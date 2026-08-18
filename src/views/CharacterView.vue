@@ -341,6 +341,7 @@ function selectCharacter(id: string) {
   const found = characters.value.find(c => String(c.id) === id)
   if (!found) return
   current.value = found
+  selectedOutfitId.value = ''
   bgExpanded.value = false
   // 点击卡片联动档案大卡：档案区不在视口内才平滑滚过去（已在视野内不打扰浏览）
   void nextTick(() => {

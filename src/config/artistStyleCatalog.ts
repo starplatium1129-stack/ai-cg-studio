@@ -5,9 +5,14 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
   { id: 'yoneyama_mai', name: 'Yoneyama Mai', cnName: '米山舞', waiTag: 'yoneyama_mai', animaTag: '@yoneyama mai', description: '电影感调色、松弛流动线条与强情绪光影', category: 'cinematic', verification: 'tag', keywords: ['电影感', '光影', '动态', '去塑料感', 'eva', '神仙画风'] },
   { id: 'rella', name: 'Rella', cnName: 'Rella', waiTag: 'rella', animaTag: '@rella', description: '梦幻夜景辉光、空灵色彩与电影照明', category: 'cinematic', verification: 'curated', keywords: ['星空', '夜景', '梦幻', '水下', '光斑'] },
   { id: 'swav', name: 'SWAV', cnName: 'SWAV', waiTag: 'swav', animaTag: '@swav', description: '高冲击力幻想海报、魔法光照与纵深', category: 'cinematic', verification: 'curated', keywords: ['纵深', '魔法光', '海报', '空间感'] },
-  
-  // 清透少女与顶级 Galgame
+
+  // 清透少女与顶级 Galgame / 动漫画风
   { id: 'kantoku', name: 'Kantoku', cnName: '监督', waiTag: 'kantoku', animaTag: '@kantoku', description: '清透日系美少女、柔和暖阳与干净线条', category: 'pure', verification: 'curated', keywords: ['格子裙', '变态王子', '阳光', '清纯', 'galgame'] },
+  { id: 'ponkan8', name: 'Ponkan8', cnName: 'ぽんかん⑧', waiTag: 'ponkan8', animaTag: '@ponkan8', description: '《春物》原案、清透水彩赛璐珞与青春明媚感', category: 'pure', verification: 'curated', keywords: ['春物', '大春物', '由比滨', '雪乃', '青春', '水彩'] },
+  { id: 'shirotaka', name: 'Shirotaka', cnName: 'シロタカ', waiTag: 'shirotaka', animaTag: '@shirotaka', description: '《无职转生》原案插画、细腻奇幻冒险与柔和水润光泽', category: 'pure', verification: 'curated', keywords: ['无职转生', '希露菲', '洛琪希', '艾莉丝', '奇幻', '水润'] },
+  { id: 'abe_tsukasa', name: 'Abe Tsukasa', cnName: '阿部司', waiTag: 'abe_tsukasa', animaTag: '@abe tsukasa', description: '《葬送的芙莉莲》作画、古典厚重大气与静谧电影感', category: 'pure', verification: 'curated', keywords: ['芙莉莲', '菲伦', '休塔尔克', '静谧', '古典', '电影感'] },
+  { id: 'fujiwara_cocoa', name: 'Fujiwara Cocoa', cnName: '藤原可可亚', waiTag: 'fujiwara_cocoa', animaTag: '@fujiwara cocoa', description: '《妖狐×仆SS》原作者、极具灵气的哥特清冷与呆萌萌系', category: 'pure', verification: 'curated', keywords: ['妖仆', '魔法少女与邪恶', '白夜', '清冷', '萌系'] },
+  { id: 'kazutake_hazano', name: 'Kazutake Hazano', cnName: '和武叶佐乃', waiTag: 'kazutake_hazano', animaTag: '@kazutake hazano', description: '《白圣女与黑牧师》原作者、温暖治愈系与圣洁柔和线条', category: 'pure', verification: 'curated', keywords: ['白圣女', '塞西莉亚', '治愈', '圣洁', '柔和'] },
   { id: 'azuuru', name: 'Azure', cnName: 'あずーる', waiTag: 'azuuru', animaTag: '@azuuru', description: '《魔女之旅》原案、空灵水彩发丝与通透旅行感', category: 'pure', verification: 'tag', keywords: ['魔女之旅', '伊蕾娜', '伊雷娜', 'elaina', 'azure', 'azuuru', '旅行', '魔女', '水彩', '通透'] },
   { id: 'hiten_(hitenkei)', name: 'Hiten', cnName: 'Hiten', waiTag: 'hiten_(hitenkei)', animaTag: '@hiten (hitenkei)', description: '柔光日系、精致五官与清澈治愈空气感', category: 'pure', verification: 'tag', keywords: ['空气感', '柔光', '精致', '唯美', '清纯'] },
   { id: 'tiv', name: 'Tiv', cnName: 'Tiv', waiTag: 'tiv', animaTag: '@tiv', description: '轻小说封面感、细腻环境光与微风发丝', category: 'pure', verification: 'tag', keywords: ['政宗君', '微风', '轻小说', '回眸'] },
@@ -27,8 +32,10 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
   { id: 'lam_(ramdayo)', name: 'LAM', cnName: 'LAM', waiTag: 'lam_(ramdayo)', animaTag: '@lam (ramdayo)', description: '极高饱和霓虹、硬朗潮流眼妆与前卫图形', category: 'trend', verification: 'tag', keywords: ['赛博', '霓虹', '眼妆', '潮流', '撞色'] },
   { id: 'mika_pikazo', name: 'Mika Pikazo', cnName: 'Mika Pikazo', waiTag: 'mika_pikazo', animaTag: '@mika pikazo', description: '高饱和流行波普色、大胆几何撞色与活力', category: 'trend', verification: 'curated', keywords: ['辉夜月', '撞色', '活力', '波普'] },
   { id: 'bunbun', name: 'BUNBUN / abec', cnName: 'abec', waiTag: 'bunbun', animaTag: '@bunbun', description: '动态游戏主视觉、清晰服装设计与动作张力', category: 'trend', verification: 'curated', keywords: ['刀剑神域', '动态', '动作', '帅气'] },
+  { id: 'fujimoto_tatsuki', name: 'Fujimoto Tatsuki', cnName: '藤本树', waiTag: 'fujimoto_tatsuki', animaTag: '@fujimoto tatsuki', description: '《电锯人》原作者、独特粗粝分镜、强烈的电影式张力与反叛感', category: 'trend', verification: 'curated', keywords: ['电锯人', '蕾塞', '玛奇玛', '粗粝', '电影感', '张力'] },
 
   // 华丽厚涂与大片级主视觉
+  { id: 'takeuchi_takashi', name: 'Takeuchi Takashi', cnName: '武内崇', waiTag: 'takeuchi_takashi', animaTag: '@takeuchi takashi', description: 'TYPE-MOON 主画师、经典月姬/Fate 凛然眼眸与标志性英灵立绘', category: 'grand', verification: 'curated', keywords: ['fate', 'fgo', '贞德', '间桐樱', 'saber', 'typemoon'] },
   { id: 'shirabi', name: 'Shirabi', cnName: '白身成', waiTag: 'shirabi', animaTag: '@shirabi', description: '利落厚重线条、鲜明轮廓与戏剧性主视觉', category: 'grand', verification: 'curated', keywords: ['86', '龙王的工作', '大片', '戏剧光'] },
   { id: 'ask_(askzy)', name: 'ASK', cnName: 'ASK', waiTag: 'ask_(askzy)', animaTag: '@ask (askzy)', description: '清冷贵气、丝滑平滑上色与克制高级感', category: 'grand', verification: 'tag', keywords: ['清冷', '贵气', '高级感', '礼服', '丝滑'] },
   { id: 'hxxg', name: 'HxxG', cnName: '刃天', waiTag: 'hxxg', animaTag: '@hxxg', description: '大动态广角透视、炫彩特效逆光与空间深邃感', category: 'grand', verification: 'curated', keywords: ['黑岩射手', '透视', '广角', '特效'] },

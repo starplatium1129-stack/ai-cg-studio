@@ -54,12 +54,18 @@
     </ArchiveStatePanel>
 
     <template v-else>
-      <!-- 工具栏：第一行 搜索+结果数+成人开关，第二行 分类（全部最左、成人垫底独立样式） -->
+      <!-- 工具栏：第一行 搜索+结果数+分级筛选+成人开关，第二行 场景分类（全部最左、成人垫底独立样式） -->
       <div class="pop-toolbar">
         <div class="pop-toolbar-row">
           <label class="sr-only" for="popularSceneSearch">搜索场景</label>
           <input v-model="query" type="search" id="popularSceneSearch" class="pop-search"
             placeholder="搜索场景标题、描述、地点或氛围（如：浴、黑丝、月光）" />
+          <div class="pop-rating-filters" role="group" aria-label="分级筛选">
+            <button v-for="r in RATING_OPTS" :key="r.v" type="button" class="pop-rating-pill"
+              :class="{ active: ratingFilter === r.v, ['rating-' + r.v]: r.v !== 'all' }"
+              :aria-pressed="ratingFilter === r.v"
+              @click="ratingFilter = r.v">{{ r.l }}</button>
+          </div>
           <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }}</span>
           <ToggleSwitch v-model="showMature" class="mature-toggle"><span>显示成人内容 <em>({{ adultCount }})</em></span></ToggleSwitch>
         </div>
@@ -145,6 +151,13 @@ const loadError = ref('')
 const query = ref('')
 const selectedId = ref('')
 const category = ref('all')
+const ratingFilter = ref<'all' | 'All' | 'R15' | 'R18'>('all')
+const RATING_OPTS = [
+  { v: 'all', l: '全部分级' },
+  { v: 'All', l: '全年龄' },
+  { v: 'R15', l: 'R15' },
+  { v: 'R18', l: 'R18' }
+] as const
 /** 本机默认展示成人内容（与灵感场景页一致）；非本机环境默认隐藏。 */
 const showMature = ref(/^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname))
 
@@ -221,6 +234,10 @@ const categories = computed(() => {
 const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
   return pool.value.filter(bp => {
+    if (ratingFilter.value !== 'all') {
+      const r = sampleRatingOf(bp)
+      if (r !== ratingFilter.value) return false
+    }
     if (category.value !== 'all' && (bp.adult ? '成人' : bp.category) !== category.value) return false
     if (!q) return true
     return [bp.title, bp.description, bp.location, bp.promptProse, bp.category, bp.mood]
@@ -279,6 +296,7 @@ function drawUrl(blueprint: SceneBlueprint): string {
 function resetFilters() {
   query.value = ''
   category.value = 'all'
+  ratingFilter.value = 'all'
 }
 
 /** 样张视觉定级：缺省按成人蓝图推导（R18/All）；2026-08-15 起样张实际画面定级优先。 */
@@ -287,11 +305,12 @@ function sampleRatingOf(blueprint: SceneBlueprint): string {
 }
 
 /** 样张缩略图：与灵感场景一致，路径为展示库样张 `pc_<角色>_<蓝图>`；通用成人蓝图无样张。 */
+const thumbVersion = ref(Date.now())
 const thumbState = ref<Record<string, boolean>>({})
 const thumbFailed = ref<Record<string, boolean>>({})
 function thumbSrc(blueprint: SceneBlueprint): string {
   if (!blueprint.characterId || !selectedId.value) return ''
-  return `/scene-showcase/thumbs/pc_${selectedId.value}_${blueprint.id}.jpg`
+  return `/scene-showcase/thumbs/pc_${selectedId.value}_${blueprint.id}.jpg?v=${thumbVersion.value}`
 }
 function onThumbLoad(src: string) {
   thumbState.value = { ...thumbState.value, [src]: true }
@@ -461,6 +480,28 @@ onMounted(() => { void init() })
 }
 .pop-search:focus { border-color: var(--accent); }
 .pop-search::placeholder { color: var(--text-muted); }
+.pop-rating-filters { display: inline-flex; align-items: center; gap: 4px; }
+.pop-rating-pill {
+  padding: 4px 10px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease-out);
+}
+.pop-rating-pill:hover { border-color: var(--border-strong); color: var(--text-primary); }
+.pop-rating-pill.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+.pop-rating-pill.rating-R18.active {
+  border-color: var(--danger-text);
+  background: color-mix(in srgb, var(--danger-text) 14%, transparent);
+  color: var(--danger-text);
+}
 .pop-count { color: var(--text-muted); font: 600 var(--fs-mono-sm) var(--font-mono); white-space: nowrap; }
 .pop-count strong { color: var(--accent); }
 .pop-cats { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: var(--s-2); }

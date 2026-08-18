@@ -90,11 +90,12 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
 
     if (blueprints?.value?.length) {
       blueprints.value.forEach(bp => {
-        const entryId = `pc_${bp.characterId}_${bp.id}`
+        const charId = bp.characterId || ''
+        const entryId = `pc_${charId}_${bp.id}`
         items.push({
           id: entryId,
           title: bp.title,
-          char: bp.characterId,
+          char: charId,
           rating: bp.adult ? 'R18' : 'All',
           type: 'popular'
         })

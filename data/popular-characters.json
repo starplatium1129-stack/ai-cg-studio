@@ -61,7 +61,8 @@
             "detached_sleeves",
             "long_sleeves"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "modern_clothes",
@@ -72,7 +73,9 @@
             "dress",
             "purple_dress",
             "long_sleeves"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -138,7 +141,8 @@
             "black_pantyhose",
             "loafers"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "bunny_girl",
@@ -152,7 +156,9 @@
             "fishnets",
             "bow_tie",
             "thighhighs"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "street_clothes",
@@ -163,7 +169,9 @@
             "sweater",
             "skirt",
             "open_jacket"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -223,7 +231,8 @@
             "black_thighhighs",
             "hair_ornament"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "school_uniform",
@@ -235,7 +244,9 @@
             "black_shirt",
             "pleated_skirt",
             "white_socks"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "casual",
@@ -246,7 +257,9 @@
             "choker",
             "cardigan",
             "black_clothes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -304,7 +317,8 @@
             "long_sleeves",
             "staff"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "travel_clothes",
@@ -315,7 +329,9 @@
             "jacket",
             "pants",
             "traveling_clothes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "casual",
@@ -325,7 +341,9 @@
             "casual_clothes",
             "dress",
             "cardigan"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -386,7 +404,8 @@
             "bare_legs",
             "sword"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "casual",
@@ -399,7 +418,9 @@
             "blue_skirt",
             "skirt",
             "long_sleeves"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "formal_dress",
@@ -410,7 +431,9 @@
             "white_dress",
             "long_sleeves",
             "dress"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -470,7 +493,8 @@
             "white_boots",
             "skin_tight"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "stage",
@@ -482,7 +506,9 @@
             "lighting",
             "frills",
             "dress"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "street",
@@ -494,7 +520,9 @@
             "sneakers",
             "crop_top",
             "miniskirt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -553,7 +581,8 @@
             "red_ribbon",
             "thighhighs"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "school_uniform",
@@ -565,7 +594,9 @@
             "blue_skirt",
             "ribbon",
             "white_socks"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "red_dress",
@@ -576,7 +607,9 @@
             "dress",
             "long_sleeves",
             "layered_skirt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -635,7 +668,8 @@
             "navy_clothes",
             "ribbon"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "casual",
@@ -646,7 +680,9 @@
             "white_shirt",
             "long_coat",
             "skirt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "snow_dress",
@@ -657,7 +693,9 @@
             "evening_gown",
             "long_sleeves",
             "dress"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -714,7 +752,8 @@
             "brooch",
             "staff"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "travel_clothes",
@@ -725,7 +764,9 @@
             "long_coat",
             "boots",
             "pants"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "casual",
@@ -735,7 +776,9 @@
             "casual_clothes",
             "dress",
             "cardigan"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -793,7 +836,8 @@
             "pleated_skirt",
             "beige_skirt"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "summer_clothes",
@@ -804,7 +848,9 @@
             "tank_top",
             "shorts",
             "pink_clothes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "casual",
@@ -815,7 +861,9 @@
             "shirt",
             "jeans",
             "jacket"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -871,7 +919,8 @@
             "black_skirt",
             "blazer"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "casual",
@@ -882,7 +931,9 @@
             "shirt",
             "skirt",
             "open_jacket"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "overcoat",
@@ -893,7 +944,9 @@
             "overcoat",
             "black_coat",
             "high_collar"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "devil_true_form",
@@ -907,7 +960,9 @@
             "golden_eyes",
             "smirk",
             "dark_aura"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -964,7 +1019,8 @@
             "pleated_skirt",
             "black_thighhighs"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "red_turtleneck",
@@ -975,7 +1031,9 @@
             "red_clothes",
             "black_skirt",
             "jacket"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "mage_battle",
@@ -987,7 +1045,9 @@
             "dress",
             "glowing",
             "long_sleeves"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1047,7 +1107,8 @@
             "frills",
             "black_dress"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "casual",
@@ -1057,7 +1118,9 @@
             "casual_clothes",
             "sweater",
             "skirt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "formal_dress",
@@ -1068,7 +1131,9 @@
             "blue_dress",
             "long_sleeves",
             "dress"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1127,7 +1192,8 @@
             "dress",
             "long_sleeves"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "witch_dress",
@@ -1138,7 +1204,9 @@
             "black_dress",
             "frills",
             "hat"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "casual",
@@ -1148,7 +1216,9 @@
             "casual_clothes",
             "dress",
             "cardigan"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1209,7 +1279,8 @@
             "thighhighs",
             "wooden_staff"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "casual",
@@ -1219,7 +1290,9 @@
             "casual_clothes",
             "dress",
             "blue_clothes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "adventurer",
@@ -1231,7 +1304,9 @@
             "boots",
             "pants",
             "belt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1287,7 +1362,8 @@
             "hood",
             "winter_clothes"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "white_dress",
@@ -1298,7 +1374,9 @@
             "ribbon",
             "dress",
             "long_sleeves"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "casual",
@@ -1308,7 +1386,9 @@
             "casual_clothes",
             "dress",
             "cardigan"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1367,7 +1447,8 @@
             "pleated_skirt",
             "loose_tie"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "gal_casual",
@@ -1379,7 +1460,9 @@
             "miniskirt",
             "sneakers",
             "casual_clothes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cosplay",
@@ -1391,7 +1474,9 @@
             "wig",
             "hair_ornament",
             "sailor_uniform"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "gothic_lolita",
@@ -1403,7 +1488,9 @@
             "frilled_dress",
             "lace",
             "hair_bow"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1465,7 +1552,8 @@
             "hair_ribbon",
             "bandage_on_leg"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "demon_dress",
@@ -1479,7 +1567,9 @@
             "gloves",
             "red_bow"
           ],
-          "adult": true
+          "adult": true,
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "casual",
@@ -1490,7 +1580,9 @@
             "jacket",
             "jeans",
             "shirt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1557,7 +1649,8 @@
             "fingerless_gloves",
             "headband"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "colorful_wonderland",
@@ -1570,7 +1663,9 @@
             "sunglasses",
             "ice_cream",
             "beach"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "liberte_echec",
@@ -1583,7 +1678,9 @@
             "jacket",
             "crown",
             "skateboard"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "prelude_to_transcendence",
@@ -1596,7 +1693,9 @@
             "lace_shirt",
             "leather_pants",
             "high_heels"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "ice_cream_cafe_casual",
@@ -1610,7 +1709,9 @@
             "thighhighs",
             "sneakers",
             "crossbody_bag"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "lava_silk_loungewear",
@@ -1623,7 +1724,9 @@
             "robe",
             "slipping_off_shoulder",
             "barefoot"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "crimson_velvet_evening_gown",
@@ -1637,7 +1740,9 @@
             "side_slit",
             "choker",
             "long_gloves"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1699,7 +1804,8 @@
             "utility_belt",
             "earrings"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "evening_gown",
@@ -1712,7 +1818,9 @@
             "gold_trim",
             "hair_up",
             "cello"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "remains",
@@ -1725,7 +1833,9 @@
             "grey_clothes",
             "cargo_pants",
             "side_ponytail"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "walker",
@@ -1737,7 +1847,9 @@
             "robe",
             "scholar",
             "staff"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "rhodes_island_lounge_knit",
@@ -1751,7 +1863,9 @@
             "wide_leg_pants",
             "linen",
             "lounge"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "midnight_emerald_silk_robe",
@@ -1764,7 +1878,9 @@
             "nightdress",
             "deep_v_back",
             "green"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "victorian_traveler_coat",
@@ -1777,7 +1893,9 @@
             "ruffled_collar",
             "blouse",
             "ribbon_tie"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1845,7 +1963,8 @@
             "twin_swords",
             "military_uniform"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "ageless_afterglow",
@@ -1858,7 +1977,9 @@
             "gold_trim",
             "black_pantyhose",
             "high_heels"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "holungday",
@@ -1870,7 +1991,9 @@
             "denim_shorts",
             "sunglasses",
             "water_gun"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "wanderer",
@@ -1883,7 +2006,9 @@
             "green_clothes",
             "red_clothes",
             "sword"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "street_gourmet_casual",
@@ -1896,7 +2021,9 @@
             "jeans",
             "sneakers",
             "crossbody_bag"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "morning_kendo_robe",
@@ -1908,7 +2035,9 @@
             "pleated_skirt",
             "martial_arts",
             "training_clothes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "lgd_detective_undercover",
@@ -1920,7 +2049,9 @@
             "black_clothes",
             "detective",
             "undercover"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1980,7 +2111,8 @@
             "boots",
             "black_clothes"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "summer_flower",
@@ -1992,7 +2124,9 @@
             "white_clothes",
             "straw_hat",
             "swim_ring"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "picnic",
@@ -2004,7 +2138,9 @@
             "cream_clothes",
             "beret",
             "picnic"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cozy_sheep_fleece_loungewear",
@@ -2017,7 +2153,9 @@
             "cardigan",
             "pajamas",
             "loungewear"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "siesta_hotspring_yukata",
@@ -2029,7 +2167,9 @@
             "cotton",
             "obi",
             "hot_spring"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "leithanien_volcanology_lab_coat",
@@ -2041,7 +2181,9 @@
             "sweater",
             "glasses",
             "hearing_aid"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2104,7 +2246,8 @@
             "wheelchair",
             "dark_clothes"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "twilight_requiem",
@@ -2116,7 +2259,9 @@
             "blue_clothes",
             "wheelchair",
             "night_sky"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "baking_apron_loungewear",
@@ -2129,7 +2274,9 @@
             "apron",
             "linen",
             "baking"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "rehab_cozy_knitwear",
@@ -2141,7 +2288,9 @@
             "silk_camisole",
             "lounge_pants",
             "sage_green"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "silk_lace_morning_robe",
@@ -2154,7 +2303,9 @@
             "chiffon",
             "morning_robe",
             "sheer"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2219,7 +2370,8 @@
             "black_clothes",
             "white_clothes"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "dying_dust",
@@ -2233,7 +2385,9 @@
             "black_pantyhose",
             "high_heels",
             "smoking_pipe"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "atelier_slouchy_loungewear",
@@ -2246,7 +2400,9 @@
             "hoodie",
             "ink",
             "messy_bun"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "ink_silk_nightdress",
@@ -2259,7 +2415,9 @@
             "lace_trim",
             "side_slit",
             "sheer_robe"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "neo_cyber_ink_techwear",
@@ -2272,7 +2430,9 @@
             "hooded_jacket",
             "high_top_sneakers",
             "cyberpunk"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2328,7 +2488,8 @@
             "helmet",
             "hammer"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "elite2",
@@ -2343,7 +2504,9 @@
             "horns",
             "shoulder_armor",
             "gauntlets"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "gravel",
@@ -2356,7 +2519,9 @@
             "cargo_pants",
             "bodysuit",
             "high_collar"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "silent_night",
@@ -2368,7 +2533,9 @@
             "flower",
             "beach",
             "parasol"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "obsidian",
@@ -2380,7 +2547,9 @@
             "lace",
             "brooch",
             "high_heels"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "clay_artisan_apron",
@@ -2392,7 +2561,9 @@
             "rolled_sleeves",
             "work_clothes",
             "craftsman"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "rhodes_oversized_hoodie",
@@ -2404,7 +2575,9 @@
             "charcoal",
             "mengkawaii",
             "loungewear"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cozy_winter_knit_coat",
@@ -2417,7 +2590,9 @@
             "wool_coat",
             "scarf",
             "winter_clothes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2478,7 +2653,8 @@
             "green_clothes",
             "black_clothes"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "forgemaster",
@@ -2490,7 +2666,9 @@
             "gloves",
             "hammer",
             "workwear"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "slumber_blueprint_loungewear",
@@ -2502,7 +2680,9 @@
             "loungewear",
             "lounge_shorts",
             "leg_warmers"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "rainforest_safari_explorer",
@@ -2515,7 +2695,9 @@
             "harness",
             "explorer",
             "adventure"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "gala_night_evening_dress",
@@ -2528,7 +2710,9 @@
             "emerald_green",
             "satin",
             "formal"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2589,7 +2773,8 @@
             "thighhighs",
             "scissors"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "maiden_of_night",
@@ -2601,7 +2786,9 @@
             "white_clothes",
             "lace",
             "maid_headdress"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "greenhouse_tea",
@@ -2613,7 +2800,9 @@
             "frills",
             "ribbon",
             "mary_janes"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cozy_afternoon_knit_casual",
@@ -2626,7 +2815,9 @@
             "pleated_skirt",
             "cat_ears",
             "autumn"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "static_paw_cozy_cat_pajamas",
@@ -2639,7 +2830,9 @@
             "hoodie",
             "pink",
             "lightning"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "salon_dreamer_work_apron",
@@ -2651,7 +2844,9 @@
             "striped_shirt",
             "stylist",
             "cat_ears"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2710,7 +2905,8 @@
             "thighhighs",
             "high_boots"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "waverider",
@@ -2722,7 +2918,9 @@
             "white_clothes",
             "sunglasses",
             "surfboard"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "sublimation",
@@ -2734,7 +2932,9 @@
             "gold_trim",
             "backless",
             "staff"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cozy_orca_loungewear",
@@ -2747,7 +2947,9 @@
             "lounge_shorts",
             "slippers",
             "orca"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "quiet_barista_uniform",
@@ -2759,7 +2961,9 @@
             "barista",
             "rolled_sleeves",
             "white_shirt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "oceanic_symphony_gown",
@@ -2772,7 +2976,9 @@
             "side_slit",
             "gradient",
             "chiffon"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2836,7 +3042,8 @@
             "choker",
             "scythe"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "summer_flower_fa210",
@@ -2849,7 +3056,9 @@
             "straw_hat",
             "sunglasses",
             "cocktail"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "sleepy_oversized_loungewear",
@@ -2861,7 +3070,9 @@
             "pink",
             "loungewear",
             "mengkawaii"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "classic_bartender_apron",
@@ -2873,7 +3084,9 @@
             "short_sleeves",
             "ribbon_tie",
             "bartender"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "dossoles_tropical_casual",
@@ -2885,7 +3098,9 @@
             "denim_shorts",
             "tropical",
             "sandals"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2949,7 +3164,8 @@
             "black_clothes",
             "white_clothes"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "city_rider",
@@ -2962,7 +3178,9 @@
             "baseball_cap",
             "shorts",
             "food"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "midnight_courier",
@@ -2974,7 +3192,9 @@
             "reflective",
             "messenger_bag",
             "tactical"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "lazy_dorm_oversized_loungewear",
@@ -2986,7 +3206,9 @@
             "shirt_dress",
             "kneehighs",
             "loungewear"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "apple_pie_bakery_patissiere",
@@ -2999,7 +3221,9 @@
             "apron",
             "baking",
             "tights"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "lungmen_streetwear_skater",
@@ -3012,7 +3236,9 @@
             "vest",
             "headphones",
             "streetwear"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -3071,7 +3297,8 @@
             "over_knee_socks",
             "boots"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "snow_clearing",
@@ -3085,7 +3312,9 @@
             "hair_ornament",
             "snow",
             "torii"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "wasteland_bloom",
@@ -3097,7 +3326,9 @@
             "green_clothes",
             "backpack",
             "hiking_boots"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cozy_fluffy_pajamas",
@@ -3109,7 +3340,9 @@
             "hoodie",
             "pastel",
             "loungewear"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "greenhouse_florist_smock",
@@ -3121,7 +3354,9 @@
             "puff_sleeves",
             "blouse",
             "cottagecore"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "higashi_summer_yukata",
@@ -3133,7 +3368,9 @@
             "floral_pattern",
             "mint_green",
             "obi"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -3199,7 +3436,8 @@
             "utility_belt",
             "black_clothes"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "wasteland_explorer",
@@ -3211,7 +3449,9 @@
             "cargo_pants",
             "backpack",
             "hiking_boots"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "supervisor_lounge_knitwear",
@@ -3223,7 +3463,9 @@
             "loungewear",
             "cream",
             "high_waist"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "endfield_techwear_street",
@@ -3235,7 +3477,9 @@
             "crop_top",
             "cargo_pants",
             "cyberpunk"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "sub_zero_frostfield_parka",
@@ -3248,7 +3492,9 @@
             "insulated",
             "turtleneck",
             "snow"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -3314,7 +3560,8 @@
             "thigh_straps",
             "greatsword"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "ignition",
@@ -3327,7 +3574,9 @@
             "glowing",
             "greatsword",
             "embers"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cozy_dorm_loungewear",
@@ -3339,7 +3588,9 @@
             "loungewear",
             "lounge_shorts",
             "tail"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "street_cafe_sweet",
@@ -3351,7 +3602,9 @@
             "pleated_skirt",
             "miniskirt",
             "streetwear"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "obsidian_formal_gown",
@@ -3364,7 +3617,9 @@
             "open_back",
             "black",
             "crimson"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -3431,7 +3686,8 @@
             "black_thighhighs",
             "loafers"
           ],
-          "default": true
+          "default": true,
+          "isDefault": true
         },
         {
           "id": "summer_sundress",
@@ -3443,7 +3699,9 @@
             "white_dress",
             "cardigan",
             "sandals"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "cheerleader",
@@ -3455,7 +3713,9 @@
             "crop_top",
             "pleated_skirt",
             "mini_skirt"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "oversized_nightshirt",
@@ -3466,7 +3726,9 @@
             "nightshirt",
             "oversized_shirt",
             "bare_legs"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -3476,6 +3738,1194 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "doga kobo, official anime screencap, nekotomi chao, anime coloring, crisp lineart"
+    },
+    {
+      "id": "sylphiette",
+      "displayName": "希露菲叶特",
+      "franchise": "Mushoku Tensei",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "default_mage_robe",
+      "identityTokens": [
+        "sylphiette",
+        "sylphie",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "red_eyes",
+        "elf_ears",
+        "pointed_ears",
+        "flat_chest"
+      ],
+      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
+      "outfits": [
+        {
+          "id": "default_mage_robe",
+          "name": "学徒法师长袍",
+          "tokens": [
+            "green_hair",
+            "short_hair",
+            "hooded_cloak",
+            "mage_robe",
+            "shorts",
+            "boots"
+          ],
+          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
+          "styleHint": "anime adventure style",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "silent_fitz_uniform",
+          "name": "菲兹学长魔术学院执事装",
+          "tokens": [
+            "white_hair",
+            "short_hair",
+            "sunglasses",
+            "academy_uniform",
+            "formal_suit",
+            "white_pants",
+            "cape"
+          ],
+          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
+          "styleHint": "sharp noble academy aesthetic",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "wedding_white_dress",
+          "name": "纯白无袖新娘礼服",
+          "tokens": [
+            "white_hair",
+            "white_dress",
+            "sleeveless_dress",
+            "flower_crown",
+            "bare_shoulders"
+          ],
+          "prose": "wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair",
+          "styleHint": "pure ethereal bridal lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_nightshirt",
+          "name": "居家宽松露肩睡衣",
+          "tokens": [
+            "oversized_shirt",
+            "off_shoulder_shirt",
+            "bare_thighs",
+            "bare_legs"
+          ],
+          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
+          "styleHint": "soft cozy morning atmosphere",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
+          "styleHint": "intimate soft studio lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "希露菲叶特",
+      "exactTokens": [
+        "sylphiette"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "希露菲叶特"
+      ]
+    },
+    {
+      "id": "yuigahama_yui",
+      "displayName": "由比滨结衣",
+      "franchise": "My Teen Romantic Comedy SNAFU",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sobu_uniform",
+      "identityTokens": [
+        "yuigahama_yui",
+        "1girl",
+        "solo",
+        "orange_hair",
+        "short_hair",
+        "hair_bun",
+        "side_bun",
+        "amber_eyes",
+        "large_breasts"
+      ],
+      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
+      "outfits": [
+        {
+          "id": "sobu_uniform",
+          "name": "总武高中制服",
+          "tokens": [
+            "school_uniform",
+            "open_blazer",
+            "pink_cardigan",
+            "white_shirt",
+            "red_ribbon",
+            "pleated_skirt",
+            "black_thighhighs"
+          ],
+          "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
+          "styleHint": "vibrant anime school aesthetic",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "summer_yukata",
+          "name": "夏日祭典碎花浴衣",
+          "tokens": [
+            "yukata",
+            "floral_print",
+            "red_obi",
+            "hair_ornament",
+            "geta",
+            "folding_fan"
+          ],
+          "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
+          "styleHint": "warm festive lantern glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "dog_pajamas",
+          "name": "居家露肩连帽卫衣",
+          "tokens": [
+            "hoodie",
+            "off_shoulder_hoodie",
+            "short_shorts",
+            "bare_legs",
+            "casual_clothes"
+          ],
+          "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
+          "styleHint": "cozy modern room lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "tennis_sportswear",
+          "name": "网球无袖运动短裙",
+          "tokens": [
+            "sportswear",
+            "sleeveless_top",
+            "tennis_skirt",
+            "pleated_skirt",
+            "wristband",
+            "sneakers"
+          ],
+          "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
+          "styleHint": "bright dynamic daylight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
+          "styleHint": "sensual soft room lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "ponkan8",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "由比滨结衣",
+      "exactTokens": [
+        "yuigahama_yui"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "由比滨结衣"
+      ]
+    },
+    {
+      "id": "jeanne_alter",
+      "displayName": "贞德[Alter]",
+      "franchise": "Fate",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "avenger_black_armor",
+      "identityTokens": [
+        "jeanne_d'arc_(alter)_(fate)",
+        "jeanne_alter",
+        "1girl",
+        "solo",
+        "short_hair",
+        "silver_hair",
+        "yellow_eyes",
+        "evil_smile"
+      ],
+      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
+      "outfits": [
+        {
+          "id": "avenger_black_armor",
+          "name": "复仇者黑铁战铠",
+          "tokens": [
+            "black_armor",
+            "dragon_witch",
+            "cape",
+            "headpiece",
+            "gauntlets",
+            "armored_boots",
+            "flag"
+          ],
+          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
+          "styleHint": "dramatic dark fantasy rim light",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "shinjuku_jacket_casual",
+          "name": "新宿皮夹克便服",
+          "tokens": [
+            "leather_jacket",
+            "black_tank_top",
+            "black_pants",
+            "leather_pants",
+            "choker",
+            "boots"
+          ],
+          "prose": "wearing her Shinjuku casual outfit featuring a fitted black leather jacket over a black tank top and tight leather pants with a choker",
+          "styleHint": "stylish urban neon contrast",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_swimsuit_berserker",
+          "name": "水着狂阶黑色比基尼",
+          "tokens": [
+            "bikini",
+            "black_bikini",
+            "strappy_bikini",
+            "sarong",
+            "katana",
+            "summer_clothes"
+          ],
+          "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
+          "styleHint": "dramatic sunset ocean glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "evening_black_dress",
+          "name": "英灵正装高开叉晚礼服",
+          "tokens": [
+            "evening_dress",
+            "black_dress",
+            "backless_dress",
+            "high_slit_dress",
+            "gloves"
+          ],
+          "prose": "wearing an alluring backless black velvet evening gown with high leg slit and long satin gloves",
+          "styleHint": "luxurious ballroom chiaroscuro",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, flawless porcelain skin, exposed pink pussy, detailed vulva, perky breasts with pink nipples, toned waist",
+          "styleHint": "sharp cinematic studio rim lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "so_bin"
+      ],
+      "originalName": "贞德[Alter]",
+      "exactTokens": [
+        "jeanne_alter"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "贞德[Alter]"
+      ]
+    },
+    {
+      "id": "matou_sakura",
+      "displayName": "间桐樱",
+      "franchise": "Fate",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "homurahara_uniform",
+      "identityTokens": [
+        "matou_sakura",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "hair_ribbon",
+        "red_ribbon",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
+      "outfits": [
+        {
+          "id": "homurahara_uniform",
+          "name": "穗群原学园制服",
+          "tokens": [
+            "school_uniform",
+            "brown_jacket",
+            "white_shirt",
+            "red_tie",
+            "pleated_skirt",
+            "black_pantyhose"
+          ],
+          "prose": "wearing Homurahara Academy winter uniform with beige blazer, red bow, pleated skirt, and black tights",
+          "styleHint": "soft school hallway sunlight",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "white_summer_sundress",
+          "name": "经典纯白夏日连衣裙",
+          "tokens": [
+            "sundress",
+            "white_dress",
+            "sleeveless_dress",
+            "hair_ribbon",
+            "sandals"
+          ],
+          "prose": "wearing her iconic pure white sleeveless summer sundress with her red hair ribbon fluttering gently",
+          "styleHint": "pure nostalgic summer breeze",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "dark_sakura_dress",
+          "name": "黑化形态红纹礼服",
+          "tokens": [
+            "dark_sakura",
+            "black_dress",
+            "red_tattoos",
+            "glowing_markings",
+            "shadow_tendrils"
+          ],
+          "prose": "wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy",
+          "styleHint": "ominous dark fantasy magic glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "kitchen_apron_homewear",
+          "name": "居家粉色毛衣与围裙",
+          "tokens": [
+            "pink_sweater",
+            "apron",
+            "frilled_apron",
+            "long_skirt",
+            "casual_clothes"
+          ],
+          "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
+          "styleHint": "warm domestic golden hour",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, voluptuous feminine body, exposed pink pussy, detailed vulva, heavy breasts with pink nipples, soft blushing skin",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "kannu"
+      ],
+      "originalName": "间桐樱",
+      "exactTokens": [
+        "matou_sakura"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "间桐樱"
+      ]
+    },
+    {
+      "id": "yor_forger",
+      "displayName": "约尔·福杰",
+      "franchise": "SPY x FAMILY",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "thorn_princess_dress",
+      "identityTokens": [
+        "yor_forger",
+        "1girl",
+        "solo",
+        "black_hair",
+        "hair_bun",
+        "updo",
+        "red_eyes",
+        "earrings",
+        "flower_earrings"
+      ],
+      "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair, striking ruby red eyes, gold rose earrings, and an endearing innocent blush.",
+      "outfits": [
+        {
+          "id": "thorn_princess_dress",
+          "name": "荆棘公主杀手礼服",
+          "tokens": [
+            "thorn_princess",
+            "black_dress",
+            "halterneck_dress",
+            "rose_pattern",
+            "black_thighhighs",
+            "heels",
+            "hair_ornament"
+          ],
+          "prose": "wearing her Thorn Princess assassin black halterneck dress with red rose patterned lining, golden headpiece, and stiletto stilettos",
+          "styleHint": "sharp cinematic assassin contrast",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "off_shoulder_red_sweater",
+          "name": "居家露肩红色毛衣",
+          "tokens": [
+            "red_sweater",
+            "off_shoulder_sweater",
+            "knit_sweater",
+            "black_tights",
+            "casual_clothes"
+          ],
+          "prose": "wearing her signature chunky knit off-the-shoulder crimson red sweater with black tights in the Forger home",
+          "styleHint": "cozy warm family living room",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "city_hall_uniform",
+          "name": "市政厅职业装套裙",
+          "tokens": [
+            "office_uniform",
+            "green_jacket",
+            "white_shirt",
+            "pencil_skirt",
+            "pantyhose"
+          ],
+          "prose": "wearing her formal Berlint City Hall olive green uniform blazer with white collared shirt and pencil skirt",
+          "styleHint": "retro modern office atmosphere",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual_home_apron",
+          "name": "居家常服与熊熊围裙",
+          "tokens": [
+            "casual_dress",
+            "bear_apron",
+            "apron",
+            "sleeveless",
+            "bare_arms"
+          ],
+          "prose": "wearing a cute home apron over casual dress while trying her best in the kitchen",
+          "styleHint": "soft cheerful morning daylight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "slender_waist",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, athletic hourglass figure, exposed pink pussy, detailed vulva, firm shapely breasts with pink nipples, bare hips",
+          "styleHint": "seductive dramatic moonlight",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "endo_tatsuya",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "约尔·福杰",
+      "exactTokens": [
+        "yor_forger"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "约尔·福杰"
+      ]
+    },
+    {
+      "id": "reze_chainsaw",
+      "displayName": "蕾塞",
+      "franchise": "Chainsaw Man",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sleeveless_white_shirt",
+      "identityTokens": [
+        "reze_(chainsaw_man)",
+        "reze",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "short_hair",
+        "green_eyes",
+        "choker",
+        "blush"
+      ],
+      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
+      "outfits": [
+        {
+          "id": "sleeveless_white_shirt",
+          "name": "经典无袖衬衫与黑领带",
+          "tokens": [
+            "sleeveless_shirt",
+            "white_shirt",
+            "black_tie",
+            "black_shorts",
+            "choker",
+            "sneakers"
+          ],
+          "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
+          "styleHint": "gritty cinematic urban anime",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "summer_swimsuit_night",
+          "name": "夜间学校泳池死库水",
+          "tokens": [
+            "school_swimsuit",
+            "one_piece_swimsuit",
+            "wet_skin",
+            "choker",
+            "bare_legs"
+          ],
+          "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
+          "styleHint": "cool blue night swimming glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cafe_apron_outfit",
+          "name": "咖啡厅打工围裙装",
+          "tokens": [
+            "cafe_uniform",
+            "apron",
+            "white_shirt",
+            "jeans",
+            "choker"
+          ],
+          "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
+          "styleHint": "warm nostalgic cafe ambient light",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_jacket_casual",
+          "name": "宽大拉链外套私服",
+          "tokens": [
+            "oversized_jacket",
+            "bomber_jacket",
+            "tank_top",
+            "shorts",
+            "choker"
+          ],
+          "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
+          "styleHint": "rainy neon asphalt reflections",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "choker",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
+          "styleHint": "alluring moody cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "fujimoto_tatsuki",
+        "rella",
+        "so_bin"
+      ],
+      "originalName": "蕾塞",
+      "exactTokens": [
+        "reze_chainsaw"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "蕾塞"
+      ]
+    },
+    {
+      "id": "fern_frieren",
+      "displayName": "菲伦",
+      "franchise": "Frieren: Beyond Journey's End",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "mage_white_robe",
+      "identityTokens": [
+        "fern_(frieren)",
+        "fern",
+        "1girl",
+        "solo",
+        "long_hair",
+        "purple_hair",
+        "side_ponytail",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a talented human mage with long straight purple hair tied in a low side ponytail, calm violet eyes, and a composed slightly pouty expression.",
+      "outfits": [
+        {
+          "id": "mage_white_robe",
+          "name": "第一阶魔法使长袍",
+          "tokens": [
+            "mage_robe",
+            "white_robe",
+            "high_neck_dress",
+            "black_dress",
+            "staff",
+            "boots"
+          ],
+          "prose": "wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff",
+          "styleHint": "majestic fantasy landscape lighting",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "winter_travel_coat",
+          "name": "冬日旅行羊毛大衣",
+          "tokens": [
+            "winter_coat",
+            "thick_coat",
+            "heavy_scarf",
+            "gloves",
+            "boots"
+          ],
+          "prose": "wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck",
+          "styleHint": "crisp snowy mountain atmosphere",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "noble_ball_dress",
+          "name": "贵族舞会典雅深紫礼服",
+          "tokens": [
+            "evening_dress",
+            "purple_dress",
+            "ball_gown",
+            "white_gloves",
+            "updo_hair"
+          ],
+          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "styleHint": "glamorous golden chandelier glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "inn_morning_nightgown",
+          "name": "旅馆清晨纯棉睡裙",
+          "tokens": [
+            "nightgown",
+            "white_nightgown",
+            "loose_dress",
+            "bare_shoulders",
+            "messy_hair"
+          ],
+          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+          "styleHint": "gentle morning rustic inn lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "soft_skin",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
+          "styleHint": "soft cozy private room lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "abe_tsukasa",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "菲伦",
+      "exactTokens": [
+        "fern_frieren"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "菲伦"
+      ]
+    },
+    {
+      "id": "mimori_byakuya",
+      "displayName": "深森白夜",
+      "franchise": "The Magical Girl and the Evil Officer",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "magical_girl_dress",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "silver_white_hair",
+        "platinum_hair",
+        "straight_hair",
+        "bangs",
+        "twin_horn_buns",
+        "spiral_buns",
+        "hair_buns",
+        "sidelocks",
+        "blue_eyes",
+        "gradient_eyes",
+        "round_eyes",
+        "deadpan",
+        "victorian_white_dress",
+        "lolita_dress",
+        "high_collar",
+        "frilled_collar",
+        "lace_trim",
+        "ribbon_bowtie",
+        "flat_chest"
+      ],
+      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Lieutenant anime, a delicate girl with flowing silver-white hair tied into signature twin spiral horn buns on each side of her head, straight bangs with long sidelocks, round gradient blue eyes with a soft deadpan innocent expression, wearing a pure white Victorian high-collar lolita dress with delicate frilled lace neckline and a small ribbon bowtie.",
+      "outfits": [
+        {
+          "id": "magical_girl_dress",
+          "name": "魔法少女战斗服",
+          "tokens": [
+            "magical_girl",
+            "frilled_dress",
+            "pink_dress",
+            "black_thighhighs",
+            "magic_wand",
+            "ribbons"
+          ],
+          "prose": "wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand",
+          "styleHint": "sparkling magical starlight aesthetic",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "poor_school_uniform",
+          "name": "简朴公立高校水手服",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "navy_sailor_collar",
+            "pleated_skirt",
+            "black_socks"
+          ],
+          "prose": "wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag",
+          "styleHint": "melancholic retro afternoon light",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "part_time_maid_apron",
+          "name": "打工女仆咖啡围裙",
+          "tokens": [
+            "maid_apron",
+            "frilled_apron",
+            "black_dress",
+            "headband"
+          ],
+          "prose": "wearing a simple black dress with a white frilly maid apron while working diligently at a cafe",
+          "styleHint": "bright cheerful cafe ambiance",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "tattered_oversized_jersey",
+          "name": "居家宽大旧运动外套",
+          "tokens": [
+            "track_jacket",
+            "oversized_jacket",
+            "jersey",
+            "short_shorts",
+            "bare_legs"
+          ],
+          "prose": "wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home",
+          "styleHint": "warm cozy apartment interior",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "flat_chest",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "slender_body",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush",
+          "styleHint": "soft pristine studio illumination",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "fujiwara_cocoa",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "深森白夜",
+      "exactTokens": [
+        "mimori_byakuya"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "深森白夜"
+      ]
+    },
+    {
+      "id": "saint_cecilia",
+      "displayName": "塞西莉亚",
+      "franchise": "Saint Cecilia and Pastor Lawrence",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "saint_nun_habit",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "pastel_green_hair",
+        "light_green_hair",
+        "mint_hair",
+        "low_bun",
+        "braided_bun",
+        "single_sidelock",
+        "long_sidelock",
+        "bangs",
+        "green_eyes",
+        "emerald_eyes",
+        "round_eyes",
+        "blush",
+        "white_dress",
+        "nun_habit",
+        "frilled_collar",
+        "high_collar",
+        "gold_necklace",
+        "cross_necklace"
+      ],
+      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a sweet and pure saint with soft pastel light mint-green hair styled in a low braided bun with a single long delicate sidelock, bright emerald green eyes with a soft cute blush, wearing a pure white holy saint habit with a frilled high collar, long wide sleeves, and a double-chain gold cross necklace.",
+      "outfits": [
+        {
+          "id": "saint_nun_habit",
+          "name": "纯白圣女修女长袍",
+          "tokens": [
+            "nun_habit",
+            "white_habit",
+            "veil",
+            "white_veil",
+            "gold_trim",
+            "cross_necklace"
+          ],
+          "prose": "wearing her ceremonial pure white saint nun habit and veil with elegant gold cross embroidery and holy pendant",
+          "styleHint": "divine cathedral stained glass rays",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "cozy_church_homewear",
+          "name": "教堂起居室宽松连衣裙",
+          "tokens": [
+            "casual_dress",
+            "loose_dress",
+            "yellow_dress",
+            "barefoot",
+            "cushion"
+          ],
+          "prose": "wearing a comfortable pastel yellow home dress while lounging lazily on the church sofa with a plush cushion",
+          "styleHint": "soft heartwarming golden hour",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "town_summer_sundress",
+          "name": "小镇漫步碎花连衣裙与草帽",
+          "tokens": [
+            "sundress",
+            "straw_hat",
+            "floral_dress",
+            "ribbon",
+            "sandals"
+          ],
+          "prose": "wearing a charming light floral sundress with a wide-brimmed straw hat while strolling through town with Lawrence",
+          "styleHint": "bright cheerful summer breeze",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_pastor_shirt",
+          "name": "偷穿牧师宽大黑衬衫",
+          "tokens": [
+            "oversized_shirt",
+            "black_shirt",
+            "bare_thighs",
+            "bare_legs",
+            "blush"
+          ],
+          "prose": "wearing Lawrence's oversized black pastor dress shirt that swallows her hands, leaving bare slender legs",
+          "styleHint": "sweet domestic morning romance",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "golden_hair",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, holy porcelain skin, exposed pink pussy, detailed vulva, shapely breasts with pink nipples, divine soft blush",
+          "styleHint": "sacred ethereal angelic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "kazutake_hazano",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "塞西莉亚",
+      "exactTokens": [
+        "saint_cecilia"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "塞西莉亚"
+      ]
     }
   ]
 }

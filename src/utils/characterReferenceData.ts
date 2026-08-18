@@ -43,6 +43,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -50,13 +51,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/nene/witch_canonical/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -64,27 +65,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/nene/witch_canonical/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/nene/witch_canonical/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -92,7 +93,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/nene/witch_canonical/ref_04_back_rear.png"
           }
         ]
@@ -108,6 +108,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -115,13 +116,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/nene/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -129,27 +130,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/nene/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/nene/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -157,7 +158,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/nene/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -173,6 +173,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -180,13 +181,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/nene/casual_summer/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -194,27 +195,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/nene/casual_summer/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/nene/casual_summer/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -222,7 +223,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/nene/casual_summer/ref_04_back_rear.png"
           }
         ]
@@ -238,6 +238,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -245,13 +246,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/nene/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -259,27 +260,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/nene/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/nene/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -287,7 +288,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/nene/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -311,6 +311,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -318,13 +319,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/natsume/cafe_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -332,27 +333,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/natsume/cafe_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/natsume/cafe_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -360,7 +361,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/natsume/cafe_uniform/ref_04_back_rear.png"
           }
         ]
@@ -376,6 +376,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -383,13 +384,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/natsume/casual_knit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -397,27 +398,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/natsume/casual_knit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/natsume/casual_knit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -425,7 +426,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/natsume/casual_knit/ref_04_back_rear.png"
           }
         ]
@@ -441,6 +441,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -448,13 +449,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/natsume/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -462,27 +463,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/natsume/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/natsume/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -490,7 +491,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/natsume/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -514,6 +514,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -521,13 +522,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/raiden_shogun/shogun_robes/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -535,27 +536,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/raiden_shogun/shogun_robes/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/raiden_shogun/shogun_robes/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -563,7 +564,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/raiden_shogun/shogun_robes/ref_04_back_rear.png"
           }
         ]
@@ -579,6 +579,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -586,13 +587,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/raiden_shogun/modern_clothes/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -600,27 +601,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/raiden_shogun/modern_clothes/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/raiden_shogun/modern_clothes/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -628,7 +629,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/raiden_shogun/modern_clothes/ref_04_back_rear.png"
           }
         ]
@@ -644,6 +644,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -651,13 +652,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/raiden_shogun/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -665,27 +666,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/raiden_shogun/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/raiden_shogun/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -693,7 +694,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/raiden_shogun/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -717,6 +717,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -724,13 +725,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/sakurajima_mai/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -738,27 +739,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/sakurajima_mai/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/sakurajima_mai/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -766,7 +767,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/sakurajima_mai/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -782,6 +782,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -789,13 +790,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/sakurajima_mai/bunny_girl/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -803,27 +804,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/sakurajima_mai/bunny_girl/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/sakurajima_mai/bunny_girl/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -831,7 +832,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/sakurajima_mai/bunny_girl/ref_04_back_rear.png"
           }
         ]
@@ -847,6 +847,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -854,13 +855,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/sakurajima_mai/street_clothes/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -868,27 +869,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/sakurajima_mai/street_clothes/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/sakurajima_mai/street_clothes/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -896,7 +897,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/sakurajima_mai/street_clothes/ref_04_back_rear.png"
           }
         ]
@@ -912,6 +912,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -919,13 +920,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/sakurajima_mai/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -933,27 +934,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/sakurajima_mai/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/sakurajima_mai/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -961,7 +962,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/sakurajima_mai/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -985,6 +985,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -992,13 +993,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tokisaki_kurumi/gothic_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1006,27 +1007,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tokisaki_kurumi/gothic_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tokisaki_kurumi/gothic_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1034,7 +1035,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tokisaki_kurumi/gothic_dress/ref_04_back_rear.png"
           }
         ]
@@ -1050,6 +1050,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1057,13 +1058,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tokisaki_kurumi/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1071,27 +1072,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tokisaki_kurumi/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tokisaki_kurumi/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1099,7 +1100,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tokisaki_kurumi/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -1115,6 +1115,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1122,13 +1123,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tokisaki_kurumi/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1136,27 +1137,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tokisaki_kurumi/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tokisaki_kurumi/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1164,7 +1165,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tokisaki_kurumi/casual/ref_04_back_rear.png"
           }
         ]
@@ -1180,6 +1180,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1187,13 +1188,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tokisaki_kurumi/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1201,27 +1202,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tokisaki_kurumi/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tokisaki_kurumi/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1229,7 +1230,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tokisaki_kurumi/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -1253,6 +1253,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1260,13 +1261,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/frieren/wizard_robe/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1274,27 +1275,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/frieren/wizard_robe/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/frieren/wizard_robe/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1302,7 +1303,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/frieren/wizard_robe/ref_04_back_rear.png"
           }
         ]
@@ -1318,6 +1318,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1325,13 +1326,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/frieren/travel_clothes/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1339,27 +1340,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/frieren/travel_clothes/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/frieren/travel_clothes/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1367,7 +1368,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/frieren/travel_clothes/ref_04_back_rear.png"
           }
         ]
@@ -1383,6 +1383,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1390,13 +1391,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/frieren/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1404,27 +1405,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/frieren/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/frieren/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1432,7 +1433,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/frieren/casual/ref_04_back_rear.png"
           }
         ]
@@ -1448,6 +1448,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1455,13 +1456,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/frieren/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1469,27 +1470,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/frieren/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/frieren/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1497,7 +1498,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/frieren/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -1521,6 +1521,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1528,13 +1529,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/artoria_pendragon/knight_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1542,27 +1543,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/artoria_pendragon/knight_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/artoria_pendragon/knight_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1570,7 +1571,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/artoria_pendragon/knight_dress/ref_04_back_rear.png"
           }
         ]
@@ -1586,6 +1586,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1593,13 +1594,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/artoria_pendragon/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1607,27 +1608,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/artoria_pendragon/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/artoria_pendragon/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1635,7 +1636,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/artoria_pendragon/casual/ref_04_back_rear.png"
           }
         ]
@@ -1651,6 +1651,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1658,13 +1659,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/artoria_pendragon/formal_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1672,27 +1673,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/artoria_pendragon/formal_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/artoria_pendragon/formal_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1700,7 +1701,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/artoria_pendragon/formal_dress/ref_04_back_rear.png"
           }
         ]
@@ -1716,6 +1716,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1723,13 +1724,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/artoria_pendragon/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1737,27 +1738,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/artoria_pendragon/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/artoria_pendragon/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1765,7 +1766,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/artoria_pendragon/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -1789,6 +1789,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1796,13 +1797,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/hatsune_miku/v2_classic/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1810,27 +1811,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/hatsune_miku/v2_classic/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/hatsune_miku/v2_classic/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1838,7 +1839,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/hatsune_miku/v2_classic/ref_04_back_rear.png"
           }
         ]
@@ -1854,6 +1854,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1861,13 +1862,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/hatsune_miku/stage/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1875,27 +1876,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/hatsune_miku/stage/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/hatsune_miku/stage/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1903,7 +1904,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/hatsune_miku/stage/ref_04_back_rear.png"
           }
         ]
@@ -1919,6 +1919,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1926,13 +1927,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/hatsune_miku/street/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -1940,27 +1941,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/hatsune_miku/street/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/hatsune_miku/street/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -1968,7 +1969,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/hatsune_miku/street/ref_04_back_rear.png"
           }
         ]
@@ -1984,6 +1984,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -1991,13 +1992,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/hatsune_miku/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2005,27 +2006,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/hatsune_miku/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/hatsune_miku/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2033,7 +2034,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/hatsune_miku/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -2057,6 +2057,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2064,13 +2065,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yuzuriha_inori/funeral_parade/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2078,27 +2079,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yuzuriha_inori/funeral_parade/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yuzuriha_inori/funeral_parade/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2106,7 +2107,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yuzuriha_inori/funeral_parade/ref_04_back_rear.png"
           }
         ]
@@ -2122,6 +2122,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2129,13 +2130,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yuzuriha_inori/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2143,27 +2144,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yuzuriha_inori/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yuzuriha_inori/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2171,7 +2172,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yuzuriha_inori/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -2187,6 +2187,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2194,13 +2195,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yuzuriha_inori/red_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2208,27 +2209,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yuzuriha_inori/red_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yuzuriha_inori/red_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2236,7 +2237,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yuzuriha_inori/red_dress/ref_04_back_rear.png"
           }
         ]
@@ -2252,6 +2252,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2259,13 +2260,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yuzuriha_inori/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2273,27 +2274,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yuzuriha_inori/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yuzuriha_inori/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2301,7 +2302,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yuzuriha_inori/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -2325,6 +2325,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2332,13 +2333,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yukinoshita_yukino/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2346,27 +2347,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yukinoshita_yukino/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yukinoshita_yukino/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2374,7 +2375,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yukinoshita_yukino/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -2390,6 +2390,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2397,13 +2398,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yukinoshita_yukino/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2411,27 +2412,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yukinoshita_yukino/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yukinoshita_yukino/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2439,7 +2440,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yukinoshita_yukino/casual/ref_04_back_rear.png"
           }
         ]
@@ -2455,6 +2455,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2462,13 +2463,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yukinoshita_yukino/snow_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2476,27 +2477,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yukinoshita_yukino/snow_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yukinoshita_yukino/snow_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2504,7 +2505,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yukinoshita_yukino/snow_dress/ref_04_back_rear.png"
           }
         ]
@@ -2520,6 +2520,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2527,13 +2528,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/yukinoshita_yukino/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2541,27 +2542,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/yukinoshita_yukino/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/yukinoshita_yukino/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2569,7 +2570,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/yukinoshita_yukino/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -2593,6 +2593,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2600,13 +2601,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/elaina/witch_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2614,27 +2615,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/elaina/witch_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/elaina/witch_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2642,7 +2643,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/elaina/witch_dress/ref_04_back_rear.png"
           }
         ]
@@ -2658,6 +2658,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2665,13 +2666,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/elaina/travel_clothes/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2679,27 +2680,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/elaina/travel_clothes/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/elaina/travel_clothes/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2707,7 +2708,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/elaina/travel_clothes/ref_04_back_rear.png"
           }
         ]
@@ -2723,6 +2723,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2730,13 +2731,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/elaina/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2744,27 +2745,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/elaina/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/elaina/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2772,7 +2773,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/elaina/casual/ref_04_back_rear.png"
           }
         ]
@@ -2788,6 +2788,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2795,13 +2796,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/elaina/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2809,27 +2810,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/elaina/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/elaina/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2837,7 +2838,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/elaina/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -2861,6 +2861,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2868,13 +2869,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/misaka_mikoto/tokiwadai_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2882,27 +2883,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/misaka_mikoto/tokiwadai_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/misaka_mikoto/tokiwadai_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2910,7 +2911,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/misaka_mikoto/tokiwadai_uniform/ref_04_back_rear.png"
           }
         ]
@@ -2926,6 +2926,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2933,13 +2934,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/misaka_mikoto/summer_clothes/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -2947,27 +2948,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/misaka_mikoto/summer_clothes/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/misaka_mikoto/summer_clothes/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -2975,7 +2976,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/misaka_mikoto/summer_clothes/ref_04_back_rear.png"
           }
         ]
@@ -2991,6 +2991,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -2998,13 +2999,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/misaka_mikoto/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3012,27 +3013,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/misaka_mikoto/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/misaka_mikoto/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3040,7 +3041,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/misaka_mikoto/casual/ref_04_back_rear.png"
           }
         ]
@@ -3056,6 +3056,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3063,13 +3064,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/misaka_mikoto/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3077,27 +3078,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/misaka_mikoto/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/misaka_mikoto/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3105,7 +3106,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/misaka_mikoto/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -3129,6 +3129,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3136,13 +3137,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/makima/work_suit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3150,27 +3151,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/makima/work_suit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/makima/work_suit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3178,7 +3179,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/makima/work_suit/ref_04_back_rear.png"
           }
         ]
@@ -3194,6 +3194,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3201,13 +3202,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/makima/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3215,27 +3216,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/makima/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/makima/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3243,7 +3244,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/makima/casual/ref_04_back_rear.png"
           }
         ]
@@ -3259,6 +3259,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3266,13 +3267,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/makima/overcoat/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3280,27 +3281,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/makima/overcoat/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/makima/overcoat/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3308,7 +3309,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/makima/overcoat/ref_04_back_rear.png"
           }
         ]
@@ -3324,6 +3324,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3331,13 +3332,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/makima/devil_true_form/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3345,27 +3346,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/makima/devil_true_form/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/makima/devil_true_form/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3373,7 +3374,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/makima/devil_true_form/ref_04_back_rear.png"
           }
         ]
@@ -3389,6 +3389,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3396,13 +3397,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/makima/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3410,27 +3411,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/makima/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/makima/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3438,7 +3439,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/makima/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -3462,6 +3462,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3469,13 +3470,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tohsaka_rin/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3483,27 +3484,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tohsaka_rin/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tohsaka_rin/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3511,7 +3512,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tohsaka_rin/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -3527,6 +3527,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3534,13 +3535,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tohsaka_rin/red_turtleneck/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3548,27 +3549,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tohsaka_rin/red_turtleneck/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tohsaka_rin/red_turtleneck/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3576,7 +3577,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tohsaka_rin/red_turtleneck/ref_04_back_rear.png"
           }
         ]
@@ -3592,6 +3592,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3599,13 +3600,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tohsaka_rin/mage_battle/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3613,27 +3614,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tohsaka_rin/mage_battle/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tohsaka_rin/mage_battle/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3641,7 +3642,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tohsaka_rin/mage_battle/ref_04_back_rear.png"
           }
         ]
@@ -3657,6 +3657,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3664,13 +3665,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/tohsaka_rin/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3678,27 +3679,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/tohsaka_rin/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/tohsaka_rin/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3706,7 +3707,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/tohsaka_rin/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -3730,6 +3730,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3737,13 +3738,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/rem_rezero/maid_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3751,27 +3752,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/rem_rezero/maid_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/rem_rezero/maid_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3779,7 +3780,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/rem_rezero/maid_uniform/ref_04_back_rear.png"
           }
         ]
@@ -3795,6 +3795,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3802,13 +3803,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/rem_rezero/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3816,27 +3817,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/rem_rezero/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/rem_rezero/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3844,7 +3845,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/rem_rezero/casual/ref_04_back_rear.png"
           }
         ]
@@ -3860,6 +3860,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3867,13 +3868,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/rem_rezero/formal_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3881,27 +3882,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/rem_rezero/formal_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/rem_rezero/formal_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3909,7 +3910,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/rem_rezero/formal_dress/ref_04_back_rear.png"
           }
         ]
@@ -3925,6 +3925,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -3932,13 +3933,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/rem_rezero/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -3946,27 +3947,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/rem_rezero/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/rem_rezero/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -3974,7 +3975,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/rem_rezero/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -3998,6 +3998,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4005,13 +4006,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/emilia_rezero/white_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4019,27 +4020,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/emilia_rezero/white_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/emilia_rezero/white_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4047,7 +4048,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/emilia_rezero/white_dress/ref_04_back_rear.png"
           }
         ]
@@ -4063,6 +4063,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4070,13 +4071,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/emilia_rezero/witch_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4084,27 +4085,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/emilia_rezero/witch_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/emilia_rezero/witch_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4112,7 +4113,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/emilia_rezero/witch_dress/ref_04_back_rear.png"
           }
         ]
@@ -4128,6 +4128,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4135,13 +4136,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/emilia_rezero/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4149,27 +4150,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/emilia_rezero/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/emilia_rezero/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4177,7 +4178,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/emilia_rezero/casual/ref_04_back_rear.png"
           }
         ]
@@ -4193,6 +4193,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4200,13 +4201,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/emilia_rezero/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4214,27 +4215,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/emilia_rezero/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/emilia_rezero/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4242,7 +4243,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/emilia_rezero/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -4266,6 +4266,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4273,13 +4274,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/roxy_migurdia/witch_outfit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4287,27 +4288,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/roxy_migurdia/witch_outfit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/roxy_migurdia/witch_outfit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4315,7 +4316,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/roxy_migurdia/witch_outfit/ref_04_back_rear.png"
           }
         ]
@@ -4331,6 +4331,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4338,13 +4339,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/roxy_migurdia/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4352,27 +4353,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/roxy_migurdia/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/roxy_migurdia/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4380,7 +4381,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/roxy_migurdia/casual/ref_04_back_rear.png"
           }
         ]
@@ -4396,6 +4396,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4403,13 +4404,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/roxy_migurdia/adventurer/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4417,27 +4418,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/roxy_migurdia/adventurer/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/roxy_migurdia/adventurer/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4445,7 +4446,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/roxy_migurdia/adventurer/ref_04_back_rear.png"
           }
         ]
@@ -4461,6 +4461,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4468,13 +4469,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/roxy_migurdia/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4482,27 +4483,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/roxy_migurdia/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/roxy_migurdia/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4510,7 +4511,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/roxy_migurdia/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -4534,6 +4534,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4541,13 +4542,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/winter_coat/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4555,27 +4556,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/winter_coat/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/winter_coat/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4583,7 +4584,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/winter_coat/ref_04_back_rear.png"
           }
         ]
@@ -4599,6 +4599,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4606,13 +4607,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/white_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4620,27 +4621,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/white_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/white_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4648,7 +4649,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/white_dress/ref_04_back_rear.png"
           }
         ]
@@ -4664,6 +4664,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4671,13 +4672,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4685,27 +4686,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4713,7 +4714,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/casual/ref_04_back_rear.png"
           }
         ]
@@ -4729,6 +4729,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4736,13 +4737,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4750,27 +4751,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4778,7 +4779,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/illyasviel_von_einzbern/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -4802,6 +4802,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4809,13 +4810,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kitagawa_marin/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4823,27 +4824,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kitagawa_marin/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kitagawa_marin/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4851,7 +4852,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kitagawa_marin/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -4867,6 +4867,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4874,13 +4875,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kitagawa_marin/gal_casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4888,27 +4889,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kitagawa_marin/gal_casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kitagawa_marin/gal_casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4916,7 +4917,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kitagawa_marin/gal_casual/ref_04_back_rear.png"
           }
         ]
@@ -4932,6 +4932,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -4939,13 +4940,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kitagawa_marin/cosplay/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -4953,27 +4954,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kitagawa_marin/cosplay/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kitagawa_marin/cosplay/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -4981,7 +4982,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kitagawa_marin/cosplay/ref_04_back_rear.png"
           }
         ]
@@ -4997,6 +4997,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5004,13 +5005,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kitagawa_marin/gothic_lolita/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5018,27 +5019,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kitagawa_marin/gothic_lolita/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kitagawa_marin/gothic_lolita/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5046,7 +5047,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kitagawa_marin/gothic_lolita/ref_04_back_rear.png"
           }
         ]
@@ -5062,6 +5062,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5069,13 +5070,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kitagawa_marin/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5083,27 +5084,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kitagawa_marin/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kitagawa_marin/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5111,7 +5112,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kitagawa_marin/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -5135,6 +5135,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5142,13 +5143,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kisara_engage_kiss/school_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5156,27 +5157,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kisara_engage_kiss/school_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kisara_engage_kiss/school_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5184,7 +5185,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kisara_engage_kiss/school_uniform/ref_04_back_rear.png"
           }
         ]
@@ -5200,6 +5200,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5207,13 +5208,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kisara_engage_kiss/demon_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5221,27 +5222,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kisara_engage_kiss/demon_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kisara_engage_kiss/demon_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5249,7 +5250,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kisara_engage_kiss/demon_dress/ref_04_back_rear.png"
           }
         ]
@@ -5265,6 +5265,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5272,13 +5273,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kisara_engage_kiss/casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5286,27 +5287,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kisara_engage_kiss/casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kisara_engage_kiss/casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5314,7 +5315,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kisara_engage_kiss/casual/ref_04_back_rear.png"
           }
         ]
@@ -5330,6 +5330,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5337,13 +5338,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kisara_engage_kiss/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5351,27 +5352,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kisara_engage_kiss/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kisara_engage_kiss/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5379,7 +5380,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kisara_engage_kiss/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -5403,6 +5403,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5410,13 +5411,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5424,27 +5425,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5452,7 +5453,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -5468,6 +5468,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5475,13 +5476,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/colorful_wonderland/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5489,27 +5490,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/colorful_wonderland/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/colorful_wonderland/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5517,7 +5518,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/colorful_wonderland/ref_04_back_rear.png"
           }
         ]
@@ -5533,6 +5533,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5540,13 +5541,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/liberte_echec/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5554,27 +5555,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/liberte_echec/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/liberte_echec/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5582,7 +5583,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/liberte_echec/ref_04_back_rear.png"
           }
         ]
@@ -5598,6 +5598,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5605,13 +5606,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/prelude_to_transcendence/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5619,27 +5620,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/prelude_to_transcendence/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/prelude_to_transcendence/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5647,7 +5648,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/prelude_to_transcendence/ref_04_back_rear.png"
           }
         ]
@@ -5663,6 +5663,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5670,13 +5671,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/ice_cream_cafe_casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5684,27 +5685,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/ice_cream_cafe_casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/ice_cream_cafe_casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5712,7 +5713,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/ice_cream_cafe_casual/ref_04_back_rear.png"
           }
         ]
@@ -5728,6 +5728,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5735,13 +5736,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/lava_silk_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5749,27 +5750,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/lava_silk_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/lava_silk_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5777,7 +5778,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/lava_silk_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -5793,6 +5793,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5800,13 +5801,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/crimson_velvet_evening_gown/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5814,27 +5815,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/crimson_velvet_evening_gown/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/crimson_velvet_evening_gown/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5842,7 +5843,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/crimson_velvet_evening_gown/ref_04_back_rear.png"
           }
         ]
@@ -5858,6 +5858,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5865,13 +5866,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/surtr_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5879,27 +5880,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/surtr_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/surtr_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5907,7 +5908,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/surtr_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -5931,6 +5931,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -5938,13 +5939,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -5952,27 +5953,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -5980,7 +5981,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -5996,6 +5996,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6003,13 +6004,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/evening_gown/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6017,27 +6018,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/evening_gown/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/evening_gown/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6045,7 +6046,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/evening_gown/ref_04_back_rear.png"
           }
         ]
@@ -6061,6 +6061,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6068,13 +6069,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/remains/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6082,27 +6083,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/remains/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/remains/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6110,7 +6111,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/remains/ref_04_back_rear.png"
           }
         ]
@@ -6126,6 +6126,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6133,13 +6134,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/walker/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6147,27 +6148,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/walker/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/walker/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6175,7 +6176,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/walker/ref_04_back_rear.png"
           }
         ]
@@ -6191,6 +6191,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6198,13 +6199,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/rhodes_island_lounge_knit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6212,27 +6213,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/rhodes_island_lounge_knit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/rhodes_island_lounge_knit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6240,7 +6241,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/rhodes_island_lounge_knit/ref_04_back_rear.png"
           }
         ]
@@ -6256,6 +6256,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6263,13 +6264,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/midnight_emerald_silk_robe/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6277,27 +6278,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/midnight_emerald_silk_robe/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/midnight_emerald_silk_robe/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6305,7 +6306,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/midnight_emerald_silk_robe/ref_04_back_rear.png"
           }
         ]
@@ -6321,6 +6321,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6328,13 +6329,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/victorian_traveler_coat/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6342,27 +6343,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/victorian_traveler_coat/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/victorian_traveler_coat/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6370,7 +6371,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/victorian_traveler_coat/ref_04_back_rear.png"
           }
         ]
@@ -6386,6 +6386,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6393,13 +6394,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/kaltsit_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6407,27 +6408,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/kaltsit_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/kaltsit_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6435,7 +6436,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/kaltsit_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -6459,6 +6459,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6466,13 +6467,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6480,27 +6481,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6508,7 +6509,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -6524,6 +6524,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6531,13 +6532,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/ageless_afterglow/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6545,27 +6546,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/ageless_afterglow/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/ageless_afterglow/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6573,7 +6574,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/ageless_afterglow/ref_04_back_rear.png"
           }
         ]
@@ -6589,6 +6589,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6596,13 +6597,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/holungday/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6610,27 +6611,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/holungday/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/holungday/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6638,7 +6639,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/holungday/ref_04_back_rear.png"
           }
         ]
@@ -6654,6 +6654,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6661,13 +6662,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/wanderer/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6675,27 +6676,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/wanderer/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/wanderer/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6703,7 +6704,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/wanderer/ref_04_back_rear.png"
           }
         ]
@@ -6719,6 +6719,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6726,13 +6727,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/street_gourmet_casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6740,27 +6741,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/street_gourmet_casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/street_gourmet_casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6768,7 +6769,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/street_gourmet_casual/ref_04_back_rear.png"
           }
         ]
@@ -6784,6 +6784,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6791,13 +6792,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/morning_kendo_robe/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6805,27 +6806,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/morning_kendo_robe/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/morning_kendo_robe/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6833,7 +6834,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/morning_kendo_robe/ref_04_back_rear.png"
           }
         ]
@@ -6849,6 +6849,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6856,13 +6857,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/lgd_detective_undercover/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6870,27 +6871,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/lgd_detective_undercover/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/lgd_detective_undercover/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6898,7 +6899,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/lgd_detective_undercover/ref_04_back_rear.png"
           }
         ]
@@ -6914,6 +6914,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6921,13 +6922,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/chen_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -6935,27 +6936,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/chen_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/chen_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -6963,7 +6964,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/chen_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -6987,6 +6987,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -6994,13 +6995,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eyjafjalla_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7008,27 +7009,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eyjafjalla_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eyjafjalla_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7036,7 +7037,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eyjafjalla_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -7052,6 +7052,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7059,13 +7060,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eyjafjalla_arknights/summer_flower/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7073,27 +7074,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eyjafjalla_arknights/summer_flower/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eyjafjalla_arknights/summer_flower/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7101,7 +7102,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eyjafjalla_arknights/summer_flower/ref_04_back_rear.png"
           }
         ]
@@ -7117,6 +7117,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7124,13 +7125,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eyjafjalla_arknights/picnic/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7138,27 +7139,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eyjafjalla_arknights/picnic/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eyjafjalla_arknights/picnic/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7166,7 +7167,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eyjafjalla_arknights/picnic/ref_04_back_rear.png"
           }
         ]
@@ -7182,6 +7182,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7189,13 +7190,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eyjafjalla_arknights/cozy_sheep_fleece_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7203,27 +7204,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eyjafjalla_arknights/cozy_sheep_fleece_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eyjafjalla_arknights/cozy_sheep_fleece_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7231,7 +7232,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eyjafjalla_arknights/cozy_sheep_fleece_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -7247,6 +7247,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7254,13 +7255,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eyjafjalla_arknights/siesta_hotspring_yukata/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7268,27 +7269,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eyjafjalla_arknights/siesta_hotspring_yukata/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eyjafjalla_arknights/siesta_hotspring_yukata/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7296,7 +7297,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eyjafjalla_arknights/siesta_hotspring_yukata/ref_04_back_rear.png"
           }
         ]
@@ -7312,6 +7312,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7319,13 +7320,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eyjafjalla_arknights/leithanien_volcanology_lab_coat/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7333,27 +7334,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eyjafjalla_arknights/leithanien_volcanology_lab_coat/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eyjafjalla_arknights/leithanien_volcanology_lab_coat/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7361,7 +7362,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eyjafjalla_arknights/leithanien_volcanology_lab_coat/ref_04_back_rear.png"
           }
         ]
@@ -7377,6 +7377,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7384,13 +7385,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eyjafjalla_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7398,27 +7399,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eyjafjalla_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eyjafjalla_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7426,7 +7427,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eyjafjalla_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -7450,6 +7450,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7457,13 +7458,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/lemuen_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7471,27 +7472,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/lemuen_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/lemuen_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7499,7 +7500,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/lemuen_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -7515,6 +7515,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7522,13 +7523,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/lemuen_arknights/twilight_requiem/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7536,27 +7537,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/lemuen_arknights/twilight_requiem/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/lemuen_arknights/twilight_requiem/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7564,7 +7565,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/lemuen_arknights/twilight_requiem/ref_04_back_rear.png"
           }
         ]
@@ -7580,6 +7580,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7587,13 +7588,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/lemuen_arknights/baking_apron_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7601,27 +7602,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/lemuen_arknights/baking_apron_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/lemuen_arknights/baking_apron_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7629,7 +7630,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/lemuen_arknights/baking_apron_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -7645,6 +7645,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7652,13 +7653,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/lemuen_arknights/rehab_cozy_knitwear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7666,27 +7667,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/lemuen_arknights/rehab_cozy_knitwear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/lemuen_arknights/rehab_cozy_knitwear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7694,7 +7695,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/lemuen_arknights/rehab_cozy_knitwear/ref_04_back_rear.png"
           }
         ]
@@ -7710,6 +7710,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7717,13 +7718,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/lemuen_arknights/silk_lace_morning_robe/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7731,27 +7732,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/lemuen_arknights/silk_lace_morning_robe/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/lemuen_arknights/silk_lace_morning_robe/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7759,7 +7760,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/lemuen_arknights/silk_lace_morning_robe/ref_04_back_rear.png"
           }
         ]
@@ -7775,6 +7775,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7782,13 +7783,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/lemuen_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7796,27 +7797,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/lemuen_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/lemuen_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7824,7 +7825,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/lemuen_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -7848,6 +7848,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7855,13 +7856,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/dusk_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7869,27 +7870,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/dusk_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/dusk_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7897,7 +7898,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/dusk_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -7913,6 +7913,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7920,13 +7921,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/dusk_arknights/dying_dust/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7934,27 +7935,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/dusk_arknights/dying_dust/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/dusk_arknights/dying_dust/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -7962,7 +7963,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/dusk_arknights/dying_dust/ref_04_back_rear.png"
           }
         ]
@@ -7978,6 +7978,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -7985,13 +7986,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/dusk_arknights/atelier_slouchy_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -7999,27 +8000,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/dusk_arknights/atelier_slouchy_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/dusk_arknights/atelier_slouchy_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8027,7 +8028,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/dusk_arknights/atelier_slouchy_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -8043,6 +8043,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8050,13 +8051,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/dusk_arknights/ink_silk_nightdress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8064,27 +8065,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/dusk_arknights/ink_silk_nightdress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/dusk_arknights/ink_silk_nightdress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8092,7 +8093,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/dusk_arknights/ink_silk_nightdress/ref_04_back_rear.png"
           }
         ]
@@ -8108,6 +8108,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8115,13 +8116,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/dusk_arknights/neo_cyber_ink_techwear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8129,27 +8130,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/dusk_arknights/neo_cyber_ink_techwear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/dusk_arknights/neo_cyber_ink_techwear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8157,7 +8158,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/dusk_arknights/neo_cyber_ink_techwear/ref_04_back_rear.png"
           }
         ]
@@ -8173,6 +8173,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8180,13 +8181,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/dusk_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8194,27 +8195,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/dusk_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/dusk_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8222,7 +8223,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/dusk_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -8246,6 +8246,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8253,13 +8254,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8267,27 +8268,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8295,7 +8296,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -8311,6 +8311,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8318,13 +8319,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/elite2/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8332,27 +8333,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/elite2/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/elite2/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8360,7 +8361,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/elite2/ref_04_back_rear.png"
           }
         ]
@@ -8376,6 +8376,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8383,13 +8384,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/gravel/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8397,27 +8398,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/gravel/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/gravel/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8425,7 +8426,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/gravel/ref_04_back_rear.png"
           }
         ]
@@ -8441,6 +8441,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8448,13 +8449,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/silent_night/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8462,27 +8463,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/silent_night/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/silent_night/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8490,7 +8491,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/silent_night/ref_04_back_rear.png"
           }
         ]
@@ -8506,6 +8506,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8513,13 +8514,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/obsidian/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8527,27 +8528,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/obsidian/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/obsidian/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8555,7 +8556,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/obsidian/ref_04_back_rear.png"
           }
         ]
@@ -8571,6 +8571,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8578,13 +8579,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/clay_artisan_apron/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8592,27 +8593,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/clay_artisan_apron/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/clay_artisan_apron/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8620,7 +8621,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/clay_artisan_apron/ref_04_back_rear.png"
           }
         ]
@@ -8636,6 +8636,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8643,13 +8644,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/rhodes_oversized_hoodie/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8657,27 +8658,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/rhodes_oversized_hoodie/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/rhodes_oversized_hoodie/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8685,7 +8686,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/rhodes_oversized_hoodie/ref_04_back_rear.png"
           }
         ]
@@ -8701,6 +8701,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8708,13 +8709,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/cozy_winter_knit_coat/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8722,27 +8723,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/cozy_winter_knit_coat/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/cozy_winter_knit_coat/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8750,7 +8751,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/cozy_winter_knit_coat/ref_04_back_rear.png"
           }
         ]
@@ -8766,6 +8766,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8773,13 +8774,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/mudrock_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8787,27 +8788,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/mudrock_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/mudrock_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8815,7 +8816,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/mudrock_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -8839,6 +8839,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8846,13 +8847,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eunectes_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8860,27 +8861,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eunectes_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eunectes_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8888,7 +8889,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eunectes_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -8904,6 +8904,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8911,13 +8912,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eunectes_arknights/forgemaster/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8925,27 +8926,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eunectes_arknights/forgemaster/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eunectes_arknights/forgemaster/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -8953,7 +8954,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eunectes_arknights/forgemaster/ref_04_back_rear.png"
           }
         ]
@@ -8969,6 +8969,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -8976,13 +8977,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eunectes_arknights/slumber_blueprint_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -8990,27 +8991,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eunectes_arknights/slumber_blueprint_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eunectes_arknights/slumber_blueprint_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9018,7 +9019,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eunectes_arknights/slumber_blueprint_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -9034,6 +9034,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9041,13 +9042,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eunectes_arknights/rainforest_safari_explorer/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9055,27 +9056,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eunectes_arknights/rainforest_safari_explorer/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eunectes_arknights/rainforest_safari_explorer/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9083,7 +9084,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eunectes_arknights/rainforest_safari_explorer/ref_04_back_rear.png"
           }
         ]
@@ -9099,6 +9099,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9106,13 +9107,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eunectes_arknights/gala_night_evening_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9120,27 +9121,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eunectes_arknights/gala_night_evening_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eunectes_arknights/gala_night_evening_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9148,7 +9149,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eunectes_arknights/gala_night_evening_dress/ref_04_back_rear.png"
           }
         ]
@@ -9164,6 +9164,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9171,13 +9172,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/eunectes_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9185,27 +9186,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/eunectes_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/eunectes_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9213,7 +9214,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/eunectes_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -9237,6 +9237,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9244,13 +9245,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/goldenglow_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9258,27 +9259,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/goldenglow_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/goldenglow_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9286,7 +9287,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/goldenglow_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -9302,6 +9302,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9309,13 +9310,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/goldenglow_arknights/maiden_of_night/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9323,27 +9324,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/goldenglow_arknights/maiden_of_night/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/goldenglow_arknights/maiden_of_night/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9351,7 +9352,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/goldenglow_arknights/maiden_of_night/ref_04_back_rear.png"
           }
         ]
@@ -9367,6 +9367,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9374,13 +9375,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/goldenglow_arknights/greenhouse_tea/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9388,27 +9389,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/goldenglow_arknights/greenhouse_tea/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/goldenglow_arknights/greenhouse_tea/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9416,7 +9417,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/goldenglow_arknights/greenhouse_tea/ref_04_back_rear.png"
           }
         ]
@@ -9432,6 +9432,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9439,13 +9440,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/goldenglow_arknights/cozy_afternoon_knit_casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9453,27 +9454,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/goldenglow_arknights/cozy_afternoon_knit_casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/goldenglow_arknights/cozy_afternoon_knit_casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9481,7 +9482,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/goldenglow_arknights/cozy_afternoon_knit_casual/ref_04_back_rear.png"
           }
         ]
@@ -9497,6 +9497,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9504,13 +9505,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/goldenglow_arknights/static_paw_cozy_cat_pajamas/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9518,27 +9519,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/goldenglow_arknights/static_paw_cozy_cat_pajamas/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/goldenglow_arknights/static_paw_cozy_cat_pajamas/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9546,7 +9547,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/goldenglow_arknights/static_paw_cozy_cat_pajamas/ref_04_back_rear.png"
           }
         ]
@@ -9562,6 +9562,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9569,13 +9570,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/goldenglow_arknights/salon_dreamer_work_apron/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9583,27 +9584,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/goldenglow_arknights/salon_dreamer_work_apron/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/goldenglow_arknights/salon_dreamer_work_apron/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9611,7 +9612,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/goldenglow_arknights/salon_dreamer_work_apron/ref_04_back_rear.png"
           }
         ]
@@ -9627,6 +9627,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9634,13 +9635,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/goldenglow_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9648,27 +9649,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/goldenglow_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/goldenglow_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9676,7 +9677,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/goldenglow_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -9700,6 +9700,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9707,13 +9708,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/skadi_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9721,27 +9722,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/skadi_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/skadi_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9749,7 +9750,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/skadi_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -9765,6 +9765,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9772,13 +9773,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/skadi_arknights/waverider/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9786,27 +9787,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/skadi_arknights/waverider/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/skadi_arknights/waverider/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9814,7 +9815,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/skadi_arknights/waverider/ref_04_back_rear.png"
           }
         ]
@@ -9830,6 +9830,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9837,13 +9838,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/skadi_arknights/sublimation/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9851,27 +9852,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/skadi_arknights/sublimation/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/skadi_arknights/sublimation/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9879,7 +9880,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/skadi_arknights/sublimation/ref_04_back_rear.png"
           }
         ]
@@ -9895,6 +9895,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9902,13 +9903,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/skadi_arknights/cozy_orca_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9916,27 +9917,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/skadi_arknights/cozy_orca_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/skadi_arknights/cozy_orca_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -9944,7 +9945,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/skadi_arknights/cozy_orca_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -9960,6 +9960,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -9967,13 +9968,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/skadi_arknights/quiet_barista_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -9981,27 +9982,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/skadi_arknights/quiet_barista_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/skadi_arknights/quiet_barista_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10009,7 +10010,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/skadi_arknights/quiet_barista_uniform/ref_04_back_rear.png"
           }
         ]
@@ -10025,6 +10025,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10032,13 +10033,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/skadi_arknights/oceanic_symphony_gown/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10046,27 +10047,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/skadi_arknights/oceanic_symphony_gown/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/skadi_arknights/oceanic_symphony_gown/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10074,7 +10075,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/skadi_arknights/oceanic_symphony_gown/ref_04_back_rear.png"
           }
         ]
@@ -10090,6 +10090,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10097,13 +10098,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/skadi_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10111,27 +10112,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/skadi_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/skadi_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10139,7 +10140,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/skadi_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -10163,6 +10163,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10170,13 +10171,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/quillpen_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10184,27 +10185,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/quillpen_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/quillpen_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10212,7 +10213,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/quillpen_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -10228,6 +10228,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10235,13 +10236,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/quillpen_arknights/summer_flower_fa210/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10249,27 +10250,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/quillpen_arknights/summer_flower_fa210/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/quillpen_arknights/summer_flower_fa210/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10277,7 +10278,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/quillpen_arknights/summer_flower_fa210/ref_04_back_rear.png"
           }
         ]
@@ -10293,6 +10293,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10300,13 +10301,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/quillpen_arknights/sleepy_oversized_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10314,27 +10315,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/quillpen_arknights/sleepy_oversized_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/quillpen_arknights/sleepy_oversized_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10342,7 +10343,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/quillpen_arknights/sleepy_oversized_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -10358,6 +10358,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10365,13 +10366,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/quillpen_arknights/classic_bartender_apron/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10379,27 +10380,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/quillpen_arknights/classic_bartender_apron/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/quillpen_arknights/classic_bartender_apron/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10407,7 +10408,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/quillpen_arknights/classic_bartender_apron/ref_04_back_rear.png"
           }
         ]
@@ -10423,6 +10423,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10430,13 +10431,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/quillpen_arknights/dossoles_tropical_casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10444,27 +10445,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/quillpen_arknights/dossoles_tropical_casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/quillpen_arknights/dossoles_tropical_casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10472,7 +10473,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/quillpen_arknights/dossoles_tropical_casual/ref_04_back_rear.png"
           }
         ]
@@ -10488,6 +10488,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10495,13 +10496,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/quillpen_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10509,27 +10510,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/quillpen_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/quillpen_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10537,7 +10538,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/quillpen_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -10561,6 +10561,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10568,13 +10569,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/exusiai_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10582,27 +10583,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/exusiai_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/exusiai_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10610,7 +10611,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/exusiai_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -10626,6 +10626,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10633,13 +10634,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/exusiai_arknights/city_rider/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10647,27 +10648,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/exusiai_arknights/city_rider/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/exusiai_arknights/city_rider/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10675,7 +10676,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/exusiai_arknights/city_rider/ref_04_back_rear.png"
           }
         ]
@@ -10691,6 +10691,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10698,13 +10699,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/exusiai_arknights/midnight_courier/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10712,27 +10713,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/exusiai_arknights/midnight_courier/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/exusiai_arknights/midnight_courier/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10740,7 +10741,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/exusiai_arknights/midnight_courier/ref_04_back_rear.png"
           }
         ]
@@ -10756,6 +10756,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10763,13 +10764,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/exusiai_arknights/lazy_dorm_oversized_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10777,27 +10778,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/exusiai_arknights/lazy_dorm_oversized_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/exusiai_arknights/lazy_dorm_oversized_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10805,7 +10806,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/exusiai_arknights/lazy_dorm_oversized_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -10821,6 +10821,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10828,13 +10829,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/exusiai_arknights/apple_pie_bakery_patissiere/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10842,27 +10843,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/exusiai_arknights/apple_pie_bakery_patissiere/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/exusiai_arknights/apple_pie_bakery_patissiere/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10870,7 +10871,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/exusiai_arknights/apple_pie_bakery_patissiere/ref_04_back_rear.png"
           }
         ]
@@ -10886,6 +10886,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10893,13 +10894,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/exusiai_arknights/lungmen_streetwear_skater/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10907,27 +10908,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/exusiai_arknights/lungmen_streetwear_skater/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/exusiai_arknights/lungmen_streetwear_skater/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -10935,7 +10936,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/exusiai_arknights/lungmen_streetwear_skater/ref_04_back_rear.png"
           }
         ]
@@ -10951,6 +10951,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -10958,13 +10959,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/exusiai_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -10972,27 +10973,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/exusiai_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/exusiai_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11000,7 +11001,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/exusiai_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -11024,6 +11024,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11031,13 +11032,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/suzuran_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11045,27 +11046,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/suzuran_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/suzuran_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11073,7 +11074,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/suzuran_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -11089,6 +11089,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11096,13 +11097,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/suzuran_arknights/snow_clearing/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11110,27 +11111,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/suzuran_arknights/snow_clearing/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/suzuran_arknights/snow_clearing/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11138,7 +11139,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/suzuran_arknights/snow_clearing/ref_04_back_rear.png"
           }
         ]
@@ -11154,6 +11154,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11161,13 +11162,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/suzuran_arknights/wasteland_bloom/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11175,27 +11176,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/suzuran_arknights/wasteland_bloom/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/suzuran_arknights/wasteland_bloom/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11203,7 +11204,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/suzuran_arknights/wasteland_bloom/ref_04_back_rear.png"
           }
         ]
@@ -11219,6 +11219,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11226,13 +11227,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/suzuran_arknights/cozy_fluffy_pajamas/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11240,27 +11241,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/suzuran_arknights/cozy_fluffy_pajamas/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/suzuran_arknights/cozy_fluffy_pajamas/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11268,7 +11269,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/suzuran_arknights/cozy_fluffy_pajamas/ref_04_back_rear.png"
           }
         ]
@@ -11284,6 +11284,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11291,13 +11292,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/suzuran_arknights/greenhouse_florist_smock/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11305,27 +11306,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/suzuran_arknights/greenhouse_florist_smock/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/suzuran_arknights/greenhouse_florist_smock/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11333,7 +11334,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/suzuran_arknights/greenhouse_florist_smock/ref_04_back_rear.png"
           }
         ]
@@ -11349,6 +11349,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11356,13 +11357,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/suzuran_arknights/higashi_summer_yukata/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11370,27 +11371,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/suzuran_arknights/higashi_summer_yukata/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/suzuran_arknights/higashi_summer_yukata/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11398,7 +11399,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/suzuran_arknights/higashi_summer_yukata/ref_04_back_rear.png"
           }
         ]
@@ -11414,6 +11414,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11421,13 +11422,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/suzuran_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11435,27 +11436,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/suzuran_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/suzuran_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11463,7 +11464,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/suzuran_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -11487,6 +11487,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11494,13 +11495,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/perlica_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11508,27 +11509,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/perlica_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/perlica_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11536,7 +11537,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/perlica_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -11552,6 +11552,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11559,13 +11560,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/perlica_arknights/wasteland_explorer/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11573,27 +11574,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/perlica_arknights/wasteland_explorer/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/perlica_arknights/wasteland_explorer/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11601,7 +11602,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/perlica_arknights/wasteland_explorer/ref_04_back_rear.png"
           }
         ]
@@ -11617,6 +11617,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11624,13 +11625,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/perlica_arknights/supervisor_lounge_knitwear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11638,27 +11639,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/perlica_arknights/supervisor_lounge_knitwear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/perlica_arknights/supervisor_lounge_knitwear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11666,7 +11667,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/perlica_arknights/supervisor_lounge_knitwear/ref_04_back_rear.png"
           }
         ]
@@ -11682,6 +11682,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11689,13 +11690,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/perlica_arknights/endfield_techwear_street/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11703,27 +11704,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/perlica_arknights/endfield_techwear_street/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/perlica_arknights/endfield_techwear_street/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11731,7 +11732,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/perlica_arknights/endfield_techwear_street/ref_04_back_rear.png"
           }
         ]
@@ -11747,6 +11747,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11754,13 +11755,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/perlica_arknights/sub_zero_frostfield_parka/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11768,27 +11769,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/perlica_arknights/sub_zero_frostfield_parka/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/perlica_arknights/sub_zero_frostfield_parka/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11796,7 +11797,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/perlica_arknights/sub_zero_frostfield_parka/ref_04_back_rear.png"
           }
         ]
@@ -11812,6 +11812,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11819,13 +11820,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/perlica_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11833,27 +11834,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/perlica_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/perlica_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11861,7 +11862,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/perlica_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -11885,6 +11885,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11892,13 +11893,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/laevatain_arknights/standard/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11906,27 +11907,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/laevatain_arknights/standard/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/laevatain_arknights/standard/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11934,7 +11935,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/laevatain_arknights/standard/ref_04_back_rear.png"
           }
         ]
@@ -11950,6 +11950,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -11957,13 +11958,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/laevatain_arknights/ignition/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -11971,27 +11972,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/laevatain_arknights/ignition/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/laevatain_arknights/ignition/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -11999,7 +12000,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/laevatain_arknights/ignition/ref_04_back_rear.png"
           }
         ]
@@ -12015,6 +12015,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12022,13 +12023,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/laevatain_arknights/cozy_dorm_loungewear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12036,27 +12037,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/laevatain_arknights/cozy_dorm_loungewear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/laevatain_arknights/cozy_dorm_loungewear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12064,7 +12065,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/laevatain_arknights/cozy_dorm_loungewear/ref_04_back_rear.png"
           }
         ]
@@ -12080,6 +12080,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12087,13 +12088,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/laevatain_arknights/street_cafe_sweet/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12101,27 +12102,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/laevatain_arknights/street_cafe_sweet/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/laevatain_arknights/street_cafe_sweet/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12129,7 +12130,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/laevatain_arknights/street_cafe_sweet/ref_04_back_rear.png"
           }
         ]
@@ -12145,6 +12145,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12152,13 +12153,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/laevatain_arknights/obsidian_formal_gown/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12166,27 +12167,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/laevatain_arknights/obsidian_formal_gown/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/laevatain_arknights/obsidian_formal_gown/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12194,7 +12195,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/laevatain_arknights/obsidian_formal_gown/ref_04_back_rear.png"
           }
         ]
@@ -12210,6 +12210,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12217,13 +12218,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/laevatain_arknights/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12231,27 +12232,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/laevatain_arknights/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/laevatain_arknights/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12259,7 +12260,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/laevatain_arknights/nsfw_nude/ref_04_back_rear.png"
           }
         ]
@@ -12283,6 +12283,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12290,13 +12291,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/seirei_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12304,27 +12305,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/seirei_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/seirei_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12332,7 +12333,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/seirei_uniform/ref_04_back_rear.png"
           }
         ]
@@ -12348,6 +12348,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12355,13 +12356,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/summer_sundress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12369,27 +12370,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/summer_sundress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/summer_sundress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12397,7 +12398,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/summer_sundress/ref_04_back_rear.png"
           }
         ]
@@ -12413,6 +12413,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12420,13 +12421,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/cheerleader/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12434,27 +12435,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/cheerleader/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/cheerleader/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12462,7 +12463,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/cheerleader/ref_04_back_rear.png"
           }
         ]
@@ -12478,6 +12478,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12485,13 +12486,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/oversized_nightshirt/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12499,27 +12500,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/oversized_nightshirt/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/oversized_nightshirt/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12527,7 +12528,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/oversized_nightshirt/ref_04_back_rear.png"
           }
         ]
@@ -12543,6 +12543,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -12550,13 +12551,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "fileName": "ref_01_face_closeup.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -12564,27 +12565,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "fileName": "ref_02_half_medium.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 广角 50mm",
-            "lens": "50mm Wide Frame",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "fileName": "ref_03_full_dynamic.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -12592,8 +12593,3004 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "fileName": "ref_04_back_rear.png",
             "url": "/assets/character-references/alisa_mikhailovna_kujou/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "sylphiette": {
+    "characterId": "sylphiette",
+    "displayName": "希露菲叶特",
+    "source": "Mushoku Tensei",
+    "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
+    "outfits": [
+      {
+        "outfitId": "default_mage_robe",
+        "outfitName": "学徒法师长袍",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "sylphiette_default_mage_robe_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/sylphiette/default_mage_robe/sylphiette_default_mage_robe_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "sylphiette_default_mage_robe_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/sylphiette/default_mage_robe/sylphiette_default_mage_robe_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "sylphiette_default_mage_robe_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/sylphiette/default_mage_robe/sylphiette_default_mage_robe_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "sylphiette_default_mage_robe_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/sylphiette/default_mage_robe/sylphiette_default_mage_robe_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "silent_fitz_uniform",
+        "outfitName": "菲兹学长魔术学院执事装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "sylphiette_silent_fitz_uniform_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/sylphiette/silent_fitz_uniform/sylphiette_silent_fitz_uniform_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "sylphiette_silent_fitz_uniform_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/sylphiette/silent_fitz_uniform/sylphiette_silent_fitz_uniform_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "sylphiette_silent_fitz_uniform_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/sylphiette/silent_fitz_uniform/sylphiette_silent_fitz_uniform_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "sylphiette_silent_fitz_uniform_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/sylphiette/silent_fitz_uniform/sylphiette_silent_fitz_uniform_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "wedding_white_dress",
+        "outfitName": "纯白无袖新娘礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "sylphiette_wedding_white_dress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "sylphiette_wedding_white_dress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "sylphiette_wedding_white_dress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "sylphiette_wedding_white_dress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "oversized_nightshirt",
+        "outfitName": "居家宽松露肩睡衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "sylphiette_oversized_nightshirt_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/sylphiette/oversized_nightshirt/sylphiette_oversized_nightshirt_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "sylphiette_oversized_nightshirt_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/sylphiette/oversized_nightshirt/sylphiette_oversized_nightshirt_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "sylphiette_oversized_nightshirt_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/sylphiette/oversized_nightshirt/sylphiette_oversized_nightshirt_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "sylphiette_oversized_nightshirt_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/sylphiette/oversized_nightshirt/sylphiette_oversized_nightshirt_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "sylphiette_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/sylphiette/nsfw_nude/sylphiette_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "sylphiette_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/sylphiette/nsfw_nude/sylphiette_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "sylphiette_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/sylphiette/nsfw_nude/sylphiette_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "sylphiette_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/sylphiette/nsfw_nude/sylphiette_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "yuigahama_yui": {
+    "characterId": "yuigahama_yui",
+    "displayName": "由比滨结衣",
+    "source": "My Teen Romantic Comedy SNAFU",
+    "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
+    "outfits": [
+      {
+        "outfitId": "sobu_uniform",
+        "outfitName": "总武高中制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yuigahama_yui_sobu_uniform_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/sobu_uniform/yuigahama_yui_sobu_uniform_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yuigahama_yui_sobu_uniform_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/sobu_uniform/yuigahama_yui_sobu_uniform_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yuigahama_yui_sobu_uniform_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/sobu_uniform/yuigahama_yui_sobu_uniform_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yuigahama_yui_sobu_uniform_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/sobu_uniform/yuigahama_yui_sobu_uniform_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "summer_yukata",
+        "outfitName": "夏日祭典碎花浴衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yuigahama_yui_summer_yukata_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/summer_yukata/yuigahama_yui_summer_yukata_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yuigahama_yui_summer_yukata_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/summer_yukata/yuigahama_yui_summer_yukata_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yuigahama_yui_summer_yukata_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/summer_yukata/yuigahama_yui_summer_yukata_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yuigahama_yui_summer_yukata_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/summer_yukata/yuigahama_yui_summer_yukata_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "dog_pajamas",
+        "outfitName": "居家露肩连帽卫衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yuigahama_yui_dog_pajamas_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/dog_pajamas/yuigahama_yui_dog_pajamas_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yuigahama_yui_dog_pajamas_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/dog_pajamas/yuigahama_yui_dog_pajamas_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yuigahama_yui_dog_pajamas_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/dog_pajamas/yuigahama_yui_dog_pajamas_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yuigahama_yui_dog_pajamas_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/dog_pajamas/yuigahama_yui_dog_pajamas_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "tennis_sportswear",
+        "outfitName": "网球无袖运动短裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yuigahama_yui_tennis_sportswear_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/tennis_sportswear/yuigahama_yui_tennis_sportswear_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yuigahama_yui_tennis_sportswear_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/tennis_sportswear/yuigahama_yui_tennis_sportswear_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yuigahama_yui_tennis_sportswear_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/tennis_sportswear/yuigahama_yui_tennis_sportswear_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yuigahama_yui_tennis_sportswear_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/tennis_sportswear/yuigahama_yui_tennis_sportswear_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yuigahama_yui_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/nsfw_nude/yuigahama_yui_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yuigahama_yui_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/nsfw_nude/yuigahama_yui_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yuigahama_yui_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/nsfw_nude/yuigahama_yui_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yuigahama_yui_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yuigahama_yui/nsfw_nude/yuigahama_yui_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "jeanne_alter": {
+    "characterId": "jeanne_alter",
+    "displayName": "贞德[Alter]",
+    "source": "Fate",
+    "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
+    "outfits": [
+      {
+        "outfitId": "avenger_black_armor",
+        "outfitName": "复仇者黑铁战铠",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "jeanne_alter_avenger_black_armor_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/jeanne_alter/avenger_black_armor/jeanne_alter_avenger_black_armor_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "jeanne_alter_avenger_black_armor_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/jeanne_alter/avenger_black_armor/jeanne_alter_avenger_black_armor_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "jeanne_alter_avenger_black_armor_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/jeanne_alter/avenger_black_armor/jeanne_alter_avenger_black_armor_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "jeanne_alter_avenger_black_armor_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/jeanne_alter/avenger_black_armor/jeanne_alter_avenger_black_armor_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "shinjuku_jacket_casual",
+        "outfitName": "新宿皮夹克便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing her Shinjuku casual outfit featuring a fitted black leather jacket over a black tank top and tight leather pants with a choker",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "jeanne_alter_shinjuku_jacket_casual_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/jeanne_alter/shinjuku_jacket_casual/jeanne_alter_shinjuku_jacket_casual_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "jeanne_alter_shinjuku_jacket_casual_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/jeanne_alter/shinjuku_jacket_casual/jeanne_alter_shinjuku_jacket_casual_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "jeanne_alter_shinjuku_jacket_casual_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/jeanne_alter/shinjuku_jacket_casual/jeanne_alter_shinjuku_jacket_casual_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "jeanne_alter_shinjuku_jacket_casual_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/jeanne_alter/shinjuku_jacket_casual/jeanne_alter_shinjuku_jacket_casual_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "summer_swimsuit_berserker",
+        "outfitName": "水着狂阶黑色比基尼",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "jeanne_alter_summer_swimsuit_berserker_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/jeanne_alter/summer_swimsuit_berserker/jeanne_alter_summer_swimsuit_berserker_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "jeanne_alter_summer_swimsuit_berserker_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/jeanne_alter/summer_swimsuit_berserker/jeanne_alter_summer_swimsuit_berserker_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "jeanne_alter_summer_swimsuit_berserker_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/jeanne_alter/summer_swimsuit_berserker/jeanne_alter_summer_swimsuit_berserker_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "jeanne_alter_summer_swimsuit_berserker_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/jeanne_alter/summer_swimsuit_berserker/jeanne_alter_summer_swimsuit_berserker_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "evening_black_dress",
+        "outfitName": "英灵正装高开叉晚礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing an alluring backless black velvet evening gown with high leg slit and long satin gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "jeanne_alter_evening_black_dress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/jeanne_alter/evening_black_dress/jeanne_alter_evening_black_dress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "jeanne_alter_evening_black_dress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/jeanne_alter/evening_black_dress/jeanne_alter_evening_black_dress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "jeanne_alter_evening_black_dress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/jeanne_alter/evening_black_dress/jeanne_alter_evening_black_dress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "jeanne_alter_evening_black_dress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/jeanne_alter/evening_black_dress/jeanne_alter_evening_black_dress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, flawless porcelain skin, exposed pink pussy, detailed vulva, perky breasts with pink nipples, toned waist",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "jeanne_alter_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/jeanne_alter/nsfw_nude/jeanne_alter_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "jeanne_alter_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/jeanne_alter/nsfw_nude/jeanne_alter_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "jeanne_alter_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/jeanne_alter/nsfw_nude/jeanne_alter_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "jeanne_alter_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/jeanne_alter/nsfw_nude/jeanne_alter_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "matou_sakura": {
+    "characterId": "matou_sakura",
+    "displayName": "间桐樱",
+    "source": "Fate",
+    "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
+    "outfits": [
+      {
+        "outfitId": "homurahara_uniform",
+        "outfitName": "穗群原学园制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing Homurahara Academy winter uniform with beige blazer, red bow, pleated skirt, and black tights",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "matou_sakura_homurahara_uniform_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/matou_sakura/homurahara_uniform/matou_sakura_homurahara_uniform_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "matou_sakura_homurahara_uniform_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/matou_sakura/homurahara_uniform/matou_sakura_homurahara_uniform_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "matou_sakura_homurahara_uniform_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/matou_sakura/homurahara_uniform/matou_sakura_homurahara_uniform_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "matou_sakura_homurahara_uniform_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/matou_sakura/homurahara_uniform/matou_sakura_homurahara_uniform_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "white_summer_sundress",
+        "outfitName": "经典纯白夏日连衣裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing her iconic pure white sleeveless summer sundress with her red hair ribbon fluttering gently",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "matou_sakura_white_summer_sundress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/matou_sakura/white_summer_sundress/matou_sakura_white_summer_sundress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "matou_sakura_white_summer_sundress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/matou_sakura/white_summer_sundress/matou_sakura_white_summer_sundress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "matou_sakura_white_summer_sundress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/matou_sakura/white_summer_sundress/matou_sakura_white_summer_sundress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "matou_sakura_white_summer_sundress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/matou_sakura/white_summer_sundress/matou_sakura_white_summer_sundress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "dark_sakura_dress",
+        "outfitName": "黑化形态红纹礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "matou_sakura_dark_sakura_dress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "matou_sakura_dark_sakura_dress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "matou_sakura_dark_sakura_dress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "matou_sakura_dark_sakura_dress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "kitchen_apron_homewear",
+        "outfitName": "居家粉色毛衣与围裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "matou_sakura_kitchen_apron_homewear_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/matou_sakura/kitchen_apron_homewear/matou_sakura_kitchen_apron_homewear_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "matou_sakura_kitchen_apron_homewear_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/matou_sakura/kitchen_apron_homewear/matou_sakura_kitchen_apron_homewear_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "matou_sakura_kitchen_apron_homewear_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/matou_sakura/kitchen_apron_homewear/matou_sakura_kitchen_apron_homewear_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "matou_sakura_kitchen_apron_homewear_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/matou_sakura/kitchen_apron_homewear/matou_sakura_kitchen_apron_homewear_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, voluptuous feminine body, exposed pink pussy, detailed vulva, heavy breasts with pink nipples, soft blushing skin",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "matou_sakura_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/matou_sakura/nsfw_nude/matou_sakura_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "matou_sakura_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/matou_sakura/nsfw_nude/matou_sakura_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "matou_sakura_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/matou_sakura/nsfw_nude/matou_sakura_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "matou_sakura_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/matou_sakura/nsfw_nude/matou_sakura_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "yor_forger": {
+    "characterId": "yor_forger",
+    "displayName": "约尔·福杰",
+    "source": "SPY x FAMILY",
+    "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair, striking ruby red eyes, gold rose earrings, and an endearing innocent blush.",
+    "outfits": [
+      {
+        "outfitId": "thorn_princess_dress",
+        "outfitName": "荆棘公主杀手礼服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her Thorn Princess assassin black halterneck dress with red rose patterned lining, golden headpiece, and stiletto stilettos",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yor_forger_thorn_princess_dress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yor_forger/thorn_princess_dress/yor_forger_thorn_princess_dress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yor_forger_thorn_princess_dress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yor_forger/thorn_princess_dress/yor_forger_thorn_princess_dress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yor_forger_thorn_princess_dress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yor_forger/thorn_princess_dress/yor_forger_thorn_princess_dress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yor_forger_thorn_princess_dress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yor_forger/thorn_princess_dress/yor_forger_thorn_princess_dress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "off_shoulder_red_sweater",
+        "outfitName": "居家露肩红色毛衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing her signature chunky knit off-the-shoulder crimson red sweater with black tights in the Forger home",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yor_forger_off_shoulder_red_sweater_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yor_forger/off_shoulder_red_sweater/yor_forger_off_shoulder_red_sweater_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yor_forger_off_shoulder_red_sweater_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yor_forger/off_shoulder_red_sweater/yor_forger_off_shoulder_red_sweater_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yor_forger_off_shoulder_red_sweater_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yor_forger/off_shoulder_red_sweater/yor_forger_off_shoulder_red_sweater_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yor_forger_off_shoulder_red_sweater_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yor_forger/off_shoulder_red_sweater/yor_forger_off_shoulder_red_sweater_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "city_hall_uniform",
+        "outfitName": "市政厅职业装套裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing her formal Berlint City Hall olive green uniform blazer with white collared shirt and pencil skirt",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yor_forger_city_hall_uniform_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yor_forger/city_hall_uniform/yor_forger_city_hall_uniform_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yor_forger_city_hall_uniform_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yor_forger/city_hall_uniform/yor_forger_city_hall_uniform_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yor_forger_city_hall_uniform_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yor_forger/city_hall_uniform/yor_forger_city_hall_uniform_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yor_forger_city_hall_uniform_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yor_forger/city_hall_uniform/yor_forger_city_hall_uniform_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_home_apron",
+        "outfitName": "居家常服与熊熊围裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a cute home apron over casual dress while trying her best in the kitchen",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yor_forger_casual_home_apron_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yor_forger/casual_home_apron/yor_forger_casual_home_apron_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yor_forger_casual_home_apron_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yor_forger/casual_home_apron/yor_forger_casual_home_apron_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yor_forger_casual_home_apron_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yor_forger/casual_home_apron/yor_forger_casual_home_apron_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yor_forger_casual_home_apron_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yor_forger/casual_home_apron/yor_forger_casual_home_apron_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, athletic hourglass figure, exposed pink pussy, detailed vulva, firm shapely breasts with pink nipples, bare hips",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "yor_forger_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/yor_forger/nsfw_nude/yor_forger_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "yor_forger_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/yor_forger/nsfw_nude/yor_forger_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "yor_forger_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/yor_forger/nsfw_nude/yor_forger_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "yor_forger_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/yor_forger/nsfw_nude/yor_forger_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "reze_chainsaw": {
+    "characterId": "reze_chainsaw",
+    "displayName": "蕾塞",
+    "source": "Chainsaw Man",
+    "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
+    "outfits": [
+      {
+        "outfitId": "sleeveless_white_shirt",
+        "outfitName": "经典无袖衬衫与黑领带",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "reze_chainsaw_sleeveless_white_shirt_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/sleeveless_white_shirt/reze_chainsaw_sleeveless_white_shirt_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "reze_chainsaw_sleeveless_white_shirt_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/sleeveless_white_shirt/reze_chainsaw_sleeveless_white_shirt_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "reze_chainsaw_sleeveless_white_shirt_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/sleeveless_white_shirt/reze_chainsaw_sleeveless_white_shirt_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "reze_chainsaw_sleeveless_white_shirt_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/sleeveless_white_shirt/reze_chainsaw_sleeveless_white_shirt_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "summer_swimsuit_night",
+        "outfitName": "夜间学校泳池死库水",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "reze_chainsaw_summer_swimsuit_night_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/summer_swimsuit_night/reze_chainsaw_summer_swimsuit_night_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "reze_chainsaw_summer_swimsuit_night_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/summer_swimsuit_night/reze_chainsaw_summer_swimsuit_night_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "reze_chainsaw_summer_swimsuit_night_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/summer_swimsuit_night/reze_chainsaw_summer_swimsuit_night_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "reze_chainsaw_summer_swimsuit_night_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/summer_swimsuit_night/reze_chainsaw_summer_swimsuit_night_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "cafe_apron_outfit",
+        "outfitName": "咖啡厅打工围裙装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "reze_chainsaw_cafe_apron_outfit_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/cafe_apron_outfit/reze_chainsaw_cafe_apron_outfit_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "reze_chainsaw_cafe_apron_outfit_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/cafe_apron_outfit/reze_chainsaw_cafe_apron_outfit_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "reze_chainsaw_cafe_apron_outfit_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/cafe_apron_outfit/reze_chainsaw_cafe_apron_outfit_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "reze_chainsaw_cafe_apron_outfit_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/cafe_apron_outfit/reze_chainsaw_cafe_apron_outfit_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "oversized_jacket_casual",
+        "outfitName": "宽大拉链外套私服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "reze_chainsaw_oversized_jacket_casual_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/oversized_jacket_casual/reze_chainsaw_oversized_jacket_casual_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "reze_chainsaw_oversized_jacket_casual_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/oversized_jacket_casual/reze_chainsaw_oversized_jacket_casual_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "reze_chainsaw_oversized_jacket_casual_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/oversized_jacket_casual/reze_chainsaw_oversized_jacket_casual_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "reze_chainsaw_oversized_jacket_casual_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/oversized_jacket_casual/reze_chainsaw_oversized_jacket_casual_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "reze_chainsaw_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/nsfw_nude/reze_chainsaw_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "reze_chainsaw_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/nsfw_nude/reze_chainsaw_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "reze_chainsaw_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/nsfw_nude/reze_chainsaw_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "reze_chainsaw_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/reze_chainsaw/nsfw_nude/reze_chainsaw_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "fern_frieren": {
+    "characterId": "fern_frieren",
+    "displayName": "菲伦",
+    "source": "Frieren: Beyond Journey's End",
+    "identityProse": "Fern from Frieren: Beyond Journey's End, a talented human mage with long straight purple hair tied in a low side ponytail, calm violet eyes, and a composed slightly pouty expression.",
+    "outfits": [
+      {
+        "outfitId": "mage_white_robe",
+        "outfitName": "第一阶魔法使长袍",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "fern_frieren_mage_white_robe_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "fern_frieren_mage_white_robe_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "fern_frieren_mage_white_robe_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "fern_frieren_mage_white_robe_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "winter_travel_coat",
+        "outfitName": "冬日旅行羊毛大衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "fern_frieren_winter_travel_coat_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "fern_frieren_winter_travel_coat_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "fern_frieren_winter_travel_coat_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "fern_frieren_winter_travel_coat_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "noble_ball_dress",
+        "outfitName": "贵族舞会典雅深紫礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "fern_frieren_noble_ball_dress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "fern_frieren_noble_ball_dress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "fern_frieren_noble_ball_dress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "fern_frieren_noble_ball_dress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "inn_morning_nightgown",
+        "outfitName": "旅馆清晨纯棉睡裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "fern_frieren_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "fern_frieren_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "fern_frieren_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "fern_frieren_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "mimori_byakuya": {
+    "characterId": "mimori_byakuya",
+    "displayName": "深森白夜",
+    "source": "The Magical Girl and the Evil Officer",
+    "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a severely impoverished magical girl with very long straight dark navy blue hair in a precise hime cut with sidelocks, blunt bangs, dark deadpan stoic eyes, and an adorable deadpan expression.",
+    "outfits": [
+      {
+        "outfitId": "magical_girl_dress",
+        "outfitName": "魔法少女战斗服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "mimori_byakuya_magical_girl_dress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "mimori_byakuya_magical_girl_dress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "mimori_byakuya_magical_girl_dress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "mimori_byakuya_magical_girl_dress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "poor_school_uniform",
+        "outfitName": "简朴公立高校水手服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "mimori_byakuya_poor_school_uniform_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "mimori_byakuya_poor_school_uniform_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "mimori_byakuya_poor_school_uniform_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "mimori_byakuya_poor_school_uniform_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "part_time_maid_apron",
+        "outfitName": "打工女仆咖啡围裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a simple black dress with a white frilly maid apron while working diligently at a cafe",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "mimori_byakuya_part_time_maid_apron_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "mimori_byakuya_part_time_maid_apron_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "mimori_byakuya_part_time_maid_apron_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "mimori_byakuya_part_time_maid_apron_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "tattered_oversized_jersey",
+        "outfitName": "居家宽大旧运动外套",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "mimori_byakuya_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "mimori_byakuya_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "mimori_byakuya_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "mimori_byakuya_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "saint_cecilia": {
+    "characterId": "saint_cecilia",
+    "displayName": "塞西莉亚",
+    "source": "Saint Cecilia and Pastor Lawrence",
+    "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a holy and delightfully lazy saint with very long fluffy wavy silver-white platinum hair featuring gentle spiral drill twintails, an expressive ahoge, round crystal-blue eyes, and a soft, adorable, heartwarming smile.",
+    "outfits": [
+      {
+        "outfitId": "saint_nun_habit",
+        "outfitName": "纯白圣女修女长袍",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her ceremonial pure white saint nun habit and veil with elegant gold cross embroidery and holy pendant",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "saint_cecilia_saint_nun_habit_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/saint_cecilia/saint_nun_habit/saint_cecilia_saint_nun_habit_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "saint_cecilia_saint_nun_habit_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/saint_cecilia/saint_nun_habit/saint_cecilia_saint_nun_habit_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "saint_cecilia_saint_nun_habit_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/saint_cecilia/saint_nun_habit/saint_cecilia_saint_nun_habit_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "saint_cecilia_saint_nun_habit_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/saint_cecilia/saint_nun_habit/saint_cecilia_saint_nun_habit_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "cozy_church_homewear",
+        "outfitName": "教堂起居室宽松连衣裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a comfortable pastel yellow home dress while lounging lazily on the church sofa with a plush cushion",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "saint_cecilia_cozy_church_homewear_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/saint_cecilia/cozy_church_homewear/saint_cecilia_cozy_church_homewear_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "saint_cecilia_cozy_church_homewear_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/saint_cecilia/cozy_church_homewear/saint_cecilia_cozy_church_homewear_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "saint_cecilia_cozy_church_homewear_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/saint_cecilia/cozy_church_homewear/saint_cecilia_cozy_church_homewear_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "saint_cecilia_cozy_church_homewear_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/saint_cecilia/cozy_church_homewear/saint_cecilia_cozy_church_homewear_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "town_summer_sundress",
+        "outfitName": "小镇漫步碎花连衣裙与草帽",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a charming light floral sundress with a wide-brimmed straw hat while strolling through town with Lawrence",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "saint_cecilia_town_summer_sundress_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/saint_cecilia/town_summer_sundress/saint_cecilia_town_summer_sundress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "saint_cecilia_town_summer_sundress_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/saint_cecilia/town_summer_sundress/saint_cecilia_town_summer_sundress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "saint_cecilia_town_summer_sundress_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/saint_cecilia/town_summer_sundress/saint_cecilia_town_summer_sundress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "saint_cecilia_town_summer_sundress_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/saint_cecilia/town_summer_sundress/saint_cecilia_town_summer_sundress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "oversized_pastor_shirt",
+        "outfitName": "偷穿牧师宽大黑衬衫",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing Lawrence's oversized black pastor dress shirt that swallows her hands, leaving bare slender legs",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "saint_cecilia_oversized_pastor_shirt_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/saint_cecilia/oversized_pastor_shirt/saint_cecilia_oversized_pastor_shirt_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "saint_cecilia_oversized_pastor_shirt_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/saint_cecilia/oversized_pastor_shirt/saint_cecilia_oversized_pastor_shirt_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "saint_cecilia_oversized_pastor_shirt_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/saint_cecilia/oversized_pastor_shirt/saint_cecilia_oversized_pastor_shirt_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "saint_cecilia_oversized_pastor_shirt_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/saint_cecilia/oversized_pastor_shirt/saint_cecilia_oversized_pastor_shirt_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, holy porcelain skin, exposed pink pussy, detailed vulva, shapely breasts with pink nipples, divine soft blush",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "saint_cecilia_nsfw_nude_ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/saint_cecilia/nsfw_nude/saint_cecilia_nsfw_nude_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "saint_cecilia_nsfw_nude_ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/saint_cecilia/nsfw_nude/saint_cecilia_nsfw_nude_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "saint_cecilia_nsfw_nude_ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/saint_cecilia/nsfw_nude/saint_cecilia_nsfw_nude_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "saint_cecilia_nsfw_nude_ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/saint_cecilia/nsfw_nude/saint_cecilia_nsfw_nude_ref_04_back_rear.png"
           }
         ]
       }
