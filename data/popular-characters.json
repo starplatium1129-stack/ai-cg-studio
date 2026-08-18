@@ -4610,75 +4610,80 @@
         "long_hair",
         "purple_hair",
         "side_ponytail",
+        "half-updo",
+        "straight_bangs",
+        "long_sidelocks",
         "purple_eyes",
         "large_breasts"
       ],
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a talented human mage with long straight purple hair tied in a low side ponytail, calm violet eyes, and a composed slightly pouty expression.",
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, soft rounded features, and a tall voluptuous figure with large breasts.",
       "outfits": [
         {
-          "id": "mage_white_robe",
-          "name": "第一阶魔法使长袍",
+          "id": "journey_robe",
+          "name": "旅途魔法长袍",
+          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
           "tokens": [
-            "mage_robe",
-            "white_robe",
-            "high_neck_dress",
-            "black_dress",
-            "staff",
+            "black_coat",
+            "white_dress",
+            "high_collar",
+            "long_sleeves",
+            "magic_staff",
             "boots"
           ],
-          "prose": "wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff",
-          "styleHint": "majestic fantasy landscape lighting",
-          "isDefault": true,
           "default": true
         },
         {
-          "id": "winter_travel_coat",
-          "name": "冬日旅行羊毛大衣",
+          "id": "winter_coat",
+          "name": "冬季厚风衣围巾装",
+          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
           "tokens": [
             "winter_coat",
-            "thick_coat",
-            "heavy_scarf",
+            "overcoat",
+            "scarf",
+            "muffler",
             "gloves",
             "boots"
-          ],
-          "prose": "wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck",
-          "styleHint": "crisp snowy mountain atmosphere",
-          "isDefault": false,
-          "default": false
+          ]
+        },
+        {
+          "id": "town_casual",
+          "name": "城镇甜品便服",
+          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
+          "tokens": [
+            "cardigan",
+            "long_skirt",
+            "blouse",
+            "ribbon"
+          ]
         },
         {
           "id": "noble_ball_dress",
           "name": "贵族舞会典雅深紫礼服",
+          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
           "tokens": [
             "evening_dress",
             "purple_dress",
             "ball_gown",
             "white_gloves",
             "updo_hair"
-          ],
-          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
-          "styleHint": "glamorous golden chandelier glow",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
           "id": "inn_morning_nightgown",
           "name": "旅馆清晨纯棉睡裙",
+          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
           "tokens": [
             "nightgown",
             "white_nightgown",
             "loose_dress",
             "bare_shoulders",
             "messy_hair"
-          ],
-          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
-          "styleHint": "gentle morning rustic inn lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
           "tokens": [
             "nude",
             "completely_naked",
@@ -4690,11 +4695,7 @@
             "pink_nipples",
             "soft_skin",
             "bare_feet"
-          ],
-          "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
-          "styleHint": "soft cozy private room lighting",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
       "negativeTokens": [
@@ -4757,12 +4758,6 @@
         "gradient_eyes",
         "round_eyes",
         "deadpan",
-        "victorian_white_dress",
-        "lolita_dress",
-        "high_collar",
-        "frilled_collar",
-        "lace_trim",
-        "ribbon_bowtie",
         "flat_chest"
       ],
       "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a delicate girl with flowing silver-white hair tied into twin spiral horn buns on each side of her head, straight bangs with long sidelocks, round gradient blue eyes, and a soft deadpan innocent expression.",
@@ -4908,10 +4903,6 @@
         "emerald_eyes",
         "round_eyes",
         "blush",
-        "white_dress",
-        "nun_habit",
-        "frilled_collar",
-        "high_collar",
         "gold_necklace",
         "cross_necklace",
         "large_breasts"

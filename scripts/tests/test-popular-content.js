@@ -57,10 +57,12 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
-test('blueprints: 43 characters x (3-6 prototype + 3-5 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
+test('blueprints: 43 characters x (6 prototype + 4 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
   // 2026-08-15 扩容：新增 15 位方舟/终末地热门角色；2026-08-18 新增 9 位跨作品热门角色
-  // （43 角色 = 9x6 + 27x10 + 7x11 = 401 场景）。
-  assert.strictEqual(blueprints.length, 401, 'expected 401 character scenes, got ' + blueprints.length);
+  // （43 角色 = 9x6 + 27x10 + 7x11 = 401 场景）；
+  // 2026-08-18 审视优化：9 位新角色场景补足至每角色 10 个（6 原型 + 4 成人）
+  // （43 角色 = 36x10 + 7x11 = 437 场景）。
+  assert.strictEqual(blueprints.length, 437, 'expected 437 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -72,25 +74,25 @@ test('blueprints: 43 characters x (3-6 prototype + 3-5 adult), all owned by a ch
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 6、10 或 11 个场景：6=3 原型+3 成人（9 角色）、10=6 原型+4 成人（27 角色）、11=6 原型+5 成人（7 角色）；
+  // 每个角色 10 或 11 个场景：10=6 原型+4 成人（36 角色）、11=6 原型+5 成人（7 角色）；
   // 全部蓝图必须归属某个角色（通用蓝图已删除）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
-    assert.ok(entry[1] === 6 || entry[1] === 10 || entry[1] === 11, entry[0] + ' must own 6, 10 or 11 scenes, got ' + entry[1]);
+    assert.ok(entry[1] === 10 || entry[1] === 11, entry[0] + ' must own 10 or 11 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 6: 9, 10: 27, 11: 7 }, 'scene distribution must be 9x6 + 27x10 + 7x11');
+  assert.deepStrictEqual(sceneDist, { 10: 36, 11: 7 }, 'scene distribution must be 36x10 + 7x11');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
-  // 每角色 3, 4 或 5 个带 characterId 的成人场景。
+  // 每角色 4 或 5 个带 characterId 的成人场景。
   var adultDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
     var adultOwned = blueprints.filter(function (blueprint) { return blueprint.characterId === entry[0] && blueprint.adult; });
-    assert.ok(adultOwned.length === 3 || adultOwned.length === 4 || adultOwned.length === 5,
-      entry[0] + ' must own 3, 4 or 5 character-specific adult scenes, got ' + adultOwned.length);
+    assert.ok(adultOwned.length === 4 || adultOwned.length === 5,
+      entry[0] + ' must own 4 or 5 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 3: 9, 4: 27, 5: 7 }, 'adult distribution must be 9x3 + 27x4 + 7x5');
+  assert.deepStrictEqual(adultDist, { 4: 36, 5: 7 }, 'adult distribution must be 36x4 + 7x5');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');

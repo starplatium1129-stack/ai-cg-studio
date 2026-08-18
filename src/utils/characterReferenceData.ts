@@ -14601,20 +14601,19 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "characterId": "fern_frieren",
     "displayName": "菲伦",
     "source": "Frieren: Beyond Journey's End",
-    "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and mature mage with long dark purple hair styled in a half-updo ponytail bun, straight bangs, round pouty cute face, chubby cheeks, deep purple eyes, tall voluptuous soft figure with large breasts, wearing modest wizard robes.",
+    "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, soft rounded features, and a tall voluptuous figure with large breasts.",
     "outfits": [
       {
         "outfitId": "journey_robe",
         "outfitName": "旅途魔法长袍",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "wearing her signature classic long black wizard coat over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
+        "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
         "references": [
           {
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
-            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -14622,13 +14621,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "url": "/assets/character-references/fern_frieren/journey_robe/ref_01_face_closeup.png"
+            "fileName": "fern_frieren_journey_robe_ref_01_face_closeup.png",
+            "url": "/assets/character-references/fern_frieren/journey_robe/fern_frieren_journey_robe_ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
-            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -14636,27 +14635,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "url": "/assets/character-references/fern_frieren/journey_robe/ref_02_half_medium.png"
+            "fileName": "fern_frieren_journey_robe_ref_02_half_medium.png",
+            "url": "/assets/character-references/fern_frieren/journey_robe/fern_frieren_journey_robe_ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 35mm 站姿",
-            "fileName": "ref_03_full_dynamic.png",
-            "lens": "35mm Full Shot Lens",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "url": "/assets/character-references/fern_frieren/journey_robe/ref_03_full_dynamic.png"
+            "fileName": "fern_frieren_journey_robe_ref_03_full_dynamic.png",
+            "url": "/assets/character-references/fern_frieren/journey_robe/fern_frieren_journey_robe_ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
-            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -14664,7 +14663,8 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "url": "/assets/character-references/fern_frieren/journey_robe/ref_04_back_rear.png"
+            "fileName": "fern_frieren_journey_robe_ref_04_back_rear.png",
+            "url": "/assets/character-references/fern_frieren/journey_robe/fern_frieren_journey_robe_ref_04_back_rear.png"
           }
         ]
       },
@@ -14679,7 +14679,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
-            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -14687,13 +14686,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_coat/ref_01_face_closeup.png"
+            "fileName": "fern_frieren_winter_coat_ref_01_face_closeup.png",
+            "url": "/assets/character-references/fern_frieren/winter_coat/fern_frieren_winter_coat_ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
-            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -14701,27 +14700,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_coat/ref_02_half_medium.png"
+            "fileName": "fern_frieren_winter_coat_ref_02_half_medium.png",
+            "url": "/assets/character-references/fern_frieren/winter_coat/fern_frieren_winter_coat_ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 35mm 站姿",
-            "fileName": "ref_03_full_dynamic.png",
-            "lens": "35mm Full Shot Lens",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_coat/ref_03_full_dynamic.png"
+            "fileName": "fern_frieren_winter_coat_ref_03_full_dynamic.png",
+            "url": "/assets/character-references/fern_frieren/winter_coat/fern_frieren_winter_coat_ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
-            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -14729,7 +14728,8 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_coat/ref_04_back_rear.png"
+            "fileName": "fern_frieren_winter_coat_ref_04_back_rear.png",
+            "url": "/assets/character-references/fern_frieren/winter_coat/fern_frieren_winter_coat_ref_04_back_rear.png"
           }
         ]
       },
@@ -14744,7 +14744,6 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
-            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -14752,13 +14751,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "url": "/assets/character-references/fern_frieren/town_casual/ref_01_face_closeup.png"
+            "fileName": "fern_frieren_town_casual_ref_01_face_closeup.png",
+            "url": "/assets/character-references/fern_frieren/town_casual/fern_frieren_town_casual_ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
-            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -14766,27 +14765,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "url": "/assets/character-references/fern_frieren/town_casual/ref_02_half_medium.png"
+            "fileName": "fern_frieren_town_casual_ref_02_half_medium.png",
+            "url": "/assets/character-references/fern_frieren/town_casual/fern_frieren_town_casual_ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 35mm 站姿",
-            "fileName": "ref_03_full_dynamic.png",
-            "lens": "35mm Full Shot Lens",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
-            "url": "/assets/character-references/fern_frieren/town_casual/ref_03_full_dynamic.png"
+            "fileName": "fern_frieren_town_casual_ref_03_full_dynamic.png",
+            "url": "/assets/character-references/fern_frieren/town_casual/fern_frieren_town_casual_ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
-            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -14794,22 +14793,22 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "url": "/assets/character-references/fern_frieren/town_casual/ref_04_back_rear.png"
+            "fileName": "fern_frieren_town_casual_ref_04_back_rear.png",
+            "url": "/assets/character-references/fern_frieren/town_casual/fern_frieren_town_casual_ref_04_back_rear.png"
           }
         ]
       },
       {
-        "outfitId": "nsfw_nude",
-        "outfitName": "私密全裸 / 丰满纯粹形态",
+        "outfitId": "noble_ball_dress",
+        "outfitName": "贵族舞会典雅深紫礼服",
         "isDefault": false,
-        "isNsfw": true,
-        "prose": "completely naked, full body bare, large natural soft breasts, plush voluptuous curves, gentle shy blush, no clothes",
+        "isNsfw": false,
+        "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
         "references": [
           {
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
-            "fileName": "fern_frieren_nsfw_nude_ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -14817,13 +14816,143 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
+            "fileName": "fern_frieren_noble_ball_dress_ref_01_face_closeup.png",
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "fern_frieren_noble_ball_dress_ref_02_half_medium.png",
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "fern_frieren_noble_ball_dress_ref_03_full_dynamic.png",
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "fern_frieren_noble_ball_dress_ref_04_back_rear.png",
+            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "inn_morning_nightgown",
+        "outfitName": "旅馆清晨纯棉睡裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png",
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_02_half_medium.png",
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png",
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "fern_frieren_inn_morning_nightgown_ref_04_back_rear.png",
+            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "fern_frieren_nsfw_nude_ref_01_face_closeup.png",
             "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
-            "fileName": "fern_frieren_nsfw_nude_ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -14831,27 +14960,27 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
+            "fileName": "fern_frieren_nsfw_nude_ref_02_half_medium.png",
             "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
-            "shotType": "全身 · 35mm 站姿",
-            "fileName": "fern_frieren_nsfw_nude_ref_03_full_dynamic.png",
-            "lens": "35mm Full Shot Lens",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
             "targetUsage": [
               "登场走入",
               "全景走位",
               "全身动作",
               "空间交代"
             ],
+            "fileName": "fern_frieren_nsfw_nude_ref_03_full_dynamic.png",
             "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
-            "fileName": "fern_frieren_nsfw_nude_ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -14859,6 +14988,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
+            "fileName": "fern_frieren_nsfw_nude_ref_04_back_rear.png",
             "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_04_back_rear.png"
           }
         ]
@@ -14869,7 +14999,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "characterId": "mimori_byakuya",
     "displayName": "深森白夜",
     "source": "The Magical Girl and the Evil Officer",
-    "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a severely impoverished magical girl with very long straight dark navy blue hair in a precise hime cut with sidelocks, blunt bangs, dark deadpan stoic eyes, and an adorable deadpan expression.",
+    "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a severely impoverished magical girl with long silver-white hair tied into signature twin spiral horn buns, straight bangs with long sidelocks, round gradient blue eyes, a soft deadpan innocent expression, and a delicate slender petite figure.",
     "outfits": [
       {
         "outfitId": "magical_girl_dress",
@@ -15202,7 +15332,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "characterId": "saint_cecilia",
     "displayName": "塞西莉亚",
     "source": "Saint Cecilia and Pastor Lawrence",
-    "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a holy and delightfully lazy saint with very long fluffy wavy silver-white platinum hair featuring gentle spiral drill twintails, an expressive ahoge, round crystal-blue eyes, and a soft, adorable, heartwarming smile.",
+    "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a holy and delightfully lazy saint with soft pastel mint-green hair in a low braided bun with one long delicate sidelock, bright emerald green eyes, a gentle blush, and a shapely mature figure with large breasts.",
     "outfits": [
       {
         "outfitId": "saint_nun_habit",

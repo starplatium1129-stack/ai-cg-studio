@@ -416,7 +416,7 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
 
 test('artist batch: curated artists + 1 no-artist baseline, one artist tag each', () => {
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
-  assert.strictEqual(artistCount, 30, 'exactly 30 artists in catalog (2026-08-17: +nekotomi_chao)');
+  assert.strictEqual(artistCount, 37, 'exactly 37 artists in catalog (2026-08-18: +rella/swav/tsunako 等 7 位成人画师)');
   const artist = gen.artistBatch(20260812);
   assert.strictEqual(artist.length, artistCount + 1);
   const withTags = artist.filter(item => item.artistId);

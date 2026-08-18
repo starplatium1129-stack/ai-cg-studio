@@ -3827,7 +3827,8 @@
         "red_eyes",
         "elf_ears",
         "pointed_ears",
-        "flat_chest"
+        "flat_chest",
+        "mushoku_tensei"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
@@ -4280,7 +4281,8 @@
         "hair_bun",
         "side_bun",
         "amber_eyes",
-        "large_breasts"
+        "large_breasts",
+        "oregairu"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
@@ -4727,7 +4729,7 @@
       "source": "Fate",
       "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
       "identityTokens": [
-        "jeanne_d'arc_(alter)_(fate)",
+        "jeanne_d'arc_alter_(fate)",
         "jeanne_alter",
         "1girl",
         "solo",
@@ -5190,7 +5192,8 @@
         "hair_ribbon",
         "red_ribbon",
         "purple_eyes",
-        "large_breasts"
+        "large_breasts",
+        "fate/stay_night"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
@@ -5634,7 +5637,7 @@
       "source": "SPY x FAMILY",
       "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair, striking ruby red eyes, gold rose earrings, and an endearing innocent blush.",
       "identityTokens": [
-        "yor_forger",
+        "yor_briar",
         "1girl",
         "solo",
         "black_hair",
@@ -5642,7 +5645,8 @@
         "updo",
         "red_eyes",
         "earrings",
-        "flower_earrings"
+        "flower_earrings",
+        "spy_x_family"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
@@ -6539,22 +6543,19 @@
       "displayName": "菲伦",
       "originalName": "菲伦",
       "source": "Frieren: Beyond Journey's End",
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and mature mage with long dark purple hair styled in a half-updo ponytail bun, straight bangs, round pouty cute face, chubby cheeks, deep purple eyes, tall voluptuous soft figure with large breasts, wearing modest wizard robes.",
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, soft rounded features, and a tall voluptuous figure with large breasts.",
       "identityTokens": [
-        "fern_(frieren)",
+        "fern_(sousou_no_frieren)",
+        "fern",
         "1girl",
         "solo",
-        "purple_hair",
         "long_hair",
-        "straight_bangs",
+        "purple_hair",
+        "side_ponytail",
         "half-updo",
-        "ponytail",
-        "hair_bun",
+        "straight_bangs",
+        "long_sidelocks",
         "purple_eyes",
-        "round_face",
-        "chubby_cheeks",
-        "pout",
-        "voluptuous",
         "large_breasts"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -6564,7 +6565,7 @@
           "id": "journey_robe",
           "name": "旅途魔法长袍",
           "isDefault": true,
-          "prose": "wearing her signature classic long black wizard coat over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
+          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
           "tokens": [
             "black_coat",
             "white_dress",
@@ -6601,18 +6602,48 @@
           ]
         },
         {
+          "id": "noble_ball_dress",
+          "name": "贵族舞会典雅深紫礼服",
+          "isDefault": false,
+          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "tokens": [
+            "evening_dress",
+            "purple_dress",
+            "ball_gown",
+            "white_gloves",
+            "updo_hair"
+          ]
+        },
+        {
+          "id": "inn_morning_nightgown",
+          "name": "旅馆清晨纯棉睡裙",
+          "isDefault": false,
+          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+          "tokens": [
+            "nightgown",
+            "white_nightgown",
+            "loose_dress",
+            "bare_shoulders",
+            "messy_hair"
+          ]
+        },
+        {
           "id": "nsfw_nude",
-          "name": "私密全裸 / 丰满纯粹形态",
+          "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
           "isNsfw": true,
-          "prose": "completely naked, full body bare, large natural soft breasts, plush voluptuous curves, gentle shy blush, no clothes",
+          "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
           "tokens": [
+            "nude",
             "completely_naked",
+            "uncensored",
             "full_body_bare",
             "large_breasts",
-            "curvy",
-            "cleavage",
-            "bare_shoulders"
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "soft_skin",
+            "bare_feet"
           ]
         }
       ]
@@ -6622,21 +6653,23 @@
       "displayName": "深森白夜",
       "originalName": "深森白夜",
       "source": "The Magical Girl and the Evil Officer",
-      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a severely impoverished magical girl with very long straight dark navy blue hair in a precise hime cut with sidelocks, blunt bangs, dark deadpan stoic eyes, and an adorable deadpan expression.",
+      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a severely impoverished magical girl with long silver-white hair tied into signature twin spiral horn buns, straight bangs with long sidelocks, round gradient blue eyes, a soft deadpan innocent expression, and a delicate slender petite figure.",
       "identityTokens": [
-        "mimori_byakuya",
         "1girl",
         "solo",
-        "dark_blue_hair",
-        "navy_hair",
-        "very_long_hair",
+        "silver_white_hair",
+        "platinum_hair",
         "straight_hair",
-        "hime_cut",
-        "blunt_bangs",
+        "bangs",
+        "twin_horn_buns",
+        "spiral_buns",
+        "hair_buns",
         "sidelocks",
-        "dark_eyes",
-        "flat_chest",
-        "ahoge"
+        "blue_eyes",
+        "gradient_eyes",
+        "round_eyes",
+        "deadpan",
+        "flat_chest"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
@@ -6714,23 +6747,25 @@
       "displayName": "塞西莉亚",
       "originalName": "塞西莉亚",
       "source": "Saint Cecilia and Pastor Lawrence",
-      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a holy and delightfully lazy saint with very long fluffy wavy silver-white platinum hair featuring gentle spiral drill twintails, an expressive ahoge, round crystal-blue eyes, and a soft, adorable, heartwarming smile.",
+      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a holy and delightfully lazy saint with soft pastel mint-green hair in a low braided bun with one long delicate sidelock, bright emerald green eyes, a gentle blush, and a shapely mature figure with large breasts.",
       "identityTokens": [
-        "cecilia_(shiro_seijo_to_kuro_bokushi)",
-        "saint_cecilia",
         "1girl",
         "solo",
-        "platinum_hair",
-        "silver_hair",
-        "very_light_blonde_hair",
-        "very_long_hair",
-        "wavy_hair",
-        "fluffy_hair",
-        "drill_hair",
-        "twin_drills",
-        "blue_eyes",
-        "ahoge",
-        "soft_face"
+        "pastel_green_hair",
+        "light_green_hair",
+        "mint_hair",
+        "low_bun",
+        "braided_bun",
+        "single_sidelock",
+        "long_sidelock",
+        "bangs",
+        "green_eyes",
+        "emerald_eyes",
+        "round_eyes",
+        "blush",
+        "gold_necklace",
+        "cross_necklace",
+        "large_breasts"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
