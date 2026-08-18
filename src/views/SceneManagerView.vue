@@ -204,10 +204,15 @@
           </div>
         </section>
         <div class="toolbar">
-          <input v-model="imageSearch" class="search-input" type="search" placeholder="搜索场景 ID 或标题…" />
-          <span class="list-meta">{{ filteredImageScenes.length }} 个场景</span>
+          <input v-model="imageSearch" class="search-input" type="search" placeholder="搜索场景/蓝图 ID、标题、角色…" />
+          <select v-model="imageTypeFilter" class="filter-select">
+            <option value="all">全部样张 ({{ allShowcaseItems.length }})</option>
+            <option value="scene">经典主线场景 ({{ scenes.length }})</option>
+            <option value="popular">热门角色蓝图 ({{ allShowcaseItems.length - scenes.length }})</option>
+          </select>
+          <span class="list-meta">{{ filteredImageScenes.length }} 个场景/蓝图</span>
         </div>
-        <p class="note">点场景查看当前样张，可上传替换。图片会归一化为 JPEG（原图 ≤4096px，缩略图 560px），上限 15MB / 6000 万像素。</p>
+        <p class="note">点选任意主线场景或热门角色蓝图查看当前样张，支持直接上传替换。图片会自动归一化为标准 JPEG 并更新官方 Manifest，刷新后即时生效。</p>
         <div class="image-grid">
           <button
             v-for="s in pagedImageScenes" :key="s.id"
@@ -217,7 +222,7 @@
           >
             <span class="sm-card-id">{{ s.id }}</span>
             <span class="sm-card-title">{{ s.title }}</span>
-            <span class="sm-card-meta">{{ charIcon(s.char) }} {{ s.rating || 'All' }}</span>
+            <span class="sm-card-meta">{{ charLabel(s.char) }} · {{ s.rating || 'All' }}</span>
           </button>
         </div>
         <div v-if="imageTotalPages > 1" class="pagination">
@@ -420,12 +425,16 @@ const {
 } = tagManager
 
 // 样张与首页主视觉上传（预览、JPEG 归一化、上传/恢复生命周期）
-const showcase = useSceneShowcaseUpload({ scenes, errorMessage })
+const showcase = useSceneShowcaseUpload({
+  scenes,
+  blueprints: computed(() => sceneStore.sceneBlueprints),
+  errorMessage,
+})
 const {
-  imageSearch, imagePage, selectedImageId, selectedImageTitle,
+  imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle,
   showcaseFeedback, showcaseError, showcaseVersion, uploadBusy,
   showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroVersion, homeHeroes,
-  filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
+  allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
   previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
   loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked,
 } = showcase

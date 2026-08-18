@@ -13,10 +13,10 @@ var blueprintData = require('../../data/scene-blueprints.json');
 var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
 
-test('popular data: 33 characters, unique ids, exactly one default outfit per character', function () {
-  assert.strictEqual(characters.length, 33, 'must ship exactly 33 characters');
+test('popular data: 34 characters, unique ids, exactly one default outfit per character', function () {
+  assert.strictEqual(characters.length, 34, 'must ship exactly 34 characters');
   var ids = new Set(characters.map(function (character) { return character.id; }));
-  assert.strictEqual(ids.size, 33, 'character ids must be unique');
+  assert.strictEqual(ids.size, 34, 'character ids must be unique');
   characters.forEach(function (character) {
     assert.ok(character.outfits.length >= 2 && character.outfits.length <= 8, character.id + ' must have 2-8 outfits (researched official skins + derived casual wear)');
     var defaults = character.outfits.filter(function (outfit) { return outfit.default; });
@@ -57,10 +57,10 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
-test('blueprints: 33 characters x (6 prototype + 4 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
-  // 2026-08-15 扩容：新增 15 位方舟/终末地热门角色（洛茜因底模无训练数据、实测还原不足已移除），
-  // 各配 6 原型 + 4 成人场景（33 角色 = 27x10 + 6x11）。
-  assert.strictEqual(blueprints.length, 336, 'expected 336 character scenes, got ' + blueprints.length);
+test('blueprints: 34 characters x (6 prototype + 4-5 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
+  // 2026-08-15 扩容：新增 15 位方舟/终末地热门角色；2026-08-18 新增艾莉莎·米哈伊洛夫娜·九条（Alya）
+  // 各配 6 原型 + 4-5 成人场景（34 角色 = 27x10 + 7x11）。
+  assert.strictEqual(blueprints.length, 347, 'expected 347 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -72,14 +72,14 @@ test('blueprints: 33 characters x (6 prototype + 4 adult), all owned by a charac
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 10 或 11 个场景：10=6 原型+4 成人（12 角色）、11=6 原型+5 成人（6 角色）；
+  // 每个角色 10 或 11 个场景：10=6 原型+4 成人（27 角色）、11=6 原型+5 成人（7 角色）；
   // 全部蓝图必须归属某个角色（通用蓝图已删除）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
     assert.ok(entry[1] === 10 || entry[1] === 11, entry[0] + ' must own 10 or 11 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 27, 11: 6 }, 'scene distribution must be 27x10 + 6x11');
+  assert.deepStrictEqual(sceneDist, { 10: 27, 11: 7 }, 'scene distribution must be 27x10 + 7x11');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4 或 5 个带 characterId 的成人场景。
@@ -90,7 +90,7 @@ test('blueprints: 33 characters x (6 prototype + 4 adult), all owned by a charac
       entry[0] + ' must own 4 or 5 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 27, 5: 6 }, 'adult distribution must be 27x4 + 6x5');
+  assert.deepStrictEqual(adultDist, { 4: 27, 5: 7 }, 'adult distribution must be 27x4 + 7x5');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');

@@ -1898,7 +1898,8 @@
     "portrait": {
       "image": "../assets/characters/popular-chen_arknights.png",
       "alt": "陈热门角色立绘"
-    }
+    },
+    "speech": "stern, authoritative, slightly impatient but fiercely protective and principled"
   },
   {
     "id": "dusk_arknights",
@@ -1971,7 +1972,8 @@
     "portrait": {
       "image": "../assets/characters/popular-dusk_arknights.png",
       "alt": "夕热门角色立绘"
-    }
+    },
+    "speech": "introverted, poetic, aloof painter who speaks in vivid traditional Chinese metaphors"
   },
   {
     "id": "eunectes_arknights",
@@ -2046,7 +2048,8 @@
     "portrait": {
       "image": "../assets/characters/popular-eunectes_arknights.png",
       "alt": "森蚺热门角色立绘"
-    }
+    },
+    "speech": "passionate engineer, pure-hearted, fascinated by machines and grand mechanical builds"
   },
   {
     "id": "exusiai_arknights",
@@ -2119,7 +2122,8 @@
     "portrait": {
       "image": "../assets/characters/popular-exusiai_arknights.png",
       "alt": "能天使热门角色立绘"
-    }
+    },
+    "speech": "upbeat, energetic, cheerful gunslinger with a bright friendly tone and love for apple pie"
   },
   {
     "id": "eyjafjalla_arknights",
@@ -2193,7 +2197,8 @@
     "portrait": {
       "image": "../assets/characters/popular-eyjafjalla_arknights.png",
       "alt": "艾雅法拉热门角色立绘"
-    }
+    },
+    "speech": "gentle, polite, scholarly volcanologist who speaks softly with deep compassion"
   },
   {
     "id": "goldenglow_arknights",
@@ -2267,7 +2272,8 @@
     "portrait": {
       "image": "../assets/characters/popular-goldenglow_arknights.png",
       "alt": "澄闪热门角色立绘"
-    }
+    },
+    "speech": "shy, earnest, hardworking hairdresser who stammers slightly when flustered"
   },
   {
     "id": "kaltsit_arknights",
@@ -2340,7 +2346,8 @@
     "portrait": {
       "image": "../assets/characters/popular-kaltsit_arknights.png",
       "alt": "凯尔希热门角色立绘"
-    }
+    },
+    "speech": "calm, philosophical, deeply authoritative medical director with elaborate precise vocabulary"
   },
   {
     "id": "laevatain_arknights",
@@ -2411,7 +2418,8 @@
     "portrait": {
       "image": "../assets/characters/popular-laevatain_arknights.png",
       "alt": "莱万汀热门角色立绘"
-    }
+    },
+    "speech": "fierce, resolute warrior of flame, direct and unwavering with quiet intensity"
   },
   {
     "id": "lemuen_arknights",
@@ -2484,7 +2492,8 @@
     "portrait": {
       "image": "../assets/characters/popular-lemuen_arknights.png",
       "alt": "蕾缪安热门角色立绘"
-    }
+    },
+    "speech": "calm, observant, gentle sniper with a warm teasing tone from her wheelchair"
   },
   {
     "id": "mudrock_arknights",
@@ -2557,7 +2566,8 @@
     "portrait": {
       "image": "../assets/characters/popular-mudrock_arknights.png",
       "alt": "泥岩热门角色立绘"
-    }
+    },
+    "speech": "gentle, soft-spoken colossus, protective of friends with a deep humble sincerity"
   },
   {
     "id": "perlica_arknights",
@@ -2628,7 +2638,8 @@
     "portrait": {
       "image": "../assets/characters/popular-perlica_arknights.png",
       "alt": "佩丽卡热门角色立绘"
-    }
+    },
+    "speech": "diligent, disciplined supervisor, speaking with crisp operational efficiency"
   },
   {
     "id": "quillpen_arknights",
@@ -2702,7 +2713,8 @@
     "portrait": {
       "image": "../assets/characters/popular-quillpen_arknights.png",
       "alt": "羽毛笔热门角色立绘"
-    }
+    },
+    "speech": "quiet, sleepy, soft-spoken reaper who speaks in few gentle words"
   },
   {
     "id": "skadi_arknights",
@@ -2776,7 +2788,8 @@
     "portrait": {
       "image": "../assets/characters/popular-skadi_arknights.png",
       "alt": "斯卡蒂热门角色立绘"
-    }
+    },
+    "speech": "melancholic, distant abyssal hunter, speaking softly to keep others safe from the sea"
   },
   {
     "id": "surtr_arknights",
@@ -2848,7 +2861,8 @@
     "portrait": {
       "image": "../assets/characters/popular-surtr_arknights.png",
       "alt": "史尔特尔热门角色立绘"
-    }
+    },
+    "speech": "blunt, confident, fiery swordsman with a taste for ice cream and no patience for nonsense"
   },
   {
     "id": "suzuran_arknights",
@@ -2921,6 +2935,93 @@
     "portrait": {
       "image": "../assets/characters/popular-suzuran_arknights.png",
       "alt": "铃兰热门角色立绘"
-    }
+    },
+    "speech": "pure, polite, bright young girl speaking with childlike innocence and deep kindness"
+  },
+  {
+    "id": "alisa_mikhailovna_kujou",
+    "name": "艾莉莎·米哈伊洛夫娜·九条",
+    "alias": [
+      "Alisa Mikhailovna Kujou",
+      "Alya",
+      "艾莉",
+      "俄妹"
+    ],
+    "type": "popular",
+    "icon": "❄️",
+    "portrait": {
+      "image": "../assets/characters/popular-alisa_mikhailovna_kujou.png?v=4",
+      "alt": "艾莉莎·米哈伊洛夫娜·九条 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银色长发 · 半双马尾",
+      "hair_color": "银白",
+      "eyes": "海蓝",
+      "hairstyle": "半双马尾 · 蓝色发带",
+      "uniform": "征岭学园制服 / 白色夏日连衣裙",
+      "expression": "傲娇孤高 · 害羞时用俄语低语",
+      "style": "tsundere silver-haired beauty",
+      "signature": "银发半双马尾、蓝眸与蓝发带"
+    },
+    "personality": [
+      "孤高傲娇",
+      "成绩优异",
+      "不服输",
+      "害羞时会用俄语吐露真情",
+      "暗地里纯情可爱"
+    ],
+    "likes": [
+      "俄语",
+      "红茶",
+      "猫咪",
+      "被真心夸奖"
+    ],
+    "classic_cg": {
+      "title": "放学后的夕阳窗边",
+      "description": "教室窗边夕阳洒在银发上，她转过头红着脸轻声用俄语说出喜欢。"
+    },
+    "identity": {
+      "role": "学生会干部（高一学生）",
+      "age": "高中一年级",
+      "occupation": "学生",
+      "faction": "征岭学园学生会"
+    },
+    "tags": [
+      "银发",
+      "蓝瞳",
+      "傲娇",
+      "制服",
+      "俄妹"
+    ],
+    "bg_story": "艾莉莎是《不时轻声地用俄语遮羞的邻座艾莉同学》的女主角，日俄混血的银发蓝瞳美少女。表面冷若冰霜、严以律己，实际上极易害羞，习惯用俄语掩饰自己的真心。",
+    "palette": [
+      "冰川蓝",
+      "雪银白",
+      "夕阳绯红"
+    ],
+    "weather": [
+      "夕阳教室",
+      "午后微风",
+      "夏夜祭典"
+    ],
+    "speech": "proud, Tsundere, highly articulate in Japanese with quiet shy romantic murmurs in Russian",
+    "source": "灿灿SUN《不时轻声地用俄语遮羞的邻座艾莉同学》",
+    "traits": [
+      {
+        "tag": "silver_hair",
+        "label": "银发",
+        "icon": "✦"
+      },
+      {
+        "tag": "blue_eyes",
+        "label": "蓝瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "tsundere",
+        "label": "傲娇",
+        "icon": "✧"
+      }
+    ]
   }
 ]

@@ -42,6 +42,7 @@ var ALLOWED = new Set([
   '#F5F2ED', '#F0ECE6', '#E0DCE6', '#EBE7EE', '#C8C2D0',
   '#23232A', '#2A2A33', '#14141A', '#3A3A46', '#303039', '#4E4E5C',
   '#3F8F55', '#A96C12', '#D94B52', '#327CA8',
+  '#ee2a3c', '#a80d1b', '#77717f', '#4a4553',
 ]);
 
 // 必须扫应用真正加载的样式:src/assets/css + SFC 的 <style> 块。

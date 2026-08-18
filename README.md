@@ -1,6 +1,6 @@
 # Lingji Atelier · 绫季绘境
 
-> A small, local workspace for turning story moments into Galgame-style AI CGs.
+> A local creative studio for turning story moments into Galgame-style AI CGs, 4-perspective character reference bibles, and AI narrative short films.
 
 [中文说明](README_zh.md)
 
@@ -8,146 +8,92 @@
 
 ## About
 
-绫季绘境 is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
+绫季绘境 (Lingji Atelier) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
-The current scene and character presets focus on **Ayachi Nene** and **Shiki Natsume**. A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
+The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **35 popular anime/game characters** across 177 outfit forms. A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
 
 This is an unofficial, non-commercial fan project and is not affiliated with or endorsed by the original rights holders.
 
 ## Features
 
-- 297 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
-- A reviewed result gallery with one approved image per Scene, featured/character/rating filters, and direct links back into the director
-- A director workspace for story, character, mood, camera, composition, lighting, and color
-- Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
-- Direct generation through AUTOMATIC1111, Forge, or ReForge
-- SD/WAI remains the production generation path. ComfyUI is used behind the application API for Anima, experimental Krea 2 Turbo natural-language generation, and basic WAI fallback only when WebUI is offline; Krea has no character LoRA or negative prompt and identity is not guaranteed. It is not an equivalent hires.fix, detailer, or ControlNet backend.
-- Automatic dual-character composition enhancement on the configured reForge setup: Regional Prompter separates Nene and Natsume, scene-specific OpenPose maps stabilize placement, and conservative ADetailer repair is limited to distant dual faces. Single-character generation keeps the audited baseline unchanged.
-- An optional local character room backed by Ollama: stream a conversation with Nene or Natsume, with a sentence-level voice pipeline that translates and synthesizes each sentence as it streams, Live2D lip sync driven by real audio amplitude, emotion-matched expressions, and automatic Ollama unload after idle to free VRAM.
-- A VRAM scheduler in the control panel: one-click draw-first / chat-first modes (release before load), individual start/stop for voice, WebUI and Ollama, and no auto-start for the voice service by default.
-- Model and sampler discovery, progress display, interrupt, fixed seeds, hires.fix, and a sequential generation queue
-- Independent Chinese reading text and voice scripts: keep captions Chinese while characters speak Japanese by default, with optional Chinese delivery
-- Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference
-- Local history, ratings, favorites, notes, projects, and image storage, with a versioned JSON backup and restore flow
-- Temporary token-protected links for trusted friends to use your local SD WebUI
-- Desktop Companion: Tauri 2 is the desktop shell. Use `npm run dev:tauri` for development, `npm run package:tauri` for the NSIS build. The Electron fallback was retired (see `desktop-electron-legacy` tag).
+- **Scene & Character Libraries**:
+  - 297+ searchable and filterable Scenes, classified as All, R15, or R18 by depicted content.
+  - 35 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
+  - 335+ verified showcase samples in `AI/SceneShowcase/` with direct links back into the studio.
+- **4-Perspective Character Reference Bible**:
+  - 35 characters $\times$ 177 outfit forms (736 standard perspectives): Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`).
+  - Automated closed-loop pipeline: 3-concurrency generation, 4-concurrency pure-vision Gemini 3.7 Flash audit pool, and fine-tuned repair engine.
+  - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
+- **Multi-Engine Generation & 30 Curated Artist Styles**:
+  - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima 1.1 (`@artist` + native tags), and Krea 2 Turbo (natural language prose).
+  - 30 curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
+  - Regional Prompter dual-character composition stabilization on reForge.
+- **AI Narrative Video Studio**:
+  - Local AI video creation supporting Wan 2.2 TI2V and MiniMax H3 (Ref2VA reference image binding).
+  - Intelligent shot list script decomposition, style anchor injection, and explicit dialogue language control (`dialogueLang: auto/zh/ja/en`).
+- **Character Space & Voice Pipeline**:
+  - Local character room backed by Ollama / OpenAI-compatible APIs with streaming sentence-level Japanese / Chinese voice synthesis (GPT-SoVITS).
+  - Live2D lip sync driven by audio amplitude and emotion-matched expressions.
+  - VRAM resource scheduler: one-click draw-first / chat-first modes with automatic model unloading.
+- **Desktop Companion (Tauri 2)**:
+  - Lightweight desktop shell with Companion + Atelier dual windows, system tray, Native Live2D overlay, and elevated quick-deploy pipeline (`deploy-desktop-quick.ps1`).
 
 ## Recommended setup
 
 1. In Stability Matrix, keep `--api --port 7860` in the WebUI launch arguments.
 2. Double-click `control.bat`.
-3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS; the gateway switches the evaluated Nene/Natsume weights for each request.
+3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS.
 4. Click **启动并生成分享链接**.
 5. Use **打开本地网站（无需 Token）** for yourself, or copy the token-protected link for a friend.
 6. Click **停止全部服务** when finished.
 
-`--api` does not prevent normal use of the WebUI interface. If Stability Matrix uses another port, enter the address shown in its log.
-
-Public sharing requires `cloudflared` at its standard Windows install path. Without it, the local site and SD connection still work.
-
 See [STARTUP.md](STARTUP.md) for full setup and troubleshooting instructions.
 
-For the current implementation, verification baseline, blockers, and maintained document index, see [docs/project-status.md](docs/project-status.md).
-
-## Data and privacy
-
-- Scene and character presets are stored as JSON in the repository.
-- Personal history and images are stored mainly in the current browser through IndexedDB.
-- The project has no account system or hosted cloud database.
-- Runtime configuration, logs, process state, and friend-generated outputs stay in the git-ignored `runtime/` directory.
-- Reviewed samples stay in the sibling `AI/SceneShowcase/` directory.
-- A friend link reaches your local gateway through a temporary tunnel, so share it only with people you trust.
-- The gateway token persists across restarts (stored under `runtime/state/gateway_token`); only the temporary tunnel domain may change.
+For current implementation details, verification baselines, and the complete documentation index, see [docs/project-status.md](docs/project-status.md) and [docs/INDEX.md](docs/INDEX.md).
 
 ## Project layout
 
 ```text
-绫季绘境/
-├── DESIGN.md               # Canonical website and control-panel design contract
+AI-CG-Studio/
+├── DESIGN.md               # Website and control-panel design contract
+├── AGENTS.md               # Collaboration rules, quality gates & operational constraints
 ├── index.html              # Vite SPA entry point (no global scripts)
 ├── vite.config.ts          # Vite build config + dev proxy to Express
 ├── control.bat             # Windows control panel launcher
 ├── server.js               # Express: static serving, SD proxy, sharing
 ├── src/                    # Vue 3 SPA source (Vite build target)
-│   ├── config/             #   Character constants, prompt definitions
-│   ├── utils/              #   Stream parsing, scene UX pure functions
+│   ├── config/             #   Character constants, artist styles, prompt definitions
+│   ├── utils/              #   Stream parsing, character reference data, prompt compiler
 │   ├── stores/             #   Pinia: scene data, prompt-builder state
 │   ├── composables/        #   Chat storage, Live2D, voice, SD generate, IndexedDB
-│   ├── components/         #   AppLayout, AppNav, SceneCard, ThemeToggle
+│   ├── components/         #   AppLayout, AppNav, SceneCard, Video Studio components
 │   ├── views/              #   One .vue per route (all lazy-loaded)
 │   └── assets/css/         #   Design system tokens, component styles
-├── routes/                 # Express API routes (chat, voice, live2d, maintenance)
+├── routes/                 # Express API routes (chat, voice, live2d, video, maintenance)
 ├── services/               # TypeScript runtime services (Ollama, TTS, HTTP client…)
 ├── desktop-tauri/          # Tauri 2 shell, Native Live2D overlay, sidecar and packaging
 ├── types/                  # Shared TypeScript type definitions
-├── data/                   # Runtime JSON: scenes, characters, tags, presets
+├── data/                   # Runtime JSON: scenes, characters, tags, blueprints, reference standards
 ├── assets/                 # Static assets: character images, Live2D models, vendor SDKs
-├── css/                    # CSS for docs/ HTML pages (separate from src/assets/css/)
-├── tools/                  # Docs runtime helpers: nav, theme, local-status; translation model installer
-├── docs/                   # Creative standards, quality checks, maintenance notes
-├── scripts/                # Maintenance, tests, and runtime helpers
+├── docs/                   # Creative standards, quality checks, master index (docs/INDEX.md)
+├── scripts/                # Maintenance, tests, reference generation, and runtime helpers
 └── runtime/                # Local config, logs, process state, generated outputs
 ```
-
-**Key data files** (fetched at runtime by the SPA, not bundled by Vite):
-
-- `data/scenes.json` — generated from `data/scenes/*.json`; do not edit directly
-- `data/scenes/*.json` — source scene shards, maintained per character/series
-- `data/curation.json` — featured and signature scene ordering
-- `data/characters.json` — Nene, Natsume character definitions and LoRA config
-- `data/tags.json` — normalised tag and category mappings
-- `data/loras.json` — LoRA model configuration
-
-## Architecture
-
-The frontend is a **Vue 3 SPA** built with Vite and TypeScript.
-
-- **State** — Pinia stores for scene data and director state (replaces previous global window variables)
-- **Composables** — `useVoice`, `useLive2D`, `useChatStorage`, `useSDGenerate`, `useKVStore`, `useImageStore`
-- **Routing** — Vue Router with lazy-loaded route components
-- **Styling** — design-token CSS in `src/assets/css/`; no CSS-in-JS
-
-The backend is an **Express server** (`server.js`) that:
-- Serves the Vite production build from `dist/`
-- Proxies SD WebUI API (`/sdapi`, `/controlnet`, `/adetailer`)
-- Uses the application generation APIs for Anima and basic WAI ComfyUI fallback; advanced hires/detailer/ControlNet capability remains WebUI-dependent
-- Provides chat (`/api/chat`), voice (`/api/tts`, `/api/translate`), and Live2D status APIs
-- Hosts static `data/`, `assets/`, `tools/`, and `docs/` directories
-
-In development, run both:
-
-```powershell
-node server.js          # Express on :3000
-npm run dev             # Vite on :5173 (proxies API calls to :3000)
-```
-
-In production, `npm run build` outputs to `dist/`, which Express serves directly.
 
 ## Validation
 
 ```powershell
-npm run validate
+npm run typecheck:app     # TypeScript check for Vue SFCs
+npm run build             # Build web application bundle
+npm run validate          # Complete validation suite
 ```
-
-Runs design lint, runtime TypeScript build, type check, scene/content contract validation, and all script tests. Run after any structural change.
-
-```powershell
-npm run test:e2e        # Playwright browser smoke tests
-npm run typecheck       # TypeScript check for both app and runtime
-```
-
-Use `npm run optimize-scenes` after importing or bulk-editing Scenes to canonicalize prompt tags, camera framing, and negative prompts.
-
-Use `npm run classify-ratings` after adding Scenes to keep `rating` aligned with image tags.
-
-For normal maintenance, use **More → Scene Manager** in the local site.
 
 ## Scope
 
-The project stays intentionally small: reliable local creation, high-quality Scene content, straightforward maintenance, and safe temporary sharing come first. Accounts, subscriptions, a public Scene store, and community uploads are not planned.
+The project stays intentionally small: reliable local creation, high-quality Scene and reference assets, straightforward maintenance, and safe temporary sharing come first. Accounts, subscriptions, a public Scene store, and community uploads are not planned.
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The character content (Ayachi Nene, Shiki Natsume, and their original works) belongs to their respective rights holders; this project is an unofficial fan work and does not claim ownership of them.
+MIT — see [LICENSE](LICENSE). The character content and original works belong to their respective rights holders; this project is an unofficial fan work and does not claim ownership of them.
 
 > Prompts describe images. Scenes describe moments.

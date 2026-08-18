@@ -166,7 +166,16 @@ function createGateway(options) {
     index:false,
     fallthrough:false
   }));
-  app.use('/assets', express.static(config.ASSETS_ROOT, staticOptions(ONE_WEEK)));
+  // assets (立绘、角色参考图、粒子、图标等运行时媒体)：
+  // 采用 no-cache + ETag 协商缓存——文件未修改返回 304 零流量秒开；
+  // 用户或脚本在本地替换图片后，刷新浏览器立即生效，彻底无需手动改 ?v= 版本号。
+  app.use('/assets', function (req, res, next) {
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+  }, express.static(config.ASSETS_ROOT, {
+    dotfiles: 'deny',
+    index: false
+  }));
   // 只放行 SPA 真正读取的数据文件。
   // 之前整个 data/ 目录对外可读，包括 history.json / projects.json / prompts.json
   // 这类个人内容，以及 data/scenes/*.json（build-scenes.js 的输入，共 893KB，

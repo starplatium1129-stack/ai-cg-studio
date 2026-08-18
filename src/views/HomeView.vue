@@ -274,7 +274,7 @@ let heroScrollFrame = 0
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
 const popularCharacters = computed(() => sceneStore.popularCharacters)
 function portraitSrc(id: string): string {
-  return `/assets/characters/popular-${id}.png?v=2`
+  return `/assets/characters/popular-${id}.png?v=${sceneStore.version || 3}`
 }
 
 /** 横条只在真正可滚动时显示右缘渐隐，避免宽屏误遮最后一张卡 */

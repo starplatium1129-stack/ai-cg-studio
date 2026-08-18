@@ -2,11 +2,13 @@
  * 场景管理 · 样张与首页主视觉上传（从 SceneManagerView.vue 拆出）。
  *
  * 所有权：图片预览、JPEG 归一化、样张与首页主视觉的上传/恢复生命周期。
+ * 2026-08-18：全量支持经典场景（302 个）与热门角色蓝图（347 个）样张在线预览与无感替换。
  */
 
 import { ref, computed, watch } from 'vue'
 import { maintenanceApi, maintenanceFailure } from '../api/maintenanceApi.ts'
 import type { HomeHeroCharacter, SceneDraft } from '@/types/api'
+import type { SceneBlueprint } from '@/utils/popularContent'
 
 const IMAGE_PAGE_SIZE = 60
 
@@ -16,8 +18,17 @@ export interface HeroEntry {
   updatedAt: string
 }
 
+export interface ShowcaseSceneItem {
+  id: string
+  title: string
+  char: string
+  rating?: string
+  type: 'scene' | 'popular'
+}
+
 interface UploadHooks {
   scenes: { value: SceneDraft[] }
+  blueprints?: { value: SceneBlueprint[] }
   errorMessage: (error: unknown, fallback: string) => string
 }
 
@@ -48,9 +59,10 @@ function readFileAsImage(file: File): Promise<HTMLImageElement> {
   })
 }
 
-export function useSceneShowcaseUpload({ scenes, errorMessage }: UploadHooks) {
+export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: UploadHooks) {
   const imageSearch = ref('')
   const imagePage = ref(1)
+  const imageTypeFilter = ref<'all' | 'scene' | 'popular'>('all')
   const selectedImageId = ref('')
   const selectedImageTitle = ref('')
   const showcaseFeedback = ref('')
@@ -67,16 +79,48 @@ export function useSceneShowcaseUpload({ scenes, errorMessage }: UploadHooks) {
     { id: 'natsume', title: '夏目', updatedAt: '' },
   ])
 
+  const allShowcaseItems = computed<ShowcaseSceneItem[]>(() => {
+    const items: ShowcaseSceneItem[] = scenes.value.map(s => ({
+      id: s.id,
+      title: s.title,
+      char: s.char,
+      rating: s.rating,
+      type: 'scene'
+    }))
+
+    if (blueprints?.value?.length) {
+      blueprints.value.forEach(bp => {
+        const entryId = `pc_${bp.characterId}_${bp.id}`
+        items.push({
+          id: entryId,
+          title: bp.title,
+          char: bp.characterId,
+          rating: bp.adult ? 'R18' : 'All',
+          type: 'popular'
+        })
+      })
+    }
+
+    return items
+  })
+
   const filteredImageScenes = computed(() => {
     const q = imageSearch.value.trim().toLowerCase()
-    if (!q) return scenes.value
-    return scenes.value.filter(s => (s.id + ' ' + s.title).toLowerCase().includes(q))
+    let list = allShowcaseItems.value
+
+    if (imageTypeFilter.value !== 'all') {
+      list = list.filter(item => item.type === imageTypeFilter.value)
+    }
+
+    if (!q) return list
+    return list.filter(s => (s.id + ' ' + s.title + ' ' + s.char).toLowerCase().includes(q))
   })
+
   const imageTotalPages = computed(() => Math.max(1, Math.ceil(filteredImageScenes.value.length / IMAGE_PAGE_SIZE)))
   const pagedImageScenes = computed(() =>
     filteredImageScenes.value.slice((imagePage.value - 1) * IMAGE_PAGE_SIZE, imagePage.value * IMAGE_PAGE_SIZE),
   )
-  watch(imageSearch, () => { imagePage.value = 1 })
+  watch([imageSearch, imageTypeFilter], () => { imagePage.value = 1 })
 
   const showcaseUrl = computed(() =>
     selectedImageId.value
@@ -87,18 +131,20 @@ export function useSceneShowcaseUpload({ scenes, errorMessage }: UploadHooks) {
     ? `/scene-showcase/home/${selectedHeroId.value}.jpg?v=${homeHeroVersion.value}`
     : '')
 
-  function previewImage(s: SceneDraft) {
+  function previewImage(s: ShowcaseSceneItem | SceneDraft) {
     selectedImageId.value = s.id
     selectedImageTitle.value = s.title
     showcaseError.value = false
     showcaseVersion.value = Date.now()
     showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
   }
+
   function onShowcaseMissing() {
     showcaseError.value = true
     showcaseFeedback.value = '该场景还没有样张，可直接上传一张。'
   }
   function pickShowcase() { showcaseFileEl.value?.click() }
+
   function previewHero(hero: HeroEntry) {
     selectedHeroId.value = hero.id
     selectedHeroTitle.value = hero.title
@@ -201,10 +247,10 @@ export function useSceneShowcaseUpload({ scenes, errorMessage }: UploadHooks) {
   }
 
   return {
-    imageSearch, imagePage, selectedImageId, selectedImageTitle,
+    imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle,
     showcaseFeedback, showcaseError, showcaseVersion, uploadBusy,
     showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroVersion, homeHeroes,
-    filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
+    allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
     previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
     loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked,
   }

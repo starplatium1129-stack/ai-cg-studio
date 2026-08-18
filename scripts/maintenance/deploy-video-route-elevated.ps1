@@ -13,7 +13,7 @@ $gatewayDir = 'C:\Program Files\AI-CG-Studio\gateway'
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
   Log 'NOT ELEVATED - re-raising...'
-  Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy','Bypass','-File',"`"$PSCommandPath`"" 
+  Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy','Bypass','-File',"`"$PSCommandPath`""
   exit 0
 }
 Log "elevated ok (user: $env:USERNAME)"

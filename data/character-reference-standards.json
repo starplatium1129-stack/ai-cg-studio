@@ -3708,6 +3708,108 @@
           ]
         }
       ]
+    },
+    {
+      "id": "alisa_mikhailovna_kujou",
+      "displayName": "艾莉莎·米哈伊洛夫娜·九条",
+      "originalName": "Alisa Mikhailovna Kujou",
+      "source": "Alya Sometimes Hides Her Feelings in Russian",
+      "identityProse": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, a stunning high school girl with silky silver hair, long hair tied with blue ribbons in half twin tails, striking clear blue eyes, delicate fair skin, carrying a proud, Tsundere yet secretly shy presence",
+      "identityTokens": [
+        "alisa_mikhailovna_kujou",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_ribbon",
+        "blue_ribbon",
+        "twintails",
+        "half_updo",
+        "bangs",
+        "fair_skin"
+      ],
+      "outfits": [
+        {
+          "id": "seirei_uniform",
+          "name": "征岭学园制服",
+          "isDefault": true,
+          "prose": "the Seirei Academy school uniform with a dark brown blazer, white collared shirt, red ribbon tie, blue pleated skirt, black thighhighs and loafers",
+          "tokens": [
+            "school_uniform",
+            "seirei_academy_uniform",
+            "blazer",
+            "brown_blazer",
+            "white_shirt",
+            "red_ribbon",
+            "pleated_skirt",
+            "blue_skirt",
+            "black_thighhighs",
+            "loafers"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "summer_sundress",
+          "name": "夏日便服连衣裙",
+          "isDefault": false,
+          "prose": "a light and elegant white summer sundress with a pale blue cardigan, delicate silver necklace and sandals",
+          "tokens": [
+            "casual_clothes",
+            "sundress",
+            "white_dress",
+            "cardigan",
+            "sandals"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "cheerleader",
+          "name": "啦啦队运动服",
+          "isDefault": false,
+          "prose": "a cute school cheerleading sleeveless crop top uniform with a pleated mini skirt and matching pom-poms",
+          "tokens": [
+            "cheerleader",
+            "sleeveless",
+            "crop_top",
+            "pleated_skirt",
+            "mini_skirt"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "oversized_nightshirt",
+          "name": "居家男友衬衫",
+          "isDefault": false,
+          "prose": "soft silk oversized light blue button-up nightshirt and bare legs",
+          "tokens": [
+            "pajamas",
+            "nightshirt",
+            "oversized_shirt",
+            "bare_legs"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "isNsfw": true,
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ]
+        }
+      ]
     }
   ]
 }

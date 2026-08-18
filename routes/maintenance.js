@@ -7,6 +7,37 @@ var express = require('express');
 var envelope = require('../server/http-envelope');
 var processTree = require('../server/process-tree');
 
+var crypto = require('crypto');
+
+function computeContentVersion(rootDir) {
+  var hash = crypto.createHash('sha1');
+  var dataDir = path.join(rootDir, 'data');
+  [
+    'scenes.json', 'scenes-index.json', 'scenes-core.json',
+    'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
+    'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json',
+    'popular-characters.json', 'scene-blueprints.json'
+  ].forEach(function (name) {
+    var p = path.join(dataDir, name);
+    if (fs.existsSync(p)) {
+      hash.update(name + '=' + fs.readFileSync(p, 'utf8').length + ';');
+      hash.update(fs.readFileSync(p));
+    }
+  });
+  return Number(parseInt(hash.digest('hex').slice(0, 8), 16));
+}
+
+function syncSceneStoreDataVersion(rootDir) {
+  var expected = computeContentVersion(rootDir);
+  var storePath = path.join(rootDir, 'src', 'stores', 'sceneStore.ts');
+  if (fs.existsSync(storePath)) {
+    var storeSource = fs.readFileSync(storePath, 'utf8');
+    storeSource = storeSource.replace(/DATA_VERSION\s*=\s*\d+/, 'DATA_VERSION = ' + expected);
+    fs.writeFileSync(storePath, storeSource, 'utf8');
+  }
+  return expected;
+}
+
 function readJson(source) {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
 }
@@ -390,6 +421,7 @@ function readHomeHeroManifest() {
           var m = readJson(manifestPath);
           if (m && Array.isArray(m.entries)) {
             m.entries = m.entries.filter(function (e) { return e.id !== sceneId; });
+            m.entryCount = m.entries.length;
             m.sceneCount = m.entries.length;
             writeJson(manifestPath, m);
           }
@@ -429,7 +461,8 @@ function readHomeHeroManifest() {
       autoRetireDeletedScenes(scenes, prevScenes);
       cleanOrphanedSceneRefs();
       await runMaintenanceChecks();
-      res.json({ ok:true, count:scenes.length, tagCount:Array.isArray(tags) ? tags.length : undefined, backup:path.basename(backupDir), message:'内容已保存并通过校验' });
+      var newVersion = syncSceneStoreDataVersion(cfg.ROOT_DIR);
+      res.json({ ok:true, count:scenes.length, tagCount:Array.isArray(tags) ? tags.length : undefined, version:newVersion, backup:path.basename(backupDir), message:'内容已保存并通过校验' });
     } catch (error) {
       // 回滚失败必须告诉客户端：此时场景分片处于半写状态，
       // 之前这里是空 catch，用户只会看到"保存失败"而以为数据没动。
@@ -450,11 +483,31 @@ function readHomeHeroManifest() {
     var snapshot;
     try {
       if (!SCENE_SHOWCASE_DIR) return envelope.fail(res, 503, '尚未找到 SceneShowcase 目录');
-      var id = String(req.body && req.body.id || '');
-      if (!/^sc\d{3}$/.test(id)) return envelope.fail(res, 400, '需要合法场景 ID');
+      var id = String(req.body && req.body.id || '').trim();
+      if (!/^(sc\d{3}|pc_[a-zA-Z0-9_-]+|[a-zA-Z0-9_-]+)$/.test(id)) return envelope.fail(res, 400, '需要合法场景或蓝图 ID');
       var scenes = sceneStore.loadSceneShards().scenes;
       var scene = scenes.find(function (item) { return item.id === id; });
-      if (!scene) return envelope.fail(res, 404, '场景不存在，不能保存孤立样张：' + id);
+      var popularBlueprint = null;
+      var popularCharacter = null;
+
+      if (!scene) {
+        var bpPath = path.join(cfg.ROOT_DIR, 'data', 'scene-blueprints.json');
+        var popPath = path.join(cfg.ROOT_DIR, 'data', 'popular-characters.json');
+        if (fs.existsSync(bpPath) && fs.existsSync(popPath)) {
+          var allBp = readJson(bpPath);
+          var allPop = readJson(popPath);
+          var bpList = Array.isArray(allBp) ? allBp : (allBp.blueprints || []);
+          var popList = Array.isArray(allPop) ? allPop : (allPop.characters || []);
+          popularBlueprint = bpList.find(function (b) {
+            return b.id === id || ('pc_' + b.characterId + '_' + b.id) === id;
+          });
+          if (popularBlueprint) {
+            popularCharacter = popList.find(function (c) { return c.id === popularBlueprint.characterId; });
+          }
+        }
+      }
+
+      if (!scene && !popularBlueprint) return envelope.fail(res, 404, '场景或蓝图不存在，不能保存孤立样张：' + id);
       var buffer = decodeJpegDataUrl(req.body && req.body.image, '原图');
       var thumbBuffer = req.body && req.body.thumbnail ? decodeJpegDataUrl(req.body.thumbnail, '缩略图') : buffer;
       if (buffer.length > 15 * 1024 * 1024 || thumbBuffer.length > 3 * 1024 * 1024) return envelope.fail(res, 413, '原图必须在 15MB 以内，缩略图必须在 3MB 以内');
@@ -477,16 +530,39 @@ function readHomeHeroManifest() {
         if (fs.existsSync(oldImage)) fs.unlinkSync(oldImage);
         if (fs.existsSync(oldThumb)) fs.unlinkSync(oldThumb);
       });
-      var manifest = fs.existsSync(manifestPath) ? readJson(manifestPath) : { version:2, entries:[] };
+      var manifest = fs.existsSync(manifestPath) ? readJson(manifestPath) : { version:23, entries:[] };
       if (!Array.isArray(manifest.entries)) manifest.entries = [];
-      var idx = manifest.entries.findIndex(function (entry) { return entry.id === id; });
-      var entry = { id:scene.id, title:scene.title, category:scene.category, story:scene.story, char:scene.char, rating:scene.rating, attempt:1, image:'images/' + id + '.jpg', thumb:'thumbs/' + id + '.jpg' };
+      var manifestEntryId = scene ? id : (id.startsWith('pc_') ? id : ('pc_' + popularBlueprint.characterId + '_' + popularBlueprint.id));
+      var idx = manifest.entries.findIndex(function (entry) { return entry.id === manifestEntryId; });
+      var entry = scene ? {
+        id: scene.id,
+        title: scene.title,
+        category: scene.category,
+        story: scene.story,
+        char: scene.char,
+        rating: scene.rating,
+        attempt: 1,
+        image: 'images/' + id + '.jpg',
+        thumb: 'thumbs/' + id + '.jpg'
+      } : {
+        id: manifestEntryId,
+        title: (popularCharacter ? popularCharacter.displayName : popularBlueprint.characterId) + ' / ' + popularBlueprint.title,
+        story: popularBlueprint.description || '',
+        category: '热门角色',
+        char: popularBlueprint.characterId,
+        displayName: popularCharacter ? popularCharacter.displayName : popularBlueprint.characterId,
+        rating: popularBlueprint.adult ? 'R18' : 'All',
+        attempt: 1,
+        type: 'popular',
+        image: 'images/' + id + '.jpg',
+        thumb: 'thumbs/' + id + '.jpg'
+      };
       if (idx >= 0) manifest.entries[idx] = entry;
       else manifest.entries.push(entry);
+      manifest.entryCount = manifest.entries.length;
       manifest.sceneCount = manifest.entries.length;
-      manifest.counts = manifest.entries.reduce(function (counts, item) {
-        var rating = item.rating || 'All'; counts[rating] = (counts[rating] || 0) + 1; return counts;
-      }, {});
+      manifest.counts = manifest.counts || {};
+      manifest.counts.popular = manifest.entries.filter(function (e) { return e.type === 'popular'; }).length;
       writeJson(manifestPath, manifest);
       res.json({ ok:true, file:entry.image, thumb:entry.thumb, backup:path.basename(backupDir), message:'样张与轻量缩略图已安全保存，旧版本已备份' });
     } catch (error) {
@@ -582,6 +658,9 @@ function readHomeHeroManifest() {
     if (output.length > 8000) output = output.slice(0, 8000) + '\n...(truncated)';
     output = output.trim();
     if (!output) output = '任务完成，无输出';
+    if (result.status === 0 && (task === 'classify' || task === 'optimize')) {
+      syncSceneStoreDataVersion(cfg.ROOT_DIR);
+    }
     res.json({
       ok: result.status === 0,
       task: task,
