@@ -773,3 +773,66 @@ test('flow 6f · 快速出图：复用最近成功参数并自动提交一次生
   }
   expect(errors).toEqual([]);
 });
+
+test('flow 6g · popular→studio 深链：热门角色模式进灵感场景出图必须切回 studio 组装', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+
+  // 第 1 步：热门角色场景「开始绘制」→ 绘图区进入 popular 模式（SPA 导航，Pinia 保留）
+  await page.goto('/popular-scenes', { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector('.pop-card .pop-draw-action', { timeout: 20000 });
+  await page.locator('.pop-card .pop-draw-action').first().click();
+  await page.waitForURL(/prompt-builder\?popular=/, { timeout: 20000 });
+  await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'popular');
+  const popPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent()).replace(/\s+/g, ' ').trim();
+
+  // 第 2 步：顶栏 SPA 跳到灵感场景（不整页刷新，popular 模式仍留在 store），选工作室场景出图
+  await page.locator('a[href="/scene-explorer"]').first().click();
+  await page.waitForURL(/scene-explorer/, { timeout: 20000 });
+  await page.waitForSelector('.sc[data-scene-id]', { timeout: 20000 });
+  const full = page.locator('.scene-personal-nav button').filter({ hasText: '完整库' });
+  if (await full.count()) { await full.click(); }
+  await page.locator('.sc[data-scene-id] a.scene-draw-action').first().click();
+  await page.waitForURL(/prompt-builder\?scene=/, { timeout: 20000 });
+
+  // 提示词组装必须整体切回工作室分支：subject=studio、不再残留热门角色身份词、
+  // 预览随本场景变化（不能与 popular 预览相同）。
+  await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'studio');
+  const studioPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent()).replace(/\s+/g, ' ').trim();
+  expect(studioPreview).not.toBe(popPreview);
+  expect(studioPreview).toMatch(/ayachi[ _]nene|shiki[ _]natsume/i);
+  expect(studioPreview).not.toMatch(/raiden[ _]shogun|shogun|raiden ei|electro/i);
+  expect(errors).toEqual([]);
+});
+
+test('flow 6h · studio→popular 深链：工作室场景进热门角色出图不残留工作室身份词', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+
+  // 第 1 步：灵感场景选宁宁/夏目场景 → 绘图区进入 studio 模式（SPA 导航保留 store）
+  await page.goto('/scene-explorer', { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector('.sc[data-scene-id]', { timeout: 20000 });
+  const full = page.locator('.scene-personal-nav button').filter({ hasText: '完整库' });
+  if (await full.count()) { await full.click(); }
+  await page.locator('.sc[data-scene-id] a.scene-draw-action').first().click();
+  await page.waitForURL(/prompt-builder\?scene=/, { timeout: 20000 });
+  await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'studio');
+  const studioStory = await page.locator('.story-input').inputValue();
+
+  // 第 2 步：SPA 跳到热门角色场景（不整页刷新），点「开始绘制」进入 popular 模式
+  await page.locator('a[href="/popular-scenes"]').first().click();
+  await page.waitForURL(/popular-scenes/, { timeout: 20000 });
+  await page.waitForSelector('.pop-card .pop-draw-action', { timeout: 20000 });
+  await page.locator('.pop-card .pop-draw-action').first().click();
+  await page.waitForURL(/prompt-builder\?popular=/, { timeout: 20000 });
+  await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'popular');
+
+  // 故事框不再是上一个工作室场景的故事（进入热门模式时清空，蓝图选中后为蓝图描述）。
+  const popularStory = await page.locator('.story-input').inputValue();
+  expect(popularStory.trim()).not.toBe('');
+  expect(popularStory).not.toBe(studioStory);
+
+  // 提示词必须整体切到热门角色组装：不得残留工作室身份/服装锚点（漏词即回归）。
+  const popularPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent()).replace(/\s+/g, ' ').trim();
+  expect(popularPreview).not.toBe('');
+  expect(popularPreview).not.toMatch(/ayachi[ _]nene|shiki[ _]natsume|nene_|natsume_/i);
+  expect(errors).toEqual([]);
+});

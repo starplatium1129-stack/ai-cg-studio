@@ -282,6 +282,11 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
 
   function loadScene(scene: Scene) {
+    // 工作室场景天然属于 studio 组装分支：热门角色(popular)模式下用 ?scene= 深链
+    // （灵感场景/全景搜索/历史恢复）切回宁宁或夏目场景时，若不把 subject 兜底回
+    // studio，isPopular 仍为 true，livePrompt 会继续走 usePopularPromptAssembly，
+    // 提示词仍是上一个热门角色的、不会跟随本场景（2026 真机复现）。
+    subject.value = { kind: 'studio' }
     sceneId.value       = scene.id
     sceneBaseStory.value = scene.story ?? ''
     story.value         = scene.story ?? story.value

@@ -1147,6 +1147,12 @@ function reuseSuccessfulRecipe(id: number) {
 }
 
 function selectScene(scene: Scene) {
+  if (pb.isPopular) {
+    // 热门角色模式直接切到工作室场景（?scene= 深链/左侧场景卡）：立即刷新 Anima
+    // 后端白名单，让 studio 的宁宁/夏目模型与 LoRA 立即可选（不等 15s 轮询）；
+    // subject 切回 studio 由 loadScene 内部兜底，保证提示词跟随本场景。
+    void refreshAnimaBackend()
+  }
   pb.loadScene(scene)
   pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value, { applySize: false })
   applyRecommendedSize(pb.lastRecommendedSize)
@@ -1189,10 +1195,11 @@ function selectPopularSource(source: 'studio' | 'popular') {
     return
   }
   if (source === 'popular' && !pb.isPopular) {
-    pb.clearScene({ keepStory: true })
-    // 进入热门模式：清空工作室场景，避免宁宁/夏目场景词泄漏。
-    pb.manualTags = new Set()
-    pb.visualDescription = ''
+    // 进入热门模式：整体清空工作室场景、词条、画面描述与故事。热门组装不读
+    // story，且故事属于 studio 场景/蓝图的上下文——不清的话故事框会残留上一个
+    // 宁宁/夏目场景的故事（裸 ?popular= 深链/页内切换均可见）。选中蓝图后故事
+    // 由 selectBlueprint 写回蓝图的 description。
+    pb.clearScene()
     resetBlueprintRotation()
     if (pb.popularCharacters.length) {
       const first = pb.popularCharacters[0]
