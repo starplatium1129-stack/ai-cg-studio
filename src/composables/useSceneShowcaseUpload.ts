@@ -10,7 +10,7 @@ import { maintenanceApi, maintenanceFailure } from '../api/maintenanceApi.ts'
 import type { HomeHeroCharacter, SceneDraft } from '@/types/api'
 import type { SceneBlueprint } from '@/utils/popularContent'
 
-const IMAGE_PAGE_SIZE = 60
+const IMAGE_PAGE_SIZE = 36
 
 export interface HeroEntry {
   id: HomeHeroCharacter
@@ -61,6 +61,12 @@ function readFileAsImage(file: File): Promise<HTMLImageElement> {
 
 export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: UploadHooks) {
   const imageSearch = ref('')
+  const imageSearchDebounced = ref('')
+  let imageDebounceTimer: ReturnType<typeof setTimeout> | null = null
+  watch(imageSearch, (v) => {
+    if (imageDebounceTimer) clearTimeout(imageDebounceTimer)
+    imageDebounceTimer = setTimeout(() => { imageSearchDebounced.value = v }, 250)
+  })
   const imagePage = ref(1)
   const imageTypeFilter = ref<'all' | 'scene' | 'popular'>('all')
   const selectedImageId = ref('')
@@ -106,7 +112,7 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   })
 
   const filteredImageScenes = computed(() => {
-    const q = imageSearch.value.trim().toLowerCase()
+    const q = imageSearchDebounced.value.trim().toLowerCase()
     let list = allShowcaseItems.value
 
     if (imageTypeFilter.value !== 'all') {
@@ -121,7 +127,7 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   const pagedImageScenes = computed(() =>
     filteredImageScenes.value.slice((imagePage.value - 1) * IMAGE_PAGE_SIZE, imagePage.value * IMAGE_PAGE_SIZE),
   )
-  watch([imageSearch, imageTypeFilter], () => { imagePage.value = 1 })
+  watch([imageSearchDebounced, imageTypeFilter], () => { imagePage.value = 1 })
 
   const showcaseUrl = computed(() =>
     selectedImageId.value
@@ -131,6 +137,9 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   const heroUrl = computed(() => selectedHeroId.value
     ? `/scene-showcase/home/${selectedHeroId.value}.jpg?v=${homeHeroVersion.value}`
     : '')
+
+  const thumbUrl = (id: string) => `/scene-showcase/thumbs/${encodeURIComponent(id)}.jpg?v=${showcaseVersion.value}`
+  const imageUrl = (id: string) => `/scene-showcase/images/${encodeURIComponent(id)}.jpg?v=${showcaseVersion.value}`
 
   function previewImage(s: ShowcaseSceneItem | SceneDraft) {
     selectedImageId.value = s.id
@@ -248,10 +257,11 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   }
 
   return {
-    imageSearch, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle,
+    imageSearch, imageSearchDebounced, imagePage, imageTypeFilter, selectedImageId, selectedImageTitle,
     showcaseFeedback, showcaseError, showcaseVersion, uploadBusy,
     showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroVersion, homeHeroes,
     allShowcaseItems, filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
+    thumbUrl, imageUrl,
     previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
     loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked,
   }

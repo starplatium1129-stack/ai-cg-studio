@@ -9,6 +9,34 @@ var processTree = require('../server/process-tree');
 
 var crypto = require('crypto');
 
+// ── 维护路由分区总览（P1-10 轻度拆分，不做物理文件拆分，逻辑按区归位） ──
+// ── 1. 事务与备份工具 ──
+// ── 2. 校验与文件工具 ──
+// ── 3. 路由：scenes/tags/curation ──
+// ── 4. 路由：showcase/home-hero ──
+// ── 5. 路由：run/backups ──
+// ── 6. 进程管理 ──
+
+// ── 0. 常量 ──
+var MAINT_LOG_CAP = 64 * 1024; // 子进程 stdout/stderr 截断上限，避免多话脚本撑爆内存
+var MAINT_TIMEOUT_MS = 120000; // 维护脚本默认超时 120s
+
+// 维护脚本名映射（script 文件名）——与任务表一一对应，集中在顶部便于总览
+var SCRIPT_NAMES = {
+  'lint-colors': 'lint-colors.js',
+  'validate': 'validate-scenes.js',
+  'classify': 'classify-scene-ratings.js',
+  'optimize': 'optimize-scenes.js'
+};
+// 维护任务表——供 /api/maintenance/run 校验与执行，args 为脚本参数，label/desc 供前端展示
+var MAINTENANCE_TASKS = {
+  'lint-colors': { args:[], label:'检查硬编码颜色', desc:'扫描所有 HTML/CSS 中的 #XXXXXX 颜色，确保已替换为设计 token' },
+  'validate':    { args:[], label:'完整场景校验', desc:'按模块检查场景数据：ID 唯一性、字段完整性、评级一致性' },
+  'classify':    { args:['--write'], label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
+  'optimize':    { args:['--write'], label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
+};
+
+// ── 1. 事务与备份工具 ──
 function computeContentVersion(rootDir) {
   var hash = crypto.createHash('sha1');
   var dataDir = path.join(rootDir, 'data');
@@ -106,6 +134,7 @@ function saveSnapshotBackup(snapshot, backupRoot, label) {
   return target;
 }
 
+// ── 2. 校验与文件工具 ──
 function uniqueActiveIds(values, activeIds) {
   var seen = new Set();
   return (Array.isArray(values) ? values : []).filter(function (id) {
@@ -162,6 +191,7 @@ function decodeJpegDataUrl(value, label) {
   return buffer;
 }
 
+// ── 2. 校验与文件工具（续）── 本机判定与桌面打包判定
 // 判定「直连本机」的逻辑只保留 server/security.js 一份，避免副本再次漂移。
 var isDirectLocalRequest = require('../server/security').isDirectLocalRequest;
 
@@ -186,6 +216,7 @@ function desktopMaintenanceUnavailable(req, res) {
   return envelope.fail(res, 501, DESKTOP_MAINTENANCE_UNAVAILABLE, { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
 }
 
+// ── 6. 进程管理 ──
 /**
  * 网关在跑的子进程登记表：/api/maintenance/run 与场景保存校验链可能耗时
  * 数分钟，网关退出时必须连树回收，否则脚本会继续写文件直到自然结束。
@@ -205,6 +236,7 @@ function killActiveChildren() {
   activeChildren.clear();
 }
 
+// ── 3. 路由：scenes/tags/curation ── · ── 4. 路由：showcase/home-hero ── · ── 5. 路由：run/backups ──
 function createMaintenanceRouter(cfg) {
   var router = express.Router();
   var sceneStore = require('../scripts/runtime/scene-store');
@@ -243,8 +275,8 @@ function createMaintenanceRouter(cfg) {
     }));
     var stdout = '';
     var stderr = '';
-    var LOG_CAP = 64 * 1024;  // 别让多话的脚本把字符串撑爆
     var settled = false;
+    var effectiveTimeout = timeoutMs || MAINT_TIMEOUT_MS;
 
     var timer = setTimeout(function () {
       if (settled) return;
@@ -252,14 +284,14 @@ function createMaintenanceRouter(cfg) {
       // 脚本可能又 spawn 了子进程（如 validate 链），只 kill 本体会让它们
       // 变孤儿继续写文件；连树一起收。
       processTree.killProcessTree(child);
-      reject(new Error(path.basename(script) + ' 执行超时（' + Math.round((timeoutMs || 120000) / 1000) + ' 秒）'));
-    }, timeoutMs || 120000);
+      reject(new Error(path.basename(script) + ' 执行超时（' + Math.round(effectiveTimeout / 1000) + ' 秒）'));
+    }, effectiveTimeout);
 
     child.stdout.on('data', function (chunk) {
-      if (stdout.length < LOG_CAP) stdout += String(chunk);
+      if (stdout.length < MAINT_LOG_CAP) stdout += String(chunk);
     });
     child.stderr.on('data', function (chunk) {
-      if (stderr.length < LOG_CAP) stderr += String(chunk);
+      if (stderr.length < MAINT_LOG_CAP) stderr += String(chunk);
     });
     child.on('error', function (error) {
       if (settled) return;
@@ -283,7 +315,7 @@ async function runMaintenanceChecks() {
     ['scripts/maintenance/validate-scenes.js', []]
   ];
   for (var i = 0; i < commands.length; i += 1) {
-    var result = await runNodeScript(commands[i][0], commands[i][1], 120000);
+    var result = await runNodeScript(commands[i][0], commands[i][1], MAINT_TIMEOUT_MS);
     if (result.status !== 0) {
       throw new Error((result.stderr || result.stdout || '维护校验失败').trim().slice(-1200));
     }
@@ -321,6 +353,39 @@ function readHomeHeroManifest() {
     }
     return fallback;
   }
+
+  router.get('/api/maintenance/backups', maintenanceLocalOnly, function (req, res) {
+    try {
+      if (!fs.existsSync(MAINTENANCE_BACKUP_DIR)) return envelope.ok(res, { entries: [] });
+      var dirents = fs.readdirSync(MAINTENANCE_BACKUP_DIR, { withFileTypes:true });
+      var entries = [];
+      dirents.forEach(function (entry) {
+        if (!entry.isDirectory()) return;
+        var id = entry.name;
+        var manifestPath = path.join(MAINTENANCE_BACKUP_DIR, id, 'manifest.json');
+        if (!fs.existsSync(manifestPath)) return;
+        try {
+          var manifest = readJson(manifestPath);
+          entries.push({
+            id: id,
+            label: String(manifest && manifest.label || ''),
+            createdAt: String(manifest && manifest.createdAt || ''),
+            fileCount: Array.isArray(manifest && manifest.files) ? manifest.files.length : 0
+          });
+        } catch (e) { /* 跳过损坏的备份 */ }
+      });
+      entries.sort(function (a, b) {
+        var ta = Date.parse(a.createdAt) || 0;
+        var tb = Date.parse(b.createdAt) || 0;
+        if (tb !== ta) return tb - ta;
+        return String(b.id).localeCompare(String(a.id));
+      });
+      if (entries.length > 50) entries = entries.slice(0, 50);
+      return envelope.ok(res, { entries: entries });
+    } catch (error) {
+      return envelope.fail(res, 500, error.message || '读取备份历史失败');
+    }
+  });
 
   // GET 必须公开：公网访客也要拿到运行时首页立绘配置（只含图片路径，
   // 不含任何敏感信息）。之前 maintenanceLocalOnly 把公网 403 掉，
@@ -614,19 +679,7 @@ function readHomeHeroManifest() {
     }
   });
 
-  // ---- 维护脚本一键执行 ----
-  var SCRIPT_NAMES = {
-    'lint-colors': 'lint-colors.js',
-    'validate': 'validate-scenes.js',
-    'classify': 'classify-scene-ratings.js',
-    'optimize': 'optimize-scenes.js'
-  };
-  var MAINTENANCE_TASKS = {
-    'lint-colors': { args:[], label:'检查硬编码颜色', desc:'扫描所有 HTML/CSS 中的 #XXXXXX 颜色，确保已替换为设计 token' },
-    'validate':    { args:[], label:'完整场景校验', desc:'按模块检查场景数据：ID 唯一性、字段完整性、评级一致性' },
-    'classify':    { args:['--write'], label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
-    'optimize':    { args:['--write'], label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
-  };
+  // ── 5. 路由：run/backups ── 维护脚本一键执行（SCRIPT_NAMES / MAINTENANCE_TASKS 已上移顶部常量区）
 
   // 必须异步。原先这里是 spawnSync(timeout:120000) —— 跑在 POST handler 里，
   // 期间整个事件循环停摆：SD 代理、进行中的 /api/chat NDJSON 流、/api/tts 的
@@ -643,7 +696,7 @@ function readHomeHeroManifest() {
     var args = MAINTENANCE_TASKS[task].args;
     var result;
     try {
-      result = await runNodeScript(script, args, 120000);
+      result = await runNodeScript(script, args, MAINT_TIMEOUT_MS);
     } catch (error) {
       return res.status(504).json({
         ok:false,

@@ -37,6 +37,18 @@ export interface SaveShowcasePayload {
   thumbnail: string
 }
 
+export interface BackupEntry {
+  id: string
+  label: string
+  createdAt: string
+  fileCount: number
+}
+
+export interface BackupListResult {
+  ok: true
+  entries: BackupEntry[]
+}
+
 export interface MaintenanceApi {
   buildWeb(options?: MaintenanceCallOptions): Promise<MaintenanceBuildWebResult>
   saveScenes(payload: SaveScenesPayload, options?: MaintenanceCallOptions): Promise<SceneSaveResult>
@@ -45,6 +57,7 @@ export interface MaintenanceApi {
   getHomeHero(options?: MaintenanceCallOptions): Promise<HomeHeroManifestResult>
   resetHomeHero(character: HomeHeroCharacter, options?: MaintenanceCallOptions): Promise<HomeHeroSaveResult>
   saveHomeHero(character: HomeHeroCharacter, image: string, options?: MaintenanceCallOptions): Promise<HomeHeroSaveResult>
+  listBackups(options?: MaintenanceCallOptions): Promise<BackupListResult>
 }
 
 function isObject(value: unknown): value is ApiResponseObject {
@@ -73,6 +86,10 @@ function isHomeHeroManifest(value: ApiResponseObject): boolean {
   return value.ok === true
     && typeof value.version === 'number'
     && isObject(value.entries)
+}
+
+function isBackupList(value: ApiResponseObject): boolean {
+  return value.ok === true && Array.isArray(value.entries)
 }
 
 export function maintenanceFailure(error: unknown): MaintenanceFailure | null {
@@ -153,6 +170,15 @@ export function createMaintenanceApi(client: ApiClient = apiClient): Maintenance
         signal: options.signal,
         timeoutMs: MAINTENANCE_API_TIMEOUTS.upload,
         validate: isSuccess,
+      })
+    },
+
+    listBackups(options: MaintenanceCallOptions = {}) {
+      return client.request<BackupListResult>('/api/maintenance/backups', {
+        cache: 'no-store',
+        signal: options.signal,
+        timeoutMs: MAINTENANCE_API_TIMEOUTS.query,
+        validate: isBackupList,
       })
     },
   }

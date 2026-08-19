@@ -8,8 +8,8 @@
 import { ref, computed, watch } from 'vue'
 import type { TagRecord, SceneDraft } from '@/types/api'
 
-const TAG_PAGE_SIZE = 60
-const TAG_CATS = ['Character', 'Clothing', 'Action', 'Emotion', 'Scene', 'Lighting', 'Body', 'Appearance']
+export const TAG_PAGE_SIZE = 60
+export const TAG_CATS = ['Character', 'Clothing', 'Action', 'Emotion', 'Scene', 'Lighting', 'Body', 'Appearance']
 
 interface TagHooks {
   tags: { value: TagRecord[] }
@@ -19,8 +19,20 @@ interface TagHooks {
 
 export function useSceneTagManager({ tags, scenes, markDirty }: TagHooks) {
   const tagSearch = ref('')
+  const tagSearchDebounced = ref('')
+  let tagDebounceTimer: ReturnType<typeof setTimeout> | null = null
+  watch(tagSearch, (v) => {
+    if (tagDebounceTimer) clearTimeout(tagDebounceTimer)
+    tagDebounceTimer = setTimeout(() => { tagSearchDebounced.value = v }, 250)
+  })
   const tagCatFilter = ref('')
   const tagPage = ref(1)
+
+  // ── 状态驱动的标签表单（替代 prompt/alert） ──
+  const tagModalOpen = ref(false)
+  const tagEditing = ref<TagRecord | null>(null)
+  const tagForm = ref({ en: '', cn: '', cat: 'Scene', weight: 0.8 })
+  const tagFormError = ref('')
 
   const tagUsage = computed(() => {
     const map: Record<string, number> = {}
@@ -34,7 +46,7 @@ export function useSceneTagManager({ tags, scenes, markDirty }: TagHooks) {
   })
 
   const filteredTags = computed(() => {
-    const q = tagSearch.value.trim().toLowerCase()
+    const q = tagSearchDebounced.value.trim().toLowerCase()
     return tags.value
       .filter((t) => {
         if (tagCatFilter.value && t.cat !== tagCatFilter.value) return false
@@ -48,7 +60,7 @@ export function useSceneTagManager({ tags, scenes, markDirty }: TagHooks) {
   const pagedTags = computed(() =>
     filteredTags.value.slice((tagPage.value - 1) * TAG_PAGE_SIZE, tagPage.value * TAG_PAGE_SIZE),
   )
-  watch([tagSearch, tagCatFilter], () => { tagPage.value = 1 })
+  watch([tagSearchDebounced, tagCatFilter], () => { tagPage.value = 1 })
 
   function nextTagId() {
     const max = tags.value.reduce((m: number, t) =>
@@ -56,51 +68,68 @@ export function useSceneTagManager({ tags, scenes, markDirty }: TagHooks) {
     return 'tag_' + String(max + 1).padStart(3, '0')
   }
 
-  function openAddTag() {
-    const en = prompt('标签英文名（Danbooru 格式，用下划线）：')
-    if (!en?.trim()) return
-    if (tags.value.some((t) => String(t.en).toLowerCase() === en.trim().toLowerCase())) {
-      alert('这个英文名已存在'); return
-    }
-    const cn = prompt('标签中文名：')
-    if (!cn?.trim()) return
-    const cat = prompt(`分类（${TAG_CATS.join(' / ')}）：`, 'Scene')
-    if (!cat?.trim()) return
-    const weight = Number(prompt('默认权重（0–2）：', '0.8'))
-    if (!Number.isFinite(weight) || weight <= 0 || weight > 2) { alert('权重必须是 0–2 之间的数字'); return }
-    tags.value.push({ id: nextTagId(), cat: cat.trim(), en: en.trim(), cn: cn.trim(), weight, related: [] })
-    markDirty('新增标签等待保存到项目')
+  function startAddTag() {
+    tagEditing.value = null
+    tagForm.value = { en: '', cn: '', cat: 'Scene', weight: 0.8 }
+    tagFormError.value = ''
+    tagModalOpen.value = true
   }
 
-  function openEditTag(id: string) {
+  function startEditTag(id: string) {
     const tag = tags.value.find((t) => t.id === id)
     if (!tag) return
-    const en = prompt('标签英文名：', tag.en)
-    if (!en?.trim()) return
-    if (tags.value.some((t) => t.id !== id && String(t.en).toLowerCase() === en.trim().toLowerCase())) {
-      alert('这个英文名已存在'); return
+    tagEditing.value = tag
+    tagForm.value = {
+      en: tag.en ?? '',
+      cn: (tag.cn as string) ?? '',
+      cat: tag.cat ?? 'Scene',
+      weight: typeof tag.weight === 'number' ? tag.weight : 0.8,
     }
-    const cn = prompt('标签中文名：', tag.cn || '')
-    if (!cn?.trim()) return
-    const cat = prompt('分类：', tag.cat || 'Scene')
-    if (!cat?.trim()) return
-    const weight = Number(prompt('默认权重（0–2）：', String(tag.weight ?? 0.8)))
-    if (!Number.isFinite(weight) || weight <= 0 || weight > 2) { alert('权重必须是 0–2 之间的数字'); return }
+    tagFormError.value = ''
+    tagModalOpen.value = true
+  }
 
-    const oldEn = tag.en
-    Object.assign(tag, { en: en.trim(), cn: cn.trim(), cat: cat.trim(), weight })
-    if (oldEn !== tag.en) {
-      // 改名级联：场景里引用的旧标签一并替换，否则引用会悬空
-      let touched = 0
-      scenes.value.forEach(s => {
-        if (!Array.isArray(s.tags)) return
-        const next = s.tags.map((v: string) => (v === oldEn ? tag.en : v))
-        if (next.join('\u0000') !== s.tags.join('\u0000')) { s.tags = next; touched++ }
-      })
-      markDirty(`标签改名已级联更新 ${touched} 个场景，等待保存`)
+  function closeTagModal() {
+    tagModalOpen.value = false
+    tagEditing.value = null
+    tagFormError.value = ''
+  }
+
+  function submitTag() {
+    const en = tagForm.value.en.trim()
+    const cn = tagForm.value.cn.trim()
+    const cat = tagForm.value.cat.trim()
+    const weight = Number(tagForm.value.weight)
+
+    if (!en) { tagFormError.value = '英文名不能为空'; return }
+    const duplicate = tags.value.some((t) => {
+      if (tagEditing.value && t.id === tagEditing.value.id) return false
+      return String(t.en).toLowerCase() === en.toLowerCase()
+    })
+    if (duplicate) { tagFormError.value = '这个英文名已存在'; return }
+    if (!cn) { tagFormError.value = '中文名不能为空'; return }
+    if (!cat) { tagFormError.value = '分类不能为空'; return }
+    if (!Number.isFinite(weight) || weight < 0 || weight > 2) { tagFormError.value = '权重必须是 0–2 之间的数字'; return }
+
+    if (tagEditing.value) {
+      const oldEn = tagEditing.value.en
+      Object.assign(tagEditing.value, { en, cn, cat, weight })
+      if (oldEn !== en) {
+        let touched = 0
+        scenes.value.forEach(s => {
+          if (!Array.isArray(s.tags)) return
+          const next = s.tags.map((v: string) => (v === oldEn ? en : v))
+          if (next.join('\u0000') !== s.tags.join('\u0000')) { s.tags = next; touched++ }
+        })
+        markDirty(`标签改名已级联更新 ${touched} 个场景，等待保存`)
+      } else {
+        markDirty('标签修改等待保存到项目')
+      }
     } else {
-      markDirty('标签修改等待保存到项目')
+      tags.value.push({ id: nextTagId(), cat, en, cn, weight, related: [] })
+      markDirty('新增标签等待保存到项目')
     }
+    closeTagModal()
   }
 
   function deleteTag(id: string) {
@@ -116,7 +145,10 @@ export function useSceneTagManager({ tags, scenes, markDirty }: TagHooks) {
   }
 
   return {
-    tagSearch, tagCatFilter, tagPage, tagUsage, tagCats, filteredTags, tagTotalPages, pagedTags,
-    openAddTag, openEditTag, deleteTag,
+    tagSearch, tagSearchDebounced, tagCatFilter, tagPage, tagUsage, tagCats, filteredTags, tagTotalPages, pagedTags,
+    deleteTag,
+    // 状态驱动表单
+    tagModalOpen, tagEditing, tagForm, tagFormError,
+    startAddTag, startEditTag, closeTagModal, submitTag,
   }
 }

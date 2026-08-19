@@ -2,6 +2,7 @@
 
 import * as http from 'http';
 import * as https from 'https';
+import * as tls from 'tls';
 import type { IncomingMessage, ClientRequest } from 'http';
 
 interface UpstreamErrorOptions {
@@ -51,6 +52,74 @@ interface SuccessBody {
   contentType: string;
 }
 
+interface ProxyConfig {
+  host: string;
+  port: number;
+  auth?: string;
+}
+
+const LOCAL_HOSTS: ReadonlySet<string> = new Set(['localhost', '127.0.0.1', '::1', '[::1]']);
+
+/**
+ * 解析代理环境变量（HTTP_PROXY/HTTPS_PROXY/ALL_PROXY，支持小写变体）。
+ * 只接受 http:// 代理（常见本地 Clash/v2ray 场景），其它协议视为无效。
+ */
+function parseProxyEnv(value: string | undefined): ProxyConfig | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  let url: URL;
+  try {
+    url = new URL(trimmed.includes('://') ? trimmed : 'http://' + trimmed);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== 'http:') return null;
+  const host = url.hostname || '';
+  const port = url.port ? Number(url.port) : 8080;
+  if (!host || !Number.isInteger(port) || port <= 0 || port > 65535) return null;
+  const auth = url.username || url.password
+    ? (url.username ? encodeURIComponent(url.username) : '') + ':' + (url.password ? encodeURIComponent(url.password) : '')
+    : undefined;
+  return { host, port, auth };
+}
+
+/**
+ * NO_PROXY 匹配：条目支持精确 host、.example.com / *.example.com 通配子域、
+ * host:port；"*" 表示全部绕过。本地回环地址无条件绕过。
+ */
+function matchesNoProxy(host: string, noProxy: string | undefined): boolean {
+  if (!host) return true;
+  if (LOCAL_HOSTS.has(host)) return true;
+  if (!noProxy) return false;
+  const parts = noProxy.split(',').map((s) => s.trim()).filter(Boolean);
+  if (parts.includes('*')) return true;
+  const hostLower = host.toLowerCase();
+  for (const part of parts) {
+    let p = part.toLowerCase();
+    if (p.includes('://')) {
+      try { p = new URL(p).hostname; } catch { p = ''; }
+    }
+    if (!p) continue;
+    if (p.startsWith('.')) p = p.slice(1);
+    if (p.startsWith('*.')) p = p.slice(2);
+    const portIdx = p.lastIndexOf(':');
+    if (portIdx > 0 && !p.includes(']')) p = p.slice(0, portIdx);
+    if (!p) continue;
+    if (hostLower === p || hostLower.endsWith('.' + p)) return true;
+  }
+  return false;
+}
+
+/** 按目标协议挑选代理；NO_PROXY 命中或未配置时返回 null（直连）。 */
+function resolveProxy(target: URL): ProxyConfig | null {
+  if (matchesNoProxy(target.hostname, process.env.NO_PROXY || process.env.no_proxy)) return null;
+  const envValue = target.protocol === 'https:'
+    ? (process.env.HTTPS_PROXY || process.env.https_proxy || process.env.ALL_PROXY || process.env.all_proxy)
+    : (process.env.HTTP_PROXY || process.env.http_proxy || process.env.ALL_PROXY || process.env.all_proxy);
+  return parseProxyEnv(envValue);
+}
+
 function abortError(message?: string): AbortError {
   const error = new Error(message || 'Request aborted') as AbortError;
   error.name = 'AbortError';
@@ -87,47 +156,131 @@ function request(baseUrl: string, pathname: string, options?: RequestOptions): P
       headers['Content-Type'] = headers['Content-Type'] || 'application/json';
       headers['Content-Length'] = Buffer.byteLength(payload);
     }
+    const method = opts.method || (payload === null ? 'GET' : 'POST');
+    const timeoutMs = opts.timeoutMs || 15000;
+    const timeoutMessage = opts.timeoutMessage || 'Upstream request timed out';
 
-    const transport = target.protocol === 'https:' ? https : http;
     let settled = false;
     let responseRef: IncomingMessage | null = null;
-    const req = transport.request(target, {
-      method: opts.method || (payload === null ? 'GET' : 'POST'),
-      headers: headers
-    }, function (response) {
+    let req: ClientRequest | null = null;
+    let connectReq: ClientRequest | null = null;
+
+    function onResponse(response: IncomingMessage) {
       settled = true;
       responseRef = response;
       response.once('close', cleanupAbort);
-      resolve({ request: req, response: response, url: target.toString() });
-    });
+      resolve({ request: req as ClientRequest, response: response, url: target.toString() });
+    }
 
     function onAbort() {
-      if (responseRef && !responseRef.destroyed) responseRef.destroy(abortError());
-      req.destroy(abortError());
+      if (req && !req.destroyed) req.destroy(abortError());
+      else if (connectReq && !connectReq.destroyed) connectReq.destroy(abortError());
     }
     function cleanupAbort() {
       if (opts.signal) opts.signal.removeEventListener('abort', onAbort);
     }
 
-    if (opts.signal) opts.signal.addEventListener('abort', onAbort, { once: true });
-    req.setTimeout(opts.timeoutMs || 15000, function () {
-      req.destroy(new UpstreamError(opts.timeoutMessage || 'Upstream request timed out', { code: 'UPSTREAM_TIMEOUT' }));
+    function attachResponse(clientReq: ClientRequest) {
+      req = clientReq;
+      clientReq.setTimeout(timeoutMs, function () {
+        clientReq.destroy(new UpstreamError(timeoutMessage, { code: 'UPSTREAM_TIMEOUT' }));
+      });
+      clientReq.on('error', function (error) {
+        cleanupAbort();
+        if (!settled) {
+          reject(error);
+          return;
+        }
+        // 响应头已发出（流式场景）：不能静默吞掉 socket 错误，
+        // 否则 TTS 音频流 / SSE 聊天流中途断连时调用方只看到"流提前结束"，
+        // 无法区分正常结束与上游截断。把错误传给 response 流，让
+        // for await / data 读取方能感知并抛给调用方的 catch。
+        if (responseRef && !responseRef.destroyed && !responseRef.complete) {
+          responseRef.destroy(error);
+        }
+      });
+      if (opts.signal) opts.signal.addEventListener('abort', onAbort, { once: true });
+      clientReq.end(payload === null ? undefined : payload);
+    }
+
+    const proxy = resolveProxy(target);
+    if (!proxy) {
+      const transport = target.protocol === 'https:' ? https : http;
+      const direct = transport.request(target, { method: method, headers: headers }, onResponse);
+      attachResponse(direct);
+      return;
+    }
+
+    // 代理路径：http 目标走正向代理（path 为完整 URL）；
+    // https 目标先 CONNECT 隧道，再在隧道 socket 上做 TLS。
+    const proxyAuth = proxy.auth
+      ? 'Basic ' + Buffer.from(proxy.auth).toString('base64')
+      : undefined;
+
+    if (target.protocol !== 'https:') {
+      const proxied = http.request({
+        host: proxy.host,
+        port: proxy.port,
+        path: target.toString(),
+        method: method,
+        headers: proxyAuth ? Object.assign({ 'Proxy-Authorization': proxyAuth }, headers) : headers
+      }, onResponse);
+      attachResponse(proxied);
+      return;
+    }
+
+    const connect = http.request({
+      host: proxy.host,
+      port: proxy.port,
+      method: 'CONNECT',
+      path: target.hostname + ':' + (target.port || '443'),
+      headers: proxyAuth ? { 'Proxy-Authorization': proxyAuth } : undefined
     });
-    req.on('error', function (error) {
+    connectReq = connect;
+    connect.setTimeout(timeoutMs, function () {
+      connect.destroy(new UpstreamError(timeoutMessage, { code: 'UPSTREAM_TIMEOUT' }));
+    });
+    connect.on('error', function (error) {
       cleanupAbort();
-      if (!settled) {
-        reject(error);
+      if (!settled) reject(error);
+    });
+    connect.on('connect', function (res, socket) {
+      connectReq = null;
+      if (!res || res.statusCode !== 200) {
+        socket.destroy();
+        cleanupAbort();
+        if (!settled) {
+          reject(new UpstreamError('Proxy CONNECT failed with ' + (res && res.statusCode || 0), {
+            code: 'UPSTREAM_STATUS',
+            status: (res && res.statusCode) || 502
+          }));
+        }
         return;
       }
-      // 响应头已发出（流式场景）：不能静默吞掉 socket 错误，
-      // 否则 TTS 音频流 / SSE 聊天流中途断连时调用方只看到"流提前结束"，
-      // 无法区分正常结束与上游截断。把错误传给 response 流，让
-      // for await / data 读取方能感知并抛给调用方的 catch。
-      if (responseRef && !responseRef.destroyed && !responseRef.complete) {
-        responseRef.destroy(error);
+      try {
+        // https.request 对"已连接"的 socket 不会自动做 TLS 握手（会直接发明文），
+        // 因此先手动 tls.connect 包装成 TLS socket 再交给请求层；
+        // 握手是异步的，https.request 监听的 secureConnect 事件不会错过。
+        const tlsSocket = tls.connect({
+          socket: socket,
+          servername: target.hostname
+        });
+        const secureReq = https.request({
+          host: target.hostname,
+          port: target.port || 443,
+          path: target.pathname + target.search,
+          method: method,
+          headers: headers,
+          createConnection: function () { return tlsSocket; }
+        }, onResponse);
+        attachResponse(secureReq);
+      } catch (error) {
+        socket.destroy();
+        cleanupAbort();
+        if (!settled) reject(error instanceof Error ? error : new Error(String(error)));
       }
     });
-    req.end(payload === null ? undefined : payload);
+    connect.end();
   });
 }
 
@@ -192,5 +345,8 @@ export = {
   request: request,
   readBody: readBody,
   readJson: readJson,
-  expectSuccess: expectSuccess
+  expectSuccess: expectSuccess,
+  parseProxyEnv: parseProxyEnv,
+  matchesNoProxy: matchesNoProxy,
+  resolveProxy: resolveProxy
 };

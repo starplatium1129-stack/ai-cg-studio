@@ -219,13 +219,22 @@ pub fn on_battery_power() -> bool {
 pub fn start_power_watch(app: AppHandle) {
     thread::spawn(move || {
         let mut last_battery: Option<bool> = None;
+        let mut last_check = Instant::now();
         loop {
             thread::sleep(Duration::from_secs(5));
+            let now = Instant::now();
             let on_battery = on_battery_power();
             if last_battery != Some(on_battery) {
                 last_battery = Some(on_battery);
                 let _ = app.emit("aics:power-mode", on_battery);
             }
+            // A long polling gap indicates sleep/hibernation. Notify the
+            // desktop bridge once after resume so Companion can re-sync room
+            // state and Live2D visibility.
+            if now.duration_since(last_check) > Duration::from_secs(15) {
+                let _ = app.emit("aics:resume", ());
+            }
+            last_check = now;
         }
     });
 }
