@@ -168,7 +168,6 @@
       "hair_ribbon",
       "school_uniform",
       "library",
-      "sunset",
       "autumn",
       "bookshelf",
       "holding_books",
@@ -191,7 +190,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, sunset, autumn, bookshelf, holding_books, peeking_out, shy, dust_motes, afternoon, clear_sky, upper_body, medium_shot, window_light, smile, happy, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, autumn, bookshelf, holding_books, peeking_out, shy, dust_motes, afternoon, clear_sky, upper_body, medium_shot, window_light, smile, happy, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・本棚との出会い】午後の図書館にはページをめくる音だけが響いていた。寧々は、いくつかのオカルト資料を収めた高い本棚の後ろから顔を出しました。来たのがあなただと分かったとき、彼女は目に見えて安堵し、急いで一番上の本を腕の中に隠しました。窓からの光が髪先に当たり、彼女は自然を装って半分位置を移動した。――「あなたも資料を調べに来たんですか？　それなら、ここに座ってください。でも、どうしてこの本を借りたのかは聞かないこと。」",
     "rating": "All",
@@ -663,7 +662,6 @@
       "clear_sky",
       "full_body",
       "wide_shot",
-      "window_light",
       "happy"
     ],
     "mature": false,
@@ -674,7 +672,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, swimsuit, beach, smile, beach_coverup, splashing_water, laughing, ocean_waves, windblown_hair, summer, morning, clear_sky, full_body, wide_shot, window_light, happy, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, swimsuit, beach, smile, beach_coverup, splashing_water, laughing, ocean_waves, windblown_hair, summer, morning, clear_sky, full_body, wide_shot, happy, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・スプラッシュカウンターアタック】真夏の海辺で、寧々さんは最初は控えめに水着を着ていました。あなたが彼女をからかっていないことを確認した後、彼女はゆっくりとリラックスしました。あなたが準備をしていないときに、彼女は海水を拾い、飛び散りましたが、打ち寄せる波によって彼女は不安定になりました。彼女は微笑んであなたの腕をつかみました。彼女のヘアバンドは海風で斜めになってしまいましたが、彼女はそれを直す気はありませんでした。――「今のはなしです！　もう一回。次こそ、私が先に転んだりしませんから。」",
     "rating": "All",
@@ -698,7 +696,6 @@
       "hair_ribbon",
       "school_uniform",
       "classroom",
-      "sunset",
       "autumn",
       "sitting_at_desk",
       "exam_paper",
@@ -724,7 +721,7 @@
       "展示图"
     ],
     "animaCaption": "Seated behind a classroom desk, she pushes one exam paper toward the viewer and points to a problem with one visible hand.",
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, sunset, autumn, sitting_at_desk, exam_paper, pushing_exam_paper_toward_viewer, one_hand_pointing_at_exam_problem, hands_visible_on_desk, troubled_expression, ahoge_drooping, afternoon, clear_sky, upper_body, medium_shot, window_light, nervous, blush, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, autumn, sitting_at_desk, exam_paper, pushing_exam_paper_toward_viewer, one_hand_pointing_at_exam_problem, hands_visible_on_desk, troubled_expression, ahoge_drooping, afternoon, clear_sky, upper_body, medium_shot, window_light, nervous, blush, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, hidden_hands, hands_out_of_frame, sitting_on_top_of_desk, empty_desk, missing_exam_paper, nsfw, nude, explicit",
     "storyJa": "【寧々・試験の1時間前に助けを求める】中間試験前の教室で、寧々は同じ問題を長い間見つめており、草稿はすでにめちゃくちゃな派生で覆われていました。あなたが通り過ぎるのを見て、彼女は最初に紙を押さえ、数秒後に諦めて紙をあなたの前に押し出し、アホ毛もぶら下がっていました。――「普段から早めに復習すべきなのは分かっています……だから、お説教はやめてください。この問題を教えてくれたら、放課後に飲み物をごちそうしますから。」",
     "rating": "All"
@@ -894,7 +891,6 @@
       "gentle_expression",
       "morning",
       "face_focus",
-      "window_light",
       "gentle_smile",
       "soft_eyes"
     ],
@@ -907,7 +903,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, snow, looking_back, casual_clothes, close_up, winter_coat, scarf, adjusting_scarf, close_distance, snowfall, red_ears, gentle_expression, morning, face_focus, window_light, gentle_smile, soft_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, snow, looking_back, casual_clothes, close_up, winter_coat, scarf, adjusting_scarf, close_distance, snowfall, red_ears, gentle_expression, morning, face_focus, gentle_smile, soft_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・スカーフに隠れた体温】特に雪が降った早朝の街路は静かです。寧々はあなたのスカーフが緩んでいることに気づくと、つま先立ちでスカーフを巻き直してくれます。急に距離が近づき、凍り付いた耳の先はさらに赤くなったが、それでも彼女は最後の角を慎重に平らにした。退却する前に、彼女はスカーフの端の下に手を隠して暖めました。――「これでもう風は入ってきません。私の手、冷たいですか？　それなら……少しだけ、握らせてください。」",
     "rating": "All",
@@ -975,7 +971,6 @@
     "tags": [
       "hair_ribbon",
       "pajamas",
-      "bedroom",
       "night",
       "looking_back",
       "solid_color",
@@ -1006,7 +1001,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, bedroom, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・お正月、こたつでの敗北】大人になって一緒に暮らし始めてから迎えた大晦日。寧々はこたつであなたと協力ゲームを遊んでいた。一回だけと言っていたのに、連敗するとこっそり難易度を下げてしまう。あなたに見つかると、慌ててコントローラーをクッションの後ろへ隠し、アホ毛まで気まずそうにぴんと立った――「これはずるじゃありません。お正月の運勢を合理的に調整しただけです！　もう一回。負けたほうが、明日の朝のお雑煮を作るんですからね。」",
     "rating": "All",
@@ -1511,7 +1506,6 @@
     "timeOfDay": "night",
     "tags": [
       "mole_under_eye",
-      "golden_hour",
       "night",
       "casual_clothes",
       "holding_birthday_cake",
@@ -1534,7 +1528,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, golden_hour, night, modest_casual_home_clothes, holding_one_small_birthday_cake_with_both_hands, candlelight, standing_behind_a_half_open_door, surprised, subtle_blush, dark_entryway, upper_body, medium_shot, expectant, bright_eyes, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, night, modest_casual_home_clothes, holding_one_small_birthday_cake_with_both_hands, candlelight, standing_behind_a_half_open_door, surprised, subtle_blush, dark_entryway, upper_body, medium_shot, expectant, bright_eyes, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・ドアの後ろに隠せない誕生日サプライズ】冬の夜、アパートの入り口には明かりがついていなかった。夏目は小さなケーキを持ってドアの後ろに隠れていました。彼女はあなたが家に入るのを待ってからキャンドルに火を灯したかったのですが、早く帰宅しようとする足音に邪魔されました。彼女は数秒間その場で固まったが、ろうそくの明かりよりも頬を赤くして、ただケーキを手渡した。――「誕生日には、それらしいことをしたほうがいいって、みんなが言うから。早く願い事をして。クリームが溶けちゃう……別に、ずっと待ってたわけじゃないけど。」",
     "rating": "All",
@@ -1989,7 +1983,6 @@
       "moonlight",
       "close_up",
       "warm_lighting",
-      "bathroom",
       "snow"
     ],
     "mature": false,
@@ -2000,8 +1993,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(smartphone held for a video call:1.55), phone screen facing viewer, outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, no phone, empty hands",
+    "prompt": "outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・雪の夜温泉の視線の約束】旅先の露天風呂は雪の夜に包まれていた。大人の寧々は、赤い顔だけを露出させて、湯気と岩の陰に隠れていました。あなたが率先して目をそらしてみると、彼女はゆっくりとリラックスして、水の音を聞きながら遠くないところへ動きました。月光が彼女の長い銀髪に降り注ぎ、彼女はルールをささやいた――「話し相手になってくれるのは嬉しいですけど、急に振り向くのは禁止です。準備ができたら……私から、あなたに見えるところへ行きますから。」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
@@ -2774,8 +2767,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black hair, long hair, yellow eyes, red hairclips, mole under eye, oversized white button-up shirt with two buttons open, bare legs, subtle blush, morning kitchen, (one red empty coffee mug and one blue empty coffee mug side by side on table:1.8), exactly two mugs total, both mugs same size, no mug in hand, medium shot, window light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, one cup, single cup, holding cup, three cups, full cup, one mug, single mug, third mug, extra mug, many mugs, cup collection, mug held toward viewer, full mug, teapot",
+    "prompt": "1girl, solo, shiki_natsume, black hair, long hair, yellow eyes, red hairclips, mole under eye, oversized white button-up shirt with two buttons open, bare legs, subtle blush, morning kitchen, (one red empty coffee mug and one blue empty coffee mug side by side on table:1.8), exactly two mugs total, both mugs same size, medium shot, window light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, one cup, single cup, three cups, full cup, one mug, single mug, third mug, extra mug, many mugs, cup collection, full mug, teapot",
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",
     "auditRevision": "round4-2026-07-22",
@@ -3059,7 +3052,7 @@
       "展示图"
     ],
     "prompt": "1girl, solo, shiki_natsume, black hair, long hair, yellow eyes, red hairclips, mole under eye, (solid plain burgundy hardcover book held vertically in both hands:1.75), blank book with absolutely no markings, book covering her mouth and nose, only shy yellow eyes visible above the book, library window, autumn afternoon light, close-up portrait, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, book below chin, book on table, unobstructed mouth, side profile, writing, letters, words, typography, title, symbols, graphic print, gibberish text, unreadable text, speech bubble, dialogue bubble, captions, subtitles, decorated book, printed book spine, open mouth visible",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, book below chin, book on table, unobstructed mouth, writing, letters, words, typography, title, symbols, graphic print, gibberish text, unreadable text, speech bubble, dialogue bubble, captions, subtitles, decorated book, printed book spine, open mouth visible",
     "storyJa": "【夏目・本のページに遮られない横顔】秋の午後、夏目は図書館の窓際に座って本を読んでいました。太陽の光が彼の長い黒髪に沿って本のページに降り注いでいました。彼女はあなたが本棚から覗いていることにすでに気づいていました。あなたが同じページで長時間立ち止まり、顔の赤い下半分を覆うまで、彼女は本を持ち上げませんでした。――「公共の場所で人をじっと見るのは失礼。ここに座りたいなら、こっちへ来て……不審者みたいに隠れないで。」",
     "rating": "All",
     "auditRevision": "round4-2026-07-22",
@@ -3227,7 +3220,6 @@
       "rain",
       "night",
       "blush",
-      "holding_hands",
       "shared_umbrella",
       "holding_arm",
       "walking",
@@ -3248,7 +3240,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, rain, night, blush, holding_hands, shared_umbrella, holding_arm, walking, rainy_night, wet_road, subtle_blush, close_distance, overcast, pov, close_up, in_love, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, rain, night, blush, shared_umbrella, holding_arm, walking, rainy_night, wet_road, subtle_blush, close_distance, overcast, pov, close_up, in_love, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・半歩家まで傘を相合】夏の夜、雨が強くなってきました。夏目さんは傘をこちらに傾けますが、肩が濡れてしまいます。あなたは彼女を引き寄せました。最初は眉をひそめ、歩くのが不便だと言いましたが、自然と腕を強く抱きしめました。街灯が水面に長く反射する――「近づけば濡れないのは確か。この結論が成り立つのは、傘が小さいときだけ……家に着くまで離さないで。」",
     "rating": "All",
@@ -3435,8 +3427,7 @@
       "lantern_light",
       "warm_lighting",
       "calm",
-      "relaxed",
-      "bathroom"
+      "relaxed"
     ],
     "mature": false,
     "location": "温泉旅馆缘侧",
@@ -3447,7 +3438,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, yukata, soft_lighting, sitting, steam, onsen_inn, sitting_on_engawa, holding_milk_bottle, snowfall, lanterns, subtle_blush, sunset, snow, upper_body, medium_shot, lantern_light, warm_lighting, calm, relaxed, bathroom, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, yukata, soft_lighting, sitting, steam, onsen_inn, sitting_on_engawa, holding_milk_bottle, snowfall, lanterns, subtle_blush, sunset, snow, upper_body, medium_shot, lantern_light, warm_lighting, calm, relaxed, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・温泉旅館の夜風】冬の夕方、夏目は髪先に湿気を残したまま、浴衣を着て温泉旅館の端に座っていた。あなたがアイスミルクを手渡すと、彼女はそれを受け取り、もう一方のボトルをあなたの手のひらに押し戻しました。彼女の顔の赤い色はランタンの下でさらにはっきりと見えました。――「温泉が熱かっただけ。ほかに理由はない。外は雪だから……飲み終わったら、庭を少し歩かない？」",
     "rating": "All",
@@ -3705,7 +3696,6 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "sitting",
       "window_light",
       "sunset",
       "autumn",
@@ -3731,7 +3721,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, sitting, window_light, sunset, autumn, old_bookstore, wooden_ladder, holding_book, looking_down, subtle_blush, bookshelves, afternoon, clear_sky, medium_shot, profile, serious, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, window_light, sunset, autumn, old_bookstore, wooden_ladder, holding_book, looking_down, subtle_blush, bookshelves, afternoon, clear_sky, medium_shot, profile, serious, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・古本屋のはしごで立ち止まる】秋の午後、夏目は古書店の木のはしごに立って、絶版になった本を漁っていました。彼女の長い黒髪は肩を越えて垂れ下がっていた。あなたが下のはしごを持っていたので、彼女は頭を下げて感謝しました。しかし、彼女は視線の角度のせいで突然顔を赤らめ、すぐに本で胸を隠しました。――「しっかり支えていればいいから、上を見ないで。見つかったら……第一章を貸してあげてもいい。」",
     "rating": "All",
@@ -4241,7 +4231,6 @@
       "morning_light",
       "soft_eyes",
       "park",
-      "crouching",
       "medium_shot"
     ],
     "mature": false,
@@ -4254,8 +4243,8 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, (crouching alone in extreme foreground:1.5), (right index finger touching the ground and tracing one heart groove through fallen pink cherry petals:1.8), hand and petal heart clearly visible, empty cherry tree path, spring morning, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, naked, topless, bottomless, underwear, swimsuit, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text, 2girls, multiple girls, second white-haired girl, extra girl, clone, twin, background person, standing, finger on lips, shushing, title",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, standing alone in the empty cherry-blossom path, (one hand gently pressing her pink hair ribbon:1.3), looking back over her shoulder with a gentle smile, empty cherry tree path, spring morning, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, naked, topless, bottomless, underwear, swimsuit, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text, 2girls, multiple girls, second white-haired girl, extra girl, clone, twin, background person, finger on lips, shushing, title",
     "storyJa": "【寧々・桜吹雪の名前】春の早朝の桜並木は空いていました。寧々は花びらでできた雪のカーテンの中に立っており、ヘアバンドを指でそっと押さえていました。あなたが彼女の名前を呼ぶと、彼女はピンクの空の向こうを振り向いた。彼女は最初は驚いていましたが、その後安心したような優しい笑顔を見せてくれました。――「大切な人に呼び止められると、自分の名前まで特別になるんですね。もう一度、呼んでもらえますか？」",
     "rating": "All",
     "auditRevision": "round4-2026-07-22",
@@ -4844,7 +4833,7 @@
     "id": "sc103",
     "title": "睡衣滑落的极乐失控",
     "category": "日常/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 居家单肩滑落真空】深夜暴雨倾盆的温馨卧室。宁宁在酒精的微醺下彻底向你敞开了心扉。她身上仅仅穿着一件极薄的粉色莫代尔睡裙，里面完全是真空状态。她跨坐在你身上，睡裙修长的吊带在一侧完全无力地滑落到了手臂以下，露出了大片圆润香肩与饱满性感的半边雪白。她手里还抓着你汗湿的衣角，满脸香汗与极致的红晕交织，头顶的呆毛软瘫成完美的心形——「柊史...不要一直盯着肩膀看啦...今晚的宁宁...已经全部是你的了哦...」",
+    "story": "【成年 After Story · 宁宁 · 居家单肩滑落真空】深夜暴雨倾盆的温馨卧室。宁宁在酒精的微醺下彻底向你敞开了心扉。她身上仅仅穿着一件极薄的粉色莫代尔睡裙，里面完全是真空状态。她跨坐在你身上，睡裙修长的吊带在一侧完全无力地滑落到了手臂以下，露出了大片圆润香肩与饱满性感的半边雪白。她手里还抓着你汗湿的衣角，满脸香汗与极致的红晕交织，头顶的呆毛软瘫成完美的心形——「柊史...不要一直盯着肩膀看啦...今晚的宁宁...已经全部是你的了哦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -4988,7 +4977,7 @@
       "核心协议",
       "R15"
     ],
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 密室魔女服极致高能】深夜反锁的超自然社办深处，空气里弥漫着神秘学书页与微热的荷尔蒙。宁宁换上了那件华丽却被你半拆解的魔女制服，香肩半露，黑色布料与雪白肌肤形成了极具张力的对比。她软软地跨坐在你膝盖上，发带凌乱地散在一边，头顶的呆毛早已因为极度动情软瘫成完美的心形螺旋。她无力地抵住你的胸口，急促地喘息着——「呜...柊史...把灯关掉啦...魔女的身体...今晚全凭你支配了...」",
+    "story": "【成年 After Story · 宁宁 · 密室魔女服极致高能】深夜反锁的超自然社办深处，空气里弥漫着神秘学书页与微热的荷尔蒙。宁宁换上了那件华丽却被你半拆解的魔女制服，香肩半露，黑色布料与雪白肌肤形成了极具张力的对比。她软软地跨坐在你膝盖上，发带凌乱地散在一边，头顶的呆毛早已因为极度动情软瘫成完美的心形螺旋。她无力地抵住你的胸口，急促地喘息着——「呜...柊史...把灯关掉啦...魔女的身体...今晚全凭你支配了...」",
     "storyJa": "【寧々・大人のアフターストーリー・・密室の魔女衣装が大迫力】深夜、施錠された超常現象協会の事務所の奥深く、空気はオカルト本のページと少し熱いホルモンで満たされています。寧々は、あなたによって半分解体された豪華な魔女の制服を着ました。彼女の肩は半分露出しており、黒い生地が雪のように白い肌と非常に緊張したコントラストを形成していました。彼女はあなたの膝の上にそっと座り、ヘアバンドは片側に乱雑に散らばっており、頭のアホ毛は極度の感情のためにすでに完璧なハート型の螺旋になっています。彼女はあなたの胸を弱く押し当て、速く喘ぎました――「もう、柊史……明かりを消してください。今夜は魔女の私を……あなたにだけ見ていてほしいんです。」",
     "prompt": "(official_ayachi_nene_witch_costume), (pink_crisscross_strappy_top), pink_collar_with_gold_buckle, black_short_cape_with_vivid_pink_lining, black_pleated_mini_skirt, asymmetrical_legwear, one_black_and_white_striped_thighhigh, one_white_frilled_sock, black_strappy_boots, wide_black_witch_hat_with_pink_striped_hatband_and_large_pink_bow, (sitting_astride_viewer_lap), bedroom_moonlight, 1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, hair_ribbon, ahoge, witch_costume, undressing, shirt_lift, bare_shoulders, cleavage, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, witch_hat, witch_dress, black_cape, pink_lining, striped_legwear, midriff, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage, school_uniform, gym_uniform",
@@ -5440,7 +5429,7 @@
     "id": "sc115",
     "title": "枕边的绝对服从协议",
     "category": "恋爱/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 真空白衬衫跨坐】微热的深夜婚房。宁宁向你彻底缴械投降，身上仅仅松垮垮地穿着你那一身宽大的纯白衬衫，里面完全是真空状态。她红着俏脸、眼神迷离地跨坐在你的腰间，散开的发带掉在床单上，头顶的呆毛早因为滚烫的依恋瘫软成了工口的心形螺旋。她纤细的双手死死攥紧你的衣领将你拉近，温热的呼吸扑在你的脸颊上——「施了魔法的身体...早就坏掉了...今晚的宁宁...随便你怎么处置都行了啦...」",
+    "story": "【成年 After Story · 宁宁 · 真空白衬衫跨坐】微热的深夜婚房。宁宁向你彻底缴械投降，身上仅仅松垮垮地穿着你那一身宽大的纯白衬衫，里面完全是真空状态。她红着俏脸、眼神迷离地跨坐在你的腰间，散开的发带掉在床单上，头顶的呆毛早因为滚烫的依恋瘫软成了工口的心形螺旋。她纤细的双手死死攥紧你的衣领将你拉近，温热的呼吸扑在你的脸颊上——「施了魔法的身体...早就坏掉了...今晚的宁宁...随便你怎么处置都行了啦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -5535,7 +5524,7 @@
     "id": "sc117",
     "title": "缎面吊带的绝对独占视界",
     "category": "恋爱/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 缎面裙极度动情】深夜静谧的私人书房。宁宁在你的霸道要求下，换上了一件极具肉感诱惑的暗粉色缎面露背吊带裙。此时她软绵绵地跨坐在你的双腿上，光滑细腻的缎面料死死贴紧她完美的娇躯曲线。她双手死死抓着你的肩膀，头顶的呆毛早已因为爱意过载而完全软瘫成一个极其工口的心形。她双眼含泪地俯视着你，温热的喘息扑在你的脖颈上——「呜...柊史...这样抱着好热...魔女的身体和灵魂...今晚全部都被你彻底独占了啦...」",
+    "story": "【成年 After Story · 宁宁 · 缎面裙极度动情】深夜静谧的私人书房。宁宁在你的霸道要求下，换上了一件极具肉感诱惑的暗粉色缎面露背吊带裙。此时她软绵绵地跨坐在你的双腿上，光滑细腻的缎面料死死贴紧她完美的娇躯曲线。她双手死死抓着你的肩膀，头顶的呆毛早已因为爱意过载而完全软瘫成一个极其工口的心形。她双眼含泪地俯视着你，温热的喘息扑在你的脖颈上——「呜...柊史...这样抱着好热...魔女的身体和灵魂...今晚全部都被你彻底独占了啦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -5830,7 +5819,7 @@
     "id": "sc123",
     "title": "甜点协议的额外惩罚",
     "category": "恋爱/After_Story",
-    "story": "【成年 After Story · 宁宁 · 居家毛衣真空高能】午后阳光慵懒的公寓厨房里，空气中弥漫着烘焙的微热甜香。宁宁在你的惩罚要求下，身上仅仅套着一件你送的大号粗线针织毛衣，里面完全真空未着寸缕。她面红耳赤地被你抱上了大理石工作台，松垮的衣领随性地向一侧完全滑落，展现出大片柔嫩圆润的香肩与若隐若现的侧乳轮廓。她有些羞怯地用沾着面粉的双手抵住你的胸口，头顶的呆毛早已因为情绪过载软瘫成完美的爱心螺旋——「呜...柊史...一大清早就在厨房做这种事...面粉都要蹭到身上了啦...快点抱紧人家...」",
+    "story": "【成年 After Story · 宁宁 · 居家毛衣真空高能】清晨阳光的公寓厨房里，空气中弥漫着烘焙的微热甜香。宁宁在你的惩罚要求下，身上仅仅套着一件你送的大号粗线针织毛衣，里面完全真空未着寸缕。她面红耳赤地被你抱上了大理石工作台，松垮的衣领随性地向一侧完全滑落，展现出大片柔嫩圆润的香肩与若隐若现的侧乳轮廓。她有些羞怯地用沾着面粉的双手抵住你的胸口，头顶的呆毛早已因为情绪过载软瘫成完美的爱心螺旋——「呜...柊史...一大清早就在厨房做这种事...面粉都要蹭到身上了啦...快点抱紧人家...」",
     "char": "nene",
     "character": [
       "nene"
@@ -6025,7 +6014,7 @@
     "id": "sc127",
     "title": "露天泳池的意外熔断",
     "category": "日常/同人/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 微型比基尼极致肉感】夏夜寂静无人的私人别墅露天泳池。蔚蓝的水波荡漾倒映着满天星斗。宁宁今晚在你的激将法下，破天荒换出了一套极小款的黑色系带微型比基尼。布料少得近乎可怜，根本无法包裹住她饱满的傲人线条。她浑身挂满晶莹剔透的水珠，大片雪白的细腻肌肤完全暴露在清冷月光下。她双手羞耻地护在胸前跨坐在池边你的膝盖上，头顶的呆毛早已因为情绪过载疯狂卷曲成工口的心形螺旋——「呜...带子好像快要散掉了啦...大色狼不准看！今晚的魔女...随你怎么样支配都行了啦...」",
+    "story": "【成年 After Story · 宁宁 · 微型比基尼极致肉感】夏夜寂静无人的私人别墅露天泳池。蔚蓝的水波荡漾倒映着满天星斗。宁宁今晚在你的激将法下，破天荒换出了一套极小款的黑色系带微型比基尼。布料少得近乎可怜，根本无法包裹住她饱满的傲人线条。她浑身挂满晶莹剔透的水珠，大片雪白的细腻肌肤完全暴露在清冷月光下。她双手羞耻地护在胸前跨坐在池边你的膝盖上，头顶的呆毛早已因为情绪过载疯狂卷曲成工口的心形螺旋——「呜...带子好像快要散掉了啦...大色狼不准看！今晚的魔女...随你怎么样支配都行了啦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -6334,7 +6323,7 @@
     "id": "sc133",
     "title": "深夜厨房的禁忌家务",
     "category": "恋爱/同人/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 裸体围裙极致羞耻】深夜彻底打烊后的安静咖啡馆厨房。宁宁在你的霸道惩罚下，被迫换上了仅有一件咖啡厅围裙的禁忌装束。她面红耳赤地被你抱上了大理石吧台桌面，细窄的围裙带子根本遮挡不住两侧大片暴露的白皙侧乳，光洁白皙的后背与完全真空的双腿毫无防备。她满脸滚烫的红晕连到耳根，头顶的呆毛直接害羞得疯狂颤动卷曲成完美的爱心螺旋——「呜... 柊史你这个大色狼！故意把厨房门反锁...今晚...真的要把宁宁吃掉吗...」",
+    "story": "【成年 After Story · 宁宁 · 裸体围裙极致羞耻】深夜彻底打烊后的安静咖啡馆厨房。宁宁在你的霸道惩罚下，被迫换上了仅有一件咖啡厅围裙的禁忌装束。她面红耳赤地被你抱上了大理石吧台桌面，细窄的围裙带子根本遮挡不住两侧大片暴露的白皙侧乳，光洁白皙的后背与完全真空的双腿毫无防备。她满脸滚烫的红晕连到耳根，头顶的呆毛直接害羞得疯狂颤动卷曲成完美的爱心螺旋——「呜... 柊史你这个大色狼！故意把厨房门反锁...今晚...真的要把宁宁吃掉吗...」",
     "char": "nene",
     "character": [
       "nene"
@@ -7085,7 +7074,6 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "hair_ribbon",
       "loose_towel",
       "wet_hair",
       "sitting_on_bed",
@@ -7300,7 +7288,7 @@
       "apron_only",
       "mole_under_eye",
       "sitting_on_counter",
-      "legs_apart",
+      "legs_together",
       "bare_back",
       "bare_legs",
       "blush",
@@ -7322,7 +7310,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked_apron, apron_only, sitting_on_counter, legs_apart, bare_back, bare_legs, blush, embarrassed, tears_in_eyes, tsundere, cafe_interior, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked_apron, apron_only, sitting_on_counter, legs_together, bare_back, bare_legs, blush, embarrassed, tears_in_eyes, tsundere, cafe_interior, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【夏目・ツンデレのディフェンスラインは完全に崩壊した】深夜のスターライトカフェ閉店後、夏目はあなたに賭けに負けたため、非常に恥ずかしい「はあ？　本当に救いようのない変態ね。スマホで撮ったりしたら……明日は秘密裏に処分するから！」",
     "rating": "R15",
@@ -7371,19 +7359,19 @@
       "close_up",
       "pov"
     ],
-    "mature": false,
+    "mature": true,
     "location": "新婚卧室大床",
     "weather": "室内温暖",
     "camera": "主观近景特写",
     "lighting": "昏暗床头灯与柔和暖光",
     "usage": [
       "核心协议",
-      "R15"
+      "R18"
     ],
     "prompt": "natsume_r18, nene_r18, 2girls, two adult women only, POV_from_viewer_lying_on_messy_bed, adult, naked, bedroom, late_night, warm_dim_bedside_light, viewer_hands_visible_in_foreground, both_women_focused_on_viewer_not_each_other, extreme_intimacy, sweat, messy_hair, close_up, clearly_different_faces, (ayachi_nene_straddling_viewer_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, interlocking_fingers_with_viewer_left_hand, heavy_blush, passionate_look, open_mouth) BREAK (shiki_natsume_leaning_over_viewer_from_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, embracing_viewer_from_behind, kissing_viewer_neck, closed_eyes, heavy_blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, girls kissing each other, women embracing each other, pink ribbon on black-haired woman, mole on white-haired woman, identical twins, extra girl, 3girls, male, man, boy, 1boy",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・二人のヒロインによる至福の修羅フィールド】薬物と感情の同調率が200％を超えるという極限の制約の中、二人の少女は普段の拘束を完全に放棄した。ベッドの上の服は全部なくなり、シーツもぐちゃぐちゃになっていました。寧々はあなたにまたがり、顔は汗と赤面で覆われ、両手はあなたの手でしっかりと握り締められ、必死にあなたの温もりを求めています。夏目が後ろからしがみつき、首筋に熱い唇を噛みつきます。ここは病的な愛と汗と肉体が詰まった至福のブラックホール――「柊史、店長……私たちの心の防壁は、とっくに消えてる。だから今夜は、ずっとそばにいて。」",
-    "rating": "R15",
+    "rating": "R18",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
     "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she reaches forward and gently clasps the viewer's hand, as cool silver moonlight bathes the surroundings."
@@ -7647,7 +7635,7 @@
     "id": "sc160",
     "title": "打烊后的禁忌家务：魔女的裸体围裙",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 厨房绝对顺从梗】深夜打烊后的安静厨房，成了完全属于你们的甜蜜私有领地。宁宁在你的惩罚要求下，被迫换上了仅有一件咖啡厅围裙的羞耻装束。她背对着你正在切水果，听到你的脚步声慌乱回头。围裙两侧大片的白皙侧乳与完全暴露的光洁后背在暖光下晃眼无比。她满脸滚烫的红晕连到耳根，头顶的呆毛直接害羞得疯狂颤动——「呜...柊史你这个大色狼！故意把厨房门反锁...今晚真的要把宁宁吃掉吗...」",
+    "story": "【成年 After Story · 宁宁 · 厨房绝对顺从梗】深夜打烊后的安静厨房，成了完全属于你们的甜蜜私有领地。宁宁在你的惩罚要求下，被迫换上了仅有一件咖啡厅围裙的羞耻装束。她背对着你正在切水果，听到你的脚步声慌乱回头。围裙两侧大片的白皙侧乳与完全暴露的光洁后背在暖光下晃眼无比。她满脸滚烫的红晕连到耳根，头顶的呆毛直接害羞得疯狂颤动——「呜...柊史你这个大色狼！故意把厨房门反锁...今晚真的要把宁宁吃掉吗...」",
     "char": "nene",
     "character": [
       "nene"
@@ -7743,7 +7731,7 @@
     "id": "sc162",
     "title": "晨光协议：魔女的早安顺从",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 新婚晨间绝对沦陷】清晨的阳光透过白纱轻柔地泼洒在凌乱的床榻上。宁宁身上只穿着你那件松垮的白衬衫，纽扣大开，半露的香肩与若隐若现的精致锁骨散发着致命的诱惑。她满脸滚烫地跨坐在你身上，发带凌乱地散在一边，头顶的呆毛早因为极度的动情而软绵绵地瘩成了一个完美的爱心形状。她用近乎融化的迷离眼神俯视着你，急促地喘息着——「大色狼...一大清早就这么欺负人...魔女的早安吻...你还没给够呢...」",
+    "story": "【成年 After Story · 宁宁 · 新婚晨间绝对沦陷】清晨的阳光透过白纱轻柔地泼洒在凌乱的床榻上。宁宁身上只穿着你那件松垮的白衬衫，纽扣大开，半露的香肩与若隐若现的精致锁骨散发着致命的诱惑。她满脸滚烫地跨坐在你身上，发带凌乱地散在一边，头顶的呆毛早因为极度的动情而软绵绵地瘩成了一个完美的爱心形状。她用近乎融化的迷离眼神俯视着你，急促地喘息着——「大色狼...一大清早就这么欺负人...魔女的早安吻...你还没给够呢...」",
     "char": "nene",
     "character": [
       "nene"
@@ -7910,7 +7898,7 @@
       "seductive_look",
       "smirk",
       "heavy_blush",
-      "kitchen",
+      "cafe_interior",
       "indoors",
       "night",
       "soft_lighting",
@@ -7928,7 +7916,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, oversized_shirt, open_shirt, no_panties, sitting_on_table, bare_legs, cross_legged, holding_wine_glass, seductive_look, smirk, heavy_blush, kitchen, indoors, night, soft_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, oversized_shirt, open_shirt, no_panties, sitting_on_table, bare_legs, cross_legged, holding_wine_glass, seductive_look, smirk, heavy_blush, cafe_interior, indoors, night, soft_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【夏目・バーでは絶対に独占的】深夜の閉店後の薄暗いカフェ。あなたの強引な要求に、夏目は服をすべて脱いで、あなたのゆったりとした黒いシャツだけを着ました。彼女は顔を赤らめて、少しひんやりとしたバーテーブルにあぐらをかいて座っていた。シャツの裾は絶対領域を覆うばかりで、色白でまっすぐな長い脚が無防備に重なり露出している。彼女はグラス半分の赤ワインを手に振っており、その目は少し酔っていますが、非常に色っぽくて強い独占欲を持っています。彼女はあなたを軽蔑するように目を細めています。目尻の泣きぼくろが赤面してて、どうしようもなくセクシーです。――「ねえ、この大変態。今夜は店に鍵をかけた。帰さないと言った以上……最後まで私に付き合う覚悟をして。」",
     "rating": "R15",
@@ -8039,7 +8027,7 @@
     "id": "sc168",
     "title": "决堤的料理魔法：吧台上的绝对极乐",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 围裙滑落决堤篇】打烊后的星光咖啡馆吧台上，微凉的石质桌面与滚烫的肉体形成了强烈的反差。宁宁身上的咖啡厅围裙带子早已被你扯断，松垮垮地挂在腰际，大片诱人的丰满和光洁的小腹毫无防备地袒露在空气中。她无力地仰躺在吧台上，乌黑的发带掉在一边，头顶的呆毛疯狂卷曲成完美的爱心螺旋。她双手死死抓着你的肩膀，双腿紧紧环住你的腰，满脸泪痕与香汗交织，小嘴微张发出令人意乱情迷的娇喘——「柊史...魔法已经不管用了...宁宁的身体和灵魂...全部都要被你融化了...」",
+    "story": "【成年 After Story · 宁宁 · 围裙滑落决堤篇】打烊后的星光咖啡馆吧台上，微凉的石质桌面与滚烫的肉体形成了强烈的反差。宁宁身上的咖啡厅围裙带子早已被你扯断，松垮垮地挂在腰际，大片诱人的丰满和光洁的小腹毫无防备地袒露在空气中。她无力地仰躺在吧台上，乌黑的发带掉在一边，头顶的呆毛疯狂卷曲成完美的爱心螺旋。她双手死死抓着你的肩膀，双腿紧紧环住你的腰，满脸泪痕与香汗交织，小嘴微张发出令人意乱情迷的娇喘——「柊史...魔法已经不管用了...宁宁的身体和灵魂...全部都要被你融化了...」",
     "char": "nene",
     "character": [
       "nene"
@@ -8236,7 +8224,7 @@
     "id": "sc172",
     "title": "发带的禁忌契约：魔女的绝对服从仪式",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 发带软缚新婚夜】深夜温馨的卧室大床上。为了惩罚宁宁白天的嘴硬，你用她平时最心爱的两条粉色发带，将她纤细白皙的双腕轻轻束缚在了床头栏杆上。此时她只穿着一套近乎透明的纯白蕾丝内衣，大片雪白的肌肤因为羞耻和兴奋而泛起极度诱人的潮红。她头顶的呆毛彻底瘫软成了一个工口的心形，亮晶晶的眼睛蒙上了一层水汽，咬着下唇剧烈喘息着凝视着你——「呜...柊史...竟然用发带做这种坏事...太狡猾了...宁宁的身体...今晚全凭你支配了啦...」",
+    "story": "【成年 After Story · 宁宁 · 发带软缚新婚夜】深夜温馨的卧室大床上。为了惩罚宁宁白天的嘴硬，你用她平时最心爱的两条粉色发带，将她纤细白皙的双腕轻轻束缚在了床头栏杆上。此时她只穿着一套近乎透明的纯白蕾丝内衣，大片雪白的肌肤因为羞耻和兴奋而泛起极度诱人的潮红。她头顶的呆毛彻底瘫软成了一个工口的心形，亮晶晶的眼睛蒙上了一层水汽，咬着下唇剧烈喘息着凝视着你——「呜...柊史...竟然用发带做这种坏事...太狡猾了...宁宁的身体...今晚全凭你支配了啦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -8334,7 +8322,7 @@
     "id": "sc174",
     "title": "私有泳池的脱落禁忌意外",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 泳衣脱落绝对工口】夏日午后的私人别墅室内泳池。蔚蓝明澈的水波荡漾，打在白皙娇嫩的躯体上。因为在水里的激烈打闹，宁宁身上那件性感的死库水泳衣系带彻底断开，整件衣服滑落到了胸口以下，饱满性感的双峰和光洁的小腹完全暴露在清澈的水面之上。她惊慌失措地站在齐腰深的水中，双手拼命试图遮挡，浑身挂满晶莹的水珠，头顶的呆毛害羞得疯狂颤动——「啊啊啊！带子怎么在这个时候断掉啦！不准看！柊史你要是敢睁开眼睛，我就用魔法把你变成青蛙！」",
+    "story": "【成年 After Story · 宁宁 · 泳衣脱落绝对工口】夏日午后的私人别墅室内泳池。蔚蓝明澈的水波荡漾，打在白皙娇嫩的躯体上。因为在水里的激烈打闹，宁宁身上那件性感的死库水泳衣系带彻底断开，整件衣服滑落到了胸口以下，饱满性感的双峰和光洁的小腹完全暴露在清澈的水面之上。她惊慌失措地站在齐腰深的水中，双手拼命试图遮挡，浑身挂满晶莹的水珠，头顶的呆毛害羞得疯狂颤动——「啊啊啊！带子怎么在这个时候断掉啦！不准看！柊史你要是敢睁开眼睛，我就用魔法把你变成青蛙！」",
     "char": "nene",
     "character": [
       "nene"
@@ -8431,7 +8419,7 @@
     "id": "sc176",
     "title": "魔女的惩罚：绝对依恋的深夜跨坐",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 针织衫真空极致高能】深夜反锁的卧室里，空气炙热得让人窒息。宁宁因为白天的傲娇被你拉入了“惩罚协议”。此刻她只穿着一件你送的宽松针织毛衣，里面完全是真空状态，胸前的纽扣已经被你尽数解开，大片温热雪白的饱满身躯与娇嫩的小腹毫无防备地暴露在外。她跨坐在你身上，发带早已滑落，头顶的呆毛因为极度动情而完全软瘫成了一个完美的爱心螺旋。她双手死死抓着你的衣襟，满脸滚烫的红晕连到耳根，含泪的眼睛迷离地注视着你——「呜...柊史...针织衫里面...好奇怪...不要一直盯着看啦...快点抱紧宁宁...」",
+    "story": "【成年 After Story · 宁宁 · 针织衫真空极致高能】深夜反锁的卧室里，空气炙热得让人窒息。宁宁因为白天的傲娇被你拉入了“惩罚协议”。此刻她只穿着一件你送的宽松针织毛衣，里面完全是真空状态，胸前的纽扣已经被你尽数解开，大片温热雪白的饱满身躯与娇嫩的小腹毫无防备地暴露在外。她跨坐在你身上，发带早已滑落，头顶的呆毛因为极度动情而完全软瘫成了一个完美的爱心螺旋。她双手死死抓着你的衣襟，满脸滚烫的红晕连到耳根，含泪的眼睛迷离地注视着你——「呜...柊史...针织衫里面...好奇怪...不要一直盯着看啦...快点抱紧宁宁...」",
     "char": "nene",
     "character": [
       "nene"
@@ -8525,7 +8513,7 @@
     "id": "sc178",
     "title": "打烊后的秘享：星光吧台的真空魔女女仆",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 裸体围裙极致羞耻】深夜彻底打烊后的星光咖啡馆。在一片安静昏暗的氛围中，宁宁换上了仅有一件咖啡厅围裙的禁忌装束。她面红耳赤地坐在微凉的吧台桌面上，围裙带子松垮垮地勾勒出她丰满迷人的侧乳轮廓，光洁白皙的后背与完全真空的双腿毫无防备地暴露在外。因为听到你推门进来的脚步声，她慌乱地夹紧双腿试图遮挡，头顶的呆毛直接害羞得疯狂颤动卷曲成完美的爱心螺旋——「呜...柊史你这个大色狼！故意把厨房门反锁...今晚真的要把宁宁吃掉吗...」",
+    "story": "【成年 After Story · 宁宁 · 裸体围裙极致羞耻】深夜彻底打烊后的星光咖啡馆。在一片安静昏暗的氛围中，宁宁换上了仅有一件咖啡厅围裙的禁忌装束。她面红耳赤地坐在微凉的吧台桌面上，围裙带子松垮垮地勾勒出她丰满迷人的侧乳轮廓，光洁白皙的后背与完全真空的双腿毫无防备地暴露在外。因为听到你推门进来的脚步声，她慌乱地夹紧双腿试图遮挡，头顶的呆毛直接害羞得疯狂颤动卷曲成完美的爱心螺旋——「呜...柊史你这个大色狼！故意把厨房门反锁...今晚真的要把宁宁吃掉吗...」",
     "char": "nene",
     "character": [
       "nene"
@@ -8621,7 +8609,7 @@
     "id": "sc180",
     "title": "晨间过载协议：被窝里的羞耻任凭支配",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 晨间完全真空极致温柔】一个慵懒的假日清晨，温暖的碎光透过窗帘泼洒下来。你从暖烘烘的床铺中醒来，震惊地发现宁宁整个人一丝不挂地钻在你的被窝里，白皙如玉的娇躯像八爪鱼一样死死缠绕在你身上。因为你的苏醒，她缩在被子里只露出一个红透的俏脸，头顶的呆毛因为极度的安心与羞涩而温顺地弯成了一个完美的心形螺旋。她攥紧被角，亮晶晶的眼睛里蒙着一层水汽，声音软绵绵的娇嗔着——「早安...大色狼...不准在被子里乱摸啦...宁宁的身体...今晚之前都随你处置了啦...」",
+    "story": "【成年 After Story · 宁宁 · 晨间完全真空极致温柔】一个慵懒的假日清晨，温暖的碎光透过窗帘泼洒下来。你从暖烘烘的床铺中醒来，震惊地发现宁宁整个人一丝不挂地钻在你的被窝里，白皙如玉的娇躯像八爪鱼一样死死缠绕在你身上。因为你的苏醒，她缩在被子里只露出一个红透的俏脸，头顶的呆毛因为极度的安心与羞涩而温顺地弯成了一个完美的心形螺旋。她攥紧被角，亮晶晶的眼睛里蒙着一层水汽，声音软绵绵的娇嗔着——「早安...大色狼...不准在被子里乱摸啦...宁宁的身体...今晚之前都随你处置了啦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -8922,7 +8910,7 @@
     "id": "sc186",
     "title": "惊喜指令：卧室里的傲娇兔女郎协议",
     "category": "恋爱/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 漆黑兔女郎装极致羞耻】深夜反锁的公寓卧室。作为给你的特别生日礼物，宁宁在极度心理斗争后，终于换上了极其性感的漆黑高叉兔女郎连体衣与黑色丝袜。她头戴萌系的兔耳，面红赤地跨坐在你的怀里，紧身衣勾勒出大片迷人的侧乳与绝对领域。她双手捂住滚烫的面颊不敢看你，头顶的呆毛从兔耳缝隙中钻出，害羞地扭曲成了工口的心形——「呜...生、生日快乐...大色狼！不准发出奇怪的笑声！这套衣服...也是宁宁最后的任性妥协了啦...快抱紧我...」",
+    "story": "【成年 After Story · 宁宁 · 漆黑兔女郎装极致羞耻】深夜反锁的公寓卧室。作为给你的特别生日礼物，宁宁在极度心理斗争后，终于换上了极其性感的漆黑高叉兔女郎连体衣与黑色丝袜。她头戴萌系的兔耳，面红赤地跨坐在你的怀里，紧身衣勾勒出大片迷人的侧乳与绝对领域。她双手捂住滚烫的面颊不敢看你，头顶的呆毛从兔耳缝隙中钻出，害羞地扭曲成了工口的心形——「呜...生、生日快乐...大色狼！不准发出奇怪的笑声！这套衣服...也是宁宁最后的任性妥协了啦...快抱紧我...」",
     "char": "nene",
     "character": [
       "nene"
@@ -9217,7 +9205,7 @@
     "id": "sc192",
     "title": "壁炉余温：单肩滑落的松垮毛衣乐章",
     "category": "恋爱/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 假日木屋毛衣单肩滑落真空】大雪封山的冬日深夜，私人度假木屋内，壁炉里的木柴正劈啪作响，泼洒着温暖的橙红火光。宁宁今晚彻底放下了防线，身上仅仅套着一件大号的粗线针织毛衣，里面完全真空没有着任何衣物。她慵懒地仰躺在厚厚的长毛地毯上，毛衣的宽大领口在一侧完全无力地滑落到了手臂以下，露出了大片圆润香肩与饱满性感的半边雪白侧乳。她修长柔嫩的双腿在火光下泛着诱人的温润光泽，头顶的呆毛因为极致的舒适与安心顺从地垂成完美的心形——「大色狼...一直盯着人家的肩膀看什么呢...壁炉好暖和...但是...你抱紧我的时候更暖和哦...」",
+    "story": "【成年 After Story · 宁宁 · 假日木屋毛衣单肩滑落真空】大雪封山的冬日深夜，私人度假木屋内，壁炉里的木柴正劈啪作响，泼洒着温暖的橙红火光。宁宁今晚彻底放下了防线，身上仅仅套着一件大号的粗线针织毛衣，里面完全真空没有着任何衣物。她慵懒地仰躺在厚厚的长毛地毯上，毛衣的宽大领口在一侧完全无力地滑落到了手臂以下，露出了大片圆润香肩与饱满性感的半边雪白侧乳。她修长柔嫩的双腿在火光下泛着诱人的温润光泽，头顶的呆毛因为极致的舒适与安心顺从地垂成完美的心形——「大色狼...一直盯着人家的肩膀看什么呢...壁炉好暖和...但是...你抱紧我的时候更暖和哦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -9232,7 +9220,7 @@
       "oversized_sweater",
       "off_shoulder_sweater",
       "no_panties",
-      "lying_on_couch",
+      "lying_on_floor",
       "bare_legs",
       "bare_shoulders",
       "cleavage",
@@ -9258,7 +9246,7 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, oversized_sweater, off_shoulder_sweater, no_panties, lying_on_couch, bare_legs, bare_shoulders, cleavage, heavy_blush, shy_smile, fireplace, indoors, night, warm_lighting, cozy, sensual, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, oversized_sweater, off_shoulder_sweater, no_panties, lying_on_floor, bare_legs, bare_shoulders, cleavage, heavy_blush, shy_smile, fireplace, indoors, night, warm_lighting, cozy, sensual, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・ホリデーキャビンセーターワンショルダーずり落ちバキューム】雪の降る冬の夜遅く、貸切の別荘で、暖炉の薪がパチパチと音を立て、オレンジがかった赤の暖かい火の光が飛び散っていた。寧々は今夜は守備を完全に下げた。彼女は大きな厚手のニットセーターを着ているだけで、何も着ていませんでした。彼女は毛の長い分厚いカーペットの上に仰向けになってのんびりと横たわっていた。彼女のセーターの広いネックラインは片方の腕に完全に滑り込み、丸い肩とふっくらとしたセクシーな白い胸の半分が露出しました。彼女の細くて柔らかい脚は、火の光の下で魅惑的な暖かい光沢を放ち、頭のアホ毛は究極の快適さと安心感のために完璧なハートの形に素直に垂れ下がりました。――「もう、肩ばかり見てどうしたんですか？　暖炉も暖かいですけど……あなたに抱きしめてもらうほうが、もっと暖かいです。」",
     "rating": "R15",
@@ -9315,7 +9303,7 @@
     "id": "sc194",
     "title": "魔女的特别诊疗：私密护士服协议",
     "category": "恋爱/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 护士服情趣扮演极致动情】深夜紧闭的公寓卧室内。为了安抚你连日加班的疲惫，宁宁羞红了脸，换上了极度犯规的粉白相间情趣护士服与白丝大腿袜。她跨坐在床边你的双腿上，小巧的护士帽歪在一边，低胸的领口被你轻轻拉开，露出了大片极具肉感的雪白起伏。她双手慌乱地抓着你的肩膀，头顶的呆毛因为过于动情和羞耻早已完全软瘫成工口的心形螺旋，眼中蒙着一层水汽急促娇喘——「呜...柊史...这个叫『特别身体检查』的惩罚...宁宁快要承受不住了啦...快抱紧我...」",
+    "story": "【成年 After Story · 宁宁 · 护士服情趣扮演极致动情】深夜紧闭的公寓卧室内。为了安抚你连日加班的疲惫，宁宁羞红了脸，换上了极度犯规的粉白相间情趣护士服与白丝大腿袜。她跨坐在床边你的双腿上，小巧的护士帽歪在一边，低胸的领口被你轻轻拉开，露出了大片极具肉感的雪白起伏。她双手慌乱地抓着你的肩膀，头顶的呆毛因为过于动情和羞耻早已完全软瘫成工口的心形螺旋，眼中蒙着一层水汽急促娇喘——「呜...柊史...这个叫『特别身体检查』的惩罚...宁宁快要承受不住了啦...快抱紧我...」",
     "char": "nene",
     "character": [
       "nene"
@@ -9611,7 +9599,7 @@
     "id": "sc200",
     "title": "终结的誓言：纯白床单下的永恒契约（第200纪元）",
     "category": "恋爱/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 终极完美大结局全裸床单篇】跨越了无数个轮回的终点，在完全属于你们两人的破晓静谧卧室内。宁宁褪去了世间所有的衣物，一丝不挂地躺在纯白松软的天鹅绒被窝中央，仅仅用一条半透明的白色床单柔和地遮盖住充满爱欲痕迹的完美胴体。她满脸滚烫的红晕连到耳根，亮晶晶的眼睛里流出了极致幸福的泪水。头顶的呆毛因为灵魂与肉体的彻底交融，顺从且深情地弯成了完美的爱心形状。她向你温柔地张开双臂，发丝散落，呢喃着永不解约的誓言——「柊史...魔女的漫长旅途结束了...从今往后...宁宁的肉体和灵魂...全部只属于你一个人了哦...」",
+    "story": "【成年 After Story · 宁宁 · 终极完美大结局全裸床单篇】跨越了无数个轮回的终点，在完全属于你们两人的破晓静谧卧室内。宁宁褪去了世间所有的衣物，一丝不挂地躺在纯白松软的天鹅绒被窝中央，仅仅用一条半透明的白色床单柔和地遮盖住充满爱欲痕迹的完美胴体。她满脸滚烫的红晕连到耳根，亮晶晶的眼睛里流出了极致幸福的泪水。头顶的呆毛因为灵魂与肉体的彻底交融，顺从且深情地弯成了完美的爱心形状。她向你温柔地张开双臂，发丝散落，呢喃着永不解约的誓言——「柊史...魔女的漫长旅途结束了...从今往后...宁宁的肉体和灵魂...全部只属于你一个人了哦...」",
     "char": "nene",
     "character": [
       "nene"
@@ -9642,7 +9630,7 @@
       "warm_lighting",
       "close_up"
     ],
-    "mature": false,
+    "mature": true,
     "location": "终焉温柔乡床榻",
     "weather": "初晴拂晓",
     "camera": "近景特写",
@@ -9653,9 +9641,9 @@
       "终章大结局"
     ],
     "prompt": "1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, naked, wrapped_in_sheet, lying_on_bed, looking_at_viewer, tears_of_joy, slight_smile, heavy_blush, bedroom, indoors, dawn, first_light, soft_shadows, cinematic_composition, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のAfter Story・旅の終わりと新しい朝】幾つもの困難を越えた先、二人だけの寝室に朝の光が差し込んでいた。寧々は真っ白な毛布にくるまり、銀色の髪を枕へ広げている。紫の瞳には幸せそうな涙が浮かび、アホ毛は小さなハートを描くように揺れていた。彼女はあなたへ両腕を伸ばし、決して解けない誓いを静かに口にする――「柊史……魔女の長い旅は、これでおしまいです。これから先の寧々の心も、人生も……ずっと、あなただけのものですよ。」",
-    "rating": "All",
+    "rating": "R18",
     "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she rests comfortably against soft pillows with a soft, reassuring smile, with soft radiant backlighting tracing her silhouette."
   },
   {
@@ -9778,7 +9766,7 @@
       "bare_shoulders",
       "cleavage",
       "bare_legs",
-      "lying_on_bed",
+      "sitting_on_tatami",
       "heavy_blush",
       "embarrassed",
       "tatami",
@@ -9800,7 +9788,7 @@
       "新手推荐",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, yukata, kimono, clothes_pull, bare_shoulders, cleavage, bare_legs, lying_on_bed, heavy_blush, embarrassed, tatami, indoors, night, lantern_light, warm_lighting, from_above, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, yukata, kimono, clothes_pull, bare_shoulders, cleavage, bare_legs, sitting_on_tatami, heavy_blush, embarrassed, tatami, indoors, night, lantern_light, warm_lighting, from_above, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, child, loli, underage",
     "storyJa": "【寧々・大人のアフターストーリー・・・花火のあとの浴衣の余韻】夏祭りが終わり、古風な旅館もようやく静かになった。畳の上では寧々の浴衣の帯が緩み、幅広のスカートが肩まで滑り落ち、夜風で少し赤くなった肩と首が露わになっていた。慌てて袖を掴んで顔を覆ったが、頭のアホ毛はすでに恥ずかしそうにハート型に丸まっていた。花火の最後のくぐもった音が遠くから聞こえ、彼女は静かに文句を言い、あなたに近づきました。――「もう、道中ずっとふざけるから……笑ってないで、早く寧々の服を整えるのを手伝ってください。」",
     "rating": "R15",
@@ -9971,7 +9959,7 @@
     "id": "sc207",
     "title": "雾气散去后的白色浴巾",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 浴室蒸汽里的清晨】周末清晨，浴室的镜面还留着一层薄雾。洗完澡的宁宁只围着柔软白浴巾，湿润的白发从肩头垂下；她一边整理发带，一边被你看得耳根发热。窗外的晨光穿过水汽，把她的轮廓照得格外柔和。她故作镇定地偏过头，小声提醒你——「宁宁已经是大人了也会害羞的……只准看一会儿，听见没有？」",
+    "story": "【成年 After Story · 宁宁 · 浴室蒸汽里的清晨】周末清晨，浴室的镜面还留着一层薄雾。洗完澡的宁宁只围着柔软白浴巾，湿润的白发从肩头垂下；她一边整理发带，一边被你看得耳根发热。窗外的晨光穿过水汽，把她的轮廓照得格外柔和。她故作镇定地偏过头，小声提醒你——「宁宁已经是大人了也会害羞的……只准看一会儿，听见没有？」",
     "char": "nene",
     "character": [
       "nene"
@@ -10065,7 +10053,7 @@
     "id": "sc209",
     "title": "拂晓床单上的心形呆毛",
     "category": "亲密/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 破晓前的赖床时间】天还没有完全亮，卧室里只剩窗帘缝隙漏进来的淡蓝晨光。宁宁裹在白色床单里坐起身，睡乱的双马尾和翘起的呆毛让她看上去格外没有防备。她发现你醒着，立刻拉高床单又忍不住偷看过来，最后轻轻把位置让出一半——「再睡五分钟就好……不许笑宁宁的头发，也不许先跑掉。」",
+    "story": "【成年 After Story · 宁宁 · 破晓前的赖床时间】天还没有完全亮，卧室里只剩窗帘缝隙漏进来的淡蓝晨光。宁宁裹在白色床单里坐起身，睡乱的双马尾和翘起的呆毛让她看上去格外没有防备。她发现你醒着，立刻拉高床单又忍不住偷看过来，最后轻轻把位置让出一半——「再睡五分钟就好……不许笑宁宁的头发，也不许先跑掉。」",
     "char": "nene",
     "character": [
       "nene"
@@ -10159,7 +10147,7 @@
     "id": "sc211",
     "title": "真丝吊带下的魔女引力",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 卧室真空依恋】深夜暴雪交加的私密主卧。宁宁今晚在你的直球攻势下防线彻底溃败，身上仅仅穿着一件极薄、半透明的薄荷绿蕾丝真丝吊带睡裙，里面真空未着寸缕。因为在床榻上的激烈打闹，一侧的窄细吊带已经无力地滑落到了手臂以下，袒露出大片极为饱满性感的雪白酥胸与若隐若现的私密轮廓。她跨坐在你大腿上，头顶的呆毛早就因为极度的羞耻顺从颤抖着卷成完美的爱心螺旋，红着脸一边慌乱推搡一边带着哭腔自曝——「呜啊！大、大色狼！吊带都断掉了啦……不准一直盯着人家那里看！才、才没有故意穿成这样来诱惑你呢……唔，快抱紧我啦，笨蛋！」",
+    "story": "【宁宁 · 卧室真空依恋】深夜暴雪交加的私密主卧。宁宁今晚在你的直球攻势下防线彻底溃败，身上仅仅穿着一件极薄、半透明的薄荷绿蕾丝真丝吊带睡裙，里面真空未着寸缕。因为在床榻上的激烈打闹，一侧的窄细吊带已经无力地滑落到了手臂以下，袒露出大片极为饱满性感的雪白酥胸与若隐若现的私密轮廓。她跨坐在你大腿上，头顶的呆毛早就因为极度的羞耻顺从颤抖着卷成完美的爱心螺旋，红着脸一边慌乱推搡一边带着哭腔自曝——「呜啊！大、大色狼！吊带都断掉了啦……不准一直盯着人家那里看！才、才没有故意穿成这样来诱惑你呢……唔，快抱紧我啦，笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -10273,7 +10261,7 @@
     "id": "sc213",
     "title": "影音室巨幕晃动下的防线溃败",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 影音室高叉连帽衫过载】深夜彻底隔音的家庭影音室，巨幕亮光幽暗。原本嘴硬要陪你通关恐怖游戏的宁宁，此时被屏幕上的高能画面吓得防线彻底崩溃。她身上仅穿着一件宽大松垮的灰色高叉连帽卫衣，真空未着寸缕，白皙丰满的双腿因为恐惧剧烈颤抖。在又一次惊吓中，她尖叫着丢掉手柄，整个人彻底失控地扑进你怀里死死跨坐在你大腿上，巨大的连帽衫衣领完全扯开，饱满的酥胸随着急促的哭腔剧烈起伏，头顶的呆毛早就瘫软成卷曲的爱心——「呜啊！柊、柊史！刚才那个怪物过去了没有？！呜呜……骗子，你故意选这个游戏对不对……人家、人家才没有借机投怀送抱呢！快抱紧我啦，笨蛋！」",
+    "story": "【宁宁 · 影音室高叉连帽衫过载】深夜彻底隔音的家庭影音室，巨幕亮光幽暗。原本嘴硬要陪你通关恐怖游戏的宁宁，此时被屏幕上的高能画面吓得防线彻底崩溃。她身上仅穿着一件宽大松垮的灰色高叉连帽卫衣，真空未着寸缕，白皙丰满的双腿因为恐惧剧烈颤抖。在又一次惊吓中，她尖叫着丢掉手柄，整个人彻底失控地扑进你怀里死死跨坐在你大腿上，巨大的连帽衫衣领完全扯开，饱满的酥胸随着急促的哭腔剧烈起伏，头顶的呆毛早就瘫软成卷曲的爱心——「呜啊！柊、柊史！刚才那个怪物过去了没有？！呜呜……骗子，你故意选这个游戏对不对……人家、人家才没有借机投怀送抱呢！快抱紧我啦，笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -10482,7 +10470,7 @@
     "id": "sc217",
     "title": "神社木仓骤雨中的契约过载",
     "category": "祭典・节日",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 避雨古仓浴衣半解】夏日祭典突降暴雨，你和宁宁慌不择路地躲进神社后面的阴暗古旧木质仓库。宁宁的姬松学院夏日浴衣在奔跑中被雨水彻底浸透，轻薄的布料近乎全透明地死死贴在她傲人的胴体上，衣领也早已在慌乱中完全松开，大片雪白丰满的酥胸一览无余。因为密闭空间的极度紧绷，她的魔女契约气场瞬间超载。她跨坐在堆满祭祀道具的木箱上紧紧贴着你，头顶那根呆毛疯狂卷成完美的爱心螺旋，红着脸一边慌乱推搡一边带着哭腔绝赞自曝——「呜啊！标签、标签都湿透了啦……不准一直盯着人家透明的地方看！才、才没有故意借助契约来诱惑你呢……唔，快抱紧我帮我挡住啦，笨蛋！」",
+    "story": "【宁宁 · 避雨古仓浴衣半解】夏日祭典突降暴雨，你和宁宁慌不择路地躲进神社后面的阴暗古旧木质仓库。宁宁的姬松学院夏日浴衣在奔跑中被雨水彻底浸透，轻薄的布料近乎全透明地死死贴在她傲人的胴体上，衣领也早已在慌乱中完全松开，大片雪白丰满的酥胸一览无余。因为密闭空间的极度紧绷，她的魔女契约气场瞬间超载。她跨坐在堆满祭祀道具的木箱上紧紧贴着你，头顶那根呆毛疯狂卷成完美的爱心螺旋，红着脸一边慌乱推搡一边带着哭腔绝赞自曝——「呜啊！标签、标签都湿透了啦……不准一直盯着人家透明的地方看！才、才没有故意借助契约来诱惑你呢……唔，快抱紧我帮我挡住啦，笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -10592,7 +10580,7 @@
     "id": "sc219",
     "title": "围裙真空下的无力自曝",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 假日厨房真空围裙】在只属于你们两人的假日公寓厨房。宁宁在你的强烈愿望请求下，破天荒地换上了那件充满反差的粉色荷叶边女仆围裙，然而里面却是完全真空未着寸缕。当她正在手忙脚乱地准备晚餐时，你突然从身后将她拦腰抱起，放在了大理石料理台上。极窄的围裙剪裁根本遮挡不住两侧大片暴露的白皙侧乳与浑圆白皙的大腿轮廓。她惊慌失措地紧紧抓住你的双臂，头顶的呆毛因为极度的羞耻载而疯狂颤动卷曲成心形，挂着眼泪瞬间哭腔自曝——「呜啊！ 柊、柊史你这个大色狼！故意把围裙的带子系得这么松……今晚、今晚真的要把宁宁从头到脚都吃掉吗……呜，不准看那里啦，笨蛋！」",
+    "story": "【宁宁 · 假日厨房真空围裙】在只属于你们两人的假日公寓厨房。宁宁在你的强烈愿望请求下，破天荒地换上了那件充满反差的粉色荷叶边女仆围裙，然而里面却是完全真空未着寸缕。当她正在手忙脚乱地准备晚餐时，你突然从身后将她拦腰抱起，放在了大理石料理台上。极窄的围裙剪裁根本遮挡不住两侧大片暴露的白皙侧乳与浑圆白皙的大腿轮廓。她惊慌失措地紧紧抓住你的双臂，头顶的呆毛因为极度的羞耻载而疯狂颤动卷曲成心形，挂着眼泪瞬间哭腔自曝——「呜啊！ 柊、柊史你这个大色狼！故意把围裙的带子系得这么松……今晚、今晚真的要把宁宁从头到脚都吃掉吗……呜，不准看那里啦，笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -10760,7 +10748,7 @@
     "id": "sc222",
     "title": "玻璃花房骤雨下的诱导过载",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 植物温室湿透真空】假日午后突然遭遇雷暴骤雨的姬松学院后花园玻璃温室。巨大的雨点疯狂砸在头顶的玻璃天窗上，而内部破损的自动喷淋系统更是突然失控，将宁宁身上那件轻薄的纯白夏日连衣裙彻底浇透，半透明的布料毫无防备地紧贴着她娇嫩的胴体，内里的真空状态一览无余，饱满的双峰与羞耻的红晕被暴露得清清楚楚。为了躲避积水，她被迫跨坐在花房中央的窄小长凳上，整个人死死贴在你怀里。头顶的呆毛因为极度动情疯狂卷成完美的爱心，一边在热气中喘息一边带着哭腔无力自曝——「呜啊！裙、裙子都变透明了啦……不准一直盯着人家看！才、才没有借着修剪植物故意穿成这样来诱惑你呢……唔，快用你的身体帮我挡住啦，笨蛋！」",
+    "story": "【宁宁 · 植物温室湿透真空】假日午后突然遭遇雷暴骤雨的姬松学院后花园玻璃温室。巨大的雨点疯狂砸在头顶的玻璃天窗上，而内部破损的自动喷淋系统更是突然失控，将宁宁身上那件轻薄的纯白夏日连衣裙彻底浇透，半透明的布料毫无防备地紧贴着她娇嫩的胴体，内里的真空状态一览无余，饱满的双峰与羞耻的红晕被暴露得清清楚楚。为了躲避积水，她被迫跨坐在花房中央的窄小长凳上，整个人死死贴在你怀里。头顶的呆毛因为极度动情疯狂卷成完美的爱心，一边在热气中喘息一边带着哭腔无力自曝——「呜啊！裙、裙子都变透明了啦……不准一直盯着人家看！才、才没有借着修剪植物故意穿成这样来诱惑你呢……唔，快用你的身体帮我挡住啦，笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -11028,7 +11016,7 @@
     "id": "sc227",
     "title": "霓虹电玩城中的街头触动",
     "category": "日常",
-    "story": "【夏目 · 潮酷机能风私服】深夜光影交错、充满赛博霓虹色彩的街头复古电玩城。脱下咖啡馆制服的夏目今天穿得极为率性休闲：一顶纯黑色的棒球帽斜斜扣在乌黑的短发上，脖子上戴着一条酷劲十足的窄黑色Choker，修身的长袖夹克与利落的紧身牛仔裤勾勒出她完美的双腿线条。她正全神贯注地用极为高效灵敏的手速操作着音乐街机，在以绝对完美的积分通关后，她微微转过头，眼角的泪痣在粉紫色的霓虹灯光下折射出极具个性的光芒。她将机器吐出来的限量版玩偶一把塞进你怀里，用毫无起伏却微微有些别扭的冷淡口吻掩饰动摇——「……拿着。这只是通关的附赠产物，放在包里很占空间，属于多余的负重。不准露出那种感动的表情……大变态。」",
+    "story": "【夏目 · 潮酷机能风私服】深夜光影交错、充满赛博霓虹色彩的街头复古电玩城。脱下咖啡馆制服的夏目今天穿得极为率性休闲：一顶纯黑色的棒球帽斜斜扣在乌黑的长发上，脖子上戴着一条酷劲十足的窄黑色Choker，修身的长袖夹克与利落的紧身牛仔裤勾勒出她完美的双腿线条。她正全神贯注地用极为高效灵敏的手速操作着音乐街机，在以绝对完美的积分通关后，她微微转过头，眼角的泪痣在粉紫色的霓虹灯光下折射出极具个性的光芒。她将机器吐出来的限量版玩偶一把塞进你怀里，用毫无起伏却微微有些别扭的冷淡口吻掩饰动摇——「……拿着。这只是通关的附赠产物，放在包里很占空间，属于多余的负重。不准露出那种感动的表情……大变态。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -11079,7 +11067,7 @@
     "id": "sc228",
     "title": "整备间拉链卡死的过载轰鸣",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 赛车女郎服真空跨坐】深夜彻底打烊、死锁的赛车场地下整备间。为了帮超自然研究会测试赞助服装，宁宁换上了一件极度紧身、高叉露背的漆皮赛车女郎连体衣，然而里面却是完全真空未着寸缕。由于衣服剪裁过于紧绷，胸前那条长长的金属拉链在拉到一半时死死卡住，将大片饱满性感的雪白酥胸与若隐若现的致命弧度完全暴露。她在惊慌后退时不慎踩到工具箱，整个人失去平衡直接反向跨坐在你大腿上。巨大的冲击力让卡住的拉链再度下滑数公分，她头顶的呆毛疯狂扭动成爱心螺旋，红着脸挂着眼泪崩溃自曝——「呜啊！大、大色狼！不准一直盯着拉链裂开的地方看啦！人家、人家只是因为拉链坏了动弹不得……绝对没有故意用这种羞耻的姿势来诱惑你！呜，快帮我拉上去，笨蛋！」",
+    "story": "【宁宁 · 赛车女郎服真空跨坐】深夜彻底打烊、死锁的赛车场地下整备间。为了帮超自然研究会测试赞助服装，宁宁换上了一件极度紧身、高叉露背的漆皮赛车女郎连体衣，然而里面却是完全真空未着寸缕。由于衣服剪裁过于紧绷，胸前那条长长的金属拉链在拉到一半时死死卡住，将大片饱满性感的雪白酥胸与若隐若现的致命弧度完全暴露。她在惊慌后退时不慎踩到工具箱，整个人失去平衡直接反向跨坐在你大腿上。巨大的冲击力让卡住的拉链再度下滑数公分，她头顶的呆毛疯狂扭动成爱心螺旋，红着脸挂着眼泪崩溃自曝——「呜啊！大、大色狼！不准一直盯着拉链裂开的地方看啦！人家、人家只是因为拉链坏了动弹不得……绝对没有故意用这种羞耻的姿势来诱惑你！呜，快帮我拉上去，笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -11406,7 +11394,7 @@
     "recommendedSize": "1344×768",
     "title": "月夜主卧的魔女绝对契约",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 魔女服契约 After Story】午后雷雨交加、深夜清冷月光洒入的私密主卧。宁宁今晚在你的强烈请求下，终于重新换上了那一身带有绝对契约象征的正统漆黑魔女服，头戴巨大的宽檐黑色巫师帽，里面完全真空未着寸缕。她咬紧银牙，满脸通红地跨坐在你大腿上，长长的纯黑丝袜紧紧包裹着丰满肉感的大腿。由于修身魔女服的极窄剪裁，胸前的镂空设计将饱满雪白的酥胸与两翼性感的侧乳彻底挤压呈现。她头顶那根心形呆毛早就因为极度的动情顺从瘫软成完美的螺旋，红着脸死死揪住你的衣领，哭腔自曝——「呜啊！柊、柊史你这个大色狼！为什么一定要人家穿成这样啦……这、这件衣服的魔力流向很奇怪啦……不准一直盯着看！今晚……真的要和宁宁完成最终契约吗……笨蛋！」",
+    "story": "【宁宁 · 魔女服契约 After Story】午后雷雨交加、深夜清冷月光洒入的私密主卧。宁宁今晚在你的强烈请求下，终于重新换上了那一身带有绝对契约象征的正统漆黑魔女服，头戴巨大的宽檐黑色巫师帽，里面完全真空未着寸缕。她咬紧银牙，满脸通红地跨坐在你大腿上，长长的纯黑丝袜紧紧包裹着丰满肉感的大腿。由于修身魔女服的极窄剪裁，胸前的镂空设计将饱满雪白的酥胸与两翼性感的侧乳彻底挤压呈现。她头顶那根心形呆毛早就因为极度的动情顺从瘫软成完美的螺旋，红着脸死死揪住你的衣领，哭腔自曝——「呜啊！柊、柊史你这个大色狼！为什么一定要人家穿成这样啦……这、这件衣服的魔力流向很奇怪啦……不准一直盯着看！今晚……真的要和宁宁完成最终契约吗……笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -11445,7 +11433,7 @@
       "hair_ribbon",
       "black_cape",
       "pink_lining",
-      "striped_legwear",
+      "black_thighhigh_stockings",
       "midriff"
     ],
     "mature": false,
@@ -11458,7 +11446,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, ceremonial ribbon restraint, moonlit bedroom, 1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, witch_hat, witch_dress, black_dress, no_bra, cleavage, sideboob, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, open_mouth, bedroom, night, moonlight, backlit, sensual, hair_ribbon, black_cape, pink_lining, striped_legwear, midriff, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, pure black thighhigh stockings, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, ceremonial ribbon restraint, moonlit bedroom, 1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, witch_hat, witch_dress, black_dress, no_bra, cleavage, sideboob, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, open_mouth, bedroom, night, moonlight, backlit, sensual, hair_ribbon, black_cape, pink_lining, black_thighhigh_stockings, midriff, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, generic witch dress, plain black dress, full-length gown, simple witch costume",
     "storyJa": "【寧々・月夜の寝室の魔女の絶対契約】午後の雷雨が去り、深夜の清らかな月光が差し込むプライベートな寝室。寧々は今夜、あなたの強い願いを受け入れ、ついに絶対的な契約の象徴であるあの正統な漆黒の魔女服を再び身に纏い、頭には巨大な広縁の黒い魔法使いの帽子を被っていたが、その中身は何も着ていない完全な真空状態だった。彼女は銀歯を噛み締め、顔を真っ赤にしてあなたの大腿の上に跨り、長い純黒のニーソックスが豊満で肉感的な太ももをきつく包み込んでいる。タイトな魔女服の極めて狭い裁断のせいで、胸元のくり抜かれたデザインから豊満で白い胸元と両脇のセクシーな側乳が完全に押し出されて晒されていた。彼女の頭の上のアホ毛は極度の情動と従順さで完璧な螺旋状に垂れ下がり、顔を真っ赤にしてあなたの襟元を強く掴みながら、涙声で自爆した――「うあぁ！柊、リストの大色狼！なぜ私にこんな格好をさせるのよ……こ、この服の魔力の流れがすごくおかしいんだから……そんなにずっと見つめないで！今夜……本当に寧々と最終契約を交わすつもりなの……バカ！」",
     "rating": "R15",
@@ -11638,7 +11626,7 @@
     "id": "sc238",
     "title": "真丝轻纱下的古典魔女代价",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 汉元素睡衣真空羞耻】大雪纷飞的深夜私密公寓。宁宁在超自然研究会伙伴的恶作剧恶搞下，错把一件极薄、半透明的绯红真丝丝绸系带肚兜睡衣当成了普通睡衣换上，里面完全真空未着寸缕。当她在大床中央转头看到推门而入的你时，防线在对视中瞬间彻底崩溃。这件衣服除了身前极窄的一抹真丝轻纱，整个光洁细腻的背部与两侧饱满雪白的侧乳几乎完全暴露在外，随着她慌乱的呼吸剧烈起伏。她面红耳赤地跨坐在你的大腿上，双手拼命捂住胸前，头顶那根发带和呆毛早就因为极度的动情超载颤抖着卷成心形螺旋，带着哭腔自曝狂嗔——「呜啊！柊、柊史你这个大变态！为什么今晚偏偏这个时候进来啦！不准盯着人家透明的系带看！才、才没有故意穿成这样在床上等你做奇怪的事情呢……呜，笨蛋快抱紧我帮我挡住啦！」",
+    "story": "【宁宁 · 汉元素睡衣真空羞耻】大雪纷飞的深夜私密公寓。宁宁在超自然研究会伙伴的恶作剧恶搞下，错把一件极薄、半透明的绯红真丝丝绸系带肚兜睡衣当成了普通睡衣换上，里面完全真空未着寸缕。当她在大床中央转头看到推门而入的你时，防线在对视中瞬间彻底崩溃。这件衣服除了身前极窄的一抹真丝轻纱，整个光洁细腻的背部与两侧饱满雪白的侧乳几乎完全暴露在外，随着她慌乱的呼吸剧烈起伏。她面红耳赤地跨坐在你的大腿上，双手拼命捂住胸前，头顶那根发带和呆毛早就因为极度的动情超载颤抖着卷成心形螺旋，带着哭腔自曝狂嗔——「呜啊！柊、柊史你这个大变态！为什么今晚偏偏这个时候进来啦！不准盯着人家透明的系带看！才、才没有故意穿成这样在床上等你做奇怪的事情呢……呜，笨蛋快抱紧我帮我挡住啦！」",
     "char": "nene",
     "character": [
       "nene"
@@ -11994,7 +11982,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "(black cat sleeping on her lap:1.55), Nene asleep alone on sofa, (one girl only:1.45), 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, sleeping, lying_on_sofa, head_resting, peaceful_expression, closed_eyes, slight_smile, sofa, indoors, afternoon, sunlight, warm_lighting, cozy, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "Nene asleep alone on sofa, (one girl only:1.45), 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, sleeping, lying_on_sofa, head_resting, peaceful_expression, closed_eyes, slight_smile, sofa, indoors, afternoon, sunlight, warm_lighting, cozy, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
     "storyJa": "【寧々・午後の膝枕】週末の午後、超自然研究会の資料を読んでいた寧々は、いつの間にかソファで眠ってしまう。あなたがそっと彼女の頭を膝へ移すと、銀色の髪が陽だまりにほどけた。安心したように頬を寄せ、彼女は寝言をこぼす――「柊史の匂い……安心する……」",
     "rating": "All",
@@ -12526,7 +12514,7 @@
     "id": "sc255",
     "title": "休息室丝绸一字领的防线溃败",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 华丽一字领轻纱晚礼服真空】学园祭赞助晚宴后方彻底锁闭、散发着淡淡香水味的奢华VIP休息室。为了配合超自然研究会的拍摄，宁宁换上了一身极其优雅华丽的深蓝色一字领露背轻纱丝绸晚礼服长裙，里面完全真空未着内衣。由于贴身华丽的收腰剪裁，将她饱满雪白的酥胸曲线托举得格外的饱满夺目，光滑细腻的整片美背全裸无遗。因为不习惯穿高跟鞋，她转过身时脚踝一拧发生惊呼失去平稳，整个人直接反向结结实实地跨坐在坐在单人沙发上的你怀里。巨大的拉扯让礼服的一字领领口瞬间再次向下滑落数公分，大片娇嫩的侧乳和香肩毫无防备地暴露。她头顶那根呆毛疯狂卷成心形螺旋，面红耳赤挂着羞耻的眼泪当场语无伦次自曝——「呜啊！柊、柊史！拉链、拉链是不是裂开了啦……不准一直往下看！人家、人家绝对没有故意借助走不稳路来让你抱住哦……唔，笨蛋快把眼睛闭上啦！」",
+    "story": "【宁宁 · 华丽一字领轻纱晚礼服真空】学园祭赞助晚宴后方彻底锁闭、散发着淡淡香水味的奢华VIP休息室。为了配合超自然研究会的拍摄，宁宁换上了一身极其优雅华丽的深蓝色一字领露背轻纱丝绸晚礼服长裙，里面完全真空未着内衣。由于贴身华丽的收腰剪裁，将她饱满雪白的酥胸曲线托举得格外的饱满夺目，光滑细腻的整片美背全裸无遗。因为不习惯穿高跟鞋，她转过身时脚踝一拧发生惊呼失去平稳，整个人直接反向结结实实地跨坐在坐在单人沙发上的你怀里。巨大的拉扯让礼服的一字领领口瞬间再次向下滑落数公分，大片娇嫩的侧乳和香肩毫无防备地暴露。她头顶那根呆毛疯狂卷成心形螺旋，面红耳赤挂着羞耻的眼泪当场语无伦次自曝——「呜啊！柊、柊史！拉链、拉链是不是裂开了啦……不准一直往下看！人家、人家绝对没有故意借助走不稳路来让你抱住哦……唔，笨蛋快把眼睛闭上啦！」",
     "char": "nene",
     "character": [
       "nene"
@@ -13579,7 +13567,7 @@
       "展示图",
       "R15"
     ],
-    "prompt": "natsume_r18, adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair_flowing_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair_flowing_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, lying_topless_on_her_side_in_a_warm_bedroom, arm_covering_her_flushed_face, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "R15",
@@ -14254,7 +14242,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, silk_robe, open_robe, bare_shoulders, cleavage, night, photo_studio, soft_lighting, key_light, intimate, eye_contact, sensual, close_up, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, silk_robe, open_robe, bare_shoulders, cleavage, night, photo_studio, soft_lighting, key_light, intimate, eye_contact, sensual, close_up, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "rating": "R15",
     "character": [
@@ -14307,7 +14295,7 @@
     ],
     "story": "【成年 After Story · 宁宁 · 雨天午后的毛衣】周末的雨从早上就没有停过。宁宁穿着一件宽大的灰色毛衣——那是你的，长度几乎盖住短裤——蜷在沙发角落翻着一本旧画集。你泡了两杯红茶出来时，她已经把位置挪到沙发中间，空出了半边。你坐下后她顺势侧过身，把腿搭在你膝上，画集搁在你手臂旁边让你一起看。雨声填满了窗外的世界，屋内只有翻页和偶尔的啜饮声。她翻到某一页时动作顿了顿，偏过头来看你，紫色瞳孔里映着窗外的灰色天光——「这张的构图……很像上次你拍我的角度。」她说完没有移开视线，毛衣的宽领在她侧身时滑落一截，露出圆润的肩头和锁骨的浅凹。她感觉到你的目光，脸颊慢慢泛红，却没有拉回衣领——「雨好像不会停了……那今天的预定，是不是也可以全部取消？」",
     "storyJa": "【寧々・大人のAfter Story・雨の午後のセーター】週末の雨は朝から止まなかった。寧々はあなたの大きな灰色のセーターを着て——丈がショートパンツをすっぽり隠れるくらい——ソファの隅で古い画集をめくっていた。あなたが紅茶を二杯淹れて戻ってくると、彼女は既にソファの中央に移動し、半分のスペースを空けていた。あなたが座ると、彼女は自然に体を寄せ、足をあなたの膝の上に乗せ、画集をあなたの腕の横に置いて一緒に見えるようにした。雨音が窓の外の世界を満たし、部屋の中にはページをめくる音と時折の紅茶をすする音だけが聞こえていた。彼女があるページで手を止め、顔を向けてあなたを見た。紫色の瞳に窓の外の灰色の空が映っていた——「この構図……前回あなたが私を撮った時のアングルにすごく似てる。」彼女はそう言っても視線を外さず、セーターの広い襟が体をひねった拍子にずれ落ち、丸みを帯びた肩と鎖骨の窪みが覗いた。彼女はあなたの視線に気づき、頬がゆっくりと赤らんでいったが、襟元を引き上げようとはしなかった——「雨は止みそうにないね……じゃあ、今日の予定は全部キャンセルにしてもいいかな？」",
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, oversized_sweater, bare_shoulders, collarbone, sitting_on_sofa, rainy_day, afternoon, living_room, intimate, eye_contact, sensual, close_up, bare_legs, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, oversized_sweater, bare_shoulders, collarbone, sitting_on_sofa, rainy_day, afternoon, living_room, intimate, eye_contact, sensual, close_up, bare_legs, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "animaCaption": "In a close-up framing in a quiet room, she cradles a warm steaming cup with both hands, under diffused overcast daylight."
   },
@@ -14353,7 +14341,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, cardigan, open_cardigan, bare_shoulders, cleavage, sitting_on_sofa, soft_lighting, living_room, intimate, eye_contact, sensual, close_up, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cardigan, open_cardigan, bare_shoulders, cleavage, sitting_on_sofa, soft_lighting, living_room, intimate, eye_contact, sensual, close_up, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のAfter Story・私服撮影の境界線】同人サークルの室内私服撮影も後半に差し掛かり、他のメンバーは先にコンビニへ行ってしまった。リビングにはあなたと寧々だけが残り、補光灯はまだ点いたままだった。彼女はソファの端に座り、大きめのニットカーディガンが片方の肩からずり落ちていた。銀色の長い髪が何本か風に散って頬に張り付き、彼女はうつむいてカメラのプレビューを眺めていたが、落ちた襟元は直そうとしなかった。あなたが近づいて襟元を整えようとすると、彼女は顔を上げた。紫色の瞳が補光灯の暖かな色の中でひときわ透き通って見えた——「一晩中撮ってたね……この構図、どう思う？」彼女は写真について尋ねたが、声は微かに震えていた。あなたの指は彼女の肩先に留まったままで、彼女も後退しなかった。カーディガンのボタンはいつの間にかほとんど外れており、白いコットンのインナーの端がほんのりと卷れていた。彼女はそっと下唇を噛み、静かなリビングで彼女の呼吸がはっきりと聞こえた——「もし他に撮りたいアングルがあったら……今は二人だけだよ。」",
     "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she sits gracefully, under soft ambient lighting."
@@ -14644,7 +14632,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, oversized_tshirt, bare_shoulders, collarbone, bare_midriff, lying_on_sofa, living_room, early_morning, tired, intimate, eye_contact, sensual, close_up, messy_hair, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, oversized_tshirt, bare_shoulders, collarbone, bare_midriff, lying_on_sofa, living_room, early_morning, tired, intimate, eye_contact, sensual, close_up, messy_hair, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のAfter Story・徹夜明けのソファの静寂】次の合同誌の原稿を徹夜で仕上げた後、寧々はリビングのソファにぐったりと倒れ込んだ。銀色の長い髪がランバーレストに乱れ広がり、アホ毛も力なく垂れていた。彼女は大きめの白いTシャツをパジャマ代わりに着ており、襟元がゆるく開いて鎖骨が広く覗いていた。あなたが液タブと散らばった参考資料を片付け終えて、彼女の前にしゃがみ込むと、彼女は紫色の目を半分だけ開けた。焦点の合わない視線が徐々にあなたの顔に合い、徹夜でかすれた柔らかな声が出た——「原稿終わったよ……三十二ページ……あのコマ割り、もう二度と見たくない。」あなたが笑って彼女の頭を撫でると、彼女はあなたの手首を掴み、顔をあなたの掌に押し付けた。しばらくして、彼女がくぐもった声で言った——「ベッドまで連れてって……もう自分では歩けない。」彼女は腕を上げてあなたの首に絡めた。Tシャツの裾がその過程で持ち上がり、平らな腹と腰のラインが露出した。リビングの天井灯がまだ点いたままで、重なる二人の影と床一面の参考資料を照らしていた。",
     "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she strolls forward, under soft ambient lighting."
@@ -14692,7 +14680,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, loose_knit_top, bare_shoulders, collarbone, side_boob, leaning_on_window, sunlight, afternoon, art_studio, intimate, eye_contact, sensual, bare_legs, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, loose_knit_top, bare_shoulders, collarbone, side_boob, leaning_on_window, sunlight, afternoon, art_studio, intimate, eye_contact, sensual, bare_legs, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のAfter Story・依頼私稿の専属モデル】あなたは個人のイラスト依頼を受けていた。クライアントは非常に細かい構図を指定してきた——テーマは「日常の親密な瞬間」。あなたは参考写真を見ながら丸一日描いていたが、どうしてもリアルな温かみが足りないと感じていた。寧々が温めたミルクを運んでアトリエに入ってきた。彼女はあなたの後ろに立ち、しばらくモニターのラフを見ていた。そして静かにカップを机の隅に置いた。何も言わずに、窓辺へ歩いていった。午後の日差しが横から彼女の体の輪郭を描き出し、彼女は振り返ってあなたを見た——「ポーズ参考なら……ここにいるよ。」彼女はゆったりとした淡い色のニットトップとショートパンツを着て、窓枠に寄りかかっていた。光が薄い布地を通して腰のラインと肩甲骨の形を浮かび上がらせていた。彼女は少し首を傾げ、紫色の瞳に細かな光をきらめかせた——「あなたの言う構図のままでいいよ。写真の人みたいに描かなくていい——あなたの目に映る私の姿を描いて。描き終わるまで……この姿勢を保つから。」",
     "animaCaption": "In a medium shot in a quiet room, she cradles a warm steaming cup with both hands, under soft ambient lighting."

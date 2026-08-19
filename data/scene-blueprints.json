@@ -275,7 +275,7 @@
         "summer",
         "outdoors"
       ],
-      "promptProse": "In a vast seaside flower field at golden hour, Raiden Shogun stands quietly among blooming cosmos flowers, warm backlight tracing a luminous rim around her silhouette as petals drift on the evening breeze with no other people present.",
+      "promptProse": "In a vast flower field in the countryside at golden hour, Raiden Shogun stands quietly among blooming cosmos flowers, warm backlight tracing a luminous rim around her silhouette as petals drift on the evening breeze with no other people present.",
       "promptTokens": [
         "flower_field",
         "cosmos",
@@ -2900,7 +2900,7 @@
       "characterId": "artoria_pendragon",
       "description": "王城寝宫，蓝白裙装半褪的骑士王。",
       "location": "王城寝宫",
-      "action": "蓝白裙装半褪立于床前",
+      "action": "蓝白裙装半褪斜倚床上",
       "timeOfDay": "夜晚",
       "lighting": "warm fireplace and silver moonlight through arched window",
       "camera": "intimate medium shot, side angle",
@@ -3555,12 +3555,11 @@
         "warm_bulbs",
         "intimate"
       ],
-      "promptProse": "Inside the quiet backstage dressing room after an exhilarating concert, Hatsune Miku relaxes on a plush sofa, her concert stage outfit and detached sleeves resting on the vanity table beside her with no other people present.",
+      "promptProse": "Inside the quiet backstage dressing room after an exhilarating concert, Hatsune Miku sits at the vanity table before the mirror, her concert stage outfit and detached sleeves draped over the dressing stool beside her with no other people present.",
       "promptTokens": [
         "dressing_room",
         "vanity_mirror",
         "warm_light_bulbs",
-        "plush_sofa",
         "backstage",
         "intimate",
         "volumetric_lighting",
@@ -3603,10 +3602,10 @@
         "glistening_skin",
         "blushing",
         "sweet_smile",
-        "sitting_on_sofa",
-        "medium_shot"
+        "medium_shot",
+        "sitting_at_vanity"
       ],
-      "nsfwProse": "Completely nude with her stage costume draped over the sofa, Hatsune Miku sits comfortably with her flowing teal twin-tails framing her bare breasts and delicate waist, warm vanity mirror lights giving her flushed skin a radiant, dewy glow as she smiles sweetly.",
+      "nsfwProse": "Completely nude with her stage costume draped over the dressing stool, Hatsune Miku sits comfortably with her flowing teal twin-tails framing her bare breasts and delicate waist, warm vanity mirror lights giving her flushed skin a radiant, dewy glow as she smiles sweetly.",
       "adultArtistHint": "@rella",
       "outfitId": "stage",
       "sampleRating": "R18"
@@ -4196,9 +4195,9 @@
       "title": "虚空歌姬的私人间",
       "category": "成人",
       "characterId": "yuzuriha_inori",
-      "description": "白色礼裙半褪的楪祈。",
+      "description": "红色礼裙半褪的楪祈。",
       "location": "私人工作室",
-      "action": "白色礼裙半褪倚在窗前",
+      "action": "红色礼裙半褪倚在窗前",
       "timeOfDay": "夜晚",
       "lighting": "ethereal cyan holographic light and warm amber backlight",
       "camera": "intimate upper body portrait",
@@ -4831,7 +4830,7 @@
         "afternoon",
         "book"
       ],
-      "promptProse": "Yukinoshita Yukino stands by a tall library window in the afternoon with no other people around, quiet columns of warm sunlight illuminating floating dust motes and rows of hardback books.",
+      "promptProse": "Yukinoshita Yukino leans by a tall library window reading a book in the afternoon with no other people around, quiet columns of warm sunlight illuminating floating dust motes and rows of hardback books.",
       "promptTokens": [
         "library",
         "reading",
@@ -4882,11 +4881,11 @@
         "japanese_bedroom",
         "futon",
         "andon_lamp",
-        "discarded_uniform",
         "intimate",
-        "night"
+        "night",
+        "discarded_yukata"
       ],
-      "promptProse": "Inside a quiet traditional Japanese tatami room at night, Yukinoshita Yukino sits softly on a clean white futon with no other people present, her school blazer and red ribbon placed neatly on a low wooden dresser beside the warm paper lantern.",
+      "promptProse": "Inside a quiet traditional Japanese tatami room at night, Yukinoshita Yukino sits softly on a clean white futon with no other people present, her yukata and obi placed neatly on a low wooden dresser beside the warm paper lantern.",
       "promptTokens": [
         "japanese_bedroom",
         "tatami",
@@ -4938,7 +4937,7 @@
         "sitting_in_futon",
         "medium_shot"
       ],
-      "nsfwProse": "Completely nude with her school uniform neatly folded beside the futon, Yukinoshita Yukino sits with her knees drawn up on white sheets, her fair bare breasts and slender collarbone glowing in warm lantern light as she looks down with deeply blushing cheeks and a rare, tender vulnerability.",
+      "nsfwProse": "Completely nude with her yukata slipped half off beside the futon, Yukinoshita Yukino sits with her knees drawn up on white sheets, her fair bare breasts and slender collarbone glowing in warm lantern light as she looks down with deeply blushing cheeks and a rare, tender vulnerability.",
       "adultArtistHint": "@tiv",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -5537,7 +5536,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Inside a charming fantasy inn room on her travels, Elaina rests comfortably on a soft bed with no other people present, her black witch hat and traveler robe resting on a wooden chair under warm lantern light.",
+      "promptProse": "Inside a charming fantasy inn room on her travels, Elaina sits at the edge of the bed reading an open book with no other people present, her black witch hat and traveler robe resting on a wooden chair under warm lantern light.",
       "promptTokens": [
         "fantasy_inn",
         "magic_lantern",
@@ -5589,7 +5588,7 @@
         "lying_in_bed",
         "medium_shot"
       ],
-      "nsfwProse": "Completely nude with her witch hat placed on the nightstand, Elaina lies across soft pillows with her long ash hair framing her bare breasts and delicate shoulders, offering a playful yet deeply blushing smile in warm lantern light.",
+      "nsfwProse": "Completely nude with her witch hat placed on the nightstand, Elaina sits at the edge of the bed reading an open book, her long ash hair framing her bare breasts and delicate shoulders, offering a playful yet deeply blushing smile in warm lantern light.",
       "adultArtistHint": "@anmi",
       "outfitId": "witch_dress",
       "sampleRating": "R18"
@@ -6895,7 +6894,7 @@
       "characterId": "makima",
       "description": "办公室深夜，西装裙半褪的支配感。",
       "location": "深夜的办公室",
-      "action": "西装裙半褪坐在办公桌沿",
+      "action": "西装裙半褪斜倚在皮沙发上",
       "timeOfDay": "深夜",
       "lighting": "warm floor lamp and panoramic high-rise night skyline",
       "camera": "intimate medium shot, low angle",
@@ -7538,7 +7537,7 @@
       "characterId": "tohsaka_rin",
       "description": "远坂宅邸，红色洋装半褪的凛。",
       "location": "远坂宅邸卧室",
-      "action": "红色洋装半褪坐在床上",
+      "action": "红色洋装半褪斜倚床上",
       "timeOfDay": "夜晚",
       "lighting": "warm glowing fireplace and candlelight",
       "camera": "intimate medium shot, three-quarter view",
@@ -8221,7 +8220,6 @@
         "rain",
         "night",
         "window",
-        "maid",
         "tears",
         "sad",
         "warm_light",
@@ -8232,7 +8230,6 @@
         "rain",
         "night",
         "window",
-        "maid",
         "sad",
         "warm_light",
         "interior",
@@ -9211,7 +9208,6 @@
         "modern",
         "sci-fi",
         "desert",
-        "day",
         "dark shadowed face",
         "flat lighting",
         "extra characters"
@@ -9649,7 +9645,7 @@
       "characterId": "roxy_migurdia",
       "description": "教师宿舍，法袍半褪的洛琪希。",
       "location": "魔法学院教师宿舍",
-      "action": "法袍半褪坐在书桌前",
+      "action": "法袍半褪斜倚在床上",
       "timeOfDay": "夜晚",
       "lighting": "warm oil lamp and soft fireplace glow",
       "camera": "intimate medium shot, side view",
@@ -10278,8 +10274,8 @@
         "moonlight",
         "night",
         "castle",
-        "purple_dress",
-        "outdoors"
+        "outdoors",
+        "white_dress"
       ],
       "promptProse": "Illyasviel walks through the snow-dusted courtyards and rose garden of the Einzbern estate under a bright silver moon, stone statues and cold shadows framing the serene winter grounds.",
       "promptTokens": [
@@ -10287,11 +10283,11 @@
         "moonlight",
         "night",
         "castle",
-        "purple_dress",
         "outdoors",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "white_dress"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10375,9 +10371,9 @@
       "title": "城堡冬夜",
       "category": "成人",
       "characterId": "illyasviel_von_einzbern",
-      "description": "城堡寝房，紫色礼裙半褪的伊莉雅。",
+      "description": "城堡寝房，红色冬大衣半褪的伊莉雅。",
       "location": "冬夜古堡寝房",
-      "action": "紫礼裙半褪坐在壁炉前",
+      "action": "红冬大衣半褪坐在壁炉前",
       "timeOfDay": "夜晚",
       "lighting": "warm roaring fireplace and snowy window moonbeams",
       "camera": "intimate medium shot, high angle",
@@ -11060,7 +11056,7 @@
         "bright",
         "fun"
       ],
-      "promptProse": "Kitagawa Marin flashes a cheerful peace sign in front of a giant colorful ferris wheel at a sunlit amusement park, blue skies and carnival balloons brightening the festive summer day.",
+      "promptProse": "Kitagawa Marin flashes a cheerful finger-heart gesture in front of a giant colorful ferris wheel at a sunlit amusement park, blue skies and carnival balloons brightening the festive summer day.",
       "promptTokens": [
         "amusement_park",
         "ferris_wheel",
@@ -11139,7 +11135,6 @@
         "child",
         "loli",
         "underage",
-        "school uniform",
         "dark",
         "sad",
         "dark shadowed face",
@@ -11794,7 +11789,6 @@
         "child",
         "loli",
         "underage",
-        "school uniform",
         "medieval",
         "fantasy",
         "bright",
@@ -12633,7 +12627,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "lava_silk_loungewear",
@@ -12653,7 +12654,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her private cabin on Rhodes Island at night, Surtr leans back against the bed with no other people present, candlelight tracing the lines of her shoulders as she glances toward the viewer.",
+      "nsfwProse": "Completely nude with her black silk loungewear cast aside, Surtr leans back against the bed with no other people present, candlelight tracing the lines of her shoulders and her full bare breasts, wine-red hair spilling over them, gentle loving blush as she glances toward the viewer.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -12710,7 +12711,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "colorful_wonderland",
@@ -12730,7 +12738,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In a steaming outdoor hot spring amid the snowfield night, Surtr rests against the rocky edge with no other people present, moonlight mixing with rising steam as snowflakes melt on her skin.",
+      "nsfwProse": "Completely nude in the steaming hot spring, Surtr rests her arms on the snowy rocky edge with no other people present, moonlight mixing with rising steam as snowflakes melt on her bare shoulders, soft breasts just above the water, gentle smile and loving blush.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -12787,7 +12795,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "lava_silk_loungewear",
@@ -12807,7 +12822,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the pale morning light of her cabin, Surtr lies on her side beneath a thin blanket with no other people present, her wine-red hair spread across the pillow as she looks over her shoulder.",
+      "nsfwProse": "Completely nude beneath the thin blanket, Surtr lies on her side with no other people present, wine-red hair spread across the pillow as she looks back over her shoulder, the pale morning light tracing her bare shoulder and the soft curve of her breast at the sheet edge, sleepy gentle smile.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -12864,7 +12879,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "crimson_velvet_evening_gown",
@@ -12884,7 +12906,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "Inside a volcanic stone chamber at night, Surtr leans against the rough wall with no other people present, the deep red glow of lava tracing the curves of her body as she watches the viewer with half-lidded eyes.",
+      "nsfwProse": "Completely nude in the volcanic stone chamber at night, Surtr leans against the rough wall with no other people present, the deep red lava glow tracing her bare skin, the curves of her body and full bare breasts glowing in the warm light, half-lidded eyes watching the viewer with a quiet loving blush.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -13297,17 +13319,17 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
-        "bare_chest",
         "exposed_breasts",
         "nipples",
         "soft_skin",
         "loving_blush",
         "gentle_smile",
         "intimate",
-        "medium_shot"
+        "medium_shot",
+        "open_back",
+        "evening_gown",
+        "low_V_neckline"
       ],
       "nsfwProse": "In her private cabin late at night, Kal'tsit stands with her back half-turned to the floor-to-ceiling window, glancing back over her shoulder, wearing an elegant black velvet evening gown with gold and emerald embroidery whose open back reveals the graceful curve of her spine while its deep V neckline shows the soft curve of her bare breast from the side, no other people present, composed as a single unbroken full-frame scene, moonlight and warm lamplight tracing her bare back and collarbone in a hushed, artistic mood.",
       "adultArtistHint": "@anmi",
@@ -13366,7 +13388,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "standard",
@@ -13386,7 +13415,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "After a long shift, Kal'tsit stands under the warm spray in the Rhodes Island bath with no other people present, steam curling around her as she lets the water run through her pale mint-green hair.",
+      "nsfwProse": "Completely naked under the warm spray in the Rhodes Island bath, Kal'tsit stands with no other people present, steam curling around her as water runs through her pale mint-green hair and down her bare breasts and slender body, soft skin flushed in the warm light.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -13443,7 +13472,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "evening_gown",
@@ -13463,7 +13499,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "Late at night in her office, Kal'tsit sits on the edge of the desk with no other people present, the lamp casting long shadows as she regards the viewer with an unreadable, knowing smile.",
+      "nsfwProse": "Completely nude with her evening gown cast aside on the chair, Kal'tsit sits on the edge of the desk with no other people present, the lamp casting long shadows across her bare breasts and slender figure as she regards the viewer with an unreadable, knowing smile.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -13528,7 +13564,14 @@
         "storyboard",
         "montage",
         "collage",
-        "duplicated character"
+        "duplicated character",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "midnight_emerald_silk_robe",
@@ -13548,7 +13591,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her moonlit cabin, Kal'tsit lies on her side with no other people present, composed as a single unbroken full-frame scene, silver light pooling on the sheets as she waits with calm patience, her expression unreadable in the dark.",
+      "nsfwProse": "Completely nude with her emerald silk robe slipped away, Kal'tsit lies on her side in the moonlit cabin with no other people present, silver light pooling on the sheets over her bare skin and quiet curves, calm patient expression.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -13943,19 +13986,17 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
-        "bare_chest",
         "exposed_breasts",
-        "nipples",
         "soft_skin",
         "loving_blush",
         "gentle_smile",
         "intimate",
-        "medium_shot"
+        "medium_shot",
+        "loosened_uniform",
+        "open_shirt"
       ],
-      "nsfwProse": "In her Lungmen apartment at night, Ch'en sits on the arm of the sofa with no other people present, her uniform loosened and warm lamplight softening her usually stern face as she looks at the viewer.",
+      "nsfwProse": "In her Lungmen apartment at night, Ch'en sits on the arm of the sofa with her uniform loosened and unbuttoned, revealing her bare breasts and smooth skin, no other people present, warm lamplight softening her usually stern face as she looks at the viewer with a quiet blush.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14020,19 +14061,17 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
-        "bare_chest",
         "exposed_breasts",
         "nipples",
         "soft_skin",
         "loving_blush",
         "gentle_smile",
         "intimate",
-        "medium_shot"
+        "medium_shot",
+        "towel_around_body"
       ],
-      "nsfwProse": "Fresh from the bath in her apartment, Ch'en dries her damp dark teal hair with a towel and no other people present, warm steam still hanging in the air as she turns toward the viewer.",
+      "nsfwProse": "Fresh from the bath in her apartment, Ch'en dries her damp dark teal hair with a towel wrapped around her body, only her bare shoulders, the soft upper curve of her breasts and long legs exposed, no other people present, warm steam still hanging in the air as she turns toward the viewer.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14089,7 +14128,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "standard",
@@ -14109,7 +14155,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her bedroom late at night, Ch'en lies on her side with her blade resting beside the pillow and no other people present, the dim lamp throwing gentle shadows over the sheets.",
+      "nsfwProse": "Completely nude in her bedroom late at night, Ch'en lies on her side with her blade resting beside the pillow and no other people present, the dim lamp throwing gentle shadows across her bare breasts and smooth skin.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14168,7 +14214,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "wanderer",
@@ -14188,7 +14241,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "Late at night in a private high-rise apartment in Lungmen, Ch'en leans back against the floor-to-ceiling window with no other people present, the glittering city below and moonlight streaming through the glass framing her as she holds the viewer's gaze.",
+      "nsfwProse": "Completely nude, Ch'en leans back against the floor-to-ceiling window late at night with no other people present, the glittering city lights below and moonlight streaming over her bare breasts and slender body as she holds the viewer's gaze.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14595,7 +14648,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "Late at night in the lab, Eyjafjalla sits on the edge of the counter with no other people present, her dark research coat slipping from her shoulders as she rubs her tired eyes and turns to the viewer.",
+      "nsfwProse": "In the darkened lab, Eyjafjalla sits on the edge of the counter with no other people present, her dark research coat slipping from her shoulders and falling away to reveal her bare breasts and pale skin as she rubs her tired eyes and turns to the viewer with a soft blush.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14652,7 +14705,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "cozy_sheep_fleece_loungewear",
@@ -14672,7 +14732,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her dorm at night, Eyjafjalla curls up under a thin blanket with no other people present, the warm lamp making her light ash-brown hair glow as she peeks sleepily over the edge.",
+      "nsfwProse": "Completely nude beneath the thin blanket, Eyjafjalla curls up in the warm lamp light with no other people present, the blanket slipping to reveal her bare shoulder and the soft curve of her breast as she peeks sleepily over the edge.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14729,7 +14789,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "siesta_hotspring_yukata",
@@ -14749,7 +14816,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In a private hot spring under the night sky, Eyjafjalla rests her chin on the rocky edge with no other people present, steam rising around her as moonlight plays across the water.",
+      "nsfwProse": "Completely nude in the private hot spring under the night sky, Eyjafjalla rests her chin on the rocky edge with no other people present, steam rising around her bare shoulders and soft breasts, gentle blush in the moonlight.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14806,7 +14873,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "standard",
@@ -14826,7 +14900,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the darkened lab, Eyjafjalla sits on the edge of the table with no other people present, a single candle flickering beside her as its warm light traces her collarbone and the curve of her smile.",
+      "nsfwProse": "Completely nude with her uniform discarded in the darkened lab, Eyjafjalla sits on the edge of the table with no other people present, a single candle flickering beside her as its warm light traces her bare breasts, collarbone and the curve of her shy smile.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -15305,7 +15379,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "standard",
@@ -15325,7 +15406,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her bathroom at night, Lemuen rests against the tub with no other people present, steam beading on her skin while her halo sheds a faint glow through the mist.",
+      "nsfwProse": "Completely nude in her bathroom at night, Lemuen rests against the tub with no other people present, steam beading on her bare breasts and skin while her halo sheds a faint glow through the mist, a quiet blush.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -15558,7 +15639,7 @@
         "brush",
         "ink"
       ],
-      "promptProse": "In her painting studio, Dusk kneels among unrolled scrolls with no other people present, brush hovering over a half-finished landscape as light falls through the paper window.",
+      "promptProse": "In her painting studio, Dusk sits cross-legged among unrolled scrolls with no other people present, brush hovering over a half-finished landscape as light falls through the paper window.",
       "promptTokens": [
         "studio",
         "scrolls",
@@ -16541,7 +16622,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "obsidian",
@@ -16624,7 +16712,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "silent_night",
@@ -16660,7 +16755,7 @@
       "characterId": "mudrock_arknights",
       "description": "深夜舱室，笨拙的温柔。",
       "location": "罗德岛私人舱室",
-      "action": "侧卧，指尖轻触枕边人的手",
+      "action": "侧卧，指尖轻抚床沿",
       "timeOfDay": "深夜",
       "lighting": "dim night light",
       "camera": "intimate close shot",
@@ -16708,7 +16803,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "rhodes_oversized_hoodie",
@@ -16791,7 +16893,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "elite2",
@@ -18107,8 +18216,6 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
@@ -18514,8 +18621,6 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
@@ -18524,7 +18629,9 @@
         "loving_blush",
         "gentle_smile",
         "intimate",
-        "medium_shot"
+        "medium_shot",
+        "black_bodysuit",
+        "unzipped"
       ],
       "nsfwProse": "In her private cabin at night, Skadi sits on the edge of the bed with her black bodysuit loosened and shoulders bare with no other people present, undoing the tie in her ankle-length silver-white hair as warm lamp light reveals her soft skin and quiet vulnerability.",
       "adultArtistHint": "@anmi",
@@ -18725,7 +18832,6 @@
         "mutated hands",
         "bad anatomy",
         "modern",
-        "neon",
         "school",
         "dark shadowed face",
         "flat lighting",
@@ -19832,7 +19938,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "Completely nude with her courier jacket discarded over the sofa armrest, Exusiai sprawls intimately across the soft cushions with no other people present, her bare breasts and slender waist bathed in the warm ambient glow of the TV, looking at the viewer with an affectionate blush and playful smile while her halo shimmers softly above.",
+      "nsfwProse": "Completely nude with her loose oversized t-shirt discarded over the sofa armrest, Exusiai sprawls intimately across the soft cushions with no other people present, her bare breasts and slender waist bathed in the warm ambient glow of the TV, looking at the viewer with an affectionate blush and playful smile while her halo shimmers softly above.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -20253,7 +20359,7 @@
         "squatting",
         "flowers"
       ],
-      "promptProse": "In a field of lily of the valley, Suzuran kneels to smell the white blooms with no other people present, her nine tails fanning out behind her in the bright afternoon light.",
+      "promptProse": "In a field of lily of the valley, Suzuran squats down to smell the white blooms with no other people present, her nine tails fanning out behind her in the bright afternoon light.",
       "promptTokens": [
         "flower_field",
         "lily_of_the_valley",
@@ -20460,19 +20566,17 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
-        "bare_chest",
-        "exposed_breasts",
-        "nipples",
         "soft_skin",
         "loving_blush",
         "gentle_smile",
         "intimate",
-        "medium_shot"
+        "medium_shot",
+        "kimono_slip",
+        "one_shoulder_off",
+        "bare_shoulder"
       ],
-      "nsfwProse": "In her room at night, Suzuran kneels on the futon with no other people present, one sleeve of her kimono slipping from her shoulder as candlelight warms her blushing face.",
+      "nsfwProse": "In her room at night, Suzuran kneels on the futon with no other people present, one sleeve of her kimono slipping from her shoulder, the loosened collar showing a hint of her bare breast, candlelight warming her blushing face.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -20549,7 +20653,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "Deep at night, Suzuran lies on her side with no other people present, her nine fluffy golden tails curling gently around her as moonlight spills over the soft fur.",
+      "nsfwProse": "Completely nude with her fluffy pajama top open, Suzuran lies on her side with no other people present, her nine golden tails curling gently around her bare shoulders and soft breasts as moonlight spills over the soft fur.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -20606,7 +20710,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "higashi_summer_yukata",
@@ -20626,7 +20737,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In a lantern-lit hot spring at night, Suzuran rests her chin on the rocky edge with no other people present, her soaked tails draped over the stones as steam rises around her.",
+      "nsfwProse": "Completely nude in the lantern-lit hot spring, Suzuran rests her chin on the rocky edge with no other people present, soaked tails draped over the stones, bare breasts just above the water, steam rising around her as she blushes softly.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -20691,7 +20802,14 @@
         "storyboard",
         "montage",
         "collage",
-        "duplicated character"
+        "duplicated character",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "snow_clearing",
@@ -20711,7 +20829,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the pale morning light, Suzuran stirs on her futon with no other people present, composed as a single unbroken full-frame scene, clutching the blanket to her chest as she blinks sleepily at the viewer, ears drooping.",
+      "nsfwProse": "Completely nude beneath the blanket she clutches to her chest, Suzuran stirs on her futon in the pale morning light with no other people present, ears drooping, bare shoulder and silhouette softly outlined as she blinks sleepily at the viewer.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21106,19 +21224,18 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
-        "bare_chest",
         "exposed_breasts",
-        "nipples",
         "soft_skin",
         "loving_blush",
         "gentle_smile",
         "intimate",
-        "medium_shot"
+        "medium_shot",
+        "uniform_unbuttoned",
+        "open_collar",
+        "exposed_collarbone"
       ],
-      "nsfwProse": "In her private quarters at night, Perlica sits on the edge of the bed with no other people present, loosening the collar of her uniform as the terminal's soft glow lights her calm face.",
+      "nsfwProse": "In her private quarters at night, Perlica sits on the edge of the bed with no other people present, her uniform collar loosened and open to reveal her bare collarbone and the soft upper curve of her breasts, terminal glow lighting her calm face.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21175,7 +21292,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "standard",
@@ -21195,7 +21319,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the Endfield hygiene bay, Perlica stands under the warm mist with no other people present, water running through her platinum hair with light cyan-blue tips as she relaxes her shoulders.",
+      "nsfwProse": "Completely nude under the warm mist in the Endfield hygiene bay, Perlica stands with no other people present, water running through her platinum hair with light cyan-blue tips and streaming down her bare breasts and smooth body as she relaxes her shoulders.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21260,19 +21384,16 @@
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
-        "completely_naked",
         "bare_shoulders",
-        "bare_chest",
         "exposed_breasts",
-        "nipples",
         "soft_skin",
         "loving_blush",
         "gentle_smile",
         "intimate",
-        "medium_shot"
+        "medium_shot",
+        "open_lounge_top"
       ],
-      "nsfwProse": "Late at night in her quarters, Perlica sits cross-legged on the bunk reading a report with no other people present, the dim lamp pooling light over the paper and her tired but steady eyes.",
+      "nsfwProse": "Late at night in her quarters, Perlica sits cross-legged on the bunk reading a report with no other people present, her outer jacket draped over her shoulders while an open lounge top reveals her bare breasts and soft skin, the dim lamp pooling light over the paper and her tired but steady eyes.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21329,7 +21450,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "standard",
@@ -21349,7 +21477,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "By the great viewport at night, Perlica leans against the glass with no other people present, the starfield outside framing her silhouette as she turns to regard the viewer.",
+      "nsfwProse": "Completely nude by the great viewport at night, Perlica leans against the glass with no other people present, the starfield outside framing her bare breasts and silhouette as she turns to regard the viewer.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21736,7 +21864,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "cozy_dorm_loungewear",
@@ -21756,7 +21891,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her quarters at night, Laevatain sits on the edge of the bed with no other people present, small embers flickering between her fingers as the dim glow traces her horns and collarbone.",
+      "nsfwProse": "Completely nude with her cozy loungewear discarded, Laevatain sits on the edge of the bed with no other people present, small embers flickering between her fingers as the dim glow traces her horns and the soft curves of her bare body.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21813,7 +21948,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "standard",
@@ -21833,7 +21975,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the icy bath chamber, Laevatain rests against the edge with no other people present, cold blue light on her skin while faint steam still rises from her shoulders.",
+      "nsfwProse": "Completely nude in the icy bath chamber, Laevatain rests against the edge with no other people present, cold blue light on her bare breasts and skin while faint steam still rises from her shoulders.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21890,7 +22032,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "cozy_dorm_loungewear",
@@ -21910,7 +22059,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "Late at night, Laevatain lies on her side with no other people present, one hand resting on the hilt of her greatsword beside the bed as faint ember light flickers across her face.",
+      "nsfwProse": "Completely nude, Laevatain lies on her side with no other people present, one hand resting on the hilt of her greatsword beside the bed as faint ember light flickers across her bare shoulders and breasts.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -21967,7 +22116,14 @@
         "2girls",
         "multiple girls",
         "clone",
-        "twin"
+        "twin",
+        "clothes",
+        "clothing",
+        "underwear",
+        "panties",
+        "bra",
+        "swimsuit",
+        "fabric"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "ignition",
@@ -21987,7 +22143,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "At the edge of a molten pool at night, Laevatain stands with no other people present, the deep red glow painting her silhouette as she looks back with a faint, knowing smile.",
+      "nsfwProse": "Completely nude at the edge of the molten pool at night, Laevatain stands with no other people present, the deep red glow painting her bare silhouette and breasts as she looks back with a faint, knowing smile.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -22280,11 +22436,11 @@
         "candy_apple",
         "festival_stalls",
         "summer_night",
-        "light_blue_sundress",
         "floral_print",
-        "summer_dress"
+        "yukata",
+        "light_blue_yukata"
       ],
-      "promptProse": "Along a lively Japanese summer festival street illuminated by rows of glowing paper lanterns at night, Alisa Mikhailovna Kujou in an elegant light blue floral summer sundress offers a glossy red candy apple towards the camera with a playful, blushing smile.",
+      "promptProse": "Along a lively Japanese summer festival street illuminated by rows of glowing paper lanterns at night, Alisa Mikhailovna Kujou in a light blue floral yukata (kimono) offers a glossy red candy apple towards the camera with a playful, blushing smile.",
       "promptTokens": [
         "festival",
         "paper_lanterns",
@@ -23470,8 +23626,7 @@
         "clothing",
         "underwear",
         "panties",
-        "bra",
-        "socks"
+        "bra"
       ],
       "adult": true,
       "adultEligibility": "adult",
@@ -23896,8 +24051,7 @@
         "clothing",
         "underwear",
         "panties",
-        "bra",
-        "boots"
+        "bra"
       ],
       "adult": true,
       "adultEligibility": "adult",
@@ -24307,8 +24461,7 @@
         "clothing",
         "underwear",
         "panties",
-        "bra",
-        "pantyhose"
+        "bra"
       ],
       "adult": true,
       "adultEligibility": "adult",
@@ -25613,7 +25766,6 @@
         "underwear",
         "panties",
         "bra",
-        "stockings",
         "fat",
         "chubby",
         "plump",
@@ -25743,7 +25895,7 @@
       "id": "byakuya_sunset_rooftop_bento",
       "characterId": "mimori_byakuya",
       "title": "学校天台·夕阳便当与清贫侧影",
-      "description": "高校锈蚀铁丝网的天台上，深森白夜独自坐在水泥长凳上安静吃着便宜的紫菜饭团，黑直发在风中拂动，眼神清澈呆萌。",
+      "description": "高校锈蚀铁丝网的天台上，深森白夜独自坐在水泥长凳上安静吃着便宜的紫菜饭团，银白长发与小角发髻在风中拂动，眼神清澈呆萌。",
       "outfitId": "poor_school_uniform",
       "sceneTags": [
         "rooftop",
@@ -25757,7 +25909,6 @@
       ],
       "promptProse": "sitting on a weathered concrete bench on high school rooftop during golden sunset, eating a simple seaweed onigiri rice ball, silver-white hair with spiral horn buns blowing in the evening breeze, quiet calm deadpan expression, chain-link fence in background The location is empty of other people, leaving her the sole person in the frame.",
       "promptTokens": [
-        "navy_hair",
         "very_long_hair",
         "hime_cut",
         "blunt_bangs",
@@ -25768,7 +25919,9 @@
         "chain_link_fence",
         "eating_onigiri",
         "deadpan_expression",
-        "warm_wind"
+        "warm_wind",
+        "silver_white_hair",
+        "spiral_horn_buns"
       ],
       "negativeTokens": [
         "worst quality",
@@ -25942,7 +26095,6 @@
       ],
       "promptProse": "In a shabby rented tatami room at night, a girl with silver-white spiral horn buns kneels on a thin futon, her faded navy sailor uniform unbuttoned and slipping off her slender shoulders, an unreadable deadpan face with shoulders trembling slightly under the dim flickering lamp. She is the only person in the room, completely alone.",
       "promptTokens": [
-        "navy_hair",
         "very_long_hair",
         "hime_cut",
         "blunt_bangs",
@@ -25956,7 +26108,7 @@
         "detailed_vulva",
         "small_pink_nipples",
         "deadpan_blush",
-        "afternoon_shoji_light"
+        "dim_lamp_light"
       ],
       "negativeTokens": [
         "worst quality",
@@ -26115,7 +26267,7 @@
         "small_breasts",
         "exhausted_blush"
       ],
-      "promptProse": "In the rubble of a ruined alley at night, a girl with silver-white spiral horn buns sits dazed in her torn pink magical girl dress, staring blankly at the moon, moonlight tracing her delicate silhouette as her magic wand lies beside her. The space is empty of others; she is entirely by herself.",
+      "promptProse": "In the rubble of a ruined alley at night, a girl with silver-white spiral horn buns lies back dazed in her torn pink magical girl dress, staring blankly at the moon, moonlight tracing her delicate silhouette as her magic wand lies beside her. The space is empty of others; she is entirely by herself.",
       "promptTokens": [
         "navy_hair",
         "very_long_hair",
@@ -26175,7 +26327,7 @@
         "spread_legs",
         "shredded_clothes"
       ],
-      "nsfwProse": "torn magical girl dress hanging off one shoulder, completely naked underneath with zero clothes, delicate slender petite body, small bare breasts with pink nipples, exposed pink pussy and detailed vulva, legs parted in a dazed sitting pose, blank dazed stare, cold moonlight",
+      "nsfwProse": "torn magical girl dress hanging off one shoulder, completely naked underneath with zero clothes, delicate slender petite body, small bare breasts with pink nipples, exposed pink pussy and detailed vulva, legs parted as she lies back on the rubble, blank dazed stare, cold moonlight",
       "category": "私密写真",
       "location": "战后废墟",
       "action": "破碎战服半挂，无防备地跌坐",
@@ -26192,24 +26344,21 @@
       "id": "cecilia_church_stained_glass_praying",
       "characterId": "saint_cecilia",
       "title": "神圣大教堂·彩绘玻璃祈祷与圣光流淌",
-      "description": "大教堂七彩斑斓的琉璃窗前，身着纯白圣女修女服的塞西莉亚双手合十虔诚祈祷，金色卷发与圣洁光辉交融，宛如天使降世。",
+      "description": "大教堂七彩斑斓的琉璃窗前，身着纯白圣女修女服的塞西莉亚双手合十虔诚祈祷，薄荷绿长发与圣洁光辉交融，宛如天使降世。",
       "outfitId": "saint_nun_habit",
       "sceneTags": [
         "cathedral",
         "stained_glass",
         "praying",
         "god_rays",
-        "golden_hair",
         "white_habit",
         "divine",
-        "gentle_smile"
+        "gentle_smile",
+        "mint_green_hair"
       ],
       "promptProse": "kneeling in prayer before magnificent multi-colored stained glass windows in grand cathedral, beams of divine colored light illuminating her mint-green hair in a low bun and pure white habit, serene angelic smile, dust motes glowing like stars The location is empty of other people, leaving her the sole person in the frame.",
       "promptTokens": [
         "saint_cecilia",
-        "platinum_hair",
-        "silver_hair",
-        "very_light_blonde_hair",
         "very_long_hair",
         "wavy_hair",
         "fluffy_hair",
@@ -26222,10 +26371,10 @@
         "stained_glass_windows",
         "praying_hands",
         "sunbeam_rays",
-        "golden_wavy_hair",
         "white_nun_habit",
         "angelic_smile",
-        "ethereal_light"
+        "ethereal_light",
+        "mint_green_hair"
       ],
       "negativeTokens": [
         "worst quality",
@@ -26598,20 +26747,17 @@
         "couch",
         "open_black_shirt",
         "bottomless",
-        "spread_thighs",
         "exposed_pussy",
         "detailed_vulva",
         "bare_breasts",
         "pink_nipples",
-        "golden_hair",
-        "sweet_blush"
+        "sweet_blush",
+        "mint_green_hair",
+        "legs_together"
       ],
       "promptProse": "On the living room couch of the church at evening, a saint with mint-green hair sits wearing only Lawrence's oversized black pastor shirt, the collar hanging open, her bare legs pressed together, an adorably confused tilt of her head, cheeks flushed, in the warm lamplight. Nobody else is in the room with her—she is alone.",
       "promptTokens": [
         "saint_cecilia",
-        "platinum_hair",
-        "silver_hair",
-        "very_light_blonde_hair",
         "very_long_hair",
         "wavy_hair",
         "fluffy_hair",
@@ -26623,14 +26769,14 @@
         "parlor_sofa",
         "open_black_shirt",
         "bottomless",
-        "spread_legs",
         "exposed_pussy",
         "detailed_vulva",
         "bare_breasts",
         "pink_nipples",
-        "golden_hair",
         "sweet_blush",
-        "warm_sunlight"
+        "warm_sunlight",
+        "mint_green_hair",
+        "legs_together"
       ],
       "negativeTokens": [
         "worst quality",
@@ -26670,7 +26816,7 @@
         "detailed_vulva",
         "bare_breasts",
         "pink_nipples",
-        "spread_thighs"
+        "legs_together"
       ],
       "nsfwProse": "oversized black pastor shirt hanging open, completely bottomless with zero underwear, holy porcelain skin, shapely bare breasts with pink nipples, exposed pink pussy and detailed vulva, bare legs pressed together trembling, adorably confused wide-eyed look, warm lamp light",
       "category": "私密写真",
@@ -26819,7 +26965,7 @@
         "oversized_shirt",
         "bare_shoulders"
       ],
-      "promptProse": "In the bright kitchen of the Grayrat household in the morning, a small elf girl with short white hair hums softly while preparing breakfast, wearing a loose oversized nightshirt that slips off one shoulder, warm sunlight flooding the room, humming a contented little tune with a soft smile. The place is deserted and she is the only person in the scene. She is alone in the kitchen; the house is quiet and empty of any other person. She is alone in the kitchen; the house is quiet and empty of any other person.",
+      "promptProse": "In the bright kitchen of the Grayrat household in the morning, a small elf girl with short white hair hums softly while preparing breakfast, wearing a loose oversized nightshirt that slips off one shoulder, warm sunlight flooding the room, humming a contented little tune with a soft smile. The place is deserted and she is the only person in the scene. She is alone in the kitchen; the house is quiet and empty of any other person. ",
       "promptTokens": [
         "kitchen",
         "morning_sunlight",
@@ -26959,7 +27105,7 @@
         "skirt_flaring",
         "action_shot"
       ],
-      "promptProse": "On the school tennis court on a bright afternoon, a girl with a coral side bun swings her racket with a cheerful grin, her white tennis skirt flaring as she moves, sunlight catching the sweat on her glowing skin. There is no one else around; she is entirely alone in the quiet space. The tennis court is completely empty; she practices alone with no opponent and no other people anywhere. The tennis court is completely empty; she practices alone with no opponent and no other people anywhere.",
+      "promptProse": "On the school tennis court on a bright afternoon, a girl with a coral side bun swings her racket with a cheerful grin, her white tennis skirt flaring as she moves, sunlight catching the sweat on her glowing skin. There is no one else around; she is entirely alone in the quiet space. The tennis court is completely empty; she practices alone with no opponent and no other people anywhere. ",
       "promptTokens": [
         "tennis_court",
         "tennis_racket",
@@ -27075,21 +27221,21 @@
         "cooking",
         "batter_bowl",
         "flour",
-        "hoodie",
         "evening_light",
         "cozy",
-        "concentration"
+        "concentration",
+        "dog_pajamas"
       ],
-      "promptProse": "In the warm kitchen of her family home, a girl with a coral side bun clumsily stirs batter in a bowl, a smudge of flour on her cheek, wearing a cozy off-shoulder hoodie with a puppy motif, her tongue poking out in concentration. The place is deserted and she is the only person in the scene.",
+      "promptProse": "In the warm kitchen of her family home, a girl with a coral side bun clumsily stirs batter in a bowl, a smudge of flour on her cheek, wearing a loose dog-print pajama top, her tongue poking out in concentration. The place is deserted and she is the only person in the scene.",
       "promptTokens": [
         "kitchen",
         "cooking",
         "batter_bowl",
         "flour",
-        "hoodie",
         "evening_light",
         "cozy",
-        "concentration"
+        "concentration",
+        "dog_pajamas"
       ],
       "negativeTokens": [
         "worst quality",
@@ -27700,7 +27846,7 @@
         "composed",
         "afternoon"
       ],
-      "promptProse": "In the Berlint City Hall office in the afternoon, a black-haired woman in an olive green uniform blazer sits at her desk neatly organizing documents, ruby red eyes focused, looking every bit the diligent civil servant. She stands all by herself in the empty scene, with no other people present. The office floor is empty during off-hours; she works alone with no colleagues or anyone else present. The office floor is empty during off-hours; she works alone with no colleagues or anyone else present.",
+      "promptProse": "In the Berlint City Hall office in the afternoon, a black-haired woman in an olive green uniform blazer sits at her desk neatly organizing documents, ruby red eyes focused, looking every bit the diligent civil servant. She stands all by herself in the empty scene, with no other people present. The office floor is empty during off-hours; she works alone with no colleagues or anyone else present. ",
       "promptTokens": [
         "office",
         "desk",
@@ -27822,7 +27968,7 @@
         "cozy",
         "peaceful"
       ],
-      "promptProse": "In the Forger living room in the evening, a black-haired woman in a chunky red off-shoulder sweater sits cross-legged on the sofa knitting, a peaceful soft smile on her face, warm lamplight pooling around her. The place is deserted and she is the only person in the scene. She is completely alone in the quiet living room; nobody else is at home with her. She is completely alone in the quiet living room; nobody else is at home with her.",
+      "promptProse": "In the Forger living room in the evening, a black-haired woman in a chunky red off-shoulder sweater sits cross-legged on the sofa knitting, a peaceful soft smile on her face, warm lamplight pooling around her. The place is deserted and she is the only person in the scene. She is completely alone in the quiet living room; nobody else is at home with her. ",
       "promptTokens": [
         "living_room",
         "sofa",
@@ -28019,7 +28165,7 @@
         "casual",
         "dusty_sunbeams"
       ],
-      "promptProse": "In a dusty old bookstore in the afternoon, a girl with short pink-purple hair leans against the shelves flipping through a magazine, her sleeveless white shirt and loose black tie at ease, sunlight filtering through the cluttered window, a relaxed lazy smile on her lips. The place is deserted and she is the only person in the scene. She is the only person in the bookshop; the aisles are completely empty with no customers and no other people inside. She is the only person in the bookshop; the aisles are completely empty with no customers and no other people inside.",
+      "promptProse": "In a dusty old bookstore in the afternoon, a girl with short pink-purple hair leans against the shelves flipping through a magazine, her sleeveless white shirt and loose black tie at ease, sunlight filtering through the cluttered window, a relaxed lazy smile on her lips. The place is deserted and she is the only person in the scene. She is the only person in the bookshop; the aisles are completely empty with no customers and no other people inside. ",
       "promptTokens": [
         "bookstore",
         "bookshelves",
