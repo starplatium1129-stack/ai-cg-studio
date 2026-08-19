@@ -14601,7 +14601,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "characterId": "fern_frieren",
     "displayName": "菲伦",
     "source": "Frieren: Beyond Journey's End",
-    "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, soft rounded features, and a tall voluptuous figure with large breasts.",
+    "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure with large breasts.",
     "outfits": [
       {
         "outfitId": "journey_robe",

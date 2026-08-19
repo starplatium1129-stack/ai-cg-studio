@@ -25245,7 +25245,15 @@
         "indoor",
         "modern",
         "night",
-        "crowd"
+        "crowd",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "adult": false,
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -25301,7 +25309,15 @@
         "extra characters",
         "outdoor",
         "night",
-        "crowd"
+        "crowd",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "adult": false,
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -25357,7 +25373,15 @@
         "indoor",
         "modern",
         "night",
-        "crowd"
+        "crowd",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "adult": false,
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -25428,7 +25452,15 @@
         "bra",
         "pajamas",
         "nightgown",
-        "blanket"
+        "blanket",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "adult": true,
       "adultEligibility": "adult",
@@ -25443,7 +25475,7 @@
         "spread_legs",
         "puffed_cheeks"
       ],
-      "nsfwProse": "nightgown slipping off one shoulder, completely naked underneath with zero clothes, very soft voluptuous body, very large bare breasts with pink nipples, exposed pink pussy and detailed vulva, legs gently parted, indignant pouting face, warm intimate light",
+      "nsfwProse": "nightgown slipping off one shoulder, completely naked underneath with zero clothes, slender-curvy body with soft smooth skin, very large bare breasts with pink nipples, exposed pink pussy and detailed vulva, legs gently parted, indignant pouting face, warm intimate light",
       "category": "私密写真",
       "location": "旅馆床榻",
       "action": "侧卧气鼓鼓地嘟嘴，睡裙滑落",
@@ -25473,7 +25505,7 @@
         "detailed_vulva",
         "huge_breasts"
       ],
-      "promptProse": "On a soft bed at night, a girl with long purple hair lies back with her round soft legs bent and parted toward the camera, white stockings peeled halfway down, a quietly flustered look, lips pressed into a thin pout, in warm dim light. No one else is present; the room holds only her.",
+      "promptProse": "On a soft bed at night, a girl with long purple hair lies back with her slender shapely legs bent and parted toward the camera, white stockings peeled halfway down, a quietly flustered look, lips pressed into a thin pout, in warm dim light. No one else is present; the room holds only her.",
       "promptTokens": [
         "fern_(frieren)",
         "bedroom",
@@ -25511,7 +25543,15 @@
         "underwear",
         "panties",
         "bra",
-        "stockings"
+        "stockings",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "adult": true,
       "adultEligibility": "adult",
@@ -25527,7 +25567,7 @@
         "spread_legs",
         "detailed_soles"
       ],
-      "nsfwProse": "completely naked with zero clothes, very soft voluptuous body, very large bare breasts with pink nipples, exposed pink pussy and detailed vulva, bent legs with detailed bare soles and toes, white stockings half peeled, thin-lipped pout with reddening cheeks, warm intimate light",
+      "nsfwProse": "completely naked with zero clothes, slender-curvy body with soft smooth skin, very large bare breasts with pink nipples, exposed pink pussy and detailed vulva, bent legs with detailed bare soles and toes, white stockings half peeled, thin-lipped pout with reddening cheeks, warm intimate light",
       "category": "私密写真",
       "location": "床榻",
       "action": "圆润双腿屈起分向镜头，白丝半褪",
@@ -25593,7 +25633,15 @@
         "underwear",
         "panties",
         "bra",
-        "dressing_gown"
+        "dressing_gown",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "adult": true,
       "adultEligibility": "adult",
@@ -25608,7 +25656,7 @@
         "pink_nipples",
         "bare_buttocks"
       ],
-      "nsfwProse": "dressing gown sliding off shoulders, completely naked with zero clothes, very soft voluptuous body, very large bare breasts with pink nipples visible in the mirror, exposed pink pussy and detailed vulva, back view with soft curves, startled wide violet eyes, warm intimate light",
+      "nsfwProse": "dressing gown sliding off shoulders, completely naked with zero clothes, slender-curvy body with soft smooth skin, very large bare breasts with pink nipples visible in the mirror, exposed pink pussy and detailed vulva, back view with shapely curves, startled wide violet eyes, warm intimate light",
       "category": "私密写真",
       "location": "旅馆更衣镜前",
       "action": "睡袍从肩头滑落，镜中映出圆润倒影",
@@ -28128,7 +28176,15 @@
         "outdoor",
         "modern",
         "day",
-        "crowd"
+        "crowd",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "recommendedSize": "832x1216"
     },
@@ -28184,7 +28240,15 @@
         "outdoor",
         "modern",
         "day",
-        "crowd"
+        "crowd",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "recommendedSize": "832x1216"
     },
@@ -28242,7 +28306,15 @@
         "night",
         "indoor",
         "summer",
-        "crowd"
+        "crowd",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "recommendedSize": "832x1216"
     },
@@ -28305,10 +28377,18 @@
         "bra",
         "swimsuit",
         "towel",
-        "fabric"
+        "fabric",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist"
       ],
       "recommendedSize": "832x1216",
-      "nsfwProse": "completely naked in the wooden bath tub, very soft voluptuous body, very large bare breasts with pink nipples above the water, exposed pink pussy and detailed vulva beneath the clear water, arms on the tub rim, dreamy relaxed half-lidded eyes, warm steam",
+      "nsfwProse": "completely naked in the wooden bath tub, slender-curvy body with soft smooth skin, very large bare breasts with pink nipples above the water, exposed pink pussy and detailed vulva beneath the clear water, arms on the tub rim, dreamy relaxed half-lidded eyes, warm steam",
       "nsfwTokens": [
         "nude",
         "completely_naked",
