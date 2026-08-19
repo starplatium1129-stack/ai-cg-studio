@@ -4063,7 +4063,11 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "funeral_parade"
@@ -4120,7 +4124,11 @@
         "school",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "1216x832",
       "outfitId": "funeral_parade"
@@ -4174,7 +4182,11 @@
         "bright",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "1216x832",
       "outfitId": "funeral_parade"
@@ -4231,7 +4243,11 @@
         "cheerful",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -4304,7 +4320,11 @@
         "night",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
@@ -4362,7 +4382,11 @@
         "night",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "funeral_parade"
@@ -4416,7 +4440,11 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "funeral_parade"
@@ -4475,7 +4503,11 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -4553,7 +4585,11 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -4631,7 +4667,11 @@
         "night",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -11586,7 +11626,10 @@
         "cheerful",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "1216x832",
       "outfitId": "demon_dress"
@@ -11639,7 +11682,10 @@
         "night",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "casual"
@@ -11692,7 +11738,10 @@
         "night",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "school_uniform"
@@ -11751,7 +11800,10 @@
         "bright",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -11822,7 +11874,10 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "casual"
@@ -11874,7 +11929,10 @@
         "night",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
@@ -11930,7 +11988,10 @@
         "night",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "outfitId": "casual"
@@ -11989,7 +12050,10 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -12067,7 +12131,10 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -12145,7 +12212,10 @@
         "day",
         "dark shadowed face",
         "flat lighting",
-        "extra characters"
+        "extra characters",
+        "black_hair",
+        "dark_hair",
+        "brown_hair"
       ],
       "recommendedSize": "832x1216",
       "adult": true,

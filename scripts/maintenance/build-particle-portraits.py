@@ -133,7 +133,7 @@ def build_one(char_id: str, source: Path) -> bool:
         "palette": palette,
         "grid": {"w": int(grid_w), "h": int(grid_h), "cells": cells},
     }
-    out.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+    out.write_bytes((json.dumps(payload, separators=(",", ":")) + "\n").encode("utf-8"))
     print(f"[ok] {char_id}: 网格 {grid_w}x{grid_h}（{filled} 格）{len(palette)} 色 → {out.relative_to(ROOT)} ({out.stat().st_size // 1024}KB)")
     return True
 

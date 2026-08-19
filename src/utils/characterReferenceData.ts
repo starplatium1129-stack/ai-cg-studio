@@ -366,6 +366,71 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
         ]
       },
       {
+        "outfitId": "official_qipao",
+        "outfitName": "官方旗袍 / 绯红旗袍",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing an elegant vivid crimson red silk qipao china dress with delicate gold floral embroidery, high side slit, black thigh-high stockings, double braided hair buns with red flower hair ornament",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "fileName": "ref_01_face_closeup.png",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "url": "/assets/character-references/natsume/official_qipao/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "fileName": "ref_02_half_medium.png",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "url": "/assets/character-references/natsume/official_qipao/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 35mm 站姿",
+            "fileName": "ref_03_full_dynamic.png",
+            "lens": "35mm Full Shot Lens",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "url": "/assets/character-references/natsume/official_qipao/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "fileName": "ref_04_back_rear.png",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "url": "/assets/character-references/natsume/official_qipao/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
         "outfitId": "casual_knit",
         "outfitName": "秋冬针织私服",
         "isDefault": false,
@@ -2044,7 +2109,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "characterId": "yuzuriha_inori",
     "displayName": "楪祈",
     "source": "Guilty Crown",
-    "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long pink and orange-gradient twin-tails, bright crimson eyes, red hair clips, and a fragile, ethereal presence",
+    "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long flowing pink-to-orange gradient hair, two slender front hair locks tied with small red hair tubes, bright crimson eyes, red hair clips, and a fragile, ethereal presence",
     "outfits": [
       {
         "outfitId": "funeral_parade",
@@ -5122,7 +5187,7 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "characterId": "kisara_engage_kiss",
     "displayName": "木更",
     "source": "Engage Kiss",
-    "identityProse": "Kisara from Engage Kiss, an A-class demon girl with very long pastel-pink hair, vibrant crimson eyes, an ahoge, center-parted bangs, a black hair ribbon, and an adhesive bandage on her right thigh",
+    "identityProse": "Kisara from Engage Kiss, an A-class demon girl with extremely long silky pastel-pink hair, vibrant crimson eyes, an expressive ahoge, black hair ribbon, and an adhesive bandage on her right thigh",
     "outfits": [
       {
         "outfitId": "school_uniform",

@@ -22,20 +22,20 @@ import { computed } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 
 const props = withDefaults(defineProps<{
-  kind: 'loading' | 'empty' | 'filtered' | 'error' | 'success'
+  kind: 'loading' | 'empty' | 'filtered' | 'error' | 'success' | 'warning'
   title: string
   message?: string
   code?: string
   compact?: boolean
 }>(), { message:'', code:'', compact:false })
 
-const role = computed(() => props.kind === 'error' ? 'alert' : props.kind === 'loading' ? 'status' : undefined)
+const role = computed(() => (props.kind === 'error' || props.kind === 'warning') ? 'alert' : props.kind === 'loading' ? 'status' : undefined)
 
 const iconName = computed<ArchiveIconName>(() => ({
-  loading:'refresh', empty:'gallery', filtered:'search', error:'warning', success:'success',
+  loading:'refresh', empty:'gallery', filtered:'search', error:'warning', success:'success', warning:'warning',
 })[props.kind] as ArchiveIconName)
 const defaultCode = computed(() => ({
-  loading:'READING LOCAL ARCHIVE', empty:'NO LOCAL RECORD', filtered:'NO FILTER MATCH', error:'ARCHIVE EXCEPTION', success:'ARCHIVE READY',
+  loading:'READING LOCAL ARCHIVE', empty:'NO LOCAL RECORD', filtered:'NO FILTER MATCH', error:'ARCHIVE EXCEPTION', success:'ARCHIVE READY', warning:'ARCHIVE WARNING',
 })[props.kind])
 </script>
 

@@ -2,8 +2,11 @@
 'use strict';
 
 /**
- * 基于 Anima 专属 LoRA（ayachi_nene_v21_anima / shiki_natsume_v21_anima）
- * 为绫地宁宁与四季夏目重新渲染全部多服装形态（含全裸纯粹形态）的 4 视角电影级资产！
+ * render-inori-kisara-references.js
+ *
+ * 针对楪祈（Yuzuriha Inori）与木更（Kisara Engage Kiss）进行全形态 4 视角参考图重绘与立绘更新：
+ * 1. 楪祈：修正发型（自然披散长发 + 前侧细束小发管，负向杜绝夸张大双马尾）；
+ * 2. 木更：修正发色（浅粉色极长发 + 红瞳 + 黑色发带 + 腿部绷带，负向彻底杜绝黑发与杂色）。
  */
 
 const fs = require('fs');
@@ -12,65 +15,66 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const BASE = 'http://127.0.0.1:3000';
 const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
+const CHAR_DIR = path.join(ROOT, 'assets', 'characters');
 
-const HEROINES = [
+const CHARACTERS = [
   {
-    id: "nene",
-    name: "绫地宁宁",
-    loraId: "L_NENE_V21_ANIMA",
-    loraStrength: 0.85,
-    baseTokens: "ayachi_nene, 1girl, solo, silver_hair, long_hair, low_twintails, purple_eyes, ahoge, pink_ribbon",
+    id: "yuzuriha_inori",
+    name: "楪祈",
+    baseTokens: "yuzuriha_inori, 1girl, solo, long_hair, flowing_hair, (gradient_hair:1.2), (pink_hair:1.2), orange_hair, two_side_up, small_twintails, hair_tubes, red_eyes, red_hair_clips, hair_ornament, ahoge, guilty_crown",
+    baseNegative: "high_twintails, huge_twintails, thick_pigtails, bulky_twintails, short_hair, bob_cut, black_hair",
     outfits: [
       {
-        id: "witch_canonical",
-        name: "经典魔女服",
-        tokens: "nene_witch_canonical, witch_hat, black_cape, criss-cross_halter, crop_top, strap_between_breasts, pink_bow, black_skirt, asymmetrical_legwear, striped_thighhighs"
+        id: "funeral_parade",
+        name: "葬仪社装",
+        isDefault: true,
+        tokens: "white_shirt, sleeveless, black_shorts, red_ribbon, thighhighs, combat_gear"
       },
       {
         id: "school_uniform",
-        name: "学院校服",
-        tokens: "school_uniform, blazer, white_shirt, collared_shirt, necktie, pleated_skirt, knee_socks, black_shoes"
+        name: "校服",
+        tokens: "school_uniform, white_shirt, blue_skirt, ribbon, white_socks"
       },
       {
-        id: "casual_summer",
-        name: "日常夏装",
-        tokens: "casual, summer_dress, sundress, short_sleeves, bare_legs, flat_shoes"
+        id: "red_dress",
+        name: "红裙 / 歌姬金鱼装",
+        tokens: "red_dress, sleeveless_dress, flowing_fabric, layered_skirt, gold_accents"
       },
       {
         id: "nsfw_nude",
         name: "私密全裸 / 纯粹形态",
         isNude: true,
-        tokens: "completely_naked, uncensored, full body bare, natural skin, breasts, pink_nipples, navel, bare_shoulders, collarbone, bare_legs, bare_feet"
+        tokens: "completely_naked, uncensored, full body bare, natural skin, delicate small breasts, pink_nipples, navel, bare_shoulders, collarbone, bare_legs, bare_feet"
       }
     ]
   },
   {
-    id: "natsume",
-    name: "四季夏目",
-    loraId: "L_NAT_V21_ANIMA",
-    loraStrength: 0.85,
-    baseTokens: "shiki_natsume, 1girl, solo, black_hair, long_hair, amber_eyes, mole_under_eye, mole_under_left_eye, hairclip, side_hairclip",
+    id: "kisara_engage_kiss",
+    name: "木更",
+    baseTokens: "kisara_(engage_kiss), 1girl, solo, (pastel_pink_hair:1.35), (very_long_pink_hair:1.3), pink_hair, very_long_hair, crimson_eyes, red_eyes, ahoge, (black_ribbon:1.1), hair_ribbon, (bandage_on_thigh:1.2), thigh_bandage, engage_kiss",
+    baseNegative: "black_hair, dark_hair, brown_hair, blue_hair, purple_hair, blonde_hair, green_hair, dark_skin, camera, holding_camera",
     outfits: [
       {
-        id: "cafe_uniform",
-        name: "Café Stella 制服",
-        tokens: "natsume_cafe_uniform, cafe_uniform, apron, white_shirt, collared_shirt, necktie, brown_skirt, pleated_skirt, black_thighhighs"
+        id: "school_uniform",
+        name: "校服",
+        isDefault: true,
+        tokens: "school_uniform, sailor_collar, red_bow, grey_jacket, puffy_sleeves, white_pleated_skirt, black_kneehighs, bandage_on_leg"
       },
       {
-        id: "official_qipao",
-        name: "官方旗袍 / 绯红旗袍",
-        tokens: "natsume_official_qipao, chinese_clothes, china_dress, red_dress, floral_print, side_slit, long_sleeves, black_thighhighs, hair_bun, double_bun, hair_flower, red_flower"
+        id: "demon_dress",
+        name: "恶魔装",
+        tokens: "black_dress, sleeveless_dress, side_slit, black_thighhighs, gloves, red_bow"
       },
       {
-        id: "casual_knit",
-        name: "秋冬针织私服",
-        tokens: "casual, sweater, knit_sweater, scarf, black_tights, mini_skirt"
+        id: "casual",
+        name: "便服",
+        tokens: "casual_clothes, stylish_jacket, inner_shirt, shorts, bare_legs"
       },
       {
         id: "nsfw_nude",
         name: "私密全裸 / 纯粹形态",
         isNude: true,
-        tokens: "completely_naked, uncensored, full body bare, natural skin, small_breasts, breasts, pink_nipples, navel, bare_shoulders, collarbone, bare_legs, bare_feet"
+        tokens: "completely_naked, uncensored, full body bare, natural skin, small_breasts, pink_nipples, navel, slender_waist, bare_shoulders, collarbone, bare_legs, bare_feet"
       }
     ]
   }
@@ -103,11 +107,11 @@ const PERSPECTIVES = [
   }
 ];
 
-function buildAnimaPrompt(heroine, outfit, pers) {
+function buildPrompt(charConfig, outfit, pers) {
   const isNude = outfit.isNude;
-  let charTokens = heroine.baseTokens;
+  let charTokens = charConfig.baseTokens;
   if (isNude) {
-    charTokens = charTokens.replace(/\b(witch_hat|cape|dress|uniform|blazer|skirt|shoes|boots|gloves|jacket|coat|hoodie|thighhighs|socks)\b/gi, '');
+    charTokens = charTokens.replace(/\b(jacket|dress|uniform|blazer|skirt|shorts|shoes|boots|gloves|coat|hoodie|thighhighs|socks|kneehighs)\b/gi, '');
   }
 
   const promptParts = [
@@ -120,6 +124,7 @@ function buildAnimaPrompt(heroine, outfit, pers) {
 
   const negParts = [
     "bad anatomy, bad hands, extra limbs, extra arms, extra legs, poorly drawn face, poorly drawn hands, missing fingers, extra digits, cropped, split image, split screen, multiple views, comic panel, collaged, sketch, lowres, blurry, jpeg artifacts, watermark, signature",
+    charConfig.baseNegative,
     isNude ? "clothes, clothing, shirt, pants, dress, kimono, robe, towel, underwear, bra, panties, swimsuit, bikini, skirt, socks, footwear, shoes, fabric covering" : "",
     pers.negative
   ].filter(Boolean);
@@ -130,13 +135,10 @@ function buildAnimaPrompt(heroine, outfit, pers) {
   };
 }
 
-async function renderAnimaLora(heroine, outfit, pers, targetPath) {
-  const { prompt, negative } = buildAnimaPrompt(heroine, outfit, pers);
+async function renderJob(charConfig, outfit, pers, targetPath) {
+  const { prompt, negative } = buildPrompt(charConfig, outfit, pers);
   const payload = {
     modelId: 'anima-aesthetic-v1.1',
-    character: heroine.id,
-    loraId: heroine.loraId,
-    loraStrength: heroine.loraStrength,
     prompt,
     negative,
     width: 832,
@@ -154,6 +156,9 @@ async function renderAnimaLora(heroine, outfit, pers, targetPath) {
 
   const submitJson = await submitRes.json();
   if (!submitRes.ok || !submitJson.ok || !submitJson.job?.id) {
+    if (submitJson.error?.includes('ANIMA_QUEUE_FULL') || submitRes.status === 429) {
+      throw new Error('ANIMA_QUEUE_FULL');
+    }
     throw new Error(`提交失败: ${JSON.stringify(submitJson)}`);
   }
 
@@ -184,47 +189,63 @@ async function main() {
   const args = process.argv.slice(2);
   const force = args.includes('--force');
   const targetChar = args.find(a => a.startsWith('--char='))?.split('=')[1] || null;
-  const targetOutfit = args.find(a => a.startsWith('--outfit='))?.split('=')[1] || null;
 
   console.log(`================================================`);
-  console.log(`[Anima LoRA Re-Renderer] 启动 Anima + v21 专属 LoRA 高精渲染`);
-  console.log(`  Force 覆写: ${force ? '是' : '否 (已存在则跳过)'}`);
+  console.log(`[Inori & Kisara Reference Re-Renderer] 启动 Anima 高精修复渲染`);
+  console.log(`  Force: ${force ? '是' : '否'}`);
   if (targetChar) console.log(`  过滤角色: ${targetChar}`);
-  if (targetOutfit) console.log(`  过滤服装: ${targetOutfit}`);
   console.log(`================================================\n`);
 
-  for (const heroine of HEROINES) {
-    if (targetChar && heroine.id !== targetChar) continue;
-    for (const outfit of heroine.outfits) {
-      if (targetOutfit && outfit.id !== targetOutfit) continue;
+  for (const charConfig of CHARACTERS) {
+    if (targetChar && charConfig.id !== targetChar) continue;
+    for (const outfit of charConfig.outfits) {
       for (const pers of PERSPECTIVES) {
-        const targetPath = path.join(OUT_BASE, heroine.id, outfit.id, `${pers.id}.png`);
+        const targetPath = path.join(OUT_BASE, charConfig.id, outfit.id, `${pers.id}.png`);
         if (fs.existsSync(targetPath) && !force) {
-          console.log(`⏭️ 已存在跳过: [${heroine.name}] - [${outfit.name}] - [${pers.name}]`);
+          console.log(`⏭️ 已存在跳过: [${charConfig.name}] - [${outfit.name}] - [${pers.name}]`);
           continue;
         }
-        console.log(`🎨 正在用 Anima + [${heroine.loraId}] 渲染 [${heroine.name}] - [${outfit.name}] - [${pers.name}]...`);
 
+        console.log(`🎨 正在渲染 [${charConfig.name}] - [${outfit.name}] - [${pers.name}]...`);
         let success = false;
-        for (let attempt = 1; attempt <= 3; attempt++) {
+        for (let attempt = 1; attempt <= 5; attempt++) {
           try {
-            await renderAnimaLora(heroine, outfit, pers, targetPath);
-            console.log(`  ✓ 成功完成并落盘: ${targetPath}`);
+            await renderJob(charConfig, outfit, pers, targetPath);
+            console.log(`  ✓ 成功落盘: ${targetPath}`);
             success = true;
             break;
           } catch (err) {
-            console.warn(`  ⚠️ 第 ${attempt} 次失败 (${err.message})，重试中...`);
-            await new Promise(r => setTimeout(r, 3000));
+            const waitMs = err.message === 'ANIMA_QUEUE_FULL' ? 5000 : 3000;
+            console.warn(`  ⚠️ 第 ${attempt} 次失败 (${err.message})，等待 ${waitMs}ms 后重试...`);
+            await new Promise(r => setTimeout(r, waitMs));
           }
         }
         if (!success) {
-          console.error(`  ❌ 渲染失败: [${heroine.name}] [${outfit.name}] [${pers.name}]`);
+          console.error(`  ❌ 最终渲染失败: [${charConfig.name}] [${outfit.name}] [${pers.name}]`);
         }
       }
     }
+
+    // 更新角色默认 4 视角根目录参考图（取 default outfit）
+    const defaultOutfit = charConfig.outfits.find(o => o.isDefault) || charConfig.outfits[0];
+    for (const pers of PERSPECTIVES) {
+      const src = path.join(OUT_BASE, charConfig.id, defaultOutfit.id, `${pers.id}.png`);
+      const dest = path.join(OUT_BASE, charConfig.id, `${pers.id}.png`);
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, dest);
+      }
+    }
+
+    // 更新角色立绘头像 assets/characters/popular-<id>.png（使用默认服装的 3/4 半身或特写）
+    const avatarSrc = path.join(OUT_BASE, charConfig.id, defaultOutfit.id, 'ref_02_half_medium.png');
+    const avatarDest = path.join(CHAR_DIR, `popular-${charConfig.id}.png`);
+    if (fs.existsSync(avatarSrc)) {
+      fs.copyFileSync(avatarSrc, avatarDest);
+      console.log(`🌟 已更新角色立绘/头像: ${avatarDest}`);
+    }
   }
 
-  console.log(`\n🎉 [Anima LoRA Re-Renderer] 绫地宁宁 & 四季夏目 全部服装与全裸 4 视角重绘任务完成！`);
+  console.log(`\n🎉 [Inori & Kisara Reference Re-Renderer] 楪祈与木更全部形态与立绘更新完成！`);
 }
 
 main().catch(console.error);
