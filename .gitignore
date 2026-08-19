@@ -66,3 +66,7 @@ desktop-tauri/native-live2d/*.png
 poc/**/target/
 poc/**/src-tauri/gen/
 poc/**/*.png
+
+# pnpm env artifact (project uses npm)
+pnpm-lock.yaml
+pnpm-workspace.yaml
