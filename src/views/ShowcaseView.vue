@@ -45,7 +45,9 @@
               <option v-for="opt in popularCharOpts" :key="opt.v" :value="opt.v">{{ opt.l }}</option>
             </select>
           </template>
-          <button v-for="opt in charOpts" :key="opt.v" class="filter-pill" :class="{active:charFilter===opt.v}" type="button" :aria-pressed="charFilter===opt.v" @click="charFilter=opt.v">{{ opt.l }}</button>
+          <template v-else>
+            <button v-for="opt in charOpts" :key="opt.v" class="filter-pill" :class="{active:charFilter===opt.v}" type="button" :aria-pressed="charFilter===opt.v" @click="charFilter=opt.v">{{ opt.l }}</button>
+          </template>
         </div>
         <div class="filter-group">
           <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>

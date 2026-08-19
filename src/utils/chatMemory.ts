@@ -89,6 +89,23 @@ export function saveChatMemoryState(state: ChatMemoryState): void {
   localStorage.setItem(CHAT_MEMORY_KEY, JSON.stringify(normalizeChatMemoryState(state)))
 }
 
+export function mergeChatMemoryStates(current: ChatMemoryState, incoming: ChatMemoryState): ChatMemoryState {
+  const merged = emptyChatMemoryState()
+  for (const character of ['nene', 'natsume'] as const) {
+    const seen = new Set<string>()
+    const items = [...current.byCharacter[character], ...incoming.byCharacter[character]]
+      .sort((a, b) => b.updatedAt - a.updatedAt)
+    for (const item of items) {
+      const key = item.text.toLocaleLowerCase()
+      if (seen.has(key)) continue
+      seen.add(key)
+      merged.byCharacter[character].push(item)
+      if (merged.byCharacter[character].length >= MAX_ITEMS) break
+    }
+  }
+  return merged
+}
+
 export function rememberChatFact(
   state: ChatMemoryState,
   character: ChatMemoryCharacter,

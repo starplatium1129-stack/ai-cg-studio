@@ -8,6 +8,7 @@ import { useVoice } from '@/composables/useVoice'
 import { controlApi } from '@/api/controlApi'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
+import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY } from '@/utils/storageKeys'
 import {
   editChatFact,
   emptyChatMemoryState,
@@ -216,6 +217,11 @@ export function useCharacterRoomSession() {
   function onReasoningChange(level: 'off' | 'low' | 'medium' | 'high') {
     reasoning.value = level
     settingsRepository.set(CHAT_THINKING_SETTING, level)
+  }
+
+  function onChatAuxStorage(event: StorageEvent) {
+    if (event.key === CHAT_MEMORY_KEY) chatMemory.value = loadChatMemoryState()
+    if (event.key === CHAT_USER_PROFILE_KEY) userProfile.value = loadChatUserProfile()
   }
 
   function updateUserProfile(profile: ChatUserProfile) {
@@ -428,6 +434,8 @@ export function useCharacterRoomSession() {
     storage.clearArchive()
     chatMemory.value = emptyChatMemoryState()
     persistChatMemory()
+    userProfile.value = { callName: '', relationship: 'atelier_owner', note: '' }
+    try { localStorage.removeItem(CHAT_USER_PROFILE_KEY) } catch {}
     setError('全部本地聊天记忆已清除。', 'info', 3000)
   }
 
@@ -453,6 +461,7 @@ export function useCharacterRoomSession() {
   watch(currentModel, (value) => { if (value) storage.setModel(value) })
 
   onMounted(async () => {
+    window.addEventListener('storage', onChatAuxStorage)
     document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
     inputText.value = storage.draft(activeChar.value)
     await refreshChatStatus()
@@ -476,6 +485,7 @@ export function useCharacterRoomSession() {
   })
 
   onUnmounted(() => {
+    window.removeEventListener('storage', onChatAuxStorage)
     clearInterval(statusTimer)
     clearInterval(roomPollTimer)
     roomPollRequest?.abort()

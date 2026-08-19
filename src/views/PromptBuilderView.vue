@@ -1749,7 +1749,8 @@ async function runBatchAnima(input: BatchDrawRunnerInput): Promise<BatchDrawRunn
     hiresDenoise: animaState.value.hiresDenoise,
   }
   try {
-    const data = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>('/api/anima/jobs', {
+    const jobRoute = animaState.value.family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
+    const data = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobRoute, {
       method: 'POST',
       body: animaRequestPayload(request),
       timeoutMs: 30_000,
@@ -1761,7 +1762,7 @@ async function runBatchAnima(input: BatchDrawRunnerInput): Promise<BatchDrawRunn
     while (Date.now() < deadline) {
       await new Promise(resolve => setTimeout(resolve, 1000))
       const state = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(
-        `/api/anima/jobs/${encodeURIComponent(jobId)}`, { cache: 'no-store', timeoutMs: 15_000 })
+        `${jobRoute}/${encodeURIComponent(jobId)}`, { cache: 'no-store', timeoutMs: 15_000 })
       if (state.ok !== true || !state.job) throw new Error(state.error || 'Anima 状态无效')
       job = state.job
       if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')

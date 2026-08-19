@@ -15,6 +15,10 @@ export interface PersistedChatMessage {
 
 export interface PersistedChatState {
   version: number
+  /** Legacy global revision retained for older persisted records. */
+  historiesRevision: number
+  /** Per-character tombstone revisions for explicit history clears. */
+  historiesRevisions: Record<string, number>
   active: string
   histories: Record<string, PersistedChatMessage[]>
   settings: {
@@ -149,10 +153,25 @@ export function normalizeChatStorage(
   const finalApiModel = apiModel || (neverConfigured ? FALLBACK_MODEL : '')
   const finalApiKey = apiKey || (neverConfigured ? FALLBACK_KEY : '')
 
+  const rawHistoriesRevision = Number(raw.historiesRevision)
+  const historiesRevision = Number.isSafeInteger(rawHistoriesRevision) && rawHistoriesRevision >= 0
+    ? rawHistoriesRevision
+    : 0
+  const rawHistoriesRevisions = isRecord(raw.historiesRevisions) ? raw.historiesRevisions : {}
+  const historiesRevisions: Record<string, number> = {}
+  for (const id of ids) {
+    const candidate = Number(rawHistoriesRevisions[id])
+    historiesRevisions[id] = Number.isSafeInteger(candidate) && candidate >= 0
+      ? candidate
+      : historiesRevision
+  }
+
   return {
     neverConfigured: neverConfigured,
     state: {
       version: options.version,
+      historiesRevision,
+      historiesRevisions,
       active,
       histories: normalizedHistories,
       settings: {
@@ -176,6 +195,8 @@ export function normalizeChatStorage(
 export function serializeChatStorage(state: PersistedChatState): string {
   return JSON.stringify({
     version: state.version,
+    historiesRevision: state.historiesRevision,
+    historiesRevisions: state.historiesRevisions,
     active: state.active,
     histories: state.histories,
     settings: state.settings,

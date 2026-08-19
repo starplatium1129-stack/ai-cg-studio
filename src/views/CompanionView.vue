@@ -410,7 +410,7 @@ const workspaceTooltip = computed(() => workspaceExists.value
   : '未配置 AI 工作区：样张预览与训练不可用，点击设置')
 interface ClipboardCard {
   kind: 'image' | 'text'
-  png?: Uint8Array
+  png?: Uint8Array | number[]
   previewUrl?: string
   text?: string
 }
@@ -435,6 +435,8 @@ const immersive = ref(false)
 const speechConfig = ref(loadSpeechInputConfig())
 const speechSettingsOpen = ref(false)
 const speechSession = createSpeechSession()
+const speechSessionState = ref(speechSession.state())
+const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
 const speechNotice = ref('')
 const documentHidden = ref(typeof document !== 'undefined' && document.hidden)
 const composerFocused = ref(false)
@@ -453,7 +455,10 @@ const {
 })
 const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
 const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
-const speechSessionActive = computed(() => speechSession.isSessionActive())
+const speechSessionActive = computed(() => {
+  void speechSessionState.value
+  return speechSession.isSessionActive()
+})
 const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
 const presence = computed(() => resolveCompanionPresence({
   visible: pageVisible.value,
@@ -865,17 +870,16 @@ function showClipboardCard(card: ClipboardCard) {
   clipboardCardTimer = window.setTimeout(dismissClipboardCard, 20_000) as unknown as number
 }
 
-function clipboardPngBlob(png: Uint8Array): Blob | null {
+function clipboardPngBlob(png: Uint8Array | number[]): Blob | null {
   try {
-    const copy = new Uint8Array(png.byteLength)
-    copy.set(png)
+    const copy = png instanceof Uint8Array ? new Uint8Array(png) : new Uint8Array(png)
     return new Blob([copy.buffer as ArrayBuffer], { type: 'image/png' })
   } catch {
     return null
   }
 }
 
-function onClipboardImage(png: Uint8Array) {
+function onClipboardImage(png: Uint8Array | number[]) {
   if (!viewAlive) return
   const blob = clipboardPngBlob(png)
   if (!blob) return
@@ -1084,6 +1088,7 @@ onMounted(async () => {
   }
 })
 onUnmounted(() => {
+  stopSpeechSessionWatch()
   viewAlive = false
   eventPollController?.abort()
   eventPollController = null

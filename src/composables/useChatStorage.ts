@@ -31,6 +31,8 @@ export interface ChatMessage {
 
 export interface ChatState {
   version: number
+  historiesRevision: number
+  historiesRevisions: Record<string, number>
   active: string
   histories: Record<string, ChatMessage[]>
   settings: {
@@ -72,7 +74,10 @@ function mergeHistories(local: ChatMessage[], remote: ChatMessage[]): ChatMessag
 }
 
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
-  const state = reactive<ChatState>({    version: STORAGE_VERSION,
+  const state = reactive<ChatState>({
+    version: STORAGE_VERSION,
+    historiesRevision: 0,
+    historiesRevisions: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, 0])),
     active: 'nene',
     histories: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, []])),
     settings: {
@@ -114,21 +119,41 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   /** 把 localStorage 中其他窗口更新的历史合并进内存（按 mid 去重，零丢失）。 */
-  function mergeRemoteIntoState() {
+  function mergeRemoteIntoState(): boolean {
     try {
       const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
-      if (!raw || typeof raw !== 'object') return
-      const remote = (raw as Record<string, unknown>).histories
-      if (!remote || typeof remote !== 'object') return
+      if (!raw || typeof raw !== 'object') return true
+      const record = raw as Record<string, unknown>
+      const parsedRevision = Number(record.historiesRevision)
+      const legacyRevision = Number.isSafeInteger(parsedRevision) && parsedRevision >= 0 ? parsedRevision : 0
+      const rawRevisions = record.historiesRevisions
+      const remoteRevisions = rawRevisions && typeof rawRevisions === 'object'
+        ? rawRevisions as Record<string, unknown>
+        : {}
+      const remote = record.histories
+      if (!remote || typeof remote !== 'object') return true
       for (const char of Object.keys(CHARACTERS)) {
+        const parsedCharRevision = Number(remoteRevisions[char])
+        const remoteRevision = Number.isSafeInteger(parsedCharRevision) && parsedCharRevision >= 0
+          ? parsedCharRevision
+          : legacyRevision
+        const localRevision = state.historiesRevisions[char] || state.historiesRevision
         const list = (remote as Record<string, unknown>)[char]
         if (!Array.isArray(list)) continue
-        const merged = mergeHistories(state.histories[char] || [], list as ChatMessage[])
-        if (merged.length !== (state.histories[char] || []).length) {
-          state.histories[char] = merged
+        if (remoteRevision > localRevision) {
+          state.historiesRevisions[char] = remoteRevision
+          state.histories[char] = list as ChatMessage[]
+        } else if (remoteRevision === localRevision) {
+          const merged = mergeHistories(state.histories[char] || [], list as ChatMessage[])
+          if (merged.length !== (state.histories[char] || []).length) state.histories[char] = merged
         }
+        state.historiesRevision = Math.max(state.historiesRevision, remoteRevision)
       }
-    } catch { /* 解析失败保持现状，下次保存仍会重试 */ }
+      return true
+    } catch {
+      /* 解析失败保持现状，下次保存仍会重试. */
+      return true
+    }
   }
 
   // storage 事件只在本 tab 之外触发：其他窗口写入后被动合并，不写回（避免循环）。
@@ -159,6 +184,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   function applyPersisted(persisted: PersistedChatState) {
     state.version = persisted.version
+    state.historiesRevision = persisted.historiesRevision
+    state.historiesRevisions = { ...persisted.historiesRevisions }
     state.active = persisted.active
     for (const char of Object.keys(CHARACTERS)) {
       state.histories[char] = persisted.histories[char] || []
@@ -180,6 +207,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function persistedState(): PersistedChatState {
     return {
       version: STORAGE_VERSION,
+      historiesRevision: state.historiesRevision,
+      historiesRevisions: state.historiesRevisions,
       active: state.active,
       histories: state.histories,
       settings: {
@@ -245,7 +274,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
       // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
-      if (mergeRemote) mergeRemoteIntoState()
+      if (mergeRemote && !mergeRemoteIntoState()) return
       state.version = STORAGE_VERSION
       localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       localStorage.setItem('aics_chat_model', state.settings.model || '')
@@ -344,9 +373,18 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     saveArchive()
   }
   function clear(char?: string) {
+    // Preserve a clear made by another tab for a different character before
+    // applying this character's clear. localStorage access is synchronous, so
+    // the read and the following write are one uninterrupted mutation.
+    if (char) mergeRemoteIntoState()
     if (char) { state.histories[char] = [] }
     else { for (const k of Object.keys(CHARACTERS)) state.histories[k] = [] }
-    // 清除不合并远端：用户显式清空不应被其他窗口的旧数据复活。
+    // Advance the tombstone before persisting. A delayed save from a tab that
+    // still has the previous revision will then be rejected.
+    const nextRevision = Math.max(state.historiesRevision + 1, Date.now())
+    state.historiesRevision = nextRevision
+    if (char) state.historiesRevisions[char] = Math.max((state.historiesRevisions[char] || 0) + 1, nextRevision)
+    else for (const key of Object.keys(CHARACTERS)) state.historiesRevisions[key] = nextRevision
     save(false)
   }
 

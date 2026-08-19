@@ -37,9 +37,10 @@ export function useTrainingPolling(options: UseTrainingPollingOptions) {
       await options.refresh(true)
       if (currentGeneration !== generation || !options.mounted.value) return
       const job = options.activeJob.value
-      if (!job || job.id !== jobId || !options.isActive(job)) return
+      if (!job || job.id !== jobId) return
       options.onJobProgress(job)
       await options.loadLogs(options.selectedJobId.value)
+      if (!options.isActive(job)) return
     })()
     try {
       await request

@@ -258,6 +258,12 @@ async function run() {
       && chatConversation.includes('parseNdjsonResponse'),
     'chat conversation composable must stream from the gateway'
   );
+  assert(
+    chatStorage.includes('historiesRevision')
+      && chatStorage.includes('historiesRevisions')
+      && chatStorage.includes('remoteRevision'),
+    'clearing a conversation must create a tombstone that blocks delayed stale saves'
+  );
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(html.includes('ChatUserProfilePanel') && userProfilePanel.includes('CHAT_RELATIONSHIPS'), 'user profile editing must have independent component ownership');
   assert(html.includes('ChatMemoryPanel') && memoryPanel.includes('LONG-TERM MEMORY') && html.includes('messageRemembered'), 'manual long-term memory must have independent UI ownership');

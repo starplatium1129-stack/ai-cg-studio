@@ -14,10 +14,14 @@ import {
 import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHealth'
 import {
   BACKUP_AT_KEY,
+  CHAT_MEMORY_KEY,
   cleanDeadLocalKeys,
   collectLiveLocalSettings,
   isLiveLocalKey,
 } from '@/utils/storageKeys'
+import { normalizeChatStorage } from '@/utils/chatStorageCore'
+import { CHAT_ARCHIVE_KEY, mergeChatArchives, normalizeChatArchive, serializeChatArchive } from '@/utils/chatArchive'
+import { mergeChatMemoryStates, normalizeChatMemoryState } from '@/utils/chatMemory'
 export type { BackupSummary } from '@/utils/backupCore'
 
 /**
@@ -237,7 +241,39 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         }
       }
       Object.entries(imported.data.settings || {}).forEach(([k, v]) => {
-        if (isLiveLocalKey(k)) { try { localStorage.setItem(k, String(v)) } catch {} }
+        if (!isLiveLocalKey(k)) return
+        try {
+          if (!replace && k === CHAT_MEMORY_KEY) {
+            const current = normalizeChatMemoryState(JSON.parse(localStorage.getItem(k) || 'null'))
+            const incoming = normalizeChatMemoryState(JSON.parse(String(v)))
+            localStorage.setItem(k, JSON.stringify(mergeChatMemoryStates(current, incoming)))
+          } else if (!replace && k === CHAT_ARCHIVE_KEY) {
+            const current = normalizeChatArchive(JSON.parse(localStorage.getItem(k) || 'null'), ['nene', 'natsume'])
+            const incoming = normalizeChatArchive(JSON.parse(String(v)), ['nene', 'natsume'])
+            localStorage.setItem(k, serializeChatArchive(mergeChatArchives(current, incoming)))
+          } else if (!replace && k === 'aics_chat_v1') {
+            const current = normalizeChatStorage(JSON.parse(localStorage.getItem(k) || 'null'), '', {
+              characterIds: ['nene', 'natsume'], maxMessages: 20, version: 3,
+              createMessageId: () => `restore-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+            }).state
+            const incoming = normalizeChatStorage(JSON.parse(String(v)), '', {
+              characterIds: ['nene', 'natsume'], maxMessages: 20, version: 3,
+              createMessageId: () => `restore-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+            }).state
+            const merged = { ...incoming, histories: { ...current.histories } }
+            for (const char of ['nene', 'natsume']) {
+              const ids = new Set<string>()
+              merged.histories[char] = [...current.histories[char], ...incoming.histories[char]].filter(item => {
+                if (ids.has(item.mid)) return false
+                ids.add(item.mid)
+                return true
+              }).slice(-20)
+            }
+            localStorage.setItem(k, JSON.stringify(merged))
+          } else {
+            localStorage.setItem(k, String(v))
+          }
+        } catch { /* skip malformed optional setting */ }
       })
 
       pending.value = null

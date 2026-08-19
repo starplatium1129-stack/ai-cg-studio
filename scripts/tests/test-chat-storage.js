@@ -60,6 +60,7 @@ const migrated = core.normalizeChatStorage({
 }, '', options);
 
 assert.strictEqual(migrated.state.version, 3, 'legacy chat storage must migrate to the current version');
+assert.strictEqual(migrated.state.historiesRevision, 0, 'legacy storage must receive the initial clear revision');
 assert.strictEqual(migrated.state.active, 'natsume');
 assert.strictEqual(migrated.state.settings.provider, 'api');
 assert.strictEqual(migrated.state.settings.apiBaseUrl, 'https://legacy.example/v1');
@@ -110,6 +111,16 @@ assert.strictEqual(damaged.migratedApiKey, '');
 
 const current = core.normalizeChatStorage(JSON.parse(durable), 'ignored-model', options);
 assert.deepStrictEqual(current.state, migrated.state, 'current chat storage must round-trip without drift');
+
+const cleared = core.normalizeChatStorage({
+  version: 3,
+  historiesRevision: 1734000000000,
+  active: 'nene',
+  histories: { nene: [], natsume: [] },
+  settings: {},
+}, '', options);
+assert.strictEqual(cleared.state.historiesRevision, 1734000000000,
+  'explicit clear revision must survive reload');
 
 // 旧版本 normalize 曾把开箱即用兜底默认（本机 CLIProxy + Gemini）持久化进
 // localStorage。这些用户从未主动配置 API，站主托管配置必须优先于兜底：

@@ -400,6 +400,8 @@ function onUserProfileSave(profile: ChatUserProfile) {
 const speechConfig = ref(loadSpeechInputConfig())
 const speechSettingsOpen = ref(false)
 const speechSession = createSpeechSession()
+const speechSessionState = ref(speechSession.state())
+const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
 const speechNotice = ref('')
 const {
   state: speechState,
@@ -443,7 +445,10 @@ const speechStateText = computed(() => {
   }
 })
 
-const speechSessionActive = computed(() => speechSession.isSessionActive())
+const speechSessionActive = computed(() => {
+  void speechSessionState.value
+  return speechSession.isSessionActive()
+})
 
 function commitSpeechText(text: string): void {
   inputText.value = text
@@ -531,5 +536,8 @@ function onSpeechSessionEnd(): void {
   reconcileAutoListen()
 }
 
-onBeforeUnmount(() => speechRelease())
+onBeforeUnmount(() => {
+  stopSpeechSessionWatch()
+  speechRelease()
+})
 </script>

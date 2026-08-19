@@ -112,7 +112,7 @@ function createVoiceRouter(config, dependencies) {
 
     translation.translate(text, controller.signal).then(function (result) {
       if (controller.signal.aborted || res.writableEnded) return;
-      res.json({
+      envelope.ok(res, {
         sourceLanguage:'zh',
         targetLanguage:'ja',
         translation:result.translation,

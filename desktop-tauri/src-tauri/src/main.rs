@@ -374,6 +374,11 @@ fn main() {
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {
                 tauri::WindowEvent::Moved(_) | tauri::WindowEvent::Resized(_) => {
                     let _ = app_handle.emit("aics:save-bounds", ());
+                    if label == "atelier" {
+                        if let Some(window) = app_handle.get_webview_window("atelier") {
+                            let _ = window.emit("aics:maximized", window.is_maximized().unwrap_or(false));
+                        }
+                    }
                 }
                 tauri::WindowEvent::CloseRequested { api, .. } => {
                     if label == "atelier" {

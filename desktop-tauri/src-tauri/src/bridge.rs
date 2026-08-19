@@ -186,6 +186,7 @@ pub fn window_maximize_toggle(app: AppHandle) {
             } else {
                 let _ = w.maximize();
             }
+            let _ = w.emit("aics:maximized", w.is_maximized().unwrap_or(false));
         }
     }
 }

@@ -661,13 +661,14 @@ function readHomeHeroManifest() {
     if (result.status === 0 && (task === 'classify' || task === 'optimize')) {
       syncSceneStoreDataVersion(cfg.ROOT_DIR);
     }
-    res.json({
-      ok: result.status === 0,
+    var payload = {
       task: task,
       label: MAINTENANCE_TASKS[task].label,
       output: output,
       exitCode: result.status
-    });
+    };
+    if (result.status !== 0) return envelope.fail(res, 400, output, payload);
+    return envelope.ok(res, payload);
   });
 
   return {

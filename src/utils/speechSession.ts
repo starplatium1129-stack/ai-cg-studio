@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 语音会话状态机（纯 TS，无 DOM）。
  *
  * 对标 ZcChat2 的 SpeechInteractionController + SpeechSessionPolicy：
@@ -45,6 +45,7 @@ export interface SpeechSessionHandle {
   /** 会话手动退出（如用户主动关闭连续对话） */
   endSession(): void
   reset(): void
+  onChange(listener: () => void): () => void
 }
 
 function normalizeWords(words: string[]): string[] {
@@ -56,9 +57,16 @@ export function createSpeechSession(): SpeechSessionHandle {
   let wakeWords: string[] = []
   let endWords: string[] = []
   let state: SpeechSessionState = 'disabled'
+  const listeners = new Set<() => void>()
+  function notify(): void { listeners.forEach(listener => listener()) }
+  function setState(next: SpeechSessionState): void {
+    if (state === next) return
+    state = next
+    notify()
+  }
 
   function toWaiting(): void {
-    state = config?.wakeEnabled ? 'waitingForWake' : 'disabled'
+    setState(config?.wakeEnabled ? 'waitingForWake' : 'disabled')
   }
 
   return {
@@ -72,6 +80,11 @@ export function createSpeechSession(): SpeechSessionHandle {
       endWords = normalizeWords(next.endWords)
       if (endWords.length === 0) endWords = ['结束对话']
       toWaiting()
+    },
+
+    onChange(listener: () => void): () => void {
+      listeners.add(listener)
+      return () => listeners.delete(listener)
     },
 
     state(): SpeechSessionState {
@@ -99,7 +112,7 @@ export function createSpeechSession(): SpeechSessionHandle {
       const hit = wakeWords.some(word => trimmed === word || trimmed.includes(word))
       if (!hit) return false
       if (state === 'waitingForWake' || state === 'continuousReady') {
-        state = 'continuousReady'
+        setState('continuousReady')
       }
       return true
     },
@@ -109,31 +122,31 @@ export function createSpeechSession(): SpeechSessionHandle {
       if (!trimmed) return 'ignore'
       if (state === 'ending') return 'ignore'
       if (endWords.some(word => trimmed === word || trimmed.includes(word))) {
-        state = 'ending'
+        setState('ending')
         return 'end'
       }
       if (state === 'waitingForReply' || state === 'recognizing' || state === 'capturing') {
         return 'ignore'
       }
-      state = 'waitingForReply'
+      setState('waitingForReply')
       return 'submit'
     },
 
     markCapturing(): void {
       if (state === 'waitingForWake' || state === 'continuousReady') {
-        state = 'capturing'
+        setState('capturing')
       }
     },
 
     markRecognizing(): void {
-      if (state === 'capturing') state = 'recognizing'
+      if (state === 'capturing') setState('recognizing')
     },
 
     markReplyBusy(): void { /* 回复期由外部 busy 驱动，状态不变 */ },
 
     markReplyIdle(): void {
       if (state === 'waitingForReply') {
-        state = 'continuousReady'
+        setState('continuousReady')
       } else if (state === 'ending') {
         toWaiting()
       }

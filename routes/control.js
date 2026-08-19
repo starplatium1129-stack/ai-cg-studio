@@ -917,7 +917,9 @@ function createControlRouter(config, gatewayRef, dependencies) {
         '请在源码开发模式中执行 npm run build。', { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
     }
     runWebBuild(config, function (result) {
-      envelope.ok(res, Object.assign({ ok:result.ok, durationMs:result.durationMs, error:result.error, tail:result.tail }, { webBuild:webBuildInfo(config) }));
+      var payload = Object.assign({ durationMs:result.durationMs, error:result.error, tail:result.tail }, { webBuild:webBuildInfo(config) });
+      if (!result.ok) return envelope.fail(res, 500, result.error || '前端构建失败', payload);
+      return envelope.ok(res, payload);
     });
   });
 
