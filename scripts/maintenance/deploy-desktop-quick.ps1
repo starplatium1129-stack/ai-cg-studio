@@ -48,9 +48,12 @@ if ($appProcs -or $sidecar) {
 # data-first guarantees a version number only ever points at matching content.
 Write-Host '[3/4] Copying data/dist/assets...' -ForegroundColor Cyan
 $map = @(
-  @{ src = 'data';   dst = 'data' },
-  @{ src = 'dist';   dst = 'dist' },
-  @{ src = 'assets'; dst = 'assets' }
+  @{ src = 'data';     dst = 'data' },
+  @{ src = 'dist';     dst = 'dist' },
+  @{ src = 'assets';   dst = 'assets' },
+  @{ src = 'routes';   dst = 'routes' },
+  @{ src = 'server';   dst = 'server' },
+  @{ src = 'services'; dst = 'services' }
 )
 foreach ($item in $map) {
   $src = Join-Path $root $item.src

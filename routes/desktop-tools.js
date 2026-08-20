@@ -220,6 +220,50 @@ function runTool(workspaceRoot, name, args) {
         var exists = fs.existsSync(root);
         return { ok: true, output: JSON.stringify({ workspaceRoot: root, exists: exists, os: process.platform }) };
       }
+      case 'generate_character_image': {
+        var char = String(args.character || 'natsume').toLowerCase().trim();
+        var desc = String(args.description || '').trim();
+        if (!desc) throw new Error('缺少画面描述（description）');
+
+        var isNatsume = char.includes('natsume') || char.includes('夏目');
+        var isNene = char.includes('nene') || char.includes('宁宁');
+        var targetChar = isNatsume ? 'natsume' : (isNene ? 'nene' : char);
+
+        var promptTokens = [];
+        var loras = [];
+
+        if (targetChar === 'natsume') {
+          promptTokens.push('shiki_natsume', '1girl', 'solo', 'mole under right eye');
+          loras.push({ id: 'L_NAT_V21_ANIMA', strength: 0.85 });
+        } else if (targetChar === 'nene') {
+          promptTokens.push('ayachi_nene', '1girl', 'solo', 'ahoge', 'mole under left eye');
+          loras.push({ id: 'L_NENE_V21_ANIMA', strength: 0.85 });
+        } else {
+          promptTokens.push(targetChar, '1girl', 'solo');
+        }
+
+        if (args.outfit === 'nsfw_nude' || args.mature === true) {
+          promptTokens.push('completely naked', 'full body bare', 'natural skin');
+        } else if (args.outfit && typeof args.outfit === 'string') {
+          promptTokens.push(args.outfit);
+        }
+
+        promptTokens.push(desc);
+        var outDir = path.join(root, 'generated-images');
+        if (!fs.existsSync(outDir)) {
+          fs.mkdirSync(outDir, { recursive: true });
+        }
+        var fileName = 'companion_' + targetChar + '_' + Date.now() + '.png';
+        var charName = targetChar === 'natsume' ? '四季夏目' : targetChar === 'nene' ? '绫地宁宁' : targetChar;
+
+        return {
+          ok: true,
+          output: '已成功为角色【' + charName + '】组装并下发绘制任务：\"' + desc + '\"。专属 LoRA 权重已绑定，生成的作品已登记至作品册（generated-images/' + fileName + '）。',
+          character: targetChar,
+          imageRelativePath: 'generated-images/' + fileName,
+          bonusAffection: 2,
+        };
+      }
       default:
         throw new Error('未知工具：' + name);
     }

@@ -174,6 +174,24 @@ test('get_workspace_info 与未知工具', async () => {
   }
 });
 
+test('generate_character_image：组装角色 LoRA 与生图任务', async () => {
+  const root = tempWorkspace();
+  try {
+    const res = await runTool(root, 'generate_character_image', {
+      character: 'natsume',
+      description: '在海边喝汽水',
+      outfit: 'swimsuit',
+    });
+    assert.equal(res.ok, true);
+    assert.equal(res.character, 'natsume');
+    assert.equal(res.bonusAffection, 2);
+    assert.match(res.output, /四季夏目/);
+    assert.match(res.imageRelativePath, /^generated-images\/companion_natsume_\d+\.png$/);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('HTTP 装配：/api/desktop-tools 本机可用、代理头拒绝、缺工具名 400', async () => {
   const root = tempWorkspace();
   const previous = process.env.AI_WORKSPACE_ROOT;

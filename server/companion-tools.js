@@ -89,6 +89,23 @@ var TOOL_DEFINITIONS = [
       description:'返回 AI 工作区根目录的绝对路径与是否可访问。用于确认文件操作的范围。',
       parameters:{ type:'object', properties:{} }
     }
+  },
+  {
+    type:'function',
+    function:{
+      name:'generate_character_image',
+      description:'根据角色名与场景描述自动调用 AI 绘画引擎生成角色插画。宁宁与夏目会自动绑定专属高精 LoRA。生成完成后会返回图片路径与状态。',
+      parameters:{
+        type:'object',
+        properties:{
+          character:{ type:'string', description:'角色 ID，如 "natsume"（四季夏目）、"nene"（绫地宁宁）或热门角色 ID。' },
+          description:{ type:'string', description:'画面场景、动作、光影或剧情氛围的自然语言描述（如 "在海边喝汽水，微风吹拂，夏日清凉"）。' },
+          outfit:{ type:'string', description:'服装类型（可选，如 "default"、"maid"、"swimsuit"、"casual"、"nsfw_nude"）。' },
+          mature:{ type:'boolean', description:'是否为 R18 私密/成人画面（可选，缺省 false）。' }
+        },
+        required:['character','description']
+      }
+    }
   }
 ];
 

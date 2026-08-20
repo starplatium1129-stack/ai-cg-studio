@@ -20,6 +20,8 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-character-profiles.js',
     'test-chat-storage.js',
     'test-companion-behavior.js',
+    'test-companion-affection.js',
+    'test-companion-vision.js',
     'test-companion-events.js',
     'test-control-operation.js',
     'test-data-backup.js',

@@ -13,6 +13,14 @@
       <div class="companion-identity">
         <span>{{ currentCharacter.roomCode }}</span>
         <h1>与{{ currentCharacter.name }}相伴</h1>
+        <div
+          class="companion-affection-pill"
+          :title="`当前好感度 ${affectionScore}/100\n${affectionInfo.title}（Lv.${affectionInfo.level}）: ${affectionInfo.description}`"
+        >
+          <span class="companion-affection-icon" aria-hidden="true">💖</span>
+          <span class="companion-affection-label">Lv.{{ affectionInfo.level }} {{ affectionInfo.title }}</span>
+          <span class="companion-affection-value">{{ affectionScore }}</span>
+        </div>
       </div>
       <div class="companion-toolbar-actions">
         <div v-if="desktopBridge" class="companion-char-switch" aria-label="切换角色">
@@ -162,6 +170,12 @@
             <p v-if="clipboardCard.kind === 'text'" class="companion-clipboard-preview">{{ clipboardCard.text }}</p>
           </div>
           <div class="companion-clipboard-actions">
+            <button
+              v-if="clipboardCard.kind === 'image'"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              @click="inspectClipboardImage"
+            >让{{ currentCharacter.name }}看看</button>
             <button type="button" class="btn btn-primary btn-sm" @click="acceptClipboardCard">{{ clipboardCard.kind === 'image' ? '存入作品册' : '发给角色' }}</button>
             <button type="button" class="btn btn-ghost btn-sm" @click="dismissClipboardCard">忽略</button>
           </div>
@@ -217,6 +231,14 @@
             @keydown.enter.exact.prevent="handleSend"
             @input="onInputChange"
           ></textarea>
+          <button
+            class="companion-vision-btn"
+            type="button"
+            :disabled="busy || !chatReady || capturingScreen"
+            :title="`让${currentCharacter.name}看你当前的屏幕画面`"
+            aria-label="看屏幕"
+            @click="onCaptureAndInspectScreen"
+          >{{ capturingScreen ? '看屏中…' : '👁️ 看屏幕' }}</button>
           <button
             v-if="busy || voiceActive"
             class="companion-stop"
@@ -338,6 +360,12 @@ import { COMPANION_BEHAVIOR_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKey
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
+import { useCompanionAffection } from '@/composables/useCompanionAffection'
+import {
+  captureScreenFrame,
+  blobToDataUrl,
+  getCharacterInspectionPrompt,
+} from '@/utils/companionVision'
 
 const CHARACTER_IDS = ['nene', 'natsume'] as const
 
@@ -379,6 +407,9 @@ const {
 } = useCharacterRoomSession()
 
 const desktopBridge = window.companionDesktop
+const { getScore, getLevelInfo } = useCompanionAffection()
+const affectionScore = computed(() => getScore(activeChar.value))
+const affectionInfo = computed(() => getLevelInfo(activeChar.value))
 const alwaysOnTop = ref(false)
 const ignoreMouseEvents = ref(false)
 const onBatteryPower = ref(false)
@@ -920,6 +951,38 @@ async function acceptClipboardCard() {
     inputText.value = text
     storage.setDraft(activeChar.value, text)
     chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: 'smooth' })
+  }
+}
+
+const capturingScreen = ref(false)
+
+async function onCaptureAndInspectScreen() {
+  if (capturingScreen.value || busy.value || !chatReady.value) return
+  capturingScreen.value = true
+  try {
+    const dataUrl = await captureScreenFrame()
+    if (!dataUrl) return
+    const prompt = getCharacterInspectionPrompt(activeChar.value)
+    handleSend(prompt, dataUrl)
+  } catch {
+    // 捕获异常忽略
+  } finally {
+    capturingScreen.value = false
+  }
+}
+
+async function inspectClipboardImage() {
+  const card = clipboardCard.value
+  if (!card || card.kind !== 'image' || !card.png) return
+  const blob = clipboardPngBlob(card.png)
+  dismissClipboardCard()
+  if (!blob) return
+  try {
+    const dataUrl = await blobToDataUrl(blob)
+    const prompt = getCharacterInspectionPrompt(activeChar.value)
+    handleSend(prompt, dataUrl)
+  } catch {
+    // 转换异常忽略
   }
 }
 

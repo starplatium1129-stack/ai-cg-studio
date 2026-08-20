@@ -19,6 +19,7 @@ import type {
 } from '@/live2d/types'
 import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
+import { useCompanionAffection } from '@/composables/useCompanionAffection'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -821,7 +822,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       .find((item): item is Live2DInteraction => Boolean(item)) ?? null
   }
 
-  function markInteractionStarted(interaction: Live2DInteraction) {
+  function markInteractionStarted(interaction: Live2DInteraction, customText?: string) {
     activeInteraction = interaction.group
     clearTimeout(interactionTimer)
     interactionTimer = window.setTimeout(() => {
@@ -830,7 +831,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         resetNatsumeOverlayParams()
       }
     }, interaction.duration + 600)
-    interactionHint.value = interaction.hint
+    interactionHint.value = customText || interaction.hint
     setState('ready', 'Live2D 已连接')
     stageEl?.classList.remove('live2d-reacting')
     void stageEl?.offsetWidth
@@ -872,13 +873,18 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       interactionFailed(interaction)
       return
     }
-    // Natsume's alternate visual layers are authored inside different motion
-    // variants. Let Cubism choose a variant instead of pinning every hit area
-    // to index 0; the motion owns all temporary parameter/layer changes.
-    const result = model.motion(interaction.group, undefined, 3)
+    // 结合好感度调度系统按规则选择动作索引，并获取原装台词与加分反馈
+    const affection = useCompanionAffection()
+    const dispatched = affection.dispatchInteractiveMotion(character.value, interaction.group)
+    const motionIndex = dispatched.index
+    const customText = dispatched.entry?.text
+      ? `“${dispatched.entry.text}”${dispatched.bonusAwarded ? ` (好感度+${dispatched.bonusAwarded})` : ''}`
+      : interaction.hint
+
+    const result = model.motion(interaction.group, motionIndex, 3)
     if (isCatchable(result)) {
       result.then((started: unknown) => {
-        if (started === true) markInteractionStarted(interaction)
+        if (started === true) markInteractionStarted(interaction, customText)
         else interactionFailed(interaction)
       }).catch((error: unknown) => {
         interactionHint.value = '动作暂时不可用，请重试'
@@ -886,7 +892,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       })
       return
     }
-    if (result === true) markInteractionStarted(interaction)
+    if (result === true) markInteractionStarted(interaction, customText)
     else interactionFailed(interaction)
   }
 

@@ -90,3 +90,20 @@ ZcChat2 的精华集中在三处：**语音输入链路**（我们为零）、**
 - 窗口隐藏、页面 visibilitychange、回复 busy 和卸载都会取消手动/自动采集；behavior tick 每次刷新安静时段并 reconcile，即使没有提醒也能及时停/恢自动监听。
 - 语音控件收拢为单一 `companion-speech-cluster`，连续会话提供结束按钮；增加 deferred microphone 与源码生命周期契约测试。
 - 整合构建后 Companion 语音浏览器回归已签收：`studio.spec.ts --grep "companion speech"` 2/2 通过，并通过 viewport/scrollWidth/控件不重叠断言。
+
+### P5：桌宠好感度体系、生图工具直连与视觉看屏锐评 ✅（2026-08-20）
+
+1. **Live2D 原作好感度与动作权限系统（`companionAffection.ts` / `useCompanionAffection.ts`）**：
+   - 0~100 亲密度体系（Lv1 初识 ~ Lv5 契约），完整还原四季夏目 Live2D 原作者 `model.json` 中的 `Intimacy` 动作门控与 `Bonus` 加分规则。
+   - 低好感度下严格拦截满分告白动作；达成满分后解锁全部专属隐藏动作（萌萌Q、喝茶邀请、我爱你告白等）。
+   - 摸头/摸手触发 `Bonus: +5` 经验累加并展示作者原配台词气泡；顶栏增加好感度药丸徽标 UI。
+
+2. **桌面生图工具箱直连（Agent Tools）**：
+   - 服务端注册 `generate_character_image` 工具定义；
+   - `routes/desktop-tools.js` 自动根据角色绑定专属 Anima LoRA 权重与形态 tokens，支持自然语言一句话出图与 R18 纯裸形态切换；
+   - 出图成功后自动触发角色好感度增长（+2 💖）。
+
+3. **多模态视觉看屏与屏幕锐评（`companionVision.ts`）**：
+   - `captureScreenFrame` 屏幕截帧与剪贴板图片 DataURL 转换；
+   - 对话请求支持多模态图文流式接入并自动路由至本地 Gemini 视觉模型；
+   - 桌宠界面提供 `👁️ 看屏幕` 快捷按钮与剪贴板“让角色看看”交互。

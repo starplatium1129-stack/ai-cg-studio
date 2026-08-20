@@ -11,6 +11,7 @@
 /** 精确活键：全站仍在读写的 localStorage 键。 */
 export const COMPANION_LIVE2D_KEY = 'aics_companion_live2d_v1'
 export const COMPANION_BEHAVIOR_KEY = 'aics_companion_behavior_v1'
+export const COMPANION_AFFECTION_KEY = 'aics_companion_affection_v1'
 export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 /** 绘图页引擎选择；键名保持不变以兼容已保存的 Anima 偏好。 */
 export const DRAW_ENGINE_KEY = 'aics_draw_engine'
@@ -49,6 +50,7 @@ export const LIVE_LOCAL_KEYS = [
   CHAT_MEMORY_KEY,
   COMPANION_LIVE2D_KEY,
   COMPANION_BEHAVIOR_KEY,
+  COMPANION_AFFECTION_KEY,
   SPEECH_INPUT_KEY,
   DRAW_ENGINE_KEY,
   'aics_training_onboarded',

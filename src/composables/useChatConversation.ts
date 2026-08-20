@@ -11,6 +11,7 @@ import {
 } from '@/utils/stream'
 import { extractMoodTag } from '@/utils/moodTag'
 import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
+import { useCompanionAffection } from '@/composables/useCompanionAffection'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
 // 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
@@ -89,9 +90,9 @@ export function useChatConversation(options: ChatConversationOptions) {
     return true
   }
 
-  async function sendMessage() {
-    const text = inputText.value.trim()
-    if (!text || options.busy.value || !options.chatReady.value) return
+  async function sendMessage(customText?: string, imageUrl?: string) {
+    const text = (customText !== undefined ? customText : inputText.value).trim()
+    if ((!text && !imageUrl) || options.busy.value || !options.chatReady.value) return
     options.onError('')
     options.voice.ensureAudioContext()
 
@@ -120,7 +121,12 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
-    messages.push({ role: 'user', content: text, mid: createMessageId(), stopped: false })
+    messages.push({
+      role: 'user',
+      content: imageUrl ? `${text || '（发送了图片）'} 🖼️` : text,
+      mid: createMessageId(),
+      stopped: false,
+    })
     options.storage.trim(characterId)
     const recalledList = options.recallMemories(characterId, text)
     const assistant = {
@@ -132,8 +138,10 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
     messages.push(assistant)
     options.storage.save()
-    inputText.value = ''
-    options.storage.setDraft(characterId, '')
+    if (customText === undefined) {
+      inputText.value = ''
+      options.storage.setDraft(characterId, '')
+    }
     streamingMid.value = assistant.mid
     options.scrollBottom()
     options.setBusy(true)
@@ -170,9 +178,18 @@ export function useChatConversation(options: ChatConversationOptions) {
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。
       const roundMessages: Array<Record<string, unknown>> = []
       let toolRounds = 0
-      // 视觉轮：read_image 成功后的下一轮改用本地 Gemini（视觉模型）发图，
+      // 视觉轮：带有 imageUrl 或 read_image 成功后的下一轮改用本地 Gemini（视觉模型）发图，
       // 看完成回到用户配置的聊天模型继续对话。
-      let visionRound = false
+      let visionRound = Boolean(imageUrl)
+      if (imageUrl) {
+        roundMessages.push({
+          role: 'user',
+          content: [
+            { type: 'text', text: text || '（这是发送给你的图片，请结合你的性格给出锐评）' },
+            { type: 'image_url', image_url: { url: imageUrl } },
+          ],
+        })
+      }
       const isVisionMessage = (message: Record<string, unknown>) =>
         Array.isArray(message.content)
         && (message.content as Array<{ type?: string }>).some(part => part.type === 'image_url')
@@ -288,7 +305,16 @@ export function useChatConversation(options: ChatConversationOptions) {
             if (window.companionDesktop) {
               result = await window.companionDesktop.runTool(call.name, parsedArgs)
             } else {
-              result = { ok: false, output: '本地工具仅限桌面应用内使用' }
+              const res = await fetch('/api/desktop-tools', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: call.name, args: parsedArgs }),
+              })
+              result = await res.json()
+            }
+            if (call.name === 'generate_character_image' && result.ok) {
+              const affection = useCompanionAffection()
+              affection.addScore(characterId, 2, '生成画作')
             }
           } catch (error) {
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }

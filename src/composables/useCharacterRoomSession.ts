@@ -315,9 +315,10 @@ export function useCharacterRoomSession() {
     scrollBottom,
   })
 
-  function handleSend() {
+  function handleSend(customText?: string | Event, imageUrl?: string) {
     characterStageRef.value?.setUserMessage()
-    void sendMessage()
+    const text = typeof customText === 'string' ? customText : undefined
+    void sendMessage(text, imageUrl)
   }
 
   async function refreshVoiceStatus() {

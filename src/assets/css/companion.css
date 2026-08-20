@@ -56,6 +56,46 @@ html.companion-mode body {
   letter-spacing: .04em;
 }
 
+.companion-page .companion-affection-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  font-size: var(--fs-label-xs);
+  color: var(--text-secondary);
+  user-select: none;
+  cursor: help;
+  transition: border-color var(--t-fast), background-color var(--t-fast);
+}
+
+.companion-page .companion-affection-pill:hover {
+  border-color: var(--accent);
+  background: var(--bg-elevated);
+}
+
+.companion-page .companion-affection-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+
+.companion-page .companion-affection-label {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.companion-page .companion-affection-value {
+  padding: 0 4px;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 10px;
+}
+
 .companion-page .companion-toolbar-actions {
   display: flex;
   align-items: center;
@@ -531,6 +571,7 @@ html.companion-mode body {
 }
 
 .companion-page .companion-send,
+.companion-page .companion-vision-btn,
 .companion-page .companion-stop {
   align-self: stretch;
   min-width: 54px;
@@ -538,6 +579,24 @@ html.companion-mode body {
   border-radius: var(--r-md);
   cursor: pointer;
   font: 700 var(--fs-label-xs) var(--font-sans);
+}
+
+.companion-page .companion-vision-btn {
+  padding: 0 var(--s-2);
+  background: var(--bg-elevated);
+  border-color: var(--border-soft);
+  color: var(--text-secondary);
+  transition: border-color var(--t-fast), color var(--t-fast), background-color var(--t-fast);
+}
+
+.companion-page .companion-vision-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.companion-page .companion-vision-btn:disabled {
+  cursor: not-allowed;
+  opacity: .5;
 }
 
 .companion-page .companion-send {
