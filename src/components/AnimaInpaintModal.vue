@@ -122,8 +122,8 @@ const OUTFIT_PRESETS: OutfitPreset[] = [
 
 const selectedPresetId = ref<string>('bikini_white')
 const customPrompt = ref<string>('')
-const maskPrompt = ref<string>('clothes | shirt | dress | uniform | collar | sleeves | skirt | pants')
-const denoisingStrength = ref<number>(0.80)
+const maskPrompt = ref<string>('clothing | clothes | outfit | dress | shirt | sweater | blouse | jacket | cardigan | coat | top | uniform | skirt | pants | shorts | sleeves | collar | costume | garment')
+const denoisingStrength = ref<number>(0.85)
 const growMaskBy = ref<number>(8)
 const preserveSeed = ref<boolean>(true)
 

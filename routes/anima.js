@@ -385,7 +385,7 @@ function buildWorkflow(input) {
         noLoraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
         noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 1] } };
       } else if (input.maskPrompt) {
-        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.35, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.25, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
         noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
       }
       if (noLoraWf['17']) {
@@ -459,7 +459,7 @@ function buildWorkflow(input) {
       loraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
       loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 1] } };
     } else if (input.maskPrompt) {
-      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.35, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.25, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
       loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
     }
     if (loraWf['17']) {
