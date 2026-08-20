@@ -78,8 +78,10 @@ html.companion-mode body {
 }
 
 .companion-page .companion-affection-icon {
-  font-size: 11px;
-  line-height: 1;
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 .companion-page .companion-affection-label {
@@ -582,11 +584,20 @@ html.companion-mode body {
 }
 
 .companion-page .companion-vision-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-1);
   padding: 0 var(--s-2);
   background: var(--bg-elevated);
   border-color: var(--border-soft);
   color: var(--text-secondary);
   transition: border-color var(--t-fast), color var(--t-fast), background-color var(--t-fast);
+}
+
+.companion-page .companion-vision-btn .archive-icon {
+  width: 14px;
+  height: 14px;
 }
 
 .companion-page .companion-vision-btn:hover:not(:disabled) {

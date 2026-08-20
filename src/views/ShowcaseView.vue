@@ -96,7 +96,7 @@
         <button class="sample-visual" type="button" :aria-label="'查看 ' + entry.title + ' 大图'" @click="openViewer(entry.id)">
           <img v-if="!brokenThumbs.has(entry.id)" class="sample-image" :class="{ 'sample-image-ready': loadedThumbs.has(entry.id) }" :src="thumbSrc(entry)" :alt="entry.title"
             loading="lazy" decoding="async" @load="markThumbLoaded(entry)" @error="markThumbError(entry)" />
-          <span v-else class="sample-image-fallback" aria-hidden="true">✦</span>
+          <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /></span>
           <span class="sample-shade"></span>
           <span class="sample-badges">
             <span v-if="featured.has(entry.id)" class="sample-badge">精选</span>
@@ -110,7 +110,7 @@
           <span class="sample-caption">
             <span class="sample-kicker">
               <span>{{ entry.id }} · {{ charLabel(entry.char) }}</span>
-              <span>✓ {{ entry.attempt }} 次通过</span>
+              <span><ArchiveIcon name="success" /> {{ entry.attempt }} 次通过</span>
             </span>
             <strong class="sample-title">{{ entry.title }}</strong>
           </span>
@@ -135,7 +135,7 @@
             <div v-else class="viewer-image-fallback">图片暂时无法读取</div>
           </div>
           <div class="viewer-copy">
-            <button class="viewer-close" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer">×</button>
+            <button class="viewer-close" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
             <div class="viewer-kicker">Artwork</div>
             <h2>{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
@@ -143,7 +143,7 @@
               <span>{{ charLabel(currentEntry.char) }}</span>
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
-              <span>✓ {{ currentEntry.attempt }} 次通过</span>
+              <span><ArchiveIcon name="success" /> {{ currentEntry.attempt }} 次通过</span>
             </div>
             <div v-if="currentEntry.meta" class="viewer-meta viewer-meta-gen">
               <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
@@ -155,7 +155,7 @@
             <div class="viewer-story">{{ currentEntry.story }}</div>
             <div class="viewer-actions">
               <RouterLink v-if="currentEntry.type === 'scene'" class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'"><ArchiveIcon name="spark" /> 画这个场景</RouterLink>
-              <RouterLink v-else class="btn btn-primary" :to="'/prompt-builder'"><ArchiveIcon name="spark" /> ✨ 去导演台创作</RouterLink>
+              <RouterLink v-else class="btn btn-primary" :to="'/prompt-builder'"><ArchiveIcon name="spark" /> 去导演台创作</RouterLink>
               <button class="btn btn-ghost" type="button" @click="move(-1)">← 上一张</button>
               <button class="btn btn-ghost" type="button" @click="move(1)">下一张 →</button>
             </div>

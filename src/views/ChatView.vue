@@ -175,7 +175,8 @@
                   <button v-if="msg.role === 'user' && msg.mid" class="msg-memory-btn" type="button"
                     :class="{ remembered: messageRemembered(msg.mid) }"
                     :disabled="messageRemembered(msg.mid)" @click="rememberMessage(msg)">
-                    {{ messageRemembered(msg.mid) ? '✓ 已记住' : '📌 钉住记忆' }}
+                    <ArchiveIcon :name="messageRemembered(msg.mid) ? 'success' : 'pin'" />
+                    <span>{{ messageRemembered(msg.mid) ? '已记住' : '钉住记忆' }}</span>
                   </button>
                   <button v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)"
                     class="msg-voice-btn" type="button"

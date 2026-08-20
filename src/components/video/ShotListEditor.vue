@@ -76,7 +76,9 @@
           <div class="shot-reference-header-row">
             <div class="shot-reference-title-group">
               <span class="field-label">角色参考卡（Ref2VA · 跨镜锁定身份 · 支持多角色 4 视角装配）</span>
-              <span v-if="loadingRefCardIndex !== null" class="shot-ref-loading">✨ 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 自动装配 4 视角基准图...</span>
+              <span v-if="loadingRefCardIndex !== null" class="shot-ref-loading">
+                <ArchiveIcon name="spark" /> 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 自动装配 4 视角基准图...
+              </span>
             </div>
             <button
               v-if="referenceCards.length < 4"
@@ -102,12 +104,12 @@
                   :value="card.characterId || ''"
                   @change="onCardCharacterSelected(cardIndex, $event)"
                 >
-                  <option value="">⚡ 选择角色预设...</option>
-                  <optgroup label="✨ 主站主角">
+                  <option value="">选择角色预设...</option>
+                  <optgroup label="主站主角">
                     <option value="nene">绫地宁宁</option>
                     <option value="natsume">四季夏目</option>
                   </optgroup>
-                  <optgroup label="🌟 热门角色">
+                  <optgroup label="热门角色">
                     <option v-for="character in popularCharacters" :key="character.id" :value="character.id">
                       {{ character.displayName }}
                     </option>
@@ -120,7 +122,7 @@
                   :disabled="batchActive"
                   title="移除此角色卡"
                   @click="removeReferenceCard(cardIndex)"
-                >✕</button>
+                ><ArchiveIcon name="close" /></button>
               </div>
 
               <!-- 服装形态药丸选择器 (Outfit Pills) -->
@@ -134,7 +136,8 @@
                   :disabled="batchActive"
                   @click="switchCardOutfit(cardIndex, outfit.outfitId)"
                 >
-                  {{ outfit.isNsfw ? '🔞' : '👗' }} {{ outfit.outfitName }}
+                  <ArchiveIcon :name="outfit.isNsfw ? 'lock' : 'wardrobe'" />
+                  <span>{{ outfit.outfitName }}</span>
                 </button>
               </div>
 
@@ -190,28 +193,28 @@
             :disabled="aiBusy || batchActive || !shots.length"
             title="第 1 步：逐镜把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/运动/对白（复用聊天 LLM 配置）"
             @click="runAiRewrite"
-          >① ✦ AI 整理分镜</button>
+          ><ArchiveIcon name="spark" /> AI 整理分镜</button>
           <button
             class="btn btn-ghost"
             type="button"
             :disabled="aiBusy || batchActive || shots.length < 2"
             title="第 2 步：用全局视角审整批镜头：调整景别/镜头运动/对白分布，让全片有节奏（不改描述本身）"
             @click="runAiPolish"
-          >② ◎ AI 整批编排</button>
+          ><ArchiveIcon name="filter" /> AI 整批编排</button>
           <button
             class="btn btn-ghost"
             type="button"
             :disabled="scriptBusy || batchActive"
             title="写个故事梗概，AI 直接生成完整分镜表（无首帧纯文字 T2VA 也可生成）"
             @click="scriptOpen = true"
-          >✎ AI 生成脚本</button>
+          ><ArchiveIcon name="wand" /> AI 生成脚本</button>
           <button
             class="btn btn-ghost"
             type="button"
             :disabled="reviewBusy || batchActive || !shots.length"
             title="AI 审查整批镜头：描述不合格/字段矛盾/对白问题/衔接跳跃，生成前把关"
             @click="runAiReview"
-          >◉ 质量检查</button>
+          ><ArchiveIcon name="search" /> 质量检查</button>
           <button
             v-if="aiSnapshot"
             class="btn btn-ghost"
@@ -267,7 +270,7 @@
             <div class="shot-row-actions">
               <button type="button" :disabled="index === 0 || batchActive" title="上移" @click="moveShot(index, -1)">↑</button>
               <button type="button" :disabled="index === shots.length - 1 || batchActive" title="下移" @click="moveShot(index, 1)">↓</button>
-              <button type="button" :disabled="batchActive" title="删除镜头" @click="removeShot(index)">✕</button>
+              <button type="button" :disabled="batchActive" title="删除镜头" @click="removeShot(index)"><ArchiveIcon name="close" /></button>
             </div>
           </header>
 
@@ -303,7 +306,7 @@
                   :disabled="batchActive || dialogueBusy"
                   title="AI 给 3 条台词备选（或润色你写的）"
                   @click="runAiDialogue(index)"
-                >✦ AI 台词</button>
+                ><ArchiveIcon name="chat" /> AI 台词</button>
               </div>
               <div v-if="dialogueIndex === index" class="shot-dialogue-options">
                 <button
@@ -412,11 +415,11 @@
           <section class="shot-script-panel" role="dialog" aria-modal="true" aria-label="AI 生成分镜脚本">
             <header class="shot-script-head">
               <div>
-                <span class="video-step">✎ AI 生成脚本</span>
+                <span class="video-step"><ArchiveIcon name="wand" /> AI 生成脚本</span>
                 <h2>故事梗概 → 完整分镜表</h2>
                 <p>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p>
               </div>
-              <button class="btn btn-ghost" type="button" aria-label="关闭" @click="scriptOpen = false">✕</button>
+              <button class="btn btn-ghost" type="button" aria-label="关闭" @click="scriptOpen = false"><ArchiveIcon name="close" /></button>
             </header>
             <label class="field">
               <span class="field-label">故事梗概（中文即可）</span>
@@ -521,6 +524,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import {
   cancelVideoBatch,
   concatVideoBatch,

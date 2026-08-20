@@ -8,7 +8,7 @@
             <h2>多选场景，一次出齐</h2>
             <p>结果自动入册「历史」，在历史里挑合适的点「加入分镜」，攒齐后去分镜短片。</p>
           </div>
-          <button class="btn btn-ghost" type="button" aria-label="关闭" @click="emit('close')">✕</button>
+          <button class="btn btn-ghost" type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
         </header>
 
         <template v-if="!running">
@@ -92,6 +92,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { BatchDrawJob, BatchEngine } from '@/composables/useBatchDraw'
 import type { SceneBlueprint } from '@/utils/popularContent'
 

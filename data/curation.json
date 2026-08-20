@@ -248,7 +248,7 @@
     {
       "id": "nene-library",
       "character": "nene",
-      "icon": "🌙",
+      "icon": "moonlight",
       "title": "宁宁的月光秘密",
       "subtitle": "图书馆 · 樱色 · 魔女",
       "query": "nene library"
@@ -256,7 +256,7 @@
     {
       "id": "natsume-cafe",
       "character": "natsume",
-      "icon": "☕",
+      "icon": "coffee",
       "title": "夏目的夜灯关心",
       "subtitle": "咖啡馆 · 雨夜 · 琥珀",
       "query": "natsume cafe"
@@ -264,7 +264,7 @@
     {
       "id": "summer-journey",
       "character": "shared",
-      "icon": "🌅",
+      "icon": "goldenhour",
       "title": "夏日远行",
       "subtitle": "海风 · 黄昏 · 纪念",
       "query": "beach sunset"

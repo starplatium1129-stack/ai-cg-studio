@@ -173,7 +173,7 @@
             :class="{ active: activeOutfit?.outfitId === outfit.outfitId, 'tab-nsfw': outfit.isNsfw }"
             @click="selectedOutfitId = outfit.outfitId"
           >
-            <span class="outfit-tab-icon">{{ outfit.isNsfw ? '🔞' : '👗' }}</span>
+            <ArchiveIcon :name="outfit.isNsfw ? 'lock' : 'wardrobe'" class="outfit-tab-icon" />
             <span class="outfit-tab-name">{{ outfit.outfitName }}</span>
           </button>
         </div>

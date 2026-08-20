@@ -103,7 +103,7 @@
                   referrerpolicy="no-referrer"
                   @load="measure(item, $event)"
                 />
-                <div v-else-if="missingImageIds.has(item.id)" class="artwork-placeholder">✦</div>
+                <div v-else-if="missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
                 <div v-else class="artwork-skeleton" aria-hidden="true"></div>
                 <div class="artwork-caption">
                   <span>
@@ -146,7 +146,7 @@
           </div>
         </template>
         <img v-else-if="viewerUrl" class="viewer-image" :src="viewerUrl" :alt="current ? sceneTitle(current.scene, current) : ''" decoding="async" />
-        <div v-else class="viewer-fallback">✦</div>
+        <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
         <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)">›</button>
         <button v-if="hasComparableImage && viewerUrl" class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :title="compareMode ? '退出对比' : '开启对比滑块'" @click="compareMode = !compareMode">
           <ArchiveIcon name="spark" /> 对比
@@ -173,7 +173,7 @@
           <div class="viewer-prompt">{{ current.prompt || '未保存 Prompt' }}</div>
         </details>
         <div class="viewer-actions">
-          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`">✨ Remix 配方</RouterLink>
+          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`"><ArchiveIcon name="spark" /> Remix 配方</RouterLink>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
           <button class="btn btn-ghost" type="button" @click="copyPrompt">复制 Prompt</button>

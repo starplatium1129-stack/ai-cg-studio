@@ -123,7 +123,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     replyAnnouncement.value = ''
     messages.push({
       role: 'user',
-      content: imageUrl ? `${text || '（发送了图片）'} 🖼️` : text,
+      content: imageUrl ? `${text || '（发送了图片）'} [图片]` : text,
       mid: createMessageId(),
       stopped: false,
     })

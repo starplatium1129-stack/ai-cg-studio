@@ -49,7 +49,8 @@
           <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
             :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
             @click="recheckEngineConnection">
-            {{ engineOnline ? `✓ ${drawEngineLabel} 已连接` : engineStatusText }}
+            <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
+            <span>{{ engineOnline ? `${drawEngineLabel} 已连接` : engineStatusText }}</span>
           </button>
           <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
         </div>
@@ -129,7 +130,7 @@
                 class="trait-chip"
                 :class="{ active: pb.manualTags.has(t.tag) }"
                 type="button"
-                @click="pb.toggleManualTag(t.tag)">{{ t.icon }} {{ t.label }}</button>
+                @click="pb.toggleManualTag(t.tag)">{{ t.label }}</button>
             </div>
           </template>
 
@@ -1837,7 +1838,7 @@ function enqueue3Variants() {
     }
     sdQueue.enqueue(jobVariant)
   }
-  pb.flash('✨ 已将 3 组不同 Seed 候选加入出图队列')
+  pb.flash('已将 3 组不同 Seed 候选加入出图队列')
 }
 
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
@@ -2409,7 +2410,7 @@ function applyDeepLink(q: Record<string, unknown>): boolean {
       applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
       if (typeof q.remix === 'string') {
         setDirectorMode('pro')
-        pb.flash('✨ 已载入作品参数与配方，可自由调整细节')
+        pb.flash('已载入作品参数与配方，可自由调整细节')
       }
       handled = true
     }

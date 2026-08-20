@@ -17,7 +17,7 @@
           class="companion-affection-pill"
           :title="`当前好感度 ${affectionScore}/100\n${affectionInfo.title}（Lv.${affectionInfo.level}）: ${affectionInfo.description}`"
         >
-          <span class="companion-affection-icon" aria-hidden="true">💖</span>
+          <ArchiveIcon name="love" class="companion-affection-icon" />
           <span class="companion-affection-label">Lv.{{ affectionInfo.level }} {{ affectionInfo.title }}</span>
           <span class="companion-affection-value">{{ affectionScore }}</span>
         </div>
@@ -95,7 +95,10 @@
               :data-state="workspaceExists ? 'ok' : 'missing'"
               :title="workspaceTooltip"
               @click="workspaceOpen = !workspaceOpen"
-            >{{ workspaceExists ? 'AI 工作区 ✓' : 'AI 工作区 ✗' }}</button>
+            >
+              <ArchiveIcon :name="workspaceExists ? 'success' : 'error'" />
+              <span>{{ workspaceExists ? 'AI 工作区已就绪' : 'AI 工作区缺失' }}</span>
+            </button>
             <label class="companion-pop-item" title="音量">
               <span>音量</span>
               <input
@@ -238,7 +241,10 @@
             :title="`让${currentCharacter.name}看你当前的屏幕画面`"
             aria-label="看屏幕"
             @click="onCaptureAndInspectScreen"
-          >{{ capturingScreen ? '看屏中…' : '👁️ 看屏幕' }}</button>
+          >
+            <ArchiveIcon name="eye" />
+            <span>{{ capturingScreen ? '看屏中…' : '看屏幕' }}</span>
+          </button>
           <button
             v-if="busy || voiceActive"
             class="companion-stop"

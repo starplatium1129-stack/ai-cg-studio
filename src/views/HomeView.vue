@@ -205,7 +205,7 @@
           title="还没有最近作品"
           message="画好之后，它会收进你的本地作品档案。"
         >
-          <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 开始绘制</RouterLink>
+          <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
         </ArchiveStatePanel>
         <template v-else>
           <RouterLink
@@ -250,7 +250,7 @@ const DRAFT_KEY = 'aics_pb_last_draft'
 const sceneCountCopy = ref('场景加载中')
 const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
 const continueIconName = ref<ArchiveIconName>('spark')
-const continueLink = ref({ to: '/prompt-builder', icon: '✦', label: '开始绘制' })
+const continueLink = ref({ to: '/prompt-builder', label: '开始绘制' })
 const continueHint = ref('')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 
@@ -347,7 +347,7 @@ function initContinueDraft() {
   const draft = readDraft(localStorage.getItem(DRAFT_KEY))
   if (!draft || (!draft.sceneId && !draft.story)) return false
   const title = draft.sceneTitle || draft.story || '未完成创作'
-  continueLink.value = { to: '/prompt-builder?resume=1', icon: '↩', label: '继续上次创作' }
+  continueLink.value = { to: '/prompt-builder?resume=1', label: '继续上次创作' }
   continueIconName.value = 'refresh'
   continueHint.value = `上次停在「${title.slice(0, 24)}」`
   return true
@@ -422,7 +422,7 @@ async function loadRecentWorks() {
 
     if (!initContinueDraft() && recentWorks.value[0]) {
       const h = recentWorks.value[0]
-      continueLink.value = { to: `/prompt-builder?regen=${encodeURIComponent(h.id)}`, icon: '↩', label: '继续最近作品' }
+      continueLink.value = { to: `/prompt-builder?regen=${encodeURIComponent(h.id)}`, label: '继续最近作品' }
       continueHint.value = `最近保存「${h.sceneTitle || h.scene || '未命名'}」`
     }
 

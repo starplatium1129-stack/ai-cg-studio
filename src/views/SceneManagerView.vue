@@ -969,9 +969,9 @@ function importScenes() {
   }
 
   let html = ''
-  if (success.length) html += '<p class="msg-ok">✓ 导入 ' + success.length + ' 个：' + esc(success.join(', ')) + '</p>'
-  if (skipped.length) html += '<p class="msg-warn">⚠ 跳过 ' + skipped.length + ' 个（ID 已存在）：' + esc(skipped.join(', ')) + '</p>'
-  if (errors.length) html += '<p class="msg-danger">✗ ' + errors.join('; ') + '</p>'
+  if (success.length) html += '<p class="msg-ok">导入成功 ' + success.length + ' 个：' + esc(success.join(', ')) + '</p>'
+  if (skipped.length) html += '<p class="msg-warn">跳过 ' + skipped.length + ' 个（ID 已存在）：' + esc(skipped.join(', ')) + '</p>'
+  if (errors.length) html += '<p class="msg-danger">导入失败：' + errors.join('; ') + '</p>'
   importResult.value = html || '<p class="muted">无变化</p>'
   if (success.length) markDirty('批量导入已通过基础检查，等待保存到项目')
 }

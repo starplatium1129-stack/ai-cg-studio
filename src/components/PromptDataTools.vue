@@ -141,7 +141,7 @@ function exportBlueprint() {
   a.download = `aics-blueprint-${stamp}.json`
   a.click()
   URL.revokeObjectURL(url)
-  emit('flash', '✨ 蓝图 JSON 已导出')
+  emit('flash', '蓝图 JSON 已导出')
   if (utilityEl.value) utilityEl.value.open = false
 }
 
@@ -154,7 +154,7 @@ async function onBlueprintFilePicked(event: Event) {
     const parsed = JSON.parse(text)
     if (parsed && typeof parsed === 'object') {
       emit('loadBlueprint', parsed as Record<string, unknown>)
-      emit('flash', '✨ 蓝图配置已成功载入')
+      emit('flash', '蓝图配置已成功载入')
     } else {
       emit('flash', '无效的蓝图文件格式')
     }

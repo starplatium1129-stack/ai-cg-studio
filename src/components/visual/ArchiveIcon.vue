@@ -41,7 +41,7 @@ export type ArchiveIconName =
   | 'character' | 'palette' | 'model' | 'training' | 'manager'
   | 'info' | 'success' | 'error' | 'warning' | 'sound' | 'mute'
   | 'close' | 'refresh' | 'sun' | 'moon' | 'menu'
-  | 'gear' | 'lightning' | 'lock' | 'eye' | 'wand' | 'speaker' | 'filter' | 'search'
+  | 'gear' | 'lightning' | 'lock' | 'eye' | 'wand' | 'speaker' | 'filter' | 'search' | 'pin'
   | 'happy' | 'shy' | 'miss' | 'expect' | 'nervous' | 'gentle' | 'moved' | 'sad'
   | 'calm' | 'joyful' | 'relaxed' | 'serious' | 'love' | 'sleepy' | 'spoiled' | 'wronged'
   | 'nene' | 'natsume' | 'triad'
@@ -599,6 +599,14 @@ const ICON_DEFS: Record<ArchiveIconName, ArchiveIconDef> = {
       'M8.1 20.2 L9.3 14.2', 'M9.3 14.2 L4.7 10.4', 'M4.7 10.4 L10.4 8.6', 'M10.4 8.6 L12 3.4',
     ],
     ends: [[12, 3.4], [19.3, 10.4], [15.9, 20.2], [8.1, 20.2], [4.7, 10.4]],
+  },
+  pin: {
+    paths: [
+      'M16 4.5 L9.5 11 L11 12.5 L6.5 17 L5.5 19.5 L8 18.5 L12.5 14 L14 15.5 Z',
+      'M14.5 6 L18.5 10',
+    ],
+    ends: [[5.5, 19.5]],
+    double: true,
   },
   download: {
     paths: [
