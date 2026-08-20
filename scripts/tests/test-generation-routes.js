@@ -29,6 +29,24 @@ async function run() {
   assert.equal(hiresGraph['12'].class_type, 'KSampler');
   var autoHiresGraph = generation.buildWorkflow(generation.validateInput({ prompt:'x', width:1024, height:1024, hiresFix:true, hiresUpscaler:'Auto', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 }));
   assert.equal(autoHiresGraph['11'].inputs.upscale_method, 'nearest-exact', 'Comfy resolves Auto hires to nearest-exact latent');
+  // 2026-08-18 super-res：显式 Remacri 意图应被认定为 Comfy 能力，注入模型文件后
+  // buildWorkflow 产出 ESRGAN 像素级超分链路（UpscaleModelLoader→VAEDecode→
+  // ImageUpscaleWithModel→ImageScale→VAEEncode→二阶段 KSampler）。
+  var superResValid = generation.validateInput({ prompt:'x', width:832, height:1216, hiresFix:true, hiresUpscaler:'Remacri', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 });
+  assert.equal(superResValid.superResWanted, true);
+  assert.equal(superResValid.comfyHires, true);
+  var superResGraph = generation.buildWorkflow(Object.assign({}, superResValid, { superResModel:'4x_foolhardy_Remacri.safetensors' }));
+  assert.equal(superResGraph['11'].class_type, 'UpscaleModelLoader');
+  assert.equal(superResGraph['11'].inputs.model_name, '4x_foolhardy_Remacri.safetensors');
+  assert.equal(superResGraph['12'].class_type, 'VAEDecode');
+  assert.equal(superResGraph['13'].class_type, 'ImageUpscaleWithModel');
+  assert.equal(superResGraph['13'].inputs.upscale_model[0], '11');
+  assert.equal(superResGraph['14'].class_type, 'ImageScale');
+  assert.equal(superResGraph['15'].class_type, 'VAEEncode');
+  assert.equal(superResGraph['16'].class_type, 'KSampler');
+  assert.equal(superResGraph['16'].inputs.denoise, 0.4, 'second pass uses requested denoise');
+  assert.equal(superResGraph['16'].inputs.steps, 20);
+  assert.equal(superResGraph['8'].inputs.samples[0], '16', 'final decode consumes second-pass samples');
   assert.throws(function () { generation.validateInput({ prompt:'x', workflow:{}, width:832, height:1216 }); }, /不支持的参数/);
   assert.throws(function () { generation.validateInput({ prompt:'x', loras:[{ id:'bad', strength:0.8 }], width:832, height:1216 }); }, /未知 WAI LoRA/);
   assert.throws(function () { generation.validateInput({ prompt:'x', modelId:'other', width:832, height:1216 }); }, /未知 WAI checkpoint/);
@@ -40,11 +58,14 @@ async function run() {
    var stack = await gatewayStack.start({ prepare:function (context) {
      var checkpointRoot = require('path').join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'checkpoints');
      var loraRoot = require('path').join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
+     var upscaleRoot = require('path').join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'upscale_models');
      require('fs').mkdirSync(checkpointRoot, { recursive:true });
      require('fs').mkdirSync(loraRoot, { recursive:true });
+     require('fs').mkdirSync(upscaleRoot, { recursive:true });
      require('fs').writeFileSync(require('path').join(checkpointRoot, generation.constants.CHECKPOINT), 'checkpoint');
      require('fs').writeFileSync(require('path').join(loraRoot, generation.constants.LORAS.L_NENE_V18_WD14.file), 'nene');
      require('fs').writeFileSync(require('path').join(loraRoot, generation.constants.LORAS.L_NAT_V18_WD14.file), 'natsume');
+     require('fs').writeFileSync(require('path').join(upscaleRoot, generation.availableSuperRes(context.config) || '4x_foolhardy_Remacri.safetensors'), 'remacri');
    } });
    try {
      var base = stack.baseUrl;
@@ -83,9 +104,12 @@ async function run() {
      assert.equal(detailerOffline.status, 503);
      assert.equal((await json(detailerOffline)).code, 'WEBUI_RESOURCES_UNAVAILABLE');
     var hiresOffline = await post(base, Object.assign({}, requestBody, { hiresFix:true, hiresUpscaler:'Auto', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 }));
-     assert.equal(hiresOffline.status, 202, 'native latent hires remains available when WebUI is offline');
+     assert.equal(hiresOffline.status, 202, 'native super-res hires remains available when WebUI is offline');
       var hiresOfflineJob = (await json(hiresOffline)).job;
-      assert.equal(hiresOfflineJob.metadata.hiresUpscaler, 'Latent (nearest-exact)');
+      assert.equal(hiresOfflineJob.metadata.hiresUpscaler, 'Remacri', 'Auto hires on Comfy resolves to Remacri super-res when installed');
+     var hiresPrompts = await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'));
+      var hiresGraph = hiresPrompts.calls.filter(function (call) { return call.path === '/prompt'; }).at(-1).body.prompt;
+      assert.equal(Object.values(hiresGraph).some(function (node) { return node && node.class_type === 'UpscaleModelLoader'; }), true, 'Comfy hires graph must contain UpscaleModelLoader for super-res');
 
     var capabilityFallback = await post(base, Object.assign({}, requestBody, { sampler:'DPM++ SDE' }));
     assert.equal(capabilityFallback.status, 503);

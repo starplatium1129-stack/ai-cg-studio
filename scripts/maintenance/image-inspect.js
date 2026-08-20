@@ -29,7 +29,9 @@ const path = require('path');
 const http = require('http');
 
 const DEFAULT_BASE_URL = process.env.VISION_BASE_URL || 'http://127.0.0.1:8317/v1';
-const DEFAULT_API_KEY = process.env.VISION_API_KEY || 'sk-local-proxy-key-2024';
+// 2026-08-20：本地 CLIProxyAPI 今日更换了 api-keys（见 E:\code\反代\...\config.yaml 的 api-keys 段），
+// 旧默认值 sk-local-proxy-key-2024 已失效；此值即当前有效 key，仍可用 VISION_API_KEY 覆盖。
+const DEFAULT_API_KEY = process.env.VISION_API_KEY || 'sk-548ae0291845851b7f8fc3c14d19a6809c60cf1f21bf61a7';
 const DEFAULT_MODEL = process.env.VISION_MODEL || 'gemini-3.7-flash-high';
 const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // base64 后 ≈20MB，对齐 opencode attachment 上限
 

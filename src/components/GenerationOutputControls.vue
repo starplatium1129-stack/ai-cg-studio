@@ -45,6 +45,7 @@
           <label>重绘幅度<input type="number" v-model.number="params.hiresDenoise" min="0.1" max="0.9" step="0.05" @change="touch('hiresDenoise')"></label>
           <label>放大器<select v-model="params.hiresUpscaler" @change="touch('hiresUpscaler')">
             <option>Auto</option>
+            <option>Remacri</option>
             <option>Latent</option>
             <option>Latent (nearest-exact)</option>
             <option>R-ESRGAN 4x+ Anime6B</option>

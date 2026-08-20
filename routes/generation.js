@@ -9,6 +9,7 @@ var path = require('path');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var anima = require('./anima');
+var superres = require('./superres');
 
 var MAX_PENDING = 4;
 var MAX_BODY = '64kb';
@@ -21,7 +22,10 @@ var LORAS = Object.freeze({
   L_NAT_V18_WD14: { file:'shiki_natsume_v18_wd14.safetensors', character:'natsume', min:0.65, max:1 }
 });
 var DUAL_LORA_IDS = Object.freeze(['L_NENE_V18_WD14', 'L_NAT_V18_WD14']);
-var WEBUI_UPSCALERS = new Set(['Auto', 'Latent', 'Latent (nearest-exact)', 'R-ESRGAN 4x+ Anime6B', 'R-ESRGAN 4x+']);
+var WEBUI_UPSCALERS = new Set(['Auto', 'Remacri', 'Latent', 'Latent (nearest-exact)', 'R-ESRGAN 4x+ Anime6B', 'R-ESRGAN 4x+']);
+// Comfy 本地真超分模型见 routes/superres.js（Remacri 优先，按优先级探测 upscale_models）。
+var COMFY_SUPERRES_FILES = superres.COMFY_SUPERRES_FILES;
+var SUPER_RES_UPSALERS = superres.SUPER_RES_UPSALERS;
 var SAMPLERS = Object.freeze({
   'DPM++ 2M': { sampler:'dpmpp_2m', scheduler:'normal' },
   'DPM++ 2M Karras': { sampler:'dpmpp_2m', scheduler:'karras' },
@@ -58,6 +62,12 @@ function safeComfyResource(config, kind, file) {
   var target = path.resolve(root, file);
   if (target.indexOf(root + path.sep) !== 0) return false;
   try { return fs.statSync(target).isFile(); } catch (error) { return false; }
+}
+// 2026-08-18：探测本机可用的 ESRGAN 超分模型（按优先顺序），返回文件名或 null。
+// 供 upstream 无 WebUI 时的本地真 super-res hires（generation.js 原生 Comfy 链路）。
+// 复用共享模块 routes/superres.js（WAI 与 Anima 两条链路同一份清单与探测逻辑）。
+function availableSuperRes(config) {
+  return superres.availableSuperRes(config);
 }
 function normalizeCheckpointName(value) {
   var text = String(value || '').trim().replace(/^.*[\\/]/, '');
@@ -133,7 +143,10 @@ function validate(body) {
   };
   if (!WEBUI_UPSCALERS.has(input.hiresUpscaler)) throw error(400, 'UNSUPPORTED_UPSCALER', '放大器不在服务端白名单');
   input.autoHires = input.hiresFix && input.hiresUpscaler === 'Auto';
-  input.comfyHires = input.hiresFix && (input.autoHires || input.hiresUpscaler === 'Latent' || input.hiresUpscaler === 'Latent (nearest-exact)')
+  // 2026-08-18：Comfy 本地真 super-res 意图（Remacri / R-ESRGAN 系）也算 Comfy 能力，
+  // 但具体 ESRGAN 模型文件可用性由路由层（有 config / fs）决定并注入 input.superResModel。
+  input.superResWanted = input.hiresFix && SUPER_RES_UPSALERS.has(input.hiresUpscaler);
+  input.comfyHires = input.hiresFix && (input.autoHires || input.hiresUpscaler === 'Latent' || input.hiresUpscaler === 'Latent (nearest-exact)' || input.superResWanted)
     && input.hiresScale >= 1.25 && input.hiresScale <= 1.5 && input.hiresSteps >= 8 && input.hiresSteps <= 24
     && input.denoisingStrength >= 0.25 && input.denoisingStrength <= 0.5
     && input.width * input.height * input.hiresScale * input.hiresScale <= 3200000;
@@ -156,9 +169,24 @@ function buildWorkflow(input) {
    graph[sample] = { class_type:'KSampler', inputs:{ model:[model, 0], positive:[positive, 0], negative:[negative, 0], latent_image:[latent, 0], seed:input.seed, steps:input.steps, cfg:input.cfg, sampler_name:SAMPLERS[input.sampler].sampler, scheduler:input.scheduler, denoise:1 } };
    var finalSamples = [sample, 0];
    if (input.hiresFix && input.comfyHires) {
-     graph['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:finalSamples, upscale_method:'nearest-exact', scale_by:input.hiresScale } };
-     graph['12'] = { class_type:'KSampler', inputs:{ model:[model, 0], positive:[positive, 0], negative:[negative, 0], latent_image:['11', 0], seed:input.seed, steps:input.hiresSteps, cfg:input.cfg, sampler_name:SAMPLERS[input.sampler].sampler, scheduler:input.scheduler, denoise:input.denoisingStrength } };
-     finalSamples = ['12', 0];
+     // 2026-08-18 真 super-res 链路：ESRGAN（Remacri）像素级放大 + 缩到目标尺寸
+     // + VAE 编码 + 低 denoise 二阶段精修；替代潜空间 nearest-exact 二阶段
+     // （动漫线条/脸部更锐利，无块状伪影）。
+     if (input.superResModel) {
+       var targetW = Math.round(input.width * input.hiresScale / 8) * 8;
+       var targetH = Math.round(input.height * input.hiresScale / 8) * 8;
+       graph['11'] = { class_type:'UpscaleModelLoader', inputs:{ model_name:input.superResModel } };
+       graph['12'] = { class_type:'VAEDecode', inputs:{ samples:finalSamples, vae:[vae, 2] } };
+       graph['13'] = { class_type:'ImageUpscaleWithModel', inputs:{ upscale_model:['11', 0], image:['12', 0] } };
+       graph['14'] = { class_type:'ImageScale', inputs:{ image:['13', 0], upscale_method:'lanczos', width:targetW, height:targetH, crop:'disabled' } };
+       graph['15'] = { class_type:'VAEEncode', inputs:{ pixels:['14', 0], vae:[vae, 2] } };
+       graph['16'] = { class_type:'KSampler', inputs:{ model:[model, 0], positive:[positive, 0], negative:[negative, 0], latent_image:['15', 0], seed:input.seed, steps:input.hiresSteps, cfg:input.cfg, sampler_name:SAMPLERS[input.sampler].sampler, scheduler:input.scheduler, denoise:input.denoisingStrength } };
+       finalSamples = ['16', 0];
+     } else {
+       graph['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:finalSamples, upscale_method:'nearest-exact', scale_by:input.hiresScale } };
+       graph['12'] = { class_type:'KSampler', inputs:{ model:[model, 0], positive:[positive, 0], negative:[negative, 0], latent_image:['11', 0], seed:input.seed, steps:input.hiresSteps, cfg:input.cfg, sampler_name:SAMPLERS[input.sampler].sampler, scheduler:input.scheduler, denoise:input.denoisingStrength } };
+       finalSamples = ['12', 0];
+     }
    }
    graph[decoded] = { class_type:'VAEDecode', inputs:{ samples:finalSamples, vae:[vae, 2] } };
   graph[output] = { class_type:'SaveImage', inputs:{ images:[decoded, 0], filename_prefix:OUTPUT_PREFIX } };
@@ -284,11 +312,13 @@ function createGenerationRouter(config, dependencies) {
       data.online = data.webuiOnline || data.comfyFallbackOnline;
       data.provider = data.comfyFallbackOnline ? 'comfy' : (data.webuiOnline ? 'webui' : null);
       var autoHiresAvailable = data.comfyFallbackOnline || (data.webuiOnline && (webui.upscalers.length === 0 || webui.upscalers.indexOf('R-ESRGAN 4x+ Anime6B') !== -1));
+      var comfySuperRes = availableSuperRes(config);
       var hiresUpscalers = [];
       if (autoHiresAvailable) hiresUpscalers.push('Auto');
+      if (data.comfyFallbackOnline && comfySuperRes) hiresUpscalers.push('Remacri');
       if (data.comfyFallbackOnline || webui.upscalers.indexOf('Latent') !== -1) hiresUpscalers.push('Latent','Latent (nearest-exact)');
       if (data.webuiOnline) webui.upscalers.forEach(function (name) { if (WEBUI_UPSCALERS.has(name) && hiresUpscalers.indexOf(name) === -1) hiresUpscalers.push(name); });
-      data.capabilities = { basic:Boolean(data.comfyFallbackOnline || data.webuiOnline), hires:Boolean(data.comfyFallbackOnline || data.webuiOnline), hiresUpscalers:hiresUpscalers, faceDetailer:Boolean(data.webuiOnline) };
+      data.capabilities = { basic:Boolean(data.comfyFallbackOnline || data.webuiOnline), hires:Boolean(data.comfyFallbackOnline || data.webuiOnline), hiresUpscalers:hiresUpscalers, faceDetailer:Boolean(data.webuiOnline), superResModel:data.comfyFallbackOnline ? comfySuperRes : null };
     data.samplers = webui.samplers;
     data.schedulers = webui.schedulers;
     data.models = webui.models;
@@ -311,9 +341,20 @@ function createGenerationRouter(config, dependencies) {
         return res.status(202).json({ ok:true, job:publicJob(animeJob) });
       }
       if (comfyUsable && !input.faceDetailer && !input.comfyUnsupported) {
+       var superResModel = availableSuperRes(config);
+       // Auto 在纯 Comfy 侧：有 ESRGAN 模型走真超分，否则回落潜空间 Latent。
        var preferredInput = input.autoHires
-         ? Object.assign({}, input, { autoHires:false, hiresUpscaler:'Latent (nearest-exact)', comfyHires:true, comfyUnsupported:false })
-         : input;
+         ? (superResModel
+             ? Object.assign({}, input, { autoHires:false, hiresUpscaler:'Remacri', superResModel:superResModel, comfyHires:true, comfyUnsupported:false })
+             : Object.assign({}, input, { autoHires:false, hiresUpscaler:'Latent (nearest-exact)', comfyHires:true, comfyUnsupported:false }))
+         : (input.superResWanted
+             ? (superResModel
+                 ? Object.assign({}, input, { superResModel:superResModel, comfyHires:true, comfyUnsupported:false })
+                 : null)
+             : input);
+       if (!preferredInput) {
+         return envelope.fail(res, 503, 'Comfy 本地未安装 ESRGAN 超分模型（Remacri / R-ESRGAN 4x+），请改用 WebUI 或 Latent', { code:'SUPER_RES_MODEL_UNAVAILABLE' });
+       }
        var preferred; try { preferred = comfy.create(preferredInput, owner(req)); await comfy.submit(preferred); } catch (e) {
          if (preferred && preferred.upstreamId) return envelope.fail(res, 502, 'ComfyUI 已接受任务但提交响应异常', { code:e.code || 'COMFY_SUBMIT_UNCERTAIN' });
          if (preferred) comfy.cancel(preferred);
@@ -357,4 +398,4 @@ function createGenerationRouter(config, dependencies) {
   return { router:router, service:comfy, close:comfy.close };
 }
 
-module.exports = { createGenerationRouter:createGenerationRouter, validateInput:validate, buildWorkflow:buildWorkflow, normalizeCheckpointName:normalizeCheckpointName, isWaiCheckpoint:isWaiCheckpoint, constants:{ CHECKPOINT:CHECKPOINT, LORAS:LORAS, SAMPLERS:SAMPLERS } };
+module.exports = { createGenerationRouter:createGenerationRouter, validateInput:validate, buildWorkflow:buildWorkflow, normalizeCheckpointName:normalizeCheckpointName, isWaiCheckpoint:isWaiCheckpoint, availableSuperRes:availableSuperRes, constants:{ CHECKPOINT:CHECKPOINT, LORAS:LORAS, SAMPLERS:SAMPLERS, COMFY_SUPERRES_FILES:COMFY_SUPERRES_FILES } };

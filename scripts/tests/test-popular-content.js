@@ -561,6 +561,23 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(hiresWf['12'].class_type, 'KSampler');
   assert.strictEqual(hiresWf['12'].inputs.denoise, 0.35);
   assert.deepStrictEqual(hiresWf['8'].inputs.samples, ['12', 0]);
+
+  // 2026-08-20：Anima hires 接入本地 ESRGAN 真超分（Remacri）——superResModel 注入后
+  // 走像素级超分链路（VAEDecode→UpscaleModelLoader→ImageUpscaleWithModel→ImageScale→
+  // VAEEncode→二阶段 KSampler），替代潜空间 bicubic 放大。
+  var srInput = Object.assign({}, hiresInput, { superResModel: '4x_foolhardy_Remacri.safetensors' });
+  var srWf = animaRoute.buildWorkflow(srInput);
+  assert.strictEqual(srWf['20'].class_type, 'VAEDecode', 'super-res: first-pass decode');
+  assert.strictEqual(srWf['21'].class_type, 'UpscaleModelLoader', 'super-res: upscale model loader');
+  assert.strictEqual(srWf['21'].inputs.model_name, '4x_foolhardy_Remacri.safetensors');
+  assert.strictEqual(srWf['22'].class_type, 'ImageUpscaleWithModel', 'super-res: ESRGAN upscale');
+  assert.strictEqual(srWf['22'].inputs.upscale_model[0], '21');
+  assert.strictEqual(srWf['23'].class_type, 'ImageScale', 'super-res: scale to target');
+  assert.strictEqual(srWf['23'].inputs.width, 1664, '832x2.0 = 1664 (8-aligned)');
+  assert.strictEqual(srWf['24'].class_type, 'VAEEncode', 'super-res: re-encode latent');
+  assert.strictEqual(srWf['25'].class_type, 'KSampler', 'super-res: second-pass KSampler');
+  assert.strictEqual(srWf['25'].inputs.denoise, 0.35);
+  assert.deepStrictEqual(srWf['8'].inputs.samples, ['25', 0], 'final decode consumes super-res second pass');
 });
 
 // 2026-08-16 审计：单条坏数据只被跳过并告警，不再让整份解析抛错丢弃。
