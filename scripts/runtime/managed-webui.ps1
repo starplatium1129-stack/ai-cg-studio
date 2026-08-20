@@ -56,6 +56,20 @@ function Wait-Ready([int]$seconds = 300) {
     do { if (Test-WebUIApi) { return $true }; Start-Sleep -Milliseconds 500 } while ((Get-Date) -lt $deadline)
     return $false
 }
+# 手动启动的 reForge：按配置端口找到监听进程，且命令行确含 WebUI 入口
+# （launch.py）才返回，避免误杀占用同端口的其他程序。与受管进程无关，
+# 循环变量命名 $procId，避免覆盖 PowerShell 只读自动变量 $PID。
+function Get-ExternalProcess {
+    $listener = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
+    if (-not $listener) { return $null }
+    $candidatePids = @($listener | ForEach-Object { $_.OwningProcess } | Where-Object { $_ -gt 0 } | Sort-Object -Unique)
+    foreach ($procId in $candidatePids) {
+        $candidate = Get-CimInstance Win32_Process -Filter "ProcessId = $procId" -ErrorAction SilentlyContinue
+        if (-not $candidate -or -not $candidate.CommandLine) { continue }
+        if ($candidate.CommandLine -match [Regex]::Escape([IO.Path]::GetFileName($launchPath))) { return $candidate }
+    }
+    return $null
+}
 
 New-Item -ItemType Directory -Force -Path $stateDir, $logDir | Out-Null
 $managedProcess = Get-ManagedProcess
@@ -65,10 +79,23 @@ if ($Action -eq 'Status') {
     Write-Result $true 'stopped' $false 'WebUI is not running.'; exit 0
 }
 if ($Action -eq 'Stop') {
-    if (-not $managedProcess) { Write-Result $true 'external-or-stopped' $false 'No control-panel-managed WebUI process to stop.'; exit 0 }
-    & taskkill.exe /PID $managedProcess.ProcessId /T /F | Out-Null
+    if ($managedProcess) {
+        & taskkill.exe /PID $managedProcess.ProcessId /T /F | Out-Null
+        Remove-Item -LiteralPath $pidFile -Force -ErrorAction SilentlyContinue
+        Write-Result $true 'stopped' $true 'Stopped the WebUI process started by the control panel.' $managedProcess.ProcessId; exit 0
+    }
+    # 手动启动的 reForge：控制面板同样允许关闭。先确认端口上确实是可用接口，
+    # 再按命令行识别确属 WebUI 的进程才动手，否则保持不碰并给出原因。
+    if (-not (Test-WebUIApi)) {
+        Write-Result $true 'external-or-stopped' $false 'WebUI is not reachable on the configured port; nothing to stop.'; exit 0
+    }
+    $externalProcess = Get-ExternalProcess
+    if (-not $externalProcess) {
+        Write-Result $true 'external-or-stopped' $false 'WebUI responds but its process could not be identified; stop it manually.'; exit 0
+    }
+    & taskkill.exe /PID $externalProcess.ProcessId /T /F | Out-Null
     Remove-Item -LiteralPath $pidFile -Force -ErrorAction SilentlyContinue
-    Write-Result $true 'stopped' $true 'Stopped the WebUI process started by the control panel.' $managedProcess.ProcessId; exit 0
+    Write-Result $true 'stopped' $false 'Stopped the manually started WebUI process.' $externalProcess.ProcessId; exit 0
 }
 if (Test-WebUIApi) {
     $processId = if ($managedProcess) { $managedProcess.ProcessId } else { 0 }

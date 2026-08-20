@@ -6,6 +6,7 @@ var events = require('events');
 var express = require('express');
 var fs = require('fs');
 var http = require('http');
+var net = require('net');
 var os = require('os');
 var path = require('path');
 var childProcess = require('child_process');
@@ -307,10 +308,75 @@ test('managed runtime scripts require injected paths and protect external owners
     'managed WebUI ownership detection must accept API-only background mode');
   assert.ok(webui.includes('Wait-Ready([int]$seconds = 300)'),
     'managed WebUI must allow a real WAI cold load to finish before timing out');
+  // 2026-08-21 用户决策：控制面板 Stop 也要能关掉手动启动的 ComfyUI / reForge。
+  // 识别方式必须按端口 + 入口脚本名（main.py / launch.py）判定，不得仅凭 PID 文件。
+  assert.ok(comfy.includes('Get-ExternalProcess') && webui.includes('Get-ExternalProcess'),
+    'Stop must be able to identify a manually started instance on the configured port');
+  assert.ok(comfy.includes('[Regex]::Escape([IO.Path]::GetFileName($mainPath))'),
+    'ComfyUI external ownership must match the main.py entry command line');
+  assert.ok(webui.includes('[Regex]::Escape([IO.Path]::GetFileName($launchPath))'),
+    'WebUI external ownership must match the launch.py entry command line');
+  assert.ok(comfy.includes('Get-NetTCPConnection') && webui.includes('Get-NetTCPConnection'),
+    'external ownership must resolve via the listening port, not a PID file');
 });
 
-test('managed-comfyui script does not stop an external healthy process', async () => {
+// 模拟“手动启动”的外部 ComfyUI / reForge：真实监听端口 + 健康接口 + 命令行
+// 携带入口脚本名（main.py / launch.py），从而通过脚本的外部进程识别。
+function startFakeService(options) {
+  return new Promise(function (resolve, reject) {
+    var entryName = options.entryName;
+    var healthPath = options.healthPath;
+    var freePortProbe = net.createServer();
+    freePortProbe.once('error', reject);
+    freePortProbe.listen(0, '127.0.0.1', function () {
+      var port = freePortProbe.address().port;
+      freePortProbe.close(function () {
+        var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-fake-' + entryName + '-'));
+        var helper = path.join(dir, 'fake.js');
+        fs.writeFileSync(helper, [
+          "var http = require('http');",
+          "var port = Number(process.argv[2]);",
+          "var server = http.createServer(function (req, res) {",
+          "  res.writeHead(String(req.url).indexOf('" + healthPath + "') === 0 ? 200 : 404);",
+          "  res.end('{}');",
+          "});",
+          "server.listen(port, '127.0.0.1', function () { console.log('READY ' + port); });"
+        ].join('\n'), 'utf8');
+        // node <helper> <port> main.py|launch.py：入口脚本名挂在命令行末位
+        var child = childProcess.spawn(process.execPath, [helper, String(port), entryName], {
+          stdio:['ignore', 'pipe', 'ignore'],
+          windowsHide:true
+        });
+        var timer = setTimeout(function () {
+          child.kill();
+          reject(new Error('fake service did not become ready'));
+        }, 4000);
+        child.stdout.on('data', function (chunk) {
+          if (String(chunk).indexOf('READY') >= 0) {
+            clearTimeout(timer);
+            resolve({ child:child, port:port, dir:dir });
+          }
+        });
+        child.on('exit', function () {
+          clearTimeout(timer);
+          reject(new Error('fake service exited early'));
+        });
+      });
+    });
+  });
+}
+
+function waitForExit(child) {
+  return new Promise(function (resolve) {
+    if (child.exitCode !== null || child.signalCode) return resolve();
+    child.once('exit', resolve);
+  });
+}
+
+test('managed-comfyui Stop refuses to kill an unrelated process on the configured port', async () => {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-script-'));
+  // 端口被与本项目无关的进程占用（这里就是测试进程自己）：命令行不含 main.py，
+  // Stop 必须视之为不可识别并保持不碰。
   var health = http.createServer(function (req, res) {
     res.statusCode = req.url === '/system_stats' ? 200 : 404;
     res.end('{}');
@@ -334,9 +400,74 @@ test('managed-comfyui script does not stop an external healthy process', async (
     var stopped = await invoke('Stop');
     assert.strictEqual(stopped.state, 'external-or-stopped');
     assert.strictEqual(stopped.managed, false);
+    var stillUp = await getJson(base, '/system_stats');
+    assert.strictEqual(stillUp.status, 200, 'an unrelated process must survive a ComfyUI Stop');
   } finally {
     await close(health);
     fs.rmSync(temporaryRoot, { recursive:true, force:true });
+  }
+});
+
+test('managed-comfyui Stop closes a recognized externally started ComfyUI', async () => {
+  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-stop-'));
+  var fake = await startFakeService({ entryName:'main.py', healthPath:'/system_stats' });
+  var base = 'http://127.0.0.1:' + fake.port;
+  function invoke(action) {
+    return new Promise(function (resolve, reject) {
+      childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+        path.join(projectRoot, 'scripts', 'runtime', 'managed-comfyui.ps1'), '-Action', action,
+        '-AIWorkspaceRoot', path.join(temporaryRoot, 'workspace'), '-RuntimeRoot', path.join(temporaryRoot, 'runtime'), '-ComfyHost', base],
+        { windowsHide:true }, function (error, stdout, _stderr) {
+          if (error && !stdout) return reject(error);
+          resolve(JSON.parse(String(stdout).trim()));
+        });
+    });
+  }
+  try {
+    var status = await invoke('Status');
+    assert.strictEqual(status.state, 'external-running');
+    var stopped = await invoke('Stop');
+    assert.strictEqual(stopped.state, 'stopped');
+    assert.strictEqual(stopped.managed, false);
+    await waitForExit(fake.child);
+    var stillUp = await fetch(base + '/system_stats').then(function () { return true; }, function () { return false; });
+    assert.strictEqual(stillUp, false, 'a recognized external ComfyUI must be closed by Stop');
+  } finally {
+    if (fake.child.exitCode === null) fake.child.kill();
+    fs.rmSync(temporaryRoot, { recursive:true, force:true });
+    fs.rmSync(fake.dir, { recursive:true, force:true });
+  }
+});
+
+test('managed-webui Stop closes a recognized externally started reForge', async () => {
+  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-webui-stop-'));
+  var fake = await startFakeService({ entryName:'launch.py', healthPath:'/sdapi/v1/sd-models' });
+  var base = 'http://127.0.0.1:' + fake.port;
+  function invoke(action) {
+    return new Promise(function (resolve, reject) {
+      childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+        path.join(projectRoot, 'scripts', 'runtime', 'managed-webui.ps1'), '-Action', action,
+        '-PackageRoot', path.join(temporaryRoot, 'package'), '-RuntimeRoot', path.join(temporaryRoot, 'runtime'),
+        '-WebuiHost', base, '-ImagesRoot', path.join(temporaryRoot, 'images'), '-ControlNetRoot', path.join(temporaryRoot, 'controlnet')],
+        { windowsHide:true }, function (error, stdout, _stderr) {
+          if (error && !stdout) return reject(error);
+          resolve(JSON.parse(String(stdout).trim()));
+        });
+    });
+  }
+  try {
+    var status = await invoke('Status');
+    assert.strictEqual(status.state, 'external-running');
+    var stopped = await invoke('Stop');
+    assert.strictEqual(stopped.state, 'stopped');
+    assert.strictEqual(stopped.managed, false);
+    await waitForExit(fake.child);
+    var stillUp = await fetch(base + '/sdapi/v1/sd-models').then(function () { return true; }, function () { return false; });
+    assert.strictEqual(stillUp, false, 'a recognized external reForge must be closed by Stop');
+  } finally {
+    if (fake.child.exitCode === null) fake.child.kill();
+    fs.rmSync(temporaryRoot, { recursive:true, force:true });
+    fs.rmSync(fake.dir, { recursive:true, force:true });
   }
 });
 
