@@ -122,7 +122,7 @@ const OUTFIT_PRESETS: OutfitPreset[] = [
 
 const selectedPresetId = ref<string>('bikini_white')
 const customPrompt = ref<string>('')
-const maskPrompt = ref<string>('clothing | clothes | outfit | dress | shirt | sweater | blouse | jacket | cardigan | coat | top | uniform | skirt | pants | shorts | sleeves | collar | costume | garment')
+const maskPrompt = ref<string>('clothing | clothes | outfit | dress | shirt | sweater | blouse | jacket | cardigan | coat | top | uniform | skirt | pants | shorts | sleeves | collar | costume | garment | fabric | bra | panties | underwear | swimsuit | bikini')
 const denoisingStrength = ref<number>(0.85)
 const growMaskBy = ref<number>(8)
 const preserveSeed = ref<boolean>(true)
@@ -134,6 +134,13 @@ watch(selectedPresetId, (newId) => {
     const preset = OUTFIT_PRESETS.find(p => p.id === newId)
     if (preset) {
       customPrompt.value = preset.prompt
+      if (preset.id === 'nude_pure') {
+        denoisingStrength.value = 0.95
+        growMaskBy.value = 16
+      } else {
+        denoisingStrength.value = 0.85
+        growMaskBy.value = 8
+      }
     }
   }
 }, { immediate: true })
