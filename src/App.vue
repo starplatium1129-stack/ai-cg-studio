@@ -23,7 +23,7 @@ import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 const HISTORY_KEY = 'aics_pb_history'
 const route = useRoute()
 const router = useRouter()
-const isCompanion = computed(() => route.path === '/companion')
+const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')
 
 interface ThumbWarmEntry { image_id?: string }
 

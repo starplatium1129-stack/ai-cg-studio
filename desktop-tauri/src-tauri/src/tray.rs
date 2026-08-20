@@ -7,6 +7,7 @@ use tauri_plugin_opener::OpenerExt;
 use crate::state::AppState;
 
 const MENU_SHOW_COMPANION: &str = "show_companion";
+const MENU_OPEN_CHAT: &str = "open_chat";
 const MENU_OPEN_ATELIER: &str = "open_atelier";
 const MENU_TOGGLE_ALWAYS_ON_TOP: &str = "toggle_always_on_top";
 const MENU_TOGGLE_PASSTHROUGH: &str = "toggle_passthrough";
@@ -36,6 +37,9 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
             match event.id().as_ref() {
                 MENU_SHOW_COMPANION => {
                     let _ = app.emit("aics:show-companion", ());
+                }
+                MENU_OPEN_CHAT => {
+                    let _ = app.emit("aics:open-chat", ());
                 }
                 MENU_OPEN_ATELIER => {
                     let _ = app.emit("aics:open-atelier", ());
@@ -109,6 +113,7 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     let autostart = app.autolaunch().is_enabled().unwrap_or(false);
 
     let show_companion = MenuItem::with_id(app, MENU_SHOW_COMPANION, "显示 Companion", true, None::<&str>)?;
+    let open_chat = MenuItem::with_id(app, MENU_OPEN_CHAT, "打开聊天", true, None::<&str>)?;
     let open_atelier = MenuItem::with_id(app, MENU_OPEN_ATELIER, "打开 Atelier 工作台", true, None::<&str>)?;
     let separator = PredefinedMenuItem::separator(app)?;
     let toggle_top = MenuItem::with_id(
@@ -133,6 +138,7 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
 
     MenuBuilder::new(app)
         .item(&show_companion)
+        .item(&open_chat)
         .item(&open_atelier)
         .item(&separator)
         .item(&toggle_top)

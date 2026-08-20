@@ -12,6 +12,8 @@
 export const COMPANION_LIVE2D_KEY = 'aics_companion_live2d_v1'
 export const COMPANION_BEHAVIOR_KEY = 'aics_companion_behavior_v1'
 export const COMPANION_AFFECTION_KEY = 'aics_companion_affection_v1'
+/** 角色窗 → 聊天窗的实时状态通道（低频繁写入，storage 事件跨窗下发） */
+export const COMPANION_CHAT_LIVE_KEY = 'aics_companion_chat_live_v1'
 export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 /** 绘图页引擎选择；键名保持不变以兼容已保存的 Anima 偏好。 */
 export const DRAW_ENGINE_KEY = 'aics_draw_engine'

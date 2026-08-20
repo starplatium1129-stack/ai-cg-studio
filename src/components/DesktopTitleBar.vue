@@ -32,11 +32,12 @@ const pageTitle = computed(() => {
   if (typeof metaTitle === 'string' && metaTitle.trim()) return metaTitle.trim()
   return ''
 })
-const visible = computed(() => Boolean(bridge) && route.path !== '/companion')
+const visible = computed(() => Boolean(bridge) && route.path !== '/companion' && route.path !== '/companion-chat')
 let maximizedSub = 0
 
 onMounted(async () => {
-  if (!bridge || route.path === '/companion') return
+  // 挂载早期 route.path 可能尚未就绪，用 location.pathname 硬守卫桌宠表面
+  if (!bridge || location.pathname === '/companion' || location.pathname === '/companion-chat') return
   document.documentElement.classList.add('aics-desktop-shell')
   try {
     const state = await bridge.getWindowState()

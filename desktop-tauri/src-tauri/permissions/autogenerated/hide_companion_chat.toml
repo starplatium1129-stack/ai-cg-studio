@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-hide-companion-chat"
+description = "Enables the hide_companion_chat command without any pre-configured scope."
+commands.allow = ["hide_companion_chat"]
+
+[[permission]]
+identifier = "deny-hide-companion-chat"
+description = "Denies the hide_companion_chat command without any pre-configured scope."
+commands.deny = ["hide_companion_chat"]

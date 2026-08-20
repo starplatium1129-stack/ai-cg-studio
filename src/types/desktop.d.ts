@@ -10,6 +10,12 @@ export interface CompanionDesktopBridge {
   hide(): void
   quit(): void
   openAtelier(pathname?: string): void
+  openChat(): Promise<unknown>
+  toggleChat(): Promise<unknown>
+  hideChatWindow(): Promise<unknown>
+  chatRelay(payload: Record<string, unknown>): Promise<unknown>
+  onChatCommand(listener: (payload: { command: string; text?: string; imageUrl?: string; character?: string }) => void): number
+  offChatCommand(subscriptionId: number): void
   setIgnoreMouseEvents(ignore: boolean): void
   setLive2dEnabled(enabled: boolean): void
   getState(): Promise<{

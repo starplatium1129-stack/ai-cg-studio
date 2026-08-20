@@ -44,6 +44,21 @@ pub fn atelier_bounds(state: &AppState) -> WindowBounds {
     clamp_window_bounds(&saved, area, Some((1024, 720)))
 }
 
+/// 聊天窗默认位于角色窗右侧（560×720），超出工作区时左移收进屏幕。
+/// 首次/坏文件时以该位置为兜底；之后记忆到 companion-chat-window.json。
+pub fn companion_chat_bounds(state: &AppState) -> WindowBounds {
+    let area = primary_work_area_logical();
+    let companion = companion_bounds(&state);
+    let fallback = WindowBounds {
+        x: companion.x + companion.width + 12,
+        y: companion.y.saturating_sub(20),
+        width: 560,
+        height: 720,
+    };
+    let saved = load_window_bounds(&state.paths.companion_chat_window_file, Some(&fallback));
+    clamp_window_bounds(&saved, area, Some((380, 460)))
+}
+
 pub fn primary_work_area() -> (i64, i64, i64, i64) {
     unsafe {
         let x = windows_sys::Win32::UI::WindowsAndMessaging::GetSystemMetrics(76) as i64;
@@ -176,6 +191,95 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, s
     Ok(())
 }
 
+/// 聊天窗（/companion-chat）：懒创建、轻量无 Live2D（严格 CSP）、独立普通小窗。
+/// 与 atelier 一样不能在主线程 IPC 回调内同步创建（WebView2 需要消息泵），
+/// 放 tokio 线程执行。
+pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
+    if let Some(w) = app.get_webview_window("companion-chat") {
+        let _ = w.unminimize();
+        let _ = w.show();
+        let _ = w.set_focus();
+        // 每次打开都重新导航（与 open_atelier 同策略）：避免 hide/close 后
+        // WebView2 内容被卸载，重现时显示空白白板。
+        let url = if gateway_url.is_empty() {
+            "http://127.0.0.1:3000/companion-chat".to_string()
+        } else {
+            format!("{}/companion-chat", gateway_url.trim_end_matches('/'))
+        };
+        if let Ok(parsed) = url.parse::<tauri::Url>() {
+            let _ = w.navigate(parsed);
+        }
+        return;
+    }
+    let state = app.state::<AppState>();
+    let bounds = companion_chat_bounds(&state);
+    let url = if gateway_url.is_empty() {
+        "http://127.0.0.1:3000/companion-chat".to_string()
+    } else {
+        format!("{}/companion-chat", gateway_url.trim_end_matches('/'))
+    };
+    let app = app.clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        let state = app.state::<AppState>();
+        let Ok(parsed) = url.parse::<tauri::Url>() else {
+            state.error(&format!("open companion-chat: bad url {url}"));
+            return;
+        };
+        match WebviewWindowBuilder::new(&app, "companion-chat", WebviewUrl::External(parsed))
+            .title("绫季聊天")
+            .inner_size(bounds.width as f64, bounds.height as f64)
+            .position(bounds.x as f64, bounds.y as f64)
+            .min_inner_size(380.0, 460.0)
+            .decorations(false)
+            .skip_taskbar(true)
+            .shadow(true)
+            .visible(false)
+            .initialization_script(crate::shim::COMPANION_SHIM_JS)
+            .build()
+        {
+            Ok(win) => {
+                state.info("open companion-chat: window built");
+                let _ = win.show();
+                let _ = win.set_focus();
+            }
+            Err(e) => state.error(&format!("open companion-chat: window build failed: {e}")),
+        }
+    });
+}
+
+pub fn toggle_companion_chat(app: &AppHandle, gateway_url: &str) {
+    if let Some(w) = app.get_webview_window("companion-chat") {
+        if w.is_visible().unwrap_or(false) {
+            let _ = w.hide();
+        } else {
+            // 显示时同样重导航，防隐藏期间 WebView2 内容卸载成空白
+            let _ = w.unminimize();
+            let _ = w.show();
+            let _ = w.set_focus();
+            let url = if gateway_url.is_empty() {
+                "http://127.0.0.1:3000/companion-chat".to_string()
+            } else {
+                format!("{}/companion-chat", gateway_url.trim_end_matches('/'))
+            };
+            if let Ok(parsed) = url.parse::<tauri::Url>() {
+                let _ = w.navigate(parsed);
+            }
+        }
+        return;
+    }
+    open_companion_chat(app, gateway_url);
+}
+
+/// 聊天窗 ×：直接 hide（不走 window.close → CloseRequested → prevent/hide
+/// 链路），保证 WebView2 内容不被卸载，再次打开不会空白。
+pub fn hide_companion_chat(app: &AppHandle) {
+    if let Some(w) = app.get_webview_window("companion-chat") {
+        if w.is_visible().unwrap_or(false) {
+            let _ = w.hide();
+        }
+    }
+}
+
 fn webview_bounds(w: &tauri::WebviewWindow) -> Option<WindowBounds> {
     let p = w.inner_position().ok()?;
     let s = w.inner_size().ok()?;
@@ -205,6 +309,11 @@ pub fn persist_window_bounds(app: &AppHandle) {
     if let Some(w) = app.get_webview_window("atelier") {
         if let Some(bounds) = persisted_webview_bounds(&w) {
             save_window_bounds(&state.paths.atelier_window_file, &bounds);
+        }
+    }
+    if let Some(w) = app.get_webview_window("companion-chat") {
+        if let Some(bounds) = persisted_webview_bounds(&w) {
+            save_window_bounds(&state.paths.companion_chat_window_file, &bounds);
         }
     }
 }

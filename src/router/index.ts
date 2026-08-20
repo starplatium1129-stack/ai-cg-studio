@@ -53,6 +53,8 @@ const router = createRouter({
     },
     // 桌宠与控制面板都有独立完整布局，不套 AppLayout。
     { path: '/companion', name: 'companion', component: () => import('@/views/CompanionView.vue') },
+    // 真双窗口：独立聊天窗（无 Live2D，严格 CSP，不进 LIVE2D_PATHS）
+    { path: '/companion-chat', name: 'companion-chat', component: () => import('@/views/CompanionChatView.vue') },
     { path: '/control', name: 'control', component: () => import('@/views/ControlView.vue') }
   ],
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置

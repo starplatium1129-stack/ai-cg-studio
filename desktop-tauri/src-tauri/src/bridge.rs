@@ -165,6 +165,35 @@ pub fn open_atelier(app: AppHandle, state: State<AppState>, pathname: Option<Str
     crate::main_shared::open_atelier(&app, &gateway, pathname.as_deref());
 }
 
+/// 打开/聚焦聊天窗（companion-chat）。由角色窗悬停胶囊、托盘与快捷键调用。
+#[tauri::command]
+pub fn open_companion_chat(app: AppHandle, state: State<AppState>) {
+    let gateway = state.gateway_url.lock().unwrap().clone();
+    crate::main_shared::open_companion_chat(&app, &gateway);
+}
+
+/// 开/关聊天窗（快捷键用）。
+#[tauri::command]
+pub fn toggle_companion_chat(app: AppHandle, state: State<AppState>) {
+    let gateway = state.gateway_url.lock().unwrap().clone();
+    crate::main_shared::toggle_companion_chat(&app, &gateway);
+}
+
+/// 聊天窗 ×：直接 hide（不触发 close 链路，避免 WebView2 卸载导致空白）。
+#[tauri::command]
+pub fn hide_companion_chat(app: AppHandle) {
+    crate::main_shared::hide_companion_chat(&app);
+}
+
+/// 聊天窗 → 角色窗指令中继：聊天窗不持有会话运行时，发送/切角色等动作
+/// 转发给 companion 窗口的 CompanionView 执行（后者是唯一会话写者）。
+#[tauri::command]
+pub fn chat_relay(app: AppHandle, payload: serde_json::Value) -> bool {
+    let Some(w) = app.get_webview_window("companion") else { return false };
+    let _ = w.emit("aics:chat-command", payload);
+    true
+}
+
 #[tauri::command]
 pub fn window_minimize(app: AppHandle) {
     // 2026-08-15 修复：标题栏最小化按钮位于 Atelier 窗口（DesktopTitleBar 在

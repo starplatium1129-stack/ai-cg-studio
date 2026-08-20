@@ -65,6 +65,12 @@ fn start_gateway_monitor(app: AppHandle) {
                             let _ = w.navigate(parsed);
                         }
                     }
+                    if let Some(w) = app.get_webview_window("companion-chat") {
+                        let chat_url = format!("{}/companion-chat", url.trim_end_matches('/'));
+                        if let Ok(parsed) = chat_url.parse() {
+                            let _ = w.navigate(parsed);
+                        }
+                    }
                     if let Some(w) = app.get_webview_window("atelier") {
                         let _ = w.navigate(url.parse().unwrap());
                     }
@@ -93,9 +99,16 @@ fn register_shortcuts(app: &AppHandle) {
         } else if key.contains("KeyA") {
             let url = app.state::<AppState>().gateway_url.lock().unwrap().clone();
             main_shared::open_atelier(app, &url, None);
+        } else if key.contains("KeyX") {
+            // Ctrl+Shift+X：开/关聊天窗（避开与浏览器 DevTools 冲突的 Ctrl+Shift+C）
+            let url = app.state::<AppState>().gateway_url.lock().unwrap().clone();
+            main_shared::toggle_companion_chat(app, &url);
         }
     };
-    let _ = app.global_shortcut().on_shortcuts(["ctrl+shift+p", "ctrl+shift+space", "ctrl+shift+a"], handler);
+    let _ = app.global_shortcut().on_shortcuts(
+        ["ctrl+shift+p", "ctrl+shift+space", "ctrl+shift+a", "ctrl+shift+x"],
+        handler,
+    );
 }
 
 
@@ -154,6 +167,10 @@ fn main() {
             bridge::set_workspace,
             bridge::notify,
             bridge::open_atelier,
+            bridge::open_companion_chat,
+            bridge::toggle_companion_chat,
+            bridge::hide_companion_chat,
+            bridge::chat_relay,
             bridge::window_minimize,
             bridge::window_maximize_toggle,
             bridge::window_close,
@@ -318,6 +335,15 @@ fn main() {
                         main_shared::open_atelier(&inner, &url, None);
                     }
                 });
+                let h5 = handle.clone();
+                h5.listen("aics:open-chat", {
+                    let inner = h5.clone();
+                    move |_| {
+                        let state = inner.state::<AppState>();
+                        let url = state.gateway_url.lock().unwrap().clone();
+                        main_shared::open_companion_chat(&inner, &url);
+                    }
+                });
                 let h4 = handle.clone();
                 h4.listen("aics:shim-diagnose", {
                     let inner = h4.clone();
@@ -386,9 +412,11 @@ fn main() {
                         if let Some(w) = app_handle.get_webview_window("atelier") {
                             let _ = w.hide();
                         }
-                    } else if label == "companion" {
+                    } else if label == "companion" || label == "companion-chat" {
                         api.prevent_close();
-                        main_shared::hide_companion(app_handle);
+                        if let Some(w) = app_handle.get_webview_window(&label) {
+                            let _ = w.hide();
+                        }
                     }
                 }
                 _ => {}

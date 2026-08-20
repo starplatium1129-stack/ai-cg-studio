@@ -75,6 +75,26 @@ pub const COMPANION_SHIM_JS: &str = r#"
       reportError('open_atelier', e)
       return null
     }),
+    openChat: () => invoke('open_companion_chat').catch((e) => {
+      console.error('[companionDesktop] open_chat failed:', e)
+      reportError('open_chat', e)
+      return null
+    }),
+    toggleChat: () => invoke('toggle_companion_chat').catch((e) => {
+      console.error('[companionDesktop] toggle_chat failed:', e)
+      reportError('toggle_chat', e)
+      return null
+    }),
+    hideChatWindow: () => invoke('hide_companion_chat').catch((e) => {
+      console.error('[companionDesktop] hide_chat failed:', e)
+      reportError('hide_chat', e)
+      return null
+    }),
+    chatRelay: (payload) => invoke('chat_relay', { payload }).catch((e) => {
+      console.error('[companionDesktop] chat_relay failed:', e)
+      reportError('chat_relay', e)
+      return null
+    }),
     setIgnoreMouseEvents: (ignore) => invoke('set_ignore_mouse_events_cmd', { ignore }),
     setLive2dEnabled: (enabled) => invoke('set_live2d_enabled', { enabled }),
     getState: () => invoke('get_state'),
@@ -100,6 +120,7 @@ pub const COMPANION_SHIM_JS: &str = r#"
     offFileDrop: () => {},
     onResume: (cb) => on('aics:resume', cb), offResume: off,
     onShown: (cb) => on('aics:shown', cb), offShown: off,
+    onChatCommand: (cb) => on('aics:chat-command', cb), offChatCommand: off,
     onVisibilityChanged: (cb) => on('aics:visibility', cb), offVisibilityChanged: off,
     onWindowBoundsChanged: (cb) => on('aics:window-bounds', cb), offWindowBoundsChanged: off,
     onPowerModeChanged: (cb) => on('aics:power-mode', cb), offPowerModeChanged: off,

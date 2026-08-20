@@ -10,6 +10,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-page-architecture.js',
     'test-runtime-generated.js',
     'test-style-debt.js',
+    'test-bridge-acl.js',
   ]),
   unit: Object.freeze([
     'test-anima-session.js',

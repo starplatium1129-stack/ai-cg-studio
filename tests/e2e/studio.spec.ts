@@ -425,7 +425,7 @@ test('character room mounts portrait, composer and voice console', async ({ page
   expect(errors).toEqual([]);
 });
 
-test('desktop companion keeps the chat loop in a compact standalone layout', async ({ page }) => {
+test('desktop companion keeps a character-first surface and opens the separate chat window', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   const live2dAssetRequests: string[] = [];
   page.on('request', request => {
@@ -457,14 +457,13 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await page.setViewportSize({ width: 520, height: 720 });
   await page.goto('/companion');
 
+  // —— 浏览器模式（无桥）先验证基础布局 ——
   await expect(page.locator('.companion-page')).toBeVisible();
   await expect(page.locator('.page-root')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: '与绫地宁宁相伴', level: 1 })).toBeVisible();
-  await expect(page.locator('.companion-input')).toBeVisible();
-  await expect(page.locator('.companion-bubble')).toContainText('今天也在这里陪着你');
   await expect(page.locator('.character-tab')).toHaveCount(2);
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
-  // 完整房间入口已收敛进设置弹层（2026-08-15 布局改造）
+  // 完整房间入口已收敛进设置弹层（2026-08-15 布局改造）；浏览器模式为链接
   await page.locator('.companion-settings-btn').click();
   await expect(page.locator('.companion-settings-popover')).toBeVisible();
   const roomLink = page.locator('.companion-settings-popover a', { hasText: '完整房间' });
@@ -499,6 +498,8 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
 
   await page.addInitScript(() => {
     (window as any).__ignoreMouseCalls = [];
+    (window as any).__openChatCalls = [];
+    (window as any).__relayedCommands = [];
     Object.defineProperty(window, 'companionDesktop', {
       configurable: true,
       value: {
@@ -506,6 +507,11 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
         hide: () => {},
         quit: () => {},
         openAtelier: () => {},
+        openChat: () => { (window as any).__openChatCalls.push(1); },
+        toggleChat: () => {},
+        chatRelay: (payload: Record<string, unknown>) => { (window as any).__relayedCommands.push(payload); },
+        onChatCommand: () => 1,
+        offChatCommand: () => {},
         setIgnoreMouseEvents: (value: boolean) => (window as any).__ignoreMouseCalls.push(value),
         setLive2dEnabled: () => {},
         getState: async () => ({
@@ -566,11 +572,19 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
     await expect(page.locator('.live2d-host')).toHaveAttribute('data-error', /unsafe-eval/);
   }
   await expect(page.locator('.live2d-enable-cta')).toHaveCount(0);
-  // 环境问候：挂载时按时间片入队一条问候气泡
-  await expect(page.locator('.companion-reminder-bubble')).toHaveCount(1);
-  await expect(page.locator('.companion-reminder-bubble p')).toHaveText(/。/);
-  await page.locator('.companion-reminder-bubble button').click();
-  await expect(page.locator('.companion-reminder-bubble')).toHaveCount(0);
+  // —— 桌面模式（桥模拟）：角色窗是"只装角色"的表面，聊天在独立窗 ——
+  await expect(page.locator('.companion-input')).toBeHidden();
+  await expect(page.locator('.companion-conversation')).toBeHidden();
+  // 聊天入口：悬停胶囊常驻，点击 → openChat（打开独立聊天窗）
+  const chatChip = page.locator('.companion-chat-chip');
+  await expect(chatChip).toBeVisible();
+  await chatChip.click();
+  await expect.poll(() => page.evaluate(() => (window as any).__openChatCalls.length)).toBeGreaterThan(0);
+  // 环境问候转瞬态浮层：挂载时按时间片入队一条问候气泡
+  await expect(page.locator('.companion-float-reminder')).toHaveCount(1);
+  await expect(page.locator('.companion-float-reminder p')).toHaveText(/。/);
+  await page.locator('.companion-float-reminder button').click();
+  await expect(page.locator('.companion-float-reminder')).toHaveCount(0);
   const dndButton = page.locator('.companion-settings-popover button[aria-pressed]', { hasText: '勿扰' });
   await page.locator('.companion-settings-btn').click();
   await expect(page.locator('.companion-settings-popover')).toBeVisible();
@@ -578,7 +592,7 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await expect(dndButton).toHaveAttribute('aria-pressed', 'false');
   await dndButton.click();
   await expect(dndButton).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('.companion-reminders')).toHaveCount(0);
+  await expect(page.locator('.companion-float-reminder')).toHaveCount(0);
   await dndButton.click();
   await expect(dndButton).toHaveAttribute('aria-pressed', 'false');
   await expect(dndButton).toBeVisible();
@@ -606,6 +620,97 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await expect(mouseToggleButton).toHaveAttribute('aria-pressed', 'false');
   await page.keyboard.press('Escape');
   await expect(page.locator('.companion-settings-popover')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test('companion chat window renders history from storage and relays sends to the character window', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'nene',
+      histories: {
+        nene: [
+          { role: 'user', content: '你好呀', mid: 'm-user' },
+          { role: 'assistant', content: '今天也在这里陪着你。', mid: 'm-assistant' },
+        ],
+        natsume: [],
+      },
+      settings: {
+        model: 'local-model',
+        provider: 'api',
+        apiBaseUrl: 'https://local.example/v1',
+        apiModel: 'local-model',
+        apiKey: 'local-key',
+        webSearchEnabled: false,
+        live2dEnabled: false,
+        live2dOutfit: 'school',
+        autoVoice: false,
+        volume: 70,
+        drafts: { nene: '', natsume: '' },
+      },
+    }));
+    // 实时状态由角色窗下行：聊天窗据此显示状态/发送
+    localStorage.setItem('aics_companion_chat_live_v1', JSON.stringify({
+      busy: false, thinking: false, speaking: false,
+      activeChar: 'nene', chatReady: true, ts: 1,
+    }));
+    (window as any).__relayedCommands = [];
+    (window as any).__radioStates = [];
+    (window as any).__hideChatCalls = 0;
+    Object.defineProperty(window, 'companionDesktop', {
+      configurable: true,
+      value: {
+        isDesktop: true,
+        hide: () => {},
+        quit: () => {},
+        openAtelier: () => {},
+        openChat: () => {},
+        hideChatWindow: () => { (window as any).__hideChatCalls += 1; },
+        chatRelay: (payload: Record<string, unknown>) => {
+          (window as any).__relayedCommands.push(payload);
+          // 模拟角色窗处理 'send' 后回写一条 assistant 消息到 storage
+          if ((payload as any).command === 'send') {
+            const raw = JSON.parse(localStorage.getItem('aics_chat_v1') || 'null');
+            const list = raw?.histories?.nene || [];
+            list.push({ role: 'user', content: payload.text, mid: `echo-user-${Date.now()}` });
+            list.push({ role: 'assistant', content: '已收到。', mid: `echo-ai-${Date.now()}` });
+            raw.histories.nene = list;
+            localStorage.setItem('aics_chat_v1', JSON.stringify(raw));
+          }
+        },
+        onChatCommand: () => 1,
+        offChatCommand: () => {},
+        onVisibilityChanged: () => 1,
+        offVisibilityChanged: () => {},
+      },
+    });
+  });
+  await page.setViewportSize({ width: 560, height: 720 });
+  await page.goto('/companion-chat');
+
+  await expect(page.locator('.companion-chat-window')).toBeVisible();
+  // 历史从 storage 渲染（跨窗经 storage 事件同步）
+  await expect(page.locator('.companion-chat-bubble.user p')).toHaveText('你好呀', { timeout: 5000 });
+  await expect(page.locator('.companion-chat-bubble p', { hasText: '今天也在这里陪着你' })).toBeVisible();
+  // 角色切换控件 + 迷你标题栏
+  await expect(page.locator('.companion-chat-char-switch button')).toHaveCount(2);
+
+  // 发送 → chatRelay({ command:'send', text })，清空输入
+  const input = page.locator('.companion-chat-input');
+  await input.fill('晚上好');
+  await page.locator('.companion-chat-send').click();
+  await expect.poll(() => page.evaluate(() => (window as any).__relayedCommands.length)).toBeGreaterThan(0);
+  const sent = await page.evaluate(() => (window as any).__relayedCommands.find((c: any) => c?.command === 'send'));
+  expect(sent?.text).toBe('晚上好');
+  await expect(input).toHaveValue('');
+  // 角色窗回写的新消息经 storage 事件合并进气泡列表
+  await expect(page.locator('.companion-chat-bubble p', { hasText: '晚上好' })).toBeVisible();
+  await expect(page.locator('.companion-chat-bubble p', { hasText: '已收到。' })).toBeVisible();
+  // 点 × 关闭聊天窗 → 走 hideChatWindow（直接 hide，不触发 window.close
+  // 的卸载链路，避免重开空白）
+  await page.locator('.companion-chat-mini[aria-label="关闭聊天窗"]').click();
+  await expect.poll(() => page.evaluate(() => (window as any).__hideChatCalls)).toBeGreaterThan(0);
   expect(errors).toEqual([]);
 });
 

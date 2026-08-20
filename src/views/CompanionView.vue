@@ -315,27 +315,58 @@
         <div class="companion-error" role="status" aria-live="polite" :data-kind="chatErrorKind">
           {{ chatError }}
         </div>
-        <div v-if="workspaceOpen" class="companion-workspace-settings" role="dialog" aria-label="AI 工作区设置">
-          <div>
-            <strong>AI 工作区</strong>
-            <span>存放样张、训练数据与配音资源的目录（例如 E:\AI）。设置后网关重启生效。</span>
-          </div>
-          <input
-            v-model="workspaceInput"
-            type="text"
-            placeholder="目录路径"
-            aria-label="AI 工作区目录路径"
-            @keydown.enter="saveWorkspace"
-          />
-          <div class="companion-workspace-actions">
-            <button type="button" class="btn btn-primary" :disabled="workspaceSaving" @click="saveWorkspace">
-              {{ workspaceSaving ? '保存中…' : '保存并重启网关' }}
-            </button>
-            <button type="button" class="btn btn-ghost" @click="workspaceOpen = false">关闭</button>
-          </div>
-        </div>
         <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>
       </section>
+
+      <div v-if="workspaceOpen" class="companion-workspace-settings" role="dialog" aria-label="AI 工作区设置">
+        <div>
+          <strong>AI 工作区</strong>
+          <span>存放样张、训练数据与配音资源的目录（例如 E:\AI）。设置后网关重启生效。</span>
+        </div>
+        <input
+          v-model="workspaceInput"
+          type="text"
+          placeholder="目录路径"
+          aria-label="AI 工作区目录路径"
+          @keydown.enter="saveWorkspace"
+        />
+        <div class="companion-workspace-actions">
+          <button type="button" class="btn btn-primary" :disabled="workspaceSaving" @click="saveWorkspace">
+            {{ workspaceSaving ? '保存中…' : '保存并重启网关' }}
+          </button>
+          <button type="button" class="btn btn-ghost" @click="workspaceOpen = false">关闭</button>
+        </div>
+      </div>
+
+      <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
+      <div v-if="desktopBridge" class="companion-desktop-float" aria-label="桌宠快捷操作">
+        <div class="companion-float-reminders" role="log" aria-label="角色主动问候">
+          <div
+            v-for="reminder in pendingReminders"
+            :key="reminder.id"
+            class="companion-float-reminder"
+            :data-kind="reminder.kind"
+            :data-event-kind="reminder.eventKind || undefined"
+            :title="reminder.kind === 'event' && reminder.eventKind ? '点击打开对应页面' : ''"
+            :class="{ 'companion-reminder-link': reminder.kind === 'event' && reminder.eventKind }"
+            @click="openReminderRoute(reminder)"
+          >
+            <span>{{ currentCharacter.name }}</span>
+            <p>{{ reminder.line }}</p>
+            <button type="button" aria-label="关闭这条问候" @click.stop="dismissReminder(reminder.id)">×</button>
+          </div>
+        </div>
+        <button
+          class="companion-chat-chip"
+          type="button"
+          title="打开聊天窗（Ctrl+Shift+X）"
+          aria-label="打开聊天"
+          @click="openChatWindow"
+        ><ArchiveIcon name="chat" /><span>聊天</span></button>
+        <span class="companion-live-dot" :data-state="liveDotState" role="status" aria-live="polite">
+          <i aria-hidden="true"></i>{{ liveDotText }}
+        </span>
+      </div>
     </main>
   </article>
 </template>
@@ -362,7 +393,7 @@ import {
   EVENT_ROUTE,
   type CompanionDetectedEvent,
 } from '@/utils/companionEvents'
-import { COMPANION_BEHAVIOR_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKeys'
+import { COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKeys'
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
@@ -507,6 +538,56 @@ const presence = computed(() => resolveCompanionPresence({
   composing: composerFocused.value || Boolean(inputText.value.trim()),
   hasReminder: pendingReminders.value.length > 0,
 }))
+
+/* ============================================================
+ * 真双窗口（桌面）：实时状态下行 + 聊天窗指令接入
+ * 角色窗是会话运行时唯一写者；聊天窗经 COMPANION_CHAT_LIVE_KEY
+ * 下行 busy/thinking/speaking/activeChar/chatReady，经
+ * bridge.onChatCommand 接收 send/switch/stop 中继。
+ * ============================================================ */
+const liveDotState = computed(() => {
+  if (isSpeaking.value) return 'speaking'
+  if (busy.value || thinkingActivity.value || Boolean(toolActivity.value)) return 'busy'
+  return 'idle'
+})
+const liveDotText = computed(() => {
+  if (!chatReady.value) return '聊天未就绪'
+  if (isSpeaking.value) return '配音中'
+  if (busy.value) return '回复中'
+  if (thinkingActivity.value || Boolean(toolActivity.value)) return '思考中'
+  return '陪伴中'
+})
+
+function publishLiveState() {
+  if (!desktopBridge) return
+  try {
+    localStorage.setItem(COMPANION_CHAT_LIVE_KEY, JSON.stringify({
+      busy: busy.value,
+      thinking: Boolean(thinkingActivity.value || toolActivity.value),
+      speaking: isSpeaking.value,
+      activeChar: activeChar.value,
+      chatReady: chatReady.value,
+      ts: Date.now(),
+    }))
+  } catch { /* 隐私模式忽略 */ }
+}
+watch([busy, thinkingActivity, toolActivity, isSpeaking, activeChar, chatReady], publishLiveState, { flush: 'sync' })
+
+function openChatWindow() {
+  desktopBridge?.openChat?.()
+}
+
+function onChatCommand(payload: { command?: string; text?: string; imageUrl?: string; character?: string }) {
+  if (!viewAlive) return
+  if (payload.command === 'send' && typeof payload.text === 'string' && payload.text.trim()) {
+    handleSend(payload.text, payload.imageUrl)
+  } else if (payload.command === 'switch-character' && payload.character) {
+    switchCharacter(payload.character)
+  } else if (payload.command === 'stop') {
+    stopEverything()
+  }
+}
+let chatCommandSubscription: number | undefined
 const speechButtonDisabled = computed(() => busy.value || !chatReady.value || !pageVisible.value
   || speechState.value === 'recognizing')
 const speechButtonText = computed(() => {
@@ -588,6 +669,14 @@ function onWindowKeydown(event: KeyboardEvent) {
     settingsOpen.value = false
     return
   }
+  // 真双窗口：角色窗不再内嵌输入；Space 呼出聊天窗（如已开则落到聊天窗自身处理）
+  if (desktopBridge) {
+    if (event.key === ' ' && !event.repeat && !isEditableTarget(event.target)) {
+      event.preventDefault()
+      void openChatWindow()
+    }
+    return
+  }
   if (event.key !== ' ' || event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
   const target = event.target
   if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
@@ -597,6 +686,15 @@ function onWindowKeydown(event: KeyboardEvent) {
   speechHeldByKeyboard = true
   event.preventDefault()
   void speechStart('manual')
+}
+
+function isEditableTarget(target: EventTarget | null): boolean {
+  if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
+    || target instanceof HTMLSelectElement) return true
+  if (target instanceof HTMLElement) {
+    return target.isContentEditable || Boolean(target.closest('button, a, [role="button"]'))
+  }
+  return false
 }
 
 function onWindowKeyup(event: KeyboardEvent) {
@@ -633,6 +731,8 @@ function onSpeechText(text: string, source: VoiceTextSource) {
 }
 
 function reconcileAutoListen() {
+  // 真双窗口：麦克风采集随聊天走聊天窗，角色窗不再 auto-listen
+  if (desktopBridge) return
   const shouldListen = speechReady.value
     && speechConfig.value.wakeEnabled
     && chatReady.value
@@ -1109,6 +1209,9 @@ onMounted(async () => {
   void refreshWorkspaceState()
   if (desktopBridge) {
     document.documentElement.classList.add('companion-desktop')
+    // 真双窗口：先下行一次实时状态，聊天窗打开即有正确内容
+    publishLiveState()
+    chatCommandSubscription = desktopBridge.onChatCommand(onChatCommand)
     clipboardImageSubscription = desktopBridge.onClipboardImage(onClipboardImage)
     clipboardTextSubscription = desktopBridge.onClipboardText(onClipboardText)
     shownSubscription = desktopBridge.onShown(() => setDesktopVisibility(true))
@@ -1185,6 +1288,7 @@ onUnmounted(() => {
   if (desktopBridge && powerModeSubscription != null) desktopBridge.offPowerModeChanged(powerModeSubscription)
   if (desktopBridge && interactionModeSubscription != null) desktopBridge.offInteractionModeChanged(interactionModeSubscription)
   if (desktopBridge && globalMouseSubscription != null) desktopBridge.offGlobalMouse(globalMouseSubscription)
+  if (desktopBridge && chatCommandSubscription != null) desktopBridge.offChatCommand(chatCommandSubscription)
   speechHeldByKeyboard = false
   speechHeldByPointer = false
   speechCancel()

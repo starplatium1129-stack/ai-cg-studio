@@ -301,7 +301,7 @@ fn clamp_windows(app: &AppHandle) {
     if area.2 <= 0 || area.3 <= 0 {
         return;
     }
-    for label in ["companion", "atelier"] {
+    for label in ["companion", "companion-chat", "atelier"] {
         if let Some(w) = app.get_webview_window(label) {
             let Ok(pos) = w.outer_position() else { continue };
             let Ok(size) = w.outer_size() else { continue };
