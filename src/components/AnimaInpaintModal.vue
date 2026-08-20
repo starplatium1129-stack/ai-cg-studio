@@ -12,15 +12,16 @@ export interface InpaintSubmitPayload {
   denoisingStrength: number
   growMaskBy: number
   seed: number | null
+  characterOverride?: 'nene' | 'natsume' | 'triad' | 'none' | null
 }
 
 const props = defineProps<{
   open: boolean
-  imageUrl: string
+  imageUrl?: string | null
   imageBlob?: Blob | null
-  currentPrompt: string
-  currentNegative: string
-  character: 'nene' | 'natsume' | 'triad' | null
+  currentPrompt?: string
+  currentNegative?: string
+  character?: 'nene' | 'natsume' | 'triad' | null
   seed?: number | null
   submitting?: boolean
 }>()
@@ -32,6 +33,59 @@ const emit = defineEmits<{
 
 const modalEl = ref<HTMLElement | null>(null)
 useFocusTrap(modalEl, () => props.open, { onEscape: () => emit('close') })
+
+// External / Uploaded Image State
+const uploadedBlob = ref<Blob | null>(null)
+const uploadedUrl = ref<string>('')
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const isDragging = ref(false)
+
+// Character LoRA Selection
+const characterMode = ref<'auto' | 'nene' | 'natsume' | 'none'>('auto')
+
+// Active Image Computation
+const activeImageUrl = computed(() => uploadedUrl.value || props.imageUrl || '')
+
+watch(() => props.open, (isOpen) => {
+  if (isOpen) {
+    uploadedBlob.value = null
+    uploadedUrl.value = ''
+    characterMode.value = 'auto'
+  }
+})
+
+function triggerUpload() {
+  fileInputRef.value?.click()
+}
+
+function processUploadedFile(file: File) {
+  if (!file.type.startsWith('image/')) {
+    alert('请选择有效的图片文件 (PNG, JPG, WebP)')
+    return
+  }
+  uploadedBlob.value = file
+  if (uploadedUrl.value) {
+    URL.revokeObjectURL(uploadedUrl.value)
+  }
+  uploadedUrl.value = URL.createObjectURL(file)
+}
+
+function onFileChange(e: Event) {
+  const target = e.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (file) {
+    processUploadedFile(file)
+  }
+  target.value = ''
+}
+
+function onDrop(e: DragEvent) {
+  isDragging.value = false
+  const file = e.dataTransfer?.files?.[0]
+  if (file) {
+    processUploadedFile(file)
+  }
+}
 
 interface OutfitPreset {
   id: string
@@ -146,23 +200,28 @@ watch(selectedPresetId, (newId) => {
 }, { immediate: true })
 
 async function getBlob(): Promise<Blob | null> {
+  if (uploadedBlob.value) {
+    return uploadedBlob.value
+  }
   if (props.imageBlob && props.imageBlob.size > 0) {
     return props.imageBlob
   }
-  if (!props.imageUrl) return null
-  try {
-    const res = await fetch(props.imageUrl, { cache: 'no-store' })
-    if (!res.ok) return null
-    return await res.blob()
-  } catch {
-    return null
+  if (activeImageUrl.value) {
+    try {
+      const res = await fetch(activeImageUrl.value, { cache: 'no-store' })
+      if (!res.ok) return null
+      return await res.blob()
+    } catch {
+      return null
+    }
   }
+  return null
 }
 
 async function handleStart() {
   const blob = await getBlob()
   if (!blob) {
-    alert('无法获取当前原图数据')
+    alert('请先上传或选择需要换装的图片')
     return
   }
 
@@ -177,14 +236,19 @@ async function handleStart() {
     ? `${negative}, ${currentPreset.value.negativeAdd}`
     : negative
 
+  const charOverride = characterMode.value === 'auto'
+    ? (props.character ?? null)
+    : (characterMode.value === 'none' ? null : characterMode.value)
+
   emit('submit', {
     imageBlob: blob,
-    maskPrompt: maskPrompt.value.trim() || 'clothes | dress | outfit',
+    maskPrompt: maskPrompt.value.trim() || 'clothing | clothes | outfit',
     newOutfitPrompt: newPrompt,
     negativePrompt: finalNegative,
     denoisingStrength: denoisingStrength.value,
     growMaskBy: growMaskBy.value,
     seed: preserveSeed.value ? (props.seed ?? null) : null,
+    characterOverride: charOverride,
   })
 }
 </script>
@@ -193,6 +257,15 @@ async function handleStart() {
   <div v-if="open" class="modal-backdrop" @click.self="emit('close')">
     <div ref="modalEl" class="modal-card inpaint-modal" role="dialog" aria-modal="true" aria-label="智能局部换装">
       <CornerFrame variant="ghost" />
+
+      <!-- Hidden file input for uploading external image -->
+      <input
+        ref="fileInputRef"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        style="display: none"
+        @change="onFileChange"
+      />
 
       <header class="modal-header">
         <div class="header-title">
@@ -211,19 +284,62 @@ async function handleStart() {
       </header>
 
       <p class="modal-intro">
-        利用视觉语义分割模型（CLIPSeg）自动锁定原图服装区域，保留面部、神态、发型与背景构图，精准换装！
+        支持对项目生成图或<b>外部手动导入的本地图片</b>进行智能换装。通过 CLIPSeg 自动锁定服装区域，精准重绘！
       </p>
 
       <div class="inpaint-layout">
         <!-- 左侧：原图预览与智能遮罩提示 -->
         <div class="inpaint-preview-col">
-          <div class="preview-card">
-            <span class="preview-label">原图基准</span>
-            <img class="preview-thumb" :src="imageUrl" alt="当前成片" />
-            <div class="preview-overlay-tag">
-              <ArchiveIcon name="spark" />
-              <span>锁定面部 & 背景</span>
-            </div>
+          <div
+            class="preview-card"
+            :class="{ 'is-dragover': isDragging, 'has-image': !!activeImageUrl }"
+            @dragover.prevent="isDragging = true"
+            @dragleave.prevent="isDragging = false"
+            @drop.prevent="onDrop"
+          >
+            <template v-if="activeImageUrl">
+              <span class="preview-label">
+                {{ uploadedBlob ? '已导入外部图片' : '原图基准' }}
+              </span>
+              <img class="preview-thumb" :src="activeImageUrl" alt="换装基准图" />
+              <div class="preview-overlay-tag">
+                <ArchiveIcon name="spark" />
+                <span>锁定面部 & 背景</span>
+              </div>
+              <button
+                class="btn btn-xs btn-upload-overlay"
+                type="button"
+                title="选择或拖入其他本地图片"
+                @click="triggerUpload"
+              >
+                <ArchiveIcon name="upload" />
+                <span>更换外部图片</span>
+              </button>
+            </template>
+
+            <template v-else>
+              <div class="dropzone-empty" @click="triggerUpload">
+                <ArchiveIcon name="upload" class="dropzone-icon" />
+                <span class="dropzone-title">点击或拖拽上传本地图片</span>
+                <span class="dropzone-hint">支持 PNG / JPG / WebP 任意动漫图像</span>
+              </div>
+            </template>
+          </div>
+
+          <!-- 角色 LoRA 辅助模式 -->
+          <div class="char-mode-box">
+            <label class="field-label" for="charModeSelect">
+              <span class="field-label-text">
+                <ArchiveIcon name="character" />
+                <span>角色模型辅助 (LoRA)</span>
+              </span>
+            </label>
+            <select id="charModeSelect" v-model="characterMode" class="input input-sm char-select">
+              <option value="auto">自动跟随当前角色 ({{ character || '通用' }})</option>
+              <option value="none">通用模式 (无 LoRA / 任意第三方动漫图)</option>
+              <option value="nene">绫地宁宁专属 LoRA (Ayachi Nene)</option>
+              <option value="natsume">四季夏目专属 LoRA (Shiki Natsume)</option>
+            </select>
           </div>
 
           <div class="segment-box">
@@ -237,9 +353,9 @@ async function handleStart() {
               id="maskPromptInput"
               v-model="maskPrompt"
               class="input input-sm"
-              placeholder="clothes | shirt | dress | uniform"
+              placeholder="clothing | clothes | outfit | dress | shirt..."
             />
-            <span class="field-hint">自动识别并重绘被填写的部位（用 | 分隔）</span>
+            <span class="field-hint">自动定位并重绘被识别的部位（用 | 分隔）</span>
           </div>
         </div>
 
@@ -299,11 +415,11 @@ async function handleStart() {
                 v-model.number="denoisingStrength"
                 type="range"
                 min="0.50"
-                max="0.95"
-                step="0.05"
+                max="0.98"
+                step="0.02"
                 class="slider"
               />
-              <span class="slider-hint">越高换装越彻底（推荐 0.75 ~ 0.85）</span>
+              <span class="slider-hint">越高换装越彻底（推荐 0.85 ~ 0.95）</span>
             </div>
 
             <div class="param-slider-group">
@@ -336,7 +452,7 @@ async function handleStart() {
         <button class="btn btn-ghost" type="button" :disabled="submitting" @click="emit('close')">
           取消
         </button>
-        <button class="btn btn-primary btn-submit-inpaint" type="button" :disabled="submitting" @click="handleStart">
+        <button class="btn btn-primary btn-submit-inpaint" type="button" :disabled="submitting || !activeImageUrl" @click="handleStart">
           <ArchiveIcon name="lightning" />
           <span>{{ submitting ? '正在换装中…' : '开始智能换装 (~6秒)' }}</span>
         </button>
@@ -353,24 +469,26 @@ async function handleStart() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 10, 16, 0.78);
+  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
   padding: var(--s-4);
-  animation: fade-in 0.2s ease-out;
+  animation: fadeIn 0.2s ease-out;
 }
 
-.inpaint-modal {
+.modal-card.inpaint-modal {
   position: relative;
-  width: min(900px, 95vw);
-  max-height: 92vh;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  background: var(--bg-surface-elevated, #161822);
+  border: 1px solid var(--border-soft, rgba(255, 255, 255, 0.12));
+  border-radius: var(--r-xl, 16px);
+  padding: var(--s-6);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  background: var(--bg-card, #121622);
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
-  border-radius: var(--r-xl, 16px);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
-  padding: var(--s-6);
   overflow-y: auto;
+  color: var(--text-primary, #fff);
 }
 
 .modal-header {
@@ -409,19 +527,6 @@ async function handleStart() {
   gap: 4px;
 }
 
-.field-label-text {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.preset-icon {
-  width: 1.15rem;
-  height: 1.15rem;
-  flex-shrink: 0;
-  color: var(--accent, #38bdf8);
-}
-
 .btn-close {
   padding: 6px;
   border-radius: 8px;
@@ -434,9 +539,13 @@ async function handleStart() {
   line-height: 1.5;
 }
 
+.modal-intro b {
+  color: var(--accent, #38bdf8);
+}
+
 .inpaint-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: var(--s-6);
   align-items: start;
 }
@@ -450,22 +559,26 @@ async function handleStart() {
 .inpaint-preview-col {
   display: flex;
   flex-direction: column;
-  gap: var(--s-4);
+  gap: var(--s-3);
 }
 
 .preview-card {
   position: relative;
-  border-radius: var(--r-md, 10px);
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
-  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  transition: all 0.2s ease;
 }
 
-.preview-thumb {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  display: block;
+.preview-card.is-dragover {
+  border-color: var(--accent, #38bdf8);
+  background: rgba(56, 189, 248, 0.08);
 }
 
 .preview-label {
@@ -473,30 +586,103 @@ async function handleStart() {
   top: 8px;
   left: 8px;
   font-size: 0.72rem;
-  padding: 2px 6px;
-  background: rgba(0, 0, 0, 0.65);
+  padding: 2px 8px;
   border-radius: 4px;
-  color: var(--text-muted, #aaa);
+  background: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 2;
+}
+
+.preview-thumb {
+  width: 100%;
+  height: auto;
+  max-height: 260px;
+  object-fit: cover;
+  display: block;
 }
 
 .preview-overlay-tag {
   position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.btn-upload-overlay {
+  position: absolute;
   bottom: 8px;
   left: 8px;
   right: 8px;
-  background: rgba(16, 24, 40, 0.85);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 8px;
-  border-radius: 6px;
+  background: rgba(22, 24, 34, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
   font-size: 0.75rem;
-  color: #38bdf8;
+  border-radius: 6px;
+  padding: 4px 8px;
   display: flex;
   align-items: center;
-  gap: 6px;
   justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
 }
 
+.btn-upload-overlay:hover {
+  background: var(--accent, #38bdf8);
+  color: #000;
+  border-color: var(--accent, #38bdf8);
+}
+
+.dropzone-empty {
+  padding: var(--s-6) var(--s-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  gap: var(--s-2);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+.dropzone-empty:hover {
+  border-color: var(--accent, #38bdf8);
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.dropzone-icon {
+  font-size: 2rem;
+  color: var(--accent, #38bdf8);
+}
+
+.dropzone-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary, #eee);
+}
+
+.dropzone-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.5));
+}
+
+.char-mode-box,
 .segment-box {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -507,6 +693,16 @@ async function handleStart() {
   gap: var(--s-2);
 }
 
+.char-select {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
 .field-label {
   font-size: 0.82rem;
   font-weight: 600;
@@ -514,6 +710,12 @@ async function handleStart() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.field-label-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .field-hint {
@@ -577,8 +779,11 @@ async function handleStart() {
   border-left: 2px solid #f43f5e;
 }
 
-.preset-emoji {
-  font-size: 1.1rem;
+.preset-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  color: var(--accent, #38bdf8);
 }
 
 .preset-title {
@@ -589,31 +794,39 @@ async function handleStart() {
   text-overflow: ellipsis;
 }
 
+.field-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
 .preset-desc-badge {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: #38bdf8;
-  font-weight: normal;
+  font-weight: 400;
 }
 
 .prompt-textarea {
-  width: 100%;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 8px 12px;
-  color: var(--text-primary, #fff);
   font-size: 0.82rem;
+  color: #fff;
   resize: vertical;
+  line-height: 1.4;
 }
 
 .params-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--s-4);
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  padding: var(--s-3);
+}
+
+@media (max-width: 600px) {
+  .params-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .param-slider-group {
@@ -626,12 +839,19 @@ async function handleStart() {
   display: flex;
   justify-content: space-between;
   font-size: 0.78rem;
-  color: var(--text-secondary, #ddd);
+  font-weight: 500;
+  color: var(--text-secondary, #ccc);
 }
 
 .param-value {
-  font-weight: 600;
   color: #38bdf8;
+  font-weight: 600;
+}
+
+.slider {
+  width: 100%;
+  accent-color: #38bdf8;
+  cursor: pointer;
 }
 
 .slider-hint {
@@ -648,36 +868,26 @@ async function handleStart() {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-secondary, #ccc);
   cursor: pointer;
 }
 
 .modal-footer {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: var(--s-3);
   margin-top: var(--s-6);
   padding-top: var(--s-4);
-  border-top: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-submit-inpaint {
+  padding: 8px 20px;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-  border: 1px solid #38bdf8;
-  font-weight: 600;
-  padding: 8px 18px;
-}
-
-.btn-submit-inpaint:hover {
-  background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
-}
-
-@keyframes fade-in {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+  gap: 6px;
 }
 </style>

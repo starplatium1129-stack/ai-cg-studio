@@ -280,6 +280,16 @@
             <div v-else class="stage-idle">
               <div class="stage-placeholder-title">心动成片将在此处呈现</div>
               <div class="stage-quick-actions">
+                <button
+                  v-if="drawEngine === 'anima'"
+                  class="btn btn-ghost"
+                  type="button"
+                  title="导入任意外部本地图片，进行智能语义识别与局部换装"
+                  @click="inpaintOpen = true"
+                >
+                  <ArchiveIcon name="wardrobe" />
+                  <span>导入本地图片换装</span>
+                </button>
                 <button class="btn btn-ghost" type="button"
                   @click="router.push('/scene-explorer')">
                   探索灵感场景
@@ -2198,11 +2208,19 @@ async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
     inpaintOpen.value = false
     pb.flash('正在执行 AI 智能识别与局部换装 (~6秒)…')
 
+    const effectiveChar = payload.characterOverride !== undefined
+      ? payload.characterOverride
+      : pb.char
+
     let promptText = payload.newOutfitPrompt
-    if (pb.char === 'nene' && !promptText.includes('ayachi_nene')) {
+    if (effectiveChar === 'nene' && !promptText.includes('ayachi_nene')) {
       promptText = `ayachi_nene, 1girl, solo, ${promptText}`
-    } else if (pb.char === 'natsume' && !promptText.includes('shiki_natsume')) {
+    } else if (effectiveChar === 'natsume' && !promptText.includes('shiki_natsume')) {
       promptText = `shiki_natsume, 1girl, solo, ${promptText}`
+    } else if (!effectiveChar || effectiveChar === 'none') {
+      if (!promptText.includes('1girl')) {
+        promptText = `1girl, solo, ${promptText}`
+      }
     }
 
     await generateAnima({
@@ -2213,6 +2231,7 @@ async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
       denoisingStrength: payload.denoisingStrength,
       growMaskBy: payload.growMaskBy,
       seed: payload.seed ?? undefined,
+      character: (effectiveChar === 'none' ? null : (effectiveChar || null)),
       teaCache: true,
     })
   } catch (error: any) {
