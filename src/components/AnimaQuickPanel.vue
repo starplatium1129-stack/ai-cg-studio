@@ -21,6 +21,7 @@ const loraStrength = computed({ get: () => props.state.loraStrength, set: value 
 const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({ seed: value === '' ? null : Number(value) }) })
 const steps = computed({ get: () => props.state.steps, set: value => patch({ steps: value }) })
 const cfg = computed({ get: () => props.state.cfg, set: value => patch({ cfg: value }) })
+const teaCache = computed({ get: () => props.state.teaCache !== false, set: value => patch({ teaCache: value }) })
 const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value => patch({ hiresFix: value }) })
 const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
 const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
@@ -83,8 +84,12 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </select>
       </div>
 
-      <!-- Anima 高清修复控制 -->
+      <!-- Anima 加速与高清修复控制 -->
       <div v-if="state.family === 'anima'" class="anima-row anima-hires-row">
+        <ToggleSwitch v-model="teaCache" :disabled="busy" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
+          <ArchiveIcon name="lightning" class="anima-hires-icon" />
+          <span>渲染加速 (TeaCache 2.4×)</span>
+        </ToggleSwitch>
         <ToggleSwitch v-model="hiresFix" :disabled="busy" label="高清放大修复" class="anima-hires-toggle">
           <ArchiveIcon name="spark" class="anima-hires-icon" />
           <span>高清放大修复 (Hires.fix 2x)</span>

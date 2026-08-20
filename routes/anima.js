@@ -10,6 +10,7 @@ var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var generationContract = require('../server/anima-generation-contract');
 var comfyClient = require('../server/comfy-client');
+var superres = require('./superres');
 
 var MAX_BODY = '64kb';
 var MAX_PENDING = 4;
@@ -115,6 +116,28 @@ function decodePathValue(value) {
 function modelRoot(config) {
   return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'models');
 }
+function imageInputRoot(config) {
+  return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'input');
+}
+
+var IMAGE_INPUT_PATTERN = /^aics_anima_input_[a-f0-9]{16,40}\.(png|jpg|jpeg|webp)$/i;
+
+function imageInputAvailable(config, name) {
+  if (typeof name !== 'string') return false;
+  if (!IMAGE_INPUT_PATTERN.test(name)) return false;
+  var target = path.resolve(imageInputRoot(config), name);
+  try { return fs.statSync(target).isFile(); } catch (error) { return false; }
+}
+
+function sniffImageExtension(buffer) {
+  if (buffer.length >= 8 && buffer[0] === 0x89 && buffer[1] === 0x50
+    && buffer[2] === 0x4e && buffer[3] === 0x47) return 'png';
+  if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return 'jpg';
+  if (buffer.length >= 12 && buffer.toString('ascii', 0, 4) === 'RIFF'
+    && buffer.toString('ascii', 8, 12) === 'WEBP') return 'webp';
+  return null;
+}
+
 function resourceExists(root, kind, file) {
   var base = path.resolve(root, kind);
   var target = path.resolve(base, file);
@@ -135,6 +158,12 @@ function requiredResources(config, input, loraRoot) {
   if (input.styleLoraId) {
     var styleLora = KREA_STYLE_LORAS[input.styleLoraId];
     if (!styleLora || !resourceExists(loraRoot, '', styleLora.file)) throw serviceError(503, 'KREA_STYLE_LORA_UNAVAILABLE', '所选 Krea 2 Style LoRA 文件不可用');
+  }
+  if (input.initImage && !imageInputAvailable(config, input.initImage)) {
+    throw serviceError(503, 'ANIMA_IMAGE_UNAVAILABLE', '局部重绘底图不存在或已过期');
+  }
+  if (input.maskImage && !imageInputAvailable(config, input.maskImage)) {
+    throw serviceError(503, 'ANIMA_MASK_UNAVAILABLE', '局部重绘遮罩图不存在或已过期');
   }
 }
 
@@ -247,7 +276,40 @@ function validateInput(body, expectedFamily) {
     hiresFix:Boolean(body.hiresFix),
     hiresScale:body.hiresFix ? validateNumber(body.hiresScale || 2.0, 'hiresScale', 1.1, 3.0, false) : 1.0,
     hiresDenoise:body.hiresFix ? validateNumber(body.hiresDenoise || 0.35, 'hiresDenoise', 0.1, 0.7, false) : 0.35,
+    teaCache:body.teaCache !== undefined ? Boolean(body.teaCache) : true,
+    teaCacheThresh:body.teaCacheThresh !== undefined ? validateNumber(body.teaCacheThresh, 'teaCacheThresh', 0.0, 1.0, false) : 0.08,
+    initImage:typeof body.initImage === 'string' && body.initImage.trim() ? body.initImage.trim() : null,
+    maskImage:typeof body.maskImage === 'string' && body.maskImage.trim() ? body.maskImage.trim() : null,
+    maskPrompt:typeof body.maskPrompt === 'string' && body.maskPrompt.trim() ? body.maskPrompt.trim() : null,
+    denoisingStrength:body.denoisingStrength !== undefined ? validateNumber(body.denoisingStrength, 'denoisingStrength', 0.1, 1.0, false) : 0.80,
+    growMaskBy:body.growMaskBy !== undefined ? validateNumber(body.growMaskBy, 'growMaskBy', 0, 32, true) : 6,
   };
+}
+
+// 2026-08-20：Anima hires 真超分辅助——与 WAI 链路同款（Remacri ESRGAN 像素级放大 +
+// 低 denoise 二阶段），替代潜空间 bicubic 放大（动漫线条块状/噪感根源之一）。
+// 只在 input.superResModel 存在时启用；否则回退原有 LatentUpscaleBy(bicubic)。
+function appendSuperResHires(wf, input, opts) {
+  var targetW = Math.round(input.width * input.hiresScale / 8) * 8;
+  var targetH = Math.round(input.height * input.hiresScale / 8) * 8;
+  wf['20'] = { class_type:'VAEDecode', inputs:{ samples:opts.firstPass, vae:opts.vae } };
+  wf['21'] = { class_type:'UpscaleModelLoader', inputs:{ model_name:input.superResModel } };
+  wf['22'] = { class_type:'ImageUpscaleWithModel', inputs:{ upscale_model:['21', 0], image:['20', 0] } };
+  wf['23'] = { class_type:'ImageScale', inputs:{ image:['22', 0], upscale_method:'lanczos', width:targetW, height:targetH, crop:'disabled' } };
+  wf['24'] = { class_type:'VAEEncode', inputs:{ pixels:['23', 0], vae:opts.vae } };
+  wf['25'] = { class_type:'KSampler', inputs:{
+    model:opts.model,
+    positive:opts.positive,
+    negative:opts.negative,
+    latent_image:['24', 0],
+    seed:input.seed + 1,
+    steps:Math.max(12, Math.round(input.steps * 0.6)),
+    cfg:input.cfg,
+    sampler_name:input.sampler,
+    scheduler:input.scheduler,
+    denoise:input.hiresDenoise || 0.35
+  } };
+  wf[opts.decodeNode].inputs.samples = ['25', 0];
 }
 
 function buildWorkflow(input) {
@@ -288,6 +350,7 @@ function buildWorkflow(input) {
   var isHires = input.hiresFix === true && input.hiresScale > 1.0;
 
   if (model.noLora === true && !input.loraId) {
+    var noLoraModel = ['1', 0];
     var noLoraWf = {
       '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
       '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
@@ -296,7 +359,7 @@ function buildWorkflow(input) {
       '5': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.negative } },
       '6': { class_type:'EmptyLatentImage', inputs:{ width:input.width, height:input.height, batch_size:1 } },
       '7': { class_type:'KSampler', inputs:{
-        model:['1', 0],
+        model:noLoraModel,
         positive:['4', 0],
         negative:['5', 0],
         latent_image:['6', 0],
@@ -310,26 +373,51 @@ function buildWorkflow(input) {
       '8': { class_type:'VAEDecode', inputs:{ samples:['7', 0], vae:['3', 0] } },
       '10': { class_type:'SaveImage', inputs:{ images:['8', 0], filename_prefix:OUTPUT_FILENAME_PREFIX } }
     };
+    if (input.teaCache) {
+      noLoraWf['13'] = { class_type:'AnimaTeaCache', inputs:{ model:['1', 0], rel_l1_thresh:input.teaCacheThresh || 0.08, start_percent:0, end_percent:1, cache_device:'cuda' } };
+      noLoraModel = ['13', 0];
+      noLoraWf['7'].inputs.model = noLoraModel;
+    }
+    if (input.initImage) {
+      noLoraWf['15'] = { class_type:'LoadImage', inputs:{ image:input.initImage } };
+      noLoraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['15', 0], vae:['3', 0] } };
+      if (input.maskImage) {
+        noLoraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
+        noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 1] } };
+      } else if (input.maskPrompt) {
+        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.35, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+        noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
+      }
+      if (noLoraWf['17']) {
+        noLoraWf['7'].inputs.latent_image = ['17', 0];
+        noLoraWf['7'].inputs.denoise = input.denoisingStrength !== undefined ? input.denoisingStrength : 0.80;
+      }
+    }
     if (isHires) {
-      noLoraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['7', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
-      noLoraWf['12'] = { class_type:'KSampler', inputs:{
-        model:['1', 0],
-        positive:['4', 0],
-        negative:['5', 0],
-        latent_image:['11', 0],
-        seed:input.seed + 1,
-        steps:Math.max(12, Math.round(input.steps * 0.6)),
-        cfg:input.cfg,
-        sampler_name:input.sampler,
-        scheduler:input.scheduler,
-        denoise:input.hiresDenoise || 0.35
-      } };
-      noLoraWf['8'].inputs.samples = ['12', 0];
+      if (input.superResModel) {
+        appendSuperResHires(noLoraWf, input, { firstPass:['7', 0], vae:['3', 0], model:noLoraModel, positive:['4', 0], negative:['5', 0], decodeNode:'8' });
+      } else {
+        noLoraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['7', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
+        noLoraWf['12'] = { class_type:'KSampler', inputs:{
+          model:noLoraModel,
+          positive:['4', 0],
+          negative:['5', 0],
+          latent_image:['11', 0],
+          seed:input.seed + 1,
+          steps:Math.max(12, Math.round(input.steps * 0.6)),
+          cfg:input.cfg,
+          sampler_name:input.sampler,
+          scheduler:input.scheduler,
+          denoise:input.hiresDenoise || 0.35
+        } };
+        noLoraWf['8'].inputs.samples = ['12', 0];
+      }
     }
     return noLoraWf;
   }
 
   var lora = LORAS[input.loraId];
+  var loraModel = ['4', 0];
   var loraWf = {
     '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
     '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
@@ -345,7 +433,7 @@ function buildWorkflow(input) {
     '6': { class_type:'CLIPTextEncode', inputs:{ clip:['4', 1], text:input.negative } },
     '7': { class_type:'EmptyLatentImage', inputs:{ width:input.width, height:input.height, batch_size:1 } },
     '8': { class_type:'KSampler', inputs:{
-      model:['4', 0],
+      model:loraModel,
       positive:['5', 0],
       negative:['6', 0],
       latent_image:['7', 0],
@@ -359,21 +447,45 @@ function buildWorkflow(input) {
     '9': { class_type:'VAEDecode', inputs:{ samples:['8', 0], vae:['3', 0] } },
     '10': { class_type:'SaveImage', inputs:{ images:['9', 0], filename_prefix:OUTPUT_FILENAME_PREFIX } }
   };
+  if (input.teaCache) {
+    loraWf['13'] = { class_type:'AnimaTeaCache', inputs:{ model:['4', 0], rel_l1_thresh:input.teaCacheThresh || 0.08, start_percent:0, end_percent:1, cache_device:'cuda' } };
+    loraModel = ['13', 0];
+    loraWf['8'].inputs.model = loraModel;
+  }
+  if (input.initImage) {
+    loraWf['15'] = { class_type:'LoadImage', inputs:{ image:input.initImage } };
+    loraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['15', 0], vae:['3', 0] } };
+    if (input.maskImage) {
+      loraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
+      loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 1] } };
+    } else if (input.maskPrompt) {
+      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.35, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+      loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
+    }
+    if (loraWf['17']) {
+      loraWf['8'].inputs.latent_image = ['17', 0];
+      loraWf['8'].inputs.denoise = input.denoisingStrength !== undefined ? input.denoisingStrength : 0.80;
+    }
+  }
   if (isHires) {
-    loraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['8', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
-    loraWf['12'] = { class_type:'KSampler', inputs:{
-      model:['4', 0],
-      positive:['5', 0],
-      negative:['6', 0],
-      latent_image:['11', 0],
-      seed:input.seed + 1,
-      steps:Math.max(12, Math.round(input.steps * 0.6)),
-      cfg:input.cfg,
-      sampler_name:input.sampler,
-      scheduler:input.scheduler,
-      denoise:input.hiresDenoise || 0.35
-    } };
-    loraWf['9'].inputs.samples = ['12', 0];
+    if (input.superResModel) {
+      appendSuperResHires(loraWf, input, { firstPass:['8', 0], vae:['3', 0], model:loraModel, positive:['5', 0], negative:['6', 0], decodeNode:'9' });
+    } else {
+      loraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['8', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
+      loraWf['12'] = { class_type:'KSampler', inputs:{
+        model:loraModel,
+        positive:['5', 0],
+        negative:['6', 0],
+        latent_image:['11', 0],
+        seed:input.seed + 1,
+        steps:Math.max(12, Math.round(input.steps * 0.6)),
+        cfg:input.cfg,
+        sampler_name:input.sampler,
+        scheduler:input.scheduler,
+        denoise:input.hiresDenoise || 0.35
+      } };
+      loraWf['9'].inputs.samples = ['12', 0];
+    }
   }
   return loraWf;
 }
@@ -814,6 +926,13 @@ function createAnimaService(config, options) {
     if (pendingCount() >= MAX_PENDING) throw serviceError(429, 'ANIMA_QUEUE_FULL', 'Anima 队列已满，请稍后再试');
     var id = crypto.randomBytes(18).toString('hex');
     var createdAt = Date.now();
+    // 2026-08-20：Anima hires 接入本地 ESRGAN 真超分（Remacri）。buildWorkflow 是纯函数
+    // 无法探测模型文件，这里在入队前探测并注入；只对 anima family（非 krea2）hires 生效，
+    // 未安装模型时保持原 latent bicubic 回退。
+    if (input.hiresFix && input.family !== 'krea2' && !input.superResModel) {
+      var localSuperRes = superres.availableSuperRes(config);
+      if (localSuperRes) input.superResModel = localSuperRes;
+    }
     var frozenInput = Object.freeze(Object.assign({}, input));
     var metadataLoras = frozenInput.loras
       ? Object.freeze(frozenInput.loras.map(function (lora) { return Object.freeze({ id:lora.id, strength:lora.strength }); }))
@@ -827,10 +946,11 @@ function createAnimaService(config, options) {
          engine:frozenInput.family || engine, id:id, prompt:frozenInput.prompt, negative:frozenInput.negative,
         profileId:frozenInput.profileId || '', modelId:frozenInput.modelId, loraId:frozenInput.loraId,
           loras:metadataLoras, loraStrength:frozenInput.loraStrength, styleLoraId:frozenInput.styleLoraId || null, width:frozenInput.width, height:frozenInput.height,
-         hiresFix:Boolean(frozenInput.hiresFix), hiresScale:frozenInput.hiresScale, hiresUpscaler:frozenInput.hiresUpscaler,
+         hiresFix:Boolean(frozenInput.hiresFix), hiresScale:frozenInput.hiresScale, hiresUpscaler:frozenInput.superResModel ? 'Remacri' : frozenInput.hiresUpscaler,
          hiresSteps:frozenInput.hiresSteps, denoisingStrength:frozenInput.denoisingStrength, faceDetailer:Boolean(frozenInput.faceDetailer),
         steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'res_multistep', scheduler:frozenInput.scheduler || 'simple',
-         seed:frozenInput.seed, character:frozenInput.character || null, preview:Boolean(LORAS[frozenInput.loraId] && LORAS[frozenInput.loraId].preview), createdAt:createdAt, resultUrl:null,
+        teaCache:Boolean(frozenInput.teaCache), teaCacheThresh:frozenInput.teaCacheThresh,
+        seed:frozenInput.seed, character:frozenInput.character || null, preview:Boolean(LORAS[frozenInput.loraId] && LORAS[frozenInput.loraId].preview), createdAt:createdAt, resultUrl:null,
         provider:provider
       }),
       status:'queued',
@@ -931,6 +1051,8 @@ function createAnimaService(config, options) {
       }),
       styleLoras:Object.keys(KREA_STYLE_LORAS).map(function (id) { var style = KREA_STYLE_LORAS[id]; return { id:id, trigger:style.trigger, recommendedStrength:1, available:resourceExists(loraRoot, '', style.file) }; }),
       characters:Object.keys(CHARACTERS).map(function (id) { return CHARACTERS[id]; }),
+      // 2026-08-20：本地 ESRGAN 真超分可用性（Anima hires 默认自动走 Remacri）。
+      hires:{ superResModel:superres.availableSuperRes(config) || null },
       pending:pendingCount(),
       maxPending:MAX_PENDING
     };
@@ -997,6 +1119,32 @@ function createAnimaRouter(config, dependencies) {
       res.setHeader('Cache-Control', 'no-store');
       envelope.ok(res, data);
     });
+  });
+
+  router.post(['/api/anima/images', '/api/creative/images'], jobLimit, express.json({ limit:'28mb' }), function (req, res) {
+    try {
+      if (!isPlainObject(req.body) || typeof req.body.image !== 'string') {
+        return envelope.fail(res, 400, '请求体必须包含 image base64 字符串', { code:'INVALID_BODY' });
+      }
+      var base64Data = req.body.image.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '');
+      var buffer = Buffer.from(base64Data, 'base64');
+      if (!buffer.length || buffer.length > MAX_IMAGE_BYTES) {
+        return envelope.fail(res, 400, '图片数据超出大小限制', { code:'INVALID_IMAGE' });
+      }
+      var ext = sniffImageExtension(buffer);
+      if (!ext) {
+        return envelope.fail(res, 400, '不支持的图片格式（仅限 PNG、JPEG、WebP）', { code:'INVALID_IMAGE_FORMAT' });
+      }
+      var hash = crypto.createHash('sha256').update(buffer).digest('hex').slice(0, 24);
+      var filename = 'aics_anima_input_' + hash + '.' + ext;
+      var targetDir = imageInputRoot(config);
+      fs.mkdirSync(targetDir, { recursive:true });
+      var targetPath = path.resolve(targetDir, filename);
+      fs.writeFileSync(targetPath, buffer);
+      return envelope.ok(res, { ok:true, name:filename });
+    } catch (error) {
+      return envelope.fail(res, 500, error.message || '图片保存失败', { code:'IMAGE_SAVE_FAILED' });
+    }
   });
 
   router.post(['/api/anima/jobs', '/api/creative/jobs'], jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {

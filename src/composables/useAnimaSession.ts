@@ -53,6 +53,13 @@ export interface AnimaRequest {
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
+  teaCache?: boolean
+  teaCacheThresh?: number
+  initImage?: string
+  maskImage?: string
+  maskPrompt?: string
+  denoisingStrength?: number
+  growMaskBy?: number
 }
 
 export interface AnimaSessionOptions {
@@ -77,6 +84,7 @@ const INITIAL_STATE: AnimaGenerationState = {
   family: 'anima',
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
   hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
+  teaCache: true, teaCacheThresh: 0.08,
   job: null, result: null, statusText: '', errorMsg: '',
 }
 
@@ -116,6 +124,13 @@ export function animaRequestPayload(
       hiresScale: request.hiresScale || 2.0,
       hiresDenoise: request.hiresDenoise || 0.35,
     } : {}),
+    ...(request.teaCache !== undefined ? { teaCache: request.teaCache } : {}),
+    ...(request.teaCacheThresh !== undefined ? { teaCacheThresh: request.teaCacheThresh } : {}),
+    ...(request.initImage ? { initImage: request.initImage } : {}),
+    ...(request.maskImage ? { maskImage: request.maskImage } : {}),
+    ...(request.maskPrompt ? { maskPrompt: request.maskPrompt } : {}),
+    ...(request.denoisingStrength !== undefined ? { denoisingStrength: request.denoisingStrength } : {}),
+    ...(request.growMaskBy !== undefined ? { growMaskBy: request.growMaskBy } : {}),
   }
 }
 

@@ -225,7 +225,9 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     var animaPromptCall = promptCalls.find(function (call) { return call.body.prompt['1'].inputs.unet_name === 'anima-base-v1.0.safetensors'; });
     assert.ok(animaPromptCall && animaPromptCall.body && animaPromptCall.body.prompt);
     assert.strictEqual(animaPromptCall.body.workflow, undefined);
-    assert.deepStrictEqual(Object.keys(animaPromptCall.body.prompt).sort(), ['1','10','2','3','4','5','6','7','8','9'], 'workflow must keep the fixed ten-node shape');
+    assert.deepStrictEqual(Object.keys(animaPromptCall.body.prompt).sort(), ['1','10','13','2','3','4','5','6','7','8','9'], 'workflow must include AnimaTeaCache node');
+    assert.strictEqual(animaPromptCall.body.prompt['13'].class_type, 'AnimaTeaCache');
+    assert.strictEqual(animaPromptCall.body.prompt['8'].inputs.model[0], '13');
     assert.strictEqual(animaPromptCall.body.prompt['7'].inputs.batch_size, 1);
     assert.strictEqual(animaPromptCall.body.prompt['1'].class_type, 'UNETLoader');
     assert.strictEqual(animaPromptCall.body.prompt['1'].inputs.unet_name, 'anima-base-v1.0.safetensors');
@@ -473,7 +475,27 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(graph['7'].inputs.scheduler, 'simple');
     assert.strictEqual(graph['7'].inputs.cfg, 4.5);
     assert.strictEqual(graph['7'].inputs.steps, 30);
+    assert.strictEqual(graph['13'].class_type, 'AnimaTeaCache');
+    assert.strictEqual(graph['7'].inputs.model[0], '13');
     assert.strictEqual(graph['10'].class_type, 'SaveImage');
+
+    var disabledTeaCache = await postJson(port, '/api/anima/jobs', {
+      prompt:'ayachi_nene, 1girl',
+      negative:'worst quality',
+      modelId:'anima-base-v1.0',
+      loraId:'L_NENE_V21_ANIMA',
+      loraStrength:0.85,
+      character:'nene',
+      width:832,
+      height:1216,
+      teaCache:false
+    });
+    assert.strictEqual(disabledTeaCache.status, 202);
+    await waitForJob(port, disabledTeaCache.json.job.id, function (job) { return job && job.status === 'succeeded'; });
+    state = await mockState(comfy.port);
+    promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
+    assert.strictEqual(promptCall.body.prompt['13'], undefined, 'disabled teaCache must omit node 13');
+    assert.strictEqual(promptCall.body.prompt['8'].inputs.model[0], '4', 'KSampler must connect directly to LoraLoader when teaCache is false');
 
     var loraOnNoLora = await postJson(port, '/api/anima/jobs', {
       prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NENE_V21_ANIMA', loraStrength:0.85,
@@ -563,6 +585,48 @@ test('Anima size contract: anima-base-v1.0 accepts 960x1536, anima-aesthetic-v1.
     });
     assert.strictEqual(aesthetic.status, 400, 'anima-aesthetic-v1.1 must reject 960x1536');
     assert.strictEqual(aesthetic.json.code, 'INVALID_PARAMETER');
+  } finally {
+    await stack.close();
+  }
+});
+
+test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentNoiseMask workflow', async function () {
+  var stack = await gatewayTestStack.start({
+    prefix:'aics-anima-inpaint-',
+    token:'anima-inpaint-token-0123456789abcdef012345',
+    prepare:prepareComfyResources,
+  });
+  var port = stack.address.port;
+  var comfy = stack.upstreams.comfy;
+  try {
+    // 1. Upload mock base64 image (1x1 transparent PNG)
+    var samplePngBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+    var uploadRes = await postJson(port, '/api/anima/images', { image: samplePngBase64 });
+    assert.strictEqual(uploadRes.status, 200);
+    assert.ok(uploadRes.json.ok);
+    assert.ok(uploadRes.json.name.startsWith('aics_anima_input_'));
+
+    // 2. Submit Inpaint job with maskPrompt
+    var inpaintJob = await postJson(port, '/api/anima/jobs', validJob({
+      initImage: uploadRes.json.name,
+      maskPrompt: 'clothes, dress',
+      denoisingStrength: 0.85,
+      growMaskBy: 8,
+      seed: 7788
+    }));
+    assert.strictEqual(inpaintJob.status, 202);
+    await waitForJob(port, inpaintJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
+
+    var state = await mockState(comfy.port);
+    var promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
+    var graph = promptCall.body.prompt;
+    assert.strictEqual(graph['15'].class_type, 'LoadImage');
+    assert.strictEqual(graph['15'].inputs.image, uploadRes.json.name);
+    assert.strictEqual(graph['16'].class_type, 'AP_CLIPSeg_TextMask');
+    assert.strictEqual(graph['16'].inputs.prompt, 'clothes, dress');
+    assert.strictEqual(graph['17'].class_type, 'SetLatentNoiseMask');
+    assert.strictEqual(graph['8'].inputs.latent_image[0], '17');
+    assert.strictEqual(graph['8'].inputs.denoise, 0.85);
   } finally {
     await stack.close();
   }

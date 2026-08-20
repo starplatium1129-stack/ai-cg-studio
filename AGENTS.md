@@ -124,6 +124,7 @@
 
 ## 不得回退的架构约束
 
+- **图标风格约束（2026-08-20 用户指示）**：项目中任何新加或修改的图标，**一律采用纯手绘线条样式（`ArchiveIcon.vue` 的 Hand-drawn Linear SVG 机制）**，严禁在界面按钮、操作栏或卡片中使用 Emoji 字符假装图标或引入风格不合的实心/填充图标；新增图标统一在 `src/components/visual/ArchiveIcon.vue` 的 `ICON_DEFS` 中以钢笔波浪双线与端点墨点机制绘制，并扩充 `ArchiveIconName` 类型。
 - 不要恢复已删除的 `tools/chat/`、`tools/prompt-builder/`、旧 `tools/*.html` 页面。
 - 不要向 `index.html` 添加 `/tools/...` 或其他全局脚本注入。
 - 不要恢复以下旧全局变量：

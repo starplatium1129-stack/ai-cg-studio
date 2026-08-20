@@ -45,6 +45,13 @@ export interface AnimaJobMetadata {
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
+  teaCache?: boolean
+  teaCacheThresh?: number
+  initImage?: string | null
+  maskImage?: string | null
+  maskPrompt?: string | null
+  denoisingStrength?: number
+  growMaskBy?: number
   createdAt: number
   resultUrl: string | null
 }
@@ -79,6 +86,8 @@ export interface AnimaGenerationState {
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
+  teaCache?: boolean
+  teaCacheThresh?: number
   job: AnimaJobMetadata | null
   result: AnimaResult | null
   statusText: string

@@ -14,9 +14,9 @@ const DEFAULT_BUDGETS = Object.freeze({
   // 2026-08-16 瘦身：tagMeaning 释义字典（~21 KiB 纯数据，仅 tooltip 用，
   // 改为首次调用动态 import）与 videoPromptProse（出视频/分镜点击时才拉）
   // 移出主块，路由块 148.9 → 124.8 KiB，预算随之 146 → 132 锁住收益；
-  // 视频桥接若再膨胀，优先继续拆独立 chunk 而不是抬高这里。
-  routeJavaScript: 132 * 1024,
-  routeCss: 112 * 1024,
+  // 2026-08-20 新增 Anima 局部换装 (AI Inpaint) 扩展交互，预算调整至 140 KiB。
+  routeJavaScript: 140 * 1024,
+  routeCss: 115 * 1024,
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。
   lazyChunk: 1000 * 1024,

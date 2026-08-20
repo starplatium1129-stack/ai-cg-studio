@@ -295,6 +295,17 @@
           <img class="result-image" :src="displayResultUrl" alt="生成的图片" />
           <div class="result-image-actions">
             <button
+              v-if="displayResultUrl && drawEngine === 'anima'"
+              class="btn btn-ghost btn-inpaint-action"
+              type="button"
+              :disabled="generationBusy"
+              title="锁定角色与背景，使用 AI 视觉语义识别一键更换服装"
+              @click="inpaintOpen = true"
+            >
+              <ArchiveIcon name="wardrobe" />
+              <span>局部换装</span>
+            </button>
+            <button
               v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
               class="btn btn-ghost btn-hires-action"
               type="button"
@@ -695,6 +706,22 @@
         </div>
       </div>
     </Teleport>
+
+    <!-- Anima 智能局部换装弹窗 -->
+    <Teleport to="body">
+      <AnimaInpaintModal
+        :open="inpaintOpen"
+        :image-url="displayResultUrl"
+        :image-blob="animaState.result?.blob"
+        :current-prompt="livePrompt"
+        :current-negative="negativePrompt"
+        :character="pb.char"
+        :seed="displayResultSeed"
+        :submitting="generationBusy"
+        @close="inpaintOpen = false"
+        @submit="handleInpaintSubmit"
+      />
+    </Teleport>
   </article>
 </template>
 
@@ -755,6 +782,8 @@ const GenerationOutputControls = defineAsyncComponent(() => import('@/components
 const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
+const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
+import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
@@ -967,6 +996,7 @@ interface ResultSnapshot {
 const prevResult = ref<ResultSnapshot | null>(null)
 const lastResult = ref<ResultSnapshot | null>(null)
 const compareOpen = ref(false)
+const inpaintOpen = ref(false)
 const compareEl = ref<HTMLElement | null>(null)
 
 /**
@@ -1496,6 +1526,8 @@ function buildAnimaRequest(): AnimaRequest | null {
     hiresFix: Boolean(animaState.value.hiresFix),
     hiresScale: animaState.value.hiresScale,
     hiresDenoise: animaState.value.hiresDenoise,
+    teaCache: animaState.value.teaCache !== false,
+    teaCacheThresh: animaState.value.teaCacheThresh,
   }
 }
 
@@ -1530,6 +1562,8 @@ function buildPopularRequest(): AnimaRequest | null {
     hiresFix: Boolean(animaState.value.hiresFix),
     hiresScale: animaState.value.hiresScale,
     hiresDenoise: animaState.value.hiresDenoise,
+    teaCache: animaState.value.teaCache !== false,
+    teaCacheThresh: animaState.value.teaCacheThresh,
   }
 }
 
@@ -2132,6 +2166,57 @@ async function upscaleCurrentResult() {
     pb.markParamTouched('hiresDenoise')
     pb.flash('正在使用当前 Seed 执行 SD 2x 高清修复…')
     await callGenerate()
+  }
+}
+
+async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
+  if (drawEngine.value !== 'anima') {
+    pb.flash('局部换装目前专属于 Anima 引擎')
+    return
+  }
+  try {
+    pb.flash('正在上传原图并准备智能换装…')
+    const reader = new FileReader()
+    const base64Promise = new Promise<string>((resolve, reject) => {
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(payload.imageBlob)
+    })
+    const base64Data = await base64Promise
+
+    const uploadRes = await fetch('/api/anima/images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: base64Data }),
+    })
+    const uploadJson = await uploadRes.json()
+    if (!uploadRes.ok || !uploadJson.ok || !uploadJson.name) {
+      throw new Error(uploadJson.error || '原图上传失败')
+    }
+
+    const initImage = uploadJson.name
+    inpaintOpen.value = false
+    pb.flash('正在执行 AI 智能识别与局部换装 (~6秒)…')
+
+    let promptText = payload.newOutfitPrompt
+    if (pb.char === 'nene' && !promptText.includes('ayachi_nene')) {
+      promptText = `ayachi_nene, 1girl, solo, ${promptText}`
+    } else if (pb.char === 'natsume' && !promptText.includes('shiki_natsume')) {
+      promptText = `shiki_natsume, 1girl, solo, ${promptText}`
+    }
+
+    await generateAnima({
+      prompt: promptText,
+      negative: payload.negativePrompt,
+      initImage,
+      maskPrompt: payload.maskPrompt,
+      denoisingStrength: payload.denoisingStrength,
+      growMaskBy: payload.growMaskBy,
+      seed: payload.seed ?? undefined,
+      teaCache: true,
+    })
+  } catch (error: any) {
+    pb.flash(`换装失败：${error?.message || error}`)
   }
 }
 
