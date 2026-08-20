@@ -192,6 +192,22 @@ test('generate_character_image：组装角色 LoRA 与生图任务', async () =>
   }
 });
 
+test('capture_screen：Windows 原生截屏', async () => {
+  const root = tempWorkspace();
+  try {
+    const res = await runTool(root, 'capture_screen', {});
+    if (process.platform === 'win32') {
+      assert.equal(res.ok, true);
+      assert.match(res.imageDataUrl, /^data:image\/jpeg;base64,/);
+      assert.match(res.output, /捕获当前桌面屏幕画面/);
+    } else {
+      assert.equal(res.ok, false);
+    }
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('HTTP 装配：/api/desktop-tools 本机可用、代理头拒绝、缺工具名 400', async () => {
   const root = tempWorkspace();
   const previous = process.env.AI_WORKSPACE_ROOT;

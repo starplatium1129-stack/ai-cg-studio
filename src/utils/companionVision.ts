@@ -32,6 +32,24 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
  * 抓取当前屏幕的一帧画面并转为压缩后的 DataURL (1080p 紧凑格式，防传输超限)
  */
 export async function captureScreenFrame(): Promise<string | null> {
+  // 1. 优先尝试本地桌面网关的原生截屏（在桌面客户端及本机环境下免授权弹窗、毫秒级截取）
+  try {
+    const res = await fetch('/api/desktop-tools', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'capture_screen', args: {} }),
+    })
+    if (res.ok) {
+      const data = await res.json()
+      if (data.ok && data.imageDataUrl) {
+        return data.imageDataUrl
+      }
+    }
+  } catch {
+    // 原生截屏失败时降级到浏览器标准 getDisplayMedia
+  }
+
+  // 2. 浏览器标准 getDisplayMedia 兜底
   if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getDisplayMedia) {
     return null
   }

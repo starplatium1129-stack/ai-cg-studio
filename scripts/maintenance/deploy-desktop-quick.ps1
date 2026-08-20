@@ -63,6 +63,11 @@ foreach ($item in $map) {
     Write-Host "  copied $($item.src) -> gateway/$($item.dst)" -ForegroundColor DarkGray
   }
 }
+$serverJsSrc = Join-Path $root 'server.js'
+if (Test-Path $serverJsSrc) {
+  Copy-Item -Path $serverJsSrc -Destination (Join-Path $gatewayDir 'server.js') -Force
+  Write-Host "  copied server.js -> gateway/server.js" -ForegroundColor DarkGray
+}
 
 # Copy-Item merges, so hashed build assets under dist/_app accumulate forever
 # (21 stale CompanionView chunks observed on 2026-08-16). Prune files that are

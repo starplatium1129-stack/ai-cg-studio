@@ -93,6 +93,14 @@ var TOOL_DEFINITIONS = [
   {
     type:'function',
     function:{
+      name:'capture_screen',
+      description:'截取用户当前 Windows 桌面主屏幕画面并返回 JPEG DataURL。用于看屏锐评、视觉感知与桌面辅助。',
+      parameters:{ type:'object', properties:{} }
+    }
+  },
+  {
+    type:'function',
+    function:{
       name:'generate_character_image',
       description:'根据角色名与场景描述自动调用 AI 绘画引擎生成角色插画。宁宁与夏目会自动绑定专属高精 LoRA。生成完成后会返回图片路径与状态。',
       parameters:{

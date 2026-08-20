@@ -220,6 +220,42 @@ function runTool(workspaceRoot, name, args) {
         var exists = fs.existsSync(root);
         return { ok: true, output: JSON.stringify({ workspaceRoot: root, exists: exists, os: process.platform }) };
       }
+      case 'capture_screen': {
+        if (process.platform !== 'win32') {
+          throw new Error('当前系统暂不支持原生屏幕截取');
+        }
+        var psScript = [
+          'Add-Type -AssemblyName System.Windows.Forms, System.Drawing',
+          '$b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds',
+          '$bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height',
+          '$g = [System.Drawing.Graphics]::FromImage($bmp)',
+          '$g.CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)',
+          '$ms = New-Object System.IO.MemoryStream',
+          '$bmp.Save($ms, [System.Drawing.Imaging.ImageFormat]::Jpeg)',
+          '$bytes = $ms.ToArray()',
+          '$g.Dispose()',
+          '$bmp.Dispose()',
+          '$ms.Dispose()',
+          '[System.Convert]::ToBase64String($bytes)'
+        ].join('\n');
+
+        return new Promise(function (resolve, reject) {
+          cp.execFile('powershell', ['-NoProfile', '-NonInteractive', '-Command', psScript], {
+            windowsHide: true,
+            maxBuffer: 20 * 1024 * 1024,
+            timeout: 10000,
+          }, function (err, stdout, stderr) {
+            if (err) return reject(new Error('截屏执行失败：' + (stderr || err.message)));
+            var base64 = String(stdout || '').trim();
+            if (!base64) return reject(new Error('未捕获到屏幕数据'));
+            resolve({
+              ok: true,
+              output: '已成功捕获当前桌面屏幕画面（' + Math.round(base64.length * 0.75 / 1024) + ' KB JPEG）',
+              imageDataUrl: 'data:image/jpeg;base64,' + base64,
+            });
+          });
+        });
+      }
       case 'generate_character_image': {
         var char = String(args.character || 'natsume').toLowerCase().trim();
         var desc = String(args.description || '').trim();

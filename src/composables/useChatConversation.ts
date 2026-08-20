@@ -199,6 +199,20 @@ export function useChatConversation(options: ChatConversationOptions) {
         visionRound = false
         // DeepSeek V4：思考轮带 tool_calls 时必须回传 reasoning_content
         let roundReasoning = ''
+        // 若用户配置的模型名包含 gemini/gpt-4/qwen-vl 等视觉模型，或用户有独立配置 API，则优先走用户当前的 API
+        const userHasVision = /gemini|gpt-4|qwen-vl|claude/i.test(options.apiModel.value)
+        const visionApi = userHasVision || options.apiKey.value ? {
+          baseUrl: options.apiBaseUrl.value,
+          model: options.apiModel.value,
+          apiKey: options.apiKey.value,
+        } : {
+          baseUrl: CLIPROXY_BASE_URL,
+          model: CLIPROXY_DEFAULT_MODEL,
+          apiKey: CLIPROXY_API_KEY,
+        }
+        const historyList = (useVision && imageUrl)
+          ? messages.slice(0, -2).map(message => ({ role: message.role, content: message.content }))
+          : messages.slice(0, -1).map(message => ({ role: message.role, content: message.content }))
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -206,11 +220,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             character: characterId,
             provider: options.chatProvider.value,
             model: hostMode ? '' : options.currentModel.value,
-            api: !hostMode && options.chatProvider.value === 'api' ? (useVision ? {
-              baseUrl: CLIPROXY_BASE_URL,
-              model: CLIPROXY_DEFAULT_MODEL,
-              apiKey: CLIPROXY_API_KEY,
-            } : {
+            api: !hostMode && options.chatProvider.value === 'api' ? (useVision ? visionApi : {
               baseUrl: options.apiBaseUrl.value,
               model: options.apiModel.value,
               apiKey: options.apiKey.value,
@@ -222,7 +232,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             userProfile: hasChatUserProfile(options.userProfile.value) ? options.userProfile.value : undefined,
             memories: options.recallMemories(characterId, text),
             messages: [
-              ...messages.slice(0, -1).map(message => ({ role: message.role, content: message.content })),
+              ...historyList,
               // 文本轮（回到 DeepSeek 等）不带图片消息：纯文本模型收到
               // image_url 会直接报错；图片已由视觉轮（Gemini）看过，
               // tool 结果里的摘要文本足够衔接上下文
