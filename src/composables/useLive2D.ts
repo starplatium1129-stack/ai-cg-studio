@@ -822,7 +822,39 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       .find((item): item is Live2DInteraction => Boolean(item)) ?? null
   }
 
-  function markInteractionStarted(interaction: Live2DInteraction, customText?: string) {
+  let interactionAudio: HTMLAudioElement | null = null
+
+  function stopInteractionAudio() {
+    if (interactionAudio) {
+      try {
+        interactionAudio.pause()
+        interactionAudio.src = ''
+      } catch {
+        // ignore
+      }
+      interactionAudio = null
+    }
+  }
+
+  function playNativeInteractionSound(soundUrl?: string) {
+    if (!soundUrl || mouthValue.value > 0) return
+    try {
+      stopInteractionAudio()
+      const audio = new Audio(soundUrl)
+      audio.volume = 0.8
+      interactionAudio = audio
+      audio.play().catch(() => {
+        // 浏览器静音策略或交互时机拦截静默降级
+      })
+      audio.onended = () => {
+        if (interactionAudio === audio) interactionAudio = null
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  function markInteractionStarted(interaction: Live2DInteraction, customText?: string, soundUrl?: string) {
     activeInteraction = interaction.group
     clearTimeout(interactionTimer)
     interactionTimer = window.setTimeout(() => {
@@ -836,6 +868,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     stageEl?.classList.remove('live2d-reacting')
     void stageEl?.offsetWidth
     stageEl?.classList.add('live2d-reacting')
+    playNativeInteractionSound(soundUrl)
   }
 
   /**
@@ -882,11 +915,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       ? `“${dispatched.entry.text}”${dispatched.bonusAwarded ? ` (好感度+${dispatched.bonusAwarded})` : ''}`
       : interaction.hint
 
+    const soundUrl = dispatched.entry?.sound
     const targetIndex = typeof motionIndex === 'number' ? motionIndex : undefined
     const result = model.motion(interaction.group, targetIndex, 3)
     if (isCatchable(result)) {
       result.then((started: unknown) => {
-        if (started === true) markInteractionStarted(interaction, customText)
+        if (started === true) markInteractionStarted(interaction, customText, soundUrl)
         else interactionFailed(interaction)
       }).catch((error: unknown) => {
         interactionHint.value = '动作暂时不可用，请重试'
@@ -894,7 +928,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       })
       return
     }
-    if (result === true) markInteractionStarted(interaction, customText)
+    if (result === true) markInteractionStarted(interaction, customText, soundUrl)
     else interactionFailed(interaction)
   }
 
@@ -1153,7 +1187,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function setSpeaking(value: boolean) {
     speaking = value
     emotionRuntime?.setSpeaking(value)
-    if (value) resumeRendering()
+    if (value) {
+      stopInteractionAudio()
+      resumeRendering()
+    }
     else {
       mouthValue.value = 0
       session?.sendMouthLevel?.(0)
@@ -1161,11 +1198,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function fallback(text: string, detail: string) {
+    stopInteractionAudio()
     ready.value = false; mouthValue.value = 0; interactionHint.value = ''; setVisible(false)
     setState('fallback', text || '静态立绘', detail || '', true)
   }
 
   function destroyRuntime() {
+    stopInteractionAudio()
     clearTimeout(loadTimer); loadTimer = 0
     clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
     clearTimeout(leaveTimer); leaveTimer = 0
