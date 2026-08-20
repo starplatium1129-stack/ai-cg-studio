@@ -253,14 +253,33 @@ function runTool(workspaceRoot, name, args) {
         if (!fs.existsSync(outDir)) {
           fs.mkdirSync(outDir, { recursive: true });
         }
-        var fileName = 'companion_' + targetChar + '_' + Date.now() + '.png';
+        var timestamp = Date.now();
+        var fileName = 'companion_' + targetChar + '_' + timestamp + '.png';
+        var metaFile = 'companion_' + targetChar + '_' + timestamp + '.json';
         var charName = targetChar === 'natsume' ? '四季夏目' : targetChar === 'nene' ? '绫地宁宁' : targetChar;
+
+        var fullImagePath = path.join(outDir, fileName);
+        var metaPayload = {
+          character: targetChar,
+          characterName: charName,
+          description: desc,
+          promptTokens: promptTokens,
+          loras: loras,
+          outfit: args.outfit || 'default',
+          mature: Boolean(args.mature),
+          createdAt: timestamp,
+          outputPath: fullImagePath
+        };
+        try {
+          fs.writeFileSync(path.join(outDir, metaFile), JSON.stringify(metaPayload, null, 2), 'utf8');
+        } catch (e) { /* ignore */ }
 
         return {
           ok: true,
-          output: '已成功为角色【' + charName + '】组装并下发绘制任务：\"' + desc + '\"。专属 LoRA 权重已绑定，生成的作品已登记至作品册（generated-images/' + fileName + '）。',
+          output: '已成功为角色【' + charName + '】组装并下发生图任务：“' + desc + '”。专属 LoRA 已绑定，生成的插画将保存在 AI 工作区目录：【' + fullImagePath + '】。',
           character: targetChar,
           imageRelativePath: 'generated-images/' + fileName,
+          fullImagePath: fullImagePath,
           bonusAffection: 2,
         };
       }
