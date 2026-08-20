@@ -380,12 +380,14 @@ function buildWorkflow(input) {
     }
     if (input.initImage) {
       noLoraWf['15'] = { class_type:'LoadImage', inputs:{ image:input.initImage } };
-      noLoraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['15', 0], vae:['3', 0] } };
+      noLoraWf['19'] = { class_type:'ImageScale', inputs:{ image:['15', 0], upscale_method:'bilinear', width:input.width, height:input.height, crop:'disabled' } };
+      noLoraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['19', 0], vae:['3', 0] } };
       if (input.maskImage) {
         noLoraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
-        noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 1] } };
+        noLoraWf['16_scale'] = { class_type:'ImageScale', inputs:{ image:['16', 0], upscale_method:'nearest-exact', width:input.width, height:input.height, crop:'disabled' } };
+        noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_scale', 1] } };
       } else if (input.maskPrompt) {
-        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.25, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
         noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
       }
       if (noLoraWf['17']) {
@@ -454,12 +456,14 @@ function buildWorkflow(input) {
   }
   if (input.initImage) {
     loraWf['15'] = { class_type:'LoadImage', inputs:{ image:input.initImage } };
-    loraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['15', 0], vae:['3', 0] } };
+    loraWf['19'] = { class_type:'ImageScale', inputs:{ image:['15', 0], upscale_method:'bilinear', width:input.width, height:input.height, crop:'disabled' } };
+    loraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['19', 0], vae:['3', 0] } };
     if (input.maskImage) {
       loraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
-      loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 1] } };
+      loraWf['16_scale'] = { class_type:'ImageScale', inputs:{ image:['16', 0], upscale_method:'nearest-exact', width:input.width, height:input.height, crop:'disabled' } };
+      loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_scale', 1] } };
     } else if (input.maskPrompt) {
-      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['15', 0], prompt:input.maskPrompt, threshold:0.25, smooth_radius:4, soft_mask:true, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
       loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
     }
     if (loraWf['17']) {

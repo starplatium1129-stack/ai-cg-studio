@@ -2214,24 +2214,26 @@ async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
 
     let promptText = payload.newOutfitPrompt
     if (effectiveChar === 'nene' && !promptText.includes('ayachi_nene')) {
-      promptText = `ayachi_nene, 1girl, solo, ${promptText}`
+      promptText = `ayachi_nene, ${promptText}`
     } else if (effectiveChar === 'natsume' && !promptText.includes('shiki_natsume')) {
-      promptText = `shiki_natsume, 1girl, solo, ${promptText}`
-    } else if (!effectiveChar || effectiveChar === 'none') {
-      if (!promptText.includes('1girl')) {
-        promptText = `1girl, solo, ${promptText}`
-      }
+      promptText = `shiki_natsume, ${promptText}`
     }
+
+    const negativePrompt = payload.characterOverride === 'none'
+      ? `${payload.negativePrompt}, face, head, hair, duplicate person, extra person`
+      : payload.negativePrompt
 
     await generateAnima({
       prompt: promptText,
-      negative: payload.negativePrompt,
+      negative: negativePrompt,
       initImage,
       maskPrompt: payload.maskPrompt,
       denoisingStrength: payload.denoisingStrength,
       growMaskBy: payload.growMaskBy,
       seed: payload.seed ?? undefined,
       character: (effectiveChar === 'none' ? null : (effectiveChar || null)),
+      width: payload.targetWidth,
+      height: payload.targetHeight,
       teaCache: true,
     })
   } catch (error: any) {

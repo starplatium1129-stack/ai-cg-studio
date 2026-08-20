@@ -13,6 +13,8 @@ export interface InpaintSubmitPayload {
   growMaskBy: number
   seed: number | null
   characterOverride?: 'nene' | 'natsume' | 'triad' | 'none' | null
+  targetWidth?: number
+  targetHeight?: number
 }
 
 const props = defineProps<{
@@ -218,6 +220,31 @@ async function getBlob(): Promise<Blob | null> {
   return null
 }
 
+// Track image aspect ratio and optimal generation resolution
+const detectedResolution = ref<{ width: number; height: number } | null>(null)
+
+watch(activeImageUrl, (url) => {
+  if (!url) {
+    detectedResolution.value = null
+    return
+  }
+  const img = new Image()
+  img.onload = () => {
+    const ratio = img.naturalWidth / img.naturalHeight
+    if (ratio >= 1.2) {
+      // 横屏图
+      detectedResolution.value = { width: 1216, height: 832 }
+    } else if (ratio <= 0.8) {
+      // 竖屏图
+      detectedResolution.value = { width: 832, height: 1216 }
+    } else {
+      // 方图或接近方图
+      detectedResolution.value = { width: 1024, height: 1024 }
+    }
+  }
+  img.src = url
+}, { immediate: true })
+
 async function handleStart() {
   const blob = await getBlob()
   if (!blob) {
@@ -249,6 +276,8 @@ async function handleStart() {
     growMaskBy: growMaskBy.value,
     seed: preserveSeed.value ? (props.seed ?? null) : null,
     characterOverride: charOverride,
+    targetWidth: detectedResolution.value?.width,
+    targetHeight: detectedResolution.value?.height,
   })
 }
 </script>
