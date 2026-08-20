@@ -209,8 +209,8 @@ export function useCharacterRoomSession() {
   const toolActivity = ref('')
   /** 模型思考过程指示（thinking 模式下收到 reasoning 增量时显示） */
   const thinkingActivity = ref(false)
-  /** 仅桌面应用启用本地工具；浏览器访问时保持纯聊天 */
-  const companionTools = ref(Boolean(window.companionDesktop))
+  /** 本地环境启用本地工具（网关有 security.isDirectLocalRequest 本机安全守卫） */
+  const companionTools = ref(true)
   /** 模型推理强度（opencode 风格多档：off/low/medium/high；默认中档） */
   const reasoning = ref<ReasoningLevel>(settingsRepository.get(CHAT_THINKING_SETTING) ?? 'medium')
 

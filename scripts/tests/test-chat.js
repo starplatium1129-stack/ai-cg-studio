@@ -634,7 +634,7 @@ async function run() {
       'companionTools must inject the local tool schemas into the upstream request'
     );
     assert(!toolPayload.tools.some(function (t) {
-      return t.function && !['list_files', 'read_file', 'write_file', 'run_command', 'read_image', 'get_workspace_info'].includes(t.function.name);
+      return t.function && !['list_files', 'read_file', 'write_file', 'run_command', 'read_image', 'get_workspace_info', 'generate_character_image'].includes(t.function.name);
     }), 'only the whitelisted companion tools may be advertised');
     assert(toolCalls.length === 1, 'split tool_calls deltas must accumulate into one event');
     assert(toolCalls[0].id === 'call_1', 'tool-call event must carry the call id');
@@ -825,7 +825,7 @@ async function run() {
     assert((dataResponse.headers.get('cache-control') || '').includes('immutable'), 'data files are cached immutable; freshness is versioned by ?v=DATA_VERSION and enforced by validate-content-contracts');
 
     var assetResponse = await fetch(gatewayBase + '/assets/logo.svg');
-    assert((assetResponse.headers.get('cache-control') || '').includes('max-age=604800'), 'stable image assets should use a one-week browser cache');
+    assert((assetResponse.headers.get('cache-control') || '').includes('no-cache'), 'runtime image assets should use no-cache ETag revalidation');
 
     var badChat = await fetch(gatewayBase + '/api/chat', {
       method:'POST',

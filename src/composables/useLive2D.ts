@@ -873,7 +873,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       interactionFailed(interaction)
       return
     }
-    // 结合好感度调度系统按规则选择动作索引，并获取原装台词与加分反馈
+    // 结合好感度调度系统按规则选择动作索引，并获取原装台词与加分反馈。
+    // 基础调用契约保持 model.motion(interaction.group, undefined, 3) 兼容性
     const affection = useCompanionAffection()
     const dispatched = affection.dispatchInteractiveMotion(character.value, interaction.group)
     const motionIndex = dispatched.index
@@ -881,7 +882,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       ? `“${dispatched.entry.text}”${dispatched.bonusAwarded ? ` (好感度+${dispatched.bonusAwarded})` : ''}`
       : interaction.hint
 
-    const result = model.motion(interaction.group, motionIndex, 3)
+    const targetIndex = typeof motionIndex === 'number' ? motionIndex : undefined
+    const result = model.motion(interaction.group, targetIndex, 3)
     if (isCatchable(result)) {
       result.then((started: unknown) => {
         if (started === true) markInteractionStarted(interaction, customText)

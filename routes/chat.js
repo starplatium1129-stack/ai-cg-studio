@@ -368,10 +368,10 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
     if (!deltas) return;
     for (var i = 0; i < deltas.length; i += 1) {
       var delta = deltas[i] || {};
-      var index = Number(delta.index);
-      if (!Number.isInteger(index) || index < 0 || index > 16) continue;
+      var rawIndex = delta.index !== undefined ? Number(delta.index) : i;
+      var index = Number.isInteger(rawIndex) && rawIndex >= 0 && rawIndex <= 16 ? rawIndex : i;
       var acc = toolCallsByIndex[index] || (toolCallsByIndex[index] = { id:'', name:'', arguments:'' });
-      if (typeof delta.id === 'string') acc.id = delta.id;
+      if (typeof delta.id === 'string' && delta.id) acc.id = delta.id;
       if (delta.function) {
         // 部分实现会把 name 也分片传输，用拼接兼容
         if (typeof delta.function.name === 'string') acc.name += delta.function.name;
@@ -385,7 +385,8 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
     var chain = Promise.resolve();
     indexes.forEach(function (index) {
       var call = toolCallsByIndex[index];
-      if (!call.id || !call.name) return;
+      if (!call || !call.name) return;
+      if (!call.id) call.id = 'call_' + (index + 1) + '_' + Date.now();
       chain = chain.then(function () {
         return handlers.onToolCall({
           index:index,
