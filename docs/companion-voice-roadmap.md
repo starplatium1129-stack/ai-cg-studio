@@ -91,19 +91,18 @@ ZcChat2 的精华集中在三处：**语音输入链路**（我们为零）、**
 - 语音控件收拢为单一 `companion-speech-cluster`，连续会话提供结束按钮；增加 deferred microphone 与源码生命周期契约测试。
 - 整合构建后 Companion 语音浏览器回归已签收：`studio.spec.ts --grep "companion speech"` 2/2 通过，并通过 viewport/scrollWidth/控件不重叠断言。
 
-### P5：桌宠好感度体系、生图工具直连与视觉看屏锐评 ✅（2026-08-20）
+### P5：桌宠好感度体系（✅ 已落地）与生图工具/视觉看屏（🚧 待后续接手完善）（2026-08-20）
 
-1. **Live2D 原作好感度与动作权限系统（`companionAffection.ts` / `useCompanionAffection.ts`）**：
+1. **Live2D 原作好感度与动作权限系统（`companionAffection.ts` / `useCompanionAffection.ts`）✅**：
    - 0~100 亲密度体系（Lv1 初识 ~ Lv5 契约），完整还原四季夏目 Live2D 原作者 `model.json` 中的 `Intimacy` 动作门控与 `Bonus` 加分规则。
    - 低好感度下严格拦截满分告白动作；达成满分后解锁全部专属隐藏动作（萌萌Q、喝茶邀请、我爱你告白等）。
-   - 摸头/摸手触发 `Bonus: +5` 经验累加并展示作者原配台词气泡；顶栏增加好感度药丸徽标 UI。
+   - 摸头/摸手触发 `Bonus: +5` 经验累加并展示作者原配台词气泡；顶栏增加好感度药丸徽标 UI，实机验证可用。
 
-2. **桌面生图工具箱直连（Agent Tools）**：
-   - 服务端注册 `generate_character_image` 工具定义；
-   - `routes/desktop-tools.js` 自动根据角色绑定专属 Anima LoRA 权重与形态 tokens，支持自然语言一句话出图与 R18 纯裸形态切换；
-   - 出图成功后自动触发角色好感度增长（+2 💖）。
+2. **桌面生图工具箱直连（`generate_character_image`）🚧（待高阶协作者完善）**：
+   - 工具定义已挂载，`routes/desktop-tools.js` 提供了 LoRA 绑定逻辑与工作区出图落盘框架；
+   - 现状：实机环境下部分 API 模型（如 Gemini 等兼容端点）在实际会话中仍存在流式工具调用未命中或执行未打通的问题，已标记为待后续专人深入联调完善。
 
-3. **多模态视觉看屏与屏幕锐评（`companionVision.ts`）**：
-   - `captureScreenFrame` 屏幕截帧与剪贴板图片 DataURL 转换；
-   - 对话请求支持多模态图文流式接入并自动路由至本地 Gemini 视觉模型；
-   - 桌宠界面提供 `👁️ 看屏幕` 快捷按钮与剪贴板“让角色看看”交互。
+3. **多模态视觉看屏与屏幕锐评（`companionVision.ts`）🚧（待高阶协作者完善）**：
+   - 后端已提供 Windows 原生截屏（`capture_screen`）与 DataURL 组装接口；
+   - 现状：桌面端实机联动仍存在未响应或多模态消息链路未完全闭环的问题，标记为待后续专人深入联调完善。
+
