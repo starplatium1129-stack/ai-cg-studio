@@ -7,7 +7,6 @@
 
 var fs = require('fs');
 var path = require('path');
-var https = require('http');
 
 var ROOT = path.resolve(__dirname, '..', '..');
 var COMFY = 'http://127.0.0.1:8188';
@@ -95,7 +94,6 @@ async function run() {
   var superInput = generation.validateInput(Object.assign({}, INPUT, { hiresUpscaler: 'Remacri' }));
   var superRes = generation.buildWorkflow(Object.assign({}, superInput, { superResModel: '4x_foolhardy_Remacri.safetensors' }));
 
-  var hasLatent = generation.buildWorkflow(generation.validateInput(Object.assign({}, INPUT, { hiresFix: false })));
   console.log('[i] latent hires graph nodes:', Object.keys(latent).length, '| super-res graph nodes:', Object.keys(superRes).length);
   console.log('[i] super-res uses UpscaleModelLoader:', Object.values(superRes).some(function (n) { return n.class_type === 'UpscaleModelLoader'; }));
 

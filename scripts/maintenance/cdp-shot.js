@@ -22,7 +22,6 @@ async function main() {
   const state = await page.evaluate(() => {
     const host = document.querySelector('#live2dHost')
     const stage = document.querySelector('.portrait-stage')
-    const card = document.querySelector('.character-card')
     const main = document.querySelector('.portrait-main')
     const cvs = host ? host.querySelector('canvas') : null
     const before = stage ? getComputedStyle(stage, '::before') : null

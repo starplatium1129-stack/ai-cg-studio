@@ -1,6 +1,5 @@
 // Multi-position click test + flicker burst check.
 const { chromium } = require('playwright')
-const { execSync } = require('node:child_process')
 
 async function main() {
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9222')
