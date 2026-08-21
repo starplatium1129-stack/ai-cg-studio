@@ -477,7 +477,7 @@
 
         <!-- SD params -->
         <GenerationParamsPanel v-if="drawEngine === 'sd' && pb.directorMode === 'pro'"
-          :params="pb.sdParams"
+          v-model:params="pb.sdParams"
           :samplers="sd.samplers.value"
           :schedulers="sd.schedulers.value"
           :result-seed="displayResultSeed"
@@ -524,7 +524,7 @@
             :engine="drawEngine"
             :expert="pb.directorMode === 'pro'"
             :preset-summary="generationPresetSummary"
-            :params="pb.sdParams"
+            v-model:params="pb.sdParams"
             v-model:size="sdSize"
             :vram-hint="vramHint"
             :vram-level="vramLevel"

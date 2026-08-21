@@ -20,6 +20,11 @@ const emit = defineEmits<{
 const activeFranchise = ref('all')
 
 const keyword = computed(() => props.search.trim().toLowerCase())
+// v-model 走 update:search 事件回写父级，不直接改 prop（单向数据流）
+const searchProxy = computed({
+  get: () => props.search,
+  set: value => emit('update:search', value),
+})
 const filteredCharacters = computed(() => {
   const base = !keyword.value
     ? props.characters
@@ -65,7 +70,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   <div class="popular-picker">
     <div class="popular-search-wrap">
       <ArchiveIcon name="search" class="popular-search-icon" />
-      <input v-model="props.search" class="popular-search" type="search"
+      <input v-model="searchProxy" class="popular-search" type="search"
         placeholder="搜索角色或作品，如 raiden / Saber / Re:Zero" aria-label="搜索热门角色" />
     </div>
     <div v-if="!keyword" class="popular-franchises" role="group" aria-label="按作品筛选">

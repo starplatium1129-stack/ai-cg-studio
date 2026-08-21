@@ -111,7 +111,6 @@ const props = defineProps<{
   engine: DrawEngine
   expert: boolean
   presetSummary: string
-  params: SDParams
   size: string
   vramHint: string
   vramLevel: string
@@ -125,6 +124,10 @@ const props = defineProps<{
   hasResult?: boolean
   animaHiresFix?: boolean
 }>()
+
+// params 由 Pinia store 的 reactive 对象承载，子组件按契约直接改字段；
+// 用 defineModel 承载该双向约定（替代裸 prop 深层变更）。
+const params = defineModel<SDParams>('params', { required: true })
 
 const emit = defineEmits<{
   'update:size': [value: string]

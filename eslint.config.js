@@ -95,8 +95,10 @@ export default tseslint.config(
       'vue/html-closing-bracket-newline': 'off',
       'vue/component-definition-name-casing': 'off',
       'vue/require-default-prop': 'off',
-      'vue/require-v-for-key': 'off',
-      'vue/no-mutating-props': 'off',
+      // 正确性规则（2026-08-22 恢复）：v-for 无 key 会导致列表复用错乱；
+      // 子组件变更 props 会破坏单向数据流。其余纯风格规则继续豁免。
+      'vue/require-v-for-key': 'error',
+      'vue/no-mutating-props': 'error',
       'vue/no-v-model-argument': 'off',
       'vue/v-on-event-hyphenation': 'off',
       'vue/attribute-hyphenation': 'off',

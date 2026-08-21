@@ -53,11 +53,14 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 
 const props = defineProps<{
-  params: SDParams
   samplers: readonly string[]
   schedulers: readonly string[]
   resultSeed: number | null
 }>()
+
+// params 由 Pinia store 的 reactive 对象承载，子组件按契约直接改字段；
+// 用 defineModel 承载该双向约定（替代裸 prop 深层变更）。
+const params = defineModel<SDParams>('params', { required: true })
 
 const emit = defineEmits<{
   touch: [key: keyof SDParams]
