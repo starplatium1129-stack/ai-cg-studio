@@ -59,16 +59,30 @@ function newestSourceMtime(rootDir) {
   return newest;
 }
 
+// /api/status 每 3s 被控制面板轮询；newestSourceMtime 要递归 stat 整个源码树
+// （~200 个文件），不能每次都走。缓存键含 dist/index.html 的 mtime——构建完成
+// 后键自动变化失效，无需手动清理（2026-08-21 性能审计 #2）。
+var WEB_BUILD_CACHE_TTL_MS = 30 * 1000;
+var WEB_BUILD_CACHE_LIMIT = 4;
+var webBuildCache = new Map();
+
 function webBuildInfo(config) {
   var distIndex = path.join(config.ROOT_DIR, 'dist', 'index.html');
   var distStat = null;
   try { distStat = fs.statSync(distIndex); } catch (error) { /* 无构建 */ }
-  var sourceNewest = newestSourceMtime(config.ROOT_DIR);
+  var distMtimeMs = distStat ? distStat.mtimeMs : -1;
+  var now = Date.now();
+  var cached = webBuildCache.get(config.ROOT_DIR);
+  if (!cached || cached.distMtimeMs !== distMtimeMs || now - cached.at > WEB_BUILD_CACHE_TTL_MS) {
+    cached = { distMtimeMs:distMtimeMs, at:now, sourceNewest:newestSourceMtime(config.ROOT_DIR) };
+    if (webBuildCache.size >= WEB_BUILD_CACHE_LIMIT) webBuildCache.clear();
+    webBuildCache.set(config.ROOT_DIR, cached);
+  }
   return {
     distReady:Boolean(distStat),
     builtAt:distStat ? new Date(distStat.mtimeMs).toISOString() : null,
-    stale:Boolean(distStat && sourceNewest > distStat.mtimeMs + 5000),
-    sourceNewest:new Date(sourceNewest).toISOString()
+    stale:Boolean(distStat && cached.sourceNewest > distStat.mtimeMs + 5000),
+    sourceNewest:new Date(cached.sourceNewest).toISOString()
   };
 }
 

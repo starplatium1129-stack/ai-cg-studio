@@ -732,9 +732,11 @@ async function materializeResult(config, job, image, options) {
   var target = safeMediaPath(root, filename);
   if (!target) throw serviceError(500, 'MEDIA_PATH_INVALID', '应用媒体路径无效');
   var temporary = target + '.' + process.pid + '.' + crypto.randomBytes(4).toString('hex') + '.tmp';
-  fs.writeFileSync(temporary, response.body, { flag:'wx', mode:0o600 });
+  // 异步落盘（2026-08-21 性能审计 #1）：≤20MB 的 writeFileSync 同步写会短暂
+  // 冻结事件循环，与视频/聊天流共享同一个进程。
+  await fs.promises.writeFile(temporary, response.body, { flag:'wx', mode:0o600 });
   try {
-    fs.renameSync(temporary, target);
+    await fs.promises.rename(temporary, target);
     var realRoot = fs.realpathSync(root);
     var realTarget = fs.realpathSync(target);
     if (realTarget.indexOf(realRoot + path.sep) !== 0) throw serviceError(500, 'MEDIA_PATH_INVALID', '应用媒体路径无效');
@@ -1205,7 +1207,7 @@ function createAnimaRouter(config, dependencies) {
     });
   });
 
-  router.post(['/api/anima/images', '/api/creative/images'], jobLimit, express.json({ limit:'28mb' }), function (req, res) {
+  router.post(['/api/anima/images', '/api/creative/images'], jobLimit, express.json({ limit:'28mb' }), async function (req, res) {
     try {
       if (!isPlainObject(req.body) || typeof req.body.image !== 'string') {
         return envelope.fail(res, 400, '请求体必须包含 image base64 字符串', { code:'INVALID_BODY' });
@@ -1224,7 +1226,8 @@ function createAnimaRouter(config, dependencies) {
       var targetDir = imageInputRoot(config);
       fs.mkdirSync(targetDir, { recursive:true });
       var targetPath = path.resolve(targetDir, filename);
-      fs.writeFileSync(targetPath, buffer);
+      // 异步写盘，避免 ≤20MB 同步写冻结事件循环（2026-08-21 性能审计 #1）
+      await fs.promises.writeFile(targetPath, buffer);
       return envelope.ok(res, { ok:true, name:filename });
     } catch (error) {
       return envelope.fail(res, 500, error.message || '图片保存失败', { code:'IMAGE_SAVE_FAILED' });

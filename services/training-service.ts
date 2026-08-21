@@ -597,14 +597,56 @@ function parseProgress(
   }
 }
 
-function walkDataset(root: string): {
+// walkDataset 结果缓存（2026-08-21 性能审计 #6）：训练页每 3s 轮询 overview，
+// 每次都对每个数据集候选全量递归 readdir+stat（上限 20000 条目）。训练数据集
+// 是静态快照：按根目录 stat 失效 + 短 TTL 兜底（覆盖子目录深处的增删）。
+interface WalkCacheEntry {
+  at: number;
+  mtimeMs: number;
+  size: number;
+  result: {
+    images: number;
+    captions: number;
+    bytes: number;
+    categories: Record<string, number>;
+  };
+}
+
+const WALK_CACHE_TTL_MS = 10000;
+const WALK_CACHE_LIMIT = 32;
+const walkCache = new Map<string, WalkCacheEntry>();
+
+type DatasetScan = {
   images: number;
   captions: number;
   bytes: number;
   categories: Record<string, number>;
-} {
-  const result = { images: 0, captions: 0, bytes: 0, categories: {} as Record<string, number> };
-  if (!fs.existsSync(root)) return result;
+};
+
+function emptyScan(): DatasetScan {
+  return { images: 0, captions: 0, bytes: 0, categories: {} };
+}
+
+function walkDataset(root: string): DatasetScan {
+  const now = Date.now();
+  let stat: fs.Stats | null = null;
+  try {
+    stat = fs.statSync(root);
+  } catch {
+    return emptyScan();
+  }
+  const cached = walkCache.get(root);
+  if (cached && cached.mtimeMs === stat.mtimeMs && cached.size === stat.size
+    && now - cached.at < WALK_CACHE_TTL_MS) {
+    // 浅拷贝：categories 不能与缓存共享引用，防调用方改写
+    return {
+      images: cached.result.images,
+      captions: cached.result.captions,
+      bytes: cached.result.bytes,
+      categories: { ...cached.result.categories },
+    };
+  }
+  const result = emptyScan();
   const stack: Array<{ directory: string; category: string }> = [{ directory: root, category: '' }];
   let visited = 0;
   while (stack.length && visited < 20000) {
@@ -642,6 +684,18 @@ function walkDataset(root: string): {
       }
     }
   }
+  if (walkCache.size >= WALK_CACHE_LIMIT) walkCache.clear();
+  walkCache.set(root, {
+    at: now,
+    mtimeMs: stat.mtimeMs,
+    size: stat.size,
+    result: {
+      images: result.images,
+      captions: result.captions,
+      bytes: result.bytes,
+      categories: { ...result.categories },
+    },
+  });
   return result;
 }
 

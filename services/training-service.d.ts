@@ -168,12 +168,13 @@ declare function isJobId(value: unknown): value is TrainingJobId;
 declare function defaultProgress(): TrainingProgress;
 declare function normalizeLogChunk(value: Buffer | string): string;
 declare function parseProgress(state: PersistedJobState, text: string, definition: JobDefinition, aiRoot: string): void;
-declare function walkDataset(root: string): {
+type DatasetScan = {
     images: number;
     captions: number;
     bytes: number;
     categories: Record<string, number>;
 };
+declare function walkDataset(root: string): DatasetScan;
 interface DatasetCandidate {
     id: string;
     name: string;

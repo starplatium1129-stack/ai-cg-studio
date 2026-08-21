@@ -69,7 +69,17 @@ function createGateway(options) {
   app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }));
   app.use(security.tokenAuth(config.TOKEN));
   app.use(precompressed(config.ROOT_DIR));
-  app.use(compression({ threshold:1024 }));
+  // 流式响应（聊天 NDJSON / SSE）不进 zlib 缓冲：compression 默认攒满才吐，
+  // token 到达会变成一段一段的突发；X-Accel-Buffering 只对反代生效管不了它
+  // （2026-08-21 性能审计 #4）。
+  app.use(compression({
+    threshold:1024,
+    filter: function (req, res) {
+      var contentType = String(res.getHeader('Content-Type') || '');
+      if (/\bapplication\/x-ndjson\b/i.test(contentType) || /\btext\/event-stream\b/i.test(contentType)) return false;
+      return compression.filter(req, res);
+    },
+  }));
 
   var chat = createChatRouter(config, options.services);
   var voice = createVoiceRouter(config, options.services);
@@ -233,6 +243,10 @@ function createGateway(options) {
       return SD_PROXY_ALLOWLIST.indexOf(pathname) !== -1;
     },
     proxyTimeout:20 * 60 * 1000,
+    // timeout 只约束「到上游建立连接/收到响应头」的阶段；txt2img 那种长任务由
+    // proxyTimeout 放行。没有它，SD 宕机时连接阶段会挂满 20 分钟才报错
+    // （2026-08-21 性能审计 #7）。
+    timeout:15000,
     auth:config.SD_API_AUTH || undefined,
     on:{
       // 每次转发都打日志会把长时运行的日志刷成噪音；需要排查时用 DEBUG=1。

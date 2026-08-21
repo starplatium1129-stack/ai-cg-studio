@@ -60,6 +60,15 @@ interface ProxyConfig {
 
 const LOCAL_HOSTS: ReadonlySet<string> = new Set(['localhost', '127.0.0.1', '::1', '[::1]']);
 
+// 上游直连连接池（2026-08-21 性能审计 #7）：显式 keep-alive agent 复用回环
+// TCP 连接（SD WebUI / ComfyUI / Ollama 高频探测与任务提交），不再依赖 Node
+// 全局 agent 默认值；timeout 让空闲 socket 解除引用并按需回收。
+// 注意：代理路径（CONNECT 隧道 + 手动 TLS）每请求仍新建隧道——复用需要自维护
+// 隧道池且要处理半关 socket，风险大于收益，维持现状。
+const DIRECT_AGENT_OPTIONS = { keepAlive: true, keepAliveMsecs: 15000, maxSockets: 32, timeout: 60000 };
+const DIRECT_HTTP_AGENT = new http.Agent(DIRECT_AGENT_OPTIONS);
+const DIRECT_HTTPS_AGENT = new https.Agent(DIRECT_AGENT_OPTIONS);
+
 /**
  * 解析代理环境变量（HTTP_PROXY/HTTPS_PROXY/ALL_PROXY，支持小写变体）。
  * 只接受 http:// 代理（常见本地 Clash/v2ray 场景），其它协议视为无效。
@@ -206,7 +215,8 @@ function request(baseUrl: string, pathname: string, options?: RequestOptions): P
     const proxy = resolveProxy(target);
     if (!proxy) {
       const transport = target.protocol === 'https:' ? https : http;
-      const direct = transport.request(target, { method: method, headers: headers }, onResponse);
+      const agent = target.protocol === 'https:' ? DIRECT_HTTPS_AGENT : DIRECT_HTTP_AGENT;
+      const direct = transport.request(target, { method: method, headers: headers, agent: agent }, onResponse);
       attachResponse(direct);
       return;
     }

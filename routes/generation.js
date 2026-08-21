@@ -224,13 +224,51 @@ function requestJson(config, hostKey, method, pathname, body, timeout) {
   });
 }
 
-async function probeWebUI(config) {
+// 探测结果短 TTL 缓存 + 在途合并（2026-08-21 性能审计 #3）：/api/generation/status
+// 与每次提交任务都调用本探测；五个请求已并行化，但无缓存时提交仍要多等一个
+// 并行探测往返。默认缓存 3s；**提交路径必须传 {fresh:true} 绕过缓存**——上游刚
+// 下线时路由决策必须立刻看到（否则 faceDetailer 任务会被送进注定失败的 WebUI
+// 异步失败，而不是立即 503，见 test-generation-routes.js 的离线路径断言）。
+var WEBUI_PROBE_TTL_MS = 3000;
+var webuiProbeCache = { key:'', at:0, value:null, pending:null };
+
+function probeWebUI(config, options) {
+  var key = String(config.SD_HOST || '');
+  var now = Date.now();
+  if (webuiProbeCache.key === key && webuiProbeCache.pending) return webuiProbeCache.pending;
+  if (!(options && options.fresh)
+    && webuiProbeCache.key === key && webuiProbeCache.value
+    && now - webuiProbeCache.at < WEBUI_PROBE_TTL_MS) {
+    return Promise.resolve(webuiProbeCache.value);
+  }
+  var pending = doProbeWebUI(config).then(function (value) {
+    webuiProbeCache.key = key;
+    webuiProbeCache.at = Date.now();
+    webuiProbeCache.value = value;
+    webuiProbeCache.pending = null;
+    return value;
+  });
+  webuiProbeCache.key = key;
+  webuiProbeCache.pending = pending;
+  return pending;
+}
+
+async function doProbeWebUI(config) {
   try {
-    var options = await requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/options', null, 3000);
-    var samplerList = await requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/samplers', null, 3000).catch(function () { return []; });
-    var schedulerList = await requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/schedulers', null, 3000).catch(function () { return []; });
-    var upscalerList = await requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/upscalers', null, 3000).catch(function () { return []; });
-    var models = await requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/sd-models', null, 3000).catch(function () { return []; });
+    // 五个端点并行探测（对照 control.js /api/sd-status 的并行口径）；options 是
+    // 唯一的硬依赖，其余失败按空列表降级——与原串行版本行为一致。
+    var probeResults = await Promise.all([
+      requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/options', null, 3000),
+      requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/samplers', null, 3000).catch(function () { return []; }),
+      requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/schedulers', null, 3000).catch(function () { return []; }),
+      requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/upscalers', null, 3000).catch(function () { return []; }),
+      requestJson(config, 'SD_HOST', 'GET', '/sdapi/v1/sd-models', null, 3000).catch(function () { return []; }),
+    ]);
+    var options = probeResults[0];
+    var samplerList = probeResults[1];
+    var schedulerList = probeResults[2];
+    var upscalerList = probeResults[3];
+    var models = probeResults[4];
      var catalog = Array.isArray(models) ? models : [];
      var match = catalog.find(function (item) {
        var values = [item && item.filename, item && item.title, item && item.model_name, item && item.name].filter(Boolean).map(String);
@@ -327,7 +365,8 @@ function createGenerationRouter(config, dependencies) {
   });
   router.post('/api/generation/jobs', limit, express.json({ limit:MAX_BODY }), async function (req, res) {
     var input; try { input = validate(req.body); } catch (e) { return envelope.fail(res, e.status || 400, e.message, { code:e.code }); }
-    var webui = await probeWebUI(config);
+    // fresh：路由决策不能吃缓存——上游刚下线时必须立即失败而不是送进注定失败的分支
+    var webui = await probeWebUI(config, { fresh:true });
     var comfyOnline = await comfy.probe().catch(function () { return false; });
     var webuiSupportsSampler = webui.samplers.length === 0 || webui.samplers.indexOf(input.sampler) !== -1;
     var webuiSupportsScheduler = !input.webuiScheduler || webui.schedulers.length === 0 || webui.schedulers.indexOf(input.webuiScheduler) !== -1 || webui.schedulers.indexOf(input.webuiScheduler === 'karras' ? 'Karras' : input.webuiScheduler) !== -1;

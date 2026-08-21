@@ -24,24 +24,47 @@ function redactText(text) {
     });
 }
 
+// 日志尾读缓存：控制面板每 3s 轮询 /api/logs，日志没新增时重复
+// open/read/close + 正则脱敏是纯浪费；按 (maxBytes,size,mtimeMs) 失效，
+// 追加写必然改 size，不会返回陈旧内容（2026-08-21 性能审计 #2）。
+var LOG_TAIL_CACHE_LIMIT = 16;
+var logTailCache = new Map();
+
 function readLogTail(filePath, maxBytes) {
   maxBytes = Math.max(1024, Number(maxBytes) || 64 * 1024);
+  var stat;
   try {
-    if (!fs.existsSync(filePath)) return { path:filePath, available:false, text:'' };
-    var size = fs.statSync(filePath).size;
-    var start = Math.max(0, size - maxBytes);
+    stat = fs.statSync(filePath);
+  } catch (error) {
+    return { path:filePath, available:false, text:'' };
+  }
+  var cached = logTailCache.get(filePath);
+  if (cached && cached.maxBytes === maxBytes
+    && cached.size === stat.size && cached.mtimeMs === stat.mtimeMs) {
+    return Object.assign({}, cached.result);
+  }
+  try {
+    var start = Math.max(0, stat.size - maxBytes);
     var fd = fs.openSync(filePath, 'r');
     try {
-      var length = size - start;
+      var length = stat.size - start;
       var buffer = Buffer.alloc(length);
       fs.readSync(fd, buffer, 0, length, start);
-      return {
+      var result = {
         path:filePath,
         available:true,
-        bytes:size,
+        bytes:stat.size,
         truncated:start > 0,
         text:redactText(buffer.toString('utf8'))
       };
+      if (logTailCache.size >= LOG_TAIL_CACHE_LIMIT) logTailCache.clear();
+      logTailCache.set(filePath, {
+        maxBytes:maxBytes,
+        size:stat.size,
+        mtimeMs:stat.mtimeMs,
+        result:result
+      });
+      return Object.assign({}, result);
     } finally {
       fs.closeSync(fd);
     }

@@ -30,9 +30,20 @@ function chatHostConfigPath(config) {
   return path.join(config.RUNTIME.state, 'chat_api_config.json');
 }
 
+// 与 routes/chat.js 完全同源的读取缓存：按 (mtimeMs,size) 失效，命中时零磁盘 IO
+// （2026-08-21 性能审计 #9）。本路由对配置只读，写路径在 chat.js 侧已失效。
+var hostConfigCache = { mtimeMs:-1, size:-1, value:null };
+
 function readHostConfig(config) {
+  var filePath = chatHostConfigPath(config);
+  var stat = null;
+  try { stat = fs.statSync(filePath); } catch (error) { return null; }
+  if (hostConfigCache.value && hostConfigCache.mtimeMs === stat.mtimeMs
+    && hostConfigCache.size === stat.size) {
+    return Object.assign({}, hostConfigCache.value);
+  }
   try {
-    var parsed = JSON.parse(fs.readFileSync(chatHostConfigPath(config), 'utf8'));
+    var parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     var baseUrl = String(parsed && parsed.baseUrl || '').trim();
     var model = String(parsed && parsed.model || '').trim();
     var apiKey = String(parsed && parsed.apiKey || '').trim();
@@ -41,8 +52,13 @@ function readHostConfig(config) {
     var pathname = typeof parsed.pathname === 'string' && parsed.pathname
       ? parsed.pathname
       : new URL('chat/completions', baseUrl.replace(/\/+$/, '') + '/').pathname;
-    return { baseUrl:baseUrl, pathname:pathname, model:model, apiKey:apiKey };
-  } catch (error) { return null; }
+    var result = { baseUrl:baseUrl, pathname:pathname, model:model, apiKey:apiKey };
+    hostConfigCache = { mtimeMs:stat.mtimeMs, size:stat.size, value:result };
+    return Object.assign({}, result);
+  } catch (error) {
+    // 半写状态/损坏文件不缓存
+    return null;
+  }
 }
 
 // ── 改写提示词（纯 ASCII；输出 JSON 是硬约束，逐字段规则给足）──────────────

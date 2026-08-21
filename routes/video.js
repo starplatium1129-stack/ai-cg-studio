@@ -407,8 +407,26 @@ function sniffImageExtension(buffer) {
 }
 
 // 只读文件头取真实像素尺寸（PNG IHDR / JPEG SOF / WebP VP8*），不整图解码。
+// 512KB 头部窗口：PNG/WebP 的尺寸字段都在前 32 字节，JPEG SOF 标记实测也在
+// 前几十 KB 内；此前 readFileSync 整图读取会为 ≤20MB 的上传白白吃一次内存带宽。
+var IMAGE_HEADER_WINDOW = 512 * 1024;
 function readImageSize(file) {
-  var buffer = fs.readFileSync(file);
+  var fd;
+  try { fd = fs.openSync(file, 'r'); } catch (error) { return null; }
+  var headerWindow = Buffer.alloc(IMAGE_HEADER_WINDOW);
+  try {
+    var read = fs.readSync(fd, headerWindow, 0, IMAGE_HEADER_WINDOW, 0);
+    if (!read) return null;
+    var buffer = read === IMAGE_HEADER_WINDOW ? headerWindow : headerWindow.subarray(0, read);
+    return parseImageHeaderSize(buffer);
+  } catch (error) {
+    return null;
+  } finally {
+    fs.closeSync(fd);
+  }
+}
+
+function parseImageHeaderSize(buffer) {
   if (buffer.length >= 24 && buffer[0] === 0x89 && buffer[1] === 0x50
     && buffer[2] === 0x4e && buffer[3] === 0x47) {
     return { width:buffer.readUInt32BE(16), height:buffer.readUInt32BE(20) };
@@ -1161,24 +1179,127 @@ function videoMimeAndExtension(contentType, body, filename) {
   return null;
 }
 
+// 与 requestComfy 相同的 URL/超时约定，但不缓冲 body：把原始响应流交给调用方。
+// 视频结果最大 256MB，整段 Buffer.concat 进内存再 writeFileSync 会瞬时占用
+// 约 2 倍文件大小的内存并冻结网关事件循环（2026-08-21 性能审计 #1）。
+function requestComfyStream(config, method, pathname, timeoutMs) {
+  return new Promise(function (resolve, reject) {
+    var target;
+    try { target = new URL(config.COMFY_HOST); } catch (error) {
+      reject(serviceError(502, 'COMFY_CONFIG_INVALID', 'ComfyUI 地址无效'));
+      return;
+    }
+    var rawPath = String(pathname || '/');
+    var queryIndex = rawPath.indexOf('?');
+    target.pathname = queryIndex >= 0 ? rawPath.slice(0, queryIndex) : rawPath;
+    target.search = queryIndex >= 0 ? rawPath.slice(queryIndex) : '';
+    var client = target.protocol === 'https:' ? https : http;
+    var request = client.request({
+      protocol:target.protocol,
+      hostname:target.hostname,
+      port:target.port,
+      method:method,
+      path:target.pathname + target.search,
+      headers:{ Accept:'application/octet-stream' },
+      timeout:timeoutMs || 10000,
+    }, function (response) {
+      resolve({ status:response.statusCode || 0, headers:response.headers, response:response });
+    });
+    request.on('error', function (error) {
+      if (error && error.code) reject(error);
+      else reject(serviceError(502, 'COMFY_UNAVAILABLE', error && error.message || 'ComfyUI 不可用'));
+    });
+    request.on('timeout', function () {
+      request.destroy(serviceError(504, 'COMFY_TIMEOUT', 'ComfyUI 请求超时'));
+    });
+    request.end();
+  });
+}
+
+// 取首个数据块用于魔数嗅探（ftyp/EBML 只需前 12 字节），随后回到暂停模式，
+// 校验通过后由 pipe 恢复流动；响应立即结束时返回 null（等价于空 body）。
+function firstResponseChunk(response) {
+  return new Promise(function (resolve, reject) {
+    var settled = false;
+    var onData = function (chunk) {
+      response.pause();
+      done(null, chunk);
+    };
+    var onEnd = function () { done(null, null); };
+    var onError = function (error) { done(error); };
+    var done = function (error, chunk) {
+      if (settled) return;
+      settled = true;
+      response.off('data', onData);
+      response.off('end', onEnd);
+      response.off('error', onError);
+      if (error) reject(error);
+      else resolve(chunk || null);
+    };
+    response.on('data', onData);
+    response.on('end', onEnd);
+    response.on('error', onError);
+  });
+}
+
 async function materializeResult(config, job, output) {
   var reference = validateVideoReference(output);
   var query = '?filename=' + encodeURIComponent(reference.filename) + '&type=output';
-  var response = await requestComfy(config, 'GET', '/view' + query, null, 120000, MAX_VIDEO_BYTES);
-  if (response.status < 200 || response.status >= 300) {
+  var upstream = await requestComfyStream(config, 'GET', '/view' + query, 120000);
+  var upstreamResponse = upstream.response;
+  if (upstream.status < 200 || upstream.status >= 300) {
+    upstreamResponse.resume();
     throw serviceError(502, 'COMFY_RESULT_ERROR', 'ComfyUI 视频读取失败');
   }
-  var info = videoMimeAndExtension(response.headers['content-type'], response.body, reference.filename);
-  if (!info || !response.body.length || response.body.length > MAX_VIDEO_BYTES) {
+  var head = await firstResponseChunk(upstreamResponse);
+  var info = head ? videoMimeAndExtension(upstream.headers['content-type'], head, reference.filename) : null;
+  if (!info || !head || !head.length) {
+    upstreamResponse.resume();
     throw serviceError(502, 'INVALID_RESULT', 'ComfyUI 返回的视频格式无效');
   }
   var root = ensureMediaRoot(config);
   var target = safeMediaPath(root, job.id + '.' + info.extension);
-  if (!target) throw serviceError(500, 'VIDEO_STORAGE_INVALID', '视频运行时目录无效');
+  if (!target) {
+    upstreamResponse.resume();
+    throw serviceError(500, 'VIDEO_STORAGE_INVALID', '视频运行时目录无效');
+  }
+  // 流式落盘：边收边写、按 MAX_VIDEO_BYTES 计数拦截，任一环节失败都清掉半成品
   var temporary = target + '.tmp';
-  fs.writeFileSync(temporary, response.body, { flag:'wx' });
-  fs.renameSync(temporary, target);
-  return { path:target, mime:info.mime, bytes:response.body.length };
+  var bytes = await new Promise(function (resolve, reject) {
+    var out = fs.createWriteStream(temporary, { flags:'wx' });
+    var total = head.length;
+    var settled = false;
+    var finish = function (error, value) {
+      if (settled) return;
+      settled = true;
+      if (error) {
+        upstreamResponse.destroy();
+        out.destroy();
+        try { fs.unlinkSync(temporary); } catch (cleanupError) {}
+        reject(error);
+      } else {
+        resolve(value);
+      }
+    };
+    upstreamResponse.on('data', function (chunk) {
+      total += chunk.length;
+      if (total > MAX_VIDEO_BYTES) {
+        finish(serviceError(502, 'INVALID_RESULT', 'ComfyUI 返回的视频格式无效'));
+      }
+    });
+    upstreamResponse.on('error', function (error) {
+      finish(error && error.code ? error
+        : serviceError(502, 'COMFY_RESULT_ERROR', 'ComfyUI 视频读取失败'));
+    });
+    out.on('error', function (error) {
+      finish(serviceError(500, 'VIDEO_STORAGE_INVALID', error && error.message || '视频落盘失败'));
+    });
+    out.on('finish', function () { finish(null, total); });
+    out.write(head);
+    upstreamResponse.pipe(out);
+  });
+  await fs.promises.rename(temporary, target);
+  return { path:target, mime:info.mime, bytes:bytes };
 }
 
 function outputReference(entry) {

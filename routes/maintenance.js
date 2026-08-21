@@ -322,9 +322,21 @@ async function runMaintenanceChecks() {
   }
 }
 
-function readHomeHeroManifest() {
+  // 首页立绘 manifest 缓存（2026-08-21 性能审计 #8）：GET 是匿名公网端点，每次
+  // 访问都同步扫版本目录 + 逐个 existsSync/readJson。5s TTL 兜底外部发布脚本的
+  // 直接写盘；本地保存（下方 POST）成功后主动失效。POST 会原地改写返回对象，
+  // 所以缓存命中必须返回两层浅拷贝。
+  var HOME_HERO_CACHE_TTL_MS = 5000;
+  var homeHeroCache = { at:0, manifest:null };
+
+  function readHomeHeroManifest() {
     var fallback = { version:1, entries:{} };
     if (!SCENE_SHOWCASE_DIR) return fallback;
+    var now = Date.now();
+    if (homeHeroCache.manifest && now - homeHeroCache.at < HOME_HERO_CACHE_TTL_MS) {
+      var hit = homeHeroCache.manifest;
+      return Object.assign({}, hit, { entries: Object.assign({}, hit.entries) });
+    }
     // 当前版本目录可能还没有 home-hero.json（发布流程先建目录后写 home 立绘；
     // 2026-08-15 实机：v20/v21 缺 home-hero.json，首页回退旧立绘）。
     // 从当前版本向旧版本回退，取最近一份完整 manifest。
@@ -348,7 +360,11 @@ function readHomeHeroManifest() {
       if (!fs.existsSync(source)) continue;
       try {
         var data = readJson(source);
-        if (data && data.entries && typeof data.entries === 'object') return data;
+        if (data && data.entries && typeof data.entries === 'object') {
+          homeHeroCache.at = now;
+          homeHeroCache.manifest = data;
+          return data;
+        }
       } catch (e) { /* try older version */ }
     }
     return fallback;
@@ -672,6 +688,8 @@ function readHomeHeroManifest() {
       }
       manifest.version = Number(manifest.version || 1) + 1;
       writeJson(manifestPath, manifest);
+      // 写盘成功后立即失效缓存，维护端保存后立刻能读到新配置
+      homeHeroCache.at = 0;
       res.json({ ok:true, character:character, action:action, backup:path.basename(backupDir), message:action === 'reset' ? '已恢复内置首页主视觉' : '首页主视觉已保存' });
     } catch (error) {
       var rollback = attemptRollback(snapshot, 'home-hero');

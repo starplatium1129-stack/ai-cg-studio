@@ -67,18 +67,38 @@ function collectReferences(manifest) {
     });
     return refs;
 }
+const INSPECT_CACHE_TTL_MS = 4000;
+const INSPECT_CACHE_LIMIT = 16;
+const inspectCache = new Map();
+function readManifestStat(manifestPath) {
+    try {
+        return fs.statSync(manifestPath);
+    }
+    catch {
+        return null;
+    }
+}
 function inspectModel(rootDir, character) {
     const modelDir = path.join(rootDir, character);
     const manifestName = character + '.model3.json';
     const manifestPath = path.join(modelDir, manifestName);
+    const stat = readManifestStat(manifestPath);
+    if (!stat) {
+        return { available: false, modelUrl: '', source: 'missing', missing: [] };
+    }
+    const now = Date.now();
+    const cached = inspectCache.get(manifestPath);
+    if (cached && cached.mtimeMs === stat.mtimeMs && cached.size === stat.size
+        && now - cached.at < INSPECT_CACHE_TTL_MS) {
+        // 浅拷贝防调用方改写共享对象
+        return Object.assign({}, cached.result);
+    }
     const result = {
         available: false,
         modelUrl: '',
         source: 'missing',
         missing: []
     };
-    if (!fs.existsSync(manifestPath))
-        return result;
     let manifest;
     try {
         manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -86,7 +106,10 @@ function inspectModel(rootDir, character) {
     catch {
         result.source = 'invalid-manifest';
         result.missing = [manifestName];
-        return result;
+        if (inspectCache.size >= INSPECT_CACHE_LIMIT)
+            inspectCache.clear();
+        inspectCache.set(manifestPath, { mtimeMs: stat.mtimeMs, size: stat.size, at: now, result });
+        return Object.assign({}, result);
     }
     collectReferences(manifest).forEach(function (reference) {
         const target = safeReference(modelDir, reference);
@@ -99,7 +122,10 @@ function inspectModel(rootDir, character) {
         : '';
     result.source = result.available ? 'project-local' : 'incomplete-model';
     result.canvas = { width: 420, height: 610 };
-    return result;
+    if (inspectCache.size >= INSPECT_CACHE_LIMIT)
+        inspectCache.clear();
+    inspectCache.set(manifestPath, { mtimeMs: stat.mtimeMs, size: stat.size, at: now, result });
+    return Object.assign({}, result);
 }
 function createLive2dService(options) {
     const rootDir = options.rootDir;

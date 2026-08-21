@@ -359,10 +359,33 @@ function parseProgress(state, text, definition, aiRoot) {
         }
     }
 }
+const WALK_CACHE_TTL_MS = 10000;
+const WALK_CACHE_LIMIT = 32;
+const walkCache = new Map();
+function emptyScan() {
+    return { images: 0, captions: 0, bytes: 0, categories: {} };
+}
 function walkDataset(root) {
-    const result = { images: 0, captions: 0, bytes: 0, categories: {} };
-    if (!fs.existsSync(root))
-        return result;
+    const now = Date.now();
+    let stat = null;
+    try {
+        stat = fs.statSync(root);
+    }
+    catch {
+        return emptyScan();
+    }
+    const cached = walkCache.get(root);
+    if (cached && cached.mtimeMs === stat.mtimeMs && cached.size === stat.size
+        && now - cached.at < WALK_CACHE_TTL_MS) {
+        // 浅拷贝：categories 不能与缓存共享引用，防调用方改写
+        return {
+            images: cached.result.images,
+            captions: cached.result.captions,
+            bytes: cached.result.bytes,
+            categories: { ...cached.result.categories },
+        };
+    }
+    const result = emptyScan();
     const stack = [{ directory: root, category: '' }];
     let visited = 0;
     while (stack.length && visited < 20000) {
@@ -405,6 +428,19 @@ function walkDataset(root) {
             }
         }
     }
+    if (walkCache.size >= WALK_CACHE_LIMIT)
+        walkCache.clear();
+    walkCache.set(root, {
+        at: now,
+        mtimeMs: stat.mtimeMs,
+        size: stat.size,
+        result: {
+            images: result.images,
+            captions: result.captions,
+            bytes: result.bytes,
+            categories: { ...result.categories },
+        },
+    });
     return result;
 }
 const CHARACTER_DATASET_DIRS = {
