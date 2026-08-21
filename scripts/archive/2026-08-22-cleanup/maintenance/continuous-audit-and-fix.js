@@ -68,13 +68,13 @@ function runVisionInspect(imagePath, promptGuide) {
   return new Promise((resolve) => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;
-    
+
     execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error, stdout, stderr) => {
       const output = (stdout || '') + (stderr || '');
       // 防漏判策略：先判不通过，再判通过
       let passed = false;
       let reason = output.trim();
-      
+
       const conclusionMatch = output.match(/【审核结论】[：:]\s*(通过|不通过)/);
       if (conclusionMatch) {
         if (conclusionMatch[1] === '通过') {
@@ -194,7 +194,7 @@ function getAllItems() {
 async function auditSingleItem(item) {
   const pConfig = PERSPECTIVE_CONFIGS[item.pers.id];
   console.log(`🔍 [审核] [${item.char.displayName}] - [${item.outfit.name}] - [${item.pers.name}]...`);
-  
+
   let result = await runVisionInspect(item.targetPath, pConfig.promptGuide);
   if (result.passed) {
     console.log(`  ✓ 判定通过: ${item.key}`);
@@ -204,7 +204,7 @@ async function auditSingleItem(item) {
   }
 
   console.log(`  ❌ 判定不通过: ${item.key} (${result.reason.slice(0, 80)}...)`);
-  
+
   // 最多尝试 2 次自动强化重绘
   for (let retry = 1; retry <= 2; retry++) {
     console.log(`    ↳ 启动第 ${retry} 次 Anima 强化重绘修复视角...`);

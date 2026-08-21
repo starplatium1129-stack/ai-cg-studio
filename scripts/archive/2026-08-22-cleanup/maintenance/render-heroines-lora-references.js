@@ -2,9 +2,9 @@
 'use strict';
 
 /**
- * 为主站专属女主角（绫地宁宁、四季夏目）使用专属精准 LoRA (WAI-Illustrious v170 + LoRA v18) 
+ * 为主站专属女主角（绫地宁宁、四季夏目）使用专属精准 LoRA (WAI-Illustrious v170 + LoRA v18)
  * 重新渲染全部多服装形态（含全裸纯粹形态）的 4 视角电影级资产
- * 
+ *
  * LoRA 矩阵配置：
  * - 绫地宁宁：ayachi_nene_v18_wd14.safetensors (权重 0.90) + 触发词 ayachi_nene, 1girl, solo, silver_hair, long_hair, low_twintails, purple_eyes, ahoge, pink_ribbon
  * - 四季夏目：shiki_natsume_v18_wd14.safetensors (权重 0.90) + 触发词 shiki_natsume, 1girl, solo, black_hair, long_hair, amber_eyes, mole_under_left_eye, hairclip
@@ -191,7 +191,7 @@ async function main() {
       for (const pers of PERSPECTIVES) {
         const targetPath = path.join(OUT_BASE, heroine.id, outfit.id, `${pers.id}.png`);
         console.log(`🚀 正在为 [${heroine.name}] 渲染 [${outfit.name}] - [${pers.name}] (挂载专属 ${heroine.loraKey} 权重 ${heroine.loraWeight})...`);
-        
+
         let success = false;
         for (let attempt = 1; attempt <= 3; attempt++) {
           try {

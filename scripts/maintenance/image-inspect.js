@@ -32,9 +32,23 @@ const path = require('path');
 const http = require('http');
 
 const DEFAULT_BASE_URL = process.env.VISION_BASE_URL || 'http://127.0.0.1:8317/v1';
-// 2026-08-20：本地 CLIProxyAPI 今日更换了 api-keys（见 E:\code\反代\...\config.yaml 的 api-keys 段），
-// 旧默认值 sk-local-proxy-key-2024 已失效；此值即当前有效 key，仍可用 VISION_API_KEY 覆盖。
-const DEFAULT_API_KEY = process.env.VISION_API_KEY || 'sk-548ae0291845851b7f8fc3c14d19a6809c60cf1f21bf61a7';
+// Key 解析顺序：VISION_API_KEY 环境变量 → runtime/vision-api-key.txt（gitignored，首行）→ 空。
+// 严禁把真实 key 写回本文件作为默认值：仓库可能被推送/共享，硬编码凭据等于泄漏
+// （2026-08-22 安全清理；历史默认值已从注释与本仓库全部文档中抹除）。
+function resolveVisionApiKey() {
+  const fromEnv = String(process.env.VISION_API_KEY || '').trim();
+  if (fromEnv) return fromEnv;
+  try {
+    const keyFile = path.join(__dirname, '..', '..', 'runtime', 'vision-api-key.txt');
+    const fromFile = fs.readFileSync(keyFile, 'utf8').split(/\r?\n/)[0].trim();
+    if (fromFile) return fromFile;
+  } catch { /* 文件不存在视为未配置 */ }
+  return '';
+}
+const DEFAULT_API_KEY = resolveVisionApiKey();
+if (!DEFAULT_API_KEY) {
+  console.error('⚠️ 未配置视觉后端 API key：请设 VISION_API_KEY 环境变量，或把 key 写入 runtime/vision-api-key.txt 首行（该文件已被 .gitignore 忽略）。');
+}
 const DEFAULT_MODEL = process.env.VISION_MODEL || 'gemini-3.7-flash-high';
 // 主端点连接失败时回退的本地 llama-server 后端；与主端点相同则视为禁用（亦可 --no-fallback）
 const FALLBACK_BASE_URL = process.env.VISION_FALLBACK_BASE_URL || 'http://127.0.0.1:8000/v1';

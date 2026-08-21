@@ -74,7 +74,7 @@ function inspectEars(imagePath) {
   return new Promise((resolve) => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `请仔细检查图中人物（洛琪希）的头部两侧与耳朵：\n画面中是否有尖尖向外伸出的精灵耳、长耳朵或尖耳？\n请严格按以下格式输出第一行：\n【审核结论】：通过 / 不通过\n（若完全被头发遮挡无精灵耳，或为正常圆耳，请判为【通过】；若出现尖尖的精灵耳或向外突出的长尖耳朵，请判为【不通过】）\n【详细理由】：...`;
-    
+
     execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error, stdout, stderr) => {
       const output = (stdout || '') + (stderr || '');
       let hasElfEars = false;
@@ -93,7 +93,7 @@ function buildPrompt(outfit, pers) {
   const isNude = outfit.isNude;
   // 关键：洛琪希原作发型是浓密的侧鬓发完全覆盖双耳（hair covering ears）
   const baseTokens = "roxy migurdia, 1girl, solo, long blue hair, twin braids, thick side hair covering ears, hair over ears, ears hidden by hair, blue eyes, normal human girl, mole on collarbone, petite female, mushoku tensei";
-  
+
   let outfitTokens = outfit.tokens;
   if (pers.id === 'ref_01_face_closeup') {
     outfitTokens = outfitTokens.replace(/\b(boots|shoes|socks|thighhighs|skirt|pants|wooden staff)\b/gi, '');
@@ -177,7 +177,7 @@ async function main() {
     for (const pers of PERSPECTIVES) {
       const targetPath = path.join(OUT_BASE, outfit.id, `${pers.id}.png`);
       console.log(`\n🎨 正在为洛琪希处理 [${outfit.name}] - [${pers.name}]...`);
-      
+
       let pass = false;
       for (let attempt = 1; attempt <= 5; attempt++) {
         const seed = Math.floor(Math.random() * 1000000000) + 100000000;
@@ -196,7 +196,7 @@ async function main() {
           await new Promise(r => setTimeout(r, 3000));
         }
       }
-      
+
       if (!pass) {
         console.warn(`  ❌ 5 次尝试后暂未完全消除，保留最佳尝试`);
       }

@@ -3694,6 +3694,11 @@
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "momoco_haru",
+        "nekotomi_chao",
+        "kantoku"
+      ],
       "outfits": [
         {
           "id": "seirei_uniform",

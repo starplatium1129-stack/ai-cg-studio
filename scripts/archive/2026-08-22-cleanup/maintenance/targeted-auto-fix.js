@@ -53,7 +53,7 @@ function runVisionInspect(imagePath, promptGuide) {
   return new Promise((resolve) => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;
-    
+
     execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error, stdout, stderr) => {
       const output = (stdout || '') + (stderr || '');
       let passed = false;
@@ -170,7 +170,7 @@ async function fixFailedItems() {
     const pConfig = PERSPECTIVE_CONFIGS[persId];
 
     console.log(`\n[Fix ${i + 1}/${failedKeys.length}] 正在强化重绘: [${char.displayName}] - [${outfit.name}] - [${persId}]...`);
-    
+
     let pass = false;
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {

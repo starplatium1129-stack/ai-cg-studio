@@ -93,6 +93,10 @@
             <small class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
           <small class="artist-desc">{{ option.description }}</small>
+          <small v-if="option.masterpiece" class="artist-masterpiece" :title="option.masterpiece">
+            <span class="masterpiece-badge">代表作</span>
+            <span class="masterpiece-text">{{ option.masterpiece }}</span>
+          </small>
         </button>
       </div>
 
@@ -142,6 +146,7 @@ const filteredOptions = computed(() => {
       option.id,
       option.cnName || '',
       option.description,
+      option.masterpiece || '',
       ...(option.keywords || []),
     ].join(' ').toLocaleLowerCase()
     return haystack.includes(needle)
@@ -452,6 +457,31 @@ function applyCombo(artistIds: readonly string[]) {
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
   line-height: 1.4;
+}
+.artist-masterpiece {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-mono-xs, 0.72rem);
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin-top: 2px;
+  overflow: hidden;
+}
+.masterpiece-badge {
+  flex: 0 0 auto;
+  font-size: 0.65rem;
+  padding: 1px 4px;
+  border-radius: var(--r-xs, 4px);
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--archive-blue, #38bdf8);
+  font-weight: 600;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+.masterpiece-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .artist-style-status {
   flex: 0 0 auto;

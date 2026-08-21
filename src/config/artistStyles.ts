@@ -15,6 +15,7 @@ export interface ArtistStyleOption {
   waiTag: string
   animaTag: string
   description: string
+  masterpiece?: string
   verification: ArtistStyleVerification
   category?: ArtistCategory
   keywords?: string[]
@@ -47,7 +48,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack kousaki_rui xinzoruo nekotomi_chao ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -56,6 +57,9 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   azuuru: 'azuuru',
   nekotomi: 'nekotomi_chao',
   nekotomi_chao: 'nekotomi_chao',
+  momoco: 'momoco_haru',
+  'momoco_(momopoco)': 'momoco_haru',
+  momoco_haru: 'momoco_haru',
 }
 
 function artistDisplayName(id: string): string {

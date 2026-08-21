@@ -73,7 +73,7 @@ const PERSPECTIVES = [
 function buildRoxyPrompt(outfit, pers) {
   const isNude = outfit.isNude;
   const baseTokens = "roxy_migurdia, 1girl, solo, long_blue_hair, twin_braids, blue_eyes, normal human ears, round ears, ears covered by hair, mole_on_collarbone, petite_female, mushoku_tensei";
-  
+
   let outfitTokens = outfit.tokens;
   if (pers.id === 'ref_01_face_closeup') {
     outfitTokens = outfitTokens.replace(/\b(boots|shoes|socks|thighhighs|skirt|pants|wooden_staff)\b/gi, '');
