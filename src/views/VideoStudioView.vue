@@ -362,7 +362,8 @@ import {
   type VideoStatusResponse,
 } from '@/api/videoApi'
 import { imgGet } from '@/composables/useImageStore'
-import { VIDEO_CTX_KEY, type VideoCtxPayload } from '@/composables/useVideoBridge'
+import type { VideoCtxPayload } from '@/composables/useVideoBridge'
+import { useVideoStore } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
 
 type StudioMode = VideoMode | 'shots'
@@ -581,15 +582,10 @@ async function loadStatus() {
   }
 }
 
-// ── 绘图页「出视频」跨页上下文（一次性消费）───────────────────────────────
+// ── 绘图页「出视频」跨页上下文（一次性消费，videoStore 承载）──────────────
 function consumeVideoCtx() {
-  let raw: string | null = null
-  try { raw = sessionStorage.getItem(VIDEO_CTX_KEY) } catch { return }
-  if (!raw) return
-  try { sessionStorage.removeItem(VIDEO_CTX_KEY) } catch { /* 忽略 */ }
-  let ctx: VideoCtxPayload
-  try { ctx = JSON.parse(raw) as VideoCtxPayload } catch { return }
-  if (!ctx || typeof ctx.imageId !== 'string' || !ctx.imageId) return
+  const ctx = useVideoStore().consumeImageCtx()
+  if (!ctx || !ctx.imageId) return
   void applyVideoCtx(ctx)
 }
 
