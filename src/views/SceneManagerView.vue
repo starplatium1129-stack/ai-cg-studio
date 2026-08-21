@@ -455,14 +455,13 @@
       <div v-if="tagModalOpen" class="overlay" @click.self="closeTagModal">
         <div
           ref="tagModalEl"
-          class="modal-card"
-          style="width:min(480px,94vw)"
+          class="modal-card modal-card-tag"
           role="dialog"
           aria-modal="true"
           :aria-labelledby="tagEditing ? 'tag-editor-title-edit' : 'tag-editor-title-add'"
         >
           <h2 :id="tagEditing ? 'tag-editor-title-edit' : 'tag-editor-title-add'">{{ tagEditing ? '编辑标签 · ' + tagEditing.id : '新增标签' }}</h2>
-          <div class="form-grid" style="grid-template-columns:1fr">
+          <div class="form-grid form-grid-single">
             <label class="form-group">
               <span class="field-label">英文名 *</span>
               <input v-model="tagForm.en" class="input" :disabled="desktopPackaged" placeholder="Danbooru 格式，用下划线" />
@@ -1223,6 +1222,8 @@ tr:hover td { background:var(--bg-elevated); }
 
 .overlay { position:fixed; inset:0; z-index:var(--z-overlay); display:flex; align-items:center; justify-content:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(6px); }
 .modal-card-wide { width:min(820px,94vw); }
+.modal-card-tag { width:min(480px,94vw); }
+.form-grid-single { grid-template-columns:1fr; }
 .modal-card { max-height:90vh; overflow-y:auto; padding:var(--s-6); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-elevated); box-shadow:var(--shadow-lg); }
 .modal-card h2 { margin-bottom:var(--s-4); font-size:var(--fs-title-sm); }
 .form-section { border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-3); margin-bottom:var(--s-3); }

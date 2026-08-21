@@ -85,7 +85,7 @@
                   <img v-if="c.portrait?.image && !brokenPortraits.has(c.id)"
                     :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async"
                     @error="markPortraitBroken(c.id)" />
-                  <span v-else class="cb-avatar-fallback" :style="avatarStyle(c.id)">{{ c.name.charAt(0) }}</span>
+                  <span v-else class="cb-avatar-fallback" :style="{ '--avatar-a': avatarGradient(c.id)[0], '--avatar-b': avatarGradient(c.id)[1] }">{{ c.name.charAt(0) }}</span>
                 </span>
                 <span class="cb-name">{{ c.name }}</span>
                 <span v-if="group.merged" class="cb-original">{{ franchiseLabel(c.source) }}</span>
@@ -101,7 +101,7 @@
               <img v-if="c.portrait?.image && !brokenPortraits.has(c.id)"
                 :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async"
                 @error="markPortraitBroken(c.id)" />
-              <span v-else class="cb-avatar-fallback" :style="avatarStyle(c.id)">{{ c.name.charAt(0) }}</span>
+              <span v-else class="cb-avatar-fallback" :style="{ '--avatar-a': avatarGradient(c.id)[0], '--avatar-b': avatarGradient(c.id)[1] }">{{ c.name.charAt(0) }}</span>
             </span>
             <span class="cb-name">{{ c.name }}</span>
             <span class="cb-original">{{ franchiseLabel(c.source) }}</span>
@@ -421,11 +421,10 @@ const AVATAR_GRADIENTS: ReadonlyArray<readonly [string, string]> = [
   ['#7a68d9', '#b49ae8'],
   ['#54a8d9', '#8fc0e8'],
 ]
-function avatarStyle(id: string): Record<string, string> {
+function avatarGradient(id: string): readonly [string, string] {
   let hash = 5381
   for (let index = 0; index < id.length; index += 1) hash = (hash * 33) ^ id.charCodeAt(index)
-  const [start, end] = AVATAR_GRADIENTS[(hash >>> 0) % AVATAR_GRADIENTS.length]
-  return { '--avatar-a': start, '--avatar-b': end }
+  return AVATAR_GRADIENTS[(hash >>> 0) % AVATAR_GRADIENTS.length]
 }
 
 /** 数据里人人都有 portrait 路径，但多数 popular-<id>.png 实际不存在；
@@ -838,7 +837,7 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform var(--t-med);
+  transition: transform var(--t-base);
 }
 .char-ref-card:hover .char-ref-image {
   transform: scale(1.03);
@@ -873,7 +872,7 @@ onMounted(() => {
   color: var(--accent);
   font-size: var(--fs-label-xs);
   padding: 1px 4px;
-  border-radius: var(--r-xs);
+  border-radius: var(--r-terminal);
   background: var(--accent-soft);
 }
 .char-ref-desc {

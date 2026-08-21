@@ -1386,7 +1386,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 /* ── 语音播放律动声波 (Audio Equalizer) ── */
-.audio-equalizer {
+.chat-page .audio-equalizer {
   display: inline-flex;
   align-items: flex-end;
   gap: 2px;
@@ -1394,15 +1394,15 @@ body:has(.chat-page) .sakura-fall {
   padding: 0 1px;
   vertical-align: middle;
 }
-.audio-equalizer .eq-bar {
+.chat-page .audio-equalizer .eq-bar {
   width: 2px;
   background: currentColor;
-  border-radius: 1px;
+  border-radius: 50%;
   animation: eqPulse 0.8s ease-in-out infinite alternate;
 }
-.audio-equalizer .eq-bar:nth-child(1) { height: 35%; animation-delay: 0.1s; }
-.audio-equalizer .eq-bar:nth-child(2) { height: 95%; animation-delay: 0.35s; }
-.audio-equalizer .eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+.chat-page .audio-equalizer .eq-bar:nth-child(1) { height: 35%; animation-delay: 0.1s; }
+.chat-page .audio-equalizer .eq-bar:nth-child(2) { height: 95%; animation-delay: 0.35s; }
+.chat-page .audio-equalizer .eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
 
 @keyframes eqPulse {
   0% { height: 25%; }
