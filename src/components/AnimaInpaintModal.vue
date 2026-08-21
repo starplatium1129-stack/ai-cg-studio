@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
@@ -52,6 +52,13 @@ let drawing = false
 let erase = false
 let lastMaskPoint: { x: number; y: number } | null = null
 
+// Undo History & Cursor Feedback
+const maskHistory = ref<ImageData[]>([])
+const MAX_UNDO_STEPS = 20
+const cursorVisible = ref(false)
+const cursorX = ref(0)
+const cursorY = ref(0)
+
 // Character LoRA Selection
 const characterMode = ref<'auto' | 'nene' | 'natsume' | 'none'>('auto')
 
@@ -63,7 +70,51 @@ function clearMask() {
   if (!canvas) return
   const context = canvas.getContext('2d')
   context?.clearRect(0, 0, canvas.width, canvas.height)
+  maskHistory.value = []
 }
+
+function saveMaskState() {
+  const canvas = maskCanvasEl.value
+  if (!canvas) return
+  const context = canvas.getContext('2d')
+  if (!context) return
+  const data = context.getImageData(0, 0, canvas.width, canvas.height)
+  maskHistory.value.push(data)
+  if (maskHistory.value.length > MAX_UNDO_STEPS) {
+    maskHistory.value.shift()
+  }
+}
+
+function undoMask() {
+  const canvas = maskCanvasEl.value
+  if (!canvas) return
+  const context = canvas.getContext('2d')
+  if (!context || maskHistory.value.length === 0) return
+  const prevState = maskHistory.value.pop()
+  if (prevState) {
+    context.putImageData(prevState, 0, 0)
+  }
+}
+
+function handleKeyDown(event: KeyboardEvent) {
+  if (!props.open || maskMode.value !== 'paint') return
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
+    event.preventDefault()
+    undoMask()
+  }
+}
+
+function handleCanvasWheel(event: WheelEvent) {
+  if (event.altKey && maskMode.value === 'paint') {
+    event.preventDefault()
+    const delta = event.deltaY < 0 ? 4 : -4
+    brushSize.value = Math.max(8, Math.min(96, brushSize.value + delta))
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
 
 function clearUploadedImage() {
   if (uploadedUrl.value) URL.revokeObjectURL(uploadedUrl.value)
@@ -81,7 +132,10 @@ watch(() => props.open, (isOpen) => {
   }
 })
 
-onBeforeUnmount(clearUploadedImage)
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+  clearUploadedImage()
+})
 
 function triggerUpload() {
   fileInputRef.value?.click()
@@ -164,6 +218,7 @@ function drawMaskStroke(event: PointerEvent) {
 
 function startMaskPaint(event: PointerEvent) {
   if (maskMode.value !== 'paint') return
+  saveMaskState()
   drawing = true
   erase = event.button === 2 || event.shiftKey
   lastMaskPoint = null
@@ -171,7 +226,16 @@ function startMaskPaint(event: PointerEvent) {
   drawMaskStroke(event)
 }
 
+function updateCursor(event: PointerEvent) {
+  const canvas = maskCanvasEl.value
+  if (!canvas) return
+  const rect = canvas.getBoundingClientRect()
+  cursorX.value = event.clientX - rect.left
+  cursorY.value = event.clientY - rect.top
+}
+
 function continueMaskPaint(event: PointerEvent) {
+  updateCursor(event)
   if (drawing) drawMaskStroke(event)
 }
 
@@ -458,11 +522,25 @@ async function handleStart() {
                   :class="{ hidden: maskMode !== 'paint' }"
                   aria-label="换装区域遮罩画布"
                   @contextmenu.prevent
+                  @pointerenter="cursorVisible = true"
+                  @pointerleave="cursorVisible = false; stopMaskPaint()"
                   @pointerdown="startMaskPaint"
                   @pointermove="continueMaskPaint"
                   @pointerup="stopMaskPaint"
                   @pointercancel="stopMaskPaint"
+                  @wheel="handleCanvasWheel"
                 ></canvas>
+                <!-- 笔刷尺寸跟随光标圈 -->
+                <div
+                  v-if="maskMode === 'paint' && cursorVisible"
+                  class="brush-cursor-indicator"
+                  :style="{
+                    left: `${cursorX}px`,
+                    top: `${cursorY}px`,
+                    width: `${brushSize * 2}px`,
+                    height: `${brushSize * 2}px`
+                  }"
+                ></div>
               </div>
               <div class="preview-overlay-tag">
                 <ArchiveIcon name="spark" />
@@ -516,9 +594,24 @@ async function handleStart() {
               <button type="button" :class="{ active: maskMode === 'auto' }" @click="maskMode = 'auto'">自动识别</button>
             </div>
             <template v-if="maskMode === 'paint'">
-              <label class="field-label" for="brushSizeInput">画笔大小 <span class="param-value">{{ brushSize }} px</span></label>
+              <div class="brush-size-header">
+                <label class="field-label" for="brushSizeInput">画笔大小 <span class="param-value">{{ brushSize }} px</span></label>
+                <span class="wheel-shortcut-hint">Alt+滚轮缩放</span>
+              </div>
               <input id="brushSizeInput" v-model.number="brushSize" class="slider" type="range" min="8" max="96" step="4" />
-              <button type="button" class="btn btn-ghost btn-xs" @click="clearMask">清空遮罩</button>
+              <div class="mask-action-btns">
+                <button
+                  type="button"
+                  class="btn btn-ghost btn-xs"
+                  :disabled="maskHistory.length === 0"
+                  title="撤销上一步笔画 (Ctrl+Z)"
+                  @click="undoMask"
+                >
+                  <ArchiveIcon name="refresh" />
+                  <span>撤销 (Ctrl+Z)</span>
+                </button>
+                <button type="button" class="btn btn-ghost btn-xs btn-clear-mask" @click="clearMask">清空遮罩</button>
+              </div>
               <span class="field-hint">直接涂白服装区域；按住 Shift 或右键擦除，保护脸、头发、手脚和背景。</span>
             </template>
             <template v-else>
@@ -786,6 +879,7 @@ async function handleStart() {
   max-height: 320px;
   overflow: hidden;
   background: #000;
+  user-select: none;
 }
 
 .preview-thumb {
@@ -801,9 +895,42 @@ async function handleStart() {
   inset: 0;
   width: 100%;
   height: 100%;
-  cursor: crosshair;
+  cursor: none;
   touch-action: none;
   z-index: 1;
+}
+
+.brush-cursor-indicator {
+  position: absolute;
+  pointer-events: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  background: rgba(56, 189, 248, 0.25);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6), inset 0 0 2px rgba(56, 189, 248, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  transition: width 0.08s ease, height 0.08s ease;
+}
+
+.brush-size-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wheel-shortcut-hint {
+  font-size: 0.68rem;
+  color: var(--text-tertiary, #888);
+}
+
+.mask-action-btns {
+  display: flex;
+  gap: var(--s-2);
+  margin-top: 4px;
+}
+
+.mask-action-btns .btn {
+  flex: 1;
 }
 
 .mask-canvas.hidden {

@@ -302,8 +302,28 @@
         <!-- Result image -->
         <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
           <CornerFrame variant="ghost" />
-          <img class="result-image" :src="displayResultUrl" alt="生成的图片" />
+          <!-- 换装前后滑动对比视图 -->
+          <ImageSplitCompare
+            v-if="inpaintCompareActive && inpaintOriginalUrl"
+            :before-src="inpaintOriginalUrl"
+            :after-src="displayResultUrl"
+            before-label="换装前原图"
+            after-label="换装后成片"
+          />
+          <img v-else class="result-image" :src="displayResultUrl" alt="生成的图片" />
           <div class="result-image-actions">
+            <!-- 换装对比切换按钮 -->
+            <button
+              v-if="inpaintOriginalUrl && displayResultUrl"
+              class="btn btn-ghost btn-compare-inpaint"
+              :class="{ active: inpaintCompareActive }"
+              type="button"
+              :title="inpaintCompareActive ? '退出前后对比模式' : '左右滑动对比换装前后效果'"
+              @click="inpaintCompareActive = !inpaintCompareActive"
+            >
+              <ArchiveIcon name="compare" />
+              <span>{{ inpaintCompareActive ? '退出对比' : '换装前后对比' }}</span>
+            </button>
             <button
               v-if="displayResultUrl && drawEngine === 'anima'"
               class="btn btn-ghost btn-inpaint-action"
@@ -798,6 +818,7 @@ import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
+const ImageSplitCompare = defineAsyncComponent(() => import('@/components/visual/ImageSplitCompare.vue'))
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
@@ -847,6 +868,8 @@ const hiddenSceneIds = ref(readHiddenScenes())
 const tagSearch = ref('')
 const tagCategory = ref('all')
 const voiceStudioRef = ref<{ setSuggestedCaption?: (caption: string) => void } | null>(null)
+const inpaintOriginalUrl = ref<string | null>(null)
+const inpaintCompareActive = ref(false)
 const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
@@ -2159,6 +2182,8 @@ async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
       maskImage = maskJson.name
     }
     inpaintOpen.value = false
+    inpaintOriginalUrl.value = displayResultUrl.value
+    inpaintCompareActive.value = false
     pb.flash('正在执行 AI 智能识别与局部换装 (~6秒)…')
 
     const effectiveChar = payload.characterOverride !== undefined

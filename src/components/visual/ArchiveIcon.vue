@@ -56,7 +56,7 @@ export type ArchiveIconName =
   | 'leaf' | 'rain' | 'coffee' | 'cap' | 'plane' | 'flower' | 'play' | 'book'
   | 'clap' | 'snowflake' | 'cherry' | 'autumnleaf'
   // ── 工具 / 服装形态 ──────────────────────────────────────────
-  | 'star' | 'download' | 'upload' | 'broom' | 'health' | 'wardrobe'
+  | 'star' | 'download' | 'upload' | 'broom' | 'health' | 'wardrobe' | 'compare'
   | 'bikini' | 'dress' | 'bunny' | 'coat' | 'school' | 'kimono' | 'ribbon'
   | 'play'
 
@@ -708,6 +708,16 @@ const ICON_DEFS: Record<ArchiveIconName, ArchiveIconDef> = {
       'M13 14.5 L16.8 21',
     ],
     ends: [[7.2, 21], [16.8, 21]],
+  },
+  compare: {
+    paths: [
+      'M12 3.5 L12 20.5',
+      'M4.5 7.5 L8.5 7.5 C10.5 7.5 12 9 12 11 L12 16.5 C12 18.5 10.5 20 8.5 20 L4.5 20 C2.5 20 1 18.5 1 16.5 L1 11 C1 9 2.5 7.5 4.5 7.5 Z',
+      'M19.5 7.5 L15.5 7.5 C13.5 7.5 12 9 12 11 L12 16.5 C12 18.5 13.5 20 15.5 20 L19.5 20 C21.5 20 23 18.5 23 16.5 L23 11 C23 9 21.5 7.5 19.5 7.5 Z',
+      'M8.5 12 L6.5 12 M7.5 11 L6.5 12 L7.5 13',
+      'M15.5 12 L17.5 12 M16.5 11 L17.5 12 L16.5 13',
+    ],
+    ends: [[12, 3.5], [12, 20.5]],
   },
 }
 
