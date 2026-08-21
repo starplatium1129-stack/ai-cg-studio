@@ -294,12 +294,8 @@ function createGateway(options) {
   });
 
   // SPA fallback — Vue Router 的前端路由在刷新时返回 index.html
-  // Express 5（path-to-regexp v8）：裸 '*' 通配符已移除，SPA fallback 用 '/*splat'。
-  // 注意 /*splat 不匹配根路径 '/'——根路径与 /index.html 已在上面显式处理。
-  app.get('/*splat', function (req, res, next) {
-    // 未命中的 API 路由必须是 JSON 404，不能被吞成 200 text/html。
-    // /api/xxx 没有扩展名，之前会直接拿到 SPA 外壳且状态 200。
-    if (req.path.startsWith('/api/')) return next();
+  // 正则 /^(?!\/api).*/ 既完美排除 /api/* 接口，又能在 Express 4（打包侧）与 Express 5（根工作区）两端通用。
+  app.get(/^(?!\/api).*/, function (req, res, next) {
     var spaEntry = path.join(config.ROOT_DIR, 'dist', 'index.html');
     if (!fs.existsSync(spaEntry)) return next();
     var ext = path.extname(req.path);
