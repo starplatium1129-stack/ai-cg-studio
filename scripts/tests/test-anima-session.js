@@ -11,6 +11,7 @@ const {
   useAnimaSession,
   animaRequestPayload,
   closestSupportedSize,
+  resolveInpaintRequestBinding,
 } = require('../../src/composables/useAnimaSession.ts');
 
 // node 没有 URL.createObjectURL / revokeObjectURL，成功路径需要桩
@@ -77,6 +78,22 @@ test('closestSupportedSize 收敛到白名单内比例最接近的尺寸', () =>
   assert.equal(closestSupportedSize(model, '800x1200'), '1024x1536');
   assert.equal(closestSupportedSize(undefined, '832x1216'), '832x1216');
   assert.equal(closestSupportedSize({ sizes: [] }, '832x1216'), '832x1216');
+});
+
+test('resolveInpaintRequestBinding keeps character LoRA coherent and selects no-LoRA fallback', () => {
+  const models = [
+    { id: 'anima-base-v1.0', sizes: ['832x1216', '960x1536'] },
+    { id: 'anima-aesthetic-v1.1', sizes: ['832x1216', '1024x1024', '1216x832'], capabilities: { negative: true, lora: true, noLora: true, characterIdentity: true, experimental: false } },
+  ];
+  assert.deepEqual(
+    resolveInpaintRequestBinding(models, 'anima-base-v1.0', 'natsume', '900x1400'),
+    { character: 'natsume', loraId: 'L_NAT_V21_ANIMA', modelId: 'anima-base-v1.0', width: 960, height: 1536 },
+  );
+  assert.deepEqual(
+    resolveInpaintRequestBinding(models, 'anima-base-v1.0', 'none', '1216x832'),
+    { character: null, loraId: null, modelId: 'anima-aesthetic-v1.1', width: 1216, height: 832 },
+  );
+  assert.equal(resolveInpaintRequestBinding([{ id: 'anima-base-v1.0', sizes: ['832x1216'] }], 'anima-base-v1.0', 'none', '832x1216'), null);
 });
 
 test('animaRequestPayload 按白名单收敛：空 lora / styleLora / seed 不发送', () => {

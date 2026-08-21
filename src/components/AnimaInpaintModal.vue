@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 
 export interface InpaintSubmitPayload {
   imageBlob: Blob
+  maskBlob: Blob | null
   maskPrompt: string
   newOutfitPrompt: string
   negativePrompt: string
@@ -24,6 +25,7 @@ const props = defineProps<{
   currentPrompt?: string
   currentNegative?: string
   character?: 'nene' | 'natsume' | 'triad' | null
+  adultEnabled?: boolean
   seed?: number | null
   submitting?: boolean
 }>()
@@ -41,6 +43,13 @@ const uploadedBlob = ref<Blob | null>(null)
 const uploadedUrl = ref<string>('')
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const isDragging = ref(false)
+const previewImageEl = ref<HTMLImageElement | null>(null)
+const maskCanvasEl = ref<HTMLCanvasElement | null>(null)
+const maskMode = ref<'auto' | 'paint'>('paint')
+const brushSize = ref(36)
+let drawing = false
+let erase = false
+let lastMaskPoint: { x: number; y: number } | null = null
 
 // Character LoRA Selection
 const characterMode = ref<'auto' | 'nene' | 'natsume' | 'none'>('auto')
@@ -48,13 +57,30 @@ const characterMode = ref<'auto' | 'nene' | 'natsume' | 'none'>('auto')
 // Active Image Computation
 const activeImageUrl = computed(() => uploadedUrl.value || props.imageUrl || '')
 
+function clearMask() {
+  const canvas = maskCanvasEl.value
+  if (!canvas) return
+  const context = canvas.getContext('2d')
+  context?.clearRect(0, 0, canvas.width, canvas.height)
+}
+
+function clearUploadedImage() {
+  if (uploadedUrl.value) URL.revokeObjectURL(uploadedUrl.value)
+  uploadedBlob.value = null
+  uploadedUrl.value = ''
+  clearMask()
+}
+
 watch(() => props.open, (isOpen) => {
   if (isOpen) {
-    uploadedBlob.value = null
-    uploadedUrl.value = ''
+    clearUploadedImage()
     characterMode.value = 'auto'
+  } else {
+    clearUploadedImage()
   }
 })
+
+onBeforeUnmount(clearUploadedImage)
 
 function triggerUpload() {
   fileInputRef.value?.click()
@@ -87,6 +113,79 @@ function onDrop(e: DragEvent) {
   if (file) {
     processUploadedFile(file)
   }
+}
+
+function syncMaskCanvas() {
+  const image = previewImageEl.value
+  const canvas = maskCanvasEl.value
+  if (!image || !canvas || !image.naturalWidth || !image.naturalHeight) return
+  canvas.width = detectedResolution.value?.width ?? image.naturalWidth
+  canvas.height = detectedResolution.value?.height ?? image.naturalHeight
+  clearMask()
+}
+
+function pointerPosition(event: PointerEvent): { x: number; y: number } | null {
+  const canvas = maskCanvasEl.value
+  if (!canvas) return null
+  const rect = canvas.getBoundingClientRect()
+  if (!rect.width || !rect.height) return null
+  return {
+    x: (event.clientX - rect.left) * (canvas.width / rect.width),
+    y: (event.clientY - rect.top) * (canvas.height / rect.height),
+  }
+}
+
+function drawMaskStroke(event: PointerEvent) {
+  const canvas = maskCanvasEl.value
+  const position = pointerPosition(event)
+  if (!canvas || !position) return
+  const context = canvas.getContext('2d')
+  if (!context) return
+  const rect = canvas.getBoundingClientRect()
+  const radius = brushSize.value * (canvas.width / rect.width)
+  context.globalCompositeOperation = erase ? 'destination-out' : 'source-over'
+  context.fillStyle = 'rgba(255, 255, 255, 0.72)'
+  context.strokeStyle = 'rgba(255, 255, 255, 0.72)'
+  context.lineWidth = radius * 2
+  context.lineCap = 'round'
+  if (lastMaskPoint) {
+    context.beginPath()
+    context.moveTo(lastMaskPoint.x, lastMaskPoint.y)
+    context.lineTo(position.x, position.y)
+    context.stroke()
+  } else {
+    context.beginPath()
+    context.arc(position.x, position.y, radius, 0, Math.PI * 2)
+    context.fill()
+  }
+  lastMaskPoint = position
+}
+
+function startMaskPaint(event: PointerEvent) {
+  if (maskMode.value !== 'paint') return
+  drawing = true
+  erase = event.button === 2 || event.shiftKey
+  lastMaskPoint = null
+  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
+  drawMaskStroke(event)
+}
+
+function continueMaskPaint(event: PointerEvent) {
+  if (drawing) drawMaskStroke(event)
+}
+
+function stopMaskPaint() {
+  drawing = false
+  erase = false
+  lastMaskPoint = null
+}
+
+async function maskBlob(): Promise<Blob | null> {
+  if (maskMode.value !== 'paint' || !maskCanvasEl.value) return null
+  const canvas = maskCanvasEl.value
+  const context = canvas.getContext('2d')
+  if (!context || !context.getImageData(0, 0, canvas.width, canvas.height).data.some(value => value > 0)) return null
+  return new Promise(resolve => canvas.toBlob(blob => resolve(blob), 'image/png'))
 }
 
 interface OutfitPreset {
@@ -183,7 +282,14 @@ const denoisingStrength = ref<number>(0.85)
 const growMaskBy = ref<number>(8)
 const preserveSeed = ref<boolean>(true)
 
-const currentPreset = computed(() => OUTFIT_PRESETS.find(p => p.id === selectedPresetId.value))
+const visiblePresets = computed(() => OUTFIT_PRESETS.filter(preset => props.adultEnabled || !preset.isNsfw))
+const currentPreset = computed(() => visiblePresets.value.find(p => p.id === selectedPresetId.value))
+
+watch(() => props.adultEnabled, (adultEnabled) => {
+  if (!adultEnabled && OUTFIT_PRESETS.find(preset => preset.id === selectedPresetId.value)?.isNsfw) {
+    selectedPresetId.value = 'bikini_white'
+  }
+}, { immediate: true })
 
 watch(selectedPresetId, (newId) => {
   if (newId !== 'custom') {
@@ -220,7 +326,8 @@ async function getBlob(): Promise<Blob | null> {
   return null
 }
 
-// Track image aspect ratio and optimal generation resolution
+import { inpaintCanvasSize } from '@/utils/inpaintCanvas'
+
 const detectedResolution = ref<{ width: number; height: number } | null>(null)
 
 watch(activeImageUrl, (url) => {
@@ -230,18 +337,10 @@ watch(activeImageUrl, (url) => {
   }
   const img = new Image()
   img.onload = () => {
-    const ratio = img.naturalWidth / img.naturalHeight
-    if (ratio >= 1.2) {
-      // 横屏图
-      detectedResolution.value = { width: 1216, height: 832 }
-    } else if (ratio <= 0.8) {
-      // 竖屏图
-      detectedResolution.value = { width: 832, height: 1216 }
-    } else {
-      // 方图或接近方图
-      detectedResolution.value = { width: 1024, height: 1024 }
-    }
+    detectedResolution.value = inpaintCanvasSize(img.naturalWidth, img.naturalHeight)
+    void nextTick(syncMaskCanvas)
   }
+  img.onerror = () => { detectedResolution.value = null }
   img.src = url
 }, { immediate: true })
 
@@ -249,6 +348,18 @@ async function handleStart() {
   const blob = await getBlob()
   if (!blob) {
     alert('请先上传或选择需要换装的图片')
+    return
+  }
+
+  const selectedMaskBlob = await maskBlob()
+  if (maskMode.value === 'paint' && !selectedMaskBlob) {
+    alert('请先在图片上涂出需要换装的区域，按住 Shift 或右键可擦除保护区')
+    return
+  }
+
+  const selectedPreset = OUTFIT_PRESETS.find(preset => preset.id === selectedPresetId.value)
+  if (selectedPreset?.isNsfw && !props.adultEnabled) {
+    alert('请先在导演台开启成人内容，才能使用该服装预设')
     return
   }
 
@@ -265,10 +376,11 @@ async function handleStart() {
 
   const charOverride = characterMode.value === 'auto'
     ? (props.character ?? null)
-    : (characterMode.value === 'none' ? null : characterMode.value)
+    : characterMode.value
 
   emit('submit', {
     imageBlob: blob,
+    maskBlob: selectedMaskBlob,
     maskPrompt: maskPrompt.value.trim() || 'clothing | clothes | outfit',
     newOutfitPrompt: newPrompt,
     negativePrompt: finalNegative,
@@ -313,7 +425,7 @@ async function handleStart() {
       </header>
 
       <p class="modal-intro">
-        支持对项目生成图或<b>外部手动导入的本地图片</b>进行智能换装。通过 CLIPSeg 自动锁定服装区域，精准重绘！
+        支持对项目生成图或<b>外部本地图片</b>手绘精确遮罩换装；自动识别仅作为快速模式。
       </p>
 
       <div class="inpaint-layout">
@@ -330,10 +442,26 @@ async function handleStart() {
               <span class="preview-label">
                 {{ uploadedBlob ? '已导入外部图片' : '原图基准' }}
               </span>
-              <img class="preview-thumb" :src="activeImageUrl" alt="换装基准图" />
+              <div
+                class="preview-surface"
+                :style="detectedResolution ? { aspectRatio: `${detectedResolution.width} / ${detectedResolution.height}` } : undefined"
+              >
+                <img ref="previewImageEl" class="preview-thumb" :src="activeImageUrl" alt="换装基准图" @load="syncMaskCanvas" />
+                <canvas
+                  ref="maskCanvasEl"
+                  class="mask-canvas"
+                  :class="{ hidden: maskMode !== 'paint' }"
+                  aria-label="换装区域遮罩画布"
+                  @contextmenu.prevent
+                  @pointerdown="startMaskPaint"
+                  @pointermove="continueMaskPaint"
+                  @pointerup="stopMaskPaint"
+                  @pointercancel="stopMaskPaint"
+                ></canvas>
+              </div>
               <div class="preview-overlay-tag">
                 <ArchiveIcon name="spark" />
-                <span>锁定面部 & 背景</span>
+                <span>{{ maskMode === 'paint' ? '涂白换装，Shift/右键保护' : '自动识别服装区域' }}</span>
               </div>
               <button
                 class="btn btn-xs btn-upload-overlay"
@@ -372,19 +500,27 @@ async function handleStart() {
           </div>
 
           <div class="segment-box">
-            <label class="field-label" for="maskPromptInput">
+            <label class="field-label">
               <span class="field-label-text">
                 <ArchiveIcon name="wand" />
-                <span>智能识别区域 (语义遮罩)</span>
+                <span>重绘区域</span>
               </span>
             </label>
-            <input
-              id="maskPromptInput"
-              v-model="maskPrompt"
-              class="input input-sm"
-              placeholder="clothing | clothes | outfit | dress | shirt..."
-            />
-            <span class="field-hint">自动定位并重绘被识别的部位（用 | 分隔）</span>
+            <div class="mask-mode-switch" role="group" aria-label="遮罩模式">
+              <button type="button" :class="{ active: maskMode === 'paint' }" @click="maskMode = 'paint'">手绘精确遮罩</button>
+              <button type="button" :class="{ active: maskMode === 'auto' }" @click="maskMode = 'auto'">自动识别</button>
+            </div>
+            <template v-if="maskMode === 'paint'">
+              <label class="field-label" for="brushSizeInput">画笔大小 <span class="param-value">{{ brushSize }} px</span></label>
+              <input id="brushSizeInput" v-model.number="brushSize" class="slider" type="range" min="8" max="96" step="4" />
+              <button type="button" class="btn btn-ghost btn-xs" @click="clearMask">清空遮罩</button>
+              <span class="field-hint">直接涂白服装区域；按住 Shift 或右键擦除，保护脸、头发、手脚和背景。</span>
+            </template>
+            <template v-else>
+              <label class="field-label" for="maskPromptInput">自动识别区域</label>
+              <input id="maskPromptInput" v-model="maskPrompt" class="input input-sm" placeholder="clothing | clothes | outfit | dress | shirt..." />
+              <span class="field-hint">仅作为快速起点。高质量换装建议使用手绘精确遮罩。</span>
+            </template>
           </div>
         </div>
 
@@ -398,7 +534,7 @@ async function handleStart() {
 
             <div class="preset-grid">
               <button
-                v-for="p in OUTFIT_PRESETS"
+                v-for="p in visiblePresets"
                 :key="p.id"
                 type="button"
                 class="preset-card"
@@ -623,12 +759,54 @@ async function handleStart() {
   z-index: 2;
 }
 
+.preview-surface {
+  position: relative;
+  width: 100%;
+  max-height: 320px;
+  overflow: hidden;
+  background: #000;
+}
+
 .preview-thumb {
   width: 100%;
-  height: auto;
-  max-height: 260px;
-  object-fit: cover;
+  height: 100%;
+  max-height: 320px;
+  object-fit: contain;
   display: block;
+}
+
+.mask-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+  z-index: 1;
+}
+
+.mask-canvas.hidden {
+  display: none;
+}
+
+.mask-mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.mask-mode-switch button {
+  min-height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--text-secondary, #ccc);
+  cursor: pointer;
+}
+
+.mask-mode-switch button.active {
+  border-color: #38bdf8;
+  color: #fff;
+  background: rgba(56, 189, 248, 0.14);
 }
 
 .preview-overlay-tag {

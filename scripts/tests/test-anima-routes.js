@@ -5,7 +5,8 @@ var fs = require('fs');
 var http = require('http');
 var path = require('path');
 var test = require('node:test');
-var createAnimaService = require('../../routes/anima.js').createAnimaService;
+var animaRoute = require('../../routes/anima.js');
+var createAnimaService = animaRoute.createAnimaService;
 var gatewayTestStack = require('./gateway-test-stack.js');
 
 function request(port, options) {
@@ -590,6 +591,28 @@ test('Anima size contract: anima-base-v1.0 accepts 960x1536, anima-aesthetic-v1.
   }
 });
 
+test('Anima input cleanup deletes expired unreferenced uploads but preserves active inputs', function () {
+  var root = fs.mkdtempSync(path.join(require('os').tmpdir(), 'aics-anima-input-cleanup-'));
+  var config = { ROOT_DIR:root, AI_WORKSPACE_ROOT:root };
+  var inputRoot = path.join(root, 'ComfyUI', 'input');
+  fs.mkdirSync(inputRoot, { recursive:true });
+  var stale = 'aics_anima_input_aaaaaaaaaaaaaaaa.png';
+  var active = 'aics_anima_input_bbbbbbbbbbbbbbbb.png';
+  var fresh = 'aics_anima_input_cccccccccccccccc.png';
+  [stale, active, fresh].forEach(function (name) { fs.writeFileSync(path.join(inputRoot, name), 'fixture'); });
+  var old = new Date(Date.now() - 2 * 60 * 60 * 1000);
+  fs.utimesSync(path.join(inputRoot, stale), old, old);
+  fs.utimesSync(path.join(inputRoot, active), old, old);
+  try {
+    animaRoute.cleanupImageInputs(config, new Set([active]), 60 * 60 * 1000);
+    assert.strictEqual(fs.existsSync(path.join(inputRoot, stale)), false);
+    assert.strictEqual(fs.existsSync(path.join(inputRoot, active)), true);
+    assert.strictEqual(fs.existsSync(path.join(inputRoot, fresh)), true);
+  } finally {
+    fs.rmSync(root, { recursive:true, force:true });
+  }
+});
+
 test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentNoiseMask workflow', async function () {
   var stack = await gatewayTestStack.start({
     prefix:'aics-anima-inpaint-',
@@ -611,7 +634,9 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
       initImage: uploadRes.json.name,
       maskPrompt: 'clothes, dress',
       denoisingStrength: 0.85,
-      growMaskBy: 8,
+      growMaskBy: 0,
+      width: 1024,
+      height: 1344,
       seed: 7788
     }));
     assert.strictEqual(inpaintJob.status, 202);
@@ -622,11 +647,67 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     var graph = promptCall.body.prompt;
     assert.strictEqual(graph['15'].class_type, 'LoadImage');
     assert.strictEqual(graph['15'].inputs.image, uploadRes.json.name);
+    assert.strictEqual(graph['19'].class_type, 'ResizeAndPadImage');
+    assert.strictEqual(graph['19'].inputs.target_width, 1024);
+    assert.strictEqual(graph['19'].inputs.target_height, 1344);
     assert.strictEqual(graph['16'].class_type, 'AP_CLIPSeg_TextMask');
     assert.strictEqual(graph['16'].inputs.prompt, 'clothes, dress');
+    assert.strictEqual(graph['16'].inputs.mask_dilate, 0, 'Grow=0 must stay an explicit no-expand mask');
     assert.strictEqual(graph['17'].class_type, 'SetLatentNoiseMask');
     assert.strictEqual(graph['8'].inputs.latent_image[0], '17');
     assert.strictEqual(graph['8'].inputs.denoise, 0.85);
+
+    var maskUpload = await postJson(port, '/api/anima/images', { image: samplePngBase64 });
+    var paintedMaskJob = await postJson(port, '/api/anima/jobs', validJob({
+      initImage: uploadRes.json.name,
+      maskImage: maskUpload.json.name,
+      width: 1024,
+      height: 1344,
+      seed: 7790
+    }));
+    assert.strictEqual(paintedMaskJob.status, 202);
+    await waitForJob(port, paintedMaskJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
+    state = await mockState(comfy.port);
+    promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
+    graph = promptCall.body.prompt;
+    assert.strictEqual(graph['16'].class_type, 'LoadImageMask');
+    assert.strictEqual(graph['16'].inputs.image, maskUpload.json.name);
+    assert.strictEqual(graph['16'].inputs.channel, 'red');
+    assert.strictEqual(graph['16_grow'].class_type, 'GrowMask');
+    assert.strictEqual(graph['16_grow'].inputs.expand, 6);
+    assert.strictEqual(graph['17'].inputs.mask[0], '16_grow');
+    assert.strictEqual(graph['30'].class_type, 'ImageCompositeMasked');
+    assert.deepStrictEqual(graph['30'].inputs.destination, ['19', 0]);
+    assert.deepStrictEqual(graph['30'].inputs.source, ['9', 0]);
+    assert.deepStrictEqual(graph['10'].inputs.images, ['30', 0]);
+
+    // 手绘遮罩叠加 hires：最终结果必须在解码前对合成图做 hires，不能复用旧的高分潜空间路径
+    var hiresWithMask = await postJson(port, '/api/anima/jobs', validJob({
+      initImage: uploadRes.json.name,
+      maskImage: maskUpload.json.name,
+      width: 832,
+      height: 1216,
+      hiresFix: true,
+      hiresScale: 2.0,
+      seed: 7791
+    }));
+    assert.strictEqual(hiresWithMask.status, 202);
+    await waitForJob(port, hiresWithMask.json.job.id, function (job) { return job && job.status === 'succeeded'; });
+    state = await mockState(comfy.port);
+    promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
+    graph = promptCall.body.prompt;
+    assert.ok(graph['30'] && graph['30'].class_type === 'ImageCompositeMasked');
+    // 普通 hires（LatentUpscaleBy）仍应对合成图生效，不应再单独针对首轮 latent 放大
+    assert.ok(graph['31'] && graph['32'] && graph['34'], 'hires on inpaint must run VAEEncode→LatentUpscaleBy→KSampler→VAEDecode over the composited image');
+
+    var unaligned = await postJson(port, '/api/anima/jobs', validJob({
+      initImage: uploadRes.json.name,
+      maskPrompt: 'clothes',
+      width: 1001,
+      height: 1333
+    }));
+    assert.strictEqual(unaligned.status, 400);
+    assert.strictEqual(unaligned.json.code, 'INVALID_PARAMETER');
   } finally {
     await stack.close();
   }

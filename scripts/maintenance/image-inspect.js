@@ -4,6 +4,8 @@
  *
  * 通过本地 CLIProxyAPI（OpenAI 兼容 /v1/chat/completions）调用视觉模型识别本地图片，
  * 等价于 opencode 配置中的 vision / gemini-vision agent（gemini-3.7-flash-high）。
+ * 主端点连不上时（ECONNREFUSED 等）自动回退到本地 llama-server（默认 127.0.0.1:8000/v1，
+ * 需 --mmproj 启动，模型 ID 自动取自其 /v1/models）；--no-fallback 可禁用回退。
  * 零第三方依赖，只使用 Node 内置模块。
  *
  * 用法：
@@ -14,13 +16,14 @@
  *   -p, --prompt "<文本>"                   自定义提示词（覆盖任务预设）
  *   -m, --model <模型名>                    视觉模型（默认 gemini-3.7-flash-high）
  *       --mode <each|group>                 each=逐张独立请求（默认）；group=多图合并一次请求
+ *       --concurrency <n>                   并发请求数（仅 each 模式，默认 1，上限 8）
  *   -o, --out <文件>                        结果写入 Markdown 文件
  *       --json                              stdout 只输出 JSON 结果
  *       --max-tokens <n>                    单次回答上限（默认 4000）
  *       --timeout <ms>                      单次请求超时（默认 180000）
  *   -h, --help                              显示帮助
  *
- * 环境变量（可选覆盖）：VISION_BASE_URL / VISION_API_KEY / VISION_MODEL
+ * 环境变量（可选覆盖）：VISION_BASE_URL / VISION_API_KEY / VISION_MODEL / VISION_FALLBACK_BASE_URL
  */
 'use strict';
 
@@ -33,6 +36,8 @@ const DEFAULT_BASE_URL = process.env.VISION_BASE_URL || 'http://127.0.0.1:8317/v
 // 旧默认值 sk-local-proxy-key-2024 已失效；此值即当前有效 key，仍可用 VISION_API_KEY 覆盖。
 const DEFAULT_API_KEY = process.env.VISION_API_KEY || 'sk-548ae0291845851b7f8fc3c14d19a6809c60cf1f21bf61a7';
 const DEFAULT_MODEL = process.env.VISION_MODEL || 'gemini-3.7-flash-high';
+// 主端点连接失败时回退的本地 llama-server 后端；与主端点相同则视为禁用（亦可 --no-fallback）
+const FALLBACK_BASE_URL = process.env.VISION_FALLBACK_BASE_URL || 'http://127.0.0.1:8000/v1';
 const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // base64 后 ≈20MB，对齐 opencode attachment 上限
 
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp']);
@@ -78,7 +83,8 @@ const TASKS = {
 function printHelp() {
   console.log(`用法：node ${path.basename(process.argv[1])} <图片|目录>... [选项]
 
-通过本地 CLIProxyAPI 调用视觉模型识别图片（等价于 opencode 的 vision agent）。
+通过本地 CLIProxyAPI 调用视觉模型识别图片（等价于 opencode 的 vision agent）；
+主端点连不上时自动回退本地 llama-server（--no-fallback 禁用）。
 
 选项：
   -t, --task <describe|audit|ocr|score>  任务预设（默认 describe）
@@ -86,13 +92,15 @@ function printHelp() {
   -e, --expect "<预期>"                   audit 任务专用：预期内容（提示词），审核时判断画面是否符合
   -m, --model <模型名>                    视觉模型（默认 ${DEFAULT_MODEL}）
       --mode <each|group>                 each=逐张独立请求（默认）；group=多图合并一次请求
+      --concurrency <n>                   并发请求数（仅 each 模式，默认 1，上限 8）
   -o, --out <文件>                        结果写入 Markdown 文件
       --json                              stdout 只输出 JSON 结果
       --max-tokens <n>                    单次回答上限（默认 4000）
       --timeout <ms>                      单次请求超时（默认 180000）
+      --no-fallback                       禁用主端点连不上时回退到本地 llama-server
   -h, --help                              显示帮助
 
-环境变量（可选覆盖）：VISION_BASE_URL / VISION_API_KEY / VISION_MODEL
+环境变量（可选覆盖）：VISION_BASE_URL / VISION_API_KEY / VISION_MODEL / VISION_FALLBACK_BASE_URL
 示例：
   node scripts/maintenance/image-inspect.js out.png
   node scripts/maintenance/image-inspect.js AI/Reviews/SceneFix/sc001 -t audit -o audit.md
@@ -102,7 +110,8 @@ function printHelp() {
 function parseArgs(argv) {
   const opts = {
     task: 'describe', mode: 'each', model: null, prompt: null, expect: null,
-    out: null, json: false, maxTokens: 4000, timeoutMs: 180000, help: false, paths: [],
+    out: null, json: false, maxTokens: 4000, timeoutMs: 180000, help: false,
+    noFallback: false, concurrency: 1, paths: [],
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -113,10 +122,12 @@ function parseArgs(argv) {
       case '-e': case '--expect': opts.expect = next(); break;
       case '-m': case '--model': opts.model = next(); break;
       case '--mode': opts.mode = next(); break;
+      case '--concurrency': opts.concurrency = Math.max(1, Math.min(8, Number(next()) || 1)); break;
       case '-o': case '--out': opts.out = next(); break;
       case '--json': opts.json = true; break;
       case '--max-tokens': opts.maxTokens = Number(next()); break;
       case '--timeout': opts.timeoutMs = Number(next()); break;
+      case '--no-fallback': opts.noFallback = true; break;
       case '-h': case '--help': opts.help = true; break;
       default:
         if (a.startsWith('-')) {
@@ -148,9 +159,9 @@ function collectImages(inputs) {
   return files;
 }
 
-function httpJson(method, urlPath, body, opts) {
+function httpJson(method, urlPath, body, opts, base) {
   return new Promise((resolve, reject) => {
-    const url = new URL(DEFAULT_BASE_URL + urlPath);
+    const url = new URL((base || DEFAULT_BASE_URL) + urlPath);
     const payload = body ? JSON.stringify(body) : null;
     const req = http.request({
       hostname: url.hostname, port: url.port || 80, path: url.pathname, method,
@@ -177,12 +188,12 @@ function httpJson(method, urlPath, body, opts) {
   });
 }
 
-async function chatCompletion(messages, opts, model) {
+async function chatCompletion(messages, opts, model, base) {
   return httpJson('POST', '/chat/completions', {
     model,
     messages,
     max_tokens: opts.maxTokens,
-  }, opts);
+  }, opts, base);
 }
 
 function imageUrl(file) {
@@ -191,7 +202,18 @@ function imageUrl(file) {
   return 'data:image/' + mime + ';base64,' + fs.readFileSync(file).toString('base64');
 }
 
-async function requestWithRetry(messages, opts, model, file) {
+function isConnectionError(err) {
+  return /ECONNREFUSED|ECONNRESET|EPIPE|ETIMEDOUT|ENETUNREACH|EAI_AGAIN|超时/.test(err);
+}
+
+async function fetchModelId(base, opts) {
+  const j = await httpJson('GET', '/models', null, opts, base);
+  const id = j && j.data && j.data[0] && j.data[0].id;
+  if (!id) throw new Error(`${base} 的 /v1/models 未返回模型`);
+  return id;
+}
+
+async function attemptBackend(base, model, messages, opts, file) {
   let lastErr = null;
   for (let attempt = 0; attempt < 2; attempt++) {
     if (attempt > 0) {
@@ -199,18 +221,34 @@ async function requestWithRetry(messages, opts, model, file) {
       await new Promise(r => setTimeout(r, 2000));
     }
     try {
-      const j = await chatCompletion(messages, opts, model);
+      const j = await chatCompletion(messages, opts, model, base);
       const content = j.choices && j.choices[0] && j.choices[0].message
         ? j.choices[0].message.content
         : JSON.stringify(j).slice(0, 800);
-      return { ok: true, content };
+      return { ok: true, content, model };
     } catch (e) {
       lastErr = e;
       const retriable = /HTTP 5\d\d/.test(e.message) || /超时/.test(e.message) || /ECONN|EPIPE|ETIMEDOUT/.test(e.message);
       if (!retriable) break;
     }
   }
-  return { ok: false, content: null, error: lastErr.message };
+  return { ok: false, content: null, model, error: lastErr.message };
+}
+
+async function requestWithRetry(messages, opts, model, file) {
+  const r1 = await attemptBackend(DEFAULT_BASE_URL, model, messages, opts, file);
+  if (r1.ok || opts.noFallback || !isConnectionError(r1.error)) return r1;
+  if (FALLBACK_BASE_URL === DEFAULT_BASE_URL) return r1;
+  console.error(`[fallback] 主视觉端点不可用（${r1.error}）→ 本地 llama-server ${FALLBACK_BASE_URL}`);
+  try {
+    const fbModel = await fetchModelId(FALLBACK_BASE_URL, opts);
+    console.error(`[fallback] 使用模型 ${fbModel}`);
+    const r2 = await attemptBackend(FALLBACK_BASE_URL, fbModel, messages, opts, file);
+    if (r2.ok) return r2;
+    return { ok: false, content: null, model: r1.model, error: `${r1.error}；fallback 亦失败：${r2.error}` };
+  } catch (e) {
+    return { ok: false, content: null, model: r1.model, error: `${r1.error}；fallback 不可用：${e.message}` };
+  }
 }
 
 function buildTextAndImages(prompt, files, labeled) {
@@ -270,7 +308,7 @@ async function main() {
     const r = await requestWithRetry([{ role: 'user', content }], opts, model, files.map(f => f.file).join('; '));
     results.push({
       mode: 'group',
-      model,
+      model: r.model,
       prompt: taskPrompt,
       files: files.map(f => f.file),
       ok: r.ok,
@@ -278,13 +316,14 @@ async function main() {
       error: r.error || null,
     });
   } else {
-    for (let i = 0; i < files.length; i++) {
-      const f = files[i];
+    const n = Math.max(1, Math.min(8, Math.floor(opts.concurrency) || 1));
+    if (n > 1) console.error(`[并发] ${n} 路并行请求（each 模式）`);
+    const resultsArr = new Array(files.length);
+    const runOne = async (f, i) => {
       if (f.size > MAX_IMAGE_BYTES) {
         console.error(`[跳过] 图片过大（>${MAX_IMAGE_BYTES / 1024 / 1024}MB）: ${f.file}`);
         skipped.push(f.file);
-        results.push({ mode: 'each', model, file: f.file, ok: false, content: null, error: '图片过大被跳过' });
-        continue;
+        return { mode: 'each', model, file: f.file, ok: false, content: null, error: '图片过大被跳过' };
       }
       console.error(`[识图 ${i + 1}/${files.length}] ${f.file} → ${model}`);
       const content = [
@@ -292,8 +331,17 @@ async function main() {
         { type: 'image_url', image_url: { url: imageUrl(f.file) } },
       ];
       const r = await requestWithRetry([{ role: 'user', content }], opts, model, f.file);
-      results.push({ mode: 'each', model, file: f.file, ok: r.ok, content: r.content, error: r.error || null });
-    }
+      return { mode: 'each', model: r.model, file: f.file, ok: r.ok, content: r.content, error: r.error || null };
+    };
+    let cursor = 0;
+    await Promise.all(Array.from({ length: Math.min(n, files.length) }, async () => {
+      for (;;) {
+        const i = cursor++;
+        if (i >= files.length) return;
+        resultsArr[i] = await runOne(files[i], i);
+      }
+    }));
+    results.push(...resultsArr);
   }
 
   if (opts.json) {
@@ -331,6 +379,8 @@ module.exports = {
   DEFAULT_BASE_URL: DEFAULT_BASE_URL,
   DEFAULT_API_KEY: DEFAULT_API_KEY,
   DEFAULT_MODEL: DEFAULT_MODEL,
+  FALLBACK_BASE_URL: FALLBACK_BASE_URL,
+  isConnectionError: isConnectionError,
   MAX_IMAGE_BYTES: MAX_IMAGE_BYTES,
   imageUrl: imageUrl,
   chatCompletion: chatCompletion,

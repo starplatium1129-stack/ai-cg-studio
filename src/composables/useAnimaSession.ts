@@ -98,6 +98,42 @@ export const ANIMA_CHARACTER_BY_CHARACTER = {
   natsume: 'natsume',
 } as const
 
+export type InpaintCharacterMode = 'nene' | 'natsume' | 'none' | null
+
+export interface InpaintRequestBinding {
+  character: 'nene' | 'natsume' | null
+  loraId: string | null
+  modelId: string
+  width: number
+  height: number
+}
+
+export function resolveInpaintRequestBinding(
+  models: AnimaOption[],
+  currentModelId: string,
+  character: InpaintCharacterMode,
+  desiredSize: string,
+): InpaintRequestBinding | null {
+  const usesCharacterLora = character === 'nene' || character === 'natsume'
+  const currentModel = models.find(model => model.id === currentModelId)
+  const selectedModel = usesCharacterLora
+    ? currentModel
+    : (currentModel?.capabilities?.noLora === true
+      ? currentModel
+      : models.find(model => model.capabilities?.noLora === true))
+  if (!selectedModel || (!usesCharacterLora && selectedModel.capabilities?.noLora !== true)) return null
+
+  const outputSize = closestSupportedSize(selectedModel, desiredSize)
+  const [width, height] = outputSize.split('x').map(Number)
+  return {
+    character: usesCharacterLora ? character : null,
+    loraId: usesCharacterLora ? ANIMA_LORA_BY_CHARACTER[character] : null,
+    modelId: selectedModel.id,
+    width,
+    height,
+  }
+}
+
 function jobPath(family: 'anima' | 'krea2', id?: string): string {
   const base = family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
   return id ? `${base}/${encodeURIComponent(id)}` : base

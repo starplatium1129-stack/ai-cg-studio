@@ -725,7 +725,8 @@
         :image-blob="animaState.result?.blob"
         :current-prompt="livePrompt"
         :current-negative="negativePrompt"
-        :character="pb.char"
+        :character="inpaintCharacter"
+        :adult-enabled="pb.showMatureScenes"
         :seed="displayResultSeed"
         :submitting="generationBusy"
         @close="inpaintOpen = false"
@@ -762,7 +763,7 @@ import {
   type SceneBlueprint,
 } from '@/utils/popularContent'
 import type { AnimaResult } from '@/types/anima'
-import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, animaRequestPayload, type AnimaPublicJob, type AnimaRequest } from '@/composables/useAnimaSession'
+import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, animaRequestPayload, resolveInpaintRequestBinding, type AnimaPublicJob, type AnimaRequest } from '@/composables/useAnimaSession'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
@@ -1007,6 +1008,9 @@ const prevResult = ref<ResultSnapshot | null>(null)
 const lastResult = ref<ResultSnapshot | null>(null)
 const compareOpen = ref(false)
 const inpaintOpen = ref(false)
+const inpaintCharacter = computed<'nene' | 'natsume' | null>(() => {
+  return pb.char === 'nene' || pb.char === 'natsume' ? pb.char : null
+})
 const compareEl = ref<HTMLElement | null>(null)
 
 /**
@@ -2205,12 +2209,40 @@ async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
     }
 
     const initImage = uploadJson.name
+    let maskImage: string | undefined
+    if (payload.maskBlob) {
+      const maskReader = new FileReader()
+      const maskData = await new Promise<string>((resolve, reject) => {
+        maskReader.onload = () => resolve(maskReader.result as string)
+        maskReader.onerror = reject
+        maskReader.readAsDataURL(payload.maskBlob as Blob)
+      })
+      const maskRes = await fetch('/api/anima/images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: maskData }),
+      })
+      const maskJson = await maskRes.json()
+      if (!maskRes.ok || !maskJson.ok || !maskJson.name) throw new Error(maskJson.error || '遮罩上传失败')
+      maskImage = maskJson.name
+    }
     inpaintOpen.value = false
     pb.flash('正在执行 AI 智能识别与局部换装 (~6秒)…')
 
     const effectiveChar = payload.characterOverride !== undefined
       ? payload.characterOverride
-      : pb.char
+      : inpaintCharacter.value
+    const isCharacterLora = effectiveChar === 'nene' || effectiveChar === 'natsume'
+    const inpaintMode = isCharacterLora || effectiveChar === 'none' ? effectiveChar : null
+    const desiredSize = payload.targetWidth && payload.targetHeight
+      ? `${payload.targetWidth}x${payload.targetHeight}`
+      : `${animaState.value.width}x${animaState.value.height}`
+    const binding = resolveInpaintRequestBinding(
+      animaState.value.models,
+      animaState.value.modelId,
+      inpaintMode,
+      desiredSize,
+    )
 
     let promptText = payload.newOutfitPrompt
     if (effectiveChar === 'nene' && !promptText.includes('ayachi_nene')) {
@@ -2219,25 +2251,33 @@ async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
       promptText = `shiki_natsume, ${promptText}`
     }
 
-    const negativePrompt = payload.characterOverride === 'none'
+    const negativePrompt = effectiveChar === 'none'
       ? `${payload.negativePrompt}, face, head, hair, duplicate person, extra person`
       : payload.negativePrompt
+    if (!binding) {
+      pb.flash('当前没有可用的无 LoRA Anima 底模，无法处理外部通用图片')
+      return
+    }
 
     await generateAnima({
       prompt: promptText,
+      modelId: binding.modelId,
       negative: negativePrompt,
       initImage,
-      maskPrompt: payload.maskPrompt,
+      ...(maskImage ? { maskImage } : { maskPrompt: payload.maskPrompt }),
       denoisingStrength: payload.denoisingStrength,
       growMaskBy: payload.growMaskBy,
       seed: payload.seed ?? undefined,
-      character: (effectiveChar === 'none' ? null : (effectiveChar || null)),
-      width: payload.targetWidth,
-      height: payload.targetHeight,
+      character: binding.character,
+      loraId: binding.loraId,
+      loraStrength: isCharacterLora ? animaState.value.loraStrength : null,
+      width: binding.width,
+      height: binding.height,
       teaCache: true,
     })
-  } catch (error: any) {
-    pb.flash(`换装失败：${error?.message || error}`)
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error)
+    pb.flash(`换装失败：${message}`)
   }
 }
 

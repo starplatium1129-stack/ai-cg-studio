@@ -17,6 +17,7 @@ var MAX_PENDING = 4;
 var MAX_PROMPT_LENGTH = 12000;
 var MAX_NEGATIVE_LENGTH = 8000;
 var MAX_IMAGE_BYTES = 16 * 1024 * 1024;
+var INPUT_IMAGE_TTL_MS = 60 * 60 * 1000;
 var JOB_TIMEOUT_MS = 10 * 60 * 1000;
 var POLL_INTERVAL_MS = 500;
 var JOB_TTL_MS = 30 * 60 * 1000;
@@ -129,6 +130,23 @@ function imageInputAvailable(config, name) {
   try { return fs.statSync(target).isFile(); } catch (error) { return false; }
 }
 
+function cleanupImageInputs(config, protectedNames, ttlMs) {
+  var root = imageInputRoot(config);
+  var keep = protectedNames || new Set();
+  var cutoff = Date.now() - (Number(ttlMs) > 0 ? Number(ttlMs) : INPUT_IMAGE_TTL_MS);
+  var entries = [];
+  try { entries = fs.readdirSync(root); } catch (error) { return; }
+  entries.forEach(function (name) {
+    if (!IMAGE_INPUT_PATTERN.test(name) || keep.has(name)) return;
+    var target = path.resolve(root, name);
+    if (target.indexOf(path.resolve(root) + path.sep) !== 0) return;
+    try {
+      var stat = fs.statSync(target);
+      if (stat.isFile() && stat.mtimeMs < cutoff) fs.unlinkSync(target);
+    } catch (error) {}
+  });
+}
+
 function sniffImageExtension(buffer) {
   if (buffer.length >= 8 && buffer[0] === 0x89 && buffer[1] === 0x50
     && buffer[2] === 0x4e && buffer[3] === 0x47) return 'png';
@@ -217,8 +235,15 @@ function validateInput(body, expectedFamily) {
   var loraStrength = lora ? validateNumber(body.loraStrength, 'loraStrength', lora.minStrength, lora.maxStrength, false) : null;
   var width = validateNumber(body.width, 'width', 512, 1536, true);
   var height = validateNumber(body.height, 'height', 512, 1536, true);
-  if (model.sizes.indexOf(width + 'x' + height) === -1) {
+  var isAspectPreservingInpaint = model.family !== 'krea2'
+    && typeof body.initImage === 'string' && body.initImage.trim();
+  // 只有局部重绘可使用非白名单尺寸：前端按原图比例计算 16 对齐的安全画布。
+  // 普通文生图继续严格锁定已验证的模型尺寸，避免任意分辨率撑爆显存。
+  if (!isAspectPreservingInpaint && model.sizes.indexOf(width + 'x' + height) === -1) {
     throw serviceError(400, 'INVALID_PARAMETER', '不支持的输出尺寸');
+  }
+  if (isAspectPreservingInpaint && (width % 16 !== 0 || height % 16 !== 0)) {
+    throw serviceError(400, 'INVALID_PARAMETER', '局部重绘尺寸必须是 16 的倍数');
   }
   if (model.family !== 'krea2' && width * height > 1_500_000) throw serviceError(400, 'INVALID_PARAMETER', '输出尺寸超过允许面积');
   var steps;
@@ -380,14 +405,16 @@ function buildWorkflow(input) {
     }
     if (input.initImage) {
       noLoraWf['15'] = { class_type:'LoadImage', inputs:{ image:input.initImage } };
-      noLoraWf['19'] = { class_type:'ImageScale', inputs:{ image:['15', 0], upscale_method:'bilinear', width:input.width, height:input.height, crop:'disabled' } };
+      noLoraWf['19'] = { class_type:'ResizeAndPadImage', inputs:{ image:['15', 0], target_width:input.width, target_height:input.height, padding_color:'black', interpolation:'lanczos' } };
       noLoraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['19', 0], vae:['3', 0] } };
       if (input.maskImage) {
-        noLoraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
-        noLoraWf['16_scale'] = { class_type:'ImageScale', inputs:{ image:['16', 0], upscale_method:'nearest-exact', width:input.width, height:input.height, crop:'disabled' } };
-        noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_scale', 1] } };
+        noLoraWf['16'] = { class_type:'LoadImageMask', inputs:{ image:input.maskImage, channel:'red' } };
+        noLoraWf['16_grow'] = { class_type:'GrowMask', inputs:{ mask:['16', 0], expand:input.growMaskBy !== undefined ? input.growMaskBy : 6, tapered_corners:true } };
+        noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_grow', 0] } };
+        noLoraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['8', 0], x:0, y:0, resize_source:false, mask:['16_grow', 0] } };
+        noLoraWf['10'].inputs.images = ['30', 0];
       } else if (input.maskPrompt) {
-        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
         noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
       }
       if (noLoraWf['17']) {
@@ -396,7 +423,25 @@ function buildWorkflow(input) {
       }
     }
     if (isHires) {
-      if (input.superResModel) {
+      if (input.maskImage) {
+        if (input.superResModel) {
+          var tw = Math.round(input.width * input.hiresScale / 8) * 8;
+          var th = Math.round(input.height * input.hiresScale / 8) * 8;
+          noLoraWf['20'] = { class_type:'UpscaleModelLoader', inputs:{ model_name:input.superResModel } };
+          noLoraWf['21'] = { class_type:'ImageUpscaleWithModel', inputs:{ upscale_model:['20', 0], image:['30', 0] } };
+          noLoraWf['22'] = { class_type:'ImageScale', inputs:{ image:['21', 0], upscale_method:'lanczos', width:tw, height:th, crop:'disabled' } };
+          noLoraWf['23'] = { class_type:'VAEEncode', inputs:{ pixels:['22', 0], vae:['3', 0] } };
+          noLoraWf['24'] = { class_type:'KSampler', inputs:{ model:noLoraModel, positive:['4', 0], negative:['5', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+          noLoraWf['25'] = { class_type:'VAEDecode', inputs:{ samples:['24', 0], vae:['3', 0] } };
+          noLoraWf['10'].inputs.images = ['25', 0];
+        } else {
+          noLoraWf['31'] = { class_type:'VAEEncode', inputs:{ pixels:['30', 0], vae:['3', 0] } };
+          noLoraWf['32'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['31', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
+          noLoraWf['33'] = { class_type:'KSampler', inputs:{ model:noLoraModel, positive:['4', 0], negative:['5', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+          noLoraWf['34'] = { class_type:'VAEDecode', inputs:{ samples:['33', 0], vae:['3', 0] } };
+          noLoraWf['10'].inputs.images = ['34', 0];
+        }
+      } else if (input.superResModel) {
         appendSuperResHires(noLoraWf, input, { firstPass:['7', 0], vae:['3', 0], model:noLoraModel, positive:['4', 0], negative:['5', 0], decodeNode:'8' });
       } else {
         noLoraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['7', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
@@ -456,14 +501,16 @@ function buildWorkflow(input) {
   }
   if (input.initImage) {
     loraWf['15'] = { class_type:'LoadImage', inputs:{ image:input.initImage } };
-    loraWf['19'] = { class_type:'ImageScale', inputs:{ image:['15', 0], upscale_method:'bilinear', width:input.width, height:input.height, crop:'disabled' } };
+    loraWf['19'] = { class_type:'ResizeAndPadImage', inputs:{ image:['15', 0], target_width:input.width, target_height:input.height, padding_color:'black', interpolation:'lanczos' } };
     loraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['19', 0], vae:['3', 0] } };
     if (input.maskImage) {
-      loraWf['16'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
-      loraWf['16_scale'] = { class_type:'ImageScale', inputs:{ image:['16', 0], upscale_method:'nearest-exact', width:input.width, height:input.height, crop:'disabled' } };
-      loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_scale', 1] } };
+      loraWf['16'] = { class_type:'LoadImageMask', inputs:{ image:input.maskImage, channel:'red' } };
+      loraWf['16_grow'] = { class_type:'GrowMask', inputs:{ mask:['16', 0], expand:input.growMaskBy !== undefined ? input.growMaskBy : 6, tapered_corners:true } };
+      loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_grow', 0] } };
+      loraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['9', 0], x:0, y:0, resize_source:false, mask:['16_grow', 0] } };
+      loraWf['10'].inputs.images = ['30', 0];
     } else if (input.maskPrompt) {
-      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy || 8, mask_blur:4, device:'auto', unload_after_run:false } };
+      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
       loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
     }
     if (loraWf['17']) {
@@ -472,7 +519,25 @@ function buildWorkflow(input) {
     }
   }
   if (isHires) {
-    if (input.superResModel) {
+    if (input.maskImage) {
+      if (input.superResModel) {
+        var ltw = Math.round(input.width * input.hiresScale / 8) * 8;
+        var lth = Math.round(input.height * input.hiresScale / 8) * 8;
+        loraWf['20'] = { class_type:'UpscaleModelLoader', inputs:{ model_name:input.superResModel } };
+        loraWf['21'] = { class_type:'ImageUpscaleWithModel', inputs:{ upscale_model:['20', 0], image:['30', 0] } };
+        loraWf['22'] = { class_type:'ImageScale', inputs:{ image:['21', 0], upscale_method:'lanczos', width:ltw, height:lth, crop:'disabled' } };
+        loraWf['23'] = { class_type:'VAEEncode', inputs:{ pixels:['22', 0], vae:['3', 0] } };
+        loraWf['24'] = { class_type:'KSampler', inputs:{ model:loraModel, positive:['5', 0], negative:['6', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+        loraWf['25'] = { class_type:'VAEDecode', inputs:{ samples:['24', 0], vae:['3', 0] } };
+        loraWf['10'].inputs.images = ['25', 0];
+      } else {
+        loraWf['31'] = { class_type:'VAEEncode', inputs:{ pixels:['30', 0], vae:['3', 0] } };
+        loraWf['32'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['31', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
+        loraWf['33'] = { class_type:'KSampler', inputs:{ model:loraModel, positive:['5', 0], negative:['6', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+        loraWf['34'] = { class_type:'VAEDecode', inputs:{ samples:['33', 0], vae:['3', 0] } };
+        loraWf['10'].inputs.images = ['34', 0];
+      }
+    } else if (input.superResModel) {
       appendSuperResHires(loraWf, input, { firstPass:['8', 0], vae:['3', 0], model:loraModel, positive:['5', 0], negative:['6', 0], decodeNode:'9' });
     } else {
       loraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['8', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
@@ -692,11 +757,20 @@ function createAnimaService(config, options) {
   var loraRoot = options.loraRoot || path.join(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'models', 'loras');
   var validateResources = options.validateResources || function (input) { requiredResources(config, input, loraRoot); };
   var jobTtlMs = Number(options.jobTtlMs) > 0 ? Number(options.jobTtlMs) : JOB_TTL_MS;
+  var inputImageTtlMs = Number(options.inputImageTtlMs) > 0 ? Number(options.inputImageTtlMs) : INPUT_IMAGE_TTL_MS;
   var cancelPollIntervalMs = Number(options.cancelPollIntervalMs) > 0
     ? Number(options.cancelPollIntervalMs) : CANCEL_POLL_INTERVAL_MS;
   var cancelTimeoutMs = Number(options.cancelTimeoutMs) > 0
     ? Number(options.cancelTimeoutMs) : CANCEL_TIMEOUT_MS;
   var jobs = new Map();
+  function cleanupOwnedInputs() {
+    var activeInputs = new Set();
+    jobs.forEach(function (job) {
+      if (job.input.initImage) activeInputs.add(job.input.initImage);
+      if (job.input.maskImage) activeInputs.add(job.input.maskImage);
+    });
+    cleanupImageInputs(config, activeInputs, inputImageTtlMs);
+  }
   // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI 任务，
   // 避免「网关重启 → 旧任务无人轮询/取消，继续占 GPU」。立即 + 30s 后各试一次
   // （网关常先于 ComfyUI 启动，重试幂等无害）。
@@ -714,6 +788,9 @@ function createAnimaService(config, options) {
   var closed = false;
 
   cleanupMediaRoot(config, mediaNamespace);
+  cleanupOwnedInputs();
+  var inputCleanupTimer = setInterval(cleanupOwnedInputs, Math.min(inputImageTtlMs, 5 * 60 * 1000));
+  if (typeof inputCleanupTimer.unref === 'function') inputCleanupTimer.unref();
 
   function pendingCount() {
     var count = 0;
@@ -1003,6 +1080,7 @@ function createAnimaService(config, options) {
     if (job.gcTimer) { clearTimeout(job.gcTimer); job.gcTimer = null; }
     removeResult(job);
     jobs.delete(job.id);
+    cleanupOwnedInputs();
   }
 
   function consumeResult(job) {
@@ -1073,6 +1151,7 @@ function createAnimaService(config, options) {
 
   function close() {
     closed = true;
+    clearInterval(inputCleanupTimer);
     jobs.forEach(function (job) {
       if (job.pollTimer) clearTimeout(job.pollTimer);
       job.pollTimer = null;
@@ -1085,6 +1164,7 @@ function createAnimaService(config, options) {
     });
     jobs.clear();
     cleanupMediaRoot(config, mediaNamespace);
+    cleanupOwnedInputs();
   }
 
   return {
@@ -1228,6 +1308,7 @@ module.exports = {
   validateInput:validateInput,
   buildWorkflow:buildWorkflow,
   validateImageReference:validateImageReference,
+  cleanupImageInputs:cleanupImageInputs,
   constants:{
     MODELS:MODELS,
     LORAS:LORAS,
