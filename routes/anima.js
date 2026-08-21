@@ -10,6 +10,11 @@ var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var generationContract = require('../server/anima-generation-contract');
 var comfyClient = require('../server/comfy-client');
+// P3 收口：ComfyUI 探活统一走 server/upstream-health
+var upstreamHealth = require('../server/upstream-health');
+// 2026-08-21 收口：模型/LoRA/角色白名单数据表外移；任务注册表骨架统一
+var modelCatalog = require('../server/anima-model-catalog');
+var jobRunner = require('../server/job-runner');
 var superres = require('./superres');
 
 var MAX_BODY = '64kb';
@@ -26,54 +31,12 @@ var CANCEL_TIMEOUT_MS = 30 * 1000;
 var OUTPUT_NODE_ID = '10';
 var OUTPUT_FILENAME_PREFIX = 'anima_app';
 
-var MODELS = Object.freeze({
-  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'] },
-  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','1024x1024','1216x832'], noLora:true },
-  // 2026-08-15 用户决策接入：AnimaYume v1.0（circlestone 社区基座微调，Civitai 2385278）。
-  // noLora:true = 无 LoRA 创作模式可用；若显式传 loraId，仍走 LORAS 兼容表校验
-  // （宁宁/夏目 v21 已声明兼容，用户实测自担效果）。
-  'anima-yume-v1.0': { file:'AnimaYume_v10_final_base.safetensors', label:'Anima Yume v1.0', family:'anima', profileId:'anima_yume_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'], noLora:true },
-  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
-});
-
-var PROFILE_BY_MODEL = Object.freeze({
-  'anima-base-v1.0':'anima_base_v10',
-  'anima-aesthetic-v1.1':'anima_aesthetic_v11',
-  'anima-yume-v1.0':'anima_yume_v10',
-  'krea2-turbo-fp8':'krea2_turbo_fp8'
-});
-
-var LORAS = Object.freeze({
-  L_NENE_V21_ANIMA: {
-    file:'ayachi_nene_v21_anima.safetensors',
-    name:'ayachi_nene_v21_anima',
-    character:'nene',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0'],
-    minStrength:0.65,
-    maxStrength:1
-  },
-  L_NAT_V21_ANIMA: {
-    file:'shiki_natsume_v21_anima.safetensors',
-    name:'shiki_natsume_v21_anima',
-    character:'natsume',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0'],
-    minStrength:0.65,
-    maxStrength:1
-  }
-});
-
-var KREA_STYLE_LORAS = Object.freeze({
-  darkbrush:{ file:'krea2_darkbrush.safetensors', trigger:'monochrome ink wash style' }, dotmatrix:{ file:'krea2_dotmatrix.safetensors', trigger:'monochrome stippling style' },
-  kidsdrawing:{ file:'krea2_kidsdrawing.safetensors', trigger:'naive expressive sketch style' }, neondrip:{ file:'krea2_neondrip.safetensors', trigger:'textured abstract style' },
-  rainywindow:{ file:'krea2_rainywindow.safetensors', trigger:'rainy window style' }, retroanime:{ file:'krea2_retroanime.safetensors', trigger:'purple retro anime style' },
-  softwatercolor:{ file:'krea2_softwatercolor.safetensors', trigger:'art deco watercolor style' }, sunsetblur:{ file:'krea2_sunsetblur.safetensors', trigger:'ethereal motion blur style' },
-  vintagetarot:{ file:'krea2_vintagetarot.safetensors', trigger:'vintage tarot style' }
-});
-
-var CHARACTERS = Object.freeze({
-  nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V21_ANIMA' },
-  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V21_ANIMA' }
-});
+// 模型/LoRA/角色白名单：2026-08-21 起由 server/anima-model-catalog.js 承载
+var MODELS = modelCatalog.MODELS;
+var PROFILE_BY_MODEL = modelCatalog.PROFILE_BY_MODEL;
+var LORAS = modelCatalog.LORAS;
+var KREA_STYLE_LORAS = modelCatalog.KREA_STYLE_LORAS;
+var CHARACTERS = modelCatalog.CHARACTERS;
 
 var ALLOWED_INPUT_KEYS = new Set(generationContract.ALLOWED_INPUT_KEYS);
 
@@ -764,7 +727,10 @@ function createAnimaService(config, options) {
     ? Number(options.cancelPollIntervalMs) : CANCEL_POLL_INTERVAL_MS;
   var cancelTimeoutMs = Number(options.cancelTimeoutMs) > 0
     ? Number(options.cancelTimeoutMs) : CANCEL_TIMEOUT_MS;
-  var jobs = new Map();
+  // 任务注册表骨架（Map + pendingCount + closed 标志）收口到 server/job-runner.js；
+  // poll/cancel 状态机保持本路由引擎专属实现。
+  var registry = jobRunner.createJobRegistry();
+  var jobs = registry.jobs;
   function cleanupOwnedInputs() {
     var activeInputs = new Set();
     jobs.forEach(function (job) {
@@ -773,37 +739,20 @@ function createAnimaService(config, options) {
     });
     cleanupImageInputs(config, activeInputs, inputImageTtlMs);
   }
-  // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI 任务，
-  // 避免「网关重启 → 旧任务无人轮询/取消，继续占 GPU」。立即 + 30s 后各试一次
-  // （网关常先于 ComfyUI 启动，重试幂等无害）。
+  // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI
+  // 任务（立即 + 30s 后各试一次，重试幂等无害）；2026-08-21 收口到 comfy-client。
   var clientId = comfyClient.clientIdFor(config, 'anima');
-  function sweepOrphanPrompts() {
-    void comfyClient.cancelOrphanPrompts(config, clientId).then(function (cancelled) {
-      if (cancelled.length) {
-        console.warn('[anima] 启动清理：已取消 ' + cancelled.length + ' 个重启遗留的 ComfyUI 任务');
-      }
-    });
-  }
-  sweepOrphanPrompts();
-  var orphanSweepRetry = setTimeout(sweepOrphanPrompts, 30 * 1000);
-  if (typeof orphanSweepRetry.unref === 'function') orphanSweepRetry.unref();
-  var closed = false;
+  comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'anima');
 
   cleanupMediaRoot(config, mediaNamespace);
   cleanupOwnedInputs();
   var inputCleanupTimer = setInterval(cleanupOwnedInputs, Math.min(inputImageTtlMs, 5 * 60 * 1000));
   if (typeof inputCleanupTimer.unref === 'function') inputCleanupTimer.unref();
 
-  function pendingCount() {
-    var count = 0;
-    jobs.forEach(function (job) {
-      if (job.status === 'queued' || job.status === 'running' || job.status === 'cancelling') count += 1;
-    });
-    return count;
-  }
+  var pendingCount = registry.pendingCount;
 
   function schedulePoll(job, delay) {
-    if (closed || job.status === 'cancelled' || job.status === 'cancelling' || job.status === 'succeeded' || job.status === 'failed') return;
+    if (registry.isClosed() || job.status === 'cancelled' || job.status === 'cancelling' || job.status === 'succeeded' || job.status === 'failed') return;
     if (job.pollTimer) clearTimeout(job.pollTimer);
     job.pollTimer = setTimeout(function () {
       job.pollTimer = null;
@@ -869,7 +818,7 @@ function createAnimaService(config, options) {
   }
 
   async function confirmCancellation(job) {
-    if (closed || job.status !== 'cancelling' || !job.upstreamId) return;
+    if (registry.isClosed() || job.status !== 'cancelling' || !job.upstreamId) return;
     // 2026-08-16 审计：cancel() 的确认定时器与 poll() 的 cancelling 分支可能并发
     // 进入本函数——两路同时推进 cancelChecks 会把「两次观测」误算成四次（提前
     // 判定取消完成），或双跑完成路径。加 in-flight 串行锁，多余进入直接返回。
@@ -915,7 +864,7 @@ function createAnimaService(config, options) {
   }
 
   function scheduleCancelPoll(job) {
-    if (closed || job.status !== 'cancelling') return;
+    if (registry.isClosed() || job.status !== 'cancelling') return;
     if (job.pollTimer) clearTimeout(job.pollTimer);
     job.pollTimer = setTimeout(function () {
       job.pollTimer = null;
@@ -924,7 +873,7 @@ function createAnimaService(config, options) {
   }
 
   async function poll(job) {
-    if (closed || job.status === 'cancelled' || !job.upstreamId) return;
+    if (registry.isClosed() || job.status === 'cancelled' || !job.upstreamId) return;
     if (job.status === 'cancelling') {
       await confirmCancellation(job);
       return;
@@ -1143,16 +1092,12 @@ function createAnimaService(config, options) {
   }
 
   async function probe() {
-    try {
-      var response = await requestComfy(config, 'GET', '/system_stats', null, 2500, 256 * 1024);
-      return response.status >= 200 && response.status < 300;
-    } catch (error) {
-      return false;
-    }
+    // P3 收口：探活统一走 server/upstream-health（与控制面板同一份判定口径）
+    return upstreamHealth.pingComfy(config.COMFY_HOST, 2500);
   }
 
   function close() {
-    closed = true;
+    registry.close();
     clearInterval(inputCleanupTimer);
     jobs.forEach(function (job) {
       if (job.pollTimer) clearTimeout(job.pollTimer);

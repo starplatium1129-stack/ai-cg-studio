@@ -6,7 +6,7 @@
  *
  * 一站式完成新增角色全链路闭环：
  *   1. 档案与场景注册（popular-characters.json / characters.json / scene-blueprints.json）
- *   2. 参考规范同步（character-reference-standards.json / characterReferenceData.ts）
+ *   2. 参考规范同步（character-reference-standards.json / character-reference-view.json）
  *   3. 头像立绘渲染与点阵粒子场构建（assets/characters/ / assets/particles/）
  *   4. 4 视角电影级标准参考资产库生成（4 视角 × N 套服装 + 私密全裸形态）
  *   5. Showcase 官方样张渲染与大盘注册（SFW + 显式解剖 NSFW × @rella 统一样式）
@@ -28,7 +28,8 @@ const POPULAR_FILE = path.join(DATA_DIR, 'popular-characters.json');
 const CHARACTERS_FILE = path.join(DATA_DIR, 'characters.json');
 const BLUEPRINTS_FILE = path.join(DATA_DIR, 'scene-blueprints.json');
 const STANDARDS_FILE = path.join(DATA_DIR, 'character-reference-standards.json');
-const TS_STANDARDS_FILE = path.join(ROOT, 'src', 'utils', 'characterReferenceData.ts');
+// 2026-08-21 起前端运行时直接加载该 JSON；characterReferenceData.ts 是手写加载器
+const TS_STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const SCENE_STORE_FILE = path.join(ROOT, 'src', 'stores', 'sceneStore.ts');
 const SHOWCASE_DIR = path.resolve('E:/code/2/lora/AI/SceneShowcase/2026-08-15_v23');
 const MANIFEST_FILE = path.join(SHOWCASE_DIR, 'manifest.json');

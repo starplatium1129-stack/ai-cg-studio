@@ -2,7 +2,12 @@
 'use strict';
 
 /**
- * 将热门角色库 (data/popular-characters.json) 与主角库统一合并构建出
+ * [2026-08-21 归档] 本脚本生成的是旧版扁平 references schema（无 outfits 分层），
+ * 与现行前端契约（outfits[] 多服装形态）不符——若运行会用旧结构覆盖参考数据。
+ * 已被 sync-multi-outfit-standards.js 取代；前端数据源现为
+ * data/character-reference-view.json（运行时加载）。
+ *
+ * 将热门角色库 (data/popular-characters.json) 与主角库统一合并构建
  * 全量的角色标准参考资产体系 (data/character-reference-standards.json)
  * 并同步更新前端运行时配置 (src/utils/characterReferenceData.ts)
  */

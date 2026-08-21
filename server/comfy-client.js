@@ -130,7 +130,26 @@ async function cancelOrphanPrompts(config, clientId) {
   return cancelled;
 }
 
+/**
+ * 启动清理接线：立即 + 30s 后各试一次（网关常先于 ComfyUI 启动，重试幂等无害）。
+ * anima/video 两路由曾各有一份相同实现（仅日志前缀不同），2026-08-21 收口到这里。
+ * 任何失败都静默降级（见 cancelOrphanPrompts）。
+ */
+function sweepOrphanPromptsAfterStart(config, clientId, logLabel) {
+  var run = function () {
+    void cancelOrphanPrompts(config, clientId).then(function (cancelled) {
+      if (cancelled.length) {
+        console.warn('[' + logLabel + '] 启动清理：已取消 ' + cancelled.length + ' 个重启遗留的 ComfyUI 任务');
+      }
+    });
+  };
+  run();
+  var retry = setTimeout(run, 30 * 1000);
+  if (typeof retry.unref === 'function') retry.unref();
+}
+
 module.exports = {
   clientIdFor: clientIdFor,
   cancelOrphanPrompts: cancelOrphanPrompts,
+  sweepOrphanPromptsAfterStart: sweepOrphanPromptsAfterStart,
 };

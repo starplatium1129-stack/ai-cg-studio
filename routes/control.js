@@ -10,13 +10,13 @@
 var express = require('express');
 var fs      = require('fs');
 var path    = require('path');
-var http    = require('http');
-var https   = require('https');
 var cp      = require('child_process');
 var security = require('../server/security');
 var diagnostics = require('../server/diagnostics');
 var envelope = require('../server/http-envelope');
 var processTree = require('../server/process-tree');
+// P3 收口：本机上游 JSON 请求与 SD/TTS/Comfy/Ollama 探活统一走 server/upstream-health
+var upstreamHealth = require('../server/upstream-health');
 var localOnly = security.localOnly;
 var createOperationManager = require('../services/control-operation').createOperationManager;
 var createServiceWatchdog = require('../services/service-watchdog').createServiceWatchdog;
@@ -29,7 +29,6 @@ var BUILD_SOURCE_GLOBS = ['index.html', 'vite.config.ts', 'src', 'public'];
 var WEB_BUILD_LOCK = null;
 var WEB_BUILD_TIMEOUT_MS = 10 * 60 * 1000;
 var WEBUI_START_TIMEOUT_MS = 6 * 60 * 1000;
-var MAX_LOCAL_JSON_BYTES = 8 * 1024 * 1024;
 
 function newestSourceMtime(rootDir) {
   var newest = 0;
@@ -143,88 +142,10 @@ function writeJson(file, data) {
   catch (err) { try { if (fs.existsSync(tmp)) fs.unlinkSync(tmp); } catch {} throw err; }
 }
 
-function requestLocalJson(baseUrl, apiPath, body, timeoutMs) {
-  return new Promise(function (resolve, reject) {
-    try {
-      var u = new URL(apiPath, baseUrl);
-      var lib = u.protocol === 'https:' ? https : http;
-      var payload = body ? JSON.stringify(body) : null;
-      var req = lib.request({
-        hostname: u.hostname,
-        port: u.port,
-        path: u.pathname + (u.search || ''),
-        method: payload ? 'POST' : 'GET',
-        headers: payload ? { 'Content-Type':'application/json', 'Content-Length': Buffer.byteLength(payload) } : {},
-        timeout: timeoutMs || 4000
-      }, function (res) {
-        // 2026-08-16 审计：探活/状态请求同样要设响应体上限，防止被探测的本机
-        // 服务（SD/TTS/Ollama）返回异常大响应时网关内存无界累积。
-        var chunks = [];
-        var size = 0;
-        res.on('data', function (c) {
-          size += c.length;
-          if (size > MAX_LOCAL_JSON_BYTES) {
-            req.destroy(new Error('response too large'));
-            return;
-          }
-          chunks.push(c);
-        });
-        res.on('end', function () {
-          var raw = Buffer.concat(chunks).toString('utf8');
-          var data = null;
-          try { data = raw ? JSON.parse(raw) : null; } catch {}
-          resolve({ status: res.statusCode || 0, data: data, raw: raw });
-        });
-      });
-      req.on('error', reject);
-      req.on('timeout', function () { req.destroy(new Error('timeout')); });
-      if (payload) req.write(payload);
-      req.end();
-    } catch (e) { reject(e); }
-  });
-}
-
-function pingSd(urlStr, timeoutMs) {
-  return requestLocalJson(urlStr, '/sdapi/v1/sd-models', null, timeoutMs || 2500)
-    .then(function (r) { return r.status >= 200 && r.status < 500; })
-    .catch(function () { return false; });
-}
-function pingTts(urlStr, timeoutMs) {
-  return requestLocalJson(urlStr, '/docs', null, timeoutMs || 2500)
-    .then(function (r) { return r.status >= 200 && r.status < 500; })
-    .catch(function () {
-      return requestLocalJson(urlStr, '/', null, timeoutMs || 2500)
-        .then(function (r) { return r.status >= 200 && r.status < 500; })
-        .catch(function () { return false; });
-    });
-}
-function pingComfy(urlStr, timeoutMs) {
-  return requestLocalJson(urlStr, '/system_stats', null, timeoutMs || 2500)
-    .then(function (r) { return r.status >= 200 && r.status < 300; })
-    .catch(function () { return false; });
-}
-function pingOllamaDetail(urlStr, timeoutMs) {
-  return requestLocalJson(urlStr, '/api/ps', null, timeoutMs || 3000)
-    .then(function (r) {
-      if (!(r.status >= 200 && r.status < 300)) return { online:false, models:[], vram:0 };
-      var models = Array.isArray(r.data && r.data.models) ? r.data.models : [];
-      var vram = 0;
-      models.forEach(function (m) {
-        var size = Number(m.size_vram || m.size || 0);
-        if (Number.isFinite(size)) vram += size;
-      });
-      return {
-        online: true,
-        models: models.map(function (m) { return String(m.name || m.model || ''); }).filter(Boolean),
-        vram: vram
-      };
-    })
-    .catch(function () {
-      return requestLocalJson(urlStr, '/api/tags', null, timeoutMs || 3000)
-        .then(function (r) { return { online: r.status === 200, models:[], vram:0 }; })
-        .catch(function () { return { online:false, models:[], vram:0 }; });
-    });
-}
+const pingSd = upstreamHealth.pingSd;
+const pingTts = upstreamHealth.pingTts;
+const pingComfy = upstreamHealth.pingComfy;
+const pingOllamaDetail = upstreamHealth.pingOllamaDetail;
 
 function createControlRouter(config, gatewayRef, dependencies) {
   dependencies = dependencies || {};
@@ -464,7 +385,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   }
 
   async function unloadOllamaModels() {
-    var listed = await requestLocalJson(config.OLLAMA_HOST, '/api/ps', null, 4000).catch(function () { return null; });
+    var listed = await upstreamHealth.requestJson(config.OLLAMA_HOST, '/api/ps', null, 4000).catch(function () { return null; });
     if (!listed || listed.status >= 300) return { ok:false, error:'Ollama 未响应' };
     var models = Array.isArray(listed.data && listed.data.models) ? listed.data.models : [];
     if (!models.length) return { ok:true, message:'Ollama 没有已加载的模型' };
@@ -472,7 +393,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
     for (var i = 0; i < models.length; i += 1) {
       var name = String(models[i].name || models[i].model || '');
       if (!name) continue;
-      var result = await requestLocalJson(config.OLLAMA_HOST, '/api/generate', { model:name, keep_alive:0, stream:false }, 20000).catch(function () { return null; });
+      var result = await upstreamHealth.requestJson(config.OLLAMA_HOST, '/api/generate', { model:name, keep_alive:0, stream:false }, 20000).catch(function () { return null; });
       if (result && result.status < 300) unloaded += 1;
     }
     await refreshServiceStates();
@@ -483,11 +404,11 @@ function createControlRouter(config, gatewayRef, dependencies) {
   router.get('/api/sd-status', function (req, res) {
     var host = config.SD_HOST;
     Promise.all([
-      requestLocalJson(host, '/sdapi/v1/sd-models', null, 5000).catch(function () { return null; }),
-      requestLocalJson(host, '/sdapi/v1/samplers', null, 5000).catch(function () { return null; }),
-      requestLocalJson(host, '/sdapi/v1/schedulers', null, 5000).catch(function () { return null; }),
-      requestLocalJson(host, '/sdapi/v1/upscalers', null, 5000).catch(function () { return null; }),
-      requestLocalJson(host, '/sdapi/v1/options', null, 5000).catch(function () { return null; })
+      upstreamHealth.requestJson(host, '/sdapi/v1/sd-models', null, 5000).catch(function () { return null; }),
+      upstreamHealth.requestJson(host, '/sdapi/v1/samplers', null, 5000).catch(function () { return null; }),
+      upstreamHealth.requestJson(host, '/sdapi/v1/schedulers', null, 5000).catch(function () { return null; }),
+      upstreamHealth.requestJson(host, '/sdapi/v1/upscalers', null, 5000).catch(function () { return null; }),
+      upstreamHealth.requestJson(host, '/sdapi/v1/options', null, 5000).catch(function () { return null; })
     ]).then(function (parts) {
       var modelsRes = parts[0];
       var online = !!(modelsRes && modelsRes.status >= 200 && modelsRes.status < 300);
@@ -505,6 +426,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
         : [];
       var options = parts[4] && parts[4].data && typeof parts[4].data === 'object' ? parts[4].data : {};
       res.setHeader('Cache-Control', 'no-store');
+      // 状态契约（刻意不走 envelope）：无 ok 字段，前端 mediaStatusApi.isSDStatus
+      // 直接按 online/models/... 校验；探活同族端点（tts/chat-status）同形状。
       res.json({
         online: online,
         host: host,
@@ -517,6 +440,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       });
     }).catch(function (e) {
       res.setHeader('Cache-Control', 'no-store');
+      // 同上：降级路径也保持无 ok 的状态形状
       res.json({ online:false, host:host, models:[], samplers:[], schedulers:[], upscalers:[], error:e.message });
     });
   });
@@ -531,8 +455,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       var tunnelStatus = tunnelUrl ? 'active' : (config.DISABLE_TUNNEL ? 'disabled' : 'waiting');
       var saved = readJson(config.RUNTIME.config);
       res.setHeader('Cache-Control', 'no-store');
-      res.json({
-        ok: true,
+      envelope.ok(res, {
         running: true,
         sdOnline: services.sdOnline,
         comfyOnline: services.comfyOnline,
@@ -571,9 +494,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       // 于是前端 `if (!r.ok) return` 会把整块状态墙冻在上一次的值上，
       // 而用户看到的是"没反应"而不是"探测失败"。
       res.setHeader('Cache-Control', 'no-store');
-      res.status(200).json({
-        ok:false,
-        error:e.message || '服务状态探测失败',
+      envelope.fail(res, 200, e.message || '服务状态探测失败', {
         running:true,
         degraded:true,
         sdOnline:false, comfyOnline:false, ttsOnline:false, ollamaOnline:false,
@@ -604,8 +525,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
     var gw = gatewayRef ? gatewayRef() : null;
     var tunnelUrl = gw ? gw.tunnelUrl : '';
     res.setHeader('Cache-Control', 'no-store');
-    res.json({
-      ok: true,
+    envelope.ok(res, {
       shareLink: tunnelUrl ? (tunnelUrl + '/?token=' + encodeURIComponent(config.TOKEN)) : ''
     });
   });
@@ -739,8 +659,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
       controlLog('GPT-SoVITS ' + action + ' 失败: ' + error.message);
       ops.finish(operation, error.message);
     });
-    res.json({
-      ok:true, pending:true, operation:operation,
+    envelope.ok(res, {
+      pending:true, operation:operation,
       message:'语音服务正在' + (action === 'start' ? '启动（约需 30–60 秒）' : '停止')
     });
   });
@@ -791,8 +711,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
       controlLog('WebUI ' + action + ' 失败: ' + error.message);
       ops.finish(operation, error.message);
     });
-    res.json({
-      ok:true, pending:true, operation:operation,
+    envelope.ok(res, {
+      pending:true, operation:operation,
       message:'WebUI 正在' + (action === 'start' ? '启动' : '停止')
     });
   });
@@ -815,7 +735,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       controlLog('Ollama 卸载失败: ' + error.message);
       ops.finish(operation, error.message);
     });
-    res.json({ ok:true, pending:true, operation:operation, message:'正在卸载 Ollama 已加载模型…' });
+    envelope.ok(res, { pending:true, operation:operation, message:'正在卸载 Ollama 已加载模型…' });
   });
 
   // POST /api/mode — 绘图优先 / 聊天优先
@@ -828,8 +748,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
       : ['正在释放受管 WebUI', '正在启动语音服务', '正在验证聊天环境'];
     var operation = ops.begin('mode-' + mode, mode === 'draw' ? '切换到绘图优先' : '切换到聊天优先', stages);
     state.modeBusy = true;
-    res.json({
-      ok:true, pending:true, operation:operation,
+    envelope.ok(res, {
+      pending:true, operation:operation,
       message: mode === 'draw'
         ? '正在切换到绘图优先：先释放语音与聊天模型显存，再启动 WebUI'
         : '正在切换到聊天优先：释放受管 WebUI，启动语音服务'
@@ -920,6 +840,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
     // 由前端按内容去重显示，不参与游标推进）。2026-08-16 审计：此前 total =
     // since + lines.length 把 ≤30×3 行文件尾算进游标且纯按环形长度计数，
     // 前端按数据长度自增 → 游标推过头/环形裁掉后，新 controlLogs 永不上屏。
+    // 状态契约（刻意不走 envelope）：无 ok 字段，前端 controlApi.isLogs 按
+    // logs/total/operation 直接校验。
     res.json({ logs:lines, total: seq, operation: state.operation });
   });
 
@@ -940,6 +862,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // GET /api/diagnostics
   router.get('/api/diagnostics', localOnly, function(req, res) {
     var saved = readJson(config.RUNTIME.config);
+    // 状态契约（刻意不走 envelope）：无 ok 字段，前端 controlApi.isDiagnostics 按
+    // timestamp/port/... 直接校验。
     res.json({
       timestamp: new Date().toISOString(),
       uptime: Math.floor((Date.now() - startTime) / 1000),
@@ -1070,7 +994,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       controlLog('ComfyUI ' + action + ' 失败: ' + error.message);
       ops.finish(operation, error.message);
     });
-    res.json({ ok:true, pending:true, operation:operation, message:'ComfyUI 正在' + (action === 'start' ? '启动' : '停止') });
+    envelope.ok(res, { pending:true, operation:operation, message:'ComfyUI 正在' + (action === 'start' ? '启动' : '停止') });
   });
   watchdog.start();
 

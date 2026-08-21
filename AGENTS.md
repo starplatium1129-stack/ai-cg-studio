@@ -63,7 +63,7 @@
     2. **纯视觉审核池**（`pure-vision-audit.js`）：4 并发调用 Gemini 3.7 Flash 视觉模型严格八维初审，审核与出图解耦避免 GPU 队列争抢；状态落盘至 `runtime/multi-outfit-audit-report.json`；
     3. **定向微调自愈引擎**（`fine-tuned-repair.js`）：读懂审核不通过理由，针对顽固项（如特写易画成半身）动态剥离下半身词条并强化景别负向压制，自动换 Seed 重绘并复审直到绿灯。
     4. **待精调归档清单**（`docs/character-reference-audit-pending.md`）：归档了剩余 75 张明日方舟高阶变体等边缘视角偏差点与修复配方，供后续空闲时一键定向微调。
-  - **资产入库边界**：`assets/character-references/`（700+ 张高精 PNG，数百 MB）属本地生成媒体，**严禁提交入 Git 仓库**（已入 `.gitignore`）；仅提交规范数据 `data/character-reference-standards.json`、TS 映射契约 `src/utils/characterReferenceData.ts` 与维护脚本。
+  - **资产入库边界**：`assets/character-references/`（700+ 张高精 PNG，数百 MB）属本地生成媒体，**严禁提交入 Git 仓库**（已入 `.gitignore`）；仅提交规范数据 `data/character-reference-standards.json`、前端运行时数据 `data/character-reference-view.json` 与维护脚本。2026-08-21 起 `src/utils/characterReferenceData.ts` 是**手写加载器**（类型契约 + `/data/character-reference-view.json` 运行时 fetch + shallowRef 缓存），不再内嵌 45 角色数据字面量（曾致 ~365KB 纯数据进 JS bundle），也**不再由脚本模板重新生成**——写入方脚本（sync-multi-outfit-standards.js 等）一律合并写入该 JSON。
 
 ## 当前架构
 
@@ -190,9 +190,9 @@
 
 ## 当前待办
 
-- 视觉与架构路线（`docs/visual-architecture-roadmap.md`）：第一至十六轮及 API Client（`src/api/`）、存储 Repository（`src/storage/`）、训练台拆分（`useTraining*`）已全部完成；剩余仅网关公共设施收口（P3）残项——`services/*.ts` 内联 taskkill 迁移（已评估维持现状）、上游健康探测与代理配置进一步收敛。2026-08-15 已按路线图状态逐项打勾核对。
+- 视觉与架构路线（`docs/visual-architecture-roadmap.md`）：第一至十八轮及 API Client（`src/api/`）、存储 Repository（`src/storage/`）、训练台拆分（`useTraining*`）已全部完成；网关公共设施收口（P3）已于 2026-08-21 完成——第十七轮上游健康探测收口 `server/upstream-health.js`（control/anima/video 探测统一），代理配置确认唯一实现在 `services/http-client.ts`，taskkill 维持现状为已签收评估。第十八轮（同日）：角色参考数据外移 `data/character-reference-view.json` 运行时加载、任务注册表骨架收口 `server/job-runner.js` + 模型目录外移、control.js 信封纪律收敛——细节见路线图第十八轮。
 - 桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`。P0/P1/P2（长按说话、会话状态机/唤醒词、`[mood=xxx]` 情绪标签协议）及 CompanionView 自动监听/热键接入、竞态复审已完成（2026-08-09）；剩余：P3 演出数据驱动、P4 自定义角色资产包——仍暂缓，每阶段独立验收，不串阶段。
-- 提示词三引擎（Krea 2 / Anima / WAI-Illustrious）调研基线见 `docs/three-engine-prompt-research.md`，供精细化配置人员使用；**待办：热门角色 exactTokens 的括号消歧按 Anima 官方空格规则改 `rem (re zero)` 形式（当前为 `rem_(re_zero)`），先 A/B 验证还原度不降再批量改**（影响 `test-popular-content.js` 断言）。
+- 提示词三引擎（Krea 2 / Anima / WAI-Illustrious）调研基线见 `docs/three-engine-prompt-research.md`，供精细化配置人员使用；**热门角色 exactTokens 括号消歧已于 2026-08-21 完成迁移**——rem/surtr 同 seed A/B 实测还原度不降后，21 个角色组的消歧 tag 全部改为 Anima 官方空格形式（`rem (re zero)`），覆盖 popular-characters.json / characters.json / character-reference-standards.json 三文件，`test-popular-content.js` 断言同步更新；LoRA 锚点 token（`ayachi_nene` 等纯下划线形式）与 `research` 文献字段保留不变，勿回退。
 - Live2D 方面仍只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
 - **热门角色场景样张：8 个难做场景待他人优化（2026-08-18 标注，勿盲目重试）**——`reze_old_bookstore_reading`（蕾塞旧书店）、`cecilia_garden_watering_flowers`（塞西莉亚浇花）、`cecilia_riverbank_evening_walk`（塞西莉亚河畔）、`sylphiette_grayrat_kitchen_morning`（希露菲厨房）、`yor_city_hall_desk_work`（约尔市政厅）、`yor_evening_sofa_knitting`（约尔织毛衣）、`yui_tennis_court_afternoon`（结衣网球）、`yui_r18_service_club_desk_afterschool`（结衣R18教室，疑似纯 API 问题可先重审）。成因=Anima 负面弱+主角唯一描述被复刻成同款分身；已试 7 轮（含「她独自一人」约束句、分身负面、正向空场 tokens，均已在数据里勿回退）；接手方向：换引擎（WAI/ComfyUI 更强负面遵循）/换构图/私密化改景。全细节与工具（`audit-fix-showcase-loop.js` 自动闭环）见 `docs/showcase-stubborn-scenes-2026-08-18.md`。**注意：`publish-popular-showcase.js` 发布会覆盖 `assets/characters/popular-*.png` 角色立绘，发布后必须从 git HEAD 恢复；`audit-results.json` 严禁并发写，审核任务须串行或隔离文件。**
 

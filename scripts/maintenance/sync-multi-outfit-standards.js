@@ -3,7 +3,7 @@
 
 /**
  * 构建「多角色 × 多服装/形态 (Multi-Outfit & Full Nude NSFW Form)」4 视角标准参考资产体系
- * 
+ *
  * 规范：
  * 每个角色均包含：
  * 1. 调研的常规服装（校服、日常、礼服、战衣等）
@@ -16,7 +16,9 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
-const TS_DATA_FILE = path.join(ROOT, 'src', 'utils', 'characterReferenceData.ts');
+// 2026-08-21 起前端运行时直接加载该 JSON；src/utils/characterReferenceData.ts
+// 已改为手写加载器，不再由脚本生成。
+const VIEW_JSON_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
 
 const PERSPECTIVES = [
@@ -199,42 +201,12 @@ function buildMultiOutfitMatrix() {
     };
   }
 
-  const tsContent = `export interface CharacterReferenceItem {
-  id: string
-  name: string
-  shotType: string
-  fileName: string
-  lens: string
-  targetUsage: string[]
-  url: string
-}
-
-export interface CharacterOutfitReference {
-  outfitId: string
-  outfitName: string
-  isDefault: boolean
-  isNsfw: boolean
-  prose: string
-  references: CharacterReferenceItem[]
-}
-
-export interface CharacterReferenceProfile {
-  characterId: string
-  displayName: string
-  source: string
-  identityProse: string
-  outfits: CharacterOutfitReference[]
-}
-
-export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferenceProfile> = ${JSON.stringify(tsRecord, null, 2)}
-
-export function getCharacterReferences(characterId: string): CharacterReferenceProfile | undefined {
-  return CHARACTER_REFERENCE_STANDARDS[characterId]
-}
-`;
-
-  fs.writeFileSync(TS_DATA_FILE, tsContent, 'utf8');
-  console.log(`[Full Nude Matrix Sync] 成功同步 35 位角色的完整服装与全裸私密形态数据！`);
+  // 合并写入（不整库覆盖）：本脚本只重建热门角色子集，合并保留其余角色条目。
+  let existing = {};
+  try { existing = JSON.parse(fs.readFileSync(VIEW_JSON_FILE, 'utf8')); } catch {}
+  const merged = Object.assign(existing, tsRecord);
+  fs.writeFileSync(VIEW_JSON_FILE, JSON.stringify(merged, null, 2), 'utf8');
+  console.log(`[Full Nude Matrix Sync] 已合并写入 ${Object.keys(tsRecord).length} 位角色 -> data/character-reference-view.json`);
 }
 
 buildMultiOutfitMatrix();

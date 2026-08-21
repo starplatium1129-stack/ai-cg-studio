@@ -10,6 +10,7 @@ var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var anima = require('./anima');
 var superres = require('./superres');
+var jobRunner = require('../server/job-runner');
 
 var MAX_PENDING = 4;
 var MAX_BODY = '64kb';
@@ -317,17 +318,19 @@ function createWebUIJob(config, input, ownerId) {
 function createGenerationRouter(config, dependencies) {
   dependencies = dependencies || {};
   var comfy = dependencies.waiComfy || anima.createAnimaService(config, { buildWorkflow:buildWorkflow, validateResources:function (input) { validateWaiResources(config, input); }, outputPrefix:OUTPUT_PREFIX, outputNodeId:'10', mediaNamespace:'wai', engine:'sd', routeBase:'/api/generation' });
-  var jobs = new Map();
+  // 任务注册表骨架收口到 server/job-runner.js（2026-08-21）：WebUI 分支的
+  // webJob 与 Comfy 分支（anima 服务内部 registry）共用同一套定时器原语。
+  var registry = jobRunner.createJobRegistry();
+  var jobs = registry.jobs;
   // 2026-08-16 审计：WebUI 出图任务此前只进 Map 从不回收（内存无上限泄漏）。
   // 统一走 trackWebJob：TTL 后删除（含释放 result Buffer），与 Comfy 分支的
   // gcTimer 对齐；结果送达后 result=null 已由取图端点处理。
   function trackWebJob(webJob) {
     jobs.set(webJob.id, webJob);
-    var timer = setTimeout(function () {
+    registry.armTimer(webJob, 'gcTimer', WEB_JOB_TTL_MS, function () {
       if (webJob.result) webJob.result = null;
       jobs.delete(webJob.id);
-    }, WEB_JOB_TTL_MS);
-    if (typeof timer.unref === 'function') timer.unref();
+    }, { unref:true });
     return webJob;
   }
   var router = express.Router();

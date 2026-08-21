@@ -551,7 +551,7 @@ import {
 import { imgGet } from '@/composables/useImageStore'
 import { clearShotsCtx, readShotsCtx } from '@/composables/useVideoBridge'
 import { useSceneStore } from '@/stores/sceneStore'
-import { getCharacterReferences } from '@/utils/characterReferenceData'
+import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 
 const route = useRoute()
 
@@ -1410,6 +1410,8 @@ function shotIssueCount(index: number): number {
 
 onMounted(() => {
   void importShotsFromDrawing()
+  // 参考档案为运行时 JSON：挂载即预取，参考卡/身份卡读取时数据通常已就位
+  void ensureCharacterReferencesLoaded().catch(() => undefined)
   const charParam = typeof route.query.character === 'string' ? route.query.character.trim() : ''
   if (charParam) {
     characterId.value = charParam

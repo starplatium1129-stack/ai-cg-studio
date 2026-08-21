@@ -1,15 +1,12 @@
 'use strict';
-// 验证 characterReferenceData.ts 的 URL 与磁盘参考图文件是否匹配
+// 验证 character-reference-view.json 的 URL 与磁盘参考图文件是否匹配
+// （2026-08-21 起数据源从 characterReferenceData.ts 内嵌字面量外移为运行时 JSON）
 const fs = require('fs');
 const path = require('path');
-const ts = fs.readFileSync('src/utils/characterReferenceData.ts', 'utf8');
-const start = ts.indexOf('= {');
-const end = ts.indexOf('\n\nexport function', start);
-const jsonText = ts.slice(start + 2, end).trim().replace(/;?\s*$/, '');
-const data = JSON.parse(jsonText);
+const data = JSON.parse(fs.readFileSync('data/character-reference-view.json', 'utf8'));
 const root = process.cwd();
 let total = 0, missing = 0;
-for (const [cid, profile] of Object.entries(data)) {
+for (const profile of Object.values(data)) {
   for (const outfit of profile.outfits || []) {
     for (const ref of outfit.references || []) {
       total++;

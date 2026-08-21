@@ -3,7 +3,9 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const STANDARDS_JSON = path.join(ROOT, 'data', 'character-reference-standards.json');
-const TARGET_TS = path.join(ROOT, 'src', 'utils', 'characterReferenceData.ts');
+// 2026-08-21 起前端运行时直接加载该 JSON；src/utils/characterReferenceData.ts
+// 已改为手写加载器，不再由脚本生成。
+const VIEW_JSON_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const REF_DIR = path.join(ROOT, 'assets', 'character-references');
 
 const standards = JSON.parse(fs.readFileSync(STANDARDS_JSON, 'utf8'));
@@ -111,7 +113,7 @@ charList.forEach(c => {
     outfits: (c.outfits || []).map(o => {
       const outfitId = o.id || o.outfitId;
       const outfitDir = path.join(REF_DIR, charId, outfitId);
-      
+
       const pSpecs = [
         { id: "ref_01_face_closeup", name: "面部特写", shotType: "特写 · 85mm 浅景深", lens: "85mm f/1.4 Portrait Lens", targetUsage: ["对白特写", "微表情", "情绪反应镜头", "台词对峙"] },
         { id: "ref_02_half_medium", name: "3/4半身定妆", shotType: "半身 · 中景", lens: "50mm Medium Lens", targetUsage: ["对话交互", "过肩推拉", "室内中景", "双人互动"] },
@@ -148,39 +150,9 @@ charList.forEach(c => {
   };
 });
 
-const tsCode = `export interface CharacterReferenceItem {
-  id: string
-  name: string
-  shotType: string
-  fileName: string
-  lens: string
-  targetUsage: string[]
-  url: string
-}
-
-export interface CharacterOutfitReference {
-  outfitId: string
-  outfitName: string
-  isDefault: boolean
-  isNsfw: boolean
-  prose: string
-  references: CharacterReferenceItem[]
-}
-
-export interface CharacterReferenceProfile {
-  characterId: string
-  displayName: string
-  source: string
-  identityProse: string
-  outfits: CharacterOutfitReference[]
-}
-
-export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferenceProfile> = ${JSON.stringify(profilesMap, null, 2)}
-
-export function getCharacterReferences(characterId: string): CharacterReferenceProfile | undefined {
-  return CHARACTER_REFERENCE_STANDARDS[characterId]
-}
-`;
-
-fs.writeFileSync(TARGET_TS, tsCode, 'utf8');
-console.log(`[OK] 菲伦与深森白夜的服装标准已全部重构并同步 TS 映射！`);
+// 合并写入（不整库覆盖）：本脚本只重建菲伦/白夜子集，合并保留其余角色条目。
+let existingView = {};
+try { existingView = JSON.parse(fs.readFileSync(VIEW_JSON_FILE, 'utf8')); } catch {}
+const mergedView = Object.assign(existingView, profilesMap);
+fs.writeFileSync(VIEW_JSON_FILE, JSON.stringify(mergedView, null, 2), 'utf8');
+console.log(`[OK] 菲伦与深森白夜的服装标准已合并写入 data/character-reference-view.json`);

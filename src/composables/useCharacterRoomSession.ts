@@ -436,7 +436,7 @@ export function useCharacterRoomSession() {
     chatMemory.value = emptyChatMemoryState()
     persistChatMemory()
     userProfile.value = { callName: '', relationship: 'atelier_owner', note: '' }
-    try { localStorage.removeItem(CHAT_USER_PROFILE_KEY) } catch {}
+    settingsRepository.remove({ key: CHAT_USER_PROFILE_KEY })
     setError('全部本地聊天记忆已清除。', 'info', 3000)
   }
 

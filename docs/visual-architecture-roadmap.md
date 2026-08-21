@@ -22,7 +22,7 @@
 - ✅ 第十五轮 图片呈现核查（A）+ 微交互收口（B）
 - ✅ 第十六轮 弹层入场动画统一（B 收尾）
 - ✅ API Client（`src/api/`）、存储 Repository（`src/storage/`）、训练台拆分（`useTraining*`）
-- ⏳ 剩余：网关公共设施收口（P3）残项——`services/*.ts` 内联 taskkill 迁移（已评估维持现状）、上游健康探测与代理配置进一步收敛；`artworkRepository` 之外的历史删除入口统一属已签收项，无需再启动。
+- ⏳ 剩余：网关公共设施收口（P3）已全部完成（2026-08-21 第十七轮：上游健康探测收口 `server/upstream-health.js`；taskkill 维持现状为已签收评估）；`artworkRepository` 之外的历史删除入口统一属已签收项，无需再启动。
 
 
 ## 结论
@@ -300,3 +300,26 @@ useTrainingOnboarding()
 - **B 方向收尾核查**：表单 focus ring 全站已统一（design-system 全局 `:focus-visible` + `.input/.select/.textarea` ring + TrainingView param-field / SceneManagerView search/import 各自 ring）；卡片 hover 全站已统一（Gallery/SceneCard/Showcase/Home/LoraView（第十五轮）/SceneManager tool&image 卡抬升 2px/3px，TrainingView job-card 为状态卡不可点，维持现状）；确认框为原生 `confirm()`（替换自定义组件需多调用点迁移 + focus trap，收益中风险中，**评估维持现状**）；ETA/百分比为轮询文本（数值滚动动画收益低，**评估维持现状**）。
 - 验证：typecheck / lint / build（132.5/133.0 KiB）/ unit 332/332 / E2E studio+flows 53/53、SceneManager 弹窗定向 7/7 / DOM 测量确认 overlay-in + modal-card-in 生效、动画后 opacity 1 且卡片居中。
 
+### 第十七轮：上游健康探测收口（P3 完成）
+
+- **新增 `server/upstream-health.js`**：本机上游 JSON 请求（`requestJson`：非 2xx 不 throw 返回 `{status,data,raw}`、响应体上限 8MB、超时）与四个服务探活谓词（`pingSd`/`pingTts`/`pingComfy`/`pingOllamaDetail`，判定口径与迁移前逐字一致：SD/TTS 宽容 2xx-4xx、Comfy 严格 2xx、Ollama `/api/ps` 汇总模型+显存且仅网络错误才回落 `/api/tags`——HTTP 5xx 不回落）的唯一实现。
+- **调用方迁移**：`routes/control.js` 删除 `requestLocalJson` + 四个 ping 函数（约 -85 行），探活与 Ollama 卸载/SD 目录拉取统一走公共模块；`routes/anima.js` 与 `routes/video.js` 的 `probe()` 改用 `pingComfy`（消除 `/system_stats` 探测的三份拷贝）。`routes/generation.js` 的 `requestJson` 保持不动——它承担 txt2img 长任务提交（20min 超时）与错误信封语义，不是健康探测。
+- **代理配置确认已收敛**：公网上游代理唯一实现在 `services/http-client.ts`（parseProxyEnv/matchesNoProxy/resolveProxy，test-http-client.js 覆盖）；路由层自造请求全部面向本机回环上游，不走代理是正确行为。P3 至此完成（taskkill 维持现状的评估不变）。
+- 测试：新增 `scripts/tests/test-upstream-health.js`（4 用例：JSON 解析与非 2xx 不 throw、POST body 与响应体上限、三服务判定口径含死端口、Ollama detail 汇总与网络错误回落），入 contract 套件；回归 test-control-failure-contract 7/7、gateway-contract、anima-routes 8/8、video-routes、generation-routes 全绿。
+- 教训留档：PowerShell 5.1 `Get-Content | Set-Content` 管道会把 UTF-8 文件按 ANSI 转码写坏（中文全变乱码），改文件一律用 edit 工具，禁止内容管道重写（本次 control.js 曾被写坏，从 HEAD 字节级恢复后重做）。
+
+
+### 第十八轮：审计落地——参考数据外移 + 任务注册表收口 + 信封纪律（2026-08-21）
+
+- **角色参考数据外移出 JS bundle**：`src/utils/characterReferenceData.ts` 从 15,733 行内嵌字面量（45 角色 / 944 参考项，构建后 ~365KB 共享 chunk）改为手写加载器——类型契约保留，数据本体移至 `data/character-reference-view.json` 运行时 fetch（`ensureCharacterReferencesLoaded()` 单例 + shallowRef 缓存；computed 内调用可响应重算）。`CharacterView`/`ShotListEditor` 挂载即预取。服务端 `/data` 白名单新增该文件并特例 no-cache + ETag 协商缓存（多脚本直接改写、无版本号入口，304 协商即可）。**验证**：typecheck/build 通过、bundle 预算达标、dist 中以唯一长文件名与 identity prose 复核确认数据完全不在任何 JS chunk；check-ref-urls.js 944 URL 全部有效。
+- **写入方脚本同步改造（防双源漂移复发）**：`sync-multi-outfit-standards.js` 与 `refactor-outfit-standards.js` 不再用字符串模板生成 TS 文件，改为**合并写入** view JSON（防子集重建覆盖全库）；`workflow-onboard-popular-character.js` 的 `TS_STANDARDS_FILE` 重指；`check-ref-urls.js` 改读 JSON；旧扁平 schema 的 `sync-all-character-references.js` 归档进 scripts/archive（其运行会写坏现行 outfits 契约）。
+- **任务注册表骨架收口**：新增 `server/job-runner.js`（Map 存储 + pendingCount + armTimer/clearTimer unref 定时器原语 + closed 标志），anima/generation(WAI webJob)/video 三处同构骨架统一；poll/cancel 状态机保持引擎专属（anima 的定向取消确认状态机、video 的 pollFailures 退避语义刻意不同，不强行合并）。孤儿清理双份实现收敛为 `comfyClient.sweepOrphanPromptsAfterStart(config, clientId, label)`。video.js 的模型目录（5 模型）外移 `server/video-model-catalog.js`、anima 的模型/LoRA/角色白名单外移 `server/anima-model-catalog.js`（提取经 vm 逐字节等价校验）；顺手清掉 video.js 已被动态超时取代的 JOB_TIMEOUT_MS/jobTimeoutMs 死代码。
+- **control.js 信封纪律**：8 处带 ok 字段的裸 `res.json` 收敛到 envelope.ok/fail（零线上形状变化，fail 会补 msg 镜像属既有契约）；4 处无 ok 的刻意状态契约（sd-status ×2 / logs / diagnostics）加注释留档「为何不走信封」（前端 isSDStatus/isLogs/isDiagnostics 校验器均不查 ok）。Tauri `"csp": null` 经核实**维持现状**——桌面壳全部窗口走 WebviewUrl::External 加载 sidecar 网关，CSP 由网关响应头下发，tauri csp 仅作用于自托管内容。
+- **仓库卫生**：13 个 `-20260818` 一次性脚本 git mv 进 scripts/archive；runtime/ 根下 4 个源码 .bak 副本归位 maintenance-backups/；docs/INDEX.md 补登 9 个未登记文档并升基线日期。packages/ 空壳目录待手动删除（会话权限禁删）。
+- 验证：改动文件 eslint 全绿（26 个 lint 错误均为未触及的维护/测试脚本预存债务）；test-anima-routes 8/8、test-anima-session 11/11、generation-routes/video-routes/video-ai ok、gateway-contract（含 data allowlist 锚点）、control-failure-contract 7/7、repo-hygiene 1/1（修复本次引入的 2 处尾随空白与 JSON 末行换行）。
+
+#### 第十八轮补遗（同日第三批：Express 5 / 日志 / 对比快照拆分）
+- **Express 4 → 5.2.1 升级**：唯一硬阻断 server.js 通配符改 '/*splat'（根路径已由显式路由兜底）。升级暴露两处 E5 不兼容并当场修复——①serve-static v2 移除 express.static.mime，precompressed.js 改为零依赖 MIME_BY_EXT 映射（预压文件是 .json.br 双扩展名，必须手工设 Content-Type，send 库对已存在的头不覆盖）；②发现 precompressed 与 server.js 各持一份 /data 白名单拷贝且已漂移（character-reference-view.json 漏在预压侧），收口为 server/public-data.js 单一来源。契约套件 17 文件全绿。
+- **网关最小日志设施**：新增零依赖 server/logger.js（info/warn/error/debug 级别、按天 gateway-YYYYMMDD.log 轮转即文件名、init+日期翻转双触发保留期清理默认 14 天、appendFile 失败静默）。接线 server.js 五个关键路径（中央错误处理器/启动摘要/监听失败/WS 升级失败/unhandledRejection+uncaughtException），console 行为不变。单测 test-logger.js 4 用例入 unit 套件；真机启动验证 runtime/logs/gateway-*.log 落盘。
+- **PromptBuilderView 再拆一刀**：出图对比簇（URL 克隆保活/延迟释放/token 防乱序/焦点陷阱/卸载清理）拆为 src/composables/useCompareSnapshots.ts（泛型 T extends {url}），视图只留业务元数据组装。2876 → 2581 行。拆分过程中 typecheck 抓回一个真 bug——rotate 初版漏接 persistUrl（正是原注释防的「上一张裂图」），已修复并有 test-compare-snapshots.js 3 用例锁死轮转/token 直通语义（node --test 直跑 .ts，document 用 Proxy 桩）。导入带 .ts 扩展（allowImportingTsExtensions 已开）以支持直跑。
+- **顺手修复两个 HEAD 上预存红灯**（与本轮改动无关，unit 套件此前不可全绿的原因）：test-archive-state-panel 断言未跟上 f232ed1 的 warning 级别（error|warning 同为 alert 角色）；useCharacterRoomSession.ts L439 绕过 settingsRepository 直写 localStorage.removeItem，改 settingsRepository.remove。至此 unit 套件全绿。

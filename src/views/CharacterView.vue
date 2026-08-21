@@ -235,7 +235,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
-import { getCharacterReferences } from '@/utils/characterReferenceData'
+import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 import {
   parseCharacterProfiles,
   parseCharacterScenes,
@@ -429,7 +429,11 @@ async function loadProfiles() {
   loading.value = false
 }
 
-onMounted(() => { void loadProfiles() })
+onMounted(() => {
+  void loadProfiles()
+  // 参考档案为运行时 JSON：挂载即预取；shallowRef 到达后 computed 自动重算
+  void ensureCharacterReferencesLoaded().catch(() => undefined)
+})
 </script>
 
 <style scoped>

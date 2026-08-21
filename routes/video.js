@@ -10,6 +10,11 @@ var path = require('path');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var comfyClient = require('../server/comfy-client');
+// P3 收口：ComfyUI 探活统一走 server/upstream-health
+var upstreamHealth = require('../server/upstream-health');
+// 2026-08-21 收口：模型目录数据表外移；任务注册表骨架统一
+var modelCatalog = require('../server/video-model-catalog');
+var jobRunner = require('../server/job-runner');
 
 var MAX_BODY = '32kb';
 var MAX_PENDING = 2;
@@ -21,7 +26,8 @@ var IMAGE_INPUT_PREFIX = 'aics_video_input_';
 // 参考图（Ref2VA 角色卡）独立前缀：网关启动清理只删首帧孤儿（aics_video_input_），
 // 参考图是跨任务长期资产，不能被启动清理误删（2026-08-17 短片流水线实锤）。
 var IMAGE_REF_PREFIX = 'aics_video_ref_';
-var JOB_TIMEOUT_MS = 45 * 60 * 1000;
+// （原 JOB_TIMEOUT_MS 已废弃：2026-08-17 起动态超时 = 预估时长 × 3、下限 10 分钟，
+// 见 createVideoService/create() 内 deadline 注释）
 var JOB_TTL_MS = 2 * 60 * 60 * 1000;
 // 分镜批量（P5）：单批镜头数、请求体上限、对白长度、批量记录 TTL。
 var MAX_BATCH_SHOTS = 30;
@@ -40,76 +46,9 @@ var WAN_NEGATIVE = [
   '静止不动的画面', '杂乱的背景',
 ].join('，');
 
-var MODEL_CATALOG = Object.freeze([
-  {
-    id:'wan2.2-ti2v-5b',
-    label:'Wan 2.2 TI2V 5B',
-    family:'wan2.2',
-    tier:'本机推荐',
-    summary:'16GB 显存优先路线，先从短片稳定闭环开始。',
-    executable:true,
-    modes:['text'],
-    requirements:[
-      ['diffusion_models', 'wan2.2_ti2v_5B_fp16.safetensors'],
-      ['text_encoders', 'umt5_xxl_fp8_e4m3fn_scaled.safetensors'],
-      ['vae', 'wan2.2_vae.safetensors'],
-    ],
-  },
-  {
-    id:'minimax-h3',
-    label:'MiniMax H3',
-    family:'minimax-h3',
-    tier:'高上限成片',
-    summary:'本地 768p 原生立体声音频与口型，画质上限最高；16GB 显存建议从 3 秒短片起步。',
-    executable:true,
-    modes:['text', 'image', 'first-last-frame'],
-    requirements:[
-      ['diffusion_models', 'minimax_h3_fl2va_pruned_int8_convrot.safetensors'],
-      ['text_encoders', 'qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors'],
-      ['vae', 'minimax_h3_video_vae_fp16.safetensors'],
-      ['vae', 'minimax_h3_audio_vae_fp32.safetensors'],
-      ['loras', 'minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors'],
-      // 2026-08-16 T8 双时钟路径（默认）：4 步加速 LoRA（lightx2v 官方 4step 版），
-      // 配合 T8 双时钟采样器；无 T8 节点时回退 8 步 LoRA + 原生采样器。
-      ['loras', 'minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors'],
-    ],
-  },
-  {
-    id:'wan2.2-14b',
-    label:'Wan 2.2 14B',
-    family:'wan2.2',
-    tier:'高质量扩展',
-    summary:'更高质量的文生/图生视频路线，需独立工作流和显存实测。',
-    executable:false,
-    modes:['text', 'image', 'first-last-frame'],
-    requirements:[],
-  },
-  {
-    id:'hunyuan-video-1.5',
-    label:'HunyuanVideo 1.5',
-    family:'hunyuan',
-    tier:'高质量扩展',
-    summary:'面向 720p 与超分链路，待本机资源和耗时验证。',
-    executable:false,
-    modes:['text', 'image'],
-    requirements:[],
-  },
-  {
-    id:'ltx-2.3',
-    label:'LTX-2.3',
-    family:'ltx',
-    tier:'快速迭代扩展',
-    summary:'适合快速预演与音视频扩展，待适配官方子图工作流。',
-    executable:false,
-    modes:['text', 'image', 'first-last-frame'],
-    requirements:[],
-  },
-]);
-
-var MODEL_BY_ID = Object.freeze(MODEL_CATALOG.reduce(function (result, model) {
-  result[model.id] = model;
-  return result;
-}, {}));
+// 模型目录：2026-08-21 起由 server/video-model-catalog.js 承载
+var MODEL_CATALOG = modelCatalog.MODEL_CATALOG;
+var MODEL_BY_ID = modelCatalog.MODEL_BY_ID;
 
 // T8 双时钟采样路径可用性（2026-08-16）：MiniMaxH3DualClockSamplerT8 +
 // MiniMaxH3AudioConditioningT8 + MiniMaxH3AVDecodeT8 + 4 步加速 LoRA。
@@ -1310,36 +1249,23 @@ function outputReference(entry) {
 
 function createVideoService(config, dependencies) {
   dependencies = dependencies || {};
-  var jobs = new Map();
-  var closed = false;
+  // 任务注册表骨架（Map + pendingCount + closed 标志）收口到 server/job-runner.js；
+  // poll/cancel 状态机保持本路由引擎专属实现（分镜 batches 是另一套形状，不套用）。
+  var registry = jobRunner.createJobRegistry();
+  var jobs = registry.jobs;
   var clientId = comfyClient.clientIdFor(config, 'video');
-  // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI 任务
-  // （旧任务无人轮询/取消会继续占 GPU）。立即 + 30s 后各试一次（网关常先于 ComfyUI
-  // 启动，重试幂等无害）。
-  function sweepOrphanPrompts() {
-    void comfyClient.cancelOrphanPrompts(config, clientId).then(function (cancelled) {
-      if (cancelled.length) {
-        console.warn('[video] 启动清理：已取消 ' + cancelled.length + ' 个重启遗留的 ComfyUI 任务');
-      }
-    });
-  }
-  sweepOrphanPrompts();
-  var orphanSweepRetry = setTimeout(sweepOrphanPrompts, 30 * 1000);
-  if (typeof orphanSweepRetry.unref === 'function') orphanSweepRetry.unref();
-  var jobTimeoutMs = dependencies.jobTimeoutMs || JOB_TIMEOUT_MS;
+  // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI
+  // 任务（立即 + 30s 后各试一次，重试幂等无害）；2026-08-21 收口到 comfy-client。
+  comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'video');
+  // JOB_TIMEOUT_MS 已被动态超时取代（deadline = 预估时长 × 3，下限 10 分钟），
+  // 见 create() 内注释；此处不再保留失效的固定超时依赖。
   var jobTtlMs = dependencies.jobTtlMs || JOB_TTL_MS;
   var pollIntervalMs = dependencies.pollIntervalMs || POLL_INTERVAL_MS;
 
   cleanupMediaRoot(config);
   cleanupImageInput(config);
 
-  function pendingCount() {
-    var count = 0;
-    jobs.forEach(function (job) {
-      if (job.status === 'queued' || job.status === 'running' || job.status === 'cancelling') count += 1;
-    });
-    return count;
-  }
+  var pendingCount = registry.pendingCount;
 
   function publicJob(job) {
     // 进度由时间外推（elapsed/预估），不再用固定 0.12 假值误导等待；
@@ -1383,7 +1309,7 @@ function createVideoService(config, dependencies) {
   }
 
   function schedulePoll(job, delay) {
-    if (closed || job.status !== 'running') return;
+    if (registry.isClosed() || job.status !== 'running') return;
     if (job.pollTimer) clearTimeout(job.pollTimer);
     job.pollTimer = setTimeout(function () {
       job.pollTimer = null;
@@ -1403,7 +1329,7 @@ function createVideoService(config, dependencies) {
   }
 
   async function poll(job) {
-    if (closed || job.status !== 'running' || !job.upstreamId) return;
+    if (registry.isClosed() || job.status !== 'running' || !job.upstreamId) return;
     if (Date.now() > job.deadline) {
       failJob(job, serviceError(504, 'VIDEO_TIMEOUT',
         '视频任务疑似卡死（超过预估时长 ' + job.estimatedSeconds + ' 秒的 3 倍仍未完成），请检查 ComfyUI 状态后重试'),
@@ -1565,12 +1491,12 @@ function createVideoService(config, dependencies) {
   }
 
   async function probe() {
-    var response = await requestComfy(config, 'GET', '/system_stats', null, 2500, 256 * 1024);
-    return response.status >= 200 && response.status < 300;
+    // P3 收口：探活统一走 server/upstream-health（与控制面板同一份判定口径）
+    return upstreamHealth.pingComfy(config.COMFY_HOST, 2500);
   }
 
   function close() {
-    closed = true;
+    registry.close();
     jobs.forEach(removeJob);
     cleanupMediaRoot(config);
   }

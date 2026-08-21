@@ -97,7 +97,7 @@
     "@soullink-emotion/engine": "^0.1.0-beta.1",
     "@vueuse/core": "^14.4.0",
     "compression": "^1.8.1",
-    "express": "^4.21.0",
+    "express": "^5.2.1",
     "http-proxy-middleware": "^4.2.0",
     "motion": "^12.43.0",
     "pinia": "^4.0.2",

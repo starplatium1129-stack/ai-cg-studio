@@ -10,20 +10,20 @@
 
 var path = require('path');
 var fs = require('fs');
-var express = require('express');
+var publicDataFiles = require('./public-data');
 
 var PRECOMPRESSIBLE = /\.(?:js|css|html|json|svg|txt|map)$/i;
 
-/** 与 server.js 的 PUBLIC_DATA_FILES 保持一致：precompressed 中间件在
- *  /data 白名单之前执行，不在这里再查一遍，data/ 下任何新 json 的预压
- *  产物都会被直接发出去，绕过公开文件白名单。 */
-var PUBLIC_DATA_FILES = [
-  'scenes.json', 'scenes-index.json', 'scenes-core.json',
-  'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
-  'curation.json', 'characters.json',
-  'loras.json', 'tags.json', 'presets.json',
-  'popular-characters.json', 'scene-blueprints.json'
-];
+/** 与 PRECOMPRESSIBLE 同范围的内容类型映射（含文本类 charset） */
+var MIME_BY_EXT = {
+  '.js': 'application/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.html': 'text/html; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
+  '.map': 'application/json; charset=utf-8'
+};
 
 function precompressed(rootDir) {
   return function (req, res, next) {
@@ -48,21 +48,24 @@ function precompressed(rootDir) {
     var compressedFile = resolved + suffix;
     if (!fs.existsSync(compressedFile)) return next();
 
-    // data/ 的公开白名单与 server.js 同步：防止 data/ 下新增 json
-    // （如个人内容）经由预压产物绕过白名单直接外发。
+    // data/ 的公开白名单与 server.js 同源（server/public-data.js）：防止 data/
+    // 下新增 json（如个人内容）经由预压产物绕过白名单直接外发。
     if (req.path.indexOf('/data/') === 0) {
       var name = req.path.replace(/^\/data\//, '');
-      if (PUBLIC_DATA_FILES.indexOf(name) === -1) return next();
+      if (publicDataFiles.indexOf(name) === -1) return next();
     }
 
     // 直接把预压文件发出去。改写 req.url 交给下游是不行的：
     // 后面的 /data 白名单会看到 "scenes.json.br" 而拒掉。
     res.setHeader('Content-Encoding', encoding);
     res.setHeader('Vary', 'Accept-Encoding');
-    var type = express.static.mime.lookup(resolved);
+    // 必须手工设置 Content-Type：实际文件名是双扩展名（如 scenes.json.br），
+    // send 库按完整扩展名判定会得到错误类型；且 send 对已存在的头不覆盖，
+    // 所以先在这里按"原始扩展名"给出正确类型。Express 5 起 serve-static v2
+    // 移除了 express.static.mime，这里用与 PRECOMPRESSIBLE 同范围的零依赖映射。
+    var type = MIME_BY_EXT[path.extname(resolved).toLowerCase()];
     if (type) {
-      res.setHeader('Content-Type', type +
-        (/^text\/|json|javascript|svg/.test(type) ? '; charset=utf-8' : ''));
+      res.setHeader('Content-Type', type);
     }
     // 缓存策略要与未压缩版本一致
     if (req.path.indexOf('/_app/') === 0 || req.path.indexOf('/data/') === 0) {

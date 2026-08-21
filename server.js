@@ -57,6 +57,12 @@ function createGateway(options) {
   options = options || {};
   var spawn = options.spawn || cp.spawn;
   var config = options.config || loadGatewayConfig(__dirname, options.env || process.env);
+  // 网关主日志：按天写 runtime/logs/gateway-*.log（保留 14 天），console 行为不变。
+  // RUNTIME.logs 在 fixture 栈下可能缺失（无 runtime 目录的极端配置），此时只走 console。
+  var logger = require('./server/logger').createLogger({
+    dir: config.RUNTIME && config.RUNTIME.logs || '',
+    prefix: 'gateway'
+  });
   var app = express();
 
   app.disable('x-powered-by');
@@ -186,24 +192,24 @@ function createGateway(options) {
     dotfiles: 'deny',
     index: false
   }));
-  // 只放行 SPA 真正读取的数据文件。
+  // 只放行 SPA 真正读取的数据文件（白名单唯一来源：server/public-data.js，
+  // precompressed 中间件共用同一份——此前两份拷贝已发生漂移）。
   // 之前整个 data/ 目录对外可读，包括 history.json / projects.json / prompts.json
   // 这类个人内容，以及 data/scenes/*.json（build-scenes.js 的输入，共 893KB，
   // 客户端从不读取）。
-  var PUBLIC_DATA_FILES = [
-    'scenes.json', 'scenes-index.json', 'scenes-core.json',
-    'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
-    'curation.json', 'characters.json',
-    'loras.json', 'tags.json', 'presets.json',
-    'popular-characters.json', 'scene-blueprints.json'
-  ];
+  var PUBLIC_DATA_FILES = require('./server/public-data');
   // 客户端统一经 sceneStore 带 ?v=DATA_VERSION 读取，版本号变即换 URL，
   // 因此这里可以放心给一年 immutable 缓存；改动 data/*.json 只需升版本号。
   // 之前是 no-cache：scenes.json 230KB gzip 等 6 个文件每次刷新都重传。
+  var NO_CACHE_DATA_FILES = ['character-reference-view.json'];
   app.use('/data', function (req, res, next) {
     var name = req.path.replace(/^\//, '');
     if (PUBLIC_DATA_FILES.indexOf(name) === -1) return res.status(404).end();
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    // 参考标准由多个维护脚本直接改写、无统一版本号入口，
+    // 用 no-cache + ETag 协商缓存：没变回 304 零流量，变了立即生效。
+    res.setHeader('Cache-Control', NO_CACHE_DATA_FILES.indexOf(name) !== -1
+      ? 'no-cache'
+      : 'public, max-age=31536000, immutable');
     next();
   }, express.static(path.join(config.ROOT_DIR, 'data'), {
     dotfiles:'deny',
@@ -288,7 +294,9 @@ function createGateway(options) {
   });
 
   // SPA fallback — Vue Router 的前端路由在刷新时返回 index.html
-  app.get('*', function (req, res, next) {
+  // Express 5（path-to-regexp v8）：裸 '*' 通配符已移除，SPA fallback 用 '/*splat'。
+  // 注意 /*splat 不匹配根路径 '/'——根路径与 /index.html 已在上面显式处理。
+  app.get('/*splat', function (req, res, next) {
     // 未命中的 API 路由必须是 JSON 404，不能被吞成 200 text/html。
     // /api/xxx 没有扩展名，之前会直接拿到 SPA 外壳且状态 200。
     if (req.path.startsWith('/api/')) return next();
@@ -318,7 +326,7 @@ function createGateway(options) {
       404:'资源不存在',
       413:'请求体过大'
     };
-    if (status >= 500) console.error('  ❌ 网关内部错误:', error && error.stack || error);
+    if (status >= 500) logger.error('网关内部错误 ' + req.method + ' ' + req.originalUrl, error);
     envelope.fail(res, status, messages[status] || (status >= 500 ? '网关内部错误' : '请求无法处理'));
   });
 
@@ -365,7 +373,7 @@ function createGateway(options) {
       }
       sdProxy.upgrade(req, socket, head);
     } catch (error) {
-      console.error('  ❌ WebSocket 升级失败:', error && error.stack || error);
+      logger.error('WebSocket 升级失败', error);
       try { socket.destroy(); } catch (ignore) {}
     }
   }
@@ -383,20 +391,22 @@ function createGateway(options) {
     },
     startTunnel:function () { if (tunnelManager) tunnelManager.start(); },
     handleUpgrade:handleUpgrade,
-    close:close
+    close:close,
+    logger:logger
   };
 }
 
 function startGateway(options) {
   var gateway = createGateway(options);
   var config = gateway.config;
+  var logger = gateway.logger;
 
   // 兜底：未捕获异常不应该带走整个网关。
   process.on('unhandledRejection', function (reason) {
-    console.error('  ❌ 未处理的 Promise 拒绝:', reason && reason.stack || reason);
+    logger.error('未处理的 Promise 拒绝', reason instanceof Error ? reason : String(reason));
   });
   process.on('uncaughtException', function (error) {
-    console.error('  ❌ 未捕获异常:', error && error.stack || error);
+    logger.error('未捕获异常', error);
   });
 
   var server = gateway.app.listen(config.PORT, config.HOST, function () {    console.log('');
@@ -412,6 +422,8 @@ function startGateway(options) {
       + ' (length ' + String(config.TOKEN || '').length + ')');
     console.log('  ══════════════════════════════════════════');
     console.log('');
+    logger.info('网关已启动 port=' + config.PORT + ' host=' + config.HOST
+      + ' sd=' + config.SD_HOST + ' tts=' + config.TTS_HOST + ' ollama=' + config.OLLAMA_HOST);
     // 公网分享不再随网关自动开启：默认仅本机，由控制面板显式启动。
     // 需要开机即分享时设 AUTO_TUNNEL=1。
     var saved = {};
@@ -424,7 +436,7 @@ function startGateway(options) {
   // 端口占用 / 权限错误等监听失败必须立刻退出，不能留一个没有监听器的僵尸进程，
   // 否则后续 startTunnel 还会指向一个死端口。
   server.once('error', function (error) {
-    console.error('  ❌ 网关监听失败:', error && error.message || error);
+    logger.error('网关监听失败: ' + (error && error.message || error));
     process.exit(1);
   });
 
@@ -447,7 +459,7 @@ function startGateway(options) {
   }
   process.once('SIGINT', shutdown);
   process.once('SIGTERM', shutdown);
-  return { gateway:gateway, server:server, shutdown:shutdown };
+  return { gateway:gateway, server:server, shutdown:shutdown, logger:logger };
 }
 
 if (require.main === module) startGateway();

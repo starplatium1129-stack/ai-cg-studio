@@ -21,7 +21,8 @@ test('archive state language contract', () => {
   assert(panel.includes(':data-kind="kind"'), 'state kind must be exposed for styling and tests');
   assert(panel.includes(':aria-busy="kind === \'loading\' ? \'true\' : undefined"'), 'loading states must expose aria-busy');
   assert(panel.includes("props.kind === 'loading' ? 'status'"), 'loading must remain a status announcement');
-  assert(panel.includes("props.kind === 'error' ? 'alert'"), 'errors must remain alerts');
+  // f232ed1 起新增 warning 级别：error 与 warning 同样以 alert 角色播报
+  assert(panel.includes("props.kind === 'error' || props.kind === 'warning'"), 'errors (and warnings) must remain alerts');
   assert(panel.includes('compact?: boolean') && panel.includes('.archive-state-panel.compact'), 'compact state contract must be supported');
   assert(panel.includes('[data-kind="loading"] { --state-accent:var(--archive-blue); }'), 'loading must keep the archive accent');
   assert(panel.includes('[data-kind="error"] { --state-accent:var(--danger-text); }'), 'errors must use the danger accent');

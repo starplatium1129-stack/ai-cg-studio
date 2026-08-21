@@ -1,6 +1,6 @@
 # AI-CG-Studio 项目文档全景索引 (Documentation Master Index)
 
-> **最新基线**：2026-08-18
+> **最新基线**：2026-08-21
 > **维护契约**：本文档为 `docs/` 目录下全部架构规范、路线图、提示词工程、角色参考库、视频管线、桌面端与排障留档的总览索引。所有新文档与重大更新须在此登记。
 
 ---
@@ -30,6 +30,7 @@
 | **桌宠语音演出路线** | [`companion-voice-roadmap.md`](companion-voice-roadmap.md) | Desktop Companion 语音交互、情绪标签驱动与状态机演进规划。 |
 | **视频生成路线** | [`video-generation-roadmap.md`](video-generation-roadmap.md) | 本地 AI 视频生成（Wan 2.2 / MiniMax H3 / I2VA / Ref2VA）路线图。 |
 | **画质与提示词路线** | [`prompt-image-quality-roadmap.md`](prompt-image-quality-roadmap.md) | 提示词结构进化、负向词抑制与画质提升长期路线。 |
+| **模型与 ComfyUI 扩展路线** | [`model-comfyui-expansion-roadmap.md`](model-comfyui-expansion-roadmap.md) | 模型库与 ComfyUI 工作流扩展规划（超分/hires/加速等）。 |
 
 ---
 
@@ -45,6 +46,7 @@
 | **角色调研：玛奇玛/木更/楪祈** | [`character-canons-makima-kisara-inori.md`](character-canons-makima-kisara-inori.md) | 玛奇玛、木更、楪祈角色设定、正向特征锚与负向拦截。 |
 | **角色调研：狂三/美琴** | [`character-research-kurumi-mikoto.md`](character-research-kurumi-mikoto.md) | 时崎狂三、御坂美琴原作设定与多形态提示词调研。 |
 | **美琴 Danbooru 标签调研** | [`research-misaka-mikoto-danbooru-tags.md`](research-misaka-mikoto-danbooru-tags.md) | 御坂美琴 Danbooru / 社区标签消歧与精准提示词映射。 |
+| **热门角色审视优化留档** | [`popular-characters-audit-2026-08-18.md`](popular-characters-audit-2026-08-18.md) | 2026-08-18 热门角色数据审视与优化记录。 |
 
 ---
 
@@ -59,6 +61,7 @@
 | **场景样张出图工艺** | [`showcase-generation-craft.md`](showcase-generation-craft.md) | 官方 Showcase 样张批次生成、种子固化与质检工艺。 |
 | **样张流水线疑难留档** | [`showcase-pipeline-lessons.md`](showcase-pipeline-lessons.md) | 11 大经典疑难（负面丢词、误判拦截、多角色漏判、顽固场景重构等）根因与解决方案。 |
 | **提示词组装审计修复** | [`prompt-assembly-audit-fixes.md`](prompt-assembly-audit-fixes.md) | `usePromptAssembly` 纯函数重构与多引擎分支修复记录。 |
+| **场景提示词一致性审计** | [`scene-prompt-consistency-audit-2026-08-20.md`](scene-prompt-consistency-audit-2026-08-20.md) | 场景预设与服装/场景描述一致性审阅与修复留档（2026-08-20）。 |
 
 ---
 
@@ -83,6 +86,8 @@
 | **WebView2 缓存排查** | [`desktop-stale-archive-cache.md`](desktop-stale-archive-cache.md) | 桌面端 WebView2 数据层缓存穿透排查与 data-first 部署顺序保障。 |
 | **Node 控制台隐藏修复** | [`desktop-node-console-window.md`](desktop-node-console-window.md) | 桌面 sidecar 后台静默启动与黑框控制台隐藏解决方案。 |
 | **夏目 Live2D 动作调研** | [`live2d-natsume-overlay-research.md`](live2d-natsume-overlay-research.md) | 四季夏目 Moc.moc3 动作曲线、叠层显隐与情绪参数映射。 |
+| **桌宠 DSH 架构对齐** | [`companion-dsh-agent-architecture.md`](companion-dsh-agent-architecture.md) | 基于 DeepSeek Harness 架构的桌宠智能伴侣配置与工具全景。 |
+| **桌宠双窗口设计** | [`companion-dual-window-design.md`](companion-dual-window-design.md) | Companion 角色/聊天真双窗口分离（方案 B2）设计与落地记录。 |
 
 ---
 
@@ -95,6 +100,10 @@
 | **ComfyUI 显存崩溃排障** | [`comfyui-dynamic-vram-crash.md`](comfyui-dynamic-vram-crash.md) | 动态显存分配崩溃排查与服务保活。 |
 | **开发环境与 npm 修复** | [`dev-environment-fixes.md`](dev-environment-fixes.md) | Node/npm/pnpm 开发环境与 PATH 配置排错记录。 |
 | **立绘边框留白修复** | [`character-portrait-frame-gap.md`](character-portrait-frame-gap.md) | 角色详情页立绘贴边与视口自适应修复。 |
+| **hires 放大疑难留档** | [`comfy-superres-hires-fix-2026-08-20.md`](comfy-superres-hires-fix-2026-08-20.md) | hires 放大「奇怪」根因分析与 Remacri ESRGAN 真超分接入（2026-08-20）。 |
+| **大文件下载镜像疑难** | [`download-mirror-lessons.md`](download-mirror-lessons.md) | ModelScope/HF 镜像测速、分段并发下载与校验流程（2026-08-21）。 |
+| **深链模式串位修复** | [`fix-log-popular-to-studio-deeplink-mode-leak.md`](fix-log-popular-to-studio-deeplink-mode-leak.md) | popular→studio 深链提示词串位疑难（2026-08-20）。 |
+| **棘手场景交接标注** | [`showcase-stubborn-scenes-2026-08-18.md`](showcase-stubborn-scenes-2026-08-18.md) | 8 个顽固场景 7 轮试错记录与交接方向（勿盲目重试）。 |
 
 ---
 
