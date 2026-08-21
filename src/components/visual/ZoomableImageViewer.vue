@@ -12,10 +12,7 @@
   >
     <div
       class="zoom-transform-layer"
-      :style="{
-        transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
-        transformOrigin: 'center center'
-      }"
+      :style="zoomLayerStyle"
     >
       <!-- 骨架屏占位 -->
       <div v-if="!imageReady && !imageFailed" class="skeleton-placeholder">
@@ -57,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
   src: string
@@ -83,6 +80,11 @@ const scale = ref(1)
 const translateX = ref(0)
 const translateY = ref(0)
 const isPanning = ref(false)
+
+// 自定义属性载体：变换规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
+const zoomLayerStyle = computed(() => ({
+  '--zoom-transform': `translate(${translateX.value}px, ${translateY.value}px) scale(${scale.value})`,
+}))
 let startX = 0
 let startY = 0
 let initialTranslateX = 0
@@ -197,6 +199,8 @@ function stopPan(event: PointerEvent) {
   justify-content: center;
   max-width: 100%;
   max-height: 100%;
+  transform: var(--zoom-transform, none);
+  transform-origin: center center;
   transition: transform 0.08s linear;
 }
 

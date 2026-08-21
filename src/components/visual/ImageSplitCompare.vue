@@ -17,7 +17,7 @@
     <!-- After Image (Clipped overlay) -->
     <div
       class="split-layer layer-after"
-      :style="{ clipPath: `polygon(${splitPos}% 0, 100% 0, 100% 100%, ${splitPos}% 100%)` }"
+      :style="splitLayerStyle"
     >
       <img :src="afterSrc" :alt="afterLabel || '换装后'" class="split-img" draggable="false" />
       <span class="split-badge badge-after">{{ afterLabel || '换装后' }}</span>
@@ -26,7 +26,7 @@
     <!-- Split Divider Handle -->
     <div
       class="split-divider"
-      :style="{ left: `${splitPos}%` }"
+      :style="dividerStyle"
       role="slider"
       aria-label="左右对比滑动条"
       :aria-valuenow="splitPos"
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   beforeSrc: string
@@ -58,6 +58,14 @@ const props = defineProps<{
 const splitPos = ref(props.initialPos ?? 50)
 const isDragging = ref(false)
 const containerEl = ref<HTMLElement | null>(null)
+
+// 自定义属性载体：样式规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
+const splitLayerStyle = computed(() => ({
+  '--split-clip': `polygon(${splitPos.value}% 0, 100% 0, 100% 100%, ${splitPos.value}% 100%)`,
+}))
+const dividerStyle = computed(() => ({
+  '--split-pos': `${splitPos.value}%`,
+}))
 
 function updatePosFromEvent(event: PointerEvent) {
   if (!containerEl.value) return
@@ -111,6 +119,10 @@ function stopDrag(event: PointerEvent) {
   pointer-events: none;
 }
 
+.layer-after {
+  clip-path: var(--split-clip, polygon(50% 0, 100% 0, 100% 100%, 50% 100%));
+}
+
 .split-img {
   width: 100%;
   height: 100%;
@@ -147,6 +159,7 @@ function stopDrag(event: PointerEvent) {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: var(--split-pos, 50%);
   width: 2px;
   transform: translateX(-50%);
   z-index: 5;

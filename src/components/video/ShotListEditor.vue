@@ -504,7 +504,7 @@
           </div>
           <span class="shot-progress-stats">{{ batch.progress.succeeded }} / {{ batch.progress.total }} 镜成功 · {{ batch.progress.failed }} 失败</span>
         </div>
-        <div class="video-progress"><i :style="{ width: progressPercent + '%' }"></i></div>
+        <div class="video-progress"><i :style="{ '--progress': progressPercent + '%' }"></i></div>
         <p class="video-install-note">
           {{ batch.linkLastFrame ? '镜头间已自动衔接上一镜尾帧；' : '已关闭尾帧衔接；' }}
           单镜约 2.5–6 分钟（standard 档），可离开页面，任务在后台继续。
@@ -1581,7 +1581,7 @@ onBeforeUnmount(() => {
 .video-segmented button.active { background: var(--accent); color: var(--text-inverse); }
 .video-install-note { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }
 .video-progress { height: 3px; margin: var(--s-3) 0; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
-.video-progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: width .4s ease; }
+.video-progress i { display: block; height: 100%; width: var(--progress, 0%); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: width .4s ease; }
 
 .shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
 .shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }

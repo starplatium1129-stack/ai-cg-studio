@@ -72,7 +72,7 @@
             <strong>正在逐张出图…</strong>
             <span class="batch-count-label">{{ progress.succeeded }} / {{ progress.total }} 张成功 · {{ progress.failed }} 失败</span>
           </div>
-          <div class="video-progress"><i :style="{ width: progressPercent + '%' }"></i></div>
+          <div class="video-progress"><i :style="{ '--progress': progressPercent + '%' }"></i></div>
           <div class="batch-job-list">
             <div v-for="job in jobs" :key="job.id" class="batch-job" :data-state="job.status">
               <span class="batch-job-index">{{ jobStatusIcon(job.status) }}</span>
@@ -212,6 +212,8 @@ watch(() => props.open, (open) => {
 .batch-empty { margin: 0; padding: var(--s-3); color: var(--text-muted); font-size: var(--fs-body-sm); }
 .batch-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .batch-progress-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-2); }
+.video-progress { height: 3px; margin: var(--s-3) 0; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
+.video-progress i { display: block; height: 100%; width: var(--progress, 0%); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: width .4s ease; }
 .batch-job-list { display: grid; gap: 2px; max-height: 40vh; overflow: auto; }
 .batch-job {
   display: grid; grid-template-columns: 24px minmax(0, 1fr) auto auto; gap: var(--s-2);

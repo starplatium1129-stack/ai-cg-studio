@@ -59,6 +59,13 @@ const cursorVisible = ref(false)
 const cursorX = ref(0)
 const cursorY = ref(0)
 
+// 自定义属性载体：笔刷光标样式规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
+const brushCursorStyle = computed(() => ({
+  '--cursor-x': `${cursorX.value}px`,
+  '--cursor-y': `${cursorY.value}px`,
+  '--brush-diameter': `${brushSize.value * 2}px`,
+}))
+
 // Character LoRA Selection
 const characterMode = ref<'auto' | 'nene' | 'natsume' | 'none'>('auto')
 
@@ -398,6 +405,11 @@ import { inpaintCanvasSize } from '@/utils/inpaintCanvas'
 
 const detectedResolution = ref<{ width: number; height: number } | null>(null)
 
+// 自定义属性载体：预览画幅比例规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
+const previewSurfaceStyle = computed(() => ({
+  '--preview-ratio': detectedResolution.value ? `${detectedResolution.value.width} / ${detectedResolution.value.height}` : undefined,
+}))
+
 watch(activeImageUrl, (url) => {
   if (!url) {
     detectedResolution.value = null
@@ -472,8 +484,8 @@ async function handleStart() {
       <input
         ref="fileInputRef"
         type="file"
+        class="hidden-file-input"
         accept="image/png,image/jpeg,image/webp"
-        style="display: none"
         @change="onFileChange"
       />
 
@@ -513,7 +525,7 @@ async function handleStart() {
               </span>
               <div
                 class="preview-surface"
-                :style="detectedResolution ? { aspectRatio: `${detectedResolution.width} / ${detectedResolution.height}` } : undefined"
+                :style="previewSurfaceStyle"
               >
                 <img ref="previewImageEl" class="preview-thumb" :src="activeImageUrl" alt="换装基准图" @load="syncMaskCanvas" />
                 <canvas
@@ -534,12 +546,7 @@ async function handleStart() {
                 <div
                   v-if="maskMode === 'paint' && cursorVisible"
                   class="brush-cursor-indicator"
-                  :style="{
-                    left: `${cursorX}px`,
-                    top: `${cursorY}px`,
-                    width: `${brushSize * 2}px`,
-                    height: `${brushSize * 2}px`
-                  }"
+                  :style="brushCursorStyle"
                 ></div>
               </div>
               <div class="preview-overlay-tag">
@@ -886,6 +893,7 @@ async function handleStart() {
   display: flex;
   align-items: center;
   justify-content: center;
+  aspect-ratio: var(--preview-ratio, auto);
 }
 
 .preview-thumb {
@@ -908,6 +916,10 @@ async function handleStart() {
 
 .brush-cursor-indicator {
   position: absolute;
+  left: var(--cursor-x, -100px);
+  top: var(--cursor-y, -100px);
+  width: var(--brush-diameter, 32px);
+  height: var(--brush-diameter, 32px);
   pointer-events: none;
   border: 1.5px solid rgba(255, 255, 255, 0.9);
   background: rgba(56, 189, 248, 0.25);
@@ -916,6 +928,10 @@ async function handleStart() {
   transform: translate(-50%, -50%);
   z-index: 3;
   transition: width 0.08s ease, height 0.08s ease;
+}
+
+.hidden-file-input {
+  display: none;
 }
 
 .brush-size-header {
