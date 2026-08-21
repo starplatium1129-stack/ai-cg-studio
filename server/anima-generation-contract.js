@@ -28,6 +28,7 @@ const PARAMETER_LIMITS = Object.freeze({
   teaCacheThresh: Object.freeze({ min: 0.0, max: 1.0, integer: false }),
   denoisingStrength: Object.freeze({ min: 0.1, max: 1.0, integer: false }),
   growMaskBy: Object.freeze({ min: 0, max: 32, integer: true }),
+  maskThreshold: Object.freeze({ min: 0.05, max: 0.95, integer: false }),
 });
 
 const ALLOWED_INPUT_KEYS = Object.freeze([
@@ -35,7 +36,7 @@ const ALLOWED_INPUT_KEYS = Object.freeze([
   'width', 'height', 'steps', 'cfg', 'seed', 'character', 'styleLoraId',
   'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps',
   'teaCache', 'teaCacheThresh',
-  'initImage', 'maskImage', 'maskPrompt', 'denoisingStrength', 'growMaskBy',
+  'initImage', 'maskImage', 'maskPrompt', 'maskThreshold', 'denoisingStrength', 'growMaskBy',
 ]);
 
 const CHARACTER_LORA_BINDINGS = Object.freeze({

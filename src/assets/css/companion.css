@@ -462,8 +462,15 @@ html.companion-mode body {
 .companion-page .companion-composer {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  /* textarea | 看屏幕 | 停止(条件) | 发送 | 语音簇 —— 新增看屏幕按钮后
+     列数必须跟上，否则语音簇被挤进隐式行与发送键坐标重叠 */
+  grid-template-columns: minmax(0, 1fr) auto auto auto auto;
   gap: var(--s-2);
+}
+
+.companion-page .companion-composer > .companion-setup-inline {
+  /* 未就绪提示独占一整行 */
+  grid-column: 1 / -1;
 }
 
 .companion-page .companion-speech-btn,
@@ -1154,7 +1161,7 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 .companion-page .companion-composer {
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto auto auto;
   gap: 7px;
   padding: 7px;
   border: 1px solid var(--companion-edge);

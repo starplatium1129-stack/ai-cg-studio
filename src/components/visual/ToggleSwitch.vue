@@ -45,10 +45,16 @@ function onChange(event: Event) {
   flex-shrink: 0;
 }
 .toggle-switch input {
+  /* 透明但铺满整个开关：保持原生 input 可点/可聚焦（Playwright check() 可达、
+     触屏命中区更大），视觉仍由 .toggle-slider 呈现。width/height 0 会让
+     自动化与辅助技术判定元素不可交互。 */
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
   opacity: 0;
-  width: 0;
-  height: 0;
+  cursor: pointer;
 }
 .toggle-slider {
   position: relative;

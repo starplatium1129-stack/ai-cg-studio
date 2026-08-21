@@ -95,7 +95,7 @@
 
 **CFG / Shift（🔵🟡）**：CFG 过高会 burn（Anima 比 Illustrious 敏感）；社区 Comfy 常用 CFG 4。Forge Neo 的 **Shift 参数**（DiT 特有）：默认 ~3，标签越多/怕风格漂移调到 **10–24**。
 
-**角色一致性（🟢🟡）**：单角色 Base 会漂、精调 checkpoint 更稳；锁死 = 角色 LoRA + 显式外观 tag。**括号歧义消解语义有效但用空格**：`(re zero)` 而非 `(re_zero)`（与空格规则一致）。双人/多人图**必须逐人点名 + 外观 + 布局**，否则特征串位。角色 tag 查 Anima 专用表（BetaDoggo/danbooru-tag-list 或 animadex.net）。项目热门角色 exactTokens 目前是 `rem_(re_zero)` 下划线形式——**按 Anima 空格规则应改 `rem (re zero)`**（待 A/B 验证后落地）。
+**角色一致性（🟢🟡）**：单角色 Base 会漂、精调 checkpoint 更稳；锁死 = 角色 LoRA + 显式外观 tag。**括号歧义消解语义有效但用空格**：`(re zero)` 而非 `(re_zero)`（与空格规则一致）。双人/多人图**必须逐人点名 + 外观 + 布局**，否则特征串位。角色 tag 查 Anima 专用表（BetaDoggo/danbooru-tag-list 或 animadex.net）。**已落地（2026-08-21）**：项目热门角色 exactTokens/identityTokens 的括号消歧 tag 已全部改为空格形式（`rem (re zero)` 等 21 角色组，rem/surtr 同 seed A/B 实测还原度不降；LoRA 锚点 token 如 `ayachi_nene`、`raiden_shogun` 仍保留下划线）。
 
 **画师混搭（🟢 #112 作者亲答 + 🟡 Reddit 94 分帖）**：与 SDXL 行为不同、更易漂移但属正常（"CLIP 偶然产物，不值得换回 CLIP"）；画师区独立成块 `Mixed style of following artists: (@artist1, @artist2:2.0)` 权重 `:2.0` 起步；少用 masterpiece/score（毁特定画师风格）；长 prompt 掩盖遗忘、越稳。**LLM adapter 是"mini trainable text encoder"，训 LoRA 必须冻结**（llm_adapter_lr=0），遗忘主因 = 训了 adapter 或 LR 过高；LLM 对首 token 权重极高，**超长 prompt 的末尾 tag=加噪声**，遵循官方 tag 顺序。
 
@@ -127,7 +127,7 @@ worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg
 
 **③ 标签格式**：一律**空格+小写**（仅 score 用下划线）；画师**必须 @**；角色变体括号 `hatsune miku (racing)` / `(adult)` / `(append)`；Danbooru/Gelbooru 不一致时用 Gelbooru。
 
-**④ 角色写法**：单角色 = 角色标签 + 外观（发/瞳/服/配饰）；**多角色逐人 [名字+外观] + 布局**；锁死 = 角色 LoRA + 显式外观 tag；歧义查 Anima 专用角色表 / animadex.net。⚠️ 项目 exactTokens 消歧括号按官方应空格（`rem (re zero)`，待 A/B）。
+**④ 角色写法**：单角色 = 角色标签 + 外观（发/瞳/服/配饰）；**多角色逐人 [名字+外观] + 布局**；锁死 = 角色 LoRA + 显式外观 tag；歧义查 Anima 专用角色表 / animadex.net。✅ 项目 exactTokens 消歧括号已按官方空格形式落地（`rem (re zero)`，2026-08-21 A/B 验证通过后批量迁移）。
 
 **⑤ 权重/参数**：权重语法有效且**数值要高**（`(chibi:2)`；角色/画师区 `:2.0` 起步）；Base/Aesthetic 30–50 steps、CFG 4–5；Turbo CFG 1、8–12 steps；采样器 er_sde（默认）→ euler_a（柔和）→ dpmpp_2m_sde_gpu（多样）→ euler（创造）；Forge Shift 默认 ~3、标签多调到 10–24；分辨率 512²–1536²。**项目生产当前 24 步/CFG 3 为实机收敛值**（比官方保守，A/B 验证过）。
 
@@ -237,7 +237,7 @@ masterpiece, best quality, amazing quality,
 ### 6.2 行动项
 1. **Krea 2 散文**：按 §1.2 结构重写/校验所有 `promptProse`（2026-08-15 扩容后每角色 6 原型（含 3 日常感）+ 3 成人共 9 场景 × 18 角色 + 3 通用成人）；检查无玄学词、裸体词前置、服装「已脱下」。
 2. **Anima 标签**：校验各角色 `identityTokens`/`exactTokens`/`outfit.tokens` 的空格/下划线规范（通用标签空格、锚点 token 下划线）；`@artist` 画师格式。
-   - ⚠️ **待 A/B**：exactTokens 的 Danbooru 消歧括号当前是下划线（`rem_(re_zero)`），Anima 官方规则是空格（`rem (re zero)`）。先出 A/B 图确认空格形式在 Anima 上还原度不降，再决定是否批量改 18 角色（影响 `test-popular-content.js` 的 exactTokens 断言）。
+   - ✅ **已完成（2026-08-21）**：exactTokens/identityTokens/aliases 的 Danbooru 消歧括号已从下划线（`rem_(re_zero)`）批量迁移为官方空格形式（`rem (re zero)`），覆盖 21 个角色组 × 3 个数据文件（popular-characters.json / characters.json / character-reference-standards.json）；rem/surtr 同 seed A/B 实测还原度不降后落地；`test-popular-content.js` 断言同步更新。LoRA 锚点 token（`ayachi_nene` 等）与 `research` 文献字段中的 Danbooru 标签名保留不变。工具：`scripts/maintenance/migrate-exact-tokens-space.js`、A/B 脚本 `ab-exact-tokens-space.js`。
 3. **SD 标签**：校验 WAI 路径质量前缀原样（`masterpiece, best quality, amazing quality` 带空格）、rating 词（general/sensitive/nsfw）、场景 token 22-26 个、实体词 2-4、氛围词 ≥2。
 4. **A/B 验证**：用 `generate-scene-showcase-candidates.js` 按引擎出候选，`image-inspect -t audit` 8 维审核，人工终审定稿。
 5. **回填**：本文件 §2.5 / §3.3 待外部调研项，子代理返回后合入对应章节。

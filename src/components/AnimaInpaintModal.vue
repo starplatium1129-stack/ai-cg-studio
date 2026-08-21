@@ -8,6 +8,7 @@ export interface InpaintSubmitPayload {
   imageBlob: Blob
   maskBlob: Blob | null
   maskPrompt: string
+  maskThreshold: number
   newOutfitPrompt: string
   negativePrompt: string
   denoisingStrength: number
@@ -278,6 +279,9 @@ const OUTFIT_PRESETS: OutfitPreset[] = [
 const selectedPresetId = ref<string>('bikini_white')
 const customPrompt = ref<string>('')
 const maskPrompt = ref<string>('clothing | clothes | outfit | dress | shirt | sweater | blouse | jacket | cardigan | coat | top | uniform | skirt | pants | shorts | sleeves | collar | costume | garment | fabric | bra | panties | underwear | swimsuit | bikini')
+// CLIPSeg 识别灵敏度：阈值越低识别区域越大。实测 0.20 会把身体/背景大片拉进
+// 重绘区（denoise 高时构图漂移），0.45 起才聚焦服装主体（2026-08-21 实机验证）。
+const maskThreshold = ref<number>(0.45)
 const denoisingStrength = ref<number>(0.85)
 const growMaskBy = ref<number>(8)
 const preserveSeed = ref<boolean>(true)
@@ -382,6 +386,7 @@ async function handleStart() {
     imageBlob: blob,
     maskBlob: selectedMaskBlob,
     maskPrompt: maskPrompt.value.trim() || 'clothing | clothes | outfit',
+    maskThreshold: maskThreshold.value,
     newOutfitPrompt: newPrompt,
     negativePrompt: finalNegative,
     denoisingStrength: denoisingStrength.value,
@@ -519,6 +524,22 @@ async function handleStart() {
             <template v-else>
               <label class="field-label" for="maskPromptInput">自动识别区域</label>
               <input id="maskPromptInput" v-model="maskPrompt" class="input input-sm" placeholder="clothing | clothes | outfit | dress | shirt..." />
+              <div class="param-slider-group">
+                <div class="param-header">
+                  <span>识别灵敏度</span>
+                  <span class="param-value">{{ maskThreshold.toFixed(2) }}</span>
+                </div>
+                <input
+                  v-model.number="maskThreshold"
+                  type="range"
+                  min="0.20"
+                  max="0.80"
+                  step="0.05"
+                  class="slider"
+                  aria-label="自动识别阈值，越低识别区域越大"
+                />
+                <span class="slider-hint">偏低会误把身体/背景划进重绘区；推荐 0.45 ~ 0.60</span>
+              </div>
               <span class="field-hint">仅作为快速起点。高质量换装建议使用手绘精确遮罩。</span>
             </template>
           </div>

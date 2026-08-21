@@ -271,6 +271,9 @@ function validateInput(body, expectedFamily) {
     maskPrompt:typeof body.maskPrompt === 'string' && body.maskPrompt.trim() ? body.maskPrompt.trim() : null,
     denoisingStrength:body.denoisingStrength !== undefined ? validateNumber(body.denoisingStrength, 'denoisingStrength', 0.1, 1.0, false) : 0.80,
     growMaskBy:body.growMaskBy !== undefined ? validateNumber(body.growMaskBy, 'growMaskBy', 0, 32, true) : 6,
+    // 2026-08-21 换装完善：CLIPSeg 自动识别阈值可调。实测 threshold 0.20 会把身体/
+    // 背景大片拉进 mask（denoise 0.85 下整块重绘 → 构图漂移），0.45+ 才聚焦服装主体。
+    maskThreshold:body.maskThreshold !== undefined ? validateNumber(body.maskThreshold, 'maskThreshold', 0.05, 0.95, false) : 0.45,
   };
 }
 
@@ -371,14 +374,21 @@ function buildWorkflow(input) {
       noLoraWf['19'] = { class_type:'ResizeAndPadImage', inputs:{ image:['15', 0], target_width:input.width, target_height:input.height, padding_color:'black', interpolation:'lanczos' } };
       noLoraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['19', 0], vae:['3', 0] } };
       if (input.maskImage) {
-        noLoraWf['16'] = { class_type:'LoadImageMask', inputs:{ image:input.maskImage, channel:'red' } };
+        noLoraWf['15_mask'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
+        noLoraWf['19_mask'] = { class_type:'ResizeAndPadImage', inputs:{ image:['15_mask', 0], target_width:input.width, target_height:input.height, padding_color:'black', interpolation:'lanczos' } };
+        noLoraWf['16'] = { class_type:'ImageToMask', inputs:{ image:['19_mask', 0], channel:'red' } };
         noLoraWf['16_grow'] = { class_type:'GrowMask', inputs:{ mask:['16', 0], expand:input.growMaskBy !== undefined ? input.growMaskBy : 6, tapered_corners:true } };
         noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_grow', 0] } };
         noLoraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['8', 0], x:0, y:0, resize_source:false, mask:['16_grow', 0] } };
         noLoraWf['10'].inputs.images = ['30', 0];
       } else if (input.maskPrompt) {
-        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
+        // 2026-08-21 换装完善：threshold 可调（默认 0.45）+ 补 ImageCompositeMasked 回贴，
+        // 与手绘遮罩分支行为一致——非重绘区像素级保真，不再整图 VAE 往返。
+        var clipsegThreshold = input.maskThreshold !== undefined ? input.maskThreshold : 0.45;
+        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:clipsegThreshold, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
         noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
+        noLoraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['8', 0], x:0, y:0, resize_source:false, mask:['16', 0] } };
+        noLoraWf['10'].inputs.images = ['30', 0];
       }
       if (noLoraWf['17']) {
         noLoraWf['7'].inputs.latent_image = ['17', 0];
@@ -386,7 +396,8 @@ function buildWorkflow(input) {
       }
     }
     if (isHires) {
-      if (input.maskImage) {
+      // inpaint（手绘遮罩或 CLIPSeg 自动识别）+ hires：对 composite 回贴结果 ['30',0] 超分。
+      if (input.initImage && (input.maskImage || input.maskPrompt)) {
         if (input.superResModel) {
           var tw = Math.round(input.width * input.hiresScale / 8) * 8;
           var th = Math.round(input.height * input.hiresScale / 8) * 8;
@@ -467,14 +478,21 @@ function buildWorkflow(input) {
     loraWf['19'] = { class_type:'ResizeAndPadImage', inputs:{ image:['15', 0], target_width:input.width, target_height:input.height, padding_color:'black', interpolation:'lanczos' } };
     loraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['19', 0], vae:['3', 0] } };
     if (input.maskImage) {
-      loraWf['16'] = { class_type:'LoadImageMask', inputs:{ image:input.maskImage, channel:'red' } };
+      loraWf['15_mask'] = { class_type:'LoadImage', inputs:{ image:input.maskImage } };
+      loraWf['19_mask'] = { class_type:'ResizeAndPadImage', inputs:{ image:['15_mask', 0], target_width:input.width, target_height:input.height, padding_color:'black', interpolation:'lanczos' } };
+      loraWf['16'] = { class_type:'ImageToMask', inputs:{ image:['19_mask', 0], channel:'red' } };
       loraWf['16_grow'] = { class_type:'GrowMask', inputs:{ mask:['16', 0], expand:input.growMaskBy !== undefined ? input.growMaskBy : 6, tapered_corners:true } };
       loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16_grow', 0] } };
       loraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['9', 0], x:0, y:0, resize_source:false, mask:['16_grow', 0] } };
       loraWf['10'].inputs.images = ['30', 0];
     } else if (input.maskPrompt) {
-      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:0.20, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
+      // 2026-08-21 换装完善：threshold 可调（默认 0.45）+ 补 ImageCompositeMasked 回贴，
+      // 与手绘遮罩分支行为一致——非重绘区像素级保真，不再整图 VAE 往返。
+      var loraClipsegThreshold = input.maskThreshold !== undefined ? input.maskThreshold : 0.45;
+      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:loraClipsegThreshold, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
       loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
+      loraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['9', 0], x:0, y:0, resize_source:false, mask:['16', 0] } };
+      loraWf['10'].inputs.images = ['30', 0];
     }
     if (loraWf['17']) {
       loraWf['8'].inputs.latent_image = ['17', 0];
@@ -482,7 +500,9 @@ function buildWorkflow(input) {
     }
   }
   if (isHires) {
-    if (input.maskImage) {
+    // inpaint（手绘遮罩或 CLIPSeg 自动识别）+ hires：对 composite 回贴结果 ['30',0] 超分。
+    // 2026-08-21 换装完善：此前只认 maskImage，CLIPSeg 任务会误走普通生图超分分支。
+    if (input.initImage && (input.maskImage || input.maskPrompt)) {
       if (input.superResModel) {
         var ltw = Math.round(input.width * input.hiresScale / 8) * 8;
         var lth = Math.round(input.height * input.hiresScale / 8) * 8;

@@ -369,7 +369,7 @@
       "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in an intricate braided bun, an ahoge, and clear emerald-green eyes, with an earnest, dignified bearing",
       "identityTokens": [
         "artoria_pendragon",
-        "saber_(fate)",
+        "saber (fate)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -731,7 +731,7 @@
       ],
       "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair, violet eyes, a black witch hat with gold buckle, with a confident smile",
       "identityTokens": [
-        "elaina_(majo_no_tabitabi)",
+        "elaina (majo no tabitabi)",
         "1girl",
         "solo",
         "long_grey_hair",
@@ -898,7 +898,7 @@
       ],
       "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid, golden concentric-ring eyes, and an unreadable, magnetic smile",
       "identityTokens": [
-        "makima_(chainsaw_man)",
+        "makima (chainsaw man)",
         "1girl",
         "solo",
         "pink_hair",
@@ -1076,14 +1076,14 @@
       "originalName": "Rem",
       "franchise": "Re:Zero",
       "aliases": [
-        "rem_(re_zero)",
+        "rem (re zero)",
         "rem rezero",
         "re zero",
         "rem from re zero"
       ],
       "identityProse": "Rem from Re:Zero, a devoted demon maid with short sky-blue hair parted over her right eye, one visible bright blue eye, a pink flower hair clip and white lace ribbon, and gentle features",
       "identityTokens": [
-        "rem_(re_zero)",
+        "rem (re zero)",
         "1girl",
         "solo",
         "short_blue_hair",
@@ -1096,7 +1096,7 @@
         "re:zero"
       ],
       "exactTokens": [
-        "rem_(re_zero)"
+        "rem (re zero)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -1162,7 +1162,7 @@
       "originalName": "Emilia",
       "franchise": "Re:Zero",
       "aliases": [
-        "emilia_(re_zero)",
+        "emilia (re zero)",
         "emt",
         "emilia rezero",
         "re zero",
@@ -1170,7 +1170,7 @@
       ],
       "identityProse": "Emilia from Re:Zero, a gentle half-elf with long silver hair, pointed elven ears, purple-blue eyes with snowflake pupils, wearing a white flower hairpin and purple hair ribbons",
       "identityTokens": [
-        "emilia_(re_zero)",
+        "emilia (re zero)",
         "1girl",
         "solo",
         "long_silver_hair",
@@ -1183,7 +1183,7 @@
         "re:zero"
       ],
       "exactTokens": [
-        "emilia_(re_zero)"
+        "emilia (re zero)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -1519,14 +1519,14 @@
       "originalName": "Kisara",
       "franchise": "Engage Kiss",
       "aliases": [
-        "kisara_(engage_kiss)",
+        "kisara (engage kiss)",
         "kisara engage kiss",
         "engage kiss",
         "kisara from engage kiss"
       ],
       "identityProse": "Kisara from Engage Kiss, an A-class demon girl with extremely long silky pastel-pink hair, vibrant crimson eyes, an expressive ahoge, black hair ribbon, and an adhesive bandage on her right thigh",
       "identityTokens": [
-        "kisara_(engage_kiss)",
+        "kisara (engage kiss)",
         "1girl",
         "solo",
         "(pastel_pink_hair:1.3)",
@@ -1542,7 +1542,7 @@
         "engage_kiss"
       ],
       "exactTokens": [
-        "kisara_(engage_kiss)"
+        "kisara (engage kiss)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -1631,7 +1631,7 @@
       ],
       "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail with a black headband, amber-orange eyes, black-red curved horns, wearing a black sleeveless cropped turtleneck with a black-and-white techwear jacket, black high-waisted shorts and thigh straps, carrying the giant molten greatsword Laevateinn",
       "identityTokens": [
-        "surtr_(arknights)",
+        "surtr (arknights)",
         "1girl",
         "solo",
         "red_hair",
@@ -1648,7 +1648,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "surtr_(arknights)"
+        "surtr (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -1944,7 +1944,7 @@
       ],
       "identityProse": "Ch'en from Arknights, a Lungmen Guard Department officer with dark teal-blue hair in low twintails tied with red cords, amber-gold eyes, red-brown branching dragon horns, a long teal dragon tail, wearing a blue-and-black stand-collar tactical jacket over a white shirt with a black tie and a black pleated skirt, carrying the crimson-sheathed sword Chi Xiao",
       "identityTokens": [
-        "ch'en_(arknights)",
+        "ch'en (arknights)",
         "1girl",
         "solo",
         "teal_hair",
@@ -1962,7 +1962,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "ch'en_(arknights)"
+        "ch'en (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -2099,7 +2099,7 @@
       ],
       "identityProse": "Eyjafjalla from Arknights, a Cautus volcano researcher with light ash-brown wavy hair in low twintails, small warm brown ram horns, ruby red eyes, wearing a dark grey hooded research coat over a white frilled blouse and black pleated skirt with black thighhighs",
       "identityTokens": [
-        "eyjafjalla_(arknights)",
+        "eyjafjalla (arknights)",
         "1girl",
         "solo",
         "light_brown_hair",
@@ -2112,7 +2112,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "eyjafjalla_(arknights)"
+        "eyjafjalla (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -2231,7 +2231,7 @@
       ],
       "identityProse": "Lemuen from Arknights, a Laterano Sankta advisor with warm ginger-brown wavy hair with a side braid, amber-gold eyes, a floating golden halo and small translucent wings at her lower back, wearing a slate dark tailored overcoat over a white collared shirt with a black necktie, seated in her high-tech wheelchair",
       "identityTokens": [
-        "lemuen_(arknights)",
+        "lemuen (arknights)",
         "1girl",
         "solo",
         "ginger_hair",
@@ -2247,7 +2247,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "lemuen_(arknights)"
+        "lemuen (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -2354,7 +2354,7 @@
       ],
       "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair fading to teal-green ink gradient, teal-green eyes with red eyeshadow, teal jade dragon horns and a long ink-wash dragon tail, wearing an ink-black high-slit qipao with a sheer black-and-white gradient wide-sleeve robe, barefoot",
       "identityTokens": [
-        "dusk_(arknights)",
+        "dusk (arknights)",
         "1girl",
         "solo",
         "black_hair",
@@ -2370,7 +2370,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "dusk_(arknights)"
+        "dusk (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -2479,7 +2479,7 @@
       ],
       "identityProse": "Mudrock from Arknights, a gentle Sarkaz warrior with long silver-white hair, crimson eyes, curved black horns, wearing heavy olive-green power armor with a sealed helmet, and beneath it a dark high-neck bodysuit, carrying a huge engineering warhammer",
       "identityTokens": [
-        "mudrock_(arknights)",
+        "mudrock (arknights)",
         "1girl",
         "solo",
         "silver_hair",
@@ -2492,7 +2492,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "mudrock_(arknights)"
+        "mudrock (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -2639,7 +2639,7 @@
       ],
       "identityProse": "Eunectes from Arknights, a cheerful Sarkaz mechanic with long dark green hair, golden slit-pupil eyes, a massive dark green anaconda snake tail, wearing a dark green halter crop top with a sleeveless tactical vest, leather hotpants and a single thigh-high sock with a leg harness",
       "identityTokens": [
-        "eunectes_(arknights)",
+        "eunectes (arknights)",
         "1girl",
         "solo",
         "green_hair",
@@ -2653,7 +2653,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "eunectes_(arknights)"
+        "eunectes (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -2759,7 +2759,7 @@
       ],
       "identityProse": "Goldenglow from Arknights, a gentle Victorian apprentice hairdresser with long pale pink hair in low twintails, teal-blue eyes, pink folded cat ears and a fluffy pink cat tail, wearing a white shirt with a yellow ascot scarf, a dark suspender pinafore dress and a pleated skirt",
       "identityTokens": [
-        "goldenglow_(arknights)",
+        "goldenglow (arknights)",
         "1girl",
         "solo",
         "pink_hair",
@@ -2775,7 +2775,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "goldenglow_(arknights)"
+        "goldenglow (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -2894,7 +2894,7 @@
       ],
       "identityProse": "Skadi from Arknights, an Abyss Hunter with very long ankle-length silver-white hair, crimson eyes, wearing a black high-cut bodysuit with red accents and a short black coat with a wide-brimmed hunter hat, carrying a huge greatsword in a black guitar case",
       "identityTokens": [
-        "skadi_(arknights)",
+        "skadi (arknights)",
         "1girl",
         "solo",
         "white_hair",
@@ -2907,7 +2907,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "skadi_(arknights)"
+        "skadi (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -3148,7 +3148,7 @@
       ],
       "identityProse": "Exusiai from Arknights, a cheerful Sankta courier of Penguin Logistics with short orange-red hair, red-brown eyes, a floating golden halo and small translucent wings, wearing a light grey-white hooded jacket over a black fitted shirt, black shorts and black thighhighs, carrying a Vector submachine gun",
       "identityTokens": [
-        "exusiai_(arknights)",
+        "exusiai (arknights)",
         "1girl",
         "solo",
         "red_hair",
@@ -3165,7 +3165,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "exusiai_(arknights)"
+        "exusiai (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -3285,7 +3285,7 @@
       ],
       "identityProse": "Suzuran from Arknights, a gentle Vulpo girl with long pale gold hair, light blue eyes, golden fox ears and nine fluffy fox tails, wearing a white haori jacket with dark green trim over a dark pleated skirt with white over-knee socks, holding a staff",
       "identityTokens": [
-        "suzuran_(arknights)",
+        "suzuran (arknights)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -3300,7 +3300,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "suzuran_(arknights)"
+        "suzuran (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -3418,7 +3418,7 @@
       ],
       "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries supervisor with platinum short hair with soft cyan gradient tips, light blue eyes, feline cat ears and a cat tail, mechanical hair clips, wearing a white and charcoal tactical jacket with cyan accents over a black pleated skirt with black thighhighs",
       "identityTokens": [
-        "perlica_(arknights)",
+        "perlica (arknights)",
         "1girl",
         "solo",
         "white_hair",
@@ -3436,7 +3436,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "perlica_(arknights)"
+        "perlica (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -3542,7 +3542,7 @@
       ],
       "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with long crimson wavy hair, red eyes, curved black horns and a black devil tail, wearing a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top and black shorts with thigh straps, wielding a huge molten greatsword",
       "identityTokens": [
-        "laevatain_(arknights)",
+        "laevatain (arknights)",
         "1girl",
         "solo",
         "red_hair",
@@ -3560,7 +3560,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "laevatain_(arknights)"
+        "laevatain (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -3884,7 +3884,7 @@
       ],
       "originalName": "希露菲叶特",
       "exactTokens": [
-        "sylphiette_(mushoku_tensei)"
+        "sylphiette (mushoku tensei)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4060,7 +4060,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "avenger_black_armor",
       "identityTokens": [
-        "jeanne_d'arc_alter_(fate)",
+        "jeanne d'arc alter (fate)",
         "jeanne_alter",
         "1girl",
         "solo",
@@ -4172,7 +4172,7 @@
       ],
       "originalName": "贞德[Alter]",
       "exactTokens": [
-        "jeanne_d'arc_alter_(fate)"
+        "jeanne d'arc alter (fate)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4489,7 +4489,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "sleeveless_white_shirt",
       "identityTokens": [
-        "reze_(chainsaw_man)",
+        "reze (chainsaw man)",
         "reze",
         "1girl",
         "solo",
@@ -4599,7 +4599,7 @@
       ],
       "originalName": "蕾塞",
       "exactTokens": [
-        "reze_(chainsaw_man)"
+        "reze (chainsaw man)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4628,7 +4628,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "journey_robe",
       "identityTokens": [
-        "fern_(sousou_no_frieren)",
+        "fern (sousou no frieren)",
         "fern",
         "1girl",
         "solo",
@@ -4749,7 +4749,7 @@
       ],
       "originalName": "菲伦",
       "exactTokens": [
-        "fern_(sousou_no_frieren)"
+        "fern (sousou no frieren)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -5042,7 +5042,7 @@
       ],
       "originalName": "塞西莉亚",
       "exactTokens": [
-        "cecilia_(shiro_seijo_to_kuro_bokushi)"
+        "cecilia (shiro seijo to kuro bokushi)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",

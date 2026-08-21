@@ -652,10 +652,32 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.strictEqual(graph['19'].inputs.target_height, 1344);
     assert.strictEqual(graph['16'].class_type, 'AP_CLIPSeg_TextMask');
     assert.strictEqual(graph['16'].inputs.prompt, 'clothes, dress');
+    assert.strictEqual(graph['16'].inputs.threshold, 0.45, 'CLIPSeg default threshold must be the tuned 0.45 (0.20 leaked body/background into the redraw area)');
     assert.strictEqual(graph['16'].inputs.mask_dilate, 0, 'Grow=0 must stay an explicit no-expand mask');
     assert.strictEqual(graph['17'].class_type, 'SetLatentNoiseMask');
     assert.strictEqual(graph['8'].inputs.latent_image[0], '17');
     assert.strictEqual(graph['8'].inputs.denoise, 0.85);
+    // 2026-08-21 换装完善：CLIPSeg 分支与手绘遮罩一致，必须按 mask 回贴原图（非重绘区像素级保真）
+    assert.strictEqual(graph['30'].class_type, 'ImageCompositeMasked', 'CLIPSeg branch must composite decoded result back over the source like the painted-mask branch');
+    assert.deepStrictEqual(graph['30'].inputs.destination, ['19', 0]);
+    assert.deepStrictEqual(graph['10'].inputs.images, ['30', 0]);
+
+    // 自定义识别阈值必须透传到 CLIPSeg 节点
+    var thresholdJob = await postJson(port, '/api/anima/jobs', validJob({
+      initImage: uploadRes.json.name,
+      maskPrompt: 'clothes, dress',
+      maskThreshold: 0.6,
+      width: 1024,
+      height: 1344,
+      seed: 7789
+    }));
+    assert.strictEqual(thresholdJob.status, 202);
+    await waitForJob(port, thresholdJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
+    state = await mockState(comfy.port);
+    promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
+    graph = promptCall.body.prompt;
+    assert.strictEqual(graph['16'].class_type, 'AP_CLIPSeg_TextMask');
+    assert.strictEqual(graph['16'].inputs.threshold, 0.6, 'caller-provided maskThreshold must reach AP_CLIPSeg_TextMask');
 
     var maskUpload = await postJson(port, '/api/anima/images', { image: samplePngBase64 });
     var paintedMaskJob = await postJson(port, '/api/anima/jobs', validJob({
@@ -670,8 +692,11 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     state = await mockState(comfy.port);
     promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
     graph = promptCall.body.prompt;
-    assert.strictEqual(graph['16'].class_type, 'LoadImageMask');
-    assert.strictEqual(graph['16'].inputs.image, maskUpload.json.name);
+    assert.strictEqual(graph['15_mask'].class_type, 'LoadImage');
+    assert.strictEqual(graph['15_mask'].inputs.image, maskUpload.json.name);
+    assert.strictEqual(graph['19_mask'].class_type, 'ResizeAndPadImage');
+    assert.strictEqual(graph['16'].class_type, 'ImageToMask');
+    assert.deepStrictEqual(graph['16'].inputs.image, ['19_mask', 0]);
     assert.strictEqual(graph['16'].inputs.channel, 'red');
     assert.strictEqual(graph['16_grow'].class_type, 'GrowMask');
     assert.strictEqual(graph['16_grow'].inputs.expand, 6);

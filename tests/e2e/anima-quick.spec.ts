@@ -28,7 +28,8 @@ test('anima engine: main generate shows result in main frame through mock ComfyU
   await expect(animaEngine).toBeEnabled({ timeout: 30000 })
   await animaEngine.click()
   await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 30000 })
-  await expect(page.locator('.api-status .badge')).toContainText(/Anima 在线/, { timeout: 30000 })
+  // c2bbb9a 起在线徽章文案改为「<引擎> 已连接」
+  await expect(page.locator('.api-status .badge')).toContainText(/Anima 已连接/, { timeout: 30000 })
 
   await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
 
@@ -483,4 +484,42 @@ test('popular creator · scene library page deep-links character and blueprint i
   await page.locator('.pop-card.adult').first().getByRole('link', { name: '开始绘制' }).click()
   await page.waitForTimeout(3000)
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
+})
+
+test('anima inpaint modal: opens local outfit swap modal, toggles mask modes, adjusts threshold and presets', async ({ page }) => {
+  await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(2000)
+
+  // 切换到专家模式并选择 Anima 引擎
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  const animaEngine = page.locator('.engine-switch button').nth(1)
+  await expect(animaEngine).toBeEnabled({ timeout: 30000 })
+  await animaEngine.click()
+
+  // 验证空闲状态下「导入本地图片换装」按钮并点击打开弹窗
+  const openInpaintBtn = page.getByRole('button', { name: /导入本地图片换装/ })
+  await expect(openInpaintBtn).toBeVisible()
+  await openInpaintBtn.click()
+
+  // 弹窗可见
+  const modal = page.locator('.inpaint-modal')
+  await expect(modal).toBeVisible()
+  await expect(modal.locator('.modal-header')).toContainText('智能视觉换装')
+
+  // 遮罩模式切换：手绘 vs 自动识别
+  await page.getByRole('button', { name: '自动识别', exact: true }).click()
+  await expect(page.locator('#maskPromptInput')).toBeVisible()
+  await expect(page.locator('.param-slider-group').filter({ hasText: '识别灵敏度' })).toBeVisible()
+
+  // 预设服装选择
+  await page.locator('.preset-card').filter({ hasText: /夏日比基尼/ }).click()
+  await expect(page.locator('.preset-card.active')).toContainText('夏日比基尼')
+
+  // 切换回手绘模式
+  await page.getByRole('button', { name: '手绘精确遮罩', exact: true }).click()
+  await expect(page.locator('#brushSizeInput')).toBeVisible()
+
+  // 关闭弹窗
+  await page.locator('.modal-header .btn-close').click()
+  await expect(modal).not.toBeVisible()
 })

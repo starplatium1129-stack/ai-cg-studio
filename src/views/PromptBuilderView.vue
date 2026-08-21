@@ -2196,7 +2196,7 @@ async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
       modelId: binding.modelId,
       negative: negativePrompt,
       initImage,
-      ...(maskImage ? { maskImage } : { maskPrompt: payload.maskPrompt }),
+      ...(maskImage ? { maskImage } : { maskPrompt: payload.maskPrompt, maskThreshold: payload.maskThreshold }),
       denoisingStrength: payload.denoisingStrength,
       growMaskBy: payload.growMaskBy,
       seed: payload.seed ?? undefined,

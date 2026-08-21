@@ -34,20 +34,16 @@
         <div class="filter-group">
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
-        <div class="filter-group">
-          <button v-for="opt in TYPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:typeFilter===opt.v}" type="button" :aria-pressed="typeFilter===opt.v" @click="typeFilter=opt.v">{{ opt.l }}</button>
-        </div>
-        <div class="filter-group">
-          <template v-if="typeFilter === 'popular' && popularCharOpts.length">
-            <label class="sr-only" for="showcasePopularChar">热门角色</label>
-            <select id="showcasePopularChar" class="filter-select" v-model="charFilter">
-              <option value="all">全部热门角色</option>
-              <option v-for="opt in popularCharOpts" :key="opt.v" :value="opt.v">{{ opt.l }}</option>
-            </select>
-          </template>
-          <template v-else>
-            <button v-for="opt in charOpts" :key="opt.v" class="filter-pill" :class="{active:charFilter===opt.v}" type="button" :aria-pressed="charFilter===opt.v" @click="charFilter=opt.v">{{ opt.l }}</button>
-          </template>
+        <div class="filter-group filter-dropdowns">
+          <label class="sr-only" for="showcaseTypeSelect">作品类型</label>
+          <select id="showcaseTypeSelect" class="filter-select" v-model="typeFilter" aria-label="筛选作品类型">
+            <option v-for="opt in TYPE_OPTS" :key="opt.v" :value="opt.v">{{ opt.l }}</option>
+          </select>
+
+          <label class="sr-only" for="showcaseCharSelect">角色筛选</label>
+          <select id="showcaseCharSelect" class="filter-select" v-model="charFilter" aria-label="筛选角色">
+            <option v-for="opt in allCharOptions" :key="opt.v" :value="opt.v">{{ opt.l }}</option>
+          </select>
         </div>
         <div class="filter-group">
           <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
@@ -249,8 +245,7 @@ function markThumbError(entry: ShowcaseEntry) {
   brokenThumbs.value = new Set([...brokenThumbs.value, entry.id])
 }
 
-/** 角色筛选选项：固定工作室角色。热门角色不补成 pills（18 个按钮在窄屏会横向溢出），
- *  类型为 popular 时改用下拉列出（popularCharOpts）；搜索词仍覆盖全部条目。 */
+/** 角色筛选选项：收进统一的下拉筛选器，支持全部角色、工作室角色与热门角色。 */
 const charOpts = computed<{ v: string; l: string }[]>(() => [...CHAR_OPTS])
 const popularCharOpts = computed<{ v: string; l: string }[]>(() => {
   const seen = new Set<string>()
@@ -261,6 +256,21 @@ const popularCharOpts = computed<{ v: string; l: string }[]>(() => {
     options.push({ v: entry.char, l: charLabel(entry.char) })
   }
   return options.sort((a, b) => a.l.localeCompare(b.l, 'zh-CN'))
+})
+
+const allCharOptions = computed<{ v: string; l: string }[]>(() => {
+  if (typeFilter.value === 'popular') {
+    return [{ v: 'all', l: '全部热门角色' }, ...popularCharOpts.value]
+  }
+  if (typeFilter.value === 'scene' || typeFilter.value === 'lora') {
+    return [...CHAR_OPTS]
+  }
+  // 全部类型下：全部角色 + 工作室角色 + 热门角色
+  const base = [...CHAR_OPTS]
+  if (popularCharOpts.value.length) {
+    return [...base, ...popularCharOpts.value]
+  }
+  return base
 })
 
 const filtered = computed(() => {
@@ -401,10 +411,12 @@ onUnmounted(() => {
 .scene-search { width:100%; padding:var(--s-2) 36px var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font-size:var(--fs-body-sm); outline:none; }
 .scene-search:focus { border-color:var(--accent); }
 .scene-search-clear { position:absolute; top:50%; right:8px; transform:translateY(-50%); width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
-.filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; }
+.filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; align-items:center; }
+.filter-dropdowns { display:flex; gap:var(--s-2); align-items:center; }
 .filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
 .filter-pill.active,.filter-pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
-.filter-select { max-width:100%; padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; }
+.filter-select { max-width:100%; height:32px; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; transition:border-color var(--t-fast),color var(--t-fast); }
+.filter-select:hover { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); }
 .filter-select:focus { border-color:var(--accent); color:var(--text-primary); }
 .result-meta { margin-left:auto; color:var(--text-muted); font-size:var(--fs-label-sm); white-space:nowrap; }
 :deep(.result-meta strong) { color:var(--accent); }

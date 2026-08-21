@@ -28,9 +28,11 @@ test('popular data: 43 characters, unique ids, exactly one default outfit per ch
     assert.ok(character.supportedEngines.includes('anima-aesthetic-v1.1'), character.id + ' must support Anima Aesthetic');
     assert.ok(character.supportedEngines.includes('krea2-turbo-fp8'), character.id + ' must support Krea 2');
   });
-    assert.strictEqual(popular.findCharacter(characters, 'rem_rezero').exactTokens[0], 'rem_(re_zero)', 'rem must use the disambiguated Danbooru tag');
-  assert.strictEqual(popular.findCharacter(characters, 'emilia_rezero').exactTokens[0], 'emilia_(re_zero)', 'emilia must use the disambiguated Danbooru tag');
-  assert.strictEqual(popular.findCharacter(characters, 'kisara_engage_kiss').exactTokens[0], 'kisara_(engage_kiss)', 'kisara must use the disambiguated Danbooru tag');
+    // 2026-08-21 exactTokens 括号消歧按 Anima 官方空格规则（A/B 实测还原度不降）：
+    // `rem (re zero)` 而非 Danbooru 下划线形式——Anima tokenizer 不做下划线转换。
+    assert.strictEqual(popular.findCharacter(characters, 'rem_rezero').exactTokens[0], 'rem (re zero)', 'rem must use the space-form disambiguated tag');
+  assert.strictEqual(popular.findCharacter(characters, 'emilia_rezero').exactTokens[0], 'emilia (re zero)', 'emilia must use the space-form disambiguated tag');
+  assert.strictEqual(popular.findCharacter(characters, 'kisara_engage_kiss').exactTokens[0], 'kisara (engage kiss)', 'kisara must use the space-form disambiguated tag');
 var adults = characters.filter(function (character) { return character.adultEligibility === 'adult'; });
   var nonAdults = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
   assert.ok(adults.length >= 1, 'at least one clearly-adult character must be available for adult blueprints');

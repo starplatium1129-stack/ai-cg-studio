@@ -21,7 +21,7 @@
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
           <ArchiveIcon name="upload" /> 从备份恢复
         </button>
-        <input ref="backupFileEl" class="sr-only" type="file" accept="application/json" @change="onBackupFilePicked" />
+        <input ref="backupFileEl" class="sr-only pb-backup-file-input" type="file" accept="application/json" @change="onBackupFilePicked" />
       </div>
       <div class="utility-divider"></div>
       <div class="utility-label">创作蓝图</div>
@@ -34,7 +34,7 @@
           title="从 Blueprint JSON 导入并回填导演台配置">
           <ArchiveIcon name="upload" /> 导入蓝图配置
         </button>
-        <input ref="blueprintFileEl" class="sr-only" type="file" accept="application/json" @change="onBlueprintFilePicked" />
+        <input ref="blueprintFileEl" class="sr-only pb-blueprint-file-input" type="file" accept="application/json" @change="onBlueprintFilePicked" />
       </div>
       <div class="utility-divider"></div>
       <div class="utility-label">存储维护</div>

@@ -58,6 +58,7 @@ export interface AnimaRequest {
   initImage?: string
   maskImage?: string
   maskPrompt?: string
+  maskThreshold?: number
   denoisingStrength?: number
   growMaskBy?: number
 }
@@ -165,6 +166,7 @@ export function animaRequestPayload(
     ...(request.initImage ? { initImage: request.initImage } : {}),
     ...(request.maskImage ? { maskImage: request.maskImage } : {}),
     ...(request.maskPrompt ? { maskPrompt: request.maskPrompt } : {}),
+    ...(request.maskPrompt && request.maskThreshold !== undefined ? { maskThreshold: request.maskThreshold } : {}),
     ...(request.denoisingStrength !== undefined ? { denoisingStrength: request.denoisingStrength } : {}),
     ...(request.growMaskBy !== undefined ? { growMaskBy: request.growMaskBy } : {}),
   }
