@@ -126,11 +126,12 @@
           <span class="d">与宁宁或夏目静享片刻独白，全流程本地语音温情陪伴。</span>
           <span class="go">→ 进入房间</span>
         </RouterLink>
-        <RouterLink to="/showcase" class="tool-card card-create card-level-2">
+        <!-- 宽屏下第 5 张卡拉通为横幅入口，避免 4+1 网格出现孤行 -->
+        <RouterLink to="/showcase" class="tool-card card-create card-level-2 tool-card-banner">
           <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
-          <span class="ic"><ArchiveIcon name="image" /></span><span class="t">效果样张</span>
-          <span class="d">经人工细致复核的定稿画册，凝结帧帧动人的画面叙事。</span>
-          <span class="go">→ 浏览</span>
+          <span class="ic"><ArchiveIcon name="image" /></span>
+          <span class="banner-copy"><span class="t">效果样张</span><span class="d">经人工细致复核的定稿画册，凝结帧帧动人的画面叙事。</span></span>
+          <span class="go">→ 浏览完整画册</span>
         </RouterLink>
       </div>
     </section>
@@ -274,7 +275,10 @@ let heroScrollFrame = 0
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
 const popularCharacters = computed(() => sceneStore.popularCharacters)
 function portraitSrc(id: string): string {
-  return `/assets/characters/popular-${id}.png?v=${sceneStore.version || 3}`
+  // 横条卡片仅 ~180px 宽，加载 1.2MB 原图曾把首页资源预算打爆 5 倍（16MB）。
+  // 改用 build-character-thumbs.py 预生成的 360px WebP 缩略图（~19KB/张）；
+  // 源 PNG 重发后需重跑该脚本（mtime 过期自动重建）。
+  return `/assets/characters/thumbs/popular-${id}.webp?v=${sceneStore.version || 3}`
 }
 
 /** 横条只在真正可滚动时显示右缘渐隐，避免宽屏误遮最后一张卡 */
@@ -475,7 +479,7 @@ onUnmounted(() => {
 
 <style scoped>
 /* ---------- Hero ---------- */
-.home-hero { position:relative; padding:var(--s-8) 0 var(--s-6); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
+.home-hero { position:relative; padding:var(--s-8) 0 var(--s-4); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
 .home-page .hero-copy { animation:homeCopyIn .58s var(--ease-out) .04s both; }
 .home-page .hero-orbit { animation:homeOrbitIn .66s var(--ease-out) .12s both; }
 .home-page .hero-strip { animation:homeStripIn .62s var(--ease-out) .22s both; }
@@ -582,8 +586,9 @@ onUnmounted(() => {
 .continue-hint strong { color:var(--accent); }
 
 /* ---------- Sections ---------- */
-.home-section { padding:clamp(40px, 6vw, 76px) 0; border-top:1px solid var(--border-soft); }
-.home-section-quiet { padding:clamp(32px, 4.5vw, 56px) 0; }
+/* 2026-08-21：区块间距收紧（原 clamp(40px,6vw,76px) 在区块间叠加出大片空白带） */
+.home-section { padding:clamp(30px, 4.2vw, 52px) 0; border-top:1px solid var(--border-soft); }
+.home-section-quiet { padding:clamp(24px, 3.2vw, 40px) 0; }
 .home-section-head { position:relative; display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:var(--s-5); padding-left:var(--s-4); gap:var(--s-4); }
 .home-section-head::before { content:""; position:absolute; left:0; top:2px; bottom:2px; width:2px; background:linear-gradient(180deg,var(--archive-blue),var(--accent),transparent); }
 .home-section-head h2 { margin-bottom:var(--s-1); font:600 var(--fs-title)/1.35 var(--font-serif); letter-spacing:.035em; }
@@ -603,6 +608,14 @@ onUnmounted(() => {
 .tool-card .t { font:600 var(--fs-title-xs)/1.35 var(--font-serif); letter-spacing:.025em; }
 .tool-card .d { font-size:var(--fs-label); color:var(--text-muted); line-height:1.5; margin:0; flex:1; }
 .tool-card .go { display:inline-flex; align-items:center; gap:var(--s-1); width:max-content; font-size:var(--fs-label-sm); color:var(--accent); margin-top:var(--s-2); transition:transform var(--t-fast) var(--ease-out); }
+
+/* ---------- Banner 卡（05/ARCHIVE）：≥768px 拉通为横向入口，消除 4+1 孤行 ---------- */
+.banner-copy { display:flex; flex-direction:column; gap:var(--s-2); flex:1; min-width:0; }
+@media (min-width:768px) {
+  .tools-grid .tool-card-banner { grid-column:1 / -1; flex-direction:row; align-items:center; gap:var(--s-4); min-height:0; padding:var(--s-4) var(--s-5); }
+  .tool-card-banner .ic { margin-top:0; width:44px; height:44px; font-size:var(--fs-title); flex-shrink:0; }
+  .tool-card-banner .go { margin-top:0; margin-left:auto; flex-shrink:0; }
+}
 
 /* ---------- Recent ---------- */
 .recent-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:var(--s-4); }

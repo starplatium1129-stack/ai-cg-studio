@@ -17,15 +17,22 @@
       </div>
       <div class="chat-actions">
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
-        <button class="btn btn-ghost" type="button" @click="clearAllMemory">清除聊天记忆</button>
-        <button
-          class="btn btn-ghost"
-          type="button"
-          :aria-expanded="archiveOpen ? 'true' : 'false'"
-          @click="archiveOpen = !archiveOpen"
-        >记忆归档</button>
-        <button class="btn btn-ghost" type="button" :aria-expanded="memoryOpen" @click="memoryOpen = !memoryOpen">长期记忆</button>
-        <button class="btn btn-ghost" type="button" :aria-expanded="profileOpen" @click="profileOpen = !profileOpen">我的档案</button>
+        <!-- 次要操作收进「更多」菜单：主操作只留「新对话」，破坏性操作入菜单并标危险色 -->
+        <div ref="actionsMoreRef" class="chat-actions-more">
+          <button class="btn btn-ghost chat-more-trigger" type="button"
+            :aria-expanded="moreOpen ? 'true' : 'false'" aria-haspopup="menu"
+            @click="moreOpen = !moreOpen">更多<span class="chat-more-caret" aria-hidden="true">{{ moreOpen ? '▴' : '▾' }}</span></button>
+          <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作">
+            <button class="chat-more-item is-danger" role="menuitem" type="button"
+              @click="runRoomAction(() => clearAllMemory())">清除聊天记忆</button>
+            <button class="chat-more-item" role="menuitem" type="button"
+              @click="runRoomAction(() => { archiveOpen = !archiveOpen })">记忆归档</button>
+            <button class="chat-more-item" role="menuitem" type="button"
+              @click="runRoomAction(() => { memoryOpen = !memoryOpen })">长期记忆</button>
+            <button class="chat-more-item" role="menuitem" type="button"
+              @click="runRoomAction(() => { profileOpen = !profileOpen })">我的档案</button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -381,6 +388,35 @@ const {
 
 const profileOpen = ref(false)
 const memoryOpen = ref(false)
+
+/** 右上角次要操作收进「更多」菜单：外点与 Escape 关闭，选中即收起。 */
+const moreOpen = ref(false)
+const actionsMoreRef = ref<HTMLElement | null>(null)
+function runRoomAction(action: () => void) {
+  moreOpen.value = false
+  action()
+}
+function onRoomActionPointerDown(event: PointerEvent) {
+  if (actionsMoreRef.value && event.target instanceof Node && !actionsMoreRef.value.contains(event.target)) {
+    moreOpen.value = false
+  }
+}
+function onRoomActionKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') moreOpen.value = false
+}
+watch(moreOpen, open => {
+  if (open) {
+    document.addEventListener('pointerdown', onRoomActionPointerDown, true)
+    document.addEventListener('keydown', onRoomActionKeydown)
+  } else {
+    document.removeEventListener('pointerdown', onRoomActionPointerDown, true)
+    document.removeEventListener('keydown', onRoomActionKeydown)
+  }
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', onRoomActionPointerDown, true)
+  document.removeEventListener('keydown', onRoomActionKeydown)
+})
 
 const personalizedGreeting = computed(() => {
   const char = currentCharacter.value

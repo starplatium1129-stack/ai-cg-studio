@@ -131,7 +131,7 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
   await switchToSdEngine(page);
   await openGenerationSettings(page);
-  await expect(page.locator('.preview-output')).toContainText('lora');
+  await expect(page.locator('.prompt-health-body')).toContainText('lora');
 
   // 固定尺寸与 seed，好让断言不依赖推荐值
   await page.locator('.sd-inline-options select').first().selectOption('896x1344');
@@ -359,7 +359,9 @@ test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', a
   await useLocalChat(page);
   await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
 
-  await page.getByRole('button', { name: '我的档案' }).click();
+  // 2026-08-21：次要操作收进「更多」菜单，先展开再点「我的档案」（只点一次，二次点击会收起）
+  await page.locator('.chat-more-trigger').click();
+  await page.getByRole('menuitem', { name: '我的档案' }).click();
   await page.getByLabel('希望她怎样称呼你').fill('小林');
   await page.getByLabel('关系定位').selectOption('confidant');
   await page.getByLabel('希望她记住的背景').fill('我习惯夜间工作，希望先听我说完。');
@@ -384,7 +386,8 @@ test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', a
   expect(secondMessages[0].content.indexOf('【长期记忆')).toBeLessThan(secondMessages[0].content.indexOf('【对话判断与表达控制】'));
 
   await page.reload();
-  await page.getByRole('button', { name: '长期记忆' }).click();
+  await page.locator('.chat-more-trigger').click();
+  await page.getByRole('menuitem', { name: '长期记忆' }).click();
   await expect(page.getByLabel(/编辑记忆/)).toHaveValue('我每周五晚上会玩 MMORPG。');
 });
 
@@ -527,7 +530,7 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
   await expect(page.locator('.history-empty')).toHaveCount(1);
 
   await page.locator('.utility-trigger').click();
-  await page.locator('.utility-actions input[type="file"]').setInputFiles(backupPath!);
+  await page.locator('.pb-backup-file-input').setInputFiles(backupPath!);
 
   // 恢复弹层必须报出真实条数，且是带焦点陷阱的对话框
   const card = page.locator('.pb-backup-card');
@@ -547,7 +550,7 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
 test('flow 4b · 备份：损坏文件不得污染本地数据', async ({ page }) => {
   await page.goto('/prompt-builder');
   await page.locator('.utility-trigger').click();
-  await page.locator('.utility-actions input[type="file"]').setInputFiles({
+  await page.locator('.pb-backup-file-input').setInputFiles({
     name: 'broken.json',
     mimeType: 'application/json',
     buffer: Buffer.from('{"app":"ai-cg-studio","data":{}}'),
@@ -645,7 +648,7 @@ test('flow 6 · 深链：?scene 决定角色，?mood 与场景推断共存', asy
   await expect(page.locator('.mood-card.active')).toHaveCount(1);
   // 受控路线：basic 默认 Anima 格式，preview 是角色 exact-token（underscore）
   // 而非 SD 的 <lora:...>；shiki_natsume 是夏目的角色控制词
-  await expect(page.locator('.preview-output')).toContainText('shiki_natsume');
+  await expect(page.locator('.preview-output-structured')).toContainText('shiki_natsume');
   // 场景推断出的镜头/光照/构图至少落一项，否则"智能预填"等于没接
   await expect(page.locator('.col-right .option.selected')).not.toHaveCount(0);
 

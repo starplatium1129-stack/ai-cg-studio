@@ -57,6 +57,42 @@
   color: var(--text-primary);
 }
 
+/* 次要操作收进「更多」下拉：减少右上角文字链接拥挤与误触 */
+.chat-page .chat-actions-more { position: relative; }
+.chat-page .chat-more-caret { margin-left: 4px; font-size: 10px; opacity: .7; }
+.chat-page .chat-more-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: var(--z-popover);
+  display: flex;
+  flex-direction: column;
+  min-width: 168px;
+  padding: var(--s-2);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.chat-page .chat-more-item {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 var(--s-3);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+  text-align: left;
+  cursor: pointer;
+}
+.chat-page .chat-more-item:hover { background: var(--accent-soft); color: var(--text-primary); }
+.chat-page .chat-more-item.is-danger { color: var(--danger-text); }
+.chat-page .chat-more-item.is-danger:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); }
+
 .chat-page > .workspace-archive-bar {
   min-height: 48px;
   margin-bottom: var(--s-2);

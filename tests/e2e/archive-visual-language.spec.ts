@@ -60,8 +60,10 @@ test('archive pages remain static and overflow-free on reduced-motion phones', a
 test('character archive browses all characters grouped by franchise and shows details', async ({ page }) => {
   await page.goto('/character')
 
-  // 全部 35 角色卡片 + 作品分组头
-  await expect(page.locator('.cb-card')).toHaveCount(35)
+  // 默认全量视图作为动态基线（角色库随接入持续增长：35→45，勿再写死）
+  const totalCards = await page.locator('.cb-card').count()
+  expect(totalCards).toBeGreaterThanOrEqual(45)
+  // 作品分组头
   await expect(page.locator('.cb-group').first()).toBeVisible()
   expect(await page.locator('.cb-franchise').count()).toBeGreaterThan(3)
 
@@ -70,16 +72,18 @@ test('character archive browses all characters grouped by franchise and shows de
   await expect(page.locator('.character-name')).toContainText('凯尔希')
   await expect(page.locator('.character-hero')).toBeVisible()
 
-  // 作品筛选：明日方舟 13 角色收敛，详情区跟随
+  // 作品筛选：明日方舟 13+ 角色收敛，详情区跟随
   await page.locator('.cb-franchise').filter({ hasText: /^明日方舟\s/ }).click()
   const arkCards = await page.locator('.cb-card').count()
   expect(arkCards).toBeGreaterThanOrEqual(13)
-  expect(arkCards).toBeLessThan(35)
+  expect(arkCards).toBeLessThan(totalCards)
 
-  // 搜索平铺（Fate 3 角色经 source 命中）
+  // 搜索平铺（Fate 系列角色经 source 命中；角色库增长后不再写死数量）
   await page.locator('.cb-search').fill('Fate')
-  await expect(page.locator('.cb-card')).toHaveCount(3)
+  const fateCards = await page.locator('.cb-card').count()
+  expect(fateCards).toBeGreaterThanOrEqual(3)
+  expect(fateCards).toBeLessThan(totalCards)
   await page.locator('.cb-search').fill('')
   await page.locator('.cb-franchise').filter({ hasText: '全部' }).click()
-  await expect(page.locator('.cb-card')).toHaveCount(35)
+  await expect(page.locator('.cb-card')).toHaveCount(totalCards)
 })

@@ -52,11 +52,26 @@
             :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
             全部 <span class="cb-count">{{ characters.length }}</span>
           </button>
-          <button v-for="f in franchises" :key="f.source" type="button"
+          <button v-for="f in majorFranchises" :key="f.source" type="button"
             class="cb-franchise" :class="{ active: activeFranchise === f.source }"
             :aria-pressed="activeFranchise === f.source" @click="activeFranchise = f.source">
             {{ f.label }} <span class="cb-count">{{ f.count }}</span>
           </button>
+          <!-- 单角色作品（count=1）收进折叠，避免 pill 条被低频项占满两行 -->
+          <template v-if="minorFranchises.length">
+            <template v-for="f in minorFranchises" :key="f.source">
+              <button v-if="showMinorFranchises || activeFranchise === f.source" type="button"
+                class="cb-franchise cb-franchise-minor" :class="{ active: activeFranchise === f.source }"
+                :aria-pressed="activeFranchise === f.source" @click="activeFranchise = f.source">
+                {{ f.label }} <span class="cb-count">{{ f.count }}</span>
+              </button>
+            </template>
+            <button type="button" class="cb-franchise cb-franchise-toggle"
+              :aria-expanded="showMinorFranchises ? 'true' : 'false'"
+              @click="showMinorFranchises = !showMinorFranchises">
+              {{ showMinorFranchises ? '收起' : `更多单角色作品 ${minorFranchises.length}` }}<span class="cb-caret" aria-hidden="true">{{ showMinorFranchises ? '▴' : '▾' }}</span>
+            </button>
+          </template>
         </div>
 
         <div v-if="grouped" class="cb-groups" role="group" aria-label="角色">
@@ -283,6 +298,11 @@ const franchises = computed(() => {
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-CN'))
 })
 
+/** pill 条降噪：≥2 人的作品外露，单角色作品收进「更多」折叠（与分组网格的 MIN_GROUP_SIZE 同口径）。 */
+const showMinorFranchises = ref(false)
+const majorFranchises = computed(() => franchises.value.filter(f => f.count >= MIN_GROUP_SIZE))
+const minorFranchises = computed(() => franchises.value.filter(f => f.count < MIN_GROUP_SIZE))
+
 /** 无搜索时按作品分组；搜索/筛选时平铺。
  *  2人及以上同一作品的角色单独成组展示（如明日方舟、Fate 系列、葬送的芙莉莲、电锯人、春物、无职转生等）；
  *  仅 1 人的独立作品合并为「更多经典作品」。 */
@@ -448,6 +468,11 @@ onMounted(() => {
 .cb-franchise { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast); }
 .cb-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .cb-franchise.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+/* 单角色作品折叠项与「更多」开关：弱化层级，不与高频作品抢注意力 */
+.cb-franchise-minor { border-style: dashed; opacity: .88; }
+.cb-franchise-toggle { color: var(--text-muted); background: transparent; border-color: var(--border-soft); }
+.cb-franchise-toggle:hover { color: var(--accent); }
+.cb-franchise .cb-caret { font-size: 10px; line-height: 1; opacity: .7; }
 .cb-count { font: 650 var(--fs-mono-xs) var(--font-mono); opacity: .7; }
 .cb-groups { display: grid; gap: var(--s-5); }
 .cb-group-head { display: flex; align-items: baseline; gap: var(--s-2); margin: 0 0 var(--s-2); font-size: var(--fs-title-xs); color: var(--text-secondary); }

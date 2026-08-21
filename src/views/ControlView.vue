@@ -264,7 +264,7 @@
         </div>
 
         <button
-          class="btn btn-lg btn-primary btn-block"
+          class="btn btn-lg btn-primary"
           type="button"
           :disabled="actionBusy || opBusy"
           @click="tunnelActive ? doStop() : doStart()"
