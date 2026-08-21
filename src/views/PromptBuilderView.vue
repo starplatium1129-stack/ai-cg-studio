@@ -1246,7 +1246,10 @@ function selectPopularOutfit(outfitId: string) {
 
 function selectBlueprint(blueprint: SceneBlueprint) {
   if (pb.subject.kind !== 'popular') return
-  pb.setPopularBlueprint(blueprint.id)
+  // 若蓝图本身绑定了专属服装形态（如泳池蓝图绑定 summer_swimsuit_night），
+  // 则自动将当前角色的服装同步切换到该形态，确保生图与故事描述 100% 一致。
+  const targetOutfitId = blueprint.outfitId || pb.subject.outfitId
+  pb.setPopularSubject(pb.subject.characterId, targetOutfitId, blueprint.id)
   const decision = inferBlueprintDecisions(blueprint)
   if (decision.shot) pb.setShot(decision.shot)
   if (decision.lighting) pb.setLighting(decision.lighting)
@@ -1260,7 +1263,7 @@ function selectBlueprint(blueprint: SceneBlueprint) {
   // 场景故事跟随所选蓝图（与工作室 selectScene → loadScene 写 story 对齐）：
   // 否则从工作室切热门后 story 框会残留上一个场景的故事。
   pb.setStory(blueprint.description)
-  pb.flash(`已选用场景「${blueprint.title}」，镜头/光照/尺寸已自动推断`)
+  pb.flash(`已选用场景「${blueprint.title}」，服装/镜头/光照已自动适配`)
 }
 
 function rotateBlueprintSet() {
