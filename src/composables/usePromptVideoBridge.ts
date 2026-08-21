@@ -1,0 +1,196 @@
+import { ref, type ComputedRef, type Ref } from 'vue'
+import type { HistoryEntry } from '@/stores/promptBuilderStore'
+import type { DrawEngine } from '@/storage/settingsRepository'
+import { imgGet } from '@/composables/useImageStore'
+
+/**
+ * 绘图页「出视频 / 分镜短片」编排（2026-08-22 自 PromptBuilderView 下沉）。
+ *
+ * 只做三件事：组装跨页上下文（videoTargetData）、把上下文交给 videoStore
+ * （单图 bridgeToVideo / 逐张 appendShotsCtx）、维护「已加入分镜」角标。
+ * blob 落 IndexedDB、sessionStorage 持久化、一次性消费语义都在 videoStore /
+ * useVideoBridge 层，这里不碰存储细节。
+ */
+
+export interface PromptVideoBridgeDeps {
+  /** 当前显示结果 url（无值时无法转视频）。 */
+  displayResultUrl: ComputedRef<string> | Ref<string>
+  drawEngine: Ref<DrawEngine>
+  /** 面板实时组装的提示词（SD 兜底源）。 */
+  livePrompt: ComputedRef<string> | Ref<string>
+  /** SD 最近一次实际提交的提示词。 */
+  sdResultPrompt: Ref<string | undefined>
+  /** Anima/Krea 会话状态（取其中的 result.blob 与 result.metadata.prompt）。 */
+  animaState: Ref<{ result?: { blob?: Blob | null; metadata?: { prompt?: string } } | null }>
+  /** 场景描述文本（pb.story）。 */
+  story: () => string
+  /** 工作室场景 id（pb.sceneId）。 */
+  sceneId: () => string | null
+  subject: () => { kind: string; blueprintId?: string | null; characterId?: string }
+  flash: (message: string) => void
+}
+
+export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
+  const { flash } = deps
+
+  /**
+   * 组装跨页上下文（useVideoBridge 独立 chunk，动态 import 不膨胀本路由块）。
+   * prompt 取该图实际生成时的提示词（Anima 取结果 metadata、SD 取提交时记录），
+   * 不随面板后续修改漂移。
+   */
+  async function videoTargetData() {
+    const url = deps.displayResultUrl.value
+    if (!url) { flash('暂无可转视频的成片'); return null }
+    if (deps.drawEngine.value !== 'sd' && !deps.animaState.value.result) {
+      flash('成片数据已失效，请重新生成')
+      return null
+    }
+    const subject = deps.subject()
+    // 按图取词：优先该图实际生成时使用的提示词，面板实时组装值只作兜底。
+    let usedPrompt = deps.livePrompt.value || ''
+    if (deps.drawEngine.value !== 'sd') {
+      usedPrompt = deps.animaState.value.result?.metadata?.prompt || usedPrompt
+    } else {
+      usedPrompt = deps.sdResultPrompt.value || usedPrompt
+    }
+    // 词条流 → 自然语言（H3 是自然语言模型；已像自然语言的提示词原样保留）。
+    // 转换器只有「出视频/加入分镜」点击时才需要，随 useVideoBridge 一起按需拉取。
+    const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
+    return {
+      displayUrl: url,
+      animaBlob: deps.drawEngine.value !== 'sd' ? deps.animaState.value.result?.blob ?? null : null,
+      prompt: tagsToVideoProse(usedPrompt),
+      story: deps.story() || '',
+      blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : deps.sceneId(),
+      characterId: subject.kind === 'popular' ? subject.characterId ?? '' : '',
+      sceneId: deps.sceneId(),
+    }
+  }
+
+  async function goToVideo(push: (path: string) => Promise<unknown> | void) {
+    const data = await videoTargetData()
+    if (!data) return
+    const { bridgeToVideo } = await import('@/composables/useVideoBridge')
+    await bridgeToVideo({
+      ...data,
+      flash,
+      push,
+    })
+  }
+
+  /** 已「加入分镜」的镜头数（videoStore 持久，刷新不丢）。 */
+  const shotsPending = ref(0)
+
+  async function refreshShotsPending() {
+    try {
+      const { readShotsCtx } = await import('@/composables/useVideoBridge')
+      shotsPending.value = readShotsCtx().length
+    } catch { /* 保持 0 */ }
+  }
+
+  function flashAdded(count: number) {
+    flash(`已加入分镜短片（当前 ${count} 个镜头）`)
+  }
+
+  /** 「加入分镜」：把当前成片入 IndexedDB + 上下文追加到分镜待带入列表。 */
+  async function addToShots() {
+    const data = await videoTargetData()
+    if (!data) return
+    const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
+    const ctx = await prepareVideoCtx({
+      ...data,
+      flash,
+      push: async () => {},
+    })
+    if (!ctx) return
+    shotsPending.value = appendShotsCtx(ctx)
+    flashAdded(shotsPending.value)
+  }
+
+  /** 「去分镜短片」：跳转视频页分镜模式，一次性消费已加入的镜头。 */
+  async function goToShots(push: (path: string) => Promise<unknown> | void) {
+    const { readShotsCtx } = await import('@/composables/useVideoBridge')
+    if (!readShotsCtx().length) {
+      flash('还没有加入任何镜头：先出图，再点「加入分镜」')
+      return
+    }
+    await push('/video-studio?mode=shots')
+  }
+
+  /**
+   * 历史图 → 加入分镜：从历史条目重建跨页上下文（图片走 IndexedDB、
+   * prompt 用该图实际生成时保存的词），追加到分镜待带入列表。
+   */
+  async function handleHistoryToShots(entry: HistoryEntry) {
+    try {
+      const blob = await imgGet(entry.image_id)
+      if (!blob || !blob.size) { flash('历史图片已失效，无法加入分镜'); return }
+      const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
+      const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
+      const ctx = await prepareVideoCtx({
+        displayUrl: '',
+        animaBlob: blob,
+        prompt: tagsToVideoProse(entry.prompt || entry.story || ''),
+        story: entry.story || '',
+        blueprintId: entry.blueprintId ?? null,
+        characterId: entry.characterId ?? '',
+        sceneId: entry.scene ?? null,
+        flash,
+        push: async () => {},
+      })
+      if (!ctx) return
+      shotsPending.value = appendShotsCtx(ctx)
+      flashAdded(shotsPending.value)
+    } catch (error) {
+      flash('加入分镜失败')
+      console.warn(error)
+    }
+  }
+
+  /** 历史多选批量加入分镜：逐张重建上下文，成功/失败计数汇总。 */
+  async function handleHistoryToShotsBatch(entries: HistoryEntry[]) {
+    if (!entries.length) return
+    const { prepareVideoCtx, appendShotsCtx, readShotsCtx } = await import('@/composables/useVideoBridge')
+    const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
+    let added = 0
+    let failed = 0
+    for (const entry of entries) {
+      try {
+        const blob = await imgGet(entry.image_id)
+        if (!blob || !blob.size) { failed += 1; continue }
+        const ctx = await prepareVideoCtx({
+          displayUrl: '',
+          animaBlob: blob,
+          prompt: tagsToVideoProse(entry.prompt || entry.story || ''),
+          story: entry.story || '',
+          blueprintId: entry.blueprintId ?? null,
+          characterId: entry.characterId ?? '',
+          sceneId: entry.scene ?? null,
+          flash: () => {},
+          push: async () => {},
+        })
+        if (!ctx) { failed += 1; continue }
+        appendShotsCtx(ctx)
+        added += 1
+      } catch (error) {
+        failed += 1
+        console.warn(error)
+      }
+    }
+    shotsPending.value = readShotsCtx().length
+    flash(failed
+      ? `已加入分镜 ${added} 张，${failed} 张失败（图片失效）`
+      : `已加入分镜 ${added} 张（当前共 ${shotsPending.value} 镜）`)
+  }
+
+  return {
+    videoTargetData,
+    goToVideo,
+    shotsPending,
+    refreshShotsPending,
+    addToShots,
+    goToShots,
+    handleHistoryToShots,
+    handleHistoryToShotsBatch,
+  }
+}
