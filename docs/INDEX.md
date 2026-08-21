@@ -1,20 +1,20 @@
 # AI-CG-Studio 项目文档全景索引 (Documentation Master Index)
 
-> **最新基线**：2026-08-21
+> **最新基线**：2026-08-21  
 > **维护契约**：本文档为 `docs/` 目录下全部架构规范、路线图、提示词工程、角色参考库、视频管线、桌面端与排障留档的总览索引。所有新文档与重大更新须在此登记。
 
 ---
 
 ## 快速导航 (Category Map)
 
-- [一、 核心规范与总状态](#一-核心规范与总状态-core-specifications--status)
-- [二、 角色 4 视角参考库与设定调研](#二-角色-4-视角参考库与设定调研-character-reference-bible--research)
-- [三、 提示词、画风与多模型生成体系](#三-提示词画风与多模型生成体系-prompting-artists--engines)
-- [四、 视频工作台与智能分镜叙事](#四-视频工作台与智能分镜叙事-video-studio--narrative-pipeline)
-- [五、 桌面端与 Live2D Native 运行时](#五-桌面端与-live2d-native-运行时-desktop--live2d-native-runtime)
-- [六、 疑难排查、故障演练与经验沉淀](#六-疑难排查故障演练与经验沉淀-lessons-learned--troubleshooting)
-- [七、 历史调研与竞品分析](#七-历史调研与竞品分析-research--benchmarks)
-- [八、 静态 HTML 文档站页面](#八-静态-html-文档站页面-static-docs-portal)
+- [一、 核心规范与总状态 (Core Specs & Status)](#一-核心规范与总状态-core-specifications--status)
+- [二、 角色 4 视角参考库与设定调研 (Character Bible & Research)](#二-角色-4-视角参考库与设定调研-character-reference-bible--research)
+- [三、 提示词、画风与多模型生成体系 (Prompting & Engines)](#三-提示词画风与多模型生成体系-prompting-artists--engines)
+- [四、 视频工作台与智能分镜叙事 (Video Studio & Narrative)](#四-视频工作台与智能分镜叙事-video-studio--narrative-pipeline)
+- [五、 桌面端与 Live2D Native 运行时 (Desktop & Live2D)](#五-桌面端与-live2d-native-运行时-desktop--live2d-native-runtime)
+- [六、 疑难排查与历史故障演练 (Troubleshooting Archive)](#六-疑难排查与历史故障演练-troubleshooting-archive)
+- [七、 历史调研与竞品分析归档 (Research Archive)](#七-历史调研与竞品分析归档-research-archive)
+- [八、 静态 HTML 文档站页面 (Static Docs Portal)](#八-静态-html-文档站页面-static-docs-portal)
 
 ---
 
@@ -42,11 +42,11 @@
 | **参考图待精调清单** | [`character-reference-audit-pending.md`](character-reference-audit-pending.md) | 35 角色 177 服装形态（736 视角）自动化审核大盘与 75 项边缘变体修复配方。 |
 | **点阵粒子立绘管线** | [`particle-portrait-pipeline.md`](particle-portrait-pipeline.md) | 热门角色 Hero 粒子场整图点阵离线提取与复刻生成管线。 |
 | **热门角色场景适配** | [`popular-scene-fit-audit.md`](popular-scene-fit-audit.md) | 热门角色与通用场景蓝图契约适配度审计报告。 |
-| **角色调研：雷电/芙莉莲/伊蕾娜** | [`character-research-raiden-frieren-elaina.md`](character-research-raiden-frieren-elaina.md) | 雷电将军、芙莉莲、伊蕾娜官方设定、服装形制与视觉特征调研。 |
-| **角色调研：玛奇玛/木更/楪祈** | [`character-canons-makima-kisara-inori.md`](character-canons-makima-kisara-inori.md) | 玛奇玛、木更、楪祈角色设定、正向特征锚与负向拦截。 |
-| **角色调研：狂三/美琴** | [`character-research-kurumi-mikoto.md`](character-research-kurumi-mikoto.md) | 时崎狂三、御坂美琴原作设定与多形态提示词调研。 |
-| **美琴 Danbooru 标签调研** | [`research-misaka-mikoto-danbooru-tags.md`](research-misaka-mikoto-danbooru-tags.md) | 御坂美琴 Danbooru / 社区标签消歧与精准提示词映射。 |
-| **热门角色审视优化留档** | [`popular-characters-audit-2026-08-18.md`](popular-characters-audit-2026-08-18.md) | 2026-08-18 热门角色数据审视与优化记录。 |
+| **角色调研：雷电/芙莉莲/伊蕾娜** | [`research/characters/character-research-raiden-frieren-elaina.md`](research/characters/character-research-raiden-frieren-elaina.md) | 雷电将军、芙莉莲、伊蕾娜官方设定、服装形制与视觉特征调研。 |
+| **角色调研：玛奇玛/木更/楪祈** | [`research/characters/character-canons-makima-kisara-inori.md`](research/characters/character-canons-makima-kisara-inori.md) | 玛奇玛、木更、楪祈角色设定、正向特征锚与负向拦截。 |
+| **角色调研：狂三/美琴** | [`research/characters/character-research-kurumi-mikoto.md`](research/characters/character-research-kurumi-mikoto.md) | 时崎狂三、御坂美琴原作设定与多形态提示词调研。 |
+| **美琴 Danbooru 标签调研** | [`research/characters/research-misaka-mikoto-danbooru-tags.md`](research/characters/research-misaka-mikoto-danbooru-tags.md) | 御坂美琴 Danbooru / 社区标签消歧与精准提示词映射。 |
+| **热门角色审视优化留档** | [`research/characters/popular-characters-audit-2026-08-18.md`](research/characters/popular-characters-audit-2026-08-18.md) | 2026-08-18 热门角色数据审视与优化记录。 |
 
 ---
 
@@ -59,9 +59,6 @@
 | **模型与参数配置指南** | [`model-prompting-and-parameters-guide.md`](model-prompting-and-parameters-guide.md) | 模型采样器、CFG、步数、hires 放大参数全景配置表。 |
 | **Anima 训练与复现记录** | [`anima-training-record.md`](anima-training-record.md) | 宁宁/夏目 Anima LoRA 训练超参、矩阵评审、晋级基线与复现协议。 |
 | **场景样张出图工艺** | [`showcase-generation-craft.md`](showcase-generation-craft.md) | 官方 Showcase 样张批次生成、种子固化与质检工艺。 |
-| **样张流水线疑难留档** | [`showcase-pipeline-lessons.md`](showcase-pipeline-lessons.md) | 11 大经典疑难（负面丢词、误判拦截、多角色漏判、顽固场景重构等）根因与解决方案。 |
-| **提示词组装审计修复** | [`prompt-assembly-audit-fixes.md`](prompt-assembly-audit-fixes.md) | `usePromptAssembly` 纯函数重构与多引擎分支修复记录。 |
-| **场景提示词一致性审计** | [`scene-prompt-consistency-audit-2026-08-20.md`](scene-prompt-consistency-audit-2026-08-20.md) | 场景预设与服装/场景描述一致性审阅与修复留档（2026-08-20）。 |
 
 ---
 
@@ -82,41 +79,48 @@
 | **Live2D Native 运行时** | [`live2d-native-runtime.md`](live2d-native-runtime.md) | Rust 原生透明窗口渲染器、GPU 纹理缓存、300s 压力测试与性能基线。 |
 | **Native Overlay 规范** | [`live2d-native-overlay-plan.md`](live2d-native-overlay-plan.md) | 前端与 Rust 壳 IPC 意图通信协议、屏幕物理像素坐标映射与分层。 |
 | **Tauri 桌面端迁移** | [`tauri-desktop-migration-plan.md`](tauri-desktop-migration-plan.md) | 从 Electron 到 Tauri 2 的架构迁移、双窗口、打包与 D-10 验收条件。 |
-| **桌面更新机制研究** | [`desktop-update-research.md`](desktop-update-research.md) | 增量快速部署（`deploy-desktop-quick.ps1`）与完整 NSIS 打包技术方案。 |
-| **WebView2 缓存排查** | [`desktop-stale-archive-cache.md`](desktop-stale-archive-cache.md) | 桌面端 WebView2 数据层缓存穿透排查与 data-first 部署顺序保障。 |
-| **Node 控制台隐藏修复** | [`desktop-node-console-window.md`](desktop-node-console-window.md) | 桌面 sidecar 后台静默启动与黑框控制台隐藏解决方案。 |
 | **夏目 Live2D 动作调研** | [`live2d-natsume-overlay-research.md`](live2d-natsume-overlay-research.md) | 四季夏目 Moc.moc3 动作曲线、叠层显隐与情绪参数映射。 |
 | **桌宠 DSH 架构对齐** | [`companion-dsh-agent-architecture.md`](companion-dsh-agent-architecture.md) | 基于 DeepSeek Harness 架构的桌宠智能伴侣配置与工具全景。 |
 | **桌宠双窗口设计** | [`companion-dual-window-design.md`](companion-dual-window-design.md) | Companion 角色/聊天真双窗口分离（方案 B2）设计与落地记录。 |
 
 ---
 
-## 六、 疑难排查、故障演练与经验沉淀 (Lessons Learned & Troubleshooting)
+## 六、 疑难排查与历史故障演练 (Troubleshooting Archive)
+
+> 位于 `docs/archive/troubleshooting/` 目录下，记录历史特定故障的「现象-根因-修复」与避坑要点。
 
 | 文档名称 | 路径 | 核心内容与维护状态 |
 | :--- | :--- | :--- |
-| **2026-08-16 架构与代码审计** | [`audit-2026-08-16.md`](audit-2026-08-16.md) | 架构健康度全面体检、安全边界收敛与优化建议。 |
-| **2026-08-14 漂移审计** | [`drift-audit-2026-08-14.md`](drift-audit-2026-08-14.md) | 契约与实现一致性审计报告。 |
-| **ComfyUI 显存崩溃排障** | [`comfyui-dynamic-vram-crash.md`](comfyui-dynamic-vram-crash.md) | 动态显存分配崩溃排查与服务保活。 |
-| **开发环境与 npm 修复** | [`dev-environment-fixes.md`](dev-environment-fixes.md) | Node/npm/pnpm 开发环境与 PATH 配置排错记录。 |
-| **立绘边框留白修复** | [`character-portrait-frame-gap.md`](character-portrait-frame-gap.md) | 角色详情页立绘贴边与视口自适应修复。 |
-| **hires 放大疑难留档** | [`comfy-superres-hires-fix-2026-08-20.md`](comfy-superres-hires-fix-2026-08-20.md) | hires 放大「奇怪」根因分析与 Remacri ESRGAN 真超分接入（2026-08-20）。 |
-| **大文件下载镜像疑难** | [`download-mirror-lessons.md`](download-mirror-lessons.md) | ModelScope/HF 镜像测速、分段并发下载与校验流程（2026-08-21）。 |
-| **深链模式串位修复** | [`fix-log-popular-to-studio-deeplink-mode-leak.md`](fix-log-popular-to-studio-deeplink-mode-leak.md) | popular→studio 深链提示词串位疑难（2026-08-20）。 |
-| **棘手场景交接标注** | [`showcase-stubborn-scenes-2026-08-18.md`](showcase-stubborn-scenes-2026-08-18.md) | 8 个顽固场景 7 轮试错记录与交接方向（勿盲目重试）。 |
+| **样张流水线 11 大疑难** | [`archive/troubleshooting/showcase-pipeline-lessons.md`](archive/troubleshooting/showcase-pipeline-lessons.md) | 负面丢词、误判拦截、多角色漏判、顽固场景重构等根因与方案。 |
+| **大文件下载镜像疑难** | [`archive/troubleshooting/download-mirror-lessons.md`](archive/troubleshooting/download-mirror-lessons.md) | ModelScope/HF 镜像测速、分段并发下载与校验流程（2026-08-21）。 |
+| **hires 放大疑难留档** | [`archive/troubleshooting/comfy-superres-hires-fix-2026-08-20.md`](archive/troubleshooting/comfy-superres-hires-fix-2026-08-20.md) | hires 放大根因分析与 Remacri ESRGAN 真超分接入（2026-08-20）。 |
+| **深链模式串位修复** | [`archive/troubleshooting/fix-log-popular-to-studio-deeplink-mode-leak.md`](archive/troubleshooting/fix-log-popular-to-studio-deeplink-mode-leak.md) | popular→studio 深链提示词串位疑难（2026-08-20）。 |
+| **场景提示词一致性审计** | [`archive/troubleshooting/scene-prompt-consistency-audit-2026-08-20.md`](archive/troubleshooting/scene-prompt-consistency-audit-2026-08-20.md) | 场景预设与服装描述一致性审阅留档（2026-08-20）。 |
+| **提示词组装审计修复** | [`archive/troubleshooting/prompt-assembly-audit-fixes.md`](archive/troubleshooting/prompt-assembly-audit-fixes.md) | `usePromptAssembly` 纯函数重构与多引擎分支修复记录。 |
+| **棘手场景交接标注** | [`archive/troubleshooting/showcase-stubborn-scenes-2026-08-18.md`](archive/troubleshooting/showcase-stubborn-scenes-2026-08-18.md) | 8 个顽固场景 7 轮试错记录与交接方向（勿盲目重试）。 |
+| **2026-08-16 架构体检** | [`archive/troubleshooting/audit-2026-08-16.md`](archive/troubleshooting/audit-2026-08-16.md) | 架构健康度全面体检、安全边界收敛与优化建议。 |
+| **2026-08-14 漂移审计** | [`archive/troubleshooting/drift-audit-2026-08-14.md`](archive/troubleshooting/drift-audit-2026-08-14.md) | 契约与实现一致性审计报告。 |
+| **ComfyUI 显存崩溃排障** | [`archive/troubleshooting/comfyui-dynamic-vram-crash.md`](archive/troubleshooting/comfyui-dynamic-vram-crash.md) | 动态显存分配崩溃排查与服务保活。 |
+| **开发环境与 npm 修复** | [`archive/troubleshooting/dev-environment-fixes.md`](archive/troubleshooting/dev-environment-fixes.md) | Node/npm/pnpm 开发环境与 PATH 配置排错记录。 |
+| **WebView2 缓存排查** | [`archive/troubleshooting/desktop-stale-archive-cache.md`](archive/troubleshooting/desktop-stale-archive-cache.md) | 桌面端 WebView2 数据层缓存穿透排查与 data-first 部署顺序保障。 |
+| **Node 控制台隐藏修复** | [`archive/troubleshooting/desktop-node-console-window.md`](archive/troubleshooting/desktop-node-console-window.md) | 桌面 sidecar 后台静默启动与黑框控制台隐藏解决方案。 |
+| **立绘边框留白修复** | [`archive/troubleshooting/character-portrait-frame-gap.md`](archive/troubleshooting/character-portrait-frame-gap.md) | 角色详情页立绘贴边与视口自适应修复。 |
 
 ---
 
-## 七、 历史调研与竞品分析 (Research & Benchmarks)
+## 七、 历史调研与竞品分析归档 (Research Archive)
+
+> 位于 `docs/archive/research/` 目录下，记录前期的竞品体验、技术选型与调研横评。
 
 | 文档名称 | 路径 | 核心内容 |
 | :--- | :--- | :--- |
-| **绘图体验优化方案** | [`drawing-experience-optimization-plan.md`](drawing-experience-optimization-plan.md) | 紧凑场景模式与专家模式双层交互设计方案。 |
-| **对话 Prompt 与长期记忆对比** | [`roleplay-prompt-memory-comparison.md`](roleplay-prompt-memory-comparison.md) | 角色空间分层 Prompt、动态召回与记忆机制评估。 |
-| **AI Roleplay 竞品深入调研** | [`ai-roleplay-products-research-deep-dive.md`](ai-roleplay-products-research-deep-dive.md) | 业界主流 AI 角色扮演产品架构与交互深度横评。 |
-| **AI 生图 UI/UX 竞品调研** | [`ai-image-ui-ux-research.md`](ai-image-ui-ux-research.md) | Midjourney、NovelAI、Civitai 等生图工作台交互对比。 |
-| **高阶工作流工具横评** | [`research-advanced-workflow-tools-benchmark.md`](research-advanced-workflow-tools-benchmark.md) | Dify、ComfyUI、Coze 等编排引擎基准测试。 |
-| **桌宠 UI 交互调研** | [`companion-ui-research.md`](companion-ui-research.md) | 桌面伴侣界面形态与轻量交互调研。 |
+| **绘图体验优化方案** | [`archive/research/drawing-experience-optimization-plan.md`](archive/research/drawing-experience-optimization-plan.md) | 紧凑场景模式与专家模式双层交互设计方案。 |
+| **对话 Prompt 与长期记忆** | [`archive/research/roleplay-prompt-memory-comparison.md`](archive/research/roleplay-prompt-memory-comparison.md) | 角色空间分层 Prompt、动态召回与记忆机制评估。 |
+| **AI Roleplay 竞品深入调研** | [`archive/research/ai-roleplay-products-research-deep-dive.md`](archive/research/ai-roleplay-products-research-deep-dive.md) | 业界主流 AI 角色扮演产品架构与交互深度横评。 |
+| **AI 生图 UI/UX 竞品调研** | [`archive/research/ai-image-ui-ux-research.md`](archive/research/ai-image-ui-ux-research.md) | Midjourney、NovelAI、Civitai 等生图工作台交互对比。 |
+| **高阶工作流工具横评** | [`archive/research/research-advanced-workflow-tools-benchmark.md`](archive/research/research-advanced-workflow-tools-benchmark.md) | Dify、ComfyUI、Coze 等编排引擎基准测试。 |
+| **桌宠 UI 交互调研** | [`archive/research/companion-ui-research.md`](archive/research/companion-ui-research.md) | 桌面伴侣界面形态与轻量交互调研。 |
+| **桌面更新机制研究** | [`archive/research/desktop-update-research.md`](archive/research/desktop-update-research.md) | 增量快速部署与完整 NSIS 打包技术方案。 |
 
 ---
 
