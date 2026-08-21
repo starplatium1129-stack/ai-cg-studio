@@ -13,7 +13,6 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 
 const BASE = process.argv[2] || 'http://127.0.0.1:3123';
 const SCENE_MATCH = process.argv[3] || '';

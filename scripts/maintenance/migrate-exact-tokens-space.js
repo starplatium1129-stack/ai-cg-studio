@@ -69,7 +69,7 @@ let totalChanges = [];
   const file = path.resolve('data', 'character-reference-standards.json');
   const data = JSON.parse(fs.readFileSync(file, 'utf8'));
   const walk = (node, where) => {
-    if (Array.isArray(node)) { node.forEach((n, i) => walk(n, where)); return; }
+    if (Array.isArray(node)) { node.forEach((n) => walk(n, where)); return; }
     if (node && typeof node === 'object') {
       for (const [key, value] of Object.entries(node)) {
         if ((key === 'identityTokens' || key === 'exactTokens' || key === 'aliases') && Array.isArray(value)) {

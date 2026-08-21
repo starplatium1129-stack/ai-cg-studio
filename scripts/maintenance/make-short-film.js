@@ -105,8 +105,6 @@ async function stageRefs() {
 }
 
 async function stageScript() {
-  const statePath = path.join(OUT_DIR, 'refs.json');
-  const refs = JSON.parse(fs.readFileSync(statePath, 'utf8'));
   const story = process.env.STORY || '深夜的咖啡店即将打烊，宁宁擦拭着最后一个杯子。门铃响起，夏目走进来，点了一杯她常喝的咖啡。两人聊起多年前的往事，宁宁把一封旧信推到夏目面前。夏目读完抬起头，眼眶微红，轻声说了一句谢谢。窗外下起雨，两人相视而笑。';
   const scriptPath = path.join(OUT_DIR, 'script.json');
   if (fs.existsSync(scriptPath)) {
@@ -157,7 +155,7 @@ async function stageGenerate() {
   // 每镜手动指定出场角色（按脚本内容推断）
   const casts = process.env.CASTS
     ? process.env.CASTS.split(',')
-    : script.shots.map((shot, i) => {
+    : script.shots.map((shot) => {
         // 简单启发式：提到两个名字 → 12；黑发/夏目 → 2；默认 → 1
         const p = shot.prompt.toLowerCase();
         if (p.includes('picture 1') && p.includes('picture 2')) return '12';

@@ -227,8 +227,11 @@
               @click="stopEverything">停止</button>
             <button class="btn btn-primary send-btn" type="button"
               :disabled="busy || !chatReady"
-              :title="chatReady ? '' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')"
-              @click="handleSend">发送</button>
+              :title="chatReady ? '发送 (Enter 发送，Shift+Enter 换行)' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')"
+              @click="handleSend">
+              <span>发送</span>
+              <kbd class="kbd-send-hint">↵</kbd>
+            </button>
           </div>
 
           <div class="composer-tools">

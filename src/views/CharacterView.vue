@@ -268,16 +268,17 @@
                 </div>
               </div>
               <div class="ref-modal-actions">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="activeRefIndex <= 0" @click="moveRef(-1)">
-                  ← 上一视角
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="activeRefIndex <= 0" title="上一视角 (键盘 ←)" @click="moveRef(-1)">
+                  ← <kbd>←</kbd>
                 </button>
                 <button
                   class="btn btn-ghost btn-sm"
                   type="button"
                   :disabled="!activeOutfit || activeRefIndex >= activeOutfit.references.length - 1"
+                  title="下一视角 (键盘 →)"
                   @click="moveRef(1)"
                 >
-                  下一视角 →
+                  <kbd>→</kbd> →
                 </button>
                 <RouterLink
                   class="btn btn-primary btn-sm"

@@ -9,7 +9,10 @@
         <button class="history-action" type="button" @click="selectedSet.clear()">取消选择</button>
       </span>
     </div>
-    <div v-if="!items.length" class="history-empty">还没有保存的作品。生成后点“保存快照”，我会把每一张都好好收着。</div>
+    <div v-if="!items.length" class="history-empty">
+      <ArchiveIcon name="image" class="history-empty-icon" />
+      <span>还没有保存的作品。生成后点“保存快照”，我会把每一张都好好收着。</span>
+    </div>
     <div v-else class="history-list compact-history-list">
       <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
@@ -108,6 +111,25 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .history-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  padding: var(--s-5) var(--s-4);
+  color: var(--text-muted);
+  text-align: center;
+  font-size: var(--fs-label-sm);
+  background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
+  border: 1px dashed var(--border-soft);
+  border-radius: var(--r-md);
+}
+.history-empty-icon {
+  font-size: 1.5rem;
+  color: var(--archive-blue, #38bdf8);
+  opacity: 0.7;
+}
 .history-batch { display: inline-flex; gap: var(--s-1); }
 .history-pick {
   position: absolute; top: 4px; left: 4px;

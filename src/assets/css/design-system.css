@@ -173,6 +173,7 @@
   /* 玻璃面高光内衬 — 与 shadow ladder 叠加使用 */
   --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
+  --shadow-glass-elevated: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 16px 40px -8px rgba(0, 0, 0, 0.5);
   /* 战术硬边框（1px 高对比）：替代柔和阴影作为主要层级手段 */
   --line-tactical: 1px solid var(--border-strong);
   /* accent 光晕:只有两档(控件 / 主操作),不再按 6px…64px 自由发挥 */
@@ -1723,17 +1724,74 @@ html.theme-fade .sakura-fall {
   transform-origin: center center;
 }
 
-/* ── 复制成功 Morph 动效 ── */
-@keyframes copySuccessPulse {
-  0% { transform: scale(0.85); opacity: 0.6; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+/* ── 键盘快捷键徽章 (<kbd> Keyboard Shortcut Badge) ── */
+kbd,
+.kbd-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--bg-surface) 85%, white);
+  border: 1px solid var(--border-soft);
+  border-bottom: 2px solid var(--border-strong);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  user-select: none;
+  vertical-align: baseline;
+}
+[data-theme="light"] kbd,
+[data-theme="light"] .kbd-badge {
+  background: #fdfdfd;
+  color: #3f3933;
+  border-color: rgba(0, 0, 0, 0.15);
+  border-bottom-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-.btn-copied-success {
-  animation: copySuccessPulse 0.3s var(--ease-out);
-  color: var(--success, #10b981) !important;
-  border-color: var(--success, #10b981) !important;
+/* ── 全站互动控件物理微按压反馈 (Tactile Press) ── */
+:where(
+  .chip,
+  .token-chip,
+  .outfit-chip,
+  .scene-cat-btn,
+  .char-outfit-tab,
+  .gallery-filter,
+  .artist-cat-btn,
+  .artist-combo-btn,
+  .artwork-tool,
+  .history-action,
+  .btn-upload-overlay,
+  .viewer-nav
+):active:not(:disabled) {
+  transform: scale(0.96);
+  transition: transform 0.06s var(--ease-out);
 }
+
+/* ── 弹窗 / 模态框平滑视口缩放与收拢过渡动效 ── */
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+dialog[open],
+.modal-card,
+.art-viewer.open,
+.inpaint-modal {
+  animation: modalScaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 
 

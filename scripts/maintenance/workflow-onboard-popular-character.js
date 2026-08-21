@@ -25,11 +25,8 @@ const { execSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..', '..');
 const DATA_DIR = path.join(ROOT, 'data');
 const POPULAR_FILE = path.join(DATA_DIR, 'popular-characters.json');
-const CHARACTERS_FILE = path.join(DATA_DIR, 'characters.json');
 const BLUEPRINTS_FILE = path.join(DATA_DIR, 'scene-blueprints.json');
 const STANDARDS_FILE = path.join(DATA_DIR, 'character-reference-standards.json');
-// 2026-08-21 起前端运行时直接加载该 JSON；characterReferenceData.ts 是手写加载器
-const TS_STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const SCENE_STORE_FILE = path.join(ROOT, 'src', 'stores', 'sceneStore.ts');
 const SHOWCASE_DIR = path.resolve('E:/code/2/lora/AI/SceneShowcase/2026-08-15_v23');
 const MANIFEST_FILE = path.join(SHOWCASE_DIR, 'manifest.json');

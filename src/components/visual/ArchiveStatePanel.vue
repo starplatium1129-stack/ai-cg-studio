@@ -64,9 +64,14 @@ const defaultCode = computed(() => ({
 [data-kind="success"] { --state-accent:var(--success-text); }
 [data-kind="loading"] .archive-state-mark i:first-of-type { animation:state-orbit 1.8s linear infinite; border-top-color:var(--archive-blue); }
 [data-kind="loading"] :deep(.archive-icon) { animation:state-counter 1.8s linear infinite reverse; }
+[data-kind="empty"] .archive-state-mark,
+[data-kind="filtered"] .archive-state-mark {
+  animation: state-float 3s ease-in-out infinite alternate;
+}
 [data-kind="error"] h2 { color:var(--danger-text); }
 [data-kind="success"] h2 { color:var(--success-text); }
 @keyframes state-orbit{to{transform:rotate(360deg)}}
 @keyframes state-counter{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.archive-state-mark i,.archive-state-mark :deep(.archive-icon){animation:none!important}}
+@keyframes state-float{0%{transform:translateY(0)}100%{transform:translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){.archive-state-mark i,.archive-state-mark :deep(.archive-icon),.archive-state-mark{animation:none!important}}
 </style>

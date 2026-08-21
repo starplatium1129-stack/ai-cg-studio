@@ -159,8 +159,8 @@
             <div class="viewer-actions">
               <RouterLink v-if="currentEntry.type === 'scene'" class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'"><ArchiveIcon name="spark" /> 画这个场景</RouterLink>
               <RouterLink v-else class="btn btn-primary" :to="'/prompt-builder'"><ArchiveIcon name="spark" /> 去导演台创作</RouterLink>
-              <button class="btn btn-ghost" type="button" @click="move(-1)">← 上一张</button>
-              <button class="btn btn-ghost" type="button" @click="move(1)">下一张 →</button>
+              <button class="btn btn-ghost" type="button" title="上一张 (键盘 ←)" @click="move(-1)">← <kbd>←</kbd></button>
+              <button class="btn btn-ghost" type="button" title="下一张 (键盘 →)" @click="move(1)"><kbd>→</kbd> →</button>
             </div>
           </div>
         </div>

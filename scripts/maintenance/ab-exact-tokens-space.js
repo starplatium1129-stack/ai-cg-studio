@@ -20,7 +20,6 @@ const path = require('path');
 
 const popularContent = require('../../src/utils/popularContent.ts');
 const { artistTagsForEngine } = require('../../src/config/artistStyles.ts');
-const animaConstants = require('../../routes/anima.js').constants;
 const animaGenerationContract = require('../../server/anima-generation-contract.js');
 
 const popularData = require('../../data/popular-characters.json');

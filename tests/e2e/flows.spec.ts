@@ -786,7 +786,7 @@ test('flow 6g · popular→studio 深链：热门角色模式进灵感场景出�
   await page.locator('.pop-card .pop-draw-action').first().click();
   await page.waitForURL(/prompt-builder\?popular=/, { timeout: 20000 });
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'popular');
-  const popPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent()).replace(/\s+/g, ' ').trim();
+  const popPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent() ?? '').replace(/\s+/g, ' ').trim();
 
   // 第 2 步：顶栏 SPA 跳到灵感场景（不整页刷新，popular 模式仍留在 store），选工作室场景出图
   await page.locator('a[href="/scene-explorer"]').first().click();
@@ -800,7 +800,7 @@ test('flow 6g · popular→studio 深链：热门角色模式进灵感场景出�
   // 提示词组装必须整体切回工作室分支：subject=studio、不再残留热门角色身份词、
   // 预览随本场景变化（不能与 popular 预览相同）。
   await expect(page.locator('.pb')).toHaveAttribute('data-subject', 'studio');
-  const studioPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent()).replace(/\s+/g, ' ').trim();
+  const studioPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent() ?? '').replace(/\s+/g, ' ').trim();
   expect(studioPreview).not.toBe(popPreview);
   expect(studioPreview).toMatch(/ayachi[ _]nene|shiki[ _]natsume/i);
   expect(studioPreview).not.toMatch(/raiden[ _]shogun|shogun|raiden ei|electro/i);
@@ -834,7 +834,7 @@ test('flow 6h · studio→popular 深链：工作室场景进热门角色出图�
   expect(popularStory).not.toBe(studioStory);
 
   // 提示词必须整体切到热门角色组装：不得残留工作室身份/服装锚点（漏词即回归）。
-  const popularPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent()).replace(/\s+/g, ' ').trim();
+  const popularPreview = (await page.locator('#promptMonitor .prompt-health-body').textContent() ?? '').replace(/\s+/g, ' ').trim();
   expect(popularPreview).not.toBe('');
   expect(popularPreview).not.toMatch(/ayachi[ _]nene|shiki[ _]natsume|nene_|natsume_/i);
   expect(errors).toEqual([]);

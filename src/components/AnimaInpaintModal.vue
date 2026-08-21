@@ -608,11 +608,13 @@ async function handleStart() {
                   @click="undoMask"
                 >
                   <ArchiveIcon name="refresh" />
-                  <span>撤销 (Ctrl+Z)</span>
+                  <span>撤销 <kbd>Ctrl+Z</kbd></span>
                 </button>
                 <button type="button" class="btn btn-ghost btn-xs btn-clear-mask" @click="clearMask">清空遮罩</button>
               </div>
-              <span class="field-hint">直接涂白服装区域；按住 Shift 或右键擦除，保护脸、头发、手脚和背景。</span>
+              <span class="field-hint">
+                涂白服装区域（支持 <kbd>Alt</kbd>+<kbd>滚轮</kbd> 调粗细；按住 <kbd>Shift</kbd> 或右键擦除保护五官手脚）。
+              </span>
             </template>
             <template v-else>
               <label class="field-label" for="maskPromptInput">自动识别区域</label>

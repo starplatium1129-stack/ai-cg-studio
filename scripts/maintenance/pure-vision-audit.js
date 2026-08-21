@@ -156,7 +156,7 @@ async function main() {
     console.log(`================================================\n`);
 
     let cursor = 0;
-    async function worker(workerId) {
+    async function worker() {
       while (cursor < pendingItems.length) {
         const item = pendingItems[cursor++];
         await auditSingleItem(item);

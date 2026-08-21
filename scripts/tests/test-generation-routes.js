@@ -108,8 +108,8 @@ async function run() {
       var hiresOfflineJob = (await json(hiresOffline)).job;
       assert.equal(hiresOfflineJob.metadata.hiresUpscaler, 'Remacri', 'Auto hires on Comfy resolves to Remacri super-res when installed');
      var hiresPrompts = await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'));
-      var hiresGraph = hiresPrompts.calls.filter(function (call) { return call.path === '/prompt'; }).at(-1).body.prompt;
-      assert.equal(Object.values(hiresGraph).some(function (node) { return node && node.class_type === 'UpscaleModelLoader'; }), true, 'Comfy hires graph must contain UpscaleModelLoader for super-res');
+      var comfyHiresGraph = hiresPrompts.calls.filter(function (call) { return call.path === '/prompt'; }).at(-1).body.prompt;
+      assert.equal(Object.values(comfyHiresGraph).some(function (node) { return node && node.class_type === 'UpscaleModelLoader'; }), true, 'Comfy hires graph must contain UpscaleModelLoader for super-res');
 
     var capabilityFallback = await post(base, Object.assign({}, requestBody, { sampler:'DPM++ SDE' }));
     assert.equal(capabilityFallback.status, 503);

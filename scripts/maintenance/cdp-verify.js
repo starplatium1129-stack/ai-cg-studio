@@ -1,7 +1,6 @@
 // Post-fix verification: CDP DOM state + correct-coordinate overlay capture.
 // Requires the companion running with WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222
 const { chromium } = require('playwright')
-const { execSync } = require('node:child_process')
 
 async function main() {
   const browser = await chromium.connectOverCDP('http://127.0.0.1:9222')

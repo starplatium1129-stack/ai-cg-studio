@@ -240,8 +240,9 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(result.headers['content-type'], 'image/png');
     assert.strictEqual(result.body[0], 137);
     // Yume jobs also complete; consume their results so the runtime output dir drains.
-    for (var i = 0; i < [yumeBareJobId, yumeLoraJobId].length; i += 1) {
-      var yumeJob = await waitForJob(port, [yumeBareJobId, yumeLoraJobId][i], function (job) { return job && job.status === 'succeeded'; });
+    var yumeJobIds = [yumeBareJobId, yumeLoraJobId];
+    for (var idx = 0; idx < yumeJobIds.length; idx += 1) {
+      var yumeJob = await waitForJob(port, yumeJobIds[idx], function (job) { return job && job.status === 'succeeded'; });
       assert.ok(yumeJob.resultUrl);
       var yumeResult = await request(port, { path:yumeJob.resultUrl });
       assert.strictEqual(yumeResult.status, 200);
