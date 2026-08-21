@@ -281,9 +281,14 @@ test('showcase view renders entry-type grouping, gated CTA, metadata and the mob
   assert(view.includes("v-else-if=\"entry.type !== 'scene'\""), 'non-scene cards must get a type badge');
   assert(view.includes('sample-badge-type'), 'type badge needs distinct styling');
 
-  // 移动端：热门角色用 select 而不是动态补 18 个 pills；搜索仍覆盖全部条目。
+  // 移动端：热门角色并入统一的 char select（动态注入 popularCharOpts，不再单独补 18 个 pills）；
+  // 搜索仍覆盖全部条目。2026-08-22 筛选器收敛重构后由 showcaseTypeSelect/showcaseCharSelect 承载。
   assert(view.includes('popularCharOpts'), 'popular characters must be derived for the select');
-  assert(view.includes('showcasePopularChar') && view.includes('filter-select'), 'popular type must render a single select');
+  assert(
+    view.includes('id="showcaseTypeSelect"') && view.includes('id="showcaseCharSelect"')
+      && view.includes('allCharOptions'),
+    'type and character filters must render as unified selects',
+  );
   assert(view.includes('全部热门角色'), 'select must have a clear-all option');
   assert(view.includes('charOpts'), 'char filter must keep the fixed studio pills');
 

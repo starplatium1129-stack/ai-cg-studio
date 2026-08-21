@@ -95,7 +95,7 @@ html.companion-mode body {
   background: color-mix(in srgb, var(--accent) 15%, transparent);
   color: var(--accent);
   font-weight: 600;
-  font-size: 10px;
+  font-size: var(--fs-mono-xs);
 }
 
 .companion-page .companion-toolbar-actions {
@@ -272,7 +272,7 @@ html.companion-mode body {
    冷启动 /companion 时不会随 chat 路由块加载，样式时有时无。 */
 .companion-page .live2d-interaction-hint {
   position: absolute;
-  z-index: 8;
+  z-index: var(--z-float);
   left: 50%;
   bottom: var(--s-3);
   translate: -50% 0;
@@ -1409,7 +1409,7 @@ html.companion-mode:not(.companion-desktop) body {
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1;
 }
 
@@ -1511,7 +1511,7 @@ html.companion-mode:not(.companion-desktop) body {
   border-radius: var(--r-sm);
   background: var(--bg-elevated);
   color: var(--text-primary);
-  font: 12px var(--font-mono);
+  font: var(--fs-label-sm) var(--font-mono);
 }
 
 .companion-page .companion-workspace-actions {
@@ -2125,7 +2125,7 @@ html:has(.companion-chat-window) body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font: 700 13px var(--font-sans);
+  font: 700 var(--fs-label) var(--font-sans);
   color: var(--text-primary);
 }
 .companion-chat-titlebar .titlebar-controls {
@@ -2151,7 +2151,7 @@ html:has(.companion-chat-window) body {
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  font: 700 11px var(--font-sans);
+  font: 700 var(--fs-mono-sm) var(--font-sans);
 }
 .companion-chat-char-switch button:hover,
 .companion-chat-char-switch button:focus-visible {
@@ -2173,7 +2173,7 @@ html:has(.companion-chat-window) body {
   background: color-mix(in srgb, var(--bg-elevated) 60%, transparent);
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1;
 }
 .companion-chat-mini .archive-icon {
@@ -2275,7 +2275,7 @@ html:has(.companion-chat-window) body {
   display: block;
   margin-top: 4px;
   color: var(--character-accent);
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
 }
 .companion-chat-typing {
   display: inline-flex;
@@ -2349,7 +2349,7 @@ html:has(.companion-chat-window) body {
   border-radius: var(--r-md);
   background: var(--bg-surface);
   color: var(--text-primary);
-  font: 13px/1.5 var(--font-sans);
+  font: var(--fs-label)/1.5 var(--font-sans);
   resize: none;
 }
 .companion-chat-input:focus {
@@ -2372,7 +2372,7 @@ html:has(.companion-chat-window) body {
   background: var(--bg-surface);
   color: var(--text-primary);
   cursor: pointer;
-  font: 600 12px var(--font-sans);
+  font: 600 var(--fs-label-sm) var(--font-sans);
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -2424,7 +2424,7 @@ html:has(.companion-chat-window) body {
 
 @media (max-width: 460px) {
   .companion-chat-titlebar { padding-left: 10px; }
-  .companion-chat-title { font-size: 12px; }
+  .companion-chat-title { font-size: var(--fs-label-sm); }
   .companion-chat-body { padding: 0 var(--s-2); }
   .companion-chat-composer { margin: 0 calc(var(--s-2) * -1); padding: var(--s-2) var(--s-2) var(--s-2); }
 }
@@ -2478,7 +2478,7 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
   -webkit-backdrop-filter: blur(14px) saturate(1.25);
   backdrop-filter: blur(14px) saturate(1.25);
   cursor: pointer;
-  font: 700 13px var(--font-sans);
+  font: 700 var(--fs-label) var(--font-sans);
   transition: transform 160ms var(--ease-out), background 160ms ease, border-color 160ms ease;
 }
 .companion-chat-chip .archive-icon {
@@ -2575,7 +2575,7 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   background: transparent;
   color: var(--companion-ink-soft);
   cursor: pointer;
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1;
 }
 .companion-float-reminder > button:hover,

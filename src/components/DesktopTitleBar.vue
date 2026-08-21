@@ -61,8 +61,8 @@ onUnmounted(() => {
   --desktop-titlebar-name: #ddd6f0;
   --desktop-titlebar-page: #857baa;
   --desktop-titlebar-hover: #f4f1fb;
-  --desktop-titlebar-hover-bg: rgba(255, 255, 255, 0.08);
-  --desktop-titlebar-press-bg: rgba(255, 255, 255, 0.13);
+  --desktop-titlebar-hover-bg: color-mix(in srgb, white 8%, transparent);
+  --desktop-titlebar-press-bg: color-mix(in srgb, white 13%, transparent);
   --desktop-titlebar-close: #e81123;
   position: relative;
   flex: none;
@@ -74,7 +74,7 @@ onUnmounted(() => {
   background:
     radial-gradient(26rem 6rem at 10% -140%, rgba(180, 140, 242, 0.2), transparent 62%),
     linear-gradient(180deg, var(--desktop-titlebar-bg-top), var(--desktop-titlebar-bg-bottom));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
   -webkit-app-region: drag;
   user-select: none;
   color: var(--desktop-titlebar-text);
@@ -106,7 +106,7 @@ onUnmounted(() => {
   height: 8px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--desktop-titlebar-dot-start), var(--desktop-titlebar-dot-end));
-  box-shadow: 0 0 10px rgba(180, 140, 242, 0.55), 0 0 2px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 10px rgba(180, 140, 242, 0.55), 0 0 2px color-mix(in srgb, white 35%, transparent);
 }
 .titlebar-name {
   color: var(--desktop-titlebar-name);
@@ -115,7 +115,7 @@ onUnmounted(() => {
 }
 .titlebar-page {
   padding-left: 10px;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid color-mix(in srgb, white 10%, transparent);
   color: var(--desktop-titlebar-page);
   overflow: hidden;
   text-overflow: ellipsis;

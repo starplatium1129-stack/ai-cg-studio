@@ -210,7 +210,7 @@ function stopPan(event: PointerEvent) {
   min-width: 240px;
   min-height: 320px;
   border-radius: var(--r-lg, 12px);
-  background: rgba(255, 255, 255, 0.04);
+  background: color-mix(in srgb, white 4%, transparent);
   overflow: hidden;
 }
 
@@ -221,7 +221,7 @@ function stopPan(event: PointerEvent) {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
+    color-mix(in srgb, white 8%, transparent) 50%,
     transparent 100%
   );
   animation: shimmer 1.6s infinite;
@@ -252,7 +252,7 @@ function stopPan(event: PointerEvent) {
 }
 
 .image-fallback {
-  color: var(--on-art-secondary, rgba(255, 255, 255, 0.6));
+  color: var(--on-art-secondary, color-mix(in srgb, white 60%, transparent));
   font-size: var(--fs-body-sm, 0.85rem);
 }
 
@@ -265,33 +265,33 @@ function stopPan(event: PointerEvent) {
   align-items: center;
   gap: 8px;
   padding: 4px 12px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, black 75%, transparent);
+  border: 1px solid color-mix(in srgb, white 15%, transparent);
   backdrop-filter: blur(8px);
-  z-index: 10;
-  font-size: 0.75rem;
+  z-index: var(--z-raised);
+  font-size: var(--fs-label-sm);
   color: #fff;
 }
 
 .zoom-level {
   font-family: var(--font-mono, monospace);
   font-weight: 600;
-  color: #38bdf8;
+  color: var(--archive-blue);
 }
 
 .btn-reset-zoom {
   border: 0;
-  background: rgba(255, 255, 255, 0.15);
+  background: color-mix(in srgb, white 15%, transparent);
   color: #fff;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--r-xs);
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: var(--fs-mono-sm);
 }
 
 .btn-reset-zoom:hover {
-  background: #38bdf8;
+  background: var(--archive-blue);
   color: #000;
 }
 
@@ -299,8 +299,8 @@ function stopPan(event: PointerEvent) {
   position: absolute;
   bottom: 8px;
   right: 12px;
-  font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: var(--fs-mono-sm);
+  color: color-mix(in srgb, white 40%, transparent);
   pointer-events: none;
 }
 </style>

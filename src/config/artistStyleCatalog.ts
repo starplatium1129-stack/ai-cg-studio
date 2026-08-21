@@ -57,7 +57,7 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
     name: 'Momoco',
     cnName: 'ももこ',
     waiTag: 'momoco_haru',
-    animaTag: '@momoco (momopoco)',
+    animaTag: '@momoco haru',
     description: '《俄妹》轻小说原案、水润眼眸与元气白皙少女感',
     masterpiece: '《不时轻声用俄语遮羞的邻座艾莉同学》（俄妹）小说原案插画',
     category: 'pure',

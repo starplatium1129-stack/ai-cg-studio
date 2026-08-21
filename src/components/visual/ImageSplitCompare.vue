@@ -107,8 +107,8 @@ function stopDrag(event: PointerEvent) {
   user-select: none;
   touch-action: none;
   cursor: ew-resize;
-  border-radius: 8px;
-  background: #09090b;
+  border-radius: var(--r-sm);
+  background: var(--bg-deep);
 }
 
 .split-layer {
@@ -133,25 +133,25 @@ function stopDrag(event: PointerEvent) {
 .split-badge {
   position: absolute;
   top: 10px;
-  font-size: 0.72rem;
+  font-size: var(--fs-label-xs);
   padding: 3px 8px;
-  border-radius: 4px;
+  border-radius: var(--r-xs);
   backdrop-filter: blur(6px);
-  z-index: 2;
+  z-index: var(--z-canvas);
   font-weight: 500;
 }
 
 .badge-before {
   left: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: color-mix(in srgb, black 70%, transparent);
+  color: color-mix(in srgb, white 85%, transparent);
+  border: 1px solid color-mix(in srgb, white 15%, transparent);
 }
 
 .badge-after {
   right: 10px;
   background: rgba(56, 189, 248, 0.2);
-  color: #38bdf8;
+  color: var(--archive-blue);
   border: 1px solid rgba(56, 189, 248, 0.4);
 }
 
@@ -169,7 +169,7 @@ function stopDrag(event: PointerEvent) {
 .divider-line {
   position: absolute;
   inset: 0;
-  background: #38bdf8;
+  background: var(--archive-blue);
   box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
 }
 
@@ -181,18 +181,18 @@ function stopDrag(event: PointerEvent) {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #0f172a;
-  border: 2px solid #38bdf8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  background: var(--bg-deep);
+  border: 2px solid var(--archive-blue);
+  box-shadow: 0 2px 8px color-mix(in srgb, black 70%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #38bdf8;
+  color: var(--archive-blue);
 }
 
 .is-dragging .divider-handle {
   transform: translate(-50%, -50%) scale(1.15);
-  background: #38bdf8;
-  color: #0f172a;
+  background: var(--archive-blue);
+  color: var(--bg-deep);
 }
 </style>

@@ -474,7 +474,7 @@ function applyCombo(artistIds: readonly string[]) {
   padding: 1px 4px;
   border-radius: var(--r-xs, 4px);
   background: rgba(56, 189, 248, 0.12);
-  color: var(--archive-blue, #38bdf8);
+  color: var(--archive-blue);
   font-weight: 600;
   border: 1px solid rgba(56, 189, 248, 0.25);
 }

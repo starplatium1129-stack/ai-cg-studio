@@ -576,7 +576,7 @@ onMounted(() => {
 .cb-franchise-minor { border-style: dashed; opacity: .88; }
 .cb-franchise-toggle { color: var(--text-muted); background: transparent; border-color: var(--border-soft); }
 .cb-franchise-toggle:hover { color: var(--accent); }
-.cb-franchise .cb-caret { font-size: 10px; line-height: 1; opacity: .7; }
+.cb-franchise .cb-caret { font-size: var(--fs-mono-xs); line-height: 1; opacity: .7; }
 .cb-count { font: 650 var(--fs-mono-xs) var(--font-mono); opacity: .7; }
 .cb-groups { display: grid; gap: var(--s-5); }
 .cb-group-head { display: flex; align-items: baseline; gap: var(--s-2); margin: 0 0 var(--s-2); font-size: var(--fs-title-xs); color: var(--text-secondary); }
@@ -601,7 +601,7 @@ onMounted(() => {
   width: 100%; height: 100%;
   display: grid; place-items: center;
   font-size: var(--fs-title-sm); font-weight: 800;
-  color: rgba(255, 255, 255, .94);
+  color: color-mix(in srgb, white 94%, transparent);
   text-shadow: 0 1px 4px color-mix(in srgb, #000 34%, transparent);
   background: linear-gradient(135deg, var(--avatar-a, #77717f), var(--avatar-b, #4a4553));
 }
@@ -769,7 +769,7 @@ onMounted(() => {
   color: #fff;
 }
 .outfit-tab-icon {
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
 }
 .char-reference-section::before {
   content: "02 · CINEMATIC BIBLE";
@@ -802,7 +802,7 @@ onMounted(() => {
 .char-ref-card:hover {
   transform: translateY(-3px);
   border-color: var(--accent);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px color-mix(in srgb, black 30%, transparent);
 }
 .char-ref-hover-hint {
   position: absolute;
@@ -810,7 +810,7 @@ onMounted(() => {
   right: var(--s-2);
   padding: 2px 8px;
   border-radius: var(--r-pill);
-  background: rgba(0, 0, 0, 0.7);
+  background: color-mix(in srgb, black 70%, transparent);
   backdrop-filter: blur(4px);
   color: #fff;
   font-size: var(--fs-label-xs);
@@ -848,7 +848,7 @@ onMounted(() => {
   left: var(--s-2);
   padding: 2px var(--s-2);
   border-radius: var(--r-pill);
-  background: rgba(0, 0, 0, 0.65);
+  background: color-mix(in srgb, black 65%, transparent);
   backdrop-filter: blur(4px);
   color: #fff;
   font: 600 var(--fs-mono-xs) var(--font-mono);
@@ -917,17 +917,17 @@ onMounted(() => {
   color: var(--text-primary);
 }
 .char-ref-modal::backdrop {
-  background: rgba(0, 0, 0, 0.82);
+  background: color-mix(in srgb, black 82%, transparent);
   backdrop-filter: blur(12px);
 }
 .ref-modal-layout {
   display: grid;
   grid-template-columns: minmax(320px, 1.2fr) minmax(300px, 1fr);
-  background: var(--bg-surface-elevated, #161822);
+  background: var(--bg-surface-elevated);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-xl);
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 24px 64px color-mix(in srgb, black 65%, transparent);
 }
 .ref-modal-art {
   background: #000;
@@ -966,7 +966,7 @@ onMounted(() => {
 }
 .ref-modal-kicker {
   font: 600 var(--fs-mono-xs) var(--font-mono);
-  color: var(--archive-blue, #38bdf8);
+  color: var(--archive-blue);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: var(--s-2);
@@ -989,7 +989,7 @@ onMounted(() => {
   border-radius: var(--r-pill);
   background: rgba(56, 189, 248, 0.15);
   border: 1px solid rgba(56, 189, 248, 0.3);
-  color: #38bdf8;
+  color: var(--archive-blue);
   font: 600 var(--fs-mono-xs) var(--font-mono);
 }
 .ref-modal-desc {

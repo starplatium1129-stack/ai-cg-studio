@@ -1143,7 +1143,7 @@ onUnmounted(() => {
   border-radius: var(--r-md); color: var(--nene-violet);
   background: linear-gradient(135deg, color-mix(in srgb, var(--nene-violet) 18%, transparent), var(--bg-deep));
   box-shadow: 0 0 12px color-mix(in srgb, var(--nene-violet) 20%, transparent);
-  font: 800 1.15rem var(--font-serif);
+  font: 800 var(--fs-title-sm) var(--font-serif);
 }
 .job-natsume .character-mark {
   border-color: color-mix(in srgb, var(--natsume-amber) 54%, var(--border-soft));

@@ -279,7 +279,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 }
 .initial-text {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-base);
   font-weight: 700;
   font-size: var(--fs-body);
   color: var(--pb-active);

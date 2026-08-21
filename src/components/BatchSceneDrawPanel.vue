@@ -163,7 +163,7 @@ watch(() => props.open, (open) => {
 
 <style scoped>
 .batch-overlay {
-  position: fixed; inset: 0; z-index: 60;
+  position: fixed; inset: 0; z-index: var(--z-dock);
   display: grid; place-items: center;
   padding: clamp(12px, 3vw, 32px);
   background: color-mix(in srgb, var(--bg-deep) 55%, transparent);

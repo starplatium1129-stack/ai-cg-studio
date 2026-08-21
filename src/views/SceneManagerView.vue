@@ -1179,9 +1179,9 @@ tr:hover td { background:var(--bg-elevated); }
 .tool-result-panel { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-deep); }
 .tool-result-head { display:flex; align-items:center; gap:var(--s-3); margin-bottom:var(--s-3); }
 .tool-output { max-height:340px; overflow:auto; padding:var(--s-3); background:var(--bg-base); border:1px solid var(--border-soft); border-radius:var(--r-md); font:400 var(--fs-mono-xs)/1.7 var(--font-mono); color:var(--text-secondary); white-space:pre-wrap; word-break:break-word; }
-.hl-id { color:var(--accent); font-weight:700; background:var(--accent-soft); padding:0 4px; border-radius:4px; }
+.hl-id { color:var(--accent); font-weight:700; background:var(--accent-soft); padding:0 4px; border-radius:var(--r-xs); }
 .tool-error-hint { color:var(--text-muted); font-size:var(--fs-label-xs); }
-:deep(.hl-id) { color:var(--accent); font-weight:700; background:var(--accent-soft); padding:0 4px; border-radius:4px; }
+:deep(.hl-id) { color:var(--accent); font-weight:700; background:var(--accent-soft); padding:0 4px; border-radius:var(--r-xs); }
 
 /* 样张管理 */
 .image-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:var(--s-2); margin-bottom:var(--s-3); }
@@ -1240,6 +1240,6 @@ tr:hover td { background:var(--bg-elevated); }
 .filter-select { padding:var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font-size:var(--fs-body-sm); width:100%; }
 .form-hint { color:var(--danger-text); font-size:var(--fs-label-sm); margin:0 0 var(--s-3); }
 .modal-actions { display:flex; gap:var(--s-2); margin-top:var(--s-2); flex-wrap:wrap; }
-.search-hl { background:color-mix(in srgb,var(--accent) 22%,transparent); color:var(--accent); padding:0 2px; border-radius:3px; }
+.search-hl { background:color-mix(in srgb,var(--accent) 22%,transparent); color:var(--accent); padding:0 2px; border-radius:var(--r-xs); }
 @media(max-width:680px) { .form-grid { grid-template-columns:1fr; } .sm-head { flex-direction:column; } }
 </style>

@@ -59,7 +59,7 @@
 
 /* 次要操作收进「更多」下拉：减少右上角文字链接拥挤与误触 */
 .chat-page .chat-actions-more { position: relative; }
-.chat-page .chat-more-caret { margin-left: 4px; font-size: 10px; opacity: .7; }
+.chat-page .chat-more-caret { margin-left: 4px; font-size: var(--fs-mono-xs); opacity: .7; }
 .chat-page .chat-more-menu {
   position: absolute;
   top: calc(100% + 6px);
@@ -688,7 +688,7 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .live2d-interaction-hint {
   position: absolute;
-  z-index: 8;
+  z-index: var(--z-float);
   left: 50%;
   bottom: var(--s-3);
   translate: -50% 0;

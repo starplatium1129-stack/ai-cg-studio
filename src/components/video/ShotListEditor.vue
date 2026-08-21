@@ -1632,7 +1632,7 @@ onBeforeUnmount(() => {
 .shot-review-copy em { color: var(--text-secondary); font-style: normal; }
 .shot-issue-badge { padding: 1px var(--s-2); border-radius: var(--r-pill); background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger-text); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .shot-row[data-issue] { outline: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); outline-offset: -1px; border-radius: var(--r-lg); }
-.shot-script-overlay { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: clamp(12px, 3vw, 32px); background: color-mix(in srgb, var(--bg-deep) 55%, transparent); backdrop-filter: blur(4px); }
+.shot-script-overlay { position: fixed; inset: 0; z-index: var(--z-dock); display: grid; place-items: center; padding: clamp(12px, 3vw, 32px); background: color-mix(in srgb, var(--bg-deep) 55%, transparent); backdrop-filter: blur(4px); }
 .shot-script-panel { width: min(560px, 100%); display: grid; gap: var(--s-4); padding: clamp(16px, 2.4vw, 26px); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); box-shadow: var(--shadow-md); }
 .shot-script-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
 .shot-script-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }

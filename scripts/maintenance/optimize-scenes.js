@@ -141,11 +141,13 @@ function optimizeNegative(scene) {
   ]);
   const custom = String(scene.negative || '').split(',').map((item) => item.trim())
     .filter((item) => item && !policyTokens.has(key(item)));
-  const ratingTokens = scene.rating === 'R18'
-    ? ['child', 'loli', 'underage', 'school_uniform', 'gym_uniform']
-    : scene.rating === 'R15'
-      ? ['nude', 'explicit']
-      : ['nsfw', 'nude', 'explicit'];
+  // 2026-08-15 用户裁定（与 classify-scene-ratings.normalizeNegative 同源）：
+  // 裸体压制(nsfw/nude/explicit)只保留在 All 评级；R15 与 R18 一样剥离，
+  // 并统一补未成年保护 token。R15 分支此前漏同步该裁定，导致与 classify
+  // 的规范形态互相 undo（132 个场景乒乓）。
+  const ratingTokens = scene.rating === 'All'
+    ? ['nsfw', 'nude', 'explicit']
+    : ['child', 'loli', 'underage', ...(scene.rating === 'R18' ? ['school_uniform', 'gym_uniform'] : [])];
   return dedupe([...baseNegative, ...custom, ...ratingTokens]).join(', ');
 }
 

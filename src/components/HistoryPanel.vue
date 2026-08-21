@@ -126,8 +126,8 @@ onBeforeUnmount(() => {
   border-radius: var(--r-md);
 }
 .history-empty-icon {
-  font-size: 1.5rem;
-  color: var(--archive-blue, #38bdf8);
+  font-size: var(--fs-title);
+  color: var(--archive-blue);
   opacity: 0.7;
 }
 .history-batch { display: inline-flex; gap: var(--s-1); }

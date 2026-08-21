@@ -144,8 +144,12 @@ assert(
   /class="artwork-image"[\s\S]{0,200}loading="lazy"/.test(view),
   'wall images must lazy-load',
 );
+// 2026-08-22 起查看器改由 ZoomableImageViewer 渲染（平滑视口缩放）：
+// 契约不变——选中作品必须立即加载（组件内部 img 不得带 loading="lazy"），
+// 且画廊必须把 viewerUrl 直接交给该组件。
 assert(
-  /class="viewer-image"(?![\s\S]{0,200}loading="lazy")/.test(view),
+  /<ZoomableImageViewer[\s\S]{0,200}:src="viewerUrl"/.test(view)
+    && !/loading="lazy"/.test(read('src/components/visual/ZoomableImageViewer.vue').split('<template')[1].split('</template>')[0]),
   'the selected artwork must load eagerly (no lazy attribute)',
 );
 
