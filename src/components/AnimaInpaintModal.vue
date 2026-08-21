@@ -757,12 +757,12 @@ async function handleStart() {
 .modal-card.inpaint-modal {
   position: relative;
   width: 100%;
-  max-width: 860px;
-  max-height: 90vh;
+  max-width: 1200px;
+  max-height: 94vh;
   background: var(--bg-surface-elevated, #161822);
   border: 1px solid var(--border-soft, rgba(255, 255, 255, 0.12));
   border-radius: var(--r-xl, 16px);
-  padding: var(--s-6);
+  padding: var(--s-5) var(--s-6);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
@@ -824,12 +824,12 @@ async function handleStart() {
 
 .inpaint-layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: minmax(500px, 1.35fr) minmax(360px, 1fr);
   gap: var(--s-6);
   align-items: start;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .inpaint-layout {
     grid-template-columns: 1fr;
   }
@@ -851,7 +851,7 @@ async function handleStart() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 220px;
+  min-height: 440px;
   transition: all 0.2s ease;
 }
 
@@ -876,16 +876,20 @@ async function handleStart() {
 .preview-surface {
   position: relative;
   width: 100%;
-  max-height: 320px;
+  max-height: 600px;
+  min-height: 380px;
   overflow: hidden;
   background: #000;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .preview-thumb {
   width: 100%;
   height: 100%;
-  max-height: 320px;
+  max-height: 600px;
   object-fit: contain;
   display: block;
 }
