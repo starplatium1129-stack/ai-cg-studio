@@ -50,9 +50,9 @@ const modules = [
   ['src/components/PromptDataTools.vue', ['useBackup', 'pb-backup-overlay', 'useFocusTrap']],
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
   ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
-  ['src/components/GenerationParamsPanel.vue', ['params: SDParams', "'reuse-seed'", 'samplerOptions']],
+  ['src/components/GenerationParamsPanel.vue', ["defineModel<SDParams>('params'", "'reuse-seed'", 'samplerOptions']],
   ['src/components/ManagedDrawingRouteCard.vue', ['managed-route-card', "reuse: [id: number]", 'route.promptFormat']],
-  ['src/components/GenerationOutputControls.vue', ['params: SDParams', 'generation-output-controls', 'queueAvailable', 'engine: DrawEngine']],
+  ['src/components/GenerationOutputControls.vue', ["defineModel<SDParams>('params'", 'generation-output-controls', 'queueAvailable', 'engine: DrawEngine']],
   ['src/components/SDRecoveryPanel.vue', ['SDErrorReport', "emit('recover'"]],
 ];
 
