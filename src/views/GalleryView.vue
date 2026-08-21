@@ -145,7 +145,15 @@
             />
           </div>
         </template>
-        <img v-else-if="viewerUrl" class="viewer-image" :src="viewerUrl" :alt="current ? sceneTitle(current.scene, current) : ''" decoding="async" />
+        <ZoomableImageViewer
+          v-else-if="viewerUrl"
+          :src="viewerUrl"
+          :alt="current ? sceneTitle(current.scene, current) : ''"
+        >
+          <template #fallback>
+            <div class="viewer-fallback"><ArchiveIcon name="image" /></div>
+          </template>
+        </ZoomableImageViewer>
         <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
         <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)">›</button>
         <button v-if="hasComparableImage && viewerUrl" class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :title="compareMode ? '退出对比' : '开启对比滑块'" @click="compareMode = !compareMode">
@@ -205,6 +213,7 @@ import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
+import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'

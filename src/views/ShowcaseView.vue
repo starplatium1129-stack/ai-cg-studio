@@ -126,9 +126,16 @@
       <dialog ref="dialogEl" class="showcase-viewer" aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <div v-if="currentEntry" class="viewer-layout">
           <div class="viewer-art">
-            <img v-if="!viewerImageFailed" :class="{ 'viewer-image-ready': viewerImageReady }" :src="imgSrc(currentEntry)" :alt="currentEntry.title"
-              @load="viewerImageReady = true" @error="viewerImageFailed = true" />
-            <div v-else class="viewer-image-fallback">图片暂时无法读取</div>
+            <ZoomableImageViewer
+              :src="imgSrc(currentEntry)"
+              :alt="currentEntry.title"
+              @load="viewerImageReady = true"
+              @error="viewerImageFailed = true"
+            >
+              <template #fallback>
+                <div class="viewer-image-fallback">图片暂时无法读取</div>
+              </template>
+            </ZoomableImageViewer>
           </div>
           <div class="viewer-copy">
             <button class="viewer-close" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
@@ -168,6 +175,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseShowcaseManifest,
