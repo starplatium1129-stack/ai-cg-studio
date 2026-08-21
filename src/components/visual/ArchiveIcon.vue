@@ -56,7 +56,7 @@ export type ArchiveIconName =
   | 'leaf' | 'rain' | 'coffee' | 'cap' | 'plane' | 'flower' | 'play' | 'book'
   | 'clap' | 'snowflake' | 'cherry' | 'autumnleaf'
   // ── 工具 / 服装形态 ──────────────────────────────────────────
-  | 'star' | 'download' | 'upload' | 'broom' | 'health' | 'wardrobe' | 'compare'
+  | 'star' | 'download' | 'upload' | 'copy' | 'broom' | 'health' | 'wardrobe' | 'compare'
   | 'bikini' | 'dress' | 'bunny' | 'coat' | 'school' | 'kimono' | 'ribbon'
   | 'play'
 
@@ -624,6 +624,13 @@ const ICON_DEFS: Record<ArchiveIconName, ArchiveIconDef> = {
       'M5.2 20 L18.8 20',
     ],
     ends: [[12, 17.4], [5.2, 20], [18.8, 20]],
+  },
+  copy: {
+    paths: [
+      'M8.2 4.6 C 11.1 4.4 14.8 4.5 17.6 4.6 C 18.7 4.7 19.5 5.5 19.6 6.7 C 19.7 10.2 19.6 13.9 19.5 16.8',
+      'M5.4 7.8 C 8.2 7.7 12.8 7.7 15.2 7.8 C 16.3 7.9 17.1 8.7 17.2 9.9 C 17.3 13.4 17.2 17.2 17.1 19.4 C 17.0 20.3 16.2 21.1 15.1 21.2 C 12.3 21.3 7.8 21.3 5.4 21.2 C 4.3 21.1 3.5 20.2 3.4 19.1 C 3.3 15.6 3.4 11.2 3.5 8.9 C 3.6 7.9 4.4 7.8 5.4 7.8 Z',
+    ],
+    ends: [[8.2, 4.6], [19.5, 16.8]],
   },
   broom: {
     paths: [

@@ -184,7 +184,15 @@
           <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`"><ArchiveIcon name="spark" /> Remix 配方</RouterLink>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
-          <button class="btn btn-ghost" type="button" @click="copyPrompt">复制 Prompt</button>
+          <button
+            class="btn btn-ghost"
+            :class="{ 'btn-copied-success': copiedPrompt }"
+            type="button"
+            @click="copyPrompt"
+          >
+            <ArchiveIcon :name="copiedPrompt ? 'success' : 'copy'" />
+            <span>{{ copiedPrompt ? '已复制' : '复制 Prompt' }}</span>
+          </button>
           <button v-if="pendingDeleteId !== current.id" class="btn btn-ghost btn-danger" type="button"
             @click="pendingDeleteId = current.id">删除这幅</button>
           <template v-else>
@@ -249,6 +257,7 @@ const viewerIndex = ref(-1)
 const infoOpen = ref(false)
 const compareMode = ref(false)
 const viewerUrl = ref('')
+const copiedPrompt = ref(false)
 const cardUrls = reactive<Record<string, string>>({})
 /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
 const thumbUrls = reactive<Record<string, string>>({})
@@ -681,7 +690,11 @@ function copyPrompt() {
   const text = current.value?.prompt
   if (!text) return
   navigator.clipboard.writeText(text)
-    .then(() => showToast('Prompt 已复制'))
+    .then(() => {
+      copiedPrompt.value = true
+      showToast('Prompt 已复制')
+      setTimeout(() => { copiedPrompt.value = false }, 2000)
+    })
     .catch(() => showToast('复制失败，请手动选取'))
 }
 
@@ -745,6 +758,7 @@ async function downloadCurrent() {
   document.body.appendChild(a)
   a.click()
   a.remove()
+  showToast('已下载原图（已嵌入完整 A1111/ComfyUI 咒文元数据）')
   if (finalBuffer) setTimeout(() => URL.revokeObjectURL(url), 2000)
 }
 

@@ -1707,3 +1707,33 @@ html.theme-fade .sakura-fall {
   min-height: 0;
 }
 
+/* ── 红心点赞 / 收藏物理弹性微动效 (Heart Micro-Bounce) ── */
+@keyframes heartBounce {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.36); }
+  65% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.heart-pop,
+.artwork-mark svg,
+.history-rating.favorite svg,
+.btn-favorite svg {
+  animation: heartBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center center;
+}
+
+/* ── 复制成功 Morph 动效 ── */
+@keyframes copySuccessPulse {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.btn-copied-success {
+  animation: copySuccessPulse 0.3s var(--ease-out);
+  color: var(--success, #10b981) !important;
+  border-color: var(--success, #10b981) !important;
+}
+
+

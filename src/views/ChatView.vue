@@ -188,8 +188,16 @@
                   <button v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)"
                     class="msg-voice-btn" type="button"
                     :class="{ playing: playingMid === msg.mid }"
-                    :data-mid="msg.mid" title="重播这条语音"
-                    @click="voice.playMessage(msg.mid)"><ArchiveIcon name="sound" /> 重播</button>
+                    :data-mid="msg.mid" :title="playingMid === msg.mid ? '正在播放中…' : '重播这条语音'"
+                    @click="voice.playMessage(msg.mid)">
+                    <span v-if="playingMid === msg.mid" class="audio-equalizer" aria-hidden="true">
+                      <span class="eq-bar"></span>
+                      <span class="eq-bar"></span>
+                      <span class="eq-bar"></span>
+                    </span>
+                    <ArchiveIcon v-else name="sound" />
+                    <span>{{ playingMid === msg.mid ? '播放中' : '重播' }}</span>
+                  </button>
                 </div>
               </div>
             </div>

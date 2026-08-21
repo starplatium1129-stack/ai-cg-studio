@@ -194,7 +194,17 @@
         </div>
 
         <div v-if="activeOutfit" class="char-reference-grid">
-          <div v-for="refItem in activeOutfit.references" :key="refItem.id" class="char-ref-card">
+          <div
+            v-for="(refItem, idx) in activeOutfit.references"
+            :key="refItem.id"
+            class="char-ref-card"
+            role="button"
+            tabindex="0"
+            :aria-label="`查看 ${refItem.name} 高清大图`"
+            @click="openRefViewer(idx)"
+            @keydown.enter="openRefViewer(idx)"
+            @keydown.space.prevent="openRefViewer(idx)"
+          >
             <div class="char-ref-image-wrap">
               <img
                 :src="`${refItem.url}?t=${refVersion}`"
@@ -203,6 +213,7 @@
                 loading="lazy"
               />
               <span class="char-ref-badge">{{ refItem.shotType }}</span>
+              <div class="char-ref-hover-hint"><ArchiveIcon name="spark" /> 点击放大审查</div>
             </div>
             <div class="char-ref-info">
               <h3 class="char-ref-title">{{ refItem.name }}</h3>
@@ -215,6 +226,70 @@
           </div>
         </div>
       </section>
+
+      <!-- 4 视角参考基准高清放大审查灯箱 -->
+      <Teleport to="body">
+        <dialog
+          ref="refDialogEl"
+          class="char-ref-modal"
+          aria-label="4 视角标准参考基准审查"
+          @click.self="closeRefViewer"
+          @cancel.prevent="closeRefViewer"
+        >
+          <div v-if="activeRefModal" class="ref-modal-layout">
+            <div class="ref-modal-art">
+              <ZoomableImageViewer
+                :src="`${activeRefModal.url}?t=${refVersion}`"
+                :alt="activeRefModal.name"
+              >
+                <template #fallback>
+                  <div class="ref-fallback">参考图暂时无法读取</div>
+                </template>
+              </ZoomableImageViewer>
+            </div>
+            <div class="ref-modal-copy">
+              <button class="ref-modal-close" type="button" aria-label="关闭审查" @click="closeRefViewer">
+                <ArchiveIcon name="close" />
+              </button>
+              <div class="ref-modal-kicker">Cinematic 4-View Bible</div>
+              <h2>{{ current?.name }} · {{ activeRefModal.name }}</h2>
+              <div class="ref-modal-meta">
+                <span class="ref-badge-tag">{{ activeRefModal.shotType }}</span>
+                <span><code>{{ activeRefModal.lens }}</code></span>
+                <span v-if="activeOutfit">{{ activeOutfit.outfitName }}</span>
+              </div>
+              <p class="ref-modal-desc">
+                锁死五官轮廓、发丝高光、服饰缝线与身材比例。支持滚轮 100%~400% 缩放与抓手平移，严密审查跨镜一致性。
+              </p>
+              <div class="ref-modal-usages">
+                <span class="usages-title">标准适用阶段：</span>
+                <div class="usages-chips">
+                  <span v-for="u in activeRefModal.targetUsage" :key="u" class="usage-chip">{{ u }}</span>
+                </div>
+              </div>
+              <div class="ref-modal-actions">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="activeRefIndex <= 0" @click="moveRef(-1)">
+                  ← 上一视角
+                </button>
+                <button
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  :disabled="!activeOutfit || activeRefIndex >= activeOutfit.references.length - 1"
+                  @click="moveRef(1)"
+                >
+                  下一视角 →
+                </button>
+                <RouterLink
+                  class="btn btn-primary btn-sm"
+                  :to="`/video-studio?mode=shots&character=${encodeURIComponent(current?.id || '')}&outfit=${encodeURIComponent(activeOutfit?.outfitId || '')}`"
+                >
+                  去分镜短片创作 ↗
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+        </dialog>
+      </Teleport>
 
       <section v-if="recommendations.length" class="recommend-section" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
@@ -247,6 +322,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
@@ -393,6 +469,34 @@ const activeOutfit = computed(() => {
   return characterReferences.value.outfits.find(o => o.isDefault) || characterReferences.value.outfits[0]
 })
 const refVersion = ref(Date.now())
+
+const refDialogEl = ref<HTMLDialogElement | null>(null)
+const activeRefIndex = ref(-1)
+const activeRefModal = computed(() => {
+  if (activeRefIndex.value < 0 || !activeOutfit.value?.references) return null
+  return activeOutfit.value.references[activeRefIndex.value] ?? null
+})
+
+function openRefViewer(index: number) {
+  activeRefIndex.value = index
+  nextTick(() => {
+    refDialogEl.value?.showModal()
+  })
+}
+
+function closeRefViewer() {
+  refDialogEl.value?.close()
+  activeRefIndex.value = -1
+}
+
+function moveRef(delta: number) {
+  if (!activeOutfit.value?.references.length) return
+  const len = activeOutfit.value.references.length
+  const next = activeRefIndex.value + delta
+  if (next >= 0 && next < len) {
+    activeRefIndex.value = next
+  }
+}
 
 const hasIdentity = computed(() => {
   const id = current.value?.identity || {}
@@ -691,11 +795,35 @@ onMounted(() => {
   border: 1px solid var(--border-soft);
   border-radius: var(--r-lg);
   overflow: hidden;
-  transition: transform var(--t-fast), border-color var(--t-fast);
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
 }
 .char-ref-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.char-ref-hover-hint {
+  position: absolute;
+  bottom: var(--s-2);
+  right: var(--s-2);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: var(--fs-label-xs);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--t-fast), transform var(--t-fast);
+}
+.char-ref-card:hover .char-ref-hover-hint {
+  opacity: 1;
+  transform: translateY(0);
 }
 .char-ref-image-wrap {
   position: relative;
@@ -775,6 +903,139 @@ onMounted(() => {
 @media (max-width: 560px) {
   .char-reference-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* 4 视角参考基准放大审查模态框 */
+.char-ref-modal {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: min(92vw, 1100px);
+  max-height: min(90vh, 860px);
+  width: 100%;
+  color: var(--text-primary);
+}
+.char-ref-modal::backdrop {
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+}
+.ref-modal-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.2fr) minmax(300px, 1fr);
+  background: var(--bg-surface-elevated, #161822);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+}
+.ref-modal-art {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 480px;
+  max-height: min(88vh, 820px);
+}
+.ref-modal-copy {
+  padding: var(--s-6);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+}
+.ref-modal-close {
+  position: absolute;
+  top: var(--s-4);
+  right: var(--s-4);
+  border: 0;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.ref-modal-close:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+.ref-modal-kicker {
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+  color: var(--archive-blue, #38bdf8);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: var(--s-2);
+}
+.ref-modal-copy h2 {
+  margin: 0 0 var(--s-3);
+  font-size: var(--fs-title-sm);
+  color: var(--text-primary);
+}
+.ref-modal-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+  font-size: var(--fs-body-sm);
+  color: var(--text-secondary);
+}
+.ref-badge-tag {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+}
+.ref-modal-desc {
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 var(--s-4);
+}
+.ref-modal-usages {
+  margin-bottom: var(--s-6);
+}
+.usages-title {
+  font-size: var(--fs-label-xs);
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: var(--s-2);
+}
+.usages-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.usage-chip {
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-label-xs);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  color: var(--text-primary);
+}
+.ref-modal-actions {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--border-soft);
+}
+
+@media (max-width: 768px) {
+  .ref-modal-layout {
+    grid-template-columns: 1fr;
+  }
+  .ref-modal-art {
+    min-height: 320px;
+    max-height: 420px;
   }
 }
 
