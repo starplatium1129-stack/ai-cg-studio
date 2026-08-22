@@ -10,7 +10,9 @@ const ANIMA_DEFAULTS = Object.freeze({
 const KREA_DEFAULTS = Object.freeze({
   steps: 8,
   cfg: 1,
-  sampler: 'euler',
+  // 2026-08-23 Krea 链路替换：采样器随社区增强链路固定 er_sde（与 buildWorkflow
+  // 内写死的社区验证配对一致），元数据与 models 接口 defaults 必须反映真实采样器。
+  sampler: 'er_sde',
   scheduler: 'simple',
 });
 
@@ -37,8 +39,6 @@ const ALLOWED_INPUT_KEYS = Object.freeze([
   'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps',
   'teaCache', 'teaCacheThresh',
   'initImage', 'maskImage', 'maskPrompt', 'maskThreshold', 'denoisingStrength', 'growMaskBy',
-  // 2026-08-22 社区工作流回流：Krea 2 细节增强链路开关（T-Enhancer + er_sde + RCAS 锐化）。
-  'detailBoost',
 ]);
 
 const CHARACTER_LORA_BINDINGS = Object.freeze({

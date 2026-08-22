@@ -231,13 +231,18 @@ test('creative catalog rejects Krea LoRA/negative and emits the official Krea co
   assert.throws(() => animaRoute.validateInput({ prompt: 'x', negative: 'bad anatomy', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024 }), /Krea/);
   const workflow = animaRoute.buildWorkflow(input);
   const classes = Object.values(workflow).map(node => node.class_type);
-  assert.deepStrictEqual(classes, ['UNETLoader', 'CLIPLoader', 'VAELoader', 'CLIPTextEncode', 'ConditioningZeroOut', 'EmptyLatentImage', 'KSampler', 'VAEDecode', 'SaveImage', 'ConditioningKrea2Rebalance']);
+  assert.deepStrictEqual(classes, ['UNETLoader', 'CLIPLoader', 'VAELoader', 'CLIPTextEncode', 'ConditioningZeroOut', 'EmptyLatentImage', 'KSampler', 'VAEDecode', 'SaveImage', 'ConditioningKrea2Rebalance', 'ComfyUI-Krea2T-Enhancer', 'ImageSharpenKJ']);
   assert.strictEqual(workflow['2'].inputs.type, 'krea2');
   assert.strictEqual(workflow['7'].inputs.steps, 8);
   assert.strictEqual(workflow['7'].inputs.cfg, 1);
-  assert.strictEqual(workflow['7'].inputs.sampler_name, 'euler');
+  assert.strictEqual(workflow['7'].inputs.sampler_name, 'er_sde');
   assert.strictEqual(workflow['7'].inputs.scheduler, 'simple');
   assert.deepStrictEqual(workflow['7'].inputs.negative, ['5', 0]);
+  // 2026-08-23 链路替换：Krea 图无条件经 T-Enhancer 采样并落盘 RCAS 锐化结果。
+  assert.strictEqual(workflow['14'].class_type, 'ComfyUI-Krea2T-Enhancer');
+  assert.deepStrictEqual(workflow['7'].inputs.model, ['14', 0]);
+  assert.strictEqual(workflow['15'].class_type, 'ImageSharpenKJ');
+  assert.deepStrictEqual(workflow['10'].inputs.images, ['15', 0]);
 });
 
 test('Anima rating and controls remain aligned without safe/R18 contradiction', () => {

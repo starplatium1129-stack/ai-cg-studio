@@ -6,12 +6,10 @@ export interface DrawingRouteInput {
   subjectKind: 'studio' | 'popular'
   character: StudioCharacter
   recommendedModelId?: string | null
-  /** 热门角色 Krea 路线的社区增强链路（T-Enhancer 细节补丁 + RCAS 锐化）开关。 */
-  preferDetailBoost?: boolean
 }
 
 export interface DrawingRouteRecommendation {
-  id: 'studio-single' | 'studio-dual' | 'popular-anima' | 'popular-krea' | 'popular-krea-detail'
+  id: 'studio-single' | 'studio-dual' | 'popular-anima' | 'popular-krea-detail'
   engine: ManagedDrawEngine
   modelId: string
   loraId: string
@@ -43,36 +41,21 @@ const STUDIO_LORA = Object.freeze({
 export function recommendDrawingRoute(input: DrawingRouteInput): DrawingRouteRecommendation {
   if (input.subjectKind === 'popular') {
     if (input.recommendedModelId === 'krea2-turbo-fp8') {
-      if (input.preferDetailBoost) {
-        return {
-          id: 'popular-krea-detail',
-          engine: 'krea2',
-          modelId: 'krea2-turbo-fp8',
-          loraId: '',
-          generationCharacter: null,
-          promptFormat: 'natural-language',
-          title: '热门角色细节增强路线',
-          summary: 'Krea 2 · 社区增强链路 · 细节补丁与锐化',
-          reasons: [
-            '启用社区验证的 Krea2T-Enhancer 细节补丁与 RCAS 锐化',
-            'er_sde 配 8 步 Turbo，出图速度与既有 Krea 路线持平',
-            '实验路线：构图契约不变，可随时回退标准路线',
-          ],
-          experimental: true,
-        }
-      }
+      // 2026-08-23 链路替换：实测社区增强链路与原标准链路出图时间一致，
+      // 原 euler 标准路线退役，Krea 2 推荐固定走增强链路（网关侧已无关闭开关）。
       return {
-        id: 'popular-krea',
+        id: 'popular-krea-detail',
         engine: 'krea2',
         modelId: 'krea2-turbo-fp8',
         loraId: '',
         generationCharacter: null,
         promptFormat: 'natural-language',
-        title: '热门角色自然语言路线',
-        summary: 'Krea 2 · 自然语言构图 · 无角色 LoRA',
+        title: '热门角色细节增强路线',
+        summary: 'Krea 2 · 社区增强链路 · 细节补丁与锐化',
         reasons: [
-          '按角色资料使用推荐底模',
-          '系统自动把场景整理为自然语言画面描述',
+          '按角色资料使用推荐底模，系统自动整理为自然语言画面描述',
+          '启用社区验证的 Krea2T-Enhancer 细节补丁与 RCAS 锐化',
+          'er_sde 配 8 步 Turbo，实测出图速度与原标准链路持平',
         ],
         experimental: true,
       }

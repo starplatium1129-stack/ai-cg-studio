@@ -60,26 +60,21 @@ test('popular routes follow model recommendations without studio LoRAs', () => {
   assert.strictEqual(krea.experimental, true);
 });
 
-test('popular detail-boost opt-in selects the community-enhanced Krea route', () => {
-  const detail = recommendDrawingRoute({
-    subjectKind: 'popular',
-    character: 'nene',
-    recommendedModelId: 'krea2-turbo-fp8',
-    preferDetailBoost: true,
-  });
-  assert.strictEqual(detail.id, 'popular-krea-detail');
-  assert.strictEqual(detail.engine, 'krea2');
-  assert.strictEqual(detail.modelId, 'krea2-turbo-fp8');
-  assert.strictEqual(detail.promptFormat, 'natural-language');
-  assert.strictEqual(detail.experimental, true);
-
-  // 缺省不选增强：标准 popular-krea 行为保持不变（受控路线零回归）。
-  const plain = recommendDrawingRoute({
+test('popular krea recommendations lock in the community-enhanced pipeline', () => {
+  // 2026-08-23 链路替换：原 euler 标准 Krea 路线退役，推荐即社区增强链路（T-Enhancer
+  // 细节补丁 + RCAS 锐化），不再有 preferDetailBoost 二选一开关。
+  const krea = recommendDrawingRoute({
     subjectKind: 'popular',
     character: 'nene',
     recommendedModelId: 'krea2-turbo-fp8',
   });
-  assert.strictEqual(plain.id, 'popular-krea');
+  assert.strictEqual(krea.id, 'popular-krea-detail');
+  assert.strictEqual(krea.engine, 'krea2');
+  assert.strictEqual(krea.modelId, 'krea2-turbo-fp8');
+  assert.strictEqual(krea.promptFormat, 'natural-language');
+  assert.strictEqual(krea.experimental, true);
+  assert.ok(krea.reasons.some(reason => reason.includes('Krea2T-Enhancer')));
+  assert.ok(krea.reasons.some(reason => reason.includes('RCAS')));
 });
 
 test('prompt format labels explain model contracts instead of exposing syntax switches', () => {

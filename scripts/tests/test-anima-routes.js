@@ -165,39 +165,34 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(creativeJob.status, 202);
     assert.strictEqual(creativeJob.json.job.metadata.steps, 8);
     assert.strictEqual(creativeJob.json.job.metadata.cfg, 1);
-    assert.strictEqual(creativeJob.json.job.metadata.sampler, 'euler');
+    assert.strictEqual(creativeJob.json.job.metadata.sampler, 'er_sde');
     assert.strictEqual((await request(port, { path:'/api/anima/jobs/' + creativeJob.json.job.id })).status, 404, 'Anima route must not read Krea jobs');
     assert.strictEqual((await request(port, { path:'/api/creative/jobs/' + creativeJob.json.job.id })).status, 200);
     await request(port, { method:'DELETE', path:'/api/creative/jobs/' + creativeJob.json.job.id });
 
-    // 2026-08-22 社区工作流回流：detailBoost=true 必须产出 Krea2T-Enhancer + er_sde +
-    // ImageSharpenKJ 的增强图；缺省时保持原 euler 图零回归；Anima 家族一律拒绝。
-    var detailJob = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene with rising steam.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9002, detailBoost:true });
+    // 2026-08-23 链路替换：实测增强链路与原 euler 标准链路出图时间一致，原链路退役。
+    // 默认 Krea 图必须无条件产出 Krea2T-Enhancer + er_sde + ImageSharpenKJ 增强图；
+    // detailBoost 开关随标准链路一并退役，任何家族传参都按未知参数拒绝（fail closed）。
+    var detailJob = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene with rising steam.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9002 });
     assert.strictEqual(detailJob.status, 202);
     await waitForJob(port, detailJob.json.job.id, function (job) { return job && job.status === 'succeeded'; }, '/api/creative/jobs/');
     var detailState = await mockState(comfy.port);
     var detailPrompt = detailState.calls.filter(function (call) { return call.path === '/prompt'; }).pop().body.prompt;
-    assert.strictEqual(detailPrompt['14'].class_type, 'ComfyUI-Krea2T-Enhancer', 'detailBoost must chain the T-Enhancer patch');
+    assert.strictEqual(detailPrompt['14'].class_type, 'ComfyUI-Krea2T-Enhancer', 'default Krea graph must chain the T-Enhancer patch');
     assert.strictEqual(detailPrompt['14'].inputs.enabled, true);
     assert.strictEqual(detailPrompt['7'].inputs.model[0], '14', 'KSampler must sample through the enhancer');
-    assert.strictEqual(detailPrompt['7'].inputs.sampler_name, 'er_sde', 'detailBoost switches to the community-verified er_sde pairing');
+    assert.strictEqual(detailPrompt['7'].inputs.sampler_name, 'er_sde', 'the retired euler pairing must not resurface');
     assert.strictEqual(detailPrompt['15'].class_type, 'ImageSharpenKJ');
     assert.strictEqual(detailPrompt['15'].inputs.method, 'rcas');
     assert.strictEqual(detailPrompt['10'].inputs.images[0], '15', 'SaveImage must persist the sharpened image');
 
-    var plainDetailJob = await postJson(port, '/api/creative/jobs', { prompt:'A quiet library at noon.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9003 });
-    assert.strictEqual(plainDetailJob.status, 202);
-    await waitForJob(port, plainDetailJob.json.job.id, function (job) { return job && job.status === 'succeeded'; }, '/api/creative/jobs/');
-    var plainDetailState = await mockState(comfy.port);
-    var plainDetailPrompt = plainDetailState.calls.filter(function (call) { return call.path === '/prompt'; }).pop().body.prompt;
-    assert.strictEqual(plainDetailPrompt['14'], undefined, 'default Krea graph must stay free of the enhancer');
-    assert.strictEqual(plainDetailPrompt['15'], undefined, 'default Krea graph must stay free of the sharpener');
-    assert.strictEqual(plainDetailPrompt['7'].inputs.sampler_name, 'euler');
-    assert.strictEqual(plainDetailPrompt['10'].inputs.images[0], '8');
+    var retiredDetailBoost = await postJson(port, '/api/creative/jobs', { prompt:'A quiet library at noon.', modelId:'krea2-turbo-fp8', width:1024, height:1024, seed:9003, detailBoost:false });
+    assert.strictEqual(retiredDetailBoost.status, 400);
+    assert.strictEqual(retiredDetailBoost.json.code, 'UNKNOWN_PARAMETER');
 
     var animaDetailBoost = await postJson(port, '/api/anima/jobs', validJob({ detailBoost:true }));
     assert.strictEqual(animaDetailBoost.status, 400);
-    assert.strictEqual(animaDetailBoost.json.code, 'WRONG_ROUTE_FAMILY');
+    assert.strictEqual(animaDetailBoost.json.code, 'UNKNOWN_PARAMETER');
     assert.ok(!status.json.loras.some(function (lora) { return lora.id === 'L_NENE_V19_ANIMA'; }), 'superseded v19 must not remain selectable');
 
     var arbitraryWorkflow = await postJson(port, '/api/anima/jobs', { prompt:{ '1':{ class_type:'ReadFile', inputs:{ path:'C:/secret' } } } });
@@ -251,7 +246,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
 
     var state = await mockState(comfy.port);
     var promptCalls = state.calls.filter(function (call) { return call.path === '/prompt'; });
-    assert.strictEqual(promptCalls.length, 6, 'base + krea + two Yume + detail-boost pair must each reach Comfy once');
+    assert.strictEqual(promptCalls.length, 5, 'base + krea + enhanced krea + two Yume must each reach Comfy once');
     var yumePromptCalls = promptCalls.filter(function (call) { return call.body.prompt['1'].inputs.unet_name === 'AnimaYume_v10_final_base.safetensors'; });
     assert.strictEqual(yumePromptCalls.length, 2, 'both Yume jobs (bare and with LoRA) must load the Yume checkpoint');
     var animaPromptCall = promptCalls.find(function (call) { return call.body.prompt['1'].inputs.unet_name === 'anima-base-v1.0.safetensors'; });
@@ -278,14 +273,11 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
       var yumeResult = await request(port, { path:yumeJob.resultUrl });
       assert.strictEqual(yumeResult.status, 200);
     }
-    // Detail-boost pair also completes; consume their results so nothing lingers.
-    var detailJobIds = [detailJob.json.job.id, plainDetailJob.json.job.id];
-    for (var didx = 0; didx < detailJobIds.length; didx += 1) {
-      var detailDone = await waitForJob(port, detailJobIds[didx], function (job) { return job && job.status === 'succeeded'; }, '/api/creative/jobs/');
-      assert.ok(detailDone.resultUrl);
-      var detailResult = await request(port, { path:detailDone.resultUrl });
-      assert.strictEqual(detailResult.status, 200);
-    }
+    // Enhanced Krea job also completes; consume its result so nothing lingers.
+    var detailDone = await waitForJob(port, detailJob.json.job.id, function (job) { return job && job.status === 'succeeded'; }, '/api/creative/jobs/');
+    assert.ok(detailDone.resultUrl);
+    var detailResult = await request(port, { path:detailDone.resultUrl });
+    assert.strictEqual(detailResult.status, 200);
     await new Promise(function (resolve) { setTimeout(resolve, 20); });
     assert.strictEqual(fs.readdirSync(path.join(runtime.outputs, 'anima')).length, 0, 'normal result consumption must remove the runtime file');
     var consumedAgain = await request(port, { path:succeeded.resultUrl });
@@ -297,7 +289,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     await waitForJob(port, transientJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
     state = await mockState(comfy.port);
     promptCalls = state.calls.filter(function (call) { return call.path === '/prompt'; });
-    assert.strictEqual(promptCalls.length, 7, 'history polling failures must not resubmit the workflow (base + krea + 2 Yume + detail pair + transient)');
+    assert.strictEqual(promptCalls.length, 6, 'history polling failures must not resubmit the workflow (base + krea + enhanced krea + 2 Yume + transient)');
 
     await mockFault(comfy.port, { renderMs:5000 });
     state = await mockState(comfy.port);
