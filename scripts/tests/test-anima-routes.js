@@ -252,9 +252,13 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     var animaPromptCall = promptCalls.find(function (call) { return call.body.prompt['1'].inputs.unet_name === 'anima-base-v1.0.safetensors'; });
     assert.ok(animaPromptCall && animaPromptCall.body && animaPromptCall.body.prompt);
     assert.strictEqual(animaPromptCall.body.workflow, undefined);
-    assert.deepStrictEqual(Object.keys(animaPromptCall.body.prompt).sort(), ['1','10','13','2','3','4','5','6','7','8','9'], 'workflow must include AnimaTeaCache node');
+    assert.deepStrictEqual(Object.keys(animaPromptCall.body.prompt).sort(), ['1','10','13','2','3','35','4','5','6','7','8','9'], 'workflow must include AnimaTeaCache node');
     assert.strictEqual(animaPromptCall.body.prompt['13'].class_type, 'AnimaTeaCache');
     assert.strictEqual(animaPromptCall.body.prompt['8'].inputs.model[0], '13');
+    // 2026-08-23 社区增强回流：纯文生图末端必须落盘 RCAS 锐化结果。
+    assert.strictEqual(animaPromptCall.body.prompt['35'].class_type, 'ImageSharpenKJ');
+    assert.strictEqual(animaPromptCall.body.prompt['35'].inputs.method, 'rcas');
+    assert.deepStrictEqual(animaPromptCall.body.prompt['10'].inputs.images, ['35', 0]);
     assert.strictEqual(animaPromptCall.body.prompt['7'].inputs.batch_size, 1);
     assert.strictEqual(animaPromptCall.body.prompt['1'].class_type, 'UNETLoader');
     assert.strictEqual(animaPromptCall.body.prompt['1'].inputs.unet_name, 'anima-base-v1.0.safetensors');
@@ -511,6 +515,8 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(graph['13'].class_type, 'AnimaTeaCache');
     assert.strictEqual(graph['7'].inputs.model[0], '13');
     assert.strictEqual(graph['10'].class_type, 'SaveImage');
+    assert.strictEqual(graph['35'].class_type, 'ImageSharpenKJ', 'no-LoRA text-to-image must also end with the RCAS sharpener');
+    assert.deepStrictEqual(graph['10'].inputs.images, ['35', 0]);
 
     var disabledTeaCache = await postJson(port, '/api/anima/jobs', {
       prompt:'ayachi_nene, 1girl',
@@ -693,6 +699,7 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.strictEqual(graph['30'].class_type, 'ImageCompositeMasked', 'CLIPSeg branch must composite decoded result back over the source like the painted-mask branch');
     assert.deepStrictEqual(graph['30'].inputs.destination, ['19', 0]);
     assert.deepStrictEqual(graph['10'].inputs.images, ['30', 0]);
+    assert.strictEqual(graph['35'], undefined, 'inpaint must NOT sharpen: pixel-faithful composite wins over global post-processing');
 
     // 自定义识别阈值必须透传到 CLIPSeg 节点
     var thresholdJob = await postJson(port, '/api/anima/jobs', validJob({

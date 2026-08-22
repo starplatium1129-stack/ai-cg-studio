@@ -378,7 +378,14 @@ function buildWorkflow(input) {
       noLoraModel = ['13', 0];
       noLoraWf['7'].inputs.model = noLoraModel;
     }
-    if (input.initImage) {
+    if (!input.initImage && !isHires) {
+    // 2026-08-23 社区增强回流：纯文生图末端 RCAS 锐化（与 Krea2 转正链路同款，
+    // 实测 0.75 强度约 +1s，线条/发丝细节显著提升且无振铃白边）。inpaint 有像素级
+    // 回贴保真契约、hires 走超分路径，一律不挂。
+    noLoraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:['8', 0], method:'rcas', 'method.strength':0.75 } };
+    noLoraWf['10'].inputs.images = ['35', 0];
+  }
+  if (input.initImage) {
       noLoraWf['15'] = { class_type:'LoadImage', inputs:{ image:input.initImage } };
       noLoraWf['19'] = { class_type:'ResizeAndPadImage', inputs:{ image:['15', 0], target_width:input.width, target_height:input.height, padding_color:'black', interpolation:'lanczos' } };
       noLoraWf['18'] = { class_type:'VAEEncode', inputs:{ pixels:['19', 0], vae:['3', 0] } };
@@ -547,6 +554,12 @@ function buildWorkflow(input) {
       } };
       loraWf['9'].inputs.samples = ['12', 0];
     }
+  }
+  if (!input.initImage && !isHires) {
+    // 同 no-LoRA 路线：纯文生图末端 RCAS 锐化；inpaint（像素级回贴保真）与
+    // hires（超分路径）不挂。
+    loraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:['9', 0], method:'rcas', 'method.strength':0.75 } };
+    loraWf['10'].inputs.images = ['35', 0];
   }
   return loraWf;
 }
