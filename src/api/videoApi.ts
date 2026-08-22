@@ -241,6 +241,39 @@ export interface CreateVideoBatchInput {
   shots: CreateVideoBatchShotInput[]
 }
 
+/** 场景蓝图一键剧本（2026-08-23）：服务端确定性四镜（起承转合）派生结果。 */
+export interface VideoStoryboardShot {
+  prompt: string
+  dialogue: string | null
+  shotSize: VideoShotSize
+  camera: VideoDefaults['camera']
+  motion: VideoDefaults['motion']
+  duration: number
+}
+
+export interface VideoStoryboard {
+  title: string
+  blueprintId: string
+  characterId: string
+  beats: string[]
+  shots: VideoStoryboardShot[]
+}
+
+export function createVideoStoryboard(
+  blueprintId: string,
+  intent?: string,
+  signal?: AbortSignal,
+): Promise<{ ok: true; storyboard: VideoStoryboard }> {
+  return apiClient.request<{ ok: true; storyboard: VideoStoryboard }>('/api/video/storyboard', {
+    method: 'POST',
+    body: intent ? { blueprintId, intent } : { blueprintId },
+    signal,
+    timeoutMs: 15_000,
+    validate: (value: Record<string, unknown>) =>
+      value.ok === true && isRecord(value.storyboard) && Array.isArray(value.storyboard.shots),
+  })
+}
+
 export interface VideoBatchResponse {
   ok: true
   batch: VideoBatch

@@ -437,8 +437,70 @@ async function run() {
     video.setT8Available(false);
   }
 
+  // ── 场景蓝图一键剧本（2026-08-23）：确定性四镜派生 + 成人 fail-closed ─────
+  var storyboardEngine = require('../../routes/video/storyboard');
+  var fixtureBlueprint = {
+    id:'fixture_blueprint', title:'花海逆光', category:'现代日常', characterId:'raiden_shogun',
+    description:'【雷电将军 · 花海逆光】金色夕阳洒满花海。她蓦然回望——「永恒并非只有静止不变。」晚风拂过，她轻声补充「有你相伴的此刻，同样值得铭记。」',
+    location:'郊野花田', action:'站在花海间回望', timeOfDay:'黄昏',
+    lighting:'金色逆光', mood:'静谧温柔',
+  };
+  var fixtureBoard = storyboardEngine.buildStoryboard(fixtureBlueprint, { intent:'她把一朵花别到耳边' });
+  assert.deepEqual(fixtureBoard.beats, ['establishing', 'interaction', 'emotion', 'closing']);
+  assert.equal(fixtureBoard.shots.length, 4);
+  assert.equal(fixtureBoard.shots[0].shotSize, 'wide');
+  assert.equal(fixtureBoard.shots[3].camera, 'pull', 'closing shot pulls back out');
+  assert.equal(fixtureBoard.shots[1].dialogue, '永恒并非只有静止不变。', 'first quoted line lands on the interaction beat');
+  assert.equal(fixtureBoard.shots[2].dialogue, '有你相伴的此刻，同样值得铭记。', 'second quoted line lands on the emotion beat');
+  assert.equal(fixtureBoard.shots[0].dialogue, null);
+  assert.match(fixtureBoard.shots[2].prompt, /她把一朵花别到耳边/, 'intent merges into the emotion beat');
+  assert.equal(storyboardEngine.characterNameOf(fixtureBlueprint), '雷电将军', 'character name parsed from the 【】 title prefix');
+  assert.equal(storyboardEngine.extractDialogues('没有任何台词的描述').length, 0);
+  // 剧本 → 现有三段式组装闭环：镜头描述直接喂 H3 校验器必须产出合法三段式。
+  var storyboardShotInput = video.validateInput({
+    prompt:fixtureBoard.shots[1].prompt, modelId:'minimax-h3', aspectRatio:'landscape',
+    duration:fixtureBoard.shots[1].duration, dialogue:fixtureBoard.shots[1].dialogue,
+    camera:fixtureBoard.shots[1].camera, motion:fixtureBoard.shots[1].motion,
+    shotSize:fixtureBoard.shots[1].shotSize, seed:77,
+  });
+  assert.match(storyboardShotInput.prompt, /integrated_multimodal_description: /);
+  assert.match(storyboardShotInput.prompt, /non_diegetic_music: /);
+    assert.match(storyboardShotInput.prompt, /<d>\[Chinese\] 永恒并非只有静止不变。<\/d>/, 'dialogue preserved verbatim in the <d> block');
+
+  // 从真实数据文件取普通/成人蓝图各一，HTTP 用例对数据演进保持鲁棒。
+  var realBlueprints = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '..', '..', 'data', 'scene-blueprints.json'), 'utf8')).blueprints;
+  var normalBlueprint = realBlueprints.find(function (item) { return item.category === '现代日常' && /「/.test(item.description || ''); });
+  var adultBlueprint = realBlueprints.find(function (item) { return item.category === '成人' || item.category === '私密写真'; });
+  assert.ok(normalBlueprint && adultBlueprint, 'fixture data must contain normal and adult blueprints');
+
   var missingStack = await gatewayStack.start();
   try {
+    var boardResponse = await fetch(missingStack.baseUrl + '/api/video/storyboard', {
+      method:'POST', headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ blueprintId:normalBlueprint.id }),
+    });
+    assert.equal(boardResponse.status, 200);
+    var boardBody = await json(boardResponse);
+    assert.equal(boardBody.storyboard.blueprintId, normalBlueprint.id);
+    assert.equal(boardBody.storyboard.shots.length, 4, 'storyboard endpoint returns the four-beat plan');
+    var quoted = (normalBlueprint.description.match(/「[^「」]+」/g) || []).map(function (raw) { return raw.slice(1, -1); });
+    if (quoted.length) {
+      assert.equal(boardBody.storyboard.shots[1].dialogue, quoted[0], 'server extraction matches the fixture expectation');
+    }
+    var unknownBoard = await fetch(missingStack.baseUrl + '/api/video/storyboard', {
+      method:'POST', headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ blueprintId:'no_such_blueprint' }),
+    });
+    assert.equal(unknownBoard.status, 404);
+    assert.equal((await json(unknownBoard)).code, 'UNKNOWN_BLUEPRINT');
+    var adultBoard = await fetch(missingStack.baseUrl + '/api/video/storyboard', {
+      method:'POST', headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ blueprintId:adultBlueprint.id }),
+    });
+    assert.equal(adultBoard.status, 400);
+    assert.equal((await json(adultBoard)).code, 'ADULT_BLUEPRINT_UNSUPPORTED',
+      'adult blueprints must stay fail-closed until the video-side adult gate lands');
     var status = await json(await fetch(missingStack.baseUrl + '/api/video/status'));
     assert.equal(status.online, true);
     assert.equal(status.qualities.length, 3, 'status must expose the three quality tiers');

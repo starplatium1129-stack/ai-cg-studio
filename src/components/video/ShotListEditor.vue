@@ -187,6 +187,28 @@
             </option>
           </select>
           <button class="btn btn-ghost" type="button" @click="addShot">＋ 添加镜头</button>
+          <select v-model="storyboardBlueprintId" class="select" aria-label="选择场景蓝图生成四镜剧本">
+            <option value="">蓝图一键剧本 · 起承转合四镜</option>
+            <option v-for="blueprint in sceneBlueprints" :key="blueprint.id" :value="blueprint.id">
+              {{ blueprint.title }}
+            </option>
+          </select>
+          <input
+            v-model="storyboardIntent"
+            class="input shot-intent-input"
+            type="text"
+            maxlength="120"
+            :disabled="storyboardBusy || batchActive"
+            placeholder="可选 · 这一幕想发生什么"
+            aria-label="剧本创作意图（可选）"
+          />
+          <button
+            class="btn btn-ghost"
+            type="button"
+            :disabled="!storyboardBlueprintId || storyboardBusy || batchActive"
+            title="选场景蓝图，服务端按起承转合生成四镜剧本（台词取蓝图原文），整体替换当前镜头清单；零 LLM 依赖、即时返回"
+            @click="runStoryboard"
+          ><ArchiveIcon name="gallery" /> {{ storyboardBusy ? '生成中…' : '生成剧本' }}</button>
           <button
             class="btn btn-ghost"
             type="button"
@@ -532,6 +554,7 @@ import { useShotBatchMachine } from './useShotBatchMachine'
 import { useShotAiTools } from './useShotAiTools'
 import type { ShotDraft } from './shotListTypes'
 import {
+  createVideoStoryboard,
   uploadVideoImage,
   type VideoBatch,
   type VideoDefaults,
@@ -583,6 +606,43 @@ const characterId = ref('')
 const sceneFillId = ref('')
 const shots = ref<ShotDraft[]>([])
 const frameInputs = ref<HTMLInputElement[]>([])
+
+// ── 场景蓝图一键剧本（2026-08-23）：服务端起承转合四镜确定性派生 ──────────
+// 与「AI 生成脚本」互补：零 LLM 依赖、即时返回，台词取蓝图原文；生成会整体
+// 替换镜头草稿（用户主动点生成即明确意图，草稿未提交可随时撤销重生成）。
+const storyboardBlueprintId = ref('')
+const storyboardIntent = ref('')
+const storyboardBusy = ref(false)
+
+async function runStoryboard() {
+  const blueprintId = storyboardBlueprintId.value
+  if (!blueprintId || storyboardBusy.value) return
+  storyboardBusy.value = true
+  batchError.value = ''
+  try {
+    const intent = storyboardIntent.value.trim()
+    const res = await createVideoStoryboard(blueprintId, intent || undefined)
+    shots.value = res.storyboard.shots.map((shot) => ({
+      prompt: shot.prompt,
+      dialogue: shot.dialogue ?? '',
+      shotSize: shot.shotSize,
+      camera: shot.camera,
+      motion: shot.motion,
+      // 服务端固定产 3 秒；这里对 API number 做字面量收窄，非法值回落 3。
+      duration: (shot.duration === 5 || shot.duration === 10 || shot.duration === 15 ? shot.duration : 3) as ShotDraft['duration'],
+      seedText: '',
+      imageName: '',
+      imageUrl: '',
+      cast: '',
+    }))
+    storyboardBlueprintId.value = ''
+    storyboardIntent.value = ''
+  } catch (error) {
+    batchError.value = error instanceof Error ? error.message : '剧本生成失败，请稍后重试'
+  } finally {
+    storyboardBusy.value = false
+  }
+}
 
 /** 本组件共用的用户可见错误通道：批量提交/轮询/重抽、首帧与参考图上传失败都回写这里。 */
 const batchError = ref('')
@@ -998,6 +1058,7 @@ onBeforeUnmount(() => {
 
 .shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
 .shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }
+.shot-toolbar .shot-intent-input { width: 180px; flex: 0 1 auto; min-height: 34px; }
 .shot-ai-note { margin: 0 0 var(--s-3); color: var(--accent); font-size: var(--fs-label-xs); line-height: 1.55; }
 .shot-ai-note[data-busy="true"] { color: var(--warning-text); }
 .shot-flow-hint { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }

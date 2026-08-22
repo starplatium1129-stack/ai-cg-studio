@@ -36,6 +36,7 @@ var comfy = require('./video/comfy');
 var workflows = require('./video/workflows');
 var validation = require('./video/validation');
 var batchFactory = require('./video/batch');
+var storyboard = require('./video/storyboard');
 
 var serviceError = errors.serviceError;
 var MAX_BODY = constants.MAX_BODY;
@@ -578,6 +579,21 @@ function createVideoRouter(config, dependencies) {
       if (!res.headersSent) envelope.fail(res, 404, '视频结果不存在', { code:'RESULT_NOT_FOUND' });
       else res.destroy();
     }
+  });
+
+  // ── 场景蓝图一键剧本（2026-08-23）：起承转合四镜确定性派生，零 LLM 依赖 ──
+  // 素材全取蓝图字段（台词从 description 引号原样提取）；成人类蓝图 fail-closed
+  // 拒绝（视频链路成人门控未接入）。输出条目与批量镜头输入对齐，前端回填
+  // ShotListEditor 后走既有批量编排，不改提交链路。
+  router.post('/api/video/storyboard', express.json({ limit:'4kb' }), function (req, res) {
+    var body = req.body || {};
+    var result = storyboard.resolveStoryboard(config, body.blueprintId, { intent: body.intent });
+    if (result.error) {
+      var status = result.error === 'UNKNOWN_BLUEPRINT' ? 404 : 400;
+      return envelope.fail(res, status, result.message, { code: result.error });
+    }
+    res.setHeader('Cache-Control', 'no-store');
+    envelope.ok(res, { storyboard: result.storyboard });
   });
 
   // ── 分镜批量（P5：批量生成 / P6：尾帧衔接 / P8：拼接成片）──────────────
