@@ -772,6 +772,7 @@ import { usePopularPromptAssembly } from '@/composables/usePopularPromptAssembly
 import { usePromptVideoBridge } from '@/composables/usePromptVideoBridge'
 import { usePromptHistoryApply } from '@/composables/usePromptHistoryApply'
 import { usePromptBatchRunners } from '@/composables/usePromptBatchRunners'
+import { usePromptTagTools } from '@/composables/usePromptTagTools'
 import {
   blueprintCategories as collectBlueprintCategories,
   eligibleBlueprints,
@@ -2015,60 +2016,8 @@ function resetAll() {
   pb.flash('已清空，可以开始新的一幅')
 }
 
-function addTag(e: Event) {
-  const input = e.target as HTMLInputElement
-  const tag = input.value.trim().replace(/\s+/g, '_').toLowerCase()
-  if (tag) { pb.toggleManualTag(tag); input.value = '' }
-}
-
-/* ── 词条释义字典（懒加载）───────────────────────────────────────────
- * tagMeaning.ts 是 ~20KB 纯数据字典，只服务词条 chip 的 tooltip 与中文
- * 副标题，静态导入会把它钉进路由主块（当时 146KiB 预算只剩 0.6KiB）。
- * 改为首次调用时动态拉取：字典到位前退回目录中文标签或词条本身，
- * 到位后 ref 触发重渲染补齐释义。 */
-type TagMeaningFn = typeof import('@/utils/tagMeaning')['tagMeaning']
-const tagMeaningLookup = ref<TagMeaningFn | null>(null)
-let tagMeaningRequested = false
-function tagMeaning(tag: string, catalogLabel = ''): string {
-  if (!tagMeaningRequested) {
-    tagMeaningRequested = true
-    void import('@/utils/tagMeaning').then(m => { tagMeaningLookup.value = m.tagMeaning })
-  }
-  const lookup = tagMeaningLookup.value
-  if (!lookup) return catalogLabel || tag
-  return lookup(tag, catalogLabel)
-}
-
-/** chip 里的中文释义；完全未知的词条不占位（字典未就绪时同样不占位） */
-function tagLabel(tag: string): string {
-  const meaning = tagMeaning(tag)
-  if (!tagMeaningLookup.value || meaning === '未收录释义') return ''
-  return meaning
-}
-
-/** 词条权重色彩热力等级（NovelAI 视觉分级：强增强、增强、弱化、标准） */
-function tagWeightTier(tag: string): 'strong-boost' | 'boost' | 'reduce' | 'normal' {
-  const match = tag.match(/:\s*([0-9.]+)\s*\)/)
-  if (match) {
-    const val = parseFloat(match[1])
-    if (val >= 1.25) return 'strong-boost'
-    if (val > 1.05) return 'boost'
-    if (val < 0.95) return 'reduce'
-  }
-  if (/^(\({1,3}|\{{1,3})/.test(tag)) return 'boost'
-  if (/^\[{1,3}/.test(tag)) return 'reduce'
-  return 'normal'
-}
-
-function toggleOutfitBundle(tags: string[]) {
-  const next = new Set(pb.manualTags)
-  const selected = tags.every(tag => next.has(tag))
-  tags.forEach(tag => {
-    if (selected) next.delete(tag)
-    else next.add(tag)
-  })
-  pb.manualTags = next
-}
+// ── 词条工作台工具（释义字典懒加载已随簇下沉 usePromptTagTools）──────────
+const { addTag, tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle } = usePromptTagTools(pb)
 
 /**
  * 深链参数应用（?scene / ?popular&blueprint / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick）。
