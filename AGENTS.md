@@ -30,7 +30,7 @@
 - **生图双引擎**：
   - **Anima (ComfyUI / Pencil)**：高质量动漫与局部换装（Inpaint），支持 TeaCache 加速、手绘/CLIPSeg 遮罩与 `ImageCompositeMasked` 像素级原图回贴。
   - **Krea 2 (SD3.5)**：自然语言探索，遵循纯英文 Prose 组装，严禁 Tag 堆砌与负面词。
-- **Live2D 双后端**：浏览器走 `wl-live2d`（按需加载贴图，`blinkScheduler` 双眼同步，静止动态降帧节能）；桌面端走原生 Overlay 桥。
+- **Live2D 双后端**：浏览器走 `wl-live2d`（按需加载贴图，`blinkScheduler` 双眼同步，静止动态降帧节能）；桌面端走原生 Overlay 桥。组合式拆分方案见 `docs/live2d-composable-refactor-plan.md`。
 - **配音与陪伴**：GPT-SoVITS + 本机翻译管道，自动剥离台词舞台提示，长句分段与 in-flight 缓存去重。
 
 ---
@@ -62,3 +62,23 @@
 1. **短剧分镜与角色一致性打磨**：深化 4 视角标准基准在视频分镜（MiniMax H3 / T8）中的自动化装配与过渡。
 2. **桌宠情感与剧场深度联动**：基于好感度、时间段与日程触发 Live2D 专属小剧场，保持低功耗静止节能。
 3. **角色设定记忆与知识库（RAG）**：免额度角色检索工具深度打通，为 40+ 热门角色构建世界观设定记忆库。
+
+---
+
+## 五、 技术重构待办（2026-08-22 体检立项）
+
+### useLive2D 组合式拆分 —— 项目内最高风险重构，方案已定稿待实施
+
+- **研究报告（唯一执行依据）**：`docs/live2d-composable-refactor-plan.md`
+- 核心事实：1270 行单工厂 / 52 个嵌套子函数 / ~35 个共享闭包变量；唯一消费方 `ChatCharacterStage.vue`；组合式内部单测覆盖为零；公开 API 必须逐字冻结。
+- 待办清单（按序执行，每步独立提交并通过门禁，严禁跳步）：
+  - [ ] Step 0：测试地基——分区带命中/夏目外框排序/readLive2DCatalog 解析/MOUTH·BLINK 参数选择 vitest 规格
+  - [ ] Step 1：抽离 `live2d/constants.ts` + `live2d/catalog.ts`（纯数据/纯函数）
+  - [ ] Step 2：闭包状态 ctx 对象化（~35 变量 → Live2DCtx 显式字段，机械重命名零行为变化）
+  - [ ] Step 3–5：抽取 pointerGaze / interactions / emotionClock+layoutFit 子模块
+  - [ ] Step 6：parameterFrame 每帧热路径抽出（逐行对照迁移）
+  - [ ] Step 7：lifecycle 抽出，useLive2D 收薄为组合根
+  - [ ] 收尾硬门槛：`npm run test:live2d-native:release` 真机自检 + 双后端手工冒烟清单归档
+- 红线提醒：`destroyRuntime` 全库唯一实现且顺序冻结（Pixi-first）；双后端 capability 分支原样搬家不抽象；`lifecycleToken` 语义不变。
+
+> 已完成（2026-08-22）：`routes/video.js` 八模块化拆分（2229→606 行编排层）、`sendMessage` 六步 pipeline 化、桌宠工具 R18 网关双门控、存储键收敛防回潮门禁。其余中期项（PromptBuilderView 编排下沉、director.css/companion.css 分片）按打包预算压力另行排期。

@@ -80,6 +80,7 @@
 | **Native Overlay 规范** | [`live2d-native-overlay-plan.md`](live2d-native-overlay-plan.md) | 前端与 Rust 壳 IPC 意图通信协议、屏幕物理像素坐标映射与分层。 |
 | **Tauri 桌面端迁移** | [`tauri-desktop-migration-plan.md`](tauri-desktop-migration-plan.md) | 从 Electron 到 Tauri 2 的架构迁移、双窗口、打包与 D-10 验收条件。 |
 | **夏目 Live2D 动作调研** | [`live2d-natsume-overlay-research.md`](live2d-natsume-overlay-research.md) | 四季夏目 Moc.moc3 动作曲线、叠层显隐与情绪参数映射。 |
+| **useLive2D 拆分计划** | [`live2d-composable-refactor-plan.md`](live2d-composable-refactor-plan.md) | 1270 行组合式工厂的模块化研究：风险清单、Live2DCtx 显式契约设计与七步绞杀迁移路线（2026-08-22）。 |
 | **桌宠 DSH 架构对齐** | [`companion-dsh-agent-architecture.md`](companion-dsh-agent-architecture.md) | 基于 DeepSeek Harness 架构的桌宠智能伴侣配置与工具全景。 |
 | **桌宠双窗口设计** | [`companion-dual-window-design.md`](companion-dual-window-design.md) | Companion 角色/聊天真双窗口分离（方案 B2）设计与落地记录。 |
 
