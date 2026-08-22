@@ -814,7 +814,7 @@ onMounted(async () => {
 .stat-value { font-size:var(--fs-title-xs); font-weight:800; color:var(--accent); }
 .stat-label { font-size:var(--fs-label-xs); color:var(--text-muted); }
 .tab-row { display:flex; gap:var(--s-2); margin-bottom:var(--s-4); flex-wrap:wrap; }
-.tab-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
+.tab-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
 .tab-btn.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
 .table-wrap { overflow-x:auto; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); margin-bottom:var(--s-4); }
 table { width:100%; border-collapse:collapse; font-size:var(--fs-body-sm); }
@@ -843,7 +843,7 @@ tr:hover td { background:var(--bg-elevated); }
 .msg-ok { color:var(--success-text); margin:0 0 4px; } .msg-warn { color:var(--warning-text); margin:0 0 4px; } .msg-danger { color:var(--danger-text); margin:0 0 4px; }
 
 .tool-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
-.sm-tool-card { display:flex; flex-direction:column; gap:var(--s-1); text-align:left; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); }
+.sm-tool-card { display:flex; flex-direction:column; gap:var(--s-1); text-align:left; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); cursor:pointer; transition:border-color var(--motion-hover),transform var(--motion-hover); }
 .sm-tool-card:hover:not(:disabled) { border-color:var(--accent); }
 .sm-tool-card:disabled { opacity:.5; cursor:not-allowed; }
 .sm-tool-icon { font-size:var(--fs-title); }
@@ -858,7 +858,7 @@ tr:hover td { background:var(--bg-elevated); }
 
 /* 样张管理 */
 .image-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:var(--s-2); margin-bottom:var(--s-3); }
-.sm-image-card { display:grid; gap:4px; text-align:left; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); overflow:hidden; }
+.sm-image-card { display:grid; gap:4px; text-align:left; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); cursor:pointer; transition:border-color var(--motion-hover),transform var(--motion-hover); overflow:hidden; }
 .sm-card-thumb { width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:var(--r-md); border:1px solid var(--border-soft); background:var(--art-mat); display:block; }
 .sm-image-card:hover { border-color:var(--accent); }
 @media (hover: hover) and (pointer: fine) {

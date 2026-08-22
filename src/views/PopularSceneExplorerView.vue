@@ -409,7 +409,7 @@ onMounted(() => { void init() })
   padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill);
   background: var(--bg-elevated); color: var(--text-secondary);
   font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover);
 }
 .pop-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .pop-franchise.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
@@ -440,7 +440,7 @@ onMounted(() => { void init() })
   color: var(--text-secondary);
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-hover);
 }
 .pop-char-btn strong { font-size: var(--fs-label); color: var(--text-primary); }
 .pop-char-btn small { font-size: var(--fs-mono-xs); opacity: .6; }
@@ -516,7 +516,7 @@ onMounted(() => { void init() })
   color: var(--text-secondary);
   font: 650 var(--fs-label-sm) var(--font-sans);
   cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .pop-cat:active { transform: translateY(1px) scale(.97); }
 .pop-cat em { font-style: normal; opacity: .55; font: 700 var(--fs-mono-xs) var(--font-mono); }
@@ -557,7 +557,7 @@ onMounted(() => { void init() })
   border-radius: var(--r-lg);
   background: var(--bg-elevated);
   box-shadow: inset 0 1px 0 var(--glass-highlight);
-  transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast), box-shadow var(--t-fast);
+  transition: transform var(--motion-hover) var(--ease-out), border-color var(--motion-hover), box-shadow var(--motion-hover);
   /* 离屏卡片跳过布局/绘制/渲染，长列表滚动保持满帧（首屏外无需工作） */
   content-visibility: auto;
   contain-intrinsic-size: auto 460px;
@@ -581,7 +581,7 @@ onMounted(() => { void init() })
   width: 100%; height: 100%;
   object-fit: cover; object-position: center 22%;
   opacity: 0; filter: blur(6px);
-  transition: opacity .28s var(--ease-out), filter .5s var(--ease-out), transform var(--t-base) var(--ease-out);
+  transition: opacity .28s var(--ease-out), filter .5s var(--ease-out), transform var(--motion-surface) var(--ease-out);
 }
 .pop-thumb img.pop-thumb-ready { opacity: 1; filter: blur(0); }
 .pop-thumb img.pop-thumb-missing { display: none; }
@@ -589,7 +589,7 @@ onMounted(() => { void init() })
   position: absolute; inset: 0; z-index: var(--z-sc-media, 0); opacity: 0;
   background: linear-gradient(105deg, var(--bg-deep) 18%, var(--bg-elevated) 42%, var(--bg-deep) 68%);
   background-size: 220% 100%;
-  transition: opacity var(--t-fast);
+  transition: opacity var(--motion-hover);
 }
 .pop-thumb-skeleton.visible { opacity: 1; animation: archive-skeleton-shimmer 1.3s linear infinite; }
 /* R18 样张默认模糊，悬停/聚焦揭示，与灵感场景一致。 */
@@ -606,7 +606,7 @@ onMounted(() => { void init() })
   background: var(--art-scrim); color: var(--on-art-primary);
   font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .08em;
   backdrop-filter: blur(10px); box-shadow: var(--shadow-sm);
-  pointer-events: none; opacity: 1; transition: opacity var(--t-fast);
+  pointer-events: none; opacity: 1; transition: opacity var(--motion-hover);
 }
 .pop-card:hover .pop-thumb-hint, .pop-card:focus-within .pop-thumb-hint { opacity: 0; }
 @media (hover: hover) and (pointer: fine) {

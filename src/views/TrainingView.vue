@@ -1213,7 +1213,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--t-base) var(--ease-out);
+  transition: transform var(--motion-surface) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .dataset-preview a:hover img { transform: scale(1.025); }
@@ -1298,7 +1298,7 @@ onUnmounted(() => {
   color: var(--text-muted);
   font-size: var(--fs-title-xs);
   transform: rotate(0deg);
-  transition: transform var(--t-fast) var(--ease-out), color var(--t-fast);
+  transition: transform var(--motion-hover) var(--ease-out), color var(--motion-hover);
 }
 .param-panel[open] .param-summary::after { color: var(--accent); transform: rotate(90deg); }
 .param-summary .field-name { margin-bottom: 3px; }
@@ -1410,7 +1410,7 @@ onUnmounted(() => {
   display: inline-block;
   margin-right: 8px;
   color: var(--accent);
-  transition: transform var(--t-fast) var(--ease-out);
+  transition: transform var(--motion-hover) var(--ease-out);
 }
 .dataset-details[open] > summary::before { transform: rotate(90deg); }
 .dataset-details > summary:hover { color: var(--text-primary); }

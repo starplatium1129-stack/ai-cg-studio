@@ -96,7 +96,7 @@ useScrollReveal()
   font: 650 var(--fs-label-xs) var(--font-sans);
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity var(--t-fast), transform var(--t-fast);
+  transition: opacity var(--motion-hover), transform var(--motion-hover);
 }
 .style-mood-card:focus-visible .mood-go {
   opacity: 1;

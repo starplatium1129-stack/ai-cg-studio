@@ -197,7 +197,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   color: inherit;
   font-size: var(--fs-label-sm);
   cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover);
 }
 .franchise-chip.active {
   border-color: var(--pb-active);

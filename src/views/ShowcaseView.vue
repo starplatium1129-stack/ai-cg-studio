@@ -421,9 +421,9 @@ onUnmounted(() => {
 .scene-search-clear { position:absolute; top:50%; right:8px; transform:translateY(-50%); width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
 .filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; align-items:center; }
 .filter-dropdowns { display:flex; gap:var(--s-2); align-items:center; }
-.filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
+.filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
 .filter-pill.active,.filter-pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
-.filter-select { max-width:100%; height:32px; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; transition:border-color var(--t-fast),color var(--t-fast); }
+.filter-select { max-width:100%; height:32px; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; transition:border-color var(--motion-hover),color var(--motion-hover); }
 .filter-select:hover { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); }
 .filter-select:focus { border-color:var(--accent); color:var(--text-primary); }
 .result-meta { margin-left:auto; color:var(--text-muted); font-size:var(--fs-label-sm); white-space:nowrap; }
@@ -432,7 +432,7 @@ onUnmounted(() => {
 /* 2026-08-15：多列（columns）改为 Grid —— columns 先填满一列再换列（从上到下），
    Grid 按行填充，样张按 1-2-3-4 从左到右排列，符合阅读直觉。 */
 .showcase-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:var(--s-4); align-items:start; }
-.sample { overflow:hidden; position:relative; border:1px solid var(--border-soft); border-radius:var(--r-dossier); background:var(--bg-surface); box-shadow:var(--shadow-sm); transition:transform var(--t-fast),border-color var(--t-fast),box-shadow var(--t-fast); animation:showcaseSampleIn .48s var(--ease-out) both; }
+.sample { overflow:hidden; position:relative; border:1px solid var(--border-soft); border-radius:var(--r-dossier); background:var(--bg-surface); box-shadow:var(--shadow-sm); transition:transform var(--motion-hover),border-color var(--motion-hover),box-shadow var(--motion-hover); animation:showcaseSampleIn .48s var(--ease-out) both; }
 .sample::before { content:""; position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:1px; background:var(--archive-blue); opacity:.86; pointer-events:none; }
 .sample:nth-child(2) { animation-delay:.04s; }
 .sample:nth-child(3) { animation-delay:.08s; }
@@ -443,7 +443,7 @@ onUnmounted(() => {
 .sample:hover { border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .sample-visual { display:block; width:100%; padding:0; border:0; background:var(--art-mat); color:var(--on-art-primary); text-align:left; cursor:zoom-in; position:relative; overflow:hidden; }
 .sample-visual:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
-.sample-image { width:100%; height:auto; display:block; background:var(--art-mat); opacity:0; filter:blur(7px); transition:opacity .3s var(--ease-out),filter .5s var(--ease-out),transform var(--t-slow) var(--ease-out); }
+.sample-image { width:100%; height:auto; display:block; background:var(--art-mat); opacity:0; filter:blur(7px); transition:opacity .3s var(--ease-out),filter .5s var(--ease-out),transform var(--motion-route) var(--ease-out); }
 .sample-image-ready { opacity:1; filter:blur(0); }
 .sample-image-fallback { display:grid; min-height:260px; place-items:center; color:var(--text-muted); font-size:var(--fs-glyph); }
 /* R18 遮罩优先于渐进模糊：未悬停时始终是深模糊 */
@@ -458,7 +458,7 @@ onUnmounted(() => {
 .sample-caption { position:absolute; z-index:var(--z-base); inset:auto 0 0; display:block; padding:48px var(--s-3) var(--s-3); pointer-events:none; }
 .sample-kicker { display:flex; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-1); color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .sample-title { display:block; color:var(--on-art-primary); font-size:var(--fs-body); line-height:1.35; text-shadow:0 2px 14px var(--art-backdrop); }
-.sample-sensitive { position:absolute; z-index:var(--z-raised); inset:50% auto auto 50%; display:grid; justify-items:center; gap:2px; min-width:112px; padding:var(--s-3) var(--s-4); transform:translate(-50%,-50%); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); box-shadow:var(--shadow-md); backdrop-filter:blur(12px); pointer-events:none; transition:opacity var(--t-base),transform var(--t-base); }
+.sample-sensitive { position:absolute; z-index:var(--z-raised); inset:50% auto auto 50%; display:grid; justify-items:center; gap:2px; min-width:112px; padding:var(--s-3) var(--s-4); transform:translate(-50%,-50%); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); box-shadow:var(--shadow-md); backdrop-filter:blur(12px); pointer-events:none; transition:opacity var(--motion-surface),transform var(--motion-surface); }
 .sample-sensitive strong { font-size:var(--fs-label-sm); letter-spacing:.12em; }
 .sample-sensitive span { color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .sample-r18 .sample-image { filter:blur(18px) saturate(.78); transform:scale(1.08); }

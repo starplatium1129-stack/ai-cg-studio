@@ -569,7 +569,7 @@ onMounted(() => {
 .cb-search { width: 100%; padding: var(--s-3) var(--s-4) var(--s-3) 38px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: var(--fs-body); outline: none; }
 .cb-search:focus { border-color: var(--accent); }
 .cb-franchises { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); padding: var(--s-3); border: 1px solid color-mix(in srgb, var(--archive-blue) 22%, var(--border-soft)); border-radius: var(--r-dossier); background: color-mix(in srgb, var(--bg-surface) 62%, transparent); }
-.cb-franchise { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast); }
+.cb-franchise { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover); }
 .cb-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .cb-franchise.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 /* 单角色作品折叠项与「更多」开关：弱化层级，不与高频作品抢注意力 */
@@ -586,7 +586,7 @@ onMounted(() => {
   display: flex; flex-direction: column; align-items: center; gap: 6px; padding: var(--s-3) var(--s-2) var(--s-2);
   border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface);
   color: var(--text-secondary); cursor: pointer;
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
   /* 离屏卡片跳过布局/绘制，35 角色长列表滚动满帧 */
   content-visibility: auto;
   contain-intrinsic-size: auto 150px;
@@ -694,7 +694,7 @@ onMounted(() => {
 .tag-chip.m4 { --chip-tone:var(--mood-tension-text); }
 .tag-chip.m5 { --chip-tone:var(--mood-warmth-text); }
 /* 现在是 <button>：重置默认样式，保留原来的截断+展开观感 */
-.bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; max-height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:max-height var(--t-base); }
+.bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; max-height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:max-height var(--motion-surface); }
 .bg-story.expanded { max-height:500px; }
 .bg-story::after { content:'展开'; position:absolute; right:0; bottom:0; padding-left:var(--s-6); background:linear-gradient(90deg,transparent,var(--bg-surface)); color:var(--accent); font-size:var(--fs-label-xs); }
 .bg-story.expanded::after { content:none; }
@@ -797,7 +797,7 @@ onMounted(() => {
   overflow: hidden;
   cursor: pointer;
   user-select: none;
-  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  transition: transform var(--motion-hover), border-color var(--motion-hover), box-shadow var(--motion-hover);
 }
 .char-ref-card:hover {
   transform: translateY(-3px);
@@ -819,7 +819,7 @@ onMounted(() => {
   gap: 4px;
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity var(--t-fast), transform var(--t-fast);
+  transition: opacity var(--motion-hover), transform var(--motion-hover);
 }
 .char-ref-card:hover .char-ref-hover-hint {
   opacity: 1;
@@ -837,7 +837,7 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform var(--t-base);
+  transition: transform var(--motion-surface);
 }
 .char-ref-card:hover .char-ref-image {
   transform: scale(1.03);

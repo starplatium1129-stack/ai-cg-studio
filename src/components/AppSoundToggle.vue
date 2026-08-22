@@ -32,7 +32,7 @@ const { soundEnabled, toggleSound } = useInterfaceFeedback()
   background:var(--bg-surface);
   color:var(--text-muted);
   cursor:pointer;
-  transition:color var(--t-fast),border-color var(--t-fast),background var(--t-fast),transform var(--t-fast);
+  transition:color var(--motion-hover),border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover);
 }
 .sound-toggle:hover,.sound-toggle.active { color:var(--archive-blue); border-color:color-mix(in srgb,var(--archive-blue) 48%,var(--border-soft)); background:var(--archive-blue-soft); }
 .sound-toggle:active { transform:scale(.92); }

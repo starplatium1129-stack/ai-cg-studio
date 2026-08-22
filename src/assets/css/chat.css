@@ -609,7 +609,7 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .wardrobe-chevron {
   color: var(--text-muted);
-  transition: transform var(--t-fast);
+  transition: transform var(--motion-hover);
 }
 
 .chat-page .live2d-wardrobe.open .wardrobe-chevron {
@@ -1215,7 +1215,7 @@ body:has(.chat-page) .sakura-fall {
   cursor: pointer;
   font: 600 var(--fs-label-xs) var(--font-sans);
   text-align: left;
-  transition: border-color var(--t-fast), color var(--t-fast), transform var(--t-fast);
+  transition: border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover);
 }
 
 .chat-page .chat-starters button:hover {
@@ -1660,8 +1660,8 @@ body:has(.chat-page) .sakura-fall {
   color: var(--text-secondary);
   cursor: pointer;
   font: 650 var(--fs-mono-sm) var(--font-sans);
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast),
-              transform var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover),
+              transform var(--motion-hover) var(--ease-out);
   white-space: nowrap;
 }
 
@@ -1695,7 +1695,7 @@ body:has(.chat-page) .sakura-fall {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 
 .chat-page .hold-talk-btn:hover {
@@ -1796,7 +1796,7 @@ body:has(.chat-page) .sakura-fall {
   cursor: pointer;
   font: 650 var(--fs-mono-xs) var(--font-sans);
   white-space: nowrap;
-  transition: border-color var(--t-fast), color var(--t-fast);
+  transition: border-color var(--motion-hover), color var(--motion-hover);
 }
 
 .chat-page .speech-config-btn:hover {

@@ -613,7 +613,9 @@ async function handleStart() {
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: var(--z-raised);
-  transition: width 0.08s ease, height 0.08s ease;
+  /* 遮罩光标点的跟手微过渡：80ms 是刻意的快速档（不套 --motion-press 的 120ms），
+     仅把裸 ease 换成 token 曲线。 */
+  transition: width 0.08s var(--ease-out), height 0.08s var(--ease-out);
 }
 
 .hidden-file-input {

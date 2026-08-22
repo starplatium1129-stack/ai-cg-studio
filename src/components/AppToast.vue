@@ -170,7 +170,7 @@ function onToastLeave(el: Element, done: () => void) {
   max-width: min(460px, 90vw);
   white-space: pre-wrap;
   word-break: break-word;
-  transition: box-shadow var(--t-fast);
+  transition: box-shadow var(--motion-hover);
 }
 .toast-item:active { cursor: grabbing; }
 .toast-item:hover {

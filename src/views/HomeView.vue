@@ -559,14 +559,14 @@ onUnmounted(() => {
   overflow:hidden;
   min-width:0;
   text-decoration:none;
-  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast), border-color var(--t-fast);
+  transition: transform var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover), border-color var(--motion-hover);
 }
 .pop-card-mini:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); box-shadow: 0 16px 34px -16px color-mix(in srgb, var(--accent) 45%, transparent), var(--shadow-glass-md); }
 .pop-card-mini:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .pop-card-mini img {
   display:block; width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; object-position:center top;
   border-radius: var(--r-md);
-  filter: saturate(.94); transition: filter var(--t-base), transform var(--t-base) var(--ease-out);
+  filter: saturate(.94); transition: filter var(--motion-surface), transform var(--motion-surface) var(--ease-out);
 }
 .pop-card-mini:hover img { filter: saturate(1.06); }
 .pop-cap {
@@ -600,14 +600,14 @@ onUnmounted(() => {
 .tools-grid { display:grid; grid-template-columns:1fr; gap:var(--s-3); }
 @media (min-width:768px) { .tools-grid { grid-template-columns:repeat(2,1fr); } }
 @media (min-width:1200px) { .tools-grid { grid-template-columns:repeat(4,1fr); } }
-.tool-card { display:flex; flex-direction:column; gap:var(--s-2); min-height:176px; background:linear-gradient(145deg,var(--editorial-gold-soft),transparent 26%),var(--bg-surface); border:1px solid var(--border-soft); border-radius:2px var(--r-lg) 2px var(--r-lg); padding:var(--s-5); text-decoration:none; color:var(--text-primary); transition:border-color var(--t-fast),transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast); }
+.tool-card { display:flex; flex-direction:column; gap:var(--s-2); min-height:176px; background:linear-gradient(145deg,var(--editorial-gold-soft),transparent 26%),var(--bg-surface); border:1px solid var(--border-soft); border-radius:2px var(--r-lg) 2px var(--r-lg); padding:var(--s-5); text-decoration:none; color:var(--text-primary); transition:border-color var(--motion-hover),transform var(--motion-hover) var(--ease-out),box-shadow var(--motion-hover); }
 .tool-card .tool-index { position:absolute; top:var(--s-3); right:var(--s-4); color:var(--editorial-gold); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; opacity:.86; }
 .tool-card .ic { margin-top:var(--s-3); }
 .tool-card:hover { border-color:color-mix(in srgb,var(--accent) 58%,var(--border-soft)); }
 .tool-card .ic { display:grid; place-items:center; width:36px; height:36px; border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft)); border-radius:var(--r-lg); background:var(--accent-soft); font-size:var(--fs-title-sm); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .tool-card .t { font:600 var(--fs-title-xs)/1.35 var(--font-serif); letter-spacing:.025em; }
 .tool-card .d { font-size:var(--fs-label); color:var(--text-muted); line-height:1.5; margin:0; flex:1; }
-.tool-card .go { display:inline-flex; align-items:center; gap:var(--s-1); width:max-content; font-size:var(--fs-label-sm); color:var(--accent); margin-top:var(--s-2); transition:transform var(--t-fast) var(--ease-out); }
+.tool-card .go { display:inline-flex; align-items:center; gap:var(--s-1); width:max-content; font-size:var(--fs-label-sm); color:var(--accent); margin-top:var(--s-2); transition:transform var(--motion-hover) var(--ease-out); }
 
 /* ---------- Banner 卡（05/ARCHIVE）：≥768px 拉通为横向入口，消除 4+1 孤行 ---------- */
 .banner-copy { display:flex; flex-direction:column; gap:var(--s-2); flex:1; min-width:0; }
@@ -619,7 +619,7 @@ onUnmounted(() => {
 
 /* ---------- Recent ---------- */
 .recent-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:var(--s-4); }
-.recent-card { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); text-decoration:none; color:var(--text-primary); }
+.recent-card { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; cursor:pointer; transition:border-color var(--motion-hover),transform var(--motion-hover); text-decoration:none; color:var(--text-primary); }
 .recent-card:hover { border-color:var(--accent); }
 .recent-cover { aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; background:var(--bg-deep); font-size:var(--fs-glyph); overflow:hidden; }
 .recent-cover img { width:100%; height:100%; object-fit:cover; animation:archive-image-in .3s ease; }

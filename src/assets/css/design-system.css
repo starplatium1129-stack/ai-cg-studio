@@ -345,8 +345,8 @@
 
 /* Same-origin page changes use a short optical dissolve where supported. */
 @view-transition { navigation: auto; }
-::view-transition-old(root) { animation: aics-page-out var(--t-fast) var(--ease-out) both; }
-::view-transition-new(root) { animation: aics-page-in var(--t-base) var(--ease-out) both; }
+::view-transition-old(root) { animation: aics-page-out var(--motion-hover) var(--ease-out) both; }
+::view-transition-new(root) { animation: aics-page-in var(--motion-surface) var(--ease-out) both; }
 @keyframes aics-page-out { to { opacity:0; transform:scale(.995); } }
 @keyframes aics-page-in { from { opacity:0; transform:translateY(5px) scale(.998); } }
 
@@ -421,7 +421,7 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
   align-items: center;
   gap: var(--s-2);
   opacity: 1;
-  transition: opacity var(--t-base) var(--ease-out);
+  transition: opacity var(--motion-surface) var(--ease-out);
 }
 .kana-watermark .kana-main {
   writing-mode: vertical-rl;
@@ -487,7 +487,7 @@ body:has(.pb, .training-page) .kana-watermark { opacity: 0; }
   to   { opacity: .6; transform: translate3d(-1.5rem, 1rem, 0) scale(1.06); }
 }
 
-a { color: var(--accent); text-decoration: none; transition: color var(--t-fast); }
+a { color: var(--accent); text-decoration: none; transition: color var(--motion-hover); }
 a:hover { color: var(--accent-hover); }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
@@ -569,7 +569,7 @@ body > *:has(+ .footer),
 .nav-links a {
   position:relative; display:inline-flex; align-items:center; gap:6px;
   color: var(--text-secondary); font-size: var(--fs-body-sm); font-weight: 600;
-  transition: color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out);
+  transition: color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
   padding: 6px 10px; border-radius: var(--r-pill);
 }
 .nav-links a:hover, .nav-links a.active { color: var(--text-primary); background: var(--accent-soft); }
@@ -578,20 +578,20 @@ body > *:has(+ .footer),
   content:""; position:absolute; left:50%; bottom:2px; width:12px; height:2px;
   border-radius:var(--r-pill); background:var(--accent);
   opacity:0; transform:translateX(-50%) scaleX(.35);
-  transition:opacity var(--t-fast),transform var(--t-fast) var(--ease-out);
+  transition:opacity var(--motion-hover),transform var(--motion-hover) var(--ease-out);
 }
 .nav-links > a.active::after { opacity:.9; transform:translateX(-50%) scaleX(1); }
 .nav-more { position:relative; }
 .nav-more summary {
   display:flex; align-items:center; gap:5px; list-style:none; cursor:pointer;
   color:var(--text-secondary); padding:6px 10px; border-radius:var(--r-pill);
-  font-size: var(--fs-body-sm); font-weight:600; transition:color var(--t-fast),background var(--t-fast);
+  font-size: var(--fs-body-sm); font-weight:600; transition:color var(--motion-hover),background var(--motion-hover);
 }
 .nav-more summary::-webkit-details-marker { display:none; }
 .nav-more summary:hover, .nav-more[open] summary, .nav-more[data-active="true"] summary {
   color:var(--text-primary); background:var(--accent-soft);
 }
-.nav-more-chevron { font-size: var(--fs-label-xs); transition:transform var(--t-fast); }
+.nav-more-chevron { font-size: var(--fs-label-xs); transition:transform var(--motion-hover); }
 .nav-more[open] .nav-more-chevron { transform:rotate(180deg); }
 .nav-more-menu {
   position:absolute; top:calc(100% + 12px); right:0; width:210px; padding:8px;
@@ -600,7 +600,7 @@ body > *:has(+ .footer),
   border-radius:var(--r-lg); box-shadow:var(--shadow-lg);
   -webkit-backdrop-filter:blur(24px) saturate(145%); backdrop-filter:blur(24px) saturate(145%);
   transform-origin:top right;
-  transition:opacity var(--t-fast),transform var(--t-fast) var(--ease-out);
+  transition:opacity var(--motion-hover),transform var(--motion-hover) var(--ease-out);
 }
 @starting-style {
   .nav-more[open] .nav-more-menu { opacity:0; transform:translateY(-6px) scale(.98); }
@@ -618,7 +618,7 @@ body > *:has(+ .footer),
   display:inline-flex; align-items:center; gap:7px; min-height:32px; padding:5px 10px;
   border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-elevated);
   color:var(--text-secondary); cursor:pointer; font: 650 var(--fs-label-xs) var(--font-sans);
-  transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast);
+  transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover);
 }
 .local-status-trigger:hover, .local-status-trigger[aria-expanded="true"] { border-color:var(--accent); color:var(--text-primary); background:var(--accent-soft); }
 .local-status-led { width:7px; height:7px; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
@@ -658,8 +658,8 @@ body > *:has(+ .footer),
   background: var(--bg-elevated);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast),
-              transform var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover),
+              transform var(--motion-hover) var(--ease-out);
   font-size: var(--fs-body-lg);
   line-height: 1;
 }
@@ -721,7 +721,7 @@ body > *:has(+ .footer),
   margin-bottom: var(--s-4);
   color: var(--text-secondary); font-size: var(--fs-body);
   text-decoration: none;
-  transition: color var(--t-fast);
+  transition: color var(--motion-hover);
 }
 .nav-back:hover { color: var(--accent); }
 
@@ -805,7 +805,7 @@ body > *:has(+ .footer),
   color: var(--text-secondary);
   font: 650 var(--fs-label-xs) var(--font-sans);
   cursor: pointer;
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .filter-pill:hover,
 .filter-pill.active {
@@ -942,7 +942,7 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   /* 修复:此处原有两条 box-shadow,后一条覆盖掉玻璃内衬高光,
      导致 .card 与 .card-info/.card-create 的表面语言不一致 */
   box-shadow: var(--shadow-glass-sm);
-  transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  transition: border-color var(--motion-hover), transform var(--motion-hover), box-shadow var(--motion-hover);
 }
 .card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-glass-md); }
 
@@ -964,7 +964,7 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   background:linear-gradient(145deg,var(--glass-highlight),transparent 34%),var(--bg-surface);
   border:1px solid var(--border-strong); border-radius:var(--r-lg); padding:var(--s-3);
   backdrop-filter:blur(18px) saturate(118%); box-shadow:var(--shadow-glass-sm);
-  transition:border-color var(--t-fast),transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast);
+  transition:border-color var(--motion-hover),transform var(--motion-hover) var(--ease-out),box-shadow var(--motion-hover);
 }
 .card-create::before {
   content:""; position:absolute; inset:0 auto auto 10%; width:52%; height:1px;
@@ -979,7 +979,7 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   border-radius: var(--r-xl);
   padding: var(--s-5);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--t-fast), transform var(--t-fast);
+  transition: box-shadow var(--motion-hover), transform var(--motion-hover);
 }
 /* 战术切角：右上角 45° 斜切，档案终端质感（设计规范 §1.2） */
 .card-direct::after {
@@ -1093,7 +1093,7 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   background: var(--bg-deep);
   color: var(--text-primary);
   font: 400 var(--fs-body) var(--font-sans);
-  transition: border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+  transition: border-color var(--motion-hover), box-shadow var(--motion-hover), background var(--motion-hover);
 }
 .textarea { min-height: 96px; resize: vertical; line-height: 1.6; }
 .input-mono, .textarea-mono { font-family: var(--font-mono); font-size: var(--fs-label); }
@@ -1161,7 +1161,7 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--accent), var(--accent-violet));
-  transition: width var(--t-base) var(--ease-out);
+  transition: width var(--motion-surface) var(--ease-out);
 }
 .meter-lg { height: 10px; }
 
@@ -1255,10 +1255,11 @@ body.overlay-open { overflow: hidden; }
   border: 1px solid var(--border-soft);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast),
-              transform var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover),
+              transform var(--motion-hover) var(--ease-out);
 }
-.chip:active { transform:scale(.97); }
+/* 2026-08-22 动效审计 #14：.chip:active scale(.97) 被 :where 触觉层覆盖（死代码）已删；
+   按压反馈统一收敛到 --motion-press + :where 层的 scale(.96)。 */
 .chip:hover { border-color: var(--accent); color: var(--accent); }
 .chip.active {
   background: var(--accent-soft);
@@ -1401,7 +1402,7 @@ body:has(.training-page) .route-atmosphere .route-index {
   font-size: var(--fs-body);
   font-weight: 700;
   transform: translateY(-140%);
-  transition: transform var(--t-fast);
+  transition: transform var(--motion-hover);
 }
 .skip-link:focus,
 .skip-link:focus-visible {
@@ -1489,7 +1490,7 @@ body:has(.training-page) .route-atmosphere .route-index {
 
 /* ── 浮动悬停（卡片增强） ── */
 .hover-lift {
-  transition: transform var(--t-base), box-shadow var(--t-base);
+  transition: transform var(--motion-surface), box-shadow var(--motion-surface);
 }
 @media (hover: hover) and (pointer: fine) {
   .hover-lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
@@ -1634,7 +1635,7 @@ body:has(.training-page) .route-atmosphere .route-index {
   .nav-links.open { display: grid; }
   .nav-links.open {
     transform-origin:top right;
-    transition:opacity var(--t-fast),transform var(--t-base) var(--ease-out);
+    transition:opacity var(--motion-hover),transform var(--motion-surface) var(--ease-out);
   }
   @starting-style {
     .nav-links.open { opacity:0; transform:translateY(-8px) scale(.98); }
@@ -1792,7 +1793,7 @@ kbd,
   .viewer-nav
 ):active:not(:disabled) {
   transform: scale(0.96);
-  transition: transform 0.06s var(--ease-out);
+  transition: transform var(--motion-press) var(--ease-out);
 }
 
 /* ── 弹窗 / 模态框平滑视口缩放与收拢过渡动效 ── */

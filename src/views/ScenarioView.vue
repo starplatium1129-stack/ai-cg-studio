@@ -204,7 +204,7 @@ onMounted(async () => {
 .viewer-en { color:var(--text-muted); font-size:var(--fs-label-sm); }
 .viewer-desc { color:var(--text-secondary); font-size:var(--fs-body-sm); margin-bottom:var(--s-5); }
 .char-toggle { display:flex; gap:var(--s-2); flex-shrink:0; }
-.char-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
+.char-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
 .char-btn.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
 
 .acts { display:grid; gap:var(--s-5); margin-bottom:var(--s-5); }

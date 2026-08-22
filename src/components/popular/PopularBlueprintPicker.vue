@@ -101,7 +101,7 @@ const categoryChips = computed(() => {
   color: var(--text-secondary);
   font: 650 var(--fs-label-sm) var(--font-sans);
   cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-cat-btn:active { transform: translateY(1px) scale(.96); }
 .blueprint-cat-btn em { font-style: normal; font: 700 var(--fs-mono-xs) var(--font-mono); opacity: .55; }
@@ -138,7 +138,7 @@ const categoryChips = computed(() => {
   color: var(--text-secondary);
   font-size: var(--fs-mono-sm);
   cursor: pointer;
-  transition: border-color var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-reco-btn:hover { border-color: var(--accent); color: var(--accent); }
 .blueprint-reco-btn:active { transform: translateY(1px) scale(.96); }
@@ -159,7 +159,7 @@ const categoryChips = computed(() => {
   background: var(--glass-fill);
   color: inherit;
   cursor: pointer;
-  transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover);
 }
 .blueprint-card:hover {
   transform: translateY(-1px);

@@ -27,7 +27,7 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color var(--t-fast), transform var(--t-base) var(--ease-out), box-shadow var(--t-base);
+  transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out), box-shadow var(--motion-surface);
 }
 .mood-card:hover { border-color: var(--accent); }
 /* 选中态用自身情绪色描边。border-color 属于非文字图形(3:1),

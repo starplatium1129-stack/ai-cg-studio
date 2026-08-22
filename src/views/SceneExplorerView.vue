@@ -640,7 +640,7 @@ onMounted(() => { init() })
 .curation-intro h2 { margin:var(--s-1) 0 var(--s-1); font-size:var(--fs-title-xs); }
 .curation-intro p { margin:0; color:var(--text-muted); font-size:var(--fs-label); line-height:1.6; }
 .mood-rails { position:relative; z-index:var(--z-raised); grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
-.mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:inset 0 1px 0 var(--glass-highlight); transition:transform var(--t-fast) var(--ease-out),border-color var(--t-fast),box-shadow var(--t-fast); }
+.mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:inset 0 1px 0 var(--glass-highlight); transition:transform var(--motion-hover) var(--ease-out),border-color var(--motion-hover),box-shadow var(--motion-hover); }
 .mood-rail.nene { background:linear-gradient(135deg,color-mix(in srgb,var(--nene-violet) 20%,transparent),color-mix(in srgb,var(--accent) 8%,transparent)),var(--bg-elevated); }
 .mood-rail.natsume { background:linear-gradient(135deg,color-mix(in srgb,var(--natsume-amber) 20%,transparent),color-mix(in srgb,var(--text-primary) 10%,transparent)),var(--bg-elevated); }
 .mood-rail:hover { border-color:var(--accent); box-shadow:var(--shadow-sm); }
@@ -653,7 +653,7 @@ onMounted(() => { init() })
 .mood-rail small { color:var(--text-muted); font-size:var(--fs-mono-sm); }
 
 .scene-search-wrap { position:relative; margin-bottom:var(--s-4); }
-.scene-search { width:100%; padding:var(--s-3) 42px var(--s-3) var(--s-4); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:var(--fs-body); outline:none; transition:border-color var(--t-fast); }
+.scene-search { width:100%; padding:var(--s-3) 42px var(--s-3) var(--s-4); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:var(--fs-body); outline:none; transition:border-color var(--motion-hover); }
 .scene-search:focus { border-color:var(--accent); }
 .scene-search::placeholder { color:var(--text-muted); }
 .scene-search-clear { position:absolute; top:50%; right:9px; transform:translateY(-50%); width:28px; height:28px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
@@ -689,7 +689,7 @@ onMounted(() => { init() })
   border:1px solid var(--border-soft); border-radius:var(--r-terminal);
   background:var(--bg-elevated); color:var(--text-secondary);
   font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
-  transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);
+  transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover);
 }
 .scene-personal-nav button:hover {
   border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); color:var(--accent);
@@ -702,7 +702,7 @@ onMounted(() => { init() })
   border:1px solid var(--border-soft); border-radius:var(--r-terminal);
   background:transparent; color:var(--text-secondary);
   font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
-  transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);
+  transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover);
 }
 .filter-toggle:hover, .filter-toggle.active {
   border-color:color-mix(in srgb,var(--accent) 40%,var(--border-soft));
@@ -724,7 +724,7 @@ onMounted(() => { init() })
 @media (prefers-reduced-motion:reduce) { .scene-facet-panel { animation:none; } }
 .scene-filter-label { font-size:var(--fs-label-xs); color:var(--text-muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:var(--s-2); }
 .scene-cats { display:flex; flex-wrap:wrap; gap:0; border-bottom:var(--line-hairline) solid var(--border-soft); }
-.scene-cat { appearance:none; position:relative; padding:7px 15px; border:0; background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-body-sm) var(--font-sans); transition:background var(--t-fast),color var(--t-fast); }
+.scene-cat { appearance:none; position:relative; padding:7px 15px; border:0; background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-body-sm) var(--font-sans); transition:background var(--motion-hover),color var(--motion-hover); }
 .scene-cat:hover { border-color:var(--accent); color:var(--accent); }
 .scene-cat.active { background:color-mix(in srgb,var(--archive-blue-soft) 78%,transparent); color:var(--archive-cyan); }
 .scene-cat.active::after { content:''; position:absolute; right:15px; bottom:calc(0px - var(--line-hairline)); left:15px; height:2px; background:var(--archive-cyan); }
@@ -773,7 +773,7 @@ onMounted(() => { init() })
   box-shadow:var(--glow-sm);
 }
 .ex-actions .scene-hide-action { flex:0 0 auto; font-weight:600; }
-.ex-more { display:grid; gap:var(--s-2); margin-top:var(--s-2); max-height:0; opacity:0; overflow:hidden; transition:max-height var(--t-base) var(--ease-out),opacity var(--t-fast); }
+.ex-more { display:grid; gap:var(--s-2); margin-top:var(--s-2); max-height:0; opacity:0; overflow:hidden; transition:max-height var(--motion-surface) var(--ease-out),opacity var(--motion-hover); }
 :deep(.sc:hover) .ex-more, :deep(.sc:focus-within) .ex-more { max-height:160px; opacity:1; }
 .ex-decision { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-secondary); font-size:var(--fs-mono-sm); }
 .ex-decision::before { content:'镜头'; color:var(--text-muted); font:750 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }

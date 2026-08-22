@@ -139,7 +139,7 @@ onMounted(() => { void loadCatalog() })
     linear-gradient(145deg,color-mix(in srgb,var(--archive-blue) 7%,transparent),transparent 32%),
     var(--bg-surface);
   box-shadow:var(--shadow-glass-sm);
-  transition: transform var(--t-base) var(--ease-out), border-color var(--t-base), box-shadow var(--t-base);
+  transition: transform var(--motion-surface) var(--ease-out), border-color var(--motion-surface), box-shadow var(--motion-surface);
 }
 @media (hover: hover) and (pointer: fine) {
   .lora-card:hover {

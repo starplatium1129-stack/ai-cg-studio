@@ -64,7 +64,7 @@ function onChange(event: Event) {
   flex-shrink: 0;
   background: var(--border-soft);
   border-radius: var(--r-pill);
-  transition: background var(--t-fast), box-shadow var(--t-fast);
+  transition: background var(--motion-hover), box-shadow var(--motion-hover);
 }
 .toggle-slider::before {
   content: "";
@@ -75,7 +75,7 @@ function onChange(event: Event) {
   bottom: 2.5px;
   background: var(--text-primary);
   border-radius: 50%;
-  transition: transform var(--t-fast), background var(--t-fast);
+  transition: transform var(--motion-hover), background var(--motion-hover);
 }
 .toggle-switch input:checked + .toggle-slider {
   background: var(--accent);

@@ -1957,7 +1957,7 @@ watch(() => drawEngine.value, engine => {
   color: inherit;
   font-size: var(--fs-label);
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color var(--motion-hover), background var(--motion-hover);
 }
 .engine-btn.active {
   border-color: var(--engine-active-border);

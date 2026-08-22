@@ -456,7 +456,7 @@ onUnmounted(() => { status.stopPolling() })
   display: flex; align-items: center; gap: 11px; min-height: 42px; padding: 0 13px;
   border: 1px solid transparent; border-radius: var(--r-lg); color: var(--text-secondary);
   font: 650 var(--fs-label-sm) var(--font-sans); text-decoration: none;
-  transition: color var(--t-fast), background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+  transition: color var(--motion-hover), background var(--motion-hover), border-color var(--motion-hover), transform var(--motion-hover);
 }
 .control-rail-link .archive-icon { width: 15px; height: 15px; flex: none; color: var(--accent); }
 .control-rail-link:hover, .control-rail-link:focus-visible {
@@ -574,7 +574,7 @@ onUnmounted(() => { status.stopPolling() })
   background: transparent; color: var(--text-secondary);
   font: 650 var(--fs-label-sm) var(--font-sans); cursor: pointer;
   display: inline-flex; align-items: center; gap: 8px;
-  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .gallery-filter:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 34%, var(--border-soft));
@@ -624,7 +624,7 @@ onUnmounted(() => { status.stopPolling() })
   display: grid; gap: 8px; text-align: left; padding: var(--s-4);
   border: 1px solid var(--border-soft); border-radius: var(--r-terminal);
   background: var(--bg-deep); color: var(--text-primary); cursor: pointer;
-  transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover);
 }
 .mode-card:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--border-soft));
@@ -719,13 +719,13 @@ onUnmounted(() => { status.stopPolling() })
   position: relative; width: 44px; height: 24px; flex-shrink: 0;
   border: 1px solid var(--border-strong); border-radius: var(--r-pill);
   background: var(--border-strong); cursor: pointer; padding: 0;
-  transition: background var(--t-fast), border-color var(--t-fast);
+  transition: background var(--motion-hover), border-color var(--motion-hover);
 }
 .tunnel-switch[aria-checked="true"] { background: var(--success); border-color: var(--success-text); }
 .tunnel-switch-knob {
   position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
   background: var(--on-art-primary); box-shadow: 0 1px 3px var(--art-scrim-soft);
-  transition: left var(--t-fast);
+  transition: left var(--motion-hover);
 }
 .tunnel-switch[aria-checked="true"] .tunnel-switch-knob { left: 22px; }
 .btn-block { width: 100%; justify-content: center; }
@@ -809,7 +809,7 @@ onUnmounted(() => { status.stopPolling() })
 }
 .log-panel summary::-webkit-details-marker { display: none; }
 .summary-side { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
-.chevron { color: var(--text-muted); transition: transform var(--t-fast); }
+.chevron { color: var(--text-muted); transition: transform var(--motion-hover); }
 details[open] .chevron { transform: rotate(90deg); }
 .log-wrap { padding: 0 var(--s-4) var(--s-4); }
 .log-box {

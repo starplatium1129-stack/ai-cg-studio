@@ -26,7 +26,7 @@ withDefaults(defineProps<{
   border-style: solid;
   opacity: 0.85;
   box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 35%, transparent);
-  transition: border-color var(--t-base), opacity var(--t-base);
+  transition: border-color var(--motion-surface), opacity var(--motion-surface);
 }
 .archive-corner-frame .tl { top: 0; left: 0; border-width: var(--line-hairline) 0 0 var(--line-hairline); }
 .archive-corner-frame .tr { top: 0; right: 0; border-width: var(--line-hairline) var(--line-hairline) 0 0; }
