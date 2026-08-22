@@ -31,25 +31,35 @@ const sizeVars = computed(() => ({
 </script>
 
 <style scoped>
+/* 2026-08-22 动效审计 LOW：shimmer 从 background-position（逐帧重绘，加载页常驻
+   数十个骨架）改为 ::before 位移扫带——只动 transform，可上合成器；常速循环用 linear。 */
 .skeleton {
-  background: linear-gradient(90deg,
-    var(--bg-elevated) 25%,
-    color-mix(in srgb, var(--bg-hover) 60%, var(--bg-elevated)) 50%,
-    var(--bg-elevated) 75%
-  );
-  background-size: 200% 100%;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-elevated);
   border-radius: var(--r-md);
   display: block;
   width: var(--skeleton-w, 100%);
   height: var(--skeleton-h, auto);
 }
-.skeleton.animated { animation: shimmer 1.6s ease-in-out infinite; }
+.skeleton.animated::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg,
+    transparent 25%,
+    color-mix(in srgb, var(--bg-hover) 60%, var(--bg-elevated)) 50%,
+    transparent 75%
+  );
+  transform: translateX(-100%);
+  animation: shimmer 1.6s linear infinite;
+}
 .skeleton.circle   { border-radius: 50%; }
 .skeleton.text     { height: 1em; border-radius: var(--r-sm); margin-bottom: .5em; }
 .skeleton.text:last-child { width: 70%; }
 
 @keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
 }
 </style>

@@ -1533,6 +1533,8 @@ body:has(.training-page) .route-atmosphere .route-index {
 .stagger-container > *:nth-child(4) { animation-delay: 0.15s; }
 .stagger-container > *:nth-child(5) { animation-delay: 0.19s; }
 .stagger-container > *:nth-child(6) { animation-delay: 0.23s; }
+/* 2026-08-22 动效审计 LOW：第 7 项起波次封顶（原 delay 归零反而先于第 6 项入场，画廊 60 张/页波次断裂） */
+.stagger-container > *:nth-child(n+7) { animation-delay: 0.24s; }
 
 /* ── Archive 质感扩展：硬质面板、刻度、微型坐标与网格底纹 ── */
 .archive-plate {

@@ -150,7 +150,14 @@
       </div>
 
       <section class="companion-conversation" aria-label="简洁对话">
-        <div v-if="behaviorEnabled && pendingReminders.length" class="companion-reminders" role="log" aria-label="角色主动问候">
+        <TransitionGroup
+          v-if="behaviorEnabled && pendingReminders.length"
+          name="reminder-pop"
+          tag="div"
+          class="companion-reminders"
+          role="log"
+          aria-label="角色主动问候"
+        >
           <div
             v-for="reminder in pendingReminders"
             :key="reminder.id"
@@ -165,7 +172,8 @@
             <p>{{ reminder.line }}</p>
             <button type="button" aria-label="关闭这条问候" @click.stop="dismissReminder(reminder.id)">×</button>
           </div>
-        </div>
+        </TransitionGroup>
+        <Transition name="layer-fade">
         <div v-if="clipboardCard" class="companion-clipboard-card" role="status" aria-live="polite">
           <img v-if="clipboardCard.kind === 'image'" :src="clipboardCard.previewUrl" alt="" />
           <div>
@@ -183,6 +191,7 @@
             <button type="button" class="btn btn-ghost btn-sm" @click="dismissClipboardCard">忽略</button>
           </div>
         </div>
+        </Transition>
         <div ref="chatListRef" class="companion-bubbles" role="log" aria-label="最近对话">
           <div v-if="!companionMessages.length" class="companion-empty">
             <span>{{ currentCharacter.name }}</span>
@@ -340,7 +349,7 @@
 
       <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
       <div v-if="desktopBridge" class="companion-desktop-float" aria-label="桌宠快捷操作">
-        <div class="companion-float-reminders" role="log" aria-label="角色主动问候">
+        <TransitionGroup name="reminder-pop" tag="div" class="companion-float-reminders" role="log" aria-label="角色主动问候">
           <div
             v-for="reminder in pendingReminders"
             :key="reminder.id"
@@ -355,7 +364,7 @@
             <p>{{ reminder.line }}</p>
             <button type="button" aria-label="关闭这条问候" @click.stop="dismissReminder(reminder.id)">×</button>
           </div>
-        </div>
+        </TransitionGroup>
         <button
           class="companion-chat-chip"
           type="button"

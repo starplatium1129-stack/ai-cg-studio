@@ -1384,6 +1384,15 @@ html.companion-mode:not(.companion-desktop) body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* 2026-08-22 动效审计 LOW：提醒气泡/剪贴卡补退场（原只有入场，关闭时瞬移消失）。
+   列表容器用 <TransitionGroup name="reminder-pop">，剪贴卡复用全局 layer-fade。 */
+.reminder-pop-leave-active {
+  transition: opacity var(--motion-hover) cubic-bezier(.55, 0, .85, .36),
+              transform var(--motion-hover) cubic-bezier(.55, 0, .85, .36);
+}
+.reminder-pop-leave-to { opacity: 0; transform: translateY(4px) scale(.97); }
+.reminder-pop-move { transition: transform var(--motion-surface) var(--ease-out); }
+
 .companion-page .companion-reminder-bubble > span {
   display: block;
   margin-bottom: 2px;

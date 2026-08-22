@@ -231,7 +231,7 @@ onUnmounted(() => {
 .route-loader { position:fixed; z-index:var(--z-toast); inset:0 0 auto; height:2px; overflow:hidden; pointer-events:none; opacity:0; transition:opacity var(--motion-press) var(--ease-out); }
 .route-loader i { display:block; width:38%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-blue),var(--accent),transparent); transform:translateX(-110%); }
 .route-loader.active { opacity:1; }
-.route-loader.active i { animation:route-loader-run .82s var(--ease-out) infinite; }
+.route-loader.active i { animation:route-loader-run .82s linear infinite; /* 常速循环用 linear：ease-out 会在每圈末端减速后跳回起点 */ }
 .interaction-impulse { position:fixed; z-index:var(--z-toast); left:var(--impulse-x); top:var(--impulse-y); width:12px; height:12px; border:1px solid var(--archive-blue); border-radius:50%; opacity:0; transform:translate3d(-50%,-50%,0) scale(.2); pointer-events:none; will-change:transform,opacity; }
 .interaction-impulse::before { content:""; position:absolute; top:50%; left:50%; width:92px; height:1px; background:linear-gradient(90deg,transparent,var(--archive-cyan),var(--accent),transparent); opacity:0; transform:translate3d(-50%,-50%,0) scaleX(.16); transform-origin:center; }
 .interaction-impulse::after { content:""; position:absolute; top:50%; left:50%; width:4px; height:4px; border-radius:50%; background:var(--archive-cyan); box-shadow:0 0 10px var(--archive-cyan-glow); opacity:0; transform:translate3d(-50%,-50%,0) scale(.4); }

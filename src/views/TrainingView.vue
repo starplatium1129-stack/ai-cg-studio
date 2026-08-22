@@ -1025,6 +1025,7 @@ onUnmounted(() => {
   border-radius: var(--r-terminal);
   background: transparent;
   color: var(--text-secondary);
+  transition: background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out), border-color var(--motion-hover) var(--ease-out);
   text-align: left;
   cursor: pointer;
 }

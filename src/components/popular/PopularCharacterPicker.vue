@@ -254,6 +254,9 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   background: var(--glass-fill);
   color: inherit;
   cursor: pointer;
+  /* 2026-08-22 动效审计 LOW：选中态边框/底色补过渡（同面板 franchise-chip 与
+     蓝图卡都有，独缺此卡造成同域反馈断裂） */
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out);
 }
 .popular-card.active {
   border-color: var(--pb-active);
@@ -276,7 +279,8 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   color: var(--pb-active);
 }
 .initial-ring-dupe {
-  animation: initial-ink 1.4s ease-in-out infinite alternate;
+  /* 2026-08-22 动效审计 LOW：33+ 张卡同步无限呼吸改为一次性落定（常动装饰删掉更强） */
+  animation: initial-ink 1.4s var(--ease-in-out) 1 both;
 }
 @keyframes initial-ink {
   from { opacity: 0.3; }
