@@ -526,27 +526,14 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useReferenceCards } from './useReferenceCards'
+import { useShotBatchMachine } from './useShotBatchMachine'
+import { useShotAiTools } from './useShotAiTools'
+import type { ShotDraft } from './shotListTypes'
 import {
-  cancelVideoBatch,
-  concatVideoBatch,
-  createVideoBatch,
-  fetchVideoAiStatus,
-  fetchVideoBatch,
-  generateVideoScript,
-  polishVideoShots,
-  retryVideoShot,
-  reviewVideoShots,
-  rewriteVideoShot,
-  suggestDialogue,
   uploadVideoImage,
-  type VideoAiIssue,
-  type VideoAiScriptShot,
-  type VideoAiStatusResponse,
   type VideoBatch,
-  type VideoBatchStatus,
   type VideoDefaults,
   type VideoQuality,
-  type VideoShotSize,
   type VideoStatusResponse,
 } from '@/api/videoApi'
 import { imgGet } from '@/composables/useImageStore'
@@ -585,20 +572,6 @@ const motionOptions: Array<{ id: VideoDefaults['motion']; label: string }> = [
   { id: 'expressive', label: '表现动作' },
 ]
 
-interface ShotDraft {
-  prompt: string
-  dialogue: string
-  shotSize: VideoShotSize | ''
-  camera: VideoDefaults['camera']
-  motion: VideoDefaults['motion']
-  duration: 3 | 5 | 10 | 15
-  seedText: string
-  imageName: string
-  imageUrl: string
-  /** 出场角色：'' 无 / '1' 角色1 / '2' 角色2 / '12' 角色1+2 / 'all' 全部角色（对应参考卡）。 */
-  cast: '' | '1' | '2' | '3' | '4' | '12' | 'all' | string
-}
-
 const aspectRatio = ref<VideoBatch['aspectRatio']>('landscape')
 const quality = ref<VideoQuality>('standard')
 const steps = ref<4 | 8>(8)
@@ -609,47 +582,95 @@ const sceneFillId = ref('')
 const shots = ref<ShotDraft[]>([])
 const frameInputs = ref<HTMLInputElement[]>([])
 
-
-// ── 全自动脚本 / 台词润色 / 质量检查 状态 ───────────────────────────────
-const scriptOpen = ref(false)
-const scriptStory = ref('')
-const scriptCount = ref<number | null>(null)
-const scriptTotal = ref<number | null>(null)
-const scriptBusy = ref(false)
-/** 台词润色：当前弹出选项的镜头 index（-1 关闭）。 */
-const dialogueIndex = ref(-1)
-const dialogueOptions = ref<Array<{ text: string; label: string }>>([])
-const dialogueBusy = ref(false)
-/** 质量检查结果（index 对齐 shots）。 */
-const reviewIssues = ref<VideoAiIssue[]>([])
-const reviewBusy = ref(false)
-
-const batch = ref<VideoBatch | null>(null)
-const submitting = ref(false)
-const cancelling = ref(false)
-const concating = ref(false)
+/** 本组件共用的用户可见错误通道：批量提交/轮询/重抽、首帧与参考图上传失败都回写这里。 */
 const batchError = ref('')
-let pollTimer = 0
-let disposed = false
 
-const batchActive = computed(() => batch.value?.status === 'running')
-const canSubmit = computed(() =>
-  shots.value.length > 0
-  && shots.value.every((shot) => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000)
-  && !submitting.value
-  && !batchActive.value
-  && props.status?.online === true)
-const canConcat = computed(() =>
-  batch.value !== null
-  && (batch.value.progress.succeeded >= 2)
-  && !batch.value.concatAvailable
-  && batch.value.status === 'done')
-const progressPercent = computed(() => {
-  const total = batch.value?.progress.total ?? 0
-  if (!total) return 0
-  const done = batch.value?.progress.succeeded ?? 0
-  const failed = batch.value?.progress.failed ?? 0
-  return Math.min(100, Math.round(((done + failed) / total) * 100))
+// ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
+const {
+  referenceCards,
+  referenceInputs,
+  loadingRefAssets,
+  loadingRefCardIndex,
+  getCharOutfits,
+  addReferenceCard,
+  removeReferenceCard,
+  switchCardOutfit,
+  autoLoadCharacterReferences,
+  onCardCharacterSelected,
+  onReferencePicked,
+  pickReference,
+  setReferenceInput,
+  removeReference,
+  shotReferences,
+} = useReferenceCards({
+  identityCard,
+  batchError,
+  readBlobAsDataURL,
+  uploadVideoImage,
+})
+
+// ── 批量提交状态机（提交/3s 轮询/取消/重抽/拼接）已下沉 useShotBatchMachine ──
+const {
+  batch,
+  submitting,
+  cancelling,
+  concating,
+  batchActive,
+  canSubmit,
+  canConcat,
+  progressPercent,
+  serverShot,
+  submitBatch,
+  cancelBatch,
+  retryShotAt,
+  retryAllFailed,
+  concatBatch,
+} = useShotBatchMachine({
+  shots,
+  identityCard,
+  aspectRatio,
+  quality,
+  steps,
+  linkLastFrame,
+  shotReferences,
+  h3Ready,
+  online: computed(() => props.status?.online === true),
+  batchError,
+})
+
+// ── AI 整理链路（逐镜整理/整批编排/脚本/台词/质检）已下沉 useShotAiTools ──
+const {
+  aiBusy,
+  aiNote,
+  aiSnapshot,
+  polishSnapshot,
+  aiFlowStep,
+  flowHint,
+  scriptOpen,
+  scriptStory,
+  scriptCount,
+  scriptTotal,
+  scriptBusy,
+  runAiRewrite,
+  restoreAiSnapshot,
+  runAiPolish,
+  restorePolishSnapshot,
+  runAiScript,
+  dialogueIndex,
+  dialogueOptions,
+  dialogueBusy,
+  runAiDialogue,
+  applyDialogueOption,
+  reviewIssues,
+  reviewBusy,
+  runAiReview,
+  applyReviewSuggestion,
+  shotIssueCount,
+} = useShotAiTools({
+  shots,
+  identityCard,
+  batchActive,
+  referenceCards,
 })
 const submitTitle = computed(() => {
   if (batchActive.value) return '整批正在生成中'
@@ -673,9 +694,6 @@ const batchStatusLabel = computed(() => ({
 const qualityLabel = computed(() =>
   props.status?.qualities.find((item) => item.id === quality.value)?.label ?? quality.value)
 
-function serverShot(index: number) {
-  return batch.value?.shots[index] ?? null
-}
 function shotStatusLabel(status: string | undefined) {
   return ({
     pending: '等待中',
@@ -833,30 +851,6 @@ function readBlobAsDataURL(blob: Blob): Promise<string> {
   })
 }
 
-// ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
-const {
-  referenceCards,
-  referenceInputs,
-  loadingRefAssets,
-  loadingRefCardIndex,
-  getCharOutfits,
-  addReferenceCard,
-  removeReferenceCard,
-  switchCardOutfit,
-  autoLoadCharacterReferences,
-  onCardCharacterSelected,
-  onReferencePicked,
-  pickReference,
-  setReferenceInput,
-  removeReference,
-  shotReferences,
-} = useReferenceCards({
-  identityCard,
-  batchError,
-  readBlobAsDataURL,
-  uploadVideoImage,
-})
-
 // ── 绘图页「加入分镜」批量带入（一次性消费 + 全自动多角色参考图装配）──────────────────────────────
 async function importShotsFromDrawing() {
   const list = readShotsCtx()
@@ -940,298 +934,6 @@ async function importShotsFromDrawing() {
   }
 }
 
-// ── 「AI 整理分镜」：逐镜把静态绘图提示词改写成视频分镜描述 ──────────────
-// 复用聊天 LLM 配置（服务端自动选：站主 API → 本地 Ollama）；并发 2 逐镜
-// 改写（Ollama 有进程内串行队列，API 也不压上游）；失败单镜保留原内容，
-// 可再点一次重试；应用前整批快照，随时「撤销整理」恢复。
-const aiBusy = ref(false)
-const aiProgress = ref(0)
-const aiTotal = ref(0)
-const aiSnapshot = ref<ShotDraft[] | null>(null)
-const aiNote = ref('')
-/** 整批编排的独立快照：撤销编排只回编排前，不影响「AI 整理」的撤销。 */
-const polishSnapshot = ref<ShotDraft[] | null>(null)
-
-// ── AI 流程引导：推荐顺序 ① 逐镜整理 → ② 整批编排 → 生成 ──────────────
-// aiFlowStep：0=未整理 1=已整理 2=已编排；导入新镜头时重置。
-const aiFlowStep = ref(0)
-const flowHint = computed(() => {
-  if (!shots.value.length) return ''
-  if (aiFlowStep.value === 0) return '推荐流程：先点 ① AI 整理分镜（逐镜改写描述 + 推断台词/景别/镜头/运动）'
-  if (aiFlowStep.value === 1) return '推荐流程：再点 ② AI 整批编排（统稿全片节奏：景别/镜头/台词分布）'
-  return '镜头已整理并编排，可以直接「生成全部镜头」，或逐镜微调后生成。'
-})
-
-async function runAiRewrite() {
-  if (aiBusy.value || batchActive.value || !shots.value.length) return
-  aiNote.value = ''
-  let status: VideoAiStatusResponse
-  try {
-    status = await fetchVideoAiStatus()
-  } catch (error) {
-    aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
-    return
-  }
-  if (!status.available) {
-    aiNote.value = status.reason || 'AI 整理暂不可用'
-    return
-  }
-  const total = shots.value.length
-  aiSnapshot.value = shots.value.map((shot) => ({ ...shot }))
-  aiTotal.value = total
-  aiProgress.value = 0
-  aiBusy.value = true
-  aiNote.value = `AI 整理中 0/${total}（${status.label}）…`
-  let failed = 0
-  let cursor = 0
-  const worker = async () => {
-    while (cursor < total) {
-      const index = cursor
-      cursor += 1
-      try {
-        const response = await rewriteVideoShot({
-          identity: identityCard.value.trim() || undefined,
-          prompt: shots.value[index].prompt,
-          shotSize: shots.value[index].shotSize || undefined,
-          camera: shots.value[index].camera,
-          motion: shots.value[index].motion,
-          dialogue: shots.value[index].dialogue || undefined,
-        })
-        const shot = shots.value[index]
-        if (response.shot.prompt) shot.prompt = response.shot.prompt
-        if (response.shot.shotSize) shot.shotSize = response.shot.shotSize
-        shot.camera = response.shot.camera
-        shot.motion = response.shot.motion
-        shot.dialogue = response.shot.dialogue
-      } catch {
-        failed += 1
-      } finally {
-        aiProgress.value += 1
-        aiNote.value = `AI 整理中 ${aiProgress.value}/${total}（${status.label}）…`
-      }
-    }
-  }
-  await Promise.all(Array.from({ length: Math.min(2, total) }, worker))
-  aiBusy.value = false
-  if (failed < total) aiFlowStep.value = Math.max(aiFlowStep.value, 1)
-  aiNote.value = failed
-    ? `AI 整理完成：${total - failed}/${total} 镜已改写，${failed} 镜失败（保留原描述，可再点一次重试）`
-    : `AI 整理完成：${total} 镜全部改写，可逐镜微调或直接生成。`
-}
-
-function restoreAiSnapshot() {
-  if (!aiSnapshot.value) return
-  shots.value.forEach((shot) => {
-    if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-  })
-  shots.value = aiSnapshot.value
-  aiSnapshot.value = null
-  aiFlowStep.value = 0
-  aiNote.value = '已撤销 AI 整理，恢复整理前内容。'
-}
-
-// ── 「AI 整批编排」：全局视角审整批镜头，只调构图字段（不动描述）──────
-// 一次 LLM 调用返回整批建议（index 对齐，null = 保持）；应用前独立快照，
-// 「撤销编排」只回编排前状态，与「AI 整理」的撤销互不干扰。
-async function runAiPolish() {
-  if (aiBusy.value || batchActive.value || shots.value.length < 2) return
-  aiNote.value = ''
-  let status: VideoAiStatusResponse
-  try {
-    status = await fetchVideoAiStatus()
-  } catch (error) {
-    aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
-    return
-  }
-  if (!status.available) {
-    aiNote.value = status.reason || 'AI 编排暂不可用'
-    return
-  }
-  polishSnapshot.value = shots.value.map((shot) => ({ ...shot }))
-  aiBusy.value = true
-  aiNote.value = `AI 整批编排中（${status.label}）…`
-  try {
-    const response = await polishVideoShots({
-      identity: identityCard.value.trim() || undefined,
-      shots: shots.value.map((shot) => ({
-        prompt: shot.prompt,
-        shotSize: shot.shotSize || undefined,
-        camera: shot.camera,
-        motion: shot.motion,
-        dialogue: shot.dialogue || undefined,
-      })),
-    })
-    let changed = 0
-    response.shots.forEach((suggestion, index) => {
-      const shot = shots.value[index]
-      if (!shot) return
-      if (suggestion.shotSize && suggestion.shotSize !== shot.shotSize) {
-        shot.shotSize = suggestion.shotSize
-        changed += 1
-      }
-      if (suggestion.camera && suggestion.camera !== shot.camera) {
-        shot.camera = suggestion.camera
-        changed += 1
-      }
-      if (suggestion.motion && suggestion.motion !== shot.motion) {
-        shot.motion = suggestion.motion
-        changed += 1
-      }
-      if (suggestion.dialogue !== null && suggestion.dialogue !== shot.dialogue) {
-        shot.dialogue = suggestion.dialogue
-        changed += 1
-      }
-    })
-    aiNote.value = changed
-      ? `AI 整批编排完成：调整 ${changed} 处（景别/镜头/运动/对白分布），可逐镜微调或「撤销编排」恢复`
-      : 'AI 整批编排完成：当前镜头语言已比较均衡，未做调整。'
-    aiFlowStep.value = 2
-  } catch (error) {
-    polishSnapshot.value = null
-    aiNote.value = 'AI 整批编排失败：' + (error instanceof Error ? error.message : String(error))
-  } finally {
-    aiBusy.value = false
-  }
-}
-
-function restorePolishSnapshot() {
-  if (!polishSnapshot.value) return
-  shots.value.forEach((shot) => {
-    if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-  })
-  shots.value = polishSnapshot.value
-  polishSnapshot.value = null
-  aiFlowStep.value = Math.min(aiFlowStep.value, 1)
-  aiNote.value = '已撤销 AI 整批编排，恢复编排前内容。'
-}
-
-// ── 「✎ AI 生成脚本」：故事梗概 → 完整分镜表（T2VA 可直接生成）─────────
-async function runAiScript() {
-  if (scriptBusy.value || !scriptStory.value.trim()) return
-  scriptBusy.value = true
-  aiNote.value = 'AI 生成分镜脚本中…'
-  try {
-    const cardLabels = referenceCards.value
-      .map(card => card.label.trim())
-      .filter(Boolean)
-    const response = await generateVideoScript({
-      identity: identityCard.value.trim() || undefined,
-      story: scriptStory.value.trim(),
-      shotCount: scriptCount.value ?? undefined,
-      totalSeconds: scriptTotal.value ?? undefined,
-      characterLabels: cardLabels.length ? cardLabels : undefined,
-    })
-    if (!response.shots.length) {
-      aiNote.value = 'AI 脚本生成为空，请调整故事梗概后重试'
-      return
-    }
-    // 替换现有镜头清单（保留参考卡与整批方向）。
-    shots.value.forEach((shot) => {
-      if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-    })
-    shots.value = response.shots.map((shot: VideoAiScriptShot) => ({
-      prompt: shot.prompt,
-      dialogue: shot.dialogue,
-      shotSize: shot.shotSize ?? '',
-      camera: shot.camera,
-      motion: shot.motion,
-      duration: shot.duration,
-      seedText: '',
-      imageName: '',
-      imageUrl: '',
-      cast: '',
-    }))
-    aiFlowStep.value = 1
-    scriptOpen.value = false
-    scriptStory.value = ''
-    aiNote.value = `AI 脚本已生成：${shots.value.length} 镜（无首帧，纯文字 T2VA 可直接生成；也可逐镜上传首帧锁构图）`
-  } catch (error) {
-    aiNote.value = 'AI 脚本生成失败：' + (error instanceof Error ? error.message : String(error))
-  } finally {
-    scriptBusy.value = false
-  }
-}
-
-// ── 「✦ AI 台词」：3 条备选 / 润色 ──────────────────────────────────────
-async function runAiDialogue(index: number) {
-  const shot = shots.value[index]
-  if (!shot || dialogueBusy.value) return
-  dialogueBusy.value = true
-  dialogueIndex.value = index
-  dialogueOptions.value = []
-  try {
-    const response = await suggestDialogue({
-      identity: identityCard.value.trim() || undefined,
-      prompt: shot.prompt,
-      currentDialogue: shot.dialogue.trim() || undefined,
-    })
-    dialogueOptions.value = response.options
-    if (!response.options.length) {
-      dialogueIndex.value = -1
-      aiNote.value = 'AI 台词未返回可用选项，请重试'
-    }
-  } catch (error) {
-    dialogueIndex.value = -1
-    aiNote.value = 'AI 台词失败：' + (error instanceof Error ? error.message : String(error))
-  } finally {
-    dialogueBusy.value = false
-  }
-}
-
-function applyDialogueOption(index: number, text: string) {
-  const shot = shots.value[index]
-  if (!shot) return
-  shot.dialogue = text
-  dialogueIndex.value = -1
-  dialogueOptions.value = []
-}
-
-// ── 「◉ 质量检查」：整批审查 → 标红 + 建议应用 ──────────────────────────
-async function runAiReview() {
-  if (reviewBusy.value || !shots.value.length) return
-  reviewBusy.value = true
-  aiNote.value = 'AI 质量检查中…'
-  reviewIssues.value = []
-  try {
-    const response = await reviewVideoShots(shots.value.map(shot => ({
-      prompt: shot.prompt,
-      shotSize: shot.shotSize || undefined,
-      camera: shot.camera,
-      motion: shot.motion,
-      dialogue: shot.dialogue || undefined,
-    })))
-    reviewIssues.value = response.issues
-    aiNote.value = response.issues.length
-      ? `质量检查：发现 ${response.issues.length} 个问题（${response.issues.filter(i => i.severity === 'error').length} 个必须修），可点击建议应用`
-      : '质量检查：未发现问题，可以生成。'
-  } catch (error) {
-    aiNote.value = 'AI 质量检查失败：' + (error instanceof Error ? error.message : String(error))
-  } finally {
-    reviewBusy.value = false
-  }
-}
-
-/** 应用质量检查建议（按字段回写镜头）。 */
-function applyReviewSuggestion(issue: VideoAiIssue) {
-  const shot = shots.value[issue.index]
-  if (!shot || !issue.suggestion) return
-  if (issue.field === 'shotSize' && ['wide', 'medium', 'closeup'].includes(issue.suggestion)) {
-    shot.shotSize = issue.suggestion as VideoShotSize
-  } else if (issue.field === 'camera' && ['still', 'push', 'pull', 'pan', 'orbit'].includes(issue.suggestion)) {
-    shot.camera = issue.suggestion as VideoDefaults['camera']
-  } else if (issue.field === 'motion' && ['subtle', 'natural', 'expressive'].includes(issue.suggestion)) {
-    shot.motion = issue.suggestion as VideoDefaults['motion']
-  } else if (issue.field === 'dialogue' || issue.field === 'prompt') {
-    shot.dialogue = issue.suggestion.slice(0, 300)
-  }
-  reviewIssues.value = reviewIssues.value.filter(item => item !== issue)
-  aiNote.value = '已应用建议：' + issue.suggestion
-}
-
-function shotIssueCount(index: number): number {
-  return reviewIssues.value.filter(issue => issue.index === index).length
-}
-
 onMounted(() => {
   void importShotsFromDrawing()
   // 参考档案为运行时 JSON：挂载即预取，参考卡/身份卡读取时数据通常已就位
@@ -1242,123 +944,8 @@ onMounted(() => {
   }
 })
 
-function parsedSeed(shot: ShotDraft): number | undefined {
-  if (!shot.seedText.trim()) return undefined
-  const value = Number(shot.seedText)
-  return Number.isSafeInteger(value) && value >= 0 && value <= 0x7fffffff ? value : undefined
-}
-
-async function submitBatch() {
-  if (!canSubmit.value || !h3Ready.value) return
-  submitting.value = true
-  batchError.value = ''
-  try {
-    const response = await createVideoBatch({
-      modelId: 'minimax-h3',
-      aspectRatio: aspectRatio.value,
-      quality: quality.value,
-      steps: steps.value,
-      linkLastFrame: linkLastFrame.value,
-      shots: shots.value.map((shot) => {
-        const prompt = [identityCard.value.trim(), shot.prompt.trim()].filter(Boolean).join('\n')
-        return {
-          prompt,
-          dialogue: shot.dialogue.trim() || undefined,
-          shotSize: shot.shotSize || undefined,
-          camera: shot.camera,
-          motion: shot.motion,
-          duration: shot.duration,
-          seed: parsedSeed(shot),
-          image: shot.imageName || undefined,
-          references: shotReferences(shot),
-        }
-      }),
-    })
-    batch.value = response.batch
-    schedulePoll()
-  } catch (error) {
-    batchError.value = error instanceof Error ? error.message : '批量提交失败'
-  } finally {
-    submitting.value = false
-  }
-}
-
-async function pollBatch() {
-  if (!batch.value || disposed) return
-  try {
-    const response = await fetchVideoBatch(batch.value.id)
-    batch.value = response.batch
-  } catch (error) {
-    batchError.value = error instanceof Error ? error.message : '批量状态读取失败'
-  } finally {
-    schedulePoll()
-  }
-}
-
-function schedulePoll() {
-  window.clearTimeout(pollTimer)
-  if (!batch.value || disposed) return
-  if (batch.value.status !== 'running' && batch.value.status !== 'paused') return
-  pollTimer = window.setTimeout(() => { void pollBatch() }, 3000)
-}
-
-async function cancelBatch() {
-  if (!batch.value || cancelling.value) return
-  cancelling.value = true
-  try {
-    const response = await cancelVideoBatch(batch.value.id)
-    batch.value = response.batch
-  } catch (error) {
-    batchError.value = error instanceof Error ? error.message : '整批取消失败'
-  } finally {
-    cancelling.value = false
-  }
-}
-
-async function retryShotAt(index: number) {
-  if (!batch.value) return
-  try {
-    const response = await retryVideoShot(batch.value.id, index + 1)
-    batch.value = response.batch
-    schedulePoll()
-  } catch (error) {
-    batchError.value = error instanceof Error ? error.message : '重抽失败'
-  }
-}
-
-async function retryAllFailed() {
-  if (!batch.value) return
-  for (let index = 0; index < batch.value.shots.length; index += 1) {
-    const shot = batch.value.shots[index]
-    if (shot.status === 'failed' || shot.status === 'cancelled') {
-      try {
-        const response = await retryVideoShot(batch.value.id, index + 1)
-        batch.value = response.batch
-      } catch (error) {
-        batchError.value = error instanceof Error ? error.message : '重抽失败'
-        return
-      }
-    }
-  }
-  schedulePoll()
-}
-
-async function concatBatch() {
-  if (!batch.value || concating.value) return
-  concating.value = true
-  try {
-    const response = await concatVideoBatch(batch.value.id)
-    batch.value = response.batch
-  } catch (error) {
-    batchError.value = error instanceof Error ? error.message : '拼接失败'
-  } finally {
-    concating.value = false
-  }
-}
-
 onBeforeUnmount(() => {
-  disposed = true
-  window.clearTimeout(pollTimer)
+  // 批量轮询与 disposed 标记归 useShotBatchMachine；这里只释镜头首帧 blob URL。
   shots.value.forEach((shot) => {
     if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
   })
