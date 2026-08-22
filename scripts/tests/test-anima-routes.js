@@ -93,6 +93,7 @@ function prepareComfyResources(context) {
     ['diffusion_models', 'anima-base-v1.0.safetensors'],
     ['diffusion_models', 'anima-aesthetic-v1.1.safetensors'],
     ['diffusion_models', 'AnimaYume_v10_final_base.safetensors'],
+    ['diffusion_models', 'Anima-2.9B-preview-v1.safetensors'],
     ['diffusion_models', 'krea2_turbo_fp8_scaled.safetensors'],
     ['text_encoders', 'qwen_3_06b_base.safetensors'],
     ['text_encoders', 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors'],

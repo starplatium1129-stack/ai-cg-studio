@@ -13,6 +13,8 @@ var generationContract = require('./anima-generation-contract');
 var MODELS = Object.freeze({
   'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'] },
   'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','1024x1024','1216x832'], noLora:true },
+  // 2026-08-22 接入：Anima 2.9B Preview v1（Gazingstars123 层扩展动漫大模型，40 层 DiT）。
+  'anima-2.9b-preview-v1': { file:'Anima-2.9B-preview-v1.safetensors', label:'Anima 2.9B Preview v1', family:'anima', profileId:'anima_29b_preview_v1', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'], noLora:true },
   // 2026-08-15 用户决策接入：AnimaYume v1.0（circlestone 社区基座微调，Civitai 2385278）。
   // noLora:true = 无 LoRA 创作模式可用；若显式传 loraId，仍走 LORAS 兼容表校验
   // （宁宁/夏目 v21 已声明兼容，用户实测自担效果）。
@@ -24,6 +26,7 @@ var PROFILE_BY_MODEL = Object.freeze({
   'anima-base-v1.0':'anima_base_v10',
   'anima-aesthetic-v1.1':'anima_aesthetic_v11',
   'anima-yume-v1.0':'anima_yume_v10',
+  'anima-2.9b-preview-v1':'anima_29b_preview_v1',
   'krea2-turbo-fp8':'krea2_turbo_fp8'
 });
 
@@ -32,7 +35,7 @@ var LORAS = Object.freeze({
     file:'ayachi_nene_v21_anima.safetensors',
     name:'ayachi_nene_v21_anima',
     character:'nene',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0'],
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1'],
     minStrength:0.65,
     maxStrength:1
   },
@@ -40,7 +43,7 @@ var LORAS = Object.freeze({
     file:'shiki_natsume_v21_anima.safetensors',
     name:'shiki_natsume_v21_anima',
     character:'natsume',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0'],
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1'],
     minStrength:0.65,
     maxStrength:1
   }

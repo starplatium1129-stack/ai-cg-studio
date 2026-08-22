@@ -90,6 +90,7 @@ function buildConfig(runtime) {
   fs.mkdirSync(path.join(animaModelRoot, 'text_encoders'), { recursive:true });
   fs.mkdirSync(path.join(animaModelRoot, 'vae'), { recursive:true });
   fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'anima-aesthetic-v1.1.safetensors'), 'e2e-anima-fixture');
+  fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'Anima-2.9B-preview-v1.safetensors'), 'e2e-anima-fixture');
   fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'anima-base-v1.0.safetensors'), 'e2e-anima-fixture');
   fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'AnimaYume_v10_final_base.safetensors'), 'e2e-anima-fixture');
   fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'krea2_turbo_fp8_scaled.safetensors'), 'e2e-krea-fixture');

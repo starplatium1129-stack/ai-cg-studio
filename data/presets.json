@@ -76,6 +76,31 @@
       "size": "832×1216"
     },
     {
+      "id": "anima_29b_preview_v1",
+      "engine": "anima",
+      "model_id": "anima-2.9b-preview-v1",
+      "name": "Anima 2.9B Preview v1",
+      "match": [
+        "anima-2.9b-preview-v1"
+      ],
+      "tag_style": "space",
+      "lora_in_prompt": false,
+      "exact_tokens": [],
+      "quality_prefix": "masterpiece, best quality, very aesthetic",
+      "strip_quality_tokens": true,
+      "negative_prefix": "worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration, border, white_border, framed, letterbox, padding, margin, inset, comic_panel",
+      "negative_mode": "replace",
+      "negative_replace_scope": "boilerplate",
+      "rating_all": "safe",
+      "rating_r15": "sensitive",
+      "rating_r18": "nsfw",
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "steps": 30,
+      "cfg": 4.5,
+      "size": "832×1216"
+    },
+    {
       "id": "anima_yume_v10",
       "engine": "anima",
       "model_id": "anima-yume-v1.0",
