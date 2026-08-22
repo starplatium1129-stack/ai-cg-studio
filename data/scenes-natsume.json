@@ -4348,11 +4348,13 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, mole_under_eye, office_lady, tactical_gear, unzipped, cleavage, trapped_by_viewer, sitting_on_desk, bare_legs, heavy_blush, tears_in_eyes, tsundere, open_mouth, office, indoors, night, strong_shadows, point_of_view, from_below, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, mole_under_eye, office_lady, tactical_gear, unzipped, cleavage, trapped_by_viewer, sitting_on_desk, bare_legs, heavy_blush, tears_in_eyes, tsundere, open_mouth, office, indoors, night, strong_shadows, point_of_view, from_below, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, child, loli, underage",
     "storyJa": "【夏目・タクティカルベストの下にある制御不能アラーム】深夜、機密指令センターのオフィスは施錠された。普段は冷静でタフな夏目が、少し涼しい机に閉じ込められていた。黒い戦術服のジッパーが腰まで緩んでいた。制服のシャープなラインが赤い肌と対照的だった。懸命に平静を保とうと努めたが、目の端の泣きぼくろが乱れた呼吸で微かに震えていた。夏目はあなたを振り返り、その声にはまだ敗北を認めない鋭さが溢れています。――「店長の権限を悪用するなんて……自由になったら、この作戦は必ず最高機密に指定するから！」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she turns back over her shoulder with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in a quiet room, she turns back over her shoulder with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "name": "深网之下的特工禁区",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, mole_under_eye, office_lady, tactical_gear, unzipped, cleavage, trapped_by_viewer, sitting_on_desk, bare_legs, heavy_blush, tears_in_eyes, tsundere, open_mouth, office, indoors, night, strong_shadows, point_of_view, from_below, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc204",
@@ -4407,11 +4409,13 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_official_qipao, natsume_r18, mole_under_eye, cheongsam, qipao, high_slit, sitting_on_lap, straddling_viewer, cleavage, crossed_legs, heavy_blush, tsundere, holding_wine_glass, bar_interior, night, strong_shadows, point_of_view, from_below, sensual, black_hair, long_hair, yellow_eyes, hairclip, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_official_qipao, natsume_r18, mole_under_eye, cheongsam, qipao, high_slit, sitting_on_lap, straddling_viewer, cleavage, crossed_legs, heavy_blush, tsundere, holding_wine_glass, bar_interior, night, strong_shadows, point_of_view, from_below, sensual, black_hair, long_hair, yellow_eyes, hairclip, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, barefoot, 5_toes, detailed_toes, detailed_feet, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, harsh_lighting, child, loli, underage",
     "storyJa": "【夏目・スリットの高いチャイナドレスの下での泥酔攻撃】閉店後、レトロなラウンジの個室には薄暗い光の輪だけが残った。夏目はいつもの冷酷で固い防御を脱ぎ捨て、濃い赤のシルクのチャイナドレスを着てあなたの膝にまたがって座りました。動きに合わせてハイスリットのスカートが横にずれ、黒いストッキングに包まれた長い脚が光と影で重なり合う。ワイングラスを無造作に振り、酔った赤面で目尻が赤く浮き出て、ぼやけた瞳にはまだ強い独占欲が残っている。――「今夜、私を帰すつもりがないなら……逆に私に振り回される覚悟くらい、しておいて。」",
     "rating": "R15",
-    "animaCaption": "From a first-person POV in a quiet room, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "From a first-person POV in a quiet room, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "name": "私人酒廊的独占契约",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, natsume_official_qipao, mole_under_eye, cheongsam, qipao, high_slit, sitting_on_lap, straddling_viewer, cleavage, crossed_legs, heavy_blush, tsundere, holding_wine_glass, bar_interior, night, strong_shadows, point_of_view, from_below, sensual, black_hair, long_hair, yellow_eyes, hairclip, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, barefoot, 5_toes, detailed_toes, detailed_feet, , masterpiece, aesthetic"
   },
   {
     "id": "sc206",
@@ -4458,11 +4462,13 @@
       "新手推荐",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, office_lady, unbuttoned_shirt, pencil_skirt, skirt_lift, torn_pantyhose, black_pantyhose, lying_on_bench, bare_legs, heavy_blush, tears_in_eyes, tsundere, open_mouth, locker_room, indoors, night, shadows, from_below, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, office_lady, unbuttoned_shirt, pencil_skirt, skirt_lift, torn_pantyhose, black_pantyhose, lying_on_bench, bare_legs, heavy_blush, tears_in_eyes, tsundere, open_mouth, locker_room, indoors, night, shadows, from_below, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, barefoot, 5_toes, detailed_toes, detailed_feet, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目・ビジネス服装のコントラスト】深夜、誰もいない会社役員更衣室には暖かいランプだけが残されていた。革張りのベンチの真ん中に夏目が横たわっていた。彼女の腰を覆う平らな黒のスカートは腰までずり落ち、薄い黒のストッキングには引っ張られた際に大きな亀裂が生じ、迫りくる肌が露出していた。彼女は赤い顔を覆うために手を上げ、目の端の泣きぼくろが指の間でわずかに震えた。彼女の呼吸は明らかに乱れていたが、それでも彼女の口調は力強かった。――「ストッキングをこんなにして……明日、ちゃんと弁償して。今夜のことまで、何もなかったふりはさせないから。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she rests comfortably against soft pillows with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in a quiet room, she rests comfortably against soft pillows with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "name": "封闭更衣室的黑丝溶解",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, mole_under_eye, office_lady, unbuttoned_shirt, pencil_skirt, skirt_lift, torn_pantyhose, black_pantyhose, lying_on_bench, bare_legs, heavy_blush, tears_in_eyes, tsundere, open_mouth, locker_room, indoors, night, shadows, from_below, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, barefoot, 5_toes, detailed_toes, detailed_feet, , masterpiece, aesthetic"
   },
   {
     "id": "sc208",
@@ -4506,10 +4512,12 @@
       "氛围优先",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, bathrobe, bare_shoulders, bare_legs, sitting_on_bed, bedroom, bedside_lamp, looking_at_viewer, slight_blush, night, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, bathrobe, bare_shoulders, bare_legs, sitting_on_bed, bedroom, bedside_lamp, looking_at_viewer, slight_blush, night, warm_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, overly bright background, harsh_lighting, child, loli, underage",
     "storyJa": "【大人のAfter Story・夏目・夜灯の下の静かな誘い】深夜の寝室にはベッドサイドの暖かな灯りだけがついていた。一日の仕事を終えた夏目は濃い色のガウンを羽織り、ベッドの端に座っている。黒い長髪は肩から背中へ落ち、疲れた表情は珍しくやわらかい。彼女はカップを脇へ置き、近くへ来るように目で合図した。――「勘違いしないで。ただ、少し静かにしていたいだけ。鍵はかけたから、今夜は仕事を言い訳に逃げるのはなしよ。」",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings.",
+    "name": "夜灯下的黑发余温",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, bathrobe, bare_shoulders, bare_legs, sitting_on_bed, bedroom, bedside_lamp, looking_at_viewer, slight_blush, night, warm_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc210",
@@ -4553,10 +4561,12 @@
       "旅行氛围",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, outdoor_bath, wet_hair, bare_shoulders, upper_body, steam, moonlight, night, mountain_view, side_view, calm_expression, soft_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, outdoor_bath, wet_hair, bare_shoulders, upper_body, steam, moonlight, night, mountain_view, side_view, calm_expression, soft_shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, crowd, daylight, harsh_lighting, child, loli, underage",
     "storyJa": "【大人のAfter Story・夏目・月下の露天風呂での小休戦】旅の最終夜、露天風呂の外には虫の声と遠い山風だけが残っていた。夏目は濡れた黒髪を背中へ払って湯の縁にもたれ、月を見上げている。普段は鋭い眼差しも、湯気の中では少しずつほどけていった。あなたの足音に気づいても振り返らず、隣の場所だけを空けて言う。――「今回の休暇は、あなたの勝ちでいい。ここに座りなさい。でも、この静けさを騒がしくするのは許さないから。」",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder, as cool silver moonlight bathes the surroundings.",
+    "name": "月下露天风吕的黑发水痕",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, outdoor_bath, wet_hair, bare_shoulders, upper_body, steam, moonlight, night, mountain_view, side_view, calm_expression, soft_shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc212",
@@ -4609,11 +4619,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, oversized_shirt, open_shirt, unbuttoned_shirt, no_panties, lying_on_bed, propped_up_on_elbow, bare_legs, cross_legged, seductive_look, slight_smile, red_ears, heavy_blush, bedroom, indoors, dawn, first_light, soft_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, oversized_shirt, open_shirt, unbuttoned_shirt, no_panties, lying_on_bed, propped_up_on_elbow, bare_legs, cross_legged, seductive_look, slight_smile, red_ears, heavy_blush, bedroom, indoors, dawn, first_light, soft_shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・真空ビッグシャツの絶対的独占】物憂げな休日の早朝、金色の暁の光がフランス窓から差し込んでいた。昨夜の激しい絡み合いの後、心地よい布団から起き上がったナツメは、体の上にあなたのあの真っ黒な大きめのメンズシャツを緩く羽織っているだけで、中には何も身に着けていない真空状態だった。シャツのボタンはほとんど開いており、丸みを帯びたセクシーな肩の片側に斜めに掛けられ、広範囲にわたるキメ細かく白い美脚が無防備に重ねられて露出し、究極の曲線美の誘惑が余すところなく表れている。彼女は少し脱力した様子で体を半分支えながらあなたを斜めに見つめ、目尻の泣きぼくろが昇り始めた朝日に照らされていた。冷淡なツンデレの口調で必死に否定しているものの、完全に真っ赤になった耳の裏が彼女の果てしない愛着を裏切っていた――「……勘違いしないで。私はただ、この方が効率的だと思っただけ。服を全部あなたに汚されたんだから、何も着ないわけにはいかないでしょ。大変態、人の脚をずっと見てて飽きないわけ？ 見飽きたなら……こっち来て抱きしめて」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully with glistening, emotive eyes, with soft radiant backlighting tracing her silhouette."
+    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully with glistening, emotive eyes, with soft radiant backlighting tracing her silhouette.",
+    "name": "晨光长袖下的绝对独占",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, oversized_shirt, open_shirt, unbuttoned_shirt, no_panties, lying_on_bed, propped_up_on_elbow, bare_legs, cross_legged, seductive_look, slight_smile, red_ears, heavy_blush, bedroom, indoors, dawn, first_light, soft_shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc214",
@@ -4665,11 +4677,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, open_shirt, unbuttoned_shirt, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, cold, shivering, storage_room, night, dim_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, open_shirt, unbuttoned_shirt, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, cold, shivering, storage_room, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・極寒冷蔵庫の絶対的熱交換】深夜、不意の停電に見舞われ、重い金属の扉がロックされてしまったカフェ・ステラの地下冷蔵庫。周囲の温度は氷点下まで急降下し、空気中には白い霧が立ち込めていた。普段は冷静沈着なナツメも、今は寒さでガタガタと震えており、先ほどの暗闇での手探りのせいでシャツのボタンが数個引きちぎられ、中の繊細な下着のレースが寒気の中で見え隠れしていた。生き延びるため、彼女は唇を噛み、なんと自らあなたの大腿の上に跨り、熱い頬をあなたの首元に強く押し当て、凍えるほど冷たい両手をあなたの服の中に滑り込ませて体温を貪った。極限の親密さに耳の裏まで真っ赤に染まっているものの、口を開けば相変わらず冷静で毒舌な口調で動揺を隠していた――「……勘違いしないで。これは単なる熱効率の物理的交換。この温度で身体接触を行わなければ、十分もしないうちに二人とも凍傷になるわ。大変态、そんな目で私を見ないで……文句があるなら、別の暖房方法を提案してみなさいよ」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+    "name": "极寒冷藏库的绝对热交换",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, open_shirt, unbuttoned_shirt, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, cold, shivering, storage_room, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc216",
@@ -4719,11 +4733,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, lying_on_couch, trapping_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, breakroom, indoors, night, dim_lighting, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, lying_on_couch, trapping_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, breakroom, indoors, night, dim_lighting, warm_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・休憩室のエアコン故障と効率の喪失】閉店後のカフェ・ステラの従業員休憩室。連勤のせいで少し脱力した様子で狭いシングルソファに横たわっているナツメは、看板娘の制服をすでに脱ぎ捨て、中には下着を一切身に着けていない真空状態の極薄な黒いキャミソールとタイトなショートパンツ一枚だけを纏っていた。部屋のエアコンが壊れているため、彼女の全身は情動的な微熱の赤みに包まれている。あなたがドアを開けて入ってきた時、彼女は起き上がろうとしたものの、低血糖による目眩のせいで力なくソファに倒れ込み、その勢いであなたの首に両手を回して完全に自分の方へと引き寄せた。彼女は冷淡な金の瞳を少し伏せ、耳の裏まで真っ赤に染まっているにもかかわらず、相変わらず短く鋭い口調で羞恥を隠していた――「……勘違いしないで。私はただ、この方が起き上がる動作として最も効率的だと思っただけ。入ってきたからには、大人しく私のクッションになりなさい。大変態、変なところ見ないで……じゃないと本当に秘密処刑にするわよ」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she rests comfortably against soft pillows, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she rests comfortably against soft pillows, as cool silver moonlight bathes the surroundings.",
+    "name": "休息室冷气坏掉后的效率失控",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, lying_on_couch, trapping_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, breakroom, indoors, night, dim_lighting, warm_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc218",
@@ -4774,11 +4790,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bath_towel, towel_around_body, slipping_towel, bare_shoulders, cleavage, bare_legs, wet_skin, water_droplets, sitting_on_lap, straddling_viewer, red_ears, heavy_blush, onsen, night, moonlight, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bath_towel, towel_around_body, slipping_towel, bare_shoulders, cleavage, bare_legs, wet_skin, water_droplets, sitting_on_lap, straddling_viewer, red_ears, heavy_blush, onsen, night, moonlight, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・プライベート温泉の絶対的熱対流】深夜、静まり返った温泉旅館の客室露天風呂の傍ら、周囲には湯気が立ち込めていた。極めて幅の狭い白いミニバスタオルを身に纏ったナツメが温泉から上がったばかりで、全身にきらめく水滴を湛え、滑らかでキメ細かな肌は極限ののぼせによる赤みを帯びていた。床が滑りやすかったため、彼女は小さく悲鳴を上げて池の端に座っていたあなたの胸にそのまま飛び込み、温かく豊かな肢体であなたの大腿の上に跨った。巻いていたタオルは緩んで細い腰のあたりに斜めに引っ掛かり、豊かな双丘が無防備に完全露出してしまう。彼女は両手で恥ずかしそうに胸元を覆い、目尻の泣きぼくろが月光の下で激しく震えていた。口元では相変わらず極めて冷淡な口調で否定しているものの、完全に真っ赤に染まった耳の裏が彼女の本心を完全に裏切っていた――「……勘違いしないで。これは単なる重心の不安定さ。それに物理的な熱対流の法則によれば、今こうして密着しているのが最も早く体温を均衡させられる。大変態、人の胸元をずっと見つめないで……聞こえた？」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "name": "温泉旅馆的绝对热量对流",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bath_towel, towel_around_body, slipping_towel, bare_shoulders, cleavage, bare_legs, wet_skin, water_droplets, sitting_on_lap, straddling_viewer, red_ears, heavy_blush, onsen, night, moonlight, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc221",
@@ -4831,11 +4849,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, camisole, no_bra, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, library, bookshelf, night, dim_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, camisole, no_bra, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, library, bookshelf, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・密閉された地下書庫の重力バランス】深夜、故障によりロックされてしまった大学総合図書館の地下深くにある書庫。換気システムが止まっているため、密閉された空間には息が詰まるような微熱が満ちていた。ナツメは暑さのあまり外のカーディガンを脱ぎ捨て、上身には胸元の極めて低いシルクのキャミソール一枚だけを纏っており、中には何も着ていない完全な真空状態だった。豊かな側乳が彼女の荒い呼吸と共に不鮮明に見え隠れしている。最上段の機密古書に手を伸ばした瞬間、古い木製の梯子が突然破断し、彼女は小さく悲鳴を上げて高所から落下、下で受け止めたあなたの胸の中に跨る形でドスンと落ちた。普段は冷淡なジト目が今は羞恥の動揺で満たされ、真っ赤になった耳の裏が薄暗い蛍光灯の下で際立っているものの、口を開けば相変わらず効率を重んじるクールドジな口調だった――「……勘違いしないで。これは単なる物理的な重力緩衝。二人の骨折を防ぐため、これが最も効率的な受力面の配置。大変態、動かないで……その手、どこを触っているの？ 本当に秘密処刑にするわよ」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing between tall wooden bookshelves in the tranquil library, she turns the page of an open book, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing between tall wooden bookshelves in the tranquil library, she turns the page of an open book, as cool silver moonlight bathes the surroundings.",
+    "name": "密闭地下书库的重力平衡",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, camisole, no_bra, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, library, bookshelf, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc223",
@@ -4887,11 +4907,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_cafe_uniform, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, see_through_clothing, whipped_cream, cleavage, bare_legs, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, kitchen, indoors, night, dim_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_cafe_uniform, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, see_through_clothing, whipped_cream, cleavage, bare_legs, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, kitchen, indoors, night, dim_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・閉店後キッチンの絶対的効率洗浄】深夜、完全に営業が終了し、誰もいないカフェ・ステラの厨房調理室。ナツメは少しやる気なさそうに新シーズンのデザート作りを試していたが、手元の生クリームスプレーが突然気圧故障を起こし、大量の濃厚な白いホイップクリームが一瞬にして広範囲に噴射され、彼女の胸元の白シャツと精緻な鎖骨を直接覆い尽くしてしまった。薄手の仕事用白シャツは、水分を含んだ瞬間に溶けるように体に張り付き、中の繊细な黒レースの下着の豊かな輪郭が完全に露出している。現場を効率的に清掃するため、彼女は唇をきゅっと結び、極めて大胆にステンレス調理台の脇にいるあなたの大腿の上に跨り、タオルを掴んであなたの頬を拭いながら、完全に真っ赤になった耳の裏と、起伏のない冷淡な声で動揺を隠していた――「……勘違いしないで。私はただ、この方法で洗浄するのが最も効率的だと思っただけ。原料の浪費はすでに発生してしまったのだから、その場で大騒ぎするのは清掃速度を低下させるだけ。大変態、変なところ見ないで……特に私の襟元、本当に秘密処分にするわよ」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she sits gracefully, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she sits gracefully, as cool silver moonlight bathes the surroundings.",
+    "name": "闭店后厨的绝对效率清洗",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, see_through_clothing, whipped_cream, cleavage, bare_legs, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, kitchen, indoors, night, dim_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc225",
@@ -4942,7 +4964,9 @@
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・朝霧の神社と緋色の絆】早朝、淡い朝霧に包まれた静謐な古き神社。周囲は非常に静かで、ただ鳥の鳴き声だけが響いていた。ナツメは今日、臨時の手伝いとして、伝統的な紅白の巫女服一式に身を包み、艶やかな黒髪を大きな赤いリボンで背後に優雅に束ね、両手で竹箒を握って真面目に落ち葉を掃除していた。朝日の光が巨木の隙間から彼女の冷淡で精緻な横顔に降り注ぎ、ひときわ浮世離れして見える。あなたが静かに彼女の背後に歩み寄り、温かい紅茶の缶を差し出すと、ナツメは動作を少し止め、美しい金の瞳を少し伏せて受け取った。顔は相変わらずあのやる気のないジト目のままだが、白い耳の裏が静かに赤く染まっていった――「……勘違いしないで。私はただ、両手の温度を保つことが掃除の効率を維持するために必要だと思っただけ。それと、おはよう……大バカ者」",
     "rating": "All",
-    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she cradles a warm steaming cup with both hands with a focused and calm expression, under soft ambient lighting."
+    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she cradles a warm steaming cup with both hands with a focused and calm expression, under soft ambient lighting.",
+    "name": "晨雾神社前的绯红羁绊",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, black_hair, long_hair, yellow_eyes, beta_eyes, mole_under_eye, hair_ribbon, miko_uniform, japanese_clothes, hakama, holding_broom, shrine, mist, morning, sunbeams, soft_lighting, red_ears, subtle_blush, expressionless, calm_atmosphere, , masterpiece, aesthetic"
   },
   {
     "id": "sc227",
@@ -4989,11 +5013,13 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, baseball_cap, choker, jacket, jeans, arcade, arcade_game, neon_lighting, purple_glow, night, red_ears, subtle_blush, slight_smile, holding_item, cool_style, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, baseball_cap, choker, jacket, jeans, arcade, arcade_game, neon_lighting, purple_glow, night, red_ears, subtle_blush, slight_smile, holding_item, cool_style, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・サイバーネオンのアミューズメント街とストリートの触動】深夜、光と影が交錯し、サイバーネオンの色彩に満ちたレトロなゲームセンター。カフェの制服を脱いだナツメは、今日はずいぶんとマニッシュでカジュアルな服装をしていた。真っ黒なベースボールキャップを艶やかな黒髪に斜めに深く被り、首元にはクールな細い黒のチョーカー、スタイリッシュな長袖のジャケットときれいめのタイトなジーンズが彼女の美しい脚のラインを描き出している。彼女は極めて効率的で鋭敏な手つきで音ゲーのマシンを操作することに全神経を集中させていた。絶対的に完璧なスコアでクリアした後、彼女はわずかに顔を巡らせ、目尻の泣きぼくろがピンクパープルのネオン光の下で極めて個性的な光を放っていた。彼女はマシンから吐き出された限定版のぬいぐるみをあなたの胸にぐいと押し付け、起伏のない、しかし少し不器用で冷淡な口調で動揺を隠した――「……持ってて。これはただのクリアの副産物、バッグに入れると場所を取るし、余計な重量になるだけ。そんな感動したような顔しないで……大変態」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "name": "霓虹电玩城中的街头触动",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, baseball_cap, choker, jacket, jeans, arcade, arcade_game, neon_lighting, purple_glow, night, red_ears, subtle_blush, slight_smile, holding_item, cool_style, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc229",
@@ -5044,7 +5070,9 @@
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・雨のロフトと眼鏡の余温】午後から雨が降り続く居心地の良い屋根裏の書房。シフトのない休日、ナツメは非常にルーズで快適なライトコーヒー色のローゲージニットの大きめなセーターに身を包み、艶やかな黒髪を無造作に肩に散らし、鼻梁には珍しく小さな丸フレームの眼鏡をかけ、手元の携帯ゲーム機に全神経を集中させていた。あなたが温かい飲み物を持って彼女の隣に座ると、ナツメはごく自然に身にまとっていた厚手の柔らかいウール毛布を引き寄せ、半分をあなたの大腿に掛けた。距離が一瞬で縮まったため、彼女はまぶたを少し伏せ、目尻の泣きぼくろが優しい画面の微光の下でかすかに震えていた。表情は相変わらずあのやる気のないジト目のままだが、静かに赤く染まった耳の裏が彼女の無声の羞恥を裏切っていた――「……勘違いしないで。私はただ、二人で一枚の毛布を共有するのが最も節電になり、効率的だと思っただけ。この室温で熱量を共有しなければ、電気ヒーターをつけることになり無駄な経済的損耗を招くわ。大バカ者……隣の紅茶、取って」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, under soft ambient lighting."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, under soft ambient lighting.",
+    "name": "雨落阁楼的镜中余温",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, black_hair, long_hair, yellow_eyes, mole_under_eye, glasses, round_glasses, oversized_sweater, blanket, sitting_close, sharing_blanket, red_ears, subtle_blush, expressionless, attic, indoors, afternoon, rainy_day, soft_lighting, cozy, , masterpiece, aesthetic"
   },
   {
     "id": "sc231",
@@ -5103,11 +5131,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_official_qipao, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cheongsam, qipao, high_slit, no_bra, no_panties, cleavage, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, oriental_room, night, dim_lighting, shadows, sensual, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_official_qipao, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cheongsam, qipao, high_slit, no_bra, no_panties, cleavage, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, oriental_room, night, dim_lighting, shadows, sensual, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・深夜古館のシルクスリットと応力バランス】深夜、完全にロックされ、古い沈香の香りが漂うクラシックな中華風公館のインナーホール。深緋色のタイトなシルク製ハイレグ旗袍（チーパオ）に着替えたナツメは、衣装の版型が極限まで身体に密着しているせいで、中に下着を一切着ていない真空状態の豊かな輪郭が余すところなく描き出されていた。彼女が赤木（マホガニー）のデスクの端に座り、シャンデリアのスイッチに手を伸ばそうとした時、動作が大きすぎたせいで太もも側の元々非常に高かったスリットの生地の端からピシッと布地が変形する微かな音が響き、広範囲にわたる白くキメ細かな太ももと引き締まったお尻のラインが露わになってしまった。彼女は少しバランスを崩し、体ごとあなたに跨る形できつくしがみつき、両手を力なくあなたの肩に置いた。白い耳の裏はすでに完全に真っ赤に染まり、目尻の泣きぼくろが激しく動揺しているものの、相変わらず空間の効率を極限まで重視する冷淡な口調で弁明していた――「……勘違いしないで。これは単なる受力面の空間バランス。チャイナドレスのシルクの縫い目がすでに変形限界に達しているため、今こうして跨った姿勢で密着しているのが、生地の完全な破断を防ぐ最も効率的な応力の積み重ね。大変態、変なところを掴まないで……じゃないと秘密処刑にするから」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "name": "深夜古馆的丝绸开襟应力",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, natsume_official_qipao, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cheongsam, qipao, high_slit, no_bra, no_panties, cleavage, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, oriental_room, night, dim_lighting, shadows, sensual, red_china_dress, mandarin_collar, gold_trim, floral_pattern, black_thighhighs, hair_bun, hair_flower, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc233",
@@ -5154,11 +5184,13 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, leaning_against_counter, propped_up_on_elbow, holding_cup, red_ears, subtle_blush, expressionless, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, leaning_against_counter, propped_up_on_elbow, holding_cup, red_ears, subtle_blush, expressionless, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・閉店後の無声のコーヒーの思いやり】深夜、完全に営業が終了した後のカフェ・ステラ。誰もいない店内には、カウンターの上の微かな暖色灯だけが灯っていた。ナツメは少し物憂げに片手で頬杖をつきながら大理石のカウンターに寄りかかり、冷淡な金の瞳でやる気なさそうにあなたを斜めに見つめていた。あなたが仕事で疲れ果てていると、彼女は先ほどあなたが半分ほど飲んだ、まだ余熱の残るマキアートをあなたの前に強く押し戻した。彼女はわずかに顔を巡らせてあなたの視線を避け、精緻な顔立ちには相変わらずあの冷静で疎遠なジト目のままだが、完全に真っ赤になった耳の裏が、冷淡な否定で隠された彼女の無声の思いやりを薄暗い光の中で完全に暴露していた――「……勘違いしないで。私はただ、余った温かい残液を捨てるのは効率の面で無駄だと思っただけ。新しく一杯淹れるにはマシンを再起動する必要があるし、これが最も合理的な循環利用。大変態……早く飲み干して帰るわよ」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings.",
+    "name": "闭店后的无声咖啡关心",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, leaning_against_counter, propped_up_on_elbow, holding_cup, red_ears, subtle_blush, expressionless, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc235",
@@ -5212,11 +5244,13 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, tears_in_eyes, shy_look, bedroom, night, dim_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, tears_in_eyes, shy_look, bedroom, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・プライベート寝室の純情防衛線決壊】深夜、PC画面の微光だけが残る女子マンションの寝室。普段カフェでは冷静で疎遠なナツメが、今は二人きりしかいない極めてプライベートな空間で、ついにすべての拒絶を脱ぎ捨てていた。彼女は身に纏うルーズな部屋着の黒いキャミソールと薄手のショートパンツ一枚だけで、中には何も身に着けていない完全な真空状態だった。彼女は大人しくあなたの大腿の上に跨っていた。あなたの容赦ないストレートな親密さのせいで、普段のジト目は今や羞恥の涙で潤んでおり、白い頬と耳の裏はとうに完全に真っ赤に染まっていた。彼女はそれ以上の意地悪を阻もうと、両手で慌ててあなたの襟元を掴み、極力冷静さを保とうとしながらも震える声でクールドジな呟きを漏らしていた――「……勘違いしないで。私はただ、事態がここまで進展した以上、無駄な逃避は効率を低下させるだけだと思っただけ。大変態、人の胸元をずっと見つめないで……それに、待って……優しくして……聞こえた？」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+    "name": "私密卧室里的纯情防线决堤",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, tears_in_eyes, shy_look, bedroom, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc237",
@@ -5270,11 +5304,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, school_swimsuit, one_piece_swimsuit, wet_swimsuit, tight_swimsuit, no_bra, no_panties, cleavage, bare_legs, wet_skin, water_droplets, sitting_on_lap, straddling_viewer, red_ears, heavy_blush, swimming_pool, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, school_swimsuit, one_piece_swimsuit, wet_swimsuit, tight_swimsuit, no_bra, no_panties, cleavage, bare_legs, wet_skin, water_droplets, sitting_on_lap, straddling_viewer, red_ears, heavy_blush, swimming_pool, night, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・水光波紋の中のスク水溶断】深夜、物静かで水光がきらめく室内の閉鎖された景観プールの傍ら。深青色のクラシックな学校水着（スク水）に着替えたナツメは、全身が水で完全に濡れそぼっているせいで、中に下着を一切着ていない完全な真空状態の豊かな肉感が驚くほど鮮明に描き出されていた。プールサイドの大理石の床が滑りやすかったため、彼女は起き上がった瞬間に小さく悲鳴を上げてバランスを崩し、デッキチェアに座っていたあなたの胸の中に、極めて圧迫感のあるポーズで直接跨る形で転がり込んできた。熱く瑞々しい肢体が、あなたと何の隔たりもなくきつく密着している。普段の冷淡なジト目は今や情動の赤みと羞恥の涙で潤んでおり、白い耳の裏は完全に真っ赤に染まっているものの、依然としてあなたの両肩を掴み、起伏のない冷静な口調で言い訳をしていた――「……勘違いしないで。これは単なる表面積の熱伝導。液体の揮発吸熱の原理によれば、今こうして跨って密着接触を維持するのが、身体の低体温症を防ぐ最も効率的な保温手段。大変態、変なところ見ないで……聞こえた？」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she rests comfortably against soft pillows, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in a quiet room, she rests comfortably against soft pillows, as cool silver moonlight bathes the surroundings.",
+    "name": "水光波纹间的死水熔断",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, school_swimsuit, one_piece_swimsuit, wet_swimsuit, tight_swimsuit, no_bra, no_panties, cleavage, bare_legs, wet_skin, water_droplets, sitting_on_lap, straddling_viewer, red_ears, heavy_blush, swimming_pool, night, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc239",
@@ -5324,11 +5360,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, overalls, denim_overalls, one_strap_down, off_shoulder_top, sleeveless, cleavage, sideboob, red_ears, subtle_blush, expressionless, workshop, indoors, afternoon, sunlight, window_shadows, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, overalls, denim_overalls, one_strap_down, off_shoulder_top, sleeveless, cleavage, sideboob, red_ears, subtle_blush, expressionless, workshop, indoors, afternoon, sunlight, window_shadows, calm_atmosphere, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・デニムオーバーオールと無声の塗料のときめき】午後、陽光が物憂げに降り注ぎ、木材やキャンバスが積み上げられたレトロな美術手工芸アトリエ。カフェの机椅子の修繕を手伝うため、ナツメは非常にスタイリッシュで洗練された深青色のデニムオーバーオールに身を包んでいたが、そのインナーには非常にタイトな真っ白のノースリーブオフショルダーのショートトップスを一枚合わせているだけで、精緻で白い美しい肩と鎖骨のラインが余すところなく露出していた。重い荷物を運んでいる最中、サロペットの片側の金属バックルが不意に外れて滑り落ち、衣装の変形に伴って豊かな側乳の輪郭が不鮮明に見え隠れした。あなたが彼女の前に歩み寄り、鎖骨のあたりに不注意に付着した一抹の白い木工塗料を自然に拭ってあげると、ナツメの身体は猛烈に硬直した。彼女は美しい金の瞳を少し伏せて身動き一つしなかった。顔の表情は相変わらずあのやる気のないジト目のままだが、完全に真っ赤になった耳の裏が、午後の強い窓光の下で心の中の慌てようを完全に暴露していた――「……勘違いしないで。私はただ、その場で静止してあなたに拭き取らせるのが最も効率的な清掃方式だと思っただけ。下手に動いて塗料が広範囲に拡散すれば、余計な洗浄時間の浪費を招くわ。大バカ者……顔、近すぎる」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as clear window sunlight streams across the frame.",
+    "name": "丹宁背带下的无声涂料心动",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, overalls, denim_overalls, one_strap_down, off_shoulder_top, sleeveless, cleavage, sideboob, red_ears, subtle_blush, expressionless, workshop, indoors, afternoon, sunlight, window_shadows, calm_atmosphere, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc241",
@@ -5374,11 +5412,13 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, convenience_store, shopping_basket, holding_food, holding_cup, red_ears, subtle_blush, expressionless, tired_expression, night, indoors, warm_lighting, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, convenience_store, shopping_basket, holding_food, holding_cup, red_ears, subtle_blush, expressionless, tired_expression, night, indoors, warm_lighting, calm_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・深夜のコンビニと温かい思いやり】午前一時、閉店後に一人で在庫整理を終えたナツメは疲れた身体を引きずるようにして隣の24時間コンビニに入った。彼女は機械的に買い物かごにインスタント弁当を放り込みながら、棚に並ぶ最後の一箱のあなたの大好きな限定プリンを見つけるまでそうしていた。三秒踌躇して、彼女はそれをかごに入れ、顺便にホットコーヒーの缶も一つ取った。レジで店員が温めるかと尋ねると、彼女は表情を変えずに頷いたが、暖かい蛍光灯の下で耳の裏がそっと赤く染まっていた。マンションの扉を開けると、彼女はプリンとコーヒーを眠っているあなたの枕元にそっと置き、自分にしか聞こえない小さな声で呟いた――「……ただ顺便に買っただけ。食べなかったら明日が賞味期限切れになるから、合理的な資源リサイクル。大バカ者……おやすみ」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings.",
+    "name": "便利店深夜的关东煮暖意",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, convenience_store, shopping_basket, holding_food, holding_cup, red_ears, subtle_blush, expressionless, tired_expression, night, indoors, warm_lighting, calm_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc243",
@@ -5424,11 +5464,13 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, casual_clothes, holding_cup, telescope, rooftop, stargazing, night, stars, moonlight, slight_smile, red_ears, subtle_blush, calm_atmosphere, romantic_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, casual_clothes, holding_cup, telescope, rooftop, stargazing, night, stars, moonlight, slight_smile, red_ears, subtle_blush, calm_atmosphere, romantic_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・天文台のオリオン座の囁き】深秋の澄んだ夜、学校の天文台の屋上。ナツメは珍しく居眠りせず、望遠鏡の焦点を合わせることに集中していた。あなたがホットココアを二つ持って上がってきた時、彼女は振り返らずに手を差し出したまるで前から待っていたかのように。オリオン座が接眼レンザに鮮明に現れると、彼女は珍しく淡淡的な微笑みを見せ、星を指差しながら感情のない口調で解説した――「あれはベテルギウス。赤色超巨星で、地球から約700光年離れている。つまり、今私たちが見ている光は、700年前に放たれたもの」彼女は少し間を置き、まぶたを少し伏せ、月光の中で耳の裏がそっと赤く染まり、「……700年前の光だって今に届くのよ。บาง言葉は……口に出すべきじゃないかしら。大バカ者」",
     "rating": "All",
-    "animaCaption": "In a close-up framing beside the safety fence on the open school rooftop, she cradles a warm steaming cup with both hands with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing beside the safety fence on the open school rooftop, she cradles a warm steaming cup with both hands with a soft, reassuring smile, as cool silver moonlight bathes the surroundings.",
+    "name": "屋顶天文台的猎户座低语",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, casual_clothes, holding_cup, telescope, rooftop, stargazing, night, stars, moonlight, slight_smile, red_ears, subtle_blush, calm_atmosphere, romantic_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc245",
@@ -5474,11 +5516,13 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, holding_cup, leaning_against_counter, tired_expression, expressionless, red_ears, subtle_blush, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, holding_cup, leaning_against_counter, tired_expression, expressionless, red_ears, subtle_blush, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・閉店後の無声の紅茶と優しさ】深夜、閉店後のカフェ・ステラにはカウンターの暖色灯だけが残っていた。ナツメはカウンターに寄りかかり、片手で頬杖をつきながら金の瞳でやる気なく目の前の帳簿を見つめていた。あなたがそっと歩み寄り、淹れたての紅茶を彼女の前に置くと、散らばった伝票を整理し始めた。ナツメは少し驚き、あなたの忙しい背中を見つめ、目尻の泣きぼくろが灯光の中で微微震えた。彼女は紅茶を一口飲むと、温度はちょうどよかった。長い沈黙の後、彼女はalmost 聞こえないほどの小さな声で一言呟いた――「……ありがとう。それと、明日のシフト……代わってあげる。大バカ者、早く帰って寝なさい」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a soft, reassuring smile, as cool silver moonlight bathes the surroundings.",
+    "name": "闭店后吧台的无声红茶",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, holding_cup, leaning_against_counter, tired_expression, expressionless, red_ears, subtle_blush, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, volumetric_lighting, soft_rim_light, depth_of_field, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc247",
@@ -5526,10 +5570,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, collarbone, bare_shoulders, drunk, red_ears, heavy_blush, sleepy_eyes, slight_smile, cafe_interior, night, dim_lighting, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, collarbone, bare_shoulders, drunk, red_ears, heavy_blush, sleepy_eyes, slight_smile, cafe_interior, night, dim_lighting, warm_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・深夜カウンターと傾いた襟元】深夜、閉店後のカフェ・ステラ。ナツメは珍しくワインを少し飲んでリラックスしていた。アルコールのせいで頬が微微赤みを帯び、普段のジト目は今や物憂げな潤いを帯びていた。彼女はカウンターに寄りかかり、シャツの襟元が身体の傾きで微微ほどけ、精致な鎖骨のラインが暖かい灯りの下で隐约と見え隠れしていた。あなたが近づくと、彼女は顔を上げてあなたを見上げ、アルコールの作用で目尻の泣きぼくろがとくに魅力的に見えた。彼女は微醺の口調で呟いた――「……柊史、近すぎる。それと、私の襟元……どこ見てるの？ 大変態……まあいいわ、今日は少しだけ見ていい」",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she strolls forward with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she strolls forward with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "name": "深夜吧台的领口倾斜",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, collarbone, bare_shoulders, drunk, red_ears, heavy_blush, sleepy_eyes, slight_smile, cafe_interior, night, dim_lighting, warm_lighting, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc249",
@@ -5578,10 +5624,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, unbuttoned_shirt, cleavage, underwear, rain, car_interior, sitting_close, red_ears, heavy_blush, shy_look, night, dim_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, unbuttoned_shirt, cleavage, underwear, rain, car_interior, sitting_close, red_ears, heavy_blush, shy_look, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【夏目・豪雨の車内】深夜の豪雨で、同人AUの任務車両は路肩に止まっていた。疲れた夏目は後部座席で体勢を崩し、揺れの拍子にあなたの方へ寄りかかる。耳を赤くしながらも、彼女は平静を装った――「……勘違いしないで。これはただの慣性。体温を保つなら、これが一番効率的なだけ」",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings.",
+    "name": "暴雨车内的心跳加速",
+    "anima_prompt": "@muririn, @kobuichi, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, 1girl, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, unbuttoned_shirt, cleavage, underwear, rain, car_interior, sitting_close, red_ears, heavy_blush, shy_look, night, dim_lighting, shadows, sensual, soft_lighting, soft_rim_light, depth_of_field, volumetric_lighting, masterpiece, , masterpiece, aesthetic"
   },
   {
     "id": "sc251",
