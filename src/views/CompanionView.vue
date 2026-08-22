@@ -383,9 +383,7 @@ import { resolveCompanionPresence } from '@/utils/companionPresence'
 import { useCompanionBehaviorRuntime } from '@/composables/useCompanionBehaviorRuntime'
 import { useCompanionClipboardImport } from '@/composables/useCompanionClipboardImport'
 import { COMPANION_CHAT_LIVE_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKeys'
-import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
-import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
-import { createSpeechSession } from '@/utils/speechSession'
+import { useCompanionSpeechInput } from '@/composables/useCompanionSpeechInput'
 import { useCompanionAffection } from '@/composables/useCompanionAffection'
 
 const CHARACTER_IDS = ['nene', 'natsume'] as const
@@ -464,7 +462,44 @@ const {
   activeChar,
   desktopBridge,
   desktopWindowVisible: () => desktopWindowVisible.value,
+  // 语音簇在本簇之后接线（它依赖 dnd/inQuietHours），这里延迟引用避免 TDZ。
+  reconcileAutoListen: () => reconcileAutoListen(),
+})
+// ── 语音输入（按住说话/Space 保持/唤醒会话/auto-listen gating）已下沉
+//    useCompanionSpeechInput；visibilitychange 监听与卸载释放自持。──
+const {
+  speechReady,
+  speechState,
+  speechError,
+  speechAutoListening,
+  speechSessionActive,
+  speechButtonDisabled,
+  speechButtonText,
+  speechStateText,
+  speechSettingsOpen,
+  pageVisible,
+  onSpeechPress,
+  onSpeechRelease,
+  onSpeechCancel,
+  onSpeechLeave,
+  onSpeechSessionEnd,
+  onSpeechSettingsSaved,
+  handleSpaceKeyDown,
+  handleSpaceKeyUp,
+  cancelSpeechActivity,
   reconcileAutoListen,
+} = useCompanionSpeechInput({
+  busy,
+  chatReady,
+  inputText,
+  currentCharacter,
+  currentCharacterName: () => currentCharacter.value.name,
+  desktopBridge,
+  desktopWindowVisible,
+  dnd,
+  inQuietHours,
+  handleSend,
+  isEditableTarget,
 })
 // ── 剪贴板浮卡 / 本地导入 / 看屏检视（已下沉 useCompanionClipboardImport）──
 // 剪贴板订阅、拖拽监听与浮卡 20s 计时器生命周期由 composable 自持。
@@ -504,34 +539,7 @@ let uiHidden = false
 let lastPointerMove = Date.now()
 let mouseToggleBlockedUntil = 0
 const immersive = ref(false)
-const speechConfig = ref(loadSpeechInputConfig())
-const speechSettingsOpen = ref(false)
-const speechSession = createSpeechSession()
-const speechSessionState = ref(speechSession.state())
-const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
-const speechNotice = ref('')
-const documentHidden = ref(typeof document !== 'undefined' && document.hidden)
 const composerFocused = ref(false)
-const {
-  state: speechState,
-  errorMessage: speechError,
-  supported: speechSupported,
-  autoListening: speechAutoListening,
-  start: speechStart,
-  stop: speechStop,
-  cancel: speechCancel,
-  release: speechRelease,
-} = useVoiceInput({
-  config: () => speechConfig.value,
-  onText: onSpeechText,
-})
-const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
-const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
-const speechSessionActive = computed(() => {
-  void speechSessionState.value
-  return speechSession.isSessionActive()
-})
-const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
 const presence = computed(() => resolveCompanionPresence({
   visible: pageVisible.value,
   dnd: dnd.value,
@@ -592,23 +600,6 @@ function onChatCommand(payload: { command?: string; text?: string; imageUrl?: st
   }
 }
 let chatCommandSubscription: number | undefined
-const speechButtonDisabled = computed(() => busy.value || !chatReady.value || !pageVisible.value
-  || speechState.value === 'recognizing')
-const speechButtonText = computed(() => {
-  if (speechState.value === 'acquiring') return '启动中…'
-  if (speechState.value === 'capturing') return '松开结束'
-  if (speechState.value === 'recognizing') return '识别中…'
-  if (speechState.value === 'error') return '重试'
-  return '按住说话'
-})
-const speechStateText = computed(() => {
-  if (speechState.value === 'capturing') return '聆听中…'
-  if (speechState.value === 'recognizing') return '正在识别…'
-  if (speechState.value === 'error') return speechError.value
-  return speechNotice.value
-})
-let speechHeldByKeyboard = false
-let speechHeldByPointer = false
 let resumeSubscription: number | undefined
 let shownSubscription: number | undefined
 let visibilitySubscription: number | undefined
@@ -659,15 +650,7 @@ function onWindowKeydown(event: KeyboardEvent) {
     }
     return
   }
-  if (event.key !== ' ' || event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
-  const target = event.target
-  if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
-    || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable)
-    || (target instanceof HTMLElement && Boolean(target.closest('button, a, [role="button"]')))) return
-  if (speechButtonDisabled.value || speechBusy.value || speechHeldByKeyboard) return
-  speechHeldByKeyboard = true
-  event.preventDefault()
-  void speechStart('manual')
+  handleSpaceKeyDown(event)
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {
@@ -680,96 +663,7 @@ function isEditableTarget(target: EventTarget | null): boolean {
 }
 
 function onWindowKeyup(event: KeyboardEvent) {
-  if (event.key !== ' ' || !speechHeldByKeyboard) return
-  speechHeldByKeyboard = false
-  event.preventDefault()
-  if (speechState.value === 'acquiring') speechCancel()
-  else speechStop()
-}
-
-function applySpeechSession() {
-  speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
-}
-
-function commitSpeechText(text: string) {
-  inputText.value = text
-  if (speechConfig.value.autoSend && chatReady.value && !busy.value) void handleSend()
-}
-
-function onSpeechText(text: string, source: VoiceTextSource) {
-  if (source === 'auto' && !speechSession.isSessionActive()) {
-    if (speechSession.onWakeText(text)) speechNotice.value = `已唤醒${currentCharacter.value.name}，可以直接对话了`
-    return
-  }
-  const action = speechSession.onSessionText(text)
-  if (action === 'end') {
-    speechNotice.value = '已退出连续对话'
-    return
-  }
-  if (action === 'submit') {
-    speechNotice.value = ''
-    commitSpeechText(text)
-  }
-}
-
-function reconcileAutoListen() {
-  // 真双窗口：麦克风采集随聊天走聊天窗，角色窗不再 auto-listen
-  if (desktopBridge) return
-  const shouldListen = speechReady.value
-    && speechConfig.value.wakeEnabled
-    && chatReady.value
-    && !busy.value
-    && !dnd.value
-    && !inQuietHours.value
-    && pageVisible.value
-    && speechState.value !== 'error'
-    && speechSession.shouldAutoListen()
-  if (shouldListen && !speechAutoListening.value && !speechBusy.value) {
-    void speechStart('auto')
-  } else if (!shouldListen && speechAutoListening.value) {
-    speechStop()
-  }
-}
-
-function onSpeechPress() {
-  if (speechButtonDisabled.value || speechBusy.value) return
-  speechHeldByPointer = true
-  void speechStart('manual')
-}
-
-function onSpeechRelease() {
-  if (!speechHeldByPointer) return
-  speechHeldByPointer = false
-  if (speechState.value === 'acquiring') speechCancel()
-  else speechStop()
-}
-
-function onSpeechCancel() {
-  speechHeldByPointer = false
-  speechCancel()
-}
-
-function onSpeechLeave(event: PointerEvent) {
-  if (speechHeldByPointer && event.buttons > 0) onSpeechCancel()
-}
-
-function onSpeechSettingsSaved() {
-  speechConfig.value = loadSpeechInputConfig()
-  applySpeechSession()
-  reconcileAutoListen()
-  speechSettingsOpen.value = false
-}
-
-function onSpeechSessionEnd() {
-  speechSession.endSession()
-  speechNotice.value = '已结束连续对话'
-  reconcileAutoListen()
-}
-
-function onDocumentVisibilityChange() {
-  documentHidden.value = document.hidden
-  if (!pageVisible.value) speechCancel()
-  reconcileAutoListen()
+  handleSpaceKeyUp(event)
 }
 
 /** 点击齿轮弹层外部时关闭设置弹层（弹层内已 @pointerdown.stop）。 */
@@ -889,9 +783,7 @@ function toggleMouseEvents() {
 
 function setDesktopVisibility(visible: boolean) {
   if (!visible) {
-    speechHeldByKeyboard = false
-    speechHeldByPointer = false
-    speechCancel()
+    cancelSpeechActivity()
     characterStageRef.value?.releasePointerFocus?.()
   }
   if (desktopWindowVisible.value === visible) return
@@ -916,33 +808,12 @@ function setDesktopPowerMode(onBattery: boolean) {
   characterStageRef.value?.setDesktopPerformanceMode?.(onBattery)
 }
 
-applySpeechSession()
-
-watch(busy, value => {
-  if (value) {
-    speechHeldByKeyboard = false
-    speechHeldByPointer = false
-    speechSession.markReplyBusy()
-    speechCancel()
-  } else {
-    speechSession.markReplyIdle()
-  }
-  reconcileAutoListen()
-}, { immediate: true })
-
-watch([speechState, speechConfig, dnd, inQuietHours, desktopWindowVisible, documentHidden, chatReady], reconcileAutoListen)
-watch(currentCharacter, () => {
-  applySpeechSession()
-  reconcileAutoListen()
-})
-
 onMounted(async () => {
   document.documentElement.classList.add('companion-mode')
   window.addEventListener('pointerdown', noteActivity, { passive: true })
   window.addEventListener('pointerdown', onDocPointerDown, { passive: true })
   window.addEventListener('keydown', onWindowKeydown, { passive: false })
   window.addEventListener('keyup', onWindowKeyup, { passive: false })
-  document.addEventListener('visibilitychange', onDocumentVisibilityChange)
   window.addEventListener('wheel', noteActivity, { passive: true })
   window.addEventListener('pointermove', onPointerMove, { passive: true })
   reconcileAutoListen()
@@ -998,13 +869,11 @@ onMounted(async () => {
   }
 })
 onUnmounted(() => {
-  stopSpeechSessionWatch()
   viewAlive = false
   window.removeEventListener('pointerdown', noteActivity)
   window.removeEventListener('pointerdown', onDocPointerDown)
   window.removeEventListener('keydown', onWindowKeydown)
   window.removeEventListener('keyup', onWindowKeyup)
-  document.removeEventListener('visibilitychange', onDocumentVisibilityChange)
   window.removeEventListener('wheel', noteActivity)
   window.removeEventListener('pointermove', onPointerMove)
   if (desktopBridge && resumeSubscription != null) desktopBridge.offResume(resumeSubscription)
@@ -1017,11 +886,6 @@ onUnmounted(() => {
   if (desktopBridge && interactionModeSubscription != null) desktopBridge.offInteractionModeChanged(interactionModeSubscription)
   if (desktopBridge && globalMouseSubscription != null) desktopBridge.offGlobalMouse(globalMouseSubscription)
   if (desktopBridge && chatCommandSubscription != null) desktopBridge.offChatCommand(chatCommandSubscription)
-  speechHeldByKeyboard = false
-  speechHeldByPointer = false
-  speechCancel()
-  speechRelease()
-  speechSession.endSession()
   document.documentElement.classList.remove(
     'companion-mode', 'companion-desktop', 'companion-immersive', 'companion-ui-hidden',
   )

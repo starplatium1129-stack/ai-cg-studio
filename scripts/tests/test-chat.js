@@ -205,8 +205,10 @@ async function run() {
   var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
   var companionHtml = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
   // 2026-08-22 行为运行时（30s 心跳：syncReminders + reconcileAutoListen）自
-  // CompanionView 下沉，tick 哨兵随之迁移。
+  // CompanionView 下沉，tick 哨兵随之迁移；同轮语音输入簇（按住说话/Space
+  // 保持/唤醒会话/auto-listen gating）下沉 useCompanionSpeechInput。
   var companionBehavior = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionBehaviorRuntime.ts'), 'utf8');
+  var companionSpeech = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionSpeechInput.ts'), 'utf8');
   var roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'useCharacterRoomSession.ts'), 'utf8');
   var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   var chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
@@ -295,15 +297,15 @@ async function run() {
   assert(chatConversation.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
   assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(companionHtml), 'CompanionView boundaries must stay explicitly typed');
-  assert(companionHtml.includes('useVoiceInput') && companionHtml.includes('createSpeechSession') && companionHtml.includes('loadSpeechInputConfig'), 'Companion speech must reuse the existing input/session modules');
-  assert(companionHtml.includes("event.key !== ' '") && companionHtml.includes('onWindowKeyup') && companionHtml.includes('speechHeldByKeyboard'), 'Companion speech must own Space keydown/keyup state');
-  assert(companionHtml.includes('documentHidden') && companionHtml.includes('!dnd.value') && companionHtml.includes('!inQuietHours.value'), 'Companion auto listening must gate visibility, DND, and quiet hours');
-  assert(companionHtml.includes("speechState.value === 'acquiring'") && companionHtml.includes('speechCancel()'), 'Companion speech must cancel pending acquisition');
-  assert(/watch\(busy, value => \{\s*if \(value\) \{\s*speechHeldByKeyboard = false\s+speechHeldByPointer = false\s+speechSession\.markReplyBusy\(\)\s+speechCancel\(\)\s*\} else \{/.test(companionHtml), 'busy=true must clear held inputs and cancel every speech mode before reconcile');
+  assert(companionSpeech.includes('useVoiceInput') && companionSpeech.includes('createSpeechSession') && companionSpeech.includes('loadSpeechInputConfig'), 'Companion speech must reuse the existing input/session modules');
+  assert(companionSpeech.includes("event.key !== ' '") && companionHtml.includes('onWindowKeyup') && companionSpeech.includes('speechHeldByKeyboard'), 'Companion speech must own Space keydown/keyup state');
+  assert(companionSpeech.includes('documentHidden') && companionSpeech.includes('!dnd.value') && companionSpeech.includes('!inQuietHours.value'), 'Companion auto listening must gate visibility, DND, and quiet hours');
+  assert(companionSpeech.includes("speechState.value === 'acquiring'") && companionSpeech.includes('speechCancel()'), 'Companion speech must cancel pending acquisition');
+  assert(/watch\(busy, value => \{\s*if \(value\) \{\s*speechHeldByKeyboard = false\s+speechHeldByPointer = false\s+speechSession\.markReplyBusy\(\)\s+speechCancel\(\)\s*\} else \{/.test(companionSpeech), 'busy=true must clear held inputs and cancel every speech mode before reconcile');
   assert(companionHtml.includes('function setDesktopVisibility(visible: boolean)'), 'Companion visibility handler must remain present');
-  assert(companionHtml.includes('if (!visible)'), 'Companion window hiding must cancel speech');
+  assert(companionHtml.includes('if (!visible)') && companionHtml.includes('cancelSpeechActivity()'), 'Companion window hiding must cancel speech');
   assert(companionBehavior.includes('syncReminders()') && companionBehavior.includes('reconcileAutoListen()'), 'Companion behavior ticks must refresh quiet state and auto listening');
-  assert(companionHtml.includes('companion-speech-cluster') && companionHtml.includes('speechRelease()') && companionHtml.includes('speechSession.endSession()') && !companionHtml.includes('/audio/transcriptions'), 'Companion speech must use one UI cluster, release on unmount, and avoid a second ASR fetch path');
+  assert(companionHtml.includes('companion-speech-cluster') && companionSpeech.includes('speechRelease()') && companionSpeech.includes('speechSession.endSession()') && !companionSpeech.includes('/audio/transcriptions'), 'Companion speech must use one UI cluster, release on unmount, and avoid a second ASR fetch path');
   assert(!/\bany\b/.test(roomSession), 'shared character-room session boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(chatConversation), 'chat conversation stream, cancellation, and draft boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(streamUtils), 'chat stream events and abort errors must stay explicitly typed');

@@ -621,9 +621,10 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
     'src/views/HomeView.vue',
     'src/views/CompanionView.vue',
     'src/composables/useCharacterRoomSession.ts',
-    // 2026-08-22 陪伴页行为/剪贴板簇自 CompanionView 下沉，随迁禁裸 fetch 清单。
+    // 2026-08-22 陪伴页行为/剪贴板/语音簇自 CompanionView 下沉，随迁禁裸 fetch 清单。
     'src/composables/useCompanionBehaviorRuntime.ts',
     'src/composables/useCompanionClipboardImport.ts',
+    'src/composables/useCompanionSpeechInput.ts',
   ];
   for (const relativePath of scopedFiles) {
     const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
