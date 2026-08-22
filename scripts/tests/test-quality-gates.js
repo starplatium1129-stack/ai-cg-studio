@@ -49,7 +49,14 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   const quality = read('.github/workflows/quality.yml');
   const native = read('.github/workflows/windows-native.yml');
 
-  assert.equal(scripts.validate, 'npm run check && npm run test:unit && npm run test:contract');
+  // 2026-08-22 加入 test:frontend（Vitest）道：validate 必须先跑前端单测再进 unit/contract。
+  assert.equal(scripts.validate, 'npm run check && npm run test:frontend && npm run test:unit && npm run test:contract');
+  assert.match(scripts['test:frontend'], /^vitest run$/);
+  assert.ok(
+    fs.existsSync(path.join(root, 'vitest.config.ts'))
+      && /environment:\s*'happy-dom'/.test(read('vitest.config.ts')),
+    'frontend tests must run in happy-dom via the dedicated vitest config',
+  );
   assert.match(scripts['test:check'], /^node scripts\/tests\/test-quality-gates\.js && /);
   // 2026-08-22 起 check 由并发编排器承载：门禁必须继续包含质量套件，
   // 且编排器步骤与 package.json 的旧串行链一一对应（防编排器悄悄漏步）。
