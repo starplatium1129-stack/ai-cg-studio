@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { readLive2DCatalog } from './live2d/catalog'
 import {
-  readLive2DCatalog,
   resolveHitAreaInteraction,
   resolveStageInteraction,
   selectBlinkParams,
