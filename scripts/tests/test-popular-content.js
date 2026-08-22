@@ -59,12 +59,14 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
-test('blueprints: 43 characters x (6 prototype + 4 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
+test('blueprints: 43 characters x (6-7 prototype + 4 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
   // 2026-08-15 扩容：新增 15 位方舟/终末地热门角色；2026-08-18 新增 9 位跨作品热门角色
   // （43 角色 = 9x6 + 27x10 + 7x11 = 401 场景）；
   // 2026-08-18 审视优化：9 位新角色场景补足至每角色 10 个（6 原型 + 4 成人）
-  // （43 角色 = 36x10 + 7x11 = 437 场景）。
-  assert.strictEqual(blueprints.length, 437, 'expected 437 character scenes, got ' + blueprints.length);
+  // （43 角色 = 36x10 + 7x11 = 437 场景）；
+  // 2026-08-23 场景库二次优化：海梦补 cosplay 泛用套日常场景（后台试装），
+  // （43 角色 = 35x10 + 8x11 = 438 场景）。
+  assert.strictEqual(blueprints.length, 438, 'expected 438 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -76,14 +78,14 @@ test('blueprints: 43 characters x (6 prototype + 4 adult), all owned by a charac
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 10 或 11 个场景：10=6 原型+4 成人（36 角色）、11=6 原型+5 成人（7 角色）；
+  // 每个角色 10 或 11 个场景：10=6 原型+4 成人（35 角色）、11=7 原型+4 成人（7 角色）；
   // 全部蓝图必须归属某个角色（通用蓝图已删除）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
     assert.ok(entry[1] === 10 || entry[1] === 11, entry[0] + ' must own 10 or 11 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 36, 11: 7 }, 'scene distribution must be 36x10 + 7x11');
+  assert.deepStrictEqual(sceneDist, { 10: 35, 11: 8 }, 'scene distribution must be 35x10 + 8x11');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4 或 5 个带 characterId 的成人场景。
@@ -113,6 +115,54 @@ test('blueprints: 43 characters x (6 prototype + 4 adult), all owned by a charac
   assert.strictEqual(popular.blueprintEligible(adultBlueprints[0], adult, { adultEnabled: true }), true);
   assert.strictEqual(popular.blueprintEligible(adultBlueprints[0], adult, { adultEnabled: false }), false,
     'adult gate must require the mature-content switch as well');
+});
+
+// 2026-08-23 场景库二次优化：用户验收标准契约化——
+// ① 每套服装至少被 1 个场景引用；② 每角色 ≥1 名场面(iconic) + ≥1 日常(daily)；
+// ③ 成人侧每角色 ≥1 特殊NSFW（coverageTags=special_nsfw）。
+test('scene coverage: every outfit referenced, >=1 iconic + >=1 daily per character, >=1 special_nsfw among adults', function () {
+  characters.forEach(function (character) {
+    var owned = blueprints.filter(function (blueprint) { return blueprint.characterId === character.id; });
+    var usedOutfits = new Set(owned.map(function (blueprint) { return blueprint.outfitId; }).filter(Boolean));
+    character.outfits.forEach(function (outfit) {
+      assert.ok(usedOutfits.has(outfit.id),
+        character.id + ' outfit ' + outfit.id + ' must be referenced by at least one scene');
+    });
+    var hasTag = function (tag) {
+      return owned.some(function (blueprint) {
+        return Array.isArray(blueprint.coverageTags) && blueprint.coverageTags.includes(tag);
+      });
+    };
+    assert.ok(hasTag('iconic'), character.id + ' must own at least one iconic scene');
+    assert.ok(hasTag('daily'), character.id + ' must own at least one daily scene');
+    var ownedAdult = owned.filter(function (blueprint) { return blueprint.adult; });
+    assert.ok(ownedAdult.length >= 4, character.id + ' must own adult scenes');
+    assert.ok(ownedAdult.some(function (blueprint) {
+      return Array.isArray(blueprint.coverageTags) && blueprint.coverageTags.includes('special_nsfw');
+    }), character.id + ' must own at least one special_nsfw scene');
+  });
+});
+
+// 2026-08-23 壁纸级质感契约——成人 hint 必须是 r18_* 配方 id（自由短语会以垃圾前缀
+// 直接拼进 Krea 提示词开头）；尺寸收敛到高分辨率；全量携带画质/光影 token 层；
+// 原型场景必须含追加的壁纸氛围句（prose 句点数 ≥2）。
+test('wallpaper-grade scenes: legal r18 hints, high-res sizes, quality token layer present', function () {
+  blueprints.forEach(function (blueprint) {
+    if (blueprint.adult) {
+      assert.ok(blueprint.kreaStyleHint && /^r18_/.test(blueprint.kreaStyleHint),
+        blueprint.id + ' adult kreaStyleHint must be an r18_* recipe id');
+    }
+    assert.ok(blueprint.recommendedSize === '1152x1536' || blueprint.recommendedSize === '1536x1152',
+      blueprint.id + ' recommendedSize must be wallpaper high-res, got ' + blueprint.recommendedSize);
+    ['masterpiece', 'best_quality', 'detailed_background', 'cinematic_lighting'].forEach(function (token) {
+      assert.ok(blueprint.promptTokens.includes(token),
+        blueprint.id + ' promptTokens missing wallpaper token ' + token);
+    });
+    if (!blueprint.adult) {
+      assert.ok((blueprint.promptProse.match(/\./g) || []).length >= 2,
+        blueprint.id + ' prototype promptProse must carry the atmospheric wallpaper sentence');
+    }
+  });
 });
 
 test('blueprint rotation: deterministic, changes per cursor, avoids immediate repeat', function () {

@@ -71,6 +71,10 @@ export interface SceneBlueprint {
   nsfwProse?: string
   /** 可选：本场景应使用的角色服装 id（角色 outfits 之一）；缺省时用 defaultOutfit。 */
   outfitId?: string
+  /** 可选：验收覆盖标注（2026-08-23 场景库二次优化）：
+   *  iconic=名场面 / daily=日常生活 / special_nsfw=特殊NSFW。
+   *  契约测试保证每角色 ≥1 iconic + ≥1 daily，成人侧 ≥1 special_nsfw。 */
+  coverageTags?: string[]
 }
 
 export type DrawSubject =
@@ -245,6 +249,8 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     nsfwTokens: negativeStringList(value.nsfwTokens),
     nsfwProse: stringValue(value.nsfwProse),
     outfitId: stringValue(value.outfitId),
+    // 2026-08-23 场景库二次优化：验收覆盖标注（iconic/daily/special_nsfw）。
+    coverageTags: stringList(value.coverageTags),
   }
 }
 
