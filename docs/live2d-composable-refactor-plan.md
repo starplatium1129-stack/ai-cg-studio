@@ -143,10 +143,21 @@ export interface Live2DCtx {
 
 - [x] Step 0 测试地基（2026-08-23，`197e67a`：useLive2D.spec.ts 14 条规格全绿）
 - [x] Step 1 constants/catalog（2026-08-23，`6987242`：纯数据/纯函数原样搬出，注释零删改）
-- [ ] Step 2 ctx 对象化 —— **2026-08-23 被并行工作阻塞**：`context.ts`（Live2DCtx 容器 + createLive2DCtx）已就位（untracked），但 `useLive2D.ts` 工作区存在另一会话进行中的"换装闪回修复"（overlaySettle 平滑回落 + browserBackend `getParameterValueById` 接口 + 桌面原生端 step_overlay_settle 对齐，未提交）。**该改动提交后**方可重启动刀，且重写时必须吸收其新增闭包变量（overlaySettle / overlayWasByMotion / OVERLAY_SETTLE_MS / beginNatsumeOverlaySettle）进 ctx 或保留为模块内局部——以彼时最新代码为准。
-- [ ] Step 3 pointerGaze
-- [ ] Step 4 interactions
-- [ ] Step 5 emotionClock + layoutFit
-- [ ] Step 6 parameterFrame
-- [ ] Step 7 lifecycle + 组合根收薄
-- [ ] 真机门禁 + 冒烟清单归档
+- [x] Step 2 ctx 对象化（2026-08-23，`e2eb7d6`：37 个闭包变量 → Live2DCtx；吸收 `ff4f385` 换装闪回修复新增的 overlaySettle/overlayWasByMotion）
+- [x] Step 3 pointerGaze（2026-08-23，`18a4e03`）
+- [x] Step 4 interactions（2026-08-23，`2535ce7`；Live2DStatus 与 prefersReducedMotion 归位 context.ts）
+- [x] Step 5 emotionClock + layoutFit（2026-08-23，`5ffe124`；desktopWindowBounds 随 layoutFit 移入）
+- [x] Step 6 parameterFrame（2026-08-23，`0f13ae5`；逐行迁移热路径，native-contract 契约断言跟随模块化新家）
+- [x] Step 7 lifecycle + 组合根收薄（2026-08-23，`2b1220c`：useLive2D.ts 1270 → 98 行组合根，destroyRuntime 复位顺序逐行冻结且全库唯一）
+- [ ] 真机门禁 + 冒烟清单归档 —— **待执行**：2026-08-23 拆分期间 Companion 桌面实例持续运行（PID 15892），selftest exe 因单实例锁直接退出（exit=0 无 SELFTEST 输出）。关闭桌宠后执行 `npm run test:live2d-native:release`，通过后按下方清单双后端各过一遍人工冒烟。
+
+最终架构（2026-08-23 定稿）：useLive2D.ts 98 行组合根 + live2d/ 九模块（constants 97 / catalog 38 / context 183 / pointerGaze 106 / interactions 298 / emotionClock 45 / layoutFit 145 / parameterFrame 151 / lifecycle 466）。每步独立提交、typecheck + test:frontend 全绿；Step 6/7 追加 live2d 三件套（backend 24/24、service、native-contract 5/5）与打包预算（19 路由全部通过）。
+
+人工冒烟清单（双后端各过一遍，目视验证）：
+- [ ] ① 双角色切换后点击八分区反馈正确
+- [ ] ② 说话口型随音频幅度开合
+- [ ] ③ 眨眼双眼同步无 Wink
+- [ ] ④ 夏目互动/登场后无叠层残留（灰眼/四手）；换装互动结束平滑回落无闪回
+- [ ] ⑤ 桌面窗口拖动 overlay 跟随不跳位
+- [ ] ⑥ `prefers-reduced-motion` 下静止节能
+- [ ] ⑦ e2e `studio.spec.ts` live2d 断言保持通过

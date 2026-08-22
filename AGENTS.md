@@ -74,11 +74,11 @@
 - 待办清单（按序执行，每步独立提交并通过门禁，严禁跳步）：
   - [x] Step 0：测试地基——分区带命中/夏目外框排序/readLive2DCatalog 解析/MOUTH·BLINK 参数选择 vitest 规格（2026-08-23 完成，`197e67a`）
   - [x] Step 1：抽离 `live2d/constants.ts` + `live2d/catalog.ts`（纯数据/纯函数）（2026-08-23 完成，`6987242`）
-  - [ ] Step 2：闭包状态 ctx 对象化（~35 变量 → Live2DCtx 显式字段，机械重命名零行为变化）——`live2d/context.ts` 已就位；2026-08-23 因另一会话在 `useLive2D.ts` 上的"换装闪回修复"（未提交）暂停，待其提交并吸收新增变量（overlaySettle/overlayWasByMotion/beginNatsumeOverlaySettle）后再动刀，详见研究计划第八节
-  - [ ] Step 3–5：抽取 pointerGaze / interactions / emotionClock+layoutFit 子模块
-  - [ ] Step 6：parameterFrame 每帧热路径抽出（逐行对照迁移）
-  - [ ] Step 7：lifecycle 抽出，useLive2D 收薄为组合根
-  - [ ] 收尾硬门槛：`npm run test:live2d-native:release` 真机自检 + 双后端手工冒烟清单归档
+  - [x] Step 2：闭包状态 ctx 对象化（`e2eb7d6`，吸收 `ff4f385` overlaySettle 回落状态）
+  - [x] Step 3–5：抽取 pointerGaze / interactions / emotionClock+layoutFit 子模块（`18a4e03` / `2535ce7` / `5ffe124`）
+  - [x] Step 6：parameterFrame 每帧热路径抽出（`0f13ae5`，native-contract 契约断言跟随模块化新家）
+  - [x] Step 7：lifecycle 抽出，useLive2D 收薄为 98 行组合根（`2b1220c`，公开 API 逐字冻结）
+  - [ ] 收尾硬门槛：`npm run test:live2d-native:release` 真机自检 + 双后端手工冒烟清单归档——**2026-08-23 拆分期间 Companion 桌面实例持续运行，selftest 因单实例锁空转退出；关闭桌宠后执行**。清单见 `docs/live2d-composable-refactor-plan.md` 第八节
 - 红线提醒：`destroyRuntime` 全库唯一实现且顺序冻结（Pixi-first）；双后端 capability 分支原样搬家不抽象；`lifecycleToken` 语义不变。
 
 > 已完成（2026-08-22）：`routes/video.js` 八模块化拆分（2229→606 行编排层）、`sendMessage` 六步 pipeline 化、桌宠工具 R18 网关双门控、存储键收敛防回潮门禁。其余中期项（PromptBuilderView 编排下沉、director.css/companion.css 分片）按打包预算压力另行排期。
