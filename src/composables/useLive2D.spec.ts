@@ -7,7 +7,7 @@ import {
 import {
   selectBlinkParams,
   selectMouthParams,
-} from './useLive2D'
+} from './live2d/parameterFrame'
 
 /**
  * useLive2D 纯函数契约（拆分 Step 0 测试地基）：
