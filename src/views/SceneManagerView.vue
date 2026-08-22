@@ -495,9 +495,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
-import { ApiClientError } from '../api/client.ts'
-import { maintenanceApi } from '../api/maintenanceApi.ts'
-import type { BackupEntry } from '../api/maintenanceApi.ts'
 import { useSceneStore } from '@/stores/sceneStore'
 // 场景编辑器的领域模型契约。原先整块是 any[] / any —— 这个视图会全量覆盖写回
 // data/scenes/*.json，字段拼错或丢字段等于静默删数据。
@@ -507,6 +504,9 @@ import type {
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneShowcaseUpload } from '@/composables/useSceneShowcaseUpload'
 import { useSceneTagManager } from '@/composables/useSceneTagManager'
+import { useSceneEditorModal } from '@/composables/useSceneEditorModal'
+import { useSceneImportExport } from '@/composables/useSceneImportExport'
+import { useSceneMaintenance } from '@/composables/useSceneMaintenance'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -526,17 +526,14 @@ const TABS = [
 ]
 
 const DUP_KEYWORDS = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛衣','衬衫','图书馆','天台','烟花','神社','巫女','咖啡','卧室','寝室','影音室','休息室','后厨','厨房','吧台','晚礼服','魔女','洛丽塔','浴衣','和服','赛车','冰箱','冷藏','露台','阳台','泳池','书房','试衣']
-const TOOLS: Array<{ id: string; iconName: 'palette' | 'success' | 'filter' | 'gear'; label: string; desc: string }> = [
-  { id:'lint-colors', iconName:'palette', label:'检查硬编码颜色', desc:'扫描未用 token 的硬编码颜色（建议用 npm run design:lint）' },
-  { id:'validate',   iconName:'success', label:'完整场景校验',   desc:'ID 唯一性、字段完整性、评级一致性' },
-  { id:'classify',   iconName:'filter',  label:'更新场景评级',   desc:'根据标签重新计算 All/R15/R18' },
-  { id:'optimize',   iconName:'gear',    label:'规范化提示词',   desc:'统一标签命名、补全负面词' },
-]
 const PAGE_SIZE = 30
 
 const scenes = ref<SceneDraft[]>([])
 const tags = ref<TagRecord[]>([])
 const curation = ref<CurationData>({})
+/** 脏标记与维护提示为跨簇共享通道（编辑/导入/标签/策展 → 保存/离开守卫）。 */
+const dirty = ref(false)
+const maintenanceHint = ref('所有改动已同步')
 const loading = ref(true)
 const loadError = ref('')
 const tab = ref('scenes')
@@ -570,31 +567,65 @@ const {
   previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
   loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked,
 } = showcase
-const editing = ref<SceneDraft | null>(null)
-const editingId = ref('')
-const curationTierValue = ref('normal')
-const curationReason = ref('')
-const tagsInput = ref('')
-const usageInput = ref('')
-/** 弹窗打开时的表单快照，用于脏关闭确认 */
-const modalSnapshot = ref('')
-const triedSave = ref(false)
-const formHint = ref('')
-const dirty = ref(false)
-const saving = ref(false)
-const savingPhase = ref('')
-const maintenanceHint = ref('所有改动已同步')
-/** 桌面打包模式：data 在只读应用包内，场景保存与维护任务不可用 */
-const desktopPackaged = ref(false)
-const importInput = ref('')
-const importResult = ref('')
-const toolRunning = ref(false)
-const toolResult = ref<{ ok: boolean; output: string } | null>(null)
-const toolResultTitle = ref('')
-const backups = ref<BackupEntry[]>([])
-const backupsLoading = ref(false)
-const backupsError = ref('')
-const backupsExpanded = ref(false)
+
+// ── 场景编辑弹层 + CRUD + 策展（已下沉 useSceneEditorModal）───────────────
+const {
+  editing,
+  editingId,
+  curationTierValue,
+  curationReason,
+  tagsInput,
+  usageInput,
+  triedSave,
+  formHint,
+  curationTier,
+  updateCharacterDefaults,
+  onCurationTierChange,
+  openAddModal,
+  openEditModal,
+  closeModal,
+  saveScene,
+  deleteScene,
+  duplicateScene,
+  copyJson,
+} = useSceneEditorModal({ scenes, curation, markDirty })
+
+// ── 导入 / 导出（已下沉 useSceneImportExport）─────────────────────────────
+const { importInput, importResult, importScenes, exportJSON } = useSceneImportExport({
+  scenes,
+  tags,
+  curation,
+  markDirty,
+  esc,
+  errorMessage,
+})
+
+// ── 维护任务：落盘/工具/备份/桌面只读探测（已下沉 useSceneMaintenance）────
+const {
+  TOOLS,
+  saving,
+  savingPhase,
+  toolRunning,
+  toolResult,
+  toolResultTitle,
+  backups,
+  backupsLoading,
+  backupsError,
+  backupsExpanded,
+  desktopPackaged,
+  saveToProject,
+  runTool,
+  loadBackups,
+  formatBackupTime,
+  highlightedOutput,
+} = useSceneMaintenance({
+  scenes,
+  tags,
+  curation,
+  dirty,
+  maintenanceHint,
+  invalidateSceneCache: () => { sceneStore.loaded = false },
+})
 
 const categories = computed(() => [...new Set(scenes.value.map(s => s.category))].sort())
 
@@ -677,380 +708,24 @@ function errorMessage(error: unknown, fallback: string) {
   const text = String(error ?? '').trim()
   return text || fallback
 }
-function maintenanceErrorMessage(error: unknown, fallback: string) {
-  if (!(error instanceof ApiClientError) || !error.responseBody) return errorMessage(error, fallback)
-  const output = typeof error.responseBody.output === 'string' ? error.responseBody.output.trim() : ''
-  const recovery = typeof error.responseBody.recovery === 'string' ? error.responseBody.recovery.trim() : ''
-  const message = output || errorMessage(error, fallback)
-  return recovery && !message.includes(recovery) ? `${message}；${recovery}` : message
-}
 const TIER_LABELS: Record<CurationTier, string> = {
   signature: '招牌', curated: '精选', review: '待审', normal: '',
 }
 function tierLabel(v: string) { return TIER_LABELS[v as CurationTier] || '' }
-
-function curationTier(id: string) {
-  if ((curation.value.signatureSceneIds||[]).includes(id)) return 'signature'
-  if ((curation.value.curatedSceneIds||[]).includes(id)) return 'curated'
-  if ((curation.value.reviewSceneIds||[]).includes(id)) return 'review'
-  return 'normal'
-}
 
 function markDirty(message: string) {
   dirty.value = true
   maintenanceHint.value = message
 }
 
-function updateCharacterDefaults() {
-  const scene = editing.value
-  if (!scene || editingId.value) return
-  if (scene.char === 'nene') scene.lora = 'ayachi_nene_v18_wd14'
-  else if (scene.char === 'natsume') scene.lora = 'shiki_natsume_v18_wd14'
-  else if (scene.char === 'triad') scene.lora = 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52'
-}
-
-function onCurationTierChange() {
-  if (curationTierValue.value === 'normal' || curationTierValue.value === 'review') curationReason.value = ''
-}
-
-function blankScene(): SceneDraft {
-  return {
-    id: '', title: '', category: '恋爱', char: 'nene',
-    lora: 'ayachi_nene_v18_wd14', emotion: '恋爱',
-    season: '不限', time: '深夜', timeOfDay: 'late_night',
-    rating: 'All', mature: false,
-    location: '', weather: '', camera: '', lighting: '',
-    tags: [], usage: ['壁纸用'],
-    story: '', storyJa: '', prompt: '', negative: 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands',
-  }
-}
-
-function openAddModal() {
-  const maxId = scenes.value.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc','')) || 0), 0)
-  editing.value = blankScene()
-  editing.value.id = 'sc' + String(maxId + 1).padStart(3, '0')
-  editingId.value = ''
-  curationTierValue.value = 'normal'
-  curationReason.value = ''
-  tagsInput.value = ''
-  usageInput.value = '壁纸用'
-  triedSave.value = false
-  formHint.value = ''
-  modalSnapshot.value = serializeModal()
-}
-
-function serializeModal() {
-  return JSON.stringify({
-    ...editing.value,
-    curationTierValue: curationTierValue.value,
-    curationReason: curationReason.value,
-    tagsInput: tagsInput.value,
-    usageInput: usageInput.value,
-  })
-}
-
-function openEditModal(id: string) {
-  const s = scenes.value.find(x => x.id === id)
-  if (!s) return
-  // sceneStore 的值是 Vue reactive proxy；structuredClone(proxy) 会抛 DataCloneError。
-  // 这里需要的是脱离响应式的可编辑快照，JSON round-trip 正合适（场景数据是 JSON）。
-  editing.value = JSON.parse(JSON.stringify(s)) as SceneDraft
-  editingId.value = id
-  curationTierValue.value = curationTier(id)
-  curationReason.value = (curation.value.recommendationReasons || {})[id] || ''
-  tagsInput.value = (s.tags || []).join(', ')
-  usageInput.value = (s.usage || []).join(', ')
-  triedSave.value = false
-  formHint.value = ''
-  modalSnapshot.value = serializeModal()
-}
-
-function closeModal() {
-  if (editing.value && modalSnapshot.value && serializeModal() !== modalSnapshot.value) {
-    if (!confirm('有未保存的修改，确定放弃？')) return
-  }
-  editing.value = null
-  editingId.value = ''
-  modalSnapshot.value = ''
-}
-
 useFocusTrap(modalEl, () => editing.value !== null, { onEscape: closeModal })
 
-/** 策展层级 → curation.json 里对应的数组字段 */
-const TIER_BUCKETS = {
-  signature: 'signatureSceneIds',
-  curated: 'curatedSceneIds',
-  review: 'reviewSceneIds',
-} as const
-
-function setSceneCuration(id: string, tier: string, reason: string) {
-  const buckets = ['signatureSceneIds', 'curatedSceneIds', 'reviewSceneIds'] as const
-  buckets.forEach(key => {
-    const list = curation.value[key]
-    curation.value[key] = (Array.isArray(list) ? list : []).filter(x => x !== id)
-  })
-  const target = TIER_BUCKETS[tier as keyof typeof TIER_BUCKETS]
-  if (target) (curation.value[target] as string[]).push(id)
-  if (!curation.value.recommendationReasons) curation.value.recommendationReasons = {}
-  if (reason) curation.value.recommendationReasons[id] = reason
-  else delete curation.value.recommendationReasons[id]
-}
-
-function saveScene() {
-  triedSave.value = true
-  const e = editing.value
-  if (!e) return
-  if (!e.title?.trim() || !e.story?.trim()) { formHint.value = '请先补齐标题和故事'; return }
-  if (curationTierValue.value === 'signature' && !curationReason.value.trim()) { formHint.value = '招牌场景必须填写推荐理由'; return }
-  e.character = e.char === 'triad' ? ['nene','natsume'] : [e.char]
-  e.tags = tagsInput.value.split(',').map((t:string) => t.trim()).filter(Boolean)
-  e.usage = usageInput.value.split(',').map((t:string) => t.trim()).filter(Boolean)
-  e.mature = e.rating === 'R18'
-  if (editingId.value) {
-    const idx = scenes.value.findIndex(s => s.id === editingId.value)
-    if (idx >= 0) scenes.value[idx] = JSON.parse(JSON.stringify(e)) as SceneDraft
-  } else {
-    if (scenes.value.some(s => s.id === e.id)) { formHint.value = 'ID 已存在：' + e.id; return }
-    scenes.value.push(JSON.parse(JSON.stringify(e)) as SceneDraft)
-  }
-  setSceneCuration(e.id, curationTierValue.value, curationReason.value.trim())
-  modalSnapshot.value = serializeModal()
-  closeModal()
-  markDirty('场景内容有修改，等待保存到项目')
-}
-
-function deleteScene(id: string) {
-  if (!confirm('确认下架 ' + id + '？保存到项目后它将不再出现在场景库中。')) return
-  scenes.value = scenes.value.filter(s => s.id !== id)
-  setSceneCuration(id, 'normal', '')
-  markDirty('有场景等待下架')
-}
-
-function duplicateScene(id: string) {
-  const source = scenes.value.find(s => s.id === id)
-  if (!source) return
-  const maxId = scenes.value.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc','')) || 0), 0)
-  const copy = JSON.parse(JSON.stringify(source)) as SceneDraft
-  copy.id = 'sc' + String(maxId + 1).padStart(3, '0')
-  copy.title = source.title + ' · 副本'
-  scenes.value.push(copy)
-  markDirty('已复制场景，请编辑副本内容')
-  openEditModal(copy.id)
-}
-
-function copyJson() {
-  if (!editing.value) return
-  navigator.clipboard.writeText(JSON.stringify(editing.value, null, 2))
-}
-
-function exportJSON() {
-  if (!scenes.value.length) return
-  const payload = {
-    scenes: scenes.value,
-    tags: tags.value,
-    curation: curation.value,
-    exportedAt: new Date().toISOString(),
-    version: 1 as const,
-  }
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  const yyyymmdd = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-  a.href = url; a.download = `aics-maintenance-${yyyymmdd}.json`; a.click()
-  URL.revokeObjectURL(url)
-}
-
-function importScenes() {
-  const input = importInput.value.trim()
-  if (!input) { importResult.value = '<p class="msg-danger">请粘贴 JSON</p>'; return }
-  let parsed: unknown
-  try { parsed = JSON.parse(input) } catch (e) { importResult.value = '<p class="msg-danger">JSON 错误：' + esc(errorMessage(e, '无法解析')) + '</p>'; return }
-
-  // 兼容两种输入形态：信封 { scenes, tags, curation, ... } 或场景数组/单对象
-  let rawScenes: unknown[] = []
-  let envelopeTags: unknown = undefined
-  let envelopeCuration: unknown = undefined
-  let envelopeScenesField = false
-  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-    const obj = parsed as Record<string, unknown>
-    if (Array.isArray(obj.scenes)) {
-      rawScenes = obj.scenes as unknown[]
-      envelopeScenesField = true
-      envelopeTags = obj.tags
-      envelopeCuration = obj.curation
-    } else if (obj.id || obj.title || obj.story) {
-      rawScenes = [parsed]
-    } else {
-      // 未知的对象形态，尝试按数组处理
-      rawScenes = [parsed]
-    }
-  } else if (Array.isArray(parsed)) {
-    rawScenes = parsed as unknown[]
-  } else {
-    rawScenes = [parsed]
-  }
-
-  const VALID_CHAR = new Set(['nene', 'natsume', 'triad', 'both'])
-  const VALID_RATING = new Set(['All', 'R15', 'R18'])
-  const ID_RE = /^sc\d{3}$/
-
-  const existingIds = new Set(scenes.value.map(s => s.id))
-  const seenImportIds = new Set<string>()
-  const success: string[] = [], skipped: string[] = [], errors: string[] = []
-
-  rawScenes.forEach((item, idx) => {
-    if (!item || typeof item !== 'object') { errors.push('#' + idx + ' 不是对象'); return }
-    const raw = item as Record<string, unknown>
-    const id = String((raw.id ?? '')).trim()
-    // 前置校验：id 格式
-    if (!id) { errors.push('#' + idx + ' 缺少 id'); return }
-    if (!ID_RE.test(id)) { errors.push('#' + idx + ' ' + esc(id) + ' id 格式非法，需 /^sc\\d{3}$/'); return }
-    if (existingIds.has(id) || seenImportIds.has(id)) { skipped.push(id); return }
-
-    const title = String(raw.title ?? '').trim()
-    const story = String(raw.story ?? '').trim()
-    if (!title) { errors.push('#' + idx + ' ' + esc(id) + ' 标题为空'); return }
-    if (!story) { errors.push('#' + idx + ' ' + esc(id) + ' story 为空'); return }
-
-    const char = String(raw.char ?? '').trim()
-    if (!VALID_CHAR.has(char)) { errors.push('#' + idx + ' ' + esc(id) + ' char 非法：' + esc(char || '(空)')); return }
-
-    // rating 严格校验：不做静默 fallback
-    const ratingRaw = String(raw.rating ?? '').trim()
-    if (!VALID_RATING.has(ratingRaw)) { errors.push('#' + idx + ' ' + esc(id) + ' rating 非法：' + esc(ratingRaw || '(空)')); return }
-    const rating = ratingRaw as SceneDraft['rating']
-
-    const mature = raw.mature === true ? true : rating === 'R18'
-
-    const list = (key: string, fallback: string[]) => Array.isArray(raw[key])
-      ? (raw[key] as unknown[]).map(String).map(s => s.trim()).filter(Boolean) : fallback
-
-    const scene: SceneDraft = {
-      id, title, category: String(raw.category ?? '恋爱'),
-      story, char,
-      character: char === 'triad' ? ['nene','natsume'] : [char],
-      lora: String(raw.lora ?? (char === 'natsume' ? 'shiki_natsume_v18_wd14' : char === 'triad' ? 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52' : 'ayachi_nene_v18_wd14')),
-      emotion: String(raw.emotion ?? '恋爱'), season: String(raw.season ?? '不限'), time: String(raw.time ?? '深夜'),
-      timeOfDay: String(raw.timeOfDay ?? 'late_night'), tags: list('tags', []), mature,
-      rating, location: String(raw.location ?? ''), weather: String(raw.weather ?? ''),
-      camera: String(raw.camera ?? ''), lighting: String(raw.lighting ?? ''),
-      usage: list('usage', ['壁纸用']), prompt: String(raw.prompt ?? ''),
-      negative: String(raw.negative ?? 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands'),
-      storyJa: String(raw.storyJa ?? '')
-    }
-    // 保留未知字段（原样写回不丢数据）
-    Object.keys(raw).forEach(k => {
-      if (!(k in scene)) (scene as Record<string, unknown>)[k] = raw[k]
-    })
-    scenes.value.push(scene); seenImportIds.add(scene.id); existingIds.add(scene.id); success.push(scene.id)
-  })
-
-  // 可选：导入 envelope 中的 tags / curation 校验（不自动写回，仅校验并提示）
-  if (envelopeScenesField && envelopeTags !== undefined) {
-    if (!Array.isArray(envelopeTags)) {
-      errors.push('tags 字段需为数组')
-    } else {
-      (envelopeTags as unknown[]).forEach((t, i) => {
-        if (!t || typeof t !== 'object') { errors.push('tags #' + i + ' 不是对象'); return }
-        const r = t as Record<string, unknown>
-        const tid = String(r.id ?? '').trim()
-        const en = String(r.en ?? '').trim()
-        const cn = String(r.cn ?? '').trim()
-        const cat = String(r.cat ?? '').trim()
-        const w = r.weight
-        if (!tid) errors.push('tags #' + i + ' 缺少 id')
-        if (!en) errors.push('tags #' + i + ' ' + esc(tid || String(i)) + ' 缺少 en')
-        if (!cn) errors.push('tags #' + i + ' ' + esc(tid || String(i)) + ' 缺少 cn')
-        if (!cat) errors.push('tags #' + i + ' ' + esc(tid || String(i)) + ' 缺少 cat')
-        if (typeof w !== 'number' || !Number.isFinite(w)) errors.push('tags #' + i + ' ' + esc(tid || String(i)) + ' weight 非法')
-      })
-    }
-  }
-
-  let html = ''
-  if (success.length) html += '<p class="msg-ok">导入成功 ' + success.length + ' 个：' + esc(success.join(', ')) + '</p>'
-  if (skipped.length) html += '<p class="msg-warn">跳过 ' + skipped.length + ' 个（ID 已存在）：' + esc(skipped.join(', ')) + '</p>'
-  if (errors.length) html += '<p class="msg-danger">导入失败：' + errors.join('; ') + '</p>'
-  importResult.value = html || '<p class="muted">无变化</p>'
-  if (success.length) markDirty('批量导入已通过基础检查，等待保存到项目')
-}
-
-async function saveToProject() {
-  if (!dirty.value || saving.value) return
-  saving.value = true
-  savingPhase.value = '正在写入分片…'
-  maintenanceHint.value = '正在保存并检查…'
-  let phaseTimers: ReturnType<typeof setTimeout>[] = []
-  phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在同步标签与策展…' }, 350))
-  phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在校验场景…' }, 750))
-  phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在更新版本…' }, 1150))
-  try {
-    const data = await maintenanceApi.saveScenes({
-      scenes: scenes.value,
-      tags: tags.value,
-      curation: curation.value,
-    })
-    savingPhase.value = '正在更新版本…'
-    dirty.value = false
-    maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
-    // 作废共享缓存：其他页面正拿着写回前的旧副本
-    sceneStore.loaded = false
-  } catch (e) {
-    maintenanceHint.value = '保存未完成：' + maintenanceErrorMessage(e, '请重试')
-  } finally {
-    phaseTimers.forEach(clearTimeout)
-    saving.value = false
-    // 保留最后阶段文案短暂可见后清空
-    setTimeout(() => { if (!saving.value) savingPhase.value = '' }, 1200)
-  }
-}
-
-async function runTool(taskId: string) {
-  if (toolRunning.value) return
-  const tool = TOOLS.find(t => t.id === taskId)
-  if (!tool) return
-  toolRunning.value = true
-  toolResultTitle.value = tool.iconName + ' ' + tool.label
-  toolResult.value = { ok: true, output: '...' }
-  try {
-    const data = await maintenanceApi.run(taskId)
-    toolResult.value = { ok: true, output: data.output || '(no output)' }
-  } catch (e) {
-    toolResult.value = { ok: false, output: maintenanceErrorMessage(e, '请重试') }
-  } finally {
-    toolRunning.value = false
-  }
-}
-
-async function loadBackups(){
-  if(backupsLoading.value) return
-  backupsLoading.value=true; backupsError.value=''
-  try{
-    const data=await maintenanceApi.listBackups()
-    backups.value=(data.entries||[]) as BackupEntry[]
-    backupsExpanded.value=true
-  }catch(e){
-    backupsError.value=maintenanceErrorMessage(e,'读取备份历史失败')
-  }finally{ backupsLoading.value=false }
-}
-function formatBackupTime(v: string){
-  if(!v) return '—'
-  try{ const d=new Date(v); if(isNaN(d.getTime())) return v; return d.toLocaleString('zh-CN',{hour12:false}) }catch{ return v }
-}
 function esc(s: string) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 
 function onThumbError(e: Event) {
   const img = e.target as HTMLImageElement | null
   if (img) img.style.display = 'none'
 }
-
-const highlightedToolOutput = computed(() => {
-  const src = toolResult.value?.output || ''
-  const safe = esc(src)
-  return safe.replace(/(sc\d{3})/g, '<span class="hl-id">$1</span>')
-})
-// 模板兼容别名
-const highlightedOutput = highlightedToolOutput
 
 function onBeforeUnload(e: BeforeUnloadEvent) {
   if (!dirty.value) return
@@ -1062,12 +737,6 @@ onBeforeRouteLeave(() => {
 })
 onMounted(() => {
   window.addEventListener('beforeunload', onBeforeUnload)
-  if (window.companionDesktop) {
-    window.companionDesktop.isPackaged().then(packaged => {
-      desktopPackaged.value = packaged
-      if (packaged) maintenanceHint.value = '桌面应用模式：场景内容位于只读应用包内，保存与维护任务不可用'
-    }).catch(() => { /* 查询失败保持可用，服务端仍有 501 兜底 */ })
-  }
 })
 onBeforeUnmount(() => { window.removeEventListener('beforeunload', onBeforeUnload) })
 
