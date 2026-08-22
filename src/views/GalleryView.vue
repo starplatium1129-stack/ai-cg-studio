@@ -928,6 +928,8 @@ watch([favoriteOnly, projectFilter], () => {
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
 .artwork-tool { min-height:30px; padding:0 var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-terminal); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
 .artwork-tool:hover:not(:disabled) { border-color:color-mix(in srgb,var(--accent) 60%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 52%,var(--art-scrim)); }
+/* 全局 a:hover 链接色 (0,1,1) 会盖过 .artwork-tool 的 on-art 墨色——深色画膜上变暗梅色难以辨认，钉回 */
+a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 54%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 48%,var(--art-scrim)); }
 .artwork-tool.danger:hover:not(:disabled) { background:var(--danger); color:var(--text-inverse); }
 .artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }

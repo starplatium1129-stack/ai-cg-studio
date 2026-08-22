@@ -1047,6 +1047,11 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 .btn-danger { background: transparent; color: var(--danger-text); border-color: color-mix(in srgb, var(--danger) 42%, transparent); }
 .btn-danger:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); border-color: var(--danger-text); }
+/* 2026-08-22 修复「锚点按钮触碰时文字隐形」：全局 a:hover 链接色特异性 (0,1,1)
+   压过 .btn-* 变体的 (0,1,0)，hover/触摸时文字被刷成与背景同色的 accent-hover。
+   填充型变体在此钉回各自的墨色；ghost 的 accent 悬停字是有意设计，不在其列。 */
+a.btn-primary, a.btn-primary:hover, a.btn-primary:active { color: var(--text-inverse); }
+a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text); }
 /* 统一按下反馈:抵消 hover 的上移,避免"按下去反而更高" */
 .btn:active:not(:disabled):not([aria-disabled="true"]) { transform: translateY(0) scale(.97); box-shadow: none; }
 /* 统一禁用态:同时覆盖真 disabled 与 aria-disabled 链接 */
