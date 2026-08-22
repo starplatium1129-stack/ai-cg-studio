@@ -208,7 +208,8 @@ function validateInput(body, expectedFamily) {
   if (isAspectPreservingInpaint && (width % 16 !== 0 || height % 16 !== 0)) {
     throw serviceError(400, 'INVALID_PARAMETER', '局部重绘尺寸必须是 16 的倍数');
   }
-  if (model.family !== 'krea2' && width * height > 1_500_000) throw serviceError(400, 'INVALID_PARAMETER', '输出尺寸超过允许面积');
+  // 尺寸上限防护：支持最大 1152x1536 (1.77 MP)，上限放宽至 1.85 MP
+  if (model.family !== 'krea2' && width * height > 1_850_000) throw serviceError(400, 'INVALID_PARAMETER', '输出尺寸超过允许面积');
   var steps;
   var cfg;
   if (model.family === 'krea2') {
