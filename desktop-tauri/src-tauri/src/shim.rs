@@ -114,7 +114,9 @@ pub const COMPANION_SHIM_JS: &str = r#"
     runTool: (name, args) => fetch('/api/desktop-tools', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, args }),
+      // adultEnabled：网关 fail-closed 双门的传输层授权信号；桌面壳即本机用户，
+      // 网关由本地 supervisor 提供（127.0.0.1），判定与 src/utils/runtimeEnvironment.ts 同语义。
+      body: JSON.stringify({ name, args, adultEnabled: ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) }),
     }).then((r) => r.json()).catch((e) => ({ ok: false, output: String(e) })),
     onFileDrop: () => 0,
     offFileDrop: () => {},

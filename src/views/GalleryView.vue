@@ -231,15 +231,16 @@ import { jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 import { formatA1111Parameters, injectPngMetadata } from '@/utils/pngMetadata'
+import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 
 const sceneStore = useSceneStore()
 useScrollReveal()
 const { show: showToast } = useToast()
 
-const HISTORY_KEY = 'aics_pb_history'
-// 必须与 useBackup.ts 的 PROJECT_KEY 一致。曾经这里写 'aics_projects'，
-// 而备份/恢复读写 'aics_pb_projects' → 两边各操作一套数据且会永久分叉。
-const PROJECT_KEY = 'aics_pb_projects'
+const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
+// 键名统一出处：src/utils/storageKeys.ts。本文件曾把项目键写成旧键
+// aics_projects（见下方 LEGACY_PROJECT_KEY），与备份读写的新键各操作一套数据且永久分叉。
+const PROJECT_KEY = ARTWORK_PROJECTS_KV_KEY
 /** 旧键，仅用于一次性迁移 */
 const LEGACY_PROJECT_KEY = 'aics_projects'
 

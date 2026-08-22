@@ -13,6 +13,8 @@ import {
 } from '@/utils/backupCore'
 import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHealth'
 import {
+  ARTWORK_HISTORY_KV_KEY,
+  ARTWORK_PROJECTS_KV_KEY,
   BACKUP_AT_KEY,
   CHAT_MEMORY_KEY,
   cleanDeadLocalKeys,
@@ -29,8 +31,9 @@ export type { BackupSummary } from '@/utils/backupCore'
  * 备份内容：作品历史、项目、出图设置、IndexedDB 图片（base64 内联）。
  */
 
-const HISTORY_KEY = 'aics_pb_history'
-const PROJECT_KEY = 'aics_pb_projects'
+// 键名统一出处：src/utils/storageKeys.ts
+const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
+const PROJECT_KEY = ARTWORK_PROJECTS_KV_KEY
 
 // 备份时间戳键（BACKUP_AT_KEY）已登记在 storageKeys.ts：
 // 活键但刻意不参与备份导出，恢复时不覆盖新环境的时间戳。

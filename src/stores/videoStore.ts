@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { imgPut } from '@/composables/useImageStore'
+import { VIDEO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY } from '@/utils/storageKeys'
 
 /**
  * 视频工作台领域 Store（2026-08-22 从 useVideoBridge 的 sessionStorage 黑盒收敛）。
@@ -37,9 +38,9 @@ export interface VideoBridgeTarget {
   push: (path: string) => Promise<unknown> | void
 }
 
-const IMAGE_CTX_KEY = 'aics_video_ctx'
+const IMAGE_CTX_KEY = VIDEO_CONTEXT_KEY
 /** 分镜短片批量带入：绘图页逐张「加入分镜」累积，视频页分镜模式一次性消费。 */
-const SHOTS_CTX_KEY = 'aics_video_shots_ctx'
+const SHOTS_CTX_KEY = VIDEO_SHOTS_CONTEXT_KEY
 
 function isVideoCtxPayload(value: unknown): value is VideoCtxPayload {
   return typeof value === 'object' && value !== null && typeof (value as VideoCtxPayload).imageId === 'string'

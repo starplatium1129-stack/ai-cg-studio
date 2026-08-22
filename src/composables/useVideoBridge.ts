@@ -1,5 +1,6 @@
 import { useVideoStore, prepareVideoCtx } from '@/stores/videoStore'
 import type { VideoBridgeTarget, VideoCtxPayload } from '@/stores/videoStore'
+import { VIDEO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY } from '@/utils/storageKeys'
 
 export type { VideoBridgeTarget, VideoCtxPayload } from '@/stores/videoStore'
 export { prepareVideoCtx }
@@ -13,9 +14,10 @@ export { prepareVideoCtx }
  * 本文件退化为纯门面，保持既有导出签名让消费端零改动。
  */
 
-export const VIDEO_CTX_KEY = 'aics_video_ctx'
+/** @deprecated 读取请用 storageKeys 的 VIDEO_CONTEXT_KEY；此导出仅为兼容保留。 */
+export const VIDEO_CTX_KEY = VIDEO_CONTEXT_KEY
 /** 分镜短片批量带入：绘图页逐张「加入分镜」累积，视频页分镜模式一次性消费。 */
-export const VIDEO_SHOTS_CTX_KEY = 'aics_video_shots_ctx'
+export const VIDEO_SHOTS_CTX_KEY = VIDEO_SHOTS_CONTEXT_KEY
 
 /** 把一张出图追加到「分镜短片」待带入列表（videoStore 持久化）。 */
 export function appendShotsCtx(ctx: VideoCtxPayload): number {

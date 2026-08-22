@@ -108,8 +108,8 @@ var TOOL_DEFINITIONS = [
         properties:{
           character:{ type:'string', description:'角色 ID，如 "natsume"（四季夏目）、"nene"（绫地宁宁）或热门角色 ID。' },
           description:{ type:'string', description:'画面场景、动作、光影或剧情氛围的自然语言描述（如 "在海边喝汽水，微风吹拂，夏日清凉"）。' },
-          outfit:{ type:'string', description:'服装类型（可选，如 "default"、"maid"、"swimsuit"、"casual"、"nsfw_nude"）。' },
-          mature:{ type:'boolean', description:'是否为 R18 私密/成人画面（可选，缺省 false）。' }
+          outfit:{ type:'string', description:'服装类型（可选，如 "default"、"maid"、"swimsuit"、"casual"）。注意："nsfw_nude" 仅在本机成人内容授权开启且角色在成人白名单时可用，未授权会被拒绝。' },
+          mature:{ type:'boolean', description:'是否为 R18 私密/成人画面（可选，缺省 false）。同样受本机成人授权与角色白名单双重门控，未授权会被拒绝并应改用普通服装重试。' }
         },
         required:['character','description']
       }

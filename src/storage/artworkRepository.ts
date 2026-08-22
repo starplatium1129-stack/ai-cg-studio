@@ -7,9 +7,10 @@ import {
   type StoredImageRecord,
 } from '../composables/useImageStore.ts'
 import { thumbKey } from '../utils/imageThumb.ts'
+import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '../utils/storageKeys.ts'
 
-export const ARTWORK_HISTORY_KEY = 'aics_pb_history'
-export const ARTWORK_PROJECTS_KEY = 'aics_pb_projects'
+export const ARTWORK_HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
+export const ARTWORK_PROJECTS_KEY = ARTWORK_PROJECTS_KV_KEY
 
 export interface ArtworkKvAdapter {
   get(key: string): Promise<unknown | null>

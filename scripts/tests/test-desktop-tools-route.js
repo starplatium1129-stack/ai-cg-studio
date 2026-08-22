@@ -192,6 +192,57 @@ test('generate_character_image：组装角色 LoRA 与生图任务', async () =>
   }
 });
 
+test('generate_character_image：R18 双门 fail-closed（白名单 × adultEnabled）', async () => {
+  const root = tempWorkspace();
+  try {
+    // 1) 未授权（缺 context）：mature=true 直接拒绝，且不落任何生成元数据
+    const denied = await runTool(root, 'generate_character_image', {
+      character: 'natsume', description: 'x', mature: true,
+    });
+    assert.equal(denied.ok, false);
+    assert.equal(denied.code, 'adult_not_enabled');
+    assert.match(denied.error, /未获本机授权/);
+    assert.equal(fs.existsSync(path.join(root, 'generated-images')), false, '拒绝时不得写入元数据');
+
+    // 2) falsy 授权同样拒绝（fail-closed 不做 truthy 宽松转换）
+    const weakConsent = await runTool(root, 'generate_character_image', {
+      character: 'nene', description: 'x', outfit: 'nsfw_nude',
+    }, { adultEnabled: 'yes' });
+    assert.equal(weakConsent.ok, false);
+
+    // 3) 有授权但角色不在成人白名单：按 adultEligibility 拒绝
+    const ineligible = await runTool(root, 'generate_character_image', {
+      character: 'raiden_shogun', description: 'x', outfit: 'nsfw_nude',
+    }, { adultEnabled: true });
+    assert.equal(ineligible.ok, false);
+    assert.equal(ineligible.code, 'adult_character_not_eligible');
+    assert.match(ineligible.output, /白名单/);
+
+    // 4) 双门齐备 + 大小写归一：放行并注入裸露 token
+    const allowed = await runTool(root, 'generate_character_image', {
+      character: 'Natsume', description: 'x', outfit: 'nsfw_nude',
+    }, { adultEnabled: true });
+    assert.equal(allowed.ok, true);
+    const metaFiles = fs.readdirSync(path.join(root, 'generated-images')).filter((f) => f.endsWith('.json'));
+    assert.equal(metaFiles.length, 1);
+    const meta = JSON.parse(fs.readFileSync(path.join(root, 'generated-images', metaFiles[0]), 'utf8'));
+    assert.equal(meta.mature, true);
+    assert.ok(meta.promptTokens.includes('completely naked'), '放行时必须注入裸露 token');
+
+    // 5) 非 R18 请求不受门控影响：任意角色无 context 也照常组装
+    const plain = await runTool(root, 'generate_character_image', {
+      character: 'raiden_shogun', description: 'y', outfit: 'dress',
+    });
+    assert.equal(plain.ok, true);
+
+    // 6) 错误信封对齐：runTool 失败结果带 error/msg 镜像
+    assert.equal(typeof denied.msg, 'string');
+    assert.equal(denied.msg, denied.error);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('capture_screen：Windows 原生截屏', async () => {
   const root = tempWorkspace();
   try {
@@ -246,6 +297,38 @@ test('HTTP 装配：/api/desktop-tools 本机可用、代理头拒绝、缺工�
     assert.equal(noName.status, 400);
     const noNameBody = await noName.json();
     assert.equal(noNameBody.ok, false);
+    assert.equal(noNameBody.error, '缺少工具名');
+    assert.equal(noNameBody.output, '缺少工具名', 'output 镜像保留，供对话模型 tool 消息消费');
+
+    // R18 传输层授权：顶层 adultEnabled !== true 时 mature 参数必须被拒
+    const adultDenied = await fetch(`${base}/api/desktop-tools`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name: 'generate_character_image', args: { character: 'nene', description: 'x', mature: true } }),
+    });
+    assert.equal(adultDenied.status, 200);
+    const adultDeniedBody = await adultDenied.json();
+    assert.equal(adultDeniedBody.ok, false);
+    assert.equal(adultDeniedBody.code, 'adult_not_enabled');
+
+    // 模型在 args 里自行声明授权无效：args.adultEnabled 不参与判定
+    const selfDeclared = await fetch(`${base}/api/desktop-tools`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name: 'generate_character_image', args: { character: 'nene', description: 'x', mature: true, adultEnabled: true } }),
+    });
+    const selfDeclaredBody = await selfDeclared.json();
+    assert.equal(selfDeclaredBody.ok, false);
+    assert.equal(selfDeclaredBody.code, 'adult_not_enabled');
+
+    // 顶层显式授权 + 白名单角色：放行
+    const adultAllowed = await fetch(`${base}/api/desktop-tools`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name: 'generate_character_image', args: { character: 'nene', description: '海边散步' }, adultEnabled: true }),
+    });
+    const adultAllowedBody = await adultAllowed.json();
+    assert.equal(adultAllowedBody.ok, true);
   } finally {
     server.close();
     if (previous === undefined) delete process.env.AI_WORKSPACE_ROOT;

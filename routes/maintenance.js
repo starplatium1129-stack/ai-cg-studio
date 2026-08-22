@@ -707,7 +707,7 @@ async function runMaintenanceChecks() {
     if (isDesktopPackagedMode(cfg)) return desktopMaintenanceUnavailable(req, res);
     var task = String(req.body && req.body.task || '').trim();
     if (!MAINTENANCE_TASKS[task]) {
-      return res.status(400).json({ ok:false, error:'不支持的任务：' + task });
+      return envelope.fail(res, 400, '不支持的任务：' + task);
     }
 
     var script = 'scripts/maintenance/' + (SCRIPT_NAMES[task] || task + '.js');

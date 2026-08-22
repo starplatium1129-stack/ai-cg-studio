@@ -18,6 +18,7 @@ var fs = require('fs');
 var path = require('path');
 var cp = require('child_process');
 var crypto = require('crypto');
+var envelope = require('../server/http-envelope');
 
 var MAX_READ_BYTES = 1024 * 1024;
 var MAX_WRITE_BYTES = 512 * 1024;
@@ -37,6 +38,33 @@ var ALLOWED_COMMANDS = Object.freeze(new Set([
   'python', 'python3', 'pythonw', 'pwsh', 'powershell',
   'node', 'npm', 'npx', 'git', 'conda',
 ].map(function (name) { return name.toLowerCase(); })));
+
+/**
+ * 成人内容白名单（AGENTS.md 红线 #4 的网关侧落地，与前端 popularContent.ts
+ * 的 adultEligibility 契约同源）：仅内容契约中确认成人的角色可注入裸露 token
+ * （宁宁/夏目，对应 nene_r18/natsume_r18 门控词）。未知角色一律 fail-closed 拒绝。
+ * adultEnabled 则必须来自传输层显式授权（请求体顶层字段，由前端本机环境开关派生），
+ * 模型在 args 里自行声明无效 —— 双门齐备才放行。
+ */
+var ADULT_ELIGIBLE_CHARACTERS = Object.freeze(new Set(['nene', 'natsume']));
+
+var ADULT_NOT_ELIGIBLE_MESSAGE = '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。';
+var ADULT_NOT_ENABLED_MESSAGE = '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。';
+
+/**
+ * R18 双门校验：返回 null 表示放行，否则返回带 code 的拒绝结果。
+ * @param {string} targetChar 归一化后的角色 ID
+ * @param {{adultEnabled?: boolean}} [context] 传输层授权上下文
+ */
+function assertAdultAllowed(targetChar, context) {
+  if (!ADULT_ELIGIBLE_CHARACTERS.has(String(targetChar || '').toLowerCase())) {
+    return { code: 'adult_character_not_eligible', message: ADULT_NOT_ELIGIBLE_MESSAGE };
+  }
+  if (!context || context.adultEnabled !== true) {
+    return { code: 'adult_not_enabled', message: ADULT_NOT_ENABLED_MESSAGE };
+  }
+  return null;
+}
 
 /**
  * run_command 命令校验收紧：裸命令必须是白名单解释器；含路径分隔符时必须
@@ -106,13 +134,17 @@ function formatEntryName(entry) {
   return entry.isDirectory() ? entry.name + '/' : entry.name;
 }
 
-function runTool(workspaceRoot, name, args) {
+function runTool(workspaceRoot, name, args, context) {
   var root = path.resolve(workspaceRoot || '.');
   function fail(error) {
-    return {
-      ok: false,
-      output: String(error instanceof Error ? error.message : error).slice(0, 2000),
-    };
+    var message = String(error instanceof Error ? error.message : error).slice(0, 2000);
+    var payload = { ok: false, output: message };
+    // 信封对齐（server/http-envelope.js 形状）：error/msg 与 output 同镜像，
+    // 新代码读 error；output 保留 —— 它会作为 tool 消息回传给对话模型。
+    payload.error = message;
+    payload.msg = message;
+    if (error instanceof Error && error.code) payload.code = error.code;
+    return payload;
   }
   return Promise.resolve().then(function () {
     switch (name) {
@@ -278,7 +310,16 @@ function runTool(workspaceRoot, name, args) {
           promptTokens.push(targetChar, '1girl', 'solo');
         }
 
-        if (args.outfit === 'nsfw_nude' || args.mature === true) {
+        var wantsMature = args.outfit === 'nsfw_nude' || args.mature === true;
+        if (wantsMature) {
+          // R18 双门（fail-closed）：adultEligibility 白名单 × 传输层 adultEnabled 授权。
+          // 任一不满足即整体拒绝 —— 不回退到安全 token，也不写入任何生成元数据。
+          var denial = assertAdultAllowed(targetChar, context);
+          if (denial) {
+            var refusal = new Error(denial.message);
+            refusal.code = denial.code;
+            throw refusal;
+          }
           promptTokens.push('completely naked', 'full body bare', 'natural skin');
         } else if (args.outfit && typeof args.outfit === 'string') {
           promptTokens.push(args.outfit);
@@ -302,7 +343,8 @@ function runTool(workspaceRoot, name, args) {
           promptTokens: promptTokens,
           loras: loras,
           outfit: args.outfit || 'default',
-          mature: Boolean(args.mature),
+          // 审计字段如实记录：outfit=nsfw_nude 同样视为成人内容（与 wantsMature 判定同源）
+          mature: wantsMature,
           createdAt: timestamp,
           outputPath: fullImagePath
         };
@@ -340,14 +382,19 @@ function createDesktopToolsRouter(options) {
       ? payload.args
       : {};
     if (!name) {
-      res.status(400).json({ ok: false, output: '缺少工具名' });
+      envelope.fail(res, 400, '缺少工具名', { output: '缺少工具名' });
       return;
     }
     var workspaceRoot = process.env.AI_WORKSPACE_ROOT || path.join(__dirname, '..', 'AI');
-    runTool(workspaceRoot, name, args).then(function (result) {
+    // 成人授权取请求体顶层字段（严格 === true），与模型可控的 args 隔离
+    var context = { adultEnabled: payload.adultEnabled === true };
+    runTool(workspaceRoot, name, args, context).then(function (result) {
       res.json(result);
     }).catch(function (error) {
-      res.status(500).json({ ok: false, output: String(error && error.message || error).slice(0, 2000) });
+      var err = error instanceof Error ? error : new Error(String(error));
+      var extra = { output: String(err.message).slice(0, 2000) };
+      if (err.code) extra.code = err.code;
+      envelope.fail(res, envelope.statusFor(err, 500), err.message, extra);
     });
   });
 

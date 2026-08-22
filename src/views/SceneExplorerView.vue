@@ -210,6 +210,8 @@ import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
 import { quickCreateUrl } from '@/utils/quickCreate'
 import { scrollBehavior } from '@/utils/motionPreference'
+import { ARTWORK_HISTORY_KV_KEY, MATURE_SETTING_KEY } from '@/utils/storageKeys'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 
@@ -236,10 +238,10 @@ interface ExplorerCuration extends CurationData, SceneUXConfig {
 }
 
 const PAGE_SIZE = 24
-const MATURE_KEY = 'aics_show_mature'
+const MATURE_KEY = MATURE_SETTING_KEY
 const FAV_KEY = 'aics_scene_favorites'
-const HISTORY_KEY = 'aics_pb_history'
-const LOCAL_OWNER = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname)
+const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
+const LOCAL_OWNER = isLocalStudioHost(window.location.hostname)
 
 const THEME_DEFS: Array<{ id: string; label: string; iconName: ArchiveIconName; categories: string[] }> = [
   { id: 'all',      label: '全部', iconName: 'spark',     categories: [] as string[] },

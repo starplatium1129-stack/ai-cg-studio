@@ -19,6 +19,8 @@ export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 export const DRAW_ENGINE_KEY = 'aics_draw_engine'
 export const THEME_KEY = 'aics_theme'
 export const INTERFACE_SOUND_KEY = 'aics_interface_sound_v1'
+/** 成人内容展示开关（灵感场景页/热门场景页共用语义：本机默认开）。 */
+export const MATURE_SETTING_KEY = 'aics_show_mature'
 export const TUNNEL_OFF_KEY = 'aics_tunnel_off'
 export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
 export const CHAT_USER_PROFILE_KEY = 'aics_user_profile_v1'
@@ -31,6 +33,21 @@ export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
  */
 export const BACKUP_AT_KEY = 'aics_backup_last_at'
 
+// ── IndexedDB / sessionStorage 键登记 ──
+// 这两类不参与 localStorage 备份白名单（见文件头规则），但常量化在这里统一出处，
+// 杜绝同一键名在多处以字面量重复定义（曾致 aics_pb_history 散落 9 处）。
+
+/** 作品册历史（IndexedDB aics_kv_store 主存储；localStorage 同名键仅作旧数据迁移读取）。 */
+export const ARTWORK_HISTORY_KV_KEY = 'aics_pb_history'
+/** 历史损坏隔离区（storageHealth 使用，刻意不参与备份导出）。 */
+export const ARTWORK_HISTORY_QUARANTINE_KEY = 'aics_pb_history_quarantine'
+/** 作品册项目（IndexedDB 主存储；useBackup / 作品册 / 导演台共用）。 */
+export const ARTWORK_PROJECTS_KV_KEY = 'aics_pb_projects'
+/** 绘图页 → 视频页单图跨页上下文（sessionStorage，容量敏感故不入 localStorage 备份）。 */
+export const VIDEO_CONTEXT_KEY = 'aics_video_ctx'
+/** 分镜短片批量带入上下文（sessionStorage）。 */
+export const VIDEO_SHOTS_CONTEXT_KEY = 'aics_video_shots_ctx'
+
 export const LIVE_LOCAL_KEYS = [
   THEME_KEY,
   INTERFACE_SOUND_KEY,
@@ -41,7 +58,7 @@ export const LIVE_LOCAL_KEYS = [
   'aics_recent_scenes',
   'aics_hidden_scenes',
   'aics_scene_usage_v1',
-  'aics_show_mature',
+  MATURE_SETTING_KEY,
   TUNNEL_OFF_KEY,
   'aics_chat_v1',
   'aics_chat_model',

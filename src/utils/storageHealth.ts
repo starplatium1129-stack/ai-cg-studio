@@ -1,4 +1,6 @@
-export const HISTORY_QUARANTINE_KEY = 'aics_pb_history_quarantine'
+import { ARTWORK_HISTORY_QUARANTINE_KEY } from './storageKeys.ts'
+
+export const HISTORY_QUARANTINE_KEY = ARTWORK_HISTORY_QUARANTINE_KEY
 
 export interface HistoryValidation {
   ok: boolean

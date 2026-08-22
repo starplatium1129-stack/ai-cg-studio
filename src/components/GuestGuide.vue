@@ -33,8 +33,9 @@
 import { onMounted, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
-const isNonLocal = !['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname)
+const isNonLocal = !isLocalStudioHost()
 const forcedGuest = new URLSearchParams(window.location.search).get('guest') === '1'
 const dismissed = settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING) ?? false
 

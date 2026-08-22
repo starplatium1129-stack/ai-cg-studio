@@ -18,9 +18,10 @@ import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
+import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 
-// 与 GalleryView 的 HISTORY_KEY 保持一致
-const HISTORY_KEY = 'aics_pb_history'
+// 键名统一出处：src/utils/storageKeys.ts
+const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 const route = useRoute()
 const router = useRouter()
 const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')

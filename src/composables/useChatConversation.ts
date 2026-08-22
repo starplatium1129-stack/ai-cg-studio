@@ -11,6 +11,7 @@ import {
 } from '@/utils/stream'
 import { extractMoodTag } from '@/utils/moodTag'
 import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { useCompanionAffection } from '@/composables/useCompanionAffection'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
@@ -22,6 +23,8 @@ const WATCHDOG_INTERVAL_MS = 4_000
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
+/** 单回合捕获的持久化消息数组（storage.messages 的活引用）。 */
+type TurnMessages = ReturnType<ChatStorage['messages']>
 
 interface ChatConversationOptions {
   storage: ChatStorage
@@ -64,6 +67,35 @@ interface PendingToolCall {
 
 const MAX_TOOL_ROUNDS = 4
 
+/** 单回合流式情绪状态：[mood=xxx] 协议标签主导 + 文本启发式回退的双通道。 */
+interface TurnEmotionTracker {
+  /** 处理一个 token 增量：更新干净展示文本、情绪通道与配音流。 */
+  applyTokenDelta(assistant: { content: string }, delta: string): void
+  /** 回合结束（含异常路径）复位情绪通道与原始流。 */
+  reset(): void
+}
+
+/** 单回合挂起看门狗：无首事件 / 事件间静默超时即中断请求。 */
+interface TurnWatchdog {
+  touch(): void
+  stop(): void
+  readonly sawFirstEvent: boolean
+  readonly idleTimedOut: boolean
+}
+
+/** 工具执行结果（桌面桥与网关端点共用的最小契约）。 */
+interface ToolCallResult {
+  ok: boolean
+  output: string
+  imageDataUrl?: string
+}
+
+/** 判断一条临时消息是否为多模态图片消息（视觉轮专用）。 */
+function isVisionMessage(message: Record<string, unknown>): boolean {
+  return Array.isArray(message.content)
+    && (message.content as Array<{ type?: string }>).some(part => part.type === 'image_url')
+}
+
 export function useChatConversation(options: ChatConversationOptions) {
   const inputText = ref('')
   const streamingMid = ref('')
@@ -90,35 +122,11 @@ export function useChatConversation(options: ChatConversationOptions) {
     return true
   }
 
-  async function sendMessage(customText?: string, imageUrl?: string) {
-    const text = (customText !== undefined ? customText : inputText.value).trim()
-    if ((!text && !imageUrl) || options.busy.value || !options.chatReady.value) return
-    options.onError('')
-    options.voice.ensureAudioContext()
-
+  // ── Pipeline 步骤①：持久化本回合 ─────────────────────────────────────
+  // 用户消息入库 + 记忆召回 + 助手占位，随后进入流式就绪状态。
+  // 返回的 messages 是存储层的活引用：catch 分支据此移除失败占位。
+  function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string) {
     const characterId = options.activeChar.value
-    const streamEmotion = { value: 'neutral' }
-    // 本回合原始流（含情绪标签），与干净展示文本分离累积。
-    let rawContent = ''
-    // 本回合是否出现过协议标签（[mood=xxx]）：出现后协议主导情绪，
-    // 文本启发式整回合让位，避免两条通道互相覆盖。
-    let moodTagged = false
-    const maybeStreamEmotion = (replyText: string) => {
-      if (!options.onStreamEmotion || replyText.length < 4) return
-      const emotion = inferEmotion(replyText, characterId)
-      if (emotion !== streamEmotion.value) {
-        streamEmotion.value = emotion
-        options.onStreamEmotion(emotion)
-      }
-    }
-    const resetStreamEmotion = () => {
-      if (options.onStreamEmotion && streamEmotion.value !== 'neutral') {
-        streamEmotion.value = 'neutral'
-        options.onStreamEmotion('neutral')
-      }
-      moodTagged = false
-      rawContent = ''
-    }
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
     messages.push({
@@ -145,32 +153,194 @@ export function useChatConversation(options: ChatConversationOptions) {
     streamingMid.value = assistant.mid
     options.scrollBottom()
     options.setBusy(true)
+    return { characterId, text, imageUrl, messages, assistant }
+  }
 
-    const controller = new AbortController()
-    activeRequest = controller
+  // ── Pipeline 步骤②：单回合流式情绪跟踪器 ────────────────────────────
+  function createTurnEmotionTracker(characterId: string): TurnEmotionTracker {
+    // 情绪双通道：本回合出现过协议标签（[mood=xxx]）后协议主导情绪，
+    // 文本启发式整回合让位，避免两条通道互相覆盖。
+    const emotionState = { value: 'neutral', moodTagged: false }
+    // 本回合原始流（含未闭合标签），与干净展示文本分离累积。
+    const streamState = { rawContent: '' }
+
+    function maybeStreamEmotion(replyText: string) {
+      if (!options.onStreamEmotion || replyText.length < 4) return
+      const emotion = inferEmotion(replyText, characterId)
+      if (emotion !== emotionState.value) {
+        emotionState.value = emotion
+        options.onStreamEmotion(emotion)
+      }
+    }
+
+    return {
+      applyTokenDelta(assistant, delta) {
+        const prevCleanLen = assistant.content.length
+        // 原始流单独累积（含未闭合标签），展示/历史/配音只吃剥离后的干净文本；
+        // 不能用 cleanText 反推 raw，否则被剥离的标签前缀会在下一 token 错位。
+        streamState.rawContent += delta
+        const extracted = extractMoodTag(streamState.rawContent)
+        assistant.content = extracted.cleanText
+        if (extracted.emotion) {
+          emotionState.moodTagged = true
+          if (extracted.emotion !== emotionState.value) {
+            emotionState.value = extracted.emotion
+            options.onStreamEmotion?.(extracted.emotion)
+          }
+        } else if (!emotionState.moodTagged) {
+          maybeStreamEmotion(assistant.content)
+        }
+        options.voice.append(extracted.cleanText.slice(prevCleanLen))
+      },
+      reset() {
+        if (options.onStreamEmotion && emotionState.value !== 'neutral') {
+          emotionState.value = 'neutral'
+          options.onStreamEmotion('neutral')
+        }
+        emotionState.moodTagged = false
+        streamState.rawContent = ''
+      },
+    }
+  }
+
+  // ── Pipeline 步骤③：挂起看门狗 ───────────────────────────────────────
+  function startTurnWatchdog(controller: AbortController): TurnWatchdog {
     // 2026-08-16 审计：挂起兜底看门狗——无首事件 / 事件间长时间静默即中断，
     // 避免上游挂起时无限 spinner（idleTimedOut 区分用户主动停止与超时中断）。
-    let firstEventAt = 0
-    let idleTimedOut = false
-    let lastEventAt = Date.now()
-    const touch = () => {
-      const now = Date.now()
-      if (!firstEventAt) firstEventAt = now
-      lastEventAt = now
-    }
-    const watchdog = window.setInterval(() => {
-      const silentFor = Date.now() - lastEventAt
-      if ((!firstEventAt && silentFor > CHAT_FIRST_EVENT_TIMEOUT_MS)
-        || (firstEventAt && silentFor > CHAT_STREAM_IDLE_MS)) {
-        idleTimedOut = true
+    const state = { firstEventAt: 0, idleTimedOut: false, lastEventAt: Date.now() }
+    const handle = window.setInterval(() => {
+      const silentFor = Date.now() - state.lastEventAt
+      if ((!state.firstEventAt && silentFor > CHAT_FIRST_EVENT_TIMEOUT_MS)
+        || (state.firstEventAt && silentFor > CHAT_STREAM_IDLE_MS)) {
+        state.idleTimedOut = true
         controller.abort()
       }
     }, WATCHDOG_INTERVAL_MS)
-    options.voice.startTurn({
-      mid: assistant.mid,
-      voice: options.currentCharacter.value.voice,
+    return {
+      touch() {
+        const now = Date.now()
+        if (!state.firstEventAt) state.firstEventAt = now
+        state.lastEventAt = now
+      },
+      stop() {
+        window.clearInterval(handle)
+      },
+      get sawFirstEvent() {
+        return Boolean(state.firstEventAt)
+      },
+      get idleTimedOut() {
+        return state.idleTimedOut
+      },
+    }
+  }
+
+  // ── Pipeline 步骤④：单个工具执行（fallible，异常由调用方转译为失败结果）──
+  async function executeToolCall(call: PendingToolCall, characterId: string): Promise<ToolCallResult> {
+    let parsedArgs: Record<string, unknown> = {}
+    try {
+      parsedArgs = JSON.parse(call.arguments || '{}')
+    } catch {
+      parsedArgs = {}
+    }
+    let result: ToolCallResult
+    if (window.companionDesktop) {
+      result = await window.companionDesktop.runTool(call.name, parsedArgs)
+    } else {
+      const res = await fetch('/api/desktop-tools', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // adultEnabled 是传输层授权信号（网关 fail-closed 双门的第二道）：
+        // 仅本机直连视为已授权，与模型可控的 args 隔离。
+        body: JSON.stringify({ name: call.name, args: parsedArgs, adultEnabled: isLocalStudioHost() }),
+      })
+      result = await res.json()
+    }
+    if (call.name === 'generate_character_image' && result.ok) {
+      const affection = useCompanionAffection()
+      affection.addScore(characterId, 2, '生成画作')
+    }
+    return result
+  }
+
+  // ── Pipeline 步骤⑤：meta 模型名写回 ─────────────────────────────────
+  function applyModelWriteback(rawModel: unknown, hostMode: boolean, useVision: boolean) {
+    // 视觉轮（临时切到 Gemini 看图）的模型名不写回用户配置
+    if (options.chatProvider.value === 'api' && !hostMode && !useVision) {
+      options.apiModel.value = String(rawModel)
+      options.storage.setApiSettings({
+        baseUrl: options.apiBaseUrl.value,
+        model: options.apiModel.value,
+        apiKey: options.apiKey.value,
+      })
+    } else if (options.chatProvider.value !== 'api' || hostMode) {
+      options.currentModel.value = String(rawModel)
+      options.storage.setModel(options.currentModel.value)
+    }
+  }
+
+  // ── Pipeline 步骤⑥：一轮回合的 /api/chat 请求体组装 ──────────────────
+  function buildChatRequestBody(args: {
+    characterId: string
+    text: string
+    imageUrl: string | undefined
+    hostMode: boolean
+    useVision: boolean
+    toolsEnabled: boolean
+    roundMessages: Array<Record<string, unknown>>
+    messages: TurnMessages
+  }): string {
+    const { characterId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages } = args
+    // 若用户配置的模型名包含 gemini/gpt-4/qwen-vl 等视觉模型，或用户有独立配置 API，则优先走用户当前的 API
+    const userHasVision = /gemini|gpt-4|qwen-vl|claude/i.test(options.apiModel.value)
+    const userApi = {
+      baseUrl: options.apiBaseUrl.value,
+      model: options.apiModel.value,
+      apiKey: options.apiKey.value,
+    }
+    const visionApi = userHasVision || options.apiKey.value
+      ? userApi
+      : { baseUrl: CLIPROXY_BASE_URL, model: CLIPROXY_DEFAULT_MODEL, apiKey: CLIPROXY_API_KEY }
+    const historyList = (useVision && imageUrl)
+      ? messages.slice(0, -2).map(message => ({ role: message.role, content: message.content }))
+      : messages.slice(0, -1).map(message => ({ role: message.role, content: message.content }))
+    return JSON.stringify({
       character: characterId,
+      provider: options.chatProvider.value,
+      model: hostMode ? '' : options.currentModel.value,
+      api: !hostMode && options.chatProvider.value === 'api' ? (useVision ? visionApi : userApi) : undefined,
+      hostConfig: hostMode || undefined,
+      webSearch: options.chatProvider.value === 'api' && options.webSearchEnabled.value,
+      companionTools: toolsEnabled || undefined,
+      reasoning: options.reasoning.value,
+      userProfile: hasChatUserProfile(options.userProfile.value) ? options.userProfile.value : undefined,
+      memories: options.recallMemories(characterId, text),
+      messages: [
+        ...historyList,
+        // 文本轮（回到 DeepSeek 等）不带图片消息：纯文本模型收到
+        // image_url 会直接报错；图片已由视觉轮（Gemini）看过，
+        // tool 结果里的摘要文本足够衔接上下文
+        ...(useVision ? roundMessages : roundMessages.filter(message => !isVisionMessage(message))),
+      ],
     })
+  }
+
+  async function sendMessage(customText?: string, imageUrl?: string) {
+    const text = (customText !== undefined ? customText : inputText.value).trim()
+    if ((!text && !imageUrl) || options.busy.value || !options.chatReady.value) return
+    options.onError('')
+    options.voice.ensureAudioContext()
+
+    const turn = beginUserTurn(text, imageUrl, customText)
+
+    const controller = new AbortController()
+    activeRequest = controller
+    const watchdog = startTurnWatchdog(controller)
+    options.voice.startTurn({
+      mid: turn.assistant.mid,
+      voice: options.currentCharacter.value.voice,
+      character: turn.characterId,
+    })
+    const tracker = createTurnEmotionTracker(turn.characterId)
 
     try {
       const toolsEnabled = options.companionTools.value && options.chatProvider.value === 'api'
@@ -190,74 +360,33 @@ export function useChatConversation(options: ChatConversationOptions) {
           ],
         })
       }
-      const isVisionMessage = (message: Record<string, unknown>) =>
-        Array.isArray(message.content)
-        && (message.content as Array<{ type?: string }>).some(part => part.type === 'image_url')
       while (true) {
         const hostMode = options.chatProvider.value === 'api' && options.useHostConfig.value
         const useVision = visionRound && options.chatProvider.value === 'api' && !hostMode
         visionRound = false
         // DeepSeek V4：思考轮带 tool_calls 时必须回传 reasoning_content
         let roundReasoning = ''
-        // 若用户配置的模型名包含 gemini/gpt-4/qwen-vl 等视觉模型，或用户有独立配置 API，则优先走用户当前的 API
-        const userHasVision = /gemini|gpt-4|qwen-vl|claude/i.test(options.apiModel.value)
-        const visionApi = userHasVision || options.apiKey.value ? {
-          baseUrl: options.apiBaseUrl.value,
-          model: options.apiModel.value,
-          apiKey: options.apiKey.value,
-        } : {
-          baseUrl: CLIPROXY_BASE_URL,
-          model: CLIPROXY_DEFAULT_MODEL,
-          apiKey: CLIPROXY_API_KEY,
-        }
-        const historyList = (useVision && imageUrl)
-          ? messages.slice(0, -2).map(message => ({ role: message.role, content: message.content }))
-          : messages.slice(0, -1).map(message => ({ role: message.role, content: message.content }))
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            character: characterId,
-            provider: options.chatProvider.value,
-            model: hostMode ? '' : options.currentModel.value,
-            api: !hostMode && options.chatProvider.value === 'api' ? (useVision ? visionApi : {
-              baseUrl: options.apiBaseUrl.value,
-              model: options.apiModel.value,
-              apiKey: options.apiKey.value,
-            }) : undefined,
-            hostConfig: hostMode || undefined,
-            webSearch: options.chatProvider.value === 'api' && options.webSearchEnabled.value,
-            companionTools: toolsEnabled || undefined,
-            reasoning: options.reasoning.value,
-            userProfile: hasChatUserProfile(options.userProfile.value) ? options.userProfile.value : undefined,
-            memories: options.recallMemories(characterId, text),
-            messages: [
-              ...historyList,
-              // 文本轮（回到 DeepSeek 等）不带图片消息：纯文本模型收到
-              // image_url 会直接报错；图片已由视觉轮（Gemini）看过，
-              // tool 结果里的摘要文本足够衔接上下文
-              ...(useVision ? roundMessages : roundMessages.filter(message => !isVisionMessage(message))),
-            ],
+          body: buildChatRequestBody({
+            characterId: turn.characterId,
+            text,
+            imageUrl,
+            hostMode,
+            useVision,
+            toolsEnabled,
+            roundMessages,
+            messages: turn.messages,
           }),
           signal: controller.signal,
         })
 
         const toolCalls: PendingToolCall[] = []
         await parseNdjsonResponse(response, async event => {
-          touch()
+          watchdog.touch()
           if (event.type === 'meta' && event.model) {
-            // 视觉轮（临时切到 Gemini 看图）的模型名不写回用户配置
-            if (options.chatProvider.value === 'api' && !hostMode && !useVision) {
-              options.apiModel.value = String(event.model)
-              options.storage.setApiSettings({
-                baseUrl: options.apiBaseUrl.value,
-                model: options.apiModel.value,
-                apiKey: options.apiKey.value,
-              })
-            } else if (options.chatProvider.value !== 'api' || hostMode) {
-              options.currentModel.value = String(event.model)
-              options.storage.setModel(options.currentModel.value)
-            }
+            applyModelWriteback(event.model, hostMode, useVision)
           }
           if (event.type === 'tool-call') {
             if (event.id && event.name) {
@@ -272,23 +401,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
           if (event.type !== 'token') return
           options.onThinking?.(null)
-          const delta = event.content || ''
-          const prevCleanLen = assistant.content.length
-          // 原始流单独累积（含未闭合标签），展示/历史/配音只吃剥离后的干净文本；
-          // 不能用 cleanText 反推 raw，否则被剥离的标签前缀会在下一 token 错位。
-          rawContent += delta
-          const extracted = extractMoodTag(rawContent)
-          assistant.content = extracted.cleanText
-          if (extracted.emotion) {
-            moodTagged = true
-            if (extracted.emotion !== streamEmotion.value) {
-              streamEmotion.value = extracted.emotion
-              options.onStreamEmotion?.(extracted.emotion)
-            }
-          } else if (!moodTagged) {
-            maybeStreamEmotion(assistant.content)
-          }
-          options.voice.append(extracted.cleanText.slice(prevCleanLen))
+          tracker.applyTokenDelta(turn.assistant, event.content || '')
           if (options.nearBottom()) options.scrollBottom()
         })
 
@@ -306,26 +419,11 @@ export function useChatConversation(options: ChatConversationOptions) {
           })),
         })
         for (const call of toolCalls) {
-          touch()
+          watchdog.touch()
           options.onToolActivity?.(`正在执行 ${call.name}…`)
-          let result: { ok: boolean; output: string; imageDataUrl?: string }
+          let result: ToolCallResult
           try {
-            let parsedArgs: Record<string, unknown> = {}
-            try { parsedArgs = JSON.parse(call.arguments || '{}') } catch { parsedArgs = {} }
-            if (window.companionDesktop) {
-              result = await window.companionDesktop.runTool(call.name, parsedArgs)
-            } else {
-              const res = await fetch('/api/desktop-tools', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: call.name, args: parsedArgs }),
-              })
-              result = await res.json()
-            }
-            if (call.name === 'generate_character_image' && result.ok) {
-              const affection = useCompanionAffection()
-              affection.addScore(characterId, 2, '生成画作')
-            }
+            result = await executeToolCall(call, turn.characterId)
           } catch (error) {
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }
           }
@@ -347,25 +445,26 @@ export function useChatConversation(options: ChatConversationOptions) {
         if (options.nearBottom()) options.scrollBottom()
       }
 
-      assistant.content = assistant.content.trim() || '……'
-      replyAnnouncement.value = `${options.currentCharacter.value.name}说：${assistant.content}`
+      // 收尾：空回复兜底、屏幕阅读器播报、配音收轨。
+      turn.assistant.content = turn.assistant.content.trim() || '……'
+      replyAnnouncement.value = `${options.currentCharacter.value.name}说：${turn.assistant.content}`
       options.voice.finishTurn()
     } catch (error) {
       if (isAbortError(error)) {
-        if (idleTimedOut) {
+        if (watchdog.idleTimedOut) {
           // 超时中断：与用户主动停止不同，按失败处理并给出可理解的提示。
-          messages.splice(messages.indexOf(assistant), 1)
+          turn.messages.splice(turn.messages.indexOf(turn.assistant), 1)
           options.voice.stop({ preserveMessageAudio: true, silent: true })
-          options.onError(firstEventAt
+          options.onError(watchdog.sawFirstEvent
             ? '对话长时间无响应，已中断，请重试。'
             : '对话等待超时（长时间未开始），请重试。')
         } else {
-          assistant.content = assistant.content.trim()
-          assistant.stopped = Boolean(assistant.content)
-          if (!assistant.content) messages.splice(messages.indexOf(assistant), 1)
+          turn.assistant.content = turn.assistant.content.trim()
+          turn.assistant.stopped = Boolean(turn.assistant.content)
+          if (!turn.assistant.content) turn.messages.splice(turn.messages.indexOf(turn.assistant), 1)
         }
       } else {
-        messages.splice(messages.indexOf(assistant), 1)
+        turn.messages.splice(turn.messages.indexOf(turn.assistant), 1)
         options.voice.stop({ preserveMessageAudio: true, silent: true })
         options.onError(streamErrorMessage(
           error,
@@ -375,11 +474,11 @@ export function useChatConversation(options: ChatConversationOptions) {
         ))
       }
     } finally {
-      window.clearInterval(watchdog)
-      resetStreamEmotion()
+      watchdog.stop()
+      tracker.reset()
       options.onToolActivity?.(null)
       options.onThinking?.(null)
-      options.storage.trim(characterId)
+      options.storage.trim(turn.characterId)
       options.storage.save()
       streamingMid.value = ''
       if (activeRequest === controller) activeRequest = null

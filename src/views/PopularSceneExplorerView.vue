@@ -142,6 +142,7 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel } from '@/utils/franchiseLabel'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const route = useRoute()
 const sceneStore = useSceneStore()
@@ -159,7 +160,7 @@ const RATING_OPTS = [
   { v: 'R18', l: 'R18' }
 ] as const
 /** 本机默认展示成人内容（与灵感场景页一致）；非本机环境默认隐藏。 */
-const showMature = ref(/^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname))
+const showMature = ref(isLocalStudioHost())
 
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)

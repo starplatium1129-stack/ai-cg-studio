@@ -243,6 +243,7 @@ import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
 import type { Scene } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
+import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 
 useScrollReveal()
 
@@ -415,11 +416,11 @@ async function loadHomeHeroAssets() {
 
 async function loadRecentWorks() {
   try {
-    let history = parseArtworkRecords(await kvGet('aics_pb_history'))
+    let history = parseArtworkRecords(await kvGet(ARTWORK_HISTORY_KV_KEY))
     if (!history.length) {
       let old: ArtworkRecord[] = []
-      try { old = parseArtworkRecords(JSON.parse(localStorage.getItem('aics_pb_history') || '[]')) } catch {}
-      if (old.length) { history = old; await kvSet('aics_pb_history', old); localStorage.removeItem('aics_pb_history') }
+      try { old = parseArtworkRecords(JSON.parse(localStorage.getItem(ARTWORK_HISTORY_KV_KEY) || '[]')) } catch {}
+      if (old.length) { history = old; await kvSet(ARTWORK_HISTORY_KV_KEY, old); localStorage.removeItem(ARTWORK_HISTORY_KV_KEY) }
     }
     // 历史按生成顺序 append，直接 slice 拿到的是最旧的三幅
     recentWorks.value = history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)

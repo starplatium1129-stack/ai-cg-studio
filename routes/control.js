@@ -629,7 +629,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // POST /api/service/voice
   router.post('/api/service/voice', localOnly, express.json({ limit:'2kb' }), function(req, res) {
     var action = req.body && req.body.action;
-    if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
+    if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ops.rejectConflict(res)) return;
     var operation = ops.begin('voice-' + action, action === 'start' ? '启动语音服务' : '停止语音服务', [
       action === 'start' ? '正在启动 GPT-SoVITS' : '正在停止 GPT-SoVITS',
@@ -668,7 +668,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // POST /api/service/webui
   router.post('/api/service/webui', localOnly, express.json({ limit:'2kb' }), function(req, res) {
     var action = req.body && req.body.action;
-    if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
+    if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ops.rejectConflict(res)) return;
     var operation = ops.begin('webui-' + action, action === 'start' ? '启动绘图服务' : '停止绘图服务', [
       action === 'start' ? '正在启动 SD WebUI' : '正在停止 SD WebUI',
@@ -720,7 +720,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // POST /api/service/ollama
   router.post('/api/service/ollama', localOnly, express.json({ limit:'2kb' }), function(req, res) {
     var action = req.body && req.body.action;
-    if (action !== 'unload') return res.status(400).json({ ok:false, error:'action 目前只支持 unload' });
+    if (action !== 'unload') return envelope.fail(res, 400, 'action 目前只支持 unload');
     if (ops.rejectConflict(res)) return;
     var operation = ops.begin('ollama-unload', '释放聊天模型显存', ['正在卸载 Ollama 模型', '正在验证显存释放结果']);
     unloadOllamaModels().then(function (result) {
@@ -741,7 +741,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // POST /api/mode — 绘图优先 / 聊天优先
   router.post('/api/mode', localOnly, express.json({ limit:'2kb' }), function(req, res) {
     var mode = req.body && req.body.mode;
-    if (!['draw', 'chat'].includes(mode)) return res.status(400).json({ ok:false, error:'mode 必须是 draw 或 chat' });
+    if (!['draw', 'chat'].includes(mode)) return envelope.fail(res, 400, 'mode 必须是 draw 或 chat');
     if (ops.rejectConflict(res)) return;
     var stages = mode === 'draw'
       ? ['正在停止语音服务', '正在卸载聊天模型', '正在启动 SD WebUI', '正在验证绘图环境']
@@ -959,7 +959,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // POST /api/service/comfy
   router.post('/api/service/comfy', localOnly, express.json({ limit:'2kb' }), function(req, res) {
     var action = req.body && req.body.action;
-    if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
+    if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ops.rejectConflict(res)) return;
     var operation = ops.begin('comfy-' + action, action === 'start' ? '启动 ComfyUI' : '停止 ComfyUI', [
       action === 'start' ? '正在启动 ComfyUI' : '正在停止 ComfyUI',

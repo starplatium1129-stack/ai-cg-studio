@@ -9,6 +9,7 @@ import { controlApi } from '@/api/controlApi'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY } from '@/utils/storageKeys'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import {
   editChatFact,
   emptyChatMemoryState,
@@ -106,9 +107,7 @@ export function useCharacterRoomSession() {
   } = useChatProvider({ storage, isBusy: busy })
   void refreshHostConfig()
 
-  const isLocalHost = computed(() =>
-    ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname),
-  )
+  const isLocalHost = computed(() => isLocalStudioHost())
 
   async function saveToHost() {
     const message = await saveHostConfig()

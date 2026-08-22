@@ -19,10 +19,11 @@ import {
 } from '@/utils/promptBuilderPersistence'
 import type { DrawSubject, PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
+import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 
-// 与 useBackup.ts / GalleryView.vue 共用同一组键。改这里必须同步那两处。
-const HISTORY_STORAGE_KEY = 'aics_pb_history'
-const PROJECT_STORAGE_KEY = 'aics_pb_projects'
+// 键名统一出处：src/utils/storageKeys.ts（useBackup / GalleryView 同读此常量）
+const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
+const PROJECT_STORAGE_KEY = ARTWORK_PROJECTS_KV_KEY
 
 /** 历史条目 id：Date.now() + 同毫秒序号，避免并发入册/保存撞 id */
 let historyIdLastMs = 0

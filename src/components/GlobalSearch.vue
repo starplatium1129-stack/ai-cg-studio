@@ -90,6 +90,7 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneStore } from '@/stores/sceneStore'
 import { kvInit, kvGet } from '@/composables/useKVStore'
+import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 
 interface SearchItem {
   id: string
@@ -105,7 +106,7 @@ interface PageItem extends SearchItem { path: string }
 interface SceneItem { id: string; title: string; meta: string; keywords: string }
 interface WorkItem { id: string | number; title: string; meta: string; keywords: string }
 
-const HISTORY_KEY = 'aics_pb_history'
+const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 
 const router = useRouter()
 const sceneStore = useSceneStore()
