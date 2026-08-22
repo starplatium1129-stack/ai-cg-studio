@@ -51,7 +51,16 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
 
   assert.equal(scripts.validate, 'npm run check && npm run test:unit && npm run test:contract');
   assert.match(scripts['test:check'], /^node scripts\/tests\/test-quality-gates\.js && /);
-  assert.match(scripts.check, /npm run test:check/);
+  // 2026-08-22 起 check 由并发编排器承载：门禁必须继续包含质量套件，
+  // 且编排器步骤与 package.json 的旧串行链一一对应（防编排器悄悄漏步）。
+  assert.match(scripts.check, /run-check-parallel/);
+  const orchestrator = read('scripts/maintenance/run-check-parallel.js');
+  assert.ok(orchestrator.includes("npm run test:check"), 'parallel check must include the quality suite');
+  for (const legacyStep of ['design:lint', 'lint:js', 'typecheck', 'scan-style-literals', 'check-contrast',
+    'lint-colors', 'build-scenes.js --check', 'optimize-scenes.js --check',
+    'classify-scene-ratings.js --check', 'validate-scenes.js', 'validate-content-contracts.js']) {
+    assert.ok(orchestrator.includes(legacyStep), `parallel check orchestrator must include ${legacyStep}`);
+  }
   assert.doesNotMatch(scripts.validate, /test:live2d-native|test:live|test:e2e/);
   assert.doesNotMatch(scripts.validate, /build:desktop/);
   assert.match(scripts['test:live'], /regress-anima-prompt-tags\.js/);
