@@ -784,7 +784,8 @@ import {
   type SceneBlueprint,
 } from '@/utils/popularContent'
 import type { AnimaResult } from '@/types/anima'
-import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, resolveInpaintRequestBinding, type AnimaRequest } from '@/composables/useAnimaSession'
+import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from '@/composables/useAnimaSession'
+import { useAnimaInpaint } from '@/composables/useAnimaInpaint'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
@@ -813,7 +814,6 @@ const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecove
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
-import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
@@ -866,8 +866,6 @@ const hiddenSceneIds = ref(readHiddenScenes())
 const tagSearch = ref('')
 const tagCategory = ref('all')
 const voiceStudioRef = ref<{ setSuggestedCaption?: (caption: string) => void } | null>(null)
-const inpaintOriginalUrl = ref<string | null>(null)
-const inpaintCompareActive = ref(false)
 const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
@@ -1032,11 +1030,6 @@ const compare = useCompareSnapshots<ResultSnapshot>({
 })
 // 模板沿用原名绑定
 const { prevResult, lastResult, compareOpen, compareEl, close: closeCompare } = compare
-
-const inpaintOpen = ref(false)
-const inpaintCharacter = computed<'nene' | 'natsume' | null>(() => {
-  return pb.char === 'nene' || pb.char === 'natsume' ? pb.char : null
-})
 
 /** 快照业务字段：URL 已由 composable 克隆保活，这里只读引擎状态组装元数据。 */
 function buildResultSnapshot(persistentUrl: string): ResultSnapshot {
@@ -1668,105 +1661,20 @@ async function upscaleCurrentResult() {
   }
 }
 
-async function handleInpaintSubmit(payload: InpaintSubmitPayload) {
-  if (drawEngine.value !== 'anima') {
-    pb.flash('局部换装目前专属于 Anima 引擎')
-    return
-  }
-  try {
-    pb.flash('正在上传原图并准备智能换装…')
-    const reader = new FileReader()
-    const base64Promise = new Promise<string>((resolve, reject) => {
-      reader.onload = () => resolve(reader.result as string)
-      reader.onerror = reject
-      reader.readAsDataURL(payload.imageBlob)
-    })
-    const base64Data = await base64Promise
-
-    const uploadRes = await fetch('/api/anima/images', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ image: base64Data }),
-    })
-    const uploadJson = await uploadRes.json()
-    if (!uploadRes.ok || !uploadJson.ok || !uploadJson.name) {
-      throw new Error(uploadJson.error || '原图上传失败')
-    }
-
-    const initImage = uploadJson.name
-    let maskImage: string | undefined
-    if (payload.maskBlob) {
-      const maskReader = new FileReader()
-      const maskData = await new Promise<string>((resolve, reject) => {
-        maskReader.onload = () => resolve(maskReader.result as string)
-        maskReader.onerror = reject
-        maskReader.readAsDataURL(payload.maskBlob as Blob)
-      })
-      const maskRes = await fetch('/api/anima/images', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: maskData }),
-      })
-      const maskJson = await maskRes.json()
-      if (!maskRes.ok || !maskJson.ok || !maskJson.name) throw new Error(maskJson.error || '遮罩上传失败')
-      maskImage = maskJson.name
-    }
-    inpaintOpen.value = false
-    inpaintOriginalUrl.value = displayResultUrl.value
-    inpaintCompareActive.value = false
-    pb.flash('正在执行 AI 智能识别与局部换装 (~6秒)…')
-
-    const effectiveChar = payload.characterOverride !== undefined
-      ? payload.characterOverride
-      : inpaintCharacter.value
-    const isCharacterLora = effectiveChar === 'nene' || effectiveChar === 'natsume'
-    const inpaintMode = isCharacterLora || effectiveChar === 'none' ? effectiveChar : null
-    const desiredSize = payload.targetWidth && payload.targetHeight
-      ? `${payload.targetWidth}x${payload.targetHeight}`
-      : `${animaState.value.width}x${animaState.value.height}`
-    const binding = resolveInpaintRequestBinding(
-      animaState.value.models,
-      animaState.value.modelId,
-      inpaintMode,
-      desiredSize,
-    )
-
-    let promptText = payload.newOutfitPrompt
-    if (effectiveChar === 'nene' && !promptText.includes('ayachi_nene')) {
-      promptText = `ayachi_nene, ${promptText}`
-    } else if (effectiveChar === 'natsume' && !promptText.includes('shiki_natsume')) {
-      promptText = `shiki_natsume, ${promptText}`
-    }
-
-    const negativePrompt = effectiveChar === 'none'
-      ? `${payload.negativePrompt}, face, head, hair, duplicate person, extra person`
-      : payload.negativePrompt
-    if (!binding) {
-      pb.flash('当前没有可用的无 LoRA Anima 底模，无法处理外部通用图片')
-      return
-    }
-
-    await generateAnima({
-      prompt: promptText,
-      modelId: binding.modelId,
-      negative: negativePrompt,
-      initImage,
-      ...(maskImage ? { maskImage } : { maskPrompt: payload.maskPrompt, maskThreshold: payload.maskThreshold }),
-      denoisingStrength: payload.denoisingStrength,
-      growMaskBy: payload.growMaskBy,
-      seed: payload.seed ?? undefined,
-      character: binding.character,
-      loraId: binding.loraId,
-      loraStrength: isCharacterLora ? animaState.value.loraStrength : null,
-      width: binding.width,
-      height: binding.height,
-      teaCache: true,
-    })
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error)
-    pb.flash(`换装失败：${message}`)
-  }
-}
+// ── Anima 智能局部换装（编排已下沉 useAnimaInpaint）───────────────────────
+const {
+  inpaintOpen,
+  inpaintOriginalUrl,
+  inpaintCompareActive,
+  inpaintCharacter,
+  handleInpaintSubmit,
+} = useAnimaInpaint({
+  pb,
+  drawEngine,
+  animaState,
+  displayResultUrl,
+  generateAnima,
+})
 
 function reuseLastSeed() {
   const seed = displayResultSeed.value ?? pb.lastSeed
