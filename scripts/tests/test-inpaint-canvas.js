@@ -19,9 +19,12 @@ test('inpaint canvas helper protects from oversize stretching and 16-aligned', f
 });
 
 test('AnimaInpaintModal delegates sizing to the shared canvas helper', function () {
-  var source = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'components', 'AnimaInpaintModal.vue'), 'utf8');
-  assert.ok(source.includes("from '@/utils/inpaintCanvas'") || source.includes('from \"@/utils/inpaintCanvas\"'), 'modal should import the shared helper');
-  assert.ok(!source.includes('const INPAINT_MAX_EDGE') || source.includes("from '@/utils/inpaintCanvas'"), 'duplicated constants must not remain in the modal');
+  // 2026-08-22 画幅探测随图片源簇下沉 useInpaintImageSource，哨兵随之迁移。
+  var source = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'components', 'inpaint', 'useInpaintImageSource.ts'), 'utf8');
+  assert.ok(source.includes("from '@/utils/inpaintCanvas'") || source.includes('from \"@/utils/inpaintCanvas\"'), 'image source composable should import the shared helper');
+  var modal = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'components', 'AnimaInpaintModal.vue'), 'utf8');
+  assert.ok(!modal.includes('const INPAINT_MAX_EDGE'), 'duplicated constants must not remain in the modal');
+  assert.ok(!source.includes('const INPAINT_MAX_EDGE'), 'duplicated constants must not remain in the composable');
 });
 
 test('hires on painted inpaint composites before upscaling', function () {

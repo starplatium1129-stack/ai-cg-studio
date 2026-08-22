@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue'
-import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import { ref } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useInpaintMaskCanvas } from './inpaint/useInpaintMaskCanvas'
+import { useInpaintImageSource } from './inpaint/useInpaintImageSource'
+import { useInpaintOutfitPresets } from './inpaint/useInpaintOutfitPresets'
 
 export interface InpaintSubmitPayload {
   imageBlob: Blob
@@ -39,390 +42,70 @@ const emit = defineEmits<{
 const modalEl = ref<HTMLElement | null>(null)
 useFocusTrap(modalEl, () => props.open, { onEscape: () => emit('close') })
 
-// External / Uploaded Image State
-const uploadedBlob = ref<Blob | null>(null)
-const uploadedUrl = ref<string>('')
-const fileInputRef = ref<HTMLInputElement | null>(null)
-const isDragging = ref(false)
 const previewImageEl = ref<HTMLImageElement | null>(null)
-const maskCanvasEl = ref<HTMLCanvasElement | null>(null)
-const maskMode = ref<'auto' | 'paint'>('paint')
-const brushSize = ref(36)
-let drawing = false
-let erase = false
-let lastMaskPoint: { x: number; y: number } | null = null
 
-// Undo History & Cursor Feedback
-const maskHistory = ref<ImageData[]>([])
-const MAX_UNDO_STEPS = 20
-const cursorVisible = ref(false)
-const cursorX = ref(0)
-const cursorY = ref(0)
-
-// 自定义属性载体：笔刷光标样式规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
-const brushCursorStyle = computed(() => ({
-  '--cursor-x': `${cursorX.value}px`,
-  '--cursor-y': `${cursorY.value}px`,
-  '--brush-diameter': `${brushSize.value * 2}px`,
-}))
-
-// Character LoRA Selection
-const characterMode = ref<'auto' | 'nene' | 'natsume' | 'none'>('auto')
-
-// Active Image Computation
-const activeImageUrl = computed(() => uploadedUrl.value || props.imageUrl || '')
-
-function clearMask() {
-  const canvas = maskCanvasEl.value
-  if (!canvas) return
-  const context = canvas.getContext('2d')
-  context?.clearRect(0, 0, canvas.width, canvas.height)
-  maskHistory.value = []
-}
-
-function saveMaskState() {
-  const canvas = maskCanvasEl.value
-  if (!canvas) return
-  const context = canvas.getContext('2d')
-  if (!context) return
-  const data = context.getImageData(0, 0, canvas.width, canvas.height)
-  maskHistory.value.push(data)
-  if (maskHistory.value.length > MAX_UNDO_STEPS) {
-    maskHistory.value.shift()
-  }
-}
-
-function undoMask() {
-  const canvas = maskCanvasEl.value
-  if (!canvas) return
-  const context = canvas.getContext('2d')
-  if (!context || maskHistory.value.length === 0) return
-  const prevState = maskHistory.value.pop()
-  if (prevState) {
-    context.putImageData(prevState, 0, 0)
-  }
-}
-
-function handleKeyDown(event: KeyboardEvent) {
-  if (!props.open || maskMode.value !== 'paint') return
-  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
-    event.preventDefault()
-    undoMask()
-  }
-}
-
-function handleCanvasWheel(event: WheelEvent) {
-  if (event.altKey && maskMode.value === 'paint') {
-    event.preventDefault()
-    const delta = event.deltaY < 0 ? 4 : -4
-    brushSize.value = Math.max(8, Math.min(96, brushSize.value + delta))
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
+// ── 手绘遮罩引擎（笔划/擦除/撤销/笔刷光标/空遮罩检测）已下沉
+//    useInpaintMaskCanvas；Ctrl+Z 与 Alt+滚轮监听自持。──
+const {
+  maskCanvasEl,
+  maskMode,
+  brushSize,
+  cursorVisible,
+  brushCursorStyle,
+  maskHistory,
+  clearMask,
+  undoMask,
+  handleCanvasWheel,
+  syncMaskCanvas,
+  startMaskPaint,
+  continueMaskPaint,
+  stopMaskPaint,
+  maskBlob,
+} = useInpaintMaskCanvas({
+  active: () => props.open,
+  imageEl: previewImageEl,
+  resolution: () => detectedResolution.value,
 })
 
-function clearUploadedImage() {
-  if (uploadedUrl.value) URL.revokeObjectURL(uploadedUrl.value)
-  uploadedBlob.value = null
-  uploadedUrl.value = ''
-  clearMask()
-}
-
-watch(() => props.open, (isOpen) => {
-  if (isOpen) {
-    clearUploadedImage()
-    characterMode.value = 'auto'
-  } else {
-    clearUploadedImage()
-  }
+// ── 图片源（上传/拖拽/blob 直通/URL 兜底）与画幅探测已下沉
+//    useInpaintImageSource；blob URL 生命周期自持。──
+const {
+  activeImageUrl,
+  previewSurfaceStyle,
+  detectedResolution,
+  uploadedBlob,
+  fileInputRef,
+  isDragging,
+  triggerUpload,
+  onFileChange,
+  onDrop,
+  getBlob,
+} = useInpaintImageSource({
+  open: () => props.open,
+  imageUrl: () => props.imageUrl,
+  imageBlob: () => props.imageBlob,
+  clearMask,
+  syncMaskCanvas,
 })
 
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-  clearUploadedImage()
+// ── 服装预设（NSFW fail-closed）与 CLIPSeg/换装参数已下沉
+//    useInpaintOutfitPresets。──
+const {
+  presets,
+  visiblePresets,
+  currentPreset,
+  selectedPresetId,
+  customPrompt,
+  maskPrompt,
+  maskThreshold,
+  denoisingStrength,
+  growMaskBy,
+  preserveSeed,
+  characterMode,
+} = useInpaintOutfitPresets({
+  adultEnabled: () => props.adultEnabled,
+  open: () => props.open,
 })
-
-function triggerUpload() {
-  fileInputRef.value?.click()
-}
-
-function processUploadedFile(file: File) {
-  if (!file.type.startsWith('image/')) {
-    alert('请选择有效的图片文件 (PNG, JPG, WebP)')
-    return
-  }
-  uploadedBlob.value = file
-  if (uploadedUrl.value) {
-    URL.revokeObjectURL(uploadedUrl.value)
-  }
-  uploadedUrl.value = URL.createObjectURL(file)
-}
-
-function onFileChange(e: Event) {
-  const target = e.target as HTMLInputElement
-  const file = target.files?.[0]
-  if (file) {
-    processUploadedFile(file)
-  }
-  target.value = ''
-}
-
-function onDrop(e: DragEvent) {
-  isDragging.value = false
-  const file = e.dataTransfer?.files?.[0]
-  if (file) {
-    processUploadedFile(file)
-  }
-}
-
-function syncMaskCanvas() {
-  const image = previewImageEl.value
-  const canvas = maskCanvasEl.value
-  if (!image || !canvas || !image.naturalWidth || !image.naturalHeight) return
-  canvas.width = detectedResolution.value?.width ?? image.naturalWidth
-  canvas.height = detectedResolution.value?.height ?? image.naturalHeight
-  clearMask()
-}
-
-function pointerPosition(event: PointerEvent): { x: number; y: number } | null {
-  const canvas = maskCanvasEl.value
-  if (!canvas) return null
-  const rect = canvas.getBoundingClientRect()
-  if (!rect.width || !rect.height) return null
-  return {
-    x: (event.clientX - rect.left) * (canvas.width / rect.width),
-    y: (event.clientY - rect.top) * (canvas.height / rect.height),
-  }
-}
-
-function drawMaskStroke(event: PointerEvent) {
-  const canvas = maskCanvasEl.value
-  const position = pointerPosition(event)
-  if (!canvas || !position) return
-  const context = canvas.getContext('2d')
-  if (!context) return
-  const rect = canvas.getBoundingClientRect()
-  const radius = brushSize.value * (canvas.width / rect.width)
-  context.globalCompositeOperation = erase ? 'destination-out' : 'source-over'
-  context.fillStyle = 'rgba(255, 255, 255, 0.72)'
-  context.strokeStyle = 'rgba(255, 255, 255, 0.72)'
-  context.lineWidth = radius * 2
-  context.lineCap = 'round'
-  if (lastMaskPoint) {
-    context.beginPath()
-    context.moveTo(lastMaskPoint.x, lastMaskPoint.y)
-    context.lineTo(position.x, position.y)
-    context.stroke()
-  } else {
-    context.beginPath()
-    context.arc(position.x, position.y, radius, 0, Math.PI * 2)
-    context.fill()
-  }
-  lastMaskPoint = position
-}
-
-function startMaskPaint(event: PointerEvent) {
-  if (maskMode.value !== 'paint') return
-  saveMaskState()
-  drawing = true
-  erase = event.button === 2 || event.shiftKey
-  lastMaskPoint = null
-  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
-  drawMaskStroke(event)
-}
-
-function updateCursor(event: PointerEvent) {
-  const canvas = maskCanvasEl.value
-  if (!canvas) return
-  const rect = canvas.getBoundingClientRect()
-  cursorX.value = event.clientX - rect.left
-  cursorY.value = event.clientY - rect.top
-}
-
-function continueMaskPaint(event: PointerEvent) {
-  updateCursor(event)
-  if (drawing) drawMaskStroke(event)
-}
-
-function stopMaskPaint() {
-  drawing = false
-  erase = false
-  lastMaskPoint = null
-}
-
-async function maskBlob(): Promise<Blob | null> {
-  if (maskMode.value !== 'paint' || !maskCanvasEl.value) return null
-  const canvas = maskCanvasEl.value
-  const context = canvas.getContext('2d')
-  if (!context || !context.getImageData(0, 0, canvas.width, canvas.height).data.some(value => value > 0)) return null
-  return new Promise(resolve => canvas.toBlob(blob => resolve(blob), 'image/png'))
-}
-
-interface OutfitPreset {
-  id: string
-  label: string
-  icon: ArchiveIconName
-  isNsfw?: boolean
-  description: string
-  prompt: string
-  negativeAdd?: string
-}
-
-const OUTFIT_PRESETS: OutfitPreset[] = [
-  {
-    id: 'bikini_white',
-    label: '夏日比基尼',
-    icon: 'bikini',
-    description: '白色荷叶边系带比基尼泳装，清爽夏日风',
-    prompt: 'wearing white frilled bikini, swimsuit, halterneck bikini top, side-tie bikini bottoms, bare navel, smooth skin',
-    negativeAdd: 'heavy clothes, long sleeves, jacket, coat',
-  },
-  {
-    id: 'nude_pure',
-    label: '私密纯粹形态',
-    icon: 'lock',
-    isNsfw: true,
-    description: '完全剥离衣物，纯粹原生肌肤形态',
-    prompt: 'completely naked, full body bare, natural skin, without clothes, bare chest, exposed skin',
-    negativeAdd: 'clothes, clothing, shirt, dress, sleeves, bra, panties, fabric, robe, towel',
-  },
-  {
-    id: 'evening_dress',
-    label: '纯白晚礼服',
-    icon: 'dress',
-    description: '优雅露肩丝绸晚礼服，华丽高贵',
-    prompt: 'wearing elegant off-shoulder white evening gown, silk dress, sweetheart neckline, delicate lace trim',
-    negativeAdd: 'casual clothes, swimsuit, bikini',
-  },
-  {
-    id: 'bunny_girl',
-    label: '性感兔女郎',
-    icon: 'bunny',
-    isNsfw: true,
-    description: '漆皮紧身兔女郎服，兔耳与领结',
-    prompt: 'wearing glossy black bunny suit, strapless leotard, bunny ears, collar with black bow tie, white wrist cuffs',
-    negativeAdd: 'coat, casual shirt, dress',
-  },
-  {
-    id: 'maid_classic',
-    label: '古典女仆装',
-    icon: 'coffee',
-    description: '黑白荷叶边围裙女仆装与女仆发箍',
-    prompt: 'wearing classic black and white maid uniform, frilled white apron, maid headdress, puffy short sleeves',
-    negativeAdd: 'bikini, modern jacket',
-  },
-  {
-    id: 'casual_trench',
-    label: '秋日风衣私服',
-    icon: 'coat',
-    description: '米色休闲风衣与针织打底，温柔日常',
-    prompt: 'wearing stylish beige open trench coat over a soft knit sweater, casual chic outfit',
-    negativeAdd: 'swimsuit, bikini, bare skin',
-  },
-  {
-    id: 'sailor_uniform',
-    label: '清爽水手服',
-    icon: 'school',
-    description: '绀色百褶裙日系水手校服',
-    prompt: 'wearing navy blue sailor uniform, white collar with red neckerchief, pleated navy skirt',
-    negativeAdd: 'swimsuit, bikini, fantasy armor',
-  },
-  {
-    id: 'yukata_floral',
-    label: '和风碎花浴衣',
-    icon: 'kimono',
-    description: '传统日式花纹浴衣与宽腰带',
-    prompt: 'wearing traditional floral patterned yukata, colorful kimono dress, decorative wide obi sash, elegant drape',
-    negativeAdd: 'bikini, modern clothes',
-  },
-  {
-    id: 'silk_nightgown',
-    label: '丝绸吊带睡衣',
-    icon: 'ribbon',
-    description: '慵懒蕾丝边吊带睡裙',
-    prompt: 'wearing silky lace-trimmed camisole nightgown, thin shoulder straps, delicate satin sleepwear',
-    negativeAdd: 'heavy jacket, school uniform',
-  },
-]
-
-const selectedPresetId = ref<string>('bikini_white')
-const customPrompt = ref<string>('')
-const maskPrompt = ref<string>('clothing | clothes | outfit | dress | shirt | sweater | blouse | jacket | cardigan | coat | top | uniform | skirt | pants | shorts | sleeves | collar | costume | garment | fabric | bra | panties | underwear | swimsuit | bikini')
-// CLIPSeg 识别灵敏度：阈值越低识别区域越大。实测 0.20 会把身体/背景大片拉进
-// 重绘区（denoise 高时构图漂移），0.45 起才聚焦服装主体（2026-08-21 实机验证）。
-const maskThreshold = ref<number>(0.45)
-const denoisingStrength = ref<number>(0.85)
-const growMaskBy = ref<number>(8)
-const preserveSeed = ref<boolean>(true)
-
-const visiblePresets = computed(() => OUTFIT_PRESETS.filter(preset => props.adultEnabled || !preset.isNsfw))
-const currentPreset = computed(() => visiblePresets.value.find(p => p.id === selectedPresetId.value))
-
-watch(() => props.adultEnabled, (adultEnabled) => {
-  if (!adultEnabled && OUTFIT_PRESETS.find(preset => preset.id === selectedPresetId.value)?.isNsfw) {
-    selectedPresetId.value = 'bikini_white'
-  }
-}, { immediate: true })
-
-watch(selectedPresetId, (newId) => {
-  if (newId !== 'custom') {
-    const preset = OUTFIT_PRESETS.find(p => p.id === newId)
-    if (preset) {
-      customPrompt.value = preset.prompt
-      if (preset.id === 'nude_pure') {
-        denoisingStrength.value = 0.95
-        growMaskBy.value = 16
-      } else {
-        denoisingStrength.value = 0.85
-        growMaskBy.value = 8
-      }
-    }
-  }
-}, { immediate: true })
-
-async function getBlob(): Promise<Blob | null> {
-  if (uploadedBlob.value) {
-    return uploadedBlob.value
-  }
-  if (props.imageBlob && props.imageBlob.size > 0) {
-    return props.imageBlob
-  }
-  if (activeImageUrl.value) {
-    try {
-      const res = await fetch(activeImageUrl.value, { cache: 'no-store' })
-      if (!res.ok) return null
-      return await res.blob()
-    } catch {
-      return null
-    }
-  }
-  return null
-}
-
-import { inpaintCanvasSize } from '@/utils/inpaintCanvas'
-
-const detectedResolution = ref<{ width: number; height: number } | null>(null)
-
-// 自定义属性载体：预览画幅比例规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
-const previewSurfaceStyle = computed(() => ({
-  '--preview-ratio': detectedResolution.value ? `${detectedResolution.value.width} / ${detectedResolution.value.height}` : undefined,
-}))
-
-watch(activeImageUrl, (url) => {
-  if (!url) {
-    detectedResolution.value = null
-    return
-  }
-  const img = new Image()
-  img.onload = () => {
-    detectedResolution.value = inpaintCanvasSize(img.naturalWidth, img.naturalHeight)
-    void nextTick(syncMaskCanvas)
-  }
-  img.onerror = () => { detectedResolution.value = null }
-  img.src = url
-}, { immediate: true })
 
 async function handleStart() {
   const blob = await getBlob()
@@ -437,7 +120,7 @@ async function handleStart() {
     return
   }
 
-  const selectedPreset = OUTFIT_PRESETS.find(preset => preset.id === selectedPresetId.value)
+  const selectedPreset = presets.find(preset => preset.id === selectedPresetId.value)
   if (selectedPreset?.isNsfw && !props.adultEnabled) {
     alert('请先在导演台开启成人内容，才能使用该服装预设')
     return

@@ -43,6 +43,24 @@ function bindsOnlyCustomProps(source, identifier) {
   return keys.length > 0 && keys.every((k) => k.startsWith('--'));
 }
 
+// 2026-08-22 自定义属性载体随簇下沉 composable 后，定义点可能不在 SFC 本体：
+// 按 SFC 的相对/别名导入把候选模块源码拼进搜索范围（只追一层，覆盖
+// 「const { x } = useY()」解构与直接 import 两种形态；找不到定义仍按违规报）。
+function styleCarrierSearchScope(absPath, source) {
+  const chunks = [source];
+  for (const m of source.matchAll(/import\s+(?:[^'"]*?\sfrom\s+)?['"]([^'"]+)['"]/g)) {
+    const spec = m[1];
+    let resolved = null;
+    if (spec.startsWith('./') || spec.startsWith('../')) resolved = path.join(path.dirname(absPath), spec);
+    else if (spec.startsWith('@/')) resolved = path.join(root, 'src', spec.slice(2));
+    else continue;
+    for (const ext of ['.ts', '.js']) {
+      try { chunks.push(fs.readFileSync(resolved + ext, 'utf8')); break } catch { /* 试下一个扩展名 */ }
+    }
+  }
+  return chunks.join('\n');
+}
+
 for (const rel of htmlFiles) {
   const source = fs.readFileSync(path.join(root, rel), 'utf8');
   const matches = [...source.matchAll(/\sstyle="([^"]*)"/g)];
@@ -63,7 +81,7 @@ for (const rel of sfcFiles) {
   for (const attr of sources.inlineStyleAttrs(template)) {
     if (attr.dynamic) {
       if (DYNAMIC_CUSTOM_PROP_ONLY.test(attr.value)) continue;
-      if (IDENTIFIER_ONLY.test(attr.value) && bindsOnlyCustomProps(source, attr.value.trim())) continue;
+      if (IDENTIFIER_ONLY.test(attr.value) && bindsOnlyCustomProps(styleCarrierSearchScope(path.join(root, rel), source), attr.value.trim())) continue;
     } else if (CUSTOM_PROP_ONLY.test(attr.value)) continue;
     const prefix = attr.dynamic ? ':style' : 'style';
     fail(`${rel}:${templateStartLine + attr.line} 内联 ${prefix} 必须换成 scoped class 或自定义属性载体 → ${prefix}="${attr.value}"`);
