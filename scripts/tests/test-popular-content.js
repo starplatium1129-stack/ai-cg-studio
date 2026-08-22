@@ -144,9 +144,16 @@ test('scene coverage: every outfit referenced, >=1 iconic + >=1 daily per charac
 });
 
 // 2026-08-23 壁纸级质感契约——成人 hint 必须是 r18_* 配方 id（自由短语会以垃圾前缀
-// 直接拼进 Krea 提示词开头）；尺寸收敛到高分辨率；全量携带画质/光影 token 层；
-// 原型场景必须含追加的壁纸氛围句（prose 句点数 ≥2）。
-test('wallpaper-grade scenes: legal r18 hints, high-res sizes, quality token layer present', function () {
+// 直接拼进 Krea 提示词开头）；尺寸收敛到高分辨率；原型场景必须含追加的壁纸氛围句
+// （prose 句点数 ≥2）。质量词属于 profile 装配层（quality_prefix 恰好一次，且
+// aesthetic/2.9B 均 strip_quality_tokens=true），场景数据严禁携带政策质量词与玄学词；
+// 具体光影/环境 tag（detailed_background/cinematic_lighting 等）作为壁纸层保留。
+test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words in data layer', function () {
+  var forbidden = [
+    'masterpiece', 'best_quality', 'amazing_quality', 'very_aesthetic',
+    'absurdres', 'newest', 'highres', 'highly_detailed',
+    'intricate_details', 'ultra_detailed', '8k', '4k',
+  ];
   blueprints.forEach(function (blueprint) {
     if (blueprint.adult) {
       assert.ok(blueprint.kreaStyleHint && /^r18_/.test(blueprint.kreaStyleHint),
@@ -154,9 +161,13 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, quality token lay
     }
     assert.ok(blueprint.recommendedSize === '1152x1536' || blueprint.recommendedSize === '1536x1152',
       blueprint.id + ' recommendedSize must be wallpaper high-res, got ' + blueprint.recommendedSize);
-    ['masterpiece', 'best_quality', 'detailed_background', 'cinematic_lighting'].forEach(function (token) {
+    forbidden.forEach(function (token) {
+      assert.ok(!blueprint.promptTokens.includes(token),
+        blueprint.id + ' promptTokens must not carry assembly-layer quality word ' + token);
+    });
+    ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
       assert.ok(blueprint.promptTokens.includes(token),
-        blueprint.id + ' promptTokens missing wallpaper token ' + token);
+        blueprint.id + ' promptTokens missing wallpaper lighting token ' + token);
     });
     if (!blueprint.adult) {
       assert.ok((blueprint.promptProse.match(/\./g) || []).length >= 2,

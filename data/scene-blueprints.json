@@ -45,12 +45,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -125,12 +120,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -191,12 +181,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -257,12 +242,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -355,12 +335,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -424,12 +399,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -493,12 +463,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -576,12 +541,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -675,12 +635,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -779,12 +734,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -883,13 +833,8 @@
         "sunbeams",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
         "clean_face",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -949,12 +894,7 @@
         "rim_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1011,12 +951,7 @@
         "warm_lighting",
         "cinematic_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "volumetric_lighting"
       ],
       "negativeTokens": [
@@ -1070,12 +1005,7 @@
         "soft_rim_light",
         "depth_of_field",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1163,12 +1093,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1235,12 +1160,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1311,12 +1231,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1378,12 +1293,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1475,12 +1385,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1575,12 +1480,7 @@
         "blushing",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -1671,12 +1571,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1738,12 +1633,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1804,12 +1694,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1867,12 +1752,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -1965,12 +1845,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2035,12 +1910,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2111,12 +1981,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2179,12 +2044,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2276,12 +2136,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2375,12 +2230,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2480,12 +2330,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2545,12 +2390,7 @@
         "wind",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2605,12 +2445,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2675,12 +2510,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -2757,12 +2587,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2822,12 +2647,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2886,12 +2706,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -2953,12 +2768,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3051,12 +2861,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3149,12 +2954,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3251,12 +3051,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3351,12 +3146,7 @@
         "stoic",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3419,12 +3209,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3500,12 +3285,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3571,12 +3351,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3670,12 +3445,7 @@
         "blushing",
         "bright_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -3733,12 +3503,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3797,12 +3562,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3866,12 +3626,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -3961,12 +3716,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4060,12 +3810,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4162,12 +3907,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4228,12 +3968,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4294,12 +4029,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4358,12 +4088,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4454,12 +4179,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4518,12 +4238,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4582,12 +4297,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4650,12 +4360,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4745,12 +4450,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4849,12 +4549,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -4954,12 +4649,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5026,12 +4716,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5094,12 +4779,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5160,12 +4840,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5256,12 +4931,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5330,12 +5000,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5400,12 +5065,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5471,12 +5131,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5572,12 +5227,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5673,12 +5323,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5782,12 +5427,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5861,12 +5501,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5928,12 +5563,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -5996,12 +5626,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6090,12 +5715,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6156,12 +5776,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6224,12 +5839,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6301,12 +5911,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6398,12 +6003,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6501,12 +6101,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6609,12 +6204,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6684,12 +6274,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6757,12 +6342,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6820,12 +6400,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6914,12 +6489,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -6980,12 +6550,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7048,12 +6613,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7116,12 +6676,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7213,12 +6768,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7318,12 +6868,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7423,12 +6968,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7519,12 +7059,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7581,12 +7116,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7646,12 +7176,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7713,12 +7238,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7805,12 +7325,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7873,12 +7388,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -7939,12 +7449,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8006,12 +7511,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8109,12 +7609,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8210,12 +7705,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8313,12 +7803,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8375,12 +7860,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8440,12 +7920,7 @@
         "cinematic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
-        "detailed_background",
-        "intricate_details"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8509,12 +7984,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8603,12 +8073,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8667,12 +8132,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8733,12 +8193,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8800,12 +8255,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -8897,12 +8347,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9000,12 +8445,7 @@
         "detailed_toes",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -9092,12 +8532,7 @@
         "smirk",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9154,12 +8589,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9216,12 +8646,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9282,12 +8707,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9374,12 +8794,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9442,12 +8857,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9508,12 +8918,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9581,12 +8986,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9678,12 +9078,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9782,12 +9177,7 @@
         "moonlight",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -9879,12 +9269,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -9981,12 +9366,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10056,12 +9436,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10120,12 +9495,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10184,12 +9554,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10278,12 +9643,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10344,12 +9704,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10408,12 +9763,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10475,12 +9825,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10572,12 +9917,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10677,12 +10017,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10783,12 +10118,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10850,12 +10180,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -10928,12 +10253,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11004,12 +10324,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11099,12 +10414,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11165,12 +10475,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11236,12 +10541,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11314,12 +10614,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11408,12 +10703,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11513,12 +10803,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11618,12 +10903,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11722,12 +11002,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11800,12 +11075,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11873,12 +11143,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -11939,12 +11204,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12033,12 +11293,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12099,12 +11354,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12165,12 +11415,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12232,12 +11477,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12329,12 +11569,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12434,12 +11669,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12539,12 +11769,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12644,12 +11869,7 @@
         "bent_knees",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12715,12 +11935,7 @@
         "depth_of_field",
         "clean_face",
         "white_dress",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12780,12 +11995,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12847,12 +12057,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -12938,12 +12143,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13006,12 +12206,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13067,12 +12262,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13136,12 +12326,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13233,12 +12418,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13338,12 +12518,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13443,12 +12618,7 @@
         "delicate_collarbone",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13541,12 +12711,7 @@
         "blushing",
         "afternoon_sunlight",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -13604,12 +12769,7 @@
         "studio_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13669,12 +12829,7 @@
         "energetic_pose",
         "cheerful_smile",
         "blushing",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting",
         "depth_of_field"
@@ -13732,12 +12887,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13797,12 +12947,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13888,12 +13033,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -13964,12 +13104,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14042,12 +13177,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14107,12 +13237,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14204,12 +13329,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14308,12 +13428,7 @@
         "blushing",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -14360,8 +13475,7 @@
         "exposed_pussy",
         "detailed_vulva",
         "blushing",
-        "playful_smile",
-        "masterpiece"
+        "playful_smile"
       ],
       "nsfwProse": "Kitagawa Marin sits completely nude on the soft bed with bent knees, showing off her slender bare legs and delicate feet with pink polished toenails, well-formed 5 toes, shapely bare breasts with pink nipples, lovely blush, warm sensual lighting. The room is quiet and she is entirely by herself.",
       "adultArtistHint": "@atdan",
@@ -14408,12 +13522,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14476,12 +13585,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14539,12 +13643,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14606,12 +13705,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14699,12 +13793,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14766,12 +13855,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14845,12 +13929,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -14915,12 +13994,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15015,12 +14089,7 @@
         "delicate_collarbone",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15121,12 +14190,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15226,12 +14290,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15295,12 +14354,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15364,12 +14418,7 @@
         "dynamic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15429,12 +14478,7 @@
         "sweet_smile",
         "bright_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -15490,12 +14534,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15561,12 +14600,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15638,12 +14672,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15741,12 +14770,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15844,12 +14868,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -15947,12 +14966,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16054,12 +15068,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16127,12 +15136,7 @@
         "cinematic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
-        "detailed_background",
-        "intricate_details"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -16185,12 +15189,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16247,12 +15246,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16312,12 +15306,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16385,12 +15374,7 @@
         "bent_knees",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16468,12 +15452,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -16549,12 +15528,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16657,12 +15631,7 @@
         "detailed_toes",
         "detailed_feet",
         "clean_toes",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16767,12 +15736,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16878,12 +15842,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -16945,12 +15904,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17007,12 +15961,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17071,12 +16020,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17148,12 +16092,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17215,12 +16154,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17279,12 +16213,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17385,12 +16314,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17479,12 +16403,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17584,12 +16503,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17693,12 +16607,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17776,12 +16685,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17853,12 +16757,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17920,12 +16819,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -17993,12 +16887,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18065,12 +16954,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18138,12 +17022,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18234,12 +17113,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18343,12 +17217,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18446,12 +17315,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18550,12 +17414,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18616,12 +17475,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18681,12 +17535,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18748,12 +17597,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18813,12 +17657,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18879,12 +17718,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -18944,12 +17778,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19040,12 +17869,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19143,12 +17967,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19246,12 +18065,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19340,12 +18154,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19409,12 +18218,7 @@
         "cinematic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
-        "detailed_background",
-        "intricate_details"
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -19466,12 +18270,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19528,12 +18327,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19593,12 +18387,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19662,12 +18451,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19737,12 +18521,7 @@
         "candlelight",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -19836,12 +18615,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -19935,12 +18709,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20036,12 +18805,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20136,12 +18900,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20212,12 +18971,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20288,12 +19042,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20354,12 +19103,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20424,12 +19168,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20491,12 +19230,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20565,12 +19299,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20674,12 +19403,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20784,12 +19508,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -20899,12 +19618,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21008,12 +19722,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21074,12 +19783,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21138,12 +19842,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21203,12 +19902,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21269,12 +19963,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21338,12 +20027,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21405,12 +20089,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21503,12 +20182,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21600,12 +20274,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21697,12 +20366,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21803,12 +20467,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21869,12 +20528,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -21936,12 +20590,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22000,12 +20649,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22071,12 +20715,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22133,12 +20772,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22202,12 +20836,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22298,12 +20927,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22402,12 +21026,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22498,12 +21117,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22596,12 +21210,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22660,12 +21269,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22725,12 +21329,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22797,12 +21396,7 @@
         "detailed_toes",
         "detailed_feet",
         "clean_toes",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22869,12 +21463,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22931,12 +21520,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -22998,12 +21582,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23097,12 +21676,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23193,12 +21767,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23288,12 +21857,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23393,12 +21957,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23479,12 +22038,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23559,12 +22113,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23632,12 +22181,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23700,12 +22244,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23769,12 +22308,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23836,12 +22370,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -23940,12 +22469,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24037,12 +22561,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24154,12 +22673,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24249,12 +22763,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24313,12 +22822,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24377,12 +22881,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24441,12 +22940,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24506,12 +23000,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24573,12 +23062,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24636,12 +23120,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24732,12 +23211,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24833,12 +23307,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -24938,12 +23407,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25029,12 +23493,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25093,12 +23552,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25160,12 +23614,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25222,12 +23671,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25287,12 +23731,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25351,12 +23790,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25418,12 +23852,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25512,12 +23941,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25611,12 +24035,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25714,12 +24133,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25823,12 +24237,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25888,12 +24297,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -25956,12 +24360,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26028,12 +24427,7 @@
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26099,12 +24493,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26173,12 +24562,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26247,12 +24631,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26351,12 +24730,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26454,12 +24828,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26547,12 +24916,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26656,12 +25020,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26730,12 +25089,7 @@
         "clean_face",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26803,12 +25157,7 @@
         "blushing",
         "bright_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -26869,12 +25218,7 @@
         "detailed_toes",
         "detailed_feet",
         "clean_toes",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -26949,12 +25293,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27023,12 +25362,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27111,12 +25445,7 @@
         "blushing",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -27201,12 +25530,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27310,12 +25634,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27413,12 +25732,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27522,12 +25836,7 @@
         "blushing",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27589,12 +25898,7 @@
         "clean_face",
         "soft_lighting",
         "soft_rim_light",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -27666,12 +25970,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27731,12 +26030,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27797,12 +26091,7 @@
         "bright_sunlight",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27866,12 +26155,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -27932,12 +26216,7 @@
         "parted_lips",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -28044,12 +26323,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -28143,12 +26417,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -28252,12 +26521,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -28356,12 +26620,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -28449,12 +26708,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -28524,12 +26778,7 @@
         "volumetric_lighting",
         "sunbeams",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -28589,12 +26838,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -28676,12 +26920,7 @@
         "parted_lips",
         "soft_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -28774,12 +27013,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -28884,12 +27118,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -28985,12 +27214,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -29054,12 +27278,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -29127,12 +27346,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -29218,12 +27432,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -29330,12 +27539,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -29441,12 +27645,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -29544,12 +27743,7 @@
         "dynamic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -29611,12 +27805,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -29682,12 +27871,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -29757,12 +27941,7 @@
         "dramatic_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -29856,12 +28035,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -29960,12 +28134,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -30059,12 +28228,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -30138,12 +28302,7 @@
         "cinematic_depth",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -30210,12 +28369,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -30293,12 +28447,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -30403,12 +28552,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -30513,12 +28657,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -30613,12 +28752,7 @@
         "cinematic_backlight",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -30684,12 +28818,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -30753,12 +28882,7 @@
         "peaceful_expression",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -30837,12 +28961,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -30950,12 +29069,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -31065,12 +29179,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -31167,12 +29276,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -31235,12 +29339,7 @@
         "neon_glow",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -31303,12 +29402,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -31395,12 +29489,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -31508,12 +29597,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -31615,12 +29699,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -31716,12 +29795,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -31796,12 +29870,7 @@
         "pout",
         "afternoon_sunlight",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -31862,12 +29931,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -31943,12 +30007,7 @@
         "morning_sunlight",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -32038,12 +30097,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -32151,12 +30205,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -32262,12 +30311,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -32344,12 +30388,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -32431,12 +30470,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -32514,12 +30548,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -32630,12 +30659,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -32748,12 +30772,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -32850,12 +30869,7 @@
         "closed_eyes",
         "sacred",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -32920,12 +30934,7 @@
         "scones",
         "afternoon_sunlight",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -33001,12 +31010,7 @@
         "bright_daylight",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -33094,12 +31098,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -33220,12 +31219,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33343,12 +31337,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33452,12 +31441,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33517,12 +31501,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33590,12 +31569,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33666,12 +31640,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33764,12 +31733,7 @@
         "solo_practice",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -33839,12 +31803,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33909,12 +31868,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -33979,12 +31933,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -34078,12 +32027,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -34143,12 +32087,7 @@
         "luxury",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -34212,12 +32151,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -34281,12 +32215,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -34377,12 +32306,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -34447,12 +32371,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -34527,12 +32446,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -34597,12 +32511,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -34700,12 +32609,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -34776,12 +32680,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -34848,12 +32747,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -34924,12 +32818,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35022,12 +32911,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -35095,12 +32979,7 @@
         "no_customers",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -35170,12 +33049,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35240,12 +33114,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35338,12 +33207,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35414,12 +33278,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -35490,12 +33349,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35575,12 +33429,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35680,12 +33529,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35756,12 +33600,7 @@
         "detailed_feet",
         "clean_toes",
         "bent_knees",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35838,12 +33677,7 @@
         "dynamic_lighting",
         "atmospheric",
         "volumetric_lighting",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "depth_of_field"
       ],
@@ -35903,12 +33737,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
@@ -36005,12 +33834,7 @@
         "no_visitors",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -36081,12 +33905,7 @@
         "depth_of_field",
         "dynamic_lighting",
         "atmospheric",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -36152,12 +33971,7 @@
         "no_walkers",
         "volumetric_lighting",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting"
       ],
       "negativeTokens": [
@@ -36227,12 +34041,7 @@
         "soft_lighting",
         "soft_rim_light",
         "depth_of_field",
-        "masterpiece",
-        "best_quality",
-        "absurdres",
-        "highres",
         "detailed_background",
-        "intricate_details",
         "cinematic_lighting",
         "volumetric_lighting"
       ],
