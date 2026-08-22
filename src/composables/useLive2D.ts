@@ -1,20 +1,15 @@
-import { ref } from 'vue'
 import {
   CHARACTERS,
-  DEFAULT_LIVE2D_OUTFIT,
   findLive2DOutfit,
   findNatsumeOutfit,
 } from '@/config/characters'
 import type { EmotionRuntime } from '@/utils/emotionRuntime'
-import { createLive2dNativeAdapter } from '@/utils/live2dNativeAdapter'
 import { gazeFromClientPoint, gazeSettled, stepGaze } from '@/utils/live2dGaze'
-import { createBlinkScheduler } from '@/utils/blinkScheduler'
 import { selectLive2DBackend } from '@/live2d/createBackend'
 import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
 import type {
   Live2DBackendKind,
   Live2DModelHandle,
-  Live2DStageBackend,
   Live2DStageSession,
 } from '@/live2d/types'
 import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
@@ -34,7 +29,8 @@ import {
   POINTER_FOCUS_PARAMS,
   type Live2DInteraction,
 } from '@/composables/live2d/constants'
-import { isRecord, readLive2DCatalog, type Live2DCatalog, type Live2DModelInfo } from '@/composables/live2d/catalog'
+import { isRecord, readLive2DCatalog, type Live2DModelInfo } from '@/composables/live2d/catalog'
+import { createLive2DCtx } from '@/composables/live2d/context'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -119,71 +115,11 @@ function windowBoundsFromScreen(): { x: number; y: number } {
 }
 
 export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
-  const ready = ref(false)
-  const enabled = ref(false)
-  const destroyed = ref(false)
-  const character = ref('nene')
-  const loadedCharacter = ref('')
-  const mouthValue = ref(0)
-  const interactionHint = ref('')
-  const outfit = ref<string>(DEFAULT_LIVE2D_OUTFIT)
-  const backendKind = ref<Live2DBackendKind>('browser')
-  const backendFallback = ref<string | null>(null)
-
-  // 内部可变状态（不需要响应式）
-  let catalog: Live2DCatalog | null = null
-  let backend: Live2DStageBackend | null = null
-  let session: Live2DStageSession | null = null
-  let model: Live2DModelHandle | null = null
-  let loading: Promise<boolean> | null = null
-  let loadTimer = 0
-  let resizeObserver: ResizeObserver | null = null
-  let onResize: (() => void) | null = null
-  let visibilityHandler: (() => void) | null = null
-  let pointerClickHandler: ((event: MouseEvent) => void) | null = null
-  let pointerGazeHandler: ((event: MouseEvent) => void) | null = null
-  let pointerGazeLeaveHandler: (() => void) | null = null
-  let pointerGazeX = 0
-  let pointerGazeY = 0
-  let pointerGazeCurrentX = 0
-  let pointerGazeCurrentY = 0
-  let pointerGazeActive = false
-  let pointerGazeFrame = 0
-  let pointerGazeLastFrame = 0
-  let pointerGazeFocusKind = 'idle'
-  let activeInteraction = ''
-  let interactionTimer = 0
-  let leaveTimer = 0
-  let lifecycleToken = 0
-  let entranceUntil = 0
-  let mouthHooked = false
-  let speaking = false
-  let hostEl: HTMLElement | null = null
-  let stageEl: HTMLElement | null = null
-  let hostSelector = '#live2dHost'
-  let emotionRuntime: EmotionRuntime | null = null
-  let nativeHitTestUnsubscribe: (() => void) | null = null
-  let nativeMotionFailedUnsubscribe: (() => void) | null = null
-  const nativeAnimationAdapter = createLive2dNativeAdapter()
-  const blinkScheduler = createBlinkScheduler()
-  const emotionCurrent: Record<string, number> = {}
-  let lastParamFrame = 0
-  let maxFps = 60
-  let nativeOverlayReady = false
-  let nativeLayoutFrame = 0
-  let nativeLayoutAttempts = 0
-  let nativeEmotionFrame = 0
-  let nativeEmotionLastFrame = 0
-  // 夏目叠层/换装回落状态（2026-08-23 换装闪回修复）：动作曲线驱动的
-  // 换装显隐态在动作结束后向隐藏态 smoothstep 缓动，替代单帧硬写造成的
-  // "服装闪回"。overlaySettle 为 null 表示未在回落；overlayWasByMotion
-  // 记录上一帧叠层参数是否由动作曲线持有，用于所有权交接检测。
-  let overlaySettle: { start: number; entries: Array<{ id: string; from: number; to: number }> } | null = null
-  let overlayWasByMotion = false
+  const ctx = createLive2DCtx()
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
-    if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
-    onStatus({ state, text, detail, retryable, ready: ready.value })
+    if (ctx.hostEl) { ctx.hostEl.dataset.state = state; ctx.hostEl.dataset.error = detail; ctx.hostEl.dataset.retryable = retryable ? 'true' : 'false' }
+    onStatus({ state, text, detail, retryable, ready: ctx.ready.value })
   }
 
   async function init(
@@ -192,32 +128,32 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     stage: HTMLElement,
     options: { autoLoad?: boolean; outfit?: string; backendKind?: Live2DBackendKind } = {},
   ) {
-    hostEl = host; stageEl = stage
+    ctx.hostEl = host; ctx.stageEl = stage
     // wl-live2d 只接受 CSS selector，这里保证宿主节点有稳定 id 可选中
-    if (!hostEl.id) hostEl.id = 'live2dHost'
-    hostSelector = '#' + hostEl.id
-    character.value = char || character.value
+    if (!ctx.hostEl.id) ctx.hostEl.id = 'live2dHost'
+    ctx.hostSelector = '#' + ctx.hostEl.id
+    ctx.character.value = char || ctx.character.value
     bindPointerGaze()
-    outfit.value = char === 'natsume'
-      ? findNatsumeOutfit(options.outfit || outfit.value).id
-      : findLive2DOutfit(options.outfit || outfit.value).id
+    ctx.outfit.value = char === 'natsume'
+      ? findNatsumeOutfit(options.outfit || ctx.outfit.value).id
+      : findLive2DOutfit(options.outfit || ctx.outfit.value).id
     setState('checking', '检查 Live2D…')
     try {
-      catalog = readLive2DCatalog(await mediaStatusApi.getLive2DStatus())
+      ctx.catalog = readLive2DCatalog(await mediaStatusApi.getLive2DStatus())
       const selection = selectLive2DBackend(options.backendKind)
-      backend = selection.backend
-      backendKind.value = selection.effectiveKind
-      backendFallback.value = selection.fallbackReason
-      if (backendFallback.value) {
-        if (hostEl) hostEl.dataset.backend = 'browser-fallback'
-        console.warn('[live2d]', backendFallback.value)
-      } else if (hostEl) {
-        hostEl.dataset.backend = selection.effectiveKind
+      ctx.backend = selection.backend
+      ctx.backendKind.value = selection.effectiveKind
+      ctx.backendFallback.value = selection.fallbackReason
+      if (ctx.backendFallback.value) {
+        if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
+        console.warn('[live2d]', ctx.backendFallback.value)
+      } else if (ctx.hostEl) {
+        ctx.hostEl.dataset.backend = selection.effectiveKind
       }
       observeSize()
       bindVisibility()
-      enabled.value = options.autoLoad === true
-      if (enabled.value) await setCharacter(character.value)
+      ctx.enabled.value = options.autoLoad === true
+      if (ctx.enabled.value) await setCharacter(ctx.character.value)
       else {
         setVisible(false)
         setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
@@ -228,34 +164,34 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function modelInfo(char: string) {
-    return catalog?.models?.[char] ?? null
+    return ctx.catalog?.models?.[char] ?? null
   }
 
   async function setCharacter(char: string) {
-    character.value = char
+    ctx.character.value = char
     const info = modelInfo(char)
     if (!info?.available || !info?.modelUrl) {
       setVisible(false)
-      interactionHint.value = ''
+      ctx.interactionHint.value = ''
       setState('static', '静态立绘', info?.source || '该角色暂无 Live2D 模型')
       return
     }
-    if (!enabled.value) {
+    if (!ctx.enabled.value) {
       setVisible(false)
-      interactionHint.value = ''
+      ctx.interactionHint.value = ''
       setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
       return
     }
-    if (ready.value && loadedCharacter.value === char) {
+    if (ctx.ready.value && ctx.loadedCharacter.value === char) {
       setVisible(true); setState('ready', 'Live2D 已连接')
       setPaused(document.hidden); layout(); return
     }
     // A character switch can happen while the previous model is still loading.
     // Wait for that request to settle, then retry the character that is still
     // selected instead of returning the obsolete request's result.
-    if (loading) await loading
-    if (destroyed.value || !enabled.value || char !== character.value) return
-    if (ready.value && loadedCharacter.value === char) {
+    if (ctx.loading) await ctx.loading
+    if (ctx.destroyed.value || !ctx.enabled.value || char !== ctx.character.value) return
+    if (ctx.ready.value && ctx.loadedCharacter.value === char) {
       setVisible(true); setState('ready', 'Live2D 已连接')
       setPaused(document.hidden); layout(); return
     }
@@ -263,34 +199,34 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   async function retry() {
-    if (destroyed.value) return
-    if (loading) return loading
-    if (!enabled.value) return enable()
+    if (ctx.destroyed.value) return
+    if (ctx.loading) return ctx.loading
+    if (!ctx.enabled.value) return enable()
     destroyRuntime()
-    await setCharacter(character.value)
+    await setCharacter(ctx.character.value)
   }
 
   async function enable() {
-    if (destroyed.value) return false
-    lifecycleToken += 1
-    clearTimeout(leaveTimer)
-    leaveTimer = 0
-    enabled.value = true
-    return setCharacter(character.value)
+    if (ctx.destroyed.value) return false
+    ctx.lifecycleToken += 1
+    clearTimeout(ctx.timers.leave)
+    ctx.timers.leave = 0
+    ctx.enabled.value = true
+    return setCharacter(ctx.character.value)
   }
 
   function disable() {
-    const token = ++lifecycleToken
-    enabled.value = false
-    interactionHint.value = ''
+    const token = ++ctx.lifecycleToken
+    ctx.enabled.value = false
+    ctx.interactionHint.value = ''
     // 告别动作：先播一小段 Leave 再销毁，避免"切换回静态立绘"瞬间硬切。
     // 减少动态效果或动作不可用时直接销毁；告别期间再次点击可立即重载。
-    const playable = ready.value && model && typeof model.motion === 'function' && !prefersReducedMotion()
-      ? model.motion(LEAVE_GROUP, undefined, 3)
+    const playable = ctx.ready.value && ctx.model && typeof ctx.model.motion === 'function' && !prefersReducedMotion()
+      ? ctx.model.motion(LEAVE_GROUP, undefined, 3)
       : null
     const started = isCatchable(playable) ? playable.then((v: unknown) => v === true).catch(() => false) : Promise.resolve(playable === true)
     void started.then((ok: boolean) => {
-      if (token !== lifecycleToken || enabled.value) return
+      if (token !== ctx.lifecycleToken || ctx.enabled.value) return
       if (!ok) {
         destroyRuntime()
         setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
@@ -298,9 +234,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       }
       resumeRendering()
       setState('idle', '正在道别…', '播放告别动作后释放资源', false)
-      clearTimeout(leaveTimer)
-      leaveTimer = window.setTimeout(() => {
-        if (token !== lifecycleToken || enabled.value) return
+      clearTimeout(ctx.timers.leave)
+      ctx.timers.leave = window.setTimeout(() => {
+        if (token !== ctx.lifecycleToken || ctx.enabled.value) return
         destroyRuntime()
         setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
       }, LEAVE_PLAY_MS)
@@ -308,22 +244,22 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function load(char: string, info: Live2DModelInfo): Promise<boolean> {
-    if (loading) return loading
-    if (!backend) return Promise.resolve(false)
-    loading = new Promise((resolve) => {
+    if (ctx.loading) return ctx.loading
+    if (!ctx.backend) return Promise.resolve(false)
+    ctx.loading = new Promise((resolve) => {
       void (async () => {
         // 先停旧会话并清空宿主：wl-live2d 在 connect 时向 hostEl 创建 canvas，
         // 顺序反了会把刚创建的 canvas 一起清掉。库加载失败时旧模型也随之
         // 销毁并进入 fallback（原实现残留旧模型的行为不一致，一并修正）。
         destroyRuntime()
-        if (hostEl) hostEl.innerHTML = ''
+        if (ctx.hostEl) ctx.hostEl.innerHTML = ''
         // 加载状态必须在 connect 之前显示：原生后端 setCharacter 在渲染线程
         // 加载模型与纹理可能耗时数秒，期间 UI 线程保持空闲，loading 立即可见。
         setState('loading', 'Live2D 加载中…')
         let nextSession: Live2DStageSession
         try {
-          nextSession = await backend!.connect({
-            selector: hostSelector,
+          nextSession = await ctx.backend!.connect({
+            selector: ctx.hostSelector,
             modelUrl: info.modelUrl,
             canvasWidth: info.canvas?.width || 420,
             canvasHeight: info.canvas?.height || 610,
@@ -332,16 +268,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         } catch (e) {
           const message = errorMessage(e)
           // 原生 IPC、GPU 或模型初始化任一步失败，都回退浏览器后端再试一次。
-          if (backendKind.value === 'native' && backend?.kind === 'native') {
+          if (ctx.backendKind.value === 'native' && ctx.backend?.kind === 'native') {
             const selection = selectLive2DBackend('browser')
-            backend = selection.backend
-            backendKind.value = 'browser'
-            backendFallback.value = `原生 Live2D 初始化失败，已回退到浏览器渲染：${message}`
-            if (hostEl) hostEl.dataset.backend = 'browser-fallback'
-            console.warn('[live2d]', backendFallback.value)
+            ctx.backend = selection.backend
+            ctx.backendKind.value = 'browser'
+            ctx.backendFallback.value = `原生 Live2D 初始化失败，已回退到浏览器渲染：${message}`
+            if (ctx.hostEl) ctx.hostEl.dataset.backend = 'browser-fallback'
+            console.warn('[live2d]', ctx.backendFallback.value)
             try {
-              nextSession = await backend!.connect({
-                selector: hostSelector,
+              nextSession = await ctx.backend!.connect({
+                selector: ctx.hostSelector,
                 modelUrl: info.modelUrl,
                 canvasWidth: info.canvas?.width || 420,
                 canvasHeight: info.canvas?.height || 610,
@@ -349,40 +285,40 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
               })
             } catch (e2) {
               fallback('Live2D 初始化失败', errorMessage(e2))
-              loading = null
+              ctx.loading = null
               resolve(false); return
             }
           } else {
             fallback('Live2D 初始化失败', message)
-            loading = null
+            ctx.loading = null
             resolve(false); return
           }
         }
-        if (destroyed.value || char !== character.value) {
+        if (ctx.destroyed.value || char !== ctx.character.value) {
           nextSession.destroy()
-          loading = null
+          ctx.loading = null
           resolve(false); return
         }
-        session = nextSession
-        const nativeCapability = session.kind === 'native' ? session.capability : null
+        ctx.session = nextSession
+        const nativeCapability = ctx.session.kind === 'native' ? ctx.session.capability : null
         let settled = false
         const finish = (v: boolean) => {
           if (settled) return; settled = true
-          clearTimeout(loadTimer); loading = null; resolve(v)
+          clearTimeout(ctx.timers.load); ctx.loading = null; resolve(v)
         }
-        loadTimer = window.setTimeout(() => { fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化'); finish(false) }, 20000)
-        session.onModelLoaded((m: Live2DModelHandle) => {
-          if (destroyed.value || char !== character.value) { finish(false); return }
-          model = m; loadedCharacter.value = char; ready.value = true
-          mouthValue.value = 0; mouthHooked = false
+        ctx.timers.load = window.setTimeout(() => { fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化'); finish(false) }, 20000)
+        ctx.session.onModelLoaded((m: Live2DModelHandle) => {
+          if (ctx.destroyed.value || char !== ctx.character.value) { finish(false); return }
+          ctx.model = m; ctx.loadedCharacter.value = char; ctx.ready.value = true
+          ctx.mouthValue.value = 0; ctx.mouthHooked = false
           bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); scheduleNativeLayout()
           setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
           startNativeEmotionClock()
           if (!nativeCapability?.entranceNative) playEntrance()
-          void setOutfit(outfit.value)
+          void setOutfit(ctx.outfit.value)
           finish(true)
         })
-        session.onModelError((e: Error) => {
+        ctx.session.onModelError((e: Error) => {
           const detail = errorMessage(e)
           // 原生渲染线程停止：overlay 已销毁，模型不可用，必须提示并允许
           // 重试重新拉起线程（与"动作/换装失败但模型仍显示"的退化不同）。
@@ -392,7 +328,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           }
           // wl-live2d 复用这一个回调报告初始载入和之后的 outfit/motion
           // 错误。后者不代表已经显示的模型失效，不能因此切回静态立绘。
-          if (ready.value && loadedCharacter.value === char) {
+          if (ctx.ready.value && ctx.loadedCharacter.value === char) {
             setState('degraded', 'Live2D 动作或换装暂不可用', detail, true)
             return
           }
@@ -400,44 +336,44 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         })
       })()
     })
-    return loading
+    return ctx.loading
   }
 
   function observeSize() {
-    if (!hostEl) return
-    if ('ResizeObserver' in window && !resizeObserver) {
-      resizeObserver = new ResizeObserver(() => layout()); resizeObserver.observe(hostEl)
+    if (!ctx.hostEl) return
+    if ('ResizeObserver' in window && !ctx.resizeObserver) {
+      ctx.resizeObserver = new ResizeObserver(() => layout()); ctx.resizeObserver.observe(ctx.hostEl)
     } else {
-      window.addEventListener('resize', (onResize = () => layout()))
+      window.addEventListener('resize', (ctx.onResize = () => layout()))
     }
   }
 
   function bindVisibility() {
-    if (visibilityHandler) return
-    visibilityHandler = () => setPaused(document.hidden)
-    document.addEventListener('visibilitychange', visibilityHandler)
+    if (ctx.visibilityHandler) return
+    ctx.visibilityHandler = () => setPaused(document.hidden)
+    document.addEventListener('visibilitychange', ctx.visibilityHandler)
   }
 
   function playEntrance() {
     if (prefersReducedMotion()) return
-    if (!model) return
-    const motionFn = model.motion
+    if (!ctx.model) return
+    const motionFn = ctx.model.motion
     if (typeof motionFn !== 'function') return
     // 浏览器路径：从 wl-live2d 的 motionManager.definitions 探测 Start 组
     // （原生后端由 Rust 接管入场动作，不会走到这里）。
-    if (!(model.hasMotionGroup?.(ENTRANCE_GROUP) ?? false)) return
+    if (!(ctx.model.hasMotionGroup?.(ENTRANCE_GROUP) ?? false)) return
     // 模型刚加载完成时 Start 组的动作可能还在预加载，startRandomMotion 会
     // 因组内全部未就绪直接返回 false；这里重试直到登场动作真正启动。
     let attempts = 0
     const tryStart = () => {
-      if (attempts++ > 40 || destroyed.value || !model) return
-      const result = motionFn.call(model, ENTRANCE_GROUP, undefined, 2)
+      if (attempts++ > 40 || ctx.destroyed.value || !ctx.model) return
+      const result = motionFn.call(ctx.model, ENTRANCE_GROUP, undefined, 2)
       const started = isCatchable(result)
         ? result.then((v: unknown) => v === true).catch(() => false)
         : Promise.resolve(result === true)
       void started.then((ok: boolean) => {
         if (ok) {
-          entranceUntil = performance.now() + ENTRANCE_MAX_MS
+          ctx.entranceUntil = performance.now() + ENTRANCE_MAX_MS
           // 登场结束后（entranceUntil 过期）叠层参数由 applyParameters 的
           // 所有权交接自动启动 smoothstep 回落：Start* 变体也会驱动叠层
           // 显隐（2026-08-16 实测 Start_1 等把 Param38 等从 0 拉高），
@@ -451,90 +387,90 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function bindMouthOverride() {
-    if (!model || mouthHooked) return
+    if (!ctx.model || ctx.mouthHooked) return
     // 原生后端：参数由作者工程执行，不需要 beforeModelUpdate 钩子
-    if (session?.capability.parameterOverride === false) return
-    mouthHooked = true
-    model.onBeforeModelUpdate(applyParameters)
+    if (ctx.session?.capability.parameterOverride === false) return
+    ctx.mouthHooked = true
+    ctx.model.onBeforeModelUpdate(applyParameters)
   }
 
   function attachEmotionRuntime(runtime: EmotionRuntime | null) {
-    emotionRuntime = runtime
-    nativeAnimationAdapter.reset()
-    for (const key of Object.keys(emotionCurrent)) delete emotionCurrent[key]
-    lastParamFrame = 0
+    ctx.emotionRuntime = runtime
+    ctx.nativeAnimationAdapter.reset()
+    for (const key of Object.keys(ctx.emotionCurrent)) delete ctx.emotionCurrent[key]
+    ctx.lastParamFrame = 0
   }
 
   function sendNativeEmotionIntent() {
-    if (session?.capability.emotionChannel !== 'bridge' || !emotionRuntime) return
-    session.sendEmotion?.(emotionRuntime.lastEmotion(), emotionRuntime.intensity())
+    if (ctx.session?.capability.emotionChannel !== 'bridge' || !ctx.emotionRuntime) return
+    ctx.session.sendEmotion?.(ctx.emotionRuntime.lastEmotion(), ctx.emotionRuntime.intensity())
   }
 
   function stopNativeEmotionClock() {
-    if (nativeEmotionFrame) window.cancelAnimationFrame(nativeEmotionFrame)
-    nativeEmotionFrame = 0
-    nativeEmotionLastFrame = 0
+    if (ctx.frames.nativeEmotion) window.cancelAnimationFrame(ctx.frames.nativeEmotion)
+    ctx.frames.nativeEmotion = 0
+    ctx.nativeEmotionLastFrame = 0
   }
 
   function nativeEmotionTick(now: number) {
-    nativeEmotionFrame = 0
+    ctx.frames.nativeEmotion = 0
     if (
-      destroyed.value
+      ctx.destroyed.value
       || document.hidden
-      || !model?.visible
-      || session?.capability.emotionChannel !== 'bridge'
+      || !ctx.model?.visible
+      || ctx.session?.capability.emotionChannel !== 'bridge'
     ) return
-    const dt = Math.min(0.12, (now - nativeEmotionLastFrame) / 1000 || 1 / 60)
-    nativeEmotionLastFrame = now
-    emotionRuntime?.update(dt)
-    if (stageEl && emotionRuntime) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
+    const dt = Math.min(0.12, (now - ctx.nativeEmotionLastFrame) / 1000 || 1 / 60)
+    ctx.nativeEmotionLastFrame = now
+    ctx.emotionRuntime?.update(dt)
+    if (ctx.stageEl && ctx.emotionRuntime) ctx.stageEl.dataset.emotionIntensity = ctx.emotionRuntime.intensity().toFixed(3)
     sendNativeEmotionIntent()
-    nativeEmotionFrame = window.requestAnimationFrame(nativeEmotionTick)
+    ctx.frames.nativeEmotion = window.requestAnimationFrame(nativeEmotionTick)
   }
 
   function startNativeEmotionClock() {
-    if (session?.capability.emotionChannel !== 'bridge' || nativeEmotionFrame || document.hidden) return
-    nativeEmotionLastFrame = performance.now()
-    nativeEmotionFrame = window.requestAnimationFrame(nativeEmotionTick)
+    if (ctx.session?.capability.emotionChannel !== 'bridge' || ctx.frames.nativeEmotion || document.hidden) return
+    ctx.nativeEmotionLastFrame = performance.now()
+    ctx.frames.nativeEmotion = window.requestAnimationFrame(nativeEmotionTick)
   }
 
   function applyParameters() {
-    if (!model?.visible) return
+    if (!ctx.model?.visible) return
     const now = performance.now()
-    const dt = Math.min(0.12, (now - lastParamFrame) / 1000 || 1 / 60)
-    lastParamFrame = now
-    if (session?.capability.parameterOverride === false) {
+    const dt = Math.min(0.12, (now - ctx.lastParamFrame) / 1000 || 1 / 60)
+    ctx.lastParamFrame = now
+    if (ctx.session?.capability.parameterOverride === false) {
       // 原生后端：只传口型意图，参数级写入由 Cubism Native 按作者工程执行。
       // blinkScheduler / MOUTH_PARAMS 参数 hack 全部退役。情绪推进只有一个
       // 时钟（nativeEmotionTick 的 requestAnimationFrame），口型回调不得再次
       // update emotionRuntime，否则同一帧会被推进两次。
-      if (speaking) session.sendMouthLevel?.(mouthValue.value)
-      if (stageEl) stageEl.dataset.blink = '1.000'
+      if (ctx.speaking) ctx.session.sendMouthLevel?.(ctx.mouthValue.value)
+      if (ctx.stageEl) ctx.stageEl.dataset.blink = '1.000'
       return
     }
     try {
       // Cubism motion/physics run before this event. Write with full weight so
       // their idle values cannot overwrite the audio amplitude or emotion.
-      if (speaking) {
-        const mouth = selectMouthParams(character.value)
-        model.setParameterValueById(mouth.id, mouthValue.value * mouth.scale, 1)
+      if (ctx.speaking) {
+        const mouth = selectMouthParams(ctx.character.value)
+        ctx.model.setParameterValueById(mouth.id, ctx.mouthValue.value * mouth.scale, 1)
       }
       // 覆盖式眨眼：双眼参数永远写同一个值（1=睁、0=闭），修掉作者眼曲线
       // 左右眼不同步造成的"单眼 Wink"，并保证定时眨眼（见 blinkScheduler）。
       // 登场动作（Start 组）期间暂停覆盖：其眼曲线左右同步（含开场闭眼），
       // 让作者动画原样呈现。
-      const inEntrance = now < entranceUntil
+      const inEntrance = now < ctx.entranceUntil
       if (inEntrance) {
-        if (stageEl) stageEl.dataset.blink = '1.000'
+        if (ctx.stageEl) ctx.stageEl.dataset.blink = '1.000'
       } else {
-        const blinkValue = blinkScheduler.update(dt)
-        const blinkIds = selectBlinkParams(character.value)
+        const blinkValue = ctx.blinkScheduler.update(dt)
+        const blinkIds = selectBlinkParams(ctx.character.value)
         if (blinkIds) {
-          for (const id of blinkIds) model.setParameterValueById(id, blinkValue, 1)
+          for (const id of blinkIds) ctx.model.setParameterValueById(id, blinkValue, 1)
         }
-        if (stageEl) stageEl.dataset.blink = blinkValue.toFixed(3)
+        if (ctx.stageEl) ctx.stageEl.dataset.blink = blinkValue.toFixed(3)
       }
-      if (stageEl) stageEl.dataset.entrance = inEntrance ? '1' : '0'
+      if (ctx.stageEl) ctx.stageEl.dataset.entrance = inEntrance ? '1' : '0'
       // 叠层参数守卫 + 平滑回落（2026-08-23 换装闪回修复）：Idle 动作
       // Idle_6 会把 Param36/37 拉出隐藏态（到 5+），静止时叠层显示 →
       // 眼睛/全身发灰；互动（Tap）或登场（Start）播放期间让动作曲线驱动
@@ -544,164 +480,164 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       // 部件一帧内消失/回穿，视觉上是"闪一下"；回落结束后恢复每帧硬性
       // 写回隐藏态（0/-1 分组）——与 native 端 step_overlay_settle /
       // force_overlay_hidden 行为一致。
-      const interactionPlaying = activeInteraction !== ''
+      const interactionPlaying = ctx.activeInteraction !== ''
       const overlayByMotion = inEntrance || interactionPlaying
       if (overlayByMotion) {
-        overlaySettle = null
-      } else if (overlayWasByMotion && character.value === 'natsume') {
+        ctx.overlaySettle = null
+      } else if (ctx.overlayWasByMotion && ctx.character.value === 'natsume') {
         beginNatsumeOverlaySettle()
       }
-      overlayWasByMotion = overlayByMotion
-      if (!overlayByMotion && character.value === 'natsume') {
-        if (overlaySettle) {
-          const t = Math.min(1, (now - overlaySettle.start) / OVERLAY_SETTLE_MS)
+      ctx.overlayWasByMotion = overlayByMotion
+      if (!overlayByMotion && ctx.character.value === 'natsume') {
+        if (ctx.overlaySettle) {
+          const t = Math.min(1, (now - ctx.overlaySettle.start) / OVERLAY_SETTLE_MS)
           const eased = t * t * (3 - 2 * t)
-          for (const { id, from, to } of overlaySettle.entries) {
-            try { model.setParameterValueById(id, from + (to - from) * eased, 1) } catch { /* 参数缺失忽略 */ }
+          for (const { id, from, to } of ctx.overlaySettle.entries) {
+            try { ctx.model.setParameterValueById(id, from + (to - from) * eased, 1) } catch { /* 参数缺失忽略 */ }
           }
-          if (t >= 1) overlaySettle = null
+          if (t >= 1) ctx.overlaySettle = null
         } else {
           for (const { id, value } of NATSUME_RESET_PARAMS) {
-            try { model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
+            try { ctx.model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
           }
         }
       }
-      if (!emotionRuntime) return
-      emotionRuntime.update(dt)
-      if (stageEl) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
-      const frame = emotionRuntime.performanceFrame()
+      if (!ctx.emotionRuntime) return
+      ctx.emotionRuntime.update(dt)
+      if (ctx.stageEl) ctx.stageEl.dataset.emotionIntensity = ctx.emotionRuntime.intensity().toFixed(3)
+      const frame = ctx.emotionRuntime.performanceFrame()
       if (!prefersReducedMotion()) {
-        void nativeAnimationAdapter.apply(frame.nativeAnimation, model, character.value)
+        void ctx.nativeAnimationAdapter.apply(frame.nativeAnimation, ctx.model, ctx.character.value)
       }
-      const targets = { ...frame.live2dParams, ...emotionRuntime.targets() }
-      for (const id of nativeAnimationAdapter.activeSuppressedParamIds()) {
+      const targets = { ...frame.live2dParams, ...ctx.emotionRuntime.targets() }
+      for (const id of ctx.nativeAnimationAdapter.activeSuppressedParamIds()) {
         delete targets[id]
-        delete emotionCurrent[id]
+        delete ctx.emotionCurrent[id]
       }
-      if (typeof model.focus === 'function') {
+      if (typeof ctx.model.focus === 'function') {
         // pixi-live2d-display already maps focus to the model's authored eye
         // and head parameters. Do not overwrite those values with SoulLink.
-        if (pointerGazeActive) {
+        if (ctx.gaze.active) {
           for (const id of POINTER_FOCUS_PARAMS) {
             delete targets[id]
-            delete emotionCurrent[id]
+            delete ctx.emotionCurrent[id]
           }
         }
       } else {
         // Keep a parameter fallback for runtimes without the native focus API.
-        if (pointerGazeActive || Math.abs(pointerGazeCurrentX) > 0.01 || Math.abs(pointerGazeCurrentY) > 0.01) {
-          targets.ParamEyeBallX = pointerGazeCurrentX
-          targets.ParamEyeBallY = pointerGazeCurrentY
+        if (ctx.gaze.active || Math.abs(ctx.gaze.currentX) > 0.01 || Math.abs(ctx.gaze.currentY) > 0.01) {
+          targets.ParamEyeBallX = ctx.gaze.currentX
+          targets.ParamEyeBallY = ctx.gaze.currentY
         }
       }
       for (const [id, target] of Object.entries(targets)) {
-        const current = emotionCurrent[id] ?? 0
+        const current = ctx.emotionCurrent[id] ?? 0
         const next = current + (target - current) * Math.min(1, dt * 6)
-        emotionCurrent[id] = next
-        model.setParameterValueById(id, next, 1)
+        ctx.emotionCurrent[id] = next
+        ctx.model.setParameterValueById(id, next, 1)
       }
       // 归零的参数交还给 idle 动作，避免表情参数常驻覆写把待机动画压死
-      for (const id of Object.keys(emotionCurrent)) {
-        if (targets[id] === 0 && Math.abs(emotionCurrent[id]) < 0.004) {
-          delete emotionCurrent[id]
+      for (const id of Object.keys(ctx.emotionCurrent)) {
+        if (targets[id] === 0 && Math.abs(ctx.emotionCurrent[id]) < 0.004) {
+          delete ctx.emotionCurrent[id]
         }
       }
     } catch {}
   }
 
   function bindContextEvents() {
-    if (!hostEl) return
-    const cvs = session?.canvasElement?.() as HTMLCanvasElement | null
+    if (!ctx.hostEl) return
+    const cvs = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
     if (!cvs || cvs.dataset.contextEvents === '1') return
     cvs.dataset.contextEvents = '1'
     cvs.addEventListener('webglcontextlost', (e) => {
       e.preventDefault()
       // 销毁/卸载阶段（disable、角色切换）移除 canvas 也会触发该事件，
       // 此时模型已经下线，不能再用"图形上下文已暂停"覆盖退出提示。
-      if (!ready.value || !model) return
+      if (!ctx.ready.value || !ctx.model) return
       fallback('Live2D 图形上下文已暂停', 'WebGL context lost')
     })
     cvs.addEventListener('webglcontextrestored', () => retry())
   }
 
   function bindPointerGaze() {
-    if (!stageEl || pointerGazeHandler) return
-    pointerGazeHandler = (event) => {
-      const rect = stageEl?.getBoundingClientRect()
+    if (!ctx.stageEl || ctx.pointerGazeHandler) return
+    ctx.pointerGazeHandler = (event) => {
+      const rect = ctx.stageEl?.getBoundingClientRect()
       if (!rect?.width || !rect.height) return
       const target = gazeFromClientPoint(event.clientX, event.clientY, rect)
-      pointerGazeX = target.x
-      pointerGazeY = target.y
-      pointerGazeActive = true
-      const focus = model?.focus
-      pointerGazeFocusKind = focus ? 'native' : 'fallback'
+      ctx.gaze.x = target.x
+      ctx.gaze.y = target.y
+      ctx.gaze.active = true
+      const focus = ctx.model?.focus
+      ctx.gaze.kind = focus ? 'native' : 'fallback'
       schedulePointerGaze()
     }
-    pointerGazeLeaveHandler = releasePointerFocus
-    stageEl.addEventListener('mousemove', pointerGazeHandler)
-    stageEl.addEventListener('mouseleave', pointerGazeLeaveHandler)
+    ctx.pointerGazeLeaveHandler = releasePointerFocus
+    ctx.stageEl.addEventListener('mousemove', ctx.pointerGazeHandler)
+    ctx.stageEl.addEventListener('mouseleave', ctx.pointerGazeLeaveHandler)
   }
 
   function schedulePointerGaze() {
-    if (pointerGazeFrame || !ready.value || !model) return
-    pointerGazeLastFrame = performance.now()
-    pointerGazeFrame = window.requestAnimationFrame(runPointerGazeFrame)
+    if (ctx.frames.gaze || !ctx.ready.value || !ctx.model) return
+    ctx.gaze.lastFrame = performance.now()
+    ctx.frames.gaze = window.requestAnimationFrame(runPointerGazeFrame)
   }
 
   function runPointerGazeFrame(now: number) {
-    pointerGazeFrame = 0
-    if (!ready.value || !model || destroyed.value) return
-    const dt = Math.max(1 / 240, Math.min(0.05, (now - pointerGazeLastFrame) / 1000))
-    pointerGazeLastFrame = now
+    ctx.frames.gaze = 0
+    if (!ctx.ready.value || !ctx.model || ctx.destroyed.value) return
+    const dt = Math.max(1 / 240, Math.min(0.05, (now - ctx.gaze.lastFrame) / 1000))
+    ctx.gaze.lastFrame = now
     const next = stepGaze(
-      { x: pointerGazeCurrentX, y: pointerGazeCurrentY },
-      { x: pointerGazeX, y: pointerGazeY },
+      { x: ctx.gaze.currentX, y: ctx.gaze.currentY },
+      { x: ctx.gaze.x, y: ctx.gaze.y },
       dt,
-      pointerGazeActive ? 12 : 6,
+      ctx.gaze.active ? 12 : 6,
     )
-    pointerGazeCurrentX = next.x
-    pointerGazeCurrentY = next.y
-    const focus = model.focus
+    ctx.gaze.currentX = next.x
+    ctx.gaze.currentY = next.y
+    const focus = ctx.model.focus
     if (focus) {
-      const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
+      const screen = ctx.session?.getScreenSize() ?? { width: 420, height: 610 }
       focus.call(
-        model,
-        (pointerGazeCurrentX + 1) * 0.5 * screen.width,
-        (1 - pointerGazeCurrentY) * 0.5 * screen.height,
+        ctx.model,
+        (ctx.gaze.currentX + 1) * 0.5 * screen.width,
+        (1 - ctx.gaze.currentY) * 0.5 * screen.height,
       )
     }
-    session?.sendGaze?.(pointerGazeCurrentX, pointerGazeCurrentY)
-    if (stageEl) {
-      stageEl.dataset.pointerFocus = pointerGazeActive ? pointerGazeFocusKind : 'idle'
-      stageEl.dataset.pointerGazeX = pointerGazeCurrentX.toFixed(3)
-      stageEl.dataset.pointerGazeY = pointerGazeCurrentY.toFixed(3)
+    ctx.session?.sendGaze?.(ctx.gaze.currentX, ctx.gaze.currentY)
+    if (ctx.stageEl) {
+      ctx.stageEl.dataset.pointerFocus = ctx.gaze.active ? ctx.gaze.kind : 'idle'
+      ctx.stageEl.dataset.pointerGazeX = ctx.gaze.currentX.toFixed(3)
+      ctx.stageEl.dataset.pointerGazeY = ctx.gaze.currentY.toFixed(3)
     }
     const settled = gazeSettled(
-      { x: pointerGazeCurrentX, y: pointerGazeCurrentY },
-      { x: pointerGazeX, y: pointerGazeY },
+      { x: ctx.gaze.currentX, y: ctx.gaze.currentY },
+      { x: ctx.gaze.x, y: ctx.gaze.y },
     )
     if (settled) {
-      pointerGazeCurrentX = pointerGazeX
-      pointerGazeCurrentY = pointerGazeY
+      ctx.gaze.currentX = ctx.gaze.x
+      ctx.gaze.currentY = ctx.gaze.y
       return
     }
-    pointerGazeFrame = window.requestAnimationFrame(runPointerGazeFrame)
+    ctx.frames.gaze = window.requestAnimationFrame(runPointerGazeFrame)
   }
 
   function releasePointerFocus() {
-    pointerGazeActive = false
-    pointerGazeX = 0
-    pointerGazeY = 0
-    pointerGazeFocusKind = 'idle'
-    if (stageEl) stageEl.dataset.pointerFocus = 'idle'
+    ctx.gaze.active = false
+    ctx.gaze.x = 0
+    ctx.gaze.y = 0
+    ctx.gaze.kind = 'idle'
+    if (ctx.stageEl) ctx.stageEl.dataset.pointerFocus = 'idle'
     schedulePointerGaze()
   }
 
   function worldPoint(event: MouseEvent) {
-    const canvas = session?.canvasElement?.() as HTMLCanvasElement | null
-    const rect = canvas?.getBoundingClientRect() ?? stageEl?.getBoundingClientRect()
+    const canvas = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
+    const rect = canvas?.getBoundingClientRect() ?? ctx.stageEl?.getBoundingClientRect()
     if (!rect || !rect.width || !rect.height) return null
-    const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
+    const screen = ctx.session?.getScreenSize() ?? { width: 420, height: 610 }
     return {
       x: Math.max(0, Math.min(screen.width, (event.clientX - rect.left) / rect.width * screen.width)),
       y: Math.max(0, Math.min(screen.height, (event.clientY - rect.top) / rect.height * screen.height)),
@@ -714,26 +650,26 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
    * DOM 事件负责（更平滑），这里只处理鼠标在窗口外的时刻。
    */
   function setGlobalPointer(screenX: number, screenY: number, windowBounds: { x: number; y: number; width: number; height: number }): void {
-    if (!ready.value || !model) return
-    const rect = stageEl?.getBoundingClientRect()
+    if (!ctx.ready.value || !ctx.model) return
+    const rect = ctx.stageEl?.getBoundingClientRect()
     if (!rect?.width || !rect.height) return
     // 无边框窗口的 bounds 即内容区在屏幕上的位置：clientX = 屏幕坐标 − bounds
     const clientX = screenX - windowBounds.x
     const clientY = screenY - windowBounds.y
     const target = gazeFromClientPoint(clientX, clientY, rect, 0.82)
-    pointerGazeX = target.x
-    pointerGazeY = target.y
-    pointerGazeActive = true
-    pointerGazeFocusKind = 'global'
+    ctx.gaze.x = target.x
+    ctx.gaze.y = target.y
+    ctx.gaze.active = true
+    ctx.gaze.kind = 'global'
     schedulePointerGaze()
   }
 
   function interactionFromStagePosition(event: MouseEvent): Live2DInteraction | null {
-    const rect = stageEl?.getBoundingClientRect()
+    const rect = ctx.stageEl?.getBoundingClientRect()
     if (!rect?.width || !rect.height) return null
     const x = (event.clientX - rect.left) / rect.width
     const y = (event.clientY - rect.top) / rect.height
-    return resolveStageInteraction(character.value, x, y)
+    return resolveStageInteraction(ctx.character.value, x, y)
   }
 
   function interactionAt(event: MouseEvent): Live2DInteraction {
@@ -745,43 +681,41 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     // wl-live2d sometimes reports the broad body mesh for every DOM click;
     // retain the measured hit areas only as a last-resort fallback.
     const point = worldPoint(event)
-    const hitAreas = point && typeof model?.hitTest === 'function'
-      ? model.hitTest(point.x, point.y)
+    const hitAreas = point && typeof ctx.model?.hitTest === 'function'
+      ? ctx.model.hitTest(point.x, point.y)
       : []
     const interaction = hitAreas
-      .map(area => (character.value === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
-      .map(area => (character.value === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
+      .map(area => (ctx.character.value === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
+      .map(area => (ctx.character.value === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
       .find((item): item is Live2DInteraction => Boolean(item))
     if (interaction) return interaction
-    return character.value === 'natsume' ? NATSUME_INTERACTIONS.Head : INTERACTION_MOTIONS.Head
+    return ctx.character.value === 'natsume' ? NATSUME_INTERACTIONS.Head : INTERACTION_MOTIONS.Head
   }
 
-  let interactionAudio: HTMLAudioElement | null = null
-
   function stopInteractionAudio() {
-    if (interactionAudio) {
+    if (ctx.interactionAudio) {
       try {
-        interactionAudio.pause()
-        interactionAudio.src = ''
+        ctx.interactionAudio.pause()
+        ctx.interactionAudio.src = ''
       } catch {
         // ignore
       }
-      interactionAudio = null
+      ctx.interactionAudio = null
     }
   }
 
   function playNativeInteractionSound(soundUrl?: string) {
-    if (!soundUrl || mouthValue.value > 0) return
+    if (!soundUrl || ctx.mouthValue.value > 0) return
     try {
       stopInteractionAudio()
       const audio = new Audio(soundUrl)
       audio.volume = 0.8
-      interactionAudio = audio
+      ctx.interactionAudio = audio
       audio.play().catch(() => {
         // 浏览器静音策略或交互时机拦截静默降级
       })
       audio.onended = () => {
-        if (interactionAudio === audio) interactionAudio = null
+        if (ctx.interactionAudio === audio) ctx.interactionAudio = null
       }
     } catch {
       // ignore
@@ -789,21 +723,21 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function markInteractionStarted(interaction: Live2DInteraction, customText?: string, soundUrl?: string) {
-    activeInteraction = interaction.group
-    clearTimeout(interactionTimer)
+    ctx.activeInteraction = interaction.group
+    clearTimeout(ctx.timers.interaction)
     // 互动计时结束只交还叠层参数所有权；复位改由 applyParameters 的所有权
     // 交接检测启动 smoothstep 回落（2026-08-23）。此处若先硬写会破坏回落
     // 对动作现值的捕获，退化回单帧硬切的"闪一下"。
-    interactionTimer = window.setTimeout(() => {
-      if (activeInteraction === interaction.group) {
-        activeInteraction = ''
+    ctx.timers.interaction = window.setTimeout(() => {
+      if (ctx.activeInteraction === interaction.group) {
+        ctx.activeInteraction = ''
       }
     }, interaction.duration + 600)
-    interactionHint.value = customText || interaction.hint
+    ctx.interactionHint.value = customText || interaction.hint
     setState('ready', 'Live2D 已连接')
-    stageEl?.classList.remove('live2d-reacting')
-    void stageEl?.offsetWidth
-    stageEl?.classList.add('live2d-reacting')
+    ctx.stageEl?.classList.remove('live2d-reacting')
+    void ctx.stageEl?.offsetWidth
+    ctx.stageEl?.classList.add('live2d-reacting')
     playNativeInteractionSound(soundUrl)
   }
 
@@ -816,9 +750,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
    * 半透明残留成重影。
    */
   function resetNatsumeOverlayParams() {
-    if (character.value !== 'natsume' || !model || session?.capability.parameterOverride === false) return
+    if (ctx.character.value !== 'natsume' || !ctx.model || ctx.session?.capability.parameterOverride === false) return
     for (const { id, value } of NATSUME_RESET_PARAMS) {
-      try { model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
+      try { ctx.model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
     }
   }
 
@@ -833,47 +767,47 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
    * 接口时退回一次性硬写（旧行为）。原生端不适用（参数由 Rust 侧回落）。
    */
   function beginNatsumeOverlaySettle() {
-    if (character.value !== 'natsume' || !model || session?.capability.parameterOverride === false) return
-    const read = model.getParameterValueById
+    if (ctx.character.value !== 'natsume' || !ctx.model || ctx.session?.capability.parameterOverride === false) return
+    const read = ctx.model.getParameterValueById
     if (typeof read !== 'function') {
       resetNatsumeOverlayParams()
       return
     }
     const entries: Array<{ id: string; from: number; to: number }> = []
     for (const { id, value } of NATSUME_RESET_PARAMS) {
-      const current = read.call(model, id)
+      const current = read.call(ctx.model, id)
       if (typeof current === 'number' && Number.isFinite(current)) {
         entries.push({ id, from: current, to: value })
       }
     }
-    overlaySettle = entries.length ? { start: performance.now(), entries } : null
+    ctx.overlaySettle = entries.length ? { start: performance.now(), entries } : null
   }
 
   function interactionFailed(interaction: Live2DInteraction) {
-    if (activeInteraction === interaction.group) {
-      interactionHint.value = '这个动作正在进行中'
+    if (ctx.activeInteraction === interaction.group) {
+      ctx.interactionHint.value = '这个动作正在进行中'
       return
     }
-    interactionHint.value = '动作没有启动，请重试'
+    ctx.interactionHint.value = '动作没有启动，请重试'
     setState('degraded', 'Live2D 动作未启动', `未能启动 ${interaction.group}`, true)
   }
 
   function playInteraction(interaction: Live2DInteraction) {
-    if (!ready.value || !model?.visible || prefersReducedMotion() || mouthValue.value > 0) return
+    if (!ctx.ready.value || !ctx.model?.visible || prefersReducedMotion() || ctx.mouthValue.value > 0) return
     // pixi-live2d-display uses the third argument as motion priority. Passing
     // null is treated as MotionPriority.NONE, which silently rejects the
     // motion while still letting the click hint update. FORCE interrupts idle
     // motion so a deliberate tap is always visible. We do not ship source WAVs;
     // this API does not need one for an authored motion to play.
     resumeRendering()
-    if (typeof model.motion !== 'function') {
+    if (typeof ctx.model.motion !== 'function') {
       interactionFailed(interaction)
       return
     }
     // 结合好感度调度系统按规则选择动作索引，并获取原装台词与加分反馈。
     // 基础调用契约保持 model.motion(interaction.group, undefined, 3) 兼容性
     const affection = useCompanionAffection()
-    const dispatched = affection.dispatchInteractiveMotion(character.value, interaction.group)
+    const dispatched = affection.dispatchInteractiveMotion(ctx.character.value, interaction.group)
     const motionIndex = dispatched.index
     const customText = dispatched.entry?.text
       ? `“${dispatched.entry.text}”${dispatched.bonusAwarded ? ` (好感度+${dispatched.bonusAwarded})` : ''}`
@@ -881,13 +815,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
     const soundUrl = dispatched.entry?.sound
     const targetIndex = typeof motionIndex === 'number' ? motionIndex : undefined
-    const result = model.motion(interaction.group, targetIndex, 3)
+    const result = ctx.model.motion(interaction.group, targetIndex, 3)
     if (isCatchable(result)) {
       result.then((started: unknown) => {
         if (started === true) markInteractionStarted(interaction, customText, soundUrl)
         else interactionFailed(interaction)
       }).catch((error: unknown) => {
-        interactionHint.value = '动作暂时不可用，请重试'
+        ctx.interactionHint.value = '动作暂时不可用，请重试'
         setState('degraded', 'Live2D 动作暂不可用', errorMessage(error), true)
       })
       return
@@ -897,88 +831,88 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function bindInteractionEvents() {
-    if (!stageEl) return
+    if (!ctx.stageEl) return
     // 幂等重建：角色切换/重载会重建 session（onModelLoaded 再次进入），旧的
     // click 监听与 native 订阅必须解绑后重建，否则新 session 的 hit-test 回调
     // 无人接收（点击无任何反馈，2026-08-16 用户反馈"切换角色后无法点击"）。
-    if (pointerClickHandler) {
-      stageEl.removeEventListener('click', pointerClickHandler)
-      pointerClickHandler = null
+    if (ctx.pointerClickHandler) {
+      ctx.stageEl.removeEventListener('click', ctx.pointerClickHandler)
+      ctx.pointerClickHandler = null
     }
-    if (nativeHitTestUnsubscribe) { nativeHitTestUnsubscribe(); nativeHitTestUnsubscribe = null }
-    if (nativeMotionFailedUnsubscribe) { nativeMotionFailedUnsubscribe(); nativeMotionFailedUnsubscribe = null }
-    interactionHint.value = character.value === 'natsume'
+    if (ctx.nativeHitTestUnsubscribe) { ctx.nativeHitTestUnsubscribe(); ctx.nativeHitTestUnsubscribe = null }
+    if (ctx.nativeMotionFailedUnsubscribe) { ctx.nativeMotionFailedUnsubscribe(); ctx.nativeMotionFailedUnsubscribe = null }
+    ctx.interactionHint.value = ctx.character.value === 'natsume'
       ? '移动鼠标可跟随视线；点击头部、手、胸前、裙子、腿或脚可互动'
       : '移动鼠标可跟随视线；点击呆毛、头部、脸、身体、两侧或裙摆可互动'
     // 原生 overlay 位于透明 WebView 下方且不接收鼠标。舞台 DOM 保持完整交互，
     // 点击坐标归一化后交给 Rust 做 Cubism 原生 HitArea 命中。
-    if (session?.capability.hitTestNative) {
-      nativeHitTestUnsubscribe = session.onNativeHitTest?.((areas) => {
-        const interaction = resolveHitAreaInteraction(character.value, areas)
+    if (ctx.session?.capability.hitTestNative) {
+      ctx.nativeHitTestUnsubscribe = ctx.session.onNativeHitTest?.((areas) => {
+        const interaction = resolveHitAreaInteraction(ctx.character.value, areas)
         if (interaction) playInteraction(interaction)
       }) ?? null
       // 同一互动播放中重复点击：Rust 拒绝并回传 motion-failed，这里直接
       // 显示"动作进行中"（Rust 状态为准，前端 duration 计时可能已过期）。
-      nativeMotionFailedUnsubscribe = session.onMotionFailed?.((info) => {
+      ctx.nativeMotionFailedUnsubscribe = ctx.session.onMotionFailed?.((info) => {
         if (/already playing/.test(info.reason)) {
-          interactionHint.value = '这个动作正在进行中'
+          ctx.interactionHint.value = '这个动作正在进行中'
         }
       }) ?? null
-      pointerClickHandler = (event) => {
+      ctx.pointerClickHandler = (event) => {
         if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
-        const rect = stageEl?.getBoundingClientRect()
+        const rect = ctx.stageEl?.getBoundingClientRect()
         if (!rect?.width || !rect.height) return
-        model?.hitTest(
+        ctx.model?.hitTest(
           Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
           Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)),
         )
       }
-      stageEl.addEventListener('click', pointerClickHandler)
+      ctx.stageEl.addEventListener('click', ctx.pointerClickHandler)
       return
     }
-    pointerClickHandler = (event) => {
+    ctx.pointerClickHandler = (event) => {
       if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
       playInteraction(interactionAt(event))
     }
-    stageEl.addEventListener('click', pointerClickHandler)
+    ctx.stageEl.addEventListener('click', ctx.pointerClickHandler)
   }
 
   function fit() {
-    if (!model || !hostEl) return
+    if (!ctx.model || !ctx.hostEl) return
     try {
-      const cvs = session?.canvasElement?.() as HTMLCanvasElement | null
+      const cvs = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
       const sw = cvs && (parseFloat(cvs.style.width) || cvs.width) || 420
       const sh = cvs && (parseFloat(cvs.style.height) || cvs.height) || 610
-      const size = model.getNaturalSize()
+      const size = ctx.model.getNaturalSize()
       const nw = size.width, nh = size.height
       if (!nw || !nh) return
       // The moc bounds include different transparent margins, so each model
       // owns an explicit visual calibration rather than sharing one multiplier.
-      const profile = CHARACTERS[character.value]?.live2dLayout ?? {
+      const profile = CHARACTERS[ctx.character.value]?.live2dLayout ?? {
         scale: 1,
         anchorX: 0.5,
         bottomOffset: 0,
       }
       const scale = Math.min(sw / nw, sh / nh) * profile.scale
-      model.applyFit(scale, (sw - nw * scale) * profile.anchorX, sh - nh * scale + profile.bottomOffset)
+      ctx.model.applyFit(scale, (sw - nw * scale) * profile.anchorX, sh - nh * scale + profile.bottomOffset)
     } catch (e) { fallback('Live2D 布局失败', errorMessage(e)) }
   }
 
   function layout() {
-    if (!ready.value || !hostEl) return
-    if (session?.capability.parameterOverride === false) {
+    if (!ctx.ready.value || !ctx.hostEl) return
+    if (ctx.session?.capability.parameterOverride === false) {
       // 原生后端：计算舞台 DOM 矩形 → 屏幕物理像素 → 下发 overlay 帧
-      if (!stageEl || !session.updateOverlay) return
+      if (!ctx.stageEl || !ctx.session.updateOverlay) return
       // Companion 首次加载时模型可能早于 desktop getState 完成。禁止用
       // screenX/devicePixelRatio 猜首帧，否则会缓存旧窗口尺寸的错误 offset，
       // 直到用户拖动窗口触发 bounds 事件才恢复。
       if (!desktopWindowBounds) {
-        nativeOverlayReady = false
-        session.setPaused(true)
+        ctx.nativeOverlayReady = false
+        ctx.session.setPaused(true)
         return
       }
       try {
-        const rect = stageEl.getBoundingClientRect()
+        const rect = ctx.stageEl.getBoundingClientRect()
         if (!rect.width || !rect.height) return
         const bounds = desktopWindowBounds ?? {
           ...windowBoundsFromScreen(),
@@ -999,37 +933,37 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           // 实时 GetWindowRect 获取，不能使用可能滞后的 desktop bounds x/y。
           windowBounds: { x: 0, y: 0, width: bounds.width, height: bounds.height },
         })
-        nativeOverlayReady = true
-        session.updateOverlay(overlayRect, true)
-        session.setPaused(false)
+        ctx.nativeOverlayReady = true
+        ctx.session.updateOverlay(overlayRect, true)
+        ctx.session.setPaused(false)
         startNativeEmotionClock()
       } catch {}
       return
     }
     if (document.hidden) return
     try {
-      const wrapper = hostEl.firstElementChild as HTMLElement | null
+      const wrapper = ctx.hostEl.firstElementChild as HTMLElement | null
       if (!wrapper) return
       // 用实际 canvas 尺寸做比例（不同模型画布不同），不硬编码 420×610
-      const canvasSize = session?.getCanvasSize() ?? { width: 420, height: 610 }
-      const ws = hostEl.clientWidth / canvasSize.width, hs = hostEl.clientHeight / canvasSize.height
+      const canvasSize = ctx.session?.getCanvasSize() ?? { width: 420, height: 610 }
+      const ws = ctx.hostEl.clientWidth / canvasSize.width, hs = ctx.hostEl.clientHeight / canvasSize.height
       // 舞台按角色卡片尺寸缩放画布；上限放宽到 1.28，让模型尽量撑满
       const scale = Math.min(1.28, Math.min(ws, hs) * 0.995)
-      session?.setStageScale(scale > 0 ? scale : 1)
+      ctx.session?.setStageScale(scale > 0 ? scale : 1)
       fit()
     } catch {}
   }
 
   function scheduleNativeLayout(reset = true) {
-    if (reset) nativeLayoutAttempts = 0
-    if (nativeLayoutFrame) return
+    if (reset) ctx.nativeLayoutAttempts = 0
+    if (ctx.frames.nativeLayout) return
     const tick = () => {
-      nativeLayoutFrame = 0
-      if (destroyed.value || session?.capability.parameterOverride !== false) return
+      ctx.frames.nativeLayout = 0
+      if (ctx.destroyed.value || ctx.session?.capability.parameterOverride !== false) return
       layout()
-      if (nativeOverlayReady || nativeLayoutAttempts >= 120) return
-      nativeLayoutAttempts += 1
-      nativeLayoutFrame = window.requestAnimationFrame(tick)
+      if (ctx.nativeOverlayReady || ctx.nativeLayoutAttempts >= 120) return
+      ctx.nativeLayoutAttempts += 1
+      ctx.frames.nativeLayout = window.requestAnimationFrame(tick)
     }
     // 先同步测量：WebView 初次显示但尚未激活时 document.hidden 可能为 true，
     // requestAnimationFrame 也可能暂停；Native overlay 仍必须先拿到正确 frame。
@@ -1045,9 +979,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function resumeRendering() {
-    if (!session || document.hidden || prefersReducedMotion()) return
-    session.setMaxFps(maxFps)
-    session.setPaused(false)
+    if (!ctx.session || document.hidden || prefersReducedMotion()) return
+    ctx.session.setMaxFps(ctx.maxFps)
+    ctx.session.setPaused(false)
     startNativeEmotionClock()
     layout()
   }
@@ -1055,18 +989,18 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function setMaxFps(value: number) {
     // 原生后端接电目标 165fps（渲染线程 vsync 决定实际帧率），不能被默认
     // 60 覆盖；browser 后端保持原有 120 上限不变。
-    const isNative = backendKind.value === 'native' && backend?.kind === 'native'
+    const isNative = ctx.backendKind.value === 'native' && ctx.backend?.kind === 'native'
     const cap = isNative ? 165 : 120
-    maxFps = Math.max(24, Math.min(cap, Math.round(value) || 60))
-    session?.setMaxFps(maxFps)
+    ctx.maxFps = Math.max(24, Math.min(cap, Math.round(value) || 60))
+    ctx.session?.setMaxFps(ctx.maxFps)
   }
 
   function setPaused(paused: boolean) {
-    if (!session) return
+    if (!ctx.session) return
     // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
-    const waitingForNativeBounds = session?.capability.parameterOverride === false && !nativeOverlayReady
+    const waitingForNativeBounds = ctx.session?.capability.parameterOverride === false && !ctx.nativeOverlayReady
     const shouldPause = paused || prefersReducedMotion() || waitingForNativeBounds
-    session.setPaused(shouldPause)
+    ctx.session.setPaused(shouldPause)
     if (shouldPause) stopNativeEmotionClock()
     else startNativeEmotionClock()
   }
@@ -1074,20 +1008,20 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) {
     const previous = desktopWindowBounds
     desktopWindowBounds = bounds
-    const nativeSession = session?.capability.parameterOverride === false
+    const nativeSession = ctx.session?.capability.parameterOverride === false
     const sizeChanged = !previous || previous.width !== bounds.width || previous.height !== bounds.height
     // 纯窗口移动由 Rust 每帧读取 Companion HWND 并保持本地 offset；这里若再用
     // 事件队列里的旧绝对坐标 setFrame，会与 Rust 跟随竞争并造成拖动抖动/跳位。
-    if (nativeSession && nativeOverlayReady && !sizeChanged) return
-    nativeOverlayReady = false
+    if (nativeSession && ctx.nativeOverlayReady && !sizeChanged) return
+    ctx.nativeOverlayReady = false
     scheduleNativeLayout()
   }
 
   async function recover() {
-    if (destroyed.value || !enabled.value || document.hidden) return
-    if (loading) await loading
-    if (destroyed.value || !enabled.value || document.hidden) return
-    if (!ready.value || !model || loadedCharacter.value !== character.value) {
+    if (ctx.destroyed.value || !ctx.enabled.value || document.hidden) return
+    if (ctx.loading) await ctx.loading
+    if (ctx.destroyed.value || !ctx.enabled.value || document.hidden) return
+    if (!ctx.ready.value || !ctx.model || ctx.loadedCharacter.value !== ctx.character.value) {
       await retry()
       return
     }
@@ -1097,30 +1031,30 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function setVisible(value: boolean) {
-    const visible = Boolean(value && ready.value && loadedCharacter.value === character.value)
-    stageEl?.classList.toggle('live2d-ready', visible)
-    if (model) model.visible = visible
-    if (!visible && session?.capability.parameterOverride === false) session.setPaused(true)
+    const visible = Boolean(value && ctx.ready.value && ctx.loadedCharacter.value === ctx.character.value)
+    ctx.stageEl?.classList.toggle('live2d-ready', visible)
+    if (ctx.model) ctx.model.visible = visible
+    if (!visible && ctx.session?.capability.parameterOverride === false) ctx.session.setPaused(true)
   }
 
   async function setOutfit(id: string): Promise<boolean> {
     // 夏目当前只有源模型自带的咖啡店制服，没有可切换衣装；模型无
     // Expressions，不得调用 expression（衣装参数由作者 motion 所有）。
-    if (character.value === 'natsume') {
+    if (ctx.character.value === 'natsume') {
       const target = findNatsumeOutfit(id)
-      outfit.value = target.id
+      ctx.outfit.value = target.id
       return true
     }
     const target = findLive2DOutfit(id)
-    outfit.value = target.id
-    if (!ready.value || !model?.visible) return true
-    if (typeof model.expression !== 'function') {
+    ctx.outfit.value = target.id
+    if (!ctx.ready.value || !ctx.model?.visible) return true
+    if (typeof ctx.model.expression !== 'function') {
       setState('degraded', 'Live2D 换装暂不可用', '当前运行库未提供 Expression 接口', true)
       return false
     }
     try {
       resumeRendering()
-      const started = await Promise.resolve(model.expression(target.expression))
+      const started = await Promise.resolve(ctx.model.expression(target.expression))
       if (started === false) {
         setState('degraded', 'Live2D 换装未完成', `模型拒绝了 ${target.label} Expression`, true)
         return false
@@ -1134,101 +1068,102 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function setMouth(value: number) {
-    mouthValue.value = Math.max(0, Math.min(1, Number(value) || 0))
+    ctx.mouthValue.value = Math.max(0, Math.min(1, Number(value) || 0))
     // Do not depend solely on the internal event emitter. Some Cubism builds
     // skip it for a frame after an outfit change, which made speech look
     // frozen even while the audio analyser was producing amplitudes.
     applyParameters()
-    if (mouthValue.value > 0) resumeRendering()
+    if (ctx.mouthValue.value > 0) resumeRendering()
   }
 
   function setAudioLevel(level: number, peak = level) {
-    emotionRuntime?.setAudioLevel(level, peak)
+    ctx.emotionRuntime?.setAudioLevel(level, peak)
   }
 
   // 换装和口型都依赖 Pixi ticker。某些 Cubism 模型在切换 Expression 后会停掉 idle
   // motion；语音开始时显式恢复渲染，避免出现"有声音但立绘冻结"。
   function setSpeaking(value: boolean) {
-    speaking = value
-    emotionRuntime?.setSpeaking(value)
+    ctx.speaking = value
+    ctx.emotionRuntime?.setSpeaking(value)
     if (value) {
       stopInteractionAudio()
       resumeRendering()
     }
     else {
-      mouthValue.value = 0
-      session?.sendMouthLevel?.(0)
+      ctx.mouthValue.value = 0
+      ctx.session?.sendMouthLevel?.(0)
     }
   }
 
   function fallback(text: string, detail: string) {
     stopInteractionAudio()
-    ready.value = false; mouthValue.value = 0; interactionHint.value = ''; setVisible(false)
+    ctx.ready.value = false; ctx.mouthValue.value = 0; ctx.interactionHint.value = ''; setVisible(false)
     setState('fallback', text || '静态立绘', detail || '', true)
   }
 
   function destroyRuntime() {
     stopInteractionAudio()
-    clearTimeout(loadTimer); loadTimer = 0
-    clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
-    clearTimeout(leaveTimer); leaveTimer = 0
+    clearTimeout(ctx.timers.load); ctx.timers.load = 0
+    clearTimeout(ctx.timers.interaction); ctx.timers.interaction = 0; ctx.activeInteraction = ''
+    clearTimeout(ctx.timers.leave); ctx.timers.leave = 0
     stopNativeEmotionClock()
-    if (nativeLayoutFrame) window.cancelAnimationFrame(nativeLayoutFrame)
-    nativeLayoutFrame = 0
-    nativeLayoutAttempts = 0
-    if (pointerGazeFrame) window.cancelAnimationFrame(pointerGazeFrame)
-    pointerGazeFrame = 0
-    pointerGazeLastFrame = 0
-    entranceUntil = 0
-    overlaySettle = null
-    overlayWasByMotion = false
+    if (ctx.frames.nativeLayout) window.cancelAnimationFrame(ctx.frames.nativeLayout)
+    ctx.frames.nativeLayout = 0
+    ctx.nativeLayoutAttempts = 0
+    if (ctx.frames.gaze) window.cancelAnimationFrame(ctx.frames.gaze)
+    ctx.frames.gaze = 0
+    ctx.gaze.lastFrame = 0
+    ctx.entranceUntil = 0
+    ctx.overlaySettle = null
+    ctx.overlayWasByMotion = false
     // Stop Pixi before clearing model state. Otherwise an authored motion can
     // tick once during character switching and read arrays already released by
     // wl-live2d's destroy path.
-    const currentSession = session
-    const currentModel = model
+    const currentSession = ctx.session
+    const currentModel = ctx.model
     if (currentSession) currentSession.setPaused(true)
     if (currentModel) currentModel.visible = false
-    ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false
-    for (const key of Object.keys(emotionCurrent)) delete emotionCurrent[key]
-    nativeAnimationAdapter.reset()
-    blinkScheduler.reset()
-    lastParamFrame = 0
-    loadedCharacter.value = ''
-    stageEl?.classList.remove('live2d-ready')
-    if (nativeHitTestUnsubscribe) { nativeHitTestUnsubscribe(); nativeHitTestUnsubscribe = null }
-    if (nativeMotionFailedUnsubscribe) { nativeMotionFailedUnsubscribe(); nativeMotionFailedUnsubscribe = null }
+    ctx.ready.value = false; ctx.mouthValue.value = 0; ctx.mouthHooked = false; ctx.speaking = false
+    for (const key of Object.keys(ctx.emotionCurrent)) delete ctx.emotionCurrent[key]
+    ctx.nativeAnimationAdapter.reset()
+    ctx.blinkScheduler.reset()
+    ctx.lastParamFrame = 0
+    ctx.loadedCharacter.value = ''
+    ctx.stageEl?.classList.remove('live2d-ready')
+    if (ctx.nativeHitTestUnsubscribe) { ctx.nativeHitTestUnsubscribe(); ctx.nativeHitTestUnsubscribe = null }
+    if (ctx.nativeMotionFailedUnsubscribe) { ctx.nativeMotionFailedUnsubscribe(); ctx.nativeMotionFailedUnsubscribe = null }
     if (currentSession && typeof currentSession.destroy === 'function') { try { currentSession.destroy() } catch {} }
-    model = null
-    session = null
-    pointerGazeCurrentX = 0
-    pointerGazeCurrentY = 0
-    pointerGazeX = 0
-    pointerGazeY = 0
-    pointerGazeActive = false
-    pointerGazeFocusKind = 'idle'
-    nativeOverlayReady = false
-    if (hostEl) hostEl.innerHTML = ''
+    ctx.model = null
+    ctx.session = null
+    ctx.gaze.currentX = 0
+    ctx.gaze.currentY = 0
+    ctx.gaze.x = 0
+    ctx.gaze.y = 0
+    ctx.gaze.active = false
+    ctx.gaze.kind = 'idle'
+    ctx.nativeOverlayReady = false
+    if (ctx.hostEl) ctx.hostEl.innerHTML = ''
   }
 
   function destroy() {
-    lifecycleToken += 1
-    destroyed.value = true; enabled.value = false; destroyRuntime()
+    ctx.lifecycleToken += 1
+    ctx.destroyed.value = true; ctx.enabled.value = false; destroyRuntime()
     desktopWindowBounds = null
-    resizeObserver?.disconnect()
-    if (onResize) window.removeEventListener('resize', onResize)
-    if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }
-    if (stageEl && pointerClickHandler) stageEl.removeEventListener('click', pointerClickHandler)
-      if (stageEl && pointerGazeHandler) stageEl.removeEventListener('mousemove', pointerGazeHandler)
-      if (stageEl && pointerGazeLeaveHandler) stageEl.removeEventListener('mouseleave', pointerGazeLeaveHandler)
-    pointerClickHandler = null
-    pointerGazeHandler = null
-    pointerGazeLeaveHandler = null
+    ctx.resizeObserver?.disconnect()
+    if (ctx.onResize) window.removeEventListener('resize', ctx.onResize)
+    if (ctx.visibilityHandler) { document.removeEventListener('visibilitychange', ctx.visibilityHandler); ctx.visibilityHandler = null }
+    if (ctx.stageEl && ctx.pointerClickHandler) ctx.stageEl.removeEventListener('click', ctx.pointerClickHandler)
+    if (ctx.stageEl && ctx.pointerGazeHandler) ctx.stageEl.removeEventListener('mousemove', ctx.pointerGazeHandler)
+    if (ctx.stageEl && ctx.pointerGazeLeaveHandler) ctx.stageEl.removeEventListener('mouseleave', ctx.pointerGazeLeaveHandler)
+    ctx.pointerClickHandler = null
+    ctx.pointerGazeHandler = null
+    ctx.pointerGazeLeaveHandler = null
   }
 
   return {
-    ready, enabled, character, loadedCharacter, mouthValue, interactionHint, outfit,
-    backendKind, backendFallback,
+    ready: ctx.ready, enabled: ctx.enabled, character: ctx.character, loadedCharacter: ctx.loadedCharacter,
+    mouthValue: ctx.mouthValue, interactionHint: ctx.interactionHint, outfit: ctx.outfit,
+    backendKind: ctx.backendKind, backendFallback: ctx.backendFallback,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
     attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
     setGlobalPointer, releasePointerFocus, setDesktopWindowBounds, syncNativeEmotion: sendNativeEmotionIntent,

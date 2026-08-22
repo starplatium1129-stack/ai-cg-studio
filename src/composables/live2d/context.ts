@@ -11,6 +11,11 @@ import type {
 import type { Live2DCatalog } from '@/composables/live2d/catalog'
 import { DEFAULT_LIVE2D_OUTFIT } from '@/config/characters'
 
+export interface NatsumeOverlaySettle {
+  start: number
+  entries: Array<{ id: string; from: number; to: number }>
+}
+
 /**
  * Live2DCtx：useLive2D 全部共享可变状态的显式类型化容器（拆分 Step 2）。
  * 由原 ~35 个工厂闭包 let 机械收敛而来——模块边界即数据边界，各子模块只经
@@ -77,6 +82,12 @@ export interface Live2DCtx {
   nativeAnimationAdapter: ReturnType<typeof createLive2dNativeAdapter>
   blinkScheduler: ReturnType<typeof createBlinkScheduler>
 
+  // 夏目叠层/换装回落（2026-08-23 换装闪回修复）：动作曲线驱动的换装显隐态
+  // 在动作结束后向隐藏态 smoothstep 缓动。settle 为 null 表示未在回落；
+  // wasByMotion 记录上一帧叠层参数是否由动作曲线持有，用于所有权交接检测。
+  overlaySettle: NatsumeOverlaySettle | null
+  overlayWasByMotion: boolean
+
   // 原生 overlay
   nativeOverlayReady: boolean
   nativeLayoutAttempts: number
@@ -135,6 +146,9 @@ export function createLive2DCtx(): Live2DCtx {
     lastParamFrame: 0,
     nativeAnimationAdapter: createLive2dNativeAdapter(),
     blinkScheduler: createBlinkScheduler(),
+
+    overlaySettle: null,
+    overlayWasByMotion: false,
 
     nativeOverlayReady: false,
     nativeLayoutAttempts: 0,
