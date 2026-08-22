@@ -1,5 +1,4 @@
 import {
-  CHARACTERS,
   findLive2DOutfit,
   findNatsumeOutfit,
 } from '@/config/characters'
@@ -11,11 +10,12 @@ import type {
   Live2DModelHandle,
   Live2DStageSession,
 } from '@/live2d/types'
-import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { createLive2DCtx, prefersReducedMotion, type Live2DStatus } from '@/composables/live2d/context'
 import { createPointerGazeController } from '@/composables/live2d/pointerGaze'
 import { createInteractionController } from '@/composables/live2d/interactions'
+import { createNativeEmotionClock } from '@/composables/live2d/emotionClock'
+import { createLayoutFitController } from '@/composables/live2d/layoutFit'
 import {
   BLINK_PARAMS,
   ENTRANCE_GROUP,
@@ -47,26 +47,12 @@ export function selectBlinkParams(character: string): readonly string[] | undefi
   return BLINK_PARAMS[character]
 }
 
-/**
- * 桌面窗口物理像素 bounds（IPC 注入）。Companion 单窗口，属全局窗口状态：
- * CompanionView 经 ChatCharacterStage.setDesktopWindowBounds 写入，原生
- * overlay 布局据此换算，避免用 screenX/devicePixelRatio 猜测造成错位。
- */
-let desktopWindowBounds: { x: number; y: number; width: number; height: number } | null = null
-
-function windowBoundsFromScreen(): { x: number; y: number } {
-  // 兜底：screenX/screenY 是 CSS 像素（物理 ÷ DPR），换算回屏幕物理像素
-  // 供 overlay 定位（DPR=1 时与窗口坐标一致）。桌面端由注入的
-  // desktopWindowBounds 覆盖，此路径只作非桌面/未注入时的退化。
-  if (desktopWindowBounds) return desktopWindowBounds
-  const dpr = window.devicePixelRatio || 1
-  return { x: Math.round((window.screenX || 0) * dpr), y: Math.round((window.screenY || 0) * dpr) }
-}
-
 export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const ctx = createLive2DCtx()
   const pointerGaze = createPointerGazeController(ctx)
   const interactions = createInteractionController(ctx, { setState, resumeRendering })
+  const emotionClock = createNativeEmotionClock(ctx)
+  const layoutFit = createLayoutFitController(ctx, { fallback, startEmotionClock: emotionClock.start })
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (ctx.hostEl) { ctx.hostEl.dataset.state = state; ctx.hostEl.dataset.error = detail; ctx.hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -135,7 +121,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     }
     if (ctx.ready.value && ctx.loadedCharacter.value === char) {
       setVisible(true); setState('ready', 'Live2D 已连接')
-      setPaused(document.hidden); layout(); return
+      setPaused(document.hidden); layoutFit.layout(); return
     }
     // A character switch can happen while the previous model is still loading.
     // Wait for that request to settle, then retry the character that is still
@@ -144,7 +130,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (ctx.destroyed.value || !ctx.enabled.value || char !== ctx.character.value) return
     if (ctx.ready.value && ctx.loadedCharacter.value === char) {
       setVisible(true); setState('ready', 'Live2D 已连接')
-      setPaused(document.hidden); layout(); return
+      setPaused(document.hidden); layoutFit.layout(); return
     }
     await load(char, info)
   }
@@ -262,9 +248,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           if (ctx.destroyed.value || char !== ctx.character.value) { finish(false); return }
           ctx.model = m; ctx.loadedCharacter.value = char; ctx.ready.value = true
           ctx.mouthValue.value = 0; ctx.mouthHooked = false
-          bindMouthOverride(); bindContextEvents(); interactions.bind(); fit(); scheduleNativeLayout()
+          bindMouthOverride(); bindContextEvents(); interactions.bind(); layoutFit.fit(); layoutFit.scheduleNativeLayout()
           setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
-          startNativeEmotionClock()
+          emotionClock.start()
           if (!nativeCapability?.entranceNative) playEntrance()
           void setOutfit(ctx.outfit.value)
           finish(true)
@@ -293,9 +279,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function observeSize() {
     if (!ctx.hostEl) return
     if ('ResizeObserver' in window && !ctx.resizeObserver) {
-      ctx.resizeObserver = new ResizeObserver(() => layout()); ctx.resizeObserver.observe(ctx.hostEl)
+      ctx.resizeObserver = new ResizeObserver(() => layoutFit.layout()); ctx.resizeObserver.observe(ctx.hostEl)
     } else {
-      window.addEventListener('resize', (ctx.onResize = () => layout()))
+      window.addEventListener('resize', (ctx.onResize = () => layoutFit.layout()))
     }
   }
 
@@ -350,39 +336,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     ctx.nativeAnimationAdapter.reset()
     for (const key of Object.keys(ctx.emotionCurrent)) delete ctx.emotionCurrent[key]
     ctx.lastParamFrame = 0
-  }
-
-  function sendNativeEmotionIntent() {
-    if (ctx.session?.capability.emotionChannel !== 'bridge' || !ctx.emotionRuntime) return
-    ctx.session.sendEmotion?.(ctx.emotionRuntime.lastEmotion(), ctx.emotionRuntime.intensity())
-  }
-
-  function stopNativeEmotionClock() {
-    if (ctx.frames.nativeEmotion) window.cancelAnimationFrame(ctx.frames.nativeEmotion)
-    ctx.frames.nativeEmotion = 0
-    ctx.nativeEmotionLastFrame = 0
-  }
-
-  function nativeEmotionTick(now: number) {
-    ctx.frames.nativeEmotion = 0
-    if (
-      ctx.destroyed.value
-      || document.hidden
-      || !ctx.model?.visible
-      || ctx.session?.capability.emotionChannel !== 'bridge'
-    ) return
-    const dt = Math.min(0.12, (now - ctx.nativeEmotionLastFrame) / 1000 || 1 / 60)
-    ctx.nativeEmotionLastFrame = now
-    ctx.emotionRuntime?.update(dt)
-    if (ctx.stageEl && ctx.emotionRuntime) ctx.stageEl.dataset.emotionIntensity = ctx.emotionRuntime.intensity().toFixed(3)
-    sendNativeEmotionIntent()
-    ctx.frames.nativeEmotion = window.requestAnimationFrame(nativeEmotionTick)
-  }
-
-  function startNativeEmotionClock() {
-    if (ctx.session?.capability.emotionChannel !== 'bridge' || ctx.frames.nativeEmotion || document.hidden) return
-    ctx.nativeEmotionLastFrame = performance.now()
-    ctx.frames.nativeEmotion = window.requestAnimationFrame(nativeEmotionTick)
   }
 
   function applyParameters() {
@@ -511,105 +464,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     cvs.addEventListener('webglcontextrestored', () => retry())
   }
 
-  function fit() {
-    if (!ctx.model || !ctx.hostEl) return
-    try {
-      const cvs = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
-      const sw = cvs && (parseFloat(cvs.style.width) || cvs.width) || 420
-      const sh = cvs && (parseFloat(cvs.style.height) || cvs.height) || 610
-      const size = ctx.model.getNaturalSize()
-      const nw = size.width, nh = size.height
-      if (!nw || !nh) return
-      // The moc bounds include different transparent margins, so each model
-      // owns an explicit visual calibration rather than sharing one multiplier.
-      const profile = CHARACTERS[ctx.character.value]?.live2dLayout ?? {
-        scale: 1,
-        anchorX: 0.5,
-        bottomOffset: 0,
-      }
-      const scale = Math.min(sw / nw, sh / nh) * profile.scale
-      ctx.model.applyFit(scale, (sw - nw * scale) * profile.anchorX, sh - nh * scale + profile.bottomOffset)
-    } catch (e) { fallback('Live2D 布局失败', errorMessage(e)) }
-  }
-
-  function layout() {
-    if (!ctx.ready.value || !ctx.hostEl) return
-    if (ctx.session?.capability.parameterOverride === false) {
-      // 原生后端：计算舞台 DOM 矩形 → 屏幕物理像素 → 下发 overlay 帧
-      if (!ctx.stageEl || !ctx.session.updateOverlay) return
-      // Companion 首次加载时模型可能早于 desktop getState 完成。禁止用
-      // screenX/devicePixelRatio 猜首帧，否则会缓存旧窗口尺寸的错误 offset，
-      // 直到用户拖动窗口触发 bounds 事件才恢复。
-      if (!desktopWindowBounds) {
-        ctx.nativeOverlayReady = false
-        ctx.session.setPaused(true)
-        return
-      }
-      try {
-        const rect = ctx.stageEl.getBoundingClientRect()
-        if (!rect.width || !rect.height) return
-        const bounds = desktopWindowBounds ?? {
-          ...windowBoundsFromScreen(),
-          width: window.innerWidth,
-          height: window.innerHeight,
-        }
-        // DPR 实测比例：WebView2 视口 CSS 像素与窗口物理像素的实际换算
-        // （物理宽 / CSS 宽）。不能用 window.devicePixelRatio——per-monitor
-        // 下它报告的是系统缩放（如 1.75），而 WebView2 视口可能按 1:1 布局，
-        // 用它会整体错位（overlay 偏移、控件穿透矩形全偏）。
-        const scale = bounds.width > 0 && window.innerWidth > 0
-          ? bounds.width / window.innerWidth
-          : (window.devicePixelRatio || 1)
-        const overlayRect = computeOverlayRect({
-          stageRect: rect,
-          dpr: scale,
-          // Native 契约使用 Companion-local 物理坐标；屏幕绝对原点由 Rust
-          // 实时 GetWindowRect 获取，不能使用可能滞后的 desktop bounds x/y。
-          windowBounds: { x: 0, y: 0, width: bounds.width, height: bounds.height },
-        })
-        ctx.nativeOverlayReady = true
-        ctx.session.updateOverlay(overlayRect, true)
-        ctx.session.setPaused(false)
-        startNativeEmotionClock()
-      } catch {}
-      return
-    }
-    if (document.hidden) return
-    try {
-      const wrapper = ctx.hostEl.firstElementChild as HTMLElement | null
-      if (!wrapper) return
-      // 用实际 canvas 尺寸做比例（不同模型画布不同），不硬编码 420×610
-      const canvasSize = ctx.session?.getCanvasSize() ?? { width: 420, height: 610 }
-      const ws = ctx.hostEl.clientWidth / canvasSize.width, hs = ctx.hostEl.clientHeight / canvasSize.height
-      // 舞台按角色卡片尺寸缩放画布；上限放宽到 1.28，让模型尽量撑满
-      const scale = Math.min(1.28, Math.min(ws, hs) * 0.995)
-      ctx.session?.setStageScale(scale > 0 ? scale : 1)
-      fit()
-    } catch {}
-  }
-
-  function scheduleNativeLayout(reset = true) {
-    if (reset) ctx.nativeLayoutAttempts = 0
-    if (ctx.frames.nativeLayout) return
-    const tick = () => {
-      ctx.frames.nativeLayout = 0
-      if (ctx.destroyed.value || ctx.session?.capability.parameterOverride !== false) return
-      layout()
-      if (ctx.nativeOverlayReady || ctx.nativeLayoutAttempts >= 120) return
-      ctx.nativeLayoutAttempts += 1
-      ctx.frames.nativeLayout = window.requestAnimationFrame(tick)
-    }
-    // 先同步测量：WebView 初次显示但尚未激活时 document.hidden 可能为 true，
-    // requestAnimationFrame 也可能暂停；Native overlay 仍必须先拿到正确 frame。
-    tick()
-  }
-
   function resumeRendering() {
     if (!ctx.session || document.hidden || prefersReducedMotion()) return
     ctx.session.setMaxFps(ctx.maxFps)
     ctx.session.setPaused(false)
-    startNativeEmotionClock()
-    layout()
+    emotionClock.start()
+    layoutFit.layout()
   }
 
   function setMaxFps(value: number) {
@@ -627,20 +487,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     const waitingForNativeBounds = ctx.session?.capability.parameterOverride === false && !ctx.nativeOverlayReady
     const shouldPause = paused || prefersReducedMotion() || waitingForNativeBounds
     ctx.session.setPaused(shouldPause)
-    if (shouldPause) stopNativeEmotionClock()
-    else startNativeEmotionClock()
-  }
-
-  function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) {
-    const previous = desktopWindowBounds
-    desktopWindowBounds = bounds
-    const nativeSession = ctx.session?.capability.parameterOverride === false
-    const sizeChanged = !previous || previous.width !== bounds.width || previous.height !== bounds.height
-    // 纯窗口移动由 Rust 每帧读取 Companion HWND 并保持本地 offset；这里若再用
-    // 事件队列里的旧绝对坐标 setFrame，会与 Rust 跟随竞争并造成拖动抖动/跳位。
-    if (nativeSession && ctx.nativeOverlayReady && !sizeChanged) return
-    ctx.nativeOverlayReady = false
-    scheduleNativeLayout()
+    if (shouldPause) emotionClock.stop()
+    else emotionClock.start()
   }
 
   async function recover() {
@@ -653,7 +501,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     }
     setVisible(true)
     setPaused(false)
-    layout()
+    layoutFit.layout()
   }
 
   function setVisible(value: boolean) {
@@ -732,7 +580,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     clearTimeout(ctx.timers.load); ctx.timers.load = 0
     clearTimeout(ctx.timers.interaction); ctx.timers.interaction = 0; ctx.activeInteraction = ''
     clearTimeout(ctx.timers.leave); ctx.timers.leave = 0
-    stopNativeEmotionClock()
+    emotionClock.stop()
     if (ctx.frames.nativeLayout) window.cancelAnimationFrame(ctx.frames.nativeLayout)
     ctx.frames.nativeLayout = 0
     ctx.nativeLayoutAttempts = 0
@@ -774,7 +622,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function destroy() {
     ctx.lifecycleToken += 1
     ctx.destroyed.value = true; ctx.enabled.value = false; destroyRuntime()
-    desktopWindowBounds = null
+    layoutFit.resetWindowBounds()
     ctx.resizeObserver?.disconnect()
     if (ctx.onResize) window.removeEventListener('resize', ctx.onResize)
     if (ctx.visibilityHandler) { document.removeEventListener('visibilitychange', ctx.visibilityHandler); ctx.visibilityHandler = null }
@@ -791,8 +639,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     mouthValue: ctx.mouthValue, interactionHint: ctx.interactionHint, outfit: ctx.outfit,
     backendKind: ctx.backendKind, backendFallback: ctx.backendFallback,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
-    attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
+    attachEmotionRuntime, setPaused, setMaxFps, recover, layout: layoutFit.layout, retry, destroy,
     setGlobalPointer: pointerGaze.setGlobalPointer, releasePointerFocus: pointerGaze.release,
-    setDesktopWindowBounds, syncNativeEmotion: sendNativeEmotionIntent,
+    setDesktopWindowBounds: layoutFit.setDesktopWindowBounds, syncNativeEmotion: emotionClock.syncIntent,
   }
 }
