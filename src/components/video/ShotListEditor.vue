@@ -411,6 +411,7 @@
       </section>
 
       <Teleport to="body">
+        <Transition name="layer-pop">
         <div v-if="scriptOpen" class="shot-script-overlay" @click.self="scriptOpen = false">
           <section class="shot-script-panel" role="dialog" aria-modal="true" aria-label="AI 生成分镜脚本">
             <header class="shot-script-head">
@@ -464,6 +465,7 @@
             </footer>
           </section>
         </div>
+        </Transition>
       </Teleport>
 
       <section class="video-panel shot-submit-panel" :data-ready="canSubmit || undefined">

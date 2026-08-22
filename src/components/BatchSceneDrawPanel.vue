@@ -1,5 +1,6 @@
 <template>
   <Teleport to="body">
+    <Transition name="layer-pop">
     <div v-if="open" class="batch-overlay" @click.self="emit('close')">
       <section class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
         <header class="batch-head">
@@ -127,6 +128,7 @@
         </template>
 
         <!-- 大图预览 -->
+        <Transition name="layer-fade">
         <div v-if="previewJob?.resultUrl" class="batch-lightbox" @click.self="previewJob = null">
           <img :src="previewJob.resultUrl" :alt="previewJob.sceneTitle" />
           <p class="batch-lightbox-caption">
@@ -137,8 +139,10 @@
             <ArchiveIcon name="close" />
           </button>
         </div>
+        </Transition>
       </section>
     </div>
+    </Transition>
   </Teleport>
 </template>
 

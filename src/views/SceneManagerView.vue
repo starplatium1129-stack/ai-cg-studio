@@ -370,6 +370,7 @@
 
     <!-- 编辑 Modal -->
     <Teleport to="body">
+      <Transition name="layer-pop">
       <div v-if="editing" class="overlay" @click.self="closeModal">
         <div
           ref="modalEl"
@@ -448,10 +449,12 @@
           <p class="note-sm">注意：修改仅在内存中生效，需点"保存到项目"写回 data/scenes.json</p>
         </div>
       </div>
+      </Transition>
     </Teleport>
 
     <!-- 标签表单 Modal -->
     <Teleport to="body">
+      <Transition name="layer-pop">
       <div v-if="tagModalOpen" class="overlay" @click.self="closeTagModal">
         <div
           ref="tagModalEl"
@@ -488,6 +491,7 @@
           </div>
         </div>
       </div>
+      </Transition>
     </Teleport>
   </article>
 </template>

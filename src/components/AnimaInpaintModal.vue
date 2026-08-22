@@ -159,6 +159,7 @@ async function handleStart() {
 </script>
 
 <template>
+  <Transition name="layer-pop">
   <div v-if="open" class="modal-backdrop" @click.self="emit('close')">
     <div ref="modalEl" class="modal-card inpaint-modal" role="dialog" aria-modal="true" aria-label="智能局部换装">
       <CornerFrame variant="ghost" />
@@ -430,6 +431,7 @@ async function handleStart() {
       </footer>
     </div>
   </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -443,9 +445,8 @@ async function handleStart() {
   background: color-mix(in srgb, black 75%, transparent);
   backdrop-filter: blur(8px);
   padding: var(--s-4);
-  /* 2026-08-22 动效审计 #3：原写 fadeIn（全局只有带连字符的 fade-in），
-     无效动画名静默失效，遮罩淡入从未生效过。 */
-  animation: fade-in .2s var(--ease-out);
+  /* 2026-08-22 动效审计 #7：遮罩淡入淡出改由外层 <Transition name="layer-pop">
+     统一驱动（原 fadeIn 动画名无效，从未生效过）。 */
 }
 
 .modal-card.inpaint-modal {
