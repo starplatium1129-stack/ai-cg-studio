@@ -763,16 +763,15 @@ import { ref, computed, nextTick, onMounted, watch, defineAsyncComponent } from 
 import { useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
-  CHAR_PROMPT,
   type CharKey,
   type HistoryEntry,
   type Scene,
 } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
-import { apiClient } from '@/api/client'
 import { usePopularPromptAssembly } from '@/composables/usePopularPromptAssembly'
 import { usePromptVideoBridge } from '@/composables/usePromptVideoBridge'
 import { usePromptHistoryApply } from '@/composables/usePromptHistoryApply'
+import { usePromptBatchRunners } from '@/composables/usePromptBatchRunners'
 import {
   blueprintCategories as collectBlueprintCategories,
   eligibleBlueprints,
@@ -784,12 +783,11 @@ import {
   type SceneBlueprint,
 } from '@/utils/popularContent'
 import type { AnimaResult } from '@/types/anima'
-import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, animaRequestPayload, resolveInpaintRequestBinding, type AnimaPublicJob, type AnimaRequest } from '@/composables/useAnimaSession'
+import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, resolveInpaintRequestBinding, type AnimaRequest } from '@/composables/useAnimaSession'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
 import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
-import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchSceneItem } from '@/composables/useBatchDraw'
 import { imgGet } from '@/composables/useImageStore'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
 import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
@@ -1654,174 +1652,21 @@ function enqueueCurrent() {
   sdQueue.enqueue(job)
 }
 
-// ── 多场景批量出图（BatchSceneDrawPanel）─────────────────────────────────
+// ── 多场景批量出图（runners 已下沉 usePromptBatchRunners）─────────────────
 // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
 // ComfyUI 任务）→ 每张自动入册历史 → 在历史里挑合适的「加入分镜」。
-const batchOpen = ref(false)
-const batchEngine = ref<BatchEngine>('sd')
-
-/** 批量 prompt 组装：场景 prose + 当前角色锚点（SD 补 tag 锚点，Anima 用自然语言）。 */
-function buildBatchPrompt(prose: string): string {
-  const text = String(prose || '').trim()
-  if (!text) return ''
-  if (pb.isPopular) {
-    const character = pb.subject.kind === 'popular'
-      ? findPopularCharacter(pb.popularCharacters, pb.subject.characterId || '')
-      : null
-    const identity = character?.identityProse
-    if (identity) return `${text}, ${identity}`
-  }
-  const anchor = CHAR_PROMPT[pb.char]
-  if (anchor) return `${text}, ${anchor}`
-  return text
-}
-
-function batchSceneProse(blueprint: SceneBlueprint | undefined): string {
-  const prose = String(blueprint?.promptProse || '').trim()
-  if (prose) return prose
-  return [blueprint?.description, blueprint?.action, blueprint?.lighting].filter(Boolean).join('，')
-}
-
-async function runBatchSd(input: BatchDrawRunnerInput): Promise<BatchDrawRunnerResult> {
-  const prompt = buildBatchPrompt(input.scene.prose)
-  if (!prompt) return { ok: false, error: '场景描述为空' }
-  const job: Omit<SDQueueJob, 'id'> = {
-    title: input.scene.title,
-    prompt,
-    negative: negativePrompt.value,
-    sceneId: input.scene.id,
-    sceneTitle: input.scene.title,
-    char: pb.char,
-    story: input.scene.prose,
-    size: sdSize.value,
-    seed: input.seed,
-    cfg: pb.sdParams.cfg,
-    steps: pb.sdParams.steps,
-    sampler: pb.sdParams.sampler,
-    scheduler: pb.sdParams.scheduler || '',
-    checkpoint: pb.sdModelName || sd.checkpoint.value || '',
-    lora: loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', '),
-    hiresFix: pb.sdParams.hiresFix,
-    hiresScale: pb.sdParams.hiresScale,
-    hiresUpscaler: pb.sdParams.hiresUpscaler,
-    hiresSteps: pb.sdParams.hiresSteps,
-    denoisingStrength: pb.sdParams.hiresDenoise,
-    faceDetailer: pb.sdParams.faceDetailer,
-  }
-  try {
-    const url = await runJob(job)
-    if (!url) return { ok: false, error: sd.errorMsg.value || 'SD 生成失败' }
-    const response = await fetch(url, { cache: 'no-store' })
-    const contentType = response.headers.get('content-type') || ''
-    if (!response.ok || !contentType.startsWith('image/')) return { ok: false, error: '成片响应不是图片' }
-    const blob = await response.blob()
-    if (!blob.size) return { ok: false, error: '成片数据已失效' }
-    await pb.commitHistoryEntry({
-      blob,
-      seed: input.seed >= 0 ? input.seed : (sd.resultSeed.value ?? undefined),
-      size: job.size,
-      negative: job.negative,
-      prompt: job.prompt,
-      ...historyGenerationFields(),
-    })
-    return { ok: true }
-  } catch (error) {
-    return { ok: false, error: error instanceof Error ? error.message : 'SD 生成失败' }
-  }
-}
-
-async function runBatchAnima(input: BatchDrawRunnerInput): Promise<BatchDrawRunnerResult> {
-  if (!animaState.value.online) return { ok: false, error: 'Anima 当前未连接' }
-  const prompt = buildBatchPrompt(input.scene.prose)
-  if (!prompt) return { ok: false, error: '场景描述为空' }
-  const selectedModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
-  const profileId = modelProfile.value?.id || selectedModel?.profileId || ''
-  const request: AnimaRequest = {
-    prompt,
-    negative: '',
-    profileId,
-    modelId: animaState.value.modelId,
-    loraId: animaState.value.loraId,
-    loraStrength: animaState.value.loraStrength,
-    width: animaState.value.width,
-    height: animaState.value.height,
-    steps: animaState.value.steps,
-    cfg: animaState.value.cfg,
-    ...(input.seed >= 0 ? { seed: input.seed } : {}),
-    character: animaState.value.family === 'krea2' || pb.char === 'triad'
-      ? null
-      : ANIMA_CHARACTER_BY_CHARACTER[pb.char],
-    hiresFix: Boolean(animaState.value.hiresFix),
-    hiresScale: animaState.value.hiresScale,
-    hiresDenoise: animaState.value.hiresDenoise,
-  }
-  try {
-    const jobRoute = animaState.value.family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
-    const data = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobRoute, {
-      method: 'POST',
-      body: animaRequestPayload(request),
-      timeoutMs: 30_000,
-    })
-    if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
-    const jobId = data.job.id
-    const deadline = Date.now() + 10 * 60 * 1000
-    let job = data.job
-    while (Date.now() < deadline) {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      const state = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(
-        `${jobRoute}/${encodeURIComponent(jobId)}`, { cache: 'no-store', timeoutMs: 15_000 })
-      if (state.ok !== true || !state.job) throw new Error(state.error || 'Anima 状态无效')
-      job = state.job
-      if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')
-      if (job.status === 'cancelled') return { ok: false, error: '任务已取消' }
-      if (job.status === 'succeeded' && job.resultAvailable && job.resultUrl) break
-    }
-    if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('Anima 生成超时')
-    const blob = await fetchImageBlob(job.resultUrl)
-    if (!blob.size) throw new Error('生成结果为空')
-    await pb.commitHistoryEntry({
-      blob,
-      seed: job.seed,
-      negative: '',
-      prompt,
-      ...historyGenerationFields(),
-    })
-    return { ok: true }
-  } catch (error) {
-    return { ok: false, error: error instanceof Error ? error.message : 'Anima 生成失败' }
-  }
-}
-
-async function fetchImageBlob(url: string): Promise<Blob> {
-  const response = await fetch(url, { cache: 'no-store' })
-  const contentType = String(response.headers.get('content-type') || '')
-  if (!response.ok) throw new Error(`图片读取失败（HTTP ${response.status}）`)
-  if (!contentType.startsWith('image/')) throw new Error('网关返回的结果不是图片')
-  const blob = await response.blob()
-  if (!blob.size) throw new Error('生成结果为空')
-  return blob
-}
-
-const batchDraw = useBatchDraw({
-  onFlash: (message) => pb.flash(message),
-  run: (input) => batchEngine.value === 'sd' ? runBatchSd(input) : runBatchAnima(input),
+const { batchOpen, batchEngine, batchDraw, onBatchStart } = usePromptBatchRunners({
+  pb,
+  sd,
+  sdSize,
+  negativePrompt,
+  loraSpecs,
+  modelProfile,
+  animaState,
+  runJob,
+  historyGenerationFields,
+  sceneBlueprints: () => sceneStore.sceneBlueprints,
 })
-
-async function onBatchStart(payload: { sceneIds: string[]; count: number }) {
-  const scenes: BatchSceneItem[] = payload.sceneIds.map(id => {
-    const blueprint = sceneStore.sceneBlueprints.find(item => item.id === id)
-    return {
-      id,
-      title: blueprint?.title || id,
-      prose: batchSceneProse(blueprint),
-    }
-  }).filter(item => item.prose)
-  if (!scenes.length) { pb.flash('所选场景没有可用的描述'); return }
-  const baseSeed = pb.sdParams.seedLock && pb.sdParams.seed >= 0
-    ? pb.sdParams.seed
-    : Math.floor(Math.random() * 900000000)
-  await batchDraw.start(scenes, payload.count, baseSeed)
-}
 
 /** 一键发起 3 个不同 Seed 的候选变体入队（Midjourney / Forge 候选挑优机制） */
 function enqueue3Variants() {
