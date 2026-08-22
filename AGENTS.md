@@ -59,9 +59,15 @@
 
 ## 四、 后续稳定演进方向（聚焦体验与质感）
 
-1. **短剧分镜与角色一致性打磨**：深化 4 视角标准基准在视频分镜（MiniMax H3 / T8）中的自动化装配与过渡。
-2. **桌宠情感与剧场深度联动**：基于好感度、时间段与日程触发 Live2D 专属小剧场，保持低功耗静止节能。
-3. **角色设定记忆与知识库（RAG）**：免额度角色检索工具深度打通，为 40+ 热门角色构建世界观设定记忆库。
+1. **剧情短片全链路深化**（2026-08-23 已落地：蓝图一键剧本 + 一键首帧 + 剧本模式直通分镜，剧情短片纯点击流）：
+   - 首尾帧过渡模式前端解锁：`VideoStudioView` modes 硬编码 `ready:false`，后端 FL2VA 校验与工作流已全支持，低成本高收益；
+   - 剧本库扩充（现 3 本预置）+ 剧本模式接场景蓝图自动分幕（分幕→分镜管道已通）；
+   - 成片后处理回流候选：`HunyuanVideo15SuperResolution`（节点已装）；Wan 2.2 图生视频模式（节点已装，显存允许时评估）。
+2. **指令式稳定换装（模型采购级，评估已完成待下载决策）**：Qwen-Image-Edit-2509 GGUF Q4_K_M（磁盘约 20GB / 显存 10–12GB，本机规格实测带得动）；`TextEncodeQwenImageEditPlus` 节点已装；落地后与现有 inpaint 并存，换装场景优先走编辑路线。SAM3 分割权重（换装遮罩 CLIPSeg→SAM3）同类决策。
+3. **Krea2 高级节点回流（模型已在盘）**：`Krea2T-Enhancer-Advanced`、`Krea2StyleReferenceNode`（风格参考，热门角色风格化价值大）、`Krea2PromptWeight`——照 detailBoost 五步样板（社区来源→本机复现样张→网关受控注册→契约锁定→实测转正）。
+4. **视频侧成人门控**：storyboard 对成人蓝图 fail-closed 拒绝中；`adultEligibility` 双重把关接入后放开成人蓝图自动剧本。
+5. **桌宠情感与剧场深度联动**：基于好感度、时间段与日程触发 Live2D 专属小剧场，保持低功耗静止节能。
+6. **角色设定记忆与知识库（RAG）**：免额度角色检索工具深度打通，为 40+ 热门角色构建世界观设定记忆库。
 
 ---
 
@@ -82,3 +88,10 @@
 - 红线提醒：`destroyRuntime` 全库唯一实现且顺序冻结（Pixi-first）；双后端 capability 分支原样搬家不抽象；`lifecycleToken` 语义不变。
 
 > 已完成（2026-08-22）：`routes/video.js` 八模块化拆分（2229→606 行编排层）、`sendMessage` 六步 pipeline 化、桌宠工具 R18 网关双门控、存储键收敛防回潮门禁。其余中期项（PromptBuilderView 编排下沉、director.css/companion.css 分片）按打包预算压力另行排期。
+
+> 已完成（2026-08-23 出图/视频链路，直连真实 ComfyUI 实测驱动）：
+> - Krea2 社区增强链路转正（T-Enhancer + er_sde + RCAS 无条件挂载，原 euler 标准链路退役，实测出图耗时持平）；
+> - Anima 纯文生图末端 RCAS 锐化回流（+~1s 线条发丝细节显著提升；`res_multistep_cfg_pp` 对照实测为动漫风负优化，已排除并维持 res_multistep + CFG4.5）；
+> - 剧情短片纯点击流闭环：蓝图一键剧本（`routes/video/storyboard.js` 起承转合四镜确定性引擎，台词取蓝图原文）→ 一键首帧（逐镜 Krea2 增强链路，`useShotFirstFrames`）→ 批量 + 尾帧衔接 + 拼接；剧本模式激活直通分镜并清退 v18/SD 时代遗留；
+> - 双家族（Krea2/Anima）真实 ComfyUI 端到端回归通过；四镜样片（12s，I2VA/FL2VA 交替 + 尾帧衔接）人物零漂移验证；
+> - 社区工作流复刻五步样板固化为标准流程：社区来源 → 本机固定 seed 复现样张审核 → 网关受控路线注册 → 契约测试锁定 → 新旧链路实测耗时对比转正。
