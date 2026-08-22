@@ -461,8 +461,8 @@ export function adaptNegative(
   return dedupeSegment(tokens.join(', '), new Set())
 }
 
-/** 紧凑手部/解剖/文字保护词：任何 profile 负面都必须带上，防止场景无负面时裸奔。 */
-export const NEGATIVE_PROTECTION = 'bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature'
+/** 紧凑手部/解剖/文字/白边留白保护词：任何 profile 负面都必须带上，防止场景无负面时裸奔或出现白边框/画面缩角。 */
+export const NEGATIVE_PROTECTION = 'bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature, border, white_border, framed, letterbox, pillarbox, padding, margin, inset, comic_panel, split_screen'
 
 /**
  * 模型原生负面统一装配（App 与 corpus 测试共用）：
