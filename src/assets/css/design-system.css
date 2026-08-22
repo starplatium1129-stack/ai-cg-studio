@@ -1018,6 +1018,9 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
 .btn::before {
   content: "";
   position: absolute;
+  /* 扫光带压在文字之下（.btn 自带 isolation:isolate，z-index:-1 仍在自身背景之上）：
+     亮色主题 --glass-specular 近不透明白，盖在 ghost 灰字上会把文字"擦没"。 */
+  z-index: -1;
   inset: -1px auto -1px -42%;
   width: 32%;
   background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--glass-specular) 42%, transparent), transparent);

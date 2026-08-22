@@ -368,7 +368,8 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 }
 .batch-thumb-btn:hover { border-color: var(--accent); }
 .batch-thumb-btn:active { transform: scale(.98); }
-.batch-thumb { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+/* 缩略图跟随成片原生比例（整批同尺寸自然对齐；横版批次不被 3/4 裁切） */
+.batch-thumb { display: block; width: 100%; height: auto; object-fit: contain; }
 .batch-thumb-placeholder {
   display: grid; place-content: center; justify-items: center; gap: var(--s-2);
   aspect-ratio: 3 / 4;
