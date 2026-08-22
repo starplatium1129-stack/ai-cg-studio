@@ -338,6 +338,22 @@ const PROSE_ARTIFACT_RULES = [
   [/\bempty scene\b/gi, 'quiet scene'],
 ];
 
+// ⑨ negativeTokens 否定短语清理（负面位双重否定重灾区，2026-08-24 实机验证前发现）
+// 「no other people」等在负面槽位不可靠且与已有 plain 形式（crowd/bystanders）冗余；
+// 个别蓝图存在自相矛盾项（yui 网球场正向要空场、负面却禁 empty/deserted）。
+const NEGATIVE_DROP_RE = /^no /i;
+const NEGATIVE_DROP_BY_ID = {
+  yui_tennis_court_afternoon: ['empty scene', 'deserted'],
+  // 灯会场景需要背景人群：压制 crowd 会抵消正向 tag；保留 2girls/multiple girls 防分身
+  dusk_arknights_lantern_festival: ['crowd', 'bystanders'],
+};
+// 定向 prose 修正（兜底规则无法覆盖的场景语义冲突）
+const TARGETED_PROSE = {
+  dusk_arknights_lantern_festival: [
+    ['with the whole place to herself', 'amid the lively festival crowd around her'],
+  ],
+};
+
 // ═══════════════════════════ 执行 ═══════════════════════════
 
 const raw = fs.readFileSync(FILE, 'utf8');
@@ -345,7 +361,7 @@ const data = JSON.parse(raw);
 const blueprints = data.blueprints;
 const report = { iconic: 0, dailyAuto: 0, dailyExtra: 0, specialTag: 0, specialEnhance: 0,
   hintFix: 0, removedQuality: 0, qualityTokens: 0, proseUpgraded: 0, sizeBump: 0,
-  negTokens: 0, negProse: 0, inserted: [] };
+  negTokens: 0, negProse: 0, negNegative: 0, inserted: [] };
 
 const byId = new Map(blueprints.map(b => [b.id, b]));
 
@@ -457,6 +473,20 @@ for (const b of blueprints) {
       report.negProse += 1;
     }
   });
+  // ⑦c 定向 prose 修正（场景语义冲突，如灯会要热闹人群）
+  for (const [from, to] of TARGETED_PROSE[b.id] || []) {
+    if ((b.promptProse || '').includes(from)) {
+      b.promptProse = b.promptProse.replace(from, to);
+      report.negProse += 1;
+    }
+  }
+  // ⑨ negativeTokens 清理：否定短语 + 蓝图专属自相矛盾项
+  if (Array.isArray(b.negativeTokens)) {
+    const beforeNeg = b.negativeTokens.length;
+    const dropSet = new Set(NEGATIVE_DROP_BY_ID[b.id] || []);
+    b.negativeTokens = b.negativeTokens.filter(t => !NEGATIVE_DROP_RE.test(t) && !dropSet.has(t));
+    if (b.negativeTokens.length !== beforeNeg) report.negNegative += 1;
+  }
 }
 
 fs.writeFileSync(FILE, JSON.stringify(data, null, 2) + '\n');

@@ -18438,7 +18438,7 @@
         "crowd_implied",
         "chinese_clothes"
       ],
-      "promptProse": "At the Yan festival lantern fair at night, Dusk in her elegant black-and-gold qipao holds a delicate paper lantern with the whole place to herself, the warm lantern glow illuminating her jade horns and subtle smile as she glances back. Strings of festival lights dissolve into dreamy orbs of color behind her, depth stacked like a painted scroll.",
+      "promptProse": "At the Yan festival lantern fair at night, Dusk in her elegant black-and-gold qipao holds a delicate paper lantern amid the lively festival crowd around her, the warm lantern glow illuminating her jade horns and subtle smile as she glances back. Strings of festival lights dissolve into dreamy orbs of color behind her, depth stacked like a painted scroll.",
       "promptTokens": [
         "lantern",
         "festival",
@@ -31591,10 +31591,6 @@
         "outdoor",
         "modern",
         "crowd",
-        "no other people",
-        "no background people",
-        "no crowd",
-        "no bystanders",
         "empty scene",
         "deserted"
       ],
@@ -31752,13 +31748,7 @@
         "night",
         "indoor",
         "rain",
-        "crowd",
-        "no other people",
-        "no background people",
-        "no crowd",
-        "no bystanders",
-        "empty scene",
-        "deserted"
+        "crowd"
       ],
       "recommendedSize": "1152x1536",
       "coverageTags": [
@@ -32628,10 +32618,6 @@
         "combat",
         "blood",
         "crowd",
-        "no other people",
-        "no background people",
-        "no crowd",
-        "no bystanders",
         "empty scene",
         "deserted"
       ],
@@ -32767,10 +32753,6 @@
         "combat",
         "blood",
         "outdoor",
-        "no other people",
-        "no background people",
-        "no crowd",
-        "no bystanders",
         "empty scene",
         "deserted"
       ],
@@ -32997,10 +32979,6 @@
         "outdoor",
         "rain",
         "crowd",
-        "no other people",
-        "no background people",
-        "no crowd",
-        "no bystanders",
         "empty scene",
         "deserted"
       ],
@@ -33851,10 +33829,6 @@
         "indoor",
         "rain",
         "crowd",
-        "no other people",
-        "no background people",
-        "no crowd",
-        "no bystanders",
         "empty scene",
         "deserted"
       ],
@@ -33987,10 +33961,6 @@
         "indoor",
         "rain",
         "crowd",
-        "no other people",
-        "no background people",
-        "no crowd",
-        "no bystanders",
         "empty scene",
         "deserted"
       ],

@@ -95,6 +95,12 @@ recommendedSize► 视图层 closestSupportedSize(activeModel) 收敛
 
 ## 四、反模式清单（本次研究修正项）
 
+### 4.0 实机 A/B 实证（2026-08-24，anima-aesthetic-v1.1 / RTX 4070 Ti SUPER，同 seed 对比）
+- **否定召唤实锤**：`yui_tennis_court_afternoon` 基线 prompt 含 `no opponent`/「no one else around」，出图**真实出现了隔网对手**；正向化后对手退化为远景小人——方向正确但未根除（`tennis racket`+`action shot` 的人物先验极强）。负面位藏匿的 `no other people/no crowd/no bystanders` 已全部清除（7 蓝图）。
+- **氛围句有效**：raiden 天守阁 new 版烛光分层、对称构图、暖冷对比显著优于基线——模板句「Candlelight pools in soft golden layers…」直接显形。
+- **cinematic 构图词的 seed 偶发风险**：`detailed_background+cinematic_lighting` 在竖版 action 场景偶发上下白边（1/2 seed 复现；另一 seed 正常）。建议动作类场景观察，必要时按场景剔除。
+- **人群场景豁免缺失（编译器层 TODO）**：装配层对单人场景统一追加 `crowd/bystanders` 负面压制，会抵消灯会等场景的正向 `crowd` tag——需要 per-blueprint 豁免机制（本次测试以工作流补丁绕过）。
+
 ### 4.1 否定式词条/短语 ❌ → 正向改写 ✅
 扩散编码器 negation-blind：「no X」的字面 token 反而可能召唤 X。项目 Krea 契约早已禁止同义短语，本次把全部蓝图对齐：
 

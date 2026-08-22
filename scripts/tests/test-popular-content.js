@@ -192,6 +192,9 @@ test('negation-free prompts: no invented no_* tags, prose carries positive solit
       assert.ok(!/\bno (?:other )?(?:people|customers|visitors|walkers|colleagues|opponent)\b|\bnobody else\b|\bno one else\b/i.test(text),
         blueprint.id + ' ' + field + ' must not use negation phrasing');
     });
+    // 负面位双重否定同样有害（2026-08-24 实机验证确认「no opponent」会召唤对手）
+    assert.ok(!(blueprint.negativeTokens || []).some(function (token) { return /^no /i.test(token); }),
+      blueprint.id + ' negativeTokens must not carry negation phrases');
   });
 });
 
