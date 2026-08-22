@@ -1599,7 +1599,11 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
         ),
     )?;
 
-    tx.send(OverlayCommand::HitTestAsync { x: 0.5, y: 0.11 })
+    // 点击点选在脸区中部（canvas y≈0.55，Face bbox y[0.441,0.625] 中心）。
+    // 原 y=0.11 换算后 canvas y≈0.688，贴着 Head 区上缘（实测 bbox 到 0.687，
+    // 差 0.001）——HitArea 顶点随动作相位微动，贴边坐标让断言随 TapHead
+    // 姿势时好时坏（2026-08-23 实测空命中）。脸中心对动作相位不敏感。
+    tx.send(OverlayCommand::HitTestAsync { x: 0.5, y: 0.20 })
         .map_err(|e| format!("selftest: send hit test: {e}"))?;
     thread::sleep(Duration::from_millis(300));
     let areas = state.hit_test_result.lock().unwrap().clone();
