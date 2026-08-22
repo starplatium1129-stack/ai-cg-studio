@@ -11,6 +11,23 @@ import type {
 import type { Live2DCatalog } from '@/composables/live2d/catalog'
 import { DEFAULT_LIVE2D_OUTFIT } from '@/config/characters'
 
+export interface Live2DStatus {
+  state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
+  text: string
+  detail: string
+  retryable: boolean
+  ready: boolean
+}
+
+/**
+ * 用户要求减少动态效果时不跑待机动作。
+ * CSS 的 prefers-reduced-motion 关不掉 WebGL ticker，只能在这里判。
+ * （拆分 Step 4 自 useLive2D.ts 移入：interactions / parameterFrame / lifecycle 共用）
+ */
+export function prefersReducedMotion(): boolean {
+  try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches } catch { return false }
+}
+
 export interface NatsumeOverlaySettle {
   start: number
   entries: Array<{ id: string; from: number; to: number }>

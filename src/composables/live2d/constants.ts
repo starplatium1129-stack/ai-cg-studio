@@ -63,6 +63,11 @@ export const LEAVE_PLAY_MS = 5_000
 
 export const POINTER_FOCUS_PARAMS = ['ParamAngleX', 'ParamAngleY', 'ParamEyeBallX', 'ParamEyeBallY']
 
+// 叠层/换装回落时长：原生端为 0.5s（OVERLAY_SETTLE_SECONDS）；浏览器端
+// 回落起点比原生晚（互动定时器在动作时长+600ms 才交还所有权），取稍短
+// 时长补偿总时长。
+export const OVERLAY_SETTLE_MS = 450
+
 // 夏目互动（Tap*）/登场（Start*）动作驱动、但 Idle 组完全未覆盖的参数
 // （2026-08-15 从 motions/Tap*.motion3.json 与 Idle*.motion3.json 曲线差集
 // 提取）：互动/登场动作把这些参数拉高（作者叠层/换装部件临时显隐），动作

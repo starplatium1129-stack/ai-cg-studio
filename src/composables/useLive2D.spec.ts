@@ -3,6 +3,8 @@ import { readLive2DCatalog } from './live2d/catalog'
 import {
   resolveHitAreaInteraction,
   resolveStageInteraction,
+} from './live2d/interactions'
+import {
   selectBlinkParams,
   selectMouthParams,
 } from './useLive2D'
