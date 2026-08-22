@@ -42,7 +42,7 @@ function violationsFor(result, target, relativePath, kind) {
     && violation.path === relativePath && violation.kind === kind);
 }
 
-test('staged-only BOM is read from the absolute index', (t) => {
+test('staged-only BOM is read from the absolute index', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'staged.js', 'clean\n');
   git(repositoryRoot, ['add', '--', 'staged.js']);
@@ -50,27 +50,27 @@ test('staged-only BOM is read from the absolute index', (t) => {
   git(repositoryRoot, ['add', '--', 'staged.js']);
   write(repositoryRoot, 'staged.js', 'clean\n');
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.equal(violationsFor(result, 'index', 'staged.js', 'bom').length, 1);
   assert.equal(violationsFor(result, 'worktree', 'staged.js', 'bom').length, 0);
 });
 
-test('unstaged BOM is read from tracked worktree bytes', (t) => {
+test('unstaged BOM is read from tracked worktree bytes', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'unstaged.js', 'clean\n');
   git(repositoryRoot, ['add', '--', 'unstaged.js']);
   write(repositoryRoot, 'unstaged.js', Buffer.from('\ufeffunstaged\n', 'utf8'));
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.equal(violationsFor(result, 'index', 'unstaged.js', 'bom').length, 0);
   assert.equal(violationsFor(result, 'worktree', 'unstaged.js', 'bom').length, 1);
 });
 
-test('untracked BOM and every illegal control character are reported', (t) => {
+test('untracked BOM and every illegal control character are reported', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'loose.txt', Buffer.from('\ufeffa\u0001b\u007fc\n', 'utf8'));
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.equal(violationsFor(result, 'untracked', 'loose.txt', 'bom').length, 1);
   assert.deepEqual(
     violationsFor(result, 'untracked', 'loose.txt', 'control').map((violation) => violation.message),
@@ -78,11 +78,11 @@ test('untracked BOM and every illegal control character are reported', (t) => {
   );
 });
 
-test('every line with trailing whitespace is reported', (t) => {
+test('every line with trailing whitespace is reported', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'trailing.txt', 'one  \ntwo\t\nthree \n');
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.deepEqual(
     violationsFor(result, 'untracked', 'trailing.txt', 'trailing-whitespace')
       .map((violation) => violation.line),
@@ -90,18 +90,18 @@ test('every line with trailing whitespace is reported', (t) => {
   );
 });
 
-test('nonempty text files require a final newline', (t) => {
+test('nonempty text files require a final newline', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'no-newline.txt', 'missing newline');
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.equal(
     violationsFor(result, 'untracked', 'no-newline.txt', 'missing-final-newline').length,
     1,
   );
 });
 
-test('index uses LF while worktree and untracked scripts use path-specific EOL', (t) => {
+test('index uses LF while worktree and untracked scripts use path-specific EOL', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'tool.ps1', 'one\r\ntwo\r\n');
   git(repositoryRoot, ['add', '--', 'tool.ps1']);
@@ -110,7 +110,7 @@ test('index uses LF while worktree and untracked scripts use path-specific EOL',
   write(repositoryRoot, 'app.js', 'one\r\ntwo\r\n');
   write(repositoryRoot, 'local.ps1', 'one\ntwo\n');
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.deepEqual(
     violationsFor(result, 'index', 'tool.ps1', 'line-ending').map((violation) => violation.line),
     [1, 2],
@@ -126,27 +126,27 @@ test('index uses LF while worktree and untracked scripts use path-specific EOL',
   );
 });
 
-test('ignored files are excluded from the untracked scan', (t) => {
+test('ignored files are excluded from the untracked scan', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, '.gitignore', 'ignored.txt\n');
   git(repositoryRoot, ['add', '--', '.gitignore']);
   write(repositoryRoot, 'ignored.txt', Buffer.from('\ufeffbad\u0001  \r\n', 'utf8'));
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.equal(result.violations.some((violation) => violation.path === 'ignored.txt'), false);
 });
 
-test('unknown extensions fail instead of guessing text or binary', (t) => {
+test('unknown extensions fail instead of guessing text or binary', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'mystery.quux', 'clean\n');
   write(repositoryRoot, 'known.png', Buffer.from([0, 1, 2, 3]));
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   assert.equal(violationsFor(result, 'untracked', 'mystery.quux', 'unknown-file-type').length, 1);
   assert.equal(result.violations.some((violation) => violation.path === 'known.png'), false);
 });
 
-test('unmerged index entries fail explicitly', (t) => {
+test('unmerged index entries fail explicitly', async (t) => {
   const repositoryRoot = createRepository(t);
   const base = git(repositoryRoot, ['hash-object', '-w', '--stdin'], { input: 'base\n' });
   const ours = git(repositoryRoot, ['hash-object', '-w', '--stdin'], { input: 'ours\n' });
@@ -160,13 +160,13 @@ test('unmerged index entries fail explicitly', (t) => {
     ].join('\n'),
   });
 
-  const result = scanRepository(repositoryRoot);
+  const result = await scanRepository(repositoryRoot);
   const violations = violationsFor(result, 'index', 'conflict.js', 'unmerged-index-entry');
   assert.equal(violations.length, 1);
   assert.equal(violations[0].message, 'unmerged index entry (stages 1, 2, 3)');
 });
 
-test('debt allowance requires the exact tracked full-blob SHA-256', (t) => {
+test('debt allowance requires the exact tracked full-blob SHA-256', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'legacy.js', 'clean\n');
   git(repositoryRoot, ['add', '--', 'legacy.js']);
@@ -174,51 +174,51 @@ test('debt allowance requires the exact tracked full-blob SHA-256', (t) => {
   write(repositoryRoot, 'legacy.js', legacyBytes);
   const allowances = [{ path: 'legacy.js', sha256: sha256(legacyBytes) }];
 
-  const allowed = scanRepository(repositoryRoot, { allowances });
+  const allowed = await scanRepository(repositoryRoot, { allowances });
   assert.equal(violationsFor(allowed, 'worktree', 'legacy.js', 'trailing-whitespace').length, 0);
   assert.equal(allowed.allowed.length, 1);
 
   write(repositoryRoot, 'legacy.js', 'edited legacy  \n');
-  const edited = scanRepository(repositoryRoot, { allowances });
+  const edited = await scanRepository(repositoryRoot, { allowances });
   assert.equal(violationsFor(edited, 'worktree', 'legacy.js', 'trailing-whitespace').length, 1);
 });
 
-test('untracked files never receive a debt allowance', (t) => {
+test('untracked files never receive a debt allowance', async (t) => {
   const repositoryRoot = createRepository(t);
   const looseBytes = Buffer.from('loose  \n');
   write(repositoryRoot, 'loose.js', looseBytes);
 
-  const result = scanRepository(repositoryRoot, {
+  const result = await scanRepository(repositoryRoot, {
     allowances: [{ path: 'loose.js', sha256: sha256(looseBytes) }],
   });
   assert.equal(violationsFor(result, 'untracked', 'loose.js', 'trailing-whitespace').length, 1);
   assert.equal(result.allowed.length, 0);
 });
 
-test('Git baseline allowances cannot bless new or edited debt', (t) => {
+test('Git baseline allowances cannot bless new or edited debt', async (t) => {
   const repositoryRoot = createRepository(t);
   write(repositoryRoot, 'legacy.js', 'legacy  \n');
   git(repositoryRoot, ['add', '--', 'legacy.js']);
   git(repositoryRoot, ['commit', '--quiet', '-m', 'baseline']);
   const baseline = git(repositoryRoot, ['rev-parse', 'HEAD']);
-  const allowances = loadDebtFromGitRef(repositoryRoot, baseline);
+  const allowances = await loadDebtFromGitRef(repositoryRoot, baseline);
 
-  const unchanged = scanRepository(repositoryRoot, { allowances });
+  const unchanged = await scanRepository(repositoryRoot, { allowances });
   assert.equal(unchanged.violations.length, 0);
   assert.ok(unchanged.allowed.some((entry) => entry.path === 'legacy.js'));
 
   write(repositoryRoot, 'new.js', 'new debt  \n');
   git(repositoryRoot, ['add', '--', 'new.js']);
-  const added = scanRepository(repositoryRoot, { allowances });
+  const added = await scanRepository(repositoryRoot, { allowances });
   assert.equal(violationsFor(added, 'index', 'new.js', 'trailing-whitespace').length, 1);
 
   write(repositoryRoot, 'legacy.js', 'edited legacy  \n');
-  const edited = scanRepository(repositoryRoot, { allowances });
+  const edited = await scanRepository(repositoryRoot, { allowances });
   assert.equal(violationsFor(edited, 'worktree', 'legacy.js', 'trailing-whitespace').length, 1);
 });
 
-test('Git discovery errors fail closed', (t) => {
+test('Git discovery errors fail closed', async (t) => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-repo-hygiene-no-git-'));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
-  assert.throws(() => scanRepository(directory), /git rev-parse --show-toplevel failed/);
+  await assert.rejects(() => scanRepository(directory), /git rev-parse --show-toplevel failed/);
 });

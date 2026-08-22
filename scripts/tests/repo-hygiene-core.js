@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('node:crypto');
-const { execFileSync } = require('node:child_process');
+const { execFileSync, spawn } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const { TextDecoder } = require('node:util');
@@ -158,7 +158,7 @@ function loadDebtFixture(fixturePath) {
   return fixture.allowances;
 }
 
-function loadDebtFromGitRef(startPath, reference) {
+async function loadDebtFromGitRef(startPath, reference) {
   if (typeof reference !== 'string' || !reference.trim()) {
     throw new Error('Repository hygiene baseline ref is required');
   }
@@ -167,7 +167,7 @@ function loadDebtFromGitRef(startPath, reference) {
     repositoryRoot,
     ['ls-tree', '-r', '-z', '--full-tree', reference.trim()],
   ));
-  const allowances = [];
+  const candidates = [];
   for (const record of records) {
     const separator = record.indexOf('\t');
     if (separator < 0) throw new Error(`Git returned a malformed tree record: ${record}`);
@@ -177,9 +177,16 @@ function loadDebtFromGitRef(startPath, reference) {
       continue;
     }
     if (classifyPath(relativePath) !== 'text') continue;
-    const bytes = runGit(repositoryRoot, ['cat-file', '-p', metadata[2]]);
+    candidates.push({ relativePath, objectId: metadata[2].toLowerCase() });
+  }
+  // 批量读取（单进程），替代逐 blob spawn
+  const blobs = await catFileBatch(repositoryRoot, candidates.map((c) => c.objectId));
+  const allowances = [];
+  for (const candidate of candidates) {
+    const bytes = blobs.get(candidate.objectId);
+    if (!bytes) throw new Error(`git cat-file --batch missed blob ${candidate.objectId} (${candidate.relativePath})`);
     if (scanText(bytes, '\n').length > 0) {
-      allowances.push({ path: relativePath, sha256: sha256(bytes) });
+      allowances.push({ path: candidate.relativePath, sha256: sha256(bytes) });
     }
   }
   return allowances;
@@ -279,13 +286,64 @@ function scanText(bytes, expectedEol) {
   return violations;
 }
 
-function readIndexBlob(repositoryRoot, entry) {
-  return runGit(repositoryRoot, ['cat-file', '-p', entry.objectId]);
-}
-
 function expectedLineEnding(target, relativePath) {
   if (target === 'index') return '\n';
   return CRLF_EXTENSIONS.has(path.posix.extname(relativePath).toLowerCase()) ? '\r\n' : '\n';
+}
+
+/**
+ * 单进程批量读取 blob 内容（`git cat-file --batch`）。
+ * Windows 上每次 spawn 约 30-80ms，逐 blob 调用在千级文件规模下产生
+ * 数十秒的纯进程创建开销——这是扫描耗时的主要来源（2026-08-22 提速）。
+ * 返回 Map<小写 oid, Buffer>；--batch 按输入顺序逐帧输出。
+ */
+function catFileBatch(repositoryRoot, objectIds) {
+  const unique = [...new Set(objectIds.map((id) => id.toLowerCase()))];
+  if (unique.length === 0) return Promise.resolve(new Map());
+  const child = spawn('git', ['cat-file', '--batch'], {
+    cwd: repositoryRoot,
+    stdio: ['pipe', 'pipe', 'pipe'],
+    windowsHide: true,
+    maxBuffer: MAX_GIT_OUTPUT,
+  });
+  const chunks = [];
+  let stderr = '';
+  child.stdout.on('data', (chunk) => chunks.push(chunk));
+  child.stderr.on('data', (chunk) => { stderr += chunk; });
+  for (const id of unique) child.stdin.write(`${id}\n`);
+  child.stdin.end();
+  return new Promise((resolve, reject) => {
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error(`git cat-file --batch failed (${code}): ${stderr.trim() || 'no stderr'}`));
+        return;
+      }
+      try {
+        const buffer = Buffer.concat(chunks);
+        const map = new Map();
+        let offset = 0;
+        for (const requested of unique) {
+          const newlineAt = buffer.indexOf(0x0a, offset);
+          if (newlineAt < 0) throw new Error(`truncated header for ${requested}`);
+          const parts = buffer.slice(offset, newlineAt).toString('utf8').split(' ');
+          if (parts.length !== 3 || parts[2] === 'missing') {
+            throw new Error(`cannot resolve ${requested}: ${parts.join(' ')}`);
+          }
+          const size = Number(parts[2]);
+          if (!Number.isInteger(size) || size < 0) {
+            throw new Error(`malformed size for ${requested}: ${parts[2]}`);
+          }
+          const contentStart = newlineAt + 1;
+          map.set(requested, buffer.slice(contentStart, contentStart + size));
+          offset = contentStart + size + 1; // 跳过帧尾换行
+        }
+        resolve(map);
+      } catch (error) {
+        reject(new Error(`git cat-file --batch parse failed: ${error.message}`));
+      }
+    });
+  });
 }
 
 function unknownViolation(target, relativePath) {
@@ -376,7 +434,7 @@ function sortViolations(violations) {
   });
 }
 
-function scanRepository(startPath, options = {}) {
+async function scanRepository(startPath, options = {}) {
   const repositoryRoot = resolveRepositoryRoot(startPath);
   const allowanceLookup = normalizeAllowances(options.allowances || []);
   const result = {
@@ -429,12 +487,17 @@ function scanRepository(startPath, options = {}) {
     }
   }
 
+  // 索引侧文本 blob 一次性批量读取（替代逐文件 spawn cat-file 的主要瓶颈）
+  const indexBlobs = await catFileBatch(
+    repositoryRoot,
+    textIndexEntries.map((entry) => entry.objectId),
+  );
   for (const entry of textIndexEntries) {
     appendBlobViolations(
       result,
       'index',
       entry.path,
-      readIndexBlob(repositoryRoot, entry),
+      indexBlobs.get(entry.objectId.toLowerCase()),
       allowanceLookup,
     );
   }

@@ -22,7 +22,7 @@ function mergeAllowances(...groups) {
   return [...entries.values()];
 }
 
-test('repository text hygiene scans index, worktree, and nonignored untracked files', () => {
+test('repository text hygiene scans index, worktree, and nonignored untracked files', async () => {
   const requestedBase = String(process.env.AICS_HYGIENE_BASE_REF || '').trim();
   const baselineRef = requestedBase && !/^0+$/.test(requestedBase)
     ? requestedBase
@@ -30,9 +30,9 @@ test('repository text hygiene scans index, worktree, and nonignored untracked fi
       ? 'HEAD^'
       : '';
   const allowances = baselineRef
-    ? loadDebtFromGitRef(root, baselineRef)
-    : mergeAllowances(loadDebtFromGitRef(root, 'HEAD'), loadDebtFixture(debtFixture));
-  const result = scanRepository(root, { allowances });
+    ? await loadDebtFromGitRef(root, baselineRef)
+    : mergeAllowances(await loadDebtFromGitRef(root, 'HEAD'), loadDebtFixture(debtFixture));
+  const result = await scanRepository(root, { allowances });
   assert.ok(result.counts.index > 0, 'the absolute Git index must contain discoverable files');
   assert.ok(result.counts.worktree > 0, 'tracked worktree files must be discoverable');
   if (result.violations.length > 0) {
