@@ -279,15 +279,96 @@ const PROSE_ALL_SENTENCES = [...new Set([
   ...PROSE_TEMPLATES.flatMap(([, v]) => v), ...PROSE_FALLBACK,
 ])];
 
+// ── ⑦ 否定式词条/短语出清（2026-08-24 词条语义研究产物）─────────────────────
+// 扩散编码器对否定不敏感，「no X」有反向召唤 X 的风险；项目 Krea 契约
+// （test-popular-content 蓝图测试）早已禁同义短语，此处对齐到全部蓝图。
+// 注意区分：no_panties/no_bra 是 Danbooru 高频习得概念（保留）；empty_场所/
+// deserted_形容词/alone 是可渲染的正向或习得表达（保留）。
+const REMOVE_NEGATION_TOKENS = [
+  'no_opponent', 'no_customers', 'no_visitors', 'no_walkers', 'no_colleagues',
+];
+const TOKEN_REPLACEMENTS = {
+  crowd_implied: 'crowd', // 灯会想要画面内人群，implied（画外暗示）语义偏弱
+};
+// prose 否定短语 → 正向改写（顺序执行：长规则在前，兜底在后；保持连接词语法）
+const PROSE_NEGATION_RULES = [
+  [/no opponent and no other people anywhere/gi, 'the court entirely hers'],
+  [/no colleagues or anyone else present/gi, 'the office floor entirely hers'],
+  [/no customers and no other people inside/gi, 'the store entirely hers'],
+  [/and no other customers crowd around/gi, 'and the place all to herself'],
+  [/no one sits near her table/gi, 'the nearby tables stand empty'],
+  [/no one crowding her table/gi, 'her table undisturbed'],
+  [/nobody else is in the room( with her)?/gi, 'she is alone in the room'],
+  [/nobody else is at home( with her)?/gi, 'the house is quiet around her'],
+  [/with no other people present/gi, 'with the whole place to herself'],
+  [/and no other people are nearby/gi, 'and the whole place to herself'],
+  [/with no other people are nearby/gi, 'with the whole place to herself'],
+  [/and no other customers nearby/gi, 'and the place all to herself'],
+  [/and no other customers around/gi, 'and the place all to herself'],
+  [/with no one else around/gi, 'with the place to herself'],
+  [/with no one else nearby/gi, 'with the place to herself'],
+  [/with no one else inside/gi, 'with the studio to herself'],
+  [/and no one else is home/gi, 'and the house is quiet around her'],
+  [/\bno one else is present/gi, 'she is alone'],
+  [/\bwith no one else present\b/gi, 'with the place to herself'],
+  [/\bwith nobody else present\b/gi, 'with the place to herself'],
+  [/\bno one else present/gi, 'she is alone'],
+  [/\bno one else nearby/gi, 'she is alone'],
+  [/\bno one else inside/gi, 'she is alone inside'],
+  [/\bno one else at home/gi, 'quiet and alone at home'],
+  [/no other people anywhere nearby/gi, 'the place entirely hers'],
+  // 兜底（前述规则未覆盖的残余形态）
+  [/with no other people\b[^.;]*/gi, 'with the whole place to herself'],
+  [/and no other people\b[^.;]*/gi, 'and she is alone'],
+  [/,\s*no other people\b[^.;]*/gi, ', the whole place to herself'],
+  [/\bno other customers\b[^.;]*/gi, 'the place all to herself'],
+  [/\bno other people\b[^.;]*/gi, 'she is alone'],
+  [/\bno one else\b[^.;]*/gi, 'she is alone'],
+];
+
+// ⑧ 兜底伪影定向修复（否定改写产生的病句/冗余，2026-08-24 复查产物）
+const PROSE_ARTIFACT_RULES = [
+  [/she is alone in the room—she is alone/gi, 'the room belongs to her alone'],
+  [/\ball by herself in the empty scene, with the whole place to herself\b/gi, 'all by herself in the quiet scene'],
+  [/\bin the empty scene, with the whole place to herself\b/gi, 'in the quiet scene'],
+  [/\bthere is she is alone; she is entirely alone in the quiet space\.?/gi, 'The quiet space around her belongs to her alone.'],
+  [/\bthere is she is alone\b/gi, 'she is completely alone'],
+  // 字符类必须排除逗号：主句「, Makima sits...」不允许被吞
+  [/\bwith she is\b[^.;,]*/gi, 'with the place to herself'],
+  [/\bempty scene\b/gi, 'quiet scene'],
+];
+
 // ═══════════════════════════ 执行 ═══════════════════════════
 
 const raw = fs.readFileSync(FILE, 'utf8');
 const data = JSON.parse(raw);
 const blueprints = data.blueprints;
 const report = { iconic: 0, dailyAuto: 0, dailyExtra: 0, specialTag: 0, specialEnhance: 0,
-  hintFix: 0, removedQuality: 0, qualityTokens: 0, proseUpgraded: 0, sizeBump: 0, inserted: [] };
+  hintFix: 0, removedQuality: 0, qualityTokens: 0, proseUpgraded: 0, sizeBump: 0,
+  negTokens: 0, negProse: 0, inserted: [] };
 
 const byId = new Map(blueprints.map(b => [b.id, b]));
+
+// --refresh-prose：否定改写曾产生中间态病句；此模式把三个散文字段回滚到
+// git HEAD 原文后重新套用全部改写规则，保证结果只依赖「原文+规则」。
+if (process.argv.includes('--refresh-prose')) {
+  const { execSync } = require('child_process');
+  const headJson = JSON.parse(execSync('git show HEAD:data/scene-blueprints.json', { maxBuffer: 2e8 }).toString());
+  const headById = new Map(headJson.blueprints.map(b => [b.id, b]));
+  let refreshed = 0;
+  for (const b of blueprints) {
+    const head = headById.get(b.id);
+    if (!head) continue;
+    ['promptProse', 'nsfwProse', 'description'].forEach((field) => {
+      if (typeof head[field] === 'string' && head[field] !== b[field]) {
+        b[field] = head[field];
+        refreshed += 1;
+      }
+    });
+  }
+  console.log('[refresh-prose] 从 HEAD 回滚散文字段:', refreshed);
+}
+
 function addTag(b, tag) {
   if (!Array.isArray(b.coverageTags)) b.coverageTags = [];
   if (!b.coverageTags.includes(tag)) {
@@ -353,6 +434,29 @@ for (const b of blueprints) {
   // ⑤c 高分辨率升级（旧底模由视图层 closestSupportedSize 收敛）
   if (b.recommendedSize === '832x1216') { b.recommendedSize = '1152x1536'; report.sizeBump += 1; }
   else if (b.recommendedSize === '1216x832') { b.recommendedSize = '1536x1152'; report.sizeBump += 1; }
+  // ⑦a 否定式 tag 出清/替换（promptTokens + nsfwTokens）
+  [b.promptTokens, b.nsfwTokens].forEach((list, idx) => {
+    if (!Array.isArray(list)) return;
+    const cleaned = list.filter(t => !REMOVE_NEGATION_TOKENS.includes(String(t).toLowerCase()))
+      .map(t => TOKEN_REPLACEMENTS[t] || t);
+    const changed = cleaned.length !== list.length || cleaned.some((t, i) => t !== list[i]);
+    if (changed) {
+      if (idx === 0) b.promptTokens = cleaned; else b.nsfwTokens = cleaned;
+      report.negTokens += 1;
+    }
+  });
+  // ⑦b prose 否定短语正向改写 + 伪影修复
+  ['promptProse', 'nsfwProse', 'description'].forEach((field) => {
+    let text = b[field];
+    if (!text) return;
+    const before = text;
+    PROSE_NEGATION_RULES.forEach(([re, to]) => { text = text.replace(re, to); });
+    PROSE_ARTIFACT_RULES.forEach(([re, to]) => { text = text.replace(re, to); });
+    if (text !== before) {
+      b[field] = text.replace(/\s{2,}/g, ' ').replace(/\s+([,.;])/g, '$1');
+      report.negProse += 1;
+    }
+  });
 }
 
 fs.writeFileSync(FILE, JSON.stringify(data, null, 2) + '\n');

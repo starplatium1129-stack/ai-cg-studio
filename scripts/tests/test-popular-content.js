@@ -176,6 +176,25 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
   });
 });
 
+// 2026-08-24 词条出图语义研究产物：自造「场景逻辑否定」tag 是扩散编码器反模式
+// （negation-blind，「no X」可能反向召唤 X）；prose 同步正向化。
+// 注意：no_panties/no_bra 是 Danbooru 高频习得概念（白名单保留），empty_场所/
+// deserted_形容词/alone 为可渲染表达（不在禁列）。
+test('negation-free prompts: no invented no_* tags, prose carries positive solitude phrasing', function () {
+  var bannedTokens = ['no_opponent', 'no_customers', 'no_visitors', 'no_walkers', 'no_colleagues'];
+  blueprints.forEach(function (blueprint) {
+    bannedTokens.concat(['crowd_implied']).forEach(function (token) {
+      assert.ok(!blueprint.promptTokens.includes(token),
+        blueprint.id + ' must not carry negation-style tag ' + token);
+    });
+    ['promptProse', 'nsfwProse'].forEach(function (field) {
+      var text = blueprint[field] || '';
+      assert.ok(!/\bno (?:other )?(?:people|customers|visitors|walkers|colleagues|opponent)\b|\bnobody else\b|\bno one else\b/i.test(text),
+        blueprint.id + ' ' + field + ' must not use negation phrasing');
+    });
+  });
+});
+
 test('blueprint rotation: deterministic, changes per cursor, avoids immediate repeat', function () {
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
   var pool = popular.eligibleBlueprints(blueprints, raiden, { adultEnabled: true });
