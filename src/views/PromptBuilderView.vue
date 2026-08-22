@@ -773,6 +773,7 @@ import { usePromptVideoBridge } from '@/composables/usePromptVideoBridge'
 import { usePromptHistoryApply } from '@/composables/usePromptHistoryApply'
 import { usePromptBatchRunners } from '@/composables/usePromptBatchRunners'
 import { usePromptTagTools } from '@/composables/usePromptTagTools'
+import { usePromptDeepLink } from '@/composables/usePromptDeepLink'
 import {
   blueprintCategories as collectBlueprintCategories,
   eligibleBlueprints,
@@ -796,12 +797,6 @@ import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/useDirectorDerived'
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
-import {
-  findScenario,
-  substituteScenarioPrompt,
-  SCENARIO_RES_MAP,
-  type ScenarioCharacter,
-} from '@/config/scenarios'
 // 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
 // 降低导演台路由块体积（预算上限 JS 128KB / CSS 100KB）。
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
@@ -847,7 +842,6 @@ const sd = useSDGenerate()
 const {
   storyChips,
   charOptions,
-  isCharKey,
 } = useDirectorCatalog()
 
 // 与 config/characters.ts 共用 Express 服务的同一份角色立绘 URL。
@@ -1740,101 +1734,23 @@ function resetAll() {
 // ── 词条工作台工具（释义字典懒加载已随簇下沉 usePromptTagTools）──────────
 const { addTag, tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle } = usePromptTagTools(pb)
 
-/**
- * 深链参数应用（?scene / ?popular&blueprint / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick）。
- * onMounted 与 watch(route.query) 共用：组件复用 / 后退恢复（bfcache）时组件不会重挂载、
- * onMounted 不重跑，URL 变了状态却不更新——由 watch 按「URL 与当前选中不一致」条件重放，
- * 保证「点场景卡片后提示词跟随新场景」。
- */
-function applyDeepLink(q: Record<string, unknown>): boolean {
-  let handled = false
-  const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
-  if (scenarioId) {
-    // 剧本模式分幕 → 导演台：第一幕的语义词条落成手动词条，
-    // 质量行不搬（质量前缀由模型 profile 决定，剧本里的六连质量词
-    // 正是 WAI 作者建议避免的堆叠写法）。
-    const scenario = findScenario(scenarioId)
-    const act = scenario?.acts[0]
-    if (act) {
-      const char = isCharKey(q.char) ? (q.char as ScenarioCharacter) : 'nene'
-      pb.setChar(char)
-      pb.setStory(`${scenario.name} · ${act.title}：${act.desc}`)
-      const semanticTokens = substituteScenarioPrompt(act.prompt, char)
-        .split('\n')
-        .slice(1)
-        .flatMap(line => line.split(',').map(token => token.trim().replace(/[\s-]+/g, '_')))
-        .filter(Boolean)
-      pb.manualTags = new Set(semanticTokens)
-      const dim = SCENARIO_RES_MAP[act.res]?.dim
-      if (dim) sdSize.value = dim.replace('×', 'x')
-      pb.flash(`已载入剧本《${scenario.name}》第一幕 ${act.title}，可调整后生成`)
-      handled = true
-    }
-  }
-  if (isCharKey(q.char)) {
-    pb.setChar(q.char); handled = true
-  }
-  // 热门角色深链：不带 !pb.isPopular 前置条件——已在热门模式时二次进入
-  // （换角色/换场景）也必须重新应用，否则「点击场景还是上一个」。
-  if (typeof q.popular === 'string') {
-    // 进入热门模式并选中指定角色；?blueprint= 可预选场景蓝图
-    // （角色场景库页面「开始绘制」直达）。
-    selectPopularSource('popular')
-    const target = findPopularCharacter(pb.popularCharacters, q.popular)
-    if (target) {
-      const blueprintId = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
-      pb.setPopularSubject(target.id, target.outfits.find(o => o.default)?.id ?? target.outfits[0].id, blueprintId)
-      patchAnimaState({ modelId: target.recommendedEngine })
-      applyRecommendedEngine(target)
-      if (blueprintId) {
-        const blueprint = findPopularBlueprint(pb.sceneBlueprints, blueprintId)
-        if (blueprint) {
-          // 与点击卡片同一路径：应用镜头/光照/构图/色调/尺寸推断，并展开全部列表
-          // 保证预选场景卡片可见高亮（可能不在推荐 3 个里）。
-          selectBlueprint(blueprint)
-          showAllBlueprints.value = true
-        }
-      }
-    }
-    handled = true
-  }
-  if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
-    pb.setColorMood(q.mood); handled = true
-  }
-  if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
-    const targetId = Number(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
-    const entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
-    if (entry) {
-      applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
-      if (typeof q.remix === 'string') {
-        setDirectorMode('pro')
-        pb.flash('已载入作品参数与配方，可自由调整细节')
-      }
-      handled = true
-    }
-  } else if (typeof q.scene === 'string') {
-    const sc = pb.scenes.find(s => s.id === q.scene)
-    if (sc) { selectScene(sc); handled = true }
-  } else if (q.resume === '1') {
-    handled = pb.restoreDraft()
-  } else if (q.quick === '1' && !pb.story) {
-    pb.setStory('用一张画面来讲今天想画的故事')
-    handled = true
-  }
-  return handled
-}
-
-/** URL 场景参数与当前选中不一致时才需要重放深链（避免覆盖用户手动编辑的状态）。 */
-function deepLinkNeeded(q: Record<string, unknown>): boolean {
-  if (typeof q.popular === 'string') {
-    const blueprint = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
-    return pb.subject.kind !== 'popular'
-      || pb.subject.characterId !== q.popular
-      || pb.subject.blueprintId !== blueprint
-  }
-  if (typeof q.scene === 'string') return pb.sceneId !== q.scene
-  return false
-}
+// ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
+// onMounted 首放 + watch(route.query) 按 deepLinkNeeded 条件重放：
+// 组件复用 / 后退恢复（bfcache）时组件不会重挂载、onMounted 不重跑，
+// URL 变了状态却不更新——按「URL 与当前选中不一致」重放，保证
+// 「点场景卡片后提示词跟随新场景」。八类参数全部走视图注入的同一路径动作。
+const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
+  pb,
+  sdSize,
+  patchAnimaState,
+  showAllBlueprints,
+  selectPopularSource,
+  selectBlueprint,
+  selectScene,
+  applyRecommendedEngine,
+  setDirectorMode,
+  applyHistory,
+})
 
 // 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：URL 场景参数变化但组件还是旧实例，
 // 这里按「状态与 URL 不一致」重放深链，让场景与提示词跟随新选择。
