@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { imgPut } from '@/composables/useImageStore'
-import { VIDEO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY } from '@/utils/storageKeys'
+import { VIDEO_CONTEXT_KEY, VIDEO_SCENARIO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY } from '@/utils/storageKeys'
 
 /**
  * 视频工作台领域 Store（2026-08-22 从 useVideoBridge 的 sessionStorage 黑盒收敛）。
@@ -38,12 +38,32 @@ export interface VideoBridgeTarget {
   push: (path: string) => Promise<unknown> | void
 }
 
+/** 剧本模式一幕 → 分镜镜头（无图纯文本；首帧走分镜的「一键首帧」或手动上传）。 */
+export interface StagedScenarioAct {
+  prompt: string
+  dialogue: string
+  shotSize: 'wide' | 'medium' | 'closeup'
+  camera: 'still' | 'push' | 'pull' | 'pan' | 'orbit'
+  motion: 'subtle' | 'natural' | 'expressive'
+  duration: number
+  /** 工作室角色（nene / natsume）：参考卡由用户在分镜模式手动挂载。 */
+  characterId: string
+}
+
 const IMAGE_CTX_KEY = VIDEO_CONTEXT_KEY
 /** 分镜短片批量带入：绘图页逐张「加入分镜」累积，视频页分镜模式一次性消费。 */
 const SHOTS_CTX_KEY = VIDEO_SHOTS_CONTEXT_KEY
+/** 剧本模式分幕 → 分镜短片：无图纯文本载荷，视频页一次性消费。 */
+const SCENARIO_CTX_KEY = VIDEO_SCENARIO_CONTEXT_KEY
 
 function isVideoCtxPayload(value: unknown): value is VideoCtxPayload {
   return typeof value === 'object' && value !== null && typeof (value as VideoCtxPayload).imageId === 'string'
+}
+
+function isStagedScenarioAct(value: unknown): value is StagedScenarioAct {
+  if (typeof value !== 'object' || value === null) return false
+  const act = value as Partial<StagedScenarioAct>
+  return typeof act.prompt === 'string' && typeof act.characterId === 'string'
 }
 
 function readJson<T>(key: string, validate: (value: unknown) => value is T): T | null {
@@ -75,10 +95,16 @@ function readStoredShots(): VideoCtxPayload[] {
   return Array.isArray(list) ? list.filter(isVideoCtxPayload) : []
 }
 
+function readStoredScenarioActs(): StagedScenarioAct[] {
+  const list = readJson<StagedScenarioAct[]>(SCENARIO_CTX_KEY, Array.isArray)
+  return Array.isArray(list) ? list.filter(isStagedScenarioAct) : []
+}
+
 export const useVideoStore = defineStore('videoStudio', () => {
   // ── 状态（初始化时从 sessionStorage 水合，刷新不丢） ──
   const pendingImageCtx = ref<VideoCtxPayload | null>(readJson(IMAGE_CTX_KEY, isVideoCtxPayload))
   const pendingShotCtxs = ref<VideoCtxPayload[]>(readStoredShots())
+  const pendingScenarioActs = ref<StagedScenarioAct[]>(readStoredScenarioActs())
 
   // ── 派生 ──
   /** 绘图页「已加入分镜」角标计数。 */
@@ -136,6 +162,26 @@ export const useVideoStore = defineStore('videoStudio', () => {
     return list
   }
 
+  // ── 剧本模式分幕交接（2026-08-23 激活：剧本页整本送入分镜短片） ──────────
+  function stageScenarioActs(list: StagedScenarioAct[]): boolean {
+    pendingScenarioActs.value = list
+    if (!writeJson(SCENARIO_CTX_KEY, list)) {
+      pendingScenarioActs.value = []
+      removeKey(SCENARIO_CTX_KEY)
+      return false
+    }
+    return true
+  }
+
+  /** 视频页分镜模式一次性消费：取走并清除。 */
+  function consumeScenarioActs(): StagedScenarioAct[] {
+    const list = pendingScenarioActs.value
+    if (!list.length) return []
+    pendingScenarioActs.value = []
+    removeKey(SCENARIO_CTX_KEY)
+    return list
+  }
+
   return {
     pendingImageCtx,
     pendingShotCtxs,
@@ -145,6 +191,8 @@ export const useVideoStore = defineStore('videoStudio', () => {
     appendShotCtx,
     stageShotCtxs,
     consumeShotCtxs,
+    stageScenarioActs,
+    consumeScenarioActs,
   }
 })
 

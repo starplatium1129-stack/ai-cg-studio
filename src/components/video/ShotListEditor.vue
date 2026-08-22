@@ -571,10 +571,12 @@ import {
 } from '@/api/videoApi'
 import { imgGet } from '@/composables/useImageStore'
 import { clearShotsCtx, readShotsCtx } from '@/composables/useVideoBridge'
+import { useVideoStore } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 
 const route = useRoute()
+const videoStore = useVideoStore()
 
 const props = defineProps<{
   status: VideoStatusResponse | null
@@ -1010,8 +1012,30 @@ async function importShotsFromDrawing() {
   }
 }
 
+// ── 剧本模式分幕带入（2026-08-23 激活）：剧本页「送入分镜短片」一次性消费 ──
+// 仅在镜头列表为空时导入（不覆盖绘图页带入或用户草稿）；工作室角色不在热门
+// 角色库，参考卡与身份卡由用户手动挂载（Ref2VA 锁身份）。
+function importScenarioActs() {
+  const acts = videoStore.consumeScenarioActs()
+  if (!acts.length || shots.value.length) return
+  shots.value = acts.map((act) => ({
+    prompt: act.prompt,
+    dialogue: act.dialogue,
+    shotSize: act.shotSize,
+    camera: act.camera,
+    motion: act.motion,
+    duration: (act.duration === 5 || act.duration === 10 || act.duration === 15 ? act.duration : 3) as ShotDraft['duration'],
+    seedText: '',
+    imageName: '',
+    imageUrl: '',
+    cast: '',
+  }))
+  batchError.value = `已载入剧本 ${acts.length} 幕。建议挂角色参考卡（锁身份）后点「一键首帧」，再批量生成。`
+}
+
 onMounted(() => {
   void importShotsFromDrawing()
+  importScenarioActs()
   // 参考档案为运行时 JSON：挂载即预取，参考卡/身份卡读取时数据通常已就位
   void ensureCharacterReferencesLoaded().catch(() => undefined)
   const charParam = typeof route.query.character === 'string' ? route.query.character.trim() : ''

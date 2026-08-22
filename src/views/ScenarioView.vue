@@ -53,6 +53,15 @@
       </div>
       <p class="viewer-desc">{{ activeScenario.desc }}</p>
 
+      <div class="act-actions scenario-to-video">
+        <button
+          class="btn btn-primary"
+          type="button"
+          title="整本分幕一键送入视频工坊分镜模式：每幕变一个镜头（描述+情绪氛围），到达后可「一键首帧」补首帧、挂角色参考卡后批量出片"
+          @click="sendToVideoStudio"
+        >送入分镜短片（{{ activeScenario.acts.length }} 幕 → {{ activeScenario.acts.length }} 镜）</button>
+      </div>
+
       <div class="acts">
         <div v-for="a in activeScenario.acts" :key="a.n" class="act">
           <div class="act-head">
@@ -102,7 +111,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
+import { useVideoStore, type StagedScenarioAct } from '@/stores/videoStore'
 import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -112,7 +123,6 @@ import {
   SCENARIOS,
   SCENARIO_RES_MAP,
   SCENARIO_CHARACTERS,
-  SCENARIO_LORA_ID,
   substituteScenarioPrompt,
   type Scenario,
   type ScenarioAct,
@@ -121,11 +131,15 @@ import {
 } from '@/config/scenarios'
 
 const sceneStore = useSceneStore()
+const videoStore = useVideoStore()
+const router = useRouter()
 useScrollReveal()
 
-const LOCK_PARAMS = 'CFG 5 · DPM++ 2M SDE · Steps 28 · Hires 0.45'
+// 引擎参数由导演台按所选引擎自动锁定（Anima: res_multistep · CFG 4.5 · 30 步）。
+// 2026-08-23 剧本模式激活：清掉 SD 时代的硬编码采样参数与内联 <lora:> 展示
+//（出图深链本就不携带 LoRA——LoRA 由网关受控路线管理，v18 内联标签是误导）。
+const LOCK_PARAMS = '底模参数由导演台按引擎自动锁定'
 const BASE_NEG = 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name'
-const LORA_ID = SCENARIO_LORA_ID
 const RES_MAP = SCENARIO_RES_MAP
 const CHARACTER_OPTIONS = [...SCENARIO_CHARACTERS] as const
 
@@ -144,7 +158,7 @@ function substitutePrompt(tpl: string, char: ScenarioCharacter) {
   return substituteScenarioPrompt(tpl, char)
 }
 function buildFullPrompt(a: ScenarioAct, char: ScenarioCharacter) {
-  return norm(substitutePrompt(a.prompt, char)) + ',\n<lora:' + LORA_ID[char] + '>'
+  return norm(substitutePrompt(a.prompt, char))
 }
 
 const MODULE_CLASSES = ['m-q','m-c','m-cl','m-s','m-e','m-sh','m-co','m-l','m-d','m-lora']
@@ -152,7 +166,7 @@ function renderModules(a: ScenarioAct) {
   const char = currentChar.value
   const modPrompt = substitutePrompt(a.prompt, char)
   const modules = modPrompt.split('\n')
-  modules.push('<lora:' + LORA_ID[char] + '>')
+  modules.push('LoRA 与采样参数由导演台引擎自动管理')
   return modules.map((line, i) => {
     const cls = MODULE_CLASSES[i] || 'm-q'
     const parts = line.split(',').map(tk => {
@@ -173,6 +187,34 @@ function copyPrompt(a: ScenarioAct) {
 }
 
 function openScenario(s: Scenario) { activeScenario.value = s }
+
+// ── 剧本模式激活（2026-08-23）：整本分幕 → 视频工坊分镜镜头 ────────────────
+// 每幕一镜：描述+情绪氛围喂 H3 三段式组装；景别按分幕构图映射；首帧到达分镜后
+// 走「一键首帧」/手动上传，角色身份建议挂 Ref2VA 参考卡（工作室角色不自动装配）。
+function scenarioShotSize(res: ScenarioResolution): StagedScenarioAct['shotSize'] {
+  if (res === 'Close-up') return 'closeup'
+  if (res === 'Half-body' || res === 'Portrait') return 'medium'
+  return 'wide'
+}
+
+function sendToVideoStudio() {
+  const scenario = activeScenario.value
+  if (!scenario) return
+  const acts: StagedScenarioAct[] = scenario.acts.map(act => ({
+    prompt: `${act.desc}。${act.emotion}的氛围。`,
+    dialogue: '',
+    shotSize: scenarioShotSize(act.res),
+    camera: 'still',
+    motion: 'natural',
+    duration: 3,
+    characterId: currentChar.value,
+  }))
+  if (!videoStore.stageScenarioActs(acts)) {
+    showToast('跨页上下文写入失败')
+    return
+  }
+  void router.push('/video-studio?mode=shots')
+}
 
 // 走全局 AppToast。原先手搓 DOM + 内联 cssText，硬编码了 z-index:9999
 // （会盖住 --z-skip 的跳转链接）、border-radius、font-size 与 rgba 阴影。

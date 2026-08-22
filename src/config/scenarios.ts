@@ -47,10 +47,6 @@ export const SCENARIO_CHAR_NAME: Record<ScenarioCharacter, string> = {
   nene: 'ayachi_nene',
   natsume: 'shiki_natsume',
 }
-export const SCENARIO_LORA_ID: Record<ScenarioCharacter, string> = {
-  nene: 'ayachi_nene_v18_wd14:0.85',
-  natsume: 'shiki_natsume_v18_wd14:0.85',
-}
 
 /** 把模板里的 {{char}}/{{traits}} 替换成指定角色的词条 */
 export function substituteScenarioPrompt(tpl: string, char: ScenarioCharacter): string {
@@ -59,16 +55,6 @@ export function substituteScenarioPrompt(tpl: string, char: ScenarioCharacter): 
     if (char === 'nene' && /school uniform/i.test(next)) next = next.replace(/school uniform/i, 'nene_school_uniform, school uniform')
     return next
   }).join('\n')
-}
-
-/** 整段模板 → 逗号分隔的 Danbooru 词条串（行内已替换角色词条） */
-export function buildScenarioPrompt(act: ScenarioAct, char: ScenarioCharacter): string {
-  const tokens = substituteScenarioPrompt(act.prompt, char)
-    .split('\n')
-    .flatMap(line => line.split(','))
-    .map(token => token.trim().replace(/[\s-]+/g, '_'))
-    .filter(Boolean)
-  return tokens.join(', ') + ',\n<lora:' + SCENARIO_LORA_ID[char] + '>'
 }
 
 export const SCENARIOS: Scenario[] = [

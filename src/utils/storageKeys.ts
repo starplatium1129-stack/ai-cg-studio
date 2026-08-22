@@ -47,6 +47,8 @@ export const ARTWORK_PROJECTS_KV_KEY = 'aics_pb_projects'
 export const VIDEO_CONTEXT_KEY = 'aics_video_ctx'
 /** 分镜短片批量带入上下文（sessionStorage）。 */
 export const VIDEO_SHOTS_CONTEXT_KEY = 'aics_video_shots_ctx'
+/** 剧本模式分幕 → 分镜短片跨页上下文（sessionStorage，2026-08-23 剧本模式激活）。 */
+export const VIDEO_SCENARIO_CONTEXT_KEY = 'aics_video_scenario_ctx'
 
 export const LIVE_LOCAL_KEYS = [
   THEME_KEY,
