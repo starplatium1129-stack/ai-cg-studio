@@ -174,9 +174,11 @@ function validateInput(body, expectedFamily) {
   var expectedProfile = PROFILE_BY_MODEL[body.modelId];
   var lora = body.loraId ? LORAS[body.loraId] : null;
   if (model.family !== 'krea2' && body.styleLoraId !== undefined) throw serviceError(400, 'WRONG_ROUTE_FAMILY', 'Style LoRA 仅适用于 Krea 2');
+  if (model.family !== 'krea2' && body.detailBoost !== undefined) throw serviceError(400, 'WRONG_ROUTE_FAMILY', 'detailBoost 仅适用于 Krea 2');
   if (model.family === 'krea2') {
     if (body.loraId || body.loraStrength !== undefined || (body.negative && String(body.negative).trim())) throw serviceError(400, 'KREA_UNSUPPORTED_PARAMETER', 'Krea 2 不接受角色 LoRA 或负向 Prompt');
     if (body.styleLoraId !== undefined && !KREA_STYLE_LORAS[body.styleLoraId]) throw serviceError(400, 'UNKNOWN_STYLE_LORA', '未知 Krea 2 官方 Style LoRA');
+    if (body.detailBoost !== undefined && typeof body.detailBoost !== 'boolean') throw serviceError(400, 'INVALID_PARAMETER', 'detailBoost 需为布尔值');
   } else if (model.noLora === true && !body.loraId) {
     // 无 LoRA 创作模式：loraId/character 缺省或 character=null 即放行。
     // 若调用方提供了 lora，则落到下面的原校验，UNKNOWN_LORA /
@@ -262,6 +264,7 @@ function validateInput(body, expectedFamily) {
     seed:seed,
     character:body.character,
     styleLoraId:model.family === 'krea2' ? (body.styleLoraId || null) : null,
+    detailBoost:model.family === 'krea2' ? Boolean(body.detailBoost) : false,
     hiresFix:Boolean(body.hiresFix),
     hiresScale:body.hiresFix ? validateNumber(body.hiresScale || 2.0, 'hiresScale', 1.1, 3.0, false) : 1.0,
     hiresDenoise:body.hiresFix ? validateNumber(body.hiresDenoise || 0.35, 'hiresDenoise', 0.1, 0.7, false) : 0.35,
@@ -335,7 +338,18 @@ function buildWorkflow(input) {
        workflow['12'] = { class_type:'LoraLoaderModelOnly', inputs:{ model:kreaModel, lora_name:styleLora.file, strength_model:1 } };
        kreaModel = ['12', 0];
      }
-     workflow['7'] = { class_type:'KSampler', inputs:{ model:kreaModel, positive:positive, negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'euler', scheduler:'simple', denoise:1 } };
+     if (input.detailBoost) {
+      // 2026-08-22 社区工作流回流（来源 comfyui-mcp krea2-txt2img-manual V2，本机
+      // 复现样张 seed 20260822 审核通过）：LoRA 栈后挂 T-Enhancer 细节补丁，采样器
+      // 换社区验证的 er_sde，解码后 RCAS 锐化。默认关闭，契约与其余 Krea 路线一致。
+      workflow['14'] = { class_type:'ComfyUI-Krea2T-Enhancer', inputs:{ model:kreaModel, enabled:true, strength:1, debug:false } };
+      kreaModel = ['14', 0];
+    }
+    workflow['7'] = { class_type:'KSampler', inputs:{ model:kreaModel, positive:positive, negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:input.detailBoost ? 'er_sde' : 'euler', scheduler:'simple', denoise:1 } };
+    if (input.detailBoost) {
+      workflow['15'] = { class_type:'ImageSharpenKJ', inputs:{ image:['8', 0], method:'rcas', 'method.strength':0.75 } };
+      workflow['10'].inputs.images = ['15', 0];
+    }
     return workflow;
   }
 
@@ -1098,7 +1112,7 @@ function createAnimaService(config, options) {
     }
     return {
       online:false,
-        models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', noLora:model.noLora === true, characterIdentity:model.family === 'anima', experimental:model.family === 'krea2' || model.noLora === true } }; }),
+        models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', noLora:model.noLora === true, characterIdentity:model.family === 'anima', detailBoost:model.family === 'krea2', experimental:model.family === 'krea2' || model.noLora === true } }; }),
       loras:Object.keys(LORAS).map(function (id) {
         var lora = LORAS[id];
         return { id:id, name:lora.name, character:lora.character, preview:Boolean(lora.preview), validation:lora.validation || 'production', available:resourceExists(loraRoot, '', lora.file) };

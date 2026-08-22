@@ -60,6 +60,28 @@ test('popular routes follow model recommendations without studio LoRAs', () => {
   assert.strictEqual(krea.experimental, true);
 });
 
+test('popular detail-boost opt-in selects the community-enhanced Krea route', () => {
+  const detail = recommendDrawingRoute({
+    subjectKind: 'popular',
+    character: 'nene',
+    recommendedModelId: 'krea2-turbo-fp8',
+    preferDetailBoost: true,
+  });
+  assert.strictEqual(detail.id, 'popular-krea-detail');
+  assert.strictEqual(detail.engine, 'krea2');
+  assert.strictEqual(detail.modelId, 'krea2-turbo-fp8');
+  assert.strictEqual(detail.promptFormat, 'natural-language');
+  assert.strictEqual(detail.experimental, true);
+
+  // 缺省不选增强：标准 popular-krea 行为保持不变（受控路线零回归）。
+  const plain = recommendDrawingRoute({
+    subjectKind: 'popular',
+    character: 'nene',
+    recommendedModelId: 'krea2-turbo-fp8',
+  });
+  assert.strictEqual(plain.id, 'popular-krea');
+});
+
 test('prompt format labels explain model contracts instead of exposing syntax switches', () => {
   assert.strictEqual(promptFormatLabel('danbooru'), 'Danbooru 标签');
   assert.strictEqual(promptFormatLabel('anima-tags'), 'Anima 模型原生标签');

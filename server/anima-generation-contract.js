@@ -37,6 +37,8 @@ const ALLOWED_INPUT_KEYS = Object.freeze([
   'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps',
   'teaCache', 'teaCacheThresh',
   'initImage', 'maskImage', 'maskPrompt', 'maskThreshold', 'denoisingStrength', 'growMaskBy',
+  // 2026-08-22 社区工作流回流：Krea 2 细节增强链路开关（T-Enhancer + er_sde + RCAS 锐化）。
+  'detailBoost',
 ]);
 
 const CHARACTER_LORA_BINDINGS = Object.freeze({
