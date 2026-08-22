@@ -141,7 +141,7 @@ function isCatchable(value: unknown): value is { catch(handler: (error: unknown)
   return isRecord(value) && typeof value.catch === 'function'
 }
 
-function readLive2DCatalog(value: unknown): Live2DCatalog {
+export function readLive2DCatalog(value: unknown): Live2DCatalog {
   if (!isRecord(value) || !isRecord(value.models)) throw new Error('Live2D 状态响应格式无效')
   const models: Record<string, Live2DModelInfo> = {}
   for (const [character, raw] of Object.entries(value.models)) {
@@ -157,6 +157,56 @@ function readLive2DCatalog(value: unknown): Live2DCatalog {
     }
   }
   return { models }
+}
+
+/** 分区带映射：舞台归一化坐标（x/y ∈ [0,1]）→ 互动动作。 */
+export function resolveStageInteraction(character: string, x: number, y: number): Live2DInteraction | null {
+  // 夏目：坐姿咖啡馆系模型，按 头/手/胸/裙/腿/脚 分区
+  if (character === 'natsume') {
+    if (y < 0.14) return NATSUME_INTERACTIONS.Head
+    if (y < 0.26) return NATSUME_INTERACTIONS.Hand
+    if (y < 0.38) return NATSUME_INTERACTIONS.Chest
+    if (y < 0.55) return NATSUME_INTERACTIONS.Skirt
+    if (y < 0.72) return NATSUME_INTERACTIONS.Leg
+    return NATSUME_INTERACTIONS.Foot
+  }
+  // These zones follow the full visible model after the canvas is fitted
+  // into the stage: face, chest, skirt, then exposed legs/body.
+  if (y < 0.12) return INTERACTION_MOTIONS.Hair
+  if (y < 0.19) return INTERACTION_MOTIONS.Head
+  if (y < 0.29) return INTERACTION_MOTIONS.Face
+  // Chest motions are intentional, reactive source motions. Keep their
+  // hit bands tight so shoulder, arm, waist and ordinary body taps do not
+  // accidentally invoke them.
+  if (y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50) return INTERACTION_MOTIONS.LeftChest
+  if (y >= 0.29 && y < 0.42 && x >= 0.50 && x <= 0.60) return INTERACTION_MOTIONS.RightChest
+  if (y >= 0.42 && y < 0.57) return INTERACTION_MOTIONS.Skirt
+  return INTERACTION_MOTIONS.Body
+}
+
+/**
+ * 原生路径：Cubism 原生 HitArea 命中（作者分区）→ 互动动作。
+ * 夏目的"外框"是环绕角色的矩形命中区，与头/手/胸/裙/腿/脚分区重叠，
+ * 且 model3.json HitAreas 顺序排第一——直接取首个会让所有点击都变成
+ * "抬眼"反应（2026-08-16 实机：头/手/裙/腿点击全部命中外框）。
+ * 具体分区优先，外框只在没有其他分区命中时兜底（点到角色外的框空白处）。
+ */
+export function resolveHitAreaInteraction(character: string, areas: string[]): Live2DInteraction | null {
+  const ordered = character === 'natsume'
+    ? [...areas.filter(area => area !== '外框'), ...areas.filter(area => area === '外框')]
+    : areas
+  return ordered
+    .map(area => (character === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
+    .map(area => (character === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
+    .find((item): item is Live2DInteraction => Boolean(item)) ?? null
+}
+
+export function selectMouthParams(character: string): { id: string; scale: number } {
+  return MOUTH_PARAMS[character] ?? MOUTH_PARAMS.nene
+}
+
+export function selectBlinkParams(character: string): readonly string[] | undefined {
+  return BLINK_PARAMS[character]
 }
 
 /**
@@ -567,7 +617,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       // Cubism motion/physics run before this event. Write with full weight so
       // their idle values cannot overwrite the audio amplitude or emotion.
       if (speaking) {
-        const mouth = MOUTH_PARAMS[character.value] ?? MOUTH_PARAMS.nene
+        const mouth = selectMouthParams(character.value)
         model.setParameterValueById(mouth.id, mouthValue.value * mouth.scale, 1)
       }
       // 覆盖式眨眼：双眼参数永远写同一个值（1=睁、0=闭），修掉作者眼曲线
@@ -579,7 +629,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         if (stageEl) stageEl.dataset.blink = '1.000'
       } else {
         const blinkValue = blinkScheduler.update(dt)
-        const blinkIds = BLINK_PARAMS[character.value]
+        const blinkIds = selectBlinkParams(character.value)
         if (blinkIds) {
           for (const id of blinkIds) model.setParameterValueById(id, blinkValue, 1)
         }
@@ -764,27 +814,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (!rect?.width || !rect.height) return null
     const x = (event.clientX - rect.left) / rect.width
     const y = (event.clientY - rect.top) / rect.height
-    // 夏目：坐姿咖啡馆系模型，按 头/手/胸/裙/腿/脚 分区
-    if (character.value === 'natsume') {
-      if (y < 0.14) return NATSUME_INTERACTIONS.Head
-      if (y < 0.26) return NATSUME_INTERACTIONS.Hand
-      if (y < 0.38) return NATSUME_INTERACTIONS.Chest
-      if (y < 0.55) return NATSUME_INTERACTIONS.Skirt
-      if (y < 0.72) return NATSUME_INTERACTIONS.Leg
-      return NATSUME_INTERACTIONS.Foot
-    }
-    // These zones follow the full visible model after the canvas is fitted
-    // into the stage: face, chest, skirt, then exposed legs/body.
-    if (y < 0.12) return INTERACTION_MOTIONS.Hair
-    if (y < 0.19) return INTERACTION_MOTIONS.Head
-    if (y < 0.29) return INTERACTION_MOTIONS.Face
-    // Chest motions are intentional, reactive source motions. Keep their
-    // hit bands tight so shoulder, arm, waist and ordinary body taps do not
-    // accidentally invoke them.
-    if (y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50) return INTERACTION_MOTIONS.LeftChest
-    if (y >= 0.29 && y < 0.42 && x >= 0.50 && x <= 0.60) return INTERACTION_MOTIONS.RightChest
-    if (y >= 0.42 && y < 0.57) return INTERACTION_MOTIONS.Skirt
-    return INTERACTION_MOTIONS.Body
+    return resolveStageInteraction(character.value, x, y)
   }
 
   function interactionAt(event: MouseEvent): Live2DInteraction {
@@ -805,21 +835,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       .find((item): item is Live2DInteraction => Boolean(item))
     if (interaction) return interaction
     return character.value === 'natsume' ? NATSUME_INTERACTIONS.Head : INTERACTION_MOTIONS.Head
-  }
-
-  /** 原生路径：Cubism 原生 HitArea 命中（作者分区）→ 互动动作 */
-  function interactionFromHitAreas(areas: string[]): Live2DInteraction | null {
-    // 夏目的"外框"是环绕角色的矩形命中区，与头/手/胸/裙/腿/脚分区重叠，
-    // 且 model3.json HitAreas 顺序排第一——直接取首个会让所有点击都变成
-    // "抬眼"反应（2026-08-16 实机：头/手/裙/腿点击全部命中外框）。
-    // 具体分区优先，外框只在没有其他分区命中时兜底（点到角色外的框空白处）。
-    const ordered = character.value === 'natsume'
-      ? [...areas.filter(area => area !== '外框'), ...areas.filter(area => area === '外框')]
-      : areas
-    return ordered
-      .map(area => (character.value === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
-      .map(area => (character.value === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
-      .find((item): item is Live2DInteraction => Boolean(item)) ?? null
   }
 
   let interactionAudio: HTMLAudioElement | null = null
@@ -950,7 +965,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     // 点击坐标归一化后交给 Rust 做 Cubism 原生 HitArea 命中。
     if (session?.capability.hitTestNative) {
       nativeHitTestUnsubscribe = session.onNativeHitTest?.((areas) => {
-        const interaction = interactionFromHitAreas(areas)
+        const interaction = resolveHitAreaInteraction(character.value, areas)
         if (interaction) playInteraction(interaction)
       }) ?? null
       // 同一互动播放中重复点击：Rust 拒绝并回传 motion-failed，这里直接
