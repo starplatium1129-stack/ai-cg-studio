@@ -31,6 +31,8 @@ export interface BatchDrawJob {
   variant: number
   status: 'pending' | 'running' | 'succeeded' | 'failed' | 'cancelled'
   error?: string
+  /** 成功张的预览 objectURL（面板缩略图直出；下一批 start/reset 统一 revoke）。 */
+  resultUrl?: string
 }
 
 export interface BatchDrawRunnerInput {
@@ -43,6 +45,8 @@ export interface BatchDrawRunnerInput {
 export interface BatchDrawRunnerResult {
   ok: boolean
   error?: string
+  /** 成功时回传预览 URL（从入册 blob 克隆的 objectURL，归本执行器统一释放）。 */
+  resultUrl?: string
 }
 
 export interface BatchDrawRunOptions {
@@ -94,12 +98,42 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
   async function start(scenes: BatchSceneItem[], count: number, baseSeed: number): Promise<void> {
     if (running.value) return
     if (!scenes.length) return
+    releaseResultUrls()
     const list = buildJobs(scenes, Math.max(1, Math.min(3, count)), baseSeed)
     jobs.value = list
     running.value = true
     cancelRequested.value = false
     onFlash(`批量出图开始：${list.length} 张（${scenes.length} 个场景）`)
 
+    await runList(list, scenes)
+
+    running.value = false
+    currentSeed.value = -1
+    const { total, succeeded, failed } = progress.value
+    onFlash(failed
+      ? `批量完成：${succeeded}/${total} 张成功，${failed} 张失败（可在结果里只重跑失败项）`
+      : `批量完成：${succeeded}/${total} 张全部入册`)
+  }
+
+  /** 只重跑失败/已取消的张（同场景同 seed 同候选序号）。 */
+  async function retryFailed(scenes: BatchSceneItem[]): Promise<void> {
+    if (running.value) return
+    const list = jobs.value.filter(j => j.status === 'failed' || j.status === 'cancelled')
+    if (!list.length) return
+    list.forEach(job => { job.status = 'pending'; job.error = undefined })
+    running.value = true
+    cancelRequested.value = false
+    onFlash(`重跑 ${list.length} 张失败任务`)
+
+    await runList(list, scenes)
+
+    running.value = false
+    currentSeed.value = -1
+    const failed = progress.value.failed
+    onFlash(failed ? `重跑完成：仍有 ${failed} 张失败` : '重跑完成：全部成功')
+  }
+
+  async function runList(list: BatchDrawJob[], scenes: BatchSceneItem[]): Promise<void> {
     for (let index = 0; index < list.length; index += 1) {
       const job = list[index]
       if (cancelRequested.value) {
@@ -123,18 +157,21 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
       // 当前张的结果先落定（run 内部可能已请求取消——取消只影响后续张）。
       job.status = result.ok ? 'succeeded' : 'failed'
       if (!result.ok) job.error = result.error || '生成失败'
+      else if (result.resultUrl) job.resultUrl = result.resultUrl
       if (cancelRequested.value) {
         for (let rest = index + 1; rest < list.length; rest += 1) list[rest].status = 'cancelled'
         break
       }
     }
+  }
 
-    running.value = false
-    currentSeed.value = -1
-    const { total, succeeded, failed } = progress.value
-    onFlash(failed
-      ? `批量完成：${succeeded}/${total} 张成功，${failed} 张失败（可在结果里重试）`
-      : `批量完成：${succeeded}/${total} 张全部入册`)
+  function releaseResultUrls() {
+    jobs.value.forEach(job => {
+      if (job.resultUrl) {
+        URL.revokeObjectURL(job.resultUrl)
+        job.resultUrl = undefined
+      }
+    })
   }
 
   function cancel() {
@@ -144,6 +181,7 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
   }
 
   function reset() {
+    releaseResultUrls()
     jobs.value = []
     running.value = false
     cancelRequested.value = false
@@ -154,6 +192,7 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
     running: readonly(running),
     progress,
     start,
+    retryFailed,
     cancel,
     reset,
   }

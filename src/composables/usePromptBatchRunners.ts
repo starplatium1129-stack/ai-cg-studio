@@ -43,7 +43,6 @@ export interface PromptBatchRunnersDeps {
 export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   const { pb, sd, sdSize, negativePrompt, loraSpecs, modelProfile, animaState, runJob, historyGenerationFields } = deps
 
-  const batchOpen = ref(false)
   const batchEngine = ref<BatchEngine>('sd')
 
   /** 批量 prompt 组装：场景 prose + 当前角色锚点（SD 补 tag 锚点，Anima 用自然语言）。 */
@@ -110,7 +109,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         prompt: job.prompt,
         ...historyGenerationFields(),
       })
-      return { ok: true }
+      // sd.resultUrl 会被下一张生成清掉，预览用入册 blob 克隆独立 objectURL。
+      return { ok: true, resultUrl: URL.createObjectURL(blob) }
     } catch (error) {
       return { ok: false, error: error instanceof Error ? error.message : 'SD 生成失败' }
     }
@@ -172,7 +172,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         prompt,
         ...historyGenerationFields(),
       })
-      return { ok: true }
+      return { ok: true, resultUrl: URL.createObjectURL(blob) }
     } catch (error) {
       return { ok: false, error: error instanceof Error ? error.message : 'Anima 生成失败' }
     }
@@ -209,5 +209,20 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     await batchDraw.start(scenes, payload.count, baseSeed)
   }
 
-  return { batchOpen, batchEngine, batchDraw, onBatchStart }
+  /** 只重跑失败/已取消的张：按 job.sceneId 重建场景素材，seed/候选序号原样保留。 */
+  async function onRetryFailed() {
+    if (batchDraw.running.value) return
+    const sceneIds = Array.from(new Set(batchDraw.jobs.value
+      .filter(job => job.status === 'failed' || job.status === 'cancelled')
+      .map(job => job.sceneId)))
+    if (!sceneIds.length) return
+    const scenes = sceneIds.map(id => {
+      const blueprint = deps.sceneBlueprints().find(item => item.id === id)
+      return { id, title: blueprint?.title || id, prose: batchSceneProse(blueprint) }
+    }).filter(item => item.prose)
+    if (!scenes.length) { pb.flash('失败场景已不可用，无法重跑'); return }
+    await batchDraw.retryFailed(scenes)
+  }
+
+  return { batchEngine, batchDraw, onBatchStart, onRetryFailed }
 }

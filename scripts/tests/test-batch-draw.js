@@ -115,3 +115,58 @@ test('running 中重复 start 被拒绝', async () => {
 
   assert.equal(batch.progress.value.total, 1, '第二次 start 不应重建任务清单');
 });
+
+test('runner 回传 resultUrl 时落到任务上，reset 释放', async () => {
+  const revoked = [];
+  const originalRevoke = URL.revokeObjectURL;
+  URL.revokeObjectURL = (url) => { revoked.push(url); };
+  try {
+    const batch = useBatchDraw({
+      run: async (input) => ({ ok: true, resultUrl: 'blob:preview-' + input.seed }),
+    });
+
+    await batch.start(scenes(1), 2, 1000);
+    assert.deepEqual(
+      batch.jobs.value.map(j => j.resultUrl),
+      ['blob:preview-1000', 'blob:preview-2000'],
+      '成功张的预览 URL 应逐张落任务',
+    );
+
+    batch.reset();
+    assert.equal(batch.jobs.value.length, 0);
+    assert.deepEqual(revoked, ['blob:preview-1000', 'blob:preview-2000'], 'reset 应释放全部预览 URL');
+  } finally {
+    URL.revokeObjectURL = originalRevoke;
+  }
+});
+
+test('retryFailed 只重跑失败/已取消张，seed 与候选序号原样保留', async () => {
+  const calls = [];
+  let failSeed = 2000;
+  const batch = useBatchDraw({
+    run: async (input) => {
+      calls.push({ sceneId: input.scene.id, seed: input.seed, variant: input.variant });
+      if (input.seed === failSeed) return { ok: false, error: '首次失败' };
+      return { ok: true };
+    },
+  });
+
+  await batch.start(scenes(1), 3, 1000);
+  assert.equal(batch.progress.value.failed, 1);
+
+  failSeed = -1; // 重跑全部成功
+  await batch.retryFailed(scenes(1));
+
+  assert.equal(batch.progress.value.total, 3, '重跑不重建清单');
+  assert.equal(batch.progress.value.succeeded, 3);
+  assert.equal(batch.progress.value.failed, 0);
+  // 最后一次调用应是失败张的原样重放：scene-0 / seed 2000 / 候选 1
+  const last = calls[calls.length - 1];
+  assert.deepEqual(
+    { id: last.sceneId, seed: last.seed, variant: last.variant },
+    { id: 'scene-0', seed: 2000, variant: 1 },
+  );
+  const retriedJob = batch.jobs.value.find(j => j.seed === 2000);
+  assert.equal(retriedJob.status, 'succeeded');
+  assert.equal(retriedJob.error, undefined, '重跑成功后清掉旧错误');
+});

@@ -553,8 +553,8 @@
             <button
               class="btn btn-ghost"
               type="button"
-              :disabled="generationBusy || batchDraw.running.value"
-              title="多选场景蓝图一次出齐，结果自动入册历史，可在历史里挑合适的加入分镜"
+              :disabled="generationBusy || batchRunning"
+              title="多选场景蓝图一次出齐，成片在面板里直接预览挑选，全部自动入册历史"
               @click="batchOpen = true"
             >批量出图 · 多场景</button>
             <span v-if="shotsPending" class="batch-entry-count">
@@ -590,16 +590,11 @@
           <BatchSceneDrawPanel
             :open="batchOpen"
             :scenes="sceneStore.sceneBlueprints"
-            :engine="batchEngine"
             :sd-available="sd.online.value"
             :anima-available="animaState.online"
-            :running="batchDraw.running.value"
-            :jobs="batchDraw.jobs.value"
-            :progress="batchDraw.progress.value"
+            :deps="batchPanelDeps"
             @close="batchOpen = false"
-            @update:engine="batchEngine = $event"
-            @start="onBatchStart"
-            @cancel="batchDraw.cancel"
+            @running-change="batchRunning = $event"
           />
         </div>
 
@@ -771,7 +766,6 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { usePopularPromptAssembly } from '@/composables/usePopularPromptAssembly'
 import { usePromptVideoBridge } from '@/composables/usePromptVideoBridge'
 import { usePromptHistoryApply } from '@/composables/usePromptHistoryApply'
-import { usePromptBatchRunners } from '@/composables/usePromptBatchRunners'
 import { usePromptTagTools } from '@/composables/usePromptTagTools'
 import { usePromptDeepLink } from '@/composables/usePromptDeepLink'
 import {
@@ -1470,10 +1464,13 @@ function buildPopularRequest(): AnimaRequest | null {
   }
 }
 
-// ── 多场景批量出图（runners 已下沉 usePromptBatchRunners）─────────────────
+// ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
 // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
-// ComfyUI 任务）→ 每张自动入册历史 → 在历史里挑合适的「加入分镜」。
-const { batchOpen, batchEngine, batchDraw, onBatchStart } = usePromptBatchRunners({
+// ComfyUI 任务）→ 每张自动入册历史 → 面板内直接预览挑选。
+const batchOpen = ref(false)
+const batchRunning = ref(false)
+// ref/函数引用在 setup 期即稳定，面板内部用这份快照接线 usePromptBatchRunners。
+const batchPanelDeps = {
   pb,
   sd,
   sdSize,
@@ -1484,7 +1481,7 @@ const { batchOpen, batchEngine, batchDraw, onBatchStart } = usePromptBatchRunner
   runJob,
   historyGenerationFields,
   sceneBlueprints: () => sceneStore.sceneBlueprints,
-})
+}
 
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
   if (pb.directorMode === 'basic') {
