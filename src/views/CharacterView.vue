@@ -592,7 +592,10 @@ onMounted(() => {
   contain-intrinsic-size: auto 150px;
 }
 .cb-card:active { transform: translateY(1px) scale(.98); }
-.cb-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); transform: translateY(-1px); }
+/* 2026-08-22 动效审计 #12：带位移的 hover 统一收进精确指针门控（触屏点按不再卡在浮起态，同其余五个视图） */
+@media (hover: hover) and (pointer: fine) {
+  .cb-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); transform: translateY(-1px); }
+}
 .cb-card.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg-surface)); }
 .cb-avatar { position: relative; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-soft); background: var(--bg-deep); display: grid; place-items: center; }
 .cb-card.active .cb-avatar { border-color: var(--accent); }
@@ -694,8 +697,8 @@ onMounted(() => {
 .tag-chip.m4 { --chip-tone:var(--mood-tension-text); }
 .tag-chip.m5 { --chip-tone:var(--mood-warmth-text); }
 /* 现在是 <button>：重置默认样式，保留原来的截断+展开观感 */
-.bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; max-height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:max-height var(--motion-surface); }
-.bg-story.expanded { max-height:500px; }
+.bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; interpolate-size: allow-keywords; height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:height var(--motion-surface) var(--ease-out); }
+.bg-story.expanded { height:auto; }
 .bg-story::after { content:'展开'; position:absolute; right:0; bottom:0; padding-left:var(--s-6); background:linear-gradient(90deg,transparent,var(--bg-surface)); color:var(--accent); font-size:var(--fs-label-xs); }
 .bg-story.expanded::after { content:none; }
 .detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
@@ -799,10 +802,12 @@ onMounted(() => {
   user-select: none;
   transition: transform var(--motion-hover), border-color var(--motion-hover), box-shadow var(--motion-hover);
 }
-.char-ref-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent);
-  box-shadow: 0 8px 24px color-mix(in srgb, black 30%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .char-ref-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px color-mix(in srgb, black 30%, transparent);
+  }
 }
 .char-ref-hover-hint {
   position: absolute;
@@ -821,9 +826,11 @@ onMounted(() => {
   transform: translateY(4px);
   transition: opacity var(--motion-hover), transform var(--motion-hover);
 }
-.char-ref-card:hover .char-ref-hover-hint {
-  opacity: 1;
-  transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .char-ref-card:hover .char-ref-hover-hint {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .char-ref-image-wrap {
   position: relative;
@@ -839,8 +846,10 @@ onMounted(() => {
   display: block;
   transition: transform var(--motion-surface);
 }
-.char-ref-card:hover .char-ref-image {
-  transform: scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .char-ref-card:hover .char-ref-image {
+    transform: scale(1.03);
+  }
 }
 .char-ref-badge {
   position: absolute;

@@ -933,7 +933,7 @@ watch([favoriteOnly, projectFilter], () => {
 .artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
 .artwork-tool:disabled { cursor:wait; opacity:.65; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
-.artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s ease; }
+.artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); }
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
 .artwork-skeleton { position:absolute; inset:0; background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%); background-size:220% 100%; animation:gallerySkeleton 1.3s linear infinite; }
 .artwork-caption { position:absolute; inset:auto 0 0; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-3); padding:40px var(--s-3) var(--s-3); color:var(--on-art-primary); background:linear-gradient(transparent,var(--art-scrim)); opacity:0; transform:translateY(8px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); text-align:left; pointer-events:none; }
@@ -965,7 +965,8 @@ watch([favoriteOnly, projectFilter], () => {
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
 @keyframes gallerySkeleton { to { background-position:-120% 0; } }
-@keyframes galleryImageIn { from { opacity:0; filter:blur(6px); } to { opacity:1; filter:blur(0); } }
+/* 2026-08-22 动效审计 #13：入场去掉 blur 补间（绘制级且随懒加载滚动反复触发），只走 opacity/transform */
+@keyframes galleryImageIn { from { opacity:0; transform:scale(.985); } to { opacity:1; transform:scale(1); } }
 </style>
 
 <style>
@@ -986,7 +987,7 @@ watch([favoriteOnly, projectFilter], () => {
 }
 .art-viewer.open { display:grid; }
 .viewer-stage { position:relative; min-width:0; display:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); overflow:hidden; }
-.viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px var(--art-backdrop)); animation:galleryImageIn .35s ease; }
+.viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px var(--art-backdrop)); animation:galleryImageIn .35s var(--ease-out); }
 .viewer-fallback { color:var(--on-art-secondary); font-size:var(--fs-glyph-lg); }
 .art-viewer .viewer-close { position:absolute; z-index:var(--z-raised); top:18px; left:18px; }
 .viewer-nav,.viewer-info-toggle { position:absolute; z-index:var(--z-raised); display:grid; place-items:center; border:1px solid var(--on-art-line); background:var(--art-scrim); color:var(--on-art-primary); cursor:pointer; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:background var(--motion-hover),transform var(--motion-hover); }

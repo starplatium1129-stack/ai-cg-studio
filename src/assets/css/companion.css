@@ -1577,14 +1577,18 @@ html.companion-mode:not(.companion-desktop) body {
 /* Immersive mode: UI fades away while idle, glass surfaces, stage shadow */
 html.companion-desktop .companion-toolbar,
 html.companion-desktop .companion-conversation {
-  transition: opacity .45s var(--ease-out), transform .45s var(--ease-out);
+  visibility: visible;
+  transition: opacity .45s var(--ease-out), transform .45s var(--ease-out), visibility 0s;
 }
 
+/* 2026-08-22 动效审计 #15：原 display:none 短路了上面的 .45s 淡出过渡（从未生效过）；
+   改 visibility 延迟翻转——淡出完成后才真正隐藏，恢复浮现即渐显。 */
 html.companion-desktop.companion-ui-hidden .companion-toolbar,
 html.companion-desktop.companion-ui-hidden .companion-conversation {
-  display: none;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+  transition: opacity .45s var(--ease-out), transform .45s var(--ease-out), visibility 0s linear .45s;
 }
 
 html.companion-desktop.companion-ui-hidden .companion-presence-cue {
