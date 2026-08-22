@@ -249,6 +249,8 @@ export interface VideoStoryboardShot {
   camera: VideoDefaults['camera']
   motion: VideoDefaults['motion']
   duration: number
+  /** 首帧出图提示词（蓝图英文散文 + 镜头构图句）；蓝图无散文素材时为 null。 */
+  firstFramePrompt: string | null
 }
 
 export interface VideoStoryboard {

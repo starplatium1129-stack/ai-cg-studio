@@ -212,6 +212,13 @@
           <button
             class="btn btn-ghost"
             type="button"
+            :disabled="firstFrameBusy || storyboardBusy || batchActive || shots.length === 0"
+            title="逐镜走 Krea2 增强链路生成首帧（蓝图散文 + 景别构图句），自动上传回填；已有首帧的镜头跳过；角色身份由参考卡（Ref2VA）锁定"
+            @click="generateFirstFrames(shots, aspectRatio)"
+          >{{ firstFrameBusy ? `首帧 ${firstFrameProgress}…` : '一键首帧' }}</button>
+          <button
+            class="btn btn-ghost"
+            type="button"
             :disabled="aiBusy || batchActive || !shots.length"
             title="第 1 步：逐镜把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/运动/对白（复用聊天 LLM 配置）"
             @click="runAiRewrite"
@@ -552,6 +559,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useReferenceCards } from './useReferenceCards'
 import { useShotBatchMachine } from './useShotBatchMachine'
 import { useShotAiTools } from './useShotAiTools'
+import { useShotFirstFrames } from './useShotFirstFrames'
 import type { ShotDraft } from './shotListTypes'
 import {
   createVideoStoryboard,
@@ -634,6 +642,7 @@ async function runStoryboard() {
       imageName: '',
       imageUrl: '',
       cast: '',
+      firstFramePrompt: shot.firstFramePrompt ?? undefined,
     }))
     storyboardBlueprintId.value = ''
     storyboardIntent.value = ''
@@ -646,6 +655,11 @@ async function runStoryboard() {
 
 /** 本组件共用的用户可见错误通道：批量提交/轮询/重抽、首帧与参考图上传失败都回写这里。 */
 const batchError = ref('')
+
+// ── 一键首帧（2026-08-23）：逐镜 Krea2 增强链路出图 → 上传受控文件 → 回填 ──
+const { firstFrameBusy, firstFrameProgress, generateFirstFrames } = useShotFirstFrames({
+  onError: (message) => { batchError.value = message },
+})
 
 // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
 const {

@@ -444,6 +444,7 @@ async function run() {
     description:'【雷电将军 · 花海逆光】金色夕阳洒满花海。她蓦然回望——「永恒并非只有静止不变。」晚风拂过，她轻声补充「有你相伴的此刻，同样值得铭记。」',
     location:'郊野花田', action:'站在花海间回望', timeOfDay:'黄昏',
     lighting:'金色逆光', mood:'静谧温柔',
+    promptProse:'In a vast flower field at golden hour, she stands among blooming cosmos flowers.',
   };
   var fixtureBoard = storyboardEngine.buildStoryboard(fixtureBlueprint, { intent:'她把一朵花别到耳边' });
   assert.deepEqual(fixtureBoard.beats, ['establishing', 'interaction', 'emotion', 'closing']);
@@ -454,6 +455,14 @@ async function run() {
   assert.equal(fixtureBoard.shots[2].dialogue, '有你相伴的此刻，同样值得铭记。', 'second quoted line lands on the emotion beat');
   assert.equal(fixtureBoard.shots[0].dialogue, null);
   assert.match(fixtureBoard.shots[2].prompt, /她把一朵花别到耳边/, 'intent merges into the emotion beat');
+  // 首帧提示词：蓝图散文基底 + 景别构图句，四镜构图变奏不雷同。
+  assert.match(fixtureBoard.shots[0].firstFramePrompt, /vast flower field/);
+  assert.match(fixtureBoard.shots[0].firstFramePrompt, /wide establishing shot/);
+  assert.match(fixtureBoard.shots[1].firstFramePrompt, /medium shot centered on her action/);
+  assert.match(fixtureBoard.shots[2].firstFramePrompt, /close-up portrait of her face/);
+  var noProseBoard = storyboardEngine.buildStoryboard(
+    Object.assign({}, fixtureBlueprint, { promptProse:'' }), {});
+  assert.match(noProseBoard.shots[0].firstFramePrompt, /花海逆光/, 'missing prose falls back to the Chinese description');
   assert.equal(storyboardEngine.characterNameOf(fixtureBlueprint), '雷电将军', 'character name parsed from the 【】 title prefix');
   assert.equal(storyboardEngine.extractDialogues('没有任何台词的描述').length, 0);
   // 剧本 → 现有三段式组装闭环：镜头描述直接喂 H3 校验器必须产出合法三段式。

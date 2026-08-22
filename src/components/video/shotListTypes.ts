@@ -16,4 +16,6 @@ export interface ShotDraft {
   imageUrl: string
   /** 出场角色：'' 无 / '1' 角色1 / '2' 角色2 / '12' 角色1+2 / 'all' 全部角色（对应参考卡）。 */
   cast: '' | '1' | '2' | '3' | '4' | '12' | 'all' | string
+  /** 剧本引擎派生的首帧出图提示词（蓝图散文+景别构图句）；「一键首帧」消费。 */
+  firstFramePrompt?: string
 }

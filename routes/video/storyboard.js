@@ -28,6 +28,15 @@ var SHOT_PLAN = Object.freeze([
   { beat:'closing',       shotSize:'wide',    camera:'pull',  motion:'subtle', dialogue:false },
 ]);
 
+// 首帧出图的英文构图句（Krea2 自然语言链路）：同一蓝图的散文描述按镜头景别
+// 变奏，四镜首帧不雷同。身份一致性不靠首帧，由分镜的 Ref2VA 参考卡锁定。
+var BEAT_FRAMING = Object.freeze({
+  establishing:'Framed as a wide establishing shot of the full scene.',
+  interaction:'Framed as a medium shot centered on her action.',
+  emotion:'Framed as a close-up portrait of her face.',
+  closing:'Framed as a wide shot as the scenery opens up.',
+});
+
 var ADULT_CATEGORIES = Object.freeze({ '成人':true, '私密写真':true });
 
 var DIALOGUE_RE = /「([^「」]{2,80})」/g;
@@ -106,6 +115,10 @@ function buildStoryboard(blueprint, options) {
     intent: opts.intent ? String(opts.intent).trim().slice(0, 120) : '',
   };
   var dialogueCursor = 0;
+  // 首帧散文基底：蓝图 promptProse（Krea2 自然语言格式）→ 缺失回退中文 description
+  //（qwen3-vl 编码器同样理解）；两者皆缺则该镜不产首帧提示词（前端跳过该镜）。
+  var proseBase = String(blueprint.promptProse || '').trim()
+    || String(blueprint.description || '').trim();
   var shots = SHOT_PLAN.map(function (plan) {
     var dialogue = null;
     if (plan.dialogue && dialogueCursor < dialogues.length) {
@@ -119,6 +132,7 @@ function buildStoryboard(blueprint, options) {
       camera: plan.camera,
       motion: plan.motion,
       duration: 3,
+      firstFramePrompt: proseBase ? proseBase + ' ' + BEAT_FRAMING[plan.beat] : null,
     };
   });
   return {
