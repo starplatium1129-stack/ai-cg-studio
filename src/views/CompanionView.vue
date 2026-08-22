@@ -375,34 +375,18 @@
 import '@/assets/css/companion.css'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { controlApi } from '../api/controlApi.ts'
-import { trainingApi } from '../api/trainingApi.ts'
 import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
-import { imgCount } from '@/composables/useImageStore'
 import { pickCompanionLine } from '@/config/characters'
-import { pickEnvironmentGreeting } from '@/utils/environmentContext'
 import { resolveCompanionPresence } from '@/utils/companionPresence'
-import { importLocalImages } from '@/utils/desktopImport'
-import type { ImportSourceFile } from '@/utils/desktopImportCore'
-import { createCompanionBehavior, normalizeCompanionConfig, type CompanionReminder } from '@/utils/companionBehavior'
-import {
-  createCompanionEventDetector,
-  EVENT_NOTIFY_TITLE,
-  EVENT_ROUTE,
-  type CompanionDetectedEvent,
-} from '@/utils/companionEvents'
-import { COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKeys'
+import { useCompanionBehaviorRuntime } from '@/composables/useCompanionBehaviorRuntime'
+import { useCompanionClipboardImport } from '@/composables/useCompanionClipboardImport'
+import { COMPANION_CHAT_LIVE_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKeys'
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
 import { useCompanionAffection } from '@/composables/useCompanionAffection'
-import {
-  captureScreenFrame,
-  blobToDataUrl,
-  getCharacterInspectionPrompt,
-} from '@/utils/companionVision'
 
 const CHARACTER_IDS = ['nene', 'natsume'] as const
 
@@ -457,17 +441,56 @@ const companionAutoLoad = computed(() => desktopBridge
   ? desktopWindowVisible.value && desktopLive2dOverride.value !== false
   : storage.state.settings.live2dEnabled)
 const immersiveMessages = computed(() => companionMessages.value.slice(-2))
-const behavior = createCompanionBehavior(readBehaviorConfig())
-const behaviorEnabled = computed(() => behavior.config().enabled)
-const dnd = ref(behavior.config().dnd)
-const pendingReminders = ref<CompanionReminder[]>([])
-const inQuietHours = ref(behavior.inQuietHours())
-const quietHoursText = computed(() => {
-  const { quietStartHour, quietEndHour } = behavior.config()
-  return `安静时段 ${quietStartHour}:00 – ${quietEndHour}:00 不主动问候`
+// ── 角色行为运行时（提醒/问候/事件轮询/勿扰）已下沉 useCompanionBehaviorRuntime ──
+// 两只 30s 心跳与轮询 AbortController 生命周期由 composable 自持；
+// 导入/剪贴板入册走 noteReturn 族 + resetEventDetector 重置检测基线。
+const {
+  behaviorEnabled,
+  dnd,
+  pendingReminders,
+  inQuietHours,
+  quietHoursText,
+  noteActivity,
+  getLastActivityAt,
+  getIdleMinutes,
+  noteReturn,
+  noteReturnPlain,
+  toggleDnd,
+  dismissReminder,
+  maybeGreetByTime,
+  openReminderRoute,
+  resetEventDetector,
+} = useCompanionBehaviorRuntime({
+  activeChar,
+  desktopBridge,
+  desktopWindowVisible: () => desktopWindowVisible.value,
+  reconcileAutoListen,
 })
-const eventDetector = createCompanionEventDetector()
-const importInputRef = ref<HTMLInputElement>()
+// ── 剪贴板浮卡 / 本地导入 / 看屏检视（已下沉 useCompanionClipboardImport）──
+// 剪贴板订阅、拖拽监听与浮卡 20s 计时器生命周期由 composable 自持。
+const {
+  importInputRef,
+  clipboardCard,
+  capturingScreen,
+  onImportInputChange,
+  dismissClipboardCard,
+  acceptClipboardCard,
+  onCaptureAndInspectScreen,
+  inspectClipboardImage,
+} = useCompanionClipboardImport({
+  activeChar,
+  desktopBridge,
+  currentCharacterName: () => currentCharacter.value.name,
+  noteReturn,
+  noteReturnPlain,
+  resetEventDetector,
+  inputText,
+  persistDraft: text => storage.setDraft(activeChar.value, text),
+  scrollChatToBottom: () => chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: 'smooth' }),
+  handleSend,
+  busy,
+  chatReady,
+})
 const settingsOpen = ref(false)
 const workspaceOpen = ref(false)
 const workspaceInput = ref('')
@@ -476,25 +499,6 @@ const workspaceSaving = ref(false)
 const workspaceTooltip = computed(() => workspaceExists.value
   ? `AI 工作区：${workspaceInput.value || '已配置'}`
   : '未配置 AI 工作区：样张预览与训练不可用，点击设置')
-interface ClipboardCard {
-  kind: 'image' | 'text'
-  png?: Uint8Array | number[]
-  previewUrl?: string
-  text?: string
-}
-const clipboardCard = ref<ClipboardCard | null>(null)
-let clipboardCardTimer = 0
-let clipboardImageSubscription: number | undefined
-let clipboardTextSubscription: number | undefined
-let behaviorTimer = 0
-let eventPollTimer = 0
-let importBusy = false
-let reminderLineOffset = 0
-let eventLineOffset = 0
-let eventPolling = false
-let eventPollController: AbortController | null = null
-let lastActivityAt = Date.now()
-let greetedSlotKey = ''
 let uiIdleTimer = 0
 let uiHidden = false
 let lastPointerMove = Date.now()
@@ -613,28 +617,6 @@ let powerModeSubscription: number | undefined
 let interactionModeSubscription: number | undefined
 let globalMouseSubscription: number | undefined
 let viewAlive = true
-
-function readBehaviorConfig() {
-  try {
-    return normalizeCompanionConfig(JSON.parse(localStorage.getItem(COMPANION_BEHAVIOR_KEY) || 'null'))
-  } catch {
-    return normalizeCompanionConfig(null)
-  }
-}
-
-function persistBehaviorConfig() {
-  try { localStorage.setItem(COMPANION_BEHAVIOR_KEY, JSON.stringify(behavior.config())) } catch { /* 隐私模式忽略 */ }
-}
-
-function syncReminders() {
-  pendingReminders.value = behavior.pending().slice()
-  inQuietHours.value = behavior.inQuietHours()
-}
-
-function noteActivity() {
-  behavior.noteActivity()
-  lastActivityAt = Date.now()
-}
 
 /** 沉浸模式：鼠标在舞台活动时 UI 浮现，静止数秒后自动隐去（桌面窗口）。 */
 function setUiHidden(hidden: boolean) {
@@ -827,147 +809,6 @@ function onPointerMove(event: PointerEvent) {
   }, 3200) as unknown as number
 }
 
-function toggleDnd() {
-  const next = !behavior.config().dnd
-  behavior.setConfig({ dnd: next })
-  dnd.value = next
-  persistBehaviorConfig()
-  reconcileAutoListen()
-}
-
-function dismissReminder(id: string) {
-  behavior.dismiss(id)
-  syncReminders()
-}
-
-/** 时间片问候：同一时间片只入队一次；周日/周末视为不同片 */
-function currentGreetedSlotKey(): string {
-  const now = new Date()
-  const greeting = pickEnvironmentGreeting(activeChar.value, now)
-  return `${activeChar.value}:${greeting.slot}:${greeting.weekend ? 'w' : 'd'}`
-}
-
-function maybeGreetByTime(force = false) {
-  if (!behaviorEnabled.value) return
-  const key = currentGreetedSlotKey()
-  if (!force && key === greetedSlotKey) return
-  greetedSlotKey = key
-  const greeting = pickEnvironmentGreeting(activeChar.value, new Date(), reminderLineOffset)
-  reminderLineOffset += 1
-  const reminder = behavior.noteReturn(greeting.line)
-  if (reminder) syncReminders()
-}
-
-function runBehaviorTick() {
-  syncReminders()
-  const reminder = behavior.tick()
-  if (reminder) {
-    reminderLineOffset += 1
-    reminder.line = pickCompanionLine(activeChar.value, 'idle', reminderLineOffset)
-    syncReminders()
-  }
-  // 跨时间片（午→下午、工作日→周末）时给一条环境问候
-  if (viewAlive && desktopWindowVisible.value) maybeGreetByTime()
-  reconcileAutoListen()
-}
-
-async function pollCompanionEvents() {
-  if (eventPolling || !viewAlive) return
-  eventPolling = true
-  const controller = new AbortController()
-  eventPollController = controller
-  try {
-    const [status, trainingJobs, imageCount] = await Promise.all([
-      controlApi.getStatus({ signal: controller.signal }).catch(() => null),
-      trainingApi.getJobs({ signal: controller.signal }).then(result => result.jobs).catch(() => null),
-      imgCount().catch(() => -1),
-    ])
-    if (!viewAlive || controller.signal.aborted || !status || status.ok === false) return
-    const jobs = (trainingJobs || []).map(job => ({
-      id: job.id,
-      status: job.status,
-      percent: Number.isFinite(job.progress.percent) ? job.progress.percent : 0,
-    }))
-    // 任务栏进度环：训练中的任务显示 percent；空闲/完成/失败清除
-    const activeJob = jobs.find(job => job.status === 'running' || job.status === 'stopping')
-    desktopBridge?.setProgress(activeJob ? (activeJob.percent || 0) / 100 : null)
-    const events = eventDetector.ingest({
-      imageCount: imageCount >= 0 ? imageCount : 0,
-      services: {
-        sdOnline: status.sdOnline,
-        ttsOnline: status.ttsOnline,
-        ollamaOnline: status.ollamaOnline,
-      },
-      jobs,
-    })
-    for (const event of events) {
-      eventLineOffset += 1
-      const line = pickCompanionLine(activeChar.value, 'event', eventLineOffset, event)
-      const reminder = behavior.noteEvent(event, line)
-      if (reminder) {
-        syncReminders()
-        if (desktopBridge) desktopBridge.notify(EVENT_NOTIFY_TITLE[event], line)
-      }
-    }
-  } catch {
-    // 轮询失败静默：下次再试
-  } finally {
-    if (eventPollController === controller) eventPollController = null
-    eventPolling = false
-  }
-}
-
-function openReminderRoute(reminder: CompanionReminder) {
-  if (reminder.kind !== 'event' || !reminder.eventKind) return
-  const route = EVENT_ROUTE[reminder.eventKind as CompanionDetectedEvent]
-  if (!route) return
-  if (desktopBridge) {
-    dismissReminder(reminder.id)
-    desktopBridge.openAtelier(route)
-  }
-}
-
-async function handleImportedFiles(files: readonly ImportSourceFile[]) {
-  if (importBusy || !files.length) return
-  importBusy = true
-  try {
-    const { imported, skipped } = await importLocalImages(files)
-    if (imported > 0) {
-      reminderLineOffset += 1
-      const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张格式不支持）` : ''}。`
-      const reminder = behavior.noteReturn(line)
-      if (reminder) syncReminders()
-      if (desktopBridge) desktopBridge.notify(currentCharacter.value.name, line)
-      // 导入也会让图片计数增加；重置检测器基线避免误报 sd-done
-      eventDetector.reset()
-    } else if (skipped > 0) {
-      const line = '这几张图片好像打不开……再试试别的？'
-      const reminder = behavior.noteReturn(line)
-      if (reminder) syncReminders()
-    }
-  } finally {
-    importBusy = false
-  }
-}
-
-function onImportInputChange() {
-  const input = importInputRef.value
-  const files = input?.files ? Array.from(input.files) : []
-  if (input) input.value = ''
-  void handleImportedFiles(files.map(file => ({ name: file.name, size: file.size, type: file.type, blob: file })))
-}
-
-function onWindowDrop(event: DragEvent) {
-  const files = event.dataTransfer?.files
-  if (!files || !files.length) return
-  event.preventDefault()
-  void handleImportedFiles(Array.from(files).map(file => ({ name: file.name, size: file.size, type: file.type, blob: file })))
-}
-
-function onWindowDragOver(event: DragEvent) {
-  event.preventDefault()
-}
-
 async function refreshWorkspaceState() {
   if (!desktopBridge) return
   try {
@@ -998,97 +839,6 @@ async function saveWorkspace() {
     chatErrorKind.value = 'error'
   } finally {
     workspaceSaving.value = false
-  }
-}
-
-function showClipboardCard(card: ClipboardCard) {
-  clipboardCard.value = card
-  clearTimeout(clipboardCardTimer)
-  clipboardCardTimer = window.setTimeout(dismissClipboardCard, 20_000) as unknown as number
-}
-
-function clipboardPngBlob(png: Uint8Array | number[]): Blob | null {
-  try {
-    const copy = png instanceof Uint8Array ? new Uint8Array(png) : new Uint8Array(png)
-    return new Blob([copy.buffer as ArrayBuffer], { type: 'image/png' })
-  } catch {
-    return null
-  }
-}
-
-function onClipboardImage(png: Uint8Array | number[]) {
-  if (!viewAlive) return
-  const blob = clipboardPngBlob(png)
-  if (!blob) return
-  try {
-    const previewUrl = URL.createObjectURL(blob)
-    showClipboardCard({ kind: 'image', png, previewUrl })
-  } catch { /* 大图/内存异常时忽略 */ }
-}
-
-function onClipboardText(text: string) {
-  if (!viewAlive) return
-  showClipboardCard({ kind: 'text', text: text.slice(0, 400) })
-}
-
-function dismissClipboardCard() {
-  clearTimeout(clipboardCardTimer)
-  if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
-  clipboardCard.value = null
-}
-
-async function acceptClipboardCard() {
-  const card = clipboardCard.value
-  if (!card) return
-  if (card.kind === 'image' && card.png) {
-    const blob = clipboardPngBlob(card.png)
-    dismissClipboardCard()
-    if (!blob) return
-    const { imported } = await importLocalImages([{ name: `剪贴板-${Date.now()}.png`, size: blob.size, type: 'image/png', blob }])
-    if (imported > 0) {
-      const reminder = behavior.noteReturn('收到剪贴板里的图片，已经放进作品册啦。')
-      if (reminder) syncReminders()
-      if (desktopBridge) desktopBridge.notify(currentCharacter.value.name, '图片已存入作品册')
-      eventDetector.reset()
-    }
-  } else if (card.kind === 'text' && card.text) {
-    const text = card.text
-    dismissClipboardCard()
-    inputText.value = text
-    storage.setDraft(activeChar.value, text)
-    chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: 'smooth' })
-  }
-}
-
-const capturingScreen = ref(false)
-
-async function onCaptureAndInspectScreen() {
-  if (capturingScreen.value || busy.value || !chatReady.value) return
-  capturingScreen.value = true
-  try {
-    const dataUrl = await captureScreenFrame()
-    if (!dataUrl) return
-    const prompt = getCharacterInspectionPrompt(activeChar.value)
-    handleSend(prompt, dataUrl)
-  } catch {
-    // 捕获异常忽略
-  } finally {
-    capturingScreen.value = false
-  }
-}
-
-async function inspectClipboardImage() {
-  const card = clipboardCard.value
-  if (!card || card.kind !== 'image' || !card.png) return
-  const blob = clipboardPngBlob(card.png)
-  dismissClipboardCard()
-  if (!blob) return
-  try {
-    const dataUrl = await blobToDataUrl(blob)
-    const prompt = getCharacterInspectionPrompt(activeChar.value)
-    handleSend(prompt, dataUrl)
-  } catch {
-    // 转换异常忽略
   }
 }
 
@@ -1148,12 +898,10 @@ function setDesktopVisibility(visible: boolean) {
   desktopWindowVisible.value = visible
   if (visible) {
     // 重新可见且离开超过提醒阈值：入队一条"回来"问候
-    const awayMs = Date.now() - lastActivityAt
-    const idleMinutes = behavior.config().idleMinutes
+    const awayMs = Date.now() - getLastActivityAt()
+    const idleMinutes = getIdleMinutes()
     if (idleMinutes > 0 && awayMs > idleMinutes * 60_000) {
-      reminderLineOffset += 1
-      const reminder = behavior.noteReturn(pickCompanionLine(activeChar.value, 'return', reminderLineOffset))
-      if (reminder) syncReminders()
+      noteReturn(offset => pickCompanionLine(activeChar.value, 'return', offset))
     }
     // 窗口重新可见：若时间片/周末状态变了，给一条环境问候
     maybeGreetByTime()
@@ -1190,9 +938,6 @@ watch(currentCharacter, () => {
 
 onMounted(async () => {
   document.documentElement.classList.add('companion-mode')
-  dnd.value = behavior.config().dnd
-  behaviorTimer = window.setInterval(runBehaviorTick, 30_000) as unknown as number
-  eventPollTimer = window.setInterval(() => { void pollCompanionEvents() }, 30_000) as unknown as number
   window.addEventListener('pointerdown', noteActivity, { passive: true })
   window.addEventListener('pointerdown', onDocPointerDown, { passive: true })
   window.addEventListener('keydown', onWindowKeydown, { passive: false })
@@ -1200,20 +945,13 @@ onMounted(async () => {
   document.addEventListener('visibilitychange', onDocumentVisibilityChange)
   window.addEventListener('wheel', noteActivity, { passive: true })
   window.addEventListener('pointermove', onPointerMove, { passive: true })
-  window.addEventListener('dragover', onWindowDragOver, { passive: false })
-  window.addEventListener('drop', onWindowDrop, { passive: false })
-  syncReminders()
-  maybeGreetByTime()
   reconcileAutoListen()
-  void pollCompanionEvents()
   void refreshWorkspaceState()
   if (desktopBridge) {
     document.documentElement.classList.add('companion-desktop')
     // 真双窗口：先下行一次实时状态，聊天窗打开即有正确内容
     publishLiveState()
     chatCommandSubscription = desktopBridge.onChatCommand(onChatCommand)
-    clipboardImageSubscription = desktopBridge.onClipboardImage(onClipboardImage)
-    clipboardTextSubscription = desktopBridge.onClipboardText(onClipboardText)
     shownSubscription = desktopBridge.onShown(() => setDesktopVisibility(true))
     visibilitySubscription = desktopBridge.onVisibilityChanged(setDesktopVisibility)
     if (desktopBridge.onWindowBoundsChanged) {
@@ -1262,12 +1000,6 @@ onMounted(async () => {
 onUnmounted(() => {
   stopSpeechSessionWatch()
   viewAlive = false
-  eventPollController?.abort()
-  eventPollController = null
-  clearInterval(behaviorTimer)
-  clearInterval(eventPollTimer)
-  clearTimeout(clipboardCardTimer)
-  if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
   window.removeEventListener('pointerdown', noteActivity)
   window.removeEventListener('pointerdown', onDocPointerDown)
   window.removeEventListener('keydown', onWindowKeydown)
@@ -1275,10 +1007,6 @@ onUnmounted(() => {
   document.removeEventListener('visibilitychange', onDocumentVisibilityChange)
   window.removeEventListener('wheel', noteActivity)
   window.removeEventListener('pointermove', onPointerMove)
-  window.removeEventListener('dragover', onWindowDragOver)
-  window.removeEventListener('drop', onWindowDrop)
-  if (desktopBridge && clipboardImageSubscription != null) desktopBridge.offClipboardImage(clipboardImageSubscription)
-  if (desktopBridge && clipboardTextSubscription != null) desktopBridge.offClipboardText(clipboardTextSubscription)
   if (desktopBridge && resumeSubscription != null) desktopBridge.offResume(resumeSubscription)
   if (desktopBridge && shownSubscription != null) desktopBridge.offShown(shownSubscription)
   if (desktopBridge && visibilitySubscription != null) desktopBridge.offVisibilityChanged(visibilitySubscription)
