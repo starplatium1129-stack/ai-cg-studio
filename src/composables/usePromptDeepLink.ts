@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { usePromptBuilderStore, type CharKey, type HistoryEntry, type Scene } from '@/stores/promptBuilderStore'
+import { usePromptBuilderStore, type HistoryEntry, type Scene } from '@/stores/promptBuilderStore'
 import { isCharKey } from '@/composables/useDirectorCatalog'
 import { COLOR_MOODS } from '@/config/promptConstants'
 import {

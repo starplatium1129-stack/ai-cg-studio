@@ -137,10 +137,16 @@ const promptAssembly = read('src/composables/usePromptAssembly.ts');
 const drawingRoute = read('src/utils/drawingRoute.ts');
 const animaPanel = read('src/components/AnimaQuickPanel.vue');
 const sdGenerateSource = read('src/composables/useSDGenerate.ts');
+// 2026-08-22 三簇下沉：SD 队列执行（runJob/captureJob/historyGenerationFields/
+// detailer）归 usePromptSdQueue；历史应用归 usePromptHistoryApply；深链参数
+// 归 usePromptDeepLink。相关哨兵随代码迁移到新宿主文件。
+const sdQueueSource = read('src/composables/usePromptSdQueue.ts');
+const historyApplySource = read('src/composables/usePromptHistoryApply.ts');
+const deepLinkSource = read('src/composables/usePromptDeepLink.ts');
 if (storeSource.includes('kreaStyleId') || storeSource.includes('artistInfluences') || !storeSource.includes('styleLoraId: entry.styleLoraId ?? null')) {
   fail('history must retain generated metadata without restoring manual style or artist controls');
 }
-if (!sdGenerateSource.includes('L_NENE_V18_WD14') || !view.includes('loras[0]?.id')) {
+if (!sdGenerateSource.includes('L_NENE_V18_WD14') || !sdQueueSource.includes('loras[0]?.id')) {
   fail('WAI history must preserve structured canonical LoRA ids and weights');
 }
 if (/\bany\b/.test(view)) fail('PromptBuilderView must keep deep links, scenes, and history explicitly typed');
@@ -154,7 +160,7 @@ if (view.includes('GenerationStylePanel') || view.includes('artistInfluences') |
 if (!view.includes('ArtistStylePicker') || !view.includes("pb.directorMode === 'pro'")) {
   fail('curated artist tags must stay scoped to expert mode');
 }
-if (/entry\.char\b/.test(view) || !view.includes('entry.character')) {
+if ((/entry\.char\b/.test(view) || /entry\.char\b/.test(historyApplySource)) || !historyApplySource.includes('entry.character')) {
   fail('history deep links must restore the canonical character field');
 }
 
@@ -181,8 +187,11 @@ for (const marker of ['L_NENE_V21_ANIMA', "engine: 'sd'", "engine: 'anima'", "en
 if (view.includes('prompt-style-switch') || view.includes('aics_parameter_memory_v1')) {
   fail('prompt syntax and detached parameter memory must not be exposed as independent scene-mode choices');
 }
-for (const marker of ['DrawEngine', 'historyGenerationFields', 'animaModelId', 'engine: meta.engine']) {
+for (const marker of ['DrawEngine', 'animaModelId']) {
   if (!view.includes(marker)) fail('director must wire engine-specific generation metadata: ' + marker);
+}
+for (const marker of ['historyGenerationFields', 'engine: meta.engine']) {
+  if (!sdQueueSource.includes(marker)) fail('director must wire engine-specific generation metadata: ' + marker);
 }
 if (view.includes('styleLoraId: animaState.value.styleLoraId')) {
   fail('one-click requests must not submit a hidden Style LoRA selection');
@@ -209,10 +218,10 @@ for (const marker of ['update:state', 'readonly']) {
 if (animaPanel.includes("emit('submit')") || animaPanel.includes("emit('cancel')") || animaPanel.includes('Style LoRA')) {
   fail('AnimaQuickPanel must not own generation actions or manual Krea style setup');
 }
-const sceneLoad = view.indexOf('if (restoredContext.scene) pb.loadScene(restoredContext.scene)');
-const storyRestore = view.indexOf('pb.setStory(restoredContext.story)');
+const sceneLoad = historyApplySource.indexOf('if (restoredContext.scene) pb.loadScene(restoredContext.scene)');
+const storyRestore = historyApplySource.indexOf('pb.setStory(restoredContext.story)');
 if (sceneLoad < 0 || storyRestore < sceneLoad) fail('history restore must load the scene before restoring custom story text');
-if (view.includes("else if (entry.engine === 'sd')")) {
+if (view.includes("else if (entry.engine === 'sd')") || historyApplySource.includes("else if (entry.engine === 'sd')")) {
   fail('legacy history without an engine field must restore through the SD path');
 }
 for (const marker of ['requestSerial += 1', "method: 'DELETE'"]) {
@@ -227,7 +236,7 @@ if (view.includes("from '@/utils/promptPolicy'")) {
 
 const wiring = [
   ['classifySDError', 'generation failures must be classified into recovery actions'],
-  ['useSDQueue', 'director must support a serial generation queue'],
+  ['usePromptSdQueue', 'director must support a serial generation queue'],
   ['PromptDataTools', 'director must mount the local data backup/restore component'],
   ['PromptHealthPanel', 'director must mount the collapsible prompt health component'],
   ['GenerationQueuePanel', 'director must mount the generation queue component'],
@@ -250,9 +259,9 @@ if (/parts\.unshift\(['"]masterpiece, best quality, highres['"]\)/.test(view)) {
   fail('quality prefix must not be hardcoded; use the model profile');
 }
 
-// 深链恢复
+// 深链恢复（2026-08-22 参数回放归 usePromptDeepLink，哨兵随之迁移）
 for (const param of ['scene', 'regen', 'variant', 'mood', 'resume', 'quick']) {
-  if (!new RegExp(`q\\.${param}`).test(view)) fail('missing deep-link restoration for ?' + param);
+  if (!new RegExp(`q\\.${param}`).test(deepLinkSource)) fail('missing deep-link restoration for ?' + param);
 }
 
 // 配音工作室的 HTTP 接线归 VoiceStudio 所有；PromptBuilderView 只负责传入
@@ -271,11 +280,12 @@ for (const marker of ['initial-voice', 'suggested-caption']) {
 }
 
 // ── 3. 出图参数必须与底模 profile 一致，且支持 hires 细项 ────────────────
+// runJob/captureJob/detailer 已随 SD 队列簇迁入 usePromptSdQueue。
 for (const marker of ['hr_second_pass_steps', 'denoising_strength', 'hiresSteps', 'hiresDenoise']) {
-  if (!view.includes(marker)) fail('hires pipeline must expose ' + marker);
+  if (!sdQueueSource.includes(marker)) fail('hires pipeline must expose ' + marker);
 }
 for (const marker of ['faceDetailer', 'face_yolov8s.pt', 'hand_yolov8n.pt', 'buildSingleDetailerScripts']) {
-  if (!view.includes(marker)) fail('high-resolution detailer must retain ' + marker);
+  if (!sdQueueSource.includes(marker)) fail('high-resolution detailer must retain ' + marker);
 }
 
 const sdGenerate = read('src/composables/useSDGenerate.ts');

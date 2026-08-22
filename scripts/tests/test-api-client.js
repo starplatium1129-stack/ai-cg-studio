@@ -621,17 +621,22 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
     'src/views/HomeView.vue',
     'src/views/CompanionView.vue',
     'src/composables/useCharacterRoomSession.ts',
+    // 2026-08-22 陪伴页行为/剪贴板簇自 CompanionView 下沉，随迁禁裸 fetch 清单。
+    'src/composables/useCompanionBehaviorRuntime.ts',
+    'src/composables/useCompanionClipboardImport.ts',
   ];
   for (const relativePath of scopedFiles) {
     const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
     assert.doesNotMatch(source, /\bfetch\s*\(/, `${relativePath} must use the typed API modules`);
   }
-  const companion = fs.readFileSync(path.join(root, 'src/views/CompanionView.vue'), 'utf8');
-  assert.match(companion, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);
-  assert.match(companion, /trainingApi\.getJobs\(\{ signal: controller\.signal \}\)/);
-  assert.match(companion, /!viewAlive \|\| controller\.signal\.aborted \|\| !status/);
-  assert.match(companion, /status\.ok === false/);
-  assert.match(companion, /viewAlive = false\s+eventPollController\?\.abort\(\)/);
+  // 事件轮询（controlApi/trainingApi/imgCount 聚合 + AbortController）已归
+  // useCompanionBehaviorRuntime，卸载中止哨兵随之迁移（存活标志更名 alive）。
+  const companionBehavior = fs.readFileSync(path.join(root, 'src/composables/useCompanionBehaviorRuntime.ts'), 'utf8');
+  assert.match(companionBehavior, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);
+  assert.match(companionBehavior, /trainingApi\.getJobs\(\{ signal: controller\.signal \}\)/);
+  assert.match(companionBehavior, /!alive \|\| controller\.signal\.aborted \|\| !status/);
+  assert.match(companionBehavior, /status\.ok === false/);
+  assert.match(companionBehavior, /alive = false\s+eventPollController\?\.abort\(\)/);
 
   const roomSession = fs.readFileSync(path.join(root, 'src/composables/useCharacterRoomSession.ts'), 'utf8');
   assert.match(roomSession, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);

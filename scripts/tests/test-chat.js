@@ -204,6 +204,9 @@ async function run() {
   // 网站角色房间与 Companion 是独立视图，只共享最小会话编排。
   var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
   var companionHtml = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
+  // 2026-08-22 行为运行时（30s 心跳：syncReminders + reconcileAutoListen）自
+  // CompanionView 下沉，tick 哨兵随之迁移。
+  var companionBehavior = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionBehaviorRuntime.ts'), 'utf8');
   var roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'useCharacterRoomSession.ts'), 'utf8');
   var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   var chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
@@ -299,7 +302,7 @@ async function run() {
   assert(/watch\(busy, value => \{\s*if \(value\) \{\s*speechHeldByKeyboard = false\s+speechHeldByPointer = false\s+speechSession\.markReplyBusy\(\)\s+speechCancel\(\)\s*\} else \{/.test(companionHtml), 'busy=true must clear held inputs and cancel every speech mode before reconcile');
   assert(companionHtml.includes('function setDesktopVisibility(visible: boolean)'), 'Companion visibility handler must remain present');
   assert(companionHtml.includes('if (!visible)'), 'Companion window hiding must cancel speech');
-  assert(companionHtml.includes('syncReminders()') && companionHtml.includes('reconcileAutoListen()'), 'Companion behavior ticks must refresh quiet state and auto listening');
+  assert(companionBehavior.includes('syncReminders()') && companionBehavior.includes('reconcileAutoListen()'), 'Companion behavior ticks must refresh quiet state and auto listening');
   assert(companionHtml.includes('companion-speech-cluster') && companionHtml.includes('speechRelease()') && companionHtml.includes('speechSession.endSession()') && !companionHtml.includes('/audio/transcriptions'), 'Companion speech must use one UI cluster, release on unmount, and avoid a second ASR fetch path');
   assert(!/\bany\b/.test(roomSession), 'shared character-room session boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(chatConversation), 'chat conversation stream, cancellation, and draft boundaries must stay explicitly typed');
