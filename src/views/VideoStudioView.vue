@@ -919,7 +919,7 @@ onBeforeUnmount(() => {
 .video-job-meta { display:flex; flex-wrap:wrap; gap:var(--s-2); margin:var(--s-3) 0; }
 .video-job-meta span { padding:3px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-muted); font:600 var(--fs-mono-xs) var(--font-mono); }
 .video-progress { height:3px; margin:var(--s-3) 0; overflow:hidden; border-radius:var(--r-pill); background:var(--bg-deep); }
-.video-progress i { display:block; height:100%; width:var(--progress,0%); background:linear-gradient(90deg,var(--archive-cyan),var(--accent)); transition:width .6s ease; }
+.video-progress i { display:block; height:100%; width:100%; transform-origin:left; scale:var(--progress,0%); background:linear-gradient(90deg,var(--archive-cyan),var(--accent)); transition:scale var(--motion-surface) var(--ease-out); }
 .video-inline-message { padding:var(--s-2) var(--s-3); border-radius:var(--r-md); font-size:var(--fs-body-sm); line-height:1.55; }
 .video-inline-message.error { background:color-mix(in srgb,var(--danger) 10%,transparent); color:var(--danger-text); }
 .video-inline-message.warning { background:color-mix(in srgb,var(--warning) 12%,transparent); color:var(--warning-text); }

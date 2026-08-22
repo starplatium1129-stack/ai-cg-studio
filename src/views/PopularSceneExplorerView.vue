@@ -489,7 +489,7 @@ onMounted(() => { void init() })
   color: var(--text-secondary);
   font: 600 var(--fs-mono-xs) var(--font-mono);
   cursor: pointer;
-  transition: all var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .pop-rating-pill:hover { border-color: var(--border-strong); color: var(--text-primary); }
 .pop-rating-pill.active {

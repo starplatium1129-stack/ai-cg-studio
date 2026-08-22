@@ -252,7 +252,7 @@ function applyCombo(artistIds: readonly string[]) {
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
   cursor: pointer;
-  transition: all var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .artist-clear-inline:hover {
   color: var(--danger-text);
@@ -296,7 +296,7 @@ function applyCombo(artistIds: readonly string[]) {
   color: var(--text-secondary);
   cursor: pointer;
   text-align: left;
-  transition: all var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .artist-combo-btn:hover {
   border-color: var(--accent);
@@ -374,7 +374,7 @@ function applyCombo(artistIds: readonly string[]) {
   color: var(--text-muted);
   cursor: pointer;
   font: 600 var(--fs-mono-xs) var(--font-sans);
-  transition: all var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .artist-cat-btn:hover {
   color: var(--text-primary);
@@ -421,7 +421,7 @@ function applyCombo(artistIds: readonly string[]) {
   color: var(--text-secondary);
   text-align: left;
   cursor: pointer;
-  transition: all var(--t-fast) var(--ease-out);
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
 }
 .artist-style-grid button:hover:not(:disabled),
 .artist-style-grid button.selected {

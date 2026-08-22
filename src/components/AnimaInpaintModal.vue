@@ -547,7 +547,7 @@ async function handleStart() {
   align-items: center;
   justify-content: center;
   min-height: 440px;
-  transition: all 0.2s ease;
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out);
 }
 
 .preview-card.is-dragover {
@@ -822,7 +822,7 @@ async function handleStart() {
   border: 1px solid color-mix(in srgb, white 8%, transparent);
   border-radius: var(--r-sm);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
   color: var(--text-secondary);
   text-align: left;
 }

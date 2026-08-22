@@ -1737,21 +1737,10 @@ html.theme-fade .sakura-fall {
   min-height: 0;
 }
 
-/* ── 红心点赞 / 收藏物理弹性微动效 (Heart Micro-Bounce) ── */
-@keyframes heartBounce {
-  0% { transform: scale(1); }
-  35% { transform: scale(1.36); }
-  65% { transform: scale(0.92); }
-  100% { transform: scale(1); }
-}
-
-.heart-pop,
-.artwork-mark svg,
-.history-rating.favorite svg,
-.btn-favorite svg {
-  animation: heartBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-origin: center center;
-}
+/* 2026-08-22 动效审计 #11：原 heartBounce 静态挂在所有已收藏图标上——
+   收藏目前是纯展示状态（无切换入口），作品册每次打开全部红心齐弹一遍。
+   连同零引用的 .heart-pop/.btn-favorite 选择器整块删除；将来若加收藏
+   切换，应做成点击瞬时类（toggle 时挂 400ms 后移除）。 */
 
 /* ── 键盘快捷键徽章 (<kbd> Keyboard Shortcut Badge) ── */
 kbd,

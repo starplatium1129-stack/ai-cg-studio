@@ -596,7 +596,7 @@
     display: inline-flex; align-items: center; padding: 2px 7px;
     border-radius: var(--r-sm); font-family: var(--font-mono); font-size: var(--fs-label-xs);
     line-height: 1.4; letter-spacing: 0.01em; border: 1px solid var(--border-soft);
-    background: var(--bg-deep); color: var(--text-secondary); transition: all var(--t-fast) var(--ease-out);
+    background: var(--bg-deep); color: var(--text-secondary); transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
   }
   .pb .token-chip.quality {
     border-color: color-mix(in srgb, var(--mood-joy-text) 50%, var(--border-soft));
@@ -703,8 +703,8 @@
   .pb .ctrl.toggle-row label { font-size: var(--fs-label-sm); color: var(--text-secondary); }
   .pb .switch { position: relative; display: inline-block; width: 32px; height: 18px; flex-shrink: 0; }
   .pb .switch input { opacity: 0; width: 0; height: 0; }
-  .pb .slider { position: absolute; cursor: pointer; inset: 0; background: var(--border-soft); border-radius: var(--r-pill); transition: var(--t-fast); }
-  .pb .slider:before { content: ""; position: absolute; height: 13px; width: 13px; left: 2.5px; bottom: 2.5px; background: var(--text-primary); border-radius: 50%; transition: var(--t-fast); }
+  .pb .slider { position: absolute; cursor: pointer; inset: 0; background: var(--border-soft); border-radius: var(--r-pill); transition: background var(--motion-hover) var(--ease-out); }
+  .pb .slider:before { content: ""; position: absolute; height: 13px; width: 13px; left: 2.5px; bottom: 2.5px; background: var(--text-primary); border-radius: 50%; transition: transform var(--motion-hover) var(--ease-out); }
   .pb .switch input:checked + .slider { background: var(--accent); }
   .pb .switch input:checked + .slider:before { transform: translateX(14px); }
 
@@ -1214,7 +1214,7 @@
   .pb .sd-base-resolution-hint.danger { color:var(--danger-text); font-weight:650; }
   .pb .sd-budget-hint.danger { color:var(--danger-text); font-weight:650; }
   .pb .sd-progress { height:8px; overflow:hidden; border-radius:var(--r-pill); background:var(--bg-deep); border:1px solid var(--border-soft); margin:0 auto var(--s-2); max-width:520px; }
-  .pb .sd-progress > span { display:block; width:var(--progress,0%); height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--accent),var(--accent-violet)); transition:width .35s ease; }
+  .pb .sd-progress > span { display:block; width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--accent),var(--accent-violet)); transform-origin:left; scale:var(--progress,0%); transition:scale var(--motion-surface) var(--ease-out); }
   .pb .sd-progress[hidden] { display:none; }
   .pb .sd-recovery { max-width:620px; margin:var(--s-3) auto 0; padding:var(--s-3); text-align:left; border:1px solid color-mix(in srgb,var(--warning) 45%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--warning) 8%,transparent); color:var(--text-secondary); }
   .pb .sd-recovery[hidden] { display:none; }
@@ -1445,8 +1445,8 @@
   .pb .sd-progress-bar {
     display:block; height:100%; border-radius:inherit;
     background:linear-gradient(90deg,var(--accent),var(--accent-violet));
-    width:var(--progress, 0%);
-    transition:width .35s ease;
+    width:100%; transform-origin:left; scale:var(--progress, 0%);
+    transition:scale var(--motion-surface) var(--ease-out);
   }
   .pb .sd-status.error { color:var(--danger-text); }
   .pb .badge-online { --badge-color:var(--success-text); }
@@ -1579,9 +1579,9 @@
   .pb .stage-progress-ring > i {
     display:block; height:100%; border-radius:inherit;
     background:linear-gradient(90deg,var(--accent),var(--accent-violet));
-    /* 宽度由模板的 --progress 载体提供(内联 style 只放数据) */
-    width:var(--progress, 0%);
-    transition:width .4s var(--ease-out);
+    /* 进度由模板的 --progress 载体提供(内联 style 只放数据)；scale 百分比补间不触发布局 */
+    width:100%; transform-origin:left; scale:var(--progress, 0%);
+    transition:scale var(--motion-surface) var(--ease-out);
   }
    @media (prefers-reduced-motion: reduce) {
      .pb .director-workspace > .col-left,

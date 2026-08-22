@@ -333,7 +333,7 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
   width: 22px; height: 22px;
   border: 1px solid var(--border-strong); border-radius: 50%;
   color: transparent;
-  transition: all var(--motion-hover);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .batch-scene-card.selected .batch-scene-check {
   border-color: var(--accent); background: var(--accent); color: var(--text-inverse);
@@ -356,9 +356,10 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 .batch-count-label { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
 .batch-progress { height: 3px; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
 .batch-progress i {
-  display: block; height: 100%; width: var(--progress, 0%);
+  display: block; height: 100%; width: 100%; transform-origin: left;
   background: linear-gradient(90deg, var(--archive-cyan), var(--accent));
-  transition: width .4s ease;
+  scale: var(--progress, 0%);
+  transition: scale var(--motion-surface) var(--ease-out);
 }
 .batch-result-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3);

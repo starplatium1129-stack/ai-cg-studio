@@ -749,7 +749,7 @@ onMounted(() => {
   font-size: var(--fs-label-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .char-outfit-tab:hover {
   border-color: var(--accent);
@@ -958,7 +958,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all var(--t-fast);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .ref-modal-close:hover {
   color: var(--text-primary);

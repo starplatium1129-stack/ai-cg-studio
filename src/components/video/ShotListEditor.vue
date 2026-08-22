@@ -994,7 +994,7 @@ onBeforeUnmount(() => {
 .video-segmented button.active { background: var(--accent); color: var(--text-inverse); }
 .video-install-note { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }
 .video-progress { height: 3px; margin: var(--s-3) 0; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
-.video-progress i { display: block; height: 100%; width: var(--progress, 0%); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: width .4s ease; }
+.video-progress i { display: block; height: 100%; width: 100%; transform-origin: left; scale: var(--progress, 0%); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: scale var(--motion-surface) var(--ease-out); }
 
 .shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
 .shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }
@@ -1021,7 +1021,7 @@ onBeforeUnmount(() => {
   padding: 2px 8px; border: 1px solid var(--border-soft);
   border-radius: var(--r-pill); background: var(--bg-surface);
   font-size: var(--fs-label-xs); color: var(--text-secondary);
-  cursor: pointer; transition: all var(--t-fast);
+  cursor: pointer; transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .shot-card-outfit-pill:hover { border-color: var(--accent); color: var(--text-primary); }
 .shot-card-outfit-pill.active { border-color: var(--accent); background: var(--accent); color: var(--text-inverse); font-weight: 600; }
