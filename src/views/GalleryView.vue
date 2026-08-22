@@ -105,7 +105,7 @@
                 />
                 <div v-else-if="missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
                 <div v-else class="artwork-skeleton" aria-hidden="true"></div>
-                <div class="artwork-caption">
+            <div class="artwork-caption">
                   <span>
                     <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
                     <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
@@ -116,6 +116,10 @@
             </button>
           </article>
         </template>
+        <!-- 分页哨兵：进入视口即追加下一页（作品很多时避免一次性铺满 DOM） -->
+        <div v-if="hasMoreToRender" ref="sentinelEl" class="gallery-more" role="status">
+          已显示 {{ pagedVisible.length }} / {{ visible.length }} 幅 · 滚动继续加载
+        </div>
       </div>
     </section>
 
@@ -290,10 +294,17 @@ const favoriteCount = computed(() => history.value.filter(i => i.favorite).lengt
 const countLabel = computed(() => `${visible.value.length} 幅作品`)
 const current = computed(() => visible.value[viewerIndex.value] || null)
 
+/* ---------- 分页渲染：滚动触底递增，避免数百作品全量铺 DOM ----------
+   查看器导航仍走完整 visible；分页只约束「展墙渲染多少张」。 */
+const PAGE_SIZE = 60
+const renderLimit = ref(PAGE_SIZE)
+const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value))
+const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length)
+
 const groups = computed(() => {
   const order = ['今天', '本周', '更早']
   const buckets: Record<string, ArtworkRecord[]> = {}
-  visible.value.forEach(item => {
+  pagedVisible.value.forEach(item => {
     const key = dayGroup(stamp(item))
     ;(buckets[key] = buckets[key] || []).push(item)
   })
@@ -488,7 +499,8 @@ function trimCardUrls() {
 }
 
 async function hydrateThumbs() {
-  const pending = visible.value.filter(item => !cardUrls[item.id] && !thumbUrls[item.id])
+  // 只为已进入渲染窗口的作品取缩略图（分页外的不预取）
+  const pending = pagedVisible.value.filter(item => !cardUrls[item.id] && !thumbUrls[item.id])
   let index = 0
   async function worker() {
     while (index < pending.length) {
@@ -846,6 +858,8 @@ onUnmounted(() => {
   cardObserver?.disconnect()
   cardObserver = null
   observedCards.clear()
+  moreObserver?.disconnect()
+  moreObserver = null
   document.removeEventListener('keydown', onKeydown)
   revokeAll()
 })
@@ -853,6 +867,39 @@ onUnmounted(() => {
 watch(visible, () => {
   void hydrateThumbs()
   void nextTick(() => scanWallCards())
+})
+
+/* ---------- 分页：哨兵进入视口即追加下一页 ---------- */
+const sentinelEl = ref<HTMLElement | null>(null)
+let moreObserver: IntersectionObserver | null = null
+
+function loadMoreIfNeeded() {
+  if (!hasMoreToRender.value) return
+  renderLimit.value = Math.min(renderLimit.value + PAGE_SIZE, visible.value.length)
+  // 极端情况：新页仍不足以把哨兵推出视口（如全部同比例小图）。
+  // nextTick 后再探测一次，直到哨兵离开视口或加载完毕，保证分页总能继续。
+  void nextTick(() => {
+    if (!hasMoreToRender.value || !sentinelEl.value) return
+    if (sentinelEl.value.getBoundingClientRect().top < window.innerHeight + 800) loadMoreIfNeeded()
+  })
+}
+
+onMounted(() => {
+  moreObserver = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) loadMoreIfNeeded()
+  }, { rootMargin: '800px 0px' })
+  if (sentinelEl.value) moreObserver.observe(sentinelEl.value)
+})
+
+watch(sentinelEl, el => {
+  if (!moreObserver) return
+  moreObserver.disconnect()
+  if (el) moreObserver.observe(el)
+})
+
+// 筛选变化回到第一页，让用户始终从最新作品看起
+watch([favoriteOnly, projectFilter], () => {
+  renderLimit.value = PAGE_SIZE
 })
 </script>
 
@@ -896,6 +943,7 @@ watch(visible, () => {
 .artwork-mark { flex:0 0 auto; font-size:var(--fs-label-sm); }
 
 .gallery-section { column-span:all; display:flex; align-items:center; gap:var(--s-3); margin:var(--s-3) 0 var(--s-4); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+.gallery-more { column-span:all; display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:var(--s-5) 0 0; padding:var(--s-3); color:var(--text-muted); font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
 .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
 
 @media (hover: hover) and (pointer: fine) {
