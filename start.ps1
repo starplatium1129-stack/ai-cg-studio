@@ -39,6 +39,17 @@ if (-not (Test-Path "dist\index.html")) {
     }
 }
 
+# 3b. Compile services runtime if needed (产物不入库，fresh clone 首启自愈)
+if (-not (Test-Path "services\http-client.js")) {
+    Write-Host "  Compiling services runtime..." -ForegroundColor Yellow
+    npm run build:runtime
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "  [ERROR] services build failed" -ForegroundColor Red
+        Read-Host "  Press Enter to exit"
+        exit 1
+    }
+}
+
 # 4. Kill existing process on port 3000
 # NOTE: $pid is reserved in PowerShell - use $ownPid instead
 $existing = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue

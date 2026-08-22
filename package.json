@@ -9,6 +9,7 @@
   },
   "packageManager": "npm@11.16.0",
   "scripts": {
+    "prestart": "npm run build:runtime",
     "start": "node server.js",
     "dev": "vite",
     "build": "vite build && node scripts/maintenance/check-bundle-budget.js && node scripts/maintenance/precompress.js",

@@ -24,6 +24,10 @@ __pycache__/
 
 # 运行期文件（配置、PID、Token、日志、朋友生成结果）
 /runtime/
+
+# services 运行时编译产物（npm run build:runtime 从 .ts 生成，不入库）
+services/**/*.js
+services/**/*.d.ts
 workspace/
 
 # 旧版运行文件（启动时会自动迁移到 runtime/）

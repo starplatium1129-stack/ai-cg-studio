@@ -199,9 +199,12 @@ SD WebUI 会按自身能力排队。“停止生成”调用的是 WebUI 全局�
 
 ```powershell
 npm install
+npm run build:runtime
 $env:SD_HOST = 'http://127.0.0.1:7860'
 node server.js
 ```
+
+`build:runtime` 会把 `services/*.ts` 编译成网关运行所需的 `.js`（产物不入库，fresh clone 后必须先执行一次；`npm start` 与 `start.ps1`/`control.bat` 会自动补这一步）。
 
 默认情况下会尝试建立临时公网通道。如果只想测试本地网关：
 
