@@ -375,6 +375,7 @@
 import '@/assets/css/companion.css'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { scrollBehavior } from '@/utils/motionPreference'
 import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
@@ -521,7 +522,7 @@ const {
   resetEventDetector,
   inputText,
   persistDraft: text => storage.setDraft(activeChar.value, text),
-  scrollChatToBottom: () => chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: 'smooth' }),
+  scrollChatToBottom: () => chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: scrollBehavior() }),
   handleSend,
   busy,
   chatReady,

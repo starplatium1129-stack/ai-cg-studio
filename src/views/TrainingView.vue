@@ -617,6 +617,7 @@ import { useTrainingOnboarding } from '@/composables/useTrainingOnboarding'
 import { useTrainingParams } from '@/composables/useTrainingParams'
 import { useTrainingPolling } from '@/composables/useTrainingPolling'
 import { useTrainingTelemetry } from '@/composables/useTrainingTelemetry'
+import { scrollBehavior } from '@/utils/motionPreference'
 import {
   adultCount, adultPreviewUrl, categoryEntries, categoryLabel,
   characterName, datasetPreviewUrl, formatBytes, formatDate, formatLoss,
@@ -794,7 +795,7 @@ async function openLogs(id: TrainingJobId): Promise<void> {
   await store.loadLogs(id)
   await nextTick()
   logElement.value?.focus({ preventScroll: true })
-  logElement.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  logElement.value?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' })
 }
 
 function selectFromEvent(event: Event): void {

@@ -254,6 +254,9 @@
   /* 画面舞台 */
   .pb .stage-placeholder {
     position:relative; isolation:isolate; overflow:hidden;
+    /* 2026-08-22 动效审计 #6：接活原 workspace-enter-studio 的交接动画——
+       v-show 关→开会重启动画，回到画布即获得导演级软落位。 */
+    animation:directorViewIn .42s var(--ease-out) both;
     min-height:clamp(380px, 46vh, 560px);
     max-height:580px;
     display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
@@ -1414,6 +1417,10 @@
   .pb .tag-results small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted); font:var(--fs-mono-xs) var(--font-mono); }
    .pb .result-image-wrap {
      position:relative; overflow:hidden; border:1px solid color-mix(in srgb, var(--accent) 35%, var(--border-soft));
+     /* 2026-08-22 动效审计 #6：接活原 workspace-enter-result 的交接动画——
+       v-if 随每张新成片重挂载，整块面板获得导演级软落位；
+       图片自身的 aicsBloomReveal 保持，形成双层质感。 */
+     animation:directorViewIn .46s var(--ease-out) both;
      border-radius:var(--r-stage); background:var(--bg-deep);
      box-shadow:inset 0 1px 0 var(--glass-specular), 0 20px 50px color-mix(in srgb, black 35%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 15%, transparent);
    }
@@ -1494,8 +1501,6 @@
   .pb.character-shifting .stage-placeholder::after { animation:characterGlassSweep .72s var(--ease-out) both; }
   .pb.character-shifting .stage-muse { transform:translateY(-4px) scale(1.015); }
   .pb #pb-toast { background:var(--glass-fill-strong) !important; border-color:var(--glass-edge) !important; -webkit-backdrop-filter:blur(24px) saturate(160%); backdrop-filter:blur(24px) saturate(160%); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--glass-shadow) !important; }
-  .pb.workspace-enter-result #stepResult { animation:directorViewIn .46s var(--ease-out) both; }
-  .pb.workspace-enter-studio .stage-placeholder { animation:directorViewIn .42s var(--ease-out) both; }
   @keyframes directorViewIn { from { opacity:0; filter:blur(7px); transform:translateY(9px) scale(.992); } 55% { filter:blur(1px); } to { opacity:1; filter:none; transform:none; } }
   @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }
   @media (max-width:768px) {
@@ -1586,10 +1591,6 @@
      .pb .stage-placeholder.is-generating::after { animation:none !important; }
    }
 
-   @keyframes aicsShutterReveal {
-     0% { opacity:0; filter:brightness(1.18) blur(4px); transform:scale(.985); }
-     100% { opacity:1; filter:brightness(1) blur(0); transform:scale(1); }
-   }
   @media (prefers-reduced-motion: reduce) {
     .pb *, .pb *::before, .pb *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     .pb .monitor-rec .dot, .pb .review-star { animation: none; transition: none; }

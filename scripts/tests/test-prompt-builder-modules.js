@@ -312,7 +312,9 @@ if (!directorCss.includes('.pb.focus-mode .col-left')) fail('missing focus mode 
 if (!directorCss.includes('@property --character-accent') || !directorCss.includes('characterGlassSweep')) {
   fail('missing animated character theme treatment');
 }
-if (!directorCss.includes('workspace-enter-result') || !directorCss.includes('directorViewIn')) {
+// 2026-08-22 动效审计 #6：交接动画从死类名 workspace-enter-* 改挂真实挂载点
+// （成片 wrap 的 v-if 重挂载 / 画布 placeholder 的 v-show 重启）。
+if (!directorCss.includes('.pb .result-image-wrap') || !directorCss.includes('directorViewIn')) {
   fail('missing director view transition');
 }
 // 生成等待反馈

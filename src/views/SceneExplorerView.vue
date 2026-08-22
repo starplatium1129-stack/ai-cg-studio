@@ -209,6 +209,7 @@ import { kvInit, kvGet } from '@/composables/useKVStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
 import { quickCreateUrl } from '@/utils/quickCreate'
+import { scrollBehavior } from '@/utils/motionPreference'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 
@@ -591,7 +592,7 @@ async function init() {
   if (focusId) {
     await nextTick()
     const el = document.querySelector(`[data-scene-id="${focusId}"]`) as HTMLElement
-    if (el) { el.scrollIntoView({behavior:'smooth',block:'center'}); flashId.value=focusId; setTimeout(()=>flashId.value='',2000) }
+    if (el) { el.scrollIntoView({behavior: scrollBehavior(),block:'center'}); flashId.value=focusId; setTimeout(()=>flashId.value='',2000) }
   }
 }
 

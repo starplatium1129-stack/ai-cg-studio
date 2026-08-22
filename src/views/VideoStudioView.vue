@@ -928,8 +928,9 @@ onBeforeUnmount(() => {
 .video-player { display:block; width:100%; max-height:min(72vh,760px); border-radius:var(--r-lg); background:var(--bg-deep); }
 .video-review-checklist { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:var(--s-2); margin-top:var(--s-3); }
 .video-review-checklist span { padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-muted); font-size:var(--fs-label-xs); text-align:center; }
-@keyframes video-progress { from{transform:translateX(-110%)} to{transform:translateX(300%)} }
-@media (prefers-reduced-motion:reduce) { .video-progress i { animation:none; width:100%; } }
+/* 2026-08-22 动效审计 #2：原 reduce 段强制 width:100% 会让 reduce 用户看到
+   永远 100% 的假进度（且针对的 video-progress keyframes 从未被引用）——
+   全局 reduce 短路段已覆盖过渡，此处整段删除。 */
 @media (max-width:1050px) {
   .video-mode-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .video-workspace { grid-template-columns:1fr; }

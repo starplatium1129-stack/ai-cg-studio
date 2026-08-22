@@ -443,7 +443,9 @@ async function handleStart() {
   background: color-mix(in srgb, black 75%, transparent);
   backdrop-filter: blur(8px);
   padding: var(--s-4);
-  animation: fadeIn 0.2s ease-out;
+  /* 2026-08-22 动效审计 #3：原写 fadeIn（全局只有带连字符的 fade-in），
+     无效动画名静默失效，遮罩淡入从未生效过。 */
+  animation: fade-in .2s var(--ease-out);
 }
 
 .modal-card.inpaint-modal {

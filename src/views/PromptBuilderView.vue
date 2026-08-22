@@ -811,6 +811,7 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
+import { scrollBehavior } from '@/utils/motionPreference'
 import {
   quickCreateSummary,
   readQuickCreate,
@@ -1544,7 +1545,7 @@ async function runRecovery(id: SDRecoveryId) {
   }
   if (id === 'open_settings') {
     const el = document.querySelector('details.generation-settings') as HTMLDetailsElement | null
-    if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'center' }) }
+    if (el) { el.open = true; el.scrollIntoView({ behavior: scrollBehavior(), block: 'center' }) }
   }
 }
 

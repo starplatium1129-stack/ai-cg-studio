@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { prefersReducedMotion } from '@/utils/motionPreference'
 
 /**
  * Live2D（PixiJS）编译着色器要用 new Function，需要 CSP 的 'unsafe-eval'。
@@ -60,7 +61,7 @@ const router = createRouter({
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    if (to.hash) return { el: to.hash, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }
     return { top: 0 }
   }
 })
