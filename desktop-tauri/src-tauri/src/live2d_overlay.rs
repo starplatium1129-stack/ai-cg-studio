@@ -211,6 +211,11 @@ fn mouth_param_for(character: &str) -> &'static str {
     }
 }
 
+/// 夏目叠层/换装参数回落时长：互动/登场动作结束后，把动作曲线留下的
+/// 换装显隐态向隐藏态 smoothstep 缓动（约 0.5s）。替代单帧硬写——硬写
+/// 让换装部件一帧内消失/回穿，桌宠实机呈现为"闪一下"（2026-08-23）。
+const OVERLAY_SETTLE_SECONDS: f32 = 0.5;
+
 /// 情绪最小执行集：脸红（ParamCheek）+ 眼睛微开合。参数级范围严格受限，
 /// 情绪参数表：与浏览器路径 src/utils/emotionRuntime.ts 的
 /// NENE_RUNTIME_CONFIG / NATSUME_RUNTIME_CONFIG emotionParams 对齐
@@ -755,11 +760,14 @@ impl RenderContext {
         // 点击互动（Tap 动作/复位）拉回隐藏态 → 恢复，回 Idle 又灰。非互动
         // 非登场期间每帧强制写回隐藏态（0/-1 分组，与 reset_overlay_params
         // 同表）——叠层只允许在互动/登场动作播放时显示。
+        // 2026-08-23 换装闪回修复：动作结束后的回落改为 smoothstep 缓动
+        // （step_overlay_settle），回落期间跳过硬性守卫；回落结束恢复守卫。
+        // 原单帧硬写会让换装部件一帧内消失/回穿（桌宠实机"闪一下"）。
         let interaction_playing = matches!(
             &self.active_motion,
             Some(m) if m.phase == MotionPhase::Interaction || m.phase == MotionPhase::Entrance
         );
-        if character == "natsume" && !interaction_playing {
+        if character == "natsume" && !interaction_playing && !model.step_overlay_settle(dt) {
             model.force_overlay_hidden();
         }
     }
@@ -1032,12 +1040,17 @@ impl RenderContext {
                 let _ = app.emit("aics:live2d:entrance-finished", ());
             }
         }
-        // 夏目互动/登场动作结束后复位叠层与换装参数：Tap* 驱动它们而 Idle
+        // 夏目互动/登场动作结束后回落叠层与换装参数：Tap* 驱动它们而 Idle
         // 不覆盖，不复位则叠层残留（2026-08-15 实机缺陷，见
-        // docs/live2d-natsume-overlay-research.md）。
-        if self.character.as_deref() == Some("natsume") {
+        // docs/live2d-natsume-overlay-research.md）。回落为 smoothstep 缓动
+        // 而非单帧硬写——硬写曾让换装部件一帧内消失回穿（2026-08-23 桌宠
+        // 实机"换装闪回"反馈）。回落期间 step() 跳过硬性隐藏守卫，结束后
+        // 恢复（防 Idle_6 拉灰）。Idle→Idle 轮换参数本就处于隐藏态，无需回落。
+        if matches!(phase, MotionPhase::Interaction | MotionPhase::Entrance)
+            && self.character.as_deref() == Some("natsume")
+        {
             if let Some(model) = self.model.as_mut() {
-                model.reset_overlay_params();
+                model.begin_overlay_settle(OVERLAY_SETTLE_SECONDS);
             }
         }
         self.start_idle_motion(app);

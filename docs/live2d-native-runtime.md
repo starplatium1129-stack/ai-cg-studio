@@ -235,6 +235,16 @@ ChatCharacterStage / useLive2D
 5. **physics3.json 输出清单核对**：Param36 非物理输出（物理输出仅 Qunzi/HairSide/Guodongyan/Param21-30 等）→ 纯动作残留。
 **修复**：Param36（隐藏态 0）补入前端 `NATSUME_RESET_PARAMS` 与 C++ `apply_overlay_hidden`。
 
+### 追加修复（2026-08-23）——换装互动结束时"闪一下"回切（overlay settle 平滑回落）
+
+**现象**：夏目触发含换装叠层的互动（Tap\*），动作结束服装变回原样时过渡不自然、像闪烁。
+**根因（真实 moc3 + TapSkirt_0 模型级实测）**：作者尾部收回曲线其实存在（TapSkirt_0 在 t=1.517-1.9 把 Param59/60 从 0 收回 -1），但 Cubism 5-r.5 对 Loop 动作的 V2 fade 机制（`CubismMotion::DoUpdateParameters`：`v = sourceValue + (curve - sourceValue) × fadeWeight` 逐帧反馈追赶，自然结束前 fadeWeight 归零）让收回只应用到半途——动作 `is_finished` 时 Param59 停在 ≈-0.34（半显示区间）。旧实现随后的复位是**单帧硬写隐藏态**（native `reset_overlay_params` / 前端定时器一次性写 + 每帧 `force_overlay_hidden` 守卫），换装部件一帧内消失、原服装一帧回穿 = 肉眼"闪一下"。另有个别动作曲线本身就停在显示态（Start_4 结束时 Param50=27.4、TapFoot_1 结束时 Param62/64 与隐藏态互换），同样被硬写闪回。
+**修复（双端同款语义）**：复位改为 **smoothstep 平滑回落**——
+- native：C++ 新增 `l2d_model_begin_overlay_settle`（捕获 36 参数现值）+ `l2d_model_step_overlay_settle`（0.5s 缓动，`OVERLAY_SETTLE_SECONDS`）；`advance_motion` 在 Interaction/Entrance 结束时 begin；`step()` 回落期间跳过硬性守卫、结束后恢复（Idle→Idle 轮换不回落）。
+- 浏览器：`useLive2D` 以"所有权交接"检测（`overlayByMotion` 边沿）在 `applyParameters` 内启动同款回落（`OVERLAY_SETTLE_MS=450`，补偿定时器 +600ms 的晚起步）；互动定时器/登场超时的一次性硬写移除（会破坏回落对现值的捕获）；句柄新增可选 `getParameterValueById`（wl-live2d coreModel 支持），缺接口时退回硬写。
+**验证**：`native-live2d/tests/overlay_settle.rs` 模型级闭环（真 moc3 + 真 TapSkirt_0）：动作结束残值 ≈-0.34 → 30 帧单调平滑落到 -1（无单帧跳变、精确落点、幂等零位移）；typecheck/前端 68 测试/cargo 22 测试/打包预算全过。注意：Cubism 框架全局状态非线程安全，测试中模型创建需互斥串行；`run-live2d-selftest.js` 在桌面应用实例运行时会被 single-instance 静默劝退（exit 0 无输出），需先关闭桌宠。
+**教训**：**"复位值正确"≠"复位过渡正确"**——参数级复位清单调对了仍可能在视觉上闪（单帧硬切）；作者曲线 + SDK fade 的半途残值要靠运行时把"最后一公里"平滑走完，而不是假设动作结束即隐藏态。
+
 ## 新模型接入检查清单（2026-08-16 经验沉淀）
 
 > 目标：新模型一次接入成功，避免逐轮踩坑。全部步骤离线/浏览器可做，不需要反复打包。

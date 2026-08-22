@@ -60,6 +60,8 @@ export interface Live2DModelHandle {
   focus(x: number, y: number): void
   /** 逐帧写参数（仅在 capability.parameterOverride 时调用） */
   setParameterValueById(id: string, value: number, weight: number): void
+  /** 读取参数当前值（可选能力；夏目叠层回落需捕获动作结束时的现值） */
+  getParameterValueById?(id: string): number | undefined
   /** 订阅每帧参数更新前回调（浏览器：internalModel.beforeModelUpdate） */
   onBeforeModelUpdate(callback: () => void): void
   /** 一次应用 fit 结果：scale 与模型位置 */

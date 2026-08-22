@@ -174,6 +174,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let nativeLayoutAttempts = 0
   let nativeEmotionFrame = 0
   let nativeEmotionLastFrame = 0
+  // 夏目叠层/换装回落状态（2026-08-23 换装闪回修复）：动作曲线驱动的
+  // 换装显隐态在动作结束后向隐藏态 smoothstep 缓动，替代单帧硬写造成的
+  // "服装闪回"。overlaySettle 为 null 表示未在回落；overlayWasByMotion
+  // 记录上一帧叠层参数是否由动作曲线持有，用于所有权交接检测。
+  let overlaySettle: { start: number; entries: Array<{ id: string; from: number; to: number }> } | null = null
+  let overlayWasByMotion = false
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -432,10 +438,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       void started.then((ok: boolean) => {
         if (ok) {
           entranceUntil = performance.now() + ENTRANCE_MAX_MS
-          // 登场动作结束（含最长 fadeOut）后复位叠层参数：Start* 变体也会
-          // 驱动叠层显隐，结束后 idle 不带回（2026-08-16 实测 Start_1 等
-          // 把 Param38 等从 0 拉高，结束后残留 → 半透明重影）。
-          window.setTimeout(() => resetNatsumeOverlayParams(), ENTRANCE_MAX_MS + 400)
+          // 登场结束后（entranceUntil 过期）叠层参数由 applyParameters 的
+          // 所有权交接自动启动 smoothstep 回落：Start* 变体也会驱动叠层
+          // 显隐（2026-08-16 实测 Start_1 等把 Param38 等从 0 拉高），
+          // idle 不带回，残留会成半透明重影。
           return
         }
         window.setTimeout(tryStart, 250)
@@ -529,15 +535,35 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         if (stageEl) stageEl.dataset.blink = blinkValue.toFixed(3)
       }
       if (stageEl) stageEl.dataset.entrance = inEntrance ? '1' : '0'
-      // 叠层参数守卫（2026-08-16 静止发灰修复）：Idle 动作 Idle_6 会把
-      // Param36/37 拉出隐藏态（到 5+），静止时叠层显示 → 眼睛/全身发灰；
-      // 互动（Tap）或登场（Start）播放期间让动作曲线驱动叠层（设计行为），
-      // 其余时间每帧写回隐藏态（0/-1 分组，与 resetNatsumeOverlayParams
-      // 同表）——与 native 端 force_overlay_hidden 行为一致。
+      // 叠层参数守卫 + 平滑回落（2026-08-23 换装闪回修复）：Idle 动作
+      // Idle_6 会把 Param36/37 拉出隐藏态（到 5+），静止时叠层显示 →
+      // 眼睛/全身发灰；互动（Tap）或登场（Start）播放期间让动作曲线驱动
+      // 叠层（设计行为）。动作曲线交还所有权的瞬间（entranceUntil 过期/
+      // 互动计时清空 activeInteraction）启动 smoothstep 回落（与原生端
+      // OVERLAY_SETTLE_SECONDS 同款），替代原先的单帧硬写——后者让换装
+      // 部件一帧内消失/回穿，视觉上是"闪一下"；回落结束后恢复每帧硬性
+      // 写回隐藏态（0/-1 分组）——与 native 端 step_overlay_settle /
+      // force_overlay_hidden 行为一致。
       const interactionPlaying = activeInteraction !== ''
-      if (!inEntrance && !interactionPlaying && character.value === 'natsume') {
-        for (const { id, value } of NATSUME_RESET_PARAMS) {
-          try { model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
+      const overlayByMotion = inEntrance || interactionPlaying
+      if (overlayByMotion) {
+        overlaySettle = null
+      } else if (overlayWasByMotion && character.value === 'natsume') {
+        beginNatsumeOverlaySettle()
+      }
+      overlayWasByMotion = overlayByMotion
+      if (!overlayByMotion && character.value === 'natsume') {
+        if (overlaySettle) {
+          const t = Math.min(1, (now - overlaySettle.start) / OVERLAY_SETTLE_MS)
+          const eased = t * t * (3 - 2 * t)
+          for (const { id, from, to } of overlaySettle.entries) {
+            try { model.setParameterValueById(id, from + (to - from) * eased, 1) } catch { /* 参数缺失忽略 */ }
+          }
+          if (t >= 1) overlaySettle = null
+        } else {
+          for (const { id, value } of NATSUME_RESET_PARAMS) {
+            try { model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
+          }
         }
       }
       if (!emotionRuntime) return
@@ -765,10 +791,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function markInteractionStarted(interaction: Live2DInteraction, customText?: string, soundUrl?: string) {
     activeInteraction = interaction.group
     clearTimeout(interactionTimer)
+    // 互动计时结束只交还叠层参数所有权；复位改由 applyParameters 的所有权
+    // 交接检测启动 smoothstep 回落（2026-08-23）。此处若先硬写会破坏回落
+    // 对动作现值的捕获，退化回单帧硬切的"闪一下"。
     interactionTimer = window.setTimeout(() => {
       if (activeInteraction === interaction.group) {
         activeInteraction = ''
-        resetNatsumeOverlayParams()
       }
     }, interaction.duration + 600)
     interactionHint.value = customText || interaction.hint
@@ -780,17 +808,45 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   /**
-   * 夏目互动/登场动作结束后复位叠层/换装参数（见 NATSUME_RESET_PARAMS）。
-   * 浏览器端参数由前端写（parameterOverride）；原生端由 Rust 在 motion
-   * 结束后经 C++ 复位，前端不重复写。幂等：参数已是隐藏态时重复写无副作用。
-   * 复位值按隐藏态分组（0 / -1，2026-08-16 实证），统一写 0 会让 -1 组的
-   * 参数落在"显示区间"，叠层半透明残留成重影。
+   * 夏目叠层/换装参数的一次性硬复位（见 NATSUME_RESET_PARAMS）。正常路径
+   * 已改用 beginNatsumeOverlaySettle 的 smoothstep 回落（2026-08-23 换装
+   * 闪回修复）；本函数保留为运行库缺读参数接口时的降级，以及幂等兜底
+   * （参数已是隐藏态时重复写无副作用）。复位值按隐藏态分组（0 / -1，
+   * 2026-08-16 实证），统一写 0 会让 -1 组的参数落在"显示区间"，叠层
+   * 半透明残留成重影。
    */
   function resetNatsumeOverlayParams() {
     if (character.value !== 'natsume' || !model || session?.capability.parameterOverride === false) return
     for (const { id, value } of NATSUME_RESET_PARAMS) {
       try { model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
     }
+  }
+
+  // 叠层/换装回落时长：原生端为 0.5s（OVERLAY_SETTLE_SECONDS）；浏览器端
+  // 回落起点比原生晚（互动定时器在动作时长+600ms 才交还所有权），取稍短
+  // 时长补偿总时长。
+  const OVERLAY_SETTLE_MS = 450
+
+  /**
+   * 开始一次夏目叠层/换装参数回落：捕获动作曲线留下的现值（换装显隐态），
+   * 此后 applyParameters 每帧向隐藏态 smoothstep 缓动。运行库没有读参数
+   * 接口时退回一次性硬写（旧行为）。原生端不适用（参数由 Rust 侧回落）。
+   */
+  function beginNatsumeOverlaySettle() {
+    if (character.value !== 'natsume' || !model || session?.capability.parameterOverride === false) return
+    const read = model.getParameterValueById
+    if (typeof read !== 'function') {
+      resetNatsumeOverlayParams()
+      return
+    }
+    const entries: Array<{ id: string; from: number; to: number }> = []
+    for (const { id, value } of NATSUME_RESET_PARAMS) {
+      const current = read.call(model, id)
+      if (typeof current === 'number' && Number.isFinite(current)) {
+        entries.push({ id, from: current, to: value })
+      }
+    }
+    overlaySettle = entries.length ? { start: performance.now(), entries } : null
   }
 
   function interactionFailed(interaction: Live2DInteraction) {
@@ -1124,6 +1180,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     pointerGazeFrame = 0
     pointerGazeLastFrame = 0
     entranceUntil = 0
+    overlaySettle = null
+    overlayWasByMotion = false
     // Stop Pixi before clearing model state. Otherwise an authored motion can
     // tick once during character switching and read arrays already released by
     // wl-live2d's destroy path.

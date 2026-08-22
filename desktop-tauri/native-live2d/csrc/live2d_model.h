@@ -80,6 +80,17 @@ float l2d_model_get_part_opacity(l2d_model* m, const char* id);
 void l2d_model_reset_overlay_params(l2d_model* m);
 /* Force overlay params to hidden state (per-frame guard while idle). */
 void l2d_model_force_overlay_hidden(l2d_model* m);
+/* Begin a smooth settle ramp toward the hidden state: captures the current
+ * value of every overlay param (typically an authored motion's last values),
+ * then l2d_model_step_overlay_settle eases them in over duration_seconds.
+ * Replaces the one-frame hard write that made costume parts pop back
+ * ("flicker") after interaction motions. duration<=0 falls back to the
+ * instant reset. */
+void l2d_model_begin_overlay_settle(l2d_model* m, float duration_seconds);
+/* Advance the settle ramp after model update; returns 1 while ramping (the
+ * caller skips the hard per-frame hidden guard that frame), 0 when finished
+ * or inactive. */
+int l2d_model_step_overlay_settle(l2d_model* m, float delta_time_seconds);
 /* TEMP DIAG: reset every parameter to its moc3 default value. */
 void l2d_model_reset_all_parameters(l2d_model* m);
 

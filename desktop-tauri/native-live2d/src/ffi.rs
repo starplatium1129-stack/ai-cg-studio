@@ -89,6 +89,11 @@ extern "C" {
     pub fn l2d_model_get_part_opacity(m: *mut l2d_model, id: *const c_char) -> c_float;
     pub fn l2d_model_reset_overlay_params(m: *mut l2d_model);
     pub fn l2d_model_force_overlay_hidden(m: *mut l2d_model);
+    pub fn l2d_model_begin_overlay_settle(m: *mut l2d_model, duration_seconds: c_float);
+    pub fn l2d_model_step_overlay_settle(
+        m: *mut l2d_model,
+        delta_time_seconds: c_float,
+    ) -> c_int;
     pub fn l2d_model_reset_all_parameters(m: *mut l2d_model);
     pub fn l2d_model_set_eye_blink_enabled(m: *mut l2d_model, enabled: c_int);
     pub fn l2d_model_get_eye_blink_enabled(m: *mut l2d_model) -> c_int;

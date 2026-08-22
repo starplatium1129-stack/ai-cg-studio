@@ -15,6 +15,7 @@ import {
 
 interface Live2DCoreModel {
   setParameterValueById(id: string, value: number, weight: number): void
+  getParameterValueById?(id: string): number
 }
 
 interface WlLive2DModel {
@@ -91,6 +92,10 @@ function wrapModel(model: WlLive2DModel): Live2DModelHandle {
     },
     setParameterValueById(id, value, weight) {
       model.internalModel?.coreModel?.setParameterValueById(id, value, weight)
+    },
+    getParameterValueById(id) {
+      const read = model.internalModel?.coreModel?.getParameterValueById
+      return typeof read === 'function' ? read.call(model.internalModel?.coreModel, id) : undefined
     },
     onBeforeModelUpdate(callback) {
       model.internalModel?.on('beforeModelUpdate', callback)

@@ -220,6 +220,21 @@ impl Model {
         unsafe { ffi::l2d_model_force_overlay_hidden(self.ptr) }
     }
 
+    /// 互动/登场动作结束后开始叠层/换装参数的平滑回落：捕获各参数当前
+    /// 值（动作曲线留下的换装显隐态），此后由 step_overlay_settle 向隐藏
+    /// 态 smoothstep 缓动。替代一次性硬写——后者让换装部件在单帧内消失
+    /// 回穿，视觉上是"闪一下"（2026-08-23 桌宠实机反馈）。duration<=0
+    /// 时 C++ 侧退化为立即复位。
+    pub fn begin_overlay_settle(&mut self, duration_seconds: f32) {
+        unsafe { ffi::l2d_model_begin_overlay_settle(self.ptr, duration_seconds) }
+    }
+
+    /// 推进回落动画（须在 model.update 之后调用）。返回 true 表示本帧仍在
+    /// 回落中，调用方应跳过硬性隐藏守卫；false 表示已结束或未激活。
+    pub fn step_overlay_settle(&mut self, delta_time_seconds: f32) -> bool {
+        unsafe { ffi::l2d_model_step_overlay_settle(self.ptr, delta_time_seconds) != 0 }
+    }
+
     /// TEMP DIAG: 把所有参数重置为 moc3 默认值。
     pub fn reset_all_parameters(&mut self) {
         unsafe { ffi::l2d_model_reset_all_parameters(self.ptr) }
