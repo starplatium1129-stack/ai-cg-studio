@@ -4,7 +4,6 @@ import {
   findNatsumeOutfit,
 } from '@/config/characters'
 import type { EmotionRuntime } from '@/utils/emotionRuntime'
-import { gazeFromClientPoint, gazeSettled, stepGaze } from '@/utils/live2dGaze'
 import { selectLive2DBackend } from '@/live2d/createBackend'
 import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
 import type {
@@ -15,6 +14,8 @@ import type {
 import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { useCompanionAffection } from '@/composables/useCompanionAffection'
+import { createLive2DCtx } from '@/composables/live2d/context'
+import { createPointerGazeController } from '@/composables/live2d/pointerGaze'
 import {
   BLINK_PARAMS,
   ENTRANCE_GROUP,
@@ -30,7 +31,6 @@ import {
   type Live2DInteraction,
 } from '@/composables/live2d/constants'
 import { isRecord, readLive2DCatalog, type Live2DModelInfo } from '@/composables/live2d/catalog'
-import { createLive2DCtx } from '@/composables/live2d/context'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -116,6 +116,7 @@ function windowBoundsFromScreen(): { x: number; y: number } {
 
 export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const ctx = createLive2DCtx()
+  const pointerGaze = createPointerGazeController(ctx)
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (ctx.hostEl) { ctx.hostEl.dataset.state = state; ctx.hostEl.dataset.error = detail; ctx.hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -133,7 +134,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (!ctx.hostEl.id) ctx.hostEl.id = 'live2dHost'
     ctx.hostSelector = '#' + ctx.hostEl.id
     ctx.character.value = char || ctx.character.value
-    bindPointerGaze()
+    pointerGaze.bind()
     ctx.outfit.value = char === 'natsume'
       ? findNatsumeOutfit(options.outfit || ctx.outfit.value).id
       : findLive2DOutfit(options.outfit || ctx.outfit.value).id
@@ -560,79 +561,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     cvs.addEventListener('webglcontextrestored', () => retry())
   }
 
-  function bindPointerGaze() {
-    if (!ctx.stageEl || ctx.pointerGazeHandler) return
-    ctx.pointerGazeHandler = (event) => {
-      const rect = ctx.stageEl?.getBoundingClientRect()
-      if (!rect?.width || !rect.height) return
-      const target = gazeFromClientPoint(event.clientX, event.clientY, rect)
-      ctx.gaze.x = target.x
-      ctx.gaze.y = target.y
-      ctx.gaze.active = true
-      const focus = ctx.model?.focus
-      ctx.gaze.kind = focus ? 'native' : 'fallback'
-      schedulePointerGaze()
-    }
-    ctx.pointerGazeLeaveHandler = releasePointerFocus
-    ctx.stageEl.addEventListener('mousemove', ctx.pointerGazeHandler)
-    ctx.stageEl.addEventListener('mouseleave', ctx.pointerGazeLeaveHandler)
-  }
-
-  function schedulePointerGaze() {
-    if (ctx.frames.gaze || !ctx.ready.value || !ctx.model) return
-    ctx.gaze.lastFrame = performance.now()
-    ctx.frames.gaze = window.requestAnimationFrame(runPointerGazeFrame)
-  }
-
-  function runPointerGazeFrame(now: number) {
-    ctx.frames.gaze = 0
-    if (!ctx.ready.value || !ctx.model || ctx.destroyed.value) return
-    const dt = Math.max(1 / 240, Math.min(0.05, (now - ctx.gaze.lastFrame) / 1000))
-    ctx.gaze.lastFrame = now
-    const next = stepGaze(
-      { x: ctx.gaze.currentX, y: ctx.gaze.currentY },
-      { x: ctx.gaze.x, y: ctx.gaze.y },
-      dt,
-      ctx.gaze.active ? 12 : 6,
-    )
-    ctx.gaze.currentX = next.x
-    ctx.gaze.currentY = next.y
-    const focus = ctx.model.focus
-    if (focus) {
-      const screen = ctx.session?.getScreenSize() ?? { width: 420, height: 610 }
-      focus.call(
-        ctx.model,
-        (ctx.gaze.currentX + 1) * 0.5 * screen.width,
-        (1 - ctx.gaze.currentY) * 0.5 * screen.height,
-      )
-    }
-    ctx.session?.sendGaze?.(ctx.gaze.currentX, ctx.gaze.currentY)
-    if (ctx.stageEl) {
-      ctx.stageEl.dataset.pointerFocus = ctx.gaze.active ? ctx.gaze.kind : 'idle'
-      ctx.stageEl.dataset.pointerGazeX = ctx.gaze.currentX.toFixed(3)
-      ctx.stageEl.dataset.pointerGazeY = ctx.gaze.currentY.toFixed(3)
-    }
-    const settled = gazeSettled(
-      { x: ctx.gaze.currentX, y: ctx.gaze.currentY },
-      { x: ctx.gaze.x, y: ctx.gaze.y },
-    )
-    if (settled) {
-      ctx.gaze.currentX = ctx.gaze.x
-      ctx.gaze.currentY = ctx.gaze.y
-      return
-    }
-    ctx.frames.gaze = window.requestAnimationFrame(runPointerGazeFrame)
-  }
-
-  function releasePointerFocus() {
-    ctx.gaze.active = false
-    ctx.gaze.x = 0
-    ctx.gaze.y = 0
-    ctx.gaze.kind = 'idle'
-    if (ctx.stageEl) ctx.stageEl.dataset.pointerFocus = 'idle'
-    schedulePointerGaze()
-  }
-
   function worldPoint(event: MouseEvent) {
     const canvas = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
     const rect = canvas?.getBoundingClientRect() ?? ctx.stageEl?.getBoundingClientRect()
@@ -642,26 +570,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       x: Math.max(0, Math.min(screen.width, (event.clientX - rect.left) / rect.width * screen.width)),
       y: Math.max(0, Math.min(screen.height, (event.clientY - rect.top) / rect.height * screen.height)),
     }
-  }
-
-  /**
-   * 全局目光凝视（桌面悬浮窗外）：主进程轮询屏幕鼠标坐标并经 IPC 送达。
-   * 与窗口内 DOM 逻辑共用同一套归一化与 focus 坐标变换；窗口内更新由
-   * DOM 事件负责（更平滑），这里只处理鼠标在窗口外的时刻。
-   */
-  function setGlobalPointer(screenX: number, screenY: number, windowBounds: { x: number; y: number; width: number; height: number }): void {
-    if (!ctx.ready.value || !ctx.model) return
-    const rect = ctx.stageEl?.getBoundingClientRect()
-    if (!rect?.width || !rect.height) return
-    // 无边框窗口的 bounds 即内容区在屏幕上的位置：clientX = 屏幕坐标 − bounds
-    const clientX = screenX - windowBounds.x
-    const clientY = screenY - windowBounds.y
-    const target = gazeFromClientPoint(clientX, clientY, rect, 0.82)
-    ctx.gaze.x = target.x
-    ctx.gaze.y = target.y
-    ctx.gaze.active = true
-    ctx.gaze.kind = 'global'
-    schedulePointerGaze()
   }
 
   function interactionFromStagePosition(event: MouseEvent): Live2DInteraction | null {
@@ -1166,6 +1074,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     backendKind: ctx.backendKind, backendFallback: ctx.backendFallback,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
     attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
-    setGlobalPointer, releasePointerFocus, setDesktopWindowBounds, syncNativeEmotion: sendNativeEmotionIntent,
+    setGlobalPointer: pointerGaze.setGlobalPointer, releasePointerFocus: pointerGaze.release,
+    setDesktopWindowBounds, syncNativeEmotion: sendNativeEmotionIntent,
   }
 }
