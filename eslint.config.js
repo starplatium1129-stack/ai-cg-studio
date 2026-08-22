@@ -2,6 +2,93 @@ import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 
+// ── 运行时全局白名单（2026-08-22 环境分离）────────────────────────────────
+// 设计原则：共享运行时（Node 22+ 与现代浏览器都内置的 Web API）放基础层；
+// 仅单侧存在的 API 进各自作用域块。这样后端误用 DOM、前端误用 process
+// 都会被纯 JS 道的 no-undef 静态捕获，而不是等运行时报 ReferenceError。
+
+// 两边都有的：控制台 / 定时器 / 取消 / URL·Blob·fetch / 编码与类型数组 / 加密 / 性能
+const SHARED_RUNTIME_GLOBALS = {
+  console: 'readonly',
+  setTimeout: 'readonly',
+  setInterval: 'readonly',
+  clearTimeout: 'readonly',
+  clearInterval: 'readonly',
+  AbortController: 'readonly',
+  AbortSignal: 'readonly',
+  URL: 'readonly',
+  URLSearchParams: 'readonly',
+  Blob: 'readonly',
+  fetch: 'readonly',
+  crypto: 'readonly',
+  performance: 'readonly',
+  structuredClone: 'readonly',
+  TextDecoder: 'readonly',
+  TextEncoder: 'readonly',
+  DataView: 'readonly',
+  Uint8Array: 'readonly',
+  Uint8ClampedArray: 'readonly',
+  ArrayBuffer: 'readonly',
+  Intl: 'readonly',
+  globalThis: 'readonly',
+  Event: 'readonly',
+  EventTarget: 'readonly',
+  Response: 'readonly',
+  Request: 'readonly',
+  Headers: 'readonly',
+  DOMException: 'readonly',
+}
+
+// 仅浏览器：DOM / 存储 / 媒体 / 输入交互
+const BROWSER_ONLY_GLOBALS = {
+  window: 'readonly',
+  document: 'readonly',
+  location: 'readonly',
+  history: 'readonly',
+  localStorage: 'readonly',
+  sessionStorage: 'readonly',
+  navigator: 'readonly',
+  FileReader: 'readonly',
+  Image: 'readonly',
+  HTMLImageElement: 'readonly',
+  HTMLInputElement: 'readonly',
+  HTMLElement: 'readonly',
+  HTMLDialogElement: 'readonly',
+  confirm: 'readonly',
+  prompt: 'readonly',
+  alert: 'readonly',
+  requestAnimationFrame: 'readonly',
+  cancelAnimationFrame: 'readonly',
+  SpeechSynthesis: 'readonly',
+  SpeechSynthesisUtterance: 'readonly',
+  speechSynthesis: 'readonly',
+  indexedDB: 'readonly',
+  IDBDatabase: 'readonly',
+  IDBTransaction: 'readonly',
+  IDBRequest: 'readonly',
+  createImageBitmap: 'readonly',
+  getComputedStyle: 'readonly',
+  CustomEvent: 'readonly',
+  PointerEvent: 'readonly',
+  KeyboardEvent: 'readonly',
+  ResizeObserver: 'readonly',
+  IntersectionObserver: 'readonly',
+  MutationObserver: 'readonly',
+}
+
+// 仅 Node：进程 / 模块系统 / 二进制
+const NODE_ONLY_GLOBALS = {
+  process: 'readonly',
+  require: 'readonly',
+  module: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  Buffer: 'readonly',
+  global: 'readonly',
+  setImmediate: 'readonly',
+  clearImmediate: 'readonly',
+}
+
 export default tseslint.config(
   {
     ignores: [
@@ -21,55 +108,9 @@ export default tseslint.config(
         extraFileExtensions: ['.vue'],
         sourceType: 'module',
       },
-      globals: {
-        window: 'readonly',
-        document: 'readonly',
-        localStorage: 'readonly',
-        navigator: 'readonly',
-        fetch: 'readonly',
-        URL: 'readonly',
-        URLSearchParams: 'readonly',
-        Blob: 'readonly',
-        FileReader: 'readonly',
-        Image: 'readonly',
-        HTMLImageElement: 'readonly',
-        HTMLInputElement: 'readonly',
-        HTMLElement: 'readonly',
-        Event: 'readonly',
-        console: 'readonly',
-        process: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        __dirname: 'readonly',
-        Buffer: 'readonly',
-        setTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        clearTimeout: 'readonly',
-        AbortController: 'readonly',
-        AbortSignal: 'readonly',
-        confirm: 'readonly',
-        prompt: 'readonly',
-        alert: 'readonly',
-        structuredClone: 'readonly',
-        TextDecoder: 'readonly',
-        DataView: 'readonly',
-        Uint8Array: 'readonly',
-        ArrayBuffer: 'readonly',
-        Intl: 'readonly',
-        crypto: 'readonly',
-        performance: 'readonly',
-        requestAnimationFrame: 'readonly',
-        globalThis: 'readonly',
-        indexedDB: 'readonly',
-        IDBDatabase: 'readonly',
-        IDBTransaction: 'readonly',
-        IDBRequest: 'readonly',
-        createImageBitmap: 'readonly',
-        SpeechSynthesis: 'readonly',
-        SpeechSynthesisUtterance: 'readonly',
-        HTMLDialogElement: 'readonly',
-      },
+      // 基础层只放共享运行时；浏览器/Node 专属 API 走下方作用域块，
+      // 用错环境时由纯 JS 道的 no-undef 兜底捕获。
+      globals: { ...SHARED_RUNTIME_GLOBALS },
     },
     rules: {
       // 个人项目门禁：未使用变量、显式 any 回退、console 残留、v-html XSS
@@ -83,6 +124,9 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'vue/no-v-html': 'warn',
+      // TS 文件的未定义标识符交给 vue-tsc/tsc 把关，这里关闭避免与类型系统打架；
+      // 纯 JS 道（见下方 blocks）单独开启 no-undef。
+      'no-undef': 'off',
       // 模板纯风格规则关闭：项目有自己的一致性，不按 eslint 默认模板风格排版
       'vue/multi-word-component-names': 'off',
       'vue/attributes-order': 'off',
@@ -109,7 +153,6 @@ export default tseslint.config(
       'vue/no-unused-refs': 'off',
       'vue/valid-template-root': 'off',
       'vue/no-template-shadow': 'off',
-      'no-undef': 'off',
       'no-unused-vars': 'off',
       'no-empty': 'off',
       'no-useless-escape': 'off',
@@ -118,7 +161,6 @@ export default tseslint.config(
       'no-prototype-builtins': 'off',
       'no-case-declarations': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
@@ -132,6 +174,38 @@ export default tseslint.config(
       'no-unassigned-vars': 'off',
       'prefer-const': 'off',
       'preserve-caught-error': 'off',
+    },
+  },
+  {
+    // 浏览器域：前端源码与组件
+    files: ['src/**/*'],
+    languageOptions: {
+      globals: { ...SHARED_RUNTIME_GLOBALS, ...BROWSER_ONLY_GLOBALS },
+    },
+  },
+  {
+    // Node 域：网关、路由、服务层与维护脚本
+    files: ['server.js', 'routes/**', 'services/**', 'scripts/**'],
+    languageOptions: {
+      globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS },
+    },
+  },
+  {
+    // 纯 JS 道开启未定义标识符检查（TS/Vue 由类型系统把关）
+    files: ['server.js', 'routes/**/*.js', 'services/**/*.js', 'scripts/**/*.js'],
+    languageOptions: {
+      globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS, ...BROWSER_ONLY_GLOBALS },
+    },
+    rules: {
+      'no-undef': 'error',
+    },
+  },
+  {
+    // CDP 调试脚本在 page.evaluate 回调里编写浏览器侧代码：
+    // 对这些文件补回浏览器全局，避免 no-undef 误报。
+    files: ['scripts/maintenance/cdp-*.js'],
+    languageOptions: {
+      globals: { ...SHARED_RUNTIME_GLOBALS, ...NODE_ONLY_GLOBALS, ...BROWSER_ONLY_GLOBALS },
     },
   },
   {
