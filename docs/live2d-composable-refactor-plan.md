@@ -141,9 +141,9 @@ export interface Live2DCtx {
 
 ## 八、进度追踪
 
-- [ ] Step 0 测试地基
-- [ ] Step 1 constants/catalog
-- [ ] Step 2 ctx 对象化
+- [x] Step 0 测试地基（2026-08-23，`197e67a`：useLive2D.spec.ts 14 条规格全绿）
+- [x] Step 1 constants/catalog（2026-08-23，`6987242`：纯数据/纯函数原样搬出，注释零删改）
+- [ ] Step 2 ctx 对象化 —— **2026-08-23 被并行工作阻塞**：`context.ts`（Live2DCtx 容器 + createLive2DCtx）已就位（untracked），但 `useLive2D.ts` 工作区存在另一会话进行中的"换装闪回修复"（overlaySettle 平滑回落 + browserBackend `getParameterValueById` 接口 + 桌面原生端 step_overlay_settle 对齐，未提交）。**该改动提交后**方可重启动刀，且重写时必须吸收其新增闭包变量（overlaySettle / overlayWasByMotion / OVERLAY_SETTLE_MS / beginNatsumeOverlaySettle）进 ctx 或保留为模块内局部——以彼时最新代码为准。
 - [ ] Step 3 pointerGaze
 - [ ] Step 4 interactions
 - [ ] Step 5 emotionClock + layoutFit

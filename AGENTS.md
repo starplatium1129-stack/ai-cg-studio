@@ -72,9 +72,9 @@
 - **研究报告（唯一执行依据）**：`docs/live2d-composable-refactor-plan.md`
 - 核心事实：1270 行单工厂 / 52 个嵌套子函数 / ~35 个共享闭包变量；唯一消费方 `ChatCharacterStage.vue`；组合式内部单测覆盖为零；公开 API 必须逐字冻结。
 - 待办清单（按序执行，每步独立提交并通过门禁，严禁跳步）：
-  - [ ] Step 0：测试地基——分区带命中/夏目外框排序/readLive2DCatalog 解析/MOUTH·BLINK 参数选择 vitest 规格
-  - [ ] Step 1：抽离 `live2d/constants.ts` + `live2d/catalog.ts`（纯数据/纯函数）
-  - [ ] Step 2：闭包状态 ctx 对象化（~35 变量 → Live2DCtx 显式字段，机械重命名零行为变化）
+  - [x] Step 0：测试地基——分区带命中/夏目外框排序/readLive2DCatalog 解析/MOUTH·BLINK 参数选择 vitest 规格（2026-08-23 完成，`197e67a`）
+  - [x] Step 1：抽离 `live2d/constants.ts` + `live2d/catalog.ts`（纯数据/纯函数）（2026-08-23 完成，`6987242`）
+  - [ ] Step 2：闭包状态 ctx 对象化（~35 变量 → Live2DCtx 显式字段，机械重命名零行为变化）——`live2d/context.ts` 已就位；2026-08-23 因另一会话在 `useLive2D.ts` 上的"换装闪回修复"（未提交）暂停，待其提交并吸收新增变量（overlaySettle/overlayWasByMotion/beginNatsumeOverlaySettle）后再动刀，详见研究计划第八节
   - [ ] Step 3–5：抽取 pointerGaze / interactions / emotionClock+layoutFit 子模块
   - [ ] Step 6：parameterFrame 每帧热路径抽出（逐行对照迁移）
   - [ ] Step 7：lifecycle 抽出，useLive2D 收薄为组合根
