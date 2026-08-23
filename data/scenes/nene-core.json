@@ -2052,12 +2052,12 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, (official Ayachi Nene witch costume:1.5), white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, a_small_white_apron_worn_over_the_complete_witch_costume, floating cooking utensils, purple magic sparks, levitating frying pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, full_witch_costume_visible, <lora:ayachi_nene_v18_wd14:0.88>",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, official_witch_outfit, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss-cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, white_apron, floating_cooking_pan, purple_magic_sparks, levitating_frying_pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, plain apron only, ordinary cook, generic witch dress",
     "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a medium shot in a quiet room, she stands beside the kitchen counter with a gentle blush on her cheeks, with soft radiant backlighting tracing her silhouette."
+    "animaCaption": "In a cozy morning kitchen, Ayachi Nene wears her official witch outfit with a small white apron over it, flustered and blushing as she panics over a magically levitating frying pan with purple magical sparks, illuminated by warm morning sunlight."
   },
   {
     "id": "sc145",
@@ -3090,22 +3090,31 @@
       "visual_audited",
       "landscape",
       "nene",
-      "solo"
+      "solo",
+      "nene_witch_canonical",
+      "witch_hat",
+      "holding_gun",
+      "revolver",
+      "aiming",
+      "foreshortening",
+      "starry_sky",
+      "rim_lighting"
     ],
     "mature": false,
-    "location": "室内场景",
-    "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "柔和自然光",
+    "location": "星海与魔法阵",
+    "weather": "星空异变",
+    "camera": "大透视持枪横幅构图",
+    "lighting": "星海逆光与银色金属高光",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "R15"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_action_composition, extreme_foreshortening, 1girl, solo, ayachi_nene, nene_witch_canonical, white_hair, very_long_hair, purple_eyes, ahoge, official_witch_outfit, wide_black_witch_hat_with_pink_striped_hatband_and_large_pink_bow, short_black_cape_with_vivid_pink_lining, pink_crisscross_strappy_top, bare_midriff, black_wrist_cuffs_with_pink_stripes, aiming_an_oversized_silver_revolver_directly_toward_the_right_foreground, gun_dominating_foreground_in_sharp_perspective, determined_face_on_left_side, swirling_purple_starfield_and_blue_magic_particles, dramatic_rim_light, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "masterpiece, best_quality, score_7, visual_novel_event_cg, cinematic_16:9_action_composition, dynamic_angle, extreme_foreshortening, 1girl, solo, ayachi_nene, nene_witch_canonical, white_hair, very_long_hair, floating_hair, purple_eyes, ahoge, official_witch_outfit, witch_hat, black_headwear, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, underboob, sideboob, detached_sleeves, black_wrist_cuffs_with_pink_stripes, holding_gun, revolver, aiming, outstretched_arm, aiming_an_oversized_silver_revolver_toward_the_viewer, gun_dominating_right_foreground_with_sharp_perspective, determined_face_on_left_side, looking_at_viewer, swirling_purple_starfield, magic_circle, glowing_blue_magic_particles, dramatic_rim_light, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, extra person, multiple persons, holding cup, coffee, quiet room, child, loli, underage",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R15",
     "officialCgCandidate": "ocn08",
     "audit": {
       "reviewer": "direct-vision",
@@ -3115,7 +3124,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer, under soft ambient lighting."
+    "animaCaption": "In a dramatic cinematic wide action shot with extreme perspective foreshortening, Ayachi Nene in her official witch outfit stands on the left with a determined expression, aiming an oversized silver revolver with her outstretched arm directly toward the right foreground at the viewer, surrounded by a swirling cosmic starfield, floating magic circles, and glowing blue magical particles under vivid rim lighting."
   },
   {
     "id": "sc288",

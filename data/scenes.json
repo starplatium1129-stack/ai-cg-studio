@@ -4990,9 +4990,9 @@
     ],
     "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 密室魔女服极致高能】深夜反锁的超自然社办深处，空气里弥漫着神秘学书页与微热的荷尔蒙。宁宁换上了那件华丽却被你半拆解的魔女制服，香肩半露，黑色布料与雪白肌肤形成了极具张力的对比。她软软地跨坐在你膝盖上，发带凌乱地散在一边，头顶的呆毛早已因为极度动情软瘫成完美的心形螺旋。她无力地抵住你的胸口，急促地喘息着——「呜...柊史...把灯关掉啦...魔女的身体...今晚全凭你支配了...」",
     "storyJa": "【寧々・大人のアフターストーリー・・密室の魔女衣装が大迫力】深夜、施錠された超常現象協会の事務所の奥深く、空気はオカルト本のページと少し熱いホルモンで満たされています。寧々は、あなたによって半分解体された豪華な魔女の制服を着ました。彼女の肩は半分露出しており、黒い生地が雪のように白い肌と非常に緊張したコントラストを形成していました。彼女はあなたの膝の上にそっと座り、ヘアバンドは片側に乱雑に散らばっており、頭のアホ毛は極度の感情のためにすでに完璧なハート型の螺旋になっています。彼女はあなたの胸を弱く押し当て、速く喘ぎました――「もう、柊史……明かりを消してください。今夜は魔女の私を……あなたにだけ見ていてほしいんです。」",
-    "prompt": "(official_ayachi_nene_witch_costume), (pink_crisscross_strappy_top), pink_collar_with_gold_buckle, black_short_cape_with_vivid_pink_lining, black_pleated_mini_skirt, asymmetrical_legwear, one_black_and_white_striped_thighhigh, one_white_frilled_sock, black_strappy_boots, wide_black_witch_hat_with_pink_striped_hatband_and_large_pink_bow, (sitting_astride_viewer_lap), bedroom_moonlight, 1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, hair_ribbon, ahoge, witch_costume, undressing, shirt_lift, bare_shoulders, cleavage, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, witch_hat, witch_dress, black_cape, pink_lining, striped_legwear, midriff, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, bare_shoulders, cleavage, undressing, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage",
-    "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she turns the page of an open book, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In an intimate close-up shot inside the dimly lit clubroom at night, Ayachi Nene in her official witch outfit sits astride on the viewer's lap with her costume partially loosened, blushing deeply with teary eyes under soft warm ambient lighting."
   },
   {
     "id": "sc106",
@@ -6824,12 +6824,12 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, (official Ayachi Nene witch costume:1.5), white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, a_small_white_apron_worn_over_the_complete_witch_costume, floating cooking utensils, purple magic sparks, levitating frying pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, full_witch_costume_visible, <lora:ayachi_nene_v18_wd14:0.88>",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, official_witch_outfit, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss-cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, white_apron, floating_cooking_pan, purple_magic_sparks, levitating_frying_pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, plain apron only, ordinary cook, generic witch dress",
     "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a medium shot in a quiet room, she stands beside the kitchen counter with a gentle blush on her cheeks, with soft radiant backlighting tracing her silhouette."
+    "animaCaption": "In a cozy morning kitchen, Ayachi Nene wears her official witch outfit with a small white apron over it, flustered and blushing as she panics over a magically levitating frying pan with purple magical sparks, illuminated by warm morning sunlight."
   },
   {
     "id": "sc143",
@@ -7273,12 +7273,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, costume straps being carefully loosened, bedroom, 1girl, ayachi_nene, nene_witch_canonical, hair_ribbon, witch_costume, undressing, shirt_lift, bare_shoulders, cleavage, lying_on_bed, straddling, ahoge, heavy_blush, intense_look, heavy_breathing, night, dim_lighting, sweat, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, witch_hat, witch_dress, black_cape, pink_lining, striped_legwear, midriff, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss-cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, costume_straps_loosened, undressing, bare_shoulders, cleavage, lying_on_bed, straddling, ahoge, heavy_blush, intense_look, heavy_breathing, bedroom, night, dim_lighting, sweat, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, hair_ribbon, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage",
     "storyJa": "【寧々・大人のアフターストーリー・・ウェディングナイト限定名シーン】鍵のかかった結婚式場の空気は熱かった。寧々は乱雑なベッドに半分横たわっています。ゴージャスな魔女の制服を半分ほどいて肩を半分露出させたボディは、黒い生地と白い肌のコントラストがインパクト大。彼女は恥ずかしさでとろけそうな目で隣に座るあなたを見つめた。頭のてっぺんが完全に崩れて、極めてエロティックなハート型になっていた。彼女の白い手はあなたの胸に力なく押し当てられ、彼女は速く喘いでいました。――「柊史……こ、これも魔女の契約に必要な儀式なんですか？　もう……早く明かりを消してください。」",
     "rating": "R15",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she rests comfortably against soft pillows, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In an intimate bedroom view at night on soft bedding, Ayachi Nene lies on the bed with her official witch costume partially unfastened, looking up at the viewer with an intense blushing gaze under soft warm lamplight."
   },
   {
     "id": "sc153",
@@ -11458,12 +11458,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, ceremonial ribbon restraint, moonlit bedroom, 1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, witch_hat, witch_dress, black_dress, no_bra, cleavage, sideboob, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, open_mouth, bedroom, night, moonlight, backlit, sensual, hair_ribbon, black_cape, pink_lining, striped_legwear, midriff, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss-cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, no_bra, cleavage, sideboob, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, open_mouth, bedroom, night, moonlight, backlit, sensual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, generic witch dress, plain black dress, full-length gown, simple witch costume",
     "storyJa": "【寧々・月夜の寝室の魔女の絶対契約】午後の雷雨が去り、深夜の清らかな月光が差し込むプライベートな寝室。寧々は今夜、あなたの強い願いを受け入れ、ついに絶対的な契約の象徴であるあの正統な漆黒の魔女服を再び身に纏い、頭には巨大な広縁の黒い魔法使いの帽子を被っていたが、その中身は何も着ていない完全な真空状態だった。彼女は銀歯を噛み締め、顔を真っ赤にしてあなたの大腿の上に跨り、長い純黒のニーソックスが豊満で肉感的な太ももをきつく包み込んでいる。タイトな魔女服の極めて狭い裁断のせいで、胸元のくり抜かれたデザインから豊満で白い胸元と両脇のセクシーな側乳が完全に押し出されて晒されていた。彼女の頭の上のアホ毛は極度の情動と従順さで完璧な螺旋状に垂れ下がり、顔を真っ赤にしてあなたの襟元を強く掴みながら、涙声で自爆した――「うあぁ！柊、リストの大色狼！なぜ私にこんな格好をさせるのよ……こ、この服の魔力の流れがすごくおかしいんだから……そんなにずっと見つめないで！今夜……本当に寧々と最終契約を交わすつもりなの……バカ！」",
     "rating": "R15",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully, with soft radiant backlighting tracing her silhouette."
+    "animaCaption": "In an intimate close-up shot in a moonlit bedroom, Ayachi Nene in her fitted official witch outfit sits on the viewer's lap, holding onto the viewer's collar with a flustered blushing expression, bathed in cool silver moonlight and subtle backlighting."
   },
   {
     "id": "sc235",
@@ -12950,22 +12950,31 @@
       "visual_audited",
       "landscape",
       "nene",
-      "solo"
+      "solo",
+      "nene_witch_canonical",
+      "witch_hat",
+      "holding_gun",
+      "revolver",
+      "aiming",
+      "foreshortening",
+      "starry_sky",
+      "rim_lighting"
     ],
     "mature": false,
-    "location": "室内场景",
-    "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "柔和自然光",
+    "location": "星海与魔法阵",
+    "weather": "星空异变",
+    "camera": "大透视持枪横幅构图",
+    "lighting": "星海逆光与银色金属高光",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "R15"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_action_composition, extreme_foreshortening, 1girl, solo, ayachi_nene, nene_witch_canonical, white_hair, very_long_hair, purple_eyes, ahoge, official_witch_outfit, wide_black_witch_hat_with_pink_striped_hatband_and_large_pink_bow, short_black_cape_with_vivid_pink_lining, pink_crisscross_strappy_top, bare_midriff, black_wrist_cuffs_with_pink_stripes, aiming_an_oversized_silver_revolver_directly_toward_the_right_foreground, gun_dominating_foreground_in_sharp_perspective, determined_face_on_left_side, swirling_purple_starfield_and_blue_magic_particles, dramatic_rim_light, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "masterpiece, best_quality, score_7, visual_novel_event_cg, cinematic_16:9_action_composition, dynamic_angle, extreme_foreshortening, 1girl, solo, ayachi_nene, nene_witch_canonical, white_hair, very_long_hair, floating_hair, purple_eyes, ahoge, official_witch_outfit, witch_hat, black_headwear, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, underboob, sideboob, detached_sleeves, black_wrist_cuffs_with_pink_stripes, holding_gun, revolver, aiming, outstretched_arm, aiming_an_oversized_silver_revolver_toward_the_viewer, gun_dominating_right_foreground_with_sharp_perspective, determined_face_on_left_side, looking_at_viewer, swirling_purple_starfield, magic_circle, glowing_blue_magic_particles, dramatic_rim_light, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, extra person, multiple persons, holding cup, coffee, quiet room, child, loli, underage",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R15",
     "officialCgCandidate": "ocn08",
     "audit": {
       "reviewer": "direct-vision",
@@ -12975,7 +12984,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer, under soft ambient lighting."
+    "animaCaption": "In a dramatic cinematic wide action shot with extreme perspective foreshortening, Ayachi Nene in her official witch outfit stands on the left with a determined expression, aiming an oversized silver revolver with her outstretched arm directly toward the right foreground at the viewer, surrounded by a swirling cosmic starfield, floating magic circles, and glowing blue magical particles under vivid rim lighting."
   },
   {
     "id": "sc264",
@@ -13156,7 +13165,7 @@
       "展示图",
       "R15"
     ],
-    "prompt": "nene_witch_canonical, nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_composition, 1girl, solo, adult_ayachi_nene, silver_white_very_long_twin_tails_with_orange_ribbon_wraps, purple_eyes, witch_hat, witch_costume, huge_black_witch_hat, (bare_back), vivid_pink_crisscross_straps_directly_over_bare_torso, black_wrist_cuffs_with_pink_bands, short_black_ruffled_skirt_lifted, no_panties, from_behind, lying_prone_on_a_warm_wooden_floor, hips_and_lower_body_filling_the_right_foreground, looking_back_over_shoulder_toward_viewer, embarrassed_open_mouth_and_blush, scattered_burgundy_clothes_at_left, dramatic_foreshortening, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "prompt": "nene_witch_canonical, nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_composition, 1girl, solo, adult_ayachi_nene, silver_white_very_long_twin_tails, purple_eyes, witch_hat, official_witch_outfit, huge_black_witch_hat, pink_striped_hat_ribbon, bare_back, vivid_pink_crisscross_straps, black_wrist_cuffs_with_pink_stripes, short_black_skirt_lifted, no_panties, from_behind, lying_prone_on_a_warm_wooden_floor, hips_and_lower_body_filling_the_right_foreground, looking_back_over_shoulder_toward_viewer, embarrassed_open_mouth_and_blush, dramatic_foreshortening, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, black jacket, black robe, black cape covering body, long sleeves covering torso, fully clothed, standing, sitting, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
@@ -13169,7 +13178,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a quiet room, she turns back over her shoulder, under soft ambient lighting."
+    "animaCaption": "In a dramatic low-angle perspective looking across the warm wooden floor, Ayachi Nene lies prone in her official witch costume, looking back over her shoulder toward the viewer with blushing cheeks and an embarrassed expression under soft ambient lighting."
   },
   {
     "id": "sc268",
