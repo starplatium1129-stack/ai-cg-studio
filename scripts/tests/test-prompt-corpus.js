@@ -141,7 +141,7 @@ test('golden scenes: sc001 medium/window, sc153 close, sc050 holding-hands prese
   assert.strictEqual(infer.sceneLighting(byId.sc001), 'window', 'sc001 window_light must resolve to window')
   assert.strictEqual(infer.sceneRecommendedSize(byId.sc001), '832x1216', 'sc001 default portrait')
 
-  assert.strictEqual(infer.sceneShot(byId.sc300), 'wide', 'sc300 explicit Chinese full-body camera must resolve to wide')
+  assert.strictEqual(infer.sceneShot(byId.sc300), 'medium', 'sc300 explicit medium bar stool camera must resolve to medium')
   assert.strictEqual(infer.sceneLighting(byId.sc300), 'golden', 'sc300 explicit sunset lighting must resolve to golden')
 
   assert.strictEqual(infer.sceneShot(byId.sc153), 'close', 'sc153 close_up must resolve to close')
