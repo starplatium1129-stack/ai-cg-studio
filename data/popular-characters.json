@@ -1207,19 +1207,6 @@
           "isDefault": true
         },
         {
-          "id": "witch_dress",
-          "name": "魔女装",
-          "prose": "a dark witch-like dress worn in the capital",
-          "tokens": [
-            "witch",
-            "black_dress",
-            "frills",
-            "hat"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "casual",
           "name": "便服",
           "prose": "a comfortable casual outfit",
@@ -1228,8 +1215,8 @@
             "dress",
             "cardigan"
           ],
-          "isDefault": false,
-          "default": false
+          "default": false,
+          "isDefault": false
         }
       ],
       "canon": {

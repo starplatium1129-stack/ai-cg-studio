@@ -10160,7 +10160,7 @@
       "action": "在庄严宫廷中身着礼服",
       "timeOfDay": "白天",
       "lighting": "高窗圣光",
-      "camera": "wide shot",
+      "camera": "medium shot, eye level, elegant royal framing",
       "mood": "端庄凛然",
       "sceneTags": [
         "palace",
@@ -10172,16 +10172,25 @@
         "fantasy",
         "dignified"
       ],
-      "promptProse": "Emilia stands composed in the grand royal court of Lugunica for the Royal Selection, ornate stone pillars and towering stained-glass windows bathing the solemn hall in dignified light. Balanced ambient gradients and fine atmospheric depth lift the composition to poster-quality finish.",
+      "promptProse": "Emilia stands composed in the grand royal court of Lugunica in her iconic white and lilac royal dress with pointed elf ears and long silver hair, glowing lesser spirits floating around her in shimmering ice-crystal particles. Towering stained-glass windows illuminate the solemn palace hall in majestic volumetric light beams with rella artistic style.",
       "promptTokens": [
         "palace",
-        "court",
-        "royal",
-        "ceremony",
+        "royal_court",
+        "throne_hall",
+        "stained_glass_window",
+        "floating_spirits",
+        "ice_particles",
+        "glowing_light_particles",
         "white_dress",
-        "kingdom",
-        "fantasy",
-        "dignified",
+        "lilac_trim",
+        "purple_ribbon",
+        "pointy_ears",
+        "elf",
+        "flower_hairpin",
+        "medium_shot",
+        "eye_level",
+        "god_rays",
+        "sunbeams",
         "volumetric_lighting",
         "depth_of_field",
         "clean_face",
@@ -10219,7 +10228,7 @@
         "deformed limbs"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "witch_dress",
+      "outfitId": "white_dress",
       "coverageTags": [
         "iconic"
       ]
