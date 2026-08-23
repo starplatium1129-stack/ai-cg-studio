@@ -13137,7 +13137,7 @@
     "recommendedSize": "1344×768",
     "title": "魔女衣装的回眸",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story】魔女帽落下阴影，宁宁伏在木地板上回头确认你的视线。她咬住唇，小声抱怨：「这套衣服的契约效果……绝对和你想的不一样。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "story": "【成年 After Story · 宁宁 · 官方经典R18还原】社办深处的实木桌面上，宁宁在你的要求下换上了正统魔女服，整个人四足趴伏在光滑的木桌上，翘起丰满雪白的翘臀正对镜头。黑色百褶短裙被完全掀起堆在腰间，私密部位毫无保留地展露。她回头看向你，紫色眼眸中泛着泪光与羞耻红晕，微张着小嘴急促喘息——「柊史……这样趴在桌子上……太羞耻了啦……不准一直盯着那里看……」",
     "char": "nene",
     "character": [
       "nene"
@@ -13152,21 +13152,35 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "r18",
+      "nene_r18",
+      "nene_witch_canonical",
+      "all_fours",
+      "on_desk",
+      "from_behind",
+      "ass_focus",
+      "skirt_lift",
+      "pussy",
+      "looking_back",
+      "blush",
+      "bare_back",
+      "criss_cross_halter",
+      "close_up"
     ],
     "mature": false,
-    "location": "室内场景",
+    "location": "私密书房木桌",
     "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "柔和自然光",
+    "camera": "后视翘臀仰视特写横幅构图",
+    "lighting": "暖色室内顶光与肌肤高光",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, ayachi_nene, nene_witch_canonical, nene_r18, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_composition, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, official_witch_outfit, huge_black_witch_hat, pink_striped_hat_ribbon, bare_back, vivid_pink_crisscross_straps, black_wrist_cuffs_with_pink_stripes, short_black_skirt_lifted, no_panties, from_behind, lying_prone_on_a_warm_wooden_floor, hips_and_lower_body_filling_the_right_foreground, looking_back_over_shoulder_toward_viewer, embarrassed_open_mouth_and_blush, dramatic_foreshortening, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pink hair, blonde hair, black jacket, black robe, black cape covering body, long sleeves covering torso, fully clothed, standing, sitting, child, loli, underage",
+    "prompt": "nsfw, explicit, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, from_behind, ass_focus, 1girl, solo, adult_ayachi_nene, ayachi_nene, nene_r18, nene_witch_canonical, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, pink_striped_hat_ribbon, official_witch_outfit, criss_cross_halter, strap_between_breasts, sideboob, bare_back, detached_sleeves, black_wrist_cuffs_with_pink_stripes, black_skirt, skirt_lift, bottomless, no_panties, pussy, exposed_pussy, ass, raised_ass, on_all_fours, all_fours, kneeling_on_wooden_desk, prone_on_wooden_table, looking_back_over_shoulder, looking_at_viewer, open_mouth, heavy_blush, panting, thighhighs, asymmetrical_legwear, striped_thighhigh, wooden_table, warm_ambient_lighting, soft_shadows, sensual, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, standing, lying on back, fully dressed, closed dress, pink hair, blonde hair, floor, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn12",
@@ -13178,7 +13192,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
       "result": "pass"
     },
-    "animaCaption": "In a dramatic low-angle perspective looking across the warm wooden floor, Ayachi Nene with long white twintails lies prone in her official witch costume, looking back over her shoulder toward the viewer with blushing cheeks and an embarrassed expression under soft ambient lighting."
+    "animaCaption": "In an intimate cinematic visual novel CG framed from behind, Ayachi Nene in her official witch costume is on all fours across a smooth wooden desk with her black skirt lifted up, revealing her bare bottom and exposed pussy in sharp perspective, looking back over her shoulder at the viewer with blushing cheeks and an open mouth under warm soft indoor lighting.",
+    "recommendedModel": "anima-aesthetic-v1.1"
   },
   {
     "id": "sc268",
