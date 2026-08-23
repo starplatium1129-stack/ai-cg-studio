@@ -13165,8 +13165,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "nene_witch_canonical, nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_composition, 1girl, solo, adult_ayachi_nene, silver_white_very_long_twin_tails, purple_eyes, witch_hat, official_witch_outfit, huge_black_witch_hat, pink_striped_hat_ribbon, bare_back, vivid_pink_crisscross_straps, black_wrist_cuffs_with_pink_stripes, short_black_skirt_lifted, no_panties, from_behind, lying_prone_on_a_warm_wooden_floor, hips_and_lower_body_filling_the_right_foreground, looking_back_over_shoulder_toward_viewer, embarrassed_open_mouth_and_blush, dramatic_foreshortening, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, black jacket, black robe, black cape covering body, long sleeves covering torso, fully clothed, standing, sitting, child, loli, underage",
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_witch_canonical, nene_r18, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_composition, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, official_witch_outfit, huge_black_witch_hat, pink_striped_hat_ribbon, bare_back, vivid_pink_crisscross_straps, black_wrist_cuffs_with_pink_stripes, short_black_skirt_lifted, no_panties, from_behind, lying_prone_on_a_warm_wooden_floor, hips_and_lower_body_filling_the_right_foreground, looking_back_over_shoulder_toward_viewer, embarrassed_open_mouth_and_blush, dramatic_foreshortening, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pink hair, blonde hair, black jacket, black robe, black cape covering body, long sleeves covering torso, fully clothed, standing, sitting, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn12",
@@ -13178,7 +13178,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
       "result": "pass"
     },
-    "animaCaption": "In a dramatic low-angle perspective looking across the warm wooden floor, Ayachi Nene lies prone in her official witch costume, looking back over her shoulder toward the viewer with blushing cheeks and an embarrassed expression under soft ambient lighting."
+    "animaCaption": "In a dramatic low-angle perspective looking across the warm wooden floor, Ayachi Nene with long white twintails lies prone in her official witch costume, looking back over her shoulder toward the viewer with blushing cheeks and an embarrassed expression under soft ambient lighting."
   },
   {
     "id": "sc268",
