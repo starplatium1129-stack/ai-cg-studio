@@ -417,7 +417,37 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (typeof d.story === 'string') story.value = d.story
     if (typeof d.visualDescription === 'string') visualDescription.value = d.visualDescription
     if (d.char) char.value = d.char
-    if (d.sceneId !== undefined) sceneId.value = d.sceneId
+    if (d.sceneId !== undefined) {
+      sceneId.value = d.sceneId
+      const currentScene = scenes.value.find(s => s.id === d.sceneId)
+      if (currentScene) {
+        lastRecommendedSize.value = sceneRecommendedSize(currentScene)
+        // 场景未被用户魔改时，镜头与推荐配置自动跟随最新场景定义更新，避免旧草稿锁死过时机位
+        const isUnmodifiedScene = (!d.story || d.story === currentScene.story) && (d.sceneBaseStory === currentScene.story || !d.sceneBaseStory)
+        if (isUnmodifiedScene) {
+          sceneBaseStory.value = currentScene.story ?? ''
+          story.value = currentScene.story ?? story.value
+          selections.shot = sceneShot(currentScene)
+          selections.lighting = sceneLighting(currentScene)
+          selections.composition = sceneComposition(currentScene)
+          colorMood.value = sceneColorMood(currentScene)
+          if (d.manualTags) manualTags.value = new Set(d.manualTags)
+          artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
+          if (d.directorMode) directorMode.value = d.directorMode
+          if (d.sdParams) Object.assign(sdParams, d.sdParams)
+          if (Array.isArray(d.sdParamsTouched) && d.sdParamsTouched.length) {
+            sdParamsTouched.value = new Set(d.sdParamsTouched.filter(key => isSDParamKey(key)) as Array<keyof SDParams>)
+          }
+          if (typeof d.projectId === 'string') projectId.value = d.projectId
+          if (d.subject === 'popular' && d.characterId && d.outfitId) {
+            subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
+          } else {
+            subject.value = { kind: 'studio' }
+          }
+          return
+        }
+      }
+    }
     if (d.sceneBaseStory !== undefined) sceneBaseStory.value = d.sceneBaseStory
     if (d.selections) {
       selections.emotion = d.selections.emotion ?? []

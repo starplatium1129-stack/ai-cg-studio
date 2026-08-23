@@ -55,41 +55,45 @@ const additions = [
     id: 'sc301', title: '晨光里的坦诚', category: '亲密/After_Story',
     story: '【成年 After Story · 宁宁 · 晨光里的坦诚】清晨的卧室还笼着淡金色的光。宁宁仰躺在床上，把双腿抬起、缓缓分开，全裸的身体被晨光勾勒得毫无保留——白嫩的双乳与腿间最私密的地方都清晰可见。她红着脸，努力稳住声音——「说好了，只准看宁宁一个人……连这里，也只准给宁宁喜欢的人看。」',
     char: 'nene', character: ['nene'], lora: 'ayachi_nene_v18_wd14', emotion: '害羞而信任', season: '不限', time: '清晨', timeOfDay: 'morning',
-    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'spread_legs', 'legs_up', 'lying_on_back', 'bare_breasts', 'nipples', 'bare_shoulders', 'fair_skin', 'morning_light', 'bedroom', 'bed', 'soft_shadows', 'heavy_blush', 'looking_at_viewer', 'medium_shot', 'sensual'],
-    rating: 'R18', mature: true, location: '清晨的卧室床沿', weather: '室内暖光', camera: '平视中近景', lighting: '清晨窗光与柔和漫反射', usage: ['成人向', '壁纸级'],
-    prompt: '1girl, adult, ayachi_nene, nene_r18, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, naked, completely_naked, no_clothes, pussy, spread_legs, legs_up, lying_on_back, bare_breasts, nipples, bare_shoulders, fair_skin, morning_light, bedroom, bed, soft_shadows, heavy_blush, looking_at_viewer, medium_shot, sensual, <lora:ayachi_nene_v18_wd14:0.85>',
+    tags: ['official_cg', 'visual_audited', 'landscape', 'adult', 'nene'],
+    rating: 'R18', mature: true, location: '清晨的卧室大床', weather: '室内晨光', camera: '电影级16:9横幅构图', lighting: '清晨金光与柔和暗影', usage: ['官方CG灵感', '成人向', '壁纸级'],
+    prompt: '1girl, solo, adult, ayachi_nene, nene_r18, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, white_hair, very_long_hair, low_twintails, pink_hair_ribbons, purple_eyes, ahoge, naked, nude, bare_breasts, nipples, navel, pussy, lying_on_back_with_knees_raised_and_legs_spread, anatomically_correct_torso, heavy_blush, shy_open_mouth, looking_at_viewer, bedroom, bed, morning_light, golden_hour, soft_shadows, sensual, <lora:ayachi_nene_v18_wd14:0.85>',
     negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, night, dark',
-    storyJa: '【大人のAfter Story・寧々・朝の光の中の素直さ】朝の寝室には、まだ淡い金色の光が満ちていた。寧々は仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体を朝の光にさらけ出している。白い胸も、脚の付け根の一番秘かな場所も、はっきりと見えている。彼女は顔を赤らめながら、必死に声を落ち着けて言った。「約束して、寧々だけを見て……ここも、寧々が好きな人にだけ見せるんだから。」'
+    storyJa: '【大人のAfter Story・寧々・朝の光の中の素直さ】朝の寝室には、まだ淡い金色の光が満ちていた。寧々は仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体を朝の光にさらけ出している。白い胸も、脚の付け根の一番秘かな場所も、はっきりと見えている。彼女は顔を赤らめながら、必死に声を落ち着けて言った。「約束して、寧々だけを見て……ここも、寧々が好きな人にだけ見せるんだから。」',
+    animaCaption: 'In an intimate cinematic view, Ayachi Nene lies gracefully on the soft bed with knees raised apart, looking shyly toward the viewer in the warm morning light.'
   },
   {
     id: 'sc302', title: '深夜镜前的完整坦诚', category: '亲密/After_Story',
     story: '【成年 After Story · 宁宁 · 深夜镜前的完整坦诚】更衣室只剩一盏暖灯。宁宁在镜前站定，把最后一件衣物褪去，正面完全朝向镜面，把自己从头到脚毫无保留地照给镜中人看——白皙的胸口、腰线，连腿间最隐秘的地方都清晰映在镜里。她抿了抿嘴，声音又轻又软——「成年之后的宁宁，连这里也好好长大了……你要看清楚，宁宁只给你一个人看。」',
     char: 'nene', character: ['nene'], lora: 'ayachi_nene_v18_wd14', emotion: '羞涩笃定', season: '不限', time: '深夜', timeOfDay: 'late_night',
-    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'standing', 'front_view', 'mirror', 'bare_breasts', 'nipples', 'navel', 'bare_shoulders', 'fair_skin', 'night', 'lamp', 'soft_light', 'heavy_blush', 'medium_shot', 'sensual'],
-    rating: 'R18', mature: true, location: '深夜的更衣室镜前', weather: '室内恒温', camera: '侧面中景', lighting: '暖色台灯与镜面反光', usage: ['成人向', '壁纸级'],
-    prompt: '1girl, adult, ayachi_nene, nene_r18, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, naked, completely_naked, no_clothes, pussy, standing, front_view, mirror, bare_breasts, nipples, navel, bare_shoulders, fair_skin, night, lamp, soft_light, heavy_blush, medium_shot, sensual, <lora:ayachi_nene_v18_wd14:0.85>',
-    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright',
-    storyJa: '【大人のAfter Story・寧々・深夜の鏡の前の素直さ】更衣室には、暖かなランプが一つだけ灯っていた。寧々は鏡の前に立ち、最後の一枚を脱ぎ捨てると、正面から鏡に向き直った。白い胸も、腰の線も、脚の付け根の一番秘かな場所も、鏡の中にはっきりと映っている。彼女は唇を結び、小さく柔らかな声で言った。「大人になった寧々は、ここもちゃんと成長してるの……よく見てね。寧々はあなたにだけ見せるんだから。」'
+    tags: ['official_cg', 'visual_audited', 'portrait', 'adult', 'nene'],
+    rating: 'R18', mature: true, location: '深夜的更衣室镜前', weather: '室内恒温', camera: '官方CG半身构图', lighting: '暖色台灯与镜面反光', usage: ['官方CG灵感', '成人向', '壁纸级'],
+    prompt: 'nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_composition, 1girl, solo, adult_ayachi_nene, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, naked, nude, completely_naked, pussy, standing, front_view, mirror_reflection, bare_breasts, nipples, navel, fair_skin, heavy_blush, shy_open_mouth, night, lamp, soft_lighting, sensual, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>',
+    negative: 'extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, ' + STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright',
+    storyJa: '【大人のAfter Story・寧々・深夜の鏡の前の素直さ】更衣室には、暖かなランプが一つだけ灯っていた。寧々は鏡の前に立ち、最後の一枚を脱ぎ捨てると、正面から鏡に向き直った。白い胸も、腰の線も、脚の付け根の一番秘かな場所も、鏡の中にはっきりと映っている。彼女は唇を結び、小さく柔らかな声で言った。「大人になった寧々は、ここもちゃんと成長してるの……よく見てね。寧々はあなたにだけ見せるんだから。」',
+    animaCaption: 'In a medium shot standing before a softly lit dressing mirror at night, she looks forward toward the viewer with a gentle blush, her reflection clearly visible under warm lamplight.'
   },
   {
     id: 'sc303', title: '暴雨夜的绝对坦诚', category: '亲密/After_Story',
     story: '【成年 After Story · 夏目 · 暴雨夜的绝对坦诚】暴雨砸在窗上，卧室里只剩急促的呼吸。夏目仰躺在凌乱的床铺上，双腿抬起、缓缓分开，台灯把她的身体照得毫无保留——胸口与腿间最私密的地方都清晰可见。她望着你，声音沙哑又笃定——「看清楚了。今晚，夏目连最后的地方都交给你。」',
     char: 'natsume', character: ['natsume'], lora: 'shiki_natsume_v18_wd14', emotion: '克制而笃定', season: '不限', time: '深夜', timeOfDay: 'late_night',
-    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'spread_legs', 'legs_up', 'lying_on_back', 'bare_breasts', 'nipples', 'heavy_blush', 'sweat', 'messy_hair', 'intense_look', 'bedroom', 'bed', 'night', 'rain', 'shadows', 'medium_shot', 'sensual'],
-    rating: 'R18', mature: true, location: '暴雨夜的凌乱卧室', weather: '狂风暴雨', camera: '特写', lighting: '台灯强光与暗影', usage: ['成人向', '壁纸级'],
-    prompt: '1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked, completely_naked, no_clothes, pussy, spread_legs, legs_up, lying_on_back, bare_breasts, nipples, heavy_blush, sweat, messy_hair, intense_look, bedroom, bed, night, rain, shadows, medium_shot, sensual, <lora:shiki_natsume_v18_wd14:0.85>',
-    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright, crowd',
-    storyJa: '【大人のAfter Story・夏目・豪雨の夜の素直さ】窓に激しい雨が叩きつけられ、寝室には荒い呼吸だけが残っていた。夏目は乱れたベッドの上に仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体をランプの光に晒している。胸も、脚の付け根の一番秘かな場所も、はっきりと見える。彼女はあなたを見つめ、掠れた声で言った。「よく見て。今夜、夏目は最後の場所まであなたに預けるわ。」'
+    tags: ['official_cg', 'visual_audited', 'landscape', 'adult', 'natsume'],
+    rating: 'R18', mature: true, location: '暴雨夜的凌乱卧室', weather: '狂风暴雨', camera: '官方CG横幅构图', lighting: '柔和台灯与暗影', usage: ['官方CG灵感', '成人向', '壁纸级'],
+    prompt: 'natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, low_camera_between_raised_knees, 1girl, solo, adult_shiki_natsume, shiki_natsume, black_hair, long_hair, two_red_hairclips, mole_under_eye, yellow_eyes, naked, nude, bare_breasts, nipples, navel, pussy, lying_on_back_with_knees_raised_and_legs_spread_around_the_camera, anatomically_correct_torso, fair_skin, heavy_blush, sweat, messy_hair, intense_look, bedroom, bed, soft_shadows, rain_on_window, warm_lamp_lighting, sensual, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>',
+    negative: 'extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, ' + STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright, crowd, young-looking, fused legs, closed legs, skirt, bra, shirt, standing, sitting, distant camera',
+    storyJa: '【大人のAfter Story・夏目・豪雨の夜の素直さ】窓に激しい雨が叩きつけられ、寝室には荒い呼吸だけが残っていた。夏目は乱れたベッドの上に仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体をランプの光に晒している。胸も、脚の付け根の一番秘かな場所も、はっきりと見える。彼女はあなたを見つめ、掠れた声で言った。「よく見て。今夜、夏目は最後の場所まであなたに預けるわ。」',
+    animaCaption: 'In a medium shot in a dimly lit bedroom during a stormy night on soft bedding, she looks toward the viewer with an intense and resolute expression, under moody ambient lighting.'
   },
   {
     id: 'sc304', title: '月光窗前的完整姿态', category: '亲密/After_Story',
     story: '【成年 After Story · 夏目 · 月光窗前的完整姿态】夜深人静，夏目站在落地窗前，正面朝向月光，睡袍顺着身体滑落。银白光线里，从胸口到腰线、再到腿间最私密的地方，全都毫无遮挡地浸在月色中。她没有回避，声音带着笑意——「看够之前，不许移开眼睛。今晚的月色，连最后的地方都分给你一个人。」',
     char: 'natsume', character: ['natsume'], lora: 'shiki_natsume_v18_wd14', emotion: '从容坦荡', season: '不限', time: '夜晚', timeOfDay: 'night',
-    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'standing', 'front_view', 'window', 'moonlight', 'night', 'bare_breasts', 'nipples', 'navel', 'bare_shoulders', 'fair_skin', 'mole_under_eye', 'long_hair', 'calm_expression', 'medium_shot', 'sensual'],
-    rating: 'R18', mature: true, location: '月光下的落地窗前', weather: '晴朗月夜', camera: '平视中景', lighting: '清冷月光与室内微光', usage: ['成人向', '壁纸级'],
-    prompt: '1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, black_hair, long_hair, naked, completely_naked, no_clothes, pussy, standing, front_view, window, moonlight, night, bare_breasts, nipples, navel, bare_shoulders, fair_skin, calm_expression, medium_shot, sensual, <lora:shiki_natsume_v18_wd14:0.85>',
-    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright, rain',
-    storyJa: '【大人のAfter Story・夏目・月明かりの窓辺の姿】夜も更け、夏目は窓辺に立っていた。月の光が彼女の輪郭を照らしている。ガウンを解いてそのまま滑り落とし、正面から月明かりに晒す。胸も、腰も、脚の付け根の一番秘かな場所も、銀色の光の中に何の隠しもなく浮かんでいる。彼女は目をそらさず、笑みを含んだ声で言った。「見飽きるまで、目を離さないで。今夜の月明かりは、最後の場所まであなたにだけ分けてあげる。」'
+    tags: ['official_cg', 'visual_audited', 'portrait', 'adult', 'natsume'],
+    rating: 'R18', mature: true, location: '月光下的落地窗前', weather: '晴朗月夜', camera: '官方CG全身构图', lighting: '清冷月光与室内微光', usage: ['官方CG灵感', '成人向', '壁纸级'],
+    prompt: 'natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_composition, 1girl, solo, adult_shiki_natsume, shiki_natsume, black_hair, long_hair, two_red_hairclips, mole_under_eye, yellow_eyes, naked, nude, completely_naked, pussy, standing, front_view, bare_breasts, nipples, navel, fair_skin, calm_smile, night, french_window, moonlight, soft_shadows, sensual, full_body, wide_shot, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>',
+    negative: 'extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, ' + STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright, rain',
+    storyJa: '【大人のAfter Story・夏目・月明かりの窓辺の姿】夜も更け、夏目は窓辺に立っていた。月の光が彼女の輪郭を照らしている。ガウンを解いてそのまま滑り落とし、正面から月明かりに晒す。胸も、腰も、脚の付け根の一番秘かな場所も、銀色の光の中に何の隠しもなく浮かんでいる。彼女は目をそらさず、笑みを含んだ声で言った。「見飽きるまで、目を離さないで。今夜の月明かりは、最後の場所まであなたにだけ分けてあげる。」',
+    animaCaption: 'In a graceful full-body view standing before a large moonlit window at night, she looks forward with a calm smile, silver moonlight illuminating her figure.'
   }
 ];
 
