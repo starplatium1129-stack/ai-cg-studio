@@ -303,9 +303,11 @@ function appendSuperResHires(wf, input, opts) {
     denoise:input.hiresDenoise || 0.35
   } };
   // 2026-08-25 修复：hires 末端补 RCAS 锐化（与普通生图路径同款 0.75），
-  // 消除超分放大后线条/发丝柔糊观感（此前 hires 路径刻意不挂，用户实测发糊）。
-  wf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['25', 0], method:'rcas', 'method.strength':0.75 } };
-  wf[opts.decodeNode].inputs.samples = ['26', 0];
+  // 消除超分放大后线条/发丝柔糊观感。注意：25 是二阶段 KSampler（输出 latent），
+  // 锐化必须接在 decodeNode 解码之后，给锐化节点喂 latent 会报 ndim 错。
+  wf[opts.decodeNode].inputs.samples = ['25', 0];
+  wf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:[opts.decodeNode, 0], method:'rcas', 'method.strength':0.75 } };
+  wf['10'].inputs.images = ['26', 0];
 }
 
 function buildWorkflow(input) {
@@ -455,8 +457,10 @@ function buildWorkflow(input) {
           scheduler:input.scheduler,
           denoise:input.hiresDenoise || 0.35
         } };
-        noLoraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['12', 0], method:'rcas', 'method.strength':0.75 } };
-        noLoraWf['8'].inputs.samples = ['26', 0];
+        // 接解码后输出做 RCAS（12 是 KSampler 输出 latent，不能直接喂锐化节点）
+        noLoraWf['8'].inputs.samples = ['12', 0];
+        noLoraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['8', 0], method:'rcas', 'method.strength':0.75 } };
+        noLoraWf['10'].inputs.images = ['26', 0];
       }
     }
     return noLoraWf;
@@ -565,8 +569,10 @@ function buildWorkflow(input) {
         scheduler:input.scheduler,
         denoise:input.hiresDenoise || 0.35
       } };
-      loraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['12', 0], method:'rcas', 'method.strength':0.75 } };
-      loraWf['9'].inputs.samples = ['26', 0];
+      // 接解码后输出做 RCAS（12 是 KSampler 输出 latent，不能直接喂锐化节点）
+      loraWf['9'].inputs.samples = ['12', 0];
+      loraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['9', 0], method:'rcas', 'method.strength':0.75 } };
+      loraWf['10'].inputs.images = ['26', 0];
     }
   }
   if (!input.initImage && !isHires) {
