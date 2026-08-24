@@ -304,8 +304,9 @@ function appendSuperResHires(wf, input, opts) {
     scheduler:input.scheduler,
     denoise:input.hiresDenoise || 0.35
   } };
-  // 433f93f 还原（2026-08-25 用户拍板）：hires 末端不挂 RCAS，二阶段全量重绘由
-  // 解码节点直接消费（25 是二阶段 KSampler，输出 latent，必须经 decodeNode 解码）。
+  // 2026-08-25 还原确认：二阶段与首轮同走 TeaCache（用户实测质量几乎一致，
+  // 要求全链加速）；hires 末端不挂 RCAS（433f93f 原样）。25 是二阶段 KSampler，
+  // 输出 latent，须经 decodeNode 解码后再保存。
   wf[opts.decodeNode].inputs.samples = ['25', 0];
 }
 
@@ -428,22 +429,22 @@ function buildWorkflow(input) {
           noLoraWf['23'] = { class_type:'VAEEncode', inputs:{ pixels:['22', 0], vae:['3', 0] } };
           // 2026-08-25 修复：二阶段不再走 TeaCache（跳步丢细节 = 放大发糊根因），
           // 直接连 UNET 原模型全量重绘补细节。
-          noLoraWf['24'] = { class_type:'KSampler', inputs:{ model:['1', 0], positive:['4', 0], negative:['5', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+          noLoraWf['24'] = { class_type:'KSampler', inputs:{ model:noLoraModel, positive:['4', 0], negative:['5', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
           noLoraWf['25'] = { class_type:'VAEDecode', inputs:{ samples:['24', 0], vae:['3', 0] } };
           noLoraWf['10'].inputs.images = ['25', 0];
         } else {
           noLoraWf['31'] = { class_type:'VAEEncode', inputs:{ pixels:['30', 0], vae:['3', 0] } };
           noLoraWf['32'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['31', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
-          noLoraWf['33'] = { class_type:'KSampler', inputs:{ model:['1', 0], positive:['4', 0], negative:['5', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+          noLoraWf['33'] = { class_type:'KSampler', inputs:{ model:noLoraModel, positive:['4', 0], negative:['5', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
           noLoraWf['34'] = { class_type:'VAEDecode', inputs:{ samples:['33', 0], vae:['3', 0] } };
           noLoraWf['10'].inputs.images = ['34', 0];
         }
       } else if (input.superResModel) {
-        appendSuperResHires(noLoraWf, input, { firstPass:['7', 0], vae:['3', 0], model:['1', 0], positive:['4', 0], negative:['5', 0], decodeNode:'8' });
+        appendSuperResHires(noLoraWf, input, { firstPass:['7', 0], vae:['3', 0], model:noLoraModel, positive:['4', 0], negative:['5', 0], decodeNode:'8' });
       } else {
         noLoraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['7', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
         noLoraWf['12'] = { class_type:'KSampler', inputs:{
-          model:['1', 0],
+          model:noLoraModel,
           positive:['4', 0],
           negative:['5', 0],
           latent_image:['11', 0],
@@ -535,22 +536,22 @@ function buildWorkflow(input) {
         loraWf['23'] = { class_type:'VAEEncode', inputs:{ pixels:['22', 0], vae:['3', 0] } };
         // 2026-08-25 修复：二阶段不再走 TeaCache（跳步丢细节 = 放大发糊根因），
         // 直接连 LoraLoader 原模型全量重绘补细节。
-        loraWf['24'] = { class_type:'KSampler', inputs:{ model:['4', 0], positive:['5', 0], negative:['6', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+        loraWf['24'] = { class_type:'KSampler', inputs:{ model:loraModel, positive:['5', 0], negative:['6', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
         loraWf['25'] = { class_type:'VAEDecode', inputs:{ samples:['24', 0], vae:['3', 0] } };
         loraWf['10'].inputs.images = ['25', 0];
       } else {
         loraWf['31'] = { class_type:'VAEEncode', inputs:{ pixels:['30', 0], vae:['3', 0] } };
         loraWf['32'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['31', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
-        loraWf['33'] = { class_type:'KSampler', inputs:{ model:['4', 0], positive:['5', 0], negative:['6', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
+        loraWf['33'] = { class_type:'KSampler', inputs:{ model:loraModel, positive:['5', 0], negative:['6', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
         loraWf['34'] = { class_type:'VAEDecode', inputs:{ samples:['33', 0], vae:['3', 0] } };
         loraWf['10'].inputs.images = ['34', 0];
       }
     } else if (input.superResModel) {
-      appendSuperResHires(loraWf, input, { firstPass:['8', 0], vae:['3', 0], model:['4', 0], positive:['5', 0], negative:['6', 0], decodeNode:'9' });
+      appendSuperResHires(loraWf, input, { firstPass:['8', 0], vae:['3', 0], model:loraModel, positive:['5', 0], negative:['6', 0], decodeNode:'9' });
     } else {
       loraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['8', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
       loraWf['12'] = { class_type:'KSampler', inputs:{
-        model:['4', 0],
+        model:loraModel,
         positive:['5', 0],
         negative:['6', 0],
         latent_image:['11', 0],
