@@ -85,12 +85,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_pink_knit_cardigan_over_white_camisole, standing_under_blooming_sakura_trees, reaching_up_one_slender_hand_to_catch_falling_petal, gentle_wistful_smile, soft_pink_blush, spring_park_path, drifting_cherry_blossom_petals, golden_morning_sunlight_filtering_through_branches, medium_full_shot, official_visual_novel_cg_framing, @rella",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_smart_casual_college_knit_cardigan_and_checkered_skirt, sheer_black_tights, sitting_at_wooden_tiered_lecture_hall_desk_by_tall_window, holding_pen_above_open_notebook, turning_head_with_startled_tsundere_blush_looking_at_viewer, entire_legs_and_feet_fully_visible_in_frame, dark_leather_shoes_under_desk, brilliant_morning_sunbeams_slicing_through_tall_windows_illuminating_floating_dust_motes, tiered_amphitheater_classroom_with_chalkboard_in_background, detailed_background, cinematic_lighting, full_body, @rella",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
     "storyJa": "【夏目・大学の教室に朝の最初の光が射す】春先の朝、大学の講堂にはまだほとんど人がいなかった。夏目さんはすでに窓際に座って講義ノートを整理していて、あなたの隣の席に座りました。あなたが椅子を引くとき、彼女は顔を上げず、ただ重要事項が書かれたメモを押し倒しました。朝の光が彼女の赤みを照らす――「昨日抜けていたところ、ついでにまとめておいたから。勘違いしないで。グループ課題で足を引っ張られたくないだけ。」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "Strolling through a park path canopied by blooming cherry blossom trees in early spring, Ayachi Nene reaches up with one delicate hand to catch a falling pink petal. Her soft purple eyes gleam with tranquil affection as the gentle morning breeze flutters her low twintails and pink cardigan amidst a shower of sunlit sakura blossoms."
+    "animaCaption": "Seated by a tall arched window in an empty university lecture amphitheater, Shiki Natsume turns around in surprise, pen in hand over her notebook with a flustered tsundere blush. Crisp golden morning sunbeams slice through the grand windows to highlight her long black hair, knit cardigan, and sheer black tights down to her leather shoes beneath the wooden desk."
   },
   {
     "id": "sc013",
@@ -550,8 +550,8 @@
     "usage": [
       "展示图"
     ],
-    "animaCaption": "In the quiet high school hallway illuminated by deep amber sunset light streaming through tall windows, Ayachi Nene clutches her schoolbag in front of her with both hands, leaning forward shyly as she turns back to invite the viewer to walk home together. Her purple eyes glisten with tender affection against the warm wooden floorboards.",
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, standing_in_school_hallway_at_sunset, holding_schoolbag_with_both_hands_in_front, leaning_body_forward_shyly, turning_head_back_to_invite_viewer, heavy_sweet_blush, long_golden_shadows_on_wooden_floor, tall_hallway_windows, official_visual_novel_cg_framing, medium_shot, @rella",
+    "animaCaption": "Standing on the weathered stone steps of an ancient mountain shrine beneath a canopy of blazing red maple leaves, Shiki Natsume clutches a wooden prayer plaque to her chest, turning with an intense, vulnerable blush. Golden late afternoon sunlight filters through the vermilion torii gates, casting brilliant light across her ornate kimono and white tabi socks in geta clogs.",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_traditional_autumn_kimono_with_gold_leaf_patterns, holding_wooden_ema_prayer_tablet_against_chest, turning_around_on_ancient_stone_temple_steps, biting_lip_with_deeply_flustered_confessing_blush, entire_legs_and_feet_fully_visible_in_frame, white_tabi_socks_and_lacquered_geta_clogs_on_stone_steps, towering_vermilion_torii_gates_and_canopy_of_glowing_crimson_autumn_maple_leaves, golden_afternoon_sunlight_filtering_through_foliage, detailed_background, cinematic_lighting, full_body, @rella",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
     "storyJa": "【夏目・古神殿の前の暗黙の願い】大学の研修旅行の早朝、夏目は京都の古刹の前で、長い黒髪を霧に濡らしながら真剣に手を合わせた。目を開けると、あなたが石段の下で待っていたことに気づき、何事もなかったかのようにあなたの手に警備員を置きました。あなたが彼女に何を懇願したのかと尋ねると、彼女はわずかに顔を向きました。――「願い事は口にしたら意味がないでしょ。このお守りは、ついでに買っただけ……せめて旅行が終わるまでは、なくさないで。」",
     "rating": "All"
@@ -742,11 +742,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_white_summer_sundress_and_straw_hat, standing_at_train_station_platform, holding_brim_of_straw_hat_against_breeze, radiant_happy_smile, blue_sky_with_summer_clouds, railway_tracks_and_green_countryside_mountains, bright_summer_sunlight, medium_shot, official_visual_novel_cg_framing, @rella",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_starlight_cafe_uniform_with_green_vest_and_white_blouse, pleated_black_skirt, sheer_black_thighhigh_socks_with_garter_clips, leaning_back_against_cafe_backstairs_brick_wall_after_closing, arms_crossed_below_chest_with_soft_vulnerable_gaze, entire_legs_and_feet_fully_visible_in_frame, polished_black_work_shoes_on_concrete_stairs, warm_amber_stairwell_pendant_light_casting_dramatic_shadows_contrasting_with_cool_night_doorway, detailed_background, cinematic_lighting, full_body, @rella",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・閉店した店舗の階段で1分】カフェステラが閉店し、帰ろうとしたところを夏目が階段の角で呼び止めた。彼女はまずあなたのエプロンについた紙切れを取り除き、それからまるである計画を実行することを最終的に決意したかのように、あなたを壁に押し戻しました。キスが落ちる前に、彼女の目は赤くなった――「一分だけ。調子に乗るのは禁止。それと……明日会ったとき、何もなかったみたいな顔をしないで。」",
     "rating": "All",
-    "animaCaption": "Standing on the sun-drenched train station platform in the countryside, Ayachi Nene holds down the brim of her straw sunhat against the summer breeze, dressed in a breezy white sundress. Her radiant, joyful smile and bright purple eyes welcome the viewer as puffy cumulus clouds drift across the vivid blue sky above the railway tracks."
+    "animaCaption": "Pausing on the quiet back stairwell of Cafe Stella after closing, Shiki Natsume leans against the rustic brick wall in her cafe uniform and sheer black gartered stockings. A single warm hanging bulb casts dramatic chiaroscuro across her slender frame and reflective black shoes, illuminating her hesitant, tender expression as she looks back at you in the quiet corridor."
   },
   {
     "id": "sc048",
@@ -2286,8 +2286,8 @@
     "usage": [
       "壁纸级"
     ],
-    "animaCaption": "Kneeling upon a plush white fur rug in front of the crackling living room hearth, Ayachi Nene is completely nude, her hands resting softly on her inner thighs in sweet surrender. The radiant amber and crimson glow from the fireplace dances across her fair bare breasts and silver twintails with breathless romantic warmth.",
-    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nude, completely_naked, soft_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, kneeling_on_plush_white_fur_rug, hands_resting_on_inner_thighs, intense_shy_blush, parted_lips_gasping, living_room_fireplace_at_night, glowing_fire_embers_casting_golden-orange_light_on_skin, medium_shot, @rella",
+    "animaCaption": "Crouching on a steel girder high above a neon-lit futuristic metropolis, Shiki Natsume's tactical agent catsuit is zipped down to expose her bare, firm breasts and toned stomach. Holding a silenced pistol with a daring, seductive smirk, the dazzling full moon and radiant cyan city lights cast sharp rim highlights across her curves and combat boots against the dark sky.",
+    "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_tight_tactical_catsuit_unzipped_to_navel, firm_shapely_breasts_fully_exposed, pink_nipples, exposed_pussy, slender_waist, crouching_on_narrow_steel_beam_atop_skyscraper_helipad, holding_silenced_pistol, looking_back_over_shoulder_with_sharp_seductive_smirk, entire_legs_and_feet_fully_visible_in_frame, sleek_tactical_boots_gripping_metal_beam, panoramic_cyberpunk_tokyo_night_skyline_with_glowing_neon_holograms_and_radiant_full_moon, cool_cyan_rim_light_and_warm_amber_ambient_city_glow, cinematic_chiaroscuro, full_body, @rella",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・Astralエージェント】カフェのメイドという仮の姿を解き、今夜の夏目はAstralに所属する精鋭エージェントとして任務に立つ。黒い戦闘服に身を包み、月明かりに照らされた高層ビルの屋上から街のネオンを見下ろしていた。夜風が黒髪を揺らし、黄色い瞳は冷静に標的を捉えている。周囲には、抑え込まれた異能の気配がかすかに波打っていた。",
     "rating": "All"
@@ -2515,11 +2515,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nude, completely_naked, soft_breasts, pink_nipples, exposed_pussy, slender_waist, lying_on_side_curled_up_gently_on_sofa, hugging_throw_pillow_between_knees, looking_over_shoulder_with_sleepy_affection, soft_blush, cozy_living_room_at_night, warm_lamp_glow, soft_shadows, medium_shot, @rella",
+    "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_unbuttoned_black_office_blazer_over_sheer_lace_lingerie, bare_breasts, pink_nipples, sheer_black_gartered_stockings, sitting_astride_executive_mahogany_desk_late_at_night, leaning_forward_with_dominant_flustered_smirk, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet_with_glossy_high_heels_dangling_from_toes, high-tech_office_suite_illuminated_by_floor-to-ceiling_rainy_city_windows_and_warm_amber_desk_lamp, cinematic_chiaroscuro, full_body, @rella",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・職場における攻撃と防御のコントラスト】誰もいない深夜のオフィスには、薄暗い電気スタンドだけが残っていた。夏目さんは職場に入ると、白いシャツの上から3つのボタンを外し、スーツのジャケットを無造作に椅子の背もたれに置きました。彼女はあなたの机の端に直接座り、見下すような目であなたを見下ろしていました。彼女のすらりとした黒い絹のような長い脚が重なり、目の端の泣きぼくろは、地元のテーブルランプの強い影の下で非常に危険な誘惑をにじみ出させました。彼女は少し前かがみになり、細い指があなたのネクタイを直接掴んであなたを引き寄せ、口元にはいたずらっぽい笑みを浮かべていました。――「店長、今夜の秘密尋問……まだ黙ったまま、私に抵抗するつもり？」",
     "rating": "R15",
-    "animaCaption": "Curled up gently on her side across the living room sofa at night, Ayachi Nene is completely nude, clutching a soft throw pillow between her legs. Glancing back over her shoulder with sleepy, tender affection, the warm amber glow of a table lamp outlines her silken silver twintails and porcelain waist."
+    "animaCaption": "Dominating the mahogany executive desk in a darkened corner office, Shiki Natsume leans forward in an open tailored blazer, exposing her lace-trimmed bare breasts and sheer gartered thigh-highs. Floor-to-ceiling windows overlooking a rainy nighttime skyline cast moody blue tones that contrast with the warm desk lamp, clearly illuminating her slender stocking-clad legs and dangling heels."
   },
   {
     "id": "sc159",
@@ -2662,11 +2662,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_white_dress_shirt_completely_unbuttoned_and_pulled_back, completely_bare_chest_and_breasts, pink_nipples, exposed_pussy, straddling_viewer_on_sofa, leaning_forward_forehead_pressed_against_viewer_forehead, heavy_passionate_blush, romantic_living_room_at_night, warm_lamp_glow, medium_close-up, @rella",
+    "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair_pinned_up_in_messy_bun, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, reclining_against_smooth_cedar_edge_of_private_hot_spring_tub, propping_head_on_arms_along_rim, bare_armpits, smooth_underarm_contours, entire_legs_and_feet_visible_through_clear_steaming_water, smooth_soles, detailed_toes, relaxed_blushing_smile_looking_at_viewer, luxury_onsen_suite_with_bamboo_screen_and_glowing_stone_lanterns_under_starry_night, soft_volumetric_steam_diffusing_warm_golden_lantern_light, cinematic_chiaroscuro, full_body, @rella",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・温泉で滑って超恥ずかしい】激しいアストラルミッション後の貸切温泉。水蒸気が濃く、温かい湧き水が体を包みます。普段は防御線が高い秘密諜報員の少女が、一人温泉の石垣にもたれかかっていた。彼女は湧き水で半分濡れた白いバスタオルだけを着て、静かに滑り落ちていた。雪のように白い大きな胸と丸い肩が無防備に月光にさらされていた。プールの水温で顔が赤くなり、目尻には水晶の水滴が垂れていた。突然プールに入ってきたあなたを見て、彼女は怒って首を傾げて口を尖らせ、最後の防衛線として恥ずかしがりやの毒舌で鼓動を隠しました。――「はあ？　あなた、絶対に時間を計って入ってきたでしょ。見ちゃだめ……これ以上見たら、水に沈めるからね。ばか。」",
     "rating": "R15",
-    "animaCaption": "Straddling the viewer on the living room couch with her white dress shirt pulled wide open to expose her bare breasts, Ayachi Nene leans forward to gently press her forehead against the viewer's with shared, racing breath. Her purple eyes overflow with pure devotion in the warm golden lamplight."
+    "animaCaption": "Reclining comfortably in a private outdoor cedar hot spring bath, Shiki Natsume rests her upper body along the smooth tub edge, completely naked with her hair pinned in a relaxed bun. Soft amber lantern light filters through rising steam under a starry night sky, highlighting the gentle curves of her bare underarms, shapely breasts, and legs visible beneath the crystal-clear water."
   },
   {
     "id": "sc165",
