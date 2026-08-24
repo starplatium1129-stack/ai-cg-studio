@@ -687,13 +687,11 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.ok(hiresWf['12'], 'hires workflow must contain 2nd KSampler');
   assert.strictEqual(hiresWf['12'].class_type, 'KSampler');
   assert.strictEqual(hiresWf['12'].inputs.denoise, 0.35);
-  // 2026-08-25 防回潮：二阶段 KSampler 必须绕过 TeaCache（跳步丢细节 = hires 发糊根因），
-  // 末端解码前必须经 RCAS 锐化节点 26（与普通生图路径同款）。
+  // 2026-08-25 防回潮：二阶段 KSampler 必须绕过 TeaCache（跳步丢细节 = hires 发糊根因）。
+  // hires 末端不挂 RCAS（433f93f 还原，用户拍板）；8 是解码节点，直接消费二阶段 latent。
   assert.notStrictEqual(hiresWf['12'].inputs.model[0], '13', 'hires 2nd pass must bypass TeaCache node 13');
   assert.deepStrictEqual(hiresWf['8'].inputs.samples, ['12', 0], 'decode node consumes 2nd pass latent');
-  assert.strictEqual(hiresWf['26'].class_type, 'ImageSharpenKJ', 'hires fallback must end with RCAS sharpen');
-  assert.strictEqual(hiresWf['26'].inputs.image[0], '8', 'RCAS must feed on decoded output, not the KSampler latent');
-  assert.deepStrictEqual(hiresWf['10'].inputs.images, ['26', 0], 'save consumes RCAS output');
+  assert.strictEqual(hiresWf['26'] === undefined, true, 'hires path must NOT attach RCAS (433f93f revert)');
 
   // 2026-08-20：Anima hires 接入本地 ESRGAN 真超分（Remacri）——superResModel 注入后
   // 走像素级超分链路（VAEDecode→UpscaleModelLoader→ImageUpscaleWithModel→ImageScale→
@@ -710,12 +708,11 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(srWf['24'].class_type, 'VAEEncode', 'super-res: re-encode latent');
   assert.strictEqual(srWf['25'].class_type, 'KSampler', 'super-res: second-pass KSampler');
   assert.strictEqual(srWf['25'].inputs.denoise, 0.35);
-  // 2026-08-25 防回潮：super-res 二阶段绕过 TeaCache 全量重绘 + 末端 RCAS 锐化。
-  assert.notStrictEqual(srWf['25'].inputs.model[0], '13', 'super-res 2nd pass must bypass TeaCache node 13');
+  // 2026-08-25 防回潮：二阶段 model 保持原始引用（433f93f 语义，无 TeaCache 节点 13）；
+  // hires 末端不挂 RCAS（433f93f 还原，用户拍板）。
+  assert.notStrictEqual(srWf['25'].inputs.model[0], '13', 'super-res 2nd pass uses raw model (no TeaCache node, 433f93f semantics)');
   assert.deepStrictEqual(srWf['8'].inputs.samples, ['25', 0], 'decode node consumes super-res 2nd pass latent');
-  assert.strictEqual(srWf['26'].class_type, 'ImageSharpenKJ', 'super-res hires must end with RCAS sharpen');
-  assert.strictEqual(srWf['26'].inputs.image[0], '8', 'RCAS must feed on decoded output, not the KSampler latent');
-  assert.deepStrictEqual(srWf['10'].inputs.images, ['26', 0], 'save consumes RCAS output');
+  assert.strictEqual(srWf['26'] === undefined, true, 'super-res path must NOT attach RCAS (433f93f revert)');
 });
 
 // 2026-08-16 审计：单条坏数据只被跳过并告警，不再让整份解析抛错丢弃。

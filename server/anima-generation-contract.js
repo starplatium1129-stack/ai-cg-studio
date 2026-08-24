@@ -36,7 +36,7 @@ const PARAMETER_LIMITS = Object.freeze({
 const ALLOWED_INPUT_KEYS = Object.freeze([
   'prompt', 'negative', 'modelId', 'loraId', 'loraStrength',
   'width', 'height', 'steps', 'cfg', 'seed', 'character', 'styleLoraId',
-  'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps',
+  'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresUpscaler',
   'teaCache', 'teaCacheThresh',
   'initImage', 'maskImage', 'maskPrompt', 'maskThreshold', 'denoisingStrength', 'growMaskBy',
 ]);

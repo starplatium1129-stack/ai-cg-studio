@@ -266,6 +266,8 @@ function validateInput(body, expectedFamily) {
     hiresFix:Boolean(body.hiresFix),
     hiresScale:body.hiresFix ? validateNumber(body.hiresScale || 2.0, 'hiresScale', 1.1, 3.0, false) : 1.0,
     hiresDenoise:body.hiresFix ? validateNumber(body.hiresDenoise || 0.35, 'hiresDenoise', 0.1, 0.7, false) : 0.35,
+    // 2026-08-25 放大器可选：'Remacri'（ESRGAN 像素超分，默认 Auto 探测注入）| 'Latent'（潜空间放大，不做像素超分）
+    hiresUpscaler:typeof body.hiresUpscaler === 'string' && (body.hiresUpscaler === 'Remacri' || body.hiresUpscaler === 'Latent') ? body.hiresUpscaler : (body.hiresFix ? 'Auto' : null),
     teaCache:body.teaCache !== undefined ? Boolean(body.teaCache) : true,
     teaCacheThresh:body.teaCacheThresh !== undefined ? validateNumber(body.teaCacheThresh, 'teaCacheThresh', 0.0, 1.0, false) : 0.08,
     initImage:typeof body.initImage === 'string' && body.initImage.trim() ? body.initImage.trim() : null,
@@ -302,12 +304,9 @@ function appendSuperResHires(wf, input, opts) {
     scheduler:input.scheduler,
     denoise:input.hiresDenoise || 0.35
   } };
-  // 2026-08-25 修复：hires 末端补 RCAS 锐化（与普通生图路径同款 0.75），
-  // 消除超分放大后线条/发丝柔糊观感。注意：25 是二阶段 KSampler（输出 latent），
-  // 锐化必须接在 decodeNode 解码之后，给锐化节点喂 latent 会报 ndim 错。
+  // 433f93f 还原（2026-08-25 用户拍板）：hires 末端不挂 RCAS，二阶段全量重绘由
+  // 解码节点直接消费（25 是二阶段 KSampler，输出 latent，必须经 decodeNode 解码）。
   wf[opts.decodeNode].inputs.samples = ['25', 0];
-  wf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:[opts.decodeNode, 0], method:'rcas', 'method.strength':0.75 } };
-  wf['10'].inputs.images = ['26', 0];
 }
 
 function buildWorkflow(input) {
@@ -431,15 +430,13 @@ function buildWorkflow(input) {
           // 直接连 UNET 原模型全量重绘补细节。
           noLoraWf['24'] = { class_type:'KSampler', inputs:{ model:['1', 0], positive:['4', 0], negative:['5', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
           noLoraWf['25'] = { class_type:'VAEDecode', inputs:{ samples:['24', 0], vae:['3', 0] } };
-          noLoraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['25', 0], method:'rcas', 'method.strength':0.75 } };
-          noLoraWf['10'].inputs.images = ['26', 0];
+          noLoraWf['10'].inputs.images = ['25', 0];
         } else {
           noLoraWf['31'] = { class_type:'VAEEncode', inputs:{ pixels:['30', 0], vae:['3', 0] } };
           noLoraWf['32'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['31', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
           noLoraWf['33'] = { class_type:'KSampler', inputs:{ model:['1', 0], positive:['4', 0], negative:['5', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
           noLoraWf['34'] = { class_type:'VAEDecode', inputs:{ samples:['33', 0], vae:['3', 0] } };
-          noLoraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:['34', 0], method:'rcas', 'method.strength':0.75 } };
-          noLoraWf['10'].inputs.images = ['35', 0];
+          noLoraWf['10'].inputs.images = ['34', 0];
         }
       } else if (input.superResModel) {
         appendSuperResHires(noLoraWf, input, { firstPass:['7', 0], vae:['3', 0], model:['1', 0], positive:['4', 0], negative:['5', 0], decodeNode:'8' });
@@ -457,10 +454,7 @@ function buildWorkflow(input) {
           scheduler:input.scheduler,
           denoise:input.hiresDenoise || 0.35
         } };
-        // 接解码后输出做 RCAS（12 是 KSampler 输出 latent，不能直接喂锐化节点）
         noLoraWf['8'].inputs.samples = ['12', 0];
-        noLoraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['8', 0], method:'rcas', 'method.strength':0.75 } };
-        noLoraWf['10'].inputs.images = ['26', 0];
       }
     }
     return noLoraWf;
@@ -543,15 +537,13 @@ function buildWorkflow(input) {
         // 直接连 LoraLoader 原模型全量重绘补细节。
         loraWf['24'] = { class_type:'KSampler', inputs:{ model:['4', 0], positive:['5', 0], negative:['6', 0], latent_image:['23', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
         loraWf['25'] = { class_type:'VAEDecode', inputs:{ samples:['24', 0], vae:['3', 0] } };
-        loraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['25', 0], method:'rcas', 'method.strength':0.75 } };
-        loraWf['10'].inputs.images = ['26', 0];
+        loraWf['10'].inputs.images = ['25', 0];
       } else {
         loraWf['31'] = { class_type:'VAEEncode', inputs:{ pixels:['30', 0], vae:['3', 0] } };
         loraWf['32'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['31', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
         loraWf['33'] = { class_type:'KSampler', inputs:{ model:['4', 0], positive:['5', 0], negative:['6', 0], latent_image:['32', 0], seed:input.seed + 1, steps:Math.max(12, Math.round(input.steps * 0.6)), cfg:input.cfg, sampler_name:input.sampler, scheduler:input.scheduler, denoise:input.hiresDenoise || 0.35 } };
         loraWf['34'] = { class_type:'VAEDecode', inputs:{ samples:['33', 0], vae:['3', 0] } };
-        loraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:['34', 0], method:'rcas', 'method.strength':0.75 } };
-        loraWf['10'].inputs.images = ['35', 0];
+        loraWf['10'].inputs.images = ['34', 0];
       }
     } else if (input.superResModel) {
       appendSuperResHires(loraWf, input, { firstPass:['8', 0], vae:['3', 0], model:['4', 0], positive:['5', 0], negative:['6', 0], decodeNode:'9' });
@@ -569,10 +561,7 @@ function buildWorkflow(input) {
         scheduler:input.scheduler,
         denoise:input.hiresDenoise || 0.35
       } };
-      // 接解码后输出做 RCAS（12 是 KSampler 输出 latent，不能直接喂锐化节点）
       loraWf['9'].inputs.samples = ['12', 0];
-      loraWf['26'] = { class_type:'ImageSharpenKJ', inputs:{ image:['9', 0], method:'rcas', 'method.strength':0.75 } };
-      loraWf['10'].inputs.images = ['26', 0];
     }
   }
   if (!input.initImage && !isHires) {
@@ -1032,8 +1021,8 @@ function createAnimaService(config, options) {
     var createdAt = Date.now();
     // 2026-08-20：Anima hires 接入本地 ESRGAN 真超分（Remacri）。buildWorkflow 是纯函数
     // 无法探测模型文件，这里在入队前探测并注入；只对 anima family（非 krea2）hires 生效，
-    // 未安装模型时保持原 latent bicubic 回退。
-    if (input.hiresFix && input.family !== 'krea2' && !input.superResModel) {
+    // 未安装模型时保持原 latent bicubic 回退；'Latent' 放大器显式跳过像素超分（2026-08-25 可选）。
+    if (input.hiresFix && input.family !== 'krea2' && !input.superResModel && input.hiresUpscaler !== 'Latent') {
       var localSuperRes = superres.availableSuperRes(config);
       if (localSuperRes) input.superResModel = localSuperRes;
     }
