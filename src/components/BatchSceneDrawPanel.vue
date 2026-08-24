@@ -358,8 +358,8 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 .batch-progress i {
   display: block; height: 100%; width: 100%; transform-origin: left;
   background: linear-gradient(90deg, var(--archive-cyan), var(--accent));
-  scale: var(--progress, 0%);
-  transition: scale var(--motion-surface) var(--ease-out);
+  transform: scaleX(var(--progress, 0%));
+  transition: transform var(--motion-surface) var(--ease-out);
 }
 .batch-result-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3);
@@ -388,6 +388,7 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 .batch-thumb-placeholder[data-state="running"] .archive-icon { animation: batchPulse 1.4s ease-in-out infinite; }
 .batch-thumb-placeholder[data-state="failed"] { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); color: var(--danger-text); }
 @keyframes batchPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.88); } }
+@media (prefers-reduced-motion: reduce) { .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; } }
 .batch-card-caption { display: grid; gap: 1px; min-width: 0; }
 .batch-card-title { font-size: var(--fs-label-sm); color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .batch-card-title em { color: var(--text-muted); font-style: normal; }

@@ -1074,12 +1074,8 @@
   .pb .review-submit { width: 100%; }
   .pb .review-submit:disabled { opacity: .55; cursor: wait; }
    /* Teleport 到 body 的恢复弹层不能靠 `.pb` 祖先作用域；类名直接命名空间化。 */
-   .pb-backup-overlay { position:fixed; inset:0; z-index:var(--z-overlay); display:none; place-items:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(10px); transition:background .22s var(--ease-out); }
-   .pb-backup-overlay.open { display:grid; }
-   .pb-backup-card { width:min(520px,100%); padding:var(--s-5); border:1px solid var(--border-strong); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); transform-origin:50% 42%; transition:opacity .22s var(--ease-out), transform .26s var(--ease-out); }
-   @starting-style {
-     .pb-backup-overlay.open .pb-backup-card { opacity:0; transform:scale(.96) translateY(10px); }
-   }
+   .pb-backup-overlay { position:fixed; inset:0; z-index:var(--z-overlay); display:grid; place-items:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(10px); }
+   .pb-backup-card { width:min(520px,100%); padding:var(--s-5); border:1px solid var(--border-strong); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); transform-origin:50% 42%; }
    .pb-backup-card h3 { font-size:var(--fs-title-xs); }
    .pb-backup-card > p { margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
    .pb-backup-summary { display:grid; gap:3px; margin:var(--s-4) 0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }

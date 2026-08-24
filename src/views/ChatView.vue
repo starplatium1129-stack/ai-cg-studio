@@ -22,16 +22,18 @@
           <button class="btn btn-ghost chat-more-trigger" type="button"
             :aria-expanded="moreOpen ? 'true' : 'false'" aria-haspopup="menu"
             @click="moreOpen = !moreOpen">更多<span class="chat-more-caret" aria-hidden="true">{{ moreOpen ? '▴' : '▾' }}</span></button>
-          <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作">
-            <button class="chat-more-item is-danger" role="menuitem" type="button"
-              @click="runRoomAction(() => clearAllMemory())">清除聊天记忆</button>
-            <button class="chat-more-item" role="menuitem" type="button"
-              @click="runRoomAction(() => { archiveOpen = !archiveOpen })">记忆归档</button>
-            <button class="chat-more-item" role="menuitem" type="button"
-              @click="runRoomAction(() => { memoryOpen = !memoryOpen })">长期记忆</button>
-            <button class="chat-more-item" role="menuitem" type="button"
-              @click="runRoomAction(() => { profileOpen = !profileOpen })">我的档案</button>
-          </div>
+          <Transition name="layer-fade">
+            <div v-if="moreOpen" class="chat-more-menu" role="menu" aria-label="更多房间操作">
+              <button class="chat-more-item is-danger" role="menuitem" type="button"
+                @click="runRoomAction(() => clearAllMemory())">清除聊天记忆</button>
+              <button class="chat-more-item" role="menuitem" type="button"
+                @click="runRoomAction(() => { archiveOpen = !archiveOpen })">记忆归档</button>
+              <button class="chat-more-item" role="menuitem" type="button"
+                @click="runRoomAction(() => { memoryOpen = !memoryOpen })">长期记忆</button>
+              <button class="chat-more-item" role="menuitem" type="button"
+                @click="runRoomAction(() => { profileOpen = !profileOpen })">我的档案</button>
+            </div>
+          </Transition>
         </div>
       </div>
     </header>

@@ -843,7 +843,7 @@ onBeforeUnmount(() => {
   background:var(--bg-deep); color:var(--text-secondary); text-align:left; cursor:pointer;
   transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-press) var(--ease-out);
 }
-.video-choice-grid button:active { transform:scale(.98); }
+.video-choice-grid button:active { transform:scale(.97); }
 .video-choice-grid button.active { border-color:var(--accent); background:var(--accent-soft); color:var(--text-primary); }
 .video-choice-grid strong,.video-choice-grid small { display:block; }
 .video-choice-grid small { color:var(--text-muted); font:500 var(--fs-mono-xs) var(--font-mono); }
@@ -861,13 +861,14 @@ onBeforeUnmount(() => {
   background:var(--bg-deep); color:var(--text-secondary); text-align:left; cursor:pointer;
   transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-press) var(--ease-out);
 }
-.video-quality-grid button:active { transform:scale(.98); }
+.video-quality-grid button:active { transform:scale(.97); }
 .video-quality-grid button.active { border-color:var(--accent); background:var(--accent-soft); color:var(--text-primary); }
 .video-quality-grid strong { font-size:var(--fs-body-sm); }
 .video-quality-grid small { color:var(--text-muted); font-size:var(--fs-label-xs); line-height:1.4; }
 .video-quality-grid em { color:var(--accent); font:600 var(--fs-mono-xs) var(--font-mono); font-style:normal; }
 .video-segmented { display:inline-flex; padding:3px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
-.video-segmented button { min-height:32px; padding:0 var(--s-3); border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-muted); cursor:pointer; transition:background var(--motion-hover) var(--ease-out),color var(--motion-hover) var(--ease-out); }
+.video-segmented button { min-height:32px; padding:0 var(--s-3); border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-muted); cursor:pointer; transition:background var(--motion-hover) var(--ease-out),color var(--motion-hover) var(--ease-out),transform var(--motion-press) var(--ease-out); }
+.video-segmented button:active { transform:scale(.97); }
 .video-segmented button.active { background:var(--accent); color:var(--text-inverse); }
 .video-duration-note { color:var(--text-muted); font-size:var(--fs-label-xs); }
 .video-advanced { margin-top:var(--s-4); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
