@@ -258,6 +258,45 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
   assert.ok(!/completely deserted|not a single other person|no commuters/i.test(kreaText), 'Krea must not force every public scene to be deserted');
 });
 
+test('blueprint decisions: angle keywords outrank framing substrings; every blueprint resolves a shot', function () {
+  var thunderNight = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; });
+  var decision = popular.inferBlueprintDecisions(thunderNight);
+  assert.strictEqual(decision.shot, 'low',
+    'authored "wide shot, dramatic low angle" must resolve to low angle, not lose to the longer "wide shot"/"medium" substring');
+  var maiLibrary = blueprints.find(function (item) { return item.id === 'sakurajima_mai_library'; });
+  assert.strictEqual(popular.inferBlueprintDecisions(maiLibrary).shot, 'low',
+    '"cinematic low angle medium shot" must keep the authored low angle');
+  var unresolved = blueprints.filter(function (item) { return !popular.inferBlueprintDecisions(item).shot; });
+  assert.strictEqual(unresolved.length, 0,
+    'every blueprint camera field must resolve to a director shot; unresolved: ' + unresolved.map(function (b) { return b.id; }).join(', '));
+});
+
+test('krea prose: director shot/lighting decisions must reach the compiled prompt', function () {
+  var yor = popular.findCharacter(characters, 'yor_forger');
+  var outfit = yor.outfits.find(function (item) { return item.default; }) || yor.outfits[0];
+  var blueprint = blueprints.find(function (item) { return item.id === 'yor_moonlit_rooftop_stiletto'; });
+  var built = popular.buildPopularPromptPlan({
+    character: yor, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: null,
+    adultEnabled: false, shot: 'medium', lighting: 'moon', composition: 'rule3',
+  });
+  assert.ok(built, 'krea plan must build');
+  assert.ok(built.prompt.includes('a medium shot'), 'director shot must enter krea prose');
+  assert.ok(/lit by /.test(built.prompt), 'director lighting must enter krea prose');
+  assert.ok(!/lit by moonlight and night/.test(built.prompt),
+    'time words are not light sources; night/stars stay out of krea lighting prose');
+  assert.ok(!/wearing wearing|wears wearing/i.test(built.prompt),
+    'outfit prose starting with "wearing" must not duplicate the verb in krea composition');
+  var anima = popular.buildPopularPromptPlan({
+    character: yor, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null,
+    adultEnabled: false, shot: 'medium', lighting: 'moon', composition: 'rule3',
+  });
+  var animaTags = anima.prompt.split('\n')[0];
+  assert.ok(animaTags.includes('medium shot') && animaTags.includes('moonlight'),
+    'anima tag stream keeps receiving director decisions (underscores normalize to spaces)');
+  assert.ok(!/wears wearing|wearing wearing/i.test(anima.prompt),
+    'outfit prose must not duplicate the wearing verb in anima caption');
+});
+
 test('prompt compiler: manual expert tags are sanitized against studio control tokens', function () {
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
   var outfit = raiden.outfits[0];

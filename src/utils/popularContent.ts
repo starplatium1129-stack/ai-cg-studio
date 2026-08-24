@@ -391,8 +391,42 @@ const CAMERA_TO_SHOT: Record<string, string> = {
   pov: 'pov', 'high angle': 'high', from_above: 'high', 'low angle': 'low',
   from_below: 'low', 'side view': 'side', looking_back: 'turn', 'front view': 'turn',
 }
+/** 蓝图 camera 字段漏网短语补映射（2026-08-24 全量审计：23 例 shot=null）。 */
+const EXTRA_CAMERA_TO_SHOT: ReadonlyArray<readonly [RegExp, string]> = [
+  [/dynamic action (?:shot|angle)|action shot/, 'wide'],
+  [/full body/, 'wide'],
+  [/couch level|low level/, 'low'],
+  [/three quarter/, 'medium'],
+  [/upper body/, 'medium'],
+  [/intimate (?:dramatic )?angle|dramatic intimate angle/, 'medium'],
+  // back_view/back shot：ShotId 枚举无「背面」槽位，取中景为中性框架，
+  // 背面视角语义由蓝图 promptProse 自由文本兜底。
+  [/back[_ ](?:view|shot)/, 'medium'],
+]
+/**
+ * 角度词优先预扫：低/高机位是比取景景别更罕见的作者意图信号。
+ * 2026-08-24 审计：matchFirst 按子串长度取胜，`cinematic low angle medium shot`
+ * 命中更长的 `medium shot`，把刻意低机位覆盖成平拍（≥10 例）。角度词先于
+ * 取景表裁决；`medium shot, slight low angle` 这类双写以机位为准（取景信息
+ * 通常仍由 promptProse 自由文本兜底）。
+ */
+const BLUEPRINT_ANGLE_RE: ReadonlyArray<readonly [RegExp, string]> = [
+  [/low angle|from below/, 'low'],
+  [/high angle|from above|overhead/, 'high'],
+  [/\bpov\b|first-person|first person|主观/, 'pov'],
+]
+
+function blueprintAngleShot(cameraText: string): string | null {
+  const text = String(cameraText || '').toLowerCase()
+  if (!text) return null
+  return BLUEPRINT_ANGLE_RE.find(([pattern]) => pattern.test(text))?.[1] ?? null
+}
 const LIGHTING_TO_ID: Record<string, string> = {
   golden: 'golden', 'golden hour': 'golden', sunset: 'golden', dusk: 'golden',
+  // 2026-08-24 全量审计补映射：晨光/日光/秋光/余晖是蓝图 lighting 字段高频
+  // 作者意图，此前 105/438 蓝图连补偿命中都拿不到，AMBIENCE 光影词包不附加。
+  morning: 'golden', sunlight: 'golden', autumn: 'golden', 余晖: 'golden',
+  柴火: 'lantern', 炉火: 'lantern',
   window: 'window', 'window light': 'window', backlight: 'back', backlit: 'back',
   'rim light': 'back', moonlight: 'moon', moon: 'moon', night: 'moon',
   lantern: 'lantern', candlelight: 'lantern', candle: 'lantern', lamp: 'lantern', overcast: 'overcast',
@@ -417,7 +451,10 @@ function matchFirst(text: string, table: Record<string, string>): string | null 
 export function inferBlueprintDecisions(blueprint: SceneBlueprint | null): PopularBlueprintDecision {
   if (!blueprint) return { shot: null, lighting: null, composition: 'rule3', colorMood: null, size: '832x1216' }
   const hay = [blueprint.camera, blueprint.lighting, blueprint.mood, blueprint.promptProse, blueprint.sceneTags.join(', ')].join(' ').toLowerCase()
-  const shot = matchFirst(hay, CAMERA_TO_SHOT)
+  const angleShot = blueprintAngleShot(blueprint.camera)
+  const cameraText = String(blueprint.camera || '').toLowerCase()
+  let shot = angleShot ?? matchFirst(hay, CAMERA_TO_SHOT)
+  if (!shot) shot = EXTRA_CAMERA_TO_SHOT.find(([pattern]) => pattern.test(cameraText))?.[1] ?? null
   const lighting = matchFirst(hay, LIGHTING_TO_ID)
   const colorMood = matchFirst(hay, MOOD_TO_COLOR)
   return {
@@ -537,6 +574,13 @@ function identityWithoutOutfit(prose: string): string {
     .trim()
 }
 
+/** 渲染模板自带动词（Krea "wearing X" / Anima "She wears X"），服装 prose 若
+ *  自带 "wearing/dressed in" 开头必须剥除，否则编译出 "wearing wearing"。
+ *  2026-08-24 实测：8 角色 37 套服装踩坑（yor/reze/fern/jalter/sakura/yui/sylphiette/mimori/cecilia）。 */
+function outfitProseForRender(prose: string): string {
+  return String(prose || '').replace(/^(?:wearing|dressed in)\s+/i, '').trim()
+}
+
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult | null {
   const { character, outfit, blueprint, engine } = options
   const profile = options.profile ?? null
@@ -573,18 +617,29 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   if (engine === 'krea2') {
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
-    const outfitProse = adultGranted ? '' : outfit.prose
+    const outfitProse = adultGranted ? '' : outfitProseForRender(outfit.prose)
     // Krea 是自然语言模型：hint 转散文时必须把下划线画师名（如 @jazz_jack）还原为空格，
     // 并去掉括号注释（如 @hiten (hitenkei) → hiten），否则散文里会混入下划线 token。
     const effectiveArtistProse = options.artistProse
       || (adultGranted && blueprint?.adultArtistHint ? `with visual styling inspired by ${blueprint.adultArtistHint.replace(/^@/, '').replace(/\s*\(.+\)$/, '').replace(/_/g, ' ').trim()}` : undefined)
+    // 2026-08-24 审计修复：Krea 分支此前硬编码 camera/lighting 为空数组，
+    // 导演面板与蓝图推断的镜头/光照决策在 Krea 上被整体丢弃（438 蓝图实测
+    // 仅剩 rule_of_thirds 一句构图）。经 promptCompiler 的 cameraPhrase/
+    // lightPhrase 散文转换器织入；光照只取主词 + 前 2 个氛围词，并剔除
+    // night/stars 等时间天体词（散文里 "lit by moonlight and night" 不成立；
+    // 这些词保留给 Anima 标签流控制背景暗度）。
+    const KREA_PROSE_LIGHT_DROP = /^(?:night|stars)$/
+    const kreaLightingTokens = lightingKey
+      ? [...new Set([lightingToken,
+        ...(AMBIENCE_TOKENS[lightingKey] || []).filter(token => token && !KREA_PROSE_LIGHT_DROP.test(token)).slice(0, 2)])]
+      : []
     const plan = createPromptPlan({
       subjectProse: identityWithoutOutfit(character.identityProse),
       outfitProse,
       sceneProse,
       emotion: emotionTokens,
-      camera: [],
-      lighting: [],
+      camera: shotToken ? [shotToken] : [],
+      lighting: kreaLightingTokens,
       composition: compositionToken ? [compositionToken] : [],
       manual,
       negative: '',
@@ -626,7 +681,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支 546 行已置空）。
     // renderPromptPlan('anima') 会在 outfitProse 存在时渲染 "She wears {outfit}",
     // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。
-    outfitProse: adultGranted ? '' : outfit.prose,
+    outfitProse: adultGranted ? '' : outfitProseForRender(outfit.prose),
     sceneProse,
     // Anima 只接收模型原生短标签；Krea 的自然语言 lead 不进入标签流。
     style: style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
