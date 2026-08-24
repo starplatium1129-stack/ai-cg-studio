@@ -261,7 +261,7 @@
             <div v-if="generationBusy" class="stage-generating-copy">
               <div class="stage-generating-title">正在绘制这一张</div>
               <div class="stage-generating-sub">{{ generationStatusText || '模型正在推理…' }}<template v-if="drawEngine === 'sd'"> {{ sd.progress.value }}%</template></div>
-              <div class="stage-progress-ring"><i :style="{ '--progress': (drawEngine === 'sd' ? sd.progress.value : 35) + '%' }"></i></div>
+              <div class="stage-progress-ring" :class="{ 'is-indeterminate': drawEngine !== 'sd' }"><i :style="{ '--progress': sd.progress.value + '%' }"></i></div>
             </div>
             <div v-else-if="generationError" class="stage-idle">
               <div class="stage-placeholder-title">这一张没有完成</div>
@@ -698,12 +698,15 @@
     </div>
 
     <!-- Toast -->
-    <div v-if="pb.toastMsg" class="pb-toast" role="status" aria-live="polite">{{ pb.toastMsg }}</div>
+    <Transition name="layer-fade">
+      <div v-if="pb.toastMsg" class="pb-toast" role="status" aria-live="polite">{{ pb.toastMsg }}</div>
+    </Transition>
 
     <!-- 出图大图对比：上一张 vs 当前 -->
     <Teleport to="body">
-      <div v-if="compareOpen && prevResult && lastResult" class="pb-compare-overlay" @click.self="closeCompare">
-        <div ref="compareEl" class="pb-compare" role="dialog" aria-modal="true" aria-label="出图对比">
+      <Transition name="layer-pop">
+        <div v-if="compareOpen && prevResult && lastResult" class="pb-compare-overlay" @click.self="closeCompare">
+          <div ref="compareEl" class="pb-compare" role="dialog" aria-modal="true" aria-label="出图对比">
           <div class="pb-compare-head">
             <div>
               <div class="pb-compare-kicker">Result compare</div>
@@ -729,7 +732,8 @@
             </figure>
           </div>
         </div>
-      </div>
+        </div>
+      </Transition>
     </Teleport>
 
     <!-- Anima 智能局部换装弹窗 -->

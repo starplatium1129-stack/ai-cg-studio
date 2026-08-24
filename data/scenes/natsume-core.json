@@ -85,12 +85,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(university lecture hall:1.55), rows of classroom desks, chalkboard, campus morning, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, university_classroom, casual_campus_outfit, holding_notes, window_seat, reserved_expression, morning, clear_sky, upper_body, medium_shot, window_light, morning_light, serious, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, train interior, bus interior, vehicle interior, carriage",
+    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_pink_knit_cardigan_over_white_camisole, standing_under_blooming_sakura_trees, reaching_up_one_slender_hand_to_catch_falling_petal, gentle_wistful_smile, soft_pink_blush, spring_park_path, drifting_cherry_blossom_petals, golden_morning_sunlight_filtering_through_branches, medium_full_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
     "storyJa": "【夏目・大学の教室に朝の最初の光が射す】春先の朝、大学の講堂にはまだほとんど人がいなかった。夏目さんはすでに窓際に座って講義ノートを整理していて、あなたの隣の席に座りました。あなたが椅子を引くとき、彼女は顔を上げず、ただ重要事項が書かれたメモを押し倒しました。朝の光が彼女の赤みを照らす――「昨日抜けていたところ、ついでにまとめておいたから。勘違いしないで。グループ課題で足を引っ張られたくないだけ。」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a medium shot by the large windows of an empty classroom, she sits gracefully with a focused and calm expression, as clear window sunlight streams across the frame."
+    "animaCaption": "Strolling through a park path canopied by blooming cherry blossom trees in early spring, Ayachi Nene reaches up with one delicate hand to catch a falling pink petal. Her soft purple eyes gleam with tranquil affection as the gentle morning breeze flutters her low twintails and pink cardigan amidst a shower of sunlit sakura blossoms."
   },
   {
     "id": "sc013",
@@ -177,11 +177,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, night, hoodie, blush, shy, camping, campfire, starry_sky, holding_camera, sitting, subtle_blush, clear_sky, medium_shot, warm_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nude, completely_naked, soft_breasts, pink_nipples, exposed_pussy, slender_waist, lying_back_on_white_sheets, hands_tangled_in_bedding, arched_back, deep_intense_blush, teary_eyes, biting_lower_lip, bedroom, warm_bedside_lamp_lighting, soft_shadows, natural_gravity_body_deformation, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "storyJa": "【夏目・キャンプファイヤーの曲がった写真】夏の夜、キャンプ場に残るのは薪が燃える柔らかな音だけ。夏目が撮ったばかりの写真を渡しました。写真の中の星空は半分傾いていたが、思いがけず彼女を振り返った瞬間を残した。あなたがそれを保管したいと言うと、彼女はすぐに手を伸ばしてそれを掴み、焚き火の光で頬を赤らめました。――「構図に失敗した写真なんて、残してどうするの……まあいいわ。あなたのスマホだけに保存して、誰にも送らないで。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a quiet room, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Completely nude and reclining softly across white bedsheets in a dimly lit bedroom, Ayachi Nene arches her back with hands clutching the linen in breathless vulnerability. Her long silver twintails pool around her delicate bare curves as her moist purple eyes look up with overwhelming love and flushed passion in the warm amber glow."
   },
   {
     "id": "sc018",
@@ -315,12 +315,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(open photo album with clearly visible photographs:1.55), turning a thick album page, sitting together at home table, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, sunbeam, photo_album, sitting_at_desk, nostalgic, side_glance, spring_afternoon, home_interior, afternoon, clear_sky, upper_body, medium_shot, window_light, melancholic, teary_eyes, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, loose papers, document folder, blank pages",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, sitting_at_classroom_desk_after_school, resting_cheek_on_one_palm, looking_out_window_then_turning_to_viewer, cool_calm_gaze, faint_subtle_smirk, orange_sunset_streaming_through_blinds, slatted_light_patterns_on_desk, floating_chalk_dust_motes, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・フォトアルバムが置かれているページ】春の午後、夏目はアパートで大学の卒業写真アルバムを整理していました。彼女はあなたの集合写真に目を向けたとき、長い間立ち止まりました。写真の中で、彼女はまだ人混みから意図的に少し離れて立っていますが、彼女の目はあなたに向かっています。あなたが後ろから近づくと、彼女はすぐにアルバムを閉じましたが、実際にはアルバムを取り上げませんでした。――「写真がぶれていないか確認していただけ。見たいならこっちに座って……でも、私の視線まで分析するのは禁止。」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a medium shot in a quiet room, she turns the page of an open book, as clear window sunlight streams across the frame."
+    "animaCaption": "In the quiet classroom bathed in rich golden-orange sunset light after school, Shiki Natsume rests her chin upon one slender hand at her desk, turning her sharp golden eyes toward the viewer with an enigmatic, cool half-smile. The window blinds cast delicate striped shadows across her black hair and neat school uniform."
   },
   {
     "id": "sc026",
@@ -361,12 +361,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "(sports equipment storage room:1.55), shelves packed with balls and rackets, stacked gym mats, metal storage racks, locked door, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, sunbeam, looking_back, close_up, university_gym_storage, casual_campus_outfit, closed_door, close_distance, flustered, dust_motes, afternoon, clear_sky, nervous, blush, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, kneeling_on_tatami_mat_in_traditional_room, leaning_forward_with_hands_on_thighs, intense_flustered_blush, parted_lips, trembling_loving_gaze, paper_sliding_doors_in_background, warm_soft_lantern_glow, natural_gravity_body_deformation, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "storyJa": "【夏目・機器室に5分間閉じ込められる】大学の体育館での活動後、夏目さんから機材の返却を手伝ってほしいと頼まれましたが、風で誤ってドアが閉まってしまいました。狭い倉庫には高窓から光が漏れてくるだけだった。ドアの鍵を確認したときはまだ冷静だったが、振り返って二人が近すぎることに気づくと、すぐに顔を赤らめた。――「まずは扉を開ける方法を考えて。そんな顔しないの。それと……少し離れて。緊張してるんじゃなくて、ここが蒸し暑いだけだから。」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing in a quiet room, she turns back over her shoulder with a gentle blush on her cheeks, under soft ambient lighting."
+    "animaCaption": "Kneeling upon woven tatami mats inside a quiet traditional Japanese ryokan room, Ayachi Nene is completely nude, leaning forward slightly as her hands rest trembling on her inner thighs. Her face burns with an overwhelming, vulnerable blush as her moist purple eyes look up with absolute devotion in the warm golden lantern light."
   },
   {
     "id": "sc030",
@@ -410,9 +410,9 @@
     "usage": [
       "实验CG"
     ],
-    "animaCaption": "A medium shot in a dark private laboratory shows her removing a biometric sensor by hand before monitors displaying heart-rate graphs.",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, blushing, eye_contact, vulnerable_expression, adult, sensor_headset, holding_biometric_sensor_in_one_hand, heart_rate_monitor, heart_rate_graphs_on_large_monitors, screen_glow, restrained_expression, blush, laboratory, night, medium_shot, screen_light, shy, serious, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extreme_close_up, headshot, hands_out_of_frame, missing_sensor, abstract_background, nsfw, nude, explicit",
+    "animaCaption": "Sitting on a wooden chair in the intimate dressing room backstage, Shiki Natsume is completely nude except for her sheer black thigh-high stockings tied with purple ribbons. Leaning forward while adjusting the lace edge with blushing hesitation, her golden eyes dart upward with racing pulse as Hollywood vanity lights reflect softly off her porcelain skin.",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, full_firm_breasts, pink_nipples, exposed_pussy, slender_waist, sheer_black_thighhigh_stockings_with_purple_ribbons, sitting_on_wooden_chair_in_dressing_room, leaning_forward_holding_stocking_top, heavy_blush, biting_lip, shy_glance, vanity_mirror_with_bulbs_in_background, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, fishnet, fishnets, clothes, child, loli",
     "storyJa": "【夏目・大人のクロスオーバーAUのヒステリシス校正・】深夜、個室研究室は監視画面の冷たい光だけが照らしていた。大人の夏目さんは、システムが意図的に低い心拍数と本当の感情を同時に大画面に映し出すまで、ストレステストの最後のラウンドを完了することを主張しました。彼女が黙ってセンサーを外すと、泣きぼくろはすでに赤くなっていた。――「機械だって、たまには判定を間違えるものよ。さっきのデータを保存するつもりなら……せめて先に、暗号化の強度を確認させて。」",
     "rating": "All"
   },
@@ -455,11 +455,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, golden_hour, night, modest_casual_home_clothes, holding_one_small_birthday_cake_with_both_hands, candlelight, standing_behind_a_half_open_door, surprised, subtle_blush, dark_entryway, upper_body, medium_shot, expectant, bright_eyes, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_bare_breasts, pink_nipples, exposed_pussy, slender_toned_waist, lying_on_side_on_dark_bedsheets, propping_head_with_one_arm, other_hand_caressing_bedding, flustered_tsundere_pout, heavy_blush, bedroom_at_night, moonlight_filtering_through_curtains, soft_shadows, natural_gravity_body_deformation, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "storyJa": "【夏目・ドアの後ろに隠せない誕生日サプライズ】冬の夜、アパートの入り口には明かりがついていなかった。夏目は小さなケーキを持ってドアの後ろに隠れていました。彼女はあなたが家に入るのを待ってからキャンドルに火を灯したかったのですが、早く帰宅しようとする足音に邪魔されました。彼女は数秒間その場で固まったが、ろうそくの明かりよりも頬を赤くして、ただケーキを手渡した。――「誕生日には、それらしいことをしたほうがいいって、みんなが言うから。早く願い事をして。クリームが溶けちゃう……別に、ずっと待ってたわけじゃないけど。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a serene snow-dusted winter setting, she looks forward toward the viewer with bright expectant eyes, as warm golden-hour sunlight illuminates the scene."
+    "animaCaption": "Lying on her side upon dark silk sheets in the quiet of midnight, Shiki Natsume is completely nude, propping her head up with one slender arm while her long black hair pools around her firm bare breasts and defined waistline. Her cheeks burn with an intense, adorable blush as she bites her lip in flustered surrender under the cool silver moonlight."
   },
   {
     "id": "sc035",
@@ -550,9 +550,9 @@
     "usage": [
       "展示图"
     ],
-    "animaCaption": "A full-body wide view shows her standing on misty stone steps at a Kyoto temple, holding one small omamori charm in one hand.",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, shrine, standing, temple, autumn, kyoto_temple, stone_steps, holding_omamori, one_small_omamori_charm_in_one_hand, casual_travel_outfit, morning_mist, side_glance, morning, clear_sky, full_body, wide_shot, morning_light, soft_lighting, diffused_light, calm, relaxed, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, kneeling, seiza, sitting_on_steps, holding_food, food_bowl, extra_feet, nsfw, nude, explicit",
+    "animaCaption": "In the quiet high school hallway illuminated by deep amber sunset light streaming through tall windows, Ayachi Nene clutches her schoolbag in front of her with both hands, leaning forward shyly as she turns back to invite the viewer to walk home together. Her purple eyes glisten with tender affection against the warm wooden floorboards.",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, standing_in_school_hallway_at_sunset, holding_schoolbag_with_both_hands_in_front, leaning_body_forward_shyly, turning_head_back_to_invite_viewer, heavy_sweet_blush, long_golden_shadows_on_wooden_floor, tall_hallway_windows, official_visual_novel_cg_framing, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
     "storyJa": "【夏目・古神殿の前の暗黙の願い】大学の研修旅行の早朝、夏目は京都の古刹の前で、長い黒髪を霧に濡らしながら真剣に手を合わせた。目を開けると、あなたが石段の下で待っていたことに気づき、何事もなかったかのようにあなたの手に警備員を置きました。あなたが彼女に何を懇願したのかと尋ねると、彼女はわずかに顔を向きました。――「願い事は口にしたら意味がないでしょ。このお守りは、ついでに買っただけ……せめて旅行が終わるまでは、なくさないで。」",
     "rating": "All"
   },
@@ -642,11 +642,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, night, pajamas, adult, cohabitation, under_blanket, holding_hands, subtle_blush, cozy, clear_sky, close_up, warm_lighting, blush, shy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・夜遅くまで寝ている言い訳】ある冬の夜、アパートの暖房が突然止まりました。夏目が予備の毛布を持って寝室にやって来ました。彼女はあなたのために半分を覆ってから、反対側に横になりました。彼女はあなたに背を向けて、暖房のためのスペースを確保しているだけだと主張しましたが、数分後、静かに冷たい指をあなたの手のひらに置きました。――「笑わないで。ここが本当に暖かいだけ……今夜は少し場所を借りるわ。毛布は明日、ちゃんと洗って返すから。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she reaches forward and gently clasps the viewer's hand with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Ayachi Nene interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc044",
@@ -742,11 +742,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, leaning, blush, looking_back, kissing, close_up, adult, cafe_uniform, stairwell, wall_lean, kiss, closed_cafe, intimate, afternoon, clear_sky, pov, face_focus, warm_lighting, cafe, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_white_summer_sundress_and_straw_hat, standing_at_train_station_platform, holding_brim_of_straw_hat_against_breeze, radiant_happy_smile, blue_sky_with_summer_clouds, railway_tracks_and_green_countryside_mountains, bright_summer_sunlight, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・閉店した店舗の階段で1分】カフェステラが閉店し、帰ろうとしたところを夏目が階段の角で呼び止めた。彼女はまずあなたのエプロンについた紙切れを取り除き、それからまるである計画を実行することを最終的に決意したかのように、あなたを壁に押し戻しました。キスが落ちる前に、彼女の目は赤くなった――「一分だけ。調子に乗るのは禁止。それと……明日会ったとき、何もなかったみたいな顔をしないで。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she stands beside the kitchen counter with a gentle blush on her cheeks, under soft ambient lighting."
+    "animaCaption": "Standing on the sun-drenched train station platform in the countryside, Ayachi Nene holds down the brim of her straw sunhat against the summer breeze, dressed in a breezy white sundress. Her radiant, joyful smile and bright purple eyes welcome the viewer as puffy cumulus clouds drift across the vivid blue sky above the railway tracks."
   },
   {
     "id": "sc048",
@@ -837,9 +837,9 @@
     "usage": [
       "展示图"
     ],
-    "animaCaption": "In a dark movie theater side view, one viewer hand enters from the lower foreground and interlocks fingers with one of her hands; no companion is visible.",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, blush, night, casual_clothes, holding_hands, one_viewer_hand_entering_from_lower_foreground_and_interlocking_fingers_with_her_hand_while_no_second_person_is_visible, pov_hand, interlocked_fingers, foreground_viewer_arm, movie_theater, profile, screen_light, subtle_blush, dark_interior, clear_sky, moonlight, shy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, holding_own_hands, hands_clasped_at_chest, second_person, visible_companion, male, extra_foreground_hand, nsfw, nude, explicit",
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Ayachi Nene interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment.",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・映画が終わる前のヤシの木】暗い劇場の中、怖いシーンが出てきた瞬間、夏目はそっと手を触れ、一瞬ためらった後、ただ指を組みました。あなたが手を振り返したとき、彼女の体は硬直しましたが、彼女は再び離れませんでした。画面の仄かな光で、気を配るふりをする彼女の横顔が浮かび上がった――「ここが暗くて、飲み物を取り違えないようにしただけ。映画が終わるまでは黙っていて……それから、先に手を離すのも禁止。」",
     "rating": "All"
   },
@@ -886,9 +886,9 @@
       "展示图",
       "头像"
     ],
-    "animaCaption": "On a laundromat bench, she rests her sleepy head on one cropped companion shoulder at the frame edge, with rows of tumble dryers behind.",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, leaning, looking_away, casual_clothes, adult, laundromat, sitting_on_bench, leaning_on_shoulder, one_cropped_companion_shoulder_at_frame_edge, dryer, rows_of_tumble_dryers_in_background, sleepy, winter, afternoon, clear_sky, medium_shot, window_light, soft_lighting, diffused_light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, second_full_person, visible_companion_face, floating_head, unsupported_lean, empty_laundromat, nsfw, nude, explicit",
+    "animaCaption": "Sitting perched on the edge of the bed with legs parted in breathless vulnerability, Shiki Natsume is completely nude, gripping the sheets tightly as her defined waist and firm bare breasts catch the fiery orange twilight streaming through the window. Her cheeks burn with an intense, adorable blush as her golden eyes look up with a mix of defiance and deep affection.",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_bare_breasts, pink_nipples, exposed_pussy, slender_waist, sitting_on_edge_of_bed_with_legs_parted, hands_gripping_bedsheet_edges, heavy_embarrassed_blush, biting_lower_lip, shy_defiant_gaze, bedroom_at_dusk, orange_and_purple_twilight_through_window, dramatic_rim_light, natural_gravity_body_deformation, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "storyJa": "【夏目・乾燥終了10分前】冬の午後、セルフサービスのランドリールームに残るのは、ドラムが回る低い音だけだ。夏目はベンチに座ってカウントダウンを見守った。眠くなってくると無意識にあなたの肩にもたれかかってきました。目が覚めて自分の姿勢に気づいた後、彼女はすぐには正座せず、回転する衣服に目を移しただけでした。――「あと十分だから、動くほうが面倒。しばらくそのままでいて……肩がつらくなったら、早めに言って。」",
     "rating": "All"
   },
@@ -932,11 +932,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, train_station, night, leaning, train, adult, empty_train, holding_sleeve, window_reflection, standing_close, subtle_blush, winter_night, clear_sky, close_up, profile, train_interior, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・最終路面電車のガラス反射】冬の夜、最後のトラムはほとんど空いていました。夏目はドアのそばに立ってガラスに映る景色を眺め、向きを変えたときに体がそっとあなたにぶつかりました。あなたが彼女をサポートした後、彼女は離れませんでした。その代わりに、馬車が揺れている間、彼女はあなたの袖を押さえていました。反射の中で二人はとても近くにいます――「降りるのは次の駅だから、急いで離さなくてもいい。あと、窓ばかり見ないで……そこには何も映ってないから。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she stands poised, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc057",
@@ -980,11 +980,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, blush, towel, swimsuit, large_towel, wet_hair, sitting_under_parasol, holding_hot_drink, reserved_smile, afternoon, clear_sky, upper_body, medium_shot, soft_lighting, diffused_light, shy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・波が引いたらバスタオル】泳ぎ終えた夏目さんは大きなバスタオルを肩に巻き、長い黒髪に水が滴ったまま傘の下に座っていた。彼女はあなたが手渡した温かい飲み物に気づきました。一瞬の沈黙の後、彼女はベンチの内側に移動し、タオルの角をあなたの足の上に置きました。――「海風、思ったより冷たい。近くに座るのは風よけのためだから……飲み物、おいしい。ありがとう。」",
     "rating": "All",
-    "animaCaption": "In a medium shot along the sandy shoreline with gentle ocean waves, she holds an open umbrella aloft with one hand with a gentle blush on her cheeks, under diffused overcast daylight."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc065",
@@ -1025,12 +1025,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black hair, long hair, yellow eyes, red hairclips, mole under eye, (solid plain burgundy hardcover book held vertically in both hands:1.75), blank book with absolutely no markings, book covering her mouth and nose, only shy yellow eyes visible above the book, library window, autumn afternoon light, close-up portrait, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, book below chin, book on table, unobstructed mouth, side profile, writing, letters, words, typography, title, symbols, graphic print, gibberish text, unreadable text, speech bubble, dialogue bubble, captions, subtitles, decorated book, printed book spine, open mouth visible",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・本のページに遮られない横顔】秋の午後、夏目は図書館の窓際に座って本を読んでいました。太陽の光が彼の長い黒髪に沿って本のページに降り注いでいました。彼女はあなたが本棚から覗いていることにすでに気づいていました。あなたが同じページで長時間立ち止まり、顔の赤い下半分を覆うまで、彼女は本を持ち上げませんでした。――「公共の場所で人をじっと見るのは失礼。ここに座りたいなら、こっちへ来て……不審者みたいに隠れないで。」",
     "rating": "All",
     "auditRevision": "round4-2026-07-22",
-    "animaCaption": "In a side-view composition between tall wooden bookshelves in the tranquil library, she turns the page of an open book with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc067",
@@ -1118,11 +1118,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, rain, night, blush, holding_hands, shared_umbrella, holding_arm, walking, rainy_night, wet_road, subtle_blush, close_distance, overcast, pov, close_up, in_love, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・半歩家まで傘を相合】夏の夜、雨が強くなってきました。夏目さんは傘をこちらに傾けますが、肩が濡れてしまいます。あなたは彼女を引き寄せました。最初は眉をひそめ、歩くのが不便だと言いましたが、自然と腕を強く抱きしめました。街灯が水面に長く反射する――「近づけば濡れないのは確か。この結論が成り立つのは、傘が小さいときだけ……家に着くまで離さないで。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a quiet room, she holds an open umbrella aloft with one hand with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc071",
@@ -1168,11 +1168,11 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, night, moonlight, mountain, camping, mountaintop, starry_sky, sitting_together, holding_thermos, milky_way, reserved_smile, clear_sky, full_body, wide_shot, starlight, warm_lighting, smile, happy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・星空の下で一度だけの約束】夏の夜、山の頂上で、夏目はテントの外に座って、あなたと一緒に天の川が昇るのを待っています。彼女は予報にある流星の方向を懐中電灯で示し、魔法瓶のカップを手に持った。最初の流れ星が現れた時、彼女は願い事をせず、ただ静かに君を見つめていた――「わざわざ連れてきたのは、あなたが好きそうだと思ったから。次に見たいものがあったら、素直に言って……また付き合うかは考えてあげる。」",
     "rating": "All",
-    "animaCaption": "In a wide full-body view in a quiet room, she sits gracefully with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc073",
@@ -1269,9 +1269,9 @@
       "头像",
       "CG"
     ],
-    "animaCaption": "A side-view medium shot shows her leaning close to a giant aquarium window, one hand touching the glass as she looks up at fish.",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, leaning, looking_back, aquarium, leaning_against, looking_away, large_glass_tank, blue_lighting, looking_up, one_hand_touching_aquarium_glass, profile, water_reflections, reserved_smile, afternoon, clear_sky, medium_shot, smile, happy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, close_up, face_crop, hands_out_of_frame, missing_aquarium_glass, nsfw, nude, explicit",
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment.",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・青い光の中で忘却のひととき】水族館の巨大なガラスのカーテンウォールの前で、夏目は周囲の環境を忘れることなく頭を上げて泳ぐ魚の群れを追いかけます。青い波紋が彼女の黒髪と目の下の泣きぼくろに広がった。彼女が正気に戻るまでに、あなたは彼女に二度電話しました。彼女はそっとガラスに寄りかかったが、口調はまだ穏やかだった――「魚のほうが誰かさんより静かなのは確か。でも……あなたがここにいても邪魔ではないから、もう少し付き合って。」",
     "rating": "All"
   },
@@ -1317,11 +1317,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, kimono, kneeling, smile, holding, tea_ceremony, holding_tea_bowl, tatami, subtle_blush, serene, afternoon, clear_sky, upper_body, medium_shot, window_light, gentle_smile, soft_eyes, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・ティーカップを渡した時の優しさ】秋の午後の茶室で、夏目は畳の上に膝をつき、その動作はほとんど細心の注意を払っていた。彼女は注文したお茶を入り口に最適な角度に回し、両手で渡してくれた。それから彼女は、彼らが近すぎることに気づきました。彼女は震えを隠すために目を下げた――「礼儀作法の練習をしているだけ。あまり深く考えないで。味は……口に合わなければ、もう一杯点ててもいい。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a quiet room, she cradles a warm steaming cup with both hands with a soft, reassuring smile, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc079",
@@ -1365,11 +1365,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, sitting, window_light, sunset, autumn, old_bookstore, wooden_ladder, holding_book, looking_down, subtle_blush, bookshelves, afternoon, clear_sky, medium_shot, profile, serious, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・古本屋のはしごで立ち止まる】秋の午後、夏目は古書店の木のはしごに立って、絶版になった本を漁っていました。彼女の長い黒髪は肩を越えて垂れ下がっていた。あなたが下のはしごを持っていたので、彼女は頭を下げて感謝しました。しかし、彼女は視線の角度のせいで突然顔を赤らめ、すぐに本で胸を隠しました。――「しっかり支えていればいいから、上を見ないで。見つかったら……第一章を貸してあげてもいい。」",
     "rating": "All",
-    "animaCaption": "In a side-view composition inside the warm cafe with polished wooden tables, she turns the page of an open book with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc081",
@@ -1411,11 +1411,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, lying, sunbeam, casual_clothes, washitsu, lying_on_cushion, thin_blanket, sleepy, tatami, spring_afternoon, afternoon, clear_sky, full_body, window_light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・和室での仮眠を黙って許可】春の午後、夏目は和室で旅行情報を整理していたところ、いつのまにか座布団に頭を乗せて眠ってしまいました。障子からはほのかな陽光が差し込んでいた。薄い毛布をかけてあげると、目は半分開いたものの起き上がろうとしませんでした。彼女は毛布の隅をそっと掴んだだけだった。――「眠っていたわけじゃない。目を閉じて考えを整理していただけ……もう掛けたなら、そばに座っていて。起きたら借りは返すから。」",
     "rating": "All",
-    "animaCaption": "In a wide full-body view in a private bedroom on soft bedding, she rests comfortably against soft pillows, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc083",
@@ -1601,11 +1601,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, sitting, smile, lake, holding, lakeside, picnic_blanket, holding_sandwich, picnic_box, summer, gentle_smile, breeze, afternoon, clear_sky, upper_body, medium_shot, happy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・ピクニックボックスの追加分】夏の湖畔で、夏目さんはきちんと準備されたピクニックボックスを開けました。中にはサンドイッチが2つとフルーツが入っていました。単なる誤算だったと彼女は言いましたが、最初の一口を食べたときのあなたの表情を注意深く観察しました。湖の風がテーブルクロスを波立たせ、彼女は飲み物を手渡した。――「塩、多すぎなかった？　口に合うなら、次も……作ってあげてもいい。これを恒例のデートにするって意味ではないけど。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a quiet room, she sits gracefully with a soft, reassuring smile, under soft ambient lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc093",
@@ -1694,14 +1694,14 @@
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "盛夏海滩阳光",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, swimsuit, blush, angry, hair_blowing, bikini, black_swimsuit, adjusting_strap, standing, windblown_hair, subtle_blush, summer, afternoon, clear_sky, full_body, calm, relaxed, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "usage": [
       "展示图"
     ],
     "storyJa": "【夏目・ビーチでの黒い水着】真夏のビーチで、夏目はシンプルな黒の水着を着て、肩紐を調整していました。あなたの視線に気づいた彼は、まず目で警告し、それから全体をはっきりと見えるように背筋を伸ばして立ち上がった。海風が彼女の長い黒髪をなびかせ、瞳はほんのり赤く染まっていた。――「先に言っておくけど、大げさな感想はいらない。……似合うと思っただけなら、普通にそう言って。」",
     "rating": "All",
-    "animaCaption": "In a wide full-body view along the sandy shoreline with gentle ocean waves, she stands poised with a gentle blush on her cheeks, under soft ambient lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc099",
@@ -1741,14 +1741,14 @@
     "weather": "晴",
     "camera": "主观狭窄空间近景",
     "lighting": "电梯应急顶光",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, night, leaning, looking_back, elevator, against_wall, looking_at_viewer, emergency_light, protective_arm, close_distance, subtle_blush, clear_sky, pov, close_up, overhead_light, nervous, blush, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "usage": [
       "展示图"
     ],
     "storyJa": "【夏目・エレベーター停止後の落ち着くプラン】秋の夜、突然エレベーターが止まり、夏目は隅に追いやられた。あなたは無意識のうちに彼女を守るために壁を支えていました。非常灯が点灯した後、彼女は落ち着いて通話ボタンを押した。それから彼女は、彼らが近づきすぎていることに気づき、呼吸が一瞬止まりました。――「救助にはもう連絡した。そんなに離れなくてもいい……ただ、この体勢のほうが安全なだけ。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a quiet room, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc102",
@@ -2030,11 +2030,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, bunny_suit, bunny_ears, high_leg_bunny_suit, black_pantyhose, sitting_on_lap, straddling_viewer, cleavage, heavy_blush, tsundere, tears_in_eyes, lounge, night, dim_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, normal_clothes, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・黒バニーガールは極度に恥ずかしい】プライベートプレミアムラウンジの革張りソファ。任務失敗の罰として、冷酷で傲慢なエージェント少女夏目は、ハイクロッチの超セクシーな漆黒のバニーガールボディスーツと極薄の黒ストッキングを着用させられる。彼女は顔を紅潮させてあなたの腕にまたがり、タイトなラテックスの服が彼女の驚くほど豊満な横乳と胸の輪郭を輪郭を描きます。極度の恥ずかしさで、目尻の泣きぼくろが霞んだ湿気の膜で覆われていた。彼女は細い手で胸を覆い、銀歯を食いしばって最後の弱い警告を発した。――「はあ？　本当に救いようのない変態ね。こんな服を着せて恥ずかしがらせるなんて……明日は覚えておきなさい。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc126",
@@ -2079,11 +2079,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked, straddling_viewer, sitting_on_lap, neck_kiss, heavy_blush, sweat, messy_hair, intense_look, car_interior, backseat, foggy_windows, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・大雨車両の絶対保有】荒れ狂う嵐の荒野で、エージェントは車両の後部座席から避難します。閉め切った窓は濃い霧と水滴で覆われ、車内は暗くて暑い。普段は冷たく堅い夏目も、この時は完全に変装を剥ぎ取り、裸で強引に腰にまたがった。濡れた長い黒髪が乱れて純白の鎖骨に張り付き、目頭の泣きぼくろは極度の興奮と感動で真っ赤に染まっていた。彼女はあなたの肩を両手でしっかりと抱き、激しく喘ぎながら、前かがみになって鎖骨に激しく噛みつきました。――「店長……ここの通信はもう完全に切れてる。今夜は、誰にも私たちの邪魔をさせないから。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she holds a sealed letter with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc128",
@@ -2237,12 +2237,12 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "(one single woman reflected in one large framed bathroom mirror:1.55), back view in foreground, her face visible only inside mirror reflection, 1girl, shiki_natsume, mole_under_eye, bath_towel, towel_slip, mirror_reflection, reflection, wet_hair, bare_shoulders, cleavage, bare_legs, heavy_blush, tears_in_eyes, tsundere, indoors, night, lantern_light, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, two separate women, twin, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・温泉浴衣を脱ぐと究極のコントラストが生まれる】窓の外には冷たく明るい月が高く垂れ下がる、古風な和風温泉宿。シャワーを浴びた夏目は巨大な半身鏡の前に立ち、温泉で半分濡れた白いバスタオル一枚を着て、静かに滑り落ちていた。鏡には彼女の完全に露出した肩と、激しくうねる官能的な雪のように白い肌の魅惑的な姿がはっきりと映っていた。突然後ろから抱きしめられた君を見て、彼女の目尻には水晶の水滴が垂れ、顔を赤らめた顔で鏡の中の君を見つめた。――「はあ？　あなた、絶対に時間を計って入ってきたでしょ。鏡越しに見ないで……この変態。」",
     "rating": "R15",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she stands poised with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc141",
@@ -2331,11 +2331,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, mole_under_eye, casual_clothes, bare_feet, sitting_on_sofa, holding_game_controller, pout, tsundere, blush, living_room, television_glow, night, cozy, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・アフターストーリー】大学を卒業して同棲を始めたある夜遅く、リビングのカーペットの上にスナック菓子が散乱していた。難しい2人協力型ゲームがテレビでプレイされています。あなたの「は？　今のは絶対、そっちの遅延！　ばかなの？　もう一回。今度負けたほうは、一週間皿洗いだから！」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc146",
@@ -2420,11 +2420,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, mole_under_eye, school_uniform, leaning_forward, trapping_viewer, whispering, tsundere, slight_smile, blush, clubroom, sunset, golden_hour, close_up, backlit, romantic_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・強烈な壁ドンコントラストと可愛らしさ】放課後の超自然協会事務局は閑散としており、窓の外の夕日は溶けた金色でした。夏目は静かにキーを回し、ドアを施錠した。彼女はあなたのオフィスの椅子まで歩き回り、椅子の背もたれの両側に手を置き、あなたを完全に押しのけました。彼女はわずかに前かがみになり、彼女特有の傲慢な息とともに黒髪が耳になびきます。目尻の泣きぼくろが夕日の逆光で危険でセクシーな魅力を醸し出している。――「ふん、午後ずっとほかの女の子ばかり見て、私のことは無視？　ここからは……私だけのために埋め合わせてもらうから。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with a gentle blush on her cheeks, as warm golden-hour sunlight illuminates the scene."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc153",
@@ -2468,11 +2468,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked_apron, apron_only, sitting_on_counter, legs_apart, bare_back, bare_legs, blush, embarrassed, tears_in_eyes, tsundere, cafe_interior, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・ツンデレのディフェンスラインは完全に崩壊した】深夜のスターライトカフェ閉店後、夏目はあなたに賭けに負けたため、非常に恥ずかしい「はあ？　本当に救いようのない変態ね。スマホで撮ったりしたら……明日は秘密裏に処分するから！」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc156",
@@ -2565,11 +2565,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, wet_clothes, wet_shirt, undressing, no_panties, sitting, bare_legs, heavy_blush, tears_in_eyes, tsundere, bathroom, steam, indoors, night, dim_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・びしょ濡れのシャツは完全にダメになった】エージェントの任務が終了した秘密の隠れ家では、バスルームが蒸気で満たされています。いつもは冷酷で毒舌だった夏目はベンチで完全にへたり込んでいた。彼女はぬるま湯に浸した白いシャツを着て、その豊満な体にぴったりと張り付いているだけだった。黒髪は濡れて鎖骨に張り付き、目尻の泣きぼくろは濃い霧の下でひどく赤くなっているように見えた。足を組み、「は？　この変態……ばか。」と弱々しく悪態をつきながらも、率先して熱い手を伸ばして首をしっかりと絡め、涙目でディープキスを歓迎する――。",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc161",
@@ -2614,11 +2614,11 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked, straddling, sitting_on_viewer, biting, neck_kiss, heavy_blush, sweat, messy_hair, intense_look, bedroom, bed, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・またがって座ってコントロールを失うことは間違いなく一線を越えています】深夜の散らかった寝室で、窓の外では雨が降っていた。普段は常に理性を保っている夏目が、この時は冷静な防御を完全に剥ぎ取った。彼女は服を脱ぎ、珍しく率先してあなたをベッドに押し倒し、汗を滴らせながらあなたの腰にまたがりました。細い手はしっかりと肩を抱き、目尻の泣きぼくろは極度の独占欲のせいで危険な魅力で輝いていた。彼女は激しく喘ぎながら、前かがみになってあなたの鎖骨に激しく噛みつきました。――「あなたは私のもの。何があっても、この先ずっと手放してあげないんだから……ばか。」",
     "rating": "R18",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc163",
@@ -2712,11 +2712,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, oversized_shirt, open_shirt, no_panties, sitting_on_table, bare_legs, cross_legged, holding_wine_glass, seductive_look, smirk, heavy_blush, kitchen, indoors, night, soft_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・バーでは絶対に独占的】深夜の閉店後の薄暗いカフェ。あなたの強引な要求に、夏目は服をすべて脱いで、あなたのゆったりとした黒いシャツだけを着ました。彼女は顔を赤らめて、少しひんやりとしたバーテーブルにあぐらをかいて座っていた。シャツの裾は絶対領域を覆うばかりで、色白でまっすぐな長い脚が無防備に重なり露出している。彼女はグラス半分の赤ワインを手に振っており、その目は少し酔っていますが、非常に色っぽくて強い独占欲を持っています。彼女はあなたを軽蔑するように目を細めています。目尻の泣きぼくろが赤面してて、どうしようもなくセクシーです。――「ねえ、この大変態。今夜は店に鍵をかけた。帰さないと言った以上……最後まで私に付き合う覚悟をして。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc167",
@@ -2759,12 +2759,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "(both wrists visibly tied together overhead with a wide black leather belt:1.75), belt loop and buckle clearly encircling wrists, arms fully extended, black tactical vest, safehouse sofa, utility straps, tense restrained pose, 1girl, shiki_natsume, mole_under_eye, arms_up, tactical_gear, undressing, bare_legs, cleavage, heavy_blush, tears_in_eyes, tsundere, sitting_on_sofa, safehouse, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, unbound wrists, casual clothes, free wrists, hands merely clasped, hands behind head, invisible restraint, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・セーフハウスソフトボンデージ絶対降伏】訓練中にあなたに「はあ？　この変態店長、そんな卑怯な手を使うなんて……自由になったら、絶対に秘密裏に処分してあげる。」",
     "rating": "R15",
     "auditRevision": "round3-2026-07-22",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc169",
@@ -2810,11 +2810,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, tactical_gear, torn_clothes, unzipped, cleavage, straddling_viewer, sitting_on_floor, heavy_blush, sweat, heavy_breathing, passionate_look, messy_hair, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・またがって座るエージェントスーツのバトルダメージ】熾烈な対決が終わったばかりの地下セーフハウスは、空気が煙とホルモンの熱で満たされていた。夏目の真っ黒なエージェントジャンプスーツは、襟から腹部まで引き裂かれ、内側の完全なラインが明らかになり、人々の血を騒がせました。彼女は床の上であなたにまたがり、汗が滴り落ち、黒髪が乱れて紅潮した頬に張り付いていました。彼女の目の隅にある泣きぼくろは、極度の興奮と感情のため、ほとんど狂ったような独占欲で輝いていました。彼女の細い手はあなたの首をしっかりと掴み、深いキスをし、耳元でささやきながら息を早くします。――「店長……任務は成功。ここからは、私が大切なものを全部取り戻す番。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc171",
@@ -2858,11 +2858,11 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked, straddling_viewer, sitting_on_lap, neck_kiss, heavy_blush, sweat, messy_hair, intense_look, car_interior, backseat, foggy_windows, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・密閉されたコンパートメントの究極の所有物】嵐の夜の真夜中、荒野にいたエージェントたちは車両の後部座席から避難した。閉め切った窓は濃い水滴で覆われ、車内は暗くて少し暖かかった。いつもは冷たく堅い夏目も、この時は完全に変装を脱ぎ捨て、裸であなたの腰にまたがった。濡れた長い黒髪が乱れて純白の鎖骨に張り付き、目尻の泣きぼくろは極度の感動と興奮で真っ赤に染まっていた。彼女はあなたの肩を両手でしっかりと抱き、率先して唇を合わせながら激しく喘ぎました。――「店長……ここの通信はもう完全に切れてる。今夜は、誰にも私たちの邪魔をさせないから。」",
     "rating": "R18",
-    "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she holds a sealed letter with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc173",
@@ -2907,11 +2907,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, office_lady, unbuttoned_shirt, skirt_lift, torn_pantyhose, black_pantyhose, sitting_on_desk, bare_legs, heavy_blush, tears_in_eyes, tsundere, indoors, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・職場OLの亀裂ハイエネルギー】シークレットサービス指令センターのオフィスは深夜には閑散としていた。寒い職場でOL夏目は顔を真っ赤にして冷たい机に座っています。彼女の体にあるプロ仕様のヒップ抱きスカートは腰まで持ち上げられています。彼女の脚のセクシーな薄い黒のストッキングは完全に引き裂かれ、白く繊細な絶対領域と太ももの皮膚が広範囲に露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc175",
@@ -2956,12 +2956,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "(black oversized button-up shirt:1.55), unbuttoned black shirt, bare legs, 1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, oversized_shirt, unbuttoned_shirt, no_panties, lying_on_bed, propped_up_on_elbow, bare_legs, cross_legged, seductive_look, slight_smile, heavy_blush, bedroom, indoors, morning_light, soft_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, white shirt, pale shirt",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・モーニングバキュームシャツ絶対独占】どこまでも怠惰な休日の朝、床から天井まで届く大きな窓から太陽の光が降り注いでいます。昨夜、二日酔いの後、夏目は散らかったベッドから目覚めました。彼女はあなたの真っ黒な長袖シャツをラフに着ているだけで、中は完全に真空でした。彼女の目はほのかに酔った怠惰と極度の魅力で満たされており、彼女は白いシーツの上に半分伸ばして横たわり、白くてまっすぐな脚を無防備に重ねて露出させていました。目尻の泣きぼくろが朝の壊れた光に照らされて、息を呑むほどセクシーです。彼女は眉を上げて、独占欲と傲慢な笑みを浮かべてあなたを見つめました。――「おはよう、この大変態。いつまで脚を見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
     "rating": "R15",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer with a soft, reassuring smile, under soft ambient lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc177",
@@ -3003,11 +3003,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, mole_under_eye, tactical_gear, unzipped, cleavage, trapped_by_viewer, leaning_against_wall, heavy_blush, tears_in_eyes, tsundere, bare_legs, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・タクティカルタイツを解くと必ず崩壊する】秘密諜報員の隠れ家でのステルス訓練中、夏目はあなたを「もう、この変態店長……重いから、少し離れて。これ以上からかったら、本気で怒るから。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc179",
@@ -3051,11 +3051,11 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, undressing, dress_pull, lying_on_bed, straddling_viewer, intoxicated, heavy_blush, tears_in_eyes, in_love, messy_hair, bedroom, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・二日酔いの服を脱ぐのはとても特別なこと】二人が暮らすアパートには深夜、赤ワインのグラスが散乱する。普段は理性を語るエージェント女子夏目が、今夜は酒の影響で完全に防御力を失っていた。彼女は率先してあなたをベッドに押し倒しました。彼女が着ていた私服のファスナーが、ひとりで乱暴に下まで引かれ、丸い肩の両側にぶら下がっていた。彼女は長い銀の髪を振り乱し、汗を滴らせながらあなたの腰にまたがっていた。泣きぼくろの目頭は、極度の独占欲と欲望のせいで危険な赤みを帯びて光っていた。彼女は激しく喘ぎながら、前かがみになって鎖骨に強く噛みつきました。――「あなたは私のもの。何があっても、この先ずっと手放してあげないんだから……ばか。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc181",
@@ -3099,11 +3099,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, wet_clothes, see_through_clothing, sitting_on_counter, legs_wrapped_around_viewer, bare_legs, heavy_blush, tsundere, open_mouth, bathroom, steam, indoors, lighting_from_above, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・濡れたベストは必ずディフェンスラインを突破する】暑い夏の夜のプライベートセーフハウスのバスルームは、シャワーを浴びただけで湯気で満たされます。普段は防御力が高く口も冷たい夏目が、今は顔を真っ赤にして少し冷たいシンクに運ばれます。彼女は、ぬるま湯に完全に浸かってほぼ半透明の、豊満な胸にぴったりと張り付いた小さな白いタンクトップを着ているだけで、中には何も入っていない。滑らかで繊細なすらりとした大きな脚が無防備に腰に絡みつき、瞳の端には水晶の水滴が垂れ下がり、大きな愛欲の衝撃に激しく震えている。彼女はあなたの首をしっかりと抱きしめ、恥ずかしそうにうめき声を上げながらディープキスを受け入れました。――「もう、この変態……服までこんなに濡らして。今夜は、乾くまでちゃんと付き合ってもらうから。」",
     "rating": "R18",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc183",
@@ -3207,11 +3207,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, yukata, kimono, clothes_pull, unbound_hair, lying_on_bed, bare_shoulders, cleavage, bare_legs, heavy_blush, tears_in_eyes, open_mouth, tatami, indoors, night, soft_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・温泉ゆかたで究極の秋を開く】夏祭りを終えた伝統的な温泉旅館では、窓の外には澄んだ星空と月影が見えます。風呂上がりの夏目は、ゆったりとした綿のバスローブを着て、香りの良い畳ベッドにそっと横たわっていた。高飛車に押さえつけられたせいで、浴衣の帯が完全に破れ、ドレス全体が腰までずり落ちて、真っ白な大きな胸、華奢な鎖骨、無防備な長い脚が無遠慮に白日の下に晒された。あまりの感情に、目尻の泣きぼくろが赤く染まった。彼女はあなたの首を弱く引っ掛け、喘ぎ声を上げながらあなたの要求を受け入れます。――「もう、この変態……浴衣をこんなに乱して。元に戻すまで、今夜は帰さないから。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she rests comfortably against soft pillows with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc187",
@@ -3304,12 +3304,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "plain concrete interrogation room walls, clean uninterrupted background, 1girl, shiki_natsume, mole_under_eye, tactical_gear, torn_clothes, unzipped, cleavage, sitting_on_chair, bound, legs_apart, black_pantyhose, heavy_blush, tears_in_eyes, tsundere, interrogation_room, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・取調椅子の柔らかな緊縛は必ず堕ちる】秘密諜報員の取調室は深夜、誰もいなくて、防音の重い鉄扉は施錠されていた。普段は飄々として頑固なエージェントの女の子夏目が、「もう、この変態店長。仕事を口実にするなんて……自由になったら、絶対に秘密裏に処分してあげる。」",
     "rating": "R15",
     "auditRevision": "round3-2026-07-22",
-    "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc191",
@@ -3356,11 +3356,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, latex_bodysuit, high_leg, unzipped, cleavage, straddling_viewer, sitting_on_lap, bare_legs, heavy_blush, smirk, intense_look, rooftop, cityscape, night, neon_lights, rim_light, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・漆黒のラテックスハイカットトップは非常に官能的です】深夜の繁華街の超高層ビルの屋上の端、足元には果てしなく広がるネオンの海とサイバー底流。夏目は今夜、絶対的な支配とタブーに満ちたダークなハイカットラテックスタイツに完全に着替えました。ラテックス素材が彼女の驚くほどふくよかな曲線にぴったりと張り付き、反射の下でSF的な官能的な光沢を醸し出します。彼女の襟のジッパーはへそまで引かれており、非常に深い胸の谷間と、翡翠のように滑らかな腹部の皮膚の広い領域が明らかになりました。屋上のガードレールの端で太股にまたがり、長い脚を組み、街のネオンに照らされた瞳の隅にある泣きぼくろが、危険でセクシー極まりないお茶目な笑みを浮かべている。――「店長……今夜、この高さで私から出す指令は一つ。私のそばから離れないこと。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing beside the safety fence on the open school rooftop, she sits gracefully with glistening, emotive eyes, with soft radiant backlighting tracing her silhouette."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc193",
@@ -3451,11 +3451,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, mole_under_eye, virgin_killer_sweater, backless_sweater, sideboob, bare_back, bare_legs, sitting_on_floor, cross_legged, heavy_blush, tears_in_eyes, tsundere, safehouse, fireplace, night, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・極端な横乳の処女キラーセーター】寒い冬の夜を守る秘密の隠れ家。寒い防御線を脱いだ夏目は、あなたのいたずらのリクエストに応じて、背中が完全に空洞で防御力のないグレーのヴァージンキラーニットセーターを着ました。彼女は顔を赤らめ、暖炉の明かりに背を向けてカーペットの上にあぐらをかいて座っていた。セーターの両側に露出した素晴らしい横乳と、完全に露出したセクシーな裸の背中が、暖炉の明かりの下で魅惑的な暖かい赤面で輝きました。あなたの横暴な背後からの愛撫に、彼女の目尻の泣きぼくろが激しく震えました。彼女は頭を向けて、頑固だが貪欲な内気で怒った表情であなたを見つめました。――「はあ？　この変態、いったいどこを見てるの？　これ以上いたずらしたら……今夜はここから帰さないから。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she sits gracefully with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc197",
@@ -3500,12 +3500,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "(black evening gown visibly open and unzipped:1.55), formal gown with high slit, gown fabric spread across the bed, 1girl, shiki_natsume, mole_under_eye, evening_gown, dress_unzipped, bare_back, sideboob, cleavage, high_slit, black_pantyhose, lying_on_bed, heavy_blush, tears_in_eyes, open_mouth, hotel_room, night, cityscape, soft_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pajamas, nightgown, casual sleepwear, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・ハイスリットのイブニングドレスが究極の秋を演出】高級宴会後の一流ホテルのプレジデンシャルスイート。窓の外には、賑やかな街の無限のネオンが広がっています。普段は飄々として上品な夏目君が、あなたにそっと大きなダブルベッドに押し倒されました。彼女の豪華な黒い背中の開いたハイスリットのシルクのイブニングガウンの背中のジッパーがあなたによって完全に外され、ガウン全体が彼女のウエストまでゆるく落ち、彼女の美しい裸の背中と、非常に直線的で赤面した豊満な横乳の広い領域が明らかになりました。彼女の脚にはセクシーな極薄の黒ストッキングが光の下で艶めかしい光沢を放っています。目尻の泣きぼくろが真っ赤に染まっていた。彼女はあえぎ、うめき声​​を上げながらあなたの首を力なく抱きしめました。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
     "rating": "R15",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she looks forward toward the viewer with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc199",
@@ -3602,11 +3602,11 @@
       "新手推荐",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, office_lady, unbuttoned_shirt, pencil_skirt, skirt_lift, torn_pantyhose, black_pantyhose, lying_on_bench, bare_legs, heavy_blush, tears_in_eyes, tsundere, open_mouth, locker_room, indoors, night, shadows, from_below, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・ビジネス服装のコントラスト】深夜、誰もいない会社役員更衣室には暖かいランプだけが残されていた。革張りのベンチの真ん中に夏目が横たわっていた。彼女の腰を覆う平らな黒のスカートは腰までずり落ち、薄い黒のストッキングには引っ張られた際に大きな亀裂が生じ、迫りくる肌が露出していた。彼女は赤い顔を覆うために手を上げ、目の端の泣きぼくろが指の間でわずかに震えた。彼女の呼吸は明らかに乱れていたが、それでも彼女の口調は力強かった。――「ストッキングをこんなにして……明日、ちゃんと弁償して。今夜のことまで、何もなかったふりはさせないから。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she rests comfortably against soft pillows with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc216",
@@ -3656,11 +3656,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, lying_on_couch, trapping_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, breakroom, indoors, night, dim_lighting, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目】【ナツメ・休憩室のエアコン故障と効率の喪失】閉店後のカフェ・ステラの従業員休憩室。連勤のせいで少し脱力した様子で狭いシングルソファに横たわっているナツメは、看板娘の制服をすでに脱ぎ捨て、中には下着を一切身に着けていない真空状態の極薄な黒いキャミソールとタイトなショートパンツ一枚だけを纏っていた。部屋のエアコンが壊れているため、彼女の全身は情動的な微熱の赤みに包まれている。あなたがドアを開けて入ってきた時、彼女は起き上がろうとしたものの、低血糖による目眩のせいで力なくソファに倒れ込み、その勢いであなたの首に両手を回して完全に自分の方へと引き寄せた。彼女は冷淡な金の瞳を少し伏せ、耳の裏まで真っ赤に染まっているにもかかわらず、相変わらず短く鋭い口調で羞恥を隠していた――「……勘違いしないで。私はただ、この方が起き上がる動作として最も効率的だと思っただけ。入ってきたからには、大人しく私のクッションになりなさい。大変態、変なところ見ないで……じゃないと本当に秘密処刑にするわよ」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she rests comfortably against soft pillows, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc223",
@@ -3712,11 +3712,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_cafe_uniform, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, see_through_clothing, whipped_cream, cleavage, bare_legs, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, kitchen, indoors, night, dim_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目】【ナツメ・閉店後キッチンの絶対的効率洗浄】深夜、完全に営業が終了し、誰もいないカフェ・ステラの厨房調理室。ナツメは少しやる気なさそうに新シーズンのデザート作りを試していたが、手元の生クリームスプレーが突然気圧故障を起こし、大量の濃厚な白いホイップクリームが一瞬にして広範囲に噴射され、彼女の胸元の白シャツと精緻な鎖骨を直接覆い尽くしてしまった。薄手の仕事用白シャツは、水分を含んだ瞬間に溶けるように体に張り付き、中の繊细な黒レースの下着の豊かな輪郭が完全に露出している。現場を効率的に清掃するため、彼女は唇をきゅっと結び、極めて大胆にステンレス調理台の脇にいるあなたの大腿の上に跨り、タオルを掴んであなたの頬を拭いながら、完全に真っ赤になった耳の裏と、起伏のない冷淡な声で動揺を隠していた――「……勘違いしないで。私はただ、この方法で洗浄するのが最も効率的だと思っただけ。原料の浪費はすでに発生してしまったのだから、その場で大騒ぎするのは清掃速度を低下させるだけ。大変態、変なところ見ないで……特に私の襟元、本当に秘密処分にするわよ」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she sits gracefully, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc225",
@@ -3814,11 +3814,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, baseball_cap, choker, jacket, jeans, arcade, arcade_game, neon_lighting, purple_glow, night, red_ears, subtle_blush, slight_smile, holding_item, cool_style, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目】【ナツメ・サイバーネオンのアミューズメント街とストリートの触動】深夜、光と影が交錯し、サイバーネオンの色彩に満ちたレトロなゲームセンター。カフェの制服を脱いだナツメは、今日はずいぶんとマニッシュでカジュアルな服装をしていた。真っ黒なベースボールキャップを艶やかな黒髪に斜めに深く被り、首元にはクールな細い黒のチョーカー、スタイリッシュな長袖のジャケットときれいめのタイトなジーンズが彼女の美しい脚のラインを描き出している。彼女は極めて効率的で鋭敏な手つきで音ゲーのマシンを操作することに全神経を集中させていた。絶対的に完璧なスコアでクリアした後、彼女はわずかに顔を巡らせ、目尻の泣きぼくろがピンクパープルのネオン光の下で極めて個性的な光を放っていた。彼女はマシンから吐き出された限定版のぬいぐるみをあなたの胸にぐいと押し付け、起伏のない、しかし少し不器用で冷淡な口調で動揺を隠した――「……持ってて。これはただのクリアの副産物、バッグに入れると場所を取るし、余計な重量になるだけ。そんな感動したような顔しないで……大変態」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc229",
@@ -4070,11 +4070,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, casual_clothes, holding_cup, telescope, rooftop, stargazing, night, stars, moonlight, slight_smile, red_ears, subtle_blush, calm_atmosphere, romantic_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目】【ナツメ・天文台のオリオン座の囁き】深秋の澄んだ夜、学校の天文台の屋上。ナツメは珍しく居眠りせず、望遠鏡の焦点を合わせることに集中していた。あなたがホットココアを二つ持って上がってきた時、彼女は振り返らずに手を差し出したまるで前から待っていたかのように。オリオン座が接眼レンザに鮮明に現れると、彼女は珍しく淡淡的な微笑みを見せ、星を指差しながら感情のない口調で解説した――「あれはベテルギウス。赤色超巨星で、地球から約700光年離れている。つまり、今私たちが見ている光は、700年前に放たれたもの」彼女は少し間を置き、まぶたを少し伏せ、月光の中で耳の裏がそっと赤く染まり、「……700年前の光だって今に届くのよ。บาง言葉は……口に出すべきじゃないかしら。大バカ者」",
     "rating": "All",
-    "animaCaption": "In a close-up framing beside the safety fence on the open school rooftop, she cradles a warm steaming cup with both hands with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc245",
@@ -4413,8 +4413,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, high_angle_diagonal_shot, 1girl, solo, adult_shiki_natsume, black_hair, very_long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_panties, black_thighhigh_stockings, sitting_on_a_locker_room_bench, one_knee_raised_toward_the_foreground_while_adjusting_a_stocking, embarrassed_direct_eye_contact, white_lockers_and_shower_room_behind_her, soft_indoor_light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs01",
@@ -4426,7 +4426,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs01-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a quiet room, she sits gracefully with glistening, emotive eyes, under soft ambient lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc272",
@@ -4507,8 +4507,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, (bright_red_qipao), (crimson_china_dress), cinematic_16:9_composition, tilted_full_body_standing_portrait, 1girl, solo, shiki_natsume, natsume_official_qipao, black_hair_arranged_in_elegant_twin_braided_buns, yellow_eyes, two_red_hairclips, mole_under_eye, red_flower_hair_ornament, vivid_scarlet_silk_fabric, elaborate_metallic_gold_floral_embroidery_and_gold_trim, high_side_slit, black_thighhigh_stockings_with_visible_garter_straps, (standing_upright), back_against_a_plain_wooden_apartment_door, (both_hands_clasped_between_her_thighs), hands_at_skirt_hem, arms_hanging_down, blushing_direct_eye_contact, warm_indoor_light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, navy qipao, navy dress, blue qipao, blue dress, green qipao, green dress, black qipao, dark dress, hands at chest, clasped hands at chest, lying, reclining, sitting, floor pose, cabinet, red vines, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs04",
@@ -4520,7 +4520,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a quiet room, she stands poised with glistening, emotive eyes, under soft ambient lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc274",
@@ -4754,9 +4754,9 @@
     ],
     "story": "【成年 After Story · 夏目 · 花火散尽的秘密余温】夏日祭典的最后一发巨大花火在空中散尽，人群的欢呼声渐渐变为离去的脚步声。夏目穿着深色浴衣，拉着你的袖子逆着人潮拐进神社主殿后方的古老仓库阴影里。远离灯笼的光线，只有远处零星的花火余烬映在她金色的瞳孔里。她松开你的袖子，却没有后退，反而往前迈了半步。浴衣的襟口在奔跑中微微敞开，露出了锁骨和泪痣旁泛红的肌肤。她抬眼望着你，呼吸有些乱，却还是努力维持着平静的语调——「人太多了……在这里等他们走完再回去。」然而她没有再说话，只是静静地靠近你，直到浴衣的腰带被你轻轻一拉便散开。她闭上眼，睫毛在花火余烬的微光中颤动——「只是今晚……可以不必马上回家。」",
     "storyJa": "【夏目・大人のAfter Story・花火が終わった後の秘密の余韻】夏祭りの最後の巨大な花火が夜空に散り、人々の歓声が次第に遠ざかっていった。夏目は濃い色の浴衣を着て、あなたの袖を引いて人混みを逆流し、神社の本殿裏手にある古い倉庫の影の中へと入っていった。提灯の明かりは届かず、遠くの花火の残り火だけが彼女の金色の瞳に映っていた。彼女はあなたの袖を離したが、後退せず、むしろ半歩前に出た。走るうちに浴衣の襟が少し緩み、鎖骨と泣きぼくろの周りの赤くなった肌がのぞいていた。彼女はあなたを見上げ、息が少し乱れていたが、それでも平静を装った声で言った——「人が多すぎる……ここで彼らが帰り終わるまで待とう。」しかし彼女はそれ以上何も言わず、ただ静かにあなたに近づき、あなたが帯をそっと引くと浴衣がはだけた。彼女は目を閉じ、まつげが花火の残り火の中で震えていた——「今夜だけは……すぐに家に帰らなくてもいい。」",
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, nude, yukata, open_yukata, bare_shoulders, cleavage, night, fireworks, shrine_backyard, wooden_storehouse, distant_festival_noise, moonlight, intimate, eye_contact, sensual, close_up, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
-    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she strolls forward with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, intimate_bedroom_setting, warm_bedside_lamp_lighting, soft_shadows, intense_flustered_blush, parted_lips, natural_gravity_body_deformation, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
+    "animaCaption": "Reclining gracefully in intimate private quarters with warm romantic lighting, Shiki Natsume is completely nude with soft ambient light tracing her bare breasts, slender waist, and flushed cheeks in breathless vulnerability."
   },
   {
     "id": "sc295",
@@ -4802,9 +4802,9 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, nude, yukata, open_yukata, wet_hair, bare_shoulders, cleavage, bare_legs, sitting_on_bed, hotel_room, night, station_platform_light, intimate, eye_contact, sensual, close_up, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, intimate_bedroom_setting, warm_bedside_lamp_lighting, soft_shadows, intense_flustered_blush, parted_lips, natural_gravity_body_deformation, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "storyJa": "【夏目・大人のAfter Story・駅前旅館の最後の夜】旅行最終日、終電を逃した二人は小さな駅の近くの古い旅館で最後の一室を見つけた。部屋は狭く、窓は駅のホームに面しており、夜になると数少ない灯りだけが残っていた。夏目は風呂から上がり、旅館の浴衣を着て、タオルで濡れた黒い髪を拭いていた。彼女は窓辺に立ってしばらく外を眺め、それから振り返ってベッドの端に腰かけた。浴衣の裾が座った拍子に少し開き、細い脚のラインが覗いた。彼女は隣の場所を軽く叩き、旅特有のくつろいだ口調で言った——「ベッドは大きくないけど……二人で寝るには十分。ただし、変に動かないって約束して。」タオルを脇に掛け、顔を向けてあなたを見た。濡れた髪が首に貼りつき、水滴が鎖骨を伝って落ちていった。窓の外のホームの灯りが彼女の瞳の中で微かに揺れていた。彼女は低い声で付け加えた——「明日には帰るけど……今夜は少なくとも暖房が十分効いてるから。」",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she rests comfortably against soft pillows, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Reclining gracefully in intimate private quarters with warm romantic lighting, Shiki Natsume is completely nude with soft ambient light tracing her bare breasts, slender waist, and flushed cheeks in breathless vulnerability."
   }
 ]

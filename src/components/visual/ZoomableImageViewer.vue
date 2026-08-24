@@ -192,6 +192,10 @@ function stopPan(event: PointerEvent) {
   cursor: grabbing;
 }
 
+.zoomable-image-viewer.is-panning .zoom-transform-layer {
+  transition: none;
+}
+
 .zoom-transform-layer {
   position: relative;
   display: flex;
@@ -201,7 +205,7 @@ function stopPan(event: PointerEvent) {
   max-height: 100%;
   transform: var(--zoom-transform, none);
   transform-origin: center center;
-  transition: transform 0.08s linear;
+  transition: transform var(--motion-control) var(--ease-out);
 }
 
 .skeleton-placeholder {

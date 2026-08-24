@@ -144,11 +144,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, sunset, pleated_skirt, school_rooftop, railing, ocean_view, holding_skirt, vulnerable_expression, looking_at_viewer, clear_sky, upper_body, medium_shot, golden_hour, backlighting, rim_light, nervous, blush, rooftop, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sitting_on_rooftop_bench, holding_bento_box_with_wooden_chopsticks, feeding_viewer_gesture, shy_sweet_blush, looking_at_viewer, school_rooftop, clear_blue_sky_with_drifting_clouds, gentle_wind_blowing_skirt_and_ribbons, warm_afternoon_sunlight, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
     "storyJa": "【寧々・屋上の秘密を教えてください】放課後の屋上は夏の夜風のせいで特に静かで、遠くの海は夕焼けの光の最後の層を飲み込んでいた。寧々は手すりにつかまり、表現するのが怖かった悩みについて話している途中で、あなたの視線を気にして緊張しながらスカートの角をつねっています。彼女は深呼吸をした、そしてついに逃げなかった――「何もかも解決してほしいわけじゃないんです……ただ、あなたになら本当の私を知ってもらってもいいって、そう思っただけで。」",
     "rating": "All",
-    "animaCaption": "In a medium shot beside the safety fence on the open school rooftop, she looks forward toward the viewer with a gentle blush on her cheeks, as warm golden-hour sunlight illuminates the scene."
+    "animaCaption": "On the sunlit high school rooftop during lunch break, Ayachi Nene sits on a wooden bench holding a colorful bento box, offering a bite with wooden chopsticks while blushing endearingly with a shy, affectionate gaze. The gentle afternoon breeze billows through her low twintails and pleated school uniform skirt against a crisp blue sky."
   },
   {
     "id": "sc004",
@@ -383,12 +383,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, (large plain pink hardcover book held upright in both hands directly in front of her mouth:1.75), both hands gripping book edges, only her shy eyes peeking over the top edge, window-side cafe booth, one white coffee cup on table, golden afternoon light, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, writing, letters, words, typography, title, symbols, graphic print, gibberish text, unreadable text, speech bubble, dialogue bubble, captions, subtitles, illustrated book cover, magazine on table, drinking coffee, book below mouth",
+    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_oversized_cream_knit_sweater, holding_steaming_latte_mug_with_both_hands, sitting_by_cafe_window, gentle_loving_smile, warm_blush, starlight_cafe_interior, rain_streaks_on_windowpane, warm_wooden_table_reflections, cozy_amber_lighting, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・コーヒーカップの横を覗いてください】秋の午後、寧々さんは窓際に座って軽い漫画を読んでいましたが、コーヒーの熱さで時折表情が見えなくなりました。彼女は、あなたが向かい側から自分を見ていることにずっと気づいていましたが、わざとさらに2ページめくって目を上げ、アホ毛は不満そうに首を振りました。あなたが目をそらすと、彼女はデザートをテーブルの中央に押し込みます――「そんなにじっと見つめるのは失礼ですよ。お詫びに、このケーキは私と半分こです。」",
     "rating": "All",
     "auditRevision": "round4-2026-07-22",
-    "animaCaption": "In a medium shot inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as clear window sunlight streams across the frame."
+    "animaCaption": "Inside the warm Starlight Cafe on a rainy afternoon, Ayachi Nene sits by the window wearing a cozy cream knit sweater, cradling a steaming latte mug between both hands with an intimate, radiant smile. Raindrops trace soft patterns down the glass behind her as warm ambient lighting reflects on the wooden table."
   },
   {
     "id": "sc010",
@@ -771,12 +771,12 @@
       "展示图",
       "壁纸"
     ],
-    "prompt": "(medium close-up:1.55), (face clearly visible:1.45), whale shark swimming overhead, aquarium tunnel, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, soft_lighting, looking_back, aquarium, reflection, aquarium_tunnel, whale_shark, blue_lighting, looking_up, excited, holding_camera, afternoon, clear_sky, window_light, calm, relaxed, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, green_cafe_vest_and_white_blouse, holding_coffee_pot_and_pouring_steaming_drip_coffee_into_porcelain_cup, concentrated_serene_expression, starlight_cafe_wooden_counter, rows_of_coffee_beans_and_antique_grinders, warm_cafe_lamp_glow, cinematic_medium_close-up, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・ジンベエザメが頭上を泳ぐ中】水族館の青い光が廊下に溢れ、巨大なジンベエザメがガラスドームの中をゆっくりと泳ぎます。寧々は遠慮することも忘れてグラスに身を寄せて追いかけた、その紫色の瞳が海水で輝いているようだった。彼女は正気に戻り、あなたが自分を撮影していることに気づき、すぐにカメラを遮ろうと手を伸ばしましたが、笑いをこらえることができませんでした。――「私ばかり撮るのは禁止です。主役はジンベエザメなんですから。せめて……次の一枚は、私と一緒に写ってください。」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a wide full-body view in a quiet room, she turns back over her shoulder, as clear window sunlight streams across the frame."
+    "animaCaption": "Behind the dark wood counter of Cafe Stella, Shiki Natsume precisely pours steaming hand-drip coffee from a slender kettle into a white porcelain cup, her focused golden eyes framed by her signature black headband. The rich aroma of coffee beans and the warm ambient glow of brass lamps fill the cozy frame."
   },
   {
     "id": "sc027",
@@ -819,11 +819,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, night, pajamas, lying_on_bed, holding_phone, pillow, shy_smile, quiet_night, intimate_call, late_night, clear_sky, close_up, warm_lighting, screen_light, melancholic, teary_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pointed_witch_hat_with_pink_ribbon, black_and_pink_witch_dress, holding_silver_magic_compact_mirror, glowing_purple_butterfly_spirits_fluttering_around_hands, confident_mysterious_smile, starlight_cafe_attic_at_night, ancient_astronomical_telescope_and_star_charts, cool_moonlight_beam, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Inside the dimly lit attic above Cafe Stella under a starry night, Ayachi Nene holds her glowing silver compact mirror with both hands, dressed in her intricate black and pink witch costume. Iridescent purple butterfly spirits flutter off the mirror's glass into the air around her, her eyes twinkling with magical mystique under the cool blue moonlight beam."
   },
   {
     "id": "sc029",
@@ -961,9 +961,9 @@
     "usage": [
       "展示图"
     ],
-    "animaCaption": "At dawn in a furnished art studio, she paints a starry night sky on a front-facing canvas, with brushes and art supplies around the easel.",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, golden_hour, art_room, painting, holding_brush, painting_starry_sky_on_front_facing_canvas, art_supplies_around_easel, paint_on_hair, dawn, tired_smile, canvas, morning, clear_sky, upper_body, medium_shot, window_light, serious, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, blank_canvas, canvas_facing_away, painting_on_easel_frame, holes_in_easel, deformed_easel, nsfw, nude, explicit",
+    "animaCaption": "Sitting on a high wooden stool by the bar counter after Cafe Stella has closed for the night, Shiki Natsume rests her chin upon her folded arms on the polished wood with a sleepy, affectionate smile. The warm amber glow from vintage pendant lamps illuminates the quiet, empty cafe interior around her.",
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, green_cafe_vest_and_white_blouse, sitting_on_high_stool_after_closing, resting_chin_on_arms_folded_on_counter, exhausted_gentle_smile, soft_blush, cafe_stella_after_hours, dim_warm_pendant_lights, empty_tables_and_chairs, cozy_night_atmosphere, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・夜明けまで星空を描いて】春の美術室では、寧々さんがクラブのポスターを完成させるために、昨夜撮った星空を一晩かけて描きました。朝の光が入ってきたとき、彼女はまだ最後の星の色を調整しており、彼女の長い銀の髪は青と紫の絵の具の数筋で汚れていました。あなたが彼女のためにブラシを取り上げると、彼女は疲れたように身をかがめました。――「あと少しで完成するんです……分かりました、五分だけ休みます。起きたら、あなたが最初に完成品を見てくださいね。」",
     "rating": "All"
   },
@@ -1054,12 +1054,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, looking_back, sad, rainy_street, umbrella, teary_eyes, wet_road, street_lamp, reconciliation, afternoon, overcast, medium_shot, over_shoulder, soft_lighting, diffused_light, melancholic, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
+    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, lying_on_stomach_on_soft_futon, propping_chin_on_hands, looking_up_with_loving_teary_eyes, heavy_blush, parted_lips, bedroom_at_night, warm_bedside_lamp_glow, soft_shadows, natural_gravity_body_deformation, medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "storyJa": "【寧々・三歩歩いて引き返した】口論後の雨の道路で、寧々は向きを変えて立ち去りました。彼女は三歩進みましたが、続けることができませんでした。彼女は街灯の下に立って、あなたが後ろから呼ぶまで傘の柄を握りしめていましたが、その後、不機嫌そうに振り返りました。雨が傘の端に沿ってカーテンに落ち、彼女はついに悲しみの本当の理由を明らかにしました。――「勝ちたいわけじゃないんです。ただ、いつかあなたが、私の説明さえ聞いてくれなくなるのが怖くて。」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a medium shot along the quiet city street, she holds an open umbrella aloft with one hand, under diffused overcast daylight."
+    "animaCaption": "Lying comfortably on her stomach across a soft futon in her private bedroom, Ayachi Nene is completely nude, propping her chin in her hands while her fair breasts press gently against the mattress. Her silken silver twintails frame her intensely blushing face as her moist purple eyes look up with absolute love and adoration in the warm bedside glow."
   },
   {
     "id": "sc040",
@@ -1148,11 +1148,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cherry_blossoms, blush, petals, kissing, school_uniform, first_kiss, holding_hands, heavy_blush, spring, morning, clear_sky, close_up, face_focus, window_light, smile, happy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・桜吹雪のファーストキス】突然、桜並木に突風が吹きました。寧々はヘアゴムを押さえ、勇気を振り絞ってつま先立ちであなたにキスしました。花びらが散ったとき、彼女は自分が本当に何をしてしまったのかに気づきました。一瞬で顔全体が真っ赤になり、どこに手を付けたらいいのか分からなくなった。あなたが彼女の名前を呼ぶとすぐに、彼女はパニックになってあなたの手を握った――「私一人だけ恥ずかしがらせるのは禁止です！　今のは事故じゃありません……だから、あなたもちゃんと応えてください。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing under blooming cherry blossom trees in the park, she reaches forward and gently clasps the viewer's hand with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Ayachi Nene interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc052",
@@ -1196,12 +1196,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, (one single full-frame illustration:1.8), side view, Nene and one partial dark-haired male standing in the same scene, male face beside her cheek giving one gentle cheek kiss, their shoulders visible together, her hand clasping his hand, school rooftop chain-link fence, starry summer night, shy happy blush, medium close-up, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, beach, ocean, sand, picnic blanket, 2girls, multiple girls, extra girl, duplicate character, cloned character, identical twins, background person, second white-haired girl, two female faces, girl kissing girl, split screen, comic panel, manga panel, triptych, storyboard, inset portrait, picture-in-picture, frame border, clone, collage, multiple views, close-up inset",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, sitting_on_stairs_landing_in_school, resting_elbows_on_knees, holding_canned_warm_coffee_with_both_hands, soft_thoughtful_glance_at_viewer, faint_smile, afternoon_sunlight_filtering_through_stairwell_window, concrete_steps_texture, cinematic_medium_shot, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・屋上の星空の下二度目の約束】夏の夜、屋上に吹く風はとても軽いです。寧々はあなたの肩に寄りかかって星を数えます。数えの途中で、彼女はいつも同じものをもう一度数えます。あなたは、彼女がただ一人の時間を引き延ばしたかっただけだと明らかにしました。彼女はただ頭を上げてあなたの顔の横にキスをし、熱くなった顔をあなたの肩に隠しました。――「見つかってしまったなら仕方ありませんね。じゃあ約束です。次の流星群も一緒に見て、この場所を誰にも取らせないこと。」",
     "rating": "All",
     "auditRevision": "round5-2026-07-22",
-    "animaCaption": "In a close-up framing beside the safety fence on the open school rooftop, she reaches forward and gently clasps the viewer's hand with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Sitting relaxed on the concrete landing of the quiet school stairwell during break, Shiki Natsume cradles a warm can of coffee between both hands, resting her elbows on her knees. Her sharp yellow eyes soften into a gentle, thoughtful gaze as warm sunlight filters through high stairwell windows, catching her dark headband and sleek black hair."
   },
   {
     "id": "sc054",
@@ -1245,11 +1245,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, smile, looking_back, holding, close_up, shared_blanket, embracing, blue_hour, first_light, ocean, sleepy_smile, dawn, clear_sky, morning_light, gentle_smile, soft_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・日の出前に体温を借りた】夏の旅行の最後の夜、あなたはビーチに座って日の出を待っていました。夜風は思ったより冷たかったです。寧々は毛布の半分をあなたに渡し、あなたの腕の中で丸まって潮の音を聞きました。空が白み始めると、彼女は眠そうな紫色の目を上げた――「一緒に夜明けを待つって、こんな感じなんですね。次は徹夜じゃなくてもいいです……目を覚ましたとき、あなたが隣にいてくれれば。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing along the sandy shoreline with gentle ocean waves, she turns back over her shoulder with a soft, reassuring smile, under soft ambient lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc056",
@@ -1337,11 +1337,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, wet_clothes, wearing_borrowed_coat, under_eaves, caring, vulnerable_expression, afternoon, overcast, medium_shot, soft_lighting, diffused_light, blush, shy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・大雨の中での学生服の上着】学校が終わる頃に激しい雨が降りました。寧々さんの制服の上着は雨で濡れ、寒さで肩を縮めた。あなたは急いで駆け寄り、彼女の体にコートを掛けました。最初はあなたが風邪をひくのではないかと心配していましたが、二人で軒下に隠れられるのを確認してからは安心しました。雨の音の中、彼女はコートの前を握りしめた――「探しに来てくれて、ありがとうございます。服が濡れたことは平気です……ただ、さっき一人で立っていたとき、少しだけ怖くて。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with a gentle blush on her cheeks, under diffused overcast daylight."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc064",
@@ -1383,12 +1383,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(one white-haired girl lying with her head on a male lap:1.65), visible dark male trousers beneath her head, male hand gently touching her hair, closed book on her chest, POV looking down, (POV lap pillow:1.55), her head resting on viewer thighs, lying down, closed book resting on her chest, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, closed_eyes, smile, shy, pov, casual_clothes, lap_pillow, book_on_chest, gentle_smile, living_room, autumn, afternoon, clear_sky, close_up, window_light, soft_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, duplicate character, cloned character, identical twins, background person, second white-haired girl, female lap, two female faces",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・午後の膝枕と目を閉じる許可】秋の午後、リビングルームはとても静かでした。寧々はあなたの膝の上で本を読んでいました。数ページめくった後、彼女はとても眠くて目を開けることができませんでした。彼女はあなたが自分を見下ろしていることに気づき、いつものようにパニックになって逃げるのではなく、ただ本を胸に置き、ゆっくりと紫色の目を閉じました。――「見てもいいですけど、寝ている間に変なことをしたらだめですよ。目が覚めてからも……すぐには手を離さないでください。」",
     "rating": "All",
     "auditRevision": "round3-2026-07-22",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she turns the page of an open book with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc066",
@@ -1430,11 +1430,18 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, windblown_hair, ocean, sunset, rim_light, clear_sky, full_body, over_shoulder, golden_hour, backlighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "@rella, masterpiece, best quality, pristine anime aesthetic, 1girl, solo, adult, ayachi nene, purple_eyes, silver_hair, ahoge, sleek_black_strappy_bikini, standing_in_sunset_shallow_surf, looking_back_with_alluring_glance, flaming_orange_and_purple_twilight, mirror_like_wet_sand_reflections, sparkling_sea_spray_particles, wide_angle_ocean_horizon, volumetric_sunbeams, floating_stardust_particles, translucent_rim_lighting, extreme_depth",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・夕日の中での水着の後ろ姿】夕暮れの海岸で、薄いコートを着て前を歩いていた寧々が突然呼び止められました。振り返ると、夕日が濡れた髪の先と水着の輪郭を金色に輝かせた。あなたが彼女を真剣に見ていることに気づいた彼女は、風でめくれ上がった服の裾を恥ずかしそうに押さえましたが、あなたに促すことはありませんでした。――「写真はいいですけど、海も一緒に入れてください。あとで見返したとき、今日の風と、あなたが立っていた場所まで思い出したいから。」",
     "rating": "All",
-    "animaCaption": "In a wide full-body view along the sandy shoreline with gentle ocean waves, she turns back over her shoulder with a gentle blush on her cheeks, as warm golden-hour sunlight illuminates the scene."
+    "animaCaption": "In magnificent spatial depth and translucent watercolor lighting, Ayachi Nene stands poised in the shallow ocean surf as twilight falls, wearing an elegant black strappy bikini and turning back over her shoulder with an alluring, confident gaze. The flaming purple and gold sunset reflects like a sheet of molten glass across the wet tidal sand, casting striking watercolor rim lighting and shimmering spray droplets around her silken silver hair. In the distinct ethereal artistic style of Rella, with delicate transparent lighting, glowing dust motes, and soft watercolor gradients.",
+    "seed": 20261097,
+    "steps": 30,
+    "cfg": 4.5,
+    "sampler": "res_multistep",
+    "scheduler": "simple",
+    "width": 832,
+    "height": 1216
   },
   {
     "id": "sc068",
@@ -1719,12 +1726,12 @@
       "头像",
       "CG"
     ],
-    "prompt": "clean unobstructed sky, plain background without overlays, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, sunset, smile, hair_blowing, golden_hour, ocean, windblown_hair, looking_at_viewer, teary_eyes, holding_hands, clear_sky, upper_body, medium_shot, blush, shy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・海風に吹かれる心のかけら】夕暮れの海辺で、寧々は潮の流れに沿って長い間歩き、ついに立ち止まってあなたに向かいました。彼女は、一度手に渡ってしまうと取り返しがつかないのではないかと恐れ、大切な感情を細かく砕いて隠していたと語った。海風が彼女の長い銀髪をかき乱したが、彼女は目をそらさなかった。――「今は、私の気持ちを全部伝えたいんです。契約でも、魔法でもなくて……あなたが好きです。ずっと、好きでした。」",
     "rating": "All",
     "auditRevision": "round3-2026-07-22",
-    "animaCaption": "In a medium shot along the sandy shoreline with gentle ocean waves, she reaches forward and gently clasps the viewer's hand with a gentle blush on her cheeks, as warm golden-hour sunlight illuminates the scene."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc082",
@@ -1766,11 +1773,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, moonlight, night, sitting, japanese_garden, sitting_on_engawa, holding_phone, leaning_close, full_moon, autumn_night, clear_sky, full_body, wide_shot, melancholic, teary_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・月の下縁への思い】秋の夜、中庭は月明かりで満たされ、寧々はその端に一人座って、日中言えなかった言葉を携帯電話に書き留めていました。あなたがドアを開けて出てくると、すぐに画面ロックをかけましたが、あなたが座ると、彼女は率先して半歩近づいてきました。紫の瞳に満月が映る――「今、考えていたんです。会いたいと思った人がちょうど現れるのも、小さな魔法に入るんでしょうか？」",
     "rating": "All",
-    "animaCaption": "In a wide full-body view in a quiet room, she sits gracefully, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc084",
@@ -1860,12 +1867,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, holding one transparent umbrella, wet empty road after rain, rainbow, looking back with bright smile, (one partial male hand entering from bottom edge:1.4), medium full shot, <lora:ayachi_nene_v18_wd14:0.82>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, naked, topless, bottomless, bare breasts, bare buttocks, underwear, swimsuit, transparent clothes, second white-haired girl, clone, twin",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・雨が止んだら見上げてください】夏の夕立はちょうど止んだところだった。寧々さんは透明な傘を持って交差点に立っていましたが、突然雲の間に完全な虹が現れていることに気づきました。彼女は興奮してあなたを呼び戻し、危うく水に入りそうになりましたが、あなたは間に合って彼女を捕まえました。彼女はあなたの手を握り、顔を上げて微笑んだ――「急いで帰らなくてよかったです。悪い天気が過ぎたあとには、本当に待つだけのものがあるんですね。」",
     "rating": "All",
     "auditRevision": "round4-2026-07-22",
-    "animaCaption": "In a wide full-body view in a quiet room, she holds an open umbrella aloft with one hand with a soft, reassuring smile, under soft ambient lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc088",
@@ -2004,14 +2011,14 @@
     "weather": "晴",
     "camera": "膝上主观面部特写",
     "lighting": "秋日下午柔和窗光",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, shy, lying, looking_back, lap_pillow, looking_up, holding_hand, gentle_smile, living_room, autumn_afternoon, intimate_gaze, afternoon, clear_sky, pov, close_up, face_focus, window_light, smile, happy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "usage": [
       "展示图"
     ],
     "storyJa": "【寧々・膝に映る目】秋の午後、寧々はあなたの膝の上に寝そべって、窓の外に揺れる木々の影を眺めていましたが、突然顔を向けてあなたを真剣に見つめました。この角度からは普段無視していた表情が見えると言い、そっと掌紋を指でなぞってくれました。何を考えているのかと尋ねると、彼女は目を細めて微笑んだ。――「好きな人がまだここにいるか、確かめていたんです。答えは変わっていないから、安心してもう少し眠れます。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she rests comfortably against soft pillows with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc142",
@@ -2194,10 +2201,10 @@
       "角色还原",
       "氛围优先"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, navy school uniform, moonlit library, (one thick antique book opened in both of her hands:1.75), both hands visibly gripping the book covers, blank cream pages facing viewer, no loose paper, holding book forward as an invitation to read together, gentle brave smile, desk lamp, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, book cover facing viewer, title on book, decorated cover, title, loose paper, separate sheet, letter, note card, book left on table, empty hands, closed book",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "auditRevision": "round4-2026-07-22",
-    "animaCaption": "In a medium shot between tall wooden bookshelves in the tranquil library, she turns the page of an open book with a focused and calm expression, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc217",
@@ -2302,11 +2309,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, angel_wings, halo, feather_accessories, thighhighs, rooftop, school_rooftop, sunset, golden_hour, backlit, windy, heavy_blush, panicked, slight_frown, romantic_atmosphere, wide_shot, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・屋上の純白の福音と恥ずかしさ】文化祭の前夜、夕暮れに染まる学校の屋上。演劇部の手伝いで、寧々は非常に精緻な純白の聖なる天使のワンピースに着替えていた。背中の白い羽の翼と頭上の光る輪が、強い夕日の逆光の中で神聖な光輪を放っている。微風が吹き抜け、彼女の銀髪のローツインテールとスカートの裾が一緒に舞い上がる。少し恥ずかしそうに鏡の前でポーズの練習をしていたが、振り返るとあなたがドアの傍に寄りかかって微笑みながら見つめているのに気づいた。寧々は瞬間的に顔を真っ赤にし、頭の上のアホ毛が慌てて翼と一緒に震え出し、手でスカートを覆いながら大声で自爆した――「うあぁ！柊、柊史！いつからそこにいたの？！見ちゃダメ！私、私はただ演劇部の衣装を試着してるだけで、決してわざとこんな格好であなたを待ってたわけじゃ……うう、バカ、早く後ろを向いて！」",
     "rating": "All",
-    "animaCaption": "In a wide full-body view beside the safety fence on the open school rooftop, she turns back over her shoulder with a gentle blush on her cheeks, as warm golden-hour sunlight illuminates the scene."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc226",
@@ -2405,11 +2412,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, heavy_blush, panicked, open_mouth, falling_forward, clinging_to_viewer, grassy_hill, fireworks, night, colorful_lighting, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・花火の夜空と緋色の自爆】夏祭りの最高潮を迎えた花火大会、喧騒から離れた神社裏手の深夜の草豊かな丘。寧々は今日、非常に豪華で美しい薄ピンク色の振袖和服一式に身を包み、大きな帯と複雑なリボンが彼女をまるで古典絵巻の中のお嬢様のように引き立てていた。夜空に巨大な花火が轟音と共に弾け飛ぶと、色とりどりのきらめく光が彼女の銀髪の清純な髪の毛に降り注ぐ。少し恥ずかしそうに振り向いてあなたに微笑もうとした瞬間、彼女は長い和服の裾に足を取られてしまい、小さく悲鳴を上げてあなたの胸の中に真っ直ぐ飛び込んできた。あなたが咄嗟に彼女をきつく抱きしめると、寧々は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛が満天の花火に照らされながら慌てて完璧なハート型に丸まり、顔を真っ赤にして大声で自爆した――「うあぁ！柊、柊史！いつの間にそんなに近くにいたのよ？！私、私は決してわざと転んだフリをして抱きついたわけじゃ……うう、心臓の音が大きすぎるよ、バカ、目を閉じて！」",
     "rating": "All",
-    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she looks forward toward the viewer with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc232",
@@ -2509,12 +2516,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cheerleader, sleeveless, crop_top, bare_streaks, pleated_skirt, short_skirt, holding_pom_poms, heavy_blush, panicked, open_mouth, falling_forward, gymnasium, daylight, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・体育館裏のオーバーロード応援自爆】体育祭当日、外は快晴、ロックされた学校の旧体育館の備品室。クラスの応援のため、寧々は超自然研究部の仲間たちに唆され、前代未聞の、非常にアクティブでセクシーなへそ出しノースリーブのチアリーダー衣装に身を包んでいた。超ミニのプリーツスカートの裾が風に揺れ、両手には金色のポンポンを握っている。恥ずかしそうに備品室の鏡の前でポーズの練習をしていたところ、あなたが突然ドアを開けて入ってきた。パニックに陥った彼女は床のバレーボールに足を取られ、小さく悲鳴を上げてマットに座っていたあなたの胸の中に真っ直ぐ転がり込んできた。寧々は瞬間的に顔を真っ赤にし、へそ出しの裁断のせいで細い腰があなたの体に無防備に密着し、頭のアホ毛を慌てて完璧なハート型に丸めながら叫んだ――「うあぁ！柊、柊史！なぜここにいるのよ？！人の露出したお腹ばかり見ないで！け、決してあなたにかわいいって思われたくてこんな格好をしてるわけじゃ……うう、大色狼、早く目を閉じて！」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing in a quiet room, she sits gracefully with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc240",
@@ -2664,12 +2671,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "(black cat sleeping on her lap:1.55), Nene asleep alone on sofa, (one girl only:1.45), 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, sleeping, lying_on_sofa, head_resting, peaceful_expression, closed_eyes, slight_smile, sofa, indoors, afternoon, sunlight, warm_lighting, cozy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・午後の膝枕】週末の午後、超自然研究会の資料を読んでいた寧々は、いつの間にかソファで眠ってしまう。あなたがそっと彼女の頭を膝へ移すと、銀色の髪が陽だまりにほどけた。安心したように頬を寄せ、彼女は寝言をこぼす――「柊史の匂い……安心する……」",
     "rating": "All",
     "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she rests comfortably against soft pillows, as clear window sunlight streams across the frame."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc246",
@@ -2819,10 +2826,10 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, blanket, sitting_close, sharing_blanket, blush, shy_expression, closed_eyes, slight_smile, sofa, indoors, night, dim_lighting, warm_atmosphere, cozy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・毛布の下の距離】冬の夜、暖房の弱いリビングで寧々はソファの隅にいた。あなたが隣に座ると、彼女は迷いながら毛布の半分を差し出す。灯りの下でアホ毛が小さく揺れた――「……二人で使った方が暖かいだけ。近すぎるけど……もう少しだけなら、いいよ」",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   },
   {
     "id": "sc252",
@@ -3169,14 +3176,14 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, yukata, open_yukata, wet_hair, bare_shoulders, cleavage, night, moonlight, tatami, open_window, mountain_view, stream, paper_lantern, intimate, eye_contact, sensual, close_up, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, intimate_bedroom_setting, warm_bedside_lamp_lighting, soft_shadows, intense_flustered_blush, parted_lips, natural_gravity_body_deformation, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "rating": "R15",
     "character": [
       "nene"
     ],
     "storyJa": "【寧々・大人のアフターストーリー・温泉旅館の月下の約束】古い温泉街での最後の夜。寧々は露天風呂から上がり、部屋に戻ると、銀色の長い髪はまだ湯気を帯びており、身には旅館の薄い浴衣だけをまとっていた。彼女は開け放たれた窓辺に座り、山から流れる川のせせらぎが月明かりとともに室内に流れ込んでいた。あなたが隣に座ると、彼女は微かに震えたが、逃げようとはしなかった。浴衣の襟元がうつむき加減に緩み、濡れた鎖骨と雪のように白い肌が広く露わになっていた。彼女は両手で衣襟を握りしめ、紫色の瞳が月明かりの下で潤んでいた——「今夜の月はとても明るい……明るすぎて、何も隠せない。」彼女は顔をそらし、呼吸が荒くなったが、視線は外さなかった。あなたが彼女の冷えた頬に触れると、彼女は目を閉じ、まつげが微かに震え、月明かりの中で浴衣の帯が静かにほどけていった——「せめて、この温泉旅館を去る前に……今のこの瞬間を、完全にあなたに捧げたい。」",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Reclining gracefully in intimate private quarters with warm romantic lighting, Shiki Natsume is completely nude with soft ambient light tracing her bare breasts, slender waist, and flushed cheeks in breathless vulnerability."
   },
   {
     "id": "sc291",
@@ -3222,9 +3229,9 @@
     ],
     "story": "【成年 After Story · 宁宁 · 雨天午后的毛衣】周末的雨从早上就没有停过。宁宁穿着一件宽大的灰色毛衣——那是你的，长度几乎盖住短裤——蜷在沙发角落翻着一本旧画集。你泡了两杯红茶出来时，她已经把位置挪到沙发中间，空出了半边。你坐下后她顺势侧过身，把腿搭在你膝上，画集搁在你手臂旁边让你一起看。雨声填满了窗外的世界，屋内只有翻页和偶尔的啜饮声。她翻到某一页时动作顿了顿，偏过头来看你，紫色瞳孔里映着窗外的灰色天光——「这张的构图……很像上次你拍我的角度。」她说完没有移开视线，毛衣的宽领在她侧身时滑落一截，露出圆润的肩头和锁骨的浅凹。她感觉到你的目光，脸颊慢慢泛红，却没有拉回衣领——「雨好像不会停了……那今天的预定，是不是也可以全部取消？」",
     "storyJa": "【寧々・大人のAfter Story・雨の午後のセーター】週末の雨は朝から止まなかった。寧々はあなたの大きな灰色のセーターを着て——丈がショートパンツをすっぽり隠れるくらい——ソファの隅で古い画集をめくっていた。あなたが紅茶を二杯淹れて戻ってくると、彼女は既にソファの中央に移動し、半分のスペースを空けていた。あなたが座ると、彼女は自然に体を寄せ、足をあなたの膝の上に乗せ、画集をあなたの腕の横に置いて一緒に見えるようにした。雨音が窓の外の世界を満たし、部屋の中にはページをめくる音と時折の紅茶をすする音だけが聞こえていた。彼女があるページで手を止め、顔を向けてあなたを見た。紫色の瞳に窓の外の灰色の空が映っていた——「この構図……前回あなたが私を撮った時のアングルにすごく似てる。」彼女はそう言っても視線を外さず、セーターの広い襟が体をひねった拍子にずれ落ち、丸みを帯びた肩と鎖骨の窪みが覗いた。彼女はあなたの視線に気づき、頬がゆっくりと赤らんでいったが、襟元を引き上げようとはしなかった——「雨は止みそうにないね……じゃあ、今日の予定は全部キャンセルにしてもいいかな？」",
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, oversized_sweater, bare_shoulders, collarbone, sitting_on_sofa, rainy_day, afternoon, living_room, intimate, eye_contact, sensual, close_up, bare_legs, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
-    "animaCaption": "In a close-up framing in a quiet room, she cradles a warm steaming cup with both hands, under diffused overcast daylight."
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, intimate_bedroom_setting, warm_bedside_lamp_lighting, soft_shadows, intense_flustered_blush, parted_lips, natural_gravity_body_deformation, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
+    "animaCaption": "Reclining gracefully in intimate private quarters with warm romantic lighting, Shiki Natsume is completely nude with soft ambient light tracing her bare breasts, slender waist, and flushed cheeks in breathless vulnerability."
   },
   {
     "id": "sc292",
@@ -3268,10 +3275,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, cardigan, open_cardigan, bare_shoulders, cleavage, sitting_on_sofa, soft_lighting, living_room, intimate, eye_contact, sensual, close_up, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, intimate_bedroom_setting, warm_bedside_lamp_lighting, soft_shadows, intense_flustered_blush, parted_lips, natural_gravity_body_deformation, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
     "storyJa": "【寧々・大人のAfter Story・私服撮影の境界線】同人サークルの室内私服撮影も後半に差し掛かり、他のメンバーは先にコンビニへ行ってしまった。リビングにはあなたと寧々だけが残り、補光灯はまだ点いたままだった。彼女はソファの端に座り、大きめのニットカーディガンが片方の肩からずり落ちていた。銀色の長い髪が何本か風に散って頬に張り付き、彼女はうつむいてカメラのプレビューを眺めていたが、落ちた襟元は直そうとしなかった。あなたが近づいて襟元を整えようとすると、彼女は顔を上げた。紫色の瞳が補光灯の暖かな色の中でひときわ透き通って見えた——「一晩中撮ってたね……この構図、どう思う？」彼女は写真について尋ねたが、声は微かに震えていた。あなたの指は彼女の肩先に留まったままで、彼女も後退しなかった。カーディガンのボタンはいつの間にかほとんど外れており、白いコットンのインナーの端がほんのりと卷れていた。彼女はそっと下唇を噛み、静かなリビングで彼女の呼吸がはっきりと聞こえた——「もし他に撮りたいアングルがあったら……今は二人だけだよ。」",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she sits gracefully, under soft ambient lighting."
+    "animaCaption": "Reclining gracefully in intimate private quarters with warm romantic lighting, Shiki Natsume is completely nude with soft ambient light tracing her bare breasts, slender waist, and flushed cheeks in breathless vulnerability."
   },
   {
     "id": "sc299",
@@ -3314,9 +3321,9 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, visual_novel_event_cg, cinematic_composition, white_hair, very_long_hair, low_twintails, pink_hair_ribbons, purple_eyes, ahoge, loose_knit_top, off_shoulder_sweater, bare_shoulders, collarbone, short_shorts, bare_legs, leaning_on_window, profile_view, turning_to_viewer, gentle_smile, eye_contact, sunlight, warm_afternoon_sunlight, rim_lighting, art_studio, easel_in_background, soft_shadows, sensual, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, 2boys, multiple girls, multiple boys, couple, extra person, multiple persons, extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・大人のAfter Story・依頼私稿の専属モデル】あなたは個人のイラスト依頼を受けていた。クライアントは非常に細かい構図を指定してきた——テーマは「日常の親密な瞬間」。あなたは参考写真を見ながら丸一日描いていたが、どうしてもリアルな温かみが足りないと感じていた。寧々が温めたミルクを運んでアトリエに入ってきた。彼女はあなたの後ろに立ち、しばらくモニターのラフを見ていた。そして静かにカップを机の隅に置いた。何も言わずに、窓辺へ歩いていった。午後の日差しが横から彼女の体の輪郭を描き出し、彼女は振り返ってあなたを見た——「ポーズ参考なら……ここにいるよ。」彼女はゆったりとした淡い色のニットトップとショートパンツを着て、窓枠に寄りかかっていた。光が薄い布地を通して腰のラインと肩甲骨の形を浮かび上がらせていた。彼女は少し首を傾げ、紫色の瞳に細かな光をきらめかせた——「あなたの言う構図のままでいいよ。写真の人みたいに描かなくていい——あなたの目に映る私の姿を描いて。描き終わるまで……この姿勢を保つから。」",
-    "animaCaption": "In a medium shot inside a quiet art studio, she leans gently against the sunlit window frame wearing a loose knit top, turning back to gaze at the viewer with a warm, trusting smile, under golden afternoon sunlight with soft rim lighting."
+    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
   }
 ]

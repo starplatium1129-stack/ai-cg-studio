@@ -52,8 +52,9 @@ const props = withDefaults(defineProps<{
 
 const splitRatio = ref(props.initialRatio)
 const sliderStyle = computed(() => ({
-  '--split-pos': `${splitRatio.value * 100}%`,
-  '--clip-pos': `${(1 - splitRatio.value) * 100}%`,
+  '--split-pos': `${Math.round(splitRatio.value * 1000) / 10}%`,
+  '--split-x': `${Math.round(splitRatio.value * 1000) / 10}cqw`,
+  '--clip-pos': `${Math.round((1 - splitRatio.value) * 1000) / 10}%`,
 }))
 const containerRef = ref<HTMLElement | null>(null)
 let isDragging = false
@@ -90,16 +91,17 @@ function onPointerUp(e: PointerEvent) {
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'ArrowLeft') {
     e.preventDefault()
-    splitRatio.value = Math.max(0, splitRatio.value - 0.05)
+    splitRatio.value = Math.max(0, Math.round((splitRatio.value - 0.05) * 100) / 100)
   } else if (e.key === 'ArrowRight') {
     e.preventDefault()
-    splitRatio.value = Math.min(1, splitRatio.value + 0.05)
+    splitRatio.value = Math.min(1, Math.round((splitRatio.value + 0.05) * 100) / 100)
   }
 }
 </script>
 
 <style scoped>
 .image-compare-slider {
+  container-type: inline-size;
   position: relative;
   display: block;
   width: 100%;
@@ -155,11 +157,11 @@ function onKeydown(e: KeyboardEvent) {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: var(--split-pos, 50%);
+  left: 0;
   width: 2px;
   background: color-mix(in srgb, var(--accent) 80%, var(--text-primary));
   box-shadow: var(--shadow-md);
-  transform: translateX(-50%);
+  transform: translateX(calc(var(--split-x, 50cqw) - 50%));
   pointer-events: none;
   z-index: var(--z-overlay);
 }

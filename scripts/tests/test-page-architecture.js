@@ -280,4 +280,38 @@ assert(
   'inferEmotion keywords must not contain replacement characters (encoding damage)',
 );
 
+// ── 8. 高频交互与合成层动效规范（2026-08-23 计划 001）────────────────────
+const compareSliderSource = read('src/components/visual/ImageCompareSlider.vue');
+assert(
+  !compareSliderSource.includes('left: var(--split-pos')
+    && /container-type:\s*inline-size/.test(compareSliderSource)
+    && /transform:\s*translateX\(calc\(var\(--split-x/.test(compareSliderSource),
+  'ImageCompareSlider must use container-query cqw transform for divider and eliminate layout left updates',
+);
+
+const zoomViewerSource = read('src/components/visual/ZoomableImageViewer.vue');
+assert(
+  /\.zoomable-image-viewer\.is-panning\s+\.zoom-transform-layer\s*\{\s*transition:\s*none;?\s*\}/.test(zoomViewerSource)
+    && /transition:\s*transform\s+var\(--motion-control\)\s+var\(--ease-out\)/.test(zoomViewerSource)
+    && !zoomViewerSource.includes('0.08s linear'),
+  'ZoomableImageViewer must disable transition during panning and use motion tokens for transform easing',
+);
+
+const videoStudioSource = read('src/views/VideoStudioView.vue');
+assert(
+  /transform:\s*scaleX\(var\(--progress,\s*0%\)\)/.test(videoStudioSource)
+    && /transition:\s*transform\s+var\(--motion-surface\)\s+var\(--ease-out\)/.test(videoStudioSource)
+    && !/scale:\s*var\(--progress/.test(videoStudioSource),
+  'VideoStudioView progress bar must use scaleX transform and eliminate single-axis scale squish',
+);
+
+const controlViewSource = read('src/views/ControlView.vue');
+assert(
+  /transition:\s*transform\s+var\(--motion-hover\)/.test(controlViewSource)
+    && /\.tunnel-switch\[aria-checked="true"\]\s+\.tunnel-switch-knob\s*\{\s*transform:\s*translateX\(20px\);?\s*\}/.test(controlViewSource)
+    && !controlViewSource.includes('transition: left')
+    && !controlViewSource.includes('left: 22px'),
+  'ControlView tunnel switch knob must animate via transform translateX and eliminate left transition',
+);
+
 });

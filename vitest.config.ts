@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitest/config'
+import vue from '@vitejs/plugin-vue'
 
 /**
  * 前端单元测试配置（2026-08-22 引入）。
@@ -7,6 +8,7 @@ import { defineConfig } from 'vitest/config'
  * 运行：npm run test:frontend（watch 模式加 --）
  */
 export default defineConfig({
+  plugins: [vue()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

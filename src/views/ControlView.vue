@@ -725,9 +725,9 @@ onUnmounted(() => { status.stopPolling() })
 .tunnel-switch-knob {
   position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
   background: var(--on-art-primary); box-shadow: 0 1px 3px var(--art-scrim-soft);
-  transition: left var(--motion-hover);
+  transition: transform var(--motion-hover) var(--ease-out);
 }
-.tunnel-switch[aria-checked="true"] .tunnel-switch-knob { left: 22px; }
+.tunnel-switch[aria-checked="true"] .tunnel-switch-knob { transform: translateX(20px); }
 .btn-block { width: 100%; justify-content: center; }
 .action-note {
   margin: var(--s-2) 0 var(--s-4); color: var(--text-muted);
