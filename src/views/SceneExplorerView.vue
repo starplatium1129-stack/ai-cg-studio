@@ -173,9 +173,10 @@
     <!-- 故事抽屉（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
-      <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" aria-label="场景故事"
-        :class="{ open: !!drawerScene }" @click.self="drawerScene = null">
-        <div class="story-card" v-if="drawerScene">
+      <Transition name="layer-pop">
+        <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" aria-label="场景故事"
+          @click.self="drawerScene = null">
+          <div class="story-card" v-if="drawerScene">
           <h3><ArchiveIcon name="cherry" /> {{ drawerScene.title }}</h3>
           <div class="story-meta">{{ charName(drawerScene) }} · {{ seasonLabel(drawerScene.season) }} · {{ timeLabel(drawerScene.timeOfDay) }} · {{ drawerScene.emotion }}</div>
           <div class="story-body">{{ drawerScene.story || '' }}</div>
@@ -184,8 +185,9 @@
             <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id) + '&step=4&generate=1'"><ArchiveIcon name="clap" /> 调整后生成</RouterLink>
             <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
           </div>
+          </div>
         </div>
-      </div>
+      </Transition>
     </Teleport>
   </article>
 </template>
@@ -784,9 +786,8 @@ onMounted(() => { init() })
 .ex-secondary { display:flex; gap:var(--s-1); flex-wrap:wrap; }
 .ex-secondary .btn { flex:1; justify-content:center; min-width:0; }
 
-.story-drawer { position:fixed; inset:0; z-index:var(--z-overlay); display:none; align-items:center; justify-content:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(6px); }
-.story-drawer.open { display:flex; }
-.story-card { width:100%; max-width:480px; padding:var(--s-5); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-elevated); box-shadow:var(--shadow-lg); }
+.story-drawer { position:fixed; inset:0; z-index:var(--z-overlay); display:flex; align-items:center; justify-content:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(6px); }
+.story-card { transform-origin:center; width:100%; max-width:480px; padding:var(--s-5); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-elevated); box-shadow:var(--shadow-lg); }
 .story-card h3 { margin-bottom:var(--s-2); color:var(--text-primary); font-size:var(--fs-title-sm); font-weight:800; }
 .story-meta { margin-bottom:var(--s-3); color:var(--text-muted); font-size:var(--fs-label-sm); }
 .story-body { margin-bottom:var(--s-4); color:var(--text-secondary); font-size:var(--fs-body); line-height:1.7; }
