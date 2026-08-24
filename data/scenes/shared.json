@@ -43,13 +43,13 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_white_wedding_gowns, sitting_side_by_side_on_edge_of_canopy_bed, holding_hands_together, intimate_loving_gazes, gentle_warm_blushes, luxury_honeymoon_hotel_suite, warm_flickering_candelabra_glow, white_rose_petals_scattered_on_bed, soft_shadows, medium_shot, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 1boy, veil covering face",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Ayachi Nene interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
+    "animaCaption": "Sitting side-by-side on the edge of the lavish canopy bed in their bridal suite, Ayachi Nene and Shiki Natsume hold hands tenderly, dressed in elegant white wedding gowns. Their eyes meet with deep, blushing affection under the warm glow of tabletop candelabras, surrounded by delicate white rose petals."
   },
   {
     "id": "sc031",
@@ -150,13 +150,13 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "safe, 2girls, ayachi_nene, shiki_natsume, BREAK, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_pink_maid_cafe_dress_and_sheer_white_thighhigh_socks, BREAK, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_black_waitress_uniform_and_sheer_black_thighhigh_socks, sitting_together_on_velvet_cafe_booth_seat_after_closing, leaning_close_with_entwined_fingers_and_blushing_smiles, entire_legs_and_feet_fully_visible_in_frame, stocking_feet_resting_side_by_side_on_wooden_floor, cozy_retro_cafe_interior, warm_stained-glass_pendant_lamps_and_illuminated_dessert_display_cases, full_body, @rella\nSitting close together inside a velvet cafe booth long after closing hours, Ayachi Nene in pink maid dress and white stockings leans against Shiki Natsume in black waitress attire and sheer black stockings. With intertwined fingers and sweet blushing smiles, warm stained-glass pendant lights and glowing pastry cases bathe the charming interior in golden radiance, clearly framing both girls' stocking-clad feet resting side by side on the floor.",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 1girl, 1boy, child, loli",
     "storyJa": "【寧々＆夏目・大人のAfter Story・魔法と異能のカフェ】あなたと寧々、夏目の三人は、魔法と異能が交差する小さなカフェを開いた。閉店後の店内には、暖かな間接照明だけが残っている。寧々は魔法でティーカップに紅茶を注ぎ、エージェント風のメイド服に着替えた夏目は、カウンターにもたれて秘密の帳簿を確認していた。やがて彼女はパソコンから顔を上げ、からかうような視線をあなたへ向ける――「ねえ、店長。今夜の二人分の残業代……自分で払うつもり？」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
+    "animaCaption": "Inside Cafe Stella long after closing, Ayachi Nene sits on the left in her classic maid dress, playfully casting glowing pink magic butterflies, while Shiki Natsume leans across the bar counter on the right with her laptop in dark tactical maid attire, offering a confident, alluring smirk under warm brass lamps."
   },
   {
     "id": "sc151",
@@ -208,13 +208,13 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "2girls, dual_heroines, ayachi_nene, shiki_natsume, subjective_first-person_view_from_pillows, sun-drenched_master_bedroom, sharing_single_fluffy_down_quilt_flanking_viewer, golden_dawn_illumination, soft_bed_shadows, extreme_proximity, (nene_snuggled_on_left, silver_hair, twin_tails, violet_eyes, ahoge_curled_tenderly, pastel_knitwear, gripping_cloth, radiant_shy_blush) BREAK (natsume_resting_chin_on_palm_on_right, dark_tresses, golden_irises, facial_mole, loose_nightwear_falling_off_shoulder, sleepy_alluring_gaze, playful_grin), cinematic_warmth, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 1girl, 1boy, child, loli",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・究極に甘い修羅場】どこまでも怠惰な朝。あなたは暖かいベッドから目覚め、最も幸せな「おはよう、このお寝坊さん。今朝の約束、二度寝は禁止だからね。」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
+    "animaCaption": "From the first-person perspective lying in bed between them on a golden morning, Ayachi Nene snuggles on the left clutching the viewer's shirt with a shy, loving smile, while Shiki Natsume props herself up on the right in off-shoulder pajamas, offering an affectionate, teasing smirk."
   },
   {
     "id": "sc154",
@@ -268,13 +268,13 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_adult_women, nene_r18, natsume_r18, naked, completely_unclothed, POV_from_viewer_lying_on_bed, late_night_bedroom, warm_dim_bedside_light, both_women_focused_on_viewer, (ayachi_nene_straddling_viewer_on_left, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, interlocking_fingers_with_viewer_hand, heavy_blush, passionate_look) BREAK (shiki_natsume_leaning_over_from_right, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, embracing_viewer_neck, closed_eyes, intense_blush), medium_close-up, official_visual_novel_cg_framing, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, child, loli",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・二人のヒロインによる至福の修羅フィールド】薬物と感情の同調率が200％を超えるという極限の制約の中、二人の少女は普段の拘束を完全に放棄した。ベッドの上の服は全部なくなり、シーツもぐちゃぐちゃになっていました。寧々はあなたにまたがり、顔は汗と赤面で覆われ、両手はあなたの手でしっかりと握り締められ、必死にあなたの温もりを求めています。夏目が後ろからしがみつき、首筋に熱い唇を噛みつきます。ここは病的な愛と汗と肉体が詰まった至福のブラックホール――「柊史、店長……私たちの心の防壁は、とっくに消えてる。だから今夜は、ずっとそばにいて。」",
     "rating": "R15",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
+    "animaCaption": "From the first-person perspective in bed late at night, Ayachi Nene and Shiki Natsume share an overwhelmingly intimate moment with the viewer, both completely nude. Nene straddles the viewer on the left with interlocked fingers, while Natsume embraces the viewer's neck from the right, bathed in warm bedside lamplight."
   },
   {
     "id": "sc157",
@@ -329,12 +329,12 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_school_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, dynamic_natural_pose, interacting_with_environment, expressive_gentle_smile, detailed_background_architecture, warm_cinematic_lighting, depth_of_field, medium_shot, official_visual_novel_cg_framing, @rella",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "2girls, dual_heroines, ayachi_nene, shiki_natsume, nene_r18, natsume_r18, subjective_bed_perspective_lying_between_both_lovers, secluded_boudoir_at_midnight, subtle_amber_sconce_glow, passionate_devotion, sweat_glistening_on_pale_skin, (nene_on_left_side, cascading_silver_locks, violet_eyes, ahoge, unfastened_pink_silk_shirt_hanging_open, clasping_hands_to_heart, parted_lips_gasping) BREAK (natsume_on_right_side, raven_hair_splayed, amber_eyes, mole, slipped_charcoal_robe, wrapping_slender_arm_around_neck, closed_eyelids, deep_crimson_flush), romantic_soft_lighting, @rella",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 1girl, 1boy, child, loli",
     "storyJa": "【寧々＆夏目・大人のAfter Story・心がほどける夜】誰にも邪魔されない部屋で、三人は長い一日の終わりを迎えていた。寧々はあなたの左手を握り、安心したように肩を寄せている。夏目も反対側からそっと寄りかかり、いつもの強がりを忘れた穏やかな表情を見せた。魔法と異能、二つの世界を隔てていた壁はもうない。窓の外で夜が静かに更けていくなか、三人の呼吸だけが同じ速さへ重なっていった。",
     "rating": "R15",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "In a beautifully rendered scene bathed in warm cinematic lighting, Shiki Natsume interacts naturally with her surroundings, her expressive eyes and delicate smile capturing an authentic, heartfelt moment."
+    "animaCaption": "From the first-person perspective lying between them late at night, Ayachi Nene and Shiki Natsume surrender their final emotional defenses together, their bodies glowing in the warm dim light of the private bedroom as both focus all their love and passion entirely on the viewer."
   }
 ]
