@@ -38,6 +38,7 @@
     "test:storage-health": "node scripts/tests/test-storage-health.js",
     "test:security": "node scripts/tests/test-security.js && node scripts/tests/test-gateway-contract.js",
     "test:gateway": "node scripts/tests/test-gateway-contract.js",
+    "test:comfy-progress": "node --test scripts/tests/test-comfy-progress.js",
     "test:gateway-token": "node scripts/tests/test-gateway-token.js",
     "test:training": "node scripts/tests/test-training-routes.js",
     "test:training-service": "node scripts/tests/test-training-service.js",
@@ -106,7 +107,8 @@
     "pinia": "^4.0.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "wl-live2d": "^1.0.8"
+    "wl-live2d": "^1.0.8",
+    "ws": "8.21.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

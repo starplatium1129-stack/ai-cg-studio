@@ -34,6 +34,7 @@ const size = computed({
 })
 
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
+const progressStyle = computed(() => ({ '--progress': `${(props.state.progress ?? 0) * 100}%` }))
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
 const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 /** 热门角色无 LoRA：只在 popular subject + noLora capability 时隐藏 LoRA 选择。 */
@@ -105,6 +106,17 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </template>
       </div>
 
+      <div v-if="busy" class="anima-progress" aria-live="polite">
+        <div class="anima-progress-copy">
+          <span>{{ state.progressText || state.statusText || 'ComfyUI 正在推理…' }}<template v-if="state.currentNode"> · 节点 {{ state.currentNode }}</template></span>
+          <strong v-if="state.progress !== null">{{ Math.round(state.progress * 100) }}%</strong>
+          <strong v-else>进行中</strong>
+        </div>
+        <div class="anima-progress-track" role="progressbar" :aria-valuenow="state.progress !== null ? Math.round(state.progress * 100) : undefined" aria-valuemin="0" aria-valuemax="100" :aria-label="state.progress !== null ? 'ComfyUI 生成进度' : 'ComfyUI 生成进行中'">
+          <i :class="{ indeterminate: state.progress === null }" :style="progressStyle"></i>
+        </div>
+        <small>已等待 {{ Math.floor(state.elapsedSeconds / 60) }}分 {{ state.elapsedSeconds % 60 }}秒 · 最长等待 10 分钟</small>
+      </div>
       <div class="anima-actions" aria-live="polite">
         <span v-if="state.statusText" class="anima-status-text">{{ state.statusText }}</span>
         <span v-if="state.errorMsg" class="anima-error">{{ state.errorMsg }}</span>
@@ -133,6 +145,15 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-seed { width: 140px }
 .anima-inline { font-size: var(--fs-label-xs); opacity: 0.6 }
 .anima-textarea { width: 100%; background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 6px 8px; font-size: var(--fs-label-xs); resize: vertical; font-family: inherit }
+.anima-progress { display: grid; gap: 5px; margin-top: 4px; }
+.anima-progress-copy { display: flex; justify-content: space-between; gap: 8px; color: var(--text-secondary); font-size: var(--fs-label-xs); }
+.anima-progress-copy strong { color: var(--accent); font: 700 var(--fs-mono-xs) var(--font-mono); }
+.anima-progress-track { height: 5px; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
+.anima-progress-track i { display: block; width: 100%; height: 100%; transform-origin: left center; transform: scaleX(var(--progress, 0%)); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: transform var(--motion-surface) var(--ease-out); }
+.anima-progress-track i.indeterminate { width: 38%; transform: translateX(-120%); animation: anima-progress-flow 1.15s linear infinite; }
+.anima-progress small { color: var(--text-muted); font-size: var(--fs-mono-xs); }
+@keyframes anima-progress-flow { to { transform: translateX(290%); } }
+@media (prefers-reduced-motion: reduce) { .anima-progress-track i.indeterminate { animation: none; transform: translateX(0); } }
 .anima-actions { display: flex; align-items: center; gap: 10px; margin-top: 4px }
 .anima-btn { background: var(--bg-hover); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 5px 12px; font-size: var(--fs-label-xs); cursor: pointer }
 .anima-btn:disabled { opacity: 0.4; cursor: not-allowed }

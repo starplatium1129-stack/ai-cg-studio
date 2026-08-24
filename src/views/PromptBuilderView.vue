@@ -260,8 +260,15 @@
             <!-- 生成中：呼吸 + 进度，缓解等待焦虑 -->
             <div v-if="generationBusy" class="stage-generating-copy">
               <div class="stage-generating-title">正在绘制这一张</div>
-              <div class="stage-generating-sub">{{ generationStatusText || '模型正在推理…' }}<template v-if="drawEngine === 'sd'"> {{ sd.progress.value }}%</template></div>
-              <div class="stage-progress-ring" :class="{ 'is-indeterminate': drawEngine !== 'sd' }"><i :style="{ '--progress': sd.progress.value + '%' }"></i></div>
+              <div class="stage-generating-sub">
+                {{ generationStatusText || '模型正在推理…' }}
+                <template v-if="generationProgress !== null"> {{ Math.round(generationProgress * 100) }}%</template>
+                <template v-else-if="drawEngine !== 'sd'"> · 已等待 {{ animaState.elapsedSeconds }} 秒</template>
+                <template v-if="drawEngine !== 'sd' && animaState.currentNode"> · 节点 {{ animaState.currentNode }}</template>
+              </div>
+              <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }">
+                <i :style="generationProgressStyle"></i>
+              </div>
             </div>
             <div v-else-if="generationError" class="stage-idle">
               <div class="stage-placeholder-title">这一张没有完成</div>
@@ -1327,6 +1334,8 @@ const engineOnline = computed(() => {
 const generationBusy = computed(() => sd.generating.value || ['submitting', 'running', 'cancelling'].includes(animaState.value.phase))
 const drawEngineLabel = computed(() => drawEngine.value === 'sd' ? 'SD' : drawEngine.value === 'anima' ? 'Anima' : 'Krea 2')
 const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value : animaState.value.statusText)
+const generationProgress = computed(() => drawEngine.value === 'sd' ? sd.progress.value / 100 : animaState.value.progress)
+const generationProgressStyle = computed(() => ({ '--progress': `${(generationProgress.value ?? 0) * 100}%` }))
 const generationError = computed(() => drawEngine.value === 'sd' ? sd.errorMsg.value : animaState.value.errorMsg)
 const generationStopped = computed(() => drawEngine.value === 'sd'
   ? sd.statusText.value === '已停止'

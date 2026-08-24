@@ -10,6 +10,7 @@ var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var generationContract = require('../server/anima-generation-contract');
 var comfyClient = require('../server/comfy-client');
+var comfyProgress = require('../server/comfy-progress');
 // P3 收口：ComfyUI 探活统一走 server/upstream-health
 var upstreamHealth = require('../server/upstream-health');
 // 2026-08-21 收口：模型/LoRA/角色白名单数据表外移；任务注册表骨架统一
@@ -637,11 +638,16 @@ function requestOwner(req) {
 
 function publicJob(job, routeBase) {
   routeBase = routeBase || (job.input && job.input.family === 'krea2' ? '/api/creative' : '/api/anima');
+  var elapsedSeconds = Math.max(0, Math.floor(((job.status === 'succeeded' || job.status === 'failed' || job.status === 'cancelled') ? (job.finishedAt || Date.now()) : Date.now()) - job.createdAt) / 1000);
+  var progress = job.status === 'succeeded' ? 1 : (typeof job.progress === 'number' ? job.progress : (job.status === 'queued' ? 0 : null));
   var result = {
     id:job.id,
     status:job.status,
     provider:job.provider || 'comfy',
-    progress:job.status === 'succeeded' ? 1 : (job.status === 'running' ? 0.1 : 0),
+    progress:progress,
+    elapsedSeconds:elapsedSeconds,
+    currentNode:job.currentNode || null,
+     progressText:job.progressText || (job.status === 'queued' ? '等待 ComfyUI 调度…' : job.status === 'running' ? 'ComfyUI 正在推理…' : job.status === 'succeeded' ? '生成完成' : job.status === 'failed' ? '生成失败' : job.status === 'cancelling' ? '正在取消…' : ''),
     modelId:job.input.modelId,
     loraId:job.input.loraId,
     character:job.input.character,
@@ -785,6 +791,7 @@ function createAnimaService(config, options) {
   // 任务（立即 + 30s 后各试一次，重试幂等无害）；2026-08-21 收口到 comfy-client。
   var clientId = comfyClient.clientIdFor(config, 'anima');
   comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'anima');
+  var progressMonitor = comfyProgress.createComfyProgressMonitor(config, clientId);
 
   cleanupMediaRoot(config, mediaNamespace);
   cleanupOwnedInputs();
@@ -932,6 +939,8 @@ function createAnimaService(config, options) {
         return;
       }
       var status = entry.status && entry.status.status_str;
+       job.progress = null;
+       job.progressText = status === 'success' ? '生成完成' : status === 'error' || status === 'failed' ? 'ComfyUI 执行失败' : 'ComfyUI 正在推理…';
       if (status === 'error' || status === 'failed') {
         failJob(job, serviceError(502, 'COMFY_EXECUTION_FAILED', 'ComfyUI 执行失败'), 'COMFY_EXECUTION_FAILED');
         return;
@@ -993,6 +1002,8 @@ function createAnimaService(config, options) {
       return;
     }
     job.status = 'running';
+    job.progressText = '已提交，等待 ComfyUI 执行…';
+    progressMonitor.watch(promptId, job);
     schedulePoll(job, 0);
   }
 
@@ -1038,6 +1049,9 @@ function createAnimaService(config, options) {
       pollTimer:null,
       gcTimer:null,
       pollFailures:0,
+       progress:null,
+       progressText:'等待提交到 ComfyUI…',
+       currentNode:null,
       cancelFailures:0,
       cancelChecks:0,
       cancelDeadline:0,
@@ -1069,6 +1083,7 @@ function createAnimaService(config, options) {
   }
 
   function removeJob(job) {
+    if (job.upstreamId) progressMonitor.unwatch(job.upstreamId);
     if (job.pollTimer) { clearTimeout(job.pollTimer); job.pollTimer = null; }
     if (job.gcTimer) { clearTimeout(job.gcTimer); job.gcTimer = null; }
     removeResult(job);
@@ -1140,6 +1155,7 @@ function createAnimaService(config, options) {
 
   function close() {
     registry.close();
+    progressMonitor.close();
     clearInterval(inputCleanupTimer);
     jobs.forEach(function (job) {
       if (job.pollTimer) clearTimeout(job.pollTimer);

@@ -19,6 +19,10 @@ import type { CharKey } from '../stores/promptBuilderStore'
 export interface AnimaPublicJob {
   id: string
   status: 'queued' | AnimaGenerationState['phase']
+  progress?: number | null
+  elapsedSeconds?: number
+  progressText?: string
+  currentNode?: string | null
   seed: number
   resultAvailable: boolean
   resultUrl: string | null
@@ -79,7 +83,7 @@ export interface AnimaSessionOptions {
 }
 
 const INITIAL_STATE: AnimaGenerationState = {
-  phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
+  phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
   prompt: '', negative: '', modelId: 'anima-aesthetic-v1.1', loraId: 'L_NENE_V21_ANIMA',
   loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
@@ -383,6 +387,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const job = data.job
       if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
       if (job.metadata) patchState({ job: metadataFromJob(job, request) })
+      patchState({
+        progress: typeof job.progress === 'number' ? Math.max(0, Math.min(1, job.progress)) : null,
+        elapsedSeconds: typeof job.elapsedSeconds === 'number' ? Math.max(0, job.elapsedSeconds) : state.value.elapsedSeconds,
+        progressText: typeof job.progressText === 'string' ? job.progressText : state.value.progressText,
+        currentNode: typeof job.currentNode === 'string' ? job.currentNode : state.value.currentNode,
+      })
       if (job.status === 'cancelling') {
         patchState({ phase: 'cancelling', statusText: '取消中…' })
         continue
@@ -401,7 +411,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       // 会话拥有成功态与结果持有：先释放旧结果再写入新结果。
       const previous = state.value.result
       if (previous && previous.url !== result.url) URL.revokeObjectURL(previous.url)
-      patchState({ result, job: metadata, phase: 'succeeded', statusText: '生成完成', errorMsg: '' })
+      patchState({ result, job: metadata, phase: 'succeeded', progress: 1, progressText: '生成完成', currentNode: null, statusText: '生成完成', errorMsg: '' })
       options.onResult(result)
       return
     }
@@ -411,7 +421,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   function clearResult() {
     const previous = state.value.result
     if (previous) URL.revokeObjectURL(previous.url)
-    patchState({ result: null, job: null })
+    patchState({ result: null, job: null, progress: null, elapsedSeconds: 0, progressText: '', currentNode: null })
   }
 
   async function generate(overrides: Partial<AnimaRequest> = {}): Promise<void> {
@@ -425,7 +435,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const controller = new AbortController()
     jobRequest = controller
     clearResult()
-    patchState({ phase: 'submitting', statusText: '提交任务…', errorMsg: '' })
+    patchState({ phase: 'submitting', progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '' })
     try {
       const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(state.value.family), {
         method: 'POST',
