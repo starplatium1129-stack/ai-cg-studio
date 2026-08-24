@@ -307,4 +307,10 @@ function stopPan(event: PointerEvent) {
   color: color-mix(in srgb, white 40%, transparent);
   pointer-events: none;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer { animation:none; }
+  .zoom-transform-layer { transition:none; }
+  .zoomable-img { filter:none; transition:opacity 120ms ease-out; }
+}
 </style>

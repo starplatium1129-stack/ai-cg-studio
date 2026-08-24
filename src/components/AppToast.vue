@@ -96,9 +96,16 @@ function onPointerUp(e: PointerEvent, id: number) {
       dismiss(id)
     })
   } else {
-    // 弹性回正
-    el.style.transform = ''
-    el.style.opacity = ''
+    // 未达阈值时从当前拖拽位置短促回弹，reduced motion 仅保留淡回反馈。
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced) {
+      el.style.transform = ''
+    }
+    void animateMini(
+      el,
+      reduced ? { opacity: 1 } : { opacity: 1, transform: 'translateY(0)' },
+      reduced ? { duration: 0.1, ease: 'easeOut' } : { type: 'spring', bounce: 0.12, duration: 0.22 },
+    )
   }
 }
 
@@ -125,11 +132,14 @@ function onToastEnter(el: Element, done: () => void) {
 }
 
 function onToastLeave(el: Element, done: () => void) {
-  const t = animateMini(
-    el as HTMLElement,
-    { opacity: 0, transform: 'translateY(-8px) scale(.96)' },
-    { duration: 0.16, ease: 'easeOut' },
-  )
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const t = reduced
+    ? animateMini(el as HTMLElement, { opacity: 0 }, { duration: 0.12, ease: 'easeOut' })
+    : animateMini(
+        el as HTMLElement,
+        { opacity: 0, transform: 'translateY(-8px) scale(.96)' },
+        { duration: 0.16, ease: 'easeOut' },
+      )
   t.then(done)
 }
 </script>

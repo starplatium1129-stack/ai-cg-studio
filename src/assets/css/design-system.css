@@ -1365,15 +1365,27 @@ tr:hover td { background: var(--bg-hover); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* transition 也必须关:只关 animation 的话页面切换、主题切换、
-     [data-reveal] 的 0.52s 位移都还在动 */
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
-    scroll-behavior: auto !important;
+  /* 只移除会造成位移、缩放、旋转或持续扫光的动效，颜色与透明度反馈仍保留。 */
+  .pulse, .spin, .skeleton-shimmer,
+  .route-atmosphere *,
+  .nav-links > a::after,
+  [data-reveal], .animate-in, [class*="stagger-in"] {
+    animation:none !important;
   }
+  .layer-pop-enter-active > :first-child,
+  .layer-pop-leave-active > :first-child,
+  .layer-pop-enter-from > :first-child,
+  .layer-pop-leave-to > :first-child {
+    transform:none !important;
+  }
+  .layer-pop-enter-active,
+  .layer-pop-leave-active,
+  .layer-fade-enter-active,
+  .layer-fade-leave-active { transition:opacity var(--motion-control) ease-out; }
+  .layer-pop-enter-from > :first-child,
+  .layer-pop-leave-to > :first-child { opacity:0; }
   ::view-transition-old(root), ::view-transition-new(root) { animation:none !important; }
+  html { scroll-behavior:auto !important; }
 }
 
 /* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；

@@ -499,7 +499,7 @@
   .pb .scene-cat { appearance:none; padding: 3px var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: var(--r-pill); cursor: pointer; font: 500 var(--fs-label-xs) var(--font-sans); transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
   .pb .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
   .pb .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
-  .pb .scene-list { display: flex; flex-direction: column; gap: 2px; max-height:min(46vh,540px); overflow-y: auto; transition: max-height var(--motion-surface) var(--ease-out); }
+  .pb .scene-list { display: flex; flex-direction: column; gap: 2px; max-height:min(46vh,540px); overflow-y: auto; }
   /* 与全局滚动条同一套渐变语言：细版但同色系，避免暗色下灰线突兀 */
   .pb .scene-list::-webkit-scrollbar { width: 6px; }
   .pb .scene-list::-webkit-scrollbar-thumb {
@@ -744,7 +744,7 @@
     border:1px solid color-mix(in srgb,var(--success) 34%,var(--border-soft));
     border-radius:var(--r-lg);
     background:linear-gradient(135deg,color-mix(in srgb,var(--success) 8%,var(--bg-surface)),var(--bg-surface));
-    transition:padding var(--motion-hover) var(--ease-out),background var(--motion-hover);
+    transition:background var(--motion-hover);
   }
   .pb .managed-route-card.is-collapsed {
     padding:var(--s-2) var(--s-3);
@@ -1599,8 +1599,9 @@
    }
 
   @media (prefers-reduced-motion: reduce) {
-    .pb *, .pb *::before, .pb *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-    .pb .monitor-rec .dot, .pb .review-star { animation: none; transition: none; }
+    .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-progress-ring.is-indeterminate > i { animation:none !important; }
+     .pb .stage-progress-ring.is-indeterminate > i { transform:translateX(0); }
+    .pb .monitor-rec .dot, .pb .review-star { animation:none; }
   }
 
 .pb-toast.layer-fade-enter-from,

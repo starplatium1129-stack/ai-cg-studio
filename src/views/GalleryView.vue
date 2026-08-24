@@ -126,16 +126,17 @@
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
-      <div
-        v-show="viewerIndex >= 0"
-        class="art-viewer"
-        :class="{ open: viewerIndex >= 0, 'info-open': infoOpen }"
-        role="dialog"
-        aria-modal="true"
-        :aria-hidden="viewerIndex >= 0 ? 'false' : 'true'"
-        aria-label="作品观赏模式"
-        ref="viewerEl"
-      >
+      <Transition name="layer-pop">
+        <div
+          v-show="viewerIndex >= 0"
+          class="art-viewer"
+          :class="{ open: viewerIndex >= 0, 'info-open': infoOpen }"
+          role="dialog"
+          aria-modal="true"
+          :aria-hidden="viewerIndex >= 0 ? 'false' : 'true'"
+          aria-label="作品观赏模式"
+          ref="viewerEl"
+        >
       <section class="viewer-stage" @click.self="infoOpen = false">
         <button class="viewer-close viewer-close-on-art" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn">×</button>
         <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)">‹</button>
@@ -207,8 +208,9 @@
           </template>
         </div>
       </aside>
-    </div>
-  </Teleport>
+        </div>
+      </Transition>
+    </Teleport>
   </article>
 
 </template>
@@ -974,7 +976,15 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 
 <style>
 /* 非 scoped：Teleport 到 body 的查看器 */
-.art-viewer { position:fixed; inset:0; z-index:var(--z-overlay); display:none; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:var(--art-backdrop); color:var(--on-art-primary); }
+.art-viewer { position:fixed; inset:0; z-index:var(--z-overlay); display:grid; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:var(--art-backdrop); color:var(--on-art-primary); }
+.art-viewer.layer-pop-enter-active,
+.art-viewer.layer-pop-leave-active { transition:opacity var(--motion-surface) var(--ease-out); }
+.art-viewer.layer-pop-enter-active > .viewer-stage,
+.art-viewer.layer-pop-leave-active > .viewer-stage { transition:transform var(--motion-surface) var(--ease-out),opacity var(--motion-surface) var(--ease-out); }
+.art-viewer.layer-pop-enter-from,
+.art-viewer.layer-pop-leave-to { opacity:0; }
+.art-viewer.layer-pop-enter-from > .viewer-stage { transform:scale(.985); opacity:0; }
+.art-viewer.layer-pop-leave-to > .viewer-stage { transform:scale(.98); opacity:0; }
 .viewer-compare-host { width:100%; height:calc(100vh - 120px); max-width:min(90vw, 1200px); display:flex; align-items:center; justify-content:center; }
 .viewer-compare-toggle {
   position:absolute; z-index:var(--z-raised); top:18px; right:64px;
@@ -988,7 +998,6 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .viewer-compare-toggle:hover, .viewer-compare-toggle.active {
   border-color:var(--accent); background:color-mix(in srgb,var(--accent) 30%,var(--art-scrim)); color:var(--on-art-primary);
 }
-.art-viewer.open { display:grid; }
 .viewer-stage { position:relative; min-width:0; display:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); overflow:hidden; }
 .viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px var(--art-backdrop)); animation:galleryImageIn .35s var(--ease-out); }
 .viewer-fallback { color:var(--on-art-secondary); font-size:var(--fs-glyph-lg); }
@@ -1015,7 +1024,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @media (max-width:900px) {
   .art-viewer { grid-template-columns:1fr; }
   .viewer-stage { padding:60px 42px 78px; }
-  .viewer-info { position:absolute; inset:0 0 0 auto; width:min(86vw,360px); transform:translateX(100%); transition:transform var(--motion-hover) var(--ease-out); z-index:var(--z-raised); }
+  .viewer-info { position:absolute; inset:0 0 0 auto; width:min(86vw,360px); transform:translateX(100%); transition:transform 260ms var(--ease-drawer); z-index:var(--z-raised); }
   .art-viewer.info-open .viewer-info { transform:none; }
   .viewer-info-toggle { display:grid; }
 }
