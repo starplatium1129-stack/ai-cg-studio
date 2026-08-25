@@ -25,7 +25,7 @@
 | 参数项 | WAI Illustrious v17 | Anima Base/Aesthetic | Krea 2 Turbo |
 |---|---|---|---|
 | **CFG Scale** | **6.0** | **3.0**（当前应用生产 preset；4.5 为历史官方参数对照） | **1.0**（固定） |
-| **采样器 (Sampler)** | `Euler a` | `euler_ancestral`（生产首轮；Remacri 放大纯像素直出，无二阶段采样器） | `euler` |
+| **采样器 (Sampler)** | `Euler a` | `res_multistep`（生产首轮，TeaCache 兼容；Remacri 放大纯像素直出，无二阶段采样器） | `euler` |
 | **调度器 (Scheduler)** | `normal` | `sgm_uniform`（历史官方参数对照；生产 `simple`） | `simple` |
 | **采样步数 (Steps)** | **30 步** | **30 步**（历史官方参数对照；生产 24 步） | **8 步**（固定） |
 | **推荐分辨率** | `1024×1344` / `832×1216` | `832×1216` / `1024×1024` | `1024×1024` / `1024×1536` |
@@ -165,7 +165,7 @@
 
 2. **Anima 官方模型与提示词指南**
    * HuggingFace 镜像仓库：[circlestone-labs/Anima](https://huggingface.co/circlestone-labs/Anima)
-   * 当前应用生产参数：首轮 30 steps / CFG 4.5 / `euler_ancestral` / `simple`；放大（Remacri 在盘）为纯像素直出——`Remacri 4x → lanczos 精确缩放 → 保存`，无二阶段重绘（2026-08-25 实测：低 denoise 二阶段重绘在 4MP 外推 latent 上全脏，穷举排除参数/显存机制后转正纯像素）；30 steps / CFG 4.5 / `er_sde` / `sgm_uniform` 的历史官方参数组仅作对照，不是生产组合
+   * 当前应用生产参数：首轮 30 steps / CFG 4.5 / `res_multistep` / `simple`（**必须保持 res_multistep：TeaCache 在 SDE 采样器下失效**，同基准实测 1.90x vs 1.04x）；放大（Remacri 在盘）为纯像素直出——`Remacri 4x → lanczos 精确缩放 → 保存`，无二阶段重绘（2026-08-25 实测：低 denoise 二阶段重绘在 4MP 外推 latent 上全脏，穷举排除参数/显存机制后转正纯像素）；30 steps / CFG 4.5 / `er_sde` / `sgm_uniform` 的历史官方参数组仅作对照，不是生产组合
 
 3. **Krea 2 官方 Prompting 规范**
    * GitHub：[krea-ai/krea-2/docs/prompting.md](https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md)
@@ -174,6 +174,6 @@
 
 ## 九、 项目现存配置速查
 
-- `data/presets.json`：WAI 30 steps / CFG 6 / Euler a，并自动启用 `Auto` hires 1.5× / 20 steps / denoise 0.4；服务端优先使用 WebUI 的 `R-ESRGAN 4x+ Anime6B`，仅 Comfy 可用时退到 `nearest-exact` Latent，两者都不可用时保留审计过的基础尺寸直出。Anima Base/Aesthetic **30 steps / CFG 4.5 / euler_ancestral / simple**（放大 = Remacri 纯像素直出）；Krea 2 Turbo 8 steps / CFG 1 / euler / simple。
+- `data/presets.json`：WAI 30 steps / CFG 6 / Euler a，并自动启用 `Auto` hires 1.5× / 20 steps / denoise 0.4；服务端优先使用 WebUI 的 `R-ESRGAN 4x+ Anime6B`，仅 Comfy 可用时退到 `nearest-exact` Latent，两者都不可用时保留审计过的基础尺寸直出。Anima Base/Aesthetic **30 steps / CFG 4.5 / res_multistep / simple**（放大 = Remacri 纯像素直出）；Krea 2 Turbo 8 steps / CFG 1 / euler / simple。
 - `routes/anima.js`：`MODELS` 中 Anima Base/Aesthetic 默认 steps 24、CFG 3（后端与前端一致）。
 - 语料/金标测试：`scripts/tests/test-prompt-corpus.js`（298 场景全量 + sc001/sc050/sc153/sc280/landscape/triad）。

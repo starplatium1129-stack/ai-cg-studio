@@ -26,10 +26,10 @@ test('shared Anima defaults and parameter whitelist stay aligned with the route'
   const routeContract = anima.constants.generationContract;
   assert.strictEqual(routeContract, generationContract);
   assert.deepStrictEqual(generationContract.ANIMA_DEFAULTS, {
-    steps: 30, cfg: 4.5, sampler: 'euler_ancestral', scheduler: 'simple',
+    steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple',
   });
   assert.deepStrictEqual(generationContract.MANUAL_REPAIR_PRESET, {
-    steps: 30, cfg: 4.5, sampler: 'euler_ancestral', scheduler: 'simple',
+    steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple',
   });
   assert.ok(generationContract.ALLOWED_INPUT_KEYS.includes('steps'));
   assert.ok(!generationContract.ALLOWED_INPUT_KEYS.includes('sampler'));

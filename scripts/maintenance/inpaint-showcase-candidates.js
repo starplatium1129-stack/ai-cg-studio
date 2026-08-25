@@ -178,7 +178,7 @@ const INPAINT_CONFIG = Object.freeze({
     lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
     steps: 24,
     cfg: 3.0,
-    sampler: 'euler_ancestral',
+    sampler: 'res_multistep',
     scheduler: 'simple',
     ops: [
       {

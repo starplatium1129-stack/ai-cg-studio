@@ -41,7 +41,7 @@ var CHARACTERS = modelCatalog.CHARACTERS;
 
 var ALLOWED_INPUT_KEYS = new Set(generationContract.ALLOWED_INPUT_KEYS);
 
-// 放大二阶段参数：用户实测转正固定 sgm_uniform + res_multistep（首轮 euler_ancestral/simple）
+// 放大二阶段参数：固定 sgm_uniform + res_multistep（首轮 res_multistep/simple）
 var HIRES_SAMPLER = generationContract.HIRES_SAMPLER;
 var HIRES_SCHEDULER = generationContract.HIRES_SCHEDULER;
 
@@ -1046,7 +1046,7 @@ function createAnimaService(config, options) {
           loras:metadataLoras, loraStrength:frozenInput.loraStrength, styleLoraId:frozenInput.styleLoraId || null, width:frozenInput.width, height:frozenInput.height,
          hiresFix:Boolean(frozenInput.hiresFix), hiresScale:frozenInput.hiresScale, hiresUpscaler:frozenInput.superResModel ? 'Remacri' : frozenInput.hiresUpscaler,
          hiresSteps:frozenInput.hiresSteps, denoisingStrength:frozenInput.denoisingStrength, faceDetailer:Boolean(frozenInput.faceDetailer),
-        steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'euler_ancestral', scheduler:frozenInput.scheduler || 'simple',
+        steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'res_multistep', scheduler:frozenInput.scheduler || 'simple',
         hiresSampler:frozenInput.family !== 'krea2' && Boolean(frozenInput.hiresFix) && !frozenInput.superResModel ? HIRES_SAMPLER : null,
         hiresScheduler:frozenInput.family !== 'krea2' && Boolean(frozenInput.hiresFix) && !frozenInput.superResModel ? HIRES_SCHEDULER : null,
         teaCache:Boolean(frozenInput.teaCache), teaCacheThresh:frozenInput.teaCacheThresh,

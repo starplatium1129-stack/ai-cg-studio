@@ -221,7 +221,7 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   expect(classes).not.toContain('LoraLoader')
   expect(graph!['2'].inputs?.clip_name).toBe('qwen_3_06b_base.safetensors')
   expect(String(graph!['5'].inputs?.text)).toContain('worst quality')
-  expect(graph!['7'].inputs?.sampler_name).toBe('euler_ancestral')
+  expect(graph!['7'].inputs?.sampler_name).toBe('res_multistep')
 })
 
 test('popular creator · Krea 2 request has no negative and no LoRA', async ({ page, request }) => {

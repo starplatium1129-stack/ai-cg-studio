@@ -1,11 +1,14 @@
 'use strict';
 
-// 首轮采样器：用户指示改 euler_ancestral（柔和多样）。放大二阶段采样器不再跟随首轮：
-// Remacri 超分路径纯像素直出（无二阶段），Latent 回退/inpaint 路径冻结 HIRES 组合。
+// 首轮采样器：恢复 res_multistep（2026-08-25 实测钉死：TeaCache 跳步判据在
+// SDE 类采样器下全 FULL——euler_ancestral 1.04x vs res_multistep 1.90x
+// 同基准实测；euler 画质偏好需先做 TeaCache SDE 兼容适配再考虑）。
+// 放大二阶段采样器不再跟随首轮：Remacri 超分路径纯像素直出（无二阶段），
+// Latent 回退/inpaint 路径冻结 HIRES 组合。
 const ANIMA_DEFAULTS = Object.freeze({
   steps: 30,
   cfg: 4.5,
-  sampler: 'euler_ancestral',
+  sampler: 'res_multistep',
   scheduler: 'simple',
 });
 

@@ -135,7 +135,7 @@ const videoStore = useVideoStore()
 const router = useRouter()
 useScrollReveal()
 
-// 引擎参数由导演台按所选引擎自动锁定（Anima: euler_ancestral · CFG 4.5 · 30 步；放大二阶段 res_multistep · sgm_uniform）。
+// 引擎参数由导演台按所选引擎自动锁定（Anima: res_multistep · CFG 4.5 · 30 步；放大二阶段 res_multistep · sgm_uniform）。
 // 2026-08-23 剧本模式激活：清掉 SD 时代的硬编码采样参数与内联 <lora:> 展示
 //（出图深链本就不携带 LoRA——LoRA 由网关受控路线管理，v18 内联标签是误导）。
 const LOCK_PARAMS = '底模参数由导演台按引擎自动锁定'
