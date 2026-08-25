@@ -427,6 +427,9 @@ const LIGHTING_TO_ID: Record<string, string> = {
   // 作者意图，此前 105/438 蓝图连补偿命中都拿不到，AMBIENCE 光影词包不附加。
   morning: 'golden', sunlight: 'golden', autumn: 'golden', 余晖: 'golden',
   柴火: 'lantern', 炉火: 'lantern',
+  // 2026-08-24 B1 试点审计：舞台/柜台聚光灯误命中 prose 里的 night -> 月光；
+  // spotlight 归入 lantern 暖光族（5 处全量影响均为语义改善）。
+  spotlight: 'lantern',
   window: 'window', 'window light': 'window', backlight: 'back', backlit: 'back',
   'rim light': 'back', moonlight: 'moon', moon: 'moon', night: 'moon',
   lantern: 'lantern', candlelight: 'lantern', candle: 'lantern', lamp: 'lantern', overcast: 'overcast',

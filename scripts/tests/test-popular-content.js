@@ -18,7 +18,8 @@ test('popular data: 43 characters, unique ids, exactly one default outfit per ch
   var ids = new Set(characters.map(function (character) { return character.id; }));
   assert.strictEqual(ids.size, 43, 'character ids must be unique');
   characters.forEach(function (character) {
-    assert.ok(character.outfits.length >= 2 && character.outfits.length <= 8, character.id + ' must have 2-8 outfits (researched official skins + derived casual wear)');
+    // 2026-08-24 B1 衣橱扩容：上限 8 -> 10（陈衍生服装试点 10 套；后续角色扩容按需再演进）。
+    assert.ok(character.outfits.length >= 2 && character.outfits.length <= 10, character.id + ' must have 2-10 outfits (researched official skins + derived casual wear)');
     var defaults = character.outfits.filter(function (outfit) { return outfit.default; });
     assert.strictEqual(defaults.length, 1, character.id + ' must have exactly one default outfit');
     var outfitIds = new Set(character.outfits.map(function (outfit) { return outfit.id; }));
@@ -66,7 +67,9 @@ test('blueprints: 43 characters x (6-7 prototype + 4 adult), all owned by a char
   // （43 角色 = 36x10 + 7x11 = 437 场景）；
   // 2026-08-23 场景库二次优化：海梦补 cosplay 泛用套日常场景（后台试装），
   // （43 角色 = 35x10 + 8x11 = 438 场景）。
-  assert.strictEqual(blueprints.length, 438, 'expected 438 character scenes, got ' + blueprints.length);
+  // 2026-08-24 B1 衣橱扩容试点（陈）：衍生服装入库配套专属场景，
+  // 陈 11 -> 14（43 角色 = 35x10 + 7x11 + 1x14 = 441 场景）。
+  assert.strictEqual(blueprints.length, 441, 'expected 441 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -78,14 +81,14 @@ test('blueprints: 43 characters x (6-7 prototype + 4 adult), all owned by a char
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 10 或 11 个场景：10=6 原型+4 成人（35 角色）、11=7 原型+4 成人（7 角色）；
-  // 全部蓝图必须归属某个角色（通用蓝图已删除）。
+  // 每个角色 10、11 或 13 个场景：10=6 原型+4 成人（34 角色）、11=7 原型+4 成人（8 角色）、
+  // 13=陈 B1 衣橱扩容（6 原型+3 衍生服装专属+4 成人）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
-    assert.ok(entry[1] === 10 || entry[1] === 11, entry[0] + ' must own 10 or 11 scenes, got ' + entry[1]);
+    assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13, entry[0] + ' must own 10, 11 or 13 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 35, 11: 8 }, 'scene distribution must be 35x10 + 8x11');
+  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 8, 13: 1 }, 'scene distribution must be 34x10 + 8x11 + 1x13');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4 或 5 个带 characterId 的成人场景。
@@ -708,7 +711,6 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(srWf['24'].class_type, 'VAEEncode', 'super-res: re-encode latent');
   assert.strictEqual(srWf['25'].class_type, 'KSampler', 'super-res: second-pass KSampler');
   assert.strictEqual(srWf['25'].inputs.denoise, 0.35);
-  // 2026-08-25 确认：二阶段同走 TeaCache（全链加速）；hires 末端不挂 RCAS（433f93f）。
   assert.strictEqual(srWf['25'].inputs.model[0], '13', 'super-res 2nd pass follows TeaCache (full-chain acceleration)');
   assert.deepStrictEqual(srWf['8'].inputs.samples, ['25', 0], 'decode node consumes super-res 2nd pass latent');
   assert.strictEqual(srWf['26'] === undefined, true, 'super-res path must NOT attach RCAS (433f93f)');
