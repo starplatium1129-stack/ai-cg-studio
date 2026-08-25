@@ -714,6 +714,23 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.deepStrictEqual(srWf['10'].inputs.images, ['23', 0], 'super-res: pure pixel output straight to SaveImage');
   assert.strictEqual(srWf['24'] === undefined && srWf['25'] === undefined, true, 'super-res: no VAEEncode/KSampler re-draw stage (dirty-chain removal 2026-08-25)');
   assert.strictEqual(srWf['35'] === undefined, true, 'super-res pure pixel path must NOT attach RCAS');
+
+  // 2026-08-25 回归盲区修复：LoRA 分支 + superRes 组合——非 hires 文生图 RCAS 分支
+  // 曾把 10 覆盖回 ['35',0]（Remacri 节点孤立、ComfyUI 跳过未消费节点、输出退回
+  // 原尺寸；gateway 全链路实测根因）。lora 分支必须同样直出像素放大结果。
+  var srLoraInput = {
+    prompt:'ayachi_nene, 1girl', negative:'worst quality',
+    modelId:'anima-base-v1.0', loraId:'L_NENE_V21_ANIMA', loraStrength:0.85,
+    width:832, height:1216, steps:30, cfg:4.5,
+    sampler:'res_multistep', scheduler:'simple', seed:42, character:'nene',
+    hiresFix:true, hiresScale:2.0, hiresDenoise:0.35,
+    superResModel:'4x_foolhardy_Remacri.safetensors',
+  };
+  var srLoraWf = animaRoute.buildWorkflow(srLoraInput);
+  assert.strictEqual(srLoraWf['23'].class_type, 'ImageScale', 'lora super-res: scale node present');
+  assert.deepStrictEqual(srLoraWf['10'].inputs.images, ['23', 0], 'lora super-res: SaveImage must consume the pure pixel output (isHires must exclude the non-hires RCAS branch)');
+  assert.strictEqual(srLoraWf['35'] === undefined, true, 'lora super-res: no RCAS override on hires pixel path');
+  assert.strictEqual(srLoraWf['25'] === undefined, true, 'lora super-res: no second-pass KSampler');
 });
 
 // 2026-08-16 审计：单条坏数据只被跳过并告警，不再让整份解析抛错丢弃。

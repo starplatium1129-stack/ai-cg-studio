@@ -570,8 +570,11 @@ function buildWorkflow(input) {
     // Remacri 纯像素路径（superResModel 存在）不挂 RCAS（2026-08-25 P1 实测状态直出）。
     loraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:loraWf['10'].inputs.images, method:'rcas', 'method.strength':0.75 } };
     loraWf['10'].inputs.images = ['35', 0];
-  } else if (!input.initImage) {
-    // 同 no-LoRA 路线：纯文生图末端 RCAS 锐化；inpaint 保持像素级回贴保真。
+  } else if (!isHires && !input.initImage) {
+    // 同 no-LoRA 路线：非 hires 纯文生图末端 RCAS 锐化；inpaint 保持像素级回贴保真。
+    // 2026-08-25 修复：必须排除 isHires——否则覆盖 appendSuperResHires 的像素直出
+    // （10←23），Remacri 节点变孤立、ComfyUI 跳过未消费节点，输出退回原尺寸
+    // （gateway 全链路实测 832x1216 的根因；node23 孤立被复现）。
     loraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:['9', 0], method:'rcas', 'method.strength':0.75 } };
     loraWf['10'].inputs.images = ['35', 0];
   }
