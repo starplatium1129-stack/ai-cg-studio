@@ -17,7 +17,8 @@
 #   match). ComfyUI attention_sage() has per-call fallback to pytorch
 #   attention, so a missing/broken kernel degrades to baseline instead of
 #   crashing. Verified by scripts/tests/benchmark-anima-teacache.js same-seed
-#   A/B (see docs/showcase-generation-craft.md).
+#   A/B for models that use ComfyUI's global attention dispatcher; Anima's
+#   native SDPA path is audited separately in docs/showcase-generation-craft.md.
 #
 # NOTE: a venv python.exe appears as TWO processes (venv launcher + base
 # interpreter) - that is ONE instance, not two. Never kill just one of them.
