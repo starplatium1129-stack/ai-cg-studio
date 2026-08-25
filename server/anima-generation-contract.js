@@ -1,7 +1,7 @@
 'use strict';
 
-// 首轮采样器：用户指示改 euler_ancestral（柔和多样）；放大二阶段采样器不再跟随首轮，
-// 冻结为 HIRES_SAMPLER（res_multistep + HIRES_SCHEDULER sgm_uniform = 用户实测组合）。
+// 首轮采样器：用户指示改 euler_ancestral（柔和多样）。放大二阶段采样器不再跟随首轮：
+// Remacri 超分路径纯像素直出（无二阶段），Latent 回退/inpaint 路径冻结 HIRES 组合。
 const ANIMA_DEFAULTS = Object.freeze({
   steps: 30,
   cfg: 4.5,
@@ -9,10 +9,10 @@ const ANIMA_DEFAULTS = Object.freeze({
   scheduler: 'simple',
 });
 
-// 用户实测转正（固定 seed A/B，TeaCache 经实测排除为变量）：放大二阶段
-// scheduler 单独固定 sgm_uniform（官方参数组同款排布，低 denoise 补绘细节更优）。
-// 二阶段采样器同步冻结为 HIRES_SAMPLER（res_multistep）：首轮改 euler_ancestral
-// 后不再跟随首轮，保住 res_multistep + sgm_uniform 实测组合。
+// Remacri 超分路径已改纯像素放大直出（2026-08-25 实测：二阶段低 denoise 重绘在
+// 4MP 外推 latent 上全脏，P1 纯像素直出干净，见 routes/anima.js appendSuperResHires）。
+// HIRES_SAMPLER / HIRES_SCHEDULER 仅用于保留重绘的 LatentUpscaleBy 回退分支与
+// inpaint+hires 路径（二阶段冻结 res_multistep + sgm_uniform）。
 const HIRES_SCHEDULER = 'sgm_uniform';
 const HIRES_SAMPLER = 'res_multistep';
 

@@ -698,9 +698,10 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.deepStrictEqual(hiresWf['8'].inputs.samples, ['12', 0], 'decode node consumes 2nd pass latent');
   assert.strictEqual(hiresWf['26'] === undefined, true, 'hires path must NOT attach RCAS (433f93f)');
 
-  // 2026-08-20：Anima hires 接入本地 ESRGAN 真超分（Remacri）——superResModel 注入后
-  // 走像素级超分链路（VAEDecode→UpscaleModelLoader→ImageUpscaleWithModel→ImageScale→
-  // VAEEncode→二阶段 KSampler），替代潜空间 bicubic 放大。
+  // 2026-08-25 转正：Remacri 路径改纯像素放大直出（二阶段低 denoise 重绘在 4MP
+  // 外推 latent 上实测全脏——采样器/调度器/TeaCache/RCAS/显存机制穷举排除，
+  // P1 纯像素直出与 Z1 VAE 往返直出均干净）。VAEDecode→UpscaleModelLoader→
+  // ImageUpscaleWithModel→ImageScale→直出保存，无 VAEEncode/KSampler 重绘段。
   var srInput = Object.assign({}, hiresInput, { superResModel: '4x_foolhardy_Remacri.safetensors' });
   var srWf = animaRoute.buildWorkflow(srInput);
   assert.strictEqual(srWf['20'].class_type, 'VAEDecode', 'super-res: first-pass decode');
@@ -710,14 +711,9 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(srWf['22'].inputs.upscale_model[0], '21');
   assert.strictEqual(srWf['23'].class_type, 'ImageScale', 'super-res: scale to target');
   assert.strictEqual(srWf['23'].inputs.width, 1664, '832x2.0 = 1664 (8-aligned)');
-  assert.strictEqual(srWf['24'].class_type, 'VAEEncode', 'super-res: re-encode latent');
-  assert.strictEqual(srWf['25'].class_type, 'KSampler', 'super-res: second-pass KSampler');
-  assert.strictEqual(srWf['25'].inputs.denoise, 0.35);
-  assert.strictEqual(srWf['25'].inputs.scheduler, 'sgm_uniform', 'super-res 2nd pass uses the same turned-on sgm_uniform scheduler');
-  assert.strictEqual(srWf['25'].inputs.sampler_name, 'res_multistep', 'super-res 2nd pass keeps the decoupled res_multistep sampler');
-  assert.strictEqual(srWf['25'].inputs.model[0], '13', 'super-res 2nd pass follows TeaCache (full-chain acceleration)');
-  assert.deepStrictEqual(srWf['8'].inputs.samples, ['25', 0], 'decode node consumes super-res 2nd pass latent');
-  assert.strictEqual(srWf['26'] === undefined, true, 'super-res path must NOT attach RCAS (433f93f)');
+  assert.deepStrictEqual(srWf['10'].inputs.images, ['23', 0], 'super-res: pure pixel output straight to SaveImage');
+  assert.strictEqual(srWf['24'] === undefined && srWf['25'] === undefined, true, 'super-res: no VAEEncode/KSampler re-draw stage (dirty-chain removal 2026-08-25)');
+  assert.strictEqual(srWf['35'] === undefined, true, 'super-res pure pixel path must NOT attach RCAS');
 });
 
 // 2026-08-16 审计：单条坏数据只被跳过并告警，不再让整份解析抛错丢弃。

@@ -288,6 +288,10 @@ function validateInput(body, expectedFamily) {
 // 2026-08-20：Anima hires 真超分辅助——与 WAI 链路同款（Remacri ESRGAN 像素级放大 +
 // 低 denoise 二阶段），替代潜空间 bicubic 放大（动漫线条块状/噪感根源之一）。
 // 只在 input.superResModel 存在时启用；否则回退原有 LatentUpscaleBy(bicubic)。
+// 2026-08-25 实测转正：二阶段 KSampler 低 denoise 重绘在 4MP 外推 latent 上实测
+// 全脏（参数/调度器/TeaCache/RCAS/显存机制穷举排除，X1r 连 433f93f 逐字复刻亦脏；
+// P1 纯像素直出与 Z1 VAE 往返直出均干净），Remacri 路径改纯像素放大直出：
+// Remacri 4x → lanczos 精确缩放 → 保存（无 VAEEncode/KSampler 重绘段）。
 function appendSuperResHires(wf, input, opts) {
   var targetW = Math.round(input.width * input.hiresScale / 8) * 8;
   var targetH = Math.round(input.height * input.hiresScale / 8) * 8;
@@ -295,23 +299,7 @@ function appendSuperResHires(wf, input, opts) {
   wf['21'] = { class_type:'UpscaleModelLoader', inputs:{ model_name:input.superResModel } };
   wf['22'] = { class_type:'ImageUpscaleWithModel', inputs:{ upscale_model:['21', 0], image:['20', 0] } };
   wf['23'] = { class_type:'ImageScale', inputs:{ image:['22', 0], upscale_method:'lanczos', width:targetW, height:targetH, crop:'disabled' } };
-  wf['24'] = { class_type:'VAEEncode', inputs:{ pixels:['23', 0], vae:opts.vae } };
-  wf['25'] = { class_type:'KSampler', inputs:{
-    model:opts.model,
-    positive:opts.positive,
-    negative:opts.negative,
-    latent_image:['24', 0],
-    seed:input.seed + 1,
-    steps:Math.max(12, Math.round(input.steps * 0.6)),
-    cfg:input.cfg,
-    sampler_name:HIRES_SAMPLER,
-    scheduler:HIRES_SCHEDULER,
-    denoise:input.hiresDenoise || 0.35
-  } };
-  // 2026-08-25 还原确认：二阶段与首轮同走 TeaCache（用户实测质量几乎一致，
-  // 要求全链加速）；hires 末端不挂 RCAS（433f93f 原样）。25 是二阶段 KSampler，
-  // 输出 latent，须经 decodeNode 解码后再保存。
-  wf[opts.decodeNode].inputs.samples = ['25', 0];
+  wf['10'].inputs.images = ['23', 0];
 }
 
 function buildWorkflow(input) {
@@ -444,7 +432,7 @@ function buildWorkflow(input) {
           noLoraWf['10'].inputs.images = ['34', 0];
         }
       } else if (input.superResModel) {
-        appendSuperResHires(noLoraWf, input, { firstPass:['7', 0], vae:['3', 0], model:noLoraModel, positive:['4', 0], negative:['5', 0], decodeNode:'8' });
+        appendSuperResHires(noLoraWf, input, { firstPass:['7', 0], vae:['3', 0] });
       } else {
         noLoraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['7', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
         noLoraWf['12'] = { class_type:'KSampler', inputs:{
@@ -462,9 +450,10 @@ function buildWorkflow(input) {
         noLoraWf['8'].inputs.samples = ['12', 0];
       }
     }
-    if (isHires) {
+    if (isHires && !input.superResModel) {
       // Keep hires output on parity with the base route: the ESRGAN/VAE round trip
       // otherwise bypasses the proven RCAS finishing pass and visibly softens line art.
+      // Remacri 纯像素路径（superResModel 存在）不挂 RCAS（2026-08-25 P1 实测状态直出）。
       noLoraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:noLoraWf['10'].inputs.images, method:'rcas', 'method.strength':0.75 } };
       noLoraWf['10'].inputs.images = ['35', 0];
     }
@@ -557,7 +546,7 @@ function buildWorkflow(input) {
         loraWf['10'].inputs.images = ['34', 0];
       }
     } else if (input.superResModel) {
-      appendSuperResHires(loraWf, input, { firstPass:['8', 0], vae:['3', 0], model:loraModel, positive:['5', 0], negative:['6', 0], decodeNode:'9' });
+      appendSuperResHires(loraWf, input, { firstPass:['8', 0], vae:['3', 0] });
     } else {
       loraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['8', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
       loraWf['12'] = { class_type:'KSampler', inputs:{
@@ -575,9 +564,10 @@ function buildWorkflow(input) {
       loraWf['9'].inputs.samples = ['12', 0];
     }
   }
-  if (isHires) {
+  if (isHires && !input.superResModel) {
     // Remacri/VAE and latent hires both need the same finishing pass as base output;
     // without it, the final enlarged image is softer than the unscaled preview.
+    // Remacri 纯像素路径（superResModel 存在）不挂 RCAS（2026-08-25 P1 实测状态直出）。
     loraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:loraWf['10'].inputs.images, method:'rcas', 'method.strength':0.75 } };
     loraWf['10'].inputs.images = ['35', 0];
   } else if (!input.initImage) {
@@ -1057,8 +1047,8 @@ function createAnimaService(config, options) {
          hiresFix:Boolean(frozenInput.hiresFix), hiresScale:frozenInput.hiresScale, hiresUpscaler:frozenInput.superResModel ? 'Remacri' : frozenInput.hiresUpscaler,
          hiresSteps:frozenInput.hiresSteps, denoisingStrength:frozenInput.denoisingStrength, faceDetailer:Boolean(frozenInput.faceDetailer),
         steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'euler_ancestral', scheduler:frozenInput.scheduler || 'simple',
-        hiresSampler:frozenInput.family !== 'krea2' && Boolean(frozenInput.hiresFix) ? HIRES_SAMPLER : null,
-        hiresScheduler:frozenInput.family !== 'krea2' && Boolean(frozenInput.hiresFix) ? HIRES_SCHEDULER : null,
+        hiresSampler:frozenInput.family !== 'krea2' && Boolean(frozenInput.hiresFix) && !frozenInput.superResModel ? HIRES_SAMPLER : null,
+        hiresScheduler:frozenInput.family !== 'krea2' && Boolean(frozenInput.hiresFix) && !frozenInput.superResModel ? HIRES_SCHEDULER : null,
         teaCache:Boolean(frozenInput.teaCache), teaCacheThresh:frozenInput.teaCacheThresh,
         seed:frozenInput.seed, character:frozenInput.character || null, preview:Boolean(LORAS[frozenInput.loraId] && LORAS[frozenInput.loraId].preview), createdAt:createdAt, resultUrl:null,
         provider:provider

@@ -45,7 +45,7 @@ masterpiece, best_quality, score_7
 - **服务端默认参数 ≠ 手工出图参数**：`routes/anima.js` 的 MODELS 默认是服务端契约（30/4.5/euler_ancestral/simple，有测试锁定）；scene-fix 手工链路显式传 `--steps 30 --cfg 4.5`。`/api/anima/jobs` 不接受 sampler/scheduler 覆盖（白名单外），只传 steps/cfg。
 - **V20B 通道**：网关 `CHARACTERS` 强制 character↔LoRA 绑定，V20B 需要独立绑定 `nene_b`（`--character nene_b`）。
 - **er_sde/sgm_uniform vs res_multistep/simple**：首轮整段采样未做严格对照；30 步候选已验证出 96 分。首轮采样器按用户指示改为 `euler_ancestral/simple`。
-- **放大二阶段参数已转正（用户固定 seed A/B 实测，TeaCache 经实测排除为变量）**：hires 二阶段 KSampler 固定 `res_multistep + sgm_uniform`（`HIRES_SAMPLER` / `HIRES_SCHEDULER`，官方参数组同款排布，低 denoise 补绘细节明显更优）；首轮改 `euler_ancestral/simple` 后二阶段不再跟随首轮。放大路径（Remacri 超分 / Latent 潜空间 / inpaint 回贴）全部生效。
+- **放大链路已转正为纯像素直出（2026-08-25 实测钉死）**：二阶段 KSampler 低 denoise 重绘在 4MP 外推 latent 上实测全脏——采样器（euler/res_multistep/er_sde）、调度器（normal/simple/sgm_uniform）、TeaCache、RCAS、DynamicVRAM/async offload/aimdo 逐项穷举排除，连 433f93f 逐字复刻都脏；而 Remacri 纯像素直出（P1）与 VAE 往返直出（Z1）均干净。生产 Remacri 路径改为 `Remacri 4x → lanczos 精确缩 2x → 直出保存`（无 VAEEncode/KSampler 重绘段、末端不挂 RCAS）。`HIRES_SAMPLER`/`HIRES_SCHEDULER` 仅保留给 Latent 回退与 inpaint+hires 路径。
 
 ## 5. NSFW / R18 实战
 
