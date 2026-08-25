@@ -7,6 +7,11 @@ const ANIMA_DEFAULTS = Object.freeze({
   scheduler: 'simple',
 });
 
+// 用户实测转正（固定 seed A/B，TeaCache 经实测排除为变量）：放大二阶段
+// scheduler 单独固定 sgm_uniform（官方参数组同款排布，低 denoise 补绘细节更优）；
+// 首轮保持 ANIMA_DEFAULTS.simple 不动，二阶段采样器仍跟随首轮。
+const HIRES_SCHEDULER = 'sgm_uniform';
+
 const KREA_DEFAULTS = Object.freeze({
   steps: 8,
   cfg: 1,
@@ -63,6 +68,7 @@ function validateTunableNumber(value, name) {
 
 module.exports = {
   ANIMA_DEFAULTS,
+  HIRES_SCHEDULER,
   KREA_DEFAULTS,
   MANUAL_REPAIR_PRESET,
   PARAMETER_LIMITS,

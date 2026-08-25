@@ -165,7 +165,7 @@
 
 2. **Anima 官方模型与提示词指南**
    * HuggingFace 镜像仓库：[circlestone-labs/Anima](https://huggingface.co/circlestone-labs/Anima)
-   * 当前应用生产参数：24 steps / CFG 3 / `res_multistep` / `simple`；30 steps / CFG 4.5 / `er_sde` / `sgm_uniform` 仅作为历史官方参数对照，不是当前默认值
+   * 当前应用生产参数：30 steps / CFG 4.5 / `res_multistep` / `simple`；30 steps / CFG 4.5 / `er_sde` / `sgm_uniform` 仅作为历史官方参数对照，不是首轮默认值——其中 `sgm_uniform` 已单独转正为放大二阶段调度器（`server/anima-generation-contract.js` 的 `HIRES_SCHEDULER`，用户固定 seed A/B 实测）
 
 3. **Krea 2 官方 Prompting 规范**
    * GitHub：[krea-ai/krea-2/docs/prompting.md](https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md)

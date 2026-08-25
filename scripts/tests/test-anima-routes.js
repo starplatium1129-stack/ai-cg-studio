@@ -763,6 +763,7 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     assert.ok(graph['30'] && graph['30'].class_type === 'ImageCompositeMasked');
     // 普通 hires（LatentUpscaleBy）仍应对合成图生效，不应再单独针对首轮 latent 放大
     assert.ok(graph['31'] && graph['32'] && graph['34'], 'hires on inpaint must run VAEEncode→LatentUpscaleBy→KSampler→VAEDecode over the composited image');
+    assert.strictEqual(graph['33'].inputs.scheduler, 'sgm_uniform', 'hires-on-inpaint 2nd pass must use the turned-on sgm_uniform scheduler');
 
     var unaligned = await postJson(port, '/api/anima/jobs', validJob({
       initImage: uploadRes.json.name,
