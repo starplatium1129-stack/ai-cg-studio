@@ -458,6 +458,12 @@ function buildWorkflow(input) {
         noLoraWf['8'].inputs.samples = ['12', 0];
       }
     }
+    if (isHires) {
+      // Keep hires output on parity with the base route: the ESRGAN/VAE round trip
+      // otherwise bypasses the proven RCAS finishing pass and visibly softens line art.
+      noLoraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:noLoraWf['10'].inputs.images, method:'rcas', 'method.strength':0.75 } };
+      noLoraWf['10'].inputs.images = ['35', 0];
+    }
     return noLoraWf;
   }
 
@@ -565,9 +571,13 @@ function buildWorkflow(input) {
       loraWf['9'].inputs.samples = ['12', 0];
     }
   }
-  if (!input.initImage && !isHires) {
-    // 同 no-LoRA 路线：纯文生图末端 RCAS 锐化；inpaint（像素级回贴保真）与
-    // hires（超分路径）不挂。
+  if (isHires) {
+    // Remacri/VAE and latent hires both need the same finishing pass as base output;
+    // without it, the final enlarged image is softer than the unscaled preview.
+    loraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:loraWf['10'].inputs.images, method:'rcas', 'method.strength':0.75 } };
+    loraWf['10'].inputs.images = ['35', 0];
+  } else if (!input.initImage) {
+    // 同 no-LoRA 路线：纯文生图末端 RCAS 锐化；inpaint 保持像素级回贴保真。
     loraWf['35'] = { class_type:'ImageSharpenKJ', inputs:{ image:['9', 0], method:'rcas', 'method.strength':0.75 } };
     loraWf['10'].inputs.images = ['35', 0];
   }
