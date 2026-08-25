@@ -12,6 +12,12 @@
 # - Do NOT add --disable-dynamic-vram (traditional mode is slow) and do NOT add
 #   --disable-pinned-memory (was present before, not the culprit, but defaults
 #   are the verified baseline).
+# - 2026-08-25 added --use-sage-attention: sageattention 2.2.0 wheel
+#   (cu130torch2.13.0, cp311) installed into the venv (exact torch/cuda/py
+#   match). ComfyUI attention_sage() has per-call fallback to pytorch
+#   attention, so a missing/broken kernel degrades to baseline instead of
+#   crashing. Verified by scripts/tests/benchmark-anima-teacache.js same-seed
+#   A/B (see docs/showcase-generation-craft.md).
 #
 # NOTE: a venv python.exe appears as TWO processes (venv launcher + base
 # interpreter) - that is ONE instance, not two. Never kill just one of them.
@@ -43,7 +49,8 @@ Start-Process -FilePath $python -ArgumentList @(
   '-u',
   (Join-Path $comfyRoot 'main.py'),
   '--listen', '127.0.0.1',
-  '--port', '8188'
+  '--port', '8188',
+  '--use-sage-attention'
 ) -WorkingDirectory $comfyRoot -RedirectStandardOutput $out -RedirectStandardError $err -WindowStyle Hidden
 
 Write-Host 'Waiting for health check...'

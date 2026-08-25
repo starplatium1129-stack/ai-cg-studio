@@ -97,7 +97,11 @@ if ($managedProcess) { Write-Result $true 'starting' $true 'ComfyUI is still sta
 if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path -LiteralPath $mainPath -PathType Leaf)) {
     Write-Result $false 'unavailable' $false 'Configured ComfyUI installation was not found.'; exit 1
 }
-$arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port, '--disable-pinned-memory')
+# 2026-08-25: --use-sage-attention 与 start-comfyui.ps1 保持一致（sageattention 2.2.0
+# wheel 已装入 venv，实测与契约见 scripts/tests/benchmark-anima-teacache.js 与
+# docs/showcase-generation-craft.md）。两条启动路径必须同步此 flag，否则面板重启后
+# sage 静默失效。
+$arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port, '--disable-pinned-memory', '--use-sage-attention')
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $comfyRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru
 Set-Content -LiteralPath $pidFile -Value $process.Id -Encoding ASCII
 if (Wait-Ready) { Write-Result $true 'ready' $true 'Started ComfyUI and waited for /system_stats.' $process.Id; exit 0 }
