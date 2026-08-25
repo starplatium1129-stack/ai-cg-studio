@@ -14,7 +14,7 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
 - 数据：场景分片、角色、LoRA、预设、标签、热门角色（35 位）、通用蓝图、角色 4 视角标准定义位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
 - 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。角色 Prompt 由服务端分层组装，并支持本机用户档案与用户手动固定的跨会话事实召回。
-- 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent。Anima Base/Aesthetic 使用 24 steps / CFG 3 / `res_multistep` / `simple` 的模型原生标签流。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
+- 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent。Anima Base/Aesthetic 使用 30 steps / CFG 4.5 / `euler_ancestral` / `simple`（放大二阶段 `res_multistep` / `sgm_uniform`）的模型原生标签流。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
 - 画师风格库：专家模式提供 30 位精选动漫画师与作监风格（含 Nekotomi Chao / 猫富ちゃお、浅野恭司 / WIT Studio、Rella 星夜光影、深崎暮人等），支持 SD/WAI (Danbooru tags)、Anima (`@artist`) 与 Krea 2 (自然语言) 跨引擎编译。
 - 视频：`/video-studio` 本地 AI 视频工作台。支持 Wan 2.2 TI2V 与 MiniMax H3（Ref2VA 多模态参考图绑定）；支持剧本分镜智能拆解、画风锚注入、中日英对白语言显式控制（`dialogueLang`）与 Range 播放。
 - 训练：训练参数覆盖、数据集枚举、配置副本、ETA 和日志均遵守 `AGENTS.md` 的白名单契约。

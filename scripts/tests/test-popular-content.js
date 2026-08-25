@@ -643,7 +643,7 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(workflow['2'].inputs.type, 'qwen_image');
   assert.strictEqual(workflow['2'].inputs.clip_name, 'qwen_3_06b_base.safetensors');
   assert.strictEqual(workflow['5'].inputs.text, 'worst quality, low quality', 'negative encode must receive the negative');
-  assert.strictEqual(workflow['7'].inputs.sampler_name, 'res_multistep');
+  assert.strictEqual(workflow['7'].inputs.sampler_name, 'euler_ancestral');
   assert.strictEqual(workflow['7'].inputs.scheduler, 'simple');
   assert.strictEqual(workflow['7'].inputs.steps, 30);
   assert.strictEqual(workflow['7'].inputs.cfg, 4.5);
@@ -691,6 +691,7 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(hiresWf['12'].class_type, 'KSampler');
   assert.strictEqual(hiresWf['12'].inputs.denoise, 0.35);
   assert.strictEqual(hiresWf['12'].inputs.scheduler, 'sgm_uniform', 'hires 2nd pass scheduler turned on by user A/B (first pass stays simple)');
+  assert.strictEqual(hiresWf['12'].inputs.sampler_name, 'res_multistep', 'hires 2nd pass keeps the decoupled res_multistep sampler');
   // 2026-08-25 确认：二阶段与首轮同走 TeaCache（全链加速，用户实测质量无差）；
   // hires 末端不挂 RCAS（433f93f 原样）。8 是解码节点，直接消费二阶段 latent。
   assert.strictEqual(hiresWf['12'].inputs.model[0], '13', 'hires 2nd pass follows TeaCache like first pass (full-chain acceleration)');
@@ -713,6 +714,7 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(srWf['25'].class_type, 'KSampler', 'super-res: second-pass KSampler');
   assert.strictEqual(srWf['25'].inputs.denoise, 0.35);
   assert.strictEqual(srWf['25'].inputs.scheduler, 'sgm_uniform', 'super-res 2nd pass uses the same turned-on sgm_uniform scheduler');
+  assert.strictEqual(srWf['25'].inputs.sampler_name, 'res_multistep', 'super-res 2nd pass keeps the decoupled res_multistep sampler');
   assert.strictEqual(srWf['25'].inputs.model[0], '13', 'super-res 2nd pass follows TeaCache (full-chain acceleration)');
   assert.deepStrictEqual(srWf['8'].inputs.samples, ['25', 0], 'decode node consumes super-res 2nd pass latent');
   assert.strictEqual(srWf['26'] === undefined, true, 'super-res path must NOT attach RCAS (433f93f)');

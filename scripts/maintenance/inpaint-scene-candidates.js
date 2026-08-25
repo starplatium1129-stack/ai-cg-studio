@@ -94,7 +94,7 @@ const SCENE_INPAINT_CONFIG = Object.freeze({
     lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
     steps: 30,
     cfg: 4.5,
-    sampler: 'res_multistep',
+    sampler: 'euler_ancestral',
     scheduler: 'simple',
     ops: [
       {
@@ -121,7 +121,7 @@ const SCENE_INPAINT_CONFIG = Object.freeze({
     lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
     steps: 30,
     cfg: 4.5,
-    sampler: 'res_multistep',
+    sampler: 'euler_ancestral',
     scheduler: 'simple',
     ops: [
       {
@@ -180,7 +180,7 @@ const SCENE_INPAINT_CONFIG = Object.freeze({
     lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
     steps: 30,
     cfg: 4.5,
-    sampler: 'res_multistep',
+    sampler: 'euler_ancestral',
     scheduler: 'simple',
     ops: [
       {

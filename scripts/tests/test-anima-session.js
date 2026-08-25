@@ -60,7 +60,7 @@ function statusPayload(overrides = {}) {
   return {
     ok: true, online: true,
     models: [
-      { id: 'anima-aesthetic-v1.1', family: 'anima', available: true, sizes: ['832x1216', '1024x1536'], defaults: { steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple' } },
+      { id: 'anima-aesthetic-v1.1', family: 'anima', available: true, sizes: ['832x1216', '1024x1536'], defaults: { steps: 30, cfg: 4.5, sampler: 'euler_ancestral', scheduler: 'simple' } },
       { id: 'krea2-turbo-fp8', family: 'krea2', available: true, sizes: ['1024x1024'] },
     ],
     loras: [

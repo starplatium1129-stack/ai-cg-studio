@@ -94,7 +94,7 @@ test('INPAINT_CONFIG covers exactly the two natsume fullbody keys', () => {
   assert.strictEqual(anima.lora.strength, 0.85);
   assert.strictEqual(anima.unet, animaConst.MODELS['anima-base-v1.0'].file, 'Anima base checkpoint');
   assert.ok(sd.sampler && sd.scheduler && sd.steps && sd.cfg, 'WAI sampler params present');
-  assert.strictEqual(anima.sampler, 'res_multistep', 'Anima sampler contract');
+  assert.strictEqual(anima.sampler, 'euler_ancestral', 'Anima sampler contract');
   assert.strictEqual(anima.scheduler, 'simple', 'Anima scheduler contract');
 });
 

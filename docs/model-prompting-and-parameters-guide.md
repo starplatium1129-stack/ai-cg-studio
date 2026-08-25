@@ -25,7 +25,7 @@
 | 参数项 | WAI Illustrious v17 | Anima Base/Aesthetic | Krea 2 Turbo |
 |---|---|---|---|
 | **CFG Scale** | **6.0** | **3.0**（当前应用生产 preset；4.5 为历史官方参数对照） | **1.0**（固定） |
-| **采样器 (Sampler)** | `Euler a` | `er_sde`（历史官方参数对照；生产 `res_multistep`） | `euler` |
+| **采样器 (Sampler)** | `Euler a` | `euler_ancestral`（生产首轮；放大二阶段冻结 `res_multistep`） | `euler` |
 | **调度器 (Scheduler)** | `normal` | `sgm_uniform`（历史官方参数对照；生产 `simple`） | `simple` |
 | **采样步数 (Steps)** | **30 步** | **30 步**（历史官方参数对照；生产 24 步） | **8 步**（固定） |
 | **推荐分辨率** | `1024×1344` / `832×1216` | `832×1216` / `1024×1024` | `1024×1024` / `1024×1536` |
@@ -165,7 +165,7 @@
 
 2. **Anima 官方模型与提示词指南**
    * HuggingFace 镜像仓库：[circlestone-labs/Anima](https://huggingface.co/circlestone-labs/Anima)
-   * 当前应用生产参数：30 steps / CFG 4.5 / `res_multistep` / `simple`；30 steps / CFG 4.5 / `er_sde` / `sgm_uniform` 仅作为历史官方参数对照，不是首轮默认值——其中 `sgm_uniform` 已单独转正为放大二阶段调度器（`server/anima-generation-contract.js` 的 `HIRES_SCHEDULER`，用户固定 seed A/B 实测）
+   * 当前应用生产参数：首轮 30 steps / CFG 4.5 / `euler_ancestral` / `simple`，放大二阶段冻结 `res_multistep` / `sgm_uniform`（`HIRES_SAMPLER` / `HIRES_SCHEDULER`，用户实测转正）；30 steps / CFG 4.5 / `er_sde` / `sgm_uniform` 的历史官方参数组仅作对照，不是生产组合
 
 3. **Krea 2 官方 Prompting 规范**
    * GitHub：[krea-ai/krea-2/docs/prompting.md](https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md)
@@ -174,6 +174,6 @@
 
 ## 九、 项目现存配置速查
 
-- `data/presets.json`：WAI 30 steps / CFG 6 / Euler a，并自动启用 `Auto` hires 1.5× / 20 steps / denoise 0.4；服务端优先使用 WebUI 的 `R-ESRGAN 4x+ Anime6B`，仅 Comfy 可用时退到 `nearest-exact` Latent，两者都不可用时保留审计过的基础尺寸直出。Anima Base/Aesthetic **24 steps / CFG 3 / res_multistep / simple**；Krea 2 Turbo 8 steps / CFG 1 / euler / simple。
+- `data/presets.json`：WAI 30 steps / CFG 6 / Euler a，并自动启用 `Auto` hires 1.5× / 20 steps / denoise 0.4；服务端优先使用 WebUI 的 `R-ESRGAN 4x+ Anime6B`，仅 Comfy 可用时退到 `nearest-exact` Latent，两者都不可用时保留审计过的基础尺寸直出。Anima Base/Aesthetic **30 steps / CFG 4.5 / euler_ancestral / simple**（放大二阶段 res_multistep / sgm_uniform）；Krea 2 Turbo 8 steps / CFG 1 / euler / simple。
 - `routes/anima.js`：`MODELS` 中 Anima Base/Aesthetic 默认 steps 24、CFG 3（后端与前端一致）。
 - 语料/金标测试：`scripts/tests/test-prompt-corpus.js`（298 场景全量 + sc001/sc050/sc153/sc280/landscape/triad）。

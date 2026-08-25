@@ -508,7 +508,7 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(graph['2'].inputs.clip_name, 'qwen_3_06b_base.safetensors');
     assert.strictEqual(graph['4'].inputs.text.indexOf('raiden_shogun') !== -1, true);
     assert.strictEqual(graph['5'].inputs.text, 'worst quality, low quality');
-    assert.strictEqual(graph['7'].inputs.sampler_name, 'res_multistep');
+    assert.strictEqual(graph['7'].inputs.sampler_name, 'euler_ancestral');
     assert.strictEqual(graph['7'].inputs.scheduler, 'simple');
     assert.strictEqual(graph['7'].inputs.cfg, 4.5);
     assert.strictEqual(graph['7'].inputs.steps, 30);
@@ -764,6 +764,7 @@ test('Anima inpainting: accepts uploaded image and builds VAEEncode + SetLatentN
     // 普通 hires（LatentUpscaleBy）仍应对合成图生效，不应再单独针对首轮 latent 放大
     assert.ok(graph['31'] && graph['32'] && graph['34'], 'hires on inpaint must run VAEEncode→LatentUpscaleBy→KSampler→VAEDecode over the composited image');
     assert.strictEqual(graph['33'].inputs.scheduler, 'sgm_uniform', 'hires-on-inpaint 2nd pass must use the turned-on sgm_uniform scheduler');
+    assert.strictEqual(graph['33'].inputs.sampler_name, 'res_multistep', 'hires-on-inpaint 2nd pass keeps the decoupled res_multistep sampler');
 
     var unaligned = await postJson(port, '/api/anima/jobs', validJob({
       initImage: uploadRes.json.name,
