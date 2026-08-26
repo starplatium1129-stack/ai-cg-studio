@@ -504,13 +504,19 @@
     "timeOfDay": "sunset",
     "tags": [
       "mole_under_eye",
-      "cardigan",
-      "sheer_black_tights",
       "beach",
-      "full_body",
-      "ankle_boots",
-      "bottle",
-      "depth_of_field"
+      "sunset",
+      "looking_back",
+      "close_up",
+      "message_bottle",
+      "holding_note",
+      "profile",
+      "subtle_blush",
+      "ocean",
+      "clear_sky",
+      "golden_hour",
+      "expectant",
+      "bright_eyes"
     ],
     "mature": false,
     "location": "海边",
@@ -521,12 +527,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_navy_cardigan_over_white_blouse_with_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_beach_sand, standing_on_beach_with_one_hand_holding_small_glass_bottle_with_message_and_gentle_composed_blush, warm_beach_sunset_light_with_sand_and_wave_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "(clear corked glass message bottle held in both hands:1.55), blank rolled note visibly inside the bottle, seaside sunset, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, sunset, looking_back, close_up, message_bottle, holding_note, profile, subtle_blush, ocean, clear_sky, golden_hour, expectant, bright_eyes, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・願いの瓶の中の白紙のメモ】夕暮れの海岸で、夏目は折りたたんだメモをガラス瓶に詰めますが、中身を読ませようとはしません。瓶が砂に埋められた後、彼女は静かにその場所をメモしたが、明らかに潮に流されるつもりはなかった。あなたがわざとそう尋ねると、彼女は夕焼けに顔をそむけた。――「大げさな願い事なんて書いてない。ただ、来年もここへ来られますようにって……誰と来たいかは、自分で考えて。」",
     "rating": "All",
     "auditRevision": "careful-batch05-2026-08-27",
-    "animaCaption": "On a beach at sunset, Shiki Natsume in a casual navy cardigan over white blouse and pleated miniskirt with glossy black tights stands holding a small glass bottle with a message, gentle composed blush under warm beach light."
+    "animaCaption": "In a close-up framing along the sandy shoreline with gentle ocean waves, she turns back over her shoulder with bright expectant eyes, as warm golden-hour sunlight illuminates the scene."
   },
   {
     "id": "sc042",
@@ -586,15 +592,22 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "grey_sweater",
-      "shorts",
-      "bare_legs",
-      "smooth_thighs",
-      "sofa",
+      "casual_clothes",
+      "sitting",
+      "looking_back",
       "straddling",
-      "full_body",
-      "barefoot",
-      "depth_of_field"
+      "close_up",
+      "adult",
+      "cohabitation",
+      "sitting_on_lap",
+      "trapping_viewer",
+      "holding_remote",
+      "subtle_blush",
+      "living_room",
+      "afternoon",
+      "clear_sky",
+      "pov",
+      "window_light"
     ],
     "mature": false,
     "location": "同居公寓客厅",
@@ -606,12 +619,12 @@
       "头像",
       "R15"
     ],
-    "prompt": "2girls, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_cozy_grey_sweater_with_navy_pajama_shorts_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_straddling_viewer_girl_on_sofa, barefoot_with_soft_toes_on_sofa_cushion, straddling_the_sofa_to_trap_viewer_girl_between_backrest_and_herself_pressing_remote_control_onto_viewer_shoulder, ears_flushed_red_by_the_close_distance_with_forced_calm_composed_expression, autumn_afternoon_window_light_with_sofa_texture_and_soft_shadows, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "(woman straddling the male viewer on a living room sofa:1.65), her knees on both sides of viewer hips, visible male trousered thighs beneath her, POV male hands around her waist, television remote in her right hand, (living room sofa:1.55), (sitting astride viewer lap:1.5), holding television remote, POV male hands at her waist, 1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, casual_clothes, looking_back, straddling, close_up, adult, cohabitation, sitting_on_lap, trapping_viewer, holding_remote, subtle_blush, living_room, afternoon, clear_sky, pov, window_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, bathroom, toilet, sink, bathtub, sitting alone, empty lap, armchair, single-person portrait, child, loli, underage",
     "storyJa": "【夏目・ソファでのアクティブな休戦】秋の午後、リビングルームで、夏目はあなたに奪われたリモコンを奪い返​​そうとソファにまたがり、あなたを背もたれの間に挟み込みました。かなり近づいた後、距離のせいで耳が赤くなりましたが、すぐには離れませんでした。彼女はリモコンをあなたの肩に押し当てて、静かに付け加えた。――「くだらないチャンネル争いを終わらせに来ただけ。この距離は……あなたが嫌じゃないなら、一分だけこのままで。」",
     "rating": "R15",
     "auditRevision": "careful-batch04-2026-08-27",
-    "animaCaption": "On the sofa in their cohabitation living room on an autumn afternoon, Shiki Natsume in a grey sweater and navy pajama shorts straddles the viewer and traps her between the backrest and herself in a bid to snatch back the remote control. Up close the distance flushes her ears red, yet she does not pull away, pressing the remote onto the viewer's shoulder and pretending to stay composed."
+    "animaCaption": "In a close-up framing in a quiet room, she turns back over her shoulder, as clear window sunlight streams across the frame."
   },
   {
     "id": "sc046",
@@ -1550,25 +1563,30 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "bound",
+      "sitting_on_chair",
+      "tactical_gear",
+      "unzipped",
+      "cleavage",
+      "bare_legs",
+      "black_pantyhose",
+      "heavy_blush",
+      "tears_in_eyes",
+      "tsundere",
+      "safehouse",
+      "night",
+      "strong_shadows",
       "mole_under_eye",
-      "catsuit",
-      "zipper_unzipped",
-      "sheer_black_tights",
-      "tactical_ribbons",
-      "bound_arms",
-      "interrogation_chair",
-      "full_body",
-      "heels",
-      "heavy_panting",
-      "depth_of_field"
+      "sensual",
+      "close_up"
     ],
     "mature": false,
     "location": "安全屋审讯椅",
     "weather": "炙热",
     "camera": "近景特写",
     "lighting": "局部聚光强对比",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_tight_fitted_catsuit_with_zipper_unzipped_to_sternum_revealing_cleavage_and_smooth_midriff, glossy_black_tights_hugging_smooth_thighs_with_tactical_ribbons_half_binding_her_to_the_interrogation_chair, black_heels_on_interrogation_room_floor, sitting_on_interrogation_chair_with_both_arms_pulled_behind_the_chair_back_and_bound_by_tactical_ribbons, heavy_panting_tsundere_blush_with_tear_mole_reddened_glaring_through_half_lidded_eyes, dim_interrogation_room_light_with_concrete_and_tactical_gear_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, skirt, thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "(both wrists visibly tied to separate chair armrests with black silk ribbons:1.7), open palms, ribbon knots clearly visible, seated upright in metal chair, black tactical vest and thigh holster, (black tactical vest:1.55), concrete safehouse wall, thigh holster, torn and partly unzipped tactical gear, 1girl, shiki_natsume, mole_under_eye, sitting_on_chair, tactical_gear, unzipped, cleavage, bare_legs, black_pantyhose, heavy_blush, tears_in_eyes, tsundere, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, ordinary office, business suit, unbound hands, hands behind head, arms overhead, hidden hands, free wrists, extra hand, detached hand, malformed hand, child, loli, underage",
     "usage": [
       "展示图",
       "R15"
@@ -1576,7 +1594,7 @@
     "storyJa": "【夏目・椅子のソフトなボンデージは絶対に台無しです】深夜の地下金庫で、電気スタンドの冷たい光が顔を照らす。普段は飄々としたエージェント夏目は、日中の自身の行動により、あなたによって戦術リボンで肘掛け椅子に半ば固定され、両手は完全に椅子の後ろに縛られていました。彼女のセクシーな黒タイツのジッパーが下ろされ、大きな領域の官能的な白いラインとお腹が明らかになりました。彼女は黒いストッキングを履いた長い脚を抱えて激しく喘ぎました。目尻の泣きぼくろが血が出そうなほど赤くなっていた。彼女は耐え難いうめき声を上げながらあなたを見つめました。――「もう、この変態……仕事を口実にするなんて。自由になったら、絶対にお仕置きしてあげるんだから。」",
     "rating": "R15",
     "auditRevision": "careful-batch13-2026-08-27",
-    "animaCaption": "Bound to the interrogation chair in the dim underground safehouse, Shiki Natsume wears a black tight catsuit with the zipper pulled down to her sternum, glossy black tights hugging her pressed-together legs while tactical ribbons pin both arms behind the chair back; she pants heavily with the tear mole glowing red and glares at the viewer through half-lidded eyes."
+    "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
   },
   {
     "id": "sc104",
@@ -3773,18 +3791,26 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "black_hair",
+      "long_hair",
+      "yellow_eyes",
       "mole_under_eye",
-      "cardigan",
-      "white_blouse",
-      "jeans",
-      "balcony",
-      "railing",
-      "book",
+      "hairclip",
+      "casual_clothes",
+      "holding_book",
       "wind",
       "hair_blowing",
-      "afternoon",
+      "balcony",
+      "sitting_close",
       "red_ears",
-      "depth_of_field"
+      "subtle_blush",
+      "expressionless",
+      "eye_contact",
+      "afternoon",
+      "sunlight",
+      "soft_lighting",
+      "romantic_atmosphere",
+      "medium_shot"
     ],
     "mature": false,
     "rating": "All",
@@ -3795,11 +3821,11 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, beige_cardigan_over_white_blouse_with_dark_jeans, leaning_on_apartment_balcony_railing_with_a_book, long_black_hair_swaying_in_the_wind_with_strands_brushing_viewer_s_cheek, strands_wrapping_around_viewer_s_shoulder, looking_up_slightly_startled_with_red_ears_and_cool_expression, autumn_afternoon_balcony_where_drying_laundry_sways_in_soft_sunlight, gusty_breeze_lifting_her_streaming_hair, shallow_focus_with_bokeh, slim_waist_and_fair_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, shiki_natsume, black hair, very long hair, yellow eyes, two red hairclips, mole under eye, white casual blouse, (standing directly beside an apartment balcony railing:1.7), outdoor balcony clearly visible, laundry fluttering behind her, (one open book held in both hands at chest height:1.75), both hands gripping book covers, strong breeze blowing her long black hair sideways toward viewer, hair crossing foreground, close eye contact, red ears, subtle blush, autumn afternoon sunlight, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, book cover facing viewer, title on book, decorated cover, title, loose paper, separate sheet, letter, note card, book left on table, empty hands, closed book, table, desk, book on table, indoor room, closed window, still hair",
     "storyJa": "【夏目・風にほどける髪】秋の午後のベランダ。読書中の夏目の黒髪が風に舞い、あなたの頬をかすめた。髪が肩に絡んで初めて、彼女は近すぎる距離に気づく。赤い耳を隠すように視線をそらし――「……風のせい。私が近づいたわけじゃないし、あなたも避けなかったでしょ」",
     "auditRevision": "careful-batch07-2026-08-27",
-    "animaCaption": "On the autumn afternoon apartment balcony with the drying laundry swaying in the wind, Shiki Natsume leans against the railing reading a book, her long black hair blown up so the strands brush past your cheek and wrap over your shoulder; only when the closeness sinks in does she look up, ears reddening while she keeps her cool expression."
+    "animaCaption": "In a medium shot in a quiet room, she turns the page of an open book with a focused and calm expression, under soft ambient lighting."
   },
   {
     "id": "sc254",
