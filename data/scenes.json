@@ -2708,21 +2708,14 @@
     "timeOfDay": "morning",
     "tags": [
       "hair_ribbon",
+      "blue_pajamas",
+      "bare_legs",
+      "smooth_thighs",
       "bedroom",
-      "pajamas",
-      "looking_back",
-      "bed",
-      "pov",
-      "adult",
-      "cohabitation",
-      "sleeping",
-      "under_blanket",
-      "holding_wrist",
-      "white_hair_spread",
+      "full_body",
+      "barefoot",
       "morning_light",
-      "morning",
-      "clear_sky",
-      "close_up"
+      "depth_of_field"
     ],
     "mature": false,
     "location": "同居公寓卧室",
@@ -2733,11 +2726,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_pastel_blue_silk_pajamas, hugging_fluffy_white_pillow_tightly_in_bed, rolling_over_to_look_at_alarm_clock, sleepy_pouting_expression, soft_blush, cozy_bedroom_at_dawn, gentle_morning_sunlight_creeping_over_sheets, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_pastel_blue_silk_pajama_set_with_white_piping_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_bed_edge, barefoot_with_soft_toes_on_bedroom_carpet, sitting_on_edge_of_bed_in_cohabitation_bedroom_holding_alarm_clock_with_one_hand_rubbing_eyes, sleepy_pouting_blush_with_ahoge_drooping_and_morning_light_on_hair, warm_morning_bedroom_light_through_curtains_with_soft_shadows_and_carpet_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・目覚まし時計が鳴る5分前】大人になって一緒に引っ越してきた春の朝、寧々さんはまだベッドに身を寄せ合ってぐっすり眠っていました。掛け布団は腰だけを覆い、長い銀髪が枕を覆っていた。あなたは初めて彼女のために目覚まし時計を止めました。彼女は呆然とあなたの手首を掴み、顔の横に押し付けました。――「あと五分だけで起きます……本当です。先に行っちゃだめですよ。目を開けたとき、最初にあなたが見えるようにしてください。」",
     "rating": "All",
-    "animaCaption": "Curled up in bed five minutes before the alarm goes off, Ayachi Nene hugs a plush pillow tightly to her chest in her pastel blue pajamas, rolling over with an adorable, sleepy pout. Soft morning light creeps across the duvet, highlighting her ruffled silver bangs and peaceful room."
+    "animaCaption": "In a cohabitation bedroom at morning, Ayachi Nene in a soft pastel blue silk pajama set sits on the bed edge with slender bare legs, bare feet on carpet, holding an alarm clock while rubbing her eyes with a sleepy pouting blush.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc063",
@@ -3399,21 +3393,12 @@
     "tags": [
       "mole_under_eye",
       "kimono",
-      "kneeling",
-      "smile",
-      "holding",
-      "tea_ceremony",
-      "holding_tea_bowl",
+      "bare_legs",
+      "smooth_thighs",
+      "white_tabi",
+      "full_body",
       "tatami",
-      "subtle_blush",
-      "serene",
-      "afternoon",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "window_light",
-      "gentle_smile",
-      "soft_eyes"
+      "depth_of_field"
     ],
     "mature": false,
     "location": "茶室",
@@ -3424,11 +3409,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_casual, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_traditional_dark_green_patterned_kimono, kneeling_in_proper_seiza_on_tatami_mat, offering_a_bowl_of_whisked_green_matcha_tea_with_both_hands, refined_gentle_smile, soft_blush, traditional_tea_ceremony_room, shoji_screens_open_to_zen_garden, afternoon_sunlight, cinematic_medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_traditional_dark_green_patterned_kimono_with_gold_obijime_and_slender_bare_legs_peeking_from_hem, smooth_bare_calf_with_soft_skin_sheen_kneeling_in_seiza_on_tatami, white_tabi_socks_with_split_toe_on_tatami_mat, kneeling_in_proper_seiza_on_tatami_offering_tea_bowl_with_both_hands_with_refined_gentle_smile, warm_tea_room_sunlight_through_shoji_with_tea_set_bokeh_and_tatami_texture, cinematic_depth_of_field, slender_hands_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body",
     "storyJa": "【夏目・ティーカップを渡した時の優しさ】秋の午後の茶室で、夏目は畳の上に膝をつき、その動作はほとんど細心の注意を払っていた。彼女は注文したお茶を入り口に最適な角度に回し、両手で渡してくれた。それから彼女は、彼らが近すぎることに気づきました。彼女は震えを隠すために目を下げた――「礼儀作法の練習をしているだけ。あまり深く考えないで。味は……口に合わなければ、もう一杯点ててもいい。」",
     "rating": "All",
-    "animaCaption": "Kneeling in graceful seiza posture upon woven tatami mats in an authentic tearoom, Shiki Natsume presents a ceramic bowl of frothy green matcha tea with both hands. Dressed in an elegant dark green kimono, her golden eyes radiate refined tranquility and heartfelt hospitality as garden sunlight streams inside."
+    "animaCaption": "Kneeling in proper seiza on tatami in a traditional dark green kimono with gold obijime, Shiki Natsume offers a tea bowl with both hands, slender bare calves peeking from the hem, white tabi socks on tatami, warm tea room sunlight through shoji.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc078",
@@ -3530,22 +3516,14 @@
     "timeOfDay": "sunset",
     "tags": [
       "hair_ribbon",
-      "beach",
-      "sunset",
-      "smile",
-      "hair_blowing",
-      "golden_hour",
-      "ocean",
-      "windblown_hair",
-      "confession",
-      "looking_at_viewer",
-      "teary_eyes",
-      "holding_hands",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "blush",
-      "shy"
+      "sundress",
+      "bare_legs",
+      "smooth_thighs",
+      "seaside",
+      "full_body",
+      "barefoot",
+      "wind",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "海边",
@@ -3557,12 +3535,12 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_white_summer_camisole_and_skirt, standing_at_wooden_cliff_lookout_overlooking_ocean, holding_pink_heart_crystal_necklace_against_chest, nostalgic_tearful_smile, vast_blue_ocean_and_coastal_horizon, bright_sunny_day, cinematic_wide_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_breezy_white_summer_sundress_with_puff_sleeves_and_straw_hat_tilted_by_wind, sun_kissed_bare_legs_with_smooth_thigh_and_calf_lines_standing_on_seaside_cliff, barefoot_with_detailed_toes_and_white_sandals_placed_on_rock, standing_on_seaside_rock_with_one_hand_holding_hat_against_sea_breeze_looking_back, wistful_gentle_smile_with_windblown_hair_and_soft_blush, sparkling_blue_sea_and_clear_sky_with_warm_seaside_sunlight_and_spray_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・海風に吹かれる心のかけら】夕暮れの海辺で、寧々は潮の流れに沿って長い間歩き、ついに立ち止まってあなたに向かいました。彼女は、一度手に渡ってしまうと取り返しがつかないのではないかと恐れ、大切な感情を細かく砕いて隠していたと語った。海風が彼女の長い銀髪をかき乱したが、彼女は目をそらさなかった。――「今は、私の気持ちを全部伝えたいんです。契約でも、魔法でもなくて……あなたが好きです。ずっと、好きでした。」",
     "rating": "All",
-    "auditRevision": "round3-2026-07-22",
-    "animaCaption": "Standing at the edge of a coastal cliff overlook overlooking the boundless blue ocean, Ayachi Nene clutches her heart-shaped memory crystal necklace against her chest as the sea breeze flutters her white summer dress and twintails. Her purple eyes glisten with nostalgic tears and profound, eternal love."
+    "auditRevision": "careful-batch02-2026-08-27",
+    "animaCaption": "On a seaside cliff with sea breeze blowing her very long silver hair, Ayachi Nene in a breezy white sundress and straw hat stands with sun-kissed bare legs, bare feet and white sandals on rock, holding her hat as she looks back with a wistful gentle smile."
   },
   {
     "id": "sc081",
@@ -4041,37 +4019,31 @@
     "timeOfDay": "night",
     "tags": [
       "mole_under_eye",
-      "night",
-      "bathroom",
-      "towel",
-      "looking_at_viewer",
-      "adult",
-      "bath_towel",
+      "black_camisole",
+      "shorts",
+      "bare_legs",
+      "smooth_thighs",
       "bathroom_door",
-      "reaching_out",
+      "full_body",
+      "barefoot",
       "steam",
-      "heavy_blush",
-      "clear_sky",
-      "close_up",
-      "upper_body",
-      "warm_lighting",
-      "blush",
-      "shy"
+      "depth_of_field"
     ],
     "mature": false,
     "location": "公寓浴室门口",
     "weather": "晴",
     "camera": "门缝半身近景",
     "lighting": "浴室暖灯与夜间暗部",
-    "prompt": "1girl, solo, shiki_natsume, natsume_casual, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_camisole_and_shorts, cracking_open_the_steamy_bathroom_door_from_outside, holding_neatly_folded_stack_of_fresh_towels_and_pajamas, flustered_blush, looking_away_to_respect_privacy, bathroom_hallway_at_night, warm_lamp_glow, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_black_camisole_with_dark_grey_shorts_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_and_steam_moisture, barefoot_with_detailed_toes_on_apartment_wooden_floor, cracking_open_steamy_bathroom_door_from_outside_holding_neatly_folded_stack_of_towels, flustered_blush_with_eyes_averted_looking_away_to_respect_privacy, warm_steamy_bathroom_light_mixing_with_cool_hallway_shadows_and_water_droplets_bokeh, cinematic_depth_of_field, slender_collarbone_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "usage": [
       "展示图",
       "R15"
     ],
     "storyJa": "【夏目・ドアの外に着替えが届けられます】冬の夜、バスルームのドアがしっかりと閉まっていなかったため、バスタオルを巻いた夏目が赤い顔の半分だけを出し、寝室に残っている服を取り出すのを手伝ってほしいと頼みました。あなたは服をドアに渡し、振り返った。彼女は数秒間沈黙し、そっとそれらを受け取りました。――「処置は一応、合格。着替えたら……お礼に温かい飲み物くらいは淹れてあげる。」",
     "rating": "R15",
-    "animaCaption": "Standing in the hallway outside the steamy bathroom, Shiki Natsume opens the door just a crack, holding out a neat stack of fresh towels and change of clothes while turning her flushed face away in flustered embarrassment. The warm interior hallway lamp illuminates her sharp profile."
+    "animaCaption": "Outside a steamy bathroom door, Shiki Natsume in an oversized black camisole and dark grey shorts cracks the door open while holding a neat stack of towels, slender bare legs with soft skin sheen, bare feet on wooden floor, flustered blush as she looks away to respect privacy.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc092",
@@ -4995,23 +4967,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "apron",
-      "camisole",
-      "sideboob",
-      "sitting_on_counter",
-      "looking_back",
-      "heavy_blush",
-      "messy_hair",
-      "kitchen",
-      "indoors",
-      "afternoon",
-      "window_light",
-      "soft_lighting",
-      "sensual",
       "hair_ribbon",
-      "ahoge",
-      "close_up",
-      "pov"
+      "camisole",
+      "apron",
+      "bare_legs",
+      "smooth_thighs",
+      "kitchen",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "新婚公寓厨房",
@@ -5022,11 +4986,12 @@
       "新手推荐",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, apron, camisole, sideboob, sitting_on_counter, looking_back, heavy_blush, messy_hair, kitchen, indoors, afternoon, window_light, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_pale_pink_camisole_with_white_apron_tied_at_waist_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_kitchen_counter, barefoot_with_detailed_toes_dangling_above_tiles, sitting_on_kitchen_counter_with_one_hand_holding_apron_and_other_hand_offering_strawberry_with_gentle_shy_smile, warm_newlywed_kitchen_morning_light_with_tile_reflections_and_apron_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, child, loli",
     "storyJa": "【寧々・大人のアフターストーリー · ·ホームエプロンの鼓動】斜めに日が差し込む午後のアパートのキッチン。寧々は初めて、ややだぶだぶのホームエプロンを着て、その下には薄手のホームベストだけを着ました。彼女はイチゴを切ることに集中していたので、後ろからそっと近づいてくるあなたに気づきませんでした。細い腰をそっと抱きしめると指を切りそうになるほどパニックになり、頭の上のアホ毛はたちまち恥ずかしがりながら狂ったように丸まり、完璧なエロゲのハート型になった。――「きゃっ！　いつからいたんですか？　後ろから急に抱きついたらだめです。小麦粉がついちゃいますよ……。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she stands beside the kitchen counter with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "Sitting on a kitchen counter in a pale pink camisole with a white apron, Ayachi Nene shows slender bare legs dangling above tiles, bare feet, offering a strawberry with a gentle shy smile in warm newlywed kitchen morning light.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc112",
@@ -5236,20 +5201,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "lace_lingerie",
-      "black_pantyhose",
-      "sitting_on_counter",
-      "bare_legs",
-      "cleavage",
-      "heavy_blush",
-      "tears_in_eyes",
-      "tsundere",
-      "cafe_interior",
-      "night",
-      "shadows",
-      "sensual",
       "mole_under_eye",
-      "pov"
+      "lace_lingerie",
+      "sheer_black_tights",
+      "smooth_thighs",
+      "cafe_counter",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "打烊后的咖啡吧台",
@@ -5260,12 +5219,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "clean cinematic illustration, no written dialogue, 1girl, shiki_natsume, mole_under_eye, lace_lingerie, black_pantyhose, sitting_on_counter, bare_legs, cleavage, heavy_blush, tears_in_eyes, tsundere, cafe_interior, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, normal_clothes, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, child, loli, underage",
+    "prompt": "clean cinematic illustration, no written dialogue, 1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_elegant_black_lace_lingerie_with_sheer_black_tights_and_garter_accents, glossy_black_tights_hugging_smooth_thighs_and_calf_with_lace_trim_and_sheer_sheen, entire_legs_and_feet_fully_visible_in_frame, black_heels_on_cafe_counter_surface, sitting_on_closed_cafe_counter_with_legs_crossed_and_one_hand_bracing_counter_edge, composed_alluring_blush_with_tear_mole_highlighted_by_dim_counter_light, dim_closed_cafe_counter_light_with_wooden_texture_and_lace_shadows, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, bare_legs, white_thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・レース下着の究極の誘惑】深夜閉店後のスターライトカフェ。静かな暗闇の中、夏目はあなたの高圧的なお仕置きに学生服の上着を全て脱ぎ、危険なタブーが詰まった黒いレースの下着と極薄の黒ストッキングだけを身に着けてバーに座りました。彼女はいつも冷たく控えめで、今では顔は赤く、手はバーの端にあり、目の端の泣きぼくろは頬の赤面で完全に濡れていました。彼女は汗だくになり、見下すようなあなたを横目に、銀歯を食いしばって傲慢な最後の宣言をした。――「ねえ、このすけべ。今夜は私を一人で帰さないで……最後まで付き合う覚悟くらい、しておいて。」",
     "rating": "R15",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "From a first-person POV inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "auditRevision": "careful-batch02-2026-08-27",
+    "animaCaption": "On a closed cafe counter, Shiki Natsume in elegant black lace lingerie with sheer black tights and garter accents sits with legs crossed, glossy tights hugging smooth thighs, black heels on the counter, composed alluring blush under dim counter light."
   },
   {
     "id": "sc117",
@@ -6081,23 +6040,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "adult",
-      "naked_apron",
-      "apron_only",
-      "bare_back",
-      "sideboob",
-      "cleavage",
-      "sitting_on_counter",
-      "heavy_blush",
-      "panicked",
-      "kitchen",
-      "indoors",
-      "warm_lighting",
       "hair_ribbon",
-      "ahoge",
-      "sensual",
-      "close_up",
-      "pov"
+      "naked_apron",
+      "bare_legs",
+      "smooth_thighs",
+      "cafe_counter",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "咖啡馆木质吧台",
@@ -6108,11 +6058,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, naked_apron, apron_only, bare_back, sideboob, cleavage, sitting_on_counter, heavy_blush, panicked, kitchen, indoors, warm_lighting, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_only_white_lace_apron_over_nude_with_slender_bare_legs_and_sideboob_visible, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_cafe_counter, barefoot_with_detailed_toes_dangling_above_floor, sitting_on_wooden_cafe_counter_with_one_hand_holding_apron_strap_and_legs_crossed_with_heavy_embarrassed_blush, warm_closed_cafe_night_light_with_wooden_counter_texture_and_lace_shadows, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, child, loli",
     "storyJa": "【寧々・大人のアフターストーリー・・裸エプロン極限羞恥】深夜閉店後の静かなカフェキッチン。あなたの高圧的な罰の下で、寧々はカフェエプロンのみというタブーな服装を強制されました。彼女は顔を赤らめ、あなたによって大理石のバーテーブルに運ばれました。細いエプロンのストラップでは、露出した色白の大きな横乳を両側から覆うことができませんでした。彼女の滑らかな白い背中と完全にバキュームの脚は無防備でした。彼女の顔の熱い赤面は耳の根元まで達し、頭のてっぺんのアホ毛はとても恥ずかしがり屋で狂ったように震えて、完璧な愛のスパイラルに曲がりました。――「もう、柊史のばか！　わざと台所の鍵をかけて……今夜は本当に、寧々を独り占めするつもりですか？」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Sitting on a wooden cafe counter after hours, Ayachi Nene in only a white lace apron over nude shows slender bare legs with sideboob visible, bare feet dangling, heavy embarrassed blush under warm cafe night light.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc134",
@@ -6582,20 +6533,15 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "casual_clothes",
       "mole_under_eye",
-      "bare_feet",
-      "sitting_on_sofa",
-      "holding_game_controller",
-      "pout",
-      "tsundere",
-      "blush",
+      "grey_hoodie",
+      "shorts",
+      "bare_legs",
+      "smooth_thighs",
       "living_room",
-      "television_glow",
-      "night",
-      "cozy",
-      "depth_of_field",
-      "close_up"
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "公寓客厅",
@@ -6606,11 +6552,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_casual, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_grey_hoodie_and_short_shorts, sitting_on_living_room_carpet_leaning_against_couch, holding_game_controller_competitively_with_both_hands, intense_focused_pout, flushed_cheeks, cozy_apartment_living_room_at_night, glowing_television_screen_light, soda_cans_and_snack_bowls_on_table, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_heather_grey_hoodie_with_black_short_shorts_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_living_room_rug, barefoot_with_detailed_toes_on_rug, sitting_on_living_room_rug_with_legs_spread_holding_game_controller_with_both_hands_in_heated_cohabitation_battle, competitive_pouting_blush_with_tear_mole_highlighted_by_tv_screen_light, warm_living_room_tv_light_mixing_with_soft_lamp_glow_and_rug_texture, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・アフターストーリー】大学を卒業して同棲を始めたある夜遅く、リビングのカーペットの上にスナック菓子が散乱していた。難しい2人協力型ゲームがテレビでプレイされています。あなたの「は？　今のは絶対、そっちの遅延！　ばかなの？　もう一回。今度負けたほうは、一週間皿洗いだから！」",
     "rating": "All",
-    "animaCaption": "Sitting on the living room rug late at night in an oversized grey hoodie and shorts, Shiki Natsume grips a gaming controller with competitive fury, leaning forward as the match heats up. Her cheeks flush with an adorably intense pout as the vibrant glow of the TV screen illuminates her dark bangs and sharp golden eyes."
+    "animaCaption": "On a living room rug in a heated cohabitation game battle, Shiki Natsume in an oversized heather grey hoodie and black shorts sits with slender bare legs, bare feet on the rug, holding a game controller with a competitive pouting blush under TV light.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc144",
@@ -7389,22 +7336,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "adult",
-      "naked_apron",
-      "apron_only",
       "hair_ribbon",
-      "ahoge",
-      "bare_back",
-      "cleavage",
-      "side_view",
-      "looking_back",
-      "heavy_blush",
-      "panicked",
+      "naked_apron",
+      "bare_legs",
+      "smooth_thighs",
       "kitchen",
-      "indoors",
-      "warm_lighting",
-      "sensual",
-      "close_up"
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "打烊后的厨房",
@@ -7415,11 +7354,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, naked_apron, apron_only, bare_back, cleavage, side_view, looking_back, heavy_blush, panicked, kitchen, indoors, warm_lighting, sensual, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_only_pink_frilly_apron_over_nude_with_slender_bare_legs_and_bare_back_exposed, smooth_bare_thighs_and_calf_with_soft_skin_sheen_standing_in_closed_kitchen, barefoot_with_detailed_toes_on_kitchen_tiles, standing_in_closed_kitchen_after_hours_with_back_to_viewer_looking_back_over_shoulder_with_panicked_heavy_blush, warm_closed_kitchen_night_light_with_tile_reflections_and_apron_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, child, loli",
     "storyJa": "【寧々・大人のアフターストーリー · ·キッチン絶対服従ミーム】閉店後の静かなキッチンは、あなただけの素敵なプライベート領域になります。あなたの罰により、寧々はカフェエプロンだけの恥ずかしい服装をさせられました。彼女はあなたに背を向けて果物を切っていて、あなたの足音を聞いて慌てて振り向いた。エプロンの両側にある白く大きな乳房と、丸見えになった滑らかな背中が暖かい光に照らされて眩しかった。彼女の顔の熱い赤面は耳の付け根まで達し、頭のてっぺんのアホ毛は恥ずかしくて狂ったように震えていました。――「もう、柊史のばか！　わざと台所の鍵をかけて……今夜は本当に、寧々を独り占めするつもりですか？」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a closed kitchen after hours, Ayachi Nene in only a pink frilly apron over nude stands with her back to the viewer, slender bare legs with soft skin sheen, bare feet on tiles, looking back over her shoulder with a panicked heavy blush.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc161",
@@ -7879,23 +7819,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "unbuttoned_shirt",
-      "skirt_lift",
-      "sitting_on_desk",
-      "bare_legs",
-      "cleavage",
       "hair_ribbon",
-      "ahoge",
-      "heavy_blush",
-      "tears_in_eyes",
-      "open_mouth",
-      "library",
-      "bookshelf",
-      "night",
-      "shadows",
-      "sensual",
-      "warm_lighting",
-      "close_up"
+      "unbuttoned_shirt",
+      "bare_legs",
+      "smooth_thighs",
+      "library_desk",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "图书馆深处阅览桌",
@@ -7906,11 +7837,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, unbuttoned_shirt, skirt_lift, sitting_on_desk, bare_legs, cleavage, heavy_blush, tears_in_eyes, open_mouth, library, bookshelf, night, shadows, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_half_unbuttoned_white_shirt_with_navy_pleated_miniskirt_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_library_desk, barefoot_with_detailed_toes_and_loafers_placed_on_floor, sitting_on_library_desk_with_skirt_slightly_lifted_and_one_hand_bracing_desk_with_heavy_teary_blush, warm_closed_library_night_light_with_bookshelf_bokeh_and_desk_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, child, loli",
     "storyJa": "【寧々・大人のアフターストーリー · ·図書館の秘密評価済み】深夜完全閉館後の大学図書館の奥深く。両側にはクルミ材の本棚がそびえ立ち、古いページと温かいホルモンの匂いが空気に満ちています。寧々はあなたによって大きな木製の読書テーブルにそっと運ばれました。彼女の制服のシャツのボタンはあなたに完全に外され、白い足はたたまれて力なく垂れ下がっていました。彼女はテーブルの端を両手で握り、頭上のアホ毛は極度の感情で激しく震えるハート型の螺旋を描き完全に崩壊した。彼女の顔は涙と赤面で覆われ、口はわずかに開いて温かいあえぎ声を上げていました。――「柊史……ここ、図書館ですよ。警備員さんが来たら、寧々は恥ずかしくて顔を上げられません……。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing between tall wooden bookshelves in the tranquil library, she turns the page of an open book with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a closed library after hours, Ayachi Nene in a half-unbuttoned white shirt and navy pleated miniskirt sits on a desk with slender bare legs, bare feet and loafers on the floor, skirt slightly lifted, heavy teary blush under warm library light.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc171",
@@ -8752,22 +8684,15 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "slip_dress",
       "apron",
-      "sitting_on_counter",
-      "cleavage",
       "bare_legs",
-      "heavy_blush",
-      "open_mouth",
-      "hair_ribbon",
-      "ahoge",
+      "smooth_thighs",
       "kitchen",
-      "indoors",
-      "morning_light",
-      "soft_shadows",
-      "sensual",
-      "warm_lighting",
-      "close_up"
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "新婚公寓厨房吧台",
@@ -8778,11 +8703,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, slip_dress, apron, sitting_on_counter, cleavage, bare_legs, heavy_blush, open_mouth, kitchen, indoors, morning_light, soft_shadows, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_pale_pink_slip_dress_with_white_lace_apron_tied_at_waist_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_kitchen_counter_edge, barefoot_with_detailed_toes_dangling_above_kitchen_tiles, sitting_on_kitchen_counter_edge_with_one_hand_holding_apron_strap_and_other_hand_offering_strawberry, shy_giggly_blush_with_ahoge_bouncing_and_morning_kitchen_light, warm_morning_kitchen_light_through_window_with_tile_reflections_and_apron_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・・・シルクサスペンダースカートとエプロンは超高機能】結婚式の翌朝、暖かいキッチンでは、パンを焼く温かく甘い香りが空気に満ちています。あなたのリクエストに応じて、寧々は非常にローカットのピンクのシルクのサスペンダーナイトガウンと小さなキッチンエプロンを外で着ているだけでした。あなたが彼女を大理石のバーテーブルに乗せたとき、彼女は顔を赤らめていました。細いエプロンの紐では露出した両側の白い胸を覆うことができませんでした。彼女は恥ずかしそうに小麦粉に汚れた手をあなたの胸に押し付けました。彼女の頭上のアホ毛はすでに恥ずかしそうに愛の完璧なスパイラルに崩壊しており、彼女は速く喘いでいました。――「柊史……朝から台所で急に抱きつかないでください。小麦粉が服についちゃいます……でも、もう少しだけ。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she stands beside the kitchen counter with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "Sitting on a kitchen counter edge in a pale pink slip dress with a white lace apron, Ayachi Nene shows slender bare legs dangling above tiles, bare feet, holding an apron strap and offering a strawberry with a shy giggly blush in warm morning kitchen light.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc189",
@@ -11667,26 +11593,16 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "white_hair",
-      "very_long_hair",
-      "low_twintails",
-      "purple_eyes",
-      "ahoge",
       "hair_ribbon",
-      "casual_clothes",
-      "sleeping",
-      "lying_on_sofa",
-      "head_resting",
-      "peaceful_expression",
-      "closed_eyes",
-      "slight_smile",
+      "knit_sweater",
+      "shorts",
+      "bare_legs",
+      "smooth_thighs",
       "sofa",
-      "indoors",
-      "afternoon",
-      "sunlight",
-      "warm_lighting",
-      "cozy",
-      "close_up"
+      "full_body",
+      "barefoot",
+      "cat",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "公寓客厅沙发",
@@ -11697,12 +11613,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair_spilling_over_sofa, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_knit_sweater_and_pleated_skirt, sleeping_peacefully_on_living_room_sofa_with_head_resting_in_viewer_lap, cute_calico_cat_curled_up_sleeping_on_her_stomach, gentle_blissful_smile, soft_pink_blush, cozy_sunlit_living_room_in_afternoon, warm_dappled_sunlight_filtering_through_lace_curtains, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_spilling_over_sofa, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_knit_sweater_with_light_grey_loungewear_shorts_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_curled_on_sofa, barefoot_with_soft_toes_tucked_under_blanket, lying_curled_on_sofa_with_cat_sleeping_on_lap_and_one_hand_gently_petting_cat, cozy_affectionate_blush_with_ahoge_tilting_and_warm_living_room_light, warm_afternoon_window_light_through_curtains_with_soft_shadows_and_sofa_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・午後の膝枕】週末の午後、超自然研究会の資料を読んでいた寧々は、いつの間にかソファで眠ってしまう。あなたがそっと彼女の頭を膝へ移すと、銀色の髪が陽だまりにほどけた。安心したように頬を寄せ、彼女は寝言をこぼす――「柊史の匂い……安心する……」",
     "rating": "All",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "Napping peacefully on the living room sofa on a warm afternoon, Ayachi Nene rests her head in the viewer's lap while a fluffy calico cat snoozes curled up on her stomach. Her silver twintails pool across the cushions as dappled sunlight filtering through lace curtains paints gentle golden motes over her sweet, dreaming smile."
+    "auditRevision": "careful-batch02-2026-08-27",
+    "animaCaption": "Curled on a sunlit sofa with a cat sleeping on her lap, Ayachi Nene in a soft white knit sweater and light grey shorts shows slender bare legs curled under a blanket, bare feet tucked, gently petting the cat with a cozy affectionate blush."
   },
   {
     "id": "sc245",
@@ -11974,27 +11890,15 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "white_hair",
-      "very_long_hair",
-      "low_twintails",
-      "purple_eyes",
-      "ahoge",
       "hair_ribbon",
-      "pajamas",
-      "blanket",
-      "sitting_close",
-      "sharing_blanket",
-      "blush",
-      "shy_expression",
-      "closed_eyes",
-      "slight_smile",
+      "pink_fleece",
+      "bare_legs",
+      "smooth_thighs",
       "sofa",
-      "indoors",
-      "night",
-      "dim_lighting",
-      "warm_atmosphere",
-      "cozy",
-      "close_up"
+      "full_body",
+      "barefoot",
+      "blanket",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "All",
@@ -12005,10 +11909,11 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_cozy_pink_fleece_loungewear, curled_up_in_corner_of_living_room_sofa_sharing_a_warm_plaid_fleece_blanket_with_viewer, resting_head_on_viewer_shoulder, sipping_hot_cocoa_from_mug_with_marshmallows, sweet_affectionate_gaze, warm_living_room_at_night, glowing_fireplace_and_table_lamp, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_cozy_pink_fleece_loungewear_with_white_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_curled_under_blanket, barefoot_with_soft_toes_peeking_from_blanket, curled_in_corner_of_sofa_with_blanket_over_knees_holding_mug_with_both_hands_and_gazing_at_window, cozy_contented_blush_with_ahoge_tilting_and_warm_living_room_light, warm_afternoon_window_light_through_curtains_with_soft_shadows_and_blanket_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・毛布の下の距離】冬の夜、暖房の弱いリビングで寧々はソファの隅にいた。あなたが隣に座ると、彼女は迷いながら毛布の半分を差し出す。灯りの下でアホ毛が小さく揺れた――「……二人で使った方が暖かいだけ。近すぎるけど……もう少しだけなら、いいよ」",
-    "animaCaption": "Curled up in the corner of the plush living room couch sharing a thick plaid fleece blanket with the viewer, Ayachi Nene rests her head on the viewer's shoulder in her pink fleece loungewear. Holding a warm mug of cocoa with melting marshmallows, her purple eyes soften with tranquil, heartwarming intimacy by the hearth fire."
+    "animaCaption": "Curled in a sofa corner with a blanket over her knees, Ayachi Nene in cozy pink fleece loungewear shows slender bare legs with soft skin sheen, bare feet peeking, holding a mug and gazing at the window with a cozy contented blush.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc251",
@@ -12810,12 +12715,16 @@
     "time": "白天",
     "timeOfDay": "afternoon",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "nene_r18"
+      "hair_ribbon",
+      "white_camisole",
+      "shorts",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "morning_light",
+      "depth_of_field"
     ],
     "mature": true,
     "location": "卧室",
@@ -12828,8 +12737,8 @@
       "展示图",
       "成人向"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair_cascading_over_pillows, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_white_camisole_and_panties, lying_propped_up_on_soft_golden_silk_pillows_in_bed, looking_directly_at_viewer_with_moist_loving_eyes, whisper_of_confession_on_parted_lips, warm_rose_blush, bright_morning_bedroom_filled_with_sunlight, floating_golden_dust_motes, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_cascading_over_pillows, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_cotton_camisole_with_lace_trim_and_short_shorts_with_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_on_bed_with_one_arm_behind_head, barefoot_with_soft_toes_on_pillow, lying_on_bed_with_one_arm_behind_head_and_other_hand_holding_pillow_with_gentle_morning_blush, warm_morning_sunlight_through_curtains_with_soft_shadows_and_pillow_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R18",
     "officialCgCandidate": "ocn11",
@@ -12841,7 +12750,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn11-a2.png",
       "result": "pass"
     },
-    "animaCaption": "Propping herself up amidst a sea of golden silk cushions on a bright morning, Ayachi Nene gazes directly into the viewer's eyes with moist purple irises overflowing with tender love. Dressed in a delicate white camisole, her parted lips whisper an eternal confession as brilliant morning sunbeams fill the bedroom with ethereal warmth."
+    "animaCaption": "Lying on a sunlit bed with one arm behind her head, Ayachi Nene in a soft white cotton camisole with lace trim and short shorts shows slender bare legs with soft skin sheen, bare feet on the pillow, gentle morning blush in warm sunlight.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc267",
@@ -12859,25 +12769,14 @@
     "time": "白天",
     "timeOfDay": "afternoon",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "r18",
-      "nene_r18",
-      "nene_witch_canonical",
-      "bent_over",
-      "leaning_forward",
-      "standing_on_floor",
-      "on_desk",
-      "from_behind",
-      "ass_focus",
-      "skirt_lift",
-      "pussy",
-      "looking_back",
-      "bare_back",
-      "criss_cross_halter"
+      "hair_ribbon",
+      "witch_dress",
+      "bare_legs",
+      "smooth_thighs",
+      "study_desk",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": true,
     "location": "私密书房木桌",
@@ -12890,8 +12789,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_witch, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_elaborate_black_and_crimson_witch_dress_and_pointed_witch_hat, holding_silver_magic_staff_glowing_with_purple_mana, looking_back_over_shoulder_with_mischievous_mystical_smile, soft_blush, starlight_cafe_garden_at_twilight, floating_purple_butterfly_illusions_and_sparkles, cinematic_medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_elaborate_black_and_pink_witch_dress_with_pointed_hat_and_caped_sleeves_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_kneeling_on_study_desk, barefoot_with_detailed_toes_on_desk_surface, kneeling_on_private_study_desk_with_one_hand_lifting_skirt_hem_looking_back_over_shoulder_with_mischievous_blush, warm_study_lamp_light_with_stacked_magic_books_and_star_charts_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R18",
     "officialCgCandidate": "ocn12",
@@ -12903,8 +12802,9 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
       "result": "pass"
     },
-    "animaCaption": "Pausing on the stone path of the cafe garden at twilight, Ayachi Nene turns back over her shoulder in her elaborate black and crimson witch gown and pointed hat, holding a glowing silver magic wand. A flock of ethereal glowing purple butterfly illusions flutters around her silken twintails as her purple eyes sparkle with playful mystique.",
-    "recommendedModel": "anima-aesthetic-v1.1"
+    "animaCaption": "Kneeling on a private study desk in an elaborate black and pink witch dress with pointed hat, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on the desk, looking back over her shoulder with a mischievous blush among stacked magic books.",
+    "recommendedModel": "anima-aesthetic-v1.1",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc268",
@@ -12922,12 +12822,15 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "nene_r18"
+      "hair_ribbon",
+      "mint_pajamas",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "morning_light",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "卧室",
@@ -12940,8 +12843,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_casual, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_mint_green_striped_cotton_pajamas, standing_in_sunlit_kitchen_holding_two_ceramic_mugs_of_fresh_coffee, turning_with_fresh_morning_smile, soft_blush, bright_morning_kitchen, aroma_steam_rising_from_cups, morning_sunbeams_illuminating_countertop, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_mint_green_striped_cotton_pajama_set_with_white_piping_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_bed_with_knees_drawn_up, barefoot_with_soft_toes_on_bedsheets, sitting_on_bed_with_knees_drawn_to_chest_resting_chin_on_knees_looking_at_viewer_with_gentle_sleepy_blush, warm_morning_window_light_through_curtains_with_soft_shadows_and_sheet_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn13",
@@ -12953,7 +12856,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn13-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Standing beside the sunny kitchen counter in her fresh mint green striped cotton pajamas, Ayachi Nene turns around holding two steaming ceramic mugs of morning coffee. Her silver bangs catch the bright dawn light as her purple eyes shine with peaceful, affectionate morning joy."
+    "animaCaption": "In a morning bedroom, Ayachi Nene in mint green striped cotton pajamas sits on the bed with knees drawn to her chest, slender bare legs with soft skin sheen, bare feet on sheets, resting her chin on her knees with a gentle sleepy blush.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc269",
@@ -13202,11 +13106,12 @@
     "time": "白天",
     "timeOfDay": "afternoon",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "solo"
+      "mole_under_eye",
+      "grey_pajamas",
+      "bare_shoulders",
+      "pillow",
+      "close_up",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "卧室",
@@ -13218,8 +13123,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, natsume_sleepwear, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, black_hair_spread_over_white_pillow, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_pajama_set_with_white_piping_and_slender_bare_shoulders, smooth_bare_shoulders_and_collarbone_with_soft_skin_sheen_lying_on_side, looking_at_viewer_with_sleepy_gentle_blush_and_parted_lips, warm_bedside_lamp_light_with_soft_shadows_and_pillow_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, child, loli",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs08",
@@ -13231,7 +13136,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she rests comfortably against soft pillows with glistening, emotive eyes, under soft ambient lighting."
+    "animaCaption": "In an intimate diagonal close-up on a white pillow, Shiki Natsume in a soft grey pajama set lies on her side with bare shoulders and soft skin sheen, looking at the viewer with a sleepy gentle blush under warm bedside lamp light.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc275",
@@ -13442,11 +13348,13 @@
     "time": "白天",
     "timeOfDay": "afternoon",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "solo"
+      "mole_under_eye",
+      "lace_camisole",
+      "bare_shoulders",
+      "wooden_floor",
+      "overhead",
+      "full_body",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "室内场景",
@@ -13458,8 +13366,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_extreme_overhead_face_close_up, 1girl, solo, adult_shiki_natsume, long_black_hair_braided_at_both_sides, golden_yellow_eyes, mole_under_eye, paired_white_rose_ornaments_with_purple_ribbons, white_shirt, lying_on_warm_wooden_floor_beside_an_orange_cushion, one_index_finger_pressed_softly_to_parted_lips, other_hand_near_ear, intense_shy_direct_gaze, flushed_cheeks, face_fills_frame, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_extreme_overhead_face_close_up, 1girl, solo, adult_shiki_natsume, long_black_hair_braided_at_both_sides, golden_yellow_eyes, mole_under_eye, black_headband, wearing_soft_black_lace_camisole_with_slender_bare_shoulders_and_collarbone_exposed, smooth_bare_shoulders_and_collarbone_with_soft_skin_sheen_lying_on_wooden_floor, looking_up_at_viewer_with_flustered_intense_blush_and_parted_lips, warm_wooden_floor_texture_with_overhead_soft_light_and_lace_shadows, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, child, loli",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs13",
@@ -13471,7 +13379,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, under soft ambient lighting."
+    "animaCaption": "In an extreme overhead close-up on a wooden floor, adult Shiki Natsume with braided long black hair lies in a soft black lace camisole, bare shoulders and collarbone with soft skin sheen, looking up with an intense flustered blush under soft overhead light.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc280",
@@ -14146,24 +14055,15 @@
     "time": "拂晓",
     "timeOfDay": "dawn",
     "tags": [
-      "nude",
-      "adult",
-      "bedsheet",
-      "bare_shoulders",
-      "collarbone",
-      "lying_on_bed",
-      "bedroom",
-      "dawn",
-      "blue_hour",
-      "soft_light",
-      "looking_at_viewer",
-      "intimate",
-      "eye_contact",
-      "sensual",
-      "close_up",
       "mole_under_eye",
-      "long_hair",
-      "messy_hair"
+      "black_camisole",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "dawn",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -14175,10 +14075,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair_messy_and_soft, yellow_eyes, mole_under_eye, black_headband, wearing_black_camisole_nightgown, buried_comfortably_under_thick_down_comforter_at_dawn, peeking_over_blanket_edge_at_viewer, sleepy_reluctant_pout, soft_morning_blush, cozy_bedroom_at_sunrise, golden_dawn_light_washing_over_bedding, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair_messy_and_soft, yellow_eyes, mole_under_eye, black_headband, wearing_soft_black_camisole_nightgown_with_lace_trim_and_matching_shorts, slender_bare_legs_with_soft_skin_sheen_tucked_under_blanket_edge, barefoot_with_soft_toes_on_bedsheets, sitting_on_edge_of_bed_in_dim_bedroom_at_dawn_holding_blanket_with_sleepy_gentle_blush, warm_dawn_window_light_through_curtains_with_soft_shadows_and_dust_motes, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・大人のAfter Story・夜明け前の布団の温度】空はまだ完全には明るくなっておらず、カーテンの隙間から淡い青色の光が差し込んでいた。夏目はあなたに背を向けて横向きに寝ていた。黒い長髪が枕に広がり、呼吸は穏やかでまだ起きていないようだった。しかし、あなたがそっと起き上がろうとすると、彼女の手が布団から伸びてあなたの腕を押さえた——力は強くなかったが、その意思は明確で無視できなかった。振り返ると、彼女はまだ目を開けていなかったが、あなたの方へ少し移動した。声には起きたばかりのかすれがあった——「5時47分……週末は仕事ないよ。」そう言っても手を離さず、指先があなたの前腕をゆっくりと伝い、手首にそっと絡まった。布団の中では彼女の体温とあなたの体温が混ざり合っていた。彼女は片目だけ開けてあなたを見て、また閉じた——「眠れないなら……一緒に横になって話してていいよ。でも、朝ごはんを作りに行くなら——あと30分待って。」",
-    "animaCaption": "Nestled deep beneath a plush down comforter at the first crack of dawn, Shiki Natsume peeks out in her black sleepwear, offering the viewer a sleepy, reluctant pout against having to wake up. Radiant golden dawn light washes across the bedding, highlighting her dark bangs and flushed cheeks in cozy morning warmth."
+    "animaCaption": "At dawn in a dim bedroom, Shiki Natsume in a soft black camisole nightgown with lace trim sits on the bed edge, slender bare legs with soft skin sheen tucked under the blanket, warm dawn light through curtains highlighting her sleepy gentle blush.",
+    "auditRevision": "careful-batch02-2026-08-27"
   },
   {
     "id": "sc295",
