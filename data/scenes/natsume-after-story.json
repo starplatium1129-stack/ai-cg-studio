@@ -114,22 +114,15 @@
     "timeOfDay": "morning",
     "tags": [
       "mole_under_eye",
+      "oversized_tshirt",
       "pajamas",
-      "looking_back",
-      "pouting",
-      "bed",
-      "pov",
-      "adult",
-      "cohabitation",
-      "lying_on_chest",
-      "looking_up",
-      "subtle_blush",
+      "bare_legs",
+      "smooth_thighs",
       "bedroom",
-      "morning",
-      "clear_sky",
-      "close_up",
+      "full_body",
+      "barefoot",
       "morning_light",
-      "warm_lighting"
+      "depth_of_field"
     ],
     "mature": false,
     "location": "同居公寓卧室",
@@ -140,11 +133,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair_messy_on_pillow, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_grey_sleep_t-shirt, half-buried_under_comforter, pulling_blanket_over_nose, looking_up_at_viewer_with_sleepy_reluctant_gaze, flustered_blush, bright_morning_bedroom, sunbeams_cutting_across_bed, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair_messy_on_pillow, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_heather_grey_sleep_t_shirt_with_slender_bare_legs_tucked_under_comforter, smooth_bare_thighs_and_calf_with_soft_skin_sheen_half_covered_by_blanket, barefoot_with_soft_toes_peeking_from_under_blanket, lying_prone_on_viewer_chest_with_chin_resting_on_viewer_collarbone_looking_up, sleepy_affectionate_blush_with_tear_mole_highlighted_by_autumn_morning_light, cozy_cohabitation_bedroom_with_warm_window_light_and_soft_shadows, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・彼氏から見たベッドの許可】秋の早朝、夏目があなたの胸に横たわり、今日の旅程を確認します。彼女は明らかに起きていますが、起き上がることを拒否します。あなたが彼女にコケティッシュな態度をとっているのかと尋ねると、彼女は金色の目を上げました。目の横がゆっくりと赤くなったが、それでも顎を元の位置に戻した。――「この枕が合格か確かめていただけ。結論は、ぎりぎり合格……だから今日は、あと五分だけ抱いていてもいい。」",
     "rating": "All",
-    "animaCaption": "Buried comfortably under the fluffy comforter in an oversized sleep t-shirt, Shiki Natsume pulls the blanket up over her nose, gazing up at the standing viewer with a sleepy, reluctant plea to stay in bed. Golden morning sunbeams dance across her dark hair and flushed cheeks."
+    "animaCaption": "On an autumn morning bed, Shiki Natsume lies prone on the viewer's chest in an oversized heather grey sleep T-shirt, slender bare legs tucked under the comforter with soft skin sheen. Her messy black hair and mole-accented blush catch warm window light as she looks up with sleepy affection.",
+    "auditRevision": "careful-batch01-2026-08-27"
   },
   {
     "id": "sc091",
@@ -2113,23 +2107,15 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "nude",
-      "adult",
-      "casual_clothes",
-      "unbuttoned_shirt",
-      "bare_shoulders",
-      "cleavage",
-      "sitting_at_table",
-      "izakaya",
-      "night",
-      "drunk",
-      "blush",
-      "intimate",
-      "eye_contact",
-      "sensual",
-      "close_up",
       "mole_under_eye",
-      "long_hair"
+      "black_tshirt",
+      "denim_skirt",
+      "bare_legs",
+      "smooth_thighs",
+      "izakaya",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -2141,10 +2127,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_casual, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_black_t-shirt_and_denim_skirt, sitting_on_living_room_floor_surrounded_by_stacks_of_freshly_printed_doujinshi_books, holding_can_of_beer_in_a_toast, triumphant_happy_smile, heavy_tipsy_blush, cozy_apartment_at_night, celebratory_snack_spread_on_low_table, warm_ambient_light, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_black_t_shirt_with_dark_denim_miniskirt_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_tatami_floor, barefoot_with_detailed_toes_and_white_sneakers_beside_stacks_of_doujinshi, sitting_on_tatami_floor_surrounded_by_stacks_of_freshly_printed_doujinshi_books_holding_can_of_beer_with_relaxed_tipsy_blush, warm_izakaya_lantern_light_with_paper_walls_and_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・大人のAfter Story・閉店後の同人打ち上げ】新刊発売後の打ち上げが終わり、他のメンバーは既に帰路についた。居酒屋の暖簾も半分ほど垂れていた。夏目は座敷の隅に座り、ほろ酔いで頬を薄赤く染めていた。黒い髪が何本か顔の横に落ちている。彼女は襟元の第一ボタンを外し、息をついた。顔を上げてあなたを見た時、金色の瞳はいつもよりずっと柔らかかった——「今日は予想より売れた……あなたの選んだレイアウト方向は正しかったね。」その評価は突然だが誠実だった。あなたが隣に座って彼女の上着を取りに行こうとすると、彼女は立ち上がらず、むしろ寄りかかってきて額をあなたの肩に預けた。声はBGMにかき消されそうなほど小さかった——「あと一分だけ……一日中立ちっぱなしで、足がすごく痛い。」彼女の息からは梅酒の甘い香りがした。指があなたの上着の裾をそっと掴んでいた——あなたが彼女の言葉を聞く前に立ち去ってしまうのが怖いかのように。",
-    "animaCaption": "Sitting cross-legged on the floor after completing their creative manuscript, Shiki Natsume raises a cold can of beer in a joyful celebratory toast, surrounded by neat stacks of fresh doujinshi booklets. Her sharp golden eyes sparkle with proud triumph and tipsy warmth under the cozy living room lights."
+    "animaCaption": "On a tatami floor surrounded by stacks of freshly printed doujinshi at a late-night izakaya, Shiki Natsume in a casual black T-shirt and dark denim miniskirt sits with slender bare legs and soft skin sheen, bare feet beside white sneakers, holding a beer can with a relaxed tipsy blush.",
+    "auditRevision": "careful-batch01-2026-08-27"
   },
   {
     "id": "sc297",
