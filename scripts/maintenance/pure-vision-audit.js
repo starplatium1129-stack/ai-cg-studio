@@ -133,13 +133,39 @@ async function auditSingleItem(item) {
 }
 
 async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(`
+纯视觉审核器 — assets/character-references 4并发
+
+用法:
+  node scripts/maintenance/pure-vision-audit.js [--force] [--keys k1,k2] [--help]
+
+参数:
+  --force          忽略已审记录，强制重审（用于重渲染后复审）
+  --keys <list>    仅审核指定 key，用逗号分隔，支持前缀匹配
+                   例: --keys alisa_mikhailovna_kujou/school_uniform/ref_01_face_closeup
+                       --keys frieren/nsfw_nude
+  --help, -h       显示此帮助
+
+说明:
+  默认跳过已审的 pass/fail，避免无限重审；重渲染后的图 previously 需 --force 或手动清理 runtime/multi-outfit-audit-report.json
+`);
+    return;
+  }
+  const force = args.includes('--force');
+  const keysArg = args.find(a => a.startsWith('--keys='));
+  const keysValue = keysArg ? keysArg.split('=')[1] : (args.includes('--keys') ? args[args.indexOf('--keys') + 1] : '');
+  const filterKeys = keysValue ? keysValue.split(',').map(s => s.trim()).filter(Boolean) : null;
+
   const allItems = getAllItems();
   
   while (true) {
-    // 找出磁盘上已有但尚未审核的项（2026-08-18 修复：已审过的条目无论 pass/fail 都跳过，
-    // 避免 fail 条目被无限重审；重渲染后的图请先清除对应 report 记录再跑）。
+    // 找出磁盘上已有但尚未审核的项（默认跳过已审的 pass/fail，避免无限重审）
+    // --force 强制重审；--keys 仅审指定前缀；重渲染后推荐 --force --keys <key>
     const pendingItems = allItems.filter(item => {
-      if (auditReport[item.key]) return false;
+      if (!force && auditReport[item.key]) return false;
+      if (filterKeys && !filterKeys.some(k => item.key === k || item.key.startsWith(k))) return false;
       if (!fs.existsSync(item.targetPath)) return false;
       const stat = fs.statSync(item.targetPath);
       return stat.size > 20000;

@@ -86,6 +86,7 @@
     "benchmark:voice": "node scripts/maintenance/benchmark-voice.js",
     "benchmark:voice-baseline": "node scripts/maintenance/check-voice-baseline.js",
     "audit:prompts": "node scripts/maintenance/audit-prompts.js",
+    "workflow": "node scripts/workflow.js",
     "scenes:build": "node scripts/maintenance/build-scenes.js",
     "particles:build": "python scripts/maintenance/build-particle-portraits.py",
     "character:onboard": "node scripts/maintenance/workflow-onboard-popular-character.js",
