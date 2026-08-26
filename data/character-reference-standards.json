@@ -281,25 +281,6 @@
             "long_sleeves"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -373,25 +354,6 @@
             "open_jacket"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         },
         {
           "id": "silk_sleepwear",
@@ -476,25 +438,6 @@
             "black_clothes"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -556,25 +499,6 @@
             "cardigan"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -628,38 +552,6 @@
             "long_sleeves"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "formal_dress",
-          "name": "礼服",
-          "isDefault": false,
-          "prose": "an elegant white formal dress with long sleeves and fine embroidery",
-          "tokens": [
-            "evening_gown",
-            "white_dress",
-            "long_sleeves",
-            "dress"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -726,25 +618,6 @@
             "miniskirt"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         },
         {
           "id": "festival_yukata",
@@ -851,25 +724,6 @@
             "layered_skirt"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -932,25 +786,6 @@
             "dress"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -1011,25 +846,6 @@
             "cardigan"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -1067,19 +883,6 @@
           "isNsfw": false
         },
         {
-          "id": "summer_clothes",
-          "name": "夏季私服",
-          "isDefault": false,
-          "prose": "a light summer outfit with a thin top and shorts",
-          "tokens": [
-            "summer_clothes",
-            "tank_top",
-            "shorts",
-            "pink_clothes"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "casual",
           "name": "便服",
           "isDefault": false,
@@ -1091,25 +894,6 @@
             "jacket"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         },
         {
           "id": "summer_yukata",
@@ -1206,25 +990,6 @@
             "dark_aura"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -1287,25 +1052,6 @@
             "long_sleeves"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -1371,25 +1117,6 @@
           "isNsfw": false
         },
         {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        },
-        {
           "id": "lace_nightgown",
           "name": "蕾丝月光睡袍",
           "isDefault": false,
@@ -1445,19 +1172,6 @@
           "isNsfw": false
         },
         {
-          "id": "witch_dress",
-          "name": "魔女装",
-          "isDefault": false,
-          "prose": "a dark witch-like dress worn in the capital",
-          "tokens": [
-            "witch",
-            "black_dress",
-            "frills",
-            "hat"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "casual",
           "name": "便服",
           "isDefault": false,
@@ -1468,25 +1182,6 @@
             "cardigan"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -1553,25 +1248,6 @@
           "isNsfw": false
         },
         {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        },
-        {
           "id": "lingerie_only",
           "name": "私密内衣形态",
           "isDefault": false,
@@ -1620,19 +1296,6 @@
             "fur_trim",
             "hood",
             "winter_clothes"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "white_dress",
-          "name": "白色连衣裙",
-          "isDefault": false,
-          "prose": "a pure white dress with a matching ribbon",
-          "tokens": [
-            "white_dress",
-            "ribbon",
-            "dress",
-            "long_sleeves"
           ],
           "isNsfw": false
         },
@@ -2014,21 +1677,6 @@
           "isNsfw": false
         },
         {
-          "id": "colorful_wonderland",
-          "name": "缤纷奇境（泳装）",
-          "isDefault": false,
-          "prose": "a black and white two-piece bikini with a translucent black beach cover-up, sunglasses and a giant multi-scoop ice cream cone",
-          "tokens": [
-            "bikini",
-            "black_clothes",
-            "white_clothes",
-            "sunglasses",
-            "ice_cream",
-            "beach"
-          ],
-          "isNsfw": true
-        },
-        {
           "id": "liberte_echec",
           "name": "自由//失效（街头滑板）",
           "isDefault": false,
@@ -2086,22 +1734,6 @@
             "robe",
             "slipping_off_shoulder",
             "barefoot"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "crimson_velvet_evening_gown",
-          "name": "深红曜影高定露背晚礼服",
-          "isDefault": false,
-          "prose": "a dark haute couture evening gown: a wine-red to ink-black gradient heavy velvet fitted long dress with a deep V-neck and open back, high side slit, subtle gold embroidery lining the hem, black choker necklace, elbow-length sheer black lace gloves, hair in a low French bun",
-          "tokens": [
-            "evening_gown",
-            "velvet",
-            "deep_v_neckline",
-            "open_back",
-            "side_slit",
-            "choker",
-            "long_gloves"
           ],
           "isNsfw": false
         },
@@ -2225,21 +1857,6 @@
           "isNsfw": false
         },
         {
-          "id": "midnight_emerald_silk_robe",
-          "name": "深夜研读·墨绿真丝睡袍与吊带裙",
-          "isDefault": false,
-          "prose": "a deep emerald green silk dressing gown with subtle gold thread woven into the lapels, tied with a matching silk sash, worn over a simple black satin slip nightdress with a deep V back",
-          "tokens": [
-            "silk",
-            "dressing_gown",
-            "satin",
-            "nightdress",
-            "deep_v_back",
-            "green"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "victorian_traveler_coat",
           "name": "维多利亚博物学者古典旅行大衣",
           "isDefault": false,
@@ -2320,35 +1937,6 @@
           "isNsfw": false
         },
         {
-          "id": "ageless_afterglow",
-          "name": "岁红霞（旗袍）",
-          "isDefault": false,
-          "prose": "a high-slit dark green and crimson qipao with gold dragon embroidery, a translucent green capelet, black pantyhose and high heels",
-          "tokens": [
-            "qipao",
-            "green_clothes",
-            "red_clothes",
-            "gold_trim",
-            "black_pantyhose",
-            "high_heels"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "holungday",
-          "name": "假日威龙（海滩装）",
-          "isDefault": false,
-          "prose": "a white crop halter top with light blue denim shorts, a red shirt tied at her waist, sunglasses and a high-pressure water gun",
-          "tokens": [
-            "crop_top",
-            "white_clothes",
-            "denim_shorts",
-            "sunglasses",
-            "water_gun"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "wanderer",
           "name": "赤刃明霄（游侠行装）",
           "isDefault": false,
@@ -2405,25 +1993,6 @@
             "undercover"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         },
         {
           "id": "bath_towel_wrap",
@@ -2549,20 +2118,6 @@
           "isNsfw": false
         },
         {
-          "id": "summer_flower",
-          "name": "夏卉（泳装）",
-          "isDefault": false,
-          "prose": "a pink and white bikini with a straw sun hat and a swimming ring shaped like a small lamb",
-          "tokens": [
-            "bikini",
-            "pink_clothes",
-            "white_clothes",
-            "straw_hat",
-            "swim_ring"
-          ],
-          "isNsfw": true
-        },
-        {
           "id": "picnic",
           "name": "远行前的野餐",
           "isDefault": false,
@@ -2618,25 +2173,6 @@
             "hearing_aid"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         },
         {
           "id": "waterproof_explorer",
@@ -2700,20 +2236,6 @@
           "isNsfw": false
         },
         {
-          "id": "twilight_requiem",
-          "name": "暮星安魂曲（礼服）",
-          "isDefault": false,
-          "prose": "a black and deep-blue starlit evening gown with a classical instrument-style wheelchair and a case-shaped rifle",
-          "tokens": [
-            "evening_gown",
-            "black_dress",
-            "blue_clothes",
-            "wheelchair",
-            "night_sky"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "baking_apron_loungewear",
           "name": "苹果派烘焙日恬静甜点师便服",
           "isDefault": false,
@@ -2756,25 +2278,6 @@
             "sheer"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         },
         {
           "id": "nun_habit",
@@ -2869,21 +2372,6 @@
           "isNsfw": false
         },
         {
-          "id": "ink_silk_nightdress",
-          "name": "墨染云纱",
-          "isDefault": false,
-          "prose": "a luxurious emerald-and-pearl-white gradient silk slip nightdress with fine black ink-flower lace at the V neckline and a high side slit, overlaid with a sheer gossamer wide-sleeved robe trailing like mist",
-          "tokens": [
-            "silk",
-            "nightdress",
-            "gradient",
-            "lace_trim",
-            "side_slit",
-            "sheer_robe"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "neo_cyber_ink_techwear",
           "name": "街头墨客",
           "isDefault": false,
@@ -2967,49 +2455,6 @@
             "horns",
             "shoulder_armor",
             "gauntlets"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "gravel",
-          "name": "砾瓦（日常工装）",
-          "isDefault": false,
-          "prose": "a dark grey high-neck bodysuit under a relaxed beige work jacket with an open collar and a red scarf, comfortable cargo trousers and sturdy boots",
-          "tokens": [
-            "work_clothes",
-            "jacket",
-            "red_scarf",
-            "cargo_pants",
-            "bodysuit",
-            "high_collar"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "silent_night",
-          "name": "静谧午夜（泳装）",
-          "isDefault": false,
-          "prose": "a black bikini with a translucent black beach cover-up, a small yellow frangipani flower on her horn and a parasol hammer",
-          "tokens": [
-            "bikini",
-            "black_clothes",
-            "flower",
-            "beach",
-            "parasol"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "obsidian",
-          "name": "黑曜石（晚礼服）",
-          "isDefault": false,
-          "prose": "a black off-shoulder evening gown with black lace trim, a deep red ruby brooch and obsidian feather ornaments, black high heels, gold chains on her horns",
-          "tokens": [
-            "evening_gown",
-            "black_dress",
-            "lace",
-            "brooch",
-            "high_heels"
           ],
           "isNsfw": false
         },
@@ -3167,20 +2612,6 @@
           "isNsfw": false
         },
         {
-          "id": "slumber_blueprint_loungewear",
-          "name": "蓝图微憩 / 工坊夜间休闲居家服",
-          "isDefault": false,
-          "prose": "a relaxed cozy oversized loungewear: a slouchy off-shoulder oversized light-grey hoodie slipping to one side to reveal the collarbone and a black thin-strap camisole, black lounge shorts, knit leg warmers",
-          "tokens": [
-            "oversized_hoodie",
-            "off_shoulder",
-            "loungewear",
-            "lounge_shorts",
-            "leg_warmers"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "rainforest_safari_explorer",
           "name": "林间搜猎 / 阿卡胡拉丛林勘探轻装",
           "isDefault": false,
@@ -3284,20 +2715,6 @@
             "pleated_skirt",
             "thighhighs",
             "scissors"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "maiden_of_night",
-          "name": "喜夜侍者（女仆装）",
-          "isDefault": false,
-          "prose": "a black and white Victorian gothic maid dress with lace frills and a maid headband, holding a silver serving tray",
-          "tokens": [
-            "maid",
-            "black_dress",
-            "white_clothes",
-            "lace",
-            "maid_headdress"
           ],
           "isNsfw": false
         },
@@ -3435,20 +2852,6 @@
           "isNsfw": false
         },
         {
-          "id": "waverider",
-          "name": "驭浪（泳装）",
-          "isDefault": false,
-          "prose": "a red two-piece bikini with a translucent white cover-up, sunglasses and a killer-whale inflatable surfboard",
-          "tokens": [
-            "bikini",
-            "red_clothes",
-            "white_clothes",
-            "sunglasses",
-            "surfboard"
-          ],
-          "isNsfw": true
-        },
-        {
           "id": "sublimation",
           "name": "升华（神官礼服）",
           "isDefault": false,
@@ -3568,21 +2971,6 @@
             "scythe"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "summer_flower_fa210",
-          "name": "夏卉（泳装）",
-          "isDefault": false,
-          "prose": "a pink and white bikini with a translucent white cover-up, a floral straw hat and sunglasses, holding a tropical cocktail",
-          "tokens": [
-            "bikini",
-            "pink_clothes",
-            "white_clothes",
-            "straw_hat",
-            "sunglasses",
-            "cocktail"
-          ],
-          "isNsfw": true
         },
         {
           "id": "sleepy_oversized_loungewear",
@@ -3718,20 +3106,6 @@
           "isNsfw": false
         },
         {
-          "id": "lazy_dorm_oversized_loungewear",
-          "name": "罗德岛宿舍慵懒开黑居家服",
-          "isDefault": false,
-          "prose": "an extra-oversized heather-grey crewneck sweatshirt with the hem falling to mid-thigh in a lazy shirt-dress look, red-and-white striped fluffy knee-high socks, tiny cotton shorts underneath",
-          "tokens": [
-            "oversized_sweatshirt",
-            "crewneck",
-            "shirt_dress",
-            "kneehighs",
-            "loungewear"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "apple_pie_bakery_patissiere",
           "name": "甜心烘焙师·苹果派围裙装",
           "isDefault": false,
@@ -3838,22 +3212,6 @@
           "isNsfw": false
         },
         {
-          "id": "snow_clearing",
-          "name": "雪霁（冬装和服）",
-          "isDefault": false,
-          "prose": "a thick white and powder-blue winter kimono with fur trim, a floral hairpin and a wooden staff with shrine bells, standing before a torii gate in snow",
-          "tokens": [
-            "kimono",
-            "white_clothes",
-            "blue_clothes",
-            "fur_trim",
-            "hair_ornament",
-            "snow",
-            "torii"
-          ],
-          "isNsfw": false
-        },
-        {
           "id": "wasteland_bloom",
           "name": "弃土花开（废土探索）",
           "isDefault": false,
@@ -3880,34 +3238,6 @@
             "loungewear"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "greenhouse_florist_smock",
-          "name": "【初绽之息】阳光温室花艺师便服",
-          "isDefault": false,
-          "prose": "a cottagecore florist outfit: a linen pinafore apron dress in oat and coffee tones over an ivory puff-sleeve blouse, brass buttons and a front pocket, gardening smock",
-          "tokens": [
-            "pinafore",
-            "apron_dress",
-            "puff_sleeves",
-            "blouse",
-            "cottagecore"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "higashi_summer_yukata",
-          "name": "【夏日微风】东国夏日祭轻风浴衣",
-          "isDefault": false,
-          "prose": "a Japanese summer festival yukata in pale mint green, pastel pink and ivory, printed with swimming red goldfish, light cotton fabric with an obi sash",
-          "tokens": [
-            "yukata",
-            "summer_festival",
-            "floral_pattern",
-            "mint_green",
-            "obi"
-          ],
-          "isNsfw": true
         },
         {
           "id": "nsfw_nude",
@@ -4051,20 +3381,6 @@
             "loungewear",
             "cream",
             "high_waist"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "endfield_techwear_street",
-          "name": "都市机能风尚",
-          "isDefault": false,
-          "prose": "a cyberpunk techwear street outfit: a cropped black-and-white techwear biker jacket over a ribbed charcoal crop tank top, high-waist techwear cargo pants with cyan line accents and straps, chunky sneakers",
-          "tokens": [
-            "techwear",
-            "biker_jacket",
-            "crop_top",
-            "cargo_pants",
-            "cyberpunk"
           ],
           "isNsfw": false
         },
@@ -4296,20 +3612,6 @@
             "white_dress",
             "cardigan",
             "sandals"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "cheerleader",
-          "name": "啦啦队运动服",
-          "isDefault": false,
-          "prose": "a cute school cheerleading sleeveless crop top uniform with a pleated mini skirt and matching pom-poms",
-          "tokens": [
-            "cheerleader",
-            "sleeveless",
-            "crop_top",
-            "pleated_skirt",
-            "mini_skirt"
           ],
           "isNsfw": false
         },
@@ -4555,91 +3857,6 @@
               "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
               "fileName": "sylphiette_silent_fitz_uniform_ref_04_back_rear.png",
               "url": "/assets/character-references/sylphiette/silent_fitz_uniform/sylphiette_silent_fitz_uniform_ref_04_back_rear.png"
-            }
-          ]
-        },
-        {
-          "id": "wedding_white_dress",
-          "name": "纯白无袖新娘礼服",
-          "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair",
-          "tokens": [
-            "white_hair",
-            "white_dress",
-            "sleeveless_dress",
-            "flower_crown",
-            "bare_shoulders"
-          ],
-          "styleHint": "pure ethereal bridal lighting",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, sylphiette, sylphie, 1girl, solo, short_hair, white_hair, red_eyes, elf_ears, pointed_ears, flat_chest, white_hair, white_dress, sleeveless_dress, flower_crown, bare_shoulders, wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "sylphiette_wedding_white_dress_ref_01_face_closeup.png",
-              "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, sylphiette, sylphie, 1girl, solo, short_hair, white_hair, red_eyes, elf_ears, pointed_ears, flat_chest, white_hair, white_dress, sleeveless_dress, flower_crown, bare_shoulders, wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "sylphiette_wedding_white_dress_ref_02_half_medium.png",
-              "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, sylphiette, sylphie, 1girl, solo, short_hair, white_hair, red_eyes, elf_ears, pointed_ears, flat_chest, white_hair, white_dress, sleeveless_dress, flower_crown, bare_shoulders, wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "sylphiette_wedding_white_dress_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, sylphiette, sylphie, 1girl, solo, short_hair, white_hair, red_eyes, elf_ears, pointed_ears, flat_chest, white_hair, white_dress, sleeveless_dress, flower_crown, bare_shoulders, wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "sylphiette_wedding_white_dress_ref_04_back_rear.png",
-              "url": "/assets/character-references/sylphiette/wedding_white_dress/sylphiette_wedding_white_dress_ref_04_back_rear.png"
             }
           ]
         },
@@ -5936,91 +5153,6 @@
               "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
               "fileName": "matou_sakura_white_summer_sundress_ref_04_back_rear.png",
               "url": "/assets/character-references/matou_sakura/white_summer_sundress/matou_sakura_white_summer_sundress_ref_04_back_rear.png"
-            }
-          ]
-        },
-        {
-          "id": "dark_sakura_dress",
-          "name": "黑化形态红纹礼服",
-          "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy",
-          "tokens": [
-            "dark_sakura",
-            "black_dress",
-            "red_tattoos",
-            "glowing_markings",
-            "shadow_tendrils"
-          ],
-          "styleHint": "ominous dark fantasy magic glow",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, matou_sakura, 1girl, solo, purple_hair, long_hair, hair_ribbon, red_ribbon, purple_eyes, large_breasts, dark_sakura, black_dress, red_tattoos, glowing_markings, shadow_tendrils, wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "matou_sakura_dark_sakura_dress_ref_01_face_closeup.png",
-              "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, matou_sakura, 1girl, solo, purple_hair, long_hair, hair_ribbon, red_ribbon, purple_eyes, large_breasts, dark_sakura, black_dress, red_tattoos, glowing_markings, shadow_tendrils, wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "matou_sakura_dark_sakura_dress_ref_02_half_medium.png",
-              "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, matou_sakura, 1girl, solo, purple_hair, long_hair, hair_ribbon, red_ribbon, purple_eyes, large_breasts, dark_sakura, black_dress, red_tattoos, glowing_markings, shadow_tendrils, wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "matou_sakura_dark_sakura_dress_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, matou_sakura, 1girl, solo, purple_hair, long_hair, hair_ribbon, red_ribbon, purple_eyes, large_breasts, dark_sakura, black_dress, red_tattoos, glowing_markings, shadow_tendrils, wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "matou_sakura_dark_sakura_dress_ref_04_back_rear.png",
-              "url": "/assets/character-references/matou_sakura/dark_sakura_dress/matou_sakura_dark_sakura_dress_ref_04_back_rear.png"
             }
           ]
         },

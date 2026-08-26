@@ -172,6 +172,26 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "silk_sleepwear",
+          "name": "丝绸晨睡套装",
+          "tokens": [
+            "silk",
+            "sleepwear",
+            "silk_sleepwear",
+            "camisole",
+            "thin_straps",
+            "loose_shorts",
+            "matching_set",
+            "bare_shoulders",
+            "nightwear",
+            "smooth_fabric"
+          ],
+          "prose": "wearing a soft silk sleepwear set of a thin-strap camisole top and matching loose shorts, smooth lustrous silk fabric in a soft neutral tone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -421,19 +441,6 @@
           ],
           "isDefault": false,
           "default": false
-        },
-        {
-          "id": "formal_dress",
-          "name": "礼服",
-          "prose": "an elegant white formal dress with long sleeves and fine embroidery",
-          "tokens": [
-            "evening_gown",
-            "white_dress",
-            "long_sleeves",
-            "dress"
-          ],
-          "isDefault": false,
-          "default": false
         }
       ],
       "canon": {
@@ -521,6 +528,46 @@
             "crop_top",
             "miniskirt"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "festival_yukata",
+          "name": "祭典葱绿短浴衣",
+          "tokens": [
+            "yukata",
+            "short_yukata",
+            "green_yukata",
+            "onion_green",
+            "cloth_sash",
+            "obi",
+            "geta",
+            "wooden_geta",
+            "bare_legs",
+            "summer_clothes"
+          ],
+          "prose": "wearing a short modified onion-green yukata with a slim cloth sash at the waist, a shortened hemline above the knees, and wooden geta sandals, bright festive summer robe",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sporty_athleisure",
+          "name": "晨跑运动休闲装",
+          "tokens": [
+            "track_jacket",
+            "zip_up_jacket",
+            "track_suit",
+            "running_shorts",
+            "sportswear",
+            "athleisure",
+            "activewear",
+            "sneakers",
+            "matching_set",
+            "quick_dry_fabric"
+          ],
+          "prose": "wearing a fresh athletic set of a zip-up track jacket and matching running shorts, lightweight quick-dry sportswear with a bright energetic color palette",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -851,19 +898,6 @@
           "isDefault": true
         },
         {
-          "id": "summer_clothes",
-          "name": "夏季私服",
-          "prose": "a light summer outfit with a thin top and shorts",
-          "tokens": [
-            "summer_clothes",
-            "tank_top",
-            "shorts",
-            "pink_clothes"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "casual",
           "name": "便服",
           "prose": "a casual outfit with a shirt and jeans",
@@ -873,6 +907,26 @@
             "jeans",
             "jacket"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_yukata",
+          "name": "夏日淡蓝浴衣",
+          "tokens": [
+            "yukata",
+            "summer_yukata",
+            "light_blue_yukata",
+            "blue_yukata",
+            "white_obi",
+            "waist_sash",
+            "geta",
+            "wooden_geta",
+            "short_hem",
+            "bare_legs"
+          ],
+          "prose": "wearing a fresh light-blue summer yukata with a white sash obi, a shortened hemline above the knees, and wooden geta sandals",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -1145,6 +1199,26 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "lace_nightgown",
+          "name": "蕾丝月光睡袍",
+          "tokens": [
+            "nightgown",
+            "lace",
+            "lace_trim",
+            "sheer",
+            "thin_fabric",
+            "translucent",
+            "sleeveless",
+            "loose_fit",
+            "nightwear",
+            "bare_shoulders"
+          ],
+          "prose": "wearing a thin lace nightgown with delicate lace trim, sheer lightweight fabric and a loose sleeveless silhouette, soft pale color",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1305,6 +1379,26 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "lingerie_only",
+          "name": "私密内衣形态",
+          "tokens": [
+            "lingerie",
+            "bra",
+            "panties",
+            "underwear",
+            "matching_set",
+            "thin_straps",
+            "cotton",
+            "bare_shoulders",
+            "bare_legs",
+            "bare_midriff"
+          ],
+          "prose": "wearing only a simple bra and matching briefs, plain cotton underwear with thin straps, minimal private undergarments",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1364,19 +1458,6 @@
           "isDefault": true
         },
         {
-          "id": "white_dress",
-          "name": "白色连衣裙",
-          "prose": "a pure white dress with a matching ribbon",
-          "tokens": [
-            "white_dress",
-            "ribbon",
-            "dress",
-            "long_sleeves"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "casual",
           "name": "便服",
           "prose": "a soft casual outfit",
@@ -1385,6 +1466,66 @@
             "dress",
             "cardigan"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "purple_hooded_cloak",
+          "name": "紫色连帽斗篷",
+          "tokens": [
+            "cloak",
+            "hooded_cloak",
+            "purple_cloak",
+            "violet",
+            "hood",
+            "wool",
+            "winter_cloak",
+            "outerwear",
+            "cape",
+            "thick_fabric"
+          ],
+          "prose": "wearing a thick purple hooded cloak of deep violet wool, a heavy front-closing cape with a large hood and long hem",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cozy_wool_blanket",
+          "name": "羊绒毛毯裹身",
+          "tokens": [
+            "wool_blanket",
+            "wrapped_in_blanket",
+            "plush",
+            "wool",
+            "draped",
+            "thick_fabric",
+            "fluffy",
+            "cozy",
+            "soft_fabric",
+            "loungewear"
+          ],
+          "prose": "wrapped in a thick soft wool blanket, plush fluffy wool fabric draped loosely around the body like a cocoon, warm neutral tone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -1487,6 +1628,66 @@
             "lace",
             "hair_bow"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "silk_pajamas",
+          "name": "丝绸居家睡衣",
+          "tokens": [
+            "pajamas",
+            "silk_pajamas",
+            "silk",
+            "button_up",
+            "long_sleeves",
+            "pajama_pants",
+            "loose_fit",
+            "nightwear",
+            "loungewear",
+            "soft_fabric"
+          ],
+          "prose": "wearing loose silk pajamas with a button-up top and matching pajama pants, smooth lustrous silk in a soft pastel tone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sheer_bathrobe",
+          "name": "薄透浴袍",
+          "tokens": [
+            "bathrobe",
+            "sheer_bathrobe",
+            "sheer",
+            "translucent",
+            "thin_fabric",
+            "loose_belt",
+            "robe",
+            "bare_shoulders",
+            "bare_legs",
+            "clinging_fabric"
+          ],
+          "prose": "wearing nothing but a thin sheer bathrobe of translucent fabric, a loose belt at the waist, the sheer material clinging to her curves",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -1594,6 +1795,66 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "oversized_white_shirt",
+          "name": "白衬衫私服",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "dress_shirt",
+            "unbuttoned",
+            "open_front",
+            "shirttail",
+            "bare_chest",
+            "bare_midriff",
+            "bare_legs",
+            "night_shirt"
+          ],
+          "prose": "wearing an oversized white dress shirt worn alone as a night shirt, fully unbuttoned with the long tails falling to mid-thigh",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sheer_lingerie",
+          "name": "薄纱里衣",
+          "tokens": [
+            "lingerie",
+            "sheer_lingerie",
+            "chemise",
+            "sheer",
+            "translucent",
+            "thin_straps",
+            "delicate_fabric",
+            "slip",
+            "bare_shoulders",
+            "bare_legs"
+          ],
+          "prose": "wearing only a thin sheer chemise of translucent delicate fabric, fine straps and a loose flowing silhouette",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -1664,21 +1925,6 @@
           "isDefault": true
         },
         {
-          "id": "colorful_wonderland",
-          "name": "缤纷奇境（泳装）",
-          "prose": "a black and white two-piece bikini with a translucent black beach cover-up, sunglasses and a giant multi-scoop ice cream cone",
-          "tokens": [
-            "bikini",
-            "black_clothes",
-            "white_clothes",
-            "sunglasses",
-            "ice_cream",
-            "beach"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "liberte_echec",
           "name": "自由//失效（街头滑板）",
           "prose": "a black off-shoulder top with a black and red plaid pleated skirt, a loose black jacket worn off her shoulders, a tiny golden crown hair accessory and a skateboard",
@@ -1740,18 +1986,22 @@
           "default": false
         },
         {
-          "id": "crimson_velvet_evening_gown",
-          "name": "深红曜影高定露背晚礼服",
-          "prose": "a dark haute couture evening gown: a wine-red to ink-black gradient heavy velvet fitted long dress with a deep V-neck and open back, high side slit, subtle gold embroidery lining the hem, black choker necklace, elbow-length sheer black lace gloves, hair in a low French bun",
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
           "tokens": [
-            "evening_gown",
-            "velvet",
-            "deep_v_neckline",
-            "open_back",
-            "side_slit",
-            "choker",
-            "long_gloves"
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
           ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -1879,21 +2129,6 @@
           "default": false
         },
         {
-          "id": "midnight_emerald_silk_robe",
-          "name": "深夜研读·墨绿真丝睡袍与吊带裙",
-          "prose": "a deep emerald green silk dressing gown with subtle gold thread woven into the lapels, tied with a matching silk sash, worn over a simple black satin slip nightdress with a deep V back",
-          "tokens": [
-            "silk",
-            "dressing_gown",
-            "satin",
-            "nightdress",
-            "deep_v_back",
-            "green"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "victorian_traveler_coat",
           "name": "维多利亚博物学者古典旅行大衣",
           "prose": "a forest-green heavyweight wool greatcoat with dark brown velvet lapels and a detachable shoulder capelet, worn over a ruffled white stand-collar blouse with a burgundy satin ribbon tie",
@@ -1905,6 +2140,26 @@
             "blouse",
             "ribbon_tie"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -1976,35 +2231,6 @@
           ],
           "default": true,
           "isDefault": true
-        },
-        {
-          "id": "ageless_afterglow",
-          "name": "岁红霞（旗袍）",
-          "prose": "a high-slit dark green and crimson qipao with gold dragon embroidery, a translucent green capelet, black pantyhose and high heels",
-          "tokens": [
-            "qipao",
-            "green_clothes",
-            "red_clothes",
-            "gold_trim",
-            "black_pantyhose",
-            "high_heels"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "holungday",
-          "name": "假日威龙（海滩装）",
-          "prose": "a white crop halter top with light blue denim shorts, a red shirt tied at her waist, sunglasses and a high-pressure water gun",
-          "tokens": [
-            "crop_top",
-            "white_clothes",
-            "denim_shorts",
-            "sunglasses",
-            "water_gun"
-          ],
-          "isDefault": false,
-          "default": false
         },
         {
           "id": "wanderer",
@@ -2111,6 +2337,46 @@
             "platform_boots",
             "electric_guitar"
           ]
+        },
+        {
+          "id": "bath_towel_wrap",
+          "name": "浴后浴巾",
+          "tokens": [
+            "bath_towel",
+            "towel",
+            "towel_wrap",
+            "wrapped_in_towel",
+            "cotton",
+            "bare_shoulders",
+            "bare_legs",
+            "bare_back",
+            "collarbone",
+            "thick_towel"
+          ],
+          "prose": "wrapped in a large thick bath towel secured at the bust, soft cotton towel fabric with bare shoulders and bare legs",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "light_lingerie",
+          "name": "轻薄内衣",
+          "tokens": [
+            "lingerie",
+            "light_lingerie",
+            "bralette",
+            "panties",
+            "matching_set",
+            "delicate_fabric",
+            "thin_fabric",
+            "bare_shoulders",
+            "bare_midriff",
+            "navel"
+          ],
+          "prose": "wearing light lingerie with a delicate bralette and matching panties, soft lightweight fabric",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -2174,20 +2440,6 @@
           "isDefault": true
         },
         {
-          "id": "summer_flower",
-          "name": "夏卉（泳装）",
-          "prose": "a pink and white bikini with a straw sun hat and a swimming ring shaped like a small lamb",
-          "tokens": [
-            "bikini",
-            "pink_clothes",
-            "white_clothes",
-            "straw_hat",
-            "swim_ring"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "picnic",
           "name": "远行前的野餐",
           "prose": "a retro dark green and cream country dress with a wool shawl, a beret and a picnic basket",
@@ -2241,6 +2493,26 @@
             "glasses",
             "hearing_aid"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "waterproof_explorer",
+          "name": "防水探险服",
+          "tokens": [
+            "eyjafjalla_waterproof_explorer",
+            "expedition_jacket",
+            "waterproof_jacket",
+            "hooded_jacket",
+            "long_sleeves",
+            "zipper",
+            "cargo_pockets",
+            "gloves",
+            "cargo_pants",
+            "hiking_boots"
+          ],
+          "prose": "wearing a water-resistant expedition outfit: a tough layered expedition jacket with zip closure and cargo pockets, durable cargo trousers, and sturdy hiking boots",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -2309,20 +2581,6 @@
           "isDefault": true
         },
         {
-          "id": "twilight_requiem",
-          "name": "暮星安魂曲（礼服）",
-          "prose": "a black and deep-blue starlit evening gown with a classical instrument-style wheelchair and a case-shaped rifle",
-          "tokens": [
-            "evening_gown",
-            "black_dress",
-            "blue_clothes",
-            "wheelchair",
-            "night_sky"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "baking_apron_loungewear",
           "name": "苹果派烘焙日恬静甜点师便服",
           "prose": "a cozy home baking outfit: a cream ribbed knit turtleneck sweater with the sleeves rolled to mid-arm, over a beige linen baking apron with a small apple emblem and big front pockets",
@@ -2363,6 +2621,25 @@
             "morning_robe",
             "sheer"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nun_habit",
+          "name": "素白修女服",
+          "tokens": [
+            "lemuen_nun_habit",
+            "nun_habit",
+            "white_gown",
+            "long_dress",
+            "white_veil",
+            "wimple",
+            "cross_pendant",
+            "long_sleeves",
+            "white_clothes"
+          ],
+          "prose": "wearing a plain white nun habit with a long modest white gown, high collar, long sleeves, and a white head veil",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -2464,21 +2741,6 @@
           "default": false
         },
         {
-          "id": "ink_silk_nightdress",
-          "name": "墨染云纱",
-          "prose": "a luxurious emerald-and-pearl-white gradient silk slip nightdress with fine black ink-flower lace at the V neckline and a high side slit, overlaid with a sheer gossamer wide-sleeved robe trailing like mist",
-          "tokens": [
-            "silk",
-            "nightdress",
-            "gradient",
-            "lace_trim",
-            "side_slit",
-            "sheer_robe"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "neo_cyber_ink_techwear",
           "name": "街头墨客",
           "prose": "a deconstructed ink-techwear outfit: a black strappy high-neck crop tank top, a lightweight techwear hooded jacket with cyan reflective lines and ink-splatter print worn loose off one shoulder, high-waisted black utility cargo pants with magnetic straps, chunky high-top sneakers",
@@ -2490,6 +2752,26 @@
             "high_top_sneakers",
             "cyberpunk"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -2568,49 +2850,6 @@
           "default": false
         },
         {
-          "id": "gravel",
-          "name": "砾瓦（日常工装）",
-          "prose": "a dark grey high-neck bodysuit under a relaxed beige work jacket with an open collar and a red scarf, comfortable cargo trousers and sturdy boots",
-          "tokens": [
-            "work_clothes",
-            "jacket",
-            "red_scarf",
-            "cargo_pants",
-            "bodysuit",
-            "high_collar"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "silent_night",
-          "name": "静谧午夜（泳装）",
-          "prose": "a black bikini with a translucent black beach cover-up, a small yellow frangipani flower on her horn and a parasol hammer",
-          "tokens": [
-            "bikini",
-            "black_clothes",
-            "flower",
-            "beach",
-            "parasol"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "obsidian",
-          "name": "黑曜石（晚礼服）",
-          "prose": "a black off-shoulder evening gown with black lace trim, a deep red ruby brooch and obsidian feather ornaments, black high heels, gold chains on her horns",
-          "tokens": [
-            "evening_gown",
-            "black_dress",
-            "lace",
-            "brooch",
-            "high_heels"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "clay_artisan_apron",
           "name": "陶艺工坊泥塑工装",
           "prose": "a pottery artisan outfit: a breathable ivory linen long-sleeve shirt with sleeves rolled to the elbows, over a dark khaki canvas work apron with leather pockets holding wooden carving tools, clay smudges on the apron and fingertips, loose comfortable trousers",
@@ -2650,6 +2889,64 @@
             "scarf",
             "winter_clothes"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "white_plain_dress",
+          "name": "素白连衣裙",
+          "tokens": [
+            "mudrock_white_plain_dress",
+            "white_dress",
+            "plain_dress",
+            "simple_dress",
+            "cotton_dress",
+            "short_sleeves",
+            "round_neckline",
+            "white_clothes",
+            "summer_dress"
+          ],
+          "prose": "wearing a simple plain white cotton dress with a modest round neckline, short sleeves, and a clean unadorned silhouette",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "thin_camisole",
+          "name": "轻薄吊带单衣",
+          "tokens": [
+            "mudrock_thin_camisole",
+            "camisole",
+            "sleeveless_shirt",
+            "undershirt",
+            "thin_fabric",
+            "lightweight_fabric",
+            "bare_shoulders",
+            "collarbone",
+            "pale_skin"
+          ],
+          "prose": "wearing only a thin sleeveless camisole of soft lightweight fabric with thin straps, leaving her shoulders and collarbone bare",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -2730,20 +3027,6 @@
           "default": false
         },
         {
-          "id": "slumber_blueprint_loungewear",
-          "name": "蓝图微憩 / 工坊夜间休闲居家服",
-          "prose": "a relaxed cozy oversized loungewear: a slouchy off-shoulder oversized light-grey hoodie slipping to one side to reveal the collarbone and a black thin-strap camisole, black lounge shorts, knit leg warmers",
-          "tokens": [
-            "oversized_hoodie",
-            "off_shoulder",
-            "loungewear",
-            "lounge_shorts",
-            "leg_warmers"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "rainforest_safari_explorer",
           "name": "林间搜猎 / 阿卡胡拉丛林勘探轻装",
           "prose": "a rainforest safari utility outfit: an olive sports bralette under an open khaki short-sleeve utility shirt, quick-release climbing harness with metal carabiners at the waist, rugged cargo pants, explorer boots",
@@ -2770,6 +3053,44 @@
             "satin",
             "formal"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "thin_undershirt",
+          "name": "单薄内衬背心",
+          "tokens": [
+            "eunectes_thin_undershirt",
+            "tank_top",
+            "undershirt",
+            "sleeveless_shirt",
+            "thin_fabric",
+            "form_fitting",
+            "bare_shoulders",
+            "goggles"
+          ],
+          "prose": "wearing only a thin form-fitting tank-top undershirt of lightweight fabric, leaving her shoulders and arms bare",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -2836,20 +3157,6 @@
           "isDefault": true
         },
         {
-          "id": "maiden_of_night",
-          "name": "喜夜侍者（女仆装）",
-          "prose": "a black and white Victorian gothic maid dress with lace frills and a maid headband, holding a silver serving tray",
-          "tokens": [
-            "maid",
-            "black_dress",
-            "white_clothes",
-            "lace",
-            "maid_headdress"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "greenhouse_tea",
           "name": "花房茶话会（三丽鸥联动）",
           "prose": "a cream pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes, in a greenhouse tea party setting",
@@ -2904,6 +3211,45 @@
             "stylist",
             "cat_ears"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "unbuttoned_shirt",
+          "name": "解开襟口的单薄衬衫",
+          "tokens": [
+            "goldenglow_unbuttoned_shirt",
+            "white_shirt",
+            "thin_shirt",
+            "unbuttoned",
+            "shirt_buttons",
+            "open_clothes",
+            "cleavage",
+            "bare_shoulders",
+            "pale_skin"
+          ],
+          "prose": "wearing a thin white shirt with buttons undone to mid-chest, the soft fabric hanging open over her pale chest and collarbone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -2968,20 +3314,6 @@
           "isDefault": true
         },
         {
-          "id": "waverider",
-          "name": "驭浪（泳装）",
-          "prose": "a red two-piece bikini with a translucent white cover-up, sunglasses and a killer-whale inflatable surfboard",
-          "tokens": [
-            "bikini",
-            "red_clothes",
-            "white_clothes",
-            "sunglasses",
-            "surfboard"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "sublimation",
           "name": "升华（神官礼服）",
           "prose": "a pure white backless divine priestess gown with gold hollow ornaments and a sacred ritual staff",
@@ -3036,6 +3368,26 @@
             "gradient",
             "chiffon"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -3105,21 +3457,6 @@
           "isDefault": true
         },
         {
-          "id": "summer_flower_fa210",
-          "name": "夏卉（泳装）",
-          "prose": "a pink and white bikini with a translucent white cover-up, a floral straw hat and sunglasses, holding a tropical cocktail",
-          "tokens": [
-            "bikini",
-            "pink_clothes",
-            "white_clothes",
-            "straw_hat",
-            "sunglasses",
-            "cocktail"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "sleepy_oversized_loungewear",
           "name": "迷糊小憩慵懒大号连帽卫衣居家睡衣",
           "prose": "an oversized dusty pink-lilac pullover hoodie with sleeves far past the fingertips, white cotton lounge shorts underneath, cozy sleepy loungewear",
@@ -3158,6 +3495,26 @@
             "tropical",
             "sandals"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -3256,20 +3613,6 @@
           "default": false
         },
         {
-          "id": "lazy_dorm_oversized_loungewear",
-          "name": "罗德岛宿舍慵懒开黑居家服",
-          "prose": "an extra-oversized heather-grey crewneck sweatshirt with the hem falling to mid-thigh in a lazy shirt-dress look, red-and-white striped fluffy knee-high socks, tiny cotton shorts underneath",
-          "tokens": [
-            "oversized_sweatshirt",
-            "crewneck",
-            "shirt_dress",
-            "kneehighs",
-            "loungewear"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "apple_pie_bakery_patissiere",
           "name": "甜心烘焙师·苹果派围裙装",
           "prose": "a warm home-baking outfit: a cream loose-knit sweater, beige pleated mini skirt, brown cotton tights, and a vintage beige strap apron with a small apple print",
@@ -3296,6 +3639,45 @@
             "headphones",
             "streetwear"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "red_hooded_tee",
+          "name": "红色连帽T恤",
+          "tokens": [
+            "exusiai_red_hooded_tee",
+            "hooded_tee",
+            "red_hoodie",
+            "hoodie",
+            "oversized_clothes",
+            "t-shirt",
+            "red_clothes",
+            "long_sleeves",
+            "off_shoulder"
+          ],
+          "prose": "wearing an oversized red hooded t-shirt with long sleeves, a soft relaxed silhouette, and a loose off-shoulder collar",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -3360,22 +3742,6 @@
           "isDefault": true
         },
         {
-          "id": "snow_clearing",
-          "name": "雪霁（冬装和服）",
-          "prose": "a thick white and powder-blue winter kimono with fur trim, a floral hairpin and a wooden staff with shrine bells, standing before a torii gate in snow",
-          "tokens": [
-            "kimono",
-            "white_clothes",
-            "blue_clothes",
-            "fur_trim",
-            "hair_ornament",
-            "snow",
-            "torii"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "wasteland_bloom",
           "name": "弃土花开（废土探索）",
           "prose": "a moss green and khaki explorer coat with a bucket hat, a heavy backpack and hiking boots, her nine tails poking out from behind",
@@ -3404,30 +3770,78 @@
           "default": false
         },
         {
-          "id": "greenhouse_florist_smock",
-          "name": "【初绽之息】阳光温室花艺师便服",
-          "prose": "a cottagecore florist outfit: a linen pinafore apron dress in oat and coffee tones over an ivory puff-sleeve blouse, brass buttons and a front pocket, gardening smock",
+          "id": "white_garden_dress",
+          "name": "洁白花园连衣裙",
           "tokens": [
-            "pinafore",
-            "apron_dress",
-            "puff_sleeves",
-            "blouse",
-            "cottagecore"
+            "suzuran_white_garden_dress",
+            "white_dress",
+            "garden_dress",
+            "summer_dress",
+            "simple_dress",
+            "soft_skirt",
+            "white_clothes",
+            "short_sleeves"
           ],
+          "prose": "wearing a pure white garden dress of soft cotton with a flowing skirt, short sleeves, and a clean innocent silhouette",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         },
         {
-          "id": "higashi_summer_yukata",
-          "name": "【夏日微风】东国夏日祭轻风浴衣",
-          "prose": "a Japanese summer festival yukata in pale mint green, pastel pink and ivory, printed with swimming red goldfish, light cotton fabric with an obi sash",
+          "id": "fluffy_cloak",
+          "name": "厚绒斗篷",
           "tokens": [
-            "yukata",
-            "summer_festival",
-            "floral_pattern",
-            "mint_green",
-            "obi"
+            "suzuran_fluffy_cloak",
+            "fur_cloak",
+            "fluffy_cloak",
+            "fur_trim",
+            "hooded_cloak",
+            "cloak",
+            "winter_clothes",
+            "fur_collar",
+            "long_cloak",
+            "warm_clothes"
           ],
+          "prose": "wearing a thick fluffy fur cloak with a plush hood, fur trim collar, and a warm voluminous winter silhouette",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "small_kimono",
+          "name": "小和服",
+          "tokens": [
+            "suzuran_small_kimono",
+            "small_kimono",
+            "kimono",
+            "japanese_clothes",
+            "traditional_clothes",
+            "obi",
+            "long_sleeves",
+            "collar"
+          ],
+          "prose": "wearing a traditional small kimono with a crisp white collar, neat obi sash, and long sleeves, elegant Japanese classical dress",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -3527,20 +3941,6 @@
           "default": false
         },
         {
-          "id": "endfield_techwear_street",
-          "name": "都市机能风尚",
-          "prose": "a cyberpunk techwear street outfit: a cropped black-and-white techwear biker jacket over a ribbed charcoal crop tank top, high-waist techwear cargo pants with cyan line accents and straps, chunky sneakers",
-          "tokens": [
-            "techwear",
-            "biker_jacket",
-            "crop_top",
-            "cargo_pants",
-            "cyberpunk"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "sub_zero_frostfield_parka",
           "name": "极地破风巡航",
           "prose": "a heavy insulated arctic parka in glacier white and grey-blue panels with a fluffy white fur-lined hood, worn over a thermal turtleneck and insulated trousers, winter combat gear",
@@ -3552,6 +3952,46 @@
             "turtleneck",
             "snow"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sheer_sleep_robe",
+          "name": "薄纱睡袍",
+          "tokens": [
+            "perlica_sheer_sleep_robe",
+            "sheer_robe",
+            "nightgown",
+            "sleep_robe",
+            "sheer_clothes",
+            "translucent_fabric",
+            "see_through",
+            "thin_clothes",
+            "bare_shoulders",
+            "collarbone"
+          ],
+          "prose": "wearing only a sheer translucent sleep robe of thin airy fabric, the see-through material tracing her bare shoulders and collarbone",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -3679,6 +4119,26 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
         }
       ],
       "canon": {
@@ -3767,20 +4227,6 @@
           "default": false
         },
         {
-          "id": "cheerleader",
-          "name": "啦啦队运动服",
-          "prose": "a cute school cheerleading sleeveless crop top uniform with a pleated mini skirt and matching pom-poms",
-          "tokens": [
-            "cheerleader",
-            "sleeveless",
-            "crop_top",
-            "pleated_skirt",
-            "mini_skirt"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "oversized_nightshirt",
           "name": "居家男友衬衫",
           "prose": "soft silk oversized light blue button-up nightshirt and bare legs",
@@ -3790,6 +4236,43 @@
             "oversized_shirt",
             "bare_legs"
           ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_yukata",
+          "name": "淡蓝夏日浴衣",
+          "tokens": [
+            "yukata",
+            "light_blue",
+            "floral_pattern",
+            "sash",
+            "geta",
+            "bun",
+            "summer"
+          ],
+          "prose": "a light blue summer yukata with a white floral pattern, soft sash belt, wooden geta sandals, silver hair up in a loose bun",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
         }
@@ -3858,21 +4341,6 @@
           "default": false
         },
         {
-          "id": "wedding_white_dress",
-          "name": "纯白无袖新娘礼服",
-          "tokens": [
-            "white_hair",
-            "white_dress",
-            "sleeveless_dress",
-            "flower_crown",
-            "bare_shoulders"
-          ],
-          "prose": "wearing an elegant sleeveless pure white bridal dress with a delicate floral wreath in her white hair",
-          "styleHint": "pure ethereal bridal lighting",
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "oversized_nightshirt",
           "name": "居家宽松露肩睡衣",
           "tokens": [
@@ -3902,6 +4370,25 @@
           ],
           "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
           "styleHint": "intimate soft studio lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual_day_dress",
+          "name": "居家便服连衣裙",
+          "tokens": [
+            "sylphiette_casual_day_dress",
+            "cardigan",
+            "knit_cardigan",
+            "cream_cardigan",
+            "simple_dress",
+            "knitwear",
+            "casual_clothes",
+            "long_sleeves",
+            "dress"
+          ],
+          "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -4287,21 +4774,6 @@
           "default": false
         },
         {
-          "id": "dark_sakura_dress",
-          "name": "黑化形态红纹礼服",
-          "tokens": [
-            "dark_sakura",
-            "black_dress",
-            "red_tattoos",
-            "glowing_markings",
-            "shadow_tendrils"
-          ],
-          "prose": "wearing Dark Sakura form with a form-fitting black dress covered in crimson glowing magic circuit patterns and dark shadow energy",
-          "styleHint": "ominous dark fantasy magic glow",
-          "isDefault": false,
-          "default": false
-        },
-        {
           "id": "kitchen_apron_homewear",
           "name": "居家粉色毛衣与围裙",
           "tokens": [
@@ -4332,6 +4804,44 @@
           ],
           "prose": "completely naked with zero clothes, voluptuous feminine body, exposed pink pussy, detailed vulva, heavy breasts with pink nipples, soft blushing skin",
           "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "winter_outfit",
+          "name": "冬日大衣",
+          "tokens": [
+            "matou_sakura_winter_outfit",
+            "winter_coat",
+            "coat",
+            "winter_clothes",
+            "warm_clothes",
+            "long_sleeves",
+            "skirt",
+            "umbrella",
+            "pink_umbrella"
+          ],
+          "prose": "wearing a warm winter outfit with a long coat over a soft skirt, layered and warm for cold rainy days",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "kyudo_gi",
+          "name": "弓道服",
+          "tokens": [
+            "matou_sakura_kyudo_gi",
+            "kyudo_gi",
+            "kyudo_uniform",
+            "white_gi",
+            "hakama",
+            "indigo_hakama",
+            "japanese_clothes",
+            "traditional_clothes",
+            "long_sleeves"
+          ],
+          "prose": "wearing a crisp white kyudo gi with a deep indigo hakama, the traditional Japanese archery uniform",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
@@ -4476,6 +4986,25 @@
           ],
           "prose": "completely naked with zero clothes, athletic hourglass figure, exposed pink pussy, detailed vulva, firm shapely breasts with pink nipples, bare hips",
           "styleHint": "seductive dramatic moonlight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "beige_trench_boots",
+          "name": "米色风衣与长靴",
+          "tokens": [
+            "yor_forger_beige_trench_boots",
+            "trench_coat",
+            "beige_coat",
+            "long_coat",
+            "belted_coat",
+            "over_knee_boots",
+            "knee_boots",
+            "leather_boots",
+            "boots"
+          ],
+          "prose": "wearing a beige belted trench coat over a neat outfit paired with knee-high leather boots",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }

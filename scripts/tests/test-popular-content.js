@@ -534,8 +534,8 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
   // Finding 6：metadata preview 已随夏目 v20 晋级停用（不再有任何 preview LoRA）。
   // 请求元数据构建归 useAnimaSession（第十二轮），哨兵随之迁移；
   // 2026-08-22 historyGenerationFields 下沉 usePromptSdQueue，历史哨兵再迁。
-  var sessionSource = fs.readFileSync(path.join(root, 'src', 'composables', 'useAnimaSession.ts'), 'utf8');
-  var sdQueueSource = fs.readFileSync(path.join(root, 'src', 'composables', 'usePromptSdQueue.ts'), 'utf8');
+  var sessionSource = fs.readFileSync(path.join(root, 'src', 'composables', 'generation', 'useAnimaSession.ts'), 'utf8');
+  var sdQueueSource = fs.readFileSync(path.join(root, 'src', 'composables', 'prompt', 'usePromptSdQueue.ts'), 'utf8');
   assert.ok(!/preview:\s*request\.character\s*===\s*'natsume'\s*\|\|\s*request\.character\s*===\s*null/.test(view),
     'preview must not be implied by character===null');
   assert.ok(/preview:\s*false/.test(sessionSource), 'preview must be retired after Natsume v20 promotion');
