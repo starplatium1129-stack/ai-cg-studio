@@ -1603,24 +1603,13 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "hair_ribbon",
-      "standing",
-      "looking_back",
-      "casual_clothes",
-      "looking_away",
+      "mole_under_eye",
+      "beige_sweater",
+      "sheer_black_tights",
       "art_gallery",
-      "standing_before_painting",
-      "holding_hands",
-      "soft_expression",
-      "museum_lighting",
-      "autumn",
-      "afternoon",
-      "clear_sky",
       "full_body",
-      "wide_shot",
-      "soft_lighting",
-      "diffused_light",
-      "serious"
+      "ankle_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "画廊",
@@ -1631,12 +1620,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "(indoor art gallery:1.55), standing directly in front of a large framed painting, museum spotlights, polished gallery floor, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, standing, looking_back, casual_clothes, looking_away, art_gallery, standing_before_painting, holding_hands, soft_expression, museum_lighting, autumn, afternoon, clear_sky, full_body, wide_shot, soft_lighting, diffused_light, serious, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, street, road, sidewalk, outdoors",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_beige_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_gallery_floor, standing_in_art_gallery_before_framed_painting_with_one_hand_behind_back_and_composed_gentle_blush, warm_gallery_spotlight_with_painting_and_frame_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・フレームの前で共有された沈黙】秋の午後、寧々さんはギャラリーにある星空と帰路を描いた作品の前で長い時間立ち止まった。あなたが彼女の側に来てからも、彼女は自分の気持ちをすぐには説明しませんでした。彼女はただ静かにあなたの手の甲に手を当てました。長い銀髪に柔らかな頭上の光が降り注ぐ――「答えを言葉にしなくてもいい絵もあるんですね。今みたいに一緒に見ているだけで、少し分かる気がします。」",
     "rating": "All",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "In a wide full-body view in a quiet room, she reaches forward and gently clasps the viewer's hand with a focused and calm expression, under diffused overcast daylight."
+    "auditRevision": "careful-batch15-2026-08-27",
+    "animaCaption": "Standing before a framed painting in an art gallery in a casual beige sweater with navy pleated miniskirt and glossy black tights, Shiki Natsume stands with one hand behind her back, composed gentle blush under warm gallery spotlight."
   },
   {
     "id": "sc090",
@@ -2597,19 +2586,14 @@
     "time": "白天",
     "timeOfDay": "afternoon",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "solo",
-      "nene_witch_canonical",
-      "witch_hat",
-      "holding_gun",
-      "revolver",
-      "aiming",
-      "foreshortening",
-      "starry_sky",
-      "rim_lighting"
+      "hair_ribbon",
+      "witch_dress",
+      "bare_legs",
+      "star_sea",
+      "magic_circle",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "星海与魔法阵",
@@ -2622,8 +2606,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "masterpiece, best_quality, score_7, visual_novel_event_cg, cinematic_16:9_action_composition, dynamic_angle, extreme_foreshortening, 1girl, solo, ayachi_nene, nene_witch_canonical, white_hair, very_long_hair, floating_hair, purple_eyes, ahoge, official_witch_outfit, witch_hat, black_headwear, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, underboob, sideboob, detached_sleeves, black_wrist_cuffs_with_pink_stripes, holding_gun, revolver, aiming, outstretched_arm, aiming_an_oversized_silver_revolver_toward_the_viewer, gun_dominating_right_foreground_with_sharp_perspective, determined_face_on_left_side, looking_at_viewer, swirling_purple_starfield, magic_circle, glowing_blue_magic_particles, dramatic_rim_light, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, extra person, multiple persons, holding cup, coffee, quiet room, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_elaborate_black_and_pink_witch_dress_with_starry_cape_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_standing_in_star_sea, barefoot_with_detailed_toes_on_magic_circle, standing_in_star_sea_with_magic_circle_under_feet_holding_wand_with_one_hand_and_confident_mystical_smile, cool_star_sea_light_with_magic_circle_and_star_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn08",
@@ -2635,7 +2619,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a dramatic cinematic wide action shot with extreme perspective foreshortening, Ayachi Nene in her official witch outfit stands on the left with a determined expression, aiming an oversized silver revolver with her outstretched arm directly toward the right foreground at the viewer, surrounded by a swirling cosmic starfield, floating magic circles, and glowing blue magical particles under vivid rim lighting."
+    "animaCaption": "Standing in a star sea with a magic circle under her feet in an elaborate black and pink witch dress with starry cape, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on the magic circle, confident mystical smile under cool star sea light.",
+    "auditRevision": "careful-batch15-2026-08-27"
   },
   {
     "id": "sc288",
