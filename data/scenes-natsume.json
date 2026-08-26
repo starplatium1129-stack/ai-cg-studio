@@ -226,20 +226,12 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "shy",
-      "blush",
-      "university_festival",
-      "theater_backstage",
-      "stage_costume",
-      "holding_script",
-      "nervous",
-      "curtain",
-      "afternoon",
-      "clear_sky",
-      "close_up",
-      "upper_body",
-      "warm_lighting",
-      "festival"
+      "turtleneck",
+      "sheer_black_tights",
+      "backstage",
+      "full_body",
+      "pumps",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "大学祭剧场后台",
@@ -249,11 +241,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, shy, blush, university_festival, theater_backstage, stage_costume, holding_script, nervous, curtain, afternoon, clear_sky, close_up, upper_body, warm_lighting, festival, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_turtleneck_with_plaid_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_pumps_on_backstage_floor, standing_in_university_festival_backstage_holding_script_with_one_hand_and_nervous_composed_blush, warm_backstage_light_with_curtain_and_script_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・キャンパスフェスティバルの舞台裏で深呼吸】大学祭のステージや楽屋は大賑わいでした。臨時ヒロインの夏目は、穏やかな表情で台本を持っていたが、その指先は微かに震えていた。あなたが彼女の首輪を調整し、コードを繰り返すと、彼女はついにゆっくりと息を吐き出しました。鐘が鳴る前に彼女はあなたを振り返った――「誰かのために演じるわけじゃない。でも、私から見える席に座って、途中で帰らないことね。」",
     "rating": "All",
-    "animaCaption": "In a close-up framing watching colorful festival fireworks burst across the night sky, she turns back over her shoulder with a gentle blush on her cheeks, under soft ambient lighting."
+    "animaCaption": "Backstage at a university festival in a black turtleneck with plaid miniskirt and glossy black tights, Shiki Natsume stands holding a script, nervous composed blush under warm backstage light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc022",
@@ -309,19 +302,13 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "sunbeam",
-      "looking_back",
-      "close_up",
-      "university_gym_storage",
-      "casual_campus_outfit",
-      "closed_door",
-      "close_distance",
-      "flustered",
-      "dust_motes",
-      "afternoon",
-      "clear_sky",
-      "nervous",
-      "blush"
+      "white_tshirt",
+      "gym_shorts",
+      "bare_legs",
+      "gym_mat",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "大学体育馆器材室",
@@ -332,12 +319,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_gym_track_jacket_and_navy_gym_shorts, white_crew_socks, sitting_on_wooden_vaulting_box_in_locked_equipment_shed, hugging_knees_to_chest, entire_legs_and_feet_fully_visible_in_frame, white_sneakers_resting_on_shed_floor, intense_flustered_tsundere_pout, dusty_sunbeams_slicing_through_wooden_plank_gaps, stacked_gymnastics_mats_and_sports_balls_on_shelves, rich_ambient_bounce_light_in_shadows, full_body\nTrapped inside the locked sports equipment shed, Shiki Natsume sits hugging her knees atop a wooden vaulting box with an intensely flustered, pouting expression. Warm golden sunbeams slice through gaps in the wooden walls to illuminate floating dust motes, filling the shadows with rich amber bounce light that clearly reveals her white socks and sneakers planted on the wooden floor.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_white_t_shirt_with_navy_gym_shorts_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_gym_mat, barefoot_with_detailed_toes_and_white_sneakers_on_gym_floor, sitting_on_gym_mat_in_equipment_room_with_knees_drawn_up_and_arms_around_knees_with_shy_embarrassed_blush, warm_gym_mat_light_with_equipment_bokeh_and_mat_texture, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・機器室に5分間閉じ込められる】大学の体育館での活動後、夏目さんから機材の返却を手伝ってほしいと頼まれましたが、風で誤ってドアが閉まってしまいました。狭い倉庫には高窓から光が漏れてくるだけだった。ドアの鍵を確認したときはまだ冷静だったが、振り返って二人が近すぎることに気づくと、すぐに顔を赤らめた。――「まずは扉を開ける方法を考えて。そんな顔しないの。それと……少し離れて。緊張してるんじゃなくて、ここが蒸し暑いだけだから。」",
     "rating": "All",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "Kneeling upon woven tatami mats inside a quiet traditional Japanese ryokan room, Ayachi Nene is completely nude, leaning forward slightly as her hands rest trembling on her inner thighs. Her face burns with an overwhelming, vulnerable blush as her moist purple eyes look up with absolute devotion in the warm golden lantern light."
+    "auditRevision": "careful-batch08-2026-08-27",
+    "animaCaption": "Sitting on a gym mat in an equipment room in a white T-shirt with navy gym shorts, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet and white sneakers on floor, knees drawn up with a shy embarrassed blush."
   },
   {
     "id": "sc030",
@@ -403,20 +390,13 @@
     "timeOfDay": "night",
     "tags": [
       "mole_under_eye",
-      "golden_hour",
-      "night",
-      "casual_clothes",
-      "holding_birthday_cake",
-      "candlelight",
-      "standing_behind_door",
-      "surprised",
-      "subtle_blush",
-      "dark_entryway",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "expectant",
-      "bright_eyes"
+      "white_shirt",
+      "pleated_skirt",
+      "sheer_black_tights",
+      "apartment_genkan",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "温馨公寓玄关",
@@ -426,11 +406,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_oversized_burgundy_turtleneck_sweater_and_navy_pleated_miniskirt, sheer_black_pantyhose, peeking_from_behind_partially_opened_wooden_door, holding_small_ribbon-tied_birthday_gift_box_behind_back, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, graceful_foot_arches, deeply_flushed_shy_expression, brightly_lit_hallway_and_cozy_living_room_with_lit_chandeliers, warm_ambient_depth, full_body\nPeeking cautiously from behind a polished oak door with a deeply flushed expression, Shiki Natsume conceals a small ribbon-wrapped gift behind her back. Clad in an oversized knit sweater and sheer black pantyhose, the warm glow of hallway sconces and living room chandeliers illuminates the hallway, perfectly framing her slender legs down to her stocking-clad feet poised gracefully on the parquet floor.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_crisp_white_shirt_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_apartment_floor, standing_in_apartment_genkan_holding_birthday_gift_box_behind_back_with_shy_excited_blush, warm_apartment_genkan_light_with_gift_box_and_floor_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・ドアの後ろに隠せない誕生日サプライズ】冬の夜、アパートの入り口には明かりがついていなかった。夏目は小さなケーキを持ってドアの後ろに隠れていました。彼女はあなたが家に入るのを待ってからキャンドルに火を灯したかったのですが、早く帰宅しようとする足音に邪魔されました。彼女は数秒間その場で固まったが、ろうそくの明かりよりも頬を赤くして、ただケーキを手渡した。――「誕生日には、それらしいことをしたほうがいいって、みんなが言うから。早く願い事をして。クリームが溶けちゃう……別に、ずっと待ってたわけじゃないけど。」",
     "rating": "All",
-    "animaCaption": "Lying on her side upon dark silk sheets in the quiet of midnight, Shiki Natsume is completely nude, propping her head up with one slender arm while her long black hair pools around her firm bare breasts and defined waistline. Her cheeks burn with an intense, adorable blush as she bites her lip in flustered surrender under the cool silver moonlight."
+    "animaCaption": "In an apartment genkan holding a birthday gift box behind her back, Shiki Natsume in a crisp white shirt with navy pleated miniskirt and glossy black tights stands with a shy excited blush under warm genkan light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc035",
@@ -1070,21 +1051,12 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "smile",
-      "standing",
-      "casual_date_outfit",
-      "fitting_room",
-      "hairclip",
-      "subtle_blush",
-      "spring",
-      "looking_at_viewer",
-      "afternoon",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "window_light",
-      "expectant",
-      "bright_eyes"
+      "cardigan",
+      "sheer_black_tights",
+      "dressing_room",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "更衣室",
@@ -1094,11 +1066,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, smile, standing, casual_date_outfit, fitting_room, subtle_blush, spring, looking_at_viewer, afternoon, clear_sky, upper_body, medium_shot, window_light, expectant, bright_eyes, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_cardigan_over_white_blouse_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_dressing_room_floor, standing_in_dressing_room_with_one_hand_holding_hanger_with_three_outfits_and_thoughtful_blush, warm_dressing_room_light_with_hanger_and_mirror_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・付き合う前の3番目のオプション】春の午後、夏目はロッカールームの前で3着の服を着替えました。毎回彼は、サイズを確認しているだけで、出てきた後のあなたの反応を観察すると言いました。結局、彼女は最もシンプルな衣装を選び、その衣装に合わせたヘアピンを留めました。――「あなたの好みに合わせたわけじゃない。ただ、これが動きやすかっただけ。……似合うと思うなら、もう一度言って。さっきはよく聞こえなかった。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a quiet room, she stands poised with bright expectant eyes, as clear window sunlight streams across the frame."
+    "animaCaption": "In a dressing room holding a hanger with three outfits, Shiki Natsume in a casual grey cardigan over white blouse and navy pleated miniskirt with glossy black tights stands with a thoughtful blush under warm dressing room light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc069",
@@ -2517,27 +2490,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "adult",
-      "micro_bikini",
-      "string_bikini",
-      "bikini_malfunction",
-      "untied_swimsuit",
-      "bare_shoulders",
-      "cleavage",
-      "bare_legs",
-      "wet_skin",
-      "water_droplets",
-      "heavy_blush",
-      "tsundere",
-      "pout",
-      "swimming_pool",
-      "night",
-      "moonlight",
-      "shadows",
       "mole_under_eye",
-      "sensual",
-      "close_up",
-      "pov"
+      "black_bikini",
+      "bare_legs",
+      "indoor_pool",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "别墅室内泳池边",
@@ -2548,11 +2507,12 @@
       "新手推荐",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, micro_bikini, string_bikini, bikini_malfunction, untied_swimsuit, bare_shoulders, cleavage, bare_legs, wet_skin, water_droplets, heavy_blush, tsundere, pout, swimming_pool, night, moonlight, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_tiny_black_bikini_with_string_ties_and_slender_bare_legs, sun_kissed_bare_legs_with_smooth_thigh_and_wet_sheen_sitting_on_indoor_pool_edge, barefoot_with_detailed_toes_dangling_above_water, sitting_on_edge_of_indoor_pool_with_legs_dangling_and_one_hand_holding_pool_edge_with_shy_seductive_blush, cool_indoor_pool_light_with_water_ripples_and_tile_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・ストラップ付きビキニをずり下げて究極のコントラストを演出】夏の夜、静かなプライベートヴィラの屋内プール。床から天井まで届く窓の外には、水の波紋が空の星を映しています。今夜の夏目は、あなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。激しい水遊びのせいで、水着の紐が完全にずれて外れ、ビキニ全体が腰にぶら下がってしまった。豊満でセクシーな胸元と滑らかなお腹が完全に露出していた。全身が透き通った水滴で覆われ、両手で胸を恥ずかしそうに守り、プールの水が目尻に垂れ、顔を向けて恥ずかしいうめき声を上げた。――「はあ？　あなた、絶対に時間を計ってたでしょ。見ちゃだめ……これ以上見たら、水に沈めるからね。ばか。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "On the edge of an indoor pool in a tiny black bikini with string ties, Shiki Natsume sits with sun-kissed bare legs dangling above water, bare feet, holding the pool edge with a shy seductive blush under cool pool light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc134",
@@ -3752,23 +3712,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "tactical_gear",
-      "torn_clothes",
-      "unzipped",
-      "cleavage",
-      "sitting_on_chair",
-      "bound",
-      "legs_apart",
-      "black_pantyhose",
-      "heavy_blush",
-      "tears_in_eyes",
-      "tsundere",
-      "interrogation_room",
-      "night",
-      "strong_shadows",
       "mole_under_eye",
-      "sensual",
-      "close_up"
+      "lace_camisole",
+      "sheer_black_tights",
+      "interrogation_room",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "特工秘密审讯室",
@@ -3779,12 +3729,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_unbuttoned_commander_military_tunic_and_pleated_black_skirt, sheer_black_thighhigh_socks_with_leather_garters, sitting_in_high-backed_leather_command_chair, resting_chin_on_interlocked_fingers_with_haughty_blushing_smirk, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, graceful_foot_arches, high-tech_tactical_command_room_illuminated_by_bright_overhead_spotlights_and_glowing_deck_lightbars, illuminated_tactical_hologram_table, full_body\nSeated in a commanding leather armchair inside the tactical briefing room, Shiki Natsume's military tunic is unbuttoned over sheer black gartered stockings. Resting her chin upon interlocked fingers with a proud, blushing smirk, bright overhead lights and glowing deck lightbars illuminate the metal floor and holographic maps, clearly highlighting her long legs and stocking-clad feet in sharp focus.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_lace_camisole_with_sheer_black_tights_and_garter, glossy_black_tights_hugging_smooth_thighs_and_calf_with_lace_trim, entire_legs_and_feet_fully_visible_in_frame, black_heels_on_interrogation_room_floor, sitting_on_interrogation_room_chair_with_legs_crossed_and_one_hand_on_armrest_with_composed_dominant_blush, dim_interrogation_room_light_with_table_and_chair_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・取調椅子の柔らかな緊縛は必ず堕ちる】秘密諜報員の取調室は深夜、誰もいなくて、防音の重い鉄扉は施錠されていた。普段は飄々として頑固なエージェントの女の子夏目が、「もう、この変態店長。仕事を口実にするなんて……自由になったら、絶対に秘密裏に処分してあげる。」",
     "rating": "R15",
-    "auditRevision": "round3-2026-07-22",
-    "animaCaption": "Reversing the roles in the underground interrogation chamber, Shiki Natsume straddles the viewer in the metal interrogation chair with her tactical shirt torn open to reveal her firm bare breasts. Gripping the viewer's tie with a commanding yet deeply flushed smirk, the single hanging overhead light casts dramatic noir shadows across her defined silhouette."
+    "auditRevision": "careful-batch08-2026-08-27",
+    "animaCaption": "In an interrogation room in a black lace camisole with sheer black tights and garter, Shiki Natsume sits with legs crossed, glossy tights hugging smooth thighs, composed dominant blush under dim interrogation light."
   },
   {
     "id": "sc191",
@@ -5108,26 +5058,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "black_hair",
-      "long_hair",
-      "yellow_eyes",
       "mole_under_eye",
-      "hairclip",
       "cafe_uniform",
-      "unbuttoned_shirt",
-      "collarbone",
-      "bare_shoulders",
-      "drunk",
-      "red_ears",
-      "heavy_blush",
-      "sleepy_eyes",
-      "slight_smile",
-      "cafe_interior",
-      "night",
-      "dim_lighting",
-      "warm_lighting",
-      "sensual",
-      "close_up"
+      "sheer_black_tights",
+      "cafe_counter",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -5139,10 +5076,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, collarbone, bare_shoulders, drunk, red_ears, heavy_blush, sleepy_eyes, slight_smile, cafe_interior, night, dim_lighting, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_stella_cafe_uniform_with_white_blouse_and_navy_apron_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_cafe_floor, leaning_over_cafe_marble_counter_with_one_hand_on_counter_and_composed_blush, warm_cafe_marble_counter_light_with_tea_set_and_apron_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目】【ナツメ・深夜カウンターと傾いた襟元】深夜、閉店後のカフェ・ステラ。ナツメは珍しくワインを少し飲んでリラックスしていた。アルコールのせいで頬が微微赤みを帯び、普段のジト目は今や物憂げな潤いを帯びていた。彼女はカウンターに寄りかかり、シャツの襟元が身体の傾きで微微ほどけ、精致な鎖骨のラインが暖かい灯りの下で隐约と見え隠れしていた。あなたが近づくと、彼女は顔を上げてあなたを見上げ、アルコールの作用で目尻の泣きぼくろがとくに魅力的に見えた。彼女は微醺の口調で呟いた――「……柊史、近すぎる。それと、私の襟元……どこ見てるの？ 大変態……まあいいわ、今日は少しだけ見ていい」",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she strolls forward with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Leaning over a cafe marble counter in a Stella cafe uniform with glossy black tights, Shiki Natsume leans with one hand on the counter, composed blush under warm marble counter light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc249",
@@ -5753,12 +5691,13 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "adult",
-      "natsume_r18"
+      "mole_under_eye",
+      "grey_loungewear",
+      "bare_legs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "卧室",
@@ -5771,8 +5710,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "natsume_r18, adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair_flowing_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_loungewear_with_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_bed, barefoot_with_soft_toes_on_bed_sheets, sitting_on_bed_in_warm_bedroom_at_night_with_one_hand_holding_blanket_and_shy_nervous_blush, warm_bedroom_night_light_with_bed_sheet_and_lamp_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "R15",
     "officialCgCandidate": "ocs10",
@@ -5784,7 +5723,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs10-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Sitting on a bed in a warm bedroom at night in soft grey loungewear, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet on sheets, shy nervous blush under warm night light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc277",
@@ -6280,24 +6220,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "nude",
-      "adult",
-      "swimming_pool",
-      "infinity_pool",
-      "night",
-      "city_skyline",
-      "moonlight",
-      "wet_hair",
-      "bare_shoulders",
-      "underwater_lighting",
-      "rooftop",
-      "hotel",
-      "intimate",
-      "eye_contact",
-      "close_up",
-      "sensual",
       "mole_under_eye",
-      "wet"
+      "bikini",
+      "sheer_black_tights",
+      "rooftop_pool",
+      "full_body",
+      "sandals",
+      "night",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -6309,10 +6239,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_neat_stella_school_blazer_over_unbuttoned_blouse, navy_pleated_skirt, sheer_black_pantyhose, standing_on_hillside_observation_deck_at_night, holding_out_pinky_finger_for_promise, entire_legs_and_feet_fully_visible_in_frame, dark_school_loafers_on_wooden_deck, deeply_tender_blushing_smile, panoramic_city_night_view_with_golden_and_blue_bokeh_lights, gentle_breeze_fluttering_hair, full_body\nStanding upon a hillside observation deck overlooking the city at night, Shiki Natsume extends her pinky finger with a deeply tender, blushing smile to seal a private promise. Her school uniform and sheer black pantyhose stand out crisp against the sprawling golden city lights below, while ambient deck lamps clearly frame her dark school loafers planted on the wooden boardwalk.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_dark_bikini_with_sheer_black_tights_and_coverup, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_sandals_on_pool_deck, standing_on_rooftop_infinity_pool_deck_at_night_with_one_hand_holding_pool_rail_and_composed_blush, cool_rooftop_pool_night_light_with_water_reflections_and_city_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【大人のAfter Story・夏目・ホテル屋上プールの深い青の夜】旅の最後の夜、あなたは夏目が一人で屋上の温水プールで泳いでいるのを見つけた。街の灯りが足元に広がり、プールの青い灯りが彼女を深海の人魚のように照らし出していた。水音以外の足音に気づき、彼女は水面から浮かび上がった。濡れた黒髪が肩に張り付き、水滴が鎖骨を伝う。あなたは何も言わずに上着を脱ぎ、水の中へ滑り込んだ。彼女は背を向けていたが、あなたが近づいた瞬間、後ろにもたれかかってきた。二人の間で水が揺れ、彼女は顔を横に向け、息が微かに震えていた——「明日には帰るけど……まだ、ここにさよならを言いたくない。」あなたが彼女を振り向かせると、水の中の体はいつもより軽く、温かかった。街の灯りが彼女の瞳の中で無数の星に砕けていた。彼女は目を閉じ、額をそっとあなたに押し付けた——「それなら——せめて今夜だけは、まだまだ時間があるふりをしよう。」",
-    "animaCaption": "Standing on the windswept wooden pier under a deep indigo night sky, Shiki Natsume links her pinky finger with the viewer's in an unbreakable promise. Dressed in her dark trench coat, her golden eyes shine with gentle certainty as glittering harbor lights shimmer across the tranquil ocean waters."
+    "animaCaption": "On a rooftop infinity pool deck at night in a dark bikini with sheer black tights and coverup, Shiki Natsume stands holding a pool rail, glossy tights hugging smooth thighs, composed blush under cool pool night light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc289",

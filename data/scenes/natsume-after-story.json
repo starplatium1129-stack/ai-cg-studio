@@ -1465,12 +1465,13 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "adult",
-      "natsume_r18"
+      "mole_under_eye",
+      "grey_loungewear",
+      "bare_legs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "卧室",
@@ -1483,8 +1484,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "natsume_r18, adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair_flowing_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_loungewear_with_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_bed, barefoot_with_soft_toes_on_bed_sheets, sitting_on_bed_in_warm_bedroom_at_night_with_one_hand_holding_blanket_and_shy_nervous_blush, warm_bedroom_night_light_with_bed_sheet_and_lamp_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "R15",
     "officialCgCandidate": "ocs10",
@@ -1496,7 +1497,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs10-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Sitting on a bed in a warm bedroom at night in soft grey loungewear, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet on sheets, shy nervous blush under warm night light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc277",
@@ -1892,24 +1894,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "nude",
-      "adult",
-      "swimming_pool",
-      "infinity_pool",
-      "night",
-      "city_skyline",
-      "moonlight",
-      "wet_hair",
-      "bare_shoulders",
-      "underwater_lighting",
-      "rooftop",
-      "hotel",
-      "intimate",
-      "eye_contact",
-      "close_up",
-      "sensual",
       "mole_under_eye",
-      "wet"
+      "bikini",
+      "sheer_black_tights",
+      "rooftop_pool",
+      "full_body",
+      "sandals",
+      "night",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -1921,10 +1913,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_neat_stella_school_blazer_over_unbuttoned_blouse, navy_pleated_skirt, sheer_black_pantyhose, standing_on_hillside_observation_deck_at_night, holding_out_pinky_finger_for_promise, entire_legs_and_feet_fully_visible_in_frame, dark_school_loafers_on_wooden_deck, deeply_tender_blushing_smile, panoramic_city_night_view_with_golden_and_blue_bokeh_lights, gentle_breeze_fluttering_hair, full_body\nStanding upon a hillside observation deck overlooking the city at night, Shiki Natsume extends her pinky finger with a deeply tender, blushing smile to seal a private promise. Her school uniform and sheer black pantyhose stand out crisp against the sprawling golden city lights below, while ambient deck lamps clearly frame her dark school loafers planted on the wooden boardwalk.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_dark_bikini_with_sheer_black_tights_and_coverup, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_sandals_on_pool_deck, standing_on_rooftop_infinity_pool_deck_at_night_with_one_hand_holding_pool_rail_and_composed_blush, cool_rooftop_pool_night_light_with_water_reflections_and_city_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【大人のAfter Story・夏目・ホテル屋上プールの深い青の夜】旅の最後の夜、あなたは夏目が一人で屋上の温水プールで泳いでいるのを見つけた。街の灯りが足元に広がり、プールの青い灯りが彼女を深海の人魚のように照らし出していた。水音以外の足音に気づき、彼女は水面から浮かび上がった。濡れた黒髪が肩に張り付き、水滴が鎖骨を伝う。あなたは何も言わずに上着を脱ぎ、水の中へ滑り込んだ。彼女は背を向けていたが、あなたが近づいた瞬間、後ろにもたれかかってきた。二人の間で水が揺れ、彼女は顔を横に向け、息が微かに震えていた——「明日には帰るけど……まだ、ここにさよならを言いたくない。」あなたが彼女を振り向かせると、水の中の体はいつもより軽く、温かかった。街の灯りが彼女の瞳の中で無数の星に砕けていた。彼女は目を閉じ、額をそっとあなたに押し付けた——「それなら——せめて今夜だけは、まだまだ時間があるふりをしよう。」",
-    "animaCaption": "Standing on the windswept wooden pier under a deep indigo night sky, Shiki Natsume links her pinky finger with the viewer's in an unbreakable promise. Dressed in her dark trench coat, her golden eyes shine with gentle certainty as glittering harbor lights shimmer across the tranquil ocean waters."
+    "animaCaption": "On a rooftop infinity pool deck at night in a dark bikini with sheer black tights and coverup, Shiki Natsume stands holding a pool rail, glossy tights hugging smooth thighs, composed blush under cool pool night light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc293",

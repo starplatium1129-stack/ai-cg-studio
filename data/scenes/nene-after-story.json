@@ -2710,26 +2710,14 @@
     "time": "拂晓",
     "timeOfDay": "dawn",
     "tags": [
-      "sundress",
-      "no_bra",
-      "nipples_visible_through_clothing",
-      "see_through_clothing",
-      "bare_shoulders",
-      "standing",
-      "balcony",
-      "heavy_blush",
-      "wind",
-      "passionate_look",
-      "beach_house",
-      "dawn",
-      "first_light",
-      "rim_light",
       "hair_ribbon",
-      "ahoge",
-      "sensual",
-      "warm_lighting",
-      "pov",
-      "close_up"
+      "sundress",
+      "bare_legs",
+      "beach_house_veranda",
+      "full_body",
+      "barefoot",
+      "dawn",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "海滨度假木屋露台",
@@ -2740,11 +2728,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, sundress, no_bra, nipples_visible_through_clothing, see_through_clothing, bare_shoulders, standing, balcony, heavy_blush, wind, passionate_look, beach_house, dawn, first_light, backlighting, rim_light, point_of_view, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, bra, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_breezy_white_sundress_with_thin_straps_and_slender_bare_legs, sun_kissed_bare_legs_with_smooth_thigh_and_calf_and_sheer_skin_sheen_standing_on_beach_house_veranda, barefoot_with_detailed_toes_on_veranda_wood, standing_on_beach_house_veranda_at_dawn_with_one_hand_holding_veranda_rail_and_gentle_loving_smile, warm_dawn_veranda_light_with_sea_breeze_and_wooden_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・・・夏の軽やかなスカートと夜明けの逆光】夜明けに目覚めると、海辺の木造住宅のテラスでは、手すりを伝って湿った海風が吹き抜けていた。寧々は、薄い白いノースリーブのドレスを着て、朝の光の中に立っていた。柔らかい布地が風によって彼女の体に押し付けられ、彼女のぼんやりとした輪郭が朝日に照らされました。彼女は顔を赤らめて振り返り、その目には恥じらいと抑えがたい幸福感が表れていた。彼女の頭のてっぺんは小さなハートの形に素直に曲がっていました――「もう見飽きた？　風が少し冷たいんです……早く後ろから、寧々を抱きしめてください。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a quiet room, she turns back over her shoulder, with soft radiant backlighting tracing her silhouette."
+    "animaCaption": "On a beach house veranda at dawn in a breezy white sundress with thin straps, Ayachi Nene stands with sun-kissed bare legs, bare feet on veranda wood, holding the rail with a gentle loving smile in warm dawn light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc207",
@@ -3610,11 +3599,13 @@
     "camera": "官方CG横幅构图",
     "lighting": "柔和自然光",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult"
+      "hair_ribbon",
+      "yellow_pajamas",
+      "bare_legs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "usage": [
       "官方CG灵感",
@@ -3624,9 +3615,10 @@
     ],
     "story": "【成年 After Story】金色软枕间，宁宁的长发与粉色发带散成一圈。她在近得无法逃开的距离里低声说：「今天不准装作没听见我的心跳。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_foreshortened_close_up, low_camera_between_raised_knees, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_across_golden_yellow_pillows, purple_eyes, topless, nipples, pale_blue_lace_panties, black_thighhigh_stockings, lying_on_back_with_knees_raised_and_legs_spread_around_the_camera, black_stockinged_thighs_framing_foreground, gold_school_bow_still_around_neck, shy_open_mouth_and_direct_eye_contact, warm_bedroom_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, skirt, bra, shirt, standing, sitting, distant camera, child, loli, underage, school_uniform, gym_uniform",
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer, under soft ambient lighting."
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_yellow_pajama_set_with_white_piping_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_on_bed, barefoot_with_soft_toes_on_pillow, lying_on_side_on_bed_with_one_hand_on_pillow_and_gentle_shy_blush, warm_bedroom_afternoon_light_with_pillow_and_blanket_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "animaCaption": "Lying on a bed in a soft yellow pajama set, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on a pillow, gentle shy blush in warm afternoon bedroom light.",
+    "auditRevision": "careful-batch08-2026-08-27"
   },
   {
     "id": "sc270",
