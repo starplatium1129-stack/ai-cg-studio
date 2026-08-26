@@ -90,7 +90,7 @@
           <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">智能推荐</option><option value="used">最近常用</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
         </div>
         <div class="scene-filter-meta">
-          <ToggleSwitch v-model="showMature" class="mature-toggle" @change="onMatureChange"><span>显示成人内容 <em>({{ matureCount }})</em></span></ToggleSwitch>
+          <span class="mature-hint" title="本机个人使用，成人内容已常驻展示，仅用模糊遮罩区分">成人 <em>{{ matureCount }}</em> · 已展示</span>
           <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
           <button class="scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
         </div>
@@ -212,8 +212,7 @@ import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
 import { quickCreateUrl } from '@/utils/quickCreate'
 import { scrollBehavior } from '@/utils/motionPreference'
-import { ARTWORK_HISTORY_KV_KEY, MATURE_SETTING_KEY } from '@/utils/storageKeys'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 
@@ -240,10 +239,8 @@ interface ExplorerCuration extends CurationData, SceneUXConfig {
 }
 
 const PAGE_SIZE = 24
-const MATURE_KEY = MATURE_SETTING_KEY
 const FAV_KEY = 'aics_scene_favorites'
 const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
-const LOCAL_OWNER = isLocalStudioHost(window.location.hostname)
 
 const THEME_DEFS: Array<{ id: string; label: string; iconName: ArchiveIconName; categories: string[] }> = [
   { id: 'all',      label: '全部', iconName: 'spark',     categories: [] as string[] },
@@ -316,7 +313,8 @@ const favs = ref(readFavorites())
 const hiddenIds = ref(readHiddenScenes())
 const localUsage = ref(readSceneUsage())
 const showHidden = ref(false)
-const showMature = ref(localStorage.getItem(MATURE_KEY) == null ? LOCAL_OWNER : localStorage.getItem(MATURE_KEY) === '1')
+/** 本机个人使用：成人内容常驻，仅模糊遮罩，不再自锁。 */
+const showMature = ref(true)
 
 const searchQuery = ref('')
 /** 首帧数据就绪标记：避免初始化时赋初值触发数据 watch 重复加载 */
@@ -356,9 +354,6 @@ const activeFacetCount = computed(() => {
   if (fTier.value !== defaultTier) n++
   if (sortBy.value !== 'smart') n++
   if (showHidden.value) n++
-  // 本机默认展示成人内容是产品默认值，不应让工具条一进入就显示「筛选 1」。
-  // 只有用户偏离当前访问环境的默认值时，才把它计为主动筛选。
-  if (showMature.value !== LOCAL_OWNER) n++
   return n
 })
 
@@ -550,10 +545,6 @@ function applyMoodRail(q: string) { searchQuery.value = q; activeTheme.value = '
 function resetFilters() {
   searchQuery.value=''; activeTheme.value='all'; fChar.value='all'; fSeason.value='all'
   fTime.value='all'; fSeries.value='all'; fRating.value='all'; fTier.value=defaultTier; sortBy.value='smart'; showHidden.value=false
-}
-function onMatureChange() {
-  if (showMature.value && !confirm('此区域包含成人向文字内容。请确认你已成年并希望继续查看。')) { showMature.value=false; return }
-  localStorage.setItem(MATURE_KEY, showMature.value?'1':'0')
 }
 
 async function init() {

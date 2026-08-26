@@ -67,7 +67,7 @@
               @click="ratingFilter = r.v">{{ r.l }}</button>
           </div>
           <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }}</span>
-          <ToggleSwitch v-model="showMature" class="mature-toggle"><span>显示成人内容 <em>({{ adultCount }})</em></span></ToggleSwitch>
+          <span class="pop-count mature-hint" title="本机个人使用，成人内容默认展示，R18 仅作模糊遮罩区分">成人 <em>{{ adultCount }}</em> · 已展示</span>
         </div>
         <div class="pop-cats" role="group" aria-label="场景分类">
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
@@ -138,11 +138,9 @@ import {
 } from '@/utils/popularContent'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel } from '@/utils/franchiseLabel'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const route = useRoute()
 const sceneStore = useSceneStore()
@@ -159,8 +157,8 @@ const RATING_OPTS = [
   { v: 'R15', l: 'R15' },
   { v: 'R18', l: 'R18' }
 ] as const
-/** 本机默认展示成人内容（与灵感场景页一致）；非本机环境默认隐藏。 */
-const showMature = ref(isLocalStudioHost())
+/** 本机个人使用：成人内容常驻展示，仅用模糊遮罩区分，不再设开关自锁。 */
+const showMature = ref(true)
 
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
