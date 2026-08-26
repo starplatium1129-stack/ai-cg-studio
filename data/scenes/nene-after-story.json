@@ -3235,19 +3235,15 @@
     "lora": "ayachi_nene_v18_wd14",
     "emotion": "亲密",
     "season": "不限",
-    "time": "黄昏",
-    "timeOfDay": "sunset",
+    "time": "白天",
+    "timeOfDay": "afternoon",
     "tags": [
       "hair_ribbon",
       "school_uniform",
-      "plaid_pleated_skirt",
-      "skirt_lifted",
       "sheer_white_thighhigh_stockings",
       "library",
-      "bookshelf",
-      "sunset",
-      "golden_hour",
       "full_body",
+      "mary_jane",
       "depth_of_field",
       "landscape"
     ],
@@ -3262,8 +3258,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_school_uniform_with_plaid_pleated_skirt, sheer_white_thighhigh_stockings, white_mary_jane_shoes, leaning_sideways_against_bookshelf, one_hand_gathering_and_lifting_skirt_hem, skirt_lifted_up_exposing_thighs, heavy_blush, teary_eyes_with_lustful_longing, panting_with_parted_lips, looking_toward_viewer, golden_sunset_backlight_through_window, narrow_bookshelf_aisle_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, sitting",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_school_uniform_with_navy_sailor_collar_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_library_floor, sitting_in_library_with_one_hand_holding_book_and_other_hand_on_desk_with_gentle_shy_blush, warm_library_window_light_with_bookshelf_and_desk_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn09",
@@ -3275,7 +3271,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Deep in the library at dusk, the narrow bookshelf aisle bathed in warm gold, Nene leans against the shelf, one hand gathering the hem of her plaid pleated skirt and lifting it up, her tearful purple eyes full of shame and longing fixed on the viewer as the setting sun backlights her silver hair.",
+    "animaCaption": "Sitting in a library in a soft white school uniform with navy sailor collar and silky white thighhighs, Ayachi Nene holds a book with a gentle shy blush under warm library window light.",
     "auditRevision": "careful-batch12-2026-08-27"
   },
   {
@@ -3403,14 +3399,11 @@
     "tags": [
       "hair_ribbon",
       "witch_dress",
-      "black_pleated_skirt",
-      "skirt_lifted",
-      "no_underwear",
-      "standing_leaning_over_desk",
-      "butt_up",
-      "looking_back",
+      "bare_legs",
+      "smooth_thighs",
       "study_desk",
       "full_body",
+      "barefoot",
       "depth_of_field",
       "landscape"
     ],
@@ -3425,8 +3418,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_black_witch_dress_with_black_pleated_short_skirt, skirt_lifted_up_to_waist, no_underwear, standing_with_upper_body_leaning_forward_against_wooden_desk, back_arched_with_lower_spine_pressed_in, butt_raised_at_desk_edge, looking_back_over_shoulder_at_viewer, heavy_blush, teary_eyes, panting_with_open_mouth, bare_legs_with_feet_on_floor, warm_indoor_top_light_with_skin_highlight, magic_books_and_star_charts_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, kneeling, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_elaborate_black_and_pink_witch_dress_with_pointed_hat_and_caped_sleeves_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_kneeling_on_study_desk, barefoot_with_detailed_toes_on_desk_surface, kneeling_on_private_study_desk_with_one_hand_lifting_skirt_hem_looking_back_over_shoulder_with_mischievous_blush, warm_study_lamp_light_with_stacked_magic_books_and_star_charts_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R18",
     "officialCgCandidate": "ocn12",
@@ -3438,7 +3431,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
       "result": "pass"
     },
-    "animaCaption": "In the backroom of the club office, Nene stands with both feet on the floor, upper body leaning forward to press against the wooden desk, lower back arched down and her full white butt raised over the desk edge, the black pleated skirt hiked up to her waist, looking back over her shoulder with tearful longing eyes and a heavy blush.",
+    "animaCaption": "Kneeling on a private study desk in an elaborate black and pink witch dress with pointed hat, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on the desk, looking back over her shoulder with a mischievous blush among stacked magic books.",
     "recommendedModel": "anima-aesthetic-v1.1",
     "auditRevision": "careful-batch02-2026-08-27"
   },
@@ -3800,14 +3793,12 @@
     "timeOfDay": "late_night",
     "tags": [
       "hair_ribbon",
-      "completely_naked",
-      "no_underwear",
-      "full_length_mirror",
-      "standing",
+      "silk_negligee",
       "bare_legs",
-      "barefoot",
       "dressing_room",
       "full_body",
+      "barefoot",
+      "mirror",
       "depth_of_field"
     ],
     "rating": "R18",
@@ -3821,10 +3812,10 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, completely_naked, no_underwear, standing_fully_facing_full_length_mirror, frontal_nude_reflection_in_mirror, breasts_and_pubic_area_clearly_reflected, slender_bare_legs, barefoot_on_dressing_room_floor, shy_firm_expression_with_light_blush, warm_lamp_light_and_mirror_reflection, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, clothed, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_silk_negligee_with_lace_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_standing_before_mirror, barefoot_with_detailed_toes_on_dressing_room_floor, standing_before_mirror_in_dressing_room_with_one_hand_holding_negligee_strap_and_shy_intimate_blush, warm_dressing_room_mirror_light_with_silk_and_mirror_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【大人のAfter Story・寧々・深夜の鏡の前の素直さ】更衣室には、暖かなランプが一つだけ灯っていた。寧々は鏡の前に立ち、最後の一枚を脱ぎ捨てると、正面から鏡に向き直った。白い胸も、腰の線も、脚の付け根の一番秘かな場所も、鏡の中にはっきりと映っている。彼女は唇を結び、小さく柔らかな声で言った。「大人になった寧々は、ここもちゃんと成長してるの……よく見てね。寧々はあなたにだけ見せるんだから。」",
-    "animaCaption": "In the dressing room lit by a single warm lamp, Nene stands completely naked facing the full-length mirror, her frontal body — pale chest, waistline, and the most private place — clearly reflected, lips pressed together as she explains softly that grown-up Nene has grown here too, and only the one she loves may see.",
+    "animaCaption": "Standing before a mirror in a dressing room in a soft white silk negligee with lace trim, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on floor, holding a strap with a shy intimate blush.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 ]

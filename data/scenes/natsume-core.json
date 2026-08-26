@@ -4016,13 +4016,9 @@
     "tags": [
       "mole_under_eye",
       "pink_sweater",
-      "pleated_miniskirt",
       "sheer_black_tights",
       "smooth_thighs",
       "classroom",
-      "finger_to_lips",
-      "whispering",
-      "red_ears",
       "full_body",
       "ankle_boots",
       "depth_of_field",
@@ -4038,7 +4034,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, mole_under_eye, black_headband, pink_chunky_knit_sweater_with_pleated_skirt_and_gleaming_black_tights, thighs_and_calves_sleek_in_nylon_shimmer, ankle_boots_in_brown_on_the_classroom_floor, snuggle_side_by_side_in_class_pressing_an_index_finger_to_her_lips, whispering_low_and_shy_with_red_ears_and_a_soft_face, gentle_window_light_with_soft_shadows_and_desk_grain, shallow_focus_with_bokeh, slim_waist_and_quiet_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, mole_under_eye, black_headband, wearing_soft_pink_knit_sweater_with_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_indoor_floor, sitting_in_classroom_with_one_hand_gently_lifting_viewer_chin_with_shy_whispered_blush, warm_classroom_window_light_with_soft_shadows_and_desk_texture, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -4051,7 +4047,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs02-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Seated close in the classroom in a soft pink knit sweater and pleated miniskirt, Shiki Natsume presses her index finger gently to her lips and whispers a shy reminder in a low voice, her mole accenting the restrained expression, warm window light softening the shadows across her reddened ears.",
+    "animaCaption": "In a classroom, Shiki Natsume in a soft pink knit sweater and pleated miniskirt with glossy black tights sits close, gently lifting the viewer's chin with a shy whispered blush, warm window light with desk texture.",
     "auditRevision": "careful-batch03-2026-08-27"
   },
   {
@@ -4072,13 +4068,7 @@
     "tags": [
       "mole_under_eye",
       "red_qipao",
-      "gold_embroidery",
-      "side_slit",
       "sheer_black_tights",
-      "smooth_thighs",
-      "hands_folded",
-      "nervous",
-      "defiant_blush",
       "indoor",
       "full_body",
       "heels",
@@ -4095,7 +4085,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_close_up, 1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, elegant_red_and_gold_qipao_with_side_slit_and_glossy_black_tights, smooth_thighs_in_sheer_nylon_sheen_beside_the_slit, black_heels_on_indoor_floor, standing_before_the_door_with_both_hands_folded_nervously_in_front, turning_face_away_with_shy_defiant_blush_and_sideways_glance, warm_indoor_light_with_gold_embroidery_bokeh, soft_focus_with_cinematic_bokeh, slim_waist_and_elegant_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_close_up, 1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_elegant_red_and_gold_qipao_with_side_slit_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_side_slit_visible, entire_legs_and_feet_fully_visible_in_frame, black_heels_on_indoor_floor, standing_in_indoor_room_with_one_hand_holding_qipao_hem_and_alluring_blush, warm_indoor_light_with_qipao_and_gold_embroidery_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -4108,7 +4098,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Standing before the door in an elegant red-and-gold qipao clinging to her figure, Shiki Natsume folds both hands nervously in front of her, then turns her face away with a shy defiant blush as she tells you only fitting is acceptable, the gold embroidery and mole catching the warm indoor light.",
+    "animaCaption": "Standing indoors in an elegant red and gold qipao with side slit and glossy black tights, Shiki Natsume stands holding the hem, alluring blush under warm indoor light with gold embroidery bokeh.",
     "auditRevision": "careful-batch09-2026-08-27"
   },
   {
@@ -4124,15 +4114,14 @@
     "lora": "shiki_natsume_v18_wd14",
     "emotion": "心动",
     "season": "不限",
-    "time": "清晨",
-    "timeOfDay": "morning",
+    "time": "白天",
+    "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
       "grey_pajamas",
       "bare_shoulders",
       "pillow",
       "close_up",
-      "morning",
       "depth_of_field",
       "landscape"
     ],
@@ -4146,7 +4135,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_intimate_close_up, 1girl, solo, shiki_natsume, long_black_hair_splayed_out_across_the_white_pillow, yellow_eyes, mole_under_eye, black_headband, grey_flannel_pajamas_with_white_piping_and_slender_shoulders_exposed, resting_on_her_side_with_bare_neckline_and_soft_skin_glow, meeting_viewer_s_eyes_with_a_sleepy_gentle_morning_smile, early_dawn_light_with_warm_shadows_and_plump_pillow_texture, soft_focus_with_cinematic_bokeh, delicate_neck_and_narrow_waist, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, black_hair_spread_over_white_pillow, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_pajama_set_with_white_piping_and_slender_bare_shoulders, smooth_bare_shoulders_and_collarbone_with_soft_skin_sheen_lying_on_side, looking_at_viewer_with_sleepy_gentle_blush_and_parted_lips, warm_bedside_lamp_light_with_soft_shadows_and_pillow_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, child, loli",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -4159,7 +4148,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Waking in the early morning with her long black hair spread over the white pillow, Shiki Natsume lies on her side in a soft grey pajama set, bare collarbone catching the warm morning light, gazing at you with a gentle drowsy smile as she murmurs good morning.",
+    "animaCaption": "In an intimate diagonal close-up on a white pillow, Shiki Natsume in a soft grey pajama set lies on her side with bare shoulders and soft skin sheen, looking at the viewer with a sleepy gentle blush under warm bedside lamp light.",
     "auditRevision": "careful-batch02-2026-08-27"
   },
   {
@@ -4232,9 +4221,7 @@
       "lace_camisole",
       "bare_shoulders",
       "wooden_floor",
-      "finger_to_lips",
       "overhead",
-      "intense_blush",
       "full_body",
       "depth_of_field",
       "landscape"
@@ -4249,7 +4236,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_extreme_overhead_face_close_up, 1girl, solo, adult_shiki_natsume, long_black_hair_braided_at_both_sides, golden_yellow_eyes, mole_under_eye, black_headband, black_lace_camisole_with_her_shoulders_and_neckline_showing, stretched_out_on_the_warm_laminate_floor_with_skin_in_soft_glow, index_finger_pressed_to_her_lips_as_her_gaze_rises_to_you, flustered_urgent_blush_with_a_held_breath, warm_floor_texture_bathed_in_overhead_soft_light_with_lace_patterns, medium_shot, soft_focus_with_cinematic_bokeh, delicate_neck_and_narrow_waist, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_extreme_overhead_face_close_up, 1girl, solo, adult_shiki_natsume, long_black_hair_braided_at_both_sides, golden_yellow_eyes, mole_under_eye, black_headband, wearing_soft_black_lace_camisole_with_slender_bare_shoulders_and_collarbone_exposed, smooth_bare_shoulders_and_collarbone_with_soft_skin_sheen_lying_on_wooden_floor, looking_up_at_viewer_with_flustered_intense_blush_and_parted_lips, warm_wooden_floor_texture_with_overhead_soft_light_and_lace_shadows, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, child, loli",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -4262,7 +4249,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
       "result": "pass"
     },
-    "animaCaption": "From an extreme overhead angle on the warm wooden floor, adult Shiki Natsume in a soft black lace camisole presses her index finger gently to her lips while looking up at you, telling you not to speak so she can confirm this is not a dream, an intense flustered blush on her face under the soft overhead light.",
+    "animaCaption": "In an extreme overhead close-up on a wooden floor, adult Shiki Natsume with braided long black hair lies in a soft black lace camisole, bare shoulders and collarbone with soft skin sheen, looking up with an intense flustered blush under soft overhead light.",
     "auditRevision": "careful-batch02-2026-08-27"
   },
   {
