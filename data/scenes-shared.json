@@ -114,17 +114,18 @@
       "mole_under_eye",
       "maid_style_tactical_gear",
       "cafe_interior",
-      "bar_counter",
-      "floating_teacup",
-      "magic",
+      "floating_cup",
       "laptop",
+      "in_love",
       "night",
       "soft_lighting",
       "seductive_look",
       "smirk",
-      "in_love",
-      "full_body",
-      "wide_shot"
+      "blush",
+      "ayachi_nene_sitting_on_the_left",
+      "smile",
+      "wide_shot",
+      "full_body"
     ],
     "mature": false,
     "location": "星光Occult咖啡馆",
@@ -135,13 +136,13 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "safe, 2girls, ayachi_nene, shiki_natsume, BREAK, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_pink_maid_cafe_dress_and_sheer_white_thighhigh_socks, casting_magic_to_pour_tea_from_a_delicate_red_teacup_floating_in_midair, BREAK, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_improved_tactical_maid_outfit_and_sheer_black_thighhigh_socks, leaning_against_the_bar_counter_typing_secret_accounts_on_a_laptop, alluring_dangerous_sideways_glance_at_viewer_with_a_smirk, BREAK, cozy_dim_cafe_interior_after_closing_hours, warm_ambient_lamplight_with_stained_glass_pendant_lamps, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "safe, 2girls, ayachi_nene, shiki_natsume, BREAK, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_pink_maid_cafe_dress_and_sheer_white_thighhigh_socks, BREAK, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_black_waitress_uniform_and_sheer_black_thighhigh_socks, sitting_together_on_velvet_cafe_booth_seat_after_closing, leaning_close_with_entwined_fingers_and_blushing_smiles, entire_legs_and_feet_fully_visible_in_frame, stocking_feet_resting_side_by_side_on_wooden_floor, cozy_retro_cafe_interior, warm_stained-glass_pendant_lamps_and_illuminated_dessert_display_cases, full_body\nSitting close together inside a velvet cafe booth long after closing hours, Ayachi Nene in pink maid dress and white stockings leans against Shiki Natsume in black waitress attire and sheer black stockings. With intertwined fingers and sweet blushing smiles, warm stained-glass pendant lights and glowing pastry cases bathe the charming interior in golden radiance, clearly framing both girls' stocking-clad feet resting side by side on the floor.",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 1girl, 1boy, child, loli",
     "storyJa": "【寧々＆夏目・大人のAfter Story・魔法と異能のカフェ】あなたと寧々、夏目の三人は、魔法と異能が交差する小さなカフェを開いた。閉店後の店内には、暖かな間接照明だけが残っている。寧々は魔法でティーカップに紅茶を注ぎ、エージェント風のメイド服に着替えた夏目は、カウンターにもたれて秘密の帳簿を確認していた。やがて彼女はパソコンから顔を上げ、からかうような視線をあなたへ向ける――「ねえ、店長。今夜の二人分の残業代……自分で払うつもり？」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "After closing at the occult cafe, Ayachi Nene in her pink maid dress pours tea by magic from a delicate red teacup floating in mid-air while Shiki Natsume in an improved tactical maid outfit leans on the bar counter typing their secret accounts on a laptop and cuts you a dangerously alluring sideways glance under warm dim lamps."
+    "animaCaption": "Inside Cafe Stella long after closing, Ayachi Nene sits on the left in her classic maid dress, playfully casting glowing pink magic butterflies, while Shiki Natsume leans across the bar counter on the right with her laptop in dark tactical maid attire, offering a confident, alluring smirk under warm brass lamps."
   },
   {
     "id": "sc151",

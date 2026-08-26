@@ -1486,14 +1486,14 @@
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "盛夏海滩阳光",
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_stylish_black_bikini_with_crisscross_waist_straps, bare_slender_waist_and_toned_midriff, bare_legs, standing_straight_and_tall_on_sandy_beach_in_black_bikini_after_adjusting_shoulder_strap, hands_on_hips_showing_off_the_full_outfit_to_viewer_with_warning_glance_and_flustered_tsundere_pout, entire_legs_and_feet_fully_visible_in_frame, bare_feet_on_warm_sand, long_black_hair_blowing_in_sea_breeze_with_slight_blush_around_tear_mole, crystal_turquoise_crashing_waves_and_open_summer_sky_with_warm_midday_sunlight_creating_natural_skin_sheen, cinematic_lighting, full_body",
+    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_stylish_black_bikini_with_crisscross_waist_straps, bare_slender_waist_and_toned_midriff, bare_legs, sitting_on_wooden_lifeguard_tower_platform, resting_hands_on_railing, entire_legs_and_feet_fully_visible_in_frame, bare_feet_resting_flat_on_wooden_steps, five_clean_detailed_toes_on_each_foot, smooth_soles, looking_at_viewer_with_flustered_tsundere_pout, bright_glint_in_eyes, vibrant_tropical_summer_beach_at_midday, crystal_turquoise_crashing_waves_with_foam, warm_sunlight_creating_natural_skin_sheen_and_cool_blue_sky_bounce_light, full_body\nSitting atop the wooden platform of a seaside lifeguard tower, Shiki Natsume wears a chic black crisscross bikini, resting her hands against the sunlit wooden railing with an adorable, flustered pout and focused eyes. Crystal turquoise waves and open summer skies provide expansive depth, while bright midday sunlight and cool sky bounce lighting highlight her toned midriff and bare feet resting neatly on the wooden steps with clean, perfectly formed toes.",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "usage": [
       "展示图"
     ],
     "storyJa": "【夏目・ビーチでの黒い水着】真夏のビーチで、夏目はシンプルな黒の水着を着て、肩紐を調整していました。あなたの視線に気づいた彼は、まず目で警告し、それから全体をはっきりと見えるように背筋を伸ばして立ち上がった。海風が彼女の長い黒髪をなびかせ、瞳はほんのり赤く染まっていた。――「先に言っておくけど、大げさな感想はいらない。……似合うと思っただけなら、普通にそう言って。」",
     "rating": "All",
-    "animaCaption": "Standing straight and tall on the pristine white sand of a midsummer beach, Shiki Natsume in a chic black crisscross bikini adjusts her shoulder strap, then rises to her full height to show off the outfit to the viewer. Her long black hair whips in the sea breeze, a warning glare softening into a flustered tsundere pout as a faint blush spreads around the mole under her eye under the warm midday sun."
+    "animaCaption": "Standing boldly on the pristine white sand beach in a stylish black halter bikini, Shiki Natsume places hands on her hips while turning her head away with an adorably flustered, feisty pout. Her long black hair whips in the salty ocean breeze as tropical midday sun illuminates her toned waist and long legs."
   },
   {
     "id": "sc099",
@@ -2181,8 +2181,7 @@
       "apron_only",
       "mole_under_eye",
       "sitting_on_counter",
-      "legs_pressed_together",
-      "covering_hands",
+      "legs_apart",
       "bare_back",
       "bare_legs",
       "blush",
@@ -2204,11 +2203,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_only_white_cotton_cooking_apron_with_naked_back_and_sides, bare_shoulders, bare_armpits, smooth_underarm_contours, bare_legs, sitting_on_wooden_kitchen_island_counter, legs_pressed_tightly_together_in_shame, entire_legs_and_feet_fully_visible_in_frame, smooth_pale_soles, detailed_toes, both_hands_covering_her_nether_region_biting_lips_with_intense_tsundere_blush, tear_mole_trembling_with_tears_in_eyes_looking_at_viewer, warm_cafe_kitchen_after_closing_illuminated_by_overhead_pendant_lamps_and_bright_under_counter_strip_lights, polished_kitchen_tile_floor_reflecting_warmth, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_only_white_cotton_cooking_apron_with_naked_back_and_sides, bare_breasts_visible_from_side, bare_shoulders, bare_armpits, smooth_underarm_contours, bare_legs, sitting_on_wooden_kitchen_island_counter, dangling_legs_freely, entire_legs_and_feet_fully_visible_in_frame, smooth_pale_soles, detailed_toes, resting_chin_on_one_hand_with_intense_tsundere_blush, looking_at_viewer, warm_cafe_kitchen_after_closing_illuminated_by_overhead_pendant_lamps_and_bright_under-counter_strip_lights, polished_kitchen_tile_floor_reflecting_warmth, full_body\nPerched atop the wooden kitchen island counter after closing, Shiki Natsume wears only a white cotton cooking apron, resting her chin on one hand with an intensely blushing, flustered gaze. Warm overhead pendant lamps and under-counter LED ribbons illuminate the entire kitchen and tiled floor, highlighting her smooth underarms and bare dangling feet in full view without dark voids.",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, bra, underwear, clothes, 2girls, child, loli",
     "storyJa": "【夏目・ツンデレのディフェンスラインは完全に崩壊した】深夜のスターライトカフェ閉店後、夏目はあなたに賭けに負けたため、非常に恥ずかしい「はあ？　本当に救いようのない変態ね。スマホで撮ったりしたら……明日は秘密裏に処分するから！」",
     "rating": "R15",
-    "animaCaption": "Perched on the wooden kitchen counter after closing in the penalty game, Shiki Natsume wears only a white cotton cooking apron over her bare skin, her bare legs pressed tightly together and both hands desperately covering her nether region as she bites her lips with a trembling tear mole and a final tsundere warning; warm pendant lamps and under-counter LED strips light the polished tiled kitchen."
+    "animaCaption": "Serving a post-closing penalty behind the locked cafe counter, Shiki Natsume wears only a white cotton kitchen apron over her completely bare skin, exposing her generous side breasts, bare back, and slender legs. Holding a glass coffee decanter with trembling fingers while biting her lip in tsundere humiliation, warm cafe pendant lamps bathe her in golden light."
   },
   {
     "id": "sc156",
