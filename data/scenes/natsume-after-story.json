@@ -1337,27 +1337,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "black_hair",
-      "long_hair",
-      "yellow_eyes",
       "mole_under_eye",
-      "hairclip",
-      "unbuttoned_shirt",
-      "cleavage",
-      "underwear",
-      "rain",
-      "car_interior",
-      "sitting_close",
-      "red_ears",
-      "heavy_blush",
-      "shy_look",
-      "night",
-      "dim_lighting",
-      "shadows",
-      "sensual",
-      "fanwork_au",
-      "close_up",
-      "pov"
+      "tactical_shirt",
+      "cargo_pants",
+      "vehicle",
+      "full_body",
+      "combat_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -1369,10 +1355,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, unbuttoned_shirt, cleavage, underwear, rain, car_interior, sitting_close, red_ears, heavy_blush, shy_look, night, dim_lighting, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_tactical_shirt_with_cargo_pants_and_combat_boots, polished_black_combat_boots_on_car_floor, sitting_in_back_seat_of_evacuation_vehicle_with_one_hand_on_door_handle_and_composed_tense_blush, dim_vehicle_interior_light_with_window_rain_bokeh_and_tactical_gear_texture, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, skirt, thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・豪雨の車内】深夜の豪雨で、同人AUの任務車両は路肩に止まっていた。疲れた夏目は後部座席で体勢を崩し、揺れの拍子にあなたの方へ寄りかかる。耳を赤くしながらも、彼女は平静を装った――「……勘違いしないで。これはただの慣性。体温を保つなら、これが一番効率的なだけ」",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In the back seat of an evacuation vehicle at night, Shiki Natsume in a black tactical shirt with cargo pants and combat boots sits with one hand on the door handle, composed tense blush under dim interior light with rain bokeh.",
+    "auditRevision": "careful-batch05-2026-08-27"
   },
   {
     "id": "sc253",
@@ -1890,22 +1877,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "nude",
-      "adult",
-      "wet_hair",
-      "bare_shoulders",
-      "entrance_hall",
-      "rain",
-      "night",
-      "dark_interior",
-      "silhouette",
-      "shadow_play",
-      "intimate",
-      "eye_contact",
-      "sensual",
       "mole_under_eye",
-      "wet",
-      "close_up"
+      "grey_loungewear",
+      "bare_legs",
+      "smooth_thighs",
+      "apartment_entrance",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -1917,10 +1896,11 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_unbuttoned_grey_hoodie_open_down_center, bare_breasts_fully_exposed, pink_nipples, exposed_pussy, hugging_viewer_tightly_on_couch_during_cold_rainy_night, sharing_body_warmth, heavy_blush, cozy_apartment_living_room, rain_streaks_on_dark_windows, warm_heater_glow, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_loungewear_with_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_bed_in_apartment_entrance, barefoot_with_soft_toes_on_bed_sheets, sitting_on_bed_near_apartment_genkan_with_one_hand_holding_towel_and_gentle_composed_blush, warm_apartment_entrance_light_with_bed_sheet_texture_and_towel_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・大人のAfter Story・雨に濡れた後】深夜の豪雨に二人はずぶ濡れになって玄関に辿り着いた。夏目の白いブラウスは濡れて肌に張り付いている。彼女は後ろ手に扉を閉め、明かりはつけなかった——暗闇には窓の外の街灯の光と、彼女の微かに荒い呼吸だけがあった。彼女は振り返り、指を襟元に置いて、濡れたブラウスのボタンを一つずつ外していった。濡れた布地が肩から滑り落ち、足元に積もった。彼女は顔を上げた。琥珀色の瞳が薄暗がりの中で驚くほどに輝いていた——もう何も言わなかった。彼女は手を伸ばしてあなたの襟を掴み、雨に打たれた熱い沈黙の中へと引き込んだ。窓の外では雨音が止まず、彼女の肌の感触は、すべての言葉よりも誠実だった。",
-    "animaCaption": "Sharing body heat on the living room sofa during a freezing rainstorm, Shiki Natsume pulls an open grey hoodie around them both, pressing her firm bare breasts against the viewer in a desperate, loving embrace. Rainwater streaks down the dark window glass as the amber warmth of a space heater fills the cozy room."
+    "animaCaption": "Sitting on a bed near an apartment genkan in soft grey loungewear, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet on sheets, holding a towel with a gentle composed blush under warm entrance light.",
+    "auditRevision": "careful-batch05-2026-08-27"
   },
   {
     "id": "sc287",

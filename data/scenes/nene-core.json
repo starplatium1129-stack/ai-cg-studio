@@ -1112,13 +1112,12 @@
     "tags": [
       "hair_ribbon",
       "school_uniform",
-      "pleated_skirt",
-      "sheer_black_thighhigh_stockings",
+      "sheer_white_thighhigh_stockings",
       "smooth_thighs",
       "rooftop",
-      "starry_sky",
       "full_body",
       "loafers",
+      "starry_sky",
       "depth_of_field"
     ],
     "mature": false,
@@ -1130,12 +1129,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_stella_school_uniform_with_navy_pleated_miniskirt, sheer_black_thighhigh_stockings_with_matte_silky_finish_hugging_smooth_thighs, entire_legs_and_feet_fully_visible_in_frame, brown_loafers_on_rooftop_wood, sitting_on_rooftop_wooden_bench_leaning_on_viewer_shoulder_under_starlit_sky, counting_stars_with_one_hand_pointing_up, shy_blush_with_moonlight_on_hair, cinematic_night_bokeh_and_depth_of_field, slender_hands_and_collarbone, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, close_up",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_stella_school_uniform_blazer_and_pleated_miniskirt_with_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_faint_garter_line, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_rooftop_wooden_floor, sitting_on_rooftop_wooden_bench_at_night_with_legs_together_looking_at_star_sky_with_viewer, gentle_loving_smile_with_starlight_reflections_on_hair, cool_rooftop_night_light_with_star_sky_and_city_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・屋上の星空の下二度目の約束】夏の夜、屋上に吹く風はとても軽いです。寧々はあなたの肩に寄りかかって星を数えます。数えの途中で、彼女はいつも同じものをもう一度数えます。あなたは、彼女がただ一人の時間を引き延ばしたかっただけだと明らかにしました。彼女はただ頭を上げてあなたの顔の横にキスをし、熱くなった顔をあなたの肩に隠しました。――「見つかってしまったなら仕方ありませんね。じゃあ約束です。次の流星群も一緒に見て、この場所を誰にも取らせないこと。」",
     "rating": "All",
-    "auditRevision": "audit-v25-2026-08-26-batch3",
-    "animaCaption": "Sitting on the rooftop bench leaning on the viewer's shoulder under a starlit sky, Ayachi Nene in her school uniform and matte black thighhighs points at stars, brown loafers on the rooftop wood, moonlight on silver hair."
+    "auditRevision": "careful-batch05-2026-08-27",
+    "animaCaption": "On a rooftop at night, Ayachi Nene in a navy Stella school uniform with silky white thighhighs sits on a wooden bench with legs together, looking at the star sky with the viewer, gentle loving smile under cool starlight."
   },
   {
     "id": "sc054",
@@ -1153,14 +1152,12 @@
     "timeOfDay": "dawn",
     "tags": [
       "hair_ribbon",
-      "beach",
-      "knit_cardigan",
+      "sundress",
       "sheer_white_thighhigh_stockings",
-      "smooth_thighs",
-      "sunrise",
-      "blanket",
+      "seaside",
       "full_body",
-      "slippers",
+      "sandals",
+      "sunrise",
       "depth_of_field"
     ],
     "mature": false,
@@ -1172,12 +1169,12 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_oversized_cream_knit_cardigan_over_white_one_piece_dress, sheer_white_thighhigh_stockings_with_fleecy_texture_hugging_soft_thighs, thigh_gap_with_faint_stocking_top_line, entire_legs_and_feet_fully_visible_in_frame, beige_slippers_on_sandy_beach_blanket, sitting_on_beach_blanket_wrapped_together_waiting_for_sunrise_with_hands_clasped, pre_dawn_blue_hour_light_with_first_golden_sunbeam_on_horizon, cinematic_depth_of_field, slender_hands_and_collarbone, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, close_up",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_blue_sundress_with_white_cardigan_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_sandals_on_seaside_sand, walking_along_seaside_at_sunrise_with_one_hand_holding_cardigan_and_gentle_shy_smile, warm_sunrise_seaside_light_with_sand_bokeh_and_wave_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・日の出前に体温を借りた】夏の旅行の最後の夜、あなたはビーチに座って日の出を待っていました。夜風は思ったより冷たかったです。寧々は毛布の半分をあなたに渡し、あなたの腕の中で丸まって潮の音を聞きました。空が白み始めると、彼女は眠そうな紫色の目を上げた――「一緒に夜明けを待つって、こんな感じなんですね。次は徹夜じゃなくてもいいです……目を覚ましたとき、あなたが隣にいてくれれば。」",
     "rating": "All",
-    "animaCaption": "Sitting wrapped together on a beach blanket waiting for sunrise, Ayachi Nene's fleecy white thighhighs hug soft thighs with a faint top line, beige slippers on the sand blanket under pre-dawn blue hour light.",
-    "auditRevision": "audit-v25-2026-08-26-batch2"
+    "animaCaption": "At sunrise along the seaside in a light blue sundress with white cardigan and silky white thighhighs, Ayachi Nene walks with a gentle shy smile, warm sunrise light with sand and wave reflections.",
+    "auditRevision": "careful-batch05-2026-08-27"
   },
   {
     "id": "sc056",
@@ -1323,20 +1320,14 @@
     "timeOfDay": "sunset",
     "tags": [
       "hair_ribbon",
-      "beach",
-      "swimsuit",
-      "looking_back",
-      "beach_coverup",
-      "windblown_hair",
-      "ocean",
-      "sunset",
-      "rim_light",
-      "clear_sky",
+      "sky_blue_bikini",
+      "bare_legs",
+      "smooth_thighs",
+      "shallow_sea",
       "full_body",
-      "over_shoulder",
-      "golden_hour",
-      "backlighting",
-      "wide_shot"
+      "barefoot",
+      "sunset",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "海边",
@@ -1347,18 +1338,19 @@
       "展示图",
       "头像"
     ],
-    "prompt": "masterpiece, best quality, pristine anime aesthetic, 1girl, solo, adult, ayachi nene, purple_eyes, silver_hair, ahoge, sleek_black_strappy_bikini, standing_in_sunset_shallow_surf, looking_back_with_alluring_glance, flaming_orange_and_purple_twilight, mirror_like_wet_sand_reflections, sparkling_sea_spray_particles, wide_angle_ocean_horizon, volumetric_sunbeams, floating_stardust_particles, translucent_rim_lighting, extreme_depth",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_sky_blue_bikini_with_white_frills_and_slender_bare_legs, sun_kissed_bare_legs_with_smooth_thigh_and_wet_sheen_standing_in_shallow_sea, barefoot_with_detailed_toes_in_shallow_water, standing_in_shallow_sea_at_sunset_with_back_to_viewer_looking_back_over_shoulder_with_shy_gentle_smile, warm_sunset_sea_light_with_wave_bokeh_and_sand_reflections, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・夕日の中での水着の後ろ姿】夕暮れの海岸で、薄いコートを着て前を歩いていた寧々が突然呼び止められました。振り返ると、夕日が濡れた髪の先と水着の輪郭を金色に輝かせた。あなたが彼女を真剣に見ていることに気づいた彼女は、風でめくれ上がった服の裾を恥ずかしそうに押さえましたが、あなたに促すことはありませんでした。――「写真はいいですけど、海も一緒に入れてください。あとで見返したとき、今日の風と、あなたが立っていた場所まで思い出したいから。」",
     "rating": "All",
-    "animaCaption": "In magnificent spatial depth and translucent watercolor lighting, Ayachi Nene stands poised in the shallow ocean surf as twilight falls, wearing an elegant black strappy bikini and turning back over her shoulder with an alluring, confident gaze. The flaming purple and gold sunset reflects like a sheet of molten glass across the wet tidal sand, casting striking watercolor rim lighting and shimmering spray droplets around her silken silver hair. In the distinct ethereal artistic style of Rella, with delicate transparent lighting, glowing dust motes, and soft watercolor gradients.",
+    "animaCaption": "In shallow sea at sunset in a sky blue bikini with white frills, Ayachi Nene stands with her back to the viewer looking back over her shoulder, sun-kissed bare legs with wet sheen, bare feet in shallow water, shy gentle smile under warm sunset sea light.",
     "seed": 20261097,
     "steps": 30,
     "cfg": 4.5,
     "sampler": "res_multistep",
     "scheduler": "simple",
     "width": 832,
-    "height": 1216
+    "height": 1216,
+    "auditRevision": "careful-batch05-2026-08-27"
   },
   {
     "id": "sc068",
@@ -2599,25 +2591,13 @@
     "time": "白天",
     "timeOfDay": "all_day",
     "tags": [
-      "white_hair",
-      "very_long_hair",
-      "low_twintails",
-      "purple_eyes",
-      "ahoge",
-      "hair_ribbon",
-      "dress",
-      "backless",
-      "bare_shoulders",
-      "shoulder_blade",
-      "underwear_strap",
-      "fitting_room",
-      "heavy_blush",
-      "panicked",
-      "open_mouth",
-      "indoors",
-      "bright",
-      "romantic_atmosphere",
-      "close_up"
+      "mole_under_eye",
+      "cardigan",
+      "sheer_black_tights",
+      "changing_room",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
@@ -2629,10 +2609,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, backless, bare_shoulders, shoulder_blade, underwear_strap, fitting_room, heavy_blush, panicked, open_mouth, indoors, bright, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_cardigan_over_white_blouse_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_mall_floor, standing_in_mall_changing_room_with_curtain_half_open_holding_clothes_with_composed_shy_blush, bright_mall_changing_room_light_with_curtain_and_mirror_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々】【寨々・試着室の隙間の驚鴻一瞥】ショッピングモールの試着室。寨々は新しく買ったワンピースを試着していたが、背中のファスナーが上がって届かず、思わずカーテンを開けて助けを求めようとした。外に立っていたのがあなただとは想像もしていなかった。カーテンは半分しか開いておらず、彼女の滑らかな背中と精致な肩甲骨のラインが柔らかな灯りの下で余すところなく露出し、細い下着の紐だけが一本横たわっていた。二人の視線が交わった瞬間、空気が凍りついた。寨々は一秒固まった後、叫びながらカーテンを閉め、向こう側から慌てた声が聞こえてきた――「うあぁ！柊、柊史！なぜここにいるの？！さっきの映像を思い浮かべないで！早く忘れて！べ、別にわざと見せたわけじゃない……うう、バカ、店員を呼んできて！」",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she looks forward toward the viewer with a gentle blush on her cheeks, as warm amber lantern light glows softly."
+    "animaCaption": "In a mall changing room with the curtain half open, Shiki Natsume in a casual grey cardigan over white blouse and navy pleated miniskirt with glossy black tights stands holding clothes with a composed shy blush under bright mall light.",
+    "auditRevision": "careful-batch05-2026-08-27"
   },
   {
     "id": "sc250",
