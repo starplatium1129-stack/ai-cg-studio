@@ -480,25 +480,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "evening_gown",
-      "dress_unzipped",
-      "bare_back",
-      "sideboob",
-      "cleavage",
-      "high_slit",
-      "black_pantyhose",
-      "lying_on_bed",
-      "heavy_blush",
-      "tears_in_eyes",
-      "open_mouth",
       "mole_under_eye",
-      "hotel_room",
-      "night",
-      "cityscape",
-      "soft_lighting",
-      "sensual",
-      "pov",
-      "close_up"
+      "evening_gown",
+      "bare_legs",
+      "smooth_thighs",
+      "hotel_suite",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "酒店套房大床",
@@ -509,11 +498,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, mole_under_eye, evening_gown, dress_unzipped, bare_back, sideboob, cleavage, high_slit, black_pantyhose, lying_on_bed, heavy_blush, tears_in_eyes, open_mouth, hotel_room, night, cityscape, soft_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, brassiere, panties, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_elegant_navy_evening_gown_with_slender_bare_shoulders_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_standing_in_luxury_hotel_suite, barefoot_with_detailed_toes_and_silver_heels_on_suite_carpet, standing_in_luxury_hotel_suite_after_banquet_with_one_hand_holding_gown_hem_and_composed_blush, warm_hotel_suite_light_with_chandelier_bokeh_and_satin_reflections, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・イブニングドレスは究極の秋のロックを解除します】豪華な晩餐会を終えた五つ星ホテルのプレジデンシャルスイート。窓の外には都会の喧騒のネオンがいつまでも輝き、部屋はほんのり暖かい。普段は上品で飄々としていた夏目が、この時は力が抜けたあなたに大きなダブルベッドに押し倒されました。彼女の黒い背中の開いたハイスリットのシルクイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に弱々しくスライドし、官能的なラインの広い領域、感情的な紅潮を伴う美しい裸の背中と横の胸を明らかにします。脚に巻きついたセクシーな極薄の黒ストッキングが、暗い光の下で非常に眩しい光沢を放ちます。目尻の泣きぼくろが真っ赤に染まっている。彼女はあえぎ、うめき声​​を上げながらあなたの首を強く締め付けます。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a luxury hotel suite after a banquet, Shiki Natsume in an elegant navy evening gown stands with slender bare shoulders and bare legs with soft skin sheen, silver heels on carpet, holding the gown hem with a composed blush under warm chandelier light.",
+    "auditRevision": "careful-batch04-2026-08-27"
   },
   {
     "id": "sc130",

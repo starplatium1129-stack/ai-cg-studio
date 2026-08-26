@@ -16,13 +16,11 @@
     "timeOfDay": "late_night",
     "tags": [
       "2girls",
-      "wedding_dress",
-      "white_thighhighs",
-      "black_thighhighs",
-      "smooth_thighs",
+      "wedding_gown",
+      "sheer_white_thighhigh_stockings",
       "honeymoon_suite",
-      "holding_hands",
-      "candlelight",
+      "full_body",
+      "heels",
       "depth_of_field"
     ],
     "mature": false,
@@ -33,13 +31,13 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_white_wedding_gowns_with_lace_veil_and_satin_gloves, sitting_side_by_side_on_edge_of_canopy_bed_in_luxury_honeymoon_suite, ayachi_nene_in_sheer_white_thighhigh_stockings_with_lace_top_hugging_smooth_thighs_and_thigh_gap, shiki_natsume_in_sheer_black_thighhigh_stockings_with_matte_weave, holding_hands_together_with_interlocked_fingers_and_gentle_warm_blushes, warm_candlelight_bokeh_and_soft_champagne_glasses_on_nightstand, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.52> <lora:shiki_natsume_v18_wd14:0.52>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, solo, bare_legs",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_white_wedding_gowns_with_lace_veil_and_satin_gloves_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, white_heels_on_canopy_bed_edge, sitting_side_by_side_on_edge_of_canopy_bed_in_luxury_honeymoon_suite_holding_hands_with_interlocked_fingers, tender_shy_blush_with_veil_bokeh_and_warm_suite_light, warm_honeymoon_suite_light_with_lace_veil_and_satin_reflections, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "rating": "All",
     "recommendedSize": "1344×896",
-    "auditRevision": "audit-v25-2026-08-26-batch3",
-    "animaCaption": "Sitting side by side on the canopy bed in white wedding gowns, Ayachi Nene in lace-top white thighhighs and Shiki Natsume in matte black thighhighs hold hands with interlocked fingers. Warm candlelight bokeh glows on smooth thighs with a soft thigh gap in the luxury honeymoon suite."
+    "auditRevision": "careful-batch04-2026-08-27",
+    "animaCaption": "Side by side on a canopy bed in a luxury honeymoon suite, Ayachi Nene and Shiki Natsume in elegant white wedding gowns with lace veils and satin gloves show silky white thighhighs hugging smooth thighs, white heels on the bed edge, tender shy blush in warm suite light."
   },
   {
     "id": "sc031",
@@ -59,13 +57,12 @@
     "tags": [
       "2girls",
       "formal_gown",
-      "white_thighhighs",
-      "black_tights",
-      "smooth_thighs",
+      "sheer_white_thighhigh_stockings",
+      "sheer_black_tights",
       "ritual_hall",
-      "holding_hands",
-      "volumetric_lighting",
-      "depth_of_field"
+      "full_body",
+      "heels",
+      "volumetric_lighting"
     ],
     "mature": false,
     "location": "仪式厅",
@@ -75,13 +72,13 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_modern_formal_gowns_nene_in_pastel_blue_and_natsume_in_black_turtleneck_and_plaid_skirt, standing_in_illuminated_ritual_hall_with_three_heart_rate_curves_projected_on_dome_ceiling, ayachi_nene_in_sheer_white_thighhigh_stockings_and_natsume_in_sheer_black_tights, holding_viewer_hands_left_and_right_with_light_ring_glowing_between_them, joyful_teary_smile_and_composed_gentle_gaze, volumetric_light_beams_and_bokeh, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.52> <lora:shiki_natsume_v18_wd14:0.52>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, solo, bare_legs",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_formal_attire_nene_in_pastel_blue_off_shoulder_gown_with_white_lace_and_natsume_in_black_turtleneck_with_plaid_miniskirt_and_sheer_black_tights, nene_sheer_white_thighhigh_stockings_with_lace_trim_hugging_smooth_thighs_and_natsume_glossy_black_tights_hugging_toned_thighs, entire_legs_and_feet_fully_visible_in_frame, nene_white_heels_and_natsume_black_pumps_on_ritual_hall_marble_floor, standing_in_illuminated_ritual_hall_with_triple_heart_rate_curves_projected_on_dome_ceiling_holding_hands, serene_determined_blush_with_cinematic_ritual_light, volumetric_ritual_hall_light_with_dome_projections_and_marble_reflections, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, cropped_feet, upper_body",
     "storyJa": "【夏目＆寧々・大人のAU・3人契約の無限ループ】式典ホールのライトカーテンは、3つの心拍数曲線をドームに投影します。寧々と夏目はそれぞれ左手と右手を持ちます。同期値がしきい値を超えた後も、制御を失うことはありませんでした。代わりに、ゆっくりと回転する後光となって安定しました。寧々が最初に笑い、泣き、夏目がしっかりと手を握り、短い言葉で3人の宣誓を終えました。――「誰かが誰かに寄りかかるんじゃない。私たちはみんな、ここに残ることを選んで、何度でも選び直すんです。」",
     "rating": "All",
     "recommendedSize": "1344×896",
-    "auditRevision": "audit-v25-2026-08-26-batch3",
-    "animaCaption": "Standing in the illuminated ritual hall with heart rate curves projected on the dome, Ayachi Nene in white thighhighs and Shiki Natsume in black tights hold the viewer's hands left and right, a glowing light ring between them, volumetric beams shining."
+    "auditRevision": "careful-batch04-2026-08-27",
+    "animaCaption": "In an illuminated ritual hall with triple heart rate curves on the dome, Ayachi Nene in a pastel blue off-shoulder gown with white lace thighhighs and Shiki Natsume in a black turtleneck with plaid miniskirt and glossy black tights stand hand in hand, serene determined blush under volumetric ritual light."
   },
   {
     "id": "sc144",
