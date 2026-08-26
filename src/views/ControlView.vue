@@ -143,8 +143,8 @@
               <span class="service-row-meta">{{ sdOnline ? (webuiManaged ? '受控' : '手动') : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('webui','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="confirmServiceAction('webui','stop')">停止</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy || sdOnline" :title="sdOnline ? '已在运行' : '启动受控 WebUI'" @click="serviceAction('webui','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !sdOnline" :title="!sdOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('webui','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">
@@ -154,8 +154,8 @@
               <span class="service-row-meta">{{ comfyOnline ? (comfyManaged ? '受控' : '手动') : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('comfy','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="confirmServiceAction('comfy','stop')">停止</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy || comfyOnline" :title="comfyOnline ? '已在运行，无需重复启动' : '启动受控 ComfyUI'" @click="serviceAction('comfy','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !comfyOnline" :title="!comfyOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('comfy','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">
@@ -165,8 +165,8 @@
               <span class="service-row-meta">{{ ttsOnline ? '在线' : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('voice','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="confirmServiceAction('voice','stop')">停止</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy || ttsOnline" :title="ttsOnline ? '已在运行' : '启动语音'" @click="serviceAction('voice','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !ttsOnline" :title="!ttsOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('voice','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">

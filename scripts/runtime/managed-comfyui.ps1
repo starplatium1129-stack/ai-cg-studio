@@ -39,10 +39,14 @@ function Get-ManagedProcess {
     return $null
 }
 function Test-ComfyApi {
-    try {
-        $response = Invoke-WebRequest -UseBasicParsing -Uri ($ComfyHost.TrimEnd('/') + '/system_stats') -TimeoutSec 2
-        return $response.StatusCode -ge 200 -and $response.StatusCode -lt 300
-    } catch { return $false }
+    for ($i = 0; $i -lt 2; $i++) {
+        try {
+            $response = Invoke-WebRequest -UseBasicParsing -Uri ($ComfyHost.TrimEnd('/') + '/system_stats') -TimeoutSec 3
+            if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) { return $true }
+        } catch {}
+        Start-Sleep -Milliseconds 300
+    }
+    return $false
 }
 function Wait-Ready([int]$seconds = 90) {
     $deadline = (Get-Date).AddSeconds($seconds)

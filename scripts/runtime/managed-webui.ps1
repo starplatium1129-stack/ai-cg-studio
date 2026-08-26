@@ -46,10 +46,14 @@ function Get-ManagedProcess {
     return $null
 }
 function Test-WebUIApi {
-    try {
-        $response = Invoke-WebRequest -UseBasicParsing -Uri ($WebuiHost.TrimEnd('/') + '/sdapi/v1/sd-models') -TimeoutSec 2
-        return $response.StatusCode -ge 200 -and $response.StatusCode -lt 300
-    } catch { return $false }
+    for ($i = 0; $i -lt 2; $i++) {
+        try {
+            $response = Invoke-WebRequest -UseBasicParsing -Uri ($WebuiHost.TrimEnd('/') + '/sdapi/v1/sd-models') -TimeoutSec 3
+            if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) { return $true }
+        } catch {}
+        Start-Sleep -Milliseconds 300
+    }
+    return $false
 }
 function Wait-Ready([int]$seconds = 300) {
     $deadline = (Get-Date).AddSeconds($seconds)

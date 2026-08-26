@@ -631,6 +631,20 @@ function createControlRouter(config, gatewayRef, dependencies) {
     var action = req.body && req.body.action;
     if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ops.rejectConflict(res)) return;
+    if (action === 'start' && state.ttsOnline) {
+      var fastOp = ops.begin('voice-start', '语音已在运行', ['语音已在运行', '正在验证语音服务状态']);
+      ops.update(fastOp, 1);
+      envelope.ok(res, { pending:true, operation:fastOp, message:'语音已在运行，正在验证…' });
+      refreshServiceStates(true).then(function () {
+        if (state.ttsOnline) {
+          controlLog('语音已在运行，无需重复启动');
+          ops.finish(fastOp, null, '语音服务已就绪');
+        } else {
+          ops.finish(fastOp, '语音验证失败，请检查 ' + config.TTS_HOST);
+        }
+      }).catch(function (e) { ops.finish(fastOp, e.message); });
+      return;
+    }
     var operation = ops.begin('voice-' + action, action === 'start' ? '启动语音服务' : '停止语音服务', [
       action === 'start' ? '正在启动 GPT-SoVITS' : '正在停止 GPT-SoVITS',
       '正在验证语音服务状态'
@@ -670,6 +684,20 @@ function createControlRouter(config, gatewayRef, dependencies) {
     var action = req.body && req.body.action;
     if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ops.rejectConflict(res)) return;
+    if (action === 'start' && state.sdOnline) {
+      var fastOp = ops.begin('webui-start', 'WebUI 已在运行', ['WebUI 已在运行', '正在验证绘图服务状态']);
+      ops.update(fastOp, 1);
+      envelope.ok(res, { pending:true, operation:fastOp, message:'WebUI 已在运行，正在验证…' });
+      refreshServiceStates(true).then(function () {
+        if (state.sdOnline) {
+          controlLog('WebUI 已在运行，无需重复启动');
+          ops.finish(fastOp, null, '绘图服务已就绪');
+        } else {
+          ops.finish(fastOp, 'WebUI 验证失败，请检查 ' + config.SD_HOST);
+        }
+      }).catch(function (e) { ops.finish(fastOp, e.message); });
+      return;
+    }
     var operation = ops.begin('webui-' + action, action === 'start' ? '启动绘图服务' : '停止绘图服务', [
       action === 'start' ? '正在启动 SD WebUI' : '正在停止 SD WebUI',
       '正在验证绘图服务状态'
@@ -961,6 +989,25 @@ function createControlRouter(config, gatewayRef, dependencies) {
     var action = req.body && req.body.action;
     if (!['start', 'stop'].includes(action)) return envelope.fail(res, 400, 'action 必须是 start 或 stop');
     if (ops.rejectConflict(res)) return;
+    // 已在线时的“启动”不应再卡在 17.5%（脚本 2s 探测 + 120s 启动等待），直接走快速验证路径
+    if (action === 'start' && state.comfyOnline) {
+      var fastOp = ops.begin('comfy-start', 'ComfyUI 已在运行', ['ComfyUI 已在运行', '正在验证 ComfyUI /system_stats']);
+      // 立即推进到 67.5%（stage 1），避免“一点点”假象
+      ops.update(fastOp, 1);
+      envelope.ok(res, { pending:true, operation:fastOp, message:'ComfyUI 已在运行，正在验证…' });
+      refreshServiceStates(true).then(function () {
+        if (state.comfyOnline) {
+          state.desiredComfy = state.comfyManaged || false;
+          // 若原本是手动启动，验证通过后也标记为已期望在线，避免看门狗误判
+          if (!state.comfyManaged) state.desiredComfy = false;
+          controlLog('ComfyUI 已在运行，无需重复启动');
+          ops.finish(fastOp, null, 'ComfyUI 已在运行');
+        } else {
+          ops.finish(fastOp, 'ComfyUI 验证失败，请检查端口 ' + config.COMFY_HOST);
+        }
+      }).catch(function (e) { ops.finish(fastOp, e.message); });
+      return;
+    }
     var operation = ops.begin('comfy-' + action, action === 'start' ? '启动 ComfyUI' : '停止 ComfyUI', [
       action === 'start' ? '正在启动 ComfyUI' : '正在停止 ComfyUI',
       '正在验证 ComfyUI /system_stats'

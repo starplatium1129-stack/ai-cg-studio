@@ -5,7 +5,7 @@
  * 上游在线状态、操作进度、日志缓冲与展示文案。
  */
 
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, nextTick, watch } from 'vue'
 import { ApiClientError } from '../api/client.ts'
 import { controlApi, type ControlApi } from '../api/controlApi.ts'
 import type {
@@ -58,22 +58,53 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const logBoxEl = ref<HTMLElement | null>(null)
   const logIndex = ref(0)
   let pollTimer: ReturnType<typeof setInterval> | null = null
+  // 驱动 opProgress 时间微增的响应式时钟，避免“冻住”观感（仅在操作进行时滴答）
+  const now = ref(Date.now())
+  let nowTimer: ReturnType<typeof setInterval> | null = null
+  function ensureNowTicker() {
+    if (nowTimer) return
+    nowTimer = setInterval(() => { now.value = Date.now() }, 500)
+    // Node 侧不阻止退出
+    const maybeUnref = nowTimer as unknown as { unref?: () => void }
+    if (typeof maybeUnref.unref === 'function') maybeUnref.unref()
+  }
+  function clearNowTicker() {
+    if (nowTimer) clearInterval(nowTimer)
+    nowTimer = null
+  }
+  function syncNowTicker() {
+    if (operation.value?.status === 'running') ensureNowTicker()
+    else clearNowTicker()
+  }
   let lastStatus: ControlStatus | null = null
   let statusRequest: AbortController | null = null
   let logsRequest: AbortController | null = null
   let shareRequest: AbortController | null = null
 
+  // 操作变化时自动启停时钟
+  watch(operation, () => syncNowTicker(), { immediate: true })
   const opBusy = computed(() => !!(operation.value && operation.value.status === 'running') || modeBusy.value)
   const opStatusLabel = computed(() => {
     const s = operation.value?.status
     return s === 'running' ? '进行中' : s === 'completed' ? '完成' : s === 'failed' ? '失败' : ''
   })
   const opProgress = computed(() => {
+    // 订阅 now 以驱动时间微增
+    const _tick = now.value
     const op = operation.value
     if (!op?.stages?.length) return op?.status === 'completed' ? 100 : op?.status === 'running' ? 35 : 0
     if (op.status === 'completed') return 100
     if (op.status === 'failed') return Math.min(100, ((op.stageIndex + 1) / op.stages.length) * 100)
-    return Math.min(95, ((op.stageIndex + 0.35) / op.stages.length) * 100)
+    const base = ((op.stageIndex + 0.35) / op.stages.length) * 100
+    // 若服务已在线但操作仍在 running（用户手动已启动 ComfyUI 后又点“启动”），
+    // 进度不应卡在 17.5%。根据 kind 与在线状态直接抬升，并加入时间微增避免“冻住”观感。
+    const isComfyStart = op.kind === 'comfy-start' && comfyOnline.value
+    const isWebuiStart = op.kind === 'webui-start' && sdOnline.value
+    const isVoiceStart = op.kind === 'voice-start' && ttsOnline.value
+    const onlineBump = (isComfyStart || isWebuiStart || isVoiceStart) ? 40 : 0
+    const elapsedSec = Math.max(0, (_tick - op.startedAt) / 1000)
+    const timeNudge = Math.min(12, elapsedSec * 1.2)
+    return Math.min(95, base + onlineBump + timeNudge)
   })
   const ollamaBadgeText = computed(() => {
     if (!ollamaOnline.value) return '未连接'
@@ -137,6 +168,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     ollamaVram.value = Number(data.ollamaVram) || 0
     modeBusy.value = !!data.modeBusy
     operation.value = data.operation || (operation.value?.status === 'running' ? operation.value : null)
+    syncNowTicker()
     selfHealing.value = data.selfHealing && typeof data.selfHealing === 'object' ? data.selfHealing : null
     tunnelStatus.value = data.tunnelStatus || ''
     // 分享链接含原始 token，已从 /api/status 拆到仅本机可读的 /api/share-link
@@ -240,7 +272,10 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     try {
       const data: ControlLogs = await api.getLogs(logIndex.value, { signal: controller.signal })
       if (logsRequest !== controller || controller.signal.aborted) return
-      if (data.operation) operation.value = data.operation
+      if (data.operation) {
+        operation.value = data.operation
+        syncNowTicker()
+      }
       if (data.logs.length) {
         const fresh = data.logs.filter((l: string) => !logs.value.includes(l))
         if (fresh.length) {
@@ -272,6 +307,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   function stopPolling() {
     if (pollTimer) clearInterval(pollTimer)
     pollTimer = null
+    clearNowTicker()
     statusRequest?.abort()
     logsRequest?.abort()
     shareRequest?.abort()
