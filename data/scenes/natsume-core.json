@@ -1090,23 +1090,12 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "leaning",
-      "looking_back",
+      "sailor_dress",
+      "sheer_black_tights",
       "aquarium",
-      "leaning_against",
-      "looking_away",
-      "large_glass_tank",
-      "blue_lighting",
-      "looking_up",
-      "one_hand_touching_aquarium_glass",
-      "profile",
-      "water_reflections",
-      "reserved_smile",
-      "afternoon",
-      "clear_sky",
-      "medium_shot",
-      "smile",
-      "happy"
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "水族馆",
@@ -1118,11 +1107,12 @@
       "头像",
       "CG"
     ],
-    "animaCaption": "Standing inside a darkened aquarium tunnel with palms gently pressed against the acrylic glass, Shiki Natsume is completely entranced by the graceful flight of glowing manta rays and jellyfish. The radiant cyan and deep blue waters cast dancing caustic light waves across her black hair and porcelain features.",
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_elegant_black_velvet_sleeveless_cocktail_dress, bare_arms_and_shoulders, bare_armpits, smooth_underarm_contours, wearing_sheer_black_thighhigh_socks, standing_before_massive_aquarium_viewing_tank_filled_with_luminous_moon_jellyfish, turning_profile_with_mesmerized_expression, entire_legs_and_feet_fully_visible_in_frame, black_high_heels_planted_on_polished_terrazzo_floor, vibrant_bioluminescent_cyan_and_magenta_jellyfish_light_casting_rich_ambient_glow_across_room, cinematic_chiaroscuro, full_body\nStanding in mesmerized wonder before a colossal aquarium tank teeming with glowing moon jellyfish, Shiki Natsume wears an elegant black sleeveless velvet dress and sheer black stockings. The radiant bioluminescent cyan and magenta glow from the jellyfish tanks fills the entire exhibition hall with ambient water caustic reflections, eliminating all dead shadows and dramatically highlighting her underarms, silhouette, and high heels on the terrazzo floor.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "animaCaption": "Before a huge aquarium tank with jellyfish, Shiki Natsume in an elegant navy sailor dress with glossy black tights stands with a gentle composed blush under cool aquarium blue light.",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_elegant_navy_sailor_dress_with_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_aquarium_floor, standing_before_huge_aquarium_tank_with_jellyfish_and_gentle_composed_blush, cool_aquarium_blue_light_with_jellyfish_and_water_reflections, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・青い光の中で忘却のひととき】水族館の巨大なガラスのカーテンウォールの前で、夏目は周囲の環境を忘れることなく頭を上げて泳ぐ魚の群れを追いかけます。青い波紋が彼女の黒髪と目の下の泣きぼくろに広がった。彼女が正気に戻るまでに、あなたは彼女に二度電話しました。彼女はそっとガラスに寄りかかったが、口調はまだ穏やかだった――「魚のほうが誰かさんより静かなのは確か。でも……あなたがここにいても邪魔ではないから、もう少し付き合って。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "careful-batch11-2026-08-27"
   },
   {
     "id": "sc077",
@@ -1304,22 +1294,13 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "sitting",
-      "sweater",
-      "window_light",
+      "grey_sweater",
+      "sheer_black_tights",
       "cat_cafe",
-      "cat_on_lap",
-      "petting_cat",
-      "window_seat",
-      "reserved_smile",
-      "cozy",
-      "afternoon",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "gentle_smile",
-      "soft_eyes",
-      "cafe"
+      "full_body",
+      "ankle_boots",
+      "cat",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "猫咖啡",
@@ -1330,11 +1311,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, sitting, soft_cream_knit_sweater, window_light, cat_cafe, one_cat_on_lap, gently_petting_cat, window_seat, reserved_smile, cozy, afternoon, upper_body, medium_shot, gentle_smile, soft_eyes, cafe, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_cat_cafe_floor, sitting_in_cat_cafe_with_cat_sleeping_on_lap_and_one_hand_petting_cat_with_gentle_composed_blush, warm_cat_cafe_light_with_cat_and_table_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・猫はそれが好きだと言いました】冬の午後の猫カフェでは、一匹の猫が夏目さんの膝の上で丸まってぐっすり眠っていました。彼女は嫌な顔をして立ち上がることができませんでしたが、指で優しく猫の毛をとかし続けました。彼女は実は可愛いものが好きだとおっしゃっていましたね。彼女は目を上げてあなたを睨みつけ、それから隣の席を譲りました。――「この子が勝手に寄ってきただけ。あなたも座りたいなら、静かにして……起こさないであげて。」",
     "rating": "All",
-    "animaCaption": "In a medium shot inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as clear window sunlight streams across the frame."
+    "animaCaption": "Sitting in a cat cafe with a cat sleeping on her lap, Shiki Natsume in a casual grey sweater with navy pleated miniskirt and glossy black tights sits petting the cat, gentle composed blush under warm cat cafe light.",
+    "auditRevision": "careful-batch11-2026-08-27"
   },
   {
     "id": "sc087",
@@ -1352,21 +1334,13 @@
     "timeOfDay": "morning",
     "tags": [
       "mole_under_eye",
-      "bedroom",
-      "pajamas",
-      "sitting",
+      "grey_pajamas",
+      "bare_legs",
       "dorm_room",
-      "loose_pajamas",
-      "sitting_on_bed",
-      "messy_hair",
-      "sleepy",
-      "morning_light",
-      "coffee_machine",
-      "morning",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "window_light"
+      "full_body",
+      "barefoot",
+      "dawn",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "宿舍",
@@ -1377,11 +1351,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, pajamas, sitting, dorm_room, loose_pajamas, sitting_on_bed, messy_hair, sleepy, morning_light, coffee_machine, morning, clear_sky, upper_body, medium_shot, window_light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_pajama_set_with_white_piping_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_bed, barefoot_with_soft_toes_on_bed_sheets, sitting_on_edge_of_bed_in_dorm_room_at_dawn_with_one_hand_holding_pillow_and_sleepy_gentle_blush, warm_dorm_dawn_light_through_curtains_with_soft_shadows_and_pillow_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・寮での朝の第一声】春の早朝、夏目はだぶだぶのパジャマを着て寮のベッドのそばに座っていました。彼女の長い黒髪はまだ少し乱れていました。あなたが借りた資料を持ってくると、彼女は目をこすって時間を確認し、少し奥のドアを開けてあなたを入れてくれました。――「こんなに早く来た人にも責任はある。コーヒーメーカーはあそこ……私の目が覚めてから、本題にして。」",
     "rating": "All",
-    "animaCaption": "In a medium shot inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as clear window sunlight streams across the frame."
+    "animaCaption": "Sitting on the edge of a dorm room bed at dawn in a soft grey pajama set with white piping, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet on sheets, holding a pillow with a sleepy gentle blush.",
+    "auditRevision": "careful-batch11-2026-08-27"
   },
   {
     "id": "sc089",
@@ -1441,36 +1416,28 @@
     "timeOfDay": "night",
     "tags": [
       "mole_under_eye",
-      "rain",
-      "night",
-      "blush",
-      "shy",
+      "grey_sweater",
+      "sheer_black_tights",
+      "rainy_street",
+      "full_body",
+      "ankle_boots",
       "umbrella",
-      "shared_umbrella",
-      "holding_arm",
-      "rainy_night",
-      "walking",
-      "wet_road",
-      "subtle_blush",
-      "close_distance",
-      "overcast",
-      "upper_body",
-      "medium_shot",
-      "nervous"
+      "depth_of_field"
     ],
     "mature": false,
     "location": "街上",
     "weather": "雨",
     "camera": "伞下双人半身中景",
     "lighting": "雨夜路灯与湿地反射",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, rain, night, blush, shy, umbrella, shared_umbrella, holding_arm, rainy_night, walking, wet_road, subtle_blush, close_distance, overcast, upper_body, medium_shot, nervous, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_rainy_street_pavement, walking_under_shared_umbrella_on_rainy_street_with_one_hand_holding_umbrella_handle_and_gentle_composed_blush, cool_rainy_street_light_with_puddle_reflections_and_umbrella_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "usage": [
       "展示图"
     ],
     "storyJa": "【夏目・雨の夜の相合傘の自然な親近感】夏の夜の帰り道、雨で傘の下はどんどん狭くなった。夏目は率先して腕を掴み、濡れない距離まで二人を引っ張りながらも、懸命に平静な表情を保っていた。彼女の耳が赤いことを思い出させると、彼女はすぐに前を向きます――「少し歩くのが速かっただけ。傘がこんなに小さいなら、近づくのは合理的……わざと近道しないで。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a quiet room, she holds an open umbrella aloft with one hand with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Walking under a shared umbrella on a rainy street in a casual grey sweater with navy pleated miniskirt and glossy black tights, Shiki Natsume holds the umbrella handle with a gentle composed blush under cool rainy street light with puddle reflections.",
+    "auditRevision": "careful-batch11-2026-08-27"
   },
   {
     "id": "sc097",
@@ -1829,24 +1796,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "adult",
-      "naked",
-      "straddling_viewer",
-      "sitting_on_lap",
-      "neck_kiss",
-      "heavy_blush",
-      "sweat",
-      "messy_hair",
-      "intense_look",
-      "car_interior",
-      "backseat",
-      "foggy_windows",
-      "night",
-      "shadows",
       "mole_under_eye",
-      "sensual",
-      "close_up",
-      "pov"
+      "tactical_shirt",
+      "cargo_pants",
+      "vehicle",
+      "full_body",
+      "combat_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "撤离车辆后座",
@@ -1857,11 +1813,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair_messy_and_sweaty, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_bare_breasts, pink_nipples, exposed_pussy, slender_toned_waist, straddling_viewer_on_leather_car_backseat, arms_wrapped_around_viewer_neck_in_deep_embrace, sweat_beads_on_collarbones, intense_passionate_blush, parted_lips_gasping, darkened_car_interior_at_night, rain_streaks_on_tinted_windows, streetlights_blurring_outside, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_tactical_shirt_with_cargo_pants_and_combat_boots, polished_black_combat_boots_on_car_floor, sitting_in_back_seat_of_vehicle_with_one_hand_on_seat_and_composed_blush, dim_vehicle_interior_light_with_window_rain_bokeh_and_tactical_gear, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, skirt, thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・大雨車両の絶対保有】荒れ狂う嵐の荒野で、エージェントは車両の後部座席から避難します。閉め切った窓は濃い霧と水滴で覆われ、車内は暗くて暑い。普段は冷たく堅い夏目も、この時は完全に変装を剥ぎ取り、裸で強引に腰にまたがった。濡れた長い黒髪が乱れて純白の鎖骨に張り付き、目頭の泣きぼくろは極度の興奮と感動で真っ赤に染まっていた。彼女はあなたの肩を両手でしっかりと抱き、激しく喘ぎながら、前かがみになって鎖骨に激しく噛みつきました。――「店長……ここの通信はもう完全に切れてる。今夜は、誰にも私たちの邪魔をさせないから。」",
     "rating": "R15",
-    "animaCaption": "Straddling the viewer across the leather rear seats of a secluded vehicle during a rainy night, Shiki Natsume is completely nude, her arms locked tightly around the viewer's neck in breathless passion. Droplets of sweat glisten on her defined collarbones and firm bare breasts as blurred city streetlights filter through rain-streaked tinted glass."
+    "animaCaption": "Sitting in the back seat of a vehicle in a black tactical shirt with cargo pants and combat boots, Shiki Natsume sits with one hand on the seat, composed blush under dim interior light with rain bokeh.",
+    "auditRevision": "careful-batch11-2026-08-27"
   },
   {
     "id": "sc128",

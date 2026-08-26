@@ -463,22 +463,13 @@
     "timeOfDay": "afternoon",
     "tags": [
       "mole_under_eye",
-      "sitting",
-      "sweater",
-      "window_light",
+      "grey_sweater",
+      "sheer_black_tights",
       "cat_cafe",
-      "cat_on_lap",
-      "petting_cat",
-      "window_seat",
-      "reserved_smile",
-      "cozy",
-      "afternoon",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "gentle_smile",
-      "soft_eyes",
-      "cafe"
+      "full_body",
+      "ankle_boots",
+      "cat",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "猫咖啡",
@@ -489,11 +480,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, sitting, soft_cream_knit_sweater, window_light, cat_cafe, one_cat_on_lap, gently_petting_cat, window_seat, reserved_smile, cozy, afternoon, upper_body, medium_shot, gentle_smile, soft_eyes, cafe, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_cat_cafe_floor, sitting_in_cat_cafe_with_cat_sleeping_on_lap_and_one_hand_petting_cat_with_gentle_composed_blush, warm_cat_cafe_light_with_cat_and_table_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・猫はそれが好きだと言いました】冬の午後の猫カフェでは、一匹の猫が夏目さんの膝の上で丸まってぐっすり眠っていました。彼女は嫌な顔をして立ち上がることができませんでしたが、指で優しく猫の毛をとかし続けました。彼女は実は可愛いものが好きだとおっしゃっていましたね。彼女は目を上げてあなたを睨みつけ、それから隣の席を譲りました。――「この子が勝手に寄ってきただけ。あなたも座りたいなら、静かにして……起こさないであげて。」",
     "rating": "All",
-    "animaCaption": "In a medium shot inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as clear window sunlight streams across the frame."
+    "animaCaption": "Sitting in a cat cafe with a cat sleeping on her lap, Shiki Natsume in a casual grey sweater with navy pleated miniskirt and glossy black tights sits petting the cat, gentle composed blush under warm cat cafe light.",
+    "auditRevision": "careful-batch11-2026-08-27"
   },
   {
     "id": "sc256",
