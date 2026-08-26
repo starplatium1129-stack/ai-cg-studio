@@ -77,3 +77,6 @@ poc/**/*.png
 # pnpm env artifact (project uses npm)
 pnpm-lock.yaml
 pnpm-workspace.yaml
+
+# Scene audit workdir (2026-08-26/27 full story-prompt audit + rewrite deltas)
+.audit-work/

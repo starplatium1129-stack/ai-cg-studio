@@ -17,8 +17,13 @@
     "tags": [
       "2girls",
       "wedding_gown",
+      "bridal_veil_removed",
       "sheer_white_thighhigh_stockings",
+      "marriage_contract_paper",
+      "hair_ornament",
       "honeymoon_suite",
+      "candlelight",
+      "holding_hands",
       "full_body",
       "heels",
       "depth_of_field"
@@ -31,13 +36,13 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_white_wedding_gowns_with_lace_veil_and_satin_gloves_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, white_heels_on_canopy_bed_edge, sitting_side_by_side_on_edge_of_canopy_bed_in_luxury_honeymoon_suite_holding_hands_with_interlocked_fingers, tender_shy_blush_with_veil_bokeh_and_warm_suite_light, warm_honeymoon_suite_light_with_lace_veil_and_satin_reflections, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_still_in_elegant_white_wedding_gowns_with_satin_gloves_and_sheer_white_thighhighs_after_taking_off_their_heavy_veils, sitting_on_either_side_of_you_on_the_edge_of_the_canopy_bed_in_the_candlelit_newlywed_home, nene_shyly_interlocking_fingers_with_you_while_holding_the_marriage_contract_in_her_other_palm, natsume_fixing_nene_s_tilted_hair_ornament_with_a_tsundere_expression_refusing_to_admit_she_is_moved, warm_candlelight_with_lace_and_satin_reflections, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "careful-batch04-2026-08-27",
-    "animaCaption": "Side by side on a canopy bed in a luxury honeymoon suite, Ayachi Nene and Shiki Natsume in elegant white wedding gowns with lace veils and satin gloves show silky white thighhighs hugging smooth thighs, white heels on the bed edge, tender shy blush in warm suite light."
+    "animaCaption": "Sitting on either side of you on the edge of the canopy bed in the candlelit new home with their heavy veils taken off, Ayachi Nene shyly interlaces her fingers with yours while holding the marriage contract the three of you wrote, and Shiki Natsume fixes her tilted hair ornament pretending not to be moved, both in elegant white wedding gowns."
   },
   {
     "id": "sc031",
@@ -60,6 +65,10 @@
       "sheer_white_thighhigh_stockings",
       "sheer_black_tights",
       "ritual_hall",
+      "tears_of_joy",
+      "crying_from_joy",
+      "rotating_halo",
+      "holding_hands",
       "full_body",
       "heels",
       "volumetric_lighting"
@@ -72,13 +81,13 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_formal_attire_nene_in_pastel_blue_off_shoulder_gown_with_white_lace_and_natsume_in_black_turtleneck_with_plaid_miniskirt_and_sheer_black_tights, nene_sheer_white_thighhigh_stockings_with_lace_trim_hugging_smooth_thighs_and_natsume_glossy_black_tights_hugging_toned_thighs, entire_legs_and_feet_fully_visible_in_frame, nene_white_heels_and_natsume_black_pumps_on_ritual_hall_marble_floor, standing_in_illuminated_ritual_hall_with_triple_heart_rate_curves_projected_on_dome_ceiling_holding_hands, serene_determined_blush_with_cinematic_ritual_light, volumetric_ritual_hall_light_with_dome_projections_and_marble_reflections, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, nene_in_pastel_blue_off_shoulder_formal_gown_with_white_lace_and_sheer_white_thighhighs, natsume_in_black_turtleneck_with_plaid_miniskirt_and_glossy_black_tights, white_heels_and_black_pumps_standing_on_ritual_hall_marble, standing_in_illuminated_ritual_hall_with_triple_heart_rate_curves_projected_on_the_dome_and_a_slowly_rotating_halo_of_golden_light, nene_holding_your_right_hand_and_laughing_with_tears_of_joy, natsume_holding_your_left_hand_gripping_tighter_with_calm_determined_expression, volumetric_golden_ritual_light_with_marble_reflections, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, cropped_feet, upper_body",
     "storyJa": "【夏目＆寧々・大人のAU・3人契約の無限ループ】式典ホールのライトカーテンは、3つの心拍数曲線をドームに投影します。寧々と夏目はそれぞれ左手と右手を持ちます。同期値がしきい値を超えた後も、制御を失うことはありませんでした。代わりに、ゆっくりと回転する後光となって安定しました。寧々が最初に笑い、泣き、夏目がしっかりと手を握り、短い言葉で3人の宣誓を終えました。――「誰かが誰かに寄りかかるんじゃない。私たちはみんな、ここに残ることを選んで、何度でも選び直すんです。」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "careful-batch04-2026-08-27",
-    "animaCaption": "In an illuminated ritual hall with triple heart rate curves on the dome, Ayachi Nene in a pastel blue off-shoulder gown with white lace thighhighs and Shiki Natsume in a black turtleneck with plaid miniskirt and glossy black tights stand hand in hand, serene determined blush under volumetric ritual light."
+    "animaCaption": "In the illuminated ritual hall with three heart-rate curves projected on the dome and a slowly rotating halo above, Ayachi Nene laughs with tears of joy holding your right hand while Shiki Natsume grips your left hand tighter and speaks the vow with calm determination."
   },
   {
     "id": "sc144",
@@ -105,18 +114,17 @@
       "mole_under_eye",
       "maid_style_tactical_gear",
       "cafe_interior",
-      "floating_cup",
+      "bar_counter",
+      "floating_teacup",
+      "magic",
       "laptop",
-      "in_love",
       "night",
       "soft_lighting",
       "seductive_look",
       "smirk",
-      "blush",
-      "ayachi_nene_sitting_on_the_left",
-      "smile",
-      "wide_shot",
-      "full_body"
+      "in_love",
+      "full_body",
+      "wide_shot"
     ],
     "mature": false,
     "location": "星光Occult咖啡馆",
@@ -127,13 +135,13 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "safe, 2girls, ayachi_nene, shiki_natsume, BREAK, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_pink_maid_cafe_dress_and_sheer_white_thighhigh_socks, BREAK, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_black_waitress_uniform_and_sheer_black_thighhigh_socks, sitting_together_on_velvet_cafe_booth_seat_after_closing, leaning_close_with_entwined_fingers_and_blushing_smiles, entire_legs_and_feet_fully_visible_in_frame, stocking_feet_resting_side_by_side_on_wooden_floor, cozy_retro_cafe_interior, warm_stained-glass_pendant_lamps_and_illuminated_dessert_display_cases, full_body\nSitting close together inside a velvet cafe booth long after closing hours, Ayachi Nene in pink maid dress and white stockings leans against Shiki Natsume in black waitress attire and sheer black stockings. With intertwined fingers and sweet blushing smiles, warm stained-glass pendant lights and glowing pastry cases bathe the charming interior in golden radiance, clearly framing both girls' stocking-clad feet resting side by side on the floor.",
+    "prompt": "safe, 2girls, ayachi_nene, shiki_natsume, BREAK, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_pink_maid_cafe_dress_and_sheer_white_thighhigh_socks, casting_magic_to_pour_tea_from_a_delicate_red_teacup_floating_in_midair, BREAK, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_improved_tactical_maid_outfit_and_sheer_black_thighhigh_socks, leaning_against_the_bar_counter_typing_secret_accounts_on_a_laptop, alluring_dangerous_sideways_glance_at_viewer_with_a_smirk, BREAK, cozy_dim_cafe_interior_after_closing_hours, warm_ambient_lamplight_with_stained_glass_pendant_lamps, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 1girl, 1boy, child, loli",
     "storyJa": "【寧々＆夏目・大人のAfter Story・魔法と異能のカフェ】あなたと寧々、夏目の三人は、魔法と異能が交差する小さなカフェを開いた。閉店後の店内には、暖かな間接照明だけが残っている。寧々は魔法でティーカップに紅茶を注ぎ、エージェント風のメイド服に着替えた夏目は、カウンターにもたれて秘密の帳簿を確認していた。やがて彼女はパソコンから顔を上げ、からかうような視線をあなたへ向ける――「ねえ、店長。今夜の二人分の残業代……自分で払うつもり？」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "Inside Cafe Stella long after closing, Ayachi Nene sits on the left in her classic maid dress, playfully casting glowing pink magic butterflies, while Shiki Natsume leans across the bar counter on the right with her laptop in dark tactical maid attire, offering a confident, alluring smirk under warm brass lamps."
+    "animaCaption": "After closing at the occult cafe, Ayachi Nene in her pink maid dress pours tea by magic from a delicate red teacup floating in mid-air while Shiki Natsume in an improved tactical maid outfit leans on the bar counter typing their secret accounts on a laptop and cuts you a dangerously alluring sideways glance under warm dim lamps."
   },
   {
     "id": "sc151",
@@ -151,13 +159,20 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "2girls",
+      "ayachi_nene",
+      "shiki_natsume",
       "hair_ribbon",
-      "silk_negligee",
-      "bare_legs",
-      "newlywed_suite",
-      "full_body",
-      "barefoot",
-      "depth_of_field"
+      "ahoge",
+      "mole_under_eye",
+      "silk_loungewear",
+      "under_blanket",
+      "morning_light",
+      "morning_sunlight",
+      "newlywed_bed",
+      "heart_shaped_ahoge",
+      "shy_blush",
+      "close_up"
     ],
     "mature": false,
     "location": "新婚大床",
@@ -168,13 +183,13 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_silk_negligee_with_lace_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_on_bed, barefoot_with_soft_toes_on_bed_sheets, lying_on_side_on_bed_in_newlywed_suite_with_one_hand_holding_blanket_and_gentle_loving_blush, warm_newlywed_suite_night_light_with_bed_sheet_and_silk_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, nene_with_white_hair_low_twintails_purple_eyes_ahoge_and_pink_ribbons, natsume_with_black_hair_yellow_eyes_mole_under_eye_and_black_headband, both_wearing_loose_soft_silk_loungewear_snuggled_under_the_blanket_in_the_newlywed_bed, nene_on_the_left_blushing_shyly_and_clutching_your_sleeve_with_her_ahoge_curled_into_a_heart, natsume_on_the_right_propping_up_on_one_elbow_with_sleepy_flirtatious_teasing_eyes, both_holding_you_trapped_between_them_under_the_blanket, bright_morning_sunlight_streaming_through_the_window_with_warm_glow_on_the_sheets, close_up, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・究極に甘い修羅場】どこまでも怠惰な朝。あなたは暖かいベッドから目覚め、最も幸せな「おはよう、このお寝坊さん。今朝の約束、二度寝は禁止だからね。」",
     "rating": "All",
     "recommendedSize": "1344×896",
     "auditRevision": "careful-batch11-2026-08-27",
-    "animaCaption": "Lying on her side on a bed in a newlywed suite in a soft white silk negligee with lace trim, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on sheets, gentle loving blush under warm suite night light."
+    "animaCaption": "In a lazy sunlit morning, Ayachi Nene on the left blushes and clutches your sleeve with her ahoge curled into a heart while Shiki Natsume on the right props herself up on one elbow and teases you with a sleepy flirtatious glance, both holding you prisoner under the blanket of the newlywed bed in warm morning light."
   },
   {
     "id": "sc154",
@@ -192,13 +207,20 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "hair_ribbon",
-      "pink_camisole",
-      "bare_legs",
-      "newlywed_bed",
-      "full_body",
-      "barefoot",
-      "depth_of_field"
+      "2girls",
+      "ayachi_nene",
+      "shiki_natsume",
+      "completely_naked",
+      "nude",
+      "cowgirl_position",
+      "riding",
+      "biting_neck",
+      "embracing_from_behind",
+      "sweat",
+      "messy_bed_sheets",
+      "intense_passion",
+      "newlywed_bedroom",
+      "close_up"
     ],
     "mature": false,
     "location": "新婚卧室大床",
@@ -209,13 +231,13 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_pink_lace_camisole_with_white_shorts_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_on_bed, barefoot_with_soft_toes_on_bed_sheets, lying_on_back_on_newlywed_bed_with_one_hand_holding_blanket_and_shy_intimate_blush, warm_newlywed_bedroom_light_with_bed_sheet_and_lace_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, nene_with_white_hair_low_twintails_purple_eyes_ahoge_and_pink_ribbons, natsume_with_black_hair_yellow_eyes_mole_under_eye_and_black_headband, completely_naked, nude, ayachi_nene_riding_on_top_of_you_in_cowgirl_position_with_fingers_interlocked_and_flushed_sweaty_face, shiki_natsume_pressing_against_you_from_behind_with_her_mouth_biting_your_neck, tangled_messy_bed_sheets_and_scattered_clothes, sweaty_bodies_with_skin_sheen_and_intense_passionate_embrace, dim_warm_bedside_lamp_light_in_the_newlywed_bedroom, close_up, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, clothed, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・二人のヒロインによる至福の修羅フィールド】薬物と感情の同調率が200％を超えるという極限の制約の中、二人の少女は普段の拘束を完全に放棄した。ベッドの上の服は全部なくなり、シーツもぐちゃぐちゃになっていました。寧々はあなたにまたがり、顔は汗と赤面で覆われ、両手はあなたの手でしっかりと握り締められ、必死にあなたの温もりを求めています。夏目が後ろからしがみつき、首筋に熱い唇を噛みつきます。ここは病的な愛と汗と肉体が詰まった至福のブラックホール――「柊史、店長……私たちの心の防壁は、とっくに消えてる。だから今夜は、ずっとそばにいて。」",
     "rating": "R15",
     "recommendedSize": "1344×896",
     "auditRevision": "careful-batch15-2026-08-27",
-    "animaCaption": "Lying on her back on a newlywed bed in a soft pink lace camisole with white shorts, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on sheets, shy intimate blush under warm bedroom light."
+    "animaCaption": "Completely naked in the tangled sheets of the dim newlywed bedroom, Ayachi Nene rides on top of you flushed and slick with sweat with her fingers locked in yours while Shiki Natsume presses close from behind and sinks her teeth into your neck, the room filled with feverish desire under warm bedside lamp light."
   },
   {
     "id": "sc157",
@@ -234,12 +256,17 @@
     "timeOfDay": "late_night",
     "tags": [
       "2girls",
-      "loungewear",
-      "bare_legs",
+      "ayachi_nene",
+      "shiki_natsume",
+      "disheveled_clothes",
+      "tangled_bed_sheets",
+      "sweat",
+      "heavy_breathing",
+      "face_buried_in_neck",
+      "gripping_hand",
       "secret_room",
-      "full_body",
-      "barefoot",
-      "depth_of_field"
+      "dim_lighting",
+      "full_body"
     ],
     "mature": false,
     "location": "秘密绝对领域",
@@ -251,12 +278,12 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, both_in_elegant_loungewear_nene_in_pink_and_natsume_in_grey_with_slender_bare_legs, nene_bare_legs_and_natsume_bare_legs_with_soft_skin_sheen_sitting_on_bed, barefoot_with_soft_toes_on_bed_sheets, sitting_side_by_side_on_bed_in_secret_room_with_hands_holding_and_gentle_loving_blush, warm_secret_room_light_with_bed_sheet_and_loungewear_bokeh, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, nene_with_white_hair_low_twintails_purple_eyes_ahoge_and_pink_ribbons, natsume_with_black_hair_yellow_eyes_mole_under_eye_and_black_headband, clothing_disheveled_and_bed_in_mess_in_the_private_secret_room, nene_with_dazed_lost_eyes_and_heavy_sweat_gripping_your_left_hand_in_blissful_ecstasy, natsume_wrapping_her_arm_around_your_shoulder_from_the_right_burying_her_face_in_your_neck_and_breathing_hard_with_her_mole_flushed_red, feverish_atmosphere_of_heavy_panting, dim_warm_ambient_light_in_the_private_room, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, cropped_feet, upper_body",
     "storyJa": "【寧々＆夏目・大人のAfter Story・心がほどける夜】誰にも邪魔されない部屋で、三人は長い一日の終わりを迎えていた。寧々はあなたの左手を握り、安心したように肩を寄せている。夏目も反対側からそっと寄りかかり、いつもの強がりを忘れた穏やかな表情を見せた。魔法と異能、二つの世界を隔てていた壁はもうない。窓の外で夜が静かに更けていくなか、三人の呼吸だけが同じ速さへ重なっていった。",
     "rating": "R15",
     "recommendedSize": "1344×896",
     "auditRevision": "careful-batch13-2026-08-27",
-    "animaCaption": "Side by side on a bed in a secret room, Ayachi Nene in pink and Shiki Natsume in grey loungewear sit with slender bare legs and soft skin sheen, bare feet on sheets, holding hands with gentle loving blush under warm secret room light."
+    "animaCaption": "In the dim private secret room, Ayachi Nene with dazed ecstatic eyes and sweat-slicked skin grips your left hand while Shiki Natsume wraps her arm around your shoulder from the right and buries her face in your neck breathing hard with her mole flushed red, tangled sheets and scattered clothes around them, all barriers melting in the feverish night."
   }
 ]

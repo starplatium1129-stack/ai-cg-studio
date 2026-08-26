@@ -12,7 +12,12 @@
  * - 角色归属一致性：角色 ID 与 prompt / caption 锚定 100% 匹配
  *
  * 用法：
- *   node scripts/tests/test-prompt-rewrite-integrity.js --delivery <path> [--baseline <commit>]
+ *   node scripts/tests/test-prompt-rewrite-integrity.js --delivery <path> [--baseline <commit>] [--targeted]
+ *
+ * --targeted：精确修复交付模式（2026-08-27 引入）。默认模式面向「批量全量重写」：
+ *   单条保留率>85% 且 prose 相似度>80% 判为偷懒嫌疑；targeted 模式面向「审计驱动的
+ *   单点纠错交付」（如仅修正时段词/单个 tag/个别句子），只在交付与基线完全一致时
+ *   判为偷懒，避免把小而真实的修复误报为未重写。覆盖率/缺漏校验两种模式一致。
  */
 
 const fs = require('fs');
@@ -95,9 +100,10 @@ function main() {
     ? process.argv[baselineArgIdx + 1]
     : 'b1ccfc0';
 
+  const targeted = process.argv.includes('--targeted');
   console.log('==============================================================');
   console.log('[门禁] 批量提示词改写完整性复检（防偷懒）');
-  console.log(`[门禁] 基线: ${baselineCommit} | 交付: ${deliveryPath || '当前工作区数据层'}`);
+  console.log(`[门禁] 基线: ${baselineCommit} | 交付: ${deliveryPath || '当前工作区数据层'} | 模式: ${targeted ? 'targeted 精确修复' : 'default 全量重写'}`);
   console.log('==============================================================');
 
   let deliveryMap = new Map();
@@ -144,8 +150,10 @@ function main() {
       totalProseSim += pSim;
 
       // 单条如果保留率超过 80% 或 prose 完全没改，报警
-      if (rRate > 0.85 && pSim > 0.80) {
+      if (!targeted && rRate > 0.85 && pSim > 0.80) {
         errors.push(`[偷懒嫌疑] ${id}: 词条保留率 ${(rRate * 100).toFixed(1)}%, Prose 相似度 ${(pSim * 100).toFixed(1)}%`);
+      } else if (targeted && rRate >= 0.999 && pSim >= 0.999) {
+        errors.push(`[偷懒嫌疑] ${id}: 交付与基线完全一致（保留率 100%, Prose 相似度 100%），疑似未改写`);
       }
     }
   });
