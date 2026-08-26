@@ -42,7 +42,7 @@
           :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
           :aria-pressed="pb.focusMode"
           @click="pb.focusMode = !pb.focusMode">
-          <span class="focus-mode-icon" aria-hidden="true">{{ pb.focusMode ? '↙' : '⛶' }}</span>
+          <ArchiveIcon :name="pb.focusMode ? 'compress' : 'expand'" class="focus-mode-icon" aria-hidden="true" />
           <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
         </button>
         <div class="api-status">
@@ -79,149 +79,33 @@
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
       <div class="director-col col-left">
 
-        <!-- Story -->
-        <div class="panel step-panel" id="stepStory">
-          <div class="panel-title">故事 · Story</div>
-          <textarea class="story-input" v-model="pb.story"
-            placeholder="写下一句触动心弦的画面，或是脑海中浮现的相遇瞬间…"
-            @input="onStoryInput"></textarea>
-          <label class="visual-description-label" for="visualDescription">画面描述 · Visual description</label>
-          <textarea id="visualDescription" class="visual-description-input" v-model="pb.visualDescription"
-            placeholder="细描角色的神态姿态、服饰光影与环境细节（将由引擎深度解析）…"></textarea>
-          <p class="visual-description-hint">该描述将直接传递给生成引擎；故事台词与心理独白由工坊为您智能转化。</p>
-          <div v-if="pb.activeScene" class="scene-context">
-            <span class="scene-context-title">{{ pb.activeScene.title }}</span>
-            <button class="scene-context-detach" type="button" @click="detachScene()">× 脱离</button>
-          </div>
-          <div class="story-chips">
-            <button v-for="s in storyChips" :key="s" type="button" class="story-chip"
-              @click="pb.setStory(s)">{{ s }}</button>
-          </div>
-        </div>
+        <DirectorStoryPanel />
 
-        <!-- Character -->
-        <div class="panel step-panel" id="stepChar">
-          <div class="panel-title">角色 · Character</div>
-          <div class="char-source" role="group" aria-label="角色来源">
-            <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular }"
-              :aria-pressed="!pb.isPopular" @click="selectPopularSource('studio')">
-              <ArchiveIcon name="character" class="char-source-icon" />
-              <span>工作室角色</span>
-            </button>
-            <button type="button" class="char-source-btn" :class="{ active: pb.isPopular }"
-              :aria-pressed="pb.isPopular" @click="selectPopularSource('popular')">
-              <ArchiveIcon name="spark" class="char-source-icon" />
-              <span>热门角色 · 无需 LoRA</span>
-            </button>
-          </div>
+        <DirectorCharacterPanel :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
 
-          <template v-if="!pb.isPopular">
-            <div class="char-row">
-              <button v-for="c in charOptions" :key="c.id"
-                class="char-btn" type="button"
-                :class="{ active: pb.char === c.id }"
-                :aria-pressed="pb.char === c.id"
-                @click="pb.setChar(c.id)">
-                <ArchiveIcon :name="c.iconName" /> {{ c.label }}
-              </button>
-            </div>
-            <div class="traits-row">
-              <button v-for="t in currentTraits" :key="t.tag"
-                class="trait-chip"
-                :class="{ active: pb.manualTags.has(t.tag) }"
-                type="button"
-                @click="pb.toggleManualTag(t.tag)">{{ t.label }}</button>
-            </div>
-          </template>
-
-          <template v-else>
-            <PopularCharacterPicker
-              v-model:search="popularSearch"
-              :characters="pb.popularCharacters"
-              :selected-character-id="pb.subject.kind === 'popular' ? pb.subject.characterId : ''"
-              :selected-outfit-id="pb.subject.kind === 'popular' ? pb.subject.outfitId : ''"
-              @select="selectPopularCharacter"
-              @select-outfit="selectPopularOutfit"
-            />
-          </template>
-        </div>
-
-        <!-- Scenes -->
-        <div class="panel step-panel" id="stepScene">
-          <template v-if="pb.isPopular">
-            <div class="panel-title">场景建议 · Blueprint<span class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
-            <PopularBlueprintPicker
-              :pool="popularBlueprintPool"
-              :categories="blueprintCategories"
-              :recommended="recommendedBlueprints"
-              :filtered="filteredPopularBlueprints"
-              v-model:category="popularCategory"
-              v-model:show-all="showAllBlueprints"
-              :data-ready="pb.dataReady"
-              :selected-blueprint-id="pb.subject.kind === 'popular' ? pb.subject.blueprintId ?? '' : ''"
-              @select="selectBlueprint"
-              @rotate="rotateBlueprintSet"
-              @toggle="toggleBlueprintList"
-            />
-          </template>
-          <template v-else>
-            <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
-            <div class="scene-scope" role="group" aria-label="场景库范围">
-              <button type="button" :class="{ active: sceneCollection === 'core' }"
-                :aria-pressed="sceneCollection === 'core'"
-                @click="setSceneCollection('core')">人设核心 {{ personaCoreCount }}</button>
-              <button type="button" :class="{ active: sceneCollection === 'curated' }"
-                :aria-pressed="sceneCollection === 'curated'"
-                @click="setSceneCollection('curated')">精选 {{ curatedCount }}</button>
-              <button type="button" :class="{ active: sceneCollection === 'all' }"
-                :aria-pressed="sceneCollection === 'all'"
-                @click="setSceneCollection('all')">完整库</button>
-            </div>
-            <div class="scene-search-wrap">
-              <input type="search" class="scene-search" v-model="pb.sceneSearch"
-                placeholder="试试：安静的夏目雨夜">
-              <button class="scene-search-clear" type="button" aria-label="清空"
-                @click="pb.sceneSearch = ''">×</button>
-            </div>
-            <div class="scene-filter-summary">
-              <span class="scene-result-count" role="status" aria-live="polite">
-                {{ availableScenes.length }} 个场景
-              </span>
-              <button class="scene-filter-reset" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
-            </div>
-            <div class="scene-filter-label advanced-decision">主题</div>
-            <div class="scene-cats advanced-decision">
-              <button v-for="t in SCENE_THEMES" :key="t.id"
-                class="scene-cat-btn" type="button"
-                :class="{ active: pb.sceneTheme === t.id }"
-                @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
-            </div>
-            <div class="scene-list">
-              <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
-              <div v-else-if="!availableScenes.length" class="scene-empty">未找到匹配场景</div>
-              <button v-for="scene in visibleScenes" :key="scene.id"
-                class="scene-card"
-                :class="{ active: pb.sceneId === scene.id }"
-                type="button"
-                @click="selectScene(scene)">
-                <div class="scene-card-title">
-                  {{ scene.title }}
-                  <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
-                </div>
-                <div v-if="scene.story" class="scene-card-story">{{ scene.story }}</div>
-                <div class="scene-card-meta">
-                  <span v-if="scene.category" class="scene-cat-tag">{{ scene.category }}</span>
-                  <span v-if="scene.rating && scene.rating !== 'All'" class="scene-rating-tag">{{ scene.rating }}</span>
-                </div>
-              </button>
-              <button v-if="availableScenes.length > sceneLimit" class="btn btn-ghost scene-more"
-                type="button" @click="sceneLimit += 20">
-                显示更多 ({{ availableScenes.length - sceneLimit }} 个)
-              </button>
-            </div>
-          </template>
-        </div>
-
+        <DirectorScenesPanel
+          :popular-blueprint-pool="popularBlueprintPool"
+          :blueprint-categories="blueprintCategories"
+          :recommended-blueprints="recommendedBlueprints"
+          :filtered-popular-blueprints="filteredPopularBlueprints"
+          :popular-category="popularCategory"
+          :show-all-blueprints="showAllBlueprints"
+          :available-scenes="availableScenes"
+          :visible-scenes="visibleScenes"
+          :scene-collection="sceneCollection"
+          :persona-core-count="personaCoreCount"
+          :curated-count="curatedCount"
+          :persona-core-ids="personaCoreIds"
+          :scene-limit="sceneLimit"
+          @update:popularCategory="popularCategory = $event"
+          @update:showAllBlueprints="showAllBlueprints = $event"
+          @selectBlueprint="selectBlueprint"
+          @rotateBlueprintSet="rotateBlueprintSet"
+          @toggleBlueprintList="toggleBlueprintList"
+          @update:sceneCollection="setSceneCollection($event)"
+          @selectScene="selectScene"
+          @update:sceneLimit="sceneLimit = $event"
+        />
         <HistoryPanel class="advanced-decision"
           :history="pb.history"
           @resume="resumeHistory"
@@ -235,233 +119,34 @@
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
       <div class="director-col col-center">
 
-        <!-- Stage placeholder -->
-        <section
-            v-show="!displayResultUrl"
-          class="stage-placeholder"
-          :class="{
-            'is-generating': generationBusy,
-            'is-error': !!generationError,
-            'is-paused': generationStopped,
-          }"
-          aria-label="成片监看区"
-        >
-          <div class="stage-chrome">
-            <span>CANVAS</span>
-            <span class="stage-ready">
-              {{ generationBusy ? 'RENDERING' : (generationError ? 'ATTENTION' : (generationStopped ? 'PAUSED' : 'READY')) }}
-            </span>
-          </div>
-          <CornerFrame />
-          <i class="stage-magic-ring" aria-hidden="true"></i>
-          <img class="stage-muse nene" :src="stageMuseUrl.nene" alt="" aria-hidden="true" decoding="async">
-          <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
-          <div class="stage-message">
-            <!-- 生成中：呼吸 + 进度，缓解等待焦虑 -->
-            <div v-if="generationBusy" class="stage-generating-copy">
-              <div class="stage-generating-title">正在绘制这一张</div>
-              <div class="stage-generating-sub">
-                {{ generationStatusText || '模型正在推理…' }}
-                <template v-if="generationProgress !== null"> {{ Math.round(generationProgress * 100) }}%</template>
-                <template v-else-if="drawEngine !== 'sd'"> · 已等待 {{ animaState.elapsedSeconds }} 秒</template>
-                <template v-if="drawEngine !== 'sd' && animaState.currentNode"> · 节点 {{ animaState.currentNode }}</template>
-              </div>
-              <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }">
-                <i :style="generationProgressStyle"></i>
-              </div>
-            </div>
-            <div v-else-if="generationError" class="stage-idle">
-              <div class="stage-placeholder-title">这一张没有完成</div>
-              <div class="stage-placeholder-copy">{{ generationError }}</div>
-              <div class="stage-quick-actions">
-                <button class="btn btn-primary" type="button" @click="callGenerate()">重新生成</button>
-              </div>
-            </div>
-            <div v-else-if="generationStopped" class="stage-idle">
-              <div class="stage-placeholder-title">生成已停止</div>
-              <div class="stage-placeholder-copy">当前画布已安全暂停，可以调整内容后重新生成。</div>
-              <div class="stage-quick-actions">
-                <button class="btn btn-primary" type="button" @click="callGenerate()">重新生成</button>
-              </div>
-            </div>
-            <div v-else class="stage-idle">
-              <div class="stage-placeholder-title">心动成片将在此处呈现</div>
-              <div class="stage-quick-actions">
-                <button
-                  v-if="drawEngine === 'anima'"
-                  class="btn btn-ghost"
-                  type="button"
-                  title="导入任意外部本地图片，进行智能语义识别与局部换装"
-                  @click="inpaintOpen = true"
-                >
-                  <ArchiveIcon name="wardrobe" />
-                  <span>导入本地图片换装</span>
-                </button>
-                <button class="btn btn-ghost" type="button"
-                  @click="router.push('/scene-explorer')">
-                  探索灵感场景
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Result image -->
-        <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-          <CornerFrame variant="ghost" />
-          <!-- 换装前后滑动对比视图 -->
-          <ImageSplitCompare
-            v-if="inpaintCompareActive && inpaintOriginalUrl"
-            :before-src="inpaintOriginalUrl"
-            :after-src="displayResultUrl"
-            before-label="换装前原图"
-            after-label="换装后成片"
-          />
-          <img v-else class="result-image" :src="displayResultUrl" alt="生成的图片" />
-          <div class="result-image-actions">
-            <!-- 换装对比切换按钮 -->
-            <button
-              v-if="inpaintOriginalUrl && displayResultUrl"
-              class="btn btn-ghost btn-compare-inpaint"
-              :class="{ active: inpaintCompareActive }"
-              type="button"
-              :title="inpaintCompareActive ? '退出前后对比模式' : '左右滑动对比换装前后效果'"
-              @click="inpaintCompareActive = !inpaintCompareActive"
-            >
-              <ArchiveIcon name="compare" />
-              <span>{{ inpaintCompareActive ? '退出对比' : '换装前后对比' }}</span>
-            </button>
-            <button
-              v-if="displayResultUrl && drawEngine === 'anima'"
-              class="btn btn-ghost btn-inpaint-action"
-              type="button"
-              :disabled="generationBusy"
-              title="锁定角色与背景，使用 AI 视觉语义识别一键更换服装"
-              @click="inpaintOpen = true"
-            >
-              <ArchiveIcon name="wardrobe" />
-              <span>局部换装</span>
-            </button>
-            <button
-              v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
-              class="btn btn-ghost btn-hires-action"
-              type="button"
-              :disabled="generationBusy"
-              title="使用 2x 高清超分放大"
-              @click="upscaleCurrentResult"
-            >
-              <ArchiveIcon name="spark" />
-              <span>高清放大 2x</span>
-            </button>
-            <button
-              v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
-              class="btn btn-ghost btn-video-action"
-              type="button"
-              :disabled="generationBusy"
-              title="将当前成片作为首帧，到视频页生成短片（场景预设自动转视频提示词）"
-              @click="goToVideo"
-            >
-              <ArchiveIcon name="play" />
-              <span>出视频</span>
-            </button>
-            <button
-              v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
-              class="btn btn-ghost btn-video-action"
-              type="button"
-              :disabled="generationBusy"
-              title="把当前成片作为分镜首帧，攒齐后到「分镜短片」整批生成"
-              @click="addToShots"
-            >
-              <ArchiveIcon name="gallery" />
-              <span>加入分镜</span>
-            </button>
-            <button
-              v-if="shotsPending > 0"
-              class="btn btn-primary btn-video-action"
-              type="button"
-              title="到视频页「分镜短片」，生成已加入的镜头"
-              @click="goToShots"
-            >
-              <ArchiveIcon name="play" />
-              <span>去分镜短片（{{ shotsPending }}）</span>
-            </button>
-            <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
-            <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
-              与上一张对比
-            </button>
-            <button class="btn btn-ghost" type="button" @click="clearDisplayedResult">清除</button>
-          </div>
-        </div>
-
-        <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
-          <div class="panel-title expert-tags-header">
-            <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
-            <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
-          </div>
-          <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
-            <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag" :data-weight-tier="tagWeightTier(tag)" :title="tagMeaning(tag)">
-              <span class="manual-tag-en">{{ tag }}</span>
-              <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
-              <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
-            </span>
-            <p v-if="!pb.manualTags.size" class="manual-tags-empty-hint">
-              暂未激活微调词条。可在下方按分类点选预设、选择官方服装包，或直接搜索/输入 Danbooru 标签回车添加。
-            </p>
-          </div>
-          <div v-if="!pb.isPopular" class="outfit-presets" aria-label="官方服装词包">
-            <div class="outfit-presets-head">
-              <strong>官方服装词包</strong>
-              <span>一键加入训练原词，也可以继续单独选 tag</span>
-            </div>
-            <div class="outfit-preset-list">
-              <button v-for="bundle in visibleOutfitBundles" :key="bundle.id"
-                type="button" class="outfit-preset"
-                :class="{ selected: bundle.tags.every(tag => pb.manualTags.has(tag)) }"
-                :aria-pressed="bundle.tags.every(tag => pb.manualTags.has(tag))"
-                @click="toggleOutfitBundle(bundle.tags)">
-                <strong>{{ bundle.label }}</strong>
-                <small>{{ bundle.tags.slice(0, 4).join(', ') }}{{ bundle.tags.length > 4 ? ' …' : '' }}</small>
-              </button>
-            </div>
-            <div class="r18-controls" aria-label="R18 角色门控词">
-              <div class="outfit-presets-head r18-controls-head">
-                <strong>R18 角色门控词</strong>
-                <span>按角色启用，仅在成人场景中选择</span>
-              </div>
-              <div class="outfit-preset-list">
-              <button v-for="control in visibleR18Controls" :key="control.tag"
-                type="button" class="outfit-preset r18-control"
-                :class="{ selected: pb.manualTags.has(control.tag) }"
-                :aria-pressed="pb.manualTags.has(control.tag)"
-                @click="pb.toggleManualTag(control.tag)">
-                <strong>{{ control.label }}</strong>
-                <small>{{ control.tag }}</small>
-              </button>
-              </div>
-            </div>
-          </div>
-          <p v-else class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
-          <div class="tag-browser">
-            <input v-model="tagSearch" class="tag-input" type="search" placeholder="搜索中文或 Danbooru 词条" />
-            <div class="tag-categories" role="group" aria-label="词条分类">
-              <button v-for="cat in tagCategories" :key="cat.id" type="button"
-                :class="{ active: tagCategory === cat.id }"
-                :aria-pressed="tagCategory === cat.id"
-                @click="tagCategory = cat.id">{{ cat.label }}</button>
-            </div>
-            <div class="tag-results">
-              <button v-for="tag in visibleTags" :key="tag.en" type="button"
-                :class="{ selected: pb.manualTags.has(tag.en) }"
-                :aria-pressed="pb.manualTags.has(tag.en)"
-                :title="tagMeaning(tag.en, tag.cn)"
-                @click="pb.toggleManualTag(tag.en)">
-                <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ tag.en }}</small>
-              </button>
-            </div>
-          </div>
-          <input class="tag-input" type="text" placeholder="也可以直接输入 Danbooru 标签后回车"
-            @keydown.enter.prevent="addTag($event)" />
-        </div>
+        <DirectorStagePanel
+          :display-result-url="displayResultUrl"
+          :generation-busy="generationBusy"
+          :generation-error="generationError"
+          :generation-stopped="generationStopped"
+          :generation-status-text="generationStatusText"
+          :generation-progress="generationProgress"
+          :generation-progress-style="generationProgressStyle"
+          :anima-elapsed="animaState.elapsedSeconds"
+          :anima-current-node="animaState.currentNode || ''"
+          :draw-engine="drawEngine"
+          :inpaint-original-url="inpaintOriginalUrl"
+          :inpaint-compare-active="inpaintCompareActive"
+          :shots-pending="shotsPending"
+          :has-prev-result="!!prevResult"
+          @generate="callGenerate()"
+          @openInpaint="inpaintOpen = true"
+          @exploreScenes="router.push('/scene-explorer')"
+          @update:inpaintCompareActive="inpaintCompareActive = $event"
+          @upscale="upscaleCurrentResult"
+          @goVideo="goToVideo"
+          @addToShots="addToShots"
+          @goShots="goToShots"
+          @saveResult="saveResult"
+          @openCompare="compareOpen = true"
+          @clearResult="clearDisplayedResult"
+        />
+        <DirectorTagWorkbench />
 
         <PromptHealthPanel
           class="advanced-decision"
@@ -733,6 +418,11 @@ const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/Batc
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
+const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))
+const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/director/DirectorCharacterPanel.vue'))
+const DirectorScenesPanel = defineAsyncComponent(() => import('@/components/director/DirectorScenesPanel.vue'))
+const DirectorTagWorkbench = defineAsyncComponent(() => import('@/components/director/DirectorTagWorkbench.vue'))
+const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
 const DirectorDecisionsRail = defineAsyncComponent(() => import('@/components/director/DirectorDecisionsRail.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const ImageSplitCompare = defineAsyncComponent(() => import('@/components/visual/ImageSplitCompare.vue'))

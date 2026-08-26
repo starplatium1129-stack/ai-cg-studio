@@ -1,0 +1,78 @@
+/* ============================================================
+     Director — 宽屏工作台 (Scene-first, Prompt-last)
+     左侧=剧本与素材，右侧=导演决策、监看与大画幅成品
+     ============================================================ */
+  .pb { max-width: 1780px; width: 100%; margin: 0 auto; padding: var(--s-3) var(--s-5) var(--s-7); }
+  .pb .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: var(--fs-label); margin-bottom: var(--s-2); text-decoration: none; }
+  .pb .nav-back:hover { color: var(--accent); }
+  .pb-topline { display:flex; align-items:center; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-3); }
+  .pb-header { margin-bottom: 0; }
+  .pb-kicker { display:flex; align-items:center; gap:6px; margin-bottom:2px; color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+  .pb-kicker::before { content:''; width:16px; height:1px; background:linear-gradient(90deg,var(--accent),var(--natsume-amber)); }
+  .pb-title { font-size:1.35rem; font-weight:750; letter-spacing:-.02em; color:var(--text-primary); margin:0; line-height:1.2; }
+  .pb-sub { color:var(--text-muted); font-size:var(--fs-label-sm); margin-top:2px; }
+  .pb-top-actions { display:flex; align-items:center; justify-content:flex-end; gap:var(--s-2); flex-wrap:wrap; }
+  .pb .aic-icon { width:1em; height:1em; display:inline-grid; place-items:center; flex:0 0 auto; }
+  .pb .aic-icon svg { width:100%; height:100%; display:block; }
+  .pb .focus-mode-btn { min-height:36px; display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); padding:0 var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); cursor:pointer; font:650 var(--fs-label-sm) var(--font-sans); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover),transform var(--motion-hover); }
+  .pb .focus-mode-icon { display:inline-grid; place-items:center; font-size:var(--fs-body-lg); line-height:1; }
+  .pb .focus-mode-btn:hover, .pb .focus-mode-btn[aria-pressed="true"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); color:var(--accent); }
+  .pb .focus-mode-btn:active, .pb .utility-trigger:active { transform:scale(.95); }
+  .pb .utility-menu { position:relative; }
+  .pb .utility-trigger { width:36px; height:36px; display:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; color:var(--text-secondary); cursor:pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--motion-hover),border-color var(--motion-hover),transform var(--motion-hover); }
+  .pb .utility-trigger:hover, .pb .utility-menu.open .utility-trigger { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }
+  .pb .utility-popover { position:absolute; z-index:var(--z-popover); top:calc(100% + 10px); right:0; width:min(300px,calc(100vw - 32px)); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-2xl); box-shadow:var(--shadow-lg); }
+  .pb .utility-label { margin:2px 4px 8px; color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
+  .pb .utility-actions { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); }
+  .pb .utility-actions .btn { min-height:38px; justify-content:center; font-size:var(--fs-label-sm); }
+  .pb .utility-actions .wide { grid-column:1 / -1; }
+  .pb .utility-divider { height:1px; margin:var(--s-3) 0; background:var(--border-soft); }
+  .pb .shortcut-hint { color:var(--text-muted); font:var(--fs-mono-sm) var(--font-mono); white-space:nowrap; }
+  .pb .shortcut-hint kbd { padding:2px var(--s-2); border:1px solid var(--border-soft); border-bottom-color:var(--border-strong); border-radius:var(--r-sm); background:var(--bg-deep); color:var(--text-secondary); box-shadow:0 1px 0 var(--border-soft); }
+  .pb .icon-label { display:inline-flex; align-items:center; gap:var(--s-2); }
+  /* .panel-title 唯一定义 */
+  .pb .panel-title, .pb .director-card-name { display:flex; align-items:center; gap:var(--s-2); }
+  .pb .panel-title {
+    margin-bottom:var(--s-3);
+    color:var(--text-secondary); font-size:var(--fs-label-sm); font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase;
+  }
+  .pb .panel-title .aic-icon, .pb .director-card-name .aic-icon { color:var(--accent); font-size:var(--fs-body-lg); }
+
+  /* ---- 宽屏 & 4K 旗舰工作台 ---- */
+  .pb .director-workspace {
+    display:grid;
+    grid-template-columns:340px minmax(560px, 1fr) 340px;
+    grid-template-areas:"story stage decisions";
+    gap:20px;
+    align-items:start;
+    animation:pbWorkspaceIn .38s var(--ease-out) both;
+  }
+  .pb .director-workspace > .col-left { animation:directorRailIn .48s var(--ease-out) .04s both; }
+  .pb .director-workspace > .col-center { animation:directorStageIn .56s var(--ease-out) .1s both; }
+  .pb .director-workspace > .col-right { animation:directorRailIn .48s var(--ease-out) .16s both; }
+  .pb[data-director-mode="basic"] .director-workspace {
+    grid-template-columns:340px minmax(640px, 1fr);
+    grid-template-areas:"story stage";
+  }
+  .pb[data-director-mode="basic"] .col-left {
+    position:sticky; top:54px; max-height:calc(100vh - 68px); overflow-y:auto; padding-right:8px;
+  }
+  .pb[data-director-mode="basic"] .col-right { display:none; }
+  .pb .director-col { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+  .pb .col-left { grid-area: story; position:sticky; top:54px; max-height:calc(100vh - 68px); overflow-y:auto; padding-right:8px; scrollbar-width:thin; }
+  .pb .col-right { grid-area: decisions; position:sticky; top:54px; max-height:calc(100vh - 68px); overflow-y:auto; padding-right:8px; scrollbar-width:thin; }
+  .pb .col-center { grid-area:stage; display:flex; flex-direction:column; gap:var(--s-4); position:static; min-width:0; }
+  .pb .col-center > .panel { margin-top:0 !important; }
+  .pb .col-center > .stage-placeholder { order:0; }
+  .pb .col-center > .result-image-wrap { order:0; }
+  .pb .col-center > #stepResult { order:1; }
+  .pb .col-center > .expert-tag-panel { order:2; }
+  .pb .col-center > .monitor { order:3; }
+  .pb .col-center > .artist-style-picker { order:4; }
+  .pb .col-center > .generation-settings { order:5; }
+  .pb .col-center > .anima-quick-panel { order:6; }
+  /* 2026-08-16 布局合理化：中栏信息流固定为 画布 → 输出（生成/队列/配音）→
+     词条工作台 → Prompt 监视器 → 画风 → 出图参数 → Anima 面板。
+     旧顺序把「输出」埋在画风/参数之后、词条压到页面底部，核心动线被拉长；
+     生成区紧跟画布，专家参数面板仍可折叠（不违反「参数可折叠、生成不可隐藏」约束）。 */

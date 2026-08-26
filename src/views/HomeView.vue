@@ -36,6 +36,7 @@
             alt="绫地宁宁"
             width="1024"
             height="1344"
+            sizes="(max-width: 768px) 100vw, 42vw"
             loading="eager"
             decoding="async"
             fetchpriority="high"
@@ -48,6 +49,7 @@
             alt="四季夏目"
             width="1024"
             height="1344"
+            sizes="(max-width: 768px) 100vw, 42vw"
             loading="eager"
             decoding="async"
           />
@@ -293,7 +295,9 @@ function updateStripFade() {
  * 滚动叙事：hero 三层以不同速率上移（视差），标题随滚动淡出，
  * 让首屏像一页被轻轻翻走。reduced-motion 下完全跳过。
  */
+function canHeroParallax(){return !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !window.matchMedia('(pointer: coarse)').matches}
 function onHeroScroll() {
+  if (!canHeroParallax()) return
   if (heroScrollFrame) return
   heroScrollFrame = requestAnimationFrame(() => {
     heroScrollFrame = 0
@@ -453,7 +457,7 @@ onMounted(async () => {
     await kvInit()
     await loadRecentWorks()
   } catch (e) { console.warn('KV store unavailable', e) }
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (canHeroParallax()) {
     window.addEventListener('scroll', onHeroScroll, { passive: true })
   }
   // 横条内容是异步载入的，DOM 渲染完成后才能判断是否真的可滚动；
@@ -481,12 +485,12 @@ onUnmounted(() => {
 <style scoped>
 /* ---------- Hero ---------- */
 .home-hero { position:relative; padding:var(--s-8) 0 var(--s-4); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
-.home-page .hero-copy { animation:homeCopyIn .58s var(--ease-out) .04s both; }
-.home-page .hero-orbit { animation:homeOrbitIn .66s var(--ease-out) .12s both; }
-.home-page .hero-strip { animation:homeStripIn .62s var(--ease-out) .22s both; }
-@keyframes homeCopyIn { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:none; } }
-@keyframes homeOrbitIn { from { opacity:0; filter:blur(8px); transform:translateX(12px) scale(.985); } to { opacity:1; filter:none; transform:none; } }
-@keyframes homeStripIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+.home-page .hero-copy { animation:homeCopyIn .32s var(--ease-out) both; }
+.home-page .hero-orbit { animation:homeOrbitIn .38s var(--ease-out) .04s both; }
+.home-page .hero-strip { animation:homeStripIn .30s var(--ease-out) .08s both; }
+@keyframes homeCopyIn { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+@keyframes homeOrbitIn { from { opacity:0; transform:translateX(10px) scale(.985); } to { opacity:1; transform:none; } }
+@keyframes homeStripIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 .home-hero::before { content:""; position:absolute; left:-18px; top:var(--s-8); width:2px; height:92px; border-radius:var(--r-pill); background:linear-gradient(180deg,var(--accent),var(--accent-violet),transparent); opacity:.72; }
 .hero-copy { grid-column:1; grid-row:1; align-self:end; min-width:0; }
 .hero-register { display:flex; align-items:center; gap:var(--s-3); margin-bottom:var(--s-4); color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
@@ -537,7 +541,7 @@ onUnmounted(() => {
   border: 1px solid var(--border-soft);
   border-radius: 2px var(--r-xl) 2px var(--r-xl);
   overflow: hidden;
-  animation: homeStripIn .62s var(--ease-out) .32s both;
+  animation: homeStripIn .30s var(--ease-out) .12s both;
 }
 .pop-scroll {
   display:flex; gap:var(--s-3); overflow-x:auto;
@@ -669,7 +673,7 @@ onUnmounted(() => {
   .chain-arrow { display:none; }
 }
 @media (prefers-reduced-motion:reduce) {
-  .home-page .hero-copy, .home-page .hero-orbit, .home-page .hero-strip { animation:none; }
+  .home-page .hero-copy, .home-page .hero-orbit, .home-page .hero-strip, .home-page .pop-strip { animation:none; }
   .tool-card,.recent-card { transition:none; }
 }
 </style>

@@ -21,22 +21,25 @@
           <span>{{ item.label }}</span>
         </RouterLink>
 
-        <!-- 更多 -->
+        <!-- 归档 · 分组下拉：发现/美学/工坊，5 项主导航之外全部收口 -->
         <details class="nav-more" :data-active="secondaryActive || undefined" ref="moreEl">
-          <!-- 不加 aria-label:它会盖掉可见文字"更多",违反 SC 2.5.3 Label in Name -->
-          <summary>更多<span class="nav-more-chevron" aria-hidden="true">⌄</span></summary>
+          <!-- 不加 aria-label:它会盖掉可见文字"归档",违反 SC 2.5.3 Label in Name -->
+          <summary>归档<span class="nav-more-chevron" aria-hidden="true">⌄</span></summary>
           <div class="nav-more-menu">
-            <RouterLink
-              v-for="item in secondaryNav"
-              :key="item.id"
-              :to="item.to"
-              :class="{ active: activeId === item.id }"
-              :aria-current="activeId === item.id ? 'page' : undefined"
-              @click="closeMenu"
-            >
-              <ArchiveIcon :name="item.icon" />
-              <span>{{ item.label }}</span>
-            </RouterLink>
+            <template v-for="group in archiveGroups" :key="group.heading">
+              <div class="nav-more-group-label">{{ group.heading }}</div>
+              <RouterLink
+                v-for="item in group.items"
+                :key="item.id"
+                :to="item.to"
+                :class="{ active: activeId === item.id }"
+                :aria-current="activeId === item.id ? 'page' : undefined"
+                @click="closeMenu"
+              >
+                <ArchiveIcon :name="item.icon" />
+                <span>{{ item.label }}</span>
+              </RouterLink>
+            </template>
           </div>
         </details>
 
@@ -77,24 +80,40 @@ interface NavItem {
 }
 
 const primaryNav: NavItem[] = [
-  { id: 'scene',    label: '灵感场景', to: '/scene-explorer', icon: 'scene' },
-  { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'star' },
-  { id: 'director', label: '开始绘制', to: '/prompt-builder', icon: 'spark' },
-  { id: 'video',    label: '视频创作', to: '/video-studio',   icon: 'play' },
-  { id: 'chat',     label: '角色房间', to: '/chat',           icon: 'chat' },
-  { id: 'showcase', label: '效果样张', to: '/showcase',       icon: 'image' },
-  { id: 'gallery',  label: '作品册',   to: '/gallery',        icon: 'gallery' },
+  { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
+  { id: 'director', label: '绘制',   to: '/prompt-builder', icon: 'spark' },
+  { id: 'video',    label: '视频',   to: '/video-studio',   icon: 'play' },
+  { id: 'chat',     label: '房间',   to: '/chat',           icon: 'chat' },
+  { id: 'gallery',  label: '作品册', to: '/gallery',        icon: 'gallery' },
 ]
-const secondaryNav: NavItem[] = [
-  { id: 'character', label: '角色档案', to: '/character',    icon: 'character' },
-  { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
-  { id: 'scenario',  label: '剧本模式', to: '/scenario',     icon: 'scene' },
-  { id: 'color-script', label: '色调脚本', to: '/color-script', icon: 'palette' },
-  { id: 'lora',      label: '模型',     to: '/lora',         icon: 'model' },
-  { id: 'training',  label: '训练台',   to: '/training',     icon: 'training' },
-  { id: 'manager',   label: '场景管理', to: '/scene-manager', icon: 'manager' },
-  { id: 'control',   label: '控制面板', to: '/control',       icon: 'gear' },
+const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
+  {
+    heading: '发现',
+    items: [
+      { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'star' },
+      { id: 'showcase', label: '效果样张', to: '/showcase',       icon: 'image' },
+      { id: 'character', label: '角色档案', to: '/character',    icon: 'character' },
+    ],
+  },
+  {
+    heading: '美学',
+    items: [
+      { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
+      { id: 'scenario',  label: '剧本',     to: '/scenario',     icon: 'scene' },
+      { id: 'color-script', label: '色调脚本', to: '/color-script', icon: 'palette' },
+    ],
+  },
+  {
+    heading: '工坊',
+    items: [
+      { id: 'lora',      label: '模型',     to: '/lora',         icon: 'model' },
+      { id: 'training',  label: '训练台',   to: '/training',     icon: 'training' },
+      { id: 'manager',   label: '场景管理', to: '/scene-manager', icon: 'manager' },
+      { id: 'control',   label: '控制面板', to: '/control',       icon: 'gear' },
+    ],
+  },
 ]
+const secondaryNav: NavItem[] = archiveGroups.flatMap(g => g.items)
 
 const activeId = computed(() => {
   const p = route.path.replace(/^\//, '')
