@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { spawnSync } = require('child_process');
 
 const sceneKeys = ['sc003', 'sc009', 'sc011', 'sc016', 'sc022', 'sc025', 'sc026', 'sc027', 'sc030', 'sc031', 'sc033', 'sc034'];

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 
 const sceneAlign = JSON.parse(fs.readFileSync('runtime/human-audit-alignment-scenes.json', 'utf8'));
 const failedSceneMap = new Map(sceneAlign.userFailed.map(u => [u.sceneId, u]));
@@ -23,7 +23,7 @@ shardFiles.forEach(file => {
 
   list.forEach(sc => {
     if (!failedSceneMap.has(sc.id)) return;
-    
+
     let prompt = sc.prompt || '';
     let negative = sc.negative || '';
     let caption = sc.animaCaption || '';

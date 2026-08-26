@@ -920,7 +920,7 @@ watch([favoriteOnly, projectFilter], () => {
 .gallery-project:focus { border-color:var(--accent); }
 .gallery-toolbar-note { margin-left:auto; padding-right:var(--s-3); color:var(--text-muted); font-size:var(--fs-mono-sm); white-space:nowrap; }
 
-.gallery-wall { max-width:1500px; margin:0 auto; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:clamp(12px,1.6vw,24px); align-items:start; }
+.gallery-wall { max-width:1500px; margin:0 auto; display:grid; columns: 4 260px; grid-template-columns:repeat(4, minmax(0,1fr)); gap:clamp(12px,1.6vw,24px); align-items:start; }
 .gallery-loading-wall { min-height:340px; }
 .artwork { position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
 .artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }

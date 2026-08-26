@@ -8,7 +8,7 @@ import {
   findOutfit as findPopularOutfit,
   inferBlueprintDecisions,
 } from '@/utils/popularContent'
-import { ANIMA_LORA_BY_CHARACTER, type useAnimaSession } from '@/composables/useAnimaSession'
+import { ANIMA_LORA_BY_CHARACTER, type useAnimaSession } from '@/composables/generation/useAnimaSession'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>

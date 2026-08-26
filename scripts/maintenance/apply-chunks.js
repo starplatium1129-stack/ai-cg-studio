@@ -122,9 +122,9 @@ function applyScenes(chunks) {
     Object.assign(allMaps, require(file));
   }
 
-  const shards = ['nene-core.json', 'nene-after-story.json', 'natsume-core.json', 'shared.json', 'nene-core.json'];
+  const _shards = ['nene-core.json', 'nene-after-story.json', 'natsume-core.json', 'shared.json', 'nene-core.json'];
   // 去重
-  const uniqueShards = [...new Set(['nene-core.json', 'nene-after-story.json', 'natsume-core.json', 'natsume-after-story.json', 'shared.json'])];
+  const _uniqueShards = [...new Set(['nene-core.json', 'nene-after-story.json', 'natsume-core.json', 'natsume-after-story.json', 'shared.json'])];
   // 实际使用 data/scenes/*.json
   const sceneDir = path.join(ROOT, 'data', 'scenes');
   const files = fs.existsSync(sceneDir) ? fs.readdirSync(sceneDir).filter(f => f.endsWith('.json')) : [];

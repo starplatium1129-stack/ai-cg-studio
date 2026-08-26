@@ -3,10 +3,10 @@ import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilder
 import type { DrawEngine } from '@/storage/settingsRepository'
 import { writeQuickCreate } from '@/utils/quickCreate'
 import { classifySDError, type SDErrorReport } from '@/utils/sdError'
-import type { useAnimaSession } from '@/composables/useAnimaSession'
-import type { useSDGenerate } from '@/composables/useSDGenerate'
-import type { usePromptAssembly } from '@/composables/usePromptAssembly'
-import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
+import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
+import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
+import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
+import { useSDQueue, type SDQueueJob } from '@/composables/generation/useSDQueue'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>

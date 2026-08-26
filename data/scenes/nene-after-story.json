@@ -1628,13 +1628,28 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "undressing",
+      "shirt_slid_down",
+      "bare_shoulders",
+      "bare_back",
+      "hands_on_mirror",
+      "back_view_facing_mirror",
+      "both_palms_pressed_flat_on_mirror",
+      "backs_of_both_hands_visible_to_camera",
+      "single_aligned_reflection",
+      "mirror_reflection",
+      "reflection",
+      "ahoge",
       "hair_ribbon",
-      "silk_negligee",
-      "bare_legs",
-      "mirror",
-      "full_body",
-      "barefoot",
-      "depth_of_field"
+      "heavy_blush",
+      "tears_in_eyes",
+      "heavy_breathing",
+      "bedroom",
+      "night",
+      "dim_lighting",
+      "sensual",
+      "warm_lighting",
+      "close_up"
     ],
     "mature": false,
     "location": "卧室梳妆镜前",
@@ -1645,12 +1660,11 @@
       "壁纸级",
       "R15"
     ],
-    "animaCaption": "Standing before a mirror in a bedroom in a soft white silk negligee with lace trim, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on floor, holding a strap with a shy intimate blush.",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_silk_negligee_with_lace_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_standing_before_mirror, barefoot_with_detailed_toes_on_bedroom_floor, standing_before_mirror_in_bedroom_with_one_hand_holding_negligee_strap_and_shy_intimate_blush, warm_bedroom_mirror_light_with_silk_and_mirror_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "animaCaption": "Standing before the full-length bedroom mirror with the viewer supporting her slender waist from behind, Ayachi Nene is completely nude, her long silver twintails cascading over her soft bare breasts. Blushing intensely as she meets the viewer's gaze in the glass reflection, warm floor lamps cast romantic amber contours across their intertwined figures.",
+    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_pink_silk_lingerie_set_and_sheer_white_thighhigh_socks_with_lace_ruffles, standing_before_full-length_bedroom_mirror, raising_both_arms_to_adjust_hairclip, bare_armpits, smooth_underarm_crease, entire_legs_and_feet_fully_visible_in_frame, sheer_white_stocking_feet, pearly_sheen_along_thighs, looking_into_mirror_with_teary_flustered_blush, soft_bedside_lamps_and_glowing_fairy_lights_filling_room, full_body\nStanding gracefully before a full-length vanity mirror in her bedroom, Ayachi Nene wears pink silk lingerie and sheer white thigh-high stockings, raising both arms to adjust her hairclip, viewer sees the backs of both hands. The mirror reflects her tearful, blushing expression and slender curves, while warm bedside lamps and twinkling fairy lights illuminate the entire room, clearly framing her smooth underarms and white-stockinged feet on the carpet.",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【寧々・大人のアフターストーリー・・化粧鏡の前での過激なエロ】深夜の閉ざされた寝室、クルミ材の巨大な鏡の前で。寧々は後ろからあなたにすっぽりと包まれ、パジャマは腰まで引き下げられ、彼女の手は冷たい鏡の上で力なく支えられています。鏡には、丸見えになった彼女の肩と、激しくうねる真っ白な肌の魅惑的な姿が鮮明に映っていた。彼女は自分自身とあなたを鏡で見ることを強制されました。彼女の頭の上のアホ毛は、極度の感情のためにすでに非常に震えるハート型に崩壊していました。彼女の目には涙があふれ、顔は真っ赤になり、下唇を噛んでいました。彼女の温かい息遣いが鏡の上で霧に変わった。――「柊史……恥ずかしいです。鏡を見たまま、そんなに褒めないでください……。」",
-    "rating": "R15",
-    "auditRevision": "careful-batch12-2026-08-27"
+    "rating": "R15"
   },
   {
     "id": "sc168",
@@ -2935,7 +2949,8 @@
       "library",
       "full_body",
       "mary_jane",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": false,
     "location": "图书室",
@@ -2986,7 +3001,8 @@
       "bedroom",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": true,
     "location": "卧室",
@@ -3040,7 +3056,8 @@
       "full_body",
       "barefoot",
       "morning_light",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": true,
     "location": "卧室",
@@ -3092,7 +3109,8 @@
       "study_desk",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": true,
     "location": "私密书房木桌",
@@ -3146,7 +3164,8 @@
       "full_body",
       "barefoot",
       "morning_light",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": false,
     "location": "卧室",
@@ -3201,7 +3220,8 @@
       "bedroom",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "usage": [
       "官方CG灵感",
@@ -3238,7 +3258,8 @@
       "bedroom",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": false,
     "location": "卧室",
@@ -3364,13 +3385,33 @@
     "time": "傍晚",
     "timeOfDay": "sunset",
     "tags": [
-      "hair_ribbon",
-      "white_sweater",
-      "sheer_white_thighhigh_stockings",
-      "warm_cafe",
-      "full_body",
-      "mary_jane",
-      "depth_of_field"
+      "official_cg",
+      "visual_audited",
+      "portrait",
+      "adult",
+      "nene",
+      "nene_witch_canonical",
+      "witch_hat",
+      "black_cape",
+      "criss_cross_halter",
+      "crop_top",
+      "pink_bow",
+      "asymmetrical_legwear",
+      "striped_thighhighs",
+      "frilled_socks",
+      "midriff",
+      "sitting_on_bar_stool",
+      "holding_cup",
+      "cafe",
+      "wooden_bar_counter",
+      "arched_window",
+      "golden_hour",
+      "warm_lighting",
+      "medium_shot",
+      "cowboy_shot",
+      "cinematic_composition",
+      "ahoge",
+      "hair_ribbon"
     ],
     "mature": false,
     "rating": "R15",
@@ -3385,8 +3426,8 @@
       "R15"
     ],
     "recommendedSize": "832×1216",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_sweater_with_light_blue_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_cafe_floor, sitting_in_closed_warm_cafe_with_one_hand_holding_mug_and_gentle_shy_smile, warm_closed_cafe_light_with_mug_and_cafe_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, witch_hat, black_cape, criss_cross_halter, crop_top, strap_between_breasts, pink_bow, black_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, midriff, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, ahoge, sitting_on_bar_stool, holding_one_coffee_cup, cafe, wooden_bar_counter, arched_window, golden_hour, warm_lighting, soft_rim_light, medium_shot, cowboy_shot, cinematic_composition, masterpiece, best_quality, score_7, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, distant shot, far away, extreme wide shot, cropped head, multiple girls, extra person, split screen, comic, panel layout, generic witch dress, plain black dress, full length gown, simple witch costume, child, loli, underage",
     "audit": {
       "reviewer": "user-selection-and-direct-vision",
       "seed": 20260809,
@@ -3396,8 +3437,7 @@
       "image": "E:\\code\\2\\lora\\AI\\SceneShowcase\\2026-08-18_v24\\images\\sc300.jpg",
       "result": "pass"
     },
-    "animaCaption": "Sitting in a closed warm cafe in a soft white sweater with light blue pleated miniskirt and silky white thighhighs, Ayachi Nene holds a mug with a gentle shy smile under warm closed cafe light.",
-    "auditRevision": "careful-batch15-2026-08-27"
+    "animaCaption": "In a medium shot at a wooden cafe bar counter, Ayachi Nene sits gracefully on a bar stool holding a warm coffee cup, looking toward the viewer with a gentle shy smile, bathed in warm golden-hour sunlight streaming through the arched window."
   },
   {
     "id": "sc301",
@@ -3420,7 +3460,8 @@
       "morning_bedroom",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "rating": "R18",
     "mature": true,

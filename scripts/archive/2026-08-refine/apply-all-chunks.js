@@ -1,12 +1,36 @@
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 
+const bpFile = 'data/scene-blueprints.json';
+const bpData = JSON.parse(fs.readFileSync(bpFile, 'utf8'));
+const blueprints = bpData.blueprints || bpData;
+
+const chunk1 = require('./refine-map-chunk1.js');
+const chunk2 = require('./refine-map-chunk2.js');
+const chunk3 = require('./refine-map-chunk3.js');
+const chunk4 = require('./refine-map-chunk4.js');
+const chunk5 = require('./refine-map-chunk5.js');
+
+const allChunks = { ...chunk1, ...chunk2, ...chunk3, ...chunk4, ...chunk5 };
+
+let replacedBps = 0;
+blueprints.forEach(bp => {
+  const map = allChunks[bp.id];
+  if (map) {
+    if (map.promptTokens) bp.promptTokens = map.promptTokens;
+    if (map.promptProse) bp.promptProse = map.promptProse;
+    if (map.nsfwTokens) bp.nsfwTokens = map.nsfwTokens;
+    if (map.nsfwProse) bp.nsfwProse = map.nsfwProse;
+    if (map.negativeTokens) bp.negativeTokens = map.negativeTokens;
+    replacedBps++;
+  }
+});
+
+fs.writeFileSync(bpFile, JSON.stringify(bpData, null, 2) + '\n', 'utf8');
+console.log(`Successfully merged ${replacedBps} hand-crafted popular blueprints!`);
+
+// 2. 更新场景库
 const sceneChunk1 = require('./refine-map-scenes-chunk1.js');
-const sceneChunk2 = require('./refine-map-scenes-chunk2.js');
-const sceneChunk3 = require('./refine-map-scenes-chunk3.js');
-
-const allSceneChunks = { ...sceneChunk1, ...sceneChunk2, ...sceneChunk3 };
-
 const shardFiles = [
   'data/scenes/nene-core.json',
   'data/scenes/nene-after-story.json',
@@ -21,7 +45,7 @@ shardFiles.forEach(file => {
   const list = JSON.parse(fs.readFileSync(file, 'utf8'));
   let fReplaced = 0;
   list.forEach(sc => {
-    const map = allSceneChunks[sc.id];
+    const map = sceneChunk1[sc.id];
     if (map) {
       if (map.prompt) sc.prompt = map.prompt;
       if (map.animaCaption) sc.animaCaption = map.animaCaption;

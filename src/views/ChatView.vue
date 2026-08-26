@@ -308,7 +308,7 @@
 <script setup lang="ts">
 import '@/assets/css/chat.css'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
+import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import ChatArchivePanel from '@/components/ChatArchivePanel.vue'

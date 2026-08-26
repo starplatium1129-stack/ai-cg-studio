@@ -1,12 +1,12 @@
 import { computed, getCurrentInstance, onUnmounted, ref } from 'vue'
-import { ApiClientError, apiClient, type ApiClient } from '../api/client.ts'
+import { ApiClientError, apiClient, type ApiClient } from '@/api/client'
 import type {
   AnimaGenerationState,
   AnimaJobMetadata,
   AnimaOption,
   AnimaResult,
-} from '../types/anima'
-import type { CharKey } from '../stores/promptBuilderStore'
+} from '@/types/anima'
+import type { CharKey } from '@/stores/promptBuilderStore'
 
 /**
  * Anima / Krea 2 生成会话 —— 「useGenerationSession：生成、进度、取消和错误」。

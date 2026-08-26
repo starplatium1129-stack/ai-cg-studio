@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry, type Scene } from '@/stores/promptBuilderStore'
-import { isCharKey } from '@/composables/useDirectorCatalog'
+import { isCharKey } from '@/composables/scene/useDirectorCatalog'
 import { COLOR_MOODS } from '@/config/promptConstants'
 import {
   findScenario,
@@ -14,7 +14,7 @@ import {
   type PopularCharacter,
   type SceneBlueprint,
 } from '@/utils/popularContent'
-import type { useAnimaSession } from '@/composables/useAnimaSession'
+import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>

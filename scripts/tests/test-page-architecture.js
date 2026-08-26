@@ -137,10 +137,10 @@ const requiredModules = [
   'src/types/artwork.ts',
   'src/composables/useVoice.ts',
   'src/composables/useLive2D.ts',
-  'src/composables/useCharacterRoomSession.ts',
-  'src/composables/useSDGenerate.ts',
-  'src/composables/useSDQueue.ts',
-  'src/composables/usePromptAssembly.ts',
+  'src/composables/chat/useCharacterRoomSession.ts',
+  'src/composables/generation/useSDGenerate.ts',
+  'src/composables/generation/useSDQueue.ts',
+  'src/composables/prompt/usePromptAssembly.ts',
   'src/composables/useBackup.ts',
   'src/composables/useKVStore.ts',
   'src/composables/useImageStore.ts',
@@ -212,7 +212,19 @@ assert(
 // CSS 仍会留在 document 里。过去 571 个裸选择器（`.scene-search`、`.panel`、
 // `.history-item` 等）会污染随后访问的任意路由。普通选择器必须以 `.pb` 根
 // 开始；body:has(.pb…) / @property / keyframes 是刻意保留的全局规则。
-const directorCss = read('src/assets/css/director.css');
+// 2026-08-26 修复：director.css 已拆为 director/*.css 四片，聚合后校验。
+function readDirectorCss() {
+  const entry = read('src/assets/css/director.css');
+  const dir = path.join(root, 'src/assets/css/director');
+  const parts = [entry];
+  if (fs.existsSync(dir)) {
+    for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.css'))) {
+      parts.push(read(path.join('src/assets/css/director', name)));
+    }
+  }
+  return parts.join('\n');
+}
+const directorCss = readDirectorCss();
 const leakedDirectorSelectors = [...directorCss.matchAll(/^\s*\.([A-Za-z_-][\w-]*)/gm)]
   .map(m => m[1])
   .filter(name => name !== 'pb' && !name.startsWith('pb-'));

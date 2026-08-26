@@ -54,8 +54,20 @@ var fitCanvasToRatio = media.fitCanvasToRatio;
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
-  'dialogue', 'dialogueLang', 'lastFrame', 'shotSize', 'steps', 'references',
+  'dialogue', 'dialogueLang', 'lastFrame', 'shotSize', 'steps', 'references', 'adultEnabled',
 ]);
+
+var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
+function assertAdultAllowed(body) {
+  var prompt = String(body.prompt || '');
+  var wantsAdult = ADULT_PROMPT_RE.test(prompt);
+  if (!wantsAdult) return;
+  // 视频侧成人蓝图当前 fail-closed 拒绝（storyboard.js ADULT_BLUEPRINT_UNSUPPORTED），
+  // 此处仅对显式 adult prompt 做二次门控，避免前端绕过。
+  if (body.adultEnabled !== true) {
+    throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
+  }
+}
 
 function validateInput(body, config) {
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
@@ -64,6 +76,7 @@ function validateInput(body, config) {
       throw serviceError(400, 'UNKNOWN_PARAMETER', '不支持的参数：' + key);
     }
   });
+  assertAdultAllowed(body);
 
   ['prompt', 'modelId', 'aspectRatio', 'duration', 'camera', 'motion'].forEach(function (key) {
     if (!hasOwn(body, key)) throw serviceError(400, 'MISSING_PARAMETER', '缺少参数：' + key);

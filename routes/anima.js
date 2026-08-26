@@ -41,6 +41,25 @@ var CHARACTERS = modelCatalog.CHARACTERS;
 
 var ALLOWED_INPUT_KEYS = new Set(generationContract.ALLOWED_INPUT_KEYS);
 
+// 成人内容双门（与 desktop-tools.js 同源，AGENTS.md 红线 #4 fail-closed）
+var ADULT_ELIGIBLE_CHARACTERS = new Set(['nene', 'natsume']);
+var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
+function assertAdultAllowed(body) {
+  var prompt = String(body.prompt || '');
+  var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
+  if (!wantsAdult) return;
+  var targetChar = String(body.character || '').toLowerCase();
+  // 无 LoRA 模式（popular）下 character 可能为空，此时按 prompt 中的 r18 锚点推断角色
+  if (!targetChar && /nene_r18/i.test(prompt)) targetChar = 'nene';
+  if (!targetChar && /natsume_r18/i.test(prompt)) targetChar = 'natsume';
+  if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
+    throw serviceError(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
+  }
+  if (body.adultEnabled !== true) {
+    throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
+  }
+}
+
 // 放大二阶段参数：固定 sgm_uniform + res_multistep（首轮 res_multistep/simple）
 var HIRES_SAMPLER = generationContract.HIRES_SAMPLER;
 var HIRES_SCHEDULER = generationContract.HIRES_SCHEDULER;
@@ -173,6 +192,7 @@ function validateInput(body, expectedFamily) {
   if (body.negative !== undefined && (typeof body.negative !== 'string' || body.negative.length > MAX_NEGATIVE_LENGTH)) {
     throw serviceError(400, 'INVALID_PARAMETER', 'negative 需为不超过 ' + MAX_NEGATIVE_LENGTH + ' 字符的文本');
   }
+  assertAdultAllowed(body);
   var model = MODELS[body.modelId];
   if (!model) throw serviceError(400, 'UNKNOWN_MODEL', '未知生成模型');
   if (expectedFamily && model.family !== expectedFamily) throw serviceError(400, 'WRONG_ROUTE_FAMILY', '请求路径与模型 family 不匹配');

@@ -869,23 +869,24 @@ function toggleBlueprintList() {
   showAllBlueprints.value = !showAllBlueprints.value
 }
 
-function handleInterrogateResult(result: any) {
-  if (!result) return
-  if (result.mode === 'caption' && typeof result.caption === 'string' && result.caption.trim()) {
-    pb.visualDescription = String(result.caption).trim()
+function handleInterrogateResult(result: unknown) {
+  if (!result || typeof result !== 'object') return
+  const payload = result as { mode?: string; caption?: string; tags?: unknown; warning?: string }
+  if (payload.mode === 'caption' && typeof payload.caption === 'string' && payload.caption.trim()) {
+    pb.visualDescription = String(payload.caption).trim()
     pb.flash('已反推为自然语言，已填入画面描述（Krea2 直出，切人保留）')
-    if (result.warning) pb.flash(result.warning)
+    if (payload.warning) pb.flash(payload.warning)
     return
   }
-  var tags: string[] = Array.isArray(result.tags) ? result.tags : []
-  var added = 0
-  for (var raw of tags) {
-    var norm = String(raw || '').trim().toLowerCase().replace(/\s+/g, '_')
+  const tags: string[] = Array.isArray(payload.tags) ? (payload.tags as string[]) : []
+  let added = 0
+  for (const raw of tags) {
+    const norm = String(raw || '').trim().toLowerCase().replace(/\s+/g, '_')
     if (!norm || pb.manualTags.has(norm)) continue
     pb.toggleManualTag(norm); added++
   }
   pb.flash(added ? `本地反推已加入 ${added} 个 Tag，可切人直出` : '反推完成，无新增 Tag')
-  if (result.warning) pb.flash(result.warning)
+  if (payload.warning) pb.flash(payload.warning)
 }
 
 function onStoryInput() {

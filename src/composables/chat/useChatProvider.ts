@@ -1,5 +1,5 @@
 import { computed, getCurrentScope, onScopeDispose, ref, type Ref } from 'vue'
-import { useChatStorage, type ChatState } from '@/composables/useChatStorage'
+import { useChatStorage, type ChatState } from '@/composables/chat/useChatStorage'
 import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
 import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
 import { STORAGE_KEY } from '@/config/characters'

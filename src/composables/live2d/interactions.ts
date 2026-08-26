@@ -4,7 +4,6 @@ import {
   NATSUME_HIT_AREA_MAP,
   NATSUME_INTERACTIONS,
   NATSUME_RESET_PARAMS,
-  OVERLAY_SETTLE_MS,
   type Live2DInteraction,
 } from '@/composables/live2d/constants'
 import type { Live2DCtx, Live2DStatus } from '@/composables/live2d/context'

@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SDQueueJob } from '@/composables/useSDQueue'
+import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 
 defineProps<{
   total: number

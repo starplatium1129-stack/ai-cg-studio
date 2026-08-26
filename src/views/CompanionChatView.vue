@@ -148,7 +148,7 @@ import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { CHARACTERS } from '@/config/characters'
-import { useChatStorage } from '@/composables/useChatStorage'
+import { useChatStorage } from '@/composables/chat/useChatStorage'
 import { useVoiceInput } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'

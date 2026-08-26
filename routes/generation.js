@@ -36,8 +36,31 @@ var SAMPLERS = Object.freeze({
 var ALLOWED = new Set([
   'prompt', 'negative', 'profile', 'modelId', 'character', 'loras', 'width', 'height',
   'steps', 'cfg', 'seed', 'sampler', 'scheduler', 'hiresFix', 'hiresScale',
-  'hiresUpscaler', 'hiresSteps', 'denoisingStrength', 'faceDetailer'
+  'hiresUpscaler', 'hiresSteps', 'denoisingStrength', 'faceDetailer', 'adultEnabled'
 ]);
+
+var ADULT_ELIGIBLE_CHARACTERS = new Set(['nene', 'natsume']);
+var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
+function assertAdultAllowed(body) {
+  var prompt = String(body.prompt || '');
+  var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
+  if (!wantsAdult) return;
+  var targetChar = String(body.character || '').toLowerCase();
+  if (!targetChar && body.loras && Array.isArray(body.loras)) {
+    var hasNene = body.loras.some(function (l) { return String(l.id || '').toUpperCase() === 'L_NENE_V18_WD14'; });
+    var hasNatsume = body.loras.some(function (l) { return String(l.id || '').toUpperCase() === 'L_NAT_V18_WD14'; });
+    if (hasNene) targetChar = 'nene';
+    else if (hasNatsume) targetChar = 'natsume';
+  }
+  if (!targetChar && /nene_r18/i.test(prompt)) targetChar = 'nene';
+  if (!targetChar && /natsume_r18/i.test(prompt)) targetChar = 'natsume';
+  if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
+    throw error(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
+  }
+  if (body.adultEnabled !== true) {
+    throw error(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
+  }
+}
 
 function error(status, code, message, detail) {
   var e = new Error(message); e.status = status; e.code = code; e.detail = detail; return e;
@@ -92,6 +115,7 @@ function freezeLoras(loras) {
 function validate(body) {
   if (!plain(body)) throw error(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) { if (!ALLOWED.has(key)) throw error(400, 'UNKNOWN_PARAMETER', '不支持的参数：' + key); });
+  assertAdultAllowed(body);
   if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > 12000) throw error(400, 'INVALID_PARAMETER', 'prompt 无效');
   if (body.negative !== undefined && (typeof body.negative !== 'string' || body.negative.length > 8000)) throw error(400, 'INVALID_PARAMETER', 'negative 无效');
   if (body.modelId !== undefined && body.modelId !== 'waiIllustriousSDXL_v170') throw error(400, 'UNKNOWN_MODEL', '未知 WAI checkpoint');

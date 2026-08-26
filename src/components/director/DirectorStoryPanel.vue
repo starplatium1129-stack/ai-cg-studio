@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
+import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
 
 const pb = usePromptBuilderStore()
 const { storyChips } = useDirectorCatalog()

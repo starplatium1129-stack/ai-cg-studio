@@ -38,9 +38,9 @@ const modules = [
   ['src/utils/sceneInference.ts', ['sceneLighting', 'sceneShot', 'sceneColorMood', 'sceneRecommendedSize']],
   ['src/utils/sdError.ts', ['classifySDError', 'SAFE_SAMPLING', 'LIGHT_LOAD']],
   ['src/utils/sdRequest.ts', ['buildTxt2ImgRequest', 'parseTxt2ImgResponse', 'DEFAULT_SD_NEGATIVE']],
-  ['src/composables/useSDGenerate.ts', ['checkStatus', 'generate', 'cancel']],
-  ['src/composables/useSDQueue.ts', ['useSDQueue', 'SD_QUEUE_LIMIT']],
-  ['src/composables/usePromptAssembly.ts', ['usePromptAssembly', 'qualityPrefix', 'assembleNegative', 'resolveLoraSpecs', 'applyFraming', 'analyzeParts']],
+  ['src/composables/generation/useSDGenerate.ts', ['checkStatus', 'generate', 'cancel']],
+  ['src/composables/generation/useSDQueue.ts', ['useSDQueue', 'SD_QUEUE_LIMIT']],
+  ['src/composables/prompt/usePromptAssembly.ts', ['usePromptAssembly', 'qualityPrefix', 'assembleNegative', 'resolveLoraSpecs', 'applyFraming', 'analyzeParts']],
   ['src/composables/useBackup.ts', ['exportBackup', 'restore', 'healthCheck', 'cleanOrphanImages']],
   ['src/composables/useVoice.ts', ['startTurn', 'append', 'finishTurn']],
   ['src/composables/useImageStore.ts', ['imgPut', 'imgGet', 'imgDeleteMany']],
@@ -133,16 +133,16 @@ if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test
 
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
 const view = read('src/views/PromptBuilderView.vue');
-const promptAssembly = read('src/composables/usePromptAssembly.ts');
+const promptAssembly = read('src/composables/prompt/usePromptAssembly.ts');
 const drawingRoute = read('src/utils/drawingRoute.ts');
 const animaPanel = read('src/components/AnimaQuickPanel.vue');
-const sdGenerateSource = read('src/composables/useSDGenerate.ts');
+const sdGenerateSource = read('src/composables/generation/useSDGenerate.ts');
 // 2026-08-22 三簇下沉：SD 队列执行（runJob/captureJob/historyGenerationFields/
 // detailer）归 usePromptSdQueue；历史应用归 usePromptHistoryApply；深链参数
 // 归 usePromptDeepLink。相关哨兵随代码迁移到新宿主文件。
-const sdQueueSource = read('src/composables/usePromptSdQueue.ts');
-const historyApplySource = read('src/composables/usePromptHistoryApply.ts');
-const deepLinkSource = read('src/composables/usePromptDeepLink.ts');
+const sdQueueSource = read('src/composables/prompt/usePromptSdQueue.ts');
+const historyApplySource = read('src/composables/prompt/usePromptHistoryApply.ts');
+const deepLinkSource = read('src/composables/prompt/usePromptDeepLink.ts');
 if (storeSource.includes('kreaStyleId') || storeSource.includes('artistInfluences') || !storeSource.includes('styleLoraId: entry.styleLoraId ?? null')) {
   fail('history must retain generated metadata without restoring manual style or artist controls');
 }
@@ -198,7 +198,7 @@ if (view.includes('styleLoraId: animaState.value.styleLoraId')) {
 }
 // Anima 生成生命周期自第十一轮起归 useAnimaSession 组合函数所有：
 // 视图保留 prompt 组装与结果协调，会话状态机/轮询/取消在组合函数内。
-const animaSessionSource = read('src/composables/useAnimaSession.ts');
+const animaSessionSource = read('src/composables/generation/useAnimaSession.ts');
 for (const marker of ['buildAnimaRequest', 'onAnimaResult', 'cancelAnimaJob', '@generate="callGenerate"', 'cancelGeneration']) {
   if (!view.includes(marker)) fail('Anima generation must be parent-owned and metadata-driven: ' + marker);
 }
@@ -288,7 +288,7 @@ for (const marker of ['faceDetailer', 'face_yolov8s.pt', 'hand_yolov8n.pt', 'bui
   if (!sdQueueSource.includes(marker)) fail('high-resolution detailer must retain ' + marker);
 }
 
-const sdGenerate = read('src/composables/useSDGenerate.ts');
+const sdGenerate = read('src/composables/generation/useSDGenerate.ts');
 const generationApiSource = read('src/api/generationApi.ts');
 if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('generationApi')) {
   fail('SD composable must use the shared production request builder and the application generation API module');
@@ -307,7 +307,18 @@ for (const marker of ['pollInFlight', 'pollFailures', 'void pollProgress(token)'
 }
 
 // ── 4. 样式层仍提供共享 chrome ───────────────────────────────────────────
-const directorCss = read('src/assets/css/director.css');
+function readDirectorCss() {
+  const entry = read('src/assets/css/director.css');
+  const dir = path.join(root, 'src/assets/css/director');
+  const parts = [entry];
+  if (fs.existsSync(dir)) {
+    for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.css'))) {
+      parts.push(read(path.join('src/assets/css/director', name)));
+    }
+  }
+  return parts.join('\n');
+}
+const directorCss = readDirectorCss();
 if (!directorCss.includes('.pb.focus-mode .col-left')) fail('missing focus mode layout rules');
 if (!directorCss.includes('@property --character-accent') || !directorCss.includes('characterGlassSweep')) {
   fail('missing animated character theme treatment');

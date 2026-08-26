@@ -1,8 +1,6 @@
 'use strict';
 
 var http = require('http');
-var fs = require('fs');
-var path = require('path');
 
 function postJson(url, payload) {
   return new Promise(function (resolve, reject) {
@@ -112,7 +110,7 @@ async function run() {
   var resStd = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptStandard, client_id: 'bench' });
   console.log('Submitted standard prompt:', resStd.prompt_id);
   var t0 = Date.now();
-  var outStd = await waitForPrompt(resStd.prompt_id);
+  await waitForPrompt(resStd.prompt_id);
   var stdTime = (Date.now() - t0) / 1000;
   console.log('Standard finished in ' + stdTime.toFixed(2) + 's');
 
@@ -121,7 +119,7 @@ async function run() {
   var resTea = await postJson('http://127.0.0.1:8188/prompt', { prompt: promptTea, client_id: 'bench' });
   console.log('Submitted TeaCache prompt:', resTea.prompt_id);
   var t1 = Date.now();
-  var outTea = await waitForPrompt(resTea.prompt_id);
+  await waitForPrompt(resTea.prompt_id);
   var teaTime = (Date.now() - t1) / 1000;
   console.log('TeaCache finished in ' + teaTime.toFixed(2) + 's');
 

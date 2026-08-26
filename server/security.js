@@ -12,7 +12,7 @@ function tokenMatches(expectedToken, value) {
 
 function isDirectLocalRequest(req) {
   var address = req.socket && req.socket.remoteAddress || '';
-  var loopback = address === '127.0.0.1' || address === '::1' || address === '::ffff:127.0.0.1';
+  var loopback = address.startsWith('127.') || address === '::1' || /^::ffff:127\.\d+\.\d+\.\d+$/.test(address);
   var forwarded = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.headers.forwarded;
   return loopback && !forwarded;
 }

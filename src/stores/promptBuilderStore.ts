@@ -1,38 +1,27 @@
 import { defineStore } from 'pinia'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, type Ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { resolveModelProfile, mutualGroupOf, membersOfMutualGroup, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
+import { mutualGroupOf, membersOfMutualGroup, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
 import { imgPut, imgDelete } from '@/composables/useImageStore'
-import { kvGet, kvSet } from '@/composables/useKVStore'
-import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
+import { kvSet } from '@/composables/useKVStore'
 import { useSceneStore } from '@/stores/sceneStore'
-import { artworkRepository } from '@/storage/artworkRepository'
+import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
+import { applyModelProfileToParams } from '@/utils/promptModelProfile'
+import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+
+const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
 import {
   isSDParamKey,
   parsePresetCatalog,
-  parseProjectOptions,
   parsePromptBuilderDraft,
   type ProjectOption,
   type PromptBuilderDraft,
   type PromptPreset,
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
-import type { DrawSubject, PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
+import type { DrawSubject } from '@/utils/popularContent'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
-import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
-
-// 键名统一出处：src/utils/storageKeys.ts（useBackup / GalleryView 同读此常量）
-const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
-const PROJECT_STORAGE_KEY = ARTWORK_PROJECTS_KV_KEY
-
-/** 历史条目 id：Date.now() + 同毫秒序号，避免并发入册/保存撞 id */
-let historyIdLastMs = 0
-let historyIdCounter = 0
-function historyIdSeq(now: number): number {
-  if (now !== historyIdLastMs) { historyIdLastMs = now; historyIdCounter = 0 }
-  historyIdCounter += 1
-  return now * 1000 + historyIdCounter
-}
 
 export type CharKey = 'nene' | 'natsume' | 'triad'
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
@@ -40,9 +29,11 @@ export type DrawEngine = 'sd' | 'anima' | 'krea2'
 export interface Scene {
   id: string; title: string; story?: string; prompt?: string; tags?: string[]; visualDescription?: string
   char?: string; category?: string; season?: string; series?: string
-  rating?: string; mature?: boolean; lora?: string; timeOfDay?: string
+  rating?: string; mature?: boolean; lora?: string; time?: string; timeOfDay?: string
   lighting?: string; camera?: string; negative?: string
-  [k: string]: unknown
+  location?: string; weather?: string; emotion?: string
+  recommendedSize?: string; animaCaption?: string
+  usage?: string[]; [k: string]: unknown
 }
 
 export interface HistoryEntry {
@@ -63,7 +54,7 @@ export interface HistoryEntry {
   width: number | null; height: number | null
   rating: Record<string, number>; favorite: boolean; notes: string
   image_id: string; image_url: string; version: number
-  parent_id: number | null; project: string; [k: string]: unknown
+  parent_id: number | null; project: string
   /** 热门角色无 LoRA 创作模式（旧历史缺省 studio，向后兼容）。 */
   subject?: 'studio' | 'popular'
   characterId?: string
@@ -138,21 +129,22 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const artistStyleIds = ref<string[]>([])
   const projectId  = ref('')
 
-  // ── Loaded data ─────────────────────────────────────────────────────────
-  const scenes       = ref<Scene[]>([])
-  const curation     = ref<Record<string, unknown>>({})
-  const loraMeta     = ref<LoraMeta[]>([])
-  const presets      = ref<PromptPreset[]>([])
+  // ── Loaded data (proxy to sceneStore, single source, no drift) ───────
+  const sceneStore = useSceneStore()
+  const historyStore = usePromptHistoryStore()
+  const { history: _historyRef, projects: _projectsRef } = storeToRefs(historyStore)
+  const history = _historyRef as unknown as Ref<HistoryEntry[]>
+  const projects = _projectsRef as unknown as Ref<ProjectOption[]>
+  const scenes = computed(() => sceneStore.scenes as unknown as Scene[])
+  const curation = computed(() => sceneStore.curation as unknown as Record<string, unknown>)
+  const loraMeta = computed(() => sceneStore.loras as unknown as LoraMeta[])
+  const tags = computed(() => sceneStore.tags as unknown as Array<{ en: string; cn: string; cat: string }>)
+  const characters = computed(() => sceneStore.characters as unknown as Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }> }>)
+  const popularCharacters = computed(() => sceneStore.popularCharacters)
+  const sceneBlueprints = computed(() => sceneStore.sceneBlueprints)
+  const presets = ref<PromptPreset[]>([])
   const modelProfiles = ref<ModelProfile[]>([])
-  const tags         = ref<Array<{ en: string; cn: string; cat: string }>>([])
-  const characters   = ref<Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }>; [k: string]: unknown }>>([])
-  const popularCharacters = ref<PopularCharacter[]>([])
-  const sceneBlueprints = ref<SceneBlueprint[]>([])
-  const dataReady    = ref(false)
-
-  // ── Runtime history ─────────────────────────────────────────────────────
-  const history  = ref<HistoryEntry[]>([])
-  const projects = ref<ProjectOption[]>([])
+  const dataReady = ref(false)
 
   // ── SD state ────────────────────────────────────────────────────────────
   // 生成生命周期状态（online/generating/progress/result/error）由 useSDGenerate
@@ -322,60 +314,18 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     setTimeout(() => { if (toastMsg.value === msg) toastMsg.value = '' }, duration)
   }
 
-  // ── Data loading ─────────────────────────────────────────────────────────
-  /**
-   * 共享数据统一走 sceneStore（单例 + 一个版本号）。
-   * 以前这里自己 fetch 六个文件，与其他 6 处视图重复请求 scenes.json。
-   */
+  // ── Data loading (single source via sceneStore) ───────────────────────
   async function loadData() {
-    const store = useSceneStore()
-    await store.load()
-
-    scenes.value = store.scenes as typeof scenes.value
-    curation.value = store.curation
-    characters.value = store.characters as typeof characters.value
-    loraMeta.value = store.loras as typeof loraMeta.value
-    tags.value = store.tags as typeof tags.value
-    popularCharacters.value = store.popularCharacters
-    sceneBlueprints.value = store.sceneBlueprints
-
-    const catalog = parsePresetCatalog(store.presets)
+    await sceneStore.load()
+    const catalog = parsePresetCatalog(sceneStore.presets as unknown as Record<string, unknown>)
     presets.value = catalog.presets
     modelProfiles.value = catalog.modelProfiles
-
-    // presets.json 载入后立刻按底模填充推荐参数
     applyModelProfile()
     dataReady.value = true
   }
 
-  /**
-   * 按当前 checkpoint 匹配 model profile，并把推荐参数填入出图设置。
-   * 用户手动改过的项不覆盖（sdParamsTouched）。
-   */
   function applyModelProfile(modelName?: string, options: { applySize?: boolean } = {}): ModelProfile | null {
-    const profile = resolveModelProfile(modelProfiles.value, modelName || sdModelName.value)
-    if (!profile) return null
-    const touched = sdParamsTouched.value
-    const set = <K extends keyof SDParams>(key: K, value: SDParams[K] | null | undefined) => {
-      if (value === undefined || value === null || value === '') return
-      if (touched.has(key)) return
-      sdParams[key] = value
-    }
-    set('sampler', profile.sampler)
-    if (!touched.has('scheduler') && profile.scheduler !== undefined) sdParams.scheduler = profile.scheduler || ''
-    set('steps', Number(profile.steps) || undefined)
-    set('cfg', Number(profile.cfg) || undefined)
-    set('hiresFix', profile.hires_fix)
-    set('hiresScale', Number(profile.hires_scale) || undefined)
-    set('hiresUpscaler', profile.hires_upscaler)
-    set('hiresSteps', Number(profile.hires_steps) || undefined)
-    set('hiresDenoise', Number(profile.hires_denoising_strength) || undefined)
-    // profile 推荐尺寸（如 1024×1344）转成 WxH
-    if (options.applySize !== false && !touched.has('size') && profile.size) {
-      const m = String(profile.size).match(/(\d+)\s*[×x]\s*(\d+)/)
-      if (m) lastRecommendedSize.value = `${m[1]}x${m[2]}`
-    }
-    return profile
+    return applyModelProfileToParams(modelProfiles.value, modelName || sdModelName.value, sdParams, sdParamsTouched.value, lastRecommendedSize, options)
   }
 
   // ── Draft persistence ────────────────────────────────────────────────────
@@ -493,40 +443,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     } catch { return false }
   }
 
-  /**
-   * 量出成片真实像素。
-   * size 字段记的是保存那一刻下拉框的值，跟成片可能已经不一致
-   * （中途换过场景 / 尺寸、或走了 hires.fix 放大），作品册按它排版就会
-   * 给竖图套上横构图的框。所以入册时直接解码一次拿真尺寸。
-   */
-  async function measureBlob(blob: Blob): Promise<{ width: number | null; height: number | null }> {
-    try {
-      if (typeof createImageBitmap === 'function') {
-        const bitmap = await createImageBitmap(blob)
-        const size = { width: bitmap.width, height: bitmap.height }
-        bitmap.close?.()
-        return size
-      }
-    } catch { /* 落到 <img> 兜底 */ }
-    return await new Promise(resolve => {
-      const url = URL.createObjectURL(blob)
-      const img = new Image()
-      img.onload = () => {
-        resolve({ width: img.naturalWidth || null, height: img.naturalHeight || null })
-        URL.revokeObjectURL(url)
-      }
-      img.onerror = () => { resolve({ width: null, height: null }); URL.revokeObjectURL(url) }
-      img.src = url
-    })
-  }
-
-  /** 入册时顺带生成缩略图缓存（fire-and-forget，失败忽略不影响入册） */
-  async function cacheThumbnail(imageId: string, blob: Blob): Promise<void> {
-    try {
-      const dataUrl = await blobThumbDataUrl(blob)
-      if (dataUrl) await kvSet(thumbKey(imageId), dataUrl)
-    } catch { /* 缩略图只是缓存，丢了下次进作品册会补 */ }
-  }
+  // 委托至 promptHistoryStore，保持单一实现
+  async function measureBlob(blob: Blob) { return historyStore.measureBlob(blob) }
+  async function cacheThumbnail(imageId: string, blob: Blob) { return historyStore.cacheThumbnail(imageId, blob) }
 
   // ── History entry commit (IndexedDB image save) ──────────────────────────
   async function commitHistoryEntry(entry: Partial<HistoryEntry> & {
@@ -543,7 +462,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       const now = Date.now()
       // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
       // removeHistoryEntry 可能误删另一条；加模块级序号保证唯一。
-      const id = historyIdSeq(now)
+      const id = historyStore.historyIdSeq(now)
       const currentSubject = subject.value
       const isPopular = currentSubject.kind === 'popular'
       const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null
@@ -609,34 +528,15 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   async function removeHistoryEntry(id: number) {
-    const result = await artworkRepository.deleteArtwork(id)
-    if (result.historyChanged) {
-      history.value = history.value.filter(entry => entry.id !== id)
-    }
-    if (result.removedProjectReferences > 0) await loadProjects()
+    await historyStore.removeHistoryEntry(id)
   }
 
   async function loadHistory() {
-    try {
-      const raw = await kvGet<HistoryEntry[]>(HISTORY_STORAGE_KEY)
-      if (Array.isArray(raw)) history.value = raw
-    } catch {}
-    // projects 以前只声明不加载 → 下拉框恒空，每条历史都写 project:''
-    await loadProjects()
+    await historyStore.loadHistory()
   }
 
   async function loadProjects() {
-    try {
-      let raw: unknown = await kvGet(PROJECT_STORAGE_KEY)
-      let parsed = parseProjectOptions(raw)
-      if (!parsed.length) {
-        // 兼容旧键（作品册早期用的是 aics_projects）
-        raw = await kvGet('aics_projects')
-        parsed = parseProjectOptions(raw)
-      }
-      // 作品册用 title，导演台用 name —— 两边字段历史上就不一致，这里统一
-      projects.value = parsed
-    } catch {}
+    await historyStore.loadProjects()
   }
 
   return {

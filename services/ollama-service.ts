@@ -237,7 +237,7 @@ function createOllamaService(options: OllamaServiceOptions) {
       if (activeModel && activeModel !== selected) {
         const previous = activeModel;
         await unload(previous, input.signal);
-        console.log('  🔄 已卸载旧模型: ' + previous + ' → 加载: ' + selected);
+        console.warn('  🔄 已卸载旧模型: ' + previous + ' → 加载: ' + selected);
       }
       activeModel = selected;
 

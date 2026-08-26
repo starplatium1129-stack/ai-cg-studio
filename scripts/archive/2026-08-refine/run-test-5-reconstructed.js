@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { spawnSync } = require('child_process');
 
 // 选取 5 个重构幅度最大的标志性场景

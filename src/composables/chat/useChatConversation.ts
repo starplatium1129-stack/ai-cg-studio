@@ -1,6 +1,6 @@
 import { ref, type ComputedRef, type Ref } from 'vue'
 import { createMessageId, type CharacterConfig } from '@/config/characters'
-import { useChatStorage } from '@/composables/useChatStorage'
+import { useChatStorage } from '@/composables/chat/useChatStorage'
 import { useVoice } from '@/composables/useVoice'
 import { CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL } from '@/config/chatApi'
 import {

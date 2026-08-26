@@ -6,7 +6,7 @@
  */
 
 import { ref, computed, watch } from 'vue'
-import { maintenanceApi, maintenanceFailure } from '../api/maintenanceApi.ts'
+import { maintenanceApi, maintenanceFailure } from '@/api/maintenanceApi'
 import type { HomeHeroCharacter, SceneDraft } from '@/types/api'
 import type { SceneBlueprint } from '@/utils/popularContent'
 

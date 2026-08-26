@@ -187,7 +187,7 @@ AI-CG-Studio 统一工作流  (scripts/workflow.js)
     console.log('');
     // forward --help to underlying cmd if exists
     if (w.cmd) {
-      const result = spawnSync(w.cmd[0], [...w.cmd.slice(1), '--help'], { stdio: 'inherit', cwd: ROOT, shell: w.cmd[0] === 'npm' || w.cmd[0] === 'powershell' });
+      spawnSync(w.cmd[0], [...w.cmd.slice(1), '--help'], { stdio: 'inherit', cwd: ROOT, shell: w.cmd[0] === 'npm' || w.cmd[0] === 'powershell' });
       // ignore exit
     }
     return;

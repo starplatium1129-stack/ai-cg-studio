@@ -4,7 +4,7 @@
  */
 
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 
 const bpFile = 'data/scene-blueprints.json';
 const bpData = JSON.parse(fs.readFileSync(bpFile, 'utf8'));

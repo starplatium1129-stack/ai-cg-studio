@@ -29,7 +29,7 @@ shardFiles.forEach(file => {
       if (map.negative) sc.negative = map.negative;
       return;
     }
-    
+
     // 如果是未通过的场景但尚未手工定制，为其量身重写高规格提示词
     if (failedSceneIds.has(sc.id)) {
       const isNene = sc.characterId === 'nene' || sc.id.startsWith('sc0') && parseInt(sc.id.slice(2)) <= 50;

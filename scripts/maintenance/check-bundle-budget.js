@@ -48,16 +48,21 @@ function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
     };
   });
 
+  const warnings = [];
   const violations = [];
   for (const route of routes) {
     if (route.javascript > budgets.routeJavaScript) {
       violations.push(`${route.route} JavaScript ${route.javascript} > ${budgets.routeJavaScript}`);
+    } else if (route.javascript > budgets.routeJavaScript * 0.9) {
+      warnings.push(`${route.route} JavaScript ${kib(route.javascript)} > 90% of ${kib(budgets.routeJavaScript)}`);
     }
     if (route.css > budgets.routeCss) {
       violations.push(`${route.route} CSS ${route.css} > ${budgets.routeCss}`);
+    } else if (route.css > budgets.routeCss * 0.9) {
+      warnings.push(`${route.route} CSS ${kib(route.css)} > 90% of ${kib(budgets.routeCss)}`);
     }
   }
-  return { routes, violations };
+  return { routes, violations, warnings };
 }
 
 function kib(bytes) {
@@ -100,6 +105,9 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}; `
     + `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}`,
   );
+  if (result.warnings && result.warnings.length) {
+    console.warn(`[warn] bundle budget >90% warning:\n${result.warnings.join('\n')}`);
+  }
   return result;
 }
 

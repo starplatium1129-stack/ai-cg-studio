@@ -8,11 +8,11 @@ import {
   type useAnimaSession,
   type AnimaPublicJob,
   type AnimaRequest,
-} from '@/composables/useAnimaSession'
-import type { useSDGenerate } from '@/composables/useSDGenerate'
-import type { usePromptAssembly } from '@/composables/usePromptAssembly'
-import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchSceneItem } from '@/composables/useBatchDraw'
-import type { SDQueueJob } from '@/composables/useSDQueue'
+} from '@/composables/generation/useAnimaSession'
+import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
+import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
+import { useBatchDraw, type BatchDrawRunnerInput, type BatchDrawRunnerResult, type BatchEngine, type BatchSceneItem } from '@/composables/generation/useBatchDraw'
+import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>

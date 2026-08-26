@@ -376,13 +376,22 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
-      "mole_under_eye",
-      "white_pajamas",
+      "adult",
+      "naked",
+      "wrapped_in_sheet",
+      "lying_on_bed",
+      "propped_up_on_elbow",
       "bare_legs",
-      "warm_bed",
-      "full_body",
-      "barefoot",
-      "depth_of_field"
+      "heavy_blush",
+      "slight_smile",
+      "seductive_look",
+      "bedroom",
+      "indoors",
+      "morning_light",
+      "soft_shadows",
+      "mole_under_eye",
+      "sensual",
+      "close_up"
     ],
     "mature": false,
     "location": "温馨卧榻被窝",
@@ -394,12 +403,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_white_pajama_set_with_blue_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_under_blanket, barefoot_with_soft_toes_peeking_from_blanket, lying_under_blanket_in_warm_bed_with_one_hand_holding_blanket_edge_and_sleepy_gentle_blush, warm_bedroom_morning_light_with_blanket_and_pillow_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair_messy_on_sheets, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, wrapped_loosely_in_white_silk_bedsheet_like_a_cocoon, propping_upper_body_up_on_one_elbow, morning_sunlight_filtering_through_drapes, soft_blush, serene_affectionate_glance, luxury_hotel_bedroom, medium_shot",
+    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
     "storyJa": "【夏目・裸シーツに恋して】どこまでも怠惰な早朝、暖かく柔らかな朝の光が白いガーゼのカーテンを通して射し込んでいた。夏目は昨夜、二日酔いで散らかったベッドから目覚めました。彼女は世界中の服をすべて脱いで、真っ白でふわふわのベルベットのベッドの真ん中に裸で横たわっていました。愛の痕跡が詰まった完璧なボディを、半透明の白いシーツだけで優しく覆った。彼女の顔の熱い赤面は耳の根元まで達し、彼女の明るい目は半開きで、目の端の泣きぼくろは、太陽の光の中で極度の愛着と無限の魅力で輝いていました。彼女は眉を上げてそっと右手をあなたに開いた――「おはよう、この大変態。いつまで見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
     "rating": "R15",
-    "animaCaption": "Lying under a warm blanket in a soft white pajama set with blue trim, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet peeking, sleepy gentle blush in warm morning bedroom light.",
-    "auditRevision": "careful-batch09-2026-08-27"
+    "animaCaption": "Propping herself up on one elbow in a sun-drenched hotel bed the morning after, Shiki Natsume is completely nude, wrapped loosely like a cocoon in crisp white silk sheets. Her golden eyes gaze with soft, lingering affection and peaceful surrender as golden dawn light illuminates her bare shoulders and firm breasts."
   },
   {
     "id": "sc124",
@@ -1198,7 +1206,8 @@
       "bedroom",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": false,
     "location": "卧室",
@@ -1298,7 +1307,8 @@
       "bedroom",
       "full_body",
       "heels",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": false,
     "location": "卧室",
@@ -1349,7 +1359,8 @@
       "bedroom",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": true,
     "location": "卧室",
@@ -1404,7 +1415,8 @@
       "bedroom",
       "full_body",
       "heels",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "usage": [
       "官方CG灵感",
@@ -1441,7 +1453,8 @@
       "bed",
       "full_body",
       "barefoot",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": true,
     "location": "卧室",
@@ -1492,7 +1505,8 @@
       "indoor",
       "full_body",
       "heels",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": false,
     "location": "室内场景",
@@ -1543,7 +1557,8 @@
       "storage_room",
       "full_body",
       "mary_jane",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "mature": false,
     "location": "咖啡馆储物室",
@@ -1835,7 +1850,8 @@
       "full_body",
       "barefoot",
       "rainy_night",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "rating": "R18",
     "mature": true,
@@ -1915,7 +1931,8 @@
       "closed_cafe_wooden_floor",
       "full_body",
       "mary_jane",
-      "depth_of_field"
+      "depth_of_field",
+      "landscape"
     ],
     "rating": "R18",
     "mature": true,

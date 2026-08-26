@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 
 const bpFile = 'data/scene-blueprints.json';
 const bpData = JSON.parse(fs.readFileSync(bpFile, 'utf8'));
@@ -60,7 +60,7 @@ missingIds.forEach(id => {
   }
 });
 
-let mergedCount = 0;
+let _mergedCount = 0;
 blueprints.forEach(bp => {
   const map = allChunks[bp.id];
   if (map) {
@@ -69,7 +69,7 @@ blueprints.forEach(bp => {
     if (map.nsfwTokens) bp.nsfwTokens = map.nsfwTokens;
     if (map.nsfwProse) bp.nsfwProse = map.nsfwProse;
     if (map.negativeTokens) bp.negativeTokens = map.negativeTokens;
-    mergedCount++;
+    _mergedCount++;
   }
 });
 

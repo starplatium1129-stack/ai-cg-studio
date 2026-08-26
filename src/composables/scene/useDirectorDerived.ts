@@ -8,7 +8,7 @@ import {
   TAG_CATEGORY_LABELS,
   NON_MANUAL_TAGS,
   normalizeCatalogKey,
-} from '@/composables/useDirectorCatalog'
+} from '@/composables/scene/useDirectorCatalog'
 
 export interface DirectorDerivedInput {
   pb: ReturnType<typeof usePromptBuilderStore>

@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { CHARACTERS } from '@/config/characters'
-import type { useChatStorage } from '@/composables/useChatStorage'
+import type { useChatStorage } from '@/composables/chat/useChatStorage'
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 

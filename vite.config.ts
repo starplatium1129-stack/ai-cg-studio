@@ -81,6 +81,25 @@ export default defineConfig(async ({ mode }) => {
               id.includes('node_modules/pinia/')) {
             return 'vendor'
           }
+          if (id.includes('node_modules/motion/') || id.includes('node_modules/framer-motion/')) {
+            return 'motion'
+          }
+          if (id.includes('node_modules/@vueuse/')) {
+            return 'motion'
+          }
+          // 提示词策略与热门内容单独成块：改一个词条不应让全量 vendor 缓存失效
+          if (id.includes('src/utils/promptPolicy') ||
+              id.includes('src/utils/promptCompiler') ||
+              id.includes('src/utils/popularContent') ||
+              id.includes('src/config/artistStyleCatalog') ||
+              id.includes('src/config/artistStyles')) {
+            return 'prompt'
+          }
+          if (id.includes('src/composables/live2d/') ||
+              id.includes('src/utils/emotionRuntime') ||
+              id.includes('src/utils/blinkScheduler')) {
+            return 'live2d'
+          }
           return undefined
         }
       }

@@ -149,8 +149,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { usePromptBatchRunners, type PromptBatchRunnersDeps } from '@/composables/usePromptBatchRunners'
-import type { BatchDrawJob } from '@/composables/useBatchDraw'
+import { usePromptBatchRunners, type PromptBatchRunnersDeps } from '@/composables/prompt/usePromptBatchRunners'
+import type { BatchDrawJob } from '@/composables/generation/useBatchDraw'
 import type { SceneBlueprint } from '@/utils/popularContent'
 
 /**

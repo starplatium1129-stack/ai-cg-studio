@@ -19,5 +19,10 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.ts'],
     // store 与工具层测试为主；组件挂载测试按需补充
     restoreMocks: true,
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{ts,vue}'],
+      thresholds: { lines: 60, branches: 50 },
+    },
   },
 })

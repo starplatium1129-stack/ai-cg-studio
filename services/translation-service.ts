@@ -158,7 +158,7 @@ function createTranslationService(options: TranslationServiceOptions) {
           if (online) {
             stopReadyPoll();
             ready = true;
-            console.log('  🌐 中日翻译常驻服务已就绪 (port ' + options.port + ')');
+            console.warn('  🌐 中日翻译常驻服务已就绪 (port ' + options.port + ')');
             settle(function () { resolve(true); });
           } else if (attempts >= 120 || !child) {
             stopReadyPoll();

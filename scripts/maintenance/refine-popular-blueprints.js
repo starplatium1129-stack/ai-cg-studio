@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 
 const bpFile = 'data/scene-blueprints.json';
 const bpData = JSON.parse(fs.readFileSync(bpFile, 'utf8'));
@@ -15,7 +15,7 @@ let refinedCount = 0;
 blueprints.forEach(bp => {
   if (!failedBpMap.has(bp.id)) return;
   const failInfo = failedBpMap.get(bp.id);
-  const char = failInfo.character;
+  const _char = failInfo.character;
   const adult = Boolean(bp.adult);
 
   // 1. 丝袜材质严格互斥与单选修正
@@ -39,7 +39,7 @@ blueprints.forEach(bp => {
 
   // 2. 空间着陆与地表光影注入（消灭悬浮与死黑）
   const targetTokens = adult ? (bp.nsfwTokens || []) : (bp.promptTokens || []);
-  
+
   // 注入通用高质量艺术与构图锚点
   const groundingTokens = [];
   const tokenSet = new Set(targetTokens);

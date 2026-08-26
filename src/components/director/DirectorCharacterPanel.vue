@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
+import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import PopularCharacterPicker from '@/components/popular/PopularCharacterPicker.vue'
 import type { PopularCharacter } from '@/utils/popularContent'

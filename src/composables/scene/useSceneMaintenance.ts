@@ -1,7 +1,7 @@
 import { computed, onMounted, ref, type Ref } from 'vue'
-import { ApiClientError } from '../api/client.ts'
-import { maintenanceApi } from '../api/maintenanceApi.ts'
-import type { BackupEntry } from '../api/maintenanceApi.ts'
+import { ApiClientError } from '@/api/client'
+import { maintenanceApi } from '@/api/maintenanceApi'
+import type { BackupEntry } from '@/api/maintenanceApi'
 import type { SceneDraft, TagRecord, CurationData } from '@/types/api'
 
 export interface SceneMaintenanceDeps {

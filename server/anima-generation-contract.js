@@ -51,6 +51,7 @@ const ALLOWED_INPUT_KEYS = Object.freeze([
   'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresUpscaler',
   'teaCache', 'teaCacheThresh',
   'initImage', 'maskImage', 'maskPrompt', 'maskThreshold', 'denoisingStrength', 'growMaskBy',
+  'adultEnabled',
 ]);
 
 const CHARACTER_LORA_BINDINGS = Object.freeze({

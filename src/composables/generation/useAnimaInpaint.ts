@@ -1,8 +1,9 @@
 import { computed, ref, type ComputedRef, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
-import { resolveInpaintRequestBinding, type useAnimaSession } from '@/composables/useAnimaSession'
+import { resolveInpaintRequestBinding, type useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
+import { apiClient } from '@/api/client'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -49,14 +50,13 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
       })
       const base64Data = await base64Promise
 
-      const uploadRes = await fetch('/api/anima/images', {
+      const uploadJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>('/api/anima/images', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: base64Data }),
-      })
-      const uploadJson = await uploadRes.json()
-      if (!uploadRes.ok || !uploadJson.ok || !uploadJson.name) {
-        throw new Error(uploadJson.error || '原图上传失败')
+        body: { image: base64Data },
+        timeoutMs: 30_000,
+      } as unknown as Record<string, unknown>)
+      if (!uploadJson.ok || !uploadJson.name) {
+        throw new Error((uploadJson as { error?: string }).error || '原图上传失败')
       }
 
       const initImage = uploadJson.name
@@ -68,13 +68,12 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
           maskReader.onerror = reject
           maskReader.readAsDataURL(payload.maskBlob as Blob)
         })
-        const maskRes = await fetch('/api/anima/images', {
+        const maskJson = await apiClient.request<{ ok: boolean; name: string; error?: string }>('/api/anima/images', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: maskData }),
-        })
-        const maskJson = await maskRes.json()
-        if (!maskRes.ok || !maskJson.ok || !maskJson.name) throw new Error(maskJson.error || '遮罩上传失败')
+          body: { image: maskData },
+          timeoutMs: 30_000,
+        } as unknown as Record<string, unknown>)
+        if (!maskJson.ok || !maskJson.name) throw new Error((maskJson as { error?: string }).error || '遮罩上传失败')
         maskImage = maskJson.name
       }
       inpaintOpen.value = false

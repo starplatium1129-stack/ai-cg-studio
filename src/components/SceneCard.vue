@@ -19,9 +19,12 @@
         class="sc-thumb"
         :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
         :src="thumbSrc"
+        :srcset="`${thumbSrc} 320w, ${thumbSrc} 640w`"
+        sizes="(max-width: 760px) 50vw, (max-width: 1000px) 33vw, 25vw"
         alt=""
         loading="lazy"
         decoding="async"
+        fetchpriority="auto"
         @load="thumbLoaded = true"
         @error="thumbFailed = true"
       />
