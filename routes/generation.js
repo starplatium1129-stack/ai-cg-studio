@@ -45,6 +45,8 @@ function assertAdultAllowed(req, body) {
   var prompt = String(body.prompt || '');
   var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
   if (!wantsAdult) return;
+  var hasLocalBypass = req && security.isDirectLocalRequest(req);
+  if (hasLocalBypass) return;
   var targetChar = String(body.character || '').toLowerCase();
   if (!targetChar && body.loras && Array.isArray(body.loras)) {
     var hasNene = body.loras.some(function (l) { return String(l.id || '').toUpperCase() === 'L_NENE_V18_WD14'; });
@@ -57,8 +59,7 @@ function assertAdultAllowed(req, body) {
   if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
     throw error(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
   }
-  var hasLocalBypass = req && security.isDirectLocalRequest(req);
-  if (body.adultEnabled === true || hasLocalBypass) return;
+  if (body.adultEnabled === true) return;
   throw error(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
 }
 

@@ -50,6 +50,10 @@ function assertAdultAllowed(req, body) {
   var prompt = String(body.prompt || '');
   var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
   if (!wantsAdult) return;
+  // 本机个人使用（127.0.0.1 直连，含 Tauri 桌面端）直接放行，不再卡角色白名单与 adultEnabled
+  // 隧道分享等非回环请求仍走双门校验
+  var hasLocalBypass = req && security.isDirectLocalRequest(req);
+  if (hasLocalBypass) return;
   var targetChar = String(body.character || '').toLowerCase();
   // 无 LoRA 模式（popular）下 character 可能为空，此时按 prompt 中的 r18 锚点推断角色
   if (!targetChar && /nene_r18/i.test(prompt)) targetChar = 'nene';
@@ -57,8 +61,7 @@ function assertAdultAllowed(req, body) {
   if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
     throw serviceError(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
   }
-  var hasLocalBypass = req && security.isDirectLocalRequest(req);
-  if (body.adultEnabled === true || hasLocalBypass) return;
+  if (body.adultEnabled === true) return;
   throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
 }
 
