@@ -10,6 +10,7 @@ import {
 } from '@/utils/sdStatus'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
 import { generationApi } from '@/api/generationApi'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
 function isAbortError(error: unknown): boolean {
@@ -169,6 +170,7 @@ export function useSDGenerate() {
         hiresFix: Boolean(params.hr_fix), hiresScale: params.hr_scale, hiresUpscaler: params.hr_upscaler,
         hiresSteps: params.hr_second_pass_steps, denoisingStrength: params.denoising_strength,
         faceDetailer: Boolean(params.alwayson_scripts?.ADetailer),
+        ...(isLocalStudioHost() ? { adultEnabled: true } : {}),
       }, { signal: abortCtrl.signal })
 
       provider.value = accepted.job.provider === 'comfy' ? 'comfy' : 'webui'

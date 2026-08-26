@@ -66,6 +66,7 @@ export interface GenerationJobPayload {
   hiresSteps?: number
   denoisingStrength?: number
   faceDetailer?: boolean
+  adultEnabled?: boolean
 }
 
 export interface GenerationJobEnvelope {

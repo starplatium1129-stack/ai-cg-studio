@@ -7,6 +7,7 @@ import type {
   AnimaResult,
 } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 /**
  * Anima / Krea 2 生成会话 —— 「useGenerationSession：生成、进度、取消和错误」。
@@ -65,6 +66,7 @@ export interface AnimaRequest {
   maskThreshold?: number
   denoisingStrength?: number
   growMaskBy?: number
+  adultEnabled?: boolean
 }
 
 export interface AnimaSessionOptions {
@@ -147,7 +149,9 @@ function jobPath(family: 'anima' | 'krea2', id?: string): string {
 /** 请求载荷按服务端白名单收敛；空字段不发送（服务端 400 INVALID_PARAMETER） */
 export function animaRequestPayload(
   request: AnimaRequest,
-): Omit<AnimaRequest, 'profileId' | 'loraId' | 'loraStrength'> & Partial<Pick<AnimaRequest, 'loraId' | 'loraStrength'>> {
+): Omit<AnimaRequest, 'profileId' | 'loraId' | 'loraStrength'> & Partial<Pick<AnimaRequest, 'loraId' | 'loraStrength'>> & { adultEnabled?: boolean } {
+  // 成人内容传输层授权：本机/桌面端自动透传，服务端 fail-closed 双门校验
+  const adultEnabled = request.adultEnabled !== undefined ? request.adultEnabled : isLocalStudioHost()
   return {
     prompt: request.prompt,
     negative: request.negative,
@@ -173,6 +177,7 @@ export function animaRequestPayload(
     ...(request.maskPrompt && request.maskThreshold !== undefined ? { maskThreshold: request.maskThreshold } : {}),
     ...(request.denoisingStrength !== undefined ? { denoisingStrength: request.denoisingStrength } : {}),
     ...(request.growMaskBy !== undefined ? { growMaskBy: request.growMaskBy } : {}),
+    ...(adultEnabled ? { adultEnabled: true } : {}),
   }
 }
 

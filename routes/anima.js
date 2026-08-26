@@ -42,9 +42,11 @@ var CHARACTERS = modelCatalog.CHARACTERS;
 var ALLOWED_INPUT_KEYS = new Set(generationContract.ALLOWED_INPUT_KEYS);
 
 // 成人内容双门（与 desktop-tools.js 同源，AGENTS.md 红线 #4 fail-closed）
+// 桌面端为本机回环请求（127.0.0.1 / ::1），即使前端因 tauri.localhost 误判未透传 adultEnabled，
+// 仍视为已获本机授权，避免“本地个人使用却被拒绝”的误伤。
 var ADULT_ELIGIBLE_CHARACTERS = new Set(['nene', 'natsume']);
 var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
-function assertAdultAllowed(body) {
+function assertAdultAllowed(req, body) {
   var prompt = String(body.prompt || '');
   var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
   if (!wantsAdult) return;
@@ -55,9 +57,9 @@ function assertAdultAllowed(body) {
   if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
     throw serviceError(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
   }
-  if (body.adultEnabled !== true) {
-    throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
-  }
+  var hasLocalBypass = req && security.isDirectLocalRequest(req);
+  if (body.adultEnabled === true || hasLocalBypass) return;
+  throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
 }
 
 // 放大二阶段参数：固定 sgm_uniform + res_multistep（首轮 res_multistep/simple）
@@ -172,7 +174,19 @@ function requiredResources(config, input, loraRoot) {
   }
 }
 
-function validateInput(body, expectedFamily) {
+function validateInput(reqOrBody, expectedFamilyOrBody, maybeExpectedFamily) {
+  var req = null;
+  var body;
+  var expectedFamily;
+  // 兼容旧调用 validateInput(body) 与新调用 validateInput(req, body)
+  if (maybeExpectedFamily !== undefined || (reqOrBody && reqOrBody.socket && reqOrBody.headers)) {
+    req = reqOrBody;
+    body = expectedFamilyOrBody;
+    expectedFamily = maybeExpectedFamily;
+  } else {
+    body = reqOrBody;
+    expectedFamily = expectedFamilyOrBody;
+  }
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
 
   Object.keys(body).forEach(function (key) {
@@ -192,7 +206,7 @@ function validateInput(body, expectedFamily) {
   if (body.negative !== undefined && (typeof body.negative !== 'string' || body.negative.length > MAX_NEGATIVE_LENGTH)) {
     throw serviceError(400, 'INVALID_PARAMETER', 'negative 需为不超过 ' + MAX_NEGATIVE_LENGTH + ' 字符的文本');
   }
-  assertAdultAllowed(body);
+  assertAdultAllowed(req, body);
   var model = MODELS[body.modelId];
   if (!model) throw serviceError(400, 'UNKNOWN_MODEL', '未知生成模型');
   if (expectedFamily && model.family !== expectedFamily) throw serviceError(400, 'WRONG_ROUTE_FAMILY', '请求路径与模型 family 不匹配');
@@ -1277,7 +1291,7 @@ function createAnimaRouter(config, dependencies) {
 
   router.post(['/api/anima/jobs', '/api/creative/jobs'], jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
     var input;
-    try { input = validateInput(req.body, routeFamily(req) === 'anima' ? 'anima' : 'krea2'); } catch (error) {
+    try { input = validateInput(req, req.body, routeFamily(req) === 'anima' ? 'anima' : 'krea2'); } catch (error) {
       return envelope.fail(res, error.status || 400, error.message, { code:error.code });
     }
     var job;

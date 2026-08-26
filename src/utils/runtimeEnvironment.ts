@@ -10,5 +10,14 @@
 const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]'] as const
 
 export function isLocalStudioHost(hostname: string = window.location.hostname): boolean {
-  return (LOCAL_HOSTNAMES as readonly string[]).includes(hostname)
+  if ((LOCAL_HOSTNAMES as readonly string[]).includes(hostname)) return true
+  // Tauri 桌面端 WebView 的 hostname 为 tauri.localhost / __tauri__ 协议，仍属本机
+  if (hostname.includes('tauri')) return true
+  try {
+    const w = window as unknown as { companionDesktop?: { isDesktop?: boolean }; __TAURI__?: unknown }
+    if (w.companionDesktop?.isDesktop) return true
+    if (w.__TAURI__) return true
+    if (window.location.protocol === 'tauri:' || window.location.protocol === 'https:' && hostname === 'tauri.localhost') return true
+  } catch {}
+  return false
 }

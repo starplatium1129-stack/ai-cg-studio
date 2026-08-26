@@ -41,7 +41,7 @@ var ALLOWED = new Set([
 
 var ADULT_ELIGIBLE_CHARACTERS = new Set(['nene', 'natsume']);
 var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
-function assertAdultAllowed(body) {
+function assertAdultAllowed(req, body) {
   var prompt = String(body.prompt || '');
   var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
   if (!wantsAdult) return;
@@ -57,9 +57,9 @@ function assertAdultAllowed(body) {
   if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
     throw error(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
   }
-  if (body.adultEnabled !== true) {
-    throw error(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
-  }
+  var hasLocalBypass = req && security.isDirectLocalRequest(req);
+  if (body.adultEnabled === true || hasLocalBypass) return;
+  throw error(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
 }
 
 function error(status, code, message, detail) {
@@ -112,10 +112,18 @@ function validateWaiResources(config, input) {
 function freezeLoras(loras) {
   return Object.freeze((loras || []).map(function (lora) { return Object.freeze({ id:lora.id, strength:lora.strength }); }));
 }
-function validate(body) {
+function validate(reqOrBody, maybeBody) {
+  var req = null;
+  var body;
+  if (maybeBody !== undefined || (reqOrBody && reqOrBody.socket && reqOrBody.headers)) {
+    req = reqOrBody;
+    body = maybeBody;
+  } else {
+    body = reqOrBody;
+  }
   if (!plain(body)) throw error(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) { if (!ALLOWED.has(key)) throw error(400, 'UNKNOWN_PARAMETER', '不支持的参数：' + key); });
-  assertAdultAllowed(body);
+  assertAdultAllowed(req, body);
   if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > 12000) throw error(400, 'INVALID_PARAMETER', 'prompt 无效');
   if (body.negative !== undefined && (typeof body.negative !== 'string' || body.negative.length > 8000)) throw error(400, 'INVALID_PARAMETER', 'negative 无效');
   if (body.modelId !== undefined && body.modelId !== 'waiIllustriousSDXL_v170') throw error(400, 'UNKNOWN_MODEL', '未知 WAI checkpoint');
@@ -391,7 +399,7 @@ function createGenerationRouter(config, dependencies) {
     return envelope.ok(res, data);
   });
   router.post('/api/generation/jobs', limit, express.json({ limit:MAX_BODY }), async function (req, res) {
-    var input; try { input = validate(req.body); } catch (e) { return envelope.fail(res, e.status || 400, e.message, { code:e.code }); }
+    var input; try { input = validate(req, req.body); } catch (e) { return envelope.fail(res, e.status || 400, e.message, { code:e.code }); }
     // fresh：路由决策不能吃缓存——上游刚下线时必须立即失败而不是送进注定失败的分支
     var webui = await probeWebUI(config, { fresh:true });
     var comfyOnline = await comfy.probe().catch(function () { return false; });

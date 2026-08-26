@@ -1060,6 +1060,7 @@ function buildAnimaRequest(): AnimaRequest | null {
     hiresDenoise: animaState.value.hiresDenoise,
     teaCache: animaState.value.teaCache !== false,
     teaCacheThresh: animaState.value.teaCacheThresh,
+    adultEnabled: pb.showMatureScenes,
   }
 }
 
@@ -1096,6 +1097,7 @@ function buildPopularRequest(): AnimaRequest | null {
     hiresDenoise: animaState.value.hiresDenoise,
     teaCache: animaState.value.teaCache !== false,
     teaCacheThresh: animaState.value.teaCacheThresh,
+    adultEnabled: pb.showMatureScenes,
   }
 }
 
