@@ -254,22 +254,12 @@
     "timeOfDay": "morning",
     "tags": [
       "hair_ribbon",
-      "bedroom",
-      "soft_lighting",
+      "silk_negligee",
+      "bare_legs",
       "mirror",
-      "lingerie",
-      "adult",
-      "robe",
-      "holding_phone",
-      "heavy_blush",
-      "cohabitation",
-      "morning",
-      "clear_sky",
-      "close_up",
-      "morning_light",
-      "diffused_light",
-      "blush",
-      "shy"
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "同居公寓卧室镜前",
@@ -281,11 +271,12 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, soft_lighting, mirror, lingerie, adult, robe, holding_phone, heavy_blush, cohabitation, morning, clear_sky, close_up, morning_light, diffused_light, blush, shy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_silk_negligee_with_lace_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_moonlit_skin_sheen_standing_before_mirror, barefoot_with_detailed_toes_on_bedroom_floor, standing_before_mirror_in_cohabitation_bedroom_with_one_hand_holding_phone_and_shy_intimate_blush, warm_bedroom_mirror_light_with_silk_and_phone_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・鏡の前の未送信写真】同棲を終えた春の朝、大人の寧々は寝室の鏡の前で新しく買った下着を試着した。彼女はこっそりとマッチング効果の写真を撮りたかったのですが、起きたばかりのあなたが鏡に映っていました。彼女は慌てて携帯電話を背中に隠し、顔を赤らめてナイトガウンで肩を覆い、ようやくゆっくりと携帯電話を下ろした。――「ちゃんと準備してから見せようと思っていたのに……もう起きてしまったなら、似合うかどうか、あなたが責任を持って教えてください。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer with a gentle blush on her cheeks, under diffused overcast daylight."
+    "animaCaption": "Standing before a mirror in a cohabitation bedroom in a soft white silk negligee with lace, Ayachi Nene shows slender bare legs with moonlit skin sheen, bare feet on floor, holding a phone with a shy intimate blush.",
+    "auditRevision": "careful-batch13-2026-08-27"
   },
   {
     "id": "sc062",
@@ -1335,22 +1326,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "mole_under_eye",
       "evening_gown",
-      "dress_unzipped",
-      "bare_back",
-      "sideboob",
-      "cleavage",
-      "lying_on_bed",
-      "heavy_blush",
-      "tears_in_eyes",
-      "heavy_breathing",
-      "bedroom",
-      "night",
-      "dim_lighting",
-      "hair_ribbon",
-      "ahoge",
-      "sensual",
-      "close_up"
+      "sheer_black_tights",
+      "apartment",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "公寓大床中央",
@@ -1361,12 +1343,12 @@
       "新手推荐",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_backless_navy_evening_gown_with_zipper_pulled_halfway_down, bare_back_and_shoulders, bare_armpits, smooth_underarm_contours, sheer_black_thighhigh_socks, sitting_on_plush_velvet_armchair_in_lounge, turning_back_with_intense_blushing_gaze, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, graceful_foot_arches, high-rise_hotel_lounge_overlooking_glittering_city_night_skyline, warm_cove_ceiling_lighting_and_crystal_chandelier, full_body\nSeated on a plush navy velvet armchair inside a luxury high-rise lounge, Ayachi Nene's evening gown is unzipped down her back to reveal her porcelain spine, worn with sheer black stockings. Turning back with a tender, blushing gaze, the glowing crystal chandelier and sparkling city skyline through panoramic windows illuminate the room, perfectly framing her smooth underarms and stocking-clad feet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, fishnet, fishnets, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_elegant_navy_evening_gown_with_slender_bare_shoulders_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_gown_slit, entire_legs_and_feet_fully_visible_in_frame, black_heels_on_apartment_floor, standing_in_apartment_with_one_hand_holding_gown_hem_and_composed_blush, warm_apartment_light_with_gown_and_chandelier_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・・・イブニングドレスを解くと究極のエロゲ】高級カクテルパーティー後の豪華なアパートのマスターベッドルーム。寧々はあなたの優しさでベルベットのベッドの真ん中に押し倒されました。彼女の神聖でエレガントな背中の開いたピンクのシルクのイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に緩くスライドし、丸い肩の広い領域と豊満でセクシーな真っ白な胸の半分が明らかになりました。彼女は頭を覆おうとして両手でシーツを握りしめた。彼女の頭上のアホ毛は、感情的な過負荷により、すでに非常に震えるハート型の螺旋に崩壊していました。――「柊史……恥ずかしいです。帰ってすぐスカートを引っ張るなんて……もう、早く寧々を抱きしめてください。」",
     "rating": "R15",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "Sitting astride the viewer's lap at a secluded cafe table after hours, Ayachi Nene's pink silk blouse is completely unbuttoned to reveal her soft bare breasts, wearing sheer black thigh-high stockings. Clasping the viewer's shoulders with an intense, biting blush, warm cafe lamps cast cozy amber highlights across her skin."
+    "auditRevision": "careful-batch13-2026-08-27",
+    "animaCaption": "Standing in an apartment in an elegant navy evening gown with a slit and glossy black tights, Shiki Natsume holds the hem with a composed blush under warm apartment light."
   },
   {
     "id": "sc139",
@@ -1383,26 +1365,13 @@
     "time": "拂晓",
     "timeOfDay": "dawn",
     "tags": [
-      "sundress",
-      "no_bra",
-      "nipples_visible_through_clothing",
-      "see_through_clothing",
-      "bare_shoulders",
-      "sitting_on_bed",
-      "heavy_blush",
-      "sweat",
-      "heavy_breathing",
-      "passionate_look",
-      "messy_hair",
-      "beach_house",
-      "dawn",
-      "first_light",
-      "rim_light",
       "hair_ribbon",
-      "ahoge",
-      "sensual",
-      "close_up",
-      "pov"
+      "sundress",
+      "bare_legs",
+      "beach_house_bed",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "海滨度假木屋床榻",
@@ -1413,11 +1382,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, nude, completely_naked, bare_breasts, pink_nipples, exposed_pussy, slender_waist, lying_on_stomach_across_velvet_couch, propping_chin_on_pillow, looking_back_over_shoulder, flustered_playful_smile, heavy_blush, living_room_at_sunset, orange_and_purple_twilight_through_window, dramatic_rim_light, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_breezy_white_sundress_with_thin_straps_and_slender_bare_legs, sun_kissed_bare_legs_with_smooth_thigh_and_calf_and_sheer_skin_sheen_lying_on_beach_house_bed, barefoot_with_detailed_toes_on_bed_sheets, lying_on_bed_in_beach_house_with_one_hand_holding_dress_strap_and_gentle_loving_blush, warm_beach_house_morning_light_with_bed_sheet_and_sundress_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・・ロングドレス真空バックライト】海辺の別荘で夜明けになると、床から天井まで届く窓の外に黄金色の太陽が昇り、打ち寄せる波が見えます。寧々は、非常に薄い白い夏用のノースリーブのワンピースを着ているだけで、その下は全裸でした。薄い生地が夜明けの逆光に全面的に照らされ、魅力的で誇らしげな胸の輪郭と際立ったフルマークが魅惑的に刻まれました。彼女は大量の汗をかきながらベッドの端に座り、海風に銀色の長い髪をなびかせ、頭の上のアホ毛がおとなしく愛情を込めて完璧な愛の形に曲がりました。彼女は率先して手を伸ばしてあなたの首を掴み、ディープキスへと導きました。――「もう、見とれちゃったんですか？　朝になったなら……昨日の続きの約束を、今から一緒に叶えましょう。」",
     "rating": "R15",
-    "animaCaption": "Lying comfortably on her stomach across a velvet living room sofa at sunset, Ayachi Nene is completely nude, propping her chin on a silk pillow while glancing back over her bare shoulder with a playful, flustered smile. Rich orange and violet twilight pours through the window, outlining her slender waist and bare curves."
+    "animaCaption": "Lying on a bed in a beach house in a breezy white sundress with thin straps, Ayachi Nene shows sun-kissed bare legs with smooth thigh and sheer skin sheen, bare feet on sheets, gentle loving blush in warm morning beach house light.",
+    "auditRevision": "careful-batch13-2026-08-27"
   },
   {
     "id": "sc149",
@@ -2030,24 +2000,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "bridal_lingerie",
-      "lace_lingerie",
-      "garter_belt",
-      "white_stockings",
-      "veil",
-      "lying_on_bed",
-      "lying_on_stomach",
-      "bare_shoulders",
-      "heavy_blush",
-      "tears_in_eyes",
-      "ahoge",
       "hair_ribbon",
-      "bedroom",
-      "night",
-      "dim_lighting",
-      "sensual",
-      "warm_lighting",
-      "close_up"
+      "wedding_lingerie",
+      "sheer_white_thighhigh_stockings",
+      "honeymoon_suite",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "新婚奢华蜜月房",
@@ -2058,11 +2017,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_bridal_white_lace_lingerie_set_with_translucent_veil, bare_shoulders, bare_armpits, smooth_underarm_crease, sheer_white_thighhigh_socks_with_floral_lace_tops, kneeling_on_white_satin_bedsheet_facing_camera, holding_veil_nervously_with_both_hands, entire_legs_and_feet_fully_visible_in_frame, sheer_white_stocking_feet, pearly_sheen_along_thighs, teary_affectionate_blush, luxurious_bridal_suite_illuminated_by_warm_crystal_chandeliers_and_candlelight, full_body\nKneeling softly upon white satin sheets in a bridal suite, Ayachi Nene wears pure white bridal lace lingerie, a translucent bridal veil, and sheer white thigh-high stockings. Holding the delicate veil with trembling fingers, crystal chandeliers and soft candles fill the lavish suite with golden light, illuminating her smooth underarms and white-stockinged feet tucked neatly on the duvet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, fishnet, fishnets, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_pure_white_wedding_lingerie_with_lace_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, white_heels_on_honeymoon_suite_floor, standing_in_luxury_honeymoon_suite_with_one_hand_holding_veil_and_shy_loving_blush, warm_honeymoon_suite_light_with_lace_and_veil_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・・・新婚のランジェリーはとびきりロマンチック】結婚式の初夜、豪華なベッドルームにバラの花びらが散りばめられます。寧々さんは、ご要望に応じて顔を赤らめてタブーのような純白のブライダルレースの下着とガーターを身に着け、頭には半透明の白いベールをかぶせました。彼女は大きな白いベルベットのベッドの真ん中にある柔らかいソファに横たわり、極度の緊張のせいで色白で繊細な体がわずかに震えていました。彼女は熱い頬を隠そうとベールを引っ張った。彼女の頭のアホ毛は、愛の過多によりすでに完全なハート型の螺旋に崩壊していました。彼女の涙ぐんだ目は混乱してあなたを見つめていました。――「柊史……この服、ちょっと反則です。今日から寧々は、本当にあなたのお嫁さんなんですね。」",
     "rating": "R15",
-    "animaCaption": "Sitting on the edge of the lavish bridal suite bed on her wedding night, Ayachi Nene wears sheer white bridal lace lingerie and a delicate veil, pulling down the cups to bare her soft breasts. Covering her burning cheeks with trembling hands in overwhelming shyness, tabletop candles and scattered white rose petals create a holy, romantic atmosphere."
+    "animaCaption": "Standing in a luxury honeymoon suite in pure white wedding lingerie with lace and silky white thighhighs, Ayachi Nene holds her veil with a shy loving blush under warm suite light.",
+    "auditRevision": "careful-batch13-2026-08-27"
   },
   {
     "id": "sc184",
@@ -2242,25 +2202,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "adult",
-      "oversized_sweater",
-      "off_shoulder_sweater",
-      "no_panties",
-      "lying_on_couch",
-      "bare_legs",
-      "bare_shoulders",
-      "cleavage",
-      "heavy_blush",
-      "shy_smile",
       "hair_ribbon",
-      "ahoge",
+      "grey_sweater",
+      "bare_legs",
       "fireplace",
-      "indoors",
-      "night",
-      "warm_lighting",
-      "cozy",
-      "sensual",
-      "close_up"
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "度假木屋壁炉前地毯",
@@ -2272,11 +2220,12 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_loose_knit_cream_sweater_slipping_completely_off_one_shoulder, bare_shoulder_and_collarbone, bare_armpits, smooth_underarm_contours, sheer_black_pantyhose, sitting_on_soft_flokati_rug_before_blazing_fireplace, holding_mug_of_hot_cocoa, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, graceful_foot_arches, blissful_blushing_smile, rustic_chalet_living_room_at_night, warm_amber_fireplace_flames_and_glowing_wall_sconces, full_body\nSitting comfortably upon a plush shag rug before a blazing stone fireplace, Ayachi Nene's loose cream knit sweater slips off one shoulder to reveal her delicate collarbone and smooth underarm. Clad in sheer black pantyhose, she holds a warm mug of cocoa with a blissful blush, while the roaring fire and amber wall sconces fill the chalet with cozy golden light, clearly capturing her stocking-clad feet resting on the rug.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_grey_oversized_sweater_with_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_before_fireplace, barefoot_with_soft_toes_on_rug, sitting_before_fireplace_with_one_hand_holding_mug_and_cozy_contented_blush, warm_fireplace_light_with_rug_and_mug_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・・ホリデーキャビンセーターワンショルダーずり落ちバキューム】雪の降る冬の夜遅く、貸切の別荘で、暖炉の薪がパチパチと音を立て、オレンジがかった赤の暖かい火の光が飛び散っていた。寧々は今夜は守備を完全に下げた。彼女は大きな厚手のニットセーターを着ているだけで、何も着ていませんでした。彼女は毛の長い分厚いカーペットの上に仰向けになってのんびりと横たわっていた。彼女のセーターの広いネックラインは片方の腕に完全に滑り込み、丸い肩とふっくらとしたセクシーな白い胸の半分が露出しました。彼女の細くて柔らかい脚は、火の光の下で魅惑的な暖かい光沢を放ち、頭のアホ毛は究極の快適さと安心感のために完璧なハートの形に素直に垂れ下がりました。――「もう、肩ばかり見てどうしたんですか？　暖炉も暖かいですけど……あなたに抱きしめてもらうほうが、もっと暖かいです。」",
     "rating": "R15",
-    "animaCaption": "Sitting on a plush sheepskin rug before a crackling brick fireplace inside a winter cabin, Ayachi Nene lets her loose cream knit sweater slide completely off one shoulder, exposing her soft bare breast and delicate collarbone. Her purple eyes gleam with tender affection as the golden firelight wraps her in romantic winter warmth."
+    "animaCaption": "Sitting before a fireplace in a soft grey oversized sweater, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on a rug, holding a mug with a cozy contented blush under warm fireplace light.",
+    "auditRevision": "careful-batch13-2026-08-27"
   },
   {
     "id": "sc194",
@@ -2455,23 +2404,12 @@
     "timeOfDay": "late_night",
     "tags": [
       "hair_ribbon",
-      "ahoge",
-      "oversized_shirt",
-      "open_shirt",
-      "unbuttoned_shirt",
-      "lying_on_bed",
-      "holding_clothes",
-      "heavy_blush",
-      "tears_in_eyes",
-      "open_mouth",
+      "silk_negligee",
+      "bare_legs",
       "bedroom",
-      "bed",
-      "night",
-      "dim_lighting",
-      "sensual",
-      "warm_lighting",
-      "pov",
-      "close_up"
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "温馨卧室大床",
@@ -2482,11 +2420,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wrapped_snugly_in_thick_white_down_comforter_like_a_cocoon, bare_shoulders_and_collarbone_peeking_out, bare_armpits, smooth_underarm_contours, bare_legs_partially_exposed, lying_on_bed_facing_viewer, entire_legs_and_feet_fully_visible_in_frame, smooth_pale_soles, detailed_toes, sleepy_content_blush, rainy_night_bedroom, warm_bedside_reading_lamp_and_glowing_rain-slicked_window, soft_ambient_depth, full_body\nWrapped cozily in a thick white down duvet like a warm cocoon on a rainy night, Ayachi Nene peeks out with bare shoulders, exposed underarms, and blushing cheeks. Her smooth bare legs and neatly framed feet rest comfortably on the mattress, illuminated by the warm golden glow of a bedside lamp and blue ambient reflections from the rain-streaked window panes.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_silk_negligee_with_lace_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_on_bed, barefoot_with_soft_toes_on_bed_sheets, lying_on_side_on_bed_with_one_hand_holding_blanket_and_shy_intimate_blush, warm_bedroom_night_light_with_bed_sheet_and_silk_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー · ·ゆるいシャツの下に究極の愛着を】窓の外は雷雨で、深夜の寝室には薄暗いベッドサイドランプだけが灯っていました。寧々は腕の中で丸まって、ゆったりとした白いシャツだけを着ています。緩んだフロントと半分露出した肩のラインが、暖かい光によって柔らかく輪郭を描かれます。彼女はあなたの服の裾を両手でしっかりと握り、目には涙と赤みが重なって、頭のアホ毛がパニックになってハート型に丸まりました。彼女は顔を上げ、その声は雨の音にほとんどかき消されそうなほど小さかった。――「もう……抱きしめて話すだけって約束したのに。これ以上からかわれたら、寧々は本当に落ち着けません……。」",
     "rating": "R15",
-    "animaCaption": "Cocooned securely inside a crisp white linen sheet with only her flushed face, bare shoulders, and silver twintails peeking out, Ayachi Nene gazes up from bed with shy adoration during a warm summer rainstorm. The cozy bedside lamp creates an intimate, protected sanctuary against the gentle tapping of raindrops on glass."
+    "animaCaption": "Lying on her side on a bed in a soft white silk negligee with lace trim, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on sheets, holding a blanket with a shy intimate blush.",
+    "auditRevision": "careful-batch13-2026-08-27"
   },
   {
     "id": "sc203",
@@ -3412,12 +3351,13 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "nene_r18"
+      "hair_ribbon",
+      "pink_pajamas",
+      "bare_legs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "卧室",
@@ -3430,8 +3370,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_translucent_white_silk_camisole_and_matching_panties, bare_shoulders, bare_armpits, smooth_underarm_crease, sheer_white_thighhigh_socks_with_lace_ruffles, kneeling_on_fluffy_bed_pillows_beside_stuffed_witch_cat_plushie, touching_plushie_nervously, entire_legs_and_feet_fully_visible_in_frame, sheer_white_stocking_feet, pearly_sheen_along_thighs, teary_shy_blush, cozy_candlelit_bedroom_at_night, warm_fairy_lights_and_crystal_lamps_filling_room, full_body\nKneeling softly upon fluffy bed pillows in her candlelit bedroom, Ayachi Nene wears a translucent white silk camisole and sheer white thigh-high stockings, clutching a black cat plushie with nervous affection. The action reveals her smooth underarms and blushing face, while warm fairy lights and crystal lamps fill the room with golden radiance, perfectly framing her white-stockinged feet tucked on the duvet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_pink_pajama_set_with_white_piping_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_on_bed, barefoot_with_soft_toes_on_bed_sheets, lying_on_side_on_bed_with_one_hand_holding_plush_toy_and_gentle_shy_blush, warm_bedroom_night_light_with_plush_toy_and_blanket_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn15",
@@ -3443,7 +3383,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn15-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Sitting on dark satin sheets beside her plush pillows in the middle of the night, Ayachi Nene is caught completely nude, hurriedly trying to hide a slender pink personal massager behind her back. Her cheeks burn with an incandescent, tearful blush of total embarrassment as the bedside lamp illuminates her trembling porcelain curves."
+    "animaCaption": "Lying on her side on a bed in a soft pink pajama set, Ayachi Nene shows slender bare legs with soft skin sheen, bare feet on sheets, holding a plush toy with a gentle shy blush under warm night light.",
+    "auditRevision": "careful-batch13-2026-08-27"
   },
   {
     "id": "sc290",
