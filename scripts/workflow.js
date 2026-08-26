@@ -41,6 +41,12 @@ const WORKFLOWS = {
     cmd: ['node', 'scripts/maintenance/validate-content-contracts.js'],
     docs: 'docs/maintenance.md',
   },
+  'data:apply': {
+    desc: '合并 refine-map chunks (替代 4 个 apply-*.js)',
+    cmd: ['node', 'scripts/maintenance/apply-chunks.js', '--help'],
+    docs: 'scripts/maintenance/apply-chunks.js:1',
+    opts: '--target popular|scenes --chunks 1-17',
+  },
   'reference:render': {
     desc: '参考库批量出图 45×236×4=944 张 (Anima 832x1216, 并发3)',
     cmd: ['node', 'scripts/maintenance/render-all-outfits-references.js'],

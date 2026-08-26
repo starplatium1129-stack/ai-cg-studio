@@ -175,11 +175,18 @@ async function main() {
 
   let finishedCount = 0;
   let cursor = 0;
+  // 原子取任务：同步递增，避免未来在取任务前插入 await 导致竞态
+  function nextTask() {
+    if (cursor >= tasks.length) return null;
+    const idx = cursor++;
+    return { task: tasks[idx], idx };
+  }
 
   async function worker(workerId) {
-    while (cursor < tasks.length) {
-      const idx = cursor++;
-      const task = tasks[idx];
+    while (true) {
+      const next = nextTask();
+      if (!next) break;
+      const { task, idx } = next;
       const prefix = `[Worker ${workerId}][${idx + 1}/${tasks.length}]`;
       console.log(`${prefix} 开始渲染: [${task.charName}] - [${task.outfitName}] - [${task.persName}]...`);
 

@@ -31,7 +31,16 @@ if (fs.existsSync(REPORT_FILE)) {
 
 function saveReport() {
   fs.mkdirSync(path.dirname(REPORT_FILE), { recursive: true });
-  fs.writeFileSync(REPORT_FILE, JSON.stringify(auditReport, null, 2), 'utf8');
+  // 合并磁盘最新报告（防多进程并发覆盖）+ 原子写入
+  try {
+    if (fs.existsSync(REPORT_FILE)) {
+      const disk = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
+      auditReport = Object.assign({}, disk, auditReport);
+    }
+  } catch (_) {}
+  const tmp = REPORT_FILE + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(auditReport, null, 2), 'utf8');
+  fs.renameSync(tmp, REPORT_FILE);
 }
 
 const PERSPECTIVE_CONFIGS = {
