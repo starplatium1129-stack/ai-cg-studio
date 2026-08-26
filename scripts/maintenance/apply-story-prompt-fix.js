@@ -110,6 +110,13 @@ function main() {
     if (!d || !d.id) { errors.push('场景 delta 缺 id'); continue; }
     const hit = sceneMap.get(d.id);
     if (!hit) { errors.push(`scenes: ${d.id} 不存在`); continue; }
+    // 官方CG/实机审核保护：usage 含标记的场景禁止批量改写提示词（故事是唯一事实源，
+    // 此类场景为人工复刻/验收成果，见 docs/scene-story-prompt-fix-report-2026-08-27.md）
+    const usage = Array.isArray(hit.item.usage) ? hit.item.usage.join('') : String(hit.item.usage || '');
+    if (/官方CG|官方.?cg|实机审核|复刻/i.test(usage)) {
+      console.log(`[保护] ${d.id}（${hit.item.title || ''}）：官方CG/实机审核场景，跳过提示词写入`);
+      continue;
+    }
     let changed = false;
     for (const f of SCENE_FIELDS) {
       if (!(f in d)) continue;
