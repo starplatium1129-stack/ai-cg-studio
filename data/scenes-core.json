@@ -168,23 +168,13 @@
     "timeOfDay": "night",
     "tags": [
       "hair_ribbon",
-      "sweater",
-      "smile",
-      "snow",
-      "gift",
       "winter_coat",
-      "scarf",
-      "holding_gift",
-      "handmade_charm",
-      "christmas_lights",
-      "snowfall",
-      "shy_smile",
-      "night",
-      "upper_body",
-      "medium_shot",
-      "warm_lighting",
-      "blush",
-      "shy"
+      "sheer_white_thighhigh_stockings",
+      "christmas_street",
+      "full_body",
+      "ankle_boots",
+      "snow",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "圣诞街区广场",
@@ -194,11 +184,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sweater, smile, snow, gift, winter_coat, scarf, holding_gift, handmade_charm, christmas_lights, snowfall, shy_smile, night, upper_body, medium_shot, warm_lighting, blush, shy, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_coat_with_red_scarf_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_snowy_street_pavement, standing_in_snowy_christmas_street_with_one_hand_holding_gift_box_and_gentle_shy_smile, warm_christmas_street_light_with_snow_and_gift_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・クリスマスイブの手作りプレゼント】クリスマスストリートのストリングライトの間に雪が降りました。寧々はスカーフを鼻の先まで引っ張り、あまりにも丁寧に梱包された小さな箱をあなたに手渡す前に、長い間ためらっていました。箱の中には彼女が作ったお守りが入っていた。縫製は完璧ではありませんが、祝福が書かれた小さな紙が付いています。ありがとうと言おうとした瞬間、彼女は慌てて顔をそむけた。――「そんなに高いものじゃありませんよ。ただ……来年の今日も、あなたが無事に私の前にいてくれたらって。」",
     "rating": "All",
-    "animaCaption": "In a medium shot in a serene snow-dusted winter setting, she gently presents a wrapped gift box with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "Standing in a snowy Christmas street in a warm beige winter coat with red scarf and pleated miniskirt with silky white thighhighs, Ayachi Nene holds a gift box with a gentle shy smile under warm christmas street light with snow.",
+    "auditRevision": "careful-batch14-2026-08-27"
   },
   {
     "id": "sc215",
