@@ -9,6 +9,9 @@
 var express = require('express');
 var http = require('http');
 var https = require('https');
+var fs = require('fs');
+var path = require('path');
+var crypto = require('crypto');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 
@@ -118,21 +121,73 @@ async function tryWebUIInterrogate(config, imageBase64, threshold) {
   return null;
 }
 
+function comfyInputRoot(config) {
+  return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'input');
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function comfyOutputRoot(config) {
+  return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'output');
+}
 async function tryComfyInterrogate(config, imageBase64, threshold, mode) {
-  // 探测 Comfy 是否在线且装有 WD14Tagger / Florence2
-  // 为保持零依赖，这里仅做轻量探测，不直接提交工作流；真实工作流可按需在 comfy-client 上扩展
-  // 若探测成功，后续可在此处构造 workflow 并通过 comfyClient.submit 执行
+  if (mode !== 'tag') return null; // caption 仍走启发式，后续可接 JoyCaption/Florence2
   try {
     var info = await requestJson(config, 'COMFY_HOST', 'GET', '/object_info', null, 5000);
-    var hasWD = info && !!info.WD14Tagger;
-    var hasFlorence = info && (!!info.Florence2Run || !!info.JoyCaption);
-    if (mode === 'tag' && hasWD) {
-      // TODO: 构造 Comfy workflow 并提交，当前先回 null 走兜底，避免阻塞
-      return null;
-    }
-    if (mode === 'caption' && hasFlorence) return null;
-  } catch (e) { }
-  return null;
+    // WD14Tagger 节点名在 pysssss 实现为 "WD14Tagger|pysssss"
+    var hasWD = info && (info['WD14Tagger|pysssss'] || info['WD14Tagger']);
+    if (!hasWD) return null;
+
+    // 将 base64 落到 Comfy input 供 /pysssss/wd14tagger/tag 读取（纯本机，不走外网）
+    var inputRoot = comfyInputRoot(config);
+    try { fs.mkdirSync(inputRoot, { recursive: true }); } catch {}
+    var filename = 'aics_interrogate_' + crypto.randomBytes(8).toString('hex') + '.png';
+    var target = path.resolve(inputRoot, filename);
+    if (target.indexOf(path.resolve(inputRoot) + path.sep) !== 0) return null;
+    var buffer = Buffer.from(imageBase64, 'base64');
+    fs.writeFileSync(target, buffer);
+
+    // 调用 WD14 的轻量 HTTP 接口（直接返回 tags 字符串，自动走 hf-mirror 下载）
+    var query = '/pysssss/wd14tagger/tag?filename=' + encodeURIComponent(filename) + '&type=input';
+    var result = await new Promise(function (resolve, reject) {
+      var u;
+      try { u = new URL(config.COMFY_HOST); } catch (e) { reject(e); return; }
+      var client = u.protocol === 'https:' ? https : http;
+      var req = client.request({
+        protocol: u.protocol, hostname: u.hostname, port: u.port,
+        path: query, method: 'GET', timeout: 60000,
+        headers: { Accept: 'application/json' }
+      }, function (res) {
+        var chunks = []; res.on('data', function (c) { chunks.push(c); });
+        res.on('end', function () {
+          var raw = Buffer.concat(chunks).toString('utf8');
+          if (res.statusCode < 200 || res.statusCode >= 300) return reject(new Error('WD14 tag failed ' + res.statusCode + ' ' + raw.slice(0, 300)));
+          try {
+            var data = JSON.parse(raw);
+            // 节点返回字符串或数组，兼容两种
+            var text = Array.isArray(data) ? String(data[0] || '') : (typeof data === 'string' ? data : JSON.stringify(data));
+            resolve(text);
+          } catch (e) { resolve(raw); }
+        });
+      });
+      req.on('error', reject);
+      req.on('timeout', function () { req.destroy(new Error('WD14 timeout')); });
+      req.end();
+    }).finally(function () {
+      // 清理临时输入图（模型下载期间可能需重试，稍延迟删）
+      setTimeout(function () { try { fs.unlinkSync(target); } catch {} }, 5000);
+    });
+
+    var tagText = String(result || '').trim();
+    if (!tagText) return null;
+    // WD14 返回逗号分隔，部分实现为换行；统一按逗号切
+    var tags = tagText.split(',').map(function (s) { return s.trim().replace(/\s+/g, '_'); }).filter(Boolean);
+    // 阈值已在节点侧过滤，这里仅做兜底去重
+    var uniq = {}; tags.forEach(function (t) { uniq[t.toLowerCase()] = t; });
+    tags = Object.values(uniq);
+    return { tags: tags, scores: {}, caption: tags.join(', ') };
+  } catch (e) {
+    // 首次调用会触发模型下载（hf-mirror），可能超时；返回 null 让上层走启发式，下次再试即命中本地缓存
+    return null;
+  }
 }
 
 function createInterrogateRouter(config) {
