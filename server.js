@@ -19,6 +19,7 @@ var createControlRouter = require('./routes/control').createControlRouter;
 var createTrainingRouter = require('./routes/training').createTrainingRouter;
 var createAnimaRouter = require('./routes/anima').createAnimaRouter;
 var createGenerationRouter = require('./routes/generation').createGenerationRouter;
+var createInterrogateRouter = require('./routes/interrogate').createInterrogateRouter;
 var createVideoRouter = require('./routes/video').createVideoRouter;
 var showcaseAssets = require('./server/showcase-assets');
 
@@ -94,6 +95,7 @@ function createGateway(options) {
   var training = createTrainingRouter(config, options.services);
   var anima = createAnimaRouter(config, options.services);
   var generation = createGenerationRouter(config, options.services);
+  var interrogate = createInterrogateRouter(config);
   var video = createVideoRouter(config, options.services);
   var videoAi = require('./routes/video-ai').createVideoAiRouter(config, options.services);
   var desktopTools = require('./routes/desktop-tools').createDesktopToolsRouter({ security: security });
@@ -118,6 +120,7 @@ function createGateway(options) {
   app.use(training.router);
   app.use(anima.router);
   app.use(generation.router);
+  app.use(interrogate.router);
   app.use(video.router);
   app.use(videoAi.router);
   app.use(desktopTools);

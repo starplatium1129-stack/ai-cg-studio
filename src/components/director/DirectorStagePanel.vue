@@ -31,7 +31,7 @@
             <template v-if="drawEngine !== 'sd' && animaCurrentNode"> · 节点 {{ animaCurrentNode }}</template>
           </div>
           <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }">
-            <i :style="generationProgressStyle"></i>
+            <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
           </div>
         </div>
         <div v-else-if="generationError" class="stage-idle">
@@ -62,10 +62,19 @@
               <span>导入本地图片换装</span>
             </button>
             <button class="btn btn-ghost" type="button"
+              :disabled="interrogateBusy"
+              :title="interrogateMode === 'caption' ? '本地反推为自然语言Prose（Krea2）' : '本地反推为Danbooru Tag（Anima/SD）'"
+              @click="triggerInterrogatePick">
+              <ArchiveIcon name="search" />
+              <span>{{ interrogateBusy ? '反推中…' : '本地反推' }}</span>
+            </button>
+            <button class="btn btn-ghost" type="button"
               @click="$emit('exploreScenes')">
               探索灵感场景
             </button>
           </div>
+          <div v-if="interrogateError" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
+          <input ref="interrogateInputRef" type="file" accept="image/*" hidden @change="onInterrogateFile" />
         </div>
       </div>
     </section>
@@ -82,6 +91,24 @@
       />
       <img v-else class="result-image" :src="displayResultUrl" alt="生成的图片" />
       <div class="result-image-actions">
+        <button
+          class="btn btn-ghost"
+          type="button"
+          :disabled="interrogateBusy"
+          :title="interrogateMode === 'caption' ? '对当前成片本地反推为Prose' : '对当前成片本地反推为Tag，可切人直出'"
+          @click="interrogateCurrentImage">
+          <ArchiveIcon name="search" />
+          <span>{{ interrogateBusy ? '反推中…' : '反推当前图' }}</span>
+        </button>
+        <button
+          class="btn btn-ghost"
+          type="button"
+          :disabled="interrogateBusy"
+          title="上传任意图片本地反推"
+          @click="triggerInterrogatePick">
+          <ArchiveIcon name="search" />
+          <span>上传反推</span>
+        </button>
         <button
           v-if="inpaintOriginalUrl && displayResultUrl"
           class="btn btn-ghost btn-compare-inpaint"
@@ -153,16 +180,22 @@
         </button>
         <button class="btn btn-ghost" type="button" @click="$emit('clearResult')">清除</button>
       </div>
+      <div v-if="interrogateError && displayResultUrl" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
     </div>
+    <!-- 供两态共用的上传入口 -->
+    <input ref="interrogateInputRef2" type="file" accept="image/*" hidden @change="onInterrogateFile" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
+import { useInterrogate } from '@/composables/useInterrogate'
+import type { InterrogateResult } from '@/composables/useInterrogate'
 
-defineProps<{
+const props = defineProps<{
   displayResultUrl: string
   generationBusy: boolean
   generationError: string | null
@@ -179,7 +212,7 @@ defineProps<{
   hasPrevResult: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   generate: []
   openInpaint: []
   exploreScenes: []
@@ -191,10 +224,56 @@ defineEmits<{
   saveResult: []
   openCompare: []
   clearResult: []
+  interrogateResult: [result: InterrogateResult]
 }>()
 
 const stageMuseUrl = {
   nene: '/assets/characters/nene-official.webp',
   natsume: '/assets/characters/natsume-official.webp',
+}
+
+const interrogateInputRef = ref<HTMLInputElement | null>(null)
+const interrogateInputRef2 = ref<HTMLInputElement | null>(null)
+const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate } = useInterrogate()
+const interrogateError = computed(() => interrogateErrorRaw.value)
+const interrogateMode = computed(() => props.drawEngine === 'krea2' ? 'caption' as const : 'tag' as const)
+
+function triggerInterrogatePick() {
+  // 优先用空闲态的 input，兜底用结果态的
+  var target = interrogateInputRef.value || interrogateInputRef2.value
+  if (target) target.click()
+  else {
+    var fallback = interrogateInputRef2.value
+    if (fallback) fallback.click()
+  }
+}
+
+async function onInterrogateFile(e: Event) {
+  var input = e.target as HTMLInputElement
+  var file = input.files && input.files[0]
+  if (!file) return
+  // 清空以便同文件可二次触发
+  input.value = ''
+  try {
+    var result = await interrogate(file, interrogateMode.value, 0.35)
+    if (result) emit('interrogateResult', result)
+  } catch {}
+}
+
+async function interrogateCurrentImage() {
+  if (!props.displayResultUrl) {
+    triggerInterrogatePick()
+    return
+  }
+  try {
+    var res = await fetch(props.displayResultUrl)
+    var blob = await res.blob()
+    var file = new File([blob], 'current_result.png', { type: blob.type || 'image/png' })
+    var result = await interrogate(file, interrogateMode.value, 0.35)
+    if (result) emit('interrogateResult', result)
+  } catch {
+    // 取图失败则回落到上传
+    triggerInterrogatePick()
+  }
 }
 </script>

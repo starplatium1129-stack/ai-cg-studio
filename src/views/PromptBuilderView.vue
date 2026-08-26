@@ -145,6 +145,7 @@
           @saveResult="saveResult"
           @openCompare="compareOpen = true"
           @clearResult="clearDisplayedResult"
+          @interrogateResult="handleInterrogateResult"
         />
         <DirectorTagWorkbench />
 
@@ -376,11 +377,11 @@ import {
   type Scene,
 } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
-import { usePopularPromptAssembly } from '@/composables/usePopularPromptAssembly'
-import { usePromptVideoBridge } from '@/composables/usePromptVideoBridge'
-import { usePromptHistoryApply } from '@/composables/usePromptHistoryApply'
-import { usePromptTagTools } from '@/composables/usePromptTagTools'
-import { usePromptDeepLink } from '@/composables/usePromptDeepLink'
+import { usePopularPromptAssembly } from '@/composables/prompt/usePopularPromptAssembly'
+import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge'
+import { usePromptHistoryApply } from '@/composables/prompt/usePromptHistoryApply'
+import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
+import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink'
 import {
   blueprintCategories as collectBlueprintCategories,
   eligibleBlueprints,
@@ -392,16 +393,17 @@ import {
   type SceneBlueprint,
 } from '@/utils/popularContent'
 import type { AnimaResult } from '@/types/anima'
-import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from '@/composables/useAnimaSession'
-import { useAnimaInpaint } from '@/composables/useAnimaInpaint'
-import { useSDGenerate } from '@/composables/useSDGenerate'
-import { usePromptAssembly } from '@/composables/usePromptAssembly'
+import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from '@/composables/generation/useAnimaSession'
+import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint'
+import { useSDGenerate } from '@/composables/generation/useSDGenerate'
+import { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
+import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
-import { usePromptSdQueue } from '@/composables/usePromptSdQueue'
+import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue'
 import { imgGet } from '@/composables/useImageStore'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
-import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
-import { useDirectorDerived } from '@/composables/useDirectorDerived'
+import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
+import { useDirectorDerived } from '@/composables/scene/useDirectorDerived'
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 // 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
@@ -537,7 +539,7 @@ const {
   sdSize,
 })
 
-// ── Prompt 组装 ───────────────────────────────────────────────────────────
+// ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
 const {
   currentTraits,
   modelProfile,
@@ -550,14 +552,14 @@ const {
   previewPrompt,
 } = usePromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId))
 
-// 热门角色无 LoRA：与工作室路径正交，绝不流经 pb.charPrompt / characterControlTokens。
-const popular = usePopularPromptAssembly(pb, drawEngine, animaModelId)
-const livePrompt = computed(() => pb.isPopular ? popular.positivePrompt.value : positivePrompt.value)
-const effectiveNegative = computed(() => pb.isPopular ? popular.negativePrompt.value : negativePrompt.value)
-const previewPromptView = computed(() => pb.isPopular ? popular.previewPrompt.value : previewPrompt.value)
-const modelProfileView = computed(() => pb.isPopular ? popular.profile.value : modelProfile.value)
-const reportView = computed(() => pb.isPopular ? popular.promptReport.value : promptReport.value)
-const artViolationsView = computed(() => pb.isPopular ? popular.artViolations.value : artViolations.value)
+const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId))
+const livePrompt = unified.positivePrompt
+const effectiveNegative = unified.negativePrompt
+const previewPromptView = unified.previewPrompt
+const modelProfileView = unified.modelProfile
+const reportView = unified.promptReport
+const artViolationsView = unified.artViolations
+const popular = unified.popular
 
 /** 热门角色 Anima 无 LoRA：仅 popular subject + 选中底模的 noLora capability 时成立。 */
 const animaNoLoraMode = computed(() => {
@@ -867,6 +869,25 @@ function toggleBlueprintList() {
   showAllBlueprints.value = !showAllBlueprints.value
 }
 
+function handleInterrogateResult(result: any) {
+  if (!result) return
+  if (result.mode === 'caption' && typeof result.caption === 'string' && result.caption.trim()) {
+    pb.visualDescription = String(result.caption).trim()
+    pb.flash('已反推为自然语言，已填入画面描述（Krea2 直出，切人保留）')
+    if (result.warning) pb.flash(result.warning)
+    return
+  }
+  var tags: string[] = Array.isArray(result.tags) ? result.tags : []
+  var added = 0
+  for (var raw of tags) {
+    var norm = String(raw || '').trim().toLowerCase().replace(/\s+/g, '_')
+    if (!norm || pb.manualTags.has(norm)) continue
+    pb.toggleManualTag(norm); added++
+  }
+  pb.flash(added ? `本地反推已加入 ${added} 个 Tag，可切人直出` : '反推完成，无新增 Tag')
+  if (result.warning) pb.flash(result.warning)
+}
+
 function onStoryInput() {
   // Clear scene context if user edits story away from scene's default
   if (pb.sceneId && pb.story !== pb.sceneBaseStory) {
@@ -924,30 +945,21 @@ function setDrawEngine(v: DrawEngine) {
     : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
 }
 
-// Anima 模式下生成按钮的可用性取决于 ComfyUI 在线状态，而不是 SD WebUI。
-const engineOnline = computed(() => {
-  if (drawEngine.value === 'anima') {
-    if (pb.isPopular) {
-      return animaState.value.online
-        && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
-    }
-    return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
-      && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
-      && animaState.value.loras.some(lora => lora.id === animaState.value.loraId && lora.available !== false)
-  }
-  if (drawEngine.value === 'krea2') return animaState.value.online
-    && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
-  return sd.online.value
-})
-const generationBusy = computed(() => sd.generating.value || ['submitting', 'running', 'cancelling'].includes(animaState.value.phase))
 const drawEngineLabel = computed(() => drawEngine.value === 'sd' ? 'SD' : drawEngine.value === 'anima' ? 'Anima' : 'Krea 2')
 const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value : animaState.value.statusText)
-const generationProgress = computed(() => drawEngine.value === 'sd' ? sd.progress.value / 100 : animaState.value.progress)
+const engineOnline = computed(() => {
+  if (drawEngine.value === 'anima') {
+    if (pb.isPopular) return animaState.value.online && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
+    return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
+  }
+  if (drawEngine.value === 'krea2') return animaState.value.online
+  return sd.online.value
+})
+const generationBusy = computed(() => sd.generating.value || (['submitting', 'running', 'cancelling'] as string[]).includes(animaState.value.phase))
+const generationProgress = computed<number | null>(() => drawEngine.value === 'sd' ? sd.progress.value / 100 : animaState.value.progress)
 const generationProgressStyle = computed(() => ({ '--progress': `${(generationProgress.value ?? 0) * 100}%` }))
 const generationError = computed(() => drawEngine.value === 'sd' ? sd.errorMsg.value : animaState.value.errorMsg)
-const generationStopped = computed(() => drawEngine.value === 'sd'
-  ? sd.statusText.value === '已停止'
-  : animaState.value.phase === 'cancelled')
+const generationStopped = computed(() => drawEngine.value === 'sd' ? sd.statusText.value === '已停止' : animaState.value.phase === 'cancelled')
 const engineStatusText = computed(() => {
   if (drawEngine.value === 'sd') return 'SD 未连接'
   return animaState.value.checkMsg || `${drawEngineLabel.value} 未连接`

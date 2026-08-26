@@ -2,8 +2,15 @@
   <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
     <div class="panel-title expert-tags-header">
       <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
-      <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
+      <div class="expert-tags-actions">
+        <button type="button" class="btn btn-ghost btn-xs" :disabled="interrogateBusy" title="上传图片本地反推为 Tag，可切人直出" @click="triggerInterrogatePick">
+          <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '反推中…' : '本地反推' }}
+        </button>
+        <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
+      </div>
+      <input ref="interrogateInputRef" type="file" accept="image/*" hidden @change="onInterrogateFile" />
     </div>
+    <div v-if="interrogateError" class="tag-interrogate-error" role="alert">{{ interrogateError }}</div>
     <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
       <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag" :data-weight-tier="tagWeightTier(tag)" :title="tagMeaning(tag)">
         <span class="manual-tag-en">{{ tag }}</span>
@@ -72,8 +79,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import { usePromptTagTools } from '@/composables/usePromptTagTools'
+import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
+import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { useInterrogate } from '@/composables/useInterrogate'
 import {
   OUTFIT_BUNDLES,
   OUTFIT_TAG_LABELS,
@@ -81,7 +90,9 @@ import {
   TAG_CATEGORY_LABELS,
   NON_MANUAL_TAGS,
   normalizeCatalogKey,
-} from '@/composables/useDirectorCatalog'
+} from '@/composables/scene/useDirectorCatalog'
+
+interface TagEntry { en: string; cn: string; cat: string }
 
 const pb = usePromptBuilderStore()
 const { tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle, addTag } = usePromptTagTools(pb)
@@ -89,29 +100,63 @@ const { tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle, addTag } = useP
 const tagSearch = ref('')
 const tagCategory = ref('all')
 
-const tagCatalog = computed(() => {
-  const merged = new Map(pb.tags.filter(tag => (tag as any).cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey((tag as any).en))).map(tag => [(tag as any).en, tag as any]))
+// 本地反推（Tag → manualTags / Caption → visualDescription，切人保留）
+const interrogateInputRef = ref<HTMLInputElement | null>(null)
+const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate } = useInterrogate()
+const interrogateError = computed(() => interrogateErrorRaw.value)
+function triggerInterrogatePick() { interrogateInputRef.value?.click() }
+async function onInterrogateFile(e: Event) {
+  var input = e.target as HTMLInputElement
+  var file = input.files && input.files[0]
+  if (!file) return
+  input.value = ''
+  try {
+    var result = await interrogate(file, 'tag', 0.35)
+    if (!result) return
+    if (result.mode === 'caption' && result.caption) {
+      pb.visualDescription = result.caption
+      pb.flash('已反推为自然语言，已填入画面描述（Krea2）')
+      return
+    }
+    var added = 0
+    for (var t of (result.tags || [])) {
+      var norm = String(t || '').trim().toLowerCase().replace(/\s+/g, '_')
+      if (!norm || pb.manualTags.has(norm)) continue
+      // 去身份污染：若标签明显是发色/瞳色等人物固有特征且与当前角色强相关，仍允许由用户手动取舍，这里不硬拦
+      pb.toggleManualTag(norm); added++
+    }
+    pb.flash(added ? `本地反推已加入 ${added} 个 Tag，可切人直出` : '反推完成，无新增 Tag')
+    if (result.warning) pb.flash(result.warning)
+  } catch {}
+}
+
+const tagCatalog = computed<TagEntry[]>(() => {
+  const merged = new Map<string, TagEntry>(
+    pb.tags
+      .filter((tag): tag is TagEntry => typeof tag.en === 'string' && tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en)))
+      .map(tag => [tag.en, tag]),
+  )
   const addSceneTag = (raw: unknown) => {
     const source = String(raw || '').trim()
     if (!source || /^<lora:/i.test(source) || /^break$/i.test(source)) return
     const en = normalizeCatalogKey(source)
     if (!en || en.length > 64 || NON_MANUAL_TAGS.has(en) || merged.has(en)) return
     const mature = /(?:^|_)(?:r18|adult|nsfw|nude|topless|nipples|explicit|pussy|penis|sex|lingerie)(?:_|$)/i.test(en)
-    const official = Boolean((OUTFIT_TAG_LABELS as Record<string,string>)[en])
+    const official = Boolean(OUTFIT_TAG_LABELS[en])
     merged.set(en, {
       en,
-      cn: (OUTFIT_TAG_LABELS as Record<string,string>)[en] || (mature ? '场景成人词' : '场景词条'),
+      cn: OUTFIT_TAG_LABELS[en] || (mature ? '场景成人词' : '场景词条'),
       cat: official ? 'Official Outfit' : (mature ? 'Mature' : 'Scene'),
     })
   }
-  pb.scenes.forEach(scene => {
-    ;((scene as any).tags || []).forEach(addSceneTag)
-    String((scene as any).prompt || '').split(',').forEach(addSceneTag)
+  pb.scenes.forEach((scene: Scene) => {
+    ;(scene.tags || []).forEach(addSceneTag)
+    String(scene.prompt || '').split(',').forEach(addSceneTag)
   })
   OUTFIT_BUNDLES.forEach(bundle => bundle.tags.forEach(en => {
     if (!merged.has(en)) merged.set(en, {
       en,
-      cn: (OUTFIT_TAG_LABELS as Record<string,string>)[en] || 'v18 训练服装词',
+      cn: OUTFIT_TAG_LABELS[en] || 'v18 训练服装词',
       cat: 'Official Outfit',
     })
   }))
@@ -119,24 +164,24 @@ const tagCatalog = computed(() => {
 })
 
 const tagCategories = computed(() => {
-  const found = new Set(tagCatalog.value.map((tag: any) => tag.cat).filter(Boolean))
-  return ['all', ...found].map(id => ({ id, label: (TAG_CATEGORY_LABELS as Record<string,string>)[id] || id }))
+  const found = new Set(tagCatalog.value.map(tag => tag.cat).filter(Boolean))
+  return ['all', ...found].map(id => ({ id, label: TAG_CATEGORY_LABELS[id] || id }))
 })
 
 const visibleTags = computed(() => {
   const q = tagSearch.value.trim().toLowerCase()
   return tagCatalog.value
-    .filter((tag: any) => tagCategory.value === 'all' || tag.cat === tagCategory.value)
-    .filter((tag: any) => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
-    .sort((a: any, b: any) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
+    .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
+    .filter(tag => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
+    .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
     .slice(0, 72)
 })
 
 const visibleOutfitBundles = computed(() =>
-  OUTFIT_BUNDLES.filter(bundle => pb.char === 'triad' || (bundle as any).character === pb.char),
+  OUTFIT_BUNDLES.filter(bundle => pb.char === 'triad' || bundle.character === pb.char),
 )
 
 const visibleR18Controls = computed(() =>
-  R18_CONTROLS.filter(control => pb.char === 'triad' || (control as any).character === pb.char),
+  R18_CONTROLS.filter(control => pb.char === 'triad' || control.character === pb.char),
 )
 </script>
