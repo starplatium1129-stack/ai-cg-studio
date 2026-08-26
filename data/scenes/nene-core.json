@@ -763,13 +763,20 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
-      "mole_under_eye",
-      "gym_uniform",
-      "bare_legs",
-      "school_track",
-      "full_body",
-      "sneakers",
-      "depth_of_field"
+      "hair_ribbon",
+      "sport_clothes",
+      "sunset",
+      "sweat",
+      "sportswear",
+      "running_track",
+      "determined",
+      "reaching_finish_line",
+      "autumn",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "golden_hour",
+      "serious"
     ],
     "mature": false,
     "location": "学校操场",
@@ -779,12 +786,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_navy_gym_uniform_with_white_t_shirt_and_bloomers_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_sweaty_sheen_running_on_school_track, barefoot_with_detailed_toes_and_white_sneakers_on_track, running_on_school_track_during_last_lap_with_one_hand_holding_baton_and_determined_blush, bright_school_track_daylight_with_track_and_sky_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sport_clothes, sunset, sweat, sportswear, running_track, determined, reaching_finish_line, autumn, clear_sky, upper_body, medium_shot, golden_hour, serious, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・遊び場の最終周回】秋のクラブ活動の後、寧々さんは、自分が設定した目標を最後までやり遂げることができることを証明したいと思い、運動場で一人で長距離走の練習をしました。空は徐々に暗くなり、最終周回で彼女はあなたに追いつきました。彼女は明らかに疲れていて話すこともできなかったが、それでも手を上げて止まらないように合図した。ゴールした後、彼女は膝を抱えて笑った――「ほら、途中で諦めなかったでしょう。次は……最初の一周から一緒に走ってくれませんか？」",
     "rating": "All",
-    "animaCaption": "Running on a school track during the last lap in a navy gym uniform with white T-shirt and bloomers, Shiki Natsume shows slender bare legs with sweaty sheen, white sneakers on track, determined blush under bright daylight.",
-    "auditRevision": "careful-batch08-2026-08-27"
+    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with a focused and calm expression, as warm golden-hour sunlight illuminates the scene."
   },
   {
     "id": "sc034",
@@ -926,13 +932,21 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "mole_under_eye",
-      "beige_sweater",
-      "sheer_black_tights",
+      "hair_ribbon",
+      "dramatic",
       "stage",
-      "full_body",
-      "ankle_boots",
-      "depth_of_field"
+      "spotlight",
+      "award_ceremony",
+      "school_uniform",
+      "holding_certificate",
+      "looking_into_crowd",
+      "bright_smile",
+      "afternoon",
+      "clear_sky",
+      "upper_body",
+      "medium_shot",
+      "smile",
+      "happy"
     ],
     "mature": false,
     "location": "舞台",
@@ -942,12 +956,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_beige_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_stage_floor, standing_on_stage_with_one_hand_holding_microphone_and_composed_blush, warm_stage_light_with_curtain_and_microphone_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dramatic, stage, spotlight, award_ceremony, school_uniform, holding_certificate, looking_into_crowd, bright_smile, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・拍手の中から一人だけ見つけてください】冬期キャンパス表彰式では、寧々さんはスポットライトの下に立ち、賞状を受け取り、聴衆に丁寧にお辞儀をしました。拍手が始まったとき、彼女は群衆を見渡しましたが、後列にいるあなたを見つけるまで、本当の笑顔はありませんでした。終わった後、彼女は賞状を抱えて駆け寄り、最初に用意していたお礼状を残して去っていきました。――「みんなの期待を裏切らずに済みましたよね？　本当はさっき、一番確かめたかったのは、あなたが見ていてくれたかどうかなんです。」",
     "rating": "All",
-    "animaCaption": "Standing on a stage in a casual beige sweater with navy pleated miniskirt and glossy black tights, Shiki Natsume holds a microphone with a composed blush under warm stage light.",
-    "auditRevision": "careful-batch11-2026-08-27"
+    "animaCaption": "In a medium shot in a serene snow-dusted winter setting, she stands poised with bright expectant eyes, under soft ambient lighting."
   },
   {
     "id": "sc049",
@@ -1635,13 +1648,24 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "mole_under_eye",
-      "beige_sweater",
-      "sheer_black_tights",
+      "hair_ribbon",
+      "standing",
+      "looking_back",
+      "casual_clothes",
+      "looking_away",
       "art_gallery",
+      "standing_before_painting",
+      "holding_hands",
+      "soft_expression",
+      "museum_lighting",
+      "autumn",
+      "afternoon",
+      "clear_sky",
       "full_body",
-      "ankle_boots",
-      "depth_of_field"
+      "wide_shot",
+      "soft_lighting",
+      "diffused_light",
+      "serious"
     ],
     "mature": false,
     "location": "画廊",
@@ -1652,12 +1676,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_beige_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_gallery_floor, standing_in_art_gallery_before_framed_painting_with_one_hand_behind_back_and_composed_gentle_blush, warm_gallery_spotlight_with_painting_and_frame_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "(indoor art gallery:1.55), standing directly in front of a large framed painting, museum spotlights, polished gallery floor, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, standing, looking_back, casual_clothes, looking_away, art_gallery, standing_before_painting, holding_hands, soft_expression, museum_lighting, autumn, afternoon, clear_sky, full_body, wide_shot, soft_lighting, diffused_light, serious, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, street, road, sidewalk, outdoors",
     "storyJa": "【寧々・フレームの前で共有された沈黙】秋の午後、寧々さんはギャラリーにある星空と帰路を描いた作品の前で長い時間立ち止まった。あなたが彼女の側に来てからも、彼女は自分の気持ちをすぐには説明しませんでした。彼女はただ静かにあなたの手の甲に手を当てました。長い銀髪に柔らかな頭上の光が降り注ぐ――「答えを言葉にしなくてもいい絵もあるんですね。今みたいに一緒に見ているだけで、少し分かる気がします。」",
     "rating": "All",
-    "auditRevision": "careful-batch15-2026-08-27",
-    "animaCaption": "Standing before a framed painting in an art gallery in a casual beige sweater with navy pleated miniskirt and glossy black tights, Shiki Natsume stands with one hand behind her back, composed gentle blush under warm gallery spotlight."
+    "auditRevision": "round2-2026-07-22",
+    "animaCaption": "In a wide full-body view in a quiet room, she reaches forward and gently clasps the viewer's hand with a focused and calm expression, under diffused overcast daylight."
   },
   {
     "id": "sc090",
@@ -2309,13 +2333,25 @@
     "time": "白天",
     "timeOfDay": "all_day",
     "tags": [
-      "mole_under_eye",
-      "cardigan",
-      "sheer_black_tights",
-      "changing_room",
-      "full_body",
-      "mary_jane",
-      "depth_of_field"
+      "white_hair",
+      "very_long_hair",
+      "low_twintails",
+      "purple_eyes",
+      "ahoge",
+      "hair_ribbon",
+      "dress",
+      "backless",
+      "bare_shoulders",
+      "shoulder_blade",
+      "underwear_strap",
+      "fitting_room",
+      "heavy_blush",
+      "panicked",
+      "open_mouth",
+      "indoors",
+      "bright",
+      "romantic_atmosphere",
+      "close_up"
     ],
     "mature": false,
     "rating": "R15",
@@ -2327,11 +2363,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_cardigan_over_white_blouse_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_mall_floor, standing_in_mall_changing_room_with_curtain_half_open_holding_clothes_with_composed_shy_blush, bright_mall_changing_room_light_with_curtain_and_mirror_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, backless, bare_shoulders, shoulder_blade, underwear_strap, fitting_room, heavy_blush, panicked, open_mouth, indoors, bright, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
     "storyJa": "【寧々】【寨々・試着室の隙間の驚鴻一瞥】ショッピングモールの試着室。寨々は新しく買ったワンピースを試着していたが、背中のファスナーが上がって届かず、思わずカーテンを開けて助けを求めようとした。外に立っていたのがあなただとは想像もしていなかった。カーテンは半分しか開いておらず、彼女の滑らかな背中と精致な肩甲骨のラインが柔らかな灯りの下で余すところなく露出し、細い下着の紐だけが一本横たわっていた。二人の視線が交わった瞬間、空気が凍りついた。寨々は一秒固まった後、叫びながらカーテンを閉め、向こう側から慌てた声が聞こえてきた――「うあぁ！柊、柊史！なぜここにいるの？！さっきの映像を思い浮かべないで！早く忘れて！べ、別にわざと見せたわけじゃない……うう、バカ、店員を呼んできて！」",
-    "animaCaption": "In a mall changing room with the curtain half open, Shiki Natsume in a casual grey cardigan over white blouse and navy pleated miniskirt with glossy black tights stands holding clothes with a composed shy blush under bright mall light.",
-    "auditRevision": "careful-batch05-2026-08-27"
+    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she looks forward toward the viewer with a gentle blush on her cheeks, as warm amber lantern light glows softly."
   },
   {
     "id": "sc250",

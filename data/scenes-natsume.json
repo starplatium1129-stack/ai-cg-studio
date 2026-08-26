@@ -242,10 +242,14 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "hair_ribbon",
-      "school_uniform",
-      "sheer_white_thighhigh_stockings",
-      "library",
+      "mole_under_eye",
+      "photo_album",
+      "sitting_at_desk",
+      "sheer_black_tights",
+      "smooth_thighs",
+      "apartment",
+      "window_light",
+      "nostalgic",
       "full_body",
       "loafers",
       "depth_of_field"
@@ -258,12 +262,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_school_uniform_blazer_and_pleated_miniskirt_with_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_floor, standing_in_school_library_aisle_between_bookshelves_holding_book_with_both_hands_and_gentle_shy_smile, warm_library_window_light_with_bookshelf_bokeh_and_dust_motes, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_natsume_winter_casual_with_cream_oversized_cardigan_over_white_blouse_and_plaid_miniskirt, sheer_black_tights_with_glossy_thigh_sheen_and_calf_contours, smooth_thighs_at_hem_with_soft_pressure_line, entire_legs_and_feet_fully_visible_in_frame, brown_loafers_on_apartment_wooden_floor, sitting_at_low_apartment_table_holding_open_photo_album_with_both_hands, resting_cheek_on_palm_with_nostalgic_soft_smile, warm_spring_afternoon_window_light_with_soft_shadows, cinematic_depth_of_field, graceful_neck_and_slender_fingers, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, classroom, upper_body",
     "storyJa": "【夏目・フォトアルバムが置かれているページ】春の午後、夏目はアパートで大学の卒業写真アルバムを整理していました。彼女はあなたの集合写真に目を向けたとき、長い間立ち止まりました。写真の中で、彼女はまだ人混みから意図的に少し離れて立っていますが、彼女の目はあなたに向かっています。あなたが後ろから近づくと、彼女はすぐにアルバムを閉じましたが、実際にはアルバムを取り上げませんでした。――「写真がぶれていないか確認していただけ。見たいならこっちに座って……でも、私の視線まで分析するのは禁止。」",
     "rating": "All",
-    "auditRevision": "careful-batch05-2026-08-27",
-    "animaCaption": "Between bookshelves in a school library, Ayachi Nene in a navy school uniform with silky white thighhighs stands holding a book with both hands, gentle shy smile in warm library window light."
+    "auditRevision": "audit-v25-2026-08-26-batch2",
+    "animaCaption": "At the low apartment table holding an open photo album, Shiki Natsume rests her cheek on one palm with a nostalgic smile. Warm spring afternoon window light highlights her sheer black tights with glossy thigh sheen, smooth thighs at the plaid hem, and brown loafers fully visible on the wooden floor."
   },
   {
     "id": "sc026",
@@ -4711,14 +4715,27 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "hair_ribbon",
-      "white_sweater",
-      "sheer_white_thighhigh_stockings",
-      "shopping_street",
-      "full_body",
-      "mary_jane",
-      "night",
-      "depth_of_field"
+      "black_hair",
+      "long_hair",
+      "yellow_eyes",
+      "mole_under_eye",
+      "hairclip",
+      "coat",
+      "trench_coat",
+      "turtleneck_sweater",
+      "jeans",
+      "boots",
+      "scarf",
+      "sharing_scarf",
+      "street",
+      "snowing",
+      "city_lights",
+      "bokeh",
+      "red_ears",
+      "subtle_blush",
+      "expressionless",
+      "romantic_atmosphere",
+      "close_up"
     ],
     "mature": false,
     "location": "繁华商业街璀璨彩灯大树旁",
@@ -4729,12 +4746,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_sweater_with_light_blue_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_shopping_street_pavement, standing_on_shopping_street_at_night_with_one_hand_holding_shopping_bag_and_gentle_shy_smile, warm_shopping_street_night_light_with_christmas_tree_and_bag_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, coat, trench_coat, turtleneck_sweater, jeans, boots, scarf, sharing_scarf, street, snowing, city_lights, bokeh, red_ears, subtle_blush, expressionless, romantic_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
     "storyJa": "【夏目】【ナツメ・初雪の街並みとチェスターコートの無声のぬくもり】深夜、初雪が舞い散り、両脇にきらびやかなクリスマスイルミネーションが飾られたレトロで繁華な商業街のストリート。仕事の制服を脱いだナツメは、今日はずいぶんとエレガントで知的な服装をしていた。非常に質感のあるダークキャメルのダブルブレストのウールチェスターコートに、インナーには保温性の高いアイボリーホワイトのタートルネックのカシミアセーターを合わせ、ボトムスのスタイリッシュなタイトジーンズとスマートなロングレザーブーツが彼女の非常に高身長で完璧な脚のプロポーションを描き出している。夜空の温度が急降下したため、あなたが立ち止まって雪を見ている時に自然に自分の大きめのマフラーを解き、二人を一緒に巻きつけた。ナツメは身体を猛烈に縮め、美しい金の瞳を少し伏せて身動き一つしなかった。顔の表情は相変わらずあのやる気のないジト目のままだが、完全に真っ赤になった耳の裏が街全体の高彩度なピンクゴールドのイルミネーションに照らされて際立っており、蚊の鳴くようなクールドジな呟きを漏らしていた――「……勘違いしないで。私はただ、一本のマフラーの物理的空間を共有するのが最も節電になり、効率的だと思っただけ。拒絶してあなたが風邪を引いたら明日のシフトが面倒になるから。大バカ者……手、コートのポケットに入れなさい」",
     "rating": "All",
-    "auditRevision": "careful-batch14-2026-08-27",
-    "animaCaption": "Standing on a shopping street at night in a soft white sweater with light blue pleated miniskirt and silky white thighhighs, Ayachi Nene holds a shopping bag with a gentle shy smile under warm shopping street night light with christmas tree bokeh."
+    "auditRevision": "round2-2026-07-22",
+    "animaCaption": "In a close-up framing along the quiet city street, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings."
   },
   {
     "id": "sc256",
@@ -4752,13 +4769,19 @@
     "time": "闭店后",
     "timeOfDay": "night",
     "tags": [
-      "hair_ribbon",
-      "white_sweater",
-      "sheer_white_thighhigh_stockings",
-      "cafe_counter",
-      "full_body",
-      "mary_jane",
-      "depth_of_field"
+      "black_hair",
+      "long_hair",
+      "yellow_eyes",
+      "mole_under_eye",
+      "hairclip",
+      "cafe_uniform",
+      "cafe",
+      "holding_cup",
+      "rain",
+      "window",
+      "warm_lighting",
+      "medium_shot",
+      "reserved_expression"
     ],
     "rating": "All",
     "mature": false,
@@ -4770,10 +4793,9 @@
       "角色还原",
       "日常叙事"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_sweater_with_light_blue_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_cafe_counter, sitting_on_cafe_counter_after_closing_with_one_hand_holding_cocoa_mug_and_gentle_shy_smile, warm_closed_cafe_counter_light_with_cocoa_steam_and_counter_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
-    "animaCaption": "Sitting on a cafe counter after closing in a soft white sweater with light blue pleated miniskirt and silky white thighhighs, Ayachi Nene holds a cocoa mug with a gentle shy smile under warm counter light.",
-    "auditRevision": "careful-batch10-2026-08-27"
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, dark_brown_cafe_suspender_dress, white_blouse, waist_apron, cafe, holding_one_hot_chocolate_cup_with_both_hands, rain_on_window, warm_lighting, reserved_expression, slight_blush, looking_at_viewer, medium_shot, cinematic_composition, cozy, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
+    "animaCaption": "In a side-view composition inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, under soft ambient lighting."
   },
   {
     "id": "sc257",
