@@ -1612,52 +1612,5 @@ watch(() => drawEngine.value, engine => {
   font-size: var(--fs-label-sm);
 }
 
-/* ── 热门角色无 LoRA 创作模式 ─────────────────────────────────────────── */
-.char-source {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-.char-source-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
-  background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-label-sm);
-  cursor: pointer;
-}
-.char-source-icon {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
-  color: currentColor;
-  opacity: 0.85;
-}
-.char-source-btn.active {
-  border-color: var(--pb-active);
-  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
-  color: var(--pb-active-text);
-}
-.popular-tags-note {
-  font-size: var(--fs-mono-sm);
-  opacity: 0.6;
-  margin: var(--s-2) 0;
-}
-.btn-video-action {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-soft));
-  background: color-mix(in srgb, var(--accent-soft) 30%, transparent);
-}
-.btn-video-action:hover {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-}
-.btn-video-action .archive-icon {
-  width: 1rem;
-}
+/* char-source / popular-tags-note / btn-video-action 已外移至 src/assets/css/director/panels.css（.pb 全局），scoped 内不再保留以免抽离后失活 */
 </style>

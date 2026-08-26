@@ -1,3 +1,12 @@
+/* Director workspace — shared tokens (from PromptBuilderView scoped, globalised for child panels) */
+.pb {
+  --pb-active: var(--mood-love);
+  --pb-active-text: var(--mood-love-text);
+  --pb-active-grad: var(--mood-tension);
+  --pb-badge-blue: var(--info);
+  --pb-badge-green: var(--success);
+}
+
 /* Story */
   .pb .story-input { width:100%; min-height:70px; padding:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:var(--fs-body); line-height:1.7; outline:none; transition:border-color var(--motion-hover),box-shadow var(--motion-hover); resize:vertical; font-family:var(--font-sans); box-sizing:border-box; }
   .pb .story-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
@@ -28,6 +37,66 @@
   .pb .trait-chip { padding: 3px var(--s-3); background: color-mix(in srgb, var(--bg-elevated) 88%, var(--accent-soft)); border: 1px solid color-mix(in srgb, var(--border-soft) 80%, var(--accent-soft)); border-radius: var(--r-pill); font:inherit; font-size: var(--fs-label-sm); color: var(--text-primary); cursor:pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), box-shadow var(--motion-hover); }
   .pb .trait-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
   .pb .traits-row:empty { margin-top: 0; }
+
+  /* Character source toggle (工作室/热门) — 2026-08-26 修复：原在 PromptBuilderView.vue scoped，抽离至 DirectorCharacterPanel 后失活致破版 */
+  .pb .char-source {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .pb .char-source-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--border-strong);
+    background: var(--glass-fill);
+    color: var(--text-secondary);
+    font-size: var(--fs-label-sm);
+    font-weight: 650;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover) var(--ease-out);
+  }
+  .pb .char-source-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .pb .char-source-icon {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    color: currentColor;
+    opacity: 0.85;
+  }
+  .pb .char-source-btn.active {
+    border-color: var(--pb-active, var(--accent));
+    background: color-mix(in srgb, var(--mood-love) 16%, transparent);
+    color: var(--pb-active-text, var(--accent));
+    box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glow-sm);
+  }
+  .pb .char-source-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* 热门角色说明与视频动作按钮原在 PromptBuilderView scoped，外移后同需全局 */
+  .pb .popular-tags-note {
+    font-size: var(--fs-mono-sm);
+    color: var(--text-muted);
+    opacity: 0.75;
+    margin: var(--s-2) 0;
+    line-height: 1.6;
+  }
+  .pb .btn-video-action {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border-soft));
+    background: color-mix(in srgb, var(--accent-soft) 30%, transparent);
+  }
+  .pb .btn-video-action:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+  .pb .btn-video-action .aic-icon,
+  .pb .btn-video-action .archive-icon {
+    width: 1rem;
+    height: 1rem;
+  }
 
   /* Scene library (compact list) */
   .pb .scene-search-wrap { position: relative; margin-bottom: var(--s-2); }
