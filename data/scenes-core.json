@@ -511,19 +511,13 @@
     "time": "闭店后",
     "timeOfDay": "night",
     "tags": [
-      "black_hair",
-      "long_hair",
-      "yellow_eyes",
-      "mole_under_eye",
-      "hairclip",
-      "cafe_uniform",
-      "cafe",
-      "holding_cup",
-      "rain",
-      "window",
-      "warm_lighting",
-      "medium_shot",
-      "reserved_expression"
+      "hair_ribbon",
+      "white_sweater",
+      "sheer_white_thighhigh_stockings",
+      "cafe_counter",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "rating": "All",
     "mature": false,
@@ -535,9 +529,10 @@
       "角色还原",
       "日常叙事"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, dark_brown_cafe_suspender_dress, white_blouse, waist_apron, cafe, holding_one_hot_chocolate_cup_with_both_hands, rain_on_window, warm_lighting, reserved_expression, slight_blush, looking_at_viewer, medium_shot, cinematic_composition, cozy, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
-    "animaCaption": "In a side-view composition inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, under soft ambient lighting."
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_sweater_with_light_blue_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_cafe_counter, sitting_on_cafe_counter_after_closing_with_one_hand_holding_cocoa_mug_and_gentle_shy_smile, warm_closed_cafe_counter_light_with_cocoa_steam_and_counter_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "animaCaption": "Sitting on a cafe counter after closing in a soft white sweater with light blue pleated miniskirt and silky white thighhighs, Ayachi Nene holds a cocoa mug with a gentle shy smile under warm counter light.",
+    "auditRevision": "careful-batch10-2026-08-27"
   },
   {
     "id": "sc028",

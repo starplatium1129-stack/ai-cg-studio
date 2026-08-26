@@ -1974,23 +1974,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "bath_towel",
-      "towel_slip",
-      "mirror_reflection",
-      "reflection",
-      "wet_hair",
-      "bare_shoulders",
-      "cleavage",
-      "bare_legs",
-      "heavy_blush",
-      "tears_in_eyes",
-      "tsundere",
-      "indoors",
-      "night",
-      "lantern_light",
       "mole_under_eye",
-      "sensual",
-      "close_up"
+      "grey_sweater",
+      "bare_legs",
+      "onsen_dressing_room",
+      "full_body",
+      "barefoot",
+      "mirror",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "温泉旅馆梳妆镜前",
@@ -2002,12 +1993,12 @@
       "绝对独占",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_black_lace_lingerie_set_and_sheer_black_thighhigh_socks_with_garter_straps, standing_before_full-length_ornate_gilded_mirror, adjusting_black_choker_with_raised_elbow, bare_armpits, smooth_underarm_contours, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, delicate_toe_contours_beneath_fabric, mirror_reflection_showing_curvaceous_back_and_flushed_face, luxury_hotel_dressing_suite, warm_sconce_lamps_and_ambient_recessed_ceiling_glow, full_body\nStanding gracefully before a full-length gilded mirror in her hotel suite, Shiki Natsume wears a black lace lingerie set with sheer gartered black stockings, raising an elbow to adjust her choker. The mirror captures her blushing reflection and toned back, while warm perimeter wall sconces fill the dressing room with golden light, clearly framing her smooth underarm and stocking-clad feet on the plush carpet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_sweater_with_navy_shorts_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_standing_before_mirror_in_onsen_dressing_room, barefoot_with_soft_toes_on_dressing_room_floor, standing_before_mirror_in_onsen_dressing_room_with_one_hand_holding_mirror_and_composed_blush, warm_onsen_dressing_room_light_with_mirror_and_towel_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・温泉浴衣を脱ぐと究極のコントラストが生まれる】窓の外には冷たく明るい月が高く垂れ下がる、古風な和風温泉宿。シャワーを浴びた夏目は巨大な半身鏡の前に立ち、温泉で半分濡れた白いバスタオル一枚を着て、静かに滑り落ちていた。鏡には彼女の完全に露出した肩と、激しくうねる官能的な雪のように白い肌の魅惑的な姿がはっきりと映っていた。突然後ろから抱きしめられた君を見て、彼女の目尻には水晶の水滴が垂れ、顔を赤らめた顔で鏡の中の君を見つめた。――「はあ？　あなた、絶対に時間を計って入ってきたでしょ。鏡越しに見ないで……この変態。」",
     "rating": "R15",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "Standing nude before a gilded full-length mirror inside a luxury hotel suite, Shiki Natsume gazes directly at the viewer standing behind her through the crystal-clear reflection. The mirror captures her flushed cheeks and arched back while wall sconces cast rich golden highlights over her firm bare breasts and porcelain curves."
+    "auditRevision": "careful-batch10-2026-08-27",
+    "animaCaption": "Standing before a mirror in an onsen dressing room in a soft grey sweater and navy shorts, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet on the floor, holding a mirror with a composed blush."
   },
   {
     "id": "sc141",
@@ -2024,24 +2015,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "tactical_gear",
-      "black_outfit",
       "mole_under_eye",
+      "tactical_bodysuit",
+      "sheer_black_tights",
       "rooftop",
-      "moonlight",
-      "night_sky",
-      "serious",
-      "glowing_eyes",
-      "action_pose",
-      "standing_on_rooftop_edge",
-      "both_feet_visible",
-      "swirling_energy_particles",
-      "dynamic_shadows",
-      "cityscape_background",
-      "bokeh",
-      "rim_light",
-      "wide_shot",
-      "full_body"
+      "full_body",
+      "combat_boots",
+      "night",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "高楼天台",
@@ -2051,11 +2032,12 @@
     "usage": [
       "壁纸级"
     ],
-    "animaCaption": "Crouching on a steel girder high above a neon-lit futuristic metropolis, Shiki Natsume's tactical agent catsuit is zipped down to expose her bare, firm breasts and toned stomach. Holding a silenced pistol with a daring, seductive smirk, the dazzling full moon and radiant cyan city lights cast sharp rim highlights across her curves and combat boots against the dark sky.",
-    "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_tight_tactical_catsuit_unzipped_to_navel, firm_shapely_breasts_fully_exposed, pink_nipples, exposed_pussy, slender_waist, crouching_on_narrow_steel_beam_atop_skyscraper_helipad, holding_silenced_pistol, looking_back_over_shoulder_with_sharp_seductive_smirk, entire_legs_and_feet_fully_visible_in_frame, sleek_tactical_boots_gripping_metal_beam, panoramic_cyberpunk_tokyo_night_skyline_with_glowing_neon_holograms_and_radiant_full_moon, cool_cyan_rim_light_and_warm_amber_ambient_city_glow, cinematic_chiaroscuro, full_body",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "animaCaption": "Standing on a high rooftop at night in a black tactical bodysuit with combat boots and sheer black tights underneath, Shiki Natsume holds a knife with a composed cold blush under cool rooftop night light.",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_tactical_bodysuit_with_combat_boots_and_sheer_black_tights_under, glossy_black_tights_hugging_smooth_thighs_and_calf_visible_under_bodysuit, entire_legs_and_feet_fully_visible_in_frame, black_combat_boots_on_rooftop, standing_on_high_rooftop_at_night_with_one_hand_holding_knife_and_composed_cold_blush, cool_rooftop_night_light_with_city_bokeh_and_tactical_sheen, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・Astralエージェント】カフェのメイドという仮の姿を解き、今夜の夏目はAstralに所属する精鋭エージェントとして任務に立つ。黒い戦闘服に身を包み、月明かりに照らされた高層ビルの屋上から街のネオンを見下ろしていた。夜風が黒髪を揺らし、黄色い瞳は冷静に標的を捉えている。周囲には、抑え込まれた異能の気配がかすかに波打っていた。",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "careful-batch10-2026-08-27"
   },
   {
     "id": "sc143",
@@ -2156,20 +2138,13 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
-      "school_uniform",
       "mole_under_eye",
-      "leaning_forward",
-      "trapping_viewer",
-      "whispering",
-      "tsundere",
-      "slight_smile",
-      "blush",
-      "clubroom",
-      "sunset",
-      "golden_hour",
-      "close_up",
-      "backlit",
-      "romantic_atmosphere"
+      "school_uniform",
+      "sheer_black_tights",
+      "club_room",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "超自然研究社办",
@@ -2180,11 +2155,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_unbuttoned_stella_school_cardigan_and_navy_pleated_skirt, sheer_black_thighhigh_socks_with_lace_ruffles, sitting_cross-legged_on_clubroom_rug_after_locking_door, leaning_forward_with_hands_clasped_between_knees, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, delicate_toe_contours_visible_under_fabric, guilty_flustered_tsundere_pout, sunset_afterglow_streaming_through_clubroom_windows, warm_golden_light_beaming_across_bookshelves_and_tea_sets, full_body\nSitting cross-legged on the rug inside the locked clubroom, Shiki Natsume leans forward with her hands clasped between her knees, wearing an unbuttoned cardigan and sheer black lace-topped stockings. Her cheeks burn with a flustered, guilty pout, while golden sunset afterglow floods the room through tall windows, illuminating bookshelves and tea sets while clearly framing her stocking-clad feet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_school_uniform_with_white_shirt_and_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_club_room_floor, sitting_in_club_room_with_one_hand_on_desk_and_composed_shy_blush, warm_club_room_light_with_desk_and_window_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・強烈な壁ドンコントラストと可愛らしさ】放課後の超自然協会事務局は閑散としており、窓の外の夕日は溶けた金色でした。夏目は静かにキーを回し、ドアを施錠した。彼女はあなたのオフィスの椅子まで歩き回り、椅子の背もたれの両側に手を置き、あなたを完全に押しのけました。彼女はわずかに前かがみになり、彼女特有の傲慢な息とともに黒髪が耳になびきます。目尻の泣きぼくろが夕日の逆光で危険でセクシーな魅力を醸し出している。――「ふん、午後ずっとほかの女の子ばかり見て、私のことは無視？　ここからは……私だけのために埋め合わせてもらうから。」",
     "rating": "All",
-    "animaCaption": "Leaning forward across the wooden clubroom table to trap the viewer with hands on either side, Shiki Natsume whispers an intimate challenge right near the viewer's ear in her academy uniform. Her sharp golden eyes gleam with tsundere warmth as blazing golden sunset light streams through the windows behind her."
+    "animaCaption": "Sitting in a club room in a school uniform with glossy black tights, Shiki Natsume sits with one hand on the desk, composed shy blush under warm club room light.",
+    "auditRevision": "careful-batch10-2026-08-27"
   },
   {
     "id": "sc153",
@@ -2479,21 +2455,12 @@
     "timeOfDay": "late_night",
     "tags": [
       "mole_under_eye",
-      "bound",
-      "arms_up",
-      "tactical_gear",
-      "undressing",
-      "bare_legs",
-      "cleavage",
-      "heavy_blush",
-      "tears_in_eyes",
-      "tsundere",
-      "sitting_on_sofa",
-      "safehouse",
-      "night",
-      "shadows",
-      "sensual",
-      "close_up"
+      "lace_camisole",
+      "sheer_black_tights",
+      "sofa",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "安全屋沙发",
@@ -2504,12 +2471,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_black_sleeveless_tunic_and_sheer_black_thighhigh_socks_with_leather_garters, wrists_bound_gently_above_head_to_wooden_bedpost_with_soft_red_silk_ribbon, raising_arms, bare_armpits, smooth_underarm_crease, kneeling_on_silk_mattress, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, graceful_foot_arches, intensely_flustered_tsundere_pout, cozy_victorian_bedroom_illuminated_by_warm_fireplace_and_brass_candelabras, full_body\nKneeling upon a plush mattress in a Victorian bedroom, Shiki Natsume's wrists are bound loosely to the wooden bedpost with a soft red silk ribbon, raising her arms to fully expose the smooth creases of her underarms. Clad in a sleeveless tunic and sheer black stockings, the crackling fireplace and brass candelabras eliminate all dark shadows, casting warm amber highlights across her pouting flushed face and stocking-clad feet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_lace_camisole_with_sheer_black_tights_and_garter, glossy_black_tights_hugging_smooth_thighs_and_calf_with_lace_trim, entire_legs_and_feet_fully_visible_in_frame, black_heels_on_sofa, sitting_on_sofa_in_safehouse_with_one_hand_behind_back_and_composed_blush, dim_safehouse_sofa_light_with_lace_and_sofa_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・セーフハウスソフトボンデージ絶対降伏】訓練中にあなたに「はあ？　この変態店長、そんな卑怯な手を使うなんて……自由になったら、絶対に秘密裏に処分してあげる。」",
     "rating": "R15",
-    "auditRevision": "round3-2026-07-22",
-    "animaCaption": "Sitting in an ornate velvet armchair inside a secluded safehouse study, Shiki Natsume's wrists are bound loosely behind her with a red velvet ribbon, her torn black silk camisole falling open to expose her firm bare breasts. Biting her lower lip with proud, defiant passion, her golden eyes burn with thrilling surrender under warm candelabra flames."
+    "auditRevision": "careful-batch10-2026-08-27",
+    "animaCaption": "Sitting on a sofa in a safehouse in a black lace camisole with sheer black tights and garter, Shiki Natsume sits with one hand behind her back, glossy tights hugging smooth thighs, composed blush under dim sofa light."
   },
   {
     "id": "sc169",
@@ -2615,23 +2582,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "adult",
-      "office_lady",
-      "unbuttoned_shirt",
-      "skirt_lift",
-      "torn_pantyhose",
-      "black_pantyhose",
-      "sitting_on_desk",
-      "bare_legs",
-      "heavy_blush",
-      "tears_in_eyes",
-      "tsundere",
-      "indoors",
-      "night",
-      "strong_shadows",
       "mole_under_eye",
-      "sensual",
-      "close_up"
+      "torn_tights",
+      "sheer_black_tights",
+      "commander_office",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "特工指挥办公室",
@@ -2643,11 +2600,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_ripped_sheer_black_pantyhose_with_large_tears_revealing_pale_thighs_and_shins, black_tactical_crop_top, bare_toned_midriff, bare_armpits, smooth_underarm_contours, sitting_on_metal_cargo_crate_in_abandoned_warehouse, panting_with_embarrassed_blush, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, delicate_toes_visible_through_rips, warehouse_illuminated_by_warm_sodium_floodlights_and_moonlight_through_broken_skylights, full_body\nPerched upon an industrial cargo crate inside an abandoned warehouse, Shiki Natsume pants with an embarrassed blush, her tactical crop top revealing her smooth underarms and toned stomach. Her sheer black pantyhose are torn extensively across her thighs and calves, while warm sodium floodlights and moonlight through cracked skylights illuminate the vast floor, clearly framing her stocking-clad feet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, fishnet, fishnets, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_torn_sheer_black_tights_with_ladder_runs_and_glossy_sheen, glossy_black_tights_with_torn_ladder_runs_hugging_smooth_thighs_and_calf, entire_legs_and_feet_fully_visible_in_frame, black_heels_on_office_floor, standing_in_commander_office_with_one_hand_holding_torn_tights_and_composed_blush, warm_commander_office_light_with_desk_and_torn_tights_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・職場OLの亀裂ハイエネルギー】シークレットサービス指令センターのオフィスは深夜には閑散としていた。寒い職場でOL夏目は顔を真っ赤にして冷たい机に座っています。彼女の体にあるプロ仕様のヒップ抱きスカートは腰まで持ち上げられています。彼女の脚のセクシーな薄い黒のストッキングは完全に引き裂かれ、白く繊細な絶対領域と太ももの皮膚が広範囲に露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
     "rating": "R15",
-    "animaCaption": "Slumped in a plush executive leather office chair at midnight, Shiki Natsume's white blouse is unbuttoned to bare her firm breasts, her sheer black pantyhose torn along her thighs. Draping one long leg over the padded armrest while biting her thumb in racing embarrassment, city skyline lights glitter through the glass wall behind her."
+    "animaCaption": "Standing in a commander office in torn sheer black tights with ladder runs, glossy tights hugging smooth thighs, Shiki Natsume holds the torn tights with a composed blush under warm office light.",
+    "auditRevision": "careful-batch10-2026-08-27"
   },
   {
     "id": "sc175",
@@ -2714,21 +2672,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "tactical_gear",
-      "unzipped",
-      "cleavage",
-      "trapped_by_viewer",
-      "leaning_against_wall",
-      "heavy_blush",
-      "tears_in_eyes",
-      "tsundere",
       "mole_under_eye",
-      "bare_legs",
-      "safehouse",
-      "night",
-      "strong_shadows",
-      "sensual",
-      "close_up"
+      "tactical_shirt",
+      "cargo_pants",
+      "cold_wall",
+      "full_body",
+      "combat_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "安全屋冰冷墙边",
@@ -2739,11 +2689,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_tight_black_leather_stealth_suit_unzipped_to_waist_revealing_black_lace_bra, sheer_black_thighhigh_socks_with_lace_bands, pinned_gently_against_concrete_safehouse_wall, hands_held_against_wall_above_head, bare_armpits, smooth_underarm_contours, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, graceful_foot_arches, defiant_pouting_blush, warm_amber_wall_sconce_and_flickering_computer_terminals_lighting_room, full_body\nBacked gently against the concrete wall of an undercover safehouse after stealth infiltration, Shiki Natsume's hands are pinned above her head, exposing the smooth lines of her bare underarms. Her stealth suit is unzipped to reveal her lace bra and sheer black thigh-high stockings, while amber wall sconces and glowing server racks illuminate the chamber, clearly capturing her stocking-clad feet planted on the floor.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_tactical_shirt_with_cargo_pants_and_combat_boots, polished_black_combat_boots_on_cold_floor, standing_against_cold_wall_in_safehouse_with_one_hand_on_wall_and_composed_tense_blush, dim_safehouse_cold_light_with_concrete_and_tactical_gear_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, skirt, thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・タクティカルタイツを解くと必ず崩壊する】秘密諜報員の隠れ家でのステルス訓練中、夏目はあなたを「もう、この変態店長……重いから、少し離れて。これ以上からかったら、本気で怒るから。」",
     "rating": "R15",
-    "animaCaption": "Backed against the cold concrete wall of a secluded safehouse hallway after a compromised mission, Shiki Natsume's black stealth suit is pulled down to her hips, exposing her firm bare breasts and defined midriff. Her hands rest flat against the wall as she bites her lip in breathless, thrilling surrender under stark fluorescent lighting."
+    "animaCaption": "Standing against a cold wall in a safehouse in a black tactical shirt with cargo pants and combat boots, Shiki Natsume stands with one hand on the wall, composed tense blush under dim cold light.",
+    "auditRevision": "careful-batch10-2026-08-27"
   },
   {
     "id": "sc179",
@@ -3836,19 +3787,13 @@
     "time": "闭店后",
     "timeOfDay": "night",
     "tags": [
-      "black_hair",
-      "long_hair",
-      "yellow_eyes",
-      "mole_under_eye",
-      "hairclip",
-      "cafe_uniform",
-      "cafe",
-      "holding_cup",
-      "rain",
-      "window",
-      "warm_lighting",
-      "medium_shot",
-      "reserved_expression"
+      "hair_ribbon",
+      "white_sweater",
+      "sheer_white_thighhigh_stockings",
+      "cafe_counter",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "rating": "All",
     "mature": false,
@@ -3860,9 +3805,10 @@
       "角色还原",
       "日常叙事"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, dark_brown_cafe_suspender_dress, white_blouse, waist_apron, cafe, holding_one_hot_chocolate_cup_with_both_hands, rain_on_window, warm_lighting, reserved_expression, slight_blush, looking_at_viewer, medium_shot, cinematic_composition, cozy, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
-    "animaCaption": "In a side-view composition inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, under soft ambient lighting."
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_sweater_with_light_blue_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_cafe_counter, sitting_on_cafe_counter_after_closing_with_one_hand_holding_cocoa_mug_and_gentle_shy_smile, warm_closed_cafe_counter_light_with_cocoa_steam_and_counter_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "animaCaption": "Sitting on a cafe counter after closing in a soft white sweater with light blue pleated miniskirt and silky white thighhighs, Ayachi Nene holds a cocoa mug with a gentle shy smile under warm counter light.",
+    "auditRevision": "careful-batch10-2026-08-27"
   },
   {
     "id": "sc257",
@@ -3879,28 +3825,13 @@
     "time": "白天",
     "timeOfDay": "all_day",
     "tags": [
-      "black_hair",
-      "long_hair",
-      "yellow_eyes",
       "mole_under_eye",
-      "hairclip",
-      "off_shoulder_top",
-      "blouse",
-      "denim_shorts",
-      "bare_shoulders",
-      "bare_legs",
-      "holding_ice_cream",
-      "feeding",
-      "red_ears",
-      "subtle_blush",
-      "expressionless",
-      "ice_cream_parlor",
-      "indoors",
-      "daytime",
-      "bright",
-      "sunlight",
-      "romantic_atmosphere",
-      "close_up"
+      "grey_sweater",
+      "sheer_black_tights",
+      "dessert_shop",
+      "full_body",
+      "ankle_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "冷饮甜品店靠窗的白色双人圆桌旁",
@@ -3911,11 +3842,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, off_shoulder_top, blouse, denim_shorts, bare_shoulders, bare_legs, holding_ice_cream, feeding, red_ears, subtle_blush, expressionless, ice_cream_parlor, indoors, daytime, bright, sunlight, romantic_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_dessert_shop_floor, sitting_at_window_table_in_dessert_shop_with_one_hand_holding_parfait_and_gentle_shy_blush, warm_dessert_shop_window_light_with_parfait_and_sunlight_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目】【ナツメ・夏日シフォンの私服と無声の間接溶融】盛夏の午後、猛暑が続く中、エアコンの効いたスタイリッシュなアイスクリーム専門店。今日の外出でナツメは、非常にクリーンで爽やかな私服を身に纏っていた。真っ白な軽やかシフォンのオフショルダーブラウスは、精緻できれいな肩と鎖骨のラインを余すところなくのぞかせ、ボトムスにはハイウエストのウォッシュドブルーデニムのショートパンツを合わせ、すらりと伸びた美しい白脚を引き立てている。彼女は少しやる気なさそうにスプーンで手元のツートンアイスクリームを掬っていたが、あなたがじっと見つめているのに気づくと、ごく自然に自分が一口食べたアイスのスプーンをあなたの口元に差し出した。間接キスの曖昧なムードが一瞬にして立ち込め、彼女は美しい金の瞳を少し伏せた。表情は相変わらずあのやる気のないジト目のままだが、完全に真っ赤になった耳の裏が明快な夏光の下で心の中の慌てようを完全に暴露しており、短い口調で弁明していた――「……勘違いしないで。私はただ、アイスがこの高温で完全に溶けてしまう前にあなたに分担させるのが最も効率的な処理方式だと思っただけ。その場でいちいち大騒ぎするのは進食速度を低下させるわ。大バカ者……早く食べなさい」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she stands beside the kitchen counter with a gentle blush on her cheeks, under soft ambient lighting."
+    "animaCaption": "Sitting at a window table in a dessert shop in a casual grey sweater with navy pleated miniskirt and glossy black tights, Shiki Natsume holds a parfait with a gentle shy blush under warm window light.",
+    "auditRevision": "careful-batch10-2026-08-27"
   },
   {
     "id": "sc271",
