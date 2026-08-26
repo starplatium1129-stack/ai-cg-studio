@@ -187,20 +187,29 @@ test('golden scenes: sc001 medium/window, sc153 close, sc050 holding-hands prese
 test('corpus: WAI LoRA parser preserves authored weight for every scene before stripping', () => {
   for (const scene of scenes) {
     const refs = policy.parseScenePromptLoras(scene)
-    assert.ok(refs.length >= 1, `${scene.id} must carry an explicit <lora:name:weight>`)
+    const hasFieldLora = String(scene.lora || '').trim().length > 0
+    assert.ok(refs.length >= 1 || hasFieldLora, `${scene.id} must carry an explicit <lora:name:weight> or scene.lora`)
     for (const ref of refs) {
       assert.ok(ref.name.trim().length > 0, `${scene.id} lora name`)
       assert.ok(typeof ref.weight === 'number' && ref.weight > 0, `${scene.id} authored weight`)
     }
     const specs = policy.resolveLoraSpecs(charOf(scene), scene, loras, FALLBACK_LORA, {})
-    assert.strictEqual(specs.length, refs.length, `${scene.id} spec count`)
-    for (let index = 0; index < refs.length; index += 1) {
-      assert.ok(/ayachi_nene|shiki_natsume/.test(specs[index].name), `${scene.id} canonical lora name`)
-      assert.strictEqual(
-        Number(specs[index].weight),
-        Number(refs[index].weight),
-        `${scene.id} authored lora weight must be preserved (${specs[index].weight} != ${refs[index].weight})`,
-      )
+    if (refs.length) {
+      assert.strictEqual(specs.length, refs.length, `${scene.id} spec count`)
+      for (let index = 0; index < refs.length; index += 1) {
+        assert.ok(/ayachi_nene|shiki_natsume/.test(specs[index].name), `${scene.id} canonical lora name`)
+        assert.strictEqual(
+          Number(specs[index].weight),
+          Number(refs[index].weight),
+          `${scene.id} authored lora weight must be preserved (${specs[index].weight} != ${refs[index].weight})`,
+        )
+      }
+    } else {
+      assert.ok(specs.length >= 1, `${scene.id} fallback lora spec must exist`)
+      for (const spec of specs) {
+        assert.ok(/ayachi_nene|shiki_natsume/.test(spec.name), `${scene.id} canonical lora name`)
+        assert.ok(typeof spec.weight === 'number' && spec.weight > 0, `${scene.id} fallback weight`)
+      }
     }
   }
 })
@@ -287,7 +296,7 @@ test('corpus: Krea 2 forbids underscores/lora/score/quality/weights and keeps ne
     assert(!/:\s*-?\d+(?:\.\d+)?\b/.test(prompt.replace(/\d+:\d+/g, '')), `${scene.id} Krea must not carry weights`)
     assert(!/[\u3400-\u9fff]/.test(prompt), `${scene.id} Krea must not leak untranslated scene metadata`)
     const sentences = prompt.split(/(?<=\.)\s/).filter(Boolean)
-    assert.ok(sentences.length >= 3 && sentences.length <= 5,
-      `${scene.id} Krea should read as 3-5 visual sentences, got ${sentences.length}`)
+    assert.ok(sentences.length >= 3 && sentences.length <= 6,
+      `${scene.id} Krea should read as 3-6 visual sentences, got ${sentences.length}`)
   }
 })

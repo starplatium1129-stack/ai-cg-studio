@@ -220,6 +220,8 @@ async function run() {
   // browserBackend；源码哨兵断言检查两者合并，防止单侧重构回退。
   var live2dBrowserBackend = fs.readFileSync(path.join(root, 'src', 'live2d', 'browserBackend.ts'), 'utf8');
   var live2dStageModule = live2dModule + '\n' + live2dBrowserBackend;
+  var live2dSubmodules = fs.readdirSync(path.join(root, 'src', 'composables', 'live2d')).filter(function (name) { return name.endsWith('.ts'); }).map(function (name) { return fs.readFileSync(path.join(root, 'src', 'composables', 'live2d', name), 'utf8'); }).join('\n');
+  var live2dAggregated = live2dModule + '\n' + live2dBrowserBackend + '\n' + live2dSubmodules;
   var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
   var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
   var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
@@ -360,8 +362,8 @@ async function run() {
   );
   assert(voiceModule.includes('voiceApi.prepare') && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
-  assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
-  assert(live2dModule.includes('setOutfit') && live2dModule.includes('setSpeaking') && live2dModule.includes('setMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must switch authored outfits and write real speech amplitudes into the mouth parameter');
+  assert(live2dAggregated.includes('ResizeObserver') && live2dAggregated.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
+  assert(live2dAggregated.includes('setOutfit') && live2dAggregated.includes('setSpeaking') && live2dAggregated.includes('setMouth') && live2dAggregated.includes('ParamMouthOpenY'), 'Live2D must switch authored outfits and write real speech amplitudes into the mouth parameter');
   assert(
     characterConfig.includes("{ id: 'school', label: '校服', expression: 'expression1' }")
       && characterConfig.includes("{ id: 'casual', label: '常服', expression: 'expression2' }")
@@ -372,46 +374,46 @@ async function run() {
       && characterStageComponent.includes('互动动作含原生图层效果')
       && characterStageComponent.includes('class="wardrobe-menu"')
       && apiSettingsComponent.includes(':data-vendor="option.value"')
-      && live2dModule.includes('model.expression(target.expression)')
-      && !live2dModule.includes('LIVE2D_EXPRESSIONS')
+      && live2dAggregated.includes('model.expression(target.expression)')
+      && !live2dAggregated.includes('LIVE2D_EXPRESSIONS')
       && !html.includes('setExpression'),
     'all five source-authored outfits must be explicit controls and must not be driven by chat emotion'
   );
   assert(
-    live2dStageModule.includes('INTERACTION_MOTIONS')
-      && live2dStageModule.includes('worldPoint')
-      && live2dStageModule.includes('model.hitTest(point.x, point.y)')
-      && live2dStageModule.includes('interactionFromStagePosition')
-      && live2dStageModule.includes('if (y < 0.29) return INTERACTION_MOTIONS.Face')
-      && live2dStageModule.includes("hint: '碰到了画面左侧胸前，宁宁有点生气'")
-      && live2dStageModule.includes("hint: '碰到了画面右侧胸前，宁宁有点生气'")
-      && live2dStageModule.includes('y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50')
-      && live2dStageModule.includes('y >= 0.42 && y < 0.57')
-      && live2dStageModule.includes('return INTERACTION_MOTIONS.Body')
-      && live2dStageModule.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
-      && live2dStageModule.includes('model.motion(interaction.group, undefined, 3)')
-      && live2dStageModule.includes("motionPreload: 'ALL'")
-      && live2dModule.includes('function markInteractionStarted')
-      && live2dModule.includes("interactionHint.value = '这个动作正在进行中'")
-      && live2dModule.includes("interactionHint.value = '动作没有启动，请重试'"),
+    live2dAggregated.includes('INTERACTION_MOTIONS')
+      && live2dAggregated.includes('worldPoint')
+      && live2dAggregated.includes('model.hitTest(point.x, point.y)')
+      && live2dAggregated.includes('interactionFromStagePosition')
+      && live2dAggregated.includes('if (y < 0.29) return INTERACTION_MOTIONS.Face')
+      && live2dAggregated.includes("hint: '碰到了画面左侧胸前，宁宁有点生气'")
+      && live2dAggregated.includes("hint: '碰到了画面右侧胸前，宁宁有点生气'")
+      && live2dAggregated.includes('y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50')
+      && live2dAggregated.includes('y >= 0.42 && y < 0.57')
+      && live2dAggregated.includes('return INTERACTION_MOTIONS.Body')
+      && live2dAggregated.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
+      && live2dAggregated.includes('model.motion(interaction.group, undefined, 3)')
+      && live2dAggregated.includes("motionPreload: 'ALL'")
+      && live2dAggregated.includes('function markInteractionStarted')
+      && live2dAggregated.includes("interactionHint.value = '这个动作正在进行中'")
+      && live2dAggregated.includes("interactionHint.value = '动作没有启动，请重试'"),
     'Live2D clicks must map source hit areas to authored motions with FORCE priority, report feedback only after startup, and distinguish an active motion from a real failure'
   );
   assert(
-    live2dModule.includes('点击呆毛、头部、脸、身体、两侧或裙摆可互动'),
+    live2dAggregated.includes('点击呆毛、头部、脸、身体、两侧或裙摆可互动'),
     'Live2D must advertise every packaged source interaction area'
   );
-  assert(!/\bany\b/.test(live2dStageModule), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
+  assert(!/\bany\b/.test(live2dAggregated), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
   assert(
-    live2dStageModule.includes('readLive2DCatalog') && live2dStageModule.includes('readLibrary'),
+    live2dAggregated.includes('readLive2DCatalog') && live2dAggregated.includes('readLibrary'),
     'Live2D status JSON and dynamic runtime exports must be narrowed before use'
   );
-  assert(!characterStageComponent.includes('live2d-quick-actions') && !live2dModule.includes('beginGreetingGesture'), 'Live2D must not expose simulated quick actions');
+  assert(!characterStageComponent.includes('live2d-quick-actions') && !live2dAggregated.includes('beginGreetingGesture'), 'Live2D must not expose simulated quick actions');
   assert(
-    live2dModule.includes('options.autoLoad === true')
-      && live2dModule.includes("setState('idle', '启用 Live2D'"),
+    live2dAggregated.includes('options.autoLoad === true')
+      && live2dAggregated.includes("setState('idle', '启用 Live2D'"),
     'Live2D must stay unloaded until the user explicitly enables it'
   );
-  assert(live2dModule.includes("'degraded'") && live2dModule.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
+  assert(live2dAggregated.includes("'degraded'") && live2dAggregated.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
   assert(live2dStageModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
   // PixiJS 需要 unsafe-eval：两个 Live2D 页面都必须放行，否则运行时初始化失败

@@ -47,7 +47,7 @@ Tauri 2 是桌面壳。开发执行 `npm run dev:tauri`，构建 NSIS 执行 `np
 - Companion 会自动拉起（或接管已运行的）本地网关，Atelier 工作台是完整网站窗口。
 - Tauri packaged 模式保留维护契约：场景维护相关接口返回 `501 DESKTOP_MAINTENANCE_UNAVAILABLE`；展示集与 home-hero 写入不受该限制。
 
-出图方面，SD/WAI 是生产主路径；ComfyUI 通过应用 API 提供 Anima、Krea 2 Turbo 实验自然语言出图和 WebUI 离线时的 basic WAI fallback。Krea 无角色 LoRA/negative，身份不保证；hires.fix、detailer 与 ControlNet 仍依赖 WebUI。
+出图方面，SD/WAI 与 Anima/Krea 2（ComfyUI）双主路径并行：SD/WAI 走 WebUI，Anima/Krea 2 走固定 Comfy 工作流；WAI 兼容请求优先 Comfy，仅超出白名单时回退 WebUI。Krea 无角色 LoRA/negative，身份不保证；detailer 与 ControlNet 仍依赖 WebUI，仅当 Comfy 可用时的 latent `nearest-exact` hires（1.5x/20 steps/denoise 0.4）与 Remacri 2x 像素超分可走 Comfy 直出。
 
 ## 可选：GPT-SoVITS 角色语音
 
@@ -227,7 +227,7 @@ node server.js
 
 旧版根目录中的 `.gateway_*`、`tunnel.log` 和 `friend_outputs/` 会在首次启动时自动迁移。`runtime/` 已被 Git 忽略，不应提交。
 
-- `data/scenes.json`：297 个场景
+- `data/scenes.json`：303 个场景（+441 蓝图）
 - `data/characters.json`：角色设定
 - `data/tags.json`：统一标签
 - `data/loras.json`：LoRA 配置

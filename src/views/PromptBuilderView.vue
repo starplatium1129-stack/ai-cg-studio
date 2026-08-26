@@ -347,11 +347,11 @@
               class="btn btn-ghost btn-hires-action"
               type="button"
               :disabled="generationBusy"
-              title="使用 2x 潜空间超分放大 (4K 级精修)"
+              title="使用 2x 高清超分放大"
               @click="upscaleCurrentResult"
             >
               <ArchiveIcon name="spark" />
-              <span>高清放大 2x (4K)</span>
+              <span>高清放大 2x</span>
             </button>
             <button
               v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
@@ -408,9 +408,9 @@
               暂未激活微调词条。可在下方按分类点选预设、选择官方服装包，或直接搜索/输入 Danbooru 标签回车添加。
             </p>
           </div>
-          <div v-if="!pb.isPopular" class="outfit-presets" aria-label="v18 官方服装词包">
+          <div v-if="!pb.isPopular" class="outfit-presets" aria-label="官方服装词包">
             <div class="outfit-presets-head">
-              <strong>v18 官方服装词包</strong>
+              <strong>官方服装词包</strong>
               <span>一键加入训练原词，也可以继续单独选 tag</span>
             </div>
             <div class="outfit-preset-list">
@@ -506,7 +506,7 @@
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
               :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
               @click="setDrawEngine('anima')">
-              Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v20 LoRA' }}</span>
+              Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v21 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
               :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
@@ -612,96 +612,13 @@
         />
       </div>
 
-      <!-- ─── 右栏：风格 ───────────────────────────────────── -->
-      <div class="director-col col-right">
-
-        <!-- Emotion -->
-        <details class="panel step-panel advanced-decision decision-fold" id="stepEmotion">
-          <summary class="panel-title decision-summary">
-            <span>情绪 · Emotion</span>
-            <span class="decision-current">{{ emotionSummary }}</span>
-          </summary>
-          <div class="emotion-list">
-            <button v-for="e in EMOTION" :key="e.id"
-              class="option" type="button"
-              :class="{ selected: pb.selections.emotion.includes(e.id) }"
-              @click="pb.toggleEmotion(e.id)">
-              <span class="opt-icon"><ArchiveIcon :name="e.iconName" /></span>
-              <span class="opt-name">{{ e.name }}</span>
-            </button>
-          </div>
-        </details>
-
-        <!-- Camera / Shot -->
-        <details class="panel step-panel advanced-decision decision-fold" id="stepCamera">
-          <summary class="panel-title decision-summary">
-            <span>镜头 · Camera</span>
-            <span class="decision-current">{{ shotSummary }}</span>
-          </summary>
-          <div class="camera-list">
-            <button v-for="s in SHOT" :key="s.id"
-              class="option" type="button"
-              :class="{ selected: pb.selections.shot === s.id }"
-              @click="pb.setShot(pb.selections.shot === s.id ? null : s.id)">
-              <span class="opt-icon"><ArchiveIcon :name="s.iconName" /></span>
-              <span class="opt-name">{{ s.name }}</span>
-            </button>
-          </div>
-        </details>
-
-        <!-- Lighting -->
-        <details class="panel step-panel advanced-decision decision-fold" id="stepLighting">
-          <summary class="panel-title decision-summary">
-            <span>光照 · Lighting</span>
-            <span class="decision-current">{{ lightingSummary }}</span>
-          </summary>
-          <div class="lighting-list">
-            <button v-for="l in LIGHTING" :key="l.id"
-              class="option" type="button"
-              :class="{ selected: pb.selections.lighting === l.id }"
-              @click="pb.setLighting(pb.selections.lighting === l.id ? null : l.id)">
-              <span class="opt-icon"><ArchiveIcon :name="l.iconName" /></span>
-              <span class="opt-name">{{ l.name }}</span>
-            </button>
-          </div>
-        </details>
-
-        <!-- Composition -->
-        <details class="panel step-panel advanced-decision decision-fold" id="stepComposition">
-          <summary class="panel-title decision-summary">
-            <span>构图 · Composition</span>
-            <span class="decision-current">{{ compositionSummary }}</span>
-          </summary>
-          <div class="comp-list">
-            <button v-for="c in COMPOSITION" :key="c.id"
-              class="option" type="button"
-              :class="{ selected: pb.selections.composition === c.id }"
-              @click="pb.setComposition(pb.selections.composition === c.id ? null : c.id)">
-              <span class="opt-icon"><ArchiveIcon :name="c.iconName" /></span>
-              <span class="opt-name">{{ c.name }}</span>
-            </button>
-          </div>
-        </details>
-
-        <!-- Color Mood -->
-        <details class="panel step-panel advanced-decision decision-fold" id="stepMood">
-          <summary class="panel-title decision-summary">
-            <span>色彩情调 · Mood</span>
-            <span class="decision-current">{{ moodSummary }}</span>
-          </summary>
-          <div class="mood-grid">
-            <button v-for="m in COLOR_MOODS" :key="m.id"
-              class="mood-card" type="button"
-              :class="{ active: pb.colorMood === m.id }"
-              @click="pb.setColorMood(pb.colorMood === m.id ? null : m.id)">
-              <span class="mood-icon"><ArchiveIcon :name="m.iconName" /></span>
-              <span class="mood-name">{{ m.name }}</span>
-              <span class="mood-desc">{{ m.desc }}</span>
-            </button>
-          </div>
-        </details>
-
-      </div>
+      <DirectorDecisionsRail
+        :emotion-summary="emotionSummary"
+        :shot-summary="shotSummary"
+        :lighting-summary="lightingSummary"
+        :composition-summary="compositionSummary"
+        :mood-summary="moodSummary"
+      />
     </div>
 
     <!-- Toast -->
@@ -803,7 +720,7 @@ import { useDirectorDerived } from '@/composables/useDirectorDerived'
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 // 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
-// 降低导演台路由块体积（预算上限 JS 128KB / CSS 100KB）。
+// 降低导演台路由块体积（预算上限 JS 140KB / CSS 115KB）。
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
 const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
 const PromptHealthPanel = defineAsyncComponent(() => import('@/components/PromptHealthPanel.vue'))
@@ -816,6 +733,7 @@ const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/Batc
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
+const DirectorDecisionsRail = defineAsyncComponent(() => import('@/components/director/DirectorDecisionsRail.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const ImageSplitCompare = defineAsyncComponent(() => import('@/components/visual/ImageSplitCompare.vue'))
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'

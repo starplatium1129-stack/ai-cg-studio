@@ -40,7 +40,7 @@
       message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
-      <!-- 2026-08-15：35 角色全量浏览——作品筛选条 + 分区网格 + 搜索；选中后下方展示档案 -->
+      <!-- 2026-08-15：全量角色浏览——作品筛选条 + 分区网格 + 搜索；选中后下方展示档案 -->
       <div class="character-browse" data-reveal>
         <div class="cb-search-wrap">
           <ArchiveIcon name="search" class="cb-search-icon" />
@@ -344,7 +344,7 @@ const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
 useScrollReveal()
 
-// 2026-08-15：全量 35 角色浏览——作品筛选 + 搜索 + 分组网格（heroine 与 popular 同台）。
+// 2026-08-15：全量角色浏览——作品筛选 + 搜索 + 分组网格（heroine 与 popular 同台）。
 const search = ref('')
 const activeFranchise = ref('')
 
@@ -587,7 +587,7 @@ onMounted(() => {
   border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface);
   color: var(--text-secondary); cursor: pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
-  /* 离屏卡片跳过布局/绘制，35 角色长列表滚动满帧 */
+  /* 离屏卡片跳过布局/绘制，长列表滚动满帧 */
   content-visibility: auto;
   contain-intrinsic-size: auto 150px;
 }

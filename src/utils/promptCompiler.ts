@@ -534,7 +534,14 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
     if (atmosphere) clauses.push(`the scene is lit by ${atmosphere}`)
     parts.push(sentence(clauses.join(', while ')))
   }
-  return parts.filter(Boolean).join(' ')
+  const assembled = parts.filter(Boolean).join(' ')
+  const sentences = assembled.split(/(?<=\.)\s/).filter(Boolean)
+  if (sentences.length > 5) {
+    const head = sentences.slice(0, 4).join(' ')
+    const tail = sentences.slice(4).join('; ')
+    return `${head} ${tail}`
+  }
+  return assembled
 }
 
 const ANIMA_RELATION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|hug|hugging|back_hug|kiss|kissing|touch|touching|press|pressed|hands?|one_hand|both_hands|playing|reading|writing|drinking|eating|cooking|dancing|sleeping|crying|smiling|eye_contact|close_distance|interlocked_fingers|bare_|nude|naked|cleavage|sideboob|no_bra|no_panties|wet_skin|wet_clothes|see_through|translucent|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone)/

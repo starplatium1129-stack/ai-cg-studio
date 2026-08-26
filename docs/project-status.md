@@ -1,21 +1,21 @@
 # AI-CG-Studio 当前状态
 
-> 更新：2026-08-18
+> 更新：2026-08-26
 > 用途：唯一的项目级当前状态入口。历史轮次、执行者分工和逐步交接稿不再作为维护文档。总文档索引见 `docs/INDEX.md`。
 
 ## 项目定位
 
-AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，包含角色聊天、Live2D、TTS、SD/Anima/Krea 2 出图、LoRA 训练、35 位热门角色场景库、4 视角角色参考库、作品册、AI 视频分镜工作台、控制面板和桌面 Companion。
+AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，包含角色聊天、Live2D、TTS、SD/Anima/Krea 2 出图、LoRA 训练、43 位热门角色场景库（45 角色/236 形态/944 视角参考库）、作品册、AI 视频分镜工作台、控制面板和桌面 Companion。
 
 ## 当前架构
 
 - 前端：Vue 3 + Vite + TypeScript + Pinia；路由视图懒加载。
 - 网关：Express；`routes/` 负责 HTTP API，`server/` 负责安全、配置、诊断和预压缩，`services/*.ts` 编译产物随仓库提交。
-- 数据：场景分片、角色、LoRA、预设、标签、热门角色（35 位）、通用蓝图、角色 4 视角标准定义位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
+- 数据：场景分片、角色、LoRA、预设、标签、热门角色（43 位 / 参考库 45 位）、441 通用蓝图、角色 4 视角标准定义位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
 - 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。角色 Prompt 由服务端分层组装，并支持本机用户档案与用户手动固定的跨会话事实召回。
 - 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent。Anima Base/Aesthetic 使用 30 steps / CFG 4.5 / `res_multistep` / `simple`（放大 = Remacri 纯像素直出）的模型原生标签流。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
-- 画师风格库：专家模式提供 30 位精选动漫画师与作监风格（含 Nekotomi Chao / 猫富ちゃお、浅野恭司 / WIT Studio、Rella 星夜光影、深崎暮人等），支持 SD/WAI (Danbooru tags)、Anima (`@artist`) 与 Krea 2 (自然语言) 跨引擎编译。
+- 画师风格库：专家模式提供 38 位精选动漫画师与作监风格（含 Nekotomi Chao / 猫富ちゃお、浅野恭司 / WIT Studio、Rella 星夜光影、深崎暮人等），支持 SD/WAI (Danbooru tags)、Anima (`@artist`) 与 Krea 2 (自然语言) 跨引擎编译。
 - 视频：`/video-studio` 本地 AI 视频工作台。支持 Wan 2.2 TI2V 与 MiniMax H3（Ref2VA 多模态参考图绑定）；支持剧本分镜智能拆解、画风锚注入、中日英对白语言显式控制（`dialogueLang`）与 Range 播放。
 - 训练：训练参数覆盖、数据集枚举、配置副本、ETA 和日志均遵守 `AGENTS.md` 的白名单契约。
 - 桌面：Tauri 2 NSIS 正式打包与快速增量部署（`deploy-desktop-quick.ps1`）双轨运行；Native Live2D overlay 正常接入。
@@ -29,12 +29,12 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
   - **静态资源协商缓存（`no-cache + ETag`）**：彻底终结浏览器与 WebView2 盲缓存旧图痛点，本地替换任意立绘/参考图后刷新页面即刻 100% 生效，无需手动改写 `?v=版本号`。
   - **场景管理样张大盘打通**：`SceneManagerView.vue` 现已支持全量 649 个样张（302 经典主线场景 + 347 热门角色场景蓝图）的统一检索、多视角预览与在线一键上传替换（自动完成 4096px 原图 + 560px 缩略图生成与 manifest 同步）。
   - **数据版本全自动自愈**：网关保存场景或执行维护脚本时，自动重新计算 13 个核心数据文件的 SHA1 哈希并升版 `DATA_VERSION`，杜绝前后端缓存脱节。
-- **36 角色 $\times$ 182 服装形态 4 视角参考库（Character Reference Bible）与全自动闭环自愈管线**：
-  - 覆盖明日方舟、原神、崩铁、葬送的芙莉莲、Fate、Re:Zero、俄语妹、青猪、刀剑神域、魔禁/超炮、约战、罪恶王冠、无职转生、物语系列、孤独摇滚、电锯人、莉可丽丝、进击的巨人等 36 位角色，共 182 套服装形态（含常规立绘/变体 + `🔞 私密全裸 / 纯粹形态`），构建了 756 个电影级标准参考视角（`ref_01_face_closeup` 特写、`ref_02_half_medium` 半身、`ref_03_full_dynamic` 全身、`ref_04_back_rear` 侧后背影）。
+- **45 角色 $\times$ 236 服装形态 4 视角参考库（Character Reference Bible）与全自动闭环自愈管线**：
+  - 覆盖明日方舟、原神、崩铁、葬送的芙莉莲、Fate、Re:Zero、俄语妹、青猪、刀剑神域、魔禁/超炮、约战、罪恶王冠、无职转生、物语系列、孤独摇滚、电锯人、莉可丽丝、进击的巨人等 45 位角色，共 236 套服装形态（含常规立绘/变体 + `🔞 私密全裸 / 纯粹形态`），构建了 944 个电影级标准参考视角（`ref_01_face_closeup` 特写、`ref_02_half_medium` 半身、`ref_03_full_dynamic` 全身、`ref_04_back_rear` 侧后背影）。
   - 主站专属女主角（绫地宁宁、四季夏目）全形态强制挂载 Anima 原生专属训练 LoRA（`ayachi_nene_v21_anima`、`shiki_natsume_v21_anima`），确保泪痣、呆毛与神韵 100% 还原。
   - 构建了「3 并发出图池（`render-all-outfits-references.js`）+ 4 并发 Gemini 3.7 Flash 纯视觉审核池（`pure-vision-audit.js`）+ 定向微调自愈引擎（`fine-tuned-repair.js`）」闭环流水线。大盘获得高比例绿灯 PASS 认证，边缘变体与修复配方完整归档至 `docs/character-reference-audit-pending.md`。
   - 数据标准与 TS 映射契约落盘至 `data/character-reference-standards.json` 与 `src/utils/characterReferenceData.ts`。
-- **精选动漫画风库扩容至 30 位与作监级分色机制**：
+- **精选动漫画风库扩容至 38 位与作监级分色机制**：
   - 正式实装 **猫富ちゃお（Nekotomi Chao）** 动画工房灵动画师标签（`@nekotomi chao`）与 **浅野恭司（Kyoji Asano）** WIT Studio 粗线硬边赛璐珞与大地低饱和色系调光。
   - 确立「动画人设作监/分镜原画师 vs 小说插画师 vs 动画制作公司」三层风格编译隔离规则。
 - **NSFW 场景大透视与光影深度升级**：
@@ -82,7 +82,7 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
 - `AGENTS.md`：项目约束、质量门槛与当前实现权威说明。
 - `DESIGN.md`：网站与控制面板设计规范。
 - `docs/INDEX.md`：全景文档分类与索引总览。
-- `docs/character-reference-audit-pending.md`：35 角色 4 视角参考库待精调清单与修复指南。
+- `docs/character-reference-audit-pending.md`：45 角色 4 视角参考库待精调清单与修复指南。
 - `docs/showcase-pipeline-lessons.md`：样张流水线 11 个疑难排查与教训留档。
 - `docs/video-generation-roadmap.md`、`docs/video-ai-storyboard.md`：视频工作台与智能分镜。
 - `docs/tauri-desktop-migration-plan.md`、`docs/desktop-update-research.md`：桌面端架构与更新机制。

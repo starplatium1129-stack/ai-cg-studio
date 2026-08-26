@@ -1,6 +1,6 @@
 # AI-CG-Studio 项目文档全景索引 (Documentation Master Index)
 
-> **最新基线**：2026-08-21  
+> **最新基线**：2026-08-21
 > **维护契约**：本文档为 `docs/` 目录下全部架构规范、路线图、提示词工程、角色参考库、视频管线、桌面端与排障留档的总览索引。所有新文档与重大更新须在此登记。
 
 ---
@@ -24,7 +24,7 @@
 | :--- | :--- | :--- |
 | **协作指南** | `AGENTS.md` (根目录) | **最高优先级**。开发约束、质量门槛、出图/审核规范、桌面部署规范与并行协作协议。 |
 | **设计系统契约** | `DESIGN.md` (根目录) | 界面视觉规范、色彩 Tokens、Typography、组件规范与布局标准。 |
-| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（35 热门角色、736 视角参考库、30 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
+| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（43 热门角色/45 角色库/944 视角参考库、38 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
 | **维护操作指南** | [`maintenance.md`](maintenance.md) | 场景维护、数据验证、多模型同步、备份恢复等日常维护脚本与契约。 |
 | **视觉与架构路线** | [`visual-architecture-roadmap.md`](visual-architecture-roadmap.md) | UI/UX 演进路线、API Client、存储 Repository 与组件拆分基线。 |
 | **桌宠语音演出路线** | [`companion-voice-roadmap.md`](companion-voice-roadmap.md) | Desktop Companion 语音交互、情绪标签驱动与状态机演进规划。 |
@@ -39,7 +39,7 @@
 | 文档名称 | 路径 | 核心内容与维护状态 |
 | :--- | :--- | :--- |
 | **角色一站式接入流水线** | [`character-onboarding-workflow.md`](character-onboarding-workflow.md) | 新增热门角色档案、SFW/NSFW 场景、4 视角参考库、点阵场与样张全量自动化接入规范。 |
-| **参考图待精调清单** | [`character-reference-audit-pending.md`](character-reference-audit-pending.md) | 35 角色 177 服装形态（736 视角）自动化审核大盘与 75 项边缘变体修复配方。 |
+| **参考图待精调清单** | [`character-reference-audit-pending.md`](character-reference-audit-pending.md) | 45 角色 236 服装形态（944 视角）自动化审核大盘与 75 项边缘变体修复配方。 |
 | **点阵粒子立绘管线** | [`particle-portrait-pipeline.md`](particle-portrait-pipeline.md) | 热门角色 Hero 粒子场整图点阵离线提取与复刻生成管线。 |
 | **热门角色场景适配** | [`popular-scene-fit-audit.md`](popular-scene-fit-audit.md) | 热门角色与通用场景蓝图契约适配度审计报告。 |
 | **角色调研：雷电/芙莉莲/伊蕾娜** | [`research/characters/character-research-raiden-frieren-elaina.md`](research/characters/character-research-raiden-frieren-elaina.md) | 雷电将军、芙莉莲、伊蕾娜官方设定、服装形制与视觉特征调研。 |

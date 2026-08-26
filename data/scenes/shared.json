@@ -15,25 +15,15 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "hair_ribbon",
       "2girls",
-      "dual_pose_verified",
       "wedding_dress",
-      "mole_under_eye",
-      "ahoge",
-      "in_love",
-      "interlocked_fingers",
-      "looking_at_viewer",
-      "depth_of_field",
-      "ayachi_nene_on_the_left",
-      "blush",
-      "adult",
-      "wedding_night",
+      "white_thighhighs",
+      "black_thighhighs",
+      "smooth_thighs",
+      "honeymoon_suite",
+      "holding_hands",
       "candlelight",
-      "intimate",
-      "late_night",
-      "night",
-      "medium_shot"
+      "depth_of_field"
     ],
     "mature": false,
     "location": "新房",
@@ -43,13 +33,13 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_white_wedding_gowns, sitting_side_by_side_on_edge_of_canopy_bed, holding_hands_together, intimate_loving_gazes, gentle_warm_blushes, luxury_honeymoon_hotel_suite, warm_flickering_candelabra_glow, white_rose_petals_scattered_on_bed, soft_shadows, medium_shot, official_visual_novel_cg_framing",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 1boy, veil covering face",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_elegant_white_wedding_gowns_with_lace_veil_and_satin_gloves, sitting_side_by_side_on_edge_of_canopy_bed_in_luxury_honeymoon_suite, ayachi_nene_in_sheer_white_thighhigh_stockings_with_lace_top_hugging_smooth_thighs_and_thigh_gap, shiki_natsume_in_sheer_black_thighhigh_stockings_with_matte_weave, holding_hands_together_with_interlocked_fingers_and_gentle_warm_blushes, warm_candlelight_bokeh_and_soft_champagne_glasses_on_nightstand, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.52> <lora:shiki_natsume_v18_wd14:0.52>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, solo, bare_legs",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "rating": "All",
     "recommendedSize": "1344×896",
-    "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "Sitting side-by-side on the edge of the lavish canopy bed in their bridal suite, Ayachi Nene and Shiki Natsume hold hands tenderly, dressed in elegant white wedding gowns. Their eyes meet with deep, blushing affection under the warm glow of tabletop candelabras, surrounded by delicate white rose petals."
+    "auditRevision": "audit-v25-2026-08-26-batch3",
+    "animaCaption": "Sitting side by side on the canopy bed in white wedding gowns, Ayachi Nene in lace-top white thighhighs and Shiki Natsume in matte black thighhighs hold hands with interlocked fingers. Warm candlelight bokeh glows on smooth thighs with a soft thigh gap in the luxury honeymoon suite."
   },
   {
     "id": "sc031",
@@ -67,25 +57,15 @@
     "time": "仪式时刻",
     "timeOfDay": "all_day",
     "tags": [
-      "hair_ribbon",
-      "mole_under_eye",
       "2girls",
-      "dual_pose_verified",
-      "wedding_dress",
-      "in_love",
-      "glitch_effect",
-      "abstract_background",
-      "ayachi_nene_on_the_left",
-      "blush",
-      "ahoge",
-      "adult",
-      "ceremonial_hall",
+      "formal_gown",
+      "white_thighhighs",
+      "black_tights",
+      "smooth_thighs",
+      "ritual_hall",
       "holding_hands",
-      "luminous_curves",
-      "halo",
-      "tears_of_joy",
-      "wide_shot",
-      "full_body"
+      "volumetric_lighting",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "仪式厅",
@@ -95,13 +75,13 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_casual, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_stylish_black_turtleneck_and_plaid_skirt, sitting_on_park_bench_in_autumn, holding_paper_bag_of_roasted_chestnuts, offering_one_chestnut_to_viewer, quiet_shy_smile, faint_blush, autumn_park_avenue, golden_ginkgo_leaves_covering_ground, warm_dusk_sunlight, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_wearing_modern_formal_gowns_nene_in_pastel_blue_and_natsume_in_black_turtleneck_and_plaid_skirt, standing_in_illuminated_ritual_hall_with_three_heart_rate_curves_projected_on_dome_ceiling, ayachi_nene_in_sheer_white_thighhigh_stockings_and_natsume_in_sheer_black_tights, holding_viewer_hands_left_and_right_with_light_ring_glowing_between_them, joyful_teary_smile_and_composed_gentle_gaze, volumetric_light_beams_and_bokeh, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.52> <lora:shiki_natsume_v18_wd14:0.52>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, solo, bare_legs",
     "storyJa": "【夏目＆寧々・大人のAU・3人契約の無限ループ】式典ホールのライトカーテンは、3つの心拍数曲線をドームに投影します。寧々と夏目はそれぞれ左手と右手を持ちます。同期値がしきい値を超えた後も、制御を失うことはありませんでした。代わりに、ゆっくりと回転する後光となって安定しました。寧々が最初に笑い、泣き、夏目がしっかりと手を握り、短い言葉で3人の宣誓を終えました。――「誰かが誰かに寄りかかるんじゃない。私たちはみんな、ここに残ることを選んで、何度でも選び直すんです。」",
     "rating": "All",
     "recommendedSize": "1344×896",
-    "auditRevision": "dual-regional-2026-07-23",
-    "animaCaption": "Sitting gracefully on a wooden park bench along an avenue of golden ginkgo trees at dusk, Shiki Natsume holds a warm paper bag of roasted chestnuts, offering one to the viewer with a gentle, understated smile. Dressed in her sleek black turtleneck and plaid skirt, the amber autumn sunset casts a soft golden glow across her sharp yellow eyes and black hair."
+    "auditRevision": "audit-v25-2026-08-26-batch3",
+    "animaCaption": "Standing in the illuminated ritual hall with heart rate curves projected on the dome, Ayachi Nene in white thighhighs and Shiki Natsume in black tights hold the viewer's hands left and right, a glowing light ring between them, volumetric beams shining."
   },
   {
     "id": "sc144",

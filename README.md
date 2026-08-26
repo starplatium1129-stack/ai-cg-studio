@@ -10,23 +10,23 @@
 
 绫季绘境 (Lingji Atelier) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
-The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **35 popular anime/game characters** across 177 outfit forms. A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
+The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **43 popular anime/game characters** across 236 outfit forms (45 characters × 236 forms / 944 perspectives in the Reference Bible). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
 
 This is an unofficial, non-commercial fan project and is not affiliated with or endorsed by the original rights holders.
 
 ## Features
 
 - **Scene & Character Libraries**:
-  - 297+ searchable and filterable Scenes, classified as All, R15, or R18 by depicted content.
-  - 35 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
+  - 303 searchable and filterable Scenes (+441 Scene Blueprints), classified as All, R15, or R18 by depicted content.
+  - 43 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
   - 335+ verified showcase samples in `AI/SceneShowcase/` with direct links back into the studio.
 - **4-Perspective Character Reference Bible**:
-  - 35 characters $\times$ 177 outfit forms (736 standard perspectives): Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`).
+  - 45 characters $\times$ 236 outfit forms (944 standard perspectives): Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`).
   - Automated closed-loop pipeline: 3-concurrency generation, 4-concurrency pure-vision Gemini 3.7 Flash audit pool, and fine-tuned repair engine.
   - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
-- **Multi-Engine Generation & 30 Curated Artist Styles**:
+- **Multi-Engine Generation & 38 Curated Artist Styles**:
   - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima 1.1 (`@artist` + native tags), and Krea 2 Turbo (natural language prose).
-  - 30 curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
+  - 38 curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
   - Regional Prompter dual-character composition stabilization on reForge.
 - **AI Narrative Video Studio**:
   - Local AI video creation supporting Wan 2.2 TI2V and MiniMax H3 (Ref2VA reference image binding).
