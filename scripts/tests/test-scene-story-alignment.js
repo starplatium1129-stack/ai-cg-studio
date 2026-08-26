@@ -48,6 +48,17 @@ const CHECKS = [
 
 const issues = [];
 const detail = [];
+// 官方服装锚定检查（宁宁/夏目）：故事涉及官方服装时，prompt 必须带官方锚定词
+const OUTFIT_ANCHORS = [
+  { char: 'nene', storyRe: /魔女服|魔女装|魔女衣装|换上.*魔女|正统.*魔女|漆黑魔女/, anchor: 'nene_witch_canonical' },
+  { char: 'nene', storyRe: /(?:学园|学校)制服|校服(?!.*换下)/, anchor: 'nene_school_uniform' },
+  { char: 'nene', storyRe: /水手服|serafuku/, anchor: 'nene_sailor_uniform' },
+  { char: 'nene', storyRe: /蓝色睡衣|蓝睡衣/, anchor: 'nene_blue_pajamas' },
+  { char: 'nene', storyRe: /绿色睡衣|绿睡衣/, anchor: 'nene_green_sleepwear' },
+  { char: 'natsume', storyRe: /旗袍/, anchor: 'natsume_official_qipao' },
+  { char: 'natsume', storyRe: /女仆(?!装被|伪装)/, anchor: 'natsume_maid_uniform' },
+  { char: 'natsume', storyRe: /咖啡(?:馆|厅)?(?:店)?制服|店员服/, anchor: 'natsume_cafe_uniform' },
+];
 // 豁免清单：人工核对的合理省略（台词/叙述指观者、POV 构图隐含姿态等）
 let exempts = new Set();
 const exemptArg = process.argv.indexOf('--exempt');
@@ -65,6 +76,12 @@ for (const s of scenes) {
   for (const c of CHECKS) {
     if (c.storyRe.test(story) && !c.promptRe.test(prompt) && !exempts.has(s.id + '#' + c.label)) {
       sceneIssues.push(c.label);
+    }
+  }
+  for (const o of OUTFIT_ANCHORS) {
+    if (s.char !== o.char) continue;
+    if (o.storyRe.test(story) && !prompt.includes(o.anchor) && !exempts.has(s.id + '#锚定:' + o.anchor)) {
+      sceneIssues.push('官方锚定:' + o.anchor);
     }
   }
   if (sceneIssues.length) issues.push({ id: s.id, title: s.title, missing: sceneIssues });
