@@ -216,13 +216,11 @@
     "tags": [
       "hair_ribbon",
       "apron",
-      "casual_clothes",
-      "sheer_white_thighhigh_stockings",
+      "bare_legs",
       "smooth_thighs",
       "kitchen",
-      "holding_spoon",
       "full_body",
-      "slippers",
+      "barefoot",
       "depth_of_field"
     ],
     "mature": false,
@@ -233,12 +231,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_pink_cotton_cooking_apron_over_white_blouse_and_pleated_miniskirt, sheer_white_thighhigh_stockings_with_soft_cotton_trim_and_silky_thigh_texture, smooth_thighs_with_subtle_garter_crease, entire_legs_and_feet_fully_visible_in_frame, cream_slippers_on_kitchen_wooden_floor, standing_in_home_kitchen_holding_wooden_spoon_with_both_hands_behind_back, warm_kitchen_lamp_light_with_steam_rising, gentle_loving_smile_with_blush, cinematic_depth_of_field, slender_waist_and_delicate_hands, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_apron_over_pastel_pink_loungewear_with_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_standing_in_kitchen, barefoot_with_soft_toes_on_kitchen_tiles, standing_in_cohabitation_kitchen_with_apron_still_on_hugging_viewer_from_behind_with_gentle_loving_blush, warm_cohabitation_kitchen_light_with_apron_and_tile_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・エプロンをしたままハグ】同棲を終えた秋の夜、大人になった寧々は料理教室で新しい料理の練習を終え、手順を復習するためにエプロン姿のまま帰宅した。あなたは彼女の顔にソースがついたことを横から彼女に思い出させました。彼女は長い時間丁寧に拭いて、最後には後ろから抱きついて肩に顎を乗せた。――「今日はずっと、最初にあなたに味見してもらおうって思ってたんです。まだ振り向かないで、少しだけ充電させてください……それから、おいしいか教えてくださいね。」",
     "rating": "All",
-    "auditRevision": "audit-v25-2026-08-26-batch2",
-    "animaCaption": "In the home kitchen holding a wooden spoon behind her back, Ayachi Nene in a pink cotton apron shows sheer white thighhighs with a soft garter crease, smooth thighs, and cream slippers on the wooden floor under warm kitchen lamp light."
+    "auditRevision": "careful-batch06-2026-08-27",
+    "animaCaption": "In a cohabitation kitchen with her apron still on, Ayachi Nene in soft white apron over pastel pink loungewear stands with slender bare legs, bare feet on tiles, hugging the viewer from behind with a gentle loving blush."
   },
   {
     "id": "sc058",
@@ -1820,18 +1818,12 @@
     "timeOfDay": "late_night",
     "tags": [
       "hair_ribbon",
-      "school_uniform",
       "unbuttoned_shirt",
-      "lace_lingerie",
-      "sheer_black_thighhigh_stockings",
-      "garter_straps",
-      "smooth_thighs",
-      "thigh_gap",
-      "sitting_on_desk",
+      "sheer_white_thighhigh_stockings",
+      "club_room",
       "full_body",
-      "heels",
-      "depth_of_field",
-      "chiaroscuro"
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "研究会课桌",
@@ -1842,12 +1834,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_unbuttoned_white_school_shirt_pushed_aside_revealing_black_lace_lingerie_with_delicate_rib_cups, sheer_black_thighhigh_stockings_with_lace_top_and_garter_straps_hugging_smooth_thighs, soft_thigh_gap_and_lace_trim_at_stocking_top, entire_legs_and_feet_fully_visible_in_frame, black_strappy_heels_on_clubroom_desk_edge, seated_on_locked_clubroom_desk_with_hands_bracing_behind, flustered_blush_with_parted_lips_and_teary_eyes, stormy_night_rain_streaks_on_windows_with_dynamic_shadows, cinematic_chiaroscuro_and_depth_of_field, slender_waist_and_delicate_collarbone, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, white_thighhighs, bare_legs, cropped_feet",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_half_unbuttoned_white_shirt_with_navy_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_club_room_floor, sitting_on_club_room_desk_with_one_hand_on_desk_and_shirt_slightly_open_with_heavy_shy_blush, warm_club_room_light_with_desk_and_window_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・大人のアフターストーリー・・・机上の禁忌犯編】深夜のオカルト研究部は閑散としており、窓の外では大雨が降り続いていた。鍵のかかった木の扉が外界を遮断し、寧々はあなたによってそっと大きな机の上に押し倒されました。普段はきちんとしている制服の紐を完全に解き、その下にある絶妙で恥ずかしい黒いレースの下着が露わになります。黒い布地が、白い肌に血の凍るような弧を描きます。彼女は両手でテーブルの角を握り、涙を浮かべながら自分を包み込む君を見上げた。彼女の頭の上のアホ毛はとても恥ずかしがり屋で、非常にエロティックなハート型の螺旋に狂ったように丸まり、彼女の小さな口がわずかに開き、彼女は息を呑みました。――「柊史……ここ、部室ですよ。こんなにどきどきさせられたら、寧々はもう平静でいられません……。」",
     "rating": "R15",
-    "auditRevision": "audit-v25-2026-08-26-batch2",
-    "animaCaption": "Seated on the locked clubroom desk with her white school shirt unbuttoned to reveal black lace lingerie, Ayachi Nene's sheer black lace-top thighhighs with garter straps hug smooth thighs, a soft thigh gap at the lace trim, black heels at the desk edge, storm shadows dancing on the walls."
+    "auditRevision": "careful-batch06-2026-08-27",
+    "animaCaption": "Sitting on a club room desk in a half-unbuttoned white shirt and navy pleated miniskirt with silky white thighhighs, Ayachi Nene sits with one hand on the desk, heavy shy blush under warm club room light."
   },
   {
     "id": "sc166",

@@ -16,16 +16,11 @@
     "timeOfDay": "afternoon",
     "tags": [
       "hair_ribbon",
-      "nene_sailor_uniform",
-      "sailor_shirt",
-      "grey_sailor_collar",
-      "pleated_skirt",
-      "sheer_black_thighhigh_stockings",
-      "smooth_thighs",
-      "window_light",
-      "interlaced_fingers",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "indoor_floor",
       "full_body",
-      "polished_loafers",
+      "mary_jane",
       "depth_of_field"
     ],
     "mature": false,
@@ -38,8 +33,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_pink_hair_ribbons, wearing_nene_sailor_uniform_with_grey_sailor_collar_and_navy_pleated_skirt, sheer_black_thighhigh_stockings_with_delicate_rib_knit_and_subtle_garter_line, smooth_thighs_with_thigh_gap_and_glossy_reflection, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_classroom_windowsill_floor, seated_on_windowsill_with_interlaced_fingers_raised_to_chest, soft_natural_light_flowing_along_silver_hair_and_pink_ribbons, pink_tie_and_sailor_collar_crisp_in_breeze, cinematic_depth_of_field, slender_waist_and_graceful_posture, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_close_up, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_school_uniform_with_navy_sailor_collar_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame_with_knees_visible, white_mary_jane_shoes_on_indoor_floor, sitting_on_indoor_floor_with_hands_clasped_together_looking_up_with_gentle_loving_blush, warm_indoor_window_light_with_soft_shadows_and_floor_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "All",
     "officialCgCandidate": "ocn02",
@@ -51,8 +46,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
       "result": "pass"
     },
-    "animaCaption": "Seated on the classroom windowsill with fingers interlaced at her chest, Ayachi Nene in her grey-collar sailor uniform glows under soft natural light. Sheer black rib-knit thighhighs hug smooth thighs with a delicate garter line, polished loafers fully visible on the sill floor.",
-    "auditRevision": "audit-v25-2026-08-26-batch2"
+    "animaCaption": "Sitting on an indoor floor with hands clasped together, Ayachi Nene in a soft white school uniform with navy sailor collar and silky white thighhighs looks up with a gentle loving blush under warm indoor window light.",
+    "auditRevision": "careful-batch06-2026-08-27"
   },
   {
     "id": "sc264",
@@ -219,19 +214,13 @@
     "time": "闭馆前",
     "timeOfDay": "evening",
     "tags": [
-      "white_hair",
-      "very_long_hair",
-      "low_twintails",
-      "purple_eyes",
-      "ahoge",
       "hair_ribbon",
       "school_uniform",
+      "sheer_white_thighhigh_stockings",
       "library",
-      "bookshelf",
-      "moonlight",
-      "holding_book",
-      "soft_smile",
-      "medium_shot"
+      "full_body",
+      "loafers",
+      "depth_of_field"
     ],
     "rating": "All",
     "mature": false,
@@ -243,10 +232,10 @@
       "角色还原",
       "氛围优先"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_oversized_unbuttoned_white_knit_cardigan_over_pink_camisole, sheer_black_thighhigh_socks_with_lace_tops, sitting_cross-legged_on_carpet_between_library_stacks_at_midnight, holding_illuminated_leather_grimoire_open_on_lap, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, delicate_toe_contours_beneath_fabric, sweet_determined_blush, grand_academy_library_at_night, silver_moonlight_pouring_through_stained-glass_windows_and_warm_bankers_lamps_glowing_on_desks, full_body\nSitting cross-legged on the carpeted aisle between towering library stacks at midnight, Ayachi Nene studies a glowing grimoire in an oversized knit cardigan and sheer black lace-topped stockings. Silvery moonlight streaming through gothic stained-glass windows combines with warm banker's lamps to fill the library with radiant depth, clearly illuminating her sweet blush and stocking-clad feet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
-    "auditRevision": "round4-2026-07-22",
-    "animaCaption": "Perched on the deep stone windowsill of the locked academy library beneath the full moon, Ayachi Nene pulls her white sundress down to her waist, revealing her soft bare breasts. Holding an open book in her lap while gathering trembling courage to confess her heart, brilliant silver moonlight streams through stained glass to bathe her in celestial radiance."
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_school_uniform_with_white_blouse_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_floor, sitting_in_school_library_with_one_hand_holding_book_and_other_hand_waving_with_gentle_shy_blush, warm_library_window_light_with_bookshelf_bokeh_and_book_spines, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "animaCaption": "In a school library, Ayachi Nene in a navy school uniform with silky white thighhighs sits holding a book and waving with a gentle shy blush, warm library window light with bookshelf bokeh."
   },
   {
     "id": "sc105",

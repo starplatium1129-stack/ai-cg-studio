@@ -435,15 +435,11 @@
     "tags": [
       "hair_ribbon",
       "winter_coat",
-      "scarf",
       "sheer_white_thighhigh_stockings",
-      "smooth_thighs",
-      "train_station",
-      "winter",
-      "looking_back",
-      "holding_ticket",
+      "snowy_platform",
       "full_body",
       "ankle_boots",
+      "snow",
       "depth_of_field"
     ],
     "mature": false,
@@ -454,12 +450,12 @@
     "usage": [
       "展示图"
     ],
-    "animaCaption": "Running back across the snowy winter train platform, Ayachi Nene extends a ticket pass case toward the viewer. Fleecy white thighhighs hug smooth thighs with a soft gap at the plaid hem, cream ankle boots on the snowy platform, hair blowing in the train wind with breath vapor.",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_pink_hair_ribbons, wearing_fluffy_white_winter_coat_with_large_red_scarf_and_plaid_miniskirt, sheer_white_thighhigh_stockings_with_fleecy_texture_and_delicate_knee_contours, smooth_thighs_with_soft_thigh_gap_at_hem, entire_legs_and_feet_fully_visible_in_frame, cream_ankle_boots_on_snowy_platform, running_back_toward_viewer_across_winter_train_platform_holding_ticket_pass_case_extended_forward, hair_blowing_in_train_wind_with_steam_and_breath_vapor, soft_cold_morning_light_with_train_bokeh, cinematic_depth_of_field, slender_waist_and_graceful_neck, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "animaCaption": "On a snowy winter platform, Ayachi Nene in a warm beige winter coat with red scarf and pleated miniskirt with silky white thighhighs stands holding her scarf, gentle shy smile under cool snowy light.",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_coat_with_red_scarf_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_faint_garter_line, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_snowy_platform, standing_on_snowy_winter_platform_with_one_hand_holding_scarf_and_gentle_shy_smile, cool_snowy_platform_light_with_snow_bokeh_and_train_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・プラットフォーム上の書き残された言葉】冬の早朝、駅に入る電車の風が寧々さんの長い銀髪をなびかせた。彼女はすでに車のドアに向かって歩いていましたが、ブザーが鳴ると、突然振り向いて、急いでいる群衆の中をあなたのほうに二歩後ずさりして走りました。彼女は手のひらに抱えていたチケットホルダーを、名残惜しそうな目で差し出した。――「これはしばらく、あなたが持っていてください。戻ってきたら、歩きそびれた道の続きを一緒に歩いてくださいね。」",
     "rating": "All",
-    "auditRevision": "audit-v25-2026-08-26-batch3"
+    "auditRevision": "careful-batch06-2026-08-27"
   },
   {
     "id": "sc014",
@@ -666,15 +662,12 @@
     "timeOfDay": "night",
     "tags": [
       "hair_ribbon",
-      "cardigan",
-      "pleated_skirt",
-      "sheer_black_thighhigh_stockings",
-      "smooth_thighs",
+      "pink_cardigan",
+      "sheer_white_thighhigh_stockings",
       "observatory",
-      "starry_sky",
-      "shooting_star",
       "full_body",
-      "ankle_boots",
+      "mary_jane",
+      "night",
       "depth_of_field"
     ],
     "mature": false,
@@ -685,12 +678,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_pink_hair_ribbons, wearing_cream_oversized_cardigan_over_navy_pleated_miniskirt, sheer_black_thighhigh_stockings_with_matte_silky_finish_and_faint_garter_line, smooth_thighs_with_thigh_gap_and_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_observatory_concrete, standing_on_starlit_observatory_platform_holding_viewer_sleeve_and_looking_at_viewer_instead_of_shooting_star, gentle_shy_smile_with_blush_under_moonlight, starry_sky_with_milky_way_bokeh_and_telescope_silhouette, cinematic_depth_of_field, slender_waist_and_delicate_hands, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_pink_cardigan_over_white_blouse_with_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_observatory_deck, standing_on_suburban_observatory_deck_at_night_with_one_hand_shielding_eyes_from_wind_and_gentle_shy_smile, cool_night_observatory_light_with_star_sky_and_telescope_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・星が流れる前に君を見て】秋の夜の星空観察のための台風はとても軽かったです。寧々はコートを巻いて、長い間見ていました。最後に、流れ星が通り過ぎたとき、彼女は目を閉じて願い事をしました。再び目を開けると、彼女は消えていく光を追うのではなく、あなたも自分を見ているかどうかをこっそり確認しました。発見された後、彼女はあなたの袖を掴んでささやきました。――「願い事はもちろん内緒です。でも叶うかどうかは、たぶん半分くらい、あなたが協力してくれるかにかかっています。」",
     "rating": "All",
-    "animaCaption": "On the starlit observatory platform, Ayachi Nene in a cream cardigan and pleated skirt holds the viewer's sleeve, looking at the viewer instead of the shooting star. Matte black thighhighs hug smooth thighs with a faint garter line, brown ankle boots on concrete under milky way bokeh.",
-    "auditRevision": "audit-v25-2026-08-26-batch3"
+    "animaCaption": "On a suburban observatory deck at night, Ayachi Nene in a soft pink cardigan over white blouse and pleated miniskirt with silky white thighhighs stands shielding her eyes from wind, gentle shy smile under cool night observatory light.",
+    "auditRevision": "careful-batch06-2026-08-27"
   },
   {
     "id": "sc025",
@@ -708,23 +701,12 @@
     "timeOfDay": "afternoon",
     "tags": [
       "hair_ribbon",
-      "soft_lighting",
-      "looking_back",
+      "sundress",
+      "sheer_white_thighhigh_stockings",
       "aquarium",
-      "reflection",
-      "wide_shot",
-      "aquarium_tunnel",
-      "whale_shark",
-      "blue_lighting",
-      "looking_up",
-      "excited",
-      "holding_camera",
-      "afternoon",
-      "clear_sky",
       "full_body",
-      "window_light",
-      "calm",
-      "relaxed"
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "水族馆",
@@ -735,12 +717,12 @@
       "展示图",
       "壁纸"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_cute_summer_sundress_and_sheer_white_thighhigh_socks, standing_inside_glass_underwater_aquarium_tunnel, looking_up_in_awe_at_massive_whale_shark_swimming_overhead, raising_one_hand_toward_camera_with_shy_laughing_smile, entire_legs_and_feet_fully_visible_in_frame, white_flat_shoes_standing_on_aquarium_floor, luminous_cyan-blue_water_reflections_and_shafts_of_sunlight_piercing_through_aquarium_dome, schools_of_vibrant_tropical_fish_and_glowing_manta_rays_in_background, detailed_background, cinematic_lighting, full_body",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_blue_sundress_with_white_cardigan_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_aquarium_floor, standing_in_aquarium_tunnel_with_whale_shark_swimming_overhead_hands_on_glass_with_joyful_blush, cool_aquarium_blue_light_with_whale_shark_and_water_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・ジンベエザメが頭上を泳ぐ中】水族館の青い光が廊下に溢れ、巨大なジンベエザメがガラスドームの中をゆっくりと泳ぎます。寧々は遠慮することも忘れてグラスに身を寄せて追いかけた、その紫色の瞳が海水で輝いているようだった。彼女は正気に戻り、あなたが自分を撮影していることに気づき、すぐにカメラを遮ろうと手を伸ばしましたが、笑いをこらえることができませんでした。――「私ばかり撮るのは禁止です。主役はジンベエザメなんですから。せめて……次の一枚は、私と一緒に写ってください。」",
     "rating": "All",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "Standing inside the curved glass tunnel of a grand aquarium, Ayachi Nene gazes up in pure wonder at a massive whale shark gliding overhead. Wearing a breezy summer sundress and sheer white stockings, radiant cyan-blue water caustics and piercing sunbeams illuminate the glass tunnel from above, casting shimmering light across her laughing face and framing her white shoes on the reflective walkway."
+    "auditRevision": "careful-batch06-2026-08-27",
+    "animaCaption": "In an aquarium tunnel with a whale shark swimming overhead, Ayachi Nene in a light blue sundress with white cardigan and silky white thighhighs stands with hands on glass, joyful blush under cool aquarium blue light."
   },
   {
     "id": "sc027",
@@ -879,23 +861,13 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
-      "hair_ribbon",
-      "golden_hour",
+      "mole_under_eye",
+      "beige_sweater",
+      "sheer_black_tights",
       "art_room",
-      "painting",
-      "holding_brush",
-      "painting_starry_sky_on_front_facing_canvas",
-      "art_supplies_around_easel",
-      "paint_on_hair",
-      "dawn",
-      "tired_smile",
-      "canvas",
-      "morning",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "window_light",
-      "serious"
+      "full_body",
+      "ankle_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "清晨美术室",
@@ -905,11 +877,12 @@
     "usage": [
       "展示图"
     ],
-    "animaCaption": "Sitting cross-legged on the wooden floor of the school art studio at the break of dawn, Ayachi Nene works on a sprawling celestial canvas with a sleepy, radiant smile. Soft blue twilight and golden sunrise filter through high arched skylights to illuminate her silver-white hair and pink ribbons, framing her paint-speckled bare feet resting naturally on the canvas cloth.",
-    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_loose_white_art_smock_over_pastel_pink_dress, sitting_cross-legged_on_wooden_art_studio_floor, holding_fine_detail_paintbrush_over_large_canvas_of_starry_sky, entire_legs_and_feet_fully_visible_in_frame, bare_feet_resting_on_canvas_drop_cloth, detailed_toes_with_blue_paint_smudge, sleepy_happy_smile, art_classroom_at_blue_dawn, golden_morning_twilight_filtering_through_tall_skylights, colorful_paint_palettes_and_easels_around, full_body",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "animaCaption": "In an early morning art room, Shiki Natsume in a casual beige sweater with navy pleated miniskirt and glossy black tights stands holding a paintbrush and palette, focused gentle blush under warm morning light.",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_beige_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_art_room_floor, standing_in_early_morning_art_room_with_one_hand_holding_paintbrush_and_palette_with_focused_gentle_blush, warm_early_morning_art_room_light_through_windows_with_paint_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・夜明けまで星空を描いて】春の美術室では、寧々さんがクラブのポスターを完成させるために、昨夜撮った星空を一晩かけて描きました。朝の光が入ってきたとき、彼女はまだ最後の星の色を調整しており、彼女の長い銀の髪は青と紫の絵の具の数筋で汚れていました。あなたが彼女のためにブラシを取り上げると、彼女は疲れたように身をかがめました。――「あと少しで完成するんです……分かりました、五分だけ休みます。起きたら、あなたが最初に完成品を見てくださいね。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "careful-batch06-2026-08-27"
   },
   {
     "id": "sc036",
@@ -972,23 +945,12 @@
     "timeOfDay": "afternoon",
     "tags": [
       "hair_ribbon",
-      "rain",
-      "school_uniform",
-      "looking_back",
-      "sad",
+      "winter_coat",
+      "sheer_black_tights",
       "rainy_street",
-      "umbrella",
-      "teary_eyes",
-      "wet_road",
-      "street_lamp",
-      "reconciliation",
-      "afternoon",
-      "overcast",
-      "medium_shot",
-      "over_shoulder",
-      "soft_lighting",
-      "diffused_light",
-      "melancholic"
+      "full_body",
+      "ankle_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "雨中街道",
@@ -998,12 +960,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_duffle_coat_and_red_plaid_muffler, sheer_black_tights, stopping_and_turning_back_around_under_snowy_streetlamp, clutching_muffler_close_to_mouth, entire_legs_and_feet_fully_visible_in_frame, brown_leather_winter_boots_standing_in_fresh_snow, teary_affectionate_glance, twilight_snowfall_in_residential_street, glowing_warm_amber_streetlights_and_illuminated_shop_windows_in_background, volumetric_snow_flakes, full_body",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_coat_with_red_scarf_and_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_rainy_street_pavement, standing_in_rainy_street_turning_back_with_one_hand_holding_scarf_and_gentle_shy_smile, cool_rainy_street_light_with_umbrella_bokeh_and_puddle_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・三歩歩いて引き返した】口論後の雨の道路で、寧々は向きを変えて立ち去りました。彼女は三歩進みましたが、続けることができませんでした。彼女は街灯の下に立って、あなたが後ろから呼ぶまで傘の柄を握りしめていましたが、その後、不機嫌そうに振り返りました。雨が傘の端に沿ってカーテンに落ち、彼女はついに悲しみの本当の理由を明らかにしました。――「勝ちたいわけじゃないんです。ただ、いつかあなたが、私の説明さえ聞いてくれなくなるのが怖くて。」",
     "rating": "All",
-    "auditRevision": "round2-2026-07-22",
-    "animaCaption": "Pausing beneath a glowing streetlamp amidst gentle twilight snowfall, Ayachi Nene turns back to face the viewer, clutching her plaid scarf to her blushing face with teary affection. Her silver-white twintails peek out from beneath her scarf while glowing neighborhood shopfronts and lampposts create rich spatial depth behind her leather boots firmly planted in fresh white snow."
+    "auditRevision": "careful-batch06-2026-08-27",
+    "animaCaption": "In a rainy street, Ayachi Nene in a warm beige winter coat with red scarf and pleated miniskirt with glossy black tights turns back holding her scarf, gentle shy smile under cool rainy light with puddle reflections."
   },
   {
     "id": "sc040",
@@ -1419,17 +1381,13 @@
     "timeOfDay": "afternoon",
     "tags": [
       "hair_ribbon",
-      "trench_coat",
-      "pleated_skirt",
+      "bamboo_path",
       "sheer_white_thighhigh_stockings",
       "smooth_thighs",
-      "rain",
-      "bamboo_forest",
-      "umbrella",
       "full_body",
-      "loafers",
-      "depth_of_field",
-      "overcast"
+      "sandals",
+      "mist",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "竹林",
@@ -1440,12 +1398,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, wearing_light_beige_trench_coat_over_navy_pleated_miniskirt, sheer_white_thighhigh_stockings_with_silky_weave_and_faint_garter_band, smooth_thighs_with_thigh_gap_and_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_loafers_on_mossy_stone_path, walking_under_transparent_umbrella_in_bamboo_forest_during_light_rain, umbrella_tilted_toward_viewer_with_gentle_smile, bamboo_leaves_glistening_with_raindrops_and_mist, soft_overcast_light_with_depth_of_field, slender_hands_and_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, sunny, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_breezy_white_blouse_with_light_blue_skirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_sandals_on_bamboo_path, walking_along_misty_bamboo_path_with_one_hand_holding_hat_and_gentle_shy_smile, cool_misty_bamboo_light_with_bamboo_bokeh_and_path_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・霧雨の竹林の足音】霧雨が笹の葉の上に落ち、寧々は傘をさし、ブルーストーンの道をゆっくりと歩きました。彼女はあなたが肩を並べられるようにわざと速度を落とし、傘は常にあなたの側に傾いていました。風が吹くと銀色の長い髪がしっとりとした緑の中でそっと舞い上がる――「二人分の足音まで聞こえるくらい、静かですね。そんなに早く歩かないでください。この道のこと、もう少し長く覚えていたいから。」",
     "rating": "All",
-    "animaCaption": "Walking under a transparent umbrella in the misty bamboo forest during light rain, Ayachi Nene's silky white thighhighs and smooth thighs with a faint garter band are fully visible above brown loafers on the mossy stone path, umbrella tilted toward the viewer.",
-    "auditRevision": "audit-v25-2026-08-26-batch2"
+    "animaCaption": "Walking along a misty bamboo path in a breezy white blouse with light blue skirt and silky white thighhighs, Ayachi Nene holds her hat with a gentle shy smile, cool misty bamboo light with path reflections.",
+    "auditRevision": "careful-batch06-2026-08-27"
   },
   {
     "id": "sc074",
@@ -2045,19 +2003,13 @@
     "time": "闭馆前",
     "timeOfDay": "evening",
     "tags": [
-      "white_hair",
-      "very_long_hair",
-      "low_twintails",
-      "purple_eyes",
-      "ahoge",
       "hair_ribbon",
       "school_uniform",
+      "sheer_white_thighhigh_stockings",
       "library",
-      "bookshelf",
-      "moonlight",
-      "holding_book",
-      "soft_smile",
-      "medium_shot"
+      "full_body",
+      "loafers",
+      "depth_of_field"
     ],
     "rating": "All",
     "mature": false,
@@ -2069,10 +2021,10 @@
       "角色还原",
       "氛围优先"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_oversized_unbuttoned_white_knit_cardigan_over_pink_camisole, sheer_black_thighhigh_socks_with_lace_tops, sitting_cross-legged_on_carpet_between_library_stacks_at_midnight, holding_illuminated_leather_grimoire_open_on_lap, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, delicate_toe_contours_beneath_fabric, sweet_determined_blush, grand_academy_library_at_night, silver_moonlight_pouring_through_stained-glass_windows_and_warm_bankers_lamps_glowing_on_desks, full_body\nSitting cross-legged on the carpeted aisle between towering library stacks at midnight, Ayachi Nene studies a glowing grimoire in an oversized knit cardigan and sheer black lace-topped stockings. Silvery moonlight streaming through gothic stained-glass windows combines with warm banker's lamps to fill the library with radiant depth, clearly illuminating her sweet blush and stocking-clad feet.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
-    "auditRevision": "round4-2026-07-22",
-    "animaCaption": "Perched on the deep stone windowsill of the locked academy library beneath the full moon, Ayachi Nene pulls her white sundress down to her waist, revealing her soft bare breasts. Holding an open book in her lap while gathering trembling courage to confess her heart, brilliant silver moonlight streams through stained glass to bathe her in celestial radiance."
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_school_uniform_with_white_blouse_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_floor, sitting_in_school_library_with_one_hand_holding_book_and_other_hand_waving_with_gentle_shy_blush, warm_library_window_light_with_bookshelf_bokeh_and_book_spines, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "animaCaption": "In a school library, Ayachi Nene in a navy school uniform with silky white thighhighs sits holding a book and waving with a gentle shy blush, warm library window light with bookshelf bokeh."
   },
   {
     "id": "sc217",
@@ -2304,17 +2256,10 @@
     "tags": [
       "hair_ribbon",
       "school_uniform",
-      "pleated_skirt",
-      "sheer_black_thighhigh_stockings",
-      "smooth_thighs",
+      "sheer_black_tights",
       "library",
-      "bookshelf",
-      "collapsed_on_desk",
-      "heavy_blush",
-      "sweat",
       "full_body",
-      "polished_loafers",
-      "stained_glass",
+      "loafers",
       "depth_of_field"
     ],
     "mature": false,
@@ -2326,12 +2271,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_stella_school_uniform_with_white_blouse_partly_untucked_and_navy_pleated_miniskirt, sheer_black_thighhigh_stockings_with_glossy_silky_weave_and_soft_thigh_pressure, smooth_thighs_with_faint_garter_crease_and_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_wooden_table_edge, collapsed_weakly_across_long_library_table_in_quiet_sunset_library, cheek_resting_on_wood_with_silver_hair_spread_and_heavy_blush, warm_orange_sunset_light_streaming_through_stained_glass_with_dust_motes, cinematic_shallow_depth_of_field_on_stockings_and_hands, slender_waist_and_delicate_fingers, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, standing, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_school_uniform_blazer_and_pleated_miniskirt_with_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_floor, standing_in_school_library_aisle_with_one_hand_holding_book_and_other_hand_slightly_lifting_skirt_hem_with_shy_embarrassed_blush, warm_library_window_light_with_bookshelf_bokeh_and_book_spines, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・図書室で突き止められた秘密】放課後、夕日が西に傾く静まり返った学院の図書室の奥深く。普段はエレガントで完璧な優等生である寧々が、今や魔女の契約の残酷な代償が突然オーバーロードしたせいで、誰もいない閲覧室の長い木製テーブルの上に完全に力なく崩れ落ちていた。彼女のしなやかな肢体は激しく震え、柔らかな銀らかな銀髪のローツインテールが乱雑に木製の台の上に散らばり、制服のシャツが荒い呼吸と共に激しく上下している。あなたがドアを開けて秘密を突き止めた瞬間、彼女は顔を真っ赤にして力ない両手で視線を遮ろうとし、目尻に羞恥の涙を浮かべ、頭の上のアホ毛はすでに完全に力なく垂れ下がり、支離滅裂に涙声で自爆した――「ま、待って！今のことは言いふらさないで……絶対にダメ！お願いだから……私のこんなところ、見ないでよ……バカ、早く目を閉じて！」",
     "rating": "All",
-    "animaCaption": "Collapsed across the long wooden table in the quiet sunset library, Ayachi Nene in her school uniform rests her cheek on the wood with silver hair spread. Warm stained-glass sunset light illuminates her sheer black thighhigh stockings, smooth thighs with a faint garter crease, and polished loafers at the table edge as she blushes heavily.",
-    "auditRevision": "audit-v25-2026-08-26-batch2"
+    "animaCaption": "In a school library aisle, Ayachi Nene in a navy school uniform with glossy black tights stands holding a book, shy embarrassed blush as she slightly lifts her skirt hem under warm library window light.",
+    "auditRevision": "careful-batch06-2026-08-27"
   },
   {
     "id": "sc236",
@@ -2402,18 +2347,13 @@
     "timeOfDay": "sunset",
     "tags": [
       "hair_ribbon",
-      "school_uniform",
-      "pleated_skirt",
+      "raincoat",
       "sheer_white_thighhigh_stockings",
-      "smooth_thighs",
-      "rain",
       "bus_stop",
-      "holding_book",
-      "wet_hair",
       "full_body",
-      "polished_loafers",
-      "depth_of_field",
-      "rain_bokeh"
+      "rain_boots",
+      "rain",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "公交站台顶棚下",
@@ -2424,12 +2364,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_pink_hair_ribbons, wearing_stella_school_uniform_with_navy_pleated_miniskirt_and_navy_blazer_clutched_to_chest, sheer_white_thighhigh_stockings_with_silky_matte_finish_and_faint_top_band, smooth_thighs_with_soft_thigh_gap_and_knee_contours, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_wet_bus_stop_concrete, huddled_under_narrow_bus_stop_shelter_in_heavy_rain_holding_ancient_book_tightly, rain_streaks_and_splashes_on_shoulders_with_wet_hair_clinging, warm_bus_stop_lamp_glow_vs_cool_rain_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_hands, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, crowd, black_thighhighs, bare_legs, cropped_feet, sunny, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_blue_raincoat_over_school_uniform_with_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_rain_boots_on_bus_stop_pavement, standing_under_bus_stop_shelter_in_rain_with_one_hand_holding_umbrella_and_gentle_shy_smile, cool_rainy_bus_stop_light_with_rain_bokeh_and_puddle_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・雨のバス停】放課後の急な雷雨で、通りはすっかり濡れていた。寧々はバス停の小さな屋根の下で、図書館から借りた古書を大切に抱えている。あなたが傘を彼女の方へ傾けると、自分の肩が雨に濡れた。寧々はそっと近づき、ハンカチでその雫を拭う――「ばか……もう少し自分の方へ傘を寄せてもよかったのに。風邪をひくよ？」",
     "rating": "All",
-    "auditRevision": "audit-v25-2026-08-26-batch2",
-    "animaCaption": "Huddled under the narrow bus stop shelter in heavy rain clutching an ancient book, Ayachi Nene's silky white thighhighs and smooth thighs with a soft gap are fully visible above polished loafers on wet concrete, rain streaks beading on her blazer as the warm shelter lamp glows against cool rain bokeh."
+    "auditRevision": "careful-batch06-2026-08-27",
+    "animaCaption": "Under a bus stop shelter in rain, Ayachi Nene in a light blue raincoat over school uniform with silky white thighhighs stands holding an umbrella, gentle shy smile under cool rainy bus stop light with rain bokeh."
   },
   {
     "id": "sc242",
@@ -2777,16 +2717,11 @@
     "timeOfDay": "afternoon",
     "tags": [
       "hair_ribbon",
-      "nene_sailor_uniform",
-      "sailor_shirt",
-      "grey_sailor_collar",
-      "pleated_skirt",
-      "sheer_black_thighhigh_stockings",
-      "smooth_thighs",
-      "window_light",
-      "interlaced_fingers",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "indoor_floor",
       "full_body",
-      "polished_loafers",
+      "mary_jane",
       "depth_of_field"
     ],
     "mature": false,
@@ -2799,8 +2734,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_pink_hair_ribbons, wearing_nene_sailor_uniform_with_grey_sailor_collar_and_navy_pleated_skirt, sheer_black_thighhigh_stockings_with_delicate_rib_knit_and_subtle_garter_line, smooth_thighs_with_thigh_gap_and_glossy_reflection, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_classroom_windowsill_floor, seated_on_windowsill_with_interlaced_fingers_raised_to_chest, soft_natural_light_flowing_along_silver_hair_and_pink_ribbons, pink_tie_and_sailor_collar_crisp_in_breeze, cinematic_depth_of_field, slender_waist_and_graceful_posture, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_close_up, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_school_uniform_with_navy_sailor_collar_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame_with_knees_visible, white_mary_jane_shoes_on_indoor_floor, sitting_on_indoor_floor_with_hands_clasped_together_looking_up_with_gentle_loving_blush, warm_indoor_window_light_with_soft_shadows_and_floor_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "All",
     "officialCgCandidate": "ocn02",
@@ -2812,8 +2747,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
       "result": "pass"
     },
-    "animaCaption": "Seated on the classroom windowsill with fingers interlaced at her chest, Ayachi Nene in her grey-collar sailor uniform glows under soft natural light. Sheer black rib-knit thighhighs hug smooth thighs with a delicate garter line, polished loafers fully visible on the sill floor.",
-    "auditRevision": "audit-v25-2026-08-26-batch2"
+    "animaCaption": "Sitting on an indoor floor with hands clasped together, Ayachi Nene in a soft white school uniform with navy sailor collar and silky white thighhighs looks up with a gentle loving blush under warm indoor window light.",
+    "auditRevision": "careful-batch06-2026-08-27"
   },
   {
     "id": "sc261",
