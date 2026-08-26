@@ -425,22 +425,13 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
-      "adult",
-      "naked",
-      "wrapped_in_sheet",
-      "lying_on_bed",
-      "propped_up_on_elbow",
-      "bare_legs",
-      "heavy_blush",
-      "slight_smile",
-      "seductive_look",
-      "bedroom",
-      "indoors",
-      "morning_light",
-      "soft_shadows",
       "mole_under_eye",
-      "sensual",
-      "close_up"
+      "white_pajamas",
+      "bare_legs",
+      "warm_bed",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "温馨卧榻被窝",
@@ -452,11 +443,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, long_hair_messy_on_sheets, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, wrapped_loosely_in_white_silk_bedsheet_like_a_cocoon, propping_upper_body_up_on_one_elbow, morning_sunlight_filtering_through_drapes, soft_blush, serene_affectionate_glance, luxury_hotel_bedroom, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_white_pajama_set_with_blue_trim_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_under_blanket, barefoot_with_soft_toes_peeking_from_blanket, lying_under_blanket_in_warm_bed_with_one_hand_holding_blanket_edge_and_sleepy_gentle_blush, warm_bedroom_morning_light_with_blanket_and_pillow_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・裸シーツに恋して】どこまでも怠惰な早朝、暖かく柔らかな朝の光が白いガーゼのカーテンを通して射し込んでいた。夏目は昨夜、二日酔いで散らかったベッドから目覚めました。彼女は世界中の服をすべて脱いで、真っ白でふわふわのベルベットのベッドの真ん中に裸で横たわっていました。愛の痕跡が詰まった完璧なボディを、半透明の白いシーツだけで優しく覆った。彼女の顔の熱い赤面は耳の根元まで達し、彼女の明るい目は半開きで、目の端の泣きぼくろは、太陽の光の中で極度の愛着と無限の魅力で輝いていました。彼女は眉を上げてそっと右手をあなたに開いた――「おはよう、この大変態。いつまで見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
     "rating": "R15",
-    "animaCaption": "Propping herself up on one elbow in a sun-drenched hotel bed the morning after, Shiki Natsume is completely nude, wrapped loosely like a cocoon in crisp white silk sheets. Her golden eyes gaze with soft, lingering affection and peaceful surrender as golden dawn light illuminates her bare shoulders and firm breasts."
+    "animaCaption": "Lying under a warm blanket in a soft white pajama set with blue trim, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet peeking, sleepy gentle blush in warm morning bedroom light.",
+    "auditRevision": "careful-batch09-2026-08-27"
   },
   {
     "id": "sc124",
@@ -513,24 +505,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "tactical_gear",
-      "torn_clothes",
-      "unzipped",
-      "cleavage",
-      "sideboob",
-      "trapped_by_viewer",
-      "lying_on_floor",
-      "heavy_blush",
-      "sweat",
-      "tears_in_eyes",
-      "tsundere",
-      "safehouse",
-      "night",
-      "strong_shadows",
       "mole_under_eye",
-      "sensual",
-      "close_up",
-      "pov"
+      "tactical_shirt",
+      "cargo_pants",
+      "cold_floor",
+      "full_body",
+      "combat_boots",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "安全屋冰冷地板",
@@ -541,11 +522,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_torn_black_tactical_tunic_and_ripped_sheer_black_pantyhose_revealing_pale_skin, leaning_back_against_brick_wall_in_safehouse, one_knee_raised_high, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, delicate_toes_visible_through_rips, defiant_pouting_blush, undercover_safehouse_at_night, warm_overhead_hanging_bulb_and_glowing_wall_switchboards, rich_ambient_depth, full_body\nLeaning back against the exposed brick wall of an undercover safehouse, Shiki Natsume's tactical tunic and sheer black pantyhose are torn slightly from a narrow escape, exposing glimpses of her pale thighs. Raising one knee high in defiant defensiveness, the warm overhead industrial pendant lamp casts rich amber light across the room, clearly capturing her slender legs and stocking-clad toes resting on the wooden floorboards.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_black_tactical_shirt_with_cargo_pants_and_combat_boots, polished_black_combat_boots_on_cold_floor, kneeling_on_cold_floor_in_safehouse_with_hands_behind_back_and_composed_tense_blush, dim_safehouse_cold_light_with_concrete_and_tactical_gear_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, skirt, thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【夏目・秘密諜報員のベストは破れ、完全に降伏している】真夜中に突然の大雨が降ったとき、セーフハウスの冷たく固い床の上で。いつもは冷酷で横暴なエージェントの女の子夏目が、今では大量の汗をかきながらあなたに押さえつけられて身動きが取れなくなっています。全身の黒っぽいタクティカルタイツが襟元から腹部まで引き裂かれ、血が騒ぐような誇らしいラインと繊細な肌が露わになっている。両脚はぴんと組み、目頭の泣きぼくろが巨大な感覚衝撃に震え、水蒸気を含んだ硬い瞳でこちらをえぐる。――「もう、この変態店長……体重をかけないで。自由になったら、絶対にお仕置きしてあげるんだから。」",
     "rating": "R15",
-    "animaCaption": "Pinned softly to the reinforced floor of an underground safehouse after a mission, Shiki Natsume's tactical vest and black undershirt are torn open, exposing her firm bare breasts and defined midriff. Her hands rest above her head as she bites her lower lip, her golden eyes flashing with an intoxicating mix of combat defiance and flushed surrender under amber emergency lights."
+    "animaCaption": "Kneeling on a cold floor in a safehouse in a black tactical shirt with cargo pants and combat boots, Shiki Natsume kneels with hands behind her back, composed tense blush under dim cold light.",
+    "auditRevision": "careful-batch09-2026-08-27"
   },
   {
     "id": "sc134",

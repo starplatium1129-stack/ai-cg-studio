@@ -118,23 +118,11 @@
     "tags": [
       "hair_ribbon",
       "school_uniform",
-      "sunset",
-      "pleated_skirt",
-      "school_rooftop",
-      "railing",
-      "ocean_view",
-      "holding_skirt",
-      "vulnerable_expression",
-      "looking_at_viewer",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "golden_hour",
-      "backlighting",
-      "rim_light",
-      "nervous",
-      "blush",
-      "rooftop"
+      "sheer_white_thighhigh_stockings",
+      "rooftop",
+      "full_body",
+      "loafers",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "天台",
@@ -144,11 +132,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_prominent_pink_hair_ribbons_tying_low_twintails, wearing_classic_stella_school_uniform_and_navy_pleated_skirt, sheer_black_thighhigh_socks_with_white_stripes, sitting_on_rooftop_wooden_bench_with_knees_together, opening_bento_box_on_lap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_resting_on_concrete_floor, looking_up_with_shy_teasing_smile, school_rooftop_at_golden_sunset, dramatic_orange_and_purple_clouds, chain-link_fence_with_fluttering_ribbons, cinematic_lighting, depth_of_field, full_body",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_pink_hair_ribbons, wearing_navy_stella_school_uniform_blazer_and_pleated_miniskirt_with_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_faint_garter_line, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_rooftop_floor, sitting_on_rooftop_wooden_bench_with_one_hand_holding_bento_box_and_gentle_shy_smile, warm_rooftop_afternoon_light_with_sky_and_bench_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・屋上の秘密を教えてください】放課後の屋上は夏の夜風のせいで特に静かで、遠くの海は夕焼けの光の最後の層を飲み込んでいた。寧々は手すりにつかまり、表現するのが怖かった悩みについて話している途中で、あなたの視線を気にして緊張しながらスカートの角をつねっています。彼女は深呼吸をした、そしてついに逃げなかった――「何もかも解決してほしいわけじゃないんです……ただ、あなたになら本当の私を知ってもらってもいいって、そう思っただけで。」",
     "rating": "All",
-    "animaCaption": "Perched upon a weathered bench on the school rooftop during golden hour, Ayachi Nene holds open a colorful bento box with a sweet, blushing gaze directed toward the viewer. Her silver-white low twintails and pink ribbons catch the dramatic sunset rays, highlighting the silky weave of her sheer black thigh-high stockings and clearly framing her polished school loafers resting on the rooftop floor."
+    "animaCaption": "Sitting on a rooftop wooden bench in a navy Stella school uniform with silky white thighhighs, Ayachi Nene holds a bento box with a gentle shy smile, warm afternoon rooftop light with sky bokeh.",
+    "auditRevision": "careful-batch09-2026-08-27"
   },
   {
     "id": "sc004",
@@ -1603,19 +1592,11 @@
     "tags": [
       "hair_ribbon",
       "yukata",
-      "night",
-      "smile",
-      "fireworks",
-      "summer_festival",
-      "lanterns",
-      "holding_hands",
-      "looking_at_viewer",
-      "clear_sky",
+      "bare_legs",
+      "festival_stalls",
       "full_body",
-      "wide_shot",
-      "lantern_light",
-      "happy",
-      "festival"
+      "geta",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "祭典会场",
@@ -1626,11 +1607,12 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, night, smile, fireworks, summer_festival, lanterns, holding_hands, looking_at_viewer, clear_sky, full_body, wide_shot, lantern_light, happy, festival, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_blue_yukata_with_white_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_standing_at_festival_stalls, barefoot_with_detailed_toes_and_wooden_geta_on_festival_ground, standing_at_festival_stalls_with_one_hand_holding_cotton_candy_and_joyful_blush, warm_festival_night_light_with_lanterns_and_stall_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body",
     "storyJa": "【寧々・花火大会を横から見たところ】夏の夜祭りで、寧々は提灯と観客の間に浴衣姿で立ち、見上げながら次の花火の花束を待っていました。紫色の瞳に華やかな光と影が重ねて咲いたでも一番大きな瞬間に彼女は君に向き直って微笑んで君の手を掴んだ――「花火は綺麗ですけど、すぐ消えてしまいます。だから、ちゃんと覚えていてください……今夜、私があなたの隣にいた姿を。」",
     "rating": "All",
-    "animaCaption": "In a wide full-body view watching colorful festival fireworks burst across the night sky, she reaches forward and gently clasps the viewer's hand with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "At festival stalls at night in a light blue yukata with white floral pattern, Ayachi Nene stands with slender bare calves and wooden geta, holding cotton candy with a joyful blush under warm festival lantern light.",
+    "auditRevision": "careful-batch09-2026-08-27"
   },
   {
     "id": "sc086",
@@ -1855,24 +1837,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "winter_coat",
-      "scarf",
       "hair_ribbon",
-      "ahoge",
+      "winter_coat",
+      "sheer_white_thighhigh_stockings",
+      "aurora_snowfield",
+      "full_body",
+      "fur_boots",
       "aurora",
-      "starry_sky",
-      "night_sky",
-      "snow",
-      "holding_hands",
-      "tears_of_joy",
-      "slight_smile",
-      "blush",
-      "backlit",
-      "cinematic_composition",
-      "depth_of_field",
-      "romantic_atmosphere",
-      "wide_shot",
-      "full_body"
+      "depth_of_field"
     ],
     "mature": false,
     "location": "极光雪原",
@@ -1883,11 +1855,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_r18, adult, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_oversized_unbuttoned_knit_cardigan_hanging_open, bare_breasts_fully_exposed, pink_nipples, exposed_pussy, sheer_white_thighhigh_socks, sitting_on_kitchen_counter_edge, legs_parted_slightly, holding_warm_mug_between_thighs, blushing_intensely, morning_kitchen, soft_sunbeams, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, fishnet, fishnets, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_elegant_white_fur_trimmed_winter_coat_with_light_blue_dress_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, white_fur_boots_on_snowy_ground, standing_in_aurora_snowfield_under_northern_lights_with_one_hand_holding_aurora_and_gentle_loving_smile, cool_aurora_light_with_snow_reflections_and_northern_lights_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・魔女の夜宴・ハネムーンフィナーレ】北欧の澄んだ雪原の深夜、星空に鮮やかな緑のオーロラがベールのように舞います。寧々は厚い冬のコートを着ており、首にはあなたからもらった赤いスカーフが巻かれています。彼女はあなたの手のひらに小さな赤みを帯びた手を置き、壮大なオーロラを見上げます。彼女の目は幸せの涙で輝き、頭上のアホ毛は夜風に優しく震えています。――「柊史、世界の果てまで連れてきてくれて、ありがとうございます。魔女の妻として交わした一生の契約は、もう解約できませんからね。」",
     "rating": "All",
-    "animaCaption": "Sitting on the edge of the kitchen counter in the gentle morning light, Ayachi Nene wears an open cream cardigan that hangs completely loose, exposing her soft bare breasts above sheer white thigh-high stockings. Holding a warm coffee mug with blushing hesitation, golden sunbeams illuminate her peaceful morning silhouette."
+    "animaCaption": "Standing in an aurora snowfield under northern lights in an elegant white fur-trimmed winter coat with light blue dress and silky white thighhighs, Ayachi Nene holds the aurora with a gentle loving smile, cool aurora light with snow reflections.",
+    "auditRevision": "careful-batch09-2026-08-27"
   },
   {
     "id": "sc147",
@@ -2533,28 +2506,13 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "white_hair",
-      "very_long_hair",
-      "low_twintails",
-      "purple_eyes",
-      "ahoge",
       "hair_ribbon",
-      "beret",
-      "oversized_sweater",
-      "off_shoulder_sweater",
-      "pleated_skirt",
-      "plaid_skirt",
-      "knee_high_socks",
-      "holding_spoon",
-      "heavy_blush",
-      "panicked",
-      "open_mouth",
-      "cafe",
-      "indoors",
-      "afternoon",
-      "sunlight",
-      "romantic_atmosphere",
-      "close_up"
+      "pink_sweater",
+      "sheer_white_thighhigh_stockings",
+      "cafe_window",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "靠窗的阳光双人卡座",
@@ -2565,11 +2523,12 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beret, oversized_sweater, off_shoulder_sweater, pleated_skirt, plaid_skirt, knee_high_socks, holding_spoon, heavy_blush, panicked, open_mouth, cafe, indoors, afternoon, sunlight, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_pink_sweater_with_white_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_cafe_floor, sitting_at_window_table_in_cafe_with_one_hand_holding_coffee_cup_and_gentle_shy_smile, warm_window_cafe_light_with_coffee_and_sunlight_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【寧々・秋のカフェの私服コーディネートと純情自爆】秋の午後、陽光が降り注ぐ街角の居心地の良いカフェ。今日のデートで寧々は、非常にフェミニンで可愛らしい私服に身を包んでいた。ライトベージュのローゲージニットの柔らかいセーターは、ルーズなドロップショルダーの裁断で片側の精緻な鎖骨をのぞかせ、ボトムスには赤茶色の英国風チェック柄プリーツミニスカートと黒のニーソックスを合わせ、頭にはお茶目な深色のベレー帽を被っている。彼女は顔を真っ赤にしながら、小さなスプーンで大好きなイチゴケーキをあなたに食べさせようとしたが、距離が近すぎたせいで二人の視線が真っ直ぐにぶつかってしまった。寧々の手が震え、小さなケーキがあなたの唇の端についてしまった。彼女は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛を慌てて完璧なハート型に丸めながら、セーターの袖口を掴んで大声で自爆した――「うあぁ！柊、柊史ごめんね！そんな目で私を見ないでよ！私、私は決してあなたと初めて二人きりでデートするからって、鏡の前で二時間もこのセーターを選んでたわけじゃ……うう、バカ、今の忘れて！」",
     "rating": "All",
-    "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as clear window sunlight streams across the frame."
+    "animaCaption": "Sitting at a window table in a cafe in a soft pink sweater with white pleated miniskirt and silky white thighhighs, Ayachi Nene holds a coffee cup with a gentle shy smile under warm window cafe light.",
+    "auditRevision": "careful-batch09-2026-08-27"
   },
   {
     "id": "sc258",

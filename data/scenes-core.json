@@ -413,11 +413,13 @@
     "time": "白天",
     "timeOfDay": "afternoon",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "solo"
+      "mole_under_eye",
+      "red_qipao",
+      "sheer_black_tights",
+      "indoor",
+      "full_body",
+      "heels",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "室内场景",
@@ -429,8 +431,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, mole_under_eye, black_headband, wearing_sleeveless_red_and_gold_silk_cheongsam_with_daring_high_side_slit_up_to_hip, bare_shoulders, bare_armpits, smooth_underarm_contours, sheer_black_thighhigh_socks_with_lace_tops, standing_at_doorway_of_traditional_chinese_courtyard_at_twilight, looking_back_over_bare_shoulder_with_intense_tsundere_glance, entire_legs_and_feet_fully_visible_in_frame, black_silk_slippers_planted_on_flagstone_floor, glowing_red_paper_lanterns_and_ornate_wooden_lattice_screens, full_body\nStanding at the doorway of a traditional courtyard at twilight, Shiki Natsume looks back over her shoulder in a sleeveless red and gold silk cheongsam with a daring high side slit and sheer black stockings. Glowing red paper lanterns and carved lattice screens illuminate the veranda with warm amber light, dramatically highlighting her smooth underarms, curvaceous thighs, and silk slippers planted on the flagstone floor.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_close_up, 1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_elegant_red_and_gold_qipao_with_side_slit_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_side_slit_visible, entire_legs_and_feet_fully_visible_in_frame, black_heels_on_indoor_floor, standing_in_indoor_room_with_one_hand_holding_qipao_hem_and_alluring_blush, warm_indoor_light_with_qipao_and_gold_embroidery_bokeh, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs04",
@@ -442,7 +444,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Standing before the grand carved wooden gates of an ancient courtyard at dusk, Shiki Natsume looks back over her shoulder in a stunning crimson cheongsam embroidered with gold dragons. The daring high side slit showcases her slender bare leg as glowing red paper lanterns cast rich festive warmth across her sharp, alluring smirk."
+    "animaCaption": "Standing indoors in an elegant red and gold qipao with side slit and glossy black tights, Shiki Natsume stands holding the hem, alluring blush under warm indoor light with gold embroidery bokeh.",
+    "auditRevision": "careful-batch09-2026-08-27"
   },
   {
     "id": "sc085",
