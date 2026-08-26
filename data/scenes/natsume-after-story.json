@@ -189,35 +189,28 @@
     "timeOfDay": "night",
     "tags": [
       "mole_under_eye",
-      "night",
-      "bathroom",
-      "towel",
-      "adult",
-      "bath_towel",
-      "bathrobe",
-      "turning_away",
-      "steam",
-      "heavy_blush",
-      "clear_sky",
-      "medium_shot",
-      "over_shoulder",
-      "soft_lighting",
-      "diffused_light"
+      "yukata",
+      "sheer_white_thighhigh_stockings",
+      "ryokan_veranda",
+      "full_body",
+      "geta",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "浴室",
     "weather": "晴",
     "camera": "肩后回避视角中景",
     "lighting": "浴室柔光与蒸汽漫射",
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, wet_long_hair, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_bare_breasts, pink_nipples, exposed_pussy, slender_waist, wet_white_bath_towel_slipping_off_body_and_held_at_last_second, intense_startled_blush, looking_up_in_vulnerability, modern_apartment_bathroom, warm_steamy_lighting, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_light_pink_yukata_with_floral_pattern_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_lace_trim, entire_legs_and_feet_fully_visible_in_frame, white_geta_on_ryokan_veranda, standing_on_ryokan_veranda_with_one_hand_holding_yukata_collar_and_shy_flustered_blush, warm_ryokan_veranda_light_with_wooden_floor_and_lantern_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "usage": [
       "展示图",
       "R15"
     ],
     "storyJa": "【夏目・落ちる前にバスタオルを引っ掛けた】夏の夜のバスルームで、夏目が浴槽から出た瞬間、緩んだバスタオルが肩から滑り落ちた。あなたは時間内に引き返して、予備のバスローブを渡しました。彼女はあなたの後ろでしばらく沈黙していましたが、それでも温かい声で話しました。――「……少なくとも、反応は紳士的。浴衣を置いたら出ていって。準備ができたら呼ぶから。」",
     "rating": "R15",
-    "animaCaption": "Caught in breathless surprise in the steamy bathroom after a shower, Shiki Natsume grabs hold of her wet white bath towel just as it slips from her shoulders, revealing her firm bare breasts and slender waist. Her cheeks burn with an intense, startled blush as water droplets glisten on her collarbones."
+    "animaCaption": "On a ryokan veranda in a light pink yukata with floral pattern and silky white thighhighs, Shiki Natsume stands holding her collar, shy flustered blush under warm veranda light with wooden floor and lantern bokeh.",
+    "auditRevision": "careful-batch07-2026-08-27"
   },
   {
     "id": "sc106",
@@ -839,22 +832,14 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "adult",
-      "nude",
-      "bathrobe",
-      "bare_shoulders",
-      "bare_legs",
-      "sitting_on_bed",
-      "bedroom",
-      "bedside_lamp",
-      "long_hair",
       "mole_under_eye",
-      "looking_at_viewer",
-      "slight_blush",
-      "night",
-      "warm_lighting",
-      "sensual",
-      "close_up"
+      "grey_pajamas",
+      "bare_legs",
+      "smooth_thighs",
+      "bedroom",
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "rating": "R15",
     "mature": false,
@@ -866,10 +851,11 @@
       "氛围优先",
       "R15"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, bathrobe, bare_shoulders, bare_legs, sitting_on_bed, bedroom, bedside_lamp, looking_at_viewer, slight_blush, night, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, overly bright background, harsh_lighting, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_soft_grey_pajama_set_with_white_piping_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_lying_on_bed, barefoot_with_soft_toes_on_pillow, lying_on_side_on_bed_in_private_apartment_bedroom_with_one_hand_on_pillow_and_sleepy_gentle_blush, warm_bedside_lamp_light_with_pillow_texture_and_soft_shadows, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【大人のAfter Story・夏目・夜灯の下の静かな誘い】深夜の寝室にはベッドサイドの暖かな灯りだけがついていた。一日の仕事を終えた夏目は濃い色のガウンを羽織り、ベッドの端に座っている。黒い長髪は肩から背中へ落ち、疲れた表情は珍しくやわらかい。彼女はカップを脇へ置き、近くへ来るように目で合図した。――「勘違いしないで。ただ、少し静かにしていたいだけ。鍵はかけたから、今夜は仕事を言い訳に逃げるのはなしよ。」",
-    "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a private apartment bedroom at night, Shiki Natsume in a soft grey pajama set lies on her side on the bed, slender bare legs with soft skin sheen, bare feet on pillow, sleepy gentle blush under warm bedside lamp.",
+    "auditRevision": "careful-batch07-2026-08-27"
   },
   {
     "id": "sc210",
