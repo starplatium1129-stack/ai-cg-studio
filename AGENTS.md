@@ -56,6 +56,8 @@
    powershell -ExecutionPolicy Bypass -File scripts/maintenance/deploy-desktop-quick.ps1 -SkipBuild
    ```
 
+> **统一工作流入口（2026-08-26 新增）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等 140 个脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`），一站式索引见 `docs/workflow.md:1`；旧 `node scripts/maintenance/*.js` 仍兼容。
+
 ---
 
 ## 四、 后续稳定演进方向（聚焦体验与质感）
