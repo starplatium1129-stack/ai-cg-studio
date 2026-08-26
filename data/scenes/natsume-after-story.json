@@ -15,23 +15,14 @@
     "timeOfDay": "morning",
     "tags": [
       "mole_under_eye",
-      "bedroom",
-      "pajamas",
-      "golden_hour",
-      "adult",
-      "oversized_white_shirt",
-      "borrowed_clothes",
-      "coffee_cup",
+      "oversized_shirt",
+      "shorts",
       "bare_legs",
-      "subtle_blush",
+      "smooth_thighs",
       "kitchen",
-      "morning",
-      "clear_sky",
-      "pov",
-      "upper_body",
-      "window_light",
-      "morning_light",
-      "medium_shot"
+      "full_body",
+      "barefoot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "同居公寓厨房",
@@ -41,12 +32,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_casual, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_white_button-up_dress_shirt_with_top_two_buttons_undone, bare_collarbones_and_cleavage_revealed, bare_legs, sitting_on_kitchen_counter, holding_mug_of_coffee, teasing_cool_smirk, heavy_blush, sunny_morning_kitchen, soft_sunbeams, medium_shot",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_oversized_unbuttoned_white_shirt_with_two_top_buttons_undone_and_dark_denim_shorts, slender_bare_legs_with_soft_skin_sheen_standing_in_cohabitation_kitchen, barefoot_with_detailed_toes_on_kitchen_tiles, standing_in_kitchen_with_one_hand_holding_shirt_collar_and_other_hand_holding_mug_with_shy_embarrassed_blush, warm_cohabitation_kitchen_morning_light_with_tile_reflections_and_shirt_texture, cinematic_depth_of_field, slender_collarbone_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",
-    "auditRevision": "round4-2026-07-22",
-    "animaCaption": "Sitting perched on the kitchen counter in the golden morning light, Shiki Natsume wears an oversized white boyfriend shirt with the top two buttons undone, revealing her delicate collarbones and bare legs. Holding a steaming mug with a teasing, flushed smirk, she greets the viewer with intimate warmth."
+    "auditRevision": "careful-batch03-2026-08-27",
+    "animaCaption": "In a cohabitation kitchen, Shiki Natsume in an oversized unbuttoned white shirt with two top buttons undone and dark denim shorts stands barefoot on tiles, slender bare legs with soft skin sheen, holding her collar and a mug with a shy embarrassed blush in warm morning kitchen light."
   },
   {
     "id": "sc061",
