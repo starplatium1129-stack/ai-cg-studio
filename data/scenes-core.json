@@ -65,12 +65,13 @@
     "time": "白天",
     "timeOfDay": "afternoon",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "nene_r18"
+      "hair_ribbon",
+      "school_uniform",
+      "sheer_white_thighhigh_stockings",
+      "library",
+      "full_body",
+      "mary_jane",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "图书室",
@@ -83,8 +84,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "safe, 1girl, solo, ayachi_nene, purple_eyes, pink_hair, side_ponytail, white_ribbon, wearing_stella_school_uniform_with_unbuttoned_blazer, navy_skirt, sheer_black_pantyhose, pinned_gently_between_tall_library_bookshelves_at_sunset, one_hand_held_against_bookcase, bare_armpits, smooth_underarm_contours, breathless_flustered_blush, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet, delicate_toe_contours_beneath_fabric, glorious_golden_sunset_light_beaming_through_high_arched_windows, dust_motes_glowing_in_air, full_body\nCaught between towering bookshelves inside the academy library at sunset, Ayachi Nene rests one hand against the wooden shelf with raised elbow, revealing her smooth underarm and gasping in sweet fluster. Glorious golden rays stream through the high arched windows, illuminating floating dust motes and bookshelves while clearly framing her sheer black pantyhose and stocking-clad feet on the parquet floor.",
-    "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_soft_white_school_uniform_with_navy_sailor_collar_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, white_mary_jane_shoes_on_library_floor, sitting_in_library_with_one_hand_holding_book_and_other_hand_on_desk_with_gentle_shy_blush, warm_library_window_light_with_bookshelf_and_desk_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn09",
@@ -96,7 +97,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Caught in a moment of overwhelming passion between the towering bookshelves of the academy library at sunset, Ayachi Nene sits on a heavy oak study table with her uniform blouse unbuttoned, fully exposing her soft bare breasts. Gripping the table edge with breathless, trembling surrender, golden sunlight slashes dramatically through the book stacks."
+    "animaCaption": "Sitting in a library in a soft white school uniform with navy sailor collar and silky white thighhighs, Ayachi Nene holds a book with a gentle shy blush under warm library window light.",
+    "auditRevision": "careful-batch12-2026-08-27"
   },
   {
     "id": "sc002",
