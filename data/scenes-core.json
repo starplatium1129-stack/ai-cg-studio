@@ -9,7 +9,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14",
+    "lora": "ayachi_nene_v21_anima",
     "emotion": "心动",
     "season": "不限",
     "time": "白天",
@@ -31,8 +31,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit",
+    "prompt": "visual_novel_event_cg, nene_r18, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit, artist name, chromatic aberration, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "All",
     "officialCgCandidate": "ocn02",
@@ -57,7 +57,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14",
+    "lora": "ayachi_nene_v21_anima",
     "emotion": "亲密",
     "season": "不限",
     "time": "白天",
@@ -82,7 +82,7 @@
       "R15"
     ],
     "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, medium_close-up, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, moist_eyes, tearful_gaze, heavy_blush, sweat_on_face, parted_lips, embarrassed, plaid_skirt, pleated_skirt, miniskirt, skirt_lift, lifted_by_self, pink_panties, bow_panties, pantyshot, black_thighhighs, zettai_ryouiki, narrow_library_aisle, bookshelf, library, indoors, golden_hour, rim_light, warm_atmosphere, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage, artist name, chromatic aberration, school uniform, gym uniform, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn09",
@@ -106,7 +106,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14",
+    "lora": "ayachi_nene_v21_anima",
     "emotion": "期待",
     "season": "春",
     "time": "清晨",
@@ -144,8 +144,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, cherry_blossoms, blush, looking_at_viewer, in_love, eye_contact, standing_on_tiptoe_waving_one_hand, hiding_letter_behind_back, petals, standing, expectant, spring, morning, clear_sky, upper_body, medium_shot, morning_light, soft_lighting, diffused_light, bright_eyes, park, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, cherry_blossoms, blush, looking_at_viewer, in_love, eye_contact, standing_on_tiptoe_waving_one_hand, hiding_letter_behind_back, petals, standing, expectant, spring, morning, clear_sky, upper_body, medium_shot, morning_light, soft_lighting, diffused_light, bright_eyes, park, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, artist name, chromatic aberration, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【寧々・桜の木の下での約束】早朝の公園には歩行者はほとんどいませんでした。寧々は、満開の桜の木の下に立ち、手で書き、修正した短いメモを慎重に守りました。道を歩くあなたを見て、彼女はつま先立ちで手を振り、銀白色の低いポニーテールに花びらが落ちました。彼女はメモを背中に隠し、顔を赤らめてあなたを見つめました。――「さ、先に言っておきますけど、告白の手紙じゃありません。来年も一緒に桜を見たいって、誘っているだけです。」",
     "rating": "All",
     "animaCaption": "In a medium shot under blooming cherry blossom trees in the park, she stands on tiptoe waving one hand while hiding a letter behind her back with a gentle blush on her cheeks under soft clear morning light."
@@ -159,7 +159,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14",
+    "lora": "ayachi_nene_v21_anima",
     "emotion": "害羞",
     "season": "冬",
     "time": "夜晚",
@@ -182,8 +182,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_coat_with_red_scarf_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_snowy_street_pavement, standing_in_snowy_christmas_street_with_one_hand_holding_gift_box_and_gentle_shy_smile, warm_christmas_street_light_with_snow_and_gift_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_coat_with_red_scarf_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_snowy_street_pavement, standing_in_snowy_christmas_street_with_one_hand_holding_gift_box_and_gentle_shy_smile, warm_christmas_street_light_with_snow_and_gift_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, artist name, chromatic aberration, nsfw, nude, explicit, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【寧々・クリスマスイブの手作りプレゼント】クリスマスストリートのストリングライトの間に雪が降りました。寧々はスカーフを鼻の先まで引っ張り、あまりにも丁寧に梱包された小さな箱をあなたに手渡す前に、長い間ためらっていました。箱の中には彼女が作ったお守りが入っていた。縫製は完璧ではありませんが、祝福が書かれた小さな紙が付いています。ありがとうと言おうとした瞬間、彼女は慌てて顔をそむけた。――「そんなに高いものじゃありませんよ。ただ……来年の今日も、あなたが無事に私の前にいてくれたらって。」",
     "rating": "All",
     "animaCaption": "Standing in a snowy Christmas street in a warm beige winter coat with red scarf and pleated miniskirt with silky white thighhighs, Ayachi Nene holds a gift box with a gentle shy smile under warm christmas street light with snow.",
@@ -199,7 +199,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14",
+    "lora": "ayachi_nene_v21_anima",
     "emotion": "鼓起勇气的信任",
     "season": "秋",
     "time": "闭馆前",
@@ -226,8 +226,8 @@
       "角色还原",
       "氛围优先"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_school_uniform_with_white_blouse_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_floor, standing_in_deserted_library_before_closing_hugging_old_magic_history_book_to_chest_with_both_arms, moonlight_falling_on_silver_hair_ribbon_with_serious_but_shy_eyes_looking_up_at_viewer_inviting_him_to_study, quiet_closing_hour_atmosphere_with_moonlight_and_desk_lamp_glow_bookshelf_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_school_uniform_with_white_blouse_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_library_floor, standing_in_deserted_library_before_closing_hugging_old_magic_history_book_to_chest_with_both_arms, moonlight_falling_on_silver_hair_ribbon_with_serious_but_shy_eyes_looking_up_at_viewer_inviting_him_to_study, quiet_closing_hour_atmosphere_with_moonlight_and_desk_lamp_glow_bookshelf_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, moonlight, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, artist name, chromatic aberration, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, book cover facing viewer, title on book, decorated cover, title, loose paper, separate sheet, letter, note card, book left on table, empty hands, closed book, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "auditRevision": "careful-batch06-2026-08-27",
     "animaCaption": "In the deserted school library just before closing, Ayachi Nene in a navy school uniform with silky white thighhighs hugs an old magic-history book to her chest, moonlight falling on her silver hair ribbon, serious yet shy eyes looking up at the viewer as she invites him to study together under mixed moonlight and desk lamp glow."
   },
@@ -239,7 +239,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14",
+    "lora": "ayachi_nene_v21_anima",
     "emotion": "极致动情依恋",
     "season": "不限",
     "time": "深夜",
@@ -287,8 +287,8 @@
     ],
     "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 密室魔女服极致高能】深夜反锁的超自然社办深处，空气里弥漫着神秘学书页与微热的荷尔蒙。宁宁换上了那件华丽却被你半拆解的魔女制服，香肩半露，黑色布料与雪白肌肤形成了极具张力的对比。她软软地跨坐在你膝盖上，发带凌乱地散在一边，头顶的呆毛早已因为极度动情软瘫成完美的心形螺旋。她无力地抵住你的胸口，急促地喘息着——「呜...柊史...把灯关掉啦...魔女的身体...今晚全凭你支配了...」",
     "storyJa": "【寧々・大人のアフターストーリー・・密室の魔女衣装が大迫力】深夜、施錠された超常現象協会の事務所の奥深く、空気はオカルト本のページと少し熱いホルモンで満たされています。寧々は、あなたによって半分解体された豪華な魔女の制服を着ました。彼女の肩は半分露出しており、黒い生地が雪のように白い肌と非常に緊張したコントラストを形成していました。彼女はあなたの膝の上にそっと座り、ヘアバンドは片側に乱雑に散らばっており、頭のアホ毛は極度の感情のためにすでに完璧なハート型の螺旋になっています。彼女はあなたの胸を弱く押し当て、速く喘ぎました――「もう、柊史……明かりを消してください。今夜は魔女の私を……あなたにだけ見ていてほしいんです。」",
-    "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, bare_shoulders, cleavage, undressing, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage",
+    "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, bare_shoulders, cleavage, undressing, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, candlelight, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage, artist name, chromatic aberration, school uniform, gym uniform, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "animaCaption": "In an intimate close-up shot inside the dimly lit clubroom at night, Ayachi Nene in her official witch outfit sits astride on the viewer's lap with her costume partially loosened, blushing deeply with teary eyes under soft warm ambient lighting."
   },
   {
@@ -301,7 +301,7 @@
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v18_wd14",
+    "lora": "shiki_natsume_v21_anima",
     "emotion": "心动",
     "season": "不限",
     "time": "白天",
@@ -323,8 +323,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, pink_gingham_off_shoulder_knit_sweater, one_index_finger_resting_near_her_lips, shy_thoughtful_expression, subtle_blush, apartment_utility_room_and_open_blue_case_in_background, soft_neutral_indoor_light, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "visual_novel_event_cg, natsume_r18, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, pink_gingham_off_shoulder_knit_sweater, one_index_finger_resting_near_her_lips, shy_thoughtful_expression, subtle_blush, apartment_utility_room_and_open_blue_case_in_background, soft_neutral_indoor_light, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit, artist name, chromatic aberration, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs02",
@@ -349,7 +349,7 @@
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v18_wd14",
+    "lora": "shiki_natsume_v21_anima",
     "emotion": "心动",
     "season": "不限",
     "time": "白天",
@@ -371,8 +371,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, natsume_sleepwear, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "visual_novel_event_cg, natsume_r18, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, natsume_sleepwear, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit, artist name, chromatic aberration, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs08",
@@ -397,7 +397,7 @@
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v18_wd14",
+    "lora": "shiki_natsume_v21_anima",
     "emotion": "心动",
     "season": "不限",
     "time": "白天",
@@ -419,8 +419,8 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, (bright_red_qipao), (crimson_china_dress), cinematic_16:9_composition, tilted_full_body_standing_portrait, 1girl, solo, shiki_natsume, natsume_official_qipao, black_hair_arranged_in_elegant_twin_braided_buns, yellow_eyes, two_red_hairclips, mole_under_eye, red_flower_hair_ornament, vivid_scarlet_silk_fabric, elaborate_metallic_gold_floral_embroidery_and_gold_trim, high_side_slit, black_thighhigh_stockings_with_visible_garter_straps, (standing_upright), back_against_a_plain_wooden_apartment_door, (both_hands_clasped_between_her_thighs), hands_at_skirt_hem, arms_hanging_down, blushing_direct_eye_contact, warm_indoor_light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, navy qipao, navy dress, blue qipao, blue dress, green qipao, green dress, black qipao, dark dress, hands at chest, clasped hands at chest, lying, reclining, sitting, floor pose, cabinet, red vines, nsfw, nude, explicit",
+    "prompt": "visual_novel_event_cg, natsume_r18, (bright_red_qipao), (crimson_china_dress), cinematic_16:9_composition, tilted_full_body_standing_portrait, 1girl, solo, shiki_natsume, natsume_official_qipao, black_hair_arranged_in_elegant_twin_braided_buns, yellow_eyes, two_red_hairclips, mole_under_eye, red_flower_hair_ornament, vivid_scarlet_silk_fabric, elaborate_metallic_gold_floral_embroidery_and_gold_trim, high_side_slit, black_thighhigh_stockings_with_visible_garter_straps, (standing_upright), back_against_a_plain_wooden_apartment_door, (both_hands_clasped_between_her_thighs), hands_at_skirt_hem, arms_hanging_down, blushing_direct_eye_contact, warm_indoor_light, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, navy qipao, navy dress, blue qipao, blue dress, green qipao, green dress, black qipao, dark dress, hands at chest, clasped hands at chest, lying, reclining, sitting, floor pose, cabinet, red vines, nsfw, nude, explicit, artist name, chromatic aberration, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs04",
@@ -444,7 +444,7 @@
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v18_wd14",
+    "lora": "shiki_natsume_v21_anima",
     "emotion": "温柔",
     "season": "冬",
     "time": "午后",
@@ -468,8 +468,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_cat_cafe_floor, sitting_in_cat_cafe_with_cat_sleeping_on_lap_and_one_hand_petting_cat_with_gentle_composed_blush, warm_cat_cafe_light_with_cat_and_table_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_casual_grey_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_cat_cafe_floor, sitting_in_cat_cafe_with_cat_sleeping_on_lap_and_one_hand_petting_cat_with_gentle_composed_blush, warm_cat_cafe_light_with_cat_and_table_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, window_light, sunlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body, artist name, chromatic aberration, purple ribbon, white flower hair ornament, white rose hair ornament, missing hairclip, nsfw, nude, explicit, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "storyJa": "【夏目・猫はそれが好きだと言いました】冬の午後の猫カフェでは、一匹の猫が夏目さんの膝の上で丸まってぐっすり眠っていました。彼女は嫌な顔をして立ち上がることができませんでしたが、指で優しく猫の毛をとかし続けました。彼女は実は可愛いものが好きだとおっしゃっていましたね。彼女は目を上げてあなたを睨みつけ、それから隣の席を譲りました。――「この子が勝手に寄ってきただけ。あなたも座りたいなら、静かにして……起こさないであげて。」",
     "rating": "All",
     "animaCaption": "Sitting in a cat cafe with a cat sleeping on her lap, Shiki Natsume in a casual grey sweater with navy pleated miniskirt and glossy black tights sits petting the cat, gentle composed blush under warm cat cafe light.",
@@ -485,7 +485,7 @@
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v18_wd14",
+    "lora": "shiki_natsume_v21_anima",
     "emotion": "沉默的关心",
     "season": "冬",
     "time": "闭店后",
@@ -518,8 +518,8 @@
       "角色还原",
       "日常叙事"
     ],
-    "prompt": "1girl, solo, shiki_natsume, cafe_uniform, long_black_hair, yellow_eyes, red_hairclips, mole_under_eye, no_hair_ribbon, suspender_dress, white_blouse, waist_apron, dry_towel_draped_over_the_back_of_the_chair, sliding_a_steaming_hot_cocoa_across_the_counter_toward_viewer, pretending_to_rummage_through_the_ledger_papers, rain_droplets_trickling_down_the_window, warm_lamplight, faint_blush, reserved_look, medium_shot, cinematic_framing, cozy, hairclips_and_face_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
+    "prompt": "1girl, natsume_r18, solo, shiki_natsume, cafe_uniform, long_black_hair, yellow_eyes, red_hairclips, mole_under_eye, no_hair_ribbon, suspender_dress, white_blouse, waist_apron, dry_towel_draped_over_the_back_of_the_chair, sliding_a_steaming_hot_cocoa_across_the_counter_toward_viewer, pretending_to_rummage_through_the_ledger_papers, rain_droplets_trickling_down_the_window, warm_lamplight, faint_blush, reserved_look, medium_shot, cinematic_framing, cozy, hairclips_and_face_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit, artist name, chromatic aberration, generic white shirt, purple ribbon, white flower hair ornament, white rose hair ornament, missing hairclip, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, extra girl, second person, additional woman, another woman, extra person, background person",
     "animaCaption": "After closing time under the single warm lamp, Shiki Natsume in her brown suspender cafe dress pushes a steaming hot chocolate toward you across the counter, a dry towel already hung over the wooden chair back; the moment you look up she pretends to be busy sorting the ledger, slight blush on her face under the cold rain light on the window."
   },
   {
@@ -559,8 +559,8 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, both_still_in_elegant_white_wedding_gowns_with_satin_gloves_and_sheer_white_thighhighs_after_taking_off_their_heavy_veils, sitting_on_either_side_of_you_on_the_edge_of_the_canopy_bed_in_the_candlelit_newlywed_home, nene_shyly_interlocking_fingers_with_you_while_holding_the_marriage_contract_in_her_other_palm, natsume_fixing_nene_s_tilted_hair_ornament_with_a_tsundere_expression_refusing_to_admit_she_is_moved, warm_candlelight_with_lace_and_satin_reflections, cinematic_depth_of_field, full_body, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, both_still_in_elegant_white_wedding_gowns_with_satin_gloves_and_sheer_white_thighhighs_after_taking_off_their_heavy_veils, sitting_on_either_side_of_you_on_the_edge_of_the_canopy_bed_in_the_candlelit_newlywed_home, nene_shyly_interlocking_fingers_with_you_while_holding_the_marriage_contract_in_her_other_palm, natsume_fixing_nene_s_tilted_hair_ornament_with_a_tsundere_expression_refusing_to_admit_she_is_moved, warm_candlelight_with_lace_and_satin_reflections, cinematic_depth_of_field, full_body, candlelight, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8> <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 1girl, black_thighhighs, bare_legs, cropped_feet, upper_body, artist name, chromatic aberration, six fingers, nsfw, nude, explicit, heterochromia, swapped eye colors, wrong eye color, same eye color, same hair color, cloned face, identical twins, extra girl, 3girls, male, man, boy, 1boy, girls kissing each other, holding each other's hands, pink ribbon on black-haired woman, white bow on black-haired woman, ahoge on black-haired woman, mole on white-haired woman, missing card, no card, hidden card, bridal veil, long veil, short veil, apron, kitchen, cooking, witch hat, letters, words, numbers, captions, signage, gibberish, scribbles, prints, logos, watermarks, patterns on clothing, writing, split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "rating": "All",
     "recommendedSize": "1344×896",
