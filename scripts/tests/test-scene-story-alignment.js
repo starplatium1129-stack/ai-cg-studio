@@ -29,7 +29,7 @@ const CHECKS = [
   { label: '站立', storyRe: /(?<!公交|车|月|站台)站(?!台)/, promptRe: /standing|stand_|upright|on_her_feet|walking|strolling|pacing/ },
   { label: '跨坐', storyRe: /跨坐|骑(?!士)/, promptRe: /straddl|astride|riding|on_lap|cowgirl/ },
   { label: '裸体', storyRe: /全裸|裸体|一丝不挂|赤裸|不着一缕/, promptRe: /naked|nude|completely_naked|no_clothes|no_underwear|apron_only|bare_breasts|topless|bottomless/ },
-  { label: '真空', storyRe: /真空|身上仅仅|只穿着?(?!校)/, promptRe: /no_bra|no_panties|no_underwear|nothing_beneath|wearing_only|apron_only|transparen|translucent|see-through|bare_|semi-transparent|sheer/ },
+  { label: '真空', storyRe: /真空|身上仅仅|只穿着?(?!校)/, promptRe: /no_bra|no_panties|no panties|no_underwear|nothing_beneath|wearing_only|apron_only|transparen|translucent|see-through|bare_|semi-transparent|sheer/ },
   { label: '睡裙睡衣', storyRe: /睡裙|睡衣(?!当作)|睡袍|夜衣/, promptRe: /nightgown|pajama|sleepwear|silk_robe|negligee|nightdress|loung|nightshirt|dudou|undergarment/ },
   { label: '浴巾', storyRe: /浴巾|毛巾/, promptRe: /towel/ },
   { label: '泳装', storyRe: /泳装|比基尼|泳衣/, promptRe: /bikini|swimsuit|swimwear/ },
