@@ -511,17 +511,33 @@ async function runMaintenanceChecks() {
     }
   }
 
-  router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), async function (req, res) {
+  router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'20mb' }), async function (req, res) {
     if (isDesktopPackagedMode(cfg)) return desktopMaintenanceUnavailable(req, res);
     var scenes = req.body && req.body.scenes;
     var tags = req.body && req.body.tags;
     var curation = req.body && req.body.curation;
+    var blueprints = req.body && req.body.blueprints;
     if (!Array.isArray(scenes) || !scenes.length || scenes.length > 1000) return envelope.fail(res, 400, '场景数据格式错误、为空或数量超出限制');
     var ids = new Set();
     for (var i = 0; i < scenes.length; i += 1) {
       var id = String(scenes[i] && scenes[i].id || '');
       if (!/^sc\d{3}$/.test(id) || ids.has(id)) return envelope.fail(res, 400, '场景 ID 必须唯一且符合 sc001 格式：' + id);
       ids.add(id);
+    }
+    var bpPath = path.join(cfg.ROOT_DIR, 'data', 'scene-blueprints.json');
+    if (blueprints !== undefined) {
+      if (!Array.isArray(blueprints) || blueprints.length > 2000) return envelope.fail(res, 400, '蓝图数据格式错误、为空或数量超出限制');
+      var bpIds = new Set();
+      for (var bi = 0; bi < blueprints.length; bi += 1) {
+        var bp = blueprints[bi] || {};
+        var bpId = String(bp.id || '');
+        if (!bpId || bpIds.has(bpId)) return envelope.fail(res, 400, '蓝图 ID 必须唯一且不能为空：' + bpId);
+        bpIds.add(bpId);
+        if (typeof bp.characterId !== 'string' || !bp.characterId) return envelope.fail(res, 400, '蓝图缺少 characterId：' + bpId);
+        if (typeof bp.title !== 'string' || !bp.title.trim()) return envelope.fail(res, 400, '蓝图缺少标题：' + bpId);
+        if (!Array.isArray(bp.promptTokens) || !Array.isArray(bp.negativeTokens)) return envelope.fail(res, 400, '蓝图 promptTokens/negativeTokens 必须为数组：' + bpId);
+        if (typeof bp.promptProse !== 'string') return envelope.fail(res, 400, '蓝图缺少 promptProse：' + bpId);
+      }
     }
     var snapshot;
     try {
@@ -531,7 +547,8 @@ async function runMaintenanceChecks() {
       if (tags !== undefined) validateTags(tags);
       var cleanCuration = curation !== undefined ? sanitizeCuration(curation, incomingIds) : null;
       snapshot = maintenanceSnapshot(deletedIds);
-      var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, 'content');
+      if (blueprints !== undefined) snapshot = snapshot.concat(snapshotFiles([bpPath]));
+      var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, blueprints !== undefined ? 'content-blueprints' : 'content');
       sceneStore.writeSceneSet(scenes);
       if (tags !== undefined) {
         writeJson(path.join(cfg.ROOT_DIR, 'data', 'tags.json'), tags);
@@ -539,11 +556,21 @@ async function runMaintenanceChecks() {
       if (curation !== undefined) {
         writeJson(path.join(cfg.ROOT_DIR, 'data', 'curation.json'), cleanCuration);
       }
+      if (blueprints !== undefined) {
+        var existingBp = fs.existsSync(bpPath) ? readJson(bpPath) : { version: 2, blueprints: [] };
+        writeJson(bpPath, { version: existingBp && existingBp.version || 2, blueprints: blueprints });
+      }
       autoRetireDeletedScenes(scenes, prevScenes);
       cleanOrphanedSceneRefs();
       await runMaintenanceChecks();
+      if (blueprints !== undefined) {
+        var contentResult = await runNodeScript('scripts/maintenance/validate-content-contracts.js', [], MAINT_TIMEOUT_MS);
+        if (contentResult.status !== 0) {
+          throw new Error((contentResult.stderr || contentResult.stdout || '蓝图内容契约校验失败').trim().slice(-1200));
+        }
+      }
       var newVersion = syncSceneStoreDataVersion(cfg.ROOT_DIR);
-      res.json({ ok:true, count:scenes.length, tagCount:Array.isArray(tags) ? tags.length : undefined, version:newVersion, backup:path.basename(backupDir), message:'内容已保存并通过校验' });
+      res.json({ ok:true, count:scenes.length, blueprintCount:Array.isArray(blueprints) ? blueprints.length : undefined, tagCount:Array.isArray(tags) ? tags.length : undefined, version:newVersion, backup:path.basename(backupDir), message:'内容已保存并通过校验' });
     } catch (error) {
       // 回滚失败必须告诉客户端：此时场景分片处于半写状态，
       // 之前这里是空 catch，用户只会看到"保存失败"而以为数据没动。

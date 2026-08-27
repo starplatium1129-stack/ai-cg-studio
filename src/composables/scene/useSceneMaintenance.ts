@@ -3,12 +3,15 @@ import { ApiClientError } from '@/api/client'
 import { maintenanceApi } from '@/api/maintenanceApi'
 import type { BackupEntry } from '@/api/maintenanceApi'
 import type { SceneDraft, TagRecord, CurationData } from '@/types/api'
+import type { SceneBlueprint } from '@/utils/popularContent'
 
 export interface SceneMaintenanceDeps {
   scenes: Ref<SceneDraft[]>
   tags: Ref<TagRecord[]>
   curation: Ref<CurationData>
-  /** 宿主持有的脏标记（编辑/导入/标签/策展任一改动置位）。 */
+  /** 可选：热门角色蓝图，保存时随场景一起写回 scene-blueprints.json。 */
+  blueprints: Ref<SceneBlueprint[]>
+  /** 宿主持有的脏标记（编辑/导入/标签/策展/蓝图任一改动置位）。 */
   dirty: Ref<boolean>
   /** 宿主持有的维护提示通道（保存进度/备份编号/桌面只读提示共用）。 */
   maintenanceHint: Ref<string>
@@ -31,7 +34,7 @@ const TOOLS: Array<{ id: string; iconName: 'palette' | 'success' | 'filter' | 'g
  * 桌面打包模式探测（data 只读、保存与维护任务禁用）在此自持。
  */
 export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
-  const { scenes, tags, curation, dirty, maintenanceHint } = deps
+  const { scenes, tags, curation, blueprints, dirty, maintenanceHint } = deps
 
   const saving = ref(false)
   const savingPhase = ref('')
@@ -73,6 +76,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
         scenes: scenes.value,
         tags: tags.value,
         curation: curation.value,
+        blueprints: blueprints.value,
       })
       savingPhase.value = '正在更新版本…'
       dirty.value = false

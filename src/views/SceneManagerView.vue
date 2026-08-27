@@ -174,6 +174,64 @@
         </div>
       </template>
 
+      <!-- 蓝图库 -->
+      <template v-if="tab==='blueprints'">
+        <div class="toolbar">
+          <input v-model="bpSearch" class="search-input" type="search" placeholder="搜索蓝图 ID、标题、角色、标签、Prompt…" />
+          <select v-model="bpChar" class="filter-select">
+            <option value="">全部角色</option>
+            <option v-for="c in bpCharacters" :key="c" :value="c">{{ charLabel(c) }}</option>
+          </select>
+          <select v-model="bpCat" class="filter-select">
+            <option value="">全部分类</option>
+            <option v-for="c in bpCategories" :key="c" :value="c">{{ c }}</option>
+          </select>
+          <select v-model="bpAdult" class="filter-select">
+            <option value="">全部内容</option>
+            <option value="safe">普通</option>
+            <option value="adult">成人</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" :title="desktopPackaged ? '桌面只读模式不可编辑' : ''" @click="openBlueprintAddModal">＋ 新增蓝图</button>
+          <span class="list-meta">{{ filteredBlueprints.length }} / {{ blueprints.length }} 条</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table-scenes">
+            <thead>
+              <tr><th>ID</th><th>标题</th><th>角色</th><th>分类</th><th>定级</th><th>动作</th><th>操作</th></tr>
+            </thead>
+            <tbody>
+              <tr v-if="!filteredBlueprints.length" class="table-state-row">
+                <td colspan="7">
+                  <ArchiveStatePanel compact kind="filtered" title="没有匹配的蓝图" message="调整筛选条件，或新建一条蓝图。" />
+                </td>
+              </tr>
+              <template v-else>
+                <tr v-for="b in pagedBlueprints" :key="b.id">
+                  <td><code class="id-code">{{ b.id }}</code></td>
+                  <td>{{ b.title }}</td>
+                  <td>{{ charLabel(b.characterId) }}</td>
+                  <td>{{ b.category }}</td>
+                  <td><span class="rating-badge" :class="'rating-' + (b.sampleRating || (b.adult ? 'R18' : 'All'))">{{ b.sampleRating || (b.adult ? 'R18' : 'All') }}</span></td>
+                  <td><div class="story-preview">{{ b.action }}</div></td>
+                  <td>
+                    <div class="action-btns">
+                      <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="openBlueprintEditModal(b.id)">编辑</button>
+                      <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="duplicateBlueprint(b.id)">复制</button>
+                      <button class="btn btn-danger btn-sm" type="button" :disabled="desktopPackaged" @click="deleteBlueprint(b.id)">删除</button>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="bpTotalPages > 1" class="pagination">
+          <button class="btn btn-ghost btn-sm" :disabled="bpPage <= 1" @click="bpPage--">← 上一页</button>
+          <span class="hint-sm">{{ bpPage }} / {{ bpTotalPages }}</span>
+          <button class="btn btn-ghost btn-sm" :disabled="bpPage >= bpTotalPages" @click="bpPage++">下一页 →</button>
+        </div>
+      </template>
+
       <!-- 标签库 -->
       <template v-if="tab==='tags'">
         <div class="toolbar">
@@ -452,6 +510,84 @@
       </Transition>
     </Teleport>
 
+    <!-- 蓝图编辑 Modal -->
+    <Teleport to="body">
+      <Transition name="layer-pop">
+      <div v-if="bpEditing" class="overlay" @click.self="closeBlueprintModal">
+        <div
+          ref="bpModalEl"
+          class="modal-card modal-card-wide"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="blueprint-editor-title"
+        >
+          <h2 id="blueprint-editor-title">{{ bpEditingId ? '编辑蓝图 · ' + bpEditing.id : '新增蓝图' }}</h2>
+          <fieldset class="form-section">
+            <legend class="form-legend">基础信息</legend>
+            <div class="form-grid">
+              <label class="form-group"><span class="field-label">ID *</span><input v-model="bpEditing.id" class="input" :disabled="!!bpEditingId || desktopPackaged" placeholder="bp_001 / character_scene" /></label>
+              <label class="form-group"><span class="field-label">标题 *</span><input v-model="bpEditing.title" class="input" :disabled="desktopPackaged" required :aria-invalid="!bpEditing.title.trim() && bpTriedSave" :class="{invalid: !bpEditing.title.trim() && bpTriedSave}" /></label>
+              <label class="form-group"><span class="field-label">角色 *</span><input v-model="bpEditing.characterId" class="input" :disabled="desktopPackaged" required :aria-invalid="!bpEditing.characterId?.trim() && bpTriedSave" :class="{invalid: !bpEditing.characterId?.trim() && bpTriedSave}" placeholder="raiden_shogun / nene" /></label>
+              <label class="form-group"><span class="field-label">分类</span><input v-model="bpEditing.category" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">服装 outfitId</span><input v-model="bpEditing.outfitId" class="input" :disabled="desktopPackaged" placeholder="default / school / witch…" /></label>
+              <label class="form-group">
+                <span class="field-label">样张定级</span>
+                <select v-model="bpEditing.sampleRating" class="filter-select" :disabled="desktopPackaged">
+                  <option value="All">All</option><option value="R15">R15</option><option value="R18">R18</option>
+                </select>
+              </label>
+              <label class="form-group form-check"><input v-model="bpEditing.adult" type="checkbox" :disabled="desktopPackaged" /><span>成人蓝图（adult）</span></label>
+              <label class="form-group form-group-full"><span class="field-label">描述</span><textarea v-model="bpEditing.description" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">场景要素</legend>
+            <div class="form-grid">
+              <label class="form-group"><span class="field-label">地点</span><input v-model="bpEditing.location" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">动作</span><input v-model="bpEditing.action" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">时段</span><input v-model="bpEditing.timeOfDay" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">光照</span><input v-model="bpEditing.lighting" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">镜头</span><input v-model="bpEditing.camera" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">情绪</span><input v-model="bpEditing.mood" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group form-group-full"><span class="field-label">场景标签（逗号分隔）</span><input v-model="bpSceneTagsInput" class="input" :disabled="desktopPackaged" placeholder="inazuma, shoji, night…" /></label>
+              <label class="form-group form-group-full"><span class="field-label">推荐尺寸</span><input v-model="bpEditing.recommendedSize" class="input" :disabled="desktopPackaged" placeholder="832x1216 / 1024x1024" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">Prompt 数据（核心）</legend>
+            <div class="form-grid">
+              <label class="form-group form-group-full"><span class="field-label">Krea 散文 promptProse</span><textarea v-model="bpEditing.promptProse" class="input" :disabled="desktopPackaged" rows="4"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">Anima 标签 promptTokens（逗号分隔）*</span><textarea v-model="bpPromptTokensInput" class="input input-mono" :disabled="desktopPackaged" rows="3" required></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">负面 negativeTokens（逗号分隔）*</span><textarea v-model="bpNegativeTokensInput" class="input input-mono" :disabled="desktopPackaged" rows="3" required></textarea></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">风格 / 成人扩展</legend>
+            <div class="form-grid">
+              <label class="form-group"><span class="field-label">Krea 风格 hint</span><input v-model="bpEditing.kreaStyleHint" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group"><span class="field-label">Anima 风格 hint</span><input v-model="bpEditing.animaStyleHint" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group form-group-full"><span class="field-label">成人画师提示</span><input v-model="bpEditing.adultArtistHint" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group form-group-full"><span class="field-label">NSFW 标签（逗号分隔）</span><input v-model="bpNsfwTokensInput" class="input" :disabled="desktopPackaged" /></label>
+              <label class="form-group form-group-full"><span class="field-label">NSFW 散文</span><textarea v-model="bpEditing.nsfwProse" class="input" :disabled="desktopPackaged" rows="2"></textarea></label>
+              <label class="form-group form-group-full"><span class="field-label">验收覆盖 coverageTags（逗号分隔）</span><input v-model="bpCoverageTagsInput" class="input" :disabled="desktopPackaged" placeholder="iconic, daily, special_nsfw" /></label>
+            </div>
+          </fieldset>
+
+          <p v-if="bpFormHint" class="form-hint" role="alert">{{ bpFormHint }}</p>
+          <div class="modal-actions">
+            <button class="btn btn-primary" type="button" @click="saveBlueprint">保存</button>
+            <button class="btn btn-ghost" type="button" @click="copyBlueprintJson">复制 JSON</button>
+            <button class="btn btn-ghost" type="button" @click="closeBlueprintModal">取消</button>
+          </div>
+          <p class="note-sm">注意：修改仅在内存中生效，需点“保存到项目”写回 data/scene-blueprints.json</p>
+        </div>
+      </div>
+      </Transition>
+    </Teleport>
+
     <!-- 标签表单 Modal -->
     <Teleport to="body">
       <Transition name="layer-pop">
@@ -505,6 +641,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import type {
   SceneDraft, TagRecord, CurationData, CurationTier,
 } from '@/types/api'
+import type { SceneBlueprint } from '@/utils/popularContent'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneShowcaseUpload } from '@/composables/scene/useSceneShowcaseUpload'
 import { useSceneTagManager } from '@/composables/scene/useSceneTagManager'
@@ -519,9 +656,12 @@ const sceneStore = useSceneStore()
 
 /** 场景编辑器是破坏性弹层，必须有焦点陷阱 + Escape（原先只有 @click.self） */
 const modalEl = ref<HTMLElement | null>(null)
+/** 蓝图编辑器同样需要焦点陷阱 + Escape */
+const bpModalEl = ref<HTMLElement | null>(null)
 
 const TABS = [
   { id:'scenes',     label:'场景库' },
+  { id:'blueprints', label:'蓝图库' },
   { id:'tags',       label:'标签库' },
   { id:'images',     label:'样张' },
   { id:'duplicates', label:'重复检测' },
@@ -533,6 +673,7 @@ const DUP_KEYWORDS = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛
 const PAGE_SIZE = 30
 
 const scenes = ref<SceneDraft[]>([])
+const blueprints = ref<SceneBlueprint[]>([])
 const tags = ref<TagRecord[]>([])
 const curation = ref<CurationData>({})
 /** 脏标记与维护提示为跨簇共享通道（编辑/导入/标签/策展 → 保存/离开守卫）。 */
@@ -545,6 +686,22 @@ const search = ref(''); const searchDebounced = ref(''); let searchTimer: Return
 watch(search, (v) => { if (searchTimer) clearTimeout(searchTimer); searchTimer = setTimeout(() => { searchDebounced.value = v }, 250) })
 const fCat = ref(''); const fChar = ref(''); const fRating = ref('')
 const sortBy = ref('id'); const page = ref(1)
+
+// ── 热门角色蓝图编辑状态 ────────────────────────────────────────────────
+const bpSearch = ref(''); const bpSearchDebounced = ref(''); let bpSearchTimer: ReturnType<typeof setTimeout> | null = null
+watch(bpSearch, (v) => { if (bpSearchTimer) clearTimeout(bpSearchTimer); bpSearchTimer = setTimeout(() => { bpSearchDebounced.value = v }, 250) })
+const bpChar = ref(''); const bpCat = ref(''); const bpAdult = ref('')
+const bpPage = ref(1)
+const bpEditing = ref<SceneBlueprint | null>(null)
+const bpEditingId = ref('')
+const bpTriedSave = ref(false)
+const bpFormHint = ref('')
+const bpSnapshot = ref('')
+const bpSceneTagsInput = ref('')
+const bpPromptTokensInput = ref('')
+const bpNegativeTokensInput = ref('')
+const bpNsfwTokensInput = ref('')
+const bpCoverageTagsInput = ref('')
 
 // 标签库 CRUD（改名级联、使用频次、筛选分页）
 const tagManager = useSceneTagManager({ tags, scenes, markDirty })
@@ -626,12 +783,150 @@ const {
   scenes,
   tags,
   curation,
+  blueprints,
   dirty,
   maintenanceHint,
   invalidateSceneCache: () => { sceneStore.loaded = false },
 })
 
 const categories = computed(() => [...new Set(scenes.value.map(s => s.category))].sort())
+const bpCategories = computed(() => [...new Set(blueprints.value.map(b => b.category).filter(Boolean))].sort())
+const bpCharacters = computed(() => [...new Set(blueprints.value.map(b => b.characterId).filter(Boolean))].sort())
+const filteredBlueprints = computed(() => {
+  const needle = bpSearchDebounced.value.trim().toLowerCase()
+  return blueprints.value.filter(b => {
+    if (bpChar.value && b.characterId !== bpChar.value) return false
+    if (bpCat.value && b.category !== bpCat.value) return false
+    if (bpAdult.value === 'adult' && !b.adult) return false
+    if (bpAdult.value === 'safe' && b.adult) return false
+    if (!needle) return true
+    return [
+      b.id, b.title, b.characterId, b.category, b.description, b.location, b.action,
+      ...(b.sceneTags || []), ...(b.promptTokens || []),
+    ].join(' ').toLowerCase().includes(needle)
+  })
+})
+const bpTotalPages = computed(() => Math.max(1, Math.ceil(filteredBlueprints.value.length / PAGE_SIZE)))
+const pagedBlueprints = computed(() => {
+  const start = (bpPage.value - 1) * PAGE_SIZE
+  return filteredBlueprints.value.slice(start, start + PAGE_SIZE)
+})
+
+function blankBlueprint(): SceneBlueprint {
+  return {
+    id: '', title: '', category: '', description: '', characterId: '',
+    location: '', action: '', timeOfDay: '', lighting: '', camera: '', mood: '',
+    sceneTags: [], promptProse: '', promptTokens: [], negativeTokens: [],
+    recommendedSize: '832x1216', adult: false,
+    kreaStyleHint: '', animaStyleHint: '', adultArtistHint: '', sampleRating: 'All',
+    nsfwTokens: [], nsfwProse: '', outfitId: '', coverageTags: [],
+  }
+}
+
+function splitList(value: string): string[] {
+  return value.split(',').map(item => item.trim()).filter(Boolean)
+}
+
+function serializeBlueprintModal() {
+  return JSON.stringify({
+    ...bpEditing.value,
+    bpSceneTagsInput: bpSceneTagsInput.value,
+    bpPromptTokensInput: bpPromptTokensInput.value,
+    bpNegativeTokensInput: bpNegativeTokensInput.value,
+    bpNsfwTokensInput: bpNsfwTokensInput.value,
+    bpCoverageTagsInput: bpCoverageTagsInput.value,
+  })
+}
+
+function openBlueprintAddModal() {
+  const max = blueprints.value.reduce((m, b) => Math.max(m, String(b.id || '').length), 0)
+  bpEditing.value = blankBlueprint()
+  bpEditing.value.id = 'bp_' + String(max + 1).padStart(3, '0')
+  bpEditingId.value = ''
+  bpSceneTagsInput.value = ''
+  bpPromptTokensInput.value = ''
+  bpNegativeTokensInput.value = ''
+  bpNsfwTokensInput.value = ''
+  bpCoverageTagsInput.value = ''
+  bpTriedSave.value = false
+  bpFormHint.value = ''
+  bpSnapshot.value = serializeBlueprintModal()
+}
+
+function openBlueprintEditModal(id: string) {
+  const source = blueprints.value.find(b => b.id === id)
+  if (!source) return
+  bpEditing.value = JSON.parse(JSON.stringify(source)) as SceneBlueprint
+  bpEditingId.value = id
+  bpSceneTagsInput.value = (source.sceneTags || []).join(', ')
+  bpPromptTokensInput.value = (source.promptTokens || []).join(', ')
+  bpNegativeTokensInput.value = (source.negativeTokens || []).join(', ')
+  bpNsfwTokensInput.value = (source.nsfwTokens || []).join(', ')
+  bpCoverageTagsInput.value = (source.coverageTags || []).join(', ')
+  bpTriedSave.value = false
+  bpFormHint.value = ''
+  bpSnapshot.value = serializeBlueprintModal()
+}
+
+function closeBlueprintModal() {
+  if (bpEditing.value && bpSnapshot.value && serializeBlueprintModal() !== bpSnapshot.value) {
+    if (!confirm('蓝图有未保存的修改，确定放弃？')) return
+  }
+  bpEditing.value = null
+  bpEditingId.value = ''
+  bpSnapshot.value = ''
+}
+
+function saveBlueprint() {
+  bpTriedSave.value = true
+  const e = bpEditing.value
+  if (!e) return
+  if (!e.id.trim() || !e.title.trim() || !e.characterId?.trim()) {
+    bpFormHint.value = '请补齐 ID、标题和角色'
+    return
+  }
+  e.sceneTags = splitList(bpSceneTagsInput.value)
+  e.promptTokens = splitList(bpPromptTokensInput.value)
+  e.negativeTokens = splitList(bpNegativeTokensInput.value)
+  e.nsfwTokens = splitList(bpNsfwTokensInput.value)
+  e.coverageTags = splitList(bpCoverageTagsInput.value)
+  if (!e.promptTokens.length || !e.negativeTokens.length) {
+    bpFormHint.value = 'promptTokens 和 negativeTokens 至少各填一项'
+    return
+  }
+  if (bpEditingId.value) {
+    const idx = blueprints.value.findIndex(b => b.id === bpEditingId.value)
+    if (idx >= 0) blueprints.value[idx] = JSON.parse(JSON.stringify(e)) as SceneBlueprint
+  } else {
+    if (blueprints.value.some(b => b.id === e.id)) { bpFormHint.value = 'ID 已存在：' + e.id; return }
+    blueprints.value.push(JSON.parse(JSON.stringify(e)) as SceneBlueprint)
+  }
+  bpSnapshot.value = serializeBlueprintModal()
+  closeBlueprintModal()
+  markDirty('蓝图内容有修改，等待保存到项目')
+}
+
+function deleteBlueprint(id: string) {
+  if (!confirm('确认删除蓝图 ' + id + '？保存到项目后它将从 scene-blueprints.json 中移除。')) return
+  blueprints.value = blueprints.value.filter(b => b.id !== id)
+  markDirty('有蓝图等待删除')
+}
+
+function duplicateBlueprint(id: string) {
+  const source = blueprints.value.find(b => b.id === id)
+  if (!source) return
+  const copy = JSON.parse(JSON.stringify(source)) as SceneBlueprint
+  copy.id = source.id + '_copy'
+  copy.title = source.title + ' · 副本'
+  blueprints.value.push(copy)
+  markDirty('已复制蓝图，请编辑副本内容')
+  openBlueprintEditModal(copy.id)
+}
+
+function copyBlueprintJson() {
+  if (!bpEditing.value) return
+  navigator.clipboard.writeText(JSON.stringify(bpEditing.value, null, 2))
+}
 
 const stats = computed(() => {
   const s = scenes.value
@@ -706,7 +1001,7 @@ function deleteSceneFromDup(id: string) {
 }
 
   function charIcon(v: string) { return v==='nene'?'宁':v==='natsume'?'夏':v==='triad'||v==='both'?'双':'—' }
-function charLabel(v: string) { return v==='nene'?'宁宁':v==='natsume'?'夏目':v==='triad'||v==='both'?'双人':v||'—' }
+function charLabel(v: string | undefined) { return v==='nene'?'宁宁':v==='natsume'?'夏目':v==='triad'||v==='both'?'双人':(v || '—') }
 function errorMessage(error: unknown, fallback: string) {
   if (error instanceof Error && error.message) return error.message
   const text = String(error ?? '').trim()
@@ -723,6 +1018,7 @@ function markDirty(message: string) {
 }
 
 useFocusTrap(modalEl, () => editing.value !== null, { onEscape: closeModal })
+useFocusTrap(bpModalEl, () => bpEditing.value !== null, { onEscape: closeBlueprintModal })
 
 function esc(s: string) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 
@@ -756,6 +1052,7 @@ async function loadFromStore(force = false) {
     if (!Array.isArray(sceneStore.scenes)) throw new Error('scenes.json 格式错误')
     // 同样不能 structuredClone reactive proxy，数据源本身是 JSON。
     scenes.value = JSON.parse(JSON.stringify(sceneStore.scenes)) as SceneDraft[]
+    blueprints.value = JSON.parse(JSON.stringify(sceneStore.sceneBlueprints)) as SceneBlueprint[]
     tags.value = JSON.parse(JSON.stringify(sceneStore.tags)) as TagRecord[]
     curation.value = JSON.parse(JSON.stringify(sceneStore.curation)) as CurationData
     loadError.value = ''
@@ -912,6 +1209,7 @@ tr:hover td { background:var(--bg-elevated); }
 .input.invalid { border-color:var(--danger-text); box-shadow:0 0 0 2px color-mix(in srgb,var(--danger) 22%,transparent); }
 .filter-select { padding:var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font-size:var(--fs-body-sm); width:100%; }
 .form-hint { color:var(--danger-text); font-size:var(--fs-label-sm); margin:0 0 var(--s-3); }
+.form-check { display:flex; align-items:center; gap:var(--s-2); }
 .modal-actions { display:flex; gap:var(--s-2); margin-top:var(--s-2); flex-wrap:wrap; }
 .search-hl { background:color-mix(in srgb,var(--accent) 22%,transparent); color:var(--accent); padding:0 2px; border-radius:var(--r-xs); }
 @media(max-width:680px) { .form-grid { grid-template-columns:1fr; } .sm-head { flex-direction:column; } }

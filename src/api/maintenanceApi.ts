@@ -12,6 +12,7 @@ import type {
   ShowcaseSaveResult,
   TagRecord,
 } from '../types/api.ts'
+import type { SceneBlueprint } from '../utils/popularContent.ts'
 
 export const MAINTENANCE_API_TIMEOUTS = {
   query: 10_000,
@@ -29,6 +30,8 @@ export interface SaveScenesPayload {
   scenes: SceneDraft[]
   tags: TagRecord[]
   curation: CurationData
+  /** 可选：热门角色蓝图（scene-blueprints.json），传入时随场景一起保存并跑内容契约校验。 */
+  blueprints?: SceneBlueprint[]
 }
 
 export interface SaveShowcasePayload {
