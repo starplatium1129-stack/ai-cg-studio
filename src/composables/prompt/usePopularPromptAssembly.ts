@@ -100,7 +100,7 @@ export function usePopularPromptAssembly(
       visualDescription: pb.visualDescription,
       style: resolvedStyle.value,
       artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),
-      artistProse: artistStyleProse(activeArtistStyleIds.value),
+      artistProse: artistStyleProse(activeArtistStyleIds.value, engine.value),
     })
   })
 

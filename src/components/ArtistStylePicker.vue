@@ -119,6 +119,7 @@ import {
   type ArtistStyleVerification,
   ARTIST_COMBO_PRESETS,
   ARTIST_CATEGORIES,
+  artistStyleProse,
 } from '@/config/artistStyles'
 import { ARTIST_STYLE_OPTIONS } from '@/config/artistStyleCatalog'
 
@@ -162,7 +163,7 @@ const engineLabel = computed(() => props.engine === 'sd' ? 'WAI / Illustrious' :
 const modelTokens = computed(() => {
   if (!selectedOptions.value.length) return ''
   if (props.engine === 'krea2') {
-    return `with visual styling inspired by ${selectedOptions.value.map(option => option.name).join(' and ')}`
+    return artistStyleProse(props.selected, 'krea2')
   }
   return selectedOptions.value.map(option => props.engine === 'anima' ? option.animaTag : option.waiTag).join(', ')
 })

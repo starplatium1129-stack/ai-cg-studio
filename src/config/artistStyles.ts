@@ -1,5 +1,5 @@
 import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
+import { resolveDrawCapabilities } from '../utils/drawCapabilities.ts'
 
 // Curated artist tags verified against the current Danbooru artist records and
 // the Illustrious/Anima model tag indexes. WAI consumes canonical Danbooru tags;
@@ -91,9 +91,59 @@ export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleE
     : id)
 }
 
-export function artistStyleProse(ids: readonly string[]): string {
-  const names = normalizeArtistStyleIds(ids).map(artistDisplayName)
-  if (!names.length) return ''
+/**
+ * Krea2 自然语言风格描述表：Danbooru 画师 tag 对 Krea2 无效，
+ * 这里把画师风格转成 Krea2 能理解的英文散文风格描述。
+ * 未收录的画师会退回 `in the style of {name}`。
+ */
+const KREA_ARTIST_PROSE: Record<string, string> = {
+  yoneyama_mai: 'cinematic anime illustration with flowing dynamic lines, expressive mood lighting, and a film-like color palette',
+  rella: 'ethereal anime illustration with dreamy night glow, luminous colors, and cinematic lighting',
+  swav: 'high-impact fantasy poster art with magical lighting and strong spatial depth',
+  kantoku: 'clear and soft Japanese anime style with gentle sunlight, clean lines, and cute girls',
+  momoco_haru: 'light novel illustration with glossy watery eyes, bright fair skin, and lively youthful charm',
+  ponkan8: 'clear watercolor cel style with bright youthful spring atmosphere',
+  shirotaka: 'delicate fantasy adventure illustration with soft watery highlights and refined detail',
+  abe_tsukasa: 'classical cinematic fantasy illustration with dignified composition and quiet atmosphere',
+  fujiwara_cocoa: 'gothic cool moe style with clean elegant lines and a touch of mystery',
+  kazutake_hazano: 'warm healing illustration with gentle holy soft lines and comforting atmosphere',
+  azuuru: 'ethereal watercolor style with translucent hair and a wandering traveler mood',
+  'hiten_(hitenkei)': 'soft light Japanese illustration with refined features and clear healing air',
+  tiv: 'light novel cover style with delicate ambient light and flowing hair',
+  anmi: 'light macaron pastel watercolor style with graceful elegant figures',
+  tsunako: 'bright cute anime girl style with vivid colors and energetic charm',
+  morikura_en: 'bright commercial character art with natural everyday light and energetic mood',
+  paryi: 'popular beautiful girl illustration with silky hair and bright clear eyes',
+  muririn: 'Yuzusoft-style bright cel shading with rounded faces and clear transparent skin',
+  kobuichi: 'Yuzusoft-style crisp cel art with clean outlines and vivid colors',
+  nekotomi_chao: 'Doga Kobo-style lively delicate cel shading with expressive fine lines',
+  atdan: 'pure adult-oriented anime style with delicate skin and shy expressions',
+  jazz_jack: 'refreshing energetic anime style with clean lines and lively girls',
+  hisasi: 'classic adult-oriented soft coloring with sweet shy atmosphere',
+  suimya: 'soft erotic atmosphere with moist glossy highlights and lazy intimate mood',
+  'lam_(ramdayo)': 'highly saturated neon trendy illustration with bold eye makeup and graphic composition',
+  mika_pikazo: 'vivid pop art anime style with bold geometric color blocking and energetic vibes',
+  bunbun: 'dynamic game key visual style with clear costume design and action pose',
+  fujimoto_tatsuki: 'raw cinematic manga style with rough textures and intense emotional tension',
+  takeuchi_takashi: 'TYPE-MOON style dignified anime illustration with sharp determined eyes and iconic servant designs',
+  shirabi: 'bold dramatic anime illustration with strong outlines and theatrical lighting',
+  'ask_(askzy)': 'cool noble anime illustration with silky smooth coloring and restrained elegance',
+  hxxg: 'dynamic wide-angle perspective with colorful special effects and deep spatial composition',
+  nardack: 'jewel-toned fantasy illustration with luxurious costumes and sparkling details',
+  fuzichoco: 'ornate Japanese fantasy style with layered watercolor and decorative details',
+  lack: 'rich fantasy thick painting with mature heavy colors and epic atmosphere',
+  'so-bin': 'dark gothic oil painting style with heavy fabrics and solemn epic mood',
+  kousaki_rui: 'refined elegant FGO-style illustration with graceful coloring and majestic atmosphere',
+  xinzoruo: 'seductive dark anime style with deep chiaroscuro and dangerous atmosphere',
+}
+
+export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {
+  const normalized = normalizeArtistStyleIds(ids)
+  if (!normalized.length) return ''
+  if (engine === 'krea2') {
+    return normalized.map(id => KREA_ARTIST_PROSE[id] || `in the style of ${artistDisplayName(id)}`).join(', ')
+  }
+  const names = normalized.map(artistDisplayName)
   const joined = names.length === 1 ? names[0] : `${names[0]} and ${names[1]}`
   return `with visual styling inspired by ${joined}`
 }

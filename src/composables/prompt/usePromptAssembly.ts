@@ -186,7 +186,7 @@ export function usePromptAssembly(
   const format = (text: string) => formatPromptForProfile(text, modelProfile.value, engine.value)
   const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
   const artistTags = computed(() => artistTagsForEngine(activeArtistStyleIds.value, engine.value))
-  const artistProse = computed(() => artistStyleProse(activeArtistStyleIds.value))
+  const artistProse = computed(() => artistStyleProse(activeArtistStyleIds.value, engine.value))
 
   /** 分块 parts：同序同类输出，供预览、健康检查与 SD 请求共用。 */
   const promptParts = computed<PromptPart[]>(() => {

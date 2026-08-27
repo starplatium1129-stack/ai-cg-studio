@@ -89,6 +89,10 @@ test('artist style catalog is unique, allowlisted, limited, and model-native', (
   assert.strictEqual(artistStyles.artistStyleProse(['bunbun', 'rella']), 'with visual styling inspired by Bunbun and Rella');
   assert.strictEqual(artistStyles.artistStyleProse(['yoneyama_mai', 'lack']), 'with visual styling inspired by Yoneyama Mai and Lack');
   assert.strictEqual(artistStyles.artistStyleProse(['azuuru', 'rella']), 'with visual styling inspired by Azure and Rella');
+  // Krea2 不识别 Danbooru tag，必须输出自然语言风格描述而非 @tag / 下划线。
+  const kreaProse = artistStyles.artistStyleProse(['muririn', 'kobuichi'], 'krea2');
+  assert.ok(kreaProse.includes('Yuzusoft-style'), 'Krea2 prose must use natural style descriptors');
+  assert.ok(!kreaProse.includes('@') && !kreaProse.includes('_'), 'Krea2 prose must not contain Danbooru tag syntax');
   assert.deepStrictEqual(ids.filter(id => artistStyles.normalizeArtistStyleIds([id]).length !== 1), []);
   assert.deepStrictEqual(
     artistCatalog.ARTIST_STYLE_OPTIONS.filter(option => option.verification === 'project').map(option => option.id),
@@ -257,7 +261,7 @@ test('Anima rating and controls remain aligned without safe/R18 contradiction', 
 });
 
 test('Anima profiles do not bind one character and LoRA contracts own exact controls from the selected service LoRA id', () => {
-  const assemblySource = fs.readFileSync(path.join(__dirname, '../../src/composables/usePromptAssembly.ts'), 'utf8');
+  const assemblySource = fs.readFileSync(path.join(__dirname, '../../src/composables/prompt/usePromptAssembly.ts'), 'utf8');
   assert(assemblySource.includes('selectedLoraId.value'), 'assembly must resolve the contract from the selected service LoRA id');
   assert(assemblySource.includes("pb.char === 'triad' ? '' : String(selectedLoraId.value || '')"));
   assert(!assemblySource.includes('Object.values(controlLoraIds.value)'));
