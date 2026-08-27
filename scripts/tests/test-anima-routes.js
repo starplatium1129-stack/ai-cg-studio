@@ -245,6 +245,8 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     var jobId = created.json.job.id;
 
     var state = await mockState(comfy.port);
+    var freeCalls = state.calls.filter(function (call) { return call.path === '/free'; });
+    assert.strictEqual(freeCalls.length, 2, 'Anima ⇄ Krea2 family switches must unload Comfy models only when crossing families');
     var promptCalls = state.calls.filter(function (call) { return call.path === '/prompt'; });
     assert.strictEqual(promptCalls.length, 5, 'base + krea + enhanced krea + two Yume must each reach Comfy once');
     var yumePromptCalls = promptCalls.filter(function (call) { return call.body.prompt['1'].inputs.unet_name === 'AnimaYume_v10_final_base.safetensors'; });

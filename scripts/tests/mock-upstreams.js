@@ -274,6 +274,10 @@ function createComfyMock() {
       return sendJson(res, 200, { deleted:deleted });
     }
 
+    if (ctx.path === '/free' && ctx.req.method === 'POST') {
+      return sendJson(res, 200, { unload_models: true, free_memory: true });
+    }
+
     var cancelMatch = ctx.path.match(/^\/api\/jobs\/([^/]+)\/cancel$/);
     if (cancelMatch && ctx.req.method === 'POST') {
       if (faults.cancelStatus) return sendJson(res, Number(faults.cancelStatus), { error:'mock cancel failure' });

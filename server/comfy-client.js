@@ -156,6 +156,23 @@ function ownedPromptIds(queue, clientId) {
 }
 
 /**
+ * 释放 ComfyUI 已加载模型与显存缓存（防双底模共存爆显存）。
+ * ComfyUI POST /free 会设置 unload_models/free_memory 标志，worker 在
+ * 当前任务结束后统一 unload_all_models + soft_empty_cache。失败静默降级，
+ * 不影响出图主链路（旧版 ComfyUI / 未就绪时保持原行为）。
+ */
+async function unloadComfyModels(config) {
+  try {
+    await requestComfyJson(config, 'POST', '/free', {
+      unload_models: true,
+      free_memory: true
+    }, 8000);
+  } catch (error) {
+    // 非致命：显存保护是尽力而为，不能因为卸载接口失败挡住出图。
+  }
+}
+
+/**
  * 启动清理：取消属于本网关（client_id 匹配）但已无人跟踪的遗留任务。
  * 返回实际取消的 prompt_id 列表；任何一步失败都静默跳过。
  */
@@ -202,6 +219,7 @@ module.exports = {
   clientIdFor: clientIdFor,
   cancelOrphanPrompts: cancelOrphanPrompts,
   sweepOrphanPromptsAfterStart: sweepOrphanPromptsAfterStart,
+  unloadComfyModels: unloadComfyModels,
   requestComfy: requestComfy,
   requestComfyJson: requestComfyJson,
 };
