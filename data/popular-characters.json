@@ -5645,23 +5645,34 @@
         "trinity",
         "tea party"
       ],
-      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and a member of the Tea Party, a graceful but airheaded young lady with long pink hair in a bun with a plant hair ornament, golden eyes, small angel-like wings, wearing a sleeveless dress with white tights and high heels",
+      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate glowing pink starburst halo, white feathered angel wings adorned with gold star brooches and dangling golden tassels, and sparkling golden eyes with star-shaped pupils",
       "identityTokens": [
         "misono_mika",
         "1girl",
         "solo",
         "pink_hair",
-        "golden_eyes",
+        "very_long_hair",
+        "multicolored_hair",
+        "inner_hair_pastel_galaxy_gradient",
+        "starry_hair",
+        "side_bun",
         "hair_bun",
-        "hair_ornament",
-        "wings",
-        "sleeveless_dress",
-        "white_tights",
-        "high_heels",
+        "plant_hair_ornament",
+        "hair_flower",
+        "halo",
+        "pink_halo",
+        "star_halo",
+        "angel_wings",
+        "white_wings",
+        "feathered_wings",
+        "wings_with_gold_star_brooches",
+        "golden_eyes",
+        "starry_eyes",
+        "star-shaped_pupils",
+        "gentle_smile",
+        "blush",
         "trinity",
-        "blue_archive",
-        "tea_party",
-        "blush"
+        "blue_archive"
       ],
       "exactTokens": [
         "misono_mika"
@@ -5679,18 +5690,20 @@
         {
           "id": "trinity_uniform",
           "name": "崔尼蒂校服",
-          "prose": "Trinity school uniform with a sleeveless white blouse, red ribbon, pleated skirt, white tights and high heels, plus small angel wings and a bun with a plant hair ornament",
+          "prose": "Trinity tea party school uniform with a sleeveless white collared dress, royal red ribbon tie, white fur-trimmed shoulder capelet draped over shoulders, pleated skirt with red trim slit, white pantyhose tights and strap high heels",
           "tokens": [
             "school_uniform",
-            "sleeveless_blouse",
+            "sleeveless_dress",
+            "white_dress",
             "red_ribbon",
+            "capelet",
+            "shoulder_cape",
             "pleated_skirt",
             "white_tights",
+            "pantyhose",
             "high_heels",
-            "wings",
-            "hair_bun",
-            "hair_ornament",
-            "trinity"
+            "trinity",
+            "tea_party"
           ],
           "default": true,
           "isDefault": true
@@ -5698,17 +5711,18 @@
         {
           "id": "tea_party_dress",
           "name": "茶话会礼装",
-          "prose": "an elegant sleeveless white tea party dress with golden trim, white tights, high heels, wings and a bun with a plant hair ornament",
+          "prose": "an exquisite royal white tea party ballgown adorned with intricate golden filigree trim, white silk shawl, white evening gloves, white tights, golden high heels, regal Trinity princess elegance",
           "tokens": [
-            "sleeveless_dress",
+            "ballgown",
             "white_dress",
+            "sleeveless_dress",
             "golden_trim",
+            "gold_embroidery",
+            "white_gloves",
             "white_tights",
             "high_heels",
-            "wings",
-            "hair_bun",
-            "hair_ornament",
-            "elegant"
+            "elegant",
+            "regal"
           ],
           "default": false,
           "isDefault": false
@@ -5716,14 +5730,16 @@
         {
           "id": "casual_pink",
           "name": "日常便服",
-          "prose": "a soft pink sleeveless dress with a white cardigan, white tights and flats, light and gentle everyday look",
+          "prose": "a lovely pastel pink sleeveless sundress with delicate white lace trim, an ivory knitted cardigan loosely worn over shoulders, white flats, sweet gentle dating atmosphere",
           "tokens": [
-            "sleeveless_dress",
+            "casual",
             "pink_dress",
+            "sundress",
             "white_cardigan",
+            "knit_cardigan",
             "white_tights",
             "flats",
-            "casual"
+            "lace_trim"
           ],
           "default": false,
           "isDefault": false
@@ -5731,15 +5747,16 @@
         {
           "id": "swimsuit",
           "name": "夏日泳装",
-          "prose": "a white and pink frilled one-piece swimsuit with a small sun hat, elegant summer look",
+          "prose": "a charming white and soft pink frilled two-piece bikini with a sheer pastel pareo wrap, sun visor hat, tropical seaside resort atmosphere",
           "tokens": [
             "swimsuit",
-            "one-piece_swimsuit",
+            "bikini",
             "white_swimsuit",
             "pink_swimsuit",
             "frills",
-            "sun_hat",
-            "summer"
+            "pareo",
+            "summer",
+            "beach"
           ],
           "default": false,
           "isDefault": false
@@ -5767,23 +5784,38 @@
         "gehenna",
         "disciplinary committee"
       ],
-      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a small and serious girl with white hair, purple eyes, a half ponytail and small bat-like wings, wearing the Gehenna military-style disciplinary uniform with long boots and over-knee socks",
+      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate spiked purple halo, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
       "identityTokens": [
         "sorasaki_hina",
         "1girl",
         "solo",
-        "white_hair",
+        "horns",
+        "small_horns",
+        "black_horns",
+        "curved_horns",
+        "demon_horns",
+        "halo",
+        "purple_halo",
+        "spiked_halo",
+        "bat_wings",
+        "demon_wings",
+        "black_wings",
+        "very_long_hair",
+        "massive_hair",
+        "fluffy_hair",
+        "hair_down",
+        "parted_bangs",
+        "silver_hair",
         "purple_eyes",
-        "half_ponytail",
+        "sleepy_eyes",
+        "serious_expression",
+        "petite",
+        "flat_chest",
+        "slender",
         "small_stature",
-        "military_uniform",
-        "long_boots",
-        "over_knee_socks",
-        "wings",
+        "blush",
         "gehenna",
-        "blue_archive",
-        "serious",
-        "blush"
+        "blue_archive"
       ],
       "exactTokens": [
         "sorasaki_hina"
@@ -5801,17 +5833,23 @@
         {
           "id": "gehenna_uniform",
           "name": "风纪委员制服",
-          "prose": "Gehenna Academy Disciplinary Committee military uniform with a half ponytail, long boots, over-knee socks, small bat-like wings and a red armband",
+          "prose": "Gehenna Academy Disciplinary Committee military uniform with an oversized black trench coat with gold epaulettes draped over shoulders like a cape, white collared shirt, black necktie, black vest, red disciplinary armband, black pleated skirt, over-knee socks and lace-up boots",
           "tokens": [
             "military_uniform",
             "black_uniform",
-            "red_accents",
+            "black_coat",
+            "coat_on_shoulders",
+            "epaulettes",
+            "white_shirt",
+            "black_necktie",
+            "black_vest",
             "armband",
-            "long_boots",
-            "over_knee_socks",
-            "wings",
-            "half_ponytail",
-            "gehenna"
+            "red_armband",
+            "black_skirt",
+            "pleated_skirt",
+            "thighhighs",
+            "over-knee_socks",
+            "boots"
           ],
           "default": true,
           "isDefault": true
@@ -5819,13 +5857,16 @@
         {
           "id": "casual_black",
           "name": "日常黑裙",
-          "prose": "a simple black one-piece dress with a red ribbon and black tights, quiet and refined",
+          "prose": "a refined casual black gothic dress with red ribbon trim, dark stockings and Mary Jane shoes, quiet and delicate private look",
           "tokens": [
             "dress",
             "black_dress",
             "red_ribbon",
+            "ribbon_trim",
             "black_tights",
-            "refined"
+            "mary_janes",
+            "refined",
+            "casual"
           ],
           "default": false,
           "isDefault": false
@@ -5833,30 +5874,34 @@
         {
           "id": "combat_gear",
           "name": "战术风纪装",
-          "prose": "tactical disciplinary combat gear with a black jacket, holster belt, fingerless gloves and combat boots",
+          "prose": "tactical disciplinary combat gear with a fitted black tactical jacket, combat webbing harness, ammo pouches, holster belt, fingerless combat gloves, tactical combat boots, MG42 machine gun aesthetic",
           "tokens": [
             "tactical_gear",
             "black_jacket",
+            "tactical_harness",
             "holster",
             "belt",
+            "pouches",
             "fingerless_gloves",
-            "combat_boots"
+            "combat_boots",
+            "military"
           ],
           "default": false,
           "isDefault": false
         },
         {
           "id": "swimsuit",
-          "name": "死库水泳装",
-          "prose": "a classic dark school swimsuit (sukumizu) with sandals and a swim ring, white hair tied in a small bun",
+          "name": "夏日泳装 / 死库水",
+          "prose": "summer swimsuit, dark navy blue two-piece swimsuit with white ruffled trim, swim ring with cute Gehenna devil motif, sandals, relaxed beach posture",
           "tokens": [
-            "school_swimsuit",
-            "sukumizu",
-            "dark_swimsuit",
-            "sandals",
+            "swimsuit",
+            "two-piece_swimsuit",
+            "navy_swimsuit",
+            "frills",
             "swim_ring",
-            "small_bun",
-            "summer"
+            "sandals",
+            "summer",
+            "beach"
           ],
           "default": false,
           "isDefault": false
@@ -5864,16 +5909,18 @@
         {
           "id": "evening_dress",
           "name": "晚礼服",
-          "prose": "an elegant evening dress with long gloves, purple tights, high heels, updo, earrings and a necklace, mature formal look",
+          "prose": "an elegant strapless black evening ballgown with ruffled hem, long black opera gloves, black ribbon corsage in hair, pearl necklace, high heels, grand piano recital aesthetic",
           "tokens": [
             "evening_dress",
-            "long_gloves",
-            "purple_tights",
+            "black_dress",
+            "strapless_dress",
+            "ruffles",
+            "opera_gloves",
+            "black_gloves",
+            "pearl_necklace",
             "high_heels",
-            "updo",
-            "earrings",
-            "necklace",
-            "formal"
+            "formal",
+            "elegant"
           ],
           "default": false,
           "isDefault": false
@@ -5902,22 +5949,26 @@
         "sweets club",
         "sugar rush"
       ],
-      "identityProse": "Kyouyama Kazusa from Blue Archive, a first-year student at Trinity Comprehensive Academy and a member of the after-school Sweets Club, vocalist and bassist of the band SugarRush, a quiet girl with black hair, pink eyes, a hood with cat-ear-like shapes, a small collar and black tights, sometimes flustered but earnest",
+      "identityProse": "Kyouyama Kazusa from Blue Archive, a first-year student at Trinity Comprehensive Academy and a member of the after-school Sweets Club, vocalist and bassist of the band SugarRush, a quiet cat-eared girl with short black bob hair, pink eyes, pointed spiked red halo with cross and ring, and sweet blush",
       "identityTokens": [
         "kyouyama_kazusa",
         "1girl",
         "solo",
         "black_hair",
+        "short_hair",
+        "bob_cut",
+        "black_cat_ears",
+        "animal_ears",
+        "no_human_ears",
         "pink_eyes",
-        "cat_ears",
-        "hood",
-        "school_uniform",
+        "pointed_spiked_red_halo_with_cross_and_ring",
+        "jagged_red_halo",
         "trinity",
         "blue_archive",
         "sweets_club",
         "bass",
         "singer",
-        "black_tights",
+        "sweet_shy_expression",
         "blush"
       ],
       "exactTokens": [
@@ -6027,22 +6078,23 @@
         "millennium",
         "blue archive"
       ],
-      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit with the codename Zero Four, a cool and slightly airheaded girl with blonde hair, blue eyes, wearing a high-cut maid combat suit with a headset, thigh-high boots and small armor accents",
+      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit Zero Four, a cool deadpan girl with champagne blonde hair, sharp ice blue eyes, tactical headset with boom mic, and blue geometric HUD halo",
       "identityTokens": [
         "asuma_toki",
         "1girl",
         "solo",
         "blonde_hair",
+        "champagne_blonde_hair",
+        "very_long_hair",
+        "sharp_ice_blue_eyes",
         "blue_eyes",
-        "maid",
-        "combat_suit",
-        "headset",
-        "thighhigh_boots",
+        "expressionless",
+        "deadpan_gaze",
+        "tactical_headset_with_boom_mic",
+        "blue_geometric_hud_halo",
         "millennium",
         "c&c",
-        "blue_archive",
-        "high_cut",
-        "armor"
+        "blue_archive"
       ],
       "exactTokens": [
         "asuma_toki"
@@ -6143,24 +6195,23 @@
         "seminar",
         "blue archive"
       ],
-      "identityProse": "Tsukatsuki Rio from Blue Archive, a third-year student at Millennium Science School and a key figure of the Seminar student council, a tall confident girl with long black hair, red eyes, wearing the Millennium uniform with a high-neck sweater, pleated skirt, black tights and high heels, sometimes with a winter coat and gloves",
+      "identityProse": "Tsukatsuki Rio from Blue Archive, the President of Millennium Science School's Seminar student council, a tall commanding mature beauty with sleek black hime-cut straight hair, sharp crimson eyes, and deep red diamond matrix halo",
       "identityTokens": [
         "tsukatsuki_rio",
         "1girl",
         "solo",
         "black_hair",
-        "long_hair",
+        "very_long_straight_hair",
+        "hime_cut",
+        "neat_bangs",
+        "sharp_red_eyes",
         "red_eyes",
-        "school_uniform",
-        "high_neck_sweater",
-        "pleated_skirt",
-        "black_tights",
-        "high_heels",
+        "tall_slender_mature_elegance",
+        "cool_beauty",
+        "deep_red_diamond_matrix_halo",
         "millennium",
         "seminar",
-        "blue_archive",
-        "hairpin",
-        "watch"
+        "blue_archive"
       ],
       "exactTokens": [
         "tsukatsuki_rio"

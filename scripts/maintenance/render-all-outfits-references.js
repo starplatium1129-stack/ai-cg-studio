@@ -17,7 +17,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
 const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
-const BASE = 'http://127.0.0.1:3000';
+const BASE = process.env.GATEWAY_URL || process.env.BASE || 'http://127.0.0.1:3123';
 const CONCURRENCY = 3;
 
 const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));

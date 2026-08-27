@@ -17653,14 +17653,14 @@
     "characterId": "misono_mika",
     "displayName": "圣园未花",
     "source": "Blue Archive",
-    "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and a member of the Tea Party, a graceful but airheaded young lady with long pink hair in a bun with a plant hair ornament, golden eyes, small angel-like wings, wearing a sleeveless dress with white tights and high heels",
+    "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate glowing pink starburst halo, white feathered angel wings adorned with gold star brooches and dangling golden tassels, and sparkling golden eyes with star-shaped pupils",
     "outfits": [
       {
         "outfitId": "trinity_uniform",
         "outfitName": "崔尼蒂校服",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "Trinity school uniform with a sleeveless white blouse, red ribbon, pleated skirt, white tights and high heels, plus small angel wings and a bun with a plant hair ornament",
+        "prose": "Trinity tea party school uniform with a sleeveless white collared dress, royal red ribbon tie, white fur-trimmed shoulder capelet draped over shoulders, pleated skirt with red trim slit, white pantyhose tights and strap high heels",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -17725,7 +17725,7 @@
         "outfitName": "茶话会礼装",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "an elegant sleeveless white tea party dress with golden trim, white tights, high heels, wings and a bun with a plant hair ornament",
+        "prose": "an exquisite royal white tea party ballgown adorned with intricate golden filigree trim, white silk shawl, white evening gloves, white tights, golden high heels, regal Trinity princess elegance",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -17790,7 +17790,7 @@
         "outfitName": "日常便服",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "a soft pink sleeveless dress with a white cardigan, white tights and flats, light and gentle everyday look",
+        "prose": "a lovely pastel pink sleeveless sundress with delicate white lace trim, an ivory knitted cardigan loosely worn over shoulders, white flats, sweet gentle dating atmosphere",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -17855,7 +17855,7 @@
         "outfitName": "夏日泳装",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "a white and pink frilled one-piece swimsuit with a small sun hat, elegant summer look",
+        "prose": "a charming white and soft pink frilled two-piece bikini with a sheer pastel pareo wrap, sun visor hat, tropical seaside resort atmosphere",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -17986,14 +17986,14 @@
     "characterId": "sorasaki_hina",
     "displayName": "空崎日奈",
     "source": "Blue Archive",
-    "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a small and serious girl with white hair, purple eyes, a half ponytail and small bat-like wings, wearing the Gehenna military-style disciplinary uniform with long boots and over-knee socks",
+    "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate spiked purple halo, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
     "outfits": [
       {
         "outfitId": "gehenna_uniform",
         "outfitName": "风纪委员制服",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "Gehenna Academy Disciplinary Committee military uniform with a half ponytail, long boots, over-knee socks, small bat-like wings and a red armband",
+        "prose": "Gehenna Academy Disciplinary Committee military uniform with an oversized black trench coat with gold epaulettes draped over shoulders like a cape, white collared shirt, black necktie, black vest, red disciplinary armband, black pleated skirt, over-knee socks and lace-up boots",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -18007,7 +18007,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_01_face_closeup.png"
+            "url": "/assets/character-references/sorasaki_hina/gehenna_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18021,7 +18021,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_02_half_medium.png"
+            "url": "/assets/character-references/sorasaki_hina/gehenna_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18035,7 +18035,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/sorasaki_hina/gehenna_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18049,7 +18049,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_04_back_rear.png"
+            "url": "/assets/character-references/sorasaki_hina/gehenna_uniform/ref_04_back_rear.png"
           }
         ]
       },
@@ -18058,7 +18058,7 @@
         "outfitName": "日常黑裙",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "a simple black one-piece dress with a red ribbon and black tights, quiet and refined",
+        "prose": "a refined casual black gothic dress with red ribbon trim, dark stockings and Mary Jane shoes, quiet and delicate private look",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -18072,7 +18072,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_01_face_closeup.png"
+            "url": "/assets/character-references/sorasaki_hina/casual_black/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18086,7 +18086,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_02_half_medium.png"
+            "url": "/assets/character-references/sorasaki_hina/casual_black/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18100,7 +18100,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/sorasaki_hina/casual_black/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18114,7 +18114,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_04_back_rear.png"
+            "url": "/assets/character-references/sorasaki_hina/casual_black/ref_04_back_rear.png"
           }
         ]
       },
@@ -18123,7 +18123,7 @@
         "outfitName": "战术风纪装",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "tactical disciplinary combat gear with a black jacket, holster belt, fingerless gloves and combat boots",
+        "prose": "tactical disciplinary combat gear with a fitted black tactical jacket, combat webbing harness, ammo pouches, holster belt, fingerless combat gloves, tactical combat boots, MG42 machine gun aesthetic",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -18137,7 +18137,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_01_face_closeup.png"
+            "url": "/assets/character-references/sorasaki_hina/combat_gear/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18151,7 +18151,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_02_half_medium.png"
+            "url": "/assets/character-references/sorasaki_hina/combat_gear/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18165,7 +18165,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/sorasaki_hina/combat_gear/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18179,16 +18179,16 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_04_back_rear.png"
+            "url": "/assets/character-references/sorasaki_hina/combat_gear/ref_04_back_rear.png"
           }
         ]
       },
       {
         "outfitId": "swimsuit",
-        "outfitName": "死库水泳装",
+        "outfitName": "夏日泳装 / 死库水",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "a classic dark school swimsuit (sukumizu) with sandals and a swim ring, white hair tied in a small bun",
+        "prose": "summer swimsuit, dark navy blue two-piece swimsuit with white ruffled trim, swim ring with cute Gehenna devil motif, sandals, relaxed beach posture",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -18202,7 +18202,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_01_face_closeup.png"
+            "url": "/assets/character-references/sorasaki_hina/swimsuit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18216,7 +18216,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_02_half_medium.png"
+            "url": "/assets/character-references/sorasaki_hina/swimsuit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18230,7 +18230,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/sorasaki_hina/swimsuit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18244,7 +18244,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_04_back_rear.png"
+            "url": "/assets/character-references/sorasaki_hina/swimsuit/ref_04_back_rear.png"
           }
         ]
       },
@@ -18253,7 +18253,7 @@
         "outfitName": "晚礼服",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "an elegant evening dress with long gloves, purple tights, high heels, updo, earrings and a necklace, mature formal look",
+        "prose": "an elegant strapless black evening ballgown with ruffled hem, long black opera gloves, black ribbon corsage in hair, pearl necklace, high heels, grand piano recital aesthetic",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -18267,7 +18267,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_01_face_closeup.png"
+            "url": "/assets/character-references/sorasaki_hina/evening_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18281,7 +18281,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_02_half_medium.png"
+            "url": "/assets/character-references/sorasaki_hina/evening_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18295,7 +18295,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/sorasaki_hina/evening_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18309,7 +18309,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_04_back_rear.png"
+            "url": "/assets/character-references/sorasaki_hina/evening_dress/ref_04_back_rear.png"
           }
         ]
       },
@@ -18332,7 +18332,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_01_face_closeup.png"
+            "url": "/assets/character-references/sorasaki_hina/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18346,7 +18346,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_02_half_medium.png"
+            "url": "/assets/character-references/sorasaki_hina/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18360,7 +18360,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/sorasaki_hina/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18374,7 +18374,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/sorasaki_hina/ref_04_back_rear.png"
+            "url": "/assets/character-references/sorasaki_hina/nsfw_nude/ref_04_back_rear.png"
           }
         ]
       }
@@ -18405,7 +18405,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_01_face_closeup.png"
+            "url": "/assets/character-references/kyouyama_kazusa/trinity_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18419,7 +18419,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_02_half_medium.png"
+            "url": "/assets/character-references/kyouyama_kazusa/trinity_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18433,7 +18433,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/kyouyama_kazusa/trinity_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18447,7 +18447,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_04_back_rear.png"
+            "url": "/assets/character-references/kyouyama_kazusa/trinity_uniform/ref_04_back_rear.png"
           }
         ]
       },
@@ -18470,7 +18470,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_01_face_closeup.png"
+            "url": "/assets/character-references/kyouyama_kazusa/sweets_apron/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18484,7 +18484,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_02_half_medium.png"
+            "url": "/assets/character-references/kyouyama_kazusa/sweets_apron/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18498,7 +18498,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/kyouyama_kazusa/sweets_apron/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18512,7 +18512,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_04_back_rear.png"
+            "url": "/assets/character-references/kyouyama_kazusa/sweets_apron/ref_04_back_rear.png"
           }
         ]
       },
@@ -18535,7 +18535,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_01_face_closeup.png"
+            "url": "/assets/character-references/kyouyama_kazusa/live_stage/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18549,7 +18549,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_02_half_medium.png"
+            "url": "/assets/character-references/kyouyama_kazusa/live_stage/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18563,7 +18563,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/kyouyama_kazusa/live_stage/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18577,7 +18577,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_04_back_rear.png"
+            "url": "/assets/character-references/kyouyama_kazusa/live_stage/ref_04_back_rear.png"
           }
         ]
       },
@@ -18600,7 +18600,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_01_face_closeup.png"
+            "url": "/assets/character-references/kyouyama_kazusa/swimsuit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18614,7 +18614,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_02_half_medium.png"
+            "url": "/assets/character-references/kyouyama_kazusa/swimsuit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18628,7 +18628,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/kyouyama_kazusa/swimsuit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18642,7 +18642,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_04_back_rear.png"
+            "url": "/assets/character-references/kyouyama_kazusa/swimsuit/ref_04_back_rear.png"
           }
         ]
       },
@@ -18665,7 +18665,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_01_face_closeup.png"
+            "url": "/assets/character-references/kyouyama_kazusa/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18679,7 +18679,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_02_half_medium.png"
+            "url": "/assets/character-references/kyouyama_kazusa/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18693,7 +18693,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/kyouyama_kazusa/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18707,7 +18707,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/kyouyama_kazusa/ref_04_back_rear.png"
+            "url": "/assets/character-references/kyouyama_kazusa/nsfw_nude/ref_04_back_rear.png"
           }
         ]
       }
@@ -18738,7 +18738,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/asuma_toki/ref_01_face_closeup.png"
+            "url": "/assets/character-references/asuma_toki/candc_maid/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18752,7 +18752,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/asuma_toki/ref_02_half_medium.png"
+            "url": "/assets/character-references/asuma_toki/candc_maid/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18766,7 +18766,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/asuma_toki/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/asuma_toki/candc_maid/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18780,7 +18780,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/asuma_toki/ref_04_back_rear.png"
+            "url": "/assets/character-references/asuma_toki/candc_maid/ref_04_back_rear.png"
           }
         ]
       },
@@ -18803,7 +18803,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/asuma_toki/ref_01_face_closeup.png"
+            "url": "/assets/character-references/asuma_toki/bunny_suit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18817,7 +18817,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/asuma_toki/ref_02_half_medium.png"
+            "url": "/assets/character-references/asuma_toki/bunny_suit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18831,7 +18831,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/asuma_toki/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/asuma_toki/bunny_suit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18845,7 +18845,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/asuma_toki/ref_04_back_rear.png"
+            "url": "/assets/character-references/asuma_toki/bunny_suit/ref_04_back_rear.png"
           }
         ]
       },
@@ -18868,7 +18868,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/asuma_toki/ref_01_face_closeup.png"
+            "url": "/assets/character-references/asuma_toki/casual_maid/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18882,7 +18882,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/asuma_toki/ref_02_half_medium.png"
+            "url": "/assets/character-references/asuma_toki/casual_maid/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18896,7 +18896,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/asuma_toki/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/asuma_toki/casual_maid/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18910,7 +18910,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/asuma_toki/ref_04_back_rear.png"
+            "url": "/assets/character-references/asuma_toki/casual_maid/ref_04_back_rear.png"
           }
         ]
       },
@@ -18933,7 +18933,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/asuma_toki/ref_01_face_closeup.png"
+            "url": "/assets/character-references/asuma_toki/swimsuit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -18947,7 +18947,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/asuma_toki/ref_02_half_medium.png"
+            "url": "/assets/character-references/asuma_toki/swimsuit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -18961,7 +18961,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/asuma_toki/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/asuma_toki/swimsuit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -18975,7 +18975,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/asuma_toki/ref_04_back_rear.png"
+            "url": "/assets/character-references/asuma_toki/swimsuit/ref_04_back_rear.png"
           }
         ]
       },
@@ -18998,7 +18998,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/asuma_toki/ref_01_face_closeup.png"
+            "url": "/assets/character-references/asuma_toki/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -19012,7 +19012,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/asuma_toki/ref_02_half_medium.png"
+            "url": "/assets/character-references/asuma_toki/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -19026,7 +19026,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/asuma_toki/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/asuma_toki/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -19040,7 +19040,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/asuma_toki/ref_04_back_rear.png"
+            "url": "/assets/character-references/asuma_toki/nsfw_nude/ref_04_back_rear.png"
           }
         ]
       }
@@ -19071,7 +19071,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_01_face_closeup.png"
+            "url": "/assets/character-references/tsukatsuki_rio/seminar_uniform/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -19085,7 +19085,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_02_half_medium.png"
+            "url": "/assets/character-references/tsukatsuki_rio/seminar_uniform/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -19099,7 +19099,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/tsukatsuki_rio/seminar_uniform/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -19113,7 +19113,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_04_back_rear.png"
+            "url": "/assets/character-references/tsukatsuki_rio/seminar_uniform/ref_04_back_rear.png"
           }
         ]
       },
@@ -19136,7 +19136,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_01_face_closeup.png"
+            "url": "/assets/character-references/tsukatsuki_rio/winter_coat/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -19150,7 +19150,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_02_half_medium.png"
+            "url": "/assets/character-references/tsukatsuki_rio/winter_coat/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -19164,7 +19164,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/tsukatsuki_rio/winter_coat/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -19178,7 +19178,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_04_back_rear.png"
+            "url": "/assets/character-references/tsukatsuki_rio/winter_coat/ref_04_back_rear.png"
           }
         ]
       },
@@ -19201,7 +19201,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_01_face_closeup.png"
+            "url": "/assets/character-references/tsukatsuki_rio/formal_dress/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -19215,7 +19215,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_02_half_medium.png"
+            "url": "/assets/character-references/tsukatsuki_rio/formal_dress/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -19229,7 +19229,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/tsukatsuki_rio/formal_dress/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -19243,7 +19243,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_04_back_rear.png"
+            "url": "/assets/character-references/tsukatsuki_rio/formal_dress/ref_04_back_rear.png"
           }
         ]
       },
@@ -19266,7 +19266,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_01_face_closeup.png"
+            "url": "/assets/character-references/tsukatsuki_rio/swimsuit/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -19280,7 +19280,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_02_half_medium.png"
+            "url": "/assets/character-references/tsukatsuki_rio/swimsuit/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -19294,7 +19294,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/tsukatsuki_rio/swimsuit/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -19308,7 +19308,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_04_back_rear.png"
+            "url": "/assets/character-references/tsukatsuki_rio/swimsuit/ref_04_back_rear.png"
           }
         ]
       },
@@ -19331,7 +19331,7 @@
               "台词对峙"
             ],
             "fileName": "ref_01_face_closeup.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_01_face_closeup.png"
+            "url": "/assets/character-references/tsukatsuki_rio/nsfw_nude/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
@@ -19345,7 +19345,7 @@
               "双人互动"
             ],
             "fileName": "ref_02_half_medium.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_02_half_medium.png"
+            "url": "/assets/character-references/tsukatsuki_rio/nsfw_nude/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
@@ -19359,7 +19359,7 @@
               "空间交代"
             ],
             "fileName": "ref_03_full_dynamic.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_03_full_dynamic.png"
+            "url": "/assets/character-references/tsukatsuki_rio/nsfw_nude/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
@@ -19373,7 +19373,7 @@
               "神秘氛围"
             ],
             "fileName": "ref_04_back_rear.png",
-            "url": "/assets/character-references/tsukatsuki_rio/ref_04_back_rear.png"
+            "url": "/assets/character-references/tsukatsuki_rio/nsfw_nude/ref_04_back_rear.png"
           }
         ]
       }
