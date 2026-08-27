@@ -5941,6 +5941,106 @@
         "research": "2026-08-27 调研"
       },
       "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    },
+    {
+      "id": "asuma_toki",
+      "displayName": "飞鸟马时",
+      "originalName": "Asuma Toki",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "asuma_toki",
+        "toki",
+        "飞鸟马季",
+        "小时",
+        "c&c",
+        "zero four",
+        "millennium",
+        "blue archive"
+      ],
+      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit with the codename Zero Four, a cool and slightly airheaded girl with blonde hair, blue eyes, wearing a high-cut maid combat suit with a headset, thigh-high boots and small armor accents",
+      "identityTokens": [
+        "asuma_toki",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "blue_eyes",
+        "maid",
+        "combat_suit",
+        "headset",
+        "thighhigh_boots",
+        "millennium",
+        "c&c",
+        "blue_archive",
+        "high_cut",
+        "armor"
+      ],
+      "exactTokens": [
+        "asuma_toki"
+      ],
+      "exactPrefixes": [
+        "asuma_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "candc_maid",
+          "name": "C&C女仆特工装",
+          "prose": "Millennium C&C high-cut maid combat suit with a headset, thigh-high boots, small armor accents and a short skirt, cool maid agent look",
+          "tokens": [
+            "maid",
+            "combat_suit",
+            "high_cut",
+            "headset",
+            "thighhigh_boots",
+            "armor",
+            "short_skirt",
+            "millennium"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "bunny_suit",
+          "name": "兔女郎装",
+          "prose": "a white bunny suit with a princess braid, white over-knee stockings and high heels, playful secret agent look",
+          "tokens": [
+            "bunny_suit",
+            "white_clothes",
+            "princess_braid",
+            "white_stockings",
+            "high_heels",
+            "bunny_ears"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_maid",
+          "name": "日常便服",
+          "prose": "a simple black casual dress with a light jacket, loose blonde hair and a small headset, relaxed off-duty look",
+          "tokens": [
+            "dress",
+            "black_dress",
+            "jacket",
+            "headset",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 千年科学学园",
+        "era": "近未来学园都市",
+        "formNotes": "C&C 特殊小队 Zero Four；女仆特工，脱线冷娇，有兔女郎形态",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
     }
   ]
 }

@@ -4023,5 +4023,92 @@
     ],
     "accent_color": "#d4a017",
     "bg_color": "#7c2d12"
+  },
+  {
+    "id": "asuma_toki",
+    "name": "飞鸟马时",
+    "alias": [
+      "Asuma Toki",
+      "飛鳥馬トキ",
+      "飞鸟马季",
+      "小时"
+    ],
+    "type": "popular",
+    "icon": "🎧",
+    "portrait": {
+      "image": "../assets/characters/popular-asuma_toki.png?v=1",
+      "alt": "飞鸟马时 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金色长发",
+      "hair_color": "金",
+      "eyes": "蓝",
+      "hairstyle": "盘发/公主辫 · 挑染 · 耳麦",
+      "uniform": "C&C高叉紧身衣 / 兔女郎装",
+      "expression": "冷静脱线，冷娇",
+      "style": "cool maid agent",
+      "signature": "金发、蓝瞳与C&C女仆特工装"
+    },
+    "personality": [
+      "冷静",
+      "脱线",
+      "冷娇",
+      "认真",
+      "卖萌"
+    ],
+    "likes": [
+      "执行任务",
+      "提裙礼",
+      "寻找兴趣中",
+      "兔女郎伪装"
+    ],
+    "classic_cg": {
+      "title": "任务之后",
+      "description": "千年C&C据点里，时坐在全息屏前拆下耳麦，金色长发散落，蓝色眼眸难得露出一丝疲惫。"
+    },
+    "identity": {
+      "role": "千年科学学园C&C特殊小队 Zero Four",
+      "age": "16岁",
+      "occupation": "学生 / C&C特工",
+      "faction": "千年科学学园 / C&C"
+    },
+    "tags": [
+      "金发",
+      "蓝瞳",
+      "女仆特工",
+      "C&C",
+      "耳麦"
+    ],
+    "bg_story": "飞鸟马时是《碧蓝档案》中千年科学学园C&C特殊小队的Zero Four。她平时冷静、脱线又冷娇，会以女仆特工或兔女郎伪装执行任务。场景应突出C&C据点、千年学院、训练场与任务后的私密时刻。",
+    "palette": [
+      "金",
+      "蓝",
+      "白"
+    ],
+    "weather": [
+      "白天",
+      "黄昏",
+      "深夜"
+    ],
+    "speech": "时正在执行C&C任务。",
+    "source": "NEXON《蔚蓝档案 / Blue Archive》",
+    "traits": [
+      "asuma_toki",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "blue_eyes",
+      "maid",
+      "combat_suit",
+      "headset",
+      "thighhigh_boots",
+      "millennium",
+      "c&c",
+      "blue_archive",
+      "high_cut",
+      "armor"
+    ],
+    "accent_color": "#fbbf24",
+    "bg_color": "#1e3a8a"
   }
 ]
