@@ -3756,5 +3756,94 @@
       "小镇集市",
       "雷雨夜"
     ]
+  },
+  {
+    "id": "misono_mika",
+    "name": "圣园未花",
+    "alias": [
+      "Misono Mika",
+      "聖園ミカ",
+      "圣园弥香",
+      "未花"
+    ],
+    "type": "popular",
+    "icon": "🌸",
+    "portrait": {
+      "image": "../assets/characters/popular-misono_mika.png?v=1",
+      "alt": "圣园未花 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "浅粉色超长发",
+      "hair_color": "浅粉",
+      "eyes": "蓝色",
+      "hairstyle": "长直发 · 轻柔波浪 · 侧发丝",
+      "uniform": "崔尼蒂校服 / 茶话会礼装",
+      "expression": "优雅温柔中带一丝狡黠",
+      "style": "graceful tea party girl",
+      "signature": "浅粉长发、蓝瞳与崔尼蒂校服"
+    },
+    "personality": [
+      "优雅",
+      "温柔",
+      "天真",
+      "狡黠",
+      "危险感"
+    ],
+    "likes": [
+      "茶话会",
+      "聊天",
+      "收集首饰",
+      "甜点",
+      "被人注视"
+    ],
+    "classic_cg": {
+      "title": "茶话会的微笑",
+      "description": "崔尼蒂午后茶会上，她端着红茶回眸一笑，阳光穿过发丝，像天使又像陷阱。"
+    },
+    "identity": {
+      "role": "崔尼蒂综合学院学生 · 前茶话会成员",
+      "age": "17岁",
+      "occupation": "学生",
+      "faction": "崔尼蒂综合学院 / 茶话会"
+    },
+    "tags": [
+      "浅粉长发",
+      "蓝瞳",
+      "崔尼蒂校服",
+      "茶话会",
+      "蝴蝶结"
+    ],
+    "bg_story": "圣园未花是《碧蓝档案》中崔尼蒂综合学院的学生，前茶话会成员，曾是帕特尔派领导人。她外表优雅温柔，实际有着天真又危险的一面。场景应突出学院、茶话会、教堂与日常校园氛围。",
+    "palette": [
+      "浅粉",
+      "蓝",
+      "白"
+    ],
+    "weather": [
+      "午后阳光",
+      "雨天",
+      "茶会暖光"
+    ],
+    "speech": "未花向你优雅地问候。",
+    "source": "NEXON《蔚蓝档案 / Blue Archive》",
+    "traits": [
+      "misono_mika",
+      "1girl",
+      "solo",
+      "long_hair",
+      "pink_hair",
+      "light_pink_hair",
+      "blue_eyes",
+      "bangs",
+      "school_uniform",
+      "trinity",
+      "blue_archive",
+      "hair_ribbon",
+      "black_thighhighs",
+      "slight_smile",
+      "blush"
+    ],
+    "accent_color": "#f9a8d4",
+    "bg_color": "#1e3a8a"
   }
 ]

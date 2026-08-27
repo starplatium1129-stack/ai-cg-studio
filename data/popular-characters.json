@@ -5630,6 +5630,109 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "doga kobo, official anime screencap, anime coloring"
+    },
+    {
+      "id": "misono_mika",
+      "displayName": "圣园未花",
+      "originalName": "Misono Mika",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "misono_mika",
+        "mika",
+        "圣园弥香",
+        "未花",
+        "blue archive",
+        "trinity",
+        "tea party"
+      ],
+      "identityProse": "Misono Mika from Blue Archive, a Trinity Comprehensive Academy student and former Tea Party member, a graceful young woman with long light pink hair, bright blue eyes, a gentle yet mischievous smile, wearing the Trinity school uniform with a ribbon, pleated skirt and black thigh-highs",
+      "identityTokens": [
+        "misono_mika",
+        "1girl",
+        "solo",
+        "long_hair",
+        "pink_hair",
+        "light_pink_hair",
+        "blue_eyes",
+        "bangs",
+        "school_uniform",
+        "trinity",
+        "blue_archive",
+        "hair_ribbon",
+        "black_thighhighs",
+        "slight_smile",
+        "blush"
+      ],
+      "exactTokens": [
+        "misono_mika"
+      ],
+      "exactPrefixes": [
+        "misono_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "trinity_uniform",
+          "name": "崔尼蒂校服",
+          "prose": "Trinity Comprehensive Academy school uniform with a white shirt, dark blue blazer, red ribbon, pleated dark skirt, black thigh-highs and loafers",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "dark_blue_blazer",
+            "red_ribbon",
+            "pleated_skirt",
+            "dark_skirt",
+            "black_thighhighs",
+            "loafers",
+            "trinity"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "tea_party_dress",
+          "name": "茶话会礼装",
+          "prose": "an elegant white tea party dress with lace trims, a blue sash, white gloves, and delicate hair ornaments",
+          "tokens": [
+            "dress",
+            "white_dress",
+            "lace",
+            "blue_sash",
+            "white_gloves",
+            "hair_ornament",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_pink",
+          "name": "日常便服",
+          "prose": "a soft pink casual dress with a white cardigan and simple flats, light and gentle everyday look",
+          "tokens": [
+            "dress",
+            "pink_dress",
+            "white_cardigan",
+            "flats",
+            "casual",
+            "long_sleeves"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 崔尼蒂综合学院",
+        "era": "近未来学园都市",
+        "formNotes": "前茶话会成员 / 帕特尔派领导人；优雅、天真又带危险感",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
     }
   ]
 }
