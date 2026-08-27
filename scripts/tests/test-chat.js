@@ -209,7 +209,8 @@ async function run() {
   // 保持/唤醒会话/auto-listen gating）下沉 useCompanionSpeechInput。
   var companionBehavior = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionBehaviorRuntime.ts'), 'utf8');
   var companionSpeech = fs.readFileSync(path.join(root, 'src', 'composables', 'useCompanionSpeechInput.ts'), 'utf8');
-  var roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'useCharacterRoomSession.ts'), 'utf8');
+  // d674a99 将角色房间会话核心迁入 chat/ 子目录（与 useChatConversation 等同层）
+  var roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useCharacterRoomSession.ts'), 'utf8');
   var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   var chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
   var characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
@@ -225,10 +226,10 @@ async function run() {
   var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
   var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
   var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
-  var chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatStorage.ts'), 'utf8');
+  var chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatStorage.ts'), 'utf8');
   var characterConfig = fs.readFileSync(path.join(root, 'src', 'config', 'characters.ts'), 'utf8');
-  var chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatProvider.ts'), 'utf8');
-  var chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatConversation.ts'), 'utf8');
+  var chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatProvider.ts'), 'utf8');
+  var chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'chat', 'useChatConversation.ts'), 'utf8');
   var userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
   var memoryPanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatMemoryPanel.vue'), 'utf8');
   var characterPrompts = fs.readFileSync(path.join(root, 'server', 'chat-character-prompts.js'), 'utf8');

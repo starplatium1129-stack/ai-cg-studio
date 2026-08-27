@@ -5,7 +5,7 @@ const path = require('path');
 const sdRequest = require('../../src/utils/sdRequest.ts');
 const sdGenerate = require('../../src/utils/sdStatus.ts');
 const sdGenerateSource = fs.readFileSync(
-  path.resolve(__dirname, '../../src/composables/useSDGenerate.ts'),
+  path.resolve(__dirname, '../../src/composables/generation/useSDGenerate.ts'),
   'utf8'
 );
 assert(!/\bany\b/.test(sdGenerateSource), 'useSDGenerate must not regress to explicit any types');
@@ -14,7 +14,7 @@ assert(
   'disposing the generation composable must interrupt an active WebUI job before leaving the page',
 );
 const sdQueueSource = fs.readFileSync(
-  path.resolve(__dirname, '../../src/composables/useSDQueue.ts'),
+  path.resolve(__dirname, '../../src/composables/generation/useSDQueue.ts'),
   'utf8'
 );
 assert(!/\bany\b/.test(sdQueueSource), 'useSDQueue must keep runner failures typed as unknown');
@@ -176,7 +176,7 @@ function testProfilesAndCapabilities() {
 // ── 队列失败保留（迁移到 src/composables/useSDQueue.ts） ─────────────────
 async function testFailedQueueJobIsRetained() {
   const flashes = [];
-  const { useSDQueue } = require('../../src/composables/useSDQueue.ts');
+  const { useSDQueue } = require('../../src/composables/generation/useSDQueue.ts');
   const queue = useSDQueue({
     run: () => Promise.resolve({ status: 'failure' }),
     onFlash: message => flashes.push(message),
