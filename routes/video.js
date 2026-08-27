@@ -28,6 +28,8 @@ var comfyClient = require('../server/comfy-client');
 var upstreamHealth = require('../server/upstream-health');
 // 2026-08-21 收口：模型目录数据表外移；任务注册表骨架统一
 var jobRunner = require('../server/job-runner');
+// 2026-08-27 P1 审计：长任务快照落盘（崩溃/强杀后的 JOB_LOST 断崖治理）
+var jobSnapshot = require('../server/job-snapshot');
 
 var constants = require('./video/constants');
 var errors = require('./video/errors');
@@ -141,6 +143,12 @@ function createVideoService(config, dependencies) {
   // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI
   // 任务（立即 + 30s 后各试一次，重试幂等无害）；2026-08-21 收口到 comfy-client。
   comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'video');
+  // 任务快照：save/remove 挂在创建与 removeJob 两端。优雅关停会逐一 removeJob
+  // 天然清空快照；只有崩溃/强杀才留痕 —— drain() 启动时读走并以 tombstone 常驻，
+  // 路由层据此把「未知 id」升级为 410 JOB_LOST 的明确提示。
+  var snapshots = jobSnapshot.createJobSnapshotStore(
+    path.join(config.RUNTIME_ROOT || path.join(config.ROOT_DIR, 'runtime'), 'jobs', 'video'));
+  var lostJobs = snapshots.drain();
   // JOB_TIMEOUT_MS 已被动态超时取代（deadline = 预估时长 × 3，下限 10 分钟），
   // 见 create() 内注释；此处不再保留失效的固定超时依赖。
   var jobTtlMs = dependencies.jobTtlMs || JOB_TTL_MS;
@@ -190,6 +198,7 @@ function createVideoService(config, dependencies) {
     if (job.input && job.input.image) media.removeInputImage(config, job.input.image);
     if (job.input && job.input.lastFrame) media.removeInputImage(config, job.input.lastFrame);
     jobs.delete(job.id);
+    snapshots.remove(job.id);
   }
 
   function schedulePoll(job, delay) {
@@ -338,6 +347,7 @@ function createVideoService(config, dependencies) {
       pollFailures:0,
     };
     jobs.set(id, job);
+    snapshots.save(job);
     job.gcTimer = setTimeout(function () { removeJob(job); }, ttlMs).unref();
     return job;
   }
@@ -345,6 +355,15 @@ function createVideoService(config, dependencies) {
   function get(id, owner) {
     var job = jobs.get(String(id || ''));
     return job && job.owner === owner ? job : null;
+  }
+
+  /** 重启遗留任务的 tombstone 查询（owner 对齐内存注册表同一判定） */
+  function getLost(id, owner) {
+    var key = String(id || '');
+    for (var i = 0; i < lostJobs.length; i++) {
+      if (lostJobs[i].id === key && lostJobs[i].owner === owner) return lostJobs[i];
+    }
+    return null;
   }
 
   async function cancel(job) {
@@ -389,6 +408,7 @@ function createVideoService(config, dependencies) {
     create:create,
     submit:submit,
     get:get,
+    getLost:getLost,
     cancel:cancel,
     publicJob:publicJob,
     pendingCount:pendingCount,
@@ -556,6 +576,9 @@ function createVideoRouter(config, dependencies) {
 
   router.get('/api/video/jobs/:id', function (req, res) {
     var job = service.get(req.params.id, requestOwner(req));
+    if (!job && service.getLost(req.params.id, requestOwner(req))) {
+      return envelope.fail(res, 410, '网关重启导致该视频任务中断，结果已丢失；请重新提交', { code:'JOB_LOST' });
+    }
     if (!job) return envelope.fail(res, 404, '视频任务不存在', { code:'JOB_NOT_FOUND' });
     res.setHeader('Cache-Control', 'no-store');
     envelope.ok(res, { job:service.publicJob(job) });
@@ -563,6 +586,9 @@ function createVideoRouter(config, dependencies) {
 
   router.delete('/api/video/jobs/:id', async function (req, res) {
     var job = service.get(req.params.id, requestOwner(req));
+    if (!job && service.getLost(req.params.id, requestOwner(req))) {
+      return envelope.fail(res, 410, '该视频任务已随网关重启中断，无需取消', { code:'JOB_LOST' });
+    }
     if (!job) return envelope.fail(res, 404, '视频任务不存在', { code:'JOB_NOT_FOUND' });
     var cancelled = await service.cancel(job);
     envelope.ok(res, { job:service.publicJob(cancelled) });

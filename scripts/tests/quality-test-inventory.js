@@ -32,6 +32,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-emotion-runtime.js',
     'test-environment-context.js',
     'test-gallery.js',
+    'test-job-snapshots.js',
     'test-inpaint-scene-candidates.js',
     'test-inpaint-canvas.js',
     'test-live2d-backend.js',
