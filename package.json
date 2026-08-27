@@ -88,6 +88,8 @@
     "audit:prompts": "node scripts/maintenance/audit-prompts.js",
     "workflow": "node scripts/workflow.js",
     "scenes:build": "node scripts/maintenance/build-scenes.js",
+    "scenes:pin": "node scripts/maintenance/pin-scene-prompts.js --check",
+    "scenes:pin-capture": "node scripts/maintenance/pin-scene-prompts.js --capture",
     "particles:build": "python scripts/maintenance/build-particle-portraits.py",
     "character:onboard": "node scripts/maintenance/workflow-onboard-popular-character.js",
     "scenes:import": "node scripts/maintenance/split-scenes.js --write && node scripts/maintenance/build-scenes.js",

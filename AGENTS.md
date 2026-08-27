@@ -19,6 +19,7 @@
    - 严禁 `git reset --hard` 等破坏性命令；临时测试脚本随用随清。
 6. **媒体资产入库边界**：`assets/character-references/` 已 `.gitignore`，严禁提交入 Git；运行时统一经 `/data/character-reference-view.json` 懒加载。
 7. **严禁偷懒式批量交付（2026-08-24 教训固化）**：批量重写/优化类任务（提示词、场景、蓝图）必须逐条全量真实改写，禁止以通用模板兜底、仅追加词条或虚报覆盖率冒充交付；任何此类交付必须跑 `node scripts/tests/test-prompt-rewrite-integrity.js --delivery <交付文件>` 复检通过（覆盖率=声明数、无模板签名/全局雷同、新旧词条保留率≤50%、prose 相似度≤60%、角色归属一致），未过门禁一律退回重写，不得声明完成。
+8. **定稿场景提示词保护（2026-08-27 教训固化）**：`data/prompt-pinned-scenes.json`（100 条：历史定点手工修/官方CG对齐/用户实拍定稿）中的渲染字段为字节级基线，任何批量优化任务**严禁触碰**这些场景的 `prompt/negative/animaCaption/recommendedSize/rating/mature`；门禁 `node scripts/tests/test-pinned-scene-prompts.js`（已入 test:contract 套件）。确需修改某条定稿时：先真实出图自测确认效果，再 `npm run scenes:pin-capture` 更新基线并在提交信息中附自测证据。批量脚本遇到受保护 ID 必须跳过。
 
 ---
 
