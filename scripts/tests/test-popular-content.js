@@ -68,8 +68,9 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
   // 2026-08-23 场景库二次优化：海梦补 cosplay 泛用套日常场景（后台试装），
   // （43 角色 = 35x10 + 8x11 = 438 场景）。
   // 2026-08-24 B1 衣橱扩容试点（陈）：衍生服装入库配套专属场景，
-  // 陈 11 -> 14（43 角色 = 35x10 + 7x11 + 1x14 = 441 场景）。
-  assert.strictEqual(blueprints.length, 506, 'expected 506 character scenes, got ' + blueprints.length);
+  // 陈 11 -> 14（43 角色 = 35x10 + 7x11 + 1x14 = 441 场景）；
+  // 2026-08-27 圣园未花专属晨曦私语场景扩容（未花 13 -> 14，48 角色 = 34x10 + 8x11 + 5x13 + 1x14 = 507 场景）。
+  assert.strictEqual(blueprints.length, 507, 'expected 507 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -81,14 +82,14 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 10、11 或 13 个场景：10=6 原型+4 成人（34 角色）、11=7 原型+4 成人（8 角色）、
-  // 13=陈 B1 衣橱扩容（6 原型+3 衍生服装专属+4 成人）。
+  // 每个角色 10、11、13 或 14 个场景：10=6 原型+4 成人（34 角色）、11=7 原型+4 成人（8 角色）、
+  // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、14=未花专属场景扩容（1 角色）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
-    assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13, entry[0] + ' must own 10, 11 or 13 scenes, got ' + entry[1]);
+    assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 14, entry[0] + ' must own 10, 11, 13 or 14 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 8, 13: 6 }, 'scene distribution must be 34x10 + 8x11 + 6x13');
+  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 8, 13: 5, 14: 1 }, 'scene distribution must be 34x10 + 8x11 + 5x13 + 1x14');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4 或 5 个带 characterId 的成人场景。
