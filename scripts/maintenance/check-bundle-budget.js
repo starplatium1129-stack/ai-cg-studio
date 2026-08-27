@@ -89,6 +89,11 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     file: entry.file,
     javascript: fs.statSync(path.join(distDir, entry.file)).size,
   }));
+  // 2026-08-27 审计：懒块此前只有硬上限，90% 告警只覆盖路由预算，
+  // wl-live2d 实测 92.3% 时静默逼近悬崖 —— 口径对齐路由块的告警线。
+  const lazyWarnings = lazy
+    .filter(entry => entry.javascript > DEFAULT_BUDGETS.lazyChunk * 0.9)
+    .map(entry => `${path.basename(entry.key)} lazy JavaScript ${kib(entry.javascript)} > 90% of ${kib(DEFAULT_BUDGETS.lazyChunk)}`);
   const lazyViolations = lazy
     .filter(entry => entry.javascript > DEFAULT_BUDGETS.lazyChunk)
     .map(entry => `${entry.key} JavaScript ${entry.javascript} > ${DEFAULT_BUDGETS.lazyChunk}`);
@@ -106,7 +111,9 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     + `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}`,
   );
   if (result.warnings && result.warnings.length) {
-    console.warn(`[warn] bundle budget >90% warning:\n${result.warnings.join('\n')}`);
+    console.warn(`[warn] bundle budget >90% warning:\n${[...result.warnings, ...lazyWarnings].join('\n')}`);
+  } else if (lazyWarnings.length) {
+    console.warn(`[warn] bundle budget >90% warning:\n${lazyWarnings.join('\n')}`);
   }
   return result;
 }
