@@ -71,6 +71,7 @@
     "build:tauri": "node scripts/maintenance/run-tauri.js build --no-bundle --ci",
     "package:tauri": "node scripts/maintenance/run-tauri.js build --ci --no-sign --bundles nsis",
     "test:content": "node scripts/maintenance/validate-content-contracts.js",
+    "patch:scenes": "node scripts/maintenance/apply-scene-patch.js",
     "test:voice-quality": "node scripts/tests/test-wav-quality.js",
     "test:voice-emotions:live": "node scripts/maintenance/regress-voice-emotions.js",
     "test:chat-voice:live": "node scripts/maintenance/regress-chat-voice-live.mjs",

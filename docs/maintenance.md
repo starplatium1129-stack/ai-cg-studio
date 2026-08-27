@@ -203,6 +203,37 @@ npm run validate
 
 导入命令会按角色和系列重新分片。它是显式覆盖操作，不应作为日常构建命令使用。
 
+## 通用场景补丁工具（AI / 协作者批量优化推荐）
+
+当场景数量很多、不适合手改整个 JSON 时，使用补丁文件逐条修改：
+
+```powershell
+node scripts/maintenance/apply-scene-patch.js --patch patch.json
+```
+
+默认是 `dry-run`，只输出每条场景/蓝图的前后 diff，不写盘。确认无误后：
+
+```powershell
+node scripts/maintenance/apply-scene-patch.js --patch patch.json --apply
+```
+
+补丁文件格式：
+
+```json
+[
+  { "id": "sc042", "type": "scene", "changes": { "prompt": "...", "animaCaption": "..." } },
+  { "id": "raiden_shogun_tenshukaku", "type": "blueprint", "changes": { "promptProse": "...", "promptTokens": ["..."] } }
+]
+```
+
+特性：
+- 经典场景与热门角色蓝图统一支持
+- 自动跳过 `data/prompt-pinned-scenes.json` 中受保护字段
+- 写盘前自动备份到 `runtime/maintenance-backups/`
+- 写盘后自动跑 `validate-scenes.js` + `validate-content-contracts.js`
+- 校验失败自动回滚
+- `--out report.json` 可输出完整 diff 报告，便于审阅“优化得好不好”
+
 ## 一键质量门槛
 
 ```powershell
