@@ -5645,22 +5645,22 @@
         "trinity",
         "tea party"
       ],
-      "identityProse": "Misono Mika from Blue Archive, a Trinity Comprehensive Academy student and former Tea Party member, a graceful young woman with long light pink hair, bright blue eyes, a gentle yet mischievous smile, wearing the Trinity school uniform with a ribbon, pleated skirt and black thigh-highs",
+      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and a member of the Tea Party, a graceful but airheaded young lady with long pink hair in a bun with a plant hair ornament, golden eyes, small angel-like wings, wearing a sleeveless dress with white tights and high heels",
       "identityTokens": [
         "misono_mika",
         "1girl",
         "solo",
-        "long_hair",
         "pink_hair",
-        "light_pink_hair",
-        "blue_eyes",
-        "bangs",
-        "school_uniform",
+        "golden_eyes",
+        "hair_bun",
+        "hair_ornament",
+        "wings",
+        "sleeveless_dress",
+        "white_tights",
+        "high_heels",
         "trinity",
         "blue_archive",
-        "hair_ribbon",
-        "black_thighhighs",
-        "slight_smile",
+        "tea_party",
         "blush"
       ],
       "exactTokens": [
@@ -5679,16 +5679,17 @@
         {
           "id": "trinity_uniform",
           "name": "崔尼蒂校服",
-          "prose": "Trinity Comprehensive Academy school uniform with a white shirt, dark blue blazer, red ribbon, pleated dark skirt, black thigh-highs and loafers",
+          "prose": "Trinity school uniform with a sleeveless white blouse, red ribbon, pleated skirt, white tights and high heels, plus small angel wings and a bun with a plant hair ornament",
           "tokens": [
             "school_uniform",
-            "white_shirt",
-            "dark_blue_blazer",
+            "sleeveless_blouse",
             "red_ribbon",
             "pleated_skirt",
-            "dark_skirt",
-            "black_thighhighs",
-            "loafers",
+            "white_tights",
+            "high_heels",
+            "wings",
+            "hair_bun",
+            "hair_ornament",
             "trinity"
           ],
           "default": true,
@@ -5697,13 +5698,15 @@
         {
           "id": "tea_party_dress",
           "name": "茶话会礼装",
-          "prose": "an elegant white tea party dress with lace trims, a blue sash, white gloves, and delicate hair ornaments",
+          "prose": "an elegant sleeveless white tea party dress with golden trim, white tights, high heels, wings and a bun with a plant hair ornament",
           "tokens": [
-            "dress",
+            "sleeveless_dress",
             "white_dress",
-            "lace",
-            "blue_sash",
-            "white_gloves",
+            "golden_trim",
+            "white_tights",
+            "high_heels",
+            "wings",
+            "hair_bun",
             "hair_ornament",
             "elegant"
           ],
@@ -5713,14 +5716,14 @@
         {
           "id": "casual_pink",
           "name": "日常便服",
-          "prose": "a soft pink casual dress with a white cardigan and simple flats, light and gentle everyday look",
+          "prose": "a soft pink sleeveless dress with a white cardigan, white tights and flats, light and gentle everyday look",
           "tokens": [
-            "dress",
+            "sleeveless_dress",
             "pink_dress",
             "white_cardigan",
+            "white_tights",
             "flats",
-            "casual",
-            "long_sleeves"
+            "casual"
           ],
           "default": false,
           "isDefault": false

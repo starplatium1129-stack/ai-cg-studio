@@ -3773,28 +3773,27 @@
       "alt": "圣园未花 样张立绘"
     },
     "visual_dna": {
-      "hair": "浅粉色超长发",
-      "hair_color": "浅粉",
-      "eyes": "蓝色",
-      "hairstyle": "长直发 · 轻柔波浪 · 侧发丝",
-      "uniform": "崔尼蒂校服 / 茶话会礼装 / 夏日泳装",
-      "expression": "优雅温柔中带一丝狡黠",
-      "style": "graceful tea party girl",
-      "signature": "浅粉长发、蓝瞳与崔尼蒂校服"
+      "hair": "粉色长发 · 丸子头",
+      "hair_color": "粉",
+      "eyes": "金",
+      "hairstyle": "丸子头 · 植物发饰 · 渐变色发",
+      "uniform": "无袖连衣裙 / 崔尼蒂校服 / 夏日泳装",
+      "expression": "天真烂漫，偶尔笨蛋",
+      "style": "graceful airheaded tea party lady",
+      "signature": "粉发丸子头、金瞳与羽翼"
     },
     "personality": [
-      "优雅",
-      "温柔",
-      "天真",
-      "狡黠",
-      "危险感"
+      "天真烂漫",
+      "笨蛋",
+      "大小姐",
+      "怪力",
+      "酒品差"
     ],
     "likes": [
-      "茶话会",
       "聊天",
       "收集首饰",
-      "甜点",
-      "被人注视"
+      "被人注视",
+      "甜点"
     ],
     "classic_cg": {
       "title": "茶话会的微笑",
@@ -3807,13 +3806,13 @@
       "faction": "崔尼蒂综合学院 / 茶话会"
     },
     "tags": [
-      "浅粉长发",
-      "蓝瞳",
-      "崔尼蒂校服",
-      "茶话会",
-      "蝴蝶结"
+      "粉发",
+      "金瞳",
+      "丸子头",
+      "羽翼",
+      "白色连裤袜"
     ],
-    "bg_story": "圣园未花是《碧蓝档案》中崔尼蒂综合学院的学生，前茶话会成员，曾是帕特尔派领导人。她外表优雅温柔，实际有着天真又危险的一面。场景应突出学院、茶话会、教堂与日常校园氛围。",
+    "bg_story": "圣园未花是《碧蓝档案》中崔尼蒂综合学院的高三学生，茶话会成员，外表天真烂漫，实际是隐藏巨乳的怪力大小姐。场景应突出茶话会、圣堂、权谋与日常反差。",
     "palette": [
       "浅粉",
       "蓝",
@@ -3830,17 +3829,17 @@
       "misono_mika",
       "1girl",
       "solo",
-      "long_hair",
       "pink_hair",
-      "light_pink_hair",
-      "blue_eyes",
-      "bangs",
-      "school_uniform",
+      "golden_eyes",
+      "hair_bun",
+      "hair_ornament",
+      "wings",
+      "sleeveless_dress",
+      "white_tights",
+      "high_heels",
       "trinity",
       "blue_archive",
-      "hair_ribbon",
-      "black_thighhighs",
-      "slight_smile",
+      "tea_party",
       "blush"
     ],
     "accent_color": "#f9a8d4",

@@ -53966,7 +53966,7 @@
         "red_tea",
         "velvet"
       ],
-      "promptProse": "In the highest Tea Party chamber of Trinity, Misono Mika sits on a velvet chair like a queen, one hand holding a crimson teacup, long light pink hair framing her face and blue eyes smiling with unreadable warmth, stained glass light and candelabras casting an elegant yet dangerous atmosphere of political power. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "In the highest Tea Party chamber of Trinity, Misono Mika sits on a velvet chair like a queen, one hand holding a crimson teacup, long light pink hair framing her face and golden eyes smiling with unreadable warmth, stained glass light and candelabras casting an elegant yet dangerous atmosphere of political power. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -53978,14 +53978,17 @@
         "velvet_chair",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "smiling",
         "candelabra",
         "stained_glass",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54060,7 +54063,7 @@
         "prayer",
         "holy"
       ],
-      "promptProse": "Inside Trinity Cathedral, Misono Mika stands beneath a towering stained glass window, long light pink hair bathed in colored holy light, blue eyes looking up at the saint statue with a serene smile that is almost too perfect, the vast sacred space and dust-filled light creating a beautiful yet unsettling atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "Inside Trinity Cathedral, Misono Mika stands beneath a towering stained glass window, long light pink hair bathed in colored holy light, golden eyes looking up at the saint statue with a serene smile that is almost too perfect, the vast sacred space and dust-filled light creating a beautiful yet unsettling atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54071,14 +54074,17 @@
         "looking_up",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "serene",
         "holy_light",
         "wide_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54153,7 +54159,7 @@
         "white_rose",
         "tea_party"
       ],
-      "promptProse": "In the Pater faction meeting room, Misono Mika places a white rose on a stack of documents, fingers tracing the petals as a cup of black tea steams beside her, long pink hair over her shoulder and blue eyes fixed on the viewer with a gentle, calculating smile, cold window light and polished wood creating a political thriller mood. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "In the Pater faction meeting room, Misono Mika places a white rose on a stack of documents, fingers tracing the petals as a cup of black tea steams beside her, long pink hair over her shoulder and golden eyes fixed on the viewer with a gentle, calculating smile, cold window light and polished wood creating a political thriller mood. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54164,14 +54170,17 @@
         "tea",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "smiling",
         "close_up",
         "cold_lighting",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54246,7 +54255,7 @@
         "candlelight",
         "secret"
       ],
-      "promptProse": "In the forbidden library of Trinity, Misono Mika stands before a dusty bookshelf with a candle in her hand, long light pink hair softly glowing in the warm flame, blue eyes scanning the spines of forbidden books, towering shelves and deep shadows creating a secretive dangerous atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "In the forbidden library of Trinity, Misono Mika stands before a dusty bookshelf with a candle in her hand, long light pink hair softly glowing in the warm flame, golden eyes scanning the spines of forbidden books, towering shelves and deep shadows creating a secretive dangerous atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54257,14 +54266,17 @@
         "standing",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "bookshelf",
         "night",
         "mysterious",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54339,7 +54351,7 @@
         "white_rose",
         "umbrella"
       ],
-      "promptProse": "After rain in the Trinity garden, Misono Mika stands among white roses under a black umbrella, long light pink hair slightly damp from the mist, blue eyes looking into the distance, wet petals and reflective paths catching pale sky light, the scene feeling elegant, cold and deeply calculated. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "After rain in the Trinity garden, Misono Mika stands among white roses under a black umbrella, long light pink hair slightly damp from the mist, golden eyes looking into the distance, wet petals and reflective paths catching pale sky light, the scene feeling elegant, cold and deeply calculated. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54351,13 +54363,16 @@
         "standing",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "wet",
         "pale_light",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54432,7 +54447,7 @@
         "overlook",
         "sunset"
       ],
-      "promptProse": "At the top of the Trinity clock tower, Misono Mika stands among brass gears and bronze bells, long light pink hair and skirt lifted by the wind, blue eyes overlooking the whole academy below, golden sunset light and mechanical shadows creating a majestic, godlike and slightly dangerous atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "At the top of the Trinity clock tower, Misono Mika stands among brass gears and bronze bells, long light pink hair and skirt lifted by the wind, golden eyes overlooking the whole academy below, golden sunset light and mechanical shadows creating a majestic, godlike and slightly dangerous atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54444,13 +54459,16 @@
         "standing",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "sunset",
         "wide_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54525,7 +54543,7 @@
         "dress",
         "intimate"
       ],
-      "promptProse": "In the Tea Party changing room after the gathering, Misono Mika loosens the ribbons of her white dress, long light pink hair falling over bare shoulders, blue eyes looking back with an elegant inviting smile, warm lamp light and lace accessories creating a refined seductive atmosphere.",
+      "promptProse": "In the Tea Party changing room after the gathering, Misono Mika loosens the ribbons of her white dress, long light pink hair falling over bare shoulders, golden eyes looking back with an elegant inviting smile, warm lamp light and lace accessories creating a refined seductive atmosphere.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54536,14 +54554,17 @@
         "untying",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "looking_back",
         "warm_lighting",
         "intimate",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54624,7 +54645,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Inside the cathedral confessional at night, Misono Mika kneels behind a lace curtain with her white dress pulled open, one finger pressed to her lips, blue eyes peeking through the gap with a dangerous smile, candlelight and curtain shadows creating a forbidden sacred atmosphere.",
+      "promptProse": "Inside the cathedral confessional at night, Misono Mika kneels behind a lace curtain with her white dress pulled open, one finger pressed to her lips, golden eyes peeking through the gap with a dangerous smile, candlelight and curtain shadows creating a forbidden sacred atmosphere.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54637,13 +54658,16 @@
         "open_dress",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "candlelight",
         "intimate",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54723,7 +54747,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "In the deepest aisle of the forbidden library, Misono Mika is pressed against a bookshelf with her skirt bunched around her waist, long pink hair scattered over old books, biting her lip with wet blue eyes, dim candlelight and towering shelves creating a secretive indulgent atmosphere.",
+      "promptProse": "In the deepest aisle of the forbidden library, Misono Mika is pressed against a bookshelf with her skirt bunched around her waist, long pink hair scattered over old books, biting her lip with wet golden eyes, dim candlelight and towering shelves creating a secretive indulgent atmosphere.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54733,7 +54757,7 @@
         "skirt_lift",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "biting_lip",
         "candlelight",
         "night",
@@ -54741,7 +54765,10 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54822,7 +54849,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "In a private Trinity bath, white rose petals float on the warm water as Misono Mika leans against the pool edge, long light pink hair soaked and clinging to her shoulders, blue eyes clear and intense through the steam, candlelight and petals creating an elegant sensual atmosphere.",
+      "promptProse": "In a private Trinity bath, white rose petals float on the warm water as Misono Mika leans against the pool edge, long light pink hair soaked and clinging to her shoulders, golden eyes clear and intense through the steam, candlelight and petals creating an elegant sensual atmosphere.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54833,14 +54860,17 @@
         "wet_hair",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "candlelight",
         "night",
         "intimate",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -54921,7 +54951,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "In a high tower bedroom of Trinity, Misono Mika sits at the center of lace bedding with her white dress half open, long light pink hair loose and blue eyes looking down at the viewer, warm bedside lamp and delicate lace creating a commanding seductive atmosphere.",
+      "promptProse": "In a high tower bedroom of Trinity, Misono Mika sits at the center of lace bedding with her white dress half open, long light pink hair loose and golden eyes looking down at the viewer, warm bedside lamp and delicate lace creating a commanding seductive atmosphere.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -54934,14 +54964,17 @@
         "open_dress",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "low_angle",
         "warm_lighting",
         "intimate",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -55022,7 +55055,7 @@
         "swimsuit",
         "blue_archive"
       ],
-      "promptProse": "On a bright Trinity summer beach, Misono Mika wears a white and pink frilled one-piece swimsuit and a small sun hat, long light pink hair lifted by the sea breeze, blue eyes looking back with an elegant playful smile, strong summer sunlight and ocean sparkle creating a fresh graceful atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "On a bright Trinity summer beach, Misono Mika wears a white and pink frilled one-piece swimsuit and a small sun hat, long light pink hair lifted by the sea breeze, golden eyes looking back with an elegant playful smile, strong summer sunlight and ocean sparkle creating a fresh graceful atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -55034,14 +55067,17 @@
         "sun_hat",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "looking_back",
         "sunlight",
         "ocean",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
@@ -55493,7 +55529,7 @@
         "wet_hair",
         "swimsuit"
       ],
-      "promptProse": "At sunset on a summer beach, Misono Mika just came out of the sea, long light pink hair wet and clinging to her shoulders, white swimsuit covered with water droplets, blue eyes looking at the darkening ocean with a rare quiet expression, golden backlight and wet reflections creating a serene elegant atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
+      "promptProse": "At sunset on a summer beach, Misono Mika just came out of the sea, long light pink hair wet and clinging to her shoulders, white swimsuit covered with water droplets, golden eyes looking at the darkening ocean with a rare quiet expression, golden backlight and wet reflections creating a serene elegant atmosphere. Soft cinematic atmosphere and delicate background details complete the wallpaper-grade composition.",
       "promptTokens": [
         "misono_mika",
         "1girl",
@@ -55505,13 +55541,16 @@
         "water_drops",
         "long_hair",
         "pink_hair",
-        "blue_eyes",
+        "golden_eyes",
         "backlight",
         "ocean",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hair_bun",
+        "wings",
+        "white_tights"
       ],
       "negativeTokens": [
         "worst quality",
