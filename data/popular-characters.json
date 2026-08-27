@@ -5848,20 +5848,22 @@
         "sweets club",
         "sugar rush"
       ],
-      "identityProse": "Kyouyama Kazusa from Blue Archive, a first-year student at Trinity Comprehensive Academy and a member of the Sweets Club, vocalist and bassist of the band SugarRush, a girl with long brown hair, golden eyes, a slightly flustered but earnest expression, wearing the Trinity school uniform",
+      "identityProse": "Kyouyama Kazusa from Blue Archive, a first-year student at Trinity Comprehensive Academy and a member of the after-school Sweets Club, vocalist and bassist of the band SugarRush, a quiet girl with black hair, pink eyes, a hood with cat-ear-like shapes, a small collar and black tights, sometimes flustered but earnest",
       "identityTokens": [
         "kyouyama_kazusa",
         "1girl",
         "solo",
-        "long_hair",
-        "brown_hair",
-        "golden_eyes",
+        "black_hair",
+        "pink_eyes",
+        "cat_ears",
+        "hood",
         "school_uniform",
         "trinity",
         "blue_archive",
         "sweets_club",
         "bass",
         "singer",
+        "black_tights",
         "blush"
       ],
       "exactTokens": [
@@ -5880,14 +5882,18 @@
         {
           "id": "trinity_uniform",
           "name": "崔尼蒂校服",
-          "prose": "Trinity Comprehensive Academy school uniform with a white shirt, dark blazer, ribbon, plaid skirt and black thigh-highs",
+          "prose": "Trinity Comprehensive Academy school uniform with a white shirt, dark blazer, ribbon, plaid skirt, black tights and loafers, plus a hood with cat-ear shapes and a small collar",
           "tokens": [
             "school_uniform",
             "white_shirt",
             "dark_blue_blazer",
             "ribbon",
             "plaid_skirt",
-            "black_thighhighs",
+            "black_tights",
+            "loafers",
+            "hood",
+            "cat_ears",
+            "collar",
             "trinity"
           ],
           "default": true,
@@ -5896,13 +5902,15 @@
         {
           "id": "sweets_apron",
           "name": "甜点部围裙",
-          "prose": "a white sweets club apron worn over the Trinity uniform, with flour dust and a small whisk, cute and cozy",
+          "prose": "a white sweets club apron worn over the Trinity uniform, with flour dust, a small whisk, and the cat-ear hood pulled down behind her shoulders",
           "tokens": [
             "apron",
             "white_apron",
             "sweets",
             "flour",
             "whisk",
+            "hood",
+            "cat_ears",
             "cooking"
           ],
           "default": false,
@@ -5911,13 +5919,15 @@
         {
           "id": "live_stage",
           "name": "乐队舞台装",
-          "prose": "a black stage outfit with silver accessories, fingerless gloves and a bass guitar, cool band girl look",
+          "prose": "a black stage outfit with silver accessories, fingerless gloves, a bass guitar, and the cat-ear hood pushed back, cool band girl look",
           "tokens": [
             "stage_outfit",
             "black_clothes",
             "silver_accessories",
             "fingerless_gloves",
             "bass_guitar",
+            "hood",
+            "cat_ears",
             "band"
           ],
           "default": false,
