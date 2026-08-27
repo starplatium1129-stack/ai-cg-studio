@@ -69,8 +69,8 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
   // （43 角色 = 35x10 + 8x11 = 438 场景）。
   // 2026-08-24 B1 衣橱扩容试点（陈）：衍生服装入库配套专属场景，
   // 陈 11 -> 14（43 角色 = 35x10 + 7x11 + 1x14 = 441 场景）；
-  // 2026-08-27 圣园未花专属晨曦私语场景扩容（未花 13 -> 14，48 角色 = 34x10 + 8x11 + 5x13 + 1x14 = 507 场景）。
-  assert.strictEqual(blueprints.length, 507, 'expected 507 character scenes, got ' + blueprints.length);
+  // 2026-08-27 圣园未花专属晨曦私语场景扩容（全年龄+纯白裸态NSFW，未花 13 -> 15，48 角色 = 34x10 + 8x11 + 5x13 + 1x15 = 508 场景）。
+  assert.strictEqual(blueprints.length, 508, 'expected 508 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -82,25 +82,25 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 10、11、13 或 14 个场景：10=6 原型+4 成人（34 角色）、11=7 原型+4 成人（8 角色）、
-  // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、14=未花专属场景扩容（1 角色）。
+  // 每个角色 10、11、13 或 15 个场景：10=6 原型+4 成人（34 角色）、11=7 原型+4 成人（8 角色）、
+  // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、15=未花专属双场景扩容（1 角色）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
-    assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 14, entry[0] + ' must own 10, 11, 13 or 14 scenes, got ' + entry[1]);
+    assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must own 10, 11, 13 or 15 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 8, 13: 5, 14: 1 }, 'scene distribution must be 34x10 + 8x11 + 5x13 + 1x14');
+  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 8, 13: 5, 15: 1 }, 'scene distribution must be 34x10 + 8x11 + 5x13 + 1x15');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
-  // 每角色 4 或 5 个带 characterId 的成人场景。
+  // 每角色 4、5 或 6 个带 characterId 的成人场景。
   var adultDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
     var adultOwned = blueprints.filter(function (blueprint) { return blueprint.characterId === entry[0] && blueprint.adult; });
-    assert.ok(adultOwned.length === 4 || adultOwned.length === 5,
-      entry[0] + ' must own 4 or 5 character-specific adult scenes, got ' + adultOwned.length);
+    assert.ok(adultOwned.length === 4 || adultOwned.length === 5 || adultOwned.length === 6,
+      entry[0] + ' must own 4, 5 or 6 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 36, 5: 12 }, 'adult distribution must be 36x4 + 12x5');
+  assert.deepStrictEqual(adultDist, { 4: 36, 5: 11, 6: 1 }, 'adult distribution must be 36x4 + 11x5 + 1x6');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');
