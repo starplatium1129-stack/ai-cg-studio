@@ -768,6 +768,8 @@ onMounted(() => { init() })
   box-shadow:var(--glow-sm);
 }
 .ex-actions .scene-hide-action { flex:0 0 auto; font-weight:600; }
+/* compositor-exempt: hover/focus 一次性展开揭示（非高频路径），max-height 塌缩展开；
+   grid-template-rows 0fr 或 JS 测高对这个小卡片成本高于收益。 */
 .ex-more { display:grid; gap:var(--s-2); margin-top:var(--s-2); max-height:0; opacity:0; overflow:hidden; transition:max-height var(--motion-surface) var(--ease-out),opacity var(--motion-hover); }
 :deep(.sc:hover) .ex-more, :deep(.sc:focus-within) .ex-more { max-height:160px; opacity:1; }
 .ex-decision { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-secondary); font-size:var(--fs-mono-sm); }

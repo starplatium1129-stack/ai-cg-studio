@@ -697,6 +697,8 @@ onMounted(() => {
 .tag-chip.m4 { --chip-tone:var(--mood-tension-text); }
 .tag-chip.m5 { --chip-tone:var(--mood-warmth-text); }
 /* 现在是 <button>：重置默认样式，保留原来的截断+展开观感 */
+/* compositor-exempt: 点击一次性展开长文阅读辅助；height:auto 终态依赖 interpolate-size
+   渐进增强，transform 无 auto 折叠等价物，且非高频交互。 */
 .bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; interpolate-size: allow-keywords; height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:height var(--motion-surface) var(--ease-out); }
 .bg-story.expanded { height:auto; }
 .bg-story::after { content:'展开'; position:absolute; right:0; bottom:0; padding-left:var(--s-6); background:linear-gradient(90deg,transparent,var(--bg-surface)); color:var(--accent); font-size:var(--fs-label-xs); }

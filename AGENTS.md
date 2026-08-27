@@ -10,7 +10,7 @@
    - 凡涉及提示词、蓝图绑定、服装联动或换装的改动，**严禁仅凭界面文字或表层状态断定成功**；必须亲自核对底层编译 Token 与真实渲染画面的一致性。
    - 状态机联动必须形成闭环（如场景蓝图切换必须同步联动 `outfitId`、镜头与参数）。
 2. **动效与视觉性能铁律**：
-   - 所有高频动画与过渡**必须使用 GPU 合成属性（`transform` / `opacity`）**，严禁使用 `left/top/width/height` 做补间引起主线程逐帧重排（Reflow）；
+   - 所有高频动画与过渡**必须使用 GPU 合成属性（`transform` / `opacity`）**，严禁使用 `left/top/width/height` 做补间引起主线程逐帧重排（Reflow）。该铁律已门禁化（2026-08-27）：`npm run lint:animations` 扫描真实样式树，未带 `/* compositor-exempt: <理由> */` 注释的违规一律失败；存量豁免以 `ALLOWED_EXEMPT=3` 基线管理，新增豁免须评审上调（已入 test:style-debt 与 run-check-parallel 流水线）；
    - 所有新增与修改的 UI 组件，必须同时在 **深色模式 (Dark)** 与 **浅色模式 (Light)** 下通过视觉审查，确保文字对比度（WCAG AA）与扫光不压字。
 3. **手绘线条图标规范（2026-08-20 指示）**：项目中新增或修改的图标，**一律采用纯手绘线条 SVG（`ArchiveIcon.vue` 的 Hand-drawn Linear 机制）**，严禁使用 Emoji 字符或实心填充图标。
 4. **内容分级 Fail-Closed 契约**：成人（R18）内容默认开启并带模糊遮罩；`adultEligibility` 与 `adultEnabled` 双重把关，未知或未授权状态必须严格拒绝，不得回退安全断言。

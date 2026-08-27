@@ -25,6 +25,7 @@ const STEPS = [
   ['style-literals', 'node scripts/maintenance/scan-style-literals.js --check'],
   ['contrast', 'node scripts/maintenance/check-contrast.js --check'],
   ['colors', 'node scripts/maintenance/lint-colors.js --check'],
+  ['animations', 'node scripts/maintenance/lint-animations.js --check'],
   ['scenes:build', 'node scripts/maintenance/build-scenes.js --check'],
   ['scenes:optimize', 'node scripts/maintenance/optimize-scenes.js --check'],
   ['scenes:ratings', 'node scripts/maintenance/classify-scene-ratings.js --check'],

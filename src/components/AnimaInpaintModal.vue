@@ -613,9 +613,8 @@ async function handleStart() {
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: var(--z-raised);
-  /* 遮罩光标点的跟手微过渡：80ms 是刻意的快速档（不套 --motion-press 的 120ms），
-     仅把裸 ease 换成 token 曲线。 */
-  transition: width 0.08s var(--ease-out), height 0.08s var(--ease-out);
+  /* 笔刷尺寸即时生效不补间：光标必须瞬时反映真实笔刷直径（80ms 过渡反而拖慢跟手，
+     且合成器铁律禁 width/height 补间 —— 2026-08-27 审计移除）。 */
 }
 
 .hidden-file-input {

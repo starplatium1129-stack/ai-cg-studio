@@ -1194,6 +1194,8 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--accent), var(--accent-violet));
+  /* compositor-exempt: 进度值更新是低频事件；scaleX 会压扁 inherit 圆头并横向拉伸
+     TrainingView 挂在填充上的扫光伪元素，保 width 过渡（单元素小子树重排可忽略）。 */
   transition: width var(--motion-surface) var(--ease-out);
 }
 .meter-lg { height: 10px; }
