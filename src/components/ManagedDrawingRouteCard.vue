@@ -59,6 +59,7 @@ import {
   promptFormatLabel,
   type DrawingRouteRecommendation,
 } from '@/utils/drawingRoute'
+import '@/assets/css/director/components/ManagedDrawingRouteCard.css'
 
 const COLLAPSED_KEY = 'aics_managed_route_collapsed_v1'
 const DISMISSED_KEY = 'aics_managed_route_dismissed_v1'

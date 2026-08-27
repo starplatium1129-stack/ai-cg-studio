@@ -1,0 +1,87 @@
+/* ============================================================
+   ManagedDrawingRouteCard 面板样式 —— 随 defineAsyncComponent 组件懒加载
+   （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
+    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+   ============================================================ */
+  .pb .managed-route-card {
+    display:grid; gap:var(--s-2); padding:var(--s-3) var(--s-4);
+    max-width:100%; box-sizing:border-box; overflow:hidden;
+    border:1px solid color-mix(in srgb,var(--success) 34%,var(--border-soft));
+    border-radius:var(--r-lg);
+    background:linear-gradient(135deg,color-mix(in srgb,var(--success) 8%,var(--bg-surface)),var(--bg-surface));
+    transition:background var(--motion-hover);
+  }
+  .pb .managed-route-card.is-collapsed {
+    padding:var(--s-2) var(--s-3);
+    gap:0;
+  }
+  .pb .managed-route-card.experimental {
+    border-color:color-mix(in srgb,var(--warning) 38%,var(--border-soft));
+    background:linear-gradient(135deg,color-mix(in srgb,var(--warning) 8%,var(--bg-surface)),var(--bg-surface));
+  }
+  .pb .managed-route-main { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); flex-wrap:wrap; max-width:100%; box-sizing:border-box; }
+  .pb .managed-route-copy { display:flex; align-items:center; gap:var(--s-2); min-width:0; flex-wrap:wrap; }
+  .pb .managed-route-card:not(.is-collapsed) .managed-route-copy { display:grid; gap:2px; }
+  .pb .managed-route-copy strong { color:var(--text-primary); font-size:var(--fs-body); word-break:break-word; }
+  .pb .managed-route-copy > span:last-child { color:var(--text-secondary); font-size:var(--fs-label); word-break:break-word; }
+  .pb .managed-route-kicker {
+    color:var(--success); font:700 var(--fs-mono-xs) var(--font-mono);
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .pb .managed-route-card.experimental .managed-route-kicker { color:var(--warning-text); }
+  .pb .managed-route-actions { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; margin-left:auto; }
+  .pb .managed-route-apply {
+    flex:0 0 auto; min-height:28px; padding:0 var(--s-3);
+    border:1px solid var(--border-soft); border-radius:var(--r-md);
+    background:var(--bg-elevated); color:var(--text-primary); cursor:pointer;
+    font-size:var(--fs-label-sm);
+    transition:transform 140ms var(--ease-out),border-color 160ms var(--ease-out),background 160ms var(--ease-out);
+  }
+  .pb .managed-route-apply:active { transform:scale(.97); }
+  .pb .managed-route-apply:disabled { opacity:.55; cursor:not-allowed; }
+  .pb .managed-route-toggle {
+    min-height:28px; padding:0 var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md);
+    background:transparent; color:var(--text-secondary); cursor:pointer; font-size:var(--fs-label-sm);
+    transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover);
+  }
+  .pb .managed-route-toggle:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  .pb .managed-route-dismiss {
+    display:grid; place-items:center; width:28px; height:28px; padding:0; border:0;
+    border-radius:var(--r-md); background:transparent; color:var(--text-muted); cursor:pointer;
+    font-size:var(--fs-label-sm); transition:color var(--motion-hover),background var(--motion-hover);
+  }
+  .pb .managed-route-dismiss:hover { color:var(--text-primary); background:var(--bg-elevated); }
+  .pb .managed-route-dismissed-wrap { display:flex; margin-bottom:var(--s-2); }
+  .pb .managed-route-reopen-btn {
+    display:inline-flex; align-items:center; gap:var(--s-1); padding:2px var(--s-2);
+    border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface);
+    color:var(--text-muted); font-size:var(--fs-mono-xs); cursor:pointer; transition:color var(--motion-hover),border-color var(--motion-hover);
+  }
+  .pb .managed-route-reopen-btn:hover { color:var(--accent); border-color:var(--accent); }
+  .pb .managed-route-facts { display:flex; flex-wrap:wrap; gap:var(--s-2); }
+  .pb .managed-route-facts span {
+    padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill);
+    color:var(--text-muted); font:600 var(--fs-mono-xs) var(--font-mono);
+  }
+  .pb .managed-route-reasons {
+    display:grid; gap:3px; margin:0; padding-left:18px;
+    color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.5;
+  }
+  .pb .successful-recipes { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
+  .pb .successful-recipes > span { color:var(--text-muted); font-size:var(--fs-label-sm); }
+  .pb .successful-recipes button {
+    min-height:28px; padding:0 var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill);
+    background:transparent; color:var(--text-secondary); cursor:pointer;
+    transition:transform 140ms var(--ease-out),border-color 160ms var(--ease-out),color 160ms var(--ease-out);
+  }
+  .pb .successful-recipes button:active { transform:scale(.97); }
+  .pb .successful-recipes button:disabled { opacity:.55; cursor:not-allowed; }
+  @media (hover:hover) and (pointer:fine) {
+    .pb .managed-route-apply:hover,
+    .pb .successful-recipes button:hover { border-color:var(--accent); color:var(--accent); }
+  }
+  @media (max-width:720px) {
+    .pb .director-mode-head, .pb .managed-route-main { align-items:stretch; flex-direction:column; }
+    .pb .director-mode-switch { align-self:flex-start; }
+    .pb .managed-route-apply { width:100%; }
+  }

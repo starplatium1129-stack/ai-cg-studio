@@ -63,6 +63,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
 import { voiceApi } from '@/api/voiceApi'
+import '@/assets/css/director/components/VoiceStudio.css'
 
 const props = defineProps<{
   /** 导演台角色切换时同步默认声线；用户仍可在本组件内手动改回来。 */

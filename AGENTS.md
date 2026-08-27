@@ -91,7 +91,7 @@
   - [ ] 收尾硬门槛：`npm run test:live2d-native:release` 真机自检 + 双后端手工冒烟清单归档——**2026-08-23 拆分期间 Companion 桌面实例持续运行，selftest 因单实例锁空转退出；关闭桌宠后执行**。清单见 `docs/live2d-composable-refactor-plan.md` 第八节
 - 红线提醒：`destroyRuntime` 全库唯一实现且顺序冻结（Pixi-first）；双后端 capability 分支原样搬家不抽象；`lifecycleToken` 语义不变。
 
-> 已完成（2026-08-22）：`routes/video.js` 八模块化拆分（2229→606 行编排层）、`sendMessage` 六步 pipeline 化、桌宠工具 R18 网关双门控、存储键收敛防回潮门禁。其余中期项（PromptBuilderView 编排下沉、director.css/companion.css 分片）按打包预算压力另行排期。
+> 已完成（2026-08-22）：`routes/video.js` 八模块化拆分（2229→606 行编排层）、`sendMessage` 六步 pipeline 化、桌宠工具 R18 网关双门控、存储键收敛防回潮门禁。**director.css 分片+分产已完成（2026-08-27）**：四片切片基础上再按异步组件规则级分产 16 个 `director/components/<Owner>.css` 随组件懒加载，PromptBuilderView 路由 CSS 113.7→67.9 KiB（预算 98.9%→59%）；其余中期项（PromptBuilderView 编排下沉、companion.css 分片）按打包预算压力另行排期。
 
 > 已完成（2026-08-23 出图/视频链路，直连真实 ComfyUI 实测驱动）：
 > - Krea2 社区增强链路转正（T-Enhancer + er_sde + RCAS 无条件挂载，原 euler 标准链路退役，实测出图耗时持平）；

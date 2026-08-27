@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'
+import '@/assets/css/director/components/GenerationQueuePanel.css'
 
 defineProps<{
   total: number

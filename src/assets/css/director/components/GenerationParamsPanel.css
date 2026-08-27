@@ -1,0 +1,30 @@
+/* ============================================================
+   GenerationParamsPanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
+   （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
+    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+   ============================================================ */
+  /* Params */
+  .pb .controls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--s-3); }
+  .pb .settings-summary { padding:var(--s-3) var(--s-4); cursor:pointer; list-style:none; }
+  .pb .settings-summary::-webkit-details-marker { display:none; }
+  .pb .ctrl-full { grid-column:1 / -1; }
+  .pb .ctrl-hint { display:block; margin-top:var(--s-2); color:var(--text-muted); }
+  .pb .seed-lock-label { display:flex; align-items:center; gap:var(--s-1); cursor:pointer; }
+  .pb .seed-input-wrap { display:flex; align-items:center; gap:var(--s-1); }
+  /* 2px 纵向内距:高级设置浮层里的紧凑输入,升到 4px 会顶开两列网格 */
+  .pb .seed-input-wrap input { width:110px; padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-deep); color:var(--text-primary); font:400 var(--fs-label-sm) var(--font-mono); }
+  .pb .ctrl-seed { min-width: 160px; }
+  .pb .btn-mini { min-height: 28px; padding: 0 var(--s-2); font-size: var(--fs-label-xs); }
+  .pb .negative-editor textarea {
+    min-height: 76px;
+    resize: vertical;
+    padding: var(--s-2);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-sm);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font: 400 var(--fs-label-sm) var(--font-mono);
+    line-height: 1.5;
+    outline: none;
+  }
+  .pb .negative-editor textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }

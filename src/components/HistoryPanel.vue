@@ -56,6 +56,7 @@ import { imgGet } from '@/composables/useImageStore'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { HistoryEntry } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
+import '@/assets/css/director/components/HistoryPanel.css'
 
 // 与 config/characters.ts 共用 Express 服务的同一份立绘 URL，避免 Vite 打包副本
 const placeholderUrl = '/assets/characters/nene-official.webp'

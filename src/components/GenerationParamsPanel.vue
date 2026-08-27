@@ -51,6 +51,7 @@
 import { computed } from 'vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
+import '@/assets/css/director/components/GenerationParamsPanel.css'
 
 const props = defineProps<{
   samplers: readonly string[]

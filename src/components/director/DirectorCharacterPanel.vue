@@ -53,6 +53,7 @@ import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import PopularCharacterPicker from '@/components/popular/PopularCharacterPicker.vue'
 import type { PopularCharacter } from '@/utils/popularContent'
+import '@/assets/css/director/components/DirectorCharacterPanel.css'
 
 defineProps<{
   currentTraits: Array<{ tag: string; label: string }>

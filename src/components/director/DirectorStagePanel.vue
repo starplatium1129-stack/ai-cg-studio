@@ -194,6 +194,7 @@ import CornerFrame from '@/components/visual/CornerFrame.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
+import '@/assets/css/director/components/DirectorStagePanel.css'
 
 const props = defineProps<{
   displayResultUrl: string

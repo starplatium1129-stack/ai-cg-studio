@@ -91,6 +91,7 @@ import {
   NON_MANUAL_TAGS,
   normalizeCatalogKey,
 } from '@/composables/scene/useDirectorCatalog'
+import '@/assets/css/director/components/DirectorTagWorkbench.css'
 
 interface TagEntry { en: string; cn: string; cat: string }
 

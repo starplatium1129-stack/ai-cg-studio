@@ -1,0 +1,62 @@
+/* ============================================================
+   DirectorScenesPanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
+   （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
+    选择器与声明逐字未改；此文件不进路由首屏 CSS 计量）
+   ============================================================ */
+  .pb .scene-filter-summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
+  .pb .scene-result-count { color:var(--text-muted); font-size:var(--fs-label-xs); }
+  .pb .scene-result-count strong { color:var(--accent); }
+  .pb .scene-filter-reset { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font:600 var(--fs-mono-sm) var(--font-sans); }
+  .pb .scene-filter-reset:hover { color:var(--accent); }
+  .pb .scene-list { display: flex; flex-direction: column; gap: 2px; max-height:min(46vh,540px); overflow-y: auto; }
+  /* 与全局滚动条同一套渐变语言：细版但同色系，避免暗色下灰线突兀 */
+  .pb .scene-list::-webkit-scrollbar { width: 6px; }
+  .pb .scene-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 42%, transparent), color-mix(in srgb, var(--accent) 38%, transparent));
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: var(--r-pill);
+  }
+  .pb .scene-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));
+    background-clip: padding-box;
+  }
+  .pb .scene-search:focus ~ .scene-list,
+  .pb .scene-list:hover { max-height:min(54vh,640px); }
+  .pb .scene-scope {
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:3px;
+    margin-bottom:var(--s-2); padding:3px;
+    border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep);
+  }
+  .pb .scene-scope button {
+    min-height:30px; padding:0 var(--s-2); border:0; border-radius:var(--r-sm);
+    background:transparent; color:var(--text-muted); cursor:pointer;
+    font:650 var(--fs-mono-xs) var(--font-sans);
+  }
+  .pb .scene-scope button:hover { color:var(--text-primary); }
+  .pb .scene-scope button.active { background:var(--accent-soft); color:var(--accent); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent); }
+  .pb .scene-core-mark {
+    flex:0 0 auto; margin-left:auto; padding:2px 6px; border-radius:var(--r-pill);
+    background:var(--accent-soft); color:var(--accent);
+    font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:0;
+  }
+  /* ---- 原先挂在 prompt-builder.html 上的内联样式,收敛为组件类 ---- */
+  .pb .scene-count-badge { color:var(--text-muted); font-weight:600; }
+  /* ── Vue SPA class aliases（模板类名与旧 HTML 控制器类名对齐） ── */
+  .pb .scene-cat-btn {
+    appearance:none; padding:3px var(--s-3); border:1px solid var(--border-soft);
+    background:var(--bg-surface); color:var(--text-secondary); border-radius:var(--r-pill);
+    cursor:pointer; font:500 var(--fs-label-xs) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out);
+  }
+  .pb .scene-cat-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .pb .scene-cat-btn.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
+  .pb .scene-card-title { display:flex; align-items:flex-start; gap:var(--s-2); font-weight:700; font-size:var(--fs-body); margin-bottom:2px; text-align:left; color:var(--text-primary); }
+  .pb .scene-card-story {
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+    font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; text-align:left;
+  }
+  .pb .scene-card-meta { display:flex; flex-wrap:wrap; gap:4px; }
+  .pb .scene-cat-tag, .pb .scene-rating-tag {
+    font-size:var(--fs-label-xs); padding:2px 8px; border-radius:var(--r-sm);
+    background:var(--bg-deep); color:var(--text-muted);
+  }

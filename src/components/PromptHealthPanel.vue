@@ -69,6 +69,7 @@
 import { computed } from 'vue'
 import { QUALITY_WORDS } from '@/utils/promptPolicy'
 import type { PromptReport } from '@/utils/promptPolicy'
+import '@/assets/css/director/components/PromptHealthPanel.css'
 
 const props = withDefaults(defineProps<{
   prompt: string

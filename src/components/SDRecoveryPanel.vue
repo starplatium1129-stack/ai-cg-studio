@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import type { SDErrorReport, SDRecoveryId } from '@/utils/sdError'
+import '@/assets/css/director/components/SDRecoveryPanel.css'
 
 defineProps<{ report: SDErrorReport | null }>()
 const emit = defineEmits<{

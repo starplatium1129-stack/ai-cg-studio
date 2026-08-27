@@ -6,6 +6,7 @@ import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useInpaintMaskCanvas } from './inpaint/useInpaintMaskCanvas'
 import { useInpaintImageSource } from './inpaint/useInpaintImageSource'
 import { useInpaintOutfitPresets } from './inpaint/useInpaintOutfitPresets'
+import '@/assets/css/director/components/AnimaInpaintModal.css'
 
 export interface InpaintSubmitPayload {
   imageBlob: Blob

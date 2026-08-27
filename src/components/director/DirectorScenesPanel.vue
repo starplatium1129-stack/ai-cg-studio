@@ -84,6 +84,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import PopularBlueprintPicker from '@/components/popular/PopularBlueprintPicker.vue'
 import type { Scene } from '@/stores/promptBuilderStore'
 import type { SceneBlueprint } from '@/utils/popularContent'
+import '@/assets/css/director/components/DirectorScenesPanel.css'
 
 const pb = usePromptBuilderStore()
 

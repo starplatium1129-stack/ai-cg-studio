@@ -106,6 +106,7 @@ import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import '@/assets/css/director/components/GenerationOutputControls.css'
 
 const props = defineProps<{
   engine: DrawEngine

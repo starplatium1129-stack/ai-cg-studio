@@ -80,6 +80,7 @@ import { ref, computed } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import '@/assets/css/director/components/PromptDataTools.css'
 
 const props = defineProps<{
   blueprintData?: Record<string, unknown>
