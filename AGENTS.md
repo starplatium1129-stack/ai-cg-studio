@@ -88,7 +88,7 @@
   - [x] Step 3–5：抽取 pointerGaze / interactions / emotionClock+layoutFit 子模块（`18a4e03` / `2535ce7` / `5ffe124`）
   - [x] Step 6：parameterFrame 每帧热路径抽出（`0f13ae5`，native-contract 契约断言跟随模块化新家）
   - [x] Step 7：lifecycle 抽出，useLive2D 收薄为 98 行组合根（`2b1220c`，公开 API 逐字冻结）
-  - [ ] 收尾硬门槛：`npm run test:live2d-native:release` 真机自检 + 双后端手工冒烟清单归档——**2026-08-23 拆分期间 Companion 桌面实例持续运行，selftest 因单实例锁空转退出；关闭桌宠后执行**。清单见 `docs/live2d-composable-refactor-plan.md` 第八节
+  - [x] 收尾硬门槛：`npm run test:live2d-native:release` 真机自检 + 双后端手工冒烟清单归档（2026-08-27 完成：自动化 selftest `OK snapshots=3/3 exit=0`；用户确认双后端人工冒烟可用）。清单见 `docs/live2d-composable-refactor-plan.md` 第八节
 - 红线提醒：`destroyRuntime` 全库唯一实现且顺序冻结（Pixi-first）；双后端 capability 分支原样搬家不抽象；`lifecycleToken` 语义不变。
 
 > 已完成（2026-08-22）：`routes/video.js` 八模块化拆分（2229→606 行编排层）、`sendMessage` 六步 pipeline 化、桌宠工具 R18 网关双门控、存储键收敛防回潮门禁。**director.css 分片+分产已完成（2026-08-27）**：四片切片基础上再按异步组件规则级分产 16 个 `director/components/<Owner>.css` 随组件懒加载，PromptBuilderView 路由 CSS 113.7→67.9 KiB（预算 98.9%→59%）；其余中期项（PromptBuilderView 编排下沉、companion.css 分片）按打包预算压力另行排期。

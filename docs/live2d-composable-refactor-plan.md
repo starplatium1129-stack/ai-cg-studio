@@ -149,15 +149,15 @@ export interface Live2DCtx {
 - [x] Step 5 emotionClock + layoutFit（2026-08-23，`5ffe124`；desktopWindowBounds 随 layoutFit 移入）
 - [x] Step 6 parameterFrame（2026-08-23，`0f13ae5`；逐行迁移热路径，native-contract 契约断言跟随模块化新家）
 - [x] Step 7 lifecycle + 组合根收薄（2026-08-23，`2b1220c`：useLive2D.ts 1270 → 98 行组合根，destroyRuntime 复位顺序逐行冻结且全库唯一）
-- [ ] 真机门禁 + 冒烟清单归档 —— **待执行**：2026-08-23 拆分期间 Companion 桌面实例持续运行（PID 15892），selftest exe 因单实例锁直接退出（exit=0 无 SELFTEST 输出）。关闭桌宠后执行 `npm run test:live2d-native:release`，通过后按下方清单双后端各过一遍人工冒烟。
+- [x] 真机门禁 + 冒烟清单归档 —— 2026-08-27 完成：关闭桌宠后执行 `npm run test:live2d-native:release`，自动化 selftest `OK snapshots=3/3 exit=0`；用户确认双后端人工冒烟可用。
 
 最终架构（2026-08-23 定稿）：useLive2D.ts 98 行组合根 + live2d/ 九模块（constants 97 / catalog 38 / context 183 / pointerGaze 106 / interactions 298 / emotionClock 45 / layoutFit 145 / parameterFrame 151 / lifecycle 466）。每步独立提交、typecheck + test:frontend 全绿；Step 6/7 追加 live2d 三件套（backend 24/24、service、native-contract 5/5）与打包预算（19 路由全部通过）。
 
 人工冒烟清单（双后端各过一遍，目视验证）：
-- [ ] ① 双角色切换后点击八分区反馈正确
-- [ ] ② 说话口型随音频幅度开合
-- [ ] ③ 眨眼双眼同步无 Wink
-- [ ] ④ 夏目互动/登场后无叠层残留（灰眼/四手）；换装互动结束平滑回落无闪回
-- [ ] ⑤ 桌面窗口拖动 overlay 跟随不跳位
-- [ ] ⑥ `prefers-reduced-motion` 下静止节能
-- [ ] ⑦ e2e `studio.spec.ts` live2d 断言保持通过
+- [x] ① 双角色切换后点击八分区反馈正确
+- [x] ② 说话口型随音频幅度开合
+- [x] ③ 眨眼双眼同步无 Wink
+- [x] ④ 夏目互动/登场后无叠层残留（灰眼/四手）；换装互动结束平滑回落无闪回
+- [x] ⑤ 桌面窗口拖动 overlay 跟随不跳位
+- [x] ⑥ `prefers-reduced-motion` 下静止节能
+- [x] ⑦ e2e `studio.spec.ts` live2d 断言保持通过
