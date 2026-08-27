@@ -74,7 +74,7 @@
             </button>
           </div>
           <div v-if="interrogateError" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
-          <input ref="interrogateInputRef" type="file" accept="image/*" hidden @change="onInterrogateFile" />
+          <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
         </div>
       </div>
     </section>
@@ -183,7 +183,7 @@
       <div v-if="interrogateError && displayResultUrl" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
     </div>
     <!-- 供两态共用的上传入口 -->
-    <input ref="interrogateInputRef2" type="file" accept="image/*" hidden @change="onInterrogateFile" />
+    <input ref="interrogateInputRef2" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
   </div>
 </template>
 
@@ -225,6 +225,7 @@ const emit = defineEmits<{
   openCompare: []
   clearResult: []
   interrogateResult: [result: InterrogateResult]
+  interrogateError: [message: string]
 }>()
 
 const stageMuseUrl = {
@@ -239,13 +240,11 @@ const interrogateError = computed(() => interrogateErrorRaw.value)
 const interrogateMode = computed(() => props.drawEngine === 'krea2' ? 'caption' as const : 'tag' as const)
 
 function triggerInterrogatePick() {
-  // 优先用空闲态的 input，兜底用结果态的
-  var target = interrogateInputRef.value || interrogateInputRef2.value
+  // 有结果时优先用结果态外层的 input：空闲态 input 在 v-show=false 的舞台里，
+  // 部分 WebView/浏览器对 display:none 祖先内的 file input 不弹选择器。
+  var target = props.displayResultUrl ? interrogateInputRef2.value : interrogateInputRef.value
+  if (!target) target = props.displayResultUrl ? interrogateInputRef.value : interrogateInputRef2.value
   if (target) target.click()
-  else {
-    var fallback = interrogateInputRef2.value
-    if (fallback) fallback.click()
-  }
 }
 
 async function onInterrogateFile(e: Event) {
@@ -257,7 +256,11 @@ async function onInterrogateFile(e: Event) {
   try {
     var result = await interrogate(file, interrogateMode.value, 0.35)
     if (result) emit('interrogateResult', result)
-  } catch {}
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    emit('interrogateError', msg)
+    console.warn('[interrogate]', msg)
+  }
 }
 
 async function interrogateCurrentImage() {
@@ -265,15 +268,26 @@ async function interrogateCurrentImage() {
     triggerInterrogatePick()
     return
   }
+  let file: File
   try {
     var res = await fetch(props.displayResultUrl)
+    if (!res.ok) throw new Error('获取当前成片失败')
     var blob = await res.blob()
-    var file = new File([blob], 'current_result.png', { type: blob.type || 'image/png' })
+    file = new File([blob], 'current_result.png', { type: blob.type || 'image/png' })
+  } catch (e) {
+    // 取图失败回落到上传，让用户手动选图
+    const msg = e instanceof Error ? e.message : String(e)
+    console.warn('[interrogate] fetch current image failed:', msg)
+    triggerInterrogatePick()
+    return
+  }
+  try {
     var result = await interrogate(file, interrogateMode.value, 0.35)
     if (result) emit('interrogateResult', result)
-  } catch {
-    // 取图失败则回落到上传
-    triggerInterrogatePick()
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    emit('interrogateError', msg)
+    console.warn('[interrogate]', msg)
   }
 }
 </script>

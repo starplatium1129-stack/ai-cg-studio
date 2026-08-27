@@ -8,7 +8,7 @@
         </button>
         <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
       </div>
-      <input ref="interrogateInputRef" type="file" accept="image/*" hidden @change="onInterrogateFile" />
+      <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
     </div>
     <div v-if="interrogateError" class="tag-interrogate-error" role="alert">{{ interrogateError }}</div>
     <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
@@ -126,8 +126,13 @@ async function onInterrogateFile(e: Event) {
       pb.toggleManualTag(norm); added++
     }
     pb.flash(added ? `本地反推已加入 ${added} 个 Tag，可切人直出` : '反推完成，无新增 Tag')
-    if (result.warning) pb.flash(result.warning)
-  } catch {}
+    const warning = result.warning
+    if (warning) setTimeout(() => pb.flash(warning), 2600)
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    pb.flash('反推失败：' + msg)
+    console.warn('[interrogate]', msg)
+  }
 }
 
 const tagCatalog = computed<TagEntry[]>(() => {

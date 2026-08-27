@@ -146,6 +146,7 @@
           @openCompare="compareOpen = true"
           @clearResult="clearDisplayedResult"
           @interrogateResult="handleInterrogateResult"
+          @interrogateError="handleInterrogateError"
         />
         <DirectorTagWorkbench />
 
@@ -875,7 +876,8 @@ function handleInterrogateResult(result: unknown) {
   if (payload.mode === 'caption' && typeof payload.caption === 'string' && payload.caption.trim()) {
     pb.visualDescription = String(payload.caption).trim()
     pb.flash('已反推为自然语言，已填入画面描述（Krea2 直出，切人保留）')
-    if (payload.warning) pb.flash(payload.warning)
+    const warning = payload.warning
+    if (warning) setTimeout(() => pb.flash(warning), 2600)
     return
   }
   const tags: string[] = Array.isArray(payload.tags) ? (payload.tags as string[]) : []
@@ -886,7 +888,12 @@ function handleInterrogateResult(result: unknown) {
     pb.toggleManualTag(norm); added++
   }
   pb.flash(added ? `本地反推已加入 ${added} 个 Tag，可切人直出` : '反推完成，无新增 Tag')
-  if (payload.warning) pb.flash(payload.warning)
+  const warning = payload.warning
+  if (warning) setTimeout(() => pb.flash(warning), 2600)
+}
+
+function handleInterrogateError(message: string) {
+  pb.flash('反推失败：' + message)
 }
 
 function onStoryInput() {
