@@ -69,7 +69,7 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
   // （43 角色 = 35x10 + 8x11 = 438 场景）。
   // 2026-08-24 B1 衣橱扩容试点（陈）：衍生服装入库配套专属场景，
   // 陈 11 -> 14（43 角色 = 35x10 + 7x11 + 1x14 = 441 场景）。
-  assert.strictEqual(blueprints.length, 496, 'expected 496 character scenes, got ' + blueprints.length);
+  assert.strictEqual(blueprints.length, 506, 'expected 506 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -88,7 +88,7 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
     assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13, entry[0] + ' must own 10, 11 or 13 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 13, 13: 1 }, 'scene distribution must be 34x10 + 13x11 + 1x13');
+  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 8, 13: 6 }, 'scene distribution must be 34x10 + 8x11 + 6x13');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4 或 5 个带 characterId 的成人场景。

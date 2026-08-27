@@ -5724,6 +5724,22 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a white and pink frilled one-piece swimsuit with a small sun hat, elegant summer look",
+          "tokens": [
+            "swimsuit",
+            "one-piece_swimsuit",
+            "white_swimsuit",
+            "pink_swimsuit",
+            "frills",
+            "sun_hat",
+            "summer"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ],
       "canon": {
@@ -5820,6 +5836,21 @@
             "belt",
             "fingerless_gloves",
             "combat_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a black bikini with red accents and a thin white cover-up, strict yet summer-like",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "red_accents",
+            "cover-up",
+            "summer"
           ],
           "default": false,
           "isDefault": false
@@ -5932,6 +5963,22 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a black bikini with a cat-ear swim hood and a small red ribbon, cute and playful",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "cat_ears",
+            "hood",
+            "red_ribbon",
+            "summer"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ],
       "canon": {
@@ -6029,6 +6076,22 @@
             "jacket",
             "headset",
             "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a white and blue bikini with a small tactical waist belt and a headset, secret agent summer look",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "white_bikini",
+            "blue_bikini",
+            "tactical_belt",
+            "headset",
+            "summer"
           ],
           "default": false,
           "isDefault": false
@@ -6130,6 +6193,21 @@
             "high_collar",
             "long_sleeves",
             "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a sleek black bikini with elegant red trim and a sheer black cover-up, commanding summer look",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "red_trim",
+            "sheer_cover-up",
+            "summer"
           ],
           "default": false,
           "isDefault": false
