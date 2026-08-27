@@ -3862,28 +3862,27 @@
       "alt": "空崎日奈 样张立绘"
     },
     "visual_dna": {
-      "hair": "白色/银白色长发",
+      "hair": "白发",
       "hair_color": "白",
-      "eyes": "红色",
-      "hairstyle": "长直发 · 刘海 · 发尾微翘",
-      "uniform": "歌赫娜风纪委员会黑色制服 / 夏日泳装",
-      "expression": "严肃认真，偶尔害羞",
-      "style": "strict disciplinary chair",
-      "signature": "白发、红瞳与黑色风纪制服"
+      "eyes": "紫",
+      "hairstyle": "半马尾 · 人字刘海",
+      "uniform": "格黑娜军服 / 死库水泳装 / 晚礼服",
+      "expression": "认真可靠，偶尔慵懒",
+      "style": "serious sleepy disciplinary chair",
+      "signature": "白发、紫瞳、半马尾与格黑娜军服"
     },
     "personality": [
-      "严肃",
       "认真",
-      "责任感强",
-      "容易害羞",
-      "外冷内热"
+      "可靠",
+      "慵懒",
+      "反差萌",
+      "责任感强"
     ],
     "likes": [
+      "睡觉",
+      "休息",
       "维护纪律",
-      "甜食",
-      "黑咖啡",
-      "安静的夜晚",
-      "被信任"
+      "机枪"
     ],
     "classic_cg": {
       "title": "深夜的委员长",
@@ -3897,12 +3896,12 @@
     },
     "tags": [
       "白发",
-      "红瞳",
-      "黑色制服",
-      "风纪委员会",
-      "娇小"
+      "紫瞳",
+      "半马尾",
+      "格黑娜军服",
+      "风纪委员"
     ],
-    "bg_story": "空崎日奈是《碧蓝档案》中歌赫娜学院风纪委员会的委员长，身高 142cm，外表严肃可靠，实际容易害羞，私下喜欢甜食。场景应突出风纪委员会、旧校舍、夜间巡逻与纪律感。",
+    "bg_story": "空崎日奈是《碧蓝档案》中格黑娜学园风纪委员会的委员长，身高142cm，看似萝莉体型但非常认真可靠，私下慵懒爱睡觉。场景应突出风纪委员会、军服、泳装和礼服。",
     "palette": [
       "白",
       "红",
@@ -3919,15 +3918,16 @@
       "sorasaki_hina",
       "1girl",
       "solo",
-      "long_hair",
       "white_hair",
-      "silver_hair",
-      "red_eyes",
+      "purple_eyes",
+      "half_ponytail",
       "small_stature",
-      "school_uniform",
+      "military_uniform",
+      "long_boots",
+      "over_knee_socks",
+      "wings",
       "gehenna",
       "blue_archive",
-      "black_thighhighs",
       "serious",
       "blush"
     ],
