@@ -5,6 +5,7 @@ import {
   tokenize,
   type ModelProfile,
 } from './promptPolicy.ts'
+import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
 
 export type PromptFamily = 'sd' | 'anima' | 'krea2'
@@ -736,7 +737,8 @@ function sanitizeKreaProse(value: string): string {
 }
 
 export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile?: ModelProfile | null): { prompt: string; negative: string } {
-  if (family === 'krea2') {
+  const capabilities = resolveDrawCapabilities(family, profile)
+  if (capabilities.promptFormat === 'natural-language') {
     const proseSafe: PromptPlan = {
       ...plan,
       subjectProse: sanitizeKreaProse(plan.subjectProse),
@@ -750,7 +752,7 @@ export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile
     return { prompt: buildStructuredKreaDescription(proseSafe), negative: '' }
   }
   let tags = allTags(plan)
-  if (family === 'anima') {
+  if (capabilities.promptFormat === 'anima-tags') {
     // Anima Aesthetic：正层全部去掉质量词与 score 词。
     if (profile?.strip_quality_tokens === true) {
       tags = tags.filter(token => !QUALITY_OR_SCORE_RE.test(String(token || '').trim()))

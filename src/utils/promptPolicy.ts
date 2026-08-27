@@ -2,6 +2,8 @@
 // 负责：Danbooru 标签规范化、模型 profile 质量/负面前缀、LoRA 权重策略、
 //       framing 冲突消解、场景模板净化、结构健康报告
 
+import { resolveDrawCapabilities } from './drawCapabilities.ts'
+
 export interface PromptPart {
   cls?: 'q' | 'c' | 't' | 'l' | 'n' | 'p'
   text: string
@@ -9,6 +11,34 @@ export interface PromptPart {
 }
 
 export type PromptEngine = 'sd' | 'anima' | 'krea2'
+
+/**
+ * 引擎/底模能力表：把“这个引擎能不能做 X”从散落硬编码收敛成数据驱动。
+ * 后端 AnimaOption.capabilities 是运行时模型白名单；这里作为前端统一视图，
+ * 由引擎默认值 + data/presets.json 的 profile.capabilities + 后端模型能力合并。
+ */
+export interface DrawCapabilities {
+  /** 是否支持/接受负向 Prompt（Krea2 恒 false） */
+  negative: boolean
+  /** 是否支持角色/通用 LoRA */
+  lora: boolean
+  /** 是否支持无 LoRA 直出模式 */
+  noLora: boolean
+  /** 是否支持角色身份锁定（character 字段 / 角色 LoRA） */
+  characterIdentity: boolean
+  /** 是否支持双人（triad）身份构图 */
+  dualCharacter: boolean
+  /** 是否支持 hires 高清放大 */
+  hires: boolean
+  /** 是否支持 TeaCache 加速（Anima 专有） */
+  teaCache: boolean
+  /** 是否支持权重语法 (tag:1.2) / BREAK 标签流 */
+  weightSyntax: boolean
+  /** Prompt 最终下发格式 */
+  promptFormat: 'danbooru' | 'anima-tags' | 'natural-language'
+  /** 实验性标记（UI 展示 / 默认门控） */
+  experimental: boolean
+}
 
 export interface ModelProfile {
   id?: string
@@ -40,6 +70,8 @@ export interface ModelProfile {
   hires_scale?: number
   hires_upscaler?: string
   hires_denoising_strength?: number
+  /** Profile 级能力覆盖（未声明时回退引擎默认能力表） */
+  capabilities?: Partial<DrawCapabilities>
   [k: string]: unknown
 }
 
@@ -476,7 +508,8 @@ export function assembleNegative(
   engine: PromptEngine,
   context: { shot?: string | null; character?: string | null; custom?: string; sdNegativeEnabled?: boolean } = {},
 ): string {
-  if (engine === 'krea2') return ''
+  const capabilities = resolveDrawCapabilities(engine, profile)
+  if (!capabilities.negative) return ''
   if (engine === 'sd' && context.sdNegativeEnabled === false) return ''
   const profileNegative = modelNegativePrompt(profile, scene?.negative || '', engine)
   const custom = engine === 'sd' ? String(context.custom || '').trim() : ''
@@ -666,8 +699,9 @@ export function sceneTemplateText(
     // The character line supplies the canonical identity; scenes remain solo regardless of old interaction tags.
     template = sanitizeNatsumeSoloTemplate(template)
   }
-  // Anima / Krea 单人引擎：过滤双人互动词与男性视角词（SD 保留完整双人支持）。
-  if (opts.engine === 'anima' || opts.engine === 'krea2') {
+  // 非双人引擎（Anima / Krea 等）：过滤双人互动词与男性视角词（SD 保留完整双人支持）。
+  const capabilities = resolveDrawCapabilities(opts.engine || 'sd', opts.profile)
+  if (!capabilities.dualCharacter) {
     template = sanitizeSoloTemplate(template)
   }
   return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), opts.shot)
@@ -847,6 +881,8 @@ export interface PromptReport {
  *  engine 可选：传入非 SD 家族时启用引擎契约违规检测（Krea 权重语法/下划线/
  *  score 质量词/负面恒空、Anima 与 Krea 的非 ASCII 混入、负面 token 重复）。 */
 export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): PromptReport {
+  const capabilities = resolveDrawCapabilities(engine || 'sd')
+  const isNaturalLanguage = capabilities.promptFormat === 'natural-language'
   const positive: string[] = []
   const negative: string[] = []
   let hasBreak = false
@@ -893,16 +929,16 @@ export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): Prompt
   // 输入必须是真实下发文本：usePromptAssembly / usePopularPromptAssembly 的
   // 非 SD 家族已把渲染结果作为单个 part 传入，SD 家族仍传分块 parts。
   const rawPositiveText = parts.filter(part => part.cls !== 'n').map(part => part.text).join('\n')
-  if (engine === 'krea2') {
+  if (isNaturalLanguage) {
     const weights = rawPositiveText.match(/\(([^()\n]*[a-z][^()\n]*):\s*-?\d+(?:\.\d+)?\s*\)/gi) || []
     if (weights.length) warnings.push(`Krea 散文残留权重语法：${[...new Set(weights)].slice(0, 3).join('、')}`)
     const underscored = rawPositiveText.match(/[a-z0-9]+_[a-z0-9_]+/gi) || []
     if (underscored.length) warnings.push(`Krea 散文混入下划线 token：${[...new Set(underscored)].slice(0, 3).join('、')}`)
     const scoreQuality = rawPositiveText.match(new RegExp(`\\b(?:${QUALITY_WORDS.join('|')}|score_\\d+)\\b`, 'gi')) || []
     if (scoreQuality.length) warnings.push(`Krea 散文混入 score/质量词：${[...new Set(scoreQuality)].slice(0, 3).join('、')}`)
-    if (negative.length) warnings.push('Krea 分支出现负面词（Krea 负面应恒空，出现即组装 bug）')
+    if (negative.length && !capabilities.negative) warnings.push('Krea 分支出现负面词（Krea 负面应恒空，出现即组装 bug）')
   }
-  if (engine === 'krea2' || engine === 'anima') {
+  if (capabilities.promptFormat !== 'danbooru') {
     // 换行是标签流/散文的可审计边界（renderPromptPlan anima 分支），不算非 ASCII 混入。
     if (/[^\x20-\x7e\n\r]/.test(rawPositiveText)) warnings.push('提示词混入非 ASCII 字符（英文模型将无法理解，视觉描述已按门控丢弃）')
   }
@@ -912,7 +948,7 @@ export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): Prompt
   let level: 'ok' | 'warn' | 'over' = 'ok'
   let label = '结构均衡'
   // Krea 是纯散文：逗号切分出的「片段数」不是 token 数，跳过数量阈值，避免误报信息偏少/过载。
-  if (engine !== 'krea2') {
+  if (!isNaturalLanguage) {
     if (positive.length > 90) { level = 'over'; label = '标签过载'; warnings.push('正向标签超过 90 个，模型容易忽略后段。') }
     else if (positive.length > 72) { level = 'warn'; label = '偏长'; warnings.push('正向标签超过 72 个，建议精简。') }
     else if (positive.length < 8) { level = 'warn'; label = '信息偏少'; warnings.push('正向标签过少，画面可能缺少细节。') }

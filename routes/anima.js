@@ -502,7 +502,7 @@ function createAnimaService(config, options) {
     }
     return {
       online:false,
-        models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', noLora:model.noLora === true, characterIdentity:model.family === 'anima', experimental:model.family === 'krea2' || model.noLora === true } }; }),
+        models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', noLora:model.family === 'krea2' || model.noLora === true, characterIdentity:model.family === 'anima', experimental:model.family === 'krea2' || model.noLora === true } }; }),
       loras:Object.keys(LORAS).map(function (id) {
         var lora = LORAS[id];
         return { id:id, name:lora.name, character:lora.character, preview:Boolean(lora.preview), validation:lora.validation || 'production', available:resourceExists(loraRoot, '', lora.file) };

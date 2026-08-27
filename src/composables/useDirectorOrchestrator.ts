@@ -7,6 +7,7 @@ import { useSDGenerate } from '@/composables/generation/useSDGenerate'
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue'
 import { settingsRepository, DRAW_ENGINE_SETTING, type DrawEngine } from '@/storage/settingsRepository'
 import type { PromptEngine } from '@/utils/promptPolicy'
+import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import {
   eligibleBlueprints,
@@ -81,7 +82,7 @@ export function useDirectorOrchestrator(
   const engineOnline = computed(() => {
     if (engine.value === 'anima') {
       if (pb.isPopular) return animaState.value.online && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
-      return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
+      return (supportsDualCharacter('anima') || pb.char !== 'triad') && Boolean(animaState.value.loraId) && animaState.value.online
     }
     if (engine.value === 'krea2') return animaState.value.online
     return sd.online.value
@@ -116,9 +117,13 @@ export function useDirectorOrchestrator(
     return recommendBlueprints(pool, key, blueprintCursor.value, previousBlueprintIds.value, 3)
   })
 
+  function supportsDualCharacter(engine: DrawEngine): boolean {
+    return resolveDrawCapabilities(engine).dualCharacter
+  }
+
   function setDrawEngine(v: DrawEngine) {
     if (v === 'sd' && pb.isPopular) { pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2'); return }
-    if (v !== 'sd' && pb.char === 'triad' && !pb.isPopular) { pb.flash('双人模式不支持 Anima/Krea2'); return }
+    if (!supportsDualCharacter(v) && pb.char === 'triad' && !pb.isPopular) { pb.flash('双人模式不支持 Anima/Krea2'); return }
     if (engine.value === v) return
     try { settingsRepository.set(DRAW_ENGINE_SETTING, v) } catch { pb.flash('绘图引擎设置保存失败'); return }
     engine.value = v

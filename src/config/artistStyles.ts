@@ -1,4 +1,5 @@
 import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 
 // Curated artist tags verified against the current Danbooru artist records and
 // the Illustrious/Anima model tag indexes. WAI consumes canonical Danbooru tags;
@@ -81,8 +82,9 @@ export function normalizeArtistStyleIds(value: unknown, limit = 2): string[] {
 }
 
 export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleEngine): string[] {
-  if (engine === 'krea2') return []
-  return normalizeArtistStyleIds(ids).map(id => engine === 'anima'
+  const capabilities = resolveDrawCapabilities(engine)
+  if (capabilities.promptFormat === 'natural-language') return []
+  return normalizeArtistStyleIds(ids).map(id => capabilities.promptFormat === 'anima-tags'
     // Anima 官方空格消歧规则：`lam_(ramdayo)` → `@lam (ramdayo)`，保留括号消歧名，
     // 与 Kohaku/Illustrious 生态（`ask (askzy)`）一致；主名 `@lam` 在 Danbooru 是弱 tag。
     ? `@${id.replace(/_/g, ' ')}`

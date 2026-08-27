@@ -191,12 +191,12 @@
               SD 引擎 <span class="engine-sub">{{ pb.isPopular ? '仅工作室角色' : 'WebUI · v18 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
-              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
+              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('anima'))" :title="(!pb.isPopular && !supportsDualCharacter('anima')) ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
               @click="setDrawEngine('anima')">
               Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v21 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
-              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
+              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('krea2'))" :title="(!pb.isPopular && !supportsDualCharacter('krea2')) ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
               Krea 2 <span class="engine-sub">{{ pb.isPopular ? '自然语言 · 身份优先' : 'ComfyUI · 自然语言实验' }}</span>
             </button>
           </div>
@@ -445,6 +445,7 @@ import {
   type DrawEngine,
 } from '@/storage/settingsRepository'
 import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
+import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 
 // 热门角色面板按需懒加载：仅在 isPopular 时渲染，避免常驻占用主 chunk。
 const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
@@ -565,9 +566,20 @@ const popular = unified.popular
 /** 热门角色 Anima 无 LoRA：仅 popular subject + 选中底模的 noLora capability 时成立。 */
 const animaNoLoraMode = computed(() => {
   if (!pb.isPopular) return false
-  if (animaState.value.family === 'krea2') return false
+  if (!currentCapabilities.value.lora) return false
   const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
   return selected?.capabilities?.noLora === true
+})
+
+/** 当前引擎/底模能力表：UI 与请求组装统一从这里判断，不再散落写 engine === '...'。 */
+const currentCapabilities = computed(() => {
+  if (drawEngine.value === 'sd') return resolveDrawCapabilities('sd', modelProfileView.value)
+  const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
+  return resolveDrawCapabilities(
+    drawEngine.value === 'krea2' ? 'krea2' : 'anima',
+    modelProfileView.value,
+    selected?.capabilities ?? null,
+  )
 })
 
 // ── 热门角色派生状态 ───────────────────────────────────────────────────────
@@ -924,12 +936,17 @@ watch(displayResultUrl, (url, oldUrl) => {
   compare.rotate(url)
 })
 
+/** 引擎按钮禁用态由能力表驱动（双人支持等）。 */
+function supportsDualCharacter(engine: DrawEngine): boolean {
+  return resolveDrawCapabilities(engine).dualCharacter
+}
+
 function setDrawEngine(v: DrawEngine) {
   if (v === 'sd' && pb.isPopular) {
     pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2，请保留 Comfy 引擎')
     return
   }
-  if (v !== 'sd' && pb.char === 'triad' && !pb.isPopular) {
+  if (!supportsDualCharacter(v) && pb.char === 'triad' && !pb.isPopular) {
     pb.flash(v === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
     return
   }
@@ -958,7 +975,7 @@ const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statu
 const engineOnline = computed(() => {
   if (drawEngine.value === 'anima') {
     if (pb.isPopular) return animaState.value.online && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
-    return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
+    return (currentCapabilities.value.dualCharacter || pb.char !== 'triad') && Boolean(animaState.value.loraId) && animaState.value.online
   }
   if (drawEngine.value === 'krea2') return animaState.value.online
   return sd.online.value
@@ -1035,16 +1052,17 @@ function buildAnimaRequest(): AnimaRequest | null {
     return buildPopularRequest()
   }
   const profile = modelProfile.value
-  if (pb.char === 'triad') {
+  if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) {
     pb.flash(animaState.value.family === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
     return null
   }
+  const charKey = pb.char === 'triad' ? null : pb.char
   if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
     pb.flash('当前底模没有匹配的模型 profile，已拒绝生成')
     return null
   }
-  const expectedLoraId = ANIMA_LORA_BY_CHARACTER[pb.char]
-  if (animaState.value.family !== 'krea2' && (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false))) {
+  const expectedLoraId = charKey ? ANIMA_LORA_BY_CHARACTER[charKey] : ''
+  if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && charKey && (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false))) {
     pb.flash('Anima 底模尚未从服务端白名单发现')
     return null
   }
@@ -1054,14 +1072,14 @@ function buildAnimaRequest(): AnimaRequest | null {
     negative: effectiveNegative.value,
     profileId: profile.id || '',
     modelId: animaState.value.modelId,
-    loraId: animaState.value.family === 'krea2' ? null : animaState.value.loraId,
-    loraStrength: animaState.value.family === 'krea2' ? null : animaState.value.loraStrength,
+    loraId: currentCapabilities.value.lora ? animaState.value.loraId : null,
+    loraStrength: currentCapabilities.value.lora ? animaState.value.loraStrength : null,
     width: animaState.value.width,
     height: animaState.value.height,
     steps: animaState.value.steps,
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
-    character: animaState.value.family === 'krea2' ? null : ANIMA_CHARACTER_BY_CHARACTER[pb.char],
+    character: currentCapabilities.value.characterIdentity && charKey ? ANIMA_CHARACTER_BY_CHARACTER[charKey] : null,
     hiresFix: Boolean(animaState.value.hiresFix),
     hiresScale: animaState.value.hiresScale,
     hiresDenoise: animaState.value.hiresDenoise,
@@ -1078,12 +1096,9 @@ function buildPopularRequest(): AnimaRequest | null {
     pb.flash('当前底模没有匹配的模型 profile，已拒绝生成')
     return null
   }
-  if (animaState.value.family === 'anima') {
-    const selectedModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
-    if (!selectedModel || selectedModel.capabilities?.noLora !== true) {
-      pb.flash('当前底模不支持无 LoRA 热门角色创作')
-      return null
-    }
+  if (!currentCapabilities.value.noLora) {
+    pb.flash('当前底模不支持无 LoRA 热门角色创作')
+    return null
   }
   updateAnimaPromptState()
   return {
@@ -1137,7 +1152,7 @@ async function callGenerate(opts: { disableLora?: boolean } = {}) {
   }
   if (!livePrompt.value) { pb.flash('请先选择场景或填写故事'); return }
   if (drawEngine.value !== 'sd') {
-    if (opts.disableLora && drawEngine.value === 'anima' && !pb.isPopular) { pb.flash('Anima 引擎固定使用角色 LoRA，无法跳过') }
+    if (opts.disableLora && currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && !pb.isPopular) { pb.flash('Anima 引擎固定使用角色 LoRA，无法跳过') }
     await generateAnima()
     return
   }

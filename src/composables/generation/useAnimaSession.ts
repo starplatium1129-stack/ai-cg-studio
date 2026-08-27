@@ -268,8 +268,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const styleLoras = family === 'krea2' ? (data.styleLoras || []) : []
       const familyModels = models.filter(model => model.family === family)
       const visibleModels = options.isPopular()
-        // 热门角色只暴露 no-LoRA 底模（Krea 家族天然无 LoRA）。
-        ? familyModels.filter(model => model.capabilities?.noLora === true || model.family === 'krea2')
+        // 热门角色只暴露 no-LoRA 底模（Krea 家族天然无 LoRA，后端已声明 noLora:true）。
+        ? familyModels.filter(model => model.capabilities?.noLora === true)
         : familyModels
       const familyLoras = family === 'krea2' ? [] : (options.isPopular() ? [] : loras)
       const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId)

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
+import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 
@@ -37,6 +38,8 @@ const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(pro
 const progressStyle = computed(() => ({ '--progress': `${(props.state.progress ?? 0) * 100}%` }))
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
 const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
+/** 当前底模能力表：引擎默认值 + 后端模型能力合并（UI 不再按 family 散落判断）。 */
+const capabilities = computed(() => resolveDrawCapabilities(props.state.family, null, selectedModel.value?.capabilities ?? null))
 /** 热门角色无 LoRA：只在 popular subject + noLora capability 时隐藏 LoRA 选择。 */
 const noLoraMode = computed(() => props.noLora === true && selectedModel.value?.capabilities?.noLora === true)
 const availableSizes = computed(() => selectedModel.value?.sizes?.length ? selectedModel.value.sizes : ['832x1216', '1024x1024', '1216x832'])
@@ -51,11 +54,11 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
     </summary>
     <div class="anima-body">
        <p class="anima-hint">{{ state.checkMsg }}</p>
-       <p v-if="state.family === 'krea2'" class="anima-preview-note"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份不保证；Prompt Enhancer 未启用。</p>
+       <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份不保证；Prompt Enhancer 未启用。</p>
         <p v-else-if="noLoraMode" class="anima-preview-note"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
-       <div v-if="state.family !== 'krea2' && !noLoraMode" class="anima-row">
+       <div v-if="capabilities.lora && !noLoraMode" class="anima-row">
         <label>LoRA</label>
         <select v-model="loraId" :disabled="busy">
           <option v-for="l in state.loras" :key="l.id" :value="l.id">{{ l.name || l.id }}</option>
@@ -66,7 +69,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
       <label class="anima-label">正向提示词</label>
       <textarea :value="state.prompt" rows="4" class="anima-textarea" readonly></textarea>
 
-       <template v-if="state.family !== 'krea2'">
+       <template v-if="capabilities.negative">
          <label class="anima-label">负向提示词</label>
          <textarea :value="state.negative" rows="2" class="anima-textarea" readonly></textarea>
        </template>
@@ -76,17 +79,17 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <input v-model.number="seed" type="number" class="anima-num anima-seed" :disabled="busy" />
         <button type="button" class="anima-btn" :disabled="busy" @click="randomSeed">随机</button>
         <span class="anima-inline">Steps</span>
-         <input v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || state.family === 'krea2'" />
+         <input v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
         <span class="anima-inline">CFG</span>
-         <input v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || state.family === 'krea2'" />
+         <input v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
         <span class="anima-inline">尺寸</span>
         <select v-model="size" class="anima-num" :disabled="busy">
            <option v-for="item in availableSizes" :key="item" :value="item">{{ item.replace('x', '×') }}</option>
         </select>
       </div>
 
-      <!-- Anima 加速与高清修复控制 -->
-      <div v-if="state.family === 'anima'" class="anima-row anima-hires-row">
+      <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
+      <div v-if="capabilities.hires || capabilities.teaCache" class="anima-row anima-hires-row">
         <ToggleSwitch v-model="teaCache" :disabled="busy" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>渲染加速 (TeaCache 2.4×)</span>

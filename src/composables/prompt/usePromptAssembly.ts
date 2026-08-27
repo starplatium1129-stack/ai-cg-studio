@@ -30,6 +30,7 @@ import {
 import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstants'
 import { createPromptPlan, plainEnglish, renderPromptPlan } from '@/utils/promptCompiler'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
+import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 
@@ -107,6 +108,9 @@ export function usePromptAssembly(
       : base
   })
 
+  /** 当前引擎 + profile 的能力表（驱动 LoRA/negative/promptFormat 等判断）。 */
+  const capabilities = computed(() => resolveDrawCapabilities(engine.value, modelProfile.value))
+
   /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或门控词，自动提升为 R18 评级以解除负面拦截。 */
   const effectiveScene = computed(() => {
     const isManualR18 = [...pb.manualTags].some(tag =>
@@ -153,28 +157,31 @@ export function usePromptAssembly(
     return result
   })
 
-  /** Anima 只认视图传入的服务端 LoRA id；SD 用 characters.json 的正式模型名。 */
+  /** Anima 只认视图传入的服务端 LoRA id；SD 用 characters.json 的正式模型名；无 LoRA 能力引擎为空。 */
   const controlLoraIds = computed<Record<string, string>>(() => {
+    if (!capabilities.value.lora || !capabilities.value.characterIdentity) return {}
     if (engine.value !== 'anima') return loraIdByChar.value
     const selected = String(selectedLoraId.value || '')
     if (pb.char === 'triad' || !selected) return {}
     return { [pb.char]: selected }
   })
 
-  /** SD LoRA 按场景显式 <lora:name:weight> 解析；Anima 的 LoRA 由固定工作流加载，不进 Prompt。 */
-  const loraSpecs = computed(() =>
-    engine.value === 'anima'
-      ? (pb.char !== 'triad' && controlLoraIds.value[pb.char]
+  /** SD LoRA 按场景显式 <lora:name:weight> 解析；Anima 的 LoRA 由固定工作流加载，不进 Prompt；无 LoRA 能力引擎为空。 */
+  const loraSpecs = computed(() => {
+    if (!capabilities.value.lora) return []
+    if (engine.value === 'anima') {
+      return pb.char !== 'triad' && controlLoraIds.value[pb.char]
         ? [{ name: controlLoraIds.value[pb.char], weight: Number(pb.loraMeta.find(meta => meta.id === controlLoraIds.value[pb.char] || meta.name === controlLoraIds.value[pb.char])?.strength?.default) || 0.85 }]
-        : [])
-      : resolveLoraSpecs(
-          pb.char,
-          effectiveScene.value,
-          pb.loraMeta,
-          loraIdByChar.value,
-          { shot: pb.selections.shot, manualTags: pb.manualTags },
-        ),
-  )
+        : []
+    }
+    return resolveLoraSpecs(
+      pb.char,
+      effectiveScene.value,
+      pb.loraMeta,
+      loraIdByChar.value,
+      { shot: pb.selections.shot, manualTags: pb.manualTags },
+    )
+  })
 
   const format = (text: string) => formatPromptForProfile(text, modelProfile.value, engine.value)
   const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
@@ -234,7 +241,7 @@ export function usePromptAssembly(
         const shot = SHOT.find(option => option.id === selections.shot)
         if (shot?.prompt) parts.push({ cls: 't', text: format(shot.prompt) })
       }
-      if (engine.value === 'sd') loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
+      if (capabilities.value.lora && capabilities.value.promptFormat === 'danbooru') loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
       return dedupeParts(applyFraming(parts, selections.shot))
     }
 
@@ -279,7 +286,7 @@ export function usePromptAssembly(
     }
 
     // 12) LoRA
-    if (engine.value === 'sd') loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
+    if (capabilities.value.lora && capabilities.value.promptFormat === 'danbooru') loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
 
     return dedupeParts(applyFraming(parts, selections.shot))
   })
@@ -308,7 +315,7 @@ export function usePromptAssembly(
    * 各 part 已按 Danbooru 契约 norm 过，只在这里去重，不再整体 norm 回下划线。
    */
   const positivePrompt = computed(() => {
-    if (engine.value !== 'sd') {
+    if (capabilities.value.promptFormat !== 'danbooru') {
       return renderPromptPlan(structuredPlan.value, engine.value, modelProfile.value).prompt
     }
     return sanitizePrompt(
@@ -330,7 +337,7 @@ export function usePromptAssembly(
     // 2026-08-15 审计：健康面板必须分析真正下发的 prompt——
     // Anima/Krea 走 renderPromptPlan 渲染文本（含散文），不再分析 SD 风格的平行 parts
     // （此前 token 数与冲突检测对应一份从未发送的组装结果）。
-    if (engine.value === 'sd') {
+    if (capabilities.value.promptFormat === 'danbooru') {
       const parts = [...promptParts.value]
       if (negativePrompt.value) parts.push({ cls: 'n', text: negativePrompt.value })
       return analyzeParts(parts, 'sd')

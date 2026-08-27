@@ -20,7 +20,7 @@ var MODELS = Object.freeze({
   // noLora:true = 无 LoRA 创作模式可用；若显式传 loraId，仍走 LORAS 兼容表校验
   // （宁宁/夏目 v21 已声明兼容，用户实测自担效果）。
   'anima-yume-v1.0': { file:'AnimaYume_v10_final_base.safetensors', label:'Anima Yume v1.0', family:'anima', profileId:'anima_yume_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'], noLora:true },
-  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
+  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], noLora:true, rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 
 var PROFILE_BY_MODEL = Object.freeze({
