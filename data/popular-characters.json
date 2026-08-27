@@ -6041,6 +6041,107 @@
         "research": "2026-08-27 调研"
       },
       "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    },
+    {
+      "id": "tsukatsuki_rio",
+      "displayName": "调月莉音",
+      "originalName": "Tsukatsuki Rio",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "tsukatsuki_rio",
+        "rio",
+        "调月莉央",
+        "莉音",
+        "老大姐",
+        "millennium",
+        "seminar",
+        "blue archive"
+      ],
+      "identityProse": "Tsukatsuki Rio from Blue Archive, a third-year student at Millennium Science School and a key figure of the Seminar student council, a tall confident girl with long black hair, red eyes, wearing the Millennium uniform with a high-neck sweater, pleated skirt, black tights and high heels, sometimes with a winter coat and gloves",
+      "identityTokens": [
+        "tsukatsuki_rio",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "red_eyes",
+        "school_uniform",
+        "high_neck_sweater",
+        "pleated_skirt",
+        "black_tights",
+        "high_heels",
+        "millennium",
+        "seminar",
+        "blue_archive",
+        "hairpin",
+        "watch"
+      ],
+      "exactTokens": [
+        "tsukatsuki_rio"
+      ],
+      "exactPrefixes": [
+        "tsukatsuki_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "seminar_uniform",
+          "name": "研讨会制服",
+          "prose": "Millennium Seminar uniform with a high-neck sweater, pleated skirt, black tights, high heels, a watch and a hairpin, mature student council look",
+          "tokens": [
+            "school_uniform",
+            "high_neck_sweater",
+            "pleated_skirt",
+            "black_tights",
+            "high_heels",
+            "watch",
+            "hairpin",
+            "millennium"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "winter_coat",
+          "name": "冬季大衣",
+          "prose": "a long winter coat with a belt, boots and gloves, sharp executive look",
+          "tokens": [
+            "winter_coat",
+            "belt",
+            "boots",
+            "gloves",
+            "long_coat"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "formal_dress",
+          "name": "正式礼服",
+          "prose": "a sleek black formal dress with a high collar and long sleeves, elegant and commanding",
+          "tokens": [
+            "dress",
+            "black_dress",
+            "high_collar",
+            "long_sleeves",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 千年科学学园",
+        "era": "近未来学园都市",
+        "formNotes": "研讨会核心人物；天才、腹黑、冷娇，有心理阴影",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
     }
   ]
 }
