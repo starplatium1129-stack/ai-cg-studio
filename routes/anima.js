@@ -3,8 +3,6 @@
 var crypto = require('crypto');
 var express = require('express');
 var fs = require('fs');
-var http = require('http');
-var https = require('https');
 var path = require('path');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
@@ -17,6 +15,11 @@ var upstreamHealth = require('../server/upstream-health');
 var modelCatalog = require('../server/anima-model-catalog');
 var jobRunner = require('../server/job-runner');
 var superres = require('./superres');
+
+// 2026-08-27 审计收口：缓冲式 ComfyUI JSON 传输全站唯一实现（曾在本文件
+// 与 routes/video/comfy.js 各持一份逐行相同的拷贝）。
+var requestComfy = comfyClient.requestComfy;
+var requestComfyJson = comfyClient.requestComfyJson;
 
 var MAX_BODY = '64kb';
 var MAX_PENDING = 4;
@@ -618,69 +621,6 @@ function buildWorkflow(input) {
   return loraWf;
 }
 
-function requestComfy(config, method, pathname, body, timeoutMs, maxBytes) {
-  return new Promise(function (resolve, reject) {
-    var target;
-    try { target = new URL(config.COMFY_HOST); } catch (error) {
-      reject(serviceError(502, 'COMFY_CONFIG_INVALID', 'ComfyUI 地址无效'));
-      return;
-    }
-    var rawPath = String(pathname || '/');
-    var queryIndex = rawPath.indexOf('?');
-    target.pathname = queryIndex >= 0 ? rawPath.slice(0, queryIndex) : rawPath;
-    target.search = queryIndex >= 0 ? rawPath.slice(queryIndex) : '';
-    var payload = body === undefined || body === null ? null : Buffer.from(JSON.stringify(body));
-    var client = target.protocol === 'https:' ? https : http;
-    var headers = { Accept:'application/json' };
-    if (payload) {
-      headers['Content-Type'] = 'application/json';
-      headers['Content-Length'] = payload.length;
-    }
-    var request = client.request({
-      protocol:target.protocol,
-      hostname:target.hostname,
-      port:target.port,
-      method:method,
-      path:target.pathname + target.search,
-      headers:headers,
-      timeout:timeoutMs || 10000
-    }, function (response) {
-      var chunks = [];
-      var size = 0;
-      response.on('data', function (chunk) {
-        size += chunk.length;
-        if (size > (maxBytes || 2 * 1024 * 1024)) {
-          request.destroy(serviceError(502, 'COMFY_RESPONSE_TOO_LARGE', 'ComfyUI 响应过大'));
-          return;
-        }
-        chunks.push(chunk);
-      });
-      response.on('end', function () {
-        resolve({ status:response.statusCode || 0, headers:response.headers, body:Buffer.concat(chunks) });
-      });
-    });
-    request.on('error', function (error) {
-      if (error && error.code) reject(error);
-      else reject(serviceError(502, 'COMFY_UNAVAILABLE', error && error.message || 'ComfyUI 不可用'));
-    });
-    request.on('timeout', function () { request.destroy(serviceError(504, 'COMFY_TIMEOUT', 'ComfyUI 请求超时')); });
-    if (payload) request.write(payload);
-    request.end();
-  });
-}
-
-async function requestComfyJson(config, method, pathname, body, timeoutMs) {
-  var response = await requestComfy(config, method, pathname, body, timeoutMs, 2 * 1024 * 1024);
-  var text = response.body.toString('utf8');
-  var data = null;
-  try { data = text ? JSON.parse(text) : null; } catch (error) {
-    throw serviceError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 返回了无效 JSON');
-  }
-  if (response.status < 200 || response.status >= 300) {
-    throw serviceError(502, 'COMFY_UPSTREAM_ERROR', 'ComfyUI 请求失败', { upstreamStatus:response.status, upstream:data });
-  }
-  return data;
-}
 
 function requestOwner(req) {
   if (security.isDirectLocalRequest(req)) return 'local';
