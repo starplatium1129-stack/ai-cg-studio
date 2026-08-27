@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
- // @ts-nocheck
 import { computed, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
-import { useAnimaSession } from '@/composables/generation/useAnimaSession'
+import { useAnimaSession, type AnimaRequest } from '@/composables/generation/useAnimaSession'
 import { useSDGenerate } from '@/composables/generation/useSDGenerate'
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue'
 import { settingsRepository, DRAW_ENGINE_SETTING, type DrawEngine } from '@/storage/settingsRepository'
@@ -19,6 +17,10 @@ import {
 /**
  * 导演台编排器 — 视图仅 `v-bind="orchestrator.bindings"` 与事件转发
  * 原 1150行编排逻辑下沉至此，保持 View 纯粹（目标 98行组合根，参考 useLive2D）
+ *
+ * 2026-08-27 审计：全库尚无消费方（PromptBuilderView 编排下沉仍在待办），
+ * 摘除 @ts-nocheck 并把 anima prompt 组装从内部坏闭包升级为必需注入参数 ——
+ * 接线时由视图提供真实 buildAnimaRequest，编译器强制闭环。
  */
 export function useDirectorOrchestrator(
   checkpoint: Ref<string>,
@@ -32,17 +34,19 @@ export function useDirectorOrchestrator(
   showAllBlueprints: Ref<boolean>,
   blueprintCursor: Ref<number>,
   previousBlueprintIds: Ref<string[] | null>,
+  /** 视图侧 Anima prompt 组装；返回 null 表示拒绝生成。必须注入。 */
+  buildAnimaRequest: () => AnimaRequest | null,
 ) {
   const pb = usePromptBuilderStore()
   const sceneStore = useSceneStore()
   const sd = useSDGenerate()
-  const assembly = useUnifiedPromptAssembly(pb, checkpoint as any, engine as any, modelName as any, selectedLoraId as any)
+  const assembly = useUnifiedPromptAssembly(pb, checkpoint, engine, modelName, selectedLoraId)
 
   const animaSession = useAnimaSession({
-    getCharacter: () => pb.char as any,
+    getCharacter: () => pb.char,
     isPopular: () => pb.isPopular,
     getFamily: () => engine.value === 'krea2' ? 'krea2' : 'anima',
-    getRequest: () => buildAnimaRequest() as any,
+    getRequest: buildAnimaRequest,
     onResult: () => sd.clearResult(),
     flash: (m: string) => pb.flash(m),
     preferredSize: () => pb.lastRecommendedSize,
@@ -64,19 +68,19 @@ export function useDirectorOrchestrator(
     pb,
     sd,
     sdSize,
-    drawEngine: engine as any,
-    livePrompt: assembly.positivePrompt as any,
-    negativePrompt: assembly.negativePrompt as any,
-    effectiveScene: (assembly as any).studio?.effectiveScene ?? computed(() => null),
-    loraSpecs: (assembly as any).studio?.loraSpecs ?? computed(() => []),
-    modelProfile: (assembly as any).studio?.modelProfile ?? computed(() => null),
+    drawEngine: engine,
+    livePrompt: assembly.positivePrompt,
+    negativePrompt: assembly.negativePrompt,
+    effectiveScene: assembly.studio.effectiveScene,
+    loraSpecs: assembly.studio.loraSpecs,
+    modelProfile: assembly.studio.modelProfile,
     animaState,
-    displayResultSeed: computed(() => null),
-  } as any)
+    displayResultSeed: computed<number | null>(() => null),
+  })
 
   const engineOnline = computed(() => {
     if (engine.value === 'anima') {
-      if (pb.isPopular) return animaState.value.online && animaState.value.models.some((m: any) => m.id === animaState.value.modelId && m.available !== false)
+      if (pb.isPopular) return animaState.value.online && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
       return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
     }
     if (engine.value === 'krea2') return animaState.value.online
@@ -91,35 +95,35 @@ export function useDirectorOrchestrator(
 
   const popularCharacter = computed(() => {
     if (pb.subject.kind !== 'popular') return null
-    return findPopularCharacter(pb.popularCharacters as any, (pb.subject as any).characterId)
+    return findPopularCharacter(pb.popularCharacters, pb.subject.characterId)
   })
   const archiveBarShape = computed(() => {
     if (pb.isPopular) return popularCharacter.value ? characterParticleTheme(popularCharacter.value.id, popularCharacter.value.franchise).shape : 'moon' as const
     return pb.directorMode === 'pro' ? 'spark' as const : 'frame' as const
   })
 
-  const popularBlueprintPool = computed(() => eligibleBlueprints(pb.sceneBlueprints as any, popularCharacter.value as any, { adultEnabled: pb.showMatureScenes }))
+  const popularBlueprintPool = computed(() => eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, { adultEnabled: pb.showMatureScenes }))
   const blueprintCategories = computed(() => {
     const cats = new Set<string>()
-    popularBlueprintPool.value.forEach((bp: any) => { if (bp.category) cats.add(bp.category) })
+    popularBlueprintPool.value.forEach(bp => { if (bp.category) cats.add(bp.category) })
     return [...cats]
   })
   const recommendedBlueprints = computed(() => {
     const pool = popularBlueprintPool.value
     if (!pool.length) return []
     if (pb.subject.kind !== 'popular') return pool.slice(0, 3)
-    const key = `${(pb.subject as any).characterId}#${(pb.subject as any).outfitId}`
-    return recommendBlueprints(pool as any, key, blueprintCursor.value, previousBlueprintIds.value, 3)
+    const key = `${pb.subject.characterId}#${pb.subject.outfitId}`
+    return recommendBlueprints(pool, key, blueprintCursor.value, previousBlueprintIds.value, 3)
   })
 
   function setDrawEngine(v: DrawEngine) {
     if (v === 'sd' && pb.isPopular) { pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2'); return }
-    if (v !== 'sd' && (pb.char as string) === 'triad' && !pb.isPopular) { pb.flash('双人模式不支持 Anima/Krea2'); return }
+    if (v !== 'sd' && pb.char === 'triad' && !pb.isPopular) { pb.flash('双人模式不支持 Anima/Krea2'); return }
     if (engine.value === v) return
     try { settingsRepository.set(DRAW_ENGINE_SETTING, v) } catch { pb.flash('绘图引擎设置保存失败'); return }
-    engine.value = v as any
-    patchAnimaState({ styleLoraId: '' } as any)
-    if (v !== 'sd') { syncAnimaCharacter(pb.char as any); void refreshAnimaBackend() }
+    engine.value = v
+    patchAnimaState({ styleLoraId: '' })
+    if (v !== 'sd') { syncAnimaCharacter(pb.char); void refreshAnimaBackend() }
     pb.flash(v === 'anima' ? '已切换到 Anima' : v === 'krea2' ? '已切换到 Krea 2' : '已切换到 SD')
   }
 
@@ -128,8 +132,8 @@ export function useDirectorOrchestrator(
     sd,
     sdSize,
     negativePrompt: assembly.negativePrompt,
-    loraSpecs: (assembly as any).studio?.loraSpecs ?? { value: [] },
-    modelProfile: (assembly as any).studio?.modelProfile ?? { value: null },
+    loraSpecs: assembly.studio.loraSpecs,
+    modelProfile: assembly.studio.modelProfile,
     animaState,
     runJob,
     historyGenerationFields,
