@@ -3845,5 +3845,93 @@
     ],
     "accent_color": "#f9a8d4",
     "bg_color": "#1e3a8a"
+  },
+  {
+    "id": "sorasaki_hina",
+    "name": "空崎日奈",
+    "alias": [
+      "Sorasaki Hina",
+      "空崎ヒナ",
+      "空崎陽奈",
+      "日奈"
+    ],
+    "type": "popular",
+    "icon": "⚖️",
+    "portrait": {
+      "image": "../assets/characters/popular-sorasaki_hina.png?v=1",
+      "alt": "空崎日奈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "白色/银白色长发",
+      "hair_color": "白",
+      "eyes": "红色",
+      "hairstyle": "长直发 · 刘海 · 发尾微翘",
+      "uniform": "歌赫娜风纪委员会黑色制服",
+      "expression": "严肃认真，偶尔害羞",
+      "style": "strict disciplinary chair",
+      "signature": "白发、红瞳与黑色风纪制服"
+    },
+    "personality": [
+      "严肃",
+      "认真",
+      "责任感强",
+      "容易害羞",
+      "外冷内热"
+    ],
+    "likes": [
+      "维护纪律",
+      "甜食",
+      "黑咖啡",
+      "安静的夜晚",
+      "被信任"
+    ],
+    "classic_cg": {
+      "title": "深夜的委员长",
+      "description": "歌赫娜风纪委员会办公室里，她独自整理文件，白发扬起，红瞳在台灯下映出从未示人的疲惫与温柔。"
+    },
+    "identity": {
+      "role": "歌赫娜学院风纪委员会委员长",
+      "age": "17岁",
+      "occupation": "学生 / 风纪委员长",
+      "faction": "歌赫娜学院 / 风纪委员会"
+    },
+    "tags": [
+      "白发",
+      "红瞳",
+      "黑色制服",
+      "风纪委员会",
+      "娇小"
+    ],
+    "bg_story": "空崎日奈是《碧蓝档案》中歌赫娜学院风纪委员会的委员长，身高 142cm，外表严肃可靠，实际容易害羞，私下喜欢甜食。场景应突出风纪委员会、旧校舍、夜间巡逻与纪律感。",
+    "palette": [
+      "白",
+      "红",
+      "黑"
+    ],
+    "weather": [
+      "雨夜",
+      "月光",
+      "黄昏"
+    ],
+    "speech": "日奈正在执行风纪巡查。",
+    "source": "NEXON《蔚蓝档案 / Blue Archive》",
+    "traits": [
+      "sorasaki_hina",
+      "1girl",
+      "solo",
+      "long_hair",
+      "white_hair",
+      "silver_hair",
+      "red_eyes",
+      "small_stature",
+      "school_uniform",
+      "gehenna",
+      "blue_archive",
+      "black_thighhighs",
+      "serious",
+      "blush"
+    ],
+    "accent_color": "#ef4444",
+    "bg_color": "#0f172a"
   }
 ]

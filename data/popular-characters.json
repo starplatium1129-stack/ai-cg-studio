@@ -5733,6 +5733,105 @@
         "research": "2026-08-27 调研"
       },
       "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    },
+    {
+      "id": "sorasaki_hina",
+      "displayName": "空崎日奈",
+      "originalName": "Sorasaki Hina",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "sorasaki_hina",
+        "hina",
+        "空崎陽奈",
+        "日奈",
+        "blue archive",
+        "gehenna",
+        "disciplinary committee"
+      ],
+      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a small and serious girl with long white-silver hair, crimson red eyes, a calm strict expression, wearing the Gehenna disciplinary black uniform with red accents and black thigh-highs",
+      "identityTokens": [
+        "sorasaki_hina",
+        "1girl",
+        "solo",
+        "long_hair",
+        "white_hair",
+        "silver_hair",
+        "red_eyes",
+        "small_stature",
+        "school_uniform",
+        "gehenna",
+        "blue_archive",
+        "black_thighhighs",
+        "serious",
+        "blush"
+      ],
+      "exactTokens": [
+        "sorasaki_hina"
+      ],
+      "exactPrefixes": [
+        "sorasaki_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "gehenna_uniform",
+          "name": "风纪委员制服",
+          "prose": "Gehenna Academy Disciplinary Committee uniform, a black military-style school uniform with red accents, a red armband, black thigh-highs and boots",
+          "tokens": [
+            "school_uniform",
+            "black_uniform",
+            "military_uniform",
+            "red_accents",
+            "armband",
+            "black_thighhighs",
+            "boots",
+            "gehenna"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_black",
+          "name": "日常黑裙",
+          "prose": "a simple black one-piece dress with a red ribbon and black tights, quiet and refined",
+          "tokens": [
+            "dress",
+            "black_dress",
+            "red_ribbon",
+            "black_tights",
+            "refined"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "combat_gear",
+          "name": "战术风纪装",
+          "prose": "tactical disciplinary combat gear with a black jacket, holster belt, fingerless gloves and combat boots",
+          "tokens": [
+            "tactical_gear",
+            "black_jacket",
+            "holster",
+            "belt",
+            "fingerless_gloves",
+            "combat_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 歌赫娜学院",
+        "era": "近未来学园都市",
+        "formNotes": "风纪委员会委员长；身高 142cm，外表严肃但私下容易害羞",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
     }
   ]
 }
