@@ -98,6 +98,8 @@
 | **hires 放大疑难留档** | [`archive/troubleshooting/comfy-superres-hires-fix-2026-08-20.md`](archive/troubleshooting/comfy-superres-hires-fix-2026-08-20.md) | hires 放大根因分析与 Remacri ESRGAN 真超分接入（2026-08-20）。 |
 | **深链模式串位修复** | [`archive/troubleshooting/fix-log-popular-to-studio-deeplink-mode-leak.md`](archive/troubleshooting/fix-log-popular-to-studio-deeplink-mode-leak.md) | popular→studio 深链提示词串位疑难（2026-08-20）。 |
 | **场景提示词一致性审计** | [`archive/troubleshooting/scene-prompt-consistency-audit-2026-08-20.md`](archive/troubleshooting/scene-prompt-consistency-audit-2026-08-20.md) | 场景预设与服装描述一致性审阅留档（2026-08-20）。 |
+| **场景故事提示词全量审计** | [`archive/troubleshooting/scene-story-prompt-audit-2026-08-26.md`](archive/troubleshooting/scene-story-prompt-audit-2026-08-26.md) | 2026-08-26 全量场景 story/prompt 一致性审计留档。 |
+| **场景故事提示词修复报告** | [`archive/troubleshooting/scene-story-prompt-fix-report-2026-08-27.md`](archive/troubleshooting/scene-story-prompt-fix-report-2026-08-27.md) | 2026-08-27 定稿场景修复验收记录（人工复刻/验收成果标注）。 |
 | **提示词组装审计修复** | [`archive/troubleshooting/prompt-assembly-audit-fixes.md`](archive/troubleshooting/prompt-assembly-audit-fixes.md) | `usePromptAssembly` 纯函数重构与多引擎分支修复记录。 |
 | **棘手场景交接标注** | [`archive/troubleshooting/showcase-stubborn-scenes-2026-08-18.md`](archive/troubleshooting/showcase-stubborn-scenes-2026-08-18.md) | 8 个顽固场景 7 轮试错记录与交接方向（勿盲目重试）。 |
 | **2026-08-16 架构体检** | [`archive/troubleshooting/audit-2026-08-16.md`](archive/troubleshooting/audit-2026-08-16.md) | 架构健康度全面体检、安全边界收敛与优化建议。 |

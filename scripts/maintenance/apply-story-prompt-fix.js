@@ -4,7 +4,7 @@
 /**
  * scripts/maintenance/apply-story-prompt-fix.js — 故事↔提示词修复 delta 合并器
  *
- * 背景：2026-08-26 全量审计（docs/scene-story-prompt-audit-2026-08-26.md）发现
+ * 背景：2026-08-26 全量审计（docs/archive/troubleshooting/scene-story-prompt-audit-2026-08-26.md）发现
  * 场景库 217 条 / 蓝图 320+ 条「故事 vs 提示词」不一致。修复由子代理逐条按故事
  * 原文重写，产出 delta 文件（仅含需修改的字段），本脚本负责合并落库：
  *
@@ -111,7 +111,7 @@ function main() {
     const hit = sceneMap.get(d.id);
     if (!hit) { errors.push(`scenes: ${d.id} 不存在`); continue; }
     // 官方CG/实机审核保护：usage 含标记的场景禁止批量改写提示词（故事是唯一事实源，
-    // 此类场景为人工复刻/验收成果，见 docs/scene-story-prompt-fix-report-2026-08-27.md）
+    // 此类场景为人工复刻/验收成果，见 docs/archive/troubleshooting/scene-story-prompt-fix-report-2026-08-27.md）
     const usage = Array.isArray(hit.item.usage) ? hit.item.usage.join('') : String(hit.item.usage || '');
     if (/官方CG|官方.?cg|实机审核|复刻/i.test(usage)) {
       console.log(`[保护] ${d.id}（${hit.item.title || ''}）：官方CG/实机审核场景，跳过提示词写入`);
