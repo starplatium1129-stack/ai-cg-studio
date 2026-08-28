@@ -13,6 +13,10 @@ Thumbs.db
 node_modules/
 test-results/
 playwright-report/
+# vitest --coverage 报告产物（npx vitest run --coverage 生成，不入库）
+coverage/
+# 环境变量文件（前瞻缺口：当前无 .env 入库，密钥一律本地/网关侧）
+.env*
 # Vite 构建产物
 dist/
 # 桌面打包产物（Tauri release 安装包在 desktop-tauri/src-tauri/target/ 下）

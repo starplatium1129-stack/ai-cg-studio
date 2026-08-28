@@ -31,6 +31,8 @@ jobs:
         run: npm run build
       - name: Run static and generated-source checks
         run: npm run check
+      - name: Run frontend unit tests (coverage thresholds enforced)
+        run: npx vitest run --coverage
       - name: Run parallel-safe unit suite
         run: npm run test:unit
       - name: Run controlled contract suite
