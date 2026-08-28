@@ -771,7 +771,8 @@ onMounted(() => {
 .char-outfit-tab.tab-nsfw.active {
   background: var(--danger);
   border-color: var(--danger);
-  color: #fff;
+  /* 审计修复：白字压 danger 底仅 3.49:1，改反色深字 5.2:1 */
+  color: var(--text-inverse);
 }
 .outfit-tab-icon {
   font-size: var(--fs-body-sm);

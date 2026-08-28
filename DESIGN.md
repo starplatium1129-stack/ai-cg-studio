@@ -61,26 +61,19 @@ spacing:
   3xl: "48px"
   4xl: "64px"
 rounded:
-  sm: "4px"
-  md: "4px"
-  lg: "6px"
-  xl: "8px"
+  # 2026-08-29: 与 design-system.css --r-* 对齐（早期方舟战术小圆角 md 4 / lg 6 已放宽）。
+  sm: "8px"
+  md: "10px"
+  lg: "14px"
+  xl: "16px"
   pill: "999px"
 components:
   page-dark:
     backgroundColor: "{colors.neutral}"
     textColor: "{colors.text-primary}"
-  page-light:
-    backgroundColor: "{colors.light-background}"
-    textColor: "{colors.light-text-primary}"
   surface-dark:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.text-primary}"
-    rounded: "{rounded.lg}"
-    padding: "{spacing.xl}"
-  surface-light:
-    backgroundColor: "{colors.light-surface}"
-    textColor: "{colors.light-text-primary}"
     rounded: "{rounded.lg}"
     padding: "{spacing.xl}"
   surface-elevated:
@@ -98,19 +91,9 @@ components:
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
     textColor: "{colors.on-primary}"
-  button-primary-light:
-    backgroundColor: "{colors.light-primary}"
-    textColor: "{colors.light-surface}"
-    typography: "{typography.label}"
-    rounded: "{rounded.md}"
-    padding: "8px 16px"
-    height: "40px"
   text-secondary-dark:
     backgroundColor: "{colors.neutral}"
     textColor: "{colors.text-secondary}"
-  text-secondary-light:
-    backgroundColor: "{colors.light-background}"
-    textColor: "{colors.light-text-secondary}"
   status-success:
     backgroundColor: "{colors.neutral-deep}"
     textColor: "{colors.success}"
@@ -288,7 +271,7 @@ and padding must make adjacent controls feel like one family.
 ## Anime Visual Language
 
 Established 2026-08-01. This project reads as a blog-style anime atelier: dark
-violet night as the default theme, pink-white dream as the light theme. The
+violet night as the single theme. The
 "anime" feel comes from light layering, sticker-like details, and motion
 rhythm — never from oversaturation (see Colors) or from copying an official
 game site.

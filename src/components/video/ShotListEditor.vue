@@ -1125,7 +1125,7 @@ onBeforeUnmount(() => {
 .shot-card-outfit-pill:hover { border-color: var(--accent); color: var(--text-primary); }
 .shot-card-outfit-pill.active { border-color: var(--accent); background: var(--accent); color: var(--text-inverse); font-weight: 600; }
 .shot-card-outfit-pill.pill-nsfw { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); }
-.shot-card-outfit-pill.pill-nsfw.active { border-color: var(--danger); background: var(--danger); color: #fff; }
+.shot-card-outfit-pill.pill-nsfw.active { border-color: var(--danger); background: var(--danger); /* 审计修复：白字压 danger 底仅 3.49:1，改反色深字 5.2:1 */ color: var(--text-inverse); }
 .shot-reference-images { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
 .shot-reference-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: var(--r-sm); border: 1px solid var(--border-soft); cursor: pointer; }
 .shot-reference-hint { margin: 0; color: var(--text-muted); font-size: var(--fs-label-xs); }
@@ -1173,7 +1173,7 @@ onBeforeUnmount(() => {
 .shot-row-status[data-state="pending"] { background: var(--bg-elevated); color: var(--text-muted); }
 .shot-row-actions { display: flex; gap: var(--s-1); margin-left: auto; }
 .shot-row-actions button { min-width: 30px; height: 30px; border: 1px solid var(--border-soft); border-radius: var(--r-sm); background: var(--bg-deep); color: var(--text-secondary); cursor: pointer; }
-.shot-row-actions button:disabled { opacity: .4; cursor: not-allowed; }
+.shot-row-actions button:disabled { /* 审计修复：不用 opacity 压字，改用禁用令牌 */ color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
 .shot-fields { display: grid; gap: var(--s-3); }
 .shot-field-prompt { display: grid; gap: var(--s-2); }
 .shot-field-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); }

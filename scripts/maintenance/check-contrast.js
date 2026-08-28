@@ -151,4 +151,77 @@ for (const [themeName, tokens] of [['dark', dark]]) {
 
 console.log('\n未达 AA(4.5:1) 的文字 token: ' + failures + ' 项');
 console.log('未达 3:1 的非文字图形 token: ' + nonTextFailures + ' 项');
-if (process.argv.includes('--check') && (failures > 0 || nonTextFailures > 0)) process.exit(1);
+
+// ---- SFC <style> 块局部文字色（2026-08-29 接入，补组件级盲区）----
+// 令牌全绿不代表组件全绿：各 SFC 里还散落着字面 hex 的 color: 声明，
+// 它们不经过 design-system.css，令牌检查天然看不到。这里补一层：
+// 只查字面 hex 的 `color:`（var()/rgb()/color-mix() 已由令牌/字面量门槛另行把关）。
+// 落点候选 = 全局 4 个表面 + 规则自身声明的背景色（hover 亮底配黑字这类
+// "on-accent" 文字落在规则自己的背景上，不能错杀）。
+// 全部候选落点都低于 4.5:1 才判 FAIL。
+console.log('\n=== SFC <style> 局部文字色（组件级盲区补扫） ===');
+let sfcChecks = 0;
+let sfcFailures = 0;
+const sfcSurfaces = SURFACES.map((name) => ({ name, bg: compositeSurface(dark, name, hexToRgb(dark['--bg-deep'])) })).filter((s) => s.bg);
+
+// 从声明值里解析出可计算的颜色：字面 hex 或解析得动的 var() 令牌
+function declColor(raw) {
+  const value = raw.replace(/!important/g, '').trim();
+  if (/^#[0-9a-fA-F]{3,8}$/.test(value)) {
+    const digits = value.slice(1);
+    const full = digits.length <= 4 ? digits.split('').slice(0, 3).map((c) => c + c).join('') : digits;
+    return hexToRgb('#' + full.slice(0, 6));
+  }
+  const alias = value.match(/^var\(\s*(--[\w-]+)\s*\)$/);
+  if (alias) {
+    const hex = resolve(dark, alias[1]);
+    if (hex && /^#/.test(hex)) return hexToRgb(hex);
+  }
+  return null;
+}
+
+for (const file of sources.sfcFiles()) {
+  const source = sources.read(file);
+  for (const styleMatch of source.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)) {
+    const baseLine = source.slice(0, styleMatch.index).split('\n').length - 1;
+    const styleBody = styleMatch[1];
+    for (const rule of styleBody.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
+      const ruleBody = rule[2];
+      const ownBackgrounds = [];
+      for (const bg of ruleBody.matchAll(/(?:^|;)\s*(?:background(?:-color)?|backdrop)\s*:\s*([^;}]+)/g)) {
+        const rgb = declColor(bg[1]);
+        if (rgb) ownBackgrounds.push(rgb);
+      }
+      for (const decl of ruleBody.matchAll(/(?<![-\w])color\s*:\s*([^;}]+)/g)) {
+        const rawValue = decl[1].replace(/!important/g, '').trim();
+        if (!/^#[0-9a-fA-F]{3,8}$/.test(rawValue)) continue;
+        const line = baseLine + styleBody.slice(0, rule.index + rule[1].length + 2 + decl.index).split('\n').length;
+        const fg = declColor(rawValue);
+        sfcChecks += 1;
+        const candidates = sfcSurfaces.map((s) => ({ name: s.name, bg: s.bg })).concat(
+          ownBackgrounds.map((bg, i) => ({ name: '规则自身背景#' + (i + 1), bg }))
+        );
+        if (!candidates.length) continue;
+        const results = candidates.map((c) => ratio(fg, c.bg));
+        // 判定语义：规则自身声明了可解析背景 → 文字必然落在它上面，硬判该落点；
+        // 没有自身背景 → 落在父级表面但具体是哪个未知，要求 4 个表面全部达标。
+        let ok, detail;
+        if (ownBackgrounds.length) {
+          ok = results[sfcSurfaces.length] >= 4.5;
+          detail = '自身背景 ' + results[sfcSurfaces.length].toFixed(2) + ':1';
+        } else {
+          const min = Math.min.apply(null, results);
+          ok = min >= 4.5;
+          detail = '全表面最低 ' + min.toFixed(2) + ':1';
+        }
+        if (!ok) {
+          sfcFailures += 1;
+          console.log('  FAIL ' + file + ':' + line + '  color: ' + rawValue + '  ' + detail);
+        }
+      }
+    }
+  }
+}
+console.log('  SFC 局部文字色检查 ' + sfcChecks + ' 处，FAIL ' + sfcFailures + ' 处');
+
+if (process.argv.includes('--check') && (failures > 0 || nonTextFailures > 0 || sfcFailures > 0)) process.exit(1);

@@ -572,8 +572,11 @@ html.companion-mode body {
 
 .companion-page .companion-speech-btn:disabled,
 .companion-page .companion-speech-settings:disabled {
+  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌三件套 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
   cursor: not-allowed;
-  opacity: .5;
 }
 
 .companion-page .companion-speech-state,
@@ -683,8 +686,11 @@ html.companion-mode body {
 }
 
 .companion-page .companion-vision-btn:disabled {
+  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌三件套 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
   cursor: not-allowed;
-  opacity: .5;
 }
 
 .companion-page .companion-send {
@@ -699,8 +705,11 @@ html.companion-mode body {
 }
 
 .companion-page .companion-send:disabled {
+  /* 审计修复：填充色按钮禁用时压暗容器 + 给达标的文字色，不用 opacity 压字 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
   cursor: not-allowed;
-  opacity: .5;
 }
 
 
@@ -1478,7 +1487,7 @@ html.companion-mode:not(.companion-desktop) body {
 /*   ============================================================
    提醒气泡与剪贴卡（进出场动画）
   ============================================================ */
-2026-08-22 动效审计 LOW：提醒气泡/剪贴卡补退场（原只有入场，关闭时瞬移消失）。
+/* 2026-08-22 动效审计 LOW：提醒气泡/剪贴卡补退场（原只有入场，关闭时瞬移消失）。
    列表容器用 <TransitionGroup name="reminder-pop">，剪贴卡复用全局 layer-fade。 */
 .reminder-pop-leave-active {
   transition: opacity var(--motion-hover) cubic-bezier(.55, 0, .85, .36),

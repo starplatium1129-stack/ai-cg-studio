@@ -20,9 +20,10 @@
     --character-aura:rgba(184,149,255,.28); --character-aura-secondary:rgba(244,166,215,.16);
     --accent:var(--character-accent); --accent-hover:var(--character-accent-hover);
     --accent-soft:var(--character-soft); --accent-glow:var(--character-glow);
-    /* 刻意设计：角色主题切换时 6 个继承型 @property 颜色在 .62~.78s 内整树渐变，
-       配合 characterGlassSweep 扫光完成换装交接。代价是过渡期间 .pb 子树逐帧重算——
-       仅在用户切换角色的低频动作触发，属可接受的性能换质感（2026-08-22 动效审计 #10 复核保留）。 */
+    /* 刻意设计：角色主题切换时 6 个继承型 @property 颜色在 --motion-atmosphere
+       （当前 560ms）内整树渐变，配合 characterGlassSweep 扫光完成换装交接。
+       代价是过渡期间 .pb 子树逐帧重算——仅在用户切换角色的低频动作触发，
+       属可接受的性能换质感（2026-08-22 动效审计 #10 复核保留）。 */
     transition:
       --character-accent var(--motion-atmosphere) var(--ease-out),
       --character-accent-hover var(--motion-atmosphere) var(--ease-out),

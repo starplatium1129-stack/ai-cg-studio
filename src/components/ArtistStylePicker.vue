@@ -435,7 +435,9 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-style-grid button:disabled {
   cursor: not-allowed;
-  opacity: .42;
+  /* 审计修复：禁用态不用 opacity 压字（压后低于 AA），改用禁用令牌 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
 }
 .artist-style-name {
   display: flex;

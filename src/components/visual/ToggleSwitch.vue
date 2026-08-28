@@ -88,7 +88,14 @@ function onChange(event: Event) {
   outline-offset: 2px;
 }
 .toggle-switch.is-disabled {
-  opacity: 0.45;
+  /* 审计修复：不用 opacity 压控件（非文字 3:1 也压没了），改用禁用令牌 */
   cursor: not-allowed;
+}
+.toggle-switch.is-disabled .toggle-slider {
+  background: var(--bg-elevated);
+  box-shadow: inset 0 0 0 1px var(--border-soft);
+}
+.toggle-switch.is-disabled .toggle-slider::before {
+  background: var(--text-disabled);
 }
 </style>

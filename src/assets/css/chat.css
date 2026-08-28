@@ -397,6 +397,9 @@ body:has(.chat-page) .sakura-fall {
   filter: drop-shadow(0 22px 30px color-mix(in srgb, var(--character-accent) 28%, transparent));
 }
 
+/*   ============================================================
+   语音光环：情绪色映射 / 触摸共振 / 头像状态
+  ============================================================ */
 .chat-page .voice-halo {
   position: absolute;
   bottom: 8%;
@@ -692,7 +695,9 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .wardrobe-option:disabled {
   cursor: wait;
-  opacity: .6;
+  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
 }
 
 .chat-page .live2d-interaction-hint {
@@ -722,6 +727,9 @@ body:has(.chat-page) .sakura-fall {
   45% { filter: drop-shadow(0 0 18px color-mix(in srgb, var(--character-accent) 42%, transparent)); }
 }
 
+/*   ============================================================
+   角色信息卡：名字 / 文案 / 状态灯
+  ============================================================ */
 .chat-page .character-info {
   flex-shrink: 0;
   padding: var(--s-3) var(--s-4);
@@ -797,6 +805,9 @@ body:has(.chat-page) .sakura-fall {
   background: var(--warning);
 }
 
+/*   ============================================================
+   会话头部与模型控制：标题 / 提供商切换 / 密钥字段
+  ============================================================ */
 .chat-page .conversation-head {
   display: flex;
   align-items: center;
@@ -853,7 +864,9 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .provider-switch button:disabled {
   cursor: not-allowed;
-  opacity: .55;
+  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌 */
+  color: var(--text-disabled);
+  background: var(--bg-surface);
 }
 
 .chat-page .api-settings-toggle {
@@ -1286,6 +1299,9 @@ body:has(.chat-page) .sakura-fall {
   align-items: flex-end;
 }
 
+/*   ============================================================
+   气泡细节：尾巴圆角 / 角色渐变条 / 说话与播放高亮
+  ============================================================ */
 .chat-page .message-bubble {
   position: relative;
   padding: 10px 13px;
@@ -1407,6 +1423,9 @@ body:has(.chat-page) .sakura-fall {
   opacity: .85;
 }
 
+/*   ============================================================
+   消息内音频均衡器：播放律动声波
+  ============================================================ */
 /* ── 语音播放律动声波 (Audio Equalizer) ── */
 .chat-page .audio-equalizer {
   display: inline-flex;
@@ -1435,6 +1454,9 @@ body:has(.chat-page) .sakura-fall {
   100% { transform: scaleY(1); }
 }
 
+/*   ============================================================
+   输入区：撰写器 / 发送与停止 / 工具指示 / 语音与思考开关
+  ============================================================ */
 .chat-page .chat-composer {
   padding: var(--s-3);
   border-top: 1px solid var(--border-soft);
@@ -1550,7 +1572,9 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .thinking-toggle:has(select:disabled) {
-  opacity: .55;
+  /* 审计修复：不用 opacity 压整块容器（压后低于 AA），改用禁用令牌 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
   cursor: not-allowed;
 }
 
@@ -1700,9 +1724,9 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .replay-btn:disabled {
   border-color: transparent;
   background: transparent;
-  color: var(--text-muted);
+  /* 审计修复：不用 opacity 压字，直接给更弱的禁用文字色 */
+  color: var(--text-disabled);
   cursor: default;
-  opacity: .45;
 }
 
 
@@ -1749,7 +1773,10 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .hold-talk-btn:disabled {
   cursor: default;
-  opacity: .85;
+  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌 */
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
 }
 
 .chat-page .speech-state-text {
