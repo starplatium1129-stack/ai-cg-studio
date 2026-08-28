@@ -17,10 +17,12 @@
 4. **内容分级 Fail-Closed 契约**：成人（R18）内容默认开启并带模糊遮罩；`adultEligibility` 与 `adultEnabled` 双重把关，未知或未授权状态必须严格拒绝，不得回退安全断言。
 5. **精准提交与工作区保护**：
    - **严禁盲目执行 `git add .`**：必须通过 `git status` 与 `git diff` 严格核对改动，只提交经过自测验证的受控文件，严禁卷入他人正在进行的脚本或分支；
-   - 严禁 `git reset --hard` 等破坏性命令；临时测试脚本随用随清。
+   - 严禁 `git reset --hard` 等破坏性命令；临时测试脚本随用随清；
+   - **提交后必须 `git push`（2026-08-29 教训固化）**：远端是唯一异地副本——2026-08-29 00:38 本地 `.git` 因中断的 repack/gc 几乎全毁（refs/heads 消失、对象库仅剩 217 个对象），未推送的 9 个提交对象全部丢失，内容靠工作区未提交改动幸存。未 push 的提交视为未完成交付。每次启动 `start.ps1` 会自动做 `git bundle` 快照（`runtime/git-backups/`，默认保留 14 份）作第二副本。
 6. **媒体资产入库边界**：`assets/character-references/` 已 `.gitignore`，严禁提交入 Git；运行时统一经 `/data/character-reference-view.json` 懒加载。
 7. **严禁偷懒式批量交付（2026-08-24 教训固化）**：批量重写/优化类任务（提示词、场景、蓝图）必须逐条全量真实改写，禁止以通用模板兜底、仅追加词条或虚报覆盖率冒充交付；任何此类交付必须跑 `node scripts/tests/test-prompt-rewrite-integrity.js --delivery <交付文件>` 复检通过（覆盖率=声明数、无模板签名/全局雷同、新旧词条保留率≤50%、prose 相似度≤60%、角色归属一致），未过门禁一律退回重写，不得声明完成。
 8. **定稿场景提示词保护（2026-08-27 教训固化）**：`data/prompt-pinned-scenes.json`（100 条：历史定点手工修/官方CG对齐/用户实拍定稿）中的渲染字段为字节级基线，任何批量优化任务**严禁触碰**这些场景的 `prompt/negative/animaCaption/recommendedSize/rating/mature`；门禁 `node scripts/tests/test-pinned-scene-prompts.js`（已入 test:contract 套件）。确需修改某条定稿时：先真实出图自测确认效果，再 `npm run scenes:pin-capture` 更新基线并在提交信息中附自测证据。批量脚本遇到受保护 ID 必须跳过。
+9. **单写者原则（2026-08-29 教训固化）**：同一工作区同一时刻**只允许一个 AI 会话执行 git 写操作**（commit/push/merge/rebase/gc/prune）；需要并行的会话必须 `git worktree` 隔离各自目录或约定错峰交接；长期并行期间禁用自动 gc（`git config gc.auto 0`）。2026-08-29 的 `.git` 崩毁正发生在两会话高频提交 + fetch 的并发窗口内（pack 目录遗留 `tmp_pack_*` 与孤儿 `.idx`）。
 
 ---
 
@@ -43,8 +45,8 @@
 在声明任何任务完成或提交 Git 前，必须按序完成以下把关：
 
 ```
-[1. 状态与逻辑自测] ──► [2. 静态类型检查] ──► [3. 前端与接口契约测试] ──► [4. 生产打包预算] ──► [5. 精准 Git 提交]
- 真实出图/状态闭环      npm run typecheck:app     node scripts/tests/...        npm run build        git add <files>
+[1. 状态与逻辑自测] ──► [2. 静态类型检查] ──► [3. 前端与接口契约测试] ──► [4. 生产打包预算] ──► [5. 精准 Git 提交 + push]
+ 真实出图/状态闭环      npm run typecheck:app     node scripts/tests/...        npm run build        git add <files> && git commit && git push
 ```
 
 1. **类型检查**：`npm run typecheck:app`（零 Error 退出）。
@@ -57,6 +59,7 @@
    ```powershell
    powershell -ExecutionPolicy Bypass -File scripts/maintenance/deploy-desktop-quick.ps1 -SkipBuild
    ```
+5. **推送远端（交付闭环）**：`git push` 成功后才算交付完成（红线 5，2026-08-29 教训固化）。`npm run backup:git` 可随时手动做 bundle 快照。
 
 > **统一工作流入口（2026-08-26 新增）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等 140 个脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`），一站式索引见 `docs/workflow.md:1`；旧 `node scripts/maintenance/*.js` 仍兼容。
 

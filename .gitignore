@@ -100,3 +100,6 @@ pnpm-workspace.yaml
 # scripts/archive：一次性历史脚本（占 scripts 目录 44%，2026-08-29 审计出库）。
 # 不再跟踪；需要时从 git 历史（origin 保留完整历史）取回。
 scripts/archive/
+
+# AI 会话工作记忆目录（.workbuddy），个人工具状态不入库（2026-08-29 审计 P2 顺带收口）
+.workbuddy/

@@ -50,6 +50,10 @@ if (-not (Test-Path "services\http-client.js")) {
     }
 }
 
+# 3c. git bundle 异地快照（尽力而为，失败不阻断启动；2026-08-29 审计 P0-2，详见红线 5/9）
+Write-Host "  git bundle backup..." -ForegroundColor DarkGray
+node scripts/maintenance/git-bundle-backup.js
+
 # 4. Kill existing process on port 3000
 # NOTE: $pid is reserved in PowerShell - use $ownPid instead
 $existing = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue
