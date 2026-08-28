@@ -112,6 +112,17 @@ const WORKFLOWS = {
     cmd: ['npm', 'run', 'check'],
     docs: 'AGENTS.md#质量门禁',
   },
+  'gate:quick': {
+    desc: '按改动类型分层门禁（ui|server|data|all，缺省自动检测 git 改动）',
+    cmd: ['node', 'scripts/maintenance/gate-quick.js'],
+    opts: '[ui|server|data|all] [--verbose] [--all]',
+    docs: 'docs/workflow.md',
+  },
+  'gate:full': {
+    desc: '全量门禁：typecheck + check + 前端 + unit + contract + 打包预算（横切重构/提交前）',
+    cmd: ['node', 'scripts/maintenance/gate-quick.js', 'full'],
+    docs: 'docs/workflow.md',
+  },
   'check:full': {
     desc: '完整校验：check + frontend + unit + contract',
     cmd: ['npm', 'run', 'validate'],

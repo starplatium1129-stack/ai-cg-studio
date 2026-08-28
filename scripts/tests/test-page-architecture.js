@@ -213,6 +213,7 @@ assert(
 // `.history-item` 等）会污染随后访问的任意路由。普通选择器必须以 `.pb` 根
 // 开始；body:has(.pb…) / @property / keyframes 是刻意保留的全局规则。
 // 2026-08-26 修复：director.css 已拆为 director/*.css 四片，聚合后校验。
+// 2026-08-27 分产：components/<Owner>.css 按异步组件懒加载，聚合需一并递归。
 function readDirectorCss() {
   const entry = read('src/assets/css/director.css');
   const dir = path.join(root, 'src/assets/css/director');
@@ -221,10 +222,18 @@ function readDirectorCss() {
     for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.css'))) {
       parts.push(read(path.join('src/assets/css/director', name)));
     }
+    const componentsDir = path.join(dir, 'components');
+    if (fs.existsSync(componentsDir)) {
+      for (const name of fs.readdirSync(componentsDir).filter(n => n.endsWith('.css'))) {
+        parts.push(read(path.join('src/assets/css/director/components', name)));
+      }
+    }
   }
   return parts.join('\n');
 }
-const directorCss = readDirectorCss();
+// 命名空间泄漏扫描前先剥注释：注释里的 .xxx 示例（如 GenerationQueuePanel.css
+// 的定位上下文说明）不是选择器，计入会误报。
+const directorCss = readDirectorCss().replace(/\/\*[\s\S]*?\*\//g, '');
 const leakedDirectorSelectors = [...directorCss.matchAll(/^\s*\.([A-Za-z_-][\w-]*)/gm)]
   .map(m => m[1])
   .filter(name => name !== 'pb' && !name.startsWith('pb-'));

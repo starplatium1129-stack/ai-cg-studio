@@ -89,11 +89,23 @@ node scripts/workflow.js reference:repair
 ### 3.5 质量门与构建
 
 ```powershell
-node scripts/workflow.js check:quick   # npm run check (并行 13 项)
-node scripts/workflow.js check:full    # npm run validate
-node scripts/workflow.js build:web     # vite build + 140KB预算 + 预压
-node scripts/workflow.js build:runtime # tsc -p tsconfig.runtime.json
+node scripts/workflow.js gate:quick     # 按改动类型分层门禁（缺省自动检测 git 改动）
+node scripts/workflow.js gate:quick ui  # 显式指定面积：ui / server / data / all
+node scripts/workflow.js gate:full      # 全量：typecheck + check + 前端 + unit + contract + 打包预算
+node scripts/workflow.js check:quick    # npm run check (并行 13 项)
+node scripts/workflow.js check:full     # npm run validate
+node scripts/workflow.js build:web      # vite build + 140KB预算 + 预压
+node scripts/workflow.js build:runtime  # tsc -p tsconfig.runtime.json
 ```
+
+`gate:quick` 面积映射：`ui` = typecheck + vitest（纯前端改动，约 1-2 分钟）；
+`server` = Anima/生成/视频/聊天/安全/桌面工具/控制 7 个契约套件；
+`data` = 聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（约 15 秒）；
+`all` = 三块连跑；`full` 另加 check 套件与打包预算。横切重构（目录改名、
+模块搬迁、依赖变更）直接 `gate:full`——爆炸半径无法事先界定。
+套件执行器 `run-quality-suite.js` 默认摘要模式（逐文件一行 ✔/✘ + 用时，
+失败才展开摘录，末尾 `sum [label]: PASS/FAIL` 汇总行，失败退出码非零）；
+`--all` 失败后连跑全部求全貌，`--verbose` 恢复日志直通。
 
 门禁见 `AGENTS.md:39`，预算见 `scripts/maintenance/check-bundle-budget.js:18`。
 
