@@ -196,6 +196,10 @@
   --r-sm: 8px; --r-md: 10px; --r-lg: 14px; --r-xl: 16px;
   --r-2xl: 20px; --r-3xl: 22px; --r-stage: 24px; --r-pill: 999px;
   --r-brand-mark: 7px 12px 7px 12px;
+  /* 手绘描边牌（2026-08-28 试点，仅 .pb .generate-btn）：四角不对称是「手绘的牌子」
+     语义本身，与 --r-brand-mark 同一先例——不对称值进令牌层而非散落硬编码，
+     防视觉漂移；扩用前须过 DESIGN.md §Shapes 评审。 */
+  --r-hand-plate: 16px 13px 17px 14px;
   /* 微圆角：徽章内衬 / 小芯片 / 画布控件（2026-08-22 补齐——此前页面代码已
      出现 var(--r-xs) 引用但系统未定义，属于层级缺口） */
   --r-xs: 4px;

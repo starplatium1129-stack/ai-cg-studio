@@ -255,7 +255,7 @@
        主操作不在其列 —— 之前的 --r-pill 其实是越界用法。
        只试点这一个按钮，不全站铺：导航与浮层的玻璃分层是功能性的，不该动。 */
     border:1.8px solid color-mix(in srgb,var(--editorial-gold) 45%,var(--accent));
-    border-radius:16px 13px 17px 14px;
+    border-radius:var(--r-hand-plate);
     background:linear-gradient(135deg, color-mix(in srgb, var(--accent-hover) 65%, var(--accent)), var(--accent));
     font-size:var(--fs-body); font-weight:720; letter-spacing:-.01em;
     color: var(--text-inverse);

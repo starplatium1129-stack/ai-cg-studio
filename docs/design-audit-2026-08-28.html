@@ -139,6 +139,13 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
   th,td{padding:9px 10px}
   .finding{padding:16px}
 }
+
+/* 2026-08-28 类化：原内联样式收口（style-debt 门禁只允许自定义属性载体） */
+.sc .bar span{width:var(--w,0%)}
+thead th[style]{width:var(--w,auto)}
+.mt-14px{margin-top:14px}.mt-16px{margin-top:16px}.mt-20px{margin-top:20px}
+.finding .fix.mt-14px{margin-top:14px}
+.quote-plum{padding:14px 18px;background:rgba(160,68,114,0.055);border-left:3px solid var(--plum);border-radius:0 6px 6px 0;font-size:14.5px}
 </style>
 </head>
 <body>
@@ -171,37 +178,37 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
     <div class="sc s-good">
       <div class="lbl">图标与手绘语言</div>
       <div class="val">9.0</div>
-      <div class="bar"><span style="width:90%"></span></div>
+      <div class="bar"><span style="--w:90%"></span></div>
     </div>
     <div class="sc s-good">
       <div class="lbl">二次元氛围营造</div>
       <div class="val">8.0</div>
-      <div class="bar"><span style="width:80%"></span></div>
+      <div class="bar"><span style="--w:80%"></span></div>
     </div>
     <div class="sc s-mid">
       <div class="lbl">主题配色意图</div>
       <div class="val">7.0</div>
-      <div class="bar"><span style="width:70%"></span></div>
+      <div class="bar"><span style="--w:70%"></span></div>
     </div>
     <div class="sc s-mid">
       <div class="lbl">动效与性能</div>
       <div class="val">6.0</div>
-      <div class="bar"><span style="width:60%"></span></div>
+      <div class="bar"><span style="--w:60%"></span></div>
     </div>
     <div class="sc s-bad">
       <div class="lbl">无障碍与可读性</div>
       <div class="val">5.0</div>
-      <div class="bar"><span style="width:50%"></span></div>
+      <div class="bar"><span style="--w:50%"></span></div>
     </div>
     <div class="sc s-bad">
       <div class="lbl">令牌纪律与可维护性</div>
       <div class="val">5.0</div>
-      <div class="bar"><span style="width:50%"></span></div>
+      <div class="bar"><span style="--w:50%"></span></div>
     </div>
   </div>
 
   <table>
-    <thead><tr><th style="width:30%">关键指标</th><th style="width:18%">实测</th><th>说明</th></tr></thead>
+    <thead><tr><th style="--w:30%">关键指标</th><th style="--w:18%">实测</th><th>说明</th></tr></thead>
     <tbody>
       <tr><td>设计令牌总数</td><td class="num">154</td><td>集中在 <span class="loc">design-system.css:11-251</span>，命名语义化良好</td></tr>
       <tr><td>浅色主题覆盖率</td><td class="num fail">32.5%</td><td>:root 定义 154 个，<code>[data-theme="light"]</code> 只覆盖 50 个</td></tr>
@@ -262,7 +269,7 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
     <div class="top"><span class="tag p0">P0</span><h4>禁用态对比度低至 2.65:1 —— 全项目最系统的 WCAG 失败</h4></div>
     <p><span class="loc">design-system.css:1086-1093</span> 用 <code>.btn:disabled { opacity: .45 }</code>。降 opacity 会同时压掉前景与背景的差值，我按 alpha 合成重算了实际渲染结果：</p>
     <table>
-      <thead><tr><th style="width:38%">组合</th><th style="width:20%">深色底</th><th style="width:20%">浅色底</th><th>判定</th></tr></thead>
+      <thead><tr><th style="--w:38%">组合</th><th style="--w:20%">深色底</th><th style="--w:20%">浅色底</th><th>判定</th></tr></thead>
       <tbody>
         <tr><td>--text-primary @ .45</td><td class="num fail">3.45:1</td><td class="num fail">2.65:1</td><td class="fail">失败</td></tr>
         <tr><td>--text-secondary @ .45</td><td class="num fail">2.50:1</td><td class="num fail">2.08:1</td><td class="fail">失败</td></tr>
@@ -272,7 +279,7 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
         <tr><td>--accent-violet</td><td class="num pass">9.21:1</td><td class="num pass">7.39:1</td><td class="pass">通过</td></tr>
       </tbody>
     </table>
-    <p style="margin-top:14px">注意后三行：<b>正常态的令牌层全部通过，而且通过得很宽裕</b>。你担心的"霓虹粉不够对比"在深色底上实测 10.31:1，完全不成立。问题 100% 出在 <code>opacity</code> 这个偷懒手法上。</p>
+    <p class="mt-14px">注意后三行：<b>正常态的令牌层全部通过，而且通过得很宽裕</b>。你担心的"霓虹粉不够对比"在深色底上实测 10.31:1，完全不成立。问题 100% 出在 <code>opacity</code> 这个偷懒手法上。</p>
     <p>同类写法还有 7 处：<span class="loc">companion.css:2399 (:2399 opacity .5)、:2407 (.45)、VoiceStudio.css:32 (.45)、panels.css:279 (.5)、design-system.css:1140 (.input:disabled, 浅色 3.01:1)</span>。</p>
     <p>WCAG 1.4.3 对"纯装饰控件"有豁免，但这些按钮上写着"生成""发送"这类需要读懂才知道为什么不能点的文案，豁免不适用。</p>
     <div class="fix"><b>修复：</b>新增 <code>--text-disabled</code> 令牌，直接给一个 ≥4.5:1 的固定色值（浅色建议 <code>#8a8278</code>，深色建议 <code>#6f6a84</code>），替换掉全部 8 处 <code>opacity</code> 压字。注意只改文字色，容器该灰还是让它灰。</div>
@@ -343,7 +350,7 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
   <p class="secsub">不紧急，但记一笔，下次动到相关文件时顺手清掉。</p>
 
   <table>
-    <thead><tr><th style="width:26%">问题</th><th style="width:30%">位置</th><th>说明</th></tr></thead>
+    <thead><tr><th style="--w:26%">问题</th><th style="--w:30%">位置</th><th>说明</th></tr></thead>
     <tbody>
       <tr><td>4 组游离 SVG 未复用 ArchiveIcon</td><td class="loc">PopularCharacterPicker.vue:97,117<br>ImageSplitCompare.vue:38<br>DesktopTitleBar.vue:13,14,17<br>TrainingView.vue:1443</td><td>stroke-width 分别是 1.8/副笔1.1、2.5、1.3 与 1.5、1.6 —— 基准是 1.8/1.2。手工复制了整套双线技法但参数走偏</td></tr>
       <tr><td>唯一一处实心填充图标</td><td class="loc">DesktopTitleBar.vue:10</td><td><code>&lt;rect fill="currentColor"&gt;</code>，直接违反"严禁实心填充图标"红线</td></tr>
@@ -378,7 +385,7 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
     <div class="h">方案 B · 补全浅色</div>
     <div class="d">补 <code>--danger</code> + 17 套角色色 + 其余 104 个变量，约 3–5 小时纯机械劳动（可交给 AI，但每套颜色你得亲自看过效果）。</div>
   </div>
-  <p style="margin-top:16px"><b>判断依据很简单：</b>如果你白天也常用它（比如在工位上改 prompt），选 B；如果只在晚上创作，选 A。别因为"有切换按钮就应该能用"而选 B —— 那个按钮是你自己加的。</p>
+  <p class="mt-16px"><b>判断依据很简单：</b>如果你白天也常用它（比如在工位上改 prompt），选 B；如果只在晚上创作，选 A。别因为"有切换按钮就应该能用"而选 B —— 那个按钮是你自己加的。</p>
 
   <h3>建议 2 · 装饰层已经开始抢戏了，画面才是主角</h3>
   <p>我把首屏同时挂载的装饰层列一下：</p>
@@ -391,17 +398,17 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
   starfield-float 16s
   bokeh-drift 26s</code></pre>
   <p>四个全屏 <code>position: fixed</code> 图层常驻动画，其中一个是 42rem 见方带 blur 的。而你在 <code>DESIGN.md:425</code> 自己写过：</p>
-  <p style="padding:14px 18px;background:rgba(160,68,114,0.055);border-left:3px solid var(--plum);border-radius:0 6px 6px 0;font-size:14.5px">"Do not add decorative whitespace, glow, blur, gradients, or floating shapes without a hierarchy or storytelling purpose."</p>
-  <p style="margin-top:16px">以及 <code>DESIGN.md:238</code>："Large blank zones with no communicative purpose are a layout defect."</p>
+  <p class="quote-plum">"Do not add decorative whitespace, glow, blur, gradients, or floating shapes without a hierarchy or storytelling purpose."</p>
+  <p class="mt-16px">以及 <code>DESIGN.md:238</code>："Large blank zones with no communicative purpose are a layout defect."</p>
   <p><b>现在首屏的实现与这份自述是矛盾的。</b>对一个创作者来说，最贵的屏幕空间应该给画面，不是给光斑。</p>
-  <div class="fix" style="margin-top:14px;padding:11px 14px;background:rgba(95,68,153,0.055);border-left:2px solid var(--violet);border-radius:0 6px 6px 0;font-size:14px">
+  <div class="fix mt-14">
     <b>具体动作：</b>① 全局氛围层 4 → 2（保留星野 + 一个光斑，砍掉 bokeh 或第二个 orb）；② 给装饰层加 <code>contain: strict</code> 与 <code>will-change: transform</code>（现在 contain 是 0 处）；③ hero 区的 <code>filter: drop-shadow</code> 换成静态 <code>box-shadow</code>，省掉每帧离屏合成。
   </div>
 
   <h3>建议 3 · 把"二次元"做得更狠：补上速度线、集中线、拟声词</h3>
   <p>你已经有的日系语汇，成体系且克制：</p>
   <table>
-    <thead><tr><th style="width:28%">元素</th><th style="width:32%">位置</th><th>实现</th></tr></thead>
+    <thead><tr><th style="--w:28%">元素</th><th style="--w:32%">位置</th><th>实现</th></tr></thead>
     <tbody>
       <tr><td>1px 网点</td><td class="loc">design-system.css:373-380</td><td>radial-gradient + 24px 网格，注释明写"galgame 杂志式"，色值随主题走</td></tr>
       <tr><td>竖排假名水印</td><td class="loc">design-system.css:430/441</td><td>writing-mode: vertical-rl + text-orientation: upright，「あとりえ / ATELIER ARCHIVE」</td></tr>
@@ -412,7 +419,7 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
       <tr><td>粒子立绘</td><td class="loc">SemanticParticleField.vue:22-24</td><td>由 utils/particlePortrait.ts 采样人物轮廓成点云</td></tr>
     </tbody>
   </table>
-  <p style="margin-top:16px">但 grep <b>零命中</b>的是这三类：<code>速度线</code>、<code>集中线</code>、<code>拟声词</code>、<code>repeating-linear-gradient</code>（<code>manga</code> 只出现在数据文件里，不是 UI）。</p>
+  <p class="mt-16px">但 grep <b>零命中</b>的是这三类：<code>速度线</code>、<code>集中线</code>、<code>拟声词</code>、<code>repeating-linear-gradient</code>（<code>manga</code> 只出现在数据文件里，不是 UI）。</p>
   <p><b>这三类恰恰是日系辨识度最高、成本最低的元素</b>，而且纯 CSS 就能做：</p>
   <pre><code>集中线（生成完成瞬间的闪光）
   repeating-conic-gradient(from 0deg,
@@ -430,10 +437,10 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
 
   <h3>建议 4 · 手绘感只做了一半：图标是手绘的，容器是 Apple 的</h3>
   <p>全项目 <code>backdrop-filter</code> 用了 <b>142 处</b>，其中 companion.css 独占 35 处。玻璃拟态是 Apple / Notion / Figma 的语汇 —— 而 <code>DESIGN.md:423</code> 白纸黑字写着：</p>
-  <p style="padding:14px 18px;background:rgba(160,68,114,0.055);border-left:3px solid var(--plum);border-radius:0 6px 6px 0;font-size:14.5px">"Do not imitate Apple, Figma, Notion, or a generic anime site as an end goal."</p>
-  <p style="margin-top:16px">现在的割裂感是：<b>图标是手绘的（有笔触、有错位、有墨点），容器是玻璃的（圆角规整、半透、带模糊）</b>。两种语汇没有对话。</p>
+  <p class="quote-plum">"Do not imitate Apple, Figma, Notion, or a generic anime site as an end goal."</p>
+  <p class="mt-16px">现在的割裂感是：<b>图标是手绘的（有笔触、有错位、有墨点），容器是玻璃的（圆角规整、半透、带模糊）</b>。两种语汇没有对话。</p>
   <p>有意思的是，你自己已经埋了答案 —— <code>--r-brand-mark: 7px 12px 7px 12px</code>（<span class="loc">design-system.css:171</span>）这个不对称圆角，说明你本来就想要"手绘的不规整感"，只是没推开。</p>
-  <div class="fix" style="margin-top:14px;padding:11px 14px;background:rgba(95,68,153,0.055);border-left:2px solid var(--violet);border-radius:0 6px 6px 0;font-size:14px">
+  <div class="fix mt-14">
     <b>试点方案：</b>卡片/面板用不对称圆角（<code>border-radius: 14px 12px 15px 13px</code>）+ 1.5px 实描边，替代玻璃填充。<b>先在导演台的 CTA 上试点，别全站铺</b> —— 玻璃拟态在导航和浮层上是有功能的（分层），砍掉反而会丢信息。
   </div>
 
@@ -441,7 +448,7 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
   <p><span class="loc">director/tokens.css:7-12</span> 用 <code>@property</code> 注册 6 个可动画自定义属性，<span class="loc">:26-33</span> 用 <code>transition: --character-accent .62s</code> 实现整树渐变 —— 切换角色时整个界面会像换季一样过渡过去。<b>这个实现很漂亮，是项目里最"二次元"的一处设计。</b></p>
   <p>但它只配了 20 套，而项目有 40+ 热门角色。作为角色厨，剩下那 20 多套的边际情绪价值极高 —— 每个角色有自己的界面配色，这种"专属感"正是私人工具相对于公共产品的最大优势。</p>
   <p>成本是纯机械劳动（每套 6 个 hex），可以交给 AI 批量生成，但<b>每套颜色你得亲自看过效果</b>，尤其是它跟立绘、跟深色底的配合。</p>
-  <div class="fix" style="margin-top:14px;padding:11px 14px;background:rgba(95,68,153,0.055);border-left:2px solid var(--violet);border-radius:0 6px 6px 0;font-size:14px">
+  <div class="fix mt-14">
     <b>前置条件：</b>先按建议 1 决定浅色主题的去留。<b>否则每个新角色都要配两遍色</b>，20 套变 40 套。
   </div>
 </section>
@@ -493,7 +500,7 @@ footer .seal{display:inline-block;margin-top:14px;padding:5px 10px;border:2px so
 <footer>
   <p>审计范围：<code>src/assets/css/**</code>（10 个 CSS 树，含 17 个 director 组件切片）+ 70 个 Vue SFC 的 <code>&lt;style&gt;</code> 块，合计 15,433 行样式；<code>src/components/visual/</code> 全部图标；<code>DESIGN.md</code> 设计契约；<code>scripts/maintenance/lint-animations.js</code> 与 <code>check-contrast.js</code> 门禁脚本。</p>
   <p>对比度数值为本次按 alpha 合成独立重算的结果，与项目 <code>check-contrast.js</code> 口径一致。所有结论均附文件路径与行号，可逐条复核。</p>
-  <p style="margin-top:20px">绫季绘境 · 美术设计审计报告 · 2026-08-28</p>
+  <p class="mt-20px">绫季绘境 · 美术设计审计报告 · 2026-08-28</p>
   <span class="seal">綾季</span>
 </footer>
 
