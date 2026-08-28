@@ -178,7 +178,17 @@ for (const [marker, message] of promptPipeline) {
 if (!view.includes('usePromptAssembly')) {
   fail('PromptBuilderView must consume the dedicated prompt assembly composable');
 }
-for (const marker of ['recommendDrawingRoute', 'managedRoute', 'applyManagedRoute', 'reuseSuccessfulRecipe', 'ManagedDrawingRouteCard']) {
+// 2026-08-28 编排下沉：受控绘图路线的推导/采用（recommendDrawingRoute、
+// refreshManagedRoute）归 src/composables/scene/useDirectorPopular.ts；
+// 视图仍消费 managedRoute/applyManagedRoute 并挂载 ManagedDrawingRouteCard。
+const directorPopularSource = read('src/composables/scene/useDirectorPopular.ts');
+if (!directorPopularSource.includes('recommendDrawingRoute') || !directorPopularSource.includes('refreshManagedRoute')) {
+  fail('managed drawing route must be owned by useDirectorPopular after the 2026-08-28 orchestration sink');
+}
+if (!view.includes('useDirectorPopular')) {
+  fail('PromptBuilderView must consume the dedicated popular orchestration composable');
+}
+for (const marker of ['managedRoute', 'applyManagedRoute', 'reuseSuccessfulRecipe', 'ManagedDrawingRouteCard']) {
   if (!view.includes(marker)) fail('scene mode must consume the managed drawing route: ' + marker);
 }
 for (const marker of ['L_NENE_V21_ANIMA', "engine: 'sd'", "engine: 'anima'", "engine: 'krea2'"]) {
@@ -314,6 +324,13 @@ function readDirectorCss() {
   if (fs.existsSync(dir)) {
     for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.css'))) {
       parts.push(read(path.join('src/assets/css/director', name)));
+    }
+    // 2026-08-27 分产：按异步组件规则拆分的 16 个 <Owner>.css 在 components/ 子目录
+    const componentsDir = path.join(dir, 'components');
+    if (fs.existsSync(componentsDir)) {
+      for (const name of fs.readdirSync(componentsDir).filter(n => n.endsWith('.css'))) {
+        parts.push(read(path.join('src/assets/css/director/components', name)));
+      }
     }
   }
   return parts.join('\n');

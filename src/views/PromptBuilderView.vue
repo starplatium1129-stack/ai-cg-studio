@@ -383,18 +383,8 @@ import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge'
 import { usePromptHistoryApply } from '@/composables/prompt/usePromptHistoryApply'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink'
-import {
-  blueprintCategories as collectBlueprintCategories,
-  eligibleBlueprints,
-  findBlueprint as findPopularBlueprint,
-  findCharacter as findPopularCharacter,
-  inferBlueprintDecisions,
-  recommendBlueprints,
-  type PopularCharacter,
-  type SceneBlueprint,
-} from '@/utils/popularContent'
 import type { AnimaResult } from '@/types/anima'
-import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from '@/composables/generation/useAnimaSession'
+import { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint'
 import { useSDGenerate } from '@/composables/generation/useSDGenerate'
 import { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
@@ -405,8 +395,9 @@ import { imgGet } from '@/composables/useImageStore'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
 import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/scene/useDirectorDerived'
+import { useDirectorEngine } from '@/composables/scene/useDirectorEngine'
+import { useDirectorPopular } from '@/composables/scene/useDirectorPopular'
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots'
-import { characterParticleTheme } from '@/utils/characterParticleTheme'
 // 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
 // 降低导演台路由块体积（预算上限 JS 140KB / CSS 115KB）。
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
@@ -444,8 +435,6 @@ import {
   settingsRepository,
   type DrawEngine,
 } from '@/storage/settingsRepository'
-import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
-import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 
 // 热门角色面板按需懒加载：仅在 isPopular 时渲染，避免常驻占用主 chunk。
 const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
@@ -504,8 +493,13 @@ const {
   startStatusPolling,
 } = animaSession
 
-function selectAnimaModel(event: Event) {
-  applyModel((event.target as HTMLSelectElement).value)
+// Anima 会话先于引擎协调层创建：请求装配与结果协调经桥接函数转发到
+// useDirectorEngine（生成/结果事件均在 setup 完成后才触发，沿用提升函数模式）。
+function buildAnimaRequest() {
+  return engine.buildAnimaRequest()
+}
+function onAnimaResult(result: AnimaResult) {
+  engine.onAnimaResult(result)
 }
 
 // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
@@ -563,75 +557,89 @@ const reportView = unified.promptReport
 const artViolationsView = unified.artViolations
 const popular = unified.popular
 
-/** 热门角色 Anima 无 LoRA：仅 popular subject + 选中底模的 noLora capability 时成立。 */
-const animaNoLoraMode = computed(() => {
-  if (!pb.isPopular) return false
-  if (!currentCapabilities.value.lora) return false
-  const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
-  return selected?.capabilities?.noLora === true
+// ── 引擎协调层（2026-08-28 编排下沉）：引擎切换守卫、能力表、在线/进度/错误
+// 聚合展示、Anima 请求装配与推荐尺寸收敛，照 useAnimaInpaint 的依赖注入样板。
+const engine = useDirectorEngine({
+  pb,
+  sd,
+  sdSize,
+  drawEngine,
+  animaState,
+  patchAnimaState,
+  refreshAnimaBackend,
+  syncAnimaCharacter,
+  applyModel,
+  cancelAnimaJob,
+  clearAnimaResult,
+  livePrompt,
+  effectiveNegative,
+  modelProfile,
+  modelProfileView,
+  popularProfile: popular.profile,
+  flash: message => pb.flash(message),
 })
+const {
+  currentCapabilities,
+  animaNoLoraMode,
+  supportsDualCharacter,
+  setDrawEngine,
+  applyRecommendedSize,
+  clearDisplayedResult,
+  displayResultUrl,
+  displayResultSeed,
+  drawEngineLabel,
+  generationStatusText,
+  engineOnline,
+  generationBusy,
+  generationProgress,
+  generationProgressStyle,
+  generationError,
+  generationStopped,
+  engineStatusText,
+  recheckEngineConnection,
+  generationPresetSummary,
+  cancelGeneration,
+  selectAnimaModel,
+  updateAnimaPromptState,
+} = engine
 
-/** 当前引擎/底模能力表：UI 与请求组装统一从这里判断，不再散落写 engine === '...'。 */
-const currentCapabilities = computed(() => {
-  if (drawEngine.value === 'sd') return resolveDrawCapabilities('sd', modelProfileView.value)
-  const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
-  return resolveDrawCapabilities(
-    drawEngine.value === 'krea2' ? 'krea2' : 'anima',
-    modelProfileView.value,
-    selected?.capabilities ?? null,
-  )
-})
-
-// ── 热门角色派生状态 ───────────────────────────────────────────────────────
-const popularSearch = ref('')
-const popularCategory = ref('all')
-const showAllBlueprints = ref(false)
-const blueprintCursor = ref(0)
-const previousBlueprintIds = ref<string[] | null>(null)
-
-const popularCharacter = computed<PopularCharacter | null>(() => {
-  if (pb.subject.kind !== 'popular') return null
-  return findPopularCharacter(pb.popularCharacters, pb.subject.characterId)
-})
-/** 顶部档案条的粒子形状：热门角色跟随她的专属轮廓（与角色场景库/角色档案一致），
-    工作室角色按模式区分（专家=spark / 场景=frame）。 */
-const archiveBarShape = computed(() => {
-  if (pb.isPopular) {
-    return popularCharacter.value
-      ? characterParticleTheme(popularCharacter.value.id, popularCharacter.value.franchise).shape
-      : 'moon' as const
-  }
-  return pb.directorMode === 'pro' ? 'spark' as const : 'frame' as const
-})
-const managedRoute = ref<DrawingRouteRecommendation | null>(null)
-async function refreshManagedRoute(): Promise<DrawingRouteRecommendation> {
-  const { recommendDrawingRoute } = await import('@/utils/drawingRoute')
-  const route = recommendDrawingRoute({
-    subjectKind: pb.isPopular ? 'popular' : 'studio',
-    character: pb.char,
-    recommendedModelId: popularCharacter.value?.recommendedEngine,
-  })
-  managedRoute.value = route
-  return route
-}
-const popularBlueprintPool = computed(() =>
-  eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, { adultEnabled: pb.showMatureScenes }),
-)
-const filteredPopularBlueprints = computed(() =>
-  eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, {
-    adultEnabled: pb.showMatureScenes,
-    category: popularCategory.value,
-  }),
-)
-const blueprintCategories = computed(() =>
-  collectBlueprintCategories(popularBlueprintPool.value.filter(blueprint => !blueprint.adult || (popularCharacter.value?.adultEligibility === 'adult' && pb.showMatureScenes))),
-)
-const recommendedBlueprints = computed(() => {
-  const pool = popularBlueprintPool.value
-  if (!pool.length) return []
-  if (pb.subject.kind !== 'popular') return pool.slice(0, 3)
-  const key = `${pb.subject.characterId}#${pb.subject.outfitId}`
-  return recommendBlueprints(pool, key, blueprintCursor.value, previousBlueprintIds.value, 3)
+// ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
+// 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。
+const {
+  popularCategory,
+  showAllBlueprints,
+  popularCharacter,
+  archiveBarShape,
+  managedRoute,
+  refreshManagedRoute,
+  popularBlueprintPool,
+  filteredPopularBlueprints,
+  blueprintCategories,
+  recommendedBlueprints,
+  resetBlueprintRotation,
+  applyRecommendedEngine,
+  selectPopularSource,
+  selectPopularCharacter,
+  selectPopularOutfit,
+  selectBlueprint,
+  rotateBlueprintSet,
+  toggleBlueprintList,
+  applyManagedRoute,
+  syncManagedRoute,
+  restorePopularDraft,
+} = useDirectorPopular({
+  pb,
+  sd,
+  drawEngine,
+  setDrawEngine,
+  applyRecommendedSize,
+  generationBusy,
+  animaState,
+  patchAnimaState,
+  refreshAnimaBackend,
+  applyModel,
+  sdSize,
+  flash: message => pb.flash(message),
 })
 
 // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
@@ -688,15 +696,6 @@ function setSceneCollection(collection: 'core' | 'curated' | 'all') {
   sceneLimit.value = 20
 }
 
-function applyRecommendedSize(size: string) {
-  const normalized = size.replace('×', 'x')
-  sdSize.value = normalized
-  const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
-  const supported = closestSupportedSize(activeModel, normalized)
-  const [width, height] = supported.split('x').map(Number)
-  if (Number.isInteger(width) && Number.isInteger(height)) patchAnimaState({ width, height })
-}
-
 const currentBlueprintData = computed(() => ({
   char: pb.char,
   sceneId: pb.sceneId,
@@ -732,36 +731,6 @@ function handleLoadBlueprint(data: Record<string, unknown>) {
   }
 }
 
-async function applyManagedRoute(options: { silent?: boolean } = {}): Promise<void> {
-  const route = await refreshManagedRoute()
-  if (generationBusy.value) return
-  const selectedModel = route.engine === 'sd'
-    ? pb.sdModelName || sd.checkpoint.value
-    : animaState.value.modelId
-  const alreadyApplied = drawEngine.value === route.engine
-    && selectedModel.includes(route.modelId)
-    && (route.engine === 'sd' || route.engine === 'krea2' || animaState.value.loraId === route.loraId)
-  if (alreadyApplied) return
-  if (route.engine !== drawEngine.value) setDrawEngine(route.engine)
-  if (route.engine === 'sd') {
-    const model = sd.models.value.find(item => item.includes(route.modelId))
-    if (model) {
-      pb.sdModelName = model
-      pb.applyModelProfile(model, { applySize: false })
-    }
-    applyRecommendedSize(pb.lastRecommendedSize)
-  } else {
-    if (animaState.value.modelId !== route.modelId) applyModel(route.modelId)
-    patchAnimaState({ loraId: route.loraId, styleLoraId: '' })
-    await refreshAnimaBackend()
-  }
-  if (!options.silent) pb.flash(`已采用${route.title}`)
-}
-
-function syncManagedRoute() {
-  void (pb.directorMode === 'basic' ? applyManagedRoute({ silent: true }) : refreshManagedRoute())
-}
-
 function selectScene(scene: Scene) {
   if (pb.isPopular) {
     // 热门角色模式直接切到工作室场景（?scene= 深链/左侧场景卡）：立即刷新 Anima
@@ -784,102 +753,6 @@ function detachScene() {
   if (!pb.sceneId) return
   pb.clearScene({ keepStory: true })
   pb.flash('已脱离场景，仅保留故事')
-}
-
-// ── 热门角色无 LoRA 模式 ─────────────────────────────────────────────────
-function resetBlueprintRotation() {
-  blueprintCursor.value = 0
-  previousBlueprintIds.value = null
-  showAllBlueprints.value = false
-  popularCategory.value = 'all'
-}
-
-/** 按角色推荐引擎切 drawEngine；角色切回/切换后立即恢复正确的 model/lora 列表。 */
-function applyRecommendedEngine(character: PopularCharacter | null) {
-  const target = character?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2' : 'anima'
-  if (drawEngine.value !== target) setDrawEngine(target)
-}
-
-function selectPopularSource(source: 'studio' | 'popular') {
-  if (source === 'studio' && pb.isPopular) {
-    pb.clearScene({ keepStory: true })
-    pb.setStudioSubject()
-    // 立即恢复 nene/natsume 的 model/lora 白名单，不等 15s 状态轮询。
-    void refreshAnimaBackend()
-    syncManagedRoute()
-    pb.flash('已切回工作室角色（宁宁 / 夏目 LoRA 路径）')
-    return
-  }
-  if (source === 'popular' && !pb.isPopular) {
-    // 进入热门模式：整体清空工作室场景、词条、画面描述与故事。热门组装不读
-    // story，且故事属于 studio 场景/蓝图的上下文——不清的话故事框会残留上一个
-    // 宁宁/夏目场景的故事（裸 ?popular= 深链/页内切换均可见）。选中蓝图后故事
-    // 由 selectBlueprint 写回蓝图的 description。
-    pb.clearScene()
-    resetBlueprintRotation()
-    if (pb.popularCharacters.length) {
-      const first = pb.popularCharacters[0]
-      pb.setPopularSubject(first.id, first.outfits.find(o => o.default)?.id ?? first.outfits[0].id, null)
-      patchAnimaState({ modelId: first.recommendedEngine })
-      applyRecommendedEngine(first)
-    } else {
-      pb.setPopularSubject('', '')
-    }
-    void refreshAnimaBackend()
-    syncManagedRoute()
-    pb.flash('已切换到热门角色：默认 Anima Aesthetic 无 LoRA，可改 Krea 2')
-  }
-}
-
-function selectPopularCharacter(character: PopularCharacter) {
-  if (pb.subject.kind !== 'popular' || pb.subject.characterId === character.id) return
-  const outfitId = character.outfits.find(o => o.default)?.id ?? character.outfits[0].id
-  pb.setPopularSubject(character.id, outfitId, null)
-  pb.visualDescription = ''
-  resetBlueprintRotation()
-  // recommendedEngine 为 Krea 时直接切 krea2 引擎（当前数据全 aesthetic，仍保留分支防死字段）。
-  applyRecommendedEngine(character)
-  patchAnimaState({ modelId: character.recommendedEngine })
-  syncManagedRoute()
-  if (pb.directorMode === 'pro') void refreshAnimaBackend()
-}
-
-function selectPopularOutfit(outfitId: string) {
-  if (pb.subject.kind !== 'popular') return
-  pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId)
-  patchAnimaState({ styleLoraId: '' })
-  resetBlueprintRotation()
-}
-
-function selectBlueprint(blueprint: SceneBlueprint) {
-  if (pb.subject.kind !== 'popular') return
-  // 若蓝图本身绑定了专属服装形态（如泳池蓝图绑定 summer_swimsuit_night），
-  // 则自动将当前角色的服装同步切换到该形态，确保生图与故事描述 100% 一致。
-  const targetOutfitId = blueprint.outfitId || pb.subject.outfitId
-  pb.setPopularSubject(pb.subject.characterId, targetOutfitId, blueprint.id)
-  const decision = inferBlueprintDecisions(blueprint)
-  if (decision.shot) pb.setShot(decision.shot)
-  if (decision.lighting) pb.setLighting(decision.lighting)
-  pb.setComposition(decision.composition)
-  pb.setColorMood(decision.colorMood)
-  // 蓝图推荐尺寸必须收敛到当前底模白名单：Krea 已激活时 832x1216 会让
-  // 服务端 400 INVALID_PARAMETER。
-  applyRecommendedSize(decision.size)
-  patchAnimaState({ styleLoraId: '' })
-  pb.visualDescription = ''
-  // 场景故事跟随所选蓝图（与工作室 selectScene → loadScene 写 story 对齐）：
-  // 否则从工作室切热门后 story 框会残留上一个场景的故事。
-  pb.setStory(blueprint.description)
-  pb.flash(`已选用场景「${blueprint.title}」，服装/镜头/光照已自动适配`)
-}
-
-function rotateBlueprintSet() {
-  previousBlueprintIds.value = recommendedBlueprints.value.map(blueprint => blueprint.id)
-  blueprintCursor.value += 1
-}
-
-function toggleBlueprintList() {
-  showAllBlueprints.value = !showAllBlueprints.value
 }
 
 function handleInterrogateResult(result: unknown) {
@@ -915,105 +788,13 @@ function onStoryInput() {
   }
 }
 
-// ── 出图 + 队列 + 错误恢复 ──────────────────────────────────────────────────
-// 引擎统一结果：Anima 结果带不可变 job metadata，历史不再读取当前面板状态。
-// 会话（useAnimaSession）已写入 result/job/phase；这里只做跨引擎互斥协调。
-function onAnimaResult(_result: AnimaResult) {
-  sd.clearResult()
-}
-function clearDisplayedResult() {
-  if (drawEngine.value === 'sd') sd.clearResult()
-  else clearAnimaResult()
-}
-const displayResultUrl = computed(() => drawEngine.value !== 'sd' ? (animaState.value.result?.url ?? '') : sd.resultUrl.value)
-const displayResultSeed = computed(() => drawEngine.value !== 'sd' ? animaState.value.result?.metadata.seed ?? null : sd.resultSeed.value)
-
 // 新一轮生成开始时结果会被清空，完成后再写入新值；
 // 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用）。
 // 快照 blob 克隆保活与 token 防乱序在 useCompareSnapshots 内部处理。
 watch(displayResultUrl, (url, oldUrl) => {
   if (!url || url === oldUrl) return
-  compare.rotate(url)
+    compare.rotate(url)
 })
-
-/** 引擎按钮禁用态由能力表驱动（双人支持等）。 */
-function supportsDualCharacter(engine: DrawEngine): boolean {
-  return resolveDrawCapabilities(engine).dualCharacter
-}
-
-function setDrawEngine(v: DrawEngine) {
-  if (v === 'sd' && pb.isPopular) {
-    pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2，请保留 Comfy 引擎')
-    return
-  }
-  if (!supportsDualCharacter(v) && pb.char === 'triad' && !pb.isPopular) {
-    pb.flash(v === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
-    return
-  }
-  if (drawEngine.value === v) {
-    return
-  }
-  try {
-    settingsRepository.set(DRAW_ENGINE_SETTING, v)
-  } catch {
-    pb.flash('绘图引擎设置保存失败')
-    return
-  }
-  drawEngine.value = v
-  patchAnimaState({ styleLoraId: '' })
-  if (v !== 'sd') {
-    syncAnimaCharacter(pb.char)
-    void refreshAnimaBackend()
-  }
-  pb.flash(v === 'anima'
-    ? (pb.isPopular ? '已切换到 Anima Aesthetic（无 LoRA 热门角色模式）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
-    : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
-}
-
-const drawEngineLabel = computed(() => drawEngine.value === 'sd' ? 'SD' : drawEngine.value === 'anima' ? 'Anima' : 'Krea 2')
-const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value : animaState.value.statusText)
-const engineOnline = computed(() => {
-  if (drawEngine.value === 'anima') {
-    if (pb.isPopular) return animaState.value.online && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false)
-    return (currentCapabilities.value.dualCharacter || pb.char !== 'triad') && Boolean(animaState.value.loraId) && animaState.value.online
-  }
-  if (drawEngine.value === 'krea2') return animaState.value.online
-  return sd.online.value
-})
-const generationBusy = computed(() => sd.generating.value || (['submitting', 'running', 'cancelling'] as string[]).includes(animaState.value.phase))
-const generationProgress = computed<number | null>(() => drawEngine.value === 'sd' ? sd.progress.value / 100 : animaState.value.progress)
-const generationProgressStyle = computed(() => ({ '--progress': `${(generationProgress.value ?? 0) * 100}%` }))
-const generationError = computed(() => drawEngine.value === 'sd' ? sd.errorMsg.value : animaState.value.errorMsg)
-const generationStopped = computed(() => drawEngine.value === 'sd' ? sd.statusText.value === '已停止' : animaState.value.phase === 'cancelled')
-const engineStatusText = computed(() => {
-  if (drawEngine.value === 'sd') return 'SD 未连接'
-  return animaState.value.checkMsg || `${drawEngineLabel.value} 未连接`
-})
-
-async function recheckEngineConnection() {
-  if (drawEngine.value === 'sd') {
-    const ok = await sd.checkStatus()
-    pb.flash(ok ? 'SD 已重新连接' : 'SD 仍未连接，请检查控制面板')
-    return
-  }
-  await refreshAnimaBackend()
-  pb.flash(animaState.value.checkMsg)
-}
-const generationPresetSummary = computed(() => {
-  if (drawEngine.value === 'sd') {
-    const upscaler = pb.sdParams.hiresUpscaler === 'Auto' ? 'Auto Anime6B/Latent' : pb.sdParams.hiresUpscaler
-    const hires = pb.sdParams.hiresFix
-      ? ` · Hires ${upscaler} ${pb.sdParams.hiresScale}× / ${pb.sdParams.hiresSteps} steps / ${pb.sdParams.hiresDenoise}`
-      : ''
-    return `${pb.sdParams.steps} steps · CFG ${pb.sdParams.cfg} · ${pb.sdParams.sampler || '自动采样'} · ${sdSize.value}${hires}`
-  }
-  return `${animaState.value.steps} steps · CFG ${animaState.value.cfg} · ${animaState.value.sampler} / ${animaState.value.scheduler} · ${animaState.value.width}×${animaState.value.height}`
-})
-
-function cancelGeneration() {
-  if (drawEngine.value === 'sd') sd.cancel()
-  else void cancelAnimaJob()
-}
 
 // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
 // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
@@ -1039,89 +820,6 @@ const {
   animaState,
   displayResultSeed,
 })
-
-function updateAnimaPromptState() {
-  patchAnimaState({
-    prompt: livePrompt.value,
-    negative: effectiveNegative.value,
-  })
-}
-
-function buildAnimaRequest(): AnimaRequest | null {
-  if (pb.isPopular) {
-    return buildPopularRequest()
-  }
-  const profile = modelProfile.value
-  if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) {
-    pb.flash(animaState.value.family === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
-    return null
-  }
-  const charKey = pb.char === 'triad' ? null : pb.char
-  if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
-    pb.flash('当前底模没有匹配的模型 profile，已拒绝生成')
-    return null
-  }
-  const expectedLoraId = charKey ? ANIMA_LORA_BY_CHARACTER[charKey] : ''
-  if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && charKey && (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false))) {
-    pb.flash('Anima 底模尚未从服务端白名单发现')
-    return null
-  }
-  updateAnimaPromptState()
-  return {
-    prompt: livePrompt.value,
-    negative: effectiveNegative.value,
-    profileId: profile.id || '',
-    modelId: animaState.value.modelId,
-    loraId: currentCapabilities.value.lora ? animaState.value.loraId : null,
-    loraStrength: currentCapabilities.value.lora ? animaState.value.loraStrength : null,
-    width: animaState.value.width,
-    height: animaState.value.height,
-    steps: animaState.value.steps,
-    cfg: animaState.value.cfg,
-    ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
-    character: currentCapabilities.value.characterIdentity && charKey ? ANIMA_CHARACTER_BY_CHARACTER[charKey] : null,
-    hiresFix: Boolean(animaState.value.hiresFix),
-    hiresScale: animaState.value.hiresScale,
-    hiresDenoise: animaState.value.hiresDenoise,
-    teaCache: animaState.value.teaCache !== false,
-    teaCacheThresh: animaState.value.teaCacheThresh,
-    adultEnabled: pb.showMatureScenes,
-  }
-}
-
-/** 热门角色无 LoRA 出图：Anima 只允许服务端声明的 noLora capability 底模；Krea 家族天然无 LoRA。 */
-function buildPopularRequest(): AnimaRequest | null {
-  const profile = popular.profile.value
-  if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
-    pb.flash('当前底模没有匹配的模型 profile，已拒绝生成')
-    return null
-  }
-  if (!currentCapabilities.value.noLora) {
-    pb.flash('当前底模不支持无 LoRA 热门角色创作')
-    return null
-  }
-  updateAnimaPromptState()
-  return {
-    prompt: livePrompt.value,
-    negative: effectiveNegative.value,
-    profileId: profile.id || '',
-    modelId: animaState.value.modelId,
-    loraId: null,
-    loraStrength: null,
-    width: animaState.value.width,
-    height: animaState.value.height,
-    steps: animaState.value.steps,
-    cfg: animaState.value.cfg,
-    ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
-    character: null,
-    hiresFix: Boolean(animaState.value.hiresFix),
-    hiresScale: animaState.value.hiresScale,
-    hiresDenoise: animaState.value.hiresDenoise,
-    teaCache: animaState.value.teaCache !== false,
-    teaCacheThresh: animaState.value.teaCacheThresh,
-    adultEnabled: pb.showMatureScenes,
-  }
-}
 
 // ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
 // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
@@ -1446,31 +1144,8 @@ onMounted(async () => {
   if (pb.directorMode === 'basic') await applyManagedRoute({ silent: true })
   else await refreshManagedRoute()
 
-  // 热门角色草稿恢复：同步无 LoRA 底模与蓝图尺寸/导演决策，并立即刷新 backend，
-  // 让面板的 model/lora 列表立刻收敛到热门角色（不等 15s 轮询）。
-  if (pb.isPopular && pb.subject.kind === 'popular') {
-    const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-aesthetic-v1.1'
-    if (animaState.value.models.some(model => model.id === recommendedEngine)) {
-      patchAnimaState({ modelId: recommendedEngine })
-    }
-    if (pb.subject.blueprintId) {
-      const restoredBlueprint = findPopularBlueprint(pb.sceneBlueprints, pb.subject.blueprintId)
-      if (restoredBlueprint) {
-        const decision = inferBlueprintDecisions(restoredBlueprint)
-        let restoredSize = decision.size
-        const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
-        if (activeModel && Array.isArray(activeModel.sizes) && activeModel.sizes.length
-          && !activeModel.sizes.includes(restoredSize)) {
-          restoredSize = activeModel.sizes[0]
-        }
-        sdSize.value = restoredSize
-        const [blueprintWidth, blueprintHeight] = restoredSize.split('x').map(Number)
-        if (Number.isInteger(blueprintWidth) && Number.isInteger(blueprintHeight)) patchAnimaState({ width: blueprintWidth, height: blueprintHeight })
-      }
-    }
-    applyRecommendedEngine(popularCharacter.value)
-    void refreshAnimaBackend()
-  }
+  // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
+  restorePopularDraft()
 
   if (route.query.quick === '1') {
     const savedQuick = readQuickCreate()
