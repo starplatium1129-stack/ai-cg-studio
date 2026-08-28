@@ -34,6 +34,8 @@
 | `data/popular/manifest.json` | 热门角色分片清单：声明系列文件与合并顺序（首次出现顺序） | 新增系列时编辑（`popular:split` 会自动补） |
 | `data/popular-characters.json` | 供静态网页读取的热门角色构建产物，由 `npm run popular:build` 从分片生成 | 否 |
 | `data/scenes.json` | 供静态网页读取的构建产物 | 否 |
+| `data/character-reference-standards.json` | 角色 × 多服装 4 视角参考标准的手写权威源；结构契约 `scripts/contracts/character-reference-standards.schema.json`（ajv，`test:contract` 阶段校验） | 是，改后跑 `node scripts/tests/test-character-reference-contract.js` |
+| `data/character-reference-view.json` | 前端懒加载的参考档案视图；视角字段必须逐字段镜像 standards，由同一契约测试交叉校验（漂移即红） | 否，改 standards 后同步此文件 |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
 | `scripts/runtime/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `src/utils/sceneUX.ts` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
