@@ -5,7 +5,6 @@ import {
 } from '@/utils/sdRequest'
 import {
   parseSDOptionList,
-  parseSDProgress,
   parseSDStatus,
 } from '@/utils/sdStatus'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
@@ -39,10 +38,6 @@ export function useSDGenerate() {
   const models      = ref<string[]>([])
   const provider    = ref<'comfy' | 'webui' | ''>('')
 
-  let pollTimer = 0
-  let pollInFlight = false
-  let pollFailures = 0
-  let progressToken = 0
   let abortCtrl: AbortController | null = null
   let activeJobId = ''
 
@@ -98,44 +93,6 @@ export function useSDGenerate() {
     }
   }
 
-  function stopPolling() {
-    progressToken += 1
-    clearInterval(pollTimer); pollTimer = 0; pollInFlight = false; progress.value = 0
-  }
-
-  async function pollProgress(token: number) {
-    if (pollInFlight || token !== progressToken || !generating.value) return
-    pollInFlight = true
-    try {
-      const r = await fetch('/sdapi/v1/progress?skip_current_image=true', { cache: 'no-store' })
-      if (!r.ok) throw new Error('HTTP ' + r.status)
-      const data = parseSDProgress(await r.json() as unknown)
-      if (token !== progressToken || !generating.value) return
-
-      progress.value = Math.round(data.ratio * 100)
-      pollFailures = 0
-
-      const eta = data.etaSeconds
-      statusText.value = progress.value > 0
-        ? `SD WebUI 生成中 · ${progress.value}%${eta ? ` · 约剩 ${eta} 秒` : ''}`
-        : 'SD WebUI 排队或准备中…'
-    } catch {
-      if (token !== progressToken || !generating.value) return
-      pollFailures += 1
-      if (pollFailures >= 3) statusText.value = 'SD WebUI 生成中 · 进度读取失败，仍在等待结果…'
-    } finally {
-      pollInFlight = false
-    }
-  }
-
-  function _startPolling() {
-    stopPolling()
-    pollFailures = 0
-    const token = ++progressToken
-    void pollProgress(token)
-    pollTimer = window.setInterval(() => { void pollProgress(token) }, 700) as unknown as number
-  }
-
   async function generate(params: SDGenerateParams): Promise<string | null> {
     if (generating.value) return null
     generating.value = true
@@ -145,7 +102,6 @@ export function useSDGenerate() {
     resultUrl.value  = ''
 
     abortCtrl = new AbortController()
-    stopPolling()
 
     try {
       const { payload } = buildTxt2ImgRequest(params)
@@ -177,6 +133,7 @@ export function useSDGenerate() {
       activeJobId = accepted.job.id
       let job = accepted.job
       const deadline = Date.now() + 20 * 60 * 1000
+      const startedAt = Date.now()
       while (Date.now() < deadline) {
         if (abortCtrl.signal.aborted) throw new DOMException('aborted', 'AbortError')
         if (job.status === 'failed') throw new Error(job.error || '生成失败')
@@ -186,8 +143,11 @@ export function useSDGenerate() {
         const state = await generationApi.getJob(job.id, { signal: abortCtrl.signal })
         if (!state.job) throw new Error('生成状态无效')
         job = state.job
-        progress.value = job.status === 'running' ? Math.min(95, progress.value + 2) : (job.status === 'succeeded' ? 100 : progress.value)
-        statusText.value = provider.value === 'comfy' ? 'ComfyUI 生成中…' : 'SD WebUI 生成中…'
+        // job API 不产出真实进度（Comfy ws 进度未接入 job 通道），progress 只反映
+        // 确定状态；进行中的动态反馈用真实等待秒数，不做匀速假增量（审计 P2）。
+        progress.value = job.status === 'succeeded' ? 100 : progress.value
+        statusText.value = (provider.value === 'comfy' ? 'ComfyUI 生成中' : 'SD WebUI 生成中')
+          + ` · 已等待 ${Math.max(0, Math.round((Date.now() - startedAt) / 1000))}s`
       }
       if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('生成超时')
       const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: abortCtrl.signal })
@@ -209,7 +169,7 @@ export function useSDGenerate() {
       return null
     } finally {
       generating.value = false
-      stopPolling()
+      progress.value = 0
       abortCtrl = null
       activeJobId = ''
     }
@@ -230,14 +190,9 @@ export function useSDGenerate() {
     resultSeed.value = null; resultPrompt.value = ''; errorMsg.value = ''; statusText.value = ''; progress.value = 0
   }
 
-  /**
-   * 组件卸载时收尾。缺这一段的后果：出图途中离开页面，1.2 秒一次的进度轮询
-   * 会一直跑到标签页关闭，in-flight 的 txt2img 也不会被取消。
-   */
+  /** 组件卸载时收尾：取消 in-flight 任务并释放 blob，防止出图途中离开页面泄漏。 */
   function dispose() {
-    // 页面离开也要通知 WebUI，否则断开的浏览器请求不一定会释放 GPU 生成。
     cancel()
-    stopPolling()
     abortCtrl = null
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
   }
