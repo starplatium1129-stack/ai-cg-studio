@@ -299,12 +299,36 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   function clearLogs() { logs.value = []; logIndex.value = 0 }
+  // 页面隐藏时暂停 3s 轮询、回前台恢复（2026-08-28 审计 P1-8：后台标签页不白白打服务）。
+  let pollActive = false
+  let visibilityBound = false
+  function handleVisibilityChange() {
+    if (!pollActive) return
+    if (document.hidden) {
+      if (pollTimer) { clearInterval(pollTimer); pollTimer = null }
+    } else if (!pollTimer) {
+      pollStatus(); pollLogs()
+      pollTimer = setInterval(() => { pollStatus(); pollLogs() }, 3000)
+    }
+  }
   function startPolling() {
-    if (pollTimer) return
-    pollStatus(); pollLogs()
-    pollTimer = setInterval(() => { pollStatus(); pollLogs() }, 3000)
+    if (pollActive) return
+    pollActive = true
+    if (!visibilityBound && typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', handleVisibilityChange)
+      visibilityBound = true
+    }
+    if (typeof document === 'undefined' || !document.hidden) {
+      pollStatus(); pollLogs()
+      pollTimer = setInterval(() => { pollStatus(); pollLogs() }, 3000)
+    }
   }
   function stopPolling() {
+    pollActive = false
+    if (visibilityBound && typeof document !== 'undefined') {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      visibilityBound = false
+    }
     if (pollTimer) clearInterval(pollTimer)
     pollTimer = null
     clearNowTicker()

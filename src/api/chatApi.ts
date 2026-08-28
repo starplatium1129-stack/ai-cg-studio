@@ -62,6 +62,9 @@ export function createChatApi(client: ApiClient = apiClient): ChatApi {
     getHostConfig(options = {}) {
       return client.request<HostConfig>('/api/chat-provider/host-config', {
         cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.host,
+        // 准静态配置：30s 内存 TTL 去抖（2026-08-28 审计 P1-8）。
+        // saveHostConfig/clearHostConfig 成功后由 client 失效同 URL 缓存。
+        cacheTtlMs: 30_000,
         validate: isHostConfig,
       })
     },

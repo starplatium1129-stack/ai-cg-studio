@@ -46,6 +46,9 @@ export interface ApiRequestOptions extends Omit<RequestInit, 'body' | 'signal'> 
   signal?: AbortSignal
   timeoutMs?: number
   validate?: (value: ApiResponseObject) => boolean
+  /** GET 响应内存缓存时长（毫秒）。默认不缓存（任务态端点必须直连）；
+   * 仅准静态配置类端点显式声明。任何写请求成功后自动失效同 URL 缓存。 */
+  cacheTtlMs?: number
 }
 
 export interface ApiClient {
@@ -123,7 +126,66 @@ function errorDetail(error: unknown): string | undefined {
 
 const defaultFetch: FetchImplementation = (input, init) => globalThis.fetch(input, init)
 
+const GET_METHOD = 'GET'
+
+/** GET 请求并发去重与显式 TTL 缓存（2026-08-28 审计 P1-8）。
+ * inflight：同 URL GET 并发时共享一次底层请求；搭车者的 abort/timeout 只作用于自己。
+ * 缓存：仅显式传 cacheTtlMs 的 GET 走内存 TTL 缓存；写请求成功即失效同 URL 缓存。 */
+interface CacheEntry {
+  value: ApiResponseObject
+  expiresAt: number
+}
+
+function requestKey(url: string, method: string): string {
+  return `${method} ${url}`
+}
+
 export function createApiClient(fetchImplementation: FetchImplementation = defaultFetch): ApiClient {
+  const responseCache = new Map<string, CacheEntry>()
+  const inflight = new Map<string, Promise<ApiResponseObject>>()
+
+  /** 搭车等待：共享响应与调用方自己的 abort/timeout 竞速，返回浅拷贝防跨消费者污染。 */
+  async function awaitShared<T extends object>(
+    shared: Promise<ApiResponseObject>,
+    callerSignal: AbortSignal | undefined,
+    timeoutMs: number,
+  ): Promise<T> {
+    let abortListener: (() => void) | undefined
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const guard = new Promise<never>((_, reject) => {
+      if (callerSignal?.aborted) {
+        reject(new ApiClientError('请求已取消', { kind: 'aborted' }))
+        return
+      }
+      if (callerSignal) {
+        abortListener = () => reject(new ApiClientError('请求已取消', { kind: 'aborted' }))
+        callerSignal.addEventListener('abort', abortListener, { once: true })
+      }
+      if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
+        timer = setTimeout(() => {
+          reject(
+            new ApiClientError(`请求超时（${Math.ceil(timeoutMs / 1000)} 秒）`, { kind: 'timeout' }),
+          )
+        }, timeoutMs)
+      }
+    })
+    try {
+      const value = await Promise.race([shared, guard])
+      return { ...value } as T
+    } catch (error) {
+      if (error instanceof ApiClientError) throw error
+      // 发起者取消连带取消共享请求时，原生 AbortError 归一为 aborted；
+      // 其余保持 network 语义，与发起者路径一致
+      if ((error as Error)?.name === 'AbortError') {
+        throw new ApiClientError('请求已取消', { kind: 'aborted', detail: errorDetail(error) })
+      }
+      throw new ApiClientError('网络请求失败', { kind: 'network', detail: errorDetail(error) })
+    } finally {
+      if (timer !== undefined) clearTimeout(timer)
+      if (callerSignal && abortListener) callerSignal.removeEventListener('abort', abortListener)
+    }
+  }
+
   return {
     async request<T extends object>(url: string, options: ApiRequestOptions = {}): Promise<T> {
       const callerSignal = options.signal
@@ -133,6 +195,22 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
 
       const headers = new Headers(options.headers)
       const hasBody = options.body !== undefined
+      const method = (options.method ?? GET_METHOD).toUpperCase()
+      const isCacheableGet = method === GET_METHOD && !hasBody
+
+      if (isCacheableGet) {
+        const cached = responseCache.get(url)
+        if (cached && cached.expiresAt > Date.now()) {
+          return { ...cached.value } as T
+        }
+        if (cached) responseCache.delete(url)
+
+        const pending = inflight.get(requestKey(url, method))
+        if (pending) {
+          return awaitShared<T>(pending, callerSignal, options.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+        }
+      }
+
       let serializedBody: string | undefined
       if (hasBody) {
         try {
@@ -170,43 +248,66 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         body: _body,
         signal: _signal,
         timeoutMs: _timeoutMs,
+        cacheTtlMs: _cacheTtlMs,
         validate,
         ...requestInit
       } = options
 
+      // 发起前先占位 inflight：并发到达的 GET 在底层 fetch 未完成前即可搭车。
+      // 失败的请求同样从 inflight 移除（finally），同 URL 后续请求重新发起。
+      const key = requestKey(url, method)
+      const shared: Promise<ApiResponseObject> = (async () => {
+        try {
+          const response = await fetchImplementation(url, {
+            ...requestInit,
+            headers,
+            body: serializedBody,
+            signal: controller.signal,
+          })
+
+          let text: string
+          try {
+            text = await response.text()
+          } catch (error) {
+            if (abortSource !== null) throw error
+            throw invalidResponse(response.status, '响应正文未能完整读取')
+          }
+          if (!text.trim()) throw invalidResponse(response.status, '响应正文为空')
+
+          let parsed: unknown
+          try {
+            parsed = JSON.parse(text)
+          } catch {
+            throw invalidResponse(response.status, '响应正文不是完整、有效的 JSON')
+          }
+          if (!isResponseObject(parsed)) {
+            throw invalidResponse(response.status, 'JSON 顶层必须是对象')
+          }
+
+          if (!response.ok) throw httpFailure(response, parsed)
+          if (parsed.ok === false) {
+            throw explicitFailure(response, parsed)
+          }
+          if (validate && !validate(parsed)) {
+            throw invalidResponse(response.status, '响应对象不符合预期格式', parsed)
+          }
+          return parsed
+        } finally {
+          inflight.delete(key)
+        }
+      })()
+      if (isCacheableGet) inflight.set(key, shared)
+
       try {
-        const response = await fetchImplementation(url, {
-          ...requestInit,
-          headers,
-          body: serializedBody,
-          signal: controller.signal,
-        })
-
-        let text: string
-        try {
-          text = await response.text()
-        } catch (error) {
-          if (abortSource !== null) throw error
-          throw invalidResponse(response.status, '响应正文未能完整读取')
-        }
-        if (!text.trim()) throw invalidResponse(response.status, '响应正文为空')
-
-        let parsed: unknown
-        try {
-          parsed = JSON.parse(text)
-        } catch {
-          throw invalidResponse(response.status, '响应正文不是完整、有效的 JSON')
-        }
-        if (!isResponseObject(parsed)) {
-          throw invalidResponse(response.status, 'JSON 顶层必须是对象')
-        }
-
-        if (!response.ok) throw httpFailure(response, parsed)
-        if (parsed.ok === false) {
-          throw explicitFailure(response, parsed)
-        }
-        if (validate && !validate(parsed)) {
-          throw invalidResponse(response.status, '响应对象不符合预期格式', parsed)
+        const parsed = await shared
+        const cacheTtlMs = options.cacheTtlMs
+        if (isCacheableGet) {
+          if (typeof cacheTtlMs === 'number' && Number.isFinite(cacheTtlMs) && cacheTtlMs > 0) {
+            responseCache.set(url, { value: parsed, expiresAt: Date.now() + cacheTtlMs })
+          }
+        } else {
+          // 写请求成功即失效同 URL 缓存，防止 saveHostConfig 之后再读到旧配置
+          responseCache.delete(url)
         }
         return parsed as T
       } catch (error) {
