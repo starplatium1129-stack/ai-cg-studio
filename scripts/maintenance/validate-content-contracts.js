@@ -282,6 +282,69 @@ function checkPrecompressArtifacts() {
   return errors;
 }
 
+/**
+ * 2026-08-29 产品运营审计 P0-1：character-reference-view.json 曾积累 232 条 url 断链
+ * （212 条命名漂移 + 5 个幽灵形态）长期无人报红——检查器 check-ref-urls.js 已存在但未接门禁。
+ * 这里把磁盘存在性与形态条目唯一性纳入 test:content；断链/重复回潮时给出修复入口。
+ */
+function checkReferenceViewUrls() {
+  var viewFile = path.join(ROOT, 'data', 'character-reference-view.json');
+  if (!fs.existsSync(viewFile)) return ['data/character-reference-view.json is missing'];
+  var view;
+  try {
+    view = JSON.parse(fs.readFileSync(viewFile, 'utf8'));
+  } catch (error) {
+    return ['character-reference-view.json cannot be parsed: ' + error.message];
+  }
+  var errors = [];
+  var total = 0;
+  var missing = 0;
+  Object.keys(view).forEach(function (cid) {
+    var seenOutfits = {};
+    ((view[cid] && view[cid].outfits) || []).forEach(function (outfit) {
+      var refs = outfit.references || [];
+      total += refs.length;
+      if (seenOutfits[outfit.outfitId]) {
+        errors.push('character-reference-view: ' + cid + ' 存在重复形态条目 ' + outfit.outfitId
+          + '（跑 node scripts/maintenance/repair-character-reference-urls.js 修复）');
+      }
+      seenOutfits[outfit.outfitId] = true;
+      refs.forEach(function (ref) {
+        var rel = String(ref.url || '').replace(/^\/assets\//, '');
+        if (!rel || !fs.existsSync(path.join(ROOT, 'assets', rel))) {
+          missing++;
+          if (missing <= 10) {
+            errors.push('character-reference-view 断链: ' + cid + '/' + outfit.outfitId + ' -> ' + ref.url);
+          }
+        }
+      });
+    });
+  });
+  if (missing > 10) {
+    errors.push('character-reference-view 断链共 ' + missing + '/' + total
+      + ' 条（跑 node scripts/maintenance/repair-character-reference-urls.js 修复，修复前先看 runtime/maintenance-backups/ 的快照）');
+  }
+  return errors;
+}
+
+/**
+ * 2026-08-29 产品运营审计 P0-3：经典场景库分级互锁——rating='R18' 与 mature=true
+ * 必须行级一致，防止 R18 内容借 All/mature=false 漏进全年龄流（红线 4 内容侧互锁）。
+ */
+function checkSceneRatingInterlock(data) {
+  var errors = [];
+  (data.scenes || []).forEach(function (scene) {
+    var mature = Boolean(scene.mature);
+    if (scene.rating === 'R18' && !mature) {
+      errors.push('scene ' + scene.id + ': rating=R18 但 mature!=true（红线 4 分级互锁）');
+    }
+    if (mature && scene.rating !== 'R18') {
+      errors.push('scene ' + scene.id + ': mature=true 但 rating=' + JSON.stringify(scene.rating) + '（红线 4 分级互锁）');
+    }
+  });
+  return errors;
+}
+
 function main() {
   var data = {
     characters:readJson('data/characters.json'),
@@ -295,7 +358,9 @@ function main() {
   });
   errors = errors.concat(validateSceneShards(data));
   errors = errors.concat(validatePopularContent());
+  errors = errors.concat(checkSceneRatingInterlock(data));
   errors = errors.concat(checkPrecompressArtifacts());
+  errors = errors.concat(checkReferenceViewUrls());
   errors = errors.concat(checkDataVersion());  if (errors.length) {
     console.error(errors.map(function (error) { return '  - ' + error; }).join('\n'));
     process.exitCode = 1;

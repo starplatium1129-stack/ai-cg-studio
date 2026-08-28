@@ -560,6 +560,120 @@
       ]
     },
     {
+      "id": "fern_frieren",
+      "displayName": "菲伦",
+      "originalName": "菲伦",
+      "source": "Frieren: Beyond Journey's End",
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure with large breasts.",
+      "identityTokens": [
+        "fern (sousou no frieren)",
+        "fern",
+        "1girl",
+        "solo",
+        "long_hair",
+        "purple_hair",
+        "side_ponytail",
+        "half-updo",
+        "straight_bangs",
+        "long_sidelocks",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "outfits": [
+        {
+          "id": "journey_robe",
+          "name": "旅途魔法长袍",
+          "isDefault": true,
+          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
+          "tokens": [
+            "black_coat",
+            "white_dress",
+            "high_collar",
+            "long_sleeves",
+            "magic_staff",
+            "boots"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "winter_coat",
+          "name": "冬季厚风衣围巾装",
+          "isDefault": false,
+          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
+          "tokens": [
+            "winter_coat",
+            "overcoat",
+            "scarf",
+            "muffler",
+            "gloves",
+            "boots"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "town_casual",
+          "name": "城镇甜品便服",
+          "isDefault": false,
+          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
+          "tokens": [
+            "cardigan",
+            "long_skirt",
+            "blouse",
+            "ribbon"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "noble_ball_dress",
+          "name": "贵族舞会典雅深紫礼服",
+          "isDefault": false,
+          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "tokens": [
+            "evening_dress",
+            "purple_dress",
+            "ball_gown",
+            "white_gloves",
+            "updo_hair"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "inn_morning_nightgown",
+          "name": "旅馆清晨纯棉睡裙",
+          "isDefault": false,
+          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+          "tokens": [
+            "nightgown",
+            "white_nightgown",
+            "loose_dress",
+            "bare_shoulders",
+            "messy_hair"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "prose": "completely naked with zero clothes, full body bare, natural slender-curvy body with soft smooth skin, large shapely breasts with pink nipples, exposed neat pink pussy, detailed vulva, narrow waist, pouting blush",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "slender_body",
+            "soft_skin",
+            "bare_feet"
+          ],
+          "isNsfw": true
+        }
+      ]
+    },
+    {
       "id": "artoria_pendragon",
       "displayName": "阿尔托莉雅",
       "originalName": "Artoria Pendragon",
@@ -628,6 +742,369 @@
             "bare_legs",
             "bare_feet"
           ]
+        }
+      ]
+    },
+    {
+      "id": "tohsaka_rin",
+      "displayName": "远坂凛",
+      "originalName": "Tohsaka Rin",
+      "source": "Fate",
+      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and brilliant mage with long dark-brown hair in twin-tails tied with large black ribbons, clear aqua-blue eyes, and a confident, spirited expression",
+      "identityTokens": [
+        "tohsaka_rin",
+        "1girl",
+        "solo",
+        "long_brown_hair",
+        "twintails",
+        "black_hair_ribbons",
+        "blue_eyes",
+        "ahoge",
+        "fate/stay_night"
+      ],
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "isDefault": true,
+          "prose": "her navy Homurahara school uniform with a ribbon",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "navy_clothes",
+            "ribbon",
+            "pleated_skirt",
+            "black_thighhighs"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "red_turtleneck",
+          "name": "红高领",
+          "isDefault": false,
+          "prose": "her casual red turtleneck with a black skirt",
+          "tokens": [
+            "turtleneck",
+            "red_clothes",
+            "black_skirt",
+            "jacket"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "mage_battle",
+          "name": "魔术战斗",
+          "isDefault": false,
+          "prose": "her mage combat outfit with glowing magic circuits and gems",
+          "tokens": [
+            "magic_circuits",
+            "jewelry",
+            "dress",
+            "glowing",
+            "long_sleeves"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "isNsfw": true,
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "illyasviel_von_einzbern",
+      "displayName": "伊莉雅丝菲尔",
+      "originalName": "Illyasviel von Einzbern",
+      "source": "Fate",
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine features, carrying an air of playful innocence and profound magic power",
+      "identityTokens": [
+        "illyasviel_von_einzbern",
+        "1girl",
+        "solo",
+        "long_white_hair",
+        "straight_hair",
+        "red_eyes",
+        "ruby_eyes",
+        "fate/stay_night"
+      ],
+      "outfits": [
+        {
+          "id": "winter_coat",
+          "name": "Fate 本篇冬装",
+          "isDefault": true,
+          "prose": "her red winter coat with a hood and fur trim from the Fuyuki winter story",
+          "tokens": [
+            "coat",
+            "red_coat",
+            "fur_trim",
+            "hood",
+            "winter_clothes"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "isDefault": false,
+          "prose": "a soft casual outfit",
+          "tokens": [
+            "casual_clothes",
+            "dress",
+            "cardigan"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "purple_hooded_cloak",
+          "name": "紫色连帽斗篷",
+          "isDefault": false,
+          "prose": "wearing a thick purple hooded cloak of deep violet wool, a heavy front-closing cape with a large hood and long hem",
+          "tokens": [
+            "cloak",
+            "hooded_cloak",
+            "purple_cloak",
+            "violet",
+            "hood",
+            "wool",
+            "winter_cloak",
+            "outerwear",
+            "cape",
+            "thick_fabric"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "cozy_wool_blanket",
+          "name": "羊绒毛毯裹身",
+          "isDefault": false,
+          "prose": "wrapped in a thick soft wool blanket, plush fluffy wool fabric draped loosely around the body like a cocoon, warm neutral tone",
+          "tokens": [
+            "wool_blanket",
+            "wrapped_in_blanket",
+            "plush",
+            "wool",
+            "draped",
+            "thick_fabric",
+            "fluffy",
+            "cozy",
+            "soft_fabric",
+            "loungewear"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "isNsfw": true
+        }
+      ]
+    },
+    {
+      "id": "jeanne_alter",
+      "displayName": "贞德[Alter]",
+      "originalName": "贞德[Alter]",
+      "source": "Fate",
+      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
+      "identityTokens": [
+        "jeanne d'arc alter (fate)",
+        "jeanne_alter",
+        "1girl",
+        "solo",
+        "short_hair",
+        "silver_hair",
+        "yellow_eyes",
+        "evil_smile"
+      ],
+      "outfits": [
+        {
+          "id": "avenger_black_armor",
+          "name": "复仇者黑铁战铠",
+          "isDefault": true,
+          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
+          "tokens": [
+            "black_armor",
+            "dragon_witch",
+            "cape",
+            "headpiece",
+            "gauntlets",
+            "armored_boots",
+            "flag"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "shinjuku_jacket_casual",
+          "name": "新宿皮夹克便服",
+          "isDefault": false,
+          "prose": "wearing her Shinjuku casual outfit featuring a fitted black leather jacket over a black tank top and tight leather pants with a choker",
+          "tokens": [
+            "leather_jacket",
+            "black_tank_top",
+            "black_pants",
+            "leather_pants",
+            "choker",
+            "boots"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "summer_swimsuit_berserker",
+          "name": "水着狂阶黑色比基尼",
+          "isDefault": false,
+          "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
+          "tokens": [
+            "bikini",
+            "black_bikini",
+            "strappy_bikini",
+            "sarong",
+            "katana",
+            "summer_clothes"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "evening_black_dress",
+          "name": "英灵正装高开叉晚礼服",
+          "isDefault": false,
+          "prose": "wearing an alluring backless black velvet evening gown with high leg slit and long satin gloves",
+          "tokens": [
+            "evening_dress",
+            "black_dress",
+            "backless_dress",
+            "high_slit_dress",
+            "gloves"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "prose": "completely naked with zero clothes, flawless porcelain skin, exposed pink pussy, detailed vulva, perky breasts with pink nipples, toned waist",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "bare_feet"
+          ],
+          "isNsfw": true
+        }
+      ]
+    },
+    {
+      "id": "matou_sakura",
+      "displayName": "间桐樱",
+      "originalName": "间桐樱",
+      "source": "Fate",
+      "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
+      "identityTokens": [
+        "matou_sakura",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "hair_ribbon",
+        "red_ribbon",
+        "purple_eyes",
+        "large_breasts",
+        "fate/stay_night"
+      ],
+      "outfits": [
+        {
+          "id": "homurahara_uniform",
+          "name": "穗群原学园制服",
+          "isDefault": true,
+          "prose": "wearing Homurahara Academy winter uniform with beige blazer, red bow, pleated skirt, and black tights",
+          "tokens": [
+            "school_uniform",
+            "brown_jacket",
+            "white_shirt",
+            "red_tie",
+            "pleated_skirt",
+            "black_pantyhose"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "white_summer_sundress",
+          "name": "经典纯白夏日连衣裙",
+          "isDefault": false,
+          "prose": "wearing her iconic pure white sleeveless summer sundress with her red hair ribbon fluttering gently",
+          "tokens": [
+            "sundress",
+            "white_dress",
+            "sleeveless_dress",
+            "hair_ribbon",
+            "sandals"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "kitchen_apron_homewear",
+          "name": "居家粉色毛衣与围裙",
+          "isDefault": false,
+          "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
+          "tokens": [
+            "pink_sweater",
+            "apron",
+            "frilled_apron",
+            "long_skirt",
+            "casual_clothes"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "prose": "completely naked with zero clothes, voluptuous feminine body, exposed pink pussy, detailed vulva, heavy breasts with pink nipples, soft blushing skin",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "isNsfw": true
         }
       ]
     },
@@ -922,6 +1399,105 @@
       ]
     },
     {
+      "id": "yuigahama_yui",
+      "displayName": "由比滨结衣",
+      "originalName": "由比滨结衣",
+      "source": "Oregairu",
+      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
+      "identityTokens": [
+        "yuigahama_yui",
+        "1girl",
+        "solo",
+        "orange_hair",
+        "short_hair",
+        "hair_bun",
+        "side_bun",
+        "amber_eyes",
+        "large_breasts",
+        "oregairu"
+      ],
+      "outfits": [
+        {
+          "id": "sobu_uniform",
+          "name": "总武高中制服",
+          "isDefault": true,
+          "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
+          "tokens": [
+            "school_uniform",
+            "open_blazer",
+            "pink_cardigan",
+            "white_shirt",
+            "red_ribbon",
+            "pleated_skirt",
+            "black_thighhighs"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "summer_yukata",
+          "name": "夏日祭典碎花浴衣",
+          "isDefault": false,
+          "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
+          "tokens": [
+            "yukata",
+            "floral_print",
+            "red_obi",
+            "hair_ornament",
+            "geta",
+            "folding_fan"
+          ],
+          "isNsfw": true
+        },
+        {
+          "id": "dog_pajamas",
+          "name": "居家露肩连帽卫衣",
+          "isDefault": false,
+          "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
+          "tokens": [
+            "hoodie",
+            "off_shoulder_hoodie",
+            "short_shorts",
+            "bare_legs",
+            "casual_clothes"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "tennis_sportswear",
+          "name": "网球无袖运动短裙",
+          "isDefault": false,
+          "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
+          "tokens": [
+            "sportswear",
+            "sleeveless_top",
+            "tennis_skirt",
+            "pleated_skirt",
+            "wristband",
+            "sneakers"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "isNsfw": true
+        }
+      ]
+    },
+    {
       "id": "elaina",
       "displayName": "伊雷娜",
       "originalName": "Elaina",
@@ -1183,83 +1759,98 @@
       ]
     },
     {
-      "id": "tohsaka_rin",
-      "displayName": "远坂凛",
-      "originalName": "Tohsaka Rin",
-      "source": "Fate",
-      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and brilliant mage with long dark-brown hair in twin-tails tied with large black ribbons, clear aqua-blue eyes, and a confident, spirited expression",
+      "id": "reze_chainsaw",
+      "displayName": "蕾塞",
+      "originalName": "蕾塞",
+      "source": "Chainsaw Man",
+      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
       "identityTokens": [
-        "tohsaka_rin",
+        "reze (chainsaw man)",
+        "reze",
         "1girl",
         "solo",
-        "long_brown_hair",
-        "twintails",
-        "black_hair_ribbons",
-        "blue_eyes",
-        "ahoge",
-        "fate/stay_night"
+        "purple_hair",
+        "short_hair",
+        "green_eyes",
+        "choker",
+        "blush"
       ],
       "outfits": [
         {
-          "id": "school_uniform",
-          "name": "校服",
+          "id": "sleeveless_white_shirt",
+          "name": "经典无袖衬衫与黑领带",
           "isDefault": true,
-          "prose": "her navy Homurahara school uniform with a ribbon",
+          "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
           "tokens": [
-            "school_uniform",
-            "blazer",
-            "navy_clothes",
-            "ribbon",
-            "pleated_skirt",
-            "black_thighhighs"
+            "sleeveless_shirt",
+            "white_shirt",
+            "black_tie",
+            "black_shorts",
+            "choker",
+            "sneakers"
           ],
           "isNsfw": false
         },
         {
-          "id": "red_turtleneck",
-          "name": "红高领",
+          "id": "summer_swimsuit_night",
+          "name": "夜间学校泳池死库水",
           "isDefault": false,
-          "prose": "her casual red turtleneck with a black skirt",
+          "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
           "tokens": [
-            "turtleneck",
-            "red_clothes",
-            "black_skirt",
-            "jacket"
+            "school_swimsuit",
+            "one_piece_swimsuit",
+            "wet_skin",
+            "choker",
+            "bare_legs"
           ],
           "isNsfw": false
         },
         {
-          "id": "mage_battle",
-          "name": "魔术战斗",
+          "id": "cafe_apron_outfit",
+          "name": "咖啡厅打工围裙装",
           "isDefault": false,
-          "prose": "her mage combat outfit with glowing magic circuits and gems",
+          "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
           "tokens": [
-            "magic_circuits",
-            "jewelry",
-            "dress",
-            "glowing",
-            "long_sleeves"
+            "cafe_uniform",
+            "apron",
+            "white_shirt",
+            "jeans",
+            "choker"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "oversized_jacket_casual",
+          "name": "宽大拉链外套私服",
+          "isDefault": false,
+          "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
+          "tokens": [
+            "oversized_jacket",
+            "bomber_jacket",
+            "tank_top",
+            "shorts",
+            "choker"
           ],
           "isNsfw": false
         },
         {
           "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
+          "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
           "tokens": [
             "nude",
             "completely_naked",
             "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
+            "full_body_bare",
+            "choker",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
             "bare_feet"
-          ]
+          ],
+          "isNsfw": true
         }
       ]
     },
@@ -1534,83 +2125,66 @@
       ]
     },
     {
-      "id": "illyasviel_von_einzbern",
-      "displayName": "伊莉雅丝菲尔",
-      "originalName": "Illyasviel von Einzbern",
-      "source": "Fate",
-      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine features, carrying an air of playful innocence and profound magic power",
+      "id": "sylphiette",
+      "displayName": "希露菲叶特",
+      "originalName": "希露菲叶特",
+      "source": "Mushoku Tensei",
+      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
       "identityTokens": [
-        "illyasviel_von_einzbern",
+        "sylphiette",
+        "sylphie",
         "1girl",
         "solo",
-        "long_white_hair",
-        "straight_hair",
+        "short_hair",
+        "white_hair",
         "red_eyes",
-        "ruby_eyes",
-        "fate/stay_night"
+        "elf_ears",
+        "pointed_ears",
+        "flat_chest",
+        "mushoku_tensei"
       ],
       "outfits": [
         {
-          "id": "winter_coat",
-          "name": "Fate 本篇冬装",
+          "id": "default_mage_robe",
+          "name": "学徒法师长袍",
           "isDefault": true,
-          "prose": "her red winter coat with a hood and fur trim from the Fuyuki winter story",
+          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
           "tokens": [
-            "coat",
-            "red_coat",
-            "fur_trim",
-            "hood",
-            "winter_clothes"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "casual",
-          "name": "便服",
-          "isDefault": false,
-          "prose": "a soft casual outfit",
-          "tokens": [
-            "casual_clothes",
-            "dress",
-            "cardigan"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "purple_hooded_cloak",
-          "name": "紫色连帽斗篷",
-          "isDefault": false,
-          "prose": "wearing a thick purple hooded cloak of deep violet wool, a heavy front-closing cape with a large hood and long hem",
-          "tokens": [
-            "cloak",
+            "green_hair",
+            "short_hair",
             "hooded_cloak",
-            "purple_cloak",
-            "violet",
-            "hood",
-            "wool",
-            "winter_cloak",
-            "outerwear",
-            "cape",
-            "thick_fabric"
+            "mage_robe",
+            "shorts",
+            "boots"
           ],
           "isNsfw": false
         },
         {
-          "id": "cozy_wool_blanket",
-          "name": "羊绒毛毯裹身",
+          "id": "silent_fitz_uniform",
+          "name": "菲兹学长魔术学院执事装",
           "isDefault": false,
-          "prose": "wrapped in a thick soft wool blanket, plush fluffy wool fabric draped loosely around the body like a cocoon, warm neutral tone",
+          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
           "tokens": [
-            "wool_blanket",
-            "wrapped_in_blanket",
-            "plush",
-            "wool",
-            "draped",
-            "thick_fabric",
-            "fluffy",
-            "cozy",
-            "soft_fabric",
-            "loungewear"
+            "white_hair",
+            "short_hair",
+            "sunglasses",
+            "academy_uniform",
+            "formal_suit",
+            "white_pants",
+            "cape"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "oversized_nightshirt",
+          "name": "居家宽松露肩睡衣",
+          "isDefault": false,
+          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
+          "tokens": [
+            "oversized_shirt",
+            "off_shoulder_shirt",
+            "bare_thighs",
+            "bare_legs"
           ],
           "isNsfw": false
         },
@@ -1618,39 +2192,19 @@
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
           "tokens": [
             "nude",
             "completely_naked",
             "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -1786,25 +2340,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -1933,25 +2468,6 @@
             "bare_legs"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -2077,25 +2593,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -2230,25 +2727,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -2829,25 +3307,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -2999,25 +3458,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -3139,25 +3579,6 @@
             "goggles"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -3294,25 +3715,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -3428,25 +3830,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -3552,25 +3935,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -3710,25 +4074,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -3868,25 +4213,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -4013,25 +4339,6 @@
             "collarbone"
           ],
           "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -4154,25 +4461,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -4243,22 +4531,6 @@
           "isNsfw": false
         },
         {
-          "id": "summer_yukata",
-          "name": "淡蓝夏日浴衣",
-          "isDefault": false,
-          "prose": "a light blue summer yukata with a white floral pattern, soft sash belt, wooden geta sandals, silver hair up in a loose bun",
-          "tokens": [
-            "yukata",
-            "light_blue",
-            "floral_pattern",
-            "sash",
-            "geta",
-            "bun",
-            "summer"
-          ],
-          "isNsfw": true
-        },
-        {
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -4276,518 +4548,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "sylphiette",
-      "displayName": "希露菲叶特",
-      "originalName": "希露菲叶特",
-      "source": "Mushoku Tensei",
-      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
-      "identityTokens": [
-        "sylphiette",
-        "sylphie",
-        "1girl",
-        "solo",
-        "short_hair",
-        "white_hair",
-        "red_eyes",
-        "elf_ears",
-        "pointed_ears",
-        "flat_chest",
-        "mushoku_tensei"
-      ],
-      "outfits": [
-        {
-          "id": "default_mage_robe",
-          "name": "学徒法师长袍",
-          "isDefault": true,
-          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
-          "tokens": [
-            "green_hair",
-            "short_hair",
-            "hooded_cloak",
-            "mage_robe",
-            "shorts",
-            "boots"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "silent_fitz_uniform",
-          "name": "菲兹学长魔术学院执事装",
-          "isDefault": false,
-          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
-          "tokens": [
-            "white_hair",
-            "short_hair",
-            "sunglasses",
-            "academy_uniform",
-            "formal_suit",
-            "white_pants",
-            "cape"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "oversized_nightshirt",
-          "name": "居家宽松露肩睡衣",
-          "isDefault": false,
-          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
-          "tokens": [
-            "oversized_shirt",
-            "off_shoulder_shirt",
-            "bare_thighs",
-            "bare_legs"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "exposed_pussy",
-            "detailed_vulva",
-            "bare_breasts",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "casual_day_dress",
-          "name": "居家便服连衣裙",
-          "isDefault": false,
-          "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
-          "tokens": [
-            "sylphiette_casual_day_dress",
-            "cardigan",
-            "knit_cardigan",
-            "cream_cardigan",
-            "simple_dress",
-            "knitwear",
-            "casual_clothes",
-            "long_sleeves",
-            "dress"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "yuigahama_yui",
-      "displayName": "由比滨结衣",
-      "originalName": "由比滨结衣",
-      "source": "Oregairu",
-      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
-      "identityTokens": [
-        "yuigahama_yui",
-        "1girl",
-        "solo",
-        "orange_hair",
-        "short_hair",
-        "hair_bun",
-        "side_bun",
-        "amber_eyes",
-        "large_breasts",
-        "oregairu"
-      ],
-      "outfits": [
-        {
-          "id": "sobu_uniform",
-          "name": "总武高中制服",
-          "isDefault": true,
-          "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
-          "tokens": [
-            "school_uniform",
-            "open_blazer",
-            "pink_cardigan",
-            "white_shirt",
-            "red_ribbon",
-            "pleated_skirt",
-            "black_thighhighs"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "summer_yukata",
-          "name": "夏日祭典碎花浴衣",
-          "isDefault": false,
-          "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
-          "tokens": [
-            "yukata",
-            "floral_print",
-            "red_obi",
-            "hair_ornament",
-            "geta",
-            "folding_fan"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "dog_pajamas",
-          "name": "居家露肩连帽卫衣",
-          "isDefault": false,
-          "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
-          "tokens": [
-            "hoodie",
-            "off_shoulder_hoodie",
-            "short_shorts",
-            "bare_legs",
-            "casual_clothes"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "tennis_sportswear",
-          "name": "网球无袖运动短裙",
-          "isDefault": false,
-          "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
-          "tokens": [
-            "sportswear",
-            "sleeveless_top",
-            "tennis_skirt",
-            "pleated_skirt",
-            "wristband",
-            "sneakers"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "large_breasts",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "jeanne_alter",
-      "displayName": "贞德[Alter]",
-      "originalName": "贞德[Alter]",
-      "source": "Fate",
-      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
-      "identityTokens": [
-        "jeanne d'arc alter (fate)",
-        "jeanne_alter",
-        "1girl",
-        "solo",
-        "short_hair",
-        "silver_hair",
-        "yellow_eyes",
-        "evil_smile"
-      ],
-      "outfits": [
-        {
-          "id": "avenger_black_armor",
-          "name": "复仇者黑铁战铠",
-          "isDefault": true,
-          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
-          "tokens": [
-            "black_armor",
-            "dragon_witch",
-            "cape",
-            "headpiece",
-            "gauntlets",
-            "armored_boots",
-            "flag"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "shinjuku_jacket_casual",
-          "name": "新宿皮夹克便服",
-          "isDefault": false,
-          "prose": "wearing her Shinjuku casual outfit featuring a fitted black leather jacket over a black tank top and tight leather pants with a choker",
-          "tokens": [
-            "leather_jacket",
-            "black_tank_top",
-            "black_pants",
-            "leather_pants",
-            "choker",
-            "boots"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "summer_swimsuit_berserker",
-          "name": "水着狂阶黑色比基尼",
-          "isDefault": false,
-          "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
-          "tokens": [
-            "bikini",
-            "black_bikini",
-            "strappy_bikini",
-            "sarong",
-            "katana",
-            "summer_clothes"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "evening_black_dress",
-          "name": "英灵正装高开叉晚礼服",
-          "isDefault": false,
-          "prose": "wearing an alluring backless black velvet evening gown with high leg slit and long satin gloves",
-          "tokens": [
-            "evening_dress",
-            "black_dress",
-            "backless_dress",
-            "high_slit_dress",
-            "gloves"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "prose": "completely naked with zero clothes, flawless porcelain skin, exposed pink pussy, detailed vulva, perky breasts with pink nipples, toned waist",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "exposed_pussy",
-            "detailed_vulva",
-            "bare_breasts",
-            "pink_nipples",
-            "slender_waist",
-            "bare_feet"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "matou_sakura",
-      "displayName": "间桐樱",
-      "originalName": "间桐樱",
-      "source": "Fate",
-      "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
-      "identityTokens": [
-        "matou_sakura",
-        "1girl",
-        "solo",
-        "purple_hair",
-        "long_hair",
-        "hair_ribbon",
-        "red_ribbon",
-        "purple_eyes",
-        "large_breasts",
-        "fate/stay_night"
-      ],
-      "outfits": [
-        {
-          "id": "homurahara_uniform",
-          "name": "穗群原学园制服",
-          "isDefault": true,
-          "prose": "wearing Homurahara Academy winter uniform with beige blazer, red bow, pleated skirt, and black tights",
-          "tokens": [
-            "school_uniform",
-            "brown_jacket",
-            "white_shirt",
-            "red_tie",
-            "pleated_skirt",
-            "black_pantyhose"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "white_summer_sundress",
-          "name": "经典纯白夏日连衣裙",
-          "isDefault": false,
-          "prose": "wearing her iconic pure white sleeveless summer sundress with her red hair ribbon fluttering gently",
-          "tokens": [
-            "sundress",
-            "white_dress",
-            "sleeveless_dress",
-            "hair_ribbon",
-            "sandals"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "kitchen_apron_homewear",
-          "name": "居家粉色毛衣与围裙",
-          "isDefault": false,
-          "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
-          "tokens": [
-            "pink_sweater",
-            "apron",
-            "frilled_apron",
-            "long_skirt",
-            "casual_clothes"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "prose": "completely naked with zero clothes, voluptuous feminine body, exposed pink pussy, detailed vulva, heavy breasts with pink nipples, soft blushing skin",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "large_breasts",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "winter_outfit",
-          "name": "冬日大衣",
-          "isDefault": false,
-          "prose": "wearing a warm winter outfit with a long coat over a soft skirt, layered and warm for cold rainy days",
-          "tokens": [
-            "matou_sakura_winter_outfit",
-            "winter_coat",
-            "coat",
-            "winter_clothes",
-            "warm_clothes",
-            "long_sleeves",
-            "skirt",
-            "umbrella",
-            "pink_umbrella"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "kyudo_gi",
-          "name": "弓道服",
-          "isDefault": false,
-          "prose": "wearing a crisp white kyudo gi with a deep indigo hakama, the traditional Japanese archery uniform",
-          "tokens": [
-            "matou_sakura_kyudo_gi",
-            "kyudo_gi",
-            "kyudo_uniform",
-            "white_gi",
-            "hakama",
-            "indigo_hakama",
-            "japanese_clothes",
-            "traditional_clothes",
-            "long_sleeves"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -4886,291 +4646,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "beige_trench_boots",
-          "name": "米色风衣与长靴",
-          "isDefault": false,
-          "prose": "wearing a beige belted trench coat over a neat outfit paired with knee-high leather boots",
-          "tokens": [
-            "yor_forger_beige_trench_boots",
-            "trench_coat",
-            "beige_coat",
-            "long_coat",
-            "belted_coat",
-            "over_knee_boots",
-            "knee_boots",
-            "leather_boots",
-            "boots"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "reze_chainsaw",
-      "displayName": "蕾塞",
-      "originalName": "蕾塞",
-      "source": "Chainsaw Man",
-      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
-      "identityTokens": [
-        "reze (chainsaw man)",
-        "reze",
-        "1girl",
-        "solo",
-        "purple_hair",
-        "short_hair",
-        "green_eyes",
-        "choker",
-        "blush"
-      ],
-      "outfits": [
-        {
-          "id": "sleeveless_white_shirt",
-          "name": "经典无袖衬衫与黑领带",
-          "isDefault": true,
-          "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
-          "tokens": [
-            "sleeveless_shirt",
-            "white_shirt",
-            "black_tie",
-            "black_shorts",
-            "choker",
-            "sneakers"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "summer_swimsuit_night",
-          "name": "夜间学校泳池死库水",
-          "isDefault": false,
-          "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
-          "tokens": [
-            "school_swimsuit",
-            "one_piece_swimsuit",
-            "wet_skin",
-            "choker",
-            "bare_legs"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "cafe_apron_outfit",
-          "name": "咖啡厅打工围裙装",
-          "isDefault": false,
-          "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
-          "tokens": [
-            "cafe_uniform",
-            "apron",
-            "white_shirt",
-            "jeans",
-            "choker"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "oversized_jacket_casual",
-          "name": "宽大拉链外套私服",
-          "isDefault": false,
-          "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
-          "tokens": [
-            "oversized_jacket",
-            "bomber_jacket",
-            "tank_top",
-            "shorts",
-            "choker"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "choker",
-            "exposed_pussy",
-            "detailed_vulva",
-            "bare_breasts",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "fern_frieren",
-      "displayName": "菲伦",
-      "originalName": "菲伦",
-      "source": "Frieren: Beyond Journey's End",
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure with large breasts.",
-      "identityTokens": [
-        "fern (sousou no frieren)",
-        "fern",
-        "1girl",
-        "solo",
-        "long_hair",
-        "purple_hair",
-        "side_ponytail",
-        "half-updo",
-        "straight_bangs",
-        "long_sidelocks",
-        "purple_eyes",
-        "large_breasts"
-      ],
-      "outfits": [
-        {
-          "id": "journey_robe",
-          "name": "旅途魔法长袍",
-          "isDefault": true,
-          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
-          "tokens": [
-            "black_coat",
-            "white_dress",
-            "high_collar",
-            "long_sleeves",
-            "magic_staff",
-            "boots"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "winter_coat",
-          "name": "冬季厚风衣围巾装",
-          "isDefault": false,
-          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
-          "tokens": [
-            "winter_coat",
-            "overcoat",
-            "scarf",
-            "muffler",
-            "gloves",
-            "boots"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "town_casual",
-          "name": "城镇甜品便服",
-          "isDefault": false,
-          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
-          "tokens": [
-            "cardigan",
-            "long_skirt",
-            "blouse",
-            "ribbon"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "noble_ball_dress",
-          "name": "贵族舞会典雅深紫礼服",
-          "isDefault": false,
-          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
-          "tokens": [
-            "evening_dress",
-            "purple_dress",
-            "ball_gown",
-            "white_gloves",
-            "updo_hair"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "inn_morning_nightgown",
-          "name": "旅馆清晨纯棉睡裙",
-          "isDefault": false,
-          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
-          "tokens": [
-            "nightgown",
-            "white_nightgown",
-            "loose_dress",
-            "bare_shoulders",
-            "messy_hair"
-          ],
-          "isNsfw": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "prose": "completely naked with zero clothes, full body bare, natural slender-curvy body with soft smooth skin, large shapely breasts with pink nipples, exposed neat pink pussy, detailed vulva, narrow waist, pouting blush",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "large_breasts",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "slender_body",
-            "soft_skin",
-            "bare_feet"
-          ],
-          "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -5272,25 +4747,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -5395,25 +4851,6 @@
             "bare_feet"
           ],
           "isNsfw": true
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "私密全裸 / 纯粹形态",
-          "isDefault": false,
-          "isNsfw": true,
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
-            "bare_feet"
-          ]
         }
       ]
     },
@@ -5710,16 +5147,20 @@
         "1girl",
         "solo",
         "black_hair",
+        "short_hair",
+        "bob_cut",
+        "black_cat_ears",
+        "animal_ears",
+        "no_human_ears",
         "pink_eyes",
-        "cat_ears",
-        "hood",
-        "school_uniform",
+        "pointed_spiked_red_halo_with_cross_and_ring",
+        "jagged_red_halo",
         "trinity",
         "blue_archive",
         "sweets_club",
         "bass",
         "singer",
-        "black_tights",
+        "sweet_shy_expression",
         "blush"
       ],
       "outfits": [
@@ -5825,16 +5266,17 @@
         "1girl",
         "solo",
         "blonde_hair",
+        "champagne_blonde_hair",
+        "very_long_hair",
+        "sharp_ice_blue_eyes",
         "blue_eyes",
-        "maid",
-        "combat_suit",
-        "headset",
-        "thighhigh_boots",
+        "expressionless",
+        "deadpan_gaze",
+        "tactical_headset_with_boom_mic",
+        "blue_geometric_hud_halo",
         "millennium",
         "c&c",
-        "blue_archive",
-        "high_cut",
-        "armor"
+        "blue_archive"
       ],
       "outfits": [
         {
@@ -5931,18 +5373,17 @@
         "1girl",
         "solo",
         "black_hair",
-        "long_hair",
+        "very_long_straight_hair",
+        "hime_cut",
+        "neat_bangs",
+        "sharp_red_eyes",
         "red_eyes",
-        "school_uniform",
-        "high_neck_sweater",
-        "pleated_skirt",
-        "black_tights",
-        "high_heels",
+        "tall_slender_mature_elegance",
+        "cool_beauty",
+        "silver_metallic_halo_with_red_curved_lines",
         "millennium",
         "seminar",
-        "blue_archive",
-        "hairpin",
-        "watch"
+        "blue_archive"
       ],
       "outfits": [
         {

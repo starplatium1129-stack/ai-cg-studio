@@ -121,6 +121,23 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
     'adult gate must require the mature-content switch as well');
 });
 
+// 2026-08-29 产品运营审计 P0-3：adult 与 sampleRating 曾三套字段各管各的，
+// 出现过 adult=true 却标 All/R15 的矛盾条目（如 artoria_r18_nape）。这里把
+// 双向互锁固化为契约：adult=true ⇔ sampleRating='R18'，杜绝 R18 内容借
+// All/R15 徽章漏进全年龄展示流（红线 4 fail-closed 的内容侧互锁）。
+test('blueprints: adult ⇔ sampleRating=R18 interlock', function () {
+  blueprints.forEach(function (blueprint) {
+    if (blueprint.adult === true) {
+      assert.strictEqual(blueprint.sampleRating, 'R18',
+        blueprint.id + ': adult=true 必须 sampleRating=R18（当前 ' + JSON.stringify(blueprint.sampleRating) + '）');
+    }
+    if (blueprint.sampleRating === 'R18') {
+      assert.strictEqual(blueprint.adult, true,
+        blueprint.id + ': sampleRating=R18 必须 adult=true（缺 adult 门控）');
+    }
+  });
+});
+
 // 2026-08-23 场景库二次优化：用户验收标准契约化——
 // ① 每套服装至少被 1 个场景引用；② 每角色 ≥1 名场面(iconic) + ≥1 日常(daily)；
 // ③ 成人侧每角色 ≥1 特殊NSFW（coverageTags=special_nsfw）。

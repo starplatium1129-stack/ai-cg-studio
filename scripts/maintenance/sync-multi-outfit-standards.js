@@ -137,14 +137,24 @@ function buildMultiOutfitMatrix() {
       isNsfw: Boolean(o.name.includes('私密') || o.name.includes('泳装') || o.name.includes('浴') || o.id.includes('nsfw') || o.name.includes('裸'))
     }));
 
-    // 为每个热门角色增加标准的「私密全裸 / 纯粹形态」
-    formattedOutfits.push({
-      id: "nsfw_nude",
-      name: "私密全裸 / 纯粹形态",
-      isDefault: false,
-      isNsfw: true,
-      prose: `completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting`,
-      tokens: ["nude", "completely_naked", "uncensored", "breasts", "nipples", "navel", "bare_shoulders", "collarbone", "bare_legs", "bare_feet"]
+    // 2026-08-29 审计 P0-1：popular-characters 已含 nsfw_nude 时不得重复追加，
+    // 否则 standards/view 各多出一条重复形态（曾致 25 角色各 2 条 nsfw_nude）。
+    if (!formattedOutfits.some((o) => o.id === "nsfw_nude")) {
+      formattedOutfits.push({
+        id: "nsfw_nude",
+        name: "私密全裸 / 纯粹形态",
+        isDefault: false,
+        isNsfw: true,
+        prose: `completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting`,
+        tokens: ["nude", "completely_naked", "uncensored", "breasts", "nipples", "navel", "bare_shoulders", "collarbone", "bare_legs", "bare_feet"]
+      });
+    }
+
+    // 2026-08-29 审计 P0-1：幽灵形态（磁盘无任何参考图资产）不得写入 standards/view，
+    // 否则 check-ref-urls 断链门禁报红；形态仍保留在 popular-characters.json 供出图提示词使用。
+    const assetBackedOutfits = formattedOutfits.filter((o) => {
+      if (PERSPECTIVES.every((persp) => fs.existsSync(path.join(OUT_BASE, p.id, o.id, `${persp.id}.png`)))) return true;
+      return PERSPECTIVES.every((persp) => fs.existsSync(path.join(OUT_BASE, p.id, `${persp.id}.png`)));
     });
 
     allCharacters.push({
@@ -154,7 +164,7 @@ function buildMultiOutfitMatrix() {
       source: p.franchise,
       identityProse: p.identityProse,
       identityTokens: p.identityTokens || [],
-      outfits: formattedOutfits
+      outfits: assetBackedOutfits
     });
   }
 
