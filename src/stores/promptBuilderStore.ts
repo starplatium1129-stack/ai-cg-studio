@@ -73,28 +73,28 @@ export interface Selections {
 }
 
 export const SHOT_PROMPT: Record<string, string> = {
-  close: 'close_up', medium: 'medium_shot', wide: 'wide_shot',
-  pov: 'pov', low: 'low_angle', high: 'high_angle',
-  side: 'side_view', turn: 'looking_back', over: 'selfie', detail: 'close_up_detail',
+  close: 'close-up', medium: 'medium shot', wide: 'wide shot',
+  pov: 'pov', low: 'low angle', high: 'high angle',
+  side: 'side view', turn: 'looking back', over: 'selfie', detail: 'extreme close-up',
 }
 
 export const LIGHTING_PROMPT: Record<string, string> = {
-  golden: 'golden hour', window: 'window light', back: 'backlit',
-  moon: 'moonlight', lantern: 'lantern light', overcast: 'overcast',
+  golden: 'golden hour', window: 'window light', back: 'backlighting',
+  moon: 'moonlight', lantern: 'lantern', overcast: 'overcast',
 }
 
 export const COMPOSITION_PROMPT: Record<string, string> = {
   center: 'centered composition', rule3: 'rule of thirds',
-  left: 'left composition', right: 'right composition',
-  foreground: 'foreground framing', frame: 'framed composition', bywindow: 'by window',
+  left: 'off-center composition', right: 'off-center composition',
+  foreground: 'blurry foreground', frame: 'framed', bywindow: 'by window',
 }
 
 export const PROMPT_MAP_EMOTION: Record<string, string> = {
-  happy: 'bright_smile', shy: 'shy, blushing', miss: 'longing_look',
-  expect: 'expectant, bright_eyes', nervous: 'nervous, blushing', gentle: 'gentle_expression',
+  happy: 'happy', shy: 'shy, blush', miss: 'wistful',
+  expect: 'excited, sparkling eyes', nervous: 'nervous, blush', gentle: 'light smile',
   moved: 'teary_eyes', sad: 'sad', calm: 'calm', joyful: 'in_love, blush',
   relaxed: 'relaxed', serious: 'serious', love: 'in_love, blush',
-  sleepy: 'sleepy', spoiled: 'pouting', wronged: 'teary_eyes, pout',
+  sleepy: 'sleepy', spoiled: 'pout', wronged: 'teary_eyes, pout',
 }
 
 export const CHAR_PROMPT: Record<string, string> = {

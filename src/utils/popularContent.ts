@@ -499,13 +499,13 @@ export interface PopularPromptResult {
 }
 
 const SHOT_TOKENS: Record<string, string> = {
-  close: 'close_up', medium: 'medium_shot', wide: 'wide_shot',
-  pov: 'pov', low: 'low_angle', high: 'high_angle', side: 'side_view',
-  turn: 'looking_back', over: 'selfie', detail: 'close_up_detail',
+  close: 'close-up', medium: 'medium shot', wide: 'wide shot',
+  pov: 'pov', low: 'low angle', high: 'high angle', side: 'side view',
+  turn: 'looking back', over: 'selfie', detail: 'extreme close-up',
 }
 const LIGHTING_TOKENS: Record<string, string> = {
-  golden: 'golden_hour', window: 'window_light', back: 'backlit',
-  moon: 'moonlight', lantern: 'lantern_light', overcast: 'overcast',
+  golden: 'golden_hour', window: 'window_light', back: 'backlighting',
+  moon: 'moonlight', lantern: 'lantern', overcast: 'overcast',
 }
 /**
  * 氛围词强化（壁纸级第一）：每种光线决策除主光照 token 外追加一组通透感
@@ -513,16 +513,16 @@ const LIGHTING_TOKENS: Record<string, string> = {
  */
 const AMBIENCE_TOKENS: Record<string, string[]> = {
   golden: ['golden_hour', 'backlight', 'rim_light', 'volumetric_lighting', 'deep_depth_of_field', 'warm_lighting'],
-  back: ['backlit', 'rim_light', 'volumetric_lighting', 'silhouette', 'deep_depth_of_field'],
+  back: ['backlighting', 'rim_light', 'volumetric_lighting', 'silhouette', 'deep_depth_of_field'],
   window: ['window_light', 'soft_lighting', 'sunlight', 'volumetric_lighting', 'shadows'],
   moon: ['moonlight', 'night', 'cool_lighting', 'stars', 'deep_depth_of_field'],
-  lantern: ['lantern_light', 'candlelight', 'warm_lighting', 'volumetric_lighting', 'shadows'],
+  lantern: ['lantern', 'candlelight', 'warm_lighting', 'volumetric_lighting', 'shadows'],
   overcast: ['overcast', 'soft_diffused_light', 'cloudy', 'hazy'],
 }
 const COMPOSITION_TOKENS: Record<string, string> = {
   center: 'centered_composition', rule3: 'rule_of_thirds',
-  left: 'left_composition', right: 'right_composition',
-  foreground: 'foreground_framing', frame: 'framed_composition', bywindow: 'by_window',
+  left: 'off-center composition', right: 'off-center composition',
+  foreground: 'blurry foreground', frame: 'framed', bywindow: 'by_window',
 }
 
 const NENE_NATSUME_POLLUTION = /(?:ayachi_nene|shiki_natsume|nene_r18|natsume_r18)/i
