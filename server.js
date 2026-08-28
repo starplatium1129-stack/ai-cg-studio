@@ -411,6 +411,19 @@ function startGateway(options) {
     setTimeout(function () { process.exit(1); }, 200).unref();
   });
 
+  // 数据聚合产物自愈（产物自 2026-08-28 起不入库）：语义源分片与产物不一致时
+  // 启动即重建，免"改完数据忘跑 scenes:build"心智；源分片损坏或精简安装缺
+  // scripts/lib 时仅告警降级，沿用现有 data/ 产物，不阻塞网关启动。
+  try {
+    var ensuredData = require('./scripts/lib/ensure-data-build').ensureAll();
+    var rebuiltFaces = ['scenes', 'popular'].filter(function (face) { return ensuredData[face].rebuilt; });
+    if (rebuiltFaces.length) {
+      logger.info('[data-build] 已自愈重建聚合产物: ' + rebuiltFaces.join(' + '));
+    }
+  } catch (error) {
+    logger.warn('[data-build] 自愈构建失败，沿用现有 data/ 产物', error instanceof Error ? error.message : error);
+  }
+
   var server = gateway.app.listen(config.PORT, config.HOST, function () {    console.log('');
     console.log('  ══════════════════════════════════════════');
     console.log('  🔗 绫季绘境 联机网关已启动');

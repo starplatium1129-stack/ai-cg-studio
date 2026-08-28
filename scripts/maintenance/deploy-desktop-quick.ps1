@@ -46,7 +46,14 @@ if ($appProcs -or $sidecar) {
 # version number) ever serves against the old data, WebView2 caches the stale
 # body under the new URL with an immutable one-year header and never refreshes.
 # data-first guarantees a version number only ever points at matching content.
-Write-Host '[3/4] Copying data/dist/assets...' -ForegroundColor Cyan
+#
+# 聚合产物自 2026-08-28 起不入库（源 = data/scenes/ 与 data/popular/ 分片），
+# 且网关安装目录不含 scripts/（无法启动自愈），所以拷贝前必须先把产物构建新鲜。
+Write-Host '[3/4] Refreshing data products + copying data/dist/assets...' -ForegroundColor Cyan
+node (Join-Path $root 'scripts\maintenance\build-scenes.js')
+if ($LASTEXITCODE -ne 0) { throw 'build-scenes failed - aborting deploy' }
+node (Join-Path $root 'scripts\maintenance\build-popular.js')
+if ($LASTEXITCODE -ne 0) { throw 'build-popular failed - aborting deploy' }
 $map = @(
   @{ src = 'data';     dst = 'data' },
   @{ src = 'dist';     dst = 'dist' },

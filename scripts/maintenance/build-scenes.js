@@ -1,5 +1,9 @@
 /** Build the browser-facing data/scenes.json from canonical scene shards. */
-const { aggregatePath, aggregateIsCurrent, loadSceneShards, writeAggregate } = require('../lib/scene-store');
+const fs = require('fs');
+const {
+  aggregatePath, browserShardPath, corePath, indexPath,
+  aggregateIsCurrent, loadSceneShards, writeAggregate,
+} = require('../lib/scene-store');
 const { syncDataVersion } = require('../lib/data-version');
 const path = require('path');
 
@@ -10,10 +14,20 @@ const counts = sources.map(({ file, scenes: items }) => file + '=' + items.lengt
 
 if (check) {
   if (!aggregateIsCurrent(scenes)) {
-    console.error('Scene build is stale: run npm run scenes:build');
-    process.exit(1);
+    // 任一产物缺失（fresh clone / 部分丢失；产物自 2026-08-28 起不入库）→ 自愈重建
+    const anyMissing = [aggregatePath, browserShardPath.nene, browserShardPath.natsume,
+      browserShardPath.shared, corePath, indexPath].some((file) => !fs.existsSync(file));
+    if (anyMissing) {
+      writeAggregate(scenes);
+      console.log('Scene products missing: rebuilt ' + scenes.length + ' scenes (' + counts + ')');
+    } else {
+      // 产物齐全但与源不一致 = 改了源忘重建，保留报错守卫
+      console.error('Scene build is stale: run npm run scenes:build');
+      process.exit(1);
+    }
+  } else {
+    console.log('Scene build current: ' + scenes.length + ' scenes (' + counts + ')');
   }
-  console.log('Scene build current: ' + scenes.length + ' scenes (' + counts + ')');
 } else {
   writeAggregate(scenes);
   console.log('Built ' + aggregatePath + ': ' + scenes.length + ' scenes (' + counts + ')');

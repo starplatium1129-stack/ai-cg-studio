@@ -1,4 +1,5 @@
 /** Build the browser-facing data/popular-characters.json from per-franchise shards. */
+const fs = require('fs');
 const path = require('path');
 const { aggregatePath, aggregateIsCurrent, loadPopularShards, writePopularAggregate } = require('../lib/popular-store');
 const { syncDataVersion } = require('../lib/data-version');
@@ -10,10 +11,18 @@ const counts = sources.map(({ entry, characters: items }) => entry.file + '=' + 
 
 if (check) {
   if (!aggregateIsCurrent()) {
-    console.error('Popular build is stale: run npm run popular:build');
-    process.exit(1);
+    if (!fs.existsSync(aggregatePath)) {
+      // 产物从未构建（fresh clone；产物自 2026-08-28 起不入库）：自愈构建而非报错
+      writePopularAggregate();
+      console.log('Popular products missing: rebuilt ' + characters.length + ' characters (' + counts + ')');
+    } else {
+      // 已构建但与源不一致 = 改了源忘重建，保留报错守卫
+      console.error('Popular build is stale: run npm run popular:build');
+      process.exit(1);
+    }
+  } else {
+    console.log('Popular build current: ' + characters.length + ' characters (' + counts + ')');
   }
-  console.log('Popular build current: ' + characters.length + ' characters (' + counts + ')');
 } else {
   writePopularAggregate();
   console.log('Built ' + aggregatePath + ': ' + characters.length + ' characters (' + counts + ')');

@@ -222,12 +222,16 @@ function aggregateIsCurrent(scenes) {
   if (fs.readFileSync(aggregatePath, 'utf8') !== jsonText(sorted)) return false;
   const expected = groupBrowserShards(sorted);
   for (const char of Object.keys(expected)) {
+    // 产物自 2026-08-28 起不入库，部分缺失（fresh clone/半删除）一律视为"非最新"，
+    // 交给自愈重建，而不是让调用方在读文件时崩掉
+    if (!fs.existsSync(browserShardPath[char])) return false;
     if (fs.readFileSync(browserShardPath[char], 'utf8') !== jsonText(expected[char])) return false;
   }
   // 校验 core / index 时先写入内存版本再比较磁盘，避免 --check 污染文件
   const byId = new Map(sorted.map((scene) => [scene.id, scene]));
   const curation = readCuration();
   const coreIds = tierIds(curation, 'personaCoreSceneIds').filter((id) => byId.has(id));
+  if (!fs.existsSync(corePath)) return false;
   if (fs.readFileSync(corePath, 'utf8') !== jsonText(coreIds.map((id) => byId.get(id)))) return false;
   const index = {
     version: 1,
@@ -240,6 +244,7 @@ function aggregateIsCurrent(scenes) {
     tiers: { core: coreIds },
     orderedIds: sorted.map((scene) => scene.id)
   };
+  if (!fs.existsSync(indexPath)) return false;
   return fs.readFileSync(indexPath, 'utf8') === jsonText(index);
 }
 

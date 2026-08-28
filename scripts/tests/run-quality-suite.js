@@ -170,6 +170,19 @@ function main(argv) {
   const keepGoing = argv.includes('--all');
   const files = QUALITY_TEST_SUITES[suiteName];
   const entries = files.map((file) => ({ name: file, file: path.join(root, 'scripts', 'tests', file) }));
+  if (suiteName === 'unit' || suiteName === 'contract') {
+    // 数据聚合产物不入库（2026-08-28）：unit（test-prompt-corpus 直读 scenes.json）
+    // 与 contract 套件都直接读取生成文件，fresh clone 先补齐缺失产物。
+    // onlyIfMissing：陈旧态留给 --check 门禁报红，不在测试里静默自愈。
+    try {
+      const ensured = require('../lib/ensure-data-build').ensureAll({ onlyIfMissing: true });
+      const rebuilt = ['scenes', 'popular'].filter((face) => ensured[face].rebuilt);
+      if (rebuilt.length) console.log(`↻ [data-build] 产物缺失，已构建: ${rebuilt.join(' + ')}`);
+    } catch (error) {
+      console.error(`✘ [data-build] 产物自愈构建失败: ${error.message}`);
+      return 1;
+    }
+  }
   if (suiteName === 'unit') return runUnitSuite({ verbose });
   return runSuiteFiles(entries, {
     label: suiteName,

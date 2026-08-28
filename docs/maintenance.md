@@ -32,8 +32,8 @@
 | `data/scenes/manifest.json` | 声明分片分组、顺序与 `batchSize`；批次文件由 `writeSceneShards` 自动维护，一般无需手改 | 新增角色系列时编辑 |
 | `data/popular/*.json` | 热门角色唯一数据源，每个 franchise（系列）一个文件 | 是，按系列文件直接编辑 |
 | `data/popular/manifest.json` | 热门角色分片清单：声明系列文件与合并顺序（首次出现顺序） | 新增系列时编辑（`popular:split` 会自动补） |
-| `data/popular-characters.json` | 供静态网页读取的热门角色构建产物，由 `npm run popular:build` 从分片生成 | 否 |
-| `data/scenes.json` | 供静态网页读取的构建产物 | 否 |
+| `data/popular-characters.json` | 供静态网页读取的热门角色构建产物，由 `npm run popular:build` 从分片生成；**不入库**，网关启动/维护脚本自愈重建 | 否 |
+| `data/scenes.json`、`data/scenes-nene/natsume/shared.json`、`data/scenes-core.json`、`data/scenes-index.json` | 供静态网页读取的构建产物；**不入库**（2026-08-28 起），由 `scripts/lib/ensure-data-build.js` 在网关启动/门禁缺失时自愈重建 | 否 |
 | `data/character-reference-standards.json` | 角色 × 多服装 4 视角参考标准的手写权威源；结构契约 `scripts/contracts/character-reference-standards.schema.json`（ajv，`test:contract` 阶段校验） | 是，改后跑 `node scripts/tests/test-character-reference-contract.js` |
 | `data/character-reference-view.json` | 前端懒加载的参考档案视图；视角字段必须逐字段镜像 standards，由同一契约测试交叉校验（漂移即红） | 否，改 standards 后同步此文件 |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
@@ -268,6 +268,7 @@ npm run validate
 ## 维护约束
 
 - 不直接编辑 `data/scenes.json`、`data/popular-characters.json`；它们是生成文件。
+- 聚合产物不入库（2026-08-28 起，`.gitignore` 收口）：Git 只版本控制语义源（`data/scenes/`、`data/popular/`、`curation.json`）。产物缺失/陈旧由 `scripts/lib/ensure-data-build.js` 自愈——网关启动陈旧即重建；`scenes:build --check` 仅在产物从未构建时自建、已构建但陈旧仍报红（保留"改源忘重建"守卫）。
 - 场景新增/批量改动走 `scene-store.js` 写回（自动按 50/批维护 `data/scenes/*.N.json`），热门角色新增/改动直接编辑对应 `data/popular/<系列>.json`，再运行 `npm run popular:build`（或 `popular:import` 从聚合回写）。
 - 新增场景：往所属系列批次文件追加（或走场景管理页面），跑 `npm run scenes:normalize` 与 `npm run validate`。
 - 新增热门角色：编辑其系列文件（`data/popular/` 下），跑 `npm run popular:build` 与 `npm run validate`；新系列自动出现在分片，无需手改 manifest。

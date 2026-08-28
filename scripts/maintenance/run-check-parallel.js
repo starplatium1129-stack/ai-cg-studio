@@ -5,6 +5,8 @@
  *
  * 取代原 `a && b && c ...` 13 步串行链。所有步骤都是只读校验（--check /
  * validate 模式不落盘），彼此无数据依赖，可安全并发。
+ * 例外（2026-08-28）：数据产物不入库后，池启动前的 ensureAll(onlyIfMissing)
+ * 会在产物缺失（fresh clone）时落盘构建——这只发生在本来就没有产物的机器上。
  *
  * 语义与旧链完全一致：任一步骤非零退出 → 整体失败并列出该步骤输出尾部；
  * 全部通过 → 打印每步耗时汇总。
@@ -27,12 +29,18 @@ const STEPS = [
   ['colors', 'node scripts/maintenance/lint-colors.js --check'],
   ['animations', 'node scripts/maintenance/lint-animations.js --check'],
   ['scenes:build', 'node scripts/maintenance/build-scenes.js --check'],
+  ['popular:build', 'node scripts/maintenance/build-popular.js --check'],
   ['scenes:optimize', 'node scripts/maintenance/optimize-scenes.js --check'],
   ['scenes:ratings', 'node scripts/maintenance/classify-scene-ratings.js --check'],
   ['scenes:validate', 'node scripts/maintenance/validate-scenes.js'],
   ['content-contracts', 'node scripts/maintenance/validate-content-contracts.js'],
   ['design:lint', 'npm run design:lint'],
 ];
+
+// 数据聚合产物自 2026-08-28 起不入库：并发池启动前先补齐缺失产物（fresh clone），
+// 否则 scenes:optimize / content-contracts 等读取方会与自愈构建产生缺文件竞态。
+// 已构建但陈旧的状态不在这一步补 —— 交给下方 build-scenes/popular --check 报红守卫。
+require('../lib/ensure-data-build').ensureAll({ onlyIfMissing: true });
 
 if (process.argv.includes('--list')) {
   for (const [name, cmd] of STEPS) console.log(`${name.padEnd(20)} ${cmd}`);

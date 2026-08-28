@@ -96,4 +96,10 @@ function main() {
     ' (brotli 比 gzip 再省 ' + (100 - (brTotal / gzTotal) * 100).toFixed(0) + '%)');
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+/** 供 scripts/lib/ensure-data-build.js 复用：重建数据产物后刷新对应预压文件，
+ *  避免 precompressed 中间件按文件名直发陈旧 .br/.gz。 */
+module.exports = { compress };

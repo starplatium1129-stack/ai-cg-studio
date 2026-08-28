@@ -86,6 +86,7 @@ const AREA_STEPS = {
     return runSuiteFiles(
       [
         { name: 'build-scenes --check', file: path.join(root, 'scripts', 'maintenance', 'build-scenes.js'), args: ['--check'] },
+        { name: 'popular:build --check', file: path.join(root, 'scripts', 'maintenance', 'build-popular.js'), args: ['--check'] },
         { name: 'validate-content-contracts', file: path.join(root, 'scripts', 'maintenance', 'validate-content-contracts.js') },
         { name: 'test-scene-shard-integrity', file: path.join(testsDir, 'test-scene-shard-integrity.js') },
         { name: 'test-popular-shard-integrity', file: path.join(testsDir, 'test-popular-shard-integrity.js') },
