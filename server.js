@@ -400,12 +400,15 @@ function startGateway(options) {
   var config = gateway.config;
   var logger = gateway.logger;
 
-  // 兜底：未捕获异常不应该带走整个网关。
+  // 兜底：未处理 Promise 拒绝记录后继续；未捕获异常记录后必须退出——
+  // V8 状态可能已不一致（句柄泄漏/半写），带病运行比重启更危险，
+  // 交给控制面板/看门狗重新拉起。延迟一拍让 fire-and-forget 日志先落盘。
   process.on('unhandledRejection', function (reason) {
     logger.error('未处理的 Promise 拒绝', reason instanceof Error ? reason : String(reason));
   });
   process.on('uncaughtException', function (error) {
-    logger.error('未捕获异常', error);
+    logger.error('未捕获异常，网关即将退出', error);
+    setTimeout(function () { process.exit(1); }, 200).unref();
   });
 
   var server = gateway.app.listen(config.PORT, config.HOST, function () {    console.log('');
