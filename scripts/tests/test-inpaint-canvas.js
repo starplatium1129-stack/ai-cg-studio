@@ -28,7 +28,10 @@ test('AnimaInpaintModal delegates sizing to the shared canvas helper', function 
 });
 
 test('hires on painted inpaint composites before upscaling', function () {
-  var routing = fs.readFileSync(path.join(__dirname, '..', '..', 'routes', 'anima.js'), 'utf8');
+  // 2026-08-27 路由八模块化拆分：工作流编排迁入 routes/anima/workflows.js，
+  // 契约哨兵需同时覆盖编排层入口与工作流构建体。
+  var routing = fs.readFileSync(path.join(__dirname, '..', '..', 'routes', 'anima.js'), 'utf8')
+    + fs.readFileSync(path.join(__dirname, '..', '..', 'routes', 'anima', 'workflows.js'), 'utf8');
   // maskImage 分支已迁移到 30 号合成节点；hires 应在 30 之后再放大
   assert.ok(routing.includes("'30'") && routing.includes('ImageCompositeMasked'));
   assert.ok(routing.includes('input.maskImage') && routing.includes('if (isHires)'));

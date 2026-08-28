@@ -47,7 +47,9 @@ const COMPOSITION_PROMPT = {
   foreground:'foreground_framing', frame:'framed_composition', bywindow:'by_window',
 };
 
-const ORIENTATIONS = new Set(['768x1344', '1344x768', '896x896', '832x1216', '1344x896']);
+// 1216x832 为 sc234（月夜主卧魔女契约）的字节级定稿尺寸（prompt-pinned-scenes.json，
+// AGENTS.md 红线 #8 禁改 recommendedSize），标准 SDXL 横幅桶，纳入合法白名单。
+const ORIENTATIONS = new Set(['768x1344', '1344x768', '896x896', '832x1216', '1344x896', '1216x832']);
 const QUALITY_RE = /^(?:masterpiece|best_quality|amazing_quality|very_aesthetic|absurdres|newest|highres|highly_detailed)$/i;
 const SCORE_RE = /^score_\d+$/i;
 

@@ -234,12 +234,12 @@ test('translate caller abort maps to aborted and passes the caller signal throug
 
 test('phase 2 callers do not keep ordinary JSON endpoint fetches, while TTS and sdapi remain allowed', () => {
   const scopedFiles = [
-    'src/composables/useChatProvider.ts',
+    'src/composables/chat/useChatProvider.ts',
     'src/components/ChatApiSettings.vue',
     'src/components/VoiceStudio.vue',
     'src/composables/useVoice.ts',
     'src/composables/useLive2D.ts',
-    'src/composables/useSDGenerate.ts',
+    'src/composables/generation/useSDGenerate.ts',
   ];
   const ordinaryEndpoint = /fetch\s*\(\s*['"]\/api\/(?:chat-status|chat-provider|tts-status|voice\/prepare|translate|live2d-status|sd-status)/;
   for (const relativePath of scopedFiles) {
@@ -617,10 +617,10 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
     'src/composables/useControlStatus.ts',
     'src/stores/trainingStore.ts',
     'src/views/SceneManagerView.vue',
-    'src/composables/useSceneShowcaseUpload.ts',
+    'src/composables/scene/useSceneShowcaseUpload.ts',
     'src/views/HomeView.vue',
     'src/views/CompanionView.vue',
-    'src/composables/useCharacterRoomSession.ts',
+    'src/composables/chat/useCharacterRoomSession.ts',
     // 2026-08-22 陪伴页行为/剪贴板/语音簇自 CompanionView 下沉，随迁禁裸 fetch 清单。
     'src/composables/useCompanionBehaviorRuntime.ts',
     'src/composables/useCompanionClipboardImport.ts',
@@ -639,7 +639,7 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
   assert.match(companionBehavior, /status\.ok === false/);
   assert.match(companionBehavior, /alive = false\s+eventPollController\?\.abort\(\)/);
 
-  const roomSession = fs.readFileSync(path.join(root, 'src/composables/useCharacterRoomSession.ts'), 'utf8');
+  const roomSession = fs.readFileSync(path.join(root, 'src/composables/chat/useCharacterRoomSession.ts'), 'utf8');
   assert.match(roomSession, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);
   assert.match(roomSession, /controlApi\.switchMode\('chat', \{ signal: controller\.signal \}\)/);
   assert.match(roomSession, /roomPollRequest\?\.abort\(\)/);

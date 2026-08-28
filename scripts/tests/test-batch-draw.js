@@ -9,7 +9,7 @@
 
 const assert = require('assert/strict');
 const { test } = require('node:test');
-const { useBatchDraw } = require('../../src/composables/useBatchDraw.ts');
+const { useBatchDraw } = require('../../src/composables/generation/useBatchDraw.ts');
 
 function scenes(n) {
   const list = [];

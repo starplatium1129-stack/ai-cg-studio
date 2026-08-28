@@ -7,12 +7,42 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+
+// useAnimaSession（generation/ 子模块）带 @/ 别名的值导入（组合式拆分随迁），
+// 原生 node require 无法解析；挂最小同步 resolve 钩子映射 @/* → src/*（含 .ts / index.ts）。
+// 注意：.ts 模块因 import 语法探测走 ESM 管线，必须用 registerHooks 而非 _resolveFilename。
+const { registerHooks } = require('node:module');
+const nodePath = require('node:path');
+const { pathToFileURL } = require('node:url');
+const aliasSrcRoot = nodePath.resolve(__dirname, '..', '..', 'src');
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (specifier.startsWith('@/')) {
+      const target = nodePath.join(aliasSrcRoot, specifier.slice(2));
+      for (const candidate of [target + '.ts', nodePath.join(target, 'index.ts')]) {
+        try {
+          return nextResolve(pathToFileURL(candidate).href, context);
+        } catch {
+          // 继续尝试下一个候选形态
+        }
+      }
+    }
+    return nextResolve(specifier, context);
+  },
+});
+
 const {
   useAnimaSession,
   animaRequestPayload,
   closestSupportedSize,
   resolveInpaintRequestBinding,
-} = require('../../src/composables/useAnimaSession.ts');
+} = require('../../src/composables/generation/useAnimaSession.ts');
+
+// isLocalStudioHost 默认读取 window.location（浏览器全局）；node:test 下补最小桩，
+// 语义取「本机直连」：hostname 命中 LOCAL_HOSTNAMES 即提前返回，不会触碰其余字段。
+if (typeof globalThis.window === 'undefined') {
+  globalThis.window = { location: { hostname: '127.0.0.1', protocol: 'http:' } };
+}
 
 // node 没有 URL.createObjectURL / revokeObjectURL，成功路径需要桩
 URL.createObjectURL = URL.createObjectURL || (() => 'blob:mock');
@@ -99,11 +129,17 @@ test('resolveInpaintRequestBinding keeps character LoRA coherent and selects no-
 test('animaRequestPayload 按白名单收敛：空 lora / styleLora / seed 不发送', () => {
   assert.deepEqual(
     animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', loraId: null, loraStrength: null, width: 832, height: 1216, steps: 24, cfg: 3, character: null }),
-    { prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null },
+    { prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null, adultEnabled: true },
   );
   assert.deepEqual(
     animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', loraId: 'L', loraStrength: 0.5, styleLoraId: 'S', width: 832, height: 1216, steps: 24, cfg: 3, seed: 42, character: null }),
-    { prompt: 'x', negative: 'y', modelId: 'm', loraId: 'L', loraStrength: 0.5, styleLoraId: 'S', width: 832, height: 1216, steps: 24, cfg: 3, seed: 42, character: null },
+    { prompt: 'x', negative: 'y', modelId: 'm', loraId: 'L', loraStrength: 0.5, styleLoraId: 'S', width: 832, height: 1216, steps: 24, cfg: 3, seed: 42, character: null, adultEnabled: true },
+  );
+  // 成人内容传输层授权（2026-08-22 双门控）：请求显式 false 时载荷省略该字段
+  //（服务端默认未授权，fail-closed），本机判定不得覆盖调用方意图。
+  assert.deepEqual(
+    animaRequestPayload({ prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null, adultEnabled: false }),
+    { prompt: 'x', negative: 'y', modelId: 'm', width: 832, height: 1216, steps: 24, cfg: 3, character: null },
   );
 });
 
