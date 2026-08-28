@@ -39,11 +39,21 @@ function createLogger(options) {
     var cutoffKey = dateKey(cutoff);
     try {
       fs.readdirSync(dir).forEach(function (name) {
-        var match = /^([a-zA-Z0-9_-]+)-(\d{8})\.log$/.exec(name);
-        if (!match || match[1] !== prefix) return;
-        if (match[2] < cutoffKey) {
-          try { fs.unlinkSync(path.join(dir, name)); } catch (error) {}
+        if (!/\.log$/i.test(name)) return;
+        var full = path.join(dir, name);
+        // 2026-08-28 审计 P1-11：此前只回收本 prefix 的按天日志，comfyui/control/
+        // translate 等旁路日志与收口前的旧格式残留永远无人清理。改为双判据：
+        // - 任意 <name>-YYYYMMDD.log 按文件名日期判过期（自己的旧按天日志不变）；
+        // - 无日期后缀的旁路日志按 mtime 判过期（活跃文件不受影响）。
+        var dated = /-(\d{8})\.log$/i.exec(name);
+        if (dated) {
+          if (dated[1] >= cutoffKey) return;
+        } else {
+          var mtime;
+          try { mtime = fs.statSync(full).mtime; } catch (error) { return; }
+          if (mtime >= cutoff) return;
         }
+        try { fs.unlinkSync(full); } catch (error) {}
       });
     } catch (error) {}
   }
