@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var zlib = require('zlib');
 var expectedDataVersion = require('../lib/data-version').expectedDataVersion;
 
 var ROOT = path.resolve(__dirname, '..', '..');
@@ -234,6 +235,53 @@ function validatePopularContent() {
   return errors;
 }
 
+/**
+ * precompress 产物一致性校验（2026-08-28 工程审计 P0-4）。
+ *
+ * 服务端按文件名直发 .gz/.br（precompressed 中间件），此前没有任何机制
+ * 校验压缩产物与源 json 内容一致：单独改源 json 而忘记重跑 precompress 时，
+ * 服务端会静默发送过期压缩数据且无任何报错。这里对 data/ 下每个压缩产物
+ * 解压后与源文件逐字节比对；孤儿产物（源文件已不存在）一并报红。
+ *
+ * 源文件存在但没有压缩产物不视为错误：fresh clone 自愈构建只重建 json，
+ * .br/.gz 由 build/precompress 流程按需生成（与 precompress --check 的
+ * 存在性检查互补，那边管缺产物，这边管产物过期）。
+ */
+function checkPrecompressArtifacts() {
+  var errors = [];
+  var dataDir = path.join(ROOT, 'data');
+  if (!fs.existsSync(dataDir)) return errors;
+  function walk(dir) {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(function (entry) {
+      var full = path.join(dir, entry.name);
+      if (entry.isDirectory()) { walk(full); return; }
+      var packed = /^(.*)\.(br|gz)$/.exec(entry.name);
+      if (!packed) return;
+      var source = path.join(dir, packed[1]);
+      var relative = path.relative(ROOT, full);
+      if (!fs.existsSync(source)) {
+        errors.push('orphan precompressed artifact: ' + relative + ' (源 json 已不存在，删除该产物或重跑 npm run precompress)');
+        return;
+      }
+      var raw = fs.readFileSync(source);
+      var decoded;
+      try {
+        decoded = packed[2] === 'br'
+          ? zlib.brotliDecompressSync(fs.readFileSync(full))
+          : zlib.gunzipSync(fs.readFileSync(full));
+      } catch (error) {
+        errors.push(relative + ' cannot be decompressed: ' + error.message);
+        return;
+      }
+      if (Buffer.compare(raw, decoded) !== 0) {
+        errors.push(relative + ' 与源文件内容不一致（改过源 json 后必须重跑 npm run precompress，否则服务端会静默发送过期压缩数据）');
+      }
+    });
+  }
+  walk(dataDir);
+  return errors;
+}
+
 function main() {
   var data = {
     characters:readJson('data/characters.json'),
@@ -247,8 +295,8 @@ function main() {
   });
   errors = errors.concat(validateSceneShards(data));
   errors = errors.concat(validatePopularContent());
-  errors = errors.concat(checkDataVersion());
-  if (errors.length) {
+  errors = errors.concat(checkPrecompressArtifacts());
+  errors = errors.concat(checkDataVersion());  if (errors.length) {
     console.error(errors.map(function (error) { return '  - ' + error; }).join('\n'));
     process.exitCode = 1;
     return;
