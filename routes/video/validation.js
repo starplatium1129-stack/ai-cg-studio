@@ -16,6 +16,7 @@ var errors = require('./errors');
 var constants = require('./constants');
 var prose = require('./prose');
 var media = require('./media');
+var security = require('../../server/security');
 
 var serviceError = errors.serviceError;
 var isPlainObject = errors.isPlainObject;
@@ -58,25 +59,33 @@ var ALLOWED_INPUT_KEYS = new Set([
 ]);
 
 var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
-function assertAdultAllowed(body) {
+function assertAdultAllowed(body, isLocal) {
   var prompt = String(body.prompt || '');
   var wantsAdult = ADULT_PROMPT_RE.test(prompt);
   if (!wantsAdult) return;
   // 视频侧成人蓝图当前 fail-closed 拒绝（storyboard.js ADULT_BLUEPRINT_UNSUPPORTED），
   // 此处仅对显式 adult prompt 做二次门控，避免前端绕过。
+  // 服务端锚点（2026-08-28）：远程/隧道访问默认拒绝成人参数，请求体自报
+  // adultEnabled 不再单独构成授权；AICS_ADULT_REMOTE=1 显式开启后按原门控放行。
+  if (isLocal === false && !security.adultRemoteEnabled()) {
+    throw serviceError(403, 'ADULT_REMOTE_NOT_ALLOWED', '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。');
+  }
   if (body.adultEnabled !== true) {
     throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
   }
 }
 
-function validateInput(body, config) {
+// isLocal 缺省视为本机：内部重放路径（分镜规划/批量重试重校验）不持 req，
+// 成人蓝图在 storyboard 层已 fail-closed，不受该缺省影响。
+function validateInput(body, config, options) {
+  var isLocal = !options || options.isLocal !== false;
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) {
     if (!ALLOWED_INPUT_KEYS.has(key)) {
       throw serviceError(400, 'UNKNOWN_PARAMETER', '不支持的参数：' + key);
     }
   });
-  assertAdultAllowed(body);
+  assertAdultAllowed(body, isLocal);
 
   ['prompt', 'modelId', 'aspectRatio', 'duration', 'camera', 'motion'].forEach(function (key) {
     if (!hasOwn(body, key)) throw serviceError(400, 'MISSING_PARAMETER', '缺少参数：' + key);

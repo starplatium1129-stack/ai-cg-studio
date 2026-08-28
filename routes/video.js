@@ -554,7 +554,7 @@ function createVideoRouter(config, dependencies) {
   router.post('/api/video/jobs', jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
     try { await ensureT8Probe(config); } catch (error) { /* 探测失败沿用旧值，提交照常 */ }
     var input;
-    try { input = validateInput(req.body, config); } catch (error) {
+    try { input = validateInput(req.body, config, { isLocal: security.isDirectLocalRequest(req) }); } catch (error) {
       return envelope.fail(res, error.status || 400, error.message, {
         code:error.code,
         detail:error.detail,

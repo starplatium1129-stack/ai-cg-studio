@@ -39,9 +39,13 @@ function assertAdultAllowed(req, body) {
   var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
   if (!wantsAdult) return;
   // 本机个人使用（127.0.0.1 直连，含 Tauri 桌面端）直接放行，不再卡角色白名单与 adultEnabled
-  // 隧道分享等非回环请求仍走双门校验
   var hasLocalBypass = req && security.isDirectLocalRequest(req);
   if (hasLocalBypass) return;
+  // 服务端锚点（2026-08-28）：远程/隧道访问默认拒绝成人参数，请求体自报
+  // adultEnabled 不再单独构成授权；AICS_ADULT_REMOTE=1 显式开启后仍走双门校验。
+  if (!security.adultRemoteEnabled()) {
+    throw serviceError(403, 'ADULT_REMOTE_NOT_ALLOWED', '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。');
+  }
   var targetChar = String(body.character || '').toLowerCase();
   // 无 LoRA 模式（popular）下 character 可能为空，此时按 prompt 中的 r18 锚点推断角色
   if (!targetChar && /nene_r18/i.test(prompt)) targetChar = 'nene';

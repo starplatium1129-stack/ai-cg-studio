@@ -47,6 +47,11 @@ function assertAdultAllowed(req, body) {
   if (!wantsAdult) return;
   var hasLocalBypass = req && security.isDirectLocalRequest(req);
   if (hasLocalBypass) return;
+  // 服务端锚点（2026-08-28）：远程/隧道访问默认拒绝成人参数，请求体自报
+  // adultEnabled 不再单独构成授权；AICS_ADULT_REMOTE=1 显式开启后仍走双门校验。
+  if (!security.adultRemoteEnabled()) {
+    throw error(403, 'ADULT_REMOTE_NOT_ALLOWED', '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。');
+  }
   var targetChar = String(body.character || '').toLowerCase();
   if (!targetChar && body.loras && Array.isArray(body.loras)) {
     var hasNene = body.loras.some(function (l) { return String(l.id || '').toUpperCase() === 'L_NENE_V18_WD14'; });

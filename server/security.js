@@ -17,6 +17,15 @@ function isDirectLocalRequest(req) {
   return loopback && !forwarded;
 }
 
+// 成人内容服务端锚点（2026-08-28）：本机直连默认授权（AGENTS.md 红线 #4，
+// 本机 adult 默认开启）；隧道/远程访问默认拒绝成人参数 —— 请求体自报
+// adultEnabled 不再单独构成授权。分享链接给朋友的场景需在服务端显式
+// AICS_ADULT_REMOTE=1 开启后重启网关；桌面端 /api/desktop-tools 路径本身
+// 已被 localOnly + chat.js 双防线覆盖，不依赖此开关。
+function adultRemoteEnabled() {
+  return process.env.AICS_ADULT_REMOTE === '1';
+}
+
 // 唯一的 localOnly 中间件。routes/control.js 与 routes/maintenance.js 都必须用这一份 ——
 // 曾经各自复制过一份，其中 control.js 的版本只比对 req.ip，隧道一开就全部失效。
 function localOnly(req, res, next) {
@@ -195,6 +204,7 @@ function tokenAuth(token) {
 module.exports = {
   tokenMatches:tokenMatches,
   isDirectLocalRequest:isDirectLocalRequest,
+  adultRemoteEnabled:adultRemoteEnabled,
   localOnly:localOnly,
   safeLocalUrl:safeLocalUrl,
   hostAllowed:hostAllowed,

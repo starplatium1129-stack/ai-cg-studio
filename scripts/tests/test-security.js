@@ -192,3 +192,43 @@ test('CSP：按路由收紧，非聊天页无 unsafe-eval，字体本地化后�
   assert.ok(headerScript.includes("'self'"));
   assert.ok(!headerScript.includes("'unsafe-inline'"));
 });
+
+test('adultRemoteEnabled：服务端成人传输锚点开关', () => {
+  const previous = process.env.AICS_ADULT_REMOTE;
+  try {
+    delete process.env.AICS_ADULT_REMOTE;
+    assert.equal(security.adultRemoteEnabled(), false, '缺省必须 fail-closed：远程不放开');
+    process.env.AICS_ADULT_REMOTE = '0';
+    assert.equal(security.adultRemoteEnabled(), false);
+    process.env.AICS_ADULT_REMOTE = '1';
+    assert.equal(security.adultRemoteEnabled(), true);
+  } finally {
+    if (previous === undefined) delete process.env.AICS_ADULT_REMOTE;
+    else process.env.AICS_ADULT_REMOTE = previous;
+  }
+});
+
+test('adult 传输锚点：本机放行、远程默认拒绝、显式开启后恢复双门校验', () => {
+  // routes/anima/validation.js 导出同一套门控实现（generation.js 为未导出孪生实现）
+  const { assertAdultAllowed } = require('../../routes/anima/validation');
+  const adultBody = { prompt: 'nene_r18, completely_naked, solo', character: 'nene', adultEnabled: true };
+  // 本机直连：维持原放行语义（红线 #4 本机默认开启，不卡 body 标志）
+  assert.equal(assertAdultAllowed(mockReq(), adultBody), undefined);
+  // 远程 + 缺省（AICS_ADULT_REMOTE 未开）：即使 body 自报 adultEnabled:true 也拒绝
+  const remoteReq = mockReq({ socket: { remoteAddress: '8.8.8.8' } });
+  assert.throws(() => assertAdultAllowed(remoteReq, adultBody), (err) => err.code === 'ADULT_REMOTE_NOT_ALLOWED');
+  // 远程 + 服务端显式开启：回到原有双门校验路径（body 标志齐备则放行）
+  const previous = process.env.AICS_ADULT_REMOTE;
+  process.env.AICS_ADULT_REMOTE = '1';
+  try {
+    assert.equal(assertAdultAllowed(remoteReq, adultBody), undefined);
+    assert.throws(
+      () => assertAdultAllowed(remoteReq, { ...adultBody, adultEnabled: false }),
+      (err) => err.code === 'ADULT_NOT_ENABLED',
+      '显式开启后仍要求 body.adultEnabled === true',
+    );
+  } finally {
+    if (previous === undefined) delete process.env.AICS_ADULT_REMOTE;
+    else process.env.AICS_ADULT_REMOTE = previous;
+  }
+});
