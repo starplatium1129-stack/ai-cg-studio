@@ -20,7 +20,7 @@ const PACKAGING_INPUTS = [
   'server',
   'routes',
   'services',
-  'scripts/runtime',
+  'scripts/lib',
   'scripts/maintenance',
   'data',
   'dist',
