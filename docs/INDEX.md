@@ -27,6 +27,7 @@
 | **设计系统契约** | `DESIGN.md` (根目录) | 界面视觉规范、色彩 Tokens、Typography、组件规范与布局标准。 |
 | **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（43 热门角色/45 角色库/944 视角参考库、38 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
 | **维护操作指南** | [`maintenance.md`](maintenance.md) | 场景维护、数据验证、多模型同步、备份恢复等日常维护脚本与契约。 |
+| **产品与运营全维审计** | [`product-operations-audit-2026-08-29.md`](product-operations-audit-2026-08-29.md) | 产品完整度/UX/数据内容/性能/运维/成本/AI 协作七维审计（综合 7.1）与 P0-P2 行动清单；与同日工程/设计审计互补。 |
 | **视觉与架构路线** | [`visual-architecture-roadmap.md`](visual-architecture-roadmap.md) | ⚠️ 2026-08-28 过期标注：浅色主题已下线（锁定深色），文中双主题结论不再适用；仅存历史演进记录。 |
 | **桌宠语音演出路线** | [`companion-voice-roadmap.md`](companion-voice-roadmap.md) | Desktop Companion 语音交互、情绪标签驱动与状态机演进规划。 |
 | **视频生成路线** | [`video-generation-roadmap.md`](video-generation-roadmap.md) | ⚠️ 2026-08-28 过期标注：权重已装、I2V/首尾帧/分镜已落地，文中「待装/禁用」表述过时；现状以 AGENTS.md 第四节为准。 |
