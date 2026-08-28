@@ -16,7 +16,7 @@ var errors = require('./errors');
 var constants = require('./constants');
 var prose = require('./prose');
 var media = require('./media');
-var security = require('../../server/security');
+var validationCore = require('../../server/validation-core');
 
 var serviceError = errors.serviceError;
 var isPlainObject = errors.isPlainObject;
@@ -58,20 +58,19 @@ var ALLOWED_INPUT_KEYS = new Set([
   'dialogue', 'dialogueLang', 'lastFrame', 'shotSize', 'steps', 'references', 'adultEnabled',
 ]);
 
-var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
 function assertAdultAllowed(body, isLocal) {
-  var prompt = String(body.prompt || '');
-  var wantsAdult = ADULT_PROMPT_RE.test(prompt);
-  if (!wantsAdult) return;
+  // 成人锚点正则与双门判定收口在 server/validation-core.js（2026-08-28 审计 P1-6）。
   // 视频侧成人蓝图当前 fail-closed 拒绝（storyboard.js ADULT_BLUEPRINT_UNSUPPORTED），
-  // 此处仅对显式 adult prompt 做二次门控，避免前端绕过。
+  // 此处仅对显式 adult prompt 做二次门控，避免前端绕过；无角色白名单（蓝图层负责）。
   // 服务端锚点（2026-08-28）：远程/隧道访问默认拒绝成人参数，请求体自报
   // adultEnabled 不再单独构成授权；AICS_ADULT_REMOTE=1 显式开启后按原门控放行。
-  if (isLocal === false && !security.adultRemoteEnabled()) {
-    throw serviceError(403, 'ADULT_REMOTE_NOT_ALLOWED', '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。');
+  if (!validationCore.detectAdultIntent(body.prompt)) return;
+  var remote = validationCore.evaluateAdultRemote(isLocal);
+  if (remote) {
+    throw serviceError(403, remote.code, remote.message);
   }
   if (body.adultEnabled !== true) {
-    throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
+    throw serviceError(403, 'ADULT_NOT_ENABLED', validationCore.ADULT_NOT_ENABLED_MESSAGE);
   }
 }
 

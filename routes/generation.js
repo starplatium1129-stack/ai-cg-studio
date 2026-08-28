@@ -7,6 +7,7 @@ var http = require('http');
 var https = require('https');
 var path = require('path');
 var security = require('../server/security');
+var validationCore = require('../server/validation-core');
 var envelope = require('../server/http-envelope');
 var anima = require('./anima');
 var superres = require('./superres');
@@ -39,33 +40,25 @@ var ALLOWED = new Set([
   'hiresUpscaler', 'hiresSteps', 'denoisingStrength', 'faceDetailer', 'adultEnabled'
 ]);
 
-var ADULT_ELIGIBLE_CHARACTERS = new Set(['nene', 'natsume']);
-var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
+// 成人门控常量与纯判定收口在 server/validation-core.js（2026-08-28 审计 P1-6，
+// 此前 4 处实现漂移），此处保留家族组装（本机直连全放行 + LoRA 推断路径）。
 function assertAdultAllowed(req, body) {
-  var prompt = String(body.prompt || '');
-  var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
-  if (!wantsAdult) return;
+  if (!validationCore.detectAdultIntent(body.prompt)) return;
   var hasLocalBypass = req && security.isDirectLocalRequest(req);
   if (hasLocalBypass) return;
   // 服务端锚点（2026-08-28）：远程/隧道访问默认拒绝成人参数，请求体自报
   // adultEnabled 不再单独构成授权；AICS_ADULT_REMOTE=1 显式开启后仍走双门校验。
-  if (!security.adultRemoteEnabled()) {
-    throw error(403, 'ADULT_REMOTE_NOT_ALLOWED', '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。');
+  var remote = validationCore.evaluateAdultRemote(false);
+  if (remote) {
+    throw error(403, remote.code, remote.message);
   }
-  var targetChar = String(body.character || '').toLowerCase();
-  if (!targetChar && body.loras && Array.isArray(body.loras)) {
-    var hasNene = body.loras.some(function (l) { return String(l.id || '').toUpperCase() === 'L_NENE_V18_WD14'; });
-    var hasNatsume = body.loras.some(function (l) { return String(l.id || '').toUpperCase() === 'L_NAT_V18_WD14'; });
-    if (hasNene) targetChar = 'nene';
-    else if (hasNatsume) targetChar = 'natsume';
+  var targetChar = validationCore.inferAdultTargetChar(body, { useLoras: true });
+  var denial = validationCore.evaluateAdultAccess(targetChar, body.adultEnabled);
+  if (!denial) return;
+  if (denial.reason === 'CHARACTER_NOT_ELIGIBLE') {
+    throw error(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', denial.message);
   }
-  if (!targetChar && /nene_r18/i.test(prompt)) targetChar = 'nene';
-  if (!targetChar && /natsume_r18/i.test(prompt)) targetChar = 'natsume';
-  if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
-    throw error(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
-  }
-  if (body.adultEnabled === true) return;
-  throw error(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
+  throw error(403, 'ADULT_NOT_ENABLED', denial.message);
 }
 
 function error(status, code, message, detail) {

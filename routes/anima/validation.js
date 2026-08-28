@@ -7,6 +7,7 @@
 
 var crypto = require('crypto');
 var security = require('../../server/security');
+var validationCore = require('../../server/validation-core');
 var generationContract = require('../../server/anima-generation-contract');
 var modelCatalog = require('../../server/anima-model-catalog');
 var animaErrors = require('./errors');
@@ -35,32 +36,28 @@ function validateNumber(value, name, min, max, integer) {
   return value;
 }
 function assertAdultAllowed(req, body) {
-  var prompt = String(body.prompt || '');
-  var wantsAdult = ADULT_PROMPT_RE.test(prompt) || String(body.prompt || '').toLowerCase().includes('nsfw');
-  if (!wantsAdult) return;
+  if (!validationCore.detectAdultIntent(body.prompt)) return;
   // 本机个人使用（127.0.0.1 直连，含 Tauri 桌面端）直接放行，不再卡角色白名单与 adultEnabled
   var hasLocalBypass = req && security.isDirectLocalRequest(req);
   if (hasLocalBypass) return;
   // 服务端锚点（2026-08-28）：远程/隧道访问默认拒绝成人参数，请求体自报
   // adultEnabled 不再单独构成授权；AICS_ADULT_REMOTE=1 显式开启后仍走双门校验。
-  if (!security.adultRemoteEnabled()) {
-    throw serviceError(403, 'ADULT_REMOTE_NOT_ALLOWED', '成人内容仅限本机直连使用；如需经分享隧道使用，请在服务端设置 AICS_ADULT_REMOTE=1 后重启网关。');
+  var remote = validationCore.evaluateAdultRemote(false);
+  if (remote) {
+    throw serviceError(403, remote.code, remote.message);
   }
-  var targetChar = String(body.character || '').toLowerCase();
-  // 无 LoRA 模式（popular）下 character 可能为空，此时按 prompt 中的 r18 锚点推断角色
-  if (!targetChar && /nene_r18/i.test(prompt)) targetChar = 'nene';
-  if (!targetChar && /natsume_r18/i.test(prompt)) targetChar = 'natsume';
-  if (!ADULT_ELIGIBLE_CHARACTERS.has(targetChar)) {
-    throw serviceError(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。');
+  // 无 LoRA 模式（popular）下 character 可能为空，此时按 prompt 中的 r18 锚点推断角色。
+  // useLoras:false —— anima 家族原语义不含 LoRA 推断（带 LoRA 无锚点时白名单拒绝）。
+  var targetChar = validationCore.inferAdultTargetChar(body, { useLoras: false });
+  var denial = validationCore.evaluateAdultAccess(targetChar, body.adultEnabled);
+  if (!denial) return;
+  if (denial.reason === 'CHARACTER_NOT_ELIGIBLE') {
+    throw serviceError(403, 'ADULT_CHARACTER_NOT_ELIGIBLE', denial.message);
   }
-  if (body.adultEnabled === true) return;
-  throw serviceError(403, 'ADULT_NOT_ENABLED', '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。');
+  throw serviceError(403, 'ADULT_NOT_ENABLED', denial.message);
 }
-// 成人内容双门（与 desktop-tools.js 同源，AGENTS.md 红线 #4 fail-closed）
-// 桌面端为本机回环请求（127.0.0.1 / ::1），即使前端因 tauri.localhost 误判未透传 adultEnabled，
-// 仍视为已获本机授权，避免“本地个人使用却被拒绝”的误伤。
-var ADULT_ELIGIBLE_CHARACTERS = new Set(['nene', 'natsume']);
-var ADULT_PROMPT_RE = /\b(?:nude|naked|completely_naked|explicit|nsfw|nene_r18|natsume_r18|exposed_pussy|pink_nipples)\b/i;
+// 成人内容双门（AGENTS.md 红线 #4 fail-closed）：常量与纯判定收口在
+// server/validation-core.js（2026-08-28 审计 P1-6，此前 4 处实现漂移），此处保留家族组装。
 function validateInput(reqOrBody, expectedFamilyOrBody, maybeExpectedFamily) {
   var req = null;
   var body;
@@ -210,7 +207,7 @@ module.exports = {
   finiteNumber:finiteNumber,
   validateNumber:validateNumber,
   assertAdultAllowed:assertAdultAllowed,
-  ADULT_ELIGIBLE_CHARACTERS:ADULT_ELIGIBLE_CHARACTERS,
-  ADULT_PROMPT_RE:ADULT_PROMPT_RE,
+  ADULT_ELIGIBLE_CHARACTERS:validationCore.ADULT_ELIGIBLE_CHARACTERS,
+  ADULT_PROMPT_RE:validationCore.ADULT_PROMPT_RE,
   validateInput:validateInput,
 };

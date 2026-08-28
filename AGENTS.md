@@ -10,7 +10,7 @@
    - 凡涉及提示词、蓝图绑定、服装联动或换装的改动，**严禁仅凭界面文字或表层状态断定成功**；必须亲自核对底层编译 Token 与真实渲染画面的一致性。
    - 状态机联动必须形成闭环（如场景蓝图切换必须同步联动 `outfitId`、镜头与参数）。
 2. **动效与视觉性能铁律**：
-   - 所有高频动画与过渡**必须使用 GPU 合成属性（`transform` / `opacity`）**，严禁使用 `left/top/width/height` 做补间引起主线程逐帧重排（Reflow）。该铁律已门禁化（2026-08-27）：`npm run lint:animations` 扫描真实样式树，未带 `/* compositor-exempt: <理由> */` 注释的违规一律失败；存量豁免以 `ALLOWED_EXEMPT=3` 基线管理，新增豁免须评审上调（已入 test:style-debt 与 run-check-parallel 流水线）；
+   - 所有高频动画与过渡**必须使用 GPU 合成属性（`transform` / `opacity`）**，严禁使用 `left/top/width/height` 做补间引起主线程逐帧重排（Reflow）。该铁律已门禁化（2026-08-27）：`npm run lint:animations` 扫描真实样式树，未带 `/* compositor-exempt: <理由> */` 注释的违规一律失败；存量豁免以 `ALLOWED_EXEMPT=4` 基线管理（2026-08-28 审计修正：文档原写 3 与 `lint-animations.js:34` 及全库实测 4 处不符——design-system.css ×2 + CharacterView + SceneExplorerView），新增豁免须评审上调（已入 test:style-debt 与 run-check-parallel 流水线）；
    - 所有新增与修改的 UI 组件，必须通过**深色模式**下的视觉审查，确保文字对比度（WCAG AA）与扫光不压字。门禁：`node scripts/maintenance/check-contrast.js --check`。
      > **2026-08-28 变更：浅色主题已下线**（美术审计 · 方案 A）。原「双主题并行审查」要求撤销 —— 154 个令牌本就为深色设计，浅色是后补的 50 个覆盖（覆盖率 32.5%），20 套角色主题里 17 套无浅色版，继续维护属纯负债。**此后新增颜色只需写一遍**。禁用态一律用 `--text-disabled` 令牌，不得用 `opacity` 压字（alpha 合成后低于 AA）。若日后恢复双主题，须先补齐角色主题浅色版再放开开关。
 3. **手绘线条图标规范（2026-08-20 指示）**：项目中新增或修改的图标，**一律采用纯手绘线条 SVG（`ArchiveIcon.vue` 的 Hand-drawn Linear 机制）**，严禁使用 Emoji 字符或实心填充图标。

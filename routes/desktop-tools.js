@@ -19,6 +19,7 @@ var path = require('path');
 var cp = require('child_process');
 var crypto = require('crypto');
 var envelope = require('../server/http-envelope');
+var validationCore = require('../server/validation-core');
 
 var MAX_READ_BYTES = 1024 * 1024;
 var MAX_WRITE_BYTES = 512 * 1024;
@@ -40,30 +41,29 @@ var ALLOWED_COMMANDS = Object.freeze(new Set([
 ].map(function (name) { return name.toLowerCase(); })));
 
 /**
- * 成人内容白名单（AGENTS.md 红线 #4 的网关侧落地，与前端 popularContent.ts
+ * 成人内容白名单契约（AGENTS.md 红线 #4 的网关侧落地，与前端 popularContent.ts
  * 的 adultEligibility 契约同源）：仅内容契约中确认成人的角色可注入裸露 token
  * （宁宁/夏目，对应 nene_r18/natsume_r18 门控词）。未知角色一律 fail-closed 拒绝。
  * adultEnabled 则必须来自传输层显式授权（请求体顶层字段，由前端本机环境开关派生），
- * 模型在 args 里自行声明无效 —— 双门齐备才放行。
+ * 模型在 args 里自行声明无效 —— 双门齐备才放行。白名单常量定义于
+ * server/validation-core.js。
  */
-var ADULT_ELIGIBLE_CHARACTERS = Object.freeze(new Set(['nene', 'natsume']));
-
-var ADULT_NOT_ELIGIBLE_MESSAGE = '该角色未登记为成人内容白名单（fail-closed），已拒绝 R18 参数；请用普通服装重试。';
-var ADULT_NOT_ENABLED_MESSAGE = '成人内容未获本机授权（adultEnabled !== true），已拒绝 R18 参数；请用普通服装重试。';
 
 /**
- * R18 双门校验：返回 null 表示放行，否则返回带 code 的拒绝结果。
+ * R18 双门校验（AGENTS.md 红线 #4）：白名单与授权判定收口在
+ * server/validation-core.js（2026-08-28 审计 P1-6，此前 4 处实现漂移）。
+ * 本家族保留返回值形态：返回 null 表示放行，否则返回带 code 的拒绝结果
+ * （由调用方转成带 code 的 Error 抛出）。
  * @param {string} targetChar 归一化后的角色 ID
  * @param {{adultEnabled?: boolean}} [context] 传输层授权上下文
  */
 function assertAdultAllowed(targetChar, context) {
-  if (!ADULT_ELIGIBLE_CHARACTERS.has(String(targetChar || '').toLowerCase())) {
-    return { code: 'adult_character_not_eligible', message: ADULT_NOT_ELIGIBLE_MESSAGE };
-  }
-  if (!context || context.adultEnabled !== true) {
-    return { code: 'adult_not_enabled', message: ADULT_NOT_ENABLED_MESSAGE };
-  }
-  return null;
+  var denial = validationCore.evaluateAdultAccess(targetChar, context && context.adultEnabled);
+  if (!denial) return null;
+  return {
+    code: denial.reason === 'CHARACTER_NOT_ELIGIBLE' ? 'adult_character_not_eligible' : 'adult_not_enabled',
+    message: denial.message,
+  };
 }
 
 /**
