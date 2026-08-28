@@ -1,6 +1,6 @@
 {
   "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-  "pinnedAt": "2026-08-28T14:23:55",
+  "pinnedAt": "2026-08-28T15:17:06",
   "scenes": {
     "sc264": {
       "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, medium_close-up, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, moist_eyes, tearful_gaze, heavy_blush, sweat_on_face, parted_lips, embarrassed, plaid_skirt, pleated_skirt, miniskirt, skirt_lift, lifted_by_self, pink_panties, bow_panties, pantyshot, black_thighhighs, zettai_ryouiki, narrow_library_aisle, bookshelf, library, indoors, golden_hour, rim_light, warm_atmosphere, <lora:ayachi_nene_v18_wd14:0.95>",
@@ -190,7 +190,7 @@
       ]
     },
     "sc037": {
-      "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_traditional_autumn_kimono_with_gold_leaf_patterns, holding_wooden_ema_prayer_tablet_against_chest, turning_around_on_ancient_stone_temple_steps, biting_lip_with_deeply_flustered_confessing_blush, entire_legs_and_feet_fully_visible_in_frame, white_tabi_socks_and_lacquered_geta_clogs_on_stone_steps, towering_vermilion_torii_gates_and_canopy_of_glowing_crimson_autumn_maple_leaves, golden_afternoon_sunlight_filtering_through_foliage, detailed_background, cinematic_lighting, full_body, @rella",
+      "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, black_headband, wearing_traditional_autumn_kimono_with_gold_leaf_patterns, holding_wooden_ema_prayer_tablet_against_chest, turning_around_on_ancient_stone_temple_steps, biting_lip_with_deeply_flustered_confessing_blush, entire_legs_and_feet_fully_visible_in_frame, white_tabi_socks_and_lacquered_geta_clogs_on_stone_steps, towering_vermilion_torii_gates_and_canopy_of_glowing_crimson_autumn_maple_leaves, soft_early_morning_light_filtering_through_mist_and_foliage, detailed_background, cinematic_lighting, full_body, @rella",
       "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
       "animaCaption": "Standing on the weathered stone steps of an ancient mountain shrine beneath a canopy of blazing red maple leaves, Shiki Natsume clutches a wooden prayer plaque to her chest, turning with an intense, vulnerable blush. Golden late afternoon sunlight filters through the vermilion torii gates, casting brilliant light across her ornate kimono and white tabi socks in geta clogs.",
       "rating": "All",
@@ -260,7 +260,7 @@
       ]
     },
     "sc038": {
-      "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_duffle_coat_and_red_plaid_muffler, sheer_black_tights, stopping_and_turning_back_around_under_snowy_streetlamp, clutching_muffler_close_to_mouth, entire_legs_and_feet_fully_visible_in_frame, brown_leather_winter_boots_standing_in_fresh_snow, teary_affectionate_glance, twilight_snowfall_in_residential_street, glowing_warm_amber_streetlights_and_illuminated_shop_windows_in_background, volumetric_snow_flakes, full_body, @rella",
+      "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_duffle_coat_and_red_plaid_muffler, sheer_black_tights, stopping_and_turning_back_around_under_rainy_streetlamp, holding_white_umbrella_with_clenched_hand, clutching_muffler_close_to_mouth, entire_legs_and_feet_fully_visible_in_frame, brown_leather_winter_boots_standing_on_wet_asphalt, teary_affectionate_glance, twilight_rain_in_residential_street, glowing_warm_amber_streetlights_and_illuminated_shop_windows_in_background, falling_rain_and_mist, full_body, @rella",
       "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
       "animaCaption": "Pausing beneath a glowing streetlamp amidst gentle twilight snowfall, Ayachi Nene turns back to face the viewer, clutching her plaid scarf to her blushing face with teary affection. Her silver-white twintails peek out from beneath her scarf while glowing neighborhood shopfronts and lampposts create rich spatial depth behind her leather boots firmly planted in fresh white snow.",
       "rating": "All",

@@ -134,7 +134,8 @@ function main(argv) {
 
   let areas;
   if (areaArg) {
-    areas = areaArg === 'all' ? ['ui', 'server', 'data'] : areaArg === 'full' ? ['ui', 'server', 'data'] : [areaArg];
+    // 'full' 保持原样走下方 full 专属分支（含 check 套件与打包预算）；'all' 展开三块
+    areas = areaArg === 'all' ? ['ui', 'server', 'data'] : [areaArg];
   } else {
     areas = detectAreas();
     if (!areas.length) {
