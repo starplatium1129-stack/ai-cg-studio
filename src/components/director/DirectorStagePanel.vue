@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
+  <div class="stage-slot">
     <!-- Stage placeholder -->
     <section
         v-show="!displayResultUrl"

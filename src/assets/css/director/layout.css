@@ -64,15 +64,16 @@
   .pb .col-right { grid-area: decisions; position:sticky; top:54px; max-height:calc(100vh - 68px); overflow-y:auto; padding-right:8px; scrollbar-width:thin; }
   .pb .col-center { grid-area:stage; display:flex; flex-direction:column; gap:var(--s-4); position:static; min-width:0; }
   .pb .col-center > .panel { margin-top:0 !important; }
-  .pb .col-center > .stage-placeholder { order:0; }
-  .pb .col-center > .result-image-wrap { order:0; }
-  .pb .col-center > #stepResult { order:1; }
-  .pb .col-center > .expert-tag-panel { order:2; }
-  .pb .col-center > .monitor { order:3; }
-  .pb .col-center > .artist-style-picker { order:4; }
-  .pb .col-center > .generation-settings { order:5; }
-  .pb .col-center > .anima-quick-panel { order:6; }
-  /* 2026-08-16 布局合理化：中栏信息流固定为 画布 → 输出（生成/队列/配音）→
-     词条工作台 → Prompt 监视器 → 画风 → 出图参数 → Anima 面板。
-     旧顺序把「输出」埋在画风/参数之后、词条压到页面底部，核心动线被拉长；
-     生成区紧跟画布，专家参数面板仍可折叠（不违反「参数可折叠、生成不可隐藏」约束）。 */
+  /* 中栏信息流固定为 画布(stage-slot) → 出图条(gen-bar：尺寸+生成，吸附跟随) →
+     输出（队列/配音）→ 词条工作台 → Prompt 监视器 → 画风 → 出图参数 → Anima 面板。
+     2026-08-28：DirectorStagePanel 抽组件后画布包在根节点里，旧 `.col-center >
+     .stage-placeholder` 子选择器永不命中（画布排序靠 DOM 顺序巧合）；现以组件根类
+     .stage-slot 为显式锚点，顺序全部唯一编号，不依赖 DOM 顺序兜底。 */
+  .pb .col-center > .stage-slot { order:0; }
+  .pb .col-center > .gen-bar { order:1; }
+  .pb .col-center > #stepResult { order:2; }
+  .pb .col-center > .expert-tag-panel { order:3; }
+  .pb .col-center > .monitor { order:4; }
+  .pb .col-center > .artist-style-picker { order:5; }
+  .pb .col-center > .generation-settings { order:6; }
+  .pb .col-center > .anima-quick-panel { order:7; }

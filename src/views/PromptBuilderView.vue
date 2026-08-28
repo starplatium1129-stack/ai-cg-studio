@@ -6,7 +6,6 @@
     :data-director-mode="pb.directorMode"
     :class="{
       'focus-mode': pb.focusMode,
-      'step-4': Boolean(displayResultUrl || generationBusy),
       'has-result': Boolean(displayResultUrl),
     }"
   >
@@ -148,6 +147,18 @@
           @interrogateResult="handleInterrogateResult"
           @interrogateError="handleInterrogateError"
         />
+        <!-- 吸附出图条：尺寸 + 生成紧跟画布，滚动时钉在导航下沿（同步加载保首屏） -->
+        <GenerationActionBar
+          :engine="drawEngine"
+          :busy="generationBusy"
+          :online="engineOnline"
+          :size="genBarSize"
+          :anima-sizes="animaBarSizes"
+          :preset-summary="generationPresetSummary"
+          @update:size="genBarSize = $event"
+          @generate="callGenerate()"
+          @cancel="cancelGeneration"
+        />
         <DirectorTagWorkbench />
 
         <PromptHealthPanel
@@ -219,14 +230,12 @@
             :expert="pb.directorMode === 'pro'"
             :preset-summary="generationPresetSummary"
             v-model:params="pb.sdParams"
-            v-model:size="sdSize"
             :vram-hint="vramHint"
             :vram-level="vramLevel"
             :base-resolution-risk="baseResolutionRisk"
             :base-resolution-hint="baseResolutionHint"
             :can-use-face-detailer="canUseFaceDetailer"
             :generating="generationBusy"
-            :online="engineOnline"
             :result-seed="displayResultSeed"
             :has-result="Boolean(displayResultUrl)"
             :anima-hires-fix="Boolean(animaState.hiresFix)"
@@ -234,8 +243,6 @@
             @update:anima-hires-fix="patchAnimaState({ hiresFix: $event })"
             @upscale-current="upscaleCurrentResult"
             @touch="pb.markParamTouched"
-            @generate="callGenerate"
-            @cancel="cancelGeneration"
             @enqueue="enqueueCurrent"
             @enqueue-variants="enqueue3Variants"
             @reuse-seed="reuseLastSeed"
@@ -256,11 +263,8 @@
             </span>
           </div>
 
-          <!-- Progress -->
-          <div v-if="sd.generating.value" class="sd-result-area is-progress">
-            <div class="sd-status">{{ sd.statusText.value }}</div>
-            <div class="sd-progress"><span class="sd-progress-bar" :style="{ '--progress': sd.progress.value + '%' }"></span></div>
-          </div>
+          <!-- 进度统一由画布舞台的 is-generating 态承担（魔法阵 + 进度环，
+               2026-08-28 审计后舞台在生成期间保持可见，不再在此重复进度条） -->
 
           <SDRecoveryPanel :report="sdErrorReport" @recover="runRecovery" @dismiss="dismissError" />
           <GenerationQueuePanel v-if="drawEngine === 'sd'"
@@ -423,6 +427,8 @@ const ImageSplitCompare = defineAsyncComponent(() => import('@/components/visual
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+// 吸附出图条承载主行动（生成按钮），同步导入保证首屏即位；体量小，不进异步分片。
+import GenerationActionBar from '@/components/director/GenerationActionBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
 import { scrollBehavior } from '@/utils/motionPreference'
 import {
@@ -602,6 +608,26 @@ const {
   selectAnimaModel,
   updateAnimaPromptState,
 } = engine
+
+// ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
+// 先收敛到当前底模白名单（closestSupportedSize）再同步双引擎，防服务端 400。
+const genBarSize = computed({
+  get: () => drawEngine.value === 'sd'
+    ? sdSize.value
+    : `${animaState.value.width}x${animaState.value.height}`,
+  set: (value: string) => {
+    if (drawEngine.value === 'sd') sdSize.value = value
+    else applyRecommendedSize(value)
+  },
+})
+/** 出图条候选尺寸：当前底模白名单；当前生效值不在列时兜底置顶，避免 select 空显。 */
+const animaBarSizes = computed<string[]>(() => {
+  const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
+  const sizes = activeModel?.sizes?.length ? [...activeModel.sizes] : ['832x1216', '1024x1024', '1216x832']
+  const current = `${animaState.value.width}x${animaState.value.height}`
+  if (!sizes.includes(current)) sizes.unshift(current)
+  return sizes
+})
 
 // ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
 // 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。

@@ -1,29 +1,7 @@
 <template>
   <div class="generation-output-controls">
+    <!-- 尺寸选择与生成/停止已上移至画布下的吸附出图条 GenerationActionBar（2026-08-28） -->
     <div v-if="engine === 'sd' && expert" class="sd-inline-options">
-      <label>尺寸<select v-model="sizeProxy">
-        <optgroup label="竖图 Portrait">
-          <option value="768x1344">768×1344</option>
-          <option value="832x1216">832×1216</option>
-          <option value="896x1344">896×1344</option>
-          <option value="1024x1344">1024×1344 · WAI 推荐</option>
-          <option value="1024x1536">1024×1536</option>
-          <option value="1152x1536">1152×1536</option>
-        </optgroup>
-        <optgroup label="方图 Square">
-          <option value="896x896">896×896</option>
-          <option value="1024x1024">1024×1024</option>
-          <option value="1280x1280">1280×1280</option>
-        </optgroup>
-        <optgroup label="横图 Landscape">
-          <option value="1216x832">1216×832</option>
-          <option value="1344x896">1344×896</option>
-          <option value="1536x1024">1536×1024</option>
-        </optgroup>
-        <optgroup label="16:9 官方 CG">
-          <option value="1344x768">1344×768</option>
-        </optgroup>
-      </select></label>
       <span class="sd-vram-hint advanced-decision" :class="vramLevel">{{ vramHint }}</span>
       <span v-if="baseResolutionRisk" class="sd-base-resolution-hint advanced-decision" :class="baseResolutionRisk">{{ baseResolutionHint }}</span>
       <label class="hires-label advanced-decision">
@@ -75,10 +53,6 @@
     </div>
 
     <div class="preview-actions">
-      <button :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'" class="btn btn-primary" type="button" :disabled="generating || !online" @click="$emit('generate')">
-        {{ generating ? '生成中…' : '生成图片' }}
-      </button>
-      <button v-if="generating" class="btn btn-ghost" type="button" @click="$emit('cancel')">停止生成</button>
       <button
         v-if="hasResult && (engine === 'anima' || engine === 'sd')"
         class="btn btn-ghost btn-hires-action-quick"
@@ -101,25 +75,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import '@/assets/css/director/components/GenerationOutputControls.css'
 
-const props = defineProps<{
+defineProps<{
   engine: DrawEngine
   expert: boolean
   presetSummary: string
-  size: string
   vramHint: string
   vramLevel: string
   baseResolutionRisk: string
   baseResolutionHint: string
   canUseFaceDetailer: boolean
   generating: boolean
-  online: boolean
   resultSeed: number | null
   queueAvailable: boolean
   hasResult?: boolean
@@ -131,11 +102,8 @@ const props = defineProps<{
 const params = defineModel<SDParams>('params', { required: true })
 
 const emit = defineEmits<{
-  'update:size': [value: string]
   'update:animaHiresFix': [value: boolean]
   touch: [key: keyof SDParams]
-  generate: []
-  cancel: []
   'upscale-current': []
   enqueue: []
   'enqueue-variants': []
@@ -143,10 +111,6 @@ const emit = defineEmits<{
   reset: []
 }>()
 
-const sizeProxy = computed({
-  get: () => props.size,
-  set: value => emit('update:size', value),
-})
 function touch(key: keyof SDParams) { emit('touch', key) }
 </script>
 

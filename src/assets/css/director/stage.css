@@ -98,7 +98,9 @@
   .pb .stage-placeholder-copy { max-width:330px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label); line-height:var(--lh-loose); }
   .pb .stage-quick-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:var(--s-4); }
   .pb .stage-quick-actions .btn { min-height:40px; }
-  .pb.step-4 .stage-placeholder { display:none; }
+  /* 2026-08-28 审计修复：生成中舞台不再被 step-4 隐藏——结果态的隐藏由组件
+     v-show="!displayResultUrl" 承担；生成期间 is-generating 态（魔法阵 + 进度环）
+     是全引擎唯一进度源，Anima 场景模式不再黑盒等待。 */
   body:has(.pb.focus-mode) .nav,
   body:has(.pb.focus-mode) .site-footer,
   .pb.focus-mode .nav-back, .pb.focus-mode .pb-header,
@@ -119,9 +121,11 @@
   .pb .monitor-toggle:hover { opacity:1; }
   /* Step workflow */
   .pb .stepbar { display:flex; align-items:center; gap:0; padding:var(--s-3) 0 var(--s-5); }
-  /* Vue SPA 始终展示输出面板；旧 step-4 流程仅抬高高度 */
+  /* Vue SPA 始终展示输出面板；旧 step-4 流程仅抬高高度。
+     2026-08-28：min-height 收窄到 has-result——生成期间舞台自持进度，
+     输出面板不再膨胀抢视口（消除点生成瞬间的整页跳变）。 */
   .pb #stepResult { display:flex; flex-direction:column; gap:var(--s-3); }
-  .pb.step-4 #stepResult { min-height:clamp(560px,74vh,940px); }
+  .pb.has-result #stepResult { min-height:clamp(560px,74vh,940px); }
   .pb #stepResult > .panel-title { order:0; margin-bottom:0; }
    .pb #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */

@@ -365,7 +365,7 @@
     .pb.has-result .col-center { grid-area:stage; }
     .pb.has-result .col-left { grid-area:story; }
     .pb.has-result .col-right { grid-area:decisions; }
-    .pb .stage-placeholder, .pb.step-4 #stepResult { min-height:clamp(420px,65vh,680px); }
+    .pb .stage-placeholder, .pb.has-result #stepResult { min-height:clamp(420px,65vh,680px); }
     .pb .stage-message { width:min(78%,360px); transform:none; }
     .pb .stage-muse { width:72%; opacity:0 !important; }
     .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.13 !important; }
@@ -402,12 +402,8 @@
   .pb .settings-caret { margin-right:var(--s-1); font-size:var(--fs-mono-sm); }
   .pb .settings-hint { color:var(--text-muted); font-size:var(--fs-mono-sm); font-weight:400; }
   .pb #sdSeedDisplay { font-family:var(--font-mono); opacity:.6; }
-  /* 结果区:可见性由 hidden 驱动,展开时为块级并居中 */
-  .pb .sd-result-area { display:block; margin-top:var(--s-4); text-align:center; }
-  .pb .sd-result-area[hidden] { display:none; }
-  /* 进度态:替代原先模板里的 style="display:block" */
-  .pb .sd-result-area.is-progress { display:block; }
-  .pb .sd-status { margin-bottom:var(--s-2); color:var(--text-muted); font-size:var(--fs-body-sm); }
+  /* 2026-08-28：.sd-result-area/.sd-status/.sd-progress 系列已随「输出面板重复进度条」
+     移除而清退，生成进度统一由画布舞台 is-generating 态承担。 */
   .pb .sd-save-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
   .pb .sd-save-actions[hidden] { display:none; }
   .pb .neg-output-spaced { margin-top:var(--s-3); }
@@ -415,9 +411,6 @@
   .pb .scene-size-hint { display:inline-flex; align-items:center; min-height:24px; padding:3px var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 38%,var(--border-soft)); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); font-size:var(--fs-mono-sm); font-weight:700; }
   .pb .sd-budget-hint.warn { color:var(--warning-text); }
   .pb .sd-budget-hint.danger { color:var(--danger-text); font-weight:650; }
-  .pb .sd-progress { height:8px; overflow:hidden; border-radius:var(--r-pill); background:var(--bg-deep); border:1px solid var(--border-soft); margin:0 auto var(--s-2); max-width:520px; }
-  .pb .sd-progress > span { display:block; width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--accent),var(--accent-violet)); transform-origin:left center; transform:scaleX(var(--progress,0%)); transition:transform var(--motion-surface) var(--ease-out); }
-  .pb .sd-progress[hidden] { display:none; }
   @media (max-width: 768px) {
     .pb-topline { align-items:stretch; flex-direction:column; gap:var(--s-2); margin-bottom:var(--s-2); }
     .pb-sub { display:none; }
@@ -463,13 +456,6 @@
 
      to { opacity:1; transform:scale(1); }
    }
-  .pb .sd-progress-bar {
-    display:block; height:100%; border-radius:inherit;
-    background:linear-gradient(90deg,var(--accent),var(--accent-violet));
-    width:100%; transform-origin:left center; transform:scaleX(var(--progress, 0%));
-    transition:transform var(--motion-surface) var(--ease-out);
-  }
-  .pb .sd-status.error { color:var(--danger-text); }
   .pb .badge-online { --badge-color:var(--success-text); }
   .pb .badge-offline { --badge-color:var(--warning-text); }
   .pb-toast {
