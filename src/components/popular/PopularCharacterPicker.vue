@@ -96,7 +96,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
             <span class="popular-card-initial" aria-hidden="true">
               <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
-                <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.1" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
+                <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
                 <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
                 <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
               </svg>
@@ -116,7 +116,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
         <span class="popular-card-initial" aria-hidden="true">
           <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
-            <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.1" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
+            <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
             <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
             <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
           </svg>

@@ -1896,3 +1896,51 @@ dialog[open],
 
 
 
+
+/* ============================================================
+   forced-colors（Windows 高对比度模式）适配
+   ------------------------------------------------------------
+   2026-08-28 补齐。系统开启强制颜色时：
+     - box-shadow 与透明玻璃层会被系统色抹掉 —— 依赖它们的焦点环、
+       分隔与层级标识会整个消失；
+     - color-mix / 低透明度叠加同样不可靠。
+   这里用系统色变量（Highlight / CanvasText / ButtonText）补一层
+   "最低限度可辨识"的兜底。真实设备上如有进一步要求，基于此段扩展。
+   ============================================================ */
+@media (forced-colors: active) {
+  /* 焦点环：项目里大量焦点样式用 box-shadow 实现，强制颜色下会消失。
+     统一补 outline 兜底，并让显式 :focus-visible 走系统高亮色。 */
+  :where(a, button, input, select, textarea, summary, [tabindex],
+         [role="button"], [role="tab"], [role="option"]):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  /* 卡片/面板：玻璃半透明在强制颜色下变平，用实边框重建层级边界 */
+  .card,
+  .panel,
+  .nav,
+  .director-stage,
+  .modal-card {
+    border: 1px solid CanvasText;
+  }
+
+  /* 状态标识：只靠颜色的状态点/徽章，补文字与边框信号 */
+  .status-badge,
+  .tag-chip,
+  .badge {
+    border: 1px solid ButtonText;
+  }
+
+  /* 键盘快捷键提示（kbd）：键帽拟物色被覆盖后至少保留边框 */
+  kbd,
+  .kbd-badge {
+    border: 1px solid ButtonText;
+  }
+
+  /* 图片回退：无法保证对比的装饰性背景直接隐藏，避免噪音 */
+  .hero-orbit::after,
+  .starfield::before {
+    display: none;
+  }
+}

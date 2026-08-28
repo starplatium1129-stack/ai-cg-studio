@@ -1,3 +1,12 @@
+/* ============================================================
+   chat.css —— 聊天页样式（ChatView / ChatCharacterStage）
+   ------------------------------------------------------------
+   由 ChatView.vue 懒加载引入，仅服务 /chat 路由，不进首屏包。
+   分区（2026-08-28 补）：主布局 → 角色选择 → 立绘舞台 → 换装 →
+   API 设置 → 房间设置 → 消息流 → 语音交互 → 响应式与降级。
+   此前的 2000+ 行零分区注释是 AI 协作里最难啃的一块 ——
+   动这里的样式前先定位区块，别在 1800 行的位置加"新"规则。
+  ============================================================ */
 .chat-page {
   position: relative;
   width: 100%;
@@ -119,6 +128,10 @@
 }
 
 .chat-page .character-card,
+
+/*   ============================================================
+   角色选择：会话卡片 / 角色标签页（宁宁 / 夏目）
+  ============================================================ */
 .chat-page .conversation-card {
   position: relative;
   min-width: 0;
@@ -199,6 +212,10 @@
   color: var(--natsume-amber);
 }
 
+
+/*   ============================================================
+   立绘舞台：角色立绘 / Live2D 宿主 / 房间信号 / 语音光环
+  ============================================================ */
 .chat-page .portrait-stage {
   position: relative;
   isolation: isolate;
@@ -512,6 +529,10 @@ body:has(.chat-page) .sakura-fall {
   font-size: var(--fs-mono-xs);
 }
 
+
+/*   ============================================================
+   Live2D 换装：衣装抽屉 / 换装入口 / 衣装菜单
+  ============================================================ */
 .chat-page .live2d-wardrobe {
   position: relative;
   z-index: var(--z-raised);
@@ -975,6 +996,10 @@ body:has(.chat-page) .sakura-fall {
   box-shadow: 0 0 8px color-mix(in srgb, var(--success) 48%, transparent);
 }
 
+
+/*   ============================================================
+   API 与引擎设置：提供商切换 / 密钥字段 / 测试状态
+  ============================================================ */
 .chat-page .api-vendor-picker {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1127,6 +1152,10 @@ body:has(.chat-page) .sakura-fall {
   color: var(--text-primary);
 }
 
+
+/*   ============================================================
+   房间设置：开场引导 / 会话卡片 / 角色标签页
+  ============================================================ */
 .chat-page .room-setup {
   display:flex; align-items:center; justify-content:space-between; gap:var(--s-3);
   margin:var(--s-3) var(--s-4) 0; padding:var(--s-3);
@@ -1212,6 +1241,10 @@ body:has(.chat-page) .sakura-fall {
   transform: translateX(2px);
 }
 
+
+/*   ============================================================
+   消息流：气泡排版 / 头像 / 语音与记忆操作按钮
+  ============================================================ */
 .chat-page .message {
   display: flex;
   align-items: flex-end;
@@ -1672,6 +1705,10 @@ body:has(.chat-page) .sakura-fall {
   opacity: .45;
 }
 
+
+/*   ============================================================
+   语音交互：按住说话 / 重放 / 音频均衡 / 音量滑块
+  ============================================================ */
 .chat-page .hold-talk-btn {
   display: inline-flex;
   align-items: center;
@@ -1888,6 +1925,11 @@ body:has(.chat-page) .sakura-fall {
   to { opacity: 1; transform: translateY(0); }
 }
 
+
+/*   ============================================================
+   响应式与无障碍降级
+   reduced-motion 短路 / 三档断点（1100 / 820 / 560）/ 高度受限兜底
+  ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   .chat-page *,
   .chat-page *::before,

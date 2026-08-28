@@ -35,7 +35,8 @@
     >
       <div class="divider-line"></div>
       <div class="divider-handle">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+        <!-- 线宽收敛到图标基准 1.8（2026-08-28）：此前 2.5 明显偏粗 -->
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8">
           <polyline points="8 6 2 12 8 18"></polyline>
           <polyline points="16 6 22 12 16 18"></polyline>
         </svg>
