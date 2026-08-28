@@ -188,7 +188,7 @@
  {
   "id": "tag_024",
   "cat": "Clothing",
-  "en": "sport_clothes",
+  "en": "sportswear",
   "cn": "运动装",
   "weight": 0.8,
   "related": []
@@ -654,7 +654,7 @@
  {
   "id": "tag_081",
   "cat": "Action",
-  "en": "lying on stomach",
+  "en": "lying_on_stomach",
   "cn": "趴着",
   "weight": 0.85,
   "related": []
@@ -662,7 +662,7 @@
  {
   "id": "tag_082",
   "cat": "Action",
-  "en": "lying on back",
+  "en": "lying_on_back",
   "cn": "躺着",
   "weight": 0.85,
   "related": []
@@ -678,7 +678,7 @@
  {
   "id": "tag_084",
   "cat": "Action",
-  "en": "leaning against",
+  "en": "leaning_against",
   "cn": "靠着",
   "weight": 0.85,
   "related": []
@@ -686,7 +686,7 @@
  {
   "id": "tag_085",
   "cat": "Action",
-  "en": "holding hands",
+  "en": "holding_hands",
   "cn": "牵手",
   "weight": 0.85,
   "related": []
@@ -1461,7 +1461,7 @@
  },
  {
   "cat": "Clothing",
-  "en": "see-through_clothing",
+  "en": "see_through_clothing",
   "cn": "透视衣物",
   "weight": 0.8,
   "related": [],
@@ -1717,7 +1717,7 @@
  },
  {
   "cat": "Action",
-  "en": "trapped_by_viewer",
+  "en": "trapped",
   "cn": "被扶住",
   "weight": 0.8,
   "related": [],
@@ -1965,7 +1965,7 @@
  },
  {
   "cat": "Action",
-  "en": "sitting_close",
+  "en": "close together",
   "cn": "靠近坐",
   "weight": 0.8,
   "related": [],
@@ -2085,7 +2085,7 @@
  },
  {
   "cat": "Action",
-  "en": "collapsed_on_desk",
+  "en": "collapsed",
   "cn": "瘫倒在桌上",
   "weight": 0.8,
   "related": [],
@@ -2093,7 +2093,7 @@
  },
  {
   "cat": "Action",
-  "en": "leaning_against_counter",
+  "en": "leaning against",
   "cn": "靠在吧台",
   "weight": 0.8,
   "related": [],
@@ -3526,7 +3526,7 @@
  {
   "id": "tag_447",
   "cat": "Scene",
-  "en": "lanterns",
+  "en": "lantern",
   "cn": "灯笼",
   "weight": 0.8,
   "related": []
