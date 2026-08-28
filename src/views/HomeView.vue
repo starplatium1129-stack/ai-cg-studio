@@ -500,14 +500,18 @@ onUnmounted(() => {
 .hero-title { max-width:12ch; text-wrap:balance; margin-bottom:var(--s-4); font:600 clamp(2.4rem,4.7vw,4.2rem)/1.06 var(--font-serif); letter-spacing:.02em; }
 .hero-title :deep(.accent) { background:linear-gradient(135deg,var(--accent) 60%,var(--mood-love)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .jp { display:block; margin-top:var(--s-2); font-size:.25em; letter-spacing:.32em; text-transform:uppercase; color:var(--accent-violet); -webkit-text-fill-color:var(--accent-violet); }
-.hero-sub { font-size:var(--fs-body-lg); color:var(--text-secondary); margin-bottom:var(--s-3); max-width:520px; line-height:1.7; }
+.hero-sub { font-size:var(--fs-body-lg); color:var(--text-secondary); margin-bottom:var(--s-3); max-width:520px; line-height:var(--lh-loose); }
 .hero-jp { color:var(--accent-violet); font:500 var(--fs-label)/1.8 var(--font-serif); letter-spacing:0.22em; margin:0 0 var(--s-5); opacity:.9; }
 .ctas { display:flex; gap:var(--s-3); flex-wrap:wrap; margin-bottom:var(--s-4); align-items:center; }
 .hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid color-mix(in srgb,var(--editorial-gold) 38%,var(--border-soft)); border-radius:2px var(--r-xl) 2px var(--r-xl); overflow:hidden; background:linear-gradient(90deg,color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-rella); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 .hero-orbit::before { content:""; position:absolute; z-index:var(--z-raised); inset:0; pointer-events:none; background:linear-gradient(115deg,var(--on-art-sheen),transparent 18%,transparent 70%,var(--on-art-wash)); mix-blend-mode:soft-light; opacity:.48; }
 .hero-orbit::after { content:""; position:absolute; z-index:var(--z-base); inset:0; pointer-events:none; box-shadow:inset 0 0 72px color-mix(in srgb,var(--art-backdrop) 34%,transparent); }
 .hero-watermark { position:absolute; z-index:var(--z-base); top:var(--s-4); left:var(--s-4); color:var(--on-art-wash); font:800 clamp(2rem,5vw,4.5rem) var(--font-mono); letter-spacing:-.07em; writing-mode:vertical-rl; pointer-events:none; opacity:.32; will-change:transform; }
-.hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px color-mix(in srgb,var(--bg-deep) 36%,transparent)); transition:transform .6s var(--ease-out),filter .6s ease; }
+/* drop-shadow 保留：立绘是透明 PNG，只有 drop-shadow 能贴合人物轮廓
+   （box-shadow 会渲成一圈矩形阴影）。但去掉了 filter 的 transition ——
+   hover 只改 transform（见下方 @media hover），filter 全程不变，
+   把它列进 transition 只会让浏览器每帧做一次离屏合成预备。 */
+.hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px color-mix(in srgb,var(--bg-deep) 36%,transparent)); transition:transform var(--motion-atmosphere) var(--ease-out); }
 /* 双人分割：原来两张各占 54% + 斜切，宽屏下右侧人物会被容器边缘切掉。
    改成各占 52% 并把 object-position 收回中心，接缝仍在中线附近。 */
 .hero-character.nene { left:0; width:52%; height:100%; object-fit:cover; object-position:46% 32%; filter:saturate(1.04) contrast(1.03); clip-path:polygon(0 0,100% 0,88% 100%,0 100%); }
@@ -611,7 +615,7 @@ onUnmounted(() => {
 .tool-card:hover { border-color:color-mix(in srgb,var(--accent) 58%,var(--border-soft)); }
 .tool-card .ic { display:grid; place-items:center; width:36px; height:36px; border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft)); border-radius:var(--r-lg); background:var(--accent-soft); font-size:var(--fs-title-sm); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .tool-card .t { font:600 var(--fs-title-xs)/1.35 var(--font-serif); letter-spacing:.025em; }
-.tool-card .d { font-size:var(--fs-label); color:var(--text-muted); line-height:1.5; margin:0; flex:1; }
+.tool-card .d { font-size:var(--fs-label); color:var(--text-muted); line-height:var(--lh-body); margin:0; flex:1; }
 .tool-card .go { display:inline-flex; align-items:center; gap:var(--s-1); width:max-content; font-size:var(--fs-label-sm); color:var(--accent); margin-top:var(--s-2); transition:transform var(--motion-hover) var(--ease-out); }
 
 /* ---------- Banner 卡（05/ARCHIVE）：≥768px 拉通为横向入口，消除 4+1 孤行 ---------- */

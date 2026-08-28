@@ -247,7 +247,7 @@ function stopPan(event: PointerEvent) {
   border-radius: var(--r-lg, 12px);
   opacity: 0;
   filter: blur(8px);
-  transition: opacity 0.35s ease, filter 0.45s ease;
+  transition: opacity var(--motion-route) ease, filter var(--motion-route-cut) ease;
 }
 
 .zoomable-img.is-ready {
@@ -311,6 +311,6 @@ function stopPan(event: PointerEvent) {
 @media (prefers-reduced-motion: reduce) {
   .skeleton-shimmer { animation:none; }
   .zoom-transform-layer { transition:none; }
-  .zoomable-img { filter:none; transition:opacity 120ms ease-out; }
+  .zoomable-img { filter:none; transition:opacity var(--motion-press) ease-out; }
 }
 </style>

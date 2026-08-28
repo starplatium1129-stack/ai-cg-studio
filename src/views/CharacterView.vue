@@ -576,7 +576,7 @@ onMounted(() => {
 .cb-franchise-minor { border-style: dashed; opacity: .88; }
 .cb-franchise-toggle { color: var(--text-muted); background: transparent; border-color: var(--border-soft); }
 .cb-franchise-toggle:hover { color: var(--accent); }
-.cb-franchise .cb-caret { font-size: var(--fs-mono-xs); line-height: 1; opacity: .7; }
+.cb-franchise .cb-caret { font-size: var(--fs-mono-xs); line-height: var(--lh-flush); opacity: .7; }
 .cb-count { font: 650 var(--fs-mono-xs) var(--font-mono); opacity: .7; }
 .cb-groups { display: grid; gap: var(--s-5); }
 .cb-group-head { display: flex; align-items: baseline; gap: var(--s-2); margin: 0 0 var(--s-2); font-size: var(--fs-title-xs); color: var(--text-secondary); }
@@ -608,7 +608,7 @@ onMounted(() => {
   text-shadow: 0 1px 4px color-mix(in srgb, #000 34%, transparent);
   background: linear-gradient(135deg, var(--avatar-a, #77717f), var(--avatar-b, #4a4553));
 }
-.cb-name { font-size: var(--fs-label-sm); font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.3; }
+.cb-name { font-size: var(--fs-label-sm); font-weight: 700; color: var(--text-primary); text-align: center; line-height: var(--lh-tight); }
 .cb-original { font-size: var(--fs-mono-xs); color: var(--text-muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cb-empty { padding: var(--s-5); text-align: center; color: var(--text-muted); border: 1px dashed var(--border-soft); border-radius: var(--r-lg); }
 .cb-empty .btn { margin-top: var(--s-3); }
@@ -699,7 +699,7 @@ onMounted(() => {
 /* 现在是 <button>：重置默认样式，保留原来的截断+展开观感 */
 /* compositor-exempt: 点击一次性展开长文阅读辅助；height:auto 终态依赖 interpolate-size
    渐进增强，transform 无 auto 折叠等价物，且非高频交互。 */
-.bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; interpolate-size: allow-keywords; height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:height var(--motion-surface) var(--ease-out); }
+.bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; interpolate-size: allow-keywords; height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-loose); cursor:pointer; transition:height var(--motion-surface) var(--ease-out); }
 .bg-story.expanded { height:auto; }
 .bg-story::after { content:'展开'; position:absolute; right:0; bottom:0; padding-left:var(--s-6); background:linear-gradient(90deg,transparent,var(--bg-surface)); color:var(--accent); font-size:var(--fs-label-xs); }
 .bg-story.expanded::after { content:none; }
@@ -722,8 +722,8 @@ onMounted(() => {
 .official-link:hover { text-decoration:underline; }
 .recommend-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:var(--s-3); }
 .cg-title { margin-bottom:var(--s-1); font-size:var(--fs-title-xs); font-weight:800; }
-.cg-reason { margin-bottom:var(--s-2); color:var(--accent); font-size:var(--fs-label-sm); line-height:1.55; }
-.cg-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; }
+.cg-reason { margin-bottom:var(--s-2); color:var(--accent); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
+.cg-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-loose); }
 
 /* 短剧 4 视角标准参考资产卡 */
 .char-reference-section {
@@ -890,7 +890,7 @@ onMounted(() => {
   margin: 0 0 var(--s-3);
   font-size: var(--fs-label-xs);
   color: var(--text-secondary);
-  line-height: 1.45;
+  line-height: var(--lh-label);
   flex: 1;
 }
 .char-ref-usages {
@@ -1005,7 +1005,7 @@ onMounted(() => {
 }
 .ref-modal-desc {
   font-size: var(--fs-body-sm);
-  line-height: 1.6;
+  line-height: var(--lh-body);
   color: var(--text-secondary);
   margin: 0 0 var(--s-4);
 }

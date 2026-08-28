@@ -269,7 +269,7 @@ function save(): void {
 
 .speech-http-hint {
   margin-top: var(--s-3); font-size: var(--fs-label-xs);
-  color: var(--text-muted); line-height: 1.5;
+  color: var(--text-muted); line-height: var(--lh-body);
 }
 .speech-http-hint i {
   font-style: normal; display: inline-block; width: 15px; height: 15px; line-height: 15px;

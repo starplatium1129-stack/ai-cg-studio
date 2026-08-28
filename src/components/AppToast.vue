@@ -189,7 +189,7 @@ function onToastLeave(el: Element, done: () => void) {
 
 .toast-icon { display:grid; place-items:center; font-size: 1em; flex-shrink: 0; }
 .toast-msg  { flex: 1; }
-.toast-close { display:grid; place-items:center; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:var(--s-1); font-size:.9em; line-height:1; }
+.toast-close { display:grid; place-items:center; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:var(--s-1); font-size:.9em; line-height:var(--lh-flush); }
 
 /* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
    (原 token 是给色块/描边调的,浅色主题下当图标只有 1.9–2.6:1) */

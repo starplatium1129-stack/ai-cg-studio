@@ -1054,7 +1054,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .shot-editor { display: grid; gap: var(--s-4); }
-.shot-blocked { color: var(--text-secondary); line-height: 1.7; }
+.shot-blocked { color: var(--text-secondary); line-height: var(--lh-loose); }
 
 /* ── 面板视觉（组件自包含：video-* 类名在 VideoStudioView 是 scoped 的，
    全局 CSS 没有定义，不能跨组件复用——2026-08-16 截图审查发现面板无边框）── */
@@ -1085,21 +1085,21 @@ onBeforeUnmount(() => {
 .video-quality-grid button:active { transform: scale(.98); }
 .video-quality-grid button.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); }
 .video-quality-grid strong { font-size: var(--fs-body-sm); }
-.video-quality-grid small { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.4; }
+.video-quality-grid small { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-label); }
 .video-quality-grid em { color: var(--accent); font: 600 var(--fs-mono-xs) var(--font-mono); font-style: normal; }
 .video-segmented { display: inline-flex; flex-wrap: wrap; padding: 3px; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); }
 .video-segmented button { min-height: 32px; padding: 0 var(--s-3); border: 0; border-radius: var(--r-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
 .video-segmented button.active { background: var(--accent); color: var(--text-inverse); }
-.video-install-note { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }
+.video-install-note { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .video-progress { height: 3px; margin: var(--s-3) 0; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
 .video-progress i { display: block; height: 100%; width: 100%; transform-origin: left; scale: var(--progress, 0%); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: scale var(--motion-surface) var(--ease-out); }
 
 .shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
 .shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }
 .shot-toolbar .shot-intent-input { width: 180px; flex: 0 1 auto; min-height: 34px; }
-.shot-ai-note { margin: 0 0 var(--s-3); color: var(--accent); font-size: var(--fs-label-xs); line-height: 1.55; }
+.shot-ai-note { margin: 0 0 var(--s-3); color: var(--accent); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .shot-ai-note[data-busy="true"] { color: var(--warning-text); }
-.shot-flow-hint { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }
+.shot-flow-hint { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 
 /* ── 参考卡 / 台词 / 质检 / 脚本弹层 ── */
 .shot-reference-section { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
@@ -1140,7 +1140,7 @@ onBeforeUnmount(() => {
 .shot-review-tag { padding: 1px var(--s-2); border-radius: var(--r-pill); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .shot-review-item[data-severity="error"] .shot-review-tag { background: var(--danger); color: var(--text-inverse); }
 .shot-review-item[data-severity="warn"] .shot-review-tag { background: color-mix(in srgb, var(--warning) 40%, transparent); color: var(--warning-text); }
-.shot-review-copy { flex: 1 1 280px; min-width: 0; line-height: 1.55; }
+.shot-review-copy { flex: 1 1 280px; min-width: 0; line-height: var(--lh-body); }
 .shot-review-copy em { color: var(--text-secondary); font-style: normal; }
 .shot-issue-badge { padding: 1px var(--s-2); border-radius: var(--r-pill); background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger-text); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .shot-row[data-issue] { outline: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); outline-offset: -1px; border-radius: var(--r-lg); }
@@ -1148,7 +1148,7 @@ onBeforeUnmount(() => {
 .shot-script-panel { width: min(560px, 100%); display: grid; gap: var(--s-4); padding: clamp(16px, 2.4vw, 26px); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); box-shadow: var(--shadow-md); }
 .shot-script-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
 .shot-script-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }
-.shot-script-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.6; }
+.shot-script-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
 .shot-script-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .shot-script-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .shot-script-hint { color: var(--text-muted); font-size: var(--fs-label-xs); }
@@ -1158,7 +1158,7 @@ onBeforeUnmount(() => {
 .shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; }
 .shot-toggle input { margin-top: 4px; accent-color: var(--accent); }
 .shot-toggle strong, .shot-toggle small { display: block; }
-.shot-toggle small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.5; }
+.shot-toggle small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 .shot-identity-field { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
 .shot-identity-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: var(--s-2); align-items: start; }
 .shot-identity-row .select { align-self: start; }
@@ -1184,14 +1184,14 @@ onBeforeUnmount(() => {
 .shot-frame { width: 120px; max-height: 90px; object-fit: contain; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); }
 .shot-frame-input { display: none; }
 .shot-chain-note { color: var(--text-muted); font-size: var(--fs-label-xs); }
-.shot-error { margin: 0; color: var(--danger-text); font-size: var(--fs-body-sm); line-height: 1.55; }
+.shot-error { margin: 0; color: var(--danger-text); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
 .shot-result { display: block; width: min(100%, 520px); border-radius: var(--r-md); background: var(--bg-deep); }
 .shot-retry { display: flex; }
-.shot-empty { color: var(--text-muted); font-size: var(--fs-body-sm); line-height: 1.7; }
+.shot-empty { color: var(--text-muted); font-size: var(--fs-body-sm); line-height: var(--lh-loose); }
 .shot-submit-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-4); background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 7%, transparent), var(--bg-surface)); }
 .shot-submit-panel[data-ready="true"] { border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft)); box-shadow: var(--shadow-md); }
 .shot-submit-panel strong { font-size: var(--fs-title-xs); }
-.shot-submit-panel p { margin: 4px 0 0; font-size: var(--fs-body-sm); line-height: 1.55; }
+.shot-submit-panel p { margin: 4px 0 0; font-size: var(--fs-body-sm); line-height: var(--lh-body); }
 .shot-submit-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); justify-content: flex-end; }
 .shot-progress-panel { display: grid; gap: var(--s-3); }
 .shot-progress-stats { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }

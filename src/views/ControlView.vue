@@ -12,7 +12,6 @@
         <div class="nav-local-actions">
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
           <AppSoundToggle />
-          <AppThemeToggle />
         </div>
       </div>
     </nav>
@@ -33,7 +32,6 @@
         <div class="control-rail-foot">
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
           <AppSoundToggle />
-          <AppThemeToggle />
         </div>
       </aside>
 
@@ -337,7 +335,6 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
-import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { useToast } from '@/composables/useToast'
@@ -507,11 +504,11 @@ onUnmounted(() => { status.stopPolling() })
 .control-intro::before { content: ''; position: absolute; top: -1px; left: var(--s-4); width: 42px; height: var(--line-hairline); background: var(--archive-cyan); }
 .control-title {
   margin: 0; color: var(--text-primary); font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2vw, 1.55rem); font-weight: 750; letter-spacing: -.02em; line-height: 1.2;
+  font-size: clamp(1.35rem, 2vw, 1.55rem); font-weight: 750; letter-spacing: -.02em; line-height: var(--lh-tight);
 }
 .control-subtitle {
   max-width: 640px; margin: var(--s-3) 0 0; color: var(--text-secondary);
-  font-size: var(--fs-body); line-height: 1.75;
+  font-size: var(--fs-body); line-height: var(--lh-loose);
 }
 .control-count {
   padding: 9px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-terminal);
@@ -553,14 +550,14 @@ onUnmounted(() => { status.stopPolling() })
 }
 .status-tile strong {
   display: block; margin-top: 8px; color: var(--text-primary);
-  font-size: var(--fs-body-sm); font-weight: 700; line-height: 1.45;
+  font-size: var(--fs-body-sm); font-weight: 700; line-height: var(--lh-label);
 }
 .status-tile[data-state="on"] strong { color: var(--success-text); }
 .status-tile[data-state="warn"] strong { color: var(--warning-text); }
 .status-tile[data-state="off"] strong { color: var(--text-muted); }
 .status-note {
   margin: 8px 0 0; color: var(--text-secondary);
-  font-size: var(--fs-label-sm); line-height: 1.65; font-weight: 400;
+  font-size: var(--fs-label-sm); line-height: var(--lh-loose); font-weight: 400;
 }
 
 .control-toolbar {
@@ -580,10 +577,12 @@ onUnmounted(() => { status.stopPolling() })
   border-color: color-mix(in srgb, var(--accent) 34%, var(--border-soft));
   background: var(--accent-soft); color: var(--accent);
 }
-.gallery-filter:disabled { opacity: .5; cursor: not-allowed; }
+/* 审计修复: 不用 opacity 压字 */
+.gallery-filter:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
 .toolbar-note { margin-left: auto; color: var(--text-muted); font-size: var(--fs-mono-sm); white-space: nowrap; }
+/* 审计修复(2026-08-28)：删掉本地重复的 @keyframes spin —— design-system.css:1554
+   已有同义全局定义，两处并存会让「改了一处另一处没变」成为常态。 */
 .spin { display: inline-block; animation: spin .7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .panel-card {
   position: relative; margin-bottom: var(--s-4); padding: clamp(18px, 2.5vw, 28px);
@@ -615,7 +614,7 @@ onUnmounted(() => { status.stopPolling() })
 }
 .panel-desc, .panel-foot {
   margin: 0 0 var(--s-4); color: var(--text-secondary);
-  font-size: var(--fs-label-sm); line-height: 1.7;
+  font-size: var(--fs-label-sm); line-height: var(--lh-loose);
 }
 .panel-foot { margin: var(--s-3) 0 0; color: var(--text-muted); font-size: var(--fs-mono-sm); }
 
@@ -633,9 +632,10 @@ onUnmounted(() => { status.stopPolling() })
 @media (hover: hover) and (pointer: fine) {
   .mode-card:hover:not(:disabled) { transform: translateY(-2px); }
 }
-.mode-card:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+/* 审计修复: 不用 opacity 压字 */
+.mode-card:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; transform: none; }
 .mode-title { font-size: var(--fs-body-sm); font-weight: 750; }
-.mode-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.6; }
+.mode-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 
 .service-rows { display: grid; gap: var(--s-2); }
 .service-row {
@@ -662,9 +662,9 @@ onUnmounted(() => { status.stopPolling() })
   display: flex; align-items: flex-start; gap: var(--s-2);
   margin-top: var(--s-3); padding: var(--s-3);
   border: 1px dashed var(--border-soft); border-radius: var(--r-lg);
-  color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; cursor: pointer;
+  color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); cursor: pointer;
 }
-.script-hint { margin-top: var(--s-2); color: var(--warning-text); font-size: var(--fs-label-xs); line-height: 1.5; }
+.script-hint { margin-top: var(--s-2); color: var(--warning-text); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
 
 .field-label {
   display: block; margin: var(--s-4) 0 var(--s-1);
@@ -673,7 +673,7 @@ onUnmounted(() => { status.stopPolling() })
 .field-label:first-of-type { margin-top: 0; }
 .field-help {
   margin: 6px 0 0; color: var(--text-muted);
-  font-size: var(--fs-label-xs); line-height: 1.55;
+  font-size: var(--fs-label-xs); line-height: var(--lh-body);
 }
 .field-help code { color: var(--accent); font-family: var(--font-mono); }
 .field-row { display: flex; gap: var(--s-2); flex-wrap: wrap; }
@@ -731,7 +731,7 @@ onUnmounted(() => { status.stopPolling() })
 .btn-block { width: 100%; justify-content: center; }
 .action-note {
   margin: var(--s-2) 0 var(--s-4); color: var(--text-muted);
-  font-size: var(--fs-label-xs); line-height: 1.55; text-align: center;
+  font-size: var(--fs-label-xs); line-height: var(--lh-body); text-align: center;
 }
 
 .access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
@@ -759,7 +759,7 @@ onUnmounted(() => { status.stopPolling() })
   border-radius: var(--r-md); color: var(--text-secondary);
   background: color-mix(in srgb, var(--warning) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--warning) 16%, transparent);
-  font-size: var(--fs-label-xs); line-height: 1.55;
+  font-size: var(--fs-label-xs); line-height: var(--lh-body);
 }
 .build-card {
   margin-top: var(--s-3); padding: var(--s-3) var(--s-4);
@@ -775,7 +775,7 @@ onUnmounted(() => { status.stopPolling() })
 .build-kicker { font: var(--fs-mono-sm) var(--font-mono); color: var(--text-muted); letter-spacing: 0.06em; }
 .build-head strong { font-size: var(--fs-body-sm); }
 .build-card[data-stale="true"] .build-head strong { color: var(--warning); }
-.build-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; margin: 0; }
+.build-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); margin: 0; }
 .build-card .btn { align-self: flex-start; }
 
 .operation-panel.running { border-color: color-mix(in srgb, var(--warning) 42%, var(--border-soft)); }
@@ -786,7 +786,7 @@ onUnmounted(() => { status.stopPolling() })
   color: var(--text-muted); font: 650 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
 }
-.operation-msg { margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.55; }
+.operation-msg { margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: var(--lh-body); }
 .operation-stages { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-3); }
 .op-stage {
   padding: 3px 9px; border-radius: var(--r-pill); background: var(--bg-deep);

@@ -53,7 +53,7 @@
   .pb .scene-card-title { display:flex; align-items:flex-start; gap:var(--s-2); font-weight:700; font-size:var(--fs-body); margin-bottom:2px; text-align:left; color:var(--text-primary); }
   .pb .scene-card-story {
     display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
-    font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; text-align:left;
+    font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:var(--lh-body); text-align:left;
   }
   .pb .scene-card-meta { display:flex; flex-wrap:wrap; gap:4px; }
   .pb .scene-cat-tag, .pb .scene-rating-tag {

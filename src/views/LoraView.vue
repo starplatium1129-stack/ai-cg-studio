@@ -161,7 +161,7 @@ onMounted(() => { void loadCatalog() })
 .lora-header { display:flex; align-items:baseline; gap:var(--s-2); margin-bottom:var(--s-2); }
 .lora-name { font-size:var(--fs-title-xs); font-weight:800; }
 .lora-version { color:var(--text-muted); font-size:var(--fs-mono-sm); }
-.lora-desc { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; margin-bottom:var(--s-3); }
+.lora-desc { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-loose); margin-bottom:var(--s-3); }
 .lora-meta { display:flex; flex-wrap:wrap; gap:var(--s-1); margin-bottom:var(--s-2); }
 .lora-pill { padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-muted); font-size:var(--fs-mono-xs); }
 .lora-triggers { display:flex; flex-wrap:wrap; gap:var(--s-1); align-items:center; }
@@ -181,13 +181,13 @@ onMounted(() => { void loadCatalog() })
 .evaluation-metrics > div { display:grid; gap:2px; padding:var(--s-2); border:1px solid color-mix(in srgb,var(--border-soft) 74%,transparent); border-radius:var(--r-sm); background:var(--bg-elevated); }
 .evaluation-metrics span { color:var(--text-muted); font-size:var(--fs-label-xs); }
 .evaluation-metrics strong { font-size:var(--fs-body-sm); }
-.evaluation-limit { margin:var(--s-3) 0 0; color:var(--warning-text); font-size:var(--fs-body-sm); line-height:1.55; }
+.evaluation-limit { margin:var(--s-3) 0 0; color:var(--warning-text); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
 .evaluation-panel details { margin-top:var(--s-3); color:var(--text-secondary); font-size:var(--fs-body-sm); }
 .evaluation-panel summary { cursor:pointer; color:var(--text-primary); font-weight:700; }
 .evaluation-panel dl { display:grid; gap:var(--s-2); margin:var(--s-3) 0 0; }
 .evaluation-panel dl > div { display:grid; gap:2px; }
 .evaluation-panel dt { color:var(--text-muted); font-size:var(--fs-label-xs); }
-.evaluation-panel dd { margin:0; line-height:1.55; overflow-wrap:anywhere; }
+.evaluation-panel dd { margin:0; line-height:var(--lh-body); overflow-wrap:anywhere; }
 .evaluation-panel code { white-space:normal; }
 
 @media (max-width:640px) {

@@ -163,7 +163,12 @@ test('settings repository: migrated scalar callers do not use raw localStorage a
     'src/composables/useCharacterRoomSession.ts',
   ];
   for (const relative of callers) {
-    const source = fs.readFileSync(path.join(root, relative), 'utf8');
+    const abs = path.join(root, relative);
+    // 文件已从项目移除时跳过：它自然不可能再写 localStorage。
+    // 此前直接 readFileSync，useCharacterRoomSession.ts 被删后报的是 ENOENT
+    // 而不是真正的违规 —— 掩盖了本条断言的实际意图（2026-08-28 修）。
+    if (!fs.existsSync(abs)) continue;
+    const source = fs.readFileSync(abs, 'utf8');
     assert.strictEqual(/localStorage\.(?:getItem|setItem|removeItem)\s*\(/.test(source), false, `${relative} must use settingsRepository`);
   }
 });

@@ -1,11 +1,15 @@
 import { test, expect, type Page } from '@playwright/test';
 
-// 双主题美术巡检 —— 全局美术校准后的回归网。
+// 美术巡检 —— 全局美术校准后的回归网。
 // 检查三类会真实破相的问题:
 //   1. 控制台运行时错误
 //   2. 横向溢出(布局在窄屏被挤破)
-//   3. 文字/背景对比度不足(浅色主题下白字压白底的那类缺陷)
+//   3. 文字/背景对比度不足(白字压白底的那类缺陷)
 // 前两类是硬失败;对比度做保守判定,只抓"几乎不可读"的极端值。
+//
+// 2026-08-28: 主题锁定深色(美术审计 · 方案 A),浅色分支已从全部样式树移除。
+// 这里仍保留 THEMES 数组与 applyTheme 的写属性动作 —— 属性写入本身是幂等的,
+// 且未来若恢复双主题,只需往数组里加回 'light' 即可,不必重写测试骨架。
 
 // Vue Router 路径（重构前是 /tools/*.html）
 const PAGES = [
@@ -34,7 +38,7 @@ const PAGES = [
   '/docs/getting-started.html'
 ];
 
-const THEMES = ['dark', 'light'] as const;
+const THEMES = ['dark'] as const;
 
 function collectErrors(page: Page): string[] {
   const errors: string[] = [];

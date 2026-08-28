@@ -908,7 +908,7 @@ onUnmounted(() => {
 
 .training-hero .subtitle { margin-bottom: 0; }
 /* 工具页三级标题：档案页与首页下方最小档位，避免仪表盘感 */
-.training-hero .title { font-size: clamp(1.35rem, 2vw, 1.55rem); font-weight: 750; letter-spacing: -.02em; line-height: 1.2; }
+.training-hero .title { font-size: clamp(1.35rem, 2vw, 1.55rem); font-weight: 750; letter-spacing: -.02em; line-height: var(--lh-tight); }
 
 .hero-status {
   position: relative; display: flex;
@@ -1041,7 +1041,7 @@ onUnmounted(() => {
 .kind-tab strong,
 .kind-tab small { display: block; }
 .kind-tab strong { font-size: var(--fs-label); }
-.kind-tab small { margin-top: 4px; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: 1.45; }
+.kind-tab small { margin-top: 4px; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: var(--lh-label); }
 
 .rail-summary {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1061,7 +1061,7 @@ onUnmounted(() => {
   background: color-mix(in srgb, var(--info) 7%, var(--bg-deep));
 }
 .local-note > span { color: var(--info-text); font-size: var(--fs-title-xs); }
-.local-note p { margin: 0; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: 1.55; }
+.local-note p { margin: 0; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: var(--lh-body); }
 .local-note strong { display: block; margin-bottom: 2px; color: var(--text-secondary); }
 
 .workbench-main { min-width: 0; }
@@ -1097,7 +1097,7 @@ onUnmounted(() => {
 }
 .plan-copy p,
 .voice-pipeline p {
-  margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.7;
+  margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: var(--lh-loose);
 }
 .plan-specs {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3);
@@ -1191,7 +1191,7 @@ onUnmounted(() => {
 .outfit-focus strong { margin-top: 3px; color: var(--text-primary); font-size: var(--fs-label); }
 .outfit-focus code {
   min-width: 0; max-width: 48%; color: var(--accent); font-size: var(--fs-mono-xs);
-  line-height: 1.45; overflow-wrap: anywhere; word-break: break-word; text-align: right;
+  line-height: var(--lh-label); overflow-wrap: anywhere; word-break: break-word; text-align: right;
 }
 
 .dataset-preview {
@@ -1237,7 +1237,7 @@ onUnmounted(() => {
   padding: var(--s-2) var(--s-3);
 }
 .dataset-preview figcaption strong { color: var(--text-primary); font-size: var(--fs-label-sm); }
-.dataset-preview figcaption small { color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: 1.45; }
+.dataset-preview figcaption small { color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: var(--lh-label); }
 
 .dataset-stats {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1274,7 +1274,7 @@ onUnmounted(() => {
 .adult-strip small { display: block; }
 .adult-strip span { color: var(--accent); font-size: var(--fs-mono-xs); }
 .adult-strip strong { margin-top: 3px; color: var(--text-primary); font-size: var(--fs-label-sm); }
-.adult-strip small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: 1.4; }
+.adult-strip small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: var(--lh-label); }
 
 .param-panel {
   margin-bottom: var(--s-3);
@@ -1360,13 +1360,14 @@ onUnmounted(() => {
   border-color: var(--accent);
   box-shadow: var(--ring);
 }
-.param-field input:disabled { opacity: .55; cursor: not-allowed; }
+/* 审计修复: 不用 opacity 压字 */
+.param-field input:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
 .param-field small { color: var(--text-muted); font-size: var(--fs-mono-xs); }
 .param-note {
   margin: var(--s-2) 0 0;
   color: var(--text-muted);
   font-size: var(--fs-mono-xs);
-  line-height: 1.5;
+  line-height: var(--lh-body);
 }
 .param-error { color: var(--warning-text); }
 
@@ -1387,7 +1388,8 @@ onUnmounted(() => {
   letter-spacing: .07em;
 }
 .dataset-picker .select { min-height: 32px; font-size: var(--fs-label-sm); }
-.dataset-picker .select:disabled { opacity: .55; cursor: not-allowed; }
+/* 审计修复: 不用 opacity 压字 */
+.dataset-picker .select:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
 .picker-hint { color: var(--text-muted); font-size: var(--fs-mono-xs); white-space: nowrap; }
 
 .dataset-details {
@@ -1451,7 +1453,7 @@ onUnmounted(() => {
   border-radius: var(--r-lg); background: color-mix(in srgb, var(--warning) 9%, var(--bg-deep));
 }
 .missing-note strong { color: var(--warning-text); font-size: var(--fs-label-sm); }
-.missing-note span { color: var(--text-secondary); font-size: var(--fs-mono-xs); line-height: 1.5; }
+.missing-note span { color: var(--text-secondary); font-size: var(--fs-mono-xs); line-height: var(--lh-body); }
 
 .progress-block {
   margin-top: auto; padding-top: var(--s-3); border-top: 1px solid var(--border-soft);
@@ -1468,7 +1470,7 @@ onUnmounted(() => {
   margin: var(--s-2) 0 0;
   color: var(--danger-text);
   font-size: var(--fs-mono-xs);
-  line-height: 1.5;
+  line-height: var(--lh-body);
   overflow-wrap: anywhere;
 }
 
@@ -1512,7 +1514,7 @@ onUnmounted(() => {
 .voice-pipeline li small { display: block; }
 .voice-pipeline li span { color: var(--accent); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .voice-pipeline li strong { margin-top: var(--s-2); color: var(--text-primary); font-size: var(--fs-label-sm); }
-.voice-pipeline li small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: 1.4; }
+.voice-pipeline li small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: var(--lh-label); }
 
 .voice-job { display: flex; flex-direction: column; }
 .voice-mark { border-radius: 50%; }
@@ -1557,7 +1559,7 @@ onUnmounted(() => {
 .voice-split small { display: block; margin-top: var(--s-2); color: var(--text-muted); font-size: var(--fs-mono-xs); }
 .voice-progress-message {
   min-height: 38px; margin: var(--s-2) 0 0; color: var(--text-muted);
-  font-size: var(--fs-mono-xs); line-height: 1.5; overflow-wrap: anywhere;
+  font-size: var(--fs-mono-xs); line-height: var(--lh-body); overflow-wrap: anywhere;
 }
 
 .log-console { margin-top: var(--s-4); }
@@ -1581,7 +1583,7 @@ onUnmounted(() => {
 }
 .console-output:focus { outline: none; border-color: var(--accent); box-shadow: var(--ring); }
 .console-error { margin: var(--s-2) 0 0; color: var(--danger-text); font-size: var(--fs-label-sm); }
-.console-note { margin: var(--s-2) 0 0; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: 1.5; }
+.console-note { margin: var(--s-2) 0 0; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: var(--lh-body); }
 
 @media (max-width: 1040px) {
   .workbench { grid-template-columns: 190px minmax(0, 1fr); gap: var(--s-3); }

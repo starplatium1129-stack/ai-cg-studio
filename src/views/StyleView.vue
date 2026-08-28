@@ -120,7 +120,7 @@ useScrollReveal()
   padding-left: 1.2em;
   color: var(--text-secondary);
   font-size: var(--fs-body-sm);
-  line-height: 1.75;
+  line-height: var(--lh-loose);
 }
 .tip-list li + li { margin-top: 4px; }
 .m-0 { margin: 0; }

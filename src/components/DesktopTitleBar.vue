@@ -7,7 +7,10 @@
     </div>
     <div class="titlebar-controls">
       <button class="tb-btn" type="button" aria-label="最小化" title="最小化" @click="bridge?.minimizeWindow()">
-        <svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><rect x="1" y="5.4" width="10" height="1.3" rx="0.65" fill="currentColor" /></svg>
+        <!-- 审计修复(2026-08-28)：原为 <rect fill="currentColor"> 实心块，违反
+             「图标一律手绘线条、严禁实心填充」红线。改为描边横线，与相邻
+             最大化/关闭两个控件同为 stroke 1.3 的线宽，视觉上一家。 -->
+        <svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M1.5 6h9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" /></svg>
       </button>
       <button class="tb-btn" type="button" :aria-label="maximized ? '还原' : '最大化'" :title="maximized ? '还原' : '最大化'" @click="bridge?.toggleMaximizeWindow()">
         <svg v-if="!maximized" viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3" /></svg>
@@ -138,7 +141,7 @@ onUnmounted(() => {
   background: transparent;
   color: var(--desktop-titlebar-text);
   cursor: default;
-  transition: background 0.14s ease, color 0.14s ease;
+  transition: background var(--motion-press) ease, color var(--motion-press) ease;
 }
 .tb-btn:hover {
   background: var(--desktop-titlebar-hover-bg);

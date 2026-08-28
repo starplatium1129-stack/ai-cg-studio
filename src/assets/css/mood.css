@@ -41,7 +41,7 @@
    但卡片标题本身不需要染色 —— 色彩信号已经由上方的 .mood-strip 色条给足了。 */
 .mood-name { color: var(--text-primary); font-size: var(--fs-body); font-weight: 600; }
 .mood-en { color: var(--text-muted); font: 400 var(--fs-label-xs) var(--font-mono); }
-.mood-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.4; }
+.mood-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-label); }
 
 /* 画风页:更大的取色卡 */
 .mood-grid-lg { --mood-col: 160px; --mood-strip-h: 40px; }

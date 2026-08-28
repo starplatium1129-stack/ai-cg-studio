@@ -457,7 +457,7 @@ function applyCombo(artistIds: readonly string[]) {
 .artist-desc {
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
-  line-height: 1.4;
+  line-height: var(--lh-label);
 }
 .artist-masterpiece {
   display: flex;
@@ -465,7 +465,7 @@ function applyCombo(artistIds: readonly string[]) {
   gap: 4px;
   font-size: var(--fs-mono-xs, 0.72rem);
   color: var(--text-secondary);
-  line-height: 1.35;
+  line-height: var(--lh-label);
   margin-top: 2px;
   overflow: hidden;
 }

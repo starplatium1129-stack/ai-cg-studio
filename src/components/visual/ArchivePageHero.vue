@@ -94,7 +94,7 @@ onUnmounted(() => {
   background: linear-gradient(var(--archive-blue), color-mix(in srgb, var(--accent) 75%, transparent), transparent 88%);
   transform: scaleY(0);
   transform-origin: top;
-  transition: transform .7s var(--ease-out) .1s;
+  transition: transform var(--motion-atmosphere) var(--ease-out) var(--motion-press);
 }
 .archive-page-hero.is-ready::before { transform: scaleY(1); }
 .archive-page-hero::after {
@@ -109,7 +109,7 @@ onUnmounted(() => {
   opacity:0;
   transform:scaleX(.08);
   transform-origin:left;
-  transition:opacity .22s ease .22s,transform .72s var(--ease-out) .22s;
+  transition:opacity var(--motion-control) ease var(--motion-control),transform var(--motion-atmosphere) var(--ease-out) var(--motion-control);
   pointer-events:none;
 }
 .archive-page-hero.is-ready::after { opacity:.72; transform:scaleX(1); }
@@ -127,7 +127,7 @@ onUnmounted(() => {
   text-transform: uppercase;
   opacity: 0;
   transform: translateX(-8px);
-  transition: opacity .42s ease .16s, transform .42s var(--ease-out) .16s;
+  transition: opacity var(--motion-route-cut) ease var(--motion-hover), transform var(--motion-route-cut) var(--ease-out) var(--motion-hover);
 }
 .archive-register strong {
   color: var(--archive-blue);
@@ -143,14 +143,14 @@ onUnmounted(() => {
   padding: 74px clamp(24px, 4vw, 54px) 42px;
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity .58s ease .08s, transform .58s var(--ease-out) .08s;
+  transition: opacity var(--motion-atmosphere) ease var(--motion-press), transform var(--motion-atmosphere) var(--ease-out) var(--motion-press);
 }
 .archive-page-hero.is-ready .archive-copy { opacity: 1; transform: none; }
 .archive-copy :deep(.page-kicker),
 .archive-copy :deep(.gallery-kicker) {
   opacity:0;
   transform:translateX(-12px);
-  transition:opacity .36s ease .18s,transform .44s var(--ease-out) .18s;
+  transition:opacity var(--motion-route) ease var(--motion-hover),transform var(--motion-route-cut) var(--ease-out) var(--motion-hover);
 }
 .archive-copy :deep(.title),
 .archive-copy :deep(.gallery-title),
@@ -160,20 +160,20 @@ onUnmounted(() => {
   font-size: clamp(2.15rem, 4vw, 4rem);
   font-weight: 780;
   letter-spacing: -.055em;
-  line-height: .98;
+  line-height: var(--lh-flush);
   opacity:0;
   transform:translateY(22px);
-  transition:opacity .44s ease .22s,transform .58s var(--ease-out) .22s;
+  transition:opacity var(--motion-route-cut) ease var(--motion-control),transform var(--motion-atmosphere) var(--ease-out) var(--motion-control);
 }
 .archive-copy :deep(.subtitle),
 .archive-copy :deep(.gallery-subtitle),
 .archive-copy :deep(p) {
   max-width: 660px;
   color: var(--text-secondary);
-  line-height: 1.75;
+  line-height: var(--lh-loose);
   opacity:0;
   transform:translateY(10px);
-  transition:opacity .42s ease .34s,transform .5s var(--ease-out) .34s;
+  transition:opacity var(--motion-route-cut) ease var(--motion-route),transform var(--motion-atmosphere) var(--ease-out) var(--motion-route);
 }
 .archive-page-hero.is-ready .archive-copy :deep(.page-kicker),
 .archive-page-hero.is-ready .archive-copy :deep(.gallery-kicker),
@@ -196,7 +196,7 @@ onUnmounted(() => {
   opacity: 0;
   transform: translateX(18px);
   clip-path:inset(0 0 0 28%);
-  transition:opacity .54s ease .2s,transform .62s var(--ease-out) .2s,clip-path .72s var(--ease-out) .18s;
+  transition:opacity var(--motion-atmosphere) ease var(--motion-control),transform var(--motion-atmosphere) var(--ease-out) var(--motion-control),clip-path var(--motion-atmosphere) var(--ease-out) var(--motion-hover);
 }
 .archive-page-hero.is-ready .archive-particles { opacity: 1; transform: none; clip-path:inset(0); }
 .archive-coordinate {
@@ -212,7 +212,7 @@ onUnmounted(() => {
   letter-spacing: .08em;
   opacity:0;
   transform:translateY(-6px);
-  transition:opacity .36s ease .42s,transform .36s var(--ease-out) .42s;
+  transition:opacity var(--motion-route) ease var(--motion-route-cut),transform var(--motion-route) var(--ease-out) var(--motion-route-cut);
 }
 .archive-page-hero.is-ready .archive-coordinate { opacity:1; transform:none; }
 .archive-coordinate i { width: 22px; height: 1px; background: var(--border-strong); }

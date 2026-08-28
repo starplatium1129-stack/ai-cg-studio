@@ -135,7 +135,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-status.is-off { color: var(--danger-text); background: color-mix(in srgb, var(--danger) 12%, transparent) }
 .anima-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px }
 .anima-hint { font-size: var(--fs-label-xs); opacity: 0.65; margin: 0 }
-.anima-preview-note { margin: 0; color: var(--warning-text); font-size: var(--fs-label-xs); line-height: 1.45 }
+.anima-preview-note { margin: 0; color: var(--warning-text); font-size: var(--fs-label-xs); line-height: var(--lh-label)}
 .anima-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap }
 .anima-hires-row { padding-top: 6px; border-top: 1px dashed var(--border-soft); margin-top: 2px }
 .anima-hires-toggle { font-size: var(--fs-label-xs); font-weight: 600; color: var(--accent) }
@@ -159,7 +159,8 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 @media (prefers-reduced-motion: reduce) { .anima-progress-track i.indeterminate { animation: none; transform: translateX(0); } }
 .anima-actions { display: flex; align-items: center; gap: 10px; margin-top: 4px }
 .anima-btn { background: var(--bg-hover); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 5px 12px; font-size: var(--fs-label-xs); cursor: pointer }
-.anima-btn:disabled { opacity: 0.4; cursor: not-allowed }
+/* 审计修复: 不用 opacity 压字 */
+.anima-btn:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed }
 .anima-primary { background: var(--accent); border-color: var(--accent); color: var(--text-inverse); font-weight: 600 }
 .anima-status-text { font-size: var(--fs-label-xs); opacity: 0.7 }
 .anima-error { font-size: var(--fs-label-xs); color: var(--danger-text) }

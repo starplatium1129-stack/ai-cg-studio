@@ -28,23 +28,42 @@ const root = sources.ROOT;
 // 1. design-system.css .meter-fill width —— scaleX 会压扁圆头并把子扫光伪元素横向拉伸；
 // 2. SceneExplorerView.vue .ex-more max-height —— hover 一次性展开（非高频），grid/JS 测高方案成本高于收益；
 // 3. CharacterView.vue .bg-story height —— 展开长文阅读辅助，interpolate-size 渐进增强，点击一次性。
-const ALLOWED_EXEMPT = 3;
+// 4. design-system.css .anim-collapse-grid grid-template-rows —— 折叠容器高度未知，
+//    grid 0fr→1fr 是唯一免 JS 测高的纯 CSS 方案（scaleY 压扁文字、max-height 要魔法值）；
+//    一次性展开非高频。2026-08-28 补检发现：此前该属性不在检测名单内，属漏检。
+const ALLOWED_EXEMPT = 4;
 
 const MARKER = 'compositor-exempt';
 
 // transition 值里属性名不带冒号（"width 0.08s ease-out"），须按名比对；
 // 不含 line-height（文字排版微调几乎不构成逐帧动画热路径）、border-*width（罕见且易误报）。
-const KEYFRAME_LAYOUT_DECL = /(?:^|[\s;{(])((?:max|min)-(?:width|height)|(?:margin|padding)(?:-(?:top|bottom|left|right))?|(?:width|height|top|bottom|left|right))\s*:/g;
+const KEYFRAME_LAYOUT_DECL = /(?:^|[\s;{(])((?:max|min)-(?:width|height)|(?:margin|padding)(?:-(?:top|bottom|left|right))?|grid-template-(?:rows|columns)|(?:width|height|top|bottom|left|right))\s*:/g;
 const TRANSITION_DECL = /transition(?:-property)?\s*:\s*([^;{}]+)/g;
 const KEYFRAMES_BLOCK = /@(?:-\w+-)?keyframes\s+[\w-]+\s*\{/g;
 const SHORTHAND_PARTS = /^(max|min)-(width|height)$/;
+
+// 重绘型属性：不触发逐帧重排（Reflow），但会触发逐帧重绘（Repaint），
+// filter / backdrop-filter 还要额外的离屏合成，实测开销不比布局属性低。
+// 2026-08-28 审计前，这三类完全不在门禁视野内 —— 布局门禁全绿，但项目里
+// 躺着 29 处 box-shadow 与 14 处 filter 过渡。这里单独统计为「警告」：
+// 打印清单、不阻断 CI、不计入 ALLOWED_EXEMPT（那套基线是给"不得不用且已
+// 逐个评审过的布局补间"留的，不应被重绘型稀释）。
+const REPAINT_NAMES = ['box-shadow', 'filter', 'backdrop-filter', 'background-position', 'background-size'];
 
 function isLayoutName(token) {
   const name = token.replace(/!important$/i, '').trim().toLowerCase();
   if (!name || name === 'all' || name === 'none' || name.startsWith('--')) return false;
   if (SHORTHAND_PARTS.test(name)) return true;
   if (/^(margin|padding)(-(top|bottom|left|right))?$/.test(name)) return true;
+  // grid-template-rows/columns 是逐帧重排属性，此前漏检
+  // （design-system.css 的 .anim-collapse-grid 靠它做折叠动画，门禁却放过）。
+  if (/^grid-template-(rows|columns)$/.test(name)) return true;
   return ['width', 'height', 'top', 'bottom', 'left', 'right'].includes(name);
+}
+
+function isRepaintName(token) {
+  const name = token.replace(/!important$/i, '').trim().toLowerCase();
+  return REPAINT_NAMES.includes(name);
 }
 
 function findExemption(text, index) {
@@ -78,6 +97,20 @@ function scanCss(relPath, css) {
   for (const match of css.matchAll(TRANSITION_DECL)) {
     const hit = scanTransitionValue(css, match);
     if (hit) findings.push(hit);
+    // 重绘型逐项统计：一个 transition 里可能同时有 box-shadow 和 filter
+    for (const item of match[1].split(',')) {
+      const lead = item.trim().split(/\s+/)[0];
+      if (isRepaintName(lead || '')) {
+        findings.push({
+          kind: `transition(${lead})`,
+          snippet: snippetOf(css, match.index),
+          exempt: true,
+          warnOnly: true,
+          // 直接记属性名：snippet 是截断的，反推会大量落进"其他"
+          repaintProp: lead,
+        });
+      }
+    }
   }
 
   for (const open of css.matchAll(KEYFRAMES_BLOCK)) {
@@ -117,16 +150,39 @@ function collect() {
 }
 
 function report(findings) {
-  if (!findings.length) {
+  const gate = findings.filter(f => !f.warnOnly);
+  const warns = findings.filter(f => f.warnOnly);
+
+  if (!gate.length) {
     console.log('动效合成器检查通过：真实样式树无布局属性补间。');
-    return;
+  } else {
+    console.log('布局属性补间清单（transform/opacity 以外的过渡/关键帧补间）：');
+    for (const f of gate.sort((a, b) => Number(a.exempt) - Number(b.exempt))) {
+      console.log(`  [${f.exempt ? '豁免' : '违规'}] ${f.file} · ${f.kind}`);
+      console.log(`          ${f.snippet}`);
+    }
+    console.log(`TOTAL ${gate.length} 处，其中已豁免 ${gate.filter(f => f.exempt).length} 处 / 基线 ${ALLOWED_EXEMPT}`);
   }
-  console.log('布局属性补间清单（transform/opacity 以外的过渡/关键帧补间）：');
-  for (const f of findings.sort((a, b) => Number(a.exempt) - Number(b.exempt))) {
-    console.log(`  [${f.exempt ? '豁免' : '违规'}] ${f.file} · ${f.kind}`);
-    console.log(`          ${f.snippet}`);
+
+  if (warns.length) {
+    console.log(`\n重绘型过渡 ${warns.length} 处（不阻断：会逐帧重绘，filter 还需离屏合成）：`);
+    const byProp = new Map();
+    const byFile = new Map();
+    for (const f of warns) {
+      const prop = f.repaintProp || '其他';
+      byProp.set(prop, (byProp.get(prop) || 0) + 1);
+      byFile.set(f.file, (byFile.get(f.file) || 0) + 1);
+    }
+    for (const [prop, n] of [...byProp].sort((a, b) => b[1] - a[1])) {
+      console.log(`  ${prop.padEnd(18)} ${n} 处`);
+    }
+    const hot = [...byFile].sort((a, b) => b[1] - a[1]).slice(0, 5);
+    if (hot.length) {
+      console.log('  集中文件：');
+      for (const [file, n] of hot) console.log(`    ${n} 处  ${file}`);
+    }
+    console.log('  整改方向：改用 transform/opacity 表达，或把变化挪到伪元素/静态图层上。');
   }
-  console.log(`TOTAL ${findings.length} 处，其中已豁免 ${findings.filter(f => f.exempt).length} 处 / 基线 ${ALLOWED_EXEMPT}`);
 }
 
 function main() {
@@ -135,13 +191,15 @@ function main() {
 
   if (!process.argv.includes('--check')) return;
 
-  const violations = findings.filter(f => !f.exempt);
+  // 警告项（重绘型）不参与门禁判定：它是改进清单，不是失败条件
+  const gate = findings.filter(f => !f.warnOnly);
+  const violations = gate.filter(f => !f.exempt);
   if (violations.length) {
     console.error(`\n动效铁律违规 ${violations.length} 处：布局属性不得用于补间，请改用 transform/opacity；`);
     console.error(`确有必要的例外请在违规声明上方写 /* ${MARKER}: <理由> */ 并评审上调 ALLOWED_EXEMPT。`);
     process.exit(1);
   }
-  const exempted = findings.length;
+  const exempted = gate.length;
   if (exempted > ALLOWED_EXEMPT) {
     console.error(`\n豁免总数 ${exempted} 超过基线 ${ALLOWED_EXEMPT}：新增豁免必须同步上调 ALLOWED_EXEMPT 并在代码评审说明理由。`);
     process.exit(1);

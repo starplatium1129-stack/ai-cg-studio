@@ -237,7 +237,7 @@ onMounted(async () => {
 .scenario-icon { display:block; font-size:var(--fs-glyph); margin-bottom:var(--s-2); }
 .scenario-name { display:block; font-size:var(--fs-title-xs); font-weight:800; margin-bottom:2px; }
 .scenario-en { display:block; color:var(--text-muted); font-size:var(--fs-mono-sm); margin-bottom:var(--s-2); }
-.scenario-desc { display:block; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; margin-bottom:var(--s-2); }
+.scenario-desc { display:block; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-loose); margin-bottom:var(--s-2); }
 .scenario-count { display:block; color:var(--accent); font-size:var(--fs-label-sm); font-weight:700; }
 
 .viewer { margin-top:var(--s-4); }

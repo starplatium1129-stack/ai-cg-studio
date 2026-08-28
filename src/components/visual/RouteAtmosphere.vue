@@ -453,7 +453,7 @@ onUnmounted(() => {
   background:var(--archive-blue);
   transform:scaleY(var(--route-progress,0));
   transform-origin:top;
-  transition:transform .16s linear;
+  transition:transform var(--motion-hover) linear;
 }
 .is-transitioning .route-scan { animation: route-scan var(--motion-atmosphere) var(--ease-out) both; }
 .route-index {

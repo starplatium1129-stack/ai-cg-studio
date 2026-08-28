@@ -12,14 +12,14 @@
   .pb .prompt-health-summary .monitor-profile + .token-counter { margin-left:0; }
   .pb .prompt-health-body { padding:0 var(--s-4) var(--s-4); border-top:1px solid var(--border-soft); }
   .pb .prompt-health-body .preview-output { margin-top:var(--s-3); }
-  .pb .prompt-health-warnings { display:grid; gap:var(--s-1); margin:var(--s-3) 0 0; padding-left:20px; color:var(--warning-text); font-size:var(--fs-label); line-height:1.55; }
+  .pb .prompt-health-warnings { display:grid; gap:var(--s-1); margin:var(--s-3) 0 0; padding-left:20px; color:var(--warning-text); font-size:var(--fs-label); line-height:var(--lh-body); }
   .pb .prompt-health-ok { margin:var(--s-3) 0 0; color:var(--success-text); font-size:var(--fs-label); }
   .pb .monitor-profile { margin-left:auto; color:var(--text-muted); font:500 var(--fs-mono-xs) var(--font-mono); text-transform:none; letter-spacing:0; }
   .pb .token-counter .num { color:var(--text-primary); font-weight:700; }
   .pb .token-counter .neg-num { color:var(--text-secondary); font-weight:700; }
   .pb .token-counter .muted { color:var(--text-muted); }
   .pb .lora-hint { margin-left:auto; color:var(--text-muted); font:500 var(--fs-mono-xs) var(--font-mono); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:45%; }
-  .pb .preview-output { background: var(--bg-base); border-radius: var(--r-md); padding: var(--s-3); font-family: var(--font-mono); font-size: var(--fs-label); line-height: 1.8; word-break: break-all; white-space: pre-wrap; color: var(--text-secondary); min-height: 50px; border: 1px solid var(--border-soft); }
+  .pb .preview-output { background: var(--bg-base); border-radius: var(--r-md); padding: var(--s-3); font-family: var(--font-mono); font-size: var(--fs-label); line-height: var(--lh-loose); word-break: break-all; white-space: pre-wrap; color: var(--text-secondary); min-height: 50px; border: 1px solid var(--border-soft); }
   .pb .preview-output-structured { display: grid; gap: var(--s-2); margin-top: var(--s-3); }
   .pb .preview-empty { color: var(--text-muted); font-style: italic; }
   .pb .prompt-tag-stream {
@@ -31,7 +31,7 @@
   .pb .token-chip {
     display: inline-flex; align-items: center; padding: 2px 7px;
     border-radius: var(--r-sm); font-family: var(--font-mono); font-size: var(--fs-label-xs);
-    line-height: 1.4; letter-spacing: 0.01em; border: 1px solid var(--border-soft);
+    line-height: var(--lh-label); letter-spacing: 0.01em; border: 1px solid var(--border-soft);
     background: var(--bg-deep); color: var(--text-secondary); transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
   }
   .pb .token-chip.quality {
@@ -66,7 +66,7 @@
   }
   .pb .prose-text {
     margin: 0; font-size: var(--fs-label); color: var(--text-primary);
-    line-height: 1.65; font-family: var(--font-sans);
+    line-height: var(--lh-loose); font-family: var(--font-sans);
   }
   .pb .prompt-neg-block {
     padding: var(--s-2) var(--s-3); border-radius: var(--r-md);
@@ -79,7 +79,7 @@
   }
   .pb .neg-text {
     margin: 0; font-size: var(--fs-label-xs); font-family: var(--font-mono);
-    color: var(--text-muted); line-height: 1.5; word-break: break-all;
+    color: var(--text-muted); line-height: var(--lh-body); word-break: break-all;
   }
   .pb .preview-output .q { color: var(--mood-joy-text); }
   .pb .preview-output .c { color: var(--accent); }

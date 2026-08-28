@@ -12,7 +12,7 @@
   .pb .clear-tags-btn:hover { color:var(--danger-text); border-color:var(--danger); }
   .pb .manual-tags { display:flex; flex-wrap:wrap; gap:6px; min-height:32px; margin-bottom:var(--s-2); padding:var(--s-2); border-radius:var(--r-md); background:color-mix(in srgb,var(--bg-deep) 70%,transparent); border:1px dashed var(--border-soft); }
   .pb .manual-tags.empty { border-style:dashed; padding:var(--s-2) var(--s-3); }
-  .pb .manual-tags-empty-hint { margin:0; font-size:var(--fs-label-xs); color:var(--text-muted); line-height:1.5; }
+  .pb .manual-tags-empty-hint { margin:0; font-size:var(--fs-label-xs); color:var(--text-muted); line-height:var(--lh-body); }
   .pb .manual-tag {
     display:inline-flex; flex-direction:column; align-items:flex-start; gap:1px;
     padding:4px 22px 4px 10px; position:relative;
@@ -42,7 +42,7 @@
     opacity:.88;
   }
   .pb .manual-tag-en { font-family:var(--font-mono); font-weight:700; letter-spacing:.02em; }
-  .pb .manual-tag-cn { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:1.3; }
+  .pb .manual-tag-cn { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-tight); }
   .pb .manual-tag .tag-remove { position:absolute; top:2px; right:4px; }
   .pb .outfit-presets {
     display:grid; gap:var(--s-2); margin:var(--s-3) 0;
@@ -84,7 +84,7 @@
   }
   .pb .tag-remove {
     border:0; background:transparent; color:inherit; cursor:pointer;
-    font:inherit; opacity:.7; line-height:1; padding:0;
+    font:inherit; opacity:.7; line-height:var(--lh-flush); padding:0;
   }
   .pb .tag-remove:hover { opacity:1; }
   .pb .tag-input {

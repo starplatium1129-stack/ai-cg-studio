@@ -96,7 +96,7 @@ function dismiss() {
   letter-spacing: .14em;
 }
 .guest-guide-body h2 { margin: var(--s-1) 0 var(--s-2); }
-.guest-guide-body p { margin: 0 0 var(--s-3); color: var(--text-secondary); line-height: 1.7; }
+.guest-guide-body p { margin: 0 0 var(--s-3); color: var(--text-secondary); line-height: var(--lh-loose); }
 .guest-guide-body ul { margin: 0; padding-left: var(--s-4); display: grid; gap: var(--s-2); color: var(--text-secondary); }
 .guest-guide-body strong { color: var(--text-primary); }
 @media (prefers-reduced-motion: reduce) {

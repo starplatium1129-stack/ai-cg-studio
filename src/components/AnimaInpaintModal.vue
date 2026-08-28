@@ -511,7 +511,7 @@ async function handleStart() {
   font-size: var(--fs-body-sm, 0.85rem);
   color: var(--text-muted, color-mix(in srgb, white 65%, transparent));
   margin: 0 0 var(--s-4) 0;
-  line-height: 1.5;
+  line-height: var(--lh-body);
 }
 
 .modal-intro b {
@@ -879,7 +879,7 @@ async function handleStart() {
   font-size: var(--fs-label);
   color: #fff;
   resize: vertical;
-  line-height: 1.4;
+  line-height: var(--lh-label);
 }
 
 .params-row {

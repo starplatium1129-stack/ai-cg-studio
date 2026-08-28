@@ -43,9 +43,8 @@
           </div>
         </details>
 
-        <!-- 主题切换 -->
+        <!-- 主题已锁定深色（2026-08-28 审计 · 方案 A），切换按钮移除 -->
         <AppSoundToggle />
-        <AppThemeToggle />
       </div>
 
       <!-- 移动端汉堡 -->
@@ -63,7 +62,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import AppThemeToggle from './AppThemeToggle.vue'
 import AppSoundToggle from './AppSoundToggle.vue'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 

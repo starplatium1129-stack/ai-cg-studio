@@ -186,5 +186,5 @@ function onKeydown(e: KeyboardEvent) {
   font-weight: 700;
 }
 
-.handle-arrow { line-height: 1; }
+.handle-arrow { line-height: var(--lh-flush); }
 </style>

@@ -7,7 +7,7 @@
    .pb-backup-overlay { position:fixed; inset:0; z-index:var(--z-overlay); display:grid; place-items:center; padding:var(--s-4); background:var(--art-backdrop); backdrop-filter:blur(10px); }
    .pb-backup-card { width:min(520px,100%); padding:var(--s-5); border:1px solid var(--border-strong); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); transform-origin:50% 42%; }
    .pb-backup-card h3 { font-size:var(--fs-title-xs); }
-   .pb-backup-card > p { margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
+   .pb-backup-card > p { margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-loose); }
    .pb-backup-summary { display:grid; gap:3px; margin:var(--s-4) 0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
    .pb-backup-summary strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-primary); font-size:var(--fs-label); }
    .pb-backup-summary span { color:var(--text-muted); font-size:var(--fs-label-xs); }

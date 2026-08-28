@@ -295,14 +295,14 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 }
 .popular-card-name {
   font-size: var(--fs-label-sm);
-  line-height: 1.2;
+  line-height: var(--lh-tight);
   text-align: center;
 }
 .popular-card-franchise {
   font-size: var(--fs-mono-xs);
   opacity: 0.55;
   text-align: center;
-  line-height: 1.2;
+  line-height: var(--lh-tight);
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -282,7 +282,7 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 }
 .batch-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
 .batch-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }
-.batch-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.6; }
+.batch-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
 .batch-step { color: var(--accent); font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
 
 /* ── 配置态 ── */
@@ -301,7 +301,8 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
   font-size: var(--fs-label-sm); cursor: pointer;
   transition: background var(--motion-hover), color var(--motion-hover);
 }
-.batch-seg button:disabled { opacity: .45; cursor: not-allowed; }
+/* 审计修复: 不用 opacity 压字 */
+.batch-seg button:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
 .batch-seg button.active { background: var(--accent); color: var(--text-inverse); }
 
 .batch-scene-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }

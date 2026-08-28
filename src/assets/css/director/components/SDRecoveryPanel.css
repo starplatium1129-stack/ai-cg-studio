@@ -6,7 +6,7 @@
   .pb .sd-recovery { max-width:620px; margin:var(--s-3) auto 0; padding:var(--s-3); text-align:left; border:1px solid color-mix(in srgb,var(--warning) 45%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--warning) 8%,transparent); color:var(--text-secondary); }
   .pb .sd-recovery[hidden] { display:none; }
   .pb .sd-recovery-title { color:var(--warning-text); font-size:var(--fs-label); font-weight:800; }
-  .pb .sd-recovery-copy { margin-top:4px; font-size:var(--fs-label-sm); line-height:1.6; }
+  .pb .sd-recovery-copy { margin-top:4px; font-size:var(--fs-label-sm); line-height:var(--lh-body); }
   .pb .sd-recovery-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-2); }
   .pb .sd-recovery details { margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-mono-sm); }
   .pb .sd-recovery summary { cursor:pointer; }

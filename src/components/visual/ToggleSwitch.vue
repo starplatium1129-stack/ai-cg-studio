@@ -41,7 +41,7 @@ function onChange(event: Event) {
   cursor: pointer;
   color: inherit;
   font-size: inherit;
-  line-height: 1;
+  line-height: var(--lh-flush);
   flex-shrink: 0;
 }
 .toggle-switch input {

@@ -201,7 +201,7 @@ const { show: showToast } = useToast()
 .mapping-label { font-size:var(--fs-label-sm); color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:var(--s-1); }
 .mapping-value { font-size:var(--fs-body); font-weight:600; }
 .prompt-label { margin-bottom:var(--s-1); color:var(--accent); font-size:var(--fs-label-sm); font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
-.prompt-code { padding:var(--s-3); background:var(--bg-elevated); border-radius:var(--r-md); font-family:var(--font-mono); font-size:var(--fs-mono-sm); line-height:1.7; margin-bottom:var(--s-3); word-break:break-word; }
+.prompt-code { padding:var(--s-3); background:var(--bg-elevated); border-radius:var(--r-md); font-family:var(--font-mono); font-size:var(--fs-mono-sm); line-height:var(--lh-loose); margin-bottom:var(--s-3); word-break:break-word; }
 :deep(.violate) { color:var(--danger-text); text-decoration:underline wavy; }
 .art-warn { display:none; align-items:center; gap:var(--s-2); background:color-mix(in srgb,var(--warning) 12%,transparent); border:1px solid var(--warning); border-radius:var(--r-md); padding:var(--s-2) var(--s-3); margin-bottom:var(--s-3); color:var(--warning-text); font-size:var(--fs-label); }
 .art-warn.show { display:flex; }
@@ -222,9 +222,9 @@ const { show: showToast } = useToast()
 .lighting-mini { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); text-align:center; }
 .lighting-icon { margin-bottom:2px; font-size:var(--fs-title); }
 .lighting-name { font-size:var(--fs-body-sm); font-weight:600; }
-.lighting-reason { font-size:var(--fs-label-xs); color:var(--accent); font-style:italic; margin-top:2px; line-height:1.3; }
+.lighting-reason { font-size:var(--fs-label-xs); color:var(--accent); font-style:italic; margin-top:2px; line-height:var(--lh-tight); }
 
-.fade-up-enter-active { transition:opacity .3s,transform .3s; }
+.fade-up-enter-active { transition:opacity var(--motion-route),transform var(--motion-route); }
 .fade-up-enter-from { opacity:0; transform:translateY(12px); }
 
 @media(max-width:768px) { .art-ref { grid-template-columns:1fr; } }

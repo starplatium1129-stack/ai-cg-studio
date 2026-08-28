@@ -10,7 +10,7 @@
   .pb .decision-summary::-webkit-details-marker { display:none; }
   .pb .decision-summary::after {
     content:'›'; flex:0 0 auto; margin-left:auto; color:var(--text-muted);
-    font-size:var(--fs-body-lg); line-height:1; transform:rotate(90deg);
+    font-size:var(--fs-body-lg); line-height:var(--lh-flush); transform:rotate(90deg);
     transition:transform var(--motion-hover) var(--ease-out),color var(--motion-hover);
   }
   .pb .decision-fold[open] > .decision-summary { margin-bottom:var(--s-3); }

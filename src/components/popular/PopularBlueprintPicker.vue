@@ -184,7 +184,7 @@ const categoryChips = computed(() => {
 .blueprint-desc {
   font-size: var(--fs-mono-sm);
   opacity: 0.7;
-  line-height: 1.4;
+  line-height: var(--lh-label);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;

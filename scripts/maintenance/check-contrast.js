@@ -1,6 +1,9 @@
 'use strict';
 
-// 对比度核算 —— 验证设计 token 在两个主题下是否满足 DESIGN.md §Colors 的 WCAG AA。
+// 对比度核算 —— 验证设计 token 是否满足 DESIGN.md §Colors 的 WCAG AA。
+// 2026-08-28: 主题锁定深色(美术审计 · 方案 A)，浅色覆盖已从设计系统移除，
+// 这里只核算深色一套。若未来恢复双主题，把 block('[data-theme="light"]')
+// 与下面的主题循环加回来即可。
 // 用法: node scripts/maintenance/check-contrast.js
 //
 // 只核算"会被当文字色使用"的 token(功能色 + mood + 角色品牌色)。
@@ -32,7 +35,7 @@ function ratio(fg, bg) {
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 
-// 从 :root 与 [data-theme="light"] 各自取 token 值
+// 从 :root 取 token 值（深色是唯一主题）
 function block(selector) {
   const index = css.indexOf(selector);
   if (index < 0) return {};
@@ -45,7 +48,6 @@ function block(selector) {
 }
 
 const dark = block(':root');
-const light = block('[data-theme="light"]');
 
 // 真正会被当文字色使用的 token。
 // 功能色与 mood 色的原 token 只做背景/描边,故不在此列 —— 文字走 --*-text。
@@ -54,7 +56,7 @@ const TEXT_TOKENS = [
   '--mood-joy-text', '--mood-love-text', '--mood-calm-text',
   '--mood-sad-text', '--mood-tension-text', '--mood-warmth-text',
   '--nene-violet', '--natsume-amber', '--accent', '--accent-violet',
-  '--text-primary', '--text-secondary', '--text-muted'
+  '--text-primary', '--text-secondary', '--text-muted', '--text-disabled'
 ];
 
 // 解开 var(--x) 别名链,拿到最终字面值
@@ -108,7 +110,7 @@ function resolveColor(tokens, expr, parentRgb, depth) {
 
 let failures = 0;
 
-for (const [themeName, tokens] of [['dark', dark], ['light', { ...dark, ...light }]]) {
+for (const [themeName, tokens] of [['dark', dark]]) {
   const deepRaw = tokens['--bg-deep'];
   if (!/^#/.test(deepRaw || '')) { console.log(themeName + ': 背景不是 hex,跳过'); continue; }
   const deep = hexToRgb(deepRaw);
@@ -133,7 +135,7 @@ for (const [themeName, tokens] of [['dark', dark], ['light', { ...dark, ...light
 // AppToast 的四种类型只靠图标颜色区分,浅色主题下曾低到 1.90。
 const NON_TEXT_TOKENS = ['--success', '--warning', '--danger', '--info'];
 let nonTextFailures = 0;
-for (const [themeName, tokens] of [['dark', dark], ['light', { ...dark, ...light }]]) {
+for (const [themeName, tokens] of [['dark', dark]]) {
   const deep = hexToRgb(tokens['--bg-deep']);
   const bg = compositeSurface(tokens, '--bg-elevated', deep) || deep;
   console.log('\n=== ' + themeName + ' theme / 非文字图形 3:1 (--bg-elevated) ===');

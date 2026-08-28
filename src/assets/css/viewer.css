@@ -30,7 +30,7 @@
   letter-spacing: .13em;
   text-transform: uppercase;
 }
-.viewer-story { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.8; }
+.viewer-story { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-loose); }
 .viewer-story-on-art { margin: var(--s-5) 0; color: var(--on-art-primary); font-style: italic; }
 .viewer-actions { display: grid; gap: var(--s-2); margin-top: var(--s-5); }
 .viewer-actions .btn { justify-content: center; }

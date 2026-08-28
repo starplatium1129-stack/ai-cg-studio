@@ -24,7 +24,7 @@
     background: var(--bg-deep);
     color: var(--text-primary);
     font: 400 var(--fs-label-sm) var(--font-mono);
-    line-height: 1.5;
+    line-height: var(--lh-body);
     outline: none;
   }
   .pb .negative-editor textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }

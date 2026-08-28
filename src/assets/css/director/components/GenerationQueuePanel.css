@@ -14,3 +14,19 @@
   .pb .sd-queue-meta { color:var(--text-muted); font-size:var(--fs-mono-sm); }
   .pb .sd-queue-remove { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
   .pb .sd-queue-remove:hover { color:var(--danger-text); }
+
+  /* ---- 日系演出层（2026-08-28 新增）----
+     .sd-queue 需要定位上下文，否则 burst 的 absolute 会跑到更外层去；
+     .sd-queue-item-active 还要 overflow:hidden 才能把速度线裁在圆角内。
+     两个图层都是装饰（模板里已 aria-hidden），不参与无障碍树。 */
+  .pb .sd-queue { position:relative; }
+  .pb .sd-queue-item-active { position:relative; overflow:hidden; }
+  .pb .sd-queue-item-active .sd-queue-index,
+  .pb .sd-queue-item-active .sd-queue-copy { position:relative; z-index:var(--z-base); }
+  .pb .sd-queue-burst {
+    position:absolute; inset:0; z-index:var(--z-raised);
+    display:grid; place-items:center;
+    overflow:hidden; border-radius:var(--r-md); pointer-events:none;
+  }
+  .pb .sd-queue-burst .fx-focus-lines { position:absolute; inset:0; }
+  .pb .sd-queue-burst .fx-onome { position:relative; font-size:var(--fs-title); }

@@ -367,7 +367,7 @@ onMounted(() => { void init() })
   gap: var(--s-3);
   padding: var(--s-5);
 }
-.pop-hero-copy .subtitle { color: var(--text-secondary); line-height: 1.7; margin: 0; }
+.pop-hero-copy .subtitle { color: var(--text-secondary); line-height: var(--lh-loose); margin: 0; }
 .pop-hero-field {
   min-width: 0;
   /* 剪影点阵需要足够高度承载人物细节（脸部/服装结构） */
@@ -388,7 +388,7 @@ onMounted(() => { void init() })
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-.pop-hero-stat strong { font-size: var(--fs-title-sm); color: var(--accent); line-height: 1; }
+.pop-hero-stat strong { font-size: var(--fs-title-sm); color: var(--accent); line-height: var(--lh-flush); }
 .pop-hero-stat strong.adult { color: var(--danger-text); }
 .pop-hero-stat span { margin-left: 4px; }
 
@@ -580,7 +580,7 @@ onMounted(() => { void init() })
   width: 100%; height: 100%;
   object-fit: cover; object-position: center 22%;
   opacity: 0; filter: blur(6px);
-  transition: opacity .28s var(--ease-out), filter .5s var(--ease-out), transform var(--motion-surface) var(--ease-out);
+  transition: opacity var(--motion-surface) var(--ease-out), filter var(--motion-atmosphere) var(--ease-out), transform var(--motion-surface) var(--ease-out);
 }
 .pop-thumb img.pop-thumb-ready { opacity: 1; filter: blur(0); }
 .pop-thumb img.pop-thumb-missing { display: none; }
@@ -636,7 +636,7 @@ onMounted(() => { void init() })
   margin: 0;
   color: var(--text-secondary);
   font-size: var(--fs-label-sm);
-  line-height: 1.55;
+  line-height: var(--lh-body);
 }
 .pop-meta { display: flex; flex-wrap: wrap; gap: var(--s-1); color: var(--text-muted); font-size: var(--fs-mono-xs); }
 .pop-meta span + span::before { content: ' · '; margin-right: var(--s-1); color: var(--border-strong); }

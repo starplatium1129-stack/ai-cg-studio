@@ -20,7 +20,8 @@ import './assets/css/scene-card.css'
 import './assets/css/viewer.css'
 import './assets/css/mood.css'
 
-// 初始主题：优先用户选择，其次跟随系统 prefers-color-scheme
+// 主题：2026-08-28 起锁定深色（美术审计 · 方案 A），preferredTheme() 恒为 'dark'。
+// 属性仍然写入：装饰层强度选择器与粒子画布的深色判据依赖它。
 document.documentElement.setAttribute('data-theme', preferredTheme())
 
 createApp(App).use(createPinia()).use(router).mount('#app')

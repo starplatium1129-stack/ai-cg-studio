@@ -13,7 +13,7 @@
       radial-gradient(circle at 28% 18%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 35%),
       linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 86%,transparent),var(--bg-deep));
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-lg);
-    transition:background .7s ease,border-color .58s ease,box-shadow .58s ease;
+    transition:background var(--motion-atmosphere) ease,border-color var(--motion-atmosphere) ease,box-shadow var(--motion-atmosphere) ease;
   }
   .pb .stage-placeholder::before { content:''; position:absolute; inset:0; z-index:var(--z-stage-backdrop); background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,color-mix(in srgb,var(--character-accent) 8%,transparent),transparent 26%); pointer-events:none; }
 
@@ -49,7 +49,7 @@
     border-radius:50%;
     pointer-events:none;
     opacity:0;
-    transition:opacity .6s var(--ease-out);
+    transition:opacity var(--motion-atmosphere) var(--ease-out);
     background:
       conic-gradient(from 20deg, transparent 0 42%, color-mix(in srgb,var(--accent) 34%,transparent) 58% 76%, transparent 94%),
       radial-gradient(circle, transparent 0 60%, color-mix(in srgb,var(--accent-violet) 16%,transparent) 65% 67%, transparent 69%);
@@ -78,7 +78,7 @@
   .pb .stage-placeholder.is-error .stage-ready::before { background:var(--danger); box-shadow:0 0 10px color-mix(in srgb,var(--danger) 50%,transparent); }
   .pb .stage-placeholder.is-paused .stage-ready { color:var(--warning-text); }
   .pb .stage-placeholder.is-paused .stage-ready::before { background:var(--warning); box-shadow:0 0 10px color-mix(in srgb,var(--warning) 50%,transparent); }
-  .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); pointer-events:none; transition:opacity .5s ease,filter .5s ease,transform .5s var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
+  .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); pointer-events:none; transition:opacity var(--motion-atmosphere) ease,filter var(--motion-atmosphere) ease,transform var(--motion-atmosphere) var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
   @keyframes stageMuseBreath { 0% { transform: translateY(0) scale(1); filter: saturate(.76) contrast(.96); } 100% { transform: translateY(-7px) scale(1.018); filter: saturate(.88) contrast(1.02); } }
   .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.34; animation: stageMuseBreath 6s ease-in-out infinite alternate; }
   .pb[data-character="natsume"] .stage-placeholder {
@@ -95,7 +95,7 @@
   .pb .stage-placeholder-icon { width:68px; height:68px; display:grid; place-items:center; margin:0 auto var(--s-4); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-2xl); background:color-mix(in srgb,var(--accent-soft) 68%,transparent); color:var(--accent); font:700 var(--fs-stage-glyph) var(--font-serif); box-shadow:0 22px 64px var(--accent-glow); }
   /* 装饰性汉字水印「綾」使用独立光学字号,不属于文本字号阶梯 */
   .pb .stage-placeholder-title { color:var(--text-primary); font-size:var(--fs-title-xs); font-weight:720; letter-spacing:-.01em; }
-  .pb .stage-placeholder-copy { max-width:330px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label); line-height:1.65; }
+  .pb .stage-placeholder-copy { max-width:330px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label); line-height:var(--lh-loose); }
   .pb .stage-quick-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:var(--s-4); }
   .pb .stage-quick-actions .btn { min-height:40px; }
   .pb.step-4 .stage-placeholder { display:none; }
@@ -151,7 +151,7 @@
   .pb .scene-card[data-category="Active_Sync_Scenes"]::before { background:linear-gradient(180deg,#7C4DFF,#311B92); }
   .pb .scene-card[data-category="战斗"]::before { background:linear-gradient(180deg,#EF5350,#B71C1C); }
   .pb .scene-name { display:block; font-weight:700; font-size:var(--fs-body); margin-bottom:2px; }
-  .pb .scene-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; }
+  .pb .scene-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:var(--lh-body); }
   .pb .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
   .pb .scene-tag { font-size:var(--fs-label-sm) !important; padding:3px 8px; font-weight:600; background:var(--bg-deep); border-radius:var(--r-sm); color:var(--text-muted); }
   .pb .scene-tag.emotion { background:var(--accent-soft); color:var(--accent); }

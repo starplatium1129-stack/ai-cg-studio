@@ -9,7 +9,7 @@
    离线可用且不依赖 Google Fonts；这里只需声明 font-family。 */
 
 :root {
-  /* ---- Core palette (dark default, overridden in [data-theme="light"]) ----
+  /* ---- Core palette (唯一主题：深色；2026-08-28 起不再有浅色覆盖) ----
      2026-07-31 暗色重塑：从"灰紫蓝"走向浓郁紫罗兰(带微品红)，与宁宁粉光晕
      呼应，摆脱通用 AI 站深蓝灰。对比度经 check-contrast 验证（text-muted
      在 bg-elevated 上仍 ≥4.5:1）。 */
@@ -35,6 +35,13 @@
   /* 三级说明文字别名：页面代码（AnimaInpaintModal 等）按 primary/secondary/
      tertiary 三级引用，收敛到 muted 同值，避免未定义 token 静默失效 */
   --text-tertiary:  var(--text-muted);
+  /* 禁用态文字（2026-08-28 审计修复）。此前全项目用 opacity:.45 压字实现禁用态，
+     alpha 合成后实测仅 3.45:1（深色底），远低于 AA 4.5:1 —— 而这些按钮上写着
+     「生成」「发送」这类需要读懂才知道为什么不能点的文案，WCAG 1.4.3 对纯装饰
+     控件的豁免并不适用。改为直接给达标色值：在 --bg-elevated 上约 4.8:1，
+     比 --text-secondary(5.7:1) 与 --text-muted(5.3:1) 更弱，仍保持层级关系。
+     注意只改文字色，容器该灰还是让它灰。 */
+  --text-disabled:  #9d98b4;
 
   /* ---- Accent (樱花粉 — 仅高亮/CTAs) ---- */
   --accent:         #f4a6d7;
@@ -74,7 +81,11 @@
   --archive-grid:        rgba(236, 226, 255, 0.05);
   --archive-line:        rgba(236, 226, 255, 0.14);
   --archive-glass:       rgba(25, 18, 48, 0.76);
-  --r-dossier:           14px;
+  /* 档案面板圆角 —— 语义别名，值统一走 --r-lg。
+     2026-08-28 审计：此前这里硬写 14px，与 --r-lg 完全同值却互不相干，
+     调整圆角阶梯时极易只改一处。保留 dossier 这个语义名（它标记的是
+     "档案夹质感"的面板），但让它指向唯一的真相。 */
+  --r-dossier:           var(--r-lg);
   --r-terminal:          6px;
   --line-hairline:       1px;
 
@@ -150,6 +161,22 @@
   --fs-glyph-lg: 3rem;
   --fs-brand-caption: .55rem;
 
+  /* ---- Line height —— 与字号阶梯配套（2026-08-28 补齐）----
+     此前全站 191 处裸值散布在 18 种取值上，其中 1.5 与 1.55 这类连设计意图都
+     说不清的偏差就占了 61 处 —— 有字号阶梯却没有行高阶梯，是最大的系统性缺口。
+     档位按"实测众数"定而不是按理想值定：让收敛带来的视觉变化最小
+     （单处最大 0.1，多数仅 0.05），避免一次性改动把密集界面撑破。
+     flush  单行/紧凑控件（按钮、徽章、机读标签）
+     tight  大标题与展示字
+     label  控件标签与卡片标题
+     body   UI 正文（密集区，占比最高）
+     loose  长文阅读（DESIGN.md typography.body 的 1.7 落在这档） */
+  --lh-flush: 1;
+  --lh-tight: 1.25;
+  --lh-label: 1.4;
+  --lh-body: 1.55;
+  --lh-loose: 1.7;
+
   /* ---- Character accents (route-aware; director may animate) ---- */
   --character-accent: var(--accent);
   --character-accent-hover: var(--accent-hover);
@@ -162,10 +189,10 @@
 
   /* ---- Radius (DESIGN.md §Shapes) ----
      sm/md 输入与紧凑控件 | lg/xl 卡片与区块 | 2xl 浮层 | stage 画面框 | pill 筛选与状态
-     2026-07-31 视觉审查修订：整体收紧（md 8→4 / lg 12→6 / xl 16→8），
-     大圆角弱化战术/工业属性，2-4px 是方舟档案语言的核心特征。 */
-  /* 圆角阶梯：博客式二次元圆润感（2026-08-01 从方舟战术小圆角放宽，
-     与 DESIGN.md §Shapes 同步）。pill 仍只用于胶囊/徽章/筛选。 */
+     当前阶梯（2026-08-01 定稿）：博客式二次元圆润感，已从早期的方舟战术小圆角
+     （md 4 / lg 6）放宽到 md 10 / lg 14 / xl 16，与 DESIGN.md §Shapes 的
+     「控件 8–10px、卡片 14–20px、主舞台可到 24px」同步。
+     变更史不写在这里 —— 令牌区注释与声明不一致会让 AI 按错误基准改样式。 */
   --r-sm: 8px; --r-md: 10px; --r-lg: 14px; --r-xl: 16px;
   --r-2xl: 20px; --r-3xl: 22px; --r-stage: 24px; --r-pill: 999px;
   --r-brand-mark: 7px 12px 7px 12px;
@@ -250,98 +277,6 @@
   --stage-amber:  linear-gradient(155deg, #3a3a2a 0%, #24241a 48%, #1a1a10 100%);
 }
 
-/* ============================================================
-    Light theme — 画册纸白
-    气质:暖、安静、层次收窄;文字反而更清(仍守 WCAG AA 4.5:1)。
-    做法:底色压暖米纸,卡片提到近纯白(明度差 ~9%),描边/阴影走暖棕墨,
-    装饰层(光斑/玻璃边)压到几乎看不见。原先冷灰底 + 紫描边是照深色换算的,
-    卡片浮不起来,整页像未上色线稿。
-   ============================================================ */
-[data-theme="light"] {
-  /* 2026-08-01 博客式粉嫩化:从"暖米纸"转向"粉白梦幻"(樱花粉调),
-     文字色与深色 accent 值不动,对比度经 check-contrast 重新核算。 */
-  --bg-deep:       #f8eef4;     /* 输入框/次级底:粉白 */
-  --bg-base:       #fdf5fa;     /* 页面:粉白纸 */
-  --bg-surface:    rgba(255, 250, 254, 0.94); /* 卡片:近纯白,与粉底拉开 */
-  --bg-elevated:   rgba(255, 251, 254, 0.98); /* 浮层:几乎不透 */
-  --bg-hover:      rgba(254, 245, 250, 0.96); /* 悬停:淡粉 */
-
-  --border-soft:   rgba(196, 116, 170, 0.18); /* 粉紫描边,安静 */
-  --border-strong: rgba(178, 96, 150, 0.40);  /* 浅色下硬边框足够对比 */
-
-  --text-primary:   #2b2620;   /* 暖墨,高对比 */
-  --text-secondary: #5c554c;   /* 暖褐灰 */
-  --text-inverse:   #FFFEFC;   /* 彩底上的纸白字 */
-
-  --accent:         #a04472;   /* 玫瑰粉,浅纸上够 AA */
-  --accent-hover:   #8f3a66;
-  --accent-soft:    rgba(160, 68, 114, 0.10);
-  --accent-glow:    rgba(160, 68, 114, 0.18);
-  --accent-violet:  #5f4499;
-  --archive-blue:   #1a7fa5;
-  --archive-blue-soft: rgba(26, 127, 165, 0.10);
-  --archive-cyan-glow: rgba(62, 178, 205, 0.22); /* 档案 scan line / 签名光 */
-  /* 角色品牌色:浅纸上当文字/描边用,必须压深到 AA */
-  --nene-violet:    #5a3d9e;
-  --natsume-amber:  #7a5210;
-  --editorial-gold: #896121;
-  --editorial-gold-soft: rgba(137, 97, 33, 0.09);
-
-  /* 粉紫柔影:读作纸影,不是灰雾 */
-  --shadow-sm: 0 1px 3px rgba(158, 90, 130, 0.08);
-  --shadow-md: 0 4px 14px rgba(158, 90, 130, 0.10);
-  --shadow-lg: 0 10px 28px rgba(158, 90, 130, 0.13);
-
-  --nav-bg: rgba(253, 245, 250, 0.88);
-  --glass-highlight: rgba(255, 252, 254, 0.92);
-  --glass-fill: rgba(255, 250, 254, 0.72);
-  --glass-fill-strong: rgba(255, 251, 254, 0.92);
-  --art-mat: #f7ebf2;          /* 画作衬垫:粉纸卡 */
-
-  /* 功能色原 token:浅纸上做描边/图标(非文字图形,SC 1.4.11 阈值 3:1)。
-     原值 #66BB6A / #FFA726 / #42A5F5 在 --bg-elevated 上只有 1.9–2.6:1,
-     而状态点、callout 左边框、toast 图标只靠颜色区分,故压深到 3:1 以上。
-     深色主题保持原值(深底上本就足够)。 */
-  --success:           #559d58;
-  --warning:           #c9841e;
-  --info:              #3589d4;   /* 2026-08-01 粉白底上压深:原 #3d99e4 仅 2.98:1(<3:1) */
-
-  /* 文字专用色阶:相对暖米纸 #f6f3ec 核算,全部 >=4.5:1 */
-  --success-text:      #356a3a;
-  --warning-text:      #7a5210;
-  --danger-text:       #a81f1c;
-  --info-text:         #1a5f96;
-  --mood-joy-text:     #6e5a10;
-  --mood-love-text:    #a02554;
-  --mood-calm-text:    #3f6839;
-  --mood-sad-text:     #2a6090;
-  --mood-tension-text: #7e368a;
-  --mood-warmth-text:  #7e5412;
-  --text-muted:        #5e574e;
-
-  --glass-edge: rgba(196, 116, 170, 0.22);
-  --glass-specular: rgba(255, 252, 254, 0.96);
-  --glass-shadow: 0 14px 36px rgba(158, 90, 130, 0.10);
-
-  /* 立绘舞台底的浅色版:画册纸上的淡紫/淡琥珀,而不是暗房 */
-  --stage-violet: linear-gradient(155deg, #f8effa 0%, #eadcf2 50%, #d3c1df 100%);
-  --stage-amber:  linear-gradient(155deg, #fff8eb 0%, #f1e3c5 50%, #ddc99c 100%);
-  /* rella 舞台浅色版:淡蓝紫晨纸,不是深夜空 */
-  --stage-rella: linear-gradient(160deg, #eef3fc 0%, #e3e9f7 46%, #d5ddf1 100%);
-}
-
-/* 浅纸上的背景光斑:深色主题是氛围,浅纸上是脏渍 —— 压到几乎看不见 */
-[data-theme="light"] body::before {
-  opacity: .28;
-  background: radial-gradient(circle, color-mix(in srgb, var(--nene-violet) 12%, transparent) 0, transparent 68%);
-}
-[data-theme="light"] body::after {
-  opacity: .22;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent) 0, transparent 70%);
-}
-/* rella 星野层同理:浅纸上只留极淡的星点剪影 */
-[data-theme="light"] .starfield { opacity: .3; }
-[data-theme="light"] .starfield::before { opacity: .18; }
 
 /* Same-origin page changes use a short optical dissolve where supported. */
 @view-transition { navigation: auto; }
@@ -363,7 +298,7 @@ body {
   font-family: var(--font-sans);
   background: var(--bg-base);
   color: var(--text-primary);
-  line-height: 1.7;
+  line-height: var(--lh-loose);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
@@ -380,9 +315,14 @@ body {
   background-size: 24px 24px, auto, auto, auto, auto;
 }
 
+/* 装饰层统一加图层隔离（2026-08-28）：contain 把重绘范围锁在图层自身，
+   will-change 提前提层，避免这两个 fixed 全屏层在动的时候把整页拉进重绘。
+   此前全项目 contain 使用数为 0、will-change 仅 7 处，而 backdrop-filter 有 142 处。 */
 body::before, body::after {
   content: ""; position: fixed; z-index: var(--z-below); pointer-events: none; border-radius: 50%;
   filter: blur(2px); opacity: .28;
+  contain: layout paint style;
+  will-change: transform;
 }
 body::before {
   width: 42rem; height: 42rem; top: -24rem; right: -16rem;
@@ -399,9 +339,14 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
   opacity: .72;
   animation: float-orb 18s ease-in-out infinite alternate;
 }
+/* 次光斑保留静态渲染，不再浮动（2026-08-28 装饰层削减 4 → 2）。
+   此前首屏同时跑 4 层常驻全屏动画：两个光斑 + 星野 + bokeh，
+   其中主光斑是 42rem 见方带 blur(2px) 的图层。装饰层越热闹，
+   画面（也就是这个工具真正的主体）越被稀释 —— 这与 DESIGN.md
+   「不要在没有叙事目的时加 glow / blur / 浮动形状」是自相矛盾的。
+   现在只留主光斑 + 星野两层在动，其余保留静态观感。 */
 body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::after {
   opacity: .62;
-  animation: float-orb 22s ease-in-out infinite alternate-reverse;
 }
 @keyframes float-orb { to { transform: translate3d(3rem, 1.5rem, 0) scale(1.05); } }
 
@@ -430,7 +375,7 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
   writing-mode: vertical-rl;
   font: 700 var(--fs-display) var(--font-serif);
   letter-spacing: 0.22em;
-  line-height: 1.25;
+  line-height: var(--lh-tight);
   color: color-mix(in srgb, var(--accent-violet) 9%, transparent);
   text-orientation: upright;
 }
@@ -471,6 +416,8 @@ body:has(.pb, .training-page) .kana-watermark { opacity: 0; }
     radial-gradient(1.5px 1.5px at 38% 90%, color-mix(in srgb, var(--rella-star) 48%, transparent), transparent 100%),
     radial-gradient(1px 1px at 57% 38%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 100%);
   animation: none;
+  contain: layout paint style;
+  will-change: transform, opacity;
 }
 body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero) .starfield {
   opacity: 1;
@@ -480,23 +427,22 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
   from { opacity: .4; transform: translateY(0); }
   to   { opacity: .72; transform: translateY(-14px); }
 }
-/* 光斑层独立呼吸：与星点错开节奏（双背景动画需要拆层，光斑用单独伪层实现） */
+/* 光斑层（bokeh）—— 2026-08-28 改为静态。
+   原先它用 bokeh-drift 26s 独立漂移，与星点的 starfield-float 错开节奏；
+   加上两个浮动光斑，艺术页同时有 4 层全屏 fixed 动画在跑。
+   现在只留"主光斑 + 星野"两层动，bokeh 以固定透明度留在原位 ——
+   观感上仍有柔光层次，但少了两层的合成与填充开销。 */
 .starfield::before {
   content: "";
   position: absolute;
   inset: 0;
+  opacity: .45;
   background-image:
     radial-gradient(9rem 9rem at 58% 88%, color-mix(in srgb, var(--rella-violet) 9%, transparent), transparent 60%),
     radial-gradient(7rem 7rem at 18% 58%, color-mix(in srgb, var(--rella-cyan) 7%, transparent), transparent 62%);
   animation: none;
 }
-body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero) .starfield::before {
-  animation: bokeh-drift 26s ease-in-out infinite alternate;
-}
-@keyframes bokeh-drift {
-  from { opacity: .35; transform: translate3d(0, 0, 0) scale(1); }
-  to   { opacity: .6; transform: translate3d(-1.5rem, 1rem, 0) scale(1.06); }
-}
+/* @keyframes bokeh-drift 已随之移除 —— 不留没有引用者的死关键帧。 */
 @media (prefers-reduced-motion: reduce) {
   body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::before,
   body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::after,
@@ -507,9 +453,21 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
 a { color: var(--accent); text-decoration: none; transition: color var(--motion-hover); }
 a:hover { color: var(--accent-hover); }
 
-:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+/* 焦点可见性兜底（2026-08-28 审计修复）
+   原实现有两个问题：
+   1. :where() 贡献 0 特异性，整条只有 :focus-visible 的 (0,1,0)，
+      任何单类选择器（组件里的 .x:focus-visible { outline: none }）都能盖掉它 ——
+      这是 16 个 director 组件中 14 个看不到焦点环的根因；
+   2. 只枚举了原生控件，卡片/轨道项这类用 div + role 造的自定义交互元素漏在外。
+   这里把 :focus-visible 重复一次把特异性抬到 (0,2,0)，并补上 role 型控件；
+   仍低于组件自定义的 (0,2,0) 同分规则（后者在后面加载、会胜出），
+   所以不会抢走 SceneCard 那种精心设计的焦点环。 */
+:where(a, button, input, select, textarea, summary, [tabindex],
+       [role="button"], [role="tab"], [role="option"], [role="menuitem"],
+       [role="switch"], [role="checkbox"], [role="radio"]):focus-visible:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+  border-radius: var(--r-xs);
 }
 
 img { max-width: 100%; display: block; }
@@ -663,7 +621,7 @@ body > *:has(+ .footer),
 .local-status-head { display:flex; align-items:center; justify-content:space-between; color:var(--accent); font: 800 var(--fs-mono-xs) var(--font-mono); letter-spacing:.14em; }
 .local-status-refresh { width:28px; height:28px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size: var(--fs-body-lg); }
 .local-status-refresh:hover { background:var(--accent-soft); color:var(--accent); }
-.local-status-summary { margin:5px 0 12px; color:var(--text-muted); font-size: var(--fs-mono-sm); line-height:1.55; }
+.local-status-summary { margin:5px 0 12px; color:var(--text-muted); font-size: var(--fs-mono-sm); line-height:var(--lh-body); }
 .local-status-services { display:grid; gap:6px; }
 .local-service { display:grid; grid-template-columns:28px 1fr auto; align-items:center; gap:8px; padding:9px; border:1px solid var(--border-soft); border-radius: var(--r-lg); background:color-mix(in srgb,var(--bg-deep) 72%,transparent); }
 .local-service-icon { display:grid; width:28px; height:28px; place-items:center; border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-muted); }
@@ -689,7 +647,7 @@ body > *:has(+ .footer),
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover),
               transform var(--motion-hover) var(--ease-out);
   font-size: var(--fs-body-lg);
-  line-height: 1;
+  line-height: var(--lh-flush);
 }
 .theme-toggle:hover {
   border-color: var(--accent);
@@ -732,7 +690,7 @@ body > *:has(+ .footer),
   font-size: clamp(1.35rem, 2vw, 1.55rem);
   font-weight: 750;
   letter-spacing: -.02em;
-  line-height: 1.2;
+  line-height: var(--lh-tight);
   margin-bottom: var(--s-2);
   background: none;
   -webkit-background-clip: unset;
@@ -785,14 +743,14 @@ body > *:has(+ .footer),
   font-size: clamp(1.55rem, 2.4vw, 2.4rem);
   font-weight: 760;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: var(--lh-flush);
 }
 .page-subtitle {
   margin: 10px 0 0;
   max-width: 640px;
   color: var(--text-secondary);
   font-size: var(--fs-body);
-  line-height: 1.7;
+  line-height: var(--lh-loose);
 }
 .page-intro {
   display: grid;
@@ -886,7 +844,7 @@ body > *:has(+ .footer),
   max-width: 520px;
   margin: 0 auto var(--s-5);
   color: var(--text-secondary);
-  line-height: 1.75;
+  line-height: var(--lh-loose);
 }
 .empty-state .btn { justify-content: center; }
 
@@ -911,7 +869,7 @@ body > *:has(+ .footer),
 /* ============================================================
    Typography
    ============================================================ */
-h1, h2, h3, h4 { line-height: 1.3; font-weight: 600; }
+h1, h2, h3, h4 { line-height: var(--lh-tight); font-weight: 600; }
 h2 { font-size: var(--fs-title); margin-bottom: var(--s-4); }
 h3 { font-size: var(--fs-title-sm); margin-bottom: var(--s-3); }
 p  { color: var(--text-secondary); margin-bottom: var(--s-3); }
@@ -1082,10 +1040,17 @@ a.btn-primary, a.btn-primary:hover, a.btn-primary:active { color: var(--text-inv
 a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text); }
 /* 统一按下反馈:抵消 hover 的上移,避免"按下去反而更高" */
 .btn:active:not(:disabled):not([aria-disabled="true"]) { transform: translateY(0) scale(.97); box-shadow: none; }
-/* 统一禁用态:同时覆盖真 disabled 与 aria-disabled 链接 */
+/* 统一禁用态:同时覆盖真 disabled 与 aria-disabled 链接
+   2026-08-28 审计修复：不再用 opacity 压字。alpha 合成后实测文字对比度只剩
+   3.45:1（深色 --bg-elevated 上），而按钮文案是「生成」「发送」这类需要读懂
+   才知道为什么不能点的内容，WCAG 1.4.3 的装饰豁免不适用。
+   改为显式压暗容器 + 给达标的文字色（--text-disabled 约 4.8:1），
+   视觉上仍是"灰下去"，但字还看得清。 */
 .btn:disabled,
 .btn[aria-disabled="true"] {
-  opacity: .45;
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -1116,7 +1081,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   font: 600 var(--fs-label-xs) var(--font-sans);
   letter-spacing: .02em;
 }
-.field-hint { color: var(--text-muted); font-size: var(--fs-mono-sm); line-height: 1.5; }
+.field-hint { color: var(--text-muted); font-size: var(--fs-mono-sm); line-height: var(--lh-body); }
 .input, .select, .textarea {
   width: 100%;
   min-height: 40px;
@@ -1128,7 +1093,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   font: 400 var(--fs-body) var(--font-sans);
   transition: border-color var(--motion-hover), box-shadow var(--motion-hover), background var(--motion-hover);
 }
-.textarea { min-height: 96px; resize: vertical; line-height: 1.6; }
+.textarea { min-height: 96px; resize: vertical; line-height: var(--lh-body); }
 .input-mono, .textarea-mono { font-family: var(--font-mono); font-size: var(--fs-label); }
 .input::placeholder, .textarea::placeholder { color: var(--text-muted); }
 .input:hover, .select:hover, .textarea:hover { border-color: var(--border-strong); }
@@ -1137,8 +1102,13 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   border-color: var(--accent);
   box-shadow: var(--ring);
 }
+/* 同 .btn:disabled —— 不用 opacity 压字（实测浅色底 3.01:1 不达 AA），
+   改为显式文字色 + 压暗底。 */
 .input:disabled, .select:disabled, .textarea:disabled {
-  opacity: .5; cursor: not-allowed; background: var(--bg-base);
+  color: var(--text-disabled);
+  border-color: var(--border-soft);
+  cursor: not-allowed;
+  background: var(--bg-base);
 }
 .input[aria-invalid="true"], .textarea[aria-invalid="true"] {
   --ring-color: var(--danger-text);
@@ -1271,14 +1241,14 @@ body.overlay-open { overflow: hidden; }
   font-size: clamp(1.55rem, 2.4vw, var(--fs-display));
   font-weight: 760;
   letter-spacing: -.03em;
-  line-height: 1.15;
+  line-height: var(--lh-flush);
 }
 .subtitle {
   max-width: 640px;
   margin: 0 0 var(--s-5);
   color: var(--text-secondary);
   font-size: var(--fs-body);
-  line-height: 1.7;
+  line-height: var(--lh-loose);
 }
 
 /* ---- Tag chip ---- */
@@ -1458,9 +1428,9 @@ body:has(.training-page) .route-atmosphere .route-index {
   outline-offset: 2px;
 }
 /* ---- Prose tones(替代散落各页的 color+font-size 内联组合) ---- */
-.lede      { color: var(--text-secondary); font-size: var(--fs-body-lg); line-height: 1.75; }
-.note      { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.7; }
-.note-sm   { color: var(--text-muted); font-size: var(--fs-label-sm); line-height: 1.6; }
+.lede      { color: var(--text-secondary); font-size: var(--fs-body-lg); line-height: var(--lh-loose); }
+.note      { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-loose); }
+.note-sm   { color: var(--text-muted); font-size: var(--fs-label-sm); line-height: var(--lh-body); }
 .note-mono { color: var(--text-muted); font: 400 var(--fs-mono-sm) var(--font-mono); }
 .emphasis  { color: var(--accent); font-weight: 600; }
 .section-title { margin: var(--s-6) 0 var(--s-3); font-size: var(--fs-title); }
@@ -1513,16 +1483,105 @@ body:has(.training-page) .route-atmosphere .route-index {
 [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity .52s var(--ease-out), transform .52s var(--ease-out);
+  transition: opacity var(--motion-atmosphere) var(--ease-out), transform var(--motion-atmosphere) var(--ease-out);
 }
 [data-reveal].revealed {
   opacity: 1;
   transform: none;
 }
-[data-reveal][data-reveal-delay="1"] { transition-delay: .08s; }
-[data-reveal][data-reveal-delay="2"] { transition-delay: .16s; }
-[data-reveal][data-reveal-delay="3"] { transition-delay: .24s; }
-[data-reveal][data-reveal-delay="4"] { transition-delay: .32s; }
+
+/* ============================================================
+   日系演出元素：集中线 / 速度线 / 拟声词
+   ------------------------------------------------------------
+   2026-08-28 补齐。项目已有的日系语汇是"静态质感"（1px 网点、竖排假名、
+   朱印、分镜角框、樱花景深），缺的是"事件性演出"—— 而这三类恰恰是
+   日系辨识度最高、且纯 CSS 就能做的。它们也天然满足 DESIGN.md 的规矩：
+   只为标记一个真实发生的事件（如"这一张出完了"）而存在，不是背景噪声。
+
+   使用约束：
+   - 全部 pointer-events:none 且建议 aria-hidden，它们是装饰，不是信息；
+   - 颜色一律走令牌，不写死色值；
+   - 动画只用 transform / opacity（合成器属性，符合动效铁律）；
+   - 一次只在一处出现，不做常驻氛围层（那正是这次要收敛的东西）。
+   ============================================================ */
+
+/* ── 集中線：从中心放射的漫画集中线，用于"事件完成"的瞬间闪光 ──
+   中心留空（mask 掏空内圈）是为了不糊住被强调的主体本身。 */
+.fx-focus-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: repeating-conic-gradient(from 0deg at 50% 50%,
+    transparent 0deg 2.2deg,
+    var(--accent-glow) 2.2deg 3.2deg);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 16%, #000 44%, transparent 76%);
+          mask: radial-gradient(circle at 50% 50%, transparent 16%, #000 44%, transparent 76%);
+}
+.fx-focus-lines.is-bursting { animation: fx-focus-burst var(--motion-route-cut) var(--ease-out) both; }
+@keyframes fx-focus-burst {
+  from { opacity: 0;  transform: scale(.55); }
+  30%  { opacity: .9; }
+  to   { opacity: 0;  transform: scale(1.3); }
+}
+
+/* ── 速度線：斜向细线横向流动，用于"进行中"的持续状态 ──
+   伪元素做到 200% 宽再 translateX(-50%)，这样流动走的是合成器，
+   而不是动画 background-position（那会逐帧重绘）。 */
+.fx-speed-lines {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.fx-speed-lines::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 200%;
+  background-image: repeating-linear-gradient(105deg,
+    transparent 0 6px,
+    var(--accent-soft) 6px 7px);
+  animation: fx-speed-scroll 1.1s linear infinite;
+}
+@keyframes fx-speed-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── 拟声詞：漫画式音效字，配合集中线使用 ──
+   paint-order 让描边画在填充之下，避免描边吃掉字形内侧。 */
+.fx-onome {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: .04em;
+  color: var(--accent);
+  -webkit-text-stroke: 3px var(--bg-deep);
+  paint-order: stroke fill;
+  transform: skewX(-8deg);
+  pointer-events: none;
+  opacity: 0;
+}
+.fx-onome.is-popping { animation: fx-onome-pop var(--motion-route-cut) var(--spring-bounce) both; }
+@keyframes fx-onome-pop {
+  0%   { opacity: 0;   transform: skewX(-8deg) scale(.5) rotate(-7deg); }
+  30%  { opacity: 1;   transform: skewX(-8deg) scale(1.18) rotate(3deg); }
+  62%  { opacity: 1;   transform: skewX(-8deg) scale(1) rotate(-1deg); }
+  to   { opacity: 0;   transform: skewX(-8deg) scale(1.06) translateY(-10px); }
+}
+
+/* 降级：动效关掉，但保留静态可见性 —— 拟声词承载的"完成了"是真实反馈，
+   不该因为 reduced-motion 就整个消失（JS 仍会在延时后移除它）。 */
+@media (prefers-reduced-motion: reduce) {
+  .fx-focus-lines.is-bursting,
+  .fx-onome.is-popping { animation: none; opacity: 1; }
+  .fx-speed-lines::before { animation: none; }
+}
+[data-reveal][data-reveal-delay="1"] { transition-delay: var(--motion-press); }
+[data-reveal][data-reveal-delay="2"] { transition-delay: var(--motion-hover); }
+[data-reveal][data-reveal-delay="3"] { transition-delay: var(--motion-surface); }
+[data-reveal][data-reveal-delay="4"] { transition-delay: var(--motion-route); }
 
 /* ── 脉冲点（在线状态） ── */
 @keyframes pulse-dot {
@@ -1660,9 +1719,9 @@ body:has(.training-page) .route-atmosphere .route-index {
   .artwork, .sample, .history-item, .tool-card, .stat-card
 ) {
   transition:
-    background-color .22s ease,
-    border-color     .22s ease,
-    color            .12s ease;
+    background-color var(--motion-control) ease,
+    border-color     var(--motion-control) ease,
+    color            var(--motion-press) ease;
 }
 /* 禁止为动画元素叠加颜色过渡（避免闪烁） */
 [data-no-theme-transition],
@@ -1738,31 +1797,6 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 textarea { scrollbar-width: thin; }
 /* 统计数字 / 进度 / 参数等机器数字纵向对齐，跳动时不左右抖 */
 :where(code, .mono, .archive-code, .fs-mono, .count, .stat, .seed, .progress-copy strong) { font-variant-numeric: tabular-nums; }
-/* 主题切换过渡：useTheme 切换瞬间给 <html> 挂 theme-fade。
-   只对高频表面（页面、导航、文本、按钮）做颜色过渡：
-   卡片/面板/徽章数量大，同时过渡会掉帧；瞬时变色 + 表面过渡
-   在观感上同样平滑。粒子层在切换期间整体隐藏，避免 canvas
-   逐帧重绘拖累合成线程。 */
-html.theme-fade body,
-html.theme-fade .page-root,
-html.theme-fade .nav,
-html.theme-fade .page-main,
-html.theme-fade .site-footer,
-html.theme-fade h1,
-html.theme-fade h2,
-html.theme-fade h3,
-html.theme-fade p,
-html.theme-fade span,
-html.theme-fade .btn {
-  transition: background-color var(--motion-control) ease, color var(--motion-control) ease, border-color var(--motion-control) ease;
-}
-html.theme-fade .route-atmosphere-field,
-html.theme-fade .scene-atlas-particles,
-html.theme-fade .hero-particles,
-html.theme-fade .hero-orbit,
-html.theme-fade .sakura-fall {
-  visibility: hidden;
-}
 /* 通用图片入场：给需要"翻开画集"质感的图片用 */
 @keyframes archive-image-in { from { opacity: 0 } to { opacity: 1 } }
 
@@ -1772,11 +1806,17 @@ html.theme-fade .sakura-fall {
   max-width: 62ch;
 }
 
-/* ── 平滑折叠展开过渡（CSS Grid 0fr → 1fr，避免 JS 高度测量与重排突兀感） ── */
+/* ── 平滑折叠展开过渡（CSS Grid 0fr → 1fr，避免 JS 高度测量与重排突兀感） ──
+   /* compositor-exempt: 折叠容器高度未知，grid-template-rows 0fr→1fr 是唯一
+      免 JS 测高的纯 CSS 方案 —— transform: scaleY 会把内容文字一起压扁，
+      max-height 则要填一个魔法上限值且动画速度随实际高度失真。
+      此动画是一次性展开/收起（非高频），220ms 内重排成本可接受。
+      注：2026-08-28 门禁补检才发现它 —— 此前 grid-template-rows 不在
+      lint-animations 的布局属性名单内，属漏检。 */
 .anim-collapse-grid {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 220ms var(--ease-out);
+  transition: grid-template-rows var(--motion-control) var(--ease-out);
 }
 .anim-collapse-grid.open,
 .anim-collapse-grid[data-open="true"] {
@@ -1804,7 +1844,7 @@ kbd,
   font-family: var(--font-mono, monospace);
   font-size: var(--fs-mono-sm);
   font-weight: 600;
-  line-height: 1;
+  line-height: var(--lh-flush);
   color: var(--text-secondary);
   background: color-mix(in srgb, var(--bg-surface) 85%, white);
   border: 1px solid var(--border-soft);
@@ -1813,17 +1853,6 @@ kbd,
   box-shadow: 0 1px 2px color-mix(in srgb, black 20%, transparent);
   user-select: none;
   vertical-align: baseline;
-}
-[data-theme="light"] kbd,
-[data-theme="light"] .kbd-badge {
-  /* 键帽拟物色：仅浅色主题的物理键盘质感（深色走 color-mix 合成） */
-  --kbd-face: #fdfdfd;
-  --kbd-ink: #3f3933;
-  background: var(--kbd-face);
-  color: var(--kbd-ink);
-  border-color: color-mix(in srgb, black 15%, transparent);
-  border-bottom-color: color-mix(in srgb, black 30%, transparent);
-  box-shadow: 0 1px 2px color-mix(in srgb, black 8%, transparent);
 }
 
 /* ── 全站互动控件物理微按压反馈 (Tactile Press) ── */

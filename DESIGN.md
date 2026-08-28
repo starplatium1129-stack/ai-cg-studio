@@ -18,11 +18,10 @@ colors:
   warning: "#FFA726"
   danger: "#EF5350"
   info: "#42A5F5"
-  light-background: "#F7F6F8"
-  light-surface: "#FFFFFF"
-  light-primary: "#AD467F"
-  light-text-primary: "#2C2C3A"
-  light-text-secondary: "#5A5A6E"
+  # 2026-08-28: 浅色主题已下线（美术审计 · 方案 A），light-* 字段随之一并移除。
+  # 深色是唯一主题，上面的 primary / surface / text-* 即唯一真相。
+  # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
+  disabled-text: "#9D98B4"
   nene: "#B895FF"
   natsume: "#F2BB68"
 typography:
@@ -180,10 +179,17 @@ or voice feedback—not to periodic transforms on a still portrait.
 
 ## Colors
 
-The dark theme uses violet-black backgrounds instead of flat black. Surfaces are
-slightly lighter and may use restrained translucency where it improves hierarchy.
-The light theme uses a neutral studio white with only a faint warm-violet cast,
-instead of clinical white or a visibly purple page wash.
+The theme is dark only. Backgrounds are violet-black instead of flat black, and
+surfaces are slightly lighter with restrained translucency where it improves
+hierarchy.
+
+> **2026-08-28 · 浅色主题下线（美术审计 · 方案 A）**
+> 此前是 dark / light 双主题，但两者并不对等：设计系统的 154 个令牌本来就
+> 围绕深色调设计，浅色是后补的 50 个覆盖，覆盖率只有 32.5%，20 套角色主题
+> 里 17 套没有浅色版。对单人使用的创作工具，维护两套完整主题是纯负债 ——
+> 每新增一个颜色都要写两遍。现已锁定深色：浅色覆盖、`AppThemeToggle`、
+> `theme-fade` 切换过渡均已移除，`preferredTheme()` 恒为 `dark`。
+> 若日后要恢复双主题，先补角色主题浅色版，再放开开关，不要只开开关。
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.
@@ -197,11 +203,11 @@ instead of clinical white or a visibly purple page wash.
 - Do not introduce a near-duplicate color when a token already expresses the
   same role.
 
-Dark runtime surfaces may use the alpha values already defined in
+Runtime surfaces may use the alpha values already defined in
 `css/design-system.css`; the opaque colors in the front matter are their
-validation fallbacks. The canonical light values are background `#F7F6F8`,
-surface `#FFFFFF`, primary `#AD467F`, primary text `#2C2C3A`, and secondary text
-`#5A5A6E`.
+validation fallbacks. Disabled controls must use the `disabled-text` token
+directly — never `opacity` on a text-bearing control, because alpha compositing
+drops it below AA.
 
 ## Typography
 
@@ -289,12 +295,12 @@ game site.
 
 ### Theme semantics
 
-- Dark theme is "night studio": violet-black base, sakura pink accent, star
-  specks and drifting petals as quiet atmosphere.
-- Light theme is "pink-white dream": near-white pink paper, soft plum shadows,
-  the same decorations in lower opacity.
-- Both themes must pass the contrast gate; text tokens and deep accent values
-  are shared across themes.
+- The single theme is "night studio": violet-black base, sakura pink accent,
+  star specks and drifting petals as quiet atmosphere.
+- Everything must pass the contrast gate. Disabled controls use the
+  `disabled-text` token rather than opacity.
+- (2026-08-28) The former "pink-white dream" light theme is retired; see the
+  note under Colors before reinstating it.
 
 ### Decor layers (all fixed, pointer-events: none, aria-hidden)
 

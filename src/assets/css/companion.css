@@ -287,7 +287,7 @@ html.companion-mode body {
   background: color-mix(in srgb, var(--bg-deep) 74%, transparent);
   color: var(--text-secondary);
   font: 600 var(--fs-mono-xs) var(--font-mono);
-  line-height: 1.45;
+  line-height: var(--lh-label);
   pointer-events: none;
   backdrop-filter: blur(12px);
   box-shadow: var(--shadow-md);
@@ -411,7 +411,7 @@ html.companion-mode body {
 .companion-page .companion-bubble p {
   margin: 0;
   font-size: var(--fs-body-sm);
-  line-height: 1.55;
+  line-height: var(--lh-body);
   white-space: pre-wrap;
 }
 
@@ -534,7 +534,7 @@ html.companion-mode body {
   color: inherit;
   cursor: pointer;
   font-size: var(--fs-label-sm);
-  line-height: 1;
+  line-height: var(--lh-flush);
 }
 
 .companion-page .speech-settings {
@@ -570,7 +570,7 @@ html.companion-mode body {
   background: var(--bg-elevated);
   color: var(--text-primary);
   font: inherit;
-  line-height: 1.45;
+  line-height: var(--lh-label);
   padding: 8px 10px;
 }
 
@@ -863,7 +863,7 @@ html.companion-mode:not(.companion-desktop) body {
   border-color: var(--companion-edge);
   background: var(--companion-wash);
   color: var(--companion-ink-soft);
-  transition: transform 160ms var(--ease-out), background 160ms ease, border-color 160ms ease, color 160ms ease;
+  transition: transform var(--motion-hover) var(--ease-out), background var(--motion-hover) ease, border-color var(--motion-hover) ease, color var(--motion-hover) ease;
 }
 
 .companion-page .companion-window-actions button:hover,
@@ -929,7 +929,7 @@ html.companion-mode:not(.companion-desktop) body {
   opacity: .72;
   transform: scale(.98);
   transform-origin: 50% 82%;
-  transition: opacity 240ms var(--ease-out), transform 280ms var(--ease-out), filter 280ms var(--ease-out);
+  transition: opacity var(--motion-surface) var(--ease-out), transform var(--motion-surface) var(--ease-out), filter var(--motion-surface) var(--ease-out);
 }
 
 .companion-page[data-presence="attentive"] .portrait-stage::before,
@@ -986,7 +986,7 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .live2d-host,
 .companion-page .portrait-main {
-  transition: opacity var(--motion-surface), filter 260ms var(--ease-out);
+  transition: opacity var(--motion-surface), filter var(--motion-surface) var(--ease-out);
 }
 
 .companion-page .companion-presence-cue {
@@ -1008,7 +1008,7 @@ html.companion-mode:not(.companion-desktop) body {
   font-size: var(--fs-label-xs);
   pointer-events: none;
   transform: translateX(-50%);
-  transition: opacity 180ms var(--ease-out), transform 220ms var(--ease-out), border-color 180ms ease;
+  transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-control) var(--ease-out), border-color var(--motion-hover) ease;
 }
 
 .companion-page .companion-presence-cue i {
@@ -1124,7 +1124,7 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-page .companion-bubble p {
   color: var(--companion-ink);
   font-size: var(--fs-body-sm);
-  line-height: 1.6;
+  line-height: var(--lh-body);
   text-shadow: 0 1px 10px color-mix(in srgb, var(--bg-deep) 30%, transparent);
 }
 
@@ -1320,7 +1320,7 @@ html.companion-mode:not(.companion-desktop) body {
   .companion-page .live2d-host,
   .companion-page .portrait-main,
   .companion-page .companion-presence-cue {
-    transition: opacity 160ms ease, border-color 160ms ease;
+    transition: opacity var(--motion-hover) ease, border-color var(--motion-hover) ease;
   }
 }
 
@@ -1403,7 +1403,7 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-page .companion-reminder-bubble p {
   margin: 0;
   font-size: var(--fs-body-sm);
-  line-height: 1.55;
+  line-height: var(--lh-body);
   white-space: pre-wrap;
 }
 
@@ -1419,7 +1419,7 @@ html.companion-mode:not(.companion-desktop) body {
   color: var(--text-muted);
   cursor: pointer;
   font-size: var(--fs-body);
-  line-height: 1;
+  line-height: var(--lh-flush);
 }
 
 .companion-page .companion-reminder-bubble button:hover,
@@ -1510,7 +1510,7 @@ html.companion-mode:not(.companion-desktop) body {
   display: block;
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
-  line-height: 1.5;
+  line-height: var(--lh-body);
 }
 
 .companion-page .companion-workspace-settings input {
@@ -1559,7 +1559,7 @@ html.companion-mode:not(.companion-desktop) body {
   margin: 2px 0 0;
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
-  line-height: 1.45;
+  line-height: var(--lh-label);
   max-height: 34px;
   overflow: hidden;
   display: -webkit-box;
@@ -1578,7 +1578,7 @@ html.companion-mode:not(.companion-desktop) body {
 html.companion-desktop .companion-toolbar,
 html.companion-desktop .companion-conversation {
   visibility: visible;
-  transition: opacity .45s var(--ease-out), transform .45s var(--ease-out), visibility 0s;
+  transition: opacity var(--motion-route-cut) var(--ease-out), transform var(--motion-route-cut) var(--ease-out), visibility 0s;
 }
 
 /* 2026-08-22 动效审计 #15：原 display:none 短路了上面的 .45s 淡出过渡（从未生效过）；
@@ -1588,7 +1588,7 @@ html.companion-desktop.companion-ui-hidden .companion-conversation {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity .45s var(--ease-out), transform .45s var(--ease-out), visibility 0s linear .45s;
+  transition: opacity var(--motion-route-cut) var(--ease-out), transform var(--motion-route-cut) var(--ease-out), visibility 0s linear var(--motion-route-cut);
 }
 
 html.companion-desktop.companion-ui-hidden .companion-presence-cue {
@@ -2019,7 +2019,7 @@ html.companion-desktop .companion-char-switch button {
   color: var(--companion-ink-soft);
   cursor: pointer;
   font: 700 var(--fs-label-xs) var(--font-sans);
-  transition: background 160ms ease, color 160ms ease;
+  transition: background var(--motion-hover) ease, color var(--motion-hover) ease;
 }
 html.companion-desktop .companion-char-switch button:hover,
 html.companion-desktop .companion-char-switch button:focus-visible {
@@ -2187,7 +2187,7 @@ html:has(.companion-chat-window) body {
   color: var(--text-muted);
   cursor: pointer;
   font-size: var(--fs-body);
-  line-height: 1;
+  line-height: var(--lh-flush);
 }
 .companion-chat-mini .archive-icon {
   width: 14px;
@@ -2274,7 +2274,7 @@ html:has(.companion-chat-window) body {
 .companion-chat-bubble p {
   margin: 0;
   font-size: var(--fs-body-sm);
-  line-height: 1.6;
+  line-height: var(--lh-body);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -2396,7 +2396,8 @@ html:has(.companion-chat-window) body {
   background: color-mix(in srgb, var(--character-accent) 22%, var(--bg-surface));
   color: var(--text-primary);
 }
-.companion-chat-speech:disabled { opacity: .5; cursor: not-allowed; }
+/* 审计修复: 不用 opacity 压字（压后低于 AA 4.5:1），改为达标文字色 */
+.companion-chat-speech:disabled { color: var(--text-disabled); background: var(--bg-surface); border-color: var(--border-soft); cursor: not-allowed; }
 .companion-chat-send {
   margin-left: auto;
   border-color: color-mix(in srgb, var(--character-accent) 62%, var(--border-soft));
@@ -2404,7 +2405,8 @@ html:has(.companion-chat-window) body {
   color: var(--text-primary);
   font-weight: 700;
 }
-.companion-chat-send:disabled { opacity: .45; cursor: not-allowed; }
+/* 审计修复: 不用 opacity 压字（压后低于 AA 4.5:1），改为达标文字色 */
+.companion-chat-send:disabled { color: var(--text-disabled); background: var(--bg-surface); border-color: var(--border-soft); cursor: not-allowed; }
 .companion-chat-stop {
   border-color: color-mix(in srgb, var(--danger) 50%, var(--border-soft));
   background: color-mix(in srgb, var(--danger) 14%, var(--bg-surface));
@@ -2432,7 +2434,7 @@ html:has(.companion-chat-window) body {
   background: color-mix(in srgb, var(--character-accent) 20%, transparent);
   color: var(--text-primary);
   cursor: pointer;
-  line-height: 1;
+  line-height: var(--lh-flush);
 }
 
 @media (max-width: 460px) {
@@ -2467,7 +2469,7 @@ html.companion-desktop .companion-page .companion-stage {
   align-items: center;
   gap: 8px;
   pointer-events: none;
-  transition: opacity .3s var(--ease-out), transform .3s var(--ease-out);
+  transition: opacity var(--motion-route) var(--ease-out), transform var(--motion-route) var(--ease-out);
 }
 html.companion-desktop.companion-ui-hidden .companion-desktop-float,
 html.companion-desktop.companion-immersive .companion-desktop-float {
@@ -2492,7 +2494,7 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
   backdrop-filter: blur(14px) saturate(1.25);
   cursor: pointer;
   font: 700 var(--fs-label) var(--font-sans);
-  transition: transform 160ms var(--ease-out), background 160ms ease, border-color 160ms ease;
+  transition: transform var(--motion-hover) var(--ease-out), background var(--motion-hover) ease, border-color var(--motion-hover) ease;
 }
 .companion-chat-chip .archive-icon {
   width: 15px;
@@ -2574,7 +2576,7 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
 .companion-float-reminder p {
   margin: 0;
   font-size: var(--fs-body-sm);
-  line-height: 1.55;
+  line-height: var(--lh-body);
   white-space: pre-wrap;
 }
 .companion-float-reminder > button {
@@ -2589,7 +2591,7 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   color: var(--companion-ink-soft);
   cursor: pointer;
   font-size: var(--fs-body);
-  line-height: 1;
+  line-height: var(--lh-flush);
 }
 .companion-float-reminder > button:hover,
 .companion-float-reminder > button:focus-visible {

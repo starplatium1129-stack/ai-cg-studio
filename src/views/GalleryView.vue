@@ -909,8 +909,8 @@ watch([favoriteOnly, projectFilter], () => {
 <style scoped>
 .gallery-shell { width:min(1880px,100%); margin:0 auto; padding:clamp(24px,4vw,64px) clamp(14px,3vw,48px) var(--s-8); }
 .gallery-intro { margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
-.gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,3.8vw,3.95rem); font-weight:760; letter-spacing:-.045em; line-height:.98; }
-.gallery-subtitle { max-width:660px; margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:1.8; }
+.gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,3.8vw,3.95rem); font-weight:760; letter-spacing:-.045em; line-height:var(--lh-flush); }
+.gallery-subtitle { max-width:660px; margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:var(--lh-loose); }
 .gallery-count { color:var(--text-muted); font:650 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
 
 .gallery-toolbar { max-width:1500px; margin:0 auto clamp(24px,3vw,38px); display:flex; align-items:center; gap:var(--s-2); }
@@ -936,7 +936,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 54%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 48%,var(--art-scrim)); }
 .artwork-tool.danger:hover:not(:disabled) { background:var(--danger); color:var(--text-inverse); }
 .artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
-.artwork-tool:disabled { cursor:wait; opacity:.65; }
+/* 审计修复: 处理中态也要读得清 */
+.artwork-tool:disabled { cursor:wait; color: var(--text-disabled); border-color: var(--border-soft); }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
 .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); }
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
@@ -1013,11 +1014,12 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .viewer-nav:hover,.viewer-info-toggle:hover { background:color-mix(in srgb,var(--accent) 58%,var(--art-scrim)); }
 .viewer-prev { left:var(--s-4); }
 .viewer-next { right:var(--s-4); }
-.viewer-nav:disabled { opacity:.24; cursor:default; }
+/* 审计修复: .24 远低于 UI 组件 3:1 门槛 */
+.viewer-nav:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor:default; }
 .viewer-position { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); color:var(--on-art-secondary); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
 .viewer-info { min-width:0; overflow-y:auto; padding:56px var(--s-5) var(--s-6); border-left:1px solid var(--on-art-line); background:var(--art-scrim); }
-.viewer-title { margin:var(--s-3) 0 var(--s-1); color:var(--on-art-primary); font-size:var(--fs-title); line-height:1.25; }
-.viewer-meta { color:var(--on-art-secondary); font-size:var(--fs-label-xs); line-height:1.6; }
+.viewer-title { margin:var(--s-3) 0 var(--s-1); color:var(--on-art-primary); font-size:var(--fs-title); line-height:var(--lh-tight); }
+.viewer-meta { color:var(--on-art-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
 .viewer-facts { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); margin-bottom:var(--s-5); }
 .viewer-fact { min-width:0; padding:var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-md); background:var(--on-art-fill); }
 .viewer-fact small,.viewer-fact strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -1029,7 +1031,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @media (max-width:900px) {
   .art-viewer { grid-template-columns:1fr; }
   .viewer-stage { padding:60px 42px 78px; }
-  .viewer-info { position:absolute; inset:0 0 0 auto; width:min(86vw,360px); transform:translateX(100%); transition:transform 260ms var(--ease-drawer); z-index:var(--z-raised); }
+  .viewer-info { position:absolute; inset:0 0 0 auto; width:min(86vw,360px); transform:translateX(100%); transition:transform var(--motion-surface) var(--ease-drawer); z-index:var(--z-raised); }
   .art-viewer.info-open .viewer-info { transform:none; }
   .viewer-info-toggle { display:grid; }
 }
