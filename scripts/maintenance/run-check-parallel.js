@@ -24,6 +24,7 @@ const STEPS = [
   ['typecheck:app', 'npm run typecheck:app'],
   ['typecheck', 'npm run typecheck'],
   ['lint:js', 'npm run lint:js'],
+  ['ts-directives', 'node scripts/maintenance/scan-ts-directives.js --check'],
   ['style-literals', 'node scripts/maintenance/scan-style-literals.js --check'],
   ['contrast', 'node scripts/maintenance/check-contrast.js --check'],
   ['colors', 'node scripts/maintenance/lint-colors.js --check'],

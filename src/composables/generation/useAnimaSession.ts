@@ -10,7 +10,7 @@ import type { CharKey } from '@/stores/promptBuilderStore'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 /**
- * Anima / Krea 2 生成会话 —— 「useGenerationSession：生成、进度、取消和错误」。
+ * Anima / Krea 2 生成会话 —— 生成、进度、取消和错误的会话内聚实现。
  *
  * 拥有 Anima 家族引擎的完整生命周期：后端发现与 15s 状态轮询、任务提交、
  * 轮询、取消、结果持有与卸载清理。导演台的 prompt 组装（buildAnimaRequest）
