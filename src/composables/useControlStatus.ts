@@ -6,6 +6,7 @@
  */
 
 import { ref, computed, nextTick, watch } from 'vue'
+import { usePolling } from './usePolling'
 import { ApiClientError } from '../api/client.ts'
 import { controlApi, type ControlApi } from '../api/controlApi.ts'
 import type {
@@ -57,7 +58,6 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const logs = ref<string[]>([])
   const logBoxEl = ref<HTMLElement | null>(null)
   const logIndex = ref(0)
-  let pollTimer: ReturnType<typeof setInterval> | null = null
   // 驱动 opProgress 时间微增的响应式时钟，避免“冻住”观感（仅在操作进行时滴答）
   const now = ref(Date.now())
   let nowTimer: ReturnType<typeof setInterval> | null = null
@@ -299,38 +299,34 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   function clearLogs() { logs.value = []; logIndex.value = 0 }
-  // 页面隐藏时暂停 3s 轮询、回前台恢复（2026-08-28 审计 P1-8：后台标签页不白白打服务）。
-  let pollActive = false
+  // 轮询底座（2026-08-28 审计 P1-9）：3s 状态/日志轮询收敛到 usePolling，
+  // in-flight 去重、页面隐藏暂停（paused=document.hidden）、回前台 sync 续跑。
   let visibilityBound = false
-  function handleVisibilityChange() {
-    if (!pollActive) return
-    if (document.hidden) {
-      if (pollTimer) { clearInterval(pollTimer); pollTimer = null }
-    } else if (!pollTimer) {
-      pollStatus(); pollLogs()
-      pollTimer = setInterval(() => { pollStatus(); pollLogs() }, 3000)
-    }
+  const polling = usePolling({
+    intervalMs: 3000,
+    tick: () => { pollStatus(); pollLogs() },
+    paused: () => typeof document !== 'undefined' && document.hidden,
+    immediate: false,
+  })
+  function handleVisibilityChange() { polling.sync() }
+  function bindPollingVisibility() {
+    if (visibilityBound || typeof document === 'undefined') return
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    visibilityBound = true
+  }
+  function unbindPollingVisibility() {
+    if (!visibilityBound || typeof document === 'undefined') return
+    document.removeEventListener('visibilitychange', handleVisibilityChange)
+    visibilityBound = false
   }
   function startPolling() {
-    if (pollActive) return
-    pollActive = true
-    if (!visibilityBound && typeof document !== 'undefined') {
-      document.addEventListener('visibilitychange', handleVisibilityChange)
-      visibilityBound = true
-    }
-    if (typeof document === 'undefined' || !document.hidden) {
-      pollStatus(); pollLogs()
-      pollTimer = setInterval(() => { pollStatus(); pollLogs() }, 3000)
-    }
+    if (polling.isActive()) return
+    bindPollingVisibility()
+    polling.start()
   }
   function stopPolling() {
-    pollActive = false
-    if (visibilityBound && typeof document !== 'undefined') {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      visibilityBound = false
-    }
-    if (pollTimer) clearInterval(pollTimer)
-    pollTimer = null
+    unbindPollingVisibility()
+    polling.stop()
     clearNowTicker()
     statusRequest?.abort()
     logsRequest?.abort()
