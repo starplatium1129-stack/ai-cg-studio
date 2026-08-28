@@ -21,6 +21,7 @@ import {
   saveChatMemoryState,
   type ChatMemoryCharacter,
 } from '@/utils/chatMemory'
+import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
 
 interface CharacterStageHandle {
   setSpeaking: (value: boolean) => void
@@ -297,7 +298,13 @@ export function useCharacterRoomSession() {
     companionTools,
     reasoning,
     userProfile,
-    recallMemories: (character, query) => recallChatFacts(chatMemory.value, memoryCharacter(character), query),
+    recallMemories: (character, query) => {
+      // 角色设定记忆（2026-08-28 最小闭环）：从 data/characters.json 既有档案派生
+      // 的角色设定卡，优先于会话事实注入——LLM 先对齐人设，再结合长期记忆。
+      const setting = recallCharacterSetting(characterSettingCards(), memoryCharacter(character), query)
+      const facts = recallChatFacts(chatMemory.value, memoryCharacter(character), query)
+      return [...setting, ...facts]
+    },
     setBusy,
     onError: setError,
     onStreamEmotion: (emotion) => {
@@ -464,6 +471,8 @@ export function useCharacterRoomSession() {
     window.addEventListener('storage', onChatAuxStorage)
     document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
     inputText.value = storage.draft(activeChar.value)
+    // 预热角色设定卡（约几十 KB，失败不影响聊天：recall 走空设定 + 会话事实）。
+    void loadCharacterSettingCards().catch(() => {})
     await refreshChatStatus()
     await refreshVoiceStatus()
     if (chatProvider.value === 'api') {
