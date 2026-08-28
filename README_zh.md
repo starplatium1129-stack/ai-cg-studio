@@ -38,31 +38,152 @@
 - **桌面端伴侣（Tauri 2）**：
   - 轻量 Tauri 2 桌面端（Companion + Atelier 双窗口、托盘、Native Live2D overlay），支持增量极速部署流水线（`deploy-desktop-quick.ps1`）。
 
-## 最常用的启动方式
+## 安装
 
-### 1. 准备 SD WebUI
+### 环境要求
 
-在 Stability Matrix 的 WebUI 启动参数中保留：
+| 组件 | 必需 | 说明 |
+| :--- | :---: | :--- |
+| Node.js | **是** | `>= 22.18`（npm 11.x），用 `node -v` 确认 |
+| Windows | **是** | 主要使用环境；启动器与桌面壳均为 Windows 优先 |
+| A1111 / Forge / ReForge WebUI | 可选* | 由 Stability Matrix 启动，启动参数带 `--api --port 7860` — SD/WAI 出图需要 |
+| ComfyUI | 可选* | 位于 `http://127.0.0.1:8188` — Anima / Krea 2 / Wan / H3 引擎路径需要 |
+| cloudflared | 可选 | 仅用于生成临时公网分享链接 |
+| GPT-SoVITS | 可选 | 仅用于 AI 声线（角色专属权重） |
+| Ollama | 可选 | 仅用于角色空间的角色对话 |
 
-```text
---api --port 7860
+\* 至少有一个出图引擎在线才能生成；浏览场景、Prompt 与参考档案库不需要任何引擎。
+
+### 第 1 步 — 获取代码
+
+```bash
+git clone https://github.com/starplatium1129-stack/ai-cg-studio.git
+cd ai-cg-studio
 ```
 
-`--api` 只会开放本地接口，不影响正常使用 WebUI。实际端口不是 7860 时，以 Stability Matrix 日志显示的地址为准。
+### 第 2 步 — 安装依赖
 
-### 2. 打开控制面板
+```bash
+npm install
+```
 
-双击 `control.bat`，确认 WebUI 地址后点击 **启动并生成分享链接**。
+`control.bat` 首次启动时也会自动执行 `npm install`。
 
-- 自己使用：点击 **打开本地网站（无需 Token）**
-- 分享朋友：复制控制面板中的带 Token 链接
-- 使用结束：在「本机服务」区逐个点击停止；手动启动的 ComfyUI / reForge 也能从面板关闭
+### 第 3 步 — 编译运行时服务
 
-首次运行会安装 Node.js 依赖。公网分享依赖本机安装的 `cloudflared`；没有安装时本地网站和 SD 连接仍可使用。
+全新克隆后必须先把 TypeScript 运行时编译一次——生成的 `.js` 不入库（已被 Git 忽略）：
 
-完整说明与排错方法见 [STARTUP.md](STARTUP.md)。
+```bash
+npm run build:runtime
+```
 
-当前实现、验证基线、阻断项和完整文档索引见 [docs/project-status.md](docs/project-status.md) 与 [docs/INDEX.md](docs/INDEX.md)。
+通过 `npm start` 或启动器（`control.bat` / `start.ps1`）启动时会经 `prestart` 钩子自动补齐这一步，可以跳过。
+
+### 第 4 步 — 启动
+
+**A. 控制面板（推荐）。** 先在 Stability Matrix 中启动 WebUI（记下日志中的地址，通常是 `http://127.0.0.1:7860`），然后双击 `control.bat`，确认 WebUI 地址后点击 **启动并生成分享链接**，再点 **打开本地网站（无需 Token）** 本地使用；需要分享时复制带 Token 的链接给朋友。使用结束点击 **停止全部服务**。
+
+**B. 手动启动（排错 / 看完整日志）。**
+
+```powershell
+npm install
+npm run build:runtime
+$env:SD_HOST = 'http://127.0.0.1:7860'   # WebUI 地址
+node server.js
+```
+
+只想测试本地网关时先设置 `$env:DISABLE_TUNNEL = '1'` 跳过公网隧道。`Ctrl+C` 停止。
+
+**C. 开发模式（HMR）。** 开两个终端：
+
+```powershell
+npm run dev:server   # Express 网关 :3000（API、SD 代理、静态服务）
+npm run dev          # Vite 开发服务器 :5173（热更新）
+```
+
+完整说明、可选组件（语音、聊天、双人构图）与排错方法见 [STARTUP.md](STARTUP.md)。
+
+## 使用示例
+
+### A. 从场景到一张成图
+
+1. 打开**场景库**，按角色 / 内容分级筛选，点开一个 Scene——故事、情绪、镜头、光照与 Prompt 已全部就位。
+2. 进入**导演台**，从 38 位精选画风中挑选一个，点击生成。
+3. 提示词编译器会自动适配当前引擎：SD/WAI（Danbooru 标签）、Anima 1.1（`@artist` + 原生标签流）或 Krea 2 Turbo（3~5 句纯英文散文）。
+
+### B. AI 叙事短片（纯点击流）
+
+1. 打开场景蓝图 → **一键剧本**（自动四镜分镜：起承转合，台词取场景原文）→ **一键首帧**（逐镜 Krea 2 增强链路出首帧）→ 批量生成 + 尾帧衔接拼接。
+2. 支持 Wan 2.2 TI2V 与 MiniMax H3 Ref2VA 锁脸；对白语言显式控制（`dialogueLang: auto/zh/ja/en`）。
+
+### C. 角色房间、语音与桌面伴侣
+
+- **更多 → 角色对话** 连接本机 Ollama；开启**回复后自动配音**后，中文回复会先经本地翻译链路，再由 GPT-SoVITS 生成日语声线，Live2D 立绘随音频振幅对口型。
+- Tauri 2 桌面伴侣（`npm run dev:tauri` 开发、`npm run package:tauri` 打包 NSIS 安装版）提供无边框置顶的角色悬浮窗、托盘菜单与全局快捷键。
+
+### D. 常用命令行操作
+
+```powershell
+npm run workflow -- --help          # 140+ 维护脚本的统一入口
+npm run workflow -- data:validate   # 编辑场景数据后校验分片与 DATA_VERSION
+npm run workflow -- gate:quick ui   # 按改动面积分层跑门禁（ui/server/data/all）
+npm run scenes:import               # 从分片重建 data/scenes.json（批次感知）
+npm run popular:build               # 重建 data/popular-characters.json
+npm run build                       # 生产构建 + 140KB 路由预算 + 预压缩
+```
+
+完整脚本索引见 [docs/workflow.md](docs/workflow.md)。
+
+## 贡献指南
+
+这个项目首先是个人项目，但欢迎范围明确的贡献。动手前请按顺序先读：[docs/INDEX.md](docs/INDEX.md)（文档全景索引）→ [docs/workflow.md](docs/workflow.md)（统一脚本入口）→ **AGENTS.md**（协作宪章，本仓库最高权威）。
+
+### 开发环境
+
+见「安装」第 4 步 C（两个终端：Express 网关 + Vite HMR）。编辑过程中 `npm run typecheck` 与 `npm run lint:js` 可快速反馈。
+
+### 质量门禁——提交前必须全部通过
+
+```
+[1. 状态与逻辑自测] ─► [2. 静态类型检查] ─► [3. 契约测试] ─► [4. 打包预算] ─► [5. 精准提交]
+```
+
+```powershell
+npm run typecheck:app           # Vue SFC 类型检查，零 Error 退出
+npm run workflow -- check:full  # 完整校验（13 项并行检查 + 单测 + 契约）
+npm run build                   # 生产构建，19 个路由严守 140KB 预算
+```
+
+快速迭代只跑改动面积：`npm run workflow -- gate:quick ui|server|data|all`。
+
+### 提交纪律（硬性红线）
+
+- **严禁盲目 `git add .`**——只暂存你核对过的受控文件（先看 `git status` 与 `git diff`），不要卷入他人正在进行的脚本或分支。
+- **严禁 `git reset --hard`** 等破坏性命令；临时测试脚本随用随清。
+- 一个提交只做一件事；先过门禁再提交，而不是提交后再补。
+
+### 不可妥协的工程红线
+
+- **动效只用 GPU 合成属性**。过渡动画必须用 `transform`/`opacity`；用 `left/top/width/height` 补间会触发逐帧重排，门禁（`npm run lint:animations`）直接失败，除非带 `/* compositor-exempt: <理由> */` 注释。
+- **图标一律手绘线条 SVG**。新增图标必须使用 Hand-drawn Linear 机制（`ArchiveIcon.vue`），严禁 Emoji 或实心填充图标。
+- **内容分级 Fail-Closed**。R18 内容默认模糊遮罩；`adultEligibility` + `adultEnabled` 双重把关，未知或未授权状态必须严格拒绝，不得回退"安全"断言。
+- **定稿场景是字节级基线**。`data/prompt-pinned-scenes.json` 中 100 条定稿场景的渲染字段严禁被批量工具触碰（`npm run scenes:pin` 强制校验）；确需修改时先真实出图自测。
+- **严禁偷懒式批量交付**。批量重写必须逐条全量真实改写，通过 `test-prompt-rewrite-integrity.js`（覆盖率=声明数、无模板签名、保留率≤50%、prose 相似度≤60%）。
+- **只维护深色主题**。浅色主题已下线，新增颜色只写一遍；禁用态用 `--text-disabled` 令牌，不得用 `opacity` 压字。
+- **样式契约以 DESIGN.md 为准**。运行时 CSS 是派生实现，冲突时以契约为准。
+
+### 测试
+
+```powershell
+npm run test:frontend   # vitest 单元测试
+npm run test:unit       # quality-suite 单测分组
+npm run test:contract   # 内容与接口契约测试
+npm run test:e2e        # Playwright 端到端（会先构建）
+```
+
+### 文档
+
+新文档与重大更新必须在 [docs/INDEX.md](docs/INDEX.md) 登记。文档必须与代码实际行为保持一致——过期注释与契约视为缺陷。
 
 ## 项目结构
 
@@ -90,7 +211,7 @@ AI-CG-Studio/
 ├── assets/                 # 静态资源（角色立绘、Live2D、vendor SDK）
 ├── docs/                   # 创作规范、质量标准、全景索引（docs/INDEX.md）
 ├── scripts/                # 维护、测试、参考图生成与运行辅助脚本
-└── runtime/                # 本机配置、日志、进程状态与朋友生成图
+└── runtime/                # 本机配置、日志、进程状态与朋友生成图（Git 忽略）
 ```
 
 ## 维护与校验
@@ -102,6 +223,8 @@ npm run validate          # 完整校验：代码规范 + 构建 + 类型检查 
 ```
 
 日常增删场景、修改故事、维护标签或替换样张，直接使用网站中的 **更多 → 场景管理**。
+
+当前实现、验证基线、阻断项和完整文档索引见 [docs/project-status.md](docs/project-status.md) 与 [docs/INDEX.md](docs/INDEX.md)。
 
 ## 维护原则
 
