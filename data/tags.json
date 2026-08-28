@@ -558,7 +558,7 @@
  {
   "id": "tag_069",
   "cat": "Lighting",
-  "en": "sun_flare",
+  "en": "lens_flare",
   "cn": "镜头光晕",
   "weight": 0.8,
   "related": []
@@ -566,7 +566,7 @@
  {
   "id": "tag_070",
   "cat": "Lighting",
-  "en": "volumetric",
+  "en": "volumetric_lighting",
   "cn": "体积光",
   "weight": 0.8,
   "related": []
@@ -574,7 +574,7 @@
  {
   "id": "tag_071",
   "cat": "Lighting",
-  "en": "dramatic",
+  "en": "dramatic_lighting",
   "cn": "戏剧光",
   "weight": 0.8,
   "related": []
@@ -710,7 +710,7 @@
  {
   "id": "tag_088",
   "cat": "Emotion",
-  "en": "happy, bright smile, joyful expression",
+  "en": "happy, smile, joyful",
   "cn": "开心",
   "weight": 0.9,
   "related": []
@@ -726,7 +726,7 @@
  {
   "id": "tag_090",
   "cat": "Emotion",
-  "en": "expectant, hopeful, bright eyes",
+  "en": "excited, hopeful, sparkling eyes",
   "cn": "期待",
   "weight": 0.9,
   "related": []
@@ -734,7 +734,7 @@
  {
   "id": "tag_091",
   "cat": "Emotion",
-  "en": "relaxed, gentle expression, calm",
+  "en": "relaxed, gentle smile, calm",
   "cn": "放松",
   "weight": 0.9,
   "related": []
@@ -742,7 +742,7 @@
  {
   "id": "tag_092",
   "cat": "Emotion",
-  "en": "missing, longing look, distant gaze",
+  "en": "wistful, looking away",
   "cn": "想念",
   "weight": 0.9,
   "related": []
@@ -806,7 +806,7 @@
  {
   "id": "tag_100",
   "cat": "Camera",
-  "en": "close-up detail",
+  "en": "extreme close-up",
   "cn": "特写",
   "weight": 0.85,
   "related": []
@@ -814,7 +814,7 @@
  {
   "id": "tag_101",
   "cat": "Camera",
-  "en": "pov, first person view",
+  "en": "pov",
   "cn": "POV",
   "weight": 0.85,
   "related": []
@@ -854,7 +854,7 @@
  {
   "id": "tag_106",
   "cat": "Camera",
-  "en": "centered composition, symmetric",
+  "en": "centered composition, symmetry",
   "cn": "居中",
   "weight": 0.85,
   "related": []
@@ -862,7 +862,7 @@
  {
   "id": "tag_107",
   "cat": "Camera",
-  "en": "rule of thirds, off-center",
+  "en": "rule of thirds, off-center composition",
   "cn": "三分法",
   "weight": 0.85,
   "related": []
@@ -870,7 +870,7 @@
  {
   "id": "tag_108",
   "cat": "Camera",
-  "en": "left composition",
+  "en": "off-center composition",
   "cn": "左构图",
   "weight": 0.85,
   "related": []
@@ -878,7 +878,7 @@
  {
   "id": "tag_109",
   "cat": "Camera",
-  "en": "right composition",
+  "en": "off-center composition",
   "cn": "右构图",
   "weight": 0.85,
   "related": []
@@ -886,7 +886,7 @@
  {
   "id": "tag_110",
   "cat": "Camera",
-  "en": "foreground framing, depth",
+  "en": "blurry foreground, depth of field",
   "cn": "前景遮挡",
   "weight": 0.85,
   "related": []
@@ -894,7 +894,7 @@
  {
   "id": "tag_111",
   "cat": "Camera",
-  "en": "framed composition",
+  "en": "framed",
   "cn": "框架构图",
   "weight": 0.85,
   "related": []
@@ -910,7 +910,7 @@
  {
   "id": "tag_113",
   "cat": "Lighting",
-  "en": "golden hour, warm light, sunset glow",
+  "en": "golden hour, warm lighting, sunset",
   "cn": "夕阳",
   "weight": 0.85,
   "related": []
@@ -918,7 +918,7 @@
  {
   "id": "tag_114",
   "cat": "Lighting",
-  "en": "window light, soft, diffused",
+  "en": "window light, soft lighting",
   "cn": "窗光",
   "weight": 0.85,
   "related": []
@@ -926,7 +926,7 @@
  {
   "id": "tag_115",
   "cat": "Lighting",
-  "en": "backlit, rim light, silhouette edge",
+  "en": "backlighting, rim light, silhouette",
   "cn": "逆光",
   "weight": 0.85,
   "related": []
@@ -934,7 +934,7 @@
  {
   "id": "tag_116",
   "cat": "Lighting",
-  "en": "lantern light, warm glow",
+  "en": "lantern, warm lighting",
   "cn": "夜灯",
   "weight": 0.85,
   "related": []
@@ -942,7 +942,7 @@
  {
   "id": "tag_117",
   "cat": "Lighting",
-  "en": "overcast, soft diffused light",
+  "en": "overcast, soft lighting",
   "cn": "阴天柔光",
   "weight": 0.85,
   "related": []
@@ -950,7 +950,7 @@
  {
   "id": "tag_118",
   "cat": "Lighting",
-  "en": "city night, colored lights",
+  "en": "cityscape, colorful lighting",
   "cn": "霓虹灯",
   "weight": 0.85,
   "related": []
@@ -958,7 +958,7 @@
  {
   "id": "tag_119",
   "cat": "Lighting",
-  "en": "candlelight, warm flickering",
+  "en": "candlelight",
   "cn": "烛光",
   "weight": 0.85,
   "related": []
@@ -966,7 +966,7 @@
  {
   "id": "tag_120",
   "cat": "Style",
-  "en": "anime illustration",
+  "en": "anime",
   "cn": "二次元",
   "weight": 1,
   "related": []
@@ -974,7 +974,7 @@
  {
   "id": "tag_121",
   "cat": "Style",
-  "en": "visual novel CG",
+  "en": "visual_novel_cg",
   "cn": "Galgame CG",
   "weight": 0.95,
   "related": []
@@ -982,7 +982,7 @@
  {
   "id": "tag_122",
   "cat": "Style",
-  "en": "game illustration",
+  "en": "game_cg",
   "cn": "游戏插画",
   "weight": 0.9,
   "related": []
@@ -1165,7 +1165,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "tears_in_eyes",
+  "en": "teary_eyes",
   "cn": "含泪",
   "weight": 0.85,
   "related": [],
@@ -1173,7 +1173,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "panicked_expression",
+  "en": "panicked",
   "cn": "惊慌",
   "weight": 0.85,
   "related": [],
@@ -1389,7 +1389,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "shy_look",
+  "en": "shy",
   "cn": "羞涩",
   "weight": 0.8,
   "related": [],
@@ -1469,7 +1469,7 @@
  },
  {
   "cat": "Lighting",
-  "en": "backlit",
+  "en": "backlighting",
   "cn": "逆光",
   "weight": 0.85,
   "related": [],
@@ -1757,7 +1757,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "calm_atmosphere",
+  "en": "calm",
   "cn": "平静氛围",
   "weight": 0.8,
   "related": [],
@@ -1765,7 +1765,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "romantic_atmosphere",
+  "en": "romantic",
   "cn": "浪漫氛围",
   "weight": 0.85,
   "related": [],
@@ -1773,7 +1773,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "cool_style",
+  "en": "cool",
   "cn": "酷帅",
   "weight": 0.8,
   "related": [],
@@ -1829,7 +1829,7 @@
  },
  {
   "cat": "Lighting",
-  "en": "sunbeams",
+  "en": "sunbeam",
   "cn": "耶稣光",
   "weight": 0.8,
   "related": [],
@@ -1845,7 +1845,7 @@
  },
  {
   "cat": "Lighting",
-  "en": "purple_glow",
+  "en": "purple_lighting",
   "cn": "紫色辉光",
   "weight": 0.8,
   "related": [],
@@ -1989,7 +1989,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "cozy_atmosphere",
+  "en": "cozy",
   "cn": "温馨氛围",
   "weight": 0.8,
   "related": [],
@@ -2301,7 +2301,7 @@
  },
  {
   "cat": "Lighting",
-  "en": "window_shadows",
+  "en": "window_shadow",
   "cn": "窗影",
   "weight": 0.8,
   "related": [],
@@ -2389,7 +2389,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "concerned_expression",
+  "en": "worried",
   "cn": "关心表情",
   "weight": 0.8,
   "related": [],
@@ -2397,7 +2397,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "peaceful_expression",
+  "en": "peaceful",
   "cn": "平静表情",
   "weight": 0.8,
   "related": [],
@@ -2405,7 +2405,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "slight_smile",
+  "en": "light smile",
   "cn": "淡淡微笑",
   "weight": 0.8,
   "related": [],
@@ -2413,7 +2413,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "tired_expression",
+  "en": "exhausted",
   "cn": "疲惫表情",
   "weight": 0.8,
   "related": [],
@@ -2549,7 +2549,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "shy_expression",
+  "en": "shy",
   "cn": "害羞表情",
   "weight": 0.8,
   "related": [],
@@ -2557,7 +2557,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "sleepy_eyes",
+  "en": "sleepy",
   "cn": "困倦眼神",
   "weight": 0.8,
   "related": [],
@@ -2565,7 +2565,7 @@
  },
  {
   "cat": "Emotion",
-  "en": "warm_atmosphere",
+  "en": "cozy",
   "cn": "温暖氛围",
   "weight": 0.8,
   "related": [],
@@ -3382,7 +3382,7 @@
  {
   "id": "tag_429",
   "cat": "Emotion",
-  "en": "reserved_smile",
+  "en": "light smile",
   "cn": "克制的微笑",
   "weight": 0.8,
   "related": []
@@ -3390,7 +3390,7 @@
  {
   "id": "tag_430",
   "cat": "Emotion",
-  "en": "expectant",
+  "en": "excited",
   "cn": "期待",
   "weight": 0.8,
   "related": []
@@ -3462,7 +3462,7 @@
  {
   "id": "tag_439",
   "cat": "Lighting",
-  "en": "lantern_light",
+  "en": "lantern",
   "cn": "灯笼光",
   "weight": 0.8,
   "related": []
@@ -3630,7 +3630,7 @@
  {
   "id": "tag_460",
   "cat": "Camera",
-  "en": "point_of_view",
+  "en": "pov",
   "cn": "视角",
   "weight": 0.8,
   "related": []
@@ -3790,7 +3790,7 @@
  {
   "id": "tag_480",
   "cat": "Appearance",
-  "en": "bright_eyes",
+  "en": "sparkling eyes",
   "cn": "明亮的眼睛",
   "weight": 0.8,
   "related": []
@@ -3926,7 +3926,7 @@
  {
   "id": "tag_497",
   "cat": "Lighting",
-  "en": "first_light",
+  "en": "dawn",
   "cn": "破晓之光",
   "weight": 0.8,
   "related": []
