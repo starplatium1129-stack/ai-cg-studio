@@ -263,10 +263,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_pink_yukata_with_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_sitting_on_tatami_with_yukata_hem_slightly_open, white_tabi_socks_with_split_toe_on_tatami, sitting_on_tatami_in_traditional_inn_guest_room_with_one_hand_holding_yukata_collar_and_hushed_shy_blush, warm_tatami_guest_room_light_with_shoji_and_yukata_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, night_travel, evening_inn, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_pink_yukata_with_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_sitting_on_tatami_with_yukata_hem_slightly_open, water_droplets_on_body, white_tabi_socks_with_split_toe_on_tatami, sitting_on_tatami_in_traditional_inn_guest_room_with_one_hand_holding_yukata_collar_and_hushed_shy_blush, warm_tatami_guest_room_light_with_shoji_and_yukata_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, night_travel, evening_inn, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body",
     "storyJa": "【寧々・旅先のほどけた襟元】夏の温泉旅館。湯上がりの寧々は、少し緩んだ浴衣の帯に気づかないまま畳の上で写真を整理していた。あなたに教えられると、彼女は真っ赤になって襟元を押さえる――「どこまで見たの！？ 思い出すのもだめ！ 浴衣の紐が滑りやすいだけなんだから……後ろ向いて！」",
-    "animaCaption": "Sitting on tatami in a traditional inn guest room in a light pink yukata, Ayachi Nene holds her collar with a hushed shy blush, slender bare calves with white tabi socks on tatami under warm light.",
+    "animaCaption": "Sitting on tatami in a traditional inn guest room in a light pink yukata, Ayachi Nene holds her collar with a hushed shy blush, slender bare calves with white tabi socks on tatami under warm light. A few water droplets still glisten on her damp collarbone from the bath.",
     "auditRevision": "careful-batch08-2026-08-27"
   },
   {

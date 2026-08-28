@@ -1,6 +1,6 @@
 {
   "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-  "pinnedAt": "2026-08-27T03:30:28",
+  "pinnedAt": "2026-08-28T14:23:55",
   "scenes": {
     "sc264": {
       "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, medium_close-up, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, moist_eyes, tearful_gaze, heavy_blush, sweat_on_face, parted_lips, embarrassed, plaid_skirt, pleated_skirt, miniskirt, skirt_lift, lifted_by_self, pink_panties, bow_panties, pantyshot, black_thighhighs, zettai_ryouiki, narrow_library_aisle, bookshelf, library, indoors, golden_hour, rim_light, warm_atmosphere, <lora:ayachi_nene_v18_wd14:0.95>",
@@ -230,9 +230,9 @@
       ]
     },
     "sc163": {
-      "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair_pinned_up_in_messy_bun, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, reclining_against_smooth_cedar_edge_of_private_hot_spring_tub, propping_head_on_arms_along_rim, bare_armpits, smooth_underarm_contours, entire_legs_and_feet_visible_through_clear_steaming_water, smooth_soles, detailed_toes, relaxed_blushing_smile_looking_at_viewer, luxury_onsen_suite_with_bamboo_screen_and_glowing_stone_lanterns_under_starry_night, soft_volumetric_steam_diffusing_warm_golden_lantern_light, cinematic_chiaroscuro, full_body, @rella",
+      "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair_pinned_up_in_messy_bun, yellow_eyes, mole_under_eye, black_headband, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, reclining_against_smooth_cedar_edge_of_private_hot_spring_tub, water_droplets_on_body, propping_head_on_arms_along_rim, bare_armpits, smooth_underarm_contours, entire_legs_and_feet_visible_through_clear_steaming_water, smooth_soles, detailed_toes, relaxed_blushing_smile_looking_at_viewer, luxury_onsen_suite_with_bamboo_screen_and_glowing_stone_lanterns_under_starry_night, soft_volumetric_steam_diffusing_warm_golden_lantern_light, cinematic_chiaroscuro, full_body, @rella",
       "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
-      "animaCaption": "Reclining comfortably in a private outdoor cedar hot spring bath, Shiki Natsume rests her upper body along the smooth tub edge, completely naked with her hair pinned in a relaxed bun. Soft amber lantern light filters through rising steam under a starry night sky, highlighting the gentle curves of her bare underarms, shapely breasts, and legs visible beneath the crystal-clear water.",
+      "animaCaption": "Reclining comfortably in a private outdoor cedar hot spring bath, Shiki Natsume rests her upper body along the smooth tub edge, completely naked with her hair pinned in a relaxed bun. Soft amber lantern light filters through rising steam under a starry night sky, highlighting the gentle curves of her bare underarms, shapely breasts, and legs visible beneath the crystal-clear water. Water droplets glisten on her bare shoulders and breasts above the surface.",
       "rating": "R15",
       "mature": false,
       "pinSource": [
@@ -350,9 +350,9 @@
       ]
     },
     "sc113": {
-      "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, loose_towel, towel_slip, wet_hair, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, indoors, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+      "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, loose_towel, towel_slip, wet_hair, water_droplets_on_body, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, indoors, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, child, loli, underage",
-      "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+      "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings. Water droplets still bead on her damp shoulders and collarbone.",
       "rating": "R15",
       "mature": false,
       "pinSource": [
@@ -749,9 +749,9 @@
       ]
     },
     "sc043": {
-      "prompt": "(smartphone held for a video call:1.55), phone screen facing viewer, outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
+      "prompt": "(smartphone held for a video call:1.55), phone screen facing viewer, outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, water_droplets_on_body, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, no phone, empty hands",
-      "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+      "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings. Water droplets bead on her bare shoulders above the steaming water.",
       "rating": "All",
       "mature": false,
       "pinSource": [
@@ -940,9 +940,9 @@
       ]
     },
     "sc246": {
-      "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_pink_yukata_with_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_sitting_on_tatami_with_yukata_hem_slightly_open, white_tabi_socks_with_split_toe_on_tatami, sitting_on_tatami_in_traditional_inn_guest_room_with_one_hand_holding_yukata_collar_and_hushed_shy_blush, warm_tatami_guest_room_light_with_shoji_and_yukata_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, night_travel, evening_inn, <lora:ayachi_nene_v18_wd14:0.8>",
+      "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_pink_yukata_with_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_sitting_on_tatami_with_yukata_hem_slightly_open, water_droplets_on_body, white_tabi_socks_with_split_toe_on_tatami, sitting_on_tatami_in_traditional_inn_guest_room_with_one_hand_holding_yukata_collar_and_hushed_shy_blush, warm_tatami_guest_room_light_with_shoji_and_yukata_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, night_travel, evening_inn, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body",
-      "animaCaption": "Sitting on tatami in a traditional inn guest room in a light pink yukata, Ayachi Nene holds her collar with a hushed shy blush, slender bare calves with white tabi socks on tatami under warm light.",
+      "animaCaption": "Sitting on tatami in a traditional inn guest room in a light pink yukata, Ayachi Nene holds her collar with a hushed shy blush, slender bare calves with white tabi socks on tatami under warm light. A few water droplets still glisten on her damp collarbone from the bath.",
       "rating": "R15",
       "mature": false,
       "pinSource": [

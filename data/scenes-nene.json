@@ -1132,12 +1132,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(smartphone held for a video call:1.55), phone screen facing viewer, outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(smartphone held for a video call:1.55), phone screen facing viewer, outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, water_droplets_on_body, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, no phone, empty hands",
     "storyJa": "【寧々・大人のアフターストーリー・雪の夜温泉の視線の約束】旅先の露天風呂は雪の夜に包まれていた。大人の寧々は、赤い顔だけを露出させて、湯気と岩の陰に隠れていました。あなたが率先して目をそらしてみると、彼女はゆっくりとリラックスして、水の音を聞きながら遠くないところへ動きました。月光が彼女の長い銀髪に降り注ぎ、彼女はルールをささやいた――「話し相手になってくれるのは嬉しいですけど、急に振り向くのは禁止です。準備ができたら……私から、あなたに見えるところへ行きますから。」",
     "rating": "All",
     "auditRevision": "careful-batch03-2026-08-27",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings. Water droplets bead on her bare shoulders above the steaming water."
   },
   {
     "id": "sc045",
@@ -2731,11 +2731,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, loose_towel, towel_slip, wet_hair, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, indoors, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, loose_towel, towel_slip, wet_hair, water_droplets_on_body, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, indoors, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, child, loli, underage",
     "storyJa": "【寧々・大人のアフターストーリー・・・お風呂上りにうっかりタオルがずれてしまった】深夜、湯気の立つ浴室内。シャワーを浴びた後、寧々は、ゆったりとした大きな純白のバスタオルだけを着て洗面台に座っていました。濡れた白銀の長い髪は散り、ヘアゴムを結ぶ暇もなかった。立ち上がるあまりの動きのせいで、バスタオルの角が静かに滑り、白くて華奢な肩と、うっすらと誇らしげなふくよかな肉付きが広範囲に露出した。彼女はパニックになってあなたに向かって突進し、顔は耳の付け根まで赤くなり、頭の上のアホ毛は極度の恥ずかしさで狂ったように震えていました。――「もう、どこを見てるんですか！　だめです、早くあっちを向いてください……。」",
     "rating": "R15",
-    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings. Water droplets still bead on her damp shoulders and collarbone."
   },
   {
     "id": "sc115",
@@ -5572,10 +5572,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_pink_yukata_with_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_sitting_on_tatami_with_yukata_hem_slightly_open, white_tabi_socks_with_split_toe_on_tatami, sitting_on_tatami_in_traditional_inn_guest_room_with_one_hand_holding_yukata_collar_and_hushed_shy_blush, warm_tatami_guest_room_light_with_shoji_and_yukata_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, night_travel, evening_inn, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_light_pink_yukata_with_floral_pattern_and_slender_bare_legs, smooth_bare_calf_with_soft_skin_sheen_sitting_on_tatami_with_yukata_hem_slightly_open, water_droplets_on_body, white_tabi_socks_with_split_toe_on_tatami, sitting_on_tatami_in_traditional_inn_guest_room_with_one_hand_holding_yukata_collar_and_hushed_shy_blush, warm_tatami_guest_room_light_with_shoji_and_yukata_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, night_travel, evening_inn, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body",
     "storyJa": "【寧々・旅先のほどけた襟元】夏の温泉旅館。湯上がりの寧々は、少し緩んだ浴衣の帯に気づかないまま畳の上で写真を整理していた。あなたに教えられると、彼女は真っ赤になって襟元を押さえる――「どこまで見たの！？ 思い出すのもだめ！ 浴衣の紐が滑りやすいだけなんだから……後ろ向いて！」",
-    "animaCaption": "Sitting on tatami in a traditional inn guest room in a light pink yukata, Ayachi Nene holds her collar with a hushed shy blush, slender bare calves with white tabi socks on tatami under warm light.",
+    "animaCaption": "Sitting on tatami in a traditional inn guest room in a light pink yukata, Ayachi Nene holds her collar with a hushed shy blush, slender bare calves with white tabi socks on tatami under warm light. A few water droplets still glisten on her damp collarbone from the bath.",
     "auditRevision": "careful-batch08-2026-08-27"
   },
   {
