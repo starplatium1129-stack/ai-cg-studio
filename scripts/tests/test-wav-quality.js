@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const quality = require('../runtime/wav-quality');
+const quality = require('../lib/wav-quality');
 
 const { test } = require('node:test');
 

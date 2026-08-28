@@ -1,7 +1,7 @@
 /** Build the browser-facing data/popular-characters.json from per-franchise shards. */
 const path = require('path');
-const { aggregatePath, aggregateIsCurrent, loadPopularShards, writePopularAggregate } = require('../runtime/popular-store');
-const { syncDataVersion } = require('../runtime/data-version');
+const { aggregatePath, aggregateIsCurrent, loadPopularShards, writePopularAggregate } = require('../lib/popular-store');
+const { syncDataVersion } = require('../lib/data-version');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const check = process.argv.includes('--check');

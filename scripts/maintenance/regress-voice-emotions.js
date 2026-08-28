@@ -4,7 +4,7 @@ const fs = require('fs');
 const http = require('http');
 const os = require('os');
 const path = require('path');
-const wavQuality = require('../runtime/wav-quality');
+const wavQuality = require('../lib/wav-quality');
 
 const baseUrl = process.argv[2] || 'http://127.0.0.1:3000';
 const emotions = ['neutral', 'gentle', 'happy', 'shy', 'serious', 'sad'];

@@ -22,12 +22,12 @@ function write(filePath, content) {
 
 function createFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-stage-fixture-'));
-  const dirs = ['server', 'routes', 'scripts/runtime', 'data', 'dist', 'assets', 'tools'];
+  const dirs = ['server', 'routes', 'scripts/lib', 'data', 'dist', 'assets', 'tools'];
   dirs.forEach((directory) => fs.mkdirSync(path.join(root, directory), { recursive: true }));
   write(path.join(root, 'server.js'), 'module.exports = {}\n');
   write(path.join(root, 'server', 'config.js'), 'module.exports = {}\n');
   write(path.join(root, 'routes', 'health.js'), 'module.exports = {}\n');
-  write(path.join(root, 'scripts/runtime', 'runtime.js'), 'runtime\n');
+  write(path.join(root, 'scripts/lib', 'runtime.js'), 'runtime\n');
   write(path.join(root, 'data', 'data.json'), '{}\n');
   write(path.join(root, 'dist', 'index.html'), '<!doctype html>\n');
   write(path.join(root, 'assets', 'asset.txt'), 'asset\n');

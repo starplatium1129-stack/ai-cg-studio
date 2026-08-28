@@ -79,7 +79,7 @@ var restartAttempts = 0;
     killStaleTunnel();
     tunnelStopped = false;
     console.log('  🌪 Starting Cloudflare Tunnel...');
-    var runtimeTools = require('../scripts/runtime/runtime-paths');
+    var runtimeTools = require('../scripts/lib/runtime-paths');
     runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
     var logFd = fs.openSync(config.RUNTIME.tunnelLog, 'w');
     tunnelProcess = spawn(config.CLOUDFLARED_PATH, [

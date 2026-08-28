@@ -179,6 +179,6 @@ masterpiece, best_quality, score_7
 - **新增 4 张**（`data/scenes/*.json`，经 `classify-scene-ratings.js` additions 机制写入，id 连续 sc301-sc304）：
   - sc301 晨光里的坦诚（宁宁 · 晨光跪坐全裸）／sc302 深夜镜前的完整坦诚（宁宁 · 镜前全裸）／sc303 暴雨夜的绝对坦诚（夏目 · 跨坐特写全裸）／sc304 月光窗前的完整姿态（夏目 · 窗前全裸）。
 - **样张质量**：prompt 统一带 `naked, completely_naked, bare_breasts, nipples`（仿保留 R18 的成功公式），四张 attempt-1 均通过事实性审核（乳头明确可见、全裸）——真正 R18。
-- **配套**：`validate-scenes.js` 按新裁定更新——R15/R18 负面不得含 nsfw/nude/explicit 且须带 child/loli/underage；非 mature 场景的人工评级（`scripts/runtime/manual-scene-ratings.js` 共享表）豁免 tag 反推交叉检查；`test-prompt-corpus.js` 计数 298→302。
+- **配套**：`validate-scenes.js` 按新裁定更新——R15/R18 负面不得含 nsfw/nude/explicit 且须带 child/loli/underage；非 mature 场景的人工评级（`scripts/lib/manual-scene-ratings.js` 共享表）豁免 tag 反推交叉检查；`test-prompt-corpus.js` 计数 298→302。
 - **发布**：`publish-scene-showcase-anima11.js` 发布 `2026-08-15_v21`（509 条目 / 302 场景 / All 266 / R15 157 / R18 86；v20 保留）。`publish-rating-refresh.js` 补拷顶层伴生文件（00-cover/home-hero/index/README），修复 v20 缺件问题。
 - **二次修订（用户：单纯露胸还差点意思，真正的 NSFW 应连下面都露出）**：4 张 prompt 升级为 `pussy + spread_legs/legs_up`（卧姿）或 `pussy + standing + front_view`（站姿），构图改正面暴露（sc303 特写改中景）。attempt-2 四张全部通过事实性审核：**乳头与生殖器均明确可见、全裸无遮挡、无肢体崩坏**。发布 `2026-08-15_v22`（v21 保留），`DATA_VERSION` 2921653165。

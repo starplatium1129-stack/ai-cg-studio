@@ -6,7 +6,7 @@ const http = require('node:http')
 const os = require('node:os')
 const path = require('node:path')
 const { spawnSync } = require('node:child_process')
-const wavQuality = require('../runtime/wav-quality')
+const wavQuality = require('../lib/wav-quality')
 const {
   findExecutable,
   installerMetadata,

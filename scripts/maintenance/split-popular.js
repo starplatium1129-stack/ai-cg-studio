@@ -1,5 +1,5 @@
 /** Import data/popular-characters.json into the per-franchise popular shards. */
-const { aggregatePath, writePopularShards } = require('../runtime/popular-store');
+const { aggregatePath, writePopularShards } = require('../lib/popular-store');
 
 if (!process.argv.includes('--write')) {
   console.error('Refusing to replace popular shards without --write');

@@ -30,7 +30,7 @@
     { "path": "scripts/archive/maintenance/run-scene-audit-batches.ps1", "sha256": "ff835cda93e5c2c14ef046aed7b87b31acf64781df8488a6980184e1c39ae1c1" },
     { "path": "scripts/archive/training/run_natsume_v17_posttrain.ps1", "sha256": "b2e4c4eff807eb0558232220bd45f75a7d315a7a73fb19fa2134a82b4fdec101" },
     { "path": "scripts/maintenance/update-v18-core-showcase.py", "sha256": "932c5da72b0ed2817fcd8442251acac7070c26f00f94c4e514f084bd3cbb330c" },
-    { "path": "scripts/runtime/managed-webui.ps1", "sha256": "3f10d47c968962cd913387142a85f84ed08c928c663cf94f134e5ce8f2420b9a" },
+    { "path": "scripts/lib/managed-webui.ps1", "sha256": "3f10d47c968962cd913387142a85f84ed08c928c663cf94f134e5ce8f2420b9a" },
     { "path": "scripts/tests/test-chat.js", "sha256": "0361f7eac386fc14023e1cbdc2ca038b7a616e94d9be6e9c1c18b98d3819ca46" },
     { "path": "scripts/tests/test-desktop.js", "sha256": "08d38b949752fad392c2c0296bc7e0dccca3d35df5d7f6d98641dee954a868e5" },
     { "path": "scripts/tests/test-tunnel-restart.js", "sha256": "5df448c6d7afac629b8a0e4b246d0590a65a08ac99d3ef0e1ad438fb108af247" },

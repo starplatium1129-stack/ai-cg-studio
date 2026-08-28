@@ -6,7 +6,7 @@ var os = require('os');
 var path = require('path');
 var createGateway = require(path.join(__dirname, '..', '..', 'server.js')).createGateway;
 var loadGatewayConfig = require(path.join(__dirname, '..', '..', 'server', 'config.js')).loadGatewayConfig;
-var runtimePaths = require(path.join(__dirname, '..', 'runtime', 'runtime-paths.js'));
+var runtimePaths = require(path.join(__dirname, '..', 'lib', 'runtime-paths.js'));
 var mocks = require('./mock-upstreams.js');
 
 var ROOT = path.join(__dirname, '..', '..');

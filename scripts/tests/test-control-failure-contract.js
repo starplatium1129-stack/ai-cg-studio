@@ -12,7 +12,7 @@ var path = require('path');
 var childProcess = require('child_process');
 var createControlRouter = require('../../routes/control').createControlRouter;
 var createTtsService = require('../../services/tts-service').createTtsService;
-var runtimePaths = require('../runtime/runtime-paths');
+var runtimePaths = require('../lib/runtime-paths');
 var gatewayTestStack = require('./gateway-test-stack');
 
 var projectRoot = path.resolve(__dirname, '..', '..');

@@ -1,5 +1,5 @@
 /**
- * scripts/runtime/data-version.js — DATA_VERSION 单一事实源
+ * scripts/lib/data-version.js — DATA_VERSION 单一事实源
  *
  * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存；
  * 此处用数据内容的稳定哈希锁定版本号。任何改动 data 产物而忘了同步

@@ -1,6 +1,6 @@
 # 统一工作流手册（Workflow）
 
-> 入口：`node scripts/workflow.js --help` 或 `npm run workflow -- --help`  
+> 入口：`node scripts/workflow.js --help` 或 `npm run workflow -- --help`
 > 目标：把 140 个分散的 `scripts/maintenance/*.js` 收敛到一套可发现、可复现、带帮助的入口，降低新同学上手成本。旧脚本仍可直接 `node` 调用，本手册仅做薄封装转发。
 
 ---
@@ -45,7 +45,7 @@ npm run workflow -- check:full
 
 ### 3.1 数据（data）— 场景是分片，聚合是产物
 
-- `data:build` → `scripts/maintenance/build-scenes.js:1` 聚合 `data/scenes/*.json` → `data/scenes.json`（`scripts/runtime/scene-store.js` 读写层）
+- `data:build` → `scripts/maintenance/build-scenes.js:1` 聚合 `data/scenes/*.json` → `data/scenes.json`（`scripts/lib/scene-store.js` 读写层）
 - `data:import` → `split-scenes.js --write` 逆向分片（覆盖写入，显式操作）
 - `data:normalize` → `npm run scenes:normalize`（`classify-scene-ratings.js --write && optimize-scenes.js --write && validate-scenes.js`）
 - `data:validate` → `validate-content-contracts.js:1` 校验 `DATA_VERSION`（`src/stores/sceneStore.ts:66`）与分片一致性，`data/*.json` 13 文件 SHA1 派生

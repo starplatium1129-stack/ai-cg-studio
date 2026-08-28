@@ -3,7 +3,7 @@
  * 修复：标签重复、格式错误、角色 DNA 缺失、tags-prompt 断层、Active Sync 占位符缺失
  * 用法：node scripts/maintenance/clean-scenes.js --write
  */
-const { loadSceneShards, writeSceneSet } = require('../runtime/scene-store');
+const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
 const write = process.argv.includes('--write');
 
 // ── 配置 ──

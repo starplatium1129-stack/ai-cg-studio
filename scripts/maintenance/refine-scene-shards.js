@@ -1,6 +1,6 @@
 const fs = require('fs');
 const _path = require('path');
-const { expandShardFiles } = require('../runtime/scene-store');
+const { expandShardFiles } = require('../lib/scene-store');
 
 const sceneAlign = JSON.parse(fs.readFileSync('runtime/human-audit-alignment-scenes.json', 'utf8'));
 const failedSceneMap = new Map(sceneAlign.userFailed.map(u => [u.sceneId, u]));

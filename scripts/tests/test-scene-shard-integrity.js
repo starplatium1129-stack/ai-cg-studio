@@ -1,6 +1,6 @@
 'use strict';
 
-/** 场景分片完整性独立守卫：不复用 scripts/runtime/scene-store.js 的分组逻辑，
+/** 场景分片完整性独立守卫：不复用 scripts/lib/scene-store.js 的分组逻辑，
  *  直接断言生成物之间的不变量。scenes:build --check 用同一套函数推导期望值，
  *  分组函数自身回归（如 groupBrowserShards 丢出去重守卫）时自检无法发现，
  *  本文件作为独立 oracle 补上这一盲区。

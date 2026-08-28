@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var expectedDataVersion = require('../runtime/data-version').expectedDataVersion;
+var expectedDataVersion = require('../lib/data-version').expectedDataVersion;
 
 var ROOT = path.resolve(__dirname, '..', '..');
 
@@ -10,7 +10,7 @@ var ROOT = path.resolve(__dirname, '..', '..');
  * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存。
  * 这里用数据内容的稳定哈希锁定 DATA_VERSION：任何人改了 data 而忘了
  * 在 sceneStore.ts 升版本号，validate 就会失败，避免客户端吃到旧缓存。
- * 哈希口径统一收口到 scripts/runtime/data-version.js（与 build-scenes/build-popular 共用）。
+ * 哈希口径统一收口到 scripts/lib/data-version.js（与 build-scenes/build-popular 共用）。
  */
 function contentVersion() {
   return expectedDataVersion(ROOT);

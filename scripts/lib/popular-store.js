@@ -1,5 +1,5 @@
 /**
- * scripts/runtime/popular-store.js — 热门角色分片存储
+ * scripts/lib/popular-store.js — 热门角色分片存储
  *
  * 数据流（与场景库同构）：
  *   data/popular/*.json（按 franchise 一个系列一个文件，canonical 源）

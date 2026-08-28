@@ -3,8 +3,8 @@
  * All = romance/daily life; R15 = suggestive but non-explicit; R18 = adult nudity or explicit sexual framing.
  * Run with: node scripts/maintenance/classify-scene-ratings.js --write
  */
-const { loadSceneShards, writeSceneSet } = require('../runtime/scene-store');
-const { ratingFor } = require('../runtime/prompt-policy');
+const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
+const { ratingFor } = require('../lib/prompt-policy');
 const write = process.argv.includes('--write');
 const STANDARD_NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic';
 
@@ -132,11 +132,11 @@ function normalizeNegative(scene, rating) {
 
 /**
  * 2026-08-15 样张视觉定级的人工降级表（用户裁定：多数标 R18 的样张实际顶多 R15），
- * 与 validate-scenes.js 共用（scripts/runtime/manual-scene-ratings.js）。
+ * 与 validate-scenes.js 共用（scripts/lib/manual-scene-ratings.js）。
  * 评级以样张实际画面为准（露点/性行为=R18，半裸/内衣/强暗示=R15，否则 All），
  * 覆盖 ratingFor 的 tag 推导与 R18 强制保留逻辑；只列入降级项。
  */
-const MANUAL_RATINGS = require('../runtime/manual-scene-ratings.js');
+const MANUAL_RATINGS = require('../lib/manual-scene-ratings.js');
 
 const scenes = loadSceneShards().scenes;
 const ids = new Set(scenes.map((scene) => scene.id));

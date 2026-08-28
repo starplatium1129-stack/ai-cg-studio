@@ -4,7 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { loadSceneShards } = require('../runtime/scene-store');
+const { loadSceneShards } = require('../lib/scene-store');
 const {
   adultSafetyIssues,
   auMetadataIssues,
@@ -14,9 +14,9 @@ const {
   ratingFor,
   scenePositiveKeys,
   tokenKey
-} = require('../runtime/prompt-policy');
+} = require('../lib/prompt-policy');
 // 2026-08-15 样张视觉定级的人工评级覆盖：非 mature 场景也信任人工评级，不做 tag 反推交叉检查。
-const MANUAL_SCENE_RATINGS = require('../runtime/manual-scene-ratings.js');
+const MANUAL_SCENE_RATINGS = require('../lib/manual-scene-ratings.js');
 
 const dataDir = path.join(__dirname, '..', '..', 'data');
 const characterSource = path.join(dataDir, 'characters.json');

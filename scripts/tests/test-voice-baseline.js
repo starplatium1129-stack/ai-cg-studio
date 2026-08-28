@@ -3,7 +3,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
-const quality = require('../runtime/wav-quality');
+const quality = require('../lib/wav-quality');
 
 const { test } = require('node:test');
 

@@ -24,7 +24,7 @@
       "resources/gateway/server": "gateway/server",
       "resources/gateway/routes": "gateway/routes",
       "resources/gateway/services": "gateway/services",
-      "resources/gateway/scripts/runtime": "gateway/scripts/runtime",
+      "resources/gateway/scripts/lib": "gateway/scripts/lib",
       "resources/gateway/data": "gateway/data",
       "resources/gateway/dist": "gateway/dist",
       "resources/gateway/assets": "gateway/assets",

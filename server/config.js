@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
-var runtimeTools = require('../scripts/runtime/runtime-paths');
+var runtimeTools = require('../scripts/lib/runtime-paths');
 var safeLocalUrl = require('./security').safeLocalUrl;
 
 // 上游 host 在读取时也要过一遍校验：落盘的 runtime/config.json 可能被改坏，

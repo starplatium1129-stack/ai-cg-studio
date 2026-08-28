@@ -1,11 +1,11 @@
-const { loadSceneShards, writeSceneSet } = require('../runtime/scene-store');
+const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
 const {
   adultSafetyIssues,
   framingConflicts,
   gazeConflicts,
   poseConflicts,
   tokenKey
-} = require('../runtime/prompt-policy');
+} = require('../lib/prompt-policy');
 const write = process.argv.includes('--write');
 const check = process.argv.includes('--check');
 

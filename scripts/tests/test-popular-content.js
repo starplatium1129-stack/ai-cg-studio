@@ -530,7 +530,10 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
   assert.ok(view.includes('navigator.clipboard.writeText(previewPromptView.value)'), 'copyPrompt must write previewPromptView');
 
   // Finding 3：popular→studio 立即 refreshAnimaBackend 恢复 nene/natsume。
-  assert.ok(/setStudioSubject\(\)[\s\S]{0,200}refreshAnimaBackend\(\)/.test(view), 'studio switch must refresh backend immediately');
+  // 2026-08-28 编排下沉：selectPopularSource 哨兵迁至 useDirectorPopular 宿主。
+  var directorPopularSource = fs.readFileSync(path.join(root, 'src', 'composables', 'scene', 'useDirectorPopular.ts'), 'utf8');
+  var directorEngineSource = fs.readFileSync(path.join(root, 'src', 'composables', 'scene', 'useDirectorEngine.ts'), 'utf8');
+  assert.ok(/setStudioSubject\(\)[\s\S]{0,200}refreshAnimaBackend\(\)/.test(directorPopularSource), 'studio switch must refresh backend immediately');
 
   // Finding 6：metadata preview 已随夏目 v20 晋级停用（不再有任何 preview LoRA）。
   // 请求元数据构建归 useAnimaSession（第十二轮），哨兵随之迁移；
@@ -547,13 +550,18 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
     'history preview must not fall back to a hardcoded character');
 
   // Finding 10：推荐引擎为 Krea 时必须切 drawEngine='krea2'（防死字段）。
-  assert.ok(/applyRecommendedEngine[\s\S]*?recommendedEngine\s*===\s*'krea2-turbo-fp8'\s*\?\s*'krea2'\s*:\s*'anima'/.test(view),
+  // 2026-08-28 编排下沉：applyRecommendedEngine 哨兵迁至 useDirectorPopular 宿主。
+  assert.ok(/applyRecommendedEngine[\s\S]*?recommendedEngine\s*===\s*'krea2-turbo-fp8'\s*\?\s*'krea2'\s*:\s*'anima'/.test(directorPopularSource),
     'recommended engine must map krea2-turbo-fp8 to the krea2 engine');
-  assert.ok(/applyRecommendedEngine\(character\)/.test(view) && /applyRecommendedEngine\(first\)/.test(view),
+  assert.ok(/applyRecommendedEngine\(character\)/.test(directorPopularSource) && /applyRecommendedEngine\(first\)/.test(directorPopularSource),
     'recommended engine must be applied on character/source selection');
+  assert.ok(view.includes('useDirectorPopular'), 'PromptBuilderView must consume the popular orchestration composable');
 
   // Finding 2：蓝图尺寸必须收敛到当前底模 sizes。
-  assert.ok(view.includes('closestSupportedSize(activeModel, normalized)') && view.includes('applyRecommendedSize(decision.size)'),
+  // 2026-08-28 编排下沉：closestSupportedSize 归 useDirectorEngine、
+  // applyRecommendedSize(decision.size) 归 useDirectorPopular。
+  assert.ok(directorEngineSource.includes('closestSupportedSize(activeModel, normalized)')
+    && directorPopularSource.includes('applyRecommendedSize(decision.size)'),
     'selectBlueprint must clamp to the nearest active-model size');
 
   assert.ok(view.includes('<GenerationOutputControls') && view.includes(':engine="drawEngine"'),

@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const quality = require('../runtime/wav-quality');
+const quality = require('../lib/wav-quality');
 
 const root = path.resolve(__dirname, '..', '..');
 const baselinePath = path.join(root, 'scripts', 'fixtures', 'voice-baseline.json');

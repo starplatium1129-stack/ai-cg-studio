@@ -4,7 +4,7 @@ var http = require('http');
 var https = require('https');
 var path = require('path');
 var performance = require('perf_hooks').performance;
-var wavQuality = require('../runtime/wav-quality');
+var wavQuality = require('../lib/wav-quality');
 
 var baseUrl = process.argv[2] || 'http://127.0.0.1:3000';
 var directVoiceUrl = process.argv[3] || '';

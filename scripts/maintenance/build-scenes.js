@@ -1,6 +1,6 @@
 /** Build the browser-facing data/scenes.json from canonical scene shards. */
-const { aggregatePath, aggregateIsCurrent, loadSceneShards, writeAggregate } = require('../runtime/scene-store');
-const { syncDataVersion } = require('../runtime/data-version');
+const { aggregatePath, aggregateIsCurrent, loadSceneShards, writeAggregate } = require('../lib/scene-store');
+const { syncDataVersion } = require('../lib/data-version');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');

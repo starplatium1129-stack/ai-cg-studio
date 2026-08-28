@@ -225,7 +225,7 @@ function main() {
     process.exit(2);
   }
 
-  const sceneStore = require('../runtime/scene-store');
+  const sceneStore = require('../lib/scene-store');
   const scenes = sceneStore.loadSceneShards().scenes;
   const blueprintFile = fs.existsSync(BLUEPRINTS_PATH) ? readJson(BLUEPRINTS_PATH) : { version: 2, blueprints: [] };
   const blueprints = Array.isArray(blueprintFile.blueprints) ? blueprintFile.blueprints : [];

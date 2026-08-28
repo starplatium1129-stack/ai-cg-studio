@@ -239,7 +239,7 @@ function killActiveChildren() {
 // ── 3. 路由：scenes/tags/curation ── · ── 4. 路由：showcase/home-hero ── · ── 5. 路由：run/backups ──
 function createMaintenanceRouter(cfg) {
   var router = express.Router();
-  var sceneStore = require('../scripts/runtime/scene-store');
+  var sceneStore = require('../scripts/lib/scene-store');
 
   var SCENE_SHOWCASE_DIR = cfg.SCENE_SHOWCASE_DIR;
   var MAINTENANCE_BACKUP_DIR = path.join(cfg.RUNTIME_ROOT, 'maintenance-backups');

@@ -37,7 +37,7 @@
 | `data/character-reference-standards.json` | 角色 × 多服装 4 视角参考标准的手写权威源；结构契约 `scripts/contracts/character-reference-standards.schema.json`（ajv，`test:contract` 阶段校验） | 是，改后跑 `node scripts/tests/test-character-reference-contract.js` |
 | `data/character-reference-view.json` | 前端懒加载的参考档案视图；视角字段必须逐字段镜像 standards，由同一契约测试交叉校验（漂移即红） | 否，改 standards 后同步此文件 |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
-| `scripts/runtime/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
+| `scripts/lib/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `src/utils/sceneUX.ts` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
 | `tools/nav.js`、`tools/local-status.js` | 全站导航与本机绘图/对话/语音状态汇总 | 页面入口或服务状态契约变化时编辑 |
 | `src/utils/quickCreate.ts` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
