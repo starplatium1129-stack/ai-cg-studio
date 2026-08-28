@@ -95,6 +95,21 @@ function inlineStyleAttrs(templateSource) {
 /** 设计系统 token 定义所在的文件（应用加载的那一份） */
 const DESIGN_SYSTEM = 'src/assets/css/design-system.css';
 
+/**
+ * 独立发布的审计/评估报告：自带设计系统的静态文档，应用一个字节都不加载。
+ * 其 <style> 遵循报告自身规范，不计入应用样式的 token 回归预算与颜色门槛。
+ * 名单须显式维护：新增自带样式的报告要评审后加入，禁止用通配符放行。
+ */
+const STANDALONE_REPORTS = new Set([
+  'docs/design-audit-2026-08-28.html',
+  'docs/design-audit-recheck-2026-08-29.html',
+  'docs/engineering-audit-2026-08-28.html',
+]);
+
+function isStandaloneReport(relPath) {
+  return STANDALONE_REPORTS.has(relPath.split(path.sep).join('/'));
+}
+
 module.exports = {
   ROOT,
   rel,
@@ -107,4 +122,5 @@ module.exports = {
   sfcTemplate,
   inlineStyleAttrs,
   DESIGN_SYSTEM,
+  isStandaloneReport,
 };

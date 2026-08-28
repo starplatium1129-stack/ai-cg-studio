@@ -176,6 +176,41 @@ footer{padding:40px 0 64px;color:var(--ink-faint);font-size:13px}
   </div>
 </section>
 
+<section id="applied">
+  <h2 class="sec"><span class="num">05</span>整改落地记录（2026-08-29 当日完成）</h2>
+  <p class="secsub">§04 行动清单已全部执行并提交（7e1f2ae），门禁链 test:style-debt 首次全绿。据此重估六维：</p>
+  <div class="scores">
+    <div class="sc"><div class="lbl">图标手绘</div><div class="val">9.0</div><div class="bar"><span style="--w:90%"></span></div></div>
+    <div class="sc"><div class="lbl">二次元氛围</div><div class="val">8.5</div><div class="bar"><span style="--w:85%"></span></div></div>
+    <div class="sc"><div class="lbl">主题配色</div><div class="val">8.5</div><div class="bar"><span style="--w:85%"></span></div></div>
+    <div class="sc"><div class="lbl">动效性能</div><div class="val">7.5</div><div class="bar"><span style="--w:75%"></span></div></div>
+    <div class="sc"><div class="lbl">无障碍</div><div class="val">7.5</div><div class="bar"><span style="--w:75%"></span></div></div>
+    <div class="sc"><div class="lbl">令牌纪律</div><div class="val">7.5</div><div class="bar"><span style="--w:75%"></span></div></div>
+  </div>
+  <p>整改后均值 <strong>7.7 → 8.1</strong>。各项变动依据：</p>
+  <div class="finding">
+    <h4><span class="tag tag-fixed">落地</span>P1 · DESIGN.md 契约同步（令牌纪律 6.5→7.5 / 主题配色 8.0→8.5）</h4>
+    <p>frontmatter rounded 对齐 8/10/14/16；<code>page-light / surface-light / button-primary-light / text-secondary-light</code> 四个 light 组件删除；Anime Visual Language 段「pink-white dream as the light theme」表述修正。tokens.css 过渡时长注释对齐 <code>--motion-atmosphere</code>。「唯一真相源」恢复诚实。</p>
+  </div>
+  <div class="finding">
+    <h4><span class="tag tag-fixed">落地</span>P1 · 11 处 opacity 禁用态清零（无障碍 6.5→7.5）</h4>
+    <p>ArtistStylePicker / companion.css×3 / chat.css×5 / ShotListEditor / ToggleSwitch 全部改为「<code>color: var(--text-disabled)</code> + border-soft + 压暗底」三件套；ToggleSwitch 改 inset box-shadow 避免布局位移。全库 grep 禁用态×opacity 零命中。</p>
+  </div>
+  <div class="finding">
+    <h4><span class="tag tag-fixed">落地</span>P2 · 对比度门禁接入 SFC style 块（无障碍加分项）</h4>
+    <p>check-contrast.js 新增组件级补扫：规则自身背景硬判 + 无自身背景时四表面全过。当场抓出 2 处白字压 <code>--danger</code> 底（3.49:1）→ 改 <code>--text-inverse</code>（5.2:1）。现在 12 处字面 color: 全部受门禁约束。</p>
+  </div>
+  <div class="finding">
+    <h4><span class="tag tag-fixed">落地</span>P2 · chat.css 分区 9→14 + 样式债链收口（令牌纪律加分项）</h4>
+    <p>补 6 处分区横幅（语音光环 / 角色信息卡 / 会话头部 / 气泡细节 / 均衡器 / 输入区），密度 234 行/个 → 153 行/个。两份审计报告内联 width 改 <code>--w</code> 自定义属性载体；<code>STANDALONE_REPORTS</code> 豁免名单入 style-sources.js 唯一采样口（自带设计系统的静态报告不占应用 token 预算），scan-style-literals 与 lint-colors 接入——test:style-debt 链首次全绿。</p>
+  </div>
+  <div class="finding">
+    <h4><span class="tag tag-debt">保留</span>豁免归一评估后决定维持 4/4（动效性能不加分）</h4>
+    <p>.ex-more 的豁免注释已论证 grid 0fr 对该卡片成本高于收益（且需改模板结构）；.bg-story 的 <code>interpolate-size</code> 是更现代方案。两处均有据可查，强行归一是为省 1 处豁免引入运行时风险，不值。动效维剩余扣分即重绘型 47 处清单与整树换肤，均为已声明取舍。</p>
+  </div>
+  <p class="loc">冲 8.5+ 的剩余路径：重绘型 47 处改写（box-shadow→伪元素静态层）· aria-label 覆盖率 41% 提升 · 对比度门禁扩展 rgb()/color-mix() 字面量解析。</p>
+</section>
+
 </main>
 <footer class="wrap">复审计方法：四路并行只读取证 + 门禁实跑（lint-animations / check-contrast）· 基线报告：docs/design-audit-2026-08-28.html · 2026-08-29</footer>
 </body>

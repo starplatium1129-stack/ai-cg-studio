@@ -48,6 +48,9 @@ var ALLOWED = new Set([
 // 必须扫应用真正加载的样式:src/assets/css + SFC 的 <style> 块。
 // 曾经只扫 tools/docs/css,而 SPA 一个字节都不加载它们 —— 于是 ALLOWED 越长越大,
 // 把 HomeView/CharacterView 的硬编码渐变当"允许"收了进来。
+// 独立发布的审计报告(style-sources.STANDALONE_REPORTS,自带设计系统的静态文档)
+// 显式豁免 —— 不被应用加载,不参与应用颜色门槛。
+var sources = require('./style-sources');
 var scanDirs = ['src', 'docs', 'css'];
 
 // 注释里的 hex 是文档示例（常常正是在解释为什么某个值不合格），不是漂移。
@@ -126,6 +129,7 @@ function main() {
       if (entry.isDirectory()) {
         if (entry.name !== 'vendor' && entry.name !== 'archive') walkDir(full);
       } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css') || entry.name.endsWith('.vue')) {
+        if (sources.isStandaloneReport(path.relative(root, full))) return;
         allWarnings = allWarnings.concat(scanFile(full));
       }
     });
