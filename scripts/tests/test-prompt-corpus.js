@@ -116,8 +116,9 @@ function planFor(scene, profile, engine) {
 }
 
 test('corpus: all scenes infer only valid shot/lighting/mood/composition ids and orientations', () => {
-  // 2026-08-15 新增 4 个真正露点的 R18 场景（sc301-sc304），2026-08-23 新增 sc305
-  assert.strictEqual(scenes.length, 303, 'corpus must cover the full scene library');
+  // 2026-08-15 新增 4 个真正露点的 R18 场景（sc301-sc304），2026-08-23 新增 sc305；
+  // 2026-08-28 删除 sc196/sc198 两个真重复场景（1a77ad7），303 → 301
+  assert.strictEqual(scenes.length, 301, 'corpus must cover the full scene library');
   const shotIds = new Set(infer.SHOT_IDS)
   const lightingIds = new Set(infer.LIGHTING_IDS)
   const moodIds = new Set(infer.MOOD_IDS)

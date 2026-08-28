@@ -295,8 +295,8 @@ test('control contract: ComfyUI start/stop uses managed ownership and shared ope
 });
 
 test('managed runtime scripts require injected paths and protect external ownership', () => {
-  var comfy = fs.readFileSync(path.join(projectRoot, 'scripts', 'runtime', 'managed-comfyui.ps1'), 'utf8');
-  var webui = fs.readFileSync(path.join(projectRoot, 'scripts', 'runtime', 'managed-webui.ps1'), 'utf8');
+  var comfy = fs.readFileSync(path.join(projectRoot, 'scripts', 'lib', 'managed-comfyui.ps1'), 'utf8');
+  var webui = fs.readFileSync(path.join(projectRoot, 'scripts', 'lib', 'managed-webui.ps1'), 'utf8');
   assert.ok(comfy.includes('$AIWorkspaceRoot') && comfy.includes('$RuntimeRoot') && comfy.includes('$ComfyHost'));
   assert.ok(webui.includes('$PackageRoot') && webui.includes('$RuntimeRoot') && webui.includes('$WebuiHost'));
   assert.ok(comfy.includes('Test-ManagedProcess') && comfy.includes('taskkill.exe /PID'));
@@ -385,7 +385,7 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
   function invoke(action) {
     return new Promise(function (resolve, reject) {
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
-        path.join(projectRoot, 'scripts', 'runtime', 'managed-comfyui.ps1'), '-Action', action,
+        path.join(projectRoot, 'scripts', 'lib', 'managed-comfyui.ps1'), '-Action', action,
         '-AIWorkspaceRoot', path.join(temporaryRoot, 'workspace'), '-RuntimeRoot', path.join(temporaryRoot, 'runtime'), '-ComfyHost', base],
         { windowsHide:true }, function (error, stdout, _stderr) {
           if (error && !stdout) return reject(error);
@@ -415,7 +415,7 @@ test('managed-comfyui Stop closes a recognized externally started ComfyUI', asyn
   function invoke(action) {
     return new Promise(function (resolve, reject) {
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
-        path.join(projectRoot, 'scripts', 'runtime', 'managed-comfyui.ps1'), '-Action', action,
+        path.join(projectRoot, 'scripts', 'lib', 'managed-comfyui.ps1'), '-Action', action,
         '-AIWorkspaceRoot', path.join(temporaryRoot, 'workspace'), '-RuntimeRoot', path.join(temporaryRoot, 'runtime'), '-ComfyHost', base],
         { windowsHide:true }, function (error, stdout, _stderr) {
           if (error && !stdout) return reject(error);
@@ -446,7 +446,7 @@ test('managed-webui Stop closes a recognized externally started reForge', async 
   function invoke(action) {
     return new Promise(function (resolve, reject) {
       childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
-        path.join(projectRoot, 'scripts', 'runtime', 'managed-webui.ps1'), '-Action', action,
+        path.join(projectRoot, 'scripts', 'lib', 'managed-webui.ps1'), '-Action', action,
         '-PackageRoot', path.join(temporaryRoot, 'package'), '-RuntimeRoot', path.join(temporaryRoot, 'runtime'),
         '-WebuiHost', base, '-ImagesRoot', path.join(temporaryRoot, 'images'), '-ControlNetRoot', path.join(temporaryRoot, 'controlnet')],
         { windowsHide:true }, function (error, stdout, _stderr) {

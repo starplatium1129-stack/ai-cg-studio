@@ -151,7 +151,7 @@ function applyScenes(chunks) {
 
   // 重建聚合
   try {
-    const { loadSceneShards, writeAggregate } = require(path.join(ROOT, 'scripts', 'runtime', 'scene-store'));
+    const { loadSceneShards, writeAggregate } = require(path.join(ROOT, 'scripts', 'lib', 'scene-store'));
     const { scenes } = loadSceneShards();
     writeAggregate(scenes);
     console.log(`[apply-chunks scenes] 聚合重建 ${scenes.length} 场景`);

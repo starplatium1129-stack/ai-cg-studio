@@ -159,8 +159,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
   var VOICE_START_SCRIPT = path.resolve(voiceRoot, 'Voice', 'Start-Voice.ps1');
   var VOICE_STOP_SCRIPT  = path.resolve(voiceRoot, 'Voice', 'Stop-Voice.ps1');
   var scriptsRoot = config.SCRIPTS_ROOT || path.join(rootDir, 'scripts');
-  var WEBUI_MANAGER_SCRIPT = path.join(scriptsRoot, 'runtime', 'managed-webui.ps1');
-  var COMFY_MANAGER_SCRIPT = path.join(scriptsRoot, 'runtime', 'managed-comfyui.ps1');
+  var WEBUI_MANAGER_SCRIPT = path.join(scriptsRoot, 'lib', 'managed-webui.ps1');
+  var COMFY_MANAGER_SCRIPT = path.join(scriptsRoot, 'lib', 'managed-comfyui.ps1');
   var WEBUI_PACKAGE_ROOT = path.join(voiceRoot, 'Data', 'Packages', 'Stable Diffusion WebUI reForge');
   var WEBUI_IMAGES_ROOT = path.join(voiceRoot, 'Data', 'Images');
   var WEBUI_CONTROLNET_ROOT = path.join(voiceRoot, 'Data', 'Models', 'ControlNet');
