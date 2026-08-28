@@ -139,6 +139,7 @@ function createBatchService(config, videoService, dependencies) {
     };
     if (input.negative) body.negative = input.negative;
     if (batch.modelId === 'minimax-h3' && input.steps) body.steps = input.steps;
+    if (batch.adultEnabled === true) body.adultEnabled = true;
     return Object.assign({}, validation.validateInput(body, config));
   }
 
@@ -250,6 +251,7 @@ function createBatchService(config, videoService, dependencies) {
       quality:batchInput.quality,
       steps:batchInput.steps,
       linkLastFrame:batchInput.linkLastFrame,
+      adultEnabled:batchInput.adultEnabled === true,
       shots:batchInput.shots.map(function (entry, index) {
         return {
           index:index + 1,

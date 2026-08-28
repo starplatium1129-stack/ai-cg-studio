@@ -87,12 +87,16 @@ export interface CreateVideoJobInput {
   camera: VideoDefaults['camera']
   motion: VideoDefaults['motion']
   seed?: number
-  /** 首帧图：POST /api/video/images 返回的受控文件名（I2VA 模式）。 */
+  /** 首帧图：POST /api/video/images 返回的受控文件名（I2VA/FL2VA 模式）。 */
   image?: string
+  /** 尾帧图：POST /api/video/images 返回的受控文件名（FL2VA/L2VA 模式，H3 专属）。 */
+  lastFrame?: string
   /** 画质档位：fast 0.2MP / standard 0.4MP（默认）/ fine 0.5MP。 */
   quality?: VideoQuality
   /** 采样步数（H3 专属）：8 标准（默认）/ 4 极速（约快一倍，质量略降）。 */
   steps?: 4 | 8
+  /** 成人内容传输层授权信号：本机直连默认 true（与出图侧同源），远程/隧道由服务端 fail-closed。 */
+  adultEnabled?: boolean
 }
 
 export interface VideoImageUploadResponse {
@@ -146,8 +150,9 @@ export function createVideoJob(input: CreateVideoJobInput, signal?: AbortSignal)
   })
 }
 
-/** 首帧图/参考图上传：base64 图片数据 → 网关校验后写入 ComfyUI/input，返回受控文件名。
- *  kind:'reference' 用独立前缀（跨任务资产，网关重启不清理）。 */
+/** 首帧图/尾帧图/参考图上传：base64 图片数据 → 网关校验后写入 ComfyUI/input，返回受控文件名。
+ *  kind:'reference' 用独立前缀（跨任务资产，网关重启不清理）；首帧/尾帧走缺省前缀（任务级清理）。
+ *  同一端点即覆盖 FL2VA 尾帧通道（后端按 IMAGE_INPUT_PATTERN 白名单校验）。 */
 export function uploadVideoImage(data: string, kind?: 'reference', signal?: AbortSignal): Promise<VideoImageUploadResponse> {
   return apiClient.request<VideoImageUploadResponse>('/api/video/images', {
     method: 'POST',
@@ -238,6 +243,8 @@ export interface CreateVideoBatchInput {
   steps?: 4 | 8
   /** 自动用上一镜尾帧衔接下一镜（FL2VA / I2VA 续接），默认开启。 */
   linkLastFrame?: boolean
+  /** 成人内容传输层授权信号：本机直连默认 true（与出图侧同源），远程/隧道由服务端 fail-closed。 */
+  adultEnabled?: boolean
   shots: CreateVideoBatchShotInput[]
 }
 

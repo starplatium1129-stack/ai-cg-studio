@@ -365,6 +365,40 @@ async function run() {
     video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', lastFrame:'aics_video_input_0123456789abcdef.png' }));
   }, /不支持尾帧图输入/, 'non-FL models reject last-frame input');
 
+  // ── 成人内容传输层门控（assertAdultAllowed：本机放行 / 缺授权拒绝 / 远程拒绝）──
+  var adultPrompt = validBody({ prompt:'nude explicit scene, naked character', adultEnabled:true });
+  // 本机直连 + adultEnabled:true → 放行（不抛）。
+  assert.doesNotThrow(function () {
+    video.validateInput(adultPrompt, null, { isLocal:true });
+  }, 'local + adultEnabled:true passes the transport gate');
+  // 本机直连但未声明授权 → 拒绝。
+  assert.throws(function () {
+    video.validateInput(validBody({ prompt:'nude explicit scene' }), null, { isLocal:true });
+  }, /ADULT_NOT_ENABLED|成人内容未获本机授权/, 'missing adultEnabled is rejected fail-closed');
+  // 远程/隧道访问 → 无条件拒绝（在 adultEnabled 检查之前短路）。
+  assert.throws(function () {
+    video.validateInput(adultPrompt, null, { isLocal:false });
+  }, /ADULT_REMOTE_NOT_ALLOWED|仅限本机直连/, 'remote access rejects adult params');
+  // 普通文案（无 R18 词）不受门控影响，三种环境均放行。
+  assert.doesNotThrow(function () {
+    video.validateInput(validBody(), null, { isLocal:false });
+  }, 'non-adult prompts are unaffected by the gate');
+  // 批次级透传：adultEnabled 随批次进入单镜校验。
+  var batchAdult = video.validateBatchInput({
+    modelId:'minimax-h3',
+    aspectRatio:'landscape',
+    adultEnabled:true,
+    shots:[{ prompt:'nude explicit scene, naked character' }],
+  });
+  assert.equal(batchAdult.adultEnabled, true, 'batch carries the transport flag through');
+  assert.throws(function () {
+    video.validateBatchInput({
+      modelId:'minimax-h3',
+      aspectRatio:'landscape',
+      shots:[{ prompt:'nude explicit scene, naked character' }],
+    });
+  }, /成人内容未获本机授权/, 'batch without the flag is rejected per shot');
+
   // ── T8 双时钟路径（2026-08-16 默认提速路径；真机 standard 5s 228s → 90s）──
   video.setT8Available(true);
   try {

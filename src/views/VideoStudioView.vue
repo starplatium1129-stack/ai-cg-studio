@@ -31,7 +31,7 @@
         type="button"
         :class="{ active: selectedMode === mode.id }"
         :aria-pressed="selectedMode === mode.id"
-        :disabled="mode.id === 'shots' ? !shotsModeReady : !mode.ready"
+        :disabled="!modeReady(mode.id)"
         @click="selectedMode = mode.id"
       >
         <span class="video-mode-icon"><ArchiveIcon :name="mode.icon" /></span>
@@ -39,7 +39,7 @@
           <strong>{{ mode.label }}</strong>
           <small>{{ mode.description }}</small>
         </span>
-        <em>{{ mode.id === 'shots' ? (shotsModeReady ? '可用' : '待装权重') : (mode.ready ? '可用' : '后续接入') }}</em>
+        <em>{{ modeBadge(mode.id) }}</em>
       </button>
     </section>
 
@@ -68,6 +68,41 @@
           </p>
           <p v-if="videoImageUrl" class="video-install-note">
             生成时后端会自动附加官方 I2VA 首帧指令（&lt;Picture 1&gt;）；画幅默认「跟随原图」，按首帧比例自动匹配画布，避免拉伸变形。
+          </p>
+        </section>
+
+        <section v-else-if="selectedMode === 'first-last-frame'" class="video-panel video-first-frame-panel">
+          <div class="video-panel-heading video-panel-heading--compact">
+            <div>
+              <span class="video-step">00 · 首尾帧</span>
+              <h2>锁定开始与结束画面</h2>
+            </div>
+            <span class="video-count">H3 专属 · FL2VA</span>
+          </div>
+          <div class="video-dual-frame-grid">
+            <div class="video-frame-slot">
+              <span class="field-label">首帧</span>
+              <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
+              <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
+                <input type="file" accept="image/*" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
+                <ArchiveIcon name="image" />
+                <span>上传首帧，或从绘图页「出视频」带入</span>
+              </label>
+              <button v-if="videoImageUrl" class="btn btn-ghost btn-block" type="button" @click="clearFirstFrame">移除首帧</button>
+            </div>
+            <div class="video-frame-slot">
+              <span class="field-label">尾帧</span>
+              <img v-if="lastFrameUrl" class="video-first-frame" :src="lastFrameUrl" alt="视频尾帧" />
+              <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
+                <input type="file" accept="image/*" :disabled="uploadingImage" @change="handleFrameFile($event, 'last')" />
+                <ArchiveIcon name="image" />
+                <span>上传尾帧</span>
+              </label>
+              <button v-if="lastFrameUrl" class="btn btn-ghost btn-block" type="button" @click="clearLastFrame">移除尾帧</button>
+            </div>
+          </div>
+          <p class="video-install-note">
+            生成时后端会自动按官方 FL2VA 规范锁定首尾画面（&lt;Picture 1&gt; / &lt;Last Frame&gt;）；画幅默认「跟随原图」，按首帧比例自动匹配画布。
           </p>
         </section>
 
@@ -362,6 +397,7 @@ import {
   type VideoStatusResponse,
 } from '@/api/videoApi'
 import { imgGet } from '@/composables/useImageStore'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import type { VideoCtxPayload } from '@/composables/useVideoBridge'
 import { useVideoStore } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -379,13 +415,29 @@ const modes: Array<{ id: StudioMode; label: string; description: string; ready: 
 const shotsModeReady = computed(() =>
   status.value?.models.some((model) => model.id === 'minimax-h3' && model.available) === true)
 
+// 首尾帧模式门槛：同源 H3（FL2VA 尾帧衔接是 H3 原生节点能力，Wan 5B 无此链路）。
+const firstLastFrameReady = computed(() =>
+  status.value?.models.some((model) =>
+    model.id === 'minimax-h3' && model.available && model.modes.includes('first-last-frame')) === true)
+
+function modeReady(mode: StudioMode): boolean {
+  if (mode === 'shots') return shotsModeReady.value
+  if (mode === 'first-last-frame') return firstLastFrameReady.value
+  return true
+}
+
+function modeBadge(mode: StudioMode): string {
+  if (mode === 'shots' || mode === 'first-last-frame') return modeReady(mode) ? '可用' : '待装权重'
+  return '可用'
+}
+
 const aspectOptions = computed(() => {
   const base: Array<{ id: VideoDefaults['aspectRatio']; label: string }> = [
     { id: 'landscape', label: '横屏' },
     { id: 'portrait', label: '竖屏' },
     { id: 'square', label: '方形' },
   ]
-  if (selectedMode.value === 'image') {
+  if (selectedMode.value === 'image' || selectedMode.value === 'first-last-frame') {
     base.push({ id: 'original', label: '跟随原图' })
   }
   return base
@@ -440,6 +492,11 @@ const sceneStore = useSceneStore()
 const videoImageId = ref('')
 const videoImageUrl = ref('')
 const uploadingImage = ref(false)
+
+// ── 首尾帧过渡（FL2VA）状态：首帧可来自绘图页或本地上传，尾帧仅本地上传 ────
+const firstFrameName = ref('')
+const lastFrameName = ref('')
+const lastFrameUrl = ref('')
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
 const environmentState = computed(() => {
@@ -514,7 +571,9 @@ const t8State = computed(() => {
 const canGenerate = computed(() => {
   const mode = selectedMode.value
   // 分镜模式走 ShotListEditor 自己的提交链路，不进单任务生成。
-  if (mode !== 'text' && !(mode === 'image' && videoImageId.value)) return false
+  if (mode === 'shots') return false
+  if (mode === 'image' && !videoImageId.value) return false
+  if (mode === 'first-last-frame' && !firstFrameReady.value) return false
   return prompt.value.trim().length >= 8
     && prompt.value.length <= 4000
     && parsedSeed.value !== null
@@ -524,10 +583,17 @@ const canGenerate = computed(() => {
     && !submitting.value
     && !jobActive.value
 })
+// 首尾帧模式素材就绪：首帧（绘图页带入 或 本地上传）与尾帧（本地上传）齐备。
+const firstFrameReady = computed(() =>
+  Boolean(videoImageId.value || firstFrameName.value) && Boolean(lastFrameName.value))
+
 const submitTitle = computed(() => {
   if (jobActive.value) return '已有视频正在生成'
   if (!status.value?.online) return '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
+  if (selectedMode.value === 'first-last-frame' && !firstFrameReady.value) {
+    return videoImageId.value || firstFrameName.value ? '先上传一张尾帧图' : '先准备首帧与尾帧图'
+  }
   if (selectedMode.value === 'image' && !videoImageId.value) return '先带入一张首帧图'
   if (activeModel.value && selectedMode.value !== 'shots'
     && !activeModel.value.modes?.includes(selectedMode.value as VideoMode)) {
@@ -541,6 +607,7 @@ const submitDescription = computed(() => {
   if (jobActive.value) return '视频任务耗时较长，为避免显存争抢，当前只允许一个页面任务。'
   if (!status.value?.online) return '控制面板启动 ComfyUI 后，回到这里重新检测即可。'
   if (!activeModel.value?.available) return '页面与原生节点已经就绪，缺失文件会在右侧明确列出。'
+  if (selectedMode.value === 'first-last-frame') return '工作室会锁定首尾两帧画面，中间过渡由模型按描述自由发挥。'
   return '工作室会自动补全稳定性约束、帧数、采样器与 MP4 输出设置。'
 })
 const jobStatusLabel = computed(() => ({
@@ -641,6 +708,45 @@ function clearFirstFrame() {
   if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
   videoImageUrl.value = ''
   videoImageId.value = ''
+  firstFrameName.value = ''
+}
+
+function clearLastFrame() {
+  if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
+  lastFrameUrl.value = ''
+  lastFrameName.value = ''
+}
+
+/** 本地上传首帧/尾帧：base64 → 网关 → 受控文件名 + 本地预览。 */
+async function handleFrameFile(event: Event, slot: 'first' | 'last') {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+  if (!file.type.startsWith('image/')) {
+    statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'
+    return
+  }
+  uploadingImage.value = true
+  statusError.value = ''
+  try {
+    const upload = await uploadVideoImage(await blobToBase64(file))
+    const preview = URL.createObjectURL(file)
+    if (slot === 'first') {
+      if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
+      videoImageUrl.value = preview
+      firstFrameName.value = upload.name
+      videoImageId.value = ''
+    } else {
+      if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
+      lastFrameUrl.value = preview
+      lastFrameName.value = upload.name
+    }
+  } catch (error) {
+    statusError.value = error instanceof Error ? error.message : '图片上传失败'
+  } finally {
+    uploadingImage.value = false
+  }
 }
 
 function blobToBase64(blob: Blob): Promise<string> {
@@ -661,12 +767,21 @@ async function submitVideo() {
   submitting.value = true
   try {
     let image: string | undefined
-    if (selectedMode.value === 'image') {
-      const blob = videoImageId.value ? await imgGet(videoImageId.value) : null
-      if (!blob) throw new Error('首帧图片读取失败，请重新带入')
-      uploadingImage.value = true
-      const upload = await uploadVideoImage(await blobToBase64(blob))
-      image = upload.name
+    let lastFrame: string | undefined
+    if (selectedMode.value === 'image' || selectedMode.value === 'first-last-frame') {
+      if (firstFrameName.value) {
+        image = firstFrameName.value
+      } else if (videoImageId.value) {
+        const blob = await imgGet(videoImageId.value)
+        if (!blob) throw new Error('首帧图片读取失败，请重新带入')
+        uploadingImage.value = true
+        const upload = await uploadVideoImage(await blobToBase64(blob))
+        image = upload.name
+      }
+      if (selectedMode.value === 'first-last-frame') {
+        if (!lastFrameName.value) throw new Error('尾帧图片读取失败，请重新上传')
+        lastFrame = lastFrameName.value
+      }
     }
     const response = await createVideoJob({
       prompt: prompt.value.trim(),
@@ -680,6 +795,9 @@ async function submitVideo() {
       quality: quality.value,
       steps: steps.value,
       image,
+      lastFrame,
+      // 成人内容传输层授权：本机直连默认 true，远程/隧道由服务端 fail-closed。
+      adultEnabled: isLocalStudioHost(),
     })
     job.value = response.job
     schedulePoll()
@@ -721,9 +839,9 @@ function formatTime(timestamp: number) {
   return new Intl.DateTimeFormat('zh-CN', { hour: '2-digit', minute: '2-digit' }).format(timestamp)
 }
 
-// 离开图生视频模式时把「跟随原图」复位，避免文字成片带着 original 画幅被后端 400。
+// 离开图生视频/首尾帧模式时把「跟随原图」复位，避免文字成片带着 original 画幅被后端 400。
 watch(selectedMode, (mode) => {
-  if (mode !== 'image' && aspectRatio.value === 'original') aspectRatio.value = 'landscape'
+  if (mode !== 'image' && mode !== 'first-last-frame' && aspectRatio.value === 'original') aspectRatio.value = 'landscape'
 })
 
 onMounted(() => {
@@ -739,6 +857,7 @@ onBeforeUnmount(() => {
   disposed = true
   window.clearTimeout(pollTimer)
   if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
+  if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
 })
 </script>
 
@@ -825,6 +944,27 @@ onBeforeUnmount(() => {
 .video-prompt-guidance { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
 .video-prompt-guidance span { padding:3px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-muted); font-size:var(--fs-label-xs); }
 .video-first-frame-panel .video-panel-heading { align-items:center; }
+.video-dual-frame-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
+.video-frame-slot { display:grid; gap:var(--s-2); align-content:start; }
+.video-upload-drop {
+  display:grid; place-items:center; gap:var(--s-2);
+  min-height:180px; padding:var(--s-4);
+  border:1px dashed var(--border-strong,var(--border-soft));
+  border-radius:var(--r-lg);
+  background:var(--bg-deep);
+  color:var(--text-muted);
+  font-size:var(--fs-body-sm);
+  line-height:var(--lh-body);
+  text-align:center;
+  cursor:pointer;
+  transition:border-color var(--motion-hover),color var(--motion-hover),transform var(--motion-press) var(--ease-out);
+}
+.video-upload-drop:hover { border-color:var(--accent); color:var(--text-secondary); }
+.video-upload-drop:active { transform:scale(.98); }
+.video-upload-drop[data-busy="true"] { opacity:.6; pointer-events:none; }
+.video-upload-drop input[type="file"] { position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
+.video-upload-drop .archive-icon { width:26px; color:var(--accent); }
+.video-upload-drop span { max-width:24ch; }
 .video-first-frame {
   display:block;
   width:100%;
@@ -944,6 +1084,7 @@ onBeforeUnmount(() => {
   .video-studio { width:min(100% - 24px,var(--page-max)); }
   .video-header,.video-submit-panel { grid-template-columns:1fr; align-items:start; }
   .video-mode-strip,.video-choice-grid--three,.video-side-column,.video-advanced-grid,.video-quality-grid { grid-template-columns:1fr; }
+  .video-dual-frame-grid { grid-template-columns:1fr; }
   .video-mode-card { min-height:70px; }
   .video-choice-pair { grid-template-columns:1fr; }
   .video-duration-row { grid-template-columns:1fr; align-items:start; }

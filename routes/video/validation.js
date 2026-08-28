@@ -334,7 +334,7 @@ function validateInput(body, config, options) {
 
 // ── 分镜批量校验（P5：POST /api/video/batches）──────────────────────────
 
-var BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFrame', 'steps', 'shots']);
+var BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFrame', 'steps', 'shots', 'adultEnabled']);
 var BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'dialogueLang', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image', 'references']);
 var BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
 
@@ -396,6 +396,9 @@ function validateBatchInput(body, config) {
       aspectRatio:aspectRatio,
       quality:quality,
     });
+    // 成人内容传输层授权随批次透传：单镜 prompt 命中 R18 词时，本机直连（adultEnabled:true）
+    // 走 assertAdultAllowed 放行；远程/隧道由服务端 fail-closed 拒绝。
+    if (body.adultEnabled === true) shotBody.adultEnabled = true;
     if (model.family === 'minimax-h3') shotBody.steps = steps;
     var input = Object.assign({}, validateInput(shotBody, config));
     return { input:input };
@@ -406,6 +409,7 @@ function validateBatchInput(body, config) {
     quality:quality,
     linkLastFrame:linkLastFrame,
     steps:steps,
+    adultEnabled:body.adultEnabled === true,
     shots:shots,
   });
 }
