@@ -223,4 +223,14 @@ export default tseslint.config(
       'no-console': 'off',
     },
   },
+  {
+    // 体量上限预警（2026-08-28 审计 P1-13）：warn 级不阻断 CI，用于暴露
+    // 单体回涨（TrainingView 1638 行 / training-service 1669 行 / control.js
+    // 1060 行等已越过项目自设的 600 行拆分红线）。拆分排期见
+    // docs/engineering-audit-2026-08-28.html §08；存量 warn 数量只降不升。
+    files: ['src/**/*.{ts,vue}', 'routes/**/*.js', 'services/**/*.{js,ts}', 'server.js'],
+    rules: {
+      'max-lines': ['warn', { max: 1000, skipBlankLines: true, skipComments: true }],
+    },
+  },
 )

@@ -8,7 +8,6 @@
 
 var assert = require('assert/strict');
 var gatewayStack = require('./gateway-test-stack');
-var interrogate = require('../../routes/interrogate');
 
 var TINY_PNG = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='.padEnd(2048, 'A'); // padEnd 合法 base64，>1024B 过体积校验
 

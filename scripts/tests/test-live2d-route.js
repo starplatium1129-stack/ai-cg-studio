@@ -8,7 +8,6 @@
 
 var assert = require('assert/strict');
 var express = require('express');
-var http = require('http');
 var createLive2dRouter = require('../../routes/live2d').createLive2dRouter;
 
 async function json(response) { return response.json(); }
