@@ -5645,7 +5645,7 @@
         "trinity",
         "tea party"
       ],
-      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate glowing pink starburst halo, white feathered angel wings adorned with gold star brooches and dangling golden tassels, and sparkling golden eyes with star-shaped pupils",
+      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate golden wing-shaped halo adorned with tiny star ornaments, and sparkling golden eyes with star-shaped pupils",
       "identityTokens": [
         "misono_mika",
         "1girl",
@@ -5660,12 +5660,8 @@
         "plant_hair_ornament",
         "hair_flower",
         "halo",
-        "pink_halo",
-        "star_halo",
-        "angel_wings",
-        "white_wings",
-        "feathered_wings",
-        "wings_with_gold_star_brooches",
+        "gold_halo",
+        "wing-shaped_halo",
         "golden_eyes",
         "starry_eyes",
         "star-shaped_pupils",
@@ -5784,7 +5780,7 @@
         "gehenna",
         "disciplinary committee"
       ],
-      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate spiked purple halo, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
+      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate purple halo of three concentric rings crowned with jagged spikes, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
       "identityTokens": [
         "sorasaki_hina",
         "1girl",
@@ -5797,6 +5793,7 @@
         "halo",
         "purple_halo",
         "spiked_halo",
+        "concentric_rings_halo",
         "bat_wings",
         "demon_wings",
         "black_wings",
@@ -6078,7 +6075,7 @@
         "millennium",
         "blue archive"
       ],
-      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit Zero Four, a cool deadpan girl with champagne blonde hair, sharp ice blue eyes, tactical headset with boom mic, and blue geometric HUD halo",
+      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit Zero Four, a cool deadpan girl with champagne blonde hair, sharp ice blue eyes, tactical headset with boom mic, and blue geometric HUD halo of three concentric rings",
       "identityTokens": [
         "asuma_toki",
         "1girl",
@@ -6195,7 +6192,7 @@
         "seminar",
         "blue archive"
       ],
-      "identityProse": "Tsukatsuki Rio from Blue Archive, the President of Millennium Science School's Seminar student council, a tall commanding mature beauty with sleek black hime-cut straight hair, sharp crimson eyes, and deep red diamond matrix halo",
+      "identityProse": "Tsukatsuki Rio from Blue Archive, the President of Millennium Science School's Seminar student council, a tall commanding mature beauty with sleek black hime-cut straight hair, sharp crimson eyes, and silver metallic halo with two red curved lines",
       "identityTokens": [
         "tsukatsuki_rio",
         "1girl",
@@ -6208,7 +6205,7 @@
         "red_eyes",
         "tall_slender_mature_elegance",
         "cool_beauty",
-        "deep_red_diamond_matrix_halo",
+        "silver_metallic_halo_with_red_curved_lines",
         "millennium",
         "seminar",
         "blue_archive"
