@@ -99,7 +99,7 @@ watch(() => [props.state, props.shape, props.status], signal)
 @keyframes workspace-scan { from{transform:translateX(-110%)} to{transform:translateX(310%)} }
 @keyframes workspace-pulse { 50%{box-shadow:0 0 0 7px transparent} }
 @keyframes workspace-rotate { to{transform:translate(-50%,-50%) rotate(360deg)} }
-@media(max-width:720px){
+@media(max-width: 768px){
   .workspace-archive-bar{grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
   .workspace-line,.workspace-radar{display:none}
   .workspace-copy span{max-width:42vw}

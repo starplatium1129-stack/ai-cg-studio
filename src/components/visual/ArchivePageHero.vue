@@ -219,7 +219,7 @@ onUnmounted(() => {
 .is-compact { min-height: 280px; }
 .is-compact .archive-particles { min-height: 280px; }
 
-@media (max-width: 820px) {
+@media (max-width: 900px) {
   .archive-page-hero { grid-template-columns: 1fr; min-height: 0; }
   .archive-copy { min-height: 260px; padding: 72px var(--s-5) 34px; }
   .archive-particles { min-height: 250px; border-left: 0; border-top: 1px solid var(--border-soft); }
@@ -227,7 +227,7 @@ onUnmounted(() => {
   .archive-page-hero.is-compact .archive-particles { min-height: 150px; }
   .archive-coordinate { display: none; }
 }
-@media (max-width: 520px) {
+@media (max-width: 600px) {
   .archive-page-hero { border-radius: var(--r-lg); }
   .archive-copy { min-height: 230px; padding: 66px var(--s-4) 28px; }
   .archive-page-hero.is-compact .archive-copy { min-height: 194px; padding: 62px var(--s-4) 24px; }

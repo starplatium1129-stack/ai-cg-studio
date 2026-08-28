@@ -525,7 +525,7 @@ async function handleStart() {
   align-items: start;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1000px) {
   .inpaint-layout {
     grid-template-columns: 1fr;
   }

@@ -1213,5 +1213,5 @@ tr:hover td { background:var(--bg-elevated); }
 .form-check { display:flex; align-items:center; gap:var(--s-2); }
 .modal-actions { display:flex; gap:var(--s-2); margin-top:var(--s-2); flex-wrap:wrap; }
 .search-hl { background:color-mix(in srgb,var(--accent) 22%,transparent); color:var(--accent); padding:0 2px; border-radius:var(--r-xs); }
-@media(max-width:680px) { .form-grid { grid-template-columns:1fr; } .sm-head { flex-direction:column; } }
+@media(max-width: 768px) { .form-grid { grid-template-columns:1fr; } .sm-head { flex-direction:column; } }
 </style>

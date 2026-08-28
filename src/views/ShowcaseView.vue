@@ -477,7 +477,7 @@ onUnmounted(() => {
 .load-more { min-width:190px; }
 
 @media(max-width:1000px) { .showcase-grid { grid-template-columns:repeat(3, minmax(0,1fr)); } }
-@media(max-width:760px) {
+@media(max-width: 768px) {
   .search-row { flex-direction:column; align-items:stretch; }
   .toolbar-shell { position:relative; top:auto; }
   .result-meta { white-space:normal; }
@@ -570,7 +570,7 @@ body:has(.showcase-viewer[open]) { overflow: hidden; }
 @media (max-width: 1000px) {
   .showcase-viewer .viewer-layout { grid-template-columns: minmax(0, 1fr) 320px; }
 }
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .showcase-viewer { padding: 0; }
   .showcase-viewer .viewer-layout {
     grid-template-columns: 1fr;

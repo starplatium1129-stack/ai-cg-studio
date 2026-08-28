@@ -962,7 +962,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @media (max-width:1000px) {
   .gallery-wall { grid-template-columns:repeat(3, minmax(0,1fr)); }
 }
-@media (max-width:760px) {
+@media (max-width: 768px) {
   .gallery-wall { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
 }
 @media (max-width:600px) {

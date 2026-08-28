@@ -805,7 +805,7 @@ onMounted(() => { init() })
   .scene-cats { flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
   .scene-cat { flex:none; }
 }
-@media (max-width:420px) {
+@media (max-width: 480px) {
   .scene-facet-grid { grid-template-columns:1fr; }
   .scene-atlas-register { grid-template-columns:auto auto; }
   .scene-atlas-register span:last-child { display:none; }

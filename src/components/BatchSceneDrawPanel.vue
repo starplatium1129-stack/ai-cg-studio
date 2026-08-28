@@ -418,7 +418,7 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 .batch-lightbox-caption em { color: var(--text-muted); font-style: normal; }
 .batch-lightbox-close { position: absolute; top: var(--s-3); right: var(--s-3); }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .batch-scene-grid { grid-template-columns: 1fr; }
   .batch-result-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }

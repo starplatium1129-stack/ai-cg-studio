@@ -190,7 +190,7 @@ onMounted(() => { void loadCatalog() })
 .evaluation-panel dd { margin:0; line-height:var(--lh-body); overflow-wrap:anywhere; }
 .evaluation-panel code { white-space:normal; }
 
-@media (max-width:640px) {
+@media (max-width: 600px) {
   .lora-title-row { align-items:flex-start; flex-direction:column; }
   .evaluation-metrics { grid-template-columns:1fr; }
 }

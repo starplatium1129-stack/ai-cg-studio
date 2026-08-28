@@ -1152,7 +1152,7 @@ onBeforeUnmount(() => {
 .shot-script-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .shot-script-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .shot-script-hint { color: var(--text-muted); font-size: var(--fs-label-xs); }
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .shot-reference-grid, .shot-script-row { grid-template-columns: 1fr; }
 }
 .shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; }
@@ -1197,13 +1197,13 @@ onBeforeUnmount(() => {
 .shot-progress-stats { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
 .shot-concat-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .shot-concat-player { display: block; width: 100%; max-height: min(68vh, 700px); border-radius: var(--r-lg); background: var(--bg-deep); }
-@media (max-width: 1050px) {
+@media (max-width: 1000px) {
   .shot-identity-row { grid-template-columns: 1fr; }
   .shot-selects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shot-submit-panel { grid-template-columns: 1fr; }
   .shot-submit-actions { justify-content: flex-start; }
 }
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .shot-selects { grid-template-columns: 1fr; }
 }
 </style>

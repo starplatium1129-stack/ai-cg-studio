@@ -98,7 +98,7 @@ function save() {
 .profile-note { grid-column: 1 / -1; }
 .profile-note small { justify-self: end; color: var(--text-muted); font-size: var(--fs-mono-sm); }
 .profile-actions { justify-content: flex-end; margin-top: var(--s-3); }
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   .profile-grid { grid-template-columns: 1fr; }
   .profile-note { grid-column: auto; }
 }

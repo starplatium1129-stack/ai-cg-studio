@@ -161,7 +161,7 @@ onUnmounted(() => {
 .tb-close:active {
   background: linear-gradient(180deg, var(--desktop-titlebar-close), #a80d1b);
 }
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   .titlebar-page { display: none; }
 }
 </style>

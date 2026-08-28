@@ -911,7 +911,7 @@ onMounted(() => {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .char-reference-grid {
     grid-template-columns: 1fr;
   }

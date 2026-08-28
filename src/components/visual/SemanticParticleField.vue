@@ -699,7 +699,7 @@ canvas { display:none; position:absolute; inset:0; width:100%; height:100%; z-in
 .is-bare::before,.is-bare::after,.is-bare .particle-caption { display:none; }
 .signal-active canvas { opacity:.92; }
 .signal-warning canvas { opacity:.86; }
-@media (max-width:760px) {
+@media (max-width: 768px) {
   .semantic-particle-field { min-height:240px; background-size:34px 34px,34px 34px,auto; }
   .particle-caption { right:var(--s-3); }
 }

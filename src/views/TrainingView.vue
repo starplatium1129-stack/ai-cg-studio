@@ -1585,14 +1585,14 @@ onUnmounted(() => {
 .console-error { margin: var(--s-2) 0 0; color: var(--danger-text); font-size: var(--fs-label-sm); }
 .console-note { margin: var(--s-2) 0 0; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: var(--lh-body); }
 
-@media (max-width: 1040px) {
+@media (max-width: 1000px) {
   .workbench { grid-template-columns: 190px minmax(0, 1fr); gap: var(--s-3); }
   .plan-card, .voice-pipeline { grid-template-columns: 1fr; }
   .voice-pipeline ol { grid-template-columns: repeat(4, minmax(110px, 1fr)); overflow-x: auto; padding-bottom: 3px; }
   .job-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .training-page { padding-inline: var(--s-3); }
   .training-hero { grid-template-columns: 1fr; }
   .hero-status { min-width: 0; }
@@ -1615,7 +1615,7 @@ onUnmounted(() => {
   .console-tools .select { width: auto; min-width: 0; flex: 1; }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
   .training-alert { align-items: flex-start; flex-direction: column; }
   .plan-card, .voice-pipeline, .log-console, .job-card { padding: var(--s-3); }
   .plan-specs { grid-template-columns: 1fr; }

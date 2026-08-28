@@ -934,13 +934,13 @@ onBeforeUnmount(() => {
 /* 2026-08-22 动效审计 #2：原 reduce 段强制 width:100% 会让 reduce 用户看到
    永远 100% 的假进度（且针对的 video-progress keyframes 从未被引用）——
    全局 reduce 短路段已覆盖过渡，此处整段删除。 */
-@media (max-width:1050px) {
+@media (max-width: 1000px) {
   .video-mode-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .video-workspace { grid-template-columns:1fr; }
   .video-side-column { position:static; grid-template-columns:repeat(2,minmax(0,1fr)); }
   .video-queue-panel { grid-column:1 / -1; }
 }
-@media (max-width:760px) {
+@media (max-width: 768px) {
   .video-studio { width:min(100% - 24px,var(--page-max)); }
   .video-header,.video-submit-panel { grid-template-columns:1fr; align-items:start; }
   .video-mode-strip,.video-choice-grid--three,.video-side-column,.video-advanced-grid,.video-quality-grid { grid-template-columns:1fr; }

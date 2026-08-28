@@ -1516,7 +1516,7 @@ body:has(.chat-page) .sakura-fall {
 }
 /* narrow screens: title only; show helper text on wide layouts */
 .chat-page .voice-toggle-copy small { display: none; }
-@media (min-width: 1100px) {
+@media (min-width: 1000px) {
   .chat-page .voice-toggle-copy small { display: block; }
 }
 
@@ -1940,7 +1940,7 @@ body:has(.chat-page) .sakura-fall {
   }
 }
 
-@media (max-width: 820px) {
+@media (max-width: 900px) {
   .chat-page {
     padding: var(--s-3);
   }
@@ -1989,7 +1989,7 @@ body:has(.chat-page) .sakura-fall {
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .chat-page .chat-head { margin-bottom: var(--s-5); }
 
   .chat-page .workspace-copy span {

@@ -834,7 +834,7 @@ details[open] .chevron { transform: rotate(90deg); }
   .control-work-grid { grid-template-columns: 1fr; }
   .resource-panel .mode-grid, .service-config-panel .voice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   .nav-local { padding: 0 var(--s-3); }
   .control-shell { padding: var(--s-5) var(--s-3) var(--s-8); }
   .status-wall, .mode-grid, .access-grid, .voice-grid, .resource-panel .mode-grid, .service-config-panel .voice-grid { grid-template-columns: 1fr; }

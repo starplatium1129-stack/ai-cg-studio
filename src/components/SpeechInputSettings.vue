@@ -277,7 +277,7 @@ function save(): void {
   background: var(--border-soft); margin-right: 5px;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .speech-settings-grid { grid-template-columns: 1fr; }
   .speech-settings-actions { flex-direction: column; align-items: stretch; }
   .speech-settings-buttons { justify-content: flex-end; }

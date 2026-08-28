@@ -480,7 +480,7 @@ onUnmounted(() => {
   18% { opacity:1; }
   100% { opacity:0; transform:translateX(620%) skewX(-12deg); }
 }
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .route-atmosphere { opacity: .1; }
   .route-atmosphere-field { inset: 12% -34% 18% 24%; }
   .route-index { display:none; }

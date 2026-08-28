@@ -58,5 +58,5 @@
   .pb .history-action.primary:hover { color: var(--text-inverse); background: var(--accent); }
   .pb .history-action.delete { width: 32px; padding: 0; color: var(--text-muted); font-size: var(--fs-body-lg); }
   .pb .history-action.delete:hover { color: var(--danger-text); background: color-mix(in srgb,var(--danger) 10%,transparent); }
-  @media (max-width: 680px) { .pb .history-list { grid-template-columns:1fr; } .pb .history-rating { justify-content:flex-start; } }
-  @media (max-width: 400px) { .pb .history-actions { flex:1; } .pb .history-action { flex:1; } .pb .history-action.delete { flex:0 0 34px; width:34px; } }
+  @media (max-width: 768px) { .pb .history-list { grid-template-columns:1fr; } .pb .history-rating { justify-content:flex-start; } }
+  @media (max-width: 480px) { .pb .history-actions { flex:1; } .pb .history-action { flex:1; } .pb .history-action.delete { flex:0 0 34px; width:34px; } }

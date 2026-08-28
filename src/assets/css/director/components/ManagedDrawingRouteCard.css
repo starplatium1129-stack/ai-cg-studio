@@ -82,7 +82,7 @@
     .pb .managed-route-apply:hover,
     .pb .successful-recipes button:hover { border-color:var(--accent); color:var(--accent); }
   }
-  @media (max-width:720px) {
+  @media (max-width: 768px) {
     .pb .director-mode-head, .pb .managed-route-main { align-items:stretch; flex-direction:column; }
     .pb .director-mode-switch { align-self:flex-start; }
     .pb .managed-route-apply { width:100%; }
