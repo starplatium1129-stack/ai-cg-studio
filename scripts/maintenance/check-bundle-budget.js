@@ -17,6 +17,11 @@ const DEFAULT_BUDGETS = Object.freeze({
   // 2026-08-20 新增 Anima 局部换装 (AI Inpaint) 扩展交互，预算调整至 140 KiB。
   routeJavaScript: 140 * 1024,
   routeCss: 115 * 1024,
+  // 入口 CSS 预算（2026-08-28 审计 P1-7）：此前入口 CSS 从未被预算约束，
+  // 字体声明一路涨到 453KB（315 条 @font-face）才被发现——"门禁管到哪、
+  // 债就长到哪"的实例。字体声明已移入异步 fonts chunk（入口 76.9KB），
+  // 此预算防 @font-face / 大样式块经 main.ts 重新混入入口。
+  entryCss: 100 * 1024,
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。
   lazyChunk: 1000 * 1024,
@@ -35,6 +40,12 @@ function lazyChunks(manifest) {
   return Object.entries(manifest)
     .map(([key, entry]) => ({ key, ...entry }))
     .filter(entry => entry.isDynamicEntry === true && !/^src\/views\/.+\.vue$/.test(entry.src || entry.key));
+}
+
+function entryEntry(manifest) {
+  return Object.entries(manifest)
+    .map(([key, entry]) => ({ key, ...entry }))
+    .find(entry => entry.isEntry === true) || null;
 }
 
 function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
@@ -75,7 +86,8 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     throw new Error(`Vite manifest missing: ${manifestPath}`);
   }
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  const result = evaluateManifest(manifest, file => fs.statSync(path.join(distDir, file)).size);
+  const sizeOf = file => fs.statSync(path.join(distDir, file)).size;
+  const result = evaluateManifest(manifest, sizeOf);
   if (result.routes.length < 12) {
     throw new Error(`Expected at least 12 lazy route chunks, found ${result.routes.length}`);
   }
@@ -101,6 +113,13 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     throw new Error(`Lazy chunk budget exceeded:\n${lazyViolations.join('\n')}`);
   }
 
+  const entry = entryEntry(manifest);
+  const entryCssBytes = entry ? (entry.css || []).reduce((total, file) => total + sizeOf(file), 0) : 0;
+  if (entryCssBytes > DEFAULT_BUDGETS.entryCss) {
+    throw new Error(`Entry CSS budget exceeded: ${(entry.css || []).join(', ')} = ${entryCssBytes} > ${DEFAULT_BUDGETS.entryCss}`
+      + '\n字体声明走 src/assets/fonts.ts 异步 chunk，勿在 main.ts 同步 import @fontsource 或大样式。');
+  }
+
   const largestJs = [...result.routes].sort((a, b) => b.javascript - a.javascript)[0];
   const largestCss = [...result.routes].sort((a, b) => b.css - a.css)[0];
   const largestLazy = lazy.sort((a, b) => b.javascript - a.javascript)[0];
@@ -108,7 +127,8 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     `Route bundle budget passed: ${result.routes.length} routes; `
     + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `
     + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}; `
-    + `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}`,
+    + `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}; `
+    + `entry CSS ${kib(entryCssBytes)} / ${kib(DEFAULT_BUDGETS.entryCss)}`,
   );
   if (result.warnings && result.warnings.length) {
     console.warn(`[warn] bundle budget >90% warning:\n${[...result.warnings, ...lazyWarnings].join('\n')}`);

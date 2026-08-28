@@ -3,14 +3,10 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import { preferredTheme } from './composables/useTheme'
-// 字体本地自托管（替代 Google Fonts）：离线可用、无第三方请求。
-// 字重：JetBrains Mono 400/600，Noto Sans SC 400/600/700
-//（500/800 使用率最低已砍掉，缺失字重由浏览器在 400/600/700 之间插值，节省 ~1.2MB woff2）。
-import '@fontsource/jetbrains-mono/400.css'
-import '@fontsource/jetbrains-mono/600.css'
-import '@fontsource/noto-sans-sc/400.css'
-import '@fontsource/noto-sans-sc/600.css'
-import '@fontsource/noto-sans-sc/700.css'
+// 字体声明移入独立异步 chunk（2026-08-28 审计 P1-7）：315 条 @font-face
+// 不再打进入口 CSS（453KB → ~85KB），首帧用 fallback 渲染、swap 无闪换。
+// 不 await —— 首帧即发起加载，不阻塞入口解析。
+import('./assets/fonts')
 // 全局样式只留真正跨路由共用的三份。
 // director.css(91.6KB)与 chat.css(18.6KB)已移到各自视图内 import ——
 // 它们占了 139KB 全局包的 79%，却只服务 /prompt-builder 与 /chat。
