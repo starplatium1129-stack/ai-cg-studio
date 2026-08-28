@@ -1,5 +1,7 @@
 # 桌面端 Tauri 2 当前架构与发布边界
 
+> ⚠️ **2026-08-28 过期标注**：文中「Electron 继续保留为稳定路径」已失效——`package.json` 已无 Electron 依赖，桌面主线仅 Tauri 2，且 `desktop-tauri/src-tauri/target/release/` 已产出发布产物。本文仅保留迁移决策史，现状以 `AGENTS.md` 第二节与 `docs/live2d-composable-refactor-plan.md` 为准。
+
 > 更新：2026-08-10
 > 本文是当前契约文档，不再记录 P0-P7 的阶段计划、人日估算或逐轮交接。
 

@@ -27,11 +27,11 @@
 | **设计系统契约** | `DESIGN.md` (根目录) | 界面视觉规范、色彩 Tokens、Typography、组件规范与布局标准。 |
 | **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（43 热门角色/45 角色库/944 视角参考库、38 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
 | **维护操作指南** | [`maintenance.md`](maintenance.md) | 场景维护、数据验证、多模型同步、备份恢复等日常维护脚本与契约。 |
-| **视觉与架构路线** | [`visual-architecture-roadmap.md`](visual-architecture-roadmap.md) | UI/UX 演进路线、API Client、存储 Repository 与组件拆分基线。 |
+| **视觉与架构路线** | [`visual-architecture-roadmap.md`](visual-architecture-roadmap.md) | ⚠️ 2026-08-28 过期标注：浅色主题已下线（锁定深色），文中双主题结论不再适用；仅存历史演进记录。 |
 | **桌宠语音演出路线** | [`companion-voice-roadmap.md`](companion-voice-roadmap.md) | Desktop Companion 语音交互、情绪标签驱动与状态机演进规划。 |
-| **视频生成路线** | [`video-generation-roadmap.md`](video-generation-roadmap.md) | 本地 AI 视频生成（Wan 2.2 / MiniMax H3 / I2VA / Ref2VA）路线图。 |
+| **视频生成路线** | [`video-generation-roadmap.md`](video-generation-roadmap.md) | ⚠️ 2026-08-28 过期标注：权重已装、I2V/首尾帧/分镜已落地，文中「待装/禁用」表述过时；现状以 AGENTS.md 第四节为准。 |
 | **画质与提示词路线** | [`prompt-image-quality-roadmap.md`](prompt-image-quality-roadmap.md) | 提示词结构进化、负向词抑制与画质提升长期路线。 |
-| **模型与 ComfyUI 扩展路线** | [`model-comfyui-expansion-roadmap.md`](model-comfyui-expansion-roadmap.md) | 模型库与 ComfyUI 工作流扩展规划（超分/hires/加速等）。 |
+| **模型与 ComfyUI 扩展路线** | [`model-comfyui-expansion-roadmap.md`](model-comfyui-expansion-roadmap.md) | ⚠️ 2026-08-28 过期标注：节点清单（9 包）与外置 upscaler 已变；仅存历史决策记录。 |
 
 ---
 
@@ -41,7 +41,7 @@
 | :--- | :--- | :--- |
 | **角色一站式接入流水线** | [`character-onboarding-workflow.md`](character-onboarding-workflow.md) | 新增热门角色档案、SFW/NSFW 场景、4 视角参考库、点阵场与样张全量自动化接入规范。 |
 | **参考图待精调清单** | [`character-reference-audit-pending.md`](character-reference-audit-pending.md) | 45 角色 236 服装形态（944 视角）自动化审核大盘与 75 项边缘变体修复配方。 |
-| **点阵粒子立绘管线** | [`particle-portrait-pipeline.md`](particle-portrait-pipeline.md) | 热门角色 Hero 粒子场整图点阵离线提取与复刻生成管线。 |
+| **点阵粒子立绘管线** | [`particle-portrait-pipeline.md`](particle-portrait-pipeline.md) | ⚠️ 2026-08-28 过期标注：浅色主题已下线，双主题分支仅深色有效；新增角色接入手顺仍可直接沿用。 |
 | **热门角色场景适配** | [`popular-scene-fit-audit.md`](popular-scene-fit-audit.md) | 热门角色与通用场景蓝图契约适配度审计报告。 |
 | **角色调研：雷电/芙莉莲/伊蕾娜** | [`research/characters/character-research-raiden-frieren-elaina.md`](research/characters/character-research-raiden-frieren-elaina.md) | 雷电将军、芙莉莲、伊蕾娜官方设定、服装形制与视觉特征调研。 |
 | **角色调研：玛奇玛/木更/楪祈** | [`research/characters/character-canons-makima-kisara-inori.md`](research/characters/character-canons-makima-kisara-inori.md) | 玛奇玛、木更、楪祈角色设定、正向特征锚与负向拦截。 |
@@ -79,7 +79,7 @@
 | :--- | :--- | :--- |
 | **Live2D Native 运行时** | [`live2d-native-runtime.md`](live2d-native-runtime.md) | Rust 原生透明窗口渲染器、GPU 纹理缓存、300s 压力测试与性能基线。 |
 | **Native Overlay 规范** | [`live2d-native-overlay-plan.md`](live2d-native-overlay-plan.md) | 前端与 Rust 壳 IPC 意图通信协议、屏幕物理像素坐标映射与分层。 |
-| **Tauri 桌面端迁移** | [`tauri-desktop-migration-plan.md`](tauri-desktop-migration-plan.md) | 从 Electron 到 Tauri 2 的架构迁移、双窗口、打包与 D-10 验收条件。 |
+| **Tauri 桌面端迁移** | [`tauri-desktop-migration-plan.md`](tauri-desktop-migration-plan.md) | ⚠️ 2026-08-28 过期标注：Electron 已移除（package.json 零引用），桌面主线仅 Tauri 2 且已有发布产物；仅存迁移决策史。 |
 | **夏目 Live2D 动作调研** | [`live2d-natsume-overlay-research.md`](live2d-natsume-overlay-research.md) | 四季夏目 Moc.moc3 动作曲线、叠层显隐与情绪参数映射。 |
 | **useLive2D 拆分计划** | [`live2d-composable-refactor-plan.md`](live2d-composable-refactor-plan.md) | 1270 行组合式工厂的模块化研究：风险清单、Live2DCtx 显式契约设计与七步绞杀迁移路线（2026-08-22）。 |
 | **桌宠 DSH 架构对齐** | [`companion-dsh-agent-architecture.md`](companion-dsh-agent-architecture.md) | 基于 DeepSeek Harness 架构的桌宠智能伴侣配置与工具全景。 |

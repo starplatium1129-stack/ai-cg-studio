@@ -65,12 +65,12 @@
 ## 四、 后续稳定演进方向（聚焦体验与质感）
 
 1. **剧情短片全链路深化**（2026-08-23 已落地：蓝图一键剧本 + 一键首帧 + 剧本模式直通分镜，剧情短片纯点击流）：
-   - 首尾帧过渡模式前端解锁：`VideoStudioView` modes 硬编码 `ready:false`，后端 FL2VA 校验与工作流已全支持，低成本高收益；
+   - ✅ 首尾帧过渡模式前端已解锁（2026-08-28）：`VideoStudioView` 按 H3 权重动态门槛（`firstLastFrameReady`），首帧可来自绘图页或本地上传、尾帧本地上传，`videoApi.uploadVideoImage` 同一端点覆盖尾帧通道（FL2VA/L2VA 后端全通）；
    - 剧本库扩充（现 3 本预置）+ 剧本模式接场景蓝图自动分幕（分幕→分镜管道已通）；
    - 成片后处理回流候选：`HunyuanVideo15SuperResolution`（节点已装）；Wan 2.2 图生视频模式（节点已装，显存允许时评估）。
-2. **指令式稳定换装（模型采购级，评估已完成待下载决策）**：Qwen-Image-Edit-2509 GGUF Q4_K_M（磁盘约 20GB / 显存 10–12GB，本机规格实测带得动）；`TextEncodeQwenImageEditPlus` 节点已装；落地后与现有 inpaint 并存，换装场景优先走编辑路线。SAM3 分割权重（换装遮罩 CLIPSeg→SAM3）同类决策。
-3. **Krea2 高级节点回流（模型已在盘）**：`Krea2T-Enhancer-Advanced`、`Krea2StyleReferenceNode`（风格参考，热门角色风格化价值大）、`Krea2PromptWeight`——照 detailBoost 五步样板（社区来源→本机复现样张→网关受控注册→契约锁定→实测转正）。
-4. **视频侧成人门控**：storyboard 对成人蓝图 fail-closed 拒绝中；`adultEligibility` 双重把关接入后放开成人蓝图自动剧本。
+2. **指令式稳定换装（模型采购级，评估已完成待下载决策）**：Qwen-Image-Edit-2509 GGUF Q4_K_M（磁盘约 20GB / 显存 10–12GB，本机规格实测带得动）；`TextEncodeQwenImageEditPlus` 为 ComfyUI 核心自带编码节点（无需单独安装），但配套 Qwen-Image-Edit 权重与本项目接线均不存在，落地须先下载 GGUF 权重并走五步样板；与现有 inpaint 并存，换装场景优先走编辑路线。SAM3 分割权重（换装遮罩 CLIPSeg→SAM3）同类决策。
+3. **Krea2 高级节点回流（模型已在盘）**：`Krea2T-Enhancer-Advanced`、`Krea2StyleReferenceNode`（风格参考，热门角色风格化价值大）、`Krea2PromptWeight`——照 detailBoost 五步样板（社区来源→本机复现样张→网关受控注册→契约锁定→实测转正）。注：`Krea2StyleReferenceNode` 是 API 节点（ComfyAPI 云端上传），与本机 Krea 2 权重非一条路，需单独评估。
+4. ✅ **视频侧成人门控传输层已接线（2026-08-28）**：单任务与分镜批量前端如实携带 `adultEnabled: isLocalStudioHost()`（本机放行、远程/隧道 fail-closed），batch 白名单与单镜校验已透传；storyboard 对成人蓝图仍 fail-closed 拒绝，`adultEligibility` 蓝图自动剧本的完整放行待后续。
 5. **桌宠情感与剧场深度联动**：基于好感度、时间段与日程触发 Live2D 专属小剧场，保持低功耗静止节能。
 6. **角色设定记忆与知识库（RAG）**：免额度角色检索工具深度打通，为 40+ 热门角色构建世界观设定记忆库。
 

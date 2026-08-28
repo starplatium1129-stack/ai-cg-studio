@@ -1,5 +1,7 @@
 # Model and ComfyUI Expansion Roadmap
 
+> ⚠️ **2026-08-28 过期标注**：本文基线段落（custom nodes 清单、未装项、ComfyUI 版本号）已过时——现 9 个节点包、外置 upscaler 已装（`routes/superres.js` 按优先级探测）。节点/权重现状以 `AGENTS.md` 第四、五节为准；本文仅保留历史决策记录。
+
 > Status: ✅ production tranche implemented (verified 2026-08-14). Later phases 1-5 below remain
 > deferred — the current machine lacks the required models/detector dependencies, consistent
 > with AGENTS.md "明确暂缓". Do not start them until the hardware/dependency conditions exist.
