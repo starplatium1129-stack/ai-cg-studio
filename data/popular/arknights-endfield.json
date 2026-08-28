@@ -1,0 +1,301 @@
+{
+  "version": 1,
+  "franchise": "Arknights: Endfield",
+  "characters": [
+    {
+      "id": "perlica_arknights",
+      "displayName": "佩丽卡",
+      "originalName": "Perlica",
+      "franchise": "Arknights: Endfield",
+      "aliases": [
+        "perlica",
+        "arknights endfield",
+        "endfield"
+      ],
+      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries supervisor with platinum short hair with soft cyan gradient tips, light blue eyes, feline cat ears and a cat tail, mechanical hair clips, wearing a white and charcoal tactical jacket with cyan accents over a black pleated skirt with black thighhighs",
+      "identityTokens": [
+        "perlica (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "short_hair",
+        "blue_eyes",
+        "hair_highlights",
+        "cat_ears",
+        "cat_tail",
+        "white_clothes",
+        "teal_jacket",
+        "tactical",
+        "jacket",
+        "pleated_skirt",
+        "thighhighs",
+        "arknights"
+      ],
+      "exactTokens": [
+        "perlica (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "standard",
+          "name": "终末地制服",
+          "prose": "her white and charcoal Endfield supervisor tactical jacket with cyan line accents over a black pleated skirt, black thighhighs, tactical boots and a utility belt, mechanical hair clips",
+          "tokens": [
+            "white_clothes",
+            "teal_jacket",
+            "tactical",
+            "jacket",
+            "pleated_skirt",
+            "thighhighs",
+            "combat_boots",
+            "utility_belt",
+            "black_clothes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "wasteland_explorer",
+          "name": "荒野探索装",
+          "prose": "a khaki hooded explorer coat with cargo pants, a heavy backpack and hiking boots",
+          "tokens": [
+            "hoodie",
+            "khaki",
+            "cargo_pants",
+            "backpack",
+            "hiking_boots"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "supervisor_lounge_knitwear",
+          "name": "中枢静谧时光",
+          "prose": "a cozy oversized chunky cream-white knit sweater with a relaxed neckline showing the collarbone, high-waist lounge trousers, soft indoor loungewear",
+          "tokens": [
+            "oversized_knit",
+            "sweater",
+            "loungewear",
+            "cream",
+            "high_waist"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sub_zero_frostfield_parka",
+          "name": "极地破风巡航",
+          "prose": "a heavy insulated arctic parka in glacier white and grey-blue panels with a fluffy white fur-lined hood, worn over a thermal turtleneck and insulated trousers, winter combat gear",
+          "tokens": [
+            "parka",
+            "winter_coat",
+            "fur_trim",
+            "insulated",
+            "turtleneck",
+            "snow"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sheer_sleep_robe",
+          "name": "薄纱睡袍",
+          "tokens": [
+            "perlica_sheer_sleep_robe",
+            "sheer_robe",
+            "nightgown",
+            "sleep_robe",
+            "sheer_clothes",
+            "translucent_fabric",
+            "see_through",
+            "thin_clothes",
+            "bare_shoulders",
+            "collarbone"
+          ],
+          "prose": "wearing only a sheer translucent sleep robe of thin airy fabric, the see-through material tracing her bare shoulders and collarbone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "塔罗斯-II（终末地工业）",
+        "era": "近未来科幻",
+        "formNotes": "白色短发蓝绿挑染、绿瞳、毛茸耳；白青战术制服；2026-08-15 Anima 实测还原 7.5/10",
+        "research": "2026-08-15 调研（Danbooru perlica_(arknights) 2446 posts + 本机实测）"
+      },
+      "animeStudio": "arknights endfield, hypergryph, official anime art"
+    },
+    {
+      "id": "laevatain_arknights",
+      "displayName": "莱万汀",
+      "originalName": "Laevatain",
+      "franchise": "Arknights: Endfield",
+      "aliases": [
+        "laevatain",
+        "arknights endfield",
+        "endfield"
+      ],
+      "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with long crimson wavy hair, red eyes, curved black horns and a black devil tail, wearing a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top and black shorts with thigh straps, wielding a huge molten greatsword",
+      "identityTokens": [
+        "laevatain (arknights)",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "red_eyes",
+        "horns",
+        "devil_tail",
+        "black_clothes",
+        "white_clothes",
+        "tactical",
+        "jacket",
+        "crop_top",
+        "shorts",
+        "greatsword",
+        "arknights"
+      ],
+      "exactTokens": [
+        "laevatain (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "standard",
+          "name": "战术特勤服",
+          "prose": "a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top, black shorts, thigh straps and high combat boots",
+          "tokens": [
+            "tactical",
+            "jacket",
+            "crop_top",
+            "black_clothes",
+            "white_clothes",
+            "shorts",
+            "combat_boots",
+            "thigh_straps",
+            "greatsword"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "ignition",
+          "name": "熔火姿态",
+          "prose": "her tactical outfit fully ignited with molten flame aura, the greatsword core vents open and spraying heat particles",
+          "tokens": [
+            "tactical",
+            "jacket",
+            "flame",
+            "glowing",
+            "greatsword",
+            "embers"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cozy_dorm_loungewear",
+          "name": "极简落肩·休息舱私服",
+          "prose": "a minimalist cozy loungewear for a private cabin: an oversized charcoal drop-shoulder hoodie with a tail slot at the back hem, soft cotton lounge shorts, over-knee cotton socks",
+          "tokens": [
+            "oversized_hoodie",
+            "hoodie",
+            "loungewear",
+            "lounge_shorts",
+            "tail"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "street_cafe_sweet",
+          "name": "绯红甜意·街头机能便服",
+          "prose": "a light techwear street outfit for a cafe visit: a black halter crop top under a slightly open cropped sheer grey techwear jacket, black high-waist pleated utility miniskirt with metal buckles and dark red lining, chunky sneakers",
+          "tokens": [
+            "crop_top",
+            "techwear",
+            "pleated_skirt",
+            "miniskirt",
+            "streetwear"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "obsidian_formal_gown",
+          "name": "黑曜夜华·萨卡兹晚礼服",
+          "prose": "a dramatic black-to-crimson gradient haute couture evening gown: a halter-neck deep plunge gown with an open back, the black tail emerging seamlessly from the open back, elegant high fashion",
+          "tokens": [
+            "evening_gown",
+            "halter_neckline",
+            "deep_plunge",
+            "open_back",
+            "black",
+            "crimson"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "塔罗斯-II（罗德岛·终末地）",
+        "era": "近未来科幻",
+        "formNotes": "红发红瞳萨卡兹；黑角+恶魔尾；黑红熔岩机能装+大剑；爱吃冰淇淋",
+        "research": "2026-08-15 调研（Danbooru laevatain_(arknights) 937 posts；官方立绘视觉确认）"
+      },
+      "animeStudio": "arknights endfield, hypergryph, official anime art"
+    }
+  ]
+}

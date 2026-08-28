@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "franchise": "Frieren: Beyond Journey's End",
+  "characters": [
+    {
+      "id": "frieren",
+      "displayName": "芙莉莲",
+      "originalName": "Frieren",
+      "franchise": "Frieren: Beyond Journey's End",
+      "aliases": [
+        "frieren",
+        "sousou no frieren",
+        "frieren the slayer",
+        "elf mage"
+      ],
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes and pointed ears, with a calm, wistful expression",
+      "identityTokens": [
+        "frieren",
+        "1girl",
+        "solo",
+        "long_white_hair",
+        "very_long_hair",
+        "twin_braids",
+        "purple_eyes",
+        "elf",
+        "pointy_ears",
+        "gold_earrings"
+      ],
+      "exactTokens": [
+        "frieren"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "wizard_robe",
+          "name": "魔导师袍",
+          "prose": "her plain white robe with a deep hood and simple adventurer belt, staff in hand",
+          "tokens": [
+            "robe",
+            "white_robe",
+            "hood",
+            "belt",
+            "long_sleeves",
+            "staff"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "travel_clothes",
+          "name": "旅行装",
+          "prose": "a practical traveler's cloak over simple clothes",
+          "tokens": [
+            "cloak",
+            "jacket",
+            "pants",
+            "traveling_clothes"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a soft casual dress she wears away from battle",
+          "tokens": [
+            "casual_clothes",
+            "dress",
+            "cardigan"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "古典奇幻（葬送的芙莉莲）",
+        "era": "中世纪风",
+        "formNotes": "精灵长寿者；低双马尾；紫眼（已修正）",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "madhouse, official anime screencap, anime coloring"
+    },
+    {
+      "id": "fern_frieren",
+      "displayName": "菲伦",
+      "franchise": "Frieren: Beyond Journey's End",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "journey_robe",
+      "identityTokens": [
+        "fern (sousou no frieren)",
+        "fern",
+        "1girl",
+        "solo",
+        "long_hair",
+        "purple_hair",
+        "side_ponytail",
+        "half-updo",
+        "straight_bangs",
+        "long_sidelocks",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure with large breasts.",
+      "outfits": [
+        {
+          "id": "journey_robe",
+          "name": "旅途魔法长袍",
+          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
+          "tokens": [
+            "black_coat",
+            "white_dress",
+            "high_collar",
+            "long_sleeves",
+            "magic_staff",
+            "boots"
+          ],
+          "default": true
+        },
+        {
+          "id": "winter_coat",
+          "name": "冬季厚风衣围巾装",
+          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
+          "tokens": [
+            "winter_coat",
+            "overcoat",
+            "scarf",
+            "muffler",
+            "gloves",
+            "boots"
+          ]
+        },
+        {
+          "id": "town_casual",
+          "name": "城镇甜品便服",
+          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
+          "tokens": [
+            "cardigan",
+            "long_skirt",
+            "blouse",
+            "ribbon"
+          ]
+        },
+        {
+          "id": "noble_ball_dress",
+          "name": "贵族舞会典雅深紫礼服",
+          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "tokens": [
+            "evening_dress",
+            "purple_dress",
+            "ball_gown",
+            "white_gloves",
+            "updo_hair"
+          ]
+        },
+        {
+          "id": "inn_morning_nightgown",
+          "name": "旅馆清晨纯棉睡裙",
+          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+          "tokens": [
+            "nightgown",
+            "white_nightgown",
+            "loose_dress",
+            "bare_shoulders",
+            "messy_hair"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked with zero clothes, full body bare, natural slender-curvy body with soft smooth skin, large shapely breasts with pink nipples, exposed neat pink pussy, detailed vulva, narrow waist, pouting blush",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "slender_body",
+            "soft_skin",
+            "bare_feet"
+          ]
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist",
+        "belly flab"
+      ],
+      "curatedArtistStyles": [
+        "abe_tsukasa",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "菲伦",
+      "exactTokens": [
+        "fern (sousou no frieren)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "fern",
+        "fern frieren",
+        "sousou no frieren",
+        "frieren beyond journeys end",
+        "菲伦"
+      ],
+      "canon": {
+        "world": "古典奇幻（葬送的芙莉莲）",
+        "era": "中世纪风",
+        "formNotes": "紫色长发低侧马尾；紫瞳；身材丰满；第一阶魔法使白袍；性格冷静、毒舌、爱睡懒觉",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "madhouse, official anime screencap, anime coloring"
+    }
+  ]
+}

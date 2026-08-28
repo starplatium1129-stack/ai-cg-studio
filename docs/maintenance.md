@@ -28,8 +28,11 @@
 
 | 文件 | 职责 | 是否手动编辑 |
 | --- | --- | --- |
-| `data/scenes/*.json` | 场景的唯一数据源，按角色与系列分片 | 否，网页维护 |
-| `data/scenes/manifest.json` | 声明分片与顺序 | 新增分片时编辑 |
+| `data/scenes/*.json` | 场景的唯一数据源，按角色 × 系列分片；超过 `manifest.json` 的 `batchSize`（默认 50）条时自动切成 `base.N.json` 批次文件 | 否，网页维护 |
+| `data/scenes/manifest.json` | 声明分片分组、顺序与 `batchSize`；批次文件由 `writeSceneShards` 自动维护，一般无需手改 | 新增角色系列时编辑 |
+| `data/popular/*.json` | 热门角色唯一数据源，每个 franchise（系列）一个文件 | 是，按系列文件直接编辑 |
+| `data/popular/manifest.json` | 热门角色分片清单：声明系列文件与合并顺序（首次出现顺序） | 新增系列时编辑（`popular:split` 会自动补） |
+| `data/popular-characters.json` | 供静态网页读取的热门角色构建产物，由 `npm run popular:build` 从分片生成 | 否 |
 | `data/scenes.json` | 供静态网页读取的构建产物 | 否 |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
 | `scripts/runtime/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
@@ -201,7 +204,16 @@ npm run scenes:import
 npm run validate
 ```
 
-导入命令会按角色和系列重新分片。它是显式覆盖操作，不应作为日常构建命令使用。
+导入命令会按角色和系列重新分片，超过批次上限（50）的系列组会自动切成 `base.N.json` 批次文件。它是显式覆盖操作，不应作为日常构建命令使用。
+
+热门角色同理：覆盖 `data/popular-characters.json` 后运行：
+
+```powershell
+npm run popular:import
+npm run validate
+```
+
+导入命令会按 franchise（系列）重新分片并重建聚合。
 
 ## 通用场景补丁工具（AI / 协作者批量优化推荐）
 
@@ -253,7 +265,10 @@ npm run validate
 
 ## 维护约束
 
-- 不直接编辑 `data/scenes.json`；它是生成文件。
+- 不直接编辑 `data/scenes.json`、`data/popular-characters.json`；它们是生成文件。
+- 场景新增/批量改动走 `scene-store.js` 写回（自动按 50/批维护 `data/scenes/*.N.json`），热门角色新增/改动直接编辑对应 `data/popular/<系列>.json`，再运行 `npm run popular:build`（或 `popular:import` 从聚合回写）。
+- 新增场景：往所属系列批次文件追加（或走场景管理页面），跑 `npm run scenes:normalize` 与 `npm run validate`。
+- 新增热门角色：编辑其系列文件（`data/popular/` 下），跑 `npm run popular:build` 与 `npm run validate`；新系列自动出现在分片，无需手改 manifest。
 - 不在 HTML 中硬编码精选场景 ID 或情绪入口，统一写入 `data/curation.json`。
 - 招牌场景必须同时存在于 `curatedSceneIds`，并在 `recommendationReasons` 中说明推荐理由。
 - 新增自然语言搜索词时，在 `searchAliases` 中提供至少一组能够命中现有场景的同义词。

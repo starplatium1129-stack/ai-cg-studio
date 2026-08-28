@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "franchise": "Wandering Witch",
+  "characters": [
+    {
+      "id": "elaina",
+      "displayName": "伊雷娜",
+      "originalName": "Elaina",
+      "franchise": "Wandering Witch",
+      "aliases": [
+        "elaina",
+        "elaina of the journey",
+        "majo no tabitabi",
+        "wandering witch"
+      ],
+      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair, violet eyes, a black witch hat with gold buckle, with a confident smile",
+      "identityTokens": [
+        "elaina (majo no tabitabi)",
+        "1girl",
+        "solo",
+        "long_grey_hair",
+        "ash_hair",
+        "purple_eyes",
+        "witch_hat",
+        "gold_buckle",
+        "majo_no_tabitabi"
+      ],
+      "exactTokens": [
+        "elaina"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "witch_dress",
+          "name": "魔女装",
+          "prose": "her black witch dress with a star brooch, frilled skirt and short staff",
+          "tokens": [
+            "witch",
+            "witch_hat",
+            "black_dress",
+            "frills",
+            "brooch",
+            "staff"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "travel_clothes",
+          "name": "旅行装",
+          "prose": "a practical traveler's outfit with a long coat and boots",
+          "tokens": [
+            "traveling_clothes",
+            "long_coat",
+            "boots",
+            "pants"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a comfortable everyday dress in soft colors",
+          "tokens": [
+            "casual_clothes",
+            "dress",
+            "cardigan"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "魔法旅行（魔女之旅）",
+        "era": "魔法世界",
+        "formNotes": "灰银发（已修正）；黑魔女帽+扫帚；灰之魔女",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "c2c, official anime screencap, anime coloring"
+    }
+  ]
+}

@@ -18,6 +18,9 @@ const browserShardPath = {
 const corePath = path.join(dataDir, 'scenes-core.json');
 const indexPath = path.join(dataDir, 'scenes-index.json');
 
+/** 单批默认场景数；可由 manifest 根级 batchSize 或条目级 batchSize 覆盖。 */
+const DEFAULT_BATCH_SIZE = 50;
+
 function readJson(source) {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
 }
@@ -54,14 +57,40 @@ function readManifest() {
   return manifest;
 }
 
+/** 解析该分片组每批上限：条目级 > manifest 根级 > 默认 50。 */
+function batchSizeFor(manifest, entry) {
+  if (entry && Number.isFinite(entry.batchSize) && entry.batchSize > 0) return entry.batchSize;
+  if (manifest && Number.isFinite(manifest.batchSize) && manifest.batchSize > 0) return manifest.batchSize;
+  return DEFAULT_BATCH_SIZE;
+}
+
+/** 展开某分片组为实际源文件列表：存在 base.1.json 时按批次序号加载，
+ *  否则回退到单文件 base.json。批次文件由 writeSceneShards 按 batchSize 自动维护。 */
+function expandShardFiles(entry) {
+  const base = String(entry.file).replace(/\.json$/, '');
+  const first = path.join(shardsDir, base + '.1.json');
+  if (fs.existsSync(first)) {
+    const files = [];
+    for (let i = 1; ; i++) {
+      const candidate = path.join(shardsDir, base + '.' + i + '.json');
+      if (!fs.existsSync(candidate)) break;
+      files.push(base + '.' + i + '.json');
+    }
+    return files;
+  }
+  return [entry.file];
+}
+
 function loadSceneShards() {
   const manifest = readManifest();
-  const sources = manifest.files.map((entry) => {
-    const source = path.join(shardsDir, entry.file);
-    const scenes = readJson(source);
-    if (!Array.isArray(scenes)) throw new Error(entry.file + ' root must be an array');
-    return { entry, source, scenes };
-  });
+  const sources = manifest.files.flatMap((entry) =>
+    expandShardFiles(entry).map((file) => {
+      const source = path.join(shardsDir, file);
+      const scenes = readJson(source);
+      if (!Array.isArray(scenes)) throw new Error(file + ' root must be an array');
+      return { entry, source, file, scenes };
+    })
+  );
   return { manifest, sources, scenes: sortScenes(sources.flatMap((item) => item.scenes)) };
 }
 
@@ -70,6 +99,40 @@ function targetFile(scene) {
   const suffix = /After_Story/i.test(String(scene.category || '')) ? 'after-story' : 'core';
   if (scene.char === 'nene' || scene.char === 'natsume') return scene.char + '-' + suffix + '.json';
   throw new Error((scene.id || 'unknown scene') + ': cannot choose shard for char=' + scene.char);
+}
+
+/** 把单个分片组按 batchSize 写入，超批自动切成 base.N.json；不足一批回退为 base.json。
+ *  同时清理过期形态（多余批次文件 / 与批次并存的单文件），保持目录与 manifest 声明一致。 */
+function writeShardBatches(manifest, baseFile, items) {
+  const entry = manifest.files.find((item) => item.file === baseFile);
+  const batchSize = batchSizeFor(manifest, entry);
+  const base = baseFile.replace(/\.json$/, '');
+  const sorted = sortScenes(items);
+  const chunks = [];
+  for (let i = 0; i < sorted.length; i += batchSize) {
+    chunks.push(sorted.slice(i, i + batchSize));
+  }
+  const written = new Set();
+  if (chunks.length <= 1) {
+    writeTextAtomic(path.join(shardsDir, baseFile), jsonText(items));
+    written.add(baseFile);
+  } else {
+    chunks.forEach((chunk, index) => {
+      const file = base + '.' + (index + 1) + '.json';
+      writeTextAtomic(path.join(shardsDir, file), jsonText(chunk));
+      written.add(file);
+    });
+  }
+  // 清理：过期的批次文件，以及切批后遗留的单文件形态
+  const prefix = base + '.';
+  for (const name of fs.readdirSync(shardsDir)) {
+    if (name === 'manifest.json') continue;
+    const isThisGroup = name === baseFile || (name.startsWith(prefix) && /\.\d+\.json$/.test(name));
+    if (!isThisGroup) continue;
+    if (!written.has(name)) {
+      fs.unlinkSync(path.join(shardsDir, name));
+    }
+  }
 }
 
 function writeSceneShards(scenes) {
@@ -81,7 +144,7 @@ function writeSceneShards(scenes) {
     groups.get(file).push(scene);
   }
   for (const [file, items] of groups) {
-    writeTextAtomic(path.join(shardsDir, file), jsonText(items));
+    writeShardBatches(manifest, file, items);
   }
 }
 
@@ -185,6 +248,8 @@ module.exports = {
   browserShardPath,
   corePath,
   indexPath,
+  batchSizeFor,
+  expandShardFiles,
   jsonText,
   loadSceneShards,
   readJson,

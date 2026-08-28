@@ -93,10 +93,14 @@ function gitScene(commit, id) {
 
 function loadShards() {
   const manifest = JSON.parse(fs.readFileSync(path.join(SHARDS_DIR, 'manifest.json'), 'utf8'));
+  const { expandShardFiles } = require('../runtime/scene-store');
   const shards = [];
   for (const entry of manifest.files) {
-    const p = path.join(SHARDS_DIR, entry.file);
-    shards.push({ file: entry.file, arr: JSON.parse(fs.readFileSync(p, 'utf8')) });
+    // 批次感知：存在 base.1.json 时按批次展开，否则读单文件
+    for (const file of expandShardFiles(entry)) {
+      const p = path.join(SHARDS_DIR, file);
+      shards.push({ file, arr: JSON.parse(fs.readFileSync(p, 'utf8')) });
+    }
   }
   return shards;
 }

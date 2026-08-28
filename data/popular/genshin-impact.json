@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "franchise": "Genshin Impact",
+  "characters": [
+    {
+      "id": "raiden_shogun",
+      "displayName": "雷电将军",
+      "originalName": "Raiden Shogun",
+      "franchise": "Genshin Impact",
+      "aliases": [
+        "raiden_shogun",
+        "raiden ei",
+        "ei",
+        "baal",
+        "genshin impact",
+        "electro archon"
+      ],
+      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon, a serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze, wearing the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid",
+      "identityTokens": [
+        "raiden_shogun",
+        "raiden_ei",
+        "1girl",
+        "solo",
+        "long_purple_hair",
+        "braid",
+        "single_braid",
+        "glowing_purple_eyes",
+        "bangs",
+        "mole_under_eye",
+        "mole_under_right_eye",
+        "golden_hairpin",
+        "hair_flower",
+        "tassel",
+        "genshin_impact"
+      ],
+      "exactTokens": [
+        "raiden_shogun"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "shogun_robes",
+          "name": "将军神装",
+          "prose": "the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid with gold trim, pauldron, black fingerless gloves, obi, and sash",
+          "tokens": [
+            "japanese_clothes",
+            "kimono",
+            "purple_clothes",
+            "gold_trim",
+            "pauldron",
+            "black_fingerless_gloves",
+            "obi",
+            "sash",
+            "bare_shoulders",
+            "black_thighhighs",
+            "detached_sleeves",
+            "long_sleeves"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "modern_clothes",
+          "name": "现代便服",
+          "prose": "a refined modern purple dress and her signature long single braid",
+          "tokens": [
+            "modern_clothing",
+            "dress",
+            "purple_dress",
+            "long_sleeves"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "奇幻和风（提瓦特·雷电神）",
+        "era": "前现代和风",
+        "formNotes": "真身=雷电影（人偶之身）；雷电元素=紫色电光；武器=梦想一心",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "genshin impact, official anime art, miHoYo style"
+    }
+  ]
+}

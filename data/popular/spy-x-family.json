@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "franchise": "SPY x FAMILY",
+  "characters": [
+    {
+      "id": "yor_forger",
+      "displayName": "约尔·福杰",
+      "franchise": "SPY x FAMILY",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "thorn_princess_dress",
+      "identityTokens": [
+        "yor_briar",
+        "1girl",
+        "solo",
+        "black_hair",
+        "hair_bun",
+        "updo",
+        "red_eyes",
+        "earrings",
+        "flower_earrings",
+        "spy_x_family"
+      ],
+      "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair, striking ruby red eyes, gold rose earrings, and an endearing innocent blush.",
+      "outfits": [
+        {
+          "id": "thorn_princess_dress",
+          "name": "荆棘公主杀手礼服",
+          "tokens": [
+            "thorn_princess",
+            "black_dress",
+            "halterneck_dress",
+            "rose_pattern",
+            "black_thighhighs",
+            "heels",
+            "hair_ornament"
+          ],
+          "prose": "wearing her Thorn Princess assassin black halterneck dress with red rose patterned lining, golden headpiece, and black stiletto heels",
+          "styleHint": "sharp cinematic assassin contrast",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "off_shoulder_red_sweater",
+          "name": "居家露肩红色毛衣",
+          "tokens": [
+            "red_sweater",
+            "off_shoulder_sweater",
+            "knit_sweater",
+            "black_tights",
+            "casual_clothes"
+          ],
+          "prose": "wearing her signature chunky knit off-the-shoulder crimson red sweater with black tights in the Forger home",
+          "styleHint": "cozy warm family living room",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "city_hall_uniform",
+          "name": "市政厅职业装套裙",
+          "tokens": [
+            "office_uniform",
+            "green_jacket",
+            "white_shirt",
+            "pencil_skirt",
+            "pantyhose"
+          ],
+          "prose": "wearing her formal Berlint City Hall olive green uniform blazer with white collared shirt and pencil skirt",
+          "styleHint": "retro modern office atmosphere",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual_home_apron",
+          "name": "居家常服与熊熊围裙",
+          "tokens": [
+            "casual_dress",
+            "bear_apron",
+            "apron",
+            "sleeveless",
+            "bare_arms"
+          ],
+          "prose": "wearing a cute home apron over casual dress while trying her best in the kitchen",
+          "styleHint": "soft cheerful morning daylight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "slender_waist",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, athletic hourglass figure, exposed pink pussy, detailed vulva, firm shapely breasts with pink nipples, bare hips",
+          "styleHint": "seductive dramatic moonlight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "beige_trench_boots",
+          "name": "米色风衣与长靴",
+          "tokens": [
+            "yor_forger_beige_trench_boots",
+            "trench_coat",
+            "beige_coat",
+            "long_coat",
+            "belted_coat",
+            "over_knee_boots",
+            "knee_boots",
+            "leather_boots",
+            "boots"
+          ],
+          "prose": "wearing a beige belted trench coat over a neat outfit paired with knee-high leather boots",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "endo_tatsuya",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "约尔·福杰",
+      "exactTokens": [
+        "yor_briar"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "yor forger",
+        "yor briar",
+        "thorn princess",
+        "spy x family",
+        "约尔·福杰",
+        "约尔"
+      ],
+      "canon": {
+        "world": "现代日常+间谍（SPY x FAMILY）",
+        "era": "当代",
+        "formNotes": "黑色长发低发髻；红瞳；金色玫瑰耳环；荆棘公主（Thorn Princess）黑色露肩高叉礼服名场面；居家红色露肩毛衣；市政厅绿色职业装",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var crypto = require('crypto');
+var expectedDataVersion = require('../runtime/data-version').expectedDataVersion;
 
 var ROOT = path.resolve(__dirname, '..', '..');
 
@@ -10,19 +10,10 @@ var ROOT = path.resolve(__dirname, '..', '..');
  * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存。
  * 这里用数据内容的稳定哈希锁定 DATA_VERSION：任何人改了 data 而忘了
  * 在 sceneStore.ts 升版本号，validate 就会失败，避免客户端吃到旧缓存。
+ * 哈希口径统一收口到 scripts/runtime/data-version.js（与 build-scenes/build-popular 共用）。
  */
 function contentVersion() {
-  var hash = crypto.createHash('sha1');
-  [
-    'scenes.json', 'scenes-index.json', 'scenes-core.json',
-    'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
-    'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json',
-    'popular-characters.json', 'scene-blueprints.json'
-  ].forEach(function (name) {
-    hash.update(name + '=' + fs.readFileSync(path.join(ROOT, 'data', name), 'utf8').length + ';');
-    hash.update(fs.readFileSync(path.join(ROOT, 'data', name)));
-  });
-  return Number(parseInt(hash.digest('hex').slice(0, 8), 16));
+  return expectedDataVersion(ROOT);
 }
 
 function checkDataVersion() {

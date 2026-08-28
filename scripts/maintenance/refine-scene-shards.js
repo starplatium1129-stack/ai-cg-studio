@@ -1,18 +1,18 @@
 const fs = require('fs');
 const _path = require('path');
+const { expandShardFiles } = require('../runtime/scene-store');
 
 const sceneAlign = JSON.parse(fs.readFileSync('runtime/human-audit-alignment-scenes.json', 'utf8'));
 const failedSceneMap = new Map(sceneAlign.userFailed.map(u => [u.sceneId, u]));
 
 console.log('Refining 157 failed scenes across scene shards...');
 
-const shardFiles = [
-  'data/scenes/nene-core.json',
-  'data/scenes/nene-after-story.json',
-  'data/scenes/natsume-core.json',
-  'data/scenes/natsume-after-story.json',
-  'data/scenes/shared-core.json'
-];
+// 批次感知：按 manifest 分组展开为实际分片文件（含 base.N.json 批次）
+const manifest = JSON.parse(fs.readFileSync('data/scenes/manifest.json', 'utf8'));
+const shardFiles = [];
+for (const entry of manifest.files) {
+  shardFiles.push(...expandShardFiles(entry));
+}
 
 let totalRefined = 0;
 

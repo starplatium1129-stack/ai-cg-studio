@@ -22,9 +22,24 @@ const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
   'data:build': {
-    desc: '聚合分片 -> scenes.json',
+    desc: '聚合场景分片 -> scenes.json（热门角色见 popular:build）',
     cmd: ['node', 'scripts/maintenance/build-scenes.js'],
     docs: 'docs/maintenance.md#文件职责',
+  },
+  'popular:build': {
+    desc: '聚合热门角色分片 -> popular-characters.json',
+    cmd: ['node', 'scripts/maintenance/build-popular.js'],
+    docs: 'docs/maintenance.md#文件职责',
+  },
+  'popular:split': {
+    desc: 'popular-characters.json -> 系列分片（覆盖写入）',
+    cmd: ['node', 'scripts/maintenance/split-popular.js', '--write'],
+    docs: 'docs/maintenance.md',
+  },
+  'popular:import': {
+    desc: 'popular-characters.json -> 系列分片并重建聚合',
+    cmd: ['npm', 'run', 'popular:import'],
+    docs: 'docs/maintenance.md',
   },
   'data:import': {
     desc: 'scenes.json -> 分片（覆盖写入）',

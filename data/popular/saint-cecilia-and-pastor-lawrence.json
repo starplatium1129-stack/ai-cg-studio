@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "franchise": "Saint Cecilia and Pastor Lawrence",
+  "characters": [
+    {
+      "id": "saint_cecilia",
+      "displayName": "塞西莉亚",
+      "franchise": "Saint Cecilia and Pastor Lawrence",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "saint_nun_habit",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "pastel_green_hair",
+        "light_green_hair",
+        "mint_hair",
+        "low_bun",
+        "braided_bun",
+        "single_sidelock",
+        "long_sidelock",
+        "bangs",
+        "green_eyes",
+        "emerald_eyes",
+        "round_eyes",
+        "blush",
+        "gold_necklace",
+        "cross_necklace",
+        "large_breasts"
+      ],
+      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a sweet and pure saint with soft pastel mint-green hair styled in a low braided bun with one long delicate sidelock, bright emerald green eyes, a gentle blush, and a soft innocent presence.",
+      "outfits": [
+        {
+          "id": "saint_nun_habit",
+          "name": "纯白圣女修女长袍",
+          "tokens": [
+            "nun_habit",
+            "white_habit",
+            "veil",
+            "white_veil",
+            "gold_trim",
+            "cross_necklace"
+          ],
+          "prose": "wearing her ceremonial pure white saint nun habit and veil with elegant gold cross embroidery and holy pendant",
+          "styleHint": "divine cathedral stained glass rays",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "cozy_church_homewear",
+          "name": "教堂起居室宽松连衣裙",
+          "tokens": [
+            "casual_dress",
+            "loose_dress",
+            "yellow_dress",
+            "barefoot",
+            "cushion"
+          ],
+          "prose": "wearing a comfortable pastel yellow home dress while lounging lazily on the church sofa with a plush cushion",
+          "styleHint": "soft heartwarming golden hour",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "town_summer_sundress",
+          "name": "小镇漫步碎花连衣裙与草帽",
+          "tokens": [
+            "sundress",
+            "straw_hat",
+            "floral_dress",
+            "ribbon",
+            "sandals"
+          ],
+          "prose": "wearing a charming light floral sundress with a wide-brimmed straw hat while strolling through town with Lawrence",
+          "styleHint": "bright cheerful summer breeze",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_pastor_shirt",
+          "name": "偷穿牧师宽大黑衬衫",
+          "tokens": [
+            "oversized_shirt",
+            "black_shirt",
+            "bare_thighs",
+            "bare_legs",
+            "blush"
+          ],
+          "prose": "wearing Lawrence's oversized black pastor dress shirt that swallows her hands, leaving bare slender legs",
+          "styleHint": "sweet domestic morning romance",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "golden_hair",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, holy porcelain skin, exposed pink pussy, detailed vulva, shapely breasts with pink nipples, divine soft blush",
+          "styleHint": "sacred ethereal angelic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "kazutake_hazano",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "塞西莉亚",
+      "exactTokens": [
+        "cecilia (shiro seijo to kuro bokushi)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "cecilia",
+        "saint cecilia",
+        "shiro seijo to kuro bokushi",
+        "pastor lawrence",
+        "塞西莉亚"
+      ],
+      "canon": {
+        "world": "中世纪欧洲小镇（白圣女与黑牧师，和武叶佐乃）",
+        "era": "中世纪风",
+        "formNotes": "浅绿/薄荷嫩绿长发低盘发+不对称长鬓发+M形刘海；翠绿圆瞳；官方萌点巨乳；纯白圣女修女袍+头纱+十字架金项链；天然呆、怕打雷、平地摔；暗恋劳伦斯",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "doga kobo, official anime screencap, anime coloring"
+    }
+  ]
+}

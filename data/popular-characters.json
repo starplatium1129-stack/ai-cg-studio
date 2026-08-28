@@ -375,6 +375,157 @@
       "animeStudio": "madhouse, official anime screencap, anime coloring"
     },
     {
+      "id": "fern_frieren",
+      "displayName": "菲伦",
+      "franchise": "Frieren: Beyond Journey's End",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "journey_robe",
+      "identityTokens": [
+        "fern (sousou no frieren)",
+        "fern",
+        "1girl",
+        "solo",
+        "long_hair",
+        "purple_hair",
+        "side_ponytail",
+        "half-updo",
+        "straight_bangs",
+        "long_sidelocks",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure with large breasts.",
+      "outfits": [
+        {
+          "id": "journey_robe",
+          "name": "旅途魔法长袍",
+          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
+          "tokens": [
+            "black_coat",
+            "white_dress",
+            "high_collar",
+            "long_sleeves",
+            "magic_staff",
+            "boots"
+          ],
+          "default": true
+        },
+        {
+          "id": "winter_coat",
+          "name": "冬季厚风衣围巾装",
+          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
+          "tokens": [
+            "winter_coat",
+            "overcoat",
+            "scarf",
+            "muffler",
+            "gloves",
+            "boots"
+          ]
+        },
+        {
+          "id": "town_casual",
+          "name": "城镇甜品便服",
+          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
+          "tokens": [
+            "cardigan",
+            "long_skirt",
+            "blouse",
+            "ribbon"
+          ]
+        },
+        {
+          "id": "noble_ball_dress",
+          "name": "贵族舞会典雅深紫礼服",
+          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "tokens": [
+            "evening_dress",
+            "purple_dress",
+            "ball_gown",
+            "white_gloves",
+            "updo_hair"
+          ]
+        },
+        {
+          "id": "inn_morning_nightgown",
+          "name": "旅馆清晨纯棉睡裙",
+          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
+          "tokens": [
+            "nightgown",
+            "white_nightgown",
+            "loose_dress",
+            "bare_shoulders",
+            "messy_hair"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked with zero clothes, full body bare, natural slender-curvy body with soft smooth skin, large shapely breasts with pink nipples, exposed neat pink pussy, detailed vulva, narrow waist, pouting blush",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "slender_body",
+            "soft_skin",
+            "bare_feet"
+          ]
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark",
+        "fat",
+        "chubby",
+        "plump",
+        "obese",
+        "overweight",
+        "heavy build",
+        "double chin",
+        "thick waist",
+        "belly flab"
+      ],
+      "curatedArtistStyles": [
+        "abe_tsukasa",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "菲伦",
+      "exactTokens": [
+        "fern (sousou no frieren)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "fern",
+        "fern frieren",
+        "sousou no frieren",
+        "frieren beyond journeys end",
+        "菲伦"
+      ],
+      "canon": {
+        "world": "古典奇幻（葬送的芙莉莲）",
+        "era": "中世纪风",
+        "formNotes": "紫色长发低侧马尾；紫瞳；身材丰满；第一阶魔法使白袍；性格冷静、毒舌、爱睡懒觉",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "madhouse, official anime screencap, anime coloring"
+    },
+    {
       "id": "artoria_pendragon",
       "displayName": "阿尔托莉雅",
       "originalName": "Artoria Pendragon",
@@ -450,6 +601,529 @@
         "research": "2026-08-14 调研"
       },
       "animeStudio": "ufotable, type-moon, cinematic anime screenshot, emiya-san chi no kyou no gohan"
+    },
+    {
+      "id": "tohsaka_rin",
+      "displayName": "远坂凛",
+      "originalName": "Tohsaka Rin",
+      "franchise": "Fate",
+      "aliases": [
+        "tohsaka_rin",
+        "rin",
+        "rin tohsaka",
+        "fate/stay night"
+      ],
+      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and brilliant mage with long dark-brown hair in twin-tails tied with large black ribbons, clear aqua-blue eyes, and a confident, spirited expression",
+      "identityTokens": [
+        "tohsaka_rin",
+        "1girl",
+        "solo",
+        "long_brown_hair",
+        "twintails",
+        "black_hair_ribbons",
+        "blue_eyes",
+        "ahoge",
+        "fate/stay_night"
+      ],
+      "exactTokens": [
+        "tohsaka_rin"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her navy Homurahara school uniform with a ribbon",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "navy_clothes",
+            "ribbon",
+            "pleated_skirt",
+            "black_thighhighs"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "red_turtleneck",
+          "name": "红高领",
+          "prose": "her casual red turtleneck with a black skirt",
+          "tokens": [
+            "turtleneck",
+            "red_clothes",
+            "black_skirt",
+            "jacket"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "mage_battle",
+          "name": "魔术战斗",
+          "prose": "her mage combat outfit with glowing magic circuits and gems",
+          "tokens": [
+            "magic_circuits",
+            "jewelry",
+            "dress",
+            "glowing",
+            "long_sleeves"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代魔术（Fate）",
+        "era": "当代",
+        "formNotes": "黑发双马尾红丝带蓝眼；宝石魔术；傲娇",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "ufotable, type-moon, cinematic anime screenshot"
+    },
+    {
+      "id": "illyasviel_von_einzbern",
+      "displayName": "伊莉雅丝菲尔",
+      "originalName": "Illyasviel von Einzbern",
+      "franchise": "Fate",
+      "aliases": [
+        "illyasviel_von_einzbern",
+        "illya",
+        "ilys",
+        "snow field",
+        "fate/stay night"
+      ],
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine features, carrying an air of playful innocence and profound magic power",
+      "identityTokens": [
+        "illyasviel_von_einzbern",
+        "1girl",
+        "solo",
+        "long_white_hair",
+        "straight_hair",
+        "red_eyes",
+        "ruby_eyes",
+        "fate/stay_night"
+      ],
+      "exactTokens": [
+        "illyasviel_von_einzbern"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "winter_coat",
+          "name": "Fate 本篇冬装",
+          "prose": "her red winter coat with a hood and fur trim from the Fuyuki winter story",
+          "tokens": [
+            "coat",
+            "red_coat",
+            "fur_trim",
+            "hood",
+            "winter_clothes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a soft casual outfit",
+          "tokens": [
+            "casual_clothes",
+            "dress",
+            "cardigan"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "purple_hooded_cloak",
+          "name": "紫色连帽斗篷",
+          "tokens": [
+            "cloak",
+            "hooded_cloak",
+            "purple_cloak",
+            "violet",
+            "hood",
+            "wool",
+            "winter_cloak",
+            "outerwear",
+            "cape",
+            "thick_fabric"
+          ],
+          "prose": "wearing a thick purple hooded cloak of deep violet wool, a heavy front-closing cape with a large hood and long hem",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cozy_wool_blanket",
+          "name": "羊绒毛毯裹身",
+          "tokens": [
+            "wool_blanket",
+            "wrapped_in_blanket",
+            "plush",
+            "wool",
+            "draped",
+            "thick_fabric",
+            "fluffy",
+            "cozy",
+            "soft_fabric",
+            "loungewear"
+          ],
+          "prose": "wrapped in a thick soft wool blanket, plush fluffy wool fabric draped loosely around the body like a cocoon, warm neutral tone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代魔术（Fate）",
+        "era": "当代",
+        "formNotes": "银发红眼幼态；紫裙；爱因兹贝伦古堡",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "silver link, ufotable, official anime screencap"
+    },
+    {
+      "id": "jeanne_alter",
+      "displayName": "贞德[Alter]",
+      "franchise": "Fate",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "avenger_black_armor",
+      "identityTokens": [
+        "jeanne d'arc alter (fate)",
+        "jeanne_alter",
+        "1girl",
+        "solo",
+        "short_hair",
+        "silver_hair",
+        "yellow_eyes",
+        "evil_smile"
+      ],
+      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
+      "outfits": [
+        {
+          "id": "avenger_black_armor",
+          "name": "复仇者黑铁战铠",
+          "tokens": [
+            "black_armor",
+            "dragon_witch",
+            "cape",
+            "headpiece",
+            "gauntlets",
+            "armored_boots",
+            "flag"
+          ],
+          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
+          "styleHint": "dramatic dark fantasy rim light",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "shinjuku_jacket_casual",
+          "name": "新宿皮夹克便服",
+          "tokens": [
+            "leather_jacket",
+            "black_tank_top",
+            "black_pants",
+            "leather_pants",
+            "choker",
+            "boots"
+          ],
+          "prose": "wearing her Shinjuku casual outfit featuring a fitted black leather jacket over a black tank top and tight leather pants with a choker",
+          "styleHint": "stylish urban neon contrast",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_swimsuit_berserker",
+          "name": "水着狂阶黑色比基尼",
+          "tokens": [
+            "bikini",
+            "black_bikini",
+            "strappy_bikini",
+            "sarong",
+            "katana",
+            "summer_clothes"
+          ],
+          "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
+          "styleHint": "dramatic sunset ocean glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "evening_black_dress",
+          "name": "英灵正装高开叉晚礼服",
+          "tokens": [
+            "evening_dress",
+            "black_dress",
+            "backless_dress",
+            "high_slit_dress",
+            "gloves"
+          ],
+          "prose": "wearing an alluring backless black velvet evening gown with high leg slit and long satin gloves",
+          "styleHint": "luxurious ballroom chiaroscuro",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, flawless porcelain skin, exposed pink pussy, detailed vulva, perky breasts with pink nipples, toned waist",
+          "styleHint": "sharp cinematic studio rim lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "so_bin"
+      ],
+      "originalName": "贞德[Alter]",
+      "exactTokens": [
+        "jeanne d'arc alter (fate)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "jeanne alter",
+        "jalter",
+        "jeanne d'arc alter",
+        "fate grand order",
+        "fgo",
+        "贞德[Alter]",
+        "黑贞德"
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate/Grand Order）",
+        "era": "当代+英灵",
+        "formNotes": "银白短发；金色瞳；复仇者职阶；黑色战铠+龙之魔女披风+军旗；新宿篇皮夹克便服；水着黑色系带比基尼+武士刀；黑色高开叉晚礼服",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "type-moon, ufotable, official anime screencap"
+    },
+    {
+      "id": "matou_sakura",
+      "displayName": "间桐樱",
+      "franchise": "Fate",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "homurahara_uniform",
+      "identityTokens": [
+        "matou_sakura",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "hair_ribbon",
+        "red_ribbon",
+        "purple_eyes",
+        "large_breasts",
+        "fate/stay_night"
+      ],
+      "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
+      "outfits": [
+        {
+          "id": "homurahara_uniform",
+          "name": "穗群原学园制服",
+          "tokens": [
+            "school_uniform",
+            "brown_jacket",
+            "white_shirt",
+            "red_tie",
+            "pleated_skirt",
+            "black_pantyhose"
+          ],
+          "prose": "wearing Homurahara Academy winter uniform with beige blazer, red bow, pleated skirt, and black tights",
+          "styleHint": "soft school hallway sunlight",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "white_summer_sundress",
+          "name": "经典纯白夏日连衣裙",
+          "tokens": [
+            "sundress",
+            "white_dress",
+            "sleeveless_dress",
+            "hair_ribbon",
+            "sandals"
+          ],
+          "prose": "wearing her iconic pure white sleeveless summer sundress with her red hair ribbon fluttering gently",
+          "styleHint": "pure nostalgic summer breeze",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "kitchen_apron_homewear",
+          "name": "居家粉色毛衣与围裙",
+          "tokens": [
+            "pink_sweater",
+            "apron",
+            "frilled_apron",
+            "long_skirt",
+            "casual_clothes"
+          ],
+          "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
+          "styleHint": "warm domestic golden hour",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, voluptuous feminine body, exposed pink pussy, detailed vulva, heavy breasts with pink nipples, soft blushing skin",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "winter_outfit",
+          "name": "冬日大衣",
+          "tokens": [
+            "matou_sakura_winter_outfit",
+            "winter_coat",
+            "coat",
+            "winter_clothes",
+            "warm_clothes",
+            "long_sleeves",
+            "skirt",
+            "umbrella",
+            "pink_umbrella"
+          ],
+          "prose": "wearing a warm winter outfit with a long coat over a soft skirt, layered and warm for cold rainy days",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "kyudo_gi",
+          "name": "弓道服",
+          "tokens": [
+            "matou_sakura_kyudo_gi",
+            "kyudo_gi",
+            "kyudo_uniform",
+            "white_gi",
+            "hakama",
+            "indigo_hakama",
+            "japanese_clothes",
+            "traditional_clothes",
+            "long_sleeves"
+          ],
+          "prose": "wearing a crisp white kyudo gi with a deep indigo hakama, the traditional Japanese archery uniform",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "kannu"
+      ],
+      "originalName": "间桐樱",
+      "exactTokens": [
+        "matou_sakura"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "matou sakura",
+        "sakura",
+        "sakura matou",
+        "fate stay night",
+        "fsn",
+        "间桐樱",
+        "樱"
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate/stay night）",
+        "era": "当代",
+        "formNotes": "紫色长发；紫色瞳；红色缎带发饰；身材丰满；穗群原学园制服；黑化形态红纹礼服",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "type-moon, ufotable, official anime screencap"
     },
     {
       "id": "hatsune_miku",
@@ -765,6 +1439,151 @@
       "animeStudio": "feel. (studio), official anime screencap, anime coloring"
     },
     {
+      "id": "yuigahama_yui",
+      "displayName": "由比滨结衣",
+      "franchise": "Oregairu",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sobu_uniform",
+      "identityTokens": [
+        "yuigahama_yui",
+        "1girl",
+        "solo",
+        "orange_hair",
+        "short_hair",
+        "hair_bun",
+        "side_bun",
+        "amber_eyes",
+        "large_breasts",
+        "oregairu"
+      ],
+      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
+      "outfits": [
+        {
+          "id": "sobu_uniform",
+          "name": "总武高中制服",
+          "tokens": [
+            "school_uniform",
+            "open_blazer",
+            "pink_cardigan",
+            "white_shirt",
+            "red_ribbon",
+            "pleated_skirt",
+            "black_thighhighs"
+          ],
+          "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
+          "styleHint": "vibrant anime school aesthetic",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "summer_yukata",
+          "name": "夏日祭典碎花浴衣",
+          "tokens": [
+            "yukata",
+            "floral_print",
+            "red_obi",
+            "hair_ornament",
+            "geta",
+            "folding_fan"
+          ],
+          "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
+          "styleHint": "warm festive lantern glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "dog_pajamas",
+          "name": "居家露肩连帽卫衣",
+          "tokens": [
+            "hoodie",
+            "off_shoulder_hoodie",
+            "short_shorts",
+            "bare_legs",
+            "casual_clothes"
+          ],
+          "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
+          "styleHint": "cozy modern room lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "tennis_sportswear",
+          "name": "网球无袖运动短裙",
+          "tokens": [
+            "sportswear",
+            "sleeveless_top",
+            "tennis_skirt",
+            "pleated_skirt",
+            "wristband",
+            "sneakers"
+          ],
+          "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
+          "styleHint": "bright dynamic daylight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
+          "styleHint": "sensual soft room lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "ponkan8",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "由比滨结衣",
+      "exactTokens": [
+        "yuigahama_yui"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "yuigahama_yui",
+        "yui",
+        "yui yuigahama",
+        "oregairu",
+        "yahari ore no seishun",
+        "由比滨结衣",
+        "结衣"
+      ],
+      "canon": {
+        "world": "现代校园（春物·总武高中）",
+        "era": "当代",
+        "formNotes": "橙粉发色团子头（side bun）；琥珀瞳；官方身材丰满；侍奉部成员；开朗天然、善察人意",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring"
+    },
+    {
       "id": "elaina",
       "displayName": "伊雷娜",
       "originalName": "Elaina",
@@ -1039,89 +1858,143 @@
       "animeStudio": "mappa, official anime screencap, anime coloring"
     },
     {
-      "id": "tohsaka_rin",
-      "displayName": "远坂凛",
-      "originalName": "Tohsaka Rin",
-      "franchise": "Fate",
-      "aliases": [
-        "tohsaka_rin",
-        "rin",
-        "rin tohsaka",
-        "fate/stay night"
-      ],
-      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and brilliant mage with long dark-brown hair in twin-tails tied with large black ribbons, clear aqua-blue eyes, and a confident, spirited expression",
+      "id": "reze_chainsaw",
+      "displayName": "蕾塞",
+      "franchise": "Chainsaw Man",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sleeveless_white_shirt",
       "identityTokens": [
-        "tohsaka_rin",
+        "reze (chainsaw man)",
+        "reze",
         "1girl",
         "solo",
-        "long_brown_hair",
-        "twintails",
-        "black_hair_ribbons",
-        "blue_eyes",
-        "ahoge",
-        "fate/stay_night"
+        "purple_hair",
+        "short_hair",
+        "green_eyes",
+        "choker",
+        "blush"
       ],
-      "exactTokens": [
-        "tohsaka_rin"
-      ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
       "outfits": [
         {
-          "id": "school_uniform",
-          "name": "校服",
-          "prose": "her navy Homurahara school uniform with a ribbon",
+          "id": "sleeveless_white_shirt",
+          "name": "经典无袖衬衫与黑领带",
           "tokens": [
-            "school_uniform",
-            "blazer",
-            "navy_clothes",
-            "ribbon",
-            "pleated_skirt",
-            "black_thighhighs"
+            "sleeveless_shirt",
+            "white_shirt",
+            "black_tie",
+            "black_shorts",
+            "choker",
+            "sneakers"
           ],
-          "default": true,
-          "isDefault": true
+          "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
+          "styleHint": "gritty cinematic urban anime",
+          "isDefault": true,
+          "default": true
         },
         {
-          "id": "red_turtleneck",
-          "name": "红高领",
-          "prose": "her casual red turtleneck with a black skirt",
+          "id": "summer_swimsuit_night",
+          "name": "夜间学校泳池死库水",
           "tokens": [
-            "turtleneck",
-            "red_clothes",
-            "black_skirt",
-            "jacket"
+            "school_swimsuit",
+            "one_piece_swimsuit",
+            "wet_skin",
+            "choker",
+            "bare_legs"
           ],
+          "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
+          "styleHint": "cool blue night swimming glow",
           "isDefault": false,
           "default": false
         },
         {
-          "id": "mage_battle",
-          "name": "魔术战斗",
-          "prose": "her mage combat outfit with glowing magic circuits and gems",
+          "id": "cafe_apron_outfit",
+          "name": "咖啡厅打工围裙装",
           "tokens": [
-            "magic_circuits",
-            "jewelry",
-            "dress",
-            "glowing",
-            "long_sleeves"
+            "cafe_uniform",
+            "apron",
+            "white_shirt",
+            "jeans",
+            "choker"
           ],
+          "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
+          "styleHint": "warm nostalgic cafe ambient light",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_jacket_casual",
+          "name": "宽大拉链外套私服",
+          "tokens": [
+            "oversized_jacket",
+            "bomber_jacket",
+            "tank_top",
+            "shorts",
+            "choker"
+          ],
+          "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
+          "styleHint": "rainy neon asphalt reflections",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "choker",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
+          "styleHint": "alluring moody cinematic lighting",
           "isDefault": false,
           "default": false
         }
       ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "fujimoto_tatsuki",
+        "rella",
+        "so_bin"
+      ],
+      "originalName": "蕾塞",
+      "exactTokens": [
+        "reze (chainsaw man)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "reze",
+        "reze chainsaw man",
+        "chainsaw man",
+        "蕾塞"
+      ],
       "canon": {
-        "world": "现代魔术（Fate）",
-        "era": "当代",
-        "formNotes": "黑发双马尾红丝带蓝眼；宝石魔术；傲娇",
-        "research": "2026-08-14 调研"
+        "world": "现代都市+恶魔（电锯人·蕾塞篇）",
+        "era": "1997",
+        "formNotes": "粉紫短发；绿色瞳；标志性黑色颈环（choker）；无袖白衬衫+黑领带+黑短裤；咖啡厅打工围裙装；夜间学校泳池死库水；炸弹恶魔",
+        "research": "2026-08-18 调研"
       },
-      "animeStudio": "ufotable, type-moon, cinematic anime screenshot"
+      "animeStudio": "MAPPA, official anime screencap, anime coloring"
     },
     {
       "id": "rem_rezero",
@@ -1410,102 +2283,71 @@
       "animeStudio": "studio bind, official anime screencap, anime coloring"
     },
     {
-      "id": "illyasviel_von_einzbern",
-      "displayName": "伊莉雅丝菲尔",
-      "originalName": "Illyasviel von Einzbern",
-      "franchise": "Fate",
-      "aliases": [
-        "illyasviel_von_einzbern",
-        "illya",
-        "ilys",
-        "snow field",
-        "fate/stay night"
-      ],
-      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine features, carrying an air of playful innocence and profound magic power",
+      "id": "sylphiette",
+      "displayName": "希露菲叶特",
+      "franchise": "Mushoku Tensei",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "default_mage_robe",
       "identityTokens": [
-        "illyasviel_von_einzbern",
+        "sylphiette",
+        "sylphie",
         "1girl",
         "solo",
-        "long_white_hair",
-        "straight_hair",
+        "short_hair",
+        "white_hair",
         "red_eyes",
-        "ruby_eyes",
-        "fate/stay_night"
+        "elf_ears",
+        "pointed_ears",
+        "flat_chest",
+        "mushoku_tensei"
       ],
-      "exactTokens": [
-        "illyasviel_von_einzbern"
-      ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
       "outfits": [
         {
-          "id": "winter_coat",
-          "name": "Fate 本篇冬装",
-          "prose": "her red winter coat with a hood and fur trim from the Fuyuki winter story",
+          "id": "default_mage_robe",
+          "name": "学徒法师长袍",
           "tokens": [
-            "coat",
-            "red_coat",
-            "fur_trim",
-            "hood",
-            "winter_clothes"
-          ],
-          "default": true,
-          "isDefault": true
-        },
-        {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a soft casual outfit",
-          "tokens": [
-            "casual_clothes",
-            "dress",
-            "cardigan"
-          ],
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "purple_hooded_cloak",
-          "name": "紫色连帽斗篷",
-          "tokens": [
-            "cloak",
+            "green_hair",
+            "short_hair",
             "hooded_cloak",
-            "purple_cloak",
-            "violet",
-            "hood",
-            "wool",
-            "winter_cloak",
-            "outerwear",
-            "cape",
-            "thick_fabric"
+            "mage_robe",
+            "shorts",
+            "boots"
           ],
-          "prose": "wearing a thick purple hooded cloak of deep violet wool, a heavy front-closing cape with a large hood and long hem",
-          "styleHint": "soft cinematic lighting",
+          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
+          "styleHint": "anime adventure style",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "silent_fitz_uniform",
+          "name": "菲兹学长魔术学院执事装",
+          "tokens": [
+            "white_hair",
+            "short_hair",
+            "sunglasses",
+            "academy_uniform",
+            "formal_suit",
+            "white_pants",
+            "cape"
+          ],
+          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
+          "styleHint": "sharp noble academy aesthetic",
           "isDefault": false,
           "default": false
         },
         {
-          "id": "cozy_wool_blanket",
-          "name": "羊绒毛毯裹身",
+          "id": "oversized_nightshirt",
+          "name": "居家宽松露肩睡衣",
           "tokens": [
-            "wool_blanket",
-            "wrapped_in_blanket",
-            "plush",
-            "wool",
-            "draped",
-            "thick_fabric",
-            "fluffy",
-            "cozy",
-            "soft_fabric",
-            "loungewear"
+            "oversized_shirt",
+            "off_shoulder_shirt",
+            "bare_thighs",
+            "bare_legs"
           ],
-          "prose": "wrapped in a thick soft wool blanket, plush fluffy wool fabric draped loosely around the body like a cocoon, warm neutral tone",
-          "styleHint": "soft cinematic lighting",
+          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
+          "styleHint": "soft cozy morning atmosphere",
           "isDefault": false,
           "default": false
         },
@@ -1516,27 +2358,76 @@
             "nude",
             "completely_naked",
             "uncensored",
-            "breasts",
-            "nipples",
-            "navel",
-            "bare_shoulders",
-            "collarbone",
-            "bare_legs",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
             "bare_feet"
           ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
+          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
+          "styleHint": "intimate soft studio lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual_day_dress",
+          "name": "居家便服连衣裙",
+          "tokens": [
+            "sylphiette_casual_day_dress",
+            "cardigan",
+            "knit_cardigan",
+            "cream_cardigan",
+            "simple_dress",
+            "knitwear",
+            "casual_clothes",
+            "long_sleeves",
+            "dress"
+          ],
+          "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
+          "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
         }
       ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "希露菲叶特",
+      "exactTokens": [
+        "sylphiette (mushoku tensei)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "sylphiette",
+        "sylphie",
+        "sylphiette grayrat",
+        "mushoku tensei",
+        "希露菲叶特",
+        "希露菲"
+      ],
       "canon": {
-        "world": "现代魔术（Fate）",
-        "era": "当代",
-        "formNotes": "银发红眼幼态；紫裙；爱因兹贝伦古堡",
-        "research": "2026-08-14 调研"
+        "world": "古典奇幻（无职转生·六面世界）",
+        "era": "中世纪风",
+        "formNotes": "米格路德族（长耳族）1/4 混血（人族1/2+兽族1/4+长耳族1/4）；又长又尖的双耳是个人标志（高兴/害羞时会扑腾）；幼年绿发→青年白发；红瞳；贫乳；不擅长火系魔术",
+        "research": "2026-08-18 调研"
       },
-      "animeStudio": "silver link, ufotable, official anime screencap"
+      "animeStudio": "studio bind, official anime screencap, anime coloring"
     },
     {
       "id": "kitagawa_marin",
@@ -4286,607 +5177,6 @@
       "animeStudio": "doga kobo, official anime screencap, nekotomi chao, anime coloring, crisp lineart"
     },
     {
-      "id": "sylphiette",
-      "displayName": "希露菲叶特",
-      "franchise": "Mushoku Tensei",
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "adultEligibility": "adult",
-      "defaultOutfitId": "default_mage_robe",
-      "identityTokens": [
-        "sylphiette",
-        "sylphie",
-        "1girl",
-        "solo",
-        "short_hair",
-        "white_hair",
-        "red_eyes",
-        "elf_ears",
-        "pointed_ears",
-        "flat_chest",
-        "mushoku_tensei"
-      ],
-      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
-      "outfits": [
-        {
-          "id": "default_mage_robe",
-          "name": "学徒法师长袍",
-          "tokens": [
-            "green_hair",
-            "short_hair",
-            "hooded_cloak",
-            "mage_robe",
-            "shorts",
-            "boots"
-          ],
-          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
-          "styleHint": "anime adventure style",
-          "isDefault": true,
-          "default": true
-        },
-        {
-          "id": "silent_fitz_uniform",
-          "name": "菲兹学长魔术学院执事装",
-          "tokens": [
-            "white_hair",
-            "short_hair",
-            "sunglasses",
-            "academy_uniform",
-            "formal_suit",
-            "white_pants",
-            "cape"
-          ],
-          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
-          "styleHint": "sharp noble academy aesthetic",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "oversized_nightshirt",
-          "name": "居家宽松露肩睡衣",
-          "tokens": [
-            "oversized_shirt",
-            "off_shoulder_shirt",
-            "bare_thighs",
-            "bare_legs"
-          ],
-          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
-          "styleHint": "soft cozy morning atmosphere",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "exposed_pussy",
-            "detailed_vulva",
-            "bare_breasts",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
-          "styleHint": "intimate soft studio lighting",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "casual_day_dress",
-          "name": "居家便服连衣裙",
-          "tokens": [
-            "sylphiette_casual_day_dress",
-            "cardigan",
-            "knit_cardigan",
-            "cream_cardigan",
-            "simple_dress",
-            "knitwear",
-            "casual_clothes",
-            "long_sleeves",
-            "dress"
-          ],
-          "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
-        }
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "curatedArtistStyles": [
-        "shirotaka",
-        "rella",
-        "kantoku"
-      ],
-      "originalName": "希露菲叶特",
-      "exactTokens": [
-        "sylphiette (mushoku tensei)"
-      ],
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "exactPrefixes": [],
-      "aliases": [
-        "sylphiette",
-        "sylphie",
-        "sylphiette grayrat",
-        "mushoku tensei",
-        "希露菲叶特",
-        "希露菲"
-      ],
-      "canon": {
-        "world": "古典奇幻（无职转生·六面世界）",
-        "era": "中世纪风",
-        "formNotes": "米格路德族（长耳族）1/4 混血（人族1/2+兽族1/4+长耳族1/4）；又长又尖的双耳是个人标志（高兴/害羞时会扑腾）；幼年绿发→青年白发；红瞳；贫乳；不擅长火系魔术",
-        "research": "2026-08-18 调研"
-      },
-      "animeStudio": "studio bind, official anime screencap, anime coloring"
-    },
-    {
-      "id": "yuigahama_yui",
-      "displayName": "由比滨结衣",
-      "franchise": "Oregairu",
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "adultEligibility": "adult",
-      "defaultOutfitId": "sobu_uniform",
-      "identityTokens": [
-        "yuigahama_yui",
-        "1girl",
-        "solo",
-        "orange_hair",
-        "short_hair",
-        "hair_bun",
-        "side_bun",
-        "amber_eyes",
-        "large_breasts",
-        "oregairu"
-      ],
-      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
-      "outfits": [
-        {
-          "id": "sobu_uniform",
-          "name": "总武高中制服",
-          "tokens": [
-            "school_uniform",
-            "open_blazer",
-            "pink_cardigan",
-            "white_shirt",
-            "red_ribbon",
-            "pleated_skirt",
-            "black_thighhighs"
-          ],
-          "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
-          "styleHint": "vibrant anime school aesthetic",
-          "isDefault": true,
-          "default": true
-        },
-        {
-          "id": "summer_yukata",
-          "name": "夏日祭典碎花浴衣",
-          "tokens": [
-            "yukata",
-            "floral_print",
-            "red_obi",
-            "hair_ornament",
-            "geta",
-            "folding_fan"
-          ],
-          "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
-          "styleHint": "warm festive lantern glow",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "dog_pajamas",
-          "name": "居家露肩连帽卫衣",
-          "tokens": [
-            "hoodie",
-            "off_shoulder_hoodie",
-            "short_shorts",
-            "bare_legs",
-            "casual_clothes"
-          ],
-          "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
-          "styleHint": "cozy modern room lighting",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "tennis_sportswear",
-          "name": "网球无袖运动短裙",
-          "tokens": [
-            "sportswear",
-            "sleeveless_top",
-            "tennis_skirt",
-            "pleated_skirt",
-            "wristband",
-            "sneakers"
-          ],
-          "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
-          "styleHint": "bright dynamic daylight",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "large_breasts",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
-          "styleHint": "sensual soft room lighting",
-          "isDefault": false,
-          "default": false
-        }
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "curatedArtistStyles": [
-        "ponkan8",
-        "rella",
-        "kantoku"
-      ],
-      "originalName": "由比滨结衣",
-      "exactTokens": [
-        "yuigahama_yui"
-      ],
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "exactPrefixes": [],
-      "aliases": [
-        "yuigahama_yui",
-        "yui",
-        "yui yuigahama",
-        "oregairu",
-        "yahari ore no seishun",
-        "由比滨结衣",
-        "结衣"
-      ],
-      "canon": {
-        "world": "现代校园（春物·总武高中）",
-        "era": "当代",
-        "formNotes": "橙粉发色团子头（side bun）；琥珀瞳；官方身材丰满；侍奉部成员；开朗天然、善察人意",
-        "research": "2026-08-18 调研"
-      },
-      "animeStudio": "feel. (studio), official anime screencap, anime coloring"
-    },
-    {
-      "id": "jeanne_alter",
-      "displayName": "贞德[Alter]",
-      "franchise": "Fate",
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "adultEligibility": "adult",
-      "defaultOutfitId": "avenger_black_armor",
-      "identityTokens": [
-        "jeanne d'arc alter (fate)",
-        "jeanne_alter",
-        "1girl",
-        "solo",
-        "short_hair",
-        "silver_hair",
-        "yellow_eyes",
-        "evil_smile"
-      ],
-      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
-      "outfits": [
-        {
-          "id": "avenger_black_armor",
-          "name": "复仇者黑铁战铠",
-          "tokens": [
-            "black_armor",
-            "dragon_witch",
-            "cape",
-            "headpiece",
-            "gauntlets",
-            "armored_boots",
-            "flag"
-          ],
-          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
-          "styleHint": "dramatic dark fantasy rim light",
-          "isDefault": true,
-          "default": true
-        },
-        {
-          "id": "shinjuku_jacket_casual",
-          "name": "新宿皮夹克便服",
-          "tokens": [
-            "leather_jacket",
-            "black_tank_top",
-            "black_pants",
-            "leather_pants",
-            "choker",
-            "boots"
-          ],
-          "prose": "wearing her Shinjuku casual outfit featuring a fitted black leather jacket over a black tank top and tight leather pants with a choker",
-          "styleHint": "stylish urban neon contrast",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "summer_swimsuit_berserker",
-          "name": "水着狂阶黑色比基尼",
-          "tokens": [
-            "bikini",
-            "black_bikini",
-            "strappy_bikini",
-            "sarong",
-            "katana",
-            "summer_clothes"
-          ],
-          "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
-          "styleHint": "dramatic sunset ocean glow",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "evening_black_dress",
-          "name": "英灵正装高开叉晚礼服",
-          "tokens": [
-            "evening_dress",
-            "black_dress",
-            "backless_dress",
-            "high_slit_dress",
-            "gloves"
-          ],
-          "prose": "wearing an alluring backless black velvet evening gown with high leg slit and long satin gloves",
-          "styleHint": "luxurious ballroom chiaroscuro",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "exposed_pussy",
-            "detailed_vulva",
-            "bare_breasts",
-            "pink_nipples",
-            "slender_waist",
-            "bare_feet"
-          ],
-          "prose": "completely naked with zero clothes, flawless porcelain skin, exposed pink pussy, detailed vulva, perky breasts with pink nipples, toned waist",
-          "styleHint": "sharp cinematic studio rim lighting",
-          "isDefault": false,
-          "default": false
-        }
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "curatedArtistStyles": [
-        "takeuchi_takashi",
-        "rella",
-        "so_bin"
-      ],
-      "originalName": "贞德[Alter]",
-      "exactTokens": [
-        "jeanne d'arc alter (fate)"
-      ],
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "exactPrefixes": [],
-      "aliases": [
-        "jeanne alter",
-        "jalter",
-        "jeanne d'arc alter",
-        "fate grand order",
-        "fgo",
-        "贞德[Alter]",
-        "黑贞德"
-      ],
-      "canon": {
-        "world": "现代奇幻（Fate/Grand Order）",
-        "era": "当代+英灵",
-        "formNotes": "银白短发；金色瞳；复仇者职阶；黑色战铠+龙之魔女披风+军旗；新宿篇皮夹克便服；水着黑色系带比基尼+武士刀；黑色高开叉晚礼服",
-        "research": "2026-08-18 调研"
-      },
-      "animeStudio": "type-moon, ufotable, official anime screencap"
-    },
-    {
-      "id": "matou_sakura",
-      "displayName": "间桐樱",
-      "franchise": "Fate",
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "adultEligibility": "adult",
-      "defaultOutfitId": "homurahara_uniform",
-      "identityTokens": [
-        "matou_sakura",
-        "1girl",
-        "solo",
-        "purple_hair",
-        "long_hair",
-        "hair_ribbon",
-        "red_ribbon",
-        "purple_eyes",
-        "large_breasts",
-        "fate/stay_night"
-      ],
-      "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
-      "outfits": [
-        {
-          "id": "homurahara_uniform",
-          "name": "穗群原学园制服",
-          "tokens": [
-            "school_uniform",
-            "brown_jacket",
-            "white_shirt",
-            "red_tie",
-            "pleated_skirt",
-            "black_pantyhose"
-          ],
-          "prose": "wearing Homurahara Academy winter uniform with beige blazer, red bow, pleated skirt, and black tights",
-          "styleHint": "soft school hallway sunlight",
-          "isDefault": true,
-          "default": true
-        },
-        {
-          "id": "white_summer_sundress",
-          "name": "经典纯白夏日连衣裙",
-          "tokens": [
-            "sundress",
-            "white_dress",
-            "sleeveless_dress",
-            "hair_ribbon",
-            "sandals"
-          ],
-          "prose": "wearing her iconic pure white sleeveless summer sundress with her red hair ribbon fluttering gently",
-          "styleHint": "pure nostalgic summer breeze",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "kitchen_apron_homewear",
-          "name": "居家粉色毛衣与围裙",
-          "tokens": [
-            "pink_sweater",
-            "apron",
-            "frilled_apron",
-            "long_skirt",
-            "casual_clothes"
-          ],
-          "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
-          "styleHint": "warm domestic golden hour",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "large_breasts",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "prose": "completely naked with zero clothes, voluptuous feminine body, exposed pink pussy, detailed vulva, heavy breasts with pink nipples, soft blushing skin",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "winter_outfit",
-          "name": "冬日大衣",
-          "tokens": [
-            "matou_sakura_winter_outfit",
-            "winter_coat",
-            "coat",
-            "winter_clothes",
-            "warm_clothes",
-            "long_sleeves",
-            "skirt",
-            "umbrella",
-            "pink_umbrella"
-          ],
-          "prose": "wearing a warm winter outfit with a long coat over a soft skirt, layered and warm for cold rainy days",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "kyudo_gi",
-          "name": "弓道服",
-          "tokens": [
-            "matou_sakura_kyudo_gi",
-            "kyudo_gi",
-            "kyudo_uniform",
-            "white_gi",
-            "hakama",
-            "indigo_hakama",
-            "japanese_clothes",
-            "traditional_clothes",
-            "long_sleeves"
-          ],
-          "prose": "wearing a crisp white kyudo gi with a deep indigo hakama, the traditional Japanese archery uniform",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
-        }
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "curatedArtistStyles": [
-        "takeuchi_takashi",
-        "rella",
-        "kannu"
-      ],
-      "originalName": "间桐樱",
-      "exactTokens": [
-        "matou_sakura"
-      ],
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "exactPrefixes": [],
-      "aliases": [
-        "matou sakura",
-        "sakura",
-        "sakura matou",
-        "fate stay night",
-        "fsn",
-        "间桐樱",
-        "樱"
-      ],
-      "canon": {
-        "world": "现代奇幻（Fate/stay night）",
-        "era": "当代",
-        "formNotes": "紫色长发；紫色瞳；红色缎带发饰；身材丰满；穗群原学园制服；黑化形态红纹礼服",
-        "research": "2026-08-18 调研"
-      },
-      "animeStudio": "type-moon, ufotable, official anime screencap"
-    },
-    {
       "id": "yor_forger",
       "displayName": "约尔·福杰",
       "franchise": "SPY x FAMILY",
@@ -5047,296 +5337,6 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring"
-    },
-    {
-      "id": "reze_chainsaw",
-      "displayName": "蕾塞",
-      "franchise": "Chainsaw Man",
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "adultEligibility": "adult",
-      "defaultOutfitId": "sleeveless_white_shirt",
-      "identityTokens": [
-        "reze (chainsaw man)",
-        "reze",
-        "1girl",
-        "solo",
-        "purple_hair",
-        "short_hair",
-        "green_eyes",
-        "choker",
-        "blush"
-      ],
-      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
-      "outfits": [
-        {
-          "id": "sleeveless_white_shirt",
-          "name": "经典无袖衬衫与黑领带",
-          "tokens": [
-            "sleeveless_shirt",
-            "white_shirt",
-            "black_tie",
-            "black_shorts",
-            "choker",
-            "sneakers"
-          ],
-          "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
-          "styleHint": "gritty cinematic urban anime",
-          "isDefault": true,
-          "default": true
-        },
-        {
-          "id": "summer_swimsuit_night",
-          "name": "夜间学校泳池死库水",
-          "tokens": [
-            "school_swimsuit",
-            "one_piece_swimsuit",
-            "wet_skin",
-            "choker",
-            "bare_legs"
-          ],
-          "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
-          "styleHint": "cool blue night swimming glow",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "cafe_apron_outfit",
-          "name": "咖啡厅打工围裙装",
-          "tokens": [
-            "cafe_uniform",
-            "apron",
-            "white_shirt",
-            "jeans",
-            "choker"
-          ],
-          "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
-          "styleHint": "warm nostalgic cafe ambient light",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "oversized_jacket_casual",
-          "name": "宽大拉链外套私服",
-          "tokens": [
-            "oversized_jacket",
-            "bomber_jacket",
-            "tank_top",
-            "shorts",
-            "choker"
-          ],
-          "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
-          "styleHint": "rainy neon asphalt reflections",
-          "isDefault": false,
-          "default": false
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "choker",
-            "exposed_pussy",
-            "detailed_vulva",
-            "bare_breasts",
-            "pink_nipples",
-            "bare_feet"
-          ],
-          "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
-          "styleHint": "alluring moody cinematic lighting",
-          "isDefault": false,
-          "default": false
-        }
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "curatedArtistStyles": [
-        "fujimoto_tatsuki",
-        "rella",
-        "so_bin"
-      ],
-      "originalName": "蕾塞",
-      "exactTokens": [
-        "reze (chainsaw man)"
-      ],
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "exactPrefixes": [],
-      "aliases": [
-        "reze",
-        "reze chainsaw man",
-        "chainsaw man",
-        "蕾塞"
-      ],
-      "canon": {
-        "world": "现代都市+恶魔（电锯人·蕾塞篇）",
-        "era": "1997",
-        "formNotes": "粉紫短发；绿色瞳；标志性黑色颈环（choker）；无袖白衬衫+黑领带+黑短裤；咖啡厅打工围裙装；夜间学校泳池死库水；炸弹恶魔",
-        "research": "2026-08-18 调研"
-      },
-      "animeStudio": "MAPPA, official anime screencap, anime coloring"
-    },
-    {
-      "id": "fern_frieren",
-      "displayName": "菲伦",
-      "franchise": "Frieren: Beyond Journey's End",
-      "recommendedEngine": "anima-aesthetic-v1.1",
-      "adultEligibility": "adult",
-      "defaultOutfitId": "journey_robe",
-      "identityTokens": [
-        "fern (sousou no frieren)",
-        "fern",
-        "1girl",
-        "solo",
-        "long_hair",
-        "purple_hair",
-        "side_ponytail",
-        "half-updo",
-        "straight_bangs",
-        "long_sidelocks",
-        "purple_eyes",
-        "large_breasts"
-      ],
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure with large breasts.",
-      "outfits": [
-        {
-          "id": "journey_robe",
-          "name": "旅途魔法长袍",
-          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
-          "tokens": [
-            "black_coat",
-            "white_dress",
-            "high_collar",
-            "long_sleeves",
-            "magic_staff",
-            "boots"
-          ],
-          "default": true
-        },
-        {
-          "id": "winter_coat",
-          "name": "冬季厚风衣围巾装",
-          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
-          "tokens": [
-            "winter_coat",
-            "overcoat",
-            "scarf",
-            "muffler",
-            "gloves",
-            "boots"
-          ]
-        },
-        {
-          "id": "town_casual",
-          "name": "城镇甜品便服",
-          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
-          "tokens": [
-            "cardigan",
-            "long_skirt",
-            "blouse",
-            "ribbon"
-          ]
-        },
-        {
-          "id": "noble_ball_dress",
-          "name": "贵族舞会典雅深紫礼服",
-          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
-          "tokens": [
-            "evening_dress",
-            "purple_dress",
-            "ball_gown",
-            "white_gloves",
-            "updo_hair"
-          ]
-        },
-        {
-          "id": "inn_morning_nightgown",
-          "name": "旅馆清晨纯棉睡裙",
-          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
-          "tokens": [
-            "nightgown",
-            "white_nightgown",
-            "loose_dress",
-            "bare_shoulders",
-            "messy_hair"
-          ]
-        },
-        {
-          "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked with zero clothes, full body bare, natural slender-curvy body with soft smooth skin, large shapely breasts with pink nipples, exposed neat pink pussy, detailed vulva, narrow waist, pouting blush",
-          "tokens": [
-            "nude",
-            "completely_naked",
-            "uncensored",
-            "full_body_bare",
-            "large_breasts",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "slender_body",
-            "soft_skin",
-            "bare_feet"
-          ]
-        }
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark",
-        "fat",
-        "chubby",
-        "plump",
-        "obese",
-        "overweight",
-        "heavy build",
-        "double chin",
-        "thick waist",
-        "belly flab"
-      ],
-      "curatedArtistStyles": [
-        "abe_tsukasa",
-        "rella",
-        "kantoku"
-      ],
-      "originalName": "菲伦",
-      "exactTokens": [
-        "fern (sousou no frieren)"
-      ],
-      "supportedEngines": [
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "exactPrefixes": [],
-      "aliases": [
-        "fern",
-        "fern frieren",
-        "sousou no frieren",
-        "frieren beyond journeys end",
-        "菲伦"
-      ],
-      "canon": {
-        "world": "古典奇幻（葬送的芙莉莲）",
-        "era": "中世纪风",
-        "formNotes": "紫色长发低侧马尾；紫瞳；身材丰满；第一阶魔法使白袍；性格冷静、毒舌、爱睡懒觉",
-        "research": "2026-08-18 调研"
-      },
-      "animeStudio": "madhouse, official anime screencap, anime coloring"
     },
     {
       "id": "mimori_byakuya",

@@ -1,0 +1,667 @@
+{
+  "version": 1,
+  "franchise": "Blue Archive",
+  "characters": [
+    {
+      "id": "misono_mika",
+      "displayName": "圣园未花",
+      "originalName": "Misono Mika",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "misono_mika",
+        "mika",
+        "圣园弥香",
+        "未花",
+        "blue archive",
+        "trinity",
+        "tea party"
+      ],
+      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate golden wing-shaped halo adorned with tiny star ornaments, and sparkling golden eyes with star-shaped pupils",
+      "identityTokens": [
+        "misono_mika",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "very_long_hair",
+        "multicolored_hair",
+        "inner_hair_pastel_galaxy_gradient",
+        "starry_hair",
+        "side_bun",
+        "hair_bun",
+        "plant_hair_ornament",
+        "hair_flower",
+        "halo",
+        "gold_halo",
+        "wing-shaped_halo",
+        "golden_eyes",
+        "starry_eyes",
+        "star-shaped_pupils",
+        "gentle_smile",
+        "blush",
+        "trinity",
+        "blue_archive"
+      ],
+      "exactTokens": [
+        "misono_mika"
+      ],
+      "exactPrefixes": [
+        "misono_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "trinity_uniform",
+          "name": "崔尼蒂校服",
+          "prose": "Trinity tea party school uniform with a sleeveless white collared dress, royal red ribbon tie, white fur-trimmed shoulder capelet draped over shoulders, pleated skirt with red trim slit, white pantyhose tights and strap high heels",
+          "tokens": [
+            "school_uniform",
+            "sleeveless_dress",
+            "white_dress",
+            "red_ribbon",
+            "capelet",
+            "shoulder_cape",
+            "pleated_skirt",
+            "white_tights",
+            "pantyhose",
+            "high_heels",
+            "trinity",
+            "tea_party"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "tea_party_dress",
+          "name": "茶话会礼装",
+          "prose": "an exquisite royal white tea party ballgown adorned with intricate golden filigree trim, white silk shawl, white evening gloves, white tights, golden high heels, regal Trinity princess elegance",
+          "tokens": [
+            "ballgown",
+            "white_dress",
+            "sleeveless_dress",
+            "golden_trim",
+            "gold_embroidery",
+            "white_gloves",
+            "white_tights",
+            "high_heels",
+            "elegant",
+            "regal"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_pink",
+          "name": "日常便服",
+          "prose": "a lovely pastel pink sleeveless sundress with delicate white lace trim, an ivory knitted cardigan loosely worn over shoulders, white flats, sweet gentle dating atmosphere",
+          "tokens": [
+            "casual",
+            "pink_dress",
+            "sundress",
+            "white_cardigan",
+            "knit_cardigan",
+            "white_tights",
+            "flats",
+            "lace_trim"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a charming white and soft pink frilled two-piece bikini with a sheer pastel pareo wrap, sun visor hat, tropical seaside resort atmosphere",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "white_swimsuit",
+            "pink_swimsuit",
+            "frills",
+            "pareo",
+            "summer",
+            "beach"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 崔尼蒂综合学院",
+        "era": "近未来学园都市",
+        "formNotes": "前茶话会成员 / 帕特尔派领导人；优雅、天真又带危险感",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    },
+    {
+      "id": "sorasaki_hina",
+      "displayName": "空崎日奈",
+      "originalName": "Sorasaki Hina",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "sorasaki_hina",
+        "hina",
+        "空崎陽奈",
+        "日奈",
+        "blue archive",
+        "gehenna",
+        "disciplinary committee"
+      ],
+      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate purple halo of three concentric rings crowned with jagged spikes, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
+      "identityTokens": [
+        "sorasaki_hina",
+        "1girl",
+        "solo",
+        "horns",
+        "small_horns",
+        "black_horns",
+        "curved_horns",
+        "demon_horns",
+        "halo",
+        "purple_halo",
+        "spiked_halo",
+        "concentric_rings_halo",
+        "bat_wings",
+        "demon_wings",
+        "black_wings",
+        "very_long_hair",
+        "massive_hair",
+        "fluffy_hair",
+        "hair_down",
+        "parted_bangs",
+        "silver_hair",
+        "purple_eyes",
+        "sleepy_eyes",
+        "serious_expression",
+        "petite",
+        "flat_chest",
+        "slender",
+        "small_stature",
+        "blush",
+        "gehenna",
+        "blue_archive"
+      ],
+      "exactTokens": [
+        "sorasaki_hina"
+      ],
+      "exactPrefixes": [
+        "sorasaki_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "gehenna_uniform",
+          "name": "风纪委员制服",
+          "prose": "Gehenna Academy Disciplinary Committee military uniform with an oversized black trench coat with gold epaulettes draped over shoulders like a cape, white collared shirt, black necktie, black vest, red disciplinary armband, black pleated skirt, over-knee socks and lace-up boots",
+          "tokens": [
+            "military_uniform",
+            "black_uniform",
+            "black_coat",
+            "coat_on_shoulders",
+            "epaulettes",
+            "white_shirt",
+            "black_necktie",
+            "black_vest",
+            "armband",
+            "red_armband",
+            "black_skirt",
+            "pleated_skirt",
+            "thighhighs",
+            "over-knee_socks",
+            "boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_black",
+          "name": "日常黑裙",
+          "prose": "a refined casual black gothic dress with red ribbon trim, dark stockings and Mary Jane shoes, quiet and delicate private look",
+          "tokens": [
+            "dress",
+            "black_dress",
+            "red_ribbon",
+            "ribbon_trim",
+            "black_tights",
+            "mary_janes",
+            "refined",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "combat_gear",
+          "name": "战术风纪装",
+          "prose": "tactical disciplinary combat gear with a fitted black tactical jacket, combat webbing harness, ammo pouches, holster belt, fingerless combat gloves, tactical combat boots, MG42 machine gun aesthetic",
+          "tokens": [
+            "tactical_gear",
+            "black_jacket",
+            "tactical_harness",
+            "holster",
+            "belt",
+            "pouches",
+            "fingerless_gloves",
+            "combat_boots",
+            "military"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装 / 死库水",
+          "prose": "summer swimsuit, dark navy blue two-piece swimsuit with white ruffled trim, swim ring with cute Gehenna devil motif, sandals, relaxed beach posture",
+          "tokens": [
+            "swimsuit",
+            "two-piece_swimsuit",
+            "navy_swimsuit",
+            "frills",
+            "swim_ring",
+            "sandals",
+            "summer",
+            "beach"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "evening_dress",
+          "name": "晚礼服",
+          "prose": "an elegant strapless black evening ballgown with ruffled hem, long black opera gloves, black ribbon corsage in hair, pearl necklace, high heels, grand piano recital aesthetic",
+          "tokens": [
+            "evening_dress",
+            "black_dress",
+            "strapless_dress",
+            "ruffles",
+            "opera_gloves",
+            "black_gloves",
+            "pearl_necklace",
+            "high_heels",
+            "formal",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 歌赫娜学院",
+        "era": "近未来学园都市",
+        "formNotes": "风纪委员会委员长；身高 142cm，外表严肃但私下容易害羞",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    },
+    {
+      "id": "kyouyama_kazusa",
+      "displayName": "杏山和纱",
+      "originalName": "Kyouyama Kazusa",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "kyouyama_kazusa",
+        "kazusa",
+        "杏山千纱",
+        "和纱",
+        "blue archive",
+        "trinity",
+        "sweets club",
+        "sugar rush"
+      ],
+      "identityProse": "Kyouyama Kazusa from Blue Archive, a first-year student at Trinity Comprehensive Academy and a member of the after-school Sweets Club, vocalist and bassist of the band SugarRush, a quiet cat-eared girl with short black bob hair, pink eyes, pointed spiked red halo with cross and ring, and sweet blush",
+      "identityTokens": [
+        "kyouyama_kazusa",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "bob_cut",
+        "black_cat_ears",
+        "animal_ears",
+        "no_human_ears",
+        "pink_eyes",
+        "pointed_spiked_red_halo_with_cross_and_ring",
+        "jagged_red_halo",
+        "trinity",
+        "blue_archive",
+        "sweets_club",
+        "bass",
+        "singer",
+        "sweet_shy_expression",
+        "blush"
+      ],
+      "exactTokens": [
+        "kyouyama_kazusa"
+      ],
+      "exactPrefixes": [
+        "kyouyama_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "trinity_uniform",
+          "name": "崔尼蒂校服",
+          "prose": "Trinity Comprehensive Academy school uniform with a white shirt, dark blazer, ribbon, plaid skirt, black tights and loafers, plus a hood with cat-ear shapes and a small collar",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "dark_blue_blazer",
+            "ribbon",
+            "plaid_skirt",
+            "black_tights",
+            "loafers",
+            "hood",
+            "cat_ears",
+            "collar",
+            "trinity"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sweets_apron",
+          "name": "甜点部围裙",
+          "prose": "a white sweets club apron worn over the Trinity uniform, with flour dust, a small whisk, and the cat-ear hood pulled down behind her shoulders",
+          "tokens": [
+            "apron",
+            "white_apron",
+            "sweets",
+            "flour",
+            "whisk",
+            "hood",
+            "cat_ears",
+            "cooking"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "live_stage",
+          "name": "乐队舞台装",
+          "prose": "a black stage outfit with silver accessories, fingerless gloves, a bass guitar, and the cat-ear hood pushed back, cool band girl look",
+          "tokens": [
+            "stage_outfit",
+            "black_clothes",
+            "silver_accessories",
+            "fingerless_gloves",
+            "bass_guitar",
+            "hood",
+            "cat_ears",
+            "band"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a black bikini with a cat-ear swim hood and a small red ribbon, cute and playful",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "cat_ears",
+            "hood",
+            "red_ribbon",
+            "summer"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 崔尼蒂综合学院",
+        "era": "近未来学园都市",
+        "formNotes": "甜点部成员 / SugarRush 主唱兼贝斯手；冒失、容易慌张但认真",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    },
+    {
+      "id": "asuma_toki",
+      "displayName": "飞鸟马时",
+      "originalName": "Asuma Toki",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "asuma_toki",
+        "toki",
+        "飞鸟马季",
+        "小时",
+        "c&c",
+        "zero four",
+        "millennium",
+        "blue archive"
+      ],
+      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit Zero Four, a cool deadpan girl with champagne blonde hair, sharp ice blue eyes, tactical headset with boom mic, and blue geometric HUD halo of three concentric rings",
+      "identityTokens": [
+        "asuma_toki",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "champagne_blonde_hair",
+        "very_long_hair",
+        "sharp_ice_blue_eyes",
+        "blue_eyes",
+        "expressionless",
+        "deadpan_gaze",
+        "tactical_headset_with_boom_mic",
+        "blue_geometric_hud_halo",
+        "millennium",
+        "c&c",
+        "blue_archive"
+      ],
+      "exactTokens": [
+        "asuma_toki"
+      ],
+      "exactPrefixes": [
+        "asuma_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "candc_maid",
+          "name": "C&C女仆特工装",
+          "prose": "Millennium C&C high-cut maid combat suit with a headset, thigh-high boots, small armor accents and a short skirt, cool maid agent look",
+          "tokens": [
+            "maid",
+            "combat_suit",
+            "high_cut",
+            "headset",
+            "thighhigh_boots",
+            "armor",
+            "short_skirt",
+            "millennium"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "bunny_suit",
+          "name": "兔女郎装",
+          "prose": "a white bunny suit with a princess braid, white over-knee stockings and high heels, playful secret agent look",
+          "tokens": [
+            "bunny_suit",
+            "white_clothes",
+            "princess_braid",
+            "white_stockings",
+            "high_heels",
+            "bunny_ears"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_maid",
+          "name": "日常便服",
+          "prose": "a simple black casual dress with a light jacket, loose blonde hair and a small headset, relaxed off-duty look",
+          "tokens": [
+            "dress",
+            "black_dress",
+            "jacket",
+            "headset",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a white and blue bikini with a small tactical waist belt and a headset, secret agent summer look",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "white_bikini",
+            "blue_bikini",
+            "tactical_belt",
+            "headset",
+            "summer"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 千年科学学园",
+        "era": "近未来学园都市",
+        "formNotes": "C&C 特殊小队 Zero Four；女仆特工，脱线冷娇，有兔女郎形态",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    },
+    {
+      "id": "tsukatsuki_rio",
+      "displayName": "调月莉音",
+      "originalName": "Tsukatsuki Rio",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "tsukatsuki_rio",
+        "rio",
+        "调月莉央",
+        "莉音",
+        "老大姐",
+        "millennium",
+        "seminar",
+        "blue archive"
+      ],
+      "identityProse": "Tsukatsuki Rio from Blue Archive, the President of Millennium Science School's Seminar student council, a tall commanding mature beauty with sleek black hime-cut straight hair, sharp crimson eyes, and silver metallic halo with two red curved lines",
+      "identityTokens": [
+        "tsukatsuki_rio",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_straight_hair",
+        "hime_cut",
+        "neat_bangs",
+        "sharp_red_eyes",
+        "red_eyes",
+        "tall_slender_mature_elegance",
+        "cool_beauty",
+        "silver_metallic_halo_with_red_curved_lines",
+        "millennium",
+        "seminar",
+        "blue_archive"
+      ],
+      "exactTokens": [
+        "tsukatsuki_rio"
+      ],
+      "exactPrefixes": [
+        "tsukatsuki_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "seminar_uniform",
+          "name": "研讨会制服",
+          "prose": "Millennium Seminar uniform with a high-neck sweater, pleated skirt, black tights, high heels, a watch and a hairpin, mature student council look",
+          "tokens": [
+            "school_uniform",
+            "high_neck_sweater",
+            "pleated_skirt",
+            "black_tights",
+            "high_heels",
+            "watch",
+            "hairpin",
+            "millennium"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "winter_coat",
+          "name": "冬季大衣",
+          "prose": "a long winter coat with a belt, boots and gloves, sharp executive look",
+          "tokens": [
+            "winter_coat",
+            "belt",
+            "boots",
+            "gloves",
+            "long_coat"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "formal_dress",
+          "name": "正式礼服",
+          "prose": "a sleek black formal dress with a high collar and long sleeves, elegant and commanding",
+          "tokens": [
+            "dress",
+            "black_dress",
+            "high_collar",
+            "long_sleeves",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日泳装",
+          "prose": "a sleek black bikini with elegant red trim and a sheer black cover-up, commanding summer look",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "red_trim",
+            "sheer_cover-up",
+            "summer"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 千年科学学园",
+        "era": "近未来学园都市",
+        "formNotes": "研讨会核心人物；天才、腹黑、冷娇，有心理阴影",
+        "research": "2026-08-27 调研"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+    }
+  ]
+}

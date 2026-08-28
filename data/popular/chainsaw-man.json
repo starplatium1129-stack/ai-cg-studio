@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "franchise": "Chainsaw Man",
+  "characters": [
+    {
+      "id": "makima",
+      "displayName": "玛奇玛",
+      "originalName": "Makima",
+      "franchise": "Chainsaw Man",
+      "aliases": [
+        "makima",
+        "chainsaw man",
+        "control devil"
+      ],
+      "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid, golden concentric-ring eyes, and an unreadable, magnetic smile",
+      "identityTokens": [
+        "makima (chainsaw man)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "single_braid",
+        "long_braid",
+        "yellow_eyes",
+        "ringed_eyes",
+        "concentric_circles",
+        "chainsaw_man"
+      ],
+      "exactTokens": [
+        "makima"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "work_suit",
+          "name": "公务套装",
+          "prose": "her office suit with a white blouse, black tie and black skirt",
+          "tokens": [
+            "suit",
+            "white_shirt",
+            "black_tie",
+            "black_skirt",
+            "blazer"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual",
+          "name": "私服",
+          "prose": "a relaxed casual outfit off the clock",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "skirt",
+            "open_jacket"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "overcoat",
+          "name": "风衣",
+          "prose": "her long black overcoat with a high collar",
+          "tokens": [
+            "long_coat",
+            "overcoat",
+            "black_coat",
+            "high_collar"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "devil_true_form",
+          "name": "支配恶魔真身",
+          "prose": "her true form as the Control Devil: crimson hair in a single braid with golden concentric ring eyes and a menacing aura",
+          "tokens": [
+            "red_hair",
+            "braid",
+            "single_braid",
+            "ring_eyes",
+            "golden_eyes",
+            "smirk",
+            "dark_aura"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代暗黑（电锯人）",
+        "era": "当代",
+        "formNotes": "日常=淡粉发+正常红瞳+白西装；支配恶魔真身=红发+圈圈眼+麻花辫（独立 outfit）；不用剑",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "mappa, official anime screencap, anime coloring"
+    },
+    {
+      "id": "reze_chainsaw",
+      "displayName": "蕾塞",
+      "franchise": "Chainsaw Man",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sleeveless_white_shirt",
+      "identityTokens": [
+        "reze (chainsaw man)",
+        "reze",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "short_hair",
+        "green_eyes",
+        "choker",
+        "blush"
+      ],
+      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
+      "outfits": [
+        {
+          "id": "sleeveless_white_shirt",
+          "name": "经典无袖衬衫与黑领带",
+          "tokens": [
+            "sleeveless_shirt",
+            "white_shirt",
+            "black_tie",
+            "black_shorts",
+            "choker",
+            "sneakers"
+          ],
+          "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
+          "styleHint": "gritty cinematic urban anime",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "summer_swimsuit_night",
+          "name": "夜间学校泳池死库水",
+          "tokens": [
+            "school_swimsuit",
+            "one_piece_swimsuit",
+            "wet_skin",
+            "choker",
+            "bare_legs"
+          ],
+          "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
+          "styleHint": "cool blue night swimming glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cafe_apron_outfit",
+          "name": "咖啡厅打工围裙装",
+          "tokens": [
+            "cafe_uniform",
+            "apron",
+            "white_shirt",
+            "jeans",
+            "choker"
+          ],
+          "prose": "wearing a simple cafe barista apron over rolled-up sleeve shirt and denim pants behind the counter",
+          "styleHint": "warm nostalgic cafe ambient light",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_jacket_casual",
+          "name": "宽大拉链外套私服",
+          "tokens": [
+            "oversized_jacket",
+            "bomber_jacket",
+            "tank_top",
+            "shorts",
+            "choker"
+          ],
+          "prose": "wearing a baggy oversized bomber jacket over a crop tank top and shorts during a rainy festival",
+          "styleHint": "rainy neon asphalt reflections",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "choker",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes wearing only her choker pin, slender toned body, exposed pink pussy, detailed vulva, pink nipples",
+          "styleHint": "alluring moody cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "fujimoto_tatsuki",
+        "rella",
+        "so_bin"
+      ],
+      "originalName": "蕾塞",
+      "exactTokens": [
+        "reze (chainsaw man)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "reze",
+        "reze chainsaw man",
+        "chainsaw man",
+        "蕾塞"
+      ],
+      "canon": {
+        "world": "现代都市+恶魔（电锯人·蕾塞篇）",
+        "era": "1997",
+        "formNotes": "粉紫短发；绿色瞳；标志性黑色颈环（choker）；无袖白衬衫+黑领带+黑短裤；咖啡厅打工围裙装；夜间学校泳池死库水；炸弹恶魔",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "MAPPA, official anime screencap, anime coloring"
+    }
+  ]
+}

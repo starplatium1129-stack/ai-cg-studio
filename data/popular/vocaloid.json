@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "franchise": "VOCALOID",
+  "characters": [
+    {
+      "id": "hatsune_miku",
+      "displayName": "初音未来",
+      "originalName": "Hatsune Miku",
+      "franchise": "VOCALOID",
+      "aliases": [
+        "hatsune_miku",
+        "miku",
+        "miku hatsune",
+        "vocaloid"
+      ],
+      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with iconic long teal twin-tails, bright turquoise eyes, black square hair ribbons, red 01 shoulder tattoo, and a vibrant stage presence",
+      "identityTokens": [
+        "hatsune_miku",
+        "1girl",
+        "solo",
+        "very_long_hair",
+        "twintails",
+        "teal_hair",
+        "teal_eyes",
+        "black_hairband",
+        "hair_ribbon",
+        "01_shoulder_tattoo",
+        "headset",
+        "vocaloid"
+      ],
+      "exactTokens": [
+        "hatsune_miku"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "v2_classic",
+          "name": "V2 经典",
+          "prose": "her classic sleeveless V2 outfit with a black necktie, short pleated skirt and white boots",
+          "tokens": [
+            "sleeveless",
+            "necktie",
+            "short_sleeves",
+            "pleated_skirt",
+            "white_boots",
+            "skin_tight"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "stage",
+          "name": "舞台装",
+          "prose": "a sparkling concert stage outfit with light-up accents and flowing sleeves",
+          "tokens": [
+            "stage_clothes",
+            "sparkling_clothes",
+            "lighting",
+            "frills",
+            "dress"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "street",
+          "name": "街头风",
+          "prose": "a street-style casual outfit with a cropped jacket and sneakers",
+          "tokens": [
+            "casual_clothes",
+            "cropped_jacket",
+            "sneakers",
+            "crop_top",
+            "miniskirt"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "festival_yukata",
+          "name": "祭典葱绿短浴衣",
+          "tokens": [
+            "yukata",
+            "short_yukata",
+            "green_yukata",
+            "onion_green",
+            "cloth_sash",
+            "obi",
+            "geta",
+            "wooden_geta",
+            "bare_legs",
+            "summer_clothes"
+          ],
+          "prose": "wearing a short modified onion-green yukata with a slim cloth sash at the waist, a shortened hemline above the knees, and wooden geta sandals, bright festive summer robe",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sporty_athleisure",
+          "name": "晨跑运动休闲装",
+          "tokens": [
+            "track_jacket",
+            "zip_up_jacket",
+            "track_suit",
+            "running_shorts",
+            "sportswear",
+            "athleisure",
+            "activewear",
+            "sneakers",
+            "matching_set",
+            "quick_dry_fabric"
+          ],
+          "prose": "wearing a fresh athletic set of a zip-up track jacket and matching running shorts, lightweight quick-dry sportswear with a bright energetic color palette",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "虚拟歌姬（VOCALOID）",
+        "era": "无固定",
+        "formNotes": "青绿超长双马尾；经典舞台装=无袖深色上衣+领带+臂套；全场景灵活",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "rella, official vocaloid art, vibrant concert lighting"
+    }
+  ]
+}

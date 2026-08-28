@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+  "characters": [
+    {
+      "id": "sakurajima_mai",
+      "displayName": "樱岛麻衣",
+      "originalName": "Sakurajima Mai",
+      "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "aliases": [
+        "sakurajima_mai",
+        "mai sakurajima",
+        "mai-san",
+        "bunny girl senpai"
+      ],
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip pinned on the side of her hair, carrying a composed and alluring presence",
+      "identityTokens": [
+        "sakurajima_mai",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "straight_hair",
+        "purple_eyes",
+        "brown_eyes",
+        "bangs",
+        "ahoge",
+        "rabbit_hair_ornament",
+        "hair_clip",
+        "beauty_mark"
+      ],
+      "exactTokens": [
+        "sakurajima_mai"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "the Minegahara High School uniform with a brown blazer, beige knit sweater vest, red necktie, white collared shirt, grey pleated skirt and black pantyhose",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "brown_blazer",
+            "sweater_vest",
+            "beige_vest",
+            "white_shirt",
+            "collared_shirt",
+            "red_necktie",
+            "pleated_skirt",
+            "grey_skirt",
+            "black_pantyhose",
+            "loafers"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "bunny_girl",
+          "name": "兔女郎",
+          "prose": "the iconic black bunny suit with bunny ears, a black leotard, fishnet stockings and a bow tie",
+          "tokens": [
+            "bunny_suit",
+            "black_bunny_suit",
+            "bunny_ears",
+            "black_leotard",
+            "fishnets",
+            "bow_tie",
+            "thighhighs"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "street_clothes",
+          "name": "私服",
+          "prose": "a soft casual street outfit with a knit sweater and skirt",
+          "tokens": [
+            "casual_clothes",
+            "sweater",
+            "skirt",
+            "open_jacket"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "silk_sleepwear",
+          "name": "丝绸晨睡套装",
+          "tokens": [
+            "silk",
+            "sleepwear",
+            "silk_sleepwear",
+            "camisole",
+            "thin_straps",
+            "loose_shorts",
+            "matching_set",
+            "bare_shoulders",
+            "nightwear",
+            "smooth_fabric"
+          ],
+          "prose": "wearing a soft silk sleepwear set of a thin-strap camisole top and matching loose shorts, smooth lustrous silk fabric in a soft neutral tone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代校园（青春猪头少年）",
+        "era": "当代",
+        "formNotes": "兔女郎装为名场面造型；瞳色为棕色（已修正）",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "cloverworks, official anime screencap, anime coloring"
+    }
+  ]
+}

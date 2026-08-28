@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "franchise": "Guilty Crown",
+  "characters": [
+    {
+      "id": "yuzuriha_inori",
+      "displayName": "楪祈",
+      "originalName": "Yuzuriha Inori",
+      "franchise": "Guilty Crown",
+      "aliases": [
+        "yuzuriha_inori",
+        "inori",
+        "inori yuzuriha",
+        "guilty crown"
+      ],
+      "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long flowing pink-to-orange gradient hair, long flowing pink-to-orange gradient hair with two slender front locks held by red hair tubes, bright crimson eyes, red hair clips, and a fragile, ethereal presence",
+      "identityTokens": [
+        "yuzuriha_inori",
+        "1girl",
+        "solo",
+        "long_hair",
+        "flowing_hair",
+        "gradient_hair",
+        "pink_hair",
+        "orange_hair",
+        "two_side_up",
+        "hair_tubes",
+        "red_eyes",
+        "red_hair_clips",
+        "hair_ornament",
+        "ahoge",
+        "guilty_crown"
+      ],
+      "exactTokens": [
+        "yuzuriha_inori"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "negativeTokens": [
+        "high_twintails",
+        "huge_twintails",
+        "thick_pigtails",
+        "bulky_twintails",
+        "short_hair",
+        "bob_cut"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "funeral_parade",
+          "name": "葬仪社装",
+          "prose": "the white funeral parade combat outfit with a sleeveless top, black shorts, and a red ribbon",
+          "tokens": [
+            "white_shirt",
+            "sleeveless",
+            "black_shorts",
+            "red_ribbon",
+            "thighhighs"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her white and blue school uniform with a ribbon",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "blue_skirt",
+            "ribbon",
+            "white_socks"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "red_dress",
+          "name": "红裙",
+          "prose": "a striking red dress with a layered skirt and long sleeves",
+          "tokens": [
+            "red_dress",
+            "dress",
+            "long_sleeves",
+            "layered_skirt"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "近未来末世（罪恶王冠）",
+        "era": "2039",
+        "formNotes": "下双马尾+红发夹；歌姬红装/白裙/虚空剑；主剧情 2039",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "production i.g, redjuice, official anime screencap"
+    }
+  ]
+}

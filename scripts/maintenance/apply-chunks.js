@@ -122,17 +122,17 @@ function applyScenes(chunks) {
     Object.assign(allMaps, require(file));
   }
 
-  const _shards = ['nene-core.json', 'nene-after-story.json', 'natsume-core.json', 'shared.json', 'nene-core.json'];
-  // 去重
-  const _uniqueShards = [...new Set(['nene-core.json', 'nene-after-story.json', 'natsume-core.json', 'natsume-after-story.json', 'shared.json'])];
-  // 实际使用 data/scenes/*.json
+  // 实际使用 data/scenes/*.json（跳过 manifest.json 等非场景数组文件）
   const sceneDir = path.join(ROOT, 'data', 'scenes');
-  const files = fs.existsSync(sceneDir) ? fs.readdirSync(sceneDir).filter(f => f.endsWith('.json')) : [];
+  const files = fs.existsSync(sceneDir)
+    ? fs.readdirSync(sceneDir).filter(f => f.endsWith('.json') && f !== 'manifest.json')
+    : [];
 
   let total = 0;
   for (const file of files) {
     const full = path.join(sceneDir, file);
     const arr = JSON.parse(fs.readFileSync(full, 'utf8'));
+    if (!Array.isArray(arr)) continue;
     let cnt = 0;
     for (const s of arr) {
       const map = allMaps[s.id];

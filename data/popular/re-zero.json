@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "franchise": "Re:Zero",
+  "characters": [
+    {
+      "id": "rem_rezero",
+      "displayName": "雷姆",
+      "originalName": "Rem",
+      "franchise": "Re:Zero",
+      "aliases": [
+        "rem (re zero)",
+        "rem rezero",
+        "re zero",
+        "rem from re zero"
+      ],
+      "identityProse": "Rem from Re:Zero, a devoted demon maid with short sky-blue hair parted over her right eye, one visible bright blue eye, a pink flower hair clip and white lace ribbon, and gentle features",
+      "identityTokens": [
+        "rem (re zero)",
+        "1girl",
+        "solo",
+        "short_blue_hair",
+        "blue_hair",
+        "hair_over_one_eye",
+        "blue_eyes",
+        "flower_hair_clip",
+        "hair_ribbon",
+        "maid_headdress",
+        "re:zero"
+      ],
+      "exactTokens": [
+        "rem (re zero)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "maid_uniform",
+          "name": "女仆装",
+          "prose": "her classic black and white maid uniform with a frilled headdress and apron",
+          "tokens": [
+            "maid",
+            "maid_apron",
+            "maid_headdress",
+            "white_apron",
+            "long_sleeves",
+            "frills",
+            "black_dress"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a soft casual outfit off duty",
+          "tokens": [
+            "casual_clothes",
+            "sweater",
+            "skirt"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "formal_dress",
+          "name": "礼服",
+          "prose": "an elegant formal dress for a special evening",
+          "tokens": [
+            "evening_gown",
+            "blue_dress",
+            "long_sleeves",
+            "dress"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "lace_nightgown",
+          "name": "蕾丝月光睡袍",
+          "tokens": [
+            "nightgown",
+            "lace",
+            "lace_trim",
+            "sheer",
+            "thin_fabric",
+            "translucent",
+            "sleeveless",
+            "loose_fit",
+            "nightwear",
+            "bare_shoulders"
+          ],
+          "prose": "wearing a thin lace nightgown with delicate lace trim, sheer lightweight fabric and a loose sleeveless silhouette, soft pale color",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "奇幻（Re:Zero）",
+        "era": "中世纪风",
+        "formNotes": "蓝发蓝眼（官方立绘为准）；隐藏鬼角；黑白色女仆装；晨星流星锤",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "white fox, official anime screencap, anime coloring"
+    },
+    {
+      "id": "emilia_rezero",
+      "displayName": "爱蜜莉雅",
+      "originalName": "Emilia",
+      "franchise": "Re:Zero",
+      "aliases": [
+        "emilia (re zero)",
+        "emt",
+        "emilia rezero",
+        "re zero",
+        "emilia from re zero"
+      ],
+      "identityProse": "Emilia from Re:Zero, a gentle half-elf with long silver hair, pointed elven ears, purple-blue eyes with snowflake pupils, wearing a white flower hairpin and purple hair ribbons",
+      "identityTokens": [
+        "emilia (re zero)",
+        "1girl",
+        "solo",
+        "long_silver_hair",
+        "white_hair",
+        "purple_eyes",
+        "elf",
+        "pointy_ears",
+        "hair_flower",
+        "purple_hair_ribbon",
+        "re:zero"
+      ],
+      "exactTokens": [
+        "emilia (re zero)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "white_dress",
+          "name": "白色连衣裙",
+          "prose": "her signature white and lilac dress with a soft ribbon",
+          "tokens": [
+            "white_dress",
+            "lilac",
+            "ribbon",
+            "dress",
+            "long_sleeves"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a comfortable casual outfit",
+          "tokens": [
+            "casual_clothes",
+            "dress",
+            "cardigan"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "奇幻（Re:Zero）",
+        "era": "中世纪风",
+        "formNotes": "银发紫瞳半精灵；独角外露；契约精灵帕克；冰雪系",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "white fox, official anime screencap, anime coloring"
+    }
+  ]
+}

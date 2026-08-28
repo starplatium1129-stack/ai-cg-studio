@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "franchise": "Engage Kiss",
+  "characters": [
+    {
+      "id": "kisara_engage_kiss",
+      "displayName": "木更",
+      "originalName": "Kisara",
+      "franchise": "Engage Kiss",
+      "aliases": [
+        "kisara (engage kiss)",
+        "kisara engage kiss",
+        "engage kiss",
+        "kisara from engage kiss"
+      ],
+      "identityProse": "Kisara from Engage Kiss, an A-class demon girl with extremely long silky pastel-pink hair, vibrant crimson eyes, an expressive ahoge, black hair ribbon, and an adhesive bandage on her right thigh",
+      "identityTokens": [
+        "kisara (engage kiss)",
+        "1girl",
+        "solo",
+        "(pastel_pink_hair:1.3)",
+        "(long_pink_hair:1.25)",
+        "pink_hair",
+        "very_long_hair",
+        "red_eyes",
+        "crimson_eyes",
+        "ahoge",
+        "hair_ribbon",
+        "black_ribbon",
+        "thigh_bandage",
+        "engage_kiss"
+      ],
+      "exactTokens": [
+        "kisara (engage kiss)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "negativeTokens": [
+        "black_hair",
+        "dark_hair",
+        "brown_hair",
+        "blue_hair",
+        "purple_hair",
+        "blonde_hair",
+        "green_hair",
+        "dark_skin"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her school uniform with a white sailor collar, red bow, grey jacket with puffy sleeves, white pleated skirt and black kneehighs, with a bandage on her right thigh",
+          "tokens": [
+            "school_uniform",
+            "sailor_collar",
+            "red_bow",
+            "grey_jacket",
+            "puffy_sleeves",
+            "white_pleated_skirt",
+            "black_kneehighs",
+            "hair_ribbon",
+            "bandage_on_leg"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "demon_dress",
+          "name": "恶魔装",
+          "prose": "her demon outfit: a sleeveless black dress with a side slit, black thighhighs, a single black glove and a red bow",
+          "tokens": [
+            "black_dress",
+            "sleeveless_dress",
+            "side_slit",
+            "black_thighhighs",
+            "gloves",
+            "red_bow"
+          ],
+          "adult": true,
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a modern casual outfit with a jacket and jeans",
+          "tokens": [
+            "casual_clothes",
+            "jacket",
+            "jeans",
+            "shirt"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_white_shirt",
+          "name": "白衬衫私服",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "dress_shirt",
+            "unbuttoned",
+            "open_front",
+            "shirttail",
+            "bare_chest",
+            "bare_midriff",
+            "bare_legs",
+            "night_shirt"
+          ],
+          "prose": "wearing an oversized white dress shirt worn alone as a night shirt, fully unbuttoned with the long tails falling to mid-thigh",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sheer_lingerie",
+          "name": "薄纱里衣",
+          "tokens": [
+            "lingerie",
+            "sheer_lingerie",
+            "chemise",
+            "sheer",
+            "translucent",
+            "thin_straps",
+            "delicate_fabric",
+            "slip",
+            "bare_shoulders",
+            "bare_legs"
+          ],
+          "prose": "wearing only a thin sheer chemise of translucent delicate fabric, fine straps and a loose flowing silhouette",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "近未来（Engage Kiss）",
+        "era": "近未来",
+        "formNotes": "粉发红眼；恶魔形态=红角+白发+白色战衣；勿与天童木更混淆",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "a-1 pictures, tsunako, official anime screencap"
+    }
+  ]
+}

@@ -81,6 +81,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-http-client.js',
     'test-maintenance.js',
     'test-pinned-scene-prompts.js',
+    'test-popular-shard-integrity.js',
     'test-sd-runtime.js',
     'test-security.js',
     'test-training-routes.js',

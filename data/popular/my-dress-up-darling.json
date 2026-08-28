@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "franchise": "My Dress-Up Darling",
+  "characters": [
+    {
+      "id": "kitagawa_marin",
+      "displayName": "喜多川海梦",
+      "originalName": "Kitagawa Marin",
+      "franchise": "My Dress-Up Darling",
+      "aliases": [
+        "kitagawa_marin",
+        "marin",
+        "marin kitagawa",
+        "my dress-up darling",
+        "sono bisque doll"
+      ],
+      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a glamorous and bubbly high school gyaru with long blonde hair with pink dip-dyed tips, bright dark-pink contact lenses, long painted nails and silver ear piercings",
+      "identityTokens": [
+        "kitagawa_marin",
+        "1girl",
+        "solo",
+        "long_blonde_hair",
+        "gradient_hair",
+        "pink_hair_tips",
+        "pink_eyes",
+        "earrings",
+        "piercing",
+        "painted_nails",
+        "sono_bisque_doll_wa_koi_wo_suru"
+      ],
+      "exactTokens": [
+        "kitagawa_marin"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her school uniform with an open blazer and a loose tie",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "open_jacket",
+            "pleated_skirt",
+            "loose_tie"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "gal_casual",
+          "name": "日常辣妹",
+          "prose": "a bright gyaru street outfit with a cropped top and skirt",
+          "tokens": [
+            "gyaru",
+            "crop_top",
+            "miniskirt",
+            "sneakers",
+            "casual_clothes"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cosplay",
+          "name": "泛用 cosplay",
+          "prose": "a playful cosplay outfit with character accents and a wig",
+          "tokens": [
+            "cosplay",
+            "costume",
+            "wig",
+            "hair_ornament",
+            "sailor_uniform"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "gothic_lolita",
+          "name": "哥特洛丽塔 cos",
+          "prose": "her handmade gothic lolita cosplay with black frilled dress, lace and a hair bow",
+          "tokens": [
+            "gothic_lolita",
+            "black_dress",
+            "frilled_dress",
+            "lace",
+            "hair_bow"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "silk_pajamas",
+          "name": "丝绸居家睡衣",
+          "tokens": [
+            "pajamas",
+            "silk_pajamas",
+            "silk",
+            "button_up",
+            "long_sleeves",
+            "pajama_pants",
+            "loose_fit",
+            "nightwear",
+            "loungewear",
+            "soft_fabric"
+          ],
+          "prose": "wearing loose silk pajamas with a button-up top and matching pajama pants, smooth lustrous silk in a soft pastel tone",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sheer_bathrobe",
+          "name": "薄透浴袍",
+          "tokens": [
+            "bathrobe",
+            "sheer_bathrobe",
+            "sheer",
+            "translucent",
+            "thin_fabric",
+            "loose_belt",
+            "robe",
+            "bare_shoulders",
+            "bare_legs",
+            "clinging_fabric"
+          ],
+          "prose": "wearing nothing but a thin sheer bathrobe of translucent fabric, a loose belt at the waist, the sheer material clinging to her curves",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代日常（更衣人偶）",
+        "era": "当代",
+        "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "cloverworks, official anime screencap, anime coloring"
+    }
+  ]
+}

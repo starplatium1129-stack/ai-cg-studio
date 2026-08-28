@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "franchise": "Date A Live",
+  "characters": [
+    {
+      "id": "tokisaki_kurumi",
+      "displayName": "时崎狂三",
+      "originalName": "Tokisaki Kurumi",
+      "franchise": "Date A Live",
+      "aliases": [
+        "tokisaki_kurumi",
+        "kurumi",
+        "kurumi tokisaki",
+        "date a live"
+      ],
+      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes, and a pale elegant face, often dressed in black and crimson gothic attire",
+      "identityTokens": [
+        "tokisaki_kurumi",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "uneven_twintails",
+        "heterochromia",
+        "red_right_eye",
+        "clock_eye",
+        "yellow_left_eye",
+        "bangs",
+        "gothic_hair_ornament",
+        "date_a_live"
+      ],
+      "exactTokens": [
+        "tokisaki_kurumi"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "gothic_dress",
+          "name": "哥特洋装",
+          "prose": "her signature black and crimson gothic dress with frills and a high collar",
+          "tokens": [
+            "gothic_lolita",
+            "black_dress",
+            "frills",
+            "high_collar",
+            "black_thighhighs",
+            "hair_ornament"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her dark school uniform with a sailor collar and pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "sailor_collar",
+            "black_shirt",
+            "pleated_skirt",
+            "white_socks"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual",
+          "name": "私服",
+          "prose": "a casual black outfit with a choker and loose cardigan",
+          "tokens": [
+            "casual_clothes",
+            "choker",
+            "cardigan",
+            "black_clothes"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代超能力（约会大作战）",
+        "era": "当代",
+        "formNotes": "左金时钟瞳/右红瞳异色；不对称双马尾；刻刻帝+双燧发枪",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "tsunako, official anime screencap, anime coloring"
+    }
+  ]
+}

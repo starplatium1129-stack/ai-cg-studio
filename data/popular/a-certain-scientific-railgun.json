@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "franchise": "A Certain Scientific Railgun",
+  "characters": [
+    {
+      "id": "misaka_mikoto",
+      "displayName": "御坂美琴",
+      "originalName": "Misaka Mikoto",
+      "franchise": "A Certain Scientific Railgun",
+      "aliases": [
+        "misaka_mikoto",
+        "mikoto",
+        "mikoto misaka",
+        "railgun",
+        "railgun sis"
+      ],
+      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut brown hair, warm brown eyes, white flower hair clip, and crackling blue-white electrical sparks",
+      "identityTokens": [
+        "misaka_mikoto",
+        "1girl",
+        "solo",
+        "short_brown_hair",
+        "brown_eyes",
+        "hair_clip",
+        "flower_hair_clip",
+        "sparks",
+        "electricity",
+        "toaru_kagaku_no_railgun"
+      ],
+      "exactTokens": [
+        "misaka_mikoto"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "tokiwadai_uniform",
+          "name": "常盘台校服",
+          "prose": "her Tokiwadai uniform, a white blouse with a light-brown sweater vest and a beige pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "sweater_vest",
+            "pleated_skirt",
+            "beige_skirt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a casual outfit with a shirt and jeans",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans",
+            "jacket"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_yukata",
+          "name": "夏日淡蓝浴衣",
+          "tokens": [
+            "yukata",
+            "summer_yukata",
+            "light_blue_yukata",
+            "blue_yukata",
+            "white_obi",
+            "waist_sash",
+            "geta",
+            "wooden_geta",
+            "short_hem",
+            "bare_legs"
+          ],
+          "prose": "wearing a fresh light-blue summer yukata with a white sash obi, a shortened hemline above the knees, and wooden geta sandals",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "学园都市（超电磁炮）",
+        "era": "近未来",
+        "formNotes": "茶发棕眼齐刘海；常盘台水手服；超电磁炮=硬币电光",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "j.c.staff, official anime screencap, anime coloring"
+    }
+  ]
+}

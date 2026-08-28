@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "franchise": "The Magical Girl and the Evil Officer",
+  "characters": [
+    {
+      "id": "mimori_byakuya",
+      "displayName": "深森白夜",
+      "franchise": "The Magical Girl and the Evil Officer",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "magical_girl_dress",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "silver_white_hair",
+        "platinum_hair",
+        "straight_hair",
+        "bangs",
+        "twin_horn_buns",
+        "spiral_buns",
+        "hair_buns",
+        "sidelocks",
+        "blue_eyes",
+        "gradient_eyes",
+        "round_eyes",
+        "deadpan",
+        "flat_chest"
+      ],
+      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a delicate girl with flowing silver-white hair tied into twin spiral horn buns on each side of her head, straight bangs with long sidelocks, round gradient blue eyes, and a soft deadpan innocent expression.",
+      "outfits": [
+        {
+          "id": "magical_girl_dress",
+          "name": "魔法少女战斗服",
+          "tokens": [
+            "magical_girl",
+            "frilled_dress",
+            "pink_dress",
+            "black_thighhighs",
+            "magic_wand",
+            "ribbons"
+          ],
+          "prose": "wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand",
+          "styleHint": "sparkling magical starlight aesthetic",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "poor_school_uniform",
+          "name": "简朴公立高校水手服",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "navy_sailor_collar",
+            "pleated_skirt",
+            "black_socks"
+          ],
+          "prose": "wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag",
+          "styleHint": "melancholic retro afternoon light",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "part_time_maid_apron",
+          "name": "打工女仆咖啡围裙",
+          "tokens": [
+            "maid_apron",
+            "frilled_apron",
+            "black_dress",
+            "headband"
+          ],
+          "prose": "wearing a simple black dress with a white frilly maid apron while working diligently at a cafe",
+          "styleHint": "bright cheerful cafe ambiance",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "tattered_oversized_jersey",
+          "name": "居家宽大旧运动外套",
+          "tokens": [
+            "track_jacket",
+            "oversized_jacket",
+            "jersey",
+            "short_shorts",
+            "bare_legs"
+          ],
+          "prose": "wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home",
+          "styleHint": "warm cozy apartment interior",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "flat_chest",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "slender_body",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush",
+          "styleHint": "soft pristine studio illumination",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "fujiwara_cocoa",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "深森白夜",
+      "exactTokens": [
+        "mimori_byakuya"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "mimori byakuya",
+        "byakuya",
+        "glass happiness",
+        "magical girl and the evil officer",
+        "深森白夜"
+      ],
+      "canon": {
+        "world": "现代都市+魔法少女（魔法少女与恶曾是敌人，藤原可可亚）",
+        "era": "当代",
+        "formNotes": "银白发；蓝瞳；标志性双螺旋角发包；维多利亚蕾丝白色洋装；孤儿+打工族+贫穷；天然呆、不幸体质；魔法少女活动名 Glass Happiness",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "BONES, official anime screencap, anime coloring"
+    }
+  ]
+}

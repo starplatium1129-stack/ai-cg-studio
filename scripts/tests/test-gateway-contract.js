@@ -273,7 +273,8 @@ async function main() {
 
     // ---- P-10: data/ 只暴露 SPA 真正读取的文件 ----
     var privateData = [
-      'scenes/nene-core.json',   // build-scenes.js 的输入，客户端从不读
+      'scenes/manifest.json',   // 场景分片清单，build 输入，客户端从不读
+      'popular/manifest.json',  // 热门角色分片清单，build 输入，客户端从不读
       'history.json', 'projects.json', 'prompts.json',
       'official-cg-candidates.json', 'retired-scenes.json'
     ];

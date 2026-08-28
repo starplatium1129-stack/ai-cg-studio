@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "franchise": "Oregairu",
+  "characters": [
+    {
+      "id": "yukinoshita_yukino",
+      "displayName": "雪之下雪乃",
+      "originalName": "Yukinoshita Yukino",
+      "franchise": "Oregairu",
+      "aliases": [
+        "yukinoshita_yukino",
+        "yukino",
+        "yukino yukinoshita",
+        "oregairu",
+        "yahari ore no seishun"
+      ],
+      "identityProse": "Yukinoshita Yukino from Oregairu, a sharp and elegant young woman with long straight black hair, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
+      "identityTokens": [
+        "yukinoshita_yukino",
+        "1girl",
+        "solo",
+        "long_black_hair",
+        "straight_hair",
+        "blue_eyes",
+        "ahoge",
+        "red_hair_ribbons",
+        "side_locks",
+        "beauty_mark",
+        "oregairu"
+      ],
+      "exactTokens": [
+        "yukinoshita_yukino"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her neat navy school uniform with a ribbon and pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "pleated_skirt",
+            "navy_clothes",
+            "ribbon"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual",
+          "name": "私服",
+          "prose": "a chic casual outfit with a white shirt and long coat",
+          "tokens": [
+            "casual_clothes",
+            "white_shirt",
+            "long_coat",
+            "skirt"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "snow_dress",
+          "name": "雪夜礼服",
+          "prose": "a pure white dress like snow under winter lights",
+          "tokens": [
+            "white_dress",
+            "evening_gown",
+            "long_sleeves",
+            "dress"
+          ],
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代校园（春物）",
+        "era": "当代",
+        "formNotes": "黑长直蓝眼；侍奉部；清冷气质",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring"
+    },
+    {
+      "id": "yuigahama_yui",
+      "displayName": "由比滨结衣",
+      "franchise": "Oregairu",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sobu_uniform",
+      "identityTokens": [
+        "yuigahama_yui",
+        "1girl",
+        "solo",
+        "orange_hair",
+        "short_hair",
+        "hair_bun",
+        "side_bun",
+        "amber_eyes",
+        "large_breasts",
+        "oregairu"
+      ],
+      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
+      "outfits": [
+        {
+          "id": "sobu_uniform",
+          "name": "总武高中制服",
+          "tokens": [
+            "school_uniform",
+            "open_blazer",
+            "pink_cardigan",
+            "white_shirt",
+            "red_ribbon",
+            "pleated_skirt",
+            "black_thighhighs"
+          ],
+          "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
+          "styleHint": "vibrant anime school aesthetic",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "summer_yukata",
+          "name": "夏日祭典碎花浴衣",
+          "tokens": [
+            "yukata",
+            "floral_print",
+            "red_obi",
+            "hair_ornament",
+            "geta",
+            "folding_fan"
+          ],
+          "prose": "wearing a light pink floral summer festival yukata with a bright red sash obi and traditional hairpin",
+          "styleHint": "warm festive lantern glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "dog_pajamas",
+          "name": "居家露肩连帽卫衣",
+          "tokens": [
+            "hoodie",
+            "off_shoulder_hoodie",
+            "short_shorts",
+            "bare_legs",
+            "casual_clothes"
+          ],
+          "prose": "wearing an off-shoulder pastel hoodie with cute puppy motif, denim short-shorts and bare legs",
+          "styleHint": "cozy modern room lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "tennis_sportswear",
+          "name": "网球无袖运动短裙",
+          "tokens": [
+            "sportswear",
+            "sleeveless_top",
+            "tennis_skirt",
+            "pleated_skirt",
+            "wristband",
+            "sneakers"
+          ],
+          "prose": "wearing athletic sleeveless tennis top with a sporty white pleated skirt and sneakers",
+          "styleHint": "bright dynamic daylight",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "exposed_pussy",
+            "detailed_vulva",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, voluptuous curves, exposed pink pussy, detailed vulva, plump breasts with pink nipples",
+          "styleHint": "sensual soft room lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "ponkan8",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "由比滨结衣",
+      "exactTokens": [
+        "yuigahama_yui"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "yuigahama_yui",
+        "yui",
+        "yui yuigahama",
+        "oregairu",
+        "yahari ore no seishun",
+        "由比滨结衣",
+        "结衣"
+      ],
+      "canon": {
+        "world": "现代校园（春物·总武高中）",
+        "era": "当代",
+        "formNotes": "橙粉发色团子头（side bun）；琥珀瞳；官方身材丰满；侍奉部成员；开朗天然、善察人意",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring"
+    }
+  ]
+}

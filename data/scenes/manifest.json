@@ -1,6 +1,7 @@
 {
   "version": 1,
-  "description": "场景源文件清单。data/scenes.json 是由这些分片生成的浏览器读取产物。",
+  "description": "场景源文件清单。data/scenes.json 是由这些分片生成的浏览器读取产物；每个系列组超过 batchSize 条时自动切成 base.N.json 批次文件（由 scripts/runtime/scene-store.js 的 writeSceneShards 维护）。",
+  "batchSize": 50,
   "files": [
     {
       "file": "nene-core.json",

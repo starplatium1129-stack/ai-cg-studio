@@ -1,0 +1,261 @@
+{
+  "version": 1,
+  "franchise": "Mushoku Tensei",
+  "characters": [
+    {
+      "id": "roxy_migurdia",
+      "displayName": "洛琪希",
+      "originalName": "Roxy Migurdia",
+      "franchise": "Mushoku Tensei",
+      "aliases": [
+        "roxy_migurdia",
+        "roxy",
+        "roxy migurdia",
+        "mushoku tensei",
+        "jobless reincarnation"
+      ],
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids, blue eyes, a mole on her left collarbone",
+      "identityTokens": [
+        "roxy_migurdia",
+        "1girl",
+        "solo",
+        "long_blue_hair",
+        "twin_braids",
+        "blue_eyes",
+        "normal_ears",
+        "round_ears",
+        "mole_on_collarbone",
+        "petite_female",
+        "mushoku_tensei"
+      ],
+      "exactTokens": [
+        "roxy_migurdia"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "witch_outfit",
+          "name": "魔女服",
+          "prose": "her short witch outfit with a blue hat, white blouse and blue skirt",
+          "tokens": [
+            "witch",
+            "witch_hat",
+            "white_shirt",
+            "blue_skirt",
+            "frills",
+            "thighhighs",
+            "wooden_staff"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a relaxed casual dress in soft blue tones",
+          "tokens": [
+            "casual_clothes",
+            "dress",
+            "blue_clothes"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "adventurer",
+          "name": "冒险装",
+          "prose": "a practical adventurer outfit with a cape and boots",
+          "tokens": [
+            "adventurer",
+            "cape",
+            "boots",
+            "pants",
+            "belt"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "lingerie_only",
+          "name": "私密内衣形态",
+          "tokens": [
+            "lingerie",
+            "bra",
+            "panties",
+            "underwear",
+            "matching_set",
+            "thin_straps",
+            "cotton",
+            "bare_shoulders",
+            "bare_legs",
+            "bare_midriff"
+          ],
+          "prose": "wearing only a simple bra and matching briefs, plain cotton underwear with thin straps, minimal private undergarments",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "异世界奇幻（无职转生）",
+        "era": "中世纪风",
+        "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
+        "research": "2026-08-14 调研"
+      },
+      "animeStudio": "studio bind, official anime screencap, anime coloring"
+    },
+    {
+      "id": "sylphiette",
+      "displayName": "希露菲叶特",
+      "franchise": "Mushoku Tensei",
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "adultEligibility": "adult",
+      "defaultOutfitId": "default_mage_robe",
+      "identityTokens": [
+        "sylphiette",
+        "sylphie",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "red_eyes",
+        "elf_ears",
+        "pointed_ears",
+        "flat_chest",
+        "mushoku_tensei"
+      ],
+      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
+      "outfits": [
+        {
+          "id": "default_mage_robe",
+          "name": "学徒法师长袍",
+          "tokens": [
+            "green_hair",
+            "short_hair",
+            "hooded_cloak",
+            "mage_robe",
+            "shorts",
+            "boots"
+          ],
+          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
+          "styleHint": "anime adventure style",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "silent_fitz_uniform",
+          "name": "菲兹学长魔术学院执事装",
+          "tokens": [
+            "white_hair",
+            "short_hair",
+            "sunglasses",
+            "academy_uniform",
+            "formal_suit",
+            "white_pants",
+            "cape"
+          ],
+          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
+          "styleHint": "sharp noble academy aesthetic",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "oversized_nightshirt",
+          "name": "居家宽松露肩睡衣",
+          "tokens": [
+            "oversized_shirt",
+            "off_shoulder_shirt",
+            "bare_thighs",
+            "bare_legs"
+          ],
+          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
+          "styleHint": "soft cozy morning atmosphere",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "exposed_pussy",
+            "detailed_vulva",
+            "bare_breasts",
+            "pink_nipples",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
+          "styleHint": "intimate soft studio lighting",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "casual_day_dress",
+          "name": "居家便服连衣裙",
+          "tokens": [
+            "sylphiette_casual_day_dress",
+            "cardigan",
+            "knit_cardigan",
+            "cream_cardigan",
+            "simple_dress",
+            "knitwear",
+            "casual_clothes",
+            "long_sleeves",
+            "dress"
+          ],
+          "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
+          "styleHint": "soft cinematic lighting",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "originalName": "希露菲叶特",
+      "exactTokens": [
+        "sylphiette (mushoku tensei)"
+      ],
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "exactPrefixes": [],
+      "aliases": [
+        "sylphiette",
+        "sylphie",
+        "sylphiette grayrat",
+        "mushoku tensei",
+        "希露菲叶特",
+        "希露菲"
+      ],
+      "canon": {
+        "world": "古典奇幻（无职转生·六面世界）",
+        "era": "中世纪风",
+        "formNotes": "米格路德族（长耳族）1/4 混血（人族1/2+兽族1/4+长耳族1/4）；又长又尖的双耳是个人标志（高兴/害羞时会扑腾）；幼年绿发→青年白发；红瞳；贫乳；不擅长火系魔术",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "studio bind, official anime screencap, anime coloring"
+    }
+  ]
+}

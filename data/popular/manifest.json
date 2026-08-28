@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "description": "热门角色分片清单。每个 franchise 一个文件，按首次出现顺序合并为 data/popular-characters.json。",
+  "files": [
+    {
+      "file": "genshin-impact.json",
+      "franchise": "Genshin Impact",
+      "count": 1
+    },
+    {
+      "file": "rascal-does-not-dream-of-bunny-girl-senpai.json",
+      "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "count": 1
+    },
+    {
+      "file": "date-a-live.json",
+      "franchise": "Date A Live",
+      "count": 1
+    },
+    {
+      "file": "frieren-beyond-journeys-end.json",
+      "franchise": "Frieren: Beyond Journey's End",
+      "count": 2
+    },
+    {
+      "file": "fate.json",
+      "franchise": "Fate",
+      "count": 5
+    },
+    {
+      "file": "vocaloid.json",
+      "franchise": "VOCALOID",
+      "count": 1
+    },
+    {
+      "file": "guilty-crown.json",
+      "franchise": "Guilty Crown",
+      "count": 1
+    },
+    {
+      "file": "oregairu.json",
+      "franchise": "Oregairu",
+      "count": 2
+    },
+    {
+      "file": "wandering-witch.json",
+      "franchise": "Wandering Witch",
+      "count": 1
+    },
+    {
+      "file": "a-certain-scientific-railgun.json",
+      "franchise": "A Certain Scientific Railgun",
+      "count": 1
+    },
+    {
+      "file": "chainsaw-man.json",
+      "franchise": "Chainsaw Man",
+      "count": 2
+    },
+    {
+      "file": "re-zero.json",
+      "franchise": "Re:Zero",
+      "count": 2
+    },
+    {
+      "file": "mushoku-tensei.json",
+      "franchise": "Mushoku Tensei",
+      "count": 2
+    },
+    {
+      "file": "my-dress-up-darling.json",
+      "franchise": "My Dress-Up Darling",
+      "count": 1
+    },
+    {
+      "file": "engage-kiss.json",
+      "franchise": "Engage Kiss",
+      "count": 1
+    },
+    {
+      "file": "arknights.json",
+      "franchise": "Arknights",
+      "count": 13
+    },
+    {
+      "file": "arknights-endfield.json",
+      "franchise": "Arknights: Endfield",
+      "count": 2
+    },
+    {
+      "file": "alya-sometimes-hides-her-feelings-in-russian.json",
+      "franchise": "Alya Sometimes Hides Her Feelings in Russian",
+      "count": 1
+    },
+    {
+      "file": "spy-x-family.json",
+      "franchise": "SPY x FAMILY",
+      "count": 1
+    },
+    {
+      "file": "the-magical-girl-and-the-evil-officer.json",
+      "franchise": "The Magical Girl and the Evil Officer",
+      "count": 1
+    },
+    {
+      "file": "saint-cecilia-and-pastor-lawrence.json",
+      "franchise": "Saint Cecilia and Pastor Lawrence",
+      "count": 1
+    },
+    {
+      "file": "blue-archive.json",
+      "franchise": "Blue Archive",
+      "count": 5
+    }
+  ]
+}
