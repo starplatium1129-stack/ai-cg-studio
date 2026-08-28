@@ -61,6 +61,36 @@ test('scene shards: core tier is a curated subset backed by curation', () => {
   }
 });
 
+test('scene shards: core tier obeys first-paint policy', () => {
+  // 政策级断言（区别于上面的一致性断言）：一致性 oracle 只保证产物互洽，
+  // 这里把 curation 的策划纪律变成可检查规则。调整阈值 = 修改政策，需评审。
+  const aggregate = readJson('scenes.json');
+  const aggregateIds = new Set(aggregate.map((s) => s.id));
+  const curationIds = readJson('curation.json').personaCoreSceneIds || [];
+  const core = readJson('scenes-core.json');
+
+  // 1) 意图不静默丢失：build 侧对 personaCoreSceneIds 做 filter(byId.has)，
+  //    失效引用会被无声吞掉——这里要求每个引用都真实存在。
+  const staleRefs = curationIds.filter((id) => !aggregateIds.has(id));
+  assert.deepStrictEqual(staleRefs, [],
+    'curation.json personaCoreSceneIds 引用了不存在的场景 id（失效引用不得静默过滤，请清理 curation）');
+
+  // 2) 首屏预算：core 层是首屏精选，条数与体积双上限，防止无痛膨胀。
+  assert.ok(core.length <= 16,
+    `core 层 ${core.length} 条超出上限 16 —— 精简 curation.json personaCoreSceneIds`);
+  const coreBytes = fs.statSync(path.join(dataDir, 'scenes-core.json')).size;
+  assert.ok(coreBytes <= 48 * 1024,
+    `scenes-core.json ${coreBytes}B 超出首屏预算 48KiB —— 精简 personaCoreSceneIds`);
+
+  // 3) 角色覆盖：聚合中出现的每个角色（含 triad 双人场景）在 core 层至少 1 条。
+  //    名单从数据动态推导而非硬编码——新增角色时本断言自动强制策划回顾。
+  const chars = new Set(aggregate.map((s) => s.char).filter(Boolean));
+  const coreChars = new Set(core.map((s) => s.char));
+  const uncovered = [...chars].filter((char) => !coreChars.has(char));
+  assert.deepStrictEqual(uncovered, [],
+    `以下角色在 core 层无任何场景，首屏精选未覆盖: ${uncovered.join(', ')} —— 在 curation.json personaCoreSceneIds 补充`);
+});
+
 test('scene shards: scenes-index.json mirrors the generated files', () => {
   const index = readJson('scenes-index.json');
   const aggregate = readJson('scenes.json');
