@@ -275,10 +275,15 @@ assert(
   !/@import\s+url\(["']?https:\/\/fonts\./.test(read('src/assets/css/design-system.css')),
   'fonts must be preconnected/linked from index.html, not @import-ed inside bundled CSS',
 );
-// 字体已本地自托管：main.ts 从 @fontsource 引入，index.html 不再请求 Google Fonts
+// P1-7 后字体声明移入独立异步 chunk：main.ts 只负责不阻塞解析的动态 import，
+// 入口 CSS 必须保持无字体声明；自托管不变式落在 fonts chunk 本体上。
 assert(
-  /@fontsource\/(noto-sans-sc|jetbrains-mono)\//.test(read('src/main.ts')),
-  'fonts must be self-hosted via @fontsource in main.ts',
+  /import\('\.\/assets\/fonts'\)/.test(read('src/main.ts')),
+  'main.ts must lazy-import the assets/fonts chunk (entry CSS must stay font-free)',
+);
+assert(
+  /@fontsource\/(noto-sans-sc|jetbrains-mono)\//.test(read('src/assets/fonts.ts')),
+  'fonts chunk must still self-host via @fontsource (no CDN)',
 );
 assert(
   !/fonts\.gstatic\.com/.test(read('index.html')),

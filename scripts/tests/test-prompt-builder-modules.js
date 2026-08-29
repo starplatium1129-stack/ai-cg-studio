@@ -209,7 +209,7 @@ if (view.includes('styleLoraId: animaState.value.styleLoraId')) {
 // Anima 生成生命周期自第十一轮起归 useAnimaSession 组合函数所有：
 // 视图保留 prompt 组装与结果协调，会话状态机/轮询/取消在组合函数内。
 const animaSessionSource = read('src/composables/generation/useAnimaSession.ts');
-for (const marker of ['buildAnimaRequest', 'onAnimaResult', 'cancelAnimaJob', '@generate="callGenerate"', 'cancelGeneration']) {
+for (const marker of ['buildAnimaRequest', 'onAnimaResult', 'cancelAnimaJob', '@generate="callGenerate()"', 'cancelGeneration']) {
   if (!view.includes(marker)) fail('Anima generation must be parent-owned and metadata-driven: ' + marker);
 }
 for (const marker of ['metadataFromJob', 'pollJob', 'generate', 'cancel', 'dispose', 'animaRequestPayload']) {
@@ -309,11 +309,16 @@ if (!generationApiSource.includes('/api/generation/jobs')) {
 if (!sdGenerate.includes("accepted.job.provider === 'comfy' ? 'comfy' : 'webui'")) {
   fail('SD provider state must fail safe to WebUI when the server response is missing or unknown');
 }
-if (!sdGenerate.includes("'SD WebUI 生成中…'") || !sdGenerate.includes("'ComfyUI 生成中…'")) {
+if (!sdGenerate.includes("'SD WebUI 生成中…'") || !sdGenerate.includes("'ComfyUI 生成中'")) {
   fail('SD generation status text must distinguish the Comfy-first and WebUI providers');
 }
-for (const marker of ['pollInFlight', 'pollFailures', 'void pollProgress(token)', '进度读取失败']) {
-  if (!sdGenerate.includes(marker)) fail('SD progress polling must retain ' + marker);
+// 2026-08-29：job API 无真实进度（Comfy ws 未接 job 通道），假进度轮询退役——
+// progress 仅反映终态（成功 100），失败/排队路径不虚构百分比。
+if (sdGenerate.includes('pollInFlight') || sdGenerate.includes('void pollProgress(token)')) {
+  fail('fake progress polling must stay retired (progress only reflects terminal states)');
+}
+if (!sdGenerate.includes("job.status === 'succeeded' ? 100 : progress.value")) {
+  fail('SD progress must only reflect terminal states');
 }
 
 // ── 4. 样式层仍提供共享 chrome ───────────────────────────────────────────
@@ -362,8 +367,12 @@ if (!designCss.includes('.nav-back') || !designCss.includes('.page-kicker') || !
 if (!designCss.includes('Noto Sans SC')) {
   fail('missing Noto Sans SC in the --font-* token stack');
 }
-if (!read('src/main.ts').includes('@fontsource/noto-sans-sc')) {
-  fail('main.ts must import self-hosted Noto Sans SC from @fontsource');
+// P1-7 后 @fontsource 声明移入 assets/fonts 异步 chunk，main.ts 只发起动态 import。
+if (!read('src/assets/fonts.ts').includes('@fontsource/noto-sans-sc')) {
+  fail('fonts chunk must import self-hosted Noto Sans SC from @fontsource');
+}
+if (!read('src/main.ts').includes("import('./assets/fonts')")) {
+  fail('main.ts must lazy-import the fonts chunk');
 }
 // 全局颜色过渡不得回退成通配符（性能回归信号）
 if (/^\s*\*,\s*$[\s\S]{0,80}transition:/m.test(designCss)) {
