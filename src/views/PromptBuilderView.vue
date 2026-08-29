@@ -44,7 +44,7 @@
           <ArchiveIcon :name="pb.focusMode ? 'compress' : 'expand'" class="focus-mode-icon" aria-hidden="true" />
           <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
         </button>
-        <RandomInspirationButton v-if="pb.subject.kind === 'studio'" />
+        <RandomInspirationButton />
         <div class="api-status">
           <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
             :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
@@ -397,6 +397,8 @@ import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from 
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue'
 import { imgGet } from '@/composables/useImageStore'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
+import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
+import { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interrogateMerge'
 import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/scene/useDirectorDerived'
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine'
@@ -785,7 +787,7 @@ function detachScene() {
 
 function handleInterrogateResult(result: unknown) {
   if (!result || typeof result !== 'object') return
-  const payload = result as { mode?: string; caption?: string; tags?: unknown; warning?: string }
+  const payload = result as { mode?: string; caption?: string; tags?: unknown; characterTags?: unknown; warning?: string }
   if (payload.mode === 'caption' && typeof payload.caption === 'string' && payload.caption.trim()) {
     pb.visualDescription = String(payload.caption).trim()
     pb.flash('已反推为自然语言，已填入画面描述（Krea2 直出，切人保留）')
@@ -794,13 +796,45 @@ function handleInterrogateResult(result: unknown) {
     return
   }
   const tags: string[] = Array.isArray(payload.tags) ? (payload.tags as string[]) : []
-  let added = 0
-  for (const raw of tags) {
-    const norm = String(raw || '').trim().toLowerCase().replace(/\s+/g, '_')
-    if (!norm || pb.manualTags.has(norm)) continue
-    pb.toggleManualTag(norm); added++
+  const characterTags: string[] = Array.isArray(payload.characterTags) ? (payload.characterTags as string[]) : []
+  // 三重去重 + 身份域冲突消解（studio：charPrompt+场景行；popular：角色词条+蓝图行）
+  const subject = pb.subject
+  const popularChar = subject.kind === 'popular' ? findCharacter(pb.popularCharacters, subject.characterId) : null
+  const context = collectInterrogateContext(subject.kind === 'popular'
+    ? {
+        kind: 'popular',
+        character: popularChar
+          ? {
+              identityTokens: popularChar.identityTokens,
+              exactTokens: popularChar.exactTokens,
+              outfitTokens: (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
+            }
+          : null,
+        blueprintTokens: subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId)?.promptTokens ?? [] : [],
+      }
+    : {
+        kind: 'studio',
+        charPrompt: pb.charPrompt,
+        scenePrompt: pb.activeScene?.prompt,
+        sceneTags: pb.activeScene?.tags,
+      })
+  const merged = mergeInterrogatedTags({
+    tags,
+    manualTags: pb.manualTags,
+    identityTokens: context.identityTokens,
+    sceneTokens: context.sceneTokens,
+  })
+  for (const tag of merged.accepted) pb.toggleManualTag(tag)
+  const note = characterConflictNote(characterTags, context.identityTokens)
+  const parts: string[] = []
+  if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条，可切人直出`)
+  if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
+  if (merged.conflicts.length) {
+    const shown = merged.conflicts.slice(0, 3).map(item => item.tag).join('、')
+    parts.push(`跳过身份冲突 ${merged.conflicts.length} 个（${shown}${merged.conflicts.length > 3 ? ' 等' : ''}）`)
   }
-  pb.flash(added ? `本地反推已加入 ${added} 个 Tag，可切人直出` : '反推完成，无新增 Tag')
+  if (note) parts.push(note)
+  pb.flash(parts.length ? parts.join('；') : '反推完成，无新增词条')
   const warning = payload.warning
   if (warning) setTimeout(() => pb.flash(warning), 2600)
 }

@@ -308,6 +308,25 @@ export function sceneRating(scene: unknown): 'R18' | 'R15' | 'ALL' {
   return 'ALL'
 }
 
+/** 手动词条 R18 门控词（LoRA 控制词 + 显式裸体词），单一事实源。 */
+export const MANUAL_R18_RE = /^(?:nene_r18|natsume_r18|nude|completely_nude|naked|topless|nipples|bare_breasts|pussy|vaginal|penis|sex|uncensored|nsfw)$/i
+
+/**
+ * manualTags 是否构成 R18 迹象：门控词正则命中，或命中词条池 Mature 分类
+ * （matureTokens 由调用方从 tags.json cat==='Mature' 派生，见 usePromptAssembly /
+ * usePopularPromptAssembly）。评级联动单一契约：studio（effectiveScene）与
+ * popular（buildPopularPromptPlan）共用，2026-08-29 随机灵感 Mature 池提额引入——
+ * 此前 47 条 Mature 词条仅 5 条能触发正则，抽中也不升评级，负面强制压制
+ * nsfw/nude/explicit，用户感知"随机不到 NSFW"。
+ */
+export function isManualR18Tags(tags: Iterable<string>, matureTokens?: ReadonlySet<string>): boolean {
+  for (const tag of tags) {
+    if (MANUAL_R18_RE.test(tag)) return true
+    if (matureTokens && matureTokens.has(normalizeKey(tag))) return true
+  }
+  return false
+}
+
 /**
  * v18 训练 caption 中实际出现的服装词组。
  *

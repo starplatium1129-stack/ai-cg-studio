@@ -5,7 +5,7 @@ const { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS } = require('../../src
 const { createPromptPlan, renderPromptPlan } = require('../../src/utils/promptCompiler.ts');
 const { artistStyleProse, artistTagsForEngine, normalizeArtistStyleIds } = require('../../src/config/artistStyles.ts');
 const { ARTIST_STYLE_OPTIONS } = require('../../src/config/artistStyleCatalog.ts');
-const { mutualGroupOf } = require('../../src/utils/promptPolicy.ts');
+const { mutualGroupOf, isManualR18Tags } = require('../../src/utils/promptPolicy.ts');
 const tagsData = require('../../data/tags.json');
 
 // 与采样器同源的身份 token（断言用）：随机结果绝不能污染角色身份
@@ -178,4 +178,50 @@ test('官方服装采样：triad 不抽服装，单人 100 次恒出官方或通
   }
   const triad = randomPromptPlan(makeOptions({ char: 'triad', rng: seededRng(1) }));
   assert.ok(!triad.manualTags.some(tag => tag.startsWith('nene_')), 'triad 不抽宁宁官方服装');
+});
+
+// ── 2026-08-29 随机灵感优化：Mature 提额 / 热门角色开放 / 评级联动 ──────────
+
+test('Mature 池提额：500 次采样命中率 ≥ 35%（采样概率 50%）', () => {
+  const matureSet = new Set(tagsData.filter(t => t.cat === 'Mature').map(t => t.en));
+  const total = 500;
+  let hit = 0;
+  for (let i = 0; i < total; i += 1) {
+    const draw = randomPromptPlan(makeOptions({ rng: seededRng(i * 41 + 7) }));
+    if (draw.manualTags.some(tag => matureSet.has(tag))) hit += 1;
+  }
+  const rate = hit / total;
+  assert.ok(rate >= 0.35, `Mature 命中率 ${(rate * 100).toFixed(1)}% 低于 35% 下限（应约 50%）`);
+});
+
+test('热门角色模式：identityExclude 传入后身份词恒不出现且不抽服装', () => {
+  // 芙莉莲身份集（identityTokens + outfit tokens 的代表子集）
+  const frierenIdentity = new Set([
+    'frieren', '1girl', 'solo', 'long_white_hair', 'very_long_hair', 'twin_braids',
+    'purple_eyes', 'elf', 'pointy_ears', 'gold_earrings', 'robe', 'white_robe', 'hood', 'staff',
+  ]);
+  const clothingSet = new Set(tagsData.filter(t => t.cat === 'Clothing').map(t => t.en));
+  for (let i = 0; i < 300; i += 1) {
+    const draw = randomPromptPlan(makeOptions({ identityExclude: frierenIdentity, rng: seededRng(i * 37 + 2) }));
+    for (const tag of draw.manualTags) {
+      assert.ok(!frierenIdentity.has(tag), `热门角色身份词 ${tag} 不得进入随机 manualTags`);
+    }
+    assert.ok(
+      !draw.manualTags.some(tag => clothingSet.has(tag)),
+      `第 ${i} 次热门角色采样不应抽通用服装（服装由 outfit 系统管理）: ${draw.manualTags.join(', ')}`,
+    );
+    assert.ok(!draw.manualTags.some(tag => tag.startsWith('nene_')), '热门角色模式不抽宁宁官方服装');
+  }
+});
+
+test('Mature 评级联动：isManualR18Tags 覆盖词条池 Mature 全部分类词', () => {
+  const matureSet = new Set(tagsData.filter(t => t.cat === 'Mature').map(t => t.en));
+  const regexOnly = /^(?:nene_r18|natsume_r18|nude|completely_nude|naked|topless|nipples|bare_breasts|pussy|vaginal|penis|sex|uncensored|nsfw)$/i;
+  const beyond = tagsData.filter(t => t.cat === 'Mature' && !regexOnly.test(t.en)).map(t => t.en);
+  assert.ok(beyond.length > 80, `Mature 非正则词条应超过 80（实际 ${beyond.length}）`);
+  for (const tag of beyond.slice(0, 60)) {
+    assert.equal(isManualR18Tags([tag], matureSet), true, `Mature 词条 ${tag} 应触发 R18 评级联动`);
+  }
+  assert.equal(isManualR18Tags(['school_uniform'], matureSet), false, '普通词条不触发评级联动');
+  assert.equal(isManualR18Tags(['nude'], matureSet), true, '正则白名单词仍触发');
 });

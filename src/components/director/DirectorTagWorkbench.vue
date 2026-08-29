@@ -84,6 +84,8 @@ import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
+import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
+import { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interrogateMerge'
 import {
   OUTFIT_BUNDLES,
   OUTFIT_TAG_LABELS,
@@ -133,14 +135,44 @@ async function onInterrogateFile(e: Event) {
       pb.flash('已反推为自然语言，已填入画面描述（Krea2）')
       return
     }
-    var added = 0
-    for (var t of (result.tags || [])) {
-      var norm = String(t || '').trim().toLowerCase().replace(/\s+/g, '_')
-      if (!norm || pb.manualTags.has(norm)) continue
-      // 去身份污染：若标签明显是发色/瞳色等人物固有特征且与当前角色强相关，仍允许由用户手动取舍，这里不硬拦
-      pb.toggleManualTag(norm); added++
+    // 三重去重（manualTags/身份行/场景行）+ 身份域冲突消解，识别出的角色名单独提示
+    const subject = pb.subject
+    const popularChar = subject.kind === 'popular' ? findCharacter(pb.popularCharacters, subject.characterId) : null
+    const context = collectInterrogateContext(subject.kind === 'popular'
+      ? {
+          kind: 'popular',
+          character: popularChar
+            ? {
+                identityTokens: popularChar.identityTokens,
+                exactTokens: popularChar.exactTokens,
+                outfitTokens: (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
+              }
+            : null,
+          blueprintTokens: subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId)?.promptTokens ?? [] : [],
+        }
+      : {
+          kind: 'studio',
+          charPrompt: pb.charPrompt,
+          scenePrompt: pb.activeScene?.prompt,
+          sceneTags: pb.activeScene?.tags,
+        })
+    const merged = mergeInterrogatedTags({
+      tags: result.tags || [],
+      manualTags: pb.manualTags,
+      identityTokens: context.identityTokens,
+      sceneTokens: context.sceneTokens,
+    })
+    for (const tag of merged.accepted) pb.toggleManualTag(tag)
+    const note = characterConflictNote(result.characterTags, context.identityTokens)
+    const parts: string[] = []
+    if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条${result.model ? '（' + result.model + '）' : ''}`)
+    if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
+    if (merged.conflicts.length) {
+      const shown = merged.conflicts.slice(0, 3).map(item => item.tag).join('、')
+      parts.push(`跳过身份冲突 ${merged.conflicts.length} 个（${shown}${merged.conflicts.length > 3 ? ' 等' : ''}）`)
     }
-    pb.flash(added ? `本地反推已加入 ${added} 个 Tag${result.model ? '（' + result.model + '）' : ''}，可切人直出` : '反推完成，无新增 Tag')
+    if (note) parts.push(note)
+    pb.flash(parts.length ? parts.join('；') : '反推完成，无新增词条')
     const warning = result.warning
     if (warning) setTimeout(() => pb.flash(warning), 2600)
   } catch (e) {

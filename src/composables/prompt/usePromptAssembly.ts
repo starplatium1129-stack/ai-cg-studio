@@ -12,6 +12,7 @@ import {
   dedupeParts,
   enrichDualPrompt,
   formatPromptForProfile,
+  isManualR18Tags,
   loraSpecText,
   normalizeKey,
   qualityPrefix,
@@ -111,11 +112,14 @@ export function usePromptAssembly(
   /** 当前引擎 + profile 的能力表（驱动 LoRA/negative/promptFormat 等判断）。 */
   const capabilities = computed(() => resolveDrawCapabilities(engine.value, modelProfile.value))
 
+  /** 词条池 Mature 分类键集（评级联动用，与 isManualR18Tags 组成单一契约）。 */
+  const matureTokenSet = computed(() =>
+    new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
+  )
+
   /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或门控词，自动提升为 R18 评级以解除负面拦截。 */
   const effectiveScene = computed(() => {
-    const isManualR18 = [...pb.manualTags].some(tag =>
-      /^(?:nene_r18|natsume_r18|nude|completely_nude|naked|topless|nipples|bare_breasts|pussy|vaginal|penis|sex|uncensored|nsfw)$/i.test(tag),
-    )
+    const isManualR18 = isManualR18Tags(pb.manualTags, matureTokenSet.value)
     const scene = pb.activeScene
     if (!scene) {
       return isManualR18

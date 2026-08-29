@@ -112,6 +112,14 @@ async function run() {
         assert.ok(r.scores[t] > 0.85, t + ' 低于 character 阈值');
       });
     });
+    check('真实推理: tags 与 characterTags 彻底分离（角色名不混入 tags）', function () {
+      // 2026-08-29：tags 只含 general 区间词条；角色名单独走 characterTags，
+      // 防止识别出的角色名随大流写入 manualTags 与当前作画角色冲突。
+      var characterSet = new Set(r.characterTags);
+      r.tags.forEach(function (t) {
+        assert.ok(!characterSet.has(t), t + ' 不得同时出现在 tags 与 characterTags');
+      });
+    });
     check('真实推理: meta 携带引擎信息', function () {
       assert.equal(r.meta.threshold, 0.35);
       assert.equal(typeof r.meta.modelPath, 'string');

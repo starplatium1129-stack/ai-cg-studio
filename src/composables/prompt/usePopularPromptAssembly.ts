@@ -65,6 +65,10 @@ export function usePopularPromptAssembly(
 
   const adultEnabled = computed(() => pb.showMatureScenes)
   const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
+  /** 词条池 Mature 分类键集（评级联动单一契约 isManualR18Tags 共用）。 */
+  const matureTokenSet = computed(() =>
+    new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => tag.en.trim().toLowerCase().replace(/\s+/g, '_'))),
+  )
 
   /** 风格由蓝图 hint 或引擎默认值自动确定；成人配方在此 fail-closed。 */
   const resolvedStyle = computed<ResolvedStyle | null>(() => {
@@ -97,6 +101,7 @@ export function usePopularPromptAssembly(
       lighting: pb.selections.lighting,
       composition: pb.selections.composition,
       adultEnabled: adultEnabled.value,
+      matureTokens: matureTokenSet.value,
       visualDescription: pb.visualDescription,
       style: resolvedStyle.value,
       artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),

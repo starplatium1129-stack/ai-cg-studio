@@ -5,6 +5,7 @@
 import { createPromptPlan, renderPromptPlan, type PromptPlan } from './promptCompiler.ts'
 import {
   assembleNegative,
+  isManualR18Tags,
   mergeTokenText,
   profileRatingTag,
   type ModelProfile,
@@ -489,6 +490,10 @@ export interface PopularPromptOptions {
   style?: ResolvedStyle | null
   artistTags?: string[]
   artistProse?: string
+  /** 词条池 Mature 分类键集（tags.json cat==='Mature'，调用方派生）。
+   *  manual 命中 Mature 词条时评级联动升 R18（与 studio isManualR18Tags 同一契约，
+   *  2026-08-29 随机灵感开放热门角色引入：否则抽中 Mature 词仍被负面压制）。 */
+  matureTokens?: ReadonlySet<string>
 }
 
 export interface PopularPromptResult {
@@ -545,9 +550,28 @@ export function scanStudioTokenLeaks(text: string): string[] {
 }
 
 /**
+ * 人物/服装层禁携环境词（2026-08-29 干净人物提示词契约）：地点、季节、时段
+ * 属于场景蓝图职责域。曾实测泄漏：5 个泳装带 summer、mika/hina 带 beach、
+ * 防寒服带 snow、针织带 autumn——人物提示词与场景叠加（含反推叠加）时这些
+ * 词会与蓝图词条打架。tea_party（套装语义）不在此列。
+ */
+const ENVIRONMENT_TOKENS = new Set([
+  'beach', 'summer', 'winter', 'autumn', 'ocean', 'sea', 'underwater',
+  'swimming_pool', 'poolside', 'indoors', 'outdoors', 'nightlife',
+  'classroom', 'library', 'bedroom', 'festival',
+])
+
+/** 扫描词条数组中的环境词泄漏（identityTokens / outfit tokens 通用）。 */
+function scanEnvironmentLeaks(tokens: ReadonlyArray<string>): string[] {
+  return tokens.filter(token => ENVIRONMENT_TOKENS.has(String(token || '').toLowerCase()))
+}
+
+/**
  * 角色数据全字段污染扫描：identityTokens/exactTokens/identityProse/aliases/
  * exactPrefixes 以及每个 outfit 的 prose+tokens，统一在此判定，供内容契约
  * 校验与单测共用，避免两处各自维护一套正则漂移。
+ * 2026-08-29 扩展：identityTokens 与 outfit tokens 额外扫环境词（地点/季节/
+ * 时段），守住「干净人物提示词」——不选场景时角色词条不得自带环境。
  */
 export function scanCharacterPollution(character: PopularCharacter): string[] {
   const leaks: string[] = []
@@ -561,9 +585,15 @@ export function scanCharacterPollution(character: PopularCharacter): string[] {
   for (const [field, text] of textSources) {
     scanStudioTokenLeaks(text).forEach(leak => leaks.push(`${character.id}.${field}: ${leak}`))
   }
+  scanEnvironmentLeaks(character.identityTokens).forEach(token => {
+    leaks.push(`${character.id}.identityTokens: environment token "${token}"`)
+  })
   character.outfits.forEach(outfit => {
     scanStudioTokenLeaks(`${outfit.prose} ${outfit.tokens.join(' ')}`).forEach(leak => {
       leaks.push(`${character.id}.outfit.${outfit.id}: ${leak}`)
+    })
+    scanEnvironmentLeaks(outfit.tokens).forEach(token => {
+      leaks.push(`${character.id}.outfit.${outfit.id}: environment token "${token}"`)
     })
   })
   return leaks
@@ -593,6 +623,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   if (adult && !adultGranted) return null
 
   const manual = sanitizePopularManual(options.manual || [])
+  // 手动 Mature 词条评级联动（单一契约 isManualR18Tags）：命中即升 R18 解除负面
+  // 压制，但仅对成年角色生效（underage 资格仍 fail-closed，数据层契约不动）。
+  const manualR18 = character.adultEligibility === 'adult'
+    && isManualR18Tags(manual, options.matureTokens)
+  const ratingLevel = (adultGranted || manualR18) ? 'R18' : 'ALL'
   const shotToken = options.shot ? SHOT_TOKENS[options.shot] : ''
   const lightingKey = options.lighting ?? ''
   const lightingToken = lightingKey ? LIGHTING_TOKENS[lightingKey] : ''
@@ -664,7 +699,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const effectiveArtists = (options.artistTags && options.artistTags.length)
     ? options.artistTags
     : (adultGranted && blueprint?.adultArtistHint ? [blueprint.adultArtistHint] : undefined)
-  const rating = profileRatingTag(profile, { rating: adultGranted ? 'R18' : 'ALL' })
+  const rating = profileRatingTag(profile, { rating: ratingLevel })
   const plan = createPromptPlan({
     profile,
     identity: identityTokens.join(', '),
@@ -678,7 +713,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     composition: compositionToken ? [compositionToken] : [],
     manual,
     negative: (blueprint?.negativeTokens || []).join(', '),
-    rating: rating || (adultGranted ? 'nsfw' : ''),
+    rating: rating || (ratingLevel === 'R18' ? 'nsfw' : ''),
     visualDescription: userVisual,
     subjectProse: identityWithoutOutfit(character.identityProse),
     // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支 546 行已置空）。
@@ -697,7 +732,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     profile,
     {
       negative: (blueprint?.negativeTokens || []).join(', '),
-      rating: adultGranted ? 'R18' : 'All',
+      rating: ratingLevel,
     },
     'anima',
     { shot: options.shot, character: character.id },

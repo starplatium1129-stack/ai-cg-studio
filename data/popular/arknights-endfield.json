@@ -97,8 +97,7 @@
             "winter_coat",
             "fur_trim",
             "insulated",
-            "turtleneck",
-            "snow"
+            "turtleneck"
           ],
           "isDefault": false,
           "default": false

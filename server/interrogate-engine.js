@@ -186,7 +186,9 @@ async function interrogateTag(imageBuffer, options) {
   var outputs = await cached.session.run(feeds);
   var probs = outputs[cached.outputName].data; // Float32Array [9083]
 
-  // 角色(general)与角色名(character)分离
+  // 角色(general)与角色名(character)分离；2026-08-29：tags 只含 general，
+  // 角色名单独走 characterTags——此前角色名 concat 进 tags 会随大流写入前端
+  // manualTags，与当前作画角色身份行直接冲突（前端消费 characterTags 做冲突提示）。
   var general = [];
   for (var g = tags.generalIndex; g < tags.characterIndex; g++) {
     var p = probs[g];
@@ -197,8 +199,7 @@ async function interrogateTag(imageBuffer, options) {
     var pc = probs[c];
     if (pc > characterThreshold) character.push({ tag: tags.names[c], score: pc });
   }
-  var merged = character.concat(general).sort(function (a, b) { return b.score - a.score; });
-  var capped = merged.slice(0, topN);
+  var capped = general.sort(function (a, b) { return b.score - a.score; }).slice(0, topN);
 
   var rating = {};
   for (var r = 0; r < RATING_NAMES.length; r++) {

@@ -11,15 +11,20 @@ import { membersOfMutualGroup, mutualGroupOf } from '../utils/promptPolicy.ts'
  * promptCompiler（createPromptPlan → renderPromptPlan），本模块不触碰渲染。
  *
  * 三条硬约束：
- * 1. 角色身份固定——identity token（CHAR_PROMPT）绝不进入采样池；
+ * 1. 角色身份固定——identity token（CHAR_PROMPT / identityExclude）绝不进入采样池；
  * 2. 画师默认不注入（includeArtists=false，保留角色原生画风），keepArtists 恒保留；
  * 3. Mature 池无独立开关——本地直连本就放行，随机抽中即与显式门控词联动
- *    （评级提升由现有 effectiveScene.isManualR18 处理），此处只保证标签层面
- *    不与显式门控词冲突、不重复。
+ *    （评级提升由 isManualR18Tags：门控词正则 ∪ 词条池 Mature 分类命中，见
+ *    usePromptAssembly.effectiveScene），此处只保证标签层面不与显式门控词冲突、不重复。
  */
 
 export interface RandomInspirationOptions {
-  char: 'nene' | 'natsume' | 'triad'
+  /** 工作室角色（studio 模式）。popular 模式改传 identityExclude，不传 char。 */
+  char?: 'nene' | 'natsume' | 'triad'
+  /** 显式身份排除集（热门角色模式）：当前角色的 identityTokens + exactTokens +
+   *  当前 outfit tokens。传入后替代内置 IDENTITY_TOKENS 查表，并跳过服装抽取
+   *  （热门角色的服装由 outfit 系统管理，随机抽通用服装会与之打架）。 */
+  identityExclude?: ReadonlySet<string>
   /** 「随机画师」开关，默认 false：不加画师 tag，保留角色原生画风。 */
   includeArtists?: boolean
   /** 用户手动已选画师，重掷恒保留（独立于 includeArtists）。 */
@@ -145,8 +150,14 @@ function addWithMutualGroup(target: string[], tag: string): boolean {
 
 export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw {
   const rng = options.rng ?? Math.random
-  const identity = IDENTITY_TOKENS[options.char] ?? IDENTITY_TOKENS.nene
-  const exclude = new Set<string>(identity)
+  // 热门角色模式：identityExclude（identityTokens+exactTokens+outfit tokens）优先；
+  // studio 模式：内置身份查表。两者都归一化后并入排除集。
+  const explicitIdentity = options.identityExclude
+  const identitySource: Iterable<string> = explicitIdentity
+    ? explicitIdentity
+    : (IDENTITY_TOKENS[options.char ?? 'nene'] ?? IDENTITY_TOKENS.nene)
+  const exclude = new Set<string>()
+  for (const token of identitySource) exclude.add(normalizeTag(token))
   META_TOKENS.forEach(token => exclude.add(token))
 
   const byCat = (cat: string): string[] =>
@@ -211,22 +222,22 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     addWithMutualGroup(manualTags, scene)
   }
 
-  // ── 动作（50% 抽 1） ────────────────────────────────────────────────
-  if (chance(0.5, rng)) {
+  // ── 动作（60% 抽 1） ────────────────────────────────────────────────
+  if (chance(0.6, rng)) {
     const action = draw(actionPool, 1, rng)[0]
     if (action) addWithMutualGroup(manualTags, action)
   }
 
-  // ── 外观（50% 1 个 / 20% 2 个，已排除身份 token） ────────────────────
-  const appearanceCount = chance(0.5, rng) ? 1 : 0
+  // ── 外观（60% 1 个 / 25% 2 个，已排除身份 token） ────────────────────
+  const appearanceCount = chance(0.6, rng) ? 1 : 0
   if (appearanceCount) {
-    for (const item of draw(appearancePool, chance(0.2, rng) ? 2 : 1, rng)) {
+    for (const item of draw(appearancePool, chance(0.25, rng) ? 2 : 1, rng)) {
       addWithMutualGroup(manualTags, item)
     }
   }
 
-  // ── 身体（40% 1 个，仅温和细节） ────────────────────────────────────
-  if (chance(0.4, rng)) {
+  // ── 身体（50% 1 个，仅温和细节） ────────────────────────────────────
+  if (chance(0.5, rng)) {
     const body = draw(bodyPool, 1, rng)[0]
     if (body) addWithMutualGroup(manualTags, body)
   }
@@ -237,10 +248,10 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     if (style) addWithMutualGroup(manualTags, style)
   }
 
-  // ── 服装（官方 60% / 通用 40%；triad 不抽服装） ─────────────────────
+  // ── 服装（官方 60% / 通用 40%；triad 与热门角色不抽服装） ─────────────
   const officialOutfits = options.officialOutfits
   const officialKeys = officialOutfits ? Object.keys(officialOutfits) : []
-  if (options.char !== 'triad') {
+  if (!explicitIdentity && options.char !== 'triad') {
     if (officialKeys.length && chance(0.6, rng)) {
       const key = draw(officialKeys, 1, rng)[0]
       if (key) {
@@ -257,9 +268,13 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     }
   }
 
-  // ── Mature（20% 抽 1~3，无独立开关，本地直连本就放行） ──────────────
-  if (maturePool.length && chance(0.2, rng)) {
-    const count = chance(0.5, rng) ? 1 : chance(0.5, rng) ? 2 : 3
+  // ── Mature（50% 抽 1~4，无独立开关，本地直连本就放行） ──────────────
+  // 2026-08-29 提额：20%→50%。此前的三重叠加（概率低 + isManualR18 正则只认
+  // 5 个词 + 评级不升则负面压制）导致"想随机 NSFW 根本随机不到"；评级联动
+  // 由 usePromptAssembly.isManualR18Tags（词条池 Mature 分类命中）兜住。
+  if (maturePool.length && chance(0.5, rng)) {
+    const roll = rng()
+    const count = roll < 0.35 ? 1 : roll < 0.65 ? 2 : roll < 0.85 ? 3 : 4
     for (const tag of draw(maturePool, count, rng)) {
       addWithMutualGroup(manualTags, tag)
     }

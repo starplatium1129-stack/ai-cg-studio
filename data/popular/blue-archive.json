@@ -121,9 +121,7 @@
             "white_swimsuit",
             "pink_swimsuit",
             "frills",
-            "pareo",
-            "summer",
-            "beach"
+            "pareo"
           ],
           "default": false,
           "isDefault": false
@@ -267,9 +265,7 @@
             "navy_swimsuit",
             "frills",
             "swim_ring",
-            "sandals",
-            "summer",
-            "beach"
+            "sandals"
           ],
           "default": false,
           "isDefault": false
@@ -416,8 +412,7 @@
             "black_bikini",
             "cat_ears",
             "hood",
-            "red_ribbon",
-            "summer"
+            "red_ribbon"
           ],
           "default": false,
           "isDefault": false
@@ -533,8 +528,7 @@
             "white_bikini",
             "blue_bikini",
             "tactical_belt",
-            "headset",
-            "summer"
+            "headset"
           ],
           "default": false,
           "isDefault": false
@@ -648,8 +642,7 @@
             "bikini",
             "black_bikini",
             "red_trim",
-            "sheer_cover-up",
-            "summer"
+            "sheer_cover-up"
           ],
           "default": false,
           "isDefault": false

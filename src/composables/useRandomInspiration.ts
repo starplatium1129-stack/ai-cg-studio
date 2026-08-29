@@ -1,12 +1,18 @@
 import { ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { randomPromptPlan, type RandomDraw, type RandomInspirationOptions } from '@/utils/randomPromptAssembler'
+import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent.ts'
 
 /**
  * 随机灵感桥接层（2026-08-29，见 docs/random-prompt-assembler-design.md）。
  *
- * 职责：读 store 已加载数据（tags / loraMeta 官方服装）→ 调纯函数采样器
- * randomPromptPlan → 写回 store 各风格层字段 → 维护撤销快照（最近一组）。
+ * 职责：读 store 已加载数据（tags / loraMeta 官方服装 / popular 角色词条）→
+ * 调纯函数采样器 randomPromptPlan → 写回 store 各风格层字段 → 维护撤销快照。
+ *
+ * 2026-08-29 扩展：热门角色（popular）模式开放随机灵感。身份排除集 =
+ * 当前角色 identityTokens + exactTokens + 当前 outfit tokens（服装由 outfit
+ * 系统管理，随机不抽服装），采样结果写回 selections/manualTags/artistStyleIds，
+ * 与 studio 模式共用同一套撤销快照。
  *
  * 不新增任何门控/开关：Mature 池无独立开关（本地直连本就放行）；
  * 画师默认不注入（includeArtists 由组件开关控制，默认 false）。
@@ -39,20 +45,45 @@ export function useRandomInspiration() {
     return result
   }
 
+  /** 热门角色身份排除集：identityTokens + exactTokens + 当前 outfit tokens。 */
+  function popularIdentityExclude(): Set<string> | null {
+    const subject = pb.subject
+    if (subject.kind !== 'popular') return null
+    const character = findCharacter(pb.popularCharacters, subject.characterId)
+    if (!character) return null
+    const outfit = findOutfit(character, subject.outfitId) ?? defaultOutfit(character)
+    return new Set<string>([
+      ...character.identityTokens,
+      ...(character.exactTokens || []),
+      ...(outfit?.tokens || []),
+    ])
+  }
+
   /** 掷一次随机灵感：快照当前状态 → 采样 → 写回 store。 */
   function roll(): boolean {
-    if (pb.isPopular) return false
     if (!pb.dataReady || !pb.tags.length) {
       pb.flash('随机灵感需要数据就绪，请稍候再试', 2500, 'warning')
       return false
     }
-    const options: RandomInspirationOptions = {
-      char: pb.char,
-      includeArtists: includeArtists.value,
-      keepArtists: pb.artistStyleIds,
-      tags: pb.tags,
-      officialOutfits: officialOutfitsFor(pb.char),
+    const identityExclude = pb.isPopular ? popularIdentityExclude() : null
+    if (pb.isPopular && !identityExclude) {
+      pb.flash('当前热门角色数据缺失，无法随机', 2500, 'warning')
+      return false
     }
+    const options: RandomInspirationOptions = identityExclude
+      ? {
+          identityExclude,
+          includeArtists: includeArtists.value,
+          keepArtists: pb.artistStyleIds,
+          tags: pb.tags,
+        }
+      : {
+          char: pb.char,
+          includeArtists: includeArtists.value,
+          keepArtists: pb.artistStyleIds,
+          tags: pb.tags,
+          officialOutfits: officialOutfitsFor(pb.char),
+        }
     const draw: RandomDraw = randomPromptPlan(options)
 
     lastSnapshot.value = pb.snapshotStyleLayers()

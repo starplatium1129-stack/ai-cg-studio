@@ -4,7 +4,7 @@
       class="random-dice"
       type="button"
       :disabled="disabled"
-      :title="disabled ? '热门角色模式与数据未就绪时不支持随机灵感' : '随机灵感：按当前角色随机组装一组风格层标签'"
+      :title="disabled ? '数据未就绪时不支持随机灵感' : '随机灵感：按当前角色（含热门角色）随机组装一组风格层标签'"
       @click="onRoll"
     >
       <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
@@ -44,7 +44,7 @@ const pb = usePromptBuilderStore()
 const { includeArtists, roll, undo, hasUndo } = useRandomInspiration()
 
 const menuOpen = ref(false)
-const disabled = computed(() => pb.isPopular || !pb.dataReady)
+const disabled = computed(() => !pb.dataReady)
 const canUndo = computed(() => Boolean(hasUndo.value))
 
 function onRoll() {
