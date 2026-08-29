@@ -11,7 +11,8 @@
         "elaina",
         "elaina of the journey",
         "majo no tabitabi",
-        "wandering witch"
+        "wandering witch",
+        "elaina (majo no tabitabi)"
       ],
       "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair, violet eyes, a black witch hat with gold buckle, with a confident smile",
       "identityTokens": [
@@ -26,7 +27,7 @@
         "majo_no_tabitabi"
       ],
       "exactTokens": [
-        "elaina"
+        "elaina (majo no tabitabi)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",

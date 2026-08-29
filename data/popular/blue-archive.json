@@ -15,11 +15,12 @@
         "未花",
         "blue archive",
         "trinity",
-        "tea party"
+        "tea party",
+        "mika (blue archive)"
       ],
       "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate golden wing-shaped halo adorned with tiny star ornaments, and sparkling golden eyes with star-shaped pupils",
       "identityTokens": [
-        "misono_mika",
+        "mika (blue archive)",
         "1girl",
         "solo",
         "pink_hair",
@@ -43,7 +44,7 @@
         "blue_archive"
       ],
       "exactTokens": [
-        "misono_mika"
+        "mika (blue archive)"
       ],
       "exactPrefixes": [
         "misono_"
@@ -149,11 +150,12 @@
         "日奈",
         "blue archive",
         "gehenna",
-        "disciplinary committee"
+        "disciplinary committee",
+        "hina (blue archive)"
       ],
       "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate purple halo of three concentric rings crowned with jagged spikes, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
       "identityTokens": [
-        "sorasaki_hina",
+        "hina (blue archive)",
         "1girl",
         "solo",
         "horns",
@@ -186,7 +188,7 @@
         "blue_archive"
       ],
       "exactTokens": [
-        "sorasaki_hina"
+        "hina (blue archive)"
       ],
       "exactPrefixes": [
         "sorasaki_"

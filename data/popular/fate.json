@@ -13,11 +13,12 @@
         "saber",
         "artoria",
         "king arthur",
-        "fate/stay night"
+        "fate/stay night",
+        "artoria_pendragon (fate)"
       ],
       "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in an intricate braided bun, an ahoge, and clear emerald-green eyes, with an earnest, dignified bearing",
       "identityTokens": [
-        "artoria_pendragon",
+        "artoria_pendragon (fate)",
         "saber (fate)",
         "1girl",
         "solo",
@@ -30,7 +31,7 @@
         "fate/stay_night"
       ],
       "exactTokens": [
-        "artoria_pendragon"
+        "artoria_pendragon (fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",

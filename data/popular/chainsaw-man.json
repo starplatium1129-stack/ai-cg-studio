@@ -11,7 +11,8 @@
         "makima",
         "makima_(chainsaw_man)",
         "chainsaw man",
-        "control devil"
+        "control devil",
+        "makima (chainsaw man)"
       ],
       "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid, golden concentric-ring eyes, and an unreadable, magnetic smile",
       "identityTokens": [
@@ -27,7 +28,7 @@
         "chainsaw_man"
       ],
       "exactTokens": [
-        "makima"
+        "makima (chainsaw man)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",

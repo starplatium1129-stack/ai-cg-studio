@@ -160,11 +160,12 @@
         "kaltsit",
         "kal'tsit",
         "arknights",
-        "mon3tr"
+        "mon3tr",
+        "kal'tsit (arknights)"
       ],
       "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair and twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, wearing a white lab coat over a black halterneck backless dress with a green utility belt and emerald earrings",
       "identityTokens": [
-        "kal'tsit",
+        "kal'tsit (arknights)",
         "1girl",
         "solo",
         "light_green_hair",
@@ -178,7 +179,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "kal'tsit"
+        "kal'tsit (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
