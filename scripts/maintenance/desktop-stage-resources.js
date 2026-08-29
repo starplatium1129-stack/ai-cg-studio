@@ -32,7 +32,18 @@ const ENTRIES = [
   ['assets', 'gateway/assets'],
   ['tools', 'gateway/tools'],
 ];
-const RUNTIME_DEPENDENCIES = ['compression', 'express', 'http-proxy-middleware'];
+// 桌面端 gateway 的 npm 依赖白名单：打包时只把这里列出的包写进 gateway/package.json，
+// 由 npm ci 安装。凡是运行时 require 的新依赖都必须加进来，否则网页版正常、桌面端静默降级
+// （2026-08-29 教训：onnxruntime-node + sharp 漏登记，真实反推在桌面端一直走启发式兜底）。
+// 要求：该包须同时存在于根 package.json 的 dependencies 与 package-lock.json，否则派生时抛错。
+const RUNTIME_DEPENDENCIES = [
+  'compression',
+  'express',
+  'http-proxy-middleware',
+  // 本地真实反推（WD14 ONNX，server/interrogate-engine.js）
+  'onnxruntime-node',
+  'sharp',
+];
 
 function copyDir(src, dest, includeFile = () => true) {
   fs.mkdirSync(dest, { recursive: true });
@@ -135,6 +146,54 @@ function directorySize(directory) {
   return bytes;
 }
 
+function removeTree(target, logger) {
+  let size = 0;
+  try {
+    size = directorySize(target);
+  } catch (error) {
+    return 0;
+  }
+  try {
+    fs.rmSync(target, { recursive: true, force: true });
+  } catch (error) {
+    logger(`[stage] warning: 未能删除 ${path.basename(target)}: ${error.message}`);
+    return 0;
+  }
+  return size;
+}
+
+/**
+ * 精简原生二进制：onnxruntime-node 一个包里塞了 win/linux/darwin + arm64 的全平台预编译
+ * 产物（283 MB），而桌面端只分发 win32-x64。装完依赖后删掉其余平台，283 MB -> 64 MB，
+ * 安装包相应少膨胀约 200 MB。删除失败只告警不中断（受限环境下 rmSync 可能被拦截，
+ * 此时由调用方用其他方式补删，功能不受影响，只是包会偏大）。
+ */
+function pruneNativeBinaries(tempStage, logger) {
+  const ortBin = path.join(tempStage, 'gateway', 'node_modules', 'onnxruntime-node', 'bin');
+  if (!fs.existsSync(ortBin)) return 0;
+
+  let freed = 0;
+  for (const apiDir of fs.readdirSync(ortBin)) {
+    const apiPath = path.join(ortBin, apiDir);
+    if (!fs.statSync(apiPath).isDirectory()) continue;
+    for (const platform of fs.readdirSync(apiPath)) {
+      const platformPath = path.join(apiPath, platform);
+      if (platform === 'win32') {
+        for (const arch of fs.readdirSync(platformPath)) {
+          if (arch === 'x64') continue;
+          freed += removeTree(path.join(platformPath, arch), logger);
+        }
+        continue;
+      }
+      freed += removeTree(platformPath, logger);
+    }
+  }
+  if (freed > 0) {
+    logger(`[stage] 裁剪非 win32-x64 的 onnxruntime 二进制，释放 ${(freed / 1024 / 1024).toFixed(1)} MB`);
+  }
+  return freed;
+}
+
 function publishStage(tempStage, stage, logger) {
   const backupStage = `${stage}.previous-${process.pid}-${crypto.randomUUID()}`;
   let oldMoved = false;
@@ -211,6 +270,7 @@ function stageResources(options = {}) {
     logger('[stage] npm ci (production deps, locked)...');
     installDependencies(gatewayDir);
     logger('[stage] node_modules installed');
+    pruneNativeBinaries(tempStage, logger);
 
     const sizeMb = directorySize(tempStage) / 1024 / 1024;
     publishStage(tempStage, stage, logger);
