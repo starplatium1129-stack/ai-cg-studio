@@ -49,6 +49,8 @@ function createFixture() {
       'node_modules/compression': { version: '1.0.0' },
       'node_modules/express': { version: '1.0.0' },
       'node_modules/http-proxy-middleware': { version: '1.0.0' },
+      'node_modules/onnxruntime-node': { version: '1.0.0' },
+      'node_modules/sharp': { version: '1.0.0' },
     },
   }, null, 2) + '\n');
   return root;
@@ -96,7 +98,7 @@ test('production stage uses exact runtime outputs and atomic replacement', () =>
 
     const manifest = JSON.parse(fs.readFileSync(path.join(stage, 'gateway', 'package.json'), 'utf8'));
     assert.deepEqual(Object.keys(manifest.dependencies).sort(), [
-      'compression', 'express', 'http-proxy-middleware',
+      'compression', 'express', 'http-proxy-middleware', 'onnxruntime-node', 'sharp',
     ]);
   } finally {
     remove(root);

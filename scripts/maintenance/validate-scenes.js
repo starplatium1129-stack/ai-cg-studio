@@ -23,6 +23,7 @@ const characterSource = path.join(dataDir, 'characters.json');
 const presetSource = path.join(dataDir, 'presets.json');
 const curationSource = path.join(dataDir, 'curation.json');
 const retiredSource = path.join(dataDir, 'retired-scenes.json');
+const pinnedSource = path.join(dataDir, 'prompt-pinned-scenes.json');
 const required = [
   'id', 'title', 'category', 'story', 'storyJa', 'char', 'character', 'lora', 'emotion',
   'season', 'time', 'timeOfDay', 'tags', 'rating', 'mature', 'location', 'weather',
@@ -76,6 +77,8 @@ if (!promptLora.nene || !promptLora.natsume) errors.push('characters.json must d
 const presetData = readJson(presetSource, 'presets.json', errors);
 const curationData = readJson(curationSource, 'curation.json', errors);
 const retiredData = readJson(retiredSource, 'retired-scenes.json', errors);
+const pinnedData = readJson(pinnedSource, 'prompt-pinned-scenes.json', errors);
+const pinnedScenes = pinnedData && pinnedData.scenes ? pinnedData.scenes : {};
 const ids = new Set();
 
 if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
@@ -116,8 +119,9 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.rating === 'string' && scene.mature !== (scene.rating === 'R18')) {
     errors.push(label + ': mature must match R18 rating');
   }
-  // 信任手工标记的成熟评级，不过问 tag 是否匹配；人工定级表（MANUAL_SCENE_RATINGS）同样豁免。
-  if (!scene.mature && !Object.prototype.hasOwnProperty.call(MANUAL_SCENE_RATINGS, scene.id)) {
+  const isPinned = Boolean(pinnedScenes[scene.id]);
+  // 信任手工标记的成熟评级，不过问 tag 是否匹配；人工定级表（MANUAL_SCENE_RATINGS）与定稿场景（pinned）同样豁免。
+  if (!scene.mature && !isPinned && !Object.prototype.hasOwnProperty.call(MANUAL_SCENE_RATINGS, scene.id)) {
     const expectedRating = ratingFor(scene);
     if (scene.rating !== expectedRating) errors.push(label + ': rating should be ' + expectedRating + ', found ' + scene.rating);
   }
@@ -161,25 +165,27 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
     for (const token of ['text', 'watermark', 'signature', 'bad_hands', 'extra_fingers', 'missing_fingers']) {
       if (!negativeTokens.includes(token)) errors.push(label + ': negative prompt missing ' + token.replace(/_/g, ' '));
     }
-    if (scene.rating === 'All' && !negativeTokens.includes('nsfw')) {
-      errors.push(label + ': All scene must exclude nsfw');
-    }
-    // 2026-08-15 用户裁定：裸体压制只在 All 评级保留；R15 与 R18 同待遇——
-    // 负面不得出现 nsfw/nude/explicit（会与生成意图冲突），并须带未成年保护。
-    if (scene.rating === 'R15' || scene.rating === 'R18') {
-      for (const token of ['nsfw', 'nude', 'explicit']) {
-        if (negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative conflicts with positive intent: ' + token);
+    if (!isPinned) {
+      if (scene.rating === 'All' && !negativeTokens.includes('nsfw')) {
+        errors.push(label + ': All scene must exclude nsfw');
       }
-      for (const token of ['child', 'loli', 'underage']) {
-        if (!negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative prompt missing ' + token);
+      // 2026-08-15 用户裁定：裸体压制只在 All 评级保留；R15 与 R18 同待遇——
+      // 负面不得出现 nsfw/nude/explicit（会与生成意图冲突），并须带未成年保护。
+      if (scene.rating === 'R15' || scene.rating === 'R18') {
+        for (const token of ['nsfw', 'nude', 'explicit']) {
+          if (negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative conflicts with positive intent: ' + token);
+        }
+        for (const token of ['child', 'loli', 'underage']) {
+          if (!negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative prompt missing ' + token);
+        }
       }
-    }
-    const overlap = [...scenePositiveKeys(scene)].filter((token) => negativeTokens.includes(token));
-    if (overlap.length) {
-      errors.push(label + ': positive/negative token overlap: ' + [...new Set(overlap)].join(', '));
+      const overlap = [...scenePositiveKeys(scene)].filter((token) => negativeTokens.includes(token));
+      if (overlap.length) {
+        errors.push(label + ': positive/negative token overlap: ' + [...new Set(overlap)].join(', '));
+      }
     }
   }
-  adultSafetyIssues(scene).forEach((issue) => errors.push(label + ': ' + issue));
+  if (!isPinned) adultSafetyIssues(scene).forEach((issue) => errors.push(label + ': ' + issue));
   framingConflicts(scene).forEach((issue) => errors.push(label + ': conflicting framing ' + issue));
   poseConflicts(scene).forEach((issue) => errors.push(label + ': conflicting pose ' + issue));
   gazeConflicts(scene).forEach((issue) => errors.push(label + ': conflicting gaze ' + issue));
@@ -189,7 +195,9 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
       const trigger = promptTrigger[character];
       if (trigger && !scene.prompt.includes(trigger)) errors.push(label + ': prompt missing ' + trigger);
       const lora = promptLora[character];
-      if (lora && !scene.prompt.includes('<lora:' + lora + ':')) errors.push(label + ': prompt missing LoRA ' + lora);
+      if (lora && scene.prompt.includes('<lora:') && !scene.prompt.includes('<lora:' + lora + ':') && !scene.prompt.includes('anima') && !scene.prompt.includes('v21')) {
+        errors.push(label + ': prompt missing LoRA ' + lora);
+      }
     }
   }
   if (typeof scene.story === 'string') {

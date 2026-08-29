@@ -3,9 +3,17 @@
  * All = romance/daily life; R15 = suggestive but non-explicit; R18 = adult nudity or explicit sexual framing.
  * Run with: node scripts/maintenance/classify-scene-ratings.js --write
  */
+const fs = require('fs');
+const path = require('path');
 const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
 const { ratingFor } = require('../lib/prompt-policy');
 const write = process.argv.includes('--write');
+
+const pinnedPath = path.resolve(__dirname, '..', '..', 'data', 'prompt-pinned-scenes.json');
+let pinnedScenes = {};
+try {
+  pinnedScenes = JSON.parse(fs.readFileSync(pinnedPath, 'utf8')).scenes || {};
+} catch {}
 const STANDARD_NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic';
 
 const additions = [
@@ -145,6 +153,10 @@ for (const addition of additions) if (!ids.has(addition.id)) scenes.push(additio
 let changed = 0;
 const totals = { All: 0, R15: 0, R18: 0 };
 for (const scene of scenes) {
+  if (pinnedScenes[scene.id]) {
+    totals[scene.rating || (scene.mature ? 'R18' : 'All')] += 1;
+    continue;
+  }
   // 信任场景已有的成熟标记：凡 mature:true / rating:R18 的保留不动
   // 只有被自动归为 All/R15 的才按 tag 重新计算，防止手动设定被覆盖
   const force = scene.mature === true || scene.rating === 'R18';

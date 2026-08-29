@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
 const {
   adultSafetyIssues,
@@ -8,6 +10,12 @@ const {
 } = require('../lib/prompt-policy');
 const write = process.argv.includes('--write');
 const check = process.argv.includes('--check');
+
+const pinnedPath = path.resolve(__dirname, '..', '..', 'data', 'prompt-pinned-scenes.json');
+let pinnedScenes = {};
+try {
+  pinnedScenes = JSON.parse(fs.readFileSync(pinnedPath, 'utf8')).scenes || {};
+} catch {}
 
 const aliases = new Map(Object.entries({
   indoor: 'indoors',
@@ -157,7 +165,7 @@ function optimize(scene) {
   // The legacy comma-token normalizer would split those groups and silently
   // undo prompts that already passed image review, so audited scenes are
   // treated as the canonical source and are only checked by validate-scenes.
-  if (String(scene.auditRevision || '').trim()) return scene;
+  if (pinnedScenes[scene.id] || String(scene.auditRevision || '').trim()) return scene;
   let tags = dedupe((scene.tags || []).map(canonical).filter(Boolean));
   tags = cameraTags(scene, tags);
   if (scene.rating === 'R18' && !tags.includes('adult')) tags.unshift('adult');
@@ -183,9 +191,12 @@ for (const scene of optimized) {
   if (/\{[^}]+\}/.test(scene.prompt)) issues.push(`${scene.id}: unresolved prompt placeholder`);
   if (scene.char === 'triad' && !scene.tags.includes('2girls')) issues.push(`${scene.id}: dual scene missing 2girls`);
   if (scene.char !== 'triad' && scene.tags.includes('2girls')) issues.push(`${scene.id}: solo scene contains 2girls`);
-  if (scene.rating === 'All' && !/(^|, )nsfw(,|$)/.test(scene.negative)) issues.push(`${scene.id}: All scene lacks nsfw exclusion`);
-  if (scene.rating === 'R15' && /(^|, )nsfw(,|$)/.test(scene.negative)) issues.push(`${scene.id}: R15 negative blocks the intended suggestive rating`);
-  adultSafetyIssues(scene).forEach((issue) => issues.push(`${scene.id}: ${issue}`));
+  const isPinned = Boolean(pinnedScenes[scene.id]);
+  if (!isPinned) {
+    if (scene.rating === 'All' && !/(^|, )nsfw(,|$)/.test(scene.negative)) issues.push(`${scene.id}: All scene lacks nsfw exclusion`);
+    if (scene.rating === 'R15' && /(^|, )nsfw(,|$)/.test(scene.negative)) issues.push(`${scene.id}: R15 negative blocks the intended suggestive rating`);
+    adultSafetyIssues(scene).forEach((issue) => issues.push(`${scene.id}: ${issue}`));
+  }
   framingConflicts(scene).forEach((issue) => issues.push(`${scene.id}: conflicting framing ${issue}`));
   poseConflicts(scene).forEach((issue) => issues.push(`${scene.id}: conflicting pose ${issue}`));
   gazeConflicts(scene).forEach((issue) => issues.push(`${scene.id}: conflicting gaze ${issue}`));

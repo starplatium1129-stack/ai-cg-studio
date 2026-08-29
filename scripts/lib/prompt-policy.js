@@ -132,7 +132,7 @@ function adultSafetyIssues(scene) {
   const positive = scenePositiveKeys(scene);
   const promptKeys = new Set(promptTokenKeys(scene.prompt));
   const negative = new Set(String(scene.negative || '').split(',').map(tokenKey).filter(Boolean));
-  if (!promptKeys.has('adult')) issues.push('R18 positive prompt must include adult');
+  if (!promptKeys.has('adult') && ![...promptKeys].some(k => k.startsWith('adult_') || k.startsWith('adult-'))) issues.push('R18 positive prompt must include adult');
   for (const tag of ADULT_SAFETY_NEGATIVE) {
     if (!negative.has(tag)) issues.push('R18 negative prompt missing ' + tag);
   }

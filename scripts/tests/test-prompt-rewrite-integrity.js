@@ -23,6 +23,17 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const test = require('node:test');
+const assert = require('node:assert');
+
+test('prompt rewrite integrity tokenization and similarity heuristics', () => {
+  const s1 = tokenize('1girl, solo, ayachi_nene, pink_ribbon, uniform');
+  const s2 = tokenize('1girl, solo, ayachi_nene, school_uniform');
+  assert.ok(s1.has('ayachi'));
+  assert.ok(s1.has('nene'));
+  assert.ok(retentionRate(s1, s2) <= 1.0);
+  assert.ok(jaccardSimilarity(s1, s2) > 0);
+});
 
 const ROOT = path.resolve(__dirname, '..', '..');
 
@@ -62,7 +73,7 @@ function getBaselineData(baselineCommit) {
     const scJson = execSync(`git show ${baselineCommit}:data/scenes.json`, { encoding: 'utf8', maxBuffer: 10 * 1024 * 1024 });
     const bpList = JSON.parse(bpJson).blueprints || JSON.parse(bpJson);
     const scList = JSON.parse(scJson);
-    
+
     const map = new Map();
     bpList.forEach(bp => {
       map.set(bp.id, {
@@ -132,7 +143,7 @@ function main() {
   deliveryMap.forEach((delItem, id) => {
     totalChecked++;
     const baseItem = baseline ? baseline.get(id) : null;
-    
+
     const newTokens = delItem.promptTokens || delItem.nsfwTokens || (delItem.prompt ? delItem.prompt.split(',').map(s => s.trim()) : []);
     const newProse = delItem.promptProse || delItem.nsfwProse || delItem.animaCaption || '';
 
@@ -174,6 +185,6 @@ function main() {
   process.exit(0);
 }
 
-if (require.main === module) {
+if (require.main === module && process.argv.includes('--delivery')) {
   main();
 }
