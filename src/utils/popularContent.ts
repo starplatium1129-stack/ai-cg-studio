@@ -7,6 +7,7 @@ import {
   assembleNegative,
   isManualR18Tags,
   mergeTokenText,
+  mutualGroupWithCategory,
   profileRatingTag,
   type ModelProfile,
 } from './promptPolicy.ts'
@@ -636,6 +637,45 @@ function outfitOverrideProse(tokens: ReadonlyArray<string>): string {
   return tokens.map(token => String(token || '').replace(/_/g, ' ').trim()).filter(Boolean).join(', ')
 }
 
+/**
+ * 剥离身份散文里的服装描写（2026-08-29）。
+ *
+ * 既有的 `identityWithoutOutfit` 只剥**句尾** ", wearing X."；但 48 个角色里有 17 个
+ * 的服装描写在**句中**（"…emerald eyes, wearing a white lab coat over…"），剥不掉。
+ * 不选场景时，这段描写等于硬塞一套衣服给用户，挤掉自主添加词条的空间（对标
+ * studio：宁宁/夏目不选场景时没有任何服装注入，服装由场景或用户自己给）。
+ * 实测 17 个命中角色里 16 个剥得干净，仅 kyouyama_kazusa 的 "and black tights"
+ * 属并列结构残留（影响小，不再加规则以免误伤）。
+ */
+/**
+ * 明确的衣物类词（2026-08-29）。
+ *
+ * `OUTFIT_FAMILIES` 只覆盖 6 个高频互斥族（校服/泳装/和服…），但角色数据里实际
+ * 混着大量普通衣物词（green_clothes / coat / dress / boots），互斥族判定管不到。
+ * 这里补一张「只要出现就一定是衣服」的名单，仅在**不选场景**时用于过滤身份词。
+ * 刻意**不含**发饰（hair_ribbon）、发型（short_hair）、职业（maid）、饰品
+ * （earring / crown）——那些是身份特征，去掉会让角色变样。
+ */
+const GARMENT_TOKEN_RE =
+  /^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/
+
+function isGarmentToken(token: string): boolean {
+  return GARMENT_TOKEN_RE.test(String(token || '').trim().toLowerCase())
+}
+
+function proseWithoutOutfit(prose: string): string {
+  let out = String(prose || '')
+  // ", wearing X …" / ", dressed in X …" 从句（句中、句尾皆可），删到句号或分号前
+  out = out.replace(/,\s*(?:wearing|dressed in)\b[^.;]*/gi, '')
+  out = out.replace(/;\s*(?:wearing|dressed in)\b[^.;]*/gi, '')
+  // 清理：悬空逗号、标点前空白、重复空格、以连接词收尾
+  out = out.replace(/,\s*(?=[,.;])/g, '')
+  out = out.replace(/[,\s]+(?=[.;])/g, '')
+  out = out.replace(/\s+/g, ' ')
+  out = out.replace(/\b(?:with|and|over|in)\s*\.\s*$/i, '.')
+  return out.trim()
+}
+
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult | null {
   const { character, outfit, blueprint, engine } = options
   const profile = options.profile ?? null
@@ -707,7 +747,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
         ...(AMBIENCE_TOKENS[lightingKey] || []).filter(token => token && !KREA_PROSE_LIGHT_DROP.test(token)).slice(0, 2)])]
       : []
     const plan = createPromptPlan({
-      subjectProse: identityWithoutOutfit(character.identityProse),
+      subjectProse: outfitActive
+        ? identityWithoutOutfit(character.identityProse)
+        : proseWithoutOutfit(character.identityProse),
       outfitProse,
       sceneProse,
       emotion: emotionTokens,
@@ -725,7 +767,13 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     return { plan, prompt: rendered.prompt, negative: '', adult }
   }
 
-  const identityTokens = character.identityTokens
+  // 不选场景时，身份词里混入的服装一并去掉（数据遗留：不少角色把 pleated_skirt /
+  // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
+  // 不过滤则瘦身对它们无效）。双保险：互斥族判定 + 普通衣物名单。
+  const identityTokens = outfitActive
+    ? character.identityTokens
+    : character.identityTokens.filter(token =>
+        mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token))
   const exactControls = [...new Set([
     ...((adultGranted || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
     ...(character.exactTokens || []),
@@ -750,7 +798,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     negative: (blueprint?.negativeTokens || []).join(', '),
     rating: rating || (ratingLevel === 'R18' ? 'nsfw' : ''),
     visualDescription: userVisual,
-    subjectProse: identityWithoutOutfit(character.identityProse),
+    subjectProse: outfitActive
+      ? identityWithoutOutfit(character.identityProse)
+      : proseWithoutOutfit(character.identityProse),
     // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支已置空）。
     // renderPromptPlan('anima') 会在 outfitProse 存在时渲染 "She wears {outfit}",
     // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。
