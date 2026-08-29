@@ -49,7 +49,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -121,6 +121,7 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   jazz_jack: 'refreshing energetic anime style with clean lines and lively girls',
   hisasi: 'classic adult-oriented soft coloring with sweet shy atmosphere',
   suimya: 'soft erotic atmosphere with moist glossy highlights and lazy intimate mood',
+  rucarachi: 'delicate game character fan art with fine linework, soft harmonious coloring, and charming bright-eyed girls',
   'lam_(ramdayo)': 'highly saturated neon trendy illustration with bold eye makeup and graphic composition',
   mika_pikazo: 'vivid pop art anime style with bold geometric color blocking and energetic vibes',
   bunbun: 'dynamic game key visual style with clear costume design and action pose',

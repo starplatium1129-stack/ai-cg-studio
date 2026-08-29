@@ -68,7 +68,7 @@ export type ArchiveIconName =
   // ── 工具 / 服装形态 ──────────────────────────────────────────
   | 'star' | 'download' | 'upload' | 'copy' | 'broom' | 'health' | 'wardrobe' | 'compare'
   | 'bikini' | 'dress' | 'bunny' | 'coat' | 'school' | 'kimono' | 'ribbon'
-  | 'expand' | 'compress'
+  | 'expand' | 'compress' | 'dice'
   | 'play'
 
 const props = defineProps<{ name: ArchiveIconName }>()

@@ -44,6 +44,7 @@
           <ArchiveIcon :name="pb.focusMode ? 'compress' : 'expand'" class="focus-mode-icon" aria-hidden="true" />
           <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
         </button>
+        <RandomInspirationButton v-if="pb.subject.kind === 'studio'" />
         <div class="api-status">
           <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
             :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
@@ -413,6 +414,7 @@ const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecove
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
+const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))

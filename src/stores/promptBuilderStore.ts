@@ -311,6 +311,30 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (!opts.keepStory) story.value = ''
   }
 
+  /** 风格层快照（随机灵感撤销用）：情绪/镜头/光照/构图/色彩/手动词条/画师。 */
+  function snapshotStyleLayers() {
+    return {
+      emotions: [...selections.emotion],
+      shot: selections.shot,
+      lighting: selections.lighting,
+      composition: selections.composition,
+      colorMood: colorMood.value,
+      manualTags: [...manualTags.value],
+      artistStyleIds: [...artistStyleIds.value],
+    }
+  }
+
+  /** 回退到一组风格层快照（随机灵感撤销用）。 */
+  function restoreStyleLayers(snapshot: ReturnType<typeof snapshotStyleLayers>) {
+    selections.emotion = [...(snapshot.emotions ?? [])]
+    selections.shot = snapshot.shot ?? null
+    selections.lighting = snapshot.lighting ?? null
+    selections.composition = snapshot.composition ?? null
+    colorMood.value = snapshot.colorMood ?? null
+    manualTags.value = new Set(snapshot.manualTags ?? [])
+    artistStyleIds.value = normalizeArtistStyleIds(snapshot.artistStyleIds)
+  }
+
   // 2026-08-29 UX 收编：原生自绘 pb-toast 退役，统一走全局 useToast。
   function flash(msg: string, duration = 2500, type: 'info' | 'success' | 'warning' | 'error' = 'info') {
     toast.show(msg, type, duration)
@@ -554,6 +578,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, setArtistStyleIds, loadScene, clearScene, flash,
+    snapshotStyleLayers, restoreStyleLayers,
     setStudioSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,
     saveDraft, restoreDraft, snapshotDraft,

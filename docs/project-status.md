@@ -15,7 +15,7 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
 - 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。角色 Prompt 由服务端分层组装，并支持本机用户档案与用户手动固定的跨会话事实召回。
 - 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent。Anima Base/Aesthetic 使用 30 steps / CFG 4.5 / `res_multistep` / `simple`（放大 = Remacri 纯像素直出）的模型原生标签流。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
-- 画师风格库：专家模式提供 38 位精选动漫画师与作监风格（含 Nekotomi Chao / 猫富ちゃお、浅野恭司 / WIT Studio、Rella 星夜光影、深崎暮人等），支持 SD/WAI (Danbooru tags)、Anima (`@artist`) 与 Krea 2 (自然语言) 跨引擎编译。
+- 画师风格库：专家模式提供 39 位精选动漫画师与作监风格（含 Nekotomi Chao / 猫富ちゃお、浅野恭司 / WIT Studio、Rella 星夜光影、深崎暮人等），支持 SD/WAI (Danbooru tags)、Anima (`@artist`) 与 Krea 2 (自然语言) 跨引擎编译。
 - 视频：`/video-studio` 本地 AI 视频工作台。支持 Wan 2.2 TI2V 与 MiniMax H3（Ref2VA 多模态参考图绑定）；支持剧本分镜智能拆解、画风锚注入、中日英对白语言显式控制（`dialogueLang`）与 Range 播放。
 - 训练：训练参数覆盖、数据集枚举、配置副本、ETA 和日志均遵守 `AGENTS.md` 的白名单契约。
 - 桌面：Tauri 2 NSIS 正式打包与快速增量部署（`deploy-desktop-quick.ps1`）双轨运行；Native Live2D overlay 正常接入。

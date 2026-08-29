@@ -292,6 +292,18 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
     verification: 'curated',
     keywords: ['氛围', '湿润', '私密', '慵懒'],
   },
+  {
+    id: 'rucarachi',
+    name: 'Rucarachi',
+    cnName: 'Rucarachi',
+    waiTag: 'rucarachi',
+    animaTag: '@rucarachi',
+    description: 'NIKKE 周年主视觉画师、细腻线条与柔和色彩的游戏角色同人绘',
+    masterpiece: '《NIKKE》2.5 周年纪念主视觉、原神雷电将军与八重神子、绝区零同人',
+    category: 'pure',
+    verification: 'tag',
+    keywords: ['nikke', '妮姬', '原神', '雷电将军', '八重神子', '阿蕾奇诺', '绝区零', '细腻', '同人', 'game fan art'],
+  },
 
   // ── 潮流先锋与高饱和 ──────────────────────────────────────────
   {

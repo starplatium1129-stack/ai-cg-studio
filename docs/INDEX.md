@@ -25,7 +25,7 @@
 | **统一工作流** | [`workflow.md`](workflow.md) | **新同学首读**。`scripts/workflow.js` 统一入口，一览全部生图/审核/参考库/构建链路与参数。 |
 | **协作指南** | `AGENTS.md` (根目录) | **最高优先级**。开发约束、质量门槛、出图/审核规范、桌面部署规范与并行协作协议。 |
 | **设计系统契约** | `DESIGN.md` (根目录) | 界面视觉规范、色彩 Tokens、Typography、组件规范与布局标准。 |
-| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（43 热门角色/45 角色库/944 视角参考库、38 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
+| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（43 热门角色/45 角色库/944 视角参考库、39 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
 | **维护操作指南** | [`maintenance.md`](maintenance.md) | 场景维护、数据验证、多模型同步、备份恢复等日常维护脚本与契约。 |
 | **产品与运营全维审计** | [`product-operations-audit-2026-08-29.md`](product-operations-audit-2026-08-29.md) | 产品完整度/UX/数据内容/性能/运维/成本/AI 协作七维审计（综合 7.1）与 P0-P2 行动清单；与同日工程/设计审计互补。 |
 | **视觉与架构路线** | [`visual-architecture-roadmap.md`](visual-architecture-roadmap.md) | ⚠️ 2026-08-28 过期标注：浅色主题已下线（锁定深色），文中双主题结论不再适用；仅存历史演进记录。 |
@@ -57,6 +57,7 @@
 | 文档名称 | 路径 | 核心内容与维护状态 |
 | :--- | :--- | :--- |
 | **三引擎提示词体系** | [`three-engine-prompt-research.md`](three-engine-prompt-research.md) | SD/WAI、Anima 1.1、Krea 2 Turbo 三生成引擎语法、约束与提示词编译机制。 |
+| **随机灵感组装设计** | [`random-prompt-assembler-design.md`](random-prompt-assembler-design.md) | 导演台「随机灵感」方案：复用标签资产池与现有编译管线，三引擎随机组装规则、零新增门控（Mature 遵循既有契约）、互斥表与实施分期（P0 已落地 2026-08-29）。 |
 | **Krea 2 编写指南** | [`krea2-prompt-writing-guide.md`](krea2-prompt-writing-guide.md) | Krea 2 自然语言 3~5 句散文构筑法则、无负面与去审查规约。 |
 | **模型与参数配置指南** | [`model-prompting-and-parameters-guide.md`](model-prompting-and-parameters-guide.md) | 模型采样器、CFG、步数、hires 放大参数全景配置表。 |
 | **Anima 训练与复现记录** | [`anima-training-record.md`](anima-training-record.md) | 宁宁/夏目 Anima LoRA 训练超参、矩阵评审、晋级基线与复现协议。 |
