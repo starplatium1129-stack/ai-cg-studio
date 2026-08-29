@@ -656,10 +656,12 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
     const outfitProse = adultGranted ? '' : outfitProseForRender(outfit.prose)
-    // Krea 是自然语言模型：hint 转散文时必须把下划线画师名（如 @jazz_jack）还原为空格，
-    // 并去掉括号注释（如 @hiten (hitenkei) → hiten），否则散文里会混入下划线 token。
+    // Krea 是自然语言模型：手动画师散文由 artistStyleProse 负责还原空格/去括号
+    // 注释（如 @hiten (hitenkei) → hiten），这里直接透传用户手动选择。
+    // 2026-08-29 需求变更：热门角色画师默认不注入（保持角色原滋原味）。
+    // 蓝图 adultArtistHint 不再作为无手动画师时的自动回退——画师完全由用户
+    // 手动选择（artistProse/artistTags），未选即不带画师。
     const effectiveArtistProse = options.artistProse
-      || (adultGranted && blueprint?.adultArtistHint ? `with visual styling inspired by ${blueprint.adultArtistHint.replace(/^@/, '').replace(/\s*\(.+\)$/, '').replace(/_/g, ' ').trim()}` : undefined)
     // 2026-08-24 审计修复：Krea 分支此前硬编码 camera/lighting 为空数组，
     // 导演面板与蓝图推断的镜头/光照决策在 Krea 上被整体丢弃（438 蓝图实测
     // 仅剩 rule_of_thirds 一句构图）。经 promptCompiler 的 cameraPhrase/
@@ -696,9 +698,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     ...(character.exactTokens || []),
     ...nsfwTokens,
   ])]
-  const effectiveArtists = (options.artistTags && options.artistTags.length)
-    ? options.artistTags
-    : (adultGranted && blueprint?.adultArtistHint ? [blueprint.adultArtistHint] : undefined)
+  // 2026-08-29 需求变更：画师仅来自用户手动选择（artistTags），
+  // 蓝图 adultArtistHint 不再自动兜底注入（保持角色原滋原味）。
+  const effectiveArtists = (options.artistTags && options.artistTags.length) ? options.artistTags : undefined
   const rating = profileRatingTag(profile, { rating: ratingLevel })
   const plan = createPromptPlan({
     profile,

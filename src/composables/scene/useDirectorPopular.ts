@@ -135,6 +135,9 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       // 宁宁/夏目场景的故事（裸 ?popular= 深链/页内切换均可见）。选中蓝图后故事
       // 由 selectBlueprint 写回蓝图的 description。
       pb.clearScene()
+      // 2026-08-29 需求变更：热门角色画师默认不注入——清掉从工作室/上一会话
+      // 继承的画师，保持角色原滋原味；画师完全由用户手动选择。
+      pb.setArtistStyleIds([])
       resetBlueprintRotation()
       if (pb.popularCharacters.length) {
         const first = pb.popularCharacters[0]
@@ -154,6 +157,9 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     if (pb.subject.kind !== 'popular' || pb.subject.characterId === character.id) return
     const outfitId = character.outfits.find(o => o.default)?.id ?? character.outfits[0].id
     pb.setPopularSubject(character.id, outfitId, null)
+    // 2026-08-29 需求变更：切换热门角色时清空上一角色继承的画师（保持角色
+    // 原滋原味），画师由用户按角色手动选择。
+    pb.setArtistStyleIds([])
     pb.visualDescription = ''
     resetBlueprintRotation()
     // recommendedEngine 为 Krea 时直接切 krea2 引擎（当前数据全 aesthetic，仍保留分支防死字段）。
