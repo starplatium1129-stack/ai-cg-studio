@@ -621,6 +621,8 @@ onMounted(() => { init() })
 .subtitle { margin-bottom:0; }
 
 .scene-atlas { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr); gap:var(--s-5); margin-bottom:var(--s-5); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(120deg,var(--rella-glow-violet),transparent 58%),linear-gradient(145deg,var(--glass-highlight),transparent 28%),linear-gradient(160deg,color-mix(in srgb,var(--rella-night-soft) 55%,transparent),transparent 70%),var(--bg-surface); box-shadow:var(--shadow-glass-sm); }
+/* contrast-exempt: 装饰性巨型水印（SCENE 底噪，4% 透明度、pointer-events:none、无信息含义），
+   不是可阅读文本，不适用 WCAG 1.4.3；若日后让它承载信息，删掉本标记并按 4.5:1 选色。 */
 .scene-atlas::before { content:"SCENE"; position:absolute; left:-.04em; bottom:-.22em; color:color-mix(in srgb,var(--text-primary) 4%,transparent); font:800 clamp(4rem,10vw,8rem) var(--font-mono); letter-spacing:-.08em; pointer-events:none; }
 .scene-atlas-copy { position:relative; z-index:var(--z-raised); display:flex; flex-direction:column; justify-content:center; min-width:0; }
 .scene-atlas-register { display:grid; grid-template-columns:auto auto 1fr; align-items:center; gap:var(--s-3); margin-bottom:var(--s-5); color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
@@ -750,7 +752,7 @@ onMounted(() => { init() })
 
 .ex-scene-line { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-1); margin:0 0 var(--s-2); color:var(--text-muted); font-size:var(--fs-mono-sm); }
 .ex-scene-line strong { color:var(--accent); font-weight:750; }
-.ex-scene-line span+span::before { content:'·'; margin-right:var(--s-1); color:var(--border-strong); }
+.ex-scene-line span+span::before { content:'·'; margin-right:var(--s-1); /* 审计修复：分隔符原用 --border-strong(2.73:1)，改 --text-muted */ color:var(--text-muted); }
 .ex-curation { margin:0 0 var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
 .ex-actions { display:flex; gap:var(--s-2); margin-top:var(--s-1); }
 .ex-actions .btn { flex:1; justify-content:center; font-weight:700; }
@@ -774,7 +776,7 @@ onMounted(() => { init() })
 :deep(.sc:hover) .ex-more, :deep(.sc:focus-within) .ex-more { max-height:160px; opacity:1; }
 .ex-decision { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-secondary); font-size:var(--fs-mono-sm); }
 .ex-decision::before { content:'镜头'; color:var(--text-muted); font:750 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }
-.ex-decision span+span::before { content:'·'; margin-right:var(--s-1); color:var(--border-strong); }
+.ex-decision span+span::before { content:'·'; margin-right:var(--s-1); /* 审计修复：分隔符原用 --border-strong(2.73:1)，改 --text-muted */ color:var(--text-muted); }
 .ex-decision strong { color:var(--text-primary); font-weight:650; }
 .ex-secondary { display:flex; gap:var(--s-1); flex-wrap:wrap; }
 .ex-secondary .btn { flex:1; justify-content:center; min-width:0; }

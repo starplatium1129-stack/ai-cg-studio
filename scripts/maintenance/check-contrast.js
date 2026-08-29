@@ -162,22 +162,25 @@ console.log('未达 3:1 的非文字图形 token: ' + nonTextFailures + ' 项');
 console.log('\n=== SFC <style> 局部文字色（组件级盲区补扫） ===');
 let sfcChecks = 0;
 let sfcFailures = 0;
+let sfcExempt = 0;
 const sfcSurfaces = SURFACES.map((name) => ({ name, bg: compositeSurface(dark, name, hexToRgb(dark['--bg-deep'])) })).filter((s) => s.bg);
 
-// 从声明值里解析出可计算的颜色：字面 hex 或解析得动的 var() 令牌
-function declColor(raw) {
+// 从声明值里解析出可计算的颜色。除字面 hex 外，也解析 rgba() / rgb() /
+// color-mix() / var() 令牌 —— 半透明白字（rgba(255,255,255,.6)）是组件里最常见的
+// 漏网写法，不合成到落点上根本看不出它压线不过。
+const SKIP_VALUES = new Set(['transparent', 'inherit', 'initial', 'unset', 'currentColor', 'none']);
+function declColor(raw, parentRgb) {
   const value = raw.replace(/!important/g, '').trim();
+  if (!value || SKIP_VALUES.has(value)) return null;
   if (/^#[0-9a-fA-F]{3,8}$/.test(value)) {
     const digits = value.slice(1);
     const full = digits.length <= 4 ? digits.split('').slice(0, 3).map((c) => c + c).join('') : digits;
     return hexToRgb('#' + full.slice(0, 6));
   }
   const alias = value.match(/^var\(\s*(--[\w-]+)\s*\)$/);
-  if (alias) {
-    const hex = resolve(dark, alias[1]);
-    if (hex && /^#/.test(hex)) return hexToRgb(hex);
-  }
-  return null;
+  const expr = alias ? resolve(dark, alias[1]) : value;
+  if (!expr) return null;
+  return compositeSurface({ ...dark, tmp: expr }, 'tmp', parentRgb);
 }
 
 for (const file of sources.sfcFiles()) {
@@ -188,25 +191,38 @@ for (const file of sources.sfcFiles()) {
     for (const rule of styleBody.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
       const ruleBody = rule[2];
       const ownBackgrounds = [];
+      let ownBgUnknown = false; // 规则自身声明了底色但解析不动（动态 var/渐变/图像）
       for (const bg of ruleBody.matchAll(/(?:^|;)\s*(?:background(?:-color)?|backdrop)\s*:\s*([^;}]+)/g)) {
-        const rgb = declColor(bg[1]);
+        const rgb = declColor(bg[1], hexToRgb(dark['--bg-deep']));
         if (rgb) ownBackgrounds.push(rgb);
+        else if (!SKIP_VALUES.has(bg[1].replace(/!important/g, '').trim())) ownBgUnknown = true;
       }
+      // 装饰性渐变/水印：按项目约定显式写 contrast-exempt 并给理由，与动效门禁的
+      // compositor-exempt 同一治理思路（可见、可查、可评审），不用通符放行。
+      // 标记写在规则的选择器段（选择器与 `{` 之间的注释块）里，只作用于紧随的那条规则，
+      // 不会顺带豁免邻居。
+      const exempt = /contrast-exempt\s*:/.test(rule[1]);
+      if (exempt) sfcExempt += 1;
       for (const decl of ruleBody.matchAll(/(?<![-\w])color\s*:\s*([^;}]+)/g)) {
         const rawValue = decl[1].replace(/!important/g, '').trim();
-        if (!/^#[0-9a-fA-F]{3,8}$/.test(rawValue)) continue;
+        if (!/^(#|rgb|hsl|color-mix|var\()/i.test(rawValue)) continue;
+        if (exempt || ownBgUnknown) continue; // 落点未知或已声明豁免 —— 不猜、不错杀
         const line = baseLine + styleBody.slice(0, rule.index + rule[1].length + 2 + decl.index).split('\n').length;
-        const fg = declColor(rawValue);
-        sfcChecks += 1;
         const candidates = sfcSurfaces.map((s) => ({ name: s.name, bg: s.bg })).concat(
           ownBackgrounds.map((bg, i) => ({ name: '规则自身背景#' + (i + 1), bg }))
         );
-        if (!candidates.length) continue;
-        const results = candidates.map((c) => ratio(fg, c.bg));
+        // 前景色随落点合成（alpha 值要在具体背景上才算得准），解析不动的跳过
+        const results = [];
+        for (const c of candidates) {
+          const fg = declColor(rawValue, c.bg);
+          if (fg) results.push(ratio(fg, c.bg));
+        }
+        if (!results.length) continue;
+        sfcChecks += 1;
         // 判定语义：规则自身声明了可解析背景 → 文字必然落在它上面，硬判该落点；
         // 没有自身背景 → 落在父级表面但具体是哪个未知，要求 4 个表面全部达标。
         let ok, detail;
-        if (ownBackgrounds.length) {
+        if (ownBackgrounds.length && results[sfcSurfaces.length] !== undefined) {
           ok = results[sfcSurfaces.length] >= 4.5;
           detail = '自身背景 ' + results[sfcSurfaces.length].toFixed(2) + ':1';
         } else {
@@ -222,6 +238,6 @@ for (const file of sources.sfcFiles()) {
     }
   }
 }
-console.log('  SFC 局部文字色检查 ' + sfcChecks + ' 处，FAIL ' + sfcFailures + ' 处');
+console.log('  SFC 局部文字色检查 ' + sfcChecks + ' 处，FAIL ' + sfcFailures + ' 处，已豁免 ' + sfcExempt + ' 处');
 
 if (process.argv.includes('--check') && (failures > 0 || nonTextFailures > 0 || sfcFailures > 0)) process.exit(1);

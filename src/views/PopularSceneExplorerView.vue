@@ -639,7 +639,7 @@ onMounted(() => { void init() })
   line-height: var(--lh-body);
 }
 .pop-meta { display: flex; flex-wrap: wrap; gap: var(--s-1); color: var(--text-muted); font-size: var(--fs-mono-xs); }
-.pop-meta span + span::before { content: ' · '; margin-right: var(--s-1); color: var(--border-strong); }
+.pop-meta span + span::before { content: ' · '; margin-right: var(--s-1); /* 审计修复：分隔符原用 --border-strong(2.73:1)，改 --text-muted */ color: var(--text-muted); }
 /* 2026-08-16 减压：决策行去底盒改轻量元数据行，把视觉焦点还给样张与 CTA */
 .pop-decision {
   display: flex;
@@ -649,7 +649,7 @@ onMounted(() => { void init() })
   font-size: var(--fs-mono-xs);
 }
 .pop-decision strong { color: var(--text-secondary); font-weight: 650; }
-.pop-decision span + span::before { content: ' · '; margin-right: var(--s-2); color: var(--border-strong); }
+.pop-decision span + span::before { content: ' · '; margin-right: var(--s-2); /* 审计修复：分隔符原用 --border-strong(2.73:1)，改 --text-muted */ color: var(--text-muted); }
 .pop-artist strong { color: var(--accent); }
 .pop-card-actions { margin-top: auto; }
 .pop-draw-action {

@@ -1139,7 +1139,9 @@ onBeforeUnmount(() => {
 .shot-review-item[data-severity="warn"] { background: color-mix(in srgb, var(--warning) 10%, transparent); }
 .shot-review-tag { padding: 1px var(--s-2); border-radius: var(--r-pill); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .shot-review-item[data-severity="error"] .shot-review-tag { background: var(--danger); color: var(--text-inverse); }
-.shot-review-item[data-severity="warn"] .shot-review-tag { background: color-mix(in srgb, var(--warning) 40%, transparent); color: var(--warning-text); }
+/* 审计修复：warn 标签原为 40% 透明 warning 底配 --warning-text（4.05:1 压线不过），
+   与同级 error 标签统一为「实心底 + 反色深字」 */
+.shot-review-item[data-severity="warn"] .shot-review-tag { background: var(--warning); color: var(--text-inverse); }
 .shot-review-copy { flex: 1 1 280px; min-width: 0; line-height: var(--lh-body); }
 .shot-review-copy em { color: var(--text-secondary); font-style: normal; }
 .shot-issue-badge { padding: 1px var(--s-2); border-radius: var(--r-pill); background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger-text); font: 700 var(--fs-mono-xs) var(--font-mono); }

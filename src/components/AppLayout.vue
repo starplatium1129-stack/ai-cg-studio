@@ -142,7 +142,8 @@ function onLeave(el: Element, done: () => void) {
   margin-left: var(--s-3);
   border: 2px solid color-mix(in srgb, var(--danger) 42%, transparent);
   border-radius: var(--r-sm);
-  color: color-mix(in srgb, var(--danger) 55%, transparent);
+  /* 审计修复：朱印字原为 55% 透明的 danger（2.09:1 不可读），改用文字专用令牌 */
+  color: var(--danger-text);
   font: 700 var(--fs-body-sm) var(--font-serif);
   letter-spacing: 0.06em;
   transform: rotate(-8deg);
