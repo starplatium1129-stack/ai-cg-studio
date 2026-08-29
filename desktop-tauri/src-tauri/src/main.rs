@@ -9,6 +9,7 @@ mod paths;
 mod shim;
 mod state;
 mod tray;
+mod updater_cmd;
 mod watchers;
 mod window_state;
 
@@ -152,6 +153,7 @@ fn main() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_deep_link::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .invoke_handler(tauri::generate_handler![
             bridge::get_state,
             bridge::hide,
@@ -181,6 +183,8 @@ fn main() {
             bridge::open_log,
             bridge::pick_files,
             bridge::save_image,
+            updater_cmd::desktop_update_check,
+            updater_cmd::desktop_update_install,
             live2d_overlay::aics_live2d_set_character,
             live2d_overlay::aics_live2d_set_frame,
             live2d_overlay::aics_live2d_play_motion,
@@ -210,6 +214,9 @@ fn main() {
             }
 
             state.info("Companion starting (tauri shell)");
+
+            // 桌面自动更新：启动后台检查一次，发现新版本走通知+控制面板横幅（审计 P1）
+            updater_cmd::spawn_startup_check(app.handle().clone());
 
             // 深链注册（dev 模式插件不会自动写注册表，需显式注册）
             {

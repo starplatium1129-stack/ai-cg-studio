@@ -230,6 +230,12 @@ function createGateway(options) {
   }, config.SCENE_SHOWCASE_DIR
     ? express.static(config.SCENE_SHOWCASE_DIR, { dotfiles:'deny', index:false, fallthrough:false })
     : function (req, res) { res.status(404).end(); });
+  // 桌面端自动更新产物（latest.json + 签名安装包）：由 release-desktop-update.js 写入。
+  // sidecar/主站同源伺服，updater 端点固定指向本网关（tauri.conf.json plugins.updater）。
+  app.use('/desktop-updates', function (req, res, next) {
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+  }, express.static(path.join(config.ROOT_DIR, 'runtime', 'desktop-updates'), { dotfiles:'deny', index:false, fallthrough:false }));
   app.use('/docs', express.static(path.join(config.ROOT_DIR, 'docs'), Object.assign(staticOptions(ONE_DAY), { index:'index.html' })));
   app.use('/tools', function (req, res, next) {
     if (req.path === '/control-server.js') return res.status(404).end();

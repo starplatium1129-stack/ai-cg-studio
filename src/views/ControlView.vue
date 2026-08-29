@@ -16,6 +16,14 @@
       </div>
     </nav>
 
+    <div v-if="desktopUpdateVersion" class="desktop-update-banner" role="status">
+      <span class="desktop-update-text">
+        桌面端新版本 {{ desktopUpdateVersion }} 可用{{ desktopUpdateStatus ? ' · ' + desktopUpdateStatus : '' }}{{ desktopUpdateError ? ' · ' + desktopUpdateError : '' }}
+      </span>
+      <button class="btn btn-primary" type="button" :disabled="desktopUpdateInstalling || undefined" @click="installDesktopUpdate()">
+        {{ desktopUpdateInstalling ? '正在更新…' : '一键升级' }}
+      </button>
+    </div>
     <div class="control-layout">
       <aside class="control-rail" aria-label="控制室导航">
         <RouterLink to="/" class="control-rail-brand">
@@ -338,6 +346,16 @@ import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { useToast } from '@/composables/useToast'
+import { useDesktopUpdater } from '@/composables/useDesktopUpdater'
+
+const updater = useDesktopUpdater()
+const {
+  availableVersion: desktopUpdateVersion,
+  statusText: desktopUpdateStatus,
+  installing: desktopUpdateInstalling,
+  errorText: desktopUpdateError,
+  install: installDesktopUpdate,
+} = updater
 // /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
 // 都要等运行时才炸，而这个视图正好在破坏性路径上（改上游 host、启停服务、
 // 开关公网隧道）。
@@ -418,6 +436,24 @@ onUnmounted(() => { status.stopPolling() })
 </script>
 
 <style scoped>
+.desktop-update-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin: var(--s-3) var(--s-4) 0;
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body);
+}
+.desktop-update-text {
+  color: var(--text-secondary);
+}
+
 /* 常驻控制轨道 + 克制的玻璃分层；移动端回退为熟悉的顶部导航。 */
 .control-page {
   min-height: 100vh;
