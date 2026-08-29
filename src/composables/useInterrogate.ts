@@ -3,11 +3,15 @@ import { ref } from 'vue'
 export type InterrogateMode = 'tag' | 'caption'
 export interface InterrogateResult {
   engine: string
+  model?: string
   mode: InterrogateMode
   threshold: number
   tags: string[]
   scores: Record<string, number>
   caption: string
+  captionDerived?: string
+  characterTags?: string[]
+  rating?: Record<string, number>
   warning?: string
 }
 

@@ -4,6 +4,13 @@
  * routes/interrogate.js — 本地图片反推（无网络）
  * 目标：上传一张图 → 反推出 Anima(Tag) / Krea2(Prose) → 回填 promptBuilderStore → 切人直出
  * 约束：仅本机可用，图片不落盘明文，阈值过滤 + 去身份污染由调用方二次处理
+ *
+ * 引擎顺序（2026-08-29 接入真实反推模型）：
+ *   1. wd14    —— 本地 ONNX 真实推理（server/interrogate-engine.js，复用本机
+ *                 ComfyUI-WD14-Tagger 权重，不依赖 WebUI/ComfyUI 进程在线）
+ *   2. webui   —— 本地 WebUI 的 wd14 tagger / sdapi interrogate
+ *   3. comfy   —— ComfyUI WD14Tagger 节点（走节点 HTTP 接口）
+ *   4. heuristic —— 纯启发式兜底（仅在真实模型缺失时保留，返回 warning 如实标注）
  */
 
 var express = require('express');
@@ -14,6 +21,7 @@ var path = require('path');
 var crypto = require('crypto');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
+var wd14 = require('../server/interrogate-engine');
 
 var MAX_BODY = '16mb';
 var MAX_IMAGE_BYTES = 12 * 1024 * 1024; // base64前 12M ≈ dataURL 16M
@@ -77,8 +85,7 @@ function requestJson(config, hostKey, method, pathname, body, timeout) {
   });
 }
 
-// 本地启发式兜底（无 WD14/Florence 时仍可闭环演示，切人→出图链路不阻塞）
-// 后续接入真实 onnx 时用同接口替换此函数即可
+// 本地启发式兜底（WD14 真实模型缺失时的最后防线；命中时返回 warning 如实标注）
 function heuristicTagFallback(threshold) {
   // 返回一组覆盖 服装/场景/光照/构图的通用高质量 Tag，供前端演示“反推→切人→生成”
   var base = [
@@ -101,6 +108,56 @@ function heuristicTagFallback(threshold) {
     scores: filtered.reduce(function (acc, i) { acc[i.tag] = i.score; return acc; }, {}),
     caption: 'a girl with long hair, soft window lighting, indoor scene, detailed eyes, school uniform, pleated skirt, depth of field'
   };
+}
+
+// 基于真实 WD14 tags 派生 Krea2 自然语言描述（非独立 caption 模型，如实标注 derived）
+var CAPTION_PHRASE = {
+  '1girl': 'a girl', '1boy': 'a boy', 'solo': 'alone',
+  'long_hair': 'long hair', 'short_hair': 'short hair', 'very_long_hair': 'very long hair',
+  'blonde_hair': 'blonde hair', 'brown_hair': 'brown hair', 'black_hair': 'black hair',
+  'white_hair': 'white hair', 'silver_hair': 'silver hair', 'pink_hair': 'pink hair',
+  'blue_hair': 'blue hair', 'purple_hair': 'purple hair', 'green_hair': 'green hair',
+  'red_hair': 'red hair', 'blue_eyes': 'blue eyes', 'green_eyes': 'green eyes',
+  'red_eyes': 'red eyes', 'brown_eyes': 'brown eyes', 'golden_eyes': 'golden eyes',
+  'purple_eyes': 'purple eyes', 'smile': 'smiling', 'blush': 'with a blush',
+  'school_uniform': 'wearing a school uniform', 'sailor_uniform': 'wearing a sailor uniform',
+  'white_shirt': 'wearing a white shirt', 'dress': 'wearing a dress', 'skirt': 'wearing a skirt',
+  'pleated_skirt': 'wearing a pleated skirt', 'indoors': 'an indoor scene', 'indoor': 'an indoor scene',
+  'outdoors': 'an outdoor scene', 'outdoor': 'an outdoor scene', 'night': 'at night',
+  'day': 'in daylight', 'soft_lighting': 'soft lighting', 'sunlight': 'sunlight',
+  'window_light': 'light from a window', 'depth_of_field': 'with depth of field',
+  'bokeh': 'with a blurred background', 'detailed_background': 'a detailed background',
+  'simple_background': 'a simple background', 'looking_at_viewer': 'looking at the viewer',
+  'looking_away': 'looking away', 'upper_body': 'an upper body shot', 'full_body': 'a full body shot',
+  'portrait': 'a portrait', 'cowboy_shot': 'a cowboy shot', 'cute': 'a cute look',
+  'serious': 'a serious expression', 'happy': 'a happy expression'
+};
+function captionFromTags(tags) {
+  var top = (tags || []).slice(0, 10);
+  var subject = '';
+  var phrases = [];
+  top.forEach(function (tag) {
+    var known = CAPTION_PHRASE[tag];
+    if (known) {
+      if (tag === '1girl' || tag === '1boy' || tag === 'solo') {
+        if (!subject) subject = known;
+        return;
+      }
+      phrases.push(known);
+      return;
+    }
+    if (tag.indexOf('_hair') > 0 || tag.indexOf('_eyes') > 0) { phrases.push(String(tag).replace(/_/g, ' ')); return; }
+    if (/^(?:wearing|holding|with|in|on|at|under|above|beside|between|behind|near|from|of|the|a|an|playing|reading|sitting|standing|walking|running|jumping|sitting_on|standing_on|leaning)/i.test(tag)) {
+      phrases.push(String(tag).replace(/_/g, ' '));
+      return;
+    }
+    // 其余标签不强行塞入 prose（避免 tag 堆砌），仅保留有明确语义的短语
+    phrases.push(String(tag).replace(/_/g, ' '));
+  });
+  if (!subject) subject = 'a character';
+  var seen = {}; var uniq = [];
+  phrases.forEach(function (p) { if (!seen[p]) { seen[p] = 1; uniq.push(p); } });
+  return subject + ', ' + uniq.join(', ');
 }
 
 async function tryWebUIInterrogate(config, imageBase64, threshold) {
@@ -203,6 +260,27 @@ function createInterrogateRouter(config) {
       var threshold = body.threshold === undefined ? DEFAULT_THRESHOLD : Number(body.threshold);
       if (!Number.isFinite(threshold) || threshold < 0.05 || threshold > 0.95) throw serviceError(400, 'INVALID_PARAMETER', 'threshold 需在 0.05-0.95');
       var imageBase64 = validateImageBase64(body.image || body.imageBase64 || '');
+      var imageBuffer = Buffer.from(imageBase64, 'base64');
+
+      // 0) 本地 WD14 真实 ONNX 推理（最优先：不依赖 WebUI/ComfyUI 进程在线，零网络）
+      var wd14Result = await wd14.interrogateTag(imageBuffer, { config: config, threshold: threshold }).catch(function () { return null; });
+      if (wd14Result && wd14Result.ok) {
+        var derivedCaption = captionFromTags(wd14Result.tags);
+        return envelope.ok(res, {
+          engine: 'wd14',
+          model: wd14Result.model,
+          mode: mode,
+          threshold: threshold,
+          tags: wd14Result.tags,
+          scores: wd14Result.scores,
+          rating: wd14Result.rating,
+          characterTags: wd14Result.characterTags,
+          caption: mode === 'caption' ? derivedCaption : wd14Result.tags.join(', '),
+          captionDerived: mode === 'caption' ? 'wd14-tags' : undefined,
+          editable: true,
+          meta: wd14Result.meta
+        });
+      }
 
       // 1) 本地 WebUI 优先（纯本机，不走 8317）
       var webuiResult = await tryWebUIInterrogate(config, imageBase64, threshold).catch(function () { return null; });
@@ -225,7 +303,7 @@ function createInterrogateRouter(config) {
         return envelope.ok(res, Object.assign({ engine: 'comfy', mode: mode, threshold: threshold, editable: true }, comfyResult));
       }
 
-      // 3) 纯本地启发式兜底（零模型依赖，闭环可跑；接真实 onnx 后替换此分支）
+      // 3) 纯本地启发式兜底（仅当 WD14/WebUI/ComfyUI 全部不可用；warning 如实标注）
       var fallback = heuristicTagFallback(threshold);
       return envelope.ok(res, {
         engine: 'heuristic',
@@ -235,19 +313,20 @@ function createInterrogateRouter(config) {
         scores: fallback.scores,
         caption: fallback.caption,
         editable: true,
-        warning: '当前为本地启发式兜底，已可切人直出；安装 WD14/JoyCaption 模型后自动升级为真实反推'
+        warning: '未找到本地 WD14 反推模型（onnxruntime/权重缺失），当前为启发式演示兜底；安装 ComfyUI-WD14-Tagger 节点或配置 AICS_WD14_MODEL_DIR 后自动升级为真实反推'
       });
     } catch (e) {
       return envelope.fail(res, e.status || 500, e.message || '反推失败', { code: e.code || 'INTERROGATE_FAILED' });
     }
   });
 
-  // 轻量探测：前端据此决定显示 本地/启发式 徽标
+  // 轻量探测：前端据此决定显示 本地/WD14/启发式 徽标
   router.get('/api/interrogate/status', function (req, res) {
     res.setHeader('Cache-Control', 'no-store');
     return envelope.ok(res, {
       local: true,
-      engines: ['webui', 'comfy', 'heuristic'],
+      engines: ['wd14', 'webui', 'comfy', 'heuristic'],
+      wd14: wd14.probe(config),
       thresholdDefault: DEFAULT_THRESHOLD,
       maxBytes: MAX_IMAGE_BYTES
     });

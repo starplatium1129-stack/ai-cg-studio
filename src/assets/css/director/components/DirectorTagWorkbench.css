@@ -6,6 +6,14 @@
   .pb .expert-tags-header { gap: var(--s-2); }
   .pb .expert-tags-actions { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
   .pb .expert-tags-actions .search-icon { width: 12px; height: 12px; }
+  /* 反推引擎徽标（WD14 真实模型 / 启发式兜底） */
+  .pb .tag-interrogate-engine {
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:var(--fs-mono-xs); font-family:var(--font-mono); color:var(--accent);
+    padding:2px 8px; border-radius:var(--r-pill); border:1px solid color-mix(in srgb,var(--accent) 35%,var(--border-soft));
+    background:var(--accent-soft); white-space:nowrap; cursor:help;
+  }
+  .pb .tag-interrogate-engine.is-fallback { color:var(--text-muted); border-color:var(--border-soft); background:transparent; }
   .pb .expert-tags-header { display:flex; align-items:center; justify-content:space-between; width:100%; }
   .pb .expert-tag-count { margin-left:var(--s-2); font-size:var(--fs-label-xs); color:var(--accent); font-weight:600; padding:2px 6px; border-radius:var(--r-pill); background:var(--accent-soft); }
   .pb .clear-tags-btn { font-size:var(--fs-label-xs); padding:2px 8px; border-radius:var(--r-sm); color:var(--text-muted); }

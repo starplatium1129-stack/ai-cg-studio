@@ -3,9 +3,10 @@
     <div class="panel-title expert-tags-header">
       <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
       <div class="expert-tags-actions">
-        <button type="button" class="btn btn-ghost btn-xs" :disabled="interrogateBusy" title="上传图片本地反推为 Tag，可切人直出" @click="triggerInterrogatePick">
+        <button type="button" class="btn btn-ghost btn-xs" :disabled="interrogateBusy" title="上传图片本地反推为 Tag（WD14 真实模型），可切人直出" @click="triggerInterrogatePick">
           <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '反推中…' : '本地反推' }}
         </button>
+        <span v-if="interrogateMeta" class="tag-interrogate-engine" :class="{ 'is-fallback': interrogateMeta.fallback }" :title="interrogateMeta.title">{{ interrogateMeta.label }}</span>
         <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
       </div>
       <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
@@ -105,6 +106,8 @@ const tagCategory = ref('all')
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
 const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate } = useInterrogate()
 const interrogateError = computed(() => interrogateErrorRaw.value)
+// 反推引擎徽标：真实模型（wd14）高亮，启发式兜底置灰并如实标注
+const interrogateMeta = ref<{ label: string; title: string; fallback: boolean } | null>(null)
 function triggerInterrogatePick() { interrogateInputRef.value?.click() }
 async function onInterrogateFile(e: Event) {
   var input = e.target as HTMLInputElement
@@ -114,6 +117,17 @@ async function onInterrogateFile(e: Event) {
   try {
     var result = await interrogate(file, 'tag', 0.35)
     if (!result) return
+    if (result.engine === 'wd14') {
+      interrogateMeta.value = {
+        label: `WD14 · ${result.model || 'wd14'}`,
+        title: `真实反推模型（本地 ONNX，零网络）。角色：${(result.characterTags || []).join(', ') || '未识别'}`,
+        fallback: false,
+      }
+    } else if (result.engine === 'heuristic') {
+      interrogateMeta.value = { label: '启发式兜底', title: result.warning || '未找到真实反推模型，当前为演示标签', fallback: true }
+    } else {
+      interrogateMeta.value = { label: result.engine, title: `引擎：${result.engine}`, fallback: false }
+    }
     if (result.mode === 'caption' && result.caption) {
       pb.visualDescription = result.caption
       pb.flash('已反推为自然语言，已填入画面描述（Krea2）')
@@ -126,7 +140,7 @@ async function onInterrogateFile(e: Event) {
       // 去身份污染：若标签明显是发色/瞳色等人物固有特征且与当前角色强相关，仍允许由用户手动取舍，这里不硬拦
       pb.toggleManualTag(norm); added++
     }
-    pb.flash(added ? `本地反推已加入 ${added} 个 Tag，可切人直出` : '反推完成，无新增 Tag')
+    pb.flash(added ? `本地反推已加入 ${added} 个 Tag${result.model ? '（' + result.model + '）' : ''}，可切人直出` : '反推完成，无新增 Tag')
     const warning = result.warning
     if (warning) setTimeout(() => pb.flash(warning), 2600)
   } catch (e) {

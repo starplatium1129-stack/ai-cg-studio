@@ -1,9 +1,10 @@
 'use strict';
 
 /**
- * routes/interrogate 契约测试（2026-08-28 补：此前零覆盖）。
- * 覆盖：参数校验（mode/threshold/base64）、启发式兜底闭环、status 探测。
- * WebUI/Comfy 上游在测试栈中不可达 → 必然落 heuristic 分支，恰验证零依赖兜底。
+ * routes/interrogate 契约测试（2026-08-28 补：此前零覆盖；2026-08-29 适配真实引擎）。
+ * 覆盖：参数校验（mode/threshold/base64）、启发式兜底闭环、status 探测（含 wd14 引擎状态）。
+ * 测试栈 AI_WORKSPACE_ROOT 指向空临时目录 → wd14 不可用，WebUI/Comfy mock 无 interrogate 端点
+ * → 必然落 heuristic 分支，恰验证零依赖兜底。
  */
 
 var assert = require('assert/strict');
@@ -25,12 +26,15 @@ async function run() {
   try {
     var base = stack.baseUrl;
 
-    // status 探测：无需任何模型，返回引擎清单与默认阈值。
+    // status 探测：无需任何模型，返回引擎清单（含 wd14 真实引擎）与默认阈值。
     var status = await json(await fetch(base + '/api/interrogate/status'));
     assert.equal(status.local, true);
-    assert.deepEqual(status.engines, ['webui', 'comfy', 'heuristic']);
+    assert.deepEqual(status.engines, ['wd14', 'webui', 'comfy', 'heuristic']);
     assert.equal(status.thresholdDefault, 0.35);
     assert.equal(typeof status.maxBytes, 'number');
+    // wd14 真实引擎状态：测试栈 workspace 无模型 → available=false（结构契约）。
+    assert.equal(status.wd14.available, false);
+    assert.equal(typeof status.wd14.reason, 'string');
 
     // 参数校验：mode 白名单 / threshold 范围 / 图片必须存在。
     var badMode = await post(base, { mode:'translate', image:TINY_PNG });
