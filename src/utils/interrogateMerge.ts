@@ -36,6 +36,36 @@ const IDENTITY_DOMAINS: IdentityDomain[] = [
   { name: 'subjectCount', label: '主体数量', test: key => SUBJECT_COUNT_RE.test(key) },
 ]
 
+// ── 马赛克/打码类词条：反推命中即自动过滤（2026-08-29 需求） ─────────────
+// NSFW 素材常带官方打码/马赛克，反推出的打码词条会把这些视觉特征带进提示词，
+// 导致新图也带码。uncensored（无码）是正向属性，不在过滤清单。
+const CENSOR_TAGS = new Set([
+  'censored',
+  'mosaic_censoring',
+  'bar_censor',
+  'convenient_censoring',
+  'pointless_censoring',
+  'heart_censor',
+  'hair_censor',
+  'out_of_frame_censoring',
+  'novelty_censor',
+  'steam_censor',
+  'blur_censor',
+  'censored_nipples',
+  'identity_censor',
+  'tail_censor',
+  'light_censor',
+  'soap_censor',
+  'blank_censor',
+  'character_censor',
+])
+
+/** 命中马赛克/打码过滤清单的词条（归一后比较）。 */
+export function isCensorTag(tag: string): boolean {
+  const key = normalizeKey(tag)
+  return key ? CENSOR_TAGS.has(key) : false
+}
+
 /** 词条命中的身份域（无则 null）。 */
 export function identityDomainOf(tag: string): IdentityDomain | null {
   const key = normalizeKey(tag)
@@ -67,6 +97,8 @@ export interface InterrogateMergeResult {
   duplicates: string[]
   /** 与当前角色身份域冲突而跳过的词条（含域与原因）。 */
   conflicts: InterrogateTagConflict[]
+  /** 马赛克/打码类词条（自动过滤，不带进提示词）。 */
+  filtered: string[]
 }
 
 function toKeySet(tokens: ReadonlyArray<string>): Set<string> {
@@ -99,10 +131,16 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
   const accepted: string[] = []
   const duplicates: string[] = []
   const conflicts: InterrogateTagConflict[] = []
+  const filtered: string[] = []
 
   for (const raw of input.tags) {
     const key = normalizeKey(raw)
     if (!key) continue
+    // 马赛克/打码类词条自动过滤（不提示、不计数为重复）。
+    if (CENSOR_TAGS.has(key)) {
+      filtered.push(key)
+      continue
+    }
     if (manualKeys.has(key) || identityKeys.has(key) || sceneKeys.has(key)) {
       duplicates.push(key)
       continue
@@ -123,7 +161,7 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
     accepted.push(key)
   }
 
-  return { accepted, duplicates, conflicts }
+  return { accepted, duplicates, conflicts, filtered }
 }
 
 /**

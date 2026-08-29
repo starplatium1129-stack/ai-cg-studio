@@ -167,6 +167,7 @@ async function onInterrogateFile(e: Event) {
     const parts: string[] = []
     if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条${result.model ? '（' + result.model + '）' : ''}`)
     if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
+    if (merged.filtered.length) parts.push(`已自动过滤马赛克/打码词条 ${merged.filtered.length} 个`)
     if (merged.conflicts.length) {
       const shown = merged.conflicts.slice(0, 3).map(item => item.tag).join('、')
       parts.push(`跳过身份冲突 ${merged.conflicts.length} 个（${shown}${merged.conflicts.length > 3 ? ' 等' : ''}）`)
