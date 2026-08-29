@@ -505,14 +505,18 @@ const WORD_MEANINGS: Record<string, string> = {
 
 const GENERIC_MEANINGS = new Set(['场景词条', '场景成人词', 'v18 训练服装词'])
 
+// WD14 反推高频词条中英词典（2026-08-29 新增，同 chunk 懒加载）。
+import { WD14_ZH } from './tagMeaningZh'
+
 function cleanTag(tag: string): string {
-  return String(tag || '')
+  let raw = String(tag || '')
     .replace(/^\s*<lora:|>\s*$/gi, '')
-    .replace(/^\s*\(+|\)+\s*$/g, '')
-    .replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '')
     .trim()
-    .toLowerCase()
-    .replace(/[\s\-/]+/g, '_')
+  // 仅当整词被括号整体包裹时才剥括号（如 (masterpiece:1.2) 加权语法）；
+  // WD14 角色词尾的 (fate)/(genshin_impact) 等括号是词条的一部分，不能剥。
+  if (/^\(.+\)$/.test(raw)) raw = raw.replace(/^\(+|\)+$/g, '')
+  raw = raw.replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '')
+  return raw.toLowerCase().replace(/[\s\-/]+/g, '_')
 }
 
 /** Returns the catalog Chinese label when present, otherwise a readable token glossary. */
@@ -522,6 +526,9 @@ export function tagMeaning(tag: string, catalogLabel = ''): string {
 
   const normalized = cleanTag(tag)
   if (EXACT_MEANINGS[normalized]) return EXACT_MEANINGS[normalized]
+
+  // WD14 反推高频词整词命中（2026-08-29）：只做整词精确匹配，不参与逐词回退
+  if (WD14_ZH[normalized]) return WD14_ZH[normalized]
 
   // 整词优先：词表里的复合词（convenience_store、winter_coat…）先整体命中，
   // 否则回退到逐词翻译
