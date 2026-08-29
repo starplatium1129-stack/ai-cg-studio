@@ -1,5 +1,6 @@
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { inpaintCanvasSize } from '@/utils/inpaintCanvas'
+import { useToast } from '@/composables/useToast'
 
 export interface InpaintImageSourceDeps {
   open: () => boolean
@@ -46,7 +47,7 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
 
   function processUploadedFile(file: File) {
     if (!file.type.startsWith('image/')) {
-      alert('请选择有效的图片文件 (PNG, JPG, WebP)')
+      useToast().error('请选择有效的图片文件 (PNG, JPG, WebP)')
       return
     }
     uploadedBlob.value = file

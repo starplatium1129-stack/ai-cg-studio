@@ -651,6 +651,7 @@ import { useSceneMaintenance } from '@/composables/scene/useSceneMaintenance'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { confirmAction } from '@/composables/useConfirm'
 
 const sceneStore = useSceneStore()
 
@@ -868,9 +869,9 @@ function openBlueprintEditModal(id: string) {
   bpSnapshot.value = serializeBlueprintModal()
 }
 
-function closeBlueprintModal() {
+async function closeBlueprintModal() {
   if (bpEditing.value && bpSnapshot.value && serializeBlueprintModal() !== bpSnapshot.value) {
-    if (!confirm('蓝图有未保存的修改，确定放弃？')) return
+    if (!(await confirmAction('蓝图有未保存的修改，确定放弃？'))) return
   }
   bpEditing.value = null
   bpEditingId.value = ''
@@ -906,8 +907,8 @@ function saveBlueprint() {
   markDirty('蓝图内容有修改，等待保存到项目')
 }
 
-function deleteBlueprint(id: string) {
-  if (!confirm('确认删除蓝图 ' + id + '？保存到项目后它将从 scene-blueprints.json 中移除。')) return
+async function deleteBlueprint(id: string) {
+  if (!(await confirmAction('确认删除蓝图 ' + id + '？保存到项目后它将从 scene-blueprints.json 中移除。'))) return
   blueprints.value = blueprints.value.filter(b => b.id !== id)
   markDirty('有蓝图等待删除')
 }
@@ -1031,9 +1032,9 @@ function onBeforeUnload(e: BeforeUnloadEvent) {
   if (!dirty.value) return
   e.preventDefault(); e.returnValue = ''
 }
-onBeforeRouteLeave(() => {
+onBeforeRouteLeave(async () => {
   if (!dirty.value) return true
-  return confirm('场景修改尚未保存到项目，仍要离开吗？')
+  return confirmAction('场景修改尚未保存到项目，仍要离开吗？')
 })
 onMounted(() => {
   window.addEventListener('beforeunload', onBeforeUnload)

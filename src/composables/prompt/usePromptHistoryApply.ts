@@ -9,6 +9,7 @@ import {
   inferBlueprintDecisions,
 } from '@/utils/popularContent'
 import { ANIMA_LORA_BY_CHARACTER, type useAnimaSession } from '@/composables/generation/useAnimaSession'
+import { confirmAction } from '@/composables/useConfirm'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -144,7 +145,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
   function resumeHistory(entry: HistoryEntry) { applyHistory(entry) }
   function duplicateHistory(entry: HistoryEntry) { applyHistory(entry, true) }
   async function deleteHistory(entry: HistoryEntry) {
-    if (!confirm(`删除历史「${entry.sceneTitle || entry.scene || '未命名'}」？此操作不可撤销。`)) return
+    if (!(await confirmAction(`删除历史「${entry.sceneTitle || entry.scene || '未命名'}」？此操作不可撤销。`))) return
     try {
       await pb.removeHistoryEntry(entry.id)
       pb.flash('历史记录已删除')

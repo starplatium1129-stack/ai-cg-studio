@@ -33,6 +33,7 @@
 import { computed, ref } from 'vue'
 import { CHARACTERS } from '@/config/characters'
 import type { useChatStorage } from '@/composables/chat/useChatStorage'
+import { confirmAction } from '@/composables/useConfirm'
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 
@@ -111,9 +112,9 @@ function restoreCurrent() {
     : '当前角色没有可并入的归档消息。', 'info')
 }
 
-function clearArchive() {
+async function clearArchive() {
   if (!totalCount.value) return
-  if (!confirm('清空全部聊天归档？建议先导出 JSON 或 Markdown。')) return
+  if (!(await confirmAction('清空全部聊天归档？建议先导出 JSON 或 Markdown。'))) return
   props.storage.clearArchive()
   emit('notice', '聊天归档已清空。', 'info')
 }

@@ -7,6 +7,7 @@
 
 import { ref, computed, watch } from 'vue'
 import type { TagRecord, SceneDraft } from '@/types/api'
+import { confirmAction } from '@/composables/useConfirm'
 
 export const TAG_PAGE_SIZE = 60
 export const TAG_CATS = ['Character', 'Clothing', 'Action', 'Emotion', 'Scene', 'Lighting', 'Body', 'Appearance']
@@ -132,11 +133,11 @@ export function useSceneTagManager({ tags, scenes, markDirty }: TagHooks) {
     closeTagModal()
   }
 
-  function deleteTag(id: string) {
+  async function deleteTag(id: string) {
     const tag = tags.value.find((t) => t.id === id)
     if (!tag) return
     const used = tagUsage.value[tag.en] || 0
-    if (!confirm(`确认删除标签「${tag.en}」？${used ? `场景中的 ${used} 处引用也会一并移除。` : ''}`)) return
+    if (!(await confirmAction(`确认删除标签「${tag.en}」？${used ? `场景中的 ${used} 处引用也会一并移除。` : ''}`))) return
     tags.value = tags.value.filter((t) => t.id !== id)
     scenes.value.forEach(s => {
       if (Array.isArray(s.tags)) s.tags = s.tags.filter((v: string) => v !== tag.en)

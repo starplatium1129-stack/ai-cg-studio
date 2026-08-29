@@ -37,8 +37,12 @@ export interface UsePollingHandle {
 }
 
 export function usePolling(options: UsePollingOptions): UsePollingHandle {
-  const setTimer = options.setInterval ?? ((handler, timeout) => window.setInterval(handler, timeout))
-  const clearTimer = options.clearInterval ?? ((id: number) => window.clearInterval(id))
+  // 默认走全局定时器：node 测试环境无 window，退回 globalThis（同一函数集）。
+  // node 测试环境的 setInterval 返回 Timeout 而非 number，但用法只是原样传回 clearInterval，
+  // 断言为 window 形状以复用 number 句柄类型。
+  const g = (typeof window !== 'undefined' ? window : globalThis) as unknown as Pick<typeof window, 'setInterval' | 'clearInterval'>
+  const setTimer = options.setInterval ?? ((handler, timeout) => g.setInterval(handler, timeout))
+  const clearTimer = options.clearInterval ?? ((id: number) => g.clearInterval(id))
   const immediate = options.immediate !== false
   const intervalMs = options.intervalMs
 

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useToast } from '@/composables/useToast'
 import { useInpaintMaskCanvas } from './inpaint/useInpaintMaskCanvas'
 import { useInpaintImageSource } from './inpaint/useInpaintImageSource'
 import { useInpaintOutfitPresets } from './inpaint/useInpaintOutfitPresets'
@@ -108,28 +109,30 @@ const {
   open: () => props.open,
 })
 
+const toast = useToast()
+
 async function handleStart() {
   const blob = await getBlob()
   if (!blob) {
-    alert('请先上传或选择需要换装的图片')
+    toast.error('请先上传或选择需要换装的图片')
     return
   }
 
   const selectedMaskBlob = await maskBlob()
   if (maskMode.value === 'paint' && !selectedMaskBlob) {
-    alert('请先在图片上涂出需要换装的区域，按住 Shift 或右键可擦除保护区')
+    toast.error('请先在图片上涂出需要换装的区域，按住 Shift 或右键可擦除保护区')
     return
   }
 
   const selectedPreset = presets.find(preset => preset.id === selectedPresetId.value)
   if (selectedPreset?.isNsfw && !props.adultEnabled) {
-    alert('请先在导演台开启成人内容，才能使用该服装预设')
+    toast.error('请先在导演台开启成人内容，才能使用该服装预设')
     return
   }
 
   const newPrompt = customPrompt.value.trim()
   if (!newPrompt) {
-    alert('请输入或选择目标服装描述')
+    toast.error('请输入或选择目标服装描述')
     return
   }
 

@@ -5,6 +5,7 @@
   </div>
   <AppInteractionLayer v-if="!isCompanion" />
   <AppToast v-if="!isCompanion" />
+  <ConfirmDialog />
   <GlobalSearch v-if="!isCompanion" />
 </template>
 
@@ -16,6 +17,7 @@ import { imgGet } from '@/composables/useImageStore'
 import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
+import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'

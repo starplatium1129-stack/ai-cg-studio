@@ -1,4 +1,5 @@
 import { ref, type Ref } from 'vue'
+import { confirmAction } from '@/composables/useConfirm'
 import type { SceneDraft, CurationData } from '@/types/api'
 
 export interface SceneEditorModalDeps {
@@ -107,9 +108,9 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
     modalSnapshot.value = serializeModal()
   }
 
-  function closeModal() {
+  async function closeModal() {
     if (editing.value && modalSnapshot.value && serializeModal() !== modalSnapshot.value) {
-      if (!confirm('有未保存的修改，确定放弃？')) return
+      if (!(await confirmAction('有未保存的修改，确定放弃？'))) return
     }
     editing.value = null
     editingId.value = ''
@@ -152,8 +153,8 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
     markDirty('场景内容有修改，等待保存到项目')
   }
 
-  function deleteScene(id: string) {
-    if (!confirm('确认下架 ' + id + '？保存到项目后它将不再出现在场景库中。')) return
+  async function deleteScene(id: string) {
+    if (!(await confirmAction('确认下架 ' + id + '？保存到项目后它将不再出现在场景库中。'))) return
     scenes.value = scenes.value.filter(s => s.id !== id)
     setSceneCuration(id, 'normal', '')
     markDirty('有场景等待下架')

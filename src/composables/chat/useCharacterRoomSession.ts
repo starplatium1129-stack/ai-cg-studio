@@ -22,6 +22,7 @@ import {
   type ChatMemoryCharacter,
 } from '@/utils/chatMemory'
 import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
+import { confirmAction } from '@/composables/useConfirm'
 
 interface CharacterStageHandle {
   setSpeaking: (value: boolean) => void
@@ -416,10 +417,10 @@ export function useCharacterRoomSession() {
     setError('')
   }
 
-  function clearCharacterConversation() {
+  async function clearCharacterConversation() {
     const messages = storage.messages(activeChar.value)
     if (!messages.length) return
-    if (!confirm('清空当前角色的这段本地对话？此操作无法撤销。')) return
+    if (!(await confirmAction('清空当前角色的这段本地对话？此操作无法撤销。'))) return
     if (busy.value) abortCurrentRequest(true)
     const mids = messages.map(message => message.mid).filter(Boolean)
     voice.stop({ preserveMessageAudio: true, silent: true })
@@ -428,13 +429,13 @@ export function useCharacterRoomSession() {
     setError('已开始新的本地对话。', 'info', 2500)
   }
 
-  function clearAllMemory() {
+  async function clearAllMemory() {
     const archiveCounts = storage.archiveCount()
     const hasMemory = Object.values(storage.state.histories).some(items => items.length > 0)
       || Object.values(chatMemory.value.byCharacter).some(items => items.length > 0)
       || Object.values(archiveCounts).some(count => count > 0)
     if (!hasMemory) return
-    if (!confirm('清除宁宁和夏目的全部本地对话、归档与长期记忆？此操作无法撤销。')) return
+    if (!(await confirmAction('清除宁宁和夏目的全部本地对话、归档与长期记忆？此操作无法撤销。'))) return
     if (busy.value) abortCurrentRequest(true)
     voice.stop({ preserveMessageAudio: false, silent: true })
     storage.clear()

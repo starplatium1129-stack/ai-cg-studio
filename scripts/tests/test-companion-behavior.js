@@ -143,7 +143,7 @@ test('台词选取：无台词角色回退默认，负偏移安全取模', () =>
   assert.equal(pickCompanionLine('unknown', 'idle', 0), '……我在这里哦。');
   assert.equal(pickCompanionLine('nene', 'idle', -2), pickCompanionLine('nene', 'idle', 2));
   assert.match(pickCompanionLine('nene', 'event', 0, 'sd-done'), /图/);
-  assert.match(pickCompanionLine('natsume', 'event', 0, 'training-failed'), /。/);
+  assert.match(pickCompanionLine('natsume', 'event', 0, 'service-back'), /。/);
   assert.equal(pickCompanionLine('unknown', 'event', 0, 'sd-done'), '有件事想告诉你……');
 });
 
@@ -164,7 +164,7 @@ test('事件播报：同类事件按 eventCooldownMinutes 节流，不同类互�
   const behavior = createCompanionBehavior({ eventCooldownMinutes: 10 });
   assert.ok(behavior.noteEvent('sd-done', 'a', base), '首次事件直接入队');
   assert.equal(behavior.noteEvent('sd-done', 'b', base + 60_000), null, '1 分钟后同类仍节流');
-  assert.ok(behavior.noteEvent('training-completed', 'c', base + 60_000), '不同类事件不受阻塞');
+  assert.ok(behavior.noteEvent('service-back', 'c', base + 60_000), '不同类事件不受阻塞');
   assert.ok(behavior.noteEvent('sd-done', 'd', base + 11 * 60_000), '11 分钟后同类放行');
 });
 

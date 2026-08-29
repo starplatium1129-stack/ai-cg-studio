@@ -9,6 +9,7 @@ import { ref, computed, watch } from 'vue'
 import { maintenanceApi, maintenanceFailure } from '@/api/maintenanceApi'
 import type { HomeHeroCharacter, SceneDraft } from '@/types/api'
 import type { SceneBlueprint } from '@/utils/popularContent'
+import { confirmAction } from '@/composables/useConfirm'
 
 const IMAGE_PAGE_SIZE = 36
 
@@ -183,7 +184,8 @@ export function useSceneShowcaseUpload({ scenes, blueprints, errorMessage }: Upl
   }
 
   async function resetHero() {
-    if (!selectedHeroId.value || !confirm(`恢复${selectedHeroTitle.value}的内置首页图？`)) return
+    if (!selectedHeroId.value) return
+    if (!(await confirmAction({ title: `恢复${selectedHeroTitle.value}的内置首页图？`, danger: false }))) return
     const character = selectedHeroId.value
     uploadBusy.value = true
     try {

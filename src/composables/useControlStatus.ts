@@ -6,7 +6,7 @@
  */
 
 import { ref, computed, nextTick, watch } from 'vue'
-import { usePolling } from './usePolling'
+import { usePolling } from './usePolling.ts'
 import { ApiClientError } from '../api/client.ts'
 import { controlApi, type ControlApi } from '../api/controlApi.ts'
 import type {

@@ -9,6 +9,9 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { applyModelProfileToParams } from '@/utils/promptModelProfile'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+import { useToast } from '@/composables/useToast'
+
+const toast = useToast()
 
 const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
 import {
@@ -184,7 +187,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // 本项目主要在本机自用，成人向场景默认参与检索；带图的场景卡仍由 SceneCard 做模糊揭示。
   const showMatureScenes = ref(true)
   const activeTab     = ref('tags')
-  const toastMsg      = ref('')
   const lastRecommendedSize = ref('832x1216')
 
   // ── Derived ─────────────────────────────────────────────────────────────
@@ -309,9 +311,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (!opts.keepStory) story.value = ''
   }
 
-  function flash(msg: string, duration = 2500) {
-    toastMsg.value = msg
-    setTimeout(() => { if (toastMsg.value === msg) toastMsg.value = '' }, duration)
+  // 2026-08-29 UX 收编：原生自绘 pb-toast 退役，统一走全局 useToast。
+  function flash(msg: string, duration = 2500, type: 'info' | 'success' | 'warning' | 'error' = 'info') {
+    toast.show(msg, type, duration)
   }
 
   // ── Data loading (single source via sceneStore) ───────────────────────
@@ -548,7 +550,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     history, projects,
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode,
-    currentStep, showMatureScenes, activeTab, toastMsg, lastRecommendedSize,
+    currentStep, showMatureScenes, activeTab, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, setArtistStyleIds, loadScene, clearScene, flash,

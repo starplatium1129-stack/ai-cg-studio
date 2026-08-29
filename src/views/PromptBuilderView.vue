@@ -314,7 +314,6 @@
 
     <!-- Toast -->
     <Transition name="layer-fade">
-      <div v-if="pb.toastMsg" class="pb-toast" role="status" aria-live="polite">{{ pb.toastMsg }}</div>
     </Transition>
 
     <!-- 出图大图对比：上一张 vs 当前 -->
@@ -436,6 +435,7 @@ import {
   readQuickCreate,
   type QuickCreateSettings,
 } from '@/utils/quickCreate'
+import { confirmAction } from '@/composables/useConfirm'
 import {
   DRAW_ENGINE_SETTING,
   settingsRepository,
@@ -1099,8 +1099,8 @@ const {
 })
 
 /** 「清空并重来」：会清空故事、场景关联、全部词条与导演决策，先确认再执行 */
-function resetAll() {
-  if (!confirm('清空当前故事、场景与全部词条，重新开始？此操作不可撤销。')) return
+async function resetAll() {
+  if (!(await confirmAction('清空当前故事、场景与全部词条，重新开始？此操作不可撤销。'))) return
   if (pb.isPopular) {
     pb.setStudioSubject()
     pb.manualTags = new Set()

@@ -360,6 +360,7 @@ const {
 // 都要等运行时才炸，而这个视图正好在破坏性路径上（改上游 host、启停服务、
 // 开关公网隧道）。
 import { useControlStatus } from '@/composables/useControlStatus'
+import { confirmAction } from '@/composables/useConfirm'
 import { useControlActions } from '@/composables/useControlActions'
 
 /**
@@ -420,10 +421,10 @@ const SERVICE_STOP_LABELS: Record<string, string> = {
   voice: 'GPT-SoVITS 语音服务',
 }
 
-function confirmServiceAction(service: string, action: string): void {
+async function confirmServiceAction(service: string, action: string): Promise<void> {
   if (action !== 'stop') { serviceAction(service, action); return }
   const label = SERVICE_STOP_LABELS[service] || service
-  if (!confirm(`停止${label}？正在出图或配音的任务会中断。`)) return
+  if (!(await confirmAction(`停止${label}？正在出图或配音的任务会中断。`))) return
   serviceAction(service, action)
 }
 
