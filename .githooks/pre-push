@@ -2,6 +2,16 @@
 # pre-push 门禁（2026-08-28 审计 P1-13）：推送前先跑最快的两道静态检查，
 # 堵住"本地可绕过提交、全靠 CI 兜底"的缺口。与 CI quality.yml 完整链互补。
 # 跳过：git push --no-verify（紧急通道，CI 仍会拦）。
+#
+# 2026-08-29：GUI 应用（VS Code 等）拉起的 git 钩子里，裸 `npm` 会命中
+# Node 自带的无扩展名 bash 脚本版 npm（#!/usr/bin/env bash），而该环境没有
+# bash/env，直接报 "No such file or directory" 挡推。Windows 下显式走
+# npm.cmd，POSIX 环境回退裸 npm。
+if command -v npm.cmd >/dev/null 2>&1; then
+  NPM=npm.cmd
+else
+  NPM=npm
+fi
 echo "[pre-push] typecheck:app + lint:js"
-npm run typecheck:app || exit 1
-npm run lint:js || exit 1
+"$NPM" run typecheck:app || exit 1
+"$NPM" run lint:js || exit 1
