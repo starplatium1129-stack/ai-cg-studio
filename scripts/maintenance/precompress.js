@@ -53,8 +53,45 @@ function compress(file) {
   return { raw: raw.length, brotli: brotli.length, gzip: gzip.length };
 }
 
+/**
+ * 构建产物里剔除 .woff 字体（2026-08-29 产品运营审计 P1）：
+ * @fontsource 的 CSS 同时登记 woff2 与 woff 两种格式且 woff2 在前，
+ * WebView2/Chromium 与一切 2012 后的浏览器只取 woff2，woff 是纯冗余磁盘占用
+ * （实测 304 个 / 8.9MB）。vite 对两种格式的内容哈希不同名，无法按名配对，
+ * 所以先把产物 CSS 里的 woff url() 源剥掉，再删除 dist 下全部 .woff。
+ */
+function purgeWoffFonts() {
+  let cssRewritten = 0;
+  let removed = 0;
+  let bytes = 0;
+  // 1) 产物 CSS 去掉 woff 源：`,url(x.woff) format("woff")`（woff2 恒在前）
+  for (const file of walk(path.join(ROOT, 'dist'))) {
+    if (!/\.css$/i.test(file)) continue;
+    const src = fs.readFileSync(file, 'utf8');
+    if (!/\.woff\)/.test(src)) continue;
+    const next = src
+      .replace(/,?url\([^)]*\.woff\)\s*format\("woff"\)/g, '')
+      .replace(/,?url\([^)]*\.woff\)\s*format\('woff'\)/g, '');
+    if (next !== src) {
+      fs.writeFileSync(file, next);
+      cssRewritten++;
+    }
+  }
+  // 2) 删除 dist 下全部 .woff（woff2 保留）
+  for (const file of walk(path.join(ROOT, 'dist'))) {
+    if (!/\.woff$/i.test(file)) continue;
+    bytes += fs.statSync(file).size;
+    fs.unlinkSync(file);
+    removed++;
+  }
+  if (removed || cssRewritten) {
+    console.log(`Purged ${removed} redundant .woff files (${(bytes / 1024 / 1024).toFixed(1)} MB)，重写 ${cssRewritten} 个 CSS——浏览器只取 woff2`);
+  }
+}
+
 function main() {
   const checkOnly = process.argv.includes('--check');
+  if (!checkOnly) purgeWoffFonts();
   let files = 0;
   let rawTotal = 0;
   let brTotal = 0;
