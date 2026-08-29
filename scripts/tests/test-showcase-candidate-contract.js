@@ -416,8 +416,8 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
 
 test('artist batch: curated artists + 1 no-artist baseline, one artist tag each', () => {
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
-  // 2026-08-21 收录 @momoco_haru 后为 38 位（2026-08-18 曾 +rella/swav/tsunako 等 7 位成人画师）
-  assert.strictEqual(artistCount, 38, 'exactly 38 artists in catalog');
+  // 2026-08-29 收录 Rucarachi 后为 39 位（2026-08-21 收录 @momoco_haru 后曾为 38 位）
+  assert.strictEqual(artistCount, 39, 'exactly 39 artists in catalog');
   const artist = gen.artistBatch(20260812);
   assert.strictEqual(artist.length, artistCount + 1);
   const withTags = artist.filter(item => item.artistId);

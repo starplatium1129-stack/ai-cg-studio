@@ -134,7 +134,7 @@ function onUndo() {
   padding: var(--s-3);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-2xl);
-  background: var(--bg-panel);
+  background: var(--bg-elevated);
   box-shadow: var(--shadow-lg);
 }
 .random-label {
@@ -166,7 +166,7 @@ function onUndo() {
 }
 .random-toggle-hint {
   color: var(--text-muted);
-  font: var(--fs-caption) var(--font-sans);
+  font: var(--fs-label-xs) var(--font-sans);
   line-height: 1.5;
 }
 .random-undo {
