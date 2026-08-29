@@ -35,7 +35,12 @@ function runCommand(command, args, options = {}) {
 }
 
 async function runTauri(argv, options = {}) {
-  const args = [...argv];
+  let args = [...argv];
+  // 2026-08-29 updater 落地：设置了签名私钥时忽略 --no-sign（package:tauri 默认带它），
+  // 否则 build 不产出 .sig，updater 发布流程拿不到签名。
+  if (process.env.TAURI_SIGNING_PRIVATE_KEY || process.env.TAURI_SIGNING_PRIVATE_KEY_PATH) {
+    args = args.filter((a) => a !== '--no-sign');
+  }
   const mode = args.shift();
   if (!mode || !['dev', 'build'].includes(mode)) {
     throw new Error('usage: node scripts/maintenance/run-tauri.js <dev|build> [tauri args]');
