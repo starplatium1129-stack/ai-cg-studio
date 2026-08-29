@@ -192,6 +192,19 @@ function createGateway(options) {
     dotfiles: 'deny',
     index: false
   }));
+  // 角色参考标准图（Cinematic Bible）——2026-08-29 随样张模式迁出项目、
+  // 落 AI 工作区 CharacterReferences（~1GB 媒体图不随桌面安装包携带）。
+  // 与 /assets 同为 no-cache + ETag 协商缓存；外部目录缺失时不挂路由。
+  if (config.CHARACTER_REF_ROOT) {
+    app.use('/character-references', function (req, res, next) {
+      res.setHeader('Cache-Control', 'no-cache');
+      next();
+    }, express.static(config.CHARACTER_REF_ROOT, {
+      dotfiles: 'deny',
+      index: false,
+      fallthrough: false
+    }));
+  }
   // 只放行 SPA 真正读取的数据文件（白名单唯一来源：server/public-data.js，
   // precompressed 中间件共用同一份——此前两份拷贝已发生漂移）。
   // 之前整个 data/ 目录对外可读，包括 history.json / projects.json / prompts.json

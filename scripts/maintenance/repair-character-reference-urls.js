@@ -36,8 +36,21 @@ function readJson(file) {
 }
 
 function refUrlToPath(url) {
+  // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences，URL 前缀
+  // /character-references/；兼容旧 /assets/ 前缀兜底。
+  if (String(url).startsWith('/character-references/')) {
+    return path.join(refRoot, String(url).replace(/^\/character-references\//, ''));
+  }
   return path.join(ROOT, 'assets', String(url).replace(/^\/assets\//, ''));
 }
+
+// 参考图实体根：优先 AI 工作区（AI_WORKSPACE_ROOT/CharacterReferences），
+// 找不到退回项目 assets（兼容未迁移的旧环境）。
+const refRoot = (() => {
+  const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+  const candidate = path.join(ws, 'CharacterReferences');
+  return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets');
+})();
 
 // 一个引用「可解析」= 规范名在盘，或前缀名在盘（A 类改名后即落到规范名）。
 // dry-run 不落盘也用同一判定，保证试跑与实跑语义一致。

@@ -19,7 +19,13 @@ const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.js
 // 2026-08-21 起前端运行时直接加载该 JSON；src/utils/characterReferenceData.ts
 // 已改为手写加载器，不再由脚本生成。
 const VIEW_JSON_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
-const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
+// 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences（样张模式，桌面
+// 安装包不再携带 ~1GB 媒体图）；找不到外部目录时退回项目 assets 兼容旧环境。
+const OUT_BASE = (() => {
+  const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+  const candidate = path.join(ws, 'CharacterReferences');
+  return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
+})();
 
 const PERSPECTIVES = [
   {
@@ -203,8 +209,8 @@ function buildMultiOutfitMatrix() {
             targetUsage: p.targetUsage,
             fileName: `${p.id}.png`,
             url: hasCustomDir
-              ? `/assets/character-references/${c.id}/${o.id}/${p.id}.png`
-              : `/assets/character-references/${c.id}/${p.id}.png`
+              ? `/character-references/${c.id}/${o.id}/${p.id}.png`
+              : `/character-references/${c.id}/${p.id}.png`
           }))
         };
       })

@@ -28,6 +28,12 @@ const POPULAR_FILE = path.join(DATA_DIR, 'popular-characters.json');
 const BLUEPRINTS_FILE = path.join(DATA_DIR, 'scene-blueprints.json');
 const STANDARDS_FILE = path.join(DATA_DIR, 'character-reference-standards.json');
 const SCENE_STORE_FILE = path.join(ROOT, 'src', 'stores', 'sceneStore.ts');
+// 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences；找不到退回项目 assets。
+const refRoot = (() => {
+  const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+  const candidate = path.join(ws, 'CharacterReferences');
+  return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
+})();
 const SHOWCASE_DIR = path.resolve('E:/code/2/lora/AI/SceneShowcase/2026-08-15_v23');
 const MANIFEST_FILE = path.join(SHOWCASE_DIR, 'manifest.json');
 const COMMS_BASE = 'http://127.0.0.1:3123';
@@ -148,7 +154,7 @@ async function runPipeline(charId, opts = {}) {
     console.log(`\n[4/6 参考资产库渲染] 检查 4 视角资产...`);
     const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
     const stdChar = standards.characters.find(c => c.id === charId);
-    const refBaseDir = path.join(ROOT, 'assets', 'character-references', charId);
+    const refBaseDir = path.join(refRoot, charId);
 
     const PERSPECTIVE_CONFIGS = {
       ref_01_face_closeup: {

@@ -310,8 +310,19 @@ function checkReferenceViewUrls() {
       }
       seenOutfits[outfit.outfitId] = true;
       refs.forEach(function (ref) {
-        var rel = String(ref.url || '').replace(/^\/assets\//, '');
-        if (!rel || !fs.existsSync(path.join(ROOT, 'assets', rel))) {
+        // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences（url 前缀
+        // /character-references/）；找不到外部目录时退回项目 assets 兼容旧环境。
+        var rel = String(ref.url || '');
+        var target;
+        if (rel.indexOf('/character-references/') === 0) {
+          var ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+          var candidate = path.join(ws, 'CharacterReferences');
+          var base = fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets');
+          target = path.join(base, rel.replace(/^\/character-references\//, ''));
+        } else {
+          target = path.join(ROOT, 'assets', rel.replace(/^\/assets\//, ''));
+        }
+        if (!rel || !fs.existsSync(target)) {
           missing++;
           if (missing <= 10) {
             errors.push('character-reference-view 断链: ' + cid + '/' + outfit.outfitId + ' -> ' + ref.url);

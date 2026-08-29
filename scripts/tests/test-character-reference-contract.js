@@ -100,3 +100,14 @@ test('character reference view: identityProse mirrors standards', () => {
       `${character.id}: identityProse 与 standards 漂移`);
   }
 });
+
+test('character reference view: urls use external /character-references/ prefix (2026-08-29 迁移)', () => {
+  for (const character of Object.values(view)) {
+    for (const outfit of character.outfits || []) {
+      for (const ref of outfit.references || []) {
+        assert.ok(ref.url.startsWith('/character-references/'),
+          `${character.characterId}/${outfit.outfitId}/${ref.id}: url 必须走外部目录前缀 /character-references/（参考图已迁 AI 工作区）`);
+      }
+    }
+  }
+});

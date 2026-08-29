@@ -55,7 +55,7 @@
                   "fileName": { "type": "string", "minLength": 1 },
                   "url": {
                     "type": "string",
-                    "pattern": "^/assets/character-references/"
+                    "pattern": "^/character-references/"
                   }
                 }
               }

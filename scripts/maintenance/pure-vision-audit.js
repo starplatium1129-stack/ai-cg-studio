@@ -3,7 +3,7 @@
 
 /**
  * 纯并行视觉审核器（Pure Vision Auditor）：
- * - 专注于对 assets/character-references 下已落盘的所有图片进行快速 4 并发审核
+ * - 专注于对 CharacterReferences（AI 工作区，2026-08-29 迁出项目）下已落盘的所有图片进行快速 4 并发审核
  * - 遇到不通过项：记录进 runtime/multi-outfit-audit-report.json，不阻塞其他图的审核
  * - 避免与正在出图的 pwsh-9 争抢 Anima 队列
  */
@@ -15,7 +15,12 @@ const { execFile } = require('child_process');
 const ROOT = path.resolve(__dirname, '..', '..');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
 const REPORT_FILE = path.join(ROOT, 'runtime', 'multi-outfit-audit-report.json');
-const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
+// 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences；找不到退回项目 assets。
+const OUT_BASE = (() => {
+  const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+  const candidate = path.join(ws, 'CharacterReferences');
+  return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
+})();
 const AUDIT_CONCURRENCY = 4;
 
 const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));

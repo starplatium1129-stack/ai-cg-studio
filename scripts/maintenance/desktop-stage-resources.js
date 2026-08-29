@@ -184,7 +184,16 @@ function stageResources(options = {}) {
       if (source === 'services') {
         copySelectedFiles(from, to, runtimeFiles.javascriptFiles);
       } else if (fs.statSync(from).isDirectory()) {
-        copyDir(from, to);
+        if (source === 'assets') {
+          // 2026-08-29：character-references（~1GB 媒体图）已迁出项目 → AI 工作区，
+          // 由网关 /character-references 外部目录服务；此处排除防误回放入包。
+          copyDir(from, to, (filePath) => {
+            const rel = path.relative(from, filePath);
+            return rel.split(path.sep)[0] !== 'character-references';
+          });
+        } else {
+          copyDir(from, to);
+        }
       } else {
         fs.mkdirSync(path.dirname(to), { recursive: true });
         fs.copyFileSync(from, to);

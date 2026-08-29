@@ -104,6 +104,27 @@ function resolveSceneShowcaseDir(rootDir, configured, workspaceRoot) {
   }
 }
 
+/**
+ * 角色参考标准图（Cinematic Bible，~1GB）——2026-08-29 随样张模式迁出项目，
+ * 落 AI 工作区 CharacterReferences（与 SceneShowcase 平级），桌面安装包不再
+ * 携带媒体图。env AICS_CHARACTER_REF_ROOT 显式覆盖；找不到返回 ''（前端按
+ * 无参考图优雅降级，server 侧不挂 /character-references 路由）。
+ */
+function resolveCharRefRoot(appRoot, env, workspaceRoot) {
+  if (env.AICS_CHARACTER_REF_ROOT) {
+    var explicit = path.resolve(env.AICS_CHARACTER_REF_ROOT);
+    if (fs.existsSync(explicit)) return explicit;
+  }
+  var bases = workspaceRoot
+    ? [workspaceRoot, path.resolve(appRoot, '..', 'AI')]
+    : [path.resolve(appRoot, '..', 'AI')];
+  for (var i = 0; i < bases.length; i++) {
+    var candidate = path.join(bases[i], 'CharacterReferences');
+    if (fs.existsSync(candidate)) return candidate;
+  }
+  return '';
+}
+
 function loadGatewayConfig(rootDir, env) {
   env = env || process.env;
   var appRoot = path.resolve(env.AICS_APP_ROOT || rootDir);
@@ -156,6 +177,7 @@ function loadGatewayConfig(rootDir, env) {
     SELF_HEALING_INTERVAL_MS:boundedInteger(env.SELF_HEALING_INTERVAL_MS, 5000, 1000, 60000),
     LIVE2D_ROOT:path.join(assetsRoot, 'live2d'),
     SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR, workspaceRoot),
+    CHARACTER_REF_ROOT:resolveCharRefRoot(appRoot, env, workspaceRoot),
     DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
     // 桌面打包模式（Tauri 壳仅在打包模式注入，见 main_shared.rs gateway_env）：
     // 场景内容维护链路（scenes/run/build-web）返回 501，展示类不受限。
@@ -167,6 +189,7 @@ function loadGatewayConfig(rootDir, env) {
 module.exports = {
   loadGatewayConfig:loadGatewayConfig,
   resolveSceneShowcaseDir:resolveSceneShowcaseDir,
+  resolveCharRefRoot:resolveCharRefRoot,
   boundedInteger:boundedInteger,
   resolveGatewayToken:resolveGatewayToken
 };

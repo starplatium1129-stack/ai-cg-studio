@@ -49,7 +49,8 @@ tunnel.log
 # Dual-pose skeleton images (generated)
 assets/dual-poses/*.png
 
-# 角色 4 视角参考图（本地离线/维护流水线生成资产，不入库）
+# 角色 4 视角参考图（2026-08-29 已迁出项目 → AI 工作区 CharacterReferences，
+# 与样张 SceneShowcase 同模式；此条目保留防误回放，勿重新放回项目 assets）
 assets/character-references/
 
 # 预压产物（npm run precompress 生成，随构建重新产生）
