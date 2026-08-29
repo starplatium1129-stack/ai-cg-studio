@@ -80,10 +80,15 @@
                   @click="pendingDeleteId = null">取消</button>
               </template>
               <template v-else>
-                <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">Remix</RouterLink>
-                <button class="artwork-tool" type="button"
+                <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
+                  <ArchiveIcon name="spark" /><span>Remix</span>
+                </RouterLink>
+                <button class="artwork-tool danger" type="button"
                   :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
-                  @click="pendingDeleteId = item.id">删除</button>
+                  title="删除作品"
+                  @click="pendingDeleteId = item.id">
+                  <ArchiveIcon name="close" /><span>删除</span>
+                </button>
               </template>
             </div>
             <button
@@ -940,17 +945,18 @@ watch([favoriteOnly, projectFilter], () => {
 .artwork:hover { border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
-.artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:4px; opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity var(--motion-hover),transform var(--motion-hover); }
+.artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:3px; padding:3px; opacity:0; transform:translateY(-4px); pointer-events:none; border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
-.artwork-tool { min-height:30px; padding:0 var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-terminal); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
-.artwork-tool:hover:not(:disabled) { border-color:color-mix(in srgb,var(--accent) 60%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 52%,var(--art-scrim)); }
+.artwork-tool { display:inline-flex; align-items:center; gap:5px; min-height:28px; padding:0 11px; border:1px solid transparent; border-radius:var(--r-pill); background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
+.artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
 /* 全局 a:hover 链接色 (0,1,1) 会盖过 .artwork-tool 的 on-art 墨色——深色画膜上变暗梅色难以辨认，钉回 */
 a.artwork-tool:hover { color:var(--on-art-primary); }
-.artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 54%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 48%,var(--art-scrim)); }
-.artwork-tool.danger:hover:not(:disabled) { background:var(--danger); color:var(--text-inverse); }
+.artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 28%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 12%,transparent); color:color-mix(in srgb,var(--danger-text) 92%,white); }
+.artwork-tool.danger:hover:not(:disabled) { background:color-mix(in srgb,var(--danger) 78%,var(--art-scrim)); border-color:var(--danger); color:var(--text-inverse); }
 .artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
 /* 审计修复: 处理中态也要读得清 */
-.artwork-tool:disabled { cursor:wait; color: var(--text-disabled); border-color: var(--border-soft); }
+.artwork-tool:disabled { cursor:wait; color: var(--text-disabled); border-color: var(--border-soft); background: transparent; }
+.artwork-tool :deep(.archive-icon) { width:14px; height:14px; vertical-align:-.12em; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
 .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); }
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
