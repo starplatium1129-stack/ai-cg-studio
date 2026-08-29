@@ -1539,15 +1539,18 @@
     {
       "id": "quillpen_arknights",
       "displayName": "羽毛笔",
-      "originalName": "Quillpen",
+      "originalName": "La Pluma",
       "franchise": "Arknights",
       "aliases": [
-        "quillpen",
+        "la pluma",
+        "la pluma (arknights)",
+        "la_pluma_(arknights)",
+        "rafaela silva",
         "arknights"
       ],
-      "identityProse": "Quillpen from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips reaching past her shoulders, a tall feather ahoge, drowsy half-lidded vermilion eyes, small feathered wings on the sides of her head, wearing a black crop top with an asymmetrical grey jacket and black hotpants, wielding a giant black mechanical scythe made by her brother Tequila",
+      "identityProse": "La Pluma from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips reaching past her shoulders, a tall feather ahoge, drowsy half-lidded vermilion eyes, small feathered wings on the sides of her head, wearing a black crop top with an asymmetrical grey jacket and black hotpants, wielding a giant black mechanical scythe made by her brother Tequila",
       "identityTokens": [
-        "quillpen",
+        "la pluma (arknights)",
         "1girl",
         "solo",
         "white_hair",
@@ -1566,7 +1569,7 @@
         "arknights"
       ],
       "exactTokens": [
-        "quillpen"
+        "la pluma (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -1658,8 +1661,8 @@
       "canon": {
         "world": "泰拉（罗德岛）",
         "era": "近未来奇幻",
-        "formNotes": "白色短发蓝瞳；羽毛笔信使；Danbooru 无词条（quillpen 0 posts），以视觉词为主",
-        "research": "2026-08-15 调研（Danbooru quillpen 0 posts，视觉词兜底）"
+        "formNotes": "银白短发红瞳；镰刀信使兼调酒师；Danbooru 词条 la_pluma_(arknights)（2026-08-29 修正，原 quillpen 调研有误，WD14 反推实测命中）",
+        "research": "2026-08-15 初调研误作 Quillpen（Danbooru quillpen 0 posts，视觉词兜底）；2026-08-29 修正：官方英文名 La Pluma（本名拉菲艾拉·席尔瓦），Danbooru 词条 la_pluma_(arknights)"
       },
       "animeStudio": "arknights, hypergryph, official anime art"
     },
