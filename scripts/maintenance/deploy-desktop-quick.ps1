@@ -1,12 +1,26 @@
-# AI-CG-Studio desktop quick deploy (incremental)
-# Copies fresh dist/data/assets into the installed gateway dir and restarts the app.
-# Full repackaging (Rust shell / server.js changes) still needs:
-#   npm run build:tauri && npm run package:tauri + installer.
+﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
-# Usage (non-admin is fine; UAC prompt auto-raises):
-#   powershell -ExecutionPolicy Bypass -File scripts/maintenance/deploy-desktop-quick.ps1 [-SkipBuild] [-NoRestart]
+# 两种模式（二选一，默认增量）：
+#   增量部署（默认）  把新鲜的 dist/data/assets/routes/... 复制到已安装网关，秒级生效。
+#                    适用于前端代码改动，也是日常开发最常用的方式。
+#   -UseInstaller    运行 runtime\desktop-updates 下最新的完整安装包（用户在向导里点几下）。
+#                    适用于 gateway 依赖变化、Rust 壳改动或全新安装。
+#
+# 常用组合：
+#   双击 deploy-desktop.bat                 增量部署（含清理历史残留 + 验证）
+#   deploy-desktop.bat -SkipBuild           已手动 build 过，跳过构建
+#   deploy-desktop.bat -UseInstaller        用完整安装包安装（本次要更新的依赖在包里）
+#   deploy-desktop.bat -NoRestart           部署后不自动启动
+#
+# 参数说明：
+#   -SkipBuild     跳过前端构建（npm run build）
+#   -Cleanup       删除「源端已删除」的历史残留目录（见下 $STALE_ASSETS）
+#   -UseInstaller  跑完整安装包，不做增量复制
+#   -NoRestart     结束后不启动桌面端
 param(
   [switch]$SkipBuild,
+  [switch]$Cleanup,
+  [switch]$UseInstaller,
   [switch]$NoRestart
 )
 
@@ -15,90 +29,141 @@ $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $installDir = 'C:\Program Files\AI-CG-Studio'
 $gatewayDir = Join-Path $installDir 'gateway'
 
+# 源端已删除、但增量部署（Copy-Item 只合并不删除）会在安装目录永久堆积的历史目录。
+# 2026-08-29：character-references（~1.2G）已迁出项目到 AI 工作区，安装目录那份成冗余副本。
+# 凡是「源端删除型」的迁移，都必须在这里登记，否则增量部署永远清不掉。
+$STALE_ASSETS = @('assets\character-references')
+
+# 提权：注意要把已传入的参数一起带过去，否则 UAC 后的新进程会丢掉它们
+# （旧版这里只传脚本路径，导致 -SkipBuild 静默失效、白白重跑一次 build）。
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-  Write-Host 'Need admin rights - raising UAC...' -ForegroundColor Yellow
-  Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`""
+  Write-Host '需要管理员权限，正在弹出 UAC 授权窗口，请点击"是"' -ForegroundColor Yellow
+  $argList = @('-NoExit', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
+  if ($SkipBuild)    { $argList += '-SkipBuild' }
+  if ($Cleanup)      { $argList += '-Cleanup' }
+  if ($UseInstaller) { $argList += '-UseInstaller' }
+  if ($NoRestart)    { $argList += '-NoRestart' }
+  Start-Process powershell -Verb RunAs -ArgumentList ($argList -join ' ')
   exit 0
 }
 
-if (-not (Test-Path $gatewayDir)) { Write-Error "Installed dir not found: $gatewayDir (run full installer first)"; exit 1 }
+# 安装包里已经带好了构建产物，用它安装时无需本地构建
+if ($UseInstaller) { $SkipBuild = $true }
 
+if (-not $UseInstaller -and -not (Test-Path $gatewayDir)) {
+  Write-Error "安装目录不存在: $gatewayDir（先用 -UseInstaller 完整安装一次）"
+  exit 1
+}
+
+# ---------------------------------------------------------------- [1] 构建
 if (-not $SkipBuild) {
-  Write-Host '[1/4] npm run build ...' -ForegroundColor Cyan
+  Write-Host '[1/6] npm run build ...' -ForegroundColor Cyan
   Push-Location $root
   npm run build
   if ($LASTEXITCODE -ne 0) { Pop-Location; Write-Error 'build failed'; exit 1 }
   Pop-Location
+} else {
+  Write-Host '[1/6] 跳过构建（-SkipBuild / 安装包模式）' -ForegroundColor DarkGray
 }
 
+# ---------------------------------------------------------- [2] 停应用
 $appProcs = Get-Process -Name 'ai-cg-studio-desktop' -ErrorAction SilentlyContinue
 $sidecar = Get-NetTCPConnection -LocalPort 3123 -State Listen -ErrorAction SilentlyContinue
 if ($appProcs -or $sidecar) {
-  Write-Host '[2/4] Stopping running app...' -ForegroundColor Cyan
+  Write-Host '[2/6] 停止正在运行的应用与网关端口 ...' -ForegroundColor Cyan
   $appProcs | Stop-Process -Force -ErrorAction SilentlyContinue
   if ($sidecar) { Stop-Process -Id $sidecar.OwningProcess -Force -ErrorAction SilentlyContinue }
   Start-Sleep -Seconds 2
+} else {
+  Write-Host '[2/6] 应用未在运行' -ForegroundColor DarkGray
 }
 
-# Copy order matters (regression 2026-08-15): data must land BEFORE dist.
-# The client requests /data/*.json with ?v=DATA_VERSION; if a new dist (new
-# version number) ever serves against the old data, WebView2 caches the stale
-# body under the new URL with an immutable one-year header and never refreshes.
-# data-first guarantees a version number only ever points at matching content.
-#
-# 聚合产物自 2026-08-28 起不入库（源 = data/scenes/ 与 data/popular/ 分片），
-# 且网关安装目录不含 scripts/（无法启动自愈），所以拷贝前必须先把产物构建新鲜。
-Write-Host '[3/4] Refreshing data products + copying data/dist/assets...' -ForegroundColor Cyan
-node (Join-Path $root 'scripts\maintenance\build-scenes.js')
-if ($LASTEXITCODE -ne 0) { throw 'build-scenes failed - aborting deploy' }
-node (Join-Path $root 'scripts\maintenance\build-popular.js')
-if ($LASTEXITCODE -ne 0) { throw 'build-popular failed - aborting deploy' }
-$map = @(
-  @{ src = 'data';     dst = 'data' },
-  @{ src = 'dist';     dst = 'dist' },
-  @{ src = 'assets';   dst = 'assets' },
-  @{ src = 'routes';   dst = 'routes' },
-  @{ src = 'server';   dst = 'server' },
-  @{ src = 'services'; dst = 'services' },
-  # scripts/lib 是 server/config.js、tunnel.js 与 routes/maintenance.js 的运行时依赖
-  # （runtime-paths / scene-store），网关安装目录没有 scripts/，必须随增量同步。
-  @{ src = 'scripts/lib'; dst = 'scripts/lib' }
-)
-foreach ($item in $map) {
-  $src = Join-Path $root $item.src
-  $dst = Join-Path $gatewayDir $item.dst
-  if (Test-Path $src) {
-    Copy-Item -Path (Join-Path $src '*') -Destination $dst -Recurse -Force
-    Write-Host "  copied $($item.src) -> gateway/$($item.dst)" -ForegroundColor DarkGray
+# ------------------------------------------------- [3] 清理源端删除型残留
+if ($Cleanup) {
+  Write-Host '[3/6] 清理源端已删除的历史残留 ...' -ForegroundColor Cyan
+  $freedTotal = 0
+  foreach ($rel in $STALE_ASSETS) {
+    $target = Join-Path $gatewayDir $rel
+    if (-not (Test-Path $target)) { continue }
+    $files = @(Get-ChildItem -Path $target -Recurse -File -ErrorAction SilentlyContinue)
+    $mb = [math]::Round((($files | Measure-Object -Property Length -Sum).Sum) / 1MB, 1)
+    Write-Host "  删除 $rel（$($files.Count) 个文件 / $mb MB）" -ForegroundColor DarkGray
+    Remove-Item -Path $target -Recurse -Force -ErrorAction SilentlyContinue
+    if (Test-Path $target) { Write-Warning "  未完全删除: $rel" } else { $freedTotal += $mb }
+  }
+  if ($freedTotal -gt 0) { Write-Host "  共释放 $freedTotal MB" -ForegroundColor DarkGray }
+} else {
+  Write-Host '[3/6] 跳过清理（未指定 -Cleanup）' -ForegroundColor DarkGray
+}
+
+# ------------------------------------------------------------ [4] 部署
+if ($UseInstaller) {
+  Write-Host '[4/6] 运行完整安装包（请在向导中点「下一步」直到完成）...' -ForegroundColor Cyan
+  $setup = Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter '*-setup.exe' -ErrorAction SilentlyContinue |
+    Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  if (-not $setup) { Write-Error 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri'; exit 1 }
+  Write-Host "  $($setup.Name)（$([math]::Round($setup.Length / 1MB, 1)) MB）" -ForegroundColor DarkGray
+  Start-Process -FilePath $setup.FullName -Wait
+  Write-Host '  安装程序已退出' -ForegroundColor DarkGray
+} else {
+  # 复制顺序很重要（2026-08-15 回归）：data 必须早于 dist。
+  # 客户端用 ?v=DATA_VERSION 请求 /data/*.json；若新 dist（新版本号）对着旧 data 提供过一次，
+  # WebView2 会把旧 body 以 immutable 一年缓存写进新 URL，之后再也不刷新。
+  # data-first 保证版本号永远指向匹配的内容。
+  #
+  # 聚合产物自 2026-08-28 起不入库（源 = data/scenes/ 与 data/popular/ 分片），
+  # 且安装目录不含 scripts/（无法自愈），所以拷贝前必须先把产物构建新鲜。
+  Write-Host '[4/6] 刷新数据产物 + 增量复制 ...' -ForegroundColor Cyan
+  node (Join-Path $root 'scripts\maintenance\build-scenes.js')
+  if ($LASTEXITCODE -ne 0) { throw 'build-scenes failed - aborting deploy' }
+  node (Join-Path $root 'scripts\maintenance\build-popular.js')
+  if ($LASTEXITCODE -ne 0) { throw 'build-popular failed - aborting deploy' }
+
+  $map = @(
+    @{ src = 'data';         dst = 'data' },
+    @{ src = 'dist';         dst = 'dist' },
+    @{ src = 'assets';       dst = 'assets' },
+    @{ src = 'routes';       dst = 'routes' },
+    @{ src = 'server';       dst = 'server' },
+    @{ src = 'services';     dst = 'services' },
+    # scripts/lib 是 server/config.js、tunnel.js 与 routes/maintenance.js 的运行时依赖
+    # （runtime-paths / scene-store），安装目录没有 scripts/，必须随增量同步。
+    @{ src = 'scripts/lib';  dst = 'scripts/lib' }
+  )
+  foreach ($item in $map) {
+    $src = Join-Path $root $item.src
+    $dst = Join-Path $gatewayDir $item.dst
+    if (Test-Path $src) {
+      Copy-Item -Path (Join-Path $src '*') -Destination $dst -Recurse -Force
+      Write-Host "  copied $($item.src) -> gateway/$($item.dst)" -ForegroundColor DarkGray
+    }
+  }
+  $serverJsSrc = Join-Path $root 'server.js'
+  if (Test-Path $serverJsSrc) {
+    Copy-Item -Path $serverJsSrc -Destination (Join-Path $gatewayDir 'server.js') -Force
+    Write-Host '  copied server.js -> gateway/server.js' -ForegroundColor DarkGray
+  }
+
+  # Copy-Item 是合并，dist/_app 下的哈希产物会无限堆积（2026-08-16 实测 21 个陈旧
+  # CompanionView chunk）。内容哈希同名即同内容，故只删真正失效的 chunk。
+  # 仍停留在旧 index.html 的标签页重装前可能 404 某个懒加载 chunk——本地应用可接受。
+  $newApp = Join-Path $root 'dist\_app'
+  $dstApp = Join-Path $gatewayDir 'dist\_app'
+  if ((Test-Path $newApp) -and (Test-Path $dstApp)) {
+    $keep = @(Get-ChildItem -File $newApp | ForEach-Object { $_.Name })
+    $stale = @(Get-ChildItem -File $dstApp | Where-Object { $keep -notcontains $_.Name })
+    if ($stale.Count -gt 0) {
+      $stale | ForEach-Object { Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue }
+      Write-Host "  pruned $($stale.Count) stale hashed asset(s) from dist/_app" -ForegroundColor DarkGray
+    }
   }
 }
-$serverJsSrc = Join-Path $root 'server.js'
-if (Test-Path $serverJsSrc) {
-  Copy-Item -Path $serverJsSrc -Destination (Join-Path $gatewayDir 'server.js') -Force
-  Write-Host "  copied server.js -> gateway/server.js" -ForegroundColor DarkGray
-}
 
-# Copy-Item merges, so hashed build assets under dist/_app accumulate forever
-# (21 stale CompanionView chunks observed on 2026-08-16). Prune files that are
-# not present in the fresh build; content-hashed names make same-name files
-# identical, so this only removes truly dead chunks. Tabs still holding an old
-# index.html may 404 a lazy chunk until reloaded - acceptable for a local app.
-$newApp = Join-Path $root 'dist\_app'
-$dstApp = Join-Path $gatewayDir 'dist\_app'
-if ((Test-Path $newApp) -and (Test-Path $dstApp)) {
-  $keep = @(Get-ChildItem -File $newApp | ForEach-Object { $_.Name })
-  $stale = @(Get-ChildItem -File $dstApp | Where-Object { $keep -notcontains $_.Name })
-  if ($stale.Count -gt 0) {
-    $stale | ForEach-Object { Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue }
-    Write-Host "  pruned $($stale.Count) stale hashed asset(s) from dist/_app" -ForegroundColor DarkGray
-  }
-}
-
-# Defense in depth: clear WebView2 HTTP caches (Cache / Code Cache / GPUCache).
-# Even with data-first ordering, an immutable entry cached in a previous
-# broken window would keep shadowing the new data; caches are performance-only
-# and contain no user data (IndexedDB / Local Storage are untouched).
+# ------------------------------------------- [5] 清 WebView2 缓存 + 验证依赖
+Write-Host '[5/6] 清理 WebView2 缓存 ...' -ForegroundColor Cyan
+# 纵深防御：即便顺序正确，之前坏窗口里以 immutable 缓存的条目也会一直遮蔽新数据。
+# 这些缓存纯性能用途，不含用户数据（IndexedDB / Local Storage 不受影响）。
 $webviewBase = Join-Path $env:LOCALAPPDATA 'com.aics.studio\EBWebView\Default'
 foreach ($cacheDir in @('Cache', 'Code Cache', 'GPUCache')) {
   $target = Join-Path $webviewBase $cacheDir
@@ -108,8 +173,27 @@ foreach ($cacheDir in @('Cache', 'Code Cache', 'GPUCache')) {
   }
 }
 
-if (-not $NoRestart) {
-  Write-Host '[4/4] Starting app...' -ForegroundColor Cyan
-  Start-Process (Join-Path $installDir 'ai-cg-studio-desktop.exe')
+# 真实反推依赖必须能 require，而不是只看目录在不在——缺了它引擎会静默降级为启发式兜底
+Write-Host '[5/6] 验证真实反推依赖 ...' -ForegroundColor Cyan
+if (Test-Path (Join-Path $gatewayDir 'node_modules\onnxruntime-node')) {
+  Push-Location $gatewayDir
+  node -e "require('onnxruntime-node'); require('sharp'); console.log('  NATIVE_OK：真实反推（WD14）可用')"
+  $nativeOk = $LASTEXITCODE
+  Pop-Location
+  if ($nativeOk -ne 0) { Write-Warning '  原生模块加载失败，真实反推不可用' }
+} else {
+  Write-Warning '  node_modules\onnxruntime-node 缺失 —— 真实反推将降级为启发式兜底'
 }
-Write-Host 'Quick deploy done (no installer rebuild).' -ForegroundColor Green
+
+# ------------------------------------------------------------ [6] 启动
+if (-not $NoRestart) {
+  Write-Host '[6/6] 启动桌面端 ...' -ForegroundColor Cyan
+  # 经 explorer 中转，让子进程脱离管理员令牌（UIPI 下拖放文件才正常）
+  Start-Process explorer.exe -ArgumentList "`"$installDir\ai-cg-studio-desktop.exe`""
+} else {
+  Write-Host '[6/6] 已按 -NoRestart 跳过启动' -ForegroundColor DarkGray
+}
+
+$after = [math]::Round((Get-ChildItem -Path $installDir -Recurse -File -ErrorAction SilentlyContinue |
+  Measure-Object -Property Length -Sum).Sum / 1MB, 1)
+Write-Host "完成。安装目录当前 $after MB" -ForegroundColor Green

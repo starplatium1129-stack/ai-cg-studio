@@ -55,10 +55,17 @@
    - Anima 接口与生成边界：`node scripts/tests/test-anima-routes.js`
    - 前端状态机单元测试：`npm run test:frontend`
 3. **打包预算**：`npm run build`（全站 19 个路由必须严格遵守 140KB 预算红线）。
-4. **桌面快速部署（按需）**：
+4. **桌面部署（按需，唯一入口 `deploy-desktop.bat`）**：
    ```powershell
-   powershell -ExecutionPolicy Bypass -File scripts/maintenance/deploy-desktop-quick.ps1 -SkipBuild
+   deploy-desktop.bat                    # 增量部署：清理残留 + 复制最新代码 + 清缓存 + 验证 + 重启
+   deploy-desktop.bat -SkipBuild         # 已手动 build 过，跳过前端构建
+   deploy-desktop.bat -UseInstaller      # 跑 runtime\desktop-updates 下最新完整安装包（依赖/壳变动时用）
+   deploy-desktop.bat -NoRestart         # 部署后不自动启动
    ```
+   - 实现脚本只有 `scripts/maintenance/deploy-desktop-quick.ps1` 一个（2026-08-29 收口：此前散落 11 个临时脚本，已全部删除）。
+   - **写 `C:\Program Files` 需管理员**：agent 侧 `Start-Process -Verb RunAs` 与 Bash 调 powershell 均被安全策略拦截，提权这一步只能由用户点 UAC。
+   - 新增「源端删除型」清理目标时，改脚本里的 `$STALE_ASSETS`（`Copy-Item` 只合并不删除，否则残留会永久堆积）。
+   - **何时增量、何时必须完整安装，见 `docs/desktop-deployment.md`**（口诀：只动会被复制进去的文件 → 增量；动 `node_modules` 或 exe → 完整安装）。
 5. **推送远端（交付闭环）**：`git push` 成功后才算交付完成（红线 5，2026-08-29 教训固化）。`npm run backup:git` 可随时手动做 bundle 快照。
 
 > **统一工作流入口（2026-08-26 新增）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等 140 个脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`），一站式索引见 `docs/workflow.md:1`；旧 `node scripts/maintenance/*.js` 仍兼容。
