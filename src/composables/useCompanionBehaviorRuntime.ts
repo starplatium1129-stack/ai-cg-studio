@@ -1,7 +1,6 @@
 import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { controlApi } from '@/api/controlApi'
-import { trainingApi } from '@/api/trainingApi'
 import { imgCount } from '@/composables/useImageStore'
 import { pickCompanionLine } from '@/config/characters'
 import { pickEnvironmentGreeting } from '@/utils/environmentContext'
@@ -152,20 +151,11 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     const controller = new AbortController()
     eventPollController = controller
     try {
-      const [status, trainingJobs, imageCount] = await Promise.all([
+      const [status, imageCount] = await Promise.all([
         controlApi.getStatus({ signal: controller.signal }).catch(() => null),
-        trainingApi.getJobs({ signal: controller.signal }).then(result => result.jobs).catch(() => null),
         imgCount().catch(() => -1),
       ])
       if (!alive || controller.signal.aborted || !status || status.ok === false) return
-      const jobs = (trainingJobs || []).map(job => ({
-        id: job.id,
-        status: job.status,
-        percent: Number.isFinite(job.progress.percent) ? job.progress.percent : 0,
-      }))
-      // 任务栏进度环：训练中的任务显示 percent；空闲/完成/失败清除
-      const activeJob = jobs.find(job => job.status === 'running' || job.status === 'stopping')
-      desktopBridge?.setProgress(activeJob ? (activeJob.percent || 0) / 100 : null)
       const events = eventDetector.ingest({
         imageCount: imageCount >= 0 ? imageCount : 0,
         services: {
@@ -173,7 +163,6 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
           ttsOnline: status.ttsOnline,
           ollamaOnline: status.ollamaOnline,
         },
-        jobs,
       })
       for (const event of events) {
         eventLineOffset += 1

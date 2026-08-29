@@ -292,7 +292,7 @@
   .pb .voice-live-caption small { display:block; margin-bottom:3px; color:var(--text-muted); font-size:var(--fs-mono-sm); letter-spacing:.04em; }
   .pb .voice-status { min-height:1.35em; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
 
-  /* Training / negative */
+  /* Negative prompt collapsible */
   .pb .collapsible { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-top: var(--s-4); }
   .pb .collapsible-btn { background: none; border: none; color: var(--text-secondary); font-size: var(--fs-label); cursor: pointer; display: flex; align-items: center; gap: var(--s-2); font-family: var(--font-sans); width: 100%; text-align: left; padding: 0; }
   .pb .collapsible-btn .arrow { transition: transform var(--motion-hover); font-size: var(--fs-mono-sm); }

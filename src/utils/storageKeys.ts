@@ -74,14 +74,11 @@ export const LIVE_LOCAL_KEYS = [
   COMPANION_AFFECTION_KEY,
   SPEECH_INPUT_KEY,
   DRAW_ENGINE_KEY,
-  'aics_training_onboarded',
   GUEST_GUIDE_DISMISSED_KEY,
 ] as const
 
 /** 动态前缀活键：训练参数/数据集选择按 job 动态命名。 */
 export const LIVE_LOCAL_PREFIXES = [
-  'aics_training_params_',
-  'aics_training_dataset_',
 ] as const
 
 /** 死键：已无写入者、内容已迁移或废弃，备份导出时清理。 */

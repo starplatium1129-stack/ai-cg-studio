@@ -108,33 +108,6 @@ async function mockTrainingWorkbench(page: Page) {
       adultPreview: { available: false, label: '', blurred: false },
     },
   ];
-
-  await page.route('**/api/training/overview', route => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({
-      ok: true,
-      workspace: { available: true, name: 'AI' },
-      activeJobId: null,
-      readyJobs: jobs.map(job => job.id),
-      datasets,
-      jobs,
-    }),
-  }));
-  await page.route(/\/api\/training\/jobs\/[^/]+\/logs(?:\?.*)?$/, route => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({
-      ok: true, id: 'lora-nene-v18', cursor: 0, nextCursor: 0,
-      reset: false, version: 0, text: '', lines: [],
-    }),
-  }));
-  await page.route('**/api/training/datasets/*/preview', route => route.fulfill({
-    contentType: 'image/svg+xml',
-    body: '<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="684"></svg>',
-  }));
-  await page.route('**/api/training/datasets/*/adult-preview', route => route.fulfill({
-    contentType: 'image/svg+xml',
-    body: '<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="1120"></svg>',
-  }));
 }
 
 // 走 AppLayout 的路由：共享 skip-link 与 main landmark
@@ -145,7 +118,6 @@ const layoutRoutes = [
   { path: '/scene-explorer', name: 'scene-explorer' },
   { path: '/showcase', name: 'showcase' },
   { path: '/chat', name: 'chat' },
-  { path: '/training?kind=lora', name: 'training' },
 ];
 
 for (const entry of layoutRoutes) {
@@ -294,32 +266,6 @@ test('樱花与动效在触屏和减弱动效设备上收口', async ({ page }) 
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.routeMotion || '')).toBe('');
 });
 
-test('training workbench keeps visual samples and keyboard tabs usable', async ({ page }) => {
-  const errors = collectRuntimeErrors(page);
-  await mockTrainingWorkbench(page);
-  await page.goto('/training?kind=lora');
-  await expect(page.getByRole('heading', { name: '角色训练台' })).toHaveCount(1);
-  // 数据集详情（审核样张/分层）默认折叠：先展开再断言样本可见与模糊遮罩
-  await page.locator('.dataset-details summary').first().click();
-  await expect(page.locator('.dataset-preview img')).toHaveCount(2);
-  await expect(page.locator('.dataset-preview img').first()).toBeVisible();
-  await expect(page.locator('.adult-preview img')).toHaveCount(2);
-  await expect(page.locator('.adult-preview img').first()).toBeVisible();
-  await expect(page.locator('.adult-preview img').first()).toHaveCSS('filter', /blur/);
-
-  const voiceTab = page.getByRole('tab', { name: /角色语音/ });
-  await voiceTab.click();
-  await expect(page.getByRole('heading', { name: '角色语音训练' })).toBeVisible();
-  await voiceTab.focus();
-  await page.keyboard.press('ArrowLeft');
-  await expect(page.getByRole('tab', { name: /角色 LoRA/ })).toHaveAttribute('aria-selected', 'true');
-
-  const overflow = await page.evaluate(() =>
-    document.documentElement.scrollWidth - document.documentElement.clientWidth,
-  );
-  expect(overflow).toBeLessThanOrEqual(1);
-  expect(errors).toEqual([]);
-});
 
 test('control layout keeps its navigation usable without horizontal scroll', async ({ page }) => {
   const errors = collectRuntimeErrors(page);

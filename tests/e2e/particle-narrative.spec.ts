@@ -45,7 +45,6 @@ test('all complex workspaces expose one compact archive status bar', async ({ pa
     ['/prompt-builder', '01'],
     ['/chat', '09'],
     ['/lora', '10'],
-    ['/training', '11'],
     ['/scene-manager', '12'],
     ['/control', '13'],
   ] as const

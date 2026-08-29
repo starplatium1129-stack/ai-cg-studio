@@ -48,7 +48,7 @@ import { toolDefs } from './icons/tool.ts'
 
 export type ArchiveIconName =
   | 'scene' | 'spark' | 'chat' | 'image' | 'gallery'
-  | 'character' | 'palette' | 'model' | 'training' | 'manager'
+  | 'character' | 'palette' | 'model' | 'manager'
   | 'info' | 'success' | 'error' | 'warning' | 'sound' | 'mute'
   | 'close' | 'refresh' | 'sun' | 'moon' | 'menu'
   | 'gear' | 'lightning' | 'lock' | 'eye' | 'wand' | 'speaker' | 'filter' | 'search' | 'pin'

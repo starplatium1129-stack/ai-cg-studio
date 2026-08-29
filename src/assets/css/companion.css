@@ -1550,13 +1550,11 @@ html.companion-mode:not(.companion-desktop) body {
   border-color: color-mix(in srgb, var(--character-accent) 70%, var(--border-strong));
 }
 
-.companion-page .companion-reminder-bubble[data-event-kind="training-completed"],
 .companion-page .companion-reminder-bubble[data-event-kind="service-back"] {
   border-color: color-mix(in srgb, var(--success) 55%, var(--border-soft));
   background: color-mix(in srgb, var(--success) 9%, var(--bg-surface));
 }
 
-.companion-page .companion-reminder-bubble[data-event-kind="training-failed"],
 .companion-page .companion-reminder-bubble[data-event-kind="service-down"] {
   border-color: color-mix(in srgb, var(--danger) 55%, var(--border-soft));
   background: color-mix(in srgb, var(--danger) 9%, var(--bg-surface));

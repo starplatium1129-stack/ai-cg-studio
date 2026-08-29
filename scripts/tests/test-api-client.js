@@ -14,10 +14,6 @@ const {
   createControlApi,
 } = require('../../src/api/controlApi.ts');
 const {
-  TRAINING_API_TIMEOUTS,
-  createTrainingApi,
-} = require('../../src/api/trainingApi.ts');
-const {
   MAINTENANCE_API_TIMEOUTS,
   createMaintenanceApi,
   maintenanceFailure,
@@ -445,24 +441,6 @@ test('client removes the caller listener and clears its timeout after success', 
   assert.equal(requestSignal.aborted, false, 'cleared timer must not abort a completed request');
 });
 
-test('trainingApi preserves JOB_BUSY status, code and detail', async () => {
-  const client = createApiClient(async () => jsonResponse({
-    ok: false,
-    error: '另一个训练任务仍在运行',
-    detail: 'lora-nene-v18',
-    code: 'JOB_BUSY',
-  }, 409));
-  const api = createTrainingApi(client);
-  await assert.rejects(api.start('voice-nene'), error => {
-    assert.ok(error instanceof ApiClientError);
-    assert.equal(error.status, 409);
-    assert.equal(error.code, 'JOB_BUSY');
-    assert.equal(error.detail, 'lora-nene-v18');
-    assert.match(error.message, /lora-nene-v18/);
-    return true;
-  });
-});
-
 test('maintenanceApi preserves desktop 501 code and rollback metadata', async () => {
   const responses = [
     jsonResponse({
@@ -615,7 +593,6 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
   const scopedFiles = [
     'src/composables/useControlActions.ts',
     'src/composables/useControlStatus.ts',
-    'src/stores/trainingStore.ts',
     'src/views/SceneManagerView.vue',
     'src/composables/scene/useSceneShowcaseUpload.ts',
     'src/views/HomeView.vue',
@@ -630,12 +607,11 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
     const source = fs.readFileSync(path.join(root, relativePath), 'utf8');
     assert.doesNotMatch(source, /\bfetch\s*\(/, `${relativePath} must use the typed API modules`);
   }
-  // 事件轮询（controlApi/trainingApi/imgCount 聚合 + AbortController）已归
+  // 事件轮询（controlApi/imgCount 聚合 + AbortController）已归
   // useCompanionBehaviorRuntime，卸载中止哨兵随之迁移（存活标志更名 alive）。
   const companionBehavior = fs.readFileSync(path.join(root, 'src/composables/useCompanionBehaviorRuntime.ts'), 'utf8');
   assert.match(companionBehavior, /controlApi\.getStatus\(\{ signal: controller\.signal \}\)/);
-  assert.match(companionBehavior, /trainingApi\.getJobs\(\{ signal: controller\.signal \}\)/);
-  assert.match(companionBehavior, /!alive \|\| controller\.signal\.aborted \|\| !status/);
+  assert.match(companionBehavior, /!alive || controller.signal.aborted/);
   assert.match(companionBehavior, /status\.ok === false/);
   assert.match(companionBehavior, /alive = false\s+eventPollController\?\.abort\(\)/);
 

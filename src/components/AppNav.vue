@@ -105,7 +105,6 @@ const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
     heading: '工坊',
     items: [
       { id: 'lora',      label: '模型',     to: '/lora',         icon: 'model' },
-      { id: 'training',  label: '训练台',   to: '/training',     icon: 'training' },
       { id: 'manager',   label: '场景管理', to: '/scene-manager', icon: 'manager' },
       { id: 'control',   label: '控制面板', to: '/control',       icon: 'gear' },
     ],

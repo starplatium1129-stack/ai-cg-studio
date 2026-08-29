@@ -134,7 +134,6 @@ const PAGES: PageItem[] = [
   { id: 'character', label: '角色档案', icon: 'character', path: '/character', keywords: '角色 档案 人设' },
   { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画风 色彩 色板' },
   { id: 'lora', label: '模型', icon: 'model', path: '/lora', keywords: '模型 lora 权重' },
-  { id: 'training', label: '训练台', icon: 'training', path: '/training', keywords: '训练 lora 语音' },
   { id: 'scenario', label: '剧本模式', icon: 'book', path: '/scenario', keywords: '剧本 分幕 剧情' },
   { id: 'color-script', label: '色调脚本', icon: 'palette', path: '/color-script', keywords: '色彩 脚本 对照' },
   { id: 'manager', label: '场景管理', icon: 'manager', path: '/scene-manager', keywords: '管理 编辑 维护' },

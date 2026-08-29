@@ -13,7 +13,6 @@
         <h1 class="title">模型</h1>
         <p class="subtitle">专属模型凝结着角色的容颜细节与神态气质。出图时由工坊智能调度，在此浏览核心特征与最佳推荐权重。</p>
       </div>
-      <RouterLink class="btn btn-primary" to="/training?kind=lora">打开训练台</RouterLink>
     </div>
     <ArchiveStatePanel
       v-if="loading"
@@ -33,9 +32,8 @@
       v-else-if="!loras.length"
       kind="empty"
       title="模型目录暂未收录"
-      message="完成一次 LoRA 训练或导入模型后，专属角色与画风档案将在此静候取用。"
+      message="导入模型后，专属角色与画风档案将在此静候取用。"
     >
-      <RouterLink class="btn btn-primary" to="/training?kind=lora">前往训练台</RouterLink>
     </ArchiveStatePanel>
     <div v-else class="lora-grid">
       <div v-for="l in loras" :key="l.id" class="lora-card">

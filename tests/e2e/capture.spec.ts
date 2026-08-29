@@ -26,7 +26,6 @@ const PAGES: [string, string][] = [
   ['color-script', '/color-script'],
   ['scenario', '/scenario'],
   ['control', '/control'],
-  ['training', '/training'],
   ['scene-manager', '/scene-manager'],
   ['docs-index', '/docs/index.html'],
   ['docs-getting-started', '/docs/getting-started.html'],

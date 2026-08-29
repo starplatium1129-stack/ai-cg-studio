@@ -42,8 +42,6 @@
     "test:gateway": "node scripts/tests/test-gateway-contract.js",
     "test:comfy-progress": "node --test scripts/tests/test-comfy-progress.js",
     "test:gateway-token": "node scripts/tests/test-gateway-token.js",
-    "test:training": "node scripts/tests/test-training-routes.js",
-    "test:training-service": "node scripts/tests/test-training-service.js",
     "test:prompt-builder": "node scripts/tests/test-prompt-builder-modules.js",
     "test:prompt-policy": "node scripts/tests/test-prompt-policy.js",
     "test:rewrite-integrity": "node scripts/tests/test-prompt-rewrite-integrity.js",

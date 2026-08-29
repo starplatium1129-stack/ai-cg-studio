@@ -4,7 +4,7 @@
  * 桌宠本地工具执行器（从 desktop/toolRunner.ts 下沉到网关的 CJS 版）。
  *
  * 安全边界（与 toolRunner.ts 一致）：
- * - localOnly：仅本机可调（与 /api/training 同级别）。
+ * - localOnly：仅本机可调（localOnly 网关级）。
  * - 所有路径解析后必须落在 AI 工作区（AI_WORKSPACE_ROOT）内（Windows 大小写不敏感）。
  * - 命令以参数数组 execFile 执行，不经过 shell —— 没有 `;`/`|`/`&&` 注入面。
  * - 命令名白名单（python/pwsh/node/git 等解释器）或工作区内脚本的相对路径，

@@ -69,7 +69,6 @@ const ROUTE_LABELS: Record<string, [string, string]> = {
   '/character': ['03', 'IDENTITY FILE'],
   '/style': ['04', 'VISUAL GRAMMAR'],
   '/lora': ['10', 'MODEL SHELF'],
-  '/training': ['11', 'TRAINING WORKBENCH'],
   '/scene-manager': ['12', 'SCENE MAINTENANCE'],
   '/color-script': ['07', 'CHROMATIC RECORD'],
   '/scenario': ['08', 'NARRATIVE SEQUENCE'],

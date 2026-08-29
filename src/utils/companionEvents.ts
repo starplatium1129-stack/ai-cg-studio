@@ -14,19 +14,13 @@ export interface CompanionServicesSnapshot {
   ollamaOnline: boolean
 }
 
-export interface CompanionTrainingJobSnapshot {
-  id: string
-  status: 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped'
-}
-
 export interface CompanionEventSnapshot {
   /** 作品库图片总数（IndexedDB 计数），增加视为出图完成 */
   imageCount: number
   services: CompanionServicesSnapshot
-  jobs: CompanionTrainingJobSnapshot[]
 }
 
-export type CompanionDetectedEvent = 'sd-done' | 'training-completed' | 'training-failed' | 'service-back' | 'service-down'
+export type CompanionDetectedEvent = 'sd-done' | 'service-back' | 'service-down'
 
 export interface CompanionEventDetector {
   /**
@@ -45,15 +39,6 @@ export function createCompanionEventDetector(): CompanionEventDetector {
     const events: CompanionDetectedEvent[] = []
     if (baseline) {
       if (snapshot.imageCount > baseline.imageCount) events.push('sd-done')
-
-      for (const job of snapshot.jobs) {
-        const previous = baseline.jobs.find(prev => prev.id === job.id)
-        if (!previous) continue
-        if (previous.status === 'running' || previous.status === 'stopping') {
-          if (job.status === 'completed') events.push('training-completed')
-          else if (job.status === 'failed') events.push('training-failed')
-        }
-      }
 
       for (const key of ['sdOnline', 'ttsOnline', 'ollamaOnline'] as const) {
         const was = baseline.services[key]
@@ -76,8 +61,6 @@ export function createCompanionEventDetector(): CompanionEventDetector {
 /** 事件 → 跳转的 Atelier 路由（供 UI 点击气泡时使用）。 */
 export const EVENT_ROUTE: Record<CompanionDetectedEvent, string> = {
   'sd-done': '/gallery',
-  'training-completed': '/training',
-  'training-failed': '/training',
   'service-back': '/control',
   'service-down': '/control',
 }
@@ -85,8 +68,6 @@ export const EVENT_ROUTE: Record<CompanionDetectedEvent, string> = {
 /** 事件 → 系统通知标题（供 desktopBridge.notify 使用）。 */
 export const EVENT_NOTIFY_TITLE: Record<CompanionDetectedEvent, string> = {
   'sd-done': '新图入库',
-  'training-completed': '训练完成',
-  'training-failed': '训练失败',
   'service-back': '服务恢复',
   'service-down': '服务掉线',
 }

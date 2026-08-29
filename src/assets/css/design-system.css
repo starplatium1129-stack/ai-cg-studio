@@ -390,7 +390,7 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
   writing-mode: vertical-rl;
 }
 /* 内容密集页（导演台 / 训练台）水印会与面板叠压，与 route-index 同策略隐藏 */
-body:has(.pb, .training-page) .kana-watermark { opacity: 0; }
+body:has(.pb) .kana-watermark { opacity: 0; }
 @media (max-width: 600px) { .kana-watermark { opacity: 0; } }
 
 /* ---- 星野层：rella 化（2026-08-15） ----
@@ -867,17 +867,28 @@ body > *:has(+ .footer),
 }
 .empty-state .btn { justify-content: center; }
 
+/* 审计修复：涟漪圈原为逐帧补间 box-shadow（无限循环 → 每帧重绘），
+   改为伪元素静态光晕 + transform:scale/opacity 补间（合成器属性，零重绘）。
+   视觉等价：8px 实心点背后扩散一层光晕，放大到约 3.5 倍（=原 10px spread）并淡出。 */
 .loading-pulse {
+  position: relative;
   display: inline-block;
   width: 8px; height: 8px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 0 var(--accent-glow);
+}
+.loading-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* 光晕在圆点背后扩散，不遮住实心点 */
+  border-radius: 50%;
+  background: var(--accent-glow);
   animation: atelierPulse 1.2s ease-out infinite;
 }
 @keyframes atelierPulse {
-  70% { box-shadow: 0 0 0 10px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
+  0% { transform: scale(1); opacity: .55; }
+  70%, 100% { transform: scale(3.5); opacity: 0; }
 }
 
 @media (max-width: 600px) {
@@ -1184,7 +1195,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   border-radius: inherit;
   background: linear-gradient(90deg, var(--accent), var(--accent-violet));
   /* compositor-exempt: 进度值更新是低频事件；scaleX 会压扁 inherit 圆头并横向拉伸
-     TrainingView 挂在填充上的扫光伪元素，保 width 过渡（单元素小子树重排可忽略）。 */
+     填充上的扫光伪元素，保 width 过渡（单元素小子树重排可忽略）。 */
   transition: width var(--motion-surface) var(--ease-out);
 }
 .meter-lg { height: 10px; }
@@ -1410,9 +1421,6 @@ tr:hover td { background: var(--bg-hover); }
 /* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；
    其余页面仍保留首屏水印（滚动后由 RouteAtmosphere 渐隐） */
 body:has(.pb) .route-atmosphere .route-index,
-body:has(.training-page) .route-atmosphere .route-index {
-  display: none;
-}
 
 @media (prefers-reduced-transparency: reduce) {
   :root { --glass-fill:var(--bg-surface); --glass-fill-strong:var(--bg-elevated); }
@@ -1602,12 +1610,25 @@ body:has(.training-page) .route-atmosphere .route-index {
 [data-reveal][data-reveal-delay="3"] { transition-delay: var(--motion-surface); }
 [data-reveal][data-reveal-delay="4"] { transition-delay: var(--motion-route); }
 
-/* ── 脉冲点（在线状态） ── */
+/* ── 脉冲点（在线状态） ──
+   审计修复：同上——涟漪由 box-shadow 补间改为伪元素 + transform:scale/opacity，
+   合成器属性补间，无限循环下不再逐帧重绘。 */
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
-  50%       { box-shadow: 0 0 0 5px transparent; opacity: .72; }
+  0%, 100% { transform: scale(1);   opacity: .8; }
+  50%      { transform: scale(2.2); opacity: .35; }
 }
-.pulse { animation: pulse-dot 2s ease-in-out infinite; }
+.pulse {
+  position: relative;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+}
 
 /* ── 旋转加载圈 ── */
 @keyframes spin { to { transform: rotate(360deg); } }

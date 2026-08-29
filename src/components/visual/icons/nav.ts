@@ -64,12 +64,6 @@ export const navDefs: Record<string, ArchiveIconDef> = {
     ],
     ends: [[12, 3.5], [12, 20.5]],
   },
-  training: {
-    paths: [
-      'M4.9 5.9 L19.1 5.9 L19.1 19.2 L4.9 19.2 Z',
-      'M8.3 9.3 L15.7 9.3', 'M8.3 12.7 L13.7 12.7',
-    ],
-  },
   manager: {
     paths: [
       'M5.5 4.5 L18.5 4.5 L18.5 19.5 L5.5 19.5 Z',

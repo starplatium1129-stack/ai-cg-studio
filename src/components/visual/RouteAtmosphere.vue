@@ -83,7 +83,6 @@ const ROUTE_META: Record<string, RouteAtmosphereMeta> = {
   '/scenario': { code: '08', label: 'NARRATIVE SEQUENCE', shape: 'book' },
   '/chat': { code: '09', label: 'CHARACTER ROOM', shape: 'heart' },
   '/lora': { code: '10', label: 'MODEL SHELF', shape: 'frame' },
-  '/training': { code: '11', label: 'TRAINING WORKBENCH', shape: 'book' },
   '/scene-manager': { code: '12', label: 'SCENE MAINTENANCE', shape: 'frame' },
   '/control': { code: '13', label: 'LOCAL CONTROL', shape: 'spark' },
 }
@@ -119,7 +118,7 @@ const ROUTES_WITH_DIM_SAKURA = new Set(['/prompt-builder'])
 const routeHasOwnParticle = computed(() => ROUTES_WITH_OWN_PARTICLES.has(route.path))
 // 右下角水印与密集工作台面板实测碰撞（控制台 / 场景管理 / 视频台），且这些页
 // 的 WorkspaceArchiveBar 已承载档案编号与机读上下文，水印重复且遮挡内容。
-// 导演台（水印锚点 particle-narrative 断言 '01'）与无碰撞的训练台/模型架保留。
+// 导演台（水印锚点 particle-narrative 断言 '01'）与无碰撞的模型架保留。
 const ROUTES_WITHOUT_ROUTE_INDEX = new Set(['/control', '/scene-manager', '/video-studio'])
 const showRouteIndex = computed(() => !routeHasOwnParticle.value && !ROUTES_WITHOUT_ROUTE_INDEX.has(route.path))
 const showSakura = computed(() => ROUTES_WITH_SAKURA.has(route.path))

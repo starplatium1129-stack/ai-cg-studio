@@ -27,8 +27,6 @@ export interface CompanionBehaviorConfig {
 
 export type CompanionEventKind =
   | 'sd-done'
-  | 'training-completed'
-  | 'training-failed'
   | 'service-back'
   | 'service-down'
 

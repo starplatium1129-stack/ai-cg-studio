@@ -16,7 +16,6 @@ var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
 var createMaintenanceRouter = require('./routes/maintenance').createMaintenanceRouter;
 var createControlRouter = require('./routes/control').createControlRouter;
-var createTrainingRouter = require('./routes/training').createTrainingRouter;
 var createAnimaRouter = require('./routes/anima').createAnimaRouter;
 var createGenerationRouter = require('./routes/generation').createGenerationRouter;
 var createInterrogateRouter = require('./routes/interrogate').createInterrogateRouter;
@@ -92,7 +91,6 @@ function createGateway(options) {
   var voice = createVoiceRouter(config, options.services);
   var live2d = createLive2dRouter(config, options.services);
   var maintenance = createMaintenanceRouter(config);
-  var training = createTrainingRouter(config, options.services);
   var anima = createAnimaRouter(config, options.services);
   var generation = createGenerationRouter(config, options.services);
   var interrogate = createInterrogateRouter(config);
@@ -117,7 +115,6 @@ function createGateway(options) {
   app.use(live2d.router);
   app.use(maintenance.router);
   app.use(control);
-  app.use(training.router);
   app.use(anima.router);
   app.use(generation.router);
   app.use(interrogate.router);
@@ -331,7 +328,6 @@ function createGateway(options) {
 
   function close() {
     voice.close();
-    training.close();
     if (anima && typeof anima.close === 'function') anima.close();
     if (generation && typeof generation.close === 'function') generation.close();
     if (video && typeof video.close === 'function') video.close();
@@ -385,7 +381,6 @@ function createGateway(options) {
       tts:voice.tts,
       translation:voice.translation,
       live2d:live2d.service,
-      training:training.service,
       anima:anima.service
     },
     startTunnel:function () { if (tunnelManager) tunnelManager.start(); },
