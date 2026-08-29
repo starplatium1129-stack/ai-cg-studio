@@ -45,6 +45,8 @@ function main() {
       env: Object.assign({}, process.env, {
         // 走 TAURI_SIGNING_PRIVATE_KEY_PATH：密钥文件含换行，环境变量传内容在
         // Windows spawn 层可能被截断/转义出错（实测 -k 传内容同样报 base64 错）。
+        // 构建期签名只认内容变量；PATH 变量一并传，双保险。
+        TAURI_SIGNING_PRIVATE_KEY: fs.readFileSync(KEY_FILE, 'utf8').trim(),
         TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE,
         TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '',
       }),
