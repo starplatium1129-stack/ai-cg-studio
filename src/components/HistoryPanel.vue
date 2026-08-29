@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, reactive, watch } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { imgGet } from '@/composables/useImageStore'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { HistoryEntry } from '@/stores/promptBuilderStore'
@@ -71,9 +71,12 @@ defineEmits<{
   'to-shots-batch': [entries: HistoryEntry[]]
 }>()
 
-const selectedSet = reactive(new Set<number>())
+// 必须用 ref 而非 reactive/const 裸 Set：checkbox 的 v-model 在选中变化时会整体赋值
+// （Vue 运行时先对 Set 做 add/delete，再 assign 回绑定）。裸 const 会编译成
+// `selectedSet = $event` 并在运行时抛 TypeError（esbuild 构建期即告警）。
+const selectedSet = ref(new Set<number>())
 const selectedEntries = computed(() =>
-  props.history.filter(entry => selectedSet.has(entry.id)))
+  props.history.filter(entry => selectedSet.value.has(entry.id)))
 
 const thumbs = reactive<Record<number, string>>({})
 const objectUrls = new Map<number, string>()
