@@ -106,8 +106,12 @@ export function usePopularPromptAssembly(
       style: resolvedStyle.value,
       artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),
       artistProse: artistStyleProse(activeArtistStyleIds.value, engine.value),
+      outfitOverride: pb.outfitOverride?.tokens ?? null,
     })
   })
+
+  /** 角色默认服装是否正被反推结果顶替（供 UI 展示/一键恢复）。 */
+  const outfitOverridden = computed(() => Boolean(pb.outfitOverride?.tokens.length))
 
   const structuredPlan = computed(() => result.value?.plan ?? null)
   const positivePrompt = computed(() => result.value?.prompt ?? '')
@@ -134,6 +138,7 @@ export function usePopularPromptAssembly(
     profile,
     character,
     outfit,
+    outfitOverridden,
     blueprint,
     resolvedStyle,
     structuredPlan,

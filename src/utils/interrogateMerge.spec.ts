@@ -75,13 +75,17 @@ describe('interrogateMerge · 同角色等价匹配（2026-08-29）', () => {
 })
 
 describe('interrogateMerge · 互斥组冲突消解（2026-08-29 修复「校服 + 泳装并存」）', () => {
-  it('校服角色 + 反推泳装 → 判冲突跳过（圣园未花 trinity_uniform 真实场景）', () => {
+  it('校服角色 + 反推泳装 → 收集为服装顶替项（圣园未花 trinity_uniform 真实场景）', () => {
     const result = mergeInterrogatedTags({
       tags: ['swimsuit', 'bikini', 'white_hair', '1girl'],
       manualTags: new Set(),
       identityTokens: ['misono_mika', '1girl', 'school_uniform', 'pleated_skirt', 'white_tights'],
     })
-    expect(result.conflicts.map(c => c.tag)).toEqual(['swimsuit', 'bikini'])
+    // 服装跨族不是「丢弃」，是拿去顶替角色默认服装 —— 2026-08-29 改为替换语义
+    expect(result.outfitReplacement).toEqual(['swimsuit', 'bikini'])
+    expect(result.replacedOutfitGroup).toBe('校服/水手服')
+    expect(result.conflicts).toEqual([])
+    // 顶替项绝不能同时进 accepted，否则又变成两套服装并存
     expect(result.accepted).not.toContain('swimsuit')
     expect(result.accepted).not.toContain('bikini')
     // 非互斥组词条照常叠加；1girl 已在身份行判为重复
@@ -109,27 +113,30 @@ describe('interrogateMerge · 互斥组冲突消解（2026-08-29 修复「校服
     expect(result.conflicts).toEqual([])
   })
 
-  it('反向对称：泳装角色 + 反推校服 同样判冲突', () => {
+  it('反向对称：泳装角色 + 反推校服 同样顶替', () => {
     const result = mergeInterrogatedTags({
       tags: ['school_uniform'],
       manualTags: new Set(),
       identityTokens: ['swimsuit'],
     })
-    expect(result.conflicts.map(c => c.tag)).toEqual(['school_uniform'])
+    expect(result.outfitReplacement).toEqual(['school_uniform'])
+    expect(result.replacedOutfitGroup).toBe('泳装')
+    expect(result.accepted).toEqual([])
   })
 
-  it('冲突原因点明双方服装族，便于用户判断与处置', () => {
+  it('顶替项记录被顶替的服装族，供提示与一键恢复使用', () => {
     const result = mergeInterrogatedTags({
       tags: ['swimsuit'],
       manualTags: new Set(),
       identityTokens: ['school_uniform'],
     })
-    expect(result.conflicts[0].domain).toBe('服装')
-    expect(result.conflicts[0].reason).toContain('泳装')
-    expect(result.conflicts[0].reason).toContain('校服/水手服')
+    expect(result.outfitReplacement).toEqual(['swimsuit'])
+    expect(result.replacedOutfitGroup).toBe('校服/水手服')
+    // 服装是替换语义，不再计入 conflicts（conflicts 表示「丢弃」）
+    expect(result.conflicts).toEqual([])
   })
 
-  it('时段互斥一并消解（身份行 night + 反推 day）', () => {
+  it('时段互斥仍走跳过（无「可替换部件」语义），且不进服装顶替', () => {
     const result = mergeInterrogatedTags({
       tags: ['day'],
       manualTags: new Set(),
@@ -137,6 +144,7 @@ describe('interrogateMerge · 互斥组冲突消解（2026-08-29 修复「校服
     })
     expect(result.conflicts.map(c => c.tag)).toEqual(['day'])
     expect(result.conflicts[0].domain).toBe('时段')
+    expect(result.outfitReplacement).toEqual([])
   })
 
   it('回归：发色身份域行为不受影响（域内互斥）', () => {

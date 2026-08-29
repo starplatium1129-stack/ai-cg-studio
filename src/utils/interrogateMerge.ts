@@ -107,6 +107,17 @@ export interface InterrogateMergeResult {
   conflicts: InterrogateTagConflict[]
   /** 马赛克/打码类词条（自动过滤，不带进提示词）。 */
   filtered: string[]
+  /**
+   * 反推出、且与当前角色服装**跨族**的服装词条。
+   *
+   * 这些词条**不进 accepted**（追加到 manualTags 末尾会被角色那 12 个服装 tag
+   * 与 "She wears ..." 散文淹没），而是由调用方拿去**顶替**角色默认服装
+   * （outfit.tokens + outfit.prose），这样参考图的服装才真正生效。
+   * 用户 2026-08-29 选定行为：自动替换，可一键切回。
+   */
+  outfitReplacement: string[]
+  /** 被顶替掉的当前服装族名（提示文案用）；无替换时为 null。 */
+  replacedOutfitGroup: string | null
 }
 
 function toKeySet(tokens: ReadonlyArray<string>): Set<string> {
@@ -151,6 +162,8 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
   const duplicates: string[] = []
   const conflicts: InterrogateTagConflict[] = []
   const filtered: string[] = []
+  const outfitReplacement: string[] = []
+  let replacedOutfitGroup: string | null = null
 
   for (const raw of input.tags) {
     const key = normalizeKey(raw)
@@ -177,26 +190,42 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
         continue
       }
     }
-    // 互斥组冲突（服装/时段/天气）：身份行已占用**另一个**组 → 跳过。
+    // 互斥组冲突（服装/时段/天气）：身份行已占用**另一个**组。
     // 能走到这里说明 key 不在身份行（否则上面已判为重复），故同组必不命中。
     const groupHit = mutualGroupWithCategory(key)
     if (groupHit && identityGroupKeys.size) {
       const foreign = [...identityGroupKeys.entries()].find(([group]) => group !== groupHit.group)
       if (foreign) {
-        conflicts.push({
-          tag: key,
-          domain: groupHit.label,
-          // 点明「反推出什么 / 当前是什么 / 怎么改」三件事——只给 tag 名（swimsuit）
-          // 用户无从判断，也不知道去哪儿换成泳装。
-          reason: `${groupHit.label}冲突：反推出「${groupHit.group}」，当前角色是「${foreign[0]}」，已按当前角色保留；如需换用请在角色服装中切换`,
-        })
+        if (groupHit.category === 'outfit') {
+          // 服装跨族：**不跳过**，收集起来顶替角色默认服装。
+          // 若按普通冲突处理（跳过）或用 accepted 追加到 manualTags 末尾，都还原不了
+          // 参考图——实测角色侧有 12 个服装 tag 加一整段 "She wears ..." 散文，
+          // 孤零零一个 swimsuit 追加在末尾会被彻底淹没（2026-08-29 实测）。
+          outfitReplacement.push(key)
+          replacedOutfitGroup = foreign[0]
+        } else {
+          // 时段/天气没有「可替换的部件」语义（角色数据里没有"当前时段"这种字段），
+          // 只能跳过并说明。
+          conflicts.push({
+            tag: key,
+            domain: groupHit.label,
+            reason: `${groupHit.label}冲突：反推出「${groupHit.group}」，当前已定为「${foreign[0]}」，已按当前设定保留`,
+          })
+        }
         continue
       }
     }
     accepted.push(key)
   }
 
-  return { accepted, duplicates, conflicts, filtered }
+  return {
+    accepted,
+    duplicates,
+    conflicts,
+    filtered,
+    outfitReplacement,
+    replacedOutfitGroup,
+  }
 }
 
 /**

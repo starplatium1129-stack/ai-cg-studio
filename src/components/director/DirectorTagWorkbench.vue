@@ -164,11 +164,19 @@ async function onInterrogateFile(e: Event) {
       sceneTokens: context.sceneTokens,
     })
     for (const tag of merged.accepted) pb.toggleManualTag(tag)
+    // 服装跨族：顶替角色默认服装而非追加（追加会被角色服装 tag + 散文淹没，实测）
+    if (subject.kind === 'popular' && merged.outfitReplacement.length) {
+      pb.setOutfitOverride(merged.outfitReplacement, merged.replacedOutfitGroup)
+    }
     const note = characterConflictNote(result.characterTags, context.identityTokens, context.aliases)
     const parts: string[] = []
     if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条${result.model ? '（' + result.model + '）' : ''}`)
     if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
     if (merged.filtered.length) parts.push(`已自动过滤马赛克/打码词条 ${merged.filtered.length} 个`)
+    if (merged.outfitReplacement.length) {
+      const from = merged.replacedOutfitGroup ? `（原${merged.replacedOutfitGroup}）` : ''
+      parts.push(`已用参考图服装顶替角色默认服装${from}：${merged.outfitReplacement.slice(0, 3).join('、')}`)
+    }
     if (merged.conflicts.length) {
       // 只列 tag 名（swimsuit）用户看不懂为什么被拦，故优先展示 reason
       // （含「反推出什么 / 当前是什么 / 怎么改」）。冲突含身份域与互斥组两类。

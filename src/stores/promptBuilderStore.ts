@@ -137,6 +137,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sceneBaseStory = ref('')
   const selections = reactive<Selections>({ emotion: [], shot: null, lighting: null, composition: null })
   const manualTags = ref<Set<string>>(new Set())
+  /**
+   * 反推顶替的服装（2026-08-29）。非空时，热门角色用参考图服装**整体替换**
+   * 角色默认服装（outfit.tokens + outfit.prose 一起换；只换 tag 不换散文无效）。
+   * 清空即恢复角色默认服装。studio 路径（宁宁/夏目）不使用——它们无默认服装注入。
+   */
+  const outfitOverride = ref<{ tokens: string[]; replaced: string | null } | null>(null)
   const artistStyleIds = ref<string[]>([])
   const projectId  = ref('')
 
@@ -250,9 +256,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setStudioSubject() {
     if (subject.value.kind === 'studio') return
     subject.value = { kind: 'studio' }
+    outfitOverride.value = null
   }
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null) {
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
+    // 换角色 / 换服装是一次明确的服装决策，清掉上一次反推留下的顶替
+    outfitOverride.value = null
   }
   function setPopularBlueprint(blueprintId: string | null) {
     if (subject.value.kind !== 'popular') return
@@ -284,6 +293,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
   function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
 
+  /** 反推出跨族服装：顶替角色默认服装（replaced 为被顶替的服装族名，用于提示）。 */
+  function setOutfitOverride(tokens: string[], replaced: string | null) {
+    outfitOverride.value = tokens.length ? { tokens: [...tokens], replaced } : null
+  }
+  /** 一键恢复角色默认服装。 */
+  function clearOutfitOverride() { outfitOverride.value = null }
+
   function loadScene(scene: Scene) {
     // 工作室场景天然属于 studio 组装分支：热门角色(popular)模式下用 ?scene= 深链
     // （灵感场景/全景搜索/历史恢复）切回宁宁或夏目场景时，若不把 subject 兜底回
@@ -306,6 +322,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     selections.composition = sceneComposition(scene)
     colorMood.value = sceneColorMood(scene)
     manualTags.value = new Set()
+    outfitOverride.value = null
     sdParams.negativeCustom = ''
     sdParamsTouched.value = new Set()
     // 推荐尺寸（优先场景显式字段，供视图书写）
@@ -314,6 +331,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   function clearScene(opts: { keepStory?: boolean } = {}) {
     sceneId.value = null; sceneBaseStory.value = ''; visualDescription.value = ''; manualTags.value = new Set()
+    outfitOverride.value = null
     selections.emotion = []; selections.shot = null; selections.lighting = null
     selections.composition = null; colorMood.value = null
     if (!opts.keepStory) story.value = ''
@@ -587,7 +605,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, manualTags, artistStyleIds, projectId,
-    subject, isPopular,
+    subject, isPopular, outfitOverride,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady,
     history, projects,
@@ -597,6 +615,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, setArtistStyleIds, loadScene, clearScene, flash,
+    setOutfitOverride, clearOutfitOverride,
     snapshotStyleLayers, restoreStyleLayers,
     setStudioSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,

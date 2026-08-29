@@ -160,6 +160,17 @@
           @generate="callGenerate()"
           @cancel="cancelGeneration"
         />
+        <!-- 反推服装顶替提示：仅热门角色服装被参考图顶替时出现，附一键恢复 -->
+        <div v-if="outfitOverridden" class="outfit-override-note" role="status">
+          <ArchiveIcon name="wardrobe" class="outfit-override-icon" />
+          <span class="outfit-override-text">
+            服装已按参考图顶替为「{{ outfitOverrideTokens.slice(0, 3).join('、') }}」<template v-if="outfitReplacedLabel">（原{{ outfitReplacedLabel }}）</template>
+          </span>
+          <button type="button" class="outfit-override-restore" @click="pb.clearOutfitOverride()">
+            恢复默认服装
+          </button>
+        </div>
+
         <DirectorTagWorkbench />
 
         <PromptHealthPanel
@@ -567,6 +578,13 @@ const reportView = unified.promptReport
 const artViolationsView = unified.artViolations
 const popular = unified.popular
 
+// ── 反推服装顶替（2026-08-29）────────────────────────────────────────────
+// 热门角色默认会注入 12 个服装 tag 加一整段 "She wears ..." 散文，参考图服装
+// 追加在末尾会被淹没。故反推出跨族服装时改为整体顶替，并给用户一键恢复的入口。
+const outfitOverridden = computed(() => pb.isPopular && Boolean(pb.outfitOverride?.tokens.length))
+const outfitOverrideTokens = computed(() => pb.outfitOverride?.tokens ?? [])
+const outfitReplacedLabel = computed(() => pb.outfitOverride?.replaced ?? '')
+
 // ── 引擎协调层（2026-08-28 编排下沉）：引擎切换守卫、能力表、在线/进度/错误
 // 聚合展示、Anima 请求装配与推荐尺寸收敛，照 useAnimaInpaint 的依赖注入样板。
 const engine = useDirectorEngine({
@@ -825,10 +843,20 @@ function handleInterrogateResult(result: unknown) {
     sceneTokens: context.sceneTokens,
   })
   for (const tag of merged.accepted) pb.toggleManualTag(tag)
+  // 服装跨族：顶替角色默认服装，而不是追加到 manualTags —— 追加会被角色那 12 个
+  // 服装 tag 与 "She wears ..." 散文淹没，参考图服装根本出不来（2026-08-29 实测）。
+  // 仅 popular 需要：studio（宁宁/夏目）无默认服装注入，反推词直接生效。
+  if (subject.kind === 'popular' && merged.outfitReplacement.length) {
+    pb.setOutfitOverride(merged.outfitReplacement, merged.replacedOutfitGroup)
+  }
   const note = characterConflictNote(characterTags, context.identityTokens)
   const parts: string[] = []
   if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条，可切人直出`)
   if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
+  if (merged.outfitReplacement.length) {
+    const from = merged.replacedOutfitGroup ? `（原${merged.replacedOutfitGroup}）` : ''
+    parts.push(`已用参考图服装顶替角色默认服装${from}：${merged.outfitReplacement.slice(0, 3).join('、')}`)
+  }
   if (merged.conflicts.length) {
     // 只列 tag 名（swimsuit）用户看不懂为什么被拦，故优先展示 reason
     // （含「反推出什么 / 当前是什么 / 怎么改」）。冲突含身份域与互斥组两类。
@@ -1313,6 +1341,25 @@ watch(() => drawEngine.value, engine => {
 </script>
 
 <style scoped>
+/* 反推服装顶替提示条（2026-08-29）：热门角色服装被参考图顶替时的告知与恢复 */
+.outfit-override-note {
+  display: flex; align-items: center; gap: var(--s-2);
+  margin-bottom: var(--s-3); padding: var(--s-2) var(--s-3);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--border-soft));
+  border-radius: var(--r-md); background: var(--accent-soft);
+  font-size: var(--fs-label-xs); line-height: var(--lh-label);
+}
+.outfit-override-icon { flex: 0 0 auto; width: 15px; height: 15px; color: var(--accent); }
+.outfit-override-text { flex: 1 1 auto; min-width: 0; color: var(--text-secondary); }
+.outfit-override-restore {
+  flex: 0 0 auto; padding: 4px 10px; border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill); background: var(--bg-elevated);
+  color: var(--text-primary); font-size: var(--fs-label-xs); cursor: pointer;
+  transition: border-color var(--motion-hover), background var(--motion-hover);
+}
+.outfit-override-restore:hover { border-color: var(--accent); background: var(--bg-hover); }
+.outfit-override-restore:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 /* 多场景批量出图入口行 */
 .batch-entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin: var(--s-2) 0; }
 .batch-entry-count { color: var(--text-secondary); font-size: var(--fs-label-xs); }
