@@ -167,16 +167,63 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
 /**
  * 反推识别出的角色名（characterTags）与当前作画角色的冲突说明。
  * 命中当前角色触发词 → 无冲突返回 null；识别到其他角色 → 提示文案。
+ *
+ * 2026-08-29 修复「同角色误报冲突」：WD14 输出的角色名是 Danbooru 标准词条
+ * （mika_(blue_archive)），而项目身份词可能写法不同（misono_mika / 空格格式 /
+ * 缺作品后缀）。除精确匹配外，支持角色名等价匹配（见 isSameCharacterKey）。
  */
 export function characterConflictNote(
   characterTags: ReadonlyArray<string> | undefined,
   identityTokens: ReadonlyArray<string>,
+  aliases?: ReadonlyArray<string>,
 ): string | null {
   if (!characterTags || !characterTags.length) return null
   const identityKeys = toKeySet(identityTokens)
-  const foreign = characterTags.filter(tag => !identityKeys.has(normalizeKey(tag)))
+  const aliasKeys = new Set<string>()
+  for (const alias of aliases ?? []) {
+    const key = normalizeKey(alias)
+    if (key) aliasKeys.add(key)
+  }
+  const foreign = characterTags.filter(tag => {
+    const key = normalizeKey(tag)
+    if (!key) return false
+    if (identityKeys.has(key)) return false
+    // 角色名等价匹配：剥作品后缀（_(blue_archive) 等）后与身份词/别名互相
+    // 相等或包含（mika_(blue_archive) ≙ mika ≙ misono_mika）。
+    return !isSameCharacterKey(key, identityKeys, aliasKeys)
+  })
   if (!foreign.length) return null
   return `图中识别到其他角色：${foreign.slice(0, 3).join('、')}${foreign.length > 3 ? ' 等' : ''}，已按当前角色作画，角色名词条未叠加`
+}
+
+/** WD14/Danbooru 角色词条的作品后缀（_(blue_archive) 等，下划线+括号段）。 */
+const SERIES_SUFFIX_RE = /_\([a-z0-9_]+\)$/
+
+/** 剥作品后缀后的角色名基座：mika_(blue_archive) → mika；misono_mika → misono_mika。 */
+function seriesBase(key: string): string {
+  return key.replace(SERIES_SUFFIX_RE, '')
+}
+
+/**
+ * 反推角色名与当前角色身份词/别名是否等价：
+ * 1. 剥作品后缀后相等（artoria_pendragon_(fate) ≙ artoria_pendragon）；
+ * 2. 或一方基座包含另一方且被包含侧 ≥3 字符（mika ≙ misono_mika；
+ *    makima_(chainsaw_man) 的基座 makima 与身份词 makima 相等走规则 1）。
+ * 只与「当前角色」的身份词和别名比对，不会跨角色误伤。
+ */
+function isSameCharacterKey(key: string, identityKeys: ReadonlySet<string>, aliasKeys: ReadonlySet<string>): boolean {
+  const base = seriesBase(key)
+  const known = new Set<string>(identityKeys)
+  for (const alias of aliasKeys) known.add(seriesBase(alias))
+  for (const candidate of known) {
+    if (key === candidate || base === candidate) return true
+  }
+  for (const candidate of known) {
+    const a = base
+    const b = candidate
+    if (a.length >= 3 && b.length >= 3 && (a.includes(b) || b.includes(a))) return true
+  }
+  return false
 }
 
 // ── 上下文采集（视图层参数组装，保持工具层与 store 解耦） ────────────────
@@ -193,6 +240,8 @@ export interface InterrogateContextParams {
     identityTokens: ReadonlyArray<string>
     exactTokens?: ReadonlyArray<string>
     outfitTokens?: ReadonlyArray<string>
+    /** 2026-08-29：角色别名（含 Danbooru 标准词条，用于同角色等价比对）。 */
+    aliases?: ReadonlyArray<string>
   } | null
   /** popular：当前蓝图 promptTokens。 */
   blueprintTokens?: ReadonlyArray<string>
@@ -202,6 +251,7 @@ export interface InterrogateContextParams {
 export function collectInterrogateContext(params: InterrogateContextParams): {
   identityTokens: string[]
   sceneTokens: string[]
+  aliases: string[]
 } {
   if (params.kind === 'popular') {
     const character = params.character
@@ -212,6 +262,7 @@ export function collectInterrogateContext(params: InterrogateContextParams): {
         ...(character?.outfitTokens ?? []),
       ],
       sceneTokens: [...(params.blueprintTokens ?? [])],
+      aliases: [...(character?.aliases ?? [])],
     }
   }
   return {
@@ -220,5 +271,6 @@ export function collectInterrogateContext(params: InterrogateContextParams): {
       ...tokenize(String(params.scenePrompt || '')),
       ...(params.sceneTags ?? []),
     ],
+    aliases: [],
   }
 }

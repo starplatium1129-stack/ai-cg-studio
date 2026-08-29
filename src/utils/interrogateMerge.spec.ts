@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isCensorTag, mergeInterrogatedTags } from './interrogateMerge'
+import { characterConflictNote, isCensorTag, mergeInterrogatedTags } from './interrogateMerge'
 
 describe('interrogateMerge · 马赛克/打码词条自动过滤（2026-08-29）', () => {
   it('打码类词条全部进 filtered，不进 accepted', () => {
@@ -28,5 +28,48 @@ describe('interrogateMerge · 马赛克/打码词条自动过滤（2026-08-29）
     expect(isCensorTag('mosaic_censoring')).toBe(true)
     expect(isCensorTag('uncensored')).toBe(false)
     expect(isCensorTag('censorship')).toBe(false)
+  })
+})
+
+describe('interrogateMerge · 同角色等价匹配（2026-08-29）', () => {
+  it('WD14 标准词条 vs 项目写法不同 → 不报冲突（mika_(blue_archive) ≙ misono_mika）', () => {
+    const note = characterConflictNote(
+      ['mika_(blue_archive)'],
+      ['misono_mika', '1girl', 'pink_hair', 'halo', 'blue_archive'],
+      ['misono_mika', 'mika', 'mika_(blue_archive)', '圣园未花'],
+    )
+    expect(note).toBeNull()
+  })
+
+  it('无 alias 时按基座包含匹配（hina_(blue_archive) 基座 hina ⊆ sorasaki_hina）', () => {
+    const note = characterConflictNote(
+      ['hina_(blue_archive)'],
+      ['sorasaki_hina', '1girl', 'blue_archive'],
+    )
+    expect(note).toBeNull()
+  })
+
+  it('剥作品后缀后相等（artoria_pendragon_(fate) ≙ artoria_pendragon）', () => {
+    const note = characterConflictNote(
+      ['artoria_pendragon_(fate)'],
+      ['artoria_pendragon', 'saber (fate)', '1girl'],
+    )
+    expect(note).toBeNull()
+  })
+
+  it('空格格式与下划线格式归一等价（makima (chainsaw man) ≙ makima_(chainsaw_man)）', () => {
+    const note = characterConflictNote(
+      ['makima_(chainsaw_man)'],
+      ['makima (chainsaw man)', '1girl'],
+    )
+    expect(note).toBeNull()
+  })
+
+  it('真正的其他角色仍报冲突', () => {
+    const note = characterConflictNote(
+      ['reimu_hakurei'],
+      ['misono_mika', '1girl', 'blue_archive'],
+    )
+    expect(note).toContain('reimu_hakurei')
   })
 })

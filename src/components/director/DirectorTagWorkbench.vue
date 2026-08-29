@@ -146,6 +146,7 @@ async function onInterrogateFile(e: Event) {
                 identityTokens: popularChar.identityTokens,
                 exactTokens: popularChar.exactTokens,
                 outfitTokens: (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
+                aliases: popularChar.aliases,
               }
             : null,
           blueprintTokens: subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId)?.promptTokens ?? [] : [],
@@ -163,7 +164,7 @@ async function onInterrogateFile(e: Event) {
       sceneTokens: context.sceneTokens,
     })
     for (const tag of merged.accepted) pb.toggleManualTag(tag)
-    const note = characterConflictNote(result.characterTags, context.identityTokens)
+    const note = characterConflictNote(result.characterTags, context.identityTokens, context.aliases)
     const parts: string[] = []
     if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条${result.model ? '（' + result.model + '）' : ''}`)
     if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
