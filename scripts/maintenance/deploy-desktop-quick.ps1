@@ -60,7 +60,10 @@ $map = @(
   @{ src = 'assets';   dst = 'assets' },
   @{ src = 'routes';   dst = 'routes' },
   @{ src = 'server';   dst = 'server' },
-  @{ src = 'services'; dst = 'services' }
+  @{ src = 'services'; dst = 'services' },
+  # scripts/lib 是 server/config.js、tunnel.js 与 routes/maintenance.js 的运行时依赖
+  # （runtime-paths / scene-store），网关安装目录没有 scripts/，必须随增量同步。
+  @{ src = 'scripts/lib'; dst = 'scripts/lib' }
 )
 foreach ($item in $map) {
   $src = Join-Path $root $item.src
