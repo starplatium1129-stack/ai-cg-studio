@@ -27,10 +27,9 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const VIEW_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
-const ASSETS = path.join(ROOT, 'assets', 'character-references');
+// 2026-08-29：删除两个从未被引用的常量 ASSETS / PERSPECTIVE_COUNT ——
+// 它们让 lint:js 报 4 个 error，进而被 pre-push 钩子挡下（见 .githooks/pre-push）。
 const DRY_RUN = process.argv.includes('--dry-run');
-
-const PERSPECTIVE_COUNT = 4;
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));

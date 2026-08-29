@@ -625,8 +625,8 @@ test('scoped migration keeps Companion unmount aborts and removes bare fetch cal
 test('API modules keep operation timeouts within the documented baselines', () => {
   assert.ok(CONTROL_API_TIMEOUTS.quick <= 10_000);
   assert.ok(CONTROL_API_TIMEOUTS.action <= 30_000);
-  assert.ok(TRAINING_API_TIMEOUTS.logs <= 10_000);
-  assert.ok(TRAINING_API_TIMEOUTS.action <= 30_000);
+  // 2026-08-29：training 模块已下线，TRAINING_API_TIMEOUTS 的基线断言随之删除
+  // （留着会让 lint:js 报 no-undef，pre-push 钩子因此拒推）。
   assert.ok(MAINTENANCE_API_TIMEOUTS.upload <= 120_000);
   assert.ok(MAINTENANCE_API_TIMEOUTS.buildWeb <= 120_000);
   assert.ok(MAINTENANCE_API_TIMEOUTS.run >= 130_000);
