@@ -881,6 +881,46 @@ export function mutualGroupOf(tag: string): string | null {
   return group ? group.name : null
 }
 
+/** 互斥组类别。 */
+export type MutualGroupCategory = 'outfit' | 'time' | 'weather'
+
+const CATEGORY_LABEL: Record<MutualGroupCategory, string> = {
+  outfit: '服装',
+  time: '时段',
+  weather: '天气',
+}
+
+const MUTUAL_CATEGORY_BY_GROUP: Map<string, MutualGroupCategory> = new Map([
+  ...OUTFIT_FAMILIES.map(g => [g.name, 'outfit'] as [string, MutualGroupCategory]),
+  ...TIME_GROUPS.map(g => [g.name, 'time'] as [string, MutualGroupCategory]),
+  ...WEATHER_GROUPS.map(g => [g.name, 'weather'] as [string, MutualGroupCategory]),
+])
+
+export interface MutualGroupHit {
+  /** 组名（'泳装' / '夜间' / '雨天' …）。 */
+  group: string
+  category: MutualGroupCategory
+  /** 类别中文标签（'服装' / '时段' / '天气'）。 */
+  label: string
+}
+
+/**
+ * 返回 tag 命中的互斥组及其类别（无则 null）。
+ *
+ * 与 analyzeParts 的冲突警告共用 MUTUAL_EXCLUSION_GROUPS 同一真相源 —— 反推合并
+ * 用它做「写入前消解」，analyzeParts 做「最终兜底警告」，两处判定不会漂移。
+ *
+ * 注意语义与身份域相反：身份域是**域内互斥**（发色 pink vs blonde 不能共存），
+ * 互斥组是**组间互斥**（校服 vs 泳装不能共存），同组内可叠加
+ * （school_uniform + pleated_skirt 同属「校服/水手服」，叠加不冲突）。
+ */
+export function mutualGroupWithCategory(tag: string): MutualGroupHit | null {
+  const group = mutualGroupOf(tag)
+  if (!group) return null
+  const category = MUTUAL_CATEGORY_BY_GROUP.get(group) ?? 'outfit'
+  return { group, category, label: CATEGORY_LABEL[category] }
+}
+
 /** 返回 tags 中属于 groupName 互斥组的成员 */
 export function membersOfMutualGroup(groupName: string, tags: string[]): string[] {
   const group = MUTUAL_EXCLUSION_GROUPS.find(g => g.name === groupName)

@@ -170,8 +170,13 @@ async function onInterrogateFile(e: Event) {
     if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
     if (merged.filtered.length) parts.push(`已自动过滤马赛克/打码词条 ${merged.filtered.length} 个`)
     if (merged.conflicts.length) {
-      const shown = merged.conflicts.slice(0, 3).map(item => item.tag).join('、')
-      parts.push(`跳过身份冲突 ${merged.conflicts.length} 个（${shown}${merged.conflicts.length > 3 ? ' 等' : ''}）`)
+      // 只列 tag 名（swimsuit）用户看不懂为什么被拦，故优先展示 reason
+      // （含「反推出什么 / 当前是什么 / 怎么改」）。冲突含身份域与互斥组两类。
+      const first = merged.conflicts[0]
+      const detail = merged.conflicts.length === 1
+        ? first.reason
+        : `${first.reason} 等 ${merged.conflicts.length} 项`
+      parts.push(`跳过冲突词条 ${merged.conflicts.length} 个：${detail}`)
     }
     if (note) parts.push(note)
     pb.flash(parts.length ? parts.join('；') : '反推完成，无新增词条')

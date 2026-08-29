@@ -1,10 +1,10 @@
-import { normalizeKey, tokenize } from './promptPolicy.ts'
+import { mutualGroupWithCategory, normalizeKey, tokenize } from './promptPolicy.ts'
 
 /**
  * 反推词条合并器（2026-08-29，随机灵感/反推优化）。
  *
  * 职责：反推（interrogate）词条写入 manualTags 前的「不重复叠加」与
- * 「人物身份冲突」消解。纯函数，无 Vue/IO 依赖，可被 node:test 单测。
+ * 「人物身份冲突」「互斥组冲突」消解。纯函数，无 Vue/IO 依赖，可被 node:test 单测。
  *
  * 三重去重：manualTags（已有手动词条）∪ 身份行（charPrompt / identityTokens
  * + exactTokens + outfit tokens）∪ 场景行（scene.prompt / blueprint.promptTokens）。
@@ -12,6 +12,14 @@ import { normalizeKey, tokenize } from './promptPolicy.ts'
  * 身份冲突：反推词条命中「人物固有特征域」（发色/瞳色/发型/发长/主体数量），
  * 且当前身份行在该域已有取值但不含该词条 → 跳过并报告（以当前作画角色为准，
  * 图上人物 ≠ 当前角色时，特征词条会污染角色身份）。
+ *
+ * 互斥组冲突（2026-08-29 修复「校服 + 泳装并存」）：反推词条命中互斥组
+ * （服装/时段/天气），且身份行已占用**另一个**组 → 跳过并报告。
+ * 语义与身份域相反：身份域是域内互斥（pink_hair vs blonde_hair 不能共存），
+ * 互斥组是组间互斥（校服 vs 泳装不能共存），同组内可叠加
+ * （school_uniform + pleated_skirt 同属「校服/水手服」族）。
+ * 组定义复用 promptPolicy 的 MUTUAL_EXCLUSION_GROUPS —— 与最终提示词的
+ * 「服装相互冲突」警告同一真相源，杜绝两处判定漂移。
  */
 
 // ── 人物固有特征域（同域不同值 = 身份冲突） ────────────────────────────────
@@ -128,6 +136,17 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
     }
   }
 
+  // 身份行占用的互斥组：组名 → 该组已占用的 key 集（服装/时段/天气）。
+  // 组间互斥：反推词条属 B 组而身份行占着 A 组（A≠B）→ 冲突；同组则放行。
+  const identityGroupKeys = new Map<string, Set<string>>()
+  for (const key of identityKeys) {
+    const hit = mutualGroupWithCategory(key)
+    if (!hit) continue
+    const bucket = identityGroupKeys.get(hit.group) ?? new Set<string>()
+    bucket.add(key)
+    identityGroupKeys.set(hit.group, bucket)
+  }
+
   const accepted: string[] = []
   const duplicates: string[] = []
   const conflicts: InterrogateTagConflict[] = []
@@ -154,6 +173,22 @@ export function mergeInterrogatedTags(input: InterrogateMergeInput): Interrogate
           tag: key,
           domain: domain.label,
           reason: `${domain.label}与当前角色（${[...occupied].slice(0, 3).join('、')}）冲突`,
+        })
+        continue
+      }
+    }
+    // 互斥组冲突（服装/时段/天气）：身份行已占用**另一个**组 → 跳过。
+    // 能走到这里说明 key 不在身份行（否则上面已判为重复），故同组必不命中。
+    const groupHit = mutualGroupWithCategory(key)
+    if (groupHit && identityGroupKeys.size) {
+      const foreign = [...identityGroupKeys.entries()].find(([group]) => group !== groupHit.group)
+      if (foreign) {
+        conflicts.push({
+          tag: key,
+          domain: groupHit.label,
+          // 点明「反推出什么 / 当前是什么 / 怎么改」三件事——只给 tag 名（swimsuit）
+          // 用户无从判断，也不知道去哪儿换成泳装。
+          reason: `${groupHit.label}冲突：反推出「${groupHit.group}」，当前角色是「${foreign[0]}」，已按当前角色保留；如需换用请在角色服装中切换`,
         })
         continue
       }
