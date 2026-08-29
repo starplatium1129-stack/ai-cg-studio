@@ -496,6 +496,14 @@ export interface PopularPromptOptions {
    * 参考图的泳装压不过（实测主因）。可一键清空恢复角色默认服装。
    */
   outfitOverride?: ReadonlyArray<string> | null
+  /**
+   * 服装是否由用户**显式**选择（非回退到默认）（2026-08-29）。
+   *
+   * 基础提示词对标 studio（宁宁/夏目）：它们无场景时 `characterControlTokens`
+   * 返回空，只留人物基本特征。故 popular 在无蓝图且服装仍是默认时**不注入服装**，
+   * 让反推词条与手动词条自由生效；用户主动挑了某套服装才注入。
+   */
+  outfitExplicit?: boolean
   /** 词条池 Mature 分类键集（tags.json cat==='Mature'，调用方派生）。
    *  manual 命中 Mature 词条时评级联动升 R18（与 studio isManualR18Tags 同一契约，
    *  2026-08-29 随机灵感开放热门角色引入：否则抽中 Mature 词仍被负面压制）。 */
@@ -639,6 +647,12 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const manual = sanitizePopularManual(options.manual || [])
   // 反推顶替的服装（非空即整体替换 outfit.tokens 与 outfit.prose）
   const overridden = options.outfitOverride?.length ? [...options.outfitOverride] : null
+  // 服装是否参与注入（2026-08-29 基础提示词瘦身，对标 studio 的「场景驱动」）：
+  //   1) 反推顶替 → 一定注入（参考图服装必须出来）
+  //   2) 有蓝图/场景 → 注入（用户已选中某个具体场面）
+  //   3) 用户显式挑了某套服装 → 注入（尊重明确选择）
+  //   4) 否则（无场景 + 仍是默认服装）→ 不注入，只留人物基本特征
+  const outfitActive = Boolean(overridden) || Boolean(blueprint) || options.outfitExplicit === true
   // 手动 Mature 词条评级联动（单一契约 isManualR18Tags）：命中即升 R18 解除负面
   // 压制，但仅对成年角色生效（underage 资格仍 fail-closed，数据层契约不动）。
   const manualR18 = character.adultEligibility === 'adult'
@@ -672,7 +686,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
     // 反推顶替：Krea 只有散文流，必须换成参考图服装，否则 "wearing 校服..." 压制参考图。
-    const outfitProse = adultGranted
+    const outfitProse = (adultGranted || !outfitActive)
       ? ''
       : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose))
     // Krea 是自然语言模型：手动画师散文由 artistStyleProse 负责还原空格/去括号
@@ -713,7 +727,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   const identityTokens = character.identityTokens
   const exactControls = [...new Set([
-    ...(adultGranted ? [] : (overridden ?? outfit.tokens)),
+    ...((adultGranted || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
     ...(character.exactTokens || []),
     ...nsfwTokens,
   ])]
@@ -742,7 +756,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。
     // 2026-08-29：反推顶替同理——那句 "She wears 校服..." 是热门角色还原不了参考图
     // 服装的主因，必须连同 controls 一起换成参考图服装。
-    outfitProse: adultGranted
+    outfitProse: (adultGranted || !outfitActive)
       ? ''
       : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose)),
     sceneProse,

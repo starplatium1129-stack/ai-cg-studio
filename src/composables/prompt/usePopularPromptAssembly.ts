@@ -107,11 +107,27 @@ export function usePopularPromptAssembly(
       artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),
       artistProse: artistStyleProse(activeArtistStyleIds.value, engine.value),
       outfitOverride: pb.outfitOverride?.tokens ?? null,
+      outfitExplicit: outfitExplicit.value,
     })
   })
 
   /** 角色默认服装是否正被反推结果顶替（供 UI 展示/一键恢复）。 */
   const outfitOverridden = computed(() => Boolean(pb.outfitOverride?.tokens.length))
+
+  /**
+   * 用户是否**显式**挑过服装（而非选中角色时自动回退到默认那套）。
+   *
+   * 对标 studio：宁宁/夏目无场景时服装控制词为空，只留人物基本特征。故 popular 在
+   * 「无蓝图 + 服装仍是默认」时不注入服装，基础提示词保持干净；用户主动挑了别的
+   * 服装才注入。反推顶替不受此限制（参考图服装必须出来）。
+   */
+  const outfitExplicit = computed(() => {
+    const subject = pb.subject
+    if (subject.kind !== 'popular' || !subject.outfitId) return false
+    const current = character.value
+    const fallbackId = current ? defaultOutfit(current)?.id : undefined
+    return Boolean(fallbackId) && subject.outfitId !== fallbackId
+  })
 
   const structuredPlan = computed(() => result.value?.plan ?? null)
   const positivePrompt = computed(() => result.value?.prompt ?? '')
