@@ -211,6 +211,28 @@ footer{padding:40px 0 64px;color:var(--ink-faint);font-size:13px}
   <p class="loc">冲 8.5+ 的剩余路径：重绘型 47 处改写（box-shadow→伪元素静态层）· aria-label 覆盖率 41% 提升 · 对比度门禁扩展 rgb()/color-mix() 字面量解析。</p>
 </section>
 
+<section id="round2">
+  <h2 class="sec"><span class="num">06</span>第二轮深化（同日后续）：三条剩余路径的复核结论</h2>
+  <p class="secsub">三条路径逐条深挖后，结论与预期并不一致——两条改了口径、一条改了优先级。记录如下，避免后人照着过期建议做无用功。</p>
+
+  <div class="finding">
+    <h4><span class="tag tag-fixed">口径修正</span>「aria-label 覆盖率 41%」是测量错误，不是欠账</h4>
+    <p>原统计拿 <code>aria-label</code> 属性数除以 <code>&lt;button&gt;</code> 标签数，既把 <code>{{ }}</code> 插值文本当成「无文字」，也没算 <code>title</code>。按正确口径（有可见文本或插值即已有可访问名）复核：<strong>424 个按钮 / 16 个图标唯一 / 缺可访问名 0 个</strong>。真正值得做的是把正确口径固化成门禁（<code>npm run test:a11y-labels</code>），并只补了 2 处 title-only 按钮为 <code>aria-label</code>。<strong>无障碍维度据此上调，而非按 41% 计分。</strong></p>
+  </div>
+
+  <div class="finding">
+    <h4><span class="tag tag-fixed">盲区补上</span>对比度门禁扩展到 rgba()/color-mix()/var()：12 → 700 处</h4>
+    <p>此前只认字面 hex，半透明白字（<code>rgba(255,255,255,.6)</code>）这类最常见的漏网写法完全测不到。扩展后按候选落点合成计算，暴露 4 处真实违规并全部修复：朱印字 55% danger（2.09:1）→ <code>--danger-text</code>、warn 标签（4.05:1）→ 实心底 + 反色深字、元数据分隔符 <code>--border-strong</code>（2.73:1）→ <code>--text-muted</code> ×4。同时新增两条判定规则：落点未知（动态 var/渐变底）不猜不错杀；装饰性元素走 <code>contrast-exempt</code> 显式标记（与 <code>compositor-exempt</code> 同一治理方式）。</p>
+  </div>
+
+  <div class="finding">
+    <h4><span class="tag tag-debt">优先级重排</span>重绘型 47 处：真正该改的是「无限循环」，不是 hover</h4>
+    <p>§04 建议把 box-shadow 挪到伪元素静态层，但复核发现这条<strong>并非通用</strong>：场景卡片 <code>.sc</code> 带 <code>overflow:hidden</code>，伪元素外阴影会被裁掉，照做必然出视觉回归。真正的每帧热点是<strong>无限循环动画里的重绘属性</strong>——补上 keyframes 重绘扫描后抓出 5 处并全部整改：3 处涟漪圈（atelierPulse / pulse-dot / workspace-pulse）改伪元素 + transform:scale/opacity，2 处骨架微光（archive-skeleton-shimmer / gallerySkeleton）改伪元素 + translateX，1 处 6s filter 呼吸（stageMuseBreath）改纯 transform。<strong>无限循环重绘归零</strong>；剩余 58 处皆为 hover 一次性或有限次补间，维持为改进清单而非缺陷。</p>
+  </div>
+
+  <p>据此对六维作第二轮复评：<strong>图标 9.0 / 氛围 8.5 / 配色 8.5 / 动效 8.0 / 无障碍 8.0 / 令牌 7.5 —— 均值 8.25</strong>。动效与无障碍的上调依据分别是「常驻每帧重绘归零」与「可访问名口径修正 + 组件级对比度全绿」。</p>
+</section>
+
 </main>
 <footer class="wrap">复审计方法：四路并行只读取证 + 门禁实跑（lint-animations / check-contrast）· 基线报告：docs/design-audit-2026-08-28.html · 2026-08-29</footer>
 </body>
