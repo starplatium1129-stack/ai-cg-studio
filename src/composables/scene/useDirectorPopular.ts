@@ -142,7 +142,9 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       if (pb.popularCharacters.length) {
         const first = pb.popularCharacters[0]
         pb.setPopularSubject(first.id, first.outfits.find(o => o.default)?.id ?? first.outfits[0].id, null)
-        patchAnimaState({ modelId: first.recommendedEngine })
+        // 2026-08-29 修复：热门角色为无 LoRA 创作，必须清掉 anima 侧残留的
+        // studio loraId（默认 L_NENE_V21_ANIMA），否则后端会拿宁宁 lora 生成热门角色。
+        patchAnimaState({ modelId: first.recommendedEngine, loraId: '' })
         applyRecommendedEngine(first)
       } else {
         pb.setPopularSubject('', '')
@@ -164,7 +166,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     resetBlueprintRotation()
     // recommendedEngine 为 Krea 时直接切 krea2 引擎（当前数据全 aesthetic，仍保留分支防死字段）。
     applyRecommendedEngine(character)
-    patchAnimaState({ modelId: character.recommendedEngine })
+    patchAnimaState({ modelId: character.recommendedEngine, loraId: '' })
     syncManagedRoute()
     if (pb.directorMode === 'pro') void refreshAnimaBackend()
   }
@@ -172,7 +174,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   function selectPopularOutfit(outfitId: string) {
     if (pb.subject.kind !== 'popular') return
     pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId)
-    patchAnimaState({ styleLoraId: '' })
+    patchAnimaState({ styleLoraId: '', loraId: '' })
     resetBlueprintRotation()
   }
 
@@ -244,7 +246,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     if (!pb.isPopular || pb.subject.kind !== 'popular') return
     const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-aesthetic-v1.1'
     if (animaState.value.models.some(model => model.id === recommendedEngine)) {
-      patchAnimaState({ modelId: recommendedEngine })
+      patchAnimaState({ modelId: recommendedEngine, loraId: '' })
     }
     if (pb.subject.blueprintId) {
       const restoredBlueprint = findPopularBlueprint(pb.sceneBlueprints, pb.subject.blueprintId)

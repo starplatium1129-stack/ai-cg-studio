@@ -345,6 +345,10 @@ const facts = computed(() => {
     { label: '模型', value: modelName(i.checkpoint) },
     { label: 'Seed', value: i.seed == null ? '' : String(i.seed) },
     { label: 'Sampler', value: i.sampler || '' },
+    // 2026-08-29 修复：回显高清修复与采样参数（旧条目缺字段显示「—」）。
+    { label: '高清修复', value: hiresLabel(i) },
+    { label: 'CFG', value: i.cfg == null ? '' : String(i.cfg) },
+    { label: '步数', value: i.steps == null ? '' : String(i.steps) },
   ]
 })
 
@@ -365,6 +369,15 @@ function loraName(id: string | null | undefined) {
   if (!id) return '—'
   const item = loras.value.find(l => l.id === id || (l.name && (l.name === id || String(id).startsWith(l.name))))
   return item ? item.name : id
+}
+/** 高清修复参数回显：旧条目无字段显示「—」，新条目精确显示倍率/放大器/步数。 */
+function hiresLabel(i: ArtworkRecord): string {
+  if (i.hiresFix == null) return '—'
+  if (!i.hiresFix) return '关'
+  const scale = i.hiresScale ? ` ×${i.hiresScale}` : ''
+  const upscaler = i.hiresUpscaler ? ` · ${String(i.hiresUpscaler).split(/[\\/]/).pop()}` : ''
+  const steps = i.hiresSteps ? ` · ${i.hiresSteps}步` : ''
+  return `开${scale}${upscaler}${steps}`
 }
 function modelName(value: string | undefined) {
   if (!value) return 'WebUI 当前模型'

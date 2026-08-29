@@ -108,6 +108,16 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         negative: job.negative,
         prompt: job.prompt,
         ...historyGenerationFields(),
+        // 2026-08-29 修复：批量任务同样用入队快照覆盖（story/scene/hires 不随面板漂移）。
+        story: job.story,
+        scene: job.sceneId ?? null,
+        sceneTitle: job.sceneTitle || undefined,
+        hiresFix: job.hiresFix,
+        hiresScale: job.hiresScale,
+        hiresUpscaler: job.hiresUpscaler,
+        hiresSteps: job.hiresSteps,
+        hiresDenoise: job.denoisingStrength,
+        faceDetailer: job.faceDetailer,
       })
       // sd.resultUrl 会被下一张生成清掉，预览用入册 blob 克隆独立 objectURL。
       return { ok: true, resultUrl: URL.createObjectURL(blob) }
@@ -171,6 +181,12 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         negative: '',
         prompt,
         ...historyGenerationFields(),
+        // 2026-08-29 修复：Anima 批量同样固化场景故事/标题与 hires 实参。
+        story: input.scene.prose,
+        sceneTitle: input.scene.title || undefined,
+        hiresFix: Boolean(animaState.value.hiresFix),
+        hiresScale: animaState.value.hiresScale,
+        hiresDenoise: animaState.value.hiresDenoise,
       })
       return { ok: true, resultUrl: URL.createObjectURL(blob) }
     } catch (error) {

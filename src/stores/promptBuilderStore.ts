@@ -68,6 +68,14 @@ export interface HistoryEntry {
   styleLoraId?: string | null
   /** 专家模式选中的模型原生画师风格 id，最多两位。 */
   artistStyleIds?: string[]
+  /** 2026-08-29 修复：高清修复（SD hires）与脸部修复等生成参数此前未保存，
+   *  作品册无法回显「开了 hires」；旧条目缺省 undefined（展示为「—」）。 */
+  hiresFix?: boolean
+  hiresScale?: number
+  hiresUpscaler?: string
+  hiresSteps?: number
+  hiresDenoise?: number
+  faceDetailer?: boolean
 }
 
 export interface Selections {
@@ -503,9 +511,11 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         id,
         timestamp: now,
         character: isPopular ? ((currentSubject.characterId as unknown as CharKey) || char.value) : char.value,
-        scene: isPopular ? (currentSubject.blueprintId ?? null) : sceneId.value,
-        sceneTitle: resolvedSceneTitle,
-        story: story.value,
+        // 2026-08-29 修复：队列/批量入册优先用任务入队时快照的 story/scene/sceneTitle
+        // （entry.story ?? …），避免出图期间改了故事导致作品册与成片不符。
+        scene: isPopular ? (currentSubject.blueprintId ?? null) : (entry.scene !== undefined ? entry.scene : sceneId.value),
+        sceneTitle: entry.sceneTitle ?? resolvedSceneTitle,
+        story: entry.story ?? story.value,
         visualDescription: visualDescription.value,
         prompt: entry.prompt,
         negative: entry.negative ?? '',
@@ -514,7 +524,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         shot: selections.shot, lighting: selections.lighting, composition: selections.composition,
         colorMood: colorMood.value,
         manual_tags: [...manualTags.value],
-        lora: (entry.lora ?? loraLine.value) || null,
+        // 2026-08-29 修复：热门角色为无 LoRA 创作，lora 相关字段一律落空——
+        // 此前会兜底到 studio 的 loraLine（<ayachi_nene:…>）或残留的 anima loraId。
+        lora: isPopular ? null : ((entry.lora ?? loraLine.value) || null),
         cfg: entry.cfg ?? sdParams.cfg,
         steps: entry.steps ?? sdParams.steps,
         sampler: entry.sampler ?? sdParams.sampler,
@@ -524,9 +536,16 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         engine: entry.engine ?? 'sd',
         profile: entry.profile ?? '',
         model: entry.model ?? sdModelName.value,
-        loraId: entry.loraId ?? null,
-        loraStrength: entry.loraStrength ?? null,
-        loras: Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
+        loraId: isPopular ? null : (entry.loraId ?? null),
+        loraStrength: isPopular ? null : (entry.loraStrength ?? null),
+        loras: isPopular ? [] : Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
+        // 2026-08-29 修复：hires/脸部修复参数落库（SD 读面板实值，Anima 读任务元数据）。
+        hiresFix: entry.hiresFix ?? sdParams.hiresFix,
+        hiresScale: entry.hiresScale ?? sdParams.hiresScale,
+        hiresUpscaler: entry.hiresUpscaler ?? sdParams.hiresUpscaler,
+        hiresSteps: entry.hiresSteps ?? sdParams.hiresSteps,
+        hiresDenoise: entry.hiresDenoise ?? sdParams.hiresDenoise,
+        faceDetailer: entry.faceDetailer ?? sdParams.faceDetailer,
         width: measured.width, height: measured.height,
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',

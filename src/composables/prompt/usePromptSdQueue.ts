@@ -91,6 +91,11 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
         sampler: meta.sampler,
         scheduler: meta.scheduler,
         size: `${meta.width}x${meta.height}`,
+        // 2026-08-29：Anima/Krea 的 hires 实参回显（元数据仅有 fix/scale/denoise；
+        // 无则显式 false，避免兜底到 SD 面板值）。
+        hiresFix: meta.hiresFix === true,
+        hiresScale: typeof meta.hiresScale === 'number' ? meta.hiresScale : undefined,
+        hiresDenoise: typeof meta.hiresDenoise === 'number' ? meta.hiresDenoise : undefined,
       }
     }
     const model = pb.sdModelName || sd.checkpoint.value || ''
@@ -108,6 +113,13 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       sampler: pb.sdParams.sampler,
       scheduler: pb.sdParams.scheduler,
       size: sdSize.value,
+      // 2026-08-29：SD 高清修复/脸部修复实参落库（作品册回显 hires 开关）。
+      hiresFix: pb.sdParams.hiresFix,
+      hiresScale: pb.sdParams.hiresScale,
+      hiresUpscaler: pb.sdParams.hiresUpscaler,
+      hiresSteps: pb.sdParams.hiresSteps,
+      hiresDenoise: pb.sdParams.hiresDenoise,
+      faceDetailer: pb.sdParams.faceDetailer,
     }
   }
 
@@ -215,6 +227,17 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
             blob, seed: sd.resultSeed.value ?? undefined,
             size: job.size, negative: job.negative, prompt: job.prompt,
             ...historyGenerationFields(),
+            // 2026-08-29 修复：队列任务用入队时快照（job）覆盖当前面板状态——
+            // 故事/场景在排队期间被改也不串味；hires 取任务实参而非面板现值。
+            story: job.story,
+            scene: job.sceneId ?? null,
+            sceneTitle: job.sceneTitle || undefined,
+            hiresFix: job.hiresFix,
+            hiresScale: job.hiresScale,
+            hiresUpscaler: job.hiresUpscaler,
+            hiresSteps: job.hiresSteps,
+            hiresDenoise: job.denoisingStrength,
+            faceDetailer: job.faceDetailer,
           })
         } catch (e) { console.warn('queue autosave failed', e) }
         return { status: 'success' as const }
