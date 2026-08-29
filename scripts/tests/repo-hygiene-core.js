@@ -28,7 +28,7 @@ const BINARY_EXTENSIONS = new Set([
 ]);
 const TEXT_FILENAMES = new Set([
   '.editorconfig', '.env', '.env.example', '.eslintignore', '.gitattributes',
-  '.gitignore', '.gitkeep', '.npmrc', '.nvmrc', '.prettierignore', '.prettierrc',
+  '.gitignore', '.gitkeep', '.npmrc', '.nvmrc', '.prettierignore', '.prettierrc', 'pre-push',
   'dockerfile', 'license', 'makefile',
 ]);
 
