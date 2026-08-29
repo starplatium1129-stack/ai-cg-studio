@@ -299,7 +299,7 @@
             <div class="shot-row-actions">
               <button type="button" :disabled="index === 0 || batchActive" title="上移" @click="moveShot(index, -1)">↑</button>
               <button type="button" :disabled="index === shots.length - 1 || batchActive" title="下移" @click="moveShot(index, 1)">↓</button>
-              <button type="button" :disabled="batchActive" title="删除镜头" @click="removeShot(index)"><ArchiveIcon name="close" /></button>
+              <button type="button" :disabled="batchActive" aria-label="删除镜头" title="删除镜头" @click="removeShot(index)"><ArchiveIcon name="close" /></button>
             </div>
           </header>
 

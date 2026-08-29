@@ -93,6 +93,7 @@
                 v-if="job.resultUrl"
                 type="button"
                 class="batch-thumb-btn"
+                :aria-label="`查看大图：${job.sceneTitle}`"
                 :title="`查看大图：${job.sceneTitle}`"
                 @click="previewJob = job"
               >
