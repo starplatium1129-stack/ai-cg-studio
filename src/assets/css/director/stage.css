@@ -79,7 +79,10 @@
   .pb .stage-placeholder.is-paused .stage-ready { color:var(--warning-text); }
   .pb .stage-placeholder.is-paused .stage-ready::before { background:var(--warning); box-shadow:0 0 10px color-mix(in srgb,var(--warning) 50%,transparent); }
   .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); pointer-events:none; transition:opacity var(--motion-atmosphere) ease,filter var(--motion-atmosphere) ease,transform var(--motion-atmosphere) var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
-  @keyframes stageMuseBreath { 0% { transform: translateY(0) scale(1); filter: saturate(.76) contrast(.96); } 100% { transform: translateY(-7px) scale(1.018); filter: saturate(.88) contrast(1.02); } }
+  /* 审计修复：呼吸动画原为逐帧补间 filter（6s 无限循环 · 大图离屏合成 = 常驻每帧开销）。
+     .stage-muse 是 <img>，无法挂伪元素承载滤镜层；而 saturate .76→.88 / contrast .96→1.02
+     的差值本就几乎不可感，故去掉 filter 补间、只保留 transform 呼吸（合成器属性，零重绘）。 */
+  @keyframes stageMuseBreath { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-7px) scale(1.018); } }
   .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.34; animation: stageMuseBreath 6s ease-in-out infinite alternate; }
   .pb[data-character="natsume"] .stage-placeholder {
     background:

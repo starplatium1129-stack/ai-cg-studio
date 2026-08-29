@@ -49,6 +49,10 @@ const SHORTHAND_PARTS = /^(max|min)-(width|height)$/;
 // 打印清单、不阻断 CI、不计入 ALLOWED_EXEMPT（那套基线是给"不得不用且已
 // 逐个评审过的布局补间"留的，不应被重绘型稀释）。
 const REPAINT_NAMES = ['box-shadow', 'filter', 'backdrop-filter', 'background-position', 'background-size'];
+// keyframes 里的重绘型声明：此前门禁只扫 keyframes 的布局属性，于是
+// 「无限循环 + box-shadow 涟漪」这类每帧重绘的常驻动画一直躺在盲区
+// （2026-08-29 实测抓出 atelierPulse / pulse-dot 两处）。
+const KEYFRAME_REPAINT_DECL = new RegExp('(?:^|[\\s;{])(' + REPAINT_NAMES.join('|') + ')\\s*:', 'g');
 
 function isLayoutName(token) {
   const name = token.replace(/!important$/i, '').trim().toLowerCase();
@@ -129,6 +133,17 @@ function scanCss(relPath, css) {
         kind: `@keyframes ${name}(${match[1]})`,
         snippet: snippetOf(body, match.index),
         exempt: findExemption(body, match.index),
+      });
+    }
+    // 无限循环的重绘型动画是真热点（每帧都在跑），单独标注出来便于定位
+    const infinite = new RegExp('animation[^;}]*\\b' + name + '\\b[^;}]*infinite').test(css);
+    for (const match of body.matchAll(KEYFRAME_REPAINT_DECL)) {
+      findings.push({
+        kind: `@keyframes ${name} · ${infinite ? '无限循环' : '有限次'}(${match[1]})`,
+        snippet: snippetOf(body, match.index),
+        exempt: findExemption(body, match.index),
+        warnOnly: true,
+        repaintProp: `${match[1]} @keyframes${infinite ? '·无限循环' : ''}`,
       });
     }
   }

@@ -66,8 +66,16 @@
   opacity:0; filter:blur(6px); transition: opacity var(--motion-surface) var(--ease-out), filter var(--motion-atmosphere) var(--ease-out), transform var(--motion-surface) var(--ease-out), filter var(--motion-surface);
 }
 .sc-thumb-ready { opacity:1; filter:blur(0); }
-.sc-thumb-skeleton { position:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%); background-size:220% 100%; transition:opacity var(--motion-hover); }
-.sc-thumb-skeleton.visible { opacity:1; animation:archive-skeleton-shimmer 1.3s linear infinite; }
+/* 审计修复：骨架微光原为逐帧补间 background-position（无限循环 → 每帧重绘整块渐变），
+   改为伪元素承载渐变 + transform:translateX 位移（合成器属性，零重绘）。
+   渐变宽度 220%，位移 0 → -120% 与原背景位移量一致。 */
+.sc-thumb-skeleton { position:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; overflow:hidden; transition:opacity var(--motion-hover); }
+.sc-thumb-skeleton::after {
+  content:""; position:absolute; top:0; bottom:0; left:0; width:220%;
+  background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%);
+}
+.sc-thumb-skeleton.visible { opacity:1; }
+.sc-thumb-skeleton.visible::after { animation:archive-skeleton-shimmer 1.3s linear infinite; }
 .sc-thumb-missing { display: none; }
 .sc:hover .sc-thumb { transform: none; }
 /* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
@@ -166,5 +174,6 @@
 }
 .sc-empty .ic { font-size: var(--fs-glyph); margin-bottom: var(--s-3); }
 .sc-empty p { color: var(--text-muted); margin-bottom: var(--s-4); }
-@keyframes archive-skeleton-shimmer { to { background-position:-120% 0; } }
+/* 位移量：层宽 220%，要让右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
+@keyframes archive-skeleton-shimmer { to { transform: translateX(-54.5%); } }
 @media (prefers-reduced-motion: reduce) { .sc-thumb-skeleton.visible { animation:none; } }

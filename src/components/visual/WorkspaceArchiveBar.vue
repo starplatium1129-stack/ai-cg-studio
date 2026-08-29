@@ -88,8 +88,16 @@ watch(() => [props.state, props.shape, props.status], signal)
 .workspace-line { height:1px; overflow:hidden; background:var(--border-soft); }
 .workspace-line i { display:block; width:34%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-blue),transparent); animation:workspace-scan .82s var(--ease-out) both; }
 .workspace-state { display:flex; align-items:center; gap:7px; color:var(--text-secondary); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
-.workspace-state-dot { width:6px; height:6px; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
-[data-state="active"] .workspace-state-dot { background:var(--archive-blue); animation:workspace-pulse 1.15s ease-in-out infinite; }
+.workspace-state-dot { position:relative; width:6px; height:6px; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
+/* 审计修复：脉冲圈原为逐帧补间 box-shadow（无限循环 → 每帧重绘），
+   改为伪元素静态光晕 + transform:scale/opacity（合成器属性，零重绘）。
+   放大到 3.3 倍 ≈ 原 box-shadow 7px spread 的扩散半径。 */
+[data-state="active"] .workspace-state-dot { background:var(--archive-blue); }
+[data-state="active"] .workspace-state-dot::after {
+  content:""; position:absolute; inset:0; z-index:-1;
+  border-radius:50%; background:color-mix(in srgb,var(--archive-blue) 40%,transparent);
+  animation:workspace-pulse 1.15s ease-in-out infinite;
+}
 [data-state="success"] .workspace-state-dot { background:var(--success); }
 [data-state="warning"] .workspace-state-dot { background:var(--warning); }
 .workspace-radar { position:relative; width:36px; height:36px; }
@@ -97,7 +105,7 @@ watch(() => [props.state, props.shape, props.status], signal)
 .workspace-radar i:nth-child(1){width:8px;height:8px}.workspace-radar i:nth-child(2){width:20px;height:20px}.workspace-radar i:nth-child(3){width:34px;height:34px;border-style:dashed}
 [data-state="active"] .workspace-radar i:nth-child(3){animation:workspace-rotate 3.2s linear infinite}
 @keyframes workspace-scan { from{transform:translateX(-110%)} to{transform:translateX(310%)} }
-@keyframes workspace-pulse { 50%{box-shadow:0 0 0 7px transparent} }
+@keyframes workspace-pulse { 0%{transform:scale(1);opacity:.6} 50%{transform:scale(3.3);opacity:0} 100%{transform:scale(1);opacity:0} }
 @keyframes workspace-rotate { to{transform:translate(-50%,-50%) rotate(360deg)} }
 @media(max-width: 768px){
   .workspace-archive-bar{grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
