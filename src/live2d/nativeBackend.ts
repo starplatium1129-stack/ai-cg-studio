@@ -65,7 +65,22 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
       const errorListeners = new Set<(error: Error) => void>()
 
+      // 已下发过的帧参数。setPaused(false) 会被高频重复调用（说话时口型回调
+      // 每帧走 resumeRendering），不去重就会每帧发一次 setFrame，让 Rust 每帧
+      // 执行 ShowWindow + SetWindowPos——透明 overlay 窗口被反复重设会表现成
+      // 表面抖动。参数未变时整条 IPC 直接跳过，位置同步不依赖它（Rust 侧自己
+      // 按 Companion HWND 跟随）。2026-08-30 桌宠表面闪烁修复。
+      let pushedFrame: { rect: { x: number; y: number; width: number; height: number }; visible: boolean } | null = null
       const pushFrame = () => {
+        if (
+          pushedFrame
+          && pushedFrame.visible === lastVisible
+          && pushedFrame.rect.x === lastRect.x
+          && pushedFrame.rect.y === lastRect.y
+          && pushedFrame.rect.width === lastRect.width
+          && pushedFrame.rect.height === lastRect.height
+        ) return
+        pushedFrame = { rect: { ...lastRect }, visible: lastVisible }
         void Promise.resolve(bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1 })).catch(() => {})
       }
 

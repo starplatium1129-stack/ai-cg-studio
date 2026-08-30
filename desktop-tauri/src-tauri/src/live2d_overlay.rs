@@ -38,6 +38,29 @@ pub struct OverlayRect {
     pub height: u32,
 }
 
+/// 连续拿不到可绘制 surface 的帧数上限（165fps 下约 0.2 秒）。
+/// 原实现在 Outdated/Lost 分支"configure 后直接 return"，既没有计数也没有
+/// 任何日志：一旦 swapchain 持续拿不到帧就陷入每帧 configure、永不绘制的
+/// 死循环，画面停在未定义内容上（实机即"老电视雪花"），而 frameCount 停增
+/// 前端也无从分辨——visible/ready 仍是 true，不会提示"渲染已停止"。
+const SURFACE_FAILURE_LIMIT: u32 = 30;
+/// 就地重建 surface 的次数上限。连续重建仍失败说明是设备级故障，停止渲染
+/// 线程并上报，让前端显示"渲染已停止 / 可重试"（走既有 NATIVE_RENDER_STOPPED
+/// 通路重新拉起渲染线程），用户无需重启整个桌宠进程。
+const SURFACE_RECOVERY_LIMIT: u32 = 3;
+
+/// GPU 设备丢失标记。wgpu 只在 device.poll 时调用 device lost 回调，原实现
+/// 从不 poll 也从未注册回调：驱动重置 / TDR / 休眠唤醒后仍每帧 submit +
+/// present 已经作废的 backbuffer，表现同样是满屏雪花且只能靠重启进程恢复。
+static DEVICE_LOST: AtomicBool = AtomicBool::new(false);
+static DEVICE_LOST_DETAIL: Mutex<Option<String>> = Mutex::new(None);
+/// 未被捕获的 wgpu 错误计数（验证/内部/显存）。渲染路径的错误平时全部走
+/// ErrorSink 被静默丢弃（queue.submit 的返回值是 ()），命令被丢弃后画面仍
+/// 会 present，表现为"画面不对但日志什么都没有"。这里只累计并打印前若干条，
+/// 便于事后取证，不刷屏。
+static RENDER_ERROR_COUNT: AtomicU32 = AtomicU32::new(0);
+const RENDER_ERROR_LOG_LIMIT: u32 = 5;
+
 pub struct Live2DOverlayState {
     pub rect: Mutex<OverlayRect>,
     pub visible: AtomicBool,
@@ -70,6 +93,11 @@ pub struct Live2DOverlayState {
     /// 最近一次规范化口型意图与角色映射值，仅供只读发布验收诊断。
     pub last_mouth_level: AtomicU32,
     pub last_mapped_mouth_value: AtomicU32,
+    /// 连续拿不到可绘制 surface 的帧数（镜像渲染线程计数，供诊断取证）。
+    /// 持续 > 0 说明 swapchain 拿不到帧，是"画面雪花/冻结"的直接指标。
+    pub surface_failures: AtomicU32,
+    /// 已就地重建 surface 的次数（镜像渲染线程计数）。
+    pub surface_recoveries: AtomicU32,
 }
 
 impl Default for Live2DOverlayState {
@@ -93,6 +121,8 @@ impl Default for Live2DOverlayState {
             model_ready: AtomicBool::new(false),
             last_mouth_level: AtomicU32::new(0.0f32.to_bits()),
             last_mapped_mouth_value: AtomicU32::new(0.0f32.to_bits()),
+            surface_failures: AtomicU32::new(0),
+            surface_recoveries: AtomicU32::new(0),
         }
     }
 }
@@ -142,6 +172,14 @@ fn reset_runtime_state(state: &Live2DOverlayState) {
     *state.character.lock().unwrap() = None;
     *state.model_bounds.lock().unwrap() = None;
     reset_mouth_diagnostics(state);
+    // 渲染线程退出即丢弃 RenderContext，计数随之重建；镜像值同步清零，
+    // 否则新线程起来后 state 里还留着上一代的故障计数，误导诊断。
+    state.surface_failures.store(0, Ordering::Relaxed);
+    state.surface_recoveries.store(0, Ordering::Relaxed);
+    DEVICE_LOST.store(false, Ordering::SeqCst);
+    if let Ok(mut slot) = DEVICE_LOST_DETAIL.lock() {
+        *slot = None;
+    }
 }
 
 static OVERLAY_STATE_INIT: OnceLock<Mutex<()>> = OnceLock::new();
@@ -466,6 +504,10 @@ struct RenderContext {
     active_motion: Option<ActiveMotion>,
     ready_emitted: bool,
     last_rect: OverlayRect,
+    /// 连续拿不到可绘制 surface 的帧数，见 SURFACE_FAILURE_LIMIT。
+    surface_failures: u32,
+    /// 已就地重建 surface 的次数，见 SURFACE_RECOVERY_LIMIT。
+    surface_recoveries: u32,
     blink: BlinkState,
 }
 
@@ -505,6 +547,21 @@ impl RenderContext {
             },
         ))
         .map_err(|e| format!("no device: {e}"))?;
+        // 设备丢失回调：wgpu 只在 poll 时触发，渲染循环每帧 Poll 一次来驱动它。
+        // 标记置位后由渲染线程停止并上报，前端据此提示重试（重新拉起线程即
+        // 重新建 device），不必重启整个应用。
+        device.set_device_lost_callback(|reason, message| {
+            if let Ok(mut slot) = DEVICE_LOST_DETAIL.lock() {
+                *slot = Some(format!("{reason:?}: {message}"));
+            }
+            DEVICE_LOST.store(true, Ordering::SeqCst);
+        });
+        device.on_uncaptured_error(std::sync::Arc::new(|error: wgpu::Error| {
+            let seen = RENDER_ERROR_COUNT.fetch_add(1, Ordering::Relaxed);
+            if seen < RENDER_ERROR_LOG_LIMIT {
+                eprintln!("[live2d] wgpu error: {error}");
+            }
+        }));
         Ok(Self {
             instance,
             adapter,
@@ -528,6 +585,8 @@ impl RenderContext {
             active_motion: None,
             ready_emitted: false,
             last_rect: OverlayRect::default(),
+            surface_failures: 0,
+            surface_recoveries: 0,
             blink: BlinkState::new(),
         })
     }
@@ -594,6 +653,21 @@ impl RenderContext {
                 },
             );
         }
+    }
+
+    /// 就地重建 surface（surface 卡死自愈）：丢弃 surface 与 renderer，下一帧
+    /// 由 render_frame 的 ensure_surface 重新创建。
+    /// 两点必须一起做：renderer 持有 device/queue 克隆并缓存 surface format 与
+    /// 2x 离屏目标，不重建会与新 surface 失配导致 blit 被丢弃（又退化成雪花）；
+    /// last_rect 必须归零，否则下一帧会因"尺寸未变"跳过 configure_surface。
+    /// 模型纹理属于 device，device 未变时无需重传；模型 GPU 缓存由 draw_frame
+    /// 的 ensure_model_cache 自动重建。
+    fn reset_surface(&mut self) {
+        self.surface = None;
+        self.renderer = None;
+        self.last_rect = OverlayRect::default();
+        self.surface_failures = 0;
+        self.surface_recoveries += 1;
     }
 }
 
@@ -794,9 +868,41 @@ impl RenderContext {
         }
         let surface = self.surface.as_ref().ok_or("no surface")?;
         let frame = match surface.get_current_texture() {
-            Ok(frame) => frame,
+            Ok(frame) => {
+                if self.surface_failures != 0 {
+                    self.surface_failures = 0;
+                    state.surface_failures.store(0, Ordering::Relaxed);
+                }
+                frame
+            }
             Err(wgpu::SurfaceError::Outdated | wgpu::SurfaceError::Lost) => {
                 self.configure_surface(rect.width, rect.height);
+                self.surface_failures += 1;
+                state
+                    .surface_failures
+                    .store(self.surface_failures, Ordering::Relaxed);
+                if self.surface_failures < SURFACE_FAILURE_LIMIT {
+                    return Ok(false);
+                }
+                // swapchain 卡死：就地丢弃 surface 重建（device 未变，模型纹理
+                // 仍有效，只重建 surface + renderer）。此分支没有持有
+                // SurfaceTexture，可以安全丢弃。
+                eprintln!(
+                    "[live2d] surface stuck after {} frames (recovery #{})",
+                    self.surface_failures,
+                    self.surface_recoveries + 1
+                );
+                self.reset_surface();
+                state.surface_failures.store(0, Ordering::Relaxed);
+                state
+                    .surface_recoveries
+                    .store(self.surface_recoveries, Ordering::Relaxed);
+                if self.surface_recoveries >= SURFACE_RECOVERY_LIMIT {
+                    return Err(format!(
+                        "surface 连续 {} 次重建后仍不可用",
+                        self.surface_recoveries
+                    ));
+                }
                 return Ok(false);
             }
             Err(wgpu::SurfaceError::Timeout) => return Ok(false),
@@ -1227,6 +1333,23 @@ fn overlay_window_thread(
                     running = false;
                     break;
                 }
+            }
+        }
+        // 每帧 poll 一次以驱动 wgpu 的 device lost 回调（非阻塞，开销极小）。
+        // 不 poll 就永远发现不了 GPU reset / TDR / 休眠唤醒后的设备失效：原实现
+        // 会在已作废的资源上继续 submit + present，画面变成满屏雪花，且因为
+        // surface 仍能拿到帧（只是内容作废）而毫无征兆，只能重启进程恢复。
+        if running {
+            let _ = ctx.device.poll(wgpu::PollType::Poll);
+            if DEVICE_LOST.swap(false, Ordering::SeqCst) {
+                let detail = DEVICE_LOST_DETAIL
+                    .lock()
+                    .ok()
+                    .and_then(|slot| slot.clone())
+                    .unwrap_or_else(|| "未知原因".to_string());
+                eprintln!("[live2d] device lost: {detail}");
+                stopped_reason = Some(format!("GPU 设备丢失：{detail}"));
+                break;
             }
         }
         if running && state.visible.load(Ordering::SeqCst) {
@@ -1892,6 +2015,9 @@ pub fn aics_live2d_get_state(app: AppHandle) -> Result<serde_json::Value, String
             "modelBounds": null,
             "mouthLevel": 0.0,
             "mouthMappedValue": 0.0,
+            "surfaceFailures": 0,
+            "surfaceRecoveries": 0,
+            "renderErrors": 0,
         }));
     };
     let state = state.inner();
@@ -1909,6 +2035,9 @@ pub fn aics_live2d_get_state(app: AppHandle) -> Result<serde_json::Value, String
         "modelBounds": *state.model_bounds.lock().unwrap(),
         "mouthLevel": f32::from_bits(state.last_mouth_level.load(Ordering::SeqCst)),
         "mouthMappedValue": f32::from_bits(state.last_mapped_mouth_value.load(Ordering::SeqCst)),
+        "surfaceFailures": state.surface_failures.load(Ordering::Relaxed),
+        "surfaceRecoveries": state.surface_recoveries.load(Ordering::Relaxed),
+        "renderErrors": RENDER_ERROR_COUNT.load(Ordering::Relaxed),
     }))
 }
 

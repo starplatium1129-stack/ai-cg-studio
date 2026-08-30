@@ -1022,7 +1022,14 @@ impl Renderer {
                     resolve_target: None,
                     depth_slice: None,
                     ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Load,
+                        // 必须是 Clear 而不是 Load：swapchain backbuffer 在配置后、
+                        // 尺寸变化后或设备异常期间内容是未定义的，Load 会把上一帧
+                        // 残留或显存垃圾原样送到屏幕——就是实机看到的"老电视雪花"。
+                        // blit 是全屏三角形 + REPLACE 混合 + write_mask: ALL，正常帧
+                        // 下逐像素全通道覆写，Clear 与 Load 的最终像素完全一致，
+                        // 只在 blit 绘制被丢弃（资源失效/命令被拒绝）时兜底为透明。
+                        // 2026-08-30 桌宠雪花修复。
+                        load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
                         store: wgpu::StoreOp::Store,
                     },
                 })],

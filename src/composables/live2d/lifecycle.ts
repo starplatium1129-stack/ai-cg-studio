@@ -49,6 +49,24 @@ export function createLifecycleController(
   },
 ) {
   const setState = hooks.setState
+  /**
+   * 原生渲染线程停止（GPU 设备丢失 / swapchain 不可恢复）后的自动重试。
+   * 桌宠是长期挂机场景，渲染挂掉时不应只留一个"点我重试"的按钮等人来点；
+   * 这里退避重试最多 3 次（1.2s / 2.4s / 3.6s），成功（模型重新加载完成）后
+   * 计数归零。超过上限则停在 retryable 状态交回用户，避免无效循环。
+   */
+  const NATIVE_STOPPED_RETRY_LIMIT = 3
+  let nativeStoppedRetries = 0
+  function scheduleNativeStoppedRetry() {
+    if (ctx.destroyed.value || !ctx.enabled.value) return
+    if (nativeStoppedRetries >= NATIVE_STOPPED_RETRY_LIMIT) return
+    nativeStoppedRetries += 1
+    const delay = 1200 * nativeStoppedRetries
+    window.setTimeout(() => {
+      if (ctx.destroyed.value || !ctx.enabled.value || ctx.ready.value) return
+      void retry()
+    }, delay)
+  }
 
   async function init(
     char: string,
@@ -238,6 +256,8 @@ export function createLifecycleController(
         ctx.session.onModelLoaded((m: Live2DModelHandle) => {
           if (ctx.destroyed.value || char !== ctx.character.value) { finish(false); return }
           ctx.model = m; ctx.loadedCharacter.value = char; ctx.ready.value = true
+          // 模型重新加载成功 = 渲染已恢复（含自动重试路径），清零重试计数
+          nativeStoppedRetries = 0
           ctx.mouthValue.value = 0; ctx.mouthHooked = false
           controllers.parameterFrame.bindMouthOverride(); bindContextEvents(); controllers.interactions.bind(); controllers.layoutFit.fit(); controllers.layoutFit.scheduleNativeLayout()
           setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
@@ -252,6 +272,7 @@ export function createLifecycleController(
           // 重试重新拉起线程（与"动作/换装失败但模型仍显示"的退化不同）。
           if (e.name === NATIVE_RENDER_STOPPED) {
             setState('degraded', 'Live2D 渲染已停止', detail, true)
+            scheduleNativeStoppedRetry()
             return
           }
           // wl-live2d 复用这一个回调报告初始载入和之后的 outfit/motion
