@@ -144,6 +144,8 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   gweda: 'delicate Korean-style anime illustration with soft thick-paint shading, glossy glass-like eyes, and refined beautiful girls',
   eufoniuz: 'soft adult-oriented anime fan art with cute rounded girls, smooth skin shading, and intimate sweet atmosphere',
   'solar_(happymonk)': 'glossy adult-oriented game character fan art with bright skin, seductive poses, and vibrant colors',
+  alllisso: 'polished anime game character fan art with clean lineart, vibrant colors, and appealing soft shading',
+  mesilmen: 'soft adult-oriented anime game fan art with smooth skin shading, expressive eyes, and intimate sweet atmosphere',
 }
 
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {
