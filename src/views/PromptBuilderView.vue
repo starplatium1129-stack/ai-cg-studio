@@ -291,7 +291,6 @@
           />
 
           <VoiceStudio
-            :key="pb.sceneId || 'freeform'"
             ref="voiceStudioRef"
             :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
             :suggested-caption="pb.activeScene?.story || pb.story"

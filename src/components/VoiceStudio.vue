@@ -86,9 +86,11 @@ const props = defineProps<{
 
 const toast = useToast()
 // 2026-08-30：配音使用频率低，默认折叠以省纵向空间；状态记忆在 localStorage（点击标题栏按钮展开/收起）。
+// 无记录时默认折叠（用户从未点过 = 折叠），immediate 写入确保任意重挂载都读回一致状态。
 const COLLAPSED_KEY = 'aics-voice-studio-collapsed'
-const collapsed = ref(localStorage.getItem(COLLAPSED_KEY) === '1')
-watch(collapsed, value => localStorage.setItem(COLLAPSED_KEY, value ? '1' : '0'))
+const storedCollapsed = localStorage.getItem(COLLAPSED_KEY)
+const collapsed = ref(storedCollapsed === null ? true : storedCollapsed === '1')
+watch(collapsed, value => localStorage.setItem(COLLAPSED_KEY, value ? '1' : '0'), { immediate: true })
 const voiceChar = ref<'nene' | 'natsume'>(props.initialVoice)
 const voiceLang = ref<'ja' | 'zh'>('ja')
 const voiceCaption = ref('')
