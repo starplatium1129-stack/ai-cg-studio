@@ -8,7 +8,7 @@
   .pb .voice-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); }
   .pb .voice-head-actions { display:flex; align-items:center; gap:var(--s-2); flex:0 0 auto; }
   .pb .voice-collapse { display:grid; place-items:center; width:28px; height:28px; padding:0; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; transition:color .15s ease, border-color .15s ease; }
-  .pb .voice-collapse:hover { color:var(--text-primary); border-color:var(--border-secondary); }
+  .pb .voice-collapse:hover { color:var(--text-primary); border-color:var(--border-strong); }
   .pb .voice-collapse svg { width:16px; height:16px; }
   .pb .voice-panel-enter-active, .pb .voice-panel-leave-active { transition:opacity .16s ease, transform .16s ease; }
   .pb .voice-panel-enter-from, .pb .voice-panel-leave-to { opacity:0; transform:translateY(-4px); }
