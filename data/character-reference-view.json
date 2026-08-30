@@ -17428,5 +17428,338 @@
         ]
       }
     ]
+  },
+  "ling_arknights": {
+    "characterId": "ling_arknights",
+    "displayName": "令",
+    "source": "Arknights",
+    "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long white hair streaked with pale aqua-blue that flows past her ankles like a waterfall, golden-yellow eyes, a pair of black swept-back dragon horns, pointy ears, wearing a black high-slit qipao-style long dress with gold cloud motifs, bare shoulders and gold jewelry",
+    "outfits": [
+      {
+        "outfitId": "standard",
+        "outfitName": "岁序华章（黑金旗袍）",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her black high-slit qipao-style long dress with gold cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, barefoot",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ling_arknights/standard/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ling_arknights/standard/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ling_arknights/standard/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ling_arknights/standard/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "zhuoying",
+        "outfitName": "濯缨（素白羽衣）",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "the official Zhuoying outfit: a plain white feather-trimmed feathered robe with wide sleeves reaching the knees, a white long skirt embroidered with auspicious beast motifs, loose and flowing like a dream",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ling_arknights/zhuoying/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ling_arknights/zhuoying/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ling_arknights/zhuoying/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ling_arknights/zhuoying/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "fangqiu_juan",
+        "outfitName": "方遒卷（银甲玄袍）",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "the official Fangqiu Juan outfit: a silver-armored dark robe with white beast-embroidered lapels, jade-green accessories and a jade hair ornament, a border-command style with a proud wandering air",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ling_arknights/fangqiu_juan/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ling_arknights/fangqiu_juan/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ling_arknights/fangqiu_juan/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ling_arknights/fangqiu_juan/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "drunkard_loungewear",
+        "outfitName": "醉里丹青（慵懒家居）",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an oversized loose ink-grey hanfu-style loungewear robe with a wine gourd hanging from the sash, messy long hair loose, cozy sleepy poet loungewear",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ling_arknights/drunkard_loungewear/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ling_arknights/drunkard_loungewear/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ling_arknights/drunkard_loungewear/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ling_arknights/drunkard_loungewear/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ling_arknights/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ling_arknights/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ling_arknights/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ling_arknights/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
   }
 }

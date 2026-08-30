@@ -680,7 +680,7 @@
       "source": "Fate",
       "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in an intricate braided bun, an ahoge, and clear emerald-green eyes, with an earnest, dignified bearing",
       "identityTokens": [
-        "artoria_pendragon",
+        "artoria_pendragon (fate)",
         "saber (fate)",
         "1girl",
         "solo",
@@ -2603,7 +2603,7 @@
       "source": "Arknights",
       "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair and twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, wearing a white lab coat over a black halterneck backless dress with a green utility belt and emerald earrings",
       "identityTokens": [
-        "kal'tsit",
+        "kal'tsit (arknights)",
         "1girl",
         "solo",
         "light_green_hair",
@@ -3645,8 +3645,7 @@
             "oversized",
             "beret",
             "pleated_skirt",
-            "cat_ears",
-            "autumn"
+            "cat_ears"
           ],
           "isNsfw": false
         },
@@ -4217,6 +4216,122 @@
       ]
     },
     {
+      "id": "ling_arknights",
+      "displayName": "令",
+      "originalName": "Ling",
+      "source": "Arknights",
+      "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long white hair streaked with pale aqua-blue that flows past her ankles like a waterfall, golden-yellow eyes, a pair of black swept-back dragon horns, pointy ears, wearing a black high-slit qipao-style long dress with gold cloud motifs, bare shoulders and gold jewelry",
+      "identityTokens": [
+        "ling (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "streaked_hair",
+        "yellow_eyes",
+        "dragon_horns",
+        "pointy_ears",
+        "chinese_clothes",
+        "long_dress",
+        "black_dress",
+        "bare_shoulders",
+        "jewelry",
+        "arknights"
+      ],
+      "outfits": [
+        {
+          "id": "standard",
+          "name": "岁序华章（黑金旗袍）",
+          "isDefault": true,
+          "prose": "her black high-slit qipao-style long dress with gold cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, barefoot",
+          "tokens": [
+            "qipao",
+            "high_slit",
+            "long_dress",
+            "black_dress",
+            "chinese_clothes",
+            "gold_trim",
+            "bare_shoulders",
+            "jewelry",
+            "earrings",
+            "hair_ornament",
+            "barefoot"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "zhuoying",
+          "name": "濯缨（素白羽衣）",
+          "isDefault": false,
+          "prose": "the official Zhuoying outfit: a plain white feather-trimmed feathered robe with wide sleeves reaching the knees, a white long skirt embroidered with auspicious beast motifs, loose and flowing like a dream",
+          "tokens": [
+            "white_clothes",
+            "long_sleeves",
+            "wide_sleeves",
+            "feathers",
+            "feather_trim",
+            "hanfu",
+            "loose_clothes",
+            "chinese_clothes"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "fangqiu_juan",
+          "name": "方遒卷（银甲玄袍）",
+          "isDefault": false,
+          "prose": "the official Fangqiu Juan outfit: a silver-armored dark robe with white beast-embroidered lapels, jade-green accessories and a jade hair ornament, a border-command style with a proud wandering air",
+          "tokens": [
+            "armor",
+            "black_clothes",
+            "white_clothes",
+            "silver_trim",
+            "chinese_clothes",
+            "jade",
+            "hair_ornament",
+            "wide_sleeves"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "drunkard_loungewear",
+          "name": "醉里丹青（慵懒家居）",
+          "isDefault": false,
+          "prose": "an oversized loose ink-grey hanfu-style loungewear robe with a wine gourd hanging from the sash, messy long hair loose, cozy sleepy poet loungewear",
+          "tokens": [
+            "loungewear",
+            "loose_clothes",
+            "hanfu",
+            "sash",
+            "gourd",
+            "messy_hair",
+            "sleepy",
+            "chinese_clothes"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "isDefault": false,
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "isNsfw": true
+        }
+      ]
+    },
+    {
       "id": "perlica_arknights",
       "displayName": "佩丽卡",
       "originalName": "Perlica",
@@ -4297,8 +4412,7 @@
             "winter_coat",
             "fur_trim",
             "insulated",
-            "turtleneck",
-            "snow"
+            "turtleneck"
           ],
           "isNsfw": false
         },
@@ -4861,7 +4975,7 @@
       "source": "Blue Archive",
       "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate golden wing-shaped halo adorned with tiny star ornaments, and sparkling golden eyes with star-shaped pupils",
       "identityTokens": [
-        "misono_mika",
+        "mika (blue archive)",
         "1girl",
         "solo",
         "pink_hair",
@@ -4953,9 +5067,7 @@
             "white_swimsuit",
             "pink_swimsuit",
             "frills",
-            "pareo",
-            "summer",
-            "beach"
+            "pareo"
           ],
           "isNsfw": true
         },
@@ -4987,7 +5099,7 @@
       "source": "Blue Archive",
       "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate purple halo of three concentric rings crowned with jagged spikes, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
       "identityTokens": [
-        "sorasaki_hina",
+        "hina (blue archive)",
         "1girl",
         "solo",
         "horns",
@@ -5090,9 +5202,7 @@
             "navy_swimsuit",
             "frills",
             "swim_ring",
-            "sandals",
-            "summer",
-            "beach"
+            "sandals"
           ],
           "isNsfw": true
         },
@@ -5229,8 +5339,7 @@
             "black_bikini",
             "cat_ears",
             "hood",
-            "red_ribbon",
-            "summer"
+            "red_ribbon"
           ],
           "isNsfw": true
         },
@@ -5336,8 +5445,7 @@
             "white_bikini",
             "blue_bikini",
             "tactical_belt",
-            "headset",
-            "summer"
+            "headset"
           ],
           "isNsfw": true
         },
@@ -5441,8 +5549,7 @@
             "bikini",
             "black_bikini",
             "red_trim",
-            "sheer_cover-up",
-            "summer"
+            "sheer_cover-up"
           ],
           "isNsfw": true
         },
