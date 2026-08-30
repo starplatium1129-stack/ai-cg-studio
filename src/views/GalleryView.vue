@@ -43,6 +43,11 @@
         :aria-pressed="selectMode" @click="toggleSelectMode">
         <ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}
       </button>
+      <!-- 回收站（2026-08-31）：查看/恢复软删作品，30 天保留 -->
+      <button class="gallery-filter" type="button" :class="{ active: trashMode }"
+        :aria-pressed="trashMode" @click="toggleTrashMode">
+        <ArchiveIcon name="trash" />回收站{{ trashItems.length ? `（${trashItems.length}）` : '' }}
+      </button>
       <span class="gallery-toolbar-note">{{ selectMode ? '点卡片勾选，再批量移入回收站' : '点作品进入沉浸观画' }}</span>
     </div>
 
@@ -58,6 +63,47 @@
     </div>
 
     <section aria-live="polite" data-reveal data-reveal-delay="1">
+      <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
+      <div v-if="trashMode" class="trash-wall">
+        <div class="trash-toolbar">
+          <span class="trash-hint">软删保留 30 天，超期自动清理；点「恢复」放回展墙</span>
+          <span class="trash-count" aria-live="polite">{{ trashItems.length }} 条</span>
+        </div>
+        <template v-if="trashItems.length">
+          <article
+            v-for="entry in trashItems"
+            :key="entry.id"
+            class="artwork trash-card"
+            :class="{ 'artwork-pending': trashBusy === entry.id }"
+          >
+            <div class="artwork-media" style="--art-ratio: 1">
+              <img
+                v-if="trashThumbs[entry.id]"
+                class="artwork-image"
+                :src="trashThumbs[entry.id]"
+                :alt="trashPrompt(entry)"
+                loading="lazy"
+                decoding="async"
+              />
+              <div v-else class="artwork-placeholder"><ArchiveIcon name="image" /></div>
+            </div>
+            <div class="artwork-caption">
+              <span class="artwork-name truncate">{{ trashPrompt(entry) }}</span>
+              <span class="artwork-date">删除于 {{ formatTrashTime(entry.deletedAt) }}</span>
+            </div>
+            <div class="artwork-tools">
+              <button class="artwork-tool" type="button" :disabled="trashBusy === entry.id"
+                :aria-label="`恢复作品：${trashPrompt(entry)}`" title="恢复放回展墙"
+                @click="restoreTrashItem(entry.id)">
+                <ArchiveIcon name="spark" /><span>{{ trashBusy === entry.id ? '恢复中…' : '恢复' }}</span>
+              </button>
+            </div>
+          </article>
+        </template>
+        <ArchiveStatePanel v-else kind="empty" title="回收站是空的"
+          message="删除的作品会在这里保留 30 天，随时可以恢复。" />
+      </div>
+      <template v-else>
       <ArchiveStatePanel
         v-if="galleryLoading"
         class="gallery-loading-wall"
@@ -173,6 +219,7 @@
           已显示 {{ pagedVisible.length }} / {{ visible.length }} 幅 · 滚动继续加载
         </div>
       </div>
+      </template>
     </section>
 
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
@@ -279,7 +326,7 @@ import { useRoute, useRouter } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
-import { artworkRepository } from '@/storage/artworkRepository'
+import { artworkRepository, type TrashEntry } from '@/storage/artworkRepository'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
@@ -345,6 +392,76 @@ const deleting = ref(false)
 const selectMode = ref(false)
 const selectedIds = ref(new Set<string | number>())
 const bulkDeleting = ref(false)
+// ── 回收站视图（2026-08-31）：软删条目列表 + 逐条恢复 ────────────────────
+const trashMode = ref(false)
+const trashItems = ref<TrashEntry[]>([])
+const trashThumbs = reactive<Record<string, string>>({})
+const trashBusy = ref<string | number | null>(null)
+
+function toggleTrashMode() {
+  trashMode.value = !trashMode.value
+  if (trashMode.value) void loadTrash()
+}
+
+/** 读取回收站列表并加载首图缩略图（30 天保留期内缩略图仍在）。 */
+async function loadTrash() {
+  try {
+    const entries = await artworkRepository.listTrash()
+    entries.sort((a, b) => Number(b.deletedAt) - Number(a.deletedAt))
+    trashItems.value = entries
+    for (const entry of entries) {
+      const imageId = entry.imageIds?.[0]
+      if (!imageId || trashThumbs[entry.id]) continue
+      const thumb = await kvGet<string>(thumbKey(imageId))
+      if (thumb) trashThumbs[entry.id] = thumb
+    }
+  } catch (e) {
+    console.warn('[gallery] load trash failed', e)
+  }
+}
+
+/** 恢复一条软删作品：放回展墙后刷新回收站与主墙。 */
+async function restoreTrashItem(id: string | number) {
+  if (trashBusy.value !== null) return
+  trashBusy.value = id
+  try {
+    const result = await artworkRepository.restoreArtwork(id)
+    if (result.restored) {
+      showToast('已恢复，放回展墙', 'success')
+      trashItems.value = trashItems.value.filter(entry => entry.id !== id)
+      delete trashThumbs[id]
+      await loadGalleryStorage()
+    } else {
+      showToast('这条作品已不在回收站，无法恢复', 'warning')
+      await loadTrash()
+    }
+  } catch (e) {
+    console.warn('[gallery] restore trash failed', e)
+    showToast('恢复失败，请重试', 'warning')
+  } finally {
+    trashBusy.value = null
+  }
+}
+
+/** 回收站卡片摘要：取原 history 条目的 prompt 短述。 */
+function trashPrompt(entry: TrashEntry): string {
+  const first = entry.historyEntries?.[0]
+  if (first && typeof first === 'object') {
+    const record = first as Record<string, unknown>
+    const prompt = typeof record.prompt === 'string' ? record.prompt : ''
+    if (prompt) return prompt.length > 60 ? `${prompt.slice(0, 60)}…` : prompt
+    const scene = typeof record.scene === 'string' ? record.scene : ''
+    if (scene) return scene.length > 60 ? `${scene.slice(0, 60)}…` : scene
+  }
+  return '（已删除作品）'
+}
+
+function formatTrashTime(ts: number): string {
+  const d = new Date(Number(ts))
+  if (Number.isNaN(d.getTime())) return ''
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
 const closeBtn = ref<HTMLElement | null>(null)
 const viewerEl = ref<HTMLElement | null>(null)
 const objectUrls = new Set<string>()
@@ -1362,6 +1479,20 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 @keyframes gallerySkeleton { to { transform: translateX(-54.5%); } }
 /* 2026-08-22 动效审计 #13：入场去掉 blur 补间（绘制级且随懒加载滚动反复触发），只走 opacity/transform */
 @keyframes galleryImageIn { from { opacity:0; transform:scale(.985); } to { opacity:1; transform:scale(1); } }
+/* ── 回收站（2026-08-31）── */
+.trash-wall { max-width:1500px; margin:0 auto; }
+.trash-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-4); color:var(--text-secondary); }
+.trash-hint { font-size:var(--fs-sm); }
+.trash-count { font-weight:500; color:var(--text-primary); }
+.trash-card { position:relative; border:1px solid var(--border-tertiary); border-radius:var(--r-lg); overflow:hidden; background:var(--surface-secondary); }
+.trash-card .artwork-media { height:100%; }
+.trash-card .artwork-caption { position:static; opacity:1; transform:none; pointer-events:auto; background:none; padding:var(--s-2) var(--s-3) var(--s-3); color:var(--text-primary); }
+.trash-card .artwork-name { display:block; font-size:var(--fs-sm); line-height:1.4; }
+.trash-card .artwork-date { display:block; margin-top:2px; font-size:var(--fs-xs); color:var(--text-secondary); }
+.trash-card .artwork-tools { position:static; opacity:1; transform:none; pointer-events:auto; justify-content:flex-start; margin:0 var(--s-3) var(--s-3); background:none; border:none; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; padding:0; }
+.trash-card .artwork-tool { color:var(--text-secondary); }
+.trash-card .artwork-tool:hover { color:var(--text-primary); }
+.trash-card .artwork-placeholder { min-height:200px; display:grid; place-items:center; color:var(--text-tertiary); }
 </style>
 
 <style>

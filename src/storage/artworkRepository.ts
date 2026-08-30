@@ -41,6 +41,18 @@ export interface ArtworkDeleteResult {
   removedProjectReferences: number
 }
 
+/** 软删回收站条目（2026-08-30 UX 审计 P0-8）。快照只存恢复所需增量信息，不复制图片数据。 */
+export interface TrashEntry {
+  id: string
+  deletedAt: number
+  /** 被移除的 history 条目（原样保存，恢复时追加回去）。 */
+  historyEntries: unknown[]
+  /** 删除前每条 project 的 id 与是否引用该作品（恢复时增量补回引用）。 */
+  projectRefs: Array<{ projectId: unknown; hadReference: boolean }>
+  /** 该作品独占、purge 时应真删的 image id。 */
+  imageIds: string[]
+}
+
 export class ArtworkDeletionError extends Error {
   readonly originalError: unknown
   readonly rollbackErrors: unknown[]
@@ -238,17 +250,6 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
   // 与缩略图保留在原地，快照进 trash KV，30 天内可整条恢复；超期由懒清理
   // 真删。快照只存恢复所需的增量信息，不复制图片数据。
 
-  interface TrashEntry {
-    id: string
-    deletedAt: number
-    /** 被移除的 history 条目（原样保存，恢复时追加回去）。 */
-    historyEntries: unknown[]
-    /** 删除前每条 project 的 id 与是否引用该作品（恢复时增量补回引用）。 */
-    projectRefs: Array<{ projectId: unknown; hadReference: boolean }>
-    /** 该作品独占、purge 时应真删的 image id。 */
-    imageIds: string[]
-  }
-
   async function readTrash(): Promise<TrashEntry[]> {
     const snapshot = await kv.get(ARTWORK_TRASH_KEY)
     const list = arrayValue(snapshot)
@@ -395,6 +396,11 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     return operation
   }
 
+  /** 列出回收站全部软删条目（2026-08-31 回收站视图用，含删除时间与首图 id）。 */
+  function listTrashNow(): Promise<TrashEntry[]> {
+    return readTrash()
+  }
+
   /**
    * 就地更新一条历史作品的元数据（2026-08-30 UX 审计：收藏是死功能）。
    *
@@ -439,7 +445,7 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     return operation
   }
 
-  return { deleteArtwork, patchArtwork, softDeleteArtwork, restoreArtwork, purgeExpiredTrash }
+  return { deleteArtwork, patchArtwork, softDeleteArtwork, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
 }
 
 export const artworkRepository = createArtworkRepository()
@@ -461,6 +467,11 @@ export async function restoreArtwork(id: string | number): Promise<{ restored: b
 /** 懒清理超期软删（作品册挂载时调一次）。返回真删条数。 */
 export async function purgeExpiredTrash(): Promise<{ purged: number }> {
   return artworkRepository.purgeExpiredTrash()
+}
+
+/** 列出回收站全部软删条目（回收站视图）。 */
+export async function listTrash(): Promise<TrashEntry[]> {
+  return artworkRepository.listTrash()
 }
 
 /** 更新单条作品的元数据（收藏 / 备注 / 评分）。 */

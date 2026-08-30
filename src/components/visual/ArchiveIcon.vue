@@ -52,6 +52,7 @@ export type ArchiveIconName =
   | 'info' | 'success' | 'error' | 'warning' | 'sound' | 'mute'
   | 'close' | 'refresh' | 'sun' | 'moon' | 'menu'
   | 'gear' | 'lightning' | 'lock' | 'eye' | 'wand' | 'speaker' | 'filter' | 'search' | 'pin'
+  | 'trash'
   | 'happy' | 'shy' | 'miss' | 'expect' | 'nervous' | 'gentle' | 'moved' | 'sad'
   | 'calm' | 'joyful' | 'relaxed' | 'serious' | 'love' | 'sleepy' | 'spoiled' | 'wronged'
   | 'nene' | 'natsume' | 'triad'
