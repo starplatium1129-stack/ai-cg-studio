@@ -49,7 +49,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -61,6 +61,8 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   momoco: 'momoco_haru',
   'momoco_(momopoco)': 'momoco_haru',
   momoco_haru: 'momoco_haru',
+  gweda8593: 'gweda',
+  eufoniuz1026: 'eufoniuz',
 }
 
 function artistDisplayName(id: string): string {
@@ -136,6 +138,8 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   'so-bin': 'dark gothic oil painting style with heavy fabrics and solemn epic mood',
   kousaki_rui: 'refined elegant FGO-style illustration with graceful coloring and majestic atmosphere',
   xinzoruo: 'seductive dark anime style with deep chiaroscuro and dangerous atmosphere',
+  gweda: 'delicate Korean-style anime illustration with soft thick-paint shading, glossy glass-like eyes, and refined beautiful girls',
+  eufoniuz: 'soft adult-oriented anime fan art with cute rounded girls, smooth skin shading, and intimate sweet atmosphere',
 }
 
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {
