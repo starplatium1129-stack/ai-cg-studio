@@ -1993,6 +1993,147 @@
         "research": "2026-08-15 调研（Danbooru suzuran_(arknights) 6749 posts）"
       },
       "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "ling_arknights",
+      "displayName": "令",
+      "originalName": "Ling",
+      "franchise": "Arknights",
+      "aliases": [
+        "ling",
+        "ling (arknights)",
+        "ling_(arknights)",
+        "arknights",
+        "sui"
+      ],
+      "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long white hair streaked with pale aqua-blue that flows past her ankles like a waterfall, golden-yellow eyes, a pair of black swept-back dragon horns, pointy ears, wearing a black high-slit qipao-style long dress with gold cloud motifs, bare shoulders and gold jewelry",
+      "identityTokens": [
+        "ling (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "streaked_hair",
+        "yellow_eyes",
+        "dragon_horns",
+        "pointy_ears",
+        "chinese_clothes",
+        "long_dress",
+        "black_dress",
+        "bare_shoulders",
+        "jewelry",
+        "arknights"
+      ],
+      "exactTokens": [
+        "ling (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "standard",
+          "name": "岁序华章（黑金旗袍）",
+          "prose": "her black high-slit qipao-style long dress with gold cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, barefoot",
+          "tokens": [
+            "qipao",
+            "high_slit",
+            "long_dress",
+            "black_dress",
+            "chinese_clothes",
+            "gold_trim",
+            "bare_shoulders",
+            "jewelry",
+            "earrings",
+            "hair_ornament",
+            "barefoot"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "zhuoying",
+          "name": "濯缨（素白羽衣）",
+          "prose": "the official Zhuoying outfit: a plain white feather-trimmed feathered robe with wide sleeves reaching the knees, a white long skirt embroidered with auspicious beast motifs, loose and flowing like a dream",
+          "tokens": [
+            "white_clothes",
+            "long_sleeves",
+            "wide_sleeves",
+            "feathers",
+            "feather_trim",
+            "hanfu",
+            "loose_clothes",
+            "chinese_clothes"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "fangqiu_juan",
+          "name": "方遒卷（银甲玄袍）",
+          "prose": "the official Fangqiu Juan outfit: a silver-armored dark robe with white beast-embroidered lapels, jade-green accessories and a jade hair ornament, a border-command style with a proud wandering air",
+          "tokens": [
+            "armor",
+            "black_clothes",
+            "white_clothes",
+            "silver_trim",
+            "chinese_clothes",
+            "jade",
+            "hair_ornament",
+            "wide_sleeves"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "drunkard_loungewear",
+          "name": "醉里丹青（慵懒家居）",
+          "prose": "an oversized loose ink-grey hanfu-style loungewear robe with a wine gourd hanging from the sash, messy long hair loose, cozy sleepy poet loungewear",
+          "tokens": [
+            "loungewear",
+            "loose_clothes",
+            "hanfu",
+            "sash",
+            "gourd",
+            "messy_hair",
+            "sleepy",
+            "chinese_clothes"
+          ],
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "nipples",
+            "navel",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "泰拉（岁兽一脉）",
+        "era": "近未来奇幻",
+        "formNotes": "白发金瞳；岁十二生肖之龙；慵懒诗人；精二白发如瀑浮空；丹博鲁词条 ling_(arknights)",
+        "research": "2026-08-30 调研（Danbooru ling_(arknights) 1100+ posts；WD14 词表实测：white_hair/very_long_hair/streaked_hair/yellow_eyes/dragon_horns/pointy_ears/chinese_clothes/long_dress 全命中，golden_eyes 不在词表故取 yellow_eyes）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
     }
   ]
 }

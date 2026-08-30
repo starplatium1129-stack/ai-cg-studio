@@ -13,10 +13,10 @@ var blueprintData = require('../../data/scene-blueprints.json');
 var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
 
-test('popular data: 48 characters, unique ids, exactly one default outfit per character', function () {
-  assert.strictEqual(characters.length, 48, 'must ship exactly 48 characters');
+test('popular data: 49 characters, unique ids, exactly one default outfit per character', function () {
+  assert.strictEqual(characters.length, 49, 'must ship exactly 49 characters');
   var ids = new Set(characters.map(function (character) { return character.id; }));
-  assert.strictEqual(ids.size, 48, 'character ids must be unique');
+  assert.strictEqual(ids.size, 49, 'character ids must be unique');
   characters.forEach(function (character) {
     // 2026-08-24 B1 衣橱扩容：上限 8 -> 10（陈衍生服装试点 10 套；后续角色扩容按需再演进）。
     assert.ok(character.outfits.length >= 2 && character.outfits.length <= 10, character.id + ' must have 2-10 outfits (researched official skins + derived casual wear)');
@@ -70,7 +70,8 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
   // 2026-08-24 B1 衣橱扩容试点（陈）：衍生服装入库配套专属场景，
   // 陈 11 -> 14（43 角色 = 35x10 + 7x11 + 1x14 = 441 场景）；
   // 2026-08-27 圣园未花专属晨曦私语场景扩容（全年龄+纯白裸态NSFW，未花 13 -> 15，48 角色 = 34x10 + 8x11 + 5x13 + 1x15 = 508 场景）。
-  assert.strictEqual(blueprints.length, 508, 'expected 508 character scenes, got ' + blueprints.length);
+  // 2026-08-30 明日方舟「令」接入（ling_arknights，6 原型 + 4 成人，49 角色 = 35x10 + 8x11 + 5x13 + 1x15 = 518 场景）。
+  assert.strictEqual(blueprints.length, 518, 'expected 518 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -82,14 +83,14 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 10、11、13 或 15 个场景：10=6 原型+4 成人（34 角色）、11=7 原型+4 成人（8 角色）、
+  // 每个角色 10、11、13 或 15 个场景：10=6 原型+4 成人（35 角色）、11=7 原型+4 成人（8 角色）、
   // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、15=未花专属双场景扩容（1 角色）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
     assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must own 10, 11, 13 or 15 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 34, 11: 8, 13: 5, 15: 1 }, 'scene distribution must be 34x10 + 8x11 + 5x13 + 1x15');
+  assert.deepStrictEqual(sceneDist, { 10: 35, 11: 8, 13: 5, 15: 1 }, 'scene distribution must be 35x10 + 8x11 + 5x13 + 1x15');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4、5 或 6 个带 characterId 的成人场景。
@@ -100,7 +101,7 @@ test('blueprints: 48 characters x (6-7 prototype + 4-5 adult), all owned by a ch
       entry[0] + ' must own 4, 5 or 6 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 36, 5: 11, 6: 1 }, 'adult distribution must be 36x4 + 11x5 + 1x6');
+  assert.deepStrictEqual(adultDist, { 4: 37, 5: 11, 6: 1 }, 'adult distribution must be 37x4 + 11x5 + 1x6');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');
