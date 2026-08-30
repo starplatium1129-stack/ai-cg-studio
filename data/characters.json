@@ -4233,5 +4233,81 @@
     ],
     "accent_color": "#b91c1c",
     "bg_color": "#0f172a"
+  },
+  {
+    "id": "ling_arknights",
+    "name": "令",
+    "alias": [
+      "Ling",
+      "令",
+      "岁相之龙",
+      "岁之龙"
+    ],
+    "type": "popular",
+    "icon": "🍶",
+    "visual_dna": {
+      "hair": "极长的白色长发（very long hair）如瀑布般垂落过踝，发丝中带淡青色/水蓝色渐变（streaked hair），精二立绘中长发可浮空如瀑；额前有细碎的刘海与两缕长鬓发。",
+      "hair_color": "白色为主色、带淡青/水蓝渐变（white with pale aqua-blue streaks）",
+      "eyes": "金色/琥珀金色双瞳（golden-yellow eyes），眼型细长慵懒，眼神常含三分醉意与七分洞明，笑起来如弯月。",
+      "hairstyle": "极长瀑布直发，带渐变挑染与长鬓发（very long straight hair with streaked gradient and long sidelocks）",
+      "uniform": "岁序华章·黑金改良旗袍。黑色高开衩长旗袍裙（qipao-style long dress），衣面绣金色云纹与龙纹，露肩设计（bare shoulders）；颈挂金色长链，耳坠金色流苏耳饰，发间缀金色步摇/发饰；赤足或配金色环饰。",
+      "expression": "常态下神情慵懒淡然、似醉非醉的诗人气质；动情时眉眼弯弯带着温柔的玩味，永远保持一种看尽千年的从容与疏离感。",
+      "style": "大炎国风（Chinese fantasy）／岁兽仙灵气质／慵懒诗仙（Drunken Poet）／龙角仙人之姿",
+      "signature": "一对向后弯曲的黑色龙角（dragon horns）、极长白发如瀑、金色龙瞳、黑金龙纹高开衩旗袍、腰间或手中的酒盏/酒葫芦、尖耳（pointy ears）"
+    },
+    "personality": [
+      "慵懒淡然",
+      "洞明通透",
+      "诗意盎然",
+      "爱酒成癖",
+      "温柔疏离",
+      "举重若轻",
+      "神秘悠远",
+      "看尽千年"
+    ],
+    "likes": [
+      "饮酒（尤其是好酒）",
+      "吟诗作对",
+      "观云海与星空",
+      "人间烟火与热闹市集",
+      "独自发呆",
+      "与弟妹们（岁相）闲聚"
+    ],
+    "identity": {
+      "role": "岁十二生肖之龙（辰龙）化身、游历人间的诗人、罗德岛合作干员",
+      "age": "未知（沉睡万年后苏醒）",
+      "occupation": "诗人 / 术师（龙）",
+      "faction": "大炎 / 岁兽一脉"
+    },
+    "tags": [
+      "极长的白色长发带淡青/水蓝渐变（very long white hair with pale aqua-blue streaks）",
+      "金色/琥珀金双瞳，眼型细长慵懒（golden-yellow eyes, long lazy eye shape）"
+    ],
+    "bg_story": "令是大炎岁相十二子之一——龙的化身，与夕、年、重岳等为兄弟姐妹。她于万年前沉睡，苏醒后游历人间，以诗人自居，喜饮酒吟诗，说话常带三分醉意与禅机。她应罗德岛之邀成为合作干员，看似慵懒随性，实则洞明世事、举重若轻，战斗时召出龙影，威能莫测。",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "traits": [
+      "ling (arknights)",
+      "1girl",
+      "solo",
+      "white_hair",
+      "very_long_hair",
+      "streaked_hair",
+      "yellow_eyes",
+      "dragon_horns",
+      "pointy_ears",
+      "chinese_clothes",
+      "long_dress",
+      "black_dress",
+      "bare_shoulders",
+      "jewelry",
+      "arknights"
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-ling_arknights.png",
+      "alt": "令热门角色立绘"
+    },
+    "speech": "千载长路不过须臾，万般虚实无非一梦。博士，可愿与我共饮一杯？",
+    "accent_color": "#d4a83c",
+    "bg_color": "#1a1424"
   }
 ]
