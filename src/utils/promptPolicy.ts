@@ -964,6 +964,30 @@ export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): Prompt
   if (!hasBreak && ['standing', 'sitting', 'lying', 'kneeling'].filter(pose => positive.includes(pose)).length > 1) {
     warnings.push('主体姿势相互冲突')
   }
+  // ── 镜头可见性与硬冲突（2026-08-30 K2 引擎 §10.1/§10.3 落地）───────────
+  // 先确定构图，再删除镜头看不到的细节：特写不写鞋、背面不写正面胸饰、
+  // 遮眼不写瞳孔、赤脚与穿鞋互斥、俯拍与仰拍互斥、正面与背面互斥。
+  const positiveSet = new Set(positive)
+  const FACE_CLOSEUP = new Set(['face_focus', 'extreme_close_up', 'close_up_detail', 'macro', 'upper_face'])
+  const FOOTWEAR = new Set(['boots', 'shoes', 'sneakers', 'heels', 'sandals', 'socks', 'stockings', 'thighhighs', 'thigh_highs', 'over_knee_socks', 'knee_socks', 'tights', 'pantyhose', 'leggings', 'footwear', 'barefoot', 'bare_feet', 'feet'])
+  const FRONT_CHEST = new Set(['cleavage', 'breasts', 'bare_breasts', 'chest', 'necklace', 'neck_tie', 'breast_hold', 'breast_between_cheeks'])
+  const BACK_VIEWS = new Set(['back_view', 'turned_back', 'from_behind', 'looking_back'])
+  if ([...FACE_CLOSEUP].some(t => positiveSet.has(t)) && [...FOOTWEAR].some(t => positiveSet.has(t))) {
+    warnings.push('特写镜头下鞋子/脚部不可见（镜头可见性）：面颊特写不写鞋')
+  }
+  if ([...BACK_VIEWS].some(t => positiveSet.has(t)) && [...FRONT_CHEST].some(t => positiveSet.has(t))) {
+    warnings.push('背面镜头下前胸/领饰不可见（镜头可见性）：背面不写正面胸饰')
+  }
+  if (positiveSet.has('closed_eyes') && [...positiveSet].some(t =>
+    /^(?:sparkling_eyes|detailed_eyes|glowing_eyes|wide_eyes|dilated_pupils|sparkling_pupils)$/.test(t),
+  )) {
+    warnings.push('闭眼状态下瞳孔/眼神细节不可见（镜头可见性）')
+  }
+  if (positiveSet.has('barefoot') && ['boots', 'shoes', 'sneakers', 'heels', 'sandals'].some(t => positiveSet.has(t))) {
+    warnings.push('赤脚与穿鞋互斥（硬冲突）：barefoot 与鞋子不能同屏')
+  }
+  if (positiveSet.has('from_above') && positiveSet.has('from_below')) warnings.push('俯拍与仰拍互斥（硬冲突）')
+  if (positiveSet.has('front_view') && positiveSet.has('back_view')) warnings.push('正面与背面视角互斥（硬冲突）')
   const qualityCount = positive.filter(token => QUALITY_TOKENS.has(token)).length
   if (qualityCount > 5) {
     warnings.push(`质量词过多（${qualityCount} 个）：模型作者建议不要堆叠质量标签，多了反而降质变糊`)

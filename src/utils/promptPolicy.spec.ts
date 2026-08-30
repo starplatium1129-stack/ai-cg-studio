@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { ModelProfile, PromptPart } from './promptPolicy'
 import {
   adaptNegative,
+  analyzeParts,
   applyFraming,
   assembleNegative,
   mergeNegativePrompt,
@@ -165,5 +166,53 @@ describe('sceneRating / qualityPrefix', () => {
 
   it('qualityPrefix 无 profile 时使用站内默认质量前缀', () => {
     expect(qualityPrefix(null)).toBe('masterpiece, best quality, very aesthetic, absurdres')
+  })
+})
+
+/** K2 引擎 §10.1/§10.3 镜头可见性与硬冲突检查（2026-08-30 落地）。 */
+describe('analyzeParts · 镜头可见性与硬冲突', () => {
+  it('特写镜头下写鞋 → 警告镜头可见性', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'face_focus, boots, black dress' }], 'sd')
+    expect(report.warnings.some(w => w.includes('特写镜头'))).toBe(true)
+  })
+
+  it('特写但不写鞋 → 无镜头可见性警告', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'face_focus, black dress, long hair' }], 'sd')
+    expect(report.warnings.some(w => w.includes('特写镜头'))).toBe(false)
+  })
+
+  it('背面镜头写前胸 → 警告镜头可见性', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'back_view, cleavage, long hair' }], 'sd')
+    expect(report.warnings.some(w => w.includes('背面镜头'))).toBe(true)
+  })
+
+  it('闭眼 + 亮晶晶眼睛 → 警告瞳孔不可见', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'closed_eyes, sparkling_eyes, smile' }], 'sd')
+    expect(report.warnings.some(w => w.includes('瞳孔'))).toBe(true)
+  })
+
+  it('闭眼但不写瞳孔细节 → 无瞳孔警告', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'closed_eyes, gentle smile' }], 'sd')
+    expect(report.warnings.some(w => w.includes('瞳孔'))).toBe(false)
+  })
+
+  it('赤脚与靴子同屏 → 硬冲突警告', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'barefoot, boots, summer' }], 'sd')
+    expect(report.warnings.some(w => w.includes('赤脚'))).toBe(true)
+  })
+
+  it('俯拍与仰拍同屏 → 硬冲突警告', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'from_above, from_below, girl' }], 'sd')
+    expect(report.warnings.some(w => w.includes('俯拍'))).toBe(true)
+  })
+
+  it('正面与背面视角同屏 → 硬冲突警告', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'front_view, back_view, girl' }], 'sd')
+    expect(report.warnings.some(w => w.includes('正面与背面'))).toBe(true)
+  })
+
+  it('Krea 散文路径不误报（自然语言短语非独立 token）', () => {
+    const report = analyzeParts([{ cls: 'q', text: 'A close-up portrait, wearing black boots and a red dress' }], 'krea2')
+    expect(report.warnings.some(w => w.includes('特写镜头'))).toBe(false)
   })
 })
