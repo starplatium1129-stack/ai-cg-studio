@@ -111,6 +111,8 @@
   .pb.focus-mode .footer { display:none !important; }
   .pb.focus-mode .api-status, .pb.focus-mode .utility-menu,
   .pb.focus-mode .col-center > .monitor, .pb.focus-mode .col-center > .generation-settings { display:none !important; }
+  /* 专注成片模式：配音面板（含折叠态）整体不占舞台——配音是独立工序，出片时不需要 */
+  .pb.focus-mode .voice-studio { display:none !important; }
   .pb.focus-mode { padding-top:var(--s-3); padding-bottom:0; }
   .pb.focus-mode .pb-topline { align-items:center; justify-content:flex-end; margin-bottom:var(--s-3); }
   .pb.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"stage"; }
