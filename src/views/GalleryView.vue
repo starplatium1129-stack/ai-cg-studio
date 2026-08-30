@@ -905,6 +905,14 @@ watch(visible, () => {
   void nextTick(() => scanWallCards())
 })
 
+// 2026-08-30 修复：分页追加（renderLimit 增）只改变 pagedVisible，visible 不变 →
+// 上面 watch 不触发 → 新页卡片从未挂 IntersectionObserver → 无缩略图的旧图永远 skeleton。
+// 监听 pagedVisible 长度变化，翻页后重新取缩略图 + 重挂观察器。
+watch(() => pagedVisible.value.length, () => {
+  void hydrateThumbs()
+  void nextTick(() => scanWallCards())
+})
+
 /* ---------- 分页：哨兵进入视口即追加下一页 ---------- */
 const sentinelEl = ref<HTMLElement | null>(null)
 let moreObserver: IntersectionObserver | null = null
