@@ -65,7 +65,7 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
 
 ## Live2D/Tauri 状态
 
-- 当前实现、IPC 接入点、坐标系、资源生命周期和真机证据见 `live2d-native-runtime.md`、`tauri-desktop-migration-plan.md`。
+- 当前实现、IPC 接入点、坐标系、资源生命周期和真机证据见 `live2d-native-runtime.md`、`docs/archive/expired/tauri-desktop-migration-plan.md`。
 - overlay 矩形使用屏幕物理像素；前端通过 `live2dOverlayLayout.ts` 换算，Native 参数写入由 Cubism Native 作者工程负责。
 - 可见 Companion 人工验证已通过冷启动、窗口移动/缩放、透明区域、关闭/恢复、双角色 hit-test、重复动作 busy 提示和隐藏。
 
@@ -84,5 +84,5 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
 - `docs/INDEX.md`：全景文档分类与索引总览。
 - `docs/character-reference-audit-pending.md`：45 角色 4 视角参考库待精调清单与修复指南。
 - `docs/showcase-pipeline-lessons.md`：样张流水线 11 个疑难排查与教训留档。
-- `docs/video-generation-roadmap.md`、`docs/video-ai-storyboard.md`：视频工作台与智能分镜。
-- `docs/tauri-desktop-migration-plan.md`、`docs/desktop-update-research.md`：桌面端架构与更新机制。
+- `docs/archive/expired/video-generation-roadmap.md`、`docs/video-ai-storyboard.md`：视频工作台与智能分镜。
+- `docs/archive/expired/tauri-desktop-migration-plan.md`、`docs/desktop-update-research.md`：桌面端架构与更新机制。
