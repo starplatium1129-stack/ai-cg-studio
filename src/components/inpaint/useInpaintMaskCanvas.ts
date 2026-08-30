@@ -21,7 +21,9 @@ const MAX_UNDO_STEPS = 20
  */
 export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   const maskCanvasEl = ref<HTMLCanvasElement | null>(null)
-  const maskMode = ref<'auto' | 'paint'>('paint')
+  // 2026-08-30 默认切「自动识别」（CLIPSeg）：手绘涂抹门槛高、涂不准是换装效果差的
+  // 主因；自动识别按服装词圈区域贴合衣服轮廓。手绘仍可随时切回精确微调。
+  const maskMode = ref<'auto' | 'paint'>('auto')
   const brushSize = ref(36)
   const maskHistory = ref<ImageData[]>([])
   const cursorVisible = ref(false)

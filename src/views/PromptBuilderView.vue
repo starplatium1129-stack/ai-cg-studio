@@ -1251,6 +1251,15 @@ async function upscaleCurrentResult() {
 }
 
 // ── Anima 智能局部换装（编排已下沉 useAnimaInpaint）───────────────────────
+// 热门角色换装：取出角色 Danbooru 身份标签（exactTokens + identityTokens），
+// 换装时拼入提示词锁定「衣服穿在谁身上」；studio 桌宠角色为空数组不影响。
+const inpaintPopularTokens = computed(() => {
+  const subject = pb.subject
+  if (subject.kind !== 'popular') return []
+  const match = sceneStore.popularCharacters.find(c => c.id === subject.characterId)
+  if (!match) return []
+  return [...(match.exactTokens ?? []), ...(match.identityTokens ?? [])]
+})
 const {
   inpaintOpen,
   inpaintOriginalUrl,
@@ -1263,6 +1272,8 @@ const {
   animaState,
   displayResultUrl,
   generateAnima,
+  isPopular: computed(() => pb.isPopular),
+  popularIdentityTokens: inpaintPopularTokens,
 })
 
 // 弹窗一打开就定格来源：此时舞台上的正是要被重绘的那张图；等结果回来再取

@@ -127,7 +127,7 @@ function buildWorkflow(input) {
         // 2026-08-21 换装完善：threshold 可调（默认 0.45）+ 补 ImageCompositeMasked 回贴，
         // 与手绘遮罩分支行为一致——非重绘区像素级保真，不再整图 VAE 往返。
         var clipsegThreshold = input.maskThreshold !== undefined ? input.maskThreshold : 0.45;
-        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:clipsegThreshold, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
+        noLoraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:clipsegThreshold, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:12, device:'auto', unload_after_run:false } };
         noLoraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
         noLoraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['8', 0], x:0, y:0, resize_source:false, mask:['16', 0] } };
         noLoraWf['10'].inputs.images = ['30', 0];
@@ -240,7 +240,7 @@ function buildWorkflow(input) {
       // 2026-08-21 换装完善：threshold 可调（默认 0.45）+ 补 ImageCompositeMasked 回贴，
       // 与手绘遮罩分支行为一致——非重绘区像素级保真，不再整图 VAE 往返。
       var loraClipsegThreshold = input.maskThreshold !== undefined ? input.maskThreshold : 0.45;
-      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:loraClipsegThreshold, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:4, device:'auto', unload_after_run:false } };
+      loraWf['16'] = { class_type:'AP_CLIPSeg_TextMask', inputs:{ image:['19', 0], prompt:input.maskPrompt, threshold:loraClipsegThreshold, smooth_radius:2, soft_mask:false, invert:false, model:'clipseg_rd64', mask_dilate:input.growMaskBy !== undefined ? input.growMaskBy : 8, mask_blur:12, device:'auto', unload_after_run:false } };
       loraWf['17'] = { class_type:'SetLatentNoiseMask', inputs:{ samples:['18', 0], mask:['16', 0] } };
       loraWf['30'] = { class_type:'ImageCompositeMasked', inputs:{ destination:['19', 0], source:['9', 0], x:0, y:0, resize_source:false, mask:['16', 0] } };
       loraWf['10'].inputs.images = ['30', 0];

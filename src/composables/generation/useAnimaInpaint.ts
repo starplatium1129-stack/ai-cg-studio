@@ -14,6 +14,11 @@ export interface AnimaInpaintDeps {
   animaState: AnimaSession['state']
   displayResultUrl: ComputedRef<string>
   generateAnima: AnimaSession['generate']
+  /** 当前是否热门角色（popular）模式；热门角色无 LoRA，换装必须走无 LoRA 底模。 */
+  isPopular: ComputedRef<boolean>
+  /** 热门角色的 Danbooru 身份标签（exactTokens + identityTokens），换装时拼入提示词头部，
+   *  让模型知道「衣服穿在谁身上」——此前热门角色换装只传衣服词，新衣光影/气质与原图脱节。 */
+  popularIdentityTokens: ComputedRef<string[]>
 }
 
 /**
@@ -25,13 +30,16 @@ export interface AnimaInpaintDeps {
  * 「换装前后对比」的原图 URL / 对比开关状态。
  */
 export function useAnimaInpaint(deps: AnimaInpaintDeps) {
-  const { pb, drawEngine, animaState, displayResultUrl, generateAnima } = deps
+  const { pb, drawEngine, animaState, displayResultUrl, generateAnima, isPopular, popularIdentityTokens } = deps
 
   const inpaintOpen = ref(false)
   const inpaintOriginalUrl = ref<string | null>(null)
   const inpaintCompareActive = ref(false)
 
   const inpaintCharacter = computed<'nene' | 'natsume' | null>(() => {
+    // 热门角色（popular）模式没有 LoRA 绑定，必须返回 null 走无 LoRA 底模；
+    // 否则 pb.char 仍是默认 'nene'，会把热门角色图误绑 nene LoRA 导致「换衣变脸」。
+    if (isPopular.value) return null
     return pb.char === 'nene' || pb.char === 'natsume' ? pb.char : null
   })
 
@@ -84,8 +92,11 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
       const effectiveChar = payload.characterOverride !== undefined
         ? payload.characterOverride
         : inpaintCharacter.value
-      const isCharacterLora = effectiveChar === 'nene' || effectiveChar === 'natsume'
-      const inpaintMode = isCharacterLora || effectiveChar === 'none' ? effectiveChar : null
+      // 热门角色强制走无 LoRA 底模（即使 characterOverride 误传 nene/natsume 也纠正），
+      // 避免 nene/夏目 LoRA 污染热门角色脸型；身份靠 Danbooru 标签（popularIdentityTokens）锁定。
+      const charLocked = isPopular.value ? 'none' : effectiveChar
+      const isCharacterLora = charLocked === 'nene' || charLocked === 'natsume'
+      const inpaintMode = isCharacterLora || charLocked === 'none' ? charLocked : null
       const desiredSize = payload.targetWidth && payload.targetHeight
         ? `${payload.targetWidth}x${payload.targetHeight}`
         : `${animaState.value.width}x${animaState.value.height}`
@@ -97,13 +108,17 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
       )
 
       let promptText = payload.newOutfitPrompt
-      if (effectiveChar === 'nene' && !promptText.includes('ayachi_nene')) {
+      if (charLocked === 'nene' && !promptText.includes('ayachi_nene')) {
         promptText = `ayachi_nene, ${promptText}`
-      } else if (effectiveChar === 'natsume' && !promptText.includes('shiki_natsume')) {
+      } else if (charLocked === 'natsume' && !promptText.includes('shiki_natsume')) {
         promptText = `shiki_natsume, ${promptText}`
+      } else if (charLocked === 'none' && popularIdentityTokens.value.length && isPopular.value) {
+        // 2026-08-30 热门角色换装修复：身份标签前置（hina (blue archive), halo, silver_hair…），
+        // 模型才知道衣服穿在谁身上——此前只传衣服词导致新衣光影/气质与原图脱节。
+        promptText = `${popularIdentityTokens.value.join(', ')}, ${promptText}`
       }
 
-      const negativePrompt = effectiveChar === 'none'
+      const negativePrompt = charLocked === 'none'
         ? `${payload.negativePrompt}, face, head, hair, duplicate person, extra person`
         : payload.negativePrompt
       if (!binding) {

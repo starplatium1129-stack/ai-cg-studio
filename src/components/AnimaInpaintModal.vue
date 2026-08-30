@@ -194,7 +194,8 @@ async function handleStart() {
       </header>
 
       <p class="modal-intro">
-        支持对项目生成图或<b>外部本地图片</b>手绘精确遮罩换装；自动识别仅作为快速模式。
+        默认<b>自动识别</b>服装区域（输入服装词即可，如 uniform / dress）；<b>手绘精确遮罩</b>可随时切回做局部微调。
+        热门角色换装已自动锁定角色身份，不会误绑桌宠 LoRA。
       </p>
 
       <div class="inpaint-layout">
