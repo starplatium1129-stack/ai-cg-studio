@@ -16,8 +16,7 @@
         </button>
       </div>
     </div>
-    <transition name="voice-panel">
-      <div v-show="!collapsed" class="voice-body">
+    <div v-show="!collapsed" class="voice-body">
         <div class="voice-controls">
           <label class="voice-field">角色
             <select v-model="voiceChar">
@@ -67,8 +66,7 @@
         <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
         <audio v-if="voiceAudioUrl" class="voice-audio show" :src="voiceAudioUrl" controls></audio>
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
-      </div>
-    </transition>
+    </div>
   </section>
 </template>
 
