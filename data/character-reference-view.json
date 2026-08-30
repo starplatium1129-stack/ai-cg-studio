@@ -17433,14 +17433,14 @@
     "characterId": "ling_arknights",
     "displayName": "令",
     "source": "Arknights",
-    "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long white hair streaked with pale aqua-blue that flows past her ankles like a waterfall, golden-yellow eyes, a pair of black swept-back dragon horns, pointy ears, wearing a black high-slit qipao-style long dress with gold cloud motifs, bare shoulders and gold jewelry",
+    "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long predominantly white hair flowing with distinct pale aqua-blue gradient streaks and aqua-tinted tips, hair gradient clearly visible from roots to ends, golden-yellow eyes, a pair of black swept-back dragon horns, pointy ears, wearing an ink-teal (深墨青) high-slit qipao-style long dress with gold cloud and dragon motifs, the dark teal fabric echoing her aqua hair gradient, bare shoulders and gold jewelry",
     "outfits": [
       {
         "outfitId": "standard",
         "outfitName": "岁序华章（黑金旗袍）",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "her black high-slit qipao-style long dress with gold cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, barefoot",
+        "prose": "her ink-teal high-slit qipao-style long dress with gold and pale aqua-blue cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, the deep teal fabric harmonizing with her aqua-tipped white hair, barefoot",
         "references": [
           {
             "id": "ref_01_face_closeup",
