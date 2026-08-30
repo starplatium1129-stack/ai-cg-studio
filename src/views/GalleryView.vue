@@ -1482,13 +1482,13 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 /* ── 回收站（2026-08-31）── */
 .trash-wall { max-width:1500px; margin:0 auto; }
 .trash-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-4); color:var(--text-secondary); }
-.trash-hint { font-size:var(--fs-sm); }
+.trash-hint { font-size:var(--fs-body-sm); }
 .trash-count { font-weight:500; color:var(--text-primary); }
-.trash-card { position:relative; border:1px solid var(--border-tertiary); border-radius:var(--r-lg); overflow:hidden; background:var(--surface-secondary); }
+.trash-card { position:relative; border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; background:var(--bg-surface); }
 .trash-card .artwork-media { height:100%; }
 .trash-card .artwork-caption { position:static; opacity:1; transform:none; pointer-events:auto; background:none; padding:var(--s-2) var(--s-3) var(--s-3); color:var(--text-primary); }
-.trash-card .artwork-name { display:block; font-size:var(--fs-sm); line-height:1.4; }
-.trash-card .artwork-date { display:block; margin-top:2px; font-size:var(--fs-xs); color:var(--text-secondary); }
+.trash-card .artwork-name { display:block; font-size:var(--fs-body-sm); line-height:1.4; }
+.trash-card .artwork-date { display:block; margin-top:2px; font-size:var(--fs-label-xs); color:var(--text-secondary); }
 .trash-card .artwork-tools { position:static; opacity:1; transform:none; pointer-events:auto; justify-content:flex-start; margin:0 var(--s-3) var(--s-3); background:none; border:none; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; padding:0; }
 .trash-card .artwork-tool { color:var(--text-secondary); }
 .trash-card .artwork-tool:hover { color:var(--text-primary); }
