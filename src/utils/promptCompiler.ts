@@ -349,11 +349,14 @@ function inferredKreaStyle(plan: PromptPlan): string {
   const usage = (scene?.usage || []).join(' ').toLowerCase()
   const landscape = tags.has('landscape') || /官方cg|展示图/.test(`${category} ${usage}`)
   const mature = String(scene?.rating || '').toUpperCase() === 'R18'
+  // 2026-08-30 Krea2 默认偏厚涂/半写实质感，'polished' 词又引导光泽——
+  // 加 cel shading/flat colors/crisp line art 二次元限定，把模型拉回赛璐璐。
+  // 实验 D 句（cel+flat+line art）效果明显优于原句"polished anime wallpaper illustration"。
   const base = mature
-    ? 'A polished mature anime visual novel wallpaper'
+    ? 'A polished 2D mature anime visual novel wallpaper with clean cel shading, flat colors and crisp line art'
     : landscape
-      ? 'A cinematic anime wallpaper composed like a polished visual novel event CG'
-      : 'A polished anime wallpaper illustration'
+      ? 'A cinematic 2D anime wallpaper composed like a polished visual novel event CG with cel shading, flat colors and crisp line art'
+      : 'A polished 2D anime illustration with clean cel shading, flat colors and crisp line art'
   return sentence(plan.artistProse ? `${base}, ${plan.artistProse}` : base)
 }
 
