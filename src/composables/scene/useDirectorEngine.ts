@@ -160,7 +160,11 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     return sd.online.value
   })
   const generationBusy = computed(() => sd.generating.value || (['submitting', 'running', 'cancelling'] as string[]).includes(animaState.value.phase))
-  const generationProgress = computed<number | null>(() => drawEngine.value === 'sd' ? sd.progress.value / 100 : animaState.value.progress)
+  // SD 侧 progress 可空（WebUI 路径 / 尚未收到步骤事件时后端给不出进度），
+  // 空值一路传到进度环走 indeterminate，绝不兜成 0（会被读成「卡在 0%」）。
+  const generationProgress = computed<number | null>(() => drawEngine.value === 'sd'
+    ? (sd.progress.value === null ? null : sd.progress.value / 100)
+    : animaState.value.progress)
   const generationProgressStyle = computed(() => ({ '--progress': `${(generationProgress.value ?? 0) * 100}%` }))
   const generationError = computed(() => drawEngine.value === 'sd' ? sd.errorMsg.value : animaState.value.errorMsg)
   const generationStopped = computed(() => drawEngine.value === 'sd' ? sd.statusText.value === '已停止' : animaState.value.phase === 'cancelled')

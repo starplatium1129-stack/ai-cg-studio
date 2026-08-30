@@ -43,12 +43,25 @@ export const ARTWORK_HISTORY_KV_KEY = 'aics_pb_history'
 export const ARTWORK_HISTORY_QUARANTINE_KEY = 'aics_pb_history_quarantine'
 /** 作品册项目（IndexedDB 主存储；useBackup / 作品册 / 导演台共用）。 */
 export const ARTWORK_PROJECTS_KV_KEY = 'aics_pb_projects'
+/**
+ * 作品册软删回收站（IndexedDB，2026-08-30 UX 审计 P0-8）。软删条目保留
+ * 30 天（图片与缩略图在 purge 前不删），期间可整条恢复；超期由作品册
+ * 挂载时的懒清理真删。刻意不参与备份导出：回收站属于会话期补救通道。
+ */
+export const ARTWORK_TRASH_KV_KEY = 'aics_pb_trash'
 /** 绘图页 → 视频页单图跨页上下文（sessionStorage，容量敏感故不入 localStorage 备份）。 */
 export const VIDEO_CONTEXT_KEY = 'aics_video_ctx'
 /** 分镜短片批量带入上下文（sessionStorage）。 */
 export const VIDEO_SHOTS_CONTEXT_KEY = 'aics_video_shots_ctx'
 /** 剧本模式分幕 → 分镜短片跨页上下文（sessionStorage，2026-08-23 剧本模式激活）。 */
 export const VIDEO_SCENARIO_CONTEXT_KEY = 'aics_video_scenario_ctx'
+
+/**
+ * SD 出图队列快照（2026-08-30 UX 审计 P0-5）。队列任务在离开绘图页 / 刷新后
+ * 经此快照恢复。活键但刻意不参与备份导出：恢复到新环境时的陈旧队列没有
+ * 价值（引用的 checkpoint / LoRA 可能不存在），只在本机会话内往返。
+ */
+export const SD_QUEUE_SNAPSHOT_KEY = 'aics_sd_queue_snapshot_v1'
 
 export const LIVE_LOCAL_KEYS = [
   THEME_KEY,

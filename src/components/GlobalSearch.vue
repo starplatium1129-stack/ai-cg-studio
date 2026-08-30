@@ -229,8 +229,11 @@ async function loadWorks() {
     await kvInit()
     const raw = await kvGet<unknown[]>(HISTORY_KEY)
     const list = Array.isArray(raw) ? raw.slice(0, 300) : []
+    // 2026-08-30 UX 审计：这里原来是 `!r`（写反了），任何非空条目都会被判为
+    // 非对象而被丢掉——「作品」分组永远为空，用户搜不到旧作会误判「那张图没
+    // 了」。口径与 App.vue 的 `!!r` 对齐。
     works.value = list
-      .filter((r): r is Record<string, unknown> => !r && typeof r === 'object')
+      .filter((r): r is Record<string, unknown> => !!r && typeof r === 'object')
       .map((entry) => {
         const title = String(entry.sceneTitle || entry.title || entry.scene || '未命名作品')
         const time = typeof entry.timestamp === 'number'

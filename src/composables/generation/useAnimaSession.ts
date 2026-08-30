@@ -8,6 +8,7 @@ import type {
 } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { classifySDError } from '@/utils/sdError'
 
 /**
  * Anima / Krea 2 生成会话 —— 生成、进度、取消和错误的会话内聚实现。
@@ -92,7 +93,7 @@ const INITIAL_STATE: AnimaGenerationState = {
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
   hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
   teaCache: true, teaCacheThresh: 0.08,
-  job: null, result: null, statusText: '', errorMsg: '',
+  job: null, result: null, statusText: '', errorMsg: '', errorReport: null,
 }
 
 export const ANIMA_LORA_BY_CHARACTER = {
@@ -440,11 +441,33 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       // 会话拥有成功态与结果持有：先释放旧结果再写入新结果。
       const previous = state.value.result
       if (previous && previous.url !== result.url) URL.revokeObjectURL(previous.url)
-      patchState({ result, job: metadata, phase: 'succeeded', progress: 1, progressText: '生成完成', currentNode: null, statusText: '生成完成', errorMsg: '' })
+      patchState({ result, job: metadata, phase: 'succeeded', progress: 1, progressText: '生成完成', currentNode: null, statusText: '生成完成', errorMsg: '', errorReport: null })
       options.onResult(result)
       return
     }
     if (serial === requestSerial) throw new Error('Anima 生成超时')
+  }
+
+  /**
+   * 失败态统一落法（2026-08-30 UX 审计）。
+   *
+   * Anima / Krea 2 走 ComfyUI，后端失败信息是英文技术串（节点名、张量形状、
+   * traceback）。此前原样直出——用户看不懂，也没有任何重试入口，与 SD 路径
+   * 的「分类 + 恢复动作」形成体验断层。
+   *
+   * 现在与 SD 共用 sdError 分类器（backend='comfy' 保证文案不提 WebUI），
+   * errorMsg 给中文结论，errorReport 让面板能显示标题、建议与折叠的技术细节。
+   * errorMsg 保留分类后的可读文案而非原始串——调用方（导演台 generationError、
+   * 面板红字）都只是展示给用户看。
+   */
+  function failurePatch(error: unknown, statusText: string) {
+    const report = classifySDError(error, 'comfy')
+    return {
+      phase: 'failed' as const,
+      statusText,
+      errorMsg: report.kind === 'cancelled' ? report.message : `${report.title}：${report.message}`,
+      errorReport: report,
+    }
   }
 
   function clearResult() {
@@ -464,7 +487,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const controller = new AbortController()
     jobRequest = controller
     clearResult()
-    patchState({ phase: 'submitting', progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '' })
+    patchState({ phase: 'submitting', progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     try {
       const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(state.value.family), {
         method: 'POST',
@@ -479,7 +502,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     } catch (error) {
       if (serial !== requestSerial) return
       if (error instanceof ApiClientError && error.kind === 'aborted') return
-      patchState({ phase: 'failed', statusText: '生成失败', errorMsg: error instanceof Error ? error.message : String(error) })
+      patchState(failurePatch(error, '生成失败'))
     } finally {
       if (jobRequest === controller) jobRequest = null
     }
@@ -492,14 +515,14 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       return
     }
     if (!job || !['running', 'cancelling'].includes(state.value.phase)) return
-    patchState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '' })
+    patchState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '', errorReport: null })
     try {
       const data = await client.request<{ job?: AnimaPublicJob }>(jobPath(state.value.family, job.id), {
         method: 'DELETE', timeoutMs: 15_000,
       })
       if (data.job?.status === 'cancelled') patchState({ phase: 'cancelled', statusText: '任务已取消' })
     } catch (error) {
-      patchState({ phase: 'failed', statusText: '取消失败', errorMsg: error instanceof Error ? error.message : String(error) })
+      patchState(failurePatch(error, '取消失败'))
     }
   }
 

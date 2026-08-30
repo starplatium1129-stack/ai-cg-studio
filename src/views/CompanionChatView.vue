@@ -145,6 +145,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { CHARACTERS } from '@/config/characters'
@@ -171,6 +172,9 @@ interface ChatLiveState {
 /** 无桥降级：允许纯浏览器里用本地 storage 观看/本地切角色（发送需桌宠桥） */
 const storage = useChatStorage(() => { /* 聊天窗静默收集失败即可 */ })
 const bridge = window.companionDesktop
+/** 浏览器形态（无桥）下 /companion-chat 是死路：window.close() 对非脚本打开的
+ *  窗口无效，页面里也没有任何路由出口。这里给一个真正走得通的返回。 */
+const router = useRouter()
 
 const liveState = reactive<ChatLiveState>({
   busy: false,
@@ -294,7 +298,10 @@ function switchCharacter(id: string) {
 }
 
 function openFullRoom() {
-  if (bridge) bridge.openAtelier('/chat')
+  if (bridge) { bridge.openAtelier('/chat'); return }
+  // 2026-08-30 UX 审计：无桥（浏览器形态）时这里原来是空操作，页面无任何
+  // 路由出口，用户既关不掉也回不去。降级为路由跳转。
+  void router.push('/companion')
 }
 
 function closeWindow() {
@@ -302,9 +309,13 @@ function closeWindow() {
   // WebView2 内容被卸载、再次打开显示空白白板。
   if (bridge?.hideChatWindow) {
     void bridge.hideChatWindow()
-  } else {
-    window.close()
+    return
   }
+  // 2026-08-30 UX 审计：window.close() 只对脚本打开的窗口生效，浏览器里直接
+  // 打开这个地址时它什么都不做——关窗按钮点了没反应，页面又无任何出口。
+  // 有历史就后退，没有就回桌宠页。
+  if (window.history.length > 1) router.back()
+  else void router.push('/companion')
 }
 
 const errorText = ref('')

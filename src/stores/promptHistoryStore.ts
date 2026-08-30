@@ -66,10 +66,28 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
     } catch {}
   }
 
+  /**
+   * 移除一条历史作品（2026-08-30 UX 审计 P0-8）。
+   *
+   * 改走软删：条目与项目引用立即消失（界面反馈与从前一致），原图与缩略图
+   * 保留 30 天，期间 restoreHistoryEntry 可整条恢复。历史面板与作品册两条
+   * 删除路径共用同一实现，避免「这边可撤销、那边不可」的割裂。
+   */
   async function removeHistoryEntry(id: number) {
-    const result = await artworkRepository.deleteArtwork(id)
-    if (result.historyChanged) history.value = (history.value as unknown as Array<{ id: number }>).filter(entry => entry.id !== id) as unknown as typeof history.value
-    if (result.removedProjectReferences > 0) await loadProjects()
+    const result = await artworkRepository.softDeleteArtwork(id)
+    if (result.deleted) {
+      history.value = (history.value as unknown as Array<{ id: number }>).filter(entry => entry.id !== id) as unknown as typeof history.value
+      await loadProjects()
+    }
+  }
+
+  /** 撤销软删：整条恢复并重新载入列表。 */
+  async function restoreHistoryEntry(id: number): Promise<boolean> {
+    const result = await artworkRepository.restoreArtwork(id)
+    if (!result.restored) return false
+    await loadHistory()
+    await loadProjects()
+    return true
   }
 
   return {
@@ -81,6 +99,7 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
     loadHistory,
     loadProjects,
     removeHistoryEntry,
+    restoreHistoryEntry,
   }
 })
 

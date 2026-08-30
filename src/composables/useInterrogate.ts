@@ -27,6 +27,29 @@ function fileToDataUrl(file: File): Promise<string> {
   })
 }
 
+/**
+ * 反推失败的可读文案（2026-08-30 UX 审计）。
+ *
+ * 此前非 2xx 一律 `throw new Error('反推失败：' + res.status)`——用户看到的是
+ * 一个 HTTP 状态码，既不知道为什么，也不知道该怎么办。后端已经在信封里带了
+ * 中文的 error 文案，这里把它保留下来，再按状态码补一句可操作的下一步。
+ *
+ * 刻意不复用 sdError 的分类器：那一套是出图语义（WebUI/Comfy、采样器、LoRA），
+ * 用在反推上会给出「关闭高清修复」这类驴唇不对马嘴的建议。
+ */
+function interrogateFailure(status: number, backendMessage: string): string {
+  const hint =
+    status === 413 ? '图片体积超出网关上限，换一张小一些的图重试。'
+    : status === 429 ? '反推请求太频繁，稍等几秒再试。'
+    : status === 400 ? '请求被网关拒绝，通常是图片格式或体积不合要求。'
+    : status === 404 ? '反推接口不可用，请确认网关已启动到最新版本。'
+    : status >= 500 ? '反推服务内部出错，WD14 模型可能尚未就绪，可稍后重试。'
+    : status === 0 ? '无法连接网关，请确认服务已启动。'
+    : '请稍后重试；若持续失败，检查网关与 WD14 反推模型。'
+  // 后端给的中文文案优先，状态码提示作为补充，不重复拼接。
+  return backendMessage ? `${backendMessage}（${hint}）` : `反推失败：${hint}`
+}
+
 export function useInterrogate() {
   const busy = ref(false)
   const error = ref<string | null>(null)
@@ -48,8 +71,8 @@ export function useInterrogate() {
       })
       const json = (await res.json().catch(() => null)) as { ok?: boolean; data?: InterrogateResult; error?: string; message?: string } | null
       if (!res.ok || !json || json.ok !== true) {
-        const msg = (json && (json.error || json.message)) || '反推失败：' + res.status
-        throw new Error(msg)
+        const backendMessage = (json && (json.error || json.message)) || ''
+        throw new Error(interrogateFailure(res.status, backendMessage))
       }
       // 后端信封是 { ok:true, ...payload }，payload 直接平铺在顶层；
       // 兼容历史/未来可能的 { ok:true, data: {...} } 两种形态。
@@ -57,7 +80,12 @@ export function useInterrogate() {
       lastResult.value = data
       return data
     } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : String(e)
+      // fetch 的网络失败（网关没起）抛的是 TypeError，消息是浏览器的
+      // "Failed to fetch"，同样属于「看不懂」，在这里一并换成可读文案。
+      const isNetwork = e instanceof TypeError
+      const message = isNetwork
+        ? interrogateFailure(0, '')
+        : (e instanceof Error ? e.message : String(e))
       error.value = message || '反推失败'
       throw e
     } finally {

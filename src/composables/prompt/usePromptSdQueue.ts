@@ -1,7 +1,8 @@
-import { ref, type ComputedRef, type Ref } from 'vue'
+import { ref, watch, type ComputedRef, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import { writeQuickCreate } from '@/utils/quickCreate'
+import { SD_QUEUE_SNAPSHOT_KEY } from '@/utils/storageKeys'
 import { classifySDError, type SDErrorReport } from '@/utils/sdError'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
@@ -41,6 +42,37 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
   const sdErrorReport = ref<SDErrorReport | null>(null)
   function dismissError() { sdErrorReport.value = null }
+
+  /**
+   * 队列快照持久化（2026-08-30 UX 审计 P0-5）。
+   *
+   * 队列此前只活在 PromptBuilderView 作用域：离开页面（onUnmounted→dispose→
+   * cancel）或刷新，pending 队列整组蒸发且无任何解释。现在 pending 任务实时
+   * 落 localStorage，回到绘图页时恢复（置暂停，不自动开跑）；在途任务不保
+   * 留——它已被真实取消，恢复一个早已死掉的 jobId 只会误导。
+   */
+  function readQueueSnapshot(): SDQueueJob[] {
+    try {
+      const raw = localStorage.getItem(SD_QUEUE_SNAPSHOT_KEY)
+      if (!raw) return []
+      const parsed: unknown = JSON.parse(raw)
+      if (!Array.isArray(parsed)) return []
+      return parsed.filter((job): job is SDQueueJob =>
+        Boolean(job) && typeof job === 'object' && typeof (job as SDQueueJob).id === 'string')
+    } catch { return [] }
+  }
+
+  function persistQueueSnapshot(jobs: readonly SDQueueJob[]) {
+    try {
+      if (!jobs.length) { localStorage.removeItem(SD_QUEUE_SNAPSHOT_KEY); return }
+      localStorage.setItem(SD_QUEUE_SNAPSHOT_KEY, JSON.stringify(jobs))
+    } catch { /* 快照写失败不阻断出图主链路 */ }
+  }
+
+  // 注意：watch 的 getter 在建立依赖时就会被立即执行一次，restore 也是同步调用
+  // ——两者都读 sdQueue，而 sdQueue 是下方 useSDQueue(...) 的 const 声明，必须
+  // 等它初始化之后才能挂（否则命中 TDZ，整个导演台在 setup 阶段就抛错）。
+  // 因此这两个调用放在文件末尾的「队列接线」处，不要因为读起来更顺就往上挪。
 
   /** 把当前导演台状态快照成一个队列任务 */
   function captureJob(): Omit<SDQueueJob, 'id'> | null {
@@ -207,6 +239,40 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     return url
   }
 
+  /**
+   * 成片入册（直出 / 队列共用同一实现，2026-08-30 UX 审计 P0-8）。
+   *
+   * 此前只有队列与批量路径自动入册，直出成片要手点「保存快照」，忘点后
+   * 切页即丢。抽出来后直出路径同样自动写历史，三条路径行为一致。
+   */
+  async function commitJobResult(job: Omit<SDQueueJob, 'id'>, url: string): Promise<HistoryEntry | null> {
+    // url 是本地 blob URL，不会回 HTML 错误页，但可能已被 revoke 而拿到空 blob。
+    // 空 blob 入册会在作品册里留下一条打不开的记录。
+    const response = await fetch(url)
+    const contentType = response.headers.get('content-type') || ''
+    if (!response.ok || !contentType.startsWith('image/')) throw new Error('成片响应不是图片')
+    const blob = await response.blob()
+    if (!blob.size) throw new Error('成片数据已失效')
+    // 返回落库条目：直出路径用它把「舞台这张图 = 作品册哪一条」记下来，
+    // 后续 inpaint 重绘才有对比锚点（2026-08-30 UX 审计 P1-14）。
+    return await pb.commitHistoryEntry({
+      blob, seed: sd.resultSeed.value ?? undefined,
+      size: job.size, negative: job.negative, prompt: job.prompt,
+      ...historyGenerationFields(),
+      // 2026-08-29 修复：队列任务用入队时快照（job）覆盖当前面板状态——
+      // 故事/场景在排队期间被改也不串味；hires 取任务实参而非面板现值。
+      story: job.story,
+      scene: job.sceneId ?? null,
+      sceneTitle: job.sceneTitle || undefined,
+      hiresFix: job.hiresFix,
+      hiresScale: job.hiresScale,
+      hiresUpscaler: job.hiresUpscaler,
+      hiresSteps: job.hiresSteps,
+      hiresDenoise: job.denoisingStrength,
+      faceDetailer: job.faceDetailer,
+    })
+  }
+
   const sdQueue = useSDQueue({
     isBusy: () => sd.generating.value,
     onFlash: (m) => pb.flash(m),
@@ -216,29 +282,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
         sdErrorReport.value = null
         // 队列产出自动入册，避免跑完一批还要手点保存
         try {
-          // url 是本地 blob URL，不会回 HTML 错误页，但可能已被 revoke 而拿到空 blob。
-          // 空 blob 入册会在作品册里留下一条打不开的记录。
-          const response = await fetch(url)
-          const contentType = response.headers.get('content-type') || ''
-          if (!response.ok || !contentType.startsWith('image/')) throw new Error('成片响应不是图片')
-          const blob = await response.blob()
-          if (!blob.size) throw new Error('成片数据已失效')
-          await pb.commitHistoryEntry({
-            blob, seed: sd.resultSeed.value ?? undefined,
-            size: job.size, negative: job.negative, prompt: job.prompt,
-            ...historyGenerationFields(),
-            // 2026-08-29 修复：队列任务用入队时快照（job）覆盖当前面板状态——
-            // 故事/场景在排队期间被改也不串味；hires 取任务实参而非面板现值。
-            story: job.story,
-            scene: job.sceneId ?? null,
-            sceneTitle: job.sceneTitle || undefined,
-            hiresFix: job.hiresFix,
-            hiresScale: job.hiresScale,
-            hiresUpscaler: job.hiresUpscaler,
-            hiresSteps: job.hiresSteps,
-            hiresDenoise: job.denoisingStrength,
-            faceDetailer: job.faceDetailer,
-          })
+          await commitJobResult(job, url)
         } catch (e) { console.warn('queue autosave failed', e) }
         return { status: 'success' as const }
       }
@@ -248,6 +292,16 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       return { status: 'failure' as const, error: err }
     },
   })
+
+  // ── 队列快照接线（声明顺序见上方 readQueueSnapshot 处的说明）──────────
+  // 队列变化实时落盘；挂载时把上次离开/刷新残留的 pending 任务灌回队列并置
+  // 暂停，让用户确认面板状态后再手动「继续」。
+  watch(() => sdQueue.queue.value, jobs => persistQueueSnapshot(jobs), { deep: true })
+
+  const restoredCount = sdQueue.restore(readQueueSnapshot())
+  if (restoredCount > 0) {
+    pb.flash(`已恢复 ${restoredCount} 个排队任务（已暂停，点「继续」逐张生成）`)
+  }
 
   function enqueueCurrent() {
     if (drawEngine.value !== 'sd') { pb.flash(`${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 引擎暂不支持队列，直接点击生成即可`); return }
@@ -279,6 +333,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     captureJob,
     historyGenerationFields,
     runJob,
+    commitJobResult,
     sdQueue,
     enqueueCurrent,
     enqueue3Variants,

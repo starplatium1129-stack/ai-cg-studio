@@ -1,17 +1,31 @@
 import { defineStore } from 'pinia'
 import { parsePromptBuilderDraft, type PromptBuilderDraft, type SDParams, isSDParamKey } from '@/utils/promptBuilderPersistence'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
+import { storageWriteMessage } from '@/utils/storageWriteError'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 
 export const usePromptDraftStore = defineStore('promptDraft', () => {
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
 
-  function saveDraft(snapshot: () => PromptBuilderDraft, dataReady: { value: boolean }) {
+  /**
+   * @param onError 写入失败回调（2026-08-30 UX 审计）。原先 `catch {}` 静默吞掉，
+   *   配额写满时用户以为草稿已存、刷新即丢。调用方应把它接到 toast/flash 上。
+   */
+  function saveDraft(
+    snapshot: () => PromptBuilderDraft,
+    dataReady: { value: boolean },
+    onError?: (message: string) => void,
+  ) {
     if (!dataReady.value) return
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = setTimeout(() => {
-      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshot())) } catch {}
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshot()))
+      } catch (e) {
+        console.warn('[draft] 草稿写入失败', e)
+        onError?.(storageWriteMessage(e, '草稿'))
+      }
     }, 280)
   }
 

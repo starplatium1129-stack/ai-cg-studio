@@ -80,6 +80,14 @@
                   @click="pendingDeleteId = null">取消</button>
               </template>
               <template v-else>
+                <button class="artwork-tool" type="button"
+                  :class="{ 'artwork-tool-on': item.favorite }"
+                  :aria-pressed="!!item.favorite"
+                  :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
+                  title="收藏后可在顶部按「收藏」筛选"
+                  @click="toggleFavorite(item)">
+                  <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
+                </button>
                 <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
                   <ArchiveIcon name="spark" /><span>Remix</span>
                 </RouterLink>
@@ -191,6 +199,12 @@
           <div class="viewer-prompt">{{ current.prompt || '未保存 Prompt' }}</div>
         </details>
         <div class="viewer-actions">
+          <button class="btn btn-ghost" type="button"
+            :class="{ 'btn-favorite-on': current.favorite }"
+            :aria-pressed="!!current.favorite"
+            @click="toggleFavorite(current)">
+            <ArchiveIcon name="love" /><span>{{ current.favorite ? '取消收藏' : '收藏这幅' }}</span>
+          </button>
           <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`"><ArchiveIcon name="spark" /> Remix 配方</RouterLink>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
@@ -207,7 +221,7 @@
             @click="pendingDeleteId = current.id">删除这幅</button>
           <template v-else>
             <button class="btn btn-danger" type="button" :disabled="deleting"
-              @click="confirmDelete(current)">{{ deleting ? '删除中…' : '确认删除（不可撤销）' }}</button>
+              @click="confirmDelete(current)">{{ deleting ? '删除中…' : '移入回收站' }}</button>
             <button class="btn btn-ghost" type="button" :disabled="deleting"
               @click="pendingDeleteId = null">取消</button>
           </template>
@@ -225,6 +239,7 @@ import { ref, computed, reactive, onMounted, onActivated, onUnmounted, watch, ne
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { artworkRepository } from '@/storage/artworkRepository'
+import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useToast } from '@/composables/useToast'
@@ -276,7 +291,7 @@ const thumbUrls = reactive<Record<string, string>>({})
 const missingImageIds = ref(new Set<string | number>())
 /** 图片实际比例，键为历史条目 id；元数据不可信时以此为准 */
 const measuredRatios = reactive<Record<string, number>>({})
-/** 待确认删除的条目 id：删除不可撤销，所以要点两次 */
+/** 待确认删除的条目 id：删除有回收站兜底，但二次确认仍是防手滑的第一道闸 */
 const pendingDeleteId = ref<string | number | null>(null)
 const deleting = ref(false)
 const closeBtn = ref<HTMLElement | null>(null)
@@ -699,6 +714,39 @@ function step(delta: number) {
  * 从作品册移除一幅：历史条目 + IndexedDB 里的原图一起删，
  * 否则图片会变成没人引用的孤儿，继续占着配额。
  */
+/**
+ * 收藏切换（2026-08-30 UX 审计：收藏此前是死功能）。
+ *
+ * 「收藏」筛选与卡片爱心标记一直都在，但全库没有任何写入 `favorite` 的入口，
+ * 创建作品时恒为 false —— 于是顶部「收藏 N」永远是 0，角色厨想标精选无门。
+ *
+ * 乐观更新：大图墙里等一次 KV 往返再变色会有肉眼可见的迟滞。写失败则回滚
+ * 并如实告知，不静默吞（与本项目其他存储写入失败的修法一致）。
+ */
+async function toggleFavorite(item: ArtworkRecord) {
+  const next = !item.favorite
+  item.favorite = next
+  try {
+    const result = await artworkRepository.patchArtwork(item.id, { favorite: next })
+    if (!result.updated) {
+      item.favorite = !next
+      showToast('没找到这幅作品，收藏没能保存', 'warning')
+      return
+    }
+  } catch (e) {
+    item.favorite = !next
+    console.warn('[gallery] 收藏写入失败', e)
+    showToast(storageWriteMessage(e, '收藏状态'), 'error')
+  }
+}
+
+/**
+ * 删除（2026-08-30 UX 审计 P0-8：原为硬删不可恢复）。
+ *
+ * 现在默认走软删：列表与项目引用立即消失（界面反馈与从前一致），但原图
+ * 与缩略图保留 30 天，toast 上给 5 秒「撤销」窗口；超期由挂载时的懒清理
+ * 真删。攒几百张时误删不再是不可逆损失。
+ */
 async function confirmDelete(item: ArtworkRecord) {
   if (deleting.value) return
   deleting.value = true
@@ -708,7 +756,7 @@ async function confirmDelete(item: ArtworkRecord) {
 
     // Repository 先完成跨库删除与补偿回滚，再改界面；失败时界面不动作。
     const next = history.value.filter(h => h.id !== item.id)
-    await artworkRepository.deleteArtwork(item.id)
+    await artworkRepository.softDeleteArtwork(item.id)
     history.value = next
 
     // 释放这张卡自己的 object URL，并清掉派生缓存
@@ -726,11 +774,29 @@ async function confirmDelete(item: ArtworkRecord) {
       if (!visible.value.length) closeViewer()
       else openViewer(Math.min(Math.max(removedIndex, 0), visible.value.length - 1))
     }
+
+    showToast('已移入回收站，30 天内可撤销', 'info', 5000, {
+      label: '撤销',
+      onClick: () => { void undoDelete(item) },
+    })
   } catch (e) {
     console.warn('delete artwork failed', e)
     showToast('删除失败，请重试')
   } finally {
     deleting.value = false
+  }
+}
+
+/** 撤销软删：整条恢复（历史条目 + 项目引用），刷新列表即可见。 */
+async function undoDelete(item: ArtworkRecord) {
+  try {
+    const result = await artworkRepository.restoreArtwork(item.id)
+    if (!result.restored) { showToast('这条作品已不在回收站，无法恢复', 'warning'); return }
+    await loadGalleryStorage()
+    showToast('已恢复到作品册')
+  } catch (e) {
+    console.warn('restore artwork failed', e)
+    showToast('恢复失败，请重试')
   }
 }
 
@@ -878,6 +944,10 @@ onMounted(async () => {
   document.addEventListener('keydown', onKeydown)
   await loadGalleryStorage()
 
+  // 回收站懒清理（2026-08-30 UX 审计 P0-8）：真删超期软删条目的图片与
+  // 缩略图。不阻塞首屏，失败静默（下次挂载再试）。
+  void artworkRepository.purgeExpiredTrash().catch(e => console.warn('[gallery] trash purge failed', e))
+
   try {
     await sceneStore.load()
     scenes.value = sceneStore.scenes
@@ -995,6 +1065,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
 /* 审计修复: 处理中态也要读得清 */
 .artwork-tool:disabled { cursor:wait; color: var(--text-disabled); border-color: var(--border-soft); background: transparent; }
+/* 收藏激活态：画膜上要够亮才看得见，用 on-art 令牌而非全局强调色（后者在深色膜上偏暗） */
+.artwork-tool-on { border-color:color-mix(in srgb,var(--accent) 42%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 20%,transparent); color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { width:14px; height:14px; vertical-align:-.12em; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
 .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); }

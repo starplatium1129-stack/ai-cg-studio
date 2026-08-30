@@ -10,6 +10,7 @@ import {
 } from '@/utils/popularContent'
 import { ANIMA_LORA_BY_CHARACTER, type useAnimaSession } from '@/composables/generation/useAnimaSession'
 import { confirmAction } from '@/composables/useConfirm'
+import { useToast } from '@/composables/useToast'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -37,6 +38,7 @@ export interface PromptHistoryApplyDeps {
  */
 export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
   const { pb, animaState, patchAnimaState, clearAnimaResult, refreshAnimaBackend, setDrawEngine, resetBlueprintRotation, sdSize } = deps
+  const { show: showToast } = useToast()
 
   function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
     const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
@@ -144,11 +146,25 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
 
   function resumeHistory(entry: HistoryEntry) { applyHistory(entry) }
   function duplicateHistory(entry: HistoryEntry) { applyHistory(entry, true) }
+  /**
+   * 删除历史条目（2026-08-30 UX 审计 P0-8）。
+   *
+   * 底层已改软删，确认文案不再写「不可撤销」，并给 5 秒撤销窗口——原图在
+   * 回收站留 30 天，但用户真正会后悔的就是点下去的这几秒。
+   */
   async function deleteHistory(entry: HistoryEntry) {
-    if (!(await confirmAction(`删除历史「${entry.sceneTitle || entry.scene || '未命名'}」？此操作不可撤销。`))) return
+    if (!(await confirmAction(`删除历史「${entry.sceneTitle || entry.scene || '未命名'}」？`))) return
     try {
       await pb.removeHistoryEntry(entry.id)
       pb.flash('历史记录已删除')
+      showToast('已移入回收站，30 天内可撤销', 'info', 5000, {
+        label: '撤销',
+        onClick: () => {
+          void pb.restoreHistoryEntry(entry.id).then(ok => {
+            showToast(ok ? '已恢复' : '这条记录已不在回收站，无法恢复', ok ? 'success' : 'warning')
+          })
+        },
+      })
     } catch {
       pb.flash('删除失败，请重试')
     }

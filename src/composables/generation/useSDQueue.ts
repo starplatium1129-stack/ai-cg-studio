@@ -113,11 +113,30 @@ export function useSDQueue(options: {
   function pause() { paused.value = true }
   function resume() { paused.value = false; void process() }
 
+  /**
+   * 恢复一组排队任务（2026-08-30 UX 审计 P0-5：队列快照持久化）。
+   *
+   * 只灌回 pending 队列并置暂停——恢复后不自动开跑，由用户确认面板状态后
+   * 再点「继续」，避免挂载即烧显存。返回实际新并入的任务数（去重后）。
+   */
+  function restore(jobs: SDQueueJob[]): number {
+    if (!Array.isArray(jobs) || !jobs.length) return 0
+    const incoming = jobs.filter(job => job && typeof job.id === 'string' && typeof job.prompt === 'string')
+    if (!incoming.length) return 0
+    // 与在跑/已在队的任务按 id 去重（同一任务不重复灌）
+    const existing = new Set([activeJob.value?.id, ...queue.value.map(j => j.id)])
+    const fresh = incoming.filter(j => !existing.has(j.id))
+    if (!fresh.length) return 0
+    queue.value = [...queue.value, ...fresh].slice(0, SD_QUEUE_LIMIT)
+    paused.value = true
+    return fresh.length
+  }
+
   return {
     queue: readonly(queue),
     activeJob: readonly(activeJob),
     paused: readonly(paused),
     total, canEnqueue,
-    enqueue, remove, clear, pause, resume, process,
+    enqueue, remove, clear, pause, resume, process, restore,
   }
 }

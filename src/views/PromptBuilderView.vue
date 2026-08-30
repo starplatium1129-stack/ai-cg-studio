@@ -311,6 +311,7 @@
           :state="animaState"
           :no-lora="animaNoLoraMode"
           @update:state="patchAnimaState"
+          @retry="retryAnima"
         />
       </div>
 
@@ -384,7 +385,7 @@
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
 import { ref, computed, nextTick, onMounted, watch, defineAsyncComponent } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
   type CharKey,
@@ -520,6 +521,37 @@ function buildAnimaRequest() {
 }
 function onAnimaResult(result: AnimaResult) {
   engine.onAnimaResult(result)
+  // 直出自动入册（2026-08-30 UX 审计 P0-8）：Anima/Krea 直出与 SD、队列、
+  // 批量同路径写历史，忘点「保存快照」不再等于丢图。字段口径对齐批量
+  // 路径（usePromptBatchRunners.runBatchAnima）；inpaint 换装结果同样入册
+  // ——它也是成片，且 parent_id 打通后将成为重绘对比的锚点。
+  void (async () => {
+    try {
+      if (!result.blob.size) throw new Error('成片数据为空')
+      // 2026-08-30 UX 审计 P1-14：initImage 非空即说明这次是 inpaint 重绘，
+      // 把来源条目记进 parent_id，作品册对比滑块才有「重绘前 vs 重绘后」的
+      // 真实语义。来源是上传图等无条目场景时为 null，退回旧的自身对比。
+      const isInpaint = Boolean(result.metadata.initImage)
+      const saved = await pb.commitHistoryEntry({
+        blob: result.blob,
+        seed: result.metadata.seed,
+        negative: result.metadata.negative ?? '',
+        prompt: result.metadata.prompt,
+        ...historyGenerationFields(),
+        story: String(pb.story || '').trim(),
+        scene: pb.sceneId,
+        hiresFix: result.metadata.hiresFix === true,
+        hiresScale: typeof result.metadata.hiresScale === 'number' ? result.metadata.hiresScale : undefined,
+        hiresDenoise: typeof result.metadata.hiresDenoise === 'number' ? result.metadata.hiresDenoise : undefined,
+        parentId: isInpaint ? (inpaintSourceHistoryId.value ?? undefined) : undefined,
+      })
+      if (saved) displayedResultHistoryId.value = saved.id
+      pb.flash('已自动存入作品册')
+    } catch (e) {
+      console.warn('anima direct autosave failed', e)
+      pb.flash('自动入册失败，可手动点「保存快照」')
+    }
+  })()
 }
 
 // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
@@ -890,6 +922,23 @@ watch(displayResultUrl, (url, oldUrl) => {
     compare.rotate(url)
 })
 
+/**
+ * 舞台当前结果对应的作品册条目 id（2026-08-30 UX 审计 P1-14）。
+ *
+ * 作品册的对比滑块靠 `parent_id` 找 before 图，而全库唯一的写入点一直是
+ * null——于是拿同一张图的缩略图当 before，拉滑块看到的是「糊版 vs 高清版」，
+ * 会得出错误的重绘判断。
+ *
+ * 这里记录「舞台这张图是作品册里的哪一条」，供 inpaint 结果回指来源。换
+ * result 即清空：来源不明的图（上传/Remix 载入/历史回看）不配对比锚点，
+ * 宁可没有也不能指错——指错会让用户以为自己看到的是重绘前后。
+ */
+const displayedResultHistoryId = ref<number | null>(null)
+watch(displayResultUrl, () => { displayedResultHistoryId.value = null })
+
+/** 重绘来源条目：在换装弹窗打开的瞬间定格，弹窗期间舞台结果不变。 */
+const inpaintSourceHistoryId = ref<number | null>(null)
+
 // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
 // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
 const {
@@ -898,6 +947,7 @@ const {
   captureJob,
   historyGenerationFields,
   runJob,
+  commitJobResult,
   sdQueue,
   enqueueCurrent,
   enqueue3Variants,
@@ -934,6 +984,33 @@ const batchPanelDeps = {
   sceneBlueprints: () => sceneStore.sceneBlueprints,
 }
 
+/**
+ * 离开导演台前拦一次（2026-08-30 UX 审计 P0-5）。
+ *
+ * sd.dispose() 挂在 onUnmounted，组件一卸载就 cancel() 在途任务；出图队列只
+ * 活在本视图作用域、无持久化。于是「排了 8 张、切到角色页看个设定再回来」
+ * 的结果是队列空了、正在跑的那张也没了，**且没有任何解释**——用户不会归因
+ * 于切换页面，只会觉得软件不稳定。
+ *
+ * 防泄漏的设计意图是对的，这里补的是代价：在途 / 有队列 / 批量跑着的时候
+ * 先问一次，让用户自己决定要不要付这个代价。
+ */
+onBeforeRouteLeave(async () => {
+  const queued = sdQueue.queue.value.length
+  if (!generationBusy.value && !queued && !batchRunning.value) return true
+  const detail = [
+    generationBusy.value ? '正在生成的这一张会被取消' : '',
+    queued ? `队列中还有 ${queued} 张未开始` : '',
+    batchRunning.value ? '批量出图会被中断' : '',
+  ].filter(Boolean).join('，')
+  return await confirmAction({
+    title: '离开会中断出图，确定吗？',
+    message: `${detail}。离开后无法恢复；已经完成的成片不受影响。`,
+    confirmLabel: '仍要离开',
+    danger: true,
+  })
+})
+
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
   if (pb.directorMode === 'basic') {
     await applyManagedRoute({ silent: true })
@@ -954,6 +1031,20 @@ async function callGenerate(opts: { disableLora?: boolean } = {}) {
   const url = await runJob(job, opts)
   if (!url && sd.errorMsg.value) {
     sdErrorReport.value = classifySDError({ message: sd.errorMsg.value })
+    return
+  }
+  // 直出自动入册（2026-08-30 UX 审计 P0-8）：与队列/批量同路径写历史，
+  // 忘点「保存快照」不再等于丢图。后台写不阻塞舞台展示；失败只提示
+  // 不重试（手动保存仍可用作兜底）。
+  if (url) {
+    try {
+      const saved = await commitJobResult(job, url)
+      if (saved) displayedResultHistoryId.value = saved.id
+      pb.flash('已自动存入作品册')
+    } catch (e) {
+      console.warn('direct autosave failed', e)
+      pb.flash('自动入册失败，可手动点「保存快照」')
+    }
   }
 }
 
@@ -1117,6 +1208,24 @@ const {
   displayResultUrl,
   generateAnima,
 })
+
+// 弹窗一打开就定格来源：此时舞台上的正是要被重绘的那张图；等结果回来再取
+// 就已经是新图了（inpaint 是覆盖式提交，结果直接顶掉舞台）。
+watch(inpaintOpen, (open) => {
+  if (open) inpaintSourceHistoryId.value = displayedResultHistoryId.value
+})
+
+/**
+ * Anima / Krea 2 失败后重试（2026-08-30 UX 审计）。
+ *
+ * 面板里的「重试」按当前面板配置原样重发一次——Comfy 侧最常命中 OOM 与模型
+ * 未就绪，重发是确定有效的动作；SD 那套「切回 WebUI 当前模型」之类的恢复在
+ * 这里并不适用，所以不复用 SDRecoveryPanel 的动作集。
+ */
+function retryAnima() {
+  if (generationBusy.value) return
+  void generateAnima()
+}
 
 function reuseLastSeed() {
   const seed = displayResultSeed.value ?? pb.lastSeed

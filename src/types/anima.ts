@@ -1,3 +1,5 @@
+import type { SDErrorReport } from '@/utils/sdError'
+
 export interface AnimaOption {
   id: string
   label?: string
@@ -97,4 +99,10 @@ export interface AnimaGenerationState {
   result: AnimaResult | null
   statusText: string
   errorMsg: string
+  /**
+   * 失败时的分类报告（2026-08-30 UX 审计）。Anima / Krea 2 此前直出 ComfyUI
+   * 的英文技术串，用户既看不懂也没有重试入口；现在与 SD 路径共用同一套分类
+   * 器，标题与建议给中文，原始串折进 details。成功与取消时置空。
+   */
+  errorReport: SDErrorReport | null
 }

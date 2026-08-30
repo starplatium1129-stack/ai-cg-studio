@@ -9,6 +9,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { applyModelProfileToParams } from '@/utils/promptModelProfile'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useToast } from '@/composables/useToast'
 
 const toast = useToast()
@@ -505,7 +506,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (!dataReady.value) return
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = setTimeout(() => {
-      try { localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft())) } catch {}
+      try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft()))
+      } catch (e) {
+        // 2026-08-30 UX 审计：原先 catch {} 静默吞掉。配额写满时界面一切正常、
+        // 用户以为草稿已存，刷新即丢——必须让失败可感知并给出补救动作。
+        console.warn('[draft] 草稿写入失败', e)
+        flash(storageWriteMessage(e, '草稿'))
+      }
     }, 280)
   }
 
@@ -530,6 +538,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     engine?: DrawEngine; profile?: string; model?: string
     loraId?: string | null; loraStrength?: number | null
     cfg?: number | string; steps?: number | string; sampler?: string; scheduler?: string
+    /**
+     * 重绘/换装的源图 image id（2026-08-30 UX 审计 P1-14）。此前全库唯一写入
+     * 点是 null，于是作品册的对比滑块只能拿同一张图的缩略图当 before，拉滑块
+     * 看到的是「糊版 vs 高清版」，会得出错误的重绘判断。inpaint 路径把源图
+     * 对应的历史条目 id 传进来，对比才有真实语义。
+     */
+    parentId?: number | null
   }): Promise<HistoryEntry | null> {
     let imageId = ''
     try {
@@ -592,7 +607,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         width: measured.width, height: measured.height,
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',
-        version: 1, parent_id: null, project: projectId.value,
+        version: 1, parent_id: entry.parentId ?? null, project: projectId.value,
         subject: isPopular ? 'popular' : 'studio',
         characterId: isPopular ? currentSubject.characterId : undefined,
         outfitId: isPopular ? currentSubject.outfitId : undefined,
@@ -617,6 +632,11 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   async function removeHistoryEntry(id: number) {
     await historyStore.removeHistoryEntry(id)
+  }
+
+  /** 撤销软删（2026-08-30 UX 审计 P0-8）：整条恢复并重载列表。 */
+  async function restoreHistoryEntry(id: number): Promise<boolean> {
+    return await historyStore.restoreHistoryEntry(id)
   }
 
   async function loadHistory() {
@@ -645,7 +665,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     setStudioSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,
     saveDraft, restoreDraft, snapshotDraft,
-    commitHistoryEntry, removeHistoryEntry,
+    commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry,
     sdParamsTouched, markParamTouched, applyModelProfile,
   }
 })

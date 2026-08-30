@@ -24,7 +24,12 @@ export function useSDGenerate() {
   const online      = ref(false)
   const checkpoint  = ref('')
   const generating  = ref(false)
-  const progress    = ref(0)
+  /**
+   * 0–100 的真实进度；`null` = 后端给不出进度（WebUI 路径 / 尚未收到步骤事件）。
+   * 保持可空而非默认 0：UI 的进度环对 null 走 indeterminate 动画，对 0 则画一个
+   * 静止的空环——后者会被读成「卡在 0%」。**不伪造匀速增量**（审计保持项）。
+   */
+  const progress    = ref<number | null>(null)
   const statusText  = ref('')
   const resultUrl   = ref('')
   const resultSeed  = ref<number | null>(null)
@@ -134,6 +139,39 @@ export function useSDGenerate() {
       let job = accepted.job
       const deadline = Date.now() + 20 * 60 * 1000
       const startedAt = Date.now()
+      /**
+       * 卡死检测阈值（2026-08-30 UX 审计 P0-9）。
+       *
+       * 真实进度（下方 while 循环消费 job.progress）覆盖「在跑」的可见性；这层
+       * 兜底覆盖「进度长时间不动 / WebUI 路径无进度」的死角——按步数与是否开
+       * 二阶段粗估耗时上限，超过后在状态文案上挂一句可操作提示（照
+       * VideoStudioView 的 2.5× 预估口径）。估计刻意偏保守（2s/步，二阶段按
+       * 2.25× 面积折算），宁可少报不可误报。
+       *
+       * 只提示、**不擅自取消**：对出图而言「再等等其实能出」比「被系统自己
+       * 掐掉」的损失小得多，决定权留给用户。
+       */
+      const baseSteps = Number(params.steps) || 30
+      const hiresSteps = params.hr_fix ? (Number(params.hr_second_pass_steps) || 0) * 2.25 : 0
+      const estimatedMs = (baseSteps + hiresSteps) * 2000 + 30_000
+      const stuckAfterMs = Math.max(120_000, estimatedMs * 2.5)
+      let stuckNoted = false
+      /**
+       * 真实进度消费（2026-08-30 UX 审计 P0-9）。
+       *
+       * generation.js 的 Comfy 分支复用 anima 服务（createAnimaService），后端
+       * 早就把 ComfyUI ws 步骤进度写进 job.progress / progressText / currentNode
+       * 并经 publicJob 序列化——此前前端只读 status，把这条已有通道晾在一边
+       * （旧注释「job API 不产出真实进度」已过时，属注释与实现矛盾，一并修正）。
+       *
+       * 消费规则：
+       * - 后端给 0–1 数值 → 映射到 0–100 交给进度环；
+       * - 后端给 null（WebUI 路径的 publicJob 不带 progress 字段 / Comfy 尚未
+       *   收到步骤事件）→ progress 置 null，UI 走 indeterminate 动画，**不做
+       *   匀速假增量**——这条诚实纪律保持不变；
+       * - 状态文案优先用后端 progressText（含「采样 12/30 · 节点」），无则退回
+       *   「引擎 + 已等待秒数」。
+       */
       while (Date.now() < deadline) {
         if (abortCtrl.signal.aborted) throw new DOMException('aborted', 'AbortError')
         if (job.status === 'failed') throw new Error(job.error || '生成失败')
@@ -143,11 +181,18 @@ export function useSDGenerate() {
         const state = await generationApi.getJob(job.id, { signal: abortCtrl.signal })
         if (!state.job) throw new Error('生成状态无效')
         job = state.job
-        // job API 不产出真实进度（Comfy ws 进度未接入 job 通道），progress 只反映
-        // 确定状态；进行中的动态反馈用真实等待秒数，不做匀速假增量（审计 P2）。
-        progress.value = job.status === 'succeeded' ? 100 : progress.value
-        statusText.value = (provider.value === 'comfy' ? 'ComfyUI 生成中' : 'SD WebUI 生成中')
-          + ` · 已等待 ${Math.max(0, Math.round((Date.now() - startedAt) / 1000))}s`
+        // 后端 publicJob 在 WebUI 路径下不产出 progress 字段（undefined），
+        // Comfy 路径排队期也不给——这两类都视为「未知」，交给 indeterminate。
+        progress.value = job.status === 'succeeded' ? 100
+          : typeof job.progress === 'number' ? Math.round(job.progress * 100)
+          : null
+        const elapsedMs = Date.now() - startedAt
+        if (elapsedMs > stuckAfterMs) stuckNoted = true
+        statusText.value = (typeof job.progressText === 'string' && job.progressText
+            ? job.progressText
+            : (provider.value === 'comfy' ? 'ComfyUI 生成中' : 'SD WebUI 生成中'))
+          + ` · 已等待 ${Math.max(0, Math.round(elapsedMs / 1000))}s`
+          + (stuckNoted ? ' · 耗时异常，可检查 ComfyUI 是否卡住，必要时取消后重试' : '')
       }
       if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('生成超时')
       const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: abortCtrl.signal })

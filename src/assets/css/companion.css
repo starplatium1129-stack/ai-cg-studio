@@ -46,7 +46,11 @@ html.companion-mode body {
   position: relative;
   width: min(100%, 760px);
   height: 100dvh;
-  min-height: 560px;
+  /* 2026-08-30 UX 审计：原来是死值 560px。桌宠窗被拉成宽扁条（如 700×500）时
+     560 的下限超过视口高度，而 html/body 与本层都是 overflow:hidden——底部对话
+     条被永久裁在视口外，既不能输入也点不到关闭。min() 让下限始终不超过视口，
+     矮窗下由下面的 max-height 规则压缩气泡区而非裁掉输入区。 */
+  min-height: min(560px, 100dvh);
   margin: 0 auto;
   padding: var(--s-3);
   overflow: hidden;
@@ -247,7 +251,8 @@ html.companion-mode body {
 .companion-page .companion-stage {
   position: relative;
   height: calc(100dvh - 78px);
-  min-height: 480px;
+  /* 同上：死值下限在矮窗里会把底部内容顶出视口 */
+  min-height: min(480px, 100dvh);
 }
 
 .companion-page .character-card {
@@ -753,7 +758,7 @@ html.companion-mode body {
 
 @media (max-width: 600px) {
   .companion-page {
-    min-height: 480px;
+    min-height: min(480px, 100dvh);
     padding: var(--s-2);
   }
 
@@ -767,7 +772,7 @@ html.companion-mode body {
 
   .companion-page .companion-stage {
     height: calc(100dvh - 58px);
-    min-height: 420px;
+    min-height: min(420px, 100dvh);
   }
 
   .companion-page .companion-conversation {
@@ -798,6 +803,27 @@ html.companion-mode body {
   }
 
   .companion-page .companion-speech-cluster { gap: 4px; }
+}
+
+/*   ============================================================
+   矮窗轴：桌宠窗可以被拉成宽扁条（宽度够、高度不够），上面的断点只看宽度
+   覆盖不到。这里压缩气泡区而不是裁掉输入区——输入与关窗是桌宠形态下仅有的
+   两个可达控件，任何时候都不能落在视口外。
+  ============================================================ */
+@media (max-height: 620px) {
+  .companion-page { padding: var(--s-2); }
+
+  .companion-page .companion-conversation {
+    bottom: var(--s-2);
+    padding: var(--s-2);
+    gap: var(--s-1);
+  }
+
+  .companion-page .companion-bubbles { max-height: 84px; }
+
+  .companion-page .companion-setup span,
+  .companion-page .companion-voice-status,
+  .companion-page .companion-speech-state { display: none; }
 }
 
 html.companion-desktop body {

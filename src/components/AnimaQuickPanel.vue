@@ -13,6 +13,8 @@ const props = defineProps<{
 const state = computed(() => props.state)
 const emit = defineEmits<{
   (event: 'update:state', patch: Partial<AnimaGenerationState>): void
+  /** 失败后按当前面板配置重发一次（2026-08-30 UX 审计：Comfy 侧的恢复动作）。 */
+  (event: 'retry'): void
 }>()
 
 function patch(patch: Partial<AnimaGenerationState>) { emit('update:state', patch) }
@@ -121,8 +123,24 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <small>已等待 {{ Math.floor(state.elapsedSeconds / 60) }}分 {{ state.elapsedSeconds % 60 }}秒 · 最长等待 10 分钟</small>
       </div>
       <div class="anima-actions" aria-live="polite">
-        <span v-if="state.statusText" class="anima-status-text">{{ state.statusText }}</span>
-        <span v-if="state.errorMsg" class="anima-error">{{ state.errorMsg }}</span>
+        <span v-if="state.statusText && !state.errorReport" class="anima-status-text">{{ state.statusText }}</span>
+        <!--
+          失败时给「为什么 + 怎么办」而不是一句红色英文技术串（2026-08-30 UX 审计）。
+          分类报告与 SD 路径同源（backend='comfy'，文案不提 WebUI），原始串折进
+          技术细节，避免污染主文案。重试直接重发当前面板配置，是 Comfy 侧唯一
+          确定有效的恢复动作。
+        -->
+        <div v-if="state.errorReport" class="anima-error-block" role="alert">
+          <span class="anima-error">{{ state.errorReport.title }}：{{ state.errorReport.message }}</span>
+          <div class="anima-error-actions">
+            <button class="anima-retry" type="button" :disabled="busy" @click="$emit('retry')">重试</button>
+            <details v-if="state.errorReport.details" class="anima-error-detail">
+              <summary>技术细节</summary>
+              <code>{{ state.errorReport.details }}</code>
+            </details>
+          </div>
+        </div>
+        <span v-else-if="state.errorMsg" class="anima-error">{{ state.errorMsg }}</span>
       </div>
     </div>
   </details>
@@ -164,6 +182,22 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-primary { background: var(--accent); border-color: var(--accent); color: var(--text-inverse); font-weight: 600 }
 .anima-status-text { font-size: var(--fs-label-xs); opacity: 0.7 }
 .anima-error { font-size: var(--fs-label-xs); color: var(--danger-text) }
+.anima-error-block { display: flex; flex-direction: column; gap: 4px }
+.anima-error-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap }
+.anima-retry {
+  font: inherit; font-size: var(--fs-label-xs); font-weight: 600;
+  padding: 2px 10px; border-radius: var(--r-sm); cursor: pointer;
+  color: var(--danger-text); background: color-mix(in srgb, var(--danger) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border-soft));
+}
+.anima-retry:hover:not(:disabled) { background: color-mix(in srgb, var(--danger) 24%, transparent) }
+.anima-retry:disabled { cursor: not-allowed; color: var(--text-disabled); border-color: var(--border-soft); background: transparent }
+.anima-error-detail summary { font-size: var(--fs-label-xs); opacity: 0.65; cursor: pointer }
+.anima-error-detail code {
+  display: block; margin-top: 4px; padding: 6px 8px; border-radius: var(--r-sm);
+  background: var(--bg-deep); font-size: var(--fs-label-xs); line-height: var(--lh-label);
+  white-space: pre-wrap; word-break: break-word;
+}
 .anima-result { margin-top: 8px }
 .anima-result img { max-width: 100%; border-radius: var(--r-lg); border: 1px solid var(--border-soft) }
 </style>

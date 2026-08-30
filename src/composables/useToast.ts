@@ -3,6 +3,12 @@ import { playInterfaceTone, type InterfaceTone } from '@/composables/useInterfac
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning'
 
+/** 可选内联动作（如删除后的「撤销」）。点击即关 toast 并执行回调。 */
+export interface ToastAction {
+  label: string
+  onClick: () => void
+}
+
 export interface ToastItem {
   id: number
   msg: string
@@ -11,6 +17,7 @@ export interface ToastItem {
   remaining: number
   startedAt: number
   timer?: ReturnType<typeof setTimeout>
+  action?: ToastAction
 }
 
 const toasts = ref<ToastItem[]>([])
@@ -62,7 +69,7 @@ function dismiss(id: number) {
 export function useToast() {
   ensureListeners()
 
-  function show(msg: string, type: ToastType = 'info', duration = 2800) {
+  function show(msg: string, type: ToastType = 'info', duration = 2800, action?: ToastAction) {
     const id = ++nextId
     const item: ToastItem = {
       id,
@@ -71,6 +78,7 @@ export function useToast() {
       duration,
       remaining: duration,
       startedAt: Date.now(),
+      action,
     }
     item.timer = setTimeout(() => dismiss(id), duration)
     toasts.value.push(item)

@@ -571,6 +571,7 @@ import {
 } from '@/api/videoApi'
 import { imgGet } from '@/composables/useImageStore'
 import { clearShotsCtx, readShotsCtx } from '@/composables/useVideoBridge'
+import { confirmAction } from '@/composables/useConfirm'
 import { useVideoStore } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
@@ -823,12 +824,42 @@ function inferShotParams(prompt: string): {
   else if (/(转身|回头|回望|回眸|奔跑|跑向|跑进|跑出|走向|走进|走出|走到|坐下|躺下|站起|起身|跳跃|跳起|跳向|起舞|挥手|挥动|举起|拿起|放下|端起|推开|拉开|打开|关上|翻页|弹奏|歌唱|呼喊|微笑|轻笑|大笑|哭泣|仰望|俯身|弯腰|行走|跑动|迈步|踱步|跪下|拥抱|亲吻|抬头|低头|转头|伸手|伸手|捡起|拾起|抱起|坐下|\bmov(?:e|es|ed|ing)\b|\bwalk(?:s|ed|ing)\b|\brun(?:s|ning)\b|\bjump(?:s|ed|ing)\b|\bturn(?:s|ed|ing)\b|\brais(?:e|es|ed|ing)\b|\breach(?:es|ed|ing)\b|\bstand(?:s|ing)\b|\bsit(?:s|ting)\b|\bdanc(?:e|es|ed|ing)\b|\blift(?:s|ed|ing)\b|\bplac(?:e|es|ed|ing)\b|\bopen(?:s|ed|ing)\b|\bclos(?:e|es|ed|ing)\b|\bwav(?:e|es|ed|ing)\b|\bgrab(?:s|bed|bing)\b|\bstep(?:s|ped|ping)\b|\blean(?:s|ed|ing)\b|\bbend(?:s|ing)\b|\bkneel(?:s|ing)\b|\bbow(?:s|ing)\b|\bnod(?:s|ded|ding)\b|\bsmil(?:e|es|ed|ing)\b|\blaugh(?:s|ed|ing)\b|\bwhisper(?:s|ed|ing)\b|\bspeak(?:s|ing)\b|\bsay(?:s|ing)\b|\bsing(?:s|ing)\b|\bsigh(?:s|ed|ing)\b)/i.test(text)) motion = 'natural'
   return { shotSize, camera, motion }
 }
-function removeShot(index: number) {
+/**
+ * 删除 / 清空的破坏性确认（2026-08-30 UX 审计 P1）。
+ *
+ * 每镜描述上限 4000 字、首帧是现算的图，误点一次整段消失；分镜只做
+ * sessionStorage 覆盖写，没有任何回退路径。
+ *
+ * 单镜删除**只在镜头有内容时**拦一次——空白镜头没什么可失去的，快速增删
+ * 是正常排版动作，每删一个都弹窗反而逼用户养成无脑确认的习惯（那才是
+ * 确认框真正失效的方式）。清空则无条件拦。
+ */
+async function removeShot(index: number) {
   const shot = shots.value[index]
-  if (shot?.imageUrl) URL.revokeObjectURL(shot.imageUrl)
+  if (!shot) return
+  const hasContent = Boolean(shot.prompt?.trim() || shot.dialogue?.trim() || shot.imageUrl || shot.firstFramePrompt?.trim())
+  if (hasContent) {
+    const ok = await confirmAction({
+      title: `删除第 ${index + 1} 镜？`,
+      message: '这一镜的描述、台词与首帧会一起删掉，且无法撤销。',
+      confirmLabel: '删除',
+      danger: true,
+    })
+    if (!ok) return
+  }
+  if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
   shots.value.splice(index, 1)
 }
-function clearShots() {
+
+async function clearShots() {
+  if (!shots.value.length) return
+  const ok = await confirmAction({
+    title: `清空全部 ${shots.value.length} 个镜头？`,
+    message: '所有镜头的描述、台词与首帧会一起清掉，且无法撤销。',
+    confirmLabel: '清空',
+    danger: true,
+  })
+  if (!ok) return
   shots.value.forEach((shot) => {
     if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
   })

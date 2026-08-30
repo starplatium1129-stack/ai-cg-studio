@@ -22,6 +22,13 @@
         >
           <span class="toast-icon" aria-hidden="true"><ArchiveIcon :name="icons[t.type]" /></span>
           <span class="toast-msg">{{ t.msg }}</span>
+          <!-- 内联动作（如删除后的「撤销」）：点击即关 toast 并执行回调 -->
+          <button
+            v-if="t.action"
+            class="toast-action"
+            type="button"
+            @click.stop="runAction(t)"
+          >{{ t.action.label }}</button>
           <!-- 关闭动作挂在按钮本身，而不是外层 div -->
           <button
             class="toast-close"
@@ -38,9 +45,14 @@
 <script setup lang="ts">
 import { animateMini } from 'motion'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import { useToast, type ToastType } from '@/composables/useToast'
+import { useToast, type ToastItem, type ToastType } from '@/composables/useToast'
 
 const { toasts, dismiss, pauseAll, resumeAll } = useToast()
+
+function runAction(t: ToastItem) {
+  dismiss(t.id)
+  t.action?.onClick()
+}
 
 const icons: Record<ToastType, ArchiveIconName> = {
   info: 'info',
@@ -189,6 +201,24 @@ function onToastLeave(el: Element, done: () => void) {
 
 .toast-icon { display:grid; place-items:center; font-size: 1em; flex-shrink: 0; }
 .toast-msg  { flex: 1; }
+.toast-action {
+  flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border-soft));
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  font: inherit;
+  font-weight: 700;
+  padding: var(--s-1) var(--s-3);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  line-height: var(--lh-flush);
+  transition: background var(--motion-hover), border-color var(--motion-hover);
+}
+.toast-action:hover {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 65%, var(--border-soft));
+}
+.toast-action:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .toast-close { display:grid; place-items:center; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:var(--s-1); font-size:.9em; line-height:var(--lh-flush); }
 
 /* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
