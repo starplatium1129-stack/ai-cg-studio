@@ -523,6 +523,21 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   }
 
   const parts = [style]
+  // 2026-08-30：身份保护句（防止 Krea 散文扩写将热门角色泛化为通用动漫）。
+  // 调研 + 样图对照：别人在 prompt 开头明确 "Preserve <Name>'s iconic recognizable
+  // character identity, existing appearance and original design logic..." 锁定
+  // 角色视觉指纹；项目 5 桶拼接把 identityProse 淹没在散文中，没有"保护"指令，
+  // Krea 内部扩写倾向把 IP 角色泛化（出图不认角色）。提取 subjectProse 头部
+  // "Name from Series" 作为 IP 角色名，注入保护句。
+  if (subject) {
+    const nameMatch = subject.match(/^([A-Z][\w'-]+(?:\s+[A-Z][\w'-]+)*)\s+from\s+/)
+    const ipName = nameMatch ? nameMatch[1].trim() : null
+    if (ipName) {
+      parts.push(sentence(
+        `Preserve ${ipName}'s iconic recognizable character identity, her established appearance, and her original design logic. Do not substitute the character with a generic anime girl.`,
+      ))
+    }
+  }
   const outfitText = naturalList(outfit)
   if (subject) parts.push(sentence(outfitText ? `${subject}, wearing ${outfitText}` : subject))
   const actionText = naturalList(action.map(proseClause))
