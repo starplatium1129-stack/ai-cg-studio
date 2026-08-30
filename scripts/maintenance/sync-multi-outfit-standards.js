@@ -58,6 +58,34 @@ const PERSPECTIVES = [
   }
 ];
 
+// 2026-08-31 设计图基线视角（占位）：供视频 3渲2 角色卡锁身份用的标准三视图
+// （严格正/侧/背 + 对称站姿 + 纯灰背景 + 均匀光）。当前为「空位」——只进
+// standards/view 的 perspectives 与 references（pending: true 标记、无 url），
+// 不出资产校验过滤（见 assetBackedOutfits 仅按 PERSPECTIVES 校验），出图批量补做。
+const DESIGN_PERSPECTIVES = [
+  {
+    id: "ref_design_front",
+    name: "设计图·正面",
+    shotType: "正面 · 对称站姿",
+    lens: "Standard Design Sheet",
+    targetUsage: ["3渲2 角色卡正面", "身份锁定", "服装正面结构"]
+  },
+  {
+    id: "ref_design_side",
+    name: "设计图·侧面",
+    shotType: "侧面 90° · 对称站姿",
+    lens: "Standard Design Sheet",
+    targetUsage: ["3渲2 角色卡侧面", "发型厚度", "服装层次"]
+  },
+  {
+    id: "ref_design_back",
+    name: "设计图·背面",
+    shotType: "背面 90° · 对称站姿",
+    lens: "Standard Design Sheet",
+    targetUsage: ["3渲2 角色卡背面", "背后服装结构", "发型背面轮廓"]
+  }
+];
+
 // 核心主角专属服装形态
 const HEROINE_CHARACTERS = [
   {
@@ -178,8 +206,8 @@ function buildMultiOutfitMatrix() {
   const standardsData = {
     version: 2,
     schema: "character-reference-standards-v2",
-    description: "角色 × 多服装形态（含全裸私密形态）短剧 4 视角标准参考资产库",
-    perspectives: PERSPECTIVES,
+    description: "角色 × 多服装形态（含全裸私密形态）短剧 4 视角标准参考资产库 + 3 视角设计图基线（占位）",
+    perspectives: [...PERSPECTIVES, ...DESIGN_PERSPECTIVES],
     characters: allCharacters
   };
   fs.writeFileSync(STANDARDS_FILE, JSON.stringify(standardsData, null, 2) + '\n', 'utf8');
@@ -201,17 +229,31 @@ function buildMultiOutfitMatrix() {
           isDefault: Boolean(o.isDefault),
           isNsfw: Boolean(o.isNsfw),
           prose: o.prose,
-          references: PERSPECTIVES.map(p => ({
-            id: p.id,
-            name: p.name,
-            shotType: p.shotType,
-            lens: p.lens,
-            targetUsage: p.targetUsage,
-            fileName: `${p.id}.png`,
-            url: hasCustomDir
-              ? `/character-references/${c.id}/${o.id}/${p.id}.png`
-              : `/character-references/${c.id}/${p.id}.png`
-          }))
+          references: [
+            ...PERSPECTIVES.map(p => ({
+              id: p.id,
+              name: p.name,
+              shotType: p.shotType,
+              lens: p.lens,
+              targetUsage: p.targetUsage,
+              fileName: `${p.id}.png`,
+              url: hasCustomDir
+                ? `/character-references/${c.id}/${o.id}/${p.id}.png`
+                : `/character-references/${c.id}/${p.id}.png`
+            })),
+            // 2026-08-31 设计图基线占位：pending 无 url（图未生成），前端渲染占位卡、
+            // check-ref-urls 门禁跳过；批量出图后去掉 pending 填 url。
+            ...DESIGN_PERSPECTIVES.map(p => ({
+              id: p.id,
+              name: p.name,
+              shotType: p.shotType,
+              lens: p.lens,
+              targetUsage: p.targetUsage,
+              fileName: `${p.id}.png`,
+              url: '',
+              pending: true
+            }))
+          ]
         };
       })
     };

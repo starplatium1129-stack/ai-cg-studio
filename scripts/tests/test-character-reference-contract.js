@@ -77,12 +77,12 @@ test('character reference view: exactly one default outfit per character, mirror
   }
 });
 
-test('character reference view: references are the 4 canonical perspectives in order, fields mirrored', () => {
+test('character reference view: references are the canonical perspectives in order, fields mirrored', () => {
   for (const character of standards.characters) {
     for (const outfit of view[character.id].outfits) {
       const ids = outfit.references.map((r) => r.id);
       assert.deepEqual(ids, PERSPECTIVE_IDS,
-        `${character.id}/${outfit.outfitId}: 参考视角必须恰为 4 标准视角且顺序稳定`);
+        `${character.id}/${outfit.outfitId}: 参考视角必须恰为 standards 定义的标准视角且顺序稳定`);
       for (const reference of outfit.references) {
         const standard = standards.perspectives.find((p) => p.id === reference.id);
         for (const field of ['name', 'shotType', 'lens', 'targetUsage']) {
@@ -105,6 +105,8 @@ test('character reference view: urls use external /character-references/ prefix 
   for (const character of Object.values(view)) {
     for (const outfit of character.outfits || []) {
       for (const ref of outfit.references || []) {
+        // 2026-08-31 设计图基线占位：pending 无 url（图未生成），跳过；生成后填 url 走外部前缀。
+        if (ref.pending) continue;
         assert.ok(ref.url.startsWith('/character-references/'),
           `${character.characterId}/${outfit.outfitId}/${ref.id}: url 必须走外部目录前缀 /character-references/（参考图已迁 AI 工作区）`);
       }

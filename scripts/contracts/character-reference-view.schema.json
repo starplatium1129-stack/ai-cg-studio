@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "character-reference-view-v2",
   "title": "character-reference-view-v2",
-  "description": "前端运行时懒加载的参考档案视图（data/character-reference-view.json，键为角色 id）的结构契约。视角字段必须逐字段镜像 standards 的 perspectives 定义，交叉校验见 scripts/tests/test-character-reference-contract.js。",
+  "description": "前端运行时懒加载的参考档案视图（data/character-reference-view.json，键为角色 id）的结构契约。视角字段必须逐字段镜像 standards 的 perspectives 定义，交叉校验见 scripts/tests/test-character-reference-contract.js。2026-08-31：新增 3 个设计图基线占位视角（pending 无 url）。",
   "type": "object",
   "propertyNames": { "pattern": "^[a-z0-9_]+$" },
   "additionalProperties": {
@@ -30,7 +30,7 @@
             "references": {
               "type": "array",
               "minItems": 4,
-              "maxItems": 4,
+              "maxItems": 7,
               "items": {
                 "type": "object",
                 "additionalProperties": false,
@@ -41,7 +41,10 @@
                       "ref_01_face_closeup",
                       "ref_02_half_medium",
                       "ref_03_full_dynamic",
-                      "ref_04_back_rear"
+                      "ref_04_back_rear",
+                      "ref_design_front",
+                      "ref_design_side",
+                      "ref_design_back"
                     ]
                   },
                   "name": { "type": "string", "minLength": 1 },
@@ -54,9 +57,12 @@
                   },
                   "fileName": { "type": "string", "minLength": 1 },
                   "url": {
-                    "type": "string",
-                    "pattern": "^/character-references/"
-                  }
+                    "anyOf": [
+                      { "type": "string", "pattern": "^/character-references/" },
+                      { "const": "" }
+                    ]
+                  },
+                  "pending": { "type": "boolean" }
                 }
               }
             }

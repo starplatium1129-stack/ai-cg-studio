@@ -100,9 +100,9 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     loadingRefAssets.value = true
     loadingRefCardIndex.value = cardIndex
     try {
-      // 自动加载全部 4 张基准图（特写 / 半身 / 全身 / 侧后背影）
+      // 自动加载基准图（特写 / 半身 / 全身 / 侧后背影）；设计图基线占位（pending 无 url）排除
       // 关键修复：加入时间戳与 no-cache，杜绝浏览器拉取旧缓存图片
-      const targets = chosenOutfit?.references.slice(0, MAX_IMAGES_PER_CARD) || []
+      const targets = (chosenOutfit?.references || []).filter(r => r.url).slice(0, MAX_IMAGES_PER_CARD)
       for (const item of targets) {
         const imgUrl = `${item.url}?t=${Date.now()}`
         const resp = await fetch(imgUrl, { cache: 'no-cache' })

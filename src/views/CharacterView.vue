@@ -207,11 +207,17 @@
           >
             <div class="char-ref-image-wrap">
               <img
+                v-if="refItem.url"
                 :src="`${refItem.url}?t=${refVersion}`"
                 :alt="refItem.name"
                 class="char-ref-image"
                 loading="lazy"
               />
+              <!-- 2026-08-31 设计图基线占位：pending 无 url，显示待生成卡片不请求 404 -->
+              <div v-else class="char-ref-image char-ref-pending">
+                <ArchiveIcon name="spark" />
+                <span>待生成</span>
+              </div>
               <span class="char-ref-badge">{{ refItem.shotType }}</span>
               <div class="char-ref-hover-hint"><ArchiveIcon name="spark" /> 点击放大审查</div>
             </div>
@@ -478,6 +484,9 @@ const activeRefModal = computed(() => {
 })
 
 function openRefViewer(index: number) {
+  const refItem = activeOutfit.value?.references?.[index]
+  // 2026-08-31 设计图基线占位：pending 无 url，不打开查看器（避免加载坏图）。
+  if (!refItem || !refItem.url) return
   activeRefIndex.value = index
   nextTick(() => {
     refDialogEl.value?.showModal()

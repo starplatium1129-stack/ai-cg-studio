@@ -1,7 +1,7 @@
 {
   "version": 2,
   "schema": "character-reference-standards-v2",
-  "description": "角色 × 多服装形态（含全裸私密形态）短剧 4 视角标准参考资产库",
+  "description": "角色 × 多服装形态（含全裸私密形态）短剧 4 视角标准参考资产库 + 3 视角设计图基线（占位）",
   "perspectives": [
     {
       "id": "ref_01_face_closeup",
@@ -49,6 +49,39 @@
         "转身离去",
         "背影叙事",
         "神秘氛围"
+      ]
+    },
+    {
+      "id": "ref_design_front",
+      "name": "设计图·正面",
+      "shotType": "正面 · 对称站姿",
+      "lens": "Standard Design Sheet",
+      "targetUsage": [
+        "3渲2 角色卡正面",
+        "身份锁定",
+        "服装正面结构"
+      ]
+    },
+    {
+      "id": "ref_design_side",
+      "name": "设计图·侧面",
+      "shotType": "侧面 90° · 对称站姿",
+      "lens": "Standard Design Sheet",
+      "targetUsage": [
+        "3渲2 角色卡侧面",
+        "发型厚度",
+        "服装层次"
+      ]
+    },
+    {
+      "id": "ref_design_back",
+      "name": "设计图·背面",
+      "shotType": "背面 90° · 对称站姿",
+      "lens": "Standard Design Sheet",
+      "targetUsage": [
+        "3渲2 角色卡背面",
+        "背后服装结构",
+        "发型背面轮廓"
       ]
     }
   ],
@@ -210,7 +243,7 @@
       "displayName": "雷电将军",
       "originalName": "Raiden Shogun",
       "source": "Genshin Impact",
-      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon, a serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze, wearing the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid",
+      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon, a serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze",
       "identityTokens": [
         "raiden_shogun",
         "raiden_ei",
@@ -289,7 +322,7 @@
       "displayName": "樱岛麻衣",
       "originalName": "Sakurajima Mai",
       "source": "Rascal Does Not Dream of Bunny Girl Senpai",
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip pinned on the side of her hair, carrying a composed and alluring presence",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, carrying a composed alluring presence",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
@@ -400,7 +433,7 @@
       "displayName": "时崎狂三",
       "originalName": "Tokisaki Kurumi",
       "source": "Date A Live",
-      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes, and a pale elegant face, often dressed in black and crimson gothic attire",
+      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes with an intense gleam, a pale elegant face, and a timeless black and crimson gothic wardrobe",
       "identityTokens": [
         "tokisaki_kurumi",
         "1girl",
@@ -484,7 +517,7 @@
       "displayName": "芙莉莲",
       "originalName": "Frieren",
       "source": "Frieren: Beyond Journey's End",
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes and pointed ears, with a calm, wistful expression",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes with a calm distant shimmer, pointed ears, and a serene wistful expression",
       "identityTokens": [
         "frieren",
         "1girl",
@@ -564,7 +597,7 @@
       "displayName": "菲伦",
       "originalName": "菲伦",
       "source": "Frieren: Beyond Journey's End",
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure with large breasts.",
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure",
       "identityTokens": [
         "fern (sousou no frieren)",
         "fern",
@@ -678,7 +711,7 @@
       "displayName": "阿尔托莉雅",
       "originalName": "Artoria Pendragon",
       "source": "Fate",
-      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in an intricate braided bun, an ahoge, and clear emerald-green eyes, with an earnest, dignified bearing",
+      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair in an intricate braided bun, a single ahoge, and clear emerald-green eyes, with an earnest dignified bearing",
       "identityTokens": [
         "artoria_pendragon (fate)",
         "saber (fate)",
@@ -750,7 +783,7 @@
       "displayName": "远坂凛",
       "originalName": "Tohsaka Rin",
       "source": "Fate",
-      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and brilliant mage with long dark-brown hair in twin-tails tied with large black ribbons, clear aqua-blue eyes, and a confident, spirited expression",
+      "identityProse": "Tohsaka Rin from Fate/stay night, a proud brilliant mage with long dark-brown hair in twin-tails bound with large black ribbons, clear aqua-blue eyes, and a confident spirited expression",
       "identityTokens": [
         "tohsaka_rin",
         "1girl",
@@ -831,7 +864,7 @@
       "displayName": "伊莉雅丝菲尔",
       "originalName": "Illyasviel von Einzbern",
       "source": "Fate",
-      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine features, carrying an air of playful innocence and profound magic power",
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine delicate features, carrying an air of playful innocence and profound magic power",
       "identityTokens": [
         "illyasviel_von_einzbern",
         "1girl",
@@ -933,7 +966,7 @@
       "displayName": "贞德[Alter]",
       "originalName": "贞德[Alter]",
       "source": "Fate",
-      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair, piercing golden yellow eyes, and an arrogant yet secretly flustered tsundere expression.",
+      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair cut in sharp layers, piercing golden yellow eyes with an intense glow, and an arrogant yet secretly flustered tsundere expression",
       "identityTokens": [
         "jeanne d'arc alter (fate)",
         "jeanne_alter",
@@ -1031,7 +1064,7 @@
       "displayName": "间桐樱",
       "originalName": "间桐樱",
       "source": "Fate",
-      "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
+      "identityProse": "Sakura Matou from Fate/stay night, a gentle girl with long purple hair flowing in soft silky waves, a red ribbon tied on the left side, deep violet eyes with a tender gleam, and a devoted affectionate gaze",
       "identityTokens": [
         "matou_sakura",
         "1girl",
@@ -1054,7 +1087,7 @@
             "school_uniform",
             "brown_jacket",
             "white_shirt",
-            "red_tie",
+            "red_bow",
             "pleated_skirt",
             "black_pantyhose"
           ],
@@ -1113,7 +1146,7 @@
       "displayName": "初音未来",
       "originalName": "Hatsune Miku",
       "source": "VOCALOID",
-      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with iconic long teal twin-tails, bright turquoise eyes, black square hair ribbons, red 01 shoulder tattoo, and a vibrant stage presence",
+      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with iconic long teal twin-tails with a glossy sheen, bright turquoise eyes, black square hair ribbons, red 01 shoulder tattoo, and a vibrant stage presence",
       "identityTokens": [
         "hatsune_miku",
         "1girl",
@@ -1236,7 +1269,7 @@
       "displayName": "楪祈",
       "originalName": "Yuzuriha Inori",
       "source": "Guilty Crown",
-      "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long flowing pink-to-orange gradient hair, long flowing pink-to-orange gradient hair with two slender front locks held by red hair tubes, bright crimson eyes, red hair clips, and a fragile, ethereal presence",
+      "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long flowing pink-to-orange gradient hair shimmering like sunset silk, two slender front locks held by red hair tubes, bright crimson eyes with a glassy sheen, red hair clips, and a fragile ethereal presence",
       "identityTokens": [
         "yuzuriha_inori",
         "1girl",
@@ -1322,7 +1355,7 @@
       "displayName": "雪之下雪乃",
       "originalName": "Yukinoshita Yukino",
       "source": "Oregairu",
-      "identityProse": "Yukinoshita Yukino from Oregairu, a sharp and elegant young woman with long straight black hair, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
+      "identityProse": "Yukinoshita Yukino from Oregairu, a sharp elegant young woman with long straight black hair with a glossy mirror shine, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
       "identityTokens": [
         "yukinoshita_yukino",
         "1girl",
@@ -1403,7 +1436,7 @@
       "displayName": "由比滨结衣",
       "originalName": "由比滨结衣",
       "source": "Oregairu",
-      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
+      "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun with a soft warm sheen, amber eyes, and a cheerful blushing smile",
       "identityTokens": [
         "yuigahama_yui",
         "1girl",
@@ -1502,7 +1535,7 @@
       "displayName": "伊雷娜",
       "originalName": "Elaina",
       "source": "Wandering Witch",
-      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair, violet eyes, a black witch hat with gold buckle, with a confident smile",
+      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair with a silvery sheen, violet eyes, a black witch hat with gold buckle, with a confident smile",
       "identityTokens": [
         "elaina (majo no tabitabi)",
         "1girl",
@@ -1581,7 +1614,7 @@
       "displayName": "御坂美琴",
       "originalName": "Misaka Mikoto",
       "source": "A Certain Scientific Railgun",
-      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut brown hair, warm brown eyes, white flower hair clip, and crackling blue-white electrical sparks",
+      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut-brown hair carrying a soft glossy sheen, warm brown eyes, a white flower hair clip, and blue-white electrical sparks crackling at her fingertips",
       "identityTokens": [
         "misaka_mikoto",
         "1girl",
@@ -1667,7 +1700,7 @@
       "displayName": "玛奇玛",
       "originalName": "Makima",
       "source": "Chainsaw Man",
-      "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid, golden concentric-ring eyes, and an unreadable, magnetic smile",
+      "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid with a silky texture, golden concentric-ring eyes, and an unreadable magnetic smile",
       "identityTokens": [
         "makima (chainsaw man)",
         "1girl",
@@ -1763,7 +1796,7 @@
       "displayName": "蕾塞",
       "originalName": "蕾塞",
       "source": "Chainsaw Man",
-      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair, expressive emerald green eyes, a signature pin choker, and a playful dangerous smile.",
+      "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair with a soft matte texture, expressive emerald green eyes that catch the light, a signature pin choker, and a playful dangerous smile",
       "identityTokens": [
         "reze (chainsaw man)",
         "reze",
@@ -1859,7 +1892,7 @@
       "displayName": "雷姆",
       "originalName": "Rem",
       "source": "Re:Zero",
-      "identityProse": "Rem from Re:Zero, a devoted demon maid with short sky-blue hair parted over her right eye, one visible bright blue eye, a pink flower hair clip and white lace ribbon, and gentle features",
+      "identityProse": "Rem from Re:Zero, a devoted demon maid with short sky-blue hair parted over her right eye with a clean soft shine, one visible bright blue eye, a pink flower hair clip and white lace ribbon, and gentle features",
       "identityTokens": [
         "rem (re zero)",
         "1girl",
@@ -1960,7 +1993,7 @@
       "displayName": "爱蜜莉雅",
       "originalName": "Emilia",
       "source": "Re:Zero",
-      "identityProse": "Emilia from Re:Zero, a gentle half-elf with long silver hair, pointed elven ears, purple-blue eyes with snowflake pupils, wearing a white flower hairpin and purple hair ribbons",
+      "identityProse": "Emilia from Re:Zero, a gentle half-elf with long silver hair, pointed elven ears, purple-blue eyes with snowflake pupils, a white flower hairpin and purple hair ribbons",
       "identityTokens": [
         "emilia (re zero)",
         "1girl",
@@ -2027,7 +2060,7 @@
       "displayName": "洛琪希",
       "originalName": "Roxy Migurdia",
       "source": "Mushoku Tensei",
-      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids, blue eyes, a mole on her left collarbone",
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids with a soft silky shine, blue eyes, a mole on her left collarbone",
       "identityTokens": [
         "roxy_migurdia",
         "1girl",
@@ -2129,7 +2162,7 @@
       "displayName": "希露菲叶特",
       "originalName": "希露菲叶特",
       "source": "Mushoku Tensei",
-      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
+      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair with a feathery texture, delicate long pointed elf ears, and ruby red eyes with a warm glow, carrying a sweet shy demeanor",
       "identityTokens": [
         "sylphiette",
         "sylphie",
@@ -2213,7 +2246,7 @@
       "displayName": "喜多川海梦",
       "originalName": "Kitagawa Marin",
       "source": "My Dress-Up Darling",
-      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a glamorous and bubbly high school gyaru with long blonde hair with pink dip-dyed tips, bright dark-pink contact lenses, long painted nails and silver ear piercings",
+      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a glamorous bubbly high school gyaru with long blonde hair with pink dip-dyed tips and a glossy sheen, bright dark-pink contact lenses, long painted nails and silver ear piercings",
       "identityTokens": [
         "kitagawa_marin",
         "1girl",
@@ -2348,7 +2381,7 @@
       "displayName": "木更",
       "originalName": "Kisara",
       "source": "Engage Kiss",
-      "identityProse": "Kisara from Engage Kiss, an A-class demon girl with extremely long silky pastel-pink hair, vibrant crimson eyes, an expressive ahoge, black hair ribbon, and an adhesive bandage on her right thigh",
+      "identityProse": "Kisara from Engage Kiss, an A-class demon girl with extremely long silky pastel-pink hair flowing like a glossy ribbon, vibrant crimson eyes, an expressive ahoge, a black hair ribbon, and an adhesive bandage on her right thigh",
       "identityTokens": [
         "kisara (engage kiss)",
         "1girl",
@@ -2476,7 +2509,7 @@
       "displayName": "史尔特尔",
       "originalName": "Surtr",
       "source": "Arknights",
-      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail with a black headband, amber-orange eyes, black-red curved horns, wearing a black sleeveless cropped turtleneck with a black-and-white techwear jacket, black high-waisted shorts and thigh straps, carrying the giant molten greatsword Laevateinn",
+      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail under a black headband, amber-orange eyes, black-red curved horns, carrying the giant molten greatsword Laevateinn",
       "identityTokens": [
         "surtr (arknights)",
         "1girl",
@@ -2601,7 +2634,7 @@
       "displayName": "凯尔希",
       "originalName": "Kal'tsit",
       "source": "Arknights",
-      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair and twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, wearing a white lab coat over a black halterneck backless dress with a green utility belt and emerald earrings",
+      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair in twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, and a sharp authoritative gaze",
       "identityTokens": [
         "kal'tsit (arknights)",
         "1girl",
@@ -2735,7 +2768,7 @@
       "displayName": "陈",
       "originalName": "Ch'en",
       "source": "Arknights",
-      "identityProse": "Ch'en from Arknights, a Lungmen Guard Department officer with dark teal-blue hair in low twintails tied with red cords, amber-gold eyes, red-brown branching dragon horns, a long teal dragon tail, wearing a blue-and-black stand-collar tactical jacket over a white shirt with a black tie and a black pleated skirt, carrying the crimson-sheathed sword Chi Xiao",
+      "identityProse": "Ch'en from Arknights, a Lungmen Guard Department officer with dark teal-blue hair in low twintails tied with red cords, amber-gold eyes, red-brown branching dragon horns, a long teal dragon tail, carrying the crimson-sheathed sword Chi Xiao",
       "identityTokens": [
         "ch'en (arknights)",
         "1girl",
@@ -2950,7 +2983,7 @@
       "displayName": "艾雅法拉",
       "originalName": "Eyjafjalla",
       "source": "Arknights",
-      "identityProse": "Eyjafjalla from Arknights, a Cautus volcano researcher with light ash-brown wavy hair in low twintails, small warm brown ram horns, ruby red eyes, wearing a dark grey hooded research coat over a white frilled blouse and black pleated skirt with black thighhighs",
+      "identityProse": "Eyjafjalla from Arknights, a Cautus volcano researcher with light ash-brown wavy hair in low twintails, small warm brown ram horns, ruby red eyes, and a quiet focused expression",
       "identityTokens": [
         "eyjafjalla (arknights)",
         "1girl",
@@ -3084,7 +3117,7 @@
       "displayName": "蕾缪安",
       "originalName": "Lemuen",
       "source": "Arknights",
-      "identityProse": "Lemuen from Arknights, a Laterano Sankta advisor with warm ginger-brown wavy hair with a side braid, amber-gold eyes, a floating golden halo and small translucent wings at her lower back, wearing a slate dark tailored overcoat over a white collared shirt with a black necktie, seated in her high-tech wheelchair",
+      "identityProse": "Lemuen from Arknights, a Laterano Sankta advisor with warm ginger-brown wavy hair and a side braid, amber-gold eyes, a floating golden halo and small translucent wings at her lower back, seated in her high-tech wheelchair",
       "identityTokens": [
         "lemuen (arknights)",
         "1girl",
@@ -3207,7 +3240,7 @@
       "displayName": "夕",
       "originalName": "Dusk",
       "source": "Arknights",
-      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair fading to teal-green ink gradient, teal-green eyes with red eyeshadow, teal jade dragon horns and a long ink-wash dragon tail, wearing an ink-black high-slit qipao with a sheer black-and-white gradient wide-sleeve robe, barefoot",
+      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair dissolving into a teal-green ink gradient, teal-green eyes with red eyeshadow, teal jade dragon horns and a long ink-wash dragon tail, barefoot",
       "identityTokens": [
         "dusk (arknights)",
         "1girl",
@@ -3315,7 +3348,7 @@
       "displayName": "泥岩",
       "originalName": "Mudrock",
       "source": "Arknights",
-      "identityProse": "Mudrock from Arknights, a gentle Sarkaz warrior with long silver-white hair, crimson eyes, curved black horns, wearing heavy olive-green power armor with a sealed helmet, and beneath it a dark high-neck bodysuit, carrying a huge engineering warhammer",
+      "identityProse": "Mudrock from Arknights, a gentle Sarkaz warrior with long silver-white hair, crimson eyes, curved black horns, clad in heavy olive-green power armor with a sealed helmet, carrying a huge engineering warhammer",
       "identityTokens": [
         "mudrock (arknights)",
         "1girl",
@@ -3466,7 +3499,7 @@
       "displayName": "森蚺",
       "originalName": "Eunectes",
       "source": "Arknights",
-      "identityProse": "Eunectes from Arknights, a cheerful Sarkaz mechanic with long dark green hair, golden slit-pupil eyes, a massive dark green anaconda snake tail, wearing a dark green halter crop top with a sleeveless tactical vest, leather hotpants and a single thigh-high sock with a leg harness",
+      "identityProse": "Eunectes from Arknights, a cheerful Sarkaz mechanic with long dark green hair, golden slit-pupil eyes, a massive dark green anaconda snake tail, and a lively confident grin",
       "identityTokens": [
         "eunectes (arknights)",
         "1girl",
@@ -3587,7 +3620,7 @@
       "displayName": "澄闪",
       "originalName": "Goldenglow",
       "source": "Arknights",
-      "identityProse": "Goldenglow from Arknights, a gentle Victorian apprentice hairdresser with long pale pink hair in low twintails, teal-blue eyes, pink folded cat ears and a fluffy pink cat tail, wearing a white shirt with a yellow ascot scarf, a dark suspender pinafore dress and a pleated skirt",
+      "identityProse": "Goldenglow from Arknights, a gentle Victorian apprentice hairdresser with long pale pink hair in low twintails, teal-blue eyes, pink folded cat ears and a fluffy pink cat tail",
       "identityTokens": [
         "goldenglow (arknights)",
         "1girl",
@@ -3722,7 +3755,7 @@
       "displayName": "斯卡蒂",
       "originalName": "Skadi",
       "source": "Arknights",
-      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long ankle-length silver-white hair, crimson eyes, wearing a black high-cut bodysuit with red accents and a short black coat with a wide-brimmed hunter hat, carrying a huge greatsword in a black guitar case",
+      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long ankle-length silver-white hair, crimson eyes, wearing a wide-brimmed hunter hat, carrying a huge greatsword in a black guitar case",
       "identityTokens": [
         "skadi (arknights)",
         "1girl",
@@ -3837,7 +3870,7 @@
       "displayName": "羽毛笔",
       "originalName": "La Pluma",
       "source": "Arknights",
-      "identityProse": "La Pluma from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips reaching past her shoulders, a tall feather ahoge, drowsy half-lidded vermilion eyes, small feathered wings on the sides of her head, wearing a black crop top with an asymmetrical grey jacket and black hotpants, wielding a giant black mechanical scythe made by her brother Tequila",
+      "identityProse": "La Pluma from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips past her shoulders, a tall feather ahoge, drowsy half-lidded vermilion eyes, small feathered wings on the sides of her head, wielding a giant black mechanical scythe",
       "identityTokens": [
         "la pluma (arknights)",
         "1girl",
@@ -3942,7 +3975,7 @@
       "displayName": "能天使",
       "originalName": "Exusiai",
       "source": "Arknights",
-      "identityProse": "Exusiai from Arknights, a cheerful Sankta courier of Penguin Logistics with short orange-red hair, red-brown eyes, a floating golden halo and small translucent wings, wearing a light grey-white hooded jacket over a black fitted shirt, black shorts and black thighhighs, carrying a Vector submachine gun",
+      "identityProse": "Exusiai from Arknights, a cheerful Sankta courier of Penguin Logistics with short orange-red hair, red-brown eyes, a floating golden halo and small translucent wings, carrying a Vector submachine gun",
       "identityTokens": [
         "exusiai (arknights)",
         "1girl",
@@ -4081,7 +4114,7 @@
       "displayName": "铃兰",
       "originalName": "Suzuran",
       "source": "Arknights",
-      "identityProse": "Suzuran from Arknights, a gentle Vulpo girl with long pale gold hair, light blue eyes, golden fox ears and nine fluffy fox tails, wearing a white haori jacket with dark green trim over a dark pleated skirt with white over-knee socks, holding a staff",
+      "identityProse": "Suzuran from Arknights, a gentle Vulpo girl with long pale gold hair, light blue eyes, golden fox ears and nine fluffy fox tails, holding a staff",
       "identityTokens": [
         "suzuran (arknights)",
         "1girl",
@@ -4220,7 +4253,7 @@
       "displayName": "令",
       "originalName": "Ling",
       "source": "Arknights",
-      "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long deep navy-blue hair flowing with pale blue and aqua gradient streaks, hair gradient from deep blue roots to pale aqua-blue tips, blue eyes, a pair of black swept-back dragon horns, pointy ears, a slender dragon tail, wearing an ink-teal (深墨青) high-slit qipao-style long dress with gold cloud and dragon motifs, the dark teal fabric echoing her blue hair, bare shoulders and gold jewelry",
+      "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long deep navy-blue hair flowing in pale blue and aqua gradient streaks, blue eyes, a pair of black swept-back dragon horns, pointy ears, a slender dragon tail, and gold jewelry",
       "identityTokens": [
         "ling (arknights)",
         "1girl",
@@ -4337,7 +4370,7 @@
       "displayName": "佩丽卡",
       "originalName": "Perlica",
       "source": "Arknights: Endfield",
-      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries supervisor with platinum short hair with soft cyan gradient tips, light blue eyes, feline cat ears and a cat tail, mechanical hair clips, wearing a white and charcoal tactical jacket with cyan accents over a black pleated skirt with black thighhighs",
+      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries supervisor with platinum short hair tipped in soft cyan, light blue eyes, feline cat ears and a matching tail, mechanical hair clips, and a calm professional bearing",
       "identityTokens": [
         "perlica (arknights)",
         "1girl",
@@ -4462,7 +4495,7 @@
       "displayName": "莱万汀",
       "originalName": "Laevatain",
       "source": "Arknights: Endfield",
-      "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with long crimson wavy hair, red eyes, curved black horns and a black devil tail, wearing a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top and black shorts with thigh straps, wielding a huge molten greatsword",
+      "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with long crimson wavy hair, glowing red eyes, curved black horns and a black devil tail, wielding a huge molten greatsword",
       "identityTokens": [
         "laevatain (arknights)",
         "1girl",
@@ -4584,7 +4617,7 @@
       "displayName": "艾莉莎·米哈伊洛夫娜·九条",
       "originalName": "Alisa Mikhailovna Kujou",
       "source": "Alya Sometimes Hides Her Feelings in Russian",
-      "identityProse": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, a stunning high school girl with silky silver hair, long hair tied with blue ribbons in a half-updo with small blue ribbons, striking clear blue eyes, delicate fair skin, carrying a proud, Tsundere yet secretly shy presence",
+      "identityProse": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, a stunning high school girl with silky silver hair glowing with luminous platinum highlights, gathered in a neat half-updo with small blue ribbons, striking clear blue eyes, delicate fair skin, and a proud yet secretly shy presence",
       "identityTokens": [
         "alisa_mikhailovna_kujou",
         "1girl",
@@ -4671,7 +4704,7 @@
       "displayName": "约尔·福杰",
       "originalName": "约尔·福杰",
       "source": "SPY x FAMILY",
-      "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair, striking ruby red eyes, gold rose earrings, and an endearing innocent blush.",
+      "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair with a sleek shine, striking ruby red eyes, gold rose earrings, and an endearing innocent blush",
       "identityTokens": [
         "yor_briar",
         "1girl",
@@ -4769,7 +4802,7 @@
       "displayName": "深森白夜",
       "originalName": "深森白夜",
       "source": "The Magical Girl and the Evil Officer",
-      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a delicate girl with flowing silver-white hair tied into twin spiral horn buns on each side of her head, straight bangs with long sidelocks, round gradient blue eyes, and a soft deadpan innocent expression.",
+      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a delicate girl with flowing silver-white hair tied into twin spiral horn buns, straight bangs with long sidelocks, round gradient blue eyes with a dreamy glow, and a soft deadpan innocent expression",
       "identityTokens": [
         "1girl",
         "solo",
@@ -4870,7 +4903,7 @@
       "displayName": "塞西莉亚",
       "originalName": "塞西莉亚",
       "source": "Saint Cecilia and Pastor Lawrence",
-      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a sweet and pure saint with soft pastel mint-green hair styled in a low braided bun with one long delicate sidelock, bright emerald green eyes, a gentle blush, and a soft innocent presence.",
+      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a sweet pure saint with soft pastel mint-green hair styled in a low braided bun with one long delicate sidelock, bright emerald green eyes with a gentle sparkle, a soft blush, and an innocent presence",
       "identityTokens": [
         "1girl",
         "solo",
@@ -4974,7 +5007,7 @@
       "displayName": "圣园未花",
       "originalName": "Misono Mika",
       "source": "Blue Archive",
-      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair featuring a deep cosmic starry galaxy inner-layer gradient, a side hair bun adorned with an olive plant laurel hairpin, an intricate golden wing-shaped halo adorned with tiny star ornaments, and sparkling golden eyes with star-shaped pupils",
+      "identityProse": "Misono Mika from Blue Archive, a third-year student at Trinity Comprehensive Academy and former Tea Party member, a graceful princess with long pastel pink hair hiding a deep cosmic starry galaxy gradient in its inner layer, a side hair bun adorned with an olive plant laurel hairpin, an intricate golden wing-shaped halo dotted with tiny star ornaments, and sparkling golden eyes with star-shaped pupils",
       "identityTokens": [
         "mika (blue archive)",
         "1girl",
@@ -5098,7 +5131,7 @@
       "displayName": "空崎日奈",
       "originalName": "Sorasaki Hina",
       "source": "Blue Archive",
-      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate purple halo of three concentric rings crowned with jagged spikes, massive flowing silver hair down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
+      "identityProse": "Sorasaki Hina from Blue Archive, the head of Gehenna Academy's Disciplinary Committee, a petite demon girl with delicate curved black horns, an intricate purple halo of three concentric rings crowned with jagged spikes, massive flowing silver hair with a soft luminous sheen down to her calves, crimson-purple eyes with a sleepy serious gaze, and black demon bat wings on her back",
       "identityTokens": [
         "hina (blue archive)",
         "1girl",
@@ -5252,7 +5285,7 @@
       "displayName": "杏山和纱",
       "originalName": "Kyouyama Kazusa",
       "source": "Blue Archive",
-      "identityProse": "Kyouyama Kazusa from Blue Archive, a first-year student at Trinity Comprehensive Academy and a member of the after-school Sweets Club, vocalist and bassist of the band SugarRush, a quiet girl with black hair, pink eyes, a hood with cat-ear-like shapes, a small collar and black tights, sometimes flustered but earnest",
+      "identityProse": "Kyouyama Kazusa from Blue Archive, a first-year student at Trinity Comprehensive Academy and a member of the after-school Sweets Club, vocalist and bassist of the band SugarRush, a quiet girl with jet-black hair with a soft sheen, pink eyes, a hood with cat-ear-like shapes, a small collar and black tights, sometimes flustered but earnest",
       "identityTokens": [
         "kyouyama_kazusa",
         "1girl",
@@ -5370,7 +5403,7 @@
       "displayName": "飞鸟马时",
       "originalName": "Asuma Toki",
       "source": "Blue Archive",
-      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit with the codename Zero Four, a cool and slightly airheaded girl with blonde hair, blue eyes, wearing a high-cut maid combat suit with a headset, thigh-high boots and small armor accents",
+      "identityProse": "Asuma Toki from Blue Archive, a member of Millennium Science School's C&C special unit with the codename Zero Four, a cool and slightly airheaded girl with golden blonde hair, blue eyes, wearing a high-cut maid combat suit with a headset, thigh-high boots and small armor accents",
       "identityTokens": [
         "asuma_toki",
         "1girl",
@@ -5476,7 +5509,7 @@
       "displayName": "调月莉音",
       "originalName": "Tsukatsuki Rio",
       "source": "Blue Archive",
-      "identityProse": "Tsukatsuki Rio from Blue Archive, a third-year student at Millennium Science School and a key figure of the Seminar student council, a tall confident girl with long black hair, red eyes, wearing the Millennium uniform with a high-neck sweater, pleated skirt, black tights and high heels, sometimes with a winter coat and gloves",
+      "identityProse": "Tsukatsuki Rio from Blue Archive, a third-year student at Millennium Science School and a key figure of the Seminar student council, a tall confident girl with long jet-black hair, crimson red eyes, wearing the Millennium uniform with a high-neck sweater, pleated skirt, black tights and high heels",
       "identityTokens": [
         "tsukatsuki_rio",
         "1girl",

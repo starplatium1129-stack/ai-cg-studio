@@ -24,6 +24,8 @@ let total = 0, missing = 0;
 for (const profile of Object.values(data)) {
   for (const outfit of profile.outfits || []) {
     for (const ref of outfit.references || []) {
+      // 2026-08-31 设计图基线占位：pending 无 url（图未生成），门禁跳过不报红。
+      if (ref.pending || !ref.url) continue;
       total++;
       if (!fs.existsSync(refUrlToPath(ref.url))) {
         missing++;
@@ -32,4 +34,4 @@ for (const profile of Object.values(data)) {
     }
   }
 }
-console.log('total urls:', total, '| missing on disk:', missing, '| refRoot:', refRoot);
+console.log('total urls:', total, '| missing on disk:', missing, '| pending skipped（设计图占位）| refRoot:', refRoot);

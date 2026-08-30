@@ -2,38 +2,72 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "character-reference-standards-v2",
   "title": "character-reference-standards-v2",
-  "description": "角色 × 多服装形态 4 视角标准参考资产库的结构契约。data/character-reference-standards.json 是唯一手写权威源；执行化见 scripts/tests/test-character-reference-contract.js（2026-08-28 机器契约，替代散落在维护脚本里的手写字段清单）。",
+  "description": "角色 × 多服装形态 4 视角标准参考资产库 + 3 视角设计图基线占位的结构契约。data/character-reference-standards.json 是唯一手写权威源；执行化见 scripts/tests/test-character-reference-contract.js（2026-08-28 机器契约，替代散落在维护脚本里的手写字段清单）。",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "schema", "description", "perspectives", "characters"],
+  "required": [
+    "version",
+    "schema",
+    "description",
+    "perspectives",
+    "characters"
+  ],
   "properties": {
-    "version": { "const": 2 },
-    "schema": { "const": "character-reference-standards-v2" },
-    "description": { "type": "string", "minLength": 1 },
+    "version": {
+      "const": 2
+    },
+    "schema": {
+      "const": "character-reference-standards-v2"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
     "perspectives": {
       "type": "array",
       "minItems": 4,
-      "maxItems": 4,
+      "maxItems": 7,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name", "shotType", "lens", "targetUsage"],
+        "required": [
+          "id",
+          "name",
+          "shotType",
+          "lens",
+          "targetUsage"
+        ],
         "properties": {
           "id": {
             "enum": [
               "ref_01_face_closeup",
               "ref_02_half_medium",
               "ref_03_full_dynamic",
-              "ref_04_back_rear"
+              "ref_04_back_rear",
+              "ref_design_front",
+              "ref_design_side",
+              "ref_design_back"
             ]
           },
-          "name": { "type": "string", "minLength": 1 },
-          "shotType": { "type": "string", "minLength": 1 },
-          "lens": { "type": "string", "minLength": 1 },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "shotType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lens": {
+            "type": "string",
+            "minLength": 1
+          },
           "targetUsage": {
             "type": "array",
             "minItems": 1,
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       }
@@ -41,47 +75,98 @@
     "characters": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/definitions/character" }
+      "items": {
+        "$ref": "#/definitions/character"
+      }
     }
   },
   "definitions": {
     "character": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "displayName", "originalName", "source", "identityProse", "identityTokens", "outfits"],
+      "required": [
+        "id",
+        "displayName",
+        "originalName",
+        "source",
+        "identityProse",
+        "identityTokens",
+        "outfits"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
-        "displayName": { "type": "string", "minLength": 1 },
-        "originalName": { "type": "string", "minLength": 1 },
-        "source": { "type": "string", "minLength": 1 },
-        "identityProse": { "type": "string", "minLength": 1 },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "originalName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identityProse": {
+          "type": "string",
+          "minLength": 1
+        },
         "identityTokens": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 },
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "outfits": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/definitions/outfit" }
+          "items": {
+            "$ref": "#/definitions/outfit"
+          }
         }
       }
     },
     "outfit": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "name", "prose", "tokens"],
+      "required": [
+        "id",
+        "name",
+        "prose",
+        "tokens"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
-        "name": { "type": "string", "minLength": 1 },
-        "isDefault": { "type": "boolean" },
-        "isNsfw": { "type": "boolean" },
-        "prose": { "type": "string", "minLength": 1 },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "isDefault": {
+          "type": "boolean"
+        },
+        "isNsfw": {
+          "type": "boolean"
+        },
+        "prose": {
+          "type": "string",
+          "minLength": 1
+        },
         "tokens": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string", "minLength": 1 }
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     }
