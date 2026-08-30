@@ -846,11 +846,15 @@ html.companion-desktop .companion-toolbar-actions * {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* plans/003：只停位移/滤镜类过渡，保留颜色与透明度状态反馈（≤ --motion-control）。
+     曾用通配 transition-duration:.01ms 把颜色/边框反馈一并抹掉，用户分不清
+     悬停与按压 —— 与 design-system.css 全局策略（1397 起）对齐。 */
   .companion-page *,
   .companion-page *::before,
   .companion-page *::after {
     scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
+    transition-property: opacity, color, background-color, border-color, box-shadow, visibility !important;
+    transition-duration: var(--motion-control) !important;
   }
 }
 
@@ -1514,10 +1518,11 @@ html.companion-mode:not(.companion-desktop) body {
    提醒气泡与剪贴卡（进出场动画）
   ============================================================ */
 /* 2026-08-22 动效审计 LOW：提醒气泡/剪贴卡补退场（原只有入场，关闭时瞬移消失）。
-   列表容器用 <TransitionGroup name="reminder-pop">，剪贴卡复用全局 layer-fade。 */
+   列表容器用 <TransitionGroup name="reminder-pop">，剪贴卡复用全局 layer-fade。
+   2026-08-31 plans/003：退场曲线同步收敛为 --ease-out（与 layer-pop 一致）。 */
 .reminder-pop-leave-active {
-  transition: opacity var(--motion-hover) cubic-bezier(.55, 0, .85, .36),
-              transform var(--motion-hover) cubic-bezier(.55, 0, .85, .36);
+  transition: opacity var(--motion-hover) var(--ease-out),
+              transform var(--motion-hover) var(--ease-out);
 }
 .reminder-pop-leave-to { opacity: 0; transform: translateY(4px) scale(.97); }
 .reminder-pop-move { transition: transform var(--motion-surface) var(--ease-out); }

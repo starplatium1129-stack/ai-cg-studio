@@ -1213,24 +1213,26 @@ body.overlay-open { overflow: hidden; }
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
 .overlay[hidden] { display: none; }
-/* ── 弹层统一进出场（Vue <Transition name="layer-pop">，2026-08-22 动效审计 #7）──
-   遮罩淡入淡出、内容卡（首个子元素）上浮落位；退场更快且用加速曲线（离场利落）。
+/* ── 弹层统一进出场（Vue <Transition name="layer-pop">，2026-08-22 动效审计 #7；
+   2026-08-31 plans/003：退场曲线从加速曲线 cubic-bezier(.55,0,.85,.36) 收敛为
+   --ease-out 快速响应 —— ease-in 风格曲线让退出先迟滞再飞走，触感发黏。
+   遮罩淡入淡出、内容卡（首个子元素）上浮落位，退场保持更短的 --motion-hover。
    接入方：Teleport 内 v-if 弹层根节点包 <Transition name="layer-pop">；
    原 .overlay/.modal-card 的入场 animation 已删，避免与 Transition 双重动画。 */
 .layer-pop-enter-active { transition: opacity var(--motion-surface) var(--ease-out); }
 .layer-pop-enter-active > :first-child {
   transition: transform var(--motion-surface) var(--ease-out), opacity var(--motion-surface) var(--ease-out);
 }
-.layer-pop-leave-active { transition: opacity var(--motion-hover) cubic-bezier(.55, 0, .85, .36); }
+.layer-pop-leave-active { transition: opacity var(--motion-hover) var(--ease-out); }
 .layer-pop-leave-active > :first-child {
-  transition: transform var(--motion-hover) cubic-bezier(.55, 0, .85, .36), opacity var(--motion-hover) cubic-bezier(.55, 0, .85, .36);
+  transition: transform var(--motion-hover) var(--ease-out), opacity var(--motion-hover) var(--ease-out);
 }
 .layer-pop-enter-from, .layer-pop-leave-to { opacity: 0; }
 .layer-pop-enter-from > :first-child { transform: translateY(12px) scale(.97); opacity: 0; }
 .layer-pop-leave-to > :first-child { transform: translateY(8px) scale(.98); opacity: 0; }
 /* 纯淡入淡出变体：弹层内的二级浮层（大图预览等） */
 .layer-fade-enter-active { transition: opacity var(--motion-control) var(--ease-out); }
-.layer-fade-leave-active { transition: opacity var(--motion-hover) cubic-bezier(.55, 0, .85, .36); }
+.layer-fade-leave-active { transition: opacity var(--motion-hover) var(--ease-out); }
 .layer-fade-enter-from, .layer-fade-leave-to { opacity: 0; }
 .modal-card {
   width: min(560px, 100%);
