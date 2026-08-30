@@ -36,7 +36,10 @@ const refRoot = (() => {
 })();
 const SHOWCASE_DIR = path.resolve('E:/code/2/lora/AI/SceneShowcase/2026-08-15_v23');
 const MANIFEST_FILE = path.join(SHOWCASE_DIR, 'manifest.json');
-const COMMS_BASE = 'http://127.0.0.1:3123';
+// 2026-08-30：网页端（主工作区 server.js）与桌面端（resources/gateway sidecar）
+// 是两套独立网关，默认均监听 3000；3123 仅是历史 sidecar/桌面更新端点，不是
+// 当前网关端口。优先 AICS_COMMS_BASE 环境变量覆盖，默认回退 3000。
+const COMMS_BASE = process.env.AICS_COMMS_BASE || 'http://127.0.0.1:3000';
 
 function computeContentVersion() {
   const hash = crypto.createHash('sha1');
