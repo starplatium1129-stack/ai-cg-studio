@@ -21,7 +21,7 @@
 
 **双引擎差异要点：**
 - **Anima（Qwen3-0.6B 文本编码器）**：LLM 族编码器对自然语言与词序敏感度高；超长 prompt 末尾 tag 权重衰减（"末尾=加噪声"，官方答疑 🟢）；underscore exact token 是身份/质量控制的硬锚点，普通场景词用空格形（v19 实测：`best_quality` 转空格→胸饰退化 🟢）。
-- **Krea 2（SD3.5/T5 系）**：纯英文散文 3–5 句；禁否定短语与 AI 玄学词（`beautiful/stunning/masterpiece/8k` 会拉向 generic gloss 🟢 项目契约）。
+- **Krea 2（自研 12B DiT + Qwen3-VL 编码器，非 SD3.5/T5 系）**：纯英文散文 3–5 句；禁否定短语与 AI 玄学词（`beautiful/stunning/masterpiece/8k` 会拉向 generic gloss 🟢 项目契约）。架构与提示词规范见 `docs/krea2-prompt-research-2026-08-30.md`。
 - **Illustrious/NoobAI 系（CLIP）**：纯 tag 方言；质量锚点前置有效（官方口径 "quality tags help clean up the picture" 🔵），但 Anima 两底模均 `strip_quality_tokens=true`——质量词只属于 profile 装配层，数据层携带必被剥离且属死数据 🟢。
 
 ---

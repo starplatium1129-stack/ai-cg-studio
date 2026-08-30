@@ -535,7 +535,19 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const environmentText = plan.sceneProse
     ? clean(plan.sceneProse).replace(/[.!?]+\s*/g, '; ').replace(/;\s*$/, '')
     : naturalList(environment)
-  if (environmentText) parts.push(sentence(plan.sceneProse ? environmentText : `The scene takes place ${environmentText}`))
+  // 2026-08-30 调研 §七/§八：Krea 见「室内/场景」就爱画人，官方推荐空场景
+  // 在正句追加 "no characters, no people, no figures"（本地 Turbo 负面失效的
+  // 替代通道）。判定：散文里确实没有主体（无 subject 描述、环境句也不含
+  // 人物代词）时追加——热门角色恒有 subjectProse 不会误伤；纯背景/风景
+  // 场景（studio 背景图）自动兜底。
+  const emptySceneGuard = !subject && !outfitText && Boolean(environmentText)
+    && !/no characters|no people|no figures/i.test(environmentText)
+    && !/\b(?:she|her|girl|woman|figure|character|person)\b/i.test(environmentText)
+  if (environmentText) {
+    parts.push(sentence(
+      `${plan.sceneProse ? environmentText : `The scene takes place ${environmentText}`}${emptySceneGuard ? '; no characters, no people, no figures' : ''}`,
+    ))
+  }
   const direction = naturalList([...camera, ...plan.composition.map(cameraPhrase).filter(Boolean)])
   const atmosphere = naturalList(lighting)
   if (direction || atmosphere) {
@@ -543,6 +555,14 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
     if (direction) clauses.push(`The composition uses ${direction}`)
     if (atmosphere) clauses.push(`the scene is lit by ${atmosphere}`)
     parts.push(sentence(clauses.join(', while ')))
+  }
+  // 2026-08-30 调研 §四/§五.2：媒介词（medium）放散文末尾收尾——官方
+  // 「命名工作室收尾」让模型承诺特定完成度（polished X style/finish）。
+  // 此前 medium 被 sanitize 但从未织入渲染输出（审计发现），这里补上；
+  // lead 已含同一媒介短语时跳过，避免 "visual novel event CG" 重复两遍。
+  const medium = sanitizeKreaProse(plan.medium)
+  if (medium && !style.toLowerCase().includes(medium.toLowerCase())) {
+    parts.push(sentence(`polished ${medium} finish`))
   }
   const assembled = parts.filter(Boolean).join(' ')
   const sentences = assembled.split(/(?<=\.)\s/).filter(Boolean)

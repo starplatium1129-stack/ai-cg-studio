@@ -378,7 +378,7 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
 
   // 无 hint / 无手选：引擎缺省。
   var auto = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', null, null, raiden, { adultEnabled: true });
-  assert.strictEqual(auto.lead, 'A polished visual novel event CG with refined cel shading and crisp character work');
+  assert.strictEqual(auto.lead, 'A polished visual novel event CG with refined cel shading, flat colors and crisp character work');
   var animaAuto = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', null, null, raiden, { adultEnabled: true });
   assert.ok(animaAuto.lead.indexOf('anime key visual') !== -1, 'anima default must be the key visual recipe');
   // 解析层照常返回自然语言 lead；Anima 组装改取同配方的模型原生短标签。

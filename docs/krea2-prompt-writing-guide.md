@@ -1,16 +1,16 @@
 # Krea 2 底模词条写法指南
 
-> 2026-08-14 · 与角色原型场景蓝图配套。Krea 2（Turbo，Qwen3VL-4B 编码器）是自然语言+标签混合模型，写法与 Anima（纯 Danbooru 标签流）不同。本文档说明项目里 Krea 2 路径的提示词正确写法。
+> 2026-08-14 首发 · **2026-08-30 修订**：Krea 2 是 Krea 自研 12B DiT + Qwen3-VL 编码器（非 SD3.5 系）；官方现口径为**纯自然语言推荐**，标签仅可作辅助；本地 Turbo（CFG≈0）负面基本失效。权威基座与最新结论以 `docs/krea2-prompt-research-2026-08-30.md` 为准，本文档冲突处从新报告。
 
 ## Krea 2 与 Anima 的本质差异
 
 | 维度 | Anima（base/aesthetic） | Krea 2（Turbo） |
 |---|---|---|
 | 文本编码器 | Qwen-3 0.6B（标签导向） | Qwen3VL-4B（视觉语言，自然语言强） |
-| 提示词形态 | Danbooru 标签流（小写、下划线 token） | 自然语言散文 + 简短标签混合 |
+| 提示词形态 | Danbooru 标签流（小写、下划线 token） | 纯自然语言散文（官方第一推荐）；标签仅可辅助 |
 | 角色识别 | 角色名+系列标签（exact token） | 角色名+系列+外貌散文描述 |
 | score 标签 | 支持（score_7 等） | 不建议（Krea 训练无 score 先验） |
-| 负面词 | 长负面列表 | 简短负面即可（模型鲁棒） |
+| 负面词 | 长负面列表 | 本地 Turbo 负面基本失效（CFG≈0）；排除元素走正句追加或正向负权 |
 
 ## 正确写法（项目已内置到数据）
 
@@ -48,12 +48,16 @@
 - 具体视觉元素（服装/道具/场景物件）用散文
 - 不要使用 Danbooru score 标签（score_1~9）、不要下划线 token（Krea 对下划线 token 不敏感）
 
-### 5. 负面词
+### 5. 负面词（2026-08-30 修正）
 
 ```text
-worst quality, low quality, blurry, jpeg artifacts, extra fingers, bad anatomy, watermark, text
+（旧写法已过时：本地 Turbo 在 CFG≈0 时负向几乎不参与，写长负面是无效功）
 ```
-短负面即可，不需要 Anima 式的长负面与分镜压制（Krea 2 分镜/双人问题弱于 Anima 低 CFG）。
+
+- 本地 Turbo 路径：**负面恒空**（项目现状正确，与官方模板一致）
+- 需要排除元素时，改为**正句句末追加**：`..., no text` / `no characters, no people, no figures`（空场景排除人，官方推荐）
+- 托管网页版（krea.ai/image）负向框仍有效；若未来接托管 API（Medium/Large）再按场景恢复负向
+- 正向内负权（NegPiP 节点 `(blurry:-1.0)`）是本地路径的备选替代通道
 
 ### 6. 风格与氛围
 
