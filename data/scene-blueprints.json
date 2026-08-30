@@ -56242,14 +56242,14 @@
         "chinese_clothes",
         "dragon_girl"
       ],
-      "promptProse": "On the second floor of an old tavern on a Longmen backstreet at night, Ling sits alone by the railing, raising a warm cup of wine to her lips, her waterfall-long blue hair spilling over the black qipao, lantern light and amber wine reflections glinting off the lacquered table. The warm lantern glow bathes the carved wooden beams while below the window the night market crowd drifts past in soft bokeh.",
+      "promptProse": "On the second floor of an old tavern on a Longmen backstreet at night, Ling sits alone by the railing, raising a warm cup of wine to her lips, her waterfall-long blue hair spilling over the ink-teal qipao, lantern light and amber wine reflections glinting off the lacquered table. The warm lantern glow bathes the carved wooden beams while below the window the night market crowd drifts past in soft bokeh.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
         "full_body",
         "dynamic_lighting",
         "bare_shoulders",
-        "black_dress",
+        "teal_clothes",
         "chinese_clothes",
         "drinking",
         "earrings",
@@ -56675,13 +56675,13 @@
         "floating_hair",
         "dragon_girl"
       ],
-      "promptProse": "On the highest peak above a sea of clouds, Ling stands on a mossy boulder with the Milky Way arching overhead, her impossibly long blue hair streaming like a waterfall in the night wind, black qipao hem fluttering, one hand raised toward the afterglow of a passing meteor. Pale blue moonlight and drifting cloud mist rim her silhouette against the star-dusted sky.",
+      "promptProse": "On the highest peak above a sea of clouds, Ling stands on a mossy boulder with the Milky Way arching overhead, her impossibly long blue hair streaming like a waterfall in the night wind, ink-teal qipao hem fluttering, one hand raised toward the afterglow of a passing meteor. Pale blue moonlight and drifting cloud mist rim her silhouette against the star-dusted sky.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
         "full_body",
         "dynamic_lighting",
-        "black_dress",
+        "teal_clothes",
         "chinese_clothes",
         "cloud",
         "floating_hair",
