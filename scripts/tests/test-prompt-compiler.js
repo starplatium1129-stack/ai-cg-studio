@@ -74,8 +74,8 @@ test('prompt compiler renders curated artist styles in each model-native syntax'
 
 test('artist style catalog is unique, allowlisted, limited, and model-native', () => {
   const ids = artistCatalog.ARTIST_STYLE_OPTIONS.map(option => option.id);
-  // 2026-08-30 收录 @gweda/@eufoniuz/@solar_(happymonk)（Danbooru 专属 tag）后为 42 位画师
-  assert.strictEqual(ids.length, 42);
+  // 2026-08-30 收录 @gweda/@eufoniuz/@solar_(happymonk)+6 位用户点名画师后为 48 位画师
+  assert.strictEqual(ids.length, 48);
   assert.strictEqual(new Set(ids).size, ids.length);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['kantoku', 'rella', 'swav', 'unknown']), ['kantoku', 'rella']);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['azure', 'rella']), ['azuuru', 'rella']);
@@ -99,7 +99,7 @@ test('artist style catalog is unique, allowlisted, limited, and model-native', (
     ['muririn', 'kobuichi'],
   );
   // 2026-08-30 收录 @gweda/@eufoniuz/@solar_(happymonk)（均 verification=tag）后为 13 位
-  assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.filter(option => option.verification === 'tag').length, 13);
+  assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.filter(option => option.verification === 'tag').length, 19);
 });
 
 test('Krea official style LoRA is allowlisted and family-scoped', () => {
