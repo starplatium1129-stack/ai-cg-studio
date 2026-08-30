@@ -528,9 +528,13 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   // character identity, existing appearance and original design logic..." 锁定
   // 角色视觉指纹；项目 5 桶拼接把 identityProse 淹没在散文中，没有"保护"指令，
   // Krea 内部扩写倾向把 IP 角色泛化（出图不认角色）。提取 subjectProse 头部
-  // "Name from Series" 作为 IP 角色名，注入保护句。
+  // 角色名（兼容 "Name from Series" / "Name, the role" / "Alias, Name from" /
+  // "Name (Alias) from" 四种常见身份散文开头），注入保护句。
   if (subject) {
-    const nameMatch = subject.match(/^([A-Z][\w'-]+(?:\s+[A-Z][\w'-]+)*)\s+from\s+/)
+    // 兼容 "Name from Series" / "Name, the role" / "Alias, Name from" /
+    // "Name (Alias) from"（括号别名如 Reze (Bomb Devil)；连词如 Jeanne d'Arc）。
+    // 取「从开头到大写单词序列结束」为止的名字：遇到 ", " / " (" / " from " 即停。
+    const nameMatch = subject.match(/^([A-Z][A-Za-z'-]*(?:\s+(?!from\s)[A-Za-z][A-Za-z'-]*)*)(?=\s+from\s+|,|\s*\()/)
     const ipName = nameMatch ? nameMatch[1].trim() : null
     if (ipName) {
       parts.push(sentence(
