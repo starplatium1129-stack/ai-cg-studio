@@ -7,7 +7,7 @@
           <ArchiveIcon name="search" class="search-icon" />{{ interrogateBusy ? '反推中…' : '本地反推' }}
         </button>
         <span v-if="interrogateMeta" class="tag-interrogate-engine" :class="{ 'is-fallback': interrogateMeta.fallback }" :title="interrogateMeta.title">{{ interrogateMeta.label }}</span>
-        <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
+        <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
       <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />
     </div>
@@ -84,6 +84,7 @@ import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
+import { confirmAction } from '@/composables/useConfirm'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interrogateMerge'
 import {
@@ -103,6 +104,26 @@ const { tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle, addTag } = useP
 
 const tagSearch = ref('')
 const tagCategory = ref('all')
+
+/**
+ * 清空全部手工词条（2026-08-30 UX 审计 P0-4）。
+ * 原先是模板里直接 `@click="pb.manualTags = new Set()"` —— 一点即没。手工挑的、
+ * 反推得来的词条是本项目最高成本的手工资产，而同一产品的「清空并重来」
+ * （PromptBuilderView）却是有确认的，两种策略并存。这里统一走破坏性确认。
+ */
+async function clearTags() {
+  const count = pb.manualTags.size
+  if (!count) return
+  const ok = await confirmAction({
+    title: `清空这 ${count} 个词条？`,
+    message: '手工添加与本地反推得来的词条会一起清掉，且无法撤销。',
+    confirmLabel: '清空',
+    danger: true,
+  })
+  if (!ok) return
+  pb.manualTags = new Set()
+  pb.flash('已清空词条')
+}
 
 // 本地反推（Tag → manualTags / Caption → visualDescription，切人保留）
 const interrogateInputRef = ref<HTMLInputElement | null>(null)

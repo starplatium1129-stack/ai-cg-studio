@@ -291,6 +291,31 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     manualTags.value = next
     if (replaced.length) flash(`已用「${tag}」替换同组「${replaced.join('、')}」`)
   }
+
+  /**
+   * 幂等添加词条（2026-08-30 UX 审计 P0-3）。
+   *
+   * 与 toggleManualTag 的唯一区别：**命中已存在的词条时保留，而不是删掉**。
+   * 输入框是「加词」语义——用户敲下一个已激活的词条，预期是「确认它还在」，
+   * toggle 语义却把它移除，属于静默数据丢失（手工攒的 40+ 词条最容易这么丢）。
+   * 组间互斥顶替逻辑照旧保留（同族换词是明确有用的行为，仍会 flash 提示）。
+   *
+   * @returns 'added' 新增 / 'replaced' 顶替同组旧词 / 'duplicate' 已存在未改动
+   */
+  function addManualTag(tag: string): 'added' | 'replaced' | 'duplicate' {
+    const next = new Set(manualTags.value)
+    if (next.has(tag)) return 'duplicate'
+    let replaced: string[] = []
+    const group = mutualGroupOf(tag)
+    if (group) {
+      replaced = membersOfMutualGroup(group, [...next])
+      replaced.forEach(t => next.delete(t))
+    }
+    next.add(tag)
+    manualTags.value = next
+    if (replaced.length) flash(`已用「${tag}」替换同组「${replaced.join('、')}」`)
+    return replaced.length ? 'replaced' : 'added'
+  }
   function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
 
   /** 反推出跨族服装：顶替角色默认服装（replaced 为被顶替的服装族名，用于提示）。 */
@@ -614,7 +639,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     currentStep, showMatureScenes, activeTab, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
-    setColorMood, toggleManualTag, setArtistStyleIds, loadScene, clearScene, flash,
+    setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,
     setOutfitOverride, clearOutfitOverride,
     snapshotStyleLayers, restoreStyleLayers,
     setStudioSubject, setPopularSubject, setPopularBlueprint,

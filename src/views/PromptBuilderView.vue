@@ -174,7 +174,7 @@
         <DirectorTagWorkbench />
 
         <PromptHealthPanel
-          class="advanced-decision"
+          class="advanced-decision basic-visible"
           :prompt="previewPromptView"
           :model-name="modelProfileView?.name"
           :report="reportView"

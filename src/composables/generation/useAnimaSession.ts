@@ -231,10 +231,19 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     patchState({ loraId: available ? expected : '' })
   }
 
+  /**
+   * 记录「当前这套参数默认值属于哪个底模」（2026-08-30 UX 审计 P0-2）。
+   * 底模默认值的施加只发生在两个时机：① 首次成功拉取后端；② 用户显式换底模
+   * （applyModel）。15s 状态轮询**不再**重施默认值，否则用户刚调好的 CFG
+   * 会在下一次心跳被静默改回。
+   */
+  let defaultsAppliedFor: string | null = null
+
   function applyModel(modelIdToApply: string) {
     const model = state.value.models.find(item => item.id === modelIdToApply)
     const size = closestSupportedSize(model, options.preferredSize() || `${state.value.width}x${state.value.height}`)
     const [width, height] = size.split('x').map(Number)
+    defaultsAppliedFor = modelIdToApply
     patchState({
       modelId: modelIdToApply,
       family: model?.family === 'krea2' ? 'krea2' : 'anima',
@@ -289,18 +298,33 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         if (Number.isInteger(nextWidth) && Number.isInteger(nextHeight)) { width = nextWidth; height = nextHeight }
       }
       const familyLabel = family === 'krea2' ? 'Krea 2' : 'Anima'
+      /**
+       * 底模默认值只在「换底模」时才重施（2026-08-30 UX 审计 P0-2）。
+       *
+       * 原实现每次心跳都无条件把 steps/cfg/sampler/scheduler 写成
+       * selectedModel.defaults：底模没变时 defaults 是常量，用户把 CFG 从 5
+       * 调到 7.5，15 秒内就被静默改回 5；styleLoraId 更是每次心跳无条件置空。
+       * 现在：首次拉取 / 底模真的变了（用户换的，或原底模从后端消失导致的回落）
+       * 才套用默认值，其余心跳只更新在线状态与候选列表。
+       */
+      const shouldApplyDefaults = defaultsAppliedFor !== modelIdCurrent
+      // 风格 LoRA 只在候选里已经不存在时才清空，而不是每 15 秒清一次
+      const styleLoraId = styleLoras.some(lora => lora.id === state.value.styleLoraId)
+        ? state.value.styleLoraId
+        : ''
       patchState({
         online: data.online === true,
         checkMsg: data.online === true
           ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
           : `${familyLabel} 离线（ComfyUI 未启动或网关不可用）`,
-        models: visibleModels, loras: familyLoras, styleLoras, styleLoraId: '', modelId: modelIdCurrent, loraId, width, height,
+        models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
         family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
-        steps: Number(selectedModel?.defaults?.steps) || state.value.steps,
-        cfg: Number(selectedModel?.defaults?.cfg) || state.value.cfg,
-        sampler: String(selectedModel?.defaults?.sampler || state.value.sampler),
-        scheduler: String(selectedModel?.defaults?.scheduler || state.value.scheduler),
+        steps: shouldApplyDefaults ? (Number(selectedModel?.defaults?.steps) || state.value.steps) : state.value.steps,
+        cfg: shouldApplyDefaults ? (Number(selectedModel?.defaults?.cfg) || state.value.cfg) : state.value.cfg,
+        sampler: shouldApplyDefaults ? String(selectedModel?.defaults?.sampler || state.value.sampler) : state.value.sampler,
+        scheduler: shouldApplyDefaults ? String(selectedModel?.defaults?.scheduler || state.value.scheduler) : state.value.scheduler,
       })
+      if (shouldApplyDefaults) defaultsAppliedFor = modelIdCurrent
       syncCharacter(options.getCharacter())
     } catch (error) {
       if (error instanceof ApiClientError && error.kind === 'aborted') return

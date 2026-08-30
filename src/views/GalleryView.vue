@@ -221,7 +221,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, computed, reactive, onMounted, onActivated, onUnmounted, watch, nextTick } from 'vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { artworkRepository } from '@/storage/artworkRepository'
@@ -886,6 +886,22 @@ onMounted(async () => {
   void hydrateThumbs()
   await nextTick()
   scanWallCards()
+})
+
+/**
+ * 作品册被 AppLayout 的 KeepAlive 缓存（数百张大图 blob 与解码结果常驻内存，
+ * 切走再回来秒开，不需要重新从 IndexedDB 读图）。
+ *
+ * 代价是 onMounted 只在**首次**进入时跑一次，此后重新激活不会重读 KV：
+ * 画出一张 →「保存快照」→ 进作品册，看到的仍是离开时那份旧列表，
+ * 用户会判定「保存失败」并重复保存、甚至重画（2026-08-30 UX 审计 P0-7）。
+ *
+ * 这里只增量重读 KV，不重建 blob 缓存（revokeAll 挂在 onUnmounted，
+ * 缓存期间不触发）——既修掉陈旧列表，又不丢 KeepAlive 的意义。
+ * 列表若真有变化，watch(visible) 会自动补缩略图并重挂观察器。
+ */
+onActivated(() => {
+  void loadGalleryStorage()
 })
 
 onUnmounted(() => {

@@ -32,7 +32,7 @@
       "steps": 30,
       "cfg": 6,
       "size": "1024×1344",
-      "hires_fix": true,
+      "hires_fix": false,
       "hires_steps": 20,
       "hires_scale": 1.5,
       "hires_upscaler": "Auto",

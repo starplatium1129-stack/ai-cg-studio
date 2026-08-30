@@ -78,10 +78,14 @@ function trapTab(e: KeyboardEvent) {
   else if (!order.includes(active as HTMLButtonElement)) { e.preventDefault(); first.focus() }
 }
 
+/**
+ * 只拦截 Escape。Enter 一律交给浏览器原生按钮语义：激活**当前焦点**的那个按钮。
+ * 原先这里自己 preventDefault() 再 ok()，导致焦点停在「取消」上按 Enter 仍然执行删除，
+ * 与「破坏性操作默认聚焦取消键」的设计直接冲突（2026-08-30 UX 审计 P0-1）。
+ */
 function onKeydown(e: KeyboardEvent) {
   if (!state.value.visible) return
   if (e.key === 'Escape') { e.preventDefault(); cancel() }
-  else if (e.key === 'Enter') { e.preventDefault(); ok() }
 }
 document.addEventListener('keydown', onKeydown)
 onUnmounted(() => document.removeEventListener('keydown', onKeydown))

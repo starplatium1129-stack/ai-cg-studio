@@ -51,10 +51,31 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
     return 'normal'
   }
 
+  /**
+   * 输入框回车加词（2026-08-30 UX 审计 P0-3 重写）。
+   *
+   * ① 支持逗号 / 中文逗号 / 顿号 / 换行分隔。从 Danbooru 复制
+   *    `blue_hair, smile, twintails` 一次回车应得到 3 个词条，
+   *    而不是 1 个垃圾词条 `blue_hair,_smile,_twintails`——批量粘贴
+   *    是「提示词自主权」最高频的动作，这条不通等于自主权打折。
+   * ② 用幂等 add 而非 toggle：输入已有词条不再把它删掉。
+   */
   function addTag(e: Event) {
     const input = e.target as HTMLInputElement
-    const tag = input.value.trim().replace(/\s+/g, '_').toLowerCase()
-    if (tag) { pb.toggleManualTag(tag); input.value = '' }
+    const parts = input.value
+      .split(/[,，、\r\n]+/)
+      .map(s => s.trim().replace(/\s+/g, '_').toLowerCase())
+      .filter(Boolean)
+    if (!parts.length) return
+    let added = 0
+    let dup = 0
+    for (const tag of parts) {
+      if (pb.addManualTag(tag) === 'duplicate') dup++
+      else added++
+    }
+    input.value = ''
+    if (dup) pb.flash(`已添加 ${added} 个，跳过 ${dup} 个已存在`)
+    else if (added > 1) pb.flash(`已添加 ${added} 个词条`)
   }
 
   function toggleOutfitBundle(tags: string[]) {
