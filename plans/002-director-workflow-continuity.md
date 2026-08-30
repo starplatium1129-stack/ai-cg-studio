@@ -1,6 +1,6 @@
 # 002 — 补齐导演台状态交接与退出反馈
 
-- **Status**: PARTIAL: result reveal and indeterminate progress done; transitions/toast/character handoff TODO
+- **Status**: DONE
 - **Commit**: b1ccfc0
 - **Severity**: MEDIUM
 - **Category**: Interruptibility / Missed opportunities

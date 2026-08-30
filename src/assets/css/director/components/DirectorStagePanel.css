@@ -38,6 +38,19 @@
   }
   .pb.character-shifting .stage-placeholder::after { animation:characterGlassSweep .72s var(--ease-out) both; }
   .pb.character-shifting .stage-muse { transform:translateY(-4px) scale(1.015); }
+  /* ── plans/002：画布占位 ↔ 成片交接（stage-swap）──
+     占位层退出时绝对定位浮层化，避免与进入中的结果层双占布局撑跳高度
+     （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
+     只补间 opacity/transform。结果层入场走 wrap 的 directorViewIn +
+     图片 aicsBloomReveal，本类不参与，防双重驱动。 */
+  .pb .stage-slot { position:relative; }
+  .stage-swap-enter-active { transition:opacity var(--motion-control) var(--ease-out); }
+  .stage-swap-leave-active {
+    position:absolute; inset:0; z-index:var(--z-raised);
+    transition:opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
+  }
+  .stage-swap-enter-from, .stage-swap-leave-to { opacity:0; }
+  .stage-swap-leave-to { transform:scale(.985); }
   /* ── 生成等待：画布呼吸 + 扫光 ──
      出图要几十秒，静止的深色块会放大等待焦虑。 */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
@@ -76,4 +89,9 @@
     .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-progress-ring.is-indeterminate > i { animation:none !important; }
      .pb .stage-progress-ring.is-indeterminate > i { transform:translateX(0); }
     .pb .monitor-rec .dot, .pb .review-star { animation:none; }
+    /* plans/002：换角扫光/缪斯浮起停掉（位移类），侧栏与令牌层的颜色过渡保留；
+       stage-swap 退出去掉 scale 只留淡出 */
+    .pb.character-shifting .stage-placeholder::after { animation:none; }
+    .pb.character-shifting .stage-muse { transform:none; }
+    .stage-swap-leave-active { transition:opacity var(--motion-hover) var(--ease-out); }
   }

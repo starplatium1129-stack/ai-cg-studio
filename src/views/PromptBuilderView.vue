@@ -7,6 +7,7 @@
     :class="{
       'focus-mode': pb.focusMode,
       'has-result': Boolean(displayResultUrl),
+      'character-shifting': characterShifting,
     }"
   >
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
@@ -331,9 +332,7 @@
       />
     </div>
 
-    <!-- Toast -->
-    <Transition name="layer-fade">
-    </Transition>
+    <!-- Toast 已于 2026-08-29 UX 收编退役，统一走全局 useToast（AppToast）；空壳 Transition 一并清除 -->
 
     <!-- 出图大图对比：上一张 vs 当前 -->
     <Teleport to="body">
@@ -391,7 +390,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import { ref, computed, nextTick, onMounted, watch, defineAsyncComponent } from 'vue'
+import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from 'vue'
 import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
@@ -1492,6 +1491,19 @@ watch(() => pb.subject, subject => {
   }
   syncManagedRoute()
 })
+
+// plans/002 Step 6：character-shifting 舞台类挂载——CSS 侧（DirectorStagePanel.css
+// 扫光 characterGlassSweep + tokens.css 侧栏/令牌过渡）早已备好但从未挂载，属死代码。
+// 有效身份 = studio 的 pb.char 或 popular 的 characterId；切换后 760ms 清理类名
+// （扫光 .72s + 余量），快速连切只重置计时不会堆叠；卸载清计时器防泄漏。
+const characterShifting = ref(false)
+let characterShiftTimer: ReturnType<typeof setTimeout> | null = null
+watch(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char, () => {
+  characterShifting.value = true
+  if (characterShiftTimer) clearTimeout(characterShiftTimer)
+  characterShiftTimer = setTimeout(() => { characterShifting.value = false }, 760)
+})
+onBeforeUnmount(() => { if (characterShiftTimer) clearTimeout(characterShiftTimer) })
 
 // 角色变化 / 成熟内容开关变化后，若当前 category 已无合格蓝图（如"成人"），
 // 自动回到"全部"并触发推荐重算，避免空面板。

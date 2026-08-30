@@ -1,10 +1,13 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
   <div class="stage-slot">
-    <!-- Stage placeholder -->
-    <section
-        v-show="!displayResultUrl"
-      class="stage-placeholder"
+    <!-- Stage placeholder：plans/002 交接收尾——v-if + stage-swap 过渡，
+         占位层淡出让位（结果层入场由 result-image-wrap 的 directorViewIn
+         与图片 aicsBloomReveal 承担，不做双重驱动） -->
+    <Transition name="stage-swap">
+      <section
+        v-if="!displayResultUrl"
+        class="stage-placeholder"
       :class="{
         'is-generating': generationBusy,
         'is-error': !!generationError,
@@ -80,6 +83,7 @@
         </div>
       </div>
     </section>
+    </Transition>
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
