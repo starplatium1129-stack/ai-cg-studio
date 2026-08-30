@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>绫季绘境 · UX 审计收尾记录 · 2026-08-30</title>
+<style>
+:root{
+  --paper:#fdf5fa; --card:#ffffff; --ink:#2b2620; --ink-soft:#5c554c; --ink-faint:#8a8278;
+  --plum:#a04472; --plum-soft:rgba(160,68,114,0.10); --good:#4a7c59;
+  --line:rgba(196,116,170,0.20); --shadow:0 4px 14px rgba(158,90,130,0.10);
+  --r-sm:8px; --r-md:12px;
+  --sans:"Noto Sans SC","HarmonyOS Sans SC","PingFang SC","Microsoft YaHei UI",sans-serif;
+  --mono:"JetBrains Mono","Fira Code",Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);font-size:15px;line-height:1.75;color:var(--ink);
+  background-color:var(--paper);
+  background-image:radial-gradient(circle at 1px 1px, rgba(178,96,150,0.075) 1px, transparent 0);
+  background-size:24px 24px;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1020px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+header{padding:clamp(40px,7vw,72px) 0 32px;border-bottom:1px solid var(--line)}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--plum);text-transform:uppercase;margin:0 0 12px}
+h1{font-size:clamp(28px,4.6vw,40px);line-height:1.24;margin:0 0 16px;letter-spacing:-.02em}
+.lede{font-size:clamp(15px,2vw,17px);color:var(--ink-soft);max-width:70ch;margin:0}
+.meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;padding:5px 11px;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);background:#fffafd}
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+h2.sec{font-size:clamp(20px,2.8vw,25px);margin:0 0 8px;letter-spacing:-.01em}
+.secsub{margin:0 0 26px;color:var(--ink-soft);font-size:14.5px;max-width:74ch}
+h3{font-size:16.5px;margin:28px 0 10px;font-weight:600}
+p{margin:0 0 13px}
+code{font-family:var(--mono);font-size:.86em;background:var(--plum-soft);color:var(--plum);padding:1px 6px;border-radius:4px}
+table{width:100%;border-collapse:collapse;margin:20px 0;background:var(--card);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line);font-size:14px}
+th,td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--plum-soft);color:var(--plum);font-weight:600;font-size:12.5px;letter-spacing:.04em}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 20px;margin:12px 0}
+.item h4{margin:0 0 7px;font-size:15px;font-weight:600;line-height:1.5}
+.item p{margin:0 0 7px;font-size:14px}
+.item p:last-child{margin-bottom:0}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;padding:2px 8px;border-radius:999px;margin-right:6px;vertical-align:2px}
+.tag-ok{background:rgba(74,124,89,.14);color:var(--good)}
+.tag-new{background:rgba(95,68,153,.12);color:#5f4499}
+.tag-left{background:rgba(138,109,31,.14);color:#8a6d1f}
+.tag-warn{background:rgba(163,45,45,.14);color:#a32d2d}
+ul{margin:0 0 13px;padding-left:22px}
+li{margin:0 0 6px}
+.loc{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint)}
+footer{padding:36px 0 60px;color:var(--ink-faint);font-size:13px}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <p class="kicker">UX Audit Follow-up</p>
+  <h1>UX 审计收尾记录</h1>
+  <p class="lede">接续 ux-audit-2026-08-30.html 的三次提交，把行动清单里剩下的项做完。所有改动都配了回归断言，每条断言都做过注入回潮的双向验证。</p>
+  <div class="meta">
+    <span class="chip">日期：2026-08-30</span>
+    <span class="chip">提交：15105f2 · 1390a8a · 41a79e1</span>
+    <span class="chip">回归断言：11 → 21 条</span>
+    <span class="chip">门禁：全绿</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <h2 class="sec">做了什么</h2>
+  <p class="secsub">按提交分组。S/M 是审计给出的工作量档。</p>
+
+  <h3>第一批 15105f2</h3>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>作品册多选批量<span class="loc">GalleryView.vue · M</span></h4>
+    <p>接手时是一份中断的半成品：7 处 TS 错误、缺 <code>confirmAction</code> 导入、CSS 一行没写。补齐后清 500 张废稿从约 1500 次点击降到几次。</p>
+    <p>顺带抽了 <code>releaseCardResources()</code>，让单张与批量共用同一条释放路径——批量若只改数组不 <code>revokeObjectURL</code>，会把 LRU 大图工程捅一个洞，几百个 blob 全部泄漏。</p>
+  </div>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>全局搜索补可见入口<span class="loc">useGlobalSearch.ts（新增）· S</span></h4>
+    <p>搜索覆盖 15 页 + 场景 + 作品，此前只有 Ctrl/⌘+K 与 <code>/</code> 两个键盘入口。面板挂在路由之外的 App.vue，导航按钮在路由之内，没有父子关系，所以按 useConfirm 的同构范式建了个单例通道；用递增序号而非布尔量，连点也能被感知。</p>
+  </div>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>出图提交前校验<span class="loc">GenerationActionBar.vue · S</span></h4>
+    <p>原先唯一的校验发生在点击之后，用户只有 2.5 秒读一句提示。改为条件不满足时禁用按钮、原因常驻在按钮旁——只禁用不说明，用户会以为软件坏了。</p>
+  </div>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>首页场景卡不再静默启动任务<span class="loc">HomeView.vue · S</span></h4>
+    <p>去掉首页两处 <code>&amp;generate=1</code>：点场景卡的意图是「用这个场景开始」，不是立刻出图。「调整后生成 / 画这个场景」这类写明动作的按钮才保留该参数。</p>
+  </div>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>术语统一 + 本机引导<span class="loc">多文件 · M</span></h4>
+    <p>色彩脚本页曾有导航「色调脚本」/ h1「色彩情绪」/ hero「色彩剧本」三个中文名，统一为「色彩情绪」，搜索 keywords 保留全部旧叫法。Blueprint / Remix / Result 三个内部术语不再出现在用户可见文案上。</p>
+    <p>GuestGuide 不再以 <code>isNonLocal</code> 为前提——单人本机部署下该条件恒假，主人自己反而永远看不到引导；文案按本机 / 访客分流。页脚与引导卡片补 docs/ 入口，42 份文档此前在应用内零引用。</p>
+  </div>
+
+  <h3>第二批 1390a8a</h3>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>CFG / Steps 可精确调参<span class="loc">GenerationParamsPanel.vue · M</span></h4>
+    <p>原先 CFG 只有 8 档、Steps 只有 6 档下拉，想跑 CFG 6.5 做 A/B 对比做不到；而同项目的 AnimaQuickPanel 早就是 number + min/max/step，两条出图路体验割裂。</p>
+    <p>改为可输入的数字框，常用档位降级为 datalist 建议——「挑一个就行」的便利保留，精确调参也做得到。自由输入的代价是用户能把它清空、填 0 或填 999，补了 <code>normalize()</code> 夹回合法区间，不让 NaN 顺着出图请求流到后端。</p>
+  </div>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>Anima 表单标签关联<span class="loc">AnimaQuickPanel.vue · S</span></h4>
+    <p>LoRA / Seed / Steps / CFG / 尺寸此前是裸 <code>&lt;span&gt;</code> 或没有 for 的 label，读屏只播「编辑框 数字」。统一改为 label[for] + 控件 id；id 用 <code>useId()</code> 生成，硬编码在多实例时会让标签指向错的控件。</p>
+  </div>
+
+  <h3>第三批 41a79e1</h3>
+  <div class="item">
+    <h4><span class="tag tag-new">P1</span>出图参数可恢复默认<span class="loc">promptBuilderStore.ts · S</span></h4>
+    <p>审计把「无法精确输入」与「无参数重置」列为同一条 P1，前一批补了前半，这里补后半。</p>
+    <p>关键坑：<code>applyModelProfileToParams</code> 会跳过用户碰过的字段（touched 机制），所以必须先清 <code>sdParamsTouched</code> 再套默认值。顺序颠倒的话「恢复默认」点下去界面纹丝不动，用户只会判定按钮坏了——这条顺序已写成断言。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec">验证</h2>
+  <p class="secsub">不是「跑通了」，是「跑通了且能拦住回潮」。</p>
+  <table>
+    <tr><th>门禁</th><th>结果</th><th>说明</th></tr>
+    <tr><td>test-ux-regressions</td><td>21 / 21</td><td>新增 10 条断言，每条做过注入回潮双向验证</td></tr>
+    <tr><td>test:frontend</td><td>142 / 142</td><td>中途一次 6 errors 是读到并行会话写到一半的 spec，重跑即过</td></tr>
+    <tr><td>typecheck:app</td><td>0 error</td><td>排除他人在途的 promptPolicy.ts 后</td></tr>
+    <tr><td>eslint</td><td>0 error</td><td>仅有存量 max-lines 警告</td></tr>
+    <tr><td>lint:animations</td><td>4 / 4 基线</td><td>未新增豁免</td></tr>
+    <tr><td>check-contrast</td><td>651 处 FAIL 0</td><td>含 SFC 局部文字色补扫</td></tr>
+    <tr><td>build 预算</td><td>134.2 / 140 KiB</td><td>18 路由全过，PromptBuilderView 已达 95.7%</td></tr>
+  </table>
+  <div class="item">
+    <h4><span class="tag tag-warn">存量</span>两处与他人在途工作相关，未处理</h4>
+    <p>① <code>src/utils/promptPolicy.ts</code> 8 处类型错误（Set 上直接调 <code>.some</code>，应为 <code>[...set].some</code>），来自并行会话的 Krea 2 镜头可见性改动；② build 时 esbuild 的 <code>Unexpected "@media"</code> 警告，用 HEAD 原版 CSS 构建同样出现 1 次，与本次改动无关。</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="sec">还剩什么</h2>
+  <p class="secsub">审计里没做完的部分，都不是阻断性问题。</p>
+  <ul>
+    <li><span class="tag tag-left">P1</span><strong>Gallery 检索弱、筛选状态不入 URL</strong> — 只有「收藏 + 项目」两个控件，Remix 后返回筛选与滚动位置双丢。M 级。</li>
+    <li><span class="tag tag-left">P1</span><strong>/chat 既不预热又强制整页刷新</strong> — 路由跳过预热，还有 420ms 转场，是全程最慢一步。M 级。</li>
+    <li><span class="tag tag-left">P2</span><strong>断点收敛</strong> — 8 档断点里 1200 完全空转，vue 侧残留 440/700/760 三个档外值；建议新增 max-height:720 矮窗档。</li>
+    <li><span class="tag tag-left">P2</span><strong>Toast 无堆叠上限</strong>、<strong>16 处 <code>:disabled="generationBusy"</code> 无 title 解释原因</strong>、<strong>无粘贴图片入口</strong>、<strong>场景探索页筛选与页码不入 URL</strong>。</li>
+  </ul>
+  <p class="loc">优先做前两条：它们直接影响「找东西」和「进房间」这两件最高频的事。P2 四项属于打磨，可以等哪天顺手。</p>
+</section>
+
+</main>
+<footer class="wrap">三次提交均已 push 到 origin/main · 配套报告：docs/ux-audit-2026-08-30.html（原始审计）、docs/design-audit-recheck-2026-08-29.html（美术维度 8.25）· 2026-08-30</footer>
+</body>
+</html>
