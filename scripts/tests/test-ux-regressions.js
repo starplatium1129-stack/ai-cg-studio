@@ -222,6 +222,27 @@ const CHECKS = [
     },
   },
   {
+    id: 'P2 场景探索页搜索词必须进 URL',
+    file: 'src/views/SceneExplorerView.vue',
+    why: '刷新或从别处返回时白搜一次。只同步 q 这一个参数：character / scene 是'
+      + '别的页面带进来的深链参数，把本页筛选全写进 query 会和它们互相覆盖。',
+    assert(source) {
+      const code = stripComments(source);
+      return /route\.query\.q/.test(code) && /router\.replace/.test(code);
+    },
+  },
+  {
+    id: 'P2 反推必须支持粘贴图片',
+    file: 'src/components/director/DirectorStagePanel.vue',
+    why: '本地反推此前只能走文件选择器，而真要用的那一刻，图往往已经在剪贴板里'
+      + '（刚截的图、从参考站复制的），多一趟「打开对话框找文件」纯属多余。'
+      + '监听器要挂在可聚焦的元素上——浏览器只把 paste 派发给焦点元素。',
+    assert(source) {
+      const code = stripComments(source);
+      return /@paste="onInterrogatePaste"/.test(code) && /function onInterrogatePaste/.test(code);
+    },
+  },
+  {
     id: 'P2 响应式断点不得出现档外值',
     file: 'src/assets/css/design-system.css',
     why: '断点档位是 480 / 600 / 768 / 900 / 1000 / 1200 / 1380 / 2560（见本文件 '

@@ -196,6 +196,7 @@
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
+import type { LocationQueryRaw } from 'vue-router'
 import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
@@ -291,6 +292,7 @@ function railIconName(icon: string | undefined): ArchiveIconName {
 }
 
 const route = useRoute()
+const router = useRouter()
 const sceneStore = useSceneStore()
 const scenes = ref<ExplorerScene[]>([])
 const curation = ref<ExplorerCuration>({ curatedSceneIds:[], moodRails:[], signatureSceneIds:[], reviewSceneIds:[] })
@@ -328,6 +330,28 @@ const debouncedQuery = ref('')
 watchDebounced(searchQuery, (value) => {
   debouncedQuery.value = value
 }, { debounce: 150, maxWait: 0, immediate: true })
+
+/**
+ * 搜索词进 URL（2026-08-30 UX 审计 P2）：刷新或从别处返回时不至于白搜一次。
+ *
+ * 只同步这一个筛选：character / scene 是别的页面带进来的深链参数，本页的主题
+ * 与分组筛选若一并写进 query，会和它们互相覆盖。分页是「加载更多」式而非页码，
+ * 返回时点几下即可，不值得给它占一个参数位。
+ */
+const queryTerm = typeof route.query.q === 'string' ? route.query.q : ''
+if (queryTerm) searchQuery.value = queryTerm
+
+// 防抖由上面的 watchDebounced 承担（150ms）；这里只在值真变了才改地址，
+// 否则初次从 URL 恢复会多出一次无意义的导航
+watch(debouncedQuery, (value) => {
+  const next = value.trim()
+  const current = typeof route.query.q === 'string' ? route.query.q : ''
+  if (next === current) return
+  const query: LocationQueryRaw = { ...route.query }
+  if (next) query.q = next
+  else delete query.q
+  void router.replace({ query }).catch(() => {})
+})
 const activeTheme = ref('all')
 const activeParticleShape = computed<ParticleShapeId>(() => PARTICLE_SHAPES[activeTheme.value] || 'atelier')
 const activeThemeDefinition = computed(() => themeDef(activeTheme.value))

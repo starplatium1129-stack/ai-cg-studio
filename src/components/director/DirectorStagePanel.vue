@@ -64,8 +64,9 @@
             </button>
             <button class="btn btn-ghost" type="button"
               :disabled="interrogateBusy"
-              :title="interrogateMode === 'caption' ? '本地反推为自然语言Prose（Krea2）' : '本地反推为Danbooru Tag（Anima/SD）'"
-              @click="triggerInterrogatePick">
+              :title="(interrogateMode === 'caption' ? '本地反推为自然语言Prose（Krea2）' : '本地反推为Danbooru Tag（Anima/SD）') + '；聚焦此按钮后可直接粘贴图片'"
+              @click="triggerInterrogatePick"
+              @paste="onInterrogatePaste">
               <ArchiveIcon name="search" />
               <span>{{ interrogateBusy ? '反推中…' : '本地反推' }}</span>
             </button>
@@ -259,13 +260,31 @@ function triggerInterrogatePick() {
 }
 
 async function onInterrogateFile(e: Event) {
-  var input = e.target as HTMLInputElement
-  var file = input.files && input.files[0]
-  if (!file) return
+  const input = e.target as HTMLInputElement
+  const file = input.files && input.files[0]
   // 清空以便同文件可二次触发
   input.value = ''
+  if (file) await runInterrogateFile(file)
+}
+
+/**
+ * 剪贴板里的图片直接反推（2026-08-30 UX 审计 P2）。
+ *
+ * 本地反推此前只能走文件选择器，而真要用的那一刻，图往往已经在剪贴板里了
+ * （刚截的图、从参考站复制的），多一趟「打开对话框找文件」纯属多余。
+ * 监听挂在按钮上是因为浏览器只把 paste 派发给焦点元素，按钮天然可聚焦。
+ */
+function onInterrogatePaste(e: ClipboardEvent) {
+  const image = Array.from(e.clipboardData?.files ?? []).find(f => f.type.startsWith('image/'))
+  if (!image) return
+  e.preventDefault()
+  void runInterrogateFile(image)
+}
+
+/** 反推一张图片：文件选择与剪贴板粘贴共用这一条路径 */
+async function runInterrogateFile(file: File) {
   try {
-    var result = await interrogate(file, interrogateMode.value, 0.35)
+    const result = await interrogate(file, interrogateMode.value, 0.35)
     if (result) emit('interrogateResult', result)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
