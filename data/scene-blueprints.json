@@ -56226,7 +56226,7 @@
       "title": "令 · 龙门酒肆独酌",
       "category": "泰拉古风",
       "characterId": "ling_arknights",
-      "description": "【令 · 龙门酒肆独酌】夜幕下的龙门老街酒肆二楼，白发如瀑的岁之龙女倚栏独坐，将一盏温酒缓缓举至唇边。龙角在黑金旗袍映衬下泛着幽光，她微微眯起金瞳，望着楼下川流的人群轻笑——「千年过去，人间依旧热闹。只是这酒，还是独酌最香。」",
+      "description": "【令 · 龙门酒肆独酌】夜幕下的龙门老街酒肆二楼，蓝发如瀑的岁之龙女倚栏独坐，将一盏温酒缓缓举至唇边。龙角在墨青旗袍映衬下泛着幽光，她微微眯起蓝瞳，望着楼下川流的人群轻笑——「千年过去，人间依旧热闹。只是这酒，还是独酌最香。」",
       "location": "龙门老街酒肆二楼",
       "action": "倚栏独坐举盏温酒轻啜",
       "timeOfDay": "夜晚",
@@ -56242,7 +56242,7 @@
         "chinese_clothes",
         "dragon_girl"
       ],
-      "promptProse": "On the second floor of an old tavern on a Longmen backstreet at night, Ling sits alone by the railing, raising a warm cup of wine to her lips, her waterfall-long white hair spilling over the black qipao, lantern light and amber wine reflections glinting off the lacquered table. The warm lantern glow bathes the carved wooden beams while below the window the night market crowd drifts past in soft bokeh.",
+      "promptProse": "On the second floor of an old tavern on a Longmen backstreet at night, Ling sits alone by the railing, raising a warm cup of wine to her lips, her waterfall-long blue hair spilling over the black qipao, lantern light and amber wine reflections glinting off the lacquered table. The warm lantern glow bathes the carved wooden beams while below the window the night market crowd drifts past in soft bokeh.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
@@ -56659,7 +56659,7 @@
       "title": "令 · 云海山巅观星",
       "category": "泰拉自然",
       "characterId": "ling_arknights",
-      "description": "【令 · 云海山巅观星】绝顶之上，云海在脚下翻涌成浪，银河横贯天际。令立于山巅青石之上，极长的白发在夜风中如瀑飘散，龙角映着星辉，黑金旗袍的下摆轻轻翻飞。她抬手虚握一颗流星的余光，声音飘渺如吟——「朝菌不知晦朔，蟪蛄不知春秋。而我看过太多春秋，仍觉得人间有趣。」",
+      "description": "【令 · 云海山巅观星】绝顶之上，云海在脚下翻涌成浪，银河横贯天际。令立于山巅青石之上，极长的蓝发在夜风中如瀑飘散，龙角映着星辉，墨青旗袍的下摆轻轻翻飞。她抬手虚握一颗流星的余光，声音飘渺如吟——「朝菌不知晦朔，蟪蛄不知春秋。而我看过太多春秋，仍觉得人间有趣。」",
       "location": "绝顶云海青石",
       "action": "立于山巅仰望银河伸臂虚握流星",
       "timeOfDay": "深夜",
@@ -56675,7 +56675,7 @@
         "floating_hair",
         "dragon_girl"
       ],
-      "promptProse": "On the highest peak above a sea of clouds, Ling stands on a mossy boulder with the Milky Way arching overhead, her impossibly long white hair streaming like a waterfall in the night wind, black qipao hem fluttering, one hand raised toward the afterglow of a passing meteor. Pale blue moonlight and drifting cloud mist rim her silhouette against the star-dusted sky.",
+      "promptProse": "On the highest peak above a sea of clouds, Ling stands on a mossy boulder with the Milky Way arching overhead, her impossibly long blue hair streaming like a waterfall in the night wind, black qipao hem fluttering, one hand raised toward the afterglow of a passing meteor. Pale blue moonlight and drifting cloud mist rim her silhouette against the star-dusted sky.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
@@ -56870,7 +56870,7 @@
       "title": "令 · 寝殿春宵",
       "category": "成人",
       "characterId": "ling_arknights",
-      "description": "【令 · 寝殿春宵】岁府寝殿内红烛高照，锦帐半垂。全裸的令斜倚在堆叠的锦被之间，白发如月光般铺满枕席，龙角在烛光下泛着温润的光。她慵懒地朝你招手，声音带着微醺的笑意——「春宵苦短，博士还在等什么呢？过来，与我对饮这最后一杯。」",
+      "description": "【令 · 寝殿春宵】岁府寝殿内红烛高照，锦帐半垂。全裸的令斜倚在堆叠的锦被之间，蓝发如月光般铺满枕席，龙角在烛光下泛着温润的光。她慵懒地朝你招手，声音带着微醺的笑意——「春宵苦短，博士还在等什么呢？过来，与我对饮这最后一杯。」",
       "location": "岁府寝殿",
       "action": "全裸斜倚锦被红烛下慵懒招手",
       "timeOfDay": "深夜",
@@ -56886,7 +56886,7 @@
         "night",
         "lamp"
       ],
-      "promptProse": "Deep at night in the old Sui manor bedchamber, Ling reclines naked among piled silk quilts, her waterfall-long white hair spilling across the pillows like moonlight, red candles burning warm on the lacquered stand as she lifts a hand in a lazy invitation, dragon horns catching the flame light.",
+      "promptProse": "Deep at night in the old Sui manor bedchamber, Ling reclines naked among piled silk quilts, her waterfall-long blue hair spilling across the pillows like moonlight, red candles burning warm on the lacquered stand as she lifts a hand in a lazy invitation, dragon horns catching the flame light.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
@@ -56921,13 +56921,13 @@
         "nipples",
         "long_hair",
         "dragon_horns",
-        "yellow_eyes",
+        "blue_eyes",
         "soft_skin",
         "loving_blush",
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the candlelit bedchamber of the old manor, completely nude Ling reclines on the piled silk quilts with the whole place to herself, her impossibly long white hair spread across the pillows like moonlight, red candle flames flickering over her bare curves and flushed cheeks, golden eyes half-lidded as she lifts a hand in invitation.",
+      "nsfwProse": "In the candlelit bedchamber of the old manor, completely nude Ling reclines on the piled silk quilts with the whole place to herself, her impossibly long blue hair spread across the pillows like moonlight, red candle flames flickering over her bare curves and flushed cheeks, blue eyes half-lidded as she lifts a hand in invitation.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18",
       "coverageTags": [
@@ -57009,7 +57009,7 @@
       "title": "令 · 玉池汤沐",
       "category": "成人",
       "characterId": "ling_arknights",
-      "description": "【令 · 玉池汤沐】岁府汤室的玉池水汽氤氲，青瓷香炉吐着袅袅白烟。令倚着白玉池壁，全裸的身子浸在温水中，湿漉漉的白发贴着光裸的脊背垂入池面，指尖有一搭没一搭地拨弄着水面漂浮的桃花瓣。她眯起金瞳，声音懒洋洋的——「水温正好，雾气也正好……博士，要下来一起泡一会儿吗？」",
+      "description": "【令 · 玉池汤沐】岁府汤室的玉池水汽氤氲，青瓷香炉吐着袅袅白烟。令倚着白玉池壁，全裸的身子浸在温水中，湿漉漉的蓝发贴着光裸的脊背垂入池面，指尖有一搭没一搭地拨弄着水面漂浮的桃花瓣。她眯起蓝瞳，声音懒洋洋的——「水温正好，雾气也正好……博士，要下来一起泡一会儿吗？」",
       "location": "岁府玉池汤室",
       "action": "倚着白玉池壁，指尖拨弄水面花瓣",
       "timeOfDay": "夜晚",
@@ -57026,7 +57026,7 @@
         "petals",
         "incense"
       ],
-      "promptProse": "In the steamy jade pool chamber of the old manor at night, Ling rests her bare back against the white jade wall, wet white hair trailing into the warm water as she lazily stirs the floating peach petals with her fingertips, incense smoke curling from a celadon burner beside the pool, warm candlelight flickering through the carved lattice. The glistening jade surface reflects the soft glow.",
+      "promptProse": "In the steamy jade pool chamber of the old manor at night, Ling rests her bare back against the white jade wall, wet blue hair trailing into the warm water as she lazily stirs the floating peach petals with her fingertips, incense smoke curling from a celadon burner beside the pool, warm candlelight flickering through the carved lattice. The glistening jade surface reflects the soft glow.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -57067,7 +57067,7 @@
         "intimate",
         "close_up"
       ],
-      "nsfwProse": "In the steaming jade pool, completely nude Ling rests her chin on the white jade rim with the whole place to herself, wet white hair plastered over her bare back, petals floating on the water around her exposed breasts as warm vapor curls over her flushed cheeks.",
+      "nsfwProse": "In the steaming jade pool, completely nude Ling rests her chin on the white jade rim with the whole place to herself, wet blue hair plastered over her bare back, petals floating on the water around her exposed breasts as warm vapor curls over her flushed cheeks.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18",
       "negativeTokens": [
@@ -57146,7 +57146,7 @@
       "title": "令 · 纱帐月夜",
       "category": "成人",
       "characterId": "ling_arknights",
-      "description": "【令 · 纱帐月夜】月光透过雕花窗棂洒进寝殿，半垂的纱帐被夜风轻轻拂动。全裸的令倚在窗边，月光在她白皙的肌肤上镀了一层银辉，极长的白发垂到脚踝。她侧过身回眸望你，声音里带着吟诗般的慵懒——「月色如酒，醉人的不是月光，是看月亮的人。」",
+      "description": "【令 · 纱帐月夜】月光透过雕花窗棂洒进寝殿，半垂的纱帐被夜风轻轻拂动。全裸的令倚在窗边，月光在她白皙的肌肤上镀了一层银辉，极长的蓝发垂到脚踝。她侧过身回眸望你，声音里带着吟诗般的慵懒——「月色如酒，醉人的不是月光，是看月亮的人。」",
       "location": "岁府寝殿窗边",
       "action": "全裸倚窗回眸，月光镀身",
       "timeOfDay": "月夜",
@@ -57162,7 +57162,7 @@
         "bedroom",
         "moon"
       ],
-      "promptProse": "In the moonlit bedchamber, Ling leans naked against the lattice window, silver-blue moonlight tracing her bare skin, sheer curtains stirring in the night breeze, her waterfall-long white hair brushing her ankles as she turns back to look over her shoulder at the viewer.",
+      "promptProse": "In the moonlit bedchamber, Ling leans naked against the lattice window, silver-blue moonlight tracing her bare skin, sheer curtains stirring in the night breeze, her waterfall-long blue hair brushing her ankles as she turns back to look over her shoulder at the viewer.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
@@ -57203,7 +57203,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the private bedchamber under the moon, completely nude Ling leans against the lattice window with the whole place to herself, the night breeze stirring sheer curtains over her bare back and exposed breasts, silver moonlight tracing her long white hair as she looks back over her shoulder.",
+      "nsfwProse": "In the private bedchamber under the moon, completely nude Ling leans against the lattice window with the whole place to herself, the night breeze stirring sheer curtains over her bare back and exposed breasts, silver moonlight tracing her long blue hair as she looks back over her shoulder.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18",
       "negativeTokens": [
@@ -57282,7 +57282,7 @@
       "title": "令 · 竹林微醺",
       "category": "成人",
       "characterId": "ling_arknights",
-      "description": "【令 · 竹林微醺】月下竹林的石台上铺着锦垫，酒盏东倒西歪。全裸的令半醉半醒地侧卧在锦垫上，脸颊浮着薄红，龙角沾着夜色，白发散落在竹叶间。她伸手勾住你的衣角，声音软得像化开的酒——「今夜月色这么好……陪我再喝一杯，好不好？」",
+      "description": "【令 · 竹林微醺】月下竹林的石台上铺着锦垫，酒盏东倒西歪。全裸的令半醉半醒地侧卧在锦垫上，脸颊浮着薄红，龙角沾着夜色，蓝发散落在竹叶间。她伸手勾住你的衣角，声音软得像化开的酒——「今夜月色这么好……陪我再喝一杯，好不好？」",
       "location": "岁府后山竹林",
       "action": "全裸半醉侧卧石台锦垫勾人衣角",
       "timeOfDay": "月夜",
@@ -57298,7 +57298,7 @@
         "silk",
         "mist"
       ],
-      "promptProse": "In the moonlit bamboo grove behind the manor, Ling lies half-drunk on a silk-cushioned stone platform, wine cups scattered around her, cheeks flushed, her long white hair spread across the fallen bamboo leaves as she reaches out lazily to catch the viewer’s sleeve.",
+      "promptProse": "In the moonlit bamboo grove behind the manor, Ling lies half-drunk on a silk-cushioned stone platform, wine cups scattered around her, cheeks flushed, her long blue hair spread across the fallen bamboo leaves as she reaches out lazily to catch the viewer’s sleeve.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
@@ -57329,9 +57329,9 @@
         "solo",
         "ling_arknights",
         "adult",
-        "yellow_eyes",
+        "blue_eyes",
         "dragon_horns",
-        "white_hair",
+        "blue_hair",
         "very_long_hair",
         "nude",
         "completely_naked",
@@ -57346,7 +57346,7 @@
         "full_body",
         "@rella"
       ],
-      "nsfwProse": "Lying naked on the silk cushion of the moonlit bamboo platform, Ling tilts her head back with a tipsy smile, one hand reaching out toward the viewer, dappled moonlight sliding over her bare breasts and the long white hair spilled across the bamboo leaves.",
+      "nsfwProse": "Lying naked on the silk cushion of the moonlit bamboo platform, Ling tilts her head back with a tipsy smile, one hand reaching out toward the viewer, dappled moonlight sliding over her bare breasts and the long blue hair spilled across the bamboo leaves.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18",
       "coverageTags": [
