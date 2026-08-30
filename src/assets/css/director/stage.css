@@ -4,7 +4,7 @@
     /* 2026-08-22 动效审计 #6：接活原 workspace-enter-studio 的交接动画——
        v-show 关→开会重启动画，回到画布即获得导演级软落位。 */
     animation:directorViewIn .42s var(--ease-out) both;
-    min-height:clamp(220px, 36vh, 360px);
+    min-height:clamp(380px, 46vh, 560px);
     max-height:580px;
     display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
     border:1px solid color-mix(in srgb,var(--archive-cyan) 18%,var(--border-soft));
@@ -117,7 +117,9 @@
   .pb.focus-mode .pb-topline { align-items:center; justify-content:flex-end; margin-bottom:var(--s-3); }
   .pb.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"stage"; }
   .pb.focus-mode .col-center { width:100%; margin-inline:auto; }
-  .pb.focus-mode .stage-placeholder, .pb.focus-mode #stepResult { min-height:clamp(240px, 38vh, 380px); }
+  /* 专注成片：舞台恢复大尺寸（单列全宽），输出控制台保持紧凑防空位 */
+  .pb.focus-mode .stage-placeholder { min-height:clamp(380px, 46vh, 560px); }
+  .pb.focus-mode #stepResult { min-height:clamp(300px, 40vh, 420px); }
   /* Prompt 监视器默认折叠 */
   .pb .monitor-preview-collapsed .preview-output,
   .pb .monitor-preview-collapsed .token-row,
