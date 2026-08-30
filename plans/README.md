@@ -4,7 +4,7 @@
 | --- | --- | --- | --- |
 | 001 | 修复高频交互的合成层性能 | HIGH | DONE |
 | 002 | 补齐导演台状态交接与退出反馈 | MEDIUM | PARTIAL |
-| 003 | 收敛动效令牌并保留 reduced-motion 反馈 | HIGH | TODO |
+| 003 | 收敛动效令牌并保留 reduced-motion 反馈 | HIGH | DONE |
 
 ## 推荐执行顺序
 

@@ -1,6 +1,6 @@
 # 003 — 收敛动效令牌并保留 reduced-motion 反馈
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: b1ccfc0
 - **Severity**: HIGH
 - **Category**: Accessibility / Cohesion
