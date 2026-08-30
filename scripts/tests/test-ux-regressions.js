@@ -179,6 +179,33 @@ const CHECKS = [
     },
   },
   {
+    id: 'P1 CFG / Steps 必须可精确输入',
+    file: 'src/components/GenerationParamsPanel.vue',
+    why: '原先 CFG 只有 8 档、Steps 只有 6 档下拉，想跑 CFG 6.5 做 A/B 对比做不到；'
+      + '而同项目的 AnimaQuickPanel 早就是 number + min/max/step，两条出图路体验割裂。'
+      + '改成 select 会立刻退回「只能挑预设值」。',
+    assert(source) {
+      const code = stripComments(source);
+      const cfg = code.match(/<(input|select)\b[^>]*params\.cfg[^>]*>/);
+      const steps = code.match(/<(input|select)\b[^>]*params\.steps[^>]*>/);
+      if (!cfg || !steps) return false;
+      const isNumberInput = tag => tag[1] === 'input' && /type="number"/.test(tag[0]);
+      // 自由输入带来了「被清空 / 填 999」的可能，必须有夹取与回退
+      return isNumberInput(cfg) && isNumberInput(steps) && /function normalize\(/.test(code);
+    },
+  },
+  {
+    id: 'P1 Anima 表单控件必须有关联标签',
+    file: 'src/components/AnimaQuickPanel.vue',
+    why: 'Steps / CFG / 尺寸此前只是裸 <span>，读屏播报「编辑框 数字」，听不出这一格'
+      + '是什么。必须用 label[for] 关联控件 id；id 还要用 useId 生成——硬编码 id 在'
+      + '面板多实例时会重复，反而让标签指向错的控件。',
+    assert(source) {
+      const code = stripComments(source);
+      return /useId/.test(code) && /:for="idOf\(/.test(code) && /:id="idOf\(/.test(code);
+    },
+  },
+  {
     id: 'P1 页面中文名不得一名多词',
     file: 'src/components/AppNav.vue',
     why: '同一页面曾同时叫导航「色调脚本」、h1「色彩情绪」、hero「色彩剧本」——'

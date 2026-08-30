@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useId } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -18,6 +18,16 @@ const emit = defineEmits<{
 }>()
 
 function patch(patch: Partial<AnimaGenerationState>) { emit('update:state', patch) }
+
+/**
+ * 表单控件与标签的关联 id（2026-08-30 UX 审计 P1）。
+ *
+ * 此前 LoRA/Seed/Steps/CFG/尺寸的说明文字是裸 <span>，读屏只会播「编辑框
+ * 数字」，不知道这一格是什么。改用 useId 而非硬编码：本面板可能同时存在多个
+ * 实例，硬编码 id 会产生重复 id，读屏与点击标签都会指错控件。
+ */
+const uid = useId()
+function idOf(field: string) { return `${uid}-${field}` }
 
 const loraId = computed({ get: () => props.state.loraId, set: value => patch({ loraId: value }) })
 const loraStrength = computed({ get: () => props.state.loraStrength, set: value => patch({ loraStrength: value }) })
@@ -61,31 +71,31 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <p v-else-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
        <div v-if="capabilities.lora && !noLoraMode" class="anima-row">
-        <label>LoRA</label>
-        <select v-model="loraId" :disabled="busy">
+        <label :for="idOf('lora')">LoRA</label>
+        <select :id="idOf('lora')" v-model="loraId" :disabled="busy">
           <option v-for="l in state.loras" :key="l.id" :value="l.id">{{ l.name || l.id }}</option>
         </select>
-        <span class="anima-inline">强度</span>
-        <input v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
+        <label :for="idOf('strength')" class="anima-inline">强度</label>
+        <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
        </div>
-      <label class="anima-label">正向提示词</label>
-      <textarea :value="state.prompt" rows="4" class="anima-textarea" readonly></textarea>
+      <label :for="idOf('prompt')" class="anima-label">正向提示词</label>
+      <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="anima-textarea" readonly></textarea>
 
        <template v-if="capabilities.negative">
-         <label class="anima-label">负向提示词</label>
-         <textarea :value="state.negative" rows="2" class="anima-textarea" readonly></textarea>
+         <label :for="idOf('negative')" class="anima-label">负向提示词</label>
+         <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="anima-textarea" readonly></textarea>
        </template>
 
       <div class="anima-row">
-        <label>Seed</label>
-        <input v-model.number="seed" type="number" class="anima-num anima-seed" :disabled="busy" />
+        <label :for="idOf('seed')">Seed</label>
+        <input :id="idOf('seed')" v-model.number="seed" type="number" class="anima-num anima-seed" :disabled="busy" />
         <button type="button" class="anima-btn" :disabled="busy" @click="randomSeed">随机</button>
-        <span class="anima-inline">Steps</span>
-         <input v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
-        <span class="anima-inline">CFG</span>
-         <input v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
-        <span class="anima-inline">尺寸</span>
-        <select v-model="size" class="anima-num" :disabled="busy">
+        <label :for="idOf('steps')" class="anima-inline">Steps</label>
+         <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
+        <label :for="idOf('cfg')" class="anima-inline">CFG</label>
+         <input :id="idOf('cfg')" v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
+        <label :for="idOf('size')" class="anima-inline">尺寸</label>
+        <select :id="idOf('size')" v-model="size" class="anima-num" :disabled="busy">
            <option v-for="item in availableSizes" :key="item" :value="item">{{ item.replace('x', '×') }}</option>
         </select>
       </div>
@@ -165,6 +175,9 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-num { width: 72px }
 .anima-seed { width: 140px }
 .anima-inline { font-size: var(--fs-label-xs); opacity: 0.6 }
+/* 行内标签原本是裸 span，改为 label 后会继承上一行 .anima-row label 的 44px
+   最小宽，把 Steps/CFG/尺寸撑开。这里还原成原来的紧凑外观，只换语义不换版式 */
+.anima-row label.anima-inline { min-width: 0 }
 .anima-textarea { width: 100%; background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 6px 8px; font-size: var(--fs-label-xs); resize: vertical; font-family: inherit }
 .anima-progress { display: grid; gap: 5px; margin-top: 4px; }
 .anima-progress-copy { display: flex; justify-content: space-between; gap: 8px; color: var(--text-secondary); font-size: var(--fs-label-xs); }

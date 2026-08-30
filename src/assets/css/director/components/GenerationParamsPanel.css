@@ -14,6 +14,13 @@
   /* 2px 纵向内距:高级设置浮层里的紧凑输入,升到 4px 会顶开两列网格 */
   .pb .seed-input-wrap input { width:110px; padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-deep); color:var(--text-primary); font:400 var(--fs-label-sm) var(--font-mono); }
   .pb .ctrl-seed { min-width: 160px; }
+  /* CFG / Steps 由 select 改为可输入的数字框：沿用设计系统 .input，再按本面板的
+     紧凑网格收一档（与 seed 输入框同一字号，避免两格高低不齐） */
+  .pb .ctrl-num {
+    min-height: 36px;
+    padding: 2px var(--s-2);
+    font: 400 var(--fs-label-sm) var(--font-mono);
+  }
   .pb .btn-mini { min-height: 28px; padding: 0 var(--s-2); font-size: var(--fs-label-xs); }
   .pb .negative-editor textarea {
     min-height: 76px;
