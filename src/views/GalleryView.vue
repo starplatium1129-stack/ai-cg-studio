@@ -18,6 +18,16 @@
     </ArchivePageHero>
 
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
+      <!--
+        展墙搜索（2026-08-30 UX 审计 P1）：攒到几百张之后，「找某一张旧作」是
+        最高频也最痛苦的动作，此前只能靠翻。检索范围含场景名、角色、当时写的
+        故事与完整 prompt——很多旧作只记得里面出现过某个词。
+      -->
+      <div class="gallery-search-field">
+        <input v-model="searchQuery" type="search" class="gallery-search" aria-label="搜索作品"
+          placeholder="搜场景、角色或关键词…" />
+        <button v-if="searchQuery" class="gallery-search-clear" type="button" aria-label="清空搜索" @click="searchQuery = ''">×</button>
+      </div>
       <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" :aria-pressed="favoriteOnly" @click="favoriteOnly = !favoriteOnly">
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
       </button>
@@ -75,7 +85,7 @@
         v-else-if="!visible.length"
         kind="filtered"
         title="当前筛选下没有作品"
-        message="作品仍在本地档案中，重置收藏或项目筛选即可重新显示。"
+        message="作品仍在本地档案中，清空搜索或重置收藏 / 项目筛选即可重新显示。"
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
@@ -265,6 +275,8 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, onActivated, onUnmounted, watch, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import type { LocationQueryRaw } from 'vue-router'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { artworkRepository } from '@/storage/artworkRepository'
@@ -288,6 +300,8 @@ import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storage
 const sceneStore = useSceneStore()
 useScrollReveal()
 const { show: showToast } = useToast()
+const route = useRoute()
+const router = useRouter()
 
 const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 // 键名统一出处：src/utils/storageKeys.ts。本文件曾把项目键写成旧键
@@ -308,6 +322,9 @@ const scenes = ref<Scene[]>([])
 const loras = ref<LoraMeta[]>([])
 const favoriteOnly = ref(false)
 const projectFilter = ref('')
+/** 展墙搜索（2026-08-30 UX 审计 P1）：此前只有「收藏 + 项目」两个控件，
+ *  攒到几百张后找某张旧作只能靠翻。 */
+const searchQuery = ref('')
 const galleryLoading = ref(true)
 const galleryError = ref('')
 const viewerIndex = ref(-1)
@@ -337,12 +354,27 @@ let viewerLoadToken = 0
 let unmounted = false
 
 /* ---------- 派生数据 ---------- */
+/**
+ * 一条作品的检索文本。
+ *
+ * 拼的是「用户会拿来找图的那些词」：场景名、角色、当时写的故事、所属项目，
+ * 最后是完整 prompt——很多旧作只记得里面出现过某个词。prompt 可能很长，
+ * 但几百条记录的拼接 + includes 在毫秒级，为它建索引属于过度设计。
+ */
+function searchHaystack(item: ArtworkRecord): string {
+  return [
+    item.sceneTitle, item.scene, item.character, item.story, item.project, item.prompt,
+  ].filter(part => typeof part === 'string' && part).join(' ').toLowerCase()
+}
+
 const visible = computed(() => {
   let source = favoriteOnly.value ? history.value.filter(i => i.favorite) : history.value.slice()
   if (projectFilter.value) {
     const p = projects.value.find(x => x.id === projectFilter.value)
     if (p) source = source.filter(i => Array.isArray(p.history_ids) && p.history_ids.includes(i.id))
   }
+  const term = searchQuery.value.trim().toLowerCase()
+  if (term) source = source.filter(i => searchHaystack(i).includes(term))
   // 历史是按生成顺序 append 的，展墙必须自己排：最新在前。
   // 之前直接用了存储顺序，所以作品册永远是最旧的排在最上面。
   return source.sort((a, b) => stamp(b) - stamp(a))
@@ -388,6 +420,56 @@ const hasComparableImage = computed(() => {
 function resetGalleryFilters() {
   favoriteOnly.value = false
   projectFilter.value = ''
+  searchQuery.value = ''
+}
+
+/* ---------- 筛选状态进 URL（2026-08-30 UX 审计 P1）----------
+   刷新页面、把链接存成书签、或从别处带着参数跳进来时，筛选条件不该归零。 */
+
+/**
+ * 只在挂载时读 URL。
+ *
+ * 不在 onActivated 读：本页被 KeepAlive 缓存，从 Remix 回来时组件状态还在，
+ * 而那次返回的 URL 大概率是干净的 /gallery——照着它恢复反而会把用户当前的
+ * 筛选清掉，比不做还糟。
+ */
+function restoreFiltersFromQuery() {
+  const q = route.query
+  if (typeof q.fav === 'string') favoriteOnly.value = q.fav === '1'
+  if (typeof q.project === 'string') projectFilter.value = q.project
+  if (typeof q.q === 'string') searchQuery.value = q.q
+}
+
+let syncTimer: ReturnType<typeof setTimeout> | null = null
+/**
+ * 写回 URL。
+ *
+ * 用 replace 而不是 push：筛选是高频微调，不该把后退键变成「逐步撤销筛选」
+ * 的历史栈。搜索输入带 300ms 防抖，避免每敲一个字就改一次地址。
+ */
+function syncFiltersToQuery() {
+  const q = route.query
+  const fav = q.fav === '1'
+  const project = typeof q.project === 'string' ? q.project : ''
+  const term = typeof q.q === 'string' ? q.q : ''
+  // 与地址栏已经一致就什么都不做：挂载时从 URL 恢复会反过来触发这里，
+  // 不挡住会多出一次无意义的导航
+  if (fav === favoriteOnly.value && project === projectFilter.value && term === searchQuery.value.trim()) return
+
+  if (syncTimer) clearTimeout(syncTimer)
+  syncTimer = setTimeout(() => {
+    syncTimer = null
+    // LocationQuery 的值允许是数组（?a=1&a=2），不能断言成 Record<string,string>
+    const query: LocationQueryRaw = { ...route.query }
+    if (favoriteOnly.value) query.fav = '1'
+    else delete query.fav
+    if (projectFilter.value) query.project = projectFilter.value
+    else delete query.project
+    const next = searchQuery.value.trim()
+    if (next) query.q = next
+    else delete query.q
+    void router.replace({ query })
+  }, 300)
 }
 
 const facts = computed(() => {
@@ -1088,6 +1170,8 @@ onMounted(async () => {
     scenes.value = sceneStore.scenes
     loras.value = sceneStore.loras
   } catch (e) { console.warn('gallery data load failed', e) }
+  // 深链 / 刷新后恢复筛选：必须在项目列表读完之后，否则 select 没有选项可匹配
+  restoreFiltersFromQuery()
   void hydrateThumbs()
   await nextTick()
   scanWallCards()
@@ -1112,6 +1196,8 @@ onActivated(() => {
 onUnmounted(() => {
   unmounted = true
   viewerLoadToken += 1
+  // 防抖定时器里握着 router，不请掉会在组件卸载后改一次导航
+  if (syncTimer) { clearTimeout(syncTimer); syncTimer = null }
   cardObserver?.disconnect()
   cardObserver = null
   observedCards.clear()
@@ -1163,8 +1249,9 @@ watch(sentinelEl, el => {
 })
 
 // 筛选变化回到第一页，让用户始终从最新作品看起
-watch([favoriteOnly, projectFilter], () => {
+watch([favoriteOnly, projectFilter, searchQuery], () => {
   renderLimit.value = PAGE_SIZE
+  syncFiltersToQuery()
 })
 </script>
 
@@ -1175,7 +1262,22 @@ watch([favoriteOnly, projectFilter], () => {
 .gallery-subtitle { max-width:660px; margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:var(--lh-loose); }
 .gallery-count { color:var(--text-muted); font:650 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
 
-.gallery-toolbar { max-width:1500px; margin:0 auto clamp(24px,3vw,38px); display:flex; align-items:center; gap:var(--s-2); }
+.gallery-toolbar { max-width:1500px; margin:0 auto clamp(24px,3vw,38px); display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
+/* 展墙搜索：占满富余宽度但设下限，窄屏自己换行 */
+.gallery-search-field { position:relative; flex:1 1 220px; min-width:180px; max-width:340px; }
+.gallery-search {
+  width:100%; min-height:36px; padding:0 34px 0 var(--s-3);
+  border:1px solid var(--border-soft); border-radius:var(--r-terminal);
+  background:var(--bg-deep); color:var(--text-primary);
+  font:400 var(--fs-label-sm) var(--font-sans); outline:none;
+  -webkit-appearance:none; appearance:none; /* 去掉 WebKit 原生清除钮，避免两个 × */
+  transition:border-color var(--motion-hover);
+}
+.gallery-search::placeholder { color:var(--text-muted); }
+.gallery-search:focus { border-color:var(--accent); }
+.gallery-search-clear { position:absolute; top:50%; right:6px; transform:translateY(-50%); display:grid; place-items:center; width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); font-size:var(--fs-body-lg); cursor:pointer; }
+.gallery-search-clear:hover { color:var(--text-primary); }
+.gallery-search-clear:focus-visible { outline:2px solid var(--accent); outline-offset:1px; border-radius:var(--r-sm); }
 .gallery-filter { min-height:36px; padding:0 15px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover); }
 .gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
 .gallery-project { min-height:36px; min-width:140px; padding:0 34px 0 13px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; outline:none; }

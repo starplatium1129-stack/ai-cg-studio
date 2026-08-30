@@ -65,9 +65,19 @@ const router = createRouter({
   }
 })
 
-/** Warm a lazy route without changing location. Used on internal-link intent. */
+/**
+ * Warm a lazy route without changing location. Used on internal-link intent.
+ *
+ * Live2D 路径同样预热（2026-08-30 UX 审计 P1）：进出它们确实要整页刷新
+ * （CSP 需要 unsafe-eval），但刷新之后浏览器仍要重新取一遍 chunk——预热过的
+ * 会命中 HTTP 缓存，整页刷新因此快一截，这正是「/chat 是全程最慢一步」的
+ * 主要来源。
+ *
+ * 安全性：ChatView 的静态依赖链里没有 PixiJS / wl-live2d（它们是运行时按需
+ * 加载的），所以模块求值不需要 eval，在严格 CSP 的文档里预热也不会抛错；
+ * 真抛了也被下面的 catch 吞掉，而整页刷新后会用新文档重新加载，不受影响。
+ */
 export function prefetchRoute(path: string): void {
-  if (LIVE2D_PATHS.has(path)) return
   const route = router.resolve(path)
   for (const record of route.matched) {
     const component = record.components?.default

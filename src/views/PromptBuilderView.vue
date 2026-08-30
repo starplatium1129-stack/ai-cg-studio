@@ -212,28 +212,30 @@
           <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
               :disabled="generationBusy || pb.isPopular"
-              :title="pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined"
+              :title="engineTitle('sd')"
               @click="setDrawEngine('sd')">
               SD 引擎 <span class="engine-sub">{{ pb.isPopular ? '仅工作室角色' : 'WebUI · v18 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
-              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('anima'))" :title="(!pb.isPopular && !supportsDualCharacter('anima')) ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
+              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('anima'))" :title="engineTitle('anima')"
               @click="setDrawEngine('anima')">
               Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v21 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
-              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('krea2'))" :title="(!pb.isPopular && !supportsDualCharacter('krea2')) ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
+              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('krea2'))" :title="engineTitle('krea2')" @click="setDrawEngine('krea2')">
               Krea 2 <span class="engine-sub">{{ pb.isPopular ? '自然语言 · 身份优先' : 'ComfyUI · 自然语言实验' }}</span>
             </button>
           </div>
 
           <div v-if="pb.directorMode === 'pro'" class="base-model-picker">
             <label for="baseModel">底模</label>
-            <select v-if="drawEngine === 'sd'" id="baseModel" v-model="pb.sdModelName" :disabled="generationBusy">
+            <select v-if="drawEngine === 'sd'" id="baseModel" v-model="pb.sdModelName" :disabled="generationBusy"
+              :title="generationBusy ? BUSY_HINT : undefined">
               <option value="">使用 WebUI 当前模型</option>
               <option v-for="model in sd.models.value" :key="model" :value="model">{{ model }}</option>
             </select>
-            <select v-else id="baseModel" :value="animaState.modelId" :disabled="generationBusy" @change="selectAnimaModel">
+            <select v-else id="baseModel" :value="animaState.modelId" :disabled="generationBusy"
+              :title="generationBusy ? BUSY_HINT : undefined" @change="selectAnimaModel">
               <option v-for="model in animaState.models" :key="model.id" :value="model.id" :disabled="model.available === false">
                 {{ model.label || model.id }}{{ model.available === false ? ' · 资源缺失' : '' }}
               </option>
@@ -270,7 +272,7 @@
               class="btn btn-ghost"
               type="button"
               :disabled="generationBusy || batchRunning"
-              title="多选场景蓝图一次出齐，成片在面板里直接预览挑选，全部自动入册历史"
+              :title="generationBusy ? BUSY_HINT : (batchRunning ? '批量任务正在跑，等它出完' : '多选场景蓝图一次出齐，成片在面板里直接预览挑选，全部自动入册历史')"
               @click="batchOpen = true"
             >批量出图 · 多场景</button>
             <span v-if="shotsPending" class="batch-entry-count">
@@ -1033,6 +1035,30 @@ onBeforeRouteLeave(async () => {
 function resetSdParams() {
   if (pb.resetParamsToProfile()) pb.flash('已恢复这套底模的推荐参数')
   else pb.flash('当前底模没有对应的推荐参数档位，未能恢复')
+}
+
+/**
+ * 生成中禁用控件的统一说明（2026-08-30 UX 审计 P2）。
+ *
+ * 同样的文案在 DirectorStagePanel 里也有一份，改动时记得两边一起改。
+ */
+const BUSY_HINT = '生成中，等这一张出完就能用'
+
+/**
+ * 引擎按钮的悬停说明：优先讲「为什么点不了」。
+ *
+ * 顺序是 生成中 > 该引擎不支持当前配置。原先这些按钮在生成中冒出来的仍是
+ * 功能介绍，用户面对「点不动 + 一堆功能说明」只会以为软件坏了。
+ */
+function engineTitle(engine: DrawEngine) {
+  if (generationBusy.value) return BUSY_HINT
+  if (engine === 'sd') return pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined
+  if (!pb.isPopular && !supportsDualCharacter(engine)) {
+    return engine === 'anima'
+      ? '双人模式不支持 Anima，请使用 SD 引擎'
+      : 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎'
+  }
+  return undefined
 }
 
 const generateBlockReason = computed(() => {

@@ -26,11 +26,54 @@ function read(relPath) {
   return fs.readFileSync(path.join(ROOT, relPath), 'utf8');
 }
 
-/** 去掉注释后再匹配，避免把解释性文字里的示例代码算进去。 */
+/**
+ * 去掉注释后再匹配，避免把解释性文字里的示例代码算进去。
+ *
+ * 逐字符扫描而不是正则，是因为模板里常有 accept="image/星号" 这类属性：正则
+ * 会把那个斜杠星号当成块注释起点，一路吞到下一个真正的注释结束标记，于是
+ * 两者之间的整段模板都被删掉，依赖它的断言静默失效——DirectorStagePanel 就
+ * 踩过这个坑（4 处 title 断言一度全部匹配不到）。引号内一律不参与注释识别。
+ *
+ * 注意：本文件的注释里不要连写斜杠星号或星号斜杠——那会提前闭合注释块，
+ * 正是下面这个函数要处理的那类问题。
+ */
 function stripComments(source) {
-  return source
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/(^|[^:])\/\/.*$/gm, '$1');
+  let out = ''
+  let i = 0
+  let quote = null // 当前所处的字符串引号
+  let inLine = false
+  let inBlock = false
+  while (i < source.length) {
+    const ch = source[i]
+    const next = source[i + 1]
+    if (inLine) {
+      if (ch === '\n') { inLine = false; out += ch }
+      i += 1
+      continue
+    }
+    if (inBlock) {
+      if (ch === '*' && next === '/') { inBlock = false; i += 2 }
+      else {
+        // 保留换行，避免把被注释掉的多行挤成一行（行号与上下文都会失真）
+        if (ch === '\n') out += ch
+        i += 1
+      }
+      continue
+    }
+    if (quote) {
+      out += ch
+      if (ch === '\\') { out += next ?? ''; i += 2; continue }
+      if (ch === quote) quote = null
+      i += 1
+      continue
+    }
+    if (ch === '"' || ch === '\'' || ch === '`') { quote = ch; out += ch; i += 1; continue }
+    if (ch === '/' && next === '/') { inLine = true; i += 2; continue }
+    if (ch === '/' && next === '*') { inBlock = true; i += 2; continue }
+    out += ch
+    i += 1
+  }
+  return out
 }
 
 /**
@@ -176,6 +219,64 @@ const CHECKS = [
       + '会把底部对话条永久裁掉，既不能输入也关不掉窗。',
     assert(source) {
       return /min-height:\s*min\(\s*560px\s*,\s*100dvh\s*\)/.test(source);
+    },
+  },
+  {
+    id: 'P2 Toast 必须有同屏上限',
+    file: 'src/composables/useToast.ts',
+    why: '批量失败、轮询报错会在几秒内连发好几条，没有上限时整屏都是提示条，'
+      + '把正在操作的内容全挡住。挤掉多余提示时不能牺牲带内联动作的那几条——'
+      + '那是删除后的撤销入口，清掉等于把撤销机会弄丢。',
+    assert(source) {
+      const code = stripComments(source);
+      return /MAX_VISIBLE/.test(code) && /trimToasts/.test(code) && /!\s*t\.action/.test(code);
+    },
+  },
+  {
+    id: 'P2 生成中禁用的控件必须说明原因',
+    file: 'src/components/director/DirectorStagePanel.vue',
+    why: '生成中这些按钮被禁用时，悬停冒出来的仍是功能介绍——用户面对「点不动 '
+      + '+ 一堆功能说明」只会以为是软件坏了。禁用态必须优先讲为什么点不了。',
+    assert(source) {
+      const code = stripComments(source);
+      return /BUSY_HINT/.test(code) && /:title="generationBusy \? BUSY_HINT/.test(code);
+    },
+  },
+  {
+    id: 'P1 Live2D 路由也必须预热',
+    file: 'src/router/index.ts',
+    why: '进出 Live2D 页要整页刷新（CSP 需要 unsafe-eval），刷新后浏览器得重新取'
+      + '一遍 chunk。预热过的会命中 HTTP 缓存，这是「/chat 是全程最慢一步」里'
+      + '最容易修的一半——以 LIVE2D_PATHS 为由跳过预热，等于把最需要预热的那条路'
+      + '恰好排除掉。（整页刷新本身是 CSP 设计的必然代价，不要为了快而删掉它。）',
+    assert(source) {
+      const code = stripComments(source);
+      return !/if\s*\(\s*LIVE2D_PATHS\.has\(path\)\s*\)\s*return/.test(code);
+    },
+  },
+  {
+    id: 'P1 作品册必须能按关键词检索',
+    file: 'src/views/GalleryView.vue',
+    why: '攒到几百张之后，「找某一张旧作」是最高频也最痛苦的动作，而此前只有'
+      + '「收藏 + 项目」两个控件，找一张图只能靠翻页。',
+    assert(source) {
+      const code = stripComments(source).replace(/<!--[\s\S]*?-->/g, '');
+      return /searchQuery/.test(code) && /type="search"/.test(code);
+    },
+  },
+  {
+    id: 'P1 作品册筛选状态必须进 URL（且只在挂载时恢复）',
+    file: 'src/views/GalleryView.vue',
+    why: '刷新页面或存成书签后筛选条件归零，等于白筛一次。但恢复只应在挂载时做：'
+      + '本页被 KeepAlive 缓存，从 Remix 回来时 URL 是干净的 /gallery，在 '
+      + 'onActivated 里照着它恢复反而会清掉用户当前的筛选，比不做更糟。'
+      + '写回必须走 replace（不污染后退栈）。',
+    assert(source) {
+      const code = stripComments(source);
+      const sync = stripComments(extractFunction(source, 'syncFiltersToQuery'));
+      if (!sync) return false;
+      const calls = code.match(/restoreFiltersFromQuery\(\)/g) || [];
+      return /router\.replace/.test(sync) && /setTimeout/.test(sync) && calls.length >= 1;
     },
   },
   {

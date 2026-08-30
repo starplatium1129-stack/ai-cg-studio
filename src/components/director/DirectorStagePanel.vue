@@ -126,7 +126,7 @@
           class="btn btn-ghost btn-inpaint-action"
           type="button"
           :disabled="generationBusy"
-          title="锁定角色与背景，使用 AI 视觉语义识别一键更换服装"
+          :title="generationBusy ? BUSY_HINT : '锁定角色与背景，使用 AI 视觉语义识别一键更换服装'"
           @click="$emit('openInpaint')"
         >
           <ArchiveIcon name="wardrobe" />
@@ -137,7 +137,7 @@
           class="btn btn-ghost btn-hires-action"
           type="button"
           :disabled="generationBusy"
-          title="使用 2x 高清超分放大"
+          :title="generationBusy ? BUSY_HINT : '使用 2x 高清超分放大'"
           @click="$emit('upscale')"
         >
           <ArchiveIcon name="spark" />
@@ -148,7 +148,7 @@
           class="btn btn-ghost btn-video-action"
           type="button"
           :disabled="generationBusy"
-          title="将当前成片作为首帧，到视频页生成短片（场景预设自动转视频提示词）"
+          :title="generationBusy ? BUSY_HINT : '将当前成片作为首帧，到视频页生成短片（场景预设自动转视频提示词）'"
           @click="$emit('goVideo')"
         >
           <ArchiveIcon name="play" />
@@ -159,7 +159,7 @@
           class="btn btn-ghost btn-video-action"
           type="button"
           :disabled="generationBusy"
-          title="把当前成片作为分镜首帧，攒齐后到「分镜短片」整批生成"
+          :title="generationBusy ? BUSY_HINT : '把当前成片作为分镜首帧，攒齐后到「分镜短片」整批生成'"
           @click="$emit('addToShots')"
         >
           <ArchiveIcon name="gallery" />
@@ -213,6 +213,15 @@ const props = defineProps<{
   shotsPending: number
   hasPrevResult: boolean
 }>()
+
+/**
+ * 生成中禁用控件的统一说明（2026-08-30 UX 审计 P2）。
+ *
+ * 这些按钮原本各有各的 title，但生成中一旦被禁用，悬停冒出来的仍是功能介绍，
+ * 用户看到「点不动 + 一堆功能说明」，只会以为软件坏了。禁用时统一换成原因。
+ * 同样的文案在 PromptBuilderView 里也有一份，改动时记得两边一起改。
+ */
+const BUSY_HINT = '生成中，等这一张出完就能用'
 
 const emit = defineEmits<{
   generate: []

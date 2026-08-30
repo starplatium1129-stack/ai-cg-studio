@@ -24,6 +24,31 @@ const toasts = ref<ToastItem[]>([])
 let nextId = 0
 let listenersInstalled = false
 
+/**
+ * 同屏最多留几条（2026-08-30 UX 审计 P2）。
+ *
+ * 批量失败、轮询报错这类场景会在几秒内连发好几条，没有上限时整屏都是提示条，
+ * 把正在操作的内容全挡住。超过就挤掉最旧的——但见下方 trimToasts 的例外。
+ */
+const MAX_VISIBLE = 4
+
+/**
+ * 超出上限时挤掉多余提示，优先牺牲没有内联动作的。
+ *
+ * 带 action 的那几条（比如删除后的「撤销」）是用户可能还要点的入口，随手清掉
+ * 等于把撤销机会弄丢；如果满屏都是带动作的，宁可多堆几条也不删。
+ */
+function trimToasts() {
+  while (toasts.value.length > MAX_VISIBLE) {
+    // 只在「除最后一条之外」的范围里找牺牲品：最后一条是刚来的，不能刚出现
+    // 就被自己挤掉。slice 从 0 开始，索引可以直接用在原数组上。
+    const victimIndex = toasts.value.slice(0, -1).findIndex(t => !t.action)
+    if (victimIndex < 0) break
+    const [victim] = toasts.value.splice(victimIndex, 1)
+    if (victim.timer) clearTimeout(victim.timer)
+  }
+}
+
 function pauseToast(t: ToastItem) {
   if (t.timer) {
     clearTimeout(t.timer)
@@ -82,6 +107,7 @@ export function useToast() {
     }
     item.timer = setTimeout(() => dismiss(id), duration)
     toasts.value.push(item)
+    trimToasts()
 
     const tones: Record<ToastType, InterfaceTone> = {
       info: 'tap', success: 'success', error: 'warning', warning: 'warning',
