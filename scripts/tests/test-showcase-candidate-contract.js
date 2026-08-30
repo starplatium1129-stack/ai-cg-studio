@@ -417,7 +417,7 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
 test('artist batch: curated artists + 1 no-artist baseline, one artist tag each', () => {
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
   // 2026-08-30 收录 gweda/eufoniuz 后为 41 位（2026-08-29 收录 Rucarachi 后曾为 39 位）
-  assert.strictEqual(artistCount, 41, 'exactly 41 artists in catalog');
+  assert.strictEqual(artistCount, 42, 'exactly 42 artists in catalog');
   const artist = gen.artistBatch(20260812);
   assert.strictEqual(artist.length, artistCount + 1);
   const withTags = artist.filter(item => item.artistId);

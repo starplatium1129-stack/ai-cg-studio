@@ -49,7 +49,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk)'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -63,6 +63,8 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   momoco_haru: 'momoco_haru',
   gweda8593: 'gweda',
   eufoniuz1026: 'eufoniuz',
+  'SOLar_Bim': 'solar_(happymonk)',
+  solar_bim: 'solar_(happymonk)',
 }
 
 function artistDisplayName(id: string): string {
@@ -140,6 +142,7 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   xinzoruo: 'seductive dark anime style with deep chiaroscuro and dangerous atmosphere',
   gweda: 'delicate Korean-style anime illustration with soft thick-paint shading, glossy glass-like eyes, and refined beautiful girls',
   eufoniuz: 'soft adult-oriented anime fan art with cute rounded girls, smooth skin shading, and intimate sweet atmosphere',
+  'solar_(happymonk)': 'glossy adult-oriented game character fan art with bright skin, seductive poses, and vibrant colors',
 }
 
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {

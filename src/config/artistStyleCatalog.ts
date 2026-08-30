@@ -500,4 +500,16 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
     verification: 'tag',
     keywords: ['成人向', '软萌', '少女', '娇甜', '电锯人', '我推的孩子', '色气'],
   },
+  {
+    id: 'solar_(happymonk)',
+    name: 'Solar (Happymonk)',
+    cnName: 'SOLar_Bim',
+    waiTag: 'solar_(happymonk)',
+    animaTag: '@solar (happymonk)',
+    description: '游戏角色色气同人、明亮肌肤与魅惑神情',
+    masterpiece: '《Fate/Grand Order》（玛修/杨贵妃）、《蔚蓝档案》（明日奈/花凛）高人气同人（Danbooru tag 394+ 作品，Twitter @SOLar_Bim）',
+    category: 'pure',
+    verification: 'tag',
+    keywords: ['成人向', '色气', 'fgo', '玛修', '蔚蓝档案', '明日奈', '游戏同人', 'SOLar_Bim'],
+  },
 ])
