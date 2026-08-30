@@ -234,7 +234,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
-import { jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
+import { blobThumbDataUrl, jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 import { formatA1111Parameters, injectPngMetadata } from '@/utils/pngMetadata'
@@ -546,7 +546,22 @@ async function hydrateCard(item: ArtworkRecord) {
   try {
     const blob = item.image_id ? await imgGet(item.image_id) : null
     if (unmounted) return
-    if (blob) { cardUrls[item.id] = trackUrl(URL.createObjectURL(blob)); resolved = true }
+    if (blob) {
+      cardUrls[item.id] = trackUrl(URL.createObjectURL(blob)); resolved = true
+      // 2026-08-30 治本：旧图缺 KV 缩略图（早期回填逻辑不存在）→ 全靠 HD 大图管线
+      // （并发 4 + LRU 40 淘汰），滚动浏览旧区域反复重读大 blob → 一直 loading。
+      // 读到 blob 立即降采样出缩略图垫底并回填 KV：卡片秒出图，后续打开走 KV 秒读。
+      const imageId = item.image_id
+      if (imageId && !thumbUrls[item.id] && !thumbPending.has(imageId)) {
+        thumbPending.add(imageId)
+        blobThumbDataUrl(blob).then(dataUrl => {
+          if (dataUrl) {
+            thumbUrls[item.id] = dataUrl
+            void kvSet(thumbKey(imageId), dataUrl)
+          }
+        }).catch(() => { /* 缩略图失败不影响 HD 显示 */ }).finally(() => thumbPending.delete(imageId))
+      }
+    }
     else if (fallback) { cardUrls[item.id] = fallback; resolved = true }
     else if (item.image_data && String(item.image_data).startsWith('data:image/')) { cardUrls[item.id] = item.image_data; resolved = true }
     else markImageMissing(item.id)
