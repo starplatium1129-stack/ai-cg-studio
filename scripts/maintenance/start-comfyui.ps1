@@ -51,7 +51,9 @@ Start-Process -FilePath $python -ArgumentList @(
   (Join-Path $comfyRoot 'main.py'),
   '--listen', '127.0.0.1',
   '--port', '8188',
-  '--use-sage-attention'
+  '--use-sage-attention',
+  '--fast-disk',
+  '--vram-headroom', '1'
 ) -WorkingDirectory $comfyRoot -RedirectStandardOutput $out -RedirectStandardError $err -WindowStyle Hidden
 
 Write-Host 'Waiting for health check...'
