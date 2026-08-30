@@ -5,62 +5,76 @@
         <div class="voice-title">成片配音</div>
         <div class="voice-sub">中文字幕可单独保留；日文配音稿用于 GPT-SoVITS。</div>
       </div>
-      <span class="voice-state" :class="voiceStateKind">{{ voiceStateLabel }}</span>
-    </div>
-    <div class="voice-controls">
-      <label class="voice-field">角色
-        <select v-model="voiceChar">
-          <option value="nene">宁宁</option>
-          <option value="natsume">夏目</option>
-        </select>
-      </label>
-      <label class="voice-field">语言
-        <select v-model="voiceLang">
-          <option value="ja">日语配音</option>
-          <option value="zh">中文配音</option>
-        </select>
-      </label>
-      <label class="voice-field">情绪
-        <select v-model="voiceEmotion">
-          <option v-for="e in VOICE_EMOTIONS" :key="e.id" :value="e.id">{{ e.label }}</option>
-        </select>
-      </label>
-      <label class="voice-field">语速
-        <select v-model.number="voiceSpeed">
-          <option :value="0.85">慢 0.85×</option>
-          <option :value="1">正常 1.0×</option>
-          <option :value="1.15">快 1.15×</option>
-        </select>
-      </label>
-    </div>
-    <div class="voice-copy">
-      <div class="voice-copy-head">
-        <span class="voice-copy-title">中文字幕</span>
-        <span class="voice-copy-note">画面旁白 / 台词</span>
+      <div class="voice-head-actions">
+        <span class="voice-state" :class="voiceStateKind">{{ voiceStateLabel }}</span>
+        <button class="voice-collapse" type="button"
+          :aria-expanded="!collapsed"
+          :aria-label="collapsed ? '展开配音面板' : '收起配音面板'"
+          :title="collapsed ? '展开配音面板' : '收起配音面板'"
+          @click="collapsed = !collapsed">
+          <ArchiveIcon :name="collapsed ? 'expand' : 'compress'" />
+        </button>
       </div>
-      <textarea class="voice-text voice-caption-text" v-model="voiceCaption" rows="3" placeholder="写下要配的中文台词或旁白…"></textarea>
     </div>
-    <details class="voice-script-details" :open="voiceLang === 'ja'">
-      <summary>日文 / 实际配音稿</summary>
-      <textarea class="voice-text" v-model="voiceScript" rows="3" placeholder="日文配音稿；可从中文一键翻译"></textarea>
-    </details>
-    <div class="voice-actions">
-      <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang !== 'ja'" @click="translateVoice">翻译成日文</button>
-      <button class="btn btn-ghost" type="button" :disabled="!voicePlayText" @click="previewVoice">系统试听</button>
-      <button class="btn btn-primary" type="button" :disabled="voiceBusy || !voicePlayText" @click="generateVoice">
-        {{ voiceBusy ? '生成中…' : '生成 AI 声线' }}
-      </button>
-      <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">重新检测</button>
-    </div>
-    <div class="voice-status">{{ voiceStatus }}</div>
-    <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
-    <audio v-if="voiceAudioUrl" class="voice-audio show" :src="voiceAudioUrl" controls></audio>
-    <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
+    <transition name="voice-panel">
+      <div v-show="!collapsed" class="voice-body">
+        <div class="voice-controls">
+          <label class="voice-field">角色
+            <select v-model="voiceChar">
+              <option value="nene">宁宁</option>
+              <option value="natsume">夏目</option>
+            </select>
+          </label>
+          <label class="voice-field">语言
+            <select v-model="voiceLang">
+              <option value="ja">日语配音</option>
+              <option value="zh">中文配音</option>
+            </select>
+          </label>
+          <label class="voice-field">情绪
+            <select v-model="voiceEmotion">
+              <option v-for="e in VOICE_EMOTIONS" :key="e.id" :value="e.id">{{ e.label }}</option>
+            </select>
+          </label>
+          <label class="voice-field">语速
+            <select v-model.number="voiceSpeed">
+              <option :value="0.85">慢 0.85×</option>
+              <option :value="1">正常 1.0×</option>
+              <option :value="1.15">快 1.15×</option>
+            </select>
+          </label>
+        </div>
+        <div class="voice-copy">
+          <div class="voice-copy-head">
+            <span class="voice-copy-title">中文字幕</span>
+            <span class="voice-copy-note">画面旁白 / 台词</span>
+          </div>
+          <textarea class="voice-text voice-caption-text" v-model="voiceCaption" rows="3" placeholder="写下要配的中文台词或旁白…"></textarea>
+        </div>
+        <details class="voice-script-details" :open="voiceLang === 'ja'">
+          <summary>日文 / 实际配音稿</summary>
+          <textarea class="voice-text" v-model="voiceScript" rows="3" placeholder="日文配音稿；可从中文一键翻译"></textarea>
+        </details>
+        <div class="voice-actions">
+          <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang !== 'ja'" @click="translateVoice">翻译成日文</button>
+          <button class="btn btn-ghost" type="button" :disabled="!voicePlayText" @click="previewVoice">系统试听</button>
+          <button class="btn btn-primary" type="button" :disabled="voiceBusy || !voicePlayText" @click="generateVoice">
+            {{ voiceBusy ? '生成中…' : '生成 AI 声线' }}
+          </button>
+          <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">重新检测</button>
+        </div>
+        <div class="voice-status">{{ voiceStatus }}</div>
+        <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
+        <audio v-if="voiceAudioUrl" class="voice-audio show" :src="voiceAudioUrl" controls></audio>
+        <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
+      </div>
+    </transition>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useToast } from '@/composables/useToast'
 import { voiceApi } from '@/api/voiceApi'
 import '@/assets/css/director/components/VoiceStudio.css'
@@ -73,6 +87,10 @@ const props = defineProps<{
 }>()
 
 const toast = useToast()
+// 2026-08-30：配音使用频率低，默认折叠以省纵向空间；状态记忆在 localStorage（点击标题栏按钮展开/收起）。
+const COLLAPSED_KEY = 'aics-voice-studio-collapsed'
+const collapsed = ref(localStorage.getItem(COLLAPSED_KEY) === '1')
+watch(collapsed, value => localStorage.setItem(COLLAPSED_KEY, value ? '1' : '0'))
 const voiceChar = ref<'nene' | 'natsume'>(props.initialVoice)
 const voiceLang = ref<'ja' | 'zh'>('ja')
 const voiceCaption = ref('')
