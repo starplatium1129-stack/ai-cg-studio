@@ -34,7 +34,13 @@ const refRoot = (() => {
   const candidate = path.join(ws, 'CharacterReferences');
   return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
 })();
-const SHOWCASE_DIR = path.resolve('E:/code/2/lora/AI/SceneShowcase/2026-08-15_v23');
+// 样张目录不再写死版本号（2026-08-30 教训：写死 2026-08-15_v23 而应用经
+// resolveSceneShowcaseDir 已读 v25，样张落错目录导致「效果样子没有新角色」）。
+// 复用网关同一份解析：含 manifest.json 的版本子目录按名倒序取最新（排除
+// .building-*），SCENE_SHOWCASE_DIR 环境变量显式覆盖契约与网关一致。
+const { resolveSceneShowcaseDir } = require('../../server/config');
+const AI_WORKSPACE = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+const SHOWCASE_DIR = resolveSceneShowcaseDir(ROOT, process.env.SCENE_SHOWCASE_DIR, AI_WORKSPACE);
 const MANIFEST_FILE = path.join(SHOWCASE_DIR, 'manifest.json');
 // 2026-08-30：网页端（主工作区 server.js）与桌面端（resources/gateway sidecar）
 // 是两套独立网关，默认均监听 3000；3123 仅是历史 sidecar/桌面更新端点，不是
@@ -235,6 +241,10 @@ async function runPipeline(charId, opts = {}) {
   // Step 5: Showcase 样张渲染与大盘注册
   if (!opts.skipRender) {
     console.log(`\n[5/6 Showcase 样张流水线] 检查与更新官方样张...`);
+    if (!SHOWCASE_DIR || !fs.existsSync(MANIFEST_FILE)) {
+      throw new Error('未解析到活跃样张目录（SceneShowcase 版本子目录缺失或无 manifest.json）；请设置 SCENE_SHOWCASE_DIR 指向目标版本目录后重试');
+    }
+    console.log(`  活跃样张目录: ${SHOWCASE_DIR}`);
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_FILE, 'utf8'));
     const tempDir = path.join(ROOT, 'assets', 'custom-gens', `pipeline-${charId}-temp`);
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
