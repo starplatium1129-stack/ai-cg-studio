@@ -32,7 +32,14 @@
     flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     color: var(--text-muted); font: 500 var(--fs-mono-xs) var(--font-mono);
   }
+  /* 校验未通过的原因：贴在按钮左侧常驻，比 title 悬停提示可靠 */
+  .pb .gen-bar-blocked {
+    flex: 1; min-width: 0; margin-left: auto;
+    color: var(--danger-text); font-size: var(--fs-label-sm); line-height: 1.45;
+  }
   .pb .gen-bar-actions { display: flex; align-items: center; gap: var(--s-2); margin-left: auto; }
+  /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
+  .pb .gen-bar-blocked + .gen-bar-actions { margin-left: 0; }
   .pb .gen-bar-actions .btn { min-height: 38px; font-size: var(--fs-label); padding: var(--s-2) var(--s-4); border-radius: var(--r-pill); }
 
   @media (max-width: 768px) {

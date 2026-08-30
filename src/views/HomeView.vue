@@ -61,11 +61,17 @@
             <span class="dot"></span> 今天可以从这里开始 · <span>{{ sceneCountCopy }}</span>
           </div>
           <div ref="stripEl" class="strip-scroll">
+            <!--
+              不带 &generate=1：点场景卡的意图是「用这个场景开始」，不是「立刻
+              出图」。带上它会在落地瞬间静默启动一次分钟级任务，用户既没预览
+              也没确认，只能干等或手忙脚乱地取消（2026-08-30 UX 审计 P1）。
+              「调整后生成 / 画这个场景」这类写明动作的按钮才带这个参数。
+            -->
             <RouterLink
               v-for="s in featuredScenes"
               :key="s.id"
               class="sc-link"
-              :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`"
+              :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
             >
               <SceneCard :scene="s" mode="strip" :clickable="false" />
             </RouterLink>
@@ -182,11 +188,12 @@
         <RouterLink to="/scene-explorer" class="link">继续找灵感 →</RouterLink>
       </div>
       <div class="recent-scenes-row">
+        <!-- 同上：进场景，不自动开跑 -->
         <RouterLink
           v-for="s in recentScenes"
           :key="s.id"
           class="sc-link"
-          :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`"
+          :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
         >
           <SceneCard :scene="s" mode="strip" :clickable="false" />
         </RouterLink>

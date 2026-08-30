@@ -4,7 +4,7 @@
       chapter="07"
       section="Chromatic record"
       shape="spark"
-      label="色彩剧本的光谱粒子标记"
+      label="色彩情绪的光谱粒子标记"
       caption="COLOR SCRIPT 07 / 08"
       compact
     >

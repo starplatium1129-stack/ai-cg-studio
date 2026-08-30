@@ -178,6 +178,89 @@ const CHECKS = [
       return /min-height:\s*min\(\s*560px\s*,\s*100dvh\s*\)/.test(source);
     },
   },
+  {
+    id: 'P1 页面中文名不得一名多词',
+    file: 'src/components/AppNav.vue',
+    why: '同一页面曾同时叫导航「色调脚本」、h1「色彩情绪」、hero「色彩剧本」——'
+      + '按其中任何一个名字在全局搜索里都可能搜不到它。导航、页面标题必须同一个名字。',
+    assert(source) {
+      const nav = stripComments(source).match(/id:\s*'color-script',\s*label:\s*'([^']+)'/);
+      if (!nav) return false;
+      const page = stripComments(read('src/views/ColorScriptView.vue'))
+        .match(/<h1[^>]*>\s*([^<]+?)\s*<\/h1>/);
+      if (!page) return false;
+      return nav[1] === page[1];
+    },
+  },
+  {
+    id: 'P1 首次引导必须覆盖本机用户',
+    file: 'src/components/GuestGuide.vue',
+    why: '展示条件原为 (isNonLocal || forcedGuest)，而本项目单人本机部署，'
+      + 'isNonLocal 恒为假——主人自己永远看不到引导，docs/ 在应用内也没有入口。',
+    assert(source) {
+      const code = stripComments(source);
+      // 不得再拿「非本机」当作展示前提
+      return !/isNonLocal/.test(code);
+    },
+  },
+  {
+    id: 'P1 出图按钮必须有提交前可见校验',
+    file: 'src/components/director/GenerationActionBar.vue',
+    why: '原先唯一的校验发生在点击之后，用户只有 2.5 秒读一句「请先选择场景或填写故事」。'
+      + '条件不满足时必须禁用按钮、并把原因常驻在按钮旁——只禁用不说明，用户会以为软件坏了。',
+    assert(source) {
+      const code = stripComments(source);
+      return /blockedReason/.test(code) && /:disabled="[^"]*blockedReason/.test(code);
+    },
+  },
+  {
+    id: 'P1 首页场景卡不得静默启动生成',
+    file: 'src/views/HomeView.vue',
+    why: '点场景卡的意图是「用这个场景开始」，不是「立刻出图」。带上 &generate=1 '
+      + '会在落地瞬间启动一次分钟级任务，既没预览也没确认，用户只能干等或者'
+      + '手忙脚乱地取消。只有「调整后生成 / 画这个场景」这类写明动作的按钮才该带它。',
+    assert(source) {
+      // 先剥 HTML 注释：注释里会复述这个参数名，不剥会把解释文字误判成代码
+      const code = stripComments(source).replace(/<!--[\s\S]*?-->/g, '');
+      return !/prompt-builder\?[^`'"\s]*generate=1/.test(code);
+    },
+  },
+  {
+    id: 'P1 全局搜索必须有可见入口',
+    file: 'src/components/AppNav.vue',
+    why: '搜索覆盖 15 个页面 + 场景 + 作品，是本项目最强的捷径，但只有 '
+      + 'Ctrl/Cmd+K 与 `/` 两个键盘入口时，纯鼠标流用户永远发现不了它。'
+      + '导航里必须有一个点得着的按钮。',
+    assert(source) {
+      const code = stripComments(source);
+      return /openGlobalSearch/.test(code) && /nav-search/.test(code);
+    },
+  },
+  {
+    id: 'P1 搜索面板必须响应外部唤起请求',
+    file: 'src/components/GlobalSearch.vue',
+    why: '搜索面板挂在路由之外的 App.vue，导航按钮在路由之内，没有父子关系，'
+      + '只能经单例通道唤起。若这条 watch 被删，按钮会变成点了没反应的死按钮。',
+    assert(source) {
+      const code = stripComments(source);
+      return /watch\(\s*openRequest/.test(code) && /openPanel\(/.test(code);
+    },
+  },
+  {
+    id: 'P1 批量删除必须先确认、再删、并释放图片内存',
+    file: 'src/views/GalleryView.vue',
+    why: '清几百张废稿是真实高频场景。批量路径若绕过确认，一次误点就整组消失；'
+      + '若只改数组而不 revokeObjectURL，相当于在 LRU 大图工程上捅一个洞——'
+      + '删掉的卡片 blob 全部泄漏，几百张图白占内存。顺序必须是确认→软删→释放。',
+    assert(source) {
+      const body = stripComments(extractFunction(source, 'bulkDelete'));
+      if (!body) return false;
+      const confirmAt = body.search(/await\s+confirmAction/);
+      const deleteAt = body.search(/softDeleteArtwork/);
+      const releaseAt = body.search(/releaseCardResources/);
+      return confirmAt >= 0 && deleteAt > confirmAt && releaseAt > deleteAt;
+    },
+  },
 ];
 
 test('UX 审计修复不回潮', () => {

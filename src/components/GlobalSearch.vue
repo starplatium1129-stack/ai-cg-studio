@@ -88,6 +88,7 @@ import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'
 import { kvInit, kvGet } from '@/composables/useKVStore'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
@@ -135,7 +136,9 @@ const PAGES: PageItem[] = [
   { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画风 色彩 色板' },
   { id: 'lora', label: '模型', icon: 'model', path: '/lora', keywords: '模型 lora 权重' },
   { id: 'scenario', label: '剧本模式', icon: 'book', path: '/scenario', keywords: '剧本 分幕 剧情' },
-  { id: 'color-script', label: '色调脚本', icon: 'palette', path: '/color-script', keywords: '色彩 脚本 对照' },
+  // 显示名与页面 h1 统一为「色彩情绪」（2026-08-30 UX 审计 P1）。keywords 里
+  // 保留全部旧叫法：改名之后，按老名字找它的用户不应该什么都搜不到。
+  { id: 'color-script', label: '色彩情绪', icon: 'palette', path: '/color-script', keywords: '色彩 情绪 色调 脚本 剧本 配色 对照' },
   { id: 'manager', label: '场景管理', icon: 'manager', path: '/scene-manager', keywords: '管理 编辑 维护' },
   { id: 'control', label: '控制面板', icon: 'gear', path: '/control', keywords: '控制 服务 设置' },
 ]
@@ -276,6 +279,15 @@ useFocusTrap(panelEl, () => open.value, {
 })
 
 watch(query, () => { activeIndex.value = 0 })
+
+// 可见入口的唤起通道（2026-08-30 UX 审计 P1）：本组件挂在路由之外，导航里的
+// 触发按钮在路由之内，两者没有父子关系，只能经单例请求。watch 的是递增序号
+// 而非布尔量，所以连点也能被感知。
+const { openRequest, openSource } = useGlobalSearchRequest()
+watch(openRequest, () => {
+  if (openRequest.value === 0) return
+  openPanel(openSource.value)
+})
 
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)

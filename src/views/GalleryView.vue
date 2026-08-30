@@ -25,7 +25,26 @@
         <option value="">全部项目</option>
         <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.title }}</option>
       </select>
-      <span class="gallery-toolbar-note">点作品进入沉浸观画</span>
+      <!--
+        多选（2026-08-30 UX 审计 P1）：清 500 张废稿原本要点约 1500 次（每张进大图
+        → 点删除 → 再确认）。删除已改软删可撤销，批量删的风险随之降到可接受。
+      -->
+      <button class="gallery-filter" type="button" :class="{ active: selectMode }"
+        :aria-pressed="selectMode" @click="toggleSelectMode">
+        <ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}
+      </button>
+      <span class="gallery-toolbar-note">{{ selectMode ? '点卡片勾选，再批量移入回收站' : '点作品进入沉浸观画' }}</span>
+    </div>
+
+    <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
+      <span class="gallery-bulk-count" aria-live="polite">已选 {{ selectedIds.size }} / {{ visible.length }}</span>
+      <span class="gallery-bulk-actions">
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="!visible.length"
+          @click="selectAllVisible">{{ allVisibleSelected ? '取消全选' : '全选当前' }}</button>
+        <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size || bulkDeleting"
+          @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>
+        <button class="btn btn-ghost btn-sm" type="button" @click="toggleSelectMode">完成</button>
+      </span>
     </div>
 
     <section aria-live="polite" data-reveal data-reveal-delay="1">
@@ -67,12 +86,19 @@
             v-for="item in group.items"
             :key="item.id"
             class="artwork"
-            :class="{ 'artwork-pending': pendingDeleteId === item.id }"
+            :class="{ 'artwork-pending': pendingDeleteId === item.id, 'artwork-selected': selectMode && selectedIds.has(item.id) }"
             :data-card-id="String(item.id)"
             :style="{ '--art-ratio': ratioOf(item) }"
           >
-            <!-- 快捷工具条 -->
-            <div class="artwork-tools">
+            <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
+            <span v-if="selectMode" class="artwork-check" aria-hidden="true">
+              <ArchiveIcon v-if="selectedIds.has(item.id)" name="success" />
+            </span>
+            <!--
+              快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
+              进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
+            -->
+            <div v-if="!selectMode" class="artwork-tools">
               <template v-if="pendingDeleteId === item.id">
                 <button class="artwork-tool danger" type="button" :disabled="deleting"
                   @click="confirmDelete(item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
@@ -89,7 +115,7 @@
                   <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
                 </button>
                 <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
-                  <ArchiveIcon name="spark" /><span>Remix</span>
+                  <ArchiveIcon name="spark" /><span>沿用配方</span>
                 </RouterLink>
                 <button class="artwork-tool danger" type="button"
                   :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
@@ -102,8 +128,11 @@
             <button
               class="artwork-button"
               type="button"
-              :aria-label="`欣赏作品：${sceneTitle(item.scene, item)}`"
-              @click="openViewer(indexOf(item))"
+              :aria-pressed="selectMode ? selectedIds.has(item.id) : undefined"
+              :aria-label="selectMode
+                ? `${selectedIds.has(item.id) ? '取消选择' : '选择'}作品：${sceneTitle(item.scene, item)}`
+                : `欣赏作品：${sceneTitle(item.scene, item)}`"
+              @click="selectMode ? toggleSelect(item.id) : openViewer(indexOf(item))"
             >
               <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
                 <img
@@ -205,7 +234,7 @@
             @click="toggleFavorite(current)">
             <ArchiveIcon name="love" /><span>{{ current.favorite ? '取消收藏' : '收藏这幅' }}</span>
           </button>
-          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`"><ArchiveIcon name="spark" /> Remix 配方</RouterLink>
+          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
           <button
@@ -243,6 +272,7 @@ import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useToast } from '@/composables/useToast'
+import { confirmAction } from '@/composables/useConfirm'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -294,6 +324,10 @@ const measuredRatios = reactive<Record<string, number>>({})
 /** 待确认删除的条目 id：删除有回收站兜底，但二次确认仍是防手滑的第一道闸 */
 const pendingDeleteId = ref<string | number | null>(null)
 const deleting = ref(false)
+/** 多选模式与已选集合（2026-08-30 UX 审计 P1：批量清理） */
+const selectMode = ref(false)
+const selectedIds = ref(new Set<string | number>())
+const bulkDeleting = ref(false)
 const closeBtn = ref<HTMLElement | null>(null)
 const viewerEl = ref<HTMLElement | null>(null)
 const objectUrls = new Set<string>()
@@ -741,6 +775,23 @@ async function toggleFavorite(item: ArtworkRecord) {
 }
 
 /**
+ * 释放一张卡片占用的内存：blob URL、LRU 登记、缩略图与尺寸缓存。
+ *
+ * 单张删除与批量删除共用这一条路径——审计里「数百张大图不卡」靠的就是
+ * LRU + 显式 revoke，批量清 500 张如果只改数组不释放，会让 blob 全部泄漏，
+ * 等于把最花力气修好的工程又捅一个洞。
+ */
+function releaseCardResources(id: string | number) {
+  const url = cardUrls[id]
+  if (url && url.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url) }
+  delete cardUrls[id]
+  cardLruOrder.delete(id)
+  delete thumbUrls[id]
+  if (missingImageIds.value.delete(id)) missingImageIds.value = new Set(missingImageIds.value)
+  delete measuredRatios[id]
+}
+
+/**
  * 删除（2026-08-30 UX 审计 P0-8：原为硬删不可恢复）。
  *
  * 现在默认走软删：列表与项目引用立即消失（界面反馈与从前一致），但原图
@@ -759,14 +810,7 @@ async function confirmDelete(item: ArtworkRecord) {
     await artworkRepository.softDeleteArtwork(item.id)
     history.value = next
 
-    // 释放这张卡自己的 object URL，并清掉派生缓存
-    const url = cardUrls[item.id]
-    if (url && url.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url) }
-    delete cardUrls[item.id]
-    cardLruOrder.delete(item.id)
-    delete thumbUrls[item.id]
-    if (missingImageIds.value.delete(item.id)) missingImageIds.value = new Set(missingImageIds.value)
-    delete measuredRatios[item.id]
+    releaseCardResources(item.id)
     pendingDeleteId.value = null
 
     // 查看器开着就顺移到下一幅，删到空则关闭
@@ -785,6 +829,97 @@ async function confirmDelete(item: ArtworkRecord) {
   } finally {
     deleting.value = false
   }
+}
+
+/* ---------- 多选批量（2026-08-30 UX 审计 P1）---------- */
+
+function toggleSelectMode() {
+  selectMode.value = !selectMode.value
+  if (!selectMode.value) selectedIds.value = new Set()
+}
+
+function toggleSelect(id: string | number) {
+  const next = new Set(selectedIds.value)
+  if (next.has(id)) next.delete(id)
+  else next.add(id)
+  selectedIds.value = next
+}
+
+const allVisibleSelected = computed(() =>
+  visible.value.length > 0 && visible.value.every(item => selectedIds.value.has(item.id)))
+
+function selectAllVisible() {
+  if (allVisibleSelected.value) { selectedIds.value = new Set(); return }
+  selectedIds.value = new Set(visible.value.map(item => item.id))
+}
+
+/**
+ * 批量移入回收站。
+ *
+ * 逐条走软删（与单张同一实现），因此同样享受 30 天保留与「已移入回收站」的
+ * 一致性；失败不中断，最后如实汇报成功/失败条数——批量操作最怕的是「以为全
+ * 成了，其实只成了一半」。
+ */
+async function bulkDelete() {
+  if (bulkDeleting.value || !selectedIds.value.size) return
+  const count = selectedIds.value.size
+  const ok = await confirmAction({
+    title: `把 ${count} 幅作品移入回收站？`,
+    message: '它们会立即从展墙消失，但原图保留 30 天，可在提示里一键撤销。',
+    confirmLabel: '移入回收站',
+    danger: true,
+  })
+  if (!ok) return
+
+  bulkDeleting.value = true
+  const ids = [...selectedIds.value]
+  const failed: (string | number)[] = []
+  try {
+    for (const id of ids) {
+      try {
+        const result = await artworkRepository.softDeleteArtwork(id)
+        if (!result.deleted) failed.push(id)
+      } catch {
+        failed.push(id)
+      }
+    }
+
+    const done = ids.length - failed.length
+    if (done) {
+      // 查看器可能正指着被删掉的某一幅，先收起来，避免停在一张空图上
+      if (viewerIndex.value >= 0) closeViewer()
+      // 软删已在仓储层摘掉项目引用，整体重载一次即可同步展墙与项目下拉
+      for (const id of ids) if (!failed.includes(id)) releaseCardResources(id)
+      selectedIds.value = new Set()
+      await loadGalleryStorage()
+    }
+
+    if (failed.length) {
+      showToast(done
+        ? `${done} 幅已移入回收站，${failed.length} 幅没成功，请重试`
+        : `一幅都没能移进去，请重试`, 'warning', 5000)
+    } else {
+      showToast(`${done} 幅已移入回收站，30 天内可撤销`, 'info', 6000, {
+        label: '撤销',
+        onClick: () => { void undoBulkDelete(ids) },
+      })
+    }
+  } finally {
+    bulkDeleting.value = false
+  }
+}
+
+/** 批量撤销：整组恢复，失败条数如实汇报。 */
+async function undoBulkDelete(ids: (string | number)[]) {
+  let restored = 0
+  for (const id of ids) {
+    try {
+      if ((await artworkRepository.restoreArtwork(id)).restored) restored += 1
+    } catch { /* 逐条继续，不因一条失败放弃其余 */ }
+  }
+  await loadGalleryStorage()
+  showToast(restored ? `已把 ${restored} 幅放回展墙` : '这些作品已不在回收站，无法恢复',
+    restored ? 'success' : 'warning')
 }
 
 /** 撤销软删：整条恢复（历史条目 + 项目引用），刷新列表即可见。 */
@@ -1047,6 +1182,11 @@ watch([favoriteOnly, projectFilter], () => {
 .gallery-project:focus { border-color:var(--accent); }
 .gallery-toolbar-note { margin-left:auto; padding-right:var(--s-3); color:var(--text-muted); font-size:var(--fs-mono-sm); white-space:nowrap; }
 
+/* 批量操作条（2026-08-30 UX 审计 P1）：只在勾选态出现，避免常态占一行 */
+.gallery-bulkbar { max-width:1500px; margin:0 auto var(--s-3); display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-2) var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-dossier); background:var(--accent-soft); }
+.gallery-bulk-count { color:var(--text-primary); font:650 var(--fs-label-sm) var(--font-mono); white-space:nowrap; }
+.gallery-bulk-actions { display:flex; align-items:center; gap:var(--s-2); margin-left:auto; flex-wrap:wrap; }
+
 .gallery-wall { max-width:1500px; margin:0 auto; display:grid; columns: 4 260px; grid-template-columns:repeat(4, minmax(0,1fr)); gap:clamp(12px,1.6vw,24px); align-items:start; }
 .gallery-loading-wall { min-height:340px; }
 .artwork { position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
@@ -1056,6 +1196,10 @@ watch([favoriteOnly, projectFilter], () => {
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:3px; padding:3px; opacity:0; transform:translateY(-4px); pointer-events:none; border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
+/* 多选选中态：外描边用 box-shadow 而非 border 位移，不改布局、不触发重排 */
+.artwork-selected { border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 42%,transparent), var(--shadow-md); }
+.artwork-check { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:1.5px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
+.artwork-selected .artwork-check { border-color:var(--accent); background:var(--accent); color:var(--text-inverse); }
 .artwork-tool { display:inline-flex; align-items:center; gap:5px; min-height:28px; padding:0 11px; border:1px solid transparent; border-radius:var(--r-pill); background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
 .artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
 /* 全局 a:hover 链接色 (0,1,1) 会盖过 .artwork-tool 的 on-art 墨色——深色画膜上变暗梅色难以辨认，钉回 */

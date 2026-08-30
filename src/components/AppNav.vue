@@ -43,6 +43,21 @@
           </div>
         </details>
 
+        <!--
+          全局搜索的可见入口（2026-08-30 UX 审计 P1）：搜索覆盖 15 个页面 +
+          场景 + 作品，但此前只有 Ctrl/Cmd+K 与 `/` 两个键盘入口，纯鼠标流
+          用户永远发现不了这个最强的捷径。
+          按钮只有图标没有可见文字，所以 aria-label 是必需的（无可见文字时
+          不存在 SC 2.5.3 的「标签覆盖可见文字」问题）；快捷键提示放 title。
+        -->
+        <button
+          type="button"
+          class="nav-search"
+          aria-label="搜索页面、场景与作品"
+          title="搜索页面、场景与作品（Ctrl/⌘ + K）"
+          @click="openSearch"
+        ><ArchiveIcon name="search" /></button>
+
         <!-- 主题已锁定深色（2026-08-28 审计 · 方案 A），切换按钮移除 -->
         <AppSoundToggle />
       </div>
@@ -63,6 +78,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
+import { openGlobalSearch } from '@/composables/useGlobalSearch'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 
 const route = useRoute()
@@ -98,7 +114,9 @@ const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
     items: [
       { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
       { id: 'scenario',  label: '剧本',     to: '/scenario',     icon: 'scene' },
-      { id: 'color-script', label: '色调脚本', to: '/color-script', icon: 'palette' },
+      // 与页面 h1 统一叫「色彩情绪」（2026-08-30 UX 审计 P1）：此前导航「色调脚本」、
+      // h1「色彩情绪」、hero「色彩剧本」三个中文名并存，搜哪个都可能对不上。
+      { id: 'color-script', label: '色彩情绪', to: '/color-script', icon: 'palette' },
     ],
   },
   {
@@ -124,6 +142,14 @@ const secondaryActive = computed(() => secondaryNav.some(n => n.id === activeId.
 
 function closeMenu() { menuOpen.value = false }
 function toggleMenu() { menuOpen.value = !menuOpen.value }
+
+/**
+ * 唤起全局搜索。面板由 App.vue 挂在路由之外，与导航没有父子关系，
+ * 走 useGlobalSearch 单例通道；传 'pointer' 是为了让面板按鼠标来源定位焦点。
+ */
+function openSearch() {
+  openGlobalSearch('pointer')
+}
 
 function onDocClick(e: MouseEvent) {
   if (moreEl.value?.open && !moreEl.value.contains(e.target as Node)) {
@@ -159,4 +185,27 @@ onUnmounted(() => {
 @media (max-width: 480px) {
   .nav-logo { height: 28px; max-width: 150px; }
 }
+
+/* 搜索入口：与音效开关同规格的圆形图标钮，视觉权重低于导航项 */
+.nav-search {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 50%;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--motion-hover), border-color var(--motion-hover),
+    background var(--motion-hover), transform var(--motion-hover);
+}
+.nav-search:hover {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));
+  background: var(--accent-soft);
+}
+.nav-search:active { transform: scale(.97); }
+.nav-search:focus-visible { outline: none; box-shadow: var(--ring); }
 </style>

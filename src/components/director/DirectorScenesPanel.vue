@@ -1,7 +1,8 @@
 <template>
   <div class="panel step-panel" id="stepScene">
     <template v-if="pb.isPopular">
-      <div class="panel-title">场景建议 · Blueprint<span class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
+      <!-- Blueprint 是内部数据结构的名字，不该出现在用户看得见的标题上 -->
+      <div class="panel-title">场景建议<span class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
       <PopularBlueprintPicker
         :pool="popularBlueprintPool"
         :categories="blueprintCategories"

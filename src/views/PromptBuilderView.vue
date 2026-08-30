@@ -156,6 +156,7 @@
           :size="genBarSize"
           :anima-sizes="animaBarSizes"
           :preset-summary="generationPresetSummary"
+          :blocked-reason="generateBlockReason"
           @update:size="genBarSize = $event"
           @generate="callGenerate()"
           @cancel="cancelGeneration"
@@ -205,7 +206,7 @@
 
         <!-- Result panel -->
         <div class="result-frame step-panel" id="stepResult">
-          <div class="panel-title">输出 Result</div>
+          <div class="panel-title">出图结果</div>
 
           <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
@@ -1013,6 +1014,19 @@ onBeforeRouteLeave(async () => {
     confirmLabel: '仍要离开',
     danger: true,
   })
+})
+
+/**
+ * 出图前的可见校验（2026-08-30 UX 审计 P1）。
+ *
+ * 规则必须与 callGenerate 里的守卫保持一致：两处一旦漂移，结果就是「按钮亮着
+ * 但点了才报错」，比没校验更让人困惑。callGenerate 的守卫保留作防御，这里
+ * 负责让原因在点之前就看得见。
+ */
+const generateBlockReason = computed(() => {
+  if (!livePrompt.value) return '先选一个场景，或写点故事，我才知道要画什么'
+  if (pb.isPopular && drawEngine.value === 'sd') return '热门角色请切到 Anima 或 Krea 2'
+  return ''
 })
 
 async function callGenerate(opts: { disableLora?: boolean } = {}) {

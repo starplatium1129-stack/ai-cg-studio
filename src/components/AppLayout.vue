@@ -18,7 +18,18 @@
       </RouterView>
     </main>
     <footer class="site-footer">
-      <p>© {{ currentYear }} 绫季绘境 · 个人创作工作台</p>
+      <!--
+        docs/ 由网关静态托管（server.js 的 /docs 路由）。此前 42 份文档在应用内
+        一个入口都没有，等于写了没人看（2026-08-30 UX 审计 P1）。
+        印章 ::after 是行内元素，所以链接并入同一行，印章仍收在行尾。
+      -->
+      <p>
+        © {{ currentYear }} 绫季绘境 · 个人创作工作台
+        <span class="site-footer-sep" aria-hidden="true">·</span>
+        <a class="site-footer-link" href="/docs/getting-started.html" target="_blank" rel="noopener">使用指南</a>
+        <span class="site-footer-sep" aria-hidden="true">·</span>
+        <a class="site-footer-link" href="/docs/index.html" target="_blank" rel="noopener">文档索引</a>
+      </p>
     </footer>
     <!-- 日系竖排假名水印：纯装饰层（aria-hidden），样式与主题适配在 design-system.css -->
     <div class="kana-watermark" aria-hidden="true">
@@ -132,6 +143,15 @@ function onLeave(el: Element, done: () => void) {
   border-top: 1px solid var(--border-soft);
   background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
 }
+/* 页脚文档入口：docs/ 静态托管目录的应用内唯一入口 */
+.site-footer-sep { margin: 0 var(--s-2); color: var(--text-disabled); }
+.site-footer-link {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.site-footer-link:hover { color: var(--accent); }
+.site-footer-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
 /* 朱印印章：页脚签名（色值由 --danger 派生，无硬编码） */
 .site-footer::after {
   content: "綾季";
