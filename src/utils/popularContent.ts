@@ -739,12 +739,13 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 导演面板与蓝图推断的镜头/光照决策在 Krea 上被整体丢弃（438 蓝图实测
     // 仅剩 rule_of_thirds 一句构图）。经 promptCompiler 的 cameraPhrase/
     // lightPhrase 散文转换器织入；光照只取主词 + 前 2 个氛围词，并剔除
-    // night/stars 等时间天体词（散文里 "lit by moonlight and night" 不成立；
-    // 这些词保留给 Anima 标签流控制背景暗度）。
-    const KREA_PROSE_LIGHT_DROP = /^(?:night|stars)$/
+    // 2026-08-30 调研放宽：只丢 night（"lit by moonlight and night" 重复不成立），
+    // 保留 stars（"lit by moonlight and stars" 自然，夜景氛围更足，Krea2 官方
+    // "name the lighting" 指南）；氛围词从 2 个放宽到 4 个，光照描述更丰富。
+    const KREA_PROSE_LIGHT_DROP = /^(?:night)$/
     const kreaLightingTokens = lightingKey
       ? [...new Set([lightingToken,
-        ...(AMBIENCE_TOKENS[lightingKey] || []).filter(token => token && !KREA_PROSE_LIGHT_DROP.test(token)).slice(0, 2)])]
+        ...(AMBIENCE_TOKENS[lightingKey] || []).filter(token => token && !KREA_PROSE_LIGHT_DROP.test(token)).slice(0, 4)])]
       : []
     const plan = createPromptPlan({
       subjectProse: outfitActive

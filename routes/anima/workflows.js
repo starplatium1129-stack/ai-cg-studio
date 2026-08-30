@@ -65,7 +65,7 @@ function buildWorkflow(input) {
      // 样张 seed 20260822 审核通过）。2026-08-23 实测增强链路与原 euler 标准链路出图
      // 时间一致，原链路退役：LoRA 栈后固定挂 T-Enhancer 细节补丁，采样器固定社区
      // 验证的 er_sde，解码后固定 RCAS 锐化，不再暴露关闭开关。
-    workflow['14'] = { class_type:'ComfyUI-Krea2T-Enhancer', inputs:{ model:kreaModel, enabled:true, strength:1, debug:false } };
+    workflow['14'] = { class_type:'ComfyUI-Krea2T-Enhancer', inputs:{ model:kreaModel, enabled:true, strength:1.3, debug:false } };
     kreaModel = ['14', 0];
     workflow['7'] = { class_type:'KSampler', inputs:{ model:kreaModel, positive:positive, negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'er_sde', scheduler:'simple', denoise:1 } };
     workflow['15'] = { class_type:'ImageSharpenKJ', inputs:{ image:['8', 0], method:'rcas', 'method.strength':0.75 } };
