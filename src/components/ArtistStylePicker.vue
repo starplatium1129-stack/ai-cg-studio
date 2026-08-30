@@ -90,6 +90,7 @@
               <span v-if="option.cnName" class="artist-cn-name">{{ option.cnName }}</span>
               <span class="artist-en-name">{{ option.name }}</span>
             </strong>
+            <small v-if="isFrequent(option.id)" class="artist-frequent" title="常用画师：按使用次数自动置顶">常用</small>
             <small class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
           <small class="artist-desc">{{ option.description }}</small>
@@ -116,6 +117,7 @@ import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import {
   type ArtistStyleEngine,
+  type ArtistStyleOption,
   type ArtistStyleVerification,
   ARTIST_COMBO_PRESETS,
   ARTIST_CATEGORIES,
@@ -132,6 +134,36 @@ const emit = defineEmits<{ 'update:selected': [value: string[]] }>()
 const query = ref('')
 const currentCategory = ref<string>('all')
 
+// 2026-08-30：常用画师自动置顶——记录点选/一键应用次数（localStorage），
+// 使用过的画师按次数降序排到网格最前，避免每次翻到底部找常用画师。
+const USAGE_KEY = 'aics-artist-usage'
+function loadUsage(): Record<string, number> {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(USAGE_KEY) || '{}')
+    return parsed && typeof parsed === 'object' ? parsed : {}
+  } catch { return {} }
+}
+const usageCounts = ref<Record<string, number>>(loadUsage())
+function recordUsage(ids: string[]) {
+  if (!ids.length) return
+  const valid = new Set(ARTIST_STYLE_OPTIONS.map(option => option.id))
+  const next = { ...usageCounts.value }
+  let changed = false
+  for (const id of ids) {
+    if (!valid.has(id)) continue
+    next[id] = (next[id] || 0) + 1
+    changed = true
+  }
+  if (!changed) return
+  usageCounts.value = next
+  try { localStorage.setItem(USAGE_KEY, JSON.stringify(next)) } catch { /* 配额满等场景静默降级 */ }
+}
+const frequentIds = computed(() => Object.entries(usageCounts.value)
+  .filter(([, count]) => count > 0)
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .map(([id]) => id))
+function isFrequent(id: string): boolean { return (usageCounts.value[id] || 0) > 0 }
+
 const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
 
 const filteredOptions = computed(() => {
@@ -140,18 +172,38 @@ const filteredOptions = computed(() => {
     list = list.filter(option => option.category === currentCategory.value)
   }
   const needle = query.value.toLocaleLowerCase()
-  if (!needle) return list
-  return list.filter(option => {
-    const haystack = [
-      option.name,
-      option.id,
-      option.cnName || '',
-      option.description,
-      option.masterpiece || '',
-      ...(option.keywords || []),
-    ].join(' ').toLocaleLowerCase()
-    return haystack.includes(needle)
-  })
+  let matched = list
+  if (needle) {
+    matched = list.filter(option => {
+      const haystack = [
+        option.name,
+        option.id,
+        option.cnName || '',
+        option.description,
+        option.masterpiece || '',
+        ...(option.keywords || []),
+      ].join(' ').toLocaleLowerCase()
+      return haystack.includes(needle)
+    })
+  }
+  // 常用画师置顶：按使用次数降序排前，其余保持目录顺序；搜索/分类过滤同样生效。
+  const freq = frequentIds.value
+  const byId = new Map(matched.map(option => [option.id, option]))
+  const sorted: ArtistStyleOption[] = []
+  const seen = new Set<string>()
+  for (const id of freq) {
+    if (seen.has(id)) continue
+    const option = byId.get(id)
+    if (!option) continue
+    sorted.push(option)
+    seen.add(id)
+  }
+  for (const option of matched) {
+    if (seen.has(option.id)) continue
+    sorted.push(option)
+    seen.add(option.id)
+  }
+  return sorted
 })
 
 const selectionSummary = computed(() => {
@@ -180,6 +232,7 @@ function toggle(id: string) {
   const next = current.includes(id)
     ? current.filter(value => value !== id)
     : [...current, id]
+  if (!current.includes(id)) recordUsage([id])
   emit('update:selected', next.slice(0, 2))
 }
 
@@ -196,6 +249,7 @@ function applyCombo(artistIds: readonly string[]) {
   if (isComboActive(artistIds)) {
     clearSelected()
   } else {
+    recordUsage([...artistIds])
     emit('update:selected', [...artistIds])
   }
 }
@@ -492,6 +546,16 @@ function applyCombo(artistIds: readonly string[]) {
   border-radius: var(--r-pill);
   background: var(--glass-fill);
   font-size: var(--fs-mono-xs);
+}
+.artist-frequent {
+  flex: 0 0 auto;
+  padding: 1px 6px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg-deep));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border-soft));
+  color: var(--accent);
+  font-size: var(--fs-mono-xs);
+  font-weight: 600;
 }
 .artist-style-status.project {
   color: var(--success);
