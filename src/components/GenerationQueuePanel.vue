@@ -1,13 +1,18 @@
 <template>
   <div v-if="total" class="sd-queue advanced-decision">
     <div class="sd-queue-head">
-      <span>出图队列 · {{ total }} 个{{ paused ? '（已暂停）' : '' }}</span>
+      <!--
+        2026-08-30 UX 审计：原来只有「N 个」，用户看不出跑到第几张，暂停后也
+        不知道为什么停（队列在任务失败时会自动暂停，见 useSDQueue）。
+      -->
+      <span>出图队列 · 第 {{ position }} / 共 {{ total }}{{ paused ? '（已暂停）' : '' }}</span>
       <span class="row-tight">
         <button v-if="paused" class="btn btn-ghost btn-sm" type="button" @click="emit('resume')">继续</button>
         <button v-else class="btn btn-ghost btn-sm" type="button" @click="emit('pause')">暂停</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="emit('clear')">清空等待</button>
       </span>
     </div>
+    <p v-if="pausedReason" class="sd-queue-reason">{{ pausedReason }}</p>
     <div class="sd-queue-list">
       <div v-if="activeJob" class="sd-queue-item sd-queue-item-active">
         <!-- 速度线：斜向细线持续流动，一眼看出"这条在跑" -->
@@ -16,8 +21,20 @@
         <div class="sd-queue-copy">
           <div class="sd-queue-title">{{ activeJob.title }}</div>
           <div class="sd-queue-meta">{{ activeJob.size }} · seed {{ seedLabel(activeJob.seed) }}</div>
+          <!-- 进度条用 scaleX 表达（动效铁律：只动 transform，不逐帧改 width）；
+               后端给不出进度时退回 indeterminate，不伪造百分比。 -->
+          <div
+            class="sd-queue-progress"
+            role="progressbar"
+            :aria-valuenow="progressKnown ? progressPercent : undefined"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            :aria-label="progressKnown ? '当前任务生成进度' : '当前任务生成进行中'"
+          >
+            <i :class="{ 'is-indeterminate': !progressKnown }" :style="barStyle"></i>
+          </div>
         </div>
-        <span></span>
+        <strong class="sd-queue-percent">{{ progressKnown ? progressPercent + '%' : '进行中' }}</strong>
       </div>
       <!-- 出完一张的瞬间演出：集中线 + 拟声词。
            纯装饰（aria-hidden），不承载信息，删掉不影响可用性。 -->
@@ -38,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 import '@/assets/css/director/components/GenerationQueuePanel.css'
 
@@ -47,6 +64,10 @@ const props = defineProps<{
   paused: boolean
   activeJob: Readonly<SDQueueJob> | null
   queue: ReadonlyArray<Readonly<SDQueueJob>>
+  /** 当前任务进度 0–1；null = 后端给不出进度，走 indeterminate。 */
+  progress?: number | null
+  /** 暂停原因（队列在任务失败时自动暂停，这里说明为什么）。 */
+  pausedReason?: string
 }>()
 
 const emit = defineEmits<{
@@ -59,6 +80,17 @@ const emit = defineEmits<{
 function seedLabel(seed: number) {
   return seed < 0 ? '随机' : seed
 }
+
+/** 当前跑到第几张：总数减去还没开始的。 */
+const position = computed(() => props.total - props.queue.length + (props.activeJob ? 0 : 1))
+
+/** 未传 / null 都算「后端给不出进度」，统一走 indeterminate。 */
+const progressKnown = computed(() => typeof props.progress === 'number')
+
+const progressPercent = computed(() =>
+  progressKnown.value ? Math.max(0, Math.min(100, Math.round((props.progress as number) * 100))) : 0)
+
+const barStyle = computed(() => ({ '--progress': `${progressPercent.value / 100}` }))
 
 // 出完一张的瞬间演出。只在「有任务在跑 → 没有任务在跑」这一次跃迁时触发，
 // 队列里还有后续任务时也能看到，所以每张图出完都有一次正反馈。

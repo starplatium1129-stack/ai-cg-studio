@@ -111,6 +111,8 @@
   }
   .pb .tag-categories button.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
   .pb .tag-results { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; max-height:280px; overflow:auto; padding-right:2px; }
+  /* 截断告知：还有多少条没显示（2026-08-30 UX 审计——原先静默截断，用户以为库里只有这些） */
+  .pb .tag-more-hint { margin:6px 0 0; color:var(--text-muted); font-size:var(--fs-label-sm); line-height:var(--lh-label); }
   .pb .expert-tag-panel .tag-results { grid-template-columns:repeat(4,minmax(0,1fr)); max-height:430px; }
   @media (max-width:768px) {
     .pb .expert-tag-panel .tag-results { grid-template-columns:repeat(2,minmax(0,1fr)); }

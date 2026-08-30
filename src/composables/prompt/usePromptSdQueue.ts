@@ -298,6 +298,11 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   // 暂停，让用户确认面板状态后再手动「继续」。
   watch(() => sdQueue.queue.value, jobs => persistQueueSnapshot(jobs), { deep: true })
 
+  /**
+   * 本次挂载从快照恢复的任务数（P0-5）。对外暴露是为了让队列面板能解释
+   * 「为什么一进来就是暂停」——否则用户看到一个暂停着的队列，既不知道这批
+   * 任务是哪来的，也不知道该不该直接点继续。
+   */
   const restoredCount = sdQueue.restore(readQueueSnapshot())
   if (restoredCount > 0) {
     pb.flash(`已恢复 ${restoredCount} 个排队任务（已暂停，点「继续」逐张生成）`)
@@ -335,6 +340,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     runJob,
     commitJobResult,
     sdQueue,
+    restoredCount,
     enqueueCurrent,
     enqueue3Variants,
   }

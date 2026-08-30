@@ -190,6 +190,7 @@
           :selected="pb.artistStyleIds"
           :engine="drawEngine"
           @update:selected="pb.setArtistStyleIds"
+          @limit-reached="onArtistLimitReached"
         />
 
         <!-- SD params -->
@@ -284,6 +285,8 @@
             :paused="sdQueue.paused.value"
             :active-job="sdQueue.activeJob.value"
             :queue="sdQueue.queue.value"
+            :progress="generationProgress"
+            :paused-reason="queuePausedReason"
             @pause="sdQueue.pause"
             @resume="sdQueue.resume"
             @clear="sdQueue.clear"
@@ -949,6 +952,7 @@ const {
   runJob,
   commitJobResult,
   sdQueue,
+  restoredCount,
   enqueueCurrent,
   enqueue3Variants,
 } = usePromptSdQueue({
@@ -1213,6 +1217,28 @@ const {
 // 就已经是新图了（inpaint 是覆盖式提交，结果直接顶掉舞台）。
 watch(inpaintOpen, (open) => {
   if (open) inpaintSourceHistoryId.value = displayedResultHistoryId.value
+})
+
+/**
+ * 画师选满后再点（2026-08-30 UX 审计 P1）：面板内已有就地提示，这里补一条
+ * toast——画师网格在折叠面板里，提示有可能被滚出视野。
+ */
+function onArtistLimitReached(max: number) {
+  pb.flash(`最多同时选 ${max} 位画师，先取消一位再选`)
+}
+
+/**
+ * 队列为什么暂停（2026-08-30 UX 审计 P1）。
+ *
+ * 队列面板原本只写「已暂停」——用户不知道是任务失败了、还是自己按的暂停。
+ * 失败时 sdErrorReport 里已有分类结论（中文标题 + 建议），直接引过来；快照
+ * 恢复导致的暂停单独说明来源。手动暂停不需要解释，返回空串。
+ */
+const queuePausedReason = computed(() => {
+  if (!sdQueue.paused.value) return ''
+  if (sdErrorReport.value) return `${sdErrorReport.value.title}：${sdErrorReport.value.message}`
+  if (restoredCount > 0) return '这些任务来自上次离开时的队列，确认参数后点「继续」'
+  return ''
 })
 
 /**

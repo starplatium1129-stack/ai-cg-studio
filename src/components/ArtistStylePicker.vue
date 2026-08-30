@@ -19,6 +19,11 @@
       </div>
     </summary>
     <div class="artist-style-body">
+      <!--
+        达上限提示（2026-08-30 UX 审计）：超上限时点选原本是静默丢弃，用户会
+        以为按钮坏了。role=status 让读屏也能听到原因。
+      -->
+      <p v-if="limitHint" class="artist-limit-hint" role="status">{{ limitHint }}</p>
       <!-- 灵感混搭黄金预设：一键应用顶级画师组合 -->
       <div class="artist-presets-section">
         <div class="artist-presets-head">
@@ -129,10 +134,19 @@ const props = defineProps<{
   selected: string[]
   engine: ArtistStyleEngine
 }>()
-const emit = defineEmits<{ 'update:selected': [value: string[]] }>()
+const emit = defineEmits<{
+  'update:selected': [value: string[]]
+  /** 已达上限还要再加一个时触发，由宿主给用户提示（2026-08-30 UX 审计）。 */
+  'limit-reached': [max: number]
+}>()
+
+/** 画师最多同时选两位：再多画风会互相打架，出图反而四不像。 */
+const ARTIST_STYLE_LIMIT = 2
 
 const query = ref('')
 const currentCategory = ref<string>('all')
+/** 达上限时的就地提示；选满第三位时给出，取消或换选后清除。 */
+const limitHint = ref('')
 
 // 2026-08-30：常用画师自动置顶——记录点选/一键应用次数（localStorage），
 // 使用过的画师按次数降序排到网格最前，避免每次翻到底部找常用画师。
@@ -226,14 +240,27 @@ function verificationLabel(verification: ArtistStyleVerification): string {
   return '官方收录'
 }
 
+/**
+ * 点选一位画师（2026-08-30 UX 审计）。
+ *
+ * 原先超上限时只是 `.slice(0,2)` 静默丢弃——用户点了第三位毫无反应，会判定
+ * 「按钮坏了」反复点击。现在如实告知已达上限，并说明要先取消一位。
+ */
 function toggle(id: string) {
   const validIds = new Set(ARTIST_STYLE_OPTIONS.map(option => option.id))
-  const current = [...new Set(props.selected.filter(value => validIds.has(value)))].slice(0, 2)
-  const next = current.includes(id)
-    ? current.filter(value => value !== id)
-    : [...current, id]
-  if (!current.includes(id)) recordUsage([id])
-  emit('update:selected', next.slice(0, 2))
+  const current = [...new Set(props.selected.filter(value => validIds.has(value)))].slice(0, ARTIST_STYLE_LIMIT)
+  if (current.includes(id)) {
+    emit('update:selected', current.filter(value => value !== id))
+    return
+  }
+  if (current.length >= ARTIST_STYLE_LIMIT) {
+    limitHint.value = `最多同时选 ${ARTIST_STYLE_LIMIT} 位画师，先取消一位再选`
+    emit('limit-reached', ARTIST_STYLE_LIMIT)
+    return
+  }
+  recordUsage([id])
+  limitHint.value = ''
+  emit('update:selected', [...current, id])
 }
 
 function clearSelected() {
@@ -592,6 +619,16 @@ function applyCombo(artistIds: readonly string[]) {
   overflow-wrap: anywhere;
   color: var(--text-primary);
   font-family: var(--font-mono);
+}
+
+/* 达上限提示：用警告色而非危险色——这是操作被挡下，不是出错 */
+.artist-limit-hint {
+  margin:0 0 var(--s-2); padding:var(--s-2) var(--s-3);
+  border:1px solid color-mix(in srgb,var(--warning) 40%,var(--border-soft));
+  border-radius:var(--r-sm);
+  background:color-mix(in srgb,var(--warning) 12%,transparent);
+  color:var(--warning-text);
+  font-size:var(--fs-label-sm); line-height:var(--lh-label);
 }
 
 @media (max-width: 900px) {

@@ -68,7 +68,7 @@
         <div class="pb-backup-actions">
           <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="discard">取消</button>
           <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>
-          <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="backup.restore('replace')">覆盖本地</button>
+          <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="restoreReplace">覆盖本地</button>
         </div>
       </div>
     </div>
@@ -78,6 +78,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
+import { confirmAction } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/director/components/PromptDataTools.css'
@@ -170,6 +171,29 @@ function discard() {
   if (backup.busy.value) return
   backup.discard()
   pendingSummary.value = null
+}
+
+/**
+ * 覆盖式恢复（2026-08-30 UX 审计 P1）。
+ *
+ * 「覆盖本地」会替换全部历史、项目与图片，而此前只需单击即执行——弹窗正文
+ * 里那句「覆盖会替换现有数据」只是说明，不是确认。误点一次等于清空本地
+ * 作品库，且没有撤销通道（备份恢复不走软删，回收站兜不住它）。
+ *
+ * 合并恢复不拦：它按 id 保留较新的记录，不会丢东西，每次都弹问反而会让
+ * 用户养成无脑确认的习惯。
+ */
+async function restoreReplace() {
+  if (backup.busy.value) return
+  const count = pendingSummary.value?.history ?? 0
+  const ok = await confirmAction({
+    title: '覆盖本地数据？',
+    message: `当前 ${count} 条历史、项目与图片会被这份备份整体替换，且无法撤销。若不确定，请先「导出备份 JSON」留一份，或改用「合并恢复」。`,
+    confirmLabel: '覆盖',
+    danger: true,
+  })
+  if (!ok) return
+  await backup.restore('replace')
 }
 
 async function onBackupFilePicked(event: Event) {

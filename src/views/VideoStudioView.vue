@@ -346,7 +346,18 @@
             <p v-if="progressWarning" class="video-inline-message" :class="progressWarning.level === 'danger' ? 'error' : 'warning'">
               {{ progressWarning.text }}
             </p>
-            <p v-if="job.error" class="video-inline-message error">{{ job.error }}</p>
+            <!--
+              任务失败：后端给的是 ComfyUI 的英文技术串（节点名 / 张量形状 /
+              traceback）。走一遍分类器换成中文结论，原始串折进「技术细节」，
+              与出图路径的失败呈现对齐（2026-08-30 UX 审计）。
+            -->
+            <div v-if="jobErrorReport" class="video-inline-message error">
+              <p>{{ jobErrorReport.title }}：{{ jobErrorReport.message }}</p>
+              <details v-if="jobErrorReport.details" class="video-error-detail">
+                <summary>技术细节</summary>
+                <code>{{ jobErrorReport.details }}</code>
+              </details>
+            </div>
             <button
               v-if="job.status === 'queued' || job.status === 'running'"
               class="btn btn-danger btn-block"
@@ -398,6 +409,7 @@ import {
 } from '@/api/videoApi'
 import { imgGet } from '@/composables/useImageStore'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { classifySDError } from '@/utils/sdError'
 import type { VideoCtxPayload } from '@/composables/useVideoBridge'
 import { useVideoStore } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -486,6 +498,18 @@ const cancelling = ref(false)
 const job = ref<VideoJob | null>(null)
 let pollTimer = 0
 let disposed = false
+
+/**
+ * 视频任务失败的分类报告（2026-08-30 UX 审计）。
+ *
+ * 视频后端同样走 ComfyUI，失败时 job.error 是英文技术串。这里复用出图那套
+ * 分类器（backend='comfy'）给出中文结论与下一步，原始串留给「技术细节」。
+ */
+const jobErrorReport = computed(() => {
+  const raw = job.value?.error
+  if (!raw) return null
+  return classifySDError({ message: raw }, 'comfy')
+})
 
 // ── 图片动起来（I2VA）状态：首帧来自绘图页「出视频」的跨页上下文 ────────────
 const sceneStore = useSceneStore()
@@ -802,7 +826,12 @@ async function submitVideo() {
     job.value = response.job
     schedulePoll()
   } catch (error) {
-    statusError.value = error instanceof Error ? error.message : '视频任务提交失败'
+    // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；
+    // 分类不出具体原因时仍退回原始消息，不丢信息。
+    const report = classifySDError(error, 'comfy')
+    statusError.value = report.kind === 'unknown'
+      ? (error instanceof Error ? error.message : '视频任务提交失败')
+      : `${report.title}：${report.message}`
     await loadStatus()
   } finally {
     uploadingImage.value = false
@@ -1066,6 +1095,14 @@ onBeforeUnmount(() => {
 .video-inline-message { padding:var(--s-2) var(--s-3); border-radius:var(--r-md); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
 .video-inline-message.error { background:color-mix(in srgb,var(--danger) 10%,transparent); color:var(--danger-text); }
 .video-inline-message.warning { background:color-mix(in srgb,var(--warning) 12%,transparent); color:var(--warning-text); }
+.video-inline-message p { margin:0 }
+.video-error-detail { margin-top:var(--s-2) }
+.video-error-detail summary { font-size:var(--fs-label-xs); opacity:.7; cursor:pointer }
+.video-error-detail code {
+  display:block; margin-top:4px; padding:6px 8px; border-radius:var(--r-sm);
+  background:var(--bg-deep); font-size:var(--fs-label-xs); line-height:var(--lh-label);
+  white-space:pre-wrap; word-break:break-word;
+}
 .video-job-eta { margin:2px 0 0; color:var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
 .video-result-panel { margin-top:var(--s-5); }
 .video-player { display:block; width:100%; max-height:min(72vh,760px); border-radius:var(--r-lg); background:var(--bg-deep); }

@@ -72,6 +72,14 @@
           <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ tag.en }}</small>
         </button>
       </div>
+      <!--
+        截断告知（2026-08-30 UX 审计）：这里长期硬截 72 条且不说明，用户会以为
+        「库里只有这些」。提示里给出还能用的手段——继续输入关键词收窄，或直接
+        在下方输入框手输（那条路径不经过这里的截断）。
+      -->
+      <p v-if="hiddenTagCount" class="tag-more-hint">
+        还有 {{ hiddenTagCount }} 个匹配词条没显示，继续输入关键词收窄，或在下方直接输入标签回车添加
+      </p>
     </div>
     <input class="tag-input" type="text" placeholder="也可以直接输入 Danbooru 标签后回车"
       @keydown.enter.prevent="addTag($event)" />
@@ -256,14 +264,27 @@ const tagCategories = computed(() => {
   return ['all', ...found].map(id => ({ id, label: TAG_CATEGORY_LABELS[id] || id }))
 })
 
-const visibleTags = computed(() => {
+/** 一次最多渲染多少条：目录基数远大于此，硬截断必须如实告知（见 hiddenTagCount）。 */
+const TAG_RENDER_LIMIT = 72
+
+const matchedTags = computed(() => {
   const q = tagSearch.value.trim().toLowerCase()
   return tagCatalog.value
     .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
     .filter(tag => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
     .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
-    .slice(0, 72)
 })
+
+const visibleTags = computed(() => matchedTags.value.slice(0, TAG_RENDER_LIMIT))
+
+/**
+ * 被截断的条数（2026-08-30 UX 审计）。
+ *
+ * 目录基数远超 72，而这里长期静默截断——用户搜「dress」看到几十条就到底了，
+ * 会以为「库里只有这些」，从而放弃用更准的词。现在把「还有多少条没显示」
+ * 说出来，并提示继续输入以缩小范围。
+ */
+const hiddenTagCount = computed(() => Math.max(0, matchedTags.value.length - visibleTags.value.length))
 
 const visibleOutfitBundles = computed(() =>
   OUTFIT_BUNDLES.filter(bundle => pb.char === 'triad' || bundle.character === pb.char),
