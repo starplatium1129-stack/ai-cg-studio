@@ -202,6 +202,7 @@
           :result-seed="displayResultSeed"
           @touch="pb.markParamTouched"
           @reuse-seed="reuseLastSeed"
+          @reset="resetSdParams"
         />
 
         <!-- Result panel -->
@@ -1023,6 +1024,17 @@ onBeforeRouteLeave(async () => {
  * 但点了才报错」，比没校验更让人困惑。callGenerate 的守卫保留作防御，这里
  * 负责让原因在点之前就看得见。
  */
+/**
+ * 出图参数恢复底模推荐值（2026-08-30 UX 审计 P1）。
+ *
+ * 默认值按 checkpoint 匹配 profile，只有 store 知道，所以实际动作在 store 里；
+ * 这里只负责如实反馈结果——套不上档位时也要说，不能点了没反应。
+ */
+function resetSdParams() {
+  if (pb.resetParamsToProfile()) pb.flash('已恢复这套底模的推荐参数')
+  else pb.flash('当前底模没有对应的推荐参数档位，未能恢复')
+}
+
 const generateBlockReason = computed(() => {
   if (!livePrompt.value) return '先选一个场景，或写点故事，我才知道要画什么'
   if (pb.isPopular && drawEngine.value === 'sd') return '热门角色请切到 Anima 或 Krea 2'

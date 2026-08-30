@@ -179,6 +179,35 @@ const CHECKS = [
     },
   },
   {
+    id: 'P1 出图参数必须能恢复默认（且先清 touched）',
+    file: 'src/stores/promptBuilderStore.ts',
+    why: '调参调乱了没有回头路。实现上有个必踩的坑：applyModelProfileToParams '
+      + '会跳过用户碰过的字段，不先清 sdParamsTouched 就调 applyModelProfile，'
+      + '「恢复默认」点下去界面纹丝不动，用户只会判定按钮坏了。顺序不能颠倒。',
+    assert(source) {
+      // 自带函数体提取：本函数带返回类型注解，通用的 extractFunction 匹配不到
+      const code = stripComments(source);
+      const start = code.search(/function\s+resetParamsToProfile\s*\(/);
+      if (start < 0) return false;
+      const open = code.indexOf('{', start);
+      if (open < 0) return false;
+      let depth = 0;
+      let end = -1;
+      for (let i = open; i < code.length; i += 1) {
+        if (code[i] === '{') depth += 1;
+        else if (code[i] === '}') {
+          depth -= 1;
+          if (depth === 0) { end = i; break; }
+        }
+      }
+      if (end < 0) return false;
+      const body = code.slice(open, end + 1);
+      const clearAt = body.search(/sdParamsTouched\.value\s*=\s*new Set/);
+      const applyAt = body.search(/applyModelProfile\(/);
+      return clearAt >= 0 && applyAt > clearAt;
+    },
+  },
+  {
     id: 'P1 CFG / Steps 必须可精确输入',
     file: 'src/components/GenerationParamsPanel.vue',
     why: '原先 CFG 只有 8 档、Steps 只有 6 档下拉，想跑 CFG 6.5 做 A/B 对比做不到；'

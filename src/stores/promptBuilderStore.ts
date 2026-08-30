@@ -406,6 +406,18 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return applyModelProfileToParams(modelProfiles.value, modelName || sdModelName.value, sdParams, sdParamsTouched.value, lastRecommendedSize, options)
   }
 
+  /**
+   * 把出图参数恢复为当前底模的推荐值（2026-08-30 UX 审计 P1）。
+   *
+   * 关键是先清 touched：applyModelProfileToParams 会跳过用户碰过的字段，
+   * 不清的话「恢复默认」点下去界面纹丝不动，用户只会判定按钮坏了。
+   * 返回是否真的套上了 profile（false 表示没有匹配档位，调用方据此提示）。
+   */
+  function resetParamsToProfile(): boolean {
+    sdParamsTouched.value = new Set<keyof SDParams>()
+    return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
+  }
+
   // ── Draft persistence ────────────────────────────────────────────────────
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
@@ -666,6 +678,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     loadData, loadHistory, loadProjects,
     saveDraft, restoreDraft, snapshotDraft,
     commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry,
-    sdParamsTouched, markParamTouched, applyModelProfile,
+    sdParamsTouched, markParamTouched, applyModelProfile, resetParamsToProfile,
   }
 })

@@ -1,6 +1,15 @@
 <template>
   <details class="panel generation-settings">
-    <summary class="panel-title settings-summary">出图参数</summary>
+    <summary class="panel-title settings-summary">
+      出图参数
+      <!--
+        恢复默认（2026-08-30 UX 审计 P1）：调参调乱了没有回头路。必须 .stop
+        挡住冒泡——summary 的点击会折叠整块面板，不挡就是「一按就收起来」。
+      -->
+      <button type="button" class="btn btn-ghost btn-mini params-reset"
+        title="把 CFG / Steps / 采样器等恢复为当前底模的推荐值"
+        @click.stop.prevent="$emit('reset')">恢复默认</button>
+    </summary>
     <div class="controls-grid">
       <div class="ctrl"><label :for="idOf('cfg')">CFG</label>
         <input :id="idOf('cfg')" v-model.number="params.cfg" class="input ctrl-num" type="number"
@@ -75,6 +84,8 @@ const params = defineModel<SDParams>('params', { required: true })
 const emit = defineEmits<{
   touch: [key: keyof SDParams]
   'reuse-seed': []
+  /** 恢复底模推荐参数：默认值只有 store 知道（按 checkpoint 匹配 profile）。 */
+  reset: []
 }>()
 
 /**

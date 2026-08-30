@@ -22,6 +22,10 @@
     font: 400 var(--fs-label-sm) var(--font-mono);
   }
   .pb .btn-mini { min-height: 28px; padding: 0 var(--s-2); font-size: var(--fs-label-xs); }
+  /* 标题行右侧的「恢复默认」：summary 默认是 list-item，改 flex 才能让按钮靠右。
+     折叠用的 marker 已在上面 display:none，改 display 不会影响展开交互 */
+  .pb .settings-summary { display: flex; align-items: center; gap: var(--s-2); }
+  .pb .params-reset { margin-left: auto; flex-shrink: 0; }
   .pb .negative-editor textarea {
     min-height: 76px;
     resize: vertical;
