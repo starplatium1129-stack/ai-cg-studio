@@ -112,7 +112,9 @@ watch(() => [props.state, props.shape, props.status], signal)
   .workspace-line,.workspace-radar{display:none}
   .workspace-copy span{max-width:42vw}
 }
-@media(max-width:440px){
+/* 440 → 480：对齐断点表的 --bp-2xs。档外值会让这一档在相邻两档之外自己再
+   跳一次，出问题的时候极难定位是哪条规则生效（2026-08-30 UX 审计 P2） */
+@media(max-width:480px){
   .workspace-archive-bar{grid-template-columns:auto minmax(0,1fr);padding:9px}
   .workspace-state{grid-column:1/-1;padding-top:7px;border-top:1px solid var(--border-soft)}
 }

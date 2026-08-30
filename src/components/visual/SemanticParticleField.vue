@@ -147,7 +147,9 @@ let qualityScale = 1
 function preferredCount(): number {
   if (reduceMotion.value) return 420
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
-  const compact = window.matchMedia('(max-width: 760px)').matches
+  // 760 → 768：对齐断点表的 --bp-sm。档外值会让 760–768 这 8px 区间单独跳一次，
+  // 调试时极难看出是哪条规则生效（2026-08-30 UX 审计 P2）
+  const compact = window.matchMedia('(max-width: 768px)').matches
   let count: number
   if (props.density === 'backdrop') count = compact ? 220 : 380
   else if (compact || (memory !== undefined && memory <= 4)) count = 520

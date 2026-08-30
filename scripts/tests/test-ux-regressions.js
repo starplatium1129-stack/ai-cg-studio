@@ -222,6 +222,37 @@ const CHECKS = [
     },
   },
   {
+    id: 'P2 响应式断点不得出现档外值',
+    file: 'src/assets/css/design-system.css',
+    why: '断点档位是 480 / 600 / 768 / 900 / 1000 / 1200 / 1380 / 2560（见本文件 '
+      + '--bp-*）。440 / 700 / 760 这类档外值会让界面在相邻两档之外自己再跳一次，'
+      + '出问题的时候极难定位是哪条规则生效。'
+      + '注意别误伤：max-width:760px 作为布局宽度或 img sizes 是正常用法，'
+      + '只有跟在 @media / matchMedia 后面的才是断点。',
+    assert() {
+      const offenders = [];
+      const walk = (dir) => {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+          if (entry.isDirectory()) {
+            if (entry.name !== 'node_modules') walk(path.join(dir, entry.name));
+            continue;
+          }
+          if (!/\.(css|vue)$/.test(entry.name)) continue;
+          const file = path.join(dir, entry.name);
+          const code = stripComments(fs.readFileSync(file, 'utf8'));
+          const hit = code.match(/(?:@media|matchMedia\()[^{]*?(?:max|min)-width:\s*(440|700|760)px/);
+          if (hit) offenders.push(`${path.relative(ROOT, file)} → ${hit[0].trim()}`);
+        }
+      };
+      walk(path.join(ROOT, 'src'));
+      if (offenders.length) {
+        console.log('      档外断点：' + offenders.join(' | '));
+        return false;
+      }
+      return true;
+    },
+  },
+  {
     id: 'P2 Toast 必须有同屏上限',
     file: 'src/composables/useToast.ts',
     why: '批量失败、轮询报错会在几秒内连发好几条，没有上限时整屏都是提示条，'

@@ -1051,5 +1051,8 @@ onMounted(() => {
   }
 }
 
-@media(max-width:700px){.character-hero{grid-template-columns:1fr}.portrait{min-height:0}.detail-grid{grid-template-columns:1fr}.recommend-head{align-items:flex-start;flex-direction:column}.character-actions .btn{flex:1 1 100%}}
+/* 700 → 768：对齐断点表的 --bp-sm。原先 700–768 这一段既没吃到单列规则、
+   两列又已经挤了，是个两头不靠的区间（2026-08-30 UX 审计 P2）。
+   选择器与上面那条 768 规则（参考图弹窗）互不重叠，合并不会互相覆盖。 */
+@media (max-width: 768px){.character-hero{grid-template-columns:1fr}.portrait{min-height:0}.detail-grid{grid-template-columns:1fr}.recommend-head{align-items:flex-start;flex-direction:column}.character-actions .btn{flex:1 1 100%}}
 </style>
