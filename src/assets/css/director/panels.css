@@ -365,7 +365,7 @@
     .pb.has-result .col-center { grid-area:stage; }
     .pb.has-result .col-left { grid-area:story; }
     .pb.has-result .col-right { grid-area:decisions; }
-    .pb .stage-placeholder, .pb.has-result #stepResult { min-height:clamp(420px,65vh,680px); }
+    .pb .stage-placeholder, .pb.has-result #stepResult { min-height:clamp(300px, 40vh, 420px); }
     .pb .stage-message { width:min(78%,360px); transform:none; }
     .pb .stage-muse { width:72%; opacity:0 !important; }
     .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.13 !important; }
