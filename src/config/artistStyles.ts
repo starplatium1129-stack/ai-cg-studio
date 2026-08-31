@@ -49,7 +49,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -66,6 +66,17 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   'SOLar_Bim': 'solar_(happymonk)',
   solar_bim: 'solar_(happymonk)',
   alllisso_: 'alllisso',
+  // 明日方舟系画师别名（2026-08-31 调研收录，Danbooru 主 tag 与 pixiv/微博名映射）
+  shimonokun: 'xiayehongming',
+  'xiaye_hongming': 'xiayehongming',
+  hohoanime: 'xiayehongming',
+  'gensou_kuro_usagi': 'huanxiang_heitu',
+  'huanxiang_heitu': 'huanxiang_heitu',
+  '幻想黑兔': 'huanxiang_heitu',
+  'li_duke': 'liduke',
+  '麻痹的小日子': 'liduke',
+  'gilangak92': 'alchemaniac',
+  'alchemaniaC': 'alchemaniac',
 }
 
 function artistDisplayName(id: string): string {
@@ -146,6 +157,10 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   'solar_(happymonk)': 'glossy adult-oriented game character fan art with bright skin, seductive poses, and vibrant colors',
   alllisso: 'polished anime game character fan art with clean lineart, vibrant colors, and appealing soft shading',
   mesilmen: 'soft adult-oriented anime game fan art with smooth skin shading, expressive eyes, and intimate sweet atmosphere',
+  xiayehongming: 'Chinese illustration with bold color-block rendering without outlines, strong light-dark contrast, and classical oriental elegance',
+  huanxiang_heitu: 'ornate Chinese fantasy illustration with divine-demonic motifs, intricate decorative details, and luminous elegant figures',
+  liduke: 'soft delicate thick-paint illustration with gentle light diffusion, warm skin tones, and serene feminine charm',
+  alchemaniac: 'cool melancholic illustration with deep sea atmosphere, subdued palette, and refined elegant lines',
 }
 
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {
