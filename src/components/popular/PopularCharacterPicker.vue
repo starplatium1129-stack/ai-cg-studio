@@ -18,6 +18,7 @@ const emit = defineEmits<{
 
 /** 2026-08-15：33 角色分组布局——作品筛选条 + franchise 分区网格 */
 const activeFranchise = ref('all')
+const brokenPortraits = ref(new Set<string>())
 
 const keyword = computed(() => props.search.trim().toLowerCase())
 // v-model 走 update:search 事件回写父级，不直接改 prop（单向数据流）
@@ -93,14 +94,25 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
             :class="{ active: character.id === props.selectedCharacterId }"
             :aria-pressed="character.id === props.selectedCharacterId"
             @click="emit('select', character)">
-            <span class="popular-card-initial" aria-hidden="true">
-              <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
-                <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
-                <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
-                <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
-              </svg>
-              <span class="initial-text">{{ character.displayName.charAt(0) }}</span>
+            <span class="popular-card-avatar" aria-hidden="true">
+              <img
+                v-if="!brokenPortraits.has(character.id)"
+                :src="`/assets/characters/thumbs/popular-${character.id}.webp`"
+                :alt="character.displayName"
+                class="popular-avatar-img"
+                loading="lazy"
+                decoding="async"
+                @error="brokenPortraits.add(character.id)"
+              />
+              <span v-else class="popular-card-fallback">
+                <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
+                  <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
+                  <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
+                  <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
+                </svg>
+                <span class="initial-text">{{ character.displayName.charAt(0) }}</span>
+              </span>
             </span>
             <span class="popular-card-name">{{ character.displayName }}</span>
           </button>
@@ -113,14 +125,25 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
         :class="{ active: character.id === props.selectedCharacterId }"
         :aria-pressed="character.id === props.selectedCharacterId"
         @click="emit('select', character)">
-        <span class="popular-card-initial" aria-hidden="true">
-          <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
-            <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
-            <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
-            <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
-          </svg>
-          <span class="initial-text">{{ character.displayName.charAt(0) }}</span>
+        <span class="popular-card-avatar" aria-hidden="true">
+          <img
+            v-if="!brokenPortraits.has(character.id)"
+            :src="`/assets/characters/thumbs/popular-${character.id}.webp`"
+            :alt="character.displayName"
+            class="popular-avatar-img"
+            loading="lazy"
+            decoding="async"
+            @error="brokenPortraits.add(character.id)"
+          />
+          <span v-else class="popular-card-fallback">
+            <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
+              <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
+              <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
+              <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
+            </svg>
+            <span class="initial-text">{{ character.displayName.charAt(0) }}</span>
+          </span>
         </span>
         <span class="popular-card-name">{{ character.displayName }}</span>
         <span class="popular-card-franchise">{{ character.franchise }}</span>
@@ -254,22 +277,53 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   background: var(--glass-fill);
   color: inherit;
   cursor: pointer;
-  /* 2026-08-22 动效审计 LOW：选中态边框/底色补过渡（同面板 franchise-chip 与
-     蓝图卡都有，独缺此卡造成同域反馈断裂） */
-  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out);
+  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
+}
+.popular-card:hover {
+  border-color: color-mix(in srgb, var(--pb-active) 60%, transparent);
+  background: color-mix(in srgb, var(--pb-active) 8%, var(--glass-fill));
 }
 .popular-card.active {
   border-color: var(--pb-active);
   background: color-mix(in srgb, var(--mood-love) 14%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pb-active) 35%, transparent);
 }
-.popular-card-initial {
+.popular-card-avatar {
   position: relative;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  overflow: hidden;
   display: grid;
   place-items: center;
-  color: var(--pb-active);
+  background: var(--bg-surface-elevated, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   margin-bottom: var(--s-1);
+  transition: transform var(--motion-hover) var(--ease-out), border-color var(--motion-hover) var(--ease-out), box-shadow var(--motion-hover) var(--ease-out);
+}
+.popular-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.popular-card:hover .popular-card-avatar {
+  transform: scale(1.06);
+  border-color: var(--pb-active);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--pb-active) 30%, transparent);
+}
+.popular-card.active .popular-card-avatar {
+  border-color: var(--pb-active);
+  box-shadow: 0 0 0 1.5px var(--pb-active), 0 4px 12px color-mix(in srgb, var(--pb-active) 35%, transparent);
+}
+.popular-card-fallback {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
 }
 .initial-ring {
   position: absolute;
@@ -279,7 +333,6 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   color: var(--pb-active);
 }
 .initial-ring-dupe {
-  /* 2026-08-22 动效审计 LOW：33+ 张卡同步无限呼吸改为一次性落定（常动装饰删掉更强） */
   animation: initial-ink 1.4s var(--ease-in-out) 1 both;
 }
 @keyframes initial-ink {
