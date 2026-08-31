@@ -10,7 +10,9 @@
  *   1. 级别方法 info/warn/error/debug（debug 默认静默，DEBUG=1 或选项开启）；
  *   2. 按天轮转：写入 <dir>/<prefix>-YYYYMMDD.log（文件名即轮转，无重命名步骤）；
  *   3. 保留期清理：init 与日期翻转时删除超过 retainDays 的旧日志；
- *   4. 落盘 fire-and-forget：appendFile 失败静默吞掉——日志永远不能弄崩网关。
+ *   4. 大小守卫：无日期后缀的旁路日志超过 maxBytes 时归档为按天名（复用保留期
+ *      自动回收）；被外部进程占用 rename 失败则 truncate 0 保底；
+ *   5. 落盘 fire-and-forget：appendFile 失败静默吞掉——日志永远不能弄崩网关。
  *
  * 约定：console 输出保持原样（终端/sidecar 可见性不变），文件行格式为
  * `[ISO] [LEVEL] message`；error 级别额外追加 detail（如 stack）。
@@ -30,8 +32,35 @@ function createLogger(options) {
   var dir = options.dir || '';
   var prefix = options.prefix || 'gateway';
   var retainDays = Number(options.retainDays) > 0 ? Number(options.retainDays) : 14;
+  var maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : 8 * 1024 * 1024;
   var debugEnabled = options.debug === true || process.env.DEBUG === '1';
   var currentKey = '';
+
+  // 大小守卫（2026-08-31 补，工程审计 P1-12「runtime 日志滚动」）：
+  // 无日期后缀的旁路日志（comfyui.stderr.log / control.log 等）没有按天轮转，
+  // 单文件会无限增长。超过 maxBytes 时优先归档为 <name>-YYYYMMDD.log——
+  // 归档文件带日期后缀，天然落入上方的按天保留期清理；rename 被占用（外部
+  // 进程持句柄）则 truncate 0 保底。按天日志（-YYYYMMDD.log）不在此列。
+  function guardSize(now) {
+    if (!dir) return;
+    var today = dateKey(now);
+    try {
+      fs.readdirSync(dir).forEach(function (name) {
+        if (!/\.log$/i.test(name)) return;
+        if (/-(\d{8})\.log$/i.test(name)) return;
+        var full = path.join(dir, name);
+        var size;
+        try { size = fs.statSync(full).size; } catch (error) { return; }
+        if (size <= maxBytes) return;
+        var archived = path.join(dir, name.replace(/\.log$/i, '-' + today + '.log'));
+        try {
+          fs.renameSync(full, archived);
+          return;
+        } catch (error) {}
+        try { fs.truncateSync(full, 0); } catch (error) {}
+      });
+    } catch (error) {}
+  }
 
   function sweepRetention(now) {
     if (!dir) return;
@@ -61,6 +90,7 @@ function createLogger(options) {
   // init 即清理一次过期日志：即使本会话一行日志都不写，陈旧文件也该被回收。
   if (dir) {
     try { fs.mkdirSync(dir, { recursive: true }); } catch (error) {}
+    guardSize(new Date());
     sweepRetention(new Date());
   }
 
@@ -74,6 +104,7 @@ function createLogger(options) {
     var key = dateKey(now);
     if (key !== currentKey && dir) {
       currentKey = key;
+      guardSize(now);
       sweepRetention(now);
     }
     if (level === 'debug') {

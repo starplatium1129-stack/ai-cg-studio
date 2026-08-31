@@ -9,7 +9,8 @@
  *   2. 其他 prefix 的超期按天日志（comfyui-YYYYMMDD.log）→ 清；
  *   3. 无日期后缀且 mtime 超期（translate.log 旧残留）→ 清；
  *   4. 新鲜按天日志与活跃旁路日志 → 保留；
- *   5. 非 .log 文件 → 保留。
+ *   5. 非 .log 文件 → 保留；
+ *   6. 超大无日期后缀旁路日志 → 归档为按天名（大小守卫，P1-12）。
  */
 
 const test = require('node:test');
@@ -48,6 +49,29 @@ test('logger sweepRetention：双判据回收 + 新鲜文件保留', () => {
       ['comfyui.stderr.log', 'gateway-20260822.log'],
     );
     assert.ok(left.includes('notes.txt'), '非日志文件不越权清理');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('logger sizeGuard：超大无日期旁路日志归档为按天名，未超限不归档', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-logger-size-'));
+  const d = new Date();
+  const today = '' + d.getFullYear()
+    + String(d.getMonth() + 1).padStart(2, '0')
+    + String(d.getDate()).padStart(2, '0');
+  const big = path.join(dir, 'control.log');
+  fs.writeFileSync(big, Buffer.alloc(9 * 1024 * 1024, 'a')); // 9MB > 8MB 阈值
+  fs.writeFileSync(path.join(dir, 'tiny.log'), 'x');
+  fs.writeFileSync(path.join(dir, 'gateway-20260822.log'), 'dated');
+
+  try {
+    createLogger({ dir, prefix: 'gateway', retainDays: 14, maxBytes: 8 * 1024 * 1024 });
+    const left = fs.readdirSync(dir).sort();
+    assert.ok(left.includes('control-' + today + '.log'), '超大旁路日志应归档为按天名');
+    assert.ok(!left.includes('control.log'), '归档后原名字不再保留');
+    assert.ok(left.includes('tiny.log'), '未超限文件不归档');
+    assert.ok(left.includes('gateway-20260822.log'), '按天日志不触发大小守卫');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
