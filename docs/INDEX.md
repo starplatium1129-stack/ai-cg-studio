@@ -72,7 +72,7 @@
 | :--- | :--- | :--- |
 | **智能分镜生成规范** | [`video-ai-storyboard.md`](video-ai-storyboard.md) | LLM 自动分镜剧本拆解、镜头运动推断与 Ref2VA 参考图绑定规范。 |
 | **叙事短片工作流** | [`narrative-short-film-workflow.md`](narrative-short-film-workflow.md) | 多镜头连贯短片生成流水线、画风锚注入与多语言对白（`dialogueLang`）驱动。 |
-| **视频提示词链路** | [`video-prompt-chain.md`](video-prompt-chain.md) | 视频镜头提示词链、音画同步与多模态结构契约。 |
+
 
 ---
 
@@ -111,6 +111,7 @@
 | **WebView2 缓存排查** | [`archive/troubleshooting/desktop-stale-archive-cache.md`](archive/troubleshooting/desktop-stale-archive-cache.md) | 桌面端 WebView2 数据层缓存穿透排查与 data-first 部署顺序保障。 |
 | **Node 控制台隐藏修复** | [`archive/troubleshooting/desktop-node-console-window.md`](archive/troubleshooting/desktop-node-console-window.md) | 桌面 sidecar 后台静默启动与黑框控制台隐藏解决方案。 |
 | **立绘边框留白修复** | [`archive/troubleshooting/character-portrait-frame-gap.md`](archive/troubleshooting/character-portrait-frame-gap.md) | 角色详情页立绘贴边与视口自适应修复。 |
+| **视频提示词链路疑难留档** | [`archive/troubleshooting/video-prompt-chain.md`](archive/troubleshooting/video-prompt-chain.md) | 出图→视频的提示词链路设计与已解决疑难留档（PromptBuilderView/useVideoBridge/routes/video.js，2026-08-16）。 |
 
 ---
 
