@@ -11,7 +11,10 @@
  * 前置：签名密钥 runtime/keys/aics-updater.key（`npx tauri signer generate` 生成，
  * 私钥不入库；丢失则无法再给已装客户端推送更新）。
  *
- * 用法：node scripts/maintenance/release-desktop-update.js [--skip-build]
+ * 用法：node scripts/maintenance/release-desktop-update.js [--skip-build] [--bump patch|minor|major]
+ *   --bump  发布前先递增版本号（package.json 与 tauri.conf.json 同步），例如
+ *           --bump patch 1.5.0 → 1.5.1。客户端 updater 只在远端版本 > 当前安装
+ *           版本时提示，日常发版必须 bump，否则永远检不到更新。
  * 局域网其它机器升级：把 latest.json 里的 127.0.0.1 换成主机局域网 IP 即可。
  */
 
@@ -24,16 +27,48 @@ const KEY_FILE = path.join(ROOT, 'runtime', 'keys', 'aics-updater.key');
 const OUT_DIR = path.join(ROOT, 'runtime', 'desktop-updates');
 const BUNDLE_DIR = path.join(ROOT, 'desktop-tauri', 'src-tauri', 'target', 'release', 'bundle', 'nsis');
 const SKIP_BUILD = process.argv.includes('--skip-build');
+const BUMP_INDEX = process.argv.indexOf('--bump');
+const BUMP_KIND = BUMP_INDEX >= 0 ? String(process.argv[BUMP_INDEX + 1] || 'patch') : '';
 
 function fail(message) {
   console.error(`[release-desktop-update] ${message}`);
   process.exit(1);
 }
 
+const SEMVER = /^(\d+)\.(\d+)\.(\d+)$/;
+
+/** 递增 package.json 与 tauri.conf.json 版本号（客户端当前版本编译自 tauri.conf.json，必须同步）。 */
+function bumpVersion(kind) {
+  if (!['patch', 'minor', 'major'].includes(kind)) fail(`未知 bump 档位: ${kind}（patch|minor|major）`);
+  const pkgPath = path.join(ROOT, 'package.json');
+  const tauriPath = path.join(ROOT, 'desktop-tauri', 'src-tauri', 'tauri.conf.json');
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+  const conf = JSON.parse(fs.readFileSync(tauriPath, 'utf8'));
+  const match = SEMVER.exec(String(pkg.version || ''));
+  if (!match) fail(`无法解析 package.json version: ${pkg.version}`);
+  let major = Number(match[1]);
+  let minor = Number(match[2]);
+  let patch = Number(match[3]);
+  if (kind === 'major') { major += 1; minor = 0; patch = 0; }
+  else if (kind === 'minor') { minor += 1; patch = 0; }
+  else { patch += 1; }
+  const next = `${major}.${minor}.${patch}`;
+  if (String(conf.version || '') !== String(pkg.version || '')) {
+    console.warn(`[release-desktop-update] 警告：tauri.conf.json version=${conf.version} 与 package.json ${pkg.version} 不一致，将两者都设为 ${next}`);
+  }
+  pkg.version = next;
+  conf.version = next;
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(tauriPath, JSON.stringify(conf, null, 2) + '\n', 'utf8');
+  console.log(`[release-desktop-update] 版本 ${match[0]} → ${next}`);
+  return next;
+}
+
 function main() {
   if (!fs.existsSync(KEY_FILE)) {
     fail(`缺少签名私钥 ${KEY_FILE}（npx tauri signer generate -w runtime/keys/aics-updater.key --password "" --ci）`);
   }
+  if (BUMP_KIND) bumpVersion(BUMP_KIND);
   const version = require(path.join(ROOT, 'package.json')).version;
 
   if (!SKIP_BUILD) {

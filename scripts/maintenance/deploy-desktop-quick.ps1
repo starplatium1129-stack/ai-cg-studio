@@ -158,6 +158,28 @@ if ($UseInstaller) {
       Write-Host "  pruned $($stale.Count) stale hashed asset(s) from dist/_app" -ForegroundColor DarkGray
     }
   }
+
+  # 应用内自动更新（tauri-plugin-updater）：把发布产物同步到安装版伺服目录
+  # gateway/runtime/desktop-updates（server.js 的 /desktop-updates 静态伺服点，
+  # 安装版 ROOT_DIR = gateway 目录）。latest.json 版本 > 当前安装版本时客户端
+  # 启动即弹「一键升级」；只同步最新安装包 + 签名 + 清单，跳过 .prev 旧包防膨胀。
+  $updatesSrc = Join-Path $root 'runtime\desktop-updates'
+  $updatesDst = Join-Path $gatewayDir 'runtime\desktop-updates'
+  if (Test-Path (Join-Path $updatesSrc 'latest.json')) {
+    New-Item -ItemType Directory -Force -Path $updatesDst | Out-Null
+    $latestExe = Get-ChildItem -Path $updatesSrc -Filter '*-setup.exe' -File |
+      Where-Object { $_.Name -notlike '*.prev-*' } |
+      Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($latestExe) {
+      Copy-Item -Path $latestExe.FullName -Destination (Join-Path $updatesDst $latestExe.Name) -Force
+      $sigFile = "$($latestExe.FullName).sig"
+      if (Test-Path $sigFile) {
+        Copy-Item -Path $sigFile -Destination (Join-Path $updatesDst "$($latestExe.Name).sig") -Force
+      }
+    }
+    Copy-Item -Path (Join-Path $updatesSrc 'latest.json') -Destination (Join-Path $updatesDst 'latest.json') -Force
+    Write-Host '  synced desktop-updates -> gateway/runtime/desktop-updates' -ForegroundColor DarkGray
+  }
 }
 
 # ------------------------------------------- [5] 清 WebView2 缓存 + 验证依赖

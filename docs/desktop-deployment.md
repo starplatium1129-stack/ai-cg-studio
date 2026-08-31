@@ -78,6 +78,36 @@ NSIS 安装会**覆盖整个 `gateway/node_modules`**。所以：
 
 ---
 
+## 三·五、应用内自动更新（tauri-plugin-updater）
+
+桌面端已接入 **Tauri updater**：客户端启动时后台检查一次 `http://127.0.0.1:3123/desktop-updates/latest.json`，
+发现新版本 → 系统通知 + 控制面板顶部「一键升级」横幅（下载安装后自动重启）。
+Rust 侧（`updater_cmd.rs`）、前端横幅（`useDesktopUpdater.ts` + `ControlView.vue`）均已落地；
+**日常发版只需保证版本号递增 + 产物同步到安装版伺服目录**。
+
+### 发版工作流（一次命令）
+
+```powershell
+node scripts/maintenance/release-desktop-update.js --bump patch [--skip-build]
+deploy-desktop.bat -SkipBuild          # 增量部署会把 desktop-updates 产物同步进安装版
+```
+
+1. `--bump patch|minor|major`：发布前**自动递增版本号**（`package.json` 与 `tauri.conf.json` 同步）。
+   客户端 updater 只在「远端版本 > 当前安装版本」时提示——**不 bump 就永远检不到更新**
+   （2026-08-31 破案：发布与安装同为 1.5.0，功能从未触发）。
+2. `deploy-desktop-quick.ps1` 增量部署会把 `runtime/desktop-updates/` 的最新
+   `latest.json + setup.exe + .sig` 同步到安装版 `gateway/runtime/desktop-updates/`
+   （`server.js` 的 `/desktop-updates` 静态伺服点，安装版 ROOT_DIR = gateway 目录；
+   只同步最新包，`.prev-*` 旧包跳过防膨胀）。
+3. 已装客户端下次启动自动检测 → 一键升级。**首个新版本走一次自动更新闭环**
+   （当前安装 1.5.0 → 发 1.5.1 后客户端自动提示，无需再手动覆盖安装）。
+
+> 坑：安装版伺服目录是 `C:\Program Files\AI-CG-Studio\gateway\runtime\desktop-updates`，
+> **不是**工作区的 `runtime/desktop-updates`——两者靠部署脚本同步，缺了同步步骤客户端会 404 静默失败
+> （updater 失败不打扰用户，控制面板横幅也不出现）。
+
+---
+
 ## 四、常见问题
 
 **Q：同版本号重装（1.5.0 → 1.5.0）会清掉旧文件吗？**
