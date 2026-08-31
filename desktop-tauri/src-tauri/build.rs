@@ -41,6 +41,8 @@ fn main() {
                 "aics_live2d_hit_test",
                 "aics_live2d_destroy",
                 "aics_live2d_get_state",
+                "desktop_update_check",
+                "desktop_update_install",
             ]),
         ),
     )
