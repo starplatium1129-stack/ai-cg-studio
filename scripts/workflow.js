@@ -79,6 +79,13 @@ const WORKFLOWS = {
     cmd: ['node', 'scripts/maintenance/fine-tuned-repair.js'],
     docs: 'scripts/maintenance/fine-tuned-repair.js:1',
   },
+  'reference:design': {
+    desc: '三视图设计图批量渲染（增量默认跑 pending，--all 重跑）',
+    cmd: ['node', 'scripts/maintenance/render-design-sheets.js'],
+    docs: 'scripts/maintenance/render-design-sheets.js:1',
+    opts: '[--chars=a,b] [--outfits=x,y] [--views=f,s,b] [--all] [--dry-run] [--limit=N]',
+    needs: 'ComfyUI http://127.0.0.1:8188（--disable-smart-memory）',
+  },
   'reference:full': {
     desc: '参考库全链路：render -> audit -> repair',
     cmd: null,
