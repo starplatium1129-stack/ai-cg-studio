@@ -22,7 +22,10 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+// 盘符大写归一（2026-08-31 破案）：bash 会话下 __dirname 可能带小写盘符 e:\，
+// 作为 execFileSync 的 cwd 会让 npm/vite 模块 ID 盘符分裂，build 秒失败且零输出。
+// 与工作区记忆配方一致：大写 cwd 一切正常。
+const ROOT = path.resolve(__dirname, '..', '..').replace(/^([a-z]):/i, (_, letter) => letter.toUpperCase() + ':');
 const KEY_FILE = path.join(ROOT, 'runtime', 'keys', 'aics-updater.key');
 const OUT_DIR = path.join(ROOT, 'runtime', 'desktop-updates');
 const BUNDLE_DIR = path.join(ROOT, 'desktop-tauri', 'src-tauri', 'target', 'release', 'bundle', 'nsis');
