@@ -145,9 +145,9 @@ function loadGatewayConfig(rootDir, env) {
     ASSETS_ROOT:assetsRoot,
     TOOLS_ROOT:toolsRoot,
     SCRIPTS_ROOT:path.resolve(env.AICS_SCRIPTS_ROOT || path.join(appRoot, 'scripts')),
-    // The sibling AI workspace contains the local LoRA and voice assets.  It
-    // is only used by the local training API; the browser never supplies this
-    // path.
+    // 工作区外的 AI 资源根（LoRA 权重、语音脚本、角色参考库、样张等）。
+    // 桌面打包版可落在安装目录之外；浏览器不直接提供此路径，由服务端按
+    // env.AI_WORKSPACE_ROOT 或 appRoot 兄弟目录解析。
     AI_WORKSPACE_ROOT:workspaceRoot,
     RUNTIME:runtime,
     RUNTIME_ROOT:runtime.root,
