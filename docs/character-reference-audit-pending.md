@@ -2,7 +2,7 @@
 
 > **归档日期**：2026-08-17（快照）
 > **大盘现状（当时）**：全量 736 张标准参考图卡槽中已有 **661 张（约 90%）** 获得 Gemini 3.7 Flash 绿灯 PASS 认证；本清单归档剩余 **75 张** 边缘视角偏差点，供后续有空时定向微调。
-> **当前基线（2026-08-31 复核）**：参考库现为 **51 角色 × 267 服装形态**（`data/character-reference-standards.json`，characters 数组）；4 视角标准参考与 3 视角设计图视图在 `data/character-reference-view.json`。2026-08-31 已批量落地 51 角色默认服装 × front/side/back 三视角 design 设计图 153 张（`ref_design_*` 独立通道）。**75 项清单复核仍有效**：涉及角色的 identityTokens 未受 08-31 修复（8 角色，均不在本清单）影响，`ref_design_*` 通道也不覆盖本清单的 `ref_01~04` 偏差点。本清单为历史快照，仅保留 75 项待精调明细的复现配方，供有空时定向微调。
+> **当前基线（2026-08-31 复核）**：参考库现为 **59 角色 × 267 服装形态**（`data/character-reference-standards.json`，characters 数组）；4 视角标准参考与 3 视角设计图视图在 `data/character-reference-view.json`。2026-08-31 已批量落地 51 角色默认服装 × front/side/back 三视角 design 设计图 153 张（`ref_design_*` 独立通道），同步新接入 8 角色（eris_greyrat / hoshino_ai / kurokawa_akane / yvonne_arknights / morgan_le_fay_fate / mash_kyrielight / mikasa_ackerman / krista_lenz，壳形态 outfits:0 占位等渲染专项）。**75 项清单复核仍有效**：涉及角色的 identityTokens 未受 08-31 修复（8 角色，均不在本清单）影响，`ref_design_*` 通道也不覆盖本清单的 `ref_01~04` 偏差点。本清单为历史快照，仅保留 75 项待精调明细的复现配方，供有空时定向微调。
 
 ## 一、 待精调角色分布概览
 
