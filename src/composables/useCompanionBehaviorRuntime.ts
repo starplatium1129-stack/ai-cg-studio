@@ -1,4 +1,5 @@
 import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
+import { usePolling } from './usePolling'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { controlApi } from '@/api/controlApi'
 import { imgCount } from '@/composables/useImageStore'
@@ -46,8 +47,12 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   })
 
   const eventDetector = createCompanionEventDetector()
-  let behaviorTimer = 0
-  let eventPollTimer = 0
+  // 工程审计 P1-9（2/2）：两只 30s 心跳迁到 usePolling 底座，语义不变。
+  // immediate=false 保持「首 tick 在 +30s」原时序（onMounted 里另有显式首跑）；
+  // pollCompanionEvents 自带 eventPolling 守卫，与 usePolling 的 in-flight 去重叠加无害；
+  // stop 由 onUnmounted 显式调用，setup 期 onScopeDispose 兜底 component 之外的手动实例。
+  const behaviorPoll = usePolling({ intervalMs: 30_000, immediate: false, tick: runBehaviorTick })
+  const eventPoll = usePolling({ intervalMs: 30_000, immediate: false, tick: pollCompanionEvents })
   let reminderLineOffset = 0
   let eventLineOffset = 0
   let eventPolling = false
@@ -198,8 +203,8 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
 
   onMounted(() => {
     dnd.value = behavior.config().dnd
-    behaviorTimer = window.setInterval(runBehaviorTick, 30_000) as unknown as number
-    eventPollTimer = window.setInterval(() => { void pollCompanionEvents() }, 30_000) as unknown as number
+    behaviorPoll.start()
+    eventPoll.start()
     syncReminders()
     maybeGreetByTime()
     void pollCompanionEvents()
@@ -209,8 +214,8 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     alive = false
     eventPollController?.abort()
     eventPollController = null
-    clearInterval(behaviorTimer)
-    clearInterval(eventPollTimer)
+    behaviorPoll.stop()
+    eventPoll.stop()
   })
 
   return {
