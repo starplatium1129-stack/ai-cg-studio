@@ -247,12 +247,17 @@ function moveOutput(relFile, destDir, destFile) {
   return true;
 }
 
-/** 目标文件在参考图根下的相对路径（沿用「有自定义服装目录则用，否则角色根目录」的约定）。 */
-function targetRelPath(charId, outfitId, view) {
-  const hasCustomDir = fs.existsSync(path.join(REF_ROOT, charId, outfitId));
-  return hasCustomDir
-    ? path.join(charId, outfitId, `ref_design_${view}.png`)
-    : path.join(charId, `ref_design_${view}.png`);
+/**
+ * 目标文件在参考图根下的相对路径。
+ * 2026-08-31 修复：原实现按「磁盘上是否存在 <charId>/<outfitId> 目录」决定输出位置——
+ * 尚无独立目录的非默认服装（如 silk_sleepwear）会被错误落到角色根目录，
+ * 覆盖该角色的默认服装设计图（11 张被覆盖事故）。改为按 isDefault 判定：
+ * 默认服装 → 角色根；非默认 → <角色>/<服装>/（目录由调用方确保存在）。
+ */
+function targetRelPath(charId, outfitId, view, isDefault) {
+  return isDefault
+    ? path.join(charId, `ref_design_${view}.png`)
+    : path.join(charId, outfitId, `ref_design_${view}.png`);
 }
 
 // ── 收集任务 ─────────────────────────────────────────────────────────────────
@@ -282,10 +287,12 @@ for (const profile of Object.values(view)) {
       const viewName = ref.id.replace('ref_design_', '');
       if (viewsFilter && !viewsFilter.includes(viewName)) continue;
       const needRun = all || (ref.pending === true && !ref.url);
-      const rel = targetRelPath(charId, o.outfitId, viewName);
+      const rel = targetRelPath(charId, o.outfitId, viewName, o.isDefault === true);
       const abs = path.join(REF_ROOT, rel);
       if (!needRun && fs.existsSync(abs)) { skipped.existing++; continue; }
       if (!identityProse || !outfitProse) { skipped.missingTokens++; continue; }
+      // 非默认服装输出到 <角色>/<服装>/ 子目录：目录不存在则创建，避免落回角色根覆盖默认图。
+      if (o.isDefault !== true) { try { fs.mkdirSync(path.dirname(abs), { recursive: true }); } catch (error) {} }
       tasks.push({ charId, outfitId: o.outfitId, viewName, identityProse, identity, outfitProse, outfitTokens, rel, abs });
     }
   }

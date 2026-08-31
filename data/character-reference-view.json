@@ -1455,7 +1455,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/sakurajima_mai/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -1468,7 +1468,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/sakurajima_mai/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -1481,7 +1481,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/sakurajima_mai/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -3151,7 +3151,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/hatsune_miku/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -3164,7 +3164,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/hatsune_miku/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -3177,7 +3177,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/hatsune_miku/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -3255,7 +3255,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/hatsune_miku/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -3268,7 +3268,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/hatsune_miku/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -3281,7 +3281,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/hatsune_miku/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -4951,7 +4951,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/misaka_mikoto/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -4964,7 +4964,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/misaka_mikoto/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -4977,7 +4977,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/misaka_mikoto/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -6431,7 +6431,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/rem_rezero/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -6444,7 +6444,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/rem_rezero/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -6457,7 +6457,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/rem_rezero/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -7279,7 +7279,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/roxy_migurdia/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -7292,7 +7292,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/roxy_migurdia/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -7305,7 +7305,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/roxy_migurdia/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -7703,7 +7703,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/illyasviel_von_einzbern/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -7716,7 +7716,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/illyasviel_von_einzbern/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -7729,7 +7729,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/illyasviel_von_einzbern/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -7807,7 +7807,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/illyasviel_von_einzbern/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -7820,7 +7820,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/illyasviel_von_einzbern/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -7833,7 +7833,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/illyasviel_von_einzbern/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -8439,7 +8439,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/kitagawa_marin/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -8452,7 +8452,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/kitagawa_marin/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -8465,7 +8465,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/kitagawa_marin/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -8543,7 +8543,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/kitagawa_marin/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -8556,7 +8556,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/kitagawa_marin/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -8569,7 +8569,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/kitagawa_marin/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -9071,7 +9071,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/kisara_engage_kiss/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -9084,7 +9084,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/kisara_engage_kiss/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -9097,7 +9097,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/kisara_engage_kiss/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -9279,7 +9279,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/kisara_engage_kiss/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -9292,7 +9292,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/kisara_engage_kiss/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -9305,7 +9305,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/kisara_engage_kiss/ref_design_back.png"
+            "pending": true
           }
         ]
       }
@@ -11279,7 +11279,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/chen_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -11292,7 +11292,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/chen_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -11305,7 +11305,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/chen_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -11383,7 +11383,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/chen_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -11396,7 +11396,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/chen_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -11409,7 +11409,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/chen_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -11487,7 +11487,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/chen_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -11500,7 +11500,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/chen_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -11513,7 +11513,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/chen_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -11591,7 +11591,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/chen_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -11604,7 +11604,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/chen_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -11617,7 +11617,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/chen_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -11695,7 +11695,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/chen_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -11708,7 +11708,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/chen_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -11721,7 +11721,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/chen_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -12431,7 +12431,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/eyjafjalla_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -12444,7 +12444,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/eyjafjalla_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -12457,7 +12457,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/eyjafjalla_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -13063,7 +13063,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/lemuen_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -13076,7 +13076,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/lemuen_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -13089,7 +13089,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/lemuen_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -14327,7 +14327,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/mudrock_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -14340,7 +14340,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/mudrock_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -14353,7 +14353,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/mudrock_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -14431,7 +14431,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/mudrock_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -14444,7 +14444,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/mudrock_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -14457,7 +14457,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/mudrock_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -15167,7 +15167,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/eunectes_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -15180,7 +15180,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/eunectes_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -15193,7 +15193,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/eunectes_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       }
@@ -15799,7 +15799,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/goldenglow_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -15812,7 +15812,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/goldenglow_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -15825,7 +15825,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/goldenglow_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -17695,7 +17695,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/exusiai_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -17708,7 +17708,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/exusiai_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -17721,7 +17721,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/exusiai_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -18223,7 +18223,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/suzuran_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -18236,7 +18236,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/suzuran_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -18249,7 +18249,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/suzuran_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -18327,7 +18327,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/suzuran_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -18340,7 +18340,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/suzuran_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -18353,7 +18353,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/suzuran_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -18431,7 +18431,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/suzuran_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -18444,7 +18444,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/suzuran_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -18457,7 +18457,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/suzuran_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       },
@@ -19167,7 +19167,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "/character-references/perlica_arknights/ref_design_front.png"
+            "pending": true
           },
           {
             "id": "ref_design_side",
@@ -19180,7 +19180,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "/character-references/perlica_arknights/ref_design_side.png"
+            "pending": true
           },
           {
             "id": "ref_design_back",
@@ -19193,7 +19193,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "/character-references/perlica_arknights/ref_design_back.png"
+            "pending": true
           }
         ]
       }
