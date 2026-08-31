@@ -19,7 +19,7 @@ dependencies = [
 
 [[package]]
 name = "ai-cg-studio-desktop"
-version = "1.5.0"
+version = "1.5.2"
 dependencies = [
  "bytemuck",
  "image",
@@ -271,7 +271,7 @@ dependencies = [
 
 [[package]]
 name = "autocfg"
-version = "1.5.1"
+version = "1.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53"
 
