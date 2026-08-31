@@ -64,7 +64,7 @@ export type ArchiveIconName =
   // ── 构图 ─────────────────────────────────────────────────────
   | 'centercomp' | 'rule3' | 'leftcomp' | 'rightcomp' | 'foreground' | 'framecomp' | 'bywindow'
   // ── 色板 / 主题 / 季节 ────────────────────────────────────────
-  | 'leaf' | 'rain' | 'coffee' | 'cap' | 'plane' | 'flower' | 'play' | 'book'
+  | 'leaf' | 'rain' | 'coffee' | 'cap' | 'plane' | 'flower' | 'flame' | 'play' | 'book'
   | 'clap' | 'snowflake' | 'cherry' | 'autumnleaf'
   // ── 工具 / 服装形态 ──────────────────────────────────────────
   | 'star' | 'download' | 'upload' | 'copy' | 'broom' | 'health' | 'wardrobe' | 'compare'

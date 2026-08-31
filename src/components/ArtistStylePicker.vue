@@ -95,8 +95,14 @@
               <span v-if="option.cnName" class="artist-cn-name">{{ option.cnName }}</span>
               <span class="artist-en-name">{{ option.name }}</span>
             </strong>
-            <small v-if="frequentTop3Ids.includes(option.id)" class="artist-frequent" title="常用画师：使用频次 Top 3 自动置顶">🔥 常用</small>
-            <small v-else-if="props.curatedArtistStyles?.includes(option.id)" class="artist-curated" title="角色专属：官方原画师或精选推荐画风">✨ 推荐</small>
+            <small v-if="frequentTop3Ids.includes(option.id)" class="artist-frequent" title="常用画师：使用频次 Top 3 自动置顶">
+              <ArchiveIcon name="flame" class="badge-icon" />
+              <span>常用</span>
+            </small>
+            <small v-else-if="props.curatedArtistStyles?.includes(option.id)" class="artist-curated" title="角色专属：官方原画师或精选推荐画风">
+              <ArchiveIcon name="spark" class="badge-icon" />
+              <span>推荐</span>
+            </small>
             <small v-else class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
           <small class="artist-desc">{{ option.description }}</small>
@@ -596,6 +602,9 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-frequent {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 1px 6px;
   border-radius: var(--r-pill);
   background: color-mix(in srgb, var(--accent) 14%, var(--bg-deep));
@@ -606,6 +615,9 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-curated {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 1px 6px;
   border-radius: var(--r-pill);
   background: rgba(245, 158, 11, 0.12);
@@ -613,6 +625,10 @@ function applyCombo(artistIds: readonly string[]) {
   color: #f59e0b;
   font-size: var(--fs-mono-xs);
   font-weight: 600;
+}
+.badge-icon {
+  font-size: 0.85em;
+  stroke-width: 2.2;
 }
 .artist-style-status.project {
   color: var(--success);
