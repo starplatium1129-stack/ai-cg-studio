@@ -322,26 +322,20 @@
       "displayName": "樱岛麻衣",
       "originalName": "Sakurajima Mai",
       "source": "Rascal Does Not Dream of Bunny Girl Senpai",
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft brown eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, carrying a composed alluring presence",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, carrying a composed alluring presence",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
         "solo",
         "long_black_hair",
         "straight_hair",
+        "purple_eyes",
         "brown_eyes",
         "bangs",
         "ahoge",
         "rabbit_hair_ornament",
         "hair_clip",
-        "beauty_mark",
-        "slim",
-        "slender",
-        "narrow_shoulders",
-        "long_legs",
-        "model_figure",
-        "tall",
-        "tall_female"
+        "beauty_mark"
       ],
       "outfits": [
         {
@@ -352,10 +346,14 @@
           "tokens": [
             "school_uniform",
             "blazer",
+            "brown_blazer",
             "sweater_vest",
+            "beige_vest",
             "white_shirt",
+            "collared_shirt",
             "red_necktie",
             "pleated_skirt",
+            "grey_skirt",
             "black_pantyhose",
             "loafers"
           ],
@@ -790,9 +788,9 @@
         "tohsaka_rin",
         "1girl",
         "solo",
-        "long_black_hair",
+        "long_brown_hair",
         "twintails",
-        "red_ribbon",
+        "black_hair_ribbons",
         "blue_eyes",
         "ahoge",
         "fate/stay_night"
@@ -1144,6 +1142,51 @@
       ]
     },
     {
+      "id": "morgan_le_fay_fate",
+      "displayName": "摩根",
+      "originalName": "Morgan le Fay",
+      "source": "Fate",
+      "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin, in a black-and-blue gothic gown with a high ruff collar and a crown, carrying the holy lance Rhongomyniad",
+      "identityTokens": [
+        "morgan_le_fay_fate",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "blue_eyes",
+        "pale_skin",
+        "crown",
+        "gothic_dress",
+        "high_collar",
+        "detached_sleeves",
+        "layered_skirt",
+        "long_dress",
+        "fairy_queen",
+        "fgo"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "mash_kyrielight",
+      "displayName": "玛修",
+      "originalName": "Mash Kyrielight",
+      "source": "Fate",
+      "identityProse": "Mash Kyrielight from Fate/Grand Order, a petite Demi-Servant girl with short pink-lavender hair covering her right eye and violet eyes, who carries the enormous cross-shaped shield Lord Chaldeas",
+      "identityTokens": [
+        "mash_kyrielight",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "short_hair",
+        "hair_over_one_eye",
+        "purple_eyes",
+        "demi_servant",
+        "shield",
+        "fgo"
+      ],
+      "outfits": []
+    },
+    {
       "id": "hatsune_miku",
       "displayName": "初音未来",
       "originalName": "Hatsune Miku",
@@ -1280,6 +1323,7 @@
         "flowing_hair",
         "gradient_hair",
         "pink_hair",
+        "orange_hair",
         "two_side_up",
         "hair_tubes",
         "red_eyes",
@@ -1443,8 +1487,7 @@
         "1girl",
         "solo",
         "orange_hair",
-        "pink_hair",
-        "medium_hair",
+        "short_hair",
         "hair_bun",
         "side_bun",
         "amber_eyes",
@@ -1459,7 +1502,7 @@
           "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
           "tokens": [
             "school_uniform",
-            "blazer",
+            "open_blazer",
             "pink_cardigan",
             "white_shirt",
             "red_ribbon",
@@ -1801,10 +1844,9 @@
       "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair with a soft matte texture, expressive emerald green eyes that catch the light, a signature pin choker, and a playful dangerous smile",
       "identityTokens": [
         "reze (chainsaw man)",
+        "reze",
         "1girl",
         "solo",
-        "pink_hair",
-        "gradient_hair",
         "purple_hair",
         "short_hair",
         "green_eyes",
@@ -2245,6 +2287,29 @@
       ]
     },
     {
+      "id": "eris_greyrat",
+      "displayName": "艾莉丝",
+      "originalName": "Eris Greyrat",
+      "source": "Mushoku Tensei",
+      "identityProse": "Eris Greyrat from Mushoku Tensei, a noble-born swordswoman with deep crimson wavy long hair, red eyes, thick eyebrows and a small ahoge, tall and athletic with a tomboyish \"mad dog\" aura that contrasts her noble upbringing",
+      "identityTokens": [
+        "eris_greyrat",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "curly_hair",
+        "red_eyes",
+        "ahoge",
+        "thick_eyebrows",
+        "headband",
+        "sword",
+        "athletic",
+        "mushoku_tensei"
+      ],
+      "outfits": []
+    },
+    {
       "id": "kitagawa_marin",
       "displayName": "喜多川海梦",
       "originalName": "Kitagawa Marin",
@@ -2257,7 +2322,7 @@
         "long_blonde_hair",
         "gradient_hair",
         "pink_hair_tips",
-        "blue_eyes",
+        "pink_eyes",
         "earrings",
         "piercing",
         "painted_nails",
@@ -2394,6 +2459,7 @@
         "pink_hair",
         "very_long_hair",
         "red_eyes",
+        "crimson_eyes",
         "ahoge",
         "hair_ribbon",
         "black_ribbon",
@@ -4378,7 +4444,7 @@
         "1girl",
         "solo",
         "white_hair",
-        "medium_hair",
+        "short_hair",
         "blue_eyes",
         "hair_highlights",
         "cat_ears",
@@ -4613,6 +4679,28 @@
           "isNsfw": true
         }
       ]
+    },
+    {
+      "id": "yvonne_arknights",
+      "displayName": "伊冯",
+      "originalName": "Yvonne",
+      "source": "Arknights: Endfield",
+      "identityProse": "Yvonne from Arknights: Endfield, a Vaivai dragon-kin girl with pink hair in twin tails with color-streaked tips, blue eyes, small horns, a tail and pointed ears, a gyaru-punk genius engineer who dual-wields handguns",
+      "identityTokens": [
+        "yvonne_arknights",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "twintails",
+        "blue_eyes",
+        "horns",
+        "tail",
+        "pointed_ears",
+        "gun",
+        "engineer",
+        "arknights_endfield"
+      ],
+      "outfits": []
     },
     {
       "id": "alisa_mikhailovna_kujou",
@@ -5609,6 +5697,90 @@
           ]
         }
       ]
+    },
+    {
+      "id": "hoshino_ai",
+      "displayName": "星野爱",
+      "originalName": "Hoshino Ai",
+      "source": "Oshi no Ko",
+      "identityProse": "Hoshino Ai from Oshi no Ko, the top idol of B-Komachi with long purple hair styled with one side up, hair between her eyes and purple eyes with star-shaped pupils, wearing her signature rabbit hair ornament and a sleeveless frilled pink dress with a heart brooch",
+      "identityTokens": [
+        "hoshino_ai",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "one_side_up",
+        "sidelocks",
+        "swept_bangs",
+        "hair_between_eyes",
+        "star_pupils",
+        "purple_eyes",
+        "rabbit_hair_ornament",
+        "idol",
+        "oshi_no_ko"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "kurokawa_akane",
+      "displayName": "黑川茜",
+      "originalName": "Kurokawa Akane",
+      "source": "Oshi no Ko",
+      "identityProse": "Kurokawa Akane from Oshi no Ko, a slim cool-beauty actress with blue-violet long straight hair and blue-purple eyes, who gains bright star-shaped pupils when performing and often wears glasses in daily life",
+      "identityTokens": [
+        "kurokawa_akane",
+        "1girl",
+        "solo",
+        "blue_purple_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_purple_eyes",
+        "actress",
+        "star_eyes",
+        "oshi_no_ko"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "mikasa_ackerman",
+      "displayName": "三笠",
+      "originalName": "Mikasa Ackerman",
+      "source": "Attack on Titan",
+      "identityProse": "Mikasa Ackerman from Attack on Titan, a skilled soldier with chin-length black hair, black eyes, pale skin and a scar below her right eye, always wearing her iconic red scarf",
+      "identityTokens": [
+        "mikasa_ackerman",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "black_eyes",
+        "pale_skin",
+        "scar_on_cheek",
+        "red_scarf",
+        "attack_on_titan"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "krista_lenz",
+      "displayName": "希斯特里亚",
+      "originalName": "Historia Reiss",
+      "source": "Attack on Titan",
+      "identityProse": "Historia Reiss from Attack on Titan, also known as Krista Lenz, a petite girl with long blonde hair and blue eyes, a heart-shaped face and a gentle smile, who becomes the Queen of the Walls",
+      "identityTokens": [
+        "krista_lenz",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
+        "petite_female",
+        "smile",
+        "hair_ribbon",
+        "attack_on_titan"
+      ],
+      "outfits": []
     }
   ]
 }

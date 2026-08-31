@@ -4309,5 +4309,688 @@
     "speech": "千载长路不过须臾，万般虚实无非一梦。博士，可愿与我共饮一杯？",
     "accent_color": "#d4a83c",
     "bg_color": "#1a1424"
+  },
+  {
+    "id": "eris_greyrat",
+    "name": "艾莉丝",
+    "alias": [
+      "Eris Greyrat",
+      "艾莉丝·伯雷亚斯·格雷拉特",
+      "狂犬"
+    ],
+    "type": "popular",
+    "icon": "⚔️",
+    "portrait": {
+      "image": "../assets/characters/popular-eris_greyrat.png?v=1",
+      "alt": "艾莉丝 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "深红波浪长发",
+      "hair_color": "深红（#CC0000）",
+      "eyes": "红色",
+      "hairstyle": "长卷发 · 小呆毛 · 粗眉 · 发带",
+      "uniform": "剑王时期：露脐短上衣 / 开衩内侧短裤 / 吊带袜",
+      "expression": "凶悍野性 · 好胜心强 · 偶尔显露贵族教养",
+      "style": "sword queen crimson",
+      "signature": "深红卷发、红瞳、粗眉与白色发带"
+    },
+    "personality": [
+      "凶悍好斗",
+      "自尊心极强",
+      "口嫌体正直",
+      "战斗直觉惊人",
+      "忠诚重情"
+    ],
+    "likes": [
+      "挥剑",
+      "变强",
+      "吃肉",
+      "与强者交手",
+      "罗路迪的冒险"
+    ],
+    "classic_cg": {
+      "title": "剑王试炼",
+      "description": "魔大陆试炼悬崖上，深红卷发的剑士持剑立于风中，红瞳燃着不屈的战意。"
+    },
+    "identity": {
+      "role": "格雷拉特家大小姐 → 剑王",
+      "age": "登场 9 岁 · 剑王期约 20 岁",
+      "occupation": "剑士（剑王）",
+      "faction": "无职转生 · 六面世界"
+    },
+    "tags": [
+      "深红卷发",
+      "红瞳",
+      "粗眉",
+      "呆毛",
+      "发带",
+      "大剑"
+    ],
+    "bg_story": "艾莉丝是《无职转生》中格雷拉特家的贵族大小姐，因家族变故成为冒险者，与路迪同行穿越魔大陆，最终凭自己的剑登顶「剑王」。场景应突出异世界剑士的野性与纯粹——试炼悬崖、魔大陆荒野、训练场与边境旅店，深红是她的主色调。",
+    "palette": [
+      "深红",
+      "白",
+      "皮革棕"
+    ],
+    "weather": [
+      "试炼悬崖烈日",
+      "魔大陆旷野",
+      "黄昏训练场"
+    ],
+    "speech": "艾莉丝向你发出剑术挑战——敢应战吗？",
+    "source": "Studio Bind《无职转生 / Mushoku Tensei》",
+    "traits": [
+      "eris_greyrat",
+      "1girl",
+      "solo",
+      "red_hair",
+      "long_hair",
+      "curly_hair",
+      "red_eyes",
+      "ahoge",
+      "thick_eyebrows",
+      "headband",
+      "sword",
+      "athletic",
+      "mushoku_tensei"
+    ],
+    "accent_color": "#CC0000",
+    "bg_color": "#1a0f0f"
+  },
+  {
+    "id": "hoshino_ai",
+    "name": "星野爱",
+    "alias": [
+      "Hoshino Ai",
+      "星野アイ",
+      "B 小町主推偶像"
+    ],
+    "type": "popular",
+    "icon": "⭐",
+    "portrait": {
+      "image": "../assets/characters/popular-hoshino_ai.png?v=1",
+      "alt": "星野爱 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "紫色长发（单侧扎起）",
+      "hair_color": "紫",
+      "eyes": "紫色 · 星形高光瞳孔",
+      "hairstyle": "单侧上扎 · 侧发 · 扫刘海 · 兔耳发饰",
+      "uniform": "无袖褶边粉裙 / 心形胸针 / 褶边手套",
+      "expression": "营业微笑完美无瑕 · 眼底藏着孤独",
+      "style": "top idol starry",
+      "signature": "紫色星瞳、兔耳发饰与粉裙"
+    },
+    "personality": [
+      "元气满分",
+      "台上完美偶像",
+      "台下天然",
+      "不懂爱却渴望爱",
+      "比谁都在乎粉丝"
+    ],
+    "likes": [
+      "演唱会",
+      "粉丝的应援",
+      "草莓蛋糕",
+      "拍摄工作",
+      "看星星"
+    ],
+    "classic_cg": {
+      "title": "万星应援",
+      "description": "万人场馆的聚光灯下，星形瞳孔的偶像跃上舞台，粉裙在光柱中飞扬，整片应援海为她闪烁。"
+    },
+    "identity": {
+      "role": "偶像（B 小町主推）",
+      "age": "初登场 16 岁 · 遇害 20 岁",
+      "occupation": "偶像",
+      "faction": "我推的孩子 · 艺能界"
+    },
+    "tags": [
+      "紫发",
+      "星形瞳孔",
+      "兔耳发饰",
+      "粉裙",
+      "偶像"
+    ],
+    "bg_story": "星野爱是《我推的孩子》中 B 小町的顶流偶像，以无可挑剔的笑容与星形瞳孔俘获万千粉丝。故事发生在现代日本的艺能界。场景应突出偶像的光与影——演唱会舞台、彩排室、后台化妆间与握手会，应援红是她舞台下的主色。",
+    "palette": [
+      "紫",
+      "樱粉",
+      "应援红"
+    ],
+    "weather": [
+      "演唱会之夜",
+      "彩排午后",
+      "握手会会场"
+    ],
+    "speech": "星野爱对你露出招牌笑容——「今天也要好好应援哦！」",
+    "source": "Doga Kobo《我推的孩子 / Oshi no Ko》",
+    "traits": [
+      "hoshino_ai",
+      "1girl",
+      "solo",
+      "purple_hair",
+      "long_hair",
+      "one_side_up",
+      "sidelocks",
+      "swept_bangs",
+      "hair_between_eyes",
+      "star_pupils",
+      "purple_eyes",
+      "rabbit_hair_ornament",
+      "idol",
+      "oshi_no_ko"
+    ],
+    "accent_color": "#E60012",
+    "bg_color": "#1a0f16"
+  },
+  {
+    "id": "kurokawa_akane",
+    "name": "黑川茜",
+    "alias": [
+      "Kurokawa Akane",
+      "黑川あかね",
+      "纱姬"
+    ],
+    "type": "popular",
+    "icon": "🎭",
+    "portrait": {
+      "image": "../assets/characters/popular-kurokawa_akane.png?v=1",
+      "alt": "黑川茜 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "蓝紫色长直发",
+      "hair_color": "蓝紫（#8A7CD8）",
+      "eyes": "蓝紫色 · 演剧时亮起星形瞳孔",
+      "hairstyle": "长直发 · 日常戴细框眼镜",
+      "uniform": "阳东高中制服：白衬衫 / 黑针织马甲 / 灰褶裙",
+      "expression": "清冷理性的美少女演员 · 入戏后判若两人",
+      "style": "cool actress violet",
+      "signature": "蓝紫长发、蓝紫瞳与演剧时的星形瞳孔"
+    },
+    "personality": [
+      "冷静理性",
+      "演技天才",
+      "钻研狂",
+      "外冷内热",
+      "对自己极狠"
+    ],
+    "likes": [
+      "研究角色",
+      "舞台剧",
+      "剧本",
+      "咖啡",
+      "把演技打磨到极致"
+    ],
+    "classic_cg": {
+      "title": "东京之刃",
+      "description": "血色布景光中，蓝紫长发的女演员以纱姬之姿提剑而立，瞳孔点亮为璀璨的星形。"
+    },
+    "identity": {
+      "role": "天才舞台剧/影视演员",
+      "age": "登场高二 17 岁 · 电影篇 19 岁",
+      "occupation": "演员",
+      "faction": "我推的孩子 · 艺能界"
+    },
+    "tags": [
+      "蓝紫长发",
+      "蓝紫瞳",
+      "星瞳",
+      "眼镜",
+      "演员"
+    ],
+    "bg_story": "黑川茜是《我推的孩子》中的天才演员，因演技过于投入而一度迷失，最终学会「爱自己」后真正成为顶尖演员。故事发生在现代日本的舞台剧与影视圈。场景应突出表演的炽热与日常的清冷——剧场舞台、试镜间、咖啡店与书店，蓝紫是她的主色。",
+    "palette": [
+      "蓝紫",
+      "灰",
+      "白"
+    ],
+    "weather": [
+      "舞台公演夜",
+      "试镜午后",
+      "书店黄昏"
+    ],
+    "speech": "黑川茜推了推眼镜打量你——「要来看我的下一场公演吗？」",
+    "source": "Doga Kobo《我推的孩子 / Oshi no Ko》",
+    "traits": [
+      "kurokawa_akane",
+      "1girl",
+      "solo",
+      "blue_purple_hair",
+      "long_hair",
+      "straight_hair",
+      "blue_purple_eyes",
+      "actress",
+      "star_eyes",
+      "oshi_no_ko"
+    ],
+    "accent_color": "#8A7CD8",
+    "bg_color": "#14121f"
+  },
+  {
+    "id": "yvonne_arknights",
+    "name": "伊冯",
+    "alias": [
+      "Yvonne",
+      "イヴォンヌ",
+      "Vaivai 天才工程师"
+    ],
+    "type": "popular",
+    "icon": "🔧",
+    "portrait": {
+      "image": "../assets/characters/popular-yvonne_arknights.png?v=1",
+      "alt": "伊冯 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "粉色双马尾（发梢渐变挑染）",
+      "hair_color": "粉（#FF8FB1）",
+      "eyes": "蓝色",
+      "hairstyle": "双马尾 · 挑染发梢",
+      "uniform": "初始作战装：露脐短上衣 / 分离袖套 / 手套 / 短靴",
+      "expression": "张扬自信的辣妹工程师 · 眼神狡黠",
+      "style": "gyaru punk engineer",
+      "signature": "粉色双马尾、小角与尾巴"
+    },
+    "personality": [
+      "自信张扬",
+      "天才工程师",
+      "毒舌但靠谱",
+      "爱好收集时尚",
+      "乐天派"
+    ],
+    "likes": [
+      "修机器",
+      "双枪",
+      "打游戏",
+      "自拍",
+      "霓虹灯光"
+    ],
+    "classic_cg": {
+      "title": "天才回旋",
+      "description": "终末地工坊的射灯下，粉色双马尾的工程师转着刚修好的手枪，小角在光里反光。"
+    },
+    "identity": {
+      "role": "Vaivai 龙族天才工程师",
+      "age": "官方未公布（成年干员形象）",
+      "occupation": "工程师（双枪手）",
+      "faction": "明日方舟：终末地"
+    },
+    "tags": [
+      "粉发双马尾",
+      "蓝瞳",
+      "小角",
+      "尾巴",
+      "双枪",
+      "工程师"
+    ],
+    "bg_story": "伊冯是《明日方舟：终末地》中的 Vaivai 龙族干员，粉发双马尾的 gyaru-punk 天才工程师，双持手枪在废土间穿梭。故事发生在近未来科幻的塔拉工业废墟与终末地。场景应突出科技废土与她的张扬个性——维修工坊、遗迹、基地天台与街机厅，粉是她的主色。",
+    "palette": [
+      "粉",
+      "蓝",
+      "机械银"
+    ],
+    "weather": [
+      "工坊射灯",
+      "遗迹天光",
+      "基地夜景"
+    ],
+    "speech": "伊冯晃了晃手里的扳手——「找本天才修东西？排队哦。」",
+    "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+    "traits": [
+      "yvonne_arknights",
+      "1girl",
+      "solo",
+      "pink_hair",
+      "twintails",
+      "blue_eyes",
+      "horns",
+      "tail",
+      "pointed_ears",
+      "gun",
+      "engineer",
+      "arknights_endfield"
+    ],
+    "accent_color": "#FF8FB1",
+    "bg_color": "#150f1a"
+  },
+  {
+    "id": "morgan_le_fay_fate",
+    "name": "摩根",
+    "alias": [
+      "Morgan le Fay",
+      "モルガン",
+      "冬之女王",
+      "梣（Aesc）"
+    ],
+    "type": "popular",
+    "icon": "🏰",
+    "portrait": {
+      "image": "../assets/characters/popular-morgan_le_fay_fate.png?v=1",
+      "alt": "摩根 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银白色长直发",
+      "hair_color": "银白",
+      "eyes": "冰蓝色",
+      "hairstyle": "长直发 · 王冠",
+      "uniform": "黑蓝哥特长裙：高领褶边 / 分离翼袖 / 层叠开衩裙",
+      "expression": "至高女王的威严 · 深藏温柔与孤独",
+      "style": "winter queen gothic",
+      "signature": "银白长发、冰蓝瞳与黑蓝哥特王裙"
+    },
+    "personality": [
+      "威严高傲",
+      "母性深沉",
+      "孤独",
+      "为子民不惜一切",
+      "外冷内热"
+    ],
+    "likes": [
+      "冬宫的雪",
+      "圣枪",
+      "妖精国的土地",
+      "子民的安宁",
+      "雨后的森林"
+    ],
+    "classic_cg": {
+      "title": "冬之王座",
+      "description": "妖精国不列颠的冬之王座厅，银发女王端坐黑蓝王裙之中，冰蓝瞳孔俯视着以寂静为誓的国土。"
+    },
+    "identity": {
+      "role": "妖精国冬之女王（乐园妖精）",
+      "age": "约 6000 岁（成年形态）",
+      "occupation": "异闻带不列颠之王",
+      "faction": "Fate/Grand Order · LB6"
+    },
+    "tags": [
+      "银白长发",
+      "冰蓝瞳",
+      "王冠",
+      "黑蓝哥特裙",
+      "圣枪"
+    ],
+    "bg_story": "摩根是《Fate/Grand Order》Lostbelt 6 中妖精国不列颠的冬之女王，统治异闻带两千余年，在威严之下藏着对子民深沉的爱与孤独。故事发生在妖精纪的异闻带。场景应突出妖精国的神圣与孤寂——冬之王座厅、雪庭、妖精森林与湖畔，深蓝是她的主色。",
+    "palette": [
+      "深蓝",
+      "黑",
+      "银白"
+    ],
+    "weather": [
+      "冬宫雪庭",
+      "妖精森林雨后",
+      "月夜静海"
+    ],
+    "speech": "摩根以冰蓝的瞳仁凝视你——「冬之女王座前，报上你的名。」",
+    "source": "Type-Moon《Fate/Grand Order》",
+    "traits": [
+      "morgan_le_fay_fate",
+      "1girl",
+      "solo",
+      "white_hair",
+      "long_hair",
+      "blue_eyes",
+      "pale_skin",
+      "crown",
+      "gothic_dress",
+      "high_collar",
+      "detached_sleeves",
+      "layered_skirt",
+      "long_dress",
+      "fairy_queen",
+      "fgo"
+    ],
+    "accent_color": "#1B2A5E",
+    "bg_color": "#0a0e1c"
+  },
+  {
+    "id": "mash_kyrielight",
+    "name": "玛修",
+    "alias": [
+      "Mash Kyrielight",
+      "マシュ・キリエライト",
+      "Shielder"
+    ],
+    "type": "popular",
+    "icon": "🛡️",
+    "portrait": {
+      "image": "../assets/characters/popular-mash_kyrielight.png?v=1",
+      "alt": "玛修 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "粉紫色短发（遮住右眼）",
+      "hair_color": "粉紫",
+      "eyes": "紫色",
+      "hairstyle": "齐肩短发 · 刘海遮右眼",
+      "uniform": "迦勒底便服：黑裙 / 灰外套 / 红领结 / 眼镜",
+      "expression": "温柔认真的亚从者少女 · 战斗时眼神坚定",
+      "style": "demi-servant violet",
+      "signature": "粉紫短发、紫瞳与十字大盾"
+    },
+    "personality": [
+      "温柔认真",
+      "勇敢坚定",
+      "天然",
+      "以守护为使命",
+      "会害羞"
+    ],
+    "likes": [
+      "守护前辈",
+      "读书",
+      "收集资料",
+      "训练",
+      "甜点"
+    ],
+    "classic_cg": {
+      "title": "圆桌之盾",
+      "description": "模拟战场的全息光中，粉紫短发的少女举起十字大盾挡在队友身前，紫瞳燃着战意。"
+    },
+    "identity": {
+      "role": "亚从者（Shielder）",
+      "age": "主线开场 15 岁 · 第 2 部 18 岁",
+      "occupation": "迦勒底从者",
+      "faction": "Fate/Grand Order · 迦勒底"
+    },
+    "tags": [
+      "粉紫短发",
+      "紫瞳",
+      "十字盾",
+      "红领结",
+      "亚从者"
+    ],
+    "bg_story": "玛修是《Fate/Grand Order》中迦勒底的亚从者少女，与前辈一同进行人理修复。故事发生在近未来的南极迦勒底机构。场景应突出机构日常与战斗使命——走廊、模拟训练室、食堂与宿舍，紫罗兰是她的主色。",
+    "palette": [
+      "紫罗兰",
+      "黑",
+      "灰"
+    ],
+    "weather": [
+      "迦勒底走廊",
+      "模拟战场",
+      "常夏海滩"
+    ],
+    "speech": "玛修抱着资料向你行礼——「前辈，今天也要一起努力哦。」",
+    "source": "Type-Moon《Fate/Grand Order》",
+    "traits": [
+      "mash_kyrielight",
+      "1girl",
+      "solo",
+      "pink_hair",
+      "short_hair",
+      "hair_over_one_eye",
+      "purple_eyes",
+      "demi_servant",
+      "shield",
+      "fgo"
+    ],
+    "accent_color": "#6A4FA3",
+    "bg_color": "#120f1f"
+  },
+  {
+    "id": "mikasa_ackerman",
+    "name": "三笠",
+    "alias": [
+      "Mikasa Ackerman",
+      "ミカサ・アッカーマン",
+      "阿克曼"
+    ],
+    "type": "popular",
+    "icon": "🧣",
+    "portrait": {
+      "image": "../assets/characters/popular-mikasa_ackerman.png?v=1",
+      "alt": "三笠 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色齐颈短发（长刘海）",
+      "hair_color": "黑",
+      "eyes": "黑色",
+      "hairstyle": "齐颈短发 · 长刘海 · 右眼下有疤",
+      "uniform": "调查兵团制服：棕夹克 / 白衬衫 / 绿披风 / 立体机动装置",
+      "expression": "冷静寡言 · 战斗时凌厉如刀",
+      "style": "survey corps crimson",
+      "signature": "黑发黑瞳、右眼下的疤与红色围巾"
+    },
+    "personality": [
+      "冷静寡言",
+      "战力超群",
+      "重情护短",
+      "对艾伦执念深",
+      "偶尔展现温柔"
+    ],
+    "likes": [
+      "红围巾",
+      "战斗",
+      "守护重要的人",
+      "墙内的安宁",
+      "和艾伦一起散步"
+    ],
+    "classic_cg": {
+      "title": "自由之翼下",
+      "description": "王都城堡屋顶，黑发士兵的绿披风与红围巾同时被风托起，她望向墙外的远方。"
+    },
+    "identity": {
+      "role": "阿克曼血脉的精英士兵",
+      "age": "少年期 15 岁（850 年）· 成年期 19 岁（854 年）",
+      "occupation": "调查兵团士兵",
+      "faction": "进击的巨人 · 帕拉迪岛"
+    },
+    "tags": [
+      "黑发",
+      "黑瞳",
+      "红围巾",
+      "疤痕",
+      "立体机动",
+      "士兵"
+    ],
+    "bg_story": "三笠是《进击的巨人》中拥有阿克曼血脉的精英士兵，以红围巾为情感锚点，为守护重要之人而战。故事发生在大高墙内的人类世界与墙外战场。场景应突出军事与末世感——城墙、树海、训练场与马莱街头，暗红是她的主色。",
+    "palette": [
+      "暗红",
+      "棕",
+      "绿"
+    ],
+    "weather": [
+      "城墙日光",
+      "树海光束",
+      "马莱阴天"
+    ],
+    "speech": "三笠握紧刀柄，红围巾随风扬起——「我会保护你。」",
+    "source": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
+    "traits": [
+      "mikasa_ackerman",
+      "1girl",
+      "solo",
+      "black_hair",
+      "short_hair",
+      "black_eyes",
+      "pale_skin",
+      "scar_on_cheek",
+      "red_scarf",
+      "attack_on_titan"
+    ],
+    "accent_color": "#B22222",
+    "bg_color": "#140f0f"
+  },
+  {
+    "id": "krista_lenz",
+    "name": "希斯特里亚",
+    "alias": [
+      "Historia Reiss",
+      "ヒストリア・レイス",
+      "克里斯塔·连兹",
+      "墙内女王"
+    ],
+    "type": "popular",
+    "icon": "👑",
+    "portrait": {
+      "image": "../assets/characters/popular-krista_lenz.png?v=1",
+      "alt": "希斯特里亚 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金色长发",
+      "hair_color": "金（#D4AF37）",
+      "eyes": "蓝色",
+      "hairstyle": "长直发 · 行军时低马尾 · 加冕后挽发",
+      "uniform": "女王日常装：浅色大衣 / 白衬衫 / 长裤",
+      "expression": "温柔治愈的微笑 · 加冕后多一分坚定",
+      "style": "queen golden",
+      "signature": "金色长发、蓝瞳与温柔微笑"
+    },
+    "personality": [
+      "温柔善良",
+      "外柔内刚",
+      "为他人而活过",
+      "觉醒后勇敢",
+      "是墙内的光"
+    ],
+    "likes": [
+      "孩子",
+      "田野",
+      "书",
+      "墙内的人们",
+      "苹果"
+    ],
+    "classic_cg": {
+      "title": "加冕之光",
+      "description": "大教堂的光柱中，金发少女接过王冠抬起头，白礼裙与金发熠熠生辉。"
+    },
+    "identity": {
+      "role": "墙内女王",
+      "age": "少年期 15 岁（850 年）· 成年期 19 岁（854 年即位）",
+      "occupation": "帕拉迪岛女王",
+      "faction": "进击的巨人 · 帕拉迪岛"
+    },
+    "tags": [
+      "金发",
+      "蓝瞳",
+      "微笑",
+      "王冠",
+      "女王"
+    ],
+    "bg_story": "希斯特里亚是《进击的巨人》中王族血脉的少女，以「克里斯塔·连兹」之名在兵团中温柔待人，最终觉醒并加冕为墙内女王。故事发生在大高墙内的人类世界。场景应突出她的温暖与王的责任——加冕大教堂、王宫花园、村落与雪原城墙，金色是她的主色。",
+    "palette": [
+      "金",
+      "白",
+      "浅棕"
+    ],
+    "weather": [
+      "加冕日大教堂",
+      "王宫花园午后",
+      "雪原"
+    ],
+    "speech": "希斯特里亚对你露出温柔的微笑——「谢谢你，愿意站在我身边。」",
+    "source": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
+    "traits": [
+      "krista_lenz",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "long_hair",
+      "blue_eyes",
+      "petite_female",
+      "smile",
+      "hair_ribbon",
+      "attack_on_titan"
+    ],
+    "accent_color": "#D4AF37",
+    "bg_color": "#151210"
   }
 ]

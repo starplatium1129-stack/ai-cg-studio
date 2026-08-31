@@ -303,13 +303,17 @@ function checkReferenceViewUrls() {
     var seenOutfits = {};
     ((view[cid] && view[cid].outfits) || []).forEach(function (outfit) {
       var refs = outfit.references || [];
-      total += refs.length;
       if (seenOutfits[outfit.outfitId]) {
         errors.push('character-reference-view: ' + cid + ' 存在重复形态条目 ' + outfit.outfitId
           + '（跑 node scripts/maintenance/repair-character-reference-urls.js 修复）');
       }
       seenOutfits[outfit.outfitId] = true;
       refs.forEach(function (ref) {
+        // 2026-08-31 设计图基线占位：pending 无 url（图未生成），前端渲染占位卡、
+        // check-ref-urls 门禁跳过；此处同口径跳过（total 只统计可检查条目），
+        // 避免占位条目被误报断链（sync-multi-outfit-standards.js 会为无资产形态写 pending）。
+        if (ref.pending || !ref.url) return;
+        total++;
         // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences（url 前缀
         // /character-references/）；找不到外部目录时退回项目 assets 兼容旧环境。
         var rel = String(ref.url || '');

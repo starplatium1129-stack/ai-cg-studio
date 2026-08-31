@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "franchise": "Oshi no Ko",
+  "characters": [
+    {
+      "id": "hoshino_ai",
+      "displayName": "星野爱",
+      "originalName": "Hoshino Ai",
+      "franchise": "Oshi no Ko",
+      "aliases": [
+        "hoshino_ai",
+        "ai hoshino",
+        "oshi no ko",
+        "b-komachi",
+        "idol"
+      ],
+      "identityProse": "Hoshino Ai from Oshi no Ko, the top idol of B-Komachi with long purple hair styled with one side up, hair between her eyes and purple eyes with star-shaped pupils, wearing her signature rabbit hair ornament and a sleeveless frilled pink dress with a heart brooch",
+      "identityTokens": [
+        "hoshino_ai",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "one_side_up",
+        "sidelocks",
+        "swept_bangs",
+        "hair_between_eyes",
+        "star_pupils",
+        "purple_eyes",
+        "rabbit_hair_ornament",
+        "idol",
+        "oshi_no_ko"
+      ],
+      "exactTokens": [
+        "hoshino_ai"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "main_look",
+          "name": "立绘主形象",
+          "prose": "her signature idol look, a sleeveless frilled pink dress with a heart brooch, frilled gloves and thigh boots, with the rabbit hair ornament in her one-side-up hair",
+          "tokens": [
+            "frilled_dress",
+            "pink_dress",
+            "sleeveless_dress",
+            "heart_brooch",
+            "frilled_gloves",
+            "thigh_boots",
+            "rabbit_hair_ornament"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "stage_off_shoulder",
+          "name": "舞台服·露肩粉裙",
+          "prose": "her stage costume with an off-shoulder pink dress, a blue necktie, white thigh-highs and black shoes",
+          "tokens": [
+            "off_shoulder",
+            "pink_dress",
+            "blue_necktie",
+            "white_thighhighs",
+            "black_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "stage_two_tone",
+          "name": "舞台服·白上粉下",
+          "prose": "her second stage costume, a two-tone dress with a white top, pink skirt and collar, brown belt, brown boots and white thigh-highs",
+          "tokens": [
+            "two_tone_dress",
+            "white_dress",
+            "pink_skirt",
+            "collar",
+            "brown_belt",
+            "brown_boots",
+            "white_thighhighs"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "现代日本娱乐圈（艺能界）",
+        "era": "现代偶像时代",
+        "formNotes": "瞳孔=星形高光 star_pupils；B 小町主推；应援色=粉；强调色 #E60012 应援红",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style"
+    },
+    {
+      "id": "kurokawa_akane",
+      "displayName": "黑川茜",
+      "originalName": "Kurokawa Akane",
+      "franchise": "Oshi no Ko",
+      "aliases": [
+        "kurokawa_akane",
+        "akane kurokawa",
+        "oshi no ko",
+        "sayahime tokyo blade",
+        "actress"
+      ],
+      "identityProse": "Kurokawa Akane from Oshi no Ko, a slim cool-beauty actress with blue-violet long straight hair and blue-purple eyes, who gains bright star-shaped pupils when performing and often wears glasses in daily life",
+      "identityTokens": [
+        "kurokawa_akane",
+        "1girl",
+        "solo",
+        "blue_purple_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_purple_eyes",
+        "actress",
+        "star_eyes",
+        "oshi_no_ko"
+      ],
+      "exactTokens": [
+        "kurokawa_akane"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "阳东高中制服",
+          "prose": "her Yoto High School uniform, a white collared shirt with a black sweater vest and necktie, and a grey pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_collared_shirt",
+            "black_sweater_vest",
+            "necktie",
+            "grey_pleated_skirt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "pinafore_dress",
+          "name": "蓝围裙连衣裙",
+          "prose": "a casual blue pinafore dress over a white blouse, with black high heels",
+          "tokens": [
+            "pinafore_dress",
+            "blue_dress",
+            "white_blouse",
+            "black_footwear",
+            "high_heels"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sayahime_stage",
+          "name": "舞台剧·纱姬造型",
+          "prose": "her Sayahime stage look from the Tokyo Blade stage play, wielding a sword with intense star-lit eyes",
+          "tokens": [
+            "sayahime_(tokyo_blade)",
+            "star_eyes",
+            "sword",
+            "long_sleeves",
+            "stage_costume"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "daily_glasses",
+          "name": "日常常服（眼镜）",
+          "prose": "a relaxed everyday outfit with glasses and a soft casual styling",
+          "tokens": [
+            "glasses",
+            "casual",
+            "white_shirt",
+            "blue_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "现代日本娱乐圈（舞台剧与影视）",
+        "era": "现代",
+        "formNotes": "纱姬造型 tag=sayahime_(tokyo_blade)；演剧时眼睛=星形高光 star_eyes；强调色 #8A7CD8 蓝紫",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style"
+    }
+  ]
+}

@@ -603,6 +603,238 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "type-moon, ufotable, official anime screencap"
+    },
+    {
+      "id": "morgan_le_fay_fate",
+      "displayName": "摩根",
+      "originalName": "Morgan le Fay",
+      "franchise": "Fate",
+      "aliases": [
+        "morgan_le_fay_fate",
+        "morgan le fay",
+        "morgan fate",
+        "queen morgan",
+        "aesc",
+        "fgo"
+      ],
+      "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin, in a black-and-blue gothic gown with a high ruff collar and a crown, carrying the holy lance Rhongomyniad",
+      "identityTokens": [
+        "morgan_le_fay_fate",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "blue_eyes",
+        "pale_skin",
+        "crown",
+        "gothic_dress",
+        "high_collar",
+        "detached_sleeves",
+        "layered_skirt",
+        "long_dress",
+        "fairy_queen",
+        "fgo"
+      ],
+      "exactTokens": [
+        "morgan_le_fay_fate"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "winter_queen",
+          "name": "冬之女王本貌",
+          "prose": "her true form as the Winter Queen of Faerie Britain, a black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves and a layered split skirt, crowned and carrying the holy lance Rhongomyniad",
+          "tokens": [
+            "black_dress",
+            "blue_dress",
+            "high_collar",
+            "detached_sleeves",
+            "layered_skirt",
+            "long_dress",
+            "gothic_dress",
+            "crown",
+            "rhongomyniad"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "aesc_rain_witch",
+          "name": "雨之魔女梣",
+          "prose": "her Aesc form as the Witch of Rain, a blue robe with a witch hat and staff, the gentle witch who wandered the land",
+          "tokens": [
+            "aesc_(fate)",
+            "witch_hat",
+            "robe",
+            "staff",
+            "blue_dress",
+            "magic",
+            "witch"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "aesc_savior",
+          "name": "救世主梣",
+          "prose": "her Aesc form as the Savior, a blue robe with a capelet and staff, resolute yet serene",
+          "tokens": [
+            "aesc_(fate)",
+            "capelet",
+            "robe",
+            "staff",
+            "blue_dress",
+            "magic"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "water_princess",
+          "name": "水妃摩根（泳装）",
+          "prose": "her summer Water Princess swimsuit, bare-shouldered with a gentle smile and silver hair loose in the breeze",
+          "tokens": [
+            "morgan_le_fay_(water_princess)_(fate)",
+            "swimsuit",
+            "bare_shoulders",
+            "smile"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "异闻带不列颠（妖精国）",
+        "era": "妖精纪奇幻",
+        "formNotes": "雨之魔女 tag=aesc_(fate)；水妃 tag=morgan_le_fay_(water_princess)_(fate)；神器=Rhongomyniad；强调色 #1B2A5E 深蓝",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "fate/grand order, official anime art, Type-Moon style"
+    },
+    {
+      "id": "mash_kyrielight",
+      "displayName": "玛修",
+      "originalName": "Mash Kyrielight",
+      "franchise": "Fate",
+      "aliases": [
+        "mash_kyrielight",
+        "mash",
+        "matthew kyrielight",
+        "fgo",
+        "shielder"
+      ],
+      "identityProse": "Mash Kyrielight from Fate/Grand Order, a petite Demi-Servant girl with short pink-lavender hair covering her right eye and violet eyes, who carries the enormous cross-shaped shield Lord Chaldeas",
+      "identityTokens": [
+        "mash_kyrielight",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "short_hair",
+        "hair_over_one_eye",
+        "purple_eyes",
+        "demi_servant",
+        "shield",
+        "fgo"
+      ],
+      "exactTokens": [
+        "mash_kyrielight"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "chaldea_casual",
+          "name": "迦勒底日常便服",
+          "prose": "her Chaldea casual outfit, a black collared dress with a grey open jacket, red necktie and black pantyhose, with glasses",
+          "tokens": [
+            "glasses",
+            "red_necktie",
+            "black_dress",
+            "black_pantyhose",
+            "grey_jacket",
+            "open_jacket",
+            "collared_dress"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "combat_armor",
+          "name": "战斗装（灵基二/三破）",
+          "prose": "her combat armored dress with a diamond-shaped midriff cutout, leotard, elbow gloves and thigh-highs, carrying Lord Chaldeas",
+          "tokens": [
+            "armored_dress",
+            "stomach_cutout",
+            "two-tone_dress",
+            "leotard",
+            "elbow_gloves",
+            "thighhighs",
+            "shield"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "常夏泳装灵衣",
+          "prose": "her summer spiritron dress, a white dress-style swimsuit with a halterneck top",
+          "tokens": [
+            "swimsuit",
+            "dress_swimsuit",
+            "white_dress",
+            "bikini",
+            "crop_top",
+            "halterneck"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "dangerous_beast",
+          "name": "Dangerous Beast 狼系灵衣",
+          "prose": "her Dangerous Beast costume, a wolf-themed outfit with wolf ears and tail, elbow gloves, thigh-highs and claws, bare-shouldered",
+          "tokens": [
+            "wolf_ears",
+            "wolf_tail",
+            "elbow_gloves",
+            "thighhighs",
+            "claws",
+            "bare_shoulders"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "ortinax_armor",
+          "name": "奥特瑙斯装甲",
+          "prose": "her Ortinax armor, a black armored suit with thigh-highs and armored boots",
+          "tokens": [
+            "black_armor",
+            "thighhighs",
+            "armored_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "人理保障机构迦勒底（近未来）",
+        "era": "近未来科幻",
+        "formNotes": "盾牌=Lord Chaldeas；紫瞳粉紫发=标识色；亚从者=Shielder；强调色 #6A4FA3 紫罗兰",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "fate/grand order, official anime art, Type-Moon style"
     }
   ]
 }

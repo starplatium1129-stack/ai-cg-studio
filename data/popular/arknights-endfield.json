@@ -295,6 +295,95 @@
         "research": "2026-08-15 调研（Danbooru laevatain_(arknights) 937 posts；官方立绘视觉确认）"
       },
       "animeStudio": "arknights endfield, hypergryph, official anime art"
+    },
+    {
+      "id": "yvonne_arknights",
+      "displayName": "伊冯",
+      "originalName": "Yvonne",
+      "franchise": "Arknights: Endfield",
+      "aliases": [
+        "yvonne_arknights",
+        "yvonne",
+        "arknights endfield",
+        "endfield",
+        "vaivai"
+      ],
+      "identityProse": "Yvonne from Arknights: Endfield, a Vaivai dragon-kin girl with pink hair in twin tails with color-streaked tips, blue eyes, small horns, a tail and pointed ears, a gyaru-punk genius engineer who dual-wields handguns",
+      "identityTokens": [
+        "yvonne_arknights",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "twintails",
+        "blue_eyes",
+        "horns",
+        "tail",
+        "pointed_ears",
+        "gun",
+        "engineer",
+        "arknights_endfield"
+      ],
+      "exactTokens": [
+        "yvonne_arknights"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "combat_outfit",
+          "name": "初始作战装",
+          "prose": "her initial combat outfit, a crop top with detached sleeves, gloves, leggings and short boots, dual-wielding handguns",
+          "tokens": [
+            "crop_top",
+            "detached_sleeves",
+            "gloves",
+            "leggings",
+            "short_boots",
+            "dual_wielding",
+            "gun"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "fashion_casual",
+          "name": "意象影画·趋势话题",
+          "prose": "a trendy fashion-casual look with nail polish and stylish coordination",
+          "tokens": [
+            "fashion",
+            "nail_polish",
+            "casual_clothes",
+            "dress"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "selfie_casual",
+          "name": "意象影画·自拍邀请",
+          "prose": "a relaxed selfie-ready casual look with her smartphone in hand and a bright smile",
+          "tokens": [
+            "smartphone",
+            "selfie",
+            "casual_clothes",
+            "smile"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "科幻末世（塔拉工业废墟与终末地）",
+        "era": "近未来科幻",
+        "formNotes": "龙族=Vaivai 亚种；双枪天才工程师；粉发粉瞳；强调色 #FF8FB1（辅 #7FB3FF 蓝瞳对比）",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "arknights endfield, official game art, Hypergryph style"
     }
   ]
 }

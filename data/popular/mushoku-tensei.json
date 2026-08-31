@@ -256,6 +256,101 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "studio bind, official anime screencap, anime coloring"
+    },
+    {
+      "id": "eris_greyrat",
+      "displayName": "艾莉丝",
+      "originalName": "Eris Greyrat",
+      "franchise": "Mushoku Tensei",
+      "aliases": [
+        "eris_greyrat",
+        "eris boreas greyrat",
+        "eris",
+        "mushoku tensei",
+        "jobless reincarnation"
+      ],
+      "identityProse": "Eris Greyrat from Mushoku Tensei, a noble-born swordswoman with deep crimson wavy long hair, red eyes, thick eyebrows and a small ahoge, tall and athletic with a tomboyish \"mad dog\" aura that contrasts her noble upbringing",
+      "identityTokens": [
+        "eris_greyrat",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "curly_hair",
+        "red_eyes",
+        "ahoge",
+        "thick_eyebrows",
+        "headband",
+        "sword",
+        "athletic",
+        "mushoku_tensei"
+      ],
+      "exactTokens": [
+        "eris_greyrat"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "sword_king",
+          "name": "剑王时期",
+          "prose": "her iconic outfit as the Sword King, a crop top with open inner-thigh pants and stirrup leggings, white pantyhose, a headband and a sheathed sword at her hip",
+          "tokens": [
+            "crop_top",
+            "open_inner_thigh_pants",
+            "stirrup_leggings",
+            "white_pantyhose",
+            "headband",
+            "sword",
+            "sheath"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "dead_end_adventurer",
+          "name": "冒险者 Dead End",
+          "prose": "her Dead End adventurer outfit from the journey across the Demon Continent, a practical jacket with pants and boots, sword and sheath at her belt",
+          "tokens": [
+            "jacket",
+            "pants",
+            "boots",
+            "sword",
+            "sheath",
+            "belt",
+            "adventure"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "noble_child",
+          "name": "贵族大小姐",
+          "prose": "her childhood noble outfit, an elegant frilled dress befitting the young lady of the Greyrat house, with her characteristic headband and ahoge",
+          "tokens": [
+            "dress",
+            "frills",
+            "headband",
+            "hair_ribbon",
+            "ahoge",
+            "red_hair"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "奇幻异世界（六面世界）",
+        "era": "中世纪魔大陆与王族领地",
+        "formNotes": "成年版 tag=eris_greyrat_(adult)；红发红瞳=格雷拉特家族特征；武器=大剑；强调色 #CC0000 深红",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "mushoku tensei, official anime art, Studio Bind style"
     }
   ]
 }

@@ -25,7 +25,7 @@
     {
       "file": "fate.json",
       "franchise": "Fate",
-      "count": 5
+      "count": 7
     },
     {
       "file": "vocaloid.json",
@@ -65,7 +65,7 @@
     {
       "file": "mushoku-tensei.json",
       "franchise": "Mushoku Tensei",
-      "count": 2
+      "count": 3
     },
     {
       "file": "my-dress-up-darling.json",
@@ -85,7 +85,7 @@
     {
       "file": "arknights-endfield.json",
       "franchise": "Arknights: Endfield",
-      "count": 2
+      "count": 3
     },
     {
       "file": "alya-sometimes-hides-her-feelings-in-russian.json",
@@ -111,6 +111,16 @@
       "file": "blue-archive.json",
       "franchise": "Blue Archive",
       "count": 5
+    },
+    {
+      "file": "oshi-no-ko.json",
+      "franchise": "Oshi no Ko",
+      "count": 2
+    },
+    {
+      "file": "attack-on-titan.json",
+      "franchise": "Attack on Titan",
+      "count": 2
     }
   ]
 }
