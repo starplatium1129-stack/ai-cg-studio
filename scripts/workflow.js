@@ -63,7 +63,7 @@ const WORKFLOWS = {
     opts: '--target popular|scenes --chunks 1-17',
   },
   'reference:render': {
-    desc: '参考库批量出图 45×236×4=944 张 (Anima 832x1216, 并发3)',
+    desc: '参考库批量出图 51 角色×多服装（1785 参考图，Anima 832x1216, 并发3）',
     cmd: ['node', 'scripts/maintenance/render-all-outfits-references.js'],
     docs: 'docs/character-reference-audit-pending.md',
     needs: 'ComfyUI + gateway http://127.0.0.1:3000',
@@ -154,6 +154,84 @@ const WORKFLOWS = {
     desc: '桌面增量部署（跳过构建）',
     cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/deploy-desktop-quick.ps1', '-SkipBuild'],
     docs: 'AGENTS.md:56',
+  },
+  'deploy:desktop:full': {
+    desc: '桌面完整部署（前端构建 + 复制 + 清缓存 + 验证 + 重启）',
+    cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/deploy-desktop-quick.ps1'],
+    docs: 'AGENTS.md:56',
+  },
+  // ── check: 单项门禁（可单独跑或组合）──────────────────────────────
+  'check:monolith': {
+    desc: '600 行红线只降不升门禁（基线 20 文件，回涨/超线/死条目 FAIL）',
+    cmd: ['node', 'scripts/tests/test-monolith-budget.js'],
+    docs: 'scripts/tests/test-monolith-budget.js:1',
+    opts: '[--update-baseline] 重新生成基线（体量真降后用）',
+  },
+  'check:contrast': {
+    desc: '深色主题文字对比度门禁（WCAG AA）',
+    cmd: ['node', 'scripts/maintenance/check-contrast.js', '--check'],
+    docs: 'AGENTS.md#动效与视觉性能铁律',
+  },
+  'check:animations': {
+    desc: 'GPU 合成属性门禁（禁 left/top/width/height 补间）',
+    cmd: ['npm', 'run', 'lint:animations'],
+    docs: 'AGENTS.md#动效与视觉性能铁律',
+  },
+  'check:ref-urls': {
+    desc: '参考库 URL 断链门禁（1869 条目全量）',
+    cmd: ['node', 'scripts/maintenance/check-ref-urls.js'],
+    docs: 'scripts/maintenance/check-ref-urls.js:1',
+  },
+  'check:pinned-scenes': {
+    desc: '定稿场景字节级保护门禁（100 条手工定稿）',
+    cmd: ['node', 'scripts/tests/test-pinned-scene-prompts.js'],
+    docs: 'AGENTS.md#定稿场景提示词保护',
+  },
+  'check:rewrite': {
+    desc: '批量改写完整性门禁（覆盖率/模板签名/跨条目雷同）',
+    cmd: ['node', 'scripts/tests/test-prompt-rewrite-integrity.js'],
+    docs: 'AGENTS.md#严禁偷懒式批量交付',
+    opts: '[--delivery <交付文件>] 复检指定交付',
+  },
+  'check:popular': {
+    desc: '热门角色与提示词契约',
+    cmd: ['node', 'scripts/tests/test-popular-content.js'],
+    docs: 'scripts/tests/test-popular-content.js:1',
+  },
+  'check:anima-routes': {
+    desc: 'Anima 接口与生成边界契约',
+    cmd: ['node', 'scripts/tests/test-anima-routes.js'],
+    docs: 'scripts/tests/test-anima-routes.js:1',
+  },
+  'check:frontend': {
+    desc: '前端单测（vitest，stores/utils/composables 主战场）',
+    cmd: ['npm', 'run', 'test:frontend'],
+    docs: 'vitest.config.ts',
+  },
+  // ── backup / runtime: 磁盘债治理 ────────────────────────────────
+  'backup:git': {
+    desc: 'git bundle 异地快照（v2 增量链：锚点×2 + 增量×10）',
+    cmd: ['node', 'scripts/maintenance/git-bundle-backup.js'],
+    docs: 'scripts/maintenance/git-bundle-backup.js:1',
+    opts: '[--keep N] 增量保留份数（默认 10）',
+  },
+  'runtime:clean': {
+    desc: '实验孤儿目录清理（dry-run 默认、白名单保护、30 天 mtime 门槛）',
+    cmd: ['node', 'scripts/maintenance/clean-runtime-experiments.js'],
+    docs: 'scripts/maintenance/clean-runtime-experiments.js:1',
+    opts: '[--prune] 真删  [--days N] 改门槛',
+  },
+  // ── test: 套件入口 ────────────────────────────────────────────────
+  'test:contract': {
+    desc: '契约测试套件（内容/接口/热门/Anima 等聚合）',
+    cmd: ['npm', 'run', 'test:contract'],
+    docs: 'package.json',
+  },
+  'test:e2e:critical': {
+    desc: '关键 e2e 套件（5 spec 132 tests，studio/flows/a11y/anima-quick/interaction-polish）',
+    cmd: ['npm', 'run', 'test:e2e:critical:run'],
+    docs: 'package.json',
+    needs: 'playwright 浏览器已安装（npx playwright install）',
   },
   'character:onboard': {
     desc: '一站式新角色接入（档案/标准/粒子/参考图/样张/DATA_VERSION）',

@@ -1,7 +1,7 @@
 # 统一工作流手册（Workflow）
 
 > 入口：`node scripts/workflow.js --help` 或 `npm run workflow -- --help`
-> 目标：把 140 个分散的 `scripts/maintenance/*.js` 收敛到一套可发现、可复现、带帮助的入口，降低新同学上手成本。旧脚本仍可直接 `node` 调用，本手册仅做薄封装转发。
+> 目标：把 `scripts/maintenance/` 下 113 个分散脚本（95 .js + 13 .py + 5 .ps1/.mjs）收敛到一套可发现、可复现、带帮助的入口，降低新同学上手成本。旧脚本仍可直接 `node` 调用，本手册仅做薄封装转发。
 
 ---
 
@@ -52,7 +52,7 @@ npm run workflow -- check:full
 
 > 日常改场景优先走网页 `场景管理 → 保存到项目`，仅批量改分片时走命令行。
 
-### 3.2 参考库（reference）— 45 角色 × 236 形态 × 4 视角 = 944
+### 3.2 参考库（reference）— 51 角色 × 267 形态（参考图 + 设计图 = 1869 条目）
 
 链路：`character-reference-standards.json:1` → `render-all-outfits-references.js:114`（Anima 832x1216，并发3，>20KB 跳过）→ `pure-vision-audit.js:52`（Gemini 4并发，`image-inspect.js`）→ `fine-tuned-repair.js:185`（每项3次重渲染+重审）
 
@@ -80,10 +80,10 @@ node scripts/workflow.js reference:repair
   node scripts/workflow.js showcase:batch --source scenes --ids sc001,sc002 --attempt 2
   ```
 
-### 3.4 生图/视频/训练
+### 3.4 生图/视频
 
 - 生图：`routes/generation.js:19`（SD WebUI, `waiIllustriousSDXL_v170`）、`routes/anima.js:1`（Anima/Krea2, `anima-aesthetic-v1.1`）、`routes/video/*.js`（Wan/H3）
-- 训练：`routes/training.js`（`JOB_IDS lora-nene-v18`），`services/training-service.ts`
+- 训练模块已于 2026-08-29 连根删除（commit 2afd449，`training-service.ts` + `routes/training.js` + ~1370 行测试同删，无残留引用）；指令式稳定换装走 Qwen-Image-Edit 路线（评估完成待下载，见 AGENTS.md#后续稳定演进方向）
 - 统一校验：`npm run workflow -- check:content` 检查 LoRA/角色/场景引用
 
 ### 3.5 质量门与构建
@@ -96,6 +96,37 @@ node scripts/workflow.js check:quick    # npm run check (并行 13 项)
 node scripts/workflow.js check:full     # npm run validate
 node scripts/workflow.js build:web      # vite build + 140KB预算 + 预压
 node scripts/workflow.js build:runtime  # tsc -p tsconfig.runtime.json
+```
+
+单项门禁（可单独跑或组合进 CI；`--help` 看各脚本参数）：
+
+```powershell
+node scripts/workflow.js check:monolith        # 600 行红线只降不升（基线 20 文件）
+node scripts/workflow.js check:contrast       # 深色主题 WCAG AA 对比度
+node scripts/workflow.js check:animations     # GPU 合成属性（禁 left/top/width/height 补间）
+node scripts/workflow.js check:ref-urls       # 参考库 URL 断链（1869 条目全量）
+node scripts/workflow.js check:pinned-scenes  # 定稿场景字节级保护（100 条）
+node scripts/workflow.js check:rewrite        # 批量改写完整性（覆盖率/模板签名/跨条目雷同）
+node scripts/workflow.js check:popular        # 热门角色与提示词契约
+node scripts/workflow.js check:anima-routes   # Anima 接口与生成边界契约
+node scripts/workflow.js check:frontend       # 前端单测（vitest）
+```
+
+### 3.6 磁盘债治理（backup / runtime）
+
+```powershell
+node scripts/workflow.js backup:git           # git bundle 异地快照（v2 增量链：锚点×2 + 增量×10）
+node scripts/workflow.js runtime:clean        # 实验孤儿目录清理（dry-run 默认）
+node scripts/workflow.js runtime:clean --prune --days 60   # 真删 + 改门槛
+```
+
+`backup:git` 排入 `start.ps1` 每次启动尽力执行；首次无状态落全量锚点，之后按增量链，磁盘上界 ~405MB（v1 全量模式曾达 1.2GB 且 KEEP=14 上限 2.9GB）。`runtime:clean` 白名单保护 `git-backups`/`desktop-updates`/`logs`/`keys`/`outputs` 等操作型目录，未识别目录只报告不删。
+
+### 3.7 测试套件（test）
+
+```powershell
+node scripts/workflow.js test:contract       # 契约套件（内容/接口/热门/Anima 聚合）
+node scripts/workflow.js test:e2e:critical    # 关键 e2e（5 spec 132 tests，需 npx playwright install）
 ```
 
 `gate:quick` 面积映射：`ui` = typecheck + vitest（纯前端改动，约 1-2 分钟）；
