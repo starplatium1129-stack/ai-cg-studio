@@ -95,7 +95,21 @@
         "formNotes": "瞳孔=星形高光 star_pupils；B 小町主推；应援色=粉；强调色 #E60012 应援红",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "oshi no ko, official anime art, Doga Kobo style"
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
+      "curatedArtistStyles": [
+        "mika_pikazo",
+        "morikura_en",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "kurokawa_akane",
@@ -195,7 +209,21 @@
         "formNotes": "纱姬造型 tag=sayahime_(tokyo_blade)；演剧时眼睛=星形高光 star_eyes；强调色 #8A7CD8 蓝紫",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "oshi no ko, official anime art, Doga Kobo style"
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
+      "curatedArtistStyles": [
+        "rella",
+        "yoneyama_mai",
+        "anmi"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

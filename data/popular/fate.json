@@ -715,7 +715,21 @@
         "formNotes": "雨之魔女 tag=aesc_(fate)；水妃 tag=morgan_le_fay_(water_princess)_(fate)；神器=Rhongomyniad；强调色 #1B2A5E 深蓝",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "fate/grand order, official anime art, Type-Moon style"
+      "animeStudio": "fate/grand order, official anime art, Type-Moon style",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "so-bin",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "mash_kyrielight",
@@ -834,7 +848,21 @@
         "formNotes": "盾牌=Lord Chaldeas；紫瞳粉紫发=标识色；亚从者=Shielder；强调色 #6A4FA3 紫罗兰",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "fate/grand order, official anime art, Type-Moon style"
+      "animeStudio": "fate/grand order, official anime art, Type-Moon style",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "lack",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

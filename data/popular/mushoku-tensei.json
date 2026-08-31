@@ -350,7 +350,21 @@
         "formNotes": "成年版 tag=eris_greyrat_(adult)；红发红瞳=格雷拉特家族特征；武器=大剑；强调色 #CC0000 深红",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "mushoku tensei, official anime art, Studio Bind style"
+      "animeStudio": "mushoku tensei, official anime art, Studio Bind style",
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

@@ -108,7 +108,26 @@
         "formNotes": "红围巾=全剧视觉锚点；立体机动装置 odm_gear；阿克曼血脉=战斗天赋；强调色 #B22222 暗红",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "attack on titan, official anime art, WIT Studio style"
+      "animeStudio": "attack on titan, official anime art, WIT Studio style",
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "swav",
+        "so-bin"
+      ],
+      "negativeTokens": [
+        "scar",
+        "scar on cheek",
+        "facial scar",
+        "wound",
+        "battle damage",
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "krista_lenz",
@@ -212,7 +231,21 @@
         "formNotes": "主 tag=krista_lenz（historia_reiss 为别名）；金发=王族象征；加冕=854 年即位女王；强调色 #D4AF37 金",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "attack on titan, official anime art, WIT Studio style"
+      "animeStudio": "attack on titan, official anime art, WIT Studio style",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "tiv"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

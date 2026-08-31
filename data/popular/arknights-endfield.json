@@ -383,7 +383,21 @@
         "formNotes": "龙族=Vaivai 亚种；双枪天才工程师；粉发粉瞳；强调色 #FF8FB1（辅 #7FB3FF 蓝瞳对比）",
         "research": "2026-08-31 调研"
       },
-      "animeStudio": "arknights endfield, official game art, Hypergryph style"
+      "animeStudio": "arknights endfield, official game art, Hypergryph style",
+      "curatedArtistStyles": [
+        "mika_pikazo",
+        "lam_(ramdayo)",
+        "liduke"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }
