@@ -1,17 +1,17 @@
 # AI-CG-Studio 当前状态
 
-> 更新：2026-08-29
+> 更新：2026-08-31
 > 用途：唯一的项目级当前状态入口。历史轮次、执行者分工和逐步交接稿不再作为维护文档。总文档索引见 `docs/INDEX.md`。
 
 ## 项目定位
 
-AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，包含角色聊天、Live2D、TTS、SD/Anima/Krea 2 出图、LoRA 训练、43 位热门角色场景库（45 角色/236 形态/944 视角参考库）、作品册、AI 视频分镜工作台、控制面板和桌面 Companion。
+AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，包含角色聊天、Live2D、TTS、SD/Anima/Krea 2 出图、49 位热门角色场景库（51 角色/267 形态/1869 参考条目参考库，数字以 `DATA_VERSION` 为准）、作品册、AI 视频分镜工作台、控制面板和桌面 Companion。
 
 ## 当前架构
 
 - 前端：Vue 3 + Vite + TypeScript + Pinia；路由视图懒加载。
 - 网关：Express；`routes/` 负责 HTTP API，`server/` 负责安全、配置、诊断和预压缩，`services/*.ts` 编译产物随仓库提交。
-- 数据：场景分片、角色、LoRA、预设、标签、热门角色（43 位 / 参考库 45 位）、441 通用蓝图、角色 4 视角标准定义位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
+- 数据：场景分片、角色、LoRA、预设、标签、热门角色（49 位 / 参考库 51 位）、518 通用蓝图、角色 4 视角标准定义位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
 - 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。角色 Prompt 由服务端分层组装，并支持本机用户档案与用户手动固定的跨会话事实召回。
 - 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent。Anima Base/Aesthetic 使用 30 steps / CFG 4.5 / `res_multistep` / `simple`（放大 = Remacri 纯像素直出）的模型原生标签流。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
@@ -31,6 +31,7 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
   - **数据版本全自动自愈**：网关保存场景或执行维护脚本时，自动重新计算核心数据文件的 SHA1 哈希并升版 `DATA_VERSION`，杜绝前后端缓存脱节。
 - **45 角色 $\times$ 236 服装形态 4 视角参考库（Character Reference Bible）与全自动闭环自愈管线**：
   - 覆盖明日方舟、原神、崩铁、葬送的芙莉莲、Fate、Re:Zero、俄语妹、青猪、刀剑神域、魔禁/超炮、约战、罪恶王冠、无职转生、物语系列、孤独摇滚、电锯人、莉可丽丝、进击的巨人等 45 位角色，共 236 套服装形态（含常规立绘/变体 + `🔞 私密全裸 / 纯粹形态`），构建了 944 个电影级标准参考视角（`ref_01_face_closeup` 特写、`ref_02_half_medium` 半身、`ref_03_full_dynamic` 全身、`ref_04_back_rear` 侧后背影）。
+  - **（2026-08-31 更新）**参考库已扩展至 **51 角色 / 267 形态 / 1869 参考条目**：三视图设计图基线全量落地（801 张，`reference:design` 渲染管线，`check-ref-urls` 门禁 1785 张在线图零断链）；热门角色达 49 位。
   - 主站专属女主角（绫地宁宁、四季夏目）全形态强制挂载 Anima 原生专属训练 LoRA（`ayachi_nene_v21_anima`、`shiki_natsume_v21_anima`），确保泪痣、呆毛与神韵 100% 还原。
   - 构建了「3 并发出图池（`render-all-outfits-references.js`）+ 4 并发 Gemini 3.7 Flash 纯视觉审核池（`pure-vision-audit.js`）+ 定向微调自愈引擎（`fine-tuned-repair.js`）」闭环流水线。大盘获得高比例绿灯 PASS 认证，边缘变体与修复配方完整归档至 `docs/character-reference-audit-pending.md`。
   - 数据标准与 TS 映射契约落盘至 `data/character-reference-standards.json` 与 `src/utils/characterReferenceData.ts`。

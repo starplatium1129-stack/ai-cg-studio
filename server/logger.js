@@ -12,7 +12,9 @@
  *   3. 保留期清理：init 与日期翻转时删除超过 retainDays 的旧日志；
  *   4. 大小守卫：无日期后缀的旁路日志超过 maxBytes 时归档为按天名（复用保留期
  *      自动回收）；被外部进程占用 rename 失败则 truncate 0 保底；
- *   5. 落盘 fire-and-forget：appendFile 失败静默吞掉——日志永远不能弄崩网关。
+ *   5. 单日落盘上限（2026-08-31）：按天日志达到 dailyBytesLimit 后当日暂停落盘
+ *      仅留终端输出，防异常日刷屏把单文件撑到数十 MB，次日自动恢复；
+ *   6. 落盘 fire-and-forget：appendFile 失败静默吞掉——日志永远不能弄崩网关。
  *
  * 约定：console 输出保持原样（终端/sidecar 可见性不变），文件行格式为
  * `[ISO] [LEVEL] message`；error 级别额外追加 detail（如 stack）。
@@ -33,8 +35,14 @@ function createLogger(options) {
   var prefix = options.prefix || 'gateway';
   var retainDays = Number(options.retainDays) > 0 ? Number(options.retainDays) : 14;
   var maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : 8 * 1024 * 1024;
+  // 单日落盘上限（2026-08-31 补，七维审计 P1「gateway 单日日志 17.85MB 失控」）：
+  // 按天日志靠 retainDays 兜底总量，但异常日（刷屏 bug）单文件可以无限膨胀。
+  // 达到 dailyBytesLimit 后当日仅保留终端输出，次日自动恢复。
+  var dailyBytesLimit = Number(options.dailyBytesLimit) > 0 ? Number(options.dailyBytesLimit) : 20 * 1024 * 1024;
   var debugEnabled = options.debug === true || process.env.DEBUG === '1';
   var currentKey = '';
+  var dailyPaused = false;
+  var writesSinceCheck = 0;
 
   // 大小守卫（2026-08-31 补，工程审计 P1-12「runtime 日志滚动」）：
   // 无日期后缀的旁路日志（comfyui.stderr.log / control.log 等）没有按天轮转，
@@ -98,12 +106,24 @@ function createLogger(options) {
     return path.join(dir, prefix + '-' + dateKey(now) + '.log');
   }
 
+  function checkDailySize(full) {
+    var size = 0;
+    try { size = fs.statSync(full).size; } catch (error) { return; }
+    if (size <= dailyBytesLimit) return;
+    dailyPaused = true;
+    console.error('[logger] 当日日志 ' + path.basename(full) + ' 已达 ' +
+      (size / 1024 / 1024).toFixed(1) + 'MB（单日上限 ' + (dailyBytesLimit / 1024 / 1024).toFixed(0) +
+      'MB），今日落盘暂停、仅保留终端输出；疑似刷屏 bug，次日自动恢复。');
+  }
+
   function write(level, message, detail) {
     var now = new Date();
     // 日期翻转时再做一次旧日志清理（每天最多触发一次）。
     var key = dateKey(now);
     if (key !== currentKey && dir) {
       currentKey = key;
+      dailyPaused = false; // 新的一天恢复落盘
+      writesSinceCheck = 0;
       guardSize(now);
       sweepRetention(now);
     }
@@ -118,8 +138,16 @@ function createLogger(options) {
       console.log(message);
     }
     if (!dir) return;
+    if (dailyPaused) return;
     var line = '[' + now.toISOString() + '] [' + level.toUpperCase() + '] ' + message;
     if (detail) line += ' | ' + String(detail.stack || detail.message || detail);
+    // 节流检查单日体积：每 500 次落盘做一次 statSync（高频日志下秒级一查，成本可忽略）
+    writesSinceCheck++;
+    if (writesSinceCheck >= 500) {
+      writesSinceCheck = 0;
+      checkDailySize(logFile(now));
+      if (dailyPaused) return;
+    }
     fs.appendFile(logFile(now), line + '\n', 'utf8', function () {});
   }
 

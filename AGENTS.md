@@ -54,7 +54,7 @@
    - 热门角色与提示词契约：`node scripts/tests/test-popular-content.js`
    - Anima 接口与生成边界：`node scripts/tests/test-anima-routes.js`
    - 前端状态机单元测试：`npm run test:frontend`
-3. **打包预算**：`npm run build`（全站 19 个路由必须严格遵守 140KB 预算红线）。
+3. **打包预算**：`npm run build`（全站 18 个路由必须严格遵守 140KB 预算红线；路由数以 `check-bundle-budget.js` 实测 lazy chunk 为准，2026-08-29 训练台移除后由 19 → 18）。
 4. **桌面部署（按需，唯一入口 `deploy-desktop.bat`）**：
    ```powershell
    deploy-desktop.bat                    # 增量部署：清理残留 + 复制最新代码 + 清缓存 + 验证 + 重启
@@ -68,7 +68,9 @@
    - **何时增量、何时必须完整安装，见 `docs/desktop-deployment.md`**（口诀：只动会被复制进去的文件 → 增量；动 `node_modules` 或 exe → 完整安装）。
 5. **推送远端（交付闭环）**：`git push` 成功后才算交付完成（红线 5，2026-08-29 教训固化）。`npm run backup:git` 可随时手动做 bundle 快照。
 
-> **统一工作流入口（2026-08-26 新增）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等 140 个脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`），一站式索引见 `docs/workflow.md:1`；旧 `node scripts/maintenance/*.js` 仍兼容。
+> **统一工作流入口（2026-08-26 新增，2026-08-31 口径修正）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等高频脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`，现注册 26 个工作流命令；`scripts/maintenance/` 仍有 112 个脚本，其中未注册者按 `node scripts/maintenance/<name>.js` 直调）。一站式索引见 `docs/workflow.md:1`；旧 `node scripts/maintenance/*.js` 仍兼容。
+
+> **单体体量门禁（2026-08-31 新增）：** 600 行拆分红线已门禁化——`node scripts/tests/test-monolith-budget.js`（已入 `npm run check` 并发池与 check 套件）。有效行数（跳空行/注释，与 eslint max-lines 同口径）超 600 的存量文件以 `scripts/tests/monolith-baseline.json` 豁免基线管理，**只降不升**：基线外新增超线文件或基线内文件回涨一律失败；拆分后用 `--update-baseline` 收编。eslint 侧 `max-lines warn@1000` 继续作预警层。
 
 ---
 

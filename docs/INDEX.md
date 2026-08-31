@@ -1,6 +1,6 @@
 # AI-CG-Studio 项目文档全景索引 (Documentation Master Index)
 
-> **最新基线**：2026-08-29
+> **最新基线**：2026-08-31
 > **维护契约**：本文档为 `docs/` 目录下全部架构规范、路线图、提示词工程、角色参考库、视频管线、桌面端与排障留档的总览索引。所有新文档与重大更新须在此登记。
 
 ---
@@ -15,6 +15,7 @@
 - [六、 疑难排查与历史故障演练 (Troubleshooting Archive)](#六-疑难排查与历史故障演练-troubleshooting-archive)
 - [七、 历史调研与竞品分析归档 (Research Archive)](#七-历史调研与竞品分析归档-research-archive)
 - [八、 静态 HTML 文档站页面 (Static Docs Portal)](#八-静态-html-文档站页面-static-docs-portal)
+- [九、 审计报告存档 (Audit Reports)](#九-审计报告存档-audit-reports)
 
 ---
 
@@ -25,9 +26,11 @@
 | **统一工作流** | [`workflow.md`](workflow.md) | **新同学首读**。`scripts/workflow.js` 统一入口，一览全部生图/审核/参考库/构建链路与参数。 |
 | **协作指南** | `AGENTS.md` (根目录) | **最高优先级**。开发约束、质量门槛、出图/审核规范、桌面部署规范与并行协作协议。 |
 | **设计系统契约** | `DESIGN.md` (根目录) | 界面视觉规范、色彩 Tokens、Typography、组件规范与布局标准。 |
-| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（43 热门角色/45 角色库/944 视角参考库、39 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
+| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（49 热门角色/51 角色库/1869 参考条目、39 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
 | **维护操作指南** | [`maintenance.md`](maintenance.md) | 场景维护、数据验证、多模型同步、备份恢复等日常维护脚本与契约。 |
 | **产品与运营全维审计** | [`product-operations-audit-2026-08-29.md`](product-operations-audit-2026-08-29.md) | 产品完整度/UX/数据内容/性能/运维/成本/AI 协作七维审计（综合 7.1）与 P0-P2 行动清单；与同日工程/设计审计互补。 |
+| **桌面部署指南** | [`desktop-deployment.md`](desktop-deployment.md) | 增量部署 vs 完整安装的决策口诀（`deploy-desktop.bat` 唯一入口）、`$STALE_ASSETS` 清理目标与提权约束。AGENTS.md:68 引用。 |
+| **质量审核标准宪章** | [`quality-audit-standards-charter.md`](quality-audit-standards-charter.md) | 样张人眼终审与 AI 预审的裁定标准、误差区统计（9.7% 反向误差）与校准闭环。 |
 | **桌宠语音演出路线** | [`companion-voice-roadmap.md`](companion-voice-roadmap.md) | Desktop Companion 语音交互、情绪标签驱动与状态机演进规划。 |
 | **画质与提示词路线** | [`prompt-image-quality-roadmap.md`](prompt-image-quality-roadmap.md) | 提示词结构进化、负向词抑制与画质提升长期路线。 |
 
@@ -38,7 +41,7 @@
 | 文档名称 | 路径 | 核心内容与维护状态 |
 | :--- | :--- | :--- |
 | **角色一站式接入流水线** | [`character-onboarding-workflow.md`](character-onboarding-workflow.md) | 新增热门角色档案、SFW/NSFW 场景、4 视角参考库、点阵场与样张全量自动化接入规范。 |
-| **参考图待精调清单** | [`character-reference-audit-pending.md`](character-reference-audit-pending.md) | 45 角色 236 服装形态（944 视角）自动化审核大盘与 75 项边缘变体修复配方。 |
+| **参考图待精调清单** | [`character-reference-audit-pending.md`](character-reference-audit-pending.md) | 45 角色 236 服装形态（944 视角）自动化审核大盘与 75 项边缘变体修复配方。⚠️ 2026-08-17 快照，规模已滞后（当前 51 角色/267 形态/1869 条目）。 |
 | **热门角色场景适配** | [`popular-scene-fit-audit.md`](popular-scene-fit-audit.md) | 热门角色与通用场景蓝图契约适配度审计报告。 |
 | **角色调研：雷电/芙莉莲/伊蕾娜** | [`research/characters/character-research-raiden-frieren-elaina.md`](research/characters/character-research-raiden-frieren-elaina.md) | 雷电将军、芙莉莲、伊蕾娜官方设定、服装形制与视觉特征调研。 |
 | **角色调研：玛奇玛/木更/楪祈** | [`research/characters/character-canons-makima-kisara-inori.md`](research/characters/character-canons-makima-kisara-inori.md) | 玛奇玛、木更、楪祈角色设定、正向特征锚与负向拦截。 |
@@ -53,8 +56,10 @@
 | 文档名称 | 路径 | 核心内容与维护状态 |
 | :--- | :--- | :--- |
 | **三引擎提示词体系** | [`three-engine-prompt-research.md`](three-engine-prompt-research.md) | SD/WAI、Anima 1.1、Krea 2 Turbo 三生成引擎语法、约束与提示词编译机制。 |
+| **Krea 2 提示词权威基座** | [`krea2-prompt-research-2026-08-30.md`](krea2-prompt-research-2026-08-30.md) | **Krea 2 提示词规范唯一权威**（AGENTS.md:37 点名，冲突以本报告为准）：官方 FAQ 核证、信源五级分级、§11 修正清单（含「非 SD3.5 系」纠错）、身份锚定与风格词位置规则。 |
 | **随机灵感组装设计** | [`random-prompt-assembler-design.md`](random-prompt-assembler-design.md) | 导演台「随机灵感」方案：复用标签资产池与现有编译管线，三引擎随机组装规则、零新增门控（Mature 遵循既有契约）、互斥表与实施分期（P0 已落地 2026-08-29）。 |
 | **Krea 2 编写指南** | [`krea2-prompt-writing-guide.md`](krea2-prompt-writing-guide.md) | Krea 2 自然语言 3~5 句散文构筑法则、无负面与去审查规约。 |
+| **标签视觉语义** | [`tag-visual-semantics.md`](tag-visual-semantics.md) | Danbooru 标签到视觉效果的映射语义与检索约定。 |
 | **模型与参数配置指南** | [`model-prompting-and-parameters-guide.md`](model-prompting-and-parameters-guide.md) | 模型采样器、CFG、步数、hires 放大参数全景配置表。 |
 | **Anima 训练与复现记录** | [`anima-training-record.md`](anima-training-record.md) | 宁宁/夏目 Anima LoRA 训练超参、矩阵评审、晋级基线与复现协议。 |
 | **场景样张出图工艺** | [`showcase-generation-craft.md`](showcase-generation-craft.md) | 官方 Showcase 样张批次生成、种子固化与质检工艺。 |
@@ -137,6 +142,22 @@
 - `quality-standard.html`：质量验收标准
 - `roadmap.html`：长期路线图展示
 - `scene-spec.html`：场景规范定义
-- `tag-standard.html`：标签分类规范
+- `tag-standard.html`（数据：`tag-standard.js`）：标签分类规范
+- `prompt-spec.html`（数据：`prompt-spec.js`）：提示词规范定义
 - `worldview.html`：世界观与设定
 - `page-template.html`：文档页面脚手架模板
+
+---
+
+## 九、 审计报告存档 (Audit Reports)
+
+历次只读审计报告（含评分、证据与优先级行动清单，评分口径纵向可比）：
+
+| 文档名称 | 路径 | 核心内容 |
+| :--- | :--- | :--- |
+| **全维度工程审计** | [`engineering-audit-2026-08-28.html`](engineering-audit-2026-08-28.html) | 八维工程审计（综合 7.8）：前端/后端/效率/测试/数据/安全/文档/依赖。 |
+| **美术设计审计** | [`design-audit-2026-08-28.html`](design-audit-2026-08-28.html) | 六维设计审计（综合 6.7）：令牌纪律、图标语言、动效与无障碍（浅色主题问题已于当日决策下线）。 |
+| **设计审计复查** | [`design-audit-recheck-2026-08-29.html`](design-audit-recheck-2026-08-29.html) | 美术审计 P0 修复回归复查。 |
+| **产品与运营审计** | [`product-operations-audit-2026-08-29.md`](product-operations-audit-2026-08-29.md) | 七维产品/运营审计（综合 7.1），含 .git 崩毁事故快报。 |
+| **UX 实用性审计** | [`ux-audit-2026-08-30.html`](ux-audit-2026-08-30.html) | 九条 P0 与核心任务链路审计（P0 于 8-30/31 收尾提交修复）。 |
+| **七维度全面审计** | [`seven-dimension-audit-2026-08-31.html`](seven-dimension-audit-2026-08-31.html) | 修复浪潮后全量复测（综合 8.1）：历史 P0 清偿核验 + 新债定位（e2e 接线、单体回涨、磁盘债）。 |

@@ -35,6 +35,27 @@ test('prompt rewrite integrity tokenization and similarity heuristics', () => {
   assert.ok(jaccardSimilarity(s1, s2) > 0);
 });
 
+test('cross-entry signature detection flags templated deliveries', () => {
+  // 三条 prose 共享同一模板骨架（前 3 token 相同、两两相似度>0.8）→ 必须报雷同
+  const templated = new Map([
+    ['a', { promptProse: 'nene stands at the counter holding a warm coffee cup in the dim cafe light' }],
+    ['b', { promptProse: 'nene stands at the counter holding a warm tea cup in the dim cafe light' }],
+    ['c', { promptProse: 'nene stands at the counter holding a warm milk cup in the dim cafe light' }],
+  ]);
+  const hit = crossEntryAudit(templated);
+  assert.ok(hit.errors.length > 0, 'templated trio must be flagged');
+
+  // 三条各不相同的 prose → 不得误报
+  const diverse = new Map([
+    ['a', { promptProse: 'nene kneels beside a sunlit windowsill watering small potted herbs' }],
+    ['b', { promptProse: 'natsume leaps across rooftop gaps under a thunderstorm at midnight' }],
+    ['c', { promptProse: 'raiden shogun meditates inside a floating shrine above drifting clouds' }],
+  ]);
+  const clean = crossEntryAudit(diverse);
+  assert.strictEqual(clean.errors.length, 0, 'diverse prose must pass');
+  assert.strictEqual(clean.pairDupes.length, 0, 'diverse prose must have no pairwise dupes');
+});
+
 const ROOT = path.resolve(__dirname, '..', '..');
 
 function tokenize(text) {
@@ -65,6 +86,72 @@ function retentionRate(oldSet, newSet) {
     if (newSet.has(item)) kept++;
   }
   return kept / oldSet.size;
+}
+
+// ── 跨条目模板检测（2026-08-31 补齐红线 7「无模板签名/全局雷同」的实现缺口）──
+// 此前只有逐条 vs 基线：同一模板套 N 条时逐条对基线相似度都低，照样通过。
+// 两道检测：① 前 3 token 签名占比（>20% 判模板签名）；② 交付集内两两 prose
+// Jaccard > 0.8 判全局雷同（跳过 token<6 的短条目，避免误伤固定短语）。
+const SIGNATURE_GROUP_LIMIT = 0.20;
+const PAIRWISE_DUPE_LIMIT = 0.80;
+const PAIRWISE_MIN_TOKENS = 6;
+
+function proseTokensOf(item) {
+  const prose = item.promptProse || item.nsfwProse || item.animaCaption || '';
+  return [...tokenize(prose)];
+}
+
+function signatureOf(tokens) {
+  return tokens.slice(0, 3).sort().join('+');
+}
+
+function crossEntryAudit(deliveryMap) {
+  const errors = [];
+  const warnings = [];
+  const pairDupes = [];
+
+  const entries = [...deliveryMap.entries()]
+    .map(([id, item]) => ({ id, tokens: proseTokensOf(item) }))
+    .filter(e => e.tokens.length > 0);
+
+  // ① 前 3 token 签名分组占比
+  const groups = new Map();
+  for (const e of entries) {
+    const sig = signatureOf(e.tokens);
+    if (!groups.has(sig)) groups.set(sig, []);
+    groups.get(sig).push(e.id);
+  }
+  const ranked = [...groups.entries()]
+    .filter(([, ids]) => ids.length >= 2)
+    .sort((a, b) => b[1].length - a[1].length);
+  const maxGroup = ranked[0];
+  const maxRatio = maxGroup ? maxGroup[1].length / entries.length : 0;
+  if (maxGroup && maxRatio > SIGNATURE_GROUP_LIMIT) {
+    errors.push(
+      `[模板签名] prose 前 3 token 签名 "${maxGroup[0]}" 出现 ${maxGroup[1].length}/${entries.length} ` +
+      `(${(maxRatio * 100).toFixed(1)}% > ${(SIGNATURE_GROUP_LIMIT * 100).toFixed(0)}%)，` +
+      `样例: ${maxGroup[1].slice(0, 5).join(', ')}`
+    );
+  } else if (maxGroup && maxRatio >= 0.15) {
+    warnings.push(`[签名预警] 签名 "${maxGroup[0]}" 占比 ${(maxRatio * 100).toFixed(1)}%（低于 20% 红线，注意趋势）`);
+  }
+
+  // ② 交付集内两两 prose 雷同
+  const pool = entries.filter(e => e.tokens.length >= PAIRWISE_MIN_TOKENS);
+  const sets = pool.map(e => ({ id: e.id, set: new Set(e.tokens) }));
+  for (let i = 0; i < sets.length; i++) {
+    for (let j = i + 1; j < sets.length; j++) {
+      const sim = jaccardSimilarity(sets[i].set, sets[j].set);
+      if (sim > PAIRWISE_DUPE_LIMIT) {
+        pairDupes.push(`${sets[i].id} ↔ ${sets[j].id} (${(sim * 100).toFixed(1)}%)`);
+      }
+    }
+  }
+  if (pairDupes.length) {
+    errors.push(`[全局雷同] 交付集内 ${pairDupes.length} 对 prose 相似度 > ${(PAIRWISE_DUPE_LIMIT * 100).toFixed(0)}%: ${pairDupes.slice(0, 10).join('; ')}`);
+  }
+
+  return { errors, warnings, pairDupes, maxRatio, maxSignature: maxGroup ? maxGroup[0] : null };
 }
 
 function getBaselineData(baselineCommit) {
@@ -174,6 +261,12 @@ function main() {
 
   console.log(`\n[结果] 覆盖 ${totalChecked}/${deliveryMap.size}（skip 0，缺漏 0）`);
   console.log(`[结果] 平均词条保留率 ${(avgRetention * 100).toFixed(1)}%（标准 ≤50%），平均 prose 相似度 ${avgProseSim.toFixed(2)}（标准 ≤0.60）`);
+
+  // 跨条目模板检测（红线 7：无模板签名与全局雷同）
+  const cross = crossEntryAudit(deliveryMap);
+  console.log(`[结果] 跨条目签名检测：最高签名占比 ${(cross.maxRatio * 100).toFixed(1)}%${cross.maxSignature ? `（"${cross.maxSignature}"）` : ''}，两两雷同对 ${cross.pairDupes.length}`);
+  for (const w of cross.warnings) console.warn(`[警告] ${w}`);
+  errors.push(...cross.errors);
 
   if (errors.length > 0) {
     console.error(`\n[门禁失败] 发现 ${errors.length} 条疑似偷懒或未重写条目:`);

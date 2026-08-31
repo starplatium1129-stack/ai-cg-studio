@@ -1,0 +1,22 @@
+{
+  "src/views/PromptBuilderView.vue": 1390,
+  "src/views/GalleryView.vue": 1284,
+  "src/components/video/ShotListEditor.vue": 1138,
+  "src/views/SceneManagerView.vue": 1113,
+  "src/views/VideoStudioView.vue": 1039,
+  "src/views/CharacterView.vue": 999,
+  "src/utils/tagMeaningZh.ts": 964,
+  "src/components/AnimaInpaintModal.vue": 853,
+  "src/views/CompanionView.vue": 836,
+  "src/utils/promptPolicy.ts": 822,
+  "src/views/ControlView.vue": 794,
+  "src/views/SceneExplorerView.vue": 768,
+  "src/utils/promptCompiler.ts": 704,
+  "routes/maintenance.js": 682,
+  "routes/video-ai.js": 649,
+  "src/views/PopularSceneExplorerView.vue": 619,
+  "routes/video.js": 614,
+  "src/views/HomeView.vue": 610,
+  "routes/anima.js": 606,
+  "routes/chat.js": 606
+}

@@ -8,6 +8,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-desktop-staging.js',
     'test-e2e-ci-split.js',
     'test-page-architecture.js',
+    'test-monolith-budget.js',
     'test-runtime-generated.js',
     'test-storage-key-hygiene.js',
     'test-style-debt.js',

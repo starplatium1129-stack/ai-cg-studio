@@ -31,6 +31,7 @@ const STEPS = [
   ['animations', 'node scripts/maintenance/lint-animations.js --check'],
   ['a11y-labels', 'node scripts/tests/test-icon-button-labels.js'],
   ['ux-regressions', 'node scripts/tests/test-ux-regressions.js'],
+  ['monolith-budget', 'node scripts/tests/test-monolith-budget.js'],
   ['scenes:build', 'node scripts/maintenance/build-scenes.js --check'],
   ['popular:build', 'node scripts/maintenance/build-popular.js --check'],
   ['scenes:optimize', 'node scripts/maintenance/optimize-scenes.js --check'],

@@ -10,7 +10,7 @@ import {
 /**
  * 共享数据的唯一加载口。
  *
- * 存在的理由：审计发现 `scenes.json`（892KB / gzip 230KB / 303 条）被 7 处
+ * 存在的理由：审计发现 `scenes.json`（~892KB / gzip ~230KB / 实测 301 条，勿在注释固化条数）被 7 处
  * 独立 fetch，用 4 种不同 cache key —— 其中 SceneManagerView 用
  * `?v=' + Date.now()`，保证每次进页面都全量重传。同时这个为"单例缓存"而建的
  * store 有 0 个消费者。

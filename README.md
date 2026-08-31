@@ -10,18 +10,18 @@
 
 绫季绘境 (Lingji Atelier) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
-The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **43 popular anime/game characters** across 236 outfit forms (45 characters × 236 forms / 944 perspectives in the Reference Bible). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
+The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **49 popular anime/game characters** across 267 outfit forms (51 characters × 267 forms / 1869 reference entries in the Reference Bible; counts follow `DATA_VERSION`). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
 
 This is an unofficial, non-commercial fan project and is not affiliated with or endorsed by the original rights holders.
 
 ## Features
 
 - **Scene & Character Libraries**:
-  - 303 searchable and filterable Scenes (+441 Scene Blueprints), classified as All, R15, or R18 by depicted content.
-  - 43 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
+  - 301 searchable and filterable Scenes (+518 Scene Blueprints), classified as All, R15, or R18 by depicted content.
+  - 49 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
   - 335+ verified showcase samples in `AI/SceneShowcase/` with direct links back into the studio.
 - **4-Perspective Character Reference Bible**:
-  - 45 characters $\times$ 236 outfit forms (944 standard perspectives): Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`).
+  - 51 characters $\times$ 267 outfit forms (1869 reference entries): four cinematic perspectives — Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`) — plus 801 three-view design-sheet baselines (`reference:design` pipeline).
   - Automated closed-loop pipeline: 3-concurrency generation, 4-concurrency pure-vision Gemini 3.7 Flash audit pool, and fine-tuned repair engine.
   - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
 - **Multi-Engine Generation & 38 Curated Artist Styles**:
