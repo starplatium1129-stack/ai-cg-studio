@@ -233,6 +233,12 @@ const WORKFLOWS = {
     docs: 'package.json',
     needs: 'playwright 浏览器已安装（npx playwright install）',
   },
+  'audit:orphans': {
+    desc: '探测 scripts/maintenance/ 下零引用的孤儿脚本（只读，列清单不删）',
+    cmd: ['node', 'scripts/maintenance/detect-orphan-scripts.js'],
+    docs: 'scripts/maintenance/detect-orphan-scripts.js:1',
+    opts: '[--json] 机器可读输出',
+  },
   'character:onboard': {
     desc: '一站式新角色接入（档案/标准/粒子/参考图/样张/DATA_VERSION）',
     cmd: ['npm', 'run', 'character:onboard', '--', '--help'],
