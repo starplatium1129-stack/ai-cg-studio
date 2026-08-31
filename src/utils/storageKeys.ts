@@ -26,6 +26,8 @@ export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
 export const CHAT_USER_PROFILE_KEY = 'aics_user_profile_v1'
 export const CHAT_MEMORY_KEY = 'aics_chat_memories_v1'
 export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
+/** 出图自动入册开关（2026-08-31 用户偏好：默认关，直出成片不再自动进作品册）。 */
+export const AUTO_SAVE_TO_GALLERY_KEY = 'aics_auto_save_to_gallery'
 
 /**
  * 上次成功备份的时间戳（localStorage）——活键但刻意不参与备份导出：
@@ -88,6 +90,7 @@ export const LIVE_LOCAL_KEYS = [
   SPEECH_INPUT_KEY,
   DRAW_ENGINE_KEY,
   GUEST_GUIDE_DISMISSED_KEY,
+  AUTO_SAVE_TO_GALLERY_KEY,
 ] as const
 
 /** 动态前缀活键：训练参数/数据集选择按 job 动态命名。 */

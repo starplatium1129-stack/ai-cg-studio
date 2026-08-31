@@ -1,4 +1,5 @@
 import {
+  AUTO_SAVE_TO_GALLERY_KEY,
   CHAT_THINKING_KEY,
   DRAW_ENGINE_KEY,
   GUEST_GUIDE_DISMISSED_KEY,
@@ -54,6 +55,13 @@ export const TUNNEL_ENABLED_SETTING: SettingDefinition<boolean> = {
 
 export const GUEST_GUIDE_DISMISSED_SETTING: SettingDefinition<boolean> = {
   key: GUEST_GUIDE_DISMISSED_KEY,
+  parse(raw) { return raw === '1' },
+  serialize(value) { return value ? '1' : '0' },
+}
+
+/** 出图自动入册（2026-08-31 用户偏好：默认关，缺省即 false）。 */
+export const AUTO_SAVE_TO_GALLERY_SETTING: SettingDefinition<boolean> = {
+  key: AUTO_SAVE_TO_GALLERY_KEY,
   parse(raw) { return raw === '1' },
   serialize(value) { return value ? '1' : '0' },
 }

@@ -267,6 +267,14 @@
             @reset="resetAll"
           />
 
+          <!-- 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动进作品册，
+               批量/队列不受此开关影响，它们按收集语义始终入册） -->
+          <div class="auto-save-gallery-row" role="group" aria-label="出图自动入册">
+            <ToggleSwitch v-model="autoSaveToGallery" label="出图自动存入作品册" />
+            <span class="auto-save-gallery-label">出图自动存入作品册</span>
+            <span class="auto-save-gallery-hint">{{ autoSaveToGallery ? '直出成片将自动进作品册' : '直出成片需手动点「保存快照」' }}</span>
+          </div>
+
           <!-- 多场景批量出图入口 -->
           <div class="batch-entry-row">
             <button
@@ -446,6 +454,7 @@ const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/
 const ImageSplitCompare = defineAsyncComponent(() => import('@/components/visual/ImageSplitCompare.vue'))
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 // 吸附出图条承载主行动（生成按钮），同步导入保证首屏即位；体量小，不进异步分片。
 import GenerationActionBar from '@/components/director/GenerationActionBar.vue'
@@ -458,6 +467,7 @@ import {
 } from '@/utils/quickCreate'
 import { confirmAction } from '@/composables/useConfirm'
 import {
+  AUTO_SAVE_TO_GALLERY_SETTING,
   DRAW_ENGINE_SETTING,
   settingsRepository,
   type DrawEngine,
@@ -498,6 +508,9 @@ const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
 const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
+// 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动写作品册）。
+const autoSaveToGallery = ref(settingsRepository.get(AUTO_SAVE_TO_GALLERY_SETTING) ?? false)
+watch(autoSaveToGallery, (value) => settingsRepository.set(AUTO_SAVE_TO_GALLERY_SETTING, value))
 const animaSession = useAnimaSession({
   getCharacter: () => pb.char,
   isPopular: () => pb.isPopular,
@@ -527,10 +540,14 @@ function buildAnimaRequest() {
 }
 function onAnimaResult(result: AnimaResult) {
   engine.onAnimaResult(result)
-  // 直出自动入册（2026-08-30 UX 审计 P0-8）：Anima/Krea 直出与 SD、队列、
-  // 批量同路径写历史，忘点「保存快照」不再等于丢图。字段口径对齐批量
-  // 路径（usePromptBatchRunners.runBatchAnima）；inpaint 换装结果同样入册
-  // ——它也是成片，且 parent_id 打通后将成为重绘对比的锚点。
+  // 直出自动入册（2026-08-30 UX 审计 P0-8，2026-08-31 起受偏好开关控制，
+  // 默认关——用户不想每次出图都自动进作品册；要开在出图结果面板打开开关）。
+  // 字段口径对齐批量路径（usePromptBatchRunners.runBatchAnima）；inpaint 换装
+  // 结果同样入册——它也是成片，且 parent_id 打通后将成为重绘对比的锚点。
+  if (!autoSaveToGallery.value) {
+    displayedResultHistoryId.value = null
+    return
+  }
   void (async () => {
     try {
       if (!result.blob.size) throw new Error('成片数据为空')
@@ -1088,10 +1105,10 @@ async function callGenerate(opts: { disableLora?: boolean } = {}) {
     sdErrorReport.value = classifySDError({ message: sd.errorMsg.value })
     return
   }
-  // 直出自动入册（2026-08-30 UX 审计 P0-8）：与队列/批量同路径写历史，
-  // 忘点「保存快照」不再等于丢图。后台写不阻塞舞台展示；失败只提示
-  // 不重试（手动保存仍可用作兜底）。
-  if (url) {
+  // 直出自动入册（2026-08-30 UX 审计 P0-8，2026-08-31 起受偏好开关控制，
+  // 默认关——用户不想每次出图都自动进作品册；要开在出图结果面板打开开关）。
+  // 与队列/批量同路径写历史；后台写不阻塞舞台展示；失败只提示不重试。
+  if (url && autoSaveToGallery.value) {
     try {
       const saved = await commitJobResult(job, url)
       if (saved) displayedResultHistoryId.value = saved.id
@@ -1573,6 +1590,21 @@ watch(() => drawEngine.value, engine => {
 .batch-entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin: var(--s-2) 0; }
 .batch-entry-count { color: var(--text-secondary); font-size: var(--fs-label-xs); }
 .linklike { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
+.auto-save-gallery-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: var(--s-2) 0;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+.auto-save-gallery-label { font-size: var(--fs-label-sm); color: var(--text-primary); }
+.auto-save-gallery-hint { font-size: var(--fs-label-xs); color: var(--text-secondary); }
 .pb {
   --pb-active: var(--mood-love);
   --pb-active-text: var(--mood-love-text);
