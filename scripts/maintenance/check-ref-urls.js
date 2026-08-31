@@ -35,3 +35,9 @@ for (const profile of Object.values(data)) {
   }
 }
 console.log('total urls:', total, '| missing on disk:', missing, '| pending skipped（设计图占位）| refRoot:', refRoot);
+// 接入门禁（run-check-parallel）：断链即非零退出，2026-08-31 前只打印不失败，
+// 导致 product-operations P0「232 条断链」长期挂账无人拦截。
+if (missing > 0) {
+  console.error(`参考图断链 ${missing}/${total}，请先修复 view.json 或补图`);
+  process.exit(1);
+}
