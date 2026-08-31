@@ -659,26 +659,20 @@
         "aesc",
         "fgo"
       ],
-      "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin, in a black-and-blue gothic gown with a high ruff collar and a crown, carrying the holy lance Rhongomyniad",
+      "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin",
       "identityTokens": [
-        "morgan_le_fay_fate",
+        "morgan (fate/grand order)",
         "1girl",
         "solo",
         "white_hair",
         "long_hair",
+        "straight_hair",
         "blue_eyes",
         "pale_skin",
-        "crown",
-        "gothic_dress",
-        "high_collar",
-        "detached_sleeves",
-        "layered_skirt",
-        "long_dress",
-        "fairy_queen",
         "fgo"
       ],
       "exactTokens": [
-        "morgan_le_fay_fate"
+        "morgan (fate/grand order)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-aesthetic-v1.1",
@@ -691,16 +685,16 @@
         {
           "id": "winter_queen",
           "name": "冬之女王本貌",
-          "prose": "her true form as the Winter Queen of Faerie Britain, a black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves and a layered split skirt, crowned and carrying the holy lance Rhongomyniad",
+          "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown and the holy lance Rhongomyniad",
           "tokens": [
+            "crown",
+            "gothic_dress",
             "black_dress",
             "blue_dress",
             "high_collar",
             "detached_sleeves",
             "layered_skirt",
             "long_dress",
-            "gothic_dress",
-            "crown",
             "rhongomyniad"
           ],
           "default": true,
@@ -709,15 +703,14 @@
         {
           "id": "aesc_rain_witch",
           "name": "雨之魔女梣",
-          "prose": "her Aesc form as the Witch of Rain, a blue robe with a witch hat and staff, the gentle witch who wandered the land",
+          "prose": "her Aesc form as the Witch of Rain, a blue witch robe with a wide-brimmed witch hat and wooden staff",
           "tokens": [
-            "aesc_(fate)",
+            "aesc (fate)",
             "witch_hat",
             "robe",
             "staff",
             "blue_dress",
-            "magic",
-            "witch"
+            "magic"
           ],
           "default": false,
           "isDefault": false
@@ -725,9 +718,9 @@
         {
           "id": "aesc_savior",
           "name": "救世主梣",
-          "prose": "her Aesc form as the Savior, a blue robe with a capelet and staff, resolute yet serene",
+          "prose": "her Aesc form as the Savior, a blue robe with a capelet and magic staff",
           "tokens": [
-            "aesc_(fate)",
+            "aesc (fate)",
             "capelet",
             "robe",
             "staff",
@@ -740,10 +733,12 @@
         {
           "id": "water_princess",
           "name": "水妃摩根（泳装）",
-          "prose": "her summer Water Princess swimsuit, bare-shouldered with a gentle smile and silver hair loose in the breeze",
+          "prose": "her summer Water Princess swimsuit, a stylish white halter swimsuit with bare shoulders and loose silver hair",
           "tokens": [
-            "morgan_le_fay_(water_princess)_(fate)",
+            "morgan (water princess) (fate)",
             "swimsuit",
+            "white_swimsuit",
+            "halterneck",
             "bare_shoulders",
             "smile"
           ],
