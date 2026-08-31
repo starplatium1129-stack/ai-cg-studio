@@ -116,7 +116,21 @@
         "formNotes": "兔女郎装为名场面造型；瞳色为棕色（已修正）",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "cloverworks, official anime screencap, anime coloring"
+      "animeStudio": "cloverworks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "tiv"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

@@ -106,7 +106,21 @@
         "formNotes": "蓝发蓝眼（官方立绘为准）；隐藏鬼角；黑白色女仆装；晨星流星锤",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "white fox, official anime screencap, anime coloring"
+      "animeStudio": "white fox, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "anmi"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "emilia_rezero",
@@ -178,7 +192,21 @@
         "formNotes": "银发紫瞳半精灵；独角外露；契约精灵帕克；冰雪系",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "white fox, official anime screencap, anime coloring"
+      "animeStudio": "white fox, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "anmi"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

@@ -108,7 +108,21 @@
         "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "studio bind, official anime screencap, anime coloring"
+      "animeStudio": "studio bind, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "sylphiette",

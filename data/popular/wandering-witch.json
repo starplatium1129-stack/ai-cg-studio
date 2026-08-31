@@ -84,7 +84,21 @@
         "formNotes": "灰银发（已修正）；黑魔女帽+扫帚；灰之魔女",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "c2c, official anime screencap, anime coloring"
+      "animeStudio": "c2c, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "azuuru",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

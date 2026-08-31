@@ -162,7 +162,21 @@
         "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "cloverworks, official anime screencap, anime coloring"
+      "animeStudio": "cloverworks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "momoco_haru",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

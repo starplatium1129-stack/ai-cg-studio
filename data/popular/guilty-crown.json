@@ -98,7 +98,12 @@
         "formNotes": "下双马尾+红发夹；歌姬红装/白裙/虚空剑；主剧情 2039",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "production i.g, redjuice, official anime screencap"
+      "animeStudio": "production i.g, redjuice, official anime screencap",
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "rella",
+        "swav"
+      ]
     }
   ]
 }

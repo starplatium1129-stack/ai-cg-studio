@@ -86,7 +86,21 @@
         "formNotes": "黑长直蓝眼；侍奉部；清冷气质",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "feel. (studio), official anime screencap, anime coloring"
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "ponkan8",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "yuigahama_yui",

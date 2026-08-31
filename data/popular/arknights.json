@@ -149,7 +149,21 @@
         "formNotes": "白发红瞳；大剑莱瓦汀；气质慵懒忧郁",
         "research": "2026-08-15 调研（Danbooru surtr_(arknights) 5266 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "swav",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "kaltsit_arknights",
@@ -308,7 +322,21 @@
         "formNotes": "银白短发绿瞳；绿白医师袍；Mon3tr 召唤物；Danbooru 本体 tag 缺失（仅衍生变体），以视觉词为主",
         "research": "2026-08-15 调研（Danbooru 本体 tag 缺失，衍生 kal'tsit_esperanta 407 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "chen_arknights",
@@ -523,7 +551,21 @@
         "formNotes": "蓝发金瞳小龙角；近卫局制服；赤霄双剑",
         "research": "2026-08-15 调研（Danbooru ch'en_(arknights) 4467 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "so-bin"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "eyjafjalla_arknights",
@@ -661,7 +703,21 @@
         "formNotes": "粉发红瞳羊角；火山学家",
         "research": "2026-08-15 调研（Danbooru eyjafjalla_(arknights) 2237 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "anmi",
+        "rella",
+        "morikura_en"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "lemuen_arknights",
@@ -788,7 +844,21 @@
         "formNotes": "银白长发蓝瞳；萨科塔光环+小翅膀；蓝白战术服",
         "research": "2026-08-15 调研（Danbooru lemuen_(arknights) 1554 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "rella",
+        "ask_(askzy)"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "dusk_arknights",
@@ -920,7 +990,21 @@
         "formNotes": "黑长直红瞳；水墨画师；白底黑纹旗袍",
         "research": "2026-08-15 调研（Danbooru dusk_(arknights) 4097 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "huanxiang_heitu",
+        "rella",
+        "yoneyama_mai"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "mudrock_arknights",
@@ -1095,7 +1179,21 @@
         "formNotes": "银发红瞳萨卡兹；重甲+大锤；外冷内柔",
         "research": "2026-08-15 调研（Danbooru mudrock_(arknights) 4238 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "so-bin",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "eunectes_arknights",
@@ -1239,7 +1337,21 @@
         "formNotes": "深绿长发金瞳健康肤色；机甲工程痴",
         "research": "2026-08-15 调研（Danbooru eunectes_(arknights) 1138 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "liduke",
+        "swav",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "goldenglow_arknights",
@@ -1397,7 +1509,21 @@
         "formNotes": "金发蓝瞳双马尾；温婉图书管理员",
         "research": "2026-08-15 调研（Danbooru goldenglow_(arknights) 2586 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "anmi",
+        "morikura_en",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "skadi_arknights",
@@ -1535,7 +1661,21 @@
         "formNotes": "白发红瞳；黑色连体作战服+大剑",
         "research": "2026-08-15 调研（Danbooru skadi_(arknights) 6856 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "alchemaniac",
+        "swav",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "quillpen_arknights",
@@ -1665,7 +1805,21 @@
         "formNotes": "银白短发红瞳；镰刀信使兼调酒师；Danbooru 词条 la_pluma_(arknights)（2026-08-29 修正，原 quillpen 调研有误，WD14 反推实测命中）",
         "research": "2026-08-15 初调研误作 Quillpen（Danbooru quillpen 0 posts，视觉词兜底）；2026-08-29 修正：官方英文名 La Pluma（本名拉菲艾拉·席尔瓦），Danbooru 词条 la_pluma_(arknights)"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "exusiai_arknights",
@@ -1828,7 +1982,21 @@
         "formNotes": "白发蓝瞳光环小翅膀；企鹅物流黑白制服；活泼乐天",
         "research": "2026-08-15 调研（Danbooru exusiai_(arknights) 5612 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "huanxiang_heitu",
+        "mika_pikazo",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "suzuran_arknights",
@@ -1992,7 +2160,21 @@
         "formNotes": "白发金瞳狐耳九尾；白金色和服；治愈系",
         "research": "2026-08-15 调研（Danbooru suzuran_(arknights) 6749 posts）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "anmi",
+        "morikura_en",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "ling_arknights",
@@ -2134,7 +2316,21 @@
         "formNotes": "白发金瞳；岁十二生肖之龙；慵懒诗人；精二白发如瀑浮空；丹博鲁词条 ling_(arknights)",
         "research": "2026-08-30 调研（Danbooru ling_(arknights) 1100+ posts；WD14 词表实测：white_hair/very_long_hair/streaked_hair/yellow_eyes/dragon_horns/pointy_ears/chinese_clothes/long_dress 全命中，golden_eyes 不在词表故取 yellow_eyes）"
       },
-      "animeStudio": "arknights, hypergryph, official anime art"
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "xiayehongming",
+        "rella",
+        "yoneyama_mai"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

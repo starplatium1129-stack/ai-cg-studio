@@ -129,7 +129,21 @@
         "formNotes": "青绿超长双马尾；经典舞台装=无袖深色上衣+领带+臂套；全场景灵活",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "rella, official vocaloid art, vibrant concert lighting"
+      "animeStudio": "rella, official vocaloid art, vibrant concert lighting",
+      "curatedArtistStyles": [
+        "rella",
+        "mika_pikazo",
+        "anmi"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

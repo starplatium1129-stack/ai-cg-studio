@@ -79,7 +79,21 @@
         "formNotes": "金发绿眼呆毛；蓝白铠裙；圣剑 Excalibur",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "ufotable, type-moon, cinematic anime screenshot, emiya-san chi no kyou no gohan"
+      "animeStudio": "ufotable, type-moon, cinematic anime screenshot, emiya-san chi no kyou no gohan",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "so-bin"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "tohsaka_rin",
@@ -164,7 +178,21 @@
         "formNotes": "黑发双马尾红丝带蓝眼；宝石魔术；傲娇",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "ufotable, type-moon, cinematic anime screenshot"
+      "animeStudio": "ufotable, type-moon, cinematic anime screenshot",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "rella",
+        "morikura_en"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "illyasviel_von_einzbern",
@@ -293,7 +321,21 @@
         "formNotes": "银发红眼幼态；紫裙；爱因兹贝伦古堡",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "silver link, ufotable, official anime screencap"
+      "animeStudio": "silver link, ufotable, official anime screencap",
+      "curatedArtistStyles": [
+        "takeuchi_takashi",
+        "anmi",
+        "morikura_en"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "jeanne_alter",

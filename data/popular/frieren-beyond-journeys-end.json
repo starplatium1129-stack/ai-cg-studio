@@ -84,7 +84,21 @@
         "formNotes": "精灵长寿者；低双马尾；紫眼（已修正）",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "madhouse, official anime screencap, anime coloring"
+      "animeStudio": "madhouse, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "abe_tsukasa",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "fern_frieren",

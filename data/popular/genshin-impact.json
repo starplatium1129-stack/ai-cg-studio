@@ -85,7 +85,21 @@
         "formNotes": "真身=雷电影（人偶之身）；雷电元素=紫色电光；武器=梦想一心",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "genshin impact, official anime art, miHoYo style"
+      "animeStudio": "genshin impact, official anime art, miHoYo style",
+      "curatedArtistStyles": [
+        "rella",
+        "swav",
+        "ask_(askzy)"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

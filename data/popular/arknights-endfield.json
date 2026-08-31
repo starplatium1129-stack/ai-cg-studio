@@ -149,7 +149,21 @@
         "formNotes": "白色短发蓝绿挑染、绿瞳、毛茸耳；白青战术制服；2026-08-15 Anima 实测还原 7.5/10",
         "research": "2026-08-15 调研（Danbooru perlica_(arknights) 2446 posts + 本机实测）"
       },
-      "animeStudio": "arknights endfield, hypergryph, official anime art"
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "laevatain_arknights",
@@ -294,7 +308,21 @@
         "formNotes": "红发红瞳萨卡兹；黑角+恶魔尾；黑红熔岩机能装+大剑；爱吃冰淇淋",
         "research": "2026-08-15 调研（Danbooru laevatain_(arknights) 937 posts；官方立绘视觉确认）"
       },
-      "animeStudio": "arknights endfield, hypergryph, official anime art"
+      "animeStudio": "arknights endfield, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "so-bin",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "yvonne_arknights",

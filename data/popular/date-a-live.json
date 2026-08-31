@@ -88,7 +88,21 @@
         "formNotes": "左金时钟瞳/右红瞳异色；不对称双马尾；刻刻帝+双燧发枪",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "tsunako, official anime screencap, anime coloring"
+      "animeStudio": "tsunako, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "tsunako",
+        "rella",
+        "swav"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

@@ -135,7 +135,21 @@
         "formNotes": "前茶话会成员 / 帕特尔派领导人；优雅、天真又带危险感",
         "research": "2026-08-27 调研"
       },
-      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "anmi",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "sorasaki_hina",
@@ -300,7 +314,21 @@
         "formNotes": "风纪委员会委员长；身高 142cm，外表严肃但私下容易害羞",
         "research": "2026-08-27 调研"
       },
-      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "anmi",
+        "rella",
+        "swav"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "kyouyama_kazusa",
@@ -428,7 +456,21 @@
         "formNotes": "甜点部成员 / SugarRush 主唱兼贝斯手；冒失、容易慌张但认真",
         "research": "2026-08-27 调研"
       },
-      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "kantoku",
+        "morikura_en",
+        "tiv"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "asuma_toki",
@@ -544,7 +586,21 @@
         "formNotes": "C&C 特殊小队 Zero Four；女仆特工，脱线冷娇，有兔女郎形态",
         "research": "2026-08-27 调研"
       },
-      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "swav",
+        "mika_pikazo",
+        "yoneyama_mai"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "tsukatsuki_rio",
@@ -658,7 +714,21 @@
         "formNotes": "研讨会核心人物；天才、腹黑、冷娇，有心理阴影",
         "research": "2026-08-27 调研"
       },
-      "animeStudio": "Blue Archive official art, Yostar / Nexon style"
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "so-bin",
+        "hxxg"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

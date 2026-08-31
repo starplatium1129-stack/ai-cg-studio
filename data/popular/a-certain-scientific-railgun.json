@@ -92,7 +92,21 @@
         "formNotes": "茶发棕眼齐刘海；常盘台水手服；超电磁炮=硬币电光",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "j.c.staff, official anime screencap, anime coloring"
+      "animeStudio": "j.c.staff, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kantoku",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

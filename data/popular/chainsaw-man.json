@@ -101,7 +101,21 @@
         "formNotes": "日常=淡粉发+正常红瞳+白西装；支配恶魔真身=红发+圈圈眼+麻花辫（独立 outfit）；不用剑",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "mappa, official anime screencap, anime coloring"
+      "animeStudio": "mappa, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "fujimoto_tatsuki",
+        "yoneyama_mai",
+        "swav"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     },
     {
       "id": "reze_chainsaw",

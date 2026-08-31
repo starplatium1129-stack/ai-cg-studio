@@ -165,7 +165,12 @@
         "formNotes": "粉发红眼；恶魔形态=红角+白发+白色战衣；勿与天童木更混淆",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "a-1 pictures, tsunako, official anime screencap"
+      "animeStudio": "a-1 pictures, tsunako, official anime screencap",
+      "curatedArtistStyles": [
+        "tsunako",
+        "rella",
+        "morikura_en"
+      ]
     }
   ]
 }
