@@ -72,7 +72,7 @@ node scripts/workflow.js reference:repair
 ### 3.3 样张（showcase）— 热门/场景 双轨
 
 - 生成：`generate-popular-showcase-anima11.js:1` / `generate-scene-showcase-anima11.js:1`（`/api/anima/jobs`，`anima-aesthetic-v1.1`，`--gateway 3123 --concurrency 3`）
-- 审核：`audit-showcase-rella.js:1` / `audit-scene-showcase-run.js:1`（`image-inspect.js` 8维）
+- 审核：`audit-showcase-rella.js:1`（popular，`workflow showcase:audit`）/ `audit-scene-showcase-run.js:1`（scene，`workflow showcase:audit:scene`）（`image-inspect.js` 8维）
 - 发布：`publish-popular-showcase.js` / `publish-scene-showcase-anima11.js`（原子重命名 + `DATA_VERSION` + `precompress`）
 - **统一批量**：`scripts/maintenance/run-batch.js:1` 合并 8 个 `run-batch-*.js`
   ```powershell

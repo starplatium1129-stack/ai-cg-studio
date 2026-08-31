@@ -32,12 +32,12 @@ const WORKFLOWS = {
     docs: 'docs/maintenance.md#文件职责',
   },
   'popular:split': {
-    desc: 'popular-characters.json -> 系列分片（覆盖写入）',
+    desc: 'popular→分片（仅写分片文件，不重建聚合；如需重建用 popular:import）',
     cmd: ['node', 'scripts/maintenance/split-popular.js', '--write'],
     docs: 'docs/maintenance.md',
   },
   'popular:import': {
-    desc: 'popular-characters.json -> 系列分片并重建聚合',
+    desc: 'popular→分片+重建聚合（popular:split 超集，改完分片后跑此重建）',
     cmd: ['npm', 'run', 'popular:import'],
     docs: 'docs/maintenance.md',
   },
@@ -99,9 +99,14 @@ const WORKFLOWS = {
     opts: '--gateway 3123 --keys a,b --concurrency 3',
   },
   'showcase:audit': {
-    desc: '批量审核 showcase (Gemini 4并发)',
+    desc: '批量审核 popular showcase (Gemini 4并发，rella)',
     cmd: ['node', 'scripts/maintenance/audit-showcase-rella.js', '--help'],
     docs: 'scripts/maintenance/audit-showcase-rella.js:1',
+  },
+  'showcase:audit:scene': {
+    desc: '批量审核 scene showcase (Gemini 4并发，scene 版)',
+    cmd: ['node', 'scripts/maintenance/audit-scene-showcase-run.js', '--help'],
+    docs: 'scripts/maintenance/audit-scene-showcase-run.js:1',
   },
   'showcase:publish': {
     desc: '发布审核通过的样张到线上',
@@ -121,12 +126,12 @@ const WORKFLOWS = {
     steps: ['showcase:generate', 'showcase:audit', 'showcase:publish'],
   },
   'check:quick': {
-    desc: '并行质量门（typecheck + 契约 + 风格）',
+    desc: '并行质量门 npm run check（13项全跑；与 gate:quick 区别：本命令全量并行，gate:quick 按改动面积只跑相关）',
     cmd: ['npm', 'run', 'check'],
     docs: 'AGENTS.md#质量门禁',
   },
   'gate:quick': {
-    desc: '按改动类型分层门禁（ui|server|data|all，缺省自动检测 git 改动）',
+    desc: '按改动类型分层门禁（ui|server|data|all；与 check:quick 区别：只跑改动相关面积，更快，缺省自动检测 git 改动）',
     cmd: ['node', 'scripts/maintenance/gate-quick.js'],
     opts: '[ui|server|data|all] [--verbose] [--all]',
     docs: 'docs/workflow.md',
