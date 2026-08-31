@@ -51,15 +51,20 @@
 
 ## 三、 一键运行流水线
 
+> **入口**（红线 10 优先复用现成工作流）：统一走 `scripts/workflow.js` 的 `character:onboard`，勿直调裸脚本。
+
 ```bash
-# 为指定角色全自动运行流水线（同步契约、建点阵、渲染 20 张参考图、渲染 11 张样张、升版本并验证）：
-node scripts/maintenance/workflow-onboard-popular-character.js --character <character_id>
+# 为指定角色全自动运行流水线（同步契约、建点阵、渲染参考图、渲染样张、升版本并验证）：
+node scripts/workflow.js character:onboard --character <character_id>
 
 # 仅执行数据、点阵与质量门禁对齐（跳过已渲染资产）：
-node scripts/maintenance/workflow-onboard-popular-character.js --character <character_id> --skip-render
+node scripts/workflow.js character:onboard --character <character_id> --skip-render
 
 # 执行并自动增量部署至桌面端：
-node scripts/maintenance/workflow-onboard-popular-character.js --character <character_id> --deploy
+node scripts/workflow.js character:onboard --character <character_id> --deploy
+
+# 旧入口仍兼容（不推荐，未经 workflow 校验层）：
+# node scripts/maintenance/workflow-onboard-popular-character.js --character <character_id>
 ```
 
 ---
