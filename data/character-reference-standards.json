@@ -1158,7 +1158,71 @@
         "pale_skin",
         "fgo"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "winter_queen",
+          "name": "冬之女王本貌",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "crown",
+            "gothic_dress",
+            "black_dress",
+            "blue_dress",
+            "high_collar",
+            "detached_sleeves",
+            "layered_skirt",
+            "long_dress",
+            "rhongomyniad"
+          ],
+          "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown and the holy lance Rhongomyniad"
+        },
+        {
+          "id": "aesc_rain_witch",
+          "name": "雨之魔女梣",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "aesc (fate)",
+            "witch_hat",
+            "robe",
+            "staff",
+            "blue_dress",
+            "magic"
+          ],
+          "prose": "her Aesc form as the Witch of Rain, a blue witch robe with a wide-brimmed witch hat and wooden staff"
+        },
+        {
+          "id": "aesc_savior",
+          "name": "救世主梣",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "aesc (fate)",
+            "capelet",
+            "robe",
+            "staff",
+            "blue_dress",
+            "magic"
+          ],
+          "prose": "her Aesc form as the Savior, a blue robe with a capelet and magic staff"
+        },
+        {
+          "id": "water_princess",
+          "name": "水妃摩根（泳装）",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "morgan (water princess) (fate)",
+            "swimsuit",
+            "white_swimsuit",
+            "halterneck",
+            "bare_shoulders",
+            "smile"
+          ],
+          "prose": "her summer Water Princess swimsuit, a stylish white halter swimsuit with bare shoulders and loose silver hair"
+        }
+      ]
     },
     {
       "id": "mash_kyrielight",
@@ -1178,7 +1242,82 @@
         "shield",
         "fgo"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "chaldea_casual",
+          "name": "迦勒底日常便服",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "glasses",
+            "red_necktie",
+            "black_dress",
+            "black_pantyhose",
+            "grey_jacket",
+            "open_jacket",
+            "collared_dress"
+          ],
+          "prose": "her Chaldea casual outfit, a black collared dress with a grey open jacket, red necktie and black pantyhose, with glasses"
+        },
+        {
+          "id": "combat_armor",
+          "name": "战斗装（灵基二/三破）",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "armored_dress",
+            "stomach_cutout",
+            "two-tone_dress",
+            "leotard",
+            "elbow_gloves",
+            "thighhighs",
+            "shield"
+          ],
+          "prose": "her combat armored dress with a diamond-shaped midriff cutout, leotard, elbow gloves and thigh-highs, carrying Lord Chaldeas"
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "常夏泳装灵衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "swimsuit",
+            "dress_swimsuit",
+            "white_dress",
+            "bikini",
+            "crop_top",
+            "halterneck"
+          ],
+          "prose": "her summer spiritron dress, a white dress-style swimsuit with a halterneck top"
+        },
+        {
+          "id": "dangerous_beast",
+          "name": "Dangerous Beast 狼系灵衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "wolf_ears",
+            "wolf_tail",
+            "elbow_gloves",
+            "thighhighs",
+            "claws",
+            "bare_shoulders"
+          ],
+          "prose": "her Dangerous Beast costume, a wolf-themed outfit with wolf ears and tail, elbow gloves, thigh-highs and claws, bare-shouldered"
+        },
+        {
+          "id": "ortinax_armor",
+          "name": "奥特瑙斯装甲",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "black_armor",
+            "thighhighs",
+            "armored_boots"
+          ],
+          "prose": "her Ortinax armor, a black armored suit with thigh-highs and armored boots"
+        }
+      ]
     },
     {
       "id": "hatsune_miku",
@@ -2301,7 +2440,55 @@
         "athletic",
         "mushoku_tensei"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "sword_king",
+          "name": "剑王时期",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "crop_top",
+            "open_inner_thigh_pants",
+            "stirrup_leggings",
+            "white_pantyhose",
+            "headband",
+            "sword",
+            "sheath"
+          ],
+          "prose": "her iconic outfit as the Sword King, a crop top with open inner-thigh pants and stirrup leggings, white pantyhose, a headband and a sheathed sword at her hip"
+        },
+        {
+          "id": "dead_end_adventurer",
+          "name": "冒险者 Dead End",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "jacket",
+            "pants",
+            "boots",
+            "sword",
+            "sheath",
+            "belt",
+            "adventure"
+          ],
+          "prose": "her Dead End adventurer outfit from the journey across the Demon Continent, a practical jacket with pants and boots, sword and sheath at her belt"
+        },
+        {
+          "id": "noble_child",
+          "name": "贵族大小姐",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "dress",
+            "frills",
+            "headband",
+            "hair_ribbon",
+            "ahoge",
+            "red_hair"
+          ],
+          "prose": "her childhood noble outfit, an elegant frilled dress befitting the young lady of the Greyrat house, with her characteristic headband and ahoge"
+        }
+      ]
     },
     {
       "id": "kitagawa_marin",
@@ -4694,7 +4881,50 @@
         "engineer",
         "arknights_endfield"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "combat_outfit",
+          "name": "初始作战装",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "crop_top",
+            "detached_sleeves",
+            "gloves",
+            "leggings",
+            "short_boots",
+            "dual_wielding",
+            "gun"
+          ],
+          "prose": "her initial combat outfit, a crop top with detached sleeves, gloves, leggings and short boots, dual-wielding handguns"
+        },
+        {
+          "id": "fashion_casual",
+          "name": "意象影画·趋势话题",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "fashion",
+            "nail_polish",
+            "casual_clothes",
+            "dress"
+          ],
+          "prose": "a trendy fashion-casual look with nail polish and stylish coordination"
+        },
+        {
+          "id": "selfie_casual",
+          "name": "意象影画·自拍邀请",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "smartphone",
+            "selfie",
+            "casual_clothes",
+            "smile"
+          ],
+          "prose": "a relaxed selfie-ready casual look with her smartphone in hand and a bright smile"
+        }
+      ]
     },
     {
       "id": "alisa_mikhailovna_kujou",
@@ -5714,7 +5944,54 @@
         "idol",
         "oshi_no_ko"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "main_look",
+          "name": "立绘主形象",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "frilled_dress",
+            "pink_dress",
+            "sleeveless_dress",
+            "heart_brooch",
+            "frilled_gloves",
+            "thigh_boots",
+            "rabbit_hair_ornament"
+          ],
+          "prose": "her signature idol look, a sleeveless frilled pink dress with a heart brooch, frilled gloves and thigh boots, with the rabbit hair ornament in her one-side-up hair"
+        },
+        {
+          "id": "stage_off_shoulder",
+          "name": "舞台服·露肩粉裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "off_shoulder",
+            "pink_dress",
+            "blue_necktie",
+            "white_thighhighs",
+            "black_shoes"
+          ],
+          "prose": "her stage costume with an off-shoulder pink dress, a blue necktie, white thigh-highs and black shoes"
+        },
+        {
+          "id": "stage_two_tone",
+          "name": "舞台服·白上粉下",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "two_tone_dress",
+            "white_dress",
+            "pink_skirt",
+            "collar",
+            "brown_belt",
+            "brown_boots",
+            "white_thighhighs"
+          ],
+          "prose": "her second stage costume, a two-tone dress with a white top, pink skirt and collar, brown belt, brown boots and white thigh-highs"
+        }
+      ]
     },
     {
       "id": "kurokawa_akane",
@@ -5734,7 +6011,63 @@
         "star_eyes",
         "oshi_no_ko"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "阳东高中制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "school_uniform",
+            "white_collared_shirt",
+            "black_sweater_vest",
+            "necktie",
+            "grey_pleated_skirt"
+          ],
+          "prose": "her Yoto High School uniform, a white collared shirt with a black sweater vest and necktie, and a grey pleated skirt"
+        },
+        {
+          "id": "pinafore_dress",
+          "name": "蓝围裙连衣裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "pinafore_dress",
+            "blue_dress",
+            "white_blouse",
+            "black_footwear",
+            "high_heels"
+          ],
+          "prose": "a casual blue pinafore dress over a white blouse, with black high heels"
+        },
+        {
+          "id": "sayahime_stage",
+          "name": "舞台剧·纱姬造型",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "sayahime_(tokyo_blade)",
+            "star_eyes",
+            "sword",
+            "long_sleeves",
+            "stage_costume"
+          ],
+          "prose": "her Sayahime stage look from the Tokyo Blade stage play, wielding a sword with intense star-lit eyes"
+        },
+        {
+          "id": "daily_glasses",
+          "name": "日常常服（眼镜）",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "glasses",
+            "casual",
+            "white_shirt",
+            "blue_skirt"
+          ],
+          "prose": "a relaxed everyday outfit with glasses and a soft casual styling"
+        }
+      ]
     },
     {
       "id": "mikasa_ackerman",
@@ -5753,7 +6086,73 @@
         "red_scarf",
         "attack_on_titan"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "survey_corps_uniform",
+          "name": "调查兵团制服 850 年",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "survey_corps_uniform",
+            "brown_jacket",
+            "white_shirt",
+            "white_pants",
+            "brown_boots",
+            "green_cape",
+            "odm_gear",
+            "harness",
+            "swords",
+            "red_scarf",
+            "belt"
+          ],
+          "prose": "her Survey Corps uniform with a brown jacket, white shirt and pants, brown boots and green cape, ODM gear harness and blades, with the iconic red scarf"
+        },
+        {
+          "id": "training_corps",
+          "name": "训练兵团制服",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "white_jacket",
+            "white_shirt",
+            "white_pants",
+            "brown_boots",
+            "belt",
+            "red_scarf"
+          ],
+          "prose": "her 104th Training Corps uniform, a white jacket and shirt with white pants and brown boots, with the red scarf"
+        },
+        {
+          "id": "casual",
+          "name": "常服便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "white_shirt",
+            "red_scarf",
+            "black_shorts",
+            "belt",
+            "tall_boots",
+            "casual_clothes"
+          ],
+          "prose": "her daily casual outfit, a white long-sleeved button-up shirt with the iconic red scarf around her neck, black shorts, a brown leather belt and tall black boots"
+        },
+        {
+          "id": "marley_uniform",
+          "name": "马莱篇黑制服 854 年",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "black_uniform",
+            "breastplate",
+            "straps",
+            "red_scarf",
+            "military_uniform",
+            "white_shirt"
+          ],
+          "prose": "her black military uniform from the Marley arc, with a breastplate and straps over a white shirt, the red scarf and a stern expression"
+        }
+      ]
     },
     {
       "id": "krista_lenz",
@@ -5773,7 +6172,66 @@
         "heart_shaped_face",
         "attack_on_titan"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "corps_uniform",
+          "name": "兵团制服 850 年",
+          "isDefault": true,
+          "isNsfw": false,
+          "tokens": [
+            "survey_corps_uniform",
+            "brown_jacket",
+            "white_shirt",
+            "white_pants",
+            "brown_boots",
+            "green_cape",
+            "low_ponytail"
+          ],
+          "prose": "her Training and Survey Corps uniform with a brown jacket, white shirt and pants, brown boots, green cape and a low ponytail"
+        },
+        {
+          "id": "queen_casual",
+          "name": "女王日常装 854 年",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "pale_coat",
+            "long_sleeves",
+            "white_shirt",
+            "pants",
+            "dark_boots",
+            "hair_up"
+          ],
+          "prose": "her daily outfit as Queen, a pale coat over a white shirt and pants with dark boots and her hair up"
+        },
+        {
+          "id": "coronation_dress",
+          "name": "女王加冕礼服",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "crown",
+            "off_shoulder_dress",
+            "white_dress",
+            "cloak",
+            "sandals",
+            "jewelry"
+          ],
+          "prose": "her coronation dress, an off-shoulder white gown with a cloak, crown and jewelry, radiant with gentle resolve"
+        },
+        {
+          "id": "casual",
+          "name": "常服便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "tokens": [
+            "casual_clothes",
+            "white_dress",
+            "smile"
+          ],
+          "prose": "a soft casual look with a white dress and a gentle smile"
+        }
+      ]
     }
   ]
 }
