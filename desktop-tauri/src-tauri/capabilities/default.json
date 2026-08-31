@@ -41,6 +41,8 @@
     "allow-open-runtime",
     "allow-open-log",
     "allow-pick-files",
-    "allow-save-image"
+    "allow-save-image",
+    "allow-desktop-update-check",
+    "allow-desktop-update-install"
   ]
 }
