@@ -1,7 +1,7 @@
 # 统一工作流手册（Workflow）
 
 > 入口：`node scripts/workflow.js --help` 或 `npm run workflow -- --help`
-> 目标：把 `scripts/maintenance/` 下 113 个分散脚本（95 .js + 13 .py + 5 .ps1/.mjs）收敛到一套可发现、可复现、带帮助的入口，降低新同学上手成本。旧脚本仍可直接 `node` 调用，本手册仅做薄封装转发。
+> 目标：把 `scripts/maintenance/` 下 100 个分散脚本（83 .js + 12 .py + 5 .ps1/.mjs；2026-08-31 归档 13 个一次性孤儿后）收敛到一套可发现、可复现、带帮助的入口，降低新同学上手成本。旧脚本仍可直接 `node` 调用，本手册仅做薄封装转发。
 
 ---
 
