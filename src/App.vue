@@ -1,5 +1,6 @@
 <template>
   <DesktopTitleBar />
+  <DesktopUpdateBanner v-if="!isCompanion" />
   <div class="route-stage">
     <RouterView />
   </div>
@@ -20,6 +21,7 @@ import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
+import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 
 // 键名统一出处：src/utils/storageKeys.ts

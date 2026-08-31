@@ -16,14 +16,6 @@
       </div>
     </nav>
 
-    <div v-if="desktopUpdateVersion" class="desktop-update-banner" role="status">
-      <span class="desktop-update-text">
-        桌面端新版本 {{ desktopUpdateVersion }} 可用{{ desktopUpdateStatus ? ' · ' + desktopUpdateStatus : '' }}{{ desktopUpdateError ? ' · ' + desktopUpdateError : '' }}
-      </span>
-      <button class="btn btn-primary" type="button" :disabled="desktopUpdateInstalling || undefined" @click="installDesktopUpdate()">
-        {{ desktopUpdateInstalling ? '正在更新…' : '一键升级' }}
-      </button>
-    </div>
     <div class="control-layout">
       <aside class="control-rail" aria-label="控制室导航">
         <RouterLink to="/" class="control-rail-brand">
@@ -346,17 +338,7 @@ import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { useToast } from '@/composables/useToast'
-import { useDesktopUpdater } from '@/composables/useDesktopUpdater'
-
-const updater = useDesktopUpdater()
-const {
-  availableVersion: desktopUpdateVersion,
-  statusText: desktopUpdateStatus,
-  installing: desktopUpdateInstalling,
-  errorText: desktopUpdateError,
-  check: checkForDesktopUpdate,
-  install: installDesktopUpdate,
-} = updater
+// 桌面端更新横幅已收敛到全局 DesktopUpdateBanner（2026-08-31，任何页面可见）。
 // /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
 // 都要等运行时才炸，而这个视图正好在破坏性路径上（改上游 host、启停服务、
 // 开关公网隧道）。
@@ -433,12 +415,7 @@ async function confirmServiceAction(service: string, action: string): Promise<vo
 const gatewayState = 'on'
 const gatewayLabel = '运行中'
 
-onMounted(() => {
-  status.startPolling()
-  // 桌面端启动时的 updater 事件早于本视图挂载会丢失（懒加载路由），
-  // 挂载时主动查询一次兜底，发现新版本即显示「一键升级」横幅（2026-08-31）。
-  checkForDesktopUpdate()
-})
+onMounted(() => { status.startPolling() })
 onUnmounted(() => { status.stopPolling() })
 </script>
 

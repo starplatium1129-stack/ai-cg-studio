@@ -38,11 +38,17 @@ export function useDesktopUpdater() {
   }
 
   async function check(): Promise<void> {
-    if (!api) return
+    if (!api) {
+      errorText.value = '仅桌面端支持自动更新'
+      return
+    }
     try {
       const version = (await api.core.invoke('desktop_update_check')) as string | null
       if (version && !installing.value) availableVersion.value = version
-    } catch { /* 更新源不可达不打扰用户 */ }
+    } catch (error) {
+      // 2026-08-31：检查失败不再静默——横幅区直接显示原因（端点不可达/命令缺失等）。
+      errorText.value = error instanceof Error ? error.message : String(error)
+    }
   }
 
   async function install(): Promise<void> {
