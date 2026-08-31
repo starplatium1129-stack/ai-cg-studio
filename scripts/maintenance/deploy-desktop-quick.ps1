@@ -178,6 +178,20 @@ if ($UseInstaller) {
       }
     }
     Copy-Item -Path (Join-Path $updatesSrc 'latest.json') -Destination (Join-Path $updatesDst 'latest.json') -Force
+    # 清理安装版旧版本安装包（只留最新一个 + 对应签名），防 Program Files 持续膨胀
+    # （2026-08-31：1.5.0/1.5.1/1.5.2 三套包曾堆到 900MB+）。
+    if ($latestExe) {
+      $stalePkgs = Get-ChildItem -Path $updatesDst -Filter '*-setup.exe' -File |
+        Where-Object { $_.Name -ne $latestExe.Name }
+      foreach ($stale in $stalePkgs) {
+        Remove-Item $stale.FullName -Force -ErrorAction SilentlyContinue
+        $staleSig = "$($stale.FullName).sig"
+        if (Test-Path $staleSig) { Remove-Item $staleSig -Force -ErrorAction SilentlyContinue }
+      }
+      if ($stalePkgs.Count -gt 0) {
+        Write-Host "  pruned $($stalePkgs.Count) old setup package(s) from gateway/runtime/desktop-updates" -ForegroundColor DarkGray
+      }
+    }
     Write-Host '  synced desktop-updates -> gateway/runtime/desktop-updates' -ForegroundColor DarkGray
   }
 }
