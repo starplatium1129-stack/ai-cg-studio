@@ -354,6 +354,7 @@ const {
   statusText: desktopUpdateStatus,
   installing: desktopUpdateInstalling,
   errorText: desktopUpdateError,
+  check: checkForDesktopUpdate,
   install: installDesktopUpdate,
 } = updater
 // /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
@@ -432,7 +433,12 @@ async function confirmServiceAction(service: string, action: string): Promise<vo
 const gatewayState = 'on'
 const gatewayLabel = '运行中'
 
-onMounted(() => { status.startPolling() })
+onMounted(() => {
+  status.startPolling()
+  // 桌面端启动时的 updater 事件早于本视图挂载会丢失（懒加载路由），
+  // 挂载时主动查询一次兜底，发现新版本即显示「一键升级」横幅（2026-08-31）。
+  checkForDesktopUpdate()
+})
 onUnmounted(() => { status.stopPolling() })
 </script>
 
