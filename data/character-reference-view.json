@@ -3647,8 +3647,7 @@
               "服装正面结构"
             ],
             "fileName": "ref_design_front.png",
-            "url": "",
-            "pending": true
+            "url": "/character-references/yuzuriha_inori/school_uniform/ref_design_front.png"
           },
           {
             "id": "ref_design_side",
@@ -3661,8 +3660,7 @@
               "服装层次"
             ],
             "fileName": "ref_design_side.png",
-            "url": "",
-            "pending": true
+            "url": "/character-references/yuzuriha_inori/school_uniform/ref_design_side.png"
           },
           {
             "id": "ref_design_back",
@@ -3675,8 +3673,7 @@
               "发型背面轮廓"
             ],
             "fileName": "ref_design_back.png",
-            "url": "",
-            "pending": true
+            "url": "/character-references/yuzuriha_inori/school_uniform/ref_design_back.png"
           }
         ]
       },

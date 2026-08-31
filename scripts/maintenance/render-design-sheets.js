@@ -9,7 +9,8 @@
  *
  * 数据源：
  *   - data/character-reference-view.json     任务事实源（哪些 design 条目还是 pending）
- *   - data/character-reference-standards.json 提示词素材（identityTokens + outfit.tokens）
+ *   - data/character-reference-standards.json 提示词素材（identityProse + outfit.prose 为主，
+ *        identityTokens + outfit.tokens 作为词表保底——prose 带角色气质语义，token 精确锚定特征）
  * 输出：E:/code/2/lora/AI/CharacterReferences/<角色>/[<服装>/]ref_design_<view>.png
  *
  * 增量与断点续跑：默认只跑 view.json 中 pending 的 design 条目；目标文件已存在则跳过；
@@ -108,8 +109,8 @@ function stableSeed(charId, outfitId, view) {
   return (digest.readUInt32BE(0) % 1000000) + seedShift * 1000000;
 }
 
-function buildPrompt(identity, outfit, viewTags) {
-  return `score_7, score_6, masterpiece, best quality, ${identity}, ${outfit}, ${viewTags}, ${SHEET}`;
+function buildPrompt(identityProse, identity, outfitProse, outfit, viewTags) {
+  return `score_7, score_6, masterpiece, best quality, ${identityProse}, ${outfitProse}, ${identity}, ${outfit}, ${viewTags}, ${SHEET}`;
 }
 
 function buildWorkflow(text, seed) {
@@ -224,11 +225,13 @@ for (const profile of Object.values(view)) {
   const charId = profile.characterId;
   if (charsFilter && !charsFilter.includes(charId)) continue;
   const stdChar = stdByChar.get(charId);
-  const identity = stdChar && (stdChar.identityTokens || []).join(', ');
+  const identityProse = (stdChar && stdChar.identityProse || '').trim();
+  const identity = (stdChar && (stdChar.identityTokens || []).join(', ')).trim();
   for (const o of profile.outfits || []) {
     if (outfitsFilter && !outfitsFilter.includes(o.outfitId)) continue;
     const stdOutfit = stdChar && stdChar.outfits && stdChar.outfits.find((x) => x.id === o.outfitId);
-    const outfitTokens = stdOutfit && (stdOutfit.tokens || []).join(', ');
+    const outfitProse = (stdOutfit && stdOutfit.prose || '').trim();
+    const outfitTokens = (stdOutfit && (stdOutfit.tokens || []).join(', ')).trim();
     for (const ref of o.references || []) {
       if (!ref.id || !String(ref.id).startsWith('ref_design_')) continue;
       const viewName = ref.id.replace('ref_design_', '');
@@ -237,8 +240,8 @@ for (const profile of Object.values(view)) {
       const rel = targetRelPath(charId, o.outfitId, viewName);
       const abs = path.join(REF_ROOT, rel);
       if (!needRun && fs.existsSync(abs)) { skipped.existing++; continue; }
-      if (!identity || !outfitTokens) { skipped.missingTokens++; continue; }
-      tasks.push({ charId, outfitId: o.outfitId, viewName, identity, outfitTokens, rel, abs });
+      if (!identityProse || !outfitProse) { skipped.missingTokens++; continue; }
+      tasks.push({ charId, outfitId: o.outfitId, viewName, identityProse, identity, outfitProse, outfitTokens, rel, abs });
     }
   }
 }
@@ -265,7 +268,7 @@ let ok = 0, failCount = 0;
 
 for (const t of slice) {
   const seed = stableSeed(t.charId, t.outfitId, t.viewName);
-  const text = buildPrompt(t.identity, t.outfitTokens, VIEWS[t.viewName]);
+  const text = buildPrompt(t.identityProse, t.identity, t.outfitProse, t.outfitTokens, VIEWS[t.viewName]);
   log(`▶ ${t.charId}/${t.outfitId}/${t.viewName} (seed ${seed})`);
   const outFile = await submitAndWait(text, seed);
   if (!outFile) {

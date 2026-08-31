@@ -322,7 +322,7 @@
       "displayName": "樱岛麻衣",
       "originalName": "Sakurajima Mai",
       "source": "Rascal Does Not Dream of Bunny Girl Senpai",
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, carrying a composed alluring presence",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft brown eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, carrying a composed alluring presence",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
@@ -334,7 +334,14 @@
         "ahoge",
         "rabbit_hair_ornament",
         "hair_clip",
-        "beauty_mark"
+        "beauty_mark",
+        "slim",
+        "slender",
+        "narrow_shoulders",
+        "long_legs",
+        "model_figure",
+        "tall",
+        "tall_female"
       ],
       "outfits": [
         {
@@ -345,14 +352,10 @@
           "tokens": [
             "school_uniform",
             "blazer",
-            "brown_blazer",
             "sweater_vest",
-            "beige_vest",
             "white_shirt",
-            "collared_shirt",
             "red_necktie",
             "pleated_skirt",
-            "grey_skirt",
             "black_pantyhose",
             "loafers"
           ],
@@ -1456,7 +1459,7 @@
           "prose": "wearing Sobu High School uniform with an unbuttoned blazer over a pink knit cardigan, red ribbon, pleated miniskirt, and black thighhighs",
           "tokens": [
             "school_uniform",
-            "open_blazer",
+            "blazer",
             "pink_cardigan",
             "white_shirt",
             "red_ribbon",
