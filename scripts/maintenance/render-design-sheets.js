@@ -53,12 +53,13 @@ const NEGATIVE =
   'worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, fewer fingers, missing fingers, extra limbs, missing limbs, deformed, mutilated, disfigured, bad proportions, duplicate, cloned face, ugly, blurry, jpeg artifacts, watermark, text, signature, logo, monochrome, grayscale, frame, border, username, artist name, bad_prompt, bad_prompt_version2, bad-hands-5, ng_deepnegative_v1_75t, scenery, cityscape, complex_background';
 
 const VIEWS = {
-  front: 'front_view, facing_viewer, looking_at_viewer',
-  side: 'side_view, profile',
-  back: 'back_view, from_behind',
+  front: 'front_view, facing_viewer, looking_at_viewer, solo, single character',
+  side: 'side_view, profile, looking_ahead, solo, single character',
+  back: 'back_view, from_behind, solo, single character',
 };
+// 自然站姿 + 单一角色 + 单角度（避免 character_sheet 把多角度塞进一张图）
 const SHEET =
-  'standing, full_body, symmetrical_pose, arms_at_sides, simple_background, plain_background, gray_background, even_lighting, uniform_lighting, character_sheet';
+  'standing, full_body, natural_pose, hands_relaxed, one_hand_at_side, simple_background, plain_background, gray_background, even_lighting, soft_lighting, character_reference, reference_sheet, design_reference';
 
 function log(msg) {
   console.log(`[${new Date().toISOString().slice(11, 19)}] ${msg}`);
