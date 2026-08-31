@@ -63,7 +63,7 @@ const WORKFLOWS = {
     opts: '--target popular|scenes --chunks 1-17',
   },
   'reference:render': {
-    desc: '参考库批量出图 51 角色×多服装（1785 参考图，Anima 832x1216, 并发3）',
+    desc: '参考库批量出图 51 角色×多服装（1869 条目，Anima 832x1216, 并发3）',
     cmd: ['node', 'scripts/maintenance/render-all-outfits-references.js'],
     docs: 'docs/character-reference-audit-pending.md',
     needs: 'ComfyUI + gateway http://127.0.0.1:3000',
@@ -71,18 +71,18 @@ const WORKFLOWS = {
   'reference:audit': {
     desc: '纯视觉审核 4并发 (Gemini)',
     cmd: ['node', 'scripts/maintenance/pure-vision-audit.js'],
-    docs: 'scripts/maintenance/pure-vision-audit.js:1',
+    docs: 'docs/workflow.md#参考库',
     opts: '[--force] [--keys char/outfit/pers,...] 强制重审指定项',
   },
   'reference:repair': {
     desc: '定向修复未通过项（每项3次重渲染+重审）',
     cmd: ['node', 'scripts/maintenance/fine-tuned-repair.js'],
-    docs: 'scripts/maintenance/fine-tuned-repair.js:1',
+    docs: 'docs/workflow.md#参考库',
   },
   'reference:design': {
     desc: '三视图设计图批量渲染（增量默认跑 pending，--all 重跑）',
     cmd: ['node', 'scripts/maintenance/render-design-sheets.js'],
-    docs: 'scripts/maintenance/render-design-sheets.js:1',
+    docs: 'docs/workflow.md#参考库',
     opts: '[--chars=a,b] [--outfits=x,y] [--views=f,s,b] [--all] [--dry-run] [--limit=N]',
     needs: 'ComfyUI http://127.0.0.1:8188（--disable-smart-memory）',
   },
@@ -113,6 +113,12 @@ const WORKFLOWS = {
     cmd: ['node', 'scripts/maintenance/run-batch.js', '--help'],
     docs: 'scripts/maintenance/run-batch.js:1',
     opts: '--source popular|scenes --batch-size 10 --concurrency 3',
+  },
+  'showcase:full': {
+    desc: '样张全链路：generate -> audit -> publish',
+    cmd: null,
+    docs: 'docs/showcase-generation-craft.md',
+    steps: ['showcase:generate', 'showcase:audit', 'showcase:publish'],
   },
   'check:quick': {
     desc: '并行质量门（typecheck + 契约 + 风格）',
@@ -208,6 +214,16 @@ const WORKFLOWS = {
     cmd: ['npm', 'run', 'test:frontend'],
     docs: 'vitest.config.ts',
   },
+  'check:style-debt': {
+    desc: '样式债聚合门禁（style-debt + style-literals + contrast + colors + animations）',
+    cmd: ['npm', 'run', 'test:style-debt'],
+    docs: 'package.json:53',
+  },
+  'check:bundle': {
+    desc: '140KB 打包预算门禁（全站 19 路由，build:web 隐含，单独跑入口）',
+    cmd: ['node', 'scripts/maintenance/check-bundle-budget.js'],
+    docs: 'AGENTS.md#质量门禁',
+  },
   // ── backup / runtime: 磁盘债治理 ────────────────────────────────
   'backup:git': {
     desc: 'git bundle 异地快照（v2 增量链：锚点×2 + 增量×10）',
@@ -220,6 +236,12 @@ const WORKFLOWS = {
     cmd: ['node', 'scripts/maintenance/clean-runtime-experiments.js'],
     docs: 'scripts/maintenance/clean-runtime-experiments.js:1',
     opts: '[--prune] 真删  [--days N] 改门槛',
+  },
+  'comfy:start': {
+    desc: '启动本机 ComfyUI（reference/showcase 链路依赖前置，--disable-smart-memory）',
+    cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/start-comfyui.ps1'],
+    docs: 'scripts/maintenance/start-comfyui.ps1:1',
+    needs: 'ComfyUI 已安装且权重就位',
   },
   // ── test: 套件入口 ────────────────────────────────────────────────
   'test:contract': {

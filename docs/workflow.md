@@ -80,11 +80,17 @@ node scripts/workflow.js reference:repair
   node scripts/workflow.js showcase:batch --source scenes --ids sc001,sc002 --attempt 2
   ```
 
+- **全链路**：`showcase:full` 复合命令 = generate → audit → publish（与 `reference:full` 对称）
+  ```powershell
+  node scripts/workflow.js showcase:full
+  ```
+
 ### 3.4 生图/视频
 
 - 生图：`routes/generation.js:19`（SD WebUI, `waiIllustriousSDXL_v170`）、`routes/anima.js:1`（Anima/Krea2, `anima-aesthetic-v1.1`）、`routes/video/*.js`（Wan/H3）
 - 训练模块已于 2026-08-29 连根删除（commit 2afd449，`training-service.ts` + `routes/training.js` + ~1370 行测试同删，无残留引用）；指令式稳定换装走 Qwen-Image-Edit 路线（评估完成待下载，见 AGENTS.md#后续稳定演进方向）
 - 统一校验：`npm run workflow -- check:content` 检查 LoRA/角色/场景引用
+- ComfyUI 启动：`node scripts/workflow.js comfy:start`（reference/showcase 链路依赖前置，`--disable-smart-memory`）
 
 ### 3.5 质量门与构建
 
@@ -110,6 +116,8 @@ node scripts/workflow.js check:rewrite        # 批量改写完整性（覆盖�
 node scripts/workflow.js check:popular        # 热门角色与提示词契约
 node scripts/workflow.js check:anima-routes   # Anima 接口与生成边界契约
 node scripts/workflow.js check:frontend       # 前端单测（vitest）
+node scripts/workflow.js check:style-debt    # 样式债聚合（style-literals+contrast+colors+animations）
+node scripts/workflow.js check:bundle        # 140KB 打包预算（build:web 隐含，单独跑）
 ```
 
 ### 3.6 磁盘债治理（backup / runtime）
@@ -140,7 +148,7 @@ node scripts/workflow.js test:e2e:critical    # 关键 e2e（5 spec 132 tests，
 
 门禁见 `AGENTS.md:39`，预算见 `scripts/maintenance/check-bundle-budget.js:18`。
 
-### 3.6 部署
+### 3.8 部署
 
 ```powershell
 node scripts/workflow.js deploy:desktop
@@ -189,3 +197,17 @@ node scripts/workflow.js showcase:batch --source popular --attempt 2 --concurren
 # 构建并本地验证
 npm run workflow -- build:web
 ```
+
+---
+
+## 7. 协作者义务（禁止造简陋轮子）
+
+> **红线**：做任何事务前，必须先查是否有现成工作流。AGENTS.md §一.10 同步收录此红线。
+
+1. **先查工作流**：跑 `npm run workflow -- --help` 或读本手册，判断是否有现成命令覆盖该事务。
+2. **再查脚本**：若无 workflow 入口，跑 `npm run workflow -- audit:orphans --json` 或 grep `scripts/maintenance/`，判断是否已有现成脚本（哪怕未被 workflow 收录）。
+3. **复用优先**：有现成工作流/脚本则用之，哪怕需补参数或读 `--help`；禁止因"不熟/嫌麻烦"而另写简陋脚本。
+4. **新增需三处登记**：确需新增脚本时，须同时登记到 `scripts/workflow.js` 的 WORKFLOWS + 本手册对应分组 + `docs/INDEX.md`（如涉及新文档），三处缺一视为未完成交付。
+5. **一次性脚本归档**：用完的一次性脚本及时移入 `scripts/archive/`（gitignored，git 历史可取回），避免堆积成孤儿（`audit:orphans` 会捕获零引用脚本）。
+
+**反面案例（禁止）**：已有 `showcase:batch` 统一批量调度，却另写 `run-batch-popular-v2.js` 造轮子；已有 `check:style-debt` 聚合五项样式门禁，却单独跑 `lint-colors` 漏掉其他四项。

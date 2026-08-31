@@ -23,6 +23,7 @@
 7. **严禁偷懒式批量交付（2026-08-24 教训固化）**：批量重写/优化类任务（提示词、场景、蓝图）必须逐条全量真实改写，禁止以通用模板兜底、仅追加词条或虚报覆盖率冒充交付；任何此类交付必须跑 `node scripts/tests/test-prompt-rewrite-integrity.js --delivery <交付文件>` 复检通过（覆盖率=声明数、无模板签名/全局雷同、新旧词条保留率≤50%、prose 相似度≤60%、角色归属一致），未过门禁一律退回重写，不得声明完成。
 8. **定稿场景提示词保护（2026-08-27 教训固化）**：`data/prompt-pinned-scenes.json`（100 条：历史定点手工修/官方CG对齐/用户实拍定稿）中的渲染字段为字节级基线，任何批量优化任务**严禁触碰**这些场景的 `prompt/negative/animaCaption/recommendedSize/rating/mature`；门禁 `node scripts/tests/test-pinned-scene-prompts.js`（已入 test:contract 套件）。确需修改某条定稿时：先真实出图自测确认效果，再 `npm run scenes:pin-capture` 更新基线并在提交信息中附自测证据。批量脚本遇到受保护 ID 必须跳过。
 9. **单写者原则（2026-08-29 .git 崩毁教训固化）**：同一工作区同一时刻**只允许一个 AI 会话执行 git 写操作**（commit/push/merge/rebase/gc/prune）；并行会话必须 `git worktree` 隔离或约定错峰交接；长期并行期间禁用自动 gc（`git config gc.auto 0`）。
+10. **优先复用现成工作流，禁止造简陋轮子（2026-08-31 审计固化）**：做任何事务前，协作者**必须先查是否有现成工作流**——跑 `npm run workflow -- --help` 或读 `docs/workflow.md`，判断是否有现成命令覆盖该事务；若无入口，再跑 `npm run workflow -- audit:orphans --json` 或 grep `scripts/maintenance/` 查现成脚本。有则用之，哪怕需补参数或读 `--help`，禁止因"不熟/嫌麻烦"另写简陋脚本。确需新增脚本时，须同时登记到 `scripts/workflow.js` 的 WORKFLOWS + `docs/workflow.md` 对应分组 + `docs/INDEX.md`（如涉及新文档），三处缺一视为未完成交付；用完的一次性脚本及时移入 `scripts/archive/`（gitignored，git 历史可取回），避免堆积成孤儿（`audit:orphans` 会捕获零引用脚本）。
 
 ---
 
@@ -68,7 +69,7 @@
    - **何时增量、何时必须完整安装，见 `docs/desktop-deployment.md`**（口诀：只动会被复制进去的文件 → 增量；动 `node_modules` 或 exe → 完整安装）。
 5. **推送远端（交付闭环）**：`git push` 成功后才算交付完成（红线 5，2026-08-29 教训固化）。`npm run backup:git` 可随时手动做 bundle 快照。
 
-> **统一工作流入口（2026-08-26 新增，2026-08-31 口径修正）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等高频脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`，现注册 42 个工作流命令；`scripts/maintenance/` 仍有 100 个脚本，其中未注册者按 `node scripts/maintenance/<name>.js` 直调）。一站式索引见 `docs/workflow.md:1`；旧 `node scripts/maintenance/*.js` 仍兼容。
+> **统一工作流入口（2026-08-26 新增，2026-08-31 审计修正）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等高频脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`，现注册 45 个工作流命令；`scripts/maintenance/` 仍有 100 个脚本，其中未注册者按 `node scripts/maintenance/<name>.js` 直调，但红线 10 要求新增脚本必须同时登记 workflow）。一站式索引见 `docs/workflow.md:1`（含协作者义务章节）；旧 `node scripts/maintenance/*.js` 仍兼容。
 
 > **单体体量门禁（2026-08-31 新增）：** 600 行拆分红线已门禁化——`node scripts/tests/test-monolith-budget.js`（已入 `npm run check` 并发池与 check 套件）。有效行数（跳空行/注释，与 eslint max-lines 同口径）超 600 的存量文件以 `scripts/tests/monolith-baseline.json` 豁免基线管理，**只降不升**：基线外新增超线文件或基线内文件回涨一律失败；拆分后用 `--update-baseline` 收编。eslint 侧 `max-lines warn@1000` 继续作预警层。
 

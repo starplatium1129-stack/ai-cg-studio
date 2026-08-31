@@ -162,3 +162,4 @@
 | **产品与运营审计** | [`product-operations-audit-2026-08-29.md`](product-operations-audit-2026-08-29.md) | 七维产品/运营审计（综合 7.1），含 .git 崩毁事故快报。 |
 | **UX 实用性审计** | [`ux-audit-2026-08-30.html`](ux-audit-2026-08-30.html) | 九条 P0 与核心任务链路审计（P0 于 8-30/31 收尾提交修复）。 |
 | **七维度全面审计** | [`seven-dimension-audit-2026-08-31.html`](seven-dimension-audit-2026-08-31.html) | 修复浪潮后全量复测（综合 8.1）：历史 P0 清偿核验 + 新债定位（e2e 接线、单体回涨、磁盘债）。 |
+| **工作流审计** | [`workflow-audit-2026-08-31.html`](workflow-audit-2026-08-31.html) | workflow.js 45 命令逐项评估 + 80 未纳入脚本分类 + 4 缺失工作流补全 + 协作者"禁止造轮子"红线入宪。 |
