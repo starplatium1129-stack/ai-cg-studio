@@ -64537,10 +64537,8 @@
         "daylight",
         "peaceful"
       ],
-      "promptProse": "In a quiet cafe in the walled city, Mikasa Ackerman sits by the window in a soft white dress and cardigan, her red scarf folded on her lap as she lifts a warm cup and watches the passersby with an unusually relaxed expression. Gentle window light softens her scarred face and the careful calm of her hands.",
+      "promptProse": "In a quiet cafe in the walled city, Mikasa Ackerman sits by the window in a white long-sleeved shirt and black shorts, her iconic red scarf folded on her lap as she lifts a warm cup and watches the passersby with an unusually relaxed expression. Gentle window light softens her usually calm face and the careful stillness of her hands.",
       "promptTokens": [
-        "brown_boots",
-        "cardigan",
         "casual_clothes",
         "cinematic_lighting",
         "cafe",
@@ -64551,8 +64549,10 @@
         "medium_shot",
         "red_scarf",
         "volumetric_lighting",
-        "white_dress",
-        "window"
+        "window",
+        "white_shirt",
+        "black_shorts",
+        "black_boots"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "casual",
@@ -64873,7 +64873,6 @@
         "exposed_breasts",
         "nipples",
         "black_hair",
-        "scar_on_cheek",
         "red_scarf",
         "blushing",
         "sitting",
@@ -64972,7 +64971,7 @@
         "military",
         "window"
       ],
-      "promptProse": "In the dim barracks at night, Mikasa Ackerman unbuttons her Survey Corps jacket in the pale moonlight, the green cape folded on the bed and the red scarf laid carefully beside it, her scarred face half-lit as she turns toward the window with unreadable calm.",
+      "promptProse": "In the dim barracks at night, Mikasa Ackerman unbuttons her Survey Corps jacket in the pale moonlight, the green cape folded on the bed and the red scarf laid carefully beside it, her calm face half-lit as she turns toward the window with unreadable poise.",
       "promptTokens": [
         "atmospheric",
         "cinematic_lighting",
@@ -64999,7 +64998,6 @@
         "exposed_breasts",
         "nipples",
         "black_hair",
-        "scar_on_cheek",
         "red_scarf",
         "blushing",
         "standing",
@@ -65122,7 +65120,6 @@
         "exposed_breasts",
         "nipples",
         "black_hair",
-        "scar_on_cheek",
         "red_scarf",
         "blushing",
         "sitting",
@@ -65246,7 +65243,6 @@
         "exposed_breasts",
         "nipples",
         "black_hair",
-        "scar_on_cheek",
         "red_scarf",
         "blushing",
         "sitting",

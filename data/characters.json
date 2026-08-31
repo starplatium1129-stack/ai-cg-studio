@@ -4842,12 +4842,12 @@
     "visual_dna": {
       "hair": "黑色齐颈短发（长刘海）",
       "hair_color": "黑",
-      "eyes": "黑色",
-      "hairstyle": "齐颈短发 · 长刘海 · 右眼下有疤",
+      "eyes": "灰色（动画灰瞳）",
+      "hairstyle": "齐颈短发 · 长刘海 · 遮耳发",
       "uniform": "调查兵团制服：棕夹克 / 白衬衫 / 绿披风 / 立体机动装置",
       "expression": "冷静寡言 · 战斗时凌厉如刀",
       "style": "survey corps crimson",
-      "signature": "黑发黑瞳、右眼下的疤与红色围巾"
+      "signature": "黑发灰瞳（动画色）与标志性红围巾"
     },
     "personality": [
       "冷静寡言",
@@ -4875,9 +4875,8 @@
     },
     "tags": [
       "黑发",
-      "黑瞳",
+      "灰瞳",
       "红围巾",
-      "疤痕",
       "立体机动",
       "士兵"
     ],
@@ -4900,9 +4899,8 @@
       "solo",
       "black_hair",
       "short_hair",
-      "black_eyes",
+      "gray_eyes",
       "pale_skin",
-      "scar_on_cheek",
       "red_scarf",
       "attack_on_titan"
     ],
@@ -4929,7 +4927,7 @@
       "hair_color": "金（#D4AF37）",
       "eyes": "蓝色",
       "hairstyle": "长直发 · 行军时低马尾 · 加冕后挽发",
-      "uniform": "女王日常装：浅色大衣 / 白衬衫 / 长裤",
+      "uniform": "兵团制服 850 年：棕夹克 / 白衬衫 / 白长裤 / 绿披风 / 低马尾",
       "expression": "温柔治愈的微笑 · 加冕后多一分坚定",
       "style": "queen golden",
       "signature": "金色长发、蓝瞳与温柔微笑"
@@ -4987,7 +4985,7 @@
       "blue_eyes",
       "petite_female",
       "smile",
-      "hair_ribbon",
+      "heart_shaped_face",
       "attack_on_titan"
     ],
     "accent_color": "#D4AF37",

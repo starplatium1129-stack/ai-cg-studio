@@ -5747,16 +5747,15 @@
       "displayName": "三笠",
       "originalName": "Mikasa Ackerman",
       "source": "Attack on Titan",
-      "identityProse": "Mikasa Ackerman from Attack on Titan, a skilled soldier with chin-length black hair, black eyes, pale skin and a scar below her right eye, always wearing her iconic red scarf",
+      "identityProse": "Mikasa Ackerman from Attack on Titan, a skilled soldier with chin-length black hair that covers her ears, gray eyes, pale skin and no scar, always wearing her iconic red scarf",
       "identityTokens": [
         "mikasa_ackerman",
         "1girl",
         "solo",
         "black_hair",
         "short_hair",
-        "black_eyes",
+        "gray_eyes",
         "pale_skin",
-        "scar_on_cheek",
         "red_scarf",
         "attack_on_titan"
       ],
@@ -5777,7 +5776,7 @@
         "blue_eyes",
         "petite_female",
         "smile",
-        "hair_ribbon",
+        "heart_shaped_face",
         "attack_on_titan"
       ],
       "outfits": []

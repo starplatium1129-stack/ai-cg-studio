@@ -65,8 +65,14 @@ test('character reference view: outfit set mirrors standards (both directions)',
 test('character reference view: exactly one default outfit per character, mirrored flags', () => {
   for (const character of standards.characters) {
     const defaults = character.outfits.filter((o) => o.isDefault === true);
-    assert.equal(defaults.length, 1,
-      `${character.id}: standards 必须恰好一套 isDefault 服装（isNsfw 私密形态不接管默认位）`);
+    // 2026-08-31：无参考资产的角色（sync 幽灵形态过滤后 outfits 为空，待 reference:render
+    // 渲染 4 视角资产后由 sync 填充）允许 0 个 default；有资产时仍必须恰好 1 套。
+    assert.ok(defaults.length <= 1,
+      `${character.id}: standards 最多一套 isDefault 服装（isNsfw 私密形态不接管默认位）`);
+    if (character.outfits.length > 0) {
+      assert.equal(defaults.length, 1,
+        `${character.id}: 有资产的角色必须恰好一套 isDefault 服装`);
+    }
     for (const outfit of character.outfits) {
       const viewOutfit = view[character.id].outfits.find((o) => o.outfitId === outfit.id);
       assert.equal(viewOutfit.isDefault, outfit.isDefault === true,
