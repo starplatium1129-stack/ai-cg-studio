@@ -20,6 +20,10 @@
  * 引擎与参数（与 2026-08-30 首轮 153 张基线一致）：
  *   anima-aesthetic-v1.1 + qwen_3_06b CLIP + qwen_image_vae，
  *   960×1536，30 steps res_multistep，CFG 4.5，ImageSharpenKJ RCAS 0.75。
+ *   2026-08-31 起不再手写 workflow——直接复用生产构建器
+ *   routes/anima/workflows.js 的 buildWorkflow（模型/参数/TeaCache/RCAS
+ *   全部由项目单一事实源决定），TeaCache 默认 rel_l1_thresh=0.08（生产默认），
+ *   --no-teacache 可关。
  *
  * 用法：
  *   node scripts/maintenance/render-design-sheets.js [--chars=a,b] [--outfits=x,y]
@@ -85,6 +89,8 @@ if (args.includes('--help') || args.includes('-h')) {
   --dry-run        只列出任务不出图
   --limit=N        只跑前 N 个任务（试跑）
   --seed-shift=N   seed 偏移，同条目换变体用
+  --no-teacache    关闭 TeaCache 加速（默认开：rel_l1_thresh=0.08，照抄生产管线默认）
+  --tea-thresh=N   自定义 TeaCache rel_l1_thresh（0 = 关闭；生产默认 0.08）
 
 环境变量: COMFY_HOST / COMFY_OUTPUT / AI_WORKSPACE_ROOT
 依赖: ComfyUI http://127.0.0.1:8188（--disable-smart-memory）`);
@@ -102,6 +108,13 @@ const all = args.includes('--all');
 const dryRun = args.includes('--dry-run');
 const limit = Number((args.find((a) => a.startsWith('--limit=')) || '').split('=')[1] || 0) || null;
 const seedShift = Number((args.find((a) => a.startsWith('--seed-shift=')) || '').split('=')[1] || 0) || 0;
+// TeaCache 加速（2026-08-31 接入）：默认关？不——与生产管线一致默认开。
+// 参数照抄 routes/anima/workflows.js 现成契约：rel_l1_thresh=0.08（生产默认 teaCacheThresh || 0.08），
+// start_percent 0 / end_percent 1 / cache_device cuda。res_multistep 必须保持
+// （docs 168 行：TeaCache 在 SDE 采样器下失效，1.90x vs 1.04x）。
+// 需要对照画质可 --no-teacache 关闭，或 --tea-thresh=<值> 调档（0 = 关闭）。
+const teaThreshArg = args.find((a) => a.startsWith('--tea-thresh='));
+const teaThresh = teaThreshArg ? Number(teaThreshArg.split('=')[1]) : (args.includes('--no-teacache') ? 0 : 0.08);
 
 // ── 工具 ─────────────────────────────────────────────────────────────────────
 function stableSeed(charId, outfitId, view) {
@@ -109,23 +122,49 @@ function stableSeed(charId, outfitId, view) {
   return (digest.readUInt32BE(0) % 1000000) + seedShift * 1000000;
 }
 
+/**
+ * 契约（2026-08-31 定稿，勿违反）：
+ *   「照抄，不创作」——identityProse / outfit.prose / identityTokens / outfitTokens
+ *   一律原样取自 data/character-reference-standards.json，脚本内禁止改写、增删或
+ *   自行发明任何角色/服装描述词（教训：自编体型 tag 出过 NSFW 身材、浪费整轮重跑）。
+ *   脚本只允许追加：质量词前缀 + 视角/站姿技术后缀（VIEWS/SHEET，非角色内容）。
+ */
 function buildPrompt(identityProse, identity, outfitProse, outfit, viewTags) {
   return `score_7, score_6, masterpiece, best quality, ${identityProse}, ${outfitProse}, ${identity}, ${outfit}, ${viewTags}, ${SHEET}`;
 }
 
+// ── 工作流：复用生产渲染管线构建器，不再平行实现 ────────────────────────────
+// 2026-08-31 教训：此前手写一份等价 workflow JSON 属「平行实现」，
+// 被用户点名「项目里都有现成的，为什么自己造」。现改为直接 require 生产
+// routes/anima/workflows.js 的 buildWorkflow——UNET/CLIP/VAE/KSampler/TeaCache/
+// RCAS 全部由项目单一事实源（anima-model-catalog + anima-generation-contract +
+// 生产节点图）决定。脚本只保留两处脚本专属：
+//   1) SaveImage filename_prefix（design_batch_tmp，避免与正式管线输出混名）
+//   2) 分辨率 960×1536（三视图竖版比例；属 anima 家族官方推荐尺寸集，
+//      anima-model-catalog 中 base/2.9b/yume 均列出 960x1536）
+const prodBuildWorkflow = require(path.join(ROOT, 'routes', 'anima', 'workflows.js')).buildWorkflow;
+const { MODELS } = require(path.join(ROOT, 'server', 'anima-model-catalog.js'));
+const MODEL_ID = 'anima-aesthetic-v1.1';
+const MODEL = MODELS[MODEL_ID];
+
 function buildWorkflow(text, seed) {
-  return {
-    '1': { class_type: 'UNETLoader', inputs: { unet_name: 'anima-aesthetic-v1.1.safetensors', weight_dtype: 'default' } },
-    '2': { class_type: 'CLIPLoader', inputs: { clip_name: 'qwen_3_06b_base.safetensors', type: 'qwen_image' } },
-    '3': { class_type: 'VAELoader', inputs: { vae_name: 'qwen_image_vae.safetensors' } },
-    '4': { class_type: 'CLIPTextEncode', inputs: { clip: ['2', 0], text } },
-    '5': { class_type: 'CLIPTextEncode', inputs: { clip: ['2', 0], text: NEGATIVE } },
-    '6': { class_type: 'EmptyLatentImage', inputs: { width: 960, height: 1536, batch_size: 1 } },
-    '7': { class_type: 'KSampler', inputs: { model: ['1', 0], positive: ['4', 0], negative: ['5', 0], latent_image: ['6', 0], seed, steps: 30, cfg: 4.5, sampler_name: 'res_multistep', scheduler: 'simple', denoise: 1 } },
-    '8': { class_type: 'VAEDecode', inputs: { samples: ['7', 0], vae: ['3', 0] } },
-    '35': { class_type: 'ImageSharpenKJ', inputs: { image: ['8', 0], method: 'rcas', 'method.strength': 0.75 } },
-    '10': { class_type: 'SaveImage', inputs: { images: ['35', 0], filename_prefix: 'design_batch_tmp' } },
-  };
+  const wf = prodBuildWorkflow({
+    modelId: MODEL_ID,
+    prompt: text,
+    negative: NEGATIVE,
+    width: 960,
+    height: 1536,
+    seed,
+    steps: MODEL.steps,
+    cfg: MODEL.cfg,
+    sampler: MODEL.sampler,
+    scheduler: MODEL.scheduler,
+    teaCache: teaThresh > 0,
+    teaCacheThresh: teaThresh || 0.08,
+  });
+  // 输出文件名走本脚本专用前缀（生产构建器用 OUTPUT_FILENAME_PREFIX）
+  wf['10'].inputs.filename_prefix = 'design_batch_tmp';
+  return wf;
 }
 
 async function comfyAlive() {
