@@ -20,6 +20,11 @@ colors:
   info: "#42A5F5"
   # 2026-08-28: 浅色主题已下线（美术审计 · 方案 A），light-* 字段随之一并移除。
   # 深色是唯一主题，上面的 primary / surface / text-* 即唯一真相。
+  # 2026-08-31: frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
+  #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
+  #   on-primary→--text-inverse, neutral→--bg-base, surface→--bg-surface,
+  #   surface-elevated→--bg-elevated, disabled-text→--text-disabled,
+  #   nene→--nene-violet, natsume→--natsume-amber。tertiary 为历史语义色无直接对应。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
   disabled-text: "#9D98B4"
   nene: "#B895FF"
@@ -133,10 +138,10 @@ competes with them. Sakura pink is the primary interaction accent; silver violet
 belongs to Ayachi Nene, while amber and coffee tones belong to Shiki Natsume.
 
 This file is the single source of truth for website and control-panel design.
-`css/design-system.css` is its runtime implementation. When the two disagree,
-update the CSS to follow this document. `docs/art-direction.html` is intentionally
-separate: it specifies the visual direction of generated CG artwork, not website
-UI.
+`src/assets/css/design-system.css` is its runtime implementation. When the two
+disagree, update the CSS to follow this document. `docs/art-direction.html` is
+intentionally separate: it specifies the visual direction of generated CG
+artwork, not website UI.
 
 ## Product character
 
@@ -187,10 +192,10 @@ hierarchy.
   same role.
 
 Runtime surfaces may use the alpha values already defined in
-`css/design-system.css`; the opaque colors in the front matter are their
-validation fallbacks. Disabled controls must use the `disabled-text` token
-directly — never `opacity` on a text-bearing control, because alpha compositing
-drops it below AA.
+`src/assets/css/design-system.css`; the opaque colors in the front matter are
+their validation fallbacks. Disabled controls must use the `--text-disabled`
+token directly — never `opacity` on a text-bearing control, because alpha
+compositing drops it below AA.
 
 ## Typography
 
@@ -281,7 +286,7 @@ game site.
 - The single theme is "night studio": violet-black base, sakura pink accent,
   star specks and drifting petals as quiet atmosphere.
 - Everything must pass the contrast gate. Disabled controls use the
-  `disabled-text` token rather than opacity.
+  `--text-disabled` token rather than opacity.
 - (2026-08-28) The former "pink-white dream" light theme is retired; see the
   note under Colors before reinstating it.
 
@@ -330,7 +335,7 @@ Keep the primary navigation short and stable. The current page is visible, but
 navigation does not compete with the artwork. Mobile navigation opens as a clear
 menu with text labels.
 
-Shared atelier chrome lives in `css/design-system.css`: `.nav-back`,
+Shared atelier chrome lives in `src/assets/css/design-system.css`: `.nav-back`,
 `.page-kicker` (aliases `.pb-kicker` / `.gallery-kicker`), `.page-title`,
 `.page-subtitle`, `.page-intro`, `.atelier-shell`, `.sticky-toolbar`,
 `.filter-pill`, and `.empty-state`. Prefer these over page-local copies.
@@ -399,7 +404,7 @@ subtle behind controls and fully legible on character or result-focused pages.
 - Make the first useful click obvious to a friend seeing the site for the first
   time.
 - Let artwork occupy the largest meaningful area in creation and review flows.
-- Reuse variables and shared components from `css/design-system.css`.
+- Reuse variables and shared components from `src/assets/css/design-system.css`.
 - Use progressive disclosure for expert controls.
 - Keep current selection, progress, empty, error, and success states explicit.
 - Test desktop, narrow desktop, and mobile layouts after structural UI changes.
