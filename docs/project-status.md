@@ -5,7 +5,7 @@
 
 ## 项目定位
 
-AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，包含角色聊天、Live2D、TTS、SD/Anima/Krea 2 出图、57 位热门角色场景库（59 角色/267 形态/1869 参考条目参考库，数字以 `DATA_VERSION=938675328` 为准）、作品册、AI 视频分镜工作台、控制面板和桌面 Companion。
+AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，包含角色聊天、Live2D、TTS、SD/Anima/Krea 2 出图、57 位热门角色场景库（59 角色/267 形态/1869 参考条目参考库，数字以 `DATA_VERSION=2529745244` 为准）、作品册、AI 视频分镜工作台、控制面板和桌面 Companion。
 
 ## 当前架构
 
@@ -15,13 +15,19 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
 - 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。角色 Prompt 由服务端分层组装，并支持本机用户档案与用户手动固定的跨会话事实召回。
 - 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent。Anima Base/Aesthetic 使用 30 steps / CFG 4.5 / `res_multistep` / `simple`（放大 = Remacri 纯像素直出）的模型原生标签流。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
-- 画师风格库：专家模式提供 39 位精选动漫画师与作监风格（含 Nekotomi Chao / 猫富ちゃお、浅野恭司 / WIT Studio、Rella 星夜光影、深崎暮人、Rucarachi 等），支持 SD/WAI (Danbooru tags)、Anima (`@artist`) 与 Krea 2 (自然语言) 跨引擎编译。
+- 画师风格库：专家模式提供 48 位精选动漫画师、官方原画师与作监风格（含 幻象黑兔、下野宏铭、Liduke、alchemaniac 等明日方舟官方画师，以及武内崇、Tsunako、阿部司、藤本树等官方原画），支持 SD/WAI (Danbooru tags)、Anima (`@artist`) 与 Krea 2 (自然语言散文) 跨引擎编译。
 - 视频：`/video-studio` 本地 AI 视频工作台。支持 Wan 2.2 TI2V 与 MiniMax H3（Ref2VA 多模态参考图绑定）；支持剧本分镜智能拆解、画风锚注入、中日英对白语言显式控制（`dialogueLang`）与 Range 播放。
 - 训练：训练参数覆盖、数据集枚举、配置副本、ETA 和日志均遵守 `AGENTS.md` 的白名单契约。
 - 桌面：Tauri 2 NSIS 正式打包与快速增量部署（`deploy-desktop.bat` / `deploy-desktop-quick.ps1`）双轨运行；Native Live2D overlay 正常接入。
 
 ## 最近完成
 
+- **57 位热门角色扩容与 32 个 NSFW 场景光影梯队全面重构（2026-08-31）**：
+  - 新增《无职转生》艾莉丝、《我推的孩子》星野爱/黑川茜、《终末地》伊冯、《Fate》摩根/玛修、《进击的巨人》三笠/希斯特里亚共 8 位高人气角色。
+  - **全量重构 32 个 R18 私密场景光影梯队**：彻底解决暗部死黑、曝光不足问题，建立「清晨淡金晨光、午后漫射日光、通透边缘逆光、温泉雪景反射」的多层次采光体系。
+  - **全量补齐 39 位角色的官方原画师与推荐画师库（`curatedArtistStyles`）**：支持武内崇、Tsunako、阿部司、藤本树、YutokaMizu、DoReMi 等名家风格跨引擎一键切换（保持默认无画师原生画风可选）。
+  - **深度重构 13 位新角色的场景背景故事（`bg_story`）**：注入角色完整心路历程、世界观冲突、反差萌性格与场景构建指导。
+  - 同步 `DATA_VERSION` 至 `2529745244`，全量契约测试 25/25 PASS，打包 18 路由全绿。
 - **43 热门角色体系与一站式角色接入自动化引擎（Character Onboarding Pipeline）**：
   - 新增《不时轻声地用俄语遮羞的邻座艾莉同学》女主角 **艾莉莎·米哈伊洛夫娜·九条（Alisa Mikhailovna Kujou / Alya）**，包含 5 套服装形态（征岭校服、夏日连衣裙、啦啦队、男友衬衫、私密全裸）、20 视角电影级标准参考图、52,261 点阵粒子场以及 11 个专属场景蓝图（6 SFW + 5 NSFW）。
   - 打造 `scripts/maintenance/workflow-onboard-popular-character.js`（`npm run character:onboard`），实现档案注册、多形态规范同步、立绘粒子场生成、20 张 4 视角参考图批量出图、11 张 Showcase 样张转码大盘注册、`DATA_VERSION` 自动哈希对齐与桌面端增量发布的一键自动化闭环。

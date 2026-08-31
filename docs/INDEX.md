@@ -26,7 +26,7 @@
 | **统一工作流** | [`workflow.md`](workflow.md) | **新同学首读**。`scripts/workflow.js` 统一入口，一览全部生图/审核/参考库/构建链路与参数。 |
 | **协作指南** | `AGENTS.md` (根目录) | **最高优先级**。开发约束、质量门槛、出图/审核规范、桌面部署规范与并行协作协议。 |
 | **设计系统契约** | `DESIGN.md` (根目录) | 界面视觉规范、色彩 Tokens、Typography、组件规范与布局标准。 |
-| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（49 热门角色/51 角色库/1869 参考条目、39 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
+| **项目当前状态** | [`project-status.md`](project-status.md) | 项目级总状态基线（57 热门角色/59 角色库/1869 参考条目、48 位画师、Tauri 桌面端、H3 Ref2VA 等）。 |
 | **维护操作指南** | [`maintenance.md`](maintenance.md) | 场景维护、数据验证、多模型同步、备份恢复等日常维护脚本与契约。 |
 | **产品与运营全维审计** | [`product-operations-audit-2026-08-29.md`](product-operations-audit-2026-08-29.md) | 产品完整度/UX/数据内容/性能/运维/成本/AI 协作七维审计（综合 7.1）与 P0-P2 行动清单；与同日工程/设计审计互补。 |
 | **桌面部署指南** | [`desktop-deployment.md`](desktop-deployment.md) | 增量部署 vs 完整安装的决策口诀（`deploy-desktop.bat` 唯一入口）、`$STALE_ASSETS` 清理目标与提权约束。AGENTS.md:68 引用。 |
@@ -47,6 +47,8 @@
 | **角色调研：玛奇玛/木更/楪祈** | [`research/characters/character-canons-makima-kisara-inori.md`](research/characters/character-canons-makima-kisara-inori.md) | 玛奇玛、木更、楪祈角色设定、正向特征锚与负向拦截。 |
 | **角色调研：狂三/美琴** | [`research/characters/character-research-kurumi-mikoto.md`](research/characters/character-research-kurumi-mikoto.md) | 时崎狂三、御坂美琴原作设定与多形态提示词调研。 |
 | **美琴 Danbooru 标签调研** | [`research/characters/research-misaka-mikoto-danbooru-tags.md`](research/characters/research-misaka-mikoto-danbooru-tags.md) | 御坂美琴 Danbooru / 社区标签消歧与精准提示词映射。 |
+| **8 位热门角色深度设定调研** | [`character-onboarding-research-2026-08-31.md`](character-onboarding-research-2026-08-31.md) | 艾莉丝/星野爱/黑川茜/伊冯/摩根/玛修/三笠/希斯特里亚 8 位角色的官方设定、Danbooru 标签消歧与服装形态。 |
+| **明日方舟干员官方画师考据** | [`arknights-artists-research-2026-08-31.html`](arknights-artists-research-2026-08-31.html) | 明日方舟 14 位干员官方原画师与社区辨识画师交叉考据档案（静态 HTML 交互版）。 |
 | **热门角色审视优化留档** | [`research/characters/popular-characters-audit-2026-08-18.md`](research/characters/popular-characters-audit-2026-08-18.md) | 2026-08-18 热门角色数据审视与优化记录。 |
 
 ---

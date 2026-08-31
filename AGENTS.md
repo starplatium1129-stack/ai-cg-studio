@@ -85,7 +85,7 @@
 3. **Krea2 高级节点回流（模型已在盘）**：`Krea2T-Enhancer-Advanced`、`Krea2StyleReferenceNode`（风格参考，热门角色风格化价值大）、`Krea2PromptWeight`——照 detailBoost 五步样板（社区来源→本机复现样张→网关受控注册→契约锁定→实测转正）。注：`Krea2StyleReferenceNode` 是 API 节点（ComfyAPI 云端上传），与本机 Krea 2 权重非一条路，需单独评估。
 4. ✅ **视频侧成人门控传输层已接线（2026-08-28）**：单任务与分镜批量前端如实携带 `adultEnabled: isLocalStudioHost()`（本机放行、远程/隧道 fail-closed），batch 白名单与单镜校验已透传；storyboard 对成人蓝图仍 fail-closed 拒绝，`adultEligibility` 蓝图自动剧本的完整放行待后续。
 5. **桌宠情感与剧场深度联动**：基于好感度、时间段与日程触发 Live2D 专属小剧场，保持低功耗静止节能。
-6. **角色设定记忆与知识库（RAG）**：免额度角色检索工具深度打通，为 40+ 热门角色构建世界观设定记忆库。
+6. **角色设定记忆与知识库（RAG）**：免额度角色检索工具深度打通，为 57 位热门角色（全库 59 位角色）构建世界观设定记忆库与深度背景故事（`bg_story`）。
 
 ---
 
