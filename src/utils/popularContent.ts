@@ -37,6 +37,8 @@ export interface PopularCharacter {
   supportedEngines: string[]
   adultEligibility: AdultEligibility
   outfits: PopularOutfit[]
+  /** 角色专属官方原画师或精选推荐画师风格 ID 列表。 */
+  curatedArtistStyles?: string[]
 }
 
 export interface SceneBlueprint {
@@ -181,6 +183,7 @@ export function parsePopularCharacter(value: unknown): PopularCharacter | null {
     supportedEngines: stringList(value.supportedEngines),
     adultEligibility,
     outfits,
+    curatedArtistStyles: stringList(value.curatedArtistStyles),
   }
 }
 

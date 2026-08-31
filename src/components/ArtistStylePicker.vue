@@ -95,8 +95,9 @@
               <span v-if="option.cnName" class="artist-cn-name">{{ option.cnName }}</span>
               <span class="artist-en-name">{{ option.name }}</span>
             </strong>
-            <small v-if="isFrequent(option.id)" class="artist-frequent" title="常用画师：按使用次数自动置顶">常用</small>
-            <small class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
+            <small v-if="frequentTop3Ids.includes(option.id)" class="artist-frequent" title="常用画师：使用频次 Top 3 自动置顶">🔥 常用</small>
+            <small v-else-if="props.curatedArtistStyles?.includes(option.id)" class="artist-curated" title="角色专属：官方原画师或精选推荐画风">✨ 推荐</small>
+            <small v-else class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
           <small class="artist-desc">{{ option.description }}</small>
           <small v-if="option.masterpiece" class="artist-masterpiece" :title="option.masterpiece">
@@ -130,10 +131,13 @@ import {
 } from '@/config/artistStyles'
 import { ARTIST_STYLE_OPTIONS } from '@/config/artistStyleCatalog'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   selected: string[]
   engine: ArtistStyleEngine
-}>()
+  curatedArtistStyles?: string[]
+}>(), {
+  curatedArtistStyles: () => [],
+})
 const emit = defineEmits<{
   'update:selected': [value: string[]]
   /** 已达上限还要再加一个时触发，由宿主给用户提示（2026-08-30 UX 审计）。 */
@@ -148,8 +152,10 @@ const currentCategory = ref<string>('all')
 /** 达上限时的就地提示；选满第三位时给出，取消或换选后清除。 */
 const limitHint = ref('')
 
-// 2026-08-30：常用画师自动置顶——记录点选/一键应用次数（localStorage），
-// 使用过的画师按次数降序排到网格最前，避免每次翻到底部找常用画师。
+// 2026-08-31 UX 升级：三级漏斗智能排序
+// 1. Top 3 常用画师：只取使用频次最高的前 3 位（避免试一次就永久污染列表）；
+// 2. 角色专属画师：当前角色的官方原画师 / 精选推荐风格；
+// 3. 其余画师按目录正常分类排列。
 const USAGE_KEY = 'aics-artist-usage'
 function loadUsage(): Record<string, number> {
   try {
@@ -172,11 +178,11 @@ function recordUsage(ids: string[]) {
   usageCounts.value = next
   try { localStorage.setItem(USAGE_KEY, JSON.stringify(next)) } catch { /* 配额满等场景静默降级 */ }
 }
-const frequentIds = computed(() => Object.entries(usageCounts.value)
+const frequentTop3Ids = computed(() => Object.entries(usageCounts.value)
   .filter(([, count]) => count > 0)
   .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .slice(0, 3)
   .map(([id]) => id))
-function isFrequent(id: string): boolean { return (usageCounts.value[id] || 0) > 0 }
 
 const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
 
@@ -200,18 +206,32 @@ const filteredOptions = computed(() => {
       return haystack.includes(needle)
     })
   }
-  // 常用画师置顶：按使用次数降序排前，其余保持目录顺序；搜索/分类过滤同样生效。
-  const freq = frequentIds.value
+
   const byId = new Map(matched.map(option => [option.id, option]))
   const sorted: ArtistStyleOption[] = []
   const seen = new Set<string>()
-  for (const id of freq) {
+
+  // 1. Top 3 常用画师（命中搜索/分类时置顶）
+  for (const id of frequentTop3Ids.value) {
     if (seen.has(id)) continue
     const option = byId.get(id)
-    if (!option) continue
-    sorted.push(option)
-    seen.add(id)
+    if (option) {
+      sorted.push(option)
+      seen.add(id)
+    }
   }
+
+  // 2. 当前角色专属原画/精选推荐画师（命中搜索/分类时紧随 Top 3 之后）
+  for (const id of (props.curatedArtistStyles || [])) {
+    if (seen.has(id)) continue
+    const option = byId.get(id)
+    if (option) {
+      sorted.push(option)
+      seen.add(id)
+    }
+  }
+
+  // 3. 其余画师保持目录默认顺序
   for (const option of matched) {
     if (seen.has(option.id)) continue
     sorted.push(option)
@@ -581,6 +601,16 @@ function applyCombo(artistIds: readonly string[]) {
   background: color-mix(in srgb, var(--accent) 14%, var(--bg-deep));
   border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border-soft));
   color: var(--accent);
+  font-size: var(--fs-mono-xs);
+  font-weight: 600;
+}
+.artist-curated {
+  flex: 0 0 auto;
+  padding: 1px 6px;
+  border-radius: var(--r-pill);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
   font-size: var(--fs-mono-xs);
   font-weight: 600;
 }

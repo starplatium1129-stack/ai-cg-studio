@@ -191,6 +191,7 @@
           v-if="pb.directorMode === 'pro'"
           :selected="pb.artistStyleIds"
           :engine="drawEngine"
+          :curated-artist-styles="currentCuratedArtistStyles"
           @update:selected="pb.setArtistStyleIds"
           @limit-reached="onArtistLimitReached"
         />
@@ -576,6 +577,16 @@ function onAnimaResult(result: AnimaResult) {
     }
   })()
 }
+
+const currentCuratedArtistStyles = computed<string[]>(() => {
+  if (pb.isPopular) {
+    const charId = pb.subject.kind === 'popular' ? pb.subject.characterId : ''
+    const char = pb.popularCharacters.find(c => c.id === charId)
+    return char?.curatedArtistStyles || []
+  }
+  // 工作室角色（宁宁 / 夏目 -> 柚子社画风 Kobuichi / Muririn / Kantoku）
+  return ['kobuichi', 'muririn', 'kantoku']
+})
 
 // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
 const {
