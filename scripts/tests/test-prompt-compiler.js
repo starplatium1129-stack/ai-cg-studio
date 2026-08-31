@@ -224,7 +224,7 @@ test('Anima studio scene caption overrides automatic prose without repeating ide
 test('creative catalog rejects Krea LoRA/negative and emits the official Krea core workflow', () => {
   const input = animaRoute.validateInput({ prompt: 'A rainy cafe scene.', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, seed: 7 });
   assert.strictEqual(input.family, 'krea2');
-  assert.strictEqual(input.steps, 8);
+  assert.strictEqual(input.steps, 12);
   assert.strictEqual(input.cfg, 1);
   for (const size of [[1024, 1536], [1536, 1024]]) {
     const sized = animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: size[0], height: size[1] });
@@ -238,7 +238,7 @@ test('creative catalog rejects Krea LoRA/negative and emits the official Krea co
   const classes = Object.values(workflow).map(node => node.class_type);
   assert.deepStrictEqual(classes, ['UNETLoader', 'CLIPLoader', 'VAELoader', 'CLIPTextEncode', 'ConditioningZeroOut', 'EmptyLatentImage', 'KSampler', 'VAEDecode', 'SaveImage', 'ConditioningKrea2Rebalance', 'ComfyUI-Krea2T-Enhancer', 'ImageSharpenKJ']);
   assert.strictEqual(workflow['2'].inputs.type, 'krea2');
-  assert.strictEqual(workflow['7'].inputs.steps, 8);
+  assert.strictEqual(workflow['7'].inputs.steps, 12);
   assert.strictEqual(workflow['7'].inputs.cfg, 1);
   assert.strictEqual(workflow['7'].inputs.sampler_name, 'er_sde');
   assert.strictEqual(workflow['7'].inputs.scheduler, 'simple');
@@ -288,7 +288,10 @@ test('WAI profile owns the adaptive automatic hires preset', () => {
   assert.strictEqual(wai.steps, 30);
   assert.strictEqual(wai.cfg, 6);
   assert.strictEqual(wai.sampler, 'Euler a');
-  assert.strictEqual(wai.hires_fix, true);
+  // 2026-08-31 对齐 78fd83d P0-6：hires_fix 有意默认关（basic 模式下不可见且关不掉，
+  // 每次出图默认多跑 1.5x/20 步二阶段）。预设能力仍在（Auto 放大/1.5x/20 步/0.4 降噪），
+  // 仅默认开关为 false，expert 模式可手动开启。
+  assert.strictEqual(wai.hires_fix, false);
   assert.strictEqual(wai.hires_upscaler, 'Auto');
   assert.strictEqual(wai.hires_scale, 1.5);
   assert.strictEqual(wai.hires_steps, 20);

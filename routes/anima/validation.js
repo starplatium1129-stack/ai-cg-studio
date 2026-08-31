@@ -136,9 +136,10 @@ function validateInput(reqOrBody, expectedFamilyOrBody, maybeExpectedFamily) {
   var steps;
   var cfg;
   if (model.family === 'krea2') {
-    if (body.steps !== undefined && body.steps !== 8) throw serviceError(400, 'INVALID_PARAMETER', 'Krea 2 steps 固定为 8');
+    // 2026-08-31 与 KREA_DEFAULTS 对齐：e0cbf20 已把主 KSampler 实际出图步数改为 12
+    if (body.steps !== undefined && body.steps !== 12) throw serviceError(400, 'INVALID_PARAMETER', 'Krea 2 steps 固定为 12');
     if (body.cfg !== undefined && body.cfg !== 1) throw serviceError(400, 'INVALID_PARAMETER', 'Krea 2 CFG 固定为 1');
-    steps = 8;
+    steps = 12;
     cfg = 1;
   } else {
     steps = body.steps === undefined ? model.steps : validateNumber(

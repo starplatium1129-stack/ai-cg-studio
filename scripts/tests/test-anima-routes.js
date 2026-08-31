@@ -163,7 +163,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual((await request(port, { path:'/api/creative/status' })).json.pending, 0, 'rejected cross-family submissions must not create jobs');
     var creativeJob = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene.', modelId:'krea2-turbo-fp8', width:1024, height:1536, seed:9001 });
     assert.strictEqual(creativeJob.status, 202);
-    assert.strictEqual(creativeJob.json.job.metadata.steps, 8);
+    assert.strictEqual(creativeJob.json.job.metadata.steps, 12);
     assert.strictEqual(creativeJob.json.job.metadata.cfg, 1);
     assert.strictEqual(creativeJob.json.job.metadata.sampler, 'er_sde');
     assert.strictEqual((await request(port, { path:'/api/anima/jobs/' + creativeJob.json.job.id })).status, 404, 'Anima route must not read Krea jobs');
