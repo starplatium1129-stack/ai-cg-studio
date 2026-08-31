@@ -97,9 +97,9 @@
       },
       "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
       "curatedArtistStyles": [
-        "mika_pikazo",
-        "morikura_en",
-        "rella"
+        "yokoyari_mengo",
+        "nekotomi_chao",
+        "mika_pikazo"
       ],
       "negativeTokens": [
         "bad anatomy",
@@ -211,9 +211,9 @@
       },
       "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
       "curatedArtistStyles": [
-        "rella",
-        "yoneyama_mai",
-        "anmi"
+        "yokoyari_mengo",
+        "nekotomi_chao",
+        "momoco_haru"
       ],
       "negativeTokens": [
         "bad anatomy",

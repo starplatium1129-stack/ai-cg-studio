@@ -49,7 +49,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -77,6 +77,20 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   '麻痹的小日子': 'liduke',
   'gilangak92': 'alchemaniac',
   'alchemaniaC': 'alchemaniac',
+  // 巨人、我推、终末地原画师别名
+  asano: 'asano_kyoji',
+  'asano kyoji': 'asano_kyoji',
+  '浅野恭司': 'asano_kyoji',
+  isayama: 'isayama_hajime',
+  'isayama hajime': 'isayama_hajime',
+  '谏山创': 'isayama_hajime',
+  mengo: 'yokoyari_mengo',
+  'yokoyari mengo': 'yokoyari_mengo',
+  '横枪萌果': 'yokoyari_mengo',
+  'wei': 'wei_at_w',
+  'wei_w': 'wei_at_w',
+  '唯@w': 'wei_at_w',
+  '唯@W': 'wei_at_w',
 }
 
 function artistDisplayName(id: string): string {
@@ -161,6 +175,10 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   huanxiang_heitu: 'ornate Chinese fantasy illustration with divine-demonic motifs, intricate decorative details, and luminous elegant figures',
   liduke: 'soft delicate thick-paint illustration with gentle light diffusion, warm skin tones, and serene feminine charm',
   alchemaniac: 'cool melancholic illustration with deep sea atmosphere, subdued palette, and refined elegant lines',
+  asano_kyoji: 'dramatic WIT Studio anime style with bold dark line art, sharp expressive eyes, dynamic motion tension, and gritty cinematic atmosphere',
+  isayama_hajime: 'intense gritty manga illustration with raw emotional tension, deep shadowed eyes, and powerful resolute expression',
+  yokoyari_mengo: 'expressive anime manga style with luminous starry eyes, delicate emotional linework, and radiant idol highlights',
+  wei_at_w: 'sleek futuristic concept art with tactical techwear design, sharp clean lines, and atmospheric cool lighting',
 }
 
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {

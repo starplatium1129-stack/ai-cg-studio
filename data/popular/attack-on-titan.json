@@ -110,9 +110,9 @@
       },
       "animeStudio": "attack on titan, official anime art, WIT Studio style",
       "curatedArtistStyles": [
-        "yoneyama_mai",
-        "swav",
-        "so-bin"
+        "asano_kyoji",
+        "isayama_hajime",
+        "yoneyama_mai"
       ],
       "negativeTokens": [
         "scar",
@@ -233,9 +233,9 @@
       },
       "animeStudio": "attack on titan, official anime art, WIT Studio style",
       "curatedArtistStyles": [
-        "kantoku",
-        "morikura_en",
-        "tiv"
+        "asano_kyoji",
+        "isayama_hajime",
+        "rella"
       ],
       "negativeTokens": [
         "bad anatomy",
