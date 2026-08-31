@@ -1,6 +1,6 @@
 # Tauri 2 PoC — AI-CG-Studio 桌面壳可行性验证
 
-> 历史可行性 PoC；当前桌面架构与契约见 `docs/tauri-desktop-migration-plan.md`、`docs/live2d-native-runtime.md` 和 `docs/project-status.md`。
+> 历史可行性 PoC；当前桌面架构与契约见 `docs/live2d-native-runtime.md`、`docs/project-status.md` 与 `AGENTS.md` 第二节（Tauri 2 已为桌面主线，迁移决策史见 `docs/archive/expired/tauri-desktop-migration-plan.md`）。
 
 ## 目标
 

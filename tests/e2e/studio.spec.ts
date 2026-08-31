@@ -1384,7 +1384,7 @@ test('roadmap points to the markdown roadmap document', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/docs/roadmap.html');
   await expect(page.getByRole('heading', { name: '产品路线图', level: 1 })).toBeVisible();
-  await expect(page.locator('a[href="visual-architecture-roadmap.md"]')).toBeVisible();
+  await expect(page.locator('a[href="archive/expired/visual-architecture-roadmap.md"]')).toBeVisible();
   expect(errors).toEqual([]);
 });
 
