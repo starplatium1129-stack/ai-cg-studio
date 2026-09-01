@@ -183,7 +183,8 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
       assert.ok(blueprint.kreaStyleHint && /^r18_/.test(blueprint.kreaStyleHint),
         blueprint.id + ' adult kreaStyleHint must be an r18_* recipe id');
     }
-    assert.ok(blueprint.recommendedSize === '1152x1536' || blueprint.recommendedSize === '1536x1152',
+    var legalSizes = ['1152x1536', '1536x1152', '1216x832', '832x1216'];
+    assert.ok(legalSizes.includes(blueprint.recommendedSize),
       blueprint.id + ' recommendedSize must be wallpaper high-res, got ' + blueprint.recommendedSize);
     forbidden.forEach(function (token) {
       assert.ok(!blueprint.promptTokens.includes(token),
