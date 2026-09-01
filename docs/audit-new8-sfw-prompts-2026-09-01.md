@@ -534,3 +534,48 @@ tokens: wolf_ears, wolf_tail, claws
 **不 commit**（避免与并发会话冲突，待用户裁定）：
 - 其他 28 场非摩根场景的 camera/size 当前 cowboy/832x1216（并发回退状态）
 
+---
+
+## 十三、并发会话 SFW 竖版化回退 + 外科手术式恢复（commit c253aa4）
+
+### 13.1 事件
+
+本会话提交 `7c89b04` 之后，并发会话再次提交 `50700cc fix(popular): 莱万汀还原为官方设计+7角色42场SFW竖版化`，把 42 场 SFW 全部改为：
+- 36 非摩根：camera cowboy/medium + size **832x1216**（竖版）
+- 6 摩根：camera cowboy/medium + size **1152x1536**（竖版，但相机偏离"全身"）
+
+### 13.2 与用户硬标准的冲突
+
+`50700cc` 与用户在本会话明确的多项硬标准直接矛盾：
+- 用户说："**这个就是横板**"（指 `E:\photo\未命名作品-2067041349.png` 1216×832 横版）
+- 用户说："**人物样貌要全部能看清...最好是近景四分之三的身体都要在画面内...全部都能入画面最好**" → full body
+- 摩根特殊："**摩根这个还是有点远了**" → 拉近（竖版 portrait 1152x1536 适合拉近）
+
+### 13.3 恢复策略（commit c253aa4）
+
+**外科手术式**——只恢复结构性标准，**不触碰 prose**（保留并发可能做的合理内容改进）：
+
+| 字段 | 36 非摩根 | 6 摩根 |
+|---|---|---|
+| `camera` | `full body` | `full body` |
+| `recommendedSize` | `1216x832`（横版）| `1152x1536`（竖版）|
+| `promptTokens` | +`full_body`、+`solo`、移除 `cowboy_shot/medium_shot/wide_shot/upper_body/portrait` | 同上 |
+| `promptProse` | **不触碰**（保留并发版本）| **不触碰** |
+| 其他 tokens/negatives | **不触碰** | **不触碰** |
+
+### 13.4 门禁（恢复后）
+
+```text
+42/42 场符合用户标准（camera=full body + size 按角色定 + full_body tag + 无裁切 tag）
+prose 相似度 55.3% < 60%（红线 7 PASS，prose 未动）
+test-prompt-rewrite-integrity 2/2 PASS（红线 7）
+precompress 171 文件同步
+DATA_VERSION 同步
+```
+
+### 13.5 仍开放（待用户裁定）
+
+- **并发与本会话的 camera/size 标准根本性冲突**：本 commit c253aa4 直接覆盖并发 50700cc 的"竖版化"决定。如并发会话再次提交竖版化回退，需用户裁决。
+- **28 场 attempt-1 渲染的 prose 可能与当前 prose 失同步**：attempt-1 渲染时 prose 是 4th-iteration 版本；50700cc 可能改了 prose；c253aa4 未动 prose。建议用户决定是否要重新出图。
+- **视觉质量仍需用户/多模态复核**：本模型本会话全程无法看图。
+
