@@ -19749,14 +19749,14 @@
     "characterId": "laevatain_arknights",
     "displayName": "莱万汀",
     "source": "Arknights: Endfield",
-    "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz swordswoman with long flowing crimson red hair, segmented black obsidian horns rising from her head, deep purple eyes, a slender devil tail with ember sparks, and a curvy commanding figure, dressed in her signature official combat attire: a one-piece sideless sleeveless dress in a black-to-crimson gradient with a backless cut and asymmetric jagged hem, a detached white collar and detached black sleeves, black thigh-high heeled boots with a single crimson thigh strap, and a long flame-bladed one-handed sword in her right hand",
+    "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz warrior with long waist-length crimson red hair, large curved black horns, purple eyes, a slender devil tail, dressed in her signature official combat attire: a backless black camisole combat top with thin spaghetti straps, a long asymmetric jagged-hem layered skirt in crimson-to-black gradient, bare legs with a black thigh strap, and black heeled boots, wielding a massive dark heavy greatsword with a molten orange core glow carried over her shoulder, a storm of dark metallic blade fragments orbiting her back like obsidian wings",
     "outfits": [
       {
         "outfitId": "standard",
-        "outfitName": "终末地官方战斗连衣裙",
+        "outfitName": "萨卡兹熔火战装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "her signature official Sarkaz combat attire: a one-piece sideless sleeveless dress in a black-to-crimson gradient with a backless cut and asymmetric jagged hem, a detached white collar and detached black sleeves, black thigh-high heeled boots with a single crimson thigh strap, and a long flame-bladed one-handed sword in her right hand",
+        "prose": "her signature official combat attire: a backless black camisole combat top with thin spaghetti straps, a long asymmetric jagged-hem layered skirt in crimson-to-black gradient, bare legs with a black thigh strap, black heeled boots, a massive dark heavy greatsword with a molten orange core glow carried over her shoulder, and a storm of dark metallic blade fragments orbiting her back and shoulders like obsidian wings",
         "references": [
           {
             "id": "ref_01_face_closeup",
