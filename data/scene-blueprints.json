@@ -58027,7 +58027,7 @@
       "action": "持剑迎风而立",
       "timeOfDay": "白天",
       "lighting": "悬崖烈日照耀",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "英姿飒爽",
       "sceneTags": [
         "cliff",
@@ -58058,6 +58058,7 @@
         "outdoor",
         "red_eyes",
         "sheath",
+        "solo",
         "stirrup_leggings",
         "sword",
         "thick_eyebrows",
@@ -58066,7 +58067,7 @@
         "white_pantyhose",
         "wind"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "sword_king",
       "coverageTags": [
         "iconic"
@@ -58139,7 +58140,7 @@
       "action": "持剑警戒前行",
       "timeOfDay": "白天",
       "lighting": "旷野烈日照耀",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "野性锐利",
       "sceneTags": [
         "wilderness",
@@ -58169,6 +58170,7 @@
         "pants",
         "red_eyes",
         "sheath",
+        "solo",
         "sword",
         "thick_eyebrows",
         "volumetric_lighting",
@@ -58176,7 +58178,7 @@
         "wavy_hair",
         "wind"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "dead_end_adventurer",
       "coverageTags": []
     },
@@ -58247,7 +58249,7 @@
       "action": "花园中追逐蝴蝶",
       "timeOfDay": "白天",
       "lighting": "花园柔光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "活泼天真",
       "sceneTags": [
         "garden",
@@ -58279,10 +58281,11 @@
         "outdoor",
         "red_eyes",
         "rose",
+        "solo",
         "thick_eyebrows",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "noble_child",
       "coverageTags": []
     },
@@ -58353,7 +58356,7 @@
       "action": "反复挥剑训练",
       "timeOfDay": "黄昏",
       "lighting": "夕阳逆光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "坚毅专注",
       "sceneTags": [
         "training",
@@ -58380,6 +58383,7 @@
         "open_inner_thigh_pants",
         "outdoor",
         "red_eyes",
+        "solo",
         "stirrup_leggings",
         "sunset",
         "sword",
@@ -58389,7 +58393,7 @@
         "wavy_hair",
         "white_pantyhose"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "sword_king",
       "coverageTags": []
     },
@@ -58460,7 +58464,7 @@
       "action": "桌前用餐休整",
       "timeOfDay": "夜晚",
       "lighting": "油灯暖光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "放松惬意",
       "sceneTags": [
         "inn",
@@ -58491,13 +58495,14 @@
         "oil_lamp",
         "pants",
         "red_eyes",
+        "solo",
         "thick_eyebrows",
         "volumetric_lighting",
         "warm_light",
         "wavy_hair",
         "wooden_table"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "dead_end_adventurer",
       "coverageTags": [
         "daily"
@@ -58570,7 +58575,7 @@
       "action": "端坐于晚宴席间",
       "timeOfDay": "夜晚",
       "lighting": "烛光摇曳",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "拘束又跃动",
       "sceneTags": [
         "banquet",
@@ -58601,11 +58606,12 @@
         "interior",
         "noble",
         "red_eyes",
+        "solo",
         "thick_eyebrows",
         "volumetric_lighting",
         "warm_light"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "noble_child",
       "coverageTags": [
         "daily"
@@ -59260,7 +59266,7 @@
       "action": "舞台上高唱登场",
       "timeOfDay": "夜晚",
       "lighting": "舞台聚光与应援海",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "偶像闪耀",
       "sceneTags": [
         "concert",
@@ -59290,6 +59296,7 @@
         "purple_eyes",
         "purple_hair",
         "rabbit_hair_ornament",
+        "solo",
         "spotlight",
         "stage",
         "star-shaped_pupils",
@@ -59297,7 +59304,7 @@
         "star_pupils",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "main_look",
       "coverageTags": [
         "iconic"
@@ -59370,7 +59377,7 @@
       "action": "镜前反复彩排",
       "timeOfDay": "白天",
       "lighting": "窗光与镜面反光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "专注自律",
       "sceneTags": [
         "rehearsal",
@@ -59400,12 +59407,13 @@
         "purple_hair",
         "rabbit_hair_ornament",
         "rehearsal",
+        "solo",
         "star-shaped_pupils",
         "star_in_eye",
         "star_pupils",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "main_look",
       "coverageTags": [
         "daily"
@@ -59478,7 +59486,7 @@
       "action": "追光下抛飞吻",
       "timeOfDay": "夜晚",
       "lighting": "追光与舞台灯",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "灵动撩人",
       "sceneTags": [
         "theater",
@@ -59504,6 +59512,7 @@
         "pink_dress",
         "purple_eyes",
         "purple_hair",
+        "solo",
         "spotlight",
         "stage",
         "star-shaped_pupils",
@@ -59513,7 +59522,7 @@
         "volumetric_lighting",
         "white_thighhighs"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "stage_off_shoulder",
       "coverageTags": []
     },
@@ -59584,7 +59593,7 @@
       "action": "镜头前比偶像手势",
       "timeOfDay": "白天",
       "lighting": "棚内柔光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "元气满格",
       "sceneTags": [
         "tv_studio",
@@ -59611,6 +59620,7 @@
         "purple_eyes",
         "purple_hair",
         "rabbit_hair_ornament",
+        "solo",
         "star-shaped_pupils",
         "star_in_eye",
         "star_pupils",
@@ -59620,7 +59630,7 @@
         "white_dress",
         "white_thighhighs"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "stage_two_tone",
       "coverageTags": []
     },
@@ -59691,7 +59701,7 @@
       "action": "镜前补妆",
       "timeOfDay": "夜晚",
       "lighting": "化妆镜灯",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "静谧专注",
       "sceneTags": [
         "dressing_room",
@@ -59721,13 +59731,14 @@
         "purple_eyes",
         "purple_hair",
         "rabbit_hair_ornament",
+        "solo",
         "star-shaped_pupils",
         "star_in_eye",
         "star_pupils",
         "volumetric_lighting",
         "warm_light"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "main_look",
       "coverageTags": [
         "daily"
@@ -59800,7 +59811,7 @@
       "action": "与粉丝握手交谈",
       "timeOfDay": "白天",
       "lighting": "会馆灯光",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "温柔亲和",
       "sceneTags": [
         "handshake_event",
@@ -59826,6 +59837,7 @@
         "purple_hair",
         "rabbit_hair_ornament",
         "smile",
+        "solo",
         "star-shaped_pupils",
         "star_in_eye",
         "star_pupils",
@@ -59833,7 +59845,7 @@
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "stage_two_tone",
       "coverageTags": []
     },
@@ -60485,7 +60497,7 @@
       "action": "拔刀出鞘立于布景光中",
       "timeOfDay": "夜晚",
       "lighting": "血色舞台光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "演技爆发",
       "sceneTags": [
         "stage",
@@ -60527,7 +60539,7 @@
         "theater",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "sayahime_stage",
       "coverageTags": [
         "iconic"
@@ -60600,7 +60612,7 @@
       "action": "抱课本走过走廊",
       "timeOfDay": "白天",
       "lighting": "走廊窗光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "清冷沉静",
       "sceneTags": [
         "school",
@@ -60627,12 +60639,13 @@
         "long_hair",
         "necktie",
         "school_uniform",
+        "solo",
         "straight_hair",
         "volumetric_lighting",
         "white_collared_shirt",
         "window"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "school_uniform",
       "coverageTags": [
         "daily"
@@ -60726,7 +60739,7 @@
       "action": "白墙前入戏试镜",
       "timeOfDay": "白天",
       "lighting": "棚内白光",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "专注入戏",
       "sceneTags": [
         "audition",
@@ -60759,7 +60772,7 @@
         "studio",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "school_uniform",
       "coverageTags": []
     },
@@ -60802,7 +60815,7 @@
       "action": "靠窗喝拿铁交谈",
       "timeOfDay": "白天",
       "lighting": "窗边柔光",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "温柔放松",
       "sceneTags": [
         "cafe",
@@ -60839,7 +60852,7 @@
         "white_blouse",
         "window"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "pinafore_dress",
       "coverageTags": [
         "daily"
@@ -60929,7 +60942,7 @@
       "action": "沙发上接受访谈",
       "timeOfDay": "夜晚",
       "lighting": "演播厅布光",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "从容得体",
       "sceneTags": [
         "tv_studio",
@@ -60963,7 +60976,7 @@
         "tv_studio",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "pinafore_dress",
       "coverageTags": []
     },
@@ -61051,7 +61064,7 @@
       "action": "戴眼镜翻阅剧本研究",
       "timeOfDay": "白天",
       "lighting": "店内暖光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "沉静书卷气",
       "sceneTags": [
         "bookstore",
@@ -61086,7 +61099,7 @@
         "warm_light",
         "white_shirt"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "daily_glasses",
       "coverageTags": []
     },
@@ -62917,7 +62930,7 @@
       "action": "王座上俯瞰国土",
       "timeOfDay": "白天",
       "lighting": "冰冷天光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "至高威严",
       "sceneTags": [
         "throne",
@@ -63023,7 +63036,7 @@
       "action": "圣枪前立誓",
       "timeOfDay": "黄昏",
       "lighting": "金色余晖",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "肃穆决然",
       "sceneTags": [
         "holy_lance",
@@ -63129,7 +63142,7 @@
       "action": "雨后林间巡游",
       "timeOfDay": "白天",
       "lighting": "雨后柔光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "静谧悠远",
       "sceneTags": [
         "forest",
@@ -63234,7 +63247,7 @@
       "action": "湖中咏唱咒语",
       "timeOfDay": "白天",
       "lighting": "水面反光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "空灵神圣",
       "sceneTags": [
         "lake",
@@ -63340,7 +63353,7 @@
       "action": "水边漫步",
       "timeOfDay": "白天",
       "lighting": "海滩阳光",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "难得松弛",
       "sceneTags": [
         "beach",
@@ -63448,7 +63461,7 @@
       "action": "雪中独立赏雪",
       "timeOfDay": "白天",
       "lighting": "雪地反光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "孤高静默",
       "sceneTags": [
         "snow",
@@ -64126,7 +64139,7 @@
       "action": "抱文件快步行走",
       "timeOfDay": "白天",
       "lighting": "走廊灯光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "认真元气",
       "sceneTags": [
         "corridor",
@@ -64159,9 +64172,10 @@
         "purple_eyes",
         "red_necktie",
         "short_hair",
+        "solo",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "chaldea_casual",
       "coverageTags": [
         "iconic"
@@ -64251,7 +64265,7 @@
       "action": "举盾守护队友",
       "timeOfDay": "白天",
       "lighting": "模拟全息光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "坚毅可靠",
       "sceneTags": [
         "simulation",
@@ -64287,7 +64301,7 @@
         "two-tone_dress",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "combat_armor",
       "coverageTags": []
     },
@@ -64367,7 +64381,7 @@
       "action": "赤足踩浪花",
       "timeOfDay": "白天",
       "lighting": "海滩阳光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "清爽明媚",
       "sceneTags": [
         "beach",
@@ -64397,13 +64411,14 @@
         "purple_eyes",
         "sea",
         "short_hair",
+        "solo",
         "summer",
         "sunlight",
         "swimsuit",
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "summer_swimsuit",
       "coverageTags": [
         "daily"
@@ -64502,7 +64517,7 @@
       "action": "摸着狼耳有些害羞",
       "timeOfDay": "黄昏",
       "lighting": "夕照暖光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "害羞又新奇",
       "sceneTags": [
         "wolf_ears",
@@ -64533,7 +64548,7 @@
         "thighhighs",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "dangerous_beast",
       "coverageTags": []
     },
@@ -64621,7 +64636,7 @@
       "action": "装甲着装准备出击",
       "timeOfDay": "白天",
       "lighting": "机库冷光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "凛然备战",
       "sceneTags": [
         "hangar",
@@ -64654,7 +64669,7 @@
         "thighhighs",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "ortinax_armor",
       "coverageTags": []
     },
@@ -64734,7 +64749,7 @@
       "action": "端餐盘找座位用餐",
       "timeOfDay": "白天",
       "lighting": "食堂日光",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "日常温馨",
       "sceneTags": [
         "cafeteria",
@@ -64767,9 +64782,10 @@
         "purple_eyes",
         "red_necktie",
         "short_hair",
+        "solo",
         "volumetric_lighting"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "chaldea_casual",
       "coverageTags": [
         "daily"
@@ -65439,7 +65455,7 @@
       "action": "垛口边俯瞰巡逻",
       "timeOfDay": "白天",
       "lighting": "墙顶日光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "沉静坚定",
       "sceneTags": [
         "wall",
@@ -65467,6 +65483,7 @@
         "outdoor",
         "red_scarf",
         "short_hair",
+        "solo",
         "survey_corps_uniform",
         "volumetric_lighting",
         "wall",
@@ -65474,7 +65491,7 @@
         "white_shirt",
         "wind"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "survey_corps_uniform",
       "coverageTags": [
         "iconic"
@@ -65547,7 +65564,7 @@
       "action": "立体机动装置疾驰",
       "timeOfDay": "白天",
       "lighting": "林隙光束",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "凌厉迅捷",
       "sceneTags": [
         "forest",
@@ -65575,11 +65592,12 @@
         "outdoor",
         "red_scarf",
         "short_hair",
+        "solo",
         "swords",
         "volumetric_lighting",
         "white_pants"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "survey_corps_uniform",
       "coverageTags": []
     },
@@ -65650,7 +65668,7 @@
       "action": "操场列队训练",
       "timeOfDay": "白天",
       "lighting": "操场日光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "冷静寡言",
       "sceneTags": [
         "training_ground",
@@ -65676,13 +65694,14 @@
         "outdoor",
         "red_scarf",
         "short_hair",
+        "solo",
         "training_ground",
         "volumetric_lighting",
         "white_jacket",
         "white_pants",
         "white_shirt"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "training_corps",
       "coverageTags": []
     },
@@ -65770,7 +65789,7 @@
       "action": "窗边喝热饮",
       "timeOfDay": "白天",
       "lighting": "窗边柔光",
-      "camera": "medium shot",
+      "camera": "full body",
       "mood": "难得的柔软",
       "sceneTags": [
         "cafe",
@@ -65801,7 +65820,7 @@
         "white_shirt",
         "window"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "casual",
       "coverageTags": [
         "daily"
@@ -65874,7 +65893,7 @@
       "action": "街巷中穿行",
       "timeOfDay": "白天",
       "lighting": "阴天灰光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "肃穆警觉",
       "sceneTags": [
         "street",
@@ -65901,12 +65920,13 @@
         "overcast",
         "red_scarf",
         "short_hair",
+        "solo",
         "straps",
         "street",
         "volumetric_lighting",
         "white_shirt"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "marley_uniform",
       "coverageTags": []
     },
@@ -65977,7 +65997,7 @@
       "action": "屋顶上望向远方",
       "timeOfDay": "黄昏",
       "lighting": "金色斜阳",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "怀念而坚定",
       "sceneTags": [
         "rooftop",
@@ -66005,13 +66025,14 @@
         "red_scarf",
         "rooftop",
         "short_hair",
+        "solo",
         "sunset",
         "survey_corps_uniform",
         "volumetric_lighting",
         "white_pants",
         "wind"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "survey_corps_uniform",
       "coverageTags": []
     },
@@ -66650,7 +66671,7 @@
       "action": "加冕礼上接过王冠",
       "timeOfDay": "白天",
       "lighting": "大教堂光柱",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "神圣决意",
       "sceneTags": [
         "coronation",
@@ -66679,10 +66700,11 @@
         "long_hair",
         "off_shoulder_dress",
         "sandals",
+        "solo",
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "coronation_dress",
       "coverageTags": [
         "iconic"
@@ -66755,7 +66777,7 @@
       "action": "桌前批阅政务",
       "timeOfDay": "白天",
       "lighting": "大厅日光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "沉稳仁厚",
       "sceneTags": [
         "throne_room",
@@ -66783,11 +66805,12 @@
         "pale_coat",
         "pants",
         "queen",
+        "solo",
         "throne_room",
         "volumetric_lighting",
         "white_shirt"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "queen_casual",
       "coverageTags": []
     },
@@ -66858,7 +66881,7 @@
       "action": "行军间歇回头微笑",
       "timeOfDay": "白天",
       "lighting": "草原日光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "温柔治愈",
       "sceneTags": [
         "grassland",
@@ -66886,12 +66909,13 @@
         "military",
         "outdoor",
         "smile",
+        "solo",
         "survey_corps_uniform",
         "volumetric_lighting",
         "white_pants",
         "white_shirt"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "corps_uniform",
       "coverageTags": []
     },
@@ -66962,7 +66986,7 @@
       "action": "花丛间散步闻花",
       "timeOfDay": "白天",
       "lighting": "花园柔光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "平和恬淡",
       "sceneTags": [
         "garden",
@@ -66992,10 +67016,11 @@
         "pale_coat",
         "pants",
         "rose",
+        "solo",
         "volumetric_lighting",
         "white_shirt"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "queen_casual",
       "coverageTags": [
         "daily"
@@ -67068,7 +67093,7 @@
       "action": "木栏上与孩子并坐",
       "timeOfDay": "白天",
       "lighting": "村间日光",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "亲民温暖",
       "sceneTags": [
         "village",
@@ -67090,11 +67115,12 @@
         "full_body",
         "outdoor",
         "smile",
+        "solo",
         "village",
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "casual",
       "coverageTags": [
         "daily"
@@ -67167,7 +67193,7 @@
       "action": "披袍立于雪中眺望",
       "timeOfDay": "白天",
       "lighting": "雪光阴沉",
-      "camera": "cowboy shot",
+      "camera": "full body",
       "mood": "悲悯坚定",
       "sceneTags": [
         "snow",
@@ -67193,12 +67219,13 @@
         "long_hair",
         "outdoor",
         "snow",
+        "solo",
         "volumetric_lighting",
         "wall",
         "white_dress",
         "winter"
       ],
-      "recommendedSize": "832x1216",
+      "recommendedSize": "1216x832",
       "outfitId": "coronation_dress",
       "coverageTags": []
     },
