@@ -341,6 +341,7 @@ import { useScrollReveal } from '@/composables/useScrollReveal'
 import { blobThumbDataUrl, jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
+import { buildArtworkFileName } from '@/utils/artworkFileName'
 import { formatA1111Parameters, injectPngMetadata } from '@/utils/pngMetadata'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 
@@ -1150,8 +1151,18 @@ function copyPrompt() {
 async function downloadCurrent() {
   const item = current.value
   if (!item) return
-  const name = (sceneTitle(item.scene) || 'artwork').replace(/[\\/:*?"<>|]/g, '_')
-  const fileName = `${name}-${item.seed ?? item.id}.png`
+  // 2026-09-01 文件名去重：旧方案「标题-seed」同场景同 seed 会撞名，
+  // 新方案带上时间戳与 id 尾号（见 utils/artworkFileName.ts）。
+  // artworkTimestamp 会给老记录兜底（字符串时间 / 纯数字 id），拿不到才是真没有。
+  const ts = stamp(item)
+  const fileName = buildArtworkFileName({
+    title: sceneTitle(item.scene, item),
+    character: item.character ? characterName(item.character, item) : undefined,
+    timestamp: ts > 0 ? ts : undefined,
+    seed: item.seed,
+    id: item.id,
+    ext: 'png',
+  })
 
   const metaText = formatA1111Parameters({
     prompt: item.prompt ? String(item.prompt) : undefined,

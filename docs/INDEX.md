@@ -57,6 +57,7 @@
 
 | 文档名称 | 路径 | 核心内容与维护状态 |
 | :--- | :--- | :--- |
+| **项目专属提示词技能指南** | [`studio-prompt-craft-guide.md`](studio-prompt-craft-guide.md) | **项目官方提示词 Expert Skill 权威指南**：Anima Tag 流 vs Krea 2 自然语言散文双引擎分流、SFW 全年龄唯美 vs NSFW R18 成人显式双分级规范与 57+ 热门角色对齐速查。 |
 | **三引擎提示词体系** | [`three-engine-prompt-research.md`](three-engine-prompt-research.md) | SD/WAI、Anima 1.1、Krea 2 Turbo 三生成引擎语法、约束与提示词编译机制。 |
 | **Krea 2 提示词权威基座** | [`krea2-prompt-research-2026-08-30.md`](krea2-prompt-research-2026-08-30.md) | **Krea 2 提示词规范唯一权威**（AGENTS.md:37 点名，冲突以本报告为准）：官方 FAQ 核证、信源五级分级、§11 修正清单（含「非 SD3.5 系」纠错）、身份锚定与风格词位置规则。 |
 | **随机灵感组装设计** | [`random-prompt-assembler-design.md`](random-prompt-assembler-design.md) | 导演台「随机灵感」方案：复用标签资产池与现有编译管线，三引擎随机组装规则、零新增门控（Mature 遵循既有契约）、互斥表与实施分期（P0 已落地 2026-08-29）。 |

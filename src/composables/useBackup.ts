@@ -22,6 +22,7 @@ import {
   isLiveLocalKey,
 } from '@/utils/storageKeys'
 import { normalizeChatStorage } from '@/utils/chatStorageCore'
+import { buildArtworkFileName } from '@/utils/artworkFileName'
 import { CHAT_ARCHIVE_KEY, mergeChatArchives, normalizeChatArchive, serializeChatArchive } from '@/utils/chatArchive'
 import { mergeChatMemoryStates, normalizeChatMemoryState } from '@/utils/chatMemory'
 export type { BackupSummary } from '@/utils/backupCore'
@@ -153,7 +154,14 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
           const a = document.createElement('a')
           const ext = (blob.type || 'image/png').split('/')[1] || 'png'
           a.href = url
-          a.download = `cg-${String(record.name || record.id || saved + 1).replace(/[\\/:*?"<>|]/g, '_')}.${ext}`
+          // 2026-09-01 文件名去重：name 相同的多张图旧方案直接撞名，
+          // 改用统一生成器，带时间戳与 id 尾号保证唯一（见 utils/artworkFileName.ts）。
+          a.download = buildArtworkFileName({
+            title: record.name,
+            timestamp: record.created_at,
+            id: record.id,
+            ext,
+          })
           document.body.appendChild(a)
           a.click()
           a.remove()
