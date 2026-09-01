@@ -392,12 +392,14 @@ export function recommendBlueprints(
 const CAMERA_TO_SHOT: Record<string, string> = {
   closeup: 'close', 'close-up': 'close', close_up: 'close', close: 'close',
   'medium shot': 'medium', half_body: 'medium', medium: 'medium',
+  'cowboy shot': 'medium', cowboy_shot: 'medium', cowboy: 'medium',
   'wide shot': 'wide', wide_shot: 'wide', full_body: 'wide', wide: 'wide',
   pov: 'pov', 'high angle': 'high', from_above: 'high', 'low angle': 'low',
   from_below: 'low', 'side view': 'side', looking_back: 'turn', 'front view': 'turn',
 }
 /** 蓝图 camera 字段漏网短语补映射（2026-08-24 全量审计：23 例 shot=null）。 */
 const EXTRA_CAMERA_TO_SHOT: ReadonlyArray<readonly [RegExp, string]> = [
+  [/cowboy (?:shot)?|cowboy_shot/, 'medium'],
   [/dynamic action (?:shot|angle)|action shot/, 'wide'],
   [/full body/, 'wide'],
   [/couch level|low level/, 'low'],
