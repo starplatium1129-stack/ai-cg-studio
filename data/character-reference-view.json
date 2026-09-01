@@ -19749,14 +19749,14 @@
     "characterId": "laevatain_arknights",
     "displayName": "莱万汀",
     "source": "Arknights: Endfield",
-    "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with short layered crimson red hair, segmented sharp curved black horns, orange eyes, and a slender devil tail with flame sparks, wielding a massive glowing molten magma greatsword",
+    "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz warrior with medium-length wavy crimson red hair, segmented black obsidian horns rising from her head, deep red eyes, a slender devil tail with ember sparks, and a curvy commanding figure, dressed in her signature official combat attire: a white sleeveless high-neck top with delicate dark lacing at the collar, a cropped black jacket half-draped off one shoulder hanging from her arm, a white asymmetric mini skirt with a black corset-style waist cincher and silver buckle straps, black thigh-high strapped heeled boots, and a massive black cross-shaped great blade strapped to her back with its edge glowing faint orange from contained heat",
     "outfits": [
       {
         "outfitId": "standard",
-        "outfitName": "战术特勤服",
+        "outfitName": "终末地官方便服战装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top, black shorts, thigh straps and high combat boots",
+        "prose": "a white sleeveless high-neck top with delicate dark lacing at the collar, a cropped black jacket half-draped off one shoulder hanging from her arm, a white asymmetric mini skirt with a black corset-style waist cincher and silver buckle straps, black thigh-high strapped heeled boots, and a massive black cross-shaped great blade strapped to her back with the blade's edge glowing faint orange from contained heat",
         "references": [
           {
             "id": "ref_01_face_closeup",
