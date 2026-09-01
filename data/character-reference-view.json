@@ -19749,14 +19749,14 @@
     "characterId": "laevatain_arknights",
     "displayName": "莱万汀",
     "source": "Arknights: Endfield",
-    "identityProse": "Laevatain from Arknights: Endfield",
+    "identityProse": "1girl, laevatain, solo, red hair, black horns, bangs, sideburns, short hair, multi-colored eyes, purple eyes, slit pupils, lipstick, white collar, metal pendant, chest straps, shoulder cut, deep cleavage, black dress, sleeveless dress, sideless dress, short layered dress, torn dress, petticoat, white cut, single free shoulder, loose jacket, black long gloves, pink dress interior, pink purse, dress decorations, thigh straps, arm strap, knee boots, high heel boots, large breasts, hair intakes, detached sleeves",
     "outfits": [
       {
         "outfitId": "standard",
         "outfitName": "萨卡兹熔火战装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "her signature official outfit: a sleeveless sideless black mini dress with a layered jagged hem lined in vivid magenta, a large high white detached collar spreading over her shoulders, a chest strap, a small belt pouch at her waist, long black elbow gloves, bare legs with a black thigh strap, black high-heel boots, and massive dark obsidian shard-wings spreading from her back",
+        "prose": "her signature outfit: a black sleeveless dress with a white collar and metal pendant, chest straps, a loose jacket slipping free off one shoulder, long black gloves, a long floating dress with pink interior and a pink purse, the lower edges burnt and torn, thigh straps, high heel boots",
         "references": [
           {
             "id": "ref_01_face_closeup",
