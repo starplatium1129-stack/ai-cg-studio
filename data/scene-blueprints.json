@@ -13305,7 +13305,7 @@
         "school",
         "indoor"
       ],
-      "promptProse": "In the quiet the cafeteria lunch tray, In her navy Homurahara school uniform with a ribbon, Tohsaka Rin carries a tray through the bright canteen, eyes scanning the dishes. Sheer black pantyhose hugging smooth thighs and calves beneath her skirt, the fabric catching subtle rim light. Volumetric light and soft bokeh add breathable depth, while careful rim lighting sculpts her silhouette against the background with gallery-print clarity.",
+      "promptProse": "In the Homurahara cafeteria at noon, Tohsaka Rin carries a lunch tray along the serving line in her navy school uniform, the red ribbon neat at her collar as her aqua eyes sweep the room for an empty seat, twin tails swaying with an impatient little bounce. Around her: a chalkboard menu with today's set meals, a stack of clean trays, a juice cooler humming by the wall, and broad windows filling the room with midday light.",
       "promptTokens": [
         "atmospheric",
         "black_thighhighs",
@@ -18271,7 +18271,7 @@
         "daylight",
         "outdoors"
       ],
-      "promptProse": "In the quiet the amusement park carousel merry go round, Illyasviel von Einzbern — a soft casual outfit — perches on a gilded carousel horse, hands lightly gripping the pole and laughing. Bare legs and white sneakers on tiled floor, the casual footwear grounding her relaxed pose. Volumetric light and soft bokeh add breathable depth, while careful rim lighting sculpts her silhouette against the background with gallery-print clarity.",
+      "promptProse": "Under the gilded canopy of an amusement park carousel, Illyasviel perches sidesaddle on a white carousel horse in her soft casual outfit, both hands gripping the brass pole as the machine turns and her laughter rings out over the calliope music. Painted mirrors, colored light bulbs and fluttering pennant flags fill the background as the park's evening lights begin to glow.",
       "promptTokens": [
         "amusement_park",
         "atmospheric",
@@ -35994,7 +35994,7 @@
         "routine",
         "endfield"
       ],
-      "promptProse": "Inside the cafeteria ship lunch bathed in bright interior light, Dressed in a cozy oversized chunky cream-white knit sweater with a relaxed neckline showing the , Perlica is carries a tray through the bright canteen, eyes scanning the dishes. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Cinematic depth of field and delicate color grading give the frame a luminous, poster-quality finish, every texture crisp and every highlight softly diffused.",
+      "promptProse": "Inside the bright Endfield base canteen at lunch hour, Perlica carries a loaded tray between the serving counters, the cozy oversized cream-white knit sweater slipping a little off one shoulder as she slows to study the day's dishes, her cyan-blue eyes narrowing in mock-serious appraisal. Steam curls up from the hot line as her silver hair sways with each step. Around her: a stacked bread station, gleaming steel sinks, clipboard rosters pinned by the door, and pendant lamps glowing over the long tables.",
       "promptTokens": [
         "perlica_(arknights)",
         "atmospheric",
@@ -36104,7 +36104,7 @@
         "endfield",
         "searching"
       ],
-      "promptProse": "The the archive terminal data glows with soft terminal glow as Wearing her white and charcoal Endfield supervisor tactical jacket with cyan line accents ove, Perlica stands with quiet poise, gaze steady. Framed with sheer black thighhigh stockings hugging smooth thighs, lace tops peeking beneath her skirt hem, her pose feels natural and unforced. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Inside the Endfield data archive, Perlica leans toward the glowing terminal and keys in a search query, her white-and-charcoal supervisor tactical jacket with cyan line accents catching the screen light as cyan glyphs reflect in her focused blue eyes. One hand rests on the archive shelf while a holo-pane drifts up beside her face. Rows of humming server shelves fade into the dim background behind her, status lamps blinking in slow rhythms.",
       "promptTokens": [
         "perlica_(arknights)",
         "archive",
@@ -37055,7 +37055,7 @@
       "action": "靠在铁砧旁，剑尖垂地",
       "timeOfDay": "白天",
       "lighting": "forge fire glow",
-      "camera": "full body",
+      "camera": "medium shot",
       "mood": "炽热专注",
       "sceneTags": [
         "forge",
@@ -37065,7 +37065,7 @@
         "fire",
         "molten_metal"
       ],
-      "promptProse": "Inside the roaring heavy-weapon forge at Talos-II, Laevatain stands in a full body shot, the backless combat dress wrapped in swirling flame aura, bare legs planted firm, the magma greatsword driven point-down into the molten metal floor. Crimson hair streams forward as she leans her weight on the alloy anvil, grinning fierce; six dark blade-fragment shards orbit her back like obsidian wings, their edges glowing red-hot. Around her the forge presses in close: a rack of half-finished blades, hanging chains, a bubbling crucible, raw ingots, orange sparks showering from the sword tip.",
+      "promptProse": "Inside the roaring heavy-weapon forge at Talos-II, Laevatain stands in a medium shot framed from the knees up, the backless combat dress wrapped in swirling flame aura, bare legs planted firm, the magma greatsword driven point-down into the molten metal floor. Crimson hair streams forward as she leans her weight on the alloy anvil, grinning fierce; six dark blade-fragment shards orbit her back like obsidian wings, their edges glowing red-hot. Around her the forge presses in close: a rack of half-finished blades, hanging chains, a bubbling crucible, raw ingots, orange sparks showering from the sword tip.",
       "promptTokens": [
         "laevatain_(arknights)",
         "1girl",
@@ -37163,7 +37163,7 @@
         "jacket_half_off",
         "white_top"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "ignition",
       "coverageTags": [
         "iconic"
@@ -37179,7 +37179,7 @@
       "action": "穿着舒适的舱内机能便服，大口享用双球甜筒冰淇淋，赤红眼眸微微弯起，黑角与恶魔尾巴惬意晃动",
       "timeOfDay": "午后",
       "lighting": "bright industrial canteen light",
-      "camera": "full body",
+      "camera": "medium shot",
       "mood": "可爱反差萌",
       "sceneTags": [
         "scifi_corridor",
@@ -37188,7 +37188,7 @@
         "eating",
         "endfield"
       ],
-      "promptProse": "Inside the bright Talos-II scifi corridor canteen, Laevatain stands in a full body shot holding up an oversized triple-scoop strawberry matcha ice cream cone in her right hand, the tip just brushing her lips. Her black halter crop top under a slightly open sheer grey techwear jacket falls casually, the pleated black utility miniskirt swaying above chunky sneakers. Wavy crimson hair spills over both shoulders, red eyes sparkling with mischief, devil tail swaying. Around her: vending machine humming at her side, stacked drink dispensers, metal lockers, a long counter with steam rising from a hot drinks machine, empty snack stools.",
+      "promptProse": "Inside the bright Talos-II scifi corridor canteen, Laevatain fills a medium shot from the waist up, holding up an oversized triple-scoop strawberry matcha ice cream cone in her right hand, the tip just brushing her lips. Her black halter crop top under a slightly open sheer grey techwear jacket falls casually, the pleated black utility miniskirt swaying above chunky sneakers. Wavy crimson hair spills over both shoulders, red eyes sparkling with mischief, devil tail swaying. Around her: vending machine humming at her side, stacked drink dispensers, metal lockers, a long counter with steam rising from a hot drinks machine, empty snack stools.",
       "promptTokens": [
         "laevatain_(arknights)",
         "1girl",
@@ -37289,7 +37289,7 @@
         "cross_shaped_sword",
         "sword_on_back"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "street_cafe_sweet",
       "coverageTags": [
         "daily"
@@ -37427,7 +37427,7 @@
       "action": "双手抱胸倚靠在合金舱壁旁，尾巴轻摆，挑眉看向迎面走来的人",
       "timeOfDay": "白天",
       "lighting": "cool corridor light",
-      "camera": "full body",
+      "camera": "medium shot",
       "mood": "闲散警戒",
       "sceneTags": [
         "scifi_corridor",
@@ -37436,7 +37436,7 @@
         "greatsword",
         "endfield"
       ],
-      "promptProse": "In the riveted metal corridor of a Talos-II warship under cool white fluorescent light, Laevatain leans her back against the alloy bulkhead in a full body shot, arms crossed over her bare shoulders, the detached black sleeves and detached white collar framing her sideless backless gradient dress. The black-to-crimson one-piece dress with asymmetric hem drapes over her black thigh-high heeled boots, the long flame-bladed one-handed sword slung across her back. Long crimson hair tumbles in two wings over her shoulders, purple eyes raise one eyebrow with a smug grin, devil tail swaying. Around her: numbered bulkhead doors, stacked cargo containers, a glowing status display panel, a coiled cable, a distant porthole showing the Talos-II sky.",
+      "promptProse": "In the riveted metal corridor of a Talos-II warship under cool white fluorescent light, Laevatain leans her back against the alloy bulkhead in a medium shot framed from the knees up, arms crossed over her bare shoulders, the detached black sleeves and detached white collar framing her sideless backless gradient dress. The black-to-crimson one-piece dress with asymmetric hem drapes over her black thigh-high heeled boots, the long flame-bladed one-handed sword slung across her back. Long crimson hair tumbles in two wings over her shoulders, purple eyes raise one eyebrow with a smug grin, devil tail swaying. Around her: numbered bulkhead doors, stacked cargo containers, a glowing status display panel, a coiled cable, a distant porthole showing the Talos-II sky.",
       "promptTokens": [
         "laevatain_(arknights)",
         "1girl",
@@ -37566,7 +37566,7 @@
         "cropped_jacket",
         "half_off_shoulder"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "standard"
     },
     {
@@ -37579,7 +37579,7 @@
       "action": "两眼放光地盯着九宫格辣锅里翻滚的红油与辣椒，熟练地捞起一块爽脆毛肚塞入口中，辣得直哈气却大呼痛快",
       "timeOfDay": "中午",
       "lighting": "bright cafeteria light",
-      "camera": "full body",
+      "camera": "medium shot",
       "mood": "好胜可爱",
       "sceneTags": [
         "cantine",
@@ -37589,7 +37589,7 @@
         "endfield",
         "friends"
       ],
-      "promptProse": "At a bubbling nine-grid blazing-spicy hotpot in the Talos-II ship canteen at noon, Laevatain sits leaning forward in a full body shot, the sheer grey techwear jacket open over her black halter crop top, pleated black utility miniskirt riding up over her knees as she fishes a piece of hairy tripe from the roiling red broth with her chopsticks. Wavy crimson hair spills over one shoulder, red eyes sparkle with delighted mischief, devil tail flicking behind. Around her: riveted metal table, a second chopstick set, a glass of cold barley tea sweating, hanging lantern bulbs, a pot of pickled vegetables, a small window showing the Talos-II midday sky.",
+      "promptProse": "At a bubbling nine-grid blazing-spicy hotpot in the Talos-II ship canteen at noon, Laevatain sits leaning forward in a medium shot framed across the table, the sheer grey techwear jacket open over her black halter crop top, pleated black utility miniskirt riding up over her knees as she fishes a piece of hairy tripe from the roiling red broth with her chopsticks. Wavy crimson hair spills over one shoulder, red eyes sparkle with delighted mischief, devil tail flicking behind. Around her: riveted metal table, a second chopstick set, a glass of cold barley tea sweating, hanging lantern bulbs, a pot of pickled vegetables, a small window showing the Talos-II midday sky.",
       "promptTokens": [
         "laevatain_(arknights)",
         "1girl",
@@ -37691,7 +37691,7 @@
         "cross_shaped_sword",
         "sword_on_back"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "street_cafe_sweet",
       "coverageTags": [
         "daily"
@@ -62880,7 +62880,7 @@
         "interior",
         "ice_palace"
       ],
-      "promptProse": "Seated on her high throne in the frozen hall of Faerie Britain, Morgan the Winter Queen regards the viewer with absolute majesty, framed in a cowboy shot from the tops of her boots to the top of her head, her whole seated figure holding the foreground Long silver-white hair falls past the carved armrest and her icy blue eyes are fully visible beneath the crystal crown, the sheer veil swept back over her shoulders and away from her face. The black-and-blue gothic gown spreads across the seat with its layered split skirt and detached wing sleeves, fluted pillars, frost-crusted banners and a choir balcony rail pressing close behind her as pale winter light cascades in cold crystalline blue. A finished anime wallpaper with a striking focal subject, layered environmental depth, and a cinematic mood.",
+      "promptProse": "Seated on her high throne in the frozen hall of Faerie Britain, Morgan the Winter Queen regards the viewer with absolute majesty, her seated figure filling the frame. Long silver-white hair falls past the carved armrest, icy blue eyes level beneath the crystal crown, the sheer veil swept back over her shoulders. The black-and-blue gothic gown spreads across the seat with its layered split skirt and detached wing sleeves, fluted pillars, frost-crusted banners and a choir balcony rail rising behind her as pale winter light falls in cold crystalline blue.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -62986,7 +62986,7 @@
         "sunset",
         "castle"
       ],
-      "promptProse": "On the high parapet of the Winter Palace, Morgan the Winter Queen stands facing the viewer, framed in a full body shot from head to toe that fills most of the frame so her face, her crystal crown, her long silver hair, her layered black-and-blue gothic gown, the holy lance Rhongomyniad in her hand and her boots are all clearly readable. Her silver hair is swept back behind her shoulders with no strand across her face, her icy blue eyes looking directly at the viewer. A stone balustrade rises behind her rather than crossing her body, while a brazier, frosted banners, a snow-dusted stair, the crenellated palace wall and the amber-to-indigo sunset sky fill the background behind her. A finished anime wallpaper with a vivid focal subject, rich background depth, and cinematic atmosphere.",
+      "promptProse": "On the high parapet of the Winter Palace, Morgan the Winter Queen stands facing the viewer in a full body shot, crystal crown, layered black-and-blue gothic gown and the holy lance Rhongomyniad in her hand all clearly readable. Her silver hair is swept back behind her shoulders, icy blue eyes looking straight ahead. Behind her a stone balustrade, a burning brazier, frosted banners, a snow-dusted stair, the crenellated palace wall and an amber-to-indigo sunset sky stack into deep layers.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -63092,7 +63092,7 @@
         "outdoor",
         "moss"
       ],
-      "promptProse": "In the rain-washed ancient forest of Faerie Britain, the young witch Aesc walks the mossy path in her blue witch robe, framed in a cowboy shot from the tops of her boots to the top of her head, her whole figure holding the foreground beneath the wide brim of her hat. Crystalline water beads cling to her long silver hair and she carries her wooden staff with quiet grace, icy blue eyes calm and her face fully clear in the soft light. Moss-covered trunks, ferns, glowing mushrooms, hanging vines, a fallen log and drifting mist crowd the forest close around her, post-rain sunbeams filtering through the canopy in translucent emerald. A finished anime illustration with a clear focal subject, layered depth, and cinematic atmosphere.",
+      "promptProse": "In the rain-washed ancient forest of Faerie Britain, the young witch Aesc walks the mossy path in her blue witch robe beneath the wide brim of her hat, carrying her wooden staff with quiet grace. Crystalline water beads cling to her long silver hair, icy blue eyes calm in the soft light. Moss-covered trunks, ferns, glowing mushrooms, hanging vines and drifting mist crowd close around her, post-rain sunbeams filtering through the canopy in translucent emerald.",
       "promptTokens": [
         "1girl",
         "aesc (fate)",
@@ -63197,7 +63197,7 @@
         "outdoor",
         "water"
       ],
-      "promptProse": "At the edge of the mystical faerie lake, Aesc the Winter Savior stands on a flat mossy rock at the water's edge, composed in a cowboy shot from the tops of her boots to the top of her head, where she herself fills most of the frame so her face, her ice-blue crystal crown, her silver hair, her blue ceremonial robe, the silver staff in her hand and her boots are all crisply readable. Her silver hair is gathered behind her shoulders with no strand over her face, her icy blue eyes meeting the viewer head-on. Soft gold-and-azure light haloes around her, while lily pads, reeds, half-submerged standing stones, drifting mist and a silver birch treeline sit behind her rather than in front. A finished anime wallpaper with a dynamic focal subject, deep background layering, and cinematic atmosphere.",
+      "promptProse": "At the edge of the mystical faerie lake, Aesc the Winter Savior stands on a flat mossy rock at the water's edge in a full body shot, ice-blue crystal crown, silver hair and blue ceremonial robe crisply readable, the silver staff in her hand. Her icy blue eyes meet the viewer head-on. Soft gold-and-azure light haloes around her while lily pads, reeds, half-submerged standing stones, drifting mist and a silver birch treeline recede behind her.",
       "promptTokens": [
         "1girl",
         "aesc (fate)",
@@ -63303,7 +63303,7 @@
         "sea",
         "sunlight"
       ],
-      "promptProse": "On a sun-drenched midsummer beach, Morgan in her Water Princess white swimsuit strolls the sparkling waterline, a full body framing from head to toe holding her complete figure in frame with her face sharply defined. Long silver hair streams in the ocean breeze and a rare, gentle smile graces her regal face, icy blue eyes bright and her features clearly lit. Striped beach parasols, wooden deck chairs, smooth driftwood, a rocky point and gulls crowd the shore close around her, the white gossamer hem of her sarong floating in the shallow tide. A finished anime wallpaper with a high-contrast focal subject, deep background layering, and a cinematic mood.",
+      "promptProse": "On a sun-drenched midsummer beach, Morgan in her Water Princess white swimsuit strolls the sparkling waterline, long silver hair streaming in the ocean breeze and a rare gentle smile on her regal face. The white gossamer hem of her sarong floats in the shallow tide. Striped beach parasols, wooden deck chairs, smooth driftwood, a rocky point and wheeling gulls fill the shore around her.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -63411,7 +63411,7 @@
         "outdoor",
         "winter"
       ],
-      "promptProse": "In the frost-touched courtyard of the Camelot royal gardens, Morgan the Winter Queen rests one gloved hand against the carved stone rim of a frozen fountain, captured in a full-length view from crown to boots so her entire figure occupies the centre of the frame and her face, her ice-blue crystal crown, her silver hair pinned in a low chignon, the high-collared black-and-blue gothic gown, the trailing blue hem and her boots are all crisply readable. A few loose silver strands frame her cheek but never cross her eyes, her icy blue gaze meeting the viewer head-on. Behind her rise a snow-laden yew hedge, a wrought iron lamp, a marble bench, the pale stone spires of Camelot and a steady drift of snowflakes catching the winter light. A finished anime wallpaper with a luminous focal subject, layered background depth, and a cinematic atmosphere.",
+      "promptProse": "In the frost-touched courtyard of the Camelot royal gardens, Morgan the Winter Queen rests one gloved hand on the carved stone rim of a frozen fountain, her full figure centred in the frame. Silver hair pinned in a low chignon with loose strands framing her cheek, the high-collared black-and-blue gothic gown trailing its blue hem over the snow. Behind her rise a snow-laden yew hedge, a wrought iron lamp, a marble bench, the pale stone spires of Camelot and a steady drift of snowflakes catching the winter light.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -64089,7 +64089,7 @@
         "daylight",
         "documents"
       ],
-      "promptProse": "In the bright corridor of Chaldea, Mash Kyrielight hurries toward the command room with a stack of reports in her arms, framed in a cowboy shot from the tops of her boots to the top of her head, her whole figure holding the foreground Her short pink-lavender bob with bangs falling over her right eye and her clear violet eyes sit behind her glasses, the grey open jacket swaying over the black collared dress with the red necktie bobbing at her collar. Tall window panels, wall conduits, a bank of monitors, handrails and potted plants press close along the corridor, clean white light glinting off the polished floor. A finished anime illustration with a clear focal subject, layered depth, and cinematic atmosphere.",
+      "promptProse": "In the bright corridor of Chaldea, Mash Kyrielight hurries toward the command room with a stack of reports in her arms, full body in frame. Her short pink-lavender bob with bangs over her right eye and clear violet eyes sit behind her glasses, the grey open jacket swaying over the black collared dress, red necktie bobbing at her collar. Tall window panels, wall conduits, a bank of monitors, handrails and potted plants line the corridor, clean white light glinting off the polished floor.",
       "promptTokens": [
         "black_dress",
         "black_pantyhose",
@@ -64215,7 +64215,7 @@
         "interior",
         "combat"
       ],
-      "promptProse": "Kneeling alone on the central platform of the Chaldea simulator's holographic battlefield, Mash Kyrielight is the only character in the scene, captured in a full body portrait from head to toe so her face, hair, enormous cross-shaped shield, armored dress and boots are all crisply legible, no monitor, no screen, no giant face projection anywhere. She braces the enormous cross-shaped shield forward in a low defensive stance, the diamond midriff cutout of her violet-accented armored dress catching the holographic light, her shoulder-length pink-lavender hair falling across her right eye and gentle violet eyes locked on the unseen threat. Floating grid floor, warning stripes on far columns, a parallax of blue targeting reticles, the simulator's curved wall and a single round blast hatch fill the space behind her. A finished anime wallpaper with a sharp focal subject, immersive background depth, and a cinematic glow.",
+      "promptProse": "Kneeling alone on the central platform of the Chaldea simulator's holographic battlefield, Mash braces the enormous cross-shaped shield forward in a low defensive stance, full body in frame, the diamond midriff cutout of her violet-accented armored dress catching the holographic light. Shoulder-length pink-lavender hair falls across her right eye, gentle violet eyes locked on the unseen threat. A floating grid floor, warning stripes on far columns, blue targeting reticles and the simulator's curved wall fill the space behind her.",
       "promptTokens": [
         "armored_dress",
         "cinematic_lighting",
@@ -64331,7 +64331,7 @@
         "sea",
         "sunlight"
       ],
-      "promptProse": "On the beach of the summer resort island, Mash Kyrielight in her white dress-style swimsuit turns back through the foaming surf with a bright, unguarded laugh, composed in a cowboy shot from the tops of her boots to the top of her head, filling the foreground, her features sharp and fully visible. Her short pink-lavender hair with bangs over her right eye blows in the sea breeze and her violet eyes crinkle with the smile, halterneck ties fluttering at her shoulders. Striped parasols, rental deck chairs, a wooden boardwalk, beached boats and palm trunks press close behind her, sunlight shimmering across the shallow water. A finished anime wallpaper with a striking focal subject, layered environmental depth, and a cinematic mood.",
+      "promptProse": "On the beach of the summer resort island, Mash in her white dress-style swimsuit turns back through the foaming surf with a bright, unguarded laugh, her short pink-lavender hair with bangs over her right eye blowing in the sea breeze, violet eyes crinkling, halterneck ties fluttering at her shoulders. Striped parasols, rental deck chairs, a wooden boardwalk, beached boats and palm trunks line the shore behind her, sunlight shimmering across the shallow water.",
       "promptTokens": [
         "atmospheric",
         "beach",
@@ -64441,10 +64441,6 @@
         "multiple_girls",
         "two_people",
         "mirror_duplication",
-        "wolf_ears",
-        "wolf_tail",
-        "animal_ears",
-        "beast_ears",
         "claws"
       ],
       "id": "mash_kyrielight_dangerous_beast",
@@ -64467,7 +64463,7 @@
         "outdoor",
         "sunset"
       ],
-      "promptProse": "Mash Kyrielight stands alone in the courtyard of Chaldea Security Organization at sunset, the only character in the frame, framed in a cowboy shot from the tops of her boots to the top of her head, her face and expression crisply readable, no wolf ears, no wolf tail, no beast costume, just her standard Chaldea combat uniform. Her armored dress with the diamond midriff cutout and violet-lined collar shows faint battle wear, short pink-lavender hair with bangs over her right eye frames her gentle violet eyes as she plants her enormous cross-shaped shield in front of her, having just repelled a dangerous beast. A stone fountain, trimmed hedges, a wrought-iron lamp, a gravel path and the curved Chaldea wall crowd the courtyard close around her, golden hour stretching long shadows across the lawn. A finished anime wallpaper with a dynamic focal subject, deep background layering, and cinematic atmosphere.",
+      "promptProse": "Alone in the courtyard of Chaldea Security Organization at golden hour, Mash wears her Dangerous Beast costume, soft wolf ears peeking from her pink-lavender hair and a fluffy wolf tail swaying behind her as she shyly touches one ear with a clawed fingertip, cheeks pink, violet eyes glancing aside. The bare-shouldered outfit with elbow gloves and thigh-highs catches the warm light. A stone fountain, trimmed hedges, a wrought-iron lamp, a gravel path and the curved Chaldea wall surround her, long shadows stretching across the lawn.",
       "promptTokens": [
         "bare_shoulders",
         "cinematic_lighting",
@@ -64485,7 +64481,11 @@
         "solo",
         "sunset",
         "thighhighs",
-        "volumetric_lighting"
+        "volumetric_lighting",
+        "wolf_ears",
+        "wolf_tail",
+        "animal_ear_fluff",
+        "claws"
       ],
       "recommendedSize": "1216x832",
       "outfitId": "dangerous_beast",
@@ -64586,7 +64586,7 @@
         "launch",
         "military"
       ],
-      "promptProse": "Mash Kyrielight stands tall on the launch deck of the Chaldea hangar, the only character in the frame, shot in a complete full body figure so her face, hair, black Ortinax armor, gauntlets, leg-armor and boots are all crisply readable, no giant face projection, no second Mash, no screen. She clenches one fist and draws a steady breath, the armored suit humming with pale blue power lines along the chest plate, her pink-lavender bob and violet eyes steady beneath the helm light, jaw set with quiet resolve. A towering launch gate, stacked support gantries, control consoles with red status lamps, fuel lines coiled on the deck and the curved hangar wall fill the background behind her. A finished anime wallpaper with a high-contrast focal subject, deep background layering, and a cinematic mood.",
+      "promptProse": "Mash stands tall on the launch deck of the Chaldea hangar in her black Ortinax armor, full body in frame, clenching one fist and drawing a steady breath as the suit hums with pale blue power lines along the chest plate. Her pink-lavender bob and violet eyes stay steady beneath the helm light, jaw set with quiet resolve. A towering launch gate, stacked support gantries, control consoles with red status lamps, coiled fuel lines and the curved hangar wall fill the background.",
       "promptTokens": [
         "armored_boots",
         "black_armor",
@@ -64699,7 +64699,7 @@
         "daylight",
         "food"
       ],
-      "promptProse": "In the Chaldea cafeteria at noon, Mash Kyrielight sets her loaded tray down and carefully arranges the vegetables beside the meat, a full body framing from head to toe holding her complete figure in frame with her face sharply defined. Her short pink-lavender hair with bangs over her right eye sways gently, violet eyes bright behind her glasses as she looks up with a happy, straightforward smile. Long shared tables, a serving counter, hanging pendant lamps, a drink cooler, a potted plant and broad windows crowd the cafeteria close around her, soft daylight warming the room. A finished anime illustration with a clear focal subject, layered depth, and cinematic atmosphere.",
+      "promptProse": "In the Chaldea cafeteria at noon, Mash sets her loaded tray down and carefully arranges the vegetables beside the meat, short pink-lavender hair with bangs over her right eye swaying gently, violet eyes bright behind her glasses as she looks up with a happy, straightforward smile. Long shared tables, a serving counter, hanging pendant lamps, a drink cooler, a potted plant and broad windows surround her in soft daylight.",
       "promptTokens": [
         "black_dress",
         "black_pantyhose",
