@@ -4877,7 +4877,7 @@
       "action": "高举誓约胜利之剑，金光四溢",
       "timeOfDay": "黄昏",
       "lighting": "金光与战云",
-      "camera": "dramatic wide shot",
+      "camera": "cowboy shot, two-handed Excalibur stance",
       "mood": "史诗凛然",
       "sceneTags": [
         "battlefield",
@@ -4889,7 +4889,7 @@
         "war",
         "epic"
       ],
-      "promptProse": "Standing fiercely atop a wind-whipped hill strewn with ancient ruined stone and broken blades, Artoria raises Excalibur high with both hands as radiant golden energy cascades in swirling storm vortices around her billowing blue cape and polished silver armor, her resolute emerald eyes locked ahead with supreme sovereign authority. Dynamic cinematic lighting and atmospheric background depth complete the scene.",
+      "promptProse": "Standing resolute in the foreground atop the ruined stone crest, Artoria Pendragon grips Excalibur with both armored gauntlets raised in a ready combat stance, brilliant golden mana swirling around the blade. Her silver-and-blue knight armor glints under dynamic volumetric storm light, her emerald eyes blazing with unwavering noble determination, with scattered broken weapons, ruined pillars, and tempest clouds filling the battlefield behind her.",
       "promptTokens": [
         "battlefield_hill",
         "billowing_royal_blue_cape",
@@ -4964,7 +4964,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "knight_dress"
     },
     {
@@ -5783,7 +5783,7 @@
       "action": "在聚光灯与荧光棒海洋中歌唱",
       "timeOfDay": "夜晚",
       "lighting": "舞台灯光与全息投影",
-      "camera": "wide shot from the crowd",
+      "camera": "cowboy shot, dynamic stage jump with microphone",
       "mood": "元气闪耀",
       "sceneTags": [
         "concert",
@@ -5795,7 +5795,7 @@
         "crowd",
         "performance"
       ],
-      "promptProse": "Under the surging spotlights of the dome arena, Hatsune Miku leaps high into the air mid-song, microphone pressed to her lips, her long neon-green twin tails flying around her, an ocean of emerald glowsticks waving below and holographic lights shimmering across the stage, her voice filling the roaring venue. Lasers sweep the arena in cascading emerald waves as the holographic stage glitters beneath her.",
+      "promptProse": "Leaping dynamically into the air center stage in a close three-quarter composition, Hatsune Miku holds her sparkling wireless mic close to her lips as she sings with a radiant, joyful smile. Her long vibrant twin tails sweep across the frame in glowing neon cyan arcs, stage lasers, floating light sticks, and pyrotechnic sparks illuminating the dome arena behind her in vivid concert energy.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -5871,7 +5871,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "stage",
       "coverageTags": [
         "iconic"
@@ -17827,7 +17827,7 @@
       "action": "与 Berserker 一同现身",
       "timeOfDay": "夜晚",
       "lighting": "战火与月色",
-      "camera": "dramatic wide shot",
+      "camera": "cowboy shot, sitting on Berserkers shoulder reaching forward",
       "mood": "压迫反转",
       "sceneTags": [
         "night",
@@ -17838,7 +17838,7 @@
         "dark",
         "ominous"
       ],
-      "promptProse": "Perched high on the shoulder of the colossal Berserker amid the burning ruins of the battlefield, Illyasviel von Einzbern sits with regal composure, her silver hair whipping in the raging wind as she laughs down at the war below, her red winter coat fluttering around her. Burning embers spiral up through the smoke, painting the night sky in shifting orange and crimson.",
+      "promptProse": "Sitting regally upon the massive iron shoulder plate of Berserker in the foreground, Illyasviel von Einzbern extends one delicate hand forward in command, a confident, mischievous smile playing on her lips. Her long silver hair and crimson winter cape flutter against Berserkers dark silhouette, with glowing Command Seals, swirling mana sparks, and ruined castle battlements framing the dramatic scene.",
       "promptTokens": [
         "atmospheric",
         "battle",
@@ -17911,7 +17911,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "winter_coat",
       "coverageTags": [
         "iconic"
@@ -22438,7 +22438,7 @@
       "action": "双臂抱胸神情冷静肃穆，背后晶体结构巨兽 Mon3tr 破体而出发出震天咆哮，绿色源石晶体散发耀眼荧光",
       "timeOfDay": "夜晚",
       "lighting": "夜幕下的昏黄残光与 Mon3tr 幽绿源石荧光形成极度强烈的冷暖对冲光影",
-      "camera": "wide epic low angle, monstrous summon towering in background, dramatic volumetric glow",
+      "camera": "cowboy shot, commanding stance with Mon3tr in midground",
       "mood": "冷峻威严与震撼",
       "sceneTags": [
         "wasteland",
@@ -22449,7 +22449,7 @@
         "cat_ears",
         "calm_expression"
       ],
-      "promptProse": "Under the night sky on the outer deck of Rhodes Island, Kal'tsit stands with her arms folded as the colossal crystalline creature Mon3tr coils silently behind her, its blood-red spine crystals casting an ominous glow, her coat whipping in the cold wasteland wind, sharp green eyes fixed ahead, calm and commanding. The cold wasteland wind pulls at her coat while the red glow of Mon3tr's crystals bleeds across the dark deck.",
+      "promptProse": "Standing in the foreground of the outer deck at night with arms folded calmly across her chest, Kaltsit gives a decisive command, her sharp emerald eyes fixed on the viewer. The crystalline behemoth Mon3tr coils in the immediate midground behind her shoulder, its glowing crimson spines casting a dramatic rim light along her pale green hair and doctor coat, with night clouds and distant deck searchlights framing the scene.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -22534,7 +22534,7 @@
       "action": "衣摆猎猎，遥望地平线",
       "timeOfDay": "黄昏",
       "lighting": "amber desert light and wind",
-      "camera": "medium wide shot",
+      "camera": "medium shot, checking tactical scanner",
       "mood": "辽阔冷静",
       "sceneTags": [
         "desert",
@@ -22543,7 +22543,7 @@
         "dusk",
         "sand"
       ],
-      "promptProse": "On the windswept desert ridge at dusk, Kal'tsit stands beside the ruined pillars of an ancient site, her pale green hair and the hem of her long windbreaker whipping in the sand-laden wind as she gazes at the horizon, amber light edging her silhouette. Dusk amber edges her silhouette as sand streams off the ruined pillars in long golden veils.",
+      "promptProse": "Resting one hand on a sun-bleached ancient stone column on the windswept desert ridge at dusk, Kaltsit studies a portable tactical scanner held in her gloved hand. Her pale green hair and windbreaker collar catch the fiery amber sunset, her feline lynx ears perked sharply as sand-laden breezes sweep past, with ancient eroded ruins and distant dust dunes filling the background.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -23638,7 +23638,7 @@
       "action": "凭栏远眺城市灯火",
       "timeOfDay": "黄昏",
       "lighting": "orange dusk and city lights",
-      "camera": "wide shot, back view",
+      "camera": "cowboy shot, front three-quarter view, hand on hilt",
       "mood": "心事重重",
       "sceneTags": [
         "rooftop",
@@ -23647,7 +23647,7 @@
         "wind",
         "lungmen"
       ],
-      "promptProse": "Under orange dusk and city lights at the rooftop cityscape dusk, Ch'en in a dark green and crimson traveller robe with a grey cape leans against the rooftop fence, wind lifting her hair. She shows slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Volumetric light and soft bokeh add breathable depth, while careful rim lighting sculpts her silhouette against the background with gallery-print clarity.",
+      "promptProse": "Standing close beside the rooftop safety railing at dusk in a front three-quarter composition, Chen rests one hand on the hilt of Chi Xiao, her crimson eyes gazing sharply toward the viewer. The golden-orange sunset and glowing neon skyline of Lungmen wash over her traveller robe and long dark-blue hair, with air conditioning units, rooftop antennas, and neon signs creating a rich cityscape atmosphere.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -26960,7 +26960,7 @@
       "action": "立于崖畔，衣袂翻飞",
       "timeOfDay": "清晨",
       "lighting": "mist and pale sun",
-      "camera": "wide shot, monochrome tones",
+      "camera": "cowboy shot, sitting on ink stone holding brush",
       "mood": "山水意境",
       "sceneTags": [
         "mountain",
@@ -26970,7 +26970,7 @@
         "landscape",
         "dragon_tail"
       ],
-      "promptProse": "On a mist-shrouded cliff floating above a sea of ink-wash clouds, Dusk stands at the precipice edge in a flowing ink-dark wide-sleeved robe, its hems whipping wildly in the gale as the great dragon tail behind her swings like a silk banner through the wind, her horns, hair and sleeves streaming, pale morning light breaking through the haze of the far mountain peaks. Pale morning light breaks through the mist in long pale shafts, gilding the sea of ink-wash clouds below the cliff.",
+      "promptProse": "Sitting gracefully on a floating ink-washed crag with one knee drawn up, Dusk balances a long bamboo calligraphy brush between her slender fingers, looking sidelong with an enigmatic smile. Her flowing wide-sleeved robe drapes across the stone, ink-mist dragons swirling in the near background around her, with mountain spires and misty pine branches fading into deep layered traditional tones.",
       "promptTokens": [
         "ink_dark_robe",
         "wide_sleeves",
@@ -27978,7 +27978,7 @@
       "action": "扛着战锤稳步前行",
       "timeOfDay": "白天",
       "lighting": "pale snow light",
-      "camera": "wide shot, back view",
+      "camera": "cowboy shot, resting warhammer on ground",
       "mood": "沉默坚毅",
       "sceneTags": [
         "snowfield",
@@ -27988,7 +27988,7 @@
         "march",
         "back_view"
       ],
-      "promptProse": "Across a windswept Leithanian snowfield, Mudrock strides in long steady steps through knee-deep snow in her full heavy Sarkaz battle armor, the giant siege warhammer balanced over one shoulder, breath misting in the icy air as she glances back to check on her companions following in her deep footprints. Pale daylight glints off the armored shoulders while snow devils drift across the endless white field.",
+      "promptProse": "Resting her massive battle warhammer head-down in the deep snow, Mudrock removes her reinforced helmet with one hand, revealing her striking white hair and red horns as she catches her breath. Frost coats her heavy Sarkaz armor plates while warm exhaled steam billows into the twilight air, with windswept Leithanian snowfields and ancient spires standing in the misty background.",
       "promptTokens": [
         "marching",
         "walking",
@@ -35844,7 +35844,7 @@
       "action": "扶着栏杆仰望巨型天体",
       "timeOfDay": "夜晚",
       "lighting": "starlight and distant planet glow",
-      "camera": "wide shot",
+      "camera": "cowboy shot, leaning on ship railing",
       "mood": "宇宙辽阔",
       "sceneTags": [
         "ship_deck",
@@ -35853,7 +35853,7 @@
         "night",
         "endfield"
       ],
-      "promptProse": "On the top deck of the forward research vessel at night, Perlica grips the alloy railing with both hands, her sharp uniform trench coat rippling in the night wind, silver hair streaming as she gazes up at the slowly turning giant alien celestial body and its brilliant ring of stars, a rare softness in her eyes. The alien ring of stars wheels slowly overhead, its pale light tracing her silhouette against the dark deck.",
+      "promptProse": "On the forward observation deck of the Endfield research vessel at night, Perlica leans both forearms against the alloy railing, looking up in quiet contemplation. Her sharp supervisor trench coat and silver hair flutter in the night breeze, her cyan-blue eyes reflecting the enormous slowly turning alien star-ring in the sky above, with deck lights and antenna towers casting sleek reflections around her.",
       "promptTokens": [
         "perlica_(arknights)",
         "atmospheric",
@@ -43635,31 +43635,41 @@
         "white_robe",
         "focused_expression"
       ],
-      "promptProse": "Deep in the mist-covered ancient forest at dawn, Fern raises her wooden staff with calm, sharp eyes, a brilliant high-density white magic orb condensing at its tip; her robe whips in the surge of mana as morning mist swirls around her, ready to loose the ordinary attack spell that will fell any foe. The brilliant white orb throws cold light through the swirling morning mist, the ancient forest shadows pressing in around her.",
+      "promptProse": "Deep within an ancient moss-draped forest shrouded in morning mist, Fern steps forward in a dynamic battle stance, leveling her polished wooden staff with calm, lethal precision. Her long black wizard coat and white robe billow dramatically in the rising surge of mana as a brilliant, high-density sphere of pure white offensive magic condenses at the staff's tip. Piercing dawn light filters through the towering canopy, illuminating swirling magical energy motes and thick fog around her focused violet gaze.",
       "promptTokens": [
-        "atmospheric",
-        "bare_legs",
-        "barefoot",
+        "1girl",
+        "solo",
+        "fern (sousou no frieren)",
+        "purple_hair",
+        "purple_eyes",
+        "side_ponytail",
         "black_coat",
-        "boots",
-        "casting_magic",
-        "cinematic_lighting",
-        "clean_face",
-        "depth_of_field",
-        "detailed_background",
-        "dynamic_lighting",
-        "focused_expression",
-        "forest",
-        "full_body",
+        "white_dress",
         "high_collar",
         "long_sleeves",
-        "magic_circle",
+        "boots",
+        "holding_staff",
         "magic_staff",
-        "medium_shot",
+        "casting_magic",
+        "energy_sphere",
+        "glowing_magic",
+        "magic_sparks",
+        "billowing_clothes",
+        "battle_stance",
+        "dynamic_angle",
+        "focused_expression",
+        "sharp_gaze",
+        "forest",
+        "ancient_trees",
         "morning_mist",
+        "fog",
+        "sunbeams",
+        "god_rays",
         "volumetric_lighting",
-        "white_dress",
-        "white_robe"
+        "cinematic_lighting",
+        "depth_of_field",
+        "medium_shot",
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -43675,6 +43685,8 @@
         "dark shadowed face",
         "flat lighting",
         "extra characters",
+        "barefoot",
+        "bare_legs",
         "indoor",
         "modern",
         "night",
@@ -44080,25 +44092,43 @@
         "night",
         "purple_hair"
       ],
-      "promptProse": "On a snowy night in the roadside inn, Fern sits on the rug before the crackling fireplace wrapped in a thick blanket, her long purple hair catching the warm amber light as she turns her face away in a sulk, cheeks puffed, violet eyes peeking out from the blanket edge. Snow drifts past the dark window while the firelight dances across the wooden floor.",
+      "promptProse": "On a bitter snowy night inside a rustic roadside inn, Fern sits curled up on a plush sheepskin rug before a crackling stone fireplace, wrapped snugly in a thick wool blanket that has slipped off her soft bare shoulders to reveal the deep curve of her cleavage. She turns her face away in a stubborn sulk with adorable puffed cheeks and flushed red ears, her expressive violet eyes peeking out as her long silky purple hair glows warmly in the dancing amber firelight. Snowflakes swirl against the dark frosted windowpanes, while the glowing embers cast intimate, flickering golden highlights across her fair, bare skin.",
       "promptTokens": [
-        "atmospheric",
-        "blanket",
-        "clean_face",
-        "fireplace",
-        "full_body",
-        "inn",
-        "long_hair",
-        "medium_shot",
-        "night",
+        "1girl",
+        "solo",
+        "fern (sousou no frieren)",
         "purple_hair",
-        "sitting",
-        "snow",
-        "winter",
-        "detailed_background",
+        "long_hair",
+        "purple_eyes",
+        "nude",
+        "completely_naked",
+        "blanket",
+        "wrapped_in_blanket",
+        "off_shoulder_blanket",
+        "bare_shoulders",
+        "cleavage",
+        "large_breasts",
+        "bare_legs",
+        "barefoot",
+        "sitting_on_floor",
+        "curled_up",
+        "pout",
+        "puffed_cheeks",
+        "blushing",
+        "looking_away",
+        "sulking",
+        "fireplace",
+        "fire_glow",
+        "warm_lighting",
+        "snowing_outside",
+        "inn",
+        "wooden_floor",
+        "rustic_interior",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "medium_shot",
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -44170,20 +44200,19 @@
       "adultArtistHint": "@rella",
       "nsfwTokens": [
         "nude",
-        "completely_naked",
         "bare_shoulders",
-        "exposed_breasts",
-        "nipples",
-        "purple_hair",
-        "violet_eyes",
-        "soft_skin",
-        "pouting",
-        "firelight",
-        "intimate",
-        "medium_shot",
-        "blanket"
+        "off_shoulder_blanket",
+        "cleavage",
+        "bare_legs",
+        "barefoot",
+        "pout",
+        "puffed_cheeks",
+        "blushing",
+        "flustered",
+        "fire_glow",
+        "intimate"
       ],
-      "nsfwProse": "By the crackling fireplace of the snowy inn, completely nude Fern sits on the rug with the whole place to herself, the blanket sliding down her bare shoulders, warm firelight tracing her exposed breasts as she pouts at the viewer with sulky violet eyes.",
+      "nsfwProse": "wrapped in a loose blanket slipping off her smooth shoulders and bare chest, revealing deep cleavage and soft skin, sitting barefoot on the hearth rug in a flustered pout with puffed cheeks, warm glowing firelight dancing over bare collarbones and legs",
       "category": "私密写真",
       "location": "雪夜旅店壁炉前地毯",
       "action": "裹毯子坐在炉前地毯上气鼓鼓别过脸",
@@ -48421,31 +48450,42 @@
         "evening",
         "dust_motes"
       ],
-      "promptProse": "Sitting upright at a large wooden study table in the grand stone archive library, Fern copies intricate ancient runes into a manuscript with solemn, focused composure, dipping her quill in ink by candlelight as she works through the third basic spell of the night. Her apprentice robes drape neatly over her chair, black-stockinged legs and leather shoes resting on the polished floorboards, warm candelabras and wall sconces illuminating the towering bookshelves through floating dust motes.",
+      "promptProse": "Sitting upright at a heavy oak study desk in the grand archive library at midnight, Fern meticulously transcribes complex ancient magical runes with quiet, unwavering concentration. Clad in her neat white apprentice robe and dark coat, she holds a slender feather quill over an open grimoire, dipping it into dark ink while her long purple hair and focused violet eyes reflect the warm, swaying glow of brass candelabras. Towering stone bookshelves packed with grimoires stretch into the vaulted shadows, with golden dust motes dancing softly through the candlelit air.",
       "promptTokens": [
         "1girl",
-        "@rella",
-        "medium_shot",
-        "ancient_stone_library_with_towering_bookcases",
-        "black_shoes_resting_on_wooden_floorboards",
-        "cinematic_lighting",
-        "depth_of_field",
-        "detailed_background",
-        "entire_legs_and_feet_fully_visible_in_frame",
-        "fern_frieren",
-        "focused_dignified_expression",
-        "full_body",
-        "half-updo_with_hair_bun",
-        "holding_quill_pen_over_magic_manuscript",
-        "long_purple_hair",
-        "magical_floating_dust_motes",
-        "multiple_flickering_candelabras_and_warm_wall_sconces",
-        "purple_eyes",
-        "safe",
-        "sitting_at_large_wooden_library_table",
         "solo",
+        "fern (sousou no frieren)",
+        "purple_hair",
+        "long_hair",
+        "purple_eyes",
+        "half-updo",
+        "side_ponytail",
+        "black_coat",
+        "white_dress",
+        "high_collar",
+        "long_sleeves",
+        "boots",
+        "sitting",
+        "desk",
+        "holding_quill",
+        "writing",
+        "open_book",
+        "grimoire",
+        "studying",
+        "focused_expression",
+        "library",
+        "bookshelves",
+        "candlelight",
+        "candlestick",
+        "candelabra",
+        "dust_motes",
+        "stone_walls",
         "volumetric_lighting",
-        "wearing_neat_apprentice_mage_robe_and_black_stockings"
+        "cinematic_lighting",
+        "warm_lighting",
+        "depth_of_field",
+        "medium_shot",
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
@@ -48532,67 +48572,70 @@
         "night",
         "royal"
       ],
-      "promptProse": "Under chandelier_light at the ballroom chandelier ball gown, 菲伦 — wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves  — stands with serene composure, presence calm and centered. She shows bare legs and elegant high heels accentuating her poised silhouette, calves softly lit. Cinematic depth of field and delicate color grading give the frame a luminous, poster-quality finish, every texture crisp and every highlight softly diffused.",
+      "promptProse": "Under the magnificent crystal chandeliers of the royal grand ballroom, Fern dances a graceful waltz in her flowing deep-violet aristocratic ball gown and pristine white elbow-length gloves. She gently lifts the layered hem of her voluminous satin dress with a poised, modest curtsy, her long styled purple hair catching radiant golden highlights from the multi-tiered chandeliers. Her calm violet eyes gaze bashfully toward her dance partner with a delicate flush upon her cheeks. Behind her, polished marble floors, gilded archways, and swirling nobles fade into an enchanting, luminous ballroom bokeh.",
       "promptTokens": [
-        "atmospheric",
-        "ball_gown",
-        "ballroom",
-        "bare_legs",
-        "chandelier",
-        "cinematic_lighting",
-        "clean_face",
-        "curtsy",
-        "depth_of_field",
-        "detailed_background",
-        "dynamic_lighting",
-        "elegant",
+        "1girl",
+        "solo",
+        "fern (sousou no frieren)",
+        "purple_hair",
+        "purple_eyes",
+        "half-updo",
+        "hair_bun",
         "evening_dress",
-        "full_body",
-        "high_heels",
-        "medium_shot",
-        "night",
         "purple_dress",
-        "royal",
-        "updo_hair",
+        "ball_gown",
+        "satin",
+        "white_gloves",
+        "elbow_gloves",
+        "curtsy",
+        "holding_dress",
+        "waltz",
+        "dancing",
+        "blushing",
+        "shy_smile",
+        "looking_at_viewer",
+        "grand_ballroom",
+        "chandelier",
+        "crystal_chandelier",
+        "marble_floor",
+        "gilded_arches",
+        "bokeh",
         "volumetric_lighting",
-        "white_gloves"
+        "cinematic_lighting",
+        "depth_of_field",
+        "medium_shot",
+        "detailed_background"
       ],
       "negativeTokens": [
         "worst quality",
         "low quality",
-        "lowres",
-        "blurry",
-        "jpeg artifacts",
-        "watermark",
-        "text",
-        "extra fingers",
-        "mutated hands",
         "bad anatomy",
-        "dark shadowed face",
-        "flat lighting",
-        "extra characters",
-        "outdoor",
-        "modern",
-        "day",
-        "crowd",
-        "fat",
-        "chubby",
-        "plump",
-        "obese",
-        "overweight",
-        "heavy build",
-        "double chin",
-        "thick waist",
+        "extra fingers",
         "bad hands",
         "missing fingers",
         "fused fingers",
         "extra arms",
         "extra legs",
         "deformed",
+        "bare_legs",
+        "high_heels",
+        "pants",
+        "shorts",
+        "boots",
+        "text",
+        "watermark",
         "logo",
         "signature",
         "artist name",
+        "blurry",
+        "jpeg artifacts",
         "chromatic aberration",
+        "dark shadowed face",
+        "flat lighting",
+        "extra characters",
+        "modern",
+        "day",
+        "crowd",
         "nsfw",
         "nude",
         "explicit",
@@ -48619,14 +48662,8 @@
         "1boy",
         "2boys",
         "bystanders",
-        "clone",
-        "copy",
-        "doppelganger",
-        "twin",
-        "two of her",
-        "second instance of her",
-        "extra girl",
-        "same character twice"
+        "lowres",
+        "mutated hands"
       ],
       "recommendedSize": "1152x1536"
     },
@@ -49893,7 +49930,7 @@
       "action": "背负双剑，逆风独行",
       "timeOfDay": "黄昏",
       "lighting": "blood-red sunset over the wasteland",
-      "camera": "wide shot, dramatic low angle",
+      "camera": "cowboy shot, walking forward with twin swords",
       "mood": "苍凉坚毅",
       "sceneTags": [
         "wasteland",
@@ -49904,7 +49941,7 @@
         "wind",
         "dust"
       ],
-      "promptProse": "On a blood-red desert road at dusk, Chen walks alone against the wind with two swords strapped across her back, her long dark-green hooded wanderer trench coat snapping in the sand-laden gale, dark teal twin tails lashing behind her, trail-worn hiking boots steady on the fading path. Harsh golden-red light, windblown dust, a vast lonely wasteland stretching to the horizon.",
+      "promptProse": "Striding forward into the foreground along a rugged desert highway at dusk, Chen holds her twin swords securely strapped to her side, wind whipping her dark-green hooded trench coat. Her determined gaze meets the viewer as dusty amber sunset light cuts across the cracked asphalt road, weathered road signs, and distant canyon cliffs.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -49954,7 +49991,7 @@
         "clone",
         "twin"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "wayfarer_wanderer",
       "coverageTags": [
         "iconic"
@@ -56997,7 +57034,7 @@
       "action": "立于山巅仰望银河伸臂虚握流星",
       "timeOfDay": "深夜",
       "lighting": "starry sky glow, pale blue moonlight, drifting cloud mist rim light",
-      "camera": "wide shot, dramatic low angle",
+      "camera": "cowboy shot, reclining on boulder raising cup",
       "mood": "苍茫空灵",
       "sceneTags": [
         "starry_sky",
@@ -57008,7 +57045,7 @@
         "floating_hair",
         "dragon_girl"
       ],
-      "promptProse": "On the highest peak above a sea of clouds, Ling stands on a mossy boulder with the Milky Way arching overhead, her impossibly long blue hair streaming like a waterfall in the night wind, ink-teal qipao hem fluttering, one hand raised toward the afterglow of a passing meteor. Pale blue moonlight and drifting cloud mist rim her silhouette against the star-dusted sky.",
+      "promptProse": "Reclining comfortably against a mossy boulder atop the moonlit mountain ridge, Ling raises a glazed wine cup in a casual toast toward the viewer, her dragon tail coiled gracefully beside her. Her impossibly long azure hair ripples like a waterfall across the stone, with the arching Milky Way, glowing mountain mist, and wind-bent pine trees framing her carefree, poetic presence.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
@@ -59282,7 +59319,7 @@
       "action": "追光下抛飞吻",
       "timeOfDay": "夜晚",
       "lighting": "追光与舞台灯",
-      "camera": "full body",
+      "camera": "cowboy shot, dynamic idol pose with mic",
       "mood": "灵动撩人",
       "sceneTags": [
         "theater",
@@ -59293,7 +59330,7 @@
         "pink_dress",
         "night"
       ],
-      "promptProse": "Under a single white spotlight in the theater, Hoshino Ai strikes a playful pose in her off-shoulder pink dress and blue necktie, a full length composition from head to toe so nothing of her is cropped away. Her purple hair falls past one shoulder and her large purple eyes shimmer with six-pointed star-shaped pupils, white thigh-highs flashing beneath the hem. Draped velvet curtains, a painted set piece of a castle terrace, a row of footlights and the darkened theater boxes press close around her, stage light cycling pink and violet. A finished anime illustration with a clear focal subject, layered depth, and cinematic atmosphere.",
+      "promptProse": "Holding a wireless microphone close to her smiling lips, Hoshino Ai strikes a dazzling idol pose center stage, her double star-shaped pupils sparkling with electrifying charisma. Her off-shoulder pink-and-blue stage dress twirls with her motion, voluminous violet-magenta hair dancing in the colored stage spotlights, with laser beams, falling confetti, and a cheering arena glow filling the background.",
       "promptTokens": [
         "atmospheric",
         "blue_necktie",
@@ -59318,7 +59355,7 @@
         "volumetric_lighting",
         "white_thighhighs"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "stage_off_shoulder",
       "coverageTags": []
     },
@@ -59389,7 +59426,7 @@
       "action": "镜头前比偶像手势",
       "timeOfDay": "白天",
       "lighting": "棚内柔光",
-      "camera": "full body",
+      "camera": "medium shot, wink and peace sign",
       "mood": "元气满格",
       "sceneTags": [
         "tv_studio",
@@ -59400,7 +59437,7 @@
         "camera",
         "daylight"
       ],
-      "promptProse": "Inside the bright recording studio, Hoshino Ai beams at the camera in her two-tone white-and-pink stage dress, a full body framing from head to toe holding her complete figure in frame with her face sharply defined. The brown belt cinches her waist and white thigh-highs and brown boots show beneath the pink skirt, while her purple hair and rabbit hair ornament catch the studio light and her large purple eyes glow with six-pointed star-shaped pupils. A cyclorama wall, camera cranes, light stands, coiled cables and floor-marked staging tape crowd the studio close behind her, soft panels diffusing an airy glow. A finished anime wallpaper with a clearly defined focal subject, atmospheric depth, and cinematic glow.",
+      "promptProse": "In the bright television recording studio, Hoshino Ai winks playfully at the camera while flashing a cute peace sign, her double star pupils radiating irresistible idol charm. Her two-tone white-and-pink dress and matching hair ribbons gleam under the professional key lights, with studio monitors, cameras, and glowing neon logo panels framing her captivating figure.",
       "promptTokens": [
         "brown_belt",
         "brown_boots",
@@ -59426,7 +59463,7 @@
         "white_dress",
         "white_thighhighs"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "stage_two_tone",
       "coverageTags": []
     },
@@ -60293,7 +60330,7 @@
       "action": "拔刀出鞘立于布景光中",
       "timeOfDay": "夜晚",
       "lighting": "血色舞台光",
-      "camera": "full body",
+      "camera": "cowboy shot, drawing katana",
       "mood": "演技爆发",
       "sceneTags": [
         "stage",
@@ -60307,7 +60344,7 @@
         "blue_purple_hair",
         "performance"
       ],
-      "promptProse": "On the climactic set of the Tokyo Blade stage play, Kurokawa Akane as Sayahime stands center stage in a dynamic battle stance with her katana drawn, captured head to toe in a full body shot. Her long straight blue-violet hair streams dramatically and her large deep violet-blue eyes blaze with vivid six-pointed star-shaped pupils. A painted castle backdrop rises behind her at stage depth, a wooden bridge spans across the mid-floor, paper lanterns and hanging kakejiku crowd the wings with brilliant theatrical footlights cutting up from below.",
+      "promptProse": "Center stage on the Tokyo Blade set, Kurokawa Akane as Sayahime adopts a dynamic diagonal battle stance with her drawn katana held across her chest, the blade reflecting the theatrical footlights. Her long straight blue-violet hair billows dramatically, her violet-blue eyes blazing with luminous six-pointed star-shaped pupils. A painted Edo castle backdrop, a lacquered wooden bridge, and glowing paper lanterns create rich theatrical depth behind her.",
       "promptTokens": [
         "atmospheric",
         "blue_purple_eyes",
@@ -60335,7 +60372,7 @@
         "theater",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "sayahime_stage",
       "coverageTags": [
         "iconic"
@@ -60408,7 +60445,7 @@
       "action": "抱课本走过走廊",
       "timeOfDay": "白天",
       "lighting": "走廊窗光",
-      "camera": "full body",
+      "camera": "medium shot, leaning on window ledge",
       "mood": "清冷沉静",
       "sceneTags": [
         "school",
@@ -60419,7 +60456,7 @@
         "daylight",
         "window"
       ],
-      "promptProse": "In the afternoon corridor of Yoto High School, Kurokawa Akane walks past the sun-dappled windows with textbooks pressed gently to her chest. Her long straight blue-violet hair catches the light and her violet-blue eyes are clear and steady, the black knit vest over a white collared shirt and the grey pleated skirt swaying with each measured step. Rows of classroom doors, a cork bulletin board, stacked shoe lockers, and hanging potted plants line the hallway, warm golden squares of sunlight falling across the polished floor.",
+      "promptProse": "Leaning gently against the sunlit window ledge in the Yoto High School corridor, Kurokawa Akane holds a textbook against her chest, looking toward the viewer with a thoughtful, gentle gaze. Warm golden afternoon sunlight rims her long blue-violet hair and black school vest, casting delicate windowpane shadows across the polished wooden floor, with classroom doors and lockers lining the hall.",
       "promptTokens": [
         "black_vest",
         "blue_purple_eyes",
@@ -60441,7 +60478,7 @@
         "white_collared_shirt",
         "window"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "school_uniform",
       "coverageTags": [
         "daily"
@@ -60535,7 +60572,7 @@
       "action": "白墙前入戏试镜",
       "timeOfDay": "白天",
       "lighting": "棚内白光",
-      "camera": "full body",
+      "camera": "medium shot, holding script",
       "mood": "专注入戏",
       "sceneTags": [
         "audition",
@@ -60546,7 +60583,7 @@
         "daylight",
         "focus"
       ],
-      "promptProse": "Kurokawa Akane stands alone in the middle of a spacious audition room, framed in a full body composition. She slips effortlessly into character with quiet intensity, her large deep violet-blue eyes blazing with vivid bright six-pointed star-shaped pupils, long straight blue-violet hair falling past her shoulders, holding an open script page in her hand as she delivers her line. A lighting rig, a folded director chair, a standing microphone, and prop shelves stand in the background under soft professional key light.",
+      "promptProse": "In the quiet rehearsal space of an audition studio, Kurokawa Akane grips an open script with both hands, slipping into character with mesmerizing focus as her brilliant six-pointed star pupils ignite in her violet-blue eyes. Professional studio key lights sculpt the contours of her face and school uniform, with a director chair, a standing mic, and acoustic wall panels standing softly out of focus behind her.",
       "promptTokens": [
         "actress",
         "audition",
@@ -60568,7 +60605,7 @@
         "studio",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "school_uniform",
       "coverageTags": []
     },
@@ -60738,7 +60775,7 @@
       "action": "沙发上接受访谈",
       "timeOfDay": "夜晚",
       "lighting": "演播厅布光",
-      "camera": "full body",
+      "camera": "cowboy shot, sitting on studio sofa",
       "mood": "从容得体",
       "sceneTags": [
         "tv_studio",
@@ -60749,7 +60786,7 @@
         "night",
         "sofa"
       ],
-      "promptProse": "Kurokawa Akane sits gracefully on a low leather sofa in a stylish late-night television studio. She cradles a ceramic coffee cup in both hands as she answers with a poised, charming smile, her long straight blue-violet hair falling over the shoulder line of her pinafore dress, her large violet-blue eyes holding a bright six-pointed star-shaped glint under warm studio lighting. A low bookshelf of props, elegant floor lamps, and dark wood-paneled walls fill the background.",
+      "promptProse": "Sitting with legs crossed gracefully on a plush leather sofa on the late-night television set, Kurokawa Akane cradles a ceramic coffee cup in both hands, smiling with poised television charm. Her long blue-violet hair falls over the shoulder of her royal blue pinafore dress, studio spotlights glinting off her star-shaped pupils, with prop bookshelves, warm floor lamps, and dark wood paneling framing the scene.",
       "promptTokens": [
         "blue_dress",
         "blue_purple_eyes",
@@ -60772,7 +60809,7 @@
         "tv_studio",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "pinafore_dress",
       "coverageTags": []
     },
@@ -60860,7 +60897,7 @@
       "action": "戴眼镜翻阅剧本研究",
       "timeOfDay": "白天",
       "lighting": "店内暖光",
-      "camera": "full body",
+      "camera": "medium shot, leaning against bookshelf",
       "mood": "沉静书卷气",
       "sceneTags": [
         "bookstore",
@@ -60871,7 +60908,7 @@
         "daylight",
         "casual"
       ],
-      "promptProse": "Kurokawa Akane browses quietly in the corner of a vintage bookstore, wearing delicate thin-rimmed glasses. She holds a script-research volume open against her hip, her long straight blue-violet hair falling over one shoulder, her violet-blue eyes sharp and intent with a six-pointed star-shaped glint catching the lamplight. Leaning book spines, a wooden rolling ladder, a green banker lamp, and stacked tomes crowd the space behind her as dusty afternoon sunlight slants through a tall window.",
+      "promptProse": "Leaning comfortably against a tall mahogany bookshelf in a vintage bookstore, Kurokawa Akane wears delicate thin-rimmed glasses, one finger lightly tracing the pages of an open script manual. Her violet-blue eyes gleam with sharp analytical star-shaped glints, dusty afternoon sunbeams slanting through tall mullioned windows to illuminate floating dust motes and towering stacks of vintage books around her.",
       "promptTokens": [
         "blue_purple_eyes",
         "blue_purple_hair",
@@ -60895,7 +60932,7 @@
         "warm_light",
         "white_shirt"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "daily_glasses",
       "coverageTags": []
     },
@@ -62726,7 +62763,7 @@
       "action": "王座上俯瞰国土",
       "timeOfDay": "白天",
       "lighting": "冰冷天光",
-      "camera": "full body",
+      "camera": "cowboy shot, sitting on throne",
       "mood": "至高威严",
       "sceneTags": [
         "throne",
@@ -62737,7 +62774,7 @@
         "interior",
         "ice_palace"
       ],
-      "promptProse": "Seated on her high throne in the frozen hall of Faerie Britain, Morgan the Winter Queen regards the viewer with absolute majesty, her seated figure filling the frame. Long silver-white hair falls past the carved armrest, icy blue eyes level beneath the crystal crown, the sheer veil swept back over her shoulders. The black-and-blue gothic gown spreads across the seat with its layered split skirt and detached wing sleeves, fluted pillars, frost-crusted banners and a choir balcony rail rising behind her as pale winter light falls in cold crystalline blue.",
+      "promptProse": "Reclining gracefully on her carved frozen throne in Faerie Britain, Morgan the Winter Queen rests one pale cheek on her gloved hand, gazing downward with cool, sovereign majesty. Her layered black-and-blue gothic gown pools elegantly across the obsidian seat and her crossed slender legs, her silver-white hair spilling past the carved armrest. Behind her, towering frost-encrusted pillars, crystal chandeliers, and heraldic banners catch the cold crystalline blue light filtering through grand vaulted windows.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -62832,7 +62869,7 @@
       "action": "圣枪前立誓",
       "timeOfDay": "黄昏",
       "lighting": "金色余晖",
-      "camera": "full body",
+      "camera": "cowboy shot, holding holy lance",
       "mood": "肃穆决然",
       "sceneTags": [
         "holy_lance",
@@ -62843,7 +62880,7 @@
         "sunset",
         "castle"
       ],
-      "promptProse": "On the high parapet of the Winter Palace, Morgan the Winter Queen stands facing the viewer in a full body shot, crystal crown, layered black-and-blue gothic gown and the holy lance Rhongomyniad in her hand all clearly readable. Her silver hair is swept back behind her shoulders, icy blue eyes looking straight ahead. Behind her a stone balustrade, a burning brazier, frosted banners, a snow-dusted stair, the crenellated palace wall and an amber-to-indigo sunset sky stack into deep layers.",
+      "promptProse": "Standing near the balustrade of the Winter Palace parapet in a poised three-quarter composition, Morgan holds the glowing holy lance Rhongomyniad upright beside her shoulder, luminous golden-cyan mana coursing through the spiral shaft. Her icy blue eyes fix the viewer with unwavering composure, her crystal crown glinting against the amber sunset. Stone crenellations, a roaring brazier, and drifting magical snow embers fill the warm atmospheric space around her.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -62938,7 +62975,7 @@
       "action": "雨后林间巡游",
       "timeOfDay": "白天",
       "lighting": "雨后柔光",
-      "camera": "full body",
+      "camera": "medium shot, sitting on mossy stone",
       "mood": "静谧悠远",
       "sceneTags": [
         "forest",
@@ -62949,7 +62986,7 @@
         "outdoor",
         "moss"
       ],
-      "promptProse": "In the rain-washed ancient forest of Faerie Britain, the young witch Aesc walks the mossy path in her blue witch robe beneath the wide brim of her hat, carrying her wooden staff with quiet grace. Crystalline water beads cling to her long silver hair, icy blue eyes calm in the soft light. Moss-covered trunks, ferns, glowing mushrooms, hanging vines and drifting mist crowd close around her, post-rain sunbeams filtering through the canopy in translucent emerald.",
+      "promptProse": "Sitting on a broad moss-covered boulder in the rain-washed ancient forest, young witch Aesc leans slightly forward with her wooden staff resting across her lap, turning a weathered spellbook with one hand. Long silver hair peeks beneath her wide-brimmed witch hat as she smiles softly. Soft rain drips from emerald leaves, glowing faerie mushrooms cluster at the base of the rock, and gentle volumetric sunbeams pierce the misty canopy above.",
       "promptTokens": [
         "1girl",
         "aesc (fate)",
@@ -63043,7 +63080,7 @@
       "action": "湖中咏唱咒语",
       "timeOfDay": "白天",
       "lighting": "水面反光",
-      "camera": "full body",
+      "camera": "cowboy shot, kneeling by water",
       "mood": "空灵神圣",
       "sceneTags": [
         "lake",
@@ -63054,7 +63091,7 @@
         "outdoor",
         "water"
       ],
-      "promptProse": "At the edge of the mystical faerie lake, Aesc the Winter Savior stands on a flat mossy rock at the water's edge in a full body shot, ice-blue crystal crown, silver hair and blue ceremonial robe crisply readable, the silver staff in her hand. Her icy blue eyes meet the viewer head-on. Soft gold-and-azure light haloes around her while lily pads, reeds, half-submerged standing stones, drifting mist and a silver birch treeline recede behind her.",
+      "promptProse": "Kneeling gracefully by the edge of the mystical faerie lake, Aesc extends one bare hand to touch the shimmering water, creating gentle concentric ripples that reflect the starlit sky. Her blue witch robe drapes softly across the flat stone, the crystal crown catching the cool night glow. Glowing water lilies, drifting light orbs, and mist-shrouded reeds frame her poised figure in a magical, ethereal composition.",
       "promptTokens": [
         "1girl",
         "aesc (fate)",
@@ -63149,7 +63186,7 @@
       "action": "水边漫步",
       "timeOfDay": "白天",
       "lighting": "海滩阳光",
-      "camera": "full body",
+      "camera": "cowboy shot, lounging on beach daybed",
       "mood": "难得松弛",
       "sceneTags": [
         "beach",
@@ -63160,7 +63197,7 @@
         "sea",
         "sunlight"
       ],
-      "promptProse": "On a sun-drenched midsummer beach, Morgan in her Water Princess white swimsuit strolls the sparkling waterline, long silver hair streaming in the ocean breeze and a rare gentle smile on her regal face. The white gossamer hem of her sarong floats in the shallow tide. Striped beach parasols, wooden deck chairs, smooth driftwood, a rocky point and wheeling gulls fill the shore around her.",
+      "promptProse": "Lounging elegantly across a white beach daybed on the sun-kissed resort shore, Morgan in her sleek white Water Princess swimsuit reclines with one arm propped on a plush cushion, her long silver hair cascading across the fabric. A crystal glass of iced fruit juice rests on a low glass side table beside her, with turquoise ocean waves, a parasol, and gentle sea breezes completing the bright, luxurious summer setting.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -63257,7 +63294,7 @@
       "action": "雪中独立赏雪",
       "timeOfDay": "白天",
       "lighting": "雪地反光",
-      "camera": "full body",
+      "camera": "cowboy shot, leaning on fountain",
       "mood": "孤高静默",
       "sceneTags": [
         "snow",
@@ -63268,7 +63305,7 @@
         "outdoor",
         "winter"
       ],
-      "promptProse": "In the frost-touched courtyard of the Camelot royal gardens, Morgan the Winter Queen rests one gloved hand on the carved stone rim of a frozen fountain, her full figure centred in the frame. Silver hair pinned in a low chignon with loose strands framing her cheek, the high-collared black-and-blue gothic gown trailing its blue hem over the snow. Behind her rise a snow-laden yew hedge, a wrought iron lamp, a marble bench, the pale stone spires of Camelot and a steady drift of snowflakes catching the winter light.",
+      "promptProse": "Leaning with one gloved hand against the ornate carved rim of a frozen marble fountain, Morgan rests her weight gracefully, her tailored winter gown and dark fur mantle framing her slender silhouette. She gazes toward the viewer with a subtle, knowing half-smile, snow flurries catching the silver strands of her hair. Frost-dusted rose bushes, stone archways, and warm lantern posts light the romantic winter garden behind her.",
       "promptTokens": [
         "1girl",
         "atmospheric",
@@ -63935,7 +63972,7 @@
       "action": "抱文件快步行走",
       "timeOfDay": "白天",
       "lighting": "走廊灯光",
-      "camera": "full body",
+      "camera": "medium shot, holding datapad",
       "mood": "认真元气",
       "sceneTags": [
         "corridor",
@@ -63946,7 +63983,7 @@
         "daylight",
         "documents"
       ],
-      "promptProse": "In the bright corridor of Chaldea, Mash Kyrielight hurries toward the command room with a stack of reports in her arms, full body in frame. Her short pink-lavender bob with bangs over her right eye and clear violet eyes sit behind her glasses, the grey open jacket swaying over the black collared dress, red necktie bobbing at her collar. Tall window panels, wall conduits, a bank of monitors, handrails and potted plants line the corridor, clean white light glinting off the polished floor.",
+      "promptProse": "In the brightly lit corridor of Chaldea, Mash Kyrielight pauses near a polished partition, hugging a stack of holographic datapad reports to her chest with both hands. Her short pink-lavender hair frames her violet eyes and glasses as she offers a warm, earnest smile. Clean futuristic wall conduits, a holographic terminal, and sunlit window panels line the corridor in soft cinematic depth.",
       "promptTokens": [
         "black_dress",
         "black_pantyhose",
@@ -63971,7 +64008,7 @@
         "solo",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "chaldea_casual",
       "coverageTags": [
         "iconic"
@@ -64061,7 +64098,7 @@
       "action": "举盾守护队友",
       "timeOfDay": "白天",
       "lighting": "模拟全息光",
-      "camera": "full body",
+      "camera": "dynamic low angle, kneeling with shield",
       "mood": "坚毅可靠",
       "sceneTags": [
         "simulation",
@@ -64072,7 +64109,7 @@
         "interior",
         "combat"
       ],
-      "promptProse": "Kneeling alone on the central platform of the Chaldea simulator's holographic battlefield, Mash braces the enormous cross-shaped shield forward in a low defensive stance, full body in frame, the diamond midriff cutout of her violet-accented armored dress catching the holographic light. Shoulder-length pink-lavender hair falls across her right eye, gentle violet eyes locked on the unseen threat. A floating grid floor, warning stripes on far columns, blue targeting reticles and the simulator's curved wall fill the space behind her.",
+      "promptProse": "Bracing low behind her towering cross-shaped shield on the Chaldea holographic battlefield, Mash kneels on one knee in an intense defensive guard, her violet armored dress and elbow gloves catching the neon tactical grid glow. Pink-lavender bangs fall across her focused eyes as she watches the front with resolute determination. Floating targeting rings, warning beacons, and energy arcs electrify the virtual chamber around her.",
       "promptTokens": [
         "armored_dress",
         "cinematic_lighting",
@@ -64097,7 +64134,7 @@
         "two-tone_dress",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "combat_armor",
       "coverageTags": []
     },
@@ -64177,7 +64214,7 @@
       "action": "赤足踩浪花",
       "timeOfDay": "白天",
       "lighting": "海滩阳光",
-      "camera": "full body",
+      "camera": "cowboy shot, sitting on beach towel",
       "mood": "清爽明媚",
       "sceneTags": [
         "beach",
@@ -64188,7 +64225,7 @@
         "sea",
         "sunlight"
       ],
-      "promptProse": "On the beach of the summer resort island, Mash in her white dress-style swimsuit turns back through the foaming surf with a bright, unguarded laugh, her short pink-lavender hair with bangs over her right eye blowing in the sea breeze, violet eyes crinkling, halterneck ties fluttering at her shoulders. Striped parasols, rental deck chairs, a wooden boardwalk, beached boats and palm trunks line the shore behind her, sunlight shimmering across the shallow water.",
+      "promptProse": "Sitting relaxed on a striped beach towel spread over warm golden sand, Mash in her white ruffled swimsuit leans back on both hands, legs bent gracefully as she laughs happily toward the viewer. A colorful beach ball, a tropical coconut drink, and splashing cyan ocean waves under radiant midday sun frame her youthful, vibrant figure.",
       "promptTokens": [
         "atmospheric",
         "beach",
@@ -64214,7 +64251,7 @@
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "summer_swimsuit",
       "coverageTags": [
         "daily"
@@ -64309,7 +64346,7 @@
       "action": "摸着狼耳有些害羞",
       "timeOfDay": "黄昏",
       "lighting": "夕照暖光",
-      "camera": "full body",
+      "camera": "cowboy shot, dynamic crouch",
       "mood": "害羞又新奇",
       "sceneTags": [
         "wolf_ears",
@@ -64320,7 +64357,7 @@
         "outdoor",
         "sunset"
       ],
-      "promptProse": "Alone in the courtyard of Chaldea Security Organization at golden hour, Mash wears her Dangerous Beast costume, soft wolf ears peeking from her pink-lavender hair and a fluffy wolf tail swaying behind her as she shyly touches one ear with a clawed fingertip, cheeks pink, violet eyes glancing aside. The bare-shouldered outfit with elbow gloves and thigh-highs catches the warm light. A stone fountain, trimmed hedges, a wrought-iron lamp, a gravel path and the curved Chaldea wall surround her, long shadows stretching across the lawn.",
+      "promptProse": "Crouching in a playful, alluring stance on the edge of a velvet lounge in the Chaldea courtyard at golden hour, Mash in her Dangerous Beast outfit tilts her head with a flustered blush. Soft furry wolf ears peek from her pink-lavender hair and a fluffy tail curls behind her, her clawed gauntlets raised in a cute pawing gesture. Warm sunset rays rim her figure, casting soft shadows across the stone floor.",
       "promptTokens": [
         "bare_shoulders",
         "cinematic_lighting",
@@ -64344,7 +64381,7 @@
         "animal_ear_fluff",
         "claws"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "dangerous_beast",
       "coverageTags": []
     },
@@ -64432,7 +64469,7 @@
       "action": "装甲着装准备出击",
       "timeOfDay": "白天",
       "lighting": "机库冷光",
-      "camera": "full body",
+      "camera": "cowboy shot, checking armor console",
       "mood": "凛然备战",
       "sceneTags": [
         "hangar",
@@ -64443,7 +64480,7 @@
         "launch",
         "military"
       ],
-      "promptProse": "Mash stands tall on the launch deck of the Chaldea hangar in her black Ortinax armor, full body in frame, clenching one fist and drawing a steady breath as the suit hums with pale blue power lines along the chest plate. Her pink-lavender bob and violet eyes stay steady beneath the helm light, jaw set with quiet resolve. A towering launch gate, stacked support gantries, control consoles with red status lamps, coiled fuel lines and the curved hangar wall fill the background.",
+      "promptProse": "Standing ready near the launch catapult in the Chaldea hangar, Mash adjusts the gauntlet of her black-and-silver Ortinax armor with a determined expression, the visor light reflecting in her violet eyes. The heavy battle harness and armored plating hum with pale blue energy trails, steam hissing from hydraulic clamps, with massive gantry cranes and launch monitors filling the background.",
       "promptTokens": [
         "armored_boots",
         "black_armor",
@@ -64465,7 +64502,7 @@
         "thighhighs",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "ortinax_armor",
       "coverageTags": []
     },
@@ -64545,7 +64582,7 @@
       "action": "端餐盘找座位用餐",
       "timeOfDay": "白天",
       "lighting": "食堂日光",
-      "camera": "full body",
+      "camera": "medium shot, sitting at dining table",
       "mood": "日常温馨",
       "sceneTags": [
         "cafeteria",
@@ -64556,7 +64593,7 @@
         "daylight",
         "food"
       ],
-      "promptProse": "In the Chaldea cafeteria at noon, Mash sets her loaded tray down and carefully arranges the vegetables beside the meat, short pink-lavender hair with bangs over her right eye swaying gently, violet eyes bright behind her glasses as she looks up with a happy, straightforward smile. Long shared tables, a serving counter, hanging pendant lamps, a drink cooler, a potted plant and broad windows surround her in soft daylight.",
+      "promptProse": "Sitting comfortably at a wooden booth in the Chaldea cafeteria at noon, Mash holds up a pair of chopsticks over a steaming bento bowl, her violet eyes crinkling in delight behind her glasses. A glass of iced tea, a small side salad, and salt shakers sit on the table, while warm cafeteria pendant lamps and the lively chatter of Servants create a cozy atmosphere around her.",
       "promptTokens": [
         "black_dress",
         "black_pantyhose",
@@ -64581,7 +64618,7 @@
         "solo",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "chaldea_casual",
       "coverageTags": [
         "daily"
