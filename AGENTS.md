@@ -24,6 +24,12 @@
 8. **定稿场景提示词保护（2026-08-27 教训固化）**：`data/prompt-pinned-scenes.json`（100 条：历史定点手工修/官方CG对齐/用户实拍定稿）中的渲染字段为字节级基线，任何批量优化任务**严禁触碰**这些场景的 `prompt/negative/animaCaption/recommendedSize/rating/mature`；门禁 `node scripts/tests/test-pinned-scene-prompts.js`（已入 test:contract 套件）。确需修改某条定稿时：先真实出图自测确认效果，再 `npm run scenes:pin-capture` 更新基线并在提交信息中附自测证据。批量脚本遇到受保护 ID 必须跳过。
 9. **单写者原则（2026-08-29 .git 崩毁教训固化）**：同一工作区同一时刻**只允许一个 AI 会话执行 git 写操作**（commit/push/merge/rebase/gc/prune）；并行会话必须 `git worktree` 隔离或约定错峰交接；长期并行期间禁用自动 gc（`git config gc.auto 0`）。
 10. **优先复用现成工作流，禁止造简陋轮子（2026-08-31 审计固化）**：做任何事务前，协作者**必须先查是否有现成工作流**——跑 `npm run workflow -- --help` 或读 `docs/workflow.md`，判断是否有现成命令覆盖该事务；若无入口，再跑 `npm run workflow -- audit:orphans --json` 或 grep `scripts/maintenance/` 查现成脚本。有则用之，哪怕需补参数或读 `--help`，禁止因"不熟/嫌麻烦"另写简陋脚本。确需新增脚本时，须同时登记到 `scripts/workflow.js` 的 WORKFLOWS + `docs/workflow.md` 对应分组 + `docs/INDEX.md`（如涉及新文档），三处缺一视为未完成交付；用完的一次性脚本及时移入 `scripts/archive/`（gitignored，git 历史可取回），避免堆积成孤儿（`audit:orphans` 会捕获零引用脚本）。
+11. **角色接入四位一体硬性闭环（2026-09-01 交付铁律，防丢项遗漏）**：
+    - 每次新增角色时，**严禁仅写提示词与分片，必须同步完成以下四层闭环**：
+      1. **数据层与大盘**：`data/popular/<franchise>.json`（服装+蓝图）+ `data/characters.json`（人物档案、视觉DNA、性格世界观、`accent_color`）+ `npm run popular:build` 编译 `popular-characters.json`；
+      2. **UI 主题与强调色系统（必做项）**：在 `src/assets/css/director/tokens.css` 中为新角色注册专属主题与氛围光晕（`.pb[data-character="<id>"]` 与 `body:has(.pb[data-character="<id>"])`），配置 `--character-accent`、`--character-soft`、`--character-glow` 与 `--character-aura`，确保生图台与页面全局背景光斑丝滑响应角色切换；
+      3. **全量场景蓝图**：每位角色必须配齐 10~11 套场景蓝图（6~7 SFW 唯美日常/名场面 + 4~5 R18 成人专属），所有服装全覆盖且无孤儿装；
+      4. **门禁与契约自检**：必须跑通 `node scripts/tests/test-popular-content.js`、`npm run typecheck:app` 与 `node scripts/workflow.js check:animations/check:contrast` 确保对比度与动画达标。
 
 ---
 
