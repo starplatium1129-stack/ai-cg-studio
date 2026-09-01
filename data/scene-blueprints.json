@@ -60182,7 +60182,7 @@
       "title": "黑川茜 · 咖啡店对谈",
       "category": "现代都市",
       "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 咖啡店对谈】街角咖啡店的靠窗座位，黑川茜端着拿铁，蓝围裙裙装衬得她格外温柔，望着窗外街景时眼神里藏着故事——「演戏是假装别人……和你说话的时候，我才是我自己。」",
+      "description": "【黑川茜 · 咖啡店对谈】欧式复古咖啡厅高大拱形落地窗旁，黑川茜侧身端坐于皮椅上品尝咖啡，明媚逆光在发丝与宝蓝长裙勾勒出唯美轮廓光，双目闪烁着标志性的耀眼星瞳——「和你说话的时候，我才是我自己。」",
       "location": "城市咖啡店",
       "action": "靠窗喝拿铁交谈",
       "timeOfDay": "白天",
@@ -60198,7 +60198,7 @@
         "window",
         "daylight"
       ],
-      "promptProse": "At a window seat in the corner cafe, Kurokawa Akane lifts her latte with both hands, the blue pinafore dress lending her a soft, everyday warmth as she gazes out at the passing street. Filtered daylight and the steam of the coffee trace delicate ribbons of gold and white across her composed face.",
+      "promptProse": "Sitting gracefully beside towering European arched windows in a sunlit vintage cafe, Kurokawa Akane gently lifts a white porcelain coffee cup. Clear morning sunlight creates radiant rim lighting across her rich blue-purple hair and royal blue dress, while both of her deep violet-blue eyes sparkle with vivid star-shaped pupils full of expressive devotion and actress charisma.",
       "promptTokens": [
         "blue_dress",
         "blue_purple_hair",
@@ -60214,9 +60214,13 @@
         "pinafore_dress",
         "volumetric_lighting",
         "white_blouse",
-        "window"
+        "window",
+        "star_pupils",
+        "star-shaped_pupils",
+        "star_in_eye",
+        "arched_window"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "832x1216",
       "outfitId": "pinafore_dress",
       "coverageTags": [
         "daily"
