@@ -60485,7 +60485,7 @@
       "action": "拔刀出鞘立于布景光中",
       "timeOfDay": "夜晚",
       "lighting": "血色舞台光",
-      "camera": "full body",
+      "camera": "cowboy shot",
       "mood": "演技爆发",
       "sceneTags": [
         "stage",
@@ -60499,7 +60499,7 @@
         "blue_purple_hair",
         "performance"
       ],
-      "promptProse": "On the climactic set of the Tokyo Blade stage play, Kurokawa Akane as Sayahime stands center stage in a dynamic battle stance with her katana drawn, the only character in the frame, captured head to toe in a full body shot that fills the foreground of the stage so her face, hair, eyes, costume and stance are all crisply readable. Her long straight blue-violet hair streams dramatically and her large deep violet-blue eyes blaze with vivid six-pointed star-shaped pupils. A painted castle backdrop rises behind her at stage depth, a wooden bridge spans across the mid-floor, paper lanterns and hanging kakejiku crowd the wings, footlights cutting up from below. A focused anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "On the climactic set of the Tokyo Blade stage play, Kurokawa Akane as Sayahime stands center stage in a dynamic battle stance with her katana drawn, the only character in the frame, captured head to toe in a full body shot that fills the foreground of the stage so her face, hair, eyes, costume and stance are all crisply readable. Her long straight blue-violet hair streams dramatically and her large deep violet-blue eyes blaze with vivid six-pointed star-shaped pupils. A painted castle backdrop rises behind her at stage depth, a wooden bridge spans across the mid-floor, paper lanterns and hanging kakejiku crowd the wings, footlights cutting up from below. A finished anime wallpaper with a clear focal subject, layered background depth, and cinematic atmosphere.",
       "promptTokens": [
         "atmospheric",
         "blue_purple_eyes",
@@ -60527,7 +60527,7 @@
         "theater",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "sayahime_stage",
       "coverageTags": [
         "iconic"
@@ -60726,7 +60726,7 @@
       "action": "白墙前入戏试镜",
       "timeOfDay": "白天",
       "lighting": "棚内白光",
-      "camera": "full body",
+      "camera": "medium shot",
       "mood": "专注入戏",
       "sceneTags": [
         "audition",
@@ -60737,7 +60737,7 @@
         "daylight",
         "focus"
       ],
-      "promptProse": "Kurokawa Akane stands alone in the middle of an empty audition room, the only person in the frame, framed head to toe in a full body shot so her face, hair, eyes and school uniform are all crisply readable, no camera monitor, no screen, no projection, no second character, no overlapping duplicate anywhere. She slips into character with quiet intensity, her large deep violet-blue eyes blazing with vivid bright six-pointed star-shaped pupils, long straight blue-violet hair falling past her shoulders, a single open script page in her hand as she delivers her line. A lighting rig, a folded director's chair, a single standing microphone, a multi-tier prop shelf and the bare studio wall stand behind her, soft key light warming her face. A polished anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "Kurokawa Akane stands alone in the middle of an empty audition room, the only person in the frame, framed head to toe in a full body shot so her face, hair, eyes and school uniform are all crisply readable, no camera monitor, no screen, no projection, no second character, no overlapping duplicate anywhere. She slips into character with quiet intensity, her large deep violet-blue eyes blazing with vivid bright six-pointed star-shaped pupils, long straight blue-violet hair falling past her shoulders, a single open script page in her hand as she delivers her line. A lighting rig, a folded director's chair, a single standing microphone, a multi-tier prop shelf and the bare studio wall stand behind her, soft key light warming her face. A finished anime wallpaper with a clearly defined focal subject, atmospheric depth, and cinematic glow.",
       "promptTokens": [
         "actress",
         "audition",
@@ -60759,7 +60759,7 @@
         "studio",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "school_uniform",
       "coverageTags": []
     },
@@ -60929,7 +60929,7 @@
       "action": "沙发上接受访谈",
       "timeOfDay": "夜晚",
       "lighting": "演播厅布光",
-      "camera": "full body",
+      "camera": "medium shot",
       "mood": "从容得体",
       "sceneTags": [
         "tv_studio",
@@ -60940,7 +60940,7 @@
         "night",
         "sofa"
       ],
-      "promptProse": "Kurokawa Akane sits alone on a low leather sofa in a small late-night talk-show set, the only person in the frame, framed head to toe in a full body shot so her face, hair, pinafore dress and crossed legs are all crisply readable, no monitor, no screen, no second character, no studio audience in focus. She cradles a small ceramic coffee cup in both hands as she answers with a poised smile, her long straight blue-violet hair falling over the shoulder line of her pinafore dress, her large violet-blue eyes holding a bright six-pointed star-shaped glint, studio lights warming her face. A low bookshelf of props, a potted plant, a floor lamp, the dark wood-paneled studio wall and a single side table fill the background behind her. A moody anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "Kurokawa Akane sits alone on a low leather sofa in a small late-night talk-show set, the only person in the frame, framed head to toe in a full body shot so her face, hair, pinafore dress and crossed legs are all crisply readable, no monitor, no screen, no second character, no studio audience in focus. She cradles a small ceramic coffee cup in both hands as she answers with a poised smile, her long straight blue-violet hair falling over the shoulder line of her pinafore dress, her large violet-blue eyes holding a bright six-pointed star-shaped glint, studio lights warming her face. A low bookshelf of props, a potted plant, a floor lamp, the dark wood-paneled studio wall and a single side table fill the background behind her. A finished anime wallpaper with a striking focal subject, layered environmental depth, and a cinematic mood.",
       "promptTokens": [
         "blue_dress",
         "blue_purple_eyes",
@@ -60963,7 +60963,7 @@
         "tv_studio",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "pinafore_dress",
       "coverageTags": []
     },
@@ -61051,7 +61051,7 @@
       "action": "戴眼镜翻阅剧本研究",
       "timeOfDay": "白天",
       "lighting": "店内暖光",
-      "camera": "full body",
+      "camera": "cowboy shot",
       "mood": "沉静书卷气",
       "sceneTags": [
         "bookstore",
@@ -61062,7 +61062,7 @@
         "daylight",
         "casual"
       ],
-      "promptProse": "Kurokawa Akane stands alone in the corner of a dusty old bookstore, the only person in the frame, framed head to toe in a full body shot so her face, glasses, hair, sweater and long skirt are all crisply readable, no second character, no close-up, no portrait crop. She holds a script-research manual open against her hip, wearing delicate thin-rimmed glasses, her long straight blue-violet hair falling over one shoulder, her violet-blue eyes sharp and intent with a six-pointed star-shaped glint catching the light. Leaning spines, a wooden ladder, a green banker lamp, stacked tomes and the warm wood-paneled shop wall crowd the space behind her, dusty sunlight slanting through a tall window. A focused anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "Kurokawa Akane stands alone in the corner of a dusty old bookstore, the only person in the frame, framed head to toe in a full body shot so her face, glasses, hair, sweater and long skirt are all crisply readable, no second character, no close-up, no portrait crop. She holds a script-research manual open against her hip, wearing delicate thin-rimmed glasses, her long straight blue-violet hair falling over one shoulder, her violet-blue eyes sharp and intent with a six-pointed star-shaped glint catching the light. Leaning spines, a wooden ladder, a green banker lamp, stacked tomes and the warm wood-paneled shop wall crowd the space behind her, dusty sunlight slanting through a tall window. A finished anime wallpaper with a vivid focal subject, rich background depth, and cinematic atmosphere.",
       "promptTokens": [
         "blue_purple_eyes",
         "blue_purple_hair",
@@ -61086,7 +61086,7 @@
         "warm_light",
         "white_shirt"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "daily_glasses",
       "coverageTags": []
     },
@@ -64251,7 +64251,7 @@
       "action": "举盾守护队友",
       "timeOfDay": "白天",
       "lighting": "模拟全息光",
-      "camera": "full body",
+      "camera": "cowboy shot",
       "mood": "坚毅可靠",
       "sceneTags": [
         "simulation",
@@ -64262,7 +64262,7 @@
         "interior",
         "combat"
       ],
-      "promptProse": "Kneeling alone on the central platform of the Chaldea simulator's holographic battlefield, Mash Kyrielight is the only character in the scene, captured in a full body portrait from head to toe so her face, hair, enormous cross-shaped shield, armored dress and boots are all crisply legible, no monitor, no screen, no giant face projection anywhere. She braces the enormous cross-shaped shield forward in a low defensive stance, the diamond midriff cutout of her violet-accented armored dress catching the holographic light, her shoulder-length pink-lavender hair falling across her right eye and gentle violet eyes locked on the unseen threat. Floating grid floor, warning stripes on far columns, a parallax of blue targeting reticles, the simulator's curved wall and a single round blast hatch fill the space behind her. A focused anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "Kneeling alone on the central platform of the Chaldea simulator's holographic battlefield, Mash Kyrielight is the only character in the scene, captured in a full body portrait from head to toe so her face, hair, enormous cross-shaped shield, armored dress and boots are all crisply legible, no monitor, no screen, no giant face projection anywhere. She braces the enormous cross-shaped shield forward in a low defensive stance, the diamond midriff cutout of her violet-accented armored dress catching the holographic light, her shoulder-length pink-lavender hair falling across her right eye and gentle violet eyes locked on the unseen threat. Floating grid floor, warning stripes on far columns, a parallax of blue targeting reticles, the simulator's curved wall and a single round blast hatch fill the space behind her. A finished anime wallpaper with a sharp focal subject, immersive background depth, and a cinematic glow.",
       "promptTokens": [
         "armored_dress",
         "cinematic_lighting",
@@ -64287,7 +64287,7 @@
         "two-tone_dress",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "combat_armor",
       "coverageTags": []
     },
@@ -64502,7 +64502,7 @@
       "action": "摸着狼耳有些害羞",
       "timeOfDay": "黄昏",
       "lighting": "夕照暖光",
-      "camera": "full body",
+      "camera": "cowboy shot",
       "mood": "害羞又新奇",
       "sceneTags": [
         "wolf_ears",
@@ -64513,7 +64513,7 @@
         "outdoor",
         "sunset"
       ],
-      "promptProse": "Mash Kyrielight stands alone in the courtyard of Chaldea Security Organization at sunset, the only character in the frame, framed head to toe in a full body shot that keeps her face and expression fully readable, no wolf ears, no wolf tail, no beast costume, just her standard Chaldea combat uniform. Her armored dress with the diamond midriff cutout and violet-lined collar shows faint battle wear, short pink-lavender hair with bangs over her right eye frames her gentle violet eyes as she plants her enormous cross-shaped shield in front of her, having just repelled a dangerous beast. A stone fountain, trimmed hedges, a wrought-iron lamp, a gravel path and the curved Chaldea wall crowd the courtyard close around her, golden hour stretching long shadows across the lawn. A focused anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "Mash Kyrielight stands alone in the courtyard of Chaldea Security Organization at sunset, the only character in the frame, framed in a cowboy shot from the tops of her boots to the top of her head, her face and expression crisply readable, no wolf ears, no wolf tail, no beast costume, just her standard Chaldea combat uniform. Her armored dress with the diamond midriff cutout and violet-lined collar shows faint battle wear, short pink-lavender hair with bangs over her right eye frames her gentle violet eyes as she plants her enormous cross-shaped shield in front of her, having just repelled a dangerous beast. A stone fountain, trimmed hedges, a wrought-iron lamp, a gravel path and the curved Chaldea wall crowd the courtyard close around her, golden hour stretching long shadows across the lawn. A finished anime wallpaper with a dynamic focal subject, deep background layering, and cinematic atmosphere.",
       "promptTokens": [
         "bare_shoulders",
         "cinematic_lighting",
@@ -64533,7 +64533,7 @@
         "thighhighs",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "dangerous_beast",
       "coverageTags": []
     },
@@ -64621,7 +64621,7 @@
       "action": "装甲着装准备出击",
       "timeOfDay": "白天",
       "lighting": "机库冷光",
-      "camera": "full body",
+      "camera": "cowboy shot",
       "mood": "凛然备战",
       "sceneTags": [
         "hangar",
@@ -64632,7 +64632,7 @@
         "launch",
         "military"
       ],
-      "promptProse": "Mash Kyrielight stands tall on the launch deck of the Chaldea hangar, the only character in the frame, shot in a complete full body figure so her face, hair, black Ortinax armor, gauntlets, leg-armor and boots are all crisply readable, no giant face projection, no second Mash, no screen. She clenches one fist and draws a steady breath, the armored suit humming with pale blue power lines along the chest plate, her pink-lavender bob and violet eyes steady beneath the helm light, jaw set with quiet resolve. A towering launch gate, stacked support gantries, control consoles with red status lamps, fuel lines coiled on the deck and the curved hangar wall fill the background behind her. A bold anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "Mash Kyrielight stands tall on the launch deck of the Chaldea hangar, the only character in the frame, shot in a complete full body figure so her face, hair, black Ortinax armor, gauntlets, leg-armor and boots are all crisply readable, no giant face projection, no second Mash, no screen. She clenches one fist and draws a steady breath, the armored suit humming with pale blue power lines along the chest plate, her pink-lavender bob and violet eyes steady beneath the helm light, jaw set with quiet resolve. A towering launch gate, stacked support gantries, control consoles with red status lamps, fuel lines coiled on the deck and the curved hangar wall fill the background behind her. A finished anime wallpaper with a high-contrast focal subject, deep background layering, and a cinematic mood.",
       "promptTokens": [
         "armored_boots",
         "black_armor",
@@ -64654,7 +64654,7 @@
         "thighhighs",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "ortinax_armor",
       "coverageTags": []
     },
@@ -65770,7 +65770,7 @@
       "action": "窗边喝热饮",
       "timeOfDay": "白天",
       "lighting": "窗边柔光",
-      "camera": "full body",
+      "camera": "medium shot",
       "mood": "难得的柔软",
       "sceneTags": [
         "cafe",
@@ -65781,7 +65781,7 @@
         "daylight",
         "peaceful"
       ],
-      "promptProse": "Mikasa Ackerman sits alone at a small wooden table in a quiet cafe in the Trost district, the only person in the room, framed head to toe in a full body shot so her face, hair, scarf, shirt, shorts and boots are all fully visible. She is a single Mikasa, no second person, no mirror reflection, no one across the table, her iconic red scarf folded on her lap as she lifts a warm teacup with both hands, short black hair with straight bangs and grey eyes softened by an unusually relaxed expression. A wooden counter, shelves of teacups, a hanging lamp, leafy potted plants and the cafe's leaded window crowd the space behind her, late afternoon sunlight slanting through the glass. A focused anime wallpaper with a clearly defined central subject, layered environmental depth, and cinematic atmosphere.",
+      "promptProse": "Mikasa Ackerman sits alone at a small wooden table in a quiet cafe in the Trost district, the only person in the room, framed head to toe in a full body shot so her face, hair, scarf, shirt, shorts and boots are all fully visible. She is a single Mikasa, no second person, no mirror reflection, no one across the table, her iconic red scarf folded on her lap as she lifts a warm teacup with both hands, short black hair with straight bangs and grey eyes softened by an unusually relaxed expression. A wooden counter, shelves of teacups, a hanging lamp, leafy potted plants and the cafe's leaded window crowd the space behind her, late afternoon sunlight slanting through the glass. A finished anime wallpaper with a luminous focal subject, layered background depth, and a cinematic atmosphere.",
       "promptTokens": [
         "black_boots",
         "black_hair",
@@ -65801,7 +65801,7 @@
         "white_shirt",
         "window"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "832x1216",
       "outfitId": "casual",
       "coverageTags": [
         "daily"
