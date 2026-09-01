@@ -240,6 +240,8 @@ function charLabel(v: string) {
   if (v) {
     const hit = entries.value.find(entry => entry.char === v && entry.displayName)
     if (hit?.displayName) return hit.displayName
+    const popChar = sceneStore.popularCharacters.find(c => c.id === v)
+    if (popChar?.displayName) return popChar.displayName
   }
   return v || '角色'
 }
