@@ -19749,14 +19749,14 @@
     "characterId": "laevatain_arknights",
     "displayName": "莱万汀",
     "source": "Arknights: Endfield",
-    "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz warrior with long waist-length crimson red hair, large curved black horns, purple eyes, a slender devil tail, dressed in her signature official combat attire: a backless black camisole combat top with thin spaghetti straps, a long asymmetric jagged-hem layered skirt in crimson-to-black gradient, bare legs with a black thigh strap, and black heeled boots, wielding a massive dark heavy greatsword with a molten orange core glow carried over her shoulder, a storm of dark metallic blade fragments orbiting her back like obsidian wings",
+    "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz demon girl with long fluffy crimson red hair flaring at the tips, hair intakes and sidelocks framing her face, large curved black demon horns, purple eyes, a slender devil tail, and a curvy figure, dressed in her signature outfit: a sleeveless sideless black mini dress with a layered jagged hem lined in vivid magenta, a large high white detached collar spreading over her shoulders, a chest strap, a small belt pouch, long black elbow gloves, bare legs with a black thigh strap, black high-heel boots, and massive dark obsidian shard-wings spreading from her back",
     "outfits": [
       {
         "outfitId": "standard",
         "outfitName": "萨卡兹熔火战装",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "her signature official combat attire: a backless black camisole combat top with thin spaghetti straps, a long asymmetric jagged-hem layered skirt in crimson-to-black gradient, bare legs with a black thigh strap, black heeled boots, a massive dark heavy greatsword with a molten orange core glow carried over her shoulder, and a storm of dark metallic blade fragments orbiting her back and shoulders like obsidian wings",
+        "prose": "her signature official outfit: a sleeveless sideless black mini dress with a layered jagged hem lined in vivid magenta, a large high white detached collar spreading over her shoulders, a chest strap, a small belt pouch at her waist, long black elbow gloves, bare legs with a black thigh strap, black high-heel boots, and massive dark obsidian shard-wings spreading from her back",
         "references": [
           {
             "id": "ref_01_face_closeup",
