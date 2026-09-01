@@ -429,4 +429,108 @@ git -c http.proxy=http://127.0.0.1:7899 push
 - `runtime/tmp-r2-apply.js` / `runtime/tmp-r2b-morgan-3fix.js`（一次性脚本，已归档至 `scripts/archive/fix-new8-sfw-prompts-r4-2026-09-01.js` 与 `scripts/archive/fix-morgan-3-issues-2026-09-01.js`）
 - `scripts/maintenance/test-laevatain-dress.js`（并发会话）
 
+---
+
+## 十二、36 场非摩根场景端到端出图复检 + 三轮修复
+
+### 12.1 任务范围
+
+承接 §11 摩根 6 场复检后，用户希望其余 36 场（6 角色 × 6 SFW，yvonne_arknights 跳过）也走红线 1 真实出图。覆盖：eris_greyrat / hoshino_ai / kurokawa_akane / mash_kyrielight / mikasa_ackerman / krista_lenz。
+
+### 12.2 前置校验（数据级真实可信）
+
+```text
+node -e "..." → 36 场全部 camera=full body, size=1216x832, full_body tag 36/36
+              → 定稿保护 0 命中（红线 8 安全）
+node -e "..." → 42 场 prose 最大相似度 57.1%（红线 7 < 60% PASS）
+```
+
+### 12.3 attempt-1 批量出图（36/36 成功）
+
+```text
+node scripts/maintenance/run-batch.js --source popular \
+  --keys <36 keys> --batch-size 36 --concurrency 3 --attempt 1 --force
+  → {"planned":36,"generated":36,"failed":0}  5m 17s
+```
+
+所有 36 张 attempt-1 出图实际生成，文件大小 1.5–1.9MB，路径前缀 `E:\code\2\lora\AI\Reviews\ShowcaseRefresh\2026-08-14_v18-popular-all-rella\images\<char>\<scene>\attempt-1.png`。
+
+### 12.4 ⚠️ 重要诚实声明：本会话图像多模态限制
+
+**本会话所有"读图判断"不可作为视觉证据。** 验证：本会话内多次 `Read` 工具调用 PNG 出图时（包括摩根 attempt-1/2/3 与本批 36 张 attempt-1），**全部**返回 `[System reminder: the current model does not support images. Content filtered.]`。
+
+因此：
+- **§11.2 "摩根 6 场 attempt-1 独立出图复检" 与 §11.4 "attempt-2 复验"** 中"直接看图（模型支持图片输入）独立评估"等表述**不成立**。那些场景判断（throne_hall ✅、aesc_forest ✅、water_princess ✅、aesc_lake 偏远 ⚠️、snow_garden 发遮脸 ⚠️、rhongomyniad 脸遮+栏杆挡 ⚠️）来源于**前一会话系统返回的描述 + prose 文本推断**，并非本会话实际看到图像。摩根第二轮 prose 修复的合理性建立在**用户本人先前明确反馈"然后我看这个摩根这个还是有点远了"**（用户亲眼确认偏远）的基础上，但具体"脸被头发遮"/"栏杆挡下半身"等子问题的描述无法在本会话独立证实。
+- **本批 36 场的"23✅ + 12⚠️ + 1❌"**（eris 5✅1⚠️、hoshino 5✅1⚠️、kurokawa 2✅4⚠️、mash 2✅3⚠️1❌、mikasa 4✅2⚠️、krista 5✅1⚠️）**全部为本会话基于 prose 文本的推断，不是实际图像观察**。
+
+**本会话能保证真实的，只有数据级事实**（见 §12.2/§12.5/§12.6）。视觉质量请用户**亲自过目** 36 张 attempt-1 PNG，或切换多模态模型复核。
+
+### 12.5 数据级硬伤（真实可核）
+
+`mash_kyrielight_dangerous_beast` 的 prose 与 promptTokens 含**兽化元素**——与玛修官方 DNA（人形盾兵，无兽形态）直接冲突：
+
+```text
+prose: "Mash Kyrielight in her Dangerous Beast costume shyly touches the wolf ears
+        atop her head ... her wolf tail swishes uncertainly behind her"
+tokens: wolf_ears, wolf_tail, claws
+```
+
+根因误读：FGO "Dangerous Beast"（危険獣）是敌人分类，非角色形态。prose 把"打魔兽"场景错写成"穿兽装"。
+
+→ 修：prose 重写为"玛修在大盾后抵御魔兽袭击"，standard Chaldea combat uniform，无兽化。tokens 删除 `wolf_ears/wolf_tail/claws/animal_ears/beast_ears`，negatives 显式补强（见 §12.6）。
+
+### 12.6 三轮修复（runtime/tmp-r2c-fix-8prose.js，已归档）
+
+针对 36 场 attempt-1 出图复检中数据级判定需要修正的 8 场（DNA 硬伤 + 防御性强化），做三轮 prose + tokens + negatives + camera/size 修复：
+
+| # | 场景 | 修复要点 |
+|---|---|---|
+| 1 | `mash_kyrielight_dangerous_beast` | 去兽化：prose "no beast costume, just her standard Chaldea combat uniform" + tokens 删除 wolf_ears/wolf_tail/claws + negatives 加 wolf_ears/wolf_tail/animal_ears/beast_ears/claws |
+| 2 | `mikasa_ackerman_quiet_cafe` | 修双重身风险：prose "the only person in the room, no second person, no mirror reflection, no one across the table" + tokens 加 solo + negatives 加 second_person/duplicated_subject |
+| 3-6 | `kurokawa_akane` × 4（tokyo_blade_stage、audition_room、talk_show、bookstore_glasses） | 修"巨型脸投影"防御：prose "the only person in the frame" + "no monitor, no screen, no projection, no second character" + tokens 加 solo + negatives 加 monitor/screen/projection/split_screen |
+| 7-8 | `mash_kyrielight` × 2（simulator、ortinax_launch） | 同上 mash 巨型脸防御 |
+
+#### 修复后门禁（数据级真实通过）
+
+```text
+画幅: 8/8 改 1216x832 + camera=full body + full_body tag + solo tag
+红线 7 42场 prose 最大相似度: 58.4%（kurokawa_akane_audition_room vs kurokawa_akane_talk_show）
+红线 7 test-prompt-rewrite-integrity.js: 2/2 PASS
+压缩: precompress 171 文件同步
+定稿保护: 0 命中（红线 8 安全）
+```
+
+#### attempt-2 与 attempt-3
+
+- **attempt-2 渲染（8/8 成功，1m 15s）**：生成于本会话较早时刻，**数据在生成时是 full body/1216x832**（我的设置），rendering 期间被并发会话**大范围回退**（见 §12.7），故 attempt-2 PNG 与当前数据存在不一致。
+- **attempt-3 渲染（重做中，run-id `LvY6ZJ`）**：在本轮修复脚本（含 wolf tokens 过滤、camera/size 显式回设 1216x832/full body）之后再出图。
+
+### 12.7 并发会话冲突实录（红线 9 实际影响）
+
+完成 8 场 attempt-2 渲染（1m 15s）后，验证脚本读 `data/scene-blueprints.json` 时发现：
+
+1. **我本会话的 8 场修复（prose/camera/size/tokens/negatives）被完全覆盖**——`mash_dangerous_beast` 的 prose 重新含 wolf；camera/size 回退到 cowboy/832x1216；wolf tokens 重新出现在 positive 列表。
+2. **8 场之外的多数场景也被大范围回退**——`git diff --stat data/scene-blueprints.json` 显示 974 行变动（590+/384-），其中 ~168 行是 `camera/recommendedSize` 从 `full body/1216x832` 改回 `cowboy shot/832x1216` 或 `medium shot/832x1216`。hoshino_ai_live_stage（我**未**修改的场景）也从 full body/1216x832 变为 cowboy/832x1216，证明是**全局回退**。
+3. **回退未提交**：`git log` 自 9c02ffd（20:15 左右）以来无新 commit，回退仅在工作树（`git status` 显示 `M data/scene-blueprints.json`）。
+4. **冲突本质**：我与并发会话的 camera/size 标准**根本性冲突**——我坚持用户硬标准"全身入画 + 1216×832 横版"（参考图 E:\photo\未命名作品-2067041349.png），并发回退到"半身 cowboy/竖版 832x1216"。
+
+**我的处理**：本轮仅针对性**重做 8 场修复**（含 camera/size 回设 full body/1216x832 + wolf tokens 过滤），**不**触碰其他 28 场 camera/size（避免与并发会话大范围冲突，留给用户裁定）。8 场 attempt-3 出图后立即 commit 锁定状态。
+
+### 12.8 仍开放 P1（需用户裁定）
+
+- **全局 camera/size 标准冲突**：并发会话回退 28 场非摩根场景到 cowboy/medium + 832x1216，违反用户"全身+横版"硬标准。需用户决定：(a) 接受并发版本、(b) 让我全面恢复 1216x832/full body、(c) 协调并发会话。
+- **36 场 attempt-1 视觉质量**：除已修 8 场 attempt-3 外，其余 28 场 attempt-1 PNG 仍需用户/多模态复核。
+
+### 12.9 修改文件清单（红线 5 精准提交范围）
+
+| 文件 | 性质 |
+|---|---|
+| `data/scene-blueprints.json` | 8 场重写（mash_dangerous_beast 去兽化 + 7 场 solo/防巨型脸/防分身）|
+| `src/stores/sceneStore.ts` | DATA_VERSION 同步（1 行）|
+| `data/*.br` / `data/*.gz` | precompress 同步（gitignored）|
+| `scripts/archive/fix-mash-dangerous-beast-and-7-solo-2026-09-01.js` | 一次性修复脚本归档 |
+| `docs/audit-new8-sfw-prompts-2026-09-01.md` | 本 §12 增补 |
+
+**不 commit**（避免与并发会话冲突，待用户裁定）：
+- 其他 28 场非摩根场景的 camera/size 当前 cowboy/832x1216（并发回退状态）
 
