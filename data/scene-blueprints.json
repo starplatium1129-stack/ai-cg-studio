@@ -36962,7 +36962,9 @@
         "black_shorts",
         "armored_boots",
         "sleeveless_dress",
-        "torn_clothes"
+        "torn_clothes",
+        "orange_lining",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -37120,7 +37122,9 @@
         "armored_boots",
         "sleeveless_dress",
         "torn_clothes",
-        "combat_boots"
+        "combat_boots",
+        "orange_lining",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -37238,7 +37242,10 @@
         "streetwear",
         "techwear",
         "volumetric_lighting",
-        "crimson_hair"
+        "crimson_hair",
+        "orange_lining",
+        "jagged_hem",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -37353,7 +37360,10 @@
         "sitting",
         "twilight",
         "volumetric_lighting",
-        "crimson_hair"
+        "crimson_hair",
+        "orange_lining",
+        "jagged_hem",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -37511,7 +37521,9 @@
         "black_shorts",
         "armored_boots",
         "sleeveless_dress",
-        "torn_clothes"
+        "torn_clothes",
+        "orange_lining",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -37644,7 +37656,10 @@
         "streetwear",
         "techwear",
         "volumetric_lighting",
-        "crimson_hair"
+        "crimson_hair",
+        "orange_lining",
+        "jagged_hem",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -37764,7 +37779,10 @@
         "smooth_thighs",
         "tail",
         "volumetric_lighting",
-        "crimson_hair"
+        "crimson_hair",
+        "orange_lining",
+        "jagged_hem",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -37910,7 +37928,10 @@
         "steam",
         "toned_body",
         "volumetric_lighting",
-        "crimson_hair"
+        "crimson_hair",
+        "orange_lining",
+        "jagged_hem",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -38058,7 +38079,10 @@
         "smooth_thighs",
         "tail",
         "volumetric_lighting",
-        "crimson_hair"
+        "crimson_hair",
+        "orange_lining",
+        "jagged_hem",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",
@@ -38208,7 +38232,10 @@
         "standing",
         "vibrant_red_hair",
         "volumetric_lighting",
-        "crimson_hair"
+        "crimson_hair",
+        "orange_lining",
+        "jagged_hem",
+        "official_art"
       ],
       "negativeTokens": [
         "worst quality",

@@ -197,6 +197,7 @@
         "devil_tail",
         "tail",
         "sarkaz",
+        "official_art",
         "arknights_endfield",
         "arknights"
       ],
@@ -214,7 +215,7 @@
         {
           "id": "standard",
           "name": "萨卡兹熔火战装",
-          "prose": "her signature official attire: an elegant backless black spaghetti-strap camisole mini dress with a ruffled skirt, a loose light grey cropped jacket slipping off her shoulders down to her elbows, completely bare legs, black high-heeled ankle boots, and black combat gloves on her right hand, holding a massive glowing molten magma greatsword radiating flame embers",
+          "prose": "her signature official combat attire: an elegant backless black spaghetti-strap mini dress with glowing orange lava lining and jagged hem, a loose light off-shoulder jacket draped around her elbows, completely bare legs, black high-heeled ankle boots, and a right armored combat gauntlet, wielding a massive sci-fi molten magma greatsword radiating flame embers",
           "tokens": [
             "black_dress",
             "backless_dress",
@@ -222,9 +223,10 @@
             "camisole",
             "mini_dress",
             "ruffled_skirt",
+            "jagged_hem",
+            "orange_lining",
             "off-shoulder_jacket",
             "off_shoulder",
-            "cropped_jacket",
             "bare_legs",
             "high_heels",
             "ankle_boots",
@@ -232,8 +234,8 @@
             "right_gauntlet",
             "greatsword",
             "glowing_sword",
-            "fire",
             "magma",
+            "fire",
             "embers"
           ],
           "default": true,
