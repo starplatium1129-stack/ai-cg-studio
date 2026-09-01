@@ -19749,14 +19749,14 @@
     "characterId": "laevatain_arknights",
     "displayName": "莱万汀",
     "source": "Arknights: Endfield",
-    "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz warrior with medium-length wavy crimson red hair, segmented black obsidian horns rising from her head, deep red eyes, a slender devil tail with ember sparks, and a curvy commanding figure, dressed in her signature official combat attire: a white sleeveless high-neck top with delicate dark lacing at the collar, a cropped black jacket half-draped off one shoulder hanging from her arm, a white asymmetric mini skirt with a black corset-style waist cincher and silver buckle straps, black thigh-high strapped heeled boots, and a massive black cross-shaped great blade strapped to her back with its edge glowing faint orange from contained heat",
+    "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz swordswoman with long flowing crimson red hair, segmented black obsidian horns rising from her head, deep purple eyes, a slender devil tail with ember sparks, and a curvy commanding figure, dressed in her signature official combat attire: a one-piece sideless sleeveless dress in a black-to-crimson gradient with a backless cut and asymmetric jagged hem, a detached white collar and detached black sleeves, black thigh-high heeled boots with a single crimson thigh strap, and a long flame-bladed one-handed sword in her right hand",
     "outfits": [
       {
         "outfitId": "standard",
-        "outfitName": "终末地官方便服战装",
+        "outfitName": "终末地官方战斗连衣裙",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "a white sleeveless high-neck top with delicate dark lacing at the collar, a cropped black jacket half-draped off one shoulder hanging from her arm, a white asymmetric mini skirt with a black corset-style waist cincher and silver buckle straps, black thigh-high strapped heeled boots, and a massive black cross-shaped great blade strapped to her back with the blade's edge glowing faint orange from contained heat",
+        "prose": "her signature official Sarkaz combat attire: a one-piece sideless sleeveless dress in a black-to-crimson gradient with a backless cut and asymmetric jagged hem, a detached white collar and detached black sleeves, black thigh-high heeled boots with a single crimson thigh strap, and a long flame-bladed one-handed sword in her right hand",
         "references": [
           {
             "id": "ref_01_face_closeup",
