@@ -2331,6 +2331,552 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "texas_arknights",
+      "displayName": "德克萨斯",
+      "originalName": "Texas",
+      "franchise": "Arknights",
+      "aliases": [
+        "texas",
+        "texas_arknights",
+        "德克萨斯",
+        "德狗",
+        "企鹅物流",
+        "缄默德克萨斯",
+        "omertosa",
+        "texas the omertosa",
+        "arknights",
+        "texas (arknights)"
+      ],
+      "identityProse": "Texas from Arknights, the cool and taciturn Lupo courier of Penguin Logistics and heir to the Siracusa Texas family, a handsome and slender wolf girl with long silky dark grey-black hair, soft pointed Lupo wolf ears atop her head, a long bushy dark wolf tail, calm golden-amber eyes with a stoic gaze, a chocolate pocky stick resting between her lips, and twin glowing originium energy swords floating in a raining blade array",
+      "identityTokens": [
+        "texas (arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "wolf_ears",
+        "animal_ears",
+        "wolf_tail",
+        "tail",
+        "amber_eyes",
+        "pocky",
+        "chocolate_stick",
+        "pocky_in_mouth",
+        "energy_sword",
+        "sword_rain",
+        "calm_expression",
+        "stoic",
+        "lupo",
+        "penguin_logistics",
+        "arknights"
+      ],
+      "exactTokens": [
+        "texas (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "penguin_logistics",
+          "name": "企鹅物流制服",
+          "prose": "Penguin Logistics courier uniform: a hooded black and white techwear windbreaker jacket with yellow accents and PL logo, white collared shirt, slim black tie, dark high-waisted shorts, black leather belt with sword scabbards, black over-knee socks, combat boots, and fingerless gloves",
+          "tokens": [
+            "techwear",
+            "jacket",
+            "hooded_jacket",
+            "black_jacket",
+            "white_shirt",
+            "black_necktie",
+            "shorts",
+            "black_shorts",
+            "thighhighs",
+            "black_thighhighs",
+            "combat_boots",
+            "fingerless_gloves",
+            "holster",
+            "sheath",
+            "penguin_logistics"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "omertosa_mafia",
+          "name": "叙拉古缄默黑帮风衣",
+          "prose": "Siracusa Texas the Omertosa formal attire: an exquisite double-breasted charcoal-black mafia overcoat with crimson silk lining, tailored black pinstripe vest, crisp white dress shirt, red silk ascot, slim tailored trousers, polished leather dress shoes, and twin glowing golden rapier swords",
+          "tokens": [
+            "overcoat",
+            "long_coat",
+            "black_coat",
+            "formal_attire",
+            "suit",
+            "vest",
+            "white_shirt",
+            "red_ascot",
+            "trousers",
+            "dress_shoes",
+            "rapier",
+            "dual_wielding",
+            "siracusa"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "willpower_winter",
+          "name": "意志 / 寒冬信使日常便服",
+          "prose": "a cozy winter urban courier outfit: a heavy olive-green winter parka with faux-fur lined hood, thick cream knit scarf, charcoal skinny jeans, leather motorcycle boots, leather messenger courier bag, and a pocky box in her pocket",
+          "tokens": [
+            "parka",
+            "winter_coat",
+            "scarf",
+            "knit_scarf",
+            "jeans",
+            "pants",
+            "boots",
+            "messenger_bag",
+            "casual",
+            "winter_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_sunbreeze",
+          "name": "阳光微风夏日泳装",
+          "prose": "a stylish and sleek black one-piece swimsuit with asymmetric cutouts along the waist, translucent white linen beach shirt worn open, dark sunglasses, and sandals, wolf tail swishing in the seaside breeze",
+          "tokens": [
+            "swimsuit",
+            "one-piece_swimsuit",
+            "black_swimsuit",
+            "cutouts",
+            "open_shirt",
+            "white_shirt",
+            "sunglasses",
+            "sandals",
+            "beachwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "pink_nipples",
+            "slender_body",
+            "toned_stomach",
+            "navel",
+            "pussy",
+            "wolf_ears",
+            "wolf_tail",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, lean and beautifully toned athletic body, perky natural breasts with tender pink nipples, slender waist, flat stomach, navel, delicate pussy, fluffy dark wolf ears and tail, bare legs, bare feet, soft dramatic room lighting",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛 / 企鹅物流 / 叙拉古）",
+        "era": "近未来奇幻",
+        "formNotes": "企鹅物流信使 / 德克萨斯家族末裔；冷静沉稳、少言寡语，喜欢吃巧克力棒（Pocky），擅长使用源石剑雨技艺",
+        "research": "2026-08-31 调研（Danbooru texas_(arknights) 11000+ posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "ask_(askzy)",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "lappland_arknights",
+      "displayName": "拉普兰德",
+      "originalName": "Lappland",
+      "franchise": "Arknights",
+      "aliases": [
+        "lappland",
+        "lappland_arknights",
+        "拉普兰德",
+        "拉狗",
+        "萨卢佐",
+        "叙拉古狂狼",
+        "arknights",
+        "lappland (arknights)"
+      ],
+      "identityProse": "Lappland from Arknights, the wild and fiercely unpredictable Lupo swordswoman of the Siracusan Saluzzo family, a pale and athletic wolf girl with shaggy layered white-silver hair, fluffy white wolf ears with dark tips, a large bush-like white wolf tail, piercing silver-grey eyes with a manic yet captivating smirk, faint black originium crystal lesions visible on her pale skin, and twin serrated Originium art blades crackling with pale blue energy",
+      "identityTokens": [
+        "lappland (arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "silver_hair",
+        "messy_hair",
+        "wolf_ears",
+        "animal_ears",
+        "wolf_tail",
+        "tail",
+        "grey_eyes",
+        "silver_eyes",
+        "smirk",
+        "sharp_teeth",
+        "originium_crystal",
+        "dual_swords",
+        "swords",
+        "twin_blades",
+        "lupo",
+        "siracusa",
+        "arknights"
+      ],
+      "exactTokens": [
+        "lappland (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "standard_mercenary",
+          "name": "罗德岛作战服",
+          "prose": "Lappland's signature battle attire: a dark slate-grey duster trench coat with tattered ragged hem and high collar worn open over a white tank top, black leather utility harness with thigh straps, black shorts, leather combat boots, dual sword sheaths on her back, and black fingerless gloves",
+          "tokens": [
+            "coat",
+            "trench_coat",
+            "duster_coat",
+            "tattered_hem",
+            "tank_top",
+            "white_shirt",
+            "shorts",
+            "black_shorts",
+            "harness",
+            "thigh_holster",
+            "straps",
+            "combat_boots",
+            "fingerless_gloves",
+            "dual_swords"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "refined_horrormare",
+          "name": "典雅噩兆 / 宴会礼服",
+          "prose": "the Refined Horrormare gothic evening ensemble: a dramatic black and crimson velvet ballgown with an asymmetric jagged lace hem, sheer lace masquerade eye mask, black leather opera gloves, crimson rose corsage, and dark crystal jewelry, projecting lethal aristocratic madness",
+          "tokens": [
+            "ballgown",
+            "black_dress",
+            "red_dress",
+            "gothic_dress",
+            "lace_mask",
+            "eye_mask",
+            "opera_gloves",
+            "black_gloves",
+            "rose",
+            "corsage",
+            "elegant",
+            "aristocratic"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_leather",
+          "name": "狂野机车皮衣便服",
+          "prose": "a rebellious street-biker look: a cropped black leather biker jacket studded with silver rivets over a dark grey cropped camisole, distressed denim mini shorts, fishnet stockings, studded leather choker, and heavy platform combat boots, wolf tail swishing restlessly",
+          "tokens": [
+            "leather_jacket",
+            "biker_jacket",
+            "crop_top",
+            "camisole",
+            "denim_shorts",
+            "short_shorts",
+            "fishnet_stockings",
+            "choker",
+            "platform_boots",
+            "rebellious",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nomad_wasteland",
+          "name": "叙拉古荒原行者",
+          "prose": "a weathered Siracusa nomad wanderer outfit: a heavy hooded grey poncho cloak with wolf fur trim, bandolier ammo belts crossing her chest, weathered leather pants, traveling canteen, and combat boots, dual blades drawn in the dust storm",
+          "tokens": [
+            "poncho",
+            "cloak",
+            "hood",
+            "fur_trim",
+            "bandolier",
+            "leather_pants",
+            "pants",
+            "traveling",
+            "wasteland",
+            "wanderer"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "originium_crystal",
+            "breasts",
+            "pink_nipples",
+            "slender_waist",
+            "toned_abs",
+            "navel",
+            "pussy",
+            "wolf_ears",
+            "wolf_tail",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pale fair skin dotted with fine glistening sweat and a few black originium crystal flecks, firm perky breasts with erect pink nipples, slender athletic waist with subtle abs, navel, exposed dripping pussy, white wolf ears and tail, bare feet, wild flushed euphoric expression",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛 / 叙拉古 / 萨卢佐家族）",
+        "era": "近未来奇幻",
+        "formNotes": "萨卢佐家族狂狼；双刀源石技艺能沉默敌方特殊能力，狂放不羁、享受杀戮与狂乱对决，对德克萨斯有着极度执着的痴迷",
+        "research": "2026-08-31 调研（Danbooru lappland_(arknights) 8000+ posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "swav",
+        "ask_(askzy)",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "viviana_arknights",
+      "displayName": "薇薇安娜",
+      "originalName": "Viviana Droste",
+      "franchise": "Arknights",
+      "aliases": [
+        "viviana",
+        "viviana_arknights",
+        "viviana_droste",
+        "薇薇安娜",
+        "烛骑士",
+        "德罗斯特",
+        "卡西米尔",
+        "莱塔尼亚",
+        "arknights",
+        "viviana (arknights)"
+      ],
+      "identityProse": "Viviana Droste from Arknights, the noble Candle Knight of Kazimierz and poet of Leithanien, an ethereal and elegant Elafia noblewoman with magnificent golden glowing deer antlers branching gracefully from her head, delicate deer ears, long flowing flaxen blonde wavy hair, serene and poetic sapphire blue eyes with a gentle melancholy gaze, and golden Arts candle flames and radiant shadow moths dancing around her slender golden rapier sword",
+      "identityTokens": [
+        "viviana (arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "wavy_hair",
+        "antlers",
+        "deer_antlers",
+        "animal_ears",
+        "deer_ears",
+        "blue_eyes",
+        "sapphire_eyes",
+        "gentle_smile",
+        "melancholy",
+        "candle",
+        "candlelight",
+        "flame",
+        "moth",
+        "rapier",
+        "sword",
+        "elafia",
+        "noble",
+        "knight",
+        "kazimierz",
+        "arknights"
+      ],
+      "exactTokens": [
+        "viviana (arknights)",
+        "viviana_droste"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "candle_knight_armor",
+          "name": "烛骑士礼装铠甲",
+          "prose": "the Candle Knight ceremonial armor: a tailored midnight-black and gold knightly tunic dress with polished golden breastplate and pauldrons, flowing pleated layered skirt with gold filigree embroidery, white silk opera gloves, golden sword sash, and polished armored greaves boots, carrying her golden rapier",
+          "tokens": [
+            "armor",
+            "breastplate",
+            "pauldrons",
+            "knight",
+            "black_dress",
+            "gold_trim",
+            "pleated_skirt",
+            "opera_gloves",
+            "white_gloves",
+            "greaves",
+            "boots",
+            "rapier",
+            "sash",
+            "kazimierz"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "lethe_poet_gown",
+          "name": "莱塔尼亚贵族诗集礼裙",
+          "prose": "a romantic Leithanien aristocratic evening gown of deep sapphire-blue velvet with translucent sheer black lace sleeves, a delicate golden choker necklace, pearl hairpins woven among her antlers, holding a leather-bound poetry book, radiating poetic grace",
+          "tokens": [
+            "evening_gown",
+            "blue_dress",
+            "velvet_dress",
+            "lace_sleeves",
+            "choker",
+            "necklace",
+            "hairpins",
+            "holding_book",
+            "poetry_book",
+            "elegant",
+            "noble",
+            "leithanien"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "autumn_stroll_casual",
+          "name": "金秋漫步羊毛风衣",
+          "prose": "an autumn casual promenade ensemble: a warm camel-beige wool trench coat over a cream cable-knit turtleneck sweater, brown tartan pleated midi skirt, dark brown leather riding boots, leather gloves, and a soft beige wool beret nestled between her antlers",
+          "tokens": [
+            "trench_coat",
+            "wool_coat",
+            "turtleneck",
+            "sweater",
+            "plaid_skirt",
+            "midi_skirt",
+            "riding_boots",
+            "boots",
+            "leather_gloves",
+            "beret",
+            "casual",
+            "autumn_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "candle_silk_slip",
+          "name": "烛影夜曲丝绸睡裙",
+          "prose": "a luxurious champagne-gold silk camisole slip nightgown with delicate French lace trim along the plunging neckline and hem, thin straps resting on her porcelain shoulders, barefoot, surrounded by soft glowing candlelights",
+          "tokens": [
+            "nightgown",
+            "slip_dress",
+            "silk_dress",
+            "camisole",
+            "lace_trim",
+            "plunging_neckline",
+            "thin_straps",
+            "barefoot",
+            "sensual",
+            "sleepwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "antlers",
+            "deer_ears",
+            "breasts",
+            "pink_nipples",
+            "slender_waist",
+            "curvy_hips",
+            "navel",
+            "pussy",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, fair porcelain skin bathed in warm amber candlelight, glowing golden antlers, soft blonde wavy hair, voluptuous and elegant feminine body, full breasts with sensitive pink nipples, slender waist, curving hips, navel, delicate moist pink pussy, bare legs, bare feet, poetic romantic intimacy",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "泰拉（卡西米尔 / 莱塔尼亚 / 罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "卡西米尔骑士大赛「烛骑士」/ 莱塔尼亚贵族后裔；优雅高贵、爱好诗歌与文学，以光影与微光微尘为源石技艺",
+        "research": "2026-08-31 调研（Danbooru viviana_(arknights) 4500+ posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "rella",
+        "swav"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

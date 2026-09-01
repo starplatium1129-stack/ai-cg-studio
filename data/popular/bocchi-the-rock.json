@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "franchise": "Bocchi the Rock!",
+  "characters": [
+    {
+      "id": "gotoh_hitori",
+      "displayName": "后藤一里",
+      "originalName": "後藤ひとり",
+      "franchise": "Bocchi the Rock!",
+      "aliases": [
+        "gotoh_hitori",
+        "gotoh hitori",
+        "hitori gotoh",
+        "bocchi",
+        "bocchi the rock",
+        "bocchi the rock!",
+        "后藤一里",
+        "波奇酱",
+        "后藤独",
+        "guitarhero"
+      ],
+      "identityProse": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression",
+      "identityTokens": [
+        "gotoh_hitori",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_ornament",
+        "cube_hair_ornament",
+        "bocchi_the_rock!"
+      ],
+      "exactTokens": [
+        "gotoh_hitori"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "pink_tracksuit",
+      "outfits": [
+        {
+          "id": "pink_tracksuit",
+          "name": "经典粉色运动服常服",
+          "tokens": [
+            "pink_tracksuit",
+            "tracksuit",
+            "track_jacket",
+            "jacket",
+            "long_sleeves",
+            "pleated_skirt",
+            "black_skirt",
+            "black_socks",
+            "sneakers",
+            "guitar_case"
+          ],
+          "prose": "wearing her iconic oversized bright pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks, casual sneakers, and carrying a black electric guitar gig bag",
+          "styleHint": "soft daily anime illustration with gentle warm lighting",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "kessoku_band_live_tshirt",
+          "name": "结束乐队Live演出T恤",
+          "tokens": [
+            "black_t-shirt",
+            "t-shirt",
+            "print_t-shirt",
+            "black_skirt",
+            "pleated_skirt",
+            "wristband",
+            "electric_guitar",
+            "gibson_les_paul",
+            "guitar_strap",
+            "guitar_pick"
+          ],
+          "prose": "wearing a black Kessoku Band graphic print t-shirt tucked into a dark pleated skirt, a red wristband, and slinging her black Gibson Les Paul Custom electric guitar across her shoulder",
+          "styleHint": "dynamic anime concert stage lighting with vibrant volumetric rays",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cultural_festival_maid",
+          "name": "文化祭复古黑白女仆装",
+          "tokens": [
+            "maid_uniform",
+            "maid_dress",
+            "black_dress",
+            "white_apron",
+            "maid_apron",
+            "maid_headdress",
+            "frills",
+            "frilled_apron",
+            "thighhighs",
+            "black_thighhighs"
+          ],
+          "prose": "wearing a classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+          "styleHint": "warm nostalgic classroom cafe lighting with soft bokeh",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "shuka_summer_uniform",
+          "name": "秀华高中夏季水手校服",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "white_shirt",
+            "short_sleeves",
+            "sailor_collar",
+            "blue_collar",
+            "red_necktie",
+            "pleated_skirt",
+            "black_skirt",
+            "white_socks",
+            "loafers"
+          ],
+          "prose": "wearing the official Shuka High School summer uniform featuring a short-sleeved white sailor shirt with a navy blue collar, red ribbon necktie, and neat dark pleated skirt",
+          "styleHint": "bright airy summer afternoon anime light",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "closet_pajamas_casual",
+          "name": "壁橱避难所宽松睡衣私服",
+          "tokens": [
+            "oversized_t-shirt",
+            "pajamas",
+            "loose_clothes",
+            "bare_legs",
+            "headphones",
+            "casual_clothes"
+          ],
+          "prose": "wearing an oversized baggy pastel t-shirt and loose lounge shorts while wearing large over-ear monitor headphones sitting curled up inside her dimly lit cozy closet recording nook",
+          "styleHint": "moody dim ambient lighting with warm fairy lights and screen glow",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "blushing",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, unexpectedly voluptuous and busty figure with soft fair skin, prominent perky pink nipples, smooth shaved exposed pussy, blushing intensely from head to toe",
+          "styleHint": "intimate warm boudoir lighting with soft glowing highlights",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代日常+摇滚音乐（孤独摇滚！）",
+        "era": "当代",
+        "formNotes": "粉色长发+蓝黄方块发夹+青蓝瞳；极度社交恐惧吉他手（guitarhero）；结束乐队主音吉他；反差巨乳身材；常态粉色运动服/Live T恤/女仆装/壁橱自闭服",
+        "research": "2026-08-31 调研"
+      },
+      "animeStudio": "CloverWorks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kerorira",
+        "hamazi_aki",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

@@ -729,6 +729,403 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "hayase_yuuka",
+      "displayName": "早濑优香",
+      "originalName": "Hayase Yuuka",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "hayase_yuuka",
+        "yuuka",
+        "yuuka_(blue_archive)",
+        "早瀬ユウカ",
+        "优香",
+        "小计算器",
+        "100kg",
+        "没关系反正优香会算账",
+        "millennium",
+        "seminar",
+        "blue archive",
+        "yuuka (blue archive)"
+      ],
+      "identityProse": "Hayase Yuuka from Blue Archive, the dedicated treasurer of Millennium Science School's Seminar student council, a smart and earnest girl with dark blue twin-tails adorned with angular mechanical hair clips, an energetic ahoge, bright blue eyes with an intelligent yet tsundere gaze, a floating blue digital square geometric halo, and famously soft, plump thighs",
+      "identityTokens": [
+        "yuuka (blue archive)",
+        "1girl",
+        "solo",
+        "dark_blue_hair",
+        "long_hair",
+        "twintails",
+        "hair_ornament",
+        "mechanical_hair_clips",
+        "ahoge",
+        "blue_eyes",
+        "blue_halo",
+        "digital_halo",
+        "geometric_halo",
+        "thighs",
+        "thick_thighs",
+        "plump_thighs",
+        "blush",
+        "tsundere",
+        "millennium",
+        "seminar",
+        "blue_archive"
+      ],
+      "exactTokens": [
+        "yuuka (blue archive)"
+      ],
+      "exactPrefixes": [
+        "hayase_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "millennium_uniform",
+          "name": "研讨会制服",
+          "prose": "Millennium Seminar school uniform featuring a sleeveless white collared blouse, blue necktie, open dark navy blazer draped over her shoulders, ID card lanyard, black pleated miniskirt, black thighhighs with white trim, brown loafers, and a handheld digital calculator tablet",
+          "tokens": [
+            "school_uniform",
+            "sleeveless_shirt",
+            "collared_shirt",
+            "white_shirt",
+            "blue_necktie",
+            "open_jacket",
+            "navy_jacket",
+            "lanyard",
+            "id_card",
+            "pleated_skirt",
+            "black_skirt",
+            "miniskirt",
+            "black_thighhighs",
+            "thighhighs",
+            "loafers",
+            "calculator",
+            "millennium",
+            "seminar"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "gym_tracksuit",
+          "name": "晄轮大祭体操服",
+          "prose": "Millennium Halo Festival athletic PE uniform with a dark navy track jacket worn unzipped over a white sports t-shirt, navy gym bloomers, white sports crew socks, blue sneakers, a silver stopwatch whistle around her neck, and high twintails",
+          "tokens": [
+            "gym_uniform",
+            "track_jacket",
+            "open_jacket",
+            "t-shirt",
+            "white_shirt",
+            "bloomers",
+            "gym_shorts",
+            "white_socks",
+            "sneakers",
+            "stopwatch",
+            "whistle",
+            "athletic"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "pajamas_loungewear",
+          "name": "居家居服与眼镜",
+          "prose": "a cozy oversized pastel blue knit sweater falling off one shoulder, comfortable dark shorts, soft house slippers, clear red-framed glasses, and loose low twintails, holding a warm mug of cocoa",
+          "tokens": [
+            "loungewear",
+            "sweater",
+            "oversized_sweater",
+            "off_shoulder",
+            "shorts",
+            "glasses",
+            "red_eyeglasses",
+            "slippers",
+            "holding_mug",
+            "low_twintails",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_date",
+          "name": "周末约会风衣",
+          "prose": "a stylish autumn casual outfit: a beige trench coat over a cream ribbed knit turtleneck sweater, navy tartan pleated skirt, dark sheer pantyhose, ankle boots, and a small black leather shoulder bag",
+          "tokens": [
+            "casual",
+            "trench_coat",
+            "turtleneck",
+            "sweater",
+            "plaid_skirt",
+            "pantyhose",
+            "tights",
+            "ankle_boots",
+            "shoulder_bag",
+            "autumn_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日海滨泳装",
+          "prose": "a sporty and charming dark navy and white two-piece bikini with cross-strap waist accents, translucent white beach cover-up pareo, sun visor hat, and sandals, highlighting her toned waist and soft thighs",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "navy_blue_bikini",
+            "two-piece_swimsuit",
+            "straps",
+            "pareo",
+            "sun_visor",
+            "sandals",
+            "beachwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "breasts",
+            "pink_nipples",
+            "thick_thighs",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "bare_shoulders",
+            "collarbone",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, bare skin, soft natural female body, voluptuous breasts with perky pink nipples, famously thick and soft thighs, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 千年科学学园",
+        "era": "近未来学园都市",
+        "formNotes": "研讨会会计；精打细算、责任心极强，因大腿肉感被老师戏称为100kg，极其傲娇容易害羞",
+        "research": "2026-08-31 调研（Danbooru hayase_yuuka 12000+ posts）"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "tiv",
+        "anmi"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "shiromi_iori",
+      "displayName": "银镜伊织",
+      "originalName": "Shiromi Iori",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "shiromi_iori",
+        "iori",
+        "iori_(blue_archive)",
+        "银镜伊织",
+        "伊织",
+        "风纪委员会突击队长",
+        "gehenna",
+        "disciplinary committee",
+        "blue archive",
+        "iori (blue archive)"
+      ],
+      "identityProse": "Shiromi Iori from Blue Archive, the elite specialist and vanguard captain of Gehenna Academy's Disciplinary Committee, a slender demon girl with sun-kissed tan skin, long silver-white twintails tied with black ribbons, two small black curved horns on her head, a long black demon tail with a spade tip, small black bat wings on her back, a spiky red jagged halo, sharp crimson eyes with a proud and flustered tsundere expression, and famously beautiful bare legs",
+      "identityTokens": [
+        "iori (blue archive)",
+        "1girl",
+        "solo",
+        "dark_skin",
+        "tanned_skin",
+        "silver_hair",
+        "white_hair",
+        "long_hair",
+        "twintails",
+        "black_ribbons",
+        "horns",
+        "black_horns",
+        "demon_horns",
+        "demon_tail",
+        "tail",
+        "spade_tail",
+        "demon_wings",
+        "bat_wings",
+        "red_halo",
+        "jagged_halo",
+        "red_eyes",
+        "sharp_eyes",
+        "tsundere",
+        "blush",
+        "gehenna",
+        "blue_archive"
+      ],
+      "exactTokens": [
+        "iori (blue archive)"
+      ],
+      "exactPrefixes": [
+        "shiromi_"
+      ],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "disciplinary_uniform",
+          "name": "风纪突击队长制服",
+          "prose": "Gehenna Disciplinary Committee assault uniform with a black sleeveless cropped military jacket, red disciplinary armband, short black pleated miniskirt, garter belt with thigh-high black stockings, fingerless combat gloves, tactical harness, sniper rifle holster, and black combat boots",
+          "tokens": [
+            "military_uniform",
+            "black_jacket",
+            "crop_top",
+            "sleeveless",
+            "red_armband",
+            "armband",
+            "pleated_skirt",
+            "black_skirt",
+            "miniskirt",
+            "garter_straps",
+            "garter_belt",
+            "thighhighs",
+            "black_thighhighs",
+            "fingerless_gloves",
+            "combat_boots",
+            "sniper_rifle",
+            "gehenna"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "swimsuit",
+          "name": "夏日灼阳泳装",
+          "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her horns, and a water squirt rifle",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "white_bikini",
+            "halterneck",
+            "tanlines",
+            "tan_lines",
+            "pareo",
+            "sunglasses",
+            "sandals",
+            "water_gun",
+            "beachwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_streetwear",
+          "name": "街头休闲私服",
+          "prose": "a trendy urban street outfit: a black ribbed sleeveless crop halter top, distressed denim shorts with a leather belt, open oversized flannel red-black checkered shirt, black choker, white high-top sneakers, and demon tail swishing freely",
+          "tokens": [
+            "casual",
+            "crop_top",
+            "halter_top",
+            "denim_shorts",
+            "short_shorts",
+            "plaid_shirt",
+            "flannel_shirt",
+            "choker",
+            "sneakers",
+            "streetwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "tactical_night_ops",
+          "name": "暗夜潜行紧身衣",
+          "prose": "a high-tech black tactical stealth bodysuit with reinforced kevlar panels, utility pouches, night-vision monocle headset, combat knife sheathed on her hip, fingerless tactical gloves, and combat boots",
+          "tokens": [
+            "bodysuit",
+            "tight_suit",
+            "stealth_suit",
+            "tactical_gear",
+            "pouches",
+            "utility_belt",
+            "headset",
+            "fingerless_gloves",
+            "combat_boots",
+            "military"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "dark_skin",
+            "tanlines",
+            "breasts",
+            "pink_nipples",
+            "slender_body",
+            "navel",
+            "pussy",
+            "demon_horns",
+            "demon_tail",
+            "demon_wings",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, small black horns, wagging demon tail, small bat wings, bare legs and bare feet, soft sensual lighting",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 歌赫娜学院",
+        "era": "近未来学园都市",
+        "formNotes": "风纪委员会突击队长；褐肤白发魔角，嘴硬心软、傲娇好胜，常被老师以各种理由捉弄舔脚而羞愤不已",
+        "research": "2026-08-31 调研（Danbooru shiromi_iori 9500+ posts）"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "swav",
+        "rella",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

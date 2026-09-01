@@ -13,11 +13,11 @@ var blueprintData = require('../../data/scene-blueprints.json');
 var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
 
-test('popular data: 57 characters, unique ids, exactly one default outfit per character', function () {
-  // 2026-08-31 新增 8 位热门角色（无职转生/我推的孩子×2/终末地/FGO×2/进击的巨人×2），49 -> 57。
-  assert.strictEqual(characters.length, 57, 'must ship exactly 57 characters');
+test('popular data: 68 characters, unique ids, exactly one default outfit per character', function () {
+  // 2026-08-31 扩容：新增 11 位现象级角色（波奇酱/EVA双壁/芙宁娜/胡桃/卡芙卡/优香/伊织/德克萨斯/拉普兰德/薇薇安娜），57 -> 68。
+  assert.strictEqual(characters.length, 68, 'must ship exactly 68 characters');
   var ids = new Set(characters.map(function (character) { return character.id; }));
-  assert.strictEqual(ids.size, 57, 'character ids must be unique');
+  assert.strictEqual(ids.size, 68, 'character ids must be unique');
   characters.forEach(function (character) {
     // 2026-08-24 B1 衣橱扩容：上限 8 -> 10（陈衍生服装试点 10 套；后续角色扩容按需再演进）。
     assert.ok(character.outfits.length >= 2 && character.outfits.length <= 10, character.id + ' must have 2-10 outfits (researched official skins + derived casual wear)');
@@ -61,7 +61,7 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
-test('blueprints: 57 characters x (6-7 prototype + 4-5 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
+test('blueprints: 68 characters x (6-7 prototype + 4-5 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
   // 2026-08-15 扩容：新增 15 位方舟/终末地热门角色；2026-08-18 新增 9 位跨作品热门角色
   // （43 角色 = 9x6 + 27x10 + 7x11 = 401 场景）；
   // 2026-08-18 审视优化：9 位新角色场景补足至每角色 10 个（6 原型 + 4 成人）
@@ -73,7 +73,8 @@ test('blueprints: 57 characters x (6-7 prototype + 4-5 adult), all owned by a ch
   // 2026-08-27 圣园未花专属晨曦私语场景扩容（全年龄+纯白裸态NSFW，未花 13 -> 15，48 角色 = 34x10 + 8x11 + 5x13 + 1x15 = 508 场景）。
   // 2026-08-30 明日方舟「令」接入（ling_arknights，6 原型 + 4 成人，49 角色 = 35x10 + 8x11 + 5x13 + 1x15 = 518 场景）。
   // 2026-08-31 新增 8 位热门角色（各 6 原型 + 4 成人，57 角色 = 43x10 + 8x11 + 5x13 + 1x15 = 598 场景）。
-  assert.strictEqual(blueprints.length, 598, 'expected 598 character scenes, got ' + blueprints.length);
+  // 2026-08-31 新增 11 位现象级角色（11 位角色各 11 蓝图 = +121 场景，68 角色 = 719 场景）。
+  assert.strictEqual(blueprints.length, 719, 'expected 719 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -85,14 +86,14 @@ test('blueprints: 57 characters x (6-7 prototype + 4-5 adult), all owned by a ch
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色 10、11、13 或 15 个场景：10=6 原型+4 成人（43 角色）、11=7 原型+4 成人（8 角色）、
+  // 每个角色 10、11、13 或 15 个场景：10=6 原型+4 成人（43 角色）、11=7 原型+4 成人（19 角色）、
   // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、15=未花专属双场景扩容（1 角色）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
     assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must own 10, 11, 13 or 15 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 43, 11: 8, 13: 5, 15: 1 }, 'scene distribution must be 43x10 + 8x11 + 5x13 + 1x15');
+  assert.deepStrictEqual(sceneDist, { 10: 43, 11: 19, 13: 5, 15: 1 }, 'scene distribution must be 43x10 + 19x11 + 5x13 + 1x15');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4、5 或 6 个带 characterId 的成人场景。
@@ -103,7 +104,7 @@ test('blueprints: 57 characters x (6-7 prototype + 4-5 adult), all owned by a ch
       entry[0] + ' must own 4, 5 or 6 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 45, 5: 11, 6: 1 }, 'adult distribution must be 45x4 + 11x5 + 1x6');
+  assert.deepStrictEqual(adultDist, { 4: 56, 5: 11, 6: 1 }, 'adult distribution must be 56x4 + 11x5 + 1x6');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');
