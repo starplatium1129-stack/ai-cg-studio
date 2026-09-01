@@ -1276,7 +1276,7 @@
       "action": "靠在铁丝网边，海风吹拂着微卷的长发与校服百褶裙，眼神清澈而带着一丝学姐的从容",
       "timeOfDay": "黄昏",
       "lighting": "夕阳将海平面与天际染成橘红色，柔和逆光勾勒出发丝金边",
-      "camera": "medium shot, ocean horizon background, golden hour rim lighting",
+      "camera": "cowboy shot, leaning against chainlink fence",
       "mood": "青春感伤与温柔",
       "sceneTags": [
         "school_rooftop",
@@ -1286,7 +1286,7 @@
         "windy",
         "golden_hour"
       ],
-      "promptProse": "Inside the school rooftop chainlink fence ocean view bathed in 夕阳将海平面与天际染成橘红色，柔和逆光勾勒出发丝金边, Sakurajima Mai — the Minegahara High School uniform with a brown blazer — leans against the rooftop fence, wind lifting her hair. Sheer black thighhigh stockings hugging smooth thighs, lace tops peeking beneath her skirt hem. Volumetric light and soft bokeh add breathable depth, while careful rim lighting sculpts her silhouette against the background with gallery-print clarity.",
+      "promptProse": "Leaning gracefully against the school rooftop chainlink fence at golden hour, Sakurajima Mai gazes toward the shimmering ocean horizon, her dark purple hair fluttering gently in the sea breeze. Her Minegahara High School brown blazer, neat knit vest, and sheer black pantyhose catch the radiant orange sunset light. The sun dips beneath the sea in the distance, casting glowing amber rim highlights and long soft shadows across the concrete rooftop.",
       "promptTokens": [
         "atmospheric",
         "beige_vest",
@@ -1309,7 +1309,8 @@
         "pleated_skirt",
         "red_necktie",
         "school_rooftop",
-        "sheer_black_thighhigh_stockings",
+        "sheer_thighhighs",
+        "black_thighhighs",
         "smooth_thighs",
         "sunset",
         "sweater_vest",
@@ -1364,7 +1365,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "school_uniform",
       "coverageTags": [
         "daily"
@@ -1715,7 +1716,7 @@
       "action": "系着围裙准备早餐",
       "timeOfDay": "清晨",
       "lighting": "柔和晨光",
-      "camera": "medium shot",
+      "camera": "medium shot, preparing breakfast at kitchen counter",
       "mood": "温柔治愈",
       "sceneTags": [
         "kitchen",
@@ -1727,7 +1728,7 @@
         "sunlight",
         "indoor"
       ],
-      "promptProse": "Under 柔和晨光 at the kitchen cooking apron, Sakurajima Mai in a soft casual street outfit with a knit sweater and skirt prepares food at the counter, hands moving with care. She shows bare legs and white sneakers on tiled floor, the casual footwear grounding her relaxed pose. Warm 柔和晨光 pools across surfaces, volumetric haze and subtle lens bokeh creating an airy, immersive atmosphere.",
+      "promptProse": "Standing beside the sunlit kitchen counter in a cozy pastel apron over her casual knit sweater, Sakurajima Mai carefully slices fresh fruit with a gentle, domestic half-smile. Soft morning sunlight streams through the window, illuminating floating dust motes and catching the glossy strands of her hair. Clean porcelain plates, steaming mugs, and neat kitchen shelves create an intimate, peaceful morning atmosphere around her.",
       "promptTokens": [
         "apron",
         "atmospheric",
@@ -1828,7 +1829,7 @@
       "action": "在书架间挑书",
       "timeOfDay": "午后",
       "lighting": "暖黄灯光",
-      "camera": "medium shot",
+      "camera": "medium shot, browsing bookshelf with open book",
       "mood": "沉静知性",
       "sceneTags": [
         "bookstore",
@@ -1838,7 +1839,7 @@
         "warm_light",
         "indoor"
       ],
-      "promptProse": "Under 暖黄灯光 at the bookstore bookshelf books, Dressed in a soft casual street outfit with a knit sweater and skirt, Sakurajima Mai is browses the shelves, fingers trailing over spines. She shows bare legs and white sneakers on tiled floor, the casual footwear grounding her relaxed pose. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Standing in a quiet corner of the bookstore, Sakurajima Mai cradles an open paperback with both hands, her violet eyes scanning the pages with focused elegance. Dressed in her soft casual knit sweater and pleated skirt, warm amber pendant lights cast gentle highlights over her delicate profile and slender fingers. Rows of wooden bookstacks and quiet reading nooks create a serene, intellectual depth behind her.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
@@ -8244,7 +8245,7 @@
       "action": "围巾在风中轻扬，呵气成雾",
       "timeOfDay": "夜晚",
       "lighting": "暖色路灯照雪",
-      "camera": "medium shot",
+      "camera": "cowboy shot, wrapping scarf in falling snow",
       "mood": "清冷温柔",
       "sceneTags": [
         "snow",
@@ -8255,7 +8256,7 @@
         "street_lamp",
         "snowing"
       ],
-      "promptProse": "Within the snow street scarf, 暖色路灯照雪 spills across the space as Wearing a pure white dress like snow under winter lights, Yukinoshita Yukino stands with serene composure, presence calm and centered. She shows bare legs and elegant high heels accentuating her poised silhouette, calves softly lit. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Walking through a snow-dusted commercial avenue at winter twilight, Yukinoshita Yukino pulls her soft plaid scarf snug against her neck with gloved hands, gazing forward with cool, poised beauty. Her elegant dark winter coat and warm tights stand out against the gently falling snowflakes. Warm amber streetlamps and glowing boutique shop windows cast luminous reflections across the snowy pavement behind her.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -10599,7 +10600,7 @@
       "action": "站在天桥上俯瞰轨道",
       "timeOfDay": "傍晚",
       "lighting": "夕照与都市光",
-      "camera": "medium shot",
+      "camera": "cowboy shot, resting arms on pedestrian overpass railing",
       "mood": "英气日常",
       "sceneTags": [
         "overpass",
@@ -10610,7 +10611,7 @@
         "outdoors",
         "academy_city"
       ],
-      "promptProse": "On an overpass, Misaka Mikoto in her Tokiwadai uniform stands with silky white thighhighs hugging smooth thighs, overpass city bokeh with cinematic depth and volumetric light. The atmosphere conveys wallpaper-grade depth with cinematic lighting and refined environmental detail.",
+      "promptProse": "Resting her forearms on the metal railing of a pedestrian overpass at sunset, Misaka Mikoto watches the bustling Academy City traffic below, blue electrical sparks crackling faintly between her fingertips. Her Tokiwadai school vest and pleated skirt flutter in the evening wind, a determined, spirited smirk playing on her lips. Giant wind turbines and gleaming high-tech skyscrapers catch the fiery orange dusk across the horizon.",
       "promptTokens": [
         "overpass",
         "tokiwadai_uniform",
@@ -10622,7 +10623,8 @@
         "atmospheric",
         "detailed_background",
         "cinematic_lighting",
-        "sheer_white_thighhigh_stockings",
+        "sheer_thighhighs",
+        "white_thighhighs",
         "smooth_thighs",
         "full_body"
       ],
@@ -11804,7 +11806,7 @@
       "action": "坐在办公桌后，手边放着文件",
       "timeOfDay": "白天",
       "lighting": "窗边冷光",
-      "camera": "medium shot",
+      "camera": "cowboy shot, leaning forward over mahogany desk with laced fingers",
       "mood": "冷静掌控",
       "sceneTags": [
         "office",
@@ -11815,7 +11817,7 @@
         "indoor",
         "professional"
       ],
-      "promptProse": "In the bright, solemn Public Safety office on a clear day, Makima sits straight behind her polished mahogany desk with her fingers steepled beneath her chin, cool daylight pouring through the tall window and carving sharp clarity across her black suit, her golden ringed eyes fixed on the viewer with serene, absolute authority. Sharp daylight cuts across the polished desk, leaving the rest of the office in quiet shadow.",
+      "promptProse": "Leaning forward over her polished mahogany executive desk with her fingers interlaced beneath her chin, Makima gazes at the viewer with hypnotic ringed golden eyes and an enigmatic, chilling smile. Her crisp white Public Safety suit shirt and black necktie are immaculate, her long red braid draped over one shoulder. High-rise floor-to-ceiling windows behind her reveal the sprawling, hazy Tokyo skyline beneath cool morning light.",
       "promptTokens": [
         "1girl",
         "bangs",
@@ -11833,7 +11835,8 @@
         "golden_ringed_eyes",
         "hands_clasped_under_chin",
         "intense_hypnotic_gaze",
-        "leaning_forward_over_mahogany_desk",
+        "leaning_forward",
+        "desk",
         "loose_braid",
         "makima",
         "medium_shot",
@@ -11843,7 +11846,8 @@
         "sharp_suit",
         "sitting_behind_desk",
         "solo",
-        "tokyo_skyline_through_huge_windows",
+        "tokyo_skyline",
+        "large_window",
         "volumetric_dust_motes",
         "volumetric_lighting",
         "yellow_eyes"
@@ -12615,7 +12619,7 @@
       "action": "坐在沙发上松开浴袍",
       "timeOfDay": "清晨",
       "lighting": "bright morning light",
-      "camera": "intimate medium shot, front view",
+      "camera": "cowboy shot, loosely tied silk bathrobe sitting on edge of bed",
       "mood": "慵懒从容",
       "sceneTags": [
         "living_room",
@@ -12625,7 +12629,7 @@
         "balcony",
         "intimate"
       ],
-      "promptProse": "The the living room leather sofa bathrobe glows with bright morning light as Makima — a relaxed casual outfit off the clock — sits with relaxed grace, posture soft. Framed with bare legs and brown loafers on wooden floor, the polished shoes reflecting warm light, her pose feels natural and unforced. Bright morning light filters through the air in warm volumetric rays, casting gentle shadows and a polished cinematic depth that lifts the whole composition.",
+      "promptProse": "Sitting on the edge of a king-sized bed in her luxury apartment, Makima wears an open silk bathrobe slipping off one pale shoulder, revealing soft cleavage and a glimpse of her slender waist. Her hypnotic ringed golden eyes fix the viewer with calm, dominant allure as she rests one hand on her bare crossed thighs. Soft morning light filters through sheer ivory drapes, casting gentle luminous glows across her flawless porcelain skin.",
       "promptTokens": [
         "atmospheric",
         "balcony",
@@ -14531,7 +14535,7 @@
       "action": "端着咖啡微笑服务",
       "timeOfDay": "午后",
       "lighting": "明亮暖光",
-      "camera": "medium shot",
+      "camera": "medium shot, serving tea tray with gentle smile",
       "mood": "温柔元气",
       "sceneTags": [
         "maid_cafe",
@@ -14541,7 +14545,7 @@
         "bright",
         "indoor"
       ],
-      "promptProse": "In the quiet maid cafe with a tray of coffee, Rem in her classic black and white maid uniform with silky white thighhighs hugging smooth thighs stands with a gentle smile, maid cafe tray bokeh with cinematic depth. The atmosphere conveys wallpaper-grade depth with cinematic lighting and refined environmental detail.",
+      "promptProse": "Balancing an ornate silver tea tray with steaming porcelain teacups, Rem steps gracefully through the sun-drenched manor parlor with a gentle, devoted smile. Her classic Roswaal mansion maid dress with crisp white ruffles and floral hair ornament are impeccably detailed, her bright blue eyes shining with warmth. Victorian velvet armchairs, polished wood paneling, and lace curtains create a lavish, welcoming backdrop.",
       "promptTokens": [
         "maid_cafe",
         "tray",
@@ -14555,7 +14559,8 @@
         "atmospheric",
         "detailed_background",
         "cinematic_lighting",
-        "sheer_white_thighhigh_stockings",
+        "sheer_thighhighs",
+        "white_thighhighs",
         "smooth_thighs",
         "full_body"
       ],
@@ -14626,7 +14631,7 @@
       "action": "品尝刚出炉的面包",
       "timeOfDay": "清晨",
       "lighting": "暖黄晨光",
-      "camera": "medium shot",
+      "camera": "medium shot, holding fresh bread basket in morning sunlight",
       "mood": "满足治愈",
       "sceneTags": [
         "bakery",
@@ -14635,7 +14640,7 @@
         "warm_light",
         "indoor"
       ],
-      "promptProse": "Within the bakery bread warm light, 暖黄晨光 spills across the space as Rem — a soft casual outfit off duty — stands with serene composure, presence calm and centered. She shows bare legs and white sneakers on tiled floor, the casual footwear grounding her relaxed pose. 暖黄晨光 filters through the air in warm volumetric rays, casting gentle shadows and a polished cinematic depth that lifts the whole composition.",
+      "promptProse": "Holding a wicker basket filled with warm, golden freshly-baked baguettes, Rem pauses near the cobblestone market street in the morning sun. Clad in a charming off-duty casual blouse and skirt with an apron, her light blue short hair catches the golden daylight as she offers a sweet, bashful smile. Quaint timber-framed village shops, hanging flower baskets, and cobblestone pathways form a cozy medieval town setting.",
       "promptTokens": [
         "atmospheric",
         "bakery",
@@ -15212,7 +15217,7 @@
       "action": "在雪与冰晶间驻足",
       "timeOfDay": "白天",
       "lighting": "冷冽雪光",
-      "camera": "wide shot",
+      "camera": "cowboy shot, kneeling gracefully in mystical snow forest",
       "mood": "清冷圣洁",
       "sceneTags": [
         "snow",
@@ -15224,7 +15229,7 @@
         "fantasy",
         "outdoors"
       ],
-      "promptProse": "At the snow forest ice under 冷冽雪光, Emilia in her signature white and lilac dress with a soft ribbon stands with serene composure, presence calm and centered. Framed with bare legs and elegant high heels accentuating her poised silhouette, calves softly lit, her pose feels natural and unforced. Volumetric light and soft bokeh add breathable depth, while careful rim lighting sculpts her silhouette against the background with gallery-print clarity.",
+      "promptProse": "Kneeling softly among glittering snow crystals in the ancient Elior Forest, Emilia gently cups glowing ice mana orbs in her hands, her amethyst eyes filled with pure wonder. Her iconic white and lilac spirit-arts dress flows across the pristine snow, long silver hair streaming in the crisp frosty breeze. Crystal-encrusted pine trees, drifting ice sprites, and soft volumetric silver moonlight illuminate the magical winter glade.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -15299,7 +15304,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "white_dress"
     },
     {
@@ -15751,7 +15756,7 @@
       "action": "捧着一束白色鲜花",
       "timeOfDay": "白天",
       "lighting": "明亮灯光",
-      "camera": "medium shot",
+      "camera": "medium shot, holding fresh flower bouquet with bright smile",
       "mood": "纯真温柔",
       "sceneTags": [
         "supermarket",
@@ -15761,7 +15766,7 @@
         "day",
         "indoor"
       ],
-      "promptProse": "Within the supermarket flower section bouquet, 明亮灯光 spills across the space as Dressed in a comfortable casual outfit, Emilia is stands with serene composure, presence calm and centered. She shows bare legs and brown loafers on wooden floor, the polished shoes reflecting warm light. Volumetric light and soft bokeh add breathable depth, while careful rim lighting sculpts her silhouette against the background with gallery-print clarity.",
+      "promptProse": "Holding a vibrant bouquet of multicolored spring blossoms in her arms, Emilia smiles brightly with pure joy, her delicate pointy half-elf ears peeking through her shimmering silver hair. Wearing a light pastel day dress with dainty ribbons, soft morning sunlight bathes her fair porcelain skin in a warm glow. A colorful floral market stall, potted greenery, and rustic wooden awnings create a lively, romantic atmosphere.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -16687,7 +16692,7 @@
       "action": "在村落草原间回望",
       "timeOfDay": "白天",
       "lighting": "明亮日光",
-      "camera": "medium shot",
+      "camera": "cowboy shot, sitting on wooden wagon holding mage staff",
       "mood": "淡泊怀乡",
       "sceneTags": [
         "village",
@@ -16698,7 +16703,7 @@
         "outdoors",
         "home"
       ],
-      "promptProse": "The the village grassland tribe glows with 明亮日光 as Roxy Migurdia — a practical adventurer outfit with a cape and boots — stands with serene composure, presence calm and centered. Framed with slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered, her pose feels natural and unforced. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Sitting comfortably on the tailgate of a traveler wagon on the sunlit plains of the Magic Continent, Roxy Migurdia holds her tall wooden mage staff upright with one hand, her blue braided twintails swaying in the warm breeze. Her oversized pointed witch hat and dark travelling robe are detailed with travel-worn authenticity, her calm lapis eyes watching the viewer. Rolling green savannah grasses, distant rocky plateaus, and roaming herds stretch beneath an expansive blue sky.",
       "promptTokens": [
         "adventurer",
         "atmospheric",
@@ -18988,7 +18993,7 @@
       "action": "身着高中辣妹制服（解开两颗扣子），双手微张配合量身，脸颊泛红，眼神中满是期待与娇羞",
       "timeOfDay": "午后",
       "lighting": "传统木格窗透进柔和日光，空气中漂浮着细小金粉与布匹纹理",
-      "camera": "medium shot, traditional Japanese tatami workshop, soft natural lighting",
+      "camera": "medium shot, measuring fabric with tape measure around neck",
       "mood": "心动纯情",
       "sceneTags": [
         "tatami_room",
@@ -18998,7 +19003,7 @@
         "afternoon_sunlight",
         "blushing"
       ],
-      "promptProse": "In the tatami sewing room dappled with afternoon light, Kitagawa Marin stands in her summer sailor uniform with the top buttons loose, arms spread wide as the measuring tape wraps around her waist, sheer black thighhighs hugging smooth thighs beneath the short pleated skirt, her amber eyes sparkling with excited anticipation and a faint blush. Dust motes float over bolts of fabric in the soft daylight. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Sitting cross-legged on a low stool in Gojo workshop, Kitagawa Marin holds up a piece of colorful cosplay fabric with enthusiastic energy, a soft yellow tape measure draped around her neck. Her blonde hair with pink gradient tips cascades over her school shirt, her reddish-pink eyes sparkling with excitement. Sewing mannequins, spools of bright thread, pattern sketches, and a vintage sewing machine fill the warm, craft-filled workspace.",
       "promptTokens": [
         "afternoon_sunlight",
         "arms_spread",
@@ -19017,7 +19022,8 @@
         "sailor_uniform",
         "school_uniform",
         "sewing_room",
-        "sheer_black_thighhigh_stockings",
+        "sheer_thighhighs",
+        "black_thighhighs",
         "smooth_thighs",
         "soft_lighting",
         "summer_uniform",
@@ -19088,7 +19094,7 @@
       "action": "身着精致的黑紫哥特萝莉女仆装，手提洋伞，紫瞳中闪烁着对角色极致热爱的自信光芒",
       "timeOfDay": "午后",
       "lighting": "展馆高顶聚光灯与闪光灯交织，高光勾勒蕾丝花边与丝绒质感",
-      "camera": "medium shot, dynamic convention hall background, sharp studio focus",
+      "camera": "cowboy shot, striking gothic lolita cosplay pose",
       "mood": "自信惊艳",
       "sceneTags": [
         "convention_hall",
@@ -19098,7 +19104,7 @@
         "parasol",
         "flash_lights"
       ],
-      "promptProse": "the convention hall cosplay gothic lolita at 午后 — In her handmade gothic lolita cosplay with black frilled dress, Kitagawa Marin stands with serene composure, presence calm and centered. Her bare legs and elegant high heels accentuating her poised silhouette, calves softly lit. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Striking a dynamic gothic lolita pose in the center of the bustling convention hall, Kitagawa Marin as Shizuku-kuroe tilts her head with a charming in-character pout, her black frilled dress and lace bonnet meticulously styled. Her dark cosplay wig and violet contacts shine under the convention spotlights, camera flashes and colorful anime banners creating vibrant festival energy in the background.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -19188,7 +19194,7 @@
       "action": "对着随身镜调整假发与饰品，回眸比出角色招牌姿势，元气满满",
       "timeOfDay": "上午",
       "lighting": "后台化妆镜环形灯与帘缝漏进的日光交错，碎金般落在肩头",
-      "camera": "medium shot, backstage dressing mirror, mixed ring-light and daylight",
+      "camera": "medium shot, checking makeup in dressing room mirror",
       "mood": "元气闪耀",
       "sceneTags": [
         "convention_backstage",
@@ -19198,14 +19204,17 @@
         "ring_light",
         "cheerful"
       ],
-      "promptProse": "Backstage minutes before the convention opens, Kitagawa Marin stands in her open cosplay leather jacket and colorful layered accessories, tilting a small handheld mirror to double-check the angle of her pink-tipped blonde wig, then suddenly spins around to flash her signature character pose with a radiant grin. Ring-light bulbs and slivers of daylight catch the costumes and wigs hanging behind her, adding rich depth.",
+      "promptProse": "Leaning slightly toward a lighted vanity mirror in the backstage dressing room, Kitagawa Marin touches up her lip gloss with a playful wink at her reflection. Her open cosplay jacket slips off one shoulder over a fitted tube top, her long blonde-pink hair catching the vanity bulb glow. Makeup palettes, hairspray cans, and hanging costumes crowd the lively backstage area in warm cinematic depth.",
       "promptTokens": [
         "1girl",
         "adjusting_wig",
-        "blonde_hair_with_pink_gradient_tips",
+        "blonde_hair",
+        "gradient_hair",
+        "pink_hair",
         "cinematic_lighting",
         "cinematic_medium_shot",
-        "cluttered_cosplay_dressing_room",
+        "dressing_room",
+        "cluttered",
         "depth_of_field",
         "detailed_background",
         "energetic_happy_radiant_smile",
@@ -19221,7 +19230,9 @@
         "solo",
         "spin_turning_around",
         "volumetric_lighting",
-        "wearing_unzipped_cosplay_leather_jacket_over_tube_top"
+        "leather_jacket",
+        "open_jacket",
+        "tube_top"
       ],
       "negativeTokens": [
         "worst quality",
@@ -20381,7 +20392,7 @@
       "action": "穿着校服在走廊转身",
       "timeOfDay": "白天",
       "lighting": "明亮日光",
-      "camera": "medium shot",
+      "camera": "medium shot, leaning against corridor locker with playful smile",
       "mood": "活泼娇嗔",
       "sceneTags": [
         "school",
@@ -20391,7 +20402,7 @@
         "hair_ornament",
         "indoor"
       ],
-      "promptProse": "Within the school uniform corridor, 明亮日光 spills across the space as Wearing her school uniform with a white sailor collar, Kisara stands with serene composure, presence calm and centered. She shows sheer black thighhigh stockings hugging smooth thighs, lace tops peeking beneath her skirt hem. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Leaning lightly against a row of school lockers in the sunlit hallway, Kisara holds her school bag with both hands, tilting her head with a sweet, devoted smile. Her classic school uniform with a white sailor collar and pleated skirt are crisp, her long pink hair tied neatly with black ribbons. Warm afternoon sunbeams slant through tall classroom windows, casting soft geometric shadows across the wooden floor.",
       "promptTokens": [
         "atmospheric",
         "bandage_on_leg",
@@ -20414,7 +20425,8 @@
         "sailor_collar",
         "school",
         "school_uniform",
-        "sheer_black_thighhigh_stockings",
+        "sheer_thighhighs",
+        "black_thighhighs",
         "smooth_thighs",
         "uniform",
         "volumetric_lighting",
@@ -20611,7 +20623,7 @@
       "action": "挑选零食",
       "timeOfDay": "夜晚",
       "lighting": "明亮灯光",
-      "camera": "medium shot",
+      "camera": "medium shot, picking snacks from illuminated store shelves",
       "mood": "活泼日常",
       "sceneTags": [
         "convenience_store",
@@ -20620,7 +20632,7 @@
         "night",
         "indoor"
       ],
-      "promptProse": "the convenience store snacks shelves at 夜晚 — Kisara, clad in a modern casual outfit with a jacket and jeans, browses the snack shelves with playful focus. Her bare legs and brown loafers on wooden floor, the polished shoes reflecting warm light. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Standing before the brightly illuminated snack aisle in a 24-hour convenience store at night, Kisara holds up a package of sweet buns with a delighted grin. Wearing an oversized casual hoodie over shorts, her vibrant pink hair glows beneath the fluorescent canopy. Neatly stacked colorful beverage bottles, snack displays, and the glass storefront looking out onto neon night streets frame the cozy urban setting.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -21436,35 +21448,42 @@
         "dusk",
         "sword"
       ],
-      "promptProse": "Within the snowfield blizzard winter, dim golden dusk over endless snow spills across the space as Dressed in her black sleeveless cropped turtleneck with a black-and-white techwear jacket with r, Surtr is stands with serene composure, presence calm and centered. She shows sheer black thighhigh stockings hugging smooth thighs, lace tops peeking beneath her skirt hem. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Trudging through an endless frozen wasteland at amber twilight, Surtr pauses in the howling blizzard, her massive black greatsword resting pointed down in the deep snow beside her. Clad in her dark explorer coat and black thighhighs, she pulls up her high collar against the biting chill, her sharp fiery-cyan eyes gazing resolute toward the frozen horizon as golden dusk light rims her long red hair and curved demonic horns in glowing frost.",
       "promptTokens": [
-        "atmospheric",
-        "black_clothes",
-        "blizzard",
-        "cinematic_lighting",
-        "clean_face",
-        "combat_boots",
-        "crop_top",
-        "depth_of_field",
-        "detailed_background",
-        "dusk",
-        "dynamic_lighting",
-        "fingerless_gloves",
-        "full_body",
-        "headband",
+        "1girl",
+        "solo",
+        "surtr_(arknights)",
+        "red_hair",
+        "long_hair",
+        "horns",
+        "demon_horns",
+        "cyan_eyes",
+        "black_coat",
         "jacket",
-        "sheer_black_thighhigh_stockings",
         "shorts",
-        "smooth_thighs",
-        "snow",
-        "snowfield",
-        "sword",
-        "techwear",
         "thighhighs",
-        "twilight",
+        "black_thighhighs",
+        "boots",
+        "standing",
+        "holding_sword",
+        "greatsword",
+        "resting_sword",
+        "looking_at_viewer",
+        "sharp_gaze",
+        "snowfield",
+        "blizzard",
+        "snowing",
+        "frozen_tundra",
+        "windy",
+        "amber_sky",
+        "dusk",
+        "sunset",
+        "rim_lighting",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "white_clothes",
-        "winter"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -21739,30 +21758,39 @@
         "morning",
         "sparring"
       ],
-      "promptProse": "At the training dojo sword under cool morning light, Surtr — a black and gold gothic rock tailcoat jacket with gold epaulets and chains over a bla — stands with serene composure, presence calm and centered. Framed with slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered, her pose feels natural and unforced. Cinematic depth of field and delicate color grading give the frame a luminous, poster-quality finish, every texture crisp and every highlight softly diffused.",
+      "promptProse": "In the spacious training hall of Rhodes Island in clear morning light, Surtr catches her breath in a dynamic three-quarter stance after intense combat practice, one gloved hand resting lightly on the pommel of her giant sword planted on the reinforced floor. Her sharp eyes narrow with haughty intensity as a few glowing embers drift from her blade, cool ambient lighting catching the sleek lines of her training uniform and sweeping horns.",
       "promptTokens": [
-        "atmospheric",
-        "bare_legs",
-        "barefoot",
-        "black_clothes",
-        "cinematic_lighting",
-        "clean_face",
-        "depth_of_field",
-        "detailed_background",
+        "1girl",
+        "solo",
+        "surtr_(arknights)",
+        "red_hair",
+        "long_hair",
+        "horns",
+        "demon_horns",
+        "cyan_eyes",
+        "sleeveless_shirt",
+        "tactical_vest",
+        "shorts",
+        "gloves",
+        "boots",
+        "standing",
+        "hand_on_sword",
+        "greatsword",
+        "resting",
+        "intense_look",
+        "smirk",
+        "haughty",
+        "training_room",
         "dojo",
-        "dynamic_lighting",
-        "full_body",
-        "gold_trim",
-        "high_heels",
-        "lace_shirt",
-        "leather_pants",
-        "morning",
-        "soft_lighting",
-        "sparring",
-        "sword",
-        "tailcoat",
-        "training",
-        "volumetric_lighting"
+        "reinforced_floor",
+        "sparks",
+        "embers",
+        "morning_light",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -22738,32 +22766,40 @@
         "afternoon",
         "window"
       ],
-      "promptProse": "Within the office tea cup, soft window light spills across the space as Kal'tsit — a cozy lounge outfit: an oatmeal chunky-knit oversized turtleneck sweater with a rela — stands with serene composure, presence calm and centered. She shows slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Sitting with poised intellectual elegance by the sunlit window of her private office, Dr. Kal'tsit gently lifts a porcelain teacup in one gloved hand, steam rising softly against the cool glass. Her neat pale-green hair and pointed lynx ears catch the morning sunbeams, her emerald eyes calm and piercingly observant as she pauses mid-thought over medical dossiers spread neatly across the low coffee table.",
       "promptTokens": [
-        "afternoon",
-        "atmospheric",
-        "bare_legs",
-        "barefoot",
-        "chunky_knit",
-        "cinematic_lighting",
-        "clean_face",
-        "close_up",
-        "cup",
-        "depth_of_field",
-        "detailed_background",
-        "dynamic_lighting",
-        "full_body",
-        "linen",
-        "lounge",
-        "medium_shot",
+        "1girl",
+        "solo",
+        "kal'tsit_(arknights)",
+        "green_hair",
+        "short_hair",
+        "cat_ears",
+        "lynx_ears",
+        "green_eyes",
+        "doctor_coat",
+        "lab_coat",
+        "dress",
+        "black_turtleneck",
+        "gloves",
+        "sitting",
+        "armchair",
+        "holding_cup",
+        "tea_cup",
+        "coffee_table",
+        "documents",
         "office",
-        "oversized",
-        "sweater",
-        "tea",
-        "turtleneck",
+        "large_window",
+        "sunbeams",
+        "peaceful",
+        "calm_expression",
+        "intelligent",
+        "warm_lighting",
+        "bokeh",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "wide_leg_pants",
-        "window"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -22840,31 +22876,39 @@
         "observation",
         "daylight"
       ],
-      "promptProse": "Inside the training dojo observation bathed in bright training hall light, Wearing her white lab coat with pale green trim and a translucent hem over a black halterneck, Kal'tsit stands with serene composure, presence calm and centered. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Observing operator combat drills from the raised gallery above the main training hall, Kal'tsit stands with arms crossed in her signature green-and-white medical coat, her lynx ears alert and tail gently swishing. Her piercing emerald gaze tracks every tactical movement below with clinical precision, the holographic monitors floating beside her casting cool cyan ambient reflections across her calm, unyielding expression.",
       "promptTokens": [
-        "atmospheric",
-        "backless_dress",
-        "bare_legs",
-        "barefoot",
-        "cinematic_lighting",
-        "clean_face",
-        "daylight",
-        "depth_of_field",
-        "detailed_background",
-        "dojo",
-        "dress",
-        "dynamic_lighting",
-        "earrings",
-        "full_body",
-        "green_clothes",
-        "halter_top",
+        "1girl",
+        "solo",
+        "kal'tsit_(arknights)",
+        "green_hair",
+        "short_hair",
+        "cat_ears",
+        "lynx_ears",
+        "green_eyes",
+        "doctor_coat",
         "lab_coat",
+        "tactical_clothes",
+        "boots",
+        "standing",
+        "arms_crossed",
+        "railing",
+        "balcony",
+        "observing",
+        "serious_expression",
+        "sharp_eyes",
+        "training_hall",
+        "holographic_screen",
+        "hud",
+        "monitors",
+        "metal_architecture",
+        "cool_lighting",
+        "cyan_glow",
         "medium_shot",
-        "observation",
-        "training",
-        "utility_belt",
+        "detailed_background",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "white_clothes"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -23657,31 +23701,41 @@
         "street_food",
         "night"
       ],
-      "promptProse": "the night market lantern neon at 夜晚 — Ch'en, clad in a retro 90s Hong Kong street-style casual outfit: an open vintage floral-print shirt , stands with serene composure, presence calm and centered. Her bare legs and brown loafers on wooden floor, the polished shoes reflecting warm light. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Strolling through the bustling Lungmen night market under a dazzling canopy of neon signs and glowing red lanterns, Ch'en enjoys a rare off-duty evening in her stylish retro bomber jacket and denim shorts. Her long teal ponytail sways as she holds a skewered street snack with a slight, satisfied smile, her dragon horns catching vibrant magenta and cyan reflections from the lively street stalls around her.",
       "promptTokens": [
-        "atmospheric",
-        "bare_legs",
+        "1girl",
+        "solo",
+        "chen_(arknights)",
+        "blue_hair",
+        "ponytail",
+        "dragon_horns",
+        "brown_eyes",
+        "jacket",
+        "bomber_jacket",
+        "t-shirt",
+        "shorts",
         "casual_clothes",
-        "cinematic_lighting",
-        "clean_face",
-        "crossbody_bag",
-        "depth_of_field",
-        "detailed_background",
-        "dynamic_lighting",
-        "floral_print",
-        "full_body",
-        "jeans",
-        "lantern",
-        "loafers",
-        "medium_shot",
-        "neon",
-        "neon_lighting",
-        "night",
-        "night_market",
-        "sneakers",
+        "standing",
+        "holding_food",
         "street_food",
-        "vintage_shirt",
-        "volumetric_lighting"
+        "snack",
+        "eating",
+        "soft_smile",
+        "relaxed",
+        "night_market",
+        "neon_lights",
+        "red_lanterns",
+        "street_stalls",
+        "chinese_sign",
+        "crowd_background",
+        "night",
+        "vibrant_colors",
+        "bokeh",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -24062,30 +24116,40 @@
         "night",
         "platform"
       ],
-      "promptProse": "In the quiet the train station rain umbrella, Ch'en, clad in a classic hard-boiled detective undercover outfit: a dark charcoal trench coat over a, stands with serene composure, presence calm and centered. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Waiting on the rain-slicked platform of a Lungmen transit station late at night, Ch'en stands under a transparent umbrella, her sharp red-sheathed sword Chi Xiao resting securely at her hip. Puddles on the concrete mirror glowing train headlights and neon billboards through the steady downpour, while she turns with an alert, decisive glance toward the arriving midnight train.",
       "promptTokens": [
-        "atmospheric",
-        "bare_legs",
-        "barefoot",
-        "black_clothes",
-        "cinematic_lighting",
-        "clean_face",
-        "depth_of_field",
-        "detailed_background",
-        "detective",
-        "dynamic_lighting",
-        "full_body",
-        "medium_shot",
-        "night",
+        "1girl",
+        "solo",
+        "chen_(arknights)",
+        "blue_hair",
+        "ponytail",
+        "dragon_horns",
+        "brown_eyes",
+        "trench_coat",
+        "jacket",
+        "shirt",
+        "tie",
+        "pants",
+        "boots",
+        "standing",
+        "holding_umbrella",
+        "transparent_umbrella",
+        "sword_at_hip",
+        "scabbard",
+        "train_station",
         "platform",
         "rain",
-        "soft_lighting",
-        "train_station",
-        "trench_coat",
-        "turtleneck",
-        "umbrella",
-        "undercover",
-        "volumetric_lighting"
+        "wet_ground",
+        "reflections",
+        "headlights",
+        "neon_signs",
+        "night",
+        "cinematic_atmosphere",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -24657,32 +24721,37 @@
         "volcano",
         "data"
       ],
-      "promptProse": "At the laboratory experiment research, Eyjafjalla, clad in her dark grey hooded volcano research coat over a white frilled blouse with a black p, stands with serene composure, presence calm and centered. Her sheer black thighhigh stockings hugging smooth thighs, lace tops peeking beneath her skirt hem. Cinematic depth of field and delicate color grading give the frame a luminous, poster-quality finish, every texture crisp and every highlight softly diffused.",
+      "promptProse": "Inside the high-temperature volcanology research lab, Eyjafjalla leans over a digital analysis terminal with earnest dedication, her fluffy caprine horns and soft pinkish-auburn hair lit by the amber glow of glowing volcanic mineral samples. Clad in her dark hooded laboratory coat, she adjusts her measurement sensors with delicate, gloved hands, her gentle purple eyes shining with academic passion.",
       "promptTokens": [
-        "atmospheric",
-        "black_clothes",
-        "boots",
-        "cinematic_lighting",
-        "clean_face",
-        "coat",
-        "data",
-        "depth_of_field",
-        "detailed_background",
-        "dynamic_lighting",
-        "experiment",
-        "frills",
-        "full_body",
-        "hooded",
+        "1girl",
+        "solo",
+        "eyjafjalla_(arknights)",
+        "pink_hair",
+        "short_hair",
+        "sheep_horns",
+        "animal_ears",
+        "purple_eyes",
+        "hooded_coat",
+        "lab_coat",
+        "gloves",
+        "skirt",
+        "standing",
+        "leaning_forward",
         "laboratory",
+        "terminal",
+        "computer",
+        "crystals",
+        "volcanic_rock",
+        "measuring",
+        "focused_expression",
+        "sweet_smile",
+        "amber_glow",
+        "high_tech",
         "medium_shot",
-        "pleated_skirt",
-        "research",
-        "sheer_black_thighhigh_stockings",
-        "smooth_thighs",
-        "thighhighs",
-        "volcano",
+        "detailed_background",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "white_shirt"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -26149,30 +26218,38 @@
         "focus",
         "wheelchair"
       ],
-      "promptProse": "Seated in her advanced mechanical wheelchair inside the brightly lit Sankta firing range, Lemuen rests her customized sniper rifle across her lap with a calm, focused smile. Her luminous halo and wings glow softly under the overhead range lights, with holographic targets and firing lanes extending into the background, and her entire wheelchair including the metal footrests clearly framed within the composition.",
+      "promptProse": "Seated with calm, lethal composure in her advanced mechanical wheelchair at the Sankta long-distance firing range, Lemuen rests her customized high-caliber sniper rifle across her lap. Her golden halo glows steadily above her wavy brown hair, her warm hazel eyes crinkling into a soft, confident smile as she checks her holographic ballistic data, bright fluorescent range lights illuminating the sleek metallic frame of her wheelchair.",
       "promptTokens": [
         "1girl",
-        "@rella",
-        "black_shoes_resting_on_footrests",
-        "bright_overhead_fluorescent_lighting_and_ambient_blue_hud",
-        "cinematic_lighting",
-        "depth_of_field",
-        "detailed_background",
-        "entire_wheelchair_and_footrests_fully_visible_in_frame",
-        "focused_gentle_smile",
-        "full_body",
-        "glowing_sankta_halo",
-        "holding_sniper_rifle_resting_across_lap",
-        "indoor_shooting_range_with_holographic_targets",
-        "lemuen_arknights",
-        "safe",
-        "seated_in_advanced_high-tech_wheelchair",
-        "short_light_brown_hair",
         "solo",
-        "teal_eyes",
-        "translucent_light_wings",
+        "lemuen_(arknights)",
+        "brown_hair",
+        "wavy_hair",
+        "halo",
+        "angel_wings",
+        "hazel_eyes",
+        "jacket",
+        "turtleneck",
+        "skirt",
+        "gloves",
+        "sitting",
+        "wheelchair",
+        "mechanical_wheelchair",
+        "holding_rifle",
+        "sniper_rifle",
+        "gun",
+        "firing_range",
+        "targets",
+        "holographic_screen",
+        "hud",
+        "confident_smile",
+        "gentle_expression",
+        "bright_lighting",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "wearing_tactical_sankta_coat_and_black_trousers"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -27367,31 +27444,40 @@
         "crowd_implied",
         "chinese_clothes"
       ],
-      "promptProse": "Inside the lantern festival paper lantern bathed in warm lantern glow, In a black and gold high-slit short qipao with a black fur-trimmed capelet, Dusk stands with serene composure, presence calm and centered. Sheer black pantyhose hugging smooth thighs and calves beneath her skirt, the fabric catching subtle rim light. Warm warm lantern glow pools across surfaces, volumetric haze and subtle lens bokeh creating an airy, immersive atmosphere.",
+      "promptProse": "Drifting through the radiant lantern festival crowd on a Yan riverbank at night, Dusk holds a delicate paper lotus lantern in both hands, her traditional black and emerald qipao flowing like liquid ink around her ankles. Her curved dragon horns and long flowing teal-black hair catch the warm amber glow of hundreds of floating river lanterns, her sharp golden eyes observing the mortal celebration with a mixture of detachment and quiet amusement.",
       "promptTokens": [
-        "atmospheric",
-        "black_clothes",
-        "black_pantyhose",
-        "chinese_clothes",
-        "cinematic_lighting",
-        "clean_face",
-        "depth_of_field",
-        "detailed_background",
-        "dynamic_lighting",
-        "festival",
-        "full_body",
-        "fur_trim",
-        "gold_trim",
-        "high_heels",
-        "lantern",
-        "medium_shot",
-        "night",
-        "paper_lantern",
+        "1girl",
+        "solo",
+        "dusk_(arknights)",
+        "teal_hair",
+        "very_long_hair",
+        "dragon_horns",
+        "yellow_eyes",
+        "mole",
         "qipao",
-        "sheer_black_pantyhose",
-        "smoking_pipe",
-        "smooth_thighs",
-        "volumetric_lighting"
+        "cheongsam",
+        "black_dress",
+        "green_trim",
+        "bare_shoulders",
+        "standing",
+        "holding_lantern",
+        "lotus_lantern",
+        "paper_lantern",
+        "floating_lanterns",
+        "lantern_festival",
+        "riverbank",
+        "night",
+        "lantern_light",
+        "traditional_chinese_architecture",
+        "amused_expression",
+        "mysterious",
+        "warm_lighting",
+        "reflections",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -28494,31 +28580,39 @@
         "training_ground",
         "standing"
       ],
-      "promptProse": "Under cool morning light at the training warhammer training ground, Mudrock in her black high-neck bodysuit with heavy armor plates removed and set aside beside her stands with serene composure, presence calm and centered. She shows cargo pants and sturdy combat boots grounding her stance with a ready, urban edge. Volumetric light and soft bokeh add breathable depth, while careful rim lighting sculpts her silhouette against the background with gallery-print clarity.",
+      "promptProse": "Having shed her bulky Hazmat armor after heavy combat training, petite white-haired Mudrock rests against a wooden bench in the open training yard, her massive mechanical warhammer resting on the dust beside her. Morning sunlight illuminates her delicate, sweat-glistening skin and long white hair, her striking crimson eyes looking up with gentle, unassuming relief as cool air sweeps the courtyard.",
       "promptTokens": [
-        "armor",
-        "atmospheric",
-        "black_clothes",
-        "bodysuit",
-        "cargo_pants",
-        "cinematic_lighting",
-        "clean_face",
-        "combat_boots",
-        "depth_of_field",
-        "detailed_background",
-        "dynamic_lighting",
-        "full_body",
-        "gauntlets",
-        "high_collar",
+        "1girl",
+        "solo",
+        "mudrock_(arknights)",
+        "white_hair",
+        "long_hair",
         "horns",
-        "morning",
-        "shoulder_armor",
-        "silver_hair",
-        "standing",
-        "training",
-        "training_ground",
+        "red_eyes",
+        "tank_top",
+        "sleeveless_shirt",
+        "shorts",
+        "gloves",
+        "boots",
+        "sitting",
+        "bench",
+        "resting",
+        "warhammer",
+        "giant_hammer",
+        "sweat",
+        "training_yard",
+        "courtyard",
+        "rubble",
+        "morning_sunlight",
+        "dust_motes",
+        "gentle_expression",
+        "relief",
+        "slender_figure",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "warhammer"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -30727,30 +30821,41 @@
         "praying",
         "wish"
       ],
-      "promptProse": "the terrace stars praying at 夜晚 — Goldenglow in a cream pink and mint lolita tea dress with frills stands with serene composure, presence calm and centered. Her slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Layered lighting carves rich spatial depth, with soft shadows and highlights that model her form and the environment in balanced harmony.",
+      "promptProse": "Leaning gently on the metallic safety railing of the observation deck under a star-drenched night sky, Goldenglow gazes upward in her cute pink-and-mint lolita dress. Her fluffy feline ears twitch in the soft night breeze, her vibrant pink hair lit by floating electric sparks from her levitating floating units, hands clasped over her chest with a wistful, hopeful prayer.",
       "promptTokens": [
-        "atmospheric",
-        "bare_legs",
-        "barefoot",
-        "cinematic_lighting",
-        "clean_face",
-        "depth_of_field",
-        "detailed_background",
-        "dress",
-        "dynamic_lighting",
+        "1girl",
+        "solo",
+        "goldenglow_(arknights)",
+        "pink_hair",
+        "long_hair",
+        "cat_ears",
+        "animal_ears",
+        "blue_eyes",
+        "lolita_dress",
         "frills",
-        "full_body",
-        "lolita",
-        "mary_janes",
-        "medium_shot",
-        "night",
-        "praying",
         "ribbon",
-        "soft_lighting",
+        "boots",
+        "standing",
+        "leaning_on_railing",
+        "clasped_hands",
+        "praying",
+        "floating_devices",
+        "electric_sparks",
+        "observation_deck",
+        "balcony",
+        "starry_sky",
+        "night_sky",
+        "nebula",
         "stars",
-        "terrace",
+        "night",
+        "hopeful_expression",
+        "cute",
+        "soft_lighting",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "wish"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -30951,31 +31056,41 @@
         "night",
         "candle"
       ],
-      "promptProse": "Inside the bathroom bathtub petals bathed in soft candlelit bathroom, In a white shirt with a yellow ascot scarf, Goldenglow rests at the bath edge, steam curling around her. Sheer black thighhigh stockings hugging smooth thighs, lace tops peeking beneath her skirt hem. Soft candlelit bathroom filters through the air in warm volumetric rays, casting gentle shadows and a polished cinematic depth that lifts the whole composition.",
+      "promptProse": "In a private candlelit bathroom filled with swirling steam and floating rose petals, Goldenglow sits nestled inside a clawfoot porcelain bathtub, completely naked with her wet pink hair clinging to her bare shoulders. She gathers petals over her exposed, blooming chest with bashful hands, her fluffy cat ears drooping slightly in adorable embarrassment as water droplets glisten on her pink-flushed skin.",
       "promptTokens": [
-        "atmospheric",
-        "bathroom",
+        "1girl",
+        "solo",
+        "goldenglow_(arknights)",
+        "pink_hair",
+        "cat_ears",
+        "animal_ears",
+        "blue_eyes",
+        "nude",
+        "completely_naked",
+        "wet_skin",
+        "water_droplets",
+        "bare_shoulders",
+        "cleavage",
+        "sitting",
+        "in_bathtub",
         "bathtub",
-        "black_clothes",
-        "candle",
+        "clawfoot_tub",
+        "holding_flower",
+        "rose_petals",
+        "floating_petals",
+        "steam",
+        "bathroom",
         "candlelight",
-        "cinematic_lighting",
-        "clean_face",
-        "depth_of_field",
+        "blushing",
+        "flustered",
+        "shy_expression",
+        "warm_lighting",
+        "intimate",
+        "medium_shot",
         "detailed_background",
-        "dynamic_lighting",
-        "full_body",
-        "night",
-        "petals",
-        "pinafore_dress",
-        "pleated_skirt",
-        "scarf",
-        "scissors",
-        "sheer_black_thighhigh_stockings",
-        "smooth_thighs",
-        "thighhighs",
+        "cinematic_lighting",
         "volumetric_lighting",
-        "white_shirt"
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",
@@ -31021,17 +31136,16 @@
         "nude",
         "completely_naked",
         "bare_shoulders",
-        "bare_chest",
-        "exposed_breasts",
-        "nipples",
-        "soft_skin",
-        "loving_blush",
-        "gentle_smile",
-        "intimate",
-        "medium_shot",
-        "water_droplets_on_body"
+        "cleavage",
+        "wet_skin",
+        "water_droplets",
+        "rose_petals",
+        "blushing",
+        "flustered",
+        "candlelight",
+        "intimate"
       ],
-      "nsfwProse": "In a candlelit bath, Goldenglow rests naked among floating flower petals with the whole place to herself, warm steam rising around her soft pink hair, exposed collarbone, and delicate blush as she trails a finger through the water. Water droplets bead on her exposed collarbone and shoulders.",
+      "nsfwProse": "soaking naked in the candlelit porcelain tub covered in floating rose petals, wet pink hair draped over bare shoulders and soft cleavage, blushing deeply with drooping feline ears and glistening water droplets",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -38312,7 +38426,7 @@
       "action": "托腮望向窗外夕阳，银发如瀑，蓝眸微转用俄语低声呢喃着害羞的爱意，微风吹拂窗帘",
       "timeOfDay": "黄昏",
       "lighting": "浓烈而浪漫的夕阳橙红金光斜射，将银发与蓝白制服染上瑰丽光辉",
-      "camera": "medium close-up, classroom window frame, golden sunset glow, cinematic lens flare",
+      "camera": "medium shot, looking back from window seat with subtle blush",
       "mood": "傲娇而深情",
       "sceneTags": [
         "classroom",
@@ -38323,7 +38437,7 @@
         "silver_hair",
         "blushing"
       ],
-      "promptProse": "By the classroom window at golden sunset, Alisa Mikhailovna Kujou rests her cheek on one hand and gazes out at the fiery orange sky, the sunset staining the desks deep red; the breeze stirs the white curtains around her waterfall of silver hair, and a faint blush colors her doll-perfect profile as she murmurs under her breath. The fiery orange sunset stains the empty desks deep red and sets the white curtains glowing.",
+      "promptProse": "Sitting at her window desk in the quiet afternoon classroom, Alisa Mikhailovna Kujou turns her head toward the viewer with a flustered blush dusting her porcelain cheeks. Her long silver hair falls over the shoulder of her Seirei Academy uniform blazer, her striking sky-blue eyes filled with Tsundere charm. Golden hour sunlight bathes her desk in rich amber light, with neat chalkboards and classroom desks extending into the soft background.",
       "promptTokens": [
         "atmospheric",
         "black_thighhighs",
@@ -38346,7 +38460,8 @@
         "red_ribbon",
         "school_uniform",
         "seirei_academy_uniform",
-        "sheer_white_thighhigh_stockings",
+        "sheer_thighhighs",
+        "white_thighhighs",
         "silver_hair",
         "smooth_thighs",
         "sunset",
@@ -38421,7 +38536,7 @@
       "action": "端着白瓷红茶杯坐在皮质沙发上，低头专注审阅文件",
       "timeOfDay": "午后阳光",
       "lighting": "soft natural window light, bright ambient illumination",
-      "camera": "medium shot, eye level, elegant interior framing",
+      "camera": "cowboy shot, reviewing documents at council conference table",
       "mood": "高雅从容与知性专注",
       "sceneTags": [
         "student_council_room",
@@ -38432,7 +38547,7 @@
         "bookshelf",
         "afternoon"
       ],
-      "promptProse": "In the hushed student council office at afternoon, sunlight stripes the mahogany table through the blinds as Alisa Mikhailovna Kujou sits on the leather sofa, lifting a white porcelain teacup of black tea to her lips with an elegant, focused air, paperwork spread neatly before her. Sunlight stripes the mahogany table through the blinds, thin dust lanes hanging in the quiet air of the office.",
+      "promptProse": "Sitting poised at the long mahogany conference table in the Student Council room, Alya holds a folder of event proposals, her posture regal and focused. Her silver hair is styled with her signature black bow, her sky-blue gaze sharp and dignified under elegant pendant lamps. Polished bookshelves, council banners, and tall arched windows overlooking the school grounds provide an atmosphere of student leadership.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
@@ -38455,7 +38570,8 @@
         "red_ribbon",
         "school_uniform",
         "seirei_academy_uniform",
-        "sheer_white_thighhigh_stockings",
+        "sheer_thighhighs",
+        "white_thighhighs",
         "smooth_thighs",
         "sofa",
         "student_council_room",
@@ -38539,7 +38655,7 @@
       "action": "手持透明雨伞微微向身侧倾斜，清亮蓝眸凝视镜头",
       "timeOfDay": "阴雨天",
       "lighting": "cool overcast rainy lighting, wet pavement reflections",
-      "camera": "medium cowboy shot, slight low angle, raindrops on umbrella",
+      "camera": "cowboy shot, holding clear umbrella on rainy train platform",
       "mood": "浪漫心动与微湿温润",
       "sceneTags": [
         "train_station",
@@ -38550,7 +38666,7 @@
         "reflections",
         "overcast"
       ],
-      "promptProse": "At the station entrance under a drizzling overcast sky, Alisa Mikhailovna Kujou holds a clear transparent umbrella tilted so that most of it shelters the person beside her, looking up with clear blue eyes and faintly reddening ears; raindrops patter on the umbrella and the wet pavement mirrors the cool grey light. Raindrops patter on the transparent umbrella while the wet pavement mirrors the cool grey light of the overcast sky.",
+      "promptProse": "Holding a transparent umbrella overhead on the train platform in the gentle rain, Alya waits near the tactile paving, rain droplets glistening on the umbrella canopy and her silver hair. Her school coat and dark pleated skirt are shielded from the drizzle, her blue eyes reflecting the blurred neon station lights. Sleek train tracks, rain-slicked asphalt, and glowing platform lanterns create a romantic, atmospheric rainy composition.",
       "promptTokens": [
         "atmospheric",
         "black_thighhighs",
@@ -38573,7 +38689,8 @@
         "reflections",
         "school_uniform",
         "seirei_academy_uniform",
-        "sheer_white_thighhigh_stockings",
+        "sheer_thighhighs",
+        "white_thighhighs",
         "smooth_thighs",
         "train_station",
         "umbrella",
@@ -38647,7 +38764,7 @@
       "action": "怀抱厚厚精装书倚在书架旁，透过书架空隙不经意回眸",
       "timeOfDay": "午后",
       "lighting": "warm dust motes in sunbeams filtering between bookshelves",
-      "camera": "medium shot, through bookshelves framing, eye level",
+      "camera": "medium shot, peeking over open study book at library table",
       "mood": "静谧知性与心跳加速",
       "sceneTags": [
         "library",
@@ -38657,7 +38774,7 @@
         "wooden_floor",
         "quiet"
       ],
-      "promptProse": "In the quiet afternoon library, Alisa Mikhailovna Kujou hugs a stack of thick hardcover reference books against her chest, leaning against the bookshelf as she glances back through a gap between the rows of books, a hint of a smile tugging at her lips. Soft afternoon light filters through the high library windows, dust hanging golden in the aisle behind her.",
+      "promptProse": "Sitting at a polished oak study desk in the quiet school library, Alya peers over the top of her open Russian literature book, stealing a shy, endearing glance at the viewer. Soft afternoon sunlight filters through tall stained-glass windows, casting warm highlights along her silver hair strands and uniform collar. Lofty wooden bookshelves and quiet reading carrels establish a peaceful academic haven.",
       "promptTokens": [
         "atmospheric",
         "black_thighhighs",
@@ -38680,7 +38797,8 @@
         "red_ribbon",
         "school_uniform",
         "seirei_academy_uniform",
-        "sheer_white_thighhigh_stockings",
+        "sheer_thighhighs",
+        "white_thighhighs",
         "smooth_thighs",
         "sunlight_beams",
         "volumetric_lighting",
@@ -39939,7 +40057,7 @@
         "elf_ears",
         "blushing"
       ],
-      "promptProse": "At the bedroom bed lying on bed, 希露菲叶特, clad in completely naked with zero clothes, reclines on soft bedding, gaze calm and intimate. Her slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. 床头暖橙烛火与柔和月光交织，将娇小身段渲染得极其柔嫩 filters through the air in warm volumetric rays, casting gentle shadows and a polished cinematic depth that lifts the whole composition.",
+      "promptProse": "Lying comfortably on her stomach on a plush feather mattress in the dim candlelight, Sylphiette props her chin in both hands with her feet playfully kicked up behind her. Her soft, delicate figure is bathed in the warm amber glow of bedside candles, her emerald eyes sparkling with sweet affection and a coy blush. Velvet pillows, draped linen canopies, and soft wool blankets create an intimate, cozy sanctuary.",
       "promptTokens": [
         "5_toes",
         "atmospheric",
@@ -40056,7 +40174,7 @@
       "action": "躺在蓬松羽绒大床上，双手轻轻拉着床单遮住胸口，双腿抬起展露极具透视感的白嫩双足与蜷缩趾尖，尖耳通红",
       "timeOfDay": "夜晚",
       "lighting": "床头暖橙烛火与柔和月光交织，将娇小身段渲染得极其柔嫩",
-      "camera": "extreme low angle foreshortening, bare feet and 5 toes close-up, bent knees, soft lighting",
+      "camera": "cowboy shot, lounging on plush bed with crossed legs",
       "mood": "温柔依恋与私密",
       "recommendedSize": "1152x1536",
       "kreaStyleHint": "r18_sensual_cg",
@@ -43219,7 +43337,7 @@
         "wet_hair",
         "holding_hand"
       ],
-      "promptProse": "At the school pool water ripples moonlight, In wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midn, 蕾塞 stands with serene composure, presence calm and centered. Her slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Sitting on the tiled edge of the rooftop school swimming pool at midnight, Reze dips her feet into the calm, rippling water with a carefree, provocative smile. Wearing her dark navy Japanese school swimsuit with wet skin and her signature black choker, the pale full moon casts shimmering silver reflections across her purple hair and fair skin. Distant city skyscrapers and rooftop chainlink fences glow softly against the deep indigo night sky.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -43307,7 +43425,7 @@
       "action": "月下从水面轻盈出水",
       "timeOfDay": "night",
       "lighting": "moonlight",
-      "camera": "medium_shot",
+      "camera": "cowboy shot, sitting on pool edge dipping feet in moonlit water",
       "mood": "serene",
       "recommendedSize": "1152x1536",
       "coverageTags": [
@@ -44506,7 +44624,7 @@
         "straight_bangs",
         "melancholy_sun"
       ],
-      "promptProse": "On the school rooftop at sunset, Byakuya sits quietly on the concrete steps beside the chain-link fence, slowly eating a plain bento of white rice topped with a single pickled plum, her faded navy sailor uniform neat around her. Noticing you walk over, a slightly flustered yet gentle, quiet smile crosses her face, resolve flickering behind the shyness. Golden evening light warms her black hair and straight bangs, the melancholy sun spreading amber across the rooftop.",
+      "promptProse": "Sitting on a wooden bench on the school rooftop at sunset, Byakuya holds a handmade bento box across her lap, her amber eyes soft and contemplative. Her magical girl academy uniform with a crimson ribbon and pleated skirt catch the vibrant orange twilight, her black hair swaying gently in the breeze. Distant city telecommunication towers and glowing dusk clouds fill the expansive sky behind her.",
       "promptTokens": [
         "atmospheric",
         "bento",
@@ -44527,7 +44645,8 @@
         "rooftop",
         "sailor_uniform",
         "school_uniform",
-        "sheer_black_thighhigh_stockings",
+        "sheer_thighhighs",
+        "black_thighhighs",
         "sitting",
         "smooth_thighs",
         "straight_bangs",
@@ -44596,7 +44715,7 @@
       "action": "夕阳下吃便当，清贫的平静",
       "timeOfDay": "sunset",
       "lighting": "golden_hour",
-      "camera": "medium_portrait",
+      "camera": "medium shot, sitting on bench opening bento box",
       "mood": "wistful",
       "recommendedSize": "1152x1536",
       "coverageTags": [
@@ -45223,7 +45342,7 @@
         "blonde_hair",
         "praying"
       ],
-      "promptProse": "Inside the church cathedral altar bathed in 巨大的玫瑰彩绘玻璃投下五彩斑斓的华美圣光，神圣丁达尔光束穿透空灵殿堂, 塞西莉亚 in wearing her ceremonial pure white saint nun habit and veil with elegant gold cross em stands with serene composure, presence calm and centered. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Kneeling gracefully in prayer before the grand cathedral altar, Saint Cecilia clasps her hands beneath her chin, golden-yellow eyes closed in serene devotion. Her pure white saint nun habit, flowing veil, and gold-trimmed cross collar are bathed in dazzling rainbow light cast by towering stained-glass rose windows. Majestic stone arches, burning votive candles, and soft ascending incense smoke create a breathtaking, sacred cathedral atmosphere.",
       "promptTokens": [
         "altar",
         "atmospheric",
@@ -45312,7 +45431,7 @@
       "action": "双手合十闭目祈祷，金发在圣光下熠熠生辉，修女服黑白分明，神圣纯洁得令人屏息",
       "timeOfDay": "午后",
       "lighting": "巨大的玫瑰彩绘玻璃投下五彩斑斓的华美圣光，神圣丁达尔光束穿透空灵殿堂",
-      "camera": "medium full shot, grand stained glass window background, divine volumetric light rays",
+      "camera": "cowboy shot, kneeling at cathedral altar under stained glass light",
       "mood": "庄严圣洁",
       "recommendedSize": "1152x1536",
       "coverageTags": [
@@ -45923,7 +46042,7 @@
       "action": "双手合拢凝聚水球，晨光穿过树梢",
       "timeOfDay": "morning",
       "lighting": "misty_sunlight",
-      "camera": "medium_shot",
+      "camera": "cowboy shot, conjuring water sphere beside forest brook",
       "mood": "focused",
       "sceneTags": [
         "forest",
@@ -45935,7 +46054,7 @@
         "dappled_light",
         "concentration"
       ],
-      "promptProse": "the forest morning mist water magic at morning — Wearing wearing her classic green hooded mage cloak over a simple white shirt and shorts with, 希露菲叶特 stands with serene composure, presence calm and centered. Her slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Warm misty_sunlight pools across surfaces, volumetric haze and subtle lens bokeh creating an airy, immersive atmosphere.",
+      "promptProse": "Kneeling beside a babbling forest stream at dawn, Sylphiette focuses her mana to conjure a shimmering sphere of clear water between her palms, a proud, gentle smile gracing her face. Her classic green hooded mage cloak over a simple white shirt and shorts drapes across the mossy riverbank, her pale green short hair and pointy elven ears glowing in the morning mist. Dewy ferns, sunlit river stones, and golden light filtering through emerald tree boughs create an enchanting woodland sanctuary.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -46151,7 +46270,7 @@
       "action": "穿着宽松睡衣哼着歌准备早餐",
       "timeOfDay": "morning",
       "lighting": "soft_morning_light",
-      "camera": "medium_portrait",
+      "camera": "medium shot, stirring pot at country stove with morning apron",
       "mood": "cozy",
       "sceneTags": [
         "kitchen",
@@ -46163,7 +46282,7 @@
         "oversized_shirt",
         "bare_shoulders"
       ],
-      "promptProse": "Inside the kitchen morning sunlight cooking bathed in soft_morning_light, Dressed in wearing an oversized loose nightshirt slipping off one shoulder, 希露菲叶特 is prepares food at the counter, hands moving with care. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Warm soft_morning_light pools across surfaces, volumetric haze and subtle lens bokeh creating an airy, immersive atmosphere.",
+      "promptProse": "Standing before the rustic hearth stove in the Grayrat family kitchen, Sylphiette happily stirs a pot of savory morning stew with a wooden spoon, wearing an apron over her simple cotton day dress. Her short white-green hair is softly illuminated by the warm crackling stove fire and golden dawn light pouring through the small window. Clay spice jars, braided garlic ropes, and copper pans hanging from wooden beams evoke a heartwarming rural home.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -46226,7 +46345,7 @@
       "action": "慵懒苏醒，薄被滑落，揉着眼睛",
       "timeOfDay": "morning",
       "lighting": "morning_sunlight",
-      "camera": "medium_shot",
+      "camera": "cowboy shot, waking up on soft white bedsheets",
       "mood": "sensual",
       "sceneTags": [
         "bedroom",
@@ -46238,7 +46357,7 @@
         "soft_light",
         "intimate"
       ],
-      "promptProse": "In the quiet the bedroom morning sunlight white sheets, 希露菲叶特 — completely naked with zero clothes — reclines on soft bedding, gaze calm and intimate. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Cinematic depth of field and delicate color grading give the frame a luminous, poster-quality finish, every texture crisp and every highlight softly diffused.",
+      "promptProse": "Reclining on soft rumpled white bedsheets in the gentle morning sunlight, Sylphiette stretches her slender arms upward with a sleepy, loving blush, her delicate collarbone and soft curves highlighted by the dawn glow. Her short green hair is sweetly tousled against the pillows, her pointy elf ears tinted pink as her emerald eyes gaze up adoringly. Warm morning sunlight casts gentle pastel tones across the cozy bedroom and soft quilts.",
       "promptTokens": [
         "atmospheric",
         "bare_breasts",
@@ -46547,7 +46666,7 @@
       "action": "笨拙地搅拌面糊，脸上沾着面粉",
       "timeOfDay": "evening",
       "lighting": "warm_kitchen_light",
-      "camera": "medium_portrait",
+      "camera": "medium shot, mixing cookie dough in kitchen with bright smile",
       "mood": "cozy",
       "sceneTags": [
         "kitchen",
@@ -46559,7 +46678,7 @@
         "concentration",
         "dog_pajamas"
       ],
-      "promptProse": "In the quiet the kitchen cooking batter bowl, Dressed in wearing an off-shoulder pastel hoodie with cute puppy motif, 由比滨结衣 is prepares food at the counter, hands moving with care. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Warm_kitchen_light filters through the air in warm volumetric rays, casting gentle shadows and a polished cinematic depth that lifts the whole composition.",
+      "promptProse": "Standing in her warm home kitchen with a ceramic mixing bowl in hand, Yuigahama Yui happily whisks cookie batter with a bright, bubbly smile for the viewer. Wearing a cute pastel puppy-motif hoodie over a casual skirt, her peach-pink hair with its signature high side-bun catches the warm kitchen lights. A flour-dusted countertop, baking trays, cookie cutters, and neat kitchen cupboards establish a cheerful, heartwarming scene.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -47726,7 +47845,7 @@
       "action": "坐在办公桌前认真整理文件",
       "timeOfDay": "afternoon",
       "lighting": "window_light",
-      "camera": "medium_portrait",
+      "camera": "medium shot, stamping documents at municipal office desk",
       "mood": "composed",
       "sceneTags": [
         "office",
@@ -47738,7 +47857,7 @@
         "composed",
         "afternoon"
       ],
-      "promptProse": "At the office desk paperwork, 约尔·福杰 — wearing her formal Berlint City Hall olive green uniform blazer with white collared s — sits with relaxed grace, posture soft. Her knee-high socks and combat boots framing smooth thighs beneath her pleated skirt. Cinematic depth of field and delicate color grading give the frame a luminous, poster-quality finish, every texture crisp and every highlight softly diffused.",
+      "promptProse": "Sitting elegantly at her wooden desk in the Berlint City Hall office, Yor Forger carefully stamps a stack of civil documents, her ruby-red eyes wide with earnest focus. Her formal olive-green civil servant blazer and crisp white collared shirt are tailored impeccably, her dark hair pinned up neatly with red ribbons. Vintage filing cabinets, paper stacks, a rotary telephone, and warm frosted-glass office partitions create an authentic mid-century European workplace.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
@@ -48225,7 +48344,7 @@
       "action": "靠在书架旁翻杂志",
       "timeOfDay": "afternoon",
       "lighting": "window_light",
-      "camera": "medium_portrait",
+      "camera": "medium shot, leaning against bookstore stack reading magazine",
       "mood": "relaxed",
       "sceneTags": [
         "bookstore",
@@ -48237,7 +48356,7 @@
         "casual",
         "dusty_sunbeams"
       ],
-      "promptProse": "Under window_light at the bookstore bookshelves magazine, Dressed in wearing her iconic sleeveless white collared shirt with loose black necktie, 蕾塞 is browses the shelves, fingers trailing over spines. She shows slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Window_light filters through the air in warm volumetric rays, casting gentle shadows and a polished cinematic depth that lifts the whole composition.",
+      "promptProse": "Leaning with one hip against a stack of vintage magazines in an old Tokyo bookstore, Reze reads with an amused, cunning half-smile, her sleeveless white collared shirt and loose black necktie casually styled. Dusty sunlight slants through the front glass, illuminating floating dust motes and her short purple hair. Towering second-hand bookstacks, manga shelves, and handwritten paper price tags create an authentic retro city atmosphere.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
@@ -49064,7 +49183,7 @@
       "action": "趴在课桌上睡着了",
       "timeOfDay": "afternoon",
       "lighting": "window_light",
-      "camera": "medium_portrait",
+      "camera": "medium shot, resting cheek on arms atop classroom desk",
       "mood": "quiet",
       "sceneTags": [
         "classroom",
@@ -49076,7 +49195,7 @@
         "peaceful",
         "school"
       ],
-      "promptProse": "In a quiet afternoon classroom with breeze drifting through the open windows, Byakuya sleeps face-down on her desk, worn out from part-time work, strands of black hair spilling across the open books, her lashes casting soft shadows in the window light. A jacket has been draped over her shoulders by someone's kindness, and her sleepy murmur is barely audible.",
+      "promptProse": "Resting her cheek on her folded arms atop her wooden classroom desk during a quiet afternoon break, Byakuya gazes lazily toward the viewer with sleepy amber eyes. Soft golden sunbeams filter through the classroom blinds, casting warm striped shadows across her dark hair and uniform. Chalkboard notes, tidy student desks, and a gentle breeze stirring the curtains create a peaceful, nostalgic school atmosphere.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
@@ -49097,7 +49216,8 @@
         "sailor_uniform",
         "school",
         "school_uniform",
-        "sheer_black_thighhigh_stockings",
+        "sheer_thighhighs",
+        "black_thighhighs",
         "sleeping",
         "smooth_thighs",
         "volumetric_lighting",
@@ -49556,7 +49676,7 @@
       "action": "提着水壶浇花，阳光洒落",
       "timeOfDay": "morning",
       "lighting": "morning_sunlight",
-      "camera": "medium_portrait",
+      "camera": "medium shot, watering rose bushes with brass watering can",
       "mood": "serene",
       "sceneTags": [
         "church_garden",
@@ -49568,7 +49688,7 @@
         "serene",
         "gentle_smile"
       ],
-      "promptProse": "At the church garden watering can flowers under morning_sunlight, 塞西莉亚 in wearing her ceremonial pure white saint nun habit and veil with elegant gold cross em stands with serene composure, presence calm and centered. Framed with slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered, her pose feels natural and unforced. Warm morning_sunlight pools across surfaces, volumetric haze and subtle lens bokeh creating an airy, immersive atmosphere.",
+      "promptProse": "Tending to blooming rose bushes in the sunlit church courtyard garden, Cecilia pours water from an ornate brass watering can with a bright, cheerful smile. Her nun veil flutters in the morning breeze as dewdrops glisten on the flower petals and her blonde bangs. Blooming red and white roses, stone garden birdbaths, and the gothic church belltower rise peacefully in the morning sun.",
       "promptTokens": [
         "atmospheric",
         "bare_legs",
@@ -49825,7 +49945,7 @@
       "action": "睡梦中翻身，薄被滑落",
       "timeOfDay": "night",
       "lighting": "moonlight",
-      "camera": "medium_shot",
+      "camera": "cowboy shot, sitting on wooden bed wrapped in soft white quilt",
       "mood": "sensual",
       "sceneTags": [
         "bedroom",
@@ -49837,7 +49957,7 @@
         "intimate",
         "soft_light"
       ],
-      "promptProse": "In the quiet the bedroom moonlight white sheets, Wearing completely naked with zero clothes, 塞西莉亚 reclines on soft bedding, gaze calm and intimate. Slender bare legs and smooth thighs, bare feet with delicate toes and soft skin reflections on the ground, every arch and toe carefully rendered. Gentle bokeh and precise rim light separate her from the background, the whole scene rendered with clean, high-detail polish and natural skin texture.",
+      "promptProse": "Sitting on the edge of her wooden bed in the quiet church dormitory at night, Cecilia clutches a soft white quilt against her chest with an endearing, flushed blush, her bare shoulders and collarbone glowing in the moonlight. Her long golden hair cascades around her in gentle waves, her sleepy yellow eyes gazing up with innocent vulnerability. A rustic wooden nightstand, a warm glowing oil lamp, and arched stone windows create a tranquil, sacred bedtime setting.",
       "promptTokens": [
         "atmospheric",
         "bare_breasts",
@@ -57969,7 +58089,7 @@
       "action": "持剑迎风而立",
       "timeOfDay": "白天",
       "lighting": "悬崖烈日照耀",
-      "camera": "full body",
+      "camera": "cowboy shot, dynamic combat stance with broadsword",
       "mood": "英姿飒爽",
       "sceneTags": [
         "cliff",
@@ -57980,7 +58100,7 @@
         "outdoor",
         "crimson_hair"
       ],
-      "promptProse": "On the wind-scoured trial cliff at the edge of the Demon Continent, Eris Greyrat plants her boots and rests a greatsword across her shoulder, framed in a cowboy shot from the tops of her boots to the top of her head, filling the foreground Her deep crimson wavy hair and white headband stream sideways in the gale, the small ahoge whipping free, while her thick eyebrows draw down over fierce red eyes. The cropped midriff top and split-side shorts of her Sword King gear leave her legs bare above the stirrup leggings, wind-carved boulders and tufted grass pressing close around her as harsh midday sun rakes warm crimson light across her athletic frame. A finished anime wallpaper with a clear focal subject, layered background depth, and cinematic atmosphere.",
+      "promptProse": "Standing in a fierce, low-center combat stance on the windswept crags of the Holy Land of the Sword, Eris Greyrat brandishes her heavy steel broadsword with both hands, fiery crimson hair whipping wildly in the mountain gale. Her fierce blue eyes blaze with Sword King intensity, her leather travel armor and red cloak worn with battle grit. Jagged snowy peaks, howling blizzard drifts, and dramatic storm clouds fill the epic mountain arena.",
       "promptTokens": [
         "adventure",
         "ahoge",
@@ -58009,7 +58129,7 @@
         "white_pantyhose",
         "wind"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "sword_king",
       "coverageTags": [
         "iconic"
@@ -58082,7 +58202,7 @@
       "action": "持剑警戒前行",
       "timeOfDay": "白天",
       "lighting": "旷野烈日照耀",
-      "camera": "full body",
+      "camera": "cowboy shot, hand on sword hilt looking across red wasteland",
       "mood": "野性锐利",
       "sceneTags": [
         "wilderness",
@@ -58093,7 +58213,7 @@
         "outdoor",
         "wasteland"
       ],
-      "promptProse": "Trudging the bleached wasteland of the Demon Continent, Eris Greyrat keeps one hand on the hilt at her hip, composed in a cowboy shot from the tops of her boots to the top of her head, filling the foreground Her heavy Dead End adventurer jacket is filmed with dust, the deep crimson waves of her hair lifting around a sun-hardened face, thick brows set above red eyes that never stop scanning. She walks across the cracked plain in sturdy boots and rolled trousers, dry riverbeds, scattered boulders, a dead twisted tree and a half-buried monolith pressing close around her, each footfall kicking up a thin golden veil of dust in the blazing light. A finished anime wallpaper with a clearly defined focal subject, atmospheric depth, and cinematic glow.",
+      "promptProse": "Surveying the harsh crimson plains of the Demon Continent at scorching midday, Eris rests one gloved hand firmly on the hilt of her sword, her crimson hair tied in a travel ponytail under the blazing sun. Her light adventurer tunic, chestplate, and sturdy travel boots are dusty from the road, a confident, adventurous grin on her face. Craggy red canyons, giant monster bones, and heat shimmers define the unforgiving wilderness around her.",
       "promptTokens": [
         "adventure",
         "ahoge",
@@ -58120,7 +58240,7 @@
         "wavy_hair",
         "wind"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "dead_end_adventurer",
       "coverageTags": []
     },
@@ -58191,7 +58311,7 @@
       "action": "花园中追逐蝴蝶",
       "timeOfDay": "白天",
       "lighting": "花园柔光",
-      "camera": "full body",
+      "camera": "medium shot, sitting on red velvet sofa in Boreas mansion",
       "mood": "活泼天真",
       "sceneTags": [
         "garden",
@@ -58202,7 +58322,7 @@
         "outdoor",
         "noble"
       ],
-      "promptProse": "In the rose garden of the Greyrat mansion, the young Eris Greyrat chases a butterfly between the flower beds, framed in a cowboy shot from the tops of her boots to the top of her head, her whole figure holding the foreground Her frilled noble child's dress and ribbon-tied headband glow in the soft afternoon sun, curly crimson hair bouncing with every step while her red eyes track the butterfly and her thick brows lift in delight. Clipped box hedges, a splashing stone fountain, terracotta pots of roses, a gravel path and a weathered garden bench crowd close around her, leaf-filtered light dappling the lawn in dappled gold. A finished anime wallpaper with a striking focal subject, layered environmental depth, and a cinematic mood.",
+      "promptProse": "Sitting with crossed legs on an ornate crimson velvet sofa in the Boreas manor salon, Eris crosses her arms with a haughty, tsundere pout, her voluminous red curls cascading across her shoulders. Dressed in her lavish gold-trimmed aristocratic dress with frilled collar, crystal chandeliers and oil portraits of the Boreas lineage adorn the opulent wood-paneled salon behind her.",
       "promptTokens": [
         "ahoge",
         "butterfly",
@@ -58227,7 +58347,7 @@
         "thick_eyebrows",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "noble_child",
       "coverageTags": []
     },
@@ -58298,7 +58418,7 @@
       "action": "反复挥剑训练",
       "timeOfDay": "黄昏",
       "lighting": "夕阳逆光",
-      "camera": "full body",
+      "camera": "cowboy shot, wiping sweat after sword practice",
       "mood": "坚毅专注",
       "sceneTags": [
         "training",
@@ -58309,7 +58429,7 @@
         "sweat",
         "determined"
       ],
-      "promptProse": "On the training ground at dusk, Eris Greyrat drives her sword through another overhead strike, a full length composition from head to toe so nothing of her is cropped away. Sweat beads along her jaw and her deep crimson wavy hair flies loose beneath the white headband, thick brows knotted above red eyes locked on the target. The cropped top and split shorts show the tension in every muscle, wooden practice dummies, stacked straw targets, a water barrel and a low stone wall pressing close behind her as last light flares gold and long crimson shadows stretch over the packed earth. A finished anime wallpaper with a vivid focal subject, rich background depth, and cinematic atmosphere.",
+      "promptProse": "Pausing after intense sword sparring on the dirt training grounds, Eris wipes a bead of sweat from her flushed cheek with the back of her forearm, breathing deeply with a fierce, satisfied grin. Her practice shirt and leather armguards are dusted with earth, her bright red hair damp with exertion. Wooden training dummies, weapon racks filled with practice swords, and the palisade wall of the fortress catch the warm afternoon sun.",
       "promptTokens": [
         "ahoge",
         "atmospheric",
@@ -58335,7 +58455,7 @@
         "wavy_hair",
         "white_pantyhose"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "sword_king",
       "coverageTags": []
     },
@@ -58406,7 +58526,7 @@
       "action": "桌前用餐休整",
       "timeOfDay": "夜晚",
       "lighting": "油灯暖光",
-      "camera": "full body",
+      "camera": "medium shot, eating roasted meat at tavern table",
       "mood": "放松惬意",
       "sceneTags": [
         "inn",
@@ -58417,7 +58537,7 @@
         "warm_light",
         "meat"
       ],
-      "promptProse": "Inside a rustic border-town inn, Eris Greyrat sits at a plank table tearing into a steaming roasted joint, framed in a cowboy shot from the tops of her boots to the top of her head, her face crisply readable Her adventurer jacket hangs over the chair back and her sword leans within arm's reach, deep crimson waves catching the lamplight as a warm flush settles over her cheeks and her red eyes brighten. A stone hearth, hanging copper pots, a rack of barrels, mounted antlers and a low beamed ceiling crowd the common room around her, smoke curling through the golden haze. A finished anime wallpaper with a sharp focal subject, immersive background depth, and a cinematic glow.",
+      "promptProse": "Sitting eagerly at a rough-hewn tavern table in a roadside village inn, Eris holds up a large skewer of roasted meat with an enthusiastic, ravenous grin. Her relaxed travel clothes are loose at the collar, her bright ruby eyes sparkling under the warm hearth firelight. Wooden beer steins, a roaring stone fireplace, and rustic adventurer gear hanging from wall hooks create a lively, hearty fantasy tavern mood.",
       "promptTokens": [
         "ahoge",
         "atmospheric",
@@ -58444,7 +58564,7 @@
         "wavy_hair",
         "wooden_table"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "dead_end_adventurer",
       "coverageTags": [
         "daily"
@@ -59208,7 +59328,7 @@
       "action": "舞台上高唱登场",
       "timeOfDay": "夜晚",
       "lighting": "舞台聚光与应援海",
-      "camera": "full body",
+      "camera": "cowboy shot, dynamic idol pose under arena spotlights",
       "mood": "偶像闪耀",
       "sceneTags": [
         "concert",
@@ -59219,7 +59339,7 @@
         "crowd_lights",
         "night"
       ],
-      "promptProse": "On the stage of a packed concert arena, Hoshino Ai leaps toward the lens in her frilled pink idol dress, captured in a cowboy shot from the tops of her boots to the top of her head,. Her purple hair swept up on one side, the rabbit hair ornament and heart brooch catch the light, and her large purple eyes blaze with vivid six-pointed star-shaped pupils. Frilled gloves flash at her wrists, truss rigs, haze jets, speaker stacks and a towering LED wall pressing close behind her as sheer beams cut through the wash of magenta pen light. A finished anime wallpaper with a high-contrast focal subject, deep background layering, and a cinematic mood.",
+      "promptProse": "Center stage in the packed dome arena, Hoshino Ai strikes a radiant, signature idol pose with her wireless mic held high, both six-pointed star pupils blazing with hypnotic, dazzling charisma. Her ruffled magenta-and-pink stage idol costume sparkles under sweeping multi-colored laser beams, with falling holographic glitter and a sea of glowing penlights illuminating the massive stadium behind her.",
       "promptTokens": [
         "atmospheric",
         "cinematic_lighting",
@@ -59246,7 +59366,7 @@
         "star_pupils",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "main_look",
       "coverageTags": [
         "iconic"
@@ -59319,7 +59439,7 @@
       "action": "镜前反复彩排",
       "timeOfDay": "白天",
       "lighting": "窗光与镜面反光",
-      "camera": "full body",
+      "camera": "medium shot, practicing dance before rehearsal mirror",
       "mood": "专注自律",
       "sceneTags": [
         "rehearsal",
@@ -59330,7 +59450,7 @@
         "interior",
         "daylight"
       ],
-      "promptProse": "In the mirrored rehearsal studio, Hoshino Ai holds the final pose of her choreography with both arms open and her idol smile perfectly in place, framed in a cowboy shot from the tops of her boots to the top of her head, filling the foreground Her one-side-up purple hair sways with the movement, the rabbit hair ornament bobbing, and her large purple eyes shine with vivid six-pointed star-shaped pupils. The wall of mirrors behind her reflects only the empty room — a barre rail, a stack of water bottles, a speaker cabinet and a folded jacket on the floor — while bright window light floods her face from the side. A finished anime wallpaper with a luminous focal subject, layered background depth, and a cinematic atmosphere.",
+      "promptProse": "Pausing in front of the full-length studio mirror in the dance rehearsal room, Hoshino Ai wipes a bead of sweat from her smiling temple with a hand towel, her double star pupils gleaming with tireless passion. Dressed in a sporty cropped practice tee and dance shorts, her long violet-magenta hair tied in a high side ponytail, bright studio lights reflect across the polished hardwood floor and acoustic walls.",
       "promptTokens": [
         "cinematic_lighting",
         "dance_studio",
@@ -59355,7 +59475,7 @@
         "star_pupils",
         "volumetric_lighting"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "main_look",
       "coverageTags": [
         "daily"
@@ -59643,7 +59763,7 @@
       "action": "镜前补妆",
       "timeOfDay": "夜晚",
       "lighting": "化妆镜灯",
-      "camera": "full body",
+      "camera": "medium shot, winking backstage before going on stage",
       "mood": "静谧专注",
       "sceneTags": [
         "dressing_room",
@@ -59654,7 +59774,7 @@
         "interior",
         "night"
       ],
-      "promptProse": "In the backstage dressing room before the show, Hoshino Ai leans toward the makeup mirror to apply the last shimmer of eyeshadow, captured in a cowboy shot from the tops of her boots to the top of her head,. The ring of warm vanity bulbs haloes her focused expression, purple hair swept one-side-up with the rabbit hair ornament bobbing, her large purple eyes holding six-pointed star-shaped pupils. Costume racks of frilled dresses, a table of palettes and brushes, a bouquet, a stack of prepared glowsticks and a water carafe crowd close around her in the warm light. A finished anime wallpaper with a striking focal subject, layered environmental depth, and a cinematic mood.",
+      "promptProse": "Peeking through the velvet backstage curtains just before showtime, Hoshino Ai offers a secret, playful wink to the viewer with a finger pressed to her smiling lips. Her elaborate idol stage dress and hair ribbons glow beneath the dim blue backstage corridor lights, with sound mixing consoles, costume racks, and stage monitors humming around her.",
       "promptTokens": [
         "cinematic_lighting",
         "depth_of_field",
@@ -59680,7 +59800,7 @@
         "volumetric_lighting",
         "warm_light"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "main_look",
       "coverageTags": [
         "daily"
@@ -59753,7 +59873,7 @@
       "action": "与粉丝握手交谈",
       "timeOfDay": "白天",
       "lighting": "会馆灯光",
-      "camera": "full body",
+      "camera": "medium shot, signing album at fan meeting table",
       "mood": "温柔亲和",
       "sceneTags": [
         "handshake_event",
@@ -59763,7 +59883,7 @@
         "smile",
         "daylight"
       ],
-      "promptProse": "At the handshake event hall, Hoshino Ai leans forward across the flower-decked table with both hands extended in welcome, composed in a cowboy shot from the tops of her boots to the top of her head, filling the foreground, her features sharp and fully visible. Her large purple eyes glow with six-pointed star-shaped pupils and genuine warmth as she tilts her head in the two-tone white-and-pink stage dress, the rabbit hair ornament catching the light. Rows of folding chairs, standing banners, bouquets and a queue barrier press close behind her, overhead lights pouring an even glow across her smiling face. A finished anime wallpaper with a vivid focal subject, rich background depth, and cinematic atmosphere.",
+      "promptProse": "Sitting behind a decorated table at a fan meet-and-greet event, Hoshino Ai signs an album cover with a gold pen, looking up with an impossibly warm, sparkling smile that melts hearts. Dressed in an elegant pastel promotional outfit with delicate ribbons, colorful flower bouquets, plush mascot toys, and event banners create a joyous, celebratory atmosphere.",
       "promptTokens": [
         "cinematic_lighting",
         "depth_of_field",
@@ -59787,7 +59907,7 @@
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "stage_two_tone",
       "coverageTags": []
     },
@@ -65397,7 +65517,7 @@
       "action": "垛口边俯瞰巡逻",
       "timeOfDay": "白天",
       "lighting": "墙顶日光",
-      "camera": "full body",
+      "camera": "cowboy shot, standing atop Wall Rose with wind in scarf",
       "mood": "沉静坚定",
       "sceneTags": [
         "wall",
@@ -65408,7 +65528,7 @@
         "daylight",
         "wind"
       ],
-      "promptProse": "On the rampart of the wall of Paradis, Mikasa Ackerman walks the line of cannon placements at midday, captured in a cowboy shot from the tops of her boots to the top of her head, her face crisply rendered. Her short black hair trimmed to the nape, straight fringe across her brow, and her grey gaze sweeps the parapet with unyielding stillness, brown jacket and green cape snapping in the midday wind, the red scarf lifting against her throat. Stone gun mounts, a signal tower, stacked supply crates and the inner parapet press close along the walkway, hard midday light raking across the ancient stone. A finished anime wallpaper with a high-contrast focal subject, deep background layering, and a cinematic mood.",
+      "promptProse": "Standing near the edge of Wall Rose overlooking the vast plains at dawn, Mikasa Ackerman rests one hand on the hilt of her blade, her signature red scarf billowing in the fierce highland wind. Her Survey Corps uniform jacket, white trousers, and Omni-Directional Mobility Gear are detailed with military precision, her dark eyes calm and unyielding. The massive stone crenellations of the wall and the distant sunrise horizon stretch into the expansive sky.",
       "promptTokens": [
         "atmospheric",
         "black_hair",
@@ -65433,7 +65553,7 @@
         "white_shirt",
         "wind"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "survey_corps_uniform",
       "coverageTags": [
         "iconic"
@@ -65506,7 +65626,7 @@
       "action": "立体机动装置疾驰",
       "timeOfDay": "白天",
       "lighting": "林隙光束",
-      "camera": "full body",
+      "camera": "cowboy shot, perching on giant tree branch with dual blades",
       "mood": "凌厉迅捷",
       "sceneTags": [
         "forest",
@@ -65517,7 +65637,7 @@
         "outdoor",
         "sunbeams"
       ],
-      "promptProse": "Through the dense tree sea, Mikasa Ackerman swings between the great trunks on her ODM gear with both blades drawn in gleaming arcs, shot in full figure, head to toe within the frame and her face fully legible. Her short black hair with straight bangs and grey eyes stay locked forward and the red scarf streams behind her like a banner of flame, green cape flaring. Massive mossy trunks, trailing cables from her gear, splintered branches, ferns and drifting leaves crowd the forest close around her, spears of sunlight piercing the canopy across her harness. A finished anime wallpaper with a luminous focal subject, layered background depth, and a cinematic atmosphere.",
+      "promptProse": "Perching agilely on a thick mossy bough in the Forest of Giant Trees, Mikasa holds dual steel blades poised in a reverse grip, her sharp dark eyes scanning the misty canopy below. Gas hisses faintly from her ODM gear thrusters as sunbeams pierce through the towering ancient trunks, casting dynamic dappled light across her agile silhouette.",
       "promptTokens": [
         "action",
         "black_hair",
@@ -65539,7 +65659,7 @@
         "volumetric_lighting",
         "white_pants"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "survey_corps_uniform",
       "coverageTags": []
     },
@@ -65610,7 +65730,7 @@
       "action": "操场列队训练",
       "timeOfDay": "白天",
       "lighting": "操场日光",
-      "camera": "full body",
+      "camera": "cowboy shot, ready combat stance on dirt training field",
       "mood": "冷静寡言",
       "sceneTags": [
         "training_ground",
@@ -65620,7 +65740,7 @@
         "daylight",
         "uniform"
       ],
-      "promptProse": "On the training corps parade ground, Mikasa Ackerman steps forward out of the formation in her white training uniform, framed in a cowboy shot from the tops of her boots to the top of her head, her face and expression crisply readable Leather harness straps and the ODM gear cross her hips and thighs and the red scarf stays wrapped firmly around her neck, while her short black hair with straight bangs frames clear grey eyes fixed ahead with quiet, absolute focus. Wooden practice dummies, stacked straw targets, equipment racks, a low stone wall and the barracks wall press close behind her, bright daylight overhead. A finished anime wallpaper with a clear focal subject, layered background depth, and cinematic atmosphere.",
+      "promptProse": "Adopting a disciplined hand-to-hand combat stance on the sun-baked training grounds, Mikasa raises her fists with focused, stoic determination. Her cadet uniform shirt is lightly dusted, her dark short hair framing her sharp, beautiful facial features. Wooden training dummies, obstacle courses, and distant stone barracks stand under the midday sky.",
       "promptTokens": [
         "belt",
         "black_hair",
@@ -65643,7 +65763,7 @@
         "white_pants",
         "white_shirt"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "training_corps",
       "coverageTags": []
     },
@@ -65731,7 +65851,7 @@
       "action": "窗边喝热饮",
       "timeOfDay": "白天",
       "lighting": "窗边柔光",
-      "camera": "full body",
+      "camera": "medium shot, sitting at cafe table holding warm teacup",
       "mood": "难得的柔软",
       "sceneTags": [
         "cafe",
@@ -65742,7 +65862,7 @@
         "daylight",
         "peaceful"
       ],
-      "promptProse": "Mikasa Ackerman sits alone at a small wooden table in a quiet cafe in the Trost district, the only person in the room, framed head to toe in a full body shot so her face, hair, scarf, shirt, shorts and boots are all fully visible. She is a single Mikasa, no second person, no mirror reflection, no one across the table, her iconic red scarf folded on her lap as she lifts a warm teacup with both hands, short black hair with straight bangs and grey eyes softened by an unusually relaxed expression. A wooden counter, shelves of teacups, a hanging lamp, leafy potted plants and the cafe's leaded window crowd the space behind her, late afternoon sunlight slanting through the glass. A finished anime wallpaper with a luminous focal subject, layered background depth, and a cinematic atmosphere.",
+      "promptProse": "Sitting at a quiet wooden table in a Trost district cafe, Mikasa holds a steaming ceramic teacup in both hands, her red scarf wrapped softly around her neck. In her simple civilian blouse and dark skirt, her expression is serene and contemplative under the warm amber cafe lights, with rustic brick walls, wood-framed windows, and chalkboard menus framing the tranquil scene.",
       "promptTokens": [
         "black_boots",
         "black_hair",
@@ -65762,7 +65882,7 @@
         "white_shirt",
         "window"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "casual",
       "coverageTags": [
         "daily"
@@ -65835,7 +65955,7 @@
       "action": "街巷中穿行",
       "timeOfDay": "白天",
       "lighting": "阴天灰光",
-      "camera": "full body",
+      "camera": "cowboy shot, standing in dark trench coat in Liberio city street",
       "mood": "肃穆警觉",
       "sceneTags": [
         "street",
@@ -65846,7 +65966,7 @@
         "overcast",
         "city"
       ],
-      "promptProse": "Through the narrow lanes of Marley, Mikasa Ackerman moves in her black military uniform, framed in a cowboy shot from the tops of her boots to the top of her head, her whole figure holding the foreground The breastplate and straps cut a taut silhouette and the red scarf burns as the only spot of colour, her short black hair with straight bangs and grey eyes steady under the heavy overcast sky. Shuttered shopfronts, hanging laundry lines, stacked crates, a gas lamppost, a handcart and rain-slick cobblestones press close on both sides, cold grey light trailing her long silent shadow. A finished anime wallpaper with a striking focal subject, layered environmental depth, and a cinematic mood.",
+      "promptProse": "Standing in the shadow of a stone archway along a Liberio street at dusk, Mikasa wears a dark belted trench coat, her black hair cut short and sleek as her piercing gaze cuts through the twilight. Streetlamps flicker to life along the paved avenue, casting long dramatic shadows across old European-style facades and tram tracks.",
       "promptTokens": [
         "black_hair",
         "black_uniform",
@@ -65868,7 +65988,7 @@
         "volumetric_lighting",
         "white_shirt"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "marley_uniform",
       "coverageTags": []
     },
@@ -65939,7 +66059,7 @@
       "action": "屋顶上望向远方",
       "timeOfDay": "黄昏",
       "lighting": "金色斜阳",
-      "camera": "full body",
+      "camera": "cowboy shot, sitting on Utgard Castle stone battlements",
       "mood": "怀念而坚定",
       "sceneTags": [
         "rooftop",
@@ -65950,7 +66070,7 @@
         "castle",
         "wind"
       ],
-      "promptProse": "On the rooftop of the royal castle at dusk, Mikasa Ackerman turns toward the lens against the dying sun, composed in a cowboy shot from the tops of her boots to the top of her head, filling the foreground, her features sharp and fully visible. Her short black hair cut to the nape, straight bangs brushing her brow, and her grey eyes hold quiet resolve, green cape and red scarf lifting together in the rooftop wind. Tiled gables, chimneys, a bell tower, laundry lines and a parapet stair crowd the roofline close around her, the Wings of Freedom emblem catching the golden light across her brown jacket as the dying sun floods the tiles. A finished anime wallpaper with a vivid focal subject, rich background depth, and cinematic atmosphere.",
+      "promptProse": "Sitting atop the ruined stone battlements of Utgard Castle at midnight, Mikasa rests with one knee drawn up, looking into the starry night sky with quiet introspection, her red scarf glowing faintly in the moonlight. Ancient weathered stones, broken towers, and drifting night mist surround her in a solemn, atmospheric composition.",
       "promptTokens": [
         "atmospheric",
         "black_hair",
@@ -65974,7 +66094,7 @@
         "white_pants",
         "wind"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "survey_corps_uniform",
       "coverageTags": []
     },
@@ -66613,7 +66733,7 @@
       "action": "加冕礼上接过王冠",
       "timeOfDay": "白天",
       "lighting": "大教堂光柱",
-      "camera": "full body",
+      "camera": "cowboy shot, standing crowned in royal coronation robe",
       "mood": "神圣决意",
       "sceneTags": [
         "coronation",
@@ -66624,7 +66744,7 @@
         "interior",
         "light_beam"
       ],
-      "promptProse": "In the great cathedral at her coronation, Historia Reiss lifts her head as the crown is set upon her golden hair, framed in a cowboy shot from the tops of her boots to the top of her head, her whole figure holding the composition The white off-shoulder gown and flowing cloak catch the tall shafts of light pouring through the rose window, and her blue eyes hold a new, unshakable resolve. Rows of empty pews, stone pillars, hanging banners, a choir loft rail and the altar steps press close around her, dust motes swirling in the holy beams. A finished anime wallpaper with a sharp focal subject, immersive background depth, and a cinematic glow.",
+      "promptProse": "Standing gracefully before the royal throne during her coronation, Queen Historia Reiss wears a magnificent white-and-gold royal mantle and a delicate golden crown atop her flowing blonde hair. Her pure blue eyes shine with newfound resolve and queenly grace as she holds the royal scepter. Grand cathedral archways, stained-glass windows, and cheering noble banners create an awe-inspiring royal ceremony.",
       "promptTokens": [
         "atmospheric",
         "blonde_hair",
@@ -66646,7 +66766,7 @@
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "coronation_dress",
       "coverageTags": [
         "iconic"
@@ -66719,7 +66839,7 @@
       "action": "桌前批阅政务",
       "timeOfDay": "白天",
       "lighting": "大厅日光",
-      "camera": "full body",
+      "camera": "medium shot, reviewing government petitions at royal desk",
       "mood": "沉稳仁厚",
       "sceneTags": [
         "throne_room",
@@ -66730,7 +66850,7 @@
         "daylight",
         "official"
       ],
-      "promptProse": "At the desk of the throne hall, Queen Historia bends over a stack of petitions in her pale coat, shot in full figure, head to toe within the frame and her face fully legible. Her golden hair is pinned up and her blue eyes read each page with a gravity beyond her years, a small careful smile forming at a favorable reply. An inkwell and quill, a wax seal and stamp, stacked leather folders, a candlestick, a brass globe and sealed letters crowd the desk close around her, high windows casting long rectangles of light across the stone floor. A finished anime wallpaper with a dynamic focal subject, deep background layering, and cinematic atmosphere.",
+      "promptProse": "Sitting behind her polished oak desk in the royal study, Queen Historia reviews a stack of humanitarian petitions with gentle, compassionate focus. Her simple, elegant pale royal dress and delicate pendant catch the warm morning sunlight streaming through grand arched windows. Towering bookshelves, maps of the Walls, and burning oil lamps surround her in regal, scholarly warmth.",
       "promptTokens": [
         "blonde_hair",
         "blue_eyes",
@@ -66752,7 +66872,7 @@
         "volumetric_lighting",
         "white_shirt"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "queen_casual",
       "coverageTags": []
     },
@@ -66928,7 +67048,7 @@
       "action": "花丛间散步闻花",
       "timeOfDay": "白天",
       "lighting": "花园柔光",
-      "camera": "full body",
+      "camera": "cowboy shot, strolling through royal rose garden",
       "mood": "平和恬淡",
       "sceneTags": [
         "garden",
@@ -66939,7 +67059,7 @@
         "daylight",
         "flowers"
       ],
-      "promptProse": "In the palace garden on a quiet afternoon, Queen Historia walks slowly between the flower beds in her pale coat, a full length composition from head to toe so nothing of her is cropped away. Her golden hair hangs loose and long around her shoulders as she bends to inhale the scent of a white rose, blue eyes closing with a gentle smile. A gravel path, clipped hedges, a stone bench, a sundial, an iron arch of climbing roses and a tiered fountain press close around her, soft light filtering through the leaves. A finished anime wallpaper with a luminous focal subject, layered background depth, and a cinematic atmosphere.",
+      "promptProse": "Strolling peacefully along a gravel path in the palace rose garden, Historia pauses beside a blooming white rose bush, holding her sun hat with one hand as she smiles gently. Her light summer day dress flutters in the warm breeze, blonde hair shining radiantly under the afternoon sun. Sculpted marble fountains, blooming flowerbeds, and distant palace spires form a serene, idyllic royal sanctuary.",
       "promptTokens": [
         "blonde_hair",
         "blue_eyes",
@@ -66962,7 +67082,7 @@
         "volumetric_lighting",
         "white_shirt"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "queen_casual",
       "coverageTags": [
         "daily"
@@ -67035,7 +67155,7 @@
       "action": "木栏上与孩子并坐",
       "timeOfDay": "白天",
       "lighting": "村间日光",
-      "camera": "full body",
+      "camera": "medium shot, crouching with bread basket to feed orphans",
       "mood": "亲民温暖",
       "sceneTags": [
         "village",
@@ -67046,7 +67166,7 @@
         "daylight",
         "children"
       ],
-      "promptProse": "On the edge of a walled village, Historia sits sideways on a wooden fence in her simple white dress with grass clinging to the hem, framed in a cowboy shot from the tops of her boots to the top of her head, her face and expression crisply readable Golden hair is bright in the midday sun and her blue eyes crinkle as she laughs, the same gentle smile she always wore at the orphanage. A drying line of hung laundry, thatched roofs, stacked firewood, wandering chickens, a stone water well and a cart press close around her, dust drifting in the warm light. A finished anime wallpaper with a clear focal subject, layered background depth, and cinematic atmosphere.",
+      "promptProse": "Crouching with gentle warmth beside the wooden fence of the farm orphanage, Historia hands out fresh bread rolls from a wicker basket with a radiant, affectionate smile. Dressed in humble country clothes with an apron, her golden hair is tied in a loose ponytail, farm fields, grazing cattle, and rustic wooden barns glowing under the golden afternoon sun.",
       "promptTokens": [
         "blonde_hair",
         "blue_eyes",
@@ -67062,7 +67182,7 @@
         "volumetric_lighting",
         "white_dress"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "casual",
       "coverageTags": [
         "daily"
@@ -67135,7 +67255,7 @@
       "action": "披袍立于雪中眺望",
       "timeOfDay": "白天",
       "lighting": "雪光阴沉",
-      "camera": "full body",
+      "camera": "cowboy shot, leaning against snowy wall crenellation in winter coat",
       "mood": "悲悯坚定",
       "sceneTags": [
         "snow",
@@ -67146,7 +67266,7 @@
         "winter",
         "cloak"
       ],
-      "promptProse": "At the snow-dusted crenellations of the wall, Queen Historia stands wrapped in her coronation cloak, captured in a cowboy shot from the tops of her boots to the top of her head, her face crisply rendered. The crown gleams dully in the overcast light and her blue eyes hold both sorrow and an unyielding promise. A sentry brazier, stacked snow-cleared stone, banner poles, a frosted walkway and the merlon wall itself crowd the rampart close around her, snow settling on her golden hair and shoulders under a hushed grey sky. A finished anime wallpaper with a clearly defined focal subject, atmospheric depth, and cinematic glow.",
+      "promptProse": "Leaning against the snow-dusted stone crenellations atop the Wall, Historia draws her fur-trimmed winter mantle close against the mountain chill, gazing into the vast winter sky with quiet hope. Soft snowflakes alight on her golden hair and eyelashes, cold blue twilight and vast snow-covered forests stretching endlessly to the horizon below.",
       "promptTokens": [
         "atmospheric",
         "blonde_hair",
@@ -67167,7 +67287,7 @@
         "white_dress",
         "winter"
       ],
-      "recommendedSize": "1216x832",
+      "recommendedSize": "1152x1536",
       "outfitId": "coronation_dress",
       "coverageTags": []
     },
