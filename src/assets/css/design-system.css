@@ -10,20 +10,19 @@
 
 :root {
   /* ---- Core palette (唯一主题：深色；2026-08-28 起不再有浅色覆盖) ----
-     2026-07-31 暗色重塑：从"灰紫蓝"走向浓郁紫罗兰(带微品红)，与宁宁粉光晕
-     呼应，摆脱通用 AI 站深蓝灰。对比度经 check-contrast 验证（text-muted
-     在 bg-elevated 上仍 ≥4.5:1）。 */
-  --bg-deep:       #110b22;     /* 最深背景:近乎纯紫黑 */
-  --bg-base:       #191230;     /* 页面背景:浓郁紫罗兰 */
-  --bg-surface:    rgba(43, 31, 69, 0.68); /* 玻璃卡片:紫罗兰玻璃 */
-  --bg-elevated:   rgba(62, 46, 94, 0.78); /* 浮层/输入框:更紫;亮度贴近旧值保 AA(见 check-contrast) */
-  --bg-hover:      rgba(92, 70, 127, 0.72);/* 悬停态 */
-  /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板（2026-08-22 补齐，
-     此前页面引用它时只能靠 hex 兜底） */
-  --bg-surface-elevated: #161822;
+     2026-09-01 第一阶段美术升级：从浓郁紫罗兰微调至「低饱和深空玄紫（Deep Space Midnight Violet）」，
+     降低眼部疲劳与色彩对冲，保持二次元神秘感与画面烘托力。
+     对比度经 check-contrast 验证（全部文字 token 在四大表面上均严格 ≥4.5:1 WCAG AA）。 */
+  --bg-deep:       #0f0d1b;     /* 最深背景:深空玄紫黑 */
+  --bg-base:       #161326;     /* 页面背景:深邃玄紫 */
+  --bg-surface:    rgba(38, 32, 60, 0.70); /* 玻璃卡片:清透玄紫玻璃 */
+  --bg-elevated:   rgba(54, 46, 82, 0.80); /* 浮层/输入框:适度提亮保 AA */
+  --bg-hover:      rgba(78, 66, 114, 0.72);/* 悬停态 */
+  /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
+  --bg-surface-elevated: #151221;
 
-  --border-soft:   rgba(226, 205, 255, 0.17);
-  --border-strong: rgba(238, 210, 255, 0.38);
+  --border-soft:   rgba(218, 204, 250, 0.14);
+  --border-strong: rgba(228, 212, 255, 0.30);
 
   /* ---- Text ---- */
   --text-primary:   #E8E8F0;   /* 主文字 */
@@ -80,7 +79,7 @@
   --archive-ember:       #e65338;
   --archive-grid:        rgba(236, 226, 255, 0.05);
   --archive-line:        rgba(236, 226, 255, 0.14);
-  --archive-glass:       rgba(25, 18, 48, 0.76);
+  --archive-glass:       rgba(22, 18, 38, 0.76);
   /* 档案面板圆角 —— 语义别名，值统一走 --r-lg。
      2026-08-28 审计：此前这里硬写 14px，与 --r-lg 完全同值却互不相干，
      调整圆角阶梯时极易只改一处。保留 dossier 这个语义名（它标记的是
@@ -89,11 +88,11 @@
   --r-terminal:          6px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(25, 18, 48, 0.72);
+  --nav-bg: rgba(22, 18, 38, 0.75);
   --glass-highlight: color-mix(in srgb, white 10%, transparent);
-  --glass-fill: rgba(43, 35, 70, 0.55);
-  --glass-fill-strong: rgba(49, 40, 78, 0.78);
-  --glass-edge: rgba(236, 226, 255, 0.26);
+  --glass-fill: rgba(38, 32, 60, 0.55);
+  --glass-fill-strong: rgba(46, 38, 72, 0.78);
+  --glass-edge: rgba(225, 212, 250, 0.22);
   --glass-specular: color-mix(in srgb, white 22%, transparent);
   --glass-shadow: 0 18px 48px rgba(5, 3, 18, 0.22);
 
