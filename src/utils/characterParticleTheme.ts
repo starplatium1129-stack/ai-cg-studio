@@ -51,7 +51,7 @@ const CHARACTER_SEEDS: Record<string, ThemeSeed> = {
   lemuen_arknights: { shape: 'lantern', colors: ['#ffe9b0', '#d9c48a'] },
   dusk_arknights: { shape: 'book', colors: ['#8a7bff', '#cdb9ff'] },
   mudrock_arknights: { shape: 'mountain', colors: ['#b0937a', '#e3cdb8'] },
-  // 新增 11 位热门角色专属粒子主题与契合意象
+  // 新增与补全的全部热门角色专属粒子主题与契合意象
   gotoh_hitori: { shape: 'spark', colors: ['#f472b6', '#38bdf8'] }, // 波奇酱：粉色吉他火花 + 蓝方块
   ayanami_rei: { shape: 'moon', colors: ['#38bdf8', '#ef4444'] }, // 绫波丽：月下红眸 + 水蓝光晕
   asuka_langley: { shape: 'spark', colors: ['#ef4444', '#f59e0b'] }, // 明日香：二号机炽红 + 金黄火花
@@ -63,6 +63,15 @@ const CHARACTER_SEEDS: Record<string, ThemeSeed> = {
   texas_arknights: { shape: 'frame', colors: ['#60a5fa', '#f59e0b'] }, // 德克萨斯：企鹅物流剑阵框 + 金雨
   lappland_arknights: { shape: 'moon', colors: ['#e2e8f0', '#38bdf8'] }, // 拉普兰德：狂月苍狼 + 苍蓝电弧
   viviana_arknights: { shape: 'lantern', colors: ['#fbbf24', '#fef08a'] }, // 薇薇安娜：金鹿微光烛火 + 影蛾金灯
+  // 历史批次存量补全
+  yvonne_arknights: { shape: 'spark', colors: ['#38bdf8', '#f59e0b'] }, // 伊冯：终末地工业科技火花
+  morgan_le_fay_fate: { shape: 'moon', colors: ['#818cf8', '#c084fc'] }, // 摩根：妖精国女王冷月
+  mash_kyrielight: { shape: 'frame', colors: ['#f472b6', '#a78bfa'] }, // 玛修：学妹十字盾牌之框
+  eris_greyrat: { shape: 'spark', colors: ['#ef4444', '#f97316'] }, // 艾莉丝：狂犬剑王赤红烈火
+  hoshino_ai: { shape: 'heart', colors: ['#ec4899', '#f43f5e'] }, // 星野爱：偶像究极爱心之眼
+  kurokawa_akane: { shape: 'moon', colors: ['#6366f1', '#38bdf8'] }, // 黑川茜：深蓝舞台月影
+  mikasa_ackerman: { shape: 'frame', colors: ['#64748b', '#ef4444'] }, // 三笠：调查兵团围巾与钢刃之框
+  krista_lenz: { shape: 'lantern', colors: ['#fbbf24', '#fef08a'] }, // 希斯特里亚：王族加冕金灯圣辉
 }
 
 /** 作品级默认：同作品新角色先拿到贴合作品气质的形状。 */
