@@ -13,26 +13,35 @@
         "byakuya (mahimaho)",
         "1girl",
         "solo",
+        "white_hair",
         "platinum_hair",
+        "long_hair",
+        "straight_hair",
         "twin_horn_buns",
+        "hair_horns",
         "blue_eyes",
         "deadpan",
-        "flat_chest"
+        "expressionless",
+        "flat_chest",
+        "petite"
       ],
-      "identityProse": "Mimori Byakuya, a deadpan and impoverished magical girl with straight platinum-white hair styled in twin horn buns, expressive blue eyes, and a slender flat-chested build.",
+      "identityProse": "Mimori Byakuya from The Magical Girl and the Evil Officer, a petite deadpan magical girl with long straight platinum-white hair styled in iconic twin horn buns, clear blue eyes, a slender flat-chested build, and an expressionless stoic demeanor.",
       "outfits": [
         {
           "id": "magical_girl_dress",
           "name": "魔法少女战斗服",
           "tokens": [
             "magical_girl",
-            "frilled_dress",
             "pink_dress",
+            "frilled_dress",
+            "detached_sleeves",
+            "pink_ribbon",
             "black_thighhighs",
             "magic_wand",
-            "ribbons"
+            "holding_wand",
+            "small_wings"
           ],
-          "prose": "wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand",
+          "prose": "wearing her signature magical girl transformation dress: a frilly layered pink and white dress with detached sleeves, pink ribbons, black thighhighs stockings, delicate fairy wings, and holding her star-tipped magic wand",
           "styleHint": "sparkling magical starlight aesthetic",
           "isDefault": true,
           "default": true
@@ -118,6 +127,7 @@
       ],
       "originalName": "深森白夜",
       "exactTokens": [
+        "byakuya_(mahimaho)",
         "mimori_byakuya"
       ],
       "supportedEngines": [

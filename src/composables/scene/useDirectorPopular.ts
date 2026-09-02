@@ -244,7 +244,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
    *  由宿主 onMounted 在 loadData/loadHistory 之后调用。 */
   function restorePopularDraft() {
     if (!pb.isPopular || pb.subject.kind !== 'popular') return
-    const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-aesthetic-v1.1'
+    const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-miaomiao-v1.2'
     if (animaState.value.models.some(model => model.id === recommendedEngine)) {
       patchAnimaState({ modelId: recommendedEngine, loraId: '' })
     }

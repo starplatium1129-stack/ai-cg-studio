@@ -62,7 +62,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
           phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
           modelId: entry.model && animaState.value.models.some(model => model.id === entry.model)
             ? entry.model
-            : 'anima-aesthetic-v1.1',
+            : 'anima-miaomiao-v1.2',
            loraId: '', loraStrength: animaState.value.loraStrength,
            styleLoraId: '',
            width: Number.isInteger(width) ? width : animaState.value.width,
@@ -86,7 +86,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         clearAnimaResult()
         patchAnimaState({
           phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
-          modelId: entry.model || 'anima-aesthetic-v1.1',
+          modelId: entry.model || 'anima-miaomiao-v1.2',
            loraId: entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
            loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
            styleLoraId: '',

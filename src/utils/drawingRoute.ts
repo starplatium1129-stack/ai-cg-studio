@@ -63,12 +63,12 @@ export function recommendDrawingRoute(input: DrawingRouteInput): DrawingRouteRec
     return {
       id: 'popular-anima',
       engine: 'anima',
-      modelId: 'anima-aesthetic-v1.1',
+      modelId: 'anima-miaomiao-v1.2',
       loraId: '',
       generationCharacter: null,
       promptFormat: 'anima-tags',
       title: '热门角色通用高质路线',
-      summary: 'Anima Aesthetic · 模型原生标签 · 无角色 LoRA',
+      summary: 'MiaoMiao Harem · 模型原生标签 · 无角色 LoRA',
       reasons: [
         '热门角色不混入宁宁或夏目的 LoRA',
         '身份、服装和场景蓝图由系统组合',
@@ -99,12 +99,12 @@ export function recommendDrawingRoute(input: DrawingRouteInput): DrawingRouteRec
   return {
     id: 'studio-single',
     engine: 'anima',
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.2',
     loraId: studio.loraId,
     generationCharacter: studio.generationCharacter,
     promptFormat: 'anima-tags',
     title: '角色高质量路线',
-    summary: `Anima Aesthetic · ${studio.label} · 模型原生标签`,
+    summary: `MiaoMiao Harem · ${studio.label} · 模型原生标签`,
     reasons: [
       '优先使用当前角色已验证的高质量 LoRA',
       'Aesthetic v1.1 底座出图质量显著优于 Base（跨底模加载记录 2026-08-13）',
