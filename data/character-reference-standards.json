@@ -6292,5 +6292,3928 @@
         }
       ]
     }
-  ]
+  ],
+  "gotoh_hitori": {
+    "characterId": "gotoh_hitori",
+    "displayName": "后藤一里",
+    "source": "Bocchi the Rock!",
+    "identityProse": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression",
+    "outfits": [
+      {
+        "outfitId": "pink_tracksuit",
+        "outfitName": "经典粉色运动服常服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her iconic oversized bright pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks, casual sneakers, and carrying a black electric guitar gig bag",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/pink_tracksuit/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "kessoku_band_live_tshirt",
+        "outfitName": "结束乐队Live演出T恤",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a black Kessoku Band graphic print t-shirt tucked into a dark pleated skirt, a red wristband, and slinging her black Gibson Les Paul Custom electric guitar across her shoulder",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/kessoku_band_live_tshirt/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "cultural_festival_maid",
+        "outfitName": "文化祭复古黑白女仆装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/cultural_festival_maid/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "shuka_summer_uniform",
+        "outfitName": "秀华高中夏季水手校服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing the official Shuka High School summer uniform featuring a short-sleeved white sailor shirt with a navy blue collar, red ribbon necktie, and neat dark pleated skirt",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/shuka_summer_uniform/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "closet_pajamas_casual",
+        "outfitName": "壁橱避难所宽松睡衣私服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing an oversized baggy pastel t-shirt and loose lounge shorts while wearing large over-ear monitor headphones sitting curled up inside her dimly lit cozy closet recording nook",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/closet_pajamas_casual/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, unexpectedly voluptuous and busty figure with soft fair skin, prominent perky pink nipples, smooth shaved exposed pussy, blushing intensely from head to toe",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/gotoh_hitori/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "ayanami_rei": {
+    "characterId": "ayanami_rei",
+    "displayName": "绫波丽",
+    "source": "Neon Genesis Evangelion",
+    "identityProse": "Ayanami Rei from Neon Genesis Evangelion, an ethereal and introverted Eva pilot with short feathery pale sky-blue hair, translucent fair porcelain skin, calm piercing crimson-red albino eyes, and an enigmatic, quiet presence",
+    "outfits": [
+      {
+        "outfitId": "plugsuit_white",
+        "outfitName": "初代白色战斗服（Plugsuit）",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her iconic pristine white pilot plugsuit with orange and black tech accents, skin-tight composite bodysuit material, and red neural interface headset clips in her blue hair",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ayanami_rei/plugsuit_white/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ayanami_rei/plugsuit_white/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ayanami_rei/plugsuit_white/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ayanami_rei/plugsuit_white/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "tokyo3_school_uniform",
+        "outfitName": "第3新东京市立中学水手校服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing the Tokyo-3 Municipal Junior High uniform with a short-sleeved white collared shirt under a turquoise-blue pinafore jumper skirt and a crisp red chest ribbon bow",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ayanami_rei/tokyo3_school_uniform/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ayanami_rei/tokyo3_school_uniform/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ayanami_rei/tokyo3_school_uniform/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ayanami_rei/tokyo3_school_uniform/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "hospital_bandages_gown",
+        "outfitName": "第一话病房绷带病服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a loose white hospital patient gown with medical gauze bandages wrapped across her left arm, chest, and a medical eyepatch over her eye, standing barefoot with fragile grace",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ayanami_rei/hospital_bandages_gown/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ayanami_rei/hospital_bandages_gown/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ayanami_rei/hospital_bandages_gown/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ayanami_rei/hospital_bandages_gown/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "black_plugsuit_q",
+        "outfitName": "黑丽战斗服（Mark.09）",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing the sleek matte jet-black Mark.09 pilot plugsuit with dark charcoal paneling, vivid neon-orange accents, and interface headset clips",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ayanami_rei/black_plugsuit_q/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ayanami_rei/black_plugsuit_q/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ayanami_rei/black_plugsuit_q/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ayanami_rei/black_plugsuit_q/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "white_one_piece_swimsuit",
+        "outfitName": "经典白色连体泳装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a minimalist pure white one-piece athletic swimsuit hugging her slender silhouette with glistening water droplets on her pale porcelain skin",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ayanami_rei/white_one_piece_swimsuit/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ayanami_rei/white_one_piece_swimsuit/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ayanami_rei/white_one_piece_swimsuit/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ayanami_rei/white_one_piece_swimsuit/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, flawless alabaster porcelain skin, delicate slender body with dainty perky breasts and pale pink nipples, exposed smooth pussy, serene otherworldly expression",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/ayanami_rei/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/ayanami_rei/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/ayanami_rei/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/ayanami_rei/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "asuka_langley": {
+    "characterId": "asuka_langley",
+    "displayName": "惣流·明日香·兰格雷",
+    "source": "Neon Genesis Evangelion",
+    "identityProse": "Asuka Langley from Neon Genesis Evangelion, a spirited and fiercely confident Eva pilot with long flowing ginger-orange hair tied into high twintails with red A10 neural interface clips, vibrant sapphire-blue eyes, and a bold, charismatic tsundere expression",
+    "outfits": [
+      {
+        "outfitId": "plugsuit_red",
+        "outfitName": "二号机经典赤红战斗服（Plugsuit）",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "wearing her iconic glossy crimson-red pilot plugsuit with emerald green chest accents, high-collar tech detailing, form-fitting bodysuit, and twin red neural interface clips",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/asuka_langley/plugsuit_red/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/asuka_langley/plugsuit_red/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/asuka_langley/plugsuit_red/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/asuka_langley/plugsuit_red/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "tokyo3_school_uniform",
+        "outfitName": "第3新东京市立中学水手校服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing the Tokyo-3 Junior High uniform with a short-sleeved white sailor blouse under a turquoise pinafore dress, bright red bow, black over-knee socks, and her signature red hair clips",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/asuka_langley/tokyo3_school_uniform/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/asuka_langley/tokyo3_school_uniform/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/asuka_langley/tokyo3_school_uniform/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/asuka_langley/tokyo3_school_uniform/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "yellow_summer_sundress",
+        "outfitName": "经典黄色夏日吊带连衣裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a bright cheerful canary yellow sleeveless summer sundress with thin spaghetti straps, open collarbone, and sun-kissed shoulders while standing on a breezy train platform",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/asuka_langley/yellow_summer_sundress/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/asuka_langley/yellow_summer_sundress/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/asuka_langley/yellow_summer_sundress/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/asuka_langley/yellow_summer_sundress/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "test_plugsuit_translucent",
+        "outfitName": "三号机测试用半透光战斗服（破）",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing the daring experimental orange and white Unit-03 test plugsuit with translucent body panels highlighting her curves, cleavage, and red interface clips",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/asuka_langley/test_plugsuit_translucent/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/asuka_langley/test_plugsuit_translucent/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/asuka_langley/test_plugsuit_translucent/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/asuka_langley/test_plugsuit_translucent/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "gothic_punk_jacket_q",
+        "outfitName": "Q版猫耳帽红黑夹克私服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "wearing a red and black pilot bomber jacket over a casual tank top and dark shorts, a black beanie hat with small cat ear pins, and a badass black tactical eyepatch",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/asuka_langley/gothic_punk_jacket_q/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/asuka_langley/gothic_punk_jacket_q/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/asuka_langley/gothic_punk_jacket_q/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/asuka_langley/gothic_punk_jacket_q/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked with zero clothes, toned athletic hourglass physique, firm shapely breasts with sensitive pink nipples, exposed neat pussy, flushed golden skin with a fiery tsundere gaze",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/asuka_langley/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/asuka_langley/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/asuka_langley/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/asuka_langley/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "furina": {
+    "characterId": "furina",
+    "displayName": "芙宁娜",
+    "source": "Genshin Impact",
+    "identityProse": "Furina from Genshin Impact, the theatrical and dramatic former Hydro Archon of Fontaine, with dual-toned silvery-white and deep cobalt-blue hair in side twin-tails, striking heterochromia teardrop eyes (deep ocean blue and pale cerulean), an expressive ahoge, wearing an ornate aristocratic mini top hat adorned with ribbons and iris flower motifs",
+    "outfits": [
+      {
+        "outfitId": "official_archon",
+        "outfitName": "枫丹礼服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Furina's signature theatrical Archon formal tailcoat ensemble with royal blue and navy velvet frock coat, ruffled jabot ascot, white vest with golden filigree buttons, dark tailored shorts, black thighhighs, detached ruffled sleeves, and pristine white gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/furina/official_archon/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/furina/official_archon/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/furina/official_archon/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/furina/official_archon/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_director",
+        "outfitName": "导演便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a cozy Fontaine theater director casual outfit with a soft navy cardigan draped over a crisp white blouse with a frilled collar, navy pleated skirt, black beret, and dark leather loafers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/furina/casual_director/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/furina/casual_director/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/furina/casual_director/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/furina/casual_director/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "opera_ballgown",
+        "outfitName": "歌剧院晚礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an exquisite royal Fontaine opera house evening ballgown featuring cascading layered azure and sapphire chiffon, lace trim, a structured corset bodice, and delicate silk opera gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/furina/opera_ballgown/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/furina/opera_ballgown/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/furina/opera_ballgown/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/furina/opera_ballgown/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "sensual_lingerie",
+        "outfitName": "轻纱睡裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "delicate translucent sky-blue and white silk lingerie babydoll nightgown with fine lace trim, matching panties, sheer thighhigh stockings, and bare shoulders",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/furina/sensual_lingerie/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/furina/sensual_lingerie/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/furina/sensual_lingerie/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/furina/sensual_lingerie/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯白无瑕",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely nude and unclad with delicate porcelain pale skin",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/furina/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/furina/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/furina/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/furina/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "hu_tao": {
+    "characterId": "hu_tao",
+    "displayName": "胡桃",
+    "source": "Genshin Impact",
+    "identityProse": "Hu Tao from Genshin Impact, the quirky and spirited 77th Director of the Wangsheng Funeral Parlor, with long rich walnut-brown twintails with crimson gradient tips, bright scarlet blossom-shaped floral pupils, a mischievous wide smile, wearing a traditional dark porkpie hat adorned with red plum blossoms and a wooden talisman",
+    "outfits": [
+      {
+        "outfitId": "official_funeral_director",
+        "outfitName": "堂主神装",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "the 77th Director uniform with a tailored dark brown traditional Chinese coat with tails, mandarin collar, golden crest buttons, black shorts, white collared shirt, red ribbon tie, black fingerless gloves with multiple silver rings, white socks with floral cuffs, and black loafers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hu_tao/official_funeral_director/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hu_tao/official_funeral_director/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hu_tao/official_funeral_director/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hu_tao/official_funeral_director/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "hanfu_spring_breeze",
+        "outfitName": "春风汉服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a traditional Liyue crimson and black silk hanfu robe embroidered with golden butterfly motifs, wide flowing sheer sleeves, jade hairpin, and a fluttering sash",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hu_tao/hanfu_spring_breeze/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hu_tao/hanfu_spring_breeze/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hu_tao/hanfu_spring_breeze/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hu_tao/hanfu_spring_breeze/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_liyue_street",
+        "outfitName": "璃月便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a casual modern-traditional Liyue street outfit featuring an oversized cozy dark knit sweater, red pleated miniskirt, knee-high black socks, and dark ankle boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hu_tao/casual_liyue_street/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hu_tao/casual_liyue_street/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hu_tao/casual_liyue_street/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hu_tao/casual_liyue_street/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "spicy_lingerie",
+        "outfitName": "绯红情趣内衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a seductive crimson and black silk lace lingerie set with delicate butterfly clasps, matching lace panties, garter straps, sheer black stockings, and bare shoulders",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hu_tao/spicy_lingerie/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hu_tao/spicy_lingerie/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hu_tao/spicy_lingerie/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hu_tao/spicy_lingerie/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "赤子之躯",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely nude and unclad, highlighting her slender youthful physique and smooth porcelain skin",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hu_tao/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hu_tao/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hu_tao/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hu_tao/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "kafka": {
+    "characterId": "kafka",
+    "displayName": "卡芙卡",
+    "source": "Honkai: Star Rail",
+    "identityProse": "Kafka from Honkai: Star Rail, a dangerous and elegant Stellaron Hunter woman with long wine-red magenta hair tied back in a low ponytail, hypnotic lilac purple ringed eyes, a stylish pair of tinted aviator sunglasses rested on top of her head, and an alluring, composed smile",
+    "outfits": [
+      {
+        "outfitId": "official_hunter_coat",
+        "outfitName": "星核猎手风衣",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Kafka's signature Stellaron Hunter tailored burgundy-black coat draped over her shoulders, white collared shirt with spider web lace collar, dark purple shorts, intricate spiderweb patterned sheer black tights, leather gloves, and high-heel boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/kafka/official_hunter_coat/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/kafka/official_hunter_coat/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/kafka/official_hunter_coat/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/kafka/official_hunter_coat/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nightclub_evening_dress",
+        "outfitName": "夜幕晚礼裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an alluring dark velvet plum backless evening gown with a high thigh-high slit, delicate gold jewelry, sheer black satin opera gloves, and stiletto high heels",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/kafka/nightclub_evening_dress/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/kafka/nightclub_evening_dress/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/kafka/nightclub_evening_dress/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/kafka/nightclub_evening_dress/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_trench_coat",
+        "outfitName": "都市风衣便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a modern casual sleek black leather trench coat over a fitted charcoal turtleneck sweater, dark tailored trousers, and leather ankle boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/kafka/casual_trench_coat/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/kafka/casual_trench_coat/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/kafka/casual_trench_coat/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/kafka/casual_trench_coat/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "seductive_spider_lingerie",
+        "outfitName": "蛛网情趣内衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a seductive sheer black spiderweb lace corset lingerie set with matching lace panties, garter straps, sheer black thighhigh stockings, and bare shoulders",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/kafka/seductive_spider_lingerie/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/kafka/seductive_spider_lingerie/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/kafka/seductive_spider_lingerie/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/kafka/seductive_spider_lingerie/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "极致胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely nude and unclad, showcasing her mature voluptuous figure, slender waist, and flawless pale skin",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/kafka/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/kafka/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/kafka/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/kafka/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "hayase_yuuka": {
+    "characterId": "hayase_yuuka",
+    "displayName": "早濑优香",
+    "source": "Blue Archive",
+    "identityProse": "Hayase Yuuka from Blue Archive, the dedicated treasurer of Millennium Science School's Seminar student council, a smart and earnest girl with dark blue twin-tails adorned with angular mechanical hair clips, an energetic ahoge, bright blue eyes with an intelligent yet tsundere gaze, a floating blue digital square geometric halo, and famously soft, plump thighs",
+    "outfits": [
+      {
+        "outfitId": "millennium_uniform",
+        "outfitName": "研讨会制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Millennium Seminar school uniform featuring a sleeveless white collared blouse, blue necktie, open dark navy blazer draped over her shoulders, ID card lanyard, black pleated miniskirt, black thighhighs with white trim, brown loafers, and a handheld digital calculator tablet",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hayase_yuuka/millennium_uniform/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hayase_yuuka/millennium_uniform/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hayase_yuuka/millennium_uniform/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hayase_yuuka/millennium_uniform/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "gym_tracksuit",
+        "outfitName": "晄轮大祭体操服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "Millennium Halo Festival athletic PE uniform with a dark navy track jacket worn unzipped over a white sports t-shirt, navy gym bloomers, white sports crew socks, blue sneakers, a silver stopwatch whistle around her neck, and high twintails",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hayase_yuuka/gym_tracksuit/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hayase_yuuka/gym_tracksuit/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hayase_yuuka/gym_tracksuit/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hayase_yuuka/gym_tracksuit/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "pajamas_loungewear",
+        "outfitName": "居家居服与眼镜",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a cozy oversized pastel blue knit sweater falling off one shoulder, comfortable dark shorts, soft house slippers, clear red-framed glasses, and loose low twintails, holding a warm mug of cocoa",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hayase_yuuka/pajamas_loungewear/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hayase_yuuka/pajamas_loungewear/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hayase_yuuka/pajamas_loungewear/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hayase_yuuka/pajamas_loungewear/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_date",
+        "outfitName": "周末约会风衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a stylish autumn casual outfit: a beige trench coat over a cream ribbed knit turtleneck sweater, navy tartan pleated skirt, dark sheer pantyhose, ankle boots, and a small black leather shoulder bag",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hayase_yuuka/casual_date/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hayase_yuuka/casual_date/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hayase_yuuka/casual_date/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hayase_yuuka/casual_date/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "swimsuit",
+        "outfitName": "夏日海滨泳装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a sporty and charming dark navy and white two-piece bikini with cross-strap waist accents, translucent white beach cover-up pareo, sun visor hat, and sandals, highlighting her toned waist and soft thighs",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hayase_yuuka/swimsuit/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hayase_yuuka/swimsuit/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hayase_yuuka/swimsuit/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hayase_yuuka/swimsuit/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, bare skin, soft natural female body, voluptuous breasts with perky pink nipples, famously thick and soft thighs, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/hayase_yuuka/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/hayase_yuuka/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/hayase_yuuka/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/hayase_yuuka/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "shiromi_iori": {
+    "characterId": "shiromi_iori",
+    "displayName": "银镜伊织",
+    "source": "Blue Archive",
+    "identityProse": "Shiromi Iori from Blue Archive, the elite specialist and vanguard captain of Gehenna Academy's Disciplinary Committee, a slender demon girl with sun-kissed tan skin, long silver-white twintails tied with black ribbons, two small black curved horns on her head, a long black demon tail with a spade tip, small black bat wings on her back, a spiky red jagged halo, sharp crimson eyes with a proud and flustered tsundere expression, and famously beautiful bare legs",
+    "outfits": [
+      {
+        "outfitId": "disciplinary_uniform",
+        "outfitName": "风纪突击队长制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Gehenna Disciplinary Committee assault uniform with a black sleeveless cropped military jacket, red disciplinary armband, short black pleated miniskirt, garter belt with thigh-high black stockings, fingerless combat gloves, tactical harness, sniper rifle holster, and black combat boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/disciplinary_uniform/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "swimsuit",
+        "outfitName": "夏日灼阳泳装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her horns, and a water squirt rifle",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/swimsuit/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_streetwear",
+        "outfitName": "街头休闲私服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a trendy urban street outfit: a black ribbed sleeveless crop halter top, distressed denim shorts with a leather belt, open oversized flannel red-black checkered shirt, black choker, white high-top sneakers, and demon tail swishing freely",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/casual_streetwear/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "tactical_night_ops",
+        "outfitName": "暗夜潜行紧身衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a high-tech black tactical stealth bodysuit with reinforced kevlar panels, utility pouches, night-vision monocle headset, combat knife sheathed on her hip, fingerless tactical gloves, and combat boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/tactical_night_ops/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, small black horns, wagging demon tail, small bat wings, bare legs and bare feet, soft sensual lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/shiromi_iori/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "texas_arknights": {
+    "characterId": "texas_arknights",
+    "displayName": "德克萨斯",
+    "source": "Arknights",
+    "identityProse": "Texas from Arknights, the cool and taciturn Lupo courier of Penguin Logistics and heir to the Siracusa Texas family, a handsome and slender wolf girl with long silky dark grey-black hair, soft pointed Lupo wolf ears atop her head, a long bushy dark wolf tail, calm golden-amber eyes with a stoic gaze, a chocolate pocky stick resting between her lips, and twin glowing originium energy swords floating in a raining blade array",
+    "outfits": [
+      {
+        "outfitId": "penguin_logistics",
+        "outfitName": "企鹅物流制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Penguin Logistics courier uniform: a hooded black and white techwear windbreaker jacket with yellow accents and PL logo, white collared shirt, slim black tie, dark high-waisted shorts, black leather belt with sword scabbards, black over-knee socks, combat boots, and fingerless gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/penguin_logistics/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "omertosa_mafia",
+        "outfitName": "叙拉古缄默黑帮风衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "Siracusa Texas the Omertosa formal attire: an exquisite double-breasted charcoal-black mafia overcoat with crimson silk lining, tailored black pinstripe vest, crisp white dress shirt, red silk ascot, slim tailored trousers, polished leather dress shoes, and twin glowing golden rapier swords",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/omertosa_mafia/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "willpower_winter",
+        "outfitName": "意志 / 寒冬信使日常便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a cozy winter urban courier outfit: a heavy olive-green winter parka with faux-fur lined hood, thick cream knit scarf, charcoal skinny jeans, leather motorcycle boots, leather messenger courier bag, and a pocky box in her pocket",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/willpower_winter/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "summer_sunbreeze",
+        "outfitName": "阳光微风夏日泳装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a stylish and sleek black one-piece swimsuit with asymmetric cutouts along the waist, translucent white linen beach shirt worn open, dark sunglasses, and sandals, wolf tail swishing in the seaside breeze",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/summer_sunbreeze/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, bare skin, lean and beautifully toned athletic body, perky natural breasts with tender pink nipples, slender waist, flat stomach, navel, delicate pussy, fluffy dark wolf ears and tail, bare legs, bare feet, soft dramatic room lighting",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/texas_arknights/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "lappland_arknights": {
+    "characterId": "lappland_arknights",
+    "displayName": "拉普兰德",
+    "source": "Arknights",
+    "identityProse": "Lappland from Arknights, the wild and fiercely unpredictable Lupo swordswoman of the Siracusan Saluzzo family, a pale and athletic wolf girl with shaggy layered white-silver hair, fluffy white wolf ears with dark tips, a large bush-like white wolf tail, piercing silver-grey eyes with a manic yet captivating smirk, faint black originium crystal lesions visible on her pale skin, and twin serrated Originium art blades crackling with pale blue energy",
+    "outfits": [
+      {
+        "outfitId": "standard_mercenary",
+        "outfitName": "罗德岛作战服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "Lappland's signature battle attire: a dark slate-grey duster trench coat with tattered ragged hem and high collar worn open over a white tank top, black leather utility harness with thigh straps, black shorts, leather combat boots, dual sword sheaths on her back, and black fingerless gloves",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/standard_mercenary/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "refined_horrormare",
+        "outfitName": "典雅噩兆 / 宴会礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "the Refined Horrormare gothic evening ensemble: a dramatic black and crimson velvet ballgown with an asymmetric jagged lace hem, sheer lace masquerade eye mask, black leather opera gloves, crimson rose corsage, and dark crystal jewelry, projecting lethal aristocratic madness",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/refined_horrormare/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "casual_leather",
+        "outfitName": "狂野机车皮衣便服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a rebellious street-biker look: a cropped black leather biker jacket studded with silver rivets over a dark grey cropped camisole, distressed denim mini shorts, fishnet stockings, studded leather choker, and heavy platform combat boots, wolf tail swishing restlessly",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/casual_leather/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nomad_wasteland",
+        "outfitName": "叙拉古荒原行者",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a weathered Siracusa nomad wanderer outfit: a heavy hooded grey poncho cloak with wolf fur trim, bandolier ammo belts crossing her chest, weathered leather pants, traveling canteen, and combat boots, dual blades drawn in the dust storm",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/nomad_wasteland/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, pale fair skin dotted with fine glistening sweat and a few black originium crystal flecks, firm perky breasts with erect pink nipples, slender athletic waist with subtle abs, navel, exposed dripping pussy, white wolf ears and tail, bare feet, wild flushed euphoric expression",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/lappland_arknights/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  },
+  "viviana_arknights": {
+    "characterId": "viviana_arknights",
+    "displayName": "薇薇安娜",
+    "source": "Arknights",
+    "identityProse": "Viviana Droste from Arknights, the noble Candle Knight of Kazimierz and poet of Leithanien, an ethereal and elegant Elafia noblewoman with magnificent golden glowing deer antlers branching gracefully from her head, delicate deer ears, long flowing flaxen blonde wavy hair, serene and poetic sapphire blue eyes with a gentle melancholy gaze, and golden Arts candle flames and radiant shadow moths dancing around her slender golden rapier sword",
+    "outfits": [
+      {
+        "outfitId": "candle_knight_armor",
+        "outfitName": "烛骑士礼装铠甲",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "the Candle Knight ceremonial armor: a tailored midnight-black and gold knightly tunic dress with polished golden breastplate and pauldrons, flowing pleated layered skirt with gold filigree embroidery, white silk opera gloves, golden sword sash, and polished armored greaves boots, carrying her golden rapier",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/viviana_arknights/candle_knight_armor/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/viviana_arknights/candle_knight_armor/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/viviana_arknights/candle_knight_armor/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/viviana_arknights/candle_knight_armor/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "lethe_poet_gown",
+        "outfitName": "莱塔尼亚贵族诗集礼裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a romantic Leithanien aristocratic evening gown of deep sapphire-blue velvet with translucent sheer black lace sleeves, a delicate golden choker necklace, pearl hairpins woven among her antlers, holding a leather-bound poetry book, radiating poetic grace",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/viviana_arknights/lethe_poet_gown/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/viviana_arknights/lethe_poet_gown/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/viviana_arknights/lethe_poet_gown/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/viviana_arknights/lethe_poet_gown/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "autumn_stroll_casual",
+        "outfitName": "金秋漫步羊毛风衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an autumn casual promenade ensemble: a warm camel-beige wool trench coat over a cream cable-knit turtleneck sweater, brown tartan pleated midi skirt, dark brown leather riding boots, leather gloves, and a soft beige wool beret nestled between her antlers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/viviana_arknights/autumn_stroll_casual/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/viviana_arknights/autumn_stroll_casual/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/viviana_arknights/autumn_stroll_casual/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/viviana_arknights/autumn_stroll_casual/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "candle_silk_slip",
+        "outfitName": "烛影夜曲丝绸睡裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a luxurious champagne-gold silk camisole slip nightgown with delicate French lace trim along the plunging neckline and hem, thin straps resting on her porcelain shoulders, barefoot, surrounded by soft glowing candlelights",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/viviana_arknights/candle_silk_slip/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/viviana_arknights/candle_silk_slip/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/viviana_arknights/candle_silk_slip/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/viviana_arknights/candle_silk_slip/ref_04_back_rear.png"
+          }
+        ]
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "completely naked, full nudity, fair porcelain skin bathed in warm amber candlelight, glowing golden antlers, soft blonde wavy hair, voluptuous and elegant feminine body, full breasts with sensitive pink nipples, slender waist, curving hips, navel, delicate moist pink pussy, bare legs, bare feet, poetic romantic intimacy",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "/character-references/viviana_arknights/nsfw_nude/ref_01_face_closeup.png"
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "/character-references/viviana_arknights/nsfw_nude/ref_02_half_medium.png"
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "服装全貌展示",
+              "动作张力"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "/character-references/viviana_arknights/nsfw_nude/ref_03_full_dynamic.png"
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "背影回眸",
+            "shotType": "背面 · 轮廓光 85mm",
+            "lens": "85mm Cinematic Rim",
+            "targetUsage": [
+              "背影离去",
+              "回眸凝视",
+              "发型背面层次",
+              "情绪留白"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "/character-references/viviana_arknights/nsfw_nude/ref_04_back_rear.png"
+          }
+        ]
+      }
+    ]
+  }
 }
