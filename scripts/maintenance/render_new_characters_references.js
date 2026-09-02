@@ -107,7 +107,7 @@ async function renderImage(task) {
   const { prompt, negative } = buildPrompt(charProfile, outfit, task.persId);
 
   const payload = {
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.2',
     prompt,
     negative,
     width: 832,

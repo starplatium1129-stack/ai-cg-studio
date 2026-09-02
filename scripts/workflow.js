@@ -63,7 +63,7 @@ const WORKFLOWS = {
     opts: '--target popular|scenes --chunks 1-17',
   },
   'reference:render': {
-    desc: '参考库批量出图 51 角色×多服装（1869 条目，Anima 832x1216, 并发3）',
+    desc: '参考库批量出图 59 角色×多服装（MiaoMiao v1.2 832x1216, 并发3）',
     cmd: ['node', 'scripts/maintenance/render-all-outfits-references.js'],
     docs: 'docs/character-reference-audit-pending.md',
     needs: 'ComfyUI + gateway http://127.0.0.1:3000',

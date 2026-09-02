@@ -1161,17 +1161,19 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
 .badge {
   display: inline-flex; align-items: center; gap: var(--s-1);
   padding: 3px var(--s-2);
-  border: 1px solid color-mix(in srgb, var(--badge-color, var(--text-muted)) 34%, transparent);
+  border: 1px solid color-mix(in srgb, var(--badge-color, var(--text-muted)) 38%, transparent);
   border-radius: var(--r-pill);
   background: color-mix(in srgb, var(--badge-color, var(--text-muted)) 12%, transparent);
   color: var(--badge-color, var(--text-muted));
   font: 700 var(--fs-mono-sm) var(--font-mono);
   letter-spacing: .04em;
   white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 .badge::before {
   content: ""; width: 6px; height: 6px; border-radius: 50%;
   background: currentColor; flex: none;
+  box-shadow: 0 0 6px currentColor;
 }
 .badge-plain::before { display: none; }
 .badge-success { --badge-color: var(--success-text); }
@@ -1220,14 +1222,14 @@ body.overlay-open { overflow: hidden; }
    原 .overlay/.modal-card 的入场 animation 已删，避免与 Transition 双重动画。 */
 .layer-pop-enter-active { transition: opacity var(--motion-surface) var(--ease-out); }
 .layer-pop-enter-active > :first-child {
-  transition: transform var(--motion-surface) var(--ease-out), opacity var(--motion-surface) var(--ease-out);
+  transition: transform var(--motion-surface) var(--spring-soft), opacity var(--motion-surface) var(--ease-out);
 }
 .layer-pop-leave-active { transition: opacity var(--motion-hover) var(--ease-out); }
 .layer-pop-leave-active > :first-child {
   transition: transform var(--motion-hover) var(--ease-out), opacity var(--motion-hover) var(--ease-out);
 }
 .layer-pop-enter-from, .layer-pop-leave-to { opacity: 0; }
-.layer-pop-enter-from > :first-child { transform: translateY(12px) scale(.97); opacity: 0; }
+.layer-pop-enter-from > :first-child { transform: translateY(14px) scale(.96); opacity: 0; }
 .layer-pop-leave-to > :first-child { transform: translateY(8px) scale(.98); opacity: 0; }
 /* 纯淡入淡出变体：弹层内的二级浮层（大图预览等） */
 .layer-fade-enter-active { transition: opacity var(--motion-control) var(--ease-out); }
@@ -1421,7 +1423,9 @@ tr:hover td { background: var(--bg-hover); }
 
 /* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；
    其余页面仍保留首屏水印（滚动后由 RouteAtmosphere 渐隐） */
-body:has(.pb) .route-atmosphere .route-index,
+body:has(.pb) .route-atmosphere .route-index {
+  display: none;
+}
 
 @media (prefers-reduced-transparency: reduce) {
   :root { --glass-fill:var(--bg-surface); --glass-fill-strong:var(--bg-elevated); }

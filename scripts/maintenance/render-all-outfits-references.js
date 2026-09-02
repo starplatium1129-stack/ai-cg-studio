@@ -5,9 +5,9 @@
  * 全量 35 角色 × 多服装形态（177 套服装 · 708 张）4 视角电影级资产批量渲染与断点续跑脚本
  * 
  * 规范：
- * - 引擎：Anima Aesthetic v1.1（极速、质感通透、二次元结构稳定）
+ * - 引擎：MiaoMiao Harem Anima v1.2（半厚涂通透质感、二次元肉感解剖、高稳定性）
  * - 并发：3 并发任务池（安全稳定不爆显存）
- * - 尺寸：832 × 1216（电影级竖版 2:3 黄金比例）
+ * - 尺寸：832 × 1216（兼顾出图速度与画面精细度）
  * - 容错与断点：已存在且体积 > 10KB 的图片自动跳过；异常自动重试
  */
 
@@ -117,7 +117,7 @@ async function renderImage(task) {
   const { prompt, negative } = buildPrompt(char, outfit, task.persId);
 
   const payload = {
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.2',
     prompt,
     negative,
     width: 832,

@@ -109,12 +109,14 @@
 .sc-id {
   position: absolute; z-index: var(--z-raised); left: var(--s-2); bottom: var(--s-2);
   font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: 0.12em;
-  color: var(--on-art-primary); background: color-mix(in srgb, var(--art-scrim-soft) 84%, var(--bg-deep));
+  color: var(--on-art-primary); background: color-mix(in srgb, var(--art-scrim-soft) 88%, var(--bg-deep));
   padding: 2px var(--s-2); border-radius: var(--r-sm); backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 .sc-badge {
   position: absolute; z-index: var(--z-raised); top: var(--s-2); right: var(--s-2); font-size: var(--fs-mono-sm);
   background: var(--accent); color: var(--text-inverse); padding: 1px var(--s-2); border-radius: var(--r-md);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 .sc-rating.r18 { background: color-mix(in srgb, var(--danger) 75%, var(--bg-deep)); }
 .sc-rating.r15 { background: color-mix(in srgb, var(--warning) 55%, var(--bg-deep)); }
@@ -127,6 +129,7 @@
   background: color-mix(in srgb, var(--accent) 62%, var(--art-scrim));
   border: 1px solid var(--on-art-line);
   padding: 2px var(--s-2); border-radius: var(--r-pill); backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 .sc-tier.signature {
   color: color-mix(in srgb, var(--natsume-amber) 34%, white);

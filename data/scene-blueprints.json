@@ -23657,11 +23657,9 @@
         "chinese_clothes",
         "cinematic_lighting",
         "clean_face",
-        "close_up",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
-        "full_body",
         "high_slit",
         "ink_wash",
         "inkstone",
@@ -23673,7 +23671,8 @@
         "veranda",
         "volumetric_lighting",
         "white_clothes",
-        "wide_sleeves"
+        "wide_sleeves",
+        "cowboy_shot"
       ],
       "negativeTokens": [
         "worst quality",
@@ -25707,14 +25706,13 @@
         "midday",
         "happy",
         "rice_bowl",
-        "full_body",
         "medium_shot",
-        "close_up",
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "upper_body"
       ],
       "negativeTokens": [
         "worst quality",
@@ -26759,13 +26757,12 @@
         "yellow_scarf",
         "soft_grey_light",
         "medium_shot",
-        "close_up",
-        "full_body",
         "atmospheric",
         "cinematic_lighting",
         "detailed_background",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "upper_body"
       ],
       "negativeTokens": [
         "worst quality",
@@ -27957,12 +27954,10 @@
         "chiffon",
         "cinematic_lighting",
         "clean_face",
-        "close_up",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "evening_gown",
-        "full_body",
         "gradient",
         "medium_shot",
         "moonlight",
@@ -27972,7 +27967,8 @@
         "strapless",
         "velvet",
         "volumetric_lighting",
-        "window"
+        "window",
+        "cowboy_shot"
       ],
       "negativeTokens": [
         "worst quality",
@@ -28755,13 +28751,11 @@
         "cheeks_in_hands",
         "cinematic_lighting",
         "clean_face",
-        "close_up",
         "cozy_indoor",
         "depth_of_field",
         "detailed_background",
         "dozing",
         "dynamic_lighting",
-        "full_body",
         "loungewear",
         "medium_shot",
         "mengkawaii",
@@ -28771,7 +28765,8 @@
         "rain_window",
         "smooth_thighs",
         "volumetric_lighting",
-        "water_drops"
+        "water_drops",
+        "upper_body"
       ],
       "negativeTokens": [
         "worst quality",
@@ -28970,13 +28965,11 @@
         "bartender",
         "cinematic_lighting",
         "clean_face",
-        "close_up",
         "cocktail_glass",
         "depth_of_field",
         "detailed_background",
         "dusk",
         "dynamic_lighting",
-        "full_body",
         "ice_cubes",
         "lemon_slice",
         "medium_shot",
@@ -28987,7 +28980,8 @@
         "tasting",
         "twilight",
         "volumetric_lighting",
-        "white_shirt"
+        "white_shirt",
+        "cowboy_shot"
       ],
       "negativeTokens": [
         "worst quality",
@@ -30634,12 +30628,10 @@
         "boots",
         "cinematic_lighting",
         "clean_face",
-        "close_up",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "fox_ears",
-        "full_body",
         "haori",
         "kimono",
         "library",
@@ -30651,7 +30643,8 @@
         "sitting",
         "volumetric_lighting",
         "white_clothes",
-        "white_tabi"
+        "white_tabi",
+        "cowboy_shot"
       ],
       "negativeTokens": [
         "worst quality",
@@ -31033,7 +31026,6 @@
         "blanket",
         "cinematic_lighting",
         "clean_face",
-        "close_up",
         "cozy",
         "curled_up",
         "depth_of_field",
@@ -31041,7 +31033,6 @@
         "dorm",
         "dynamic_lighting",
         "fleece",
-        "full_body",
         "hoodie",
         "loungewear",
         "medium_shot",
@@ -31961,14 +31952,12 @@
         "black_clothes",
         "cinematic_lighting",
         "clean_face",
-        "close_up",
         "combat_boots",
         "data",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "endfield",
-        "full_body",
         "jacket",
         "medium_shot",
         "pleated_skirt",
@@ -31998,9 +31987,8 @@
         "oversized_sleeves",
         "white_dress",
         "sleeveless_dress",
-        "black_pantyhose",
-        "sheer_pantyhose",
-        "high_heels"
+        "high_heels",
+        "cowboy_shot"
       ],
       "negativeTokens": [
         "worst quality",
@@ -33743,12 +33731,10 @@
         "cinematic_lighting",
         "classroom",
         "clean_face",
-        "close_up",
         "curtains_fluttering",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
-        "full_body",
         "loafers",
         "medium_shot",
         "pleated_skirt",
@@ -33756,13 +33742,13 @@
         "school_uniform",
         "seirei_academy_uniform",
         "sheer_thighhighs",
-        "white_thighhighs",
         "silver_hair",
         "smooth_thighs",
         "sunset",
         "volumetric_lighting",
         "white_shirt",
-        "window"
+        "window",
+        "cowboy_shot"
       ],
       "negativeTokens": [
         "worst quality",
@@ -65921,12 +65907,12 @@
       "promptTokens": [
         "schale_office",
         "office_chair",
-        "bare_legs",
         "black_thighhighs",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "garter_straps"
       ],
       "negativeTokens": [
         "worst quality",

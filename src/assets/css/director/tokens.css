@@ -103,6 +103,54 @@
     --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
     --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
   }
+  /* 调校：狂犬烈火红发 · 艾莉丝·格雷拉特 */
+  .pb[data-character="eris_greyrat"] {
+    --character-accent:#ef4444; --character-accent-hover:#f87171;
+    --character-soft:rgba(239,68,68,.16); --character-glow:rgba(239,68,68,.34);
+    --character-aura:rgba(220,38,38,.32); --character-aura-secondary:rgba(245,158,11,.22);
+  }
+  /* 调校：星眸顶流偶像 · 星野爱 */
+  .pb[data-character="hoshino_ai"] {
+    --character-accent:#f43f5e; --character-accent-hover:#fb7185;
+    --character-soft:rgba(244,63,94,.16); --character-glow:rgba(244,63,94,.34);
+    --character-aura:rgba(225,29,72,.34); --character-aura-secondary:rgba(192,132,252,.24);
+  }
+  /* 调校：静谧深蓝分析家 · 黑川茜 */
+  .pb[data-character="kurokawa_akane"] {
+    --character-accent:#3b82f6; --character-accent-hover:#60a5fa;
+    --character-soft:rgba(59,130,246,.16); --character-glow:rgba(59,130,246,.34);
+    --character-aura:rgba(37,99,235,.32); --character-aura-secondary:rgba(168,85,247,.22);
+  }
+  /* 调校：终末地耀目工业黄 · 伊冯 */
+  .pb[data-character="yvonne_arknights"] {
+    --character-accent:#f59e0b; --character-accent-hover:#fbbf24;
+    --character-soft:rgba(245,158,11,.16); --character-glow:rgba(245,158,11,.34);
+    --character-aura:rgba(217,119,6,.32); --character-aura-secondary:rgba(56,189,248,.22);
+  }
+  /* 调校：冷冽水妃冬之女王 · 摩根 */
+  .pb[data-character="morgan_le_fay_fate"] {
+    --character-accent:#60a5fa; --character-accent-hover:#93c5fd;
+    --character-soft:rgba(96,165,250,.16); --character-glow:rgba(96,165,250,.34);
+    --character-aura:rgba(30,58,138,.36); --character-aura-secondary:rgba(224,242,254,.24);
+  }
+  /* 调校：迦勒底亚从者守护者 · 玛修 */
+  .pb[data-character="mash_kyrielight"] {
+    --character-accent:#c084fc; --character-accent-hover:#d8b4fe;
+    --character-soft:rgba(192,132,252,.16); --character-glow:rgba(192,132,252,.34);
+    --character-aura:rgba(147,51,234,.32); --character-aura-secondary:rgba(96,165,250,.22);
+  }
+  /* 调校：绯红围巾调查兵团王牌 · 三笠·阿克曼 */
+  .pb[data-character="mikasa_ackerman"] {
+    --character-accent:#e11d48; --character-accent-hover:#f43f5e;
+    --character-soft:rgba(225,29,72,.16); --character-glow:rgba(225,29,72,.34);
+    --character-aura:rgba(159,18,57,.34); --character-aura-secondary:rgba(148,163,184,.22);
+  }
+  /* 调校：璀璨王冠金发女王 · 希斯特里亚·雷斯 */
+  .pb[data-character="historia_reiss"] {
+    --character-accent:#eab308; --character-accent-hover:#facc15;
+    --character-soft:rgba(234,179,8,.16); --character-glow:rgba(234,179,8,.34);
+    --character-aura:rgba(202,138,4,.34); --character-aura-secondary:rgba(125,211,252,.22);
+  }
   /* 派生：粉发 · 艾雅法拉 */
   .pb[data-character="eyjafjalla_arknights"] {
     --character-accent:#ec8db0; --character-accent-hover:#f4bdd1;
@@ -469,4 +517,12 @@
   body:has(.pb[data-character="texas_arknights"]) { --character-aura:rgba(56,189,248,.30); --character-aura-secondary:rgba(251,191,36,.20); }
   body:has(.pb[data-character="lappland_arknights"]) { --character-aura:rgba(192,132,252,.30); --character-aura-secondary:rgba(226,232,240,.24); }
   body:has(.pb[data-character="viviana_arknights"]) { --character-aura:rgba(251,191,36,.32); --character-aura-secondary:rgba(253,230,138,.22); }
+  body:has(.pb[data-character="eris_greyrat"]) { --character-aura:rgba(220,38,38,.32); --character-aura-secondary:rgba(245,158,11,.22); }
+  body:has(.pb[data-character="hoshino_ai"]) { --character-aura:rgba(225,29,72,.34); --character-aura-secondary:rgba(192,132,252,.24); }
+  body:has(.pb[data-character="kurokawa_akane"]) { --character-aura:rgba(37,99,235,.32); --character-aura-secondary:rgba(168,85,247,.22); }
+  body:has(.pb[data-character="yvonne_arknights"]) { --character-aura:rgba(217,119,6,.32); --character-aura-secondary:rgba(56,189,248,.22); }
+  body:has(.pb[data-character="morgan_le_fay_fate"]) { --character-aura:rgba(30,58,138,.36); --character-aura-secondary:rgba(224,242,254,.24); }
+  body:has(.pb[data-character="mash_kyrielight"]) { --character-aura:rgba(147,51,234,.32); --character-aura-secondary:rgba(96,165,250,.22); }
+  body:has(.pb[data-character="mikasa_ackerman"]) { --character-aura:rgba(159,18,57,.34); --character-aura-secondary:rgba(148,163,184,.22); }
+  body:has(.pb[data-character="historia_reiss"]) { --character-aura:rgba(202,138,4,.34); --character-aura-secondary:rgba(125,211,252,.22); }
 

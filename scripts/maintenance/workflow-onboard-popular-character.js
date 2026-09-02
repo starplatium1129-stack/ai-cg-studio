@@ -108,7 +108,7 @@ async function pollJob(jobId, timeoutMs = 120000) {
 
 async function renderImage({ prompt, negative, width = 832, height = 1216, steps = 28, cfg = 4.5, seed }) {
   const jobId = await submitAnimaJob({
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.2',
     prompt,
     negative,
     width,

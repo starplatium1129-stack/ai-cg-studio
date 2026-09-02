@@ -128,7 +128,7 @@ function buildFineTunedPrompt(char, outfit, persId) {
 async function renderImage(char, outfit, persId, targetPath) {
   const { prompt, negative } = buildFineTunedPrompt(char, outfit, persId);
   const payload = {
-    modelId: 'anima-aesthetic-v1.1',
+    modelId: 'anima-miaomiao-v1.2',
     prompt,
     negative,
     width: 832,
