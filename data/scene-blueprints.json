@@ -74407,7 +74407,9 @@
         "close-up",
         "dynamic_angle",
         "detailed_background",
-        "cinematic_lighting"
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",

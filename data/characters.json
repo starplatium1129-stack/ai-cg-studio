@@ -1548,7 +1548,8 @@
       "mushoku_tensei"
     ],
     "accent_color": "#38bdf8",
-    "bg_color": "#0f172a"
+    "bg_color": "#0f172a",
+    "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
   },
   {
     "id": "illyasviel_von_einzbern",
@@ -3082,7 +3083,8 @@
       "布耶纳村午后",
       "学院图书馆",
       "新婚清晨阳台"
-    ]
+    ],
+    "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
   },
   {
     "id": "yuigahama_yui",
@@ -3358,7 +3360,7 @@
       "style": "elegant assassin beauty",
       "signature": "黑发红瞳、玫瑰耳环与杀手/人妻反差"
     },
-    "source": "SPY x FAMILY",
+    "source": "远藤达哉《间谍过家家 / SPY x FAMILY》",
     "bg_story": "约尔·福杰是《SPY×FAMILY》的女主角，表面是伯林特市政厅的温和职员，真实身份是代号「荆棘公主」的顶尖杀手。黑色长发与红色眼眸、金色玫瑰耳环是她的标志。为完成任务与黄昏组建了福杰家，却在这份「虚假」的家庭里找到了真正的幸福。",
     "personality": [
       "天然",
@@ -3414,7 +3416,8 @@
       "福杰家黄昏",
       "市政厅午休",
       "任务雨夜"
-    ]
+    ],
+    "series": "远藤达哉《间谍过家家 / SPY x FAMILY》"
   },
   {
     "id": "reze_chainsaw",
@@ -3604,7 +3607,7 @@
       "style": "delicate poor magical girl",
       "signature": "螺旋角发包、蓝瞳与不幸体质"
     },
-    "source": "The Magical Girl and the Evil Officer",
+    "source": "藤原可可亚《曾经魔法少女和大恶魔经常为敌》",
     "bg_story": "深森白夜是藤原可可亚《魔法少女与恶曾是敌人》的女主角，兼任魔法少女、打工族与孤儿院助手的不幸少女。银白色的长发扎成标志性的双螺旋角发包，蓝色眼眸总是带着天然呆的平静。她与邪恶组织的干部米拉之间，展开了一段意想不到的日常。",
     "personality": [
       "天然呆",
@@ -3665,7 +3668,8 @@
       "打工的傍晚",
       "孤儿院午后",
       "魔法少女的月夜"
-    ]
+    ],
+    "series": "藤原可可亚《曾经魔法少女和大恶魔经常为敌》"
   },
   {
     "id": "saint_cecilia",
@@ -3691,7 +3695,7 @@
       "style": "pure holy saint",
       "signature": "薄荷绿发、翠绿圆瞳与圣女白袍"
     },
-    "source": "Saint Cecilia and Pastor Lawrence",
+    "source": "和武叶佐乃《白圣女与黑牧师》",
     "bg_story": "塞西莉亚是和武叶佐乃《白圣女与黑牧师》的女主角，小镇教堂的圣女。薄荷嫩绿的长发盘成低髻，翠绿的眼眸纯净而天真，纯白圣女袍与头纱是她的标志。她天然呆得像小动物，喜怒哀乐全写在脸上，与牧师劳伦斯之间有着温柔又笨拙的日常。",
     "personality": [
       "天然呆",
@@ -3754,7 +3758,8 @@
       "教堂晨光",
       "小镇集市",
       "雷雨夜"
-    ]
+    ],
+    "series": "和武叶佐乃《白圣女与黑牧师》"
   },
   {
     "id": "misono_mika",
@@ -3856,7 +3861,8 @@
       "blue_archive"
     ],
     "accent_color": "#f9a8d4",
-    "bg_color": "#1e3a8a"
+    "bg_color": "#1e3a8a",
+    "series": "NEXON《蔚蓝档案 / Blue Archive》"
   },
   {
     "id": "sorasaki_hina",
@@ -3962,7 +3968,8 @@
       "blue_archive"
     ],
     "accent_color": "#ef4444",
-    "bg_color": "#0f172a"
+    "bg_color": "#0f172a",
+    "series": "NEXON《蔚蓝档案 / Blue Archive》"
   },
   {
     "id": "kyouyama_kazusa",
@@ -4056,7 +4063,8 @@
       "blush"
     ],
     "accent_color": "#d4a017",
-    "bg_color": "#7c2d12"
+    "bg_color": "#7c2d12",
+    "series": "NEXON《蔚蓝档案 / Blue Archive》"
   },
   {
     "id": "asuma_toki",
@@ -4144,7 +4152,8 @@
       "blue_archive"
     ],
     "accent_color": "#fbbf24",
-    "bg_color": "#1e3a8a"
+    "bg_color": "#1e3a8a",
+    "series": "NEXON《蔚蓝档案 / Blue Archive》"
   },
   {
     "id": "tsukatsuki_rio",
@@ -4232,7 +4241,8 @@
       "blue_archive"
     ],
     "accent_color": "#b91c1c",
-    "bg_color": "#0f172a"
+    "bg_color": "#0f172a",
+    "series": "NEXON《蔚蓝档案 / Blue Archive》"
   },
   {
     "id": "ling_arknights",
@@ -4378,7 +4388,7 @@
       "黄昏训练场"
     ],
     "speech": "艾莉丝向你发出剑术挑战——敢应战吗？",
-    "source": "Studio Bind《无职转生 / Mushoku Tensei》",
+    "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
     "traits": [
       "eris_greyrat",
       "1girl",
@@ -4395,7 +4405,8 @@
       "mushoku_tensei"
     ],
     "accent_color": "#CC0000",
-    "bg_color": "#1a0f0f"
+    "bg_color": "#1a0f0f",
+    "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
   },
   {
     "id": "hoshino_ai",
@@ -4721,7 +4732,7 @@
       "月夜静海"
     ],
     "speech": "摩根以冰蓝的瞳仁凝视你——「冬之女王座前，报上你的名。」",
-    "source": "Type-Moon《Fate/Grand Order》",
+    "source": "TYPE-MOON《Fate 系列》",
     "traits": [
       "morgan (fate/grand order)",
       "1girl",
@@ -4734,7 +4745,8 @@
       "fgo"
     ],
     "accent_color": "#1B2A5E",
-    "bg_color": "#0a0e1c"
+    "bg_color": "#0a0e1c",
+    "series": "TYPE-MOON《Fate 系列》"
   },
   {
     "id": "mash_kyrielight",
@@ -4803,7 +4815,7 @@
       "常夏海滩"
     ],
     "speech": "玛修抱着资料向你行礼——「前辈，今天也要一起努力哦。」",
-    "source": "Type-Moon《Fate/Grand Order》",
+    "source": "TYPE-MOON《Fate 系列》",
     "traits": [
       "mash_kyrielight",
       "1girl",
@@ -4817,7 +4829,8 @@
       "fgo"
     ],
     "accent_color": "#6A4FA3",
-    "bg_color": "#120f1f"
+    "bg_color": "#120f1f",
+    "series": "TYPE-MOON《Fate 系列》"
   },
   {
     "id": "mikasa_ackerman",
@@ -5563,7 +5576,7 @@
       "天台晚霞"
     ],
     "speech": "老师！这次的赤字账单如果不核对完，我可绝对不会放你回去休息的哦！",
-    "source": "Nexon Games / Yostar《碧蓝档案 / Blue Archive》",
+    "source": "NEXON《蔚蓝档案 / Blue Archive》",
     "traits": [
       "yuuka (blue archive)",
       "1girl",
@@ -5579,7 +5592,8 @@
       "blue_archive"
     ],
     "accent_color": "#38bdf8",
-    "bg_color": "#0f172a"
+    "bg_color": "#0f172a",
+    "series": "NEXON《蔚蓝档案 / Blue Archive》"
   },
   {
     "id": "shiromi_iori",
@@ -5649,7 +5663,7 @@
       "硝烟街区"
     ],
     "speech": "老师！不许再盯着我的脚看了！再胡闹的话，我可要以妨碍公务把你逮捕了！",
-    "source": "Nexon Games / Yostar《碧蓝档案 / Blue Archive》",
+    "source": "NEXON《蔚蓝档案 / Blue Archive》",
     "traits": [
       "iori (blue archive)",
       "1girl",
@@ -5665,7 +5679,8 @@
       "blue_archive"
     ],
     "accent_color": "#f87171",
-    "bg_color": "#0f172a"
+    "bg_color": "#0f172a",
+    "series": "NEXON《蔚蓝档案 / Blue Archive》"
   },
   {
     "id": "texas_arknights",
