@@ -136,94 +136,102 @@
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
       <div v-else class="gallery-wall stagger-container">
-        <template v-for="group in groups" :key="group.key">
+        <template v-for="group in masonryGroups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
-          <article
-            v-for="item in group.items"
-            :key="item.id"
-            class="artwork"
-            :class="{ 'artwork-pending': pendingDeleteId === item.id, 'artwork-selected': selectMode && selectedIds.has(item.id) }"
-            :data-card-id="String(item.id)"
-            :style="{ '--art-ratio': String(ratioOf(item)) }"
-          >
-            <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
-            <span v-if="selectMode" class="artwork-check" aria-hidden="true">
-              <ArchiveIcon v-if="selectedIds.has(item.id)" name="success" />
-            </span>
-            <!--
-              快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
-              进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
-            -->
-            <div v-if="!selectMode" class="artwork-tools">
-              <template v-if="pendingDeleteId === item.id">
-                <button class="artwork-tool danger" type="button" :disabled="deleting"
-                  @click="confirmDelete(item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
-                <button class="artwork-tool" type="button" :disabled="deleting"
-                  @click="pendingDeleteId = null">取消</button>
-              </template>
-              <template v-else>
-                <button class="artwork-tool" type="button"
-                  :class="{ 'artwork-tool-on': item.favorite }"
-                  :aria-pressed="!!item.favorite"
-                  :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
-                  title="收藏后可在顶部按「收藏」筛选"
-                  @click="toggleFavorite(item)">
-                  <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
-                </button>
-                <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
-                  <ArchiveIcon name="spark" /><span>沿用配方</span>
-                </RouterLink>
-                <button class="artwork-tool danger" type="button"
-                  :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
-                  title="删除作品"
-                  @click="pendingDeleteId = item.id">
-                  <ArchiveIcon name="close" /><span>删除</span>
-                </button>
-              </template>
-            </div>
-            <button
-              class="artwork-button"
-              type="button"
-              :aria-pressed="selectMode ? selectedIds.has(item.id) : undefined"
-              :aria-label="selectMode
-                ? `${selectedIds.has(item.id) ? '取消选择' : '选择'}作品：${sceneTitle(item.scene, item)}`
-                : `欣赏作品：${sceneTitle(item.scene, item)}`"
-              @click="selectMode ? toggleSelect(item.id) : openViewer(indexOf(item))"
+          <div class="gallery-columns" :style="{ '--wall-cols': columnCount }">
+            <div
+              v-for="(col, colIdx) in group.columns"
+              :key="`${group.key}-col-${colIdx}`"
+              class="gallery-col"
             >
-              <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
-                <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
-                <img
-                  v-if="thumbUrls[item.id]"
-                  class="artwork-image"
-                  :src="thumbUrls[item.id]"
-                  :alt="sceneTitle(item.scene, item)"
-                  loading="lazy"
-                  decoding="async"
-                  referrerpolicy="no-referrer"
-                  @load="measure(item, $event)"
-                />
-                <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
-                <img
-                  v-if="cardUrls[item.id]"
-                  class="artwork-image artwork-image-hd"
-                  :src="cardUrls[item.id]"
-                  :alt="sceneTitle(item.scene, item)"
-                  decoding="async"
-                  referrerpolicy="no-referrer"
-                  @load="onHdLoad(item, $event)"
-                />
-                <div v-if="!cardUrls[item.id] && !thumbUrls[item.id] && missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
-                <div v-else-if="!cardUrls[item.id] && !thumbUrls[item.id]" class="artwork-skeleton" aria-hidden="true"></div>
-                <div class="artwork-caption">
-                  <span>
-                    <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
-                    <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
-                  </span>
-                  <span class="artwork-mark"><ArchiveIcon v-if="item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
+              <article
+                v-for="item in col"
+                :key="item.id"
+                class="artwork"
+                :class="{ 'artwork-pending': pendingDeleteId === item.id, 'artwork-selected': selectMode && selectedIds.has(item.id) }"
+                :data-card-id="String(item.id)"
+                :style="{ '--art-ratio': String(ratioOf(item)) }"
+              >
+                <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
+                <span v-if="selectMode" class="artwork-check" aria-hidden="true">
+                  <ArchiveIcon v-if="selectedIds.has(item.id)" name="success" />
+                </span>
+                <!--
+                  快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
+                  进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
+                -->
+                <div v-if="!selectMode" class="artwork-tools">
+                  <template v-if="pendingDeleteId === item.id">
+                    <button class="artwork-tool danger" type="button" :disabled="deleting"
+                      @click="confirmDelete(item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
+                    <button class="artwork-tool" type="button" :disabled="deleting"
+                      @click="pendingDeleteId = null">取消</button>
+                  </template>
+                  <template v-else>
+                    <button class="artwork-tool" type="button"
+                      :class="{ 'artwork-tool-on': item.favorite }"
+                      :aria-pressed="!!item.favorite"
+                      :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
+                      title="收藏后可在顶部按「收藏」筛选"
+                      @click="toggleFavorite(item)">
+                      <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
+                    </button>
+                    <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
+                      <ArchiveIcon name="spark" /><span>沿用配方</span>
+                    </RouterLink>
+                    <button class="artwork-tool danger" type="button"
+                      :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
+                      title="删除作品"
+                      @click="pendingDeleteId = item.id">
+                      <ArchiveIcon name="close" /><span>删除</span>
+                    </button>
+                  </template>
                 </div>
-              </div>
-            </button>
-          </article>
+                <button
+                  class="artwork-button"
+                  type="button"
+                  :aria-pressed="selectMode ? selectedIds.has(item.id) : undefined"
+                  :aria-label="selectMode
+                    ? `${selectedIds.has(item.id) ? '取消选择' : '选择'}作品：${sceneTitle(item.scene, item)}`
+                    : `欣赏作品：${sceneTitle(item.scene, item)}`"
+                  @click="selectMode ? toggleSelect(item.id) : openViewer(indexOf(item))"
+                >
+                  <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
+                    <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
+                    <img
+                      v-if="thumbUrls[item.id]"
+                      class="artwork-image"
+                      :src="thumbUrls[item.id]"
+                      :alt="sceneTitle(item.scene, item)"
+                      loading="lazy"
+                      decoding="async"
+                      referrerpolicy="no-referrer"
+                      @load="measure(item, $event)"
+                    />
+                    <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
+                    <img
+                      v-if="cardUrls[item.id]"
+                      class="artwork-image artwork-image-hd"
+                      :src="cardUrls[item.id]"
+                      :alt="sceneTitle(item.scene, item)"
+                      decoding="async"
+                      referrerpolicy="no-referrer"
+                      @load="onHdLoad(item, $event)"
+                    />
+                    <div v-if="!cardUrls[item.id] && !thumbUrls[item.id] && missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
+                    <div v-else-if="!cardUrls[item.id] && !thumbUrls[item.id]" class="artwork-skeleton" aria-hidden="true"></div>
+                    <div class="artwork-caption">
+                      <span>
+                        <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
+                        <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
+                      </span>
+                      <span class="artwork-mark"><ArchiveIcon v-if="item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
+                    </div>
+                  </div>
+                </button>
+              </article>
+            </div>
+          </div>
         </template>
         <!-- 分页哨兵：进入视口即追加下一页（作品很多时避免一次性铺满 DOM） -->
         <div v-if="hasMoreToRender" ref="sentinelEl" class="gallery-more" role="status">
@@ -351,6 +359,7 @@ import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { blobThumbDataUrl, jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios'
+import { useMasonryColumns, buildMasonryGroups } from '@/composables/gallery/useMasonryWall'
 import {
   searchHaystack,
   trashPrompt,
@@ -484,6 +493,7 @@ async function restoreTrashItem(id: string | number) {
 
 const closeBtn = ref<HTMLElement | null>(null)
 const viewerEl = ref<HTMLElement | null>(null)
+const shellEl = ref<HTMLElement | null>(null)
 const objectUrls = new Set<string>()
 /** 查看器当前显示的 blob URL，翻页时要主动释放 */
 let viewerObjectUrl = ''
@@ -514,7 +524,7 @@ const renderLimit = ref(PAGE_SIZE)
 const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value))
 const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length)
 
-/* ---------- 时间分组 ---------- */
+/* ---------- 时间分组与多列瀑布流 ---------- */
 const groups = computed(() => {
   const order = ['今天', '本周', '更早']
   const buckets: Record<string, ArtworkRecord[]> = {}
@@ -524,6 +534,9 @@ const groups = computed(() => {
   })
   return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }))
 })
+
+const { columnCount } = useMasonryColumns(shellEl)
+const masonryGroups = computed(() => buildMasonryGroups(groups.value, ratioOf, columnCount.value))
 
 const parentArtwork = computed(() => {
   const pId = current.value?.parent_id
@@ -786,7 +799,6 @@ function pumpCardQueue() {
 }
 
 /* ---------- 可见性驱动 HD 补图 ---------- */
-const shellEl = ref<HTMLElement | null>(null)
 const observedCards = new Map<Element, ArtworkRecord>()
 let cardObserver: IntersectionObserver | null = null
 
@@ -1351,17 +1363,28 @@ watch([favoriteOnly, projectFilter, searchQuery], () => {
 .gallery-bulk-count { color:var(--text-primary); font:650 var(--fs-label-sm) var(--font-mono); white-space:nowrap; }
 .gallery-bulk-actions { display:flex; align-items:center; gap:var(--s-2); margin-left:auto; flex-wrap:wrap; }
 
-/* 画廊大画幅展墙：响应式 4 列/3 列/2 列/1 列网格，宽阔大气，秩序井然 */
+/* 画廊多列瀑布流展墙：等宽列流式拼接，上下紧密咬合，零垂直多余空位 */
 .gallery-wall {
   max-width: 1560px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.gallery-columns {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--wall-cols, 4), minmax(0, 1fr));
   gap: clamp(16px, 1.8vw, 24px);
   align-items: start;
 }
+.gallery-col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.8vw, 24px);
+  min-width: 0;
+}
 .gallery-loading-wall { min-height:340px; }
-.artwork { position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
+.artwork { width:100%; position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
 .artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }
 .artwork:hover { border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); transform:translateY(-4px); }
 .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
@@ -1417,11 +1440,12 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 }
 
 @media (max-width:1200px) {
-  .gallery-wall { grid-template-columns:repeat(3, minmax(0,1fr)); }
+  .gallery-columns { grid-template-columns:repeat(3, minmax(0,1fr)); }
 }
 @media (max-width:900px) { .gallery-count { display:none; } }
 @media (max-width:820px) {
-  .gallery-wall { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
+  .gallery-columns { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
+  .gallery-col { gap:var(--s-3); }
 }
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
@@ -1433,7 +1457,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
   .artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
 }
 @media (max-width:480px) {
-  .gallery-wall { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
+  .gallery-columns { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
+  .gallery-col { gap:var(--s-3); }
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
 /* 位移量：层宽 220%，右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
