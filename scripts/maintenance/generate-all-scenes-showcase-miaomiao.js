@@ -65,7 +65,11 @@ function collectAllSceneTasks(opts) {
       const height = isHorizontal ? 832 : 1216;
 
       const promptTokens = (bp.promptTokens || []).join(', ');
-      const prompt = bp.prompt || promptTokens || bp.title;
+      let prompt = bp.prompt || promptTokens || bp.title;
+      // 统一注入 @rella 画师风格锚点 (若尚未包含)
+      if (!/@rella\b/i.test(prompt)) {
+        prompt = `@rella, ${prompt}`;
+      }
       const negative = Array.isArray(bp.negativeTokens) ? bp.negativeTokens.join(', ') : (bp.negative || 'worst quality, low quality, bad anatomy, blurry, watermark');
 
       tasks.push({
@@ -95,7 +99,11 @@ function collectAllSceneTasks(opts) {
       const width = isHorizontal ? 1216 : 832;
       const height = isHorizontal ? 832 : 1216;
 
-      const prompt = sc.prompt || sc.title;
+      let prompt = sc.prompt || sc.title;
+      // 统一注入 @rella 画师风格锚点 (若尚未包含)
+      if (!/@rella\b/i.test(prompt)) {
+        prompt = `@rella, ${prompt}`;
+      }
       const negative = sc.negative || 'worst quality, low quality, bad anatomy, blurry, watermark';
 
       tasks.push({
