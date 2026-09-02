@@ -135,84 +135,96 @@
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
-      <div v-else class="gallery-wall stagger-container">
-        <template v-for="group in groups" :key="group.key">
+      <div v-else ref="wallEl" class="gallery-wall stagger-container" :style="{ '--wall-gap': wallGap }">
+        <template v-for="group in wallGroups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
-          <article
-            v-for="item in group.items"
-            :key="item.id"
-            class="artwork"
-            :class="{ 'artwork-pending': pendingDeleteId === item.id, 'artwork-selected': selectMode && selectedIds.has(item.id) }"
-            :data-card-id="String(item.id)"
-            :style="{ '--art-ratio': ratioOf(item) }"
+          <!--
+            等高行：一行里的画共用同一高度，宽度按各自宽高比分配，左右刚好铺满。
+            行高与列宽由 useJustifiedWall 实测容器宽度后算出，断行只发生在时间
+            顺序的相邻两幅之间，因此「最新在前」的时间轴不被打乱。
+          -->
+          <div
+            v-for="(row, rowIdx) in group.rows"
+            :key="`${group.key}-${rowIdx}`"
+            class="gallery-row"
+            :style="{ height: `${row.height}px` }"
           >
-            <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
-            <span v-if="selectMode" class="artwork-check" aria-hidden="true">
-              <ArchiveIcon v-if="selectedIds.has(item.id)" name="success" />
-            </span>
-            <!--
-              快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
-              进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
-            -->
-            <div v-if="!selectMode" class="artwork-tools">
-              <template v-if="pendingDeleteId === item.id">
-                <button class="artwork-tool danger" type="button" :disabled="deleting"
-                  @click="confirmDelete(item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
-                <button class="artwork-tool" type="button" :disabled="deleting"
-                  @click="pendingDeleteId = null">取消</button>
-              </template>
-              <template v-else>
-                <button class="artwork-tool" type="button"
-                  :class="{ 'artwork-tool-on': item.favorite }"
-                  :aria-pressed="!!item.favorite"
-                  :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
-                  title="收藏后可在顶部按「收藏」筛选"
-                  @click="toggleFavorite(item)">
-                  <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
-                </button>
-                <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
-                  <ArchiveIcon name="spark" /><span>沿用配方</span>
-                </RouterLink>
-                <button class="artwork-tool danger" type="button"
-                  :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
-                  title="删除作品"
-                  @click="pendingDeleteId = item.id">
-                  <ArchiveIcon name="close" /><span>删除</span>
-                </button>
-              </template>
-            </div>
-            <button
-              class="artwork-button"
-              type="button"
-              :aria-pressed="selectMode ? selectedIds.has(item.id) : undefined"
-              :aria-label="selectMode
-                ? `${selectedIds.has(item.id) ? '取消选择' : '选择'}作品：${sceneTitle(item.scene, item)}`
-                : `欣赏作品：${sceneTitle(item.scene, item)}`"
-              @click="selectMode ? toggleSelect(item.id) : openViewer(indexOf(item))"
+            <article
+              v-for="cell in row.cells"
+              :key="cell.item.id"
+              class="artwork"
+              :class="{ 'artwork-pending': pendingDeleteId === cell.item.id, 'artwork-selected': selectMode && selectedIds.has(cell.item.id) }"
+              :data-card-id="String(cell.item.id)"
+              :style="{ width: `${cell.width}px` }"
             >
-              <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
-                <img
-                  v-if="cardUrls[item.id] || thumbUrls[item.id]"
-                  class="artwork-image"
-                  :src="cardUrls[item.id] || thumbUrls[item.id]"
-                  :alt="sceneTitle(item.scene, item)"
-                  loading="lazy"
-                  decoding="async"
-                  referrerpolicy="no-referrer"
-                  @load="measure(item, $event)"
-                />
-                <div v-else-if="missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
-                <div v-else class="artwork-skeleton" aria-hidden="true"></div>
-            <div class="artwork-caption">
-                  <span>
-                    <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
-                    <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
-                  </span>
-                  <span class="artwork-mark"><ArchiveIcon v-if="item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
-                </div>
+              <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
+              <span v-if="selectMode" class="artwork-check" aria-hidden="true">
+                <ArchiveIcon v-if="selectedIds.has(cell.item.id)" name="success" />
+              </span>
+              <!--
+                快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
+                进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
+              -->
+              <div v-if="!selectMode" class="artwork-tools">
+                <template v-if="pendingDeleteId === cell.item.id">
+                  <button class="artwork-tool danger" type="button" :disabled="deleting"
+                    @click="confirmDelete(cell.item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
+                  <button class="artwork-tool" type="button" :disabled="deleting"
+                    @click="pendingDeleteId = null">取消</button>
+                </template>
+                <template v-else>
+                  <button class="artwork-tool" type="button"
+                    :class="{ 'artwork-tool-on': cell.item.favorite }"
+                    :aria-pressed="!!cell.item.favorite"
+                    :aria-label="`${cell.item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(cell.item.scene, cell.item)}`"
+                    title="收藏后可在顶部按「收藏」筛选"
+                    @click="toggleFavorite(cell.item)">
+                    <ArchiveIcon name="love" /><span>{{ cell.item.favorite ? '已收藏' : '收藏' }}</span>
+                  </button>
+                  <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(cell.item.id || '')}`" title="以此作品配方回填创作台">
+                    <ArchiveIcon name="spark" /><span>沿用配方</span>
+                  </RouterLink>
+                  <button class="artwork-tool danger" type="button"
+                    :aria-label="`删除作品：${sceneTitle(cell.item.scene, cell.item)}`"
+                    title="删除作品"
+                    @click="pendingDeleteId = cell.item.id">
+                    <ArchiveIcon name="close" /><span>删除</span>
+                  </button>
+                </template>
               </div>
-            </button>
-          </article>
+              <button
+                class="artwork-button"
+                type="button"
+                :aria-pressed="selectMode ? selectedIds.has(cell.item.id) : undefined"
+                :aria-label="selectMode
+                  ? `${selectedIds.has(cell.item.id) ? '取消选择' : '选择'}作品：${sceneTitle(cell.item.scene, cell.item)}`
+                  : `欣赏作品：${sceneTitle(cell.item.scene, cell.item)}`"
+                @click="selectMode ? toggleSelect(cell.item.id) : openViewer(indexOf(cell.item))"
+              >
+                <div class="artwork-media">
+                  <img
+                    v-if="cardUrls[cell.item.id] || thumbUrls[cell.item.id]"
+                    class="artwork-image"
+                    :src="cardUrls[cell.item.id] || thumbUrls[cell.item.id]"
+                    :alt="sceneTitle(cell.item.scene, cell.item)"
+                    loading="lazy"
+                    decoding="async"
+                    referrerpolicy="no-referrer"
+                    @load="measure(cell.item, $event)"
+                  />
+                  <div v-else-if="missingImageIds.has(cell.item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
+                  <div v-else class="artwork-skeleton" aria-hidden="true"></div>
+                  <div class="artwork-caption">
+                    <span>
+                      <span class="artwork-name">{{ sceneTitle(cell.item.scene, cell.item) }}</span>
+                      <span class="artwork-date">{{ formatDate(stamp(cell.item)) }}</span>
+                    </span>
+                    <span class="artwork-mark"><ArchiveIcon v-if="cell.item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
+                  </div>
+                </div>
+              </button>
+            </article>
+          </div>
         </template>
         <!-- 分页哨兵：进入视口即追加下一页（作品很多时避免一次性铺满 DOM） -->
         <div v-if="hasMoreToRender" ref="sentinelEl" class="gallery-more" role="status">
@@ -339,6 +351,8 @@ import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { blobThumbDataUrl, jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
+import { useJustifiedWall, buildWallGroups } from '@/composables/gallery/useJustifiedWall'
+import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 import { buildArtworkFileName } from '@/utils/artworkFileName'
@@ -384,8 +398,14 @@ const cardUrls = reactive<Record<string, string>>({})
 /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
 const thumbUrls = reactive<Record<string, string>>({})
 const missingImageIds = ref(new Set<string | number>())
-/** 图片实际比例，键为历史条目 id；元数据不可信时以此为准 */
-const measuredRatios = reactive<Record<string, number>>({})
+/** 缩略图生成去重：HD 管线与解码回填共用，同一张图并发只生成一次 */
+const thumbPending = new Set<string>()
+const { measuredRatios, ratioOf, measure, forgetRatio } = useArtworkRatios({
+  pending: thumbPending,
+  hasThumb: item => Boolean(thumbUrls[item.id]),
+  saveThumb: (item, dataUrl, imageId) => kvSet(thumbKey(imageId), dataUrl).then(() => { thumbUrls[item.id] = dataUrl }),
+})
+
 /** 待确认删除的条目 id：删除有回收站兜底，但二次确认仍是防手滑的第一道闸 */
 const pendingDeleteId = ref<string | number | null>(null)
 const deleting = ref(false)
@@ -508,6 +528,13 @@ const renderLimit = ref(PAGE_SIZE)
 const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value))
 const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length)
 
+/* ---------- 等高行展墙 ----------
+   实测容器宽度，按宽高比把作品断成若干行；行内左右铺满、不留空洞。 */
+const wallEl = ref<HTMLElement | null>(null)
+const wall = useJustifiedWall(wallEl)
+/** 行距 / 间距：由 JS 与排版共用一份数值，避免 CSS 与计算结果对不上 */
+const wallGap = computed(() => `${wall.gap.value}px`)
+
 const groups = computed(() => {
   const order = ['今天', '本周', '更早']
   const buckets: Record<string, ArtworkRecord[]> = {}
@@ -517,6 +544,15 @@ const groups = computed(() => {
   })
   return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }))
 })
+
+/**
+ * 展墙实际渲染用的结构：每个时间分组内部再切成若干等高行。
+ *
+ * 依赖链是 pagedVisible → ratioOf → measuredRatios，加上 useJustifiedWall 实测的
+ * 容器宽度。所以图片解码后真实比例回填、窗口缩放、分页追加，都会自动重排。
+ * 排版只决定「在哪儿断行」，从不重排数组——时间轴和键盘 Tab 顺序原样保留。
+ */
+const wallGroups = computed(() => buildWallGroups(groups.value, ratioOf, wall.layout))
 
 const parentArtwork = computed(() => {
   const pId = current.value?.parent_id
@@ -663,54 +699,6 @@ function dayGroup(ts: number) {
   const start = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const diff = (start.getTime() - date.getTime()) / 86400000
   return diff < 1 ? '今天' : diff < 7 ? '本周' : '更早'
-}
-function clampRatio(r: number) { return Math.max(0.36, Math.min(2.8, r)) }
-
-/**
- * 画框比例。
- *
- * `size` 记的是保存快照那一刻下拉框里的值，不是这张图真实的像素尺寸——
- * 中途切场景把尺寸改成横图再保存，竖图就会套上横构图的框，画面被压在
- * 中间、两侧留黑。所以真实尺寸（naturalWidth/Height，见 measure()）优先，
- * 只有还没解码出来时才退回元数据。
- */
-function ratioOf(item: ArtworkRecord) {
-  const measured = measuredRatios[item.id]
-  if (measured) return clampRatio(measured)
-  let w = Number(item.width || item.image_width || item.actual?.width)
-  let h = Number(item.height || item.image_height || item.actual?.height)
-  if (!(w > 0 && h > 0)) {
-    const m = String(item.size || '').match(/(\d{2,5})\s*[x×]\s*(\d{2,5})/i)
-    if (m) { w = Number(m[1]); h = Number(m[2]) }
-  }
-  return clampRatio(w > 0 && h > 0 ? w / h : 3 / 4)
-}
-
-/** 图片解码完成后用真实像素纠正画框；HD 图顺带回填缩略图缓存 */
-function measure(item: ArtworkRecord, e: Event) {
-  const img = e.target as HTMLImageElement
-  if (!img.naturalWidth || !img.naturalHeight) return
-  const r = img.naturalWidth / img.naturalHeight
-  if (Math.abs((measuredRatios[item.id] ?? 0) - r) > 0.001) measuredRatios[item.id] = r
-  // 只有高清图（非缩略图）才回填，用已解码的 img 画缩略图，零额外解码
-  if (img.naturalWidth >= 700) void cacheBackfillThumb(item, img)
-}
-
-/** 防同一张图并发重复生成缩略图 */
-const thumbPending = new Set<string>()
-
-async function cacheBackfillThumb(item: ArtworkRecord, img: HTMLImageElement) {
-  const imageId = item.image_id
-  if (!imageId || thumbPending.has(imageId) || thumbUrls[item.id]) return
-  thumbPending.add(imageId)
-  try {
-    const dataUrl = jpegThumbDataUrl(img)
-    if (dataUrl) {
-      await kvSet(thumbKey(imageId), dataUrl)
-      thumbUrls[item.id] = dataUrl
-    }
-  } catch { /* 缩略图只是缓存，失败不影响展示 */ }
-  finally { thumbPending.delete(imageId) }
 }
 function indexOf(item: ArtworkRecord) { return visible.value.indexOf(item) }
 function safeImageUrl(v: string | undefined) {
@@ -988,7 +976,7 @@ function releaseCardResources(id: string | number) {
   cardLruOrder.delete(id)
   delete thumbUrls[id]
   if (missingImageIds.value.delete(id)) missingImageIds.value = new Set(missingImageIds.value)
-  delete measuredRatios[id]
+  forgetRatio(id)
 }
 
 /**
@@ -1417,7 +1405,15 @@ watch([favoriteOnly, projectFilter, searchQuery], () => {
 .gallery-bulk-count { color:var(--text-primary); font:650 var(--fs-label-sm) var(--font-mono); white-space:nowrap; }
 .gallery-bulk-actions { display:flex; align-items:center; gap:var(--s-2); margin-left:auto; flex-wrap:wrap; }
 
-.gallery-wall { max-width:1500px; margin:0 auto; display:grid; columns: 4 260px; grid-template-columns:repeat(4, minmax(0,1fr)); gap:clamp(12px,1.6vw,24px); align-items:start; }
+/* 等高行展墙：纵向是「行」流，每行内部横向铺满。行高与画宽由 useJustifiedWall
+   实测容器后算出并写成 inline style，CSS 只负责把行流起来。 */
+.gallery-wall { max-width:1500px; margin:0 auto; display:flex; flex-direction:column; gap:var(--wall-gap,20px); }
+.gallery-row { display:flex; align-items:stretch; gap:var(--wall-gap,20px); }
+.gallery-row .artwork { flex:0 0 auto; height:100%; }
+/* 画框高度跟着行走，不再自己算 aspect-ratio */
+.gallery-row .artwork-media { height:100%; width:100%; aspect-ratio:auto; }
+/* 悬停抬起时压住相邻画作，否则会被后一张盖住一条边 */
+.gallery-row .artwork:hover { z-index:2; }
 .gallery-loading-wall { min-height:340px; }
 .artwork { position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
 .artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }
@@ -1459,8 +1455,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-date { display:block; margin-top:2px; color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .artwork-mark { flex:0 0 auto; font-size:var(--fs-label-sm); }
 
-.gallery-section { grid-column:1 / -1; display:flex; align-items:center; gap:var(--s-3); margin:var(--s-3) 0 var(--s-4); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
-.gallery-more { grid-column:1 / -1; display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:var(--s-5) 0 0; padding:var(--s-3); color:var(--text-muted); font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
+.gallery-section { display:flex; align-items:center; gap:var(--s-3); margin:var(--s-3) 0 var(--s-4); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+.gallery-more { display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:var(--s-5) 0 0; padding:var(--s-3); color:var(--text-muted); font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
 .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1470,12 +1466,6 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 }
 
 @media (max-width:900px) { .gallery-count { display:none; } }
-@media (max-width:1000px) {
-  .gallery-wall { grid-template-columns:repeat(3, minmax(0,1fr)); }
-}
-@media (max-width: 768px) {
-  .gallery-wall { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
-}
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
   .artwork { border-radius:var(--r-dossier); }
