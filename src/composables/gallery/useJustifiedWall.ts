@@ -98,13 +98,13 @@ export function useJustifiedWall(containerRef: Ref<HTMLElement | null>) {
     if (frame) cancelAnimationFrame(frame)
   })
 
-  /** 期望行高：宽屏 280（中等密度），窄屏逐级降低，免得手机上两行就占满一屏 */
+  /** 期望行高：大图优先（用户偏好），宽屏 420，窄屏逐级降低，手机上两行仍可控 */
   const targetHeight = computed(() => {
     const w = width.value
-    if (!w) return 280
-    if (w < 520) return 190
-    if (w < 900) return 230
-    return 280
+    if (!w) return 420
+    if (w < 520) return 280
+    if (w < 900) return 340
+    return 420
   })
 
   /** 间距：与 clamp(12px, 1.6vw, 24px) 同手感 */
