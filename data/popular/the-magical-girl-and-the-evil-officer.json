@@ -10,23 +10,16 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "magical_girl_dress",
       "identityTokens": [
+        "byakuya (mahimaho)",
         "1girl",
         "solo",
-        "silver_white_hair",
         "platinum_hair",
-        "straight_hair",
-        "bangs",
         "twin_horn_buns",
-        "spiral_buns",
-        "hair_buns",
-        "sidelocks",
         "blue_eyes",
-        "gradient_eyes",
-        "round_eyes",
         "deadpan",
         "flat_chest"
       ],
-      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a delicate girl with flowing silver-white hair tied into twin spiral horn buns, straight bangs with long sidelocks, round gradient blue eyes with a dreamy glow, and a soft deadpan innocent expression",
+      "identityProse": "Mimori Byakuya, a deadpan and impoverished magical girl with straight platinum-white hair styled in twin horn buns, expressive blue eyes, and a slender flat-chested build.",
       "outfits": [
         {
           "id": "magical_girl_dress",

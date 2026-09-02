@@ -13,7 +13,7 @@
         "arknights",
         "laevatein"
       ],
-      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail under a black headband, amber-orange eyes, black-red curved horns, carrying the giant molten greatsword Laevateinn",
+      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail under a black headband, amber-orange eyes, black-red curved horns, and a slender athletic build.",
       "identityTokens": [
         "surtr (arknights)",
         "1girl",
@@ -24,11 +24,6 @@
         "hairband",
         "amber_eyes",
         "horns",
-        "black_clothes",
-        "white_clothes",
-        "jacket",
-        "techwear",
-        "greatsword",
         "arknights"
       ],
       "exactTokens": [
@@ -177,7 +172,7 @@
         "mon3tr",
         "kal'tsit (arknights)"
       ],
-      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair in twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, and a sharp authoritative gaze",
+      "identityProse": "Kal'tsit from Arknights, the venerable feline medical director with short pale mint-green hair, feline ears, sharp analytical green eyes, and a calm, stoic expression.",
       "identityTokens": [
         "kal'tsit (arknights)",
         "1girl",
@@ -186,9 +181,6 @@
         "short_hair",
         "cat_ears",
         "green_eyes",
-        "green_clothes",
-        "white_clothes",
-        "coat",
         "earring",
         "arknights"
       ],
@@ -349,7 +341,7 @@
         "arknights",
         "lungmen"
       ],
-      "identityProse": "Ch'en from Arknights, a Lungmen Guard Department officer with dark teal-blue hair in low twintails tied with red cords, amber-gold eyes, red-brown branching dragon horns, a long teal dragon tail, carrying the crimson-sheathed sword Chi Xiao",
+      "identityProse": "Ch'en from Arknights, the disciplined Lung inspector with dark teal hair tied in low twin tails with red ribbons, sharp amber eyes, dragon horns, and a slender dragon tail.",
       "identityTokens": [
         "ch'en (arknights)",
         "1girl",
@@ -361,11 +353,6 @@
         "amber_eyes",
         "horns",
         "tail",
-        "black_clothes",
-        "blue_clothes",
-        "military_uniform",
-        "coat",
-        "sword",
         "arknights"
       ],
       "exactTokens": [
@@ -577,7 +564,7 @@
         "eyja",
         "arknights"
       ],
-      "identityProse": "Eyjafjalla from Arknights, a Cautus volcano researcher with light ash-brown wavy hair in low twintails, small warm brown ram horns, ruby red eyes, and a quiet focused expression",
+      "identityProse": "Eyjafjalla from Arknights, a gentle Caprinae volcanologist with soft light brown hair tied in twintails, curved sheep horns, and warm crimson eyes.",
       "identityTokens": [
         "eyjafjalla (arknights)",
         "1girl",
@@ -586,9 +573,6 @@
         "twintails",
         "red_eyes",
         "horns",
-        "white_dress",
-        "black_thighhighs",
-        "coat",
         "arknights"
       ],
       "exactTokens": [
@@ -729,7 +713,7 @@
         "arknights",
         "laterano"
       ],
-      "identityProse": "Lemuen from Arknights, a Laterano Sankta advisor with warm ginger-brown wavy hair and a side braid, amber-gold eyes, a floating golden halo and small translucent wings at her lower back, seated in her high-tech wheelchair",
+      "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with ginger long hair, warm amber eyes, a luminous angelic halo, and delicate white wings.",
       "identityTokens": [
         "lemuen (arknights)",
         "1girl",
@@ -739,11 +723,6 @@
         "amber_eyes",
         "halo",
         "wings",
-        "dark_clothes",
-        "coat",
-        "tie",
-        "wheelchair",
-        "sniper_rifle",
         "arknights"
       ],
       "exactTokens": [
@@ -871,7 +850,7 @@
         "arknights",
         "sui"
       ],
-      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair dissolving into a teal-green ink gradient, teal-green eyes with red eyeshadow, teal jade dragon horns and a long ink-wash dragon tail, barefoot",
+      "identityProse": "Dusk from Arknights, a reclusive dragon painter with flowing floor-length ink-black hair, slit emerald eyes, curved black dragon horns, and a long scaly tail.",
       "identityTokens": [
         "dusk (arknights)",
         "1girl",
@@ -881,11 +860,6 @@
         "green_eyes",
         "horns",
         "tail",
-        "qipao",
-        "ink_wash",
-        "chinese_clothes",
-        "white_clothes",
-        "black_clothes",
         "arknights"
       ],
       "exactTokens": [
@@ -1015,7 +989,7 @@
         "mudrock",
         "arknights"
       ],
-      "identityProse": "Mudrock from Arknights, a gentle Sarkaz warrior with long silver-white hair, crimson eyes, curved black horns, clad in heavy olive-green power armor with a sealed helmet, carrying a huge engineering warhammer",
+      "identityProse": "Mudrock from Arknights, a gentle yet formidable Sarkaz with flowing silver-white hair, obsidian curved horns, ruby eyes, and a voluptuous figure.",
       "identityTokens": [
         "mudrock (arknights)",
         "1girl",
@@ -1024,9 +998,7 @@
         "long_hair",
         "red_eyes",
         "horns",
-        "power_armor",
-        "armor",
-        "hammer",
+        "large_breasts",
         "arknights"
       ],
       "exactTokens": [
@@ -1204,7 +1176,7 @@
         "eunectes",
         "arknights"
       ],
-      "identityProse": "Eunectes from Arknights, a cheerful Sarkaz mechanic with long dark green hair, golden slit-pupil eyes, a massive dark green anaconda snake tail, and a lively confident grin",
+      "identityProse": "Eunectes (Zumama) from Arknights, an inventive Pythia engineer with lush forest-green long hair, sharp golden reptilian eyes, and a thick snake tail.",
       "identityTokens": [
         "eunectes (arknights)",
         "1girl",
@@ -1213,10 +1185,6 @@
         "long_hair",
         "golden_eyes",
         "tail",
-        "goggles",
-        "crop_top",
-        "hotpants",
-        "tactical",
         "arknights"
       ],
       "exactTokens": [
@@ -1362,7 +1330,7 @@
         "goldenglow",
         "arknights"
       ],
-      "identityProse": "Goldenglow from Arknights, a gentle Victorian apprentice hairdresser with long pale pink hair in low twintails, teal-blue eyes, pink folded cat ears and a fluffy pink cat tail",
+      "identityProse": "Goldenglow (Susie) from Arknights, a sweet Scottish Fold hairdresser with fluffy pastel pink twintails, folded feline ears, blue eyes, and a slender cat tail.",
       "identityTokens": [
         "goldenglow (arknights)",
         "1girl",
@@ -1373,10 +1341,6 @@
         "blue_eyes",
         "cat_ears",
         "cat_tail",
-        "white_shirt",
-        "scarf",
-        "black_clothes",
-        "pleated_skirt",
         "arknights"
       ],
       "exactTokens": [
@@ -1535,7 +1499,7 @@
         "arknights",
         "abyss hunter"
       ],
-      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long ankle-length silver-white hair, crimson eyes, wearing a wide-brimmed hunter hat, carrying a huge greatsword in a black guitar case",
+      "identityProse": "Skadi from Arknights, a melancholic Abyssal Hunter with flowing pure white hair, haunting red eyes, and a tall, shapely silhouette.",
       "identityTokens": [
         "skadi (arknights)",
         "1girl",
@@ -1543,10 +1507,7 @@
         "white_hair",
         "very_long_hair",
         "red_eyes",
-        "black_swimsuit",
-        "coat",
-        "wide_brimmed_hat",
-        "claymore",
+        "large_breasts",
         "arknights"
       ],
       "exactTokens": [
@@ -1689,7 +1650,7 @@
         "rafaela silva",
         "arknights"
       ],
-      "identityProse": "La Pluma from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips past her shoulders, a tall feather ahoge, drowsy half-lidded vermilion eyes, small feathered wings on the sides of her head, wielding a giant black mechanical scythe",
+      "identityProse": "La Pluma (Rafaela) from Arknights, a soft-spoken Liberi girl with white-to-teal gradient hair, feathery winged ears, sleepy crimson eyes, and an ahoge.",
       "identityTokens": [
         "la pluma (arknights)",
         "1girl",
@@ -1700,13 +1661,6 @@
         "ahoge",
         "winged_ears",
         "red_eyes",
-        "sleepy",
-        "black_clothes",
-        "grey_clothes",
-        "crop_top",
-        "jacket",
-        "hotpants",
-        "scythe",
         "arknights"
       ],
       "exactTokens": [
@@ -1831,7 +1785,7 @@
         "arknights",
         "penguin logistics"
       ],
-      "identityProse": "Exusiai from Arknights, a cheerful Sankta courier of Penguin Logistics with short orange-red hair, red-brown eyes, a floating golden halo and small translucent wings, carrying a Vector submachine gun",
+      "identityProse": "Exusiai from Arknights, an energetic Sankta courier with vibrant short red hair, bright red eyes, a radiant golden halo, and luminous white wings.",
       "identityTokens": [
         "exusiai (arknights)",
         "1girl",
@@ -1841,12 +1795,6 @@
         "red_eyes",
         "halo",
         "wings",
-        "white_jacket",
-        "black_clothes",
-        "black_shirt",
-        "shorts",
-        "thighhighs",
-        "gun",
         "arknights"
       ],
       "exactTokens": [
@@ -2007,7 +1955,7 @@
         "suzuran",
         "arknights"
       ],
-      "identityProse": "Suzuran from Arknights, a gentle Vulpo girl with long pale gold hair, light blue eyes, golden fox ears and nine fluffy fox tails, holding a staff",
+      "identityProse": "Suzuran (Lisa) from Arknights, an adorable young Vulpo nine-tailed fox with silky blonde hair, expressive fox ears, bright blue eyes, and nine fluffy golden tails.",
       "identityTokens": [
         "suzuran (arknights)",
         "1girl",
@@ -2016,11 +1964,7 @@
         "long_hair",
         "blue_eyes",
         "fox_ears",
-        "fox_tail",
         "nine_tails",
-        "white_clothes",
-        "kimono",
-        "pleated_skirt",
         "arknights"
       ],
       "exactTokens": [
@@ -2188,7 +2132,7 @@
         "arknights",
         "sui"
       ],
-      "identityProse": "Ling from Arknights, a serene Sui dragon sister and self-styled wandering poet, with very long deep navy-blue hair flowing in pale blue and aqua gradient streaks, blue eyes, a pair of black swept-back dragon horns, pointy ears, a slender dragon tail, and gold jewelry",
+      "identityProse": "Ling from Arknights, a free-spirited dragon poetess with flowing deep cerulean hair with white streaks, translucent dragon horns, serene blue eyes, and a powerful dragon tail.",
       "identityTokens": [
         "ling (arknights)",
         "1girl",
@@ -2200,10 +2144,6 @@
         "dragon_horns",
         "tail",
         "pointy_ears",
-        "chinese_clothes",
-        "long_dress",
-        "bare_shoulders",
-        "jewelry",
         "arknights"
       ],
       "exactTokens": [
@@ -2349,7 +2289,7 @@
         "arknights",
         "texas (arknights)"
       ],
-      "identityProse": "Texas from Arknights, the cool and taciturn Lupo courier of Penguin Logistics and heir to the Siracusa Texas family, a handsome and slender wolf girl with long silky dark grey-black hair, soft pointed Lupo wolf ears atop her head, a long bushy dark wolf tail, calm golden-amber eyes with a stoic gaze, a chocolate pocky stick resting between her lips, and twin glowing originium energy swords floating in a raining blade array",
+      "identityProse": "Texas from Arknights, a calm and stoic Lupo courier with sleek straight black hair, pointy wolf ears, a bushy black tail, and golden-amber eyes.",
       "identityTokens": [
         "texas (arknights)",
         "1girl",
@@ -2357,19 +2297,9 @@
         "black_hair",
         "long_hair",
         "wolf_ears",
-        "animal_ears",
         "wolf_tail",
-        "tail",
         "amber_eyes",
-        "pocky",
-        "chocolate_stick",
-        "pocky_in_mouth",
-        "energy_sword",
-        "sword_rain",
         "calm_expression",
-        "stoic",
-        "lupo",
-        "penguin_logistics",
         "arknights"
       ],
       "exactTokens": [
@@ -2526,28 +2456,18 @@
         "arknights",
         "lappland (arknights)"
       ],
-      "identityProse": "Lappland from Arknights, the wild and fiercely unpredictable Lupo swordswoman of the Siracusan Saluzzo family, a pale and athletic wolf girl with shaggy layered white-silver hair, fluffy white wolf ears with dark tips, a large bush-like white wolf tail, piercing silver-grey eyes with a manic yet captivating smirk, faint black originium crystal lesions visible on her pale skin, and twin serrated Originium art blades crackling with pale blue energy",
+      "identityProse": "Lappland from Arknights, an unhinged Lupo swordswoman with wild messy silver-white hair, wolf ears, a bushy tail, manic grey eyes, and a sharp predatory smirk.",
       "identityTokens": [
         "lappland (arknights)",
         "1girl",
         "solo",
-        "white_hair",
         "silver_hair",
         "messy_hair",
         "wolf_ears",
-        "animal_ears",
         "wolf_tail",
-        "tail",
         "grey_eyes",
-        "silver_eyes",
         "smirk",
         "sharp_teeth",
-        "originium_crystal",
-        "dual_swords",
-        "swords",
-        "twin_blades",
-        "lupo",
-        "siracusa",
         "arknights"
       ],
       "exactTokens": [
@@ -2708,7 +2628,7 @@
         "arknights",
         "viviana (arknights)"
       ],
-      "identityProse": "Viviana Droste from Arknights, the noble Candle Knight of Kazimierz and poet of Leithanien, an ethereal and elegant Elafia noblewoman with magnificent golden glowing deer antlers branching gracefully from her head, delicate deer ears, long flowing flaxen blonde wavy hair, serene and poetic sapphire blue eyes with a gentle melancholy gaze, and golden Arts candle flames and radiant shadow moths dancing around her slender golden rapier sword",
+      "identityProse": "Viviana Droste from Arknights, the Candle Knight of Kazimierz with flowing wavy golden-blonde hair, magnificent golden deer antlers, soft deer ears, sapphire eyes, and a gentle noble smile.",
       "identityTokens": [
         "viviana (arknights)",
         "1girl",
@@ -2717,23 +2637,9 @@
         "long_hair",
         "wavy_hair",
         "antlers",
-        "deer_antlers",
         "animal_ears",
-        "deer_ears",
         "blue_eyes",
-        "sapphire_eyes",
         "gentle_smile",
-        "melancholy",
-        "candle",
-        "candlelight",
-        "flame",
-        "moth",
-        "rapier",
-        "sword",
-        "elafia",
-        "noble",
-        "knight",
-        "kazimierz",
         "arknights"
       ],
       "exactTokens": [

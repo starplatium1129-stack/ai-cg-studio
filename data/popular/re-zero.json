@@ -13,17 +13,15 @@
         "re zero",
         "rem from re zero"
       ],
-      "identityProse": "Rem from Re:Zero, a devoted demon maid with short sky-blue hair parted over her right eye with a clean soft shine, one visible bright blue eye, a pink flower hair clip and white lace ribbon, and gentle features",
+      "identityProse": "Rem from Re:Zero, a devoted oni maid with short cerulean blue hair covering one eye, sweet light blue eyes, and a white lace maid headdress.",
       "identityTokens": [
-        "rem (re zero)",
+        "rem (re:zero)",
         "1girl",
         "solo",
-        "short_blue_hair",
+        "short_hair",
         "blue_hair",
         "hair_over_one_eye",
         "blue_eyes",
-        "flower_hair_clip",
-        "hair_ribbon",
         "maid_headdress",
         "re:zero"
       ],
@@ -134,18 +132,16 @@
         "re zero",
         "emilia from re zero"
       ],
-      "identityProse": "Emilia from Re:Zero, a gentle half-elf with long silver hair, pointed elven ears, purple-blue eyes with snowflake pupils, a white flower hairpin and purple hair ribbons",
+      "identityProse": "Emilia from Re:Zero, a half-elf maiden with flowing silver-white hair, soft pointed elf ears, amethyst purple eyes, and a white flower hair clip.",
       "identityTokens": [
-        "emilia (re zero)",
+        "emilia (re:zero)",
         "1girl",
         "solo",
-        "long_silver_hair",
-        "white_hair",
+        "silver_hair",
+        "long_hair",
         "purple_eyes",
-        "elf",
         "pointy_ears",
         "hair_flower",
-        "purple_hair_ribbon",
         "re:zero"
       ],
       "exactTokens": [

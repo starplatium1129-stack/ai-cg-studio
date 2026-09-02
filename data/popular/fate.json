@@ -16,18 +16,15 @@
         "fate/stay night",
         "artoria_pendragon (fate)"
       ],
-      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair in an intricate braided bun, a single ahoge, and clear emerald-green eyes, with an earnest dignified bearing",
+      "identityProse": "Artoria Pendragon (Saber) from Fate/stay night, the noble King of Knights with braided golden-blonde hair tied in a bun with a blue ribbon, emerald green eyes, and an ahoge.",
       "identityTokens": [
-        "artoria_pendragon (fate)",
-        "saber (fate)",
+        "artoria pendragon (fate)",
         "1girl",
         "solo",
         "blonde_hair",
         "braided_bun",
-        "hair_bun",
-        "blue_hair_ribbon",
-        "ahoge",
         "green_eyes",
+        "ahoge",
         "fate/stay_night"
       ],
       "exactTokens": [
@@ -106,16 +103,15 @@
         "rin tohsaka",
         "fate/stay night"
       ],
-      "identityProse": "Tohsaka Rin from Fate/stay night, a proud brilliant mage with long dark-brown hair in twin-tails bound with large black ribbons, clear aqua-blue eyes, and a confident spirited expression",
+      "identityProse": "Tohsaka Rin from Fate/stay night, an elegant twin-tailed mage with long brown hair tied in twintails with black ribbons, aqua-blue eyes, and a tsundere expression.",
       "identityTokens": [
-        "tohsaka_rin",
+        "tohsaka rin",
         "1girl",
         "solo",
-        "long_brown_hair",
+        "brown_hair",
         "twintails",
-        "black_hair_ribbons",
-        "blue_eyes",
-        "ahoge",
+        "aqua_eyes",
+        "black_hair_ribbon",
         "fate/stay_night"
       ],
       "exactTokens": [
@@ -206,15 +202,15 @@
         "snow field",
         "fate/stay night"
       ],
-      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine delicate features, carrying an air of playful innocence and profound magic power",
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with flowing silky pure white hair, deep ruby-red eyes, and porcelain fair skin.",
       "identityTokens": [
-        "illyasviel_von_einzbern",
+        "illyasviel von einzbern",
         "1girl",
         "solo",
-        "long_white_hair",
-        "straight_hair",
-        "red_eyes",
+        "white_hair",
+        "long_hair",
         "ruby_eyes",
+        "petite",
         "fate/stay_night"
       ],
       "exactTokens": [
@@ -346,15 +342,14 @@
       "defaultOutfitId": "avenger_black_armor",
       "identityTokens": [
         "jeanne d'arc alter (fate)",
-        "jeanne_alter",
         "1girl",
         "solo",
-        "short_hair",
         "silver_hair",
+        "short_hair",
         "yellow_eyes",
-        "evil_smile"
+        "smirk"
       ],
-      "identityProse": "Jeanne d'Arc (Alter) from Fate/Grand Order, the fierce Avenger with short platinum silver hair cut in sharp layers, piercing golden yellow eyes with an intense glow, and an arrogant yet secretly flustered tsundere expression",
+      "identityProse": "Jeanne d'Arc (Alter) from Fate, the vengeful dragon witch with messy short silver hair, piercing golden-yellow eyes, and a confident smirk.",
       "outfits": [
         {
           "id": "avenger_black_armor",
