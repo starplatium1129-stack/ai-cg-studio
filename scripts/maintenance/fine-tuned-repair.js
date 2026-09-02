@@ -135,6 +135,8 @@ async function renderImage(char, outfit, persId, targetPath) {
     height: 1216,
     steps: 28,
     cfg: 4.5,
+    teaCache: true,
+    teaCacheThresh: 0.08,
     seed: Math.floor(Math.random() * 1000000000) + 100000000
   };
 

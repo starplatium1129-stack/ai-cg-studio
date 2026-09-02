@@ -115,6 +115,8 @@ async function renderImage({ prompt, negative, width = 832, height = 1216, steps
     height,
     steps,
     cfg,
+    teaCache: true,
+    teaCacheThresh: 0.08,
     seed
   });
   return await pollJob(jobId);

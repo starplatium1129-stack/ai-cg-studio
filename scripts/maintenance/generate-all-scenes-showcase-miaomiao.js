@@ -127,6 +127,8 @@ async function renderSceneImage(task) {
     height: task.height,
     steps: 30,
     cfg: 4.5,
+    teaCache: true,
+    teaCacheThresh: 0.08,
     seed: task.seed
   };
 
