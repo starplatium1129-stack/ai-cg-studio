@@ -98,6 +98,12 @@ const WORKFLOWS = {
     docs: 'docs/showcase-generation-craft.md',
     opts: '--gateway 3123 --keys a,b --concurrency 3',
   },
+  'showcase:batch-miaomiao': {
+    desc: 'MiaoMiao v1.2 全库场景样张批量生成与自动发布流水线（832x1216/1216x832，3并发）',
+    cmd: ['node', 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js'],
+    docs: 'docs/showcase-generation-craft.md',
+    opts: '[--force] [--character <id>] [--limit <n>]',
+  },
   'showcase:audit': {
     desc: '批量审核 popular showcase (Gemini 4并发，rella)',
     cmd: ['node', 'scripts/maintenance/audit-showcase-rella.js', '--help'],
