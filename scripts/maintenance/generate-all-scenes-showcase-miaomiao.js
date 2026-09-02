@@ -4,14 +4,15 @@
 /**
  * scripts/maintenance/generate-all-scenes-showcase-miaomiao.js
  * 
- * 全库场景样张一站式批量生成与发布流水线（MiaoMiao Harem v1.2 专属版）：
+ * 全库场景样张一站式批量生成与发布流水线（MiaoMiao Harem v1.2 专属正规编译版）：
  * 
  * 核心特性：
- * - 目标底模：MiaoMiao Harem Anima v1.2 (anima-miaomiao-v1.2)
- * - 基础画幅：832x1216 (竖版) / 1216x832 (横版)
- * - 存储对齐：直接输出至 AI/SceneShowcase/2026-09-02_v27-miaomiao/
- * - 自动生成：大图 JPEG (LANCZOS) + 560px WebP 缩略图 + 完整 manifest.json
- * - 并发控制：默认 3 并发稳定生成，支持随时断点续跑与按角色筛选
+ * - 提示词编译：通过 buildPopularPromptPlan 完整绑定【角色核心DNA + 专属服装 + 场景蓝图 + @rella 画风 + 防分身/Solo守护】
+ * - 专属女主角：宁宁/夏目 强制绑定官方 v21 LoRA (0.85 强度) 保证 100% 角色神韵
+ * - 底模：MiaoMiao Harem Anima v1.2 (anima-miaomiao-v1.2)
+ * - 极速画幅：832x1216 (竖版) / 1216x832 (横版)
+ * - 加速机制：TeaCache (0.08 阈值, 1.9x 加速)
+ * - 存储对齐：输出至 AI/SceneShowcase/2026-09-02_v27-miaomiao/ (大图+560px WebP缩略图+manifest.json)
  */
 
 const fs = require('fs');
@@ -29,9 +30,16 @@ const THUMBS_DIR = path.join(TARGET_VERSION_DIR, 'thumbs');
 const BASE = process.env.GATEWAY_URL || process.env.BASE || 'http://127.0.0.1:3123';
 const CONCURRENCY = parseInt(process.env.CONCURRENCY || '3', 10);
 const MODEL_ID = 'anima-miaomiao-v1.2';
+const PROFILE_ID = 'anima_miaomiao_v12';
+const ARTIST_TAG = 'rella';
+
+const popularContent = require(path.join(ROOT, 'src', 'utils', 'popularContent.ts'));
+const { artistTagsForEngine } = require(path.join(ROOT, 'src', 'config', 'artistStyles.ts'));
 
 const BLUEPRINTS_FILE = path.join(ROOT, 'data', 'scene-blueprints.json');
 const SCENES_FILE = path.join(ROOT, 'data', 'scenes.json');
+const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
+const PRESETS_FILE = path.join(ROOT, 'data', 'presets.json');
 
 fs.mkdirSync(IMAGES_DIR, { recursive: true });
 fs.mkdirSync(THUMBS_DIR, { recursive: true });
@@ -50,34 +58,69 @@ function parseArgs() {
   return opts;
 }
 
+function resolveProfile() {
+  const presets = JSON.parse(fs.readFileSync(PRESETS_FILE, 'utf8'));
+  const profile = (presets.model_profiles || []).find(item => item.id === PROFILE_ID || item.id === 'anima_base_v10');
+  if (!profile) throw new Error(`presets.json missing profile for anima`);
+  return profile;
+}
+
 function collectAllSceneTasks(opts) {
   const tasks = [];
-  
-  // 1. 热门角色场景蓝图 (scene-blueprints.json)
-  if (fs.existsSync(BLUEPRINTS_FILE)) {
-    const bpData = JSON.parse(fs.readFileSync(BLUEPRINTS_FILE, 'utf8'));
-    const bps = bpData.blueprints || bpData || [];
-    for (const bp of bps) {
-      if (opts.character && bp.characterId !== opts.character) continue;
-      
+  const popularRaw = JSON.parse(fs.readFileSync(POPULAR_FILE, 'utf8'));
+  const characters = popularContent.parsePopularCharacters(popularRaw);
+  const blueprintsRaw = JSON.parse(fs.readFileSync(BLUEPRINTS_FILE, 'utf8'));
+  const blueprints = popularContent.parseSceneBlueprints(blueprintsRaw);
+  const profile = resolveProfile();
+
+  // 1. 热门角色场景蓝图（必须走 buildPopularPromptPlan 保证角色DNA）
+  for (const character of characters) {
+    if (opts.character && character.id !== opts.character) continue;
+    const owned = blueprints.filter(bp => bp.characterId === character.id);
+    
+    for (const bp of owned) {
       const isHorizontal = bp.recommendedSize && (bp.recommendedSize.includes('1536x1152') || bp.recommendedSize.includes('1216x832') || bp.recommendedSize.includes('1344x768'));
       const width = isHorizontal ? 1216 : 832;
       const height = isHorizontal ? 832 : 1216;
 
-      const promptTokens = (bp.promptTokens || []).join(', ');
-      let prompt = bp.prompt || promptTokens || bp.title;
-      // 统一注入 @rella 画师风格锚点 (若尚未包含)
-      if (!/@rella\b/i.test(prompt)) {
-        prompt = `@rella, ${prompt}`;
-      }
-      const negative = Array.isArray(bp.negativeTokens) ? bp.negativeTokens.join(', ') : (bp.negative || 'worst quality, low quality, bad anatomy, blurry, watermark');
+      const outfit = (bp.outfitId && popularContent.findOutfit(character, bp.outfitId)) || popularContent.defaultOutfit(character);
+      const decisions = popularContent.inferBlueprintDecisions(bp);
+      const adult = Boolean(bp.adult);
+
+      const plan = popularContent.buildPopularPromptPlan({
+        character,
+        outfit,
+        blueprint: bp,
+        engine: 'anima',
+        profile,
+        adultEnabled: true,
+        shot: decisions.shot,
+        lighting: decisions.lighting,
+        composition: decisions.composition,
+        artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
+      });
+
+      if (!plan) continue;
+
+      const cloneGuard = '(no clone:1.4), (no duplicate:1.4), (no twin:1.3), no duplicated character, no second copy, single subject only';
+      const soloGuard = adult
+        ? `(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), no other person, no bystanders, ${cloneGuard}`
+        : `(single girl only:1.4), (one person only:1.4), no second person, ${cloneGuard}`;
+      
+      const fullPrompt = plan.prompt.includes('\n')
+        ? plan.prompt.replace('\n', `, ${soloGuard}\n`)
+        : `${plan.prompt}, ${soloGuard}`;
+
+      const bpNeg = Array.isArray(bp.negativeTokens) ? bp.negativeTokens.join(', ') : String(bp.negativeTokens || '');
+      const cloneNegative = 'duplicate, clone, copy, doppelganger, twin, multiple girls, extra girl';
+      const fullNegative = [plan.negative, bpNeg, cloneNegative].filter(Boolean).join(', ');
 
       tasks.push({
         id: bp.id,
         title: bp.title,
-        characterId: bp.characterId || 'generic',
-        prompt,
-        negative,
+        characterId: character.id,
+        prompt: fullPrompt,
+        negative: fullNegative,
         width,
         height,
         targetPng: path.join(IMAGES_DIR, `${bp.id}.png`),
@@ -88,7 +131,7 @@ function collectAllSceneTasks(opts) {
     }
   }
 
-  // 2. 经典主线场景 (scenes.json)
+  // 2. 经典主线场景 (scenes.json - 宁宁/夏目主线)
   if (fs.existsSync(SCENES_FILE)) {
     const scenes = JSON.parse(fs.readFileSync(SCENES_FILE, 'utf8'));
     for (const sc of scenes) {
@@ -100,11 +143,10 @@ function collectAllSceneTasks(opts) {
       const height = isHorizontal ? 832 : 1216;
 
       let prompt = sc.prompt || sc.title;
-      // 统一注入 @rella 画师风格锚点 (若尚未包含)
       if (!/@rella\b/i.test(prompt)) {
         prompt = `@rella, ${prompt}`;
       }
-      const negative = sc.negative || 'worst quality, low quality, bad anatomy, blurry, watermark';
+      const negative = sc.negative || 'worst quality, low quality, bad anatomy, blurry, watermark, duplicate, 2girls';
 
       tasks.push({
         id: sc.id,
@@ -140,7 +182,7 @@ async function renderSceneImage(task) {
     seed: task.seed
   };
 
-  // 专属女主角绑定 LoRA (如果有)
+  // 专属女主角绑定官方 v21 训练 LoRA
   if (task.characterId === 'nene') {
     payload.character = 'nene';
     payload.loraId = 'L_NENE_V21_ANIMA';
@@ -191,9 +233,9 @@ async function renderSceneImage(task) {
   try {
     const convertCmd = `python scripts/maintenance/convert-showcase-image.py "${task.targetPng}" "${task.targetBigJpg}" "${task.targetThumbJpg}"`;
     execSync(convertCmd, { cwd: ROOT, stdio: 'ignore' });
-    if (fs.existsSync(task.targetPng)) fs.unlinkSync(task.targetPng); // 清理临时 PNG
+    if (fs.existsSync(task.targetPng)) fs.unlinkSync(task.targetPng);
   } catch (e) {
-    console.warn(`[Warn] 转换缩略图失败: ${task.id}, 保持原图`);
+    console.warn(`[Warn] 转换缩略图失败: ${task.id}`);
   }
 }
 
@@ -246,7 +288,7 @@ function updateManifest(allTasks) {
 async function main() {
   const opts = parseArgs();
   console.log(`\n======================================================`);
-  console.log(`🎨 全库场景样张批量生成流水线 (MiaoMiao Harem v1.2)`);
+  console.log(`🎨 全库场景样张批量生成流水线 (MiaoMiao Harem v1.2 正规编译版)`);
   console.log(`   - 目标版本: ${VERSION_TAG}`);
   console.log(`   - 底模: ${MODEL_ID}`);
   console.log(`   - 极速画幅: 832x1216 (竖) / 1216x832 (横)`);
@@ -276,7 +318,6 @@ async function main() {
     console.log(`✨ 本版本目录已有全部有效样张！`);
   }
 
-  // 同步生成 manifest.json
   updateManifest(allTasks);
 }
 
