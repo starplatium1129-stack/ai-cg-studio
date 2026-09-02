@@ -113,3 +113,51 @@ export function justifyRows(items: JustifyItem[], o: JustifyOptions): JustifiedR
 
   return rows
 }
+
+/**
+ * 给定固定断行（每行的 item id 序列），按当前比例重算每行的高度与列宽。
+ *
+ * 供「断行锁定」使用：图片解码后真实比例回填时，若重新跑 justifyRows 的贪心
+ * 断行，断行位置会随比例漂移，导致图片跨行移动、DOM 节点被 Vue 重建、img 重新
+ * 解码（滚动回看时黑屏空位 + 卡顿）。锁定断行后，比例回填只微调行高与列宽，
+ * 图片始终留在原行、原 DOM 节点，只更新 inline style。
+ *
+ * 末行沿用 justifyRows 的「凑不满不拉伸」规则，避免最后一张被拉成横跨整屏的横幅。
+ */
+export function relayoutWithBreaks(
+  items: JustifyItem[],
+  breaks: (string | number)[][],
+  o: JustifyOptions,
+): JustifiedRow[] {
+  const { containerWidth, targetHeight, gap } = o
+  const tailFill = o.tailFillRatio ?? 0.72
+  const byId = new Map(items.map(it => [String(it.id), it]))
+  const rows: JustifiedRow[] = []
+  const lastIdx = breaks.length - 1
+  breaks.forEach((ids, idx) => {
+    const cells = ids
+      .map(id => byId.get(String(id)))
+      .filter((c): c is JustifyItem => Boolean(c))
+    if (!cells.length) return
+    const sum = cells.reduce((acc, c) => acc + c.ratio, 0)
+    if (!(sum > 0)) return
+    const gaps = gap * Math.max(0, cells.length - 1)
+    const ideal = (containerWidth - gaps) / sum
+    const isTail = idx === lastIdx
+    const h = isTail && sum * targetHeight + gaps < containerWidth * tailFill ? targetHeight : ideal
+    const height = Math.max(1, Math.round(h))
+    const widths = cells.map(c => ({ id: c.id, width: Math.max(1, Math.round(c.ratio * height)) }))
+
+    // 宽度取整误差摊回最宽的一张，保证右边缘严格齐平（与 justifyRows 同口径）
+    if (h === ideal && widths.length) {
+      const drift = containerWidth - (gaps + widths.reduce((acc, w) => acc + w.width, 0))
+      if (Math.abs(drift) <= gap) {
+        let wide = 0
+        for (let i = 1; i < widths.length; i += 1) if (widths[i].width > widths[wide].width) wide = i
+        widths[wide].width = Math.max(1, widths[wide].width + Math.round(drift))
+      }
+    }
+    rows.push({ cells: widths, height })
+  })
+  return rows
+}

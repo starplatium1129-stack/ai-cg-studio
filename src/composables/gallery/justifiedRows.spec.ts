@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { justifyRows } from './justifiedRows'
+import { justifyRows, relayoutWithBreaks } from './justifiedRows'
 
 const CW = 1400
 const TARGET = 280
@@ -72,5 +72,59 @@ describe('justifyRows', () => {
       expect(Number.isFinite(row.height)).toBe(true)
       expect(row.height).toBeLessThan(CW)
     })
+  })
+})
+
+describe('relayoutWithBreaks（断行锁定）', () => {
+  const items = (ratios: number[]) => ratios.map((ratio, i) => ({ id: i + 1, ratio }))
+  const breaksOf = (rows: ReturnType<typeof justifyRows>) =>
+    rows.map(r => r.cells.map(c => c.id))
+
+  it('比例变化后断行保持不变（每行的 id 集合与顺序都不漂移）', () => {
+    const initial = justifyRows(items([0.75, 1.778, 0.75, 1.333, 1.778, 0.75, 1.333, 0.75]), {
+      containerWidth: CW, targetHeight: TARGET, gap: GAP,
+    })
+    const breaks = breaksOf(initial)
+    // 第二张图从竖图（0.75）改成横图（1.778），比例剧烈变化
+    const changed = items([0.75, 1.778, 0.75, 1.333, 1.778, 0.75, 1.333, 0.75])
+    const relaid = relayoutWithBreaks(changed, breaks, { containerWidth: CW, targetHeight: TARGET, gap: GAP })
+    expect(breaksOf(relaid)).toEqual(breaks)
+  })
+
+  it('非末行依然左右齐平，行高按新比例重算', () => {
+    const initial = justifyRows(items([1.778, 1.778, 0.75, 0.75, 1.778, 1.778]), {
+      containerWidth: CW, targetHeight: TARGET, gap: GAP,
+    })
+    const breaks = breaksOf(initial)
+    const relaid = relayoutWithBreaks(
+      items([1.778, 1.778, 0.75, 0.75, 1.778, 1.778]),
+      breaks, { containerWidth: CW, targetHeight: TARGET, gap: GAP },
+    )
+    relaid.slice(0, -1).forEach(row => {
+      expect(rowWidth(row.cells.length, row.cells.map(c => c.width))).toBe(CW)
+    })
+  })
+
+  it('末行依旧遵守「凑不满不拉伸」规则', () => {
+    const [only] = relayoutWithBreaks(items([0.75]), [[1]], {
+      containerWidth: CW, targetHeight: TARGET, gap: GAP,
+    })
+    expect(only.height).toBe(TARGET)
+    expect(only.cells).toHaveLength(1)
+  })
+
+  it('断行里出现不存在于 items 的 id 会被跳过，不会抛错', () => {
+    // items 里没有 id 999，断行引用它时被丢弃，其余照常排
+    const rows = relayoutWithBreaks(items([0.75, 1.5, 1.778]), [[1, 2], [3, 999]], {
+      containerWidth: CW, targetHeight: TARGET, gap: GAP,
+    })
+    expect(rows.length).toBe(2)
+    expect(rows[0].cells.map(c => c.id)).toEqual([1, 2])
+    expect(rows[1].cells.map(c => c.id)).toEqual([3])
+    rows.forEach(row => expect(row.height).toBeGreaterThan(0))
+  })
+
+  it('空输入与空断行返回空，不抛错', () => {
+    expect(relayoutWithBreaks([], [], { containerWidth: CW, targetHeight: TARGET, gap: GAP })).toEqual([])
   })
 })

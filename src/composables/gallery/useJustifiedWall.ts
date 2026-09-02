@@ -1,5 +1,5 @@
-import { computed, onActivated, onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
-import { justifyRows, type JustifyItem, type JustifiedRow } from './justifiedRows'
+import { computed, onActivated, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
+import { justifyRows, relayoutWithBreaks, type JustifyItem, type JustifiedRow } from './justifiedRows'
 
 export interface WallGroup<T> {
   key: string
@@ -70,8 +70,24 @@ export function useJustifiedWall(containerRef: Ref<HTMLElement | null>) {
     readWidth()
     if (typeof ResizeObserver === 'undefined') return
     observer = new ResizeObserver(scheduleRead)
-    if (containerRef.value) observer.observe(containerRef.value)
+    // observe 交给下面的 watch 统一负责：wallEl 绑在 v-else 分支，首次挂载时
+    // 正处于 loading、DOM 尚未渲染，这里 observe 不到任何东西。
   })
+
+  /**
+   * wallEl 绑在 v-else 分支：首次挂载时（loading 状态）该节点还不存在，
+   * 数据就绪后才渲染出来。若只在 onMounted 里 observe 一次，宽度会永远
+   * 停在 0，`layout` 返回空数组、整墙一张作品都排不出来。
+   * 这里改为监听它何时出现：出现即观察并立即测量，消失（切到回收站等分支）
+   * 即断开，回来再接上。KeepAlive 场景下 watch 不随 onMounted 重跑，正好补位。
+   */
+  watch(containerRef, el => {
+    if (observer) {
+      observer.disconnect()
+      if (el) observer.observe(el)
+    }
+    if (el) readWidth()
+  }, { immediate: true })
 
   // KeepAlive 复用时不重跑 onMounted，回来要补一次测量
   onActivated(readWidth)
@@ -98,6 +114,20 @@ export function useJustifiedWall(containerRef: Ref<HTMLElement | null>) {
   })
 
   /**
+   * 断行缓存：把「一组作品的断行位置」钉死，图片解码回填比例时不再重新断行。
+   *
+   * 若不锁定，每张图 @load 回填真实比例都会让 justifyRows 重新贪心断行，断行
+   * 位置随比例漂移 → 图片跨行移动 → Vue 重建 article/img → img 重新解码（回看
+   * 黑屏空位 + 卡顿）。锁定后回填只走 relayoutWithBreaks 微调行高/列宽，图片
+   * 留在原行原节点。
+   *
+   * key = `${容器宽}\u0000${id 序列}`：容器宽变化（resize）或结构变化（分页追加/
+   * 删除/筛选）都会让 key 变化，从而正确地重新断行；只有「比例变了、结构没变」
+   * 才命中缓存。
+   */
+  const breakCache = new Map<string, (string | number)[][]>()
+
+  /**
    * 把一组作品排成等高行。
    *
    * 在 computed 里调用即可——它读 width，宽度变了会自动重排。
@@ -107,11 +137,22 @@ export function useJustifiedWall(containerRef: Ref<HTMLElement | null>) {
   function layout(items: JustifyItem[]): JustifiedRow[] {
     const w = width.value
     if (!w) return []
-    return justifyRows(items, {
+    const sig = `${w}\u0000${items.map(it => String(it.id)).join('\u0000')}`
+    const breaks = breakCache.get(sig)
+    if (breaks) {
+      return relayoutWithBreaks(items, breaks, {
+        containerWidth: w,
+        targetHeight: targetHeight.value,
+        gap: gap.value,
+      })
+    }
+    const rows = justifyRows(items, {
       containerWidth: w,
       targetHeight: targetHeight.value,
       gap: gap.value,
     })
+    breakCache.set(sig, rows.map(r => r.cells.map(c => c.id)))
+    return rows
   }
 
   return { width, targetHeight, gap, layout, remeasure: readWidth }

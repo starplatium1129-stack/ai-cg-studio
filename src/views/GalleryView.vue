@@ -202,18 +202,29 @@
                 @click="selectMode ? toggleSelect(cell.item.id) : openViewer(indexOf(cell.item))"
               >
                 <div class="artwork-media">
+                  <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
                   <img
-                    v-if="cardUrls[cell.item.id] || thumbUrls[cell.item.id]"
+                    v-if="thumbUrls[cell.item.id]"
                     class="artwork-image"
-                    :src="cardUrls[cell.item.id] || thumbUrls[cell.item.id]"
+                    :src="thumbUrls[cell.item.id]"
                     :alt="sceneTitle(cell.item.scene, cell.item)"
                     loading="lazy"
                     decoding="async"
                     referrerpolicy="no-referrer"
                     @load="measure(cell.item, $event)"
                   />
-                  <div v-else-if="missingImageIds.has(cell.item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
-                  <div v-else class="artwork-skeleton" aria-hidden="true"></div>
+                  <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
+                  <img
+                    v-if="cardUrls[cell.item.id]"
+                    class="artwork-image artwork-image-hd"
+                    :src="cardUrls[cell.item.id]"
+                    :alt="sceneTitle(cell.item.scene, cell.item)"
+                    decoding="async"
+                    referrerpolicy="no-referrer"
+                    @load="onHdLoad(cell.item, $event)"
+                  />
+                  <div v-if="!cardUrls[cell.item.id] && !thumbUrls[cell.item.id] && missingImageIds.has(cell.item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
+                  <div v-else-if="!cardUrls[cell.item.id] && !thumbUrls[cell.item.id]" class="artwork-skeleton" aria-hidden="true"></div>
                   <div class="artwork-caption">
                     <span>
                       <span class="artwork-name">{{ sceneTitle(cell.item.scene, cell.item) }}</span>
@@ -405,6 +416,17 @@ const { measuredRatios, ratioOf, measure, forgetRatio } = useArtworkRatios({
   hasThumb: item => Boolean(thumbUrls[item.id]),
   saveThumb: (item, dataUrl, imageId) => kvSet(thumbKey(imageId), dataUrl).then(() => { thumbUrls[item.id] = dataUrl }),
 })
+
+/**
+ * HD 层解码完成：回填真实比例 + 淡入覆盖缩略图。
+ * 淡入用 requestAnimationFrame 双跳，确保 CSS 的 opacity:0 先落地再切到 1，
+ * 否则 transition 不会触发、又会硬切一下（回到「闪一下」的老问题）。
+ */
+function onHdLoad(item: ArtworkRecord, e: Event) {
+  measure(item, e)
+  const img = e.target as HTMLImageElement
+  requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('is-loaded')))
+}
 
 /** 待确认删除的条目 id：删除有回收站兜底，但二次确认仍是防手滑的第一道闸 */
 const pendingDeleteId = ref<string | number | null>(null)
@@ -1440,6 +1462,10 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { width:14px; height:14px; vertical-align:-.12em; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
 .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); }
+/* HD 层叠在缩略图之上，解码完成后淡入（is-loaded 由 @load 触发），
+   消除缩略图→HD 硬切 src 造成的「闪一下变高清」。 */
+.artwork-image-hd { position:absolute; inset:0; opacity:0; animation:none; transition:opacity .28s var(--ease-out); }
+.artwork-image-hd.is-loaded { opacity:1; }
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
 /* 审计修复：骨架微光原为逐帧补间 background-position（无限循环 → 每帧重绘整块渐变），
    改为伪元素承载渐变 + transform:translateX 位移（合成器属性，零重绘）。 */
