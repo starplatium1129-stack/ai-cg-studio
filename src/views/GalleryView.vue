@@ -135,107 +135,95 @@
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
-      <div v-else ref="wallEl" class="gallery-wall stagger-container" :style="{ '--wall-gap': wallGap }">
-        <template v-for="group in wallGroups" :key="group.key">
+      <div v-else class="gallery-wall stagger-container">
+        <template v-for="group in groups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
-          <!--
-            等高行：一行里的画共用同一高度，宽度按各自宽高比分配，左右刚好铺满。
-            行高与列宽由 useJustifiedWall 实测容器宽度后算出，断行只发生在时间
-            顺序的相邻两幅之间，因此「最新在前」的时间轴不被打乱。
-          -->
-          <div
-            v-for="(row, rowIdx) in group.rows"
-            :key="`${group.key}-${rowIdx}`"
-            class="gallery-row"
-            :style="{ height: `${row.height}px` }"
+          <article
+            v-for="item in group.items"
+            :key="item.id"
+            class="artwork"
+            :class="{ 'artwork-pending': pendingDeleteId === item.id, 'artwork-selected': selectMode && selectedIds.has(item.id) }"
+            :data-card-id="String(item.id)"
+            :style="{ '--art-ratio': String(ratioOf(item)) }"
           >
-            <article
-              v-for="cell in row.cells"
-              :key="cell.item.id"
-              class="artwork"
-              :class="{ 'artwork-pending': pendingDeleteId === cell.item.id, 'artwork-selected': selectMode && selectedIds.has(cell.item.id) }"
-              :data-card-id="String(cell.item.id)"
-              :style="{ width: `${cell.width}px` }"
+            <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
+            <span v-if="selectMode" class="artwork-check" aria-hidden="true">
+              <ArchiveIcon v-if="selectedIds.has(item.id)" name="success" />
+            </span>
+            <!--
+              快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
+              进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
+            -->
+            <div v-if="!selectMode" class="artwork-tools">
+              <template v-if="pendingDeleteId === item.id">
+                <button class="artwork-tool danger" type="button" :disabled="deleting"
+                  @click="confirmDelete(item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
+                <button class="artwork-tool" type="button" :disabled="deleting"
+                  @click="pendingDeleteId = null">取消</button>
+              </template>
+              <template v-else>
+                <button class="artwork-tool" type="button"
+                  :class="{ 'artwork-tool-on': item.favorite }"
+                  :aria-pressed="!!item.favorite"
+                  :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(item.scene, item)}`"
+                  title="收藏后可在顶部按「收藏」筛选"
+                  @click="toggleFavorite(item)">
+                  <ArchiveIcon name="love" /><span>{{ item.favorite ? '已收藏' : '收藏' }}</span>
+                </button>
+                <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">
+                  <ArchiveIcon name="spark" /><span>沿用配方</span>
+                </RouterLink>
+                <button class="artwork-tool danger" type="button"
+                  :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
+                  title="删除作品"
+                  @click="pendingDeleteId = item.id">
+                  <ArchiveIcon name="close" /><span>删除</span>
+                </button>
+              </template>
+            </div>
+            <button
+              class="artwork-button"
+              type="button"
+              :aria-pressed="selectMode ? selectedIds.has(item.id) : undefined"
+              :aria-label="selectMode
+                ? `${selectedIds.has(item.id) ? '取消选择' : '选择'}作品：${sceneTitle(item.scene, item)}`
+                : `欣赏作品：${sceneTitle(item.scene, item)}`"
+              @click="selectMode ? toggleSelect(item.id) : openViewer(indexOf(item))"
             >
-              <!-- 多选勾选标记：只在选择模式出现，纯视觉，状态由按钮的 aria-pressed 承载 -->
-              <span v-if="selectMode" class="artwork-check" aria-hidden="true">
-                <ArchiveIcon v-if="selectedIds.has(cell.item.id)" name="success" />
-              </span>
-              <!--
-                快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
-                进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
-              -->
-              <div v-if="!selectMode" class="artwork-tools">
-                <template v-if="pendingDeleteId === cell.item.id">
-                  <button class="artwork-tool danger" type="button" :disabled="deleting"
-                    @click="confirmDelete(cell.item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
-                  <button class="artwork-tool" type="button" :disabled="deleting"
-                    @click="pendingDeleteId = null">取消</button>
-                </template>
-                <template v-else>
-                  <button class="artwork-tool" type="button"
-                    :class="{ 'artwork-tool-on': cell.item.favorite }"
-                    :aria-pressed="!!cell.item.favorite"
-                    :aria-label="`${cell.item.favorite ? '取消收藏' : '收藏'}：${sceneTitle(cell.item.scene, cell.item)}`"
-                    title="收藏后可在顶部按「收藏」筛选"
-                    @click="toggleFavorite(cell.item)">
-                    <ArchiveIcon name="love" /><span>{{ cell.item.favorite ? '已收藏' : '收藏' }}</span>
-                  </button>
-                  <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(cell.item.id || '')}`" title="以此作品配方回填创作台">
-                    <ArchiveIcon name="spark" /><span>沿用配方</span>
-                  </RouterLink>
-                  <button class="artwork-tool danger" type="button"
-                    :aria-label="`删除作品：${sceneTitle(cell.item.scene, cell.item)}`"
-                    title="删除作品"
-                    @click="pendingDeleteId = cell.item.id">
-                    <ArchiveIcon name="close" /><span>删除</span>
-                  </button>
-                </template>
-              </div>
-              <button
-                class="artwork-button"
-                type="button"
-                :aria-pressed="selectMode ? selectedIds.has(cell.item.id) : undefined"
-                :aria-label="selectMode
-                  ? `${selectedIds.has(cell.item.id) ? '取消选择' : '选择'}作品：${sceneTitle(cell.item.scene, cell.item)}`
-                  : `欣赏作品：${sceneTitle(cell.item.scene, cell.item)}`"
-                @click="selectMode ? toggleSelect(cell.item.id) : openViewer(indexOf(cell.item))"
-              >
-                <div class="artwork-media">
-                  <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
-                  <img
-                    v-if="thumbUrls[cell.item.id]"
-                    class="artwork-image"
-                    :src="thumbUrls[cell.item.id]"
-                    :alt="sceneTitle(cell.item.scene, cell.item)"
-                    loading="lazy"
-                    decoding="async"
-                    referrerpolicy="no-referrer"
-                    @load="measure(cell.item, $event)"
-                  />
-                  <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
-                  <img
-                    v-if="cardUrls[cell.item.id]"
-                    class="artwork-image artwork-image-hd"
-                    :src="cardUrls[cell.item.id]"
-                    :alt="sceneTitle(cell.item.scene, cell.item)"
-                    decoding="async"
-                    referrerpolicy="no-referrer"
-                    @load="onHdLoad(cell.item, $event)"
-                  />
-                  <div v-if="!cardUrls[cell.item.id] && !thumbUrls[cell.item.id] && missingImageIds.has(cell.item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
-                  <div v-else-if="!cardUrls[cell.item.id] && !thumbUrls[cell.item.id]" class="artwork-skeleton" aria-hidden="true"></div>
-                  <div class="artwork-caption">
-                    <span>
-                      <span class="artwork-name">{{ sceneTitle(cell.item.scene, cell.item) }}</span>
-                      <span class="artwork-date">{{ formatDate(stamp(cell.item)) }}</span>
-                    </span>
-                    <span class="artwork-mark"><ArchiveIcon v-if="cell.item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
-                  </div>
+              <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
+                <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
+                <img
+                  v-if="thumbUrls[item.id]"
+                  class="artwork-image"
+                  :src="thumbUrls[item.id]"
+                  :alt="sceneTitle(item.scene, item)"
+                  loading="lazy"
+                  decoding="async"
+                  referrerpolicy="no-referrer"
+                  @load="measure(item, $event)"
+                />
+                <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
+                <img
+                  v-if="cardUrls[item.id]"
+                  class="artwork-image artwork-image-hd"
+                  :src="cardUrls[item.id]"
+                  :alt="sceneTitle(item.scene, item)"
+                  decoding="async"
+                  referrerpolicy="no-referrer"
+                  @load="onHdLoad(item, $event)"
+                />
+                <div v-if="!cardUrls[item.id] && !thumbUrls[item.id] && missingImageIds.has(item.id)" class="artwork-placeholder"><ArchiveIcon name="image" /></div>
+                <div v-else-if="!cardUrls[item.id] && !thumbUrls[item.id]" class="artwork-skeleton" aria-hidden="true"></div>
+                <div class="artwork-caption">
+                  <span>
+                    <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
+                    <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
+                  </span>
+                  <span class="artwork-mark"><ArchiveIcon v-if="item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
                 </div>
-              </button>
-            </article>
-          </div>
+              </div>
+            </button>
+          </article>
         </template>
         <!-- 分页哨兵：进入视口即追加下一页（作品很多时避免一次性铺满 DOM） -->
         <div v-if="hasMoreToRender" ref="sentinelEl" class="gallery-more" role="status">
@@ -362,8 +350,16 @@ import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { blobThumbDataUrl, jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
-import { useJustifiedWall, buildWallGroups } from '@/composables/gallery/useJustifiedWall'
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios'
+import {
+  searchHaystack,
+  trashPrompt,
+  formatTrashTime,
+  loraName as resolveLoraName,
+  hiresLabel,
+  modelName,
+  sceneTitle as resolveSceneTitle,
+} from '@/composables/gallery/galleryHelpers'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 import { buildArtworkFileName } from '@/utils/artworkFileName'
@@ -486,25 +482,6 @@ async function restoreTrashItem(id: string | number) {
   }
 }
 
-/** 回收站卡片摘要：取原 history 条目的 prompt 短述。 */
-function trashPrompt(entry: TrashEntry): string {
-  const first = entry.historyEntries?.[0]
-  if (first && typeof first === 'object') {
-    const record = first as Record<string, unknown>
-    const prompt = typeof record.prompt === 'string' ? record.prompt : ''
-    if (prompt) return prompt.length > 60 ? `${prompt.slice(0, 60)}…` : prompt
-    const scene = typeof record.scene === 'string' ? record.scene : ''
-    if (scene) return scene.length > 60 ? `${scene.slice(0, 60)}…` : scene
-  }
-  return '（已删除作品）'
-}
-
-function formatTrashTime(ts: number): string {
-  const d = new Date(Number(ts))
-  if (Number.isNaN(d.getTime())) return ''
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
-}
 const closeBtn = ref<HTMLElement | null>(null)
 const viewerEl = ref<HTMLElement | null>(null)
 const objectUrls = new Set<string>()
@@ -514,19 +491,6 @@ let viewerLoadToken = 0
 let unmounted = false
 
 /* ---------- 派生数据 ---------- */
-/**
- * 一条作品的检索文本。
- *
- * 拼的是「用户会拿来找图的那些词」：场景名、角色、当时写的故事、所属项目，
- * 最后是完整 prompt——很多旧作只记得里面出现过某个词。prompt 可能很长，
- * 但几百条记录的拼接 + includes 在毫秒级，为它建索引属于过度设计。
- */
-function searchHaystack(item: ArtworkRecord): string {
-  return [
-    item.sceneTitle, item.scene, item.character, item.story, item.project, item.prompt,
-  ].filter(part => typeof part === 'string' && part).join(' ').toLowerCase()
-}
-
 const visible = computed(() => {
   let source = favoriteOnly.value ? history.value.filter(i => i.favorite) : history.value.slice()
   if (projectFilter.value) {
@@ -550,13 +514,7 @@ const renderLimit = ref(PAGE_SIZE)
 const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value))
 const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length)
 
-/* ---------- 等高行展墙 ----------
-   实测容器宽度，按宽高比把作品断成若干行；行内左右铺满、不留空洞。 */
-const wallEl = ref<HTMLElement | null>(null)
-const wall = useJustifiedWall(wallEl)
-/** 行距 / 间距：由 JS 与排版共用一份数值，避免 CSS 与计算结果对不上 */
-const wallGap = computed(() => `${wall.gap.value}px`)
-
+/* ---------- 时间分组 ---------- */
 const groups = computed(() => {
   const order = ['今天', '本周', '更早']
   const buckets: Record<string, ArtworkRecord[]> = {}
@@ -566,15 +524,6 @@ const groups = computed(() => {
   })
   return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }))
 })
-
-/**
- * 展墙实际渲染用的结构：每个时间分组内部再切成若干等高行。
- *
- * 依赖链是 pagedVisible → ratioOf → measuredRatios，加上 useJustifiedWall 实测的
- * 容器宽度。所以图片解码后真实比例回填、窗口缩放、分页追加，都会自动重排。
- * 排版只决定「在哪儿断行」，从不重排数组——时间轴和键盘 Tab 顺序原样保留。
- */
-const wallGroups = computed(() => buildWallGroups(groups.value, ratioOf, wall.layout))
 
 const parentArtwork = computed(() => {
   const pId = current.value?.parent_id
@@ -665,36 +614,11 @@ const facts = computed(() => {
 })
 
 /* ---------- 工具函数 ---------- */
-function sceneFor(id: string | null | undefined) { return scenes.value.find(s => s.id === id) }
 function sceneTitle(id: string | null | undefined, item?: ArtworkRecord) {
-  if (item?.sceneTitle) return item.sceneTitle
-  const title = sceneFor(id)?.title
-  if (typeof title === 'string' && title) return title
-  if (item?.subject === 'popular' || item?.characterId) {
-    const popChar = sceneStore.popularCharacters.find(c => c.id === (item.characterId || item.character))
-    if (popChar) return `${popChar.displayName} 创作`
-  }
-  if (item?.story) return item.story.slice(0, 20)
-  return id || '未命名作品'
+  return resolveSceneTitle(id, item, scenes.value, sceneStore.popularCharacters)
 }
 function loraName(id: string | null | undefined) {
-  if (!id) return '—'
-  const item = loras.value.find(l => l.id === id || (l.name && (l.name === id || String(id).startsWith(l.name))))
-  return item ? item.name : id
-}
-/** 高清修复参数回显：旧条目无字段显示「—」，新条目精确显示倍率/放大器/步数。 */
-function hiresLabel(i: ArtworkRecord): string {
-  if (i.hiresFix == null) return '—'
-  if (!i.hiresFix) return '关'
-  const scale = i.hiresScale ? ` ×${i.hiresScale}` : ''
-  const upscaler = i.hiresUpscaler ? ` · ${String(i.hiresUpscaler).split(/[\\/]/).pop()}` : ''
-  const steps = i.hiresSteps ? ` · ${i.hiresSteps}步` : ''
-  return `开${scale}${upscaler}${steps}`
-}
-function modelName(value: string | undefined) {
-  if (!value) return 'WebUI 当前模型'
-  const name = String(value).split(/[\\/]/).pop()!.replace(/\s*\[[a-f0-9]+\]\s*$/i, '')
-  return name.length > 42 ? name.slice(0, 39) + '…' : name
+  return resolveLoraName(id, loras.value)
 }
 function characterName(v: string | undefined, item?: ArtworkRecord) {
   if (v === 'nene') return '绫地宁宁'
@@ -1427,19 +1351,19 @@ watch([favoriteOnly, projectFilter, searchQuery], () => {
 .gallery-bulk-count { color:var(--text-primary); font:650 var(--fs-label-sm) var(--font-mono); white-space:nowrap; }
 .gallery-bulk-actions { display:flex; align-items:center; gap:var(--s-2); margin-left:auto; flex-wrap:wrap; }
 
-/* 等高行展墙：纵向是「行」流，每行内部横向铺满。行高与画宽由 useJustifiedWall
-   实测容器后算出并写成 inline style，CSS 只负责把行流起来。 */
-.gallery-wall { max-width:1500px; margin:0 auto; display:flex; flex-direction:column; gap:var(--wall-gap,20px); }
-.gallery-row { display:flex; align-items:stretch; gap:var(--wall-gap,20px); }
-.gallery-row .artwork { flex:0 0 auto; height:100%; }
-/* 画框高度跟着行走，不再自己算 aspect-ratio */
-.gallery-row .artwork-media { height:100%; width:100%; aspect-ratio:auto; }
-/* 悬停抬起时压住相邻画作，否则会被后一张盖住一条边 */
-.gallery-row .artwork:hover { z-index:2; }
+/* 画廊大画幅展墙：响应式 4 列/3 列/2 列/1 列网格，宽阔大气，秩序井然 */
+.gallery-wall {
+  max-width: 1560px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(16px, 1.8vw, 24px);
+  align-items: start;
+}
 .gallery-loading-wall { min-height:340px; }
 .artwork { position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
 .artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }
-.artwork:hover { border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); }
+.artwork:hover { border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); transform:translateY(-4px); }
 .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:3px; padding:3px; opacity:0; transform:translateY(-4px); pointer-events:none; border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
@@ -1461,7 +1385,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool-on { border-color:color-mix(in srgb,var(--accent) 42%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 20%,transparent); color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { width:14px; height:14px; vertical-align:-.12em; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
-.artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); }
+.artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); transition:transform var(--motion-surface); }
+.artwork:hover .artwork-image { transform:scale(1.025); }
 /* HD 层叠在缩略图之上，解码完成后淡入（is-loaded 由 @load 触发），
    消除缩略图→HD 硬切 src 造成的「闪一下变高清」。 */
 .artwork-image-hd { position:absolute; inset:0; opacity:0; animation:none; transition:opacity .28s var(--ease-out); }
@@ -1481,17 +1406,23 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-date { display:block; margin-top:2px; color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .artwork-mark { flex:0 0 auto; font-size:var(--fs-label-sm); }
 
-.gallery-section { display:flex; align-items:center; gap:var(--s-3); margin:var(--s-3) 0 var(--s-4); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
-.gallery-more { display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:var(--s-5) 0 0; padding:var(--s-3); color:var(--text-muted); font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
+.gallery-section { grid-column:1 / -1; display:flex; align-items:center; gap:var(--s-3); margin:var(--s-4) 0 var(--s-3); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+.gallery-more { grid-column:1 / -1; display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:var(--s-5) 0 0; padding:var(--s-3); color:var(--text-muted); font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
 .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
 
 @media (hover: hover) and (pointer: fine) {
-  .artwork:hover { transform:translateY(-3px); }
+  .artwork:hover { transform:translateY(-4px); }
   .artwork:hover .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
   .artwork:hover .artwork-caption { opacity:1; transform:none; }
 }
 
+@media (max-width:1200px) {
+  .gallery-wall { grid-template-columns:repeat(3, minmax(0,1fr)); }
+}
 @media (max-width:900px) { .gallery-count { display:none; } }
+@media (max-width:820px) {
+  .gallery-wall { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
+}
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
   .artwork { border-radius:var(--r-dossier); }
@@ -1500,6 +1431,9 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
   .artwork-date { display:none; }
   .artwork-tools { opacity:0; transform:translateY(-4px); pointer-events:none; }
   .artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
+}
+@media (max-width:480px) {
+  .gallery-wall { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
 /* 位移量：层宽 220%，右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
