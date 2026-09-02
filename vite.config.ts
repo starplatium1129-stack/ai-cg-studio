@@ -57,6 +57,7 @@ export default defineConfig(async ({ mode }) => {
       '/controlnet':  { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/adetailer':   { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/scene-showcase': { target: 'http://127.0.0.1:3000', changeOrigin: true },
+      '/character-references': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/data':        { target: 'http://127.0.0.1:3000', changeOrigin: true },
       // dev 模式下 tools/ 由 Express 提供，Vite 需转发
       // （/assets/ 见上方 express-assets-conditional-proxy 插件）
