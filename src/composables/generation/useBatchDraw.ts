@@ -12,14 +12,25 @@ import { computed, readonly, ref } from 'vue'
  * 逐张执行」——批量场景各自的 prompt 不同，不能复用单状态队列。
  */
 
-export interface BatchSceneItem {
-  /** 场景蓝图 id（sceneBlueprints 的 id）。 */
+export interface BatchTargetItem {
+  /** 蓝图 id 或角色 id。 */
   id: string
-  /** 场景标题，用于任务展示与历史入册。 */
+  /** 标题/角色名，用于任务展示与历史入册。 */
   title: string
-  /** 该场景的提示词素材（promptProse 或 description/action/lighting 拼接）。 */
-  prose: string
+  /** 提示词素材（场景 promptProse 或通用词条）。 */
+  prose?: string
+  /** 副标题（场景地点或角色作品 franchise）。 */
+  subtitle?: string
+  /** 缩略图/头像 URL（角色模式时直出头像）。 */
+  avatarUrl?: string
+  /** 目标类型：scene 场景 | character 角色。 */
+  kind?: 'scene' | 'character'
+  /** 角色专用 ID（在 kind === 'character' 时对齐 popularCharacter.id）。 */
+  characterId?: string
 }
+
+/** 兼容旧代码引用 */
+export type BatchSceneItem = BatchTargetItem
 
 export type BatchEngine = 'sd' | 'anima'
 
@@ -27,6 +38,9 @@ export interface BatchDrawJob {
   id: string
   sceneId: string
   sceneTitle: string
+  subtitle?: string
+  avatarUrl?: string
+  kind?: 'scene' | 'character'
   seed: number
   variant: number
   status: 'pending' | 'running' | 'succeeded' | 'failed' | 'cancelled'
@@ -36,7 +50,7 @@ export interface BatchDrawJob {
 }
 
 export interface BatchDrawRunnerInput {
-  scene: BatchSceneItem
+  scene: BatchTargetItem
   seed: number
   /** 候选序号（0 起；同场景第 2、3 张 = 1、2）。 */
   variant: number
@@ -76,16 +90,19 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
   }
 
   /**
-   * 构建任务清单：scenes × count（候选种子 baseSeed + i*1000 递增，锁定可复现）。
+   * 构建任务清单：items × count（候选种子 baseSeed + i*1000 递增，锁定可复现）。
    */
-  function buildJobs(scenes: BatchSceneItem[], count: number, baseSeed: number): BatchDrawJob[] {
+  function buildJobs(items: BatchTargetItem[], count: number, baseSeed: number): BatchDrawJob[] {
     const list: BatchDrawJob[] = []
-    for (const scene of scenes) {
+    for (const item of items) {
       for (let i = 0; i < count; i += 1) {
         list.push({
           id: makeId(),
-          sceneId: scene.id,
-          sceneTitle: scene.title,
+          sceneId: item.id,
+          sceneTitle: item.title,
+          subtitle: item.subtitle,
+          avatarUrl: item.avatarUrl,
+          kind: item.kind,
           seed: baseSeed >= 0 ? baseSeed + i * 1000 : -1,
           variant: i,
           status: 'pending',
@@ -95,17 +112,17 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
     return list
   }
 
-  async function start(scenes: BatchSceneItem[], count: number, baseSeed: number): Promise<void> {
+  async function start(items: BatchTargetItem[], count: number, baseSeed: number, unitLabel = '个项目'): Promise<void> {
     if (running.value) return
-    if (!scenes.length) return
+    if (!items.length) return
     releaseResultUrls()
-    const list = buildJobs(scenes, Math.max(1, Math.min(3, count)), baseSeed)
+    const list = buildJobs(items, Math.max(1, Math.min(3, count)), baseSeed)
     jobs.value = list
     running.value = true
     cancelRequested.value = false
-    onFlash(`批量出图开始：${list.length} 张（${scenes.length} 个场景）`)
+    onFlash(`批量出图开始：${list.length} 张（${items.length} ${unitLabel}）`)
 
-    await runList(list, scenes)
+    await runList(list, items)
 
     running.value = false
     currentSeed.value = -1
@@ -115,8 +132,8 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
       : `批量完成：${succeeded}/${total} 张全部入册`)
   }
 
-  /** 只重跑失败/已取消的张（同场景同 seed 同候选序号）。 */
-  async function retryFailed(scenes: BatchSceneItem[]): Promise<void> {
+  /** 只重跑失败/已取消的张（同目标同 seed 同候选序号）。 */
+  async function retryFailed(items: BatchTargetItem[]): Promise<void> {
     if (running.value) return
     const list = jobs.value.filter(j => j.status === 'failed' || j.status === 'cancelled')
     if (!list.length) return
@@ -125,7 +142,7 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
     cancelRequested.value = false
     onFlash(`重跑 ${list.length} 张失败任务`)
 
-    await runList(list, scenes)
+    await runList(list, items)
 
     running.value = false
     currentSeed.value = -1
@@ -133,7 +150,7 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
     onFlash(failed ? `重跑完成：仍有 ${failed} 张失败` : '重跑完成：全部成功')
   }
 
-  async function runList(list: BatchDrawJob[], scenes: BatchSceneItem[]): Promise<void> {
+  async function runList(list: BatchDrawJob[], items: BatchTargetItem[]): Promise<void> {
     for (let index = 0; index < list.length; index += 1) {
       const job = list[index]
       if (cancelRequested.value) {
@@ -142,9 +159,9 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
       }
       job.status = 'running'
       currentSeed.value = job.seed
-      const scene = scenes.find(s => s.id === job.sceneId)
+      const target = items.find(s => s.id === job.sceneId)
       const input: BatchDrawRunnerInput = {
-        scene: scene ?? { id: job.sceneId, title: job.sceneTitle, prose: '' },
+        scene: target ?? { id: job.sceneId, title: job.sceneTitle, prose: '' },
         seed: job.seed,
         variant: job.variant,
       }

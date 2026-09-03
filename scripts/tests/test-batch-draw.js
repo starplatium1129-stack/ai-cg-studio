@@ -170,3 +170,24 @@ test('retryFailed 只重跑失败/已取消张，seed 与候选序号原样保�
   assert.equal(retriedJob.status, 'succeeded');
   assert.equal(retriedJob.error, undefined, '重跑成功后清掉旧错误');
 });
+
+test('支持 character 类型通用实体：avatarUrl 与 subtitle 正确落任务', async () => {
+  const characters = [
+    { id: 'kaltsit', title: '凯尔希', subtitle: '明日方舟', avatarUrl: '/thumb/kaltsit.webp', kind: 'character' },
+    { id: 'raiden', title: '雷电将军', subtitle: '原神', avatarUrl: '/thumb/raiden.webp', kind: 'character' },
+  ];
+  const calls = [];
+  const batch = useBatchDraw({
+    run: async (input) => {
+      calls.push(input.scene);
+      return { ok: true };
+    },
+  });
+
+  await batch.start(characters, 1, 100, '位角色');
+  assert.equal(batch.progress.value.total, 2);
+  assert.equal(batch.jobs.value[0].sceneTitle, '凯尔希');
+  assert.equal(batch.jobs.value[0].subtitle, '明日方舟');
+  assert.equal(batch.jobs.value[0].avatarUrl, '/thumb/kaltsit.webp');
+  assert.equal(batch.jobs.value[0].kind, 'character');
+});

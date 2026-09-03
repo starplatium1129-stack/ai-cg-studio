@@ -276,15 +276,15 @@
             <span class="auto-save-gallery-hint">{{ autoSaveToGallery ? '直出成片将自动进作品册' : '直出成片需手动点「保存快照」' }}</span>
           </div>
 
-          <!-- 多场景批量出图入口 -->
+          <!-- 批量出图入口（多场景 / 多角色） -->
           <div class="batch-entry-row">
             <button
               class="btn btn-ghost"
               type="button"
               :disabled="generationBusy || batchRunning"
-              :title="generationBusy ? BUSY_HINT : (batchRunning ? '批量任务正在跑，等它出完' : '多选场景蓝图一次出齐，成片在面板里直接预览挑选，全部自动入册历史')"
+              :title="generationBusy ? BUSY_HINT : (batchRunning ? '批量任务正在跑，等它出完' : '多选场景蓝图或同词条多角色漫游，成片在面板里直接预览挑选，全部自动入册历史')"
               @click="batchOpen = true"
-            >批量出图 · 多场景</button>
+            >批量出图 · 场景 / 多角色</button>
             <span v-if="shotsPending" class="batch-entry-count">
               分镜待带入 {{ shotsPending }} 镜 · <button class="linklike" type="button" @click="goToShots">去分镜短片</button>
             </span>
