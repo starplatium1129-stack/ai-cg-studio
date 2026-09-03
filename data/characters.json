@@ -331,7 +331,7 @@
     "type": "popular",
     "icon": "⚡",
     "portrait": {
-      "image": "../assets/characters/popular-raiden_shogun.png?v=2",
+      "image": "../assets/characters/popular-raiden_shogun.png?v=5",
       "alt": "雷电将军 样张立绘"
     },
     "visual_dna": {
@@ -417,7 +417,7 @@
     "type": "popular",
     "icon": "🎬",
     "portrait": {
-      "image": "../assets/characters/popular-sakurajima_mai.png?v=2",
+      "image": "../assets/characters/popular-sakurajima_mai.png?v=5",
       "alt": "樱岛麻衣 样张立绘"
     },
     "visual_dna": {
@@ -500,7 +500,7 @@
     "type": "popular",
     "icon": "⏰",
     "portrait": {
-      "image": "../assets/characters/popular-tokisaki_kurumi.png?v=2",
+      "image": "../assets/characters/popular-tokisaki_kurumi.png?v=5",
       "alt": "时崎狂三 样张立绘"
     },
     "visual_dna": {
@@ -583,7 +583,7 @@
     "type": "popular",
     "icon": "🪄",
     "portrait": {
-      "image": "../assets/characters/popular-frieren.png?v=2",
+      "image": "../assets/characters/popular-frieren.png?v=5",
       "alt": "芙莉莲 样张立绘"
     },
     "visual_dna": {
@@ -665,7 +665,7 @@
     "type": "popular",
     "icon": "⚔️",
     "portrait": {
-      "image": "../assets/characters/popular-artoria_pendragon.png?v=2",
+      "image": "../assets/characters/popular-artoria_pendragon.png?v=5",
       "alt": "Saber 样张立绘"
     },
     "visual_dna": {
@@ -747,7 +747,7 @@
     "type": "popular",
     "icon": "🎤",
     "portrait": {
-      "image": "../assets/characters/popular-hatsune_miku.png?v=2",
+      "image": "../assets/characters/popular-hatsune_miku.png?v=5",
       "alt": "初音未来 样张立绘"
     },
     "visual_dna": {
@@ -830,7 +830,7 @@
     "type": "popular",
     "icon": "🎵",
     "portrait": {
-      "image": "../assets/characters/popular-yuzuriha_inori.png?v=2",
+      "image": "../assets/characters/popular-yuzuriha_inori.png?v=5",
       "alt": "楪祈 样张立绘"
     },
     "visual_dna": {
@@ -912,7 +912,7 @@
     "type": "popular",
     "icon": "📖",
     "portrait": {
-      "image": "../assets/characters/popular-yukinoshita_yukino.png?v=2",
+      "image": "../assets/characters/popular-yukinoshita_yukino.png?v=5",
       "alt": "雪之下雪乃 样张立绘"
     },
     "visual_dna": {
@@ -994,7 +994,7 @@
     "type": "popular",
     "icon": "🧹",
     "portrait": {
-      "image": "../assets/characters/popular-elaina.png?v=2",
+      "image": "../assets/characters/popular-elaina.png?v=5",
       "alt": "伊雷娜 样张立绘"
     },
     "visual_dna": {
@@ -1074,7 +1074,7 @@
     "type": "popular",
     "icon": "⚡",
     "portrait": {
-      "image": "../assets/characters/popular-misaka_mikoto.png?v=2",
+      "image": "../assets/characters/popular-misaka_mikoto.png?v=5",
       "alt": "御坂美琴 样张立绘"
     },
     "visual_dna": {
@@ -1154,7 +1154,7 @@
     "type": "popular",
     "icon": "🖤",
     "portrait": {
-      "image": "../assets/characters/popular-makima.png?v=2",
+      "image": "../assets/characters/popular-makima.png?v=5",
       "alt": "玛奇玛 样张立绘"
     },
     "visual_dna": {
@@ -1234,7 +1234,7 @@
     "type": "popular",
     "icon": "💎",
     "portrait": {
-      "image": "../assets/characters/popular-tohsaka_rin.png?v=2",
+      "image": "../assets/characters/popular-tohsaka_rin.png?v=5",
       "alt": "远坂凛 样张立绘"
     },
     "visual_dna": {
@@ -1314,7 +1314,7 @@
     "type": "popular",
     "icon": "🪄",
     "portrait": {
-      "image": "../assets/characters/popular-rem_rezero.png?v=2",
+      "image": "../assets/characters/popular-rem_rezero.png?v=5",
       "alt": "雷姆 样张立绘"
     },
     "visual_dna": {
@@ -1396,7 +1396,7 @@
     "type": "popular",
     "icon": "❄️",
     "portrait": {
-      "image": "../assets/characters/popular-emilia_rezero.png?v=2",
+      "image": "../assets/characters/popular-emilia_rezero.png?v=5",
       "alt": "爱蜜莉雅 样张立绘"
     },
     "visual_dna": {
@@ -1478,7 +1478,7 @@
     "type": "popular",
     "icon": "🎓",
     "portrait": {
-      "image": "../assets/characters/popular-roxy_migurdia.png?v=2",
+      "image": "../assets/characters/popular-roxy_migurdia.png?v=5",
       "alt": "洛琪希 样张立绘"
     },
     "visual_dna": {
@@ -1561,7 +1561,7 @@
     "type": "popular",
     "icon": "🏰",
     "portrait": {
-      "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=2",
+      "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=5",
       "alt": "伊莉雅丝菲尔 样张立绘"
     },
     "visual_dna": {
@@ -1640,7 +1640,7 @@
     "type": "popular",
     "icon": "🧵",
     "portrait": {
-      "image": "../assets/characters/popular-kitagawa_marin.png?v=2",
+      "image": "../assets/characters/popular-kitagawa_marin.png?v=5",
       "alt": "喜多川海梦 样张立绘"
     },
     "visual_dna": {
@@ -1722,7 +1722,7 @@
     "type": "popular",
     "icon": "🔥",
     "portrait": {
-      "image": "../assets/characters/popular-kisara_engage_kiss.png?v=2",
+      "image": "../assets/characters/popular-kisara_engage_kiss.png?v=5",
       "alt": "木更 样张立绘"
     },
     "visual_dna": {
@@ -1864,7 +1864,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-chen_arknights.png",
+      "image": "../assets/characters/popular-chen_arknights.png?v=5",
       "alt": "陈热门角色立绘"
     },
     "speech": "陈向你致以问候。",
@@ -1939,7 +1939,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-dusk_arknights.png",
+      "image": "../assets/characters/popular-dusk_arknights.png?v=5",
       "alt": "夕热门角色立绘"
     },
     "speech": "夕向你致以问候。",
@@ -2014,7 +2014,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-eunectes_arknights.png",
+      "image": "../assets/characters/popular-eunectes_arknights.png?v=5",
       "alt": "森蚺热门角色立绘"
     },
     "speech": "森蚺向你致以问候。",
@@ -2090,7 +2090,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-exusiai_arknights.png",
+      "image": "../assets/characters/popular-exusiai_arknights.png?v=5",
       "alt": "能天使热门角色立绘"
     },
     "speech": "能天使向你致以问候。",
@@ -2163,7 +2163,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-eyjafjalla_arknights.png",
+      "image": "../assets/characters/popular-eyjafjalla_arknights.png?v=5",
       "alt": "艾雅法拉热门角色立绘"
     },
     "speech": "艾雅法拉向你致以问候。",
@@ -2239,7 +2239,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-goldenglow_arknights.png",
+      "image": "../assets/characters/popular-goldenglow_arknights.png?v=5",
       "alt": "澄闪热门角色立绘"
     },
     "speech": "澄闪向你致以问候。",
@@ -2312,7 +2312,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-kaltsit_arknights.png",
+      "image": "../assets/characters/popular-kaltsit_arknights.png?v=5",
       "alt": "凯尔希热门角色立绘"
     },
     "speech": "凯尔希向你致以问候。",
@@ -2387,7 +2387,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-laevatain_arknights.png",
+      "image": "../assets/characters/popular-laevatain_arknights.png?v=5",
       "alt": "莱万汀热门角色立绘"
     },
     "speech": "莱万汀向你致以问候。",
@@ -2462,7 +2462,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-lemuen_arknights.png",
+      "image": "../assets/characters/popular-lemuen_arknights.png?v=5",
       "alt": "蕾缪安热门角色立绘"
     },
     "speech": "蕾缪安向你致以问候。",
@@ -2534,7 +2534,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-mudrock_arknights.png",
+      "image": "../assets/characters/popular-mudrock_arknights.png?v=5",
       "alt": "泥岩热门角色立绘"
     },
     "speech": "泥岩向你致以问候。",
@@ -2609,7 +2609,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-perlica_arknights.png",
+      "image": "../assets/characters/popular-perlica_arknights.png?v=5",
       "alt": "佩丽卡热门角色立绘"
     },
     "speech": "佩丽卡向你致以问候。",
@@ -2687,7 +2687,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-quillpen_arknights.png",
+      "image": "../assets/characters/popular-quillpen_arknights.png?v=5",
       "alt": "羽毛笔热门角色立绘"
     },
     "speech": "羽毛笔向你致以问候。",
@@ -2760,7 +2760,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-skadi_arknights.png",
+      "image": "../assets/characters/popular-skadi_arknights.png?v=5",
       "alt": "斯卡蒂热门角色立绘"
     },
     "speech": "斯卡蒂向你致以问候。",
@@ -2835,7 +2835,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-surtr_arknights.png",
+      "image": "../assets/characters/popular-surtr_arknights.png?v=5",
       "alt": "史尔特尔热门角色立绘"
     },
     "speech": "史尔特尔向你致以问候。",
@@ -2909,7 +2909,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-suzuran_arknights.png",
+      "image": "../assets/characters/popular-suzuran_arknights.png?v=5",
       "alt": "铃兰热门角色立绘"
     },
     "speech": "铃兰向你致以问候。",
@@ -2928,7 +2928,7 @@
     "type": "popular",
     "icon": "❄️",
     "portrait": {
-      "image": "../assets/characters/popular-alisa_mikhailovna_kujou.png?v=4",
+      "image": "../assets/characters/popular-alisa_mikhailovna_kujou.png?v=5",
       "alt": "艾莉莎·米哈伊洛夫娜·九条 样张立绘"
     },
     "visual_dna": {
@@ -3013,7 +3013,7 @@
     "type": "popular",
     "icon": "🧝‍♀️",
     "portrait": {
-      "image": "../assets/characters/popular-sylphiette.png?v=3",
+      "image": "../assets/characters/popular-sylphiette.png?v=5",
       "alt": "希露菲叶特 样张立绘"
     },
     "visual_dna": {
@@ -3098,7 +3098,7 @@
     "type": "popular",
     "icon": "🌸",
     "portrait": {
-      "image": "../assets/characters/popular-yuigahama_yui.png?v=3",
+      "image": "../assets/characters/popular-yuigahama_yui.png?v=5",
       "alt": "由比滨结衣 样张立绘"
     },
     "visual_dna": {
@@ -3182,7 +3182,7 @@
     "type": "popular",
     "icon": "🐉",
     "portrait": {
-      "image": "../assets/characters/popular-jeanne_alter.png?v=3",
+      "image": "../assets/characters/popular-jeanne_alter.png?v=5",
       "alt": "贞德[Alter] 样张立绘"
     },
     "visual_dna": {
@@ -3263,7 +3263,7 @@
     "type": "popular",
     "icon": "🎀",
     "portrait": {
-      "image": "../assets/characters/popular-matou_sakura.png?v=3",
+      "image": "../assets/characters/popular-matou_sakura.png?v=5",
       "alt": "间桐樱 样张立绘"
     },
     "visual_dna": {
@@ -3347,7 +3347,7 @@
     "type": "popular",
     "icon": "🌹",
     "portrait": {
-      "image": "../assets/characters/popular-yor_forger.png?v=3",
+      "image": "../assets/characters/popular-yor_forger.png?v=5",
       "alt": "约尔·福杰 样张立绘"
     },
     "visual_dna": {
@@ -3431,7 +3431,7 @@
     "type": "popular",
     "icon": "💣",
     "portrait": {
-      "image": "../assets/characters/popular-reze_chainsaw.png?v=3",
+      "image": "../assets/characters/popular-reze_chainsaw.png?v=5",
       "alt": "蕾塞 样张立绘"
     },
     "visual_dna": {
@@ -3512,7 +3512,7 @@
     "type": "popular",
     "icon": "🪄",
     "portrait": {
-      "image": "../assets/characters/popular-fern_frieren.png?v=3",
+      "image": "../assets/characters/popular-fern_frieren.png?v=5",
       "alt": "菲伦 样张立绘"
     },
     "visual_dna": {
@@ -3594,7 +3594,7 @@
     "type": "popular",
     "icon": "⭐",
     "portrait": {
-      "image": "../assets/characters/popular-mimori_byakuya.png?v=3",
+      "image": "../assets/characters/popular-mimori_byakuya.png?v=5",
       "alt": "深森白夜 样张立绘"
     },
     "visual_dna": {
@@ -3682,7 +3682,7 @@
     "type": "popular",
     "icon": "🕊️",
     "portrait": {
-      "image": "../assets/characters/popular-saint_cecilia.png?v=3",
+      "image": "../assets/characters/popular-saint_cecilia.png?v=5",
       "alt": "塞西莉亚 样张立绘"
     },
     "visual_dna": {
@@ -3773,7 +3773,7 @@
     "type": "popular",
     "icon": "🌸",
     "portrait": {
-      "image": "../assets/characters/popular-misono_mika.png?v=1",
+      "image": "../assets/characters/popular-misono_mika.png?v=5",
       "alt": "圣园未花 样张立绘"
     },
     "visual_dna": {
@@ -3876,7 +3876,7 @@
     "type": "popular",
     "icon": "⚖️",
     "portrait": {
-      "image": "../assets/characters/popular-sorasaki_hina.png?v=1",
+      "image": "../assets/characters/popular-sorasaki_hina.png?v=5",
       "alt": "空崎日奈 样张立绘"
     },
     "visual_dna": {
@@ -3983,7 +3983,7 @@
     "type": "popular",
     "icon": "🎸",
     "portrait": {
-      "image": "../assets/characters/popular-kyouyama_kazusa.png?v=1",
+      "image": "../assets/characters/popular-kyouyama_kazusa.png?v=5",
       "alt": "杏山和纱 样张立绘"
     },
     "visual_dna": {
@@ -4078,7 +4078,7 @@
     "type": "popular",
     "icon": "🎧",
     "portrait": {
-      "image": "../assets/characters/popular-asuma_toki.png?v=1",
+      "image": "../assets/characters/popular-asuma_toki.png?v=5",
       "alt": "飞鸟马时 样张立绘"
     },
     "visual_dna": {
@@ -4167,7 +4167,7 @@
     "type": "popular",
     "icon": "📐",
     "portrait": {
-      "image": "../assets/characters/popular-tsukatsuki_rio.png?v=1",
+      "image": "../assets/characters/popular-tsukatsuki_rio.png?v=5",
       "alt": "调月莉音 样张立绘"
     },
     "visual_dna": {
@@ -4313,7 +4313,7 @@
       "arknights"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-ling_arknights.png",
+      "image": "../assets/characters/popular-ling_arknights.png?v=5",
       "alt": "令热门角色立绘"
     },
     "speech": "千载长路不过须臾，万般虚实无非一梦。博士，可愿与我共饮一杯？",
@@ -4331,7 +4331,7 @@
     "type": "popular",
     "icon": "⚔️",
     "portrait": {
-      "image": "../assets/characters/popular-eris_greyrat.png?v=1",
+      "image": "../assets/characters/popular-eris_greyrat.png?v=5",
       "alt": "艾莉丝 样张立绘"
     },
     "visual_dna": {
@@ -4419,7 +4419,7 @@
     "type": "popular",
     "icon": "⭐",
     "portrait": {
-      "image": "../assets/characters/popular-hoshino_ai.png?v=1",
+      "image": "../assets/characters/popular-hoshino_ai.png?v=5",
       "alt": "星野爱 样张立绘"
     },
     "visual_dna": {
@@ -4506,7 +4506,7 @@
     "type": "popular",
     "icon": "🎭",
     "portrait": {
-      "image": "../assets/characters/popular-kurokawa_akane.png?v=1",
+      "image": "../assets/characters/popular-kurokawa_akane.png?v=5",
       "alt": "黑川茜 样张立绘"
     },
     "visual_dna": {
@@ -4589,7 +4589,7 @@
     "type": "popular",
     "icon": "🔧",
     "portrait": {
-      "image": "../assets/characters/popular-yvonne_arknights.png?v=1",
+      "image": "../assets/characters/popular-yvonne_arknights.png?v=5",
       "alt": "伊冯 样张立绘"
     },
     "visual_dna": {
@@ -4676,7 +4676,7 @@
     "type": "popular",
     "icon": "🏰",
     "portrait": {
-      "image": "../assets/characters/popular-morgan_le_fay_fate.png?v=1",
+      "image": "../assets/characters/popular-morgan_le_fay_fate.png?v=5",
       "alt": "摩根 样张立绘"
     },
     "visual_dna": {
@@ -4759,7 +4759,7 @@
     "type": "popular",
     "icon": "🛡️",
     "portrait": {
-      "image": "../assets/characters/popular-mash_kyrielight.png?v=1",
+      "image": "../assets/characters/popular-mash_kyrielight.png?v=5",
       "alt": "玛修 样张立绘"
     },
     "visual_dna": {
@@ -4843,7 +4843,7 @@
     "type": "popular",
     "icon": "🧣",
     "portrait": {
-      "image": "../assets/characters/popular-mikasa_ackerman.png?v=1",
+      "image": "../assets/characters/popular-mikasa_ackerman.png?v=5",
       "alt": "三笠 样张立绘"
     },
     "visual_dna": {
@@ -4926,7 +4926,7 @@
     "type": "popular",
     "icon": "👑",
     "portrait": {
-      "image": "../assets/characters/popular-krista_lenz.png?v=1",
+      "image": "../assets/characters/popular-krista_lenz.png?v=5",
       "alt": "希斯特里亚 样张立绘"
     },
     "visual_dna": {
@@ -5010,7 +5010,7 @@
     "type": "popular",
     "icon": "🎸",
     "portrait": {
-      "image": "../assets/characters/popular-gotoh_hitori.png?v=1",
+      "image": "../assets/characters/popular-gotoh_hitori.png?v=5",
       "alt": "后藤一里 样张立绘"
     },
     "visual_dna": {
@@ -5095,7 +5095,7 @@
     "type": "popular",
     "icon": "🌕",
     "portrait": {
-      "image": "../assets/characters/popular-ayanami_rei.png?v=1",
+      "image": "../assets/characters/popular-ayanami_rei.png?v=5",
       "alt": "绫波丽 样张立绘"
     },
     "visual_dna": {
@@ -5182,7 +5182,7 @@
     "type": "popular",
     "icon": "🔥",
     "portrait": {
-      "image": "../assets/characters/popular-asuka_langley.png?v=1",
+      "image": "../assets/characters/popular-asuka_langley.png?v=5",
       "alt": "明日香 样张立绘"
     },
     "visual_dna": {
@@ -5267,7 +5267,7 @@
     "type": "popular",
     "icon": "🎭",
     "portrait": {
-      "image": "../assets/characters/popular-furina.png?v=1",
+      "image": "../assets/characters/popular-furina.png?v=5",
       "alt": "芙宁娜 样张立绘"
     },
     "visual_dna": {
@@ -5351,7 +5351,7 @@
     "type": "popular",
     "icon": "🌸",
     "portrait": {
-      "image": "../assets/characters/popular-hu_tao.png?v=1",
+      "image": "../assets/characters/popular-hu_tao.png?v=5",
       "alt": "胡桃 样张立绘"
     },
     "visual_dna": {
@@ -5435,7 +5435,7 @@
     "type": "popular",
     "icon": "🕸️",
     "portrait": {
-      "image": "../assets/characters/popular-kafka.png?v=1",
+      "image": "../assets/characters/popular-kafka.png?v=5",
       "alt": "卡芙卡 样张立绘"
     },
     "visual_dna": {
@@ -5520,7 +5520,7 @@
     "type": "popular",
     "icon": "📱",
     "portrait": {
-      "image": "../assets/characters/popular-hayase_yuuka.png?v=1",
+      "image": "../assets/characters/popular-hayase_yuuka.png?v=5",
       "alt": "早濑优香 样张立绘"
     },
     "visual_dna": {
@@ -5606,7 +5606,7 @@
     "type": "popular",
     "icon": "🎯",
     "portrait": {
-      "image": "../assets/characters/popular-shiromi_iori.png?v=1",
+      "image": "../assets/characters/popular-shiromi_iori.png?v=5",
       "alt": "银镜伊织 样张立绘"
     },
     "visual_dna": {
@@ -5694,7 +5694,7 @@
     "type": "popular",
     "icon": "🗡️",
     "portrait": {
-      "image": "../assets/characters/popular-texas_arknights.png?v=1",
+      "image": "../assets/characters/popular-texas_arknights.png?v=5",
       "alt": "德克萨斯 样张立绘"
     },
     "visual_dna": {
@@ -5779,7 +5779,7 @@
     "type": "popular",
     "icon": "⚔️",
     "portrait": {
-      "image": "../assets/characters/popular-lappland_arknights.png?v=1",
+      "image": "../assets/characters/popular-lappland_arknights.png?v=5",
       "alt": "拉普兰德 样张立绘"
     },
     "visual_dna": {
@@ -5866,7 +5866,7 @@
     "type": "popular",
     "icon": "🕯️",
     "portrait": {
-      "image": "../assets/characters/popular-viviana_arknights.png?v=1",
+      "image": "../assets/characters/popular-viviana_arknights.png?v=5",
       "alt": "薇薇安娜 样张立绘"
     },
     "visual_dna": {
