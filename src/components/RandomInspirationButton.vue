@@ -4,33 +4,35 @@
       class="random-dice"
       type="button"
       :disabled="disabled"
-      :title="disabled ? '数据未就绪时不支持随机灵感' : '随机灵感：按当前角色（含热门角色）随机组装一组风格层标签'"
+      :title="disabled ? '画室数据筹备中…' : '偶遇灵光：随当前角色的性格与心境，随机交织一组画风标签'"
       @click="onRoll"
     >
       <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
-      <span>随机灵感</span>
+      <span>偶遇灵光</span>
     </button>
     <button
       class="random-menu-trigger"
       type="button"
       :disabled="disabled"
-      aria-label="随机灵感选项"
+      aria-label="灵感调配偏好"
       :aria-expanded="menuOpen"
       @click="menuOpen = !menuOpen"
     >
       <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
     </button>
-    <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="随机灵感选项">
-      <div class="random-label">随机灵感选项</div>
-      <label class="random-toggle">
-        <input v-model="includeArtists" type="checkbox" />
-        <span class="random-toggle-text">随机画师</span>
-        <small class="random-toggle-hint">开启后骰子会混入白名单画师；默认不加，保留角色原生画风</small>
-      </label>
-      <button class="random-undo" type="button" :disabled="!canUndo" @click="onUndo">
-        撤销上一组
-      </button>
-    </div>
+    <Transition name="popover-pop">
+      <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="灵感调配偏好">
+        <div class="random-label">灵感调配偏好</div>
+        <label class="random-toggle">
+          <input v-model="includeArtists" type="checkbox" />
+          <span class="random-toggle-text">偶染名家画风</span>
+          <small class="random-toggle-hint">开启后将偶遇不同画师的笔触与着色偏好；默认保留角色的原生绘卷气质</small>
+        </label>
+        <button class="random-undo" type="button" :disabled="!canUndo" @click="onUndo">
+          回溯上一缕灵感
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -91,7 +93,9 @@ function onUndo() {
 }
 .random-dice:disabled,
 .random-menu-trigger:disabled {
-  opacity: .45;
+  color: var(--text-disabled);
+  border-color: color-mix(in srgb, var(--border-soft) 40%, transparent);
+  background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
   cursor: not-allowed;
   transform: none;
 }
@@ -136,6 +140,18 @@ function onUndo() {
   border-radius: var(--r-2xl);
   background: var(--bg-elevated);
   box-shadow: var(--shadow-lg);
+  transform-origin: top right;
+}
+.popover-pop-enter-active {
+  transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
+}
+.popover-pop-leave-active {
+  transition: opacity 120ms ease-out, transform 120ms ease-out;
+}
+.popover-pop-enter-from,
+.popover-pop-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.96);
 }
 .random-label {
   margin: 2px 4px 8px;

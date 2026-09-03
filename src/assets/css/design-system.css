@@ -1900,7 +1900,7 @@ kbd,
   vertical-align: baseline;
 }
 
-/* ── 全站互动控件物理微按压反馈 (Tactile Press) ── */
+/* ── 全站互动控件物理微按压反馈 (Tactile Press - Emil Kowalski 哲学) ── */
 :where(
   .chip,
   .token-chip,
@@ -1913,8 +1913,16 @@ kbd,
   .artwork-tool,
   .history-action,
   .btn-upload-overlay,
-  .viewer-nav
-):active:not(:disabled) {
+  .viewer-nav,
+  .pop-franchise,
+  .pop-char-btn,
+  .pop-cat,
+  .director-mode-option,
+  .nav-more summary,
+  .prompt-tag,
+  .sc-tag,
+  .nav-links > a
+):active:not(:disabled):not([aria-disabled="true"]) {
   transform: scale(0.96);
   transition: transform var(--motion-press) var(--ease-out);
 }

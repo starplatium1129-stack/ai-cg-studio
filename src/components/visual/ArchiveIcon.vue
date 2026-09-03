@@ -24,6 +24,7 @@
     <circle
       v-for="(point, i) in def.ends || []"
       :key="'c' + i"
+      class="archive-icon-end"
       :cx="point[0]"
       :cy="point[1]"
       r="0.52"
@@ -69,7 +70,7 @@ export type ArchiveIconName =
   // ── 工具 / 服装形态 ──────────────────────────────────────────
   | 'star' | 'download' | 'upload' | 'copy' | 'broom' | 'health' | 'wardrobe' | 'compare'
   | 'bikini' | 'dress' | 'bunny' | 'coat' | 'school' | 'kimono' | 'ribbon'
-  | 'expand' | 'compress' | 'dice'
+  | 'expand' | 'compress' | 'dice' | 'queue' | 'inpaint'
   | 'play'
 
 const props = defineProps<{ name: ArchiveIconName }>()
@@ -91,5 +92,31 @@ const def = computed(() => ICON_DEFS[props.name])
 
 <style scoped>
 .archive-icon { display:inline-block; width:1em; height:1em; flex:0 0 auto; vertical-align:-.14em; }
-.archive-icon-dupe { pointer-events:none; }
+.archive-icon-dupe {
+  pointer-events:none;
+  transform-origin: 12px 12px;
+  transition: transform var(--motion-hover) var(--ease-out), opacity var(--motion-hover) var(--ease-out);
+}
+.archive-icon-end {
+  pointer-events: none;
+  transform-origin: center;
+  transition: transform var(--motion-hover) var(--ease-out);
+}
+
+/* 宿主控件 hover 时：第二笔墨线微微收拢入墨，端点微扩，如笔尖蘸墨起笔 */
+@media (hover: hover) and (pointer: fine) {
+  :where(button, a, summary, [role="button"], .chip, .sc-tag):hover .archive-icon-dupe {
+    transform: translate(-0.15px, -0.15px) rotate(-0.3deg);
+    opacity: 0.72;
+  }
+  :where(button, a, summary, [role="button"], .chip, .sc-tag):hover .archive-icon-end {
+    transform: scale(1.18);
+  }
+}
+
+/* 宿主控件 active 按下时：第二笔墨线如笔尖受力按压微散，呈现真实物理压感 */
+:where(button, a, summary, [role="button"], .chip, .sc-tag):active .archive-icon-dupe {
+  transform: translate(0.2px, 0.2px) rotate(0.4deg);
+  opacity: 0.85;
+}
 </style>

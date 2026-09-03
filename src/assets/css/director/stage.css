@@ -72,6 +72,16 @@
   }
   @keyframes stageMagicSpin { to { transform:translate(-50%,-50%) rotate(360deg); } }
   @keyframes stageMagicSpinRev { to { transform:rotate(-360deg); } }
+  /* 显影仪式感：在生成状态下，画布底层光晕呈现暗房显影液般的轻柔呼吸（GPU 属性 opacity/transform，零重排） */
+  .pb .stage-placeholder.is-generating::before {
+    opacity: 0.85;
+    animation: stageDevelopingBreath 4.5s ease-in-out infinite alternate;
+  }
+  @keyframes stageDevelopingBreath {
+    0% { transform: scale(0.98); opacity: 0.55; }
+    50% { transform: scale(1.03); opacity: 0.92; }
+    100% { transform: scale(1.01); opacity: 0.72; }
+  }
   .pb .stage-ready { display:flex; align-items:center; gap:var(--s-2); }
   .pb .stage-ready::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
   .pb .stage-placeholder.is-error .stage-ready { color:var(--danger-text); }

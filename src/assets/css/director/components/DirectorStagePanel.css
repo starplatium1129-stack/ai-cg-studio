@@ -86,7 +86,7 @@
      width:38%; transform:translateX(-120%); animation:stage-progress-indeterminate 1.15s linear infinite;
    }
   @media (prefers-reduced-motion: reduce) {
-    .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-progress-ring.is-indeterminate > i { animation:none !important; }
+    .pb .stage-muse, .pb .stage-magic-ring, .pb .stage-placeholder.is-generating::before, .pb .stage-progress-ring.is-indeterminate > i { animation:none !important; }
      .pb .stage-progress-ring.is-indeterminate > i { transform:translateX(0); }
     .pb .monitor-rec .dot, .pb .review-star { animation:none; }
     /* plans/002：换角扫光/缪斯浮起停掉（位移类），侧栏与令牌层的颜色过渡保留；

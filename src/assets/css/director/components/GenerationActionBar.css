@@ -6,21 +6,22 @@
   .pb .gen-bar {
     position: sticky; top: 54px; z-index: var(--z-sticky);
     display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap;
-    padding: var(--s-2) var(--s-3);
+    padding: var(--s-2) var(--s-4);
     border: 1px solid var(--glass-edge);
-    border-radius: var(--r-md);
+    border-radius: var(--r-2xl);
     background:
       linear-gradient(135deg,var(--glass-specular),transparent 34%,transparent 68%,color-mix(in srgb,var(--accent) 10%,transparent)),
       var(--glass-fill);
-    -webkit-backdrop-filter: blur(22px) saturate(165%) contrast(1.04);
-    backdrop-filter: blur(22px) saturate(165%) contrast(1.04);
-    box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
+    -webkit-backdrop-filter: blur(24px) saturate(165%) contrast(1.04);
+    backdrop-filter: blur(24px) saturate(165%) contrast(1.04);
+    box-shadow: inset 0 1px 0 var(--glass-highlight), 0 12px 36px -6px rgba(4, 3, 16, 0.38);
+    transition: border-color var(--motion-hover), box-shadow var(--motion-hover);
   }
   .pb .gen-bar-size { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); font-size: var(--fs-label); }
   .pb .gen-bar-label { font-weight: 650; white-space: nowrap; }
   .pb .gen-bar-size select {
-    max-width: 220px; min-width: 140px; padding: 7px 9px;
-    border: 1px solid var(--border-soft); border-radius: var(--r-sm);
+    max-width: 220px; min-width: 140px; padding: 6px 12px;
+    border: 1px solid var(--border-soft); border-radius: var(--r-pill);
     background: var(--bg-deep); color: var(--text-primary);
     font-size: var(--fs-label-sm); cursor: pointer; outline: none;
     transition: border-color var(--motion-hover);
@@ -41,6 +42,9 @@
   /* 有原因时按钮组不再抢 auto 外边距，让原因与按钮各占一端 */
   .pb .gen-bar-blocked + .gen-bar-actions { margin-left: 0; }
   .pb .gen-bar-actions .btn { min-height: 38px; font-size: var(--fs-label); padding: var(--s-2) var(--s-4); border-radius: var(--r-pill); }
+  .pb .gen-bar-actions .btn-primary:not(:disabled) {
+    box-shadow: 0 0 16px -2px var(--character-glow, var(--accent-glow));
+  }
 
   @media (max-width: 768px) {
     /* 移动端导航换行后实测高 ~63px（z-nav 高于本条），吸附点须让过导航，

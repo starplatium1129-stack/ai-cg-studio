@@ -452,9 +452,27 @@
     --character-aura:rgba(251,191,36,.32); --character-aura-secondary:rgba(253,230,138,.22);
   }
 
-  /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb */
-  body:has(.pb[data-character])::before { background:radial-gradient(circle,var(--character-aura, rgba(184,149,255,.32)) 0,transparent 68%); }
-  body:has(.pb[data-character])::after { background:radial-gradient(circle,var(--character-aura-secondary, rgba(244,166,215,.20)) 0,transparent 70%); }
+  /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb，形成柔和体积漫反射光 */
+  body:has(.pb[data-character])::before {
+    opacity: 0.46;
+    filter: blur(55px);
+    width: 48rem;
+    height: 48rem;
+    top: -18rem;
+    right: -10rem;
+    background: radial-gradient(circle, var(--character-aura, rgba(184,149,255,.34)) 0, transparent 70%);
+    transition: opacity var(--motion-atmosphere) var(--ease-out);
+  }
+  body:has(.pb[data-character])::after {
+    opacity: 0.38;
+    filter: blur(50px);
+    width: 42rem;
+    height: 42rem;
+    bottom: -16rem;
+    left: -8rem;
+    background: radial-gradient(circle, var(--character-aura-secondary, rgba(244,166,215,.22)) 0, transparent 72%);
+    transition: opacity var(--motion-atmosphere) var(--ease-out);
+  }
   body:has(.pb[data-character="alisa_mikhailovna_kujou"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
   body:has(.pb[data-character="artoria_pendragon"]) { --character-aura:rgba(45,135,255,.34); --character-aura-secondary:rgba(245,200,75,.24); }
   body:has(.pb[data-character="asuma_toki"]) { --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20); }

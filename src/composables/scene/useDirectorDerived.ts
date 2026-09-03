@@ -114,8 +114,8 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
   )
 
   const modeDescription = computed(() => pb.directorMode === 'basic'
-    ? '从人设核心场景出发，镜头、光照与构图由工坊智能推演，一键直达唯美成片。'
-    : '开放完整灵感场景库、细分词条、多引擎切换与专业出图参数。')
+    ? '循着心动的瞬间起笔，光影、构图与镜头由画室为您调配，静待一张唯美成稿。'
+    : '展卷掌舵：全量灵感画册、笔触词条、双生图引擎与专家级调色参数尽收笔下。')
 
   // ── 显存预算提示 ─────────────────────────────────────────────────────────
   const vramBudget = computed(() => {
