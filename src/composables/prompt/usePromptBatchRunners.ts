@@ -86,16 +86,23 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       }
     })
 
-    // 3. 去除通用角色前缀与 LoRA 标签
+    // 3. 去除通用角色前缀、LoRA 标签与衣物类描述
     text = text.replace(/<lora:[^>]+>/gi, '')
     text = text.replace(/\b(1girl|2girls|solo)\b/gi, '')
-    text = text.replace(/\bShe wears [^.,]+/gi, '')
+    text = text.replace(/\b(?:She wears|wearing|dressed in|outfit)\b[^,.;]*/gi, '')
 
-    // 4. 清洗逗号与多余空格
-    return text.split(',')
-      .map(part => part.trim())
-      .filter(Boolean)
-      .join(', ')
+    // 4. 互斥服装族与通用衣物 Tag 清洗（彻底剥离旧服装，避免串入新角色）
+    const parts = text.split(',').map(p => p.trim()).filter(Boolean)
+    const cleanParts = parts.filter(part => {
+      const lower = part.toLowerCase()
+      // 匹配明确的衣物/鞋袜/制服类 tag
+      if (/^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/.test(lower)) {
+        return false
+      }
+      return true
+    })
+
+    return cleanParts.join(', ')
   }
 
   function resolveTargetCharacter(target: BatchTargetItem) {
@@ -121,24 +128,36 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         const pop = charInfo.char
         const outfit = pop.outfits?.[0]
         if (isSd) {
+          // SD 标签流：角色基础特征 + 专属服装标签 + 场景通用基底
           const tokens = [
-            baseText,
-            ...(pop.identityTokens || pop.exactTokens || []),
+            '1girl',
+            'solo',
+            ...(pop.exactTokens || pop.identityTokens || []),
             ...(outfit?.tokens || []),
+            baseText,
           ].filter(Boolean)
           return tokens.join(', ')
         } else {
-          const outfitDesc = outfit?.prose || outfit?.tokens?.join(', ') || ''
-          const parts = [
+          // Anima / 自然语言流：遵循 renderPromptPlan 规范，标签在前，人物 Prose + 专属服装 Prose 在后
+          const tags = [
+            '1girl',
+            'solo',
+            ...(pop.exactTokens || pop.identityTokens || []),
+            ...(outfit?.tokens || []),
             baseText,
+          ].filter(Boolean).join(', ')
+
+          const outfitProse = outfit?.prose ? `She wears ${outfit.prose}.` : ''
+          const proseParts = [
             pop.identityProse,
-            outfitDesc,
-          ].filter(Boolean)
-          return parts.join(', ')
+            outfitProse,
+          ].filter(Boolean).join(' ')
+
+          return proseParts ? `${tags}\n${proseParts}` : tags
         }
       } else if (charInfo?.kind === 'studio') {
         const anchor = CHAR_PROMPT[charInfo.charKey] || ''
-        return baseText ? `${baseText}, ${anchor}` : anchor
+        return baseText ? `${anchor}, ${baseText}` : anchor
       }
     }
 
