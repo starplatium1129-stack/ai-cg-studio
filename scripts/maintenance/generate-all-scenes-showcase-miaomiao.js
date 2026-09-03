@@ -259,6 +259,33 @@ async function runWorker(tasksQueue, progress, total) {
 }
 
 function updateManifest(allTasks) {
+  // 继承上一版本的 home/ 目录与主视觉配置 (如果当前目录尚未存在)
+  try {
+    const prevVersions = fs.readdirSync(SHOWCASE_ROOT, { withFileTypes: true })
+      .filter(e => e.isDirectory() && !e.name.startsWith('.') && e.name !== VERSION_TAG && fs.existsSync(path.join(SHOWCASE_ROOT, e.name, 'manifest.json')))
+      .map(e => path.join(SHOWCASE_ROOT, e.name))
+      .sort((a, b) => path.basename(b).localeCompare(path.basename(a), 'zh-CN'));
+    
+    if (prevVersions.length > 0) {
+      const latestPrev = prevVersions[0];
+      const prevHome = path.join(latestPrev, 'home');
+      const targetHome = path.join(TARGET_VERSION_DIR, 'home');
+      if (fs.existsSync(prevHome) && !fs.existsSync(targetHome)) {
+        fs.cpSync(prevHome, targetHome, { recursive: true });
+      }
+      const filesToCopy = ['home-hero.json', '00-cover.jpg', 'README.txt', 'index.html'];
+      filesToCopy.forEach(file => {
+        const src = path.join(latestPrev, file);
+        const dst = path.join(TARGET_VERSION_DIR, file);
+        if (fs.existsSync(src) && !fs.existsSync(dst)) {
+          fs.copyFileSync(src, dst);
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('  继承历史 home-hero 失败:', err.message);
+  }
+
   const manifestFile = path.join(TARGET_VERSION_DIR, 'manifest.json');
   const manifest = {
     version: VERSION_TAG,
