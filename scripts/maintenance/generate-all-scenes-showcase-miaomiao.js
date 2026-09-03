@@ -117,15 +117,22 @@ function collectAllSceneTasks(opts) {
 
       tasks.push({
         id: bp.id,
+        standardId: `pc_${character.id}_${bp.id}`,
         title: bp.title,
+        story: bp.description || '',
+        category: bp.category || '热门角色',
         characterId: character.id,
+        rating: bp.adult || bp.rating === 'R18' ? 'R18' : (bp.rating === 'R15' ? 'R15' : 'All'),
+        type: 'popular',
         prompt: fullPrompt,
         negative: fullNegative,
         width,
         height,
-        targetPng: path.join(IMAGES_DIR, `${bp.id}.png`),
-        targetBigJpg: path.join(IMAGES_DIR, `${bp.id}.jpg`),
-        targetThumbJpg: path.join(THUMBS_DIR, `${bp.id}.jpg`),
+        targetPng: path.join(IMAGES_DIR, `pc_${character.id}_${bp.id}.png`),
+        targetBigJpg: path.join(IMAGES_DIR, `pc_${character.id}_${bp.id}.jpg`),
+        targetThumbJpg: path.join(THUMBS_DIR, `pc_${character.id}_${bp.id}.jpg`),
+        plainBigJpg: path.join(IMAGES_DIR, `${bp.id}.jpg`),
+        plainThumbJpg: path.join(THUMBS_DIR, `${bp.id}.jpg`),
         seed: Math.floor(Math.random() * 1000000000) + 100000000
       });
     }
@@ -234,6 +241,14 @@ async function renderSceneImage(task) {
     const convertCmd = `python scripts/maintenance/convert-showcase-image.py "${task.targetPng}" "${task.targetBigJpg}" "${task.targetThumbJpg}"`;
     execSync(convertCmd, { cwd: ROOT, stdio: 'ignore' });
     if (fs.existsSync(task.targetPng)) fs.unlinkSync(task.targetPng);
+    
+    // 如果有 plainBigJpg (如热门场景的非前缀别名)，保留副本以兼容直接 ID 读取
+    if (task.plainBigJpg && !fs.existsSync(task.plainBigJpg)) {
+      fs.copyFileSync(task.targetBigJpg, task.plainBigJpg);
+    }
+    if (task.plainThumbJpg && !fs.existsSync(task.plainThumbJpg)) {
+      fs.copyFileSync(task.targetThumbJpg, task.plainThumbJpg);
+    }
   } catch (e) {
     console.warn(`[Warn] 转换缩略图失败: ${task.id}`);
   }
@@ -287,29 +302,73 @@ function updateManifest(allTasks) {
   }
 
   const manifestFile = path.join(TARGET_VERSION_DIR, 'manifest.json');
-  const manifest = {
-    version: VERSION_TAG,
-    generatedAt: new Date().toISOString(),
-    engine: 'anima',
-    modelId: MODEL_ID,
-    count: allTasks.length,
-    scenes: {}
-  };
+  const entries = [];
 
   allTasks.forEach(t => {
-    manifest.scenes[t.id] = {
-      id: t.id,
+    const entryId = t.standardId || t.id;
+    entries.push({
+      id: entryId,
       title: t.title,
-      character: t.characterId,
-      image: `images/${t.id}.jpg`,
-      thumb: `thumbs/${t.id}.jpg`,
-      seed: t.seed,
-      model: MODEL_ID
-    };
+      story: t.story || '',
+      category: t.category || (t.type === 'popular' ? '热门角色' : '日常'),
+      char: t.characterId,
+      rating: t.rating || 'All',
+      attempt: 1,
+      type: t.type || 'scene',
+      displayName: t.type === 'popular' ? `${t.characterId} / ${t.title}` : t.title,
+      image: `images/${entryId}.jpg`,
+      thumb: `thumbs/${entryId}.jpg`,
+      meta: {
+        engine: 'anima',
+        model: MODEL_ID,
+        checkpoint: 'miaomiaoHarem_anima12.safetensors',
+        seed: t.seed
+      },
+      prompt: t.prompt,
+      negative: t.negative
+    });
   });
 
-  fs.writeFileSync(manifestFile, JSON.stringify(manifest, null, 2), 'utf8');
-  console.log(`\n📋 样张清单已生成: ${manifestFile}`);
+  // 继承上一版本的 artist 与 lora 展示条目
+  try {
+    const prevVersions = fs.readdirSync(SHOWCASE_ROOT, { withFileTypes: true })
+      .filter(e => e.isDirectory() && !e.name.startsWith('.') && e.name !== VERSION_TAG && fs.existsSync(path.join(SHOWCASE_ROOT, e.name, 'manifest.json')))
+      .map(e => path.join(SHOWCASE_ROOT, e.name))
+      .sort((a, b) => path.basename(b).localeCompare(path.basename(a), 'zh-CN'));
+    
+    if (prevVersions.length > 0) {
+      const prevManifest = JSON.parse(fs.readFileSync(path.join(prevVersions[0], 'manifest.json'), 'utf8'));
+      const prevEntries = Array.isArray(prevManifest.entries) ? prevManifest.entries : [];
+      prevEntries.forEach(pe => {
+        if (pe.type === 'artist' || pe.type === 'lora') {
+          entries.push(pe);
+        }
+      });
+    }
+  } catch (err) {}
+
+  const typeCounts = { scene: 0, artist: 0, popular: 0, lora: 0 };
+  const counts = { All: 0, R15: 0, R18: 0, popular: 0 };
+  entries.forEach(e => {
+    if (typeCounts[e.type] !== undefined) typeCounts[e.type]++;
+    if (counts[e.rating] !== undefined) counts[e.rating]++;
+    if (e.type === 'popular') counts.popular++;
+  });
+
+  const fullManifest = {
+    version: 5,
+    source: VERSION_TAG,
+    sourceAudit: `${VERSION_TAG}_published`,
+    publishedAt: new Date().toISOString(),
+    sceneCount: entries.length,
+    entryCount: entries.length,
+    typeCounts,
+    counts,
+    entries
+  };
+
+  fs.writeFileSync(manifestFile, JSON.stringify(fullManifest, null, 2), 'utf8');
+  console.log(`\n📋 标准 manifest.json 清单已生成: ${manifestFile} (共 ${entries.length} 个条目)`);
 }
 
 async function main() {
