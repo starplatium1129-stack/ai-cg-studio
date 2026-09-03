@@ -627,6 +627,11 @@ const NATSUME_IDENTITY_TOKENS = new Set([
   'hairclip', 'two_red_hairclips', 'two_red_hairclips_only', 'no_hair_ribbon',
 ])
 
+const NENE_IDENTITY_TOKENS = new Set([
+  '1girl', 'solo', 'ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails',
+  'purple_eyes', 'ahoge', 'pink_hair_ribbons', 'hair_ribbon',
+])
+
 /**
  * 单人引擎净化只删除「画面里明摆着第二个可见主体」的词：
  * 明确的男性主体、双人/多人计数词、以及指向第三方个体的词。
@@ -656,6 +661,18 @@ function sanitizeNatsumeSoloTemplate(template: string): string {
       const key = normalizeKey(token)
       // 身份锚点由 charPrompt 行提供，模板里重复的删掉即可；互动词保留。
       if (NATSUME_IDENTITY_TOKENS.has(key)) return false
+      return !isExtraSoloSubjectToken(key)
+    })
+    .join(', '))
+    .filter(Boolean)
+    .join(' BREAK ')
+}
+
+function sanitizeNeneSoloTemplate(template: string): string {
+  return splitBreaks(template).map(section => tokenize(section)
+    .filter(token => {
+      const key = normalizeKey(token)
+      if (NENE_IDENTITY_TOKENS.has(key)) return false
       return !isExtraSoloSubjectToken(key)
     })
     .join(', '))
@@ -717,10 +734,13 @@ export function sceneTemplateText(
   } else if (opts.char === 'natsume') {
     // The character line supplies the canonical identity; scenes remain solo regardless of old interaction tags.
     template = sanitizeNatsumeSoloTemplate(template)
+  } else if (opts.char === 'nene') {
+    template = sanitizeNeneSoloTemplate(template)
   }
-  // 非双人引擎（Anima / Krea 等）：过滤双人互动词与男性视角词（SD 保留完整双人支持）。
+  // 单人创作模式：只要不是显式双人组合（triad），无论任何引擎，强制净化掉多余主体词（如 2girls）
+  const isDualScene = opts.char === 'triad' || scene?.char === 'triad' || scene?.char === 'both'
   const capabilities = resolveDrawCapabilities(opts.engine || 'sd', opts.profile)
-  if (!capabilities.dualCharacter) {
+  if (!isDualScene || !capabilities.dualCharacter) {
     template = sanitizeSoloTemplate(template)
   }
   return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), opts.shot)
