@@ -46,7 +46,7 @@
         :disabled="busy || !online || !!blockedReason"
         :title="blockedReason || undefined"
         @click="$emit('generate')"
-      >{{ busy ? '正在定格这一幕…' : '定格心动瞬间' }}</button>
+      >{{ busy ? '宁宁正在全力描绘中…' : '定格心动瞬间 ✨' }}</button>
       <button v-if="busy" class="btn btn-ghost" type="button" @click="$emit('cancel')">先停一下</button>
     </div>
   </div>

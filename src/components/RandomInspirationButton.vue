@@ -4,32 +4,32 @@
       class="random-dice"
       type="button"
       :disabled="disabled"
-      :title="disabled ? '数据准备中…' : '灵光一闪：随机掉落一组契合当前角色气质的特调画风标签'"
+      :title="disabled ? '数据准备中…' : '夏目：“不知道画什么？那就让我随便给你摇一组词条……顺手而已，别想多。”'"
       @click="onRoll"
     >
       <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
-      <span>摇出新灵感</span>
+      <span>夏目的灵感骰子</span>
     </button>
     <button
       class="random-menu-trigger"
       type="button"
       :disabled="disabled"
-      aria-label="灵感盲盒设置"
+      aria-label="夏目的调色笔记"
       :aria-expanded="menuOpen"
       @click="menuOpen = !menuOpen"
     >
       <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
     </button>
     <Transition name="popover-pop">
-      <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="灵感盲盒设置">
-        <div class="random-label">灵感盲盒偏好</div>
+      <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="夏目的调色笔记">
+        <div class="random-label">夏目的调色笔记</div>
         <label class="random-toggle">
           <input v-model="includeArtists" type="checkbox" />
-          <span class="random-toggle-text">混入人气画师风格</span>
-          <small class="random-toggle-hint">开启后会随机融入知名动漫画师的笔触；默认关闭，保留角色原生神韵</small>
+          <span class="random-toggle-text">混入知名画师特调笔触</span>
+          <small class="random-toggle-hint">开启后由夏目悄悄塞入画师特调风格；默认关闭，保留少女最纯粹的原生神韵。</small>
         </label>
         <button class="random-undo" type="button" :disabled="!canUndo" @click="onUndo">
-          撤销·回到刚才的灵感
+          夏目：“退回刚才那一抽”
         </button>
       </div>
     </Transition>

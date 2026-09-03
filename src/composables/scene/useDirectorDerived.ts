@@ -114,8 +114,8 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
   )
 
   const modeDescription = computed(() => pb.directorMode === 'basic'
-    ? '选一个心动的经典场景，镜头、光影与少女心境全都搭配妥当，一键直出名场面 CG。'
-    : '全解锁自由舞台：全量场景图鉴、细分特征词、双引擎直通与高阶参数，尽由你亲自导演。')
+    ? '宁宁：“选一个你心动的经典场景，镜头、光影与少女心境全都搭配好了，一键就能画出名场面 CG 哦！”'
+    : '夏目：“全自由创作舞台：场景图鉴、Tag 细调、双引擎直通与高阶参数，尽由你亲自导演。”')
 
   // ── 显存预算提示 ─────────────────────────────────────────────────────────
   const vramBudget = computed(() => {
