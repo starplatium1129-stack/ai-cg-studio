@@ -30,9 +30,9 @@
         "frieren"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -104,7 +104,7 @@
       "id": "fern_frieren",
       "displayName": "菲伦",
       "franchise": "Frieren: Beyond Journey's End",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "journey_robe",
       "identityTokens": [
@@ -232,7 +232,7 @@
         "fern (sousou no frieren)"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],

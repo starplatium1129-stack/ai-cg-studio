@@ -6,7 +6,7 @@
       "id": "mimori_byakuya",
       "displayName": "深森白夜",
       "franchise": "The Magical Girl and the Evil Officer",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "magical_girl_dress",
       "identityTokens": [
@@ -131,7 +131,7 @@
         "mimori_byakuya"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],

@@ -31,9 +31,9 @@
         "artoria_pendragon (fate)"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -118,9 +118,9 @@
         "tohsaka_rin"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -217,9 +217,9 @@
         "illyasviel_von_einzbern"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -337,7 +337,7 @@
       "id": "jeanne_alter",
       "displayName": "贞德[Alter]",
       "franchise": "Fate",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "avenger_black_armor",
       "identityTokens": [
@@ -455,7 +455,7 @@
         "jeanne d'arc alter (fate)"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],
@@ -480,7 +480,7 @@
       "id": "matou_sakura",
       "displayName": "间桐樱",
       "franchise": "Fate",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "homurahara_uniform",
       "identityTokens": [
@@ -620,7 +620,7 @@
         "matou_sakura"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],
@@ -670,9 +670,9 @@
         "morgan (fate/grand order)"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -791,9 +791,9 @@
         "mash_kyrielight"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",

@@ -32,9 +32,9 @@
         "yukinoshita_yukino"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -106,7 +106,7 @@
       "id": "yuigahama_yui",
       "displayName": "由比滨结衣",
       "franchise": "Oregairu",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "sobu_uniform",
       "identityTokens": [
@@ -226,7 +226,7 @@
         "yuigahama_yui"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],

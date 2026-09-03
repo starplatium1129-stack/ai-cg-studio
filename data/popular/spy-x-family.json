@@ -6,7 +6,7 @@
       "id": "yor_forger",
       "displayName": "约尔·福杰",
       "franchise": "SPY x FAMILY",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "thorn_princess_dress",
       "identityTokens": [
@@ -144,7 +144,7 @@
         "yor_briar"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],

@@ -29,9 +29,9 @@
         "mikasa_ackerman"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -159,9 +159,9 @@
         "krista_lenz"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",

@@ -153,7 +153,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
       <div class="popular-outfits-head">
         <ArchiveIcon name="wardrobe" class="outfits-head-icon" />
         <strong>{{ selectedCharacter.displayName }} · {{ selectedCharacter.originalName }}</strong>
-        <span class="popular-badge">{{ selectedCharacter.recommendedEngine === 'krea2-turbo-fp8' ? '推荐 Krea 2' : '推荐 Anima Aesthetic' }}</span>
+        <span class="popular-badge">{{ selectedCharacter.recommendedEngine === 'krea2-turbo-fp8' ? '推荐 Krea 2' : '推荐 MiaoMiao v1.2' }}</span>
         <span class="popular-nolora-badge">无需 LoRA</span>
       </div>
       <div class="outfit-chips" role="group" aria-label="官方服装">

@@ -1,7 +1,14 @@
 import { ref, type Ref } from 'vue'
 import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '@/stores/promptBuilderStore'
 import { apiClient } from '@/api/client'
-import { findCharacter as findPopularCharacter, type SceneBlueprint, type PopularCharacter } from '@/utils/popularContent'
+import {
+  findCharacter as findPopularCharacter,
+  buildPopularPromptPlan,
+  findOutfit,
+  type SceneBlueprint,
+  type PopularCharacter,
+} from '@/utils/popularContent'
+import { mutualGroupWithCategory } from '@/utils/promptPolicy'
 import {
   ANIMA_CHARACTER_BY_CHARACTER,
   animaRequestPayload,
@@ -117,6 +124,25 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     return null
   }
 
+  /**
+   * 从当前手动词条/提示词中检测是否指定了互斥服装（如泳装、女仆等），
+   * 若有则返回该服装的 tokens，供所有角色全员换装顶替。
+   */
+  function detectOutfitOverrideFromContext(): string[] | null {
+    if (pb.outfitOverride?.tokens?.length) {
+      return [...pb.outfitOverride.tokens]
+    }
+    const tags = [...pb.manualTags]
+    const outfitTokens: string[] = []
+    for (const tag of tags) {
+      const hit = mutualGroupWithCategory(tag)
+      if (hit && hit.category === 'outfit') {
+        outfitTokens.push(tag)
+      }
+    }
+    return outfitTokens.length ? outfitTokens : null
+  }
+
   /** 组装最终出图 prompt：根据目标是场景还是多角色自适应。 */
   function buildTargetPrompt(input: BatchDrawRunnerInput, isSd: boolean): string {
     const target = input.scene
@@ -126,38 +152,51 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       const charInfo = resolveTargetCharacter(target)
       if (charInfo?.kind === 'popular') {
         const pop = charInfo.char
-        const outfit = pop.outfits?.[0]
+        const outfitOverride = detectOutfitOverrideFromContext()
+        const blueprint = pb.sceneId ? deps.sceneBlueprints().find(b => b.id === pb.sceneId) || null : null
+
+        // 调用系统标准编译入口 buildPopularPromptPlan
+        const planResult = buildPopularPromptPlan({
+          character: pop,
+          outfit: pop.outfits?.[0] || { id: 'default', name: '默认', tokens: [], prose: '' },
+          blueprint,
+          engine: 'anima',
+          profile: modelProfile.value,
+          manual: [...pb.manualTags],
+          emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
+          shot: pb.selections.shot,
+          lighting: pb.selections.lighting,
+          composition: pb.selections.composition,
+          visualDescription: pb.visualDescription,
+          outfitOverride,
+          adultEnabled: true,
+        })
+
+        if (planResult?.prompt) {
+          if (isSd) {
+            // SD 模式：提取第一行（标签行）
+            const firstLine = planResult.prompt.split('\n')[0]
+            return firstLine || planResult.prompt
+          }
+          return planResult.prompt
+        }
+
+        // 兜底回退
+        const defaultOutfit = pop.outfits?.[0]
+        const effectiveTokens = outfitOverride?.length ? outfitOverride : (defaultOutfit?.tokens || [])
+        const effectiveProse = outfitOverride?.length ? `She wears ${outfitOverride.join(', ')}.` : (defaultOutfit?.prose ? `She wears ${defaultOutfit.prose}.` : '')
         if (isSd) {
-          // SD 标签流：角色基础特征 + 专属服装标签 + 场景通用基底
-          const tokens = [
-            '1girl',
-            'solo',
-            ...(pop.exactTokens || pop.identityTokens || []),
-            ...(outfit?.tokens || []),
-            baseText,
-          ].filter(Boolean)
-          return tokens.join(', ')
+          return ['1girl', 'solo', ...(pop.exactTokens || pop.identityTokens || []), ...effectiveTokens, baseText].filter(Boolean).join(', ')
         } else {
-          // Anima / 自然语言流：遵循 renderPromptPlan 规范，标签在前，人物 Prose + 专属服装 Prose 在后
-          const tags = [
-            '1girl',
-            'solo',
-            ...(pop.exactTokens || pop.identityTokens || []),
-            ...(outfit?.tokens || []),
-            baseText,
-          ].filter(Boolean).join(', ')
-
-          const outfitProse = outfit?.prose ? `She wears ${outfit.prose}.` : ''
-          const proseParts = [
-            pop.identityProse,
-            outfitProse,
-          ].filter(Boolean).join(' ')
-
-          return proseParts ? `${tags}\n${proseParts}` : tags
+          const tags = ['1girl', 'solo', ...(pop.exactTokens || pop.identityTokens || []), ...effectiveTokens, baseText].filter(Boolean).join(', ')
+          return effectiveProse ? `${tags}\n${pop.identityProse} ${effectiveProse}` : tags
         }
       } else if (charInfo?.kind === 'studio') {
         const anchor = CHAR_PROMPT[charInfo.charKey] || ''
-        return baseText ? `${anchor}, ${baseText}` : anchor
+        const outfitOverride = detectOutfitOverrideFromContext()
+        const extraOutfit = outfitOverride?.length ? outfitOverride.join(', ') : ''
+        const parts = [anchor, extraOutfit, baseText].filter(Boolean)
+        return parts.join(', ')
       }
     }
 

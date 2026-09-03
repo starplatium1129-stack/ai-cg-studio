@@ -6,7 +6,7 @@
       "id": "saint_cecilia",
       "displayName": "塞西莉亚",
       "franchise": "Saint Cecilia and Pastor Lawrence",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "saint_nun_habit",
       "identityTokens": [
@@ -121,7 +121,7 @@
         "cecilia (shiro seijo to kuro bokushi)"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],

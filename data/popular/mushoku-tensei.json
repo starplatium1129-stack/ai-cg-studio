@@ -32,9 +32,9 @@
         "roxy_migurdia"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",
@@ -128,7 +128,7 @@
       "id": "sylphiette",
       "displayName": "希露菲叶特",
       "franchise": "Mushoku Tensei",
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "adultEligibility": "adult",
       "defaultOutfitId": "default_mage_robe",
       "identityTokens": [
@@ -251,7 +251,7 @@
         "sylphiette (mushoku tensei)"
       ],
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "exactPrefixes": [],
@@ -302,9 +302,9 @@
         "eris_greyrat"
       ],
       "exactPrefixes": [],
-      "recommendedEngine": "anima-aesthetic-v1.1",
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
-        "anima-aesthetic-v1.1",
+        "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
       "adultEligibility": "adult",

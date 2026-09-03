@@ -27,7 +27,7 @@ test('popular data: 68 characters, unique ids, exactly one default outfit per ch
     assert.strictEqual(outfitIds.size, character.outfits.length, character.id + ' outfit ids must be unique');
     assert.ok(character.identityTokens.length > 0, character.id + ' needs identityTokens');
     assert.ok(character.exactTokens.length > 0, character.id + ' needs exactTokens');
-    assert.ok(character.supportedEngines.includes('anima-aesthetic-v1.1'), character.id + ' must support Anima Aesthetic');
+    assert.ok(character.supportedEngines.includes('anima-miaomiao-v1.2') || character.supportedEngines.includes('anima-aesthetic-v1.1'), character.id + ' must support Anima MiaoMiao or Aesthetic');
     assert.ok(character.supportedEngines.includes('krea2-turbo-fp8'), character.id + ' must support Krea 2');
   });
     // 2026-08-21 exactTokens 括号消歧按 Anima 官方空格规则（A/B 实测还原度不降）：
