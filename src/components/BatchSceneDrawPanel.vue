@@ -83,6 +83,19 @@
 
           <!-- 多角色漫游选择视图 -->
           <template v-else>
+            <!-- 实时提示词预览与说明 -->
+            <div class="batch-prompt-preview-card">
+              <div class="batch-prompt-preview-head">
+                <span class="batch-prompt-preview-title">
+                  <ArchiveIcon name="spark" /> 当前应用于各角色的提示词基底
+                </span>
+                <span class="batch-prompt-preview-badge">自动剔除原角色特征，动态注入选中角色 DNA</span>
+              </div>
+              <p class="batch-prompt-preview-text">
+                {{ currentPromptPreview || '（当前提示词为空，请先在导演台输入故事、选择场景或添加标签）' }}
+              </p>
+            </div>
+
             <div class="batch-scene-toolbar">
               <input v-model="charFilter" class="input" type="search" placeholder="搜索角色名 / 原作…" />
               <select v-model="franchiseFilter" class="select" aria-label="按作品过滤">
@@ -250,6 +263,10 @@ const franchiseFilter = ref('')
 const selectedCharSet = reactive(new Set<string>())
 
 const { batchEngine, batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed } = usePromptBatchRunners(props.deps)
+
+const currentPromptPreview = computed(() => {
+  return props.deps.currentLivePrompt?.() || props.deps.currentBasePrompt?.() || props.deps.pb.story || props.deps.pb.visualDescription || ''
+})
 
 const isRunning = computed(() => batchDraw.running.value)
 const jobs = computed(() => batchDraw.jobs.value)
@@ -531,6 +548,29 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 }
 
 .batch-empty { grid-column: 1 / -1; margin: 0; padding: var(--s-4); color: var(--text-muted); font-size: var(--fs-body-sm); }
+
+/* ── 提示词基底卡片 ── */
+.batch-prompt-preview-card {
+  display: grid; gap: var(--s-1);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg-deep));
+}
+.batch-prompt-preview-head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2);
+}
+.batch-prompt-preview-title {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: var(--fs-label-sm); font-weight: 600; color: var(--accent);
+}
+.batch-prompt-preview-title .archive-icon { width: 14px; }
+.batch-prompt-preview-badge {
+  font-size: var(--fs-label-xs); color: var(--text-muted);
+}
+.batch-prompt-preview-text {
+  margin: 0; font-size: var(--fs-label-xs); line-height: 1.4; color: var(--text-secondary);
+  max-height: 4.2em; overflow-y: auto; word-break: break-all;
+}
 
 /* ── 结果态 ── */
 .batch-progress-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-2); }

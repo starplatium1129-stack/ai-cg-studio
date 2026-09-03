@@ -33,6 +33,8 @@ export interface PromptBatchRunnersDeps {
   sceneBlueprints: () => SceneBlueprint[]
   popularCharacters?: () => PopularCharacter[]
   currentBasePrompt?: () => string
+  /** 绘图台当前完整编译出的实时提示词（含所有标签、镜头、光影、画面指令） */
+  currentLivePrompt?: () => string
 }
 
 /**
@@ -48,6 +50,52 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
   function getPopularList(): PopularCharacter[] {
     return deps.popularCharacters?.() || pb.popularCharacters || []
+  }
+
+  /**
+   * 从当前完整提示词中剥离原角色的特征、专属服装与 LoRA 标签，
+   * 提炼出干净的「环境、构图、光影、画面指令」通用基底。
+   */
+  function extractUniversalPrompt(rawPrompt: string): string {
+    let text = String(rawPrompt || '').trim()
+    if (!text) return ''
+
+    // 1. 去除原 studio 角色的锚点
+    Object.values(CHAR_PROMPT).forEach(anchor => {
+      if (anchor) text = text.replace(anchor, '')
+    })
+
+    // 2. 去除热门角色的 identityProse 与 identityTokens
+    const popularChars = getPopularList()
+    popularChars.forEach((pop: PopularCharacter) => {
+      if (pop.identityProse) text = text.replace(pop.identityProse, '')
+      if (pop.outfits) {
+        pop.outfits.forEach(o => {
+          if (o.prose) text = text.replace(o.prose, '')
+          if (o.tokens) {
+            o.tokens.forEach(tok => {
+              text = text.replace(new RegExp(`\\b${tok}\\b`, 'gi'), '')
+            })
+          }
+        })
+      }
+      if (pop.identityTokens) {
+        pop.identityTokens.forEach(tok => {
+          text = text.replace(new RegExp(`\\b${tok}\\b`, 'gi'), '')
+        })
+      }
+    })
+
+    // 3. 去除通用角色前缀与 LoRA 标签
+    text = text.replace(/<lora:[^>]+>/gi, '')
+    text = text.replace(/\b(1girl|2girls|solo)\b/gi, '')
+    text = text.replace(/\bShe wears [^.,]+/gi, '')
+
+    // 4. 清洗逗号与多余空格
+    return text.split(',')
+      .map(part => part.trim())
+      .filter(Boolean)
+      .join(', ')
   }
 
   function resolveTargetCharacter(target: BatchTargetItem) {
@@ -329,7 +377,10 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
   /** 按多角色启动批量漫游出图（相同词条，不同角色） */
   async function onBatchStartCharacters(payload: { characterIds: string[]; count: number; basePrompt?: string }) {
-    const basePrompt = String(payload.basePrompt || deps.currentBasePrompt?.() || pb.story || pb.visualDescription || '').trim()
+    // 优先读取当前绘图台完整编译的实时提示词，若无再回退故事/描述
+    const liveRaw = deps.currentLivePrompt?.() || ''
+    const fallbackRaw = payload.basePrompt || deps.currentBasePrompt?.() || pb.story || pb.visualDescription || ''
+    const basePrompt = extractUniversalPrompt(liveRaw || fallbackRaw) || String(fallbackRaw).trim()
     const popularChars = getPopularList()
 
     const targets: BatchTargetItem[] = payload.characterIds.map(id => {

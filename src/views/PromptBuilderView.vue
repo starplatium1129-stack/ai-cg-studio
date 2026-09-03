@@ -1017,6 +1017,8 @@ const batchPanelDeps = {
   runJob,
   historyGenerationFields,
   sceneBlueprints: () => sceneStore.sceneBlueprints,
+  popularCharacters: () => sceneStore.popularCharacters,
+  currentLivePrompt: () => livePrompt.value,
 }
 
 /**
