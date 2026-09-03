@@ -3,7 +3,7 @@
        （2026-08-28 审计：尺寸原在栏底 AnimaQuickPanel/输出面板内，改一次要滚全页） -->
   <div class="gen-bar" role="group" aria-label="出图尺寸与生成">
     <label class="gen-bar-size">
-      <span class="gen-bar-label">画幅尺寸</span>
+      <span class="gen-bar-label">画幅比例</span>
       <select :value="size" :disabled="busy" @change="onSizeChange">
         <template v-if="engine === 'sd'">
           <optgroup label="竖图 Portrait">
@@ -46,8 +46,8 @@
         :disabled="busy || !online || !!blockedReason"
         :title="blockedReason || undefined"
         @click="$emit('generate')"
-      >{{ busy ? '正在描摹着色…' : '落笔成画' }}</button>
-      <button v-if="busy" class="btn btn-ghost" type="button" @click="$emit('cancel')">搁笔暂停</button>
+      >{{ busy ? '正在定格这一幕…' : '定格心动瞬间' }}</button>
+      <button v-if="busy" class="btn btn-ghost" type="button" @click="$emit('cancel')">先停一下</button>
     </div>
   </div>
 </template>

@@ -27,11 +27,11 @@
       <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
       <div class="stage-message">
         <div v-if="generationBusy" class="stage-generating-copy">
-          <div class="stage-generating-title">正在细细描摹这一幕</div>
+          <div class="stage-generating-title">心动画面正在显影…</div>
           <div class="stage-generating-sub">
-            {{ generationStatusText || '正在铺陈光影与色彩…' }}
+            {{ generationStatusText || '光影编织中，少女的神韵马上就好啦…' }}
             <template v-if="generationProgress !== null"> {{ Math.round(generationProgress * 100) }}%</template>
-            <template v-else-if="drawEngine !== 'sd'"> · 已静候 {{ animaElapsed }} 秒</template>
+            <template v-else-if="drawEngine !== 'sd'"> · 已渲染 {{ animaElapsed }} 秒</template>
             <template v-if="drawEngine !== 'sd' && animaCurrentNode"> · 节点 {{ animaCurrentNode }}</template>
           </div>
           <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }">
@@ -39,21 +39,21 @@
           </div>
         </div>
         <div v-else-if="generationError" class="stage-idle">
-          <div class="stage-placeholder-title">落笔偶有波折，未及成卷</div>
+          <div class="stage-placeholder-title">唔……这次的灵感不小心迷路了</div>
           <div class="stage-placeholder-copy">{{ generationError }}</div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('generate')">再试一次</button>
+            <button class="btn btn-primary" type="button" @click="$emit('generate')">再召唤一次！</button>
           </div>
         </div>
         <div v-else-if="generationStopped" class="stage-idle">
-          <div class="stage-placeholder-title">画笔已暂时悬起</div>
-          <div class="stage-placeholder-copy">画布已安稳收整，稍作微调后，随时皆可再展画卷。</div>
+          <div class="stage-placeholder-title">定格已暂时停下</div>
+          <div class="stage-placeholder-copy">草稿已经好好保管了，微调一下细节，随时都能继续定格~</div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('generate')">再续画卷</button>
+            <button class="btn btn-primary" type="button" @click="$emit('generate')">继续定格这一幕</button>
           </div>
         </div>
         <div v-else class="stage-idle">
-          <div class="stage-placeholder-title">心动的一瞬，将在此刻定格入画</div>
+          <div class="stage-placeholder-title">属于你们的心动瞬间，将在此处诞生</div>
           <div class="stage-quick-actions">
             <button
               v-if="drawEngine === 'anima'"
@@ -63,7 +63,7 @@
               @click="$emit('openInpaint')"
             >
               <ArchiveIcon name="inpaint" />
-              <span>导入画稿·巧手换装</span>
+              <span>一键换装·魔法衣橱</span>
             </button>
             <button class="btn btn-ghost" type="button"
               :disabled="interrogateBusy"
@@ -71,11 +71,11 @@
               @click="triggerInterrogatePick"
               @paste="onInterrogatePaste">
               <ArchiveIcon name="search" />
-              <span>{{ interrogateBusy ? '解构画意中…' : '解析画稿灵感' }}</span>
+              <span>{{ interrogateBusy ? '解读画面中…' : '读取图片灵感' }}</span>
             </button>
             <button class="btn btn-ghost" type="button"
               @click="$emit('exploreScenes')">
-              翻阅灵感画册
+              挑一个心动场景
             </button>
           </div>
           <div v-if="interrogateError" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>

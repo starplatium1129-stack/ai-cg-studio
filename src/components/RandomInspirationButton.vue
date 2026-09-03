@@ -4,32 +4,32 @@
       class="random-dice"
       type="button"
       :disabled="disabled"
-      :title="disabled ? '画室数据筹备中…' : '偶遇灵光：随当前角色的性格与心境，随机交织一组画风标签'"
+      :title="disabled ? '数据准备中…' : '灵光一闪：随机掉落一组契合当前角色气质的特调画风标签'"
       @click="onRoll"
     >
       <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
-      <span>偶遇灵光</span>
+      <span>摇出新灵感</span>
     </button>
     <button
       class="random-menu-trigger"
       type="button"
       :disabled="disabled"
-      aria-label="灵感调配偏好"
+      aria-label="灵感盲盒设置"
       :aria-expanded="menuOpen"
       @click="menuOpen = !menuOpen"
     >
       <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
     </button>
     <Transition name="popover-pop">
-      <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="灵感调配偏好">
-        <div class="random-label">灵感调配偏好</div>
+      <div v-if="menuOpen" class="random-popover" role="dialog" aria-label="灵感盲盒设置">
+        <div class="random-label">灵感盲盒偏好</div>
         <label class="random-toggle">
           <input v-model="includeArtists" type="checkbox" />
-          <span class="random-toggle-text">偶染名家画风</span>
-          <small class="random-toggle-hint">开启后将偶遇不同画师的笔触与着色偏好；默认保留角色的原生绘卷气质</small>
+          <span class="random-toggle-text">混入人气画师风格</span>
+          <small class="random-toggle-hint">开启后会随机融入知名动漫画师的笔触；默认关闭，保留角色原生神韵</small>
         </label>
         <button class="random-undo" type="button" :disabled="!canUndo" @click="onUndo">
-          回溯上一缕灵感
+          撤销·回到刚才的灵感
         </button>
       </div>
     </Transition>

@@ -10,7 +10,7 @@
     <p class="visual-description-hint">该描述将直接传递给生成引擎；故事台词与心理独白由画室为您智能转化。</p>
     <div v-if="pb.activeScene" class="scene-context">
       <span class="scene-context-title">{{ pb.activeScene.title }}</span>
-      <button class="scene-context-detach" type="button" @click="detachScene()">× 解除场景束缚</button>
+      <button class="scene-context-detach" type="button" @click="detachScene()">× 解除场景绑定</button>
     </div>
     <div class="story-chips">
       <button v-for="s in storyChips" :key="s" type="button" class="story-chip"
@@ -30,7 +30,7 @@ const { storyChips } = useDirectorCatalog()
 function detachScene() {
   if (!pb.sceneId) return
   pb.clearScene({ keepStory: true })
-  pb.flash('已解除场景关联，保留故事自由挥毫')
+  pb.flash('已解除场景绑定，现在由你自由编写新故事~')
 }
 
 function onStoryInput() {
