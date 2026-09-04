@@ -4,7 +4,6 @@ import { apiClient } from '@/api/client'
 import {
   findCharacter as findPopularCharacter,
   buildPopularPromptPlan,
-  findOutfit,
   type SceneBlueprint,
   type PopularCharacter,
 } from '@/utils/popularContent'

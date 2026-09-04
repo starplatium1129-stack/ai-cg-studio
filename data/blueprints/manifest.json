@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "description": "热门角色场景蓝图分片清单。每个 franchise 一个文件，合并为 data/scene-blueprints.json。",
+  "files": [
+    {
+      "file": "genshin-impact.json",
+      "franchise": "Genshin Impact",
+      "count": 32
+    },
+    {
+      "file": "rascal-does-not-dream-of-bunny-girl-senpai.json",
+      "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "count": 10
+    },
+    {
+      "file": "date-a-live.json",
+      "franchise": "Date A Live",
+      "count": 10
+    },
+    {
+      "file": "frieren-beyond-journeys-end.json",
+      "franchise": "Frieren: Beyond Journey's End",
+      "count": 21
+    },
+    {
+      "file": "fate.json",
+      "franchise": "Fate",
+      "count": 72
+    },
+    {
+      "file": "vocaloid.json",
+      "franchise": "VOCALOID",
+      "count": 10
+    },
+    {
+      "file": "guilty-crown.json",
+      "franchise": "Guilty Crown",
+      "count": 10
+    },
+    {
+      "file": "oregairu.json",
+      "franchise": "Oregairu",
+      "count": 20
+    },
+    {
+      "file": "wandering-witch.json",
+      "franchise": "Wandering Witch",
+      "count": 11
+    },
+    {
+      "file": "a-certain-scientific-railgun.json",
+      "franchise": "A Certain Scientific Railgun",
+      "count": 10
+    },
+    {
+      "file": "chainsaw-man.json",
+      "franchise": "Chainsaw Man",
+      "count": 20
+    },
+    {
+      "file": "re-zero.json",
+      "franchise": "Re:Zero",
+      "count": 21
+    },
+    {
+      "file": "mushoku-tensei.json",
+      "franchise": "Mushoku Tensei",
+      "count": 31
+    },
+    {
+      "file": "my-dress-up-darling.json",
+      "franchise": "My Dress-Up Darling",
+      "count": 11
+    },
+    {
+      "file": "engage-kiss.json",
+      "franchise": "Engage Kiss",
+      "count": 10
+    },
+    {
+      "file": "arknights.json",
+      "franchise": "Arknights",
+      "count": 176
+    },
+    {
+      "file": "arknights-endfield.json",
+      "franchise": "Arknights: Endfield",
+      "count": 30
+    },
+    {
+      "file": "alya-sometimes-hides-her-feelings-in-russian.json",
+      "franchise": "Alya Sometimes Hides Her Feelings in Russian",
+      "count": 11
+    },
+    {
+      "file": "spy-x-family.json",
+      "franchise": "SPY x FAMILY",
+      "count": 10
+    },
+    {
+      "file": "the-magical-girl-and-the-evil-officer.json",
+      "franchise": "The Magical Girl and the Evil Officer",
+      "count": 10
+    },
+    {
+      "file": "saint-cecilia-and-pastor-lawrence.json",
+      "franchise": "Saint Cecilia and Pastor Lawrence",
+      "count": 10
+    },
+    {
+      "file": "blue-archive.json",
+      "franchise": "Blue Archive",
+      "count": 100
+    },
+    {
+      "file": "oshi-no-ko.json",
+      "franchise": "Oshi no Ko",
+      "count": 20
+    },
+    {
+      "file": "attack-on-titan.json",
+      "franchise": "Attack on Titan",
+      "count": 20
+    },
+    {
+      "file": "bocchi-the-rock.json",
+      "franchise": "Bocchi the Rock!",
+      "count": 11
+    },
+    {
+      "file": "neon-genesis-evangelion.json",
+      "franchise": "Neon Genesis Evangelion",
+      "count": 22
+    },
+    {
+      "file": "honkai-star-rail.json",
+      "franchise": "Honkai: Star Rail",
+      "count": 11
+    },
+    {
+      "file": "zenless-zone-zero.json",
+      "franchise": "Zenless Zone Zero",
+      "count": 22
+    },
+    {
+      "file": "azur-lane.json",
+      "franchise": "Azur Lane",
+      "count": 22
+    },
+    {
+      "file": "cyberpunk-edgerunners.json",
+      "franchise": "Cyberpunk: Edgerunners",
+      "count": 11
+    },
+    {
+      "file": "nier-automata.json",
+      "franchise": "NieR:Automata",
+      "count": 11
+    },
+    {
+      "file": "yuzusoft.json",
+      "franchise": "YUZUSOFT",
+      "count": 33
+    },
+    {
+      "file": "grisaia.json",
+      "franchise": "Grisaia",
+      "count": 44
+    },
+    {
+      "file": "sora-no-otoshimono.json",
+      "franchise": "Sora no Otoshimono",
+      "count": 11
+    },
+    {
+      "file": "to-love-ru.json",
+      "franchise": "To LOVE-Ru",
+      "count": 55
+    }
+  ]
+}

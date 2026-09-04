@@ -119,6 +119,8 @@ if ($UseInstaller) {
   if ($LASTEXITCODE -ne 0) { throw 'build-scenes failed - aborting deploy' }
   node (Join-Path $root 'scripts\maintenance\build-popular.js')
   if ($LASTEXITCODE -ne 0) { throw 'build-popular failed - aborting deploy' }
+  node (Join-Path $root 'scripts\maintenance\build-blueprints.js')
+  if ($LASTEXITCODE -ne 0) { throw 'build-blueprints failed - aborting deploy' }
 
   $map = @(
     @{ src = 'data';         dst = 'data' },

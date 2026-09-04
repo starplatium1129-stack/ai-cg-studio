@@ -34,6 +34,7 @@ const STEPS = [
   ['monolith-budget', 'node scripts/tests/test-monolith-budget.js'],
   ['scenes:build', 'node scripts/maintenance/build-scenes.js --check'],
   ['popular:build', 'node scripts/maintenance/build-popular.js --check'],
+  ['blueprints:build', 'node scripts/maintenance/build-blueprints.js --check'],
   ['scenes:optimize', 'node scripts/maintenance/optimize-scenes.js --check'],
   ['scenes:ratings', 'node scripts/maintenance/classify-scene-ratings.js --check'],
   ['scenes:validate', 'node scripts/maintenance/validate-scenes.js'],

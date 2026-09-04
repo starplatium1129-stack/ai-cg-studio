@@ -35,6 +35,12 @@ const {
   aggregateIsCurrent: popularIsCurrent,
   writePopularAggregate,
 } = require('./popular-store');
+const {
+  aggregatePath: blueprintsAggregatePath,
+  aggregateIsCurrent: blueprintsIsCurrent,
+  writeBlueprintAggregate,
+  loadBlueprintShards,
+} = require('./blueprint-store');
 
 /** 复用 precompress.js 的压缩参数（质量 11 brotli / level 9 gzip / MIN_BYTES），
  *  单一事实源防漂移；缺失（如精简安装）时只跳过刷新，不阻塞重建。 */
@@ -78,7 +84,16 @@ function ensurePopularBuilt({ onlyIfMissing = false } = {}) {
   return { rebuilt: true, count };
 }
 
-/** 场景 + 热门角色两个产物面一起自愈；任一面源分片损坏会抛出，由调用方决定降级策略。
+function ensureBlueprintsBuilt({ onlyIfMissing = false } = {}) {
+  if (onlyIfMissing && fs.existsSync(blueprintsAggregatePath)) return { rebuilt: false };
+  if (blueprintsIsCurrent()) return { rebuilt: false };
+  const { blueprints } = loadBlueprintShards();
+  const count = writeBlueprintAggregate();
+  refreshPrecompressed([blueprintsAggregatePath]);
+  return { rebuilt: true, count };
+}
+
+/** 场景 + 热门角色 + 蓝图三个产物面一起自愈；任一面源分片损坏会抛出，由调用方决定降级策略。
  *
  *  - 默认（网关启动）：陈旧即重建——运行时必须拿到与语义源一致的数据；
  *  - onlyIfMissing（门禁/测试套件）：产物缺失（fresh clone）才构建，
@@ -87,7 +102,8 @@ function ensurePopularBuilt({ onlyIfMissing = false } = {}) {
 function ensureAll({ onlyIfMissing = false } = {}) {
   const scenes = ensureScenesBuilt({ onlyIfMissing });
   const popular = ensurePopularBuilt({ onlyIfMissing });
-  return { scenes, popular };
+  const blueprints = ensureBlueprintsBuilt({ onlyIfMissing });
+  return { scenes, popular, blueprints };
 }
 
-module.exports = { ensureAll, ensurePopularBuilt, ensureScenesBuilt };
+module.exports = { ensureAll, ensurePopularBuilt, ensureScenesBuilt, ensureBlueprintsBuilt };

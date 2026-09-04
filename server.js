@@ -430,7 +430,7 @@ function startGateway(options) {
   // scripts/lib 时仅告警降级，沿用现有 data/ 产物，不阻塞网关启动。
   try {
     var ensuredData = require('./scripts/lib/ensure-data-build').ensureAll();
-    var rebuiltFaces = ['scenes', 'popular'].filter(function (face) { return ensuredData[face].rebuilt; });
+    var rebuiltFaces = ['scenes', 'popular', 'blueprints'].filter(function (face) { return ensuredData[face] && ensuredData[face].rebuilt; });
     if (rebuiltFaces.length) {
       logger.info('[data-build] 已自愈重建聚合产物: ' + rebuiltFaces.join(' + '));
     }

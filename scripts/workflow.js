@@ -41,6 +41,21 @@ const WORKFLOWS = {
     cmd: ['npm', 'run', 'popular:import'],
     docs: 'docs/maintenance.md',
   },
+  'blueprints:build': {
+    desc: '聚合场景蓝图分片 -> scene-blueprints.json',
+    cmd: ['node', 'scripts/maintenance/build-blueprints.js'],
+    docs: 'docs/maintenance.md#文件职责',
+  },
+  'blueprints:split': {
+    desc: 'blueprints→分片（仅写分片文件，不重建聚合；如需重建用 blueprints:import）',
+    cmd: ['node', 'scripts/maintenance/split-blueprints.js', '--write'],
+    docs: 'docs/maintenance.md',
+  },
+  'blueprints:import': {
+    desc: 'blueprints→分片+重建聚合（blueprints:split 超集，改完分片后跑此重建）',
+    cmd: ['npm', 'run', 'blueprints:import'],
+    docs: 'docs/maintenance.md',
+  },
   'data:import': {
     desc: 'scenes.json -> 分片（覆盖写入）',
     cmd: ['node', 'scripts/maintenance/split-scenes.js', '--write'],

@@ -14,6 +14,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-style-debt.js',
     'test-bridge-acl.js',
     'test-icon-button-labels.js',
+    'test-ux-regressions.js',
   ]),
   unit: Object.freeze([
     'test-anima-session.js',
@@ -95,6 +96,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-sd-runtime.js',
     'test-scene-shard-integrity.js',
     'test-popular-shard-integrity.js',
+    'test-blueprint-shard-integrity.js',
     'test-security.js',
     'test-tunnel-restart.js',
     'test-upstream-health.js',

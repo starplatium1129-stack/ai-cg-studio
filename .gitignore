@@ -86,9 +86,9 @@ pnpm-workspace.yaml
 # Scene audit workdir (2026-08-26/27 full story-prompt audit + rewrite deltas)
 .audit-work/
 
-# 场景/热门角色聚合产物（scripts/lib/scene-store.js、popular-store.js 生成，不入库）：
-# Git 只版本控制语义源（data/scenes/ 组分片、data/popular/*.json、curation.json），
-# 产物由网关启动 / scenes:build 自愈重建，见 scripts/lib/ensure-data-build.js
+# 场景/热门角色/蓝图聚合产物（scripts/lib/scene-store.js、popular-store.js、blueprint-store.js 生成，不入库）：
+# Git 只版本控制语义源（data/scenes/ 组分片、data/popular/*.json、data/blueprints/*.json、curation.json），
+# 产物由网关启动 / scenes:build / blueprints:build 自愈重建，见 scripts/lib/ensure-data-build.js
 /data/scenes.json
 /data/scenes-nene.json
 /data/scenes-natsume.json
@@ -96,6 +96,7 @@ pnpm-workspace.yaml
 /data/scenes-core.json
 /data/scenes-index.json
 /data/popular-characters.json
+/data/scene-blueprints.json
 
 # scripts/archive：一次性历史脚本（占 scripts 目录 44
 # scripts/archive：一次性历史脚本（占 scripts 目录 44%，2026-08-29 审计出库）。

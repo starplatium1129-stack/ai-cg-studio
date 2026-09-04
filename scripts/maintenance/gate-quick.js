@@ -87,9 +87,11 @@ const AREA_STEPS = {
       [
         { name: 'build-scenes --check', file: path.join(root, 'scripts', 'maintenance', 'build-scenes.js'), args: ['--check'] },
         { name: 'popular:build --check', file: path.join(root, 'scripts', 'maintenance', 'build-popular.js'), args: ['--check'] },
+        { name: 'blueprints:build --check', file: path.join(root, 'scripts', 'maintenance', 'build-blueprints.js'), args: ['--check'] },
         { name: 'validate-content-contracts', file: path.join(root, 'scripts', 'maintenance', 'validate-content-contracts.js') },
         { name: 'test-scene-shard-integrity', file: path.join(testsDir, 'test-scene-shard-integrity.js') },
         { name: 'test-popular-shard-integrity', file: path.join(testsDir, 'test-popular-shard-integrity.js') },
+        { name: 'test-blueprint-shard-integrity', file: path.join(testsDir, 'test-blueprint-shard-integrity.js') },
         { name: 'test-character-reference-contract', file: path.join(testsDir, 'test-character-reference-contract.js') },
         { name: 'test-pinned-scene-prompts', file: path.join(testsDir, 'test-pinned-scene-prompts.js') },
         { name: 'test-prompt-corpus', file: path.join(testsDir, 'test-prompt-corpus.js') },
