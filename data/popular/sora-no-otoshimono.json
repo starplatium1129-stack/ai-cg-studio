@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "franchise": "Sora no Otoshimono",
+  "characters": [
+    {
+      "id": "ikaros",
+      "displayName": "伊卡洛斯",
+      "originalName": "イカロス (Ikaros)",
+      "franchise": "Sora no Otoshimono",
+      "aliases": [
+        "ikaros",
+        "ikaros_(sora_no_otoshimono)",
+        "伊卡洛斯",
+        "空之女王",
+        "天降之物",
+        "sora no otoshimono"
+      ],
+      "identityProse": "Ikaros from Sora no Otoshimono, the type Alpha strategic battle angeloid with long pastel pink twin-tails, a delicate ahoge, luminous emerald-green eyes, a metal collar around her neck with a trailing broken chain, mechanical ear winglets, massive pure white feathered angel wings, and a quiet gentle expression.",
+      "identityTokens": [
+        "ikaros",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "ahoge",
+        "green_eyes",
+        "collar",
+        "metal_collar",
+        "chain",
+        "white_wings",
+        "angel_wings",
+        "robot_ears",
+        "large_breasts",
+        "sora_no_otoshimono"
+      ],
+      "exactTokens": [
+        "ikaros"
+      ],
+      "exactPrefixes": [
+        "ikaros_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "angeloid_dress",
+          "name": "人造天使战略白裙装",
+          "prose": "canonical angeloid attire: a pure white sleeveless dress with soft translucent layered ruffles, delicate red ribbon bow at the collar, thick metal choker collar with a dangling snapped steel chain, mechanical ear ornaments, and magnificent broad white feathered wings unfurling majestically from her back",
+          "tokens": [
+            "white_dress",
+            "sleeveless_dress",
+            "frills",
+            "ribbon",
+            "red_ribbon",
+            "collar",
+            "metal_collar",
+            "chain",
+            "robot_ears",
+            "angel_wings",
+            "white_wings",
+            "bare_shoulders"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "apollon_battle",
+          "name": "空之女王·终极决战武装",
+          "prose": "the fearsome Uranus Queen battle mode: sleek metallic mechanical breastplate armor, glowing crimson energy thruster wings replacing her feathers, variable combat visor over her left eye, wielding the massive golden energy composite bow Apollon nocked with an arrow of pure light",
+          "tokens": [
+            "armor",
+            "breastplate",
+            "mechanical_wings",
+            "energy_wings",
+            "energy_bow",
+            "holding_bow",
+            "glowing_weapons",
+            "combat_visor",
+            "metal_collar",
+            "sci-fi"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "maid_uniform",
+          "name": "空美町家庭侍奉女仆装",
+          "prose": "domestic service maid attire: a tailored black short-sleeved maid dress, crisp white ruffled bib apron tied neatly behind her back, white frilled maid headband perched between her pink twin tails, white frilled thigh-high stockings, and black mary jane shoes",
+          "tokens": [
+            "maid",
+            "maid_dress",
+            "maid_apron",
+            "maid_headdress",
+            "black_dress",
+            "frills",
+            "thighhighs",
+            "white_thighhighs",
+            "mary_janes",
+            "robot_ears"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "school_swimsuit",
+          "name": "空美中学生死库水泳装",
+          "prose": "Japanese junior high school competition swimsuit: a form-fitting dark navy-blue one-piece sukumizu with white fabric name tag stitched over her ample chest, water droplets glistening over smooth skin, large feathered wings folded gently behind her, holding a green striped round watermelon with both hands",
+          "tokens": [
+            "swimsuit",
+            "school_swimsuit",
+            "one-piece_swimsuit",
+            "navy_blue_swimsuit",
+            "wet_skin",
+            "holding_watermelon",
+            "watermelon",
+            "angel_wings",
+            "white_wings"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "collar",
+            "metal_collar",
+            "chain",
+            "white_wings",
+            "angel_wings",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, soft glowing alabaster skin, voluptuous buoyant breasts with tender rose-pink nipples, slender curved waist, exposed pussy, metallic choker collar with broken chain links across her collarbone, broad fluffy white angel wings resting softly around her, bare feet, warm candlelight glow",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "空美町 · 西纳普斯（Synapse）",
+        "era": "近现代人造天使奇幻世界",
+        "formNotes": "型号 Alpha 战略用人造天使（空之女王），背生巨大白羽翼，颈部带有拘束项圈与断裂铁链；战斗时拥有毁灭级火力，日常生活极其喜爱西瓜、小鸡，对主人樱井智树绝对服从与深情依恋",
+        "research": "2026-09-02 调研（Danbooru ikaros 450+ posts + 官方设定）"
+      },
+      "animeStudio": "AIC A.S.T.A. official anime art, Watanabe Ryuichi style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "kobuichi",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

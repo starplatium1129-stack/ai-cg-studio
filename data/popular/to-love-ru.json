@@ -1,0 +1,670 @@
+{
+  "version": 1,
+  "franchise": "To LOVE-Ru",
+  "characters": [
+    {
+      "id": "golden_darkness",
+      "displayName": "金色暗影",
+      "originalName": "金色の闇 / イヴ (Golden Darkness)",
+      "franchise": "To LOVE-Ru",
+      "aliases": [
+        "golden_darkness",
+        "yami",
+        "konjiki_no_yami",
+        "金色暗影",
+        "小暗",
+        "金发杀手",
+        "出包王女",
+        "to love-ru"
+      ],
+      "identityProse": "Golden Darkness (Yami) from To LOVE-Ru by Kentaro Yabuki, the galaxy's deadliest bio-weapon assassin with floor-length lustrous golden blonde hair, distinctive hair intakes, calm yet expressive ruby-red eyes, petite yet curvaceous figure, and an aloof kuudere demeanor.",
+      "identityTokens": [
+        "golden_darkness",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "very_long_hair",
+        "hair_intakes",
+        "sidelocks",
+        "red_eyes",
+        "small_breasts",
+        "kuudere",
+        "to_love-ru"
+      ],
+      "exactTokens": [
+        "golden_darkness"
+      ],
+      "exactPrefixes": [
+        "yami_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "gothic_dress",
+          "name": "杀手黑色抹胸哥特战裙",
+          "prose": "her iconic assassin attire: a form-fitting black leather tube top mini-dress with crimson inner lining, silver chain clasps over the bare midriff, detached black sleeves flared at the wrists, black thigh-high boots, holding a warm brown fish-shaped taiyaki pastry in her small hands",
+          "tokens": [
+            "gothic_dress",
+            "black_dress",
+            "strapless_dress",
+            "tube_top",
+            "detached_sleeves",
+            "midriff",
+            "bare_shoulders",
+            "thighhighs",
+            "boots",
+            "holding_taiyaki",
+            "taiyaki"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sainan_uniform",
+          "name": "彩南高校女子水手制服",
+          "prose": "Sainan High School uniform: a crisp short-sleeved white sailor blouse with teal sailor collar, matching teal pleated miniskirt, dark neckerchief with golden brooch, dark knee socks, and black school loafers",
+          "tokens": [
+            "sainan_high_school_uniform",
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "pleated_skirt",
+            "miniskirt",
+            "knee_socks",
+            "loafers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "bikini_swimsuit",
+          "name": "暗夜系带纯黑细带比基尼",
+          "prose": "a minimalist black string halterneck bikini with delicate side-ties highlighting her fair porcelain skin, slender waist, and neat modest curves, water droplets glistening under warm sunshine",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "string_bikini",
+            "halterneck",
+            "wet_skin",
+            "side-tie_bikini_bottom",
+            "bare_legs"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_overalls",
+          "name": "假日休闲牛仔背带短裤",
+          "prose": "casual weekend streetwear: cute faded blue denim overall shorts worn over a short-sleeved striped yellow and white t-shirt, canvas sneakers, holding a fresh book under one arm with an aloof yet charming expression",
+          "tokens": [
+            "casual",
+            "overalls",
+            "denim_overalls",
+            "short_overalls",
+            "t-shirt",
+            "striped_shirt",
+            "sneakers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "small_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "very_long_hair",
+            "hair_intakes",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pristine porcelain fair skin, small perky breasts with delicate rose-pink nipples, slender flexible waist, exposed pussy, floor-length golden blonde hair pooling softly across the sheets, blushing stoic red eyes, bare feet, warm tranquil candlelight glow",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "彩南町 · 宇宙顶级杀手",
+        "era": "近现代科幻肉番世界",
+        "formNotes": "宇宙顶级杀手（代号夏娃/小暗），拥有全身体细胞自由变形能力；常态身穿黑哥特战裙、极度热爱鲷鱼烧和看书，口头禅是“讨厌色情的事情”，内心纯真又极容易害羞",
+        "research": "2026-09-02 调研（Danbooru golden_darkness + 矢吹健太朗原作设定）"
+      },
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "lala_satalin_deviluke",
+      "displayName": "菈菈·萨塔琳·戴比路克",
+      "originalName": "ララ・サタリン・デビルーク (Lala)",
+      "franchise": "To LOVE-Ru",
+      "aliases": [
+        "lala_satalin_deviluke",
+        "lala",
+        "lala_(to_love-ru)",
+        "菈菈",
+        "第一王女",
+        "出包王女",
+        "to love-ru"
+      ],
+      "identityProse": "Lala Satalin Deviluke from To LOVE-Ru by Kentaro Yabuki, the first princess of Planet Deviluke with ankle-length vibrant bubblegum-pink hair, a prominent bouncy ahoge, cheerful emerald-green eyes, a voluptuous hourglass figure, and a slender black devil tail with a spade-shaped heart tip.",
+      "identityTokens": [
+        "lala_satalin_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "very_long_hair",
+        "ahoge",
+        "green_eyes",
+        "demon_tail",
+        "tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "exactTokens": [
+        "lala_satalin_deviluke"
+      ],
+      "exactPrefixes": [
+        "lala_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "sainan_uniform",
+          "name": "彩南高校标准水手制服",
+          "prose": "Sainan High School uniform: short-sleeved white sailor shirt with teal sailor collar, front neckline pulled slightly open showing cleavage, teal pleated miniskirt, white slouch loose socks, loafers, and her slender black spade-heart tail swishing cheerfully",
+          "tokens": [
+            "sainan_high_school_uniform",
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "pleated_skirt",
+            "miniskirt",
+            "cleavage",
+            "loose_socks",
+            "loafers",
+            "demon_tail"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "deviluke_dress",
+          "name": "戴比路克王族露肩战服",
+          "prose": "royal Deviluke futuristic battle dress: a sleek white and yellow strapless mini-dress with cybernetic line accents, detached white arm sleeves, yellow mechanical choker, dark thigh-high boots, and her spade-tipped tail coiling freely",
+          "tokens": [
+            "futuristic_dress",
+            "white_dress",
+            "strapless_dress",
+            "bare_shoulders",
+            "cleavage",
+            "detached_sleeves",
+            "thighhighs",
+            "boots",
+            "demon_tail",
+            "sci-fi"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_bikini",
+          "name": "活力鹅黄分体绑带比基尼",
+          "prose": "a sunny yellow and white frilled halterneck bikini hugging her bountiful curves, delicate ribbon bow at the cleavage, side-tie bottoms with her sensitive spade tail twitching playfully, wet skin glistening in the sunlight",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "yellow_bikini",
+            "halterneck",
+            "frills",
+            "cleavage",
+            "side-tie_bikini_bottom",
+            "wet_skin",
+            "demon_tail"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "pajamas_negligee",
+          "name": "薄透粉色丝绸睡裙",
+          "prose": "sweet and seductive nightwear: a sheer pastel pink translucent silk camisole baby-doll negligee with delicate white lace trim along the plunging sweetheart neckline, bare shoulders, exposed thighs, and spade tail wagging gently",
+          "tokens": [
+            "nightgown",
+            "negligee",
+            "pink_sleepwear",
+            "camisole",
+            "sheer_fabric",
+            "lace_trim",
+            "cleavage",
+            "bare_shoulders",
+            "demon_tail"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "huge_breasts",
+            "areolae",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "demon_tail",
+            "tail",
+            "ahoge",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, radiant soft ivory skin, colossal buoyant breasts with tender rose-pink nipples, slender toned waist flaring into wide plush hips, glistening exposed pussy, cascading ankle-length bubblegum pink hair, sensitive black spade-heart tail twitching with desire, bare feet, warm romantic bedroom glow",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "彩南町 · 戴比路克星王族",
+        "era": "近现代科幻肉番世界",
+        "formNotes": "戴比路克星第一王女，天才发明家但总发明出失控搞笑道具；性格单纯天真、极度深爱结城梨斗，身后尾巴尖端的黑色爱心是戴比路克王族的超级弱点与敏感部位",
+        "research": "2026-09-02 调研（Danbooru lala_satalin_deviluke 1100+ posts）"
+      },
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "mika_pikazo",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "momo_velia_deviluke",
+      "displayName": "茉茉·贝莉雅·戴比路克",
+      "originalName": "モモ・ベリア・デビルーク (Momo)",
+      "franchise": "To LOVE-Ru",
+      "aliases": [
+        "momo_velia_deviluke",
+        "momo",
+        "momo_(to_love-ru)",
+        "茉茉",
+        "第三王女",
+        "乐园计划",
+        "出包王女",
+        "to love-ru"
+      ],
+      "identityProse": "Momo Belia Deviluke from To LOVE-Ru by Kentaro Yabuki, the third princess of Planet Deviluke with shoulder-length soft pastel pink hair with two curled strands sticking out, seductive amethyst purple-pink eyes, a voluptuous hourglass figure, a slender spade-heart devil tail, and a demure yet mischievous expression.",
+      "identityTokens": [
+        "momo_velia_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "medium_hair",
+        "short_hair",
+        "pink_eyes",
+        "purple_eyes",
+        "demon_tail",
+        "tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "exactTokens": [
+        "momo_velia_deviluke"
+      ],
+      "exactPrefixes": [
+        "momo_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "sainan_uniform",
+          "name": "彩南高校标准水手制服",
+          "prose": "Sainan High School uniform: neat short-sleeved white sailor blouse with teal collar, delicate bow at the chest, teal pleated miniskirt, sheer black thigh-high stockings with garter straps, dark school loafers, and her black devil tail swishing coyly",
+          "tokens": [
+            "sainan_high_school_uniform",
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "pleated_skirt",
+            "miniskirt",
+            "thighhighs",
+            "black_thighhighs",
+            "loafers",
+            "demon_tail"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "harem_negligee",
+          "name": "乐园计划透视薄纱蕾丝睡裙",
+          "prose": "an alluring and seductive private negligee: translucent lavender-violet sheer silk baby-doll nightgown with intricate white floral lace trim along the low-cut bust, spaghetti straps slipping slightly, bare shoulders, panties visible underneath, and spade tail coiling sensually",
+          "tokens": [
+            "negligee",
+            "nightgown",
+            "purple_dress",
+            "sheer_clothing",
+            "translucent_fabric",
+            "see-through",
+            "lace_trim",
+            "cleavage",
+            "bare_shoulders",
+            "demon_tail"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "deviluke_dress",
+          "name": "戴比路克王女华彩短裙",
+          "prose": "royal Deviluke futuristic princess attire: an elegant lilac-purple strapless cocktail dress with silver metallic panels, detached flared white arm cuffs, golden choker, dark purple thigh-high boots, and lush alien D-dial flowers blooming at her side",
+          "tokens": [
+            "strapless_dress",
+            "purple_dress",
+            "bare_shoulders",
+            "cleavage",
+            "detached_sleeves",
+            "thighhighs",
+            "boots",
+            "demon_tail",
+            "alien_plant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_bikini",
+          "name": "娇艳浅紫荷叶边分体比基尼",
+          "prose": "a seductive pastel lilac-violet two-piece bikini with delicate ruffled lace trim along the sweetheart bustline, side-tie micro bottoms, golden belly chain, and spade-shaped tail flicking through sunlit ocean spray",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "purple_bikini",
+            "halterneck",
+            "frills",
+            "cleavage",
+            "belly_chain",
+            "side-tie_bikini_bottom",
+            "demon_tail",
+            "wet_skin"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "areolae",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "demon_tail",
+            "tail",
+            "pink_hair",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, luminous fair porcelain skin, ripe heavy voluptuous breasts with tender rose-pink nipples, slender waist, wide sensual hips, exposed pussy, shoulder-length pink hair with curved strands framing her face, blushing mischievous eyes, sensitive black spade tail wriggling with pleasure, bare feet, warm bedroom candlelight",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "彩南町 · 戴比路克星王族",
+        "era": "近现代科幻肉番世界",
+        "formNotes": "戴比路克星第三王女，表面温文尔雅、礼貌纯情，实则极具小恶魔般的腹黑与策士手腕；主导并全力推行“乐园计划”（帮助梨斗建立全员后宫），擅长召唤使用各类奇异的外星植物",
+        "research": "2026-09-02 调研（Danbooru momo_velia_deviluke 1250+ posts）"
+      },
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "rella",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "kotegawa_yui",
+      "displayName": "古手川唯",
+      "originalName": "古手川 唯 (Kotegawa Yui)",
+      "franchise": "To LOVE-Ru",
+      "aliases": [
+        "kotegawa_yui",
+        "yui",
+        "yui_(to_love-ru)",
+        "古手川唯",
+        "唯",
+        "风纪委员",
+        "不知羞耻",
+        "出包王女",
+        "to love-ru"
+      ],
+      "identityProse": "Kotegawa Yui from To LOVE-Ru by Kentaro Yabuki, the serious and easily flustered disciplinary committee member with long straight glossy black hair, thin white hairband, striking golden-brown eyes, a curvaceous hourglass figure, and a proud tsundere expression.",
+      "identityTokens": [
+        "kotegawa_yui",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "very_long_hair",
+        "straight_hair",
+        "hairband",
+        "white_hairband",
+        "yellow_eyes",
+        "brown_eyes",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "exactTokens": [
+        "kotegawa_yui"
+      ],
+      "exactPrefixes": [
+        "yui_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "sainan_uniform",
+          "name": "彩南风纪委员水手制服",
+          "prose": "Sainan High School disciplinary uniform: neat short-sleeved white sailor blouse buttoned firmly up to the neck, teal sailor collar, red disciplinary committee armband on her left sleeve, teal pleated miniskirt, dark knee socks, and polished brown school loafers",
+          "tokens": [
+            "sainan_high_school_uniform",
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "armband",
+            "red_armband",
+            "pleated_skirt",
+            "miniskirt",
+            "knee_socks",
+            "loafers",
+            "white_hairband"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "cat_costume",
+          "name": "羞耻猫娘变身毛绒装",
+          "prose": "an overwhelmingly embarrassing transformed costume: fluffy black cat ears attached to a headband, a tight strapless black leather leotard mini-corset showing deep cleavage, furry paw mittens, a long black cat tail swishing above her hips, thigh-high black stockings, and bright blushing cheeks",
+          "tokens": [
+            "cat_costume",
+            "cat_ears",
+            "cat_tail",
+            "fake_animal_ears",
+            "strapless_leotard",
+            "cleavage",
+            "paw_gloves",
+            "thighhighs",
+            "black_thighhighs",
+            "heavy_blush",
+            "tsundere"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "school_swimsuit",
+          "name": "风纪委员纯白深蓝死库水",
+          "prose": "traditional Japanese navy-blue one-piece school competition swimsuit (sukumizu), form-fitting stretch fabric accentuating her voluptuous bust and trim waist, white rectangular fabric name tag reading Kotegawa on the chest, water droplets on smooth skin, and white swim cap held in hand",
+          "tokens": [
+            "swimsuit",
+            "school_swimsuit",
+            "one-piece_swimsuit",
+            "navy_blue_swimsuit",
+            "cleavage",
+            "wet_skin",
+            "white_hairband",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_sweater",
+          "name": "休日端庄开衫百褶长裙",
+          "prose": "modest and ladylike weekend casual attire: an ivory knitted cardigan buttoned modestly over a pastel lavender blouse, high-waisted pleated navy mid-length skirt, sheer black tights, brown low-heeled strap shoes, and a leather handbag",
+          "tokens": [
+            "casual",
+            "cardigan",
+            "knit_cardigan",
+            "blouse",
+            "pleated_skirt",
+            "pantyhose",
+            "black_pantyhose",
+            "shoes",
+            "white_hairband"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "white_hairband",
+            "very_long_hair",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pristine porcelain fair skin, bountiful firm breasts with tender rose-pink nipples, slender athletic waist, lush curved hips, exposed pussy, cascading silky black hair, iconic white hairband still perched in hair, furiously blushing tsundere expression, bare feet, soft dim bedroom lighting",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "彩南町 · 彩南高校风纪委员会",
+        "era": "近现代科幻肉番世界",
+        "formNotes": "彩南高校风纪委员，正义感极强、严厉整肃校风；口头禅是愤怒大喊“不知羞耻！（破廉耻）”，但本人经常因各种意外倒贴陷入各种极其香艳的尴尬场面，内心是个极度渴望纯爱的小少女",
+        "research": "2026-09-02 调研（Danbooru kotegawa_yui 960+ posts）"
+      },
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

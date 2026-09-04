@@ -535,6 +535,36 @@
     --character-soft:rgba(245,158,11,.16); --character-glow:rgba(245,158,11,.34);
     --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(30,41,59,.28);
   }
+  /* 派生：粉发双马尾/空之女王天使 · 伊卡洛斯 */
+  .pb[data-character="ikaros"] {
+    --character-accent:#f472b6; --character-accent-hover:#f9a8d4;
+    --character-soft:rgba(244,114,182,.16); --character-glow:rgba(244,114,182,.34);
+    --character-aura:rgba(244,114,182,.32); --character-aura-secondary:rgba(56,189,248,.22);
+  }
+  /* 派生：纯金及踝长发/红瞳哥特杀手 · 金色暗影 */
+  .pb[data-character="golden_darkness"] {
+    --character-accent:#eab308; --character-accent-hover:#facc15;
+    --character-soft:rgba(234,179,8,.16); --character-glow:rgba(234,179,8,.34);
+    --character-aura:rgba(234,179,8,.32); --character-aura-secondary:rgba(239,68,68,.24);
+  }
+  /* 派生：及踝粉长发/爱心恶魔尾巴王女 · 菈菈 */
+  .pb[data-character="lala_satalin_deviluke"] {
+    --character-accent:#f43f5e; --character-accent-hover:#fb7185;
+    --character-soft:rgba(244,63,94,.16); --character-glow:rgba(244,63,94,.34);
+    --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(52,211,153,.22);
+  }
+  /* 派生：粉短发紫瞳/小恶魔乐园计划 · 茉茉 */
+  .pb[data-character="momo_velia_deviluke"] {
+    --character-accent:#c084fc; --character-accent-hover:#d8b4fe;
+    --character-soft:rgba(192,132,252,.16); --character-glow:rgba(192,132,252,.34);
+    --character-aura:rgba(192,132,252,.32); --character-aura-secondary:rgba(244,114,182,.22);
+  }
+  /* 派生：黑长直白发箍/不知羞耻风纪委员 · 古手川唯 */
+  .pb[data-character="kotegawa_yui"] {
+    --character-accent:#10b981; --character-accent-hover:#34d399;
+    --character-soft:rgba(16,185,129,.16); --character-glow:rgba(16,185,129,.34);
+    --character-aura:rgba(16,185,129,.30); --character-aura-secondary:rgba(239,68,68,.20);
+  }
 
   /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb，形成柔和体积漫反射光 */
   body:has(.pb[data-character])::before {
@@ -641,6 +671,12 @@
   body:has(.pb[data-character="suou_amane"]) { --character-aura:rgba(244,63,94,.34); --character-aura-secondary:rgba(30,58,138,.24); }
   body:has(.pb[data-character="komine_sachi"]) { --character-aura:rgba(244,114,182,.32); --character-aura-secondary:rgba(186,230,253,.22); }
   body:has(.pb[data-character="harudera_yuria"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(30,41,59,.28); }
+  body:has(.pb[data-character="ikaros"]) { --character-aura:rgba(244,114,182,.32); --character-aura-secondary:rgba(56,189,248,.22); }
+  body:has(.pb[data-character="golden_darkness"]) { --character-aura:rgba(234,179,8,.32); --character-aura-secondary:rgba(239,68,68,.24); }
+  body:has(.pb[data-character="lala_satalin_deviluke"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(52,211,153,.22); }
+  body:has(.pb[data-character="momo_velia_deviluke"]) { --character-aura:rgba(192,132,252,.32); --character-aura-secondary:rgba(244,114,182,.22); }
+  body:has(.pb[data-character="kotegawa_yui"]) { --character-aura:rgba(16,185,129,.30); --character-aura-secondary:rgba(239,68,68,.20); }
+
 
 
 

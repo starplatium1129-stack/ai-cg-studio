@@ -38720,5 +38720,33 @@
     "source": "YUZUSOFT",
     "identityProse": "Tomotake Yoshino from Senren Banka by YUZUSOFT, the revered shrine maiden princess of Hoori with silky silver-white hair styled in elegant twin tails, parted center bangs framing her face, gentle yet dignified deep blue eyes, delicate cherry blossom hair ornaments, and a slender voluptuous figure.",
     "outfits": []
+  },
+  "kazami_kazuki": {
+    "characterId": "kazami_kazuki",
+    "displayName": "风见一姬",
+    "source": "Grisaia",
+    "identityProse": "Kazami Kazuki from Grisaia by Frontwing, the legendary genius older sister of Yuuji with floor-sweeping silvery-white hair, blunt bangs framing her delicate face, sharp yet intensely devoted crimson red eyes, slender graceful figure, and a cool stoic demeanor.",
+    "outfits": []
+  },
+  "suou_amane": {
+    "characterId": "suou_amane",
+    "displayName": "周防天音",
+    "source": "Grisaia",
+    "identityProse": "Suou Amane from Grisaia by Frontwing, the voluptuous and caring older-sister heroine with very long flowing crimson-red hair styled with distinctive circular hair rings at the sides, striking deep sapphire blue eyes, towering curvy figure with an ample bust, and a warm seductive smile.",
+    "outfits": []
+  },
+  "komine_sachi": {
+    "characterId": "komine_sachi",
+    "displayName": "小岭幸",
+    "source": "Grisaia",
+    "identityProse": "Komine Sachi from Grisaia by Frontwing, the polite and unconditionally obedient maid of Mihama Academy with short pastel pink hair styled in two sweet low side braids, swept bangs, bright innocent blue eyes, polite demure smile, and a curvaceous figure beneath her maid apron.",
+    "outfits": []
+  },
+  "harudera_yuria": {
+    "characterId": "harudera_yuria",
+    "displayName": "春寺由梨亚 (JB)",
+    "source": "Grisaia",
+    "identityProse": "Harudera Yuria (JB) from Grisaia by Frontwing, CIRS chief and Yuuji's official handler and guardian with long wavy honey-blonde hair, stylish red-framed glasses, a distinct beauty mark beneath her right eye, sharp intelligent blue eyes, and an impeccably tailored dark business suit.",
+    "outfits": []
   }
 }

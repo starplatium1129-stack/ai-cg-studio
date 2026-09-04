@@ -166,6 +166,16 @@
       "file": "grisaia.json",
       "franchise": "Grisaia",
       "count": 4
+    },
+    {
+      "file": "sora-no-otoshimono.json",
+      "franchise": "Sora no Otoshimono",
+      "count": 1
+    },
+    {
+      "file": "to-love-ru.json",
+      "franchise": "To LOVE-Ru",
+      "count": 4
     }
   ]
 }
