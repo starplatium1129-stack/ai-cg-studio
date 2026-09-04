@@ -1,0 +1,18 @@
+/* SPA 挂载前的首帧占位：避免 bundle 加载期间 #app 一片白。
+   原内联 <style> 已迁到此文件并以 <link> 引入，原因：
+   Vite 6 的 html-inline-proxy 在 build 模式下对内联 <style> 注册代理时用的
+   filePath key（绝对路径去 root，带前导 "/"）与 load 阶段查找用的 url
+   （cleanUrl 后相对路径，无前导 "/"）不一致，导致 "No matching HTML proxy
+   module found" 构建失败。外链 CSS 走正常 link 打包路径，无此 bug，且
+   <link rel=stylesheet> 在 head 中 render-blocking，防白屏效果等价。 */
+#app:empty::before {
+  content: "绫季绘境";
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #110b22;
+  color: #8f8aa8;
+  font: 600 13px/1.6 "PingFang SC", "Microsoft YaHei", sans-serif;
+  letter-spacing: 0.34em;
+}
