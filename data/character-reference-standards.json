@@ -7811,6 +7811,123 @@
         "grisaia_(series)"
       ],
       "outfits": []
+    },
+    {
+      "id": "ikaros",
+      "displayName": "伊卡洛斯",
+      "originalName": "イカロス (Ikaros)",
+      "source": "Sora no Otoshimono",
+      "identityProse": "Ikaros from Sora no Otoshimono, the type Alpha strategic battle angeloid with long pastel pink twin-tails, a delicate ahoge, luminous emerald-green eyes, a metal collar around her neck with a trailing broken chain, mechanical ear winglets, massive pure white feathered angel wings, and a quiet gentle expression.",
+      "identityTokens": [
+        "ikaros",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "ahoge",
+        "green_eyes",
+        "collar",
+        "metal_collar",
+        "chain",
+        "white_wings",
+        "angel_wings",
+        "robot_ears",
+        "large_breasts",
+        "sora_no_otoshimono"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "golden_darkness",
+      "displayName": "金色暗影",
+      "originalName": "金色の闇 / イヴ (Golden Darkness)",
+      "source": "To LOVE-Ru",
+      "identityProse": "Golden Darkness (Yami) from To LOVE-Ru by Kentaro Yabuki, the galaxy's deadliest bio-weapon assassin with floor-length lustrous golden blonde hair, distinctive hair intakes, calm yet expressive ruby-red eyes, petite yet curvaceous figure, and an aloof kuudere demeanor.",
+      "identityTokens": [
+        "golden_darkness",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "very_long_hair",
+        "hair_intakes",
+        "sidelocks",
+        "red_eyes",
+        "small_breasts",
+        "kuudere",
+        "to_love-ru"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "lala_satalin_deviluke",
+      "displayName": "菈菈·萨塔琳·戴比路克",
+      "originalName": "ララ・サタリン・デビルーク (Lala)",
+      "source": "To LOVE-Ru",
+      "identityProse": "Lala Satalin Deviluke from To LOVE-Ru by Kentaro Yabuki, the first princess of Planet Deviluke with ankle-length vibrant bubblegum-pink hair, a prominent bouncy ahoge, cheerful emerald-green eyes, a voluptuous hourglass figure, and a slender black devil tail with a spade-shaped heart tip.",
+      "identityTokens": [
+        "lala_satalin_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "very_long_hair",
+        "ahoge",
+        "green_eyes",
+        "demon_tail",
+        "tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "momo_velia_deviluke",
+      "displayName": "茉茉·贝莉雅·戴比路克",
+      "originalName": "モモ・ベリア・デビルーク (Momo)",
+      "source": "To LOVE-Ru",
+      "identityProse": "Momo Belia Deviluke from To LOVE-Ru by Kentaro Yabuki, the third princess of Planet Deviluke with shoulder-length soft pastel pink hair with two curled strands sticking out, seductive amethyst purple-pink eyes, a voluptuous hourglass figure, a slender spade-heart devil tail, and a demure yet mischievous expression.",
+      "identityTokens": [
+        "momo_velia_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "medium_hair",
+        "short_hair",
+        "pink_eyes",
+        "purple_eyes",
+        "demon_tail",
+        "tail",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "kotegawa_yui",
+      "displayName": "古手川唯",
+      "originalName": "古手川 唯 (Kotegawa Yui)",
+      "source": "To LOVE-Ru",
+      "identityProse": "Kotegawa Yui from To LOVE-Ru by Kentaro Yabuki, the serious and easily flustered disciplinary committee member with long straight glossy black hair, thin white hairband, striking golden-brown eyes, a curvaceous hourglass figure, and a proud tsundere expression.",
+      "identityTokens": [
+        "kotegawa_yui",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "very_long_hair",
+        "straight_hair",
+        "hairband",
+        "white_hairband",
+        "yellow_eyes",
+        "brown_eyes",
+        "large_breasts",
+        "cleavage",
+        "to_love-ru"
+      ],
+      "outfits": []
     }
   ]
 }

@@ -330,14 +330,16 @@
     },
     {
       "id": "momo_velia_deviluke",
-      "displayName": "茉茉·贝莉雅·戴比路克",
+      "displayName": "梦梦·贝莉雅·戴比路克",
       "originalName": "モモ・ベリア・デビルーク (Momo)",
       "franchise": "To LOVE-Ru",
       "aliases": [
         "momo_velia_deviluke",
         "momo",
         "momo_(to_love-ru)",
-        "茉茉",
+        "梦梦",
+        "梦梦·贝莉雅·戴比路克",
+        "梦梦",
         "第三王女",
         "乐园计划",
         "出包王女",
@@ -649,6 +651,166 @@
         "era": "近现代科幻肉番世界",
         "formNotes": "彩南高校风纪委员，正义感极强、严厉整肃校风；口头禅是愤怒大喊“不知羞耻！（破廉耻）”，但本人经常因各种意外倒贴陷入各种极其香艳的尴尬场面，内心是个极度渴望纯爱的小少女",
         "research": "2026-09-02 调研（Danbooru kotegawa_yui 960+ posts）"
+      },
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "nana_asta_deviluke",
+      "displayName": "娜娜·阿斯达·戴比路克",
+      "originalName": "ナナ・アスタ・デビルーク (Nana)",
+      "franchise": "To LOVE-Ru",
+      "aliases": [
+        "nana_asta_deviluke",
+        "nana",
+        "nana_(to_love-ru)",
+        "娜娜",
+        "第二王女",
+        "出包王女",
+        "to love-ru"
+      ],
+      "identityProse": "Nana Asta Deviluke from To LOVE-Ru by Kentaro Yabuki, the second princess of Planet Deviluke with long pink twin-tails, sharp yet endearing purple-pink eyes, a slender athletic petite figure, a delicate black spade-heart devil tail, and a feisty tsundere expression.",
+      "identityTokens": [
+        "nana_asta_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "hair_between_eyes",
+        "purple_eyes",
+        "demon_tail",
+        "tail",
+        "flat_chest",
+        "small_breasts",
+        "to_love-ru"
+      ],
+      "exactTokens": [
+        "nana_asta_deviluke"
+      ],
+      "exactPrefixes": [
+        "nana_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "sainan_uniform",
+          "name": "彩南高校标准水手制服",
+          "prose": "Sainan High School uniform: short-sleeved white sailor blouse with teal sailor collar, front ribbon tie, teal pleated miniskirt, loose white socks, loafers, and her black spade-heart devil tail flicking with tsundere energy",
+          "tokens": [
+            "sainan_high_school_uniform",
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "pleated_skirt",
+            "miniskirt",
+            "loose_socks",
+            "loafers",
+            "demon_tail"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "deviluke_dress",
+          "name": "戴比路克王女科技短装",
+          "prose": "royal Deviluke futuristic princess attire: sleek dark grey and vermilion sleeveless mini-dress with metallic cyber line trim, detached flared sleeves, thigh-high boots, and spade tail coiling behind her",
+          "tokens": [
+            "futuristic_dress",
+            "sleeveless_dress",
+            "bare_shoulders",
+            "detached_sleeves",
+            "thighhighs",
+            "boots",
+            "demon_tail",
+            "sci-fi"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_denim",
+          "name": "假日休闲无袖背心短裤",
+          "prose": "sporty casual streetwear: a fitted dark-red sleeveless crop top, distressed denim cutoff shorts, sneakers, and holding a small alien creature in her arms with a fond smile",
+          "tokens": [
+            "casual",
+            "crop_top",
+            "tank_top",
+            "denim_shorts",
+            "short_shorts",
+            "sneakers",
+            "demon_tail"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_bikini",
+          "name": "运动系带珊瑚粉分体比基尼",
+          "prose": "a sporty coral-pink two-piece halterneck bikini highlighting her slender athletic waist and petite frame, side-tie bottoms, and spade tail splashing clear ocean water",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "pink_bikini",
+            "halterneck",
+            "side-tie_bikini_bottom",
+            "demon_tail",
+            "wet_skin"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "small_breasts",
+            "flat_chest",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "demon_tail",
+            "tail",
+            "pink_hair",
+            "twintails",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, smooth alabaster skin, petite firm breasts with delicate strawberry-pink nipples, slender flexible waist, exposed pussy, pink twin-tails resting over her bare shoulders, sensitive spade-heart tail twitching with pleasure, blushing tsundere expression, bare feet, warm bedroom candlelight",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "彩南町 · 戴比路克星王族",
+        "era": "近现代科幻肉番世界",
+        "formNotes": "戴比路克星第二王女，性格活泼好胜的傲娇假小子，自幼能与各类宇宙生物心灵沟通，对自己的贫乳十分在意，常常跟梨斗斗嘴却暗生情愫",
+        "research": "2026-09-02 调研（Danbooru nana_asta_deviluke 650+ posts）"
       },
       "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
       "curatedArtistStyles": [

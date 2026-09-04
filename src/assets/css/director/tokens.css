@@ -565,6 +565,12 @@
     --character-soft:rgba(16,185,129,.16); --character-glow:rgba(16,185,129,.34);
     --character-aura:rgba(16,185,129,.30); --character-aura-secondary:rgba(239,68,68,.20);
   }
+  /* 派生：粉双马尾小虎牙/戴比路克二王女 · 娜娜 */
+  .pb[data-character="nana_asta_deviluke"] {
+    --character-accent:#fb7185; --character-accent-hover:#fda4af;
+    --character-soft:rgba(251,113,133,.16); --character-glow:rgba(251,113,133,.34);
+    --character-aura:rgba(251,113,133,.32); --character-aura-secondary:rgba(168,85,247,.20);
+  }
 
   /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb，形成柔和体积漫反射光 */
   body:has(.pb[data-character])::before {
@@ -676,6 +682,8 @@
   body:has(.pb[data-character="lala_satalin_deviluke"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(52,211,153,.22); }
   body:has(.pb[data-character="momo_velia_deviluke"]) { --character-aura:rgba(192,132,252,.32); --character-aura-secondary:rgba(244,114,182,.22); }
   body:has(.pb[data-character="kotegawa_yui"]) { --character-aura:rgba(16,185,129,.30); --character-aura-secondary:rgba(239,68,68,.20); }
+  body:has(.pb[data-character="nana_asta_deviluke"]) { --character-aura:rgba(251,113,133,.32); --character-aura-secondary:rgba(168,85,247,.20); }
+
 
 
 
