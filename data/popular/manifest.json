@@ -156,6 +156,11 @@
       "file": "nier-automata.json",
       "franchise": "NieR:Automata",
       "count": 1
+    },
+    {
+      "file": "yuzusoft.json",
+      "franchise": "YUZUSOFT",
+      "count": 3
     }
   ]
 }

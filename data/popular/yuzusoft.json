@@ -1,0 +1,509 @@
+{
+  "version": 1,
+  "franchise": "YUZUSOFT",
+  "characters": [
+    {
+      "id": "murasame",
+      "displayName": "丛雨",
+      "originalName": "ムラサメ (Murasame)",
+      "franchise": "YUZUSOFT",
+      "aliases": [
+        "murasame",
+        "murasame_(senren)",
+        "ムラサメ",
+        "丛雨",
+        "村雨",
+        "幼刀",
+        "千恋万花",
+        "senren banka"
+      ],
+      "identityProse": "Murasame from Senren Banka by YUZUSOFT, the ancient sacred blade spirit of Murasamemaru with long flowing pale-green hair tied in high twin tails, a prominent ahoge, vibrant ruby-red eyes, petite slender figure, and ethereal blue spirit wisps floating around her.",
+      "identityTokens": [
+        "murasame (senren)",
+        "1girl",
+        "solo",
+        "pale_green_hair",
+        "light_green_hair",
+        "very_long_hair",
+        "sidelocks",
+        "blunt_bangs",
+        "ahoge",
+        "red_eyes",
+        "red_ribbon",
+        "hair_ribbon",
+        "flat_chest",
+        "small_breasts",
+        "floating",
+        "spirit",
+        "katana",
+        "sword",
+        "senren_banka"
+      ],
+      "exactTokens": [
+        "murasame (senren)"
+      ],
+      "exactPrefixes": [
+        "murasame_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "spirit_kimono",
+          "name": "神刀刀灵改良和服",
+          "prose": "sacred blade spirit ceremonial attire: deep navy-black sleeveless modified kimono showing bare shoulders and armpits, layered white frilled undershirt, black and vermilion criss-cross chest cords with a center knot, yellow woven obi rope, tiered pleated skirt with lace hem, detached floating sleeves, and the sheathed Murasamemaru katana at her hip",
+          "tokens": [
+            "kimono",
+            "japanese_clothes",
+            "sleeveless_kimono",
+            "detached_sleeves",
+            "bare_shoulders",
+            "frills",
+            "lace_trim",
+            "obi",
+            "cross_straps",
+            "katana",
+            "sheath",
+            "spirit"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "modern_dress",
+          "name": "穗织夏日清凉洋装",
+          "prose": "a lovely breezy white and mint-green summer sundress with delicate floral lace trim along the sweetheart neckline, thin spaghetti shoulder straps, straw sunhat tied with a red silk ribbon, brown leather sandals, and sun-dappled greenery ambience",
+          "tokens": [
+            "sundress",
+            "white_dress",
+            "spaghetti_straps",
+            "sleeveless",
+            "lace_trim",
+            "sun_hat",
+            "sandals",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "shrine_miko",
+          "name": "神道奉纳小巫女装",
+          "prose": "traditional Shinto junior priestess vestments: pure snow-white crossover miko top with wide flowing sleeves, pleated bright crimson hakama skirt, small golden bells tied to her red hair ribbons, white tabi socks, and wooden geta sandals",
+          "tokens": [
+            "miko",
+            "white_kimono",
+            "wide_sleeves",
+            "hakama",
+            "red_hakama",
+            "tabi",
+            "geta",
+            "shrine",
+            "bells",
+            "traditional_japanese"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_yukata",
+          "name": "穗织花火绯红浴衣",
+          "prose": "a cheerful summer festival cotton yukata patterned with delicate goldfish and water ripples, contrasting deep scarlet obi sash tied in a fluffy butterfly bow behind her back, round paper fan held in one hand, and festival lantern lights reflecting in her crimson eyes",
+          "tokens": [
+            "yukata",
+            "japanese_clothes",
+            "obi",
+            "red_obi",
+            "folding_fan",
+            "uchiwa",
+            "geta",
+            "fireworks"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "flat_chest",
+            "petite",
+            "small_breasts",
+            "tiny_pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "very_long_hair",
+            "ahoge",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, luminous flawless fair skin, delicate petite frame with small smooth breasts and sensitive pale pink nipples, slender supple waist, exposed pussy, cascading pale-green hair draping softly over her shoulders, cute ahoge, bare feet, warm tranquil tatami room lantern glow",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "穗织镇（Hoori）· 神刀丛雨丸",
+        "era": "和风奇幻美少女世界",
+        "formNotes": "神刀「丛雨丸」的刀之灵，外表是娇小玲珑的白/浅绿发少女，已存在数百年的神刀管理者；平时元气活泼自称“我辈”，有着极度怕鬼与爱吃甜点的可爱反差",
+        "research": "2026-09-02 调研（Danbooru murasame_(senren) + 萌娘百科官方设定）"
+      },
+      "animeStudio": "YUZUSOFT official visual novel art, Muririn / Kobuichi style",
+      "curatedArtistStyles": [
+        "kobuichi",
+        "muririn",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "hitachi_mako",
+      "displayName": "常陆茉子",
+      "originalName": "常陸 茉子 (Hitachi Mako)",
+      "franchise": "YUZUSOFT",
+      "aliases": [
+        "hitachi_mako",
+        "mako",
+        "mako_(senren)",
+        "常陆茉子",
+        "茉子",
+        "千恋万花",
+        "senren banka"
+      ],
+      "identityProse": "Hitachi Mako from Senren Banka by YUZUSOFT, the skilled shinobi guardian of the Tomotake family with short black hair and distinctive long sidelocks, a playful ahoge, bright emerald green eyes, an adorable cat-like mouth, and a curvaceous athletic figure.",
+      "identityTokens": [
+        "hitachi_mako",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair_with_long_locks",
+        "sidelocks",
+        "ahoge",
+        "green_eyes",
+        "cat_mouth",
+        "large_breasts",
+        "cleavage",
+        "senren_banka"
+      ],
+      "exactTokens": [
+        "hitachi_mako"
+      ],
+      "exactPrefixes": [
+        "mako_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "ninja_suit",
+          "name": "常陆流隐密忍者装",
+          "prose": "Hitachi clan shinobi combat attire: black form-fitting sleeveless tactical ninja top revealing cleavage, dark fishnet arm warmers, leather forearm guards, short pleated wrap skirt over black safety bike shorts, utility thigh pouch with kunai throwing knives, and soft ninja tabi boots",
+          "tokens": [
+            "ninja",
+            "ninja_suit",
+            "sleeveless_shirt",
+            "cleavage",
+            "arm_guards",
+            "gloves",
+            "pleated_skirt",
+            "safety_shorts",
+            "thigh_strap",
+            "kunai",
+            "boots",
+            "tabi"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "shrine_casual",
+          "name": "朝武官邸家政围裙装",
+          "prose": "comfortable household attendant wear: a frilled white apron worn over a comfortable green and cream long-sleeved pullover sweater, pleated dark brown skirt, loose slouch socks, house slippers, and hair tied casually back while doing chores",
+          "tokens": [
+            "apron",
+            "maid_apron",
+            "sweater",
+            "skirt",
+            "loose_socks",
+            "slippers",
+            "casual",
+            "housewife",
+            "domestic"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "school_uniform",
+          "name": "穗织学园水手制服",
+          "prose": "Hoori Academy sailor uniform: crisp white short-sleeved sailor shirt with dark navy collar, green silk ribbon tie, high-waisted navy pleated miniskirt, white slouch socks, and brown leather penny loafers",
+          "tokens": [
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "ribbon",
+            "pleated_skirt",
+            "miniskirt",
+            "loose_socks",
+            "loafers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_bikini",
+          "name": "清溪夏日运动比基尼",
+          "prose": "a sporty forest-green and black halterneck two-piece bikini accentuating her athletic waist and generous bust, sheer mesh cropped cover-up hoodie, black choker, and bare feet wading through a sunlit mountain stream",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "two-piece_swimsuit",
+            "halterneck",
+            "cleavage",
+            "choker",
+            "wet_skin",
+            "barefoot",
+            "beachwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "athletic_body",
+            "navel",
+            "pussy",
+            "cat_mouth",
+            "ahoge",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, smooth glowing pale skin, beautifully shaped bountiful breasts with sensitive rosy-pink nipples, slender toned midriff, exposed pussy, playful cat-like smile with a flustered blush, cute ahoge, bare legs and bare feet, soft warm tatami mat lighting",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "穗织镇（Hoori）· 常陆家",
+        "era": "和风奇幻美少女世界",
+        "formNotes": "常陆一族的年轻女忍者，负责贴身护卫朝武芳乃；家务料理全能、刀术身手敏捷，看似稳重可靠但经常害羞自曝，有着招牌的猫嘴笑意与丰满反差身段",
+        "research": "2026-09-02 调研（Danbooru hitachi_mako + 萌娘百科官方设定）"
+      },
+      "animeStudio": "YUZUSOFT official visual novel art, Muririn / Kobuichi style",
+      "curatedArtistStyles": [
+        "kobuichi",
+        "muririn",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "tomotake_yoshino",
+      "displayName": "朝武芳乃",
+      "originalName": "朝武 芳乃 (Tomotake Yoshino)",
+      "franchise": "YUZUSOFT",
+      "aliases": [
+        "tomotake_yoshino",
+        "yoshino",
+        "yoshino_(senren)",
+        "朝武芳乃",
+        "芳乃",
+        "巫女姬",
+        "千恋万花",
+        "senren banka"
+      ],
+      "identityProse": "Tomotake Yoshino from Senren Banka by YUZUSOFT, the revered shrine maiden princess of Hoori with silky silver-white hair styled in elegant twin tails, parted center bangs framing her face, gentle yet dignified deep blue eyes, delicate cherry blossom hair ornaments, and a slender voluptuous figure.",
+      "identityTokens": [
+        "tomotake_yoshino",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "twintails",
+        "sidelocks",
+        "blunt_bangs",
+        "blue_eyes",
+        "hair_flower",
+        "hair_ornament",
+        "large_breasts",
+        "cleavage",
+        "senren_banka"
+      ],
+      "exactTokens": [
+        "tomotake_yoshino"
+      ],
+      "exactPrefixes": [
+        "yoshino_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "shrine_maiden",
+          "name": "神职正统巫女服",
+          "prose": "traditional sacred Hoori shrine maiden ceremonial vestments: immaculate white kimono blouse with billowing open sleeves, flowing vermilion-red pleated hakama skirt, sheer black pantyhose stockings, delicate pastel pink cherry blossom hairpins, and lacquered wooden geta sandals",
+          "tokens": [
+            "miko",
+            "japanese_clothes",
+            "white_kimono",
+            "wide_sleeves",
+            "hakama",
+            "red_hakama",
+            "pantyhose",
+            "black_pantyhose",
+            "hair_flower",
+            "geta",
+            "traditional_japanese"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "ceremonial_dance",
+          "name": "奉纳神乐华彩神装",
+          "prose": "elaborate Shinto ceremonial kagura dance attire: an opulent white silk kimono gown trimmed with gilded cloud patterns, trailing pink brocade haori, golden kagura bell staff held in two hands, and fluffy white dog ears sprouting adorably from her silver hair under ancestral enchantment",
+          "tokens": [
+            "kimono",
+            "haori",
+            "white_kimono",
+            "gold_trim",
+            "wide_sleeves",
+            "bells",
+            "dog_ears",
+            "animal_ears",
+            "hair_flower",
+            "dance",
+            "shinto"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "school_uniform",
+          "name": "穗织学园水手制服",
+          "prose": "Hoori Academy student uniform: neat white sailor blouse with dark navy blue sailor collar, crimson ribbon tie at the chest, pleated dark navy miniskirt, sheer black tights, and polished black school loafers",
+          "tokens": [
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "ribbon",
+            "pleated_skirt",
+            "pantyhose",
+            "black_pantyhose",
+            "loafers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_yukata",
+          "name": "重樱风雅夏夜浴衣",
+          "prose": "a dignified midnight navy silk summer yukata adorned with delicate wisteria and cherry blossom patterns, contrasting pastel lilac obi sash, wooden geta sandals, and a lace folding fan held gently in one hand",
+          "tokens": [
+            "yukata",
+            "japanese_clothes",
+            "navy_yukata",
+            "obi",
+            "folding_fan",
+            "geta",
+            "hair_flower",
+            "traditional_japanese"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "very_long_hair",
+            "hair_flower",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, radiant alabaster porcelain skin, voluptuous firm breasts with tender cherry-blossom pink nipples, narrow curved waist, lush hips, glistening exposed pussy, cascading silvery hair adorned with a single soft flower pin, bare feet, romantic candlelight ambiance",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "穗织镇（Hoori）· 朝武神社",
+        "era": "和风奇幻美少女世界",
+        "formNotes": "穗织镇朝武神社的巫女姬，背负着朝武一族世代驱除祟神的神圣使命；外表端庄典雅有千金小姐的贵气，内心纯情、极度喜爱甜食，由于家族诅咒在特定时刻会长出惹人怜爱的犬耳",
+        "research": "2026-09-02 调研（Danbooru tomotake_yoshino + 萌娘百科官方设定）"
+      },
+      "animeStudio": "YUZUSOFT official visual novel art, Muririn / Kobuichi style",
+      "curatedArtistStyles": [
+        "muririn",
+        "kobuichi",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

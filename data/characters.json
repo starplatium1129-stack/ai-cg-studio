@@ -6538,5 +6538,271 @@
     ],
     "accent_color": "#94a3b8",
     "bg_color": "#0a0d14"
+  },
+  {
+    "id": "murasame",
+    "name": "丛雨",
+    "alias": [
+      "Murasame",
+      "ムラサメ",
+      "幼刀",
+      "村雨",
+      "丛雨丸"
+    ],
+    "type": "popular",
+    "icon": "🗡️",
+    "portrait": {
+      "image": "../assets/characters/popular-murasame.png?v=5",
+      "alt": "丛雨 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "浅黄绿及腰长发 · 侧发束 · 头顶翘起大呆毛",
+      "hair_color": "浅黄绿/淡草绿",
+      "eyes": "红宝石色晶莹双瞳",
+      "hairstyle": "双马尾侧长束 · 鲜红垂落发带 · 灵动呆毛",
+      "uniform": "神刀刀灵露肩改良和服 / 穗织夏日洋装",
+      "expression": "元气活泼 · 傲娇害羞 · 自称老朽/我辈",
+      "style": "cheerful ancient sacred sword spirit",
+      "signature": "浅草绿长发、头顶大呆毛、鲜红长发带、露肩改良和服与神刀丛雨丸"
+    },
+    "personality": [
+      "元气开朗、自来熟又有些小傲娇",
+      "第一人称自称“我辈/老朽”",
+      "身为神刀之灵却极度怕鬼",
+      "特别喜欢吃甜点尤其是棒棒糖和蛋糕",
+      "对将臣充满深深的依恋与守护之意"
+    ],
+    "likes": [
+      "甜点、草莓蛋糕和冰淇淋",
+      "在穗织的神社屋檐上晒太阳",
+      "被将臣摸摸头",
+      "擦拭和展示自己的神刀丛雨丸"
+    ],
+    "classic_cg": {
+      "title": "神刀相唤的初遇",
+      "description": "将臣拔出断裂的丛雨丸后，娇小的草绿发少女从天而降伴随着神圣光芒，轻巧地自称神刀之管理者。"
+    },
+    "identity": {
+      "role": "神刀「丛雨丸」之灵 / 朝武神社守护刀灵",
+      "age": "外表萝莉 / 存在数百岁",
+      "occupation": "神刀之灵 / 刀灵守护者",
+      "faction": "穗织镇 · 朝武神社"
+    },
+    "tags": [
+      "绿发",
+      "红瞳",
+      "呆毛",
+      "红发带",
+      "露肩和服",
+      "刀灵",
+      "萝莉",
+      "千恋万花"
+    ],
+    "bg_story": "丛雨是柚子社《千恋＊万花》的核心女主角之一，乃是穗织镇供奉的神刀「丛雨丸」中诞生的刀之灵。拥有娇小的幼女身姿、一头浅草绿长发和灵动的大呆毛，已在世间存在了数百年。自称“我辈”，性格活泼单纯、容易吃醋害羞，虽然本体是灵体却极度害怕幽灵怪物，在与将臣的羁绊中逐渐体会到人类的温暖与爱意。",
+    "palette": [
+      "浅草绿",
+      "朱砂红",
+      "曜石黑"
+    ],
+    "weather": [
+      "晴空温阳",
+      "神木晨曦",
+      "夏夜微风"
+    ],
+    "speech": "呼啊~感觉睡了好久好久呢。汝就是唤醒我辈的人吗？我辈正是神刀丛雨丸的管理者丛雨！",
+    "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+    "traits": [
+      "murasame (senren)",
+      "1girl",
+      "solo",
+      "pale_green_hair",
+      "light_green_hair",
+      "very_long_hair",
+      "sidelocks",
+      "ahoge",
+      "red_eyes",
+      "red_ribbon",
+      "hair_ribbon",
+      "flat_chest",
+      "spirit",
+      "katana",
+      "senren_banka"
+    ],
+    "accent_color": "#86efac",
+    "bg_color": "#08170e"
+  },
+  {
+    "id": "hitachi_mako",
+    "name": "常陆茉子",
+    "alias": [
+      "Hitachi Mako",
+      "常陸茉子",
+      "茉子",
+      "忍者妹"
+    ],
+    "type": "popular",
+    "icon": "🍃",
+    "portrait": {
+      "image": "../assets/characters/popular-hitachi_mako.png?v=5",
+      "alt": "常陆茉子 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色齐耳短发 · 耳侧垂颊长发束 · 活泼呆毛",
+      "hair_color": "乌黑",
+      "eyes": "清澈透亮翡翠绿瞳",
+      "hairstyle": "短发带侧发束 · 呆毛 · 猫嘴笑颜",
+      "uniform": "常陆流贴身无袖忍者战装 / 朝武家日常围裙",
+      "expression": "爽朗幽默 · 猫嘴调皮 · 害羞自曝",
+      "style": "athletic devoted shinobi girl",
+      "signature": "黑短发侧长束、猫嘴笑意、翠绿眼眸、苦无飞镖与丰满身段"
+    },
+    "personality": [
+      "家务料理与潜行护卫全能",
+      "性格爽朗幽默、爱开玩笑（天然黑）",
+      "容易害羞、紧张时会不小心自我爆料",
+      "对自己丰满的身材有些许害羞与在意",
+      "极度忠诚负责，为了守护重要之人甘愿涉险"
+    ],
+    "likes": [
+      "为朝武家操持美味的家常饭菜",
+      "忍者体术与苦无投掷训练",
+      "和将臣开玩笑看到将臣害羞的样子",
+      "安静温馨的居家生活"
+    ],
+    "classic_cg": {
+      "title": "月夜瓦顶的忍者护卫",
+      "description": "神社屋檐黑瓦之上，茉子手持苦无轻盈半跪在夜风中，猫嘴笑意中带着令人安心的敏锐守护。"
+    },
+    "identity": {
+      "role": "常陆一族现任女忍者 / 朝武家专属护卫与侍女",
+      "age": "少女",
+      "occupation": "忍者护卫 / 侍从家政",
+      "faction": "穗织镇 · 常陆一族"
+    },
+    "tags": [
+      "黑发短发",
+      "绿瞳",
+      "猫嘴",
+      "忍者",
+      "苦无",
+      "呆毛",
+      "丰满",
+      "千恋万花"
+    ],
+    "bg_story": "常陆茉子是柚子社《千恋＊万花》的女主角之一，出身于代代侍奉朝武家的常陆一族，是负责贴身保护巫女姬朝武芳乃的年轻女忍者。身手矫健、精通各种忍术与家务料理，看似调皮爱开玩笑，内心其实极度纯情温柔。常常不自觉地做出可爱的猫嘴表情，在严肃任务与少女恋爱之间有着极其可爱的反差魅力。",
+    "palette": [
+      "暗影黑",
+      "翡翠绿",
+      "纯净白"
+    ],
+    "weather": [
+      "夜风微凉",
+      "竹林晨曦",
+      "细雨檐下"
+    ],
+    "speech": "初次见面，在下是常陆茉子。只要有在下在，就绝不会让任何危险靠近芳乃大人和您哦！",
+    "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+    "traits": [
+      "hitachi_mako",
+      "1girl",
+      "solo",
+      "black_hair",
+      "short_hair_with_long_locks",
+      "sidelocks",
+      "ahoge",
+      "green_eyes",
+      "cat_mouth",
+      "large_breasts",
+      "ninja",
+      "senren_banka"
+    ],
+    "accent_color": "#22c55e",
+    "bg_color": "#08170c"
+  },
+  {
+    "id": "tomotake_yoshino",
+    "name": "朝武芳乃",
+    "alias": [
+      "Tomotake Yoshino",
+      "朝武芳乃",
+      "芳乃",
+      "巫女姬大人"
+    ],
+    "type": "popular",
+    "icon": "🌸",
+    "portrait": {
+      "image": "../assets/characters/popular-tomotake_yoshino.png?v=5",
+      "alt": "朝武芳乃 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银白及腰长双马尾 · 中分前额刘海 · 樱花头饰",
+      "hair_color": "银白/月光银",
+      "eyes": "深邃高雅海蓝美眸",
+      "hairstyle": "高束银双马尾 · 樱花发饰 · 黑色连裤袜",
+      "uniform": "正统神职红白大袖巫女服 / 奉纳神乐金绣礼装",
+      "expression": "端庄典雅 · 高洁清冷 · 纯情娇羞",
+      "style": "dignified elegant shrine princess",
+      "signature": "银白双马尾、樱花发饰、红白正统巫女服、黑丝连裤袜与深蓝凤眸"
+    },
+    "personality": [
+      "举止端庄有礼的大小姐气质",
+      "责任感极强、独自背负家族除祟使命",
+      "超级甜食控，遇到好吃点心就瞬间破防",
+      "面对恋爱手足无措、极其容易害羞红脸",
+      "外冷内热，全心全意为镇民与所爱之人付出"
+    ],
+    "likes": [
+      "穗织产的传统金锷烧与甜点",
+      "跳神道奉纳神乐舞",
+      "神社庭院的早樱漫步",
+      "安静地和将臣独处喝茶"
+    ],
+    "classic_cg": {
+      "title": "月夜神乐的奉纳华舞",
+      "description": "神社神乐殿前，芳乃手执神乐铃翩跹起舞，绯红行灯袴与银白长发流转，神圣而绝美。"
+    },
+    "identity": {
+      "role": "朝武神社掌管者 / 穗织巫女姬",
+      "age": "少女",
+      "occupation": "神社巫女姬 / 除祟神职",
+      "faction": "穗织镇 · 朝武神社"
+    },
+    "tags": [
+      "银白长发",
+      "双马尾",
+      "蓝瞳",
+      "巫女服",
+      "黑色连裤袜",
+      "樱花头饰",
+      "千恋万花"
+    ],
+    "bg_story": "朝武芳乃是柚子社《千恋＊万花》的女主角之一，穗织镇朝武神社的巫女姬，肩负着朝武一族历代传承的除祟使命。外表高洁典雅、宛如古代神道画卷中走出的千金巫女，实际内心纯洁真挚、极度钟爱各种甜点美食。面对将臣从起初的提防疏离到深陷爱恋，举手投足间散发出令人心醉的神圣与娇羞。",
+    "palette": [
+      "月光白",
+      "朱砂绯",
+      "深海蓝"
+    ],
+    "weather": [
+      "落樱霏霏",
+      "秋月和风",
+      "白雪神社"
+    ],
+    "speech": "我是朝武芳乃。作为穗织的巫女，守护这片土地是我的职责……请多多指教。",
+    "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
+    "traits": [
+      "tomotake_yoshino",
+      "1girl",
+      "solo",
+      "white_hair",
+      "very_long_hair",
+      "twintails",
+      "sidelocks",
+      "blue_eyes",
+      "hair_flower",
+      "miko",
+      "senren_banka"
+    ],
+    "accent_color": "#e0f2fe",
+    "bg_color": "#0a101d"
   }
 ]
