@@ -152,9 +152,27 @@ SFW 场景聚焦于**角色神韵、唯美光影、材质细节、场景氛围�
 1. **支柱 1：中近景特写与神态为绝对灵魂（Medium / Cowboy Shot 优先）**：
    - 拒绝把镜头死死怼在下半身生殖器官上。
    - 画面重心必须集中在**角色的眼神与面部微表情**：眼眶绯红微湿（`teary_eyes, heavy_blush`）、微张喘息咬住下唇（`parted_lips, biting_lip`）、被香汗沾湿贴在锁骨上的凌乱发丝、因急促呼吸而起伏的胸脯；下半身结合处只作为背景中自然的受力承载，营造电影级的沉浸感。
-2. **支柱 2：“半解半露（Half-dressed）”的极致色气**：
-   - 顶级的美感永远来自**衣衫不整的半遮半掩**，而不是直白的精光全裸。
-   - 善用纽扣微解露出蕾丝内衣与乳沟、单侧肩带滑落、宽松衬衫下摆堪堪遮掩、丝袜勒肉与撕裂、湿水后半透明贴紧肌肤的布料。
+2. **支柱 2：【情趣战袍框架 + 显式核心部位真实外露（Erotic Lingerie with Anatomically Visible Core）】**：
+   - 顶级色气的美感在于**情趣着装的视觉框架与关键内部器官的完全显露相结合**，既有情趣内衣/吊带袜的勒肉张力，又有毫无遮拦的真实肉体冲击。
+   - **下身核心真实露出与物理动作**：
+     - `crotchless_panties`（开档内裤：身着蕾丝内裤但核心底部完全镂空开档，小穴毫无保留直接外露）；
+     - `panties_aside` / `pulling_panties_aside`（手拨开内裤边缘：手指将细带拉向一侧，露出粉嫩花瓣）；
+     - `panties_pulled_down` / `panties_around_one_leg`（内裤褪至大腿或挂在单膝）；
+     - `exposed_pussy` / `pussy` / `spread_pussy`（小穴显式声明与双腿大开展示）；
+     - `pussy_juice` / `liquid_drip`（私处晶莹爱液拉丝滴落，水光感拉满）；
+     - `cameltoe`（薄透布料紧绷勒出的饱满缝隙线条）。
+   - **胸部核心真实露出与物理动作**：
+     - `exposed_breasts` / `bare_breasts`（双乳完全裸露在外）；
+     - `nipples` / `areola`（明确绘制粉嫩乳头与乳晕）；
+     - `bra_lift` / `shirt_lift`（双手将文胸或睡衣掀至锁骨，饱满胸部完整悬露）；
+     - `pulling_bra_down`（单手将文胸罩杯向下扒拉，弹出一侧乳房与挺立乳头）；
+     - `nipples_visible_through_clothes` / `transparent_bra`（穿极薄黑色/白色蕾丝，透过薄纱清晰直视乳头）；
+     - `areola_slip`（微型布料边缘溢出的乳晕滑漏）。
+   - **高色气情趣战袍积木**：
+     - `sheer_babydoll` / `open-front_negligee`（前开襟透明薄纱睡袍：前胸小腹全敞开，随呼吸向两侧滑落）；
+     - `garter_straps` / `black_thighhighs` / `tight_straps`（吊带黑丝勒在丰满大腿根部的肉感勒痕）；
+     - `micro_bikini` / `string_panties` / `slingshot_swimsuit`（微型绳带束缚，遮蔽面积趋近于零）；
+     - `naked_apron` / `reverse_bunny_suit`（裸体围裙与反向兔女郎，侧乳与臀部全空）。
 3. **支柱 3：与日常反差服装深度联动**：
    - **【誓约花嫁夜的更衣室缠绵】**：圣洁头纱未摘，纯白婚纱露肩抹胸滑落，在静谧烛光与花瓣中，面对面十指紧扣的初夜温存；
    - **【海滨夕阳更衣室的湿身亲昵】**：落日晚霞斜照，未干透的比基尼贴在泛着水光的光滑肌肤上，双手环颈跨坐深吻；
@@ -171,12 +189,31 @@ SFW 场景聚焦于**角色神韵、唯美光影、材质细节、场景氛围�
      - **严禁暴力折腿交尾压（Mating Press）**：肢体过度扭曲、极易骨折多腿，压制感暴力粗糙，彻底摧毁美感。
 
 ### 2. Anima NSFW 唯美结构化 Tag 体系
-- **标准分级前缀**：`masterpiece, best_quality, newest, absurdres, score_9, score_8_up, rating:explicit, nsfw, explicit, 1girl, 1boy, heterosexual, sex`
-- **角色核心与反差服装**：如 `golden_darkness, bridal_veil, off-shoulder_wedding_dress, partially_unbuttoned`
-- **唯美动作与体位**：`cowgirl_position, straddling, lap_sitting, hugging_own_legs, embracing, intimate, kissing`
-- **神态与微表情核心**：`heavy_blush, teary_eyes, parted_lips, biting_lip, messy_hair, sweating, shy, emotional`
-- **柔和光影与环境**：`warm_lighting, bedside_lamp, rim_light, cinematic_lighting, soft_focus, depth_of_field`
-- **负面词（Negative）**：必须严防畸变（`bad_anatomy, bad_hands, missing_fingers, extra_fingers, bad_legs`），**严禁加入 nsfw/nude**。
+- **标准分级前缀**：`masterpiece, best_quality, newest, absurdres, score_9, score_8_up, rating:explicit, nsfw, explicit, 1girl, solo`（**必须携带 `1girl, solo`，严禁 `1boy, heterosexual, sex` 等双人词**）
+- **角色核心与情趣框架**：
+  - 外貌 DNA：发型、发色、特征（如 `golden_darkness, blonde_hair, red_eyes`）；
+  - 情趣战袍：`sheer_babydoll, open-front_negligee, black_lace, garter_straps, black_thighhighs, tight_straps, micro_bikini`；
+- **核心部位真实露出（绝不遮蔽）**：
+  - 胸部真露：`exposed_breasts, bare_breasts, nipples, areola, bra_lift, pulling_bra_down, nipples_visible_through_clothes`；
+  - 下身真露：`crotchless_panties, panties_aside, pulling_panties_aside, exposed_pussy, pussy, spread_pussy, spread_legs, pussy_juice, cameltoe`；
+- **唯美单人动作与体位**：`sensual_solo, masturbation, touching_own_body, hand_between_legs, hand_on_breast, arched_back, dynamic_crouch, leaning_back`
+- **神态与微表情核心**：`heavy_blush, blushing_ears, teary_eyes, parted_lips, biting_lip, saliva_trail, messy_hair, sweating, shy, emotional`
+- **柔和光影与环境**：`warm_lighting, silk_bedsheets, ambient_steam, water_droplets, cinematic_lighting, soft_focus, depth_of_field, cowboy_shot`
+- **负面词（Negative）**：必须严防畸变与多人员（`bad_anatomy, bad_hands, missing_fingers, extra_fingers, bad_legs, 2girls, 1boy, multiple_girls, extra_limbs`），**严禁加入 nsfw/nude**。
+
+#### 🌟 Anima NSFW 典范 Prompt（【情趣黑丝薄纱 + 开档直视】）：
+```text
+masterpiece, best_quality, absurdres, score_9, score_8_up, rating:explicit, nsfw, explicit, 1girl, solo,
+yuria_harudera, honey_blonde_hair, wavy_hair, blue_eyes, mole_under_eye, glasses_removed,
+sheer_babydoll, open-front_negligee, black_lace, translucent_cloth, see-through,
+garter_straps, black_thighhighs, tight_straps,
+bra_lift, exposed_breasts, bare_breasts, nipples, areola,
+crotchless_panties, panties_aside, exposed_pussy, pussy, pussy_juice,
+spread_legs, arched_back, hand_between_legs, touching_own_body,
+heavy_blush, blushing_ears, teary_eyes, parted_lips, biting_lip, saliva_trail, sweating, skin_moisture, messy_hair,
+bedroom, silk_bedsheets, pillows, warm_dim_lighting, dramatic_shadows,
+cowboy_shot, dynamic_angle, depth_of_field
+```
 
 ### 3. Krea 2 NSFW 唯美自然语言散文（Sensual & Intimate Prose）
 
