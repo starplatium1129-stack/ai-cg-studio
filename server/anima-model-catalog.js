@@ -22,6 +22,14 @@ var MODELS = Object.freeze({
   'anima-yume-v1.0': { file:'AnimaYume_v10_final_base.safetensors', label:'Anima Yume v1.0', family:'anima', profileId:'anima_yume_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'], noLora:true },
   // 接入：MiaoMiao Harem Anima v1.2（MIAOKA 质感微调，专攻半厚涂肌肤质感与唯美光影）。
   'anima-miaomiao-v1.2': { file:'miaomiaoHarem_anima12.safetensors', label:'MiaoMiao Harem Anima v1.2', family:'anima', profileId:'anima_miaomiao_v12', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
+  // 2026-09-04 接入：MiaoMiao Harem Anima v1.6（MIAOKA Anima 主线正式版，2026-08-20 发布）。
+  // 与 v1.2 同架构（实测：685 tensor / 2.091B 参数 / 28 层 DiT / 全 BF16，去掉 safetensors 头部后
+  // 权重数据区字节数完全相同 4182137856），属版本迭代而非换底模。
+  // 顶层键前缀由 model.diffusion_model.* 改为 net.*，ComfyUI unet_prefix_from_state_dict() 候选表
+  // 已含 "net."，自动识别剥离，无需任何权重转换。
+  // 官方推荐 30 步 / CFG 4.0-5.0 / Euler，与 ANIMA_DEFAULTS 一致。
+  // 注意：1.5/1.6 为美学强化模型，会影响 artist tag 表现；负面官方建议含 shiny skin。
+  'anima-miaomiao-v1.6': { file:'miaomiaoHarem_anima16.safetensors', label:'MiaoMiao Harem Anima v1.6', family:'anima', profileId:'anima_miaomiao_v16', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
   'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], noLora:true, rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 
@@ -31,6 +39,7 @@ var PROFILE_BY_MODEL = Object.freeze({
   'anima-yume-v1.0':'anima_yume_v10',
   'anima-2.9b-preview-v1':'anima_29b_preview_v1',
   'anima-miaomiao-v1.2':'anima_miaomiao_v12',
+  'anima-miaomiao-v1.6':'anima_miaomiao_v16',
   'krea2-turbo-fp8':'krea2_turbo_fp8'
 });
 
@@ -39,7 +48,7 @@ var LORAS = Object.freeze({
     file:'ayachi_nene_v21_anima.safetensors',
     name:'ayachi_nene_v21_anima',
     character:'nene',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1', 'anima-miaomiao-v1.2'],
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'],
     minStrength:0.65,
     maxStrength:1
   },
@@ -47,7 +56,7 @@ var LORAS = Object.freeze({
     file:'shiki_natsume_v21_anima.safetensors',
     name:'shiki_natsume_v21_anima',
     character:'natsume',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1', 'anima-miaomiao-v1.2'],
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-2.9b-preview-v1', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'],
     minStrength:0.65,
     maxStrength:1
   }

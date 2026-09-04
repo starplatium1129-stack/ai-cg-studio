@@ -221,6 +221,42 @@
       "size": "832×1216"
     },
     {
+      "id": "anima_miaomiao_v16",
+      "engine": "anima",
+      "model_id": "anima-miaomiao-v1.6",
+      "name": "MiaoMiao Harem Anima v1.6",
+      "match": [
+        "anima-miaomiao-v1.6"
+      ],
+      "tag_style": "space",
+      "lora_in_prompt": false,
+      "exact_tokens": [],
+      "quality_prefix": "masterpiece, best quality, very aesthetic",
+      "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration, border, white_border, framed, letterbox, padding, margin, inset, comic_panel",
+      "negative_mode": "replace",
+      "negative_replace_scope": "boilerplate",
+      "capabilities": {
+        "negative": true,
+        "lora": true,
+        "noLora": true,
+        "characterIdentity": true,
+        "dualCharacter": false,
+        "hires": true,
+        "teaCache": true,
+        "weightSyntax": true,
+        "promptFormat": "anima-tags",
+        "experimental": false
+      },
+      "rating_all": "safe",
+      "rating_r15": "sensitive",
+      "rating_r18": "nsfw",
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "steps": 30,
+      "cfg": 4.5,
+      "size": "832×1216"
+    },
+    {
       "id": "krea2_turbo_fp8",
       "engine": "krea2",
       "model_id": "krea2-turbo-fp8",
