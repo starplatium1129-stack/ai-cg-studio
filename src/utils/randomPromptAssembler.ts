@@ -61,7 +61,7 @@ export interface RandomDraw {
 /** 角色身份 token：与 CHAR_PROMPT 同源，采样池必须排除。 */
 const IDENTITY_TOKENS: Record<string, ReadonlySet<string>> = {
   nene: new Set(['1girl', 'solo', 'ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'pink_hair_ribbons']),
-  natsume: new Set(['1girl', 'solo', 'shiki_natsume', 'very_long_black_hair', 'golden_yellow_eyes', 'two_red_hairclips', 'mole_under_eye', 'no_hair_ribbon']),
+  natsume: new Set(['1girl', 'solo', 'shiki_natsume', 'black_hair', 'very_long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip']),
   triad: new Set(['2girls', '1girl', 'solo']),
 }
 
