@@ -522,7 +522,7 @@ watch(isRunning, running => emit('running-change', running), { immediate: true }
 }
 .batch-char-avatar-wrap {
   position: relative; width: 56px; height: 56px;
-  border-radius: var(--r-full); overflow: hidden;
+  border-radius: var(--r-pill); overflow: hidden;
   border: 1px solid var(--border-soft); background: var(--bg-deep);
 }
 .batch-char-avatar { width: 100%; height: 100%; object-fit: cover; }

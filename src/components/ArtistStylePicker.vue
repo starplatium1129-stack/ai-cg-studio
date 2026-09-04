@@ -622,7 +622,7 @@ function applyCombo(artistIds: readonly string[]) {
   border-radius: var(--r-pill);
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.3);
-  color: #f59e0b;
+  color: var(--warning-text);
   font-size: var(--fs-mono-xs);
   font-weight: 600;
 }

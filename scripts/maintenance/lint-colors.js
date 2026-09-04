@@ -30,6 +30,7 @@ var ALLOWED = new Set([
   '#e85d75', '#8d1732', '#d6a039', '#7a5210',
   '#521b29', '#ffb4c1', '#4b3817', '#ffd489',
   '#17131b', '#8b5cf6',
+  '#0d0b14', '#ff75a0', '#ffa3c2', '#a093b5',
   '#FF9EC4', '#FFD3E0', '#FFB86C', '#FFD8A8', '#C8E6C9', '#BBDEFB',
   '#E1BEE7',
   '#81D4FA', '#F48FB1', '#A5D6A7', '#F8BBD0', '#FFCC80',

@@ -10,92 +10,93 @@
 
 :root {
   /* ---- Core palette (唯一主题：深色；2026-08-28 起不再有浅色覆盖) ----
-     2026-09-01 甜系升级：Candy Galgame Night —— 高饱和樱花粉 + 薰衣草紫，
-     背景保持深色但更有萌系首页的甜味；对比度仍按 WCAG AA 严格把关。 */
-  --bg-deep:       #1b1017;     /* 最深背景:草莓紫夜 */
-  --bg-base:       #2b1823;     /* 页面背景:甜莓夜 */
-  --bg-surface:    rgba(100, 42, 68, 0.68); /* 玻璃卡片:粉莓玻璃 */
-  --bg-elevated:   rgba(128, 56, 88, 0.78); /* 浮层/输入框:甜莓提亮 */
-  --bg-hover:      rgba(150, 65, 100, 0.72);/* 悬停态 */
+     Galgame 梦幻夜空 & 水晶亚克力质感系统 (Cosmic Indigo & Crystal Acrylic) ——
+     深邃澄澈的星夜底色 + 樱花粉 / 薰衣草紫 / 汽水苏打青三色糖果流光点睛；
+     对比度按 WCAG AA 严格把关。 */
+  --bg-deep:       #0d0b14;     /* 最深夜空: 纯净通透深绀黑 */
+  --bg-base:       #14101e;     /* 页面背景: 梦幻星夜绀紫 */
+  --bg-surface:    rgba(28, 21, 41, 0.72); /* 玻璃卡片: 水晶亚克力透亮面板 */
+  --bg-elevated:   rgba(44, 32, 64, 0.82); /* 浮层/输入框: 星尘柔和提亮 */
+  --bg-hover:      rgba(66, 48, 96, 0.65); /* 悬停态: 星尘紫光 */
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: #2e1320;
+  --bg-surface-elevated: #1a1428;
 
-  --border-soft:   rgba(255, 214, 239, 0.20);
-  --border-strong: rgba(255, 176, 220, 0.36);
+  --border-soft:   rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 214, 245, 0.28);
 
   /* ---- Text ---- */
-  --text-primary:   #fff5fb;   /* 主文字 */
-  --text-secondary: #e8d3e1;   /* 副文字 */
-  /* 占位/说明。#d0b6c6 合成到 --bg-elevated 仍 ≥4.5:1。 */
-  --text-muted:     #d0b6c6;
-  --text-inverse:   #241331;   /* 粉底深色字反色 */
+  --text-primary:   #fff7fc;   /* 主文字: 暖白带微弱恋爱温润感 */
+  --text-secondary: #c8bed6;   /* 副文字: 淡薰衣草紫灰 */
+  /* 占位/说明。合成到 --bg-elevated 仍 ≥4.5:1。 */
+  --text-muted:     #a093b5;
+  --text-inverse:   #120c1a;   /* 浅色高光底深色字反色 */
   /* 三级说明文字别名：页面代码按 primary/secondary/tertiary 三级引用。 */
   --text-tertiary:  var(--text-muted);
-  /* 禁用态文字：直接用达标色值，不再用 opacity 压字。 */
-  --text-disabled:  #c9aec0;
+  /* 禁用态文字：直接用达标色值，不再用 opacity 压字。合成到 --bg-elevated 仍 ≥4.5:1。 */
+  --text-disabled:  #9487aa;
 
-  /* ---- Accent (糖果樱花粉 — 仅高亮/CTAs) ---- */
-  --accent:         #ff8fc4;
-  --accent-hover:   #ffb3d9;
-  --accent-soft:    rgba(255, 143, 196, 0.18);
-  --accent-glow:    rgba(255, 143, 196, 0.42);
-  --accent-violet:  #d8b4fe;
-  --archive-blue:   #7fe7ff;
-  --archive-blue-soft: rgba(127, 231, 255, 0.16);
-  --archive-cyan-glow: rgba(150, 238, 255, 0.38); /* 档案 scan line / 签名光 */
-  --nene-violet:    #d8b4fe;
-  --natsume-amber:  #f2bb68;
-  --editorial-gold: #d7b56d;
-  --editorial-gold-soft: rgba(215, 181, 109, 0.14);
+  /* ---- Accent (糖果樱花粉 & 二次元梦幻强调色) ---- */
+  --accent:         #ff75a0;
+  --accent-hover:   #ffa3c2;
+  --accent-soft:    rgba(255, 117, 160, 0.16);
+  --accent-glow:    rgba(255, 117, 160, 0.38);
+  --accent-violet:  #b784f6;
+  --archive-blue:   #5eead4;
+  --archive-blue-soft: rgba(94, 234, 212, 0.16);
+  --archive-cyan-glow: rgba(94, 234, 212, 0.38); /* 档案 scan line / 签名光 */
+  --nene-violet:    #b784f6;
+  --natsume-amber:  #fbb040;
+  --editorial-gold: #f2bb68;
+  --editorial-gold-soft: rgba(242, 187, 104, 0.14);
 
-  /* ---- Rella 夜空氛围（2026-09-01 甜系化：粉樱夜空 / 薰衣草仅做小面积收尾） ----
+  /* ---- Rella 夜空氛围（Galgame 梦幻星尘夜空） ----
      只做背景/辉光/渐变层，不做文字色；对比度仍由既有文字 token 承担。 */
-  --rella-night:       #2a0f1d;  /* 最深夜空 */
-  --rella-night-soft:  #421b30;  /* 夜空过渡层 */
-  --rella-night-glass: rgba(42, 15, 29, 0.64); /* 夜空玻璃卡 */
-  --rella-star:        #ffe3f0;  /* 糖果粉白星辉 */
-  --rella-cyan:        #7fe7ff;  /* 清亮冰青 */
-  --rella-violet:      #d8b4fe;  /* 薰衣草紫 */
-  --rella-glow-cyan:   rgba(255, 143, 196, 0.24);  /* 粉辉光主导层 */
-  --rella-glow-violet: rgba(216, 180, 254, 0.13);  /* 紫辉光点缀层 */
-  --rella-glow-pink:   rgba(255, 143, 196, 0.30);  /* 粉辉光强化层 */
-  --stage-rella: linear-gradient(160deg, #4b1f35 0%, #321627 46%, #190d15 100%);
+  --rella-night:       #0e0c16;  /* 最深夜空 */
+  --rella-night-soft:  #1d162c;  /* 夜空过渡层 */
+  --rella-night-glass: rgba(24, 18, 36, 0.70); /* 夜空玻璃卡 */
+  --rella-star:        #fff2f9;  /* 糖果粉白星辉 */
+  --rella-cyan:        #5eead4;  /* 汽水苏打青 */
+  --rella-violet:      #b784f6;  /* 梦幻薰衣草紫 */
+  --rella-glow-cyan:   rgba(94, 234, 212, 0.22);  /* 青辉光点缀层 */
+  --rella-glow-violet: rgba(183, 132, 246, 0.24);  /* 紫辉光主导层 */
+  --rella-glow-pink:   rgba(255, 117, 160, 0.32);  /* 樱粉辉光强化层 */
+  --stage-rella: linear-gradient(160deg, #241838 0%, #171126 48%, #0d0b14 100%);
 
   /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
   --archive-paper:       #f2f5f3;
   --archive-ink:         #11181d;
-  --archive-cyan:        #7fe7ff;
+  --archive-cyan:        #5eead4;
   --archive-graphite:    #667078;
   --archive-ember:       #e65338;
-  --archive-grid:        rgba(255, 214, 239, 0.06);
-  --archive-line:        rgba(255, 214, 239, 0.16);
-  --archive-glass:       rgba(35, 22, 49, 0.80);
+  --archive-grid:        rgba(255, 255, 255, 0.05);
+  --archive-line:        rgba(255, 255, 255, 0.12);
+  --archive-glass:       rgba(24, 18, 36, 0.82);
   /* 档案面板圆角：语义别名统一走 --r-lg，避免只改一处。 */
   --r-dossier:           var(--r-lg);
   --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(43, 18, 35, 0.80);
-  --glass-highlight: color-mix(in srgb, white 12%, transparent);
-  --glass-fill: rgba(72, 30, 50, 0.60);
-  --glass-fill-strong: rgba(92, 38, 62, 0.84);
-  --glass-edge: rgba(255, 214, 239, 0.26);
-  --glass-specular: color-mix(in srgb, white 26%, transparent);
-  --glass-shadow: 0 18px 48px rgba(16, 8, 26, 0.28);
+  --nav-bg: rgba(20, 16, 30, 0.82);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
+  --glass-fill: rgba(28, 21, 41, 0.65);
+  --glass-fill-strong: rgba(44, 32, 64, 0.85);
+  --glass-edge: rgba(255, 255, 255, 0.14);
+  --glass-specular: color-mix(in srgb, white 24%, transparent);
+  --glass-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
 
   /* ---- Functional ---- */
-  --success:        #81C784;
-  --warning:        #FFA726;
-  --danger:         #ff9b8f;
-  --info:           #90CAF9;
+  --success:        #4ade80;
+  --warning:        #fbbf24;
+  --danger:         #f87171;
+  --info:           #60a5fa;
 
   /* ---- Color Script moods (美术规范用) ---- */
-  --mood-joy:       #FFD54F;
-  --mood-love:      #ff8fc4;
-  --mood-calm:      #81C784;
-  --mood-sad:       #90CAF9;
-  --mood-tension:   #c99cef;
-  --mood-warmth:    #FFB74D;
+  --mood-joy:       #ffd166;
+  --mood-love:      #ff75a0;
+  --mood-calm:      #4ade80;
+  --mood-sad:       #60a5fa;
+  --mood-tension:   #b784f6;
+  --mood-warmth:    #fbb040;
 
   /* ---- 文字专用色阶 ----------------------------------------------------
      上面的功能色与 mood 色是为"色块/描边"调的:高饱和、亮度高。
@@ -107,13 +108,13 @@
      故按需提亮到 4.5:1 以上(deep 底上仍在 6.4:1 以上)。 */
   --success-text:       var(--success);
   --warning-text:       var(--warning);
-  --danger-text:        #ff9b8f;   /* 甜系珊瑚红，elevated 上约 5.08:1 */
+  --danger-text:        #f87171;   /* 甜系珊瑚红，elevated 上 ≥4.5:1 */
   --info-text:          var(--info);
   --mood-joy-text:      var(--mood-joy);
-  --mood-love-text:     #ff9dbe;   /* 甜系樱粉，elevated 上约 5.32:1 */
+  --mood-love-text:     #ff8db0;   /* 甜系樱粉，elevated 上 ≥4.5:1 */
   --mood-calm-text:     var(--mood-calm);
   --mood-sad-text:      var(--mood-sad);
-  --mood-tension-text:  #d8b4fe;   /* 薰衣草紫，elevated 上约 5.84:1 */
+  --mood-tension-text:  #c498ff;   /* 薰衣草紫，elevated 上 ≥4.5:1 */
   --mood-warmth-text:   var(--mood-warmth);
   /* mood 色块之上的文字:6 种 mood 底全部是高亮度色,白字最差 1.4:1,
      故统一用深墨。此值不随主题翻转 —— 底色是 mood 而不是页面底。 */
@@ -188,20 +189,19 @@
   --r-xs: 6px;
 
   /* ---- Shadow ladder(仅三级,对应 DESIGN.md §Elevation 的 L1/L2/L3) ----
-     2026-07-31 视觉审查修订：阴影整体收敛（弱化柔光），层级靠 1px 硬边框
-     与局部深色块表达，避免"发脏"。 */
-  --shadow-sm: 0 4px 12px rgba(4, 3, 16, 0.14);
-  --shadow-md: 0 8px 20px rgba(4, 3, 16, 0.20);
-  --shadow-lg: 0 14px 34px rgba(4, 3, 16, 0.30);
-  /* 玻璃面高光内衬 — 与 shadow ladder 叠加使用 */
+     二次元水晶亚克力折射与梦幻光晕阶梯 (Crystal Acrylic Specular & Bloom) */
+  --shadow-sm: 0 4px 12px rgba(4, 3, 16, 0.24);
+  --shadow-md: 0 8px 24px rgba(4, 3, 16, 0.36);
+  --shadow-lg: 0 16px 40px rgba(4, 3, 16, 0.50);
+  /* 玻璃面高光内衬 — 水晶亚克力双层高光折射 (顶部 1px 晶莹雪白，底部环境微阴影) */
   --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
-  --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
-  --shadow-glass-elevated: inset 0 1px 0 color-mix(in srgb, white 16%, transparent), 0 16px 40px -8px color-mix(in srgb, black 50%, transparent);
+  --shadow-glass-md: inset 0 1px 0 rgba(255, 255, 255, 0.20), inset 0 -1px 0 rgba(0, 0, 0, 0.22), var(--shadow-md);
+  --shadow-glass-elevated: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.35), 0 18px 44px -6px rgba(0, 0, 0, 0.52);
   /* 战术硬边框（1px 高对比）：替代柔和阴影作为主要层级手段 */
   --line-tactical: 1px solid var(--border-strong);
-  /* accent 光晕:只有两档(控件 / 主操作),不再按 6px…64px 自由发挥 */
-  --glow-sm: 0 0 12px var(--accent-glow);
-  --glow-md: 0 0 24px var(--accent-glow);
+  /* accent 光晕: 恋爱感柔光弥散 (Bloom) */
+  --glow-sm: 0 0 14px var(--accent-glow);
+  --glow-md: 0 0 28px var(--accent-glow), 0 0 10px rgba(183, 132, 246, 0.25);
   /* 焦点/选中环:统一 3px,状态色由 --ring-color 决定 */
   --ring-color: var(--accent);
   --ring: 0 0 0 3px color-mix(in srgb, var(--ring-color) 34%, transparent);
@@ -457,7 +457,7 @@ a:hover { color: var(--accent-hover); }
 
 img { max-width: 100%; display: block; }
 
-::selection { background: var(--accent-glow); color: var(--text-primary); }
+::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff7fc; }
 
 /* ============================================================
    Layout
@@ -1800,7 +1800,7 @@ body:has(.pb) .route-atmosphere .route-index {
 
 /* ── 全局质感：字体渲染 / 选区 / 滚动条 / 数字对齐 / 按压 / 图片入场 ── */
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-::selection { background: color-mix(in srgb, var(--accent) 26%, transparent); color: inherit; }
+::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff7fc; }
 /* ── 滚动条 ──
    标准属性打底（Chrome 121+ / Firefox / Safari 18.2+，含 overlay 滚动条模式）：
    新版浏览器默认 overlay scrollbars，::-webkit-scrollbar 会被忽略，
@@ -1808,18 +1808,18 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
    经典非 overlay 模式下由下面的 ::-webkit-scrollbar 渐变增强。 */
 * {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--accent) 52%, var(--archive-blue)) transparent;
+  scrollbar-color: color-mix(in srgb, var(--accent) 56%, var(--archive-blue)) transparent;
 }
-::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 42%, transparent), color-mix(in srgb, var(--accent) 38%, transparent));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 48%, transparent), color-mix(in srgb, var(--accent) 44%, transparent));
     border: 2px solid transparent;
     background-clip: padding-box;
     border-radius: var(--r-pill);
   }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 75%, transparent), color-mix(in srgb, var(--accent) 70%, transparent));
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-corner { background: transparent; }
@@ -1862,6 +1862,36 @@ textarea { scrollbar-width: thin; }
    收藏目前是纯展示状态（无切换入口），作品册每次打开全部红心齐弹一遍。
    连同零引用的 .heart-pop/.btn-favorite 选择器整块删除；将来若加收藏
    切换，应做成点击瞬时类（toggle 时挂 400ms 后移除）。 */
+
+/* ── 二次元 Galgame 梦幻质感增强工具类 ── */
+.title-gradient,
+.title-gradient-sakura {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--mood-love-text) 52%, var(--accent-violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px var(--accent-glow));
+}
+.title-gradient-violet {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--mood-tension-text) 52%, var(--archive-blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(183, 132, 246, 0.28));
+}
+.acrylic-glass {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(18px) saturate(130%);
+  box-shadow: var(--shadow-glass-md);
+}
+.acrylic-glass-elevated {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(20px) saturate(135%);
+  box-shadow: var(--shadow-glass-elevated);
+}
+.glow-bloom {
+  box-shadow: 0 0 22px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
 
 /* ── 键盘快捷键徽章 (<kbd> Keyboard Shortcut Badge) ── */
 kbd,

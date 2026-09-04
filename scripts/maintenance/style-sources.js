@@ -107,6 +107,9 @@ const STANDALONE_REPORTS = new Set([
   // 2026-08-30 UX 审计报告（与前三份同族、自带设计系统）；建报告时漏登记，
   // 合并 followup 后 27 处报告内字面量把应用预算撑爆（54/36），2026-08-31 补录。
   'docs/ux-audit-2026-08-30.html',
+  'docs/seven-dimension-audit-2026-08-31.html',
+  'docs/arknights-artists-research-2026-08-31.html',
+  'docs/workflow-audit-2026-08-31.html',
 ]);
 
 function isStandaloneReport(relPath) {

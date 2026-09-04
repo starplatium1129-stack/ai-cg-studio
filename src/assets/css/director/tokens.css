@@ -4,20 +4,20 @@
    Depends on: design-system.css
    ============================================================ */
 
-  @property --character-accent { syntax:'<color>'; inherits:true; initial-value:#ff8fc4; }
-  @property --character-accent-hover { syntax:'<color>'; inherits:true; initial-value:#ffb3d9; }
-  @property --character-soft { syntax:'<color>'; inherits:true; initial-value:rgba(255,143,196,.18); }
-  @property --character-glow { syntax:'<color>'; inherits:true; initial-value:rgba(255,143,196,.42); }
-  @property --character-aura { syntax:'<color>'; inherits:true; initial-value:rgba(216,180,254,.34); }
-  @property --character-aura-secondary { syntax:'<color>'; inherits:true; initial-value:rgba(255,143,196,.22); }
+  @property --character-accent { syntax:'<color>'; inherits:true; initial-value:#ff75a0; }
+  @property --character-accent-hover { syntax:'<color>'; inherits:true; initial-value:#ffa3c2; }
+  @property --character-soft { syntax:'<color>'; inherits:true; initial-value:rgba(255,117,160,.16); }
+  @property --character-glow { syntax:'<color>'; inherits:true; initial-value:rgba(255,117,160,.38); }
+  @property --character-aura { syntax:'<color>'; inherits:true; initial-value:rgba(183,132,246,.28); }
+  @property --character-aura-secondary { syntax:'<color>'; inherits:true; initial-value:rgba(255,117,160,.20); }
   .pb {
     --fs-stage-glyph: 1.7rem;
     --fs-ios-control: 16px;
     --z-stage-backdrop: 0;
     --ease-stage-sweep: cubic-bezier(.4,0,.2,1);
-    --character-accent:#ff8fc4; --character-accent-hover:#ffb3d9;
-    --character-soft:rgba(255,143,196,.18); --character-glow:rgba(255,143,196,.42);
-    --character-aura:rgba(216,180,254,.34); --character-aura-secondary:rgba(255,143,196,.22);
+    --character-accent:#ff75a0; --character-accent-hover:#ffa3c2;
+    --character-soft:rgba(255,117,160,.16); --character-glow:rgba(255,117,160,.38);
+    --character-aura:rgba(183,132,246,.28); --character-aura-secondary:rgba(255,117,160,.20);
     --accent:var(--character-accent); --accent-hover:var(--character-accent-hover);
     --accent-soft:var(--character-soft); --accent-glow:var(--character-glow);
     /* 刻意设计：角色主题切换时 6 个继承型 @property 颜色在 --motion-atmosphere
