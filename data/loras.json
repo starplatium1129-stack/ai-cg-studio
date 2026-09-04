@@ -54,18 +54,26 @@
     "outfit_guidance": {
       "official_witch": [
         "nene_witch_canonical",
+        "official_witch_outfit",
         "witch_hat",
+        "pink_striped_hat_ribbon",
         "black_cape",
-        "criss-cross_halter",
+        "vivid_pink_lining",
+        "criss_cross_halter",
         "crop_top",
         "strap_between_breasts",
-        "pink_bow",
-        "black_skirt",
+        "striped_bow",
+        "bare_midriff",
+        "cleavage",
+        "sideboob",
+        "underboob",
+        "no_bra",
+        "black_pleated_mini_skirt",
         "asymmetrical_legwear",
         "striped_thighhighs",
         "single_thighhigh",
         "frilled_socks",
-        "midriff"
+        "black_boots"
       ],
       "official_school": [
         "nene_school_uniform",
