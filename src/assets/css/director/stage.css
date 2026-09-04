@@ -52,14 +52,14 @@
     transition:opacity var(--motion-atmosphere) var(--ease-out);
     background:
       conic-gradient(from 20deg, transparent 0 42%, color-mix(in srgb,var(--accent) 34%,transparent) 58% 76%, transparent 94%),
-      radial-gradient(circle, transparent 0 60%, color-mix(in srgb,var(--accent-violet) 16%,transparent) 65% 67%, transparent 69%);
+      radial-gradient(circle, transparent 0 60%, color-mix(in srgb,var(--accent-hover) 18%,transparent) 65% 67%, transparent 69%);
     -webkit-mask:radial-gradient(closest-side, transparent 0 76%, var(--text-primary) 76% 79%, transparent 79%);
     mask:radial-gradient(closest-side, transparent 0 76%, var(--text-primary) 76% 79%, transparent 79%);
   }
   .pb .stage-magic-ring::after {
     content:''; position:absolute; inset:19%;
     border-radius:50%;
-    background:conic-gradient(from 200deg, transparent 0 32%, color-mix(in srgb,var(--accent-violet) 28%,transparent) 50% 64%, transparent 84%);
+    background:conic-gradient(from 200deg, transparent 0 32%, color-mix(in srgb,var(--accent-hover) 32%,transparent) 50% 64%, transparent 84%);
     -webkit-mask:radial-gradient(closest-side, transparent 0 70%, var(--text-primary) 70% 74%, transparent 74%);
     mask:radial-gradient(closest-side, transparent 0 70%, var(--text-primary) 70% 74%, transparent 74%);
   }

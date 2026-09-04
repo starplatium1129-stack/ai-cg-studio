@@ -1322,7 +1322,7 @@ body:has(.chat-page) .sakura-fall {
   left: -1px; top: 14px; bottom: 14px;
   width: 3px;
   border-radius: var(--r-pill);
-  background: linear-gradient(180deg, var(--character-accent), color-mix(in srgb, var(--character-accent) 38%, var(--accent-violet)));
+  background: linear-gradient(180deg, var(--character-accent), color-mix(in srgb, var(--character-accent) 38%, var(--accent)));
   opacity: .8;
 }
 

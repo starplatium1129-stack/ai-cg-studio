@@ -133,7 +133,7 @@ let width = 0
 let height = 0
 let dpr = 1
 let particles: RuntimeParticle[] = []
-let palette: Palette = { primary: '#d9d5df', secondary: '#77717f', accent: '#f4a6d7' }
+let palette: Palette = { primary: '#d9d5df', secondary: '#77717f', accent: '#ff8fc4' }
 let visible = true
 let pointerX = -10000
 let pointerY = -10000
@@ -170,7 +170,7 @@ function readPalette() {
   palette = {
     primary: style.getPropertyValue('--text-primary').trim() || '#d9d5df',
     secondary: style.getPropertyValue('--text-muted').trim() || '#77717f',
-    accent: style.getPropertyValue('--archive-blue').trim() || style.getPropertyValue('--accent-violet').trim() || '#f4a6d7',
+    accent: style.getPropertyValue('--accent').trim() || style.getPropertyValue('--accent-violet').trim() || '#ff8fc4',
   }
   draw()
 }

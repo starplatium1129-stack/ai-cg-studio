@@ -1,33 +1,34 @@
 ---
 version: "alpha"
 name: "Lingji Atelier"
-description: "A quiet, image-first Galgame creation desk for Ayachi Nene and Shiki Natsume."
+description: "A sweet, image-first Galgame creation desk for Ayachi Nene and Shiki Natsume."
 colors:
-  primary: "#F4A6D7"
-  on-primary: "#17171C"
-  primary-hover: "#FFC1E8"
-  secondary: "#BBA7FF"
-  tertiary: "#90D9FF"
-  neutral: "#191230"
-  neutral-deep: "#110B22"
-  surface: "#2B1F45"
-  surface-elevated: "#3E2E5E"
-  text-primary: "#E8E8F0"
-  text-secondary: "#A8A8C0"
-  success: "#66BB6A"
+  primary: "#FF8FC4"
+  on-primary: "#241331"
+  primary-hover: "#FFB3D9"
+  secondary: "#D8B4FE"
+  tertiary: "#7FE7FF"
+  neutral: "#2B1823"
+  neutral-deep: "#1B1017"
+  surface: "#4D2236"
+  surface-elevated: "#6A2F4A"
+  text-primary: "#FFF5FB"
+  text-secondary: "#E8D3E1"
+  success: "#81C784"
   warning: "#FFA726"
-  danger: "#EF5350"
-  info: "#42A5F5"
+  danger: "#FF9B8F"
+  info: "#90CAF9"
   # 2026-08-28: 浅色主题已下线（美术审计 · 方案 A），light-* 字段随之一并移除。
+  # 2026-09-01: 升级为甜系 Galgame 夜主题：高饱和樱花粉 + 薰衣草紫。
   # 深色是唯一主题，上面的 primary / surface / text-* 即唯一真相。
-  # 2026-08-31: frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
+  # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
   #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
   #   on-primary→--text-inverse, neutral→--bg-base, surface→--bg-surface,
   #   surface-elevated→--bg-elevated, disabled-text→--text-disabled,
   #   nene→--nene-violet, natsume→--natsume-amber。tertiary 为历史语义色无直接对应。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
-  disabled-text: "#9D98B4"
-  nene: "#B895FF"
+  disabled-text: "#C9AEC0"
+  nene: "#D8B4FE"
   natsume: "#F2BB68"
 typography:
   display:
@@ -66,11 +67,11 @@ spacing:
   3xl: "48px"
   4xl: "64px"
 rounded:
-  # 2026-08-29: 与 design-system.css --r-* 对齐（早期方舟战术小圆角 md 4 / lg 6 已放宽）。
-  sm: "8px"
-  md: "10px"
-  lg: "14px"
-  xl: "16px"
+  # 2026-09-01: 甜系升级，与 design-system.css --r-* 对齐（大圆角萌系贴纸感）。
+  sm: "10px"
+  md: "14px"
+  lg: "18px"
+  xl: "22px"
   pill: "999px"
 components:
   page-dark:

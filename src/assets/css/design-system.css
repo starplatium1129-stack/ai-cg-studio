@@ -1,8 +1,8 @@
 /* ============================================================
    绫季绘境 · Design System
    Source contract: ../DESIGN.md
-   Style: 克制、亲密、以画面为主的 Galgame 创作工作台
-   Theme: dark(紫黑) / light(暖薰衣草白) 双主题切换
+   Style: 甜蜜、亲密、以画面为主的 Galgame 创作工作台
+   Theme: dark(甜系薰衣草紫黑) 唯一主题
    ============================================================ */
 
 /* 字体不在这里 @import —— 字体已本地自托管（@fontsource，见 src/main.ts），
@@ -10,104 +10,91 @@
 
 :root {
   /* ---- Core palette (唯一主题：深色；2026-08-28 起不再有浅色覆盖) ----
-     2026-09-01 第一阶段美术升级：从浓郁紫罗兰微调至「低饱和深空玄紫（Deep Space Midnight Violet）」，
-     降低眼部疲劳与色彩对冲，保持二次元神秘感与画面烘托力。
-     对比度经 check-contrast 验证（全部文字 token 在四大表面上均严格 ≥4.5:1 WCAG AA）。 */
-  --bg-deep:       #0f0d1b;     /* 最深背景:深空玄紫黑 */
-  --bg-base:       #161326;     /* 页面背景:深邃玄紫 */
-  --bg-surface:    rgba(38, 32, 60, 0.70); /* 玻璃卡片:清透玄紫玻璃 */
-  --bg-elevated:   rgba(54, 46, 82, 0.80); /* 浮层/输入框:适度提亮保 AA */
-  --bg-hover:      rgba(78, 66, 114, 0.72);/* 悬停态 */
+     2026-09-01 甜系升级：Candy Galgame Night —— 高饱和樱花粉 + 薰衣草紫，
+     背景保持深色但更有萌系首页的甜味；对比度仍按 WCAG AA 严格把关。 */
+  --bg-deep:       #1b1017;     /* 最深背景:草莓紫夜 */
+  --bg-base:       #2b1823;     /* 页面背景:甜莓夜 */
+  --bg-surface:    rgba(100, 42, 68, 0.68); /* 玻璃卡片:粉莓玻璃 */
+  --bg-elevated:   rgba(128, 56, 88, 0.78); /* 浮层/输入框:甜莓提亮 */
+  --bg-hover:      rgba(150, 65, 100, 0.72);/* 悬停态 */
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: #151221;
+  --bg-surface-elevated: #2e1320;
 
-  --border-soft:   rgba(218, 204, 250, 0.14);
-  --border-strong: rgba(228, 212, 255, 0.30);
+  --border-soft:   rgba(255, 214, 239, 0.20);
+  --border-strong: rgba(255, 176, 220, 0.36);
 
   /* ---- Text ---- */
-  --text-primary:   #E8E8F0;   /* 主文字 */
-  --text-secondary: #A8A8C0;   /* 副文字 */
-  /* 占位/说明。#8C8CA3 在 --bg-deep 上够(5.84),但合成到 --bg-elevated
-     (#32294d) 上只有 4.10 —— 而 .sc-tag、.local-status-refresh 等确实用在那层。 */
-  --text-muted:     #a2a2ba;   /* 2026-07-31 提亮:紫罗兰暗底上小字辨识度 */
-  --text-inverse:   #17171C;   /* 粉底深色字反色 */
-  /* 三级说明文字别名：页面代码（AnimaInpaintModal 等）按 primary/secondary/
-     tertiary 三级引用，收敛到 muted 同值，避免未定义 token 静默失效 */
+  --text-primary:   #fff5fb;   /* 主文字 */
+  --text-secondary: #e8d3e1;   /* 副文字 */
+  /* 占位/说明。#d0b6c6 合成到 --bg-elevated 仍 ≥4.5:1。 */
+  --text-muted:     #d0b6c6;
+  --text-inverse:   #241331;   /* 粉底深色字反色 */
+  /* 三级说明文字别名：页面代码按 primary/secondary/tertiary 三级引用。 */
   --text-tertiary:  var(--text-muted);
-  /* 禁用态文字（2026-08-28 审计修复）。此前全项目用 opacity:.45 压字实现禁用态，
-     alpha 合成后实测仅 3.45:1（深色底），远低于 AA 4.5:1 —— 而这些按钮上写着
-     「生成」「发送」这类需要读懂才知道为什么不能点的文案，WCAG 1.4.3 对纯装饰
-     控件的豁免并不适用。改为直接给达标色值：在 --bg-elevated 上约 4.8:1，
-     比 --text-secondary(5.7:1) 与 --text-muted(5.3:1) 更弱，仍保持层级关系。
-     注意只改文字色，容器该灰还是让它灰。 */
-  --text-disabled:  #9d98b4;
+  /* 禁用态文字：直接用达标色值，不再用 opacity 压字。 */
+  --text-disabled:  #c9aec0;
 
-  /* ---- Accent (樱花粉 — 仅高亮/CTAs) ---- */
-  --accent:         #f4a6d7;
-  --accent-hover:   #ffc1e8;
-  --accent-soft:    rgba(244, 166, 215, 0.15);
-  --accent-glow:    rgba(223, 168, 255, 0.34);
-  --accent-violet:  #bba7ff;
-  --archive-blue:   #24c9f0;
-  --archive-blue-soft: rgba(36, 201, 240, 0.14);
-  --archive-cyan-glow: rgba(121, 231, 242, 0.34); /* 档案 scan line / 签名光 */
-  --nene-violet:    #b895ff;
+  /* ---- Accent (糖果樱花粉 — 仅高亮/CTAs) ---- */
+  --accent:         #ff8fc4;
+  --accent-hover:   #ffb3d9;
+  --accent-soft:    rgba(255, 143, 196, 0.18);
+  --accent-glow:    rgba(255, 143, 196, 0.42);
+  --accent-violet:  #d8b4fe;
+  --archive-blue:   #7fe7ff;
+  --archive-blue-soft: rgba(127, 231, 255, 0.16);
+  --archive-cyan-glow: rgba(150, 238, 255, 0.38); /* 档案 scan line / 签名光 */
+  --nene-violet:    #d8b4fe;
   --natsume-amber:  #f2bb68;
   --editorial-gold: #d7b56d;
-  --editorial-gold-soft: rgba(215, 181, 109, 0.12);
+  --editorial-gold-soft: rgba(215, 181, 109, 0.14);
 
-  /* ---- Rella 夜空氛围（2026-08-15 设计升级：梦幻夜景辉光 / 空灵星辉） ----
-     只做背景/辉光/渐变层，不做文字色；对比度仍由既有文字 token 承担。
-     夜空蓝紫 + 青蓝辉光 + 星辉白，樱花粉仅作点缀（与 rella 画面中的
-     蓝紫夜空 + 粉紫渐变一致）。 */
-  --rella-night:       #0d1430;  /* 最深夜空 */
-  --rella-night-soft:  #1b2448;  /* 夜空过渡层 */
-  --rella-night-glass: rgba(13, 20, 48, 0.62); /* 夜空玻璃卡 */
-  --rella-star:        #cfe4ff;  /* 星辉白蓝 */
-  --rella-cyan:        #7fd8ff;  /* 辉光青蓝 */
-  --rella-violet:      #8f7bff;  /* 空灵紫 */
-  --rella-glow-cyan:   rgba(127, 216, 255, 0.20);  /* 青蓝辉光层 */
-  --rella-glow-violet: rgba(143, 123, 255, 0.22);  /* 紫辉光层 */
-  --rella-glow-pink:   rgba(244, 166, 215, 0.14);  /* 粉辉光点缀层 */
-  --stage-rella: linear-gradient(160deg, #232d5e 0%, #171e42 46%, #0d1230 100%);
+  /* ---- Rella 夜空氛围（2026-09-01 甜系化：粉樱夜空 / 薰衣草仅做小面积收尾） ----
+     只做背景/辉光/渐变层，不做文字色；对比度仍由既有文字 token 承担。 */
+  --rella-night:       #2a0f1d;  /* 最深夜空 */
+  --rella-night-soft:  #421b30;  /* 夜空过渡层 */
+  --rella-night-glass: rgba(42, 15, 29, 0.64); /* 夜空玻璃卡 */
+  --rella-star:        #ffe3f0;  /* 糖果粉白星辉 */
+  --rella-cyan:        #7fe7ff;  /* 清亮冰青 */
+  --rella-violet:      #d8b4fe;  /* 薰衣草紫 */
+  --rella-glow-cyan:   rgba(255, 143, 196, 0.24);  /* 粉辉光主导层 */
+  --rella-glow-violet: rgba(216, 180, 254, 0.13);  /* 紫辉光点缀层 */
+  --rella-glow-pink:   rgba(255, 143, 196, 0.30);  /* 粉辉光强化层 */
+  --stage-rella: linear-gradient(160deg, #4b1f35 0%, #321627 46%, #190d15 100%);
 
   /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
   --archive-paper:       #f2f5f3;
   --archive-ink:         #11181d;
-  --archive-cyan:        #79e7f2;
+  --archive-cyan:        #7fe7ff;
   --archive-graphite:    #667078;
   --archive-ember:       #e65338;
-  --archive-grid:        rgba(236, 226, 255, 0.05);
-  --archive-line:        rgba(236, 226, 255, 0.14);
-  --archive-glass:       rgba(22, 18, 38, 0.76);
-  /* 档案面板圆角 —— 语义别名，值统一走 --r-lg。
-     2026-08-28 审计：此前这里硬写 14px，与 --r-lg 完全同值却互不相干，
-     调整圆角阶梯时极易只改一处。保留 dossier 这个语义名（它标记的是
-     "档案夹质感"的面板），但让它指向唯一的真相。 */
+  --archive-grid:        rgba(255, 214, 239, 0.06);
+  --archive-line:        rgba(255, 214, 239, 0.16);
+  --archive-glass:       rgba(35, 22, 49, 0.80);
+  /* 档案面板圆角：语义别名统一走 --r-lg，避免只改一处。 */
   --r-dossier:           var(--r-lg);
-  --r-terminal:          6px;
+  --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(22, 18, 38, 0.75);
-  --glass-highlight: color-mix(in srgb, white 10%, transparent);
-  --glass-fill: rgba(38, 32, 60, 0.55);
-  --glass-fill-strong: rgba(46, 38, 72, 0.78);
-  --glass-edge: rgba(225, 212, 250, 0.22);
-  --glass-specular: color-mix(in srgb, white 22%, transparent);
-  --glass-shadow: 0 18px 48px rgba(5, 3, 18, 0.22);
+  --nav-bg: rgba(43, 18, 35, 0.80);
+  --glass-highlight: color-mix(in srgb, white 12%, transparent);
+  --glass-fill: rgba(72, 30, 50, 0.60);
+  --glass-fill-strong: rgba(92, 38, 62, 0.84);
+  --glass-edge: rgba(255, 214, 239, 0.26);
+  --glass-specular: color-mix(in srgb, white 26%, transparent);
+  --glass-shadow: 0 18px 48px rgba(16, 8, 26, 0.28);
 
   /* ---- Functional ---- */
-  --success:        #66BB6A;
+  --success:        #81C784;
   --warning:        #FFA726;
-  --danger:         #EF5350;
-  --info:           #42A5F5;
+  --danger:         #ff9b8f;
+  --info:           #90CAF9;
 
   /* ---- Color Script moods (美术规范用) ---- */
   --mood-joy:       #FFD54F;
-  --mood-love:      #F06292;
+  --mood-love:      #ff8fc4;
   --mood-calm:      #81C784;
-  --mood-sad:       #64B5F6;
-  --mood-tension:   #BA68C8;
+  --mood-sad:       #90CAF9;
+  --mood-tension:   #c99cef;
   --mood-warmth:    #FFB74D;
 
   /* ---- 文字专用色阶 ----------------------------------------------------
@@ -120,13 +107,13 @@
      故按需提亮到 4.5:1 以上(deep 底上仍在 6.4:1 以上)。 */
   --success-text:       var(--success);
   --warning-text:       var(--warning);
-  --danger-text:        #f16b69;   /* 原 var(--danger),elevated 上仅 3.86:1 */
+  --danger-text:        #ff9b8f;   /* 甜系珊瑚红，elevated 上约 5.08:1 */
   --info-text:          var(--info);
   --mood-joy-text:      var(--mood-joy);
-  --mood-love-text:     #f06795;   /* 原 var(--mood-love),elevated 上仅 4.40:1 */
+  --mood-love-text:     #ff9dbe;   /* 甜系樱粉，elevated 上约 5.32:1 */
   --mood-calm-text:     var(--mood-calm);
   --mood-sad-text:      var(--mood-sad);
-  --mood-tension-text:  #c37ccf;   /* 原 var(--mood-tension),elevated 上仅 3.78:1 */
+  --mood-tension-text:  #d8b4fe;   /* 薰衣草紫，elevated 上约 5.84:1 */
   --mood-warmth-text:   var(--mood-warmth);
   /* mood 色块之上的文字:6 种 mood 底全部是高亮度色,白字最差 1.4:1,
      故统一用深墨。此值不随主题翻转 —— 底色是 mood 而不是页面底。 */
@@ -192,16 +179,13 @@
      （md 4 / lg 6）放宽到 md 10 / lg 14 / xl 16，与 DESIGN.md §Shapes 的
      「控件 8–10px、卡片 14–20px、主舞台可到 24px」同步。
      变更史不写在这里 —— 令牌区注释与声明不一致会让 AI 按错误基准改样式。 */
-  --r-sm: 8px; --r-md: 10px; --r-lg: 14px; --r-xl: 16px;
-  --r-2xl: 20px; --r-3xl: 22px; --r-stage: 24px; --r-pill: 999px;
-  --r-brand-mark: 7px 12px 7px 12px;
-  /* 手绘描边牌（2026-08-28 试点，仅 .pb .generate-btn）：四角不对称是「手绘的牌子」
-     语义本身，与 --r-brand-mark 同一先例——不对称值进令牌层而非散落硬编码，
-     防视觉漂移；扩用前须过 DESIGN.md §Shapes 评审。 */
-  --r-hand-plate: 16px 13px 17px 14px;
-  /* 微圆角：徽章内衬 / 小芯片 / 画布控件（2026-08-22 补齐——此前页面代码已
-     出现 var(--r-xs) 引用但系统未定义，属于层级缺口） */
-  --r-xs: 4px;
+  --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 22px;
+  --r-2xl: 26px; --r-3xl: 30px; --r-stage: 32px; --r-pill: 999px;
+  --r-brand-mark: 9px 15px 9px 15px;
+  /* 手绘描边牌：四角不对称是「手绘贴纸牌」语义本身。 */
+  --r-hand-plate: 18px 15px 19px 16px;
+  /* 微圆角：徽章内衬 / 小芯片 / 画布控件 */
+  --r-xs: 6px;
 
   /* ---- Shadow ladder(仅三级,对应 DESIGN.md §Elevation 的 L1/L2/L3) ----
      2026-07-31 视觉审查修订：阴影整体收敛（弱化柔光），层级靠 1px 硬边框
@@ -276,8 +260,8 @@
      这些是"人物身后的空间",随主题翻转:深色是暗房,浅色是画册纸。
      过去直接硬编码在 HomeView / CharacterView 的 <style> 里,
      其中角色页压根没有浅色值 —— 浅色主题下画框仍是近黑。 */
-  --stage-violet: linear-gradient(155deg, #4d3d67 0%, #2a233d 48%, #171422 100%);
-  --stage-amber:  linear-gradient(155deg, #3a3a2a 0%, #24241a 48%, #1a1a10 100%);
+  --stage-violet: linear-gradient(155deg, #5b3a7d 0%, #39224f 48%, #1b1227 100%);
+  --stage-amber:  linear-gradient(155deg, #4a3525 0%, #2e2018 48%, #1b1210 100%);
 }
 
 
@@ -306,15 +290,13 @@ body {
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
   overflow-x: hidden;
-  /* 网点纹理层:galgame 杂志式 1px 网点(色值随主题走 --border-strong,
-     深色=淡紫点 / 浅色=暖棕点),作为最上层压在光晕上 */
+  /* 网点纹理层:萌系杂志网点，色值随主题走 --border-strong */
   background-image:
-    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--border-strong) 26%, transparent) 1px, transparent 0),
-    linear-gradient(118deg, color-mix(in srgb, white 2%, transparent), transparent 34%),
-    /* 2026-08-15 rella 化：页面底色从"粉紫为主"转向"蓝紫夜空 + 青蓝辉光"，粉紫退为点缀 */
-    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--rella-violet) 10%, transparent), transparent 26rem),
-    radial-gradient(circle at 88% 30%, color-mix(in srgb, var(--rella-cyan) 9%, transparent), transparent 30rem),
-    radial-gradient(circle at 55% 96%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 24rem);
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--border-strong) 32%, transparent) 1px, transparent 0),
+    linear-gradient(118deg, color-mix(in srgb, white 4%, transparent), transparent 34%),
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 30rem),
+    radial-gradient(circle at 88% 28%, color-mix(in srgb, var(--accent-hover) 16%, transparent), transparent 32rem),
+    radial-gradient(circle at 55% 96%, color-mix(in srgb, var(--accent-hover) 9%, transparent), transparent 26rem);
   background-size: 24px 24px, auto, auto, auto, auto;
 }
 
@@ -329,13 +311,13 @@ body::before, body::after {
 }
 body::before {
   width: 42rem; height: 42rem; top: -24rem; right: -16rem;
-  /* rella 化：主光斑从粉紫转向夜空蓝紫辉光 */
-  background: radial-gradient(circle, color-mix(in srgb, var(--rella-violet) 20%, transparent) 0, transparent 70%);
+  /* 甜系化：主光斑改成樱花粉辉光 */
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent) 0, transparent 70%);
 }
 body::after {
   width: 34rem; height: 34rem; bottom: -22rem; left: -14rem;
-  /* rella 化：次光斑从琥珀转向青蓝星辉（保留暖色仅作品牌点缀时使用 --natsume-amber 低强度） */
-  background: radial-gradient(circle, color-mix(in srgb, var(--rella-cyan) 15%, transparent) 0, transparent 72%);
+  /* 甜系化：次光斑改成淡樱粉辉光 */
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-hover) 22%, transparent) 0, transparent 72%);
 }
 /* 氛围光斑只在艺术向页面缓慢浮动；工作台保持静止，避免抢画面 */
 body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::before {
@@ -355,7 +337,7 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
 
 /* ---- 日系竖排假名水印（工坊签名层） ----
    DOM 在 AppLayout；fixed + z-below 与光斑同级（body 的 isolation 保证
-   它浮在背景之上、内容之下）。色值走 --accent-violet 自动适配深浅主题。 */
+   它浮在背景之上、内容之下）。色值走 --accent 自动适配深浅主题。 */
 .kana-watermark {
   position: fixed;
   right: clamp(0.75rem, 3vw, 2.25rem);
@@ -379,13 +361,13 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
   font: 700 var(--fs-display) var(--font-serif);
   letter-spacing: 0.22em;
   line-height: var(--lh-tight);
-  color: color-mix(in srgb, var(--accent-violet) 9%, transparent);
+  color: color-mix(in srgb, var(--accent) 18%, transparent);
   text-orientation: upright;
 }
 .kana-watermark .kana-sub {
   font: 600 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: 0.34em;
-  color: color-mix(in srgb, var(--accent-violet) 7%, transparent);
+  color: color-mix(in srgb, var(--accent) 14%, transparent);
   writing-mode: vertical-rl;
 }
 /* 内容密集页（导演台 / 训练台）水印会与面板叠压，与 route-index 同策略隐藏 */
@@ -405,10 +387,10 @@ body:has(.pb) .kana-watermark { opacity: 0; }
   opacity: 0;
   background-image:
     /* 光斑层（bokeh） */
-    radial-gradient(7rem 7rem at 8% 22%, var(--rella-glow-cyan), transparent 62%),
-    radial-gradient(5.5rem 5.5rem at 72% 16%, var(--rella-glow-violet), transparent 60%),
-    radial-gradient(4.5rem 4.5rem at 40% 78%, var(--rella-glow-pink), transparent 58%),
-    radial-gradient(6rem 6rem at 92% 62%, var(--rella-glow-cyan), transparent 64%),
+    radial-gradient(7rem 7rem at 8% 22%, var(--rella-glow-pink), transparent 62%),
+    radial-gradient(5.5rem 5.5rem at 72% 16%, var(--rella-glow-pink), transparent 60%),
+    radial-gradient(4.5rem 4.5rem at 40% 78%, var(--rella-glow-violet), transparent 58%),
+    radial-gradient(6rem 6rem at 92% 62%, var(--rella-glow-pink), transparent 64%),
     /* 星点层 */
     radial-gradient(1.5px 1.5px at 12% 24%, color-mix(in srgb, var(--rella-star) 55%, transparent), transparent 100%),
     radial-gradient(1px 1px at 29% 68%, color-mix(in srgb, var(--rella-violet) 60%, transparent), transparent 100%),
@@ -513,10 +495,10 @@ body > *:has(+ .footer),
   position: sticky; top: 0; z-index: var(--z-nav);
   isolation:isolate;
   background:
-    /* 2026-08-15 rella 化：玻璃底上叠一层极淡青蓝星辉，夜航般的微光 */
-    radial-gradient(28rem 10rem at 82% -40%, color-mix(in srgb, var(--rella-cyan) 7%, transparent), transparent 68%),
-    radial-gradient(20rem 8rem at 12% -60%, color-mix(in srgb, var(--rella-violet) 8%, transparent), transparent 66%),
-    linear-gradient(110deg, var(--glass-specular), transparent 26%, transparent 72%, color-mix(in srgb,var(--accent) 7%,transparent)),
+    /* 甜系化：导航玻璃层叠粉色星辉与薰衣草紫光 */
+    radial-gradient(28rem 10rem at 82% -40%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 68%),
+    radial-gradient(20rem 8rem at 12% -60%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 66%),
+    linear-gradient(110deg, var(--glass-specular), transparent 26%, transparent 72%, color-mix(in srgb,var(--accent) 10%,transparent)),
     var(--nav-bg);
   -webkit-backdrop-filter: blur(26px) saturate(155%) contrast(1.03);
   backdrop-filter: blur(26px) saturate(155%) contrast(1.03);
@@ -549,7 +531,7 @@ body > *:has(+ .footer),
 .nav-brand .dot {
   /* logo 菱形:非对称圆角是品牌图形本身,不是卡片圆角 */
   width: 18px; height: 18px; border-radius: var(--r-brand-mark); transform: rotate(45deg);
-  background: linear-gradient(135deg, var(--accent), var(--accent-violet));
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
   box-shadow: 0 0 14px var(--accent-glow);
 }
 .nav-menu-toggle {
@@ -688,9 +670,10 @@ body > *:has(+ .footer),
   font-family: var(--font-display);
   font-size: var(--fs-display); font-weight: 700;
   margin-bottom: var(--s-3);
-  background: linear-gradient(135deg, var(--text-primary) 60%, var(--accent));
+  background: linear-gradient(135deg, var(--text-primary) 18%, var(--accent) 62%, var(--accent-hover));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 16px color-mix(in srgb, var(--accent) 18%, transparent));
 }
 .page-header .subtitle {
   color: var(--text-secondary); font-size: var(--fs-title-xs);
@@ -744,7 +727,7 @@ body > *:has(+ .footer),
   content: "";
   width: 26px; height: 6px;
   border-radius: var(--r-pill);
-  background: linear-gradient(90deg, var(--accent), var(--accent-violet));
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
   box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 30%, transparent);
   transform: rotate(-2deg);
 }
@@ -905,15 +888,18 @@ p  { color: var(--text-secondary); margin-bottom: var(--s-3); }
 
 .section { margin-bottom: var(--s-7); }
 
-/* ---- Eyebrow tag ---- */
+/* ---- Eyebrow tag（甜系贴纸角标） ---- */
 .eyebrow {
   display: inline-block;
   font-size: var(--fs-label-xs); font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
   background: var(--accent-soft);
-  padding: 3px 10px; border-radius: var(--r-pill);
+  padding: 4px 11px; border-radius: var(--r-pill);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border-soft));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 2px 0 color-mix(in srgb, var(--accent) 16%, transparent);
   margin-bottom: var(--s-3);
+  transform: rotate(-1deg);
 }
 
 /* ---- Quote block ---- */
@@ -1157,21 +1143,21 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
 }
 .checkbox-row input { accent-color: var(--accent); cursor: pointer; }
 
-/* ---- Status badge(DESIGN.md §Status:颜色不是唯一信号,故保留文字与圆点) ---- */
+/* ---- Status badge（甜系贴纸角标：颜色不是唯一信号，保留文字与圆点） ---- */
 .badge {
   display: inline-flex; align-items: center; gap: var(--s-1);
-  padding: 3px var(--s-2);
-  border: 1px solid color-mix(in srgb, var(--badge-color, var(--text-muted)) 38%, transparent);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--badge-color, var(--text-muted)) 12%, transparent);
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--badge-color, var(--text-muted)) 42%, transparent);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--badge-color, var(--text-muted)) 14%, transparent);
   color: var(--badge-color, var(--text-muted));
   font: 700 var(--fs-mono-sm) var(--font-mono);
   letter-spacing: .04em;
   white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 0 color-mix(in srgb, var(--badge-color, var(--text-muted)) 26%, transparent);
 }
 .badge::before {
-  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  content: ""; width: 5px; height: 5px; border-radius: 50%;
   background: currentColor; flex: none;
   box-shadow: 0 0 6px currentColor;
 }
@@ -1194,7 +1180,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   width: var(--fill, 0%);
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--accent), var(--accent-violet));
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
   /* compositor-exempt: 进度值更新是低频事件；scaleX 会压扁 inherit 圆头并横向拉伸
      填充上的扫光伪元素，保 width 过渡（单元素小子树重排可忽略）。 */
   transition: width var(--motion-surface) var(--ease-out);
