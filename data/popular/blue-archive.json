@@ -1049,6 +1049,179 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "ichinose_asuna",
+      "displayName": "一之濑明日奈",
+      "originalName": "Ichinose Asuna",
+      "franchise": "Blue Archive",
+      "aliases": [
+        "ichinose_asuna",
+        "asuna",
+        "asuna (blue archive)",
+        "一之濑明日奈",
+        "明日奈",
+        "兔女郎明日奈",
+        "c&c",
+        "cleaning & clearing"
+      ],
+      "identityProse": "Ichinose Asuna from Blue Archive, C&C agent and combat maid with floor-length golden blonde hair covering one eye, drooping cute dog ears, striking blue eyes, towering voluptuous hourglass figure, sweet beaming smile, and a delicate ring halo.",
+      "identityTokens": [
+        "asuna (blue archive)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "hair_over_one_eye",
+        "dog_ears",
+        "animal_ears",
+        "blue_eyes",
+        "large_breasts",
+        "cleavage",
+        "halo",
+        "blue_archive"
+      ],
+      "exactTokens": [
+        "asuna (blue archive)"
+      ],
+      "exactPrefixes": [
+        "asuna_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "bunny_suit",
+          "name": "极奢幻梦兔女郎装",
+          "prose": "an iconic glossy black high-leg bunny suit hugging her statuesque curves, sweetheart plunge neckline with exposed deep cleavage, white tuxedo collar with a black bowtie, French cuffs with gold cufflinks, towering black bunny ears on a headband, sheer sheer black tights, and patent high stiletto heels",
+          "tokens": [
+            "playboy_bunny",
+            "bunny_suit",
+            "black_leotard",
+            "fake_bunny_ears",
+            "bunny_ears",
+            "collar",
+            "bowtie",
+            "cuffs",
+            "cleavage",
+            "deep_cleavage",
+            "bare_shoulders",
+            "pantyhose",
+            "black_pantyhose",
+            "high_heels",
+            "stiletto_heels"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "cleaning_maid",
+          "name": "C&C 特勤女仆战术制服",
+          "prose": "Millennium C&C combat maid uniform: frilled white maid headband, short-sleeved tailored black maid dress with a white apron, sweetheart neckline, tactical sidearm leather holster strapped to her thigh over sheer black stockings, and combat heels",
+          "tokens": [
+            "maid",
+            "maid_dress",
+            "maid_apron",
+            "maid_headdress",
+            "cleavage",
+            "thighhighs",
+            "black_thighhighs",
+            "holster",
+            "high_heels",
+            "millennium_science_school"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_bikini",
+          "name": "金阳沙滩系带比基尼",
+          "prose": "a brilliant white and sunny yellow string halterneck bikini highlighting her tall sun-kissed silhouette, golden belly chain, hibiscus flower pinned in her long blonde hair, and bare feet walking along the warm surf",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "white_bikini",
+            "halterneck",
+            "belly_chain",
+            "flower",
+            "hair_flower",
+            "wet_skin",
+            "beachwear",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "casual_sweater",
+          "name": "假日露肩软糯毛衣",
+          "prose": "a cozy casual date outfit: an oversized ivory off-shoulder ribbed knit sweater casually drooping over one shoulder, dark denim skater miniskirt, sheer black tights, stylish tan ankle booties, and long golden hair swaying naturally",
+          "tokens": [
+            "casual",
+            "sweater",
+            "knit_sweater",
+            "off_shoulder",
+            "skirt",
+            "denim_skirt",
+            "pantyhose",
+            "black_pantyhose",
+            "boots",
+            "date"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "huge_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "dog_ears",
+            "animal_ears",
+            "very_long_hair",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, luminous golden-toned fair skin, colossal buoyant breasts with tender rose-pink nipples, narrow toned waist, wide lush hips, glistening exposed pussy, cascading ankle-length silky blonde hair, floppy soft dog ears, bare legs and bare feet, warm golden morning light filtering through curtains",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "基沃托斯（Kivotos）· 千年科技学园",
+        "era": "近未来学园都市",
+        "formNotes": "千年前往秘密特勤部门 C&C 的王牌特工，代号 Zero Zero；有着超乎常人的敏锐第六感和直觉，性格天真烂漫、爽朗单纯，极度信赖老师并喜欢亲昵依偎",
+        "research": "2026-09-02 调研（Danbooru ichinose_asuna 28000+ posts）"
+      },
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "curatedArtistStyles": [
+        "kakao",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

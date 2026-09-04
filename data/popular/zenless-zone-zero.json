@@ -1,0 +1,354 @@
+{
+  "version": 1,
+  "franchise": "Zenless Zone Zero",
+  "characters": [
+    {
+      "id": "ellen_joe",
+      "displayName": "艾莲·乔",
+      "originalName": "Ellen Joe",
+      "franchise": "Zenless Zone Zero",
+      "aliases": [
+        "ellen_joe",
+        "ellen",
+        "ellen (zenless zone zero)",
+        "艾莲",
+        "艾莲乔",
+        "鲨鱼妹",
+        "维多利亚家政",
+        "victoria housekeeping"
+      ],
+      "identityProse": "Ellen Joe from Zenless Zone Zero, a high school maid from Victoria Housekeeping with two-tone black and crimson short hair, tired dark red eyes, red hairpins, a huge black and white spiky shark tail, sharp shark teeth, and a cool deadpan expression.",
+      "identityTokens": [
+        "ellen joe",
+        "1girl",
+        "solo",
+        "short_hair",
+        "two-tone_hair",
+        "black_hair",
+        "red_hair",
+        "colored_inner_hair",
+        "red_eyes",
+        "mole_under_eye",
+        "shark_tail",
+        "tail",
+        "shark_teeth",
+        "razor_blade_hair_ornament",
+        "hairclip",
+        "zenless_zone_zero"
+      ],
+      "exactTokens": [
+        "ellen joe"
+      ],
+      "exactPrefixes": [
+        "ellen_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "maid_uniform",
+          "name": "维多利亚执事女仆装",
+          "prose": "Victoria Housekeeping combat maid uniform: frilled white maid headdress, gothic black tailored dress with white apron and delicate lace trim, detached sleeves, black thigh-high stockings with garter straps, red ribbon bowtie, heavy combat platform mary janes, and her oversized shear blades",
+          "tokens": [
+            "maid",
+            "maid_headdress",
+            "maid_apron",
+            "black_dress",
+            "lace_trim",
+            "detached_sleeves",
+            "thighhighs",
+            "black_thighhighs",
+            "garter_straps",
+            "red_bow",
+            "platform_footwear",
+            "mary_janes",
+            "victoria_housekeeping"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "school_uniform",
+          "name": "新艾利都女子高制服",
+          "prose": "New Eridu high school uniform: crisp white sailor shirt with short sleeves, navy collar, red silk neckerchief, pleated navy miniskirt, loose black slouch socks, dark school loafers, and a casual school backpack with shark plush strap charm",
+          "tokens": [
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "sailor_collar",
+            "neckerchief",
+            "red_neckerchief",
+            "pleated_skirt",
+            "navy_skirt",
+            "miniskirt",
+            "loose_socks",
+            "loafers",
+            "schoolbag"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "shark_swimsuit",
+          "name": "夏日鲨齿运动分体泳装",
+          "prose": "a sporty black and vermilion two-piece bikini with white shark teeth prints on the waist trim, sheer dark cropped cover-up hoodie, black choker, tinted red visor sunglasses, and bare legs leading to her sleek shark tail glistening with water droplets",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "two-piece_swimsuit",
+            "black_bikini",
+            "halterneck",
+            "choker",
+            "sunglasses",
+            "visors",
+            "wet_skin",
+            "water_droplets",
+            "beachwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "streetwear_hoodie",
+          "name": "潮派街区宽松卫衣",
+          "prose": "trendy Sixth Street streetwear: an oversized baggy charcoal black graphic zip-up hoodie loosely slipping off one shoulder, distressed denim shorts with frayed hems, striped knee-high socks, chunky street sneakers, and a red lollipop stick resting between her lips",
+          "tokens": [
+            "casual",
+            "hoodie",
+            "black_hoodie",
+            "oversized_clothes",
+            "off_shoulder",
+            "denim_shorts",
+            "short_shorts",
+            "striped_socks",
+            "sneakers",
+            "lollipop",
+            "streetwear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "small_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "shark_tail",
+            "shark_teeth",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, smooth alabaster pale skin, petite soft breasts with delicate rosy-pink nipples, slender athletic waist, subtle hip curve, exposed pussy, prominent thick two-tone spiky shark tail resting gracefully, cute shark teeth, bare legs and bare feet, soft dim bedroom lighting",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "新艾利都（New Eridu）· 维多利亚家政",
+        "era": "后空洞灾害近未来都市",
+        "formNotes": "维多利亚家政专属女仆，平时在校贪睡且冷淡厌世，随身携带棒棒糖，战斗中甩动巨大鲨鱼尾与巨剪爆发惊人战力",
+        "research": "2026-09-02 调研（Danbooru ellen_joe 11000+ posts）"
+      },
+      "animeStudio": "Zenless Zone Zero official art, HoYoverse style",
+      "curatedArtistStyles": [
+        "mika_pikazo",
+        "ask_(askzy)",
+        "swav"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "hoshimi_miyabi",
+      "displayName": "星见雅",
+      "originalName": "Hoshimi Miyabi",
+      "franchise": "Zenless Zone Zero",
+      "aliases": [
+        "hoshimi_miyabi",
+        "miyabi",
+        "miyabi (zenless zone zero)",
+        "星见雅",
+        "雅",
+        "对空六课",
+        "section 6"
+      ],
+      "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, Section 6 chief and master swordswoman with long silky black hair in a high ponytail, fluffy white fox ears, sharp amber golden eyes, a fluffy black-tipped white fox tail, refined stoic expression, and a sheathed katana.",
+      "identityTokens": [
+        "hoshimi miyabi",
+        "1girl",
+        "solo",
+        "black_hair",
+        "high_ponytail",
+        "fox_ears",
+        "fox_tail",
+        "amber_eyes",
+        "yellow_eyes",
+        "katana",
+        "sheath",
+        "zenless_zone_zero"
+      ],
+      "exactTokens": [
+        "hoshimi miyabi"
+      ],
+      "exactPrefixes": [
+        "miyabi_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "section6_uniform",
+          "name": "对空六课课长军服",
+          "prose": "Section 6 executive uniform: sleek futuristic navy blue military coat with ceremonial gold cord tassels, black sleeveless under-armor top, pleated high-waisted haori miniskirt, sheer absolute-territory black thighhighs, armored gauntlet arm guards, tactical sheath harness, and polished dark low-heeled boots",
+          "tokens": [
+            "military_uniform",
+            "coat",
+            "navy_coat",
+            "sleeveless_shirt",
+            "pleated_skirt",
+            "black_skirt",
+            "miniskirt",
+            "thighhighs",
+            "black_thighhighs",
+            "gauntlets",
+            "armor",
+            "sheath",
+            "boots",
+            "section_6"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "traditional_miko",
+          "name": "重樱御守仪典巫女服",
+          "prose": "traditional sacred Shinto miko priestess ceremonial robes: crisp snow-white kimono top with wide vermilion borders, deep crimson pleated hakama pants, braided shimenawa belt with golden paper charms, white tabi socks, and wooden geta sandals",
+          "tokens": [
+            "miko",
+            "kimono",
+            "white_kimono",
+            "wide_sleeves",
+            "hakama",
+            "hakama_pants",
+            "red_hakama",
+            "shimenawa",
+            "tabi",
+            "geta",
+            "traditional_clothes",
+            "shrine"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "dojo_training",
+          "name": "道场居合练功服",
+          "prose": "austere martial arts keikogi dojo training attire: breathable pure white cotton crossover training top, deep indigo pleated training hakama, white cloth handwraps and wrist bandages, barefoot stance on tatami floor, holding a wooden bokken practice sword",
+          "tokens": [
+            "keikogi",
+            "martial_arts_uniform",
+            "white_shirt",
+            "hakama",
+            "indigo_hakama",
+            "hand_wraps",
+            "wrist_wraps",
+            "bandages",
+            "barefoot",
+            "bokken",
+            "wooden_sword",
+            "dojo"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "moonlight_yukata",
+          "name": "月夜雅韵华纹浴衣",
+          "prose": "an elegant midnight navy silk summer yukata adorned with delicate gilded spider lily and silver moon crest patterns, contrasting deep crimson obi sash, soft wooden geta sandals, and a small silver bell hairpin gently ringing by her fox ear",
+          "tokens": [
+            "yukata",
+            "navy_yukata",
+            "japanese_clothes",
+            "obi",
+            "red_obi",
+            "geta",
+            "hairpin",
+            "bell",
+            "traditional_japanese",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "medium_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "fox_ears",
+            "fox_tail",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, luminous flawless porcelain white skin, beautifully shaped firm medium breasts with sensitive pale rosy nipples, slender toned midriff, exposed pussy, twitching white fox ears with dark ear tufts, large luxurious fluffy white fox tail curled alongside her thighs, bare feet, soft moonlight ambience",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "新艾利都（New Eridu）· 对空六课",
+        "era": "后空洞灾害近未来都市",
+        "formNotes": "对空六课课长，著名的居合斩名手，武学门第星见流宗主之女，性格冷峻清雅、秉公执法，偶尔在生活常识上展现天然呆反差",
+        "research": "2026-09-02 调研（Danbooru hoshimi_miyabi 4500+ posts）"
+      },
+      "animeStudio": "Zenless Zone Zero official art, HoYoverse style",
+      "curatedArtistStyles": [
+        "rella",
+        "krenz_cushart",
+        "wlop"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

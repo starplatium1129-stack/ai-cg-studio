@@ -5939,5 +5939,604 @@
     ],
     "accent_color": "#fbbf24",
     "bg_color": "#0f172a"
+  },
+  {
+    "id": "ellen_joe",
+    "name": "艾莲·乔",
+    "alias": [
+      "Ellen Joe",
+      "艾莲",
+      "鲨鱼妹",
+      "维多利亚家政"
+    ],
+    "type": "popular",
+    "icon": "🦈",
+    "portrait": {
+      "image": "../assets/characters/popular-ellen_joe.png?v=5",
+      "alt": "艾莲·乔 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑红渐变短发 · 内层亮红挑染 · 刀片发卡",
+      "hair_color": "黑红渐变（外黑内红）",
+      "eyes": "倦怠暗红双瞳 · 眼角泪痣",
+      "hairstyle": "挑染短发 · 刀片发饰 · 巨大黑色锯齿鲨鱼尾 · 鲨齿尖牙",
+      "uniform": "维多利亚执事战斗女仆装 / 新艾利都女子高制服",
+      "expression": "厌世冷淡 · 困倦打盹 · 护食娇蛮",
+      "style": "cool gothic shark maid",
+      "signature": "巨大的鲨鱼尾巴、棒棒糖、冷酷死鱼眼、眼角泪痣与黑红挑染短发"
+    },
+    "personality": [
+      "极度嗜睡且怕麻烦",
+      "外冷内热的反差少女",
+      "热爱甜食尤其是圣代与棒棒糖",
+      "战斗时爆发力惊人毫不留情",
+      "珍视家政伙伴与重要羁绊"
+    ],
+    "likes": [
+      "下午四点前去吃限定圣代",
+      "水果味棒棒糖",
+      "安静无人的角落补觉",
+      "大海与冰爽的气泡水"
+    ],
+    "classic_cg": {
+      "title": "空洞深处的极寒猎杀",
+      "description": "冰晶以骸废墟中，艾莲拖着巨剪与强劲鲨鱼尾撕裂暴风雪，展现深海顶级掠食者的绝对力量。"
+    },
+    "identity": {
+      "role": "维多利亚家政专属女仆 / 高中在读学生",
+      "age": "高中生",
+      "occupation": "空洞作战执事 / 战斗女仆",
+      "faction": "新艾利都 · 维多利亚家政"
+    },
+    "tags": [
+      "鲨鱼尾巴",
+      "黑红渐变短发",
+      "女仆装",
+      "死鱼眼",
+      "巨剪武器",
+      "棒棒糖"
+    ],
+    "bg_story": "艾莲·乔是《绝区零》中维多利亚家政的专属执事，同时也是新艾利都的一名普通高中生。她拥有标志性的巨大鲨鱼尾巴与锐利鲨齿，平时在学校总是困倦不堪、含着棒棒糖厌世摸鱼，但一旦进入空洞执行家政任务，便会化身为挥舞重剪、速度极快的寒冰游猎者。",
+    "palette": [
+      "暗夜黑",
+      "深海红",
+      "冰霜白"
+    ],
+    "weather": [
+      "阴雨微风",
+      "冰晶空洞",
+      "六分街黄昏"
+    ],
+    "speech": "工作赶紧收工吧……我还赶着去吃今天限定的草莓圣代呢。",
+    "source": "HoYoverse《绝区零 / Zenless Zone Zero》",
+    "traits": [
+      "ellen joe",
+      "1girl",
+      "solo",
+      "short_hair",
+      "two-tone_hair",
+      "black_hair",
+      "red_hair",
+      "red_eyes",
+      "shark_tail",
+      "shark_teeth",
+      "zenless_zone_zero"
+    ],
+    "accent_color": "#ef4444",
+    "bg_color": "#090d16"
+  },
+  {
+    "id": "hoshimi_miyabi",
+    "name": "星见雅",
+    "alias": [
+      "Hoshimi Miyabi",
+      "雅",
+      "星见课长",
+      "对空六课"
+    ],
+    "type": "popular",
+    "icon": "🦊",
+    "portrait": {
+      "image": "../assets/characters/popular-hoshimi_miyabi.png?v=5",
+      "alt": "星见雅 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "乌黑丝缎高马尾 · 灵动白狐耳",
+      "hair_color": "墨黑",
+      "eyes": "锐利澄澈金黄狐瞳",
+      "hairstyle": "高束单马尾 · 纯白毛茸狐耳 · 黑尖白狐尾",
+      "uniform": "对空六课课长军官制服 / 传统御守巫女服",
+      "expression": "清冷肃穆 · 一丝不苟 · 偶尔天然呆",
+      "style": "stoic fox swordmaster",
+      "signature": "雪白狐耳、黑发高马尾、锐利金瞳与佩刀居合"
+    },
+    "personality": [
+      "极度自律且坚守法度",
+      "武痴心性一心向剑",
+      "对待部下与平民深沉负责",
+      "生活常识偶露反差萌",
+      "面对邪恶绝不手软"
+    ],
+    "likes": [
+      "清晨道场的挥刀静修",
+      "神社回廊的苦涩抹茶",
+      "刀具保养与研磨石",
+      "新艾利都的安宁街景"
+    ],
+    "classic_cg": {
+      "title": "月夜竹林的虚空居合",
+      "description": "苍白冷月下，雅拇指推刀出鞘，极寒剑气撕裂竹林残叶，狐尾迎风招展，宛若画中剑仙。"
+    },
+    "identity": {
+      "role": "新艾利都治安局对空六课课长 / 星见流宗家之女",
+      "age": "青年",
+      "occupation": "对空六课课长 / 武学宗师",
+      "faction": "新艾利都 · 治安局对空六课"
+    },
+    "tags": [
+      "狐耳",
+      "狐尾",
+      "黑发高马尾",
+      "金瞳",
+      "太刀",
+      "居合斩",
+      "军服制服"
+    ],
+    "bg_story": "星见雅是《绝区零》中对空事务六课的课长，出身于武学名门星见流，是新艾利都公认的顶尖太刀居合斩名手。她性格冷峻严肃、恪尽职守，面对再凶险的以太灾害也面不改色，但在日常生活上偶尔有着不谙世故的纯真天然反差。",
+    "palette": [
+      "曜石黑",
+      "霜月蓝",
+      "银狐白"
+    ],
+    "weather": [
+      "寒夜清月",
+      "初雪霜天",
+      "竹林晨曦"
+    ],
+    "speech": "对空六课，星见雅。拔刀之令既下，自当荡平诸恶。",
+    "source": "HoYoverse《绝区零 / Zenless Zone Zero》",
+    "traits": [
+      "hoshimi miyabi",
+      "1girl",
+      "solo",
+      "black_hair",
+      "high_ponytail",
+      "fox_ears",
+      "fox_tail",
+      "amber_eyes",
+      "katana",
+      "zenless_zone_zero"
+    ],
+    "accent_color": "#38bdf8",
+    "bg_color": "#070b14"
+  },
+  {
+    "id": "cheshire_azur",
+    "name": "柴郡",
+    "alias": [
+      "Cheshire",
+      "猫猫头",
+      "皇家柴郡",
+      "猫爪重巡"
+    ],
+    "type": "popular",
+    "icon": "🐾",
+    "portrait": {
+      "image": "../assets/characters/popular-cheshire_azur.png?v=5",
+      "alt": "柴郡 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "蓝灰长发 · 湖青挑染 · 及腰双马尾",
+      "hair_color": "蓝灰色带青色挑染",
+      "eyes": "澄澈灵动宝石绿水眸",
+      "hairstyle": "微卷长双马尾 · 黑色猫耳发饰发箍 · 荷叶边女仆发带",
+      "uniform": "皇家黑白典雅荷叶边女仆装 / 冰雪仙子丝绸高叉旗袍",
+      "expression": "元气撒娇 · 灿烂如阳 · 娇俏黏人",
+      "style": "cheerful royal cat-headband maid",
+      "signature": "蓝灰长双马尾青挑染、黑色猫耳发箍、宝石绿大眼与黑白女仆裙"
+    },
+    "personality": [
+      "超级自来熟与黏人",
+      "对指挥官一见钟情喊“亲爱的”",
+      "极度喜欢佩戴猫耳发饰却坚称自己不是猫",
+      "性格像贪玩娇俏的小猫一样活泼",
+      "战斗中重巡防空对海火力极其强悍"
+    ],
+    "likes": [
+      "整天黏在指挥官身边飞扑求抱抱",
+      "收集各种可爱的猫耳发箍发饰",
+      "皇家后花园的惬意红茶时光",
+      "被指挥官温柔摸头"
+    ],
+    "classic_cg": {
+      "title": "皇家茶会的飞扑拥抱",
+      "description": "玫瑰花园茶桌前，柴郡晃动着蓝灰双马尾与猫耳发箍，张开双臂元气满满地向指挥官飞扑撒娇。"
+    },
+    "identity": {
+      "role": "皇家海军最高方案科研重巡洋舰",
+      "age": "少女",
+      "occupation": "重巡洋舰舰船 / 皇家女仆团荣誉成员",
+      "faction": "碧蓝航线 · 皇家海军"
+    },
+    "tags": [
+      "猫耳发饰",
+      "猫耳发箍",
+      "蓝灰长发",
+      "青色挑染",
+      "双马尾",
+      "女仆装",
+      "绿瞳",
+      "皇家重巡"
+    ],
+    "bg_story": "柴郡是《碧蓝航线》中皇家阵营的最高方案重巡洋舰。她留着一头极具辨识度的蓝灰色长双马尾并带有青色挑染，头上常年佩戴着可爱的黑色猫耳发饰。她特别喜欢猫咪，却在台词里一本正经地声明“柴郡才不是猫呢”，平时对指挥官一见钟情、亲昵地唤作“亲爱的”，娇俏黏人的外表下却隐藏着皇家海军顶级的对海防空战力。",
+    "palette": [
+      "冰魄蓝",
+      "宝石绿",
+      "奶油白"
+    ],
+    "weather": [
+      "晴空温阳",
+      "午后花园",
+      "微风拂面"
+    ],
+    "speech": "亲爱的亲爱的~！柴郡今天也超级超级想你哦！快给柴郡摸摸头嘛~柴郡才不是猫呢，但柴郡最喜欢你啦！",
+    "source": "Manjuu/Yongshi《碧蓝航线 / Azur Lane》",
+    "traits": [
+      "cheshire (azur lane)",
+      "1girl",
+      "solo",
+      "grey_hair",
+      "blue_hair",
+      "streaked_hair",
+      "twintails",
+      "cat_ear_headband",
+      "fake_animal_ears",
+      "green_eyes",
+      "large_breasts",
+      "azur_lane"
+    ],
+    "accent_color": "#38bdf8",
+    "bg_color": "#0a1322"
+  },
+  {
+    "id": "taihou_azur",
+    "name": "大凤",
+    "alias": [
+      "Taihou",
+      "大凤航母",
+      "重樱大凤",
+      "病娇装母"
+    ],
+    "type": "popular",
+    "icon": "🪭",
+    "portrait": {
+      "image": "../assets/characters/popular-taihou_azur.png?v=5",
+      "alt": "大凤 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及膝乌黑超长双马尾 · 金凤发饰",
+      "hair_color": "漆黑曜石",
+      "eyes": "炽热如火赤红眼眸",
+      "hairstyle": "极长双马尾 · 齐刘海 · 奢华红金金鱼大振袖",
+      "uniform": "重樱朱砂金鱼华服 / 禁忌盛宴深红丝绒晚礼裙",
+      "expression": "深情迷醉 · 极度占有 · 娇羞依赖",
+      "style": "devoted yandere armored carrier",
+      "signature": "曳地漆黑双马尾、金鱼大振袖、极具压迫感丰满身段与赤红凤眸"
+    },
+    "personality": [
+      "对指挥官怀有毫无保留的炽热爱意",
+      "独占欲强但极度听话顺从",
+      "家务与侍奉全能的完美贤妻",
+      "战场上如烈焰般果断狂猛",
+      "内心极其渴望被全心全意注视"
+    ],
+    "likes": [
+      "为指挥官打理官邸所有内务",
+      "亲手烹饪滋补的重樱和食",
+      "在深夜陪伴在指挥官身侧",
+      "漫步在盛开落樱的神殿庭院"
+    ],
+    "classic_cg": {
+      "title": "重樱烈焰的深情相候",
+      "description": "神殿朱红回廊下，漫天绯樱飘扬，大凤执赤金折扇侧身含情脉脉相迎，身段曼妙美艳不可方物。"
+    },
+    "identity": {
+      "role": "重樱主力装甲航空母舰",
+      "age": "青年",
+      "occupation": "装甲航母舰船 / 指挥官贴身侍奉",
+      "faction": "碧蓝航线 · 重樱群岛"
+    },
+    "tags": [
+      "黑长双马尾",
+      "红瞳",
+      "金鱼振袖",
+      "和服",
+      "病娇深情",
+      "装甲航母",
+      "丰腴尤物"
+    ],
+    "bg_story": "大凤是《碧蓝航线》中重樱阵营的装甲航空母舰。外表是美艳绝伦的和风绝色佳人，拖曳着如夜色般的极长黑双马尾，身着华丽如锦鲤的红金振袖。她对指挥官有着近乎病态却毫无恶意的绝对深情与献身精神，时时刻刻将指挥官的一切放在第一位。",
+    "palette": [
+      "朱砂红",
+      "曜石黑",
+      "赤金"
+    ],
+    "weather": [
+      "绯樱飘落",
+      "红月夜色",
+      "烈焰晴空"
+    ],
+    "speech": "指挥官大人，您的一切，大凤全都了如指掌哦……今晚也请全心全意交给我吧。",
+    "source": "Manjuu/Yongshi《碧蓝航线 / Azur Lane》",
+    "traits": [
+      "taihou (azur lane)",
+      "1girl",
+      "solo",
+      "black_hair",
+      "very_long_hair",
+      "twintails",
+      "red_eyes",
+      "huge_breasts",
+      "cleavage",
+      "azur_lane"
+    ],
+    "accent_color": "#dc2626",
+    "bg_color": "#160808"
+  },
+  {
+    "id": "ichinose_asuna",
+    "name": "一之濑明日奈",
+    "alias": [
+      "Ichinose Asuna",
+      "明日奈",
+      "兔女郎明日奈",
+      "C&C 00"
+    ],
+    "type": "popular",
+    "icon": "🐰",
+    "portrait": {
+      "image": "../assets/characters/popular-ichinose_asuna.png?v=5",
+      "alt": "一之濑明日奈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及踝灿金长瀑发 · 单眼遮发 · 柔软下垂金犬耳",
+      "hair_color": "璀璨金黄",
+      "eyes": "清澈湛蓝美眸（蔚蓝水瞳）",
+      "hairstyle": "极长直发金瀑 · 遮单眼流海 · 下垂犬耳 · 细环光环",
+      "uniform": "标志性反光高叉黑兔女郎装 / C&C 特勤女仆制服",
+      "expression": "灿烂爽朗 · 天真单纯 · 毫无防备",
+      "style": "beaming bunny agent goddess",
+      "signature": "灿烂金长发、高叉黑兔女郎、垂耳犬耳、湛蓝眼眸与治愈笑容"
+    },
+    "personality": [
+      "天真纯真、不拘小节",
+      "拥有不可思议的超强直觉与幸运",
+      "像大狗狗一样热情依恋老师",
+      "执行特勤任务时果敢利落",
+      "笑容如小太阳般感染周围所有人"
+    ],
+    "likes": [
+      "像大狗狗一样扑到老师怀里撒娇",
+      "在豪华赌船的轮盘桌上大展身手",
+      "海滩排球与肆意奔跑",
+      "好吃的点心与冰激凌"
+    ],
+    "classic_cg": {
+      "title": "黄金赌船的迎宾微笑",
+      "description": "极尽奢华的游轮水晶灯下，明日奈身着黑色高叉兔女郎服侧身甜笑招手，及踝金发如瀑流转，璀璨夺目。"
+    },
+    "identity": {
+      "role": "千年科技学园秘密特勤组 C&C 特工",
+      "age": "高中生",
+      "occupation": "秘密特勤干员 / 战斗女仆",
+      "faction": "基沃托斯 · 千年科技学园 C&C"
+    },
+    "tags": [
+      "兔女郎",
+      "金发及踝",
+      "犬耳",
+      "女仆装",
+      "高挑身段",
+      "开朗甜美",
+      "光环"
+    ],
+    "bg_story": "一之濑明日奈是《蔚蓝档案》中千年科技学园秘密组织 C&C 的王牌特工（代号 00）。她拥有罕见的野兽直觉和超强气运，平时总是一副天真无邪、开朗灿烂的模样，对老师有着毫无保留的亲近与信任。其标志性的兔女郎装扮在同人生图圈享有统治级人气。",
+    "palette": [
+      "日光金",
+      "纯漆黑",
+      "温润白"
+    ],
+    "weather": [
+      "金色暖阳",
+      "晴空万里",
+      "海风微拂"
+    ],
+    "speech": "主人主人！今天明日奈也有好好完成特勤任务哦，快点夸夸我嘛~！",
+    "source": "NEXON《蔚蓝档案 / Blue Archive》",
+    "traits": [
+      "asuna (blue archive)",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "very_long_hair",
+      "dog_ears",
+      "amber_eyes",
+      "large_breasts",
+      "halo",
+      "blue_archive"
+    ],
+    "accent_color": "#fbbf24",
+    "bg_color": "#141006"
+  },
+  {
+    "id": "lucy_cyberpunk",
+    "name": "露西",
+    "alias": [
+      "Lucy",
+      "边缘行者露西",
+      "夜之城黑客",
+      "月球露西"
+    ],
+    "type": "popular",
+    "icon": "🌙",
+    "portrait": {
+      "image": "../assets/characters/popular-lucy_cyberpunk.png?v=5",
+      "alt": "露西 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "不对称渐变短发 · 幻彩白粉紫微蓝",
+      "hair_color": "七彩幻彩白",
+      "eyes": "神秘紫罗兰魅瞳 · 鲜红眼影",
+      "hairstyle": "不对称波波头 · 赛博脊椎神经接口插槽",
+      "uniform": "高领黑短夹克与深潜紧身战术衣 / 月球漫步轻型宇航服",
+      "expression": "清冷孤傲 · 抽烟沉思 · 唯美动情",
+      "style": "melancholic cyberpunk netrunner",
+      "signature": "幻彩渐变短发、单分子线手环、脊柱发光插槽与月球追忆"
+    },
+    "personality": [
+      "防备心极强、性格清冷独立",
+      "曾受荒坂残酷训练内心渴望自由",
+      "对认定的人深情至死不渝",
+      "夜之城最顶级的神经黑客技术",
+      "毕生心愿是前往宁静纯洁的月球"
+    ],
+    "likes": [
+      "坐在沃森区高空天台仰望月球",
+      "抽着泛淡紫光的赛博香烟",
+      "在深潜数据冰海中畅游",
+      "与深爱之人相依为命的平静时光"
+    ],
+    "classic_cg": {
+      "title": "月球之巅的蔚蓝地出",
+      "description": "荒凉死寂的月球平原上，露西手抱宇航头盔凝望星空中冉冉升起的蔚蓝地球，目光深邃凄美。"
+    },
+    "identity": {
+      "role": "夜之城顶尖自由网络黑客 / 原荒坂深潜逃犯",
+      "age": "青年",
+      "occupation": "网络黑客 (Netrunner)",
+      "faction": "夜之城 · 曼恩佣兵小队"
+    },
+    "tags": [
+      "幻彩短发",
+      "赛博黑客",
+      "单分子线",
+      "月球梦想",
+      "深潜紧身衣",
+      "红眼影",
+      "赛博朋克"
+    ],
+    "bg_story": "露西是《赛博朋克：边缘行者》的女主角，夜之城身手最高超的网络黑客之一。年幼时曾被荒坂当做深潜探针残酷训练，逃出生天后独自在夜之城流浪，性格戒备而孤傲。直到遇见大卫后冰封的心才被融化，她始终怀抱着逃离夜之城、前往纯净月球生活的终极梦想。",
+    "palette": [
+      "幻彩白",
+      "赛博紫",
+      "霓虹青"
+    ],
+    "weather": [
+      "夜之城酸雨",
+      "沃森霓虹夜",
+      "月面星空"
+    ],
+    "speech": "夜之城吞噬一切……但在那颗月球上，什么都没有，只有绝对的平静。",
+    "source": "Studio TRIGGER / CD PROJEKT RED《赛博朋克：边缘行者》",
+    "traits": [
+      "lucy (cyberpunk)",
+      "1girl",
+      "solo",
+      "short_hair",
+      "white_hair",
+      "multicolored_hair",
+      "gradient_hair",
+      "eyeliner",
+      "red_eyeshadow",
+      "cyberware",
+      "cyberpunk"
+    ],
+    "accent_color": "#c084fc",
+    "bg_color": "#0e0b16"
+  },
+  {
+    "id": "yorha_2b",
+    "name": "2B",
+    "alias": [
+      "YoRHa No.2 Type B",
+      "尤尔哈2号B型",
+      "2B小姐姐",
+      "尼尔2B"
+    ],
+    "type": "popular",
+    "icon": "⚔️",
+    "portrait": {
+      "image": "../assets/characters/popular-yorha_2b.png?v=5",
+      "alt": "2B 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银白波波头短发 · 黑色发带",
+      "hair_color": "银白",
+      "eyes": "黑色战术护目眼罩 · 晶莹冰蓝双瞳",
+      "hairstyle": "短波波头 · 唇下精致美人痣",
+      "uniform": "尤尔哈哥特镂空刺绣战斗裙 / 破损凯妮战斗装束",
+      "expression": "沉着内敛 · 冰冷寡言 · 隐藏深情",
+      "style": "stoic gothic battle android",
+      "signature": "黑色战术眼罩、银白波波头、露背高叉哥特裙与白之契约太刀"
+    },
+    "personality": [
+      "恪守寄叶军规严禁流露情感",
+      "冷静理智、战斗技艺巅峰绝伦",
+      "内心深处温柔且充满人性关怀",
+      "愿意为了守护 9S 奉献自身一切",
+      "在无尽轮回中背负着沉重宿命"
+    ],
+    "likes": [
+      "默默守护同伴的安全",
+      "月之泪花海的微风",
+      "随行支援机 Pod 的规律互动",
+      "废墟都市中罕见的花草生长"
+    ],
+    "classic_cg": {
+      "title": "高架断崖的白之契约",
+      "description": "废墟都市高架断桥前，2B 单手虚空按剑，哥特黑裙迎着海风烈烈飞舞，周身散发冷峻傲岸的战神气场。"
+    },
+    "identity": {
+      "role": "人类会议寄叶部队泛用型战斗人造人",
+      "age": "外观青年",
+      "occupation": "寄叶战斗员 (Battler)",
+      "faction": "寄叶部队 (YoRHa)"
+    },
+    "tags": [
+      "银白短发",
+      "战术眼罩",
+      "哥特裙",
+      "美人痣",
+      "人造人",
+      "白之契约",
+      "高叉黑靴"
+    ],
+    "bg_story": "2B（尤尔哈2号B型）是《尼尔：机械纪元》的女主角，寄叶部队部署在地球夺还战第一线的泛用战斗型人造人。她配备有近战长刀与远程随行机 Pod，战力高超，严苛遵守“禁止拥有情感”的部队铁律；然而在冰冷的机械外表下，却拥有一颗比任何生命都细腻温柔、甘愿为他人赴死的炽热之心。",
+    "palette": [
+      "哥特黑",
+      "白之契约银",
+      "冷冽钢灰"
+    ],
+    "weather": [
+      "废墟阴天",
+      "月之泪微风",
+      "雨后水没都市"
+    ],
+    "speech": "一切存在皆是为了被毁灭而设计……我们盲目地被困在生死相续的螺旋中。",
+    "source": "Square Enix / PlatinumGames《尼尔：机械纪元 / NieR:Automata》",
+    "traits": [
+      "2b (nier:automata)",
+      "1girl",
+      "solo",
+      "short_hair",
+      "white_hair",
+      "blindfold",
+      "mole_under_mouth",
+      "cleavage",
+      "large_breasts",
+      "nier:automata"
+    ],
+    "accent_color": "#94a3b8",
+    "bg_color": "#0a0d14"
   }
 ]

@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "franchise": "NieR:Automata",
+  "characters": [
+    {
+      "id": "yorha_2b",
+      "displayName": "2B",
+      "originalName": "YoRHa No.2 Type B",
+      "franchise": "NieR:Automata",
+      "aliases": [
+        "yorha_2b",
+        "2b",
+        "2b (nier:automata)",
+        "尤尔哈2号B型",
+        "尼尔",
+        "nier",
+        "automata",
+        "yorha"
+      ],
+      "identityProse": "YoRHa No.2 Type B (2B) from NieR:Automata, an elite battle android with silvery-white bob hair, iconic black visor blindfold, subtle beauty mark beneath the left corner of her lips, curvaceous athletic silhouette, and a stoic expression.",
+      "identityTokens": [
+        "2b (nier:automata)",
+        "1girl",
+        "solo",
+        "short_hair",
+        "white_hair",
+        "blindfold",
+        "mole_under_mouth",
+        "cleavage",
+        "large_breasts",
+        "nier:automata"
+      ],
+      "exactTokens": [
+        "2b (nier:automata)"
+      ],
+      "exactPrefixes": [
+        "2b_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "gothic_dress",
+          "name": "尤尔哈决战哥特战裙",
+          "prose": "canonical YoRHa short black gothic dress with intricate white floral embroidery across the chest, sheer mesh cleavage window, puff sleeves with feather trim cuffs, deep open back cutout, side-slit flared miniskirt revealing white leotard underneath, thigh-high black over-the-knee leather boots, black headband, and floating Virtuous Contract katana",
+          "tokens": [
+            "gothic_lolita",
+            "black_dress",
+            "short_dress",
+            "embroidery",
+            "cleavage",
+            "puff_sleeves",
+            "feathers",
+            "open_back",
+            "leotard_under_clothes",
+            "thighhighs",
+            "boots",
+            "leather_boots",
+            "headband",
+            "sword",
+            "katana",
+            "floating_weapon",
+            "yorha"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "leotard_kaine",
+          "name": "破损清凉战装（凯妮装束）",
+          "prose": "the Revealing Outfit combat attire: delicate pale sky-blue and translucent white lace lingerie bodysuit, floral lace trim hugging her voluptuous curves, medical bandage wrap around one arm, matching sheer stockings, and slender ribbon high heels",
+          "tokens": [
+            "lingerie",
+            "bodysuit",
+            "blue_lingerie",
+            "lace_trim",
+            "cleavage",
+            "deep_cleavage",
+            "bandages",
+            "stockings",
+            "high_heels",
+            "revealing_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "ruins_cape",
+          "name": "废墟风沙行者斗篷",
+          "prose": "a weathered desert exploration outfit: a tattered windblown dark gray traveler cloak and cowl draped over a form-fitting charcoal tactical combat suit, reinforced knee guards, tactical combat boots dusted with golden desert sand, and heavy two-handed greatsword mounted across her back",
+          "tokens": [
+            "cloak",
+            "hood",
+            "cape",
+            "tattered_clothes",
+            "bodysuit",
+            "tight_suit",
+            "armor",
+            "boots",
+            "greatsword",
+            "desert",
+            "ruins"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "evening_gown",
+          "name": "失落纪元露背深黑晚礼服",
+          "prose": "a lavish midnight black velvet formal evening gown with an open heart neckline, dramatic backless cutout showing her shoulder blades, black silk elbow-length opera gloves, silver filigree choker, and dark stiletto heels",
+          "tokens": [
+            "dress",
+            "evening_gown",
+            "black_dress",
+            "velvet",
+            "backless",
+            "open_back",
+            "gloves",
+            "opera_gloves",
+            "choker",
+            "high_heels",
+            "cleavage",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "large_butt",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "mole_under_mouth",
+            "short_hair",
+            "white_hair",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pristine pale porcelain android skin, remarkably voluptuous firm breasts with delicate soft pink nipples, slender waist flaring into her iconic sculpted round hips and curvaceous thighs, exposed pussy, beauty mark under her lip, blindfold removed revealing breathtaking crystalline blue eyes, bare feet, serene ruined church moonlight",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "尼尔：机械纪元（NieR:Automata）· 地球废墟",
+        "era": "公元 11945 年第十四次机械战争",
+        "formNotes": "寄叶部队所属泛用战斗型人造人，性格沉着内敛、严守“禁止拥有情感”军规，却在内心深处对 9S 与人性的美好抱有无尽温柔与守护信念",
+        "research": "2026-09-02 调研（Danbooru 2b_(nier:automata) 25000+ posts）"
+      },
+      "animeStudio": "A-1 Pictures / Square Enix style",
+      "curatedArtistStyles": [
+        "wlop",
+        "krenz_cushart",
+        "toshi_aki"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

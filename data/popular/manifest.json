@@ -110,7 +110,7 @@
     {
       "file": "blue-archive.json",
       "franchise": "Blue Archive",
-      "count": 7
+      "count": 8
     },
     {
       "file": "oshi-no-ko.json",
@@ -135,6 +135,26 @@
     {
       "file": "honkai-star-rail.json",
       "franchise": "Honkai: Star Rail",
+      "count": 1
+    },
+    {
+      "file": "zenless-zone-zero.json",
+      "franchise": "Zenless Zone Zero",
+      "count": 2
+    },
+    {
+      "file": "azur-lane.json",
+      "franchise": "Azur Lane",
+      "count": 2
+    },
+    {
+      "file": "cyberpunk-edgerunners.json",
+      "franchise": "Cyberpunk: Edgerunners",
+      "count": 1
+    },
+    {
+      "file": "nier-automata.json",
+      "franchise": "NieR:Automata",
       "count": 1
     }
   ]
