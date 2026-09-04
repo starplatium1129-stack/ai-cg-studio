@@ -7647,6 +7647,81 @@
         "nier:automata"
       ],
       "outfits": []
+    },
+    {
+      "id": "murasame",
+      "displayName": "丛雨",
+      "originalName": "ムラサメ (Murasame)",
+      "source": "YUZUSOFT",
+      "identityProse": "Murasame from Senren Banka by YUZUSOFT, the ancient sacred blade spirit of Murasamemaru with long flowing pale-green hair tied in high twin tails, a prominent ahoge, vibrant ruby-red eyes, petite slender figure, and ethereal blue spirit wisps floating around her.",
+      "identityTokens": [
+        "murasame (senren)",
+        "1girl",
+        "solo",
+        "pale_green_hair",
+        "light_green_hair",
+        "very_long_hair",
+        "sidelocks",
+        "blunt_bangs",
+        "ahoge",
+        "red_eyes",
+        "red_ribbon",
+        "hair_ribbon",
+        "flat_chest",
+        "small_breasts",
+        "floating",
+        "spirit",
+        "katana",
+        "sword",
+        "senren_banka"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "hitachi_mako",
+      "displayName": "常陆茉子",
+      "originalName": "常陸 茉子 (Hitachi Mako)",
+      "source": "YUZUSOFT",
+      "identityProse": "Hitachi Mako from Senren Banka by YUZUSOFT, the skilled shinobi guardian of the Tomotake family with short black hair and distinctive long sidelocks, a playful ahoge, bright emerald green eyes, an adorable cat-like mouth, and a curvaceous athletic figure.",
+      "identityTokens": [
+        "hitachi_mako",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair_with_long_locks",
+        "sidelocks",
+        "ahoge",
+        "green_eyes",
+        "cat_mouth",
+        "large_breasts",
+        "cleavage",
+        "senren_banka"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "tomotake_yoshino",
+      "displayName": "朝武芳乃",
+      "originalName": "朝武 芳乃 (Tomotake Yoshino)",
+      "source": "YUZUSOFT",
+      "identityProse": "Tomotake Yoshino from Senren Banka by YUZUSOFT, the revered shrine maiden princess of Hoori with silky silver-white hair styled in elegant twin tails, parted center bangs framing her face, gentle yet dignified deep blue eyes, delicate cherry blossom hair ornaments, and a slender voluptuous figure.",
+      "identityTokens": [
+        "tomotake_yoshino",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "twintails",
+        "sidelocks",
+        "blunt_bangs",
+        "blue_eyes",
+        "hair_flower",
+        "hair_ornament",
+        "large_breasts",
+        "cleavage",
+        "senren_banka"
+      ],
+      "outfits": []
     }
   ]
 }

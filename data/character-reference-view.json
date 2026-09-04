@@ -38699,5 +38699,26 @@
     "source": "NieR:Automata",
     "identityProse": "YoRHa No.2 Type B (2B) from NieR:Automata, an elite battle android with silvery-white bob hair, iconic black visor blindfold, subtle beauty mark beneath the left corner of her lips, curvaceous athletic silhouette, and a stoic expression.",
     "outfits": []
+  },
+  "murasame": {
+    "characterId": "murasame",
+    "displayName": "丛雨",
+    "source": "YUZUSOFT",
+    "identityProse": "Murasame from Senren Banka by YUZUSOFT, the ancient sacred blade spirit of Murasamemaru with long flowing pale-green hair tied in high twin tails, a prominent ahoge, vibrant ruby-red eyes, petite slender figure, and ethereal blue spirit wisps floating around her.",
+    "outfits": []
+  },
+  "hitachi_mako": {
+    "characterId": "hitachi_mako",
+    "displayName": "常陆茉子",
+    "source": "YUZUSOFT",
+    "identityProse": "Hitachi Mako from Senren Banka by YUZUSOFT, the skilled shinobi guardian of the Tomotake family with short black hair and distinctive long sidelocks, a playful ahoge, bright emerald green eyes, an adorable cat-like mouth, and a curvaceous athletic figure.",
+    "outfits": []
+  },
+  "tomotake_yoshino": {
+    "characterId": "tomotake_yoshino",
+    "displayName": "朝武芳乃",
+    "source": "YUZUSOFT",
+    "identityProse": "Tomotake Yoshino from Senren Banka by YUZUSOFT, the revered shrine maiden princess of Hoori with silky silver-white hair styled in elegant twin tails, parted center bangs framing her face, gentle yet dignified deep blue eyes, delicate cherry blossom hair ornaments, and a slender voluptuous figure.",
+    "outfits": []
   }
 }

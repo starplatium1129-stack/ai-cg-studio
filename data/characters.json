@@ -6804,5 +6804,356 @@
     ],
     "accent_color": "#e0f2fe",
     "bg_color": "#0a101d"
+  },
+  {
+    "id": "kazami_kazuki",
+    "name": "风见一姬",
+    "alias": [
+      "Kazami Kazuki",
+      "風見一姫",
+      "一姬",
+      "天才姐姐",
+      "灰色的果实"
+    ],
+    "type": "popular",
+    "icon": "❄️",
+    "portrait": {
+      "image": "../assets/characters/popular-kazami_kazuki.png?v=5",
+      "alt": "风见一姬 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及膝银白超长发 · 齐刘海 · 优雅侧发束",
+      "hair_color": "银白/雪白",
+      "eyes": "清冷锐利深红眼眸",
+      "hairstyle": "齐腰及膝直发 · 极简中分齐刘海 · 纤细病弱美感",
+      "uniform": "极简无瑕纯白连身裙 / 美浜学园紫衫白裙制服",
+      "expression": "高傲冷峻 · 毒舌从容 · 对弟弟深情执念",
+      "style": "transcendent genius silver-haired sister",
+      "signature": "及膝如瀑银发、绯红双瞳、纯白素裙与超凡脱俗的天才神态"
+    },
+    "personality": [
+      "智商极高、逻辑严密的天才少女",
+      "性格冷峻从容、说话直切要害（轻微毒舌）",
+      "对弟弟风见雄二怀有无限深情与近乎溺爱的守护欲",
+      "在极端逆境中拥有超越常人的意志与生存决断力",
+      "外冷内热，内心渴望弟弟能获得普通人的幸福"
+    ],
+    "likes": [
+      "教导和注视着弟弟雄二",
+      "深奥的书籍、哲学思考与解谜",
+      "安静无人的靠窗阅读时光",
+      "简单的红茶与白面包"
+    ],
+    "classic_cg": {
+      "title": "泷园断崖的天才抉择",
+      "description": "翻覆的校车废墟旁，白发少女立于险峻崖壁之上，神情平静地指挥着救援与生存，展现惊人宿命感。"
+    },
+    "identity": {
+      "role": "风见雄二的亲生姐姐 / 泷园学园事故幸存者",
+      "age": "青年",
+      "occupation": "战略战术研究 / 天才思想者",
+      "faction": "风见家 · 美浜学园"
+    },
+    "tags": [
+      "银发",
+      "红瞳",
+      "及膝长发",
+      "天才",
+      "姐姐",
+      "毒舌",
+      "白裙",
+      "灰色的果实"
+    ],
+    "bg_story": "风见一姬是《灰色的果实》及灰色系列中灵魂般的核心角色，男主角风见雄二的亲生姐姐。自幼展现出无人能及的超级天才智商，被周围人视为“怪物”，唯有弟弟雄二是她精神世界中无可替代的绝对至宝。十年前在惨烈的泷园水难事故中以超凡决断拯救了全车人，并在暗处默默守望着雄二的救赎之路。",
+    "palette": [
+      "纯洁白",
+      "冷月银",
+      "绯红色"
+    ],
+    "weather": [
+      "高山飞雪",
+      "幽寂寒月",
+      "晨曦微光"
+    ],
+    "speech": "怎么了，雄二？遇到困难了吗？只要你向我求助，姐姐无论何时都会为你扫平障碍哦。",
+    "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+    "traits": [
+      "kazami_kazuki",
+      "1girl",
+      "solo",
+      "white_hair",
+      "very_long_hair",
+      "blunt_bangs",
+      "sidelocks",
+      "red_eyes",
+      "grisaia_(series)"
+    ],
+    "accent_color": "#fca5a5",
+    "bg_color": "#180e0e"
+  },
+  {
+    "id": "suou_amane",
+    "name": "周防天音",
+    "alias": [
+      "Suou Amane",
+      "周防天音",
+      "天音姐",
+      "樱桃大姐姐",
+      "灰色的果实"
+    ],
+    "type": "popular",
+    "icon": "🍒",
+    "portrait": {
+      "image": "../assets/characters/popular-suou_amane.png?v=5",
+      "alt": "周防天音 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "酒红超长发 · 双侧环形发圈发髻 · 飘逸长侧束",
+      "hair_color": "酒红色/深深樱桃红",
+      "eyes": "温润明亮深海蓝瞳",
+      "hairstyle": "极长卷发 · 标志性发环发带（hair rings） · 丰满性感",
+      "uniform": "美浜学园大开领制服 / 烈焰机车紧身皮衣",
+      "expression": "包容温柔 · 成熟色气 · 豪爽大姐姐",
+      "style": "voluptuous caring older sister",
+      "signature": "酒红长发带发环、深蓝美眸、傲人丰满三围与机车大姐姐气质"
+    },
+    "personality": [
+      "开朗豪爽、极具包容力与母性光辉",
+      "料理手艺精湛、照顾同伴无微不至",
+      "喜欢主动挑逗雄二，色气又大胆",
+      "内心深处背负着泷园事故对一姬的深沉负罪感",
+      "深爱着雄二，甘愿用全部身心去救赎和温暖他"
+    ],
+    "likes": [
+      "骑着重型机车在沿海公路上兜风",
+      "为美浜学园的同伴们做满满一桌丰盛大餐",
+      "捉弄雄二看他害羞脸红的窘样",
+      "夏日海滩晒太阳"
+    ],
+    "classic_cg": {
+      "title": "暮色公里的机车依偎",
+      "description": "夕阳染红的海边公路旁，天音倚在重型机车边单手摘下头盔，酒红长发在晚风中飞扬，神态温柔动情。"
+    },
+    "identity": {
+      "role": "美浜学园三年级生 / 泷园事故唯一幸存者",
+      "age": "高中三年生",
+      "occupation": "美浜学园学生 / 重型机车骑士",
+      "faction": "美浜学园"
+    },
+    "tags": [
+      "红发",
+      "发环",
+      "蓝瞳",
+      "巨乳",
+      "大姐姐",
+      "机车皮衣",
+      "美浜制服",
+      "灰色的果实"
+    ],
+    "bg_story": "周防天音是《灰色的果实》的主要女主角之一，美浜学园中如同大姐姐般照顾所有人的存在。十年前在风见一姬的舍身掩护下九死一生逃出深山，因而视一姬为救命恩人，在得知雄二是其弟弟后，毅然决然将全部爱意与献身精神倾注在雄二身上。拥有极具压迫感的身材曲线与招牌的双侧发环发型。",
+    "palette": [
+      "樱桃红",
+      "深海蓝",
+      "皮衣黑"
+    ],
+    "weather": [
+      "落日金辉",
+      "夏日海风",
+      "星夜沿海"
+    ],
+    "speech": "雄二！今天想吃什么？不管是咖喱、炸猪排还是……我，我都完全可以准备好哦~♪",
+    "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+    "traits": [
+      "suou_amane",
+      "1girl",
+      "solo",
+      "red_hair",
+      "very_long_hair",
+      "hair_rings",
+      "blue_eyes",
+      "large_breasts",
+      "cleavage",
+      "grisaia_(series)"
+    ],
+    "accent_color": "#f43f5e",
+    "bg_color": "#1c0a10"
+  },
+  {
+    "id": "komine_sachi",
+    "name": "小岭幸",
+    "alias": [
+      "Komine Sachi",
+      "小嶺幸",
+      "幸",
+      "全能女仆",
+      "灰色的果实"
+    ],
+    "type": "popular",
+    "icon": "🧹",
+    "portrait": {
+      "image": "../assets/characters/popular-komine_sachi.png?v=5",
+      "alt": "小岭幸 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "粉色短发 · 双侧小麻花辫 · 斜刘海",
+      "hair_color": "柔和樱粉",
+      "eyes": "纯净剔透天空蓝眼眸",
+      "hairstyle": "短发双小辫 · 荷叶边女仆发箍 · 黑色发带",
+      "uniform": "经典法式黑白荷叶边女仆装 / 美浜学园学生制服",
+      "expression": "毕恭毕敬 · 温柔顺从 · 天然认真",
+      "style": "dutiful obedient maid archetype",
+      "signature": "粉色短发双小辫、白色荷叶边发箍、经典女仆围裙与鲨鱼抱枕"
+    },
+    "personality": [
+      "无条件顺从命令的绝对执行者",
+      "家务打扫、机械修理与爆破全能",
+      "待人礼貌恭敬，随时面带得体的微笑",
+      "因为过去的心理阴影，把“做好孩子”当做绝对信条",
+      "其实是雄二的青梅竹马，深爱着曾经给予她希望的雄二"
+    ],
+    "likes": [
+      "将美浜学园的每个角落打扫得一尘不染",
+      "收集可爱的鲨鱼公仔与周边",
+      "制作各种小点心与茶水",
+      "遵从雄二下达的任何指令"
+    ],
+    "classic_cg": {
+      "title": "晨光长廊的恭敬屈膝",
+      "description": "美浜学园清晨静谧的长廊中，粉发女仆双手轻挽裙摆深情行礼，阳光在女仆蕾丝上勾勒出纯洁光晕。"
+    },
+    "identity": {
+      "role": "美浜学园一年级生 / 美浜专属女仆兼班长",
+      "age": "高中一年生",
+      "occupation": "学生女仆 / 班长",
+      "faction": "美浜学园"
+    },
+    "tags": [
+      "粉发",
+      "短发双辫",
+      "蓝瞳",
+      "女仆装",
+      "围裙",
+      "绝对服从",
+      "青梅竹马",
+      "灰色的果实"
+    ],
+    "bg_story": "小岭幸是《灰色的果实》的主要女主角之一，美浜学园全校第一的优等生，同时也是学园里唯一的专职女仆。过去因家庭矛盾自责而封闭情感，发誓做个“百依百顺的好孩子”。事实上她正是雄二童年时期的青梅竹马，一直默默珍藏着雄二送给她的定情信物，是个动手能力极强、甚至能自制防爆工具的硬核女仆。",
+    "palette": [
+      "樱花粉",
+      "女仆黑",
+      "纯洁白"
+    ],
+    "weather": [
+      "晨光清丽",
+      "午后晴空",
+      "微雨长廊"
+    ],
+    "speech": "早上好，雄二先生。学园内的所有打扫与早茶已准备完毕。只要是您的命令，幸都会全力以赴执行。",
+    "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+    "traits": [
+      "komine_sachi",
+      "1girl",
+      "solo",
+      "pink_hair",
+      "short_hair",
+      "two_side_up",
+      "blue_eyes",
+      "maid",
+      "maid_dress",
+      "large_breasts",
+      "grisaia_(series)"
+    ],
+    "accent_color": "#f472b6",
+    "bg_color": "#1a0d18"
+  },
+  {
+    "id": "harudera_yuria",
+    "name": "春寺由梨亚 (JB)",
+    "alias": [
+      "Harudera Yuria",
+      "JB",
+      "茱莉亚·巴尔德拉",
+      "女上司",
+      "灰色的果实"
+    ],
+    "type": "popular",
+    "icon": "🕶️",
+    "portrait": {
+      "image": "../assets/characters/popular-harudera_yuria.png?v=5",
+      "alt": "春寺由梨亚 (JB) 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "极长蜂蜜金大波浪卷发 · 成熟偏分",
+      "hair_color": "蜂蜜金黄",
+      "eyes": "锐利智慧冰蓝双瞳 · 右眼下美人泪痣",
+      "hairstyle": "微卷金长大波浪 · 标志性红框眼镜 · 职场知性",
+      "uniform": "CIRS 剪裁修身深色西装套裙 / 特勤暗夜潜行紧身衣",
+      "expression": "威严干练 · 成熟沉稳 · 私密娇嗔",
+      "style": "authoritative elegant intelligence handler",
+      "signature": "红框眼镜、右眼角泪痣、金发大波浪、职业西服套裙与女上司威严"
+    },
+    "personality": [
+      "处事果断理智、铁腕干练的情报官",
+      "刀子嘴豆腐心，表面严厉其实极其护短",
+      "雄二唯一的监护人，常年为雄二各种出格行动收拾残局",
+      "职场上位者的威严下深藏着女人味与私密柔情",
+      "工作过载时会有些许依赖雄二的反差萌"
+    ],
+    "likes": [
+      "手冲特浓黑咖啡与平静的深夜办公",
+      "看到雄二平安完成任务归来",
+      "高档丝绸睡衣与舒适的沙发补觉",
+      "小酌高年份单一麦芽威士忌"
+    ],
+    "classic_cg": {
+      "title": "机密办公室的深夜审度",
+      "description": "百叶窗透入冷清夜色的特工办公室内，JB轻推红框眼镜倚在皮椅上，白衬衫微敞，知性与成熟韵味拉满。"
+    },
+    "identity": {
+      "role": "日美联合反恐情报机构 CIRS 部门长 / 雄二监护人",
+      "age": "成年御姐",
+      "occupation": "情报长官 / CIRS 课长",
+      "faction": "日美国防特工机构 CIRS"
+    },
+    "tags": [
+      "金发大波浪",
+      "红框眼镜",
+      "泪痣",
+      "西装套裙",
+      "女上司",
+      "成熟御姐",
+      "监护人",
+      "灰色的果实"
+    ],
+    "bg_story": "春寺由梨亚（代号 JB，全名茱莉亚·巴尔德拉）是《灰色的果实》中的核心高人气女长官。身为日美反恐特工机构 CIRS 的课长，她是风见雄二唯一的直属上司与名义上的监护人。外表知性冷艳、戴着标志性的红框眼镜，做事雷厉风行；虽然常常对雄二的任性行为感到头痛大发雷霆，但在关键时刻总是不惜动用一切权力与资源为雄二善后与护短，二人的关系兼具上司、义姐与情妇般的深沉纽带。",
+    "palette": [
+      "商务深灰",
+      "日光金",
+      "暗绯红"
+    ],
+    "weather": [
+      "夜之城霓虹",
+      "百叶窗雨夜",
+      "黎明微光"
+    ],
+    "speech": "雄二，任务报告我已经看过了。你这次又擅自搞出那么大动静……坐下，给我好好从头交代清楚。",
+    "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+    "traits": [
+      "harudera_yuria",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "very_long_hair",
+      "wavy_hair",
+      "blue_eyes",
+      "glasses",
+      "red-framed_eyewear",
+      "mole_under_eye",
+      "large_breasts",
+      "mature_female",
+      "grisaia_(series)"
+    ],
+    "accent_color": "#f59e0b",
+    "bg_color": "#140f06"
   }
 ]

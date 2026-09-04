@@ -161,6 +161,11 @@
       "file": "yuzusoft.json",
       "franchise": "YUZUSOFT",
       "count": 3
+    },
+    {
+      "file": "grisaia.json",
+      "franchise": "Grisaia",
+      "count": 4
     }
   ]
 }

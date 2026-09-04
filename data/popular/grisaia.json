@@ -1,0 +1,662 @@
+{
+  "version": 1,
+  "franchise": "Grisaia",
+  "characters": [
+    {
+      "id": "kazami_kazuki",
+      "displayName": "风见一姬",
+      "originalName": "風見 一姫 (Kazami Kazuki)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "kazami_kazuki",
+        "kazuki",
+        "kazuki_(grisaia)",
+        "风见一姬",
+        "一姬",
+        "天才姐姐",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Kazami Kazuki from Grisaia by Frontwing, the legendary genius older sister of Yuuji with floor-sweeping silvery-white hair, blunt bangs framing her delicate face, sharp yet intensely devoted crimson red eyes, slender graceful figure, and a cool stoic demeanor.",
+      "identityTokens": [
+        "kazami_kazuki",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "blunt_bangs",
+        "sidelocks",
+        "red_eyes",
+        "long_eyelashes",
+        "slender",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "kazami_kazuki"
+      ],
+      "exactPrefixes": [
+        "kazuki_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "white_dress",
+          "name": "纯白无瑕修身连身裙",
+          "prose": "an immaculate pure white sleeveless sundress made of flowing lightweight linen, delicate square neckline, slender shoulder straps, subtle waist seam, bare shoulders and slender arms, graceful minimalist aesthetic",
+          "tokens": [
+            "white_dress",
+            "sundress",
+            "sleeveless_dress",
+            "bare_shoulders",
+            "bare_arms",
+            "minimalist",
+            "elegant"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "mihama_uniform",
+          "name": "美浜学园紫衫白裙制服",
+          "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with wide sailor collar, royal blue plaid necktie, high-waisted white pleated mid-length skirt, dark knee socks, and brown school penny loafers",
+          "tokens": [
+            "mihama_private_academy_school_uniform",
+            "school_uniform",
+            "purple_shirt",
+            "sailor_collar",
+            "plaid_necktie",
+            "blue_necktie",
+            "white_skirt",
+            "pleated_skirt",
+            "knee_socks",
+            "loafers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "hospital_casual",
+          "name": "安宁静养宽松白衬衫",
+          "prose": "comfortable convalescent loungewear: an oversized crisp white cotton button-up collared shirt loosely draped over her slender frame, top buttons undone revealing fragile collarbones, rolled-up cuffs, bare legs, and slippers",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "collared_shirt",
+            "unbuttoned",
+            "collarbone",
+            "bare_legs",
+            "slippers",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "月华银辉竞技连体泳装",
+          "prose": "a sleek minimalist silvery-white one-piece swimsuit hugging her slender silhouette, high-cut leg openings, low back scoop, thin cross-back straps, water droplets glistening on smooth fair skin",
+          "tokens": [
+            "swimsuit",
+            "one-piece_swimsuit",
+            "white_swimsuit",
+            "highleg",
+            "cross-back_straps",
+            "wet_skin",
+            "bare_legs"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "small_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "very_long_hair",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pristine alabaster porcelain skin, delicate petite breasts with soft rosy-pink nipples, slender toned midriff, exposed pussy, cascading floor-length silvery hair trailing softly across the sheets, cool crimson eyes shining with secret passion, bare feet, dim tranquil candle ambience",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "美浜学园 · 泷园水难事故",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "风见雄二的亲生姐姐，智商惊人的绝对天才，在十年前的事故中展现出超越常人的冷静与决断；外表冷峻毒舌，却对弟弟雄二抱有极度深沉且近乎病态的关爱与执念",
+        "research": "2026-09-02 调研（Danbooru kazami_kazuki 210+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kobuichi"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "suou_amane",
+      "displayName": "周防天音",
+      "originalName": "周防 天音 (Suou Amane)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "suou_amane",
+        "amane",
+        "amane_(grisaia)",
+        "周防天音",
+        "天音",
+        "天音姐",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Suou Amane from Grisaia by Frontwing, the voluptuous and caring older-sister heroine with very long flowing crimson-red hair styled with distinctive circular hair rings at the sides, striking deep sapphire blue eyes, towering curvy figure with an ample bust, and a warm seductive smile.",
+      "identityTokens": [
+        "suou_amane",
+        "1girl",
+        "solo",
+        "red_hair",
+        "very_long_hair",
+        "hair_rings",
+        "hair_bow",
+        "sidelocks",
+        "blue_eyes",
+        "large_breasts",
+        "cleavage",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "suou_amane"
+      ],
+      "exactPrefixes": [
+        "amane_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "mihama_uniform",
+          "name": "美浜学园大领制服",
+          "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with sailor collar worn dangerously unbuttoned at the top revealing deep cleavage, plaid necktie loosely draped, high-waisted white pleated skirt, sheer black thigh-high stockings, and black loafers",
+          "tokens": [
+            "mihama_private_academy_school_uniform",
+            "school_uniform",
+            "purple_shirt",
+            "unbuttoned",
+            "cleavage",
+            "deep_cleavage",
+            "plaid_necktie",
+            "white_skirt",
+            "pleated_skirt",
+            "thighhighs",
+            "black_thighhighs",
+            "loafers"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "biker_jacket",
+          "name": "烈焰机车皮衣与热裤",
+          "prose": "cool motorcycle rider attire: a cropped black leather biker jacket with silver zipper accents worn over a tight crimson tank top, distressed denim cutoff shorts, wide leather belt, black fingerless riding gloves, and knee-high leather combat boots",
+          "tokens": [
+            "leather_jacket",
+            "biker_jacket",
+            "black_jacket",
+            "crop_top",
+            "tank_top",
+            "cleavage",
+            "denim_shorts",
+            "short_shorts",
+            "fingerless_gloves",
+            "boots",
+            "leather_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "apron_casual",
+          "name": "温馨居家乐膳围裙",
+          "prose": "sweet domestic housewife attire: a frilled pastel pink kitchen apron tied snugly around her slender waist over an off-shoulder cream knitted sweater dress, bare shoulders, sheer pantyhose, and house slippers",
+          "tokens": [
+            "apron",
+            "pink_apron",
+            "sweater_dress",
+            "knit_sweater",
+            "off_shoulder",
+            "cleavage",
+            "pantyhose",
+            "slippers",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_bikini",
+          "name": "夏日灼阳细带比基尼",
+          "prose": "a provocative cherry-red string triangle micro-bikini accentuating her colossal bust and sculpted hourglass waist, halterneck ties behind her neck, translucent white sarong loosely tied on her hip, sunglasses perched in hair, and sun-warmed skin",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "red_bikini",
+            "string_bikini",
+            "halterneck",
+            "micro_bikini",
+            "sarong",
+            "wet_skin",
+            "sunglasses"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "huge_breasts",
+            "areolae",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "hair_rings",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, sun-kissed soft ivory skin, colossal buoyant breasts with tender rose-pink nipples, narrow curved waist flaring into wide plush hips, glistening exposed pussy, cascading crimson hair with signature hair rings spread across the pillows, sultry blue eyes, bare feet, warm passionate bedroom glow",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "美浜学园 · 泷园水难幸存者",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园三年生，性格豪爽、极具包容力的大姐姐，照顾同伴料理全能；因曾经受风见一姬的牺牲拯救而对风见雄二怀有无限深情与救赎执念，擅长驾驶重型机车",
+        "research": "2026-09-02 调研（Danbooru suou_amane 290+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "yunsang",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "komine_sachi",
+      "displayName": "小岭幸",
+      "originalName": "小嶺 幸 (Komine Sachi)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "komine_sachi",
+        "sachi",
+        "sachi_(grisaia)",
+        "小岭幸",
+        "幸",
+        "女仆幸",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Komine Sachi from Grisaia by Frontwing, the polite and unconditionally obedient maid of Mihama Academy with short pastel pink hair styled in two sweet low side braids, swept bangs, bright innocent blue eyes, polite demure smile, and a curvaceous figure beneath her maid apron.",
+      "identityTokens": [
+        "komine_sachi",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "short_hair",
+        "swept_bangs",
+        "two_side_up",
+        "hair_bow",
+        "blue_eyes",
+        "large_breasts",
+        "cleavage",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "komine_sachi"
+      ],
+      "exactPrefixes": [
+        "sachi_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "maid_uniform",
+          "name": "全能忠犬荷叶边女仆装",
+          "prose": "classical French maid uniform: frilled white lace maid headdress, tailored black short-sleeved maid dress, crisp white ruffled apron tied in a large bow at the back, red ribbon bowtie at the collar, white frilled thigh-high stockings with garter straps, and black patent leather mary jane shoes",
+          "tokens": [
+            "maid",
+            "maid_dress",
+            "maid_apron",
+            "maid_headdress",
+            "black_dress",
+            "red_bowtie",
+            "frills",
+            "thighhighs",
+            "white_thighhighs",
+            "garter_straps",
+            "mary_janes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "mihama_uniform",
+          "name": "美浜学园正统学生制服",
+          "prose": "Mihama Private Academy uniform: neat lavender-purple button-up shirt with dark sailor collar, blue plaid necktie tied crisply, high-waisted white pleated skirt, sheer black pantyhose tights, and polished dark loafers",
+          "tokens": [
+            "mihama_private_academy_school_uniform",
+            "school_uniform",
+            "purple_shirt",
+            "sailor_collar",
+            "plaid_necktie",
+            "blue_necktie",
+            "white_skirt",
+            "pleated_skirt",
+            "pantyhose",
+            "black_pantyhose",
+            "loafers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "shark_pajamas",
+          "name": "可爱玩趣鲨鱼连体睡衣",
+          "prose": "adorable and cozy loungewear: an oversized pastel-blue plush shark kigurumi pajama onesie with white belly panel, shark hood with soft felt teeth worn down, hugging a giant grey shark plushie with both arms",
+          "tokens": [
+            "pajamas",
+            "onesie",
+            "kigurumi",
+            "shark_hoodie",
+            "holding_plushie",
+            "stuffed_toy",
+            "cute",
+            "cozy"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "school_swimsuit",
+          "name": "深蓝连体竞技死库水",
+          "prose": "classic Japanese navy blue one-piece school competition swimsuit (sukumizu), white name tag stitched on the chest, form-fitting stretch fabric accentuating her voluptuous bust, white swim cap held in hand, and bare feet on poolside tiles",
+          "tokens": [
+            "swimsuit",
+            "school_swimsuit",
+            "one-piece_swimsuit",
+            "navy_blue_swimsuit",
+            "cleavage",
+            "wet_skin",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "pink_hair",
+            "swept_bangs",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, smooth fair porcelain skin, beautifully shaped firm breasts with sensitive tender strawberry-pink nipples, narrow supple waist, exposed pussy, short pink hair with delicate side braids resting against the sheets, obedient blushing smile, bare feet, warm tender candlelight glow",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "美浜学园 · 专属女仆",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园的女仆兼学生，成绩全校第一；因过去家庭悲剧而封闭自我，坚守“绝对服从所有要求”的准则，家务与动手能力堪比工程兵，随身携带着防爆工具与自制爆炸物",
+        "research": "2026-09-02 调研（Danbooru komine_sachi 240+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "harudera_yuria",
+      "displayName": "春寺由梨亚 (JB)",
+      "originalName": "春寺 由梨亜 / JB (Harudera Yuria)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "harudera_yuria",
+        "jb",
+        "julia_bardera",
+        "春寺由梨亚",
+        "茱莉亚·巴尔德拉",
+        "女上司",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Harudera Yuria (JB) from Grisaia by Frontwing, CIRS chief and Yuuji's official handler and guardian with long wavy honey-blonde hair, stylish red-framed glasses, a distinct beauty mark beneath her right eye, sharp intelligent blue eyes, and an impeccably tailored dark business suit.",
+      "identityTokens": [
+        "harudera_yuria",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "wavy_hair",
+        "blue_eyes",
+        "glasses",
+        "red-framed_eyewear",
+        "mole",
+        "mole_under_eye",
+        "large_breasts",
+        "mature_female",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "harudera_yuria"
+      ],
+      "exactPrefixes": [
+        "yuria_",
+        "jb_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "executive_suit",
+          "name": "CIRS 职场黑色西装套裙",
+          "prose": "authoritative intelligence agency executive wear: an impeccably fitted dark charcoal business suit jacket, crisp white button-down collared shirt with top buttons loosened revealing modest cleavage, matching high-waisted pencil miniskirt, sheer black tights, and patent high stiletto heels",
+          "tokens": [
+            "business_suit",
+            "suit_jacket",
+            "black_jacket",
+            "pencil_skirt",
+            "white_shirt",
+            "collared_shirt",
+            "cleavage",
+            "pantyhose",
+            "black_pantyhose",
+            "high_heels",
+            "professional"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "tactical_stealth",
+          "name": "特勤暗夜潜行紧身衣",
+          "prose": "field operative tactical gear: high-tech matte black stealth combat catsuit with kevlar reinforcement panels, drop-leg tactical holster with sidearm pistol, fingerless combat gloves, utility belt with communication earpiece, and combat boots",
+          "tokens": [
+            "bodysuit",
+            "tight_suit",
+            "stealth_suit",
+            "tactical_gear",
+            "holster",
+            "pistol",
+            "fingerless_gloves",
+            "boots",
+            "combat_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "home_casual_shirt",
+          "name": "松垮白衬衫黑丝居家常服",
+          "prose": "intimate off-duty loungewear: an oversized unbuttoned men's white dress shirt casually slipping off one shoulder, black lace bra peeking through, sheer black pantyhose, red-framed glasses perched on nose, holding a coffee mug with tired affectionate eyes",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "unbuttoned",
+            "off_shoulder",
+            "bra",
+            "black_bra",
+            "cleavage",
+            "pantyhose",
+            "black_pantyhose",
+            "coffee_mug",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "gala_evening_gown",
+          "name": "潜入夜宴露背深蓝晚礼服",
+          "prose": "high-society infiltration evening attire: an exquisite backless midnight navy silk evening gown with a daring plunging sweetheart neckline, thigh-high side slit showing slender legs, diamond drop earrings, opera gloves, and silver strappy high heels",
+          "tokens": [
+            "evening_gown",
+            "dress",
+            "navy_dress",
+            "backless",
+            "open_back",
+            "cleavage",
+            "deep_cleavage",
+            "high_slit",
+            "opera_gloves",
+            "high_heels",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "glasses",
+            "red-framed_eyewear",
+            "mole_under_eye",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, glowing fair skin, ripe heavy voluptuous breasts with sensitive dark-pink nipples, slender curved waist, wide sensual hips, exposed pussy, signature red-framed glasses remaining on her face with flushed flustered cheeks, beauty mark under right eye, bare feet, warm executive suite lamplight",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "CIRS（日美国防特工机构）· 美浜学园监护人",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "日美联合反恐组织 CIRS 的女性干部长官，风见雄二的直属上司与表面监护人；外表干练严格戴红框眼镜，内心极度关心雄二、常常为他善后收拾残局，在威严上司与情妇般温柔之间展现出无尽的包容成熟反差",
+        "research": "2026-09-02 调研（Danbooru harudera_yuria 80+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "swav",
+        "rella"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

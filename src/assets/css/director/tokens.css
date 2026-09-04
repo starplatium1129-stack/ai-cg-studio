@@ -511,6 +511,30 @@
     --character-soft:rgba(186,230,253,.16); --character-glow:rgba(186,230,253,.34);
     --character-aura:rgba(186,230,253,.32); --character-aura-secondary:rgba(239,68,68,.20);
   }
+  /* 派生：银白长发/天才红瞳 · 风见一姬 */
+  .pb[data-character="kazami_kazuki"] {
+    --character-accent:#fca5a5; --character-accent-hover:#fecaca;
+    --character-soft:rgba(252,165,165,.16); --character-glow:rgba(252,165,165,.34);
+    --character-aura:rgba(252,165,165,.32); --character-aura-secondary:rgba(241,245,249,.24);
+  }
+  /* 派生：酒红发环/机车御姐 · 周防天音 */
+  .pb[data-character="suou_amane"] {
+    --character-accent:#f43f5e; --character-accent-hover:#fb7185;
+    --character-soft:rgba(244,63,94,.16); --character-glow:rgba(244,63,94,.34);
+    --character-aura:rgba(244,63,94,.34); --character-aura-secondary:rgba(30,58,138,.24);
+  }
+  /* 派生：粉发双小辫/忠犬女仆 · 小岭幸 */
+  .pb[data-character="komine_sachi"] {
+    --character-accent:#f472b6; --character-accent-hover:#f9a8d4;
+    --character-soft:rgba(244,114,182,.16); --character-glow:rgba(244,114,182,.34);
+    --character-aura:rgba(244,114,182,.32); --character-aura-secondary:rgba(186,230,253,.22);
+  }
+  /* 派生：金发大波浪/红框眼镜长官 · 春寺由梨亚(JB) */
+  .pb[data-character="harudera_yuria"] {
+    --character-accent:#f59e0b; --character-accent-hover:#fbbf24;
+    --character-soft:rgba(245,158,11,.16); --character-glow:rgba(245,158,11,.34);
+    --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(30,41,59,.28);
+  }
 
   /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb，形成柔和体积漫反射光 */
   body:has(.pb[data-character])::before {
@@ -613,6 +637,11 @@
   body:has(.pb[data-character="murasame"]) { --character-aura:rgba(134,239,172,.32); --character-aura-secondary:rgba(56,189,248,.22); }
   body:has(.pb[data-character="hitachi_mako"]) { --character-aura:rgba(34,197,94,.30); --character-aura-secondary:rgba(15,23,42,.28); }
   body:has(.pb[data-character="tomotake_yoshino"]) { --character-aura:rgba(186,230,253,.32); --character-aura-secondary:rgba(239,68,68,.20); }
+  body:has(.pb[data-character="kazami_kazuki"]) { --character-aura:rgba(252,165,165,.32); --character-aura-secondary:rgba(241,245,249,.24); }
+  body:has(.pb[data-character="suou_amane"]) { --character-aura:rgba(244,63,94,.34); --character-aura-secondary:rgba(30,58,138,.24); }
+  body:has(.pb[data-character="komine_sachi"]) { --character-aura:rgba(244,114,182,.32); --character-aura-secondary:rgba(186,230,253,.22); }
+  body:has(.pb[data-character="harudera_yuria"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(30,41,59,.28); }
+
 
 
 
