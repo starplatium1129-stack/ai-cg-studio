@@ -127,7 +127,17 @@
             "slender_body"
           ]
         }
-      ]
+      ],
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "kimono",
+          "leather_jacket",
+          "holding_knife",
+          "mystic_eyes_of_death_perception"
+        ]
+      }
     }
   ]
 }

@@ -20,6 +20,7 @@ import {
   stringValue,
 } from './popularParseGuards.ts'
 import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
+import { normalizeProseKey } from './promptPhraseTables.ts'
 
 export type AdultEligibility = 'adult' | 'unknown' | 'underage'
 
@@ -47,6 +48,14 @@ export interface PopularCharacter {
   outfits: PopularOutfit[]
   /** 角色专属官方原画师或精选推荐画师风格 ID 列表。 */
   curatedArtistStyles?: string[]
+  /**
+   * Character DNA 锁（2026-09-06 v2 升级落地）：三分类视觉基因契约。
+   * must：角色不可丢失的核心特征（预留策展层，编译器不强制）；
+   * flexible：允许随场景变化的元素（预留策展层）；
+   * avoid：禁止作为常驻身份锚定的元素（编译器从 identity 标签流过滤，
+   * 防止 C.C. 印记/花火面具/式和服类死绑回归；场景蓝图按需使用不受限）。
+   */
+  dnaLock?: { must: string[]; flexible: string[]; avoid: string[] }
 }
 
 export interface SceneBlueprint {
@@ -99,6 +108,8 @@ export interface PopularBlueprintDecision {
   composition: string | null
   colorMood: string | null
   size: string
+  /** 情绪摄影语法（v2）：按蓝图 mood 匹配的镜头语言（Anima 附加标签 + Krea 散文）。 */
+  moodGrammar?: { tokens: string[]; prose: string }
 }
 
 // ── 严格解析 ───────────────────────────────────────────────────────────────
@@ -134,6 +145,11 @@ export function parsePopularCharacter(value: unknown): PopularCharacter | null {
     .filter((outfit): outfit is PopularOutfit => outfit !== null)
   if (!outfits.length) throw new Error(`popular data: ${id} requires at least one outfit`)
   const adultEligibility = parseAdultEligibility(value.adultEligibility)
+  // Character DNA 锁（可选策展层）：must/flexible/avoid 三分类，缺省为空契约。
+  const dnaRaw = isRecord(value.dnaLock) ? value.dnaLock : null
+  const dnaLock = dnaRaw
+    ? { must: stringList(dnaRaw.must), flexible: stringList(dnaRaw.flexible), avoid: stringList(dnaRaw.avoid) }
+    : undefined
   return {
     id,
     displayName: requiredString(value, 'displayName'),
@@ -149,6 +165,7 @@ export function parsePopularCharacter(value: unknown): PopularCharacter | null {
     adultEligibility,
     outfits,
     curatedArtistStyles: stringList(value.curatedArtistStyles),
+    dnaLock,
   }
 }
 
@@ -414,6 +431,33 @@ const MOOD_TO_COLOR: Record<string, string> = {
   lively: 'joy', hopeful: 'joy', lighthearted: 'joy',
 }
 
+/**
+ * 情绪摄影语法（2026-09-06 v2 升级）：蓝图 mood → 镜头语言的确定性映射。
+ * 只在蓝图 camera/lighting 未给出更强信号时作为**附加**镜头语言注入，
+ * 不覆盖已解析的 shot/lighting 决策（sc280 旗帜构图契约不受影响）。
+ * tokens 必须是 Danbooru 真实标签；prose 供 Krea 自然语言流拼接。
+ */
+const MOOD_CAMERA_GRAMMAR: ReadonlyArray<readonly [RegExp, { tokens: string[]; prose: string }]> = [
+  [/温柔|治愈|暖|甜|tender|warm|healing|cozy/i,
+    { tokens: ['soft_focus', 'blurred_background'],
+      prose: 'Shot with an 85mm lens at shallow depth of field, a soft warm glow wrapping the subject.' }],
+  [/孤独|寂|落寞|怅|lonely|solitary|melancho/i,
+    { tokens: ['negative_space', 'scenery'],
+      prose: 'Generous negative space and compressed distance emphasize her quiet solitude.' }],
+  [/压迫|威压|凛|傲|凌厉|oppressive|domin|intimidat/i,
+    { tokens: ['foreshortening', 'dutch_angle'],
+      prose: 'A low aggressive angle with strong foreshortening bears down on the viewer.' }],
+  [/神秘|幻|梦|妖|myst|dream|etherea/i,
+    { tokens: ['lens_flare', 'light_particles'],
+      prose: 'Ethereal lens flares and drifting light particles veil the scene in mystery.' }],
+]
+
+function matchMoodGrammar(mood: string): { tokens: string[]; prose: string } | undefined {
+  const text = String(mood || '')
+  if (!text) return undefined
+  return MOOD_CAMERA_GRAMMAR.find(([pattern]) => pattern.test(text))?.[1]
+}
+
 function matchFirst(text: string, table: Record<string, string>): string | null {
   const lower = text.toLowerCase()
   const keys = Object.keys(table).sort((a, b) => b.length - a.length)
@@ -432,12 +476,14 @@ export function inferBlueprintDecisions(blueprint: SceneBlueprint | null): Popul
   if (!shot) shot = EXTRA_CAMERA_TO_SHOT.find(([pattern]) => pattern.test(cameraText))?.[1] ?? null
   const lighting = matchFirst(hay, LIGHTING_TO_ID)
   const colorMood = matchFirst(hay, MOOD_TO_COLOR)
+  const moodGrammar = matchMoodGrammar(blueprint.mood)
   return {
     shot,
     lighting,
     composition: 'rule3',
     colorMood,
     size: blueprint.recommendedSize || '832x1216',
+    moodGrammar,
   }
 }
 
@@ -675,6 +721,12 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     ? [...new Set([lightingToken, ...(AMBIENCE_TOKENS[lightingKey] || [])])].filter(Boolean)
     : []
   const compositionToken = options.composition ? COMPOSITION_TOKENS[options.composition] : ''
+  // 情绪摄影语法（v2）：蓝图 mood → 附加镜头语言；不覆盖显式 shot/lighting 决策。
+  const moodGrammar = blueprint ? inferBlueprintDecisions(blueprint).moodGrammar : undefined
+  const moodGrammarTokens = moodGrammar?.tokens ?? []
+  // Character DNA 锁 avoid（v2）：从常驻身份锚定流过滤易失真元素（如 C.C. 印记、
+  // 花火面具、式和服类死绑回归）。只过滤 identity 标签流；场景蓝图按需使用不受限。
+  const dnaAvoid = new Set((character.dnaLock?.avoid || []).map(key => normalizeProseKey(key)))
   // 成人配方与成人蓝图同一把 fail-closed 锁：资格不满足绝不进入渲染层。
   const style = options.style
   if (style?.adult && !adultGranted) return null
@@ -688,6 +740,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 成人场景：裸体叙述前置，避免被服装散文压过（Krea 2 自然语言模型对句首描述权重最高）。
     ...(nsfwProse ? [nsfwProse] : []),
     blueprint?.promptProse,
+    // 情绪摄影语法（v2）：Krea 自然语言流以一句镜头语言收尾。
+    ...(moodGrammar ? [moodGrammar.prose] : []),
   ].filter(Boolean).join(' ')
 
   const emotionTokens = options.emotion || []
@@ -741,10 +795,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 不选场景时，身份词里混入的服装一并去掉（数据遗留：不少角色把 pleated_skirt /
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
   // 不过滤则瘦身对它们无效）。双保险：互斥族判定 + 普通衣物名单。
-  const identityTokens = outfitActive
+  const identityTokens = (outfitActive
     ? character.identityTokens
     : character.identityTokens.filter(token =>
-        mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token))
+        mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
+    .filter(token => !dnaAvoid.has(normalizeProseKey(token)))
   const exactControls = [...new Set([
     ...((adultGranted || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
     ...(character.exactTokens || []),
@@ -763,7 +818,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     scenePrompt: (blueprint?.promptTokens || []).join(', '),
     emotion: emotionTokens,
     camera: shotToken ? [shotToken] : [],
-    lighting: lightingTokens.length ? lightingTokens : [],
+    lighting: [...lightingTokens, ...moodGrammarTokens].length ? [...new Set([...lightingTokens, ...moodGrammarTokens])] : [],
     composition: compositionToken ? [compositionToken] : [],
     manual,
     negative: (blueprint?.negativeTokens || []).join(', '),

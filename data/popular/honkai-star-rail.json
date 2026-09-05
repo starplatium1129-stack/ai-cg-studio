@@ -282,7 +282,15 @@
             "slender_body"
           ]
         }
-      ]
+      ],
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "fox_mask",
+          "kitsune_mask"
+        ]
+      }
     }
   ]
 }

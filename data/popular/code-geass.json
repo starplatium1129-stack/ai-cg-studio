@@ -138,7 +138,14 @@
             "slender_body"
           ]
         }
-      ]
+      ],
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "geass_sigil"
+        ]
+      }
     }
   ]
 }

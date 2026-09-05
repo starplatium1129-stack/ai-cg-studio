@@ -258,7 +258,14 @@
             "hourglass_body"
           ]
         }
-      ]
+      ],
+      "dna_lock": {
+        "must": [],
+        "flexible": [],
+        "avoid": [
+          "glasses"
+        ]
+      }
     }
   ]
 }

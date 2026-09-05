@@ -8556,7 +8556,15 @@
       "smirk"
     ],
     "accent_color": "#f43f5e",
-    "bg_color": "#881337"
+    "bg_color": "#881337",
+    "dna_lock": {
+      "must": [],
+      "flexible": [],
+      "avoid": [
+        "fox_mask",
+        "kitsune_mask"
+      ]
+    }
   },
   {
     "id": "cc_code_geass",
@@ -8626,7 +8634,14 @@
       "geass"
     ],
     "accent_color": "#84cc16",
-    "bg_color": "#14532d"
+    "bg_color": "#14532d",
+    "dna_lock": {
+      "must": [],
+      "flexible": [],
+      "avoid": [
+        "geass_sigil"
+      ]
+    }
   },
   {
     "id": "ryougi_shiki",
@@ -8696,7 +8711,17 @@
       "tsundere"
     ],
     "accent_color": "#dc2626",
-    "bg_color": "#1e293b"
+    "bg_color": "#1e293b",
+    "dna_lock": {
+      "must": [],
+      "flexible": [],
+      "avoid": [
+        "kimono",
+        "leather_jacket",
+        "holding_knife",
+        "mystic_eyes_of_death_perception"
+      ]
+    }
   },
   {
     "id": "arcueid_brunestud",
@@ -8836,7 +8861,14 @@
       "curry_lover"
     ],
     "accent_color": "#2563eb",
-    "bg_color": "#1e1b4b"
+    "bg_color": "#1e1b4b",
+    "dna_lock": {
+      "must": [],
+      "flexible": [],
+      "avoid": [
+        "glasses"
+      ]
+    }
   },
   {
     "id": "asuna_yuuki",
