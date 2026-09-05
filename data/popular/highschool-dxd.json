@@ -1,0 +1,295 @@
+{
+  "version": "1.0.0",
+  "franchise": "High School DxD",
+  "characters": [
+    {
+      "id": "rias_gremory",
+      "displayName": "莉雅丝·吉蒙里",
+      "originalName": "リアス・グレモリー",
+      "franchise": "High School DxD",
+      "aliases": [
+        "Rias Gremory",
+        "莉雅丝",
+        "红发的灭杀姬",
+        "吉蒙里公爵千金"
+      ],
+      "identityProse": "Rias Gremory from High School DxD, a voluptuous pureblood devil noblewoman with knee-length vivid crimson-red hair, an expressive ahoge on top, striking aquamarine-cyan eyes, and a regal yet deeply affectionate demeanor",
+      "identityTokens": [
+        "rias_gremory",
+        "crimson_hair",
+        "very_long_hair",
+        "ahoge",
+        "cyan_eyes",
+        "large_breasts",
+        "hourglass_figure"
+      ],
+      "exactTokens": [
+        "rias_gremory"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, rias_gremory"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "TNK / Passione",
+      "curatedArtistStyles": [
+        "Miyama-Zero",
+        "Gotou Junji"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_kuoh_uniform",
+          "name": "驹王学园校服制服",
+          "prose": "her classic Kuoh Academy school uniform featuring a white collared blouse, a tight black buttoned vest corset accentuating her voluptuous bust, a short black pleated skirt, a delicate magenta cross tie at the collar, and white thigh-high socks",
+          "tokens": [
+            "kuoh_academy_uniform",
+            "white_shirt",
+            "collared_shirt",
+            "black_vest",
+            "black_skirt",
+            "pleated_skirt",
+            "cross_tie",
+            "thighhighs",
+            "white_thighhighs"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "gremory_crimson_battle",
+          "name": "吉蒙里公爵纯血战袍",
+          "prose": "her majestic devil combat attire adorned with crimson and black noble embroideries, flared open shoulders, glowing magical crests, and a magnificent pair of bat-like dark devil wings unfurled gracefully from her back",
+          "tokens": [
+            "devil_wings",
+            "bat_wings",
+            "noble_dress",
+            "crimson_dress",
+            "black_accents",
+            "magic_circle",
+            "bare_shoulders",
+            "detached_sleeves"
+          ]
+        },
+        {
+          "id": "oversized_white_shirt",
+          "name": "居家男友风大号衬衫",
+          "prose": "a relaxed oversized boyfriend-style white button-up shirt draped loosely over her bare body, slipping off one shoulder to reveal her smooth collarbone and cleavage, bare legs emerging beneath the hem",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "off-shoulder",
+            "bare_legs",
+            "cleavage",
+            "thighs",
+            "barefoot",
+            "casual_morning"
+          ]
+        },
+        {
+          "id": "crimson_silk_lingerie",
+          "name": "深红蕾丝情趣吊带睡袍",
+          "prose": "a seductive deep crimson silk lingerie set with black floral lace trims, matching garter straps over sheer black stockings, and a translucent matching babydoll negligee flowing down her hips",
+          "tokens": [
+            "lingerie",
+            "crimson_lingerie",
+            "black_lace",
+            "sheer_babydoll",
+            "garter_straps",
+            "black_stockings",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "sensual_swimsuit",
+          "name": "深红高开叉修身泳装",
+          "prose": "a glamorous deep red one-piece swimsuit with daring side cutouts, high-cut leg openings accentuating her curvy hips, and crossed back-straps glistening under the summer sun",
+          "tokens": [
+            "swimsuit",
+            "one-piece_swimsuit",
+            "red_swimsuit",
+            "highleg",
+            "side_cutout",
+            "backless",
+            "cleavage",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely naked and breathtaking body, with long crimson hair cascading over her soft shoulders, full natural breasts, slender waist, and flawless ivory skin glowing with a faint warm luster",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hourglass_body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "akeno_himejima",
+      "displayName": "姬岛朱乃",
+      "originalName": "姫島朱乃",
+      "franchise": "High School DxD",
+      "aliases": [
+        "Akeno Himejima",
+        "朱乃",
+        "雷光巫女",
+        "神圣副会长"
+      ],
+      "identityProse": "Akeno Himejima from High School DxD, a ravishing half-human half-fallen-angel beauty with very long raven-black hair tied into a sleek high ponytail with a delicate orange ribbon, alluring violet-purple eyes, a gentle mature smile, and an intoxicatingly teasing aura",
+      "identityTokens": [
+        "akeno_himejima",
+        "black_hair",
+        "very_long_hair",
+        "high_ponytail",
+        "orange_hair_ribbon",
+        "purple_eyes",
+        "large_breasts",
+        "seductive_smile"
+      ],
+      "exactTokens": [
+        "akeno_himejima"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, akeno_himejima"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "TNK / Passione",
+      "curatedArtistStyles": [
+        "Miyama-Zero",
+        "Gotou Junji"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_miko_robe",
+          "name": "传统神道绯袴巫女服",
+          "prose": "her traditional Japanese shrine maiden miko attire: a pristine white haori kimono top with wide flowing sleeves, a vibrant red hakama pleated skirt, and an orange decorative tie at the collar",
+          "tokens": [
+            "miko",
+            "miko_attire",
+            "white_kimono",
+            "wide_sleeves",
+            "red_hakama",
+            "hakama_skirt",
+            "orange_ribbon"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "kuoh_academy_uniform",
+          "name": "驹王学园副会长制服",
+          "prose": "her tailored Kuoh Academy uniform with a crisp white blouse straining over her bountiful bust, a fitted black vest corset, a short pleated skirt, a magenta cross tie, and black sheer pantyhose",
+          "tokens": [
+            "kuoh_academy_uniform",
+            "white_shirt",
+            "black_vest",
+            "black_skirt",
+            "pleated_skirt",
+            "cross_tie",
+            "black_pantyhose",
+            "sheer_pantyhose"
+          ]
+        },
+        {
+          "id": "casual_yukata_summer",
+          "name": "夏日紫阳花祭典浴衣",
+          "prose": "a delicate dark violet summer yukata adorned with hydrangeas and morning glories, tied with a soft lilac obi sash, exposing her graceful nape and collarbone",
+          "tokens": [
+            "yukata",
+            "purple_yukata",
+            "floral_pattern",
+            "obi",
+            "exposed_nape",
+            "cleavage",
+            "japanese_festival"
+          ]
+        },
+        {
+          "id": "purple_lace_negligee",
+          "name": "深紫薄纱情趣晨袍",
+          "prose": "a tantalizing semi-sheer deep violet lace negligee with fluttering flutter sleeves, open-front design revealing her full cleavage and matching purple lace panties beneath",
+          "tokens": [
+            "negligee",
+            "purple_negligee",
+            "sheer_cloth",
+            "black_lace",
+            "open_front",
+            "cleavage",
+            "lace_panties",
+            "sensual"
+          ]
+        },
+        {
+          "id": "black_sensual_bikini",
+          "name": "极细黑带诱惑比基尼",
+          "prose": "a skimpy glossy black micro-bikini held together by slender string ties, highlighting her curvaceous hourglass proportions and sun-kissed fair skin",
+          "tokens": [
+            "bikini",
+            "black_bikini",
+            "string_bikini",
+            "halterneck",
+            "cleavage",
+            "hourglass_body",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, voluptuous body with her silky black ponytail resting against her shoulder, ample breasts with delicate rose-tinted areolas, a slender waist, and shapely hips glistening softly",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hourglass_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

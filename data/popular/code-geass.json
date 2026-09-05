@@ -1,0 +1,141 @@
+{
+  "version": "1.0.0",
+  "franchise": "Code Geass",
+  "characters": [
+    {
+      "id": "cc_code_geass",
+      "displayName": "C.C.",
+      "originalName": "C.C.",
+      "franchise": "Code Geass",
+      "aliases": [
+        "C.C.",
+        "CC",
+        "不老不死的魔女",
+        "披萨魔女",
+        "共犯"
+      ],
+      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, a Geass sigil on her forehead when glowing, and a serene, detached yet intimately teasing smile",
+      "identityTokens": [
+        "c.c._(code_geass)",
+        "green_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "golden_eyes",
+        "slender_waist",
+        "calm_expression",
+        "seductive_smile"
+      ],
+      "exactTokens": [
+        "c.c._(code_geass)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, c.c._(code_geass)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Sunrise",
+      "curatedArtistStyles": [
+        "Takahiro Kimura",
+        "CLAMP"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_straitjacket",
+          "name": "纯白拘束服风衣",
+          "prose": "her iconic white straitjacket uniform with long sleeves extending past her hands, high zippered collar, loose buckled belts trailing behind her, and tight white leggings accentuating her slender legs",
+          "tokens": [
+            "straitjacket",
+            "white_jacket",
+            "belts",
+            "buckles",
+            "long_sleeves",
+            "zipper",
+            "high_collar",
+            "white_pants",
+            "tight_pants"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "black_knights_uniform",
+          "name": "黑色骑士团高领制服",
+          "prose": "her Black Knights executive uniform: a fitted black tailored jacket with red trim and gold emblems, high stand collar, black mini skirt, and matching thigh-high leather boots",
+          "tokens": [
+            "black_knights_uniform",
+            "military_uniform",
+            "black_jacket",
+            "red_trim",
+            "gold_buttons",
+            "miniskirt",
+            "thighhighs",
+            "boots"
+          ]
+        },
+        {
+          "id": "casual_oversized_sweater",
+          "name": "居家米白大号粗线毛衣",
+          "prose": "a cozy oversized off-white knit sweater slipping down one delicate shoulder, short denim shorts barely visible beneath the hem, clutching a plush Cheese-kun plush toy in her lap",
+          "tokens": [
+            "oversized_sweater",
+            "knit_sweater",
+            "off-shoulder",
+            "bare_shoulders",
+            "bare_legs",
+            "holding_plushie",
+            "cheese-kun",
+            "barefoot"
+          ]
+        },
+        {
+          "id": "empress_black_gown",
+          "name": "高贵深黑高开叉皇妃晚礼裙",
+          "prose": "a regal black velvet evening gown with high side slits, gold filigree along the corseted bodice, bare back, and trailing sheer black silk train",
+          "tokens": [
+            "black_dress",
+            "evening_gown",
+            "high_slit",
+            "backless_dress",
+            "cleavage",
+            "gold_trim",
+            "bare_legs",
+            "heels"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, slender immortal body with long green hair pooling beneath her, pale ivory skin, tender natural breasts with small pink nipples, and a red bird-like Geass mark visible on her forehead or upper chest",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "small_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "geass_sigil",
+            "slender_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

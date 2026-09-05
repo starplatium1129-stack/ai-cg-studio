@@ -135,7 +135,7 @@
     {
       "file": "honkai-star-rail.json",
       "franchise": "Honkai: Star Rail",
-      "count": 11
+      "count": 22
     },
     {
       "file": "zenless-zone-zero.json",
@@ -176,6 +176,21 @@
       "file": "to-love-ru.json",
       "franchise": "To LOVE-Ru",
       "count": 55
+    },
+    {
+      "file": "highschool-dxd.json",
+      "franchise": "High School DxD",
+      "count": 22
+    },
+    {
+      "file": "overlord.json",
+      "franchise": "OVERLORD",
+      "count": 11
+    },
+    {
+      "file": "code-geass.json",
+      "franchise": "Code Geass",
+      "count": 11
     }
   ]
 }

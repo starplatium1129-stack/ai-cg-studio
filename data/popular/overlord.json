@@ -1,0 +1,143 @@
+{
+  "version": "1.0.0",
+  "franchise": "OVERLORD",
+  "characters": [
+    {
+      "id": "albedo_overlord",
+      "displayName": "雅儿贝德",
+      "originalName": "アルベド",
+      "franchise": "OVERLORD",
+      "aliases": [
+        "Albedo",
+        "雅儿贝德",
+        "守护者总管",
+        "纯白恶魔"
+      ],
+      "identityProse": "Albedo from OVERLORD, the supreme Guardian Overseer of the Great Tomb of Nazarick, an exquisite succubus with long glossy raven-black hair, curved white horns on the sides of her head, luminous golden-slitted eyes, a majestic pair of feathered black wings emerging from her waist, and a flawless hourglass figure",
+      "identityTokens": [
+        "albedo_(overlord)",
+        "black_hair",
+        "very_long_hair",
+        "horns",
+        "curved_horns",
+        "yellow_eyes",
+        "golden_eyes",
+        "slit_pupils",
+        "black_wings",
+        "feathered_wings",
+        "large_breasts",
+        "hourglass_figure"
+      ],
+      "exactTokens": [
+        "albedo_(overlord)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, albedo_(overlord)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "MADHOUSE",
+      "curatedArtistStyles": [
+        "so-bin",
+        "Satoshi Tasaki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_white_dress",
+          "name": "纯白神圣晚礼服与漆黑恶魔翼",
+          "prose": "her signature elegant pure white backless evening dress with a spiderweb-patterned golden necklace, a waist cincher with a green gem brooch, and magnificent feathered black wings extending gracefully from her lower back",
+          "tokens": [
+            "white_dress",
+            "backless_dress",
+            "evening_gown",
+            "cleavage",
+            "golden_necklace",
+            "black_wings",
+            "feathered_wings",
+            "curved_horns"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "hermes_black_armor",
+          "name": "全覆式三层纯黑重铠赫尔墨斯",
+          "prose": "her imposing full-body black plate armor Hermes Trismegistus with spiked pauldrons, glowing purple crevices, horned helmet retracted to reveal her face, holding a massive dark Bardiche battleaxe",
+          "tokens": [
+            "black_armor",
+            "full_armor",
+            "plate_armor",
+            "pauldrons",
+            "holding_axe",
+            "battle_axe",
+            "curved_horns",
+            "black_wings"
+          ]
+        },
+        {
+          "id": "cozy_nightwear_lingerie",
+          "name": "大坟墓闺房黑色丝绸睡裙",
+          "prose": "a delicate black silk camisole nightgown with sheer lace trim over her bust, leaving her smooth back bare around her resting black wings, bare legs peeking through soft silk sheets",
+          "tokens": [
+            "nightgown",
+            "black_nightgown",
+            "camisole",
+            "lace_trim",
+            "bare_shoulders",
+            "cleavage",
+            "black_wings",
+            "curved_horns",
+            "bare_legs"
+          ]
+        },
+        {
+          "id": "pure_white_bikini",
+          "name": "纯白露翼修身度假比基尼",
+          "prose": "a radiant pure white micro bikini with gold ring connectors, her sleek horns and black wings spreading gently as sea breeze caresses her sunlit porcelain skin",
+          "tokens": [
+            "bikini",
+            "white_bikini",
+            "micro_bikini",
+            "halterneck",
+            "cleavage",
+            "black_wings",
+            "curved_horns",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, voluptuous body with glossy black hair framing her waist, large natural breasts with soft pink areolas, a slender waist flanked by soft downy black feathers, and flawless pale skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "nipples",
+            "areola",
+            "pussy",
+            "black_wings",
+            "curved_horns",
+            "hourglass_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -7792,5 +7792,351 @@
     ],
     "accent_color": "#fb7185",
     "bg_color": "#1a0b12"
+  },
+  {
+    "id": "rias_gremory",
+    "name": "莉雅丝·吉蒙里",
+    "alias": [
+      "Rias Gremory",
+      "莉雅丝",
+      "红发的灭杀姬",
+      "吉蒙里公爵千金"
+    ],
+    "type": "popular",
+    "icon": "🍷",
+    "portrait": {
+      "image": "../assets/characters/popular-rias_gremory.png?v=1",
+      "alt": "莉雅丝·吉蒙里 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "深红鲜艳及膝长发 · 活泼呆毛",
+      "hair_color": "深红 / 鲜红",
+      "eyes": "清澈水蓝 / 碧青眼眸",
+      "hairstyle": "长直发及膝 · 柔美前刘海 · 标志性呆毛",
+      "uniform": "驹王学园制服 / 吉蒙里纯血恶魔礼服",
+      "expression": "高贵端庄 · 温柔威严 · 面对心爱之人脸红娇羞",
+      "style": "regal crimson-haired devil noblewoman",
+      "signature": "鲜红及膝长发、水蓝双瞳、恶魔羽翼与沙漏身材"
+    },
+    "personality": [
+      "威严而极重情义",
+      "专一且毫无保留的爱意",
+      "偶尔吃醋撒娇的纯情反差",
+      "骨子里的贵族担当与领袖风范"
+    ],
+    "likes": [
+      "红茶与日式料理",
+      "与心爱之人同床共枕",
+      "保护自己的眷属"
+    ],
+    "classic_cg": {
+      "title": "纯血恶魔的破灭之翼",
+      "description": "在赤月之下展开漆黑恶魔羽翼，掌心凝聚毁灭魔力阵的绝代公爵千金。"
+    },
+    "identity": "恶魔高校DxD女主角 · 冥界吉蒙里家族下任当家 · 神秘学研究部部长",
+    "tags": [
+      "恶魔高校DxD",
+      "红发及膝",
+      "公爵千金",
+      "恶魔羽翼",
+      "正宫肉感",
+      "反差萌"
+    ],
+    "bg_story": "冥界名门吉蒙里家族的下任宗主，拥有『红发的灭杀姬』之称的纯血恶魔贵族。在驹王学园担任神秘学研究部部长，表面上是威严尊贵的千金大小姐，但在认定了心爱之人后，展现出极致的温柔、专一与毫无保留的奉献。",
+    "palette": [
+      "#e52b50",
+      "#1e1b4b",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "月明深夜 / 温暖晨曦",
+    "speech": "「今晚我只想做你一个人的莉雅丝……把你的全部都交给我吧。」",
+    "source": "High School DxD",
+    "traits": [
+      "pureblood_devil",
+      "crimson_hair",
+      "large_breasts",
+      "ahoge",
+      "cyan_eyes"
+    ],
+    "accent_color": "#e52b50",
+    "bg_color": "#1e1b4b"
+  },
+  {
+    "id": "akeno_himejima",
+    "name": "姬岛朱乃",
+    "alias": [
+      "Akeno Himejima",
+      "姬岛朱乃",
+      "雷光巫女",
+      "神圣副会长"
+    ],
+    "type": "popular",
+    "icon": "⚡",
+    "portrait": {
+      "image": "../assets/characters/popular-akeno_himejima.png?v=1",
+      "alt": "姬岛朱乃 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "乌黑柔顺长发 · 优雅高马尾",
+      "hair_color": "深黑 / 乌黑",
+      "eyes": "神秘深邃紫眸",
+      "hairstyle": "高马尾 · 橙色发带 · 柔和斜刘海",
+      "uniform": "传统神道纯白绯袴巫女服 / 驹王学园副会长制服",
+      "expression": "温柔微醺 · 危险挑逗 · 被攻陷时的娇羞破防",
+      "style": "seductive lightning shrine maiden",
+      "signature": "黑色高马尾、橙色发带、绯袴巫女服与堕天使黑翼"
+    },
+    "personality": [
+      "口癖『啊啦啊啦』的抖S调戏",
+      "内心极度渴望被爱与救赎",
+      "被触及弱点时的慌乱纯情",
+      "温柔体贴的包容人妻感"
+    ],
+    "likes": [
+      "神前祈祷与泡茶",
+      "制作手工便当",
+      "调戏心爱之人"
+    ],
+    "classic_cg": {
+      "title": "降魔雷光与堕天之翼",
+      "description": "在暴风雨夜中展开漆黑羽翼引落万丈雷霆的神圣制裁姿态。"
+    },
+    "identity": "恶魔高校DxD女二号 · 吉蒙里眷属『女王』 · 雷光巫女",
+    "tags": [
+      "恶魔高校DxD",
+      "黑发高马尾",
+      "巫女",
+      "堕天使",
+      "抖S",
+      "温柔学姐"
+    ],
+    "bg_story": "神道巫女与堕天使干部之女，继承了神圣雷光与堕天之力的强大混血修罗。平日里是一口一个『啊啦啊啦』、喜欢调戏后辈的抖S大姐姐，实则内心背负着沉重的家庭创伤，在得到救赎后成为了最温顺深情的专属小娇妻。",
+    "palette": [
+      "#9333ea",
+      "#3b0764",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "夏夜花火 / 幽静雨夜",
+    "speech": "「啊啦啊啦……表情变得这么舒服呢，今晚可不会轻易放过你哦。」",
+    "source": "High School DxD",
+    "traits": [
+      "fallen_angel_hybrid",
+      "black_ponytail",
+      "purple_eyes",
+      "miko",
+      "seductive"
+    ],
+    "accent_color": "#9333ea",
+    "bg_color": "#3b0764"
+  },
+  {
+    "id": "albedo_overlord",
+    "name": "雅儿贝德",
+    "alias": [
+      "Albedo",
+      "雅儿贝德",
+      "守护者总管",
+      "纯白恶魔"
+    ],
+    "type": "popular",
+    "icon": "🕊️",
+    "portrait": {
+      "image": "../assets/characters/popular-albedo_overlord.png?v=1",
+      "alt": "雅儿贝德 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及腰乌黑长发 · 洁白恶魔双角",
+      "hair_color": "纯黑 / 乌黑",
+      "eyes": "璀璨金眸 · 爬虫类竖瞳",
+      "hairstyle": "长直发自然垂落 · 两侧弯曲白色山羊角",
+      "uniform": "纯白露背神圣晚礼服 / 赫尔墨斯三层黑铠",
+      "expression": "端庄圣洁 · 傲视凡俗 · 私下病娇痴情",
+      "style": "regal pure-white succubus guardian overseer",
+      "signature": "白色双角、纯白露背晚礼服、腰间黑色羽翼与金色竖瞳"
+    },
+    "personality": [
+      "绝对的忠诚与崇拜",
+      "智谋通天的守护者领袖",
+      "病娇与独占欲天花板",
+      "被窝里打滚的纯情小女生"
+    ],
+    "likes": [
+      "缝制安兹大人的周边",
+      "处理大坟墓内政",
+      "与心爱之人共处一室"
+    ],
+    "classic_cg": {
+      "title": "三层黑铠的守护者总管",
+      "description": "在纳萨力克大坟墓王座前身披全黑重铠赫尔墨斯、手持战斧守卫圣域的巍峨姿态。"
+    },
+    "identity": "OVERLORD女主角 · 纳萨力克大坟墓守护者总管 · 纯白魅魔",
+    "tags": [
+      "OVERLORD",
+      "守护者总管",
+      "纯白礼服",
+      "黑色羽翼",
+      "病娇",
+      "反差萌"
+    ],
+    "bg_story": "纳萨力克地下大坟墓的守护者总管，统御全体NPC与魔物的最高管理层。原本设定为淫魔，却因设定修改而将所有的爱意与痴狂全盘系于一人之身。对待外人冷酷无情视如尘埃，唯独在心爱之人面前展现出令人忍俊不禁的极端痴情与娇羞。",
+    "palette": [
+      "#eab308",
+      "#1e293b",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "王座幽光 / 纯白雪景",
+    "speech": "「您就是我的全世界……请将您的全部，毫无保留地赐予雅儿贝德吧。」",
+    "source": "OVERLORD",
+    "traits": [
+      "succubus",
+      "black_wings",
+      "curved_horns",
+      "yellow_eyes",
+      "yandere"
+    ],
+    "accent_color": "#eab308",
+    "bg_color": "#1e293b"
+  },
+  {
+    "id": "sparkle_hsr",
+    "name": "花火",
+    "alias": [
+      "Sparkle",
+      "花火",
+      "假面愚者花火",
+      "千面戏子"
+    ],
+    "type": "popular",
+    "icon": "🎭",
+    "portrait": {
+      "image": "../assets/characters/popular-sparkle_hsr.png?v=1",
+      "alt": "花火 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "乌黑如墨双马尾 · 鲜红发带",
+      "hair_color": "纯黑 / 乌黑",
+      "eyes": "璀璨绯红眼眸 · 樱花花瓣瞳光",
+      "hairstyle": "高低不称双马尾 · 斜戴狐狸面具",
+      "uniform": "红黑金和风短裙洛丽塔 / 匹诺康尼街头卫衣",
+      "expression": "戏谑坏笑 · 狡黠挑衅 · 被反制时面红耳赤",
+      "style": "theatrical masked fool girl with kitsune charm",
+      "signature": "红黑和风短裙、狐狸面具、黑发双马尾与赤红眼眸"
+    },
+    "personality": [
+      "愉悦犯与小恶魔乐子人",
+      "以假面游戏人间",
+      "攻防反转后的嘴硬羞恼",
+      "卸下面具后的真诚依恋"
+    ],
+    "likes": [
+      "策划颠覆狂欢的恶作剧",
+      "收集各式面具",
+      "和喜欢的人在天台吹风喝汽水"
+    ],
+    "classic_cg": {
+      "title": "梦境千面的狂欢序幕",
+      "description": "在匹诺康尼黄金时刻的钟表广场夜空，勾起狐狸面具露出戏谑坏笑的千面戏子。"
+    },
+    "identity": "崩坏：星穹铁道高人气角色 · 假面愚者成员 · 欢愉令使门徒",
+    "tags": [
+      "崩坏星穹铁道",
+      "假面愚者",
+      "和风洛丽塔",
+      "双马尾",
+      "狐狸面具",
+      "雌小鬼反差"
+    ],
+    "bg_story": "难以捉摸、视世间一切为狂欢舞台的假面愚者。拥有千变万化的化身与无尽的面具，擅长将所有人玩弄于鼓掌之间。看似疯狂而混乱，实则内心有着独属于她自己的浪漫法则，一旦被真正看穿了脆弱防线，就会变成满脸涨红、手足无措的傲娇小少女。",
+    "palette": [
+      "#f43f5e",
+      "#881337",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "梦境繁华 / 霓虹深夜",
+    "speech": "「喂……谁准你随便碰本小姐的面具了？！快还给我啦……不准盯着我的脸看，笨蛋！」",
+    "source": "Honkai: Star Rail",
+    "traits": [
+      "masked_fool",
+      "black_twintails",
+      "red_eyes",
+      "kitsune_mask",
+      "smirk"
+    ],
+    "accent_color": "#f43f5e",
+    "bg_color": "#881337"
+  },
+  {
+    "id": "cc_code_geass",
+    "name": "C.C.",
+    "alias": [
+      "C.C.",
+      "CC",
+      "不老不死的魔女",
+      "披萨魔女",
+      "共犯"
+    ],
+    "type": "popular",
+    "icon": "🍕",
+    "portrait": {
+      "image": "../assets/characters/popular-cc_code_geass.png?v=1",
+      "alt": "C.C. 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及腰瀑布般翠绿长发 · 柔顺平刘海",
+      "hair_color": "翠绿 / 浅柠檬绿",
+      "eyes": "深邃琥珀金眸 · 额间飞鸟Geass印记",
+      "hairstyle": "超长翠绿直发 · 优雅垂胸前",
+      "uniform": "纯白拘束服风衣 / 黑色骑士团制服",
+      "expression": "从容淡漠 · 似笑非笑 · 深邃温柔",
+      "style": "immortal enigmatic green-haired witch",
+      "signature": "及腰翠绿长发、金珀眼眸、纯白拘束服与奶酪君抱枕"
+    },
+    "personality": [
+      "看破世间沧桑的从容淡漠",
+      "唯独对你的生死相托与羁绊",
+      "酷爱披萨的慵懒萌态",
+      "偶尔脸红微怔的反差娇羞"
+    ],
+    "likes": [
+      "必胜客热烤披萨",
+      "奶酪君黄色玩偶",
+      "在午后的阳光下静静发呆"
+    ],
+    "classic_cg": {
+      "title": "废墟月下的契约魔女",
+      "description": "在钟楼断壁残垣之上迎风而立，纯白拘束带翻飞、额间Geass红光闪烁的绝代魔女。"
+    },
+    "identity": "反叛的鲁路修女主角 · 不老不死的Code持有者 · 灵魂共犯",
+    "tags": [
+      "反叛的鲁路修",
+      "C.C.",
+      "绿长直",
+      "不老不死",
+      "拘束服",
+      "披萨魔女"
+    ],
+    "bg_story": "二次元神作历史上无可争议的魔女之王。拥有不老不死之躯与赐予他人Geass力量的能力，经历了数百年的战乱、背叛与孤独，将自己的内心冰封在冷漠的面具之下。直到遇见了唯一的共犯，冰冷的心彻底被融化，甘愿背负一切罪孽与他同行至世界尽头。",
+    "palette": [
+      "#84cc16",
+      "#14532d",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "废墟清风 / 破晓晨曦",
+    "speech": "「无论世界如何看待我们，你和我都是背负一切的共犯……只要你呼唤我，我就会一直在。」",
+    "source": "Code Geass",
+    "traits": [
+      "immortal_witch",
+      "green_hair",
+      "yellow_eyes",
+      "straitjacket",
+      "geass"
+    ],
+    "accent_color": "#84cc16",
+    "bg_color": "#14532d"
   }
 ]

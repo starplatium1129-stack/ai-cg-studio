@@ -149,6 +149,139 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "sparkle_hsr",
+      "displayName": "花火",
+      "originalName": "花火",
+      "franchise": "Honkai: Star Rail",
+      "aliases": [
+        "Sparkle",
+        "花火",
+        "假面愚者花火",
+        "千面戏子"
+      ],
+      "identityProse": "Sparkle from Honkai: Star Rail, a mischievous and elusive Masked Fool girl with glossy raven-black hair in uneven twin-tails tied with crimson ribbons, vibrant scarlet eyes with cherry blossom-like highlights, an expressive kitsune fox mask tilted on the side of her head, and a wicked, theatrical smirk",
+      "identityTokens": [
+        "sparkle_(honkai:_star_rail)",
+        "black_hair",
+        "twintails",
+        "red_ribbon",
+        "red_eyes",
+        "kitsune_mask",
+        "fox_mask",
+        "smirk",
+        "petite"
+      ],
+      "exactTokens": [
+        "sparkle_(honkai:_star_rail)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, sparkle_(honkai:_star_rail)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "miHoYo / HoYoverse",
+      "curatedArtistStyles": [
+        "HoYoverse Official",
+        "Mika Pikazo"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_kimono_dress",
+          "name": "红黑和风短裙洛丽塔",
+          "prose": "her signature theatrical outfit: an ornate crimson and black Japanese-style mini kimono dress with gold floral trims, wide fluttering sleeves, dark obi with a goldfish tasselled sash, black thigh-high stockings, and an artistic kitsune fox mask tilted on her head",
+          "tokens": [
+            "japanese_clothes",
+            "mini_kimono",
+            "kimono_dress",
+            "black_dress",
+            "red_accents",
+            "wide_sleeves",
+            "obi",
+            "thighhighs",
+            "black_thighhighs",
+            "kitsune_mask"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_street_hoodie",
+          "name": "匹诺康尼街头潮牌卫衣",
+          "prose": "a stylish oversized red and black streetwear hoodie with neon graffiti accents, denim micro-shorts, mismatched striped stockings, and playful hair clips",
+          "tokens": [
+            "hoodie",
+            "oversized_hoodie",
+            "red_hoodie",
+            "denim_shorts",
+            "short_shorts",
+            "thighhighs",
+            "sneakers",
+            "streetwear"
+          ]
+        },
+        {
+          "id": "playful_nightgown",
+          "name": "深红露肩真丝小睡衣",
+          "prose": "a short glossy crimson silk nightgown with off-shoulder spaghetti straps, a flirty hemline brushing her bare thighs, and a plush fox-tail cushion hugged in her arms",
+          "tokens": [
+            "nightgown",
+            "red_nightgown",
+            "silk_pajamas",
+            "off-shoulder",
+            "cleavage",
+            "bare_shoulders",
+            "bare_legs",
+            "barefoot"
+          ]
+        },
+        {
+          "id": "festive_goldfish_yukata",
+          "name": "夏日游园金鱼薄浴衣",
+          "prose": "a light coral-red summer yukata printed with swimming goldfishes, tied loosely with a dark obi sash, exposing her slender collarbone and nape",
+          "tokens": [
+            "yukata",
+            "red_yukata",
+            "goldfish_print",
+            "obi",
+            "exposed_nape",
+            "japanese_festival"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely naked and petite body, with glossy black twintails cascading across her shoulders, perky natural breasts with tender pink nipples, slender waist, and smooth fair skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "small_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body"
+          ]
+        }
+      ]
     }
   ]
 }

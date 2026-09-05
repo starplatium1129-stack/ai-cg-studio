@@ -572,6 +572,37 @@
     --character-aura:rgba(251,113,133,.32); --character-aura-secondary:rgba(168,85,247,.20);
   }
 
+  /* 派生：恶魔高校DxD · 莉雅丝·吉蒙里 */
+  .pb[data-character="rias_gremory"] {
+    --character-accent:#e52b50; --character-accent-hover:#ff4d6d;
+    --character-soft:rgba(229,43,80,.16); --character-glow:rgba(229,43,80,.34);
+    --character-aura:rgba(229,43,80,.32); --character-aura-secondary:rgba(15,23,42,.24);
+  }
+  /* 派生：恶魔高校DxD · 姬岛朱乃 */
+  .pb[data-character="akeno_himejima"] {
+    --character-accent:#9333ea; --character-accent-hover:#a855f7;
+    --character-soft:rgba(147,51,234,.16); --character-glow:rgba(147,51,234,.34);
+    --character-aura:rgba(147,51,234,.32); --character-aura-secondary:rgba(239,68,68,.22);
+  }
+  /* 派生：OVERLORD · 雅儿贝德 */
+  .pb[data-character="albedo_overlord"] {
+    --character-accent:#eab308; --character-accent-hover:#facc15;
+    --character-soft:rgba(234,179,8,.16); --character-glow:rgba(234,179,8,.34);
+    --character-aura:rgba(234,179,8,.30); --character-aura-secondary:rgba(15,23,42,.28);
+  }
+  /* 派生：崩坏星穹铁道 · 花火 */
+  .pb[data-character="sparkle_hsr"] {
+    --character-accent:#f43f5e; --character-accent-hover:#fb7185;
+    --character-soft:rgba(244,63,94,.16); --character-glow:rgba(244,63,94,.34);
+    --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(15,23,42,.24);
+  }
+  /* 派生：反叛的鲁路修 · C.C. */
+  .pb[data-character="cc_code_geass"] {
+    --character-accent:#84cc16; --character-accent-hover:#a3e635;
+    --character-soft:rgba(132,204,22,.16); --character-glow:rgba(132,204,22,.34);
+    --character-aura:rgba(132,204,22,.30); --character-aura-secondary:rgba(245,158,11,.22);
+  }
+
   /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb，形成柔和体积漫反射光 */
   body:has(.pb[data-character])::before {
     opacity: 0.46;
@@ -683,9 +714,9 @@
   body:has(.pb[data-character="momo_velia_deviluke"]) { --character-aura:rgba(192,132,252,.32); --character-aura-secondary:rgba(244,114,182,.22); }
   body:has(.pb[data-character="kotegawa_yui"]) { --character-aura:rgba(16,185,129,.30); --character-aura-secondary:rgba(239,68,68,.20); }
   body:has(.pb[data-character="nana_asta_deviluke"]) { --character-aura:rgba(251,113,133,.32); --character-aura-secondary:rgba(168,85,247,.20); }
-
-
-
-
-
+  body:has(.pb[data-character="rias_gremory"]) { --character-aura:rgba(229,43,80,.32); --character-aura-secondary:rgba(15,23,42,.24); }
+  body:has(.pb[data-character="akeno_himejima"]) { --character-aura:rgba(147,51,234,.32); --character-aura-secondary:rgba(239,68,68,.22); }
+  body:has(.pb[data-character="albedo_overlord"]) { --character-aura:rgba(234,179,8,.30); --character-aura-secondary:rgba(15,23,42,.28); }
+  body:has(.pb[data-character="sparkle_hsr"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(15,23,42,.24); }
+  body:has(.pb[data-character="cc_code_geass"]) { --character-aura:rgba(132,204,22,.30); --character-aura-secondary:rgba(245,158,11,.22); }
 

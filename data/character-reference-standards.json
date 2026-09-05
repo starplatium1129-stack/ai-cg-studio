@@ -297,6 +297,60 @@
           "isNsfw": false
         },
         {
+          "id": "inazuma_bikini",
+          "name": "稻妻紫电前系带比基尼",
+          "isDefault": false,
+          "prose": "a captivating deep purple front-tie string bikini adorned with subtle golden Mitsudomoe emblems, thin side-tie panties, bare shoulders, bare midriff, and glowing violet electro accents",
+          "tokens": [
+            "front-tie_bikini",
+            "triangle_bikini",
+            "purple_bikini",
+            "side-tie_panties",
+            "cleavage",
+            "bare_shoulders",
+            "bare_midriff",
+            "bare_legs",
+            "barefoot"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "shogun_virgin_killer",
+          "name": "鸣神纯黑露背高领毛衣",
+          "isDefault": false,
+          "prose": "an alluring black sleeveless turtleneck virgin killer sweater, completely backless showing her smooth spine and waist contours, subtle sideboob, and delicate purple ribbons",
+          "tokens": [
+            "virgin_killer_sweater",
+            "black_sweater",
+            "backless_sweater",
+            "turtleneck_sweater",
+            "sleeveless_sweater",
+            "sideboob",
+            "bare_back",
+            "bare_shoulders",
+            "bare_legs"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "sheer_babydoll",
+          "name": "天守夜寝透明薄纱睡袍",
+          "isDefault": false,
+          "prose": "a sheer translucent dark purple babydoll nightgown, open-front design revealing her cleavage and collarbone, delicate black lace trims, and an untied silk sash slipping off her shoulder",
+          "tokens": [
+            "sheer_babydoll",
+            "open-front_negligee",
+            "translucent_cloth",
+            "see-through",
+            "falling_strap",
+            "cleavage",
+            "bare_shoulders",
+            "bare_legs",
+            "silk_slip"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -603,6 +657,25 @@
             "sweater",
             "skirt",
             "open_jacket"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "silk_sleepwear",
+          "name": "丝绸晨睡套装",
+          "isDefault": false,
+          "prose": "wearing a soft silk sleepwear set of a thin-strap camisole top and matching loose shorts, smooth lustrous silk fabric in a soft neutral tone",
+          "tokens": [
+            "silk",
+            "sleepwear",
+            "silk_sleepwear",
+            "camisole",
+            "thin_straps",
+            "loose_shorts",
+            "matching_set",
+            "bare_shoulders",
+            "nightwear",
+            "smooth_fabric"
           ],
           "isNsfw": false
         },
@@ -954,6 +1027,22 @@
           "isNsfw": false
         },
         {
+          "id": "bridal_dress",
+          "name": "纯白誓约露肩花嫁婚纱",
+          "isDefault": false,
+          "prose": "an exquisite strapless white bridal gown with delicate lace embroidery, sheer translucent veil cascading over her golden braided updo, and an exposed sweetheart neckline",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "strapless_dress",
+            "bare_shoulders",
+            "cleavage",
+            "white_dress",
+            "lace_trim"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -1034,6 +1123,43 @@
           "isNsfw": false
         },
         {
+          "id": "bunny_suit",
+          "name": "深红魅惑漆皮兔女郎装",
+          "isDefault": false,
+          "prose": "a glossy crimson latex bunny suit clinging to her slender waist, black bunny ears, white collar and bowtie, sheer black pantyhose, and stiletto heels",
+          "tokens": [
+            "bunny_suit",
+            "red_bunny_suit",
+            "glossy_latex",
+            "bunny_ears",
+            "bowtie",
+            "cuffs",
+            "bare_shoulders",
+            "cleavage",
+            "black_pantyhose",
+            "high_heels"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "virgin_killer_sweater",
+          "name": "赤红露背高领毛衣",
+          "isDefault": false,
+          "prose": "her signature crimson shade in a virgin killer backless turtleneck sweater, bare back, prominent sideboob, and black thigh-high socks",
+          "tokens": [
+            "virgin_killer_sweater",
+            "red_sweater",
+            "backless_sweater",
+            "turtleneck_sweater",
+            "sleeveless_sweater",
+            "sideboob",
+            "bare_back",
+            "bare_shoulders",
+            "black_thighhighs"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -1094,6 +1220,44 @@
             "casual_clothes",
             "dress",
             "cardigan"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "purple_hooded_cloak",
+          "name": "紫色连帽斗篷",
+          "isDefault": false,
+          "prose": "wearing a thick purple hooded cloak of deep violet wool, a heavy front-closing cape with a large hood and long hem",
+          "tokens": [
+            "cloak",
+            "hooded_cloak",
+            "purple_cloak",
+            "violet",
+            "hood",
+            "wool",
+            "winter_cloak",
+            "outerwear",
+            "cape",
+            "thick_fabric"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "cozy_wool_blanket",
+          "name": "羊绒毛毯裹身",
+          "isDefault": false,
+          "prose": "wrapped in a thick soft wool blanket, plush fluffy wool fabric draped loosely around the body like a cocoon, warm neutral tone",
+          "tokens": [
+            "wool_blanket",
+            "wrapped_in_blanket",
+            "plush",
+            "wool",
+            "draped",
+            "thick_fabric",
+            "fluffy",
+            "cozy",
+            "soft_fabric",
+            "loungewear"
           ],
           "isNsfw": false
         },
@@ -1539,6 +1703,44 @@
           "isNsfw": false
         },
         {
+          "id": "festival_yukata",
+          "name": "祭典葱绿短浴衣",
+          "isDefault": false,
+          "prose": "wearing a short modified onion-green yukata with a slim cloth sash at the waist, a shortened hemline above the knees, and wooden geta sandals, bright festive summer robe",
+          "tokens": [
+            "yukata",
+            "short_yukata",
+            "green_yukata",
+            "onion_green",
+            "cloth_sash",
+            "obi",
+            "geta",
+            "wooden_geta",
+            "bare_legs",
+            "summer_clothes"
+          ],
+          "isNsfw": true
+        },
+        {
+          "id": "sporty_athleisure",
+          "name": "晨跑运动休闲装",
+          "isDefault": false,
+          "prose": "wearing a fresh athletic set of a zip-up track jacket and matching running shorts, lightweight quick-dry sportswear with a bright energetic color palette",
+          "tokens": [
+            "track_jacket",
+            "zip_up_jacket",
+            "track_suit",
+            "running_shorts",
+            "sportswear",
+            "athleisure",
+            "activewear",
+            "sneakers",
+            "matching_set",
+            "quick_dry_fabric"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -1951,6 +2153,25 @@
           "isNsfw": false
         },
         {
+          "id": "summer_yukata",
+          "name": "夏日淡蓝浴衣",
+          "isDefault": false,
+          "prose": "wearing a fresh light-blue summer yukata with a white sash obi, a shortened hemline above the knees, and wooden geta sandals",
+          "tokens": [
+            "yukata",
+            "summer_yukata",
+            "light_blue_yukata",
+            "blue_yukata",
+            "white_obi",
+            "waist_sash",
+            "geta",
+            "wooden_geta",
+            "short_hem",
+            "bare_legs"
+          ],
+          "isNsfw": true
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -2223,6 +2444,25 @@
           "isNsfw": false
         },
         {
+          "id": "lace_nightgown",
+          "name": "蕾丝月光睡袍",
+          "isDefault": false,
+          "prose": "wearing a thin lace nightgown with delicate lace trim, sheer lightweight fabric and a loose sleeveless silhouette, soft pale color",
+          "tokens": [
+            "nightgown",
+            "lace",
+            "lace_trim",
+            "sheer",
+            "thin_fabric",
+            "translucent",
+            "sleeveless",
+            "loose_fit",
+            "nightwear",
+            "bare_shoulders"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -2369,6 +2609,25 @@
             "belt"
           ],
           "isNsfw": false
+        },
+        {
+          "id": "lingerie_only",
+          "name": "私密内衣形态",
+          "isDefault": false,
+          "prose": "wearing only a simple bra and matching briefs, plain cotton underwear with thin straps, minimal private undergarments",
+          "tokens": [
+            "lingerie",
+            "bra",
+            "panties",
+            "underwear",
+            "matching_set",
+            "thin_straps",
+            "cotton",
+            "bare_shoulders",
+            "bare_legs",
+            "bare_midriff"
+          ],
+          "isNsfw": true
         },
         {
           "id": "nsfw_nude",
@@ -2622,6 +2881,44 @@
           "isNsfw": false
         },
         {
+          "id": "silk_pajamas",
+          "name": "丝绸居家睡衣",
+          "isDefault": false,
+          "prose": "wearing loose silk pajamas with a button-up top and matching pajama pants, smooth lustrous silk in a soft pastel tone",
+          "tokens": [
+            "pajamas",
+            "silk_pajamas",
+            "silk",
+            "button_up",
+            "long_sleeves",
+            "pajama_pants",
+            "loose_fit",
+            "nightwear",
+            "loungewear",
+            "soft_fabric"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "sheer_bathrobe",
+          "name": "薄透浴袍",
+          "isDefault": false,
+          "prose": "wearing nothing but a thin sheer bathrobe of translucent fabric, a loose belt at the waist, the sheer material clinging to her curves",
+          "tokens": [
+            "bathrobe",
+            "sheer_bathrobe",
+            "sheer",
+            "translucent",
+            "thin_fabric",
+            "loose_belt",
+            "robe",
+            "bare_shoulders",
+            "bare_legs",
+            "clinging_fabric"
+          ],
+          "isNsfw": true
+        },
+        {
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -2707,6 +3004,25 @@
           "isNsfw": false
         },
         {
+          "id": "oversized_white_shirt",
+          "name": "白衬衫私服",
+          "isDefault": false,
+          "prose": "wearing an oversized white dress shirt worn alone as a night shirt, fully unbuttoned with the long tails falling to mid-thigh",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "dress_shirt",
+            "unbuttoned",
+            "open_front",
+            "shirttail",
+            "bare_chest",
+            "bare_midriff",
+            "bare_legs",
+            "night_shirt"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -2724,6 +3040,25 @@
             "bare_feet"
           ],
           "isNsfw": true
+        },
+        {
+          "id": "sheer_lingerie",
+          "name": "薄纱里衣",
+          "isDefault": false,
+          "prose": "wearing only a thin sheer chemise of translucent delicate fabric, fine straps and a loose flowing silhouette",
+          "tokens": [
+            "lingerie",
+            "sheer_lingerie",
+            "chemise",
+            "sheer",
+            "translucent",
+            "thin_straps",
+            "delicate_fabric",
+            "slip",
+            "bare_shoulders",
+            "bare_legs"
+          ],
+          "isNsfw": false
         }
       ]
     },
@@ -3076,6 +3411,98 @@
           "isNsfw": false
         },
         {
+          "id": "cadet_royal_guard",
+          "name": "维多利亚近卫军校学员礼服",
+          "isDefault": false,
+          "prose": "a Victorian Royal Guard Military Academy cadet dress uniform: a deep navy double-breasted military jacket with gold braided trim, brass buttons and tasseled gold epaulettes over a crisp white high-collar shirt with a dark red neck scarf, beige high-waisted equestrian jodhpurs, polished black knee-high riding boots, white cavalry gloves and a fencing rapier at her belt",
+          "tokens": [
+            "military_uniform",
+            "double-breasted",
+            "gold_trim",
+            "epaulettes",
+            "white_shirt",
+            "ascot",
+            "jodhpurs",
+            "riding_boots",
+            "white_gloves",
+            "rapier"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "wayfarer_wanderer",
+          "name": "泰拉远行游历风衣",
+          "isDefault": false,
+          "prose": "a long dark sage-green hooded travel trench coat with dust-proof shoulder guards over a charcoal ribbed turtleneck sweater, reinforced dark grey cargo pants tucked into brown leather hiking boots, twin swords strapped on her back and a metal canteen at her belt",
+          "tokens": [
+            "trench_coat",
+            "hood",
+            "turtleneck",
+            "sweater",
+            "cargo_pants",
+            "hiking_boots",
+            "sword_on_back",
+            "canteen"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "ambience_synesthesia_rocker",
+          "name": "音律联觉·赤雷电音摇滚装",
+          "isDefault": false,
+          "prose": "a crimson and matte-black asymmetric cropped leather biker jacket with silver studs over a sheer black mesh crop top, a silver dragon-engraved choker, high-waisted distressed black denim shorts, ripped fishnet thighhighs, black lace-up platform knee-high boots and a crimson electric guitar",
+          "tokens": [
+            "leather_jacket",
+            "cropped_jacket",
+            "mesh",
+            "crop_top",
+            "choker",
+            "denim_shorts",
+            "fishnet_thighhighs",
+            "platform_boots",
+            "electric_guitar"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "bath_towel_wrap",
+          "name": "浴后浴巾",
+          "isDefault": false,
+          "prose": "wrapped in a large thick bath towel secured at the bust, soft cotton towel fabric with bare shoulders and bare legs",
+          "tokens": [
+            "bath_towel",
+            "towel",
+            "towel_wrap",
+            "wrapped_in_towel",
+            "cotton",
+            "bare_shoulders",
+            "bare_legs",
+            "bare_back",
+            "collarbone",
+            "thick_towel"
+          ],
+          "isNsfw": true
+        },
+        {
+          "id": "light_lingerie",
+          "name": "轻薄内衣",
+          "isDefault": false,
+          "prose": "wearing light lingerie with a delicate bralette and matching panties, soft lightweight fabric",
+          "tokens": [
+            "lingerie",
+            "light_lingerie",
+            "bralette",
+            "panties",
+            "matching_set",
+            "delicate_fabric",
+            "thin_fabric",
+            "bare_shoulders",
+            "bare_midriff",
+            "navel"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -3188,6 +3615,25 @@
           "isNsfw": false
         },
         {
+          "id": "waterproof_explorer",
+          "name": "防水探险服",
+          "isDefault": false,
+          "prose": "wearing a water-resistant expedition outfit: a tough layered expedition jacket with zip closure and cargo pockets, durable cargo trousers, and sturdy hiking boots",
+          "tokens": [
+            "eyjafjalla_waterproof_explorer",
+            "expedition_jacket",
+            "waterproof_jacket",
+            "hooded_jacket",
+            "long_sleeves",
+            "zipper",
+            "cargo_pockets",
+            "gloves",
+            "cargo_pants",
+            "hiking_boots"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -3286,6 +3732,24 @@
             "sheer"
           ],
           "isNsfw": true
+        },
+        {
+          "id": "nun_habit",
+          "name": "素白修女服",
+          "isDefault": false,
+          "prose": "wearing a plain white nun habit with a long modest white gown, high collar, long sleeves, and a white head veil",
+          "tokens": [
+            "lemuen_nun_habit",
+            "nun_habit",
+            "white_gown",
+            "long_dress",
+            "white_veil",
+            "wimple",
+            "cross_pendant",
+            "long_sleeves",
+            "white_clothes"
+          ],
+          "isNsfw": false
         },
         {
           "id": "nsfw_nude",
@@ -3504,6 +3968,42 @@
           "isNsfw": false
         },
         {
+          "id": "white_plain_dress",
+          "name": "素白连衣裙",
+          "isDefault": false,
+          "prose": "wearing a simple plain white cotton dress with a modest round neckline, short sleeves, and a clean unadorned silhouette",
+          "tokens": [
+            "mudrock_white_plain_dress",
+            "white_dress",
+            "plain_dress",
+            "simple_dress",
+            "cotton_dress",
+            "short_sleeves",
+            "round_neckline",
+            "white_clothes",
+            "summer_dress"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "thin_camisole",
+          "name": "轻薄吊带单衣",
+          "isDefault": false,
+          "prose": "wearing only a thin sleeveless camisole of soft lightweight fabric with thin straps, leaving her shoulders and collarbone bare",
+          "tokens": [
+            "mudrock_thin_camisole",
+            "camisole",
+            "sleeveless_shirt",
+            "undershirt",
+            "thin_fabric",
+            "lightweight_fabric",
+            "bare_shoulders",
+            "collarbone",
+            "pale_skin"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -3621,6 +4121,23 @@
             "bare_feet"
           ],
           "isNsfw": true
+        },
+        {
+          "id": "thin_undershirt",
+          "name": "单薄内衬背心",
+          "isDefault": false,
+          "prose": "wearing only a thin form-fitting tank-top undershirt of lightweight fabric, leaving her shoulders and arms bare",
+          "tokens": [
+            "eunectes_thin_undershirt",
+            "tank_top",
+            "undershirt",
+            "sleeveless_shirt",
+            "thin_fabric",
+            "form_fitting",
+            "bare_shoulders",
+            "goggles"
+          ],
+          "isNsfw": false
         }
       ]
     },
@@ -3713,6 +4230,24 @@
             "striped_shirt",
             "stylist",
             "cat_ears"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "unbuttoned_shirt",
+          "name": "解开襟口的单薄衬衫",
+          "isDefault": false,
+          "prose": "wearing a thin white shirt with buttons undone to mid-chest, the soft fabric hanging open over her pale chest and collarbone",
+          "tokens": [
+            "goldenglow_unbuttoned_shirt",
+            "white_shirt",
+            "thin_shirt",
+            "unbuttoned",
+            "shirt_buttons",
+            "open_clothes",
+            "cleavage",
+            "bare_shoulders",
+            "pale_skin"
           ],
           "isNsfw": false
         },
@@ -4042,6 +4577,24 @@
           "isNsfw": false
         },
         {
+          "id": "red_hooded_tee",
+          "name": "红色连帽T恤",
+          "isDefault": false,
+          "prose": "wearing an oversized red hooded t-shirt with long sleeves, a soft relaxed silhouette, and a loose off-shoulder collar",
+          "tokens": [
+            "exusiai_red_hooded_tee",
+            "hooded_tee",
+            "red_hoodie",
+            "hoodie",
+            "oversized_clothes",
+            "t-shirt",
+            "red_clothes",
+            "long_sleeves",
+            "off_shoulder"
+          ],
+          "isNsfw": false
+        },
+        {
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
@@ -4120,6 +4673,59 @@
             "hoodie",
             "pastel",
             "loungewear"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "white_garden_dress",
+          "name": "洁白花园连衣裙",
+          "isDefault": false,
+          "prose": "wearing a pure white garden dress of soft cotton with a flowing skirt, short sleeves, and a clean innocent silhouette",
+          "tokens": [
+            "suzuran_white_garden_dress",
+            "white_dress",
+            "garden_dress",
+            "summer_dress",
+            "simple_dress",
+            "soft_skirt",
+            "white_clothes",
+            "short_sleeves"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "fluffy_cloak",
+          "name": "厚绒斗篷",
+          "isDefault": false,
+          "prose": "wearing a thick fluffy fur cloak with a plush hood, fur trim collar, and a warm voluminous winter silhouette",
+          "tokens": [
+            "suzuran_fluffy_cloak",
+            "fur_cloak",
+            "fluffy_cloak",
+            "fur_trim",
+            "hooded_cloak",
+            "cloak",
+            "winter_clothes",
+            "fur_collar",
+            "long_cloak",
+            "warm_clothes"
+          ],
+          "isNsfw": false
+        },
+        {
+          "id": "small_kimono",
+          "name": "小和服",
+          "isDefault": false,
+          "prose": "wearing a traditional small kimono with a crisp white collar, neat obi sash, and long sleeves, elegant Japanese classical dress",
+          "tokens": [
+            "suzuran_small_kimono",
+            "small_kimono",
+            "kimono",
+            "japanese_clothes",
+            "traditional_clothes",
+            "obi",
+            "long_sleeves",
+            "collar"
           ],
           "isNsfw": false
         },
@@ -4740,6 +5346,25 @@
             "bare_feet"
           ],
           "isNsfw": true
+        },
+        {
+          "id": "sheer_sleep_robe",
+          "name": "薄纱睡袍",
+          "isDefault": false,
+          "prose": "wearing only a sheer translucent sleep robe of thin airy fabric, the see-through material tracing her bare shoulders and collarbone",
+          "tokens": [
+            "perlica_sheer_sleep_robe",
+            "sheer_robe",
+            "nightgown",
+            "sleep_robe",
+            "sheer_clothes",
+            "translucent_fabric",
+            "see_through",
+            "thin_clothes",
+            "bare_shoulders",
+            "collarbone"
+          ],
+          "isNsfw": false
         }
       ]
     },
@@ -6176,7 +6801,7 @@
       "displayName": "一之濑明日奈",
       "originalName": "Ichinose Asuna",
       "source": "Blue Archive",
-      "identityProse": "Ichinose Asuna from Blue Archive, C&C agent and combat maid with floor-length golden blonde hair covering one eye, drooping cute dog ears, striking blue eyes, towering voluptuous hourglass figure, sweet beaming smile, and a delicate ring halo.",
+      "identityProse": "Ichinose Asuna from Blue Archive, C&C agent and combat maid with floor-length golden blonde hair covering one eye, striking blue eyes, towering voluptuous hourglass figure, sweet beaming smile, and a delicate ring halo.",
       "identityTokens": [
         "asuna (blue archive)",
         "1girl",
@@ -6995,6 +7620,25 @@
       ]
     },
     {
+      "id": "sparkle_hsr",
+      "displayName": "花火",
+      "originalName": "花火",
+      "source": "Honkai: Star Rail",
+      "identityProse": "Sparkle from Honkai: Star Rail, a mischievous and elusive Masked Fool girl with glossy raven-black hair in uneven twin-tails tied with crimson ribbons, vibrant scarlet eyes with cherry blossom-like highlights, an expressive kitsune fox mask tilted on the side of her head, and a wicked, theatrical smirk",
+      "identityTokens": [
+        "sparkle_(honkai:_star_rail)",
+        "black_hair",
+        "twintails",
+        "red_ribbon",
+        "red_eyes",
+        "kitsune_mask",
+        "fox_mask",
+        "smirk",
+        "petite"
+      ],
+      "outfits": []
+    },
+    {
       "id": "ellen_joe",
       "displayName": "艾莲·乔",
       "originalName": "Ellen Joe",
@@ -7363,7 +8007,7 @@
     },
     {
       "id": "momo_velia_deviluke",
-      "displayName": "茉茉·贝莉雅·戴比路克",
+      "displayName": "梦梦·贝莉雅·戴比路克",
       "originalName": "モモ・ベリア・デビルーク (Momo)",
       "source": "To LOVE-Ru",
       "identityProse": "Momo Belia Deviluke from To LOVE-Ru by Kentaro Yabuki, the third princess of Planet Deviluke with shoulder-length soft pastel pink hair with two curled strands sticking out, seductive amethyst purple-pink eyes, a voluptuous hourglass figure, a slender spade-heart devil tail, and a demure yet mischievous expression.",
@@ -7405,6 +8049,104 @@
         "large_breasts",
         "cleavage",
         "to_love-ru"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "nana_asta_deviluke",
+      "displayName": "娜娜·阿斯达·戴比路克",
+      "originalName": "ナナ・アスタ・デビルーク (Nana)",
+      "source": "To LOVE-Ru",
+      "identityProse": "Nana Asta Deviluke from To LOVE-Ru by Kentaro Yabuki, the second princess of Planet Deviluke with long pink twin-tails, sharp yet endearing purple-pink eyes, a slender athletic petite figure, a delicate black spade-heart devil tail, and a feisty tsundere expression.",
+      "identityTokens": [
+        "nana_asta_deviluke",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "hair_between_eyes",
+        "purple_eyes",
+        "demon_tail",
+        "tail",
+        "flat_chest",
+        "small_breasts",
+        "to_love-ru"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "rias_gremory",
+      "displayName": "莉雅丝·吉蒙里",
+      "originalName": "リアス・グレモリー",
+      "source": "High School DxD",
+      "identityProse": "Rias Gremory from High School DxD, a voluptuous pureblood devil noblewoman with knee-length vivid crimson-red hair, an expressive ahoge on top, striking aquamarine-cyan eyes, and a regal yet deeply affectionate demeanor",
+      "identityTokens": [
+        "rias_gremory",
+        "crimson_hair",
+        "very_long_hair",
+        "ahoge",
+        "cyan_eyes",
+        "large_breasts",
+        "hourglass_figure"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "akeno_himejima",
+      "displayName": "姬岛朱乃",
+      "originalName": "姫島朱乃",
+      "source": "High School DxD",
+      "identityProse": "Akeno Himejima from High School DxD, a ravishing half-human half-fallen-angel beauty with very long raven-black hair tied into a sleek high ponytail with a delicate orange ribbon, alluring violet-purple eyes, a gentle mature smile, and an intoxicatingly teasing aura",
+      "identityTokens": [
+        "akeno_himejima",
+        "black_hair",
+        "very_long_hair",
+        "high_ponytail",
+        "orange_hair_ribbon",
+        "purple_eyes",
+        "large_breasts",
+        "seductive_smile"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "albedo_overlord",
+      "displayName": "雅儿贝德",
+      "originalName": "アルベド",
+      "source": "OVERLORD",
+      "identityProse": "Albedo from OVERLORD, the supreme Guardian Overseer of the Great Tomb of Nazarick, an exquisite succubus with long glossy raven-black hair, curved white horns on the sides of her head, luminous golden-slitted eyes, a majestic pair of feathered black wings emerging from her waist, and a flawless hourglass figure",
+      "identityTokens": [
+        "albedo_(overlord)",
+        "black_hair",
+        "very_long_hair",
+        "horns",
+        "curved_horns",
+        "yellow_eyes",
+        "golden_eyes",
+        "slit_pupils",
+        "black_wings",
+        "feathered_wings",
+        "large_breasts",
+        "hourglass_figure"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "cc_code_geass",
+      "displayName": "C.C.",
+      "originalName": "C.C.",
+      "source": "Code Geass",
+      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, a Geass sigil on her forehead when glowing, and a serene, detached yet intimately teasing smile",
+      "identityTokens": [
+        "c.c._(code_geass)",
+        "green_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "golden_eyes",
+        "slender_waist",
+        "calm_expression",
+        "seductive_smile"
       ],
       "outfits": []
     }
