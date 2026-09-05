@@ -122,7 +122,7 @@ const WORKFLOWS = {
   'showcase:fill-gaps': {
     desc: '样张缺口补齐：对照活跃版本manifest批量渲染缺失的pc_<角色>_<场景>样张（miaomiao v1.2，按蓝图recommendedSize出图，并发3）',
     cmd: ['node', 'scripts/maintenance/render-showcase-gaps.js'],
-    opts: '[--only <charId1,charId2>] [--concurrency <n>] [--gateway <url>]',
+    opts: '[--only <charId1,charId2>] [--concurrency <n>] [--gateway <url>] [--redo-mine]',
   },
   'showcase:audit': {
     desc: '批量审核 popular showcase (Gemini 4并发，rella)',

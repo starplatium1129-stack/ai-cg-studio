@@ -11,11 +11,12 @@
  *   - resolveStyleRecipe 按蓝图 hint 解析风格配方（成人配方 fail-closed）
  *   - matureTokens 池（tags.json Mature 分类）与 UI 同源
  *   - TeaCache 加速（thresh 0.08）、按蓝图 recommendedSize 出图（画幅轴向契约）
- *   - 失败自动换 seed 重试一轮；manifest 已存在的条目自动跳过（可安全重入）
+ *   - 失败自动换 seed 重试一轮；manifest 已存在的条目自动跳过（可安全重入，用户手动上传的样张永不被覆盖）
+   - --redo-mine: 只重出带旧版 gap-render 指纹的问题条目（provenance notes 指纹识别）
  *
  * 用法:
  *   node scripts/maintenance/render-showcase-gaps.js [--only <charId,charId>] [--concurrency <n>]
- *                                                    [--gateway <url>] [--dry-run]
+ *                                                    [--gateway <url>] [--dry-run] [--redo-mine]
  */
 
 const fs = require('fs');
@@ -29,6 +30,7 @@ const ENGINE = 'anima';
 const CONCURRENCY = Number(process.argv.includes('--concurrency') ? process.argv[process.argv.indexOf('--concurrency') + 1] : 3);
 const ONLY = process.argv.includes('--only') ? process.argv[process.argv.indexOf('--only') + 1].split(',') : null;
 const DRY_RUN = process.argv.includes('--dry-run');
+const REDO_MINE = process.argv.includes('--redo-mine');
 
 const { resolveSceneShowcaseDir } = require(path.join(ROOT, 'server', 'config'));
 const AI_WORKSPACE = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
@@ -127,7 +129,11 @@ for (const character of characters) {
   const own = blueprints.filter(b => b.characterId === character.id);
   for (const bp of own) {
     const entryId = `pc_${character.id}_${bp.id}`;
-    if (have.has(entryId)) continue;
+    const existing = manifest.entries.find(e => e.id === entryId && e.type === 'popular');
+    if (REDO_MINE) {
+      // 只重出由旧版 gap-render 生成的条目（provenance notes 指纹识别），绝不覆盖用户手动上传或其他来源的样张
+      if (!existing || !/gap-render/.test(existing.provenance?.review?.notes || existing.provenance?.notes || '')) continue;
+    } else if (have.has(entryId)) continue;
     const [w, h] = String(bp.recommendedSize || '832x1216').split('x').map(Number);
     tasks.push({ character, bp, entryId, width: w || 832, height: h || 1216 });
   }
