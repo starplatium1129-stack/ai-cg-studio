@@ -296,7 +296,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   overflow: hidden;
   display: grid;
   place-items: center;
-  background: var(--bg-surface-elevated, rgba(255, 255, 255, 0.04));
+  background: var(--bg-surface-elevated, var(--hl-inset-04));
   border: 1px solid var(--border-soft);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   margin-bottom: var(--s-1);

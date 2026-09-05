@@ -11,6 +11,14 @@ import {
   profileRatingTag,
   type ModelProfile,
 } from './promptPolicy.ts'
+import {
+  isRecord,
+  negativeStringList,
+  requiredString,
+  requiredStringList,
+  stringList,
+  stringValue,
+} from './popularParseGuards.ts'
 import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 
 export type AdultEligibility = 'adult' | 'unknown' | 'underage'
@@ -94,50 +102,7 @@ export interface PopularBlueprintDecision {
 }
 
 // ── 严格解析 ───────────────────────────────────────────────────────────────
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-}
-
-function stringValue(value: unknown): string | undefined {
-  return typeof value === 'string' ? value : undefined
-}
-
-function stringList(value: unknown): string[] {
-  return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
-}
-
-/**
- * 负面词列表解析：兼容字符串与数组两种数据格式。
- * scene-blueprints.json 的 negativeTokens 历史格式为逗号分隔字符串
- * （"worst quality, low quality, ..."），stringList 对字符串返回 [] 会静默丢词
- * （2026-08-15 发现：336 个场景的场景级负面定制从未生效）。
- */
-function negativeStringList(value: unknown): string[] {
-  if (Array.isArray(value)) {
-    // 2026-08-15 审计：兼容历史「单元素数组内整段逗号串」格式（162/336 蓝图）。
-    // 任何数组元素都按逗号切分，保证按元素消费（includes/去重/UI chips）不踩坑。
-    return value.flatMap(item => typeof item === 'string'
-      ? item.split(',').map(segment => segment.trim()).filter(Boolean)
-      : [])
-  }
-  if (typeof value === 'string' && value.trim()) {
-    return value.split(',').map(item => item.trim()).filter(Boolean)
-  }
-  return []
-}
-
-function requiredString(record: Record<string, unknown>, key: string): string {
-  const value = stringValue(record[key])
-  if (!value) throw new Error(`popular data: ${key} must be a non-empty string`)
-  return value
-}
-
-function requiredStringList(record: Record<string, unknown>, key: string): string[] {
-  const value = stringList(record[key])
-  if (!value.length) throw new Error(`popular data: ${key} must be a non-empty string array`)
-  return value
-}
+// 解析守卫已收敛至 ./popularParseGuards.ts（2026-09-05 单体拆分）。
 
 function parseAdultEligibility(value: unknown): AdultEligibility {
   if (value === 'adult' || value === 'unknown' || value === 'underage') return value

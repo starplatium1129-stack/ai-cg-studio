@@ -3,6 +3,13 @@
 //       framing 冲突消解、场景模板净化、结构健康报告
 
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
+import {
+  sanitizeNatsumeSoloTemplate,
+  sanitizeNeneSoloTemplate,
+  sanitizeSoloTemplate,
+} from './soloTemplateSanitize.ts'
+
+export { sanitizeSoloTemplate } from './soloTemplateSanitize.ts'
 
 export interface PromptPart {
   cls?: 'q' | 'c' | 't' | 'l' | 'n' | 'p'
@@ -621,80 +628,8 @@ export function enrichDualPrompt(template: string, neneTags: string[], natsumeTa
   return `${[global, enrichedLeft].filter(Boolean).join(', ')} BREAK ${enrichedRight}`
 }
 
-const NATSUME_IDENTITY_TOKENS = new Set([
-  '1girl', 'solo', 'shiki_natsume', 'black_hair', 'long_hair', 'very_long_hair',
-  'very_long_black_hair', 'yellow_eyes', 'golden_yellow_eyes', 'mole_under_eye',
-  'hairclip', 'two_red_hairclips', 'two_red_hairclips_only', 'no_hair_ribbon',
-])
-
-const NENE_IDENTITY_TOKENS = new Set([
-  '1girl', 'solo', 'ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails',
-  'purple_eyes', 'ahoge', 'pink_hair_ribbons', 'hair_ribbon',
-])
-
-/**
- * 单人引擎净化只删除「画面里明摆着第二个可见主体」的词：
- * 明确的男性主体、双人/多人计数词、以及指向第三方个体的词。
- * POV / 望向镜头 / 牵手 / 浪漫氛围 / 互动动作全部保留 —— 它们是
- * 面向 viewer 或对单主体成立的内容，不是画面中多出来的可见人物。
- */
-const SOLO_EXTRA_SUBJECT_TOKENS = new Set([
-  '1boy', '1man', '1woman', '1boy1girl', '1girl1boy', '1man1woman',
-  '2boys', '2girls', '2people', 'two_girls', 'three_girls',
-  'multiple_girls', 'multiple_boys', 'multiple_people',
-  'boy', 'man', 'male', 'men', 'boys', 'males', 'guy', 'guys',
-  'another_girl', 'other_girl', 'second_girl', 'another_person', 'other_person',
-  'background_girl', 'background_character', 'background_person', 'second_character',
-])
-
-/** 明确的男性主体标记（含下划线前缀/后缀词，如 male_arms / man_s_hands）。 */
-const SOLO_MALE_SUBJECT_RE = /(?:^|_)(?:male|man|men|boy|boys|guy|guys)(?:_|$)/i
-
-function isExtraSoloSubjectToken(key: string): boolean {
-  if (SOLO_EXTRA_SUBJECT_TOKENS.has(key)) return true
-  return SOLO_MALE_SUBJECT_RE.test(key)
-}
-
-function sanitizeNatsumeSoloTemplate(template: string): string {
-  return splitBreaks(template).map(section => tokenize(section)
-    .filter(token => {
-      const key = normalizeKey(token)
-      // 身份锚点由 charPrompt 行提供，模板里重复的删掉即可；互动词保留。
-      if (NATSUME_IDENTITY_TOKENS.has(key)) return false
-      return !isExtraSoloSubjectToken(key)
-    })
-    .join(', '))
-    .filter(Boolean)
-    .join(' BREAK ')
-}
-
-function sanitizeNeneSoloTemplate(template: string): string {
-  return splitBreaks(template).map(section => tokenize(section)
-    .filter(token => {
-      const key = normalizeKey(token)
-      if (NENE_IDENTITY_TOKENS.has(key)) return false
-      return !isExtraSoloSubjectToken(key)
-    })
-    .join(', '))
-    .filter(Boolean)
-    .join(' BREAK ')
-}
-
-/**
- * 单人引擎（Anima/Krea）场景净化：只删除明确可见的额外主体/人数词。
- * POV、望向镜头、牵手、浪漫氛围与中心互动/动作全部保留（viewer 相关，
- * 不产生画面中第二个可见人物）。SD 引擎保留原样（WebUI 有完整双人支持）。
- */
-export function sanitizeSoloTemplate(template: string): string {
-  return splitBreaks(template).map(section => tokenize(section)
-    .filter(token => {
-      const key = normalizeKey(token)
-      return !isExtraSoloSubjectToken(key)
-    })
-    .join(', '))
-    .filter(Boolean)
-    .join(' BREAK ')
-}
+// ── 单人引擎防分身净化已收敛至 ./soloTemplateSanitize.ts（2026-09-05 单体拆分，
+//    三个 sanitize 函数共享 sanitizeSections 内核，行为不变）
 
 /** 场景是否支持该角色（避免把宁宁场景套到夏目身上） */
 export function sceneSupportsCharacter(scene: PromptScene | null | undefined, char: string): boolean {

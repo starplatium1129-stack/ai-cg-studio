@@ -136,6 +136,7 @@ import {
   artistStyleProse,
 } from '@/config/artistStyles'
 import { ARTIST_STYLE_OPTIONS } from '@/config/artistStyleCatalog'
+import { sortByStyleFunnel, useArtistStyleFunnel } from '@/composables/useArtistStyleFunnel'
 
 const props = withDefaults(defineProps<{
   selected: string[]
@@ -158,37 +159,9 @@ const currentCategory = ref<string>('all')
 /** 达上限时的就地提示；选满第三位时给出，取消或换选后清除。 */
 const limitHint = ref('')
 
-// 2026-08-31 UX 升级：三级漏斗智能排序
-// 1. Top 3 常用画师：只取使用频次最高的前 3 位（避免试一次就永久污染列表）；
-// 2. 角色专属画师：当前角色的官方原画师 / 精选推荐风格；
-// 3. 其余画师按目录正常分类排列。
-const USAGE_KEY = 'aics-artist-usage'
-function loadUsage(): Record<string, number> {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(USAGE_KEY) || '{}')
-    return parsed && typeof parsed === 'object' ? parsed : {}
-  } catch { return {} }
-}
-const usageCounts = ref<Record<string, number>>(loadUsage())
-function recordUsage(ids: string[]) {
-  if (!ids.length) return
-  const valid = new Set(ARTIST_STYLE_OPTIONS.map(option => option.id))
-  const next = { ...usageCounts.value }
-  let changed = false
-  for (const id of ids) {
-    if (!valid.has(id)) continue
-    next[id] = (next[id] || 0) + 1
-    changed = true
-  }
-  if (!changed) return
-  usageCounts.value = next
-  try { localStorage.setItem(USAGE_KEY, JSON.stringify(next)) } catch { /* 配额满等场景静默降级 */ }
-}
-const frequentTop3Ids = computed(() => Object.entries(usageCounts.value)
-  .filter(([, count]) => count > 0)
-  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-  .slice(0, 3)
-  .map(([id]) => id))
+// 三级漏斗排序逻辑（Top3 常用 + 角色专属 + 目录）已收敛至
+// @/composables/useArtistStyleFunnel（2026-09-05 单体拆分）。
+const { recordUsage, frequentTop3Ids } = useArtistStyleFunnel(ARTIST_STYLE_OPTIONS)
 
 const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
 
@@ -213,37 +186,7 @@ const filteredOptions = computed(() => {
     })
   }
 
-  const byId = new Map(matched.map(option => [option.id, option]))
-  const sorted: ArtistStyleOption[] = []
-  const seen = new Set<string>()
-
-  // 1. Top 3 常用画师（命中搜索/分类时置顶）
-  for (const id of frequentTop3Ids.value) {
-    if (seen.has(id)) continue
-    const option = byId.get(id)
-    if (option) {
-      sorted.push(option)
-      seen.add(id)
-    }
-  }
-
-  // 2. 当前角色专属原画/精选推荐画师（命中搜索/分类时紧随 Top 3 之后）
-  for (const id of (props.curatedArtistStyles || [])) {
-    if (seen.has(id)) continue
-    const option = byId.get(id)
-    if (option) {
-      sorted.push(option)
-      seen.add(id)
-    }
-  }
-
-  // 3. 其余画师保持目录默认顺序
-  for (const option of matched) {
-    if (seen.has(option.id)) continue
-    sorted.push(option)
-    seen.add(option.id)
-  }
-  return sorted
+  return sortByStyleFunnel(matched, frequentTop3Ids.value, props.curatedArtistStyles || [])
 })
 
 const selectionSummary = computed(() => {

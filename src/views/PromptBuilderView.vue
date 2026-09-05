@@ -191,7 +191,7 @@
           v-if="pb.directorMode === 'pro'"
           :selected="pb.artistStyleIds"
           :engine="drawEngine"
-          :curated-artist-styles="currentCuratedArtistStyles"
+          :curated-artist-styles="pb.currentCuratedArtistStyles"
           @update:selected="pb.setArtistStyleIds"
           @limit-reached="onArtistLimitReached"
         />
@@ -411,6 +411,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { usePopularPromptAssembly } from '@/composables/prompt/usePopularPromptAssembly'
 import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge'
 import { usePromptHistoryApply } from '@/composables/prompt/usePromptHistoryApply'
+import { useQuickCreateApply } from '@/composables/prompt/useQuickCreateApply'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink'
 import type { AnimaResult } from '@/types/anima'
@@ -578,15 +579,7 @@ function onAnimaResult(result: AnimaResult) {
   })()
 }
 
-const currentCuratedArtistStyles = computed<string[]>(() => {
-  if (pb.isPopular) {
-    const charId = pb.subject.kind === 'popular' ? pb.subject.characterId : ''
-    const char = pb.popularCharacters.find(c => c.id === charId)
-    return char?.curatedArtistStyles || []
-  }
-  // 工作室角色（宁宁 / 夏目 -> 柚子社画风 Kobuichi / Muririn / Kantoku）
-  return ['kobuichi', 'muririn', 'kantoku']
-})
+// currentCuratedArtistStyles 已迁入 promptBuilderStore（2026-09-05 单体拆分，纯 store 派生）
 
 // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
 const {
@@ -1353,27 +1346,7 @@ function reuseLastSeed() {
   pb.flash(`已锁定 seed ${seed}`)
 }
 
-function applyQuickCreateSettings(settings: QuickCreateSettings | null) {
-  if (!settings) return
-  // 快速出图参数等同于用户已经确认过的参数。先标记 touched，避免 checkpoint
-  // 变更触发的异步 watcher 再用 model profile 覆盖刚恢复的值。
-  ;['sampler', 'scheduler', 'cfg', 'steps', 'size', 'hiresFix', 'hiresUpscaler', 'hiresScale']
-    .forEach(key => pb.markParamTouched(key))
-  if (settings.checkpoint && sd.models.value.includes(settings.checkpoint)) {
-    pb.sdModelName = settings.checkpoint
-    pb.applyModelProfile(settings.checkpoint)
-  }
-  if (settings.sampler && sd.samplers.value.includes(settings.sampler)) pb.sdParams.sampler = settings.sampler
-  if (!settings.scheduler || sd.schedulers.value.includes(settings.scheduler)) pb.sdParams.scheduler = settings.scheduler
-  if (settings.cfg > 0) pb.sdParams.cfg = settings.cfg
-  if (settings.steps > 0) pb.sdParams.steps = settings.steps
-  if (settings.size) sdSize.value = settings.size.replace('×', 'x')
-  pb.sdParams.hiresFix = settings.hiresFix
-  if (settings.hiresUpscaler && sd.upscalers.value.includes(settings.hiresUpscaler)) {
-    pb.sdParams.hiresUpscaler = settings.hiresUpscaler
-  }
-  if (settings.hiresScale > 0) pb.sdParams.hiresScale = settings.hiresScale
-}
+const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize })
 
 // ── 历史应用（恢复/复制/删除/复用配方）已下沉 usePromptHistoryApply ────────
 const {

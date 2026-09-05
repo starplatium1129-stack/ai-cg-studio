@@ -159,6 +159,16 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const tags = computed(() => sceneStore.tags as unknown as Array<{ en: string; cn: string; cat: string }>)
   const characters = computed(() => sceneStore.characters as unknown as Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }> }>)
   const popularCharacters = computed(() => sceneStore.popularCharacters)
+  /** 当前主体对应的画师专属推荐（2026-09-05 从 PromptBuilderView 迁入：纯 store 派生）。 */
+  const currentCuratedArtistStyles = computed<string[]>(() => {
+    if (isPopular.value) {
+      const charId = subject.value.kind === 'popular' ? subject.value.characterId : ''
+      const current = popularCharacters.value.find(c => c.id === charId)
+      return current?.curatedArtistStyles || []
+    }
+    // 工作室角色（宁宁 / 夏目 -> 柚子社画风 Kobuichi / Muririn / Kantoku）
+    return ['kobuichi', 'muririn', 'kantoku']
+  })
   const sceneBlueprints = computed(() => sceneStore.sceneBlueprints)
   const presets = ref<PromptPreset[]>([])
   const modelProfiles = ref<ModelProfile[]>([])
@@ -669,7 +679,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode,
     currentStep, showMatureScenes, activeTab, lastRecommendedSize,
-    activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
+    activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes, currentCuratedArtistStyles,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,
     setOutfitOverride, clearOutfitOverride,
