@@ -109,10 +109,15 @@ function main() {
     const self = path.join(MAINT, name);
     let found = false;
     let refs = [];
+    // 2026-09-05 审计 P3：Node 的 require 支持 ./desktop-build-lock 这类无扩展名
+    // 导入，仅按完整 basename 匹配会把真实引用误报为孤儿（desktop-build-lock.js、
+    // runtime-generated-files.js 即此类误报）。补一条"无扩展名 stem"token 匹配：
+    // '-' 等连接符不在边界集内，仍不会把 build-scenes 误命中到 build-scenes-v2.js。
+    const stem = name.replace(/\.(js|mjs|ps1|py)$/i, '');
     for (const entry of corpus) {
       // 跳过自身文件
       if (entry.path === self) continue;
-      if (isReferenced(entry.content, name)) {
+      if (isReferenced(entry.content, name) || isReferenced(entry.content, stem)) {
         found = true;
         refs.push(path.relative(ROOT, entry.path));
         // 只记前 3 个引用出处，足够判断非孤儿

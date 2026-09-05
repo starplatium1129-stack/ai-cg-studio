@@ -27,7 +27,20 @@ function write(repositoryRoot, relativePath, content) {
 
 function createRepository(t) {
   const repositoryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-repo-hygiene-'));
-  t.after(() => fs.rmSync(repositoryRoot, { recursive: true, force: true }));
+  t.after(() => {
+    // Windows：git 子进程（pack-objects/index）句柄释放略有滞后，立即 rmSync
+    // 会 ENOTEMPTY/EBUSY。有界重试只处理清理，不吞业务断言结果（审计 2026-09-05 P2-01）。
+    for (let attempt = 0; ; attempt += 1) {
+      try {
+        fs.rmSync(repositoryRoot, { recursive: true, force: true });
+        return;
+      } catch (error) {
+        const retriable = ['ENOTEMPTY', 'EBUSY', 'EPERM'].includes(error.code);
+        if (attempt >= 5 || !retriable) throw error;
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100);
+      }
+    }
+  });
   git(repositoryRoot, ['init', '--quiet']);
   git(repositoryRoot, ['config', 'user.email', 'repo-hygiene@example.invalid']);
   git(repositoryRoot, ['config', 'user.name', 'Repo Hygiene Test']);

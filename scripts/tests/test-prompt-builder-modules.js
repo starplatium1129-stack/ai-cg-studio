@@ -124,8 +124,10 @@ for (const marker of ['engine?: DrawEngine', 'profile?: string', 'model?: string
 for (const marker of ['engine: entry.engine ?? \'sd\'', 'profile: entry.profile ?? \'\'', 'model: entry.model ?? sdModelName.value']) {
   if (!storeSource.includes(marker)) fail('history commit must persist generation metadata: ' + marker);
 }
-if (!storeSource.includes("two_red_hairclips, mole_under_eye, no_hair_ribbon")) {
-  fail('Natsume control prompt must retain the explicit red-clip and mole identity anchors');
+// 52ed8a39 将夏目身份锚点对齐自训 LoRA 标准特征（黑发/极长发/黄瞳/眼下痣/发夹），
+// 旧的 two_red_hairclips/no_hair_ribbon 词组已废弃；此断言守护新锚点不被再漂移。
+if (!storeSource.includes("black_hair, very_long_hair, yellow_eyes, mole_under_eye, hairclip")) {
+  fail('Natsume control prompt must retain the aligned self-trained-LoRA identity anchors (mole + hairclip)');
 }
 if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test(storeSource)) {
   fail('single-character wallpaper prompts must retain their solo composition lock');
@@ -317,8 +319,8 @@ if (!sdGenerate.includes("'SD WebUI 生成中…'") || !sdGenerate.includes("'Co
 if (sdGenerate.includes('pollInFlight') || sdGenerate.includes('void pollProgress(token)')) {
   fail('fake progress polling must stay retired (progress only reflects terminal states)');
 }
-if (!sdGenerate.includes("job.status === 'succeeded' ? 100 : progress.value")) {
-  fail('SD progress must only reflect terminal states');
+if (!sdGenerate.includes("job.status === 'succeeded' ? 100")) {
+  fail('SD progress must pin terminal success to 100 and otherwise consume real job.progress (no fabricated percent)');
 }
 
 // ── 4. 样式层仍提供共享 chrome ───────────────────────────────────────────

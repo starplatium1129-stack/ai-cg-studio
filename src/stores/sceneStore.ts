@@ -16,6 +16,12 @@ import {
  * store 有 0 个消费者。
  *
  * 现在所有视图都走这里：一次网络请求，一份内存副本，一个版本号。
+ *
+ * 2026-09-05 审计修复（P1-01/P1-02）：
+ *  - 元数据区分必需（characters/popular/blueprints，失败必须可见且不得标记完成）
+ *    与可选（失败保留旧数据、单列 metaFailedFiles），逐资源缓存成功结果，重试只补失败项；
+ *  - 进行中请求按目标键去重（full/core/各角色分片），不同目标的并发加载各自成行；
+ *    旧响应返回时若"当前展示目标"已切换或已有更新的同键工作，一律不得回写视图。
  */
 
 export interface Scene {
@@ -63,14 +69,13 @@ export interface TagMeta {
  * 改过 data/*.json 后 `npm run validate` 会提示这里该改成什么。
  * 以前是手动计数（曾到 15），现在由内容锁定，不会再出现"改数据忘升版本"。
  */
-export const DATA_VERSION = 3281901339
+export const DATA_VERSION = 4167060244
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
-async function loadJson<T>(file: string, fallback: T, version: number): Promise<T> {
+async function fetchJson<T>(file: string, version: number): Promise<T> {
   const response = await fetch(`/data/${file}?v=${version}`)
   if (!response.ok) throw new Error(`${file} HTTP ${response.status}`)
-  const data = await response.json()
-  return (data ?? fallback) as T
+  return (await response.json()) as T
 }
 
 const CORE_FILE = 'scenes-core.json'
@@ -121,102 +126,193 @@ export const useSceneStore = defineStore('scenes', () => {
   const loadedShards = ref<Set<ShardChar>>(new Set())
   /** 手动作废缓存时递增，用于绕过浏览器缓存（场景管理保存后要读到新数据） */
   const version = ref(DATA_VERSION)
+  /** 最近一次加载中失败的元数据文件（可选资源失败在此可见，不阻塞完成） */
+  const metaFailedFiles = ref<Set<string>>(new Set())
 
-  let inflight: Promise<void> | null = null
-  /** 2026-08-16 审计：inflight 槽的代际计数——只有自己这一代的 finally 才能清槽，
-   *  避免 force reload 与在途 load 并发时旧 promise 把新槽误清、触发重复全量加载。 */
-  let inflightGeneration = 0
-  let shardCache: Partial<Record<ShardChar, Scene[]>> = {}
-  let metaLoaded = false
-  let coreLoaded = false
-
-  async function loadMeta(force = false): Promise<void> {
-    if (metaLoaded && !force) return
-    const v = version.value
-    const [cu, ch, lo, tg, pr, ix, pop, bp] = await Promise.all([
-      loadJson<CurationData>('curation.json', {}, v).catch(() => ({} as CurationData)),
-      loadJson<Array<Record<string, unknown>>>('characters.json', [], v).catch(() => []),
-      loadJson<LoraMeta[]>('loras.json', [], v).catch(() => []),
-      loadJson<TagMeta[]>('tags.json', [], v).catch(() => []),
-      loadJson<Record<string, unknown> | unknown[]>('presets.json', [], v).catch(() => []),
-      loadJson<SceneIndex | null>('scenes-index.json', null, v).catch(() => null),
-      loadJson('popular-characters.json', { characters: [] }, v)
-        .then(raw => parsePopularCharacters(raw)).catch(() => []),
-      loadJson('scene-blueprints.json', { blueprints: [] }, v)
-        .then(raw => parseSceneBlueprints(raw)).catch(() => []),
-    ])
-    curation.value = cu ?? {}
-    characters.value = Array.isArray(ch) ? ch : []
-    loras.value = Array.isArray(lo) ? lo : []
-    tags.value = Array.isArray(tg) ? tg : []
-    presets.value = pr ?? []
-    index.value = ix
-    popularCharacters.value = pop
-    sceneBlueprints.value = bp
-    metaLoaded = true
+  /** 活跃加载数：loading 反映"任意入口在途"，避免多目标并发时先完成者提前熄灯。 */
+  let activeLoads = 0
+  function beginLoad() {
+    activeLoads += 1
+    loading.value = true
+  }
+  function endLoad() {
+    activeLoads = Math.max(0, activeLoads - 1)
+    if (activeLoads === 0) loading.value = false
   }
 
-  async function loadShard(char: ShardChar): Promise<Scene[]> {
-    if (shardCache[char]) return shardCache[char] as Scene[]
-    const list = await loadJson<Scene[]>(SHARD_FILES[char], [], version.value)
-    shardCache[char] = Array.isArray(list) ? list : []
-    loadedShards.value = new Set([...loadedShards.value, char])
-    return shardCache[char] as Scene[]
+  // ── 元数据层：必需/可选区分 + 逐资源成功缓存 ───────────────────────────
+
+  interface MetaSpec {
+    file: string
+    /** 必需资源失败必须让整次加载失败并可见；可选资源失败保留上次成功数据。 */
+    required: boolean
+    parse: (raw: unknown) => unknown
+    apply: (data: unknown) => void
+  }
+
+  const META_SPECS: MetaSpec[] = [
+    { file: 'curation.json', required: false, parse: (raw) => raw ?? {}, apply: (d) => { curation.value = d as CurationData } },
+    { file: 'characters.json', required: true, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { characters.value = d as Array<Record<string, unknown>> } },
+    { file: 'loras.json', required: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { loras.value = d as LoraMeta[] } },
+    { file: 'tags.json', required: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
+    { file: 'presets.json', required: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
+    { file: 'scenes-index.json', required: false, parse: (raw) => raw ?? null, apply: (d) => { index.value = d as SceneIndex | null } },
+    { file: 'popular-characters.json', required: true, parse: (raw) => parsePopularCharacters(raw), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
+    { file: 'scene-blueprints.json', required: true, parse: (raw) => parseSceneBlueprints(raw), apply: (d) => { sceneBlueprints.value = d as SceneBlueprint[] } },
+  ]
+
+  /** 已成功资源的解析结果：重试只补失败项，不重复请求已成功资源；force 时逐项重取。 */
+  const metaOk = new Map<string, unknown>()
+  let metaLoaded = false
+  /** 在途元数据加载的持有者：finally 里比对持有者身份清槽，避免自引用 promise。 */
+  let metaInflight: { promise: Promise<void> } | null = null
+
+  async function runMetaLoad(force: boolean): Promise<void> {
+    const v = version.value
+    const failedNow = new Set<string>()
+    const requiredFailures: string[] = []
+    await Promise.all(META_SPECS.map(async (spec) => {
+      if (!force && metaOk.has(spec.file)) {
+        spec.apply(metaOk.get(spec.file))
+        return
+      }
+      try {
+        const parsed = spec.parse(await fetchJson(spec.file, v))
+        metaOk.set(spec.file, parsed)
+        spec.apply(parsed)
+      } catch (e) {
+        // 失败资源清除成功缓存以便重试；已应用到视图的旧数据保持不动
+        metaOk.delete(spec.file)
+        failedNow.add(spec.file)
+        if (spec.required) requiredFailures.push(`${spec.file}: ${(e as Error)?.message ?? e}`)
+      }
+    }))
+    metaFailedFiles.value = failedNow
+    if (requiredFailures.length) {
+      throw new Error(`必需数据加载失败：${requiredFailures.join('；')}`)
+    }
+  }
+
+  function loadMeta(force = false): Promise<void> {
+    if (!force && metaLoaded) return Promise.resolve()
+    if (!force && metaInflight) return metaInflight.promise
+    const entry: { promise: Promise<void> } = { promise: Promise.resolve() }
+    entry.promise = runMetaLoad(force)
+      .then(() => { metaLoaded = true })
+      .finally(() => { if (metaInflight === entry) metaInflight = null })
+    metaInflight = entry
+    return entry.promise
+  }
+
+  // ── 分片层：逐分片缓存 + 在途去重 ─────────────────────────────────────
+
+  let shardCache: Partial<Record<ShardChar, Scene[]>> = {}
+  let coreLoaded = false
+  const shardInflight = new Map<ShardChar, { promise: Promise<Scene[]> }>()
+
+  function loadShard(char: ShardChar): Promise<Scene[]> {
+    const cached = shardCache[char]
+    if (cached) return Promise.resolve(cached)
+    const existing = shardInflight.get(char)
+    if (existing) return existing.promise
+    const entry: { promise: Promise<Scene[]> } = { promise: Promise.resolve([]) }
+    entry.promise = fetchJson<Scene[]>(SHARD_FILES[char], version.value)
+      .then((list) => {
+        shardCache[char] = Array.isArray(list) ? list : []
+        loadedShards.value = new Set([...loadedShards.value, char])
+        return shardCache[char] as Scene[]
+      })
+      .finally(() => { if (shardInflight.get(char) === entry) shardInflight.delete(char) })
+    shardInflight.set(char, entry)
+    return entry.promise
+  }
+
+  // ── 视图层：按目标键去重 + 最新意图守卫 ────────────────────────────────
+
+  /** 当前展示目标键。每次调用 load / loadCharacter / loadCore 都是一次意图申明。 */
+  let viewTarget: string | null = null
+  /** 同键强制重载的代际：只有该键最新一次工作才允许回写视图。 */
+  let workSeq = 0
+  const latestSeqByKey = new Map<string, number>()
+  const inflightByKey = new Map<string, { promise: Promise<void> }>()
+
+  /**
+   * 按目标键启动/加入一个视图加载。同键并发去重；不同键各自成行。
+   * work 收到 isCurrent 守卫：目标未被更新意图取代且仍是该键最新一次工作。
+   * 旧响应（慢网/强制重载竞态）一律不得覆盖新意图的视图与错误态。
+   */
+  function beginTargetLoad(key: string, work: (isCurrent: () => boolean) => Promise<Scene[]>): Promise<void> {
+    viewTarget = key
+    const existing = inflightByKey.get(key)
+    if (existing) return existing.promise
+    const seq = ++workSeq
+    latestSeqByKey.set(key, seq)
+    const isCurrent = () => viewTarget === key && latestSeqByKey.get(key) === seq
+    beginLoad()
+    error.value = null
+    const entry: { promise: Promise<void> } = { promise: Promise.resolve() }
+    entry.promise = (async () => {
+      try {
+        const list = await work(isCurrent)
+        if (isCurrent()) scenes.value = list
+      } catch (e) {
+        if (isCurrent()) {
+          error.value = String((e as Error)?.message ?? e)
+        }
+      } finally {
+        if (inflightByKey.get(key) === entry) inflightByKey.delete(key)
+        endLoad()
+      }
+    })()
+    inflightByKey.set(key, entry)
+    return entry.promise
+  }
+
+  function resolveShard(char: string): ShardChar {
+    return char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'
   }
 
   /** 只加载某角色所需的分片（shared + 目标角色），用于场景库按需浏览。 */
-  async function loadCharacter(char: string, force = false): Promise<void> {
-    if (inflight) return inflight
-    const shard = char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'
-    if (force) { shardCache[shard] = undefined; loadedShards.value = new Set() }
-    loading.value = true
-    error.value = null
-    const generation = ++inflightGeneration
-    inflight = (async () => {
+  function loadCharacter(char: string, force = false): Promise<void> {
+    const shard = resolveShard(char)
+    if (force) {
+      shardCache[shard] = undefined
+      loadedShards.value = new Set()
+      inflightByKey.delete(`char:${shard}`)
+    }
+    return beginTargetLoad(`char:${shard}`, async () => {
       await loadMeta()
       const [shared, target] = await Promise.all([loadShard('shared'), loadShard(shard)])
-      scenes.value = mergeScenes(shared, target)
-    })()
-      .catch((e) => { error.value = String((e as Error)?.message ?? e) })
-      .finally(() => {
-        loading.value = false
-        if (generation === inflightGeneration) inflight = null
-      })
-    return inflight
+      return mergeScenes(shared, target)
+    })
   }
 
   /** 只加载默认"人设核心"视图所需的数据（index + shared + core 精选子集）。 */
-  async function loadCore(force = false): Promise<void> {
-    if (inflight) return inflight
-    if (force) { shardCache = {}; loadedShards.value = new Set() }
-    loading.value = true
-    error.value = null
-    const generation = ++inflightGeneration
-    inflight = (async () => {
+  function loadCore(force = false): Promise<void> {
+    if (force) {
+      shardCache = {}
+      loadedShards.value = new Set()
+      inflightByKey.delete('core')
+    }
+    return beginTargetLoad('core', async (isCurrent) => {
       await loadMeta()
       const [shared, core] = await Promise.all([
         loadShard('shared'),
-        loadJson<Scene[]>(CORE_FILE, [], version.value),
+        fetchJson<Scene[]>(CORE_FILE, version.value),
       ])
-      scenes.value = mergeScenes(shared, Array.isArray(core) ? core : [])
-      coreLoaded = true
-    })()
-      .catch((e) => { error.value = String((e as Error)?.message ?? e) })
-      .finally(() => {
-        loading.value = false
-        if (generation === inflightGeneration) inflight = null
-      })
-    return inflight
+      const list = mergeScenes(shared, Array.isArray(core) ? core : [])
+      if (isCurrent()) coreLoaded = true
+      return list
+    })
   }
 
   function ensureCharacter(char: string): Promise<void> {
     if (loaded.value) return Promise.resolve()
-    const shard = char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'
+    const shard = resolveShard(char)
     if (loadedShards.value.has(shard)) {
       // 目标分片已在手：直接用 shared + 目标分片重建视图，不发请求。
-      const shared = shardCache.shared || []
-      const target = shardCache[shard] || []
-      scenes.value = mergeScenes(shared, target)
+      viewTarget = `char:${shard}`
+      scenes.value = mergeScenes(shardCache.shared || [], shardCache[shard] || [])
       return Promise.resolve()
     }
     return loadCharacter(char)
@@ -231,35 +327,24 @@ export const useSceneStore = defineStore('scenes', () => {
    * 加载共享数据集。重复调用只发一次请求；已加载则直接返回。
    * @param force 场景管理保存后需要读回落盘结果时传 true
    */
-  async function load(force = false): Promise<void> {
-    if (loaded.value && !force) return
-    if (inflight && !force) return inflight
-    if (force) version.value += 1
-
-    loading.value = true
-    error.value = null
-
-    const generation = ++inflightGeneration
-    inflight = (async () => {
-      if (force) { shardCache = {}; loadedShards.value = new Set() }
+  function load(force = false): Promise<void> {
+    if (loaded.value && !force) return Promise.resolve()
+    if (force) {
+      version.value += 1
+      shardCache = {}
+      loadedShards.value = new Set()
+      inflightByKey.delete('full')
+    }
+    return beginTargetLoad('full', async (isCurrent) => {
       await loadMeta(force)
       const [shared, nene, natsume] = await Promise.all([
         loadShard('shared'),
         loadShard('nene'),
         loadShard('natsume'),
       ])
-      scenes.value = mergeScenes(shared, nene, natsume)
-      loaded.value = true
-    })()
-      .catch((e) => {
-        error.value = String((e as Error)?.message ?? e)
-      })
-      .finally(() => {
-        loading.value = false
-        if (generation === inflightGeneration) inflight = null
-      })
-
-    return inflight
+      if (isCurrent()) loaded.value = true
+      return mergeScenes(shared, nene, natsume)
+    })
   }
 
   /** 场景管理写回 data/ 之后调用 */
@@ -280,7 +365,7 @@ export const useSceneStore = defineStore('scenes', () => {
   return {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
-    loading, error, loaded, loadedShards, version,
+    loading, error, loaded, loadedShards, version, metaFailedFiles,
     load, loadCharacter, loadCore, ensureCharacter, ensureCore, reload, byId, count,
   }
 })

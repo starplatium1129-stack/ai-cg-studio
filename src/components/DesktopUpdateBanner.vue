@@ -3,6 +3,8 @@
  * 全局桌面端自动更新横幅（2026-08-31 收敛自 ControlView）。
  * 任何页面可见：挂载即主动查询（不依赖 Rust 启动事件——懒加载路由会丢事件），
  * 发现新版本显示「一键升级」，检查失败显示原因（不再静默）。
+ * 审计 2026-09-05 P2-04：横幅只在桌面壳内渲染；普通浏览器既不检查也不显示，
+ * 不会再看到与自己无关的「仅桌面端支持自动更新」报错。
  */
 import { onMounted } from 'vue'
 import { useDesktopUpdater } from '@/composables/useDesktopUpdater'
@@ -12,15 +14,16 @@ const {
   statusText,
   installing,
   errorText,
+  supported,
   check: checkForUpdate,
   install: installUpdate,
 } = useDesktopUpdater()
 
-onMounted(() => { checkForUpdate() })
+onMounted(() => { if (supported) checkForUpdate() })
 </script>
 
 <template>
-  <div v-if="availableVersion || errorText" class="desktop-update-banner" role="status">
+  <div v-if="supported && (availableVersion || errorText)" class="desktop-update-banner" role="status">
     <span class="desktop-update-text">
       <template v-if="availableVersion">桌面端新版本 {{ availableVersion }} 可用</template>
       <template v-else-if="errorText">更新检查失败：{{ errorText }}</template>

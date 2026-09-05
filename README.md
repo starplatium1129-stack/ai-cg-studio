@@ -10,22 +10,22 @@
 
 绫季绘境 (Lingji Atelier) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
-The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **49 popular anime/game characters** across 267 outfit forms (51 characters × 267 forms / 1869 reference entries in the Reference Bible; counts follow `DATA_VERSION`). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
+The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **109 popular anime/game characters** across 544 outfit forms (111 character profiles / 1,448 active reference URLs in the Reference Bible, pending design placeholders excluded; counts follow `DATA_VERSION`). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
 
 This is an unofficial, non-commercial fan project and is not affiliated with or endorsed by the original rights holders.
 
 ## Features
 
 - **Scene & Character Libraries**:
-  - 301 searchable and filterable Scenes (+518 Scene Blueprints), classified as All, R15, or R18 by depicted content.
-  - 49 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
+  - 302 searchable and filterable Scenes (+1,170 Scene Blueprints), classified as All, R15, or R18 by depicted content.
+  - 109 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
   - 335+ verified showcase samples in `AI/SceneShowcase/` with direct links back into the studio.
 - **4-Perspective Character Reference Bible**:
   - 51 characters $\times$ 267 outfit forms (1869 reference entries): four cinematic perspectives — Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`) — plus 801 three-view design-sheet baselines (`reference:design` pipeline).
   - Automated closed-loop pipeline: 3-concurrency generation, 4-concurrency pure-vision Gemini 3.7 Flash audit pool, and fine-tuned repair engine.
   - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
 - **Multi-Engine Generation & 38 Curated Artist Styles**:
-  - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima 1.1 (`@artist` + native tags), and Krea 2 Turbo (natural language prose).
+  - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), and Krea 2 Turbo (natural language prose).
   - 38 curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
   - Regional Prompter dual-character composition stabilization on reForge.
 - **AI Narrative Video Studio**:
@@ -109,7 +109,7 @@ Full setup details, optional components (voice, chat, dual-character composition
 
 1. Open the **Scene Library** (`场景库`), filter by character / content rating, and pick a Scene — story, mood, camera, lighting and prompt are already assembled.
 2. Enter the **Director's Studio** (`导演台`), pick one of the 38 curated artist styles, and hit generate.
-3. The prompt compiler automatically targets the active engine: SD/WAI (Danbooru tags), Anima 1.1 (`@artist` + native tags), or Krea 2 Turbo (3–5 sentences of natural-language prose).
+3. The prompt compiler automatically targets the active engine: SD/WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), or Krea 2 Turbo (3–5 sentences of natural-language prose).
 
 ### B. AI narrative short film (click-only flow)
 

@@ -9,6 +9,10 @@
  * 而且只有 gzip。实测 scenes.json gzip 229.7KB → brotli 155.2KB（−32%）。
  * 预压之后服务端只需按 Accept-Encoding 挑一个已存在的文件发出去。
  *
+ * 2026-09-05 审计 P2-06：预压中间件按文件名直发，源文件删除/缩小后残留的
+ * .br/.gz 会把陈旧内容发给浏览器——常规预压只遍历仍存在的源文件，压不掉孤儿。
+ * 现在正常模式成对清理孤儿/陈旧产物；--check 校验存在性 + 解压内容与源一致。
+ *
  * 用法: node scripts/maintenance/precompress.js [--check]
  * 已挂在 npm run build:all 之后。
  */
@@ -89,6 +93,37 @@ function purgeWoffFonts() {
   }
 }
 
+/** 解压 .br/.gz 并与源文件字节比对——存在但内容陈旧同样算失效。 */
+function artifactMatchesSource(artifact) {
+  const source = artifact.replace(/\.(?:br|gz)$/i, '');
+  try {
+    const raw = fs.readFileSync(source);
+    const data = /\.gz$/i.test(artifact)
+      ? zlib.gunzipSync(fs.readFileSync(artifact))
+      : zlib.brotliDecompressSync(fs.readFileSync(artifact));
+    return raw.equals(data);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * 孤儿/陈旧预压产物清单：源已删除、低于压缩阈值或不再属于可压类型的 .br/.gz。
+ * 只扫 TARGET_DIRS，不越界（审计 2026-09-05 P2-06）。
+ */
+function listStaleArtifacts() {
+  const stale = [];
+  for (const dir of TARGET_DIRS) {
+    for (const file of walk(path.join(ROOT, dir))) {
+      if (!/\.(?:br|gz)$/i.test(file)) continue;
+      const source = file.replace(/\.(?:br|gz)$/i, '');
+      if (!fs.existsSync(source)) { stale.push(file); continue; }
+      if (!COMPRESSIBLE.test(source) || fs.statSync(source).size < MIN_BYTES) stale.push(file);
+    }
+  }
+  return stale;
+}
+
 function main() {
   const checkOnly = process.argv.includes('--check');
   if (!checkOnly) purgeWoffFonts();
@@ -98,6 +133,14 @@ function main() {
   let gzTotal = 0;
   const missing = [];
 
+  if (!checkOnly) {
+    const stale = listStaleArtifacts();
+    for (const file of stale) fs.unlinkSync(file);
+    if (stale.length) {
+      console.log(`Pruned ${stale.length} orphaned/stale precompress artifacts（源已删除或低于阈值）`);
+    }
+  }
+
   for (const dir of TARGET_DIRS) {
     for (const file of walk(path.join(ROOT, dir))) {
       if (!COMPRESSIBLE.test(file)) continue;
@@ -106,6 +149,13 @@ function main() {
 
       if (checkOnly) {
         if (!fs.existsSync(file + '.br')) missing.push(path.relative(ROOT, file));
+        // 内容一致性：压缩产物存在但解压后与源不符 = 陈旧，须重建
+        for (const ext of ['.br', '.gz']) {
+          const artifact = file + ext;
+          if (fs.existsSync(artifact) && !artifactMatchesSource(artifact)) {
+            missing.push(path.relative(ROOT, artifact) + ' (内容与源不一致)');
+          }
+        }
         continue;
       }
       const result = compress(file);
@@ -118,9 +168,17 @@ function main() {
   }
 
   if (checkOnly) {
-    if (missing.length) {
-      console.error('缺少预压产物（先跑 npm run precompress）:');
-      missing.slice(0, 10).forEach((f) => console.error('  - ' + f));
+    // check 模式三类失效全部拦截：源缺 .br、产物内容陈旧、孤儿产物（源已删除/低于阈值）
+    const stale = listStaleArtifacts();
+    if (missing.length || stale.length) {
+      if (missing.length) {
+        console.error('预压产物缺失或内容陈旧（跑 npm run precompress 重建并清理孤儿）:');
+        missing.slice(0, 10).forEach((f) => console.error('  - ' + f));
+      }
+      if (stale.length) {
+        console.error('孤儿/陈旧预压产物（源已删除或低于阈值，跑 npm run precompress 清理）:');
+        stale.slice(0, 10).forEach((f) => console.error('  - ' + path.relative(ROOT, f)));
+      }
       process.exit(1);
     }
     console.log('预压产物完整。');

@@ -12,12 +12,23 @@ import { useSceneStore, DATA_VERSION } from './sceneStore'
 type Json = unknown
 const calls: string[] = []
 let routes: Record<string, Json> = {}
+/** 文件 → 剩余失败次数（模拟临时 503 后恢复） */
+let failOnce: Record<string, number> = {}
+/** 持续失败直到手动清除（模拟可选资源长期不可用） */
+let failAlways = new Set<string>()
 
 function stubFetch() {
   vi.stubGlobal('fetch', vi.fn(async (input: string | URL) => {
     const url = String(input)
     calls.push(url)
     const file = url.replace(/^\/data\//, '').replace(/\?.*$/, '')
+    if ((failOnce[file] ?? 0) > 0) {
+      failOnce[file] -= 1
+      return { ok: false, status: 503, json: async () => null } as Response
+    }
+    if (failAlways.has(file)) {
+      return { ok: false, status: 503, json: async () => null } as Response
+    }
     if (!(file in routes)) {
       return { ok: false, status: 404, json: async () => null } as Response
     }
@@ -32,6 +43,8 @@ function scene(id: string, extra: Record<string, unknown> = {}) {
 beforeEach(() => {
   calls.length = 0
   routes = {}
+  failOnce = {}
+  failAlways = new Set()
   localStorage.clear()
   setActivePinia(createPinia())
 })
@@ -129,5 +142,137 @@ describe('sceneStore · 按需加载与并发去重', () => {
     expect(store.loading).toBe(false)
     expect(store.error).toBeTruthy()
     expect(store.loaded).toBe(false)
+  })
+})
+
+describe('sceneStore · 失败恢复（审计 2026-09-05 P1-01）', () => {
+  const fullRoutes = () => ({
+    'scenes-shared.json': [scene('sc001')],
+    'scenes-nene.json': [scene('sc002')],
+    'scenes-natsume.json': [scene('sc003')],
+    'curation.json': {}, 'loras.json': [], 'tags.json': [], 'presets.json': [],
+    'characters.json': [{ id: 'char-1', name: 'Nene' }],
+    'popular-characters.json': { characters: [] },
+    'scene-blueprints.json': { blueprints: [] },
+  })
+
+  it('必需元数据首载 503：不得标记 loaded，error 可见；恢复后重试补拉且不重复请求已成功资源', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    failOnce['characters.json'] = 1
+    const store = useSceneStore()
+    await store.load()
+
+    // 失败可见：不能把 503 当成"成功但为空"
+    expect(store.loaded).toBe(false)
+    expect(store.error).toContain('characters.json')
+    expect(store.characters).toEqual([])
+
+    await store.load() // 服务恢复后原入口重试，无需整页刷新
+
+    expect(store.loaded).toBe(true)
+    expect(store.error).toBe(null)
+    expect(store.characters).toEqual([{ id: 'char-1', name: 'Nene' }])
+    // 已成功资源命中逐资源缓存（tags 只请求过 1 次），失败资源恰好补拉 1 次
+    const fetchCount = (file: string) => calls.filter(u => u.split('?')[0].endsWith(`/${file}`)).length
+    expect(fetchCount('tags.json')).toBe(1)
+    expect(fetchCount('characters.json')).toBe(2)
+    expect(fetchCount('scenes-nene.json')).toBe(1)
+  })
+
+  it('可选元数据失败：加载照常完成，失败单列可见；force 重载后恢复', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    failAlways.add('tags.json')
+    const store = useSceneStore()
+    await store.load()
+
+    expect(store.loaded).toBe(true)
+    expect(store.error).toBe(null)
+    expect(store.metaFailedFiles.has('tags.json')).toBe(true)
+
+    failAlways.clear()
+    await store.load(true)
+    expect(store.metaFailedFiles.has('tags.json')).toBe(false)
+    expect(store.loaded).toBe(true)
+  })
+
+  it('已有成功数据后刷新失败：视图与元数据保留旧值，error 可见', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    const store = useSceneStore()
+    await store.load()
+    const oldCharacters = JSON.parse(JSON.stringify(store.characters))
+    const oldScenes = JSON.parse(JSON.stringify(store.scenes))
+
+    routes = {} // 全部 404
+    await store.load(true)
+
+    expect(store.error).toBeTruthy()
+    expect(store.characters).toEqual(oldCharacters)
+    expect(store.scenes).toEqual(oldScenes)
+  })
+})
+
+describe('sceneStore · 多目标并发（审计 2026-09-05 P1-02）', () => {
+  beforeEach(() => {
+    routes = {
+      'scenes-shared.json': [scene('sc001', { char: 'triad' })],
+      'scenes-nene.json': [scene('sc002')],
+      'scenes-natsume.json': [scene('sc003')],
+      'curation.json': {}, 'characters.json': [], 'loras.json': [], 'tags.json': [],
+      'presets.json': [], 'popular-characters.json': { characters: [] }, 'scene-blueprints.json': { blueprints: [] },
+    }
+  })
+
+  it('不同角色并发：各自分片都被请求，最终视图为最后一次切换意图', async () => {
+    stubFetch()
+    const store = useSceneStore()
+    await Promise.all([store.loadCharacter('nene'), store.loadCharacter('natsume')])
+
+    // 回归断言：修复前夏目分片根本不会被请求
+    expect(calls.some(u => u.includes('scenes-nene.json'))).toBe(true)
+    expect(calls.some(u => u.includes('scenes-natsume.json'))).toBe(true)
+    expect(store.scenes.map(s => s.id).sort()).toEqual(['sc001', 'sc003'])
+  })
+
+  it('快速往返切换：nene→natsume→nene 后最新意图（nene）生效', async () => {
+    stubFetch()
+    const store = useSceneStore()
+    await Promise.all([
+      store.loadCharacter('nene'),
+      store.loadCharacter('natsume'),
+      store.loadCharacter('nene'),
+    ])
+
+    expect(store.scenes.map(s => s.id).sort()).toEqual(['sc001', 'sc002'])
+  })
+
+  it('慢旧响应晚于新响应：旧目标完成时不得回写已切换的视图', async () => {
+    let releaseNatsume!: () => void
+    const natsumeGate = new Promise<void>((resolve) => { releaseNatsume = resolve })
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL) => {
+      const url = String(input)
+      calls.push(url)
+      const file = url.replace(/^\/data\//, '').replace(/\?.*$/, '')
+      if (file === 'scenes-natsume.json') await natsumeGate
+      if (!(file in routes)) {
+        return { ok: false, status: 404, json: async () => null } as Response
+      }
+      return { ok: true, status: 200, json: async () => routes[file] } as Response
+    }))
+    const store = useSceneStore()
+    const slow = store.loadCharacter('natsume')
+    const fast = store.loadCharacter('nene')
+    await fast
+
+    expect(store.scenes.map(s => s.id).sort()).toEqual(['sc001', 'sc002'])
+
+    releaseNatsume()
+    await slow
+    // 旧目标（natsume）晚到：视图必须保持 nene，且不误报错误
+    expect(store.scenes.map(s => s.id).sort()).toEqual(['sc001', 'sc002'])
+    expect(store.error).toBe(null)
+    expect(store.loading).toBe(false)
   })
 })

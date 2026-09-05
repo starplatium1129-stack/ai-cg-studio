@@ -8,6 +8,8 @@ const {
 } = require('../../src/utils/drawingRoute.ts');
 
 test('studio single-character routes prefer validated Anima LoRAs', () => {
+  // 2026-09-05 审计 P2-01：默认底模已随 d6ded591 迁至 MiaoMiao Harem v1.2，
+  // 期望值同步生产契约（此前仍钉在 anima-aesthetic-v1.1 旧值）。
   const nene = recommendDrawingRoute({ subjectKind: 'studio', character: 'nene' });
   assert.deepStrictEqual(
     {
@@ -19,7 +21,7 @@ test('studio single-character routes prefer validated Anima LoRAs', () => {
     },
     {
       engine: 'anima',
-      modelId: 'anima-aesthetic-v1.1',
+      modelId: 'anima-miaomiao-v1.2',
       loraId: 'L_NENE_V21_ANIMA',
       generationCharacter: 'nene',
       promptFormat: 'anima-tags',
@@ -29,7 +31,7 @@ test('studio single-character routes prefer validated Anima LoRAs', () => {
   const natsume = recommendDrawingRoute({ subjectKind: 'studio', character: 'natsume' });
   assert.strictEqual(natsume.loraId, 'L_NAT_V21_ANIMA');
   assert.strictEqual(natsume.generationCharacter, 'natsume');
-  assert.strictEqual(natsume.modelId, 'anima-aesthetic-v1.1');
+  assert.strictEqual(natsume.modelId, 'anima-miaomiao-v1.2');
 });
 
 test('studio dual-character route remains on the proven SD dual-LoRA path', () => {

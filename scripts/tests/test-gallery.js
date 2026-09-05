@@ -39,10 +39,12 @@ assert.strictEqual(
   'legacy artwork timestamps must fall back to numeric ids',
 );
 
-// ── 展墙：瀑布流 + 原始比例 ───────────────────────────────────────────────
+// ── 展墙：多列展墙 + 原始比例 ─────────────────────────────────────────────
+// 2026-09-05 审计 P2-01：展墙实现已随 dff0c6e2 改为等高行 grid 铺排
+// （repeat(var(--wall-cols)) 保持时间顺序、横竖混排零空洞），断言同步新契约。
 assert(
-  view.includes('gallery-wall') && /columns:\s*4\s+260px/.test(view),
-  'gallery must use a responsive masonry exhibition wall',
+  view.includes('gallery-wall') && view.includes('grid-template-columns: repeat(var(--wall-cols, 4), minmax(0, 1fr))'),
+  'gallery must use a responsive multi-column exhibition wall (grid row-fill)',
 );
 assert(
   view.includes('object-fit:contain'),
@@ -117,9 +119,11 @@ assert(
   view.includes('viewerLoadToken') && view.includes('unmounted'),
   'gallery async image loads must not write stale URLs after navigation or unmount',
 );
+// 2026-09-05 审计 P2-01：删除已升级为回收站软删（softDeleteArtwork，30 天可恢复），
+// 硬删 deleteArtwork 退役为仓储内部 purge 路径；断言从旧硬删 API 同步到软删契约。
 assert(
-  view.includes('artworkRepository.deleteArtwork') && !view.includes('imgDelete('),
-  'gallery deletion must use the single artwork repository instead of deleting media piecemeal',
+  view.includes('artworkRepository.softDeleteArtwork') && !view.includes('imgDelete('),
+  'gallery deletion must go through the repository soft-delete (trash) path instead of deleting media piecemeal',
 );
 assert(
   artworkRepository.includes('rollbackErrors') && artworkRepository.includes('thumbnailSnapshot'),

@@ -12,7 +12,8 @@
  *   server Anima/生成/视频/聊天/安全/桌面工具/控制 7 个契约套件（~2-3 分钟）
  *   data   聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（~15 秒）
  *   all    ui + server + data 三块连跑
- *   full   all + check 套件 + 生产打包预算（提交前/发布前一次）
+ *   full   ≙ npm run validate（check 21 步编排 + vitest + unit + contract）+ 生产打包预算。
+ *          与 `npm run check` 共用同一份步骤清单，不存在第二套"全量"口径（2026-09-05 P1-03）。
  *
  * 横切重构（目录改名、模块搬迁、依赖变更）请直接用 full——爆炸半径无法事先界定。
  */
@@ -163,13 +164,22 @@ function main(argv) {
       exitCode = AREA_STEPS.data({ verbose, keepGoing }) || exitCode;
       continue;
     }
-    // full：三块 + check 套件 + unit + 生产打包预算
-    if (runNpmStep('typecheck:app', 'typecheck:app', 300_000, verbose) !== 0) { exitCode = 1; continue; }
-    if (runNpmStep('vitest', 'test:frontend', 300_000, verbose) !== 0) { exitCode = 1; continue; }
-    if (suiteFiles(QUALITY_TEST_SUITES.check, 'check', { verbose, keepGoing }) !== 0) { exitCode = 1; continue; }
-    if (runUnitSuite({ verbose }) !== 0) { exitCode = 1; continue; }
-    if (suiteFiles(QUALITY_TEST_SUITES.contract, 'contract', { verbose, keepGoing }) !== 0) { exitCode = 1; continue; }
-    if (runNpmStep('build（打包预算）', 'build', 600_000, verbose) !== 0) { exitCode = 1; }
+    // full ≙ npm run check（run-check-parallel.js 的 21 步编排，含后端/前端 typecheck、
+    // eslint、风格/对比度/动效门禁、场景构建与优化/分级/校验、内容契约、参考 URL、
+    // design:lint 及 test:check 的 check 套件）+ vitest + unit + contract + 生产打包预算。
+    // 2026-09-05 审计 P1-03：此前 full 自拼 QUALITY_TEST_SUITES.check 文件子集，与
+    // npm run check 的编排漂移；现直接复用同一编排，"全量通过"不再出现两套口径。
+    // 缺省保持 fail-fast；--all 时阶段失败仍继续跑完并收集其余结果。
+    const failPhase = (code) => {
+      if (code === 0) return false;
+      exitCode = 1;
+      return !keepGoing;
+    };
+    if (failPhase(runNpmStep('check（21 步质量门禁编排）', 'check', 900_000, verbose))) continue;
+    if (failPhase(runNpmStep('vitest', 'test:frontend', 300_000, verbose))) continue;
+    if (failPhase(runUnitSuite({ verbose }))) continue;
+    if (failPhase(suiteFiles(QUALITY_TEST_SUITES.contract, 'contract', { verbose, keepGoing }))) continue;
+    failPhase(runNpmStep('build（打包预算）', 'build', 600_000, verbose));
   }
   console.log(`gate 总计: ${exitCode === 0 ? 'PASS' : 'FAIL'} · ${formatDuration(Date.now() - started)}`);
   return exitCode;

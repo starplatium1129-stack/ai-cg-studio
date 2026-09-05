@@ -8,6 +8,10 @@ test("Resource scheduling tests passed: VRAM modes, service controls, persistent
  *
  * 重构前断言 tools/control-server.js + control.html/control.js。
  * 那套独立 3001 进程已合并进主网关：routes/control.js + src/views/ControlView.vue。
+ * 2026-08-31 起写端点再拆至 routes/control/services.js、只读状态拆至 status.js、
+ * 长脚本执行拆至 script-runner.js——断言改为跨 control 路由模块联合匹配，
+ * 并校验 control.js 真正挂载了拆分模块，不再把断言钉死在单一源码位置
+ * （审计 2026-09-05 P2-01）。
  * 保障目标不变：
  *   1. 网关让 Ollama 空闲自动释放显存、限制上下文、换模型前先卸载
  *   2. 常驻翻译服务 + 回退路径 + 健康检查
@@ -16,12 +20,16 @@ test("Resource scheduling tests passed: VRAM modes, service controls, persistent
  */
 
 const fs = require('fs');
-const path = require('path');
+const path = require('node:path');
 
 const root = path.resolve(__dirname, '..', '..');
 const read = (...parts) => fs.readFileSync(path.join(root, ...parts), 'utf8');
 
 const control = read('routes', 'control.js');
+const controlServices = read('routes', 'control', 'services.js');
+const controlStatus = read('routes', 'control', 'status.js');
+// 写端点/只读状态/模式切换分散在三个拆分模块中，契约按"control 路由族"整体匹配
+const controlRoutes = control + controlServices + controlStatus;
 const controlView = read('src', 'views', 'ControlView.vue');
 // 控制面板脚本已按状态所有权拆出：自动启停偏好归 useControlActions
 const controlActions = read('src', 'composables', 'useControlActions.ts');
@@ -53,29 +61,33 @@ assert(translatePy.includes('load_model()'), 'translate script must load the mod
 assert(translatePy.includes('_MODEL_LOCK'), 'translate script must serialize concurrent translations');
 assert(translatePy.includes('batch_decode') && translatePy.includes('TRANSLATION_BEAMS'), 'translation must batch sentences and default to low-latency decoding');
 
-// ─── 控制面板后端：服务调度 ───
-assert(control.includes("'/api/service/voice'"), 'control routes must expose voice start/stop endpoint');
-assert(control.includes("'/api/service/webui'"), 'control routes must expose webui start/stop endpoint');
-assert(control.includes("'/api/service/ollama'"), 'control routes must expose ollama unload endpoint');
-assert(control.includes("'/api/mode'"), 'control routes must expose one-click mode switching');
-assert(control.includes('unloadOllamaModels') && control.includes('keep_alive:0'), 'control routes must unload Ollama models via keep_alive=0');
-assert(control.includes('/api/ps'), 'control routes must read Ollama loaded models and VRAM usage');
-assert(control.includes('autoStartVoice'), 'voice auto-start must remain an explicit preference');
-assert(control.includes('runScriptAsync'), 'control routes must run long service scripts asynchronously');
+// ─── 控制面板后端：服务调度（跨 control 路由族联合断言） ───
 assert(
-  control.includes('ops.begin') && control.includes('ops.finish') && control.includes('rejectConflict'),
+  control.includes("require('./control/services')") && control.includes('serviceRoutes'),
+  'control.js must mount the split service routes module',
+);
+assert(controlRoutes.includes("'/api/service/voice'"), 'control routes must expose voice start/stop endpoint');
+assert(controlRoutes.includes("'/api/service/webui'"), 'control routes must expose webui start/stop endpoint');
+assert(controlRoutes.includes("'/api/service/ollama'"), 'control routes must expose ollama unload endpoint');
+assert(controlRoutes.includes("'/api/mode'"), 'control routes must expose one-click mode switching');
+assert(controlRoutes.includes('unloadOllamaModels') && controlRoutes.includes('keep_alive:0'), 'control routes must unload Ollama models via keep_alive=0');
+assert(controlRoutes.includes('/api/ps'), 'control routes must read Ollama loaded models and VRAM usage');
+assert(controlRoutes.includes('autoStartVoice'), 'voice auto-start must remain an explicit preference');
+assert(controlRoutes.includes('runScriptAsync'), 'control routes must run long service scripts asynchronously');
+assert(
+  controlRoutes.includes('ops.begin') && controlRoutes.includes('ops.finish') && controlRoutes.includes('rejectConflict'),
   'control routes must serialize GPU operations and expose structured progress',
 );
 assert(
-  control.includes('refreshServiceStates'),
+  controlRoutes.includes('refreshServiceStates'),
   'fresh status requests must wait for completed health checks instead of returning stale state',
 );
 // 停止只关公网分享，不牵连绘图/语音/聊天
 assert(
-  /stopTunnel/.test(control) && !/stopManagedServices\s*===\s*true/.test(control),
+  /stopTunnel/.test(controlRoutes) && !/stopManagedServices\s*===\s*true/.test(controlRoutes),
   'stopping the share tunnel must not implicitly stop generation services',
 );
-assert(control.includes("'/api/sd-status'"), 'control routes must expose an SD status probe for the director');
+assert(controlRoutes.includes("'/api/sd-status'"), 'control routes must expose an SD status probe for the director');
 
 // ─── 网关：公网分享不得随进程自动开启 ───
 assert(

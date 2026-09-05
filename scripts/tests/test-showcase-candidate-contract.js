@@ -416,8 +416,14 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
 
 test('artist batch: curated artists + 1 no-artist baseline, one artist tag each', () => {
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
-  // 2026-08-30 收录 gweda/eufoniuz 后为 41 位（2026-08-29 收录 Rucarachi 后曾为 39 位）
-  assert.strictEqual(artistCount, 44, 'exactly 44 artists in catalog');
+  // 2026-09-05 审计 P2-01：目录是持续收录的活配置（官方画师拆分后 44 → 52），
+  // 总数不再钉死当契约；改为验证目录完整性——id/WAI/Anima 三类标识各自唯一、
+  // 字段齐全（逐项 tag 语法与嵌入由下方循环兜底），把"目录增长"与"目录损坏"区分开。
+  assert.ok(artistCount > 0, `artist catalog must not be empty, got ${artistCount}`);
+  assert.strictEqual(new Set(artistCatalog.ARTIST_STYLE_OPTIONS.map(o => o.id)).size, artistCount, 'artist ids must be unique');
+  assert.strictEqual(new Set(artistCatalog.ARTIST_STYLE_OPTIONS.map(o => o.waiTag)).size, artistCount, 'artist WAI tags must be unique');
+  assert.strictEqual(new Set(artistCatalog.ARTIST_STYLE_OPTIONS.map(o => o.animaTag)).size, artistCount, 'artist Anima tags must be unique');
+  assert.ok(artistCatalog.ARTIST_STYLE_OPTIONS.every(o => o.id && o.waiTag && o.animaTag), 'every artist option must carry id/waiTag/animaTag');
   const artist = gen.artistBatch(20260812);
   assert.strictEqual(artist.length, artistCount + 1);
   const withTags = artist.filter(item => item.artistId);

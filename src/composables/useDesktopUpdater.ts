@@ -28,6 +28,9 @@ export function useDesktopUpdater() {
   const offs: Array<() => void> = []
 
   const api = tauriApi()
+  /** 当前前端是否运行在桌面壳内。浏览器里桌面更新能力不存在——这是能力缺失，
+   *  不是故障（审计 2026-09-05 P2-04）：静默跳过检查，不得把"仅桌面端支持"当错误展示。 */
+  const supported = api !== null
   if (api) {
     api.event.listen('desktop-update-found', (event) => {
       if (typeof event.payload === 'string' && !installing.value) availableVersion.value = event.payload
@@ -38,13 +41,11 @@ export function useDesktopUpdater() {
   }
 
   async function check(): Promise<void> {
-    if (!api) {
-      errorText.value = '仅桌面端支持自动更新'
-      return
-    }
+    if (!api) return
     try {
       const version = (await api.core.invoke('desktop_update_check')) as string | null
       if (version && !installing.value) availableVersion.value = version
+      errorText.value = '' // 重试成功：清掉上一次失败留下的旧错误
     } catch (error) {
       // 2026-08-31：检查失败不再静默——横幅区直接显示原因（端点不可达/命令缺失等）。
       errorText.value = error instanceof Error ? error.message : String(error)
@@ -67,5 +68,5 @@ export function useDesktopUpdater() {
 
   onUnmounted(() => { offs.forEach((off) => off()) })
 
-  return { availableVersion, statusText, installing, errorText, check, install }
+  return { availableVersion, statusText, installing, errorText, supported, check, install }
 }
