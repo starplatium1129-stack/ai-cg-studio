@@ -110,6 +110,8 @@ const STANDALONE_REPORTS = new Set([
   'docs/seven-dimension-audit-2026-08-31.html',
   'docs/arknights-artists-research-2026-08-31.html',
   'docs/workflow-audit-2026-08-31.html',
+  // 2026-09-05 完成度复审报告（同族、自带设计系统）
+  'docs/completion-audit-2026-09-05.html',
 ]);
 
 function isStandaloneReport(relPath) {
