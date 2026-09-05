@@ -22,10 +22,29 @@
         暂未激活微调词条。可在下方按分类点选预设、选择官方服装包，或直接搜索/输入 Danbooru 标签回车添加。
       </p>
     </div>
+    <!-- 全角色通用·特典衣橱预设（无论工作室角色还是热门角色均可一键套用） -->
+    <div class="outfit-presets universal-wardrobe-section" aria-label="全角色通用·特典衣橱">
+      <div class="outfit-presets-head">
+        <strong>👗 全角色通用 · 特典战袍衣橱</strong>
+        <span>一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</span>
+      </div>
+      <div class="outfit-preset-list universal-preset-list">
+        <button v-for="preset in universalWardrobePresets" :key="preset.id"
+          type="button" class="outfit-preset universal-outfit-btn"
+          :class="{ selected: isPresetActive(preset.tags) }"
+          :aria-pressed="isPresetActive(preset.tags)"
+          :title="preset.description"
+          @click="toggleUniversalPreset(preset.tags, preset.label)">
+          <strong>{{ preset.label }}</strong>
+          <small>{{ preset.description }}</small>
+        </button>
+      </div>
+    </div>
+
     <div v-if="!pb.isPopular" class="outfit-presets" aria-label="官方服装词包">
       <div class="outfit-presets-head">
-        <strong>官方服装词包</strong>
-        <span>一键加入训练原词，也可以继续单独选 tag</span>
+        <strong>看板娘专属服装词包</strong>
+        <span>宁宁 / 夏目训练原词，一键快速装配</span>
       </div>
       <div class="outfit-preset-list">
         <button v-for="bundle in visibleOutfitBundles" :key="bundle.id"
@@ -103,6 +122,7 @@ import {
   NON_MANUAL_TAGS,
   normalizeCatalogKey,
 } from '@/composables/scene/useDirectorCatalog'
+import { UNIVERSAL_WARDROBE_PRESETS } from '@/config/universalWardrobe'
 import '@/assets/css/director/components/DirectorTagWorkbench.css'
 
 interface TagEntry { en: string; cn: string; cat: string }
@@ -289,6 +309,38 @@ const hiddenTagCount = computed(() => Math.max(0, matchedTags.value.length - vis
 const visibleOutfitBundles = computed(() =>
   OUTFIT_BUNDLES.filter(bundle => pb.char === 'triad' || bundle.character === pb.char),
 )
+
+const universalWardrobePresets = computed(() => UNIVERSAL_WARDROBE_PRESETS)
+
+function isPresetActive(tags: string[]): boolean {
+  if (!tags.length) return false
+  if (pb.isPopular) {
+    if (pb.outfitOverride) {
+      const set = new Set(pb.outfitOverride.tokens)
+      return tags.every(t => set.has(t))
+    }
+    return tags.every(t => pb.manualTags.has(t))
+  }
+  return tags.every(t => pb.manualTags.has(t))
+}
+
+function toggleUniversalPreset(tags: string[], label: string) {
+  if (isPresetActive(tags)) {
+    if (pb.isPopular) {
+      pb.clearOutfitOverride()
+    }
+    toggleOutfitBundle(tags)
+    pb.flash(`已卸下「${label}」`)
+    return
+  }
+  if (pb.isPopular) {
+    pb.setOutfitOverride(tags, label)
+    pb.flash(`已为当前热门角色换装「${label}」`)
+  } else {
+    toggleOutfitBundle(tags)
+    pb.flash(`已装配「${label}」`)
+  }
+}
 
 const visibleR18Controls = computed(() =>
   R18_CONTROLS.filter(control => pb.char === 'triad' || control.character === pb.char),

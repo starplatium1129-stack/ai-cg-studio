@@ -52,6 +52,18 @@
   .pb .manual-tag-en { font-family:var(--font-mono); font-weight:700; letter-spacing:.02em; }
   .pb .manual-tag-cn { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-tight); }
   .pb .manual-tag .tag-remove { position:absolute; top:2px; right:4px; }
+  .pb .universal-wardrobe-section {
+    border-color: color-mix(in srgb, var(--mood-love) 40%, var(--border-soft));
+    background: color-mix(in srgb, var(--mood-love) 8%, var(--bg-deep));
+  }
+  .pb .universal-outfit-btn {
+    border-color: color-mix(in srgb, var(--mood-love) 25%, var(--border-soft));
+  }
+  .pb .universal-outfit-btn:hover, .pb .universal-outfit-btn.selected {
+    border-color: var(--mood-love);
+    background: color-mix(in srgb, var(--mood-love) 15%, var(--bg-deep));
+    color: var(--mood-love);
+  }
   .pb .outfit-presets {
     display:grid; gap:var(--s-2); margin:var(--s-3) 0;
     padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft));
