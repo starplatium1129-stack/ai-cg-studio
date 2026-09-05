@@ -891,7 +891,7 @@
         "blue archive",
         "iori (blue archive)"
       ],
-      "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, red eyes, curved horns, a spiked black halo, pointy elf ears, and a slender demon tail.",
+      "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, red eyes, a spiked black halo, pointy elf ears, black hair ribbons, and a slender demon tail.",
       "identityTokens": [
         "iori (blue archive)",
         "1girl",
@@ -899,7 +899,7 @@
         "silver_hair",
         "twintails",
         "red_eyes",
-        "horns",
+        "hair_ribbon",
         "halo",
         "dark_skin",
         "pointy_ears",
@@ -948,7 +948,7 @@
         {
           "id": "swimsuit",
           "name": "夏日灼阳泳装",
-          "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her horns, and a water squirt rifle",
+          "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her hair ribbons, and a water squirt rifle",
           "tokens": [
             "swimsuit",
             "bikini",
@@ -1017,12 +1017,12 @@
             "slender_body",
             "navel",
             "pussy",
-            "demon_horns",
+            "pointy_ears",
             "demon_tail",
-            "demon_wings",
+            "hair_ribbon",
             "bare_feet"
           ],
-          "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, small black horns, wagging demon tail, small bat wings, bare legs and bare feet, soft sensual lighting",
+          "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, pointy elf ears, black hair ribbons, wagging demon tail, bare legs and bare feet, soft sensual lighting",
           "styleHint": "tender romantic candlelight",
           "default": false,
           "isDefault": false
@@ -1031,7 +1031,7 @@
       "canon": {
         "world": "基沃托斯（Kivotos）· 歌赫娜学院",
         "era": "近未来学园都市",
-        "formNotes": "风纪委员会突击队长；褐肤白发魔角，嘴硬心软、傲娇好胜，常被老师以各种理由捉弄舔脚而羞愤不已",
+        "formNotes": "风纪委员会突击队长；褐肤白发尖耳，嘴硬心软、傲娇好胜，常被老师以各种理由捉弄舔脚而羞愤不已",
         "research": "2026-08-31 调研（Danbooru shiromi_iori 9500+ posts）"
       },
       "animeStudio": "Blue Archive official art, Yostar / Nexon style",

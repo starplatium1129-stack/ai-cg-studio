@@ -6760,7 +6760,7 @@
         "kneeling",
         "wind",
         "demon_tail",
-        "demon_horns",
+        "pointy_ears",
         "dark_skin",
         "twintails"
       ],
@@ -7063,7 +7063,7 @@
         "stealth_suit",
         "crouching",
         "night_vision",
-        "demon_wings"
+        "demon_tail"
       ],
       "promptProse": "Crouching silently along high metal catwalks on a midnight stealth mission, Iori observes the facility with sharp focus. Sweeping yellow searchlights and cool industrial shadows frame her agile, stealthy posture.",
       "promptTokens": [

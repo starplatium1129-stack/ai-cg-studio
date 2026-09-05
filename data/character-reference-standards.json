@@ -6563,7 +6563,7 @@
       "displayName": "银镜伊织",
       "originalName": "Shiromi Iori",
       "source": "Blue Archive",
-      "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, red eyes, curved horns, a spiked black halo, pointy elf ears, and a slender demon tail.",
+      "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, red eyes, a spiked black halo, pointy elf ears, black hair ribbons, and a slender demon tail.",
       "identityTokens": [
         "iori (blue archive)",
         "1girl",
@@ -6571,7 +6571,7 @@
         "silver_hair",
         "twintails",
         "red_eyes",
-        "horns",
+        "hair_ribbon",
         "halo",
         "dark_skin",
         "pointy_ears",
@@ -6609,7 +6609,7 @@
           "id": "swimsuit",
           "name": "夏日灼阳泳装",
           "isDefault": false,
-          "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her horns, and a water squirt rifle",
+          "prose": "a striking white and black criss-cross halterneck bikini highlighting her chocolate tan skin and prominent pale tan lines, sheer white pareo, sunglasses pushed up onto her hair ribbons, and a water squirt rifle",
           "tokens": [
             "swimsuit",
             "bikini",
@@ -6667,7 +6667,7 @@
           "id": "nsfw_nude",
           "name": "🔞 私密全裸 / 纯粹形态",
           "isDefault": false,
-          "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, small black horns, wagging demon tail, small bat wings, bare legs and bare feet, soft sensual lighting",
+          "prose": "completely naked, full nudity, beautiful sun-kissed chocolate tan skin with faint pale bikini tan lines, perky bare breasts, sensitive dark pink nipples, slender athletic waist, navel, exposed pussy, pointy elf ears, black hair ribbons, wagging demon tail, bare legs and bare feet, soft sensual lighting",
           "tokens": [
             "nude",
             "completely_naked",
@@ -6679,9 +6679,9 @@
             "slender_body",
             "navel",
             "pussy",
-            "demon_horns",
+            "pointy_ears",
             "demon_tail",
-            "demon_wings",
+            "hair_ribbon",
             "bare_feet"
           ],
           "isNsfw": true
