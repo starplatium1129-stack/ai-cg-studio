@@ -11,21 +11,32 @@
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
         <p class="subtitle">精选契合人设的高光瞬间，每一幕均悉数预设镜头与叙事光影。其余 <strong>{{ scenes.length }} 个场景</strong>已完整收录于工坊档案。</p>
         <div class="curation-intro">
-          <span class="curation-kicker">Nene × Natsume</span>
+          <span class="curation-kicker">Nene × Natsume · 看板娘陪伴</span>
           <h2>从角色的心情，走进场景</h2>
-          <p>点选以下心境主题，粒子流将由情绪意象重新聚合成专属的场景标记。</p>
+          <p>粒子流由当前陪伴角色的等距立绘点阵重组而成，亦随心境流转。</p>
+          <div class="companion-switch" role="group" aria-label="看板娘陪伴选择">
+            <button type="button" class="companion-pill nene" :class="{ active: companionId === 'nene' }" @click="manualCompanion = 'nene'">
+              <span class="dot"></span>绫地宁宁
+            </button>
+            <button type="button" class="companion-pill natsume" :class="{ active: companionId === 'natsume' }" @click="manualCompanion = 'natsume'">
+              <span class="dot"></span>四季夏目
+            </button>
+          </div>
         </div>
       </div>
       <SemanticParticleField
         class="scene-atlas-particles"
-        :shape="activeParticleShape"
+        :shape="companionTheme.shape"
+        :portrait-id="companionId"
         :label="particleLabel"
         :caption="particleCaption"
+        density="ambient"
+        :style="{ '--archive-blue': companionTheme.accent, '--character-aura': companionTheme.aura }"
       />
       <div class="mood-rails" aria-live="polite">
         <button v-for="rail in moodRails" :key="rail.title" type="button" class="mood-rail"
           :class="[rail.character === 'nene' || rail.character === 'natsume' ? rail.character : '']"
-          @click="applyMoodRail(rail.query)">
+          @click="applyMoodRail(rail)">
           <span class="mood-icon"><ArchiveIcon :name="railIconName(rail.icon)" /></span>
           <strong>{{ rail.title }}</strong><small>{{ rail.subtitle }}</small>
         </button>
@@ -201,6 +212,7 @@ import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import type { ParticleShapeId } from '@/utils/particleShapes'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
 
 import { tier as uxTier, matchesSearch as uxMatchesSearch, searchScore as uxSearchScore,
   isPersonalFavorite as uxIsFav, personalScore as uxPersonalScore,
@@ -353,12 +365,21 @@ watch(debouncedQuery, (value) => {
   void router.replace({ query }).catch(() => {})
 })
 const activeTheme = ref('all')
-const activeParticleShape = computed<ParticleShapeId>(() => PARTICLE_SHAPES[activeTheme.value] || 'atelier')
 const activeThemeDefinition = computed(() => themeDef(activeTheme.value))
 const activeThemeLabel = computed(() => activeThemeDefinition.value.label)
 const activeThemeIndex = computed(() => String(Math.max(1, THEME_DEFS.findIndex(item => item.id === activeTheme.value) + 1)).padStart(2, '0'))
-const particleLabel = computed(() => `${activeThemeLabel.value}场景的粒子轮廓，切换主题时重新组合`)
-const particleCaption = computed(() => `ARCHIVE ${activeThemeIndex.value} / ${String(THEME_DEFS.length).padStart(2, '0')}`)
+const manualCompanion = ref<'nene' | 'natsume' | null>(null)
+const companionId = computed<'nene' | 'natsume'>(() => {
+  if (fChar.value === 'natsume') return 'natsume'
+  if (fChar.value === 'nene') return 'nene'
+  const q = searchQuery.value.toLowerCase()
+  if (q.includes('natsume') || q.includes('夏目')) return 'natsume'
+  if (q.includes('nene') || q.includes('宁宁')) return 'nene'
+  return manualCompanion.value || 'nene'
+})
+const companionTheme = computed(() => characterParticleTheme(companionId.value))
+const particleLabel = computed(() => `${companionId.value === 'nene' ? '绫地宁宁' : '四季夏目'}的人物剪影粒子 · ${activeThemeLabel.value}`)
+const particleCaption = computed(() => `${companionId.value.toUpperCase()} // ATELIER PRESENCE`)
 const fChar = ref('all'); const fSeason = ref('all'); const fTime = ref('all')
 const fSeries = ref('all'); const fRating = ref('all')
 const defaultTier = Object.keys(localUsage.value).length || favs.value.size ? 'personal' : 'core'
@@ -565,7 +586,12 @@ function showHiddenScenes() {
 function showAllScenes() {
   showHidden.value = false; fTier.value = 'all'; sortBy.value = 'smart'; filtersOpen.value = false
 }
-function applyMoodRail(q: string) { searchQuery.value = q; activeTheme.value = 'all'; nextTick(() => document.getElementById('sceneSearch')?.focus()) }
+function applyMoodRail(rail: { character: string; query: string }) {
+  searchQuery.value = rail.query
+  activeTheme.value = 'all'
+  if (rail.character === 'nene' || rail.character === 'natsume') manualCompanion.value = rail.character
+  nextTick(() => document.getElementById('sceneSearch')?.focus())
+}
 function resetFilters() {
   searchQuery.value=''; activeTheme.value='all'; fChar.value='all'; fSeason.value='all'
   fTime.value='all'; fSeries.value='all'; fRating.value='all'; fTier.value=defaultTier; sortBy.value='smart'; showHidden.value=false
@@ -660,6 +686,12 @@ onMounted(() => { init() })
 .curation-kicker { display:flex; align-items:center; gap:var(--s-2); color:var(--archive-blue); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
 .curation-intro h2 { margin:var(--s-1) 0 var(--s-1); font-size:var(--fs-title-xs); }
 .curation-intro p { margin:0; color:var(--text-muted); font-size:var(--fs-label); line-height:var(--lh-body); }
+.companion-switch { display:flex; align-items:center; gap:var(--s-2); margin-top:var(--s-3); }
+.companion-pill { display:inline-flex; align-items:center; gap:var(--s-1); padding:3px 12px; border-radius:var(--r-pill); border:1px solid var(--border-soft); background:var(--bg-elevated); color:var(--text-secondary); font:600 var(--fs-label-xs) var(--font-sans); cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.2); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),box-shadow var(--motion-hover); }
+.companion-pill .dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+.companion-pill.nene { --cp-accent:var(--nene-violet); }
+.companion-pill.natsume { --cp-accent:var(--natsume-amber); }
+.companion-pill:hover, .companion-pill.active { border-color:var(--cp-accent); color:var(--text-primary); background:color-mix(in srgb,var(--cp-accent) 18%,var(--bg-elevated)); box-shadow:0 0 12px color-mix(in srgb,var(--cp-accent) 35%,transparent); }
 .mood-rails { position:relative; z-index:var(--z-raised); grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:inset 0 1px 0 var(--glass-highlight); transition:transform var(--motion-hover) var(--ease-out),border-color var(--motion-hover),box-shadow var(--motion-hover); }
 .mood-rail.nene { background:linear-gradient(135deg,color-mix(in srgb,var(--nene-violet) 20%,transparent),color-mix(in srgb,var(--accent) 8%,transparent)),var(--bg-elevated); }
@@ -682,65 +714,21 @@ onMounted(() => { init() })
 .search-intent { min-height:22px; margin:-10px var(--s-1) var(--s-3); color:var(--text-muted); font-size:var(--fs-label-sm); }
 :deep(.search-intent strong) { color:var(--accent); }
 
-.scene-toolbar {
-  position:relative; display:grid; gap:var(--s-3); margin-bottom:var(--s-5);
-  padding:var(--s-3);
-  border:1px solid color-mix(in srgb,var(--archive-cyan) 18%,var(--border-soft));
-  border-radius:var(--r-dossier);
-  background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
-  box-shadow:var(--shadow-glass-sm);
-  -webkit-backdrop-filter:blur(20px) saturate(130%);
-  backdrop-filter:blur(20px) saturate(130%);
-}
+.scene-toolbar { position:relative; display:grid; gap:var(--s-3); margin-bottom:var(--s-5); padding:var(--s-3); border:1px solid color-mix(in srgb,var(--archive-cyan) 18%,var(--border-soft)); border-radius:var(--r-dossier); background:color-mix(in srgb,var(--bg-surface) 88%,transparent); box-shadow:var(--shadow-glass-sm); -webkit-backdrop-filter:blur(20px) saturate(130%); backdrop-filter:blur(20px) saturate(130%); }
 .scene-toolbar::before { content:''; position:absolute; top:-1px; left:var(--s-4); width:42px; height:var(--line-hairline); background:var(--archive-cyan); }
 .toolbar-primary { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
 .toolbar-primary .scene-search-wrap { flex:1 1 260px; min-width:0; margin:0; }
 .toolbar-primary .scene-count { color:var(--text-muted); font:600 var(--fs-mono-sm) var(--font-mono); white-space:nowrap; }
 .toolbar-primary .scene-count strong { color:var(--accent); }
-.scene-personal-nav {
-  display:flex; align-items:center; gap:var(--s-2); overflow-x:auto;
-  padding-bottom:2px; scrollbar-width:thin;
-}
-.scene-personal-label {
-  flex:0 0 auto; margin-right:2px; color:var(--text-muted);
-  font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; text-transform:uppercase;
-}
-.scene-personal-nav button {
-  flex:0 0 auto; min-height:34px; padding:0 13px;
-  border:1px solid var(--border-soft); border-radius:var(--r-terminal);
-  background:var(--bg-elevated); color:var(--text-secondary);
-  font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
-  transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover);
-}
-.scene-personal-nav button:hover {
-  border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); color:var(--accent);
-}
-.scene-personal-nav button.active {
-  border-color:var(--accent); background:var(--accent-soft); color:var(--accent);
-}
-.filter-toggle {
-  display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px;
-  border:1px solid var(--border-soft); border-radius:var(--r-terminal);
-  background:transparent; color:var(--text-secondary);
-  font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
-  transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover);
-}
-.filter-toggle:hover, .filter-toggle.active {
-  border-color:color-mix(in srgb,var(--accent) 40%,var(--border-soft));
-  background:var(--accent-soft); color:var(--accent);
-}
-.facet-badge {
-  display:inline-grid; place-items:center; min-width:18px; height:18px; padding:0 5px;
-  border-radius:var(--r-pill); background:var(--accent); color:var(--text-inverse);
-  font:700 var(--fs-mono-xs) var(--font-mono);
-}
-.scene-facet-panel {
-  display:grid; gap:var(--s-3); padding:var(--s-3);
-  border:var(--line-hairline) solid var(--border-soft);
-  border-radius:var(--r-terminal);
-  background:color-mix(in srgb,var(--bg-deep) 54%,transparent);
-  animation:facetIn .22s var(--ease-out) both;
-}
+.scene-personal-nav { display:flex; align-items:center; gap:var(--s-2); overflow-x:auto; padding-bottom:2px; scrollbar-width:thin; }
+.scene-personal-label { flex:0 0 auto; margin-right:2px; color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; text-transform:uppercase; }
+.scene-personal-nav button { flex:0 0 auto; min-height:34px; padding:0 13px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-elevated); color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover); }
+.scene-personal-nav button:hover { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); color:var(--accent); }
+.scene-personal-nav button.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+.filter-toggle { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover); }
+.filter-toggle:hover, .filter-toggle.active { border-color:color-mix(in srgb,var(--accent) 40%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
+.facet-badge { display:inline-grid; place-items:center; min-width:18px; height:18px; padding:0 5px; border-radius:var(--r-pill); background:var(--accent); color:var(--text-inverse); font:700 var(--fs-mono-xs) var(--font-mono); }
+.scene-facet-panel { display:grid; gap:var(--s-3); padding:var(--s-3); border:var(--line-hairline) solid var(--border-soft); border-radius:var(--r-terminal); background:color-mix(in srgb,var(--bg-deep) 54%,transparent); animation:facetIn .22s var(--ease-out) both; }
 @keyframes facetIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion:reduce) { .scene-facet-panel { animation:none; } }
 .scene-filter-label { font-size:var(--fs-label-xs); color:var(--text-muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:var(--s-2); }
