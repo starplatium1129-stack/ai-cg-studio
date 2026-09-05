@@ -119,6 +119,11 @@ const WORKFLOWS = {
     docs: 'docs/showcase-generation-craft.md',
     opts: '[--force] [--character <id>] [--limit <n>]',
   },
+  'showcase:fill-gaps': {
+    desc: '样张缺口补齐：对照活跃版本manifest批量渲染缺失的pc_<角色>_<场景>样张（miaomiao v1.2，按蓝图recommendedSize出图，并发3）',
+    cmd: ['node', 'scripts/maintenance/render-showcase-gaps.js'],
+    opts: '[--only <charId1,charId2>] [--concurrency <n>] [--gateway <url>]',
+  },
   'showcase:audit': {
     desc: '批量审核 popular showcase (Gemini 4并发，rella)',
     cmd: ['node', 'scripts/maintenance/audit-showcase-rella.js', '--help'],
