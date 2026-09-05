@@ -1,0 +1,136 @@
+{
+  "version": "1.0.0",
+  "franchise": "Kara no Kyoukai",
+  "characters": [
+    {
+      "id": "ryougi_shiki",
+      "displayName": "两仪式",
+      "originalName": "両儀式",
+      "franchise": "Kara no Kyoukai",
+      "aliases": [
+        "Ryougi Shiki",
+        "两仪式",
+        "式姐",
+        "直死之魔眼",
+        "伽蓝之堂"
+      ],
+      "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome combatant with chin-length layered raven-black hair, piercing dual-colored Mystic Eyes of Death Perception flashing between azure-blue and crimson, wearing a traditional white kimono under a vibrant red leather jacket, holding an antique knife with deadly grace",
+      "identityTokens": [
+        "ryougi_shiki",
+        "black_hair",
+        "short_hair",
+        "mystic_eyes_of_death_perception",
+        "blue_eyes",
+        "red_eyes",
+        "kimono",
+        "leather_jacket",
+        "holding_knife",
+        "cool_beauty"
+      ],
+      "exactTokens": [
+        "ryougi_shiki"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ryougi_shiki"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Tomonori Sudou"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_kimono_leather_jacket",
+          "name": "纯白和服赤红皮夹克",
+          "prose": "her iconic signature battle attire: a pure white traditional Japanese kimono with a dark patterned obi, worn under a stylish red leather biker jacket, brown lace-up combat boots, and holding an unsheathed Japanese combat knife",
+          "tokens": [
+            "kimono",
+            "white_kimono",
+            "obi",
+            "leather_jacket",
+            "red_jacket",
+            "boots",
+            "holding_knife",
+            "knife"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_blue_kimono",
+          "name": "居家深蓝素雅和服",
+          "prose": "a relaxed dark indigo-blue casual cotton kimono with subtle floral accents, loosely tied with a simple black sash, showing her graceful neckline and bare feet",
+          "tokens": [
+            "kimono",
+            "blue_kimono",
+            "obi",
+            "exposed_nape",
+            "barefoot",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "winter_white_knit_coat",
+          "name": "冬日私服白毛衣长风衣",
+          "prose": "a warm and stylish winter ensemble: a fitted cream knit turtleneck sweater, a dark charcoal woolen coat, knee-high leather boots, and a red plaid scarf around her neck",
+          "tokens": [
+            "winter_coat",
+            "coat",
+            "turtleneck_sweater",
+            "scarf",
+            "plaid_scarf",
+            "boots",
+            "casual_winter"
+          ]
+        },
+        {
+          "id": "black_lace_sensual_lingerie",
+          "name": "纯黑修身蕾丝情趣内衣",
+          "prose": "a delicate black lace bralette and matching panties with thin straps, framing her toned and graceful porcelain body under soft shadows",
+          "tokens": [
+            "lingerie",
+            "black_lingerie",
+            "lace",
+            "cleavage",
+            "slender_body",
+            "bare_shoulders",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, slender yet toned body with short black hair brushing her collarbone, perky natural breasts with delicate pink nipples, slender waist, and flawless pale skin under moonlight",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

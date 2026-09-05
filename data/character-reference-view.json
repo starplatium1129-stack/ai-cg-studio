@@ -39467,5 +39467,40 @@
     "source": "Code Geass",
     "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, a Geass sigil on her forehead when glowing, and a serene, detached yet intimately teasing smile",
     "outfits": []
+  },
+  "caren_hortensia": {
+    "characterId": "caren_hortensia",
+    "displayName": "卡莲·C·奥尔黛西亚",
+    "source": "Fate",
+    "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued exorcist nun with chin-length layered platinum-silver hair, piercing lilac-purple eyes, wearing a unique skirtless white and black clerical vestment revealing her slender bare thighs, wielding the golden Shroud of Magdalene with cold grace",
+    "outfits": []
+  },
+  "artoria_pendragon_alter": {
+    "characterId": "artoria_pendragon_alter",
+    "displayName": "阿尔托莉雅·Alter",
+    "source": "Fate",
+    "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, donning spiked jet-black gothic plate armor, and wielding the corrupted Excalibur Morgan coursing with dark red energy",
+    "outfits": []
+  },
+  "arcueid_brunestud": {
+    "characterId": "arcueid_brunestud",
+    "displayName": "爱尔奎特·布伦史塔德",
+    "source": "Tsukihime",
+    "identityProse": "Arcueid Brunestud from Tsukihime, the supreme True Ancestor vampire princess, an ethereal beauty with neck-length silky blonde hair with gentle playful bangs, radiant crimson-ruby eyes, an expressive feline smile, and an aura of transcendent, ancient royalty mingled with innocent curiosity",
+    "outfits": []
+  },
+  "ciel_tsukihime": {
+    "characterId": "ciel_tsukihime",
+    "displayName": "希耶尔",
+    "source": "Tsukihime",
+    "identityProse": "Ciel from Tsukihime, the Seventh Member of the Holy Church's Burial Agency, a cool-headed and formidable executor with neat chin-length navy-blue hair, sharp dark sapphire eyes, rimless oval glasses, and an intellectual yet deeply passionate aura",
+    "outfits": []
+  },
+  "ryougi_shiki": {
+    "characterId": "ryougi_shiki",
+    "displayName": "两仪式",
+    "source": "Kara no Kyoukai",
+    "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome combatant with chin-length layered raven-black hair, piercing dual-colored Mystic Eyes of Death Perception flashing between azure-blue and crimson, wearing a traditional white kimono under a vibrant red leather jacket, holding an antique knife with deadly grace",
+    "outfits": []
   }
 }

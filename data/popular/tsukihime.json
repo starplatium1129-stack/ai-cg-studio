@@ -1,0 +1,265 @@
+{
+  "version": "1.0.0",
+  "franchise": "Tsukihime",
+  "characters": [
+    {
+      "id": "arcueid_brunestud",
+      "displayName": "爱尔奎特·布伦史塔德",
+      "originalName": "アルクェイド・ブリュンスタッド",
+      "franchise": "Tsukihime",
+      "aliases": [
+        "Arcueid Brunestud",
+        "爱尔奎特",
+        "真祖白姬",
+        "纯白吸血姬",
+        "月姬"
+      ],
+      "identityProse": "Arcueid Brunestud from Tsukihime, the supreme True Ancestor vampire princess, an ethereal beauty with neck-length silky blonde hair with gentle playful bangs, radiant crimson-ruby eyes, an expressive feline smile, and an aura of transcendent, ancient royalty mingled with innocent curiosity",
+      "identityTokens": [
+        "arcueid_brunestud",
+        "blonde_hair",
+        "short_hair",
+        "red_eyes",
+        "crimson_eyes",
+        "vampire",
+        "playful_smile",
+        "slender_figure"
+      ],
+      "exactTokens": [
+        "arcueid_brunestud"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, arcueid_brunestud"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Type-Moon / ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Hirokazu Koyama"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_white_sweater_purple_skirt",
+          "name": "经典白色高领毛衣长紫裙",
+          "prose": "her iconic casual attire: a snug off-white high-neck knit sweater hugging her slender torso, an ankle-length deep royal purple flowing skirt, brown leather ankle boots, and gold cross pendant",
+          "tokens": [
+            "turtleneck",
+            "white_sweater",
+            "knit_sweater",
+            "long_skirt",
+            "purple_skirt",
+            "cross_necklace",
+            "boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_summer_sundress",
+          "name": "夏日无袖露肩白吊带裙",
+          "prose": "a light and breezy pure white summer sundress with thin spaghetti straps, open back, floating hem fluttering around her bare knees, and bare feet",
+          "tokens": [
+            "sundress",
+            "white_dress",
+            "spaghetti_straps",
+            "bare_shoulders",
+            "backless",
+            "bare_legs",
+            "barefoot",
+            "summer_dress"
+          ]
+        },
+        {
+          "id": "archetype_earth_regal_gown",
+          "name": "地球姬华丽纯白大礼服皇冠",
+          "prose": "her majestic Archetype: Earth True Ancestor royal dress: a multi-layered pristine white grand ballgown with gold filigree embroideries, glowing crimson gemstones, a gold tiara on her head, and an aura of overwhelming celestial royalty",
+          "tokens": [
+            "ball_gown",
+            "white_dress",
+            "royal_dress",
+            "gold_trim",
+            "tiara",
+            "glowing_aura",
+            "bare_shoulders",
+            "cleavage"
+          ]
+        },
+        {
+          "id": "black_lace_sensual_camisole",
+          "name": "纯黑真丝吊带情趣小睡衣",
+          "prose": "a delicate black silk camisole trimmed with sheer eyelash lace, plunging neckline exposing her collarbone, matching black lace panties, draped loosely over her pale skin",
+          "tokens": [
+            "camisole",
+            "black_nightgown",
+            "silk_lingerie",
+            "lace_trim",
+            "cleavage",
+            "bare_shoulders",
+            "bare_legs",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, glowing vampire body with golden hair framing her neck, tender natural breasts with pale pink nipples, slender waist, and flawless alabaster skin under the moon",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ciel_tsukihime",
+      "displayName": "希耶尔",
+      "originalName": "シエル",
+      "franchise": "Tsukihime",
+      "aliases": [
+        "Ciel",
+        "希耶尔",
+        "知性修女",
+        "埋葬机关第七位",
+        "咖喱学姐"
+      ],
+      "identityProse": "Ciel from Tsukihime, the Seventh Member of the Holy Church's Burial Agency, a cool-headed and formidable executor with neat chin-length navy-blue hair, sharp dark sapphire eyes, rimless oval glasses, and an intellectual yet deeply passionate aura",
+      "identityTokens": [
+        "ciel_(tsukihime)",
+        "blue_hair",
+        "short_hair",
+        "blue_eyes",
+        "glasses",
+        "curvaceous_body",
+        "intellectual_smile"
+      ],
+      "exactTokens": [
+        "ciel_(tsukihime)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ciel_(tsukihime)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Type-Moon / ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Hirokazu Koyama"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_burial_agency_habit",
+          "name": "埋葬机关修女法衣战袍",
+          "prose": "her Burial Agency combat habit: a deep navy-blue sleeveless high-collar clergy tunic with white accents, gold crucifixes, dark blue short skirt, sheer black pantyhose, and throwing black keys between her gloved fingers",
+          "tokens": [
+            "nun",
+            "habit",
+            "church_uniform",
+            "blue_dress",
+            "cross",
+            "gloves",
+            "black_pantyhose",
+            "black_keys_(type-moon)"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "misaki_school_uniform",
+          "name": "三咲高中校服学姐装",
+          "prose": "her Misaki High School uniform: a navy blazer with gold buttons, crisp white collared shirt, red necktie, pleated grey skirt, rimless glasses, and black stockings",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_shirt",
+            "necktie",
+            "pleated_skirt",
+            "glasses",
+            "black_stockings"
+          ]
+        },
+        {
+          "id": "casual_knit_sweater_jeans",
+          "name": "知性针织毛衣紧身裤",
+          "prose": "a relaxed cream knit turtleneck sweater accentuating her surprisingly full bust, paired with form-fitting dark blue jeans and ankle boots",
+          "tokens": [
+            "turtleneck_sweater",
+            "knit_sweater",
+            "jeans",
+            "tight_pants",
+            "glasses",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "holy_white_lace_lingerie",
+          "name": "纯白神圣蕾丝情趣吊带",
+          "prose": "a delicate white lace lingerie set featuring sheer cups, fine floral embroidery, matching garter belt over sheer white thigh-high stockings",
+          "tokens": [
+            "lingerie",
+            "white_lingerie",
+            "lace",
+            "garter_straps",
+            "white_thighhighs",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, voluptuous body with short navy hair, generous natural breasts with tender pink areolas, toned waist, and smooth fair skin without glasses",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "large_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hourglass_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

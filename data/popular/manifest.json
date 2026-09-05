@@ -25,7 +25,7 @@
     {
       "file": "fate.json",
       "franchise": "Fate",
-      "count": 7
+      "count": 9
     },
     {
       "file": "vocaloid.json",
@@ -190,6 +190,16 @@
     {
       "file": "code-geass.json",
       "franchise": "Code Geass",
+      "count": 1
+    },
+    {
+      "file": "tsukihime.json",
+      "franchise": "Tsukihime",
+      "count": 2
+    },
+    {
+      "file": "kara-no-kyoukai.json",
+      "franchise": "Kara no Kyoukai",
       "count": 1
     }
   ]

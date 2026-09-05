@@ -1639,6 +1639,45 @@
       ]
     },
     {
+      "id": "caren_hortensia",
+      "displayName": "卡莲·C·奥尔黛西亚",
+      "originalName": "カレン・オルテンシア",
+      "source": "Fate",
+      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued exorcist nun with chin-length layered platinum-silver hair, piercing lilac-purple eyes, wearing a unique skirtless white and black clerical vestment revealing her slender bare thighs, wielding the golden Shroud of Magdalene with cold grace",
+      "identityTokens": [
+        "caren_hortensia",
+        "white_hair",
+        "short_hair",
+        "purple_eyes",
+        "clerical_vestment",
+        "shroud_of_magdalene",
+        "slender_legs",
+        "cool_beauty",
+        "deadpan"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "artoria_pendragon_alter",
+      "displayName": "阿尔托莉雅·Alter",
+      "originalName": "アルトリア・ペンドラゴン[オルタ]",
+      "source": "Fate",
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, donning spiked jet-black gothic plate armor, and wielding the corrupted Excalibur Morgan coursing with dark red energy",
+      "identityTokens": [
+        "saber_alter",
+        "blonde_hair",
+        "hair_bun",
+        "yellow_eyes",
+        "golden_eyes",
+        "black_armor",
+        "excalibur_morgan",
+        "dark_aura",
+        "kuudere",
+        "cool_beauty"
+      ],
+      "outfits": []
+    },
+    {
       "id": "hatsune_miku",
       "displayName": "初音未来",
       "originalName": "Hatsune Miku",
@@ -8147,6 +8186,61 @@
         "slender_waist",
         "calm_expression",
         "seductive_smile"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "arcueid_brunestud",
+      "displayName": "爱尔奎特·布伦史塔德",
+      "originalName": "アルクェイド・ブリュンスタッド",
+      "source": "Tsukihime",
+      "identityProse": "Arcueid Brunestud from Tsukihime, the supreme True Ancestor vampire princess, an ethereal beauty with neck-length silky blonde hair with gentle playful bangs, radiant crimson-ruby eyes, an expressive feline smile, and an aura of transcendent, ancient royalty mingled with innocent curiosity",
+      "identityTokens": [
+        "arcueid_brunestud",
+        "blonde_hair",
+        "short_hair",
+        "red_eyes",
+        "crimson_eyes",
+        "vampire",
+        "playful_smile",
+        "slender_figure"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "ciel_tsukihime",
+      "displayName": "希耶尔",
+      "originalName": "シエル",
+      "source": "Tsukihime",
+      "identityProse": "Ciel from Tsukihime, the Seventh Member of the Holy Church's Burial Agency, a cool-headed and formidable executor with neat chin-length navy-blue hair, sharp dark sapphire eyes, rimless oval glasses, and an intellectual yet deeply passionate aura",
+      "identityTokens": [
+        "ciel_(tsukihime)",
+        "blue_hair",
+        "short_hair",
+        "blue_eyes",
+        "glasses",
+        "curvaceous_body",
+        "intellectual_smile"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "ryougi_shiki",
+      "displayName": "两仪式",
+      "originalName": "両儀式",
+      "source": "Kara no Kyoukai",
+      "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome combatant with chin-length layered raven-black hair, piercing dual-colored Mystic Eyes of Death Perception flashing between azure-blue and crimson, wearing a traditional white kimono under a vibrant red leather jacket, holding an antique knife with deadly grace",
+      "identityTokens": [
+        "ryougi_shiki",
+        "black_hair",
+        "short_hair",
+        "mystic_eyes_of_death_perception",
+        "blue_eyes",
+        "red_eyes",
+        "kimono",
+        "leather_jacket",
+        "holding_knife",
+        "cool_beauty"
       ],
       "outfits": []
     }

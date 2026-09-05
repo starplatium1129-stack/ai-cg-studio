@@ -603,6 +603,37 @@
     --character-aura:rgba(132,204,22,.30); --character-aura-secondary:rgba(245,158,11,.22);
   }
 
+  /* 派生：空之境界 · 两仪式 */
+  .pb[data-character="ryougi_shiki"] {
+    --character-accent:#dc2626; --character-accent-hover:#ef4444;
+    --character-soft:rgba(220,38,38,.16); --character-glow:rgba(220,38,38,.34);
+    --character-aura:rgba(220,38,38,.32); --character-aura-secondary:rgba(15,23,42,.24);
+  }
+  /* 派生：月姬 · 爱尔奎特·布伦史塔德 */
+  .pb[data-character="arcueid_brunestud"] {
+    --character-accent:#eab308; --character-accent-hover:#facc15;
+    --character-soft:rgba(234,179,8,.16); --character-glow:rgba(234,179,8,.34);
+    --character-aura:rgba(234,179,8,.32); --character-aura-secondary:rgba(220,38,38,.22);
+  }
+  /* 派生：月姬 · 希耶尔 */
+  .pb[data-character="ciel_tsukihime"] {
+    --character-accent:#2563eb; --character-accent-hover:#3b82f6;
+    --character-soft:rgba(37,99,235,.16); --character-glow:rgba(37,99,235,.34);
+    --character-aura:rgba(37,99,235,.32); --character-aura-secondary:rgba(241,245,249,.24);
+  }
+  /* 派生：Fate · 卡莲·C·奥尔黛西亚 */
+  .pb[data-character="caren_hortensia"] {
+    --character-accent:#c084fc; --character-accent-hover:#d8b4fe;
+    --character-soft:rgba(192,132,252,.16); --character-glow:rgba(192,132,252,.34);
+    --character-aura:rgba(192,132,252,.30); --character-aura-secondary:rgba(220,38,38,.20);
+  }
+  /* 派生：Fate · 阿尔托莉雅·Alter */
+  .pb[data-character="artoria_pendragon_alter"] {
+    --character-accent:#f59e0b; --character-accent-hover:#fbbf24;
+    --character-soft:rgba(245,158,11,.16); --character-glow:rgba(245,158,11,.34);
+    --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(15,23,42,.28);
+  }
+
   /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb，形成柔和体积漫反射光 */
   body:has(.pb[data-character])::before {
     opacity: 0.46;
@@ -719,4 +750,9 @@
   body:has(.pb[data-character="albedo_overlord"]) { --character-aura:rgba(234,179,8,.30); --character-aura-secondary:rgba(15,23,42,.28); }
   body:has(.pb[data-character="sparkle_hsr"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(15,23,42,.24); }
   body:has(.pb[data-character="cc_code_geass"]) { --character-aura:rgba(132,204,22,.30); --character-aura-secondary:rgba(245,158,11,.22); }
+  body:has(.pb[data-character="ryougi_shiki"]) { --character-aura:rgba(220,38,38,.32); --character-aura-secondary:rgba(15,23,42,.24); }
+  body:has(.pb[data-character="arcueid_brunestud"]) { --character-aura:rgba(234,179,8,.32); --character-aura-secondary:rgba(220,38,38,.22); }
+  body:has(.pb[data-character="ciel_tsukihime"]) { --character-aura:rgba(37,99,235,.32); --character-aura-secondary:rgba(241,245,249,.24); }
+  body:has(.pb[data-character="caren_hortensia"]) { --character-aura:rgba(192,132,252,.30); --character-aura-secondary:rgba(220,38,38,.20); }
+  body:has(.pb[data-character="artoria_pendragon_alter"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(15,23,42,.28); }
 

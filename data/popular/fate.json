@@ -947,6 +947,271 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "caren_hortensia",
+      "displayName": "卡莲·C·奥尔黛西亚",
+      "originalName": "カレン・オルテンシア",
+      "franchise": "Fate",
+      "aliases": [
+        "Caren Hortensia",
+        "卡莲",
+        "圣痕修女",
+        "毒舌修女",
+        "抹大拉的圣骸布"
+      ],
+      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued exorcist nun with chin-length layered platinum-silver hair, piercing lilac-purple eyes, wearing a unique skirtless white and black clerical vestment revealing her slender bare thighs, wielding the golden Shroud of Magdalene with cold grace",
+      "identityTokens": [
+        "caren_hortensia",
+        "white_hair",
+        "short_hair",
+        "purple_eyes",
+        "clerical_vestment",
+        "shroud_of_magdalene",
+        "slender_legs",
+        "cool_beauty",
+        "deadpan"
+      ],
+      "exactTokens": [
+        "caren_hortensia"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, caren_hortensia"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Type-Moon / ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Hirokazu Koyama"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_exorcist_habit",
+          "name": "无下裙特殊驱魔祭服",
+          "prose": "her signature skirtless white and black Catholic clerical vestment with gold embroidery, long detached clerical sleeves, pure white cross collar, black thigh-high stockings, bare hips and upper thighs, and flowing red Shroud of Magdalene ribbons",
+          "tokens": [
+            "habit",
+            "church_uniform",
+            "sleeveless",
+            "no_skirt",
+            "thighhighs",
+            "black_thighhighs",
+            "detached_sleeves",
+            "shroud_of_magdalene",
+            "cross"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_winter_duffle_coat",
+          "name": "冬日红大衣毛线帽私服",
+          "prose": "a cute and warm winter outfit: a bright red wool duffle coat with horn toggle buttons, a white knit beanie over her silver bangs, black tights, and brown boots",
+          "tokens": [
+            "coat",
+            "duffle_coat",
+            "red_coat",
+            "beanie",
+            "winter_clothes",
+            "tights",
+            "boots"
+          ]
+        },
+        {
+          "id": "sensual_black_camisole",
+          "name": "黑色真丝吊带露背睡裙",
+          "prose": "a delicate black silk nightgown with a low back revealing her pale shoulderblades and stigmata marks, thin spaghetti straps, and a short hem skimming her slender hips",
+          "tokens": [
+            "nightgown",
+            "black_nightgown",
+            "camisole",
+            "backless",
+            "bare_shoulders",
+            "bare_legs",
+            "cleavage"
+          ]
+        },
+        {
+          "id": "sacred_white_swimsuit",
+          "name": "圣洁纯白高开叉连体泳装",
+          "prose": "a pristine white one-piece swimsuit with a high neckline, cross-back straps, and daring high-cut leg openings accentuating her flawless long legs",
+          "tokens": [
+            "swimsuit",
+            "one-piece_swimsuit",
+            "white_swimsuit",
+            "highleg",
+            "bare_legs",
+            "cleavage",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, slender and fragile body with silver hair brushing her neck, perky natural breasts with pale pink nipples, stigmata blush on her skin, and slender waist",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "small_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "artoria_pendragon_alter",
+      "displayName": "阿尔托莉雅·Alter",
+      "originalName": "アルトリア・ペンドラゴン[オルタ]",
+      "franchise": "Fate",
+      "aliases": [
+        "Artoria Pendragon Alter",
+        "Saber Alter",
+        "阿尔托莉雅·Alter",
+        "黑呆",
+        "黑无毛",
+        "暴君骑士王"
+      ],
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, donning spiked jet-black gothic plate armor, and wielding the corrupted Excalibur Morgan coursing with dark red energy",
+      "identityTokens": [
+        "saber_alter",
+        "blonde_hair",
+        "hair_bun",
+        "yellow_eyes",
+        "golden_eyes",
+        "black_armor",
+        "excalibur_morgan",
+        "dark_aura",
+        "kuudere",
+        "cool_beauty"
+      ],
+      "exactTokens": [
+        "saber_alter"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, saber_alter"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "ufotable",
+      "curatedArtistStyles": [
+        "Takashi Takeuchi",
+        "Tomonori Sudou"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_black_armor",
+          "name": "漆黑哥特重铠战袍",
+          "prose": "her iconic heavy black plate armor with jagged red filigree lines, dark blue gown accents, heavy iron gauntlets, and holding the jet-black corrupt sword Excalibur Morgan radiating dark red energy",
+          "tokens": [
+            "black_armor",
+            "plate_armor",
+            "gauntlets",
+            "holding_sword",
+            "excalibur_morgan",
+            "dark_dress",
+            "red_trim"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_gothic_lolita_dress",
+          "name": "无光深黑哥特抹胸晚礼裙",
+          "prose": "her striking Heaven's Feel gothic evening dress: a strapless black velvet corset mini dress with black lace trim, exposing her pale porcelain shoulders, matching sheer black gloves, and knee-high leather boots",
+          "tokens": [
+            "black_dress",
+            "strapless_dress",
+            "gothic_dress",
+            "bare_shoulders",
+            "gloves",
+            "black_gloves",
+            "boots"
+          ]
+        },
+        {
+          "id": "casual_shinjuku_jacket_shorts",
+          "name": "新宿机车皮夹克热裤",
+          "prose": "her stylish Shinjuku modern casual wear: a black leather biker jacket over a white cropped tank top, black denim micro-shorts with belt, sheer black pantyhose, and studded choker",
+          "tokens": [
+            "leather_jacket",
+            "crop_top",
+            "midriff",
+            "short_shorts",
+            "denim_shorts",
+            "pantyhose",
+            "black_pantyhose",
+            "choker",
+            "streetwear"
+          ]
+        },
+        {
+          "id": "sensual_black_lingerie",
+          "name": "黑色皮革吊带情趣内衣",
+          "prose": "a provocative black faux-leather lingerie set with silver buckle details, matching garter straps over sheer black stockings, framing her toned and fair figure",
+          "tokens": [
+            "lingerie",
+            "black_lingerie",
+            "leather_lingerie",
+            "garter_straps",
+            "black_stockings",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, pale and regal body with platinum hair unpinned across her shoulders, firm natural breasts with pale pink nipples, slender waist, and smooth alabaster skin under dark shadows",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hourglass_body"
+          ]
+        }
+      ]
     }
   ]
 }

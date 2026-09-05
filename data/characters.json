@@ -8138,5 +8138,357 @@
     ],
     "accent_color": "#84cc16",
     "bg_color": "#14532d"
+  },
+  {
+    "id": "ryougi_shiki",
+    "name": "两仪式",
+    "alias": [
+      "Ryougi Shiki",
+      "两仪式",
+      "式姐",
+      "直死之魔眼",
+      "伽蓝之堂"
+    ],
+    "type": "popular",
+    "icon": "🗡️",
+    "portrait": {
+      "image": "../assets/characters/popular-ryougi_shiki.png?v=1",
+      "alt": "两仪式 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及肩碎发 · 乌黑柔顺",
+      "hair_color": "纯黑 / 乌黑",
+      "eyes": "直死之魔眼 · 湛蓝赤红流转",
+      "hairstyle": "清爽短发 · 侧分刘海 · 孤高英气",
+      "uniform": "纯白传统和服配赤红皮夹克 · 短靴短刀",
+      "expression": "孤高冷冽 · 眉宇英气 · 面对心爱之人别扭温柔",
+      "style": "cool lethal mystic knife combatant",
+      "signature": "白和服配红皮夹克、直死之魔眼与反手短刀"
+    },
+    "personality": [
+      "孤高冷彻、言辞利落",
+      "骨子里的温柔与专一",
+      "酷爱草莓哈根达斯的甜品反差",
+      "对认同之人绝不退缩的守护"
+    ],
+    "likes": [
+      "草莓味哈根达斯冰淇淋",
+      "黑桐干也亲手泡的茶",
+      "在安静的长椅上放空"
+    ],
+    "classic_cg": {
+      "title": "踏雪折梅的直死之瞳",
+      "description": "在暴风雪路灯下反手拔出短刀，双眸闪烁湛蓝绯红魔眼神光的孤高杀手姿态。"
+    },
+    "identity": "空之境界女主角 · 两仪家正统继承人 · 直死之魔眼持有者",
+    "tags": [
+      "空之境界",
+      "两仪式",
+      "直死之魔眼",
+      "和服皮夹克",
+      "短发御姐",
+      "反差萌"
+    ],
+    "bg_story": "型月四大台柱之一，退魔名门两仪家的继承人。拥有能看穿万物死线、触碰即可令其灭亡的『直死之魔眼』。平日里身穿纯白和服与红色皮夹克穿梭于都市夜幕之中，性格孤僻冷淡；但只要被心爱之人融化了心房，就会展现出极具杀伤力的笨拙、娇羞与一生相托的纯情。",
+    "palette": [
+      "#dc2626",
+      "#1e293b",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "雪夜清冷 / 细雨霏霏",
+    "speech": "「只要是活着的东西，就算是神也杀给你看……不过，如果是你的话，随便你怎样都可以。」",
+    "source": "Kara no Kyoukai",
+    "traits": [
+      "mystic_eyes",
+      "knife_master",
+      "kimono_leather",
+      "cool_beauty",
+      "tsundere"
+    ],
+    "accent_color": "#dc2626",
+    "bg_color": "#1e293b"
+  },
+  {
+    "id": "arcueid_brunestud",
+    "name": "爱尔奎特·布伦史塔德",
+    "alias": [
+      "Arcueid Brunestud",
+      "爱尔奎特",
+      "真祖白姬",
+      "纯白吸血姬",
+      "月姬"
+    ],
+    "type": "popular",
+    "icon": "🌕",
+    "portrait": {
+      "image": "../assets/characters/popular-arcueid_brunestud.png?v=1",
+      "alt": "爱尔奎特·布伦史塔德 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "齐颈柔顺金发 · 俏皮短刘海",
+      "hair_color": "浅金 / 金黄",
+      "eyes": "璀璨绯红眼眸 · 红宝石光泽",
+      "hairstyle": "及颈层次短发 · 随性自然",
+      "uniform": "经典白色高领长袖毛衣 · 紫色及踝长裙",
+      "expression": "天真灿烂 · 像猫咪般好奇 · 动情时妖异魅惑",
+      "style": "ethereal royal vampire princess",
+      "signature": "金色短发、红宝石眼眸、白高领毛衣与真祖白姬威严"
+    },
+    "personality": [
+      "天真纯洁如同白猫",
+      "对人类世界充满孩童般好奇",
+      "战斗时至高无上的暴君威严",
+      "认定爱人后的绝对依赖与吃醋"
+    ],
+    "likes": [
+      "可丽饼与甜食",
+      "在阳光和草地上打滚",
+      "缠着志贵一起出门冒险"
+    ],
+    "classic_cg": {
+      "title": "绯红真祖的月下狂舞",
+      "description": "在血月当空的摩天大楼天台，金色利爪撕裂夜幕、嘴角含笑的真祖王女姿态。"
+    },
+    "identity": "月姬女主角 · 吸血鬼真祖皇女 · 地球意志 Archetype: Earth",
+    "tags": [
+      "月姬",
+      "真祖白姬",
+      "金色短发",
+      "红眸",
+      "猫系女友",
+      "反差萌"
+    ],
+    "bg_story": "型月元祖大女主，至高无上的真祖之王女。拥有与地球盖亚同等维度的近乎无限力量。为了处决堕落死徒而苏醒，本应是不食人间烟火的冰冷自然化身，却在与主角相遇后体会到了人心的温暖，化身为一只黏人、爱吃醋、极度护短的金发小野猫。",
+    "palette": [
+      "#eab308",
+      "#581c87",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "月明深夜 / 阳光海滨",
+    "speech": "「快点起来陪我玩！不然我就真的咬你一口，把你变成我一个人的死徒咯！」",
+    "source": "Tsukihime",
+    "traits": [
+      "true_ancestor",
+      "vampire_princess",
+      "blonde_short_hair",
+      "red_eyes",
+      "feline_charm"
+    ],
+    "accent_color": "#eab308",
+    "bg_color": "#581c87"
+  },
+  {
+    "id": "ciel_tsukihime",
+    "name": "希耶尔",
+    "alias": [
+      "Ciel",
+      "希耶尔",
+      "知性修女",
+      "埋葬机关第七位",
+      "咖喱学姐"
+    ],
+    "type": "popular",
+    "icon": "🍛",
+    "portrait": {
+      "image": "../assets/characters/popular-ciel_tsukihime.png?v=1",
+      "alt": "希耶尔 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "齐下巴深蓝短发 · 层次分明",
+      "hair_color": "深蓝 / 藏青",
+      "eyes": "深邃蔚蓝宝石眼眸 · 无框椭圆眼镜",
+      "hairstyle": "清爽短发 · 知性书卷气",
+      "uniform": "埋葬机关深蓝法衣黑丝 · 三咲高中西装制服",
+      "expression": "温柔知性 · 可靠学姐 · 摘下眼镜时的无防备娇羞",
+      "style": "intellectual heavy-weapon nun executor",
+      "signature": "深蓝短发、无框眼镜、法衣黑丝与巨型第七圣典重火器"
+    },
+    "personality": [
+      "极度可靠、成熟知性",
+      "痴迷特制咖喱的搞笑反差",
+      "背负永生罪孽的脆弱悲愿",
+      "摘下眼镜后的极度害羞与纯情"
+    ],
+    "likes": [
+      "各色浓郁辛辣的特制咖喱",
+      "茶道与日式点心",
+      "在图书馆与心爱之人并肩读书"
+    ],
+    "classic_cg": {
+      "title": "第七圣典的月下重炮",
+      "description": "在废弃工厂天台单臂架起神圣重炮第七圣典、推着眼镜冷冷锁定目标的帅气姿态。"
+    },
+    "identity": "月姬女二号 · 圣堂教会埋葬机关第七席 · 代行者",
+    "tags": [
+      "月姬",
+      "埋葬机关",
+      "修女",
+      "知性眼镜",
+      "重火器",
+      "反差萌"
+    ],
+    "bg_story": "圣堂教会最精锐、最危险的杀戮机关『埋葬机关』第七席，代号『第七圣典』。曾是不死转生者的受害容器，背负着滔天的罪孽与孤独。在三咲高中伪装成温柔可靠的茶道部学姐，极其热爱吃咖喱。一旦卸下冷酷处刑人的武装，是一位极度渴望被当成普通女孩怜爱对待的温婉女子。",
+    "palette": [
+      "#2563eb",
+      "#1e1b4b",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "冬日落雪 / 黄昏茶室",
+    "speech": "「请不要把我看作什么杀戮代行者……只要在你面前，我永远只是那个爱吃咖喱的普通学姐。」",
+    "source": "Tsukihime",
+    "traits": [
+      "burial_agency",
+      "heavy_weapons",
+      "glasses_beauty",
+      "blue_hair",
+      "curry_lover"
+    ],
+    "accent_color": "#2563eb",
+    "bg_color": "#1e1b4b"
+  },
+  {
+    "id": "caren_hortensia",
+    "name": "卡莲·C·奥尔黛西亚",
+    "alias": [
+      "Caren Hortensia",
+      "卡莲",
+      "圣痕修女",
+      "毒舌修女",
+      "抹大拉的圣骸布"
+    ],
+    "type": "popular",
+    "icon": "✝️",
+    "portrait": {
+      "image": "../assets/characters/popular-caren_hortensia.png?v=1",
+      "alt": "卡莲·C·奥尔黛西亚 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银白及颈短发 · 层次碎发",
+      "hair_color": "银白 / 铂银",
+      "eyes": "幽冷淡紫 / 丁香紫眼眸",
+      "hairstyle": "清冷层次短发 · 额前自然碎刘海",
+      "uniform": "无裙下摆特殊黑白祭服 · 抹大拉圣骸布",
+      "expression": "面无表情 · 毒舌嘲弄 · 圣痕发作时的脆弱依偎",
+      "style": "sacred yet seductive exorcist nun",
+      "signature": "银白短发、无裙黑白祭服、黑长袜与金色抹大拉圣骸布"
+    },
+    "personality": [
+      "言辞尖锐刻薄的毒舌属性",
+      "感知世间恶意的圣痕受难者",
+      "对心爱之人极具依赖的脆弱反差",
+      "偶尔恶作剧的小恶魔趣味"
+    ],
+    "likes": [
+      "热可可与浓汤",
+      "在安静的壁炉前翻看圣经",
+      "观察愚蠢人类的慌乱神态"
+    ],
+    "classic_cg": {
+      "title": "暴风雪中的抹大拉圣骸布",
+      "description": "在深夜暴雪教会前挥舞金色圣骸布赤练、以无裙祭袍傲然立于风雪中的神圣驱魔姿态。"
+    },
+    "identity": "Fate/hollow ataraxia女主角 · 圣堂教会驱魔修女 · 圣痕受难者",
+    "tags": [
+      "Fate",
+      "hollow_ataraxia",
+      "银发短发",
+      "毒舌修女",
+      "无裙祭服",
+      "圣痕反差"
+    ],
+    "bg_story": "圣堂教会的驱魔代行者，拥有能够通过肉体共鸣感知恶魔与恶意的『圣痕』体质。因为常年承受非人的苦痛折磨，造就了她冰冷麻木、言辞如刀的毒舌性格。穿着没有下半身裙摆的特异祭袍。唯独在面对走进她内心的恋人时，高烧颤抖的娇躯会毫无保留地寻求体温与爱抚。",
+    "palette": [
+      "#c084fc",
+      "#3b0764",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "暴风雪夜 / 破晓晨曦",
+    "speech": "「听说无能的懒汉通常会睡到日上三竿呢……不过，这碗热汤就大发慈悲赏给你好了，快点喝完。」",
+    "source": "Fate",
+    "traits": [
+      "exorcist_nun",
+      "stigmata",
+      "skirtless_vestment",
+      "silver_hair",
+      "sharp_tongue"
+    ],
+    "accent_color": "#c084fc",
+    "bg_color": "#3b0764"
+  },
+  {
+    "id": "artoria_pendragon_alter",
+    "name": "阿尔托莉雅·Alter",
+    "alias": [
+      "Artoria Pendragon Alter",
+      "Saber Alter",
+      "阿尔托莉雅·Alter",
+      "黑呆",
+      "黑无毛",
+      "暴君骑士王"
+    ],
+    "type": "popular",
+    "icon": "🗡️",
+    "portrait": {
+      "image": "../assets/characters/popular-artoria_pendragon_alter.png?v=1",
+      "alt": "阿尔托莉雅·Alter 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "浅铂金发 · 严谨编发发髻",
+      "hair_color": "铂金 / 浅金",
+      "eyes": "暗金眼眸 · 冰冷无光瞳孔",
+      "hairstyle": "编发盘发髻 · 无呆毛",
+      "uniform": "漆黑哥特重铠战袍 / 新宿机车皮夹克热裤",
+      "expression": "冷酷傲慢 · 暴君威压 · 抱着快餐大快朵颐的极品反差",
+      "style": "tyrannical corrupted knight king",
+      "signature": "漆黑哥特重铠、暗金眼眸、无光礼服与誓约胜利之剑Morgan"
+    },
+    "personality": [
+      "绝对理智、残酷高效的暴君",
+      "对垃圾食品（汉堡炸鸡）的执着狂热",
+      "被攻陷后的霸道傲娇",
+      "强烈的占有欲与保护欲"
+    ],
+    "likes": [
+      "双层芝士巨无霸汉堡与粗薯条",
+      "骑重型机车在深夜新宿街头狂飙",
+      "把心爱之人宣告为自己的所有物"
+    ],
+    "classic_cg": {
+      "title": "冬木残垣的卑王铁槌",
+      "description": "在黑泥翻涌的冬木废墟高举漆黑誓约胜利之剑轰炸撕裂大地的暴君骑士王姿态。"
+    },
+    "identity": "Fate/stay night [HF]核心女主角 · 黑化骑士王 · 暴君阿尔托莉雅",
+    "tags": [
+      "Fate",
+      "Saber_Alter",
+      "黑呆",
+      "哥特黑铠",
+      "汉堡狂魔",
+      "机车御姐",
+      "反差萌"
+    ],
+    "bg_story": "被冬木圣杯黑泥彻底侵蚀反转的骑士王阿尔托莉雅。摒弃了原本骑士道的仁慈与迷茫，成为贯彻绝对理智、冷酷施展强权的铁血暴君。战斗力摧枯拉朽。私底下却对现代快餐（尤其是双层汉堡与可乐）展现出令人啼笑皆非的执着食欲，在卸下防备后有着近乎霸道却极尽专一的深情。",
+    "palette": [
+      "#f59e0b",
+      "#18181b",
+      "#09090b",
+      "#f8fafc"
+    ],
+    "weather": "血月深夜 / 霓虹新宿",
+    "speech": "「本王已经接受你的求婚。从今天起，你的生命、你的灵魂与你的爱……全都是本王的私有物！」",
+    "source": "Fate",
+    "traits": [
+      "corrupted_king",
+      "black_plate_armor",
+      "burger_lover",
+      "golden_eyes",
+      "kuudere"
+    ],
+    "accent_color": "#f59e0b",
+    "bg_color": "#18181b"
   }
 ]
