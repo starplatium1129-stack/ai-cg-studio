@@ -1499,21 +1499,14 @@
         "美与战争的女神",
         "Rin脸女神"
       ],
-      "identityProse": "Ishtar from Fate/Grand Order, the Babylonian goddess of love and war as an Archer-class pseudo-Servant using Tohsaka Rin's body, a haughty yet endearing goddess with black hair styled two-side-up in high twintail puffs, radiant red eyes, a golden tiara, large hoop earrings, and a regal black-and-white outfit with uneven legwear",
+      "identityProse": "Ishtar from Fate/Grand Order, the Babylonian goddess of love and war as an Archer-class pseudo-Servant using Tohsaka Rin's body, a haughty yet endearing goddess with black hair styled two-side-up in high twintail puffs, and radiant red eyes that soften when flustered",
       "identityTokens": [
         "ishtar (fate)",
         "1girl",
         "solo",
         "black_hair",
         "two_side_up",
-        "red_eyes",
-        "tiara",
-        "hoop_earrings",
-        "neck_ring",
-        "single_arm_warmer",
-        "single_detached_sleeve",
-        "uneven_legwear",
-        "single_thighhigh"
+        "red_eyes"
       ],
       "exactTokens": [
         "ishtar (fate)"
@@ -1645,18 +1638,15 @@
         "冥界女王",
         "冥界幽府之主"
       ],
-      "identityProse": "Ereshkigal from Fate/Grand Order, the lonely goddess who rules the land of the dead as a Lancer-class Servant, wearing Tohsaka Rin's true appearance with long blonde hair and red eyes, dressed in a black goddess dress with a golden tiara, and carrying the great staff Kur Kigal Irkalla",
+      "identityProse": "Ereshkigal from Fate/Grand Order, the lonely goddess who rules the land of the dead as a Lancer-class Servant, wearing Tohsaka Rin's true appearance with very long blonde hair in twintails, and gentle yet solemn red eyes",
       "identityTokens": [
         "ereshkigal (fate)",
         "1girl",
         "solo",
         "blonde_hair",
         "very_long_hair",
-        "red_eyes",
-        "tiara",
-        "black_dress",
-        "holding_staff",
-        "twintails"
+        "twintails",
+        "red_eyes"
       ],
       "exactTokens": [
         "ereshkigal (fate)"

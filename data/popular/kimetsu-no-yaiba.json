@@ -14,7 +14,7 @@
         "蝶屋敷主人",
         "紫藤姐姐"
       ],
-      "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira and master of the Butterfly Mansion, a petite, eternally-smiling beauty with pale skin, purple eyes, and two-tone black wavy hair that fades to dark purple, styled in a bun fastened with a butterfly hair ornament",
+      "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira and master of the Butterfly Mansion, a petite, eternally-smiling beauty with pale skin, purple eyes, and two-tone black wavy hair that fades to dark purple",
       "identityTokens": [
         "kochou_shinobu",
         "1girl",
@@ -24,8 +24,6 @@
         "two-tone_hair",
         "gradient_hair",
         "wavy_hair",
-        "hair_bun",
-        "butterfly_hair_ornament",
         "purple_eyes",
         "pale_skin",
         "smile"
@@ -75,7 +73,9 @@
             "waraji",
             "haori",
             "butterfly_print",
-            "animal_print"
+            "animal_print",
+            "hair_bun",
+            "butterfly_hair_ornament"
           ],
           "default": true,
           "isDefault": true
