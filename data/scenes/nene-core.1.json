@@ -1665,11 +1665,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, yukata, bare_legs, standing, barefoot, turning, partner, bright, warm_lighting, bokeh, depth_of_field, collarbone, slender_waist, full_body, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, light_blue_yukata, bare_legs, geta, turning_around, looking_at_viewer, shy_smile, reaching_towards_viewer, night_sky, fireworks, red_paper_lanterns, festival_crowd_bokeh, depth_of_field, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, nsfw, nude, explicit, letters, words, numbers, captions, signage, gibberish, scribbles, prints, logos, watermarks, patterns_on_clothing, writing, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "storyJa": "【寧々・花火大会を横から見たところ】夏の夜祭りで、寧々は提灯と観客の間に浴衣姿で立ち、見上げながら次の花火の花束を待っていました。紫色の瞳に華やかな光と影が重ねて咲いたでも一番大きな瞬間に彼女は君に向き直って微笑んで君の手を掴んだ――「花火は綺麗ですけど、すぐ消えてしまいます。だから、ちゃんと覚えていてください……今夜、私があなたの隣にいた姿を。」",
     "rating": "All",
-    "animaCaption": "At a summer night festival, Ayachi Nene in a light blue yukata stands with wooden geta between lanterns and the crowd, looking up at a blooming firework display, at the brightest moment turning to her partner with a smile and grabbing the partner's hand.",
+    "animaCaption": "At a summer night festival, Ayachi Nene in a light blue yukata stands with wooden geta between lanterns and the crowd, looking up at a blooming firework display, then turning toward the viewer with a shy radiant smile, reaching her hand out.",
     "auditRevision": "careful-batch09-2026-08-27"
   },
   {
@@ -1836,21 +1836,21 @@
       "full_body",
       "mary_jane",
       "depth_of_field",
-      "lap_pillow"
+      "lying_down"
     ],
     "mature": false,
     "location": "客厅",
     "weather": "晴",
     "camera": "膝上主观面部特写",
     "lighting": "秋日下午柔和窗光",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, silk_slip, pink_camisole, lace_trim, spaghetti_straps, falling_strap, bare_shoulders, cleavage, bare_legs, resting_head_on_partner_lap, lying_down, looking_up_at_viewer, affectionate_gaze, gentle_smile, heavy_blush, tatami_room, afternoon_light, cozy, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, silk_slip, pink_camisole, lace_trim, spaghetti_straps, falling_strap, bare_shoulders, cleavage, bare_legs, lying_down, looking_up_at_viewer, head_tilt, close-up, affectionate_gaze, gentle_smile, heavy_blush, tatami_room, tatami_mat, afternoon_light, cozy, sensual, depth_of_field, collarbone, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_clothes, pajamas",
     "usage": [
       "展示图"
     ],
     "storyJa": "【寧々・膝に映る目】秋の午後、寧々はあなたの膝の上に寝そべって、窓の外に揺れる木々の影を眺めていましたが、突然顔を向けてあなたを真剣に見つめました。この角度からは普段無視していた表情が見えると言い、そっと掌紋を指でなぞってくれました。何を考えているのかと尋ねると、彼女は目を細めて微笑んだ。――「好きな人がまだここにいるか、確かめていたんです。答えは変わっていないから、安心してもう少し眠れます。」",
     "rating": "All",
-    "animaCaption": "Lying with her head in the viewer's lap on a sunlit sofa, Ayachi Nene in a soft pink knit sweater and pleated miniskirt shows silky white thighhighs hugging smooth thighs with a thigh gap, white Mary Janes on the rug, looking up with a moist, loving gaze.",
+    "animaCaption": "Lying on the tatami mat on a sunlit afternoon in a first-person POV perspective, Ayachi Nene in a soft pink knit camisole and silk slip tilts her head slightly, looking directly up at the viewer with an affectionate, moist gaze and a gentle loving blush.",
     "auditRevision": "careful-batch01-2026-08-27"
   },
   {

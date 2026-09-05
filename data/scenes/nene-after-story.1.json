@@ -950,7 +950,7 @@
       "backless_dress",
       "bare_back",
       "bare_shoulders",
-      "sitting_on_lap",
+      "kneeling_on_bed",
       "straddling_viewer",
       "grabbing_viewer_shoulders",
       "tears_in_eyes",
@@ -971,11 +971,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, dark, pink, bare, back, shoulders, sitting, straddling, sitting_on_lap, both, hands, grabbing, smooth, satin, fabric, blush, late, night, private, depth_of_field, collarbone, slender_waist, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, dark_pink_camisole, satin_fabric, bare_back, bare_shoulders, cleavage, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, hands_gripping_bedsheets, heavy_blush, bedroom, on_bed, late_night, private_room, depth_of_field, collarbone, slender_waist, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, underwear, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "storyJa": "【寧々・大人のアフターストーリー・・サテンスカートがとってもエモい】深夜の静かな個人勉強。あなたの強引なリクエストに応じて、寧々は非常にセクシーで魅惑的なダークピンクのサテンのバックレスサスペンダースカートを着ました。この瞬間、彼女はあなたの足の上にそっと座っており、滑らかで繊細なサテン生地が彼女の完璧なボディの曲線にぴったりと張り付いています。両手であなたの肩をしっかりと抱き、頭の上のアホ毛は愛のあまりに完全にエロティックなハート型に崩れ落ちています。彼女は涙ぐんだ目であなたを見下ろし、彼女の温かい息があなたの首にかかりました。――「柊史……こうしていると、すごく暖かいです。魔女の心も、今夜は全部あなたのものですよ。」",
     "rating": "R15",
-    "animaCaption": "In the silent private study at midnight, Ayachi Nene in a dark pink satin backless slip dress that clings to her curves straddles the viewer's lap, gripping his shoulders with teary eyes as she looks down. The desk lamp traces warm side light over her bare back and heart-shaped ahoge.",
+    "animaCaption": "Late at night in the private master bedroom, Nene in a dark pink satin slip kneels on the disheveled bed, leaning forward in an intimate first-person POV close-up, hands gripping the smooth sheets with a heavy blush under the warm bedside rim lighting.",
     "auditRevision": "careful-batch14-2026-08-27"
   },
   {
@@ -1184,7 +1184,7 @@
       "hair_ribbon",
       "black_bikini",
       "string_bikini",
-      "sitting_on_lap",
+      "sitting_on_edge",
       "straddling_viewer",
       "pool_edge",
       "bare_legs",
@@ -1204,11 +1204,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing, tiny, black, water, droplets, pale, sitting, straddling, sitting_on_lap, shy_smile, smooth, bare, thighs, blush, silent, summer, night, depth_of_field, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, tiny_black_bikini, wet_skin, water_droplets, cleavage, bare_thighs, sitting_on_edge, poolside, leaning_forward, close-up, looking_at_viewer, shy_smile, heavy_blush, poolside_lighting, water_reflections, silent_summer_night, depth_of_field, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, clothes, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "storyJa": "【寧々・大人のアフターストーリー・・極エロマイクロビキニ】夏の夜、プライベートヴィラの屋外プールは静かです。波打つ青い水が空の星を映していました。今夜の寧々はあなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。生地は非常にまばらで、彼女のふくよかで誇らしいラインを隠すことができませんでした。彼女の全身は透き通った水滴で覆われ、雪のように白く繊細な肌の広い範囲が冷たい月光にさらされていました。彼女は恥知らずにも手で胸を守り、プールサイドであなたの膝にまたがって座ります。彼女の頭の上のアホ毛は、感情的な過負荷のためにすでに狂ったようにカールしてハート型の螺旋を描いています。――「帯がほどけそうです……見ちゃだめですよ！　今夜の魔女は……あなたにだけ、少しわがままを聞いてほしいんです。」",
     "rating": "R15",
-    "animaCaption": "On a silent summer night beside the private villa pool, Ayachi Nene in a tiny black string bikini barely covering her curves sits astride the viewer's knees at the pool edge, water droplets glistening on her pale skin under the cool moonlight. She shyly shields her chest with both hands, blushing with a heart-shaped ahoge while stars reflect in the rippling water.",
+    "animaCaption": "On a silent summer night by the private rooftop pool, Nene in a tiny black bikini sits on the poolside edge, water droplets glistening on her pale skin, leaning forward toward the viewer with a shy smile and trembling blush under the gentle pool light reflections.",
     "auditRevision": "careful-batch09-2026-08-27"
   },
   {
@@ -1750,7 +1750,7 @@
       "oversized_shirt",
       "unbuttoned_shirt",
       "bare_shoulders",
-      "sitting_on_lap",
+      "kneeling_on_bed",
       "straddling_viewer",
       "bare_legs",
       "bedroom",
@@ -1772,11 +1772,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink, hair, ribbon, wearing, only, loose, sitting, straddling, sitting_on_lap, blush, warm, breath, quick, bedroom, on_bed, depth_of_field, collarbone, slender_waist, morning_light, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, loose_white_shirt, off-shoulder, bare_shoulders, cleavage, no_pants, bare_legs, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, heavy_blush, warm_breath, open_mouth, bedroom, on_bed, morning_light, backlight, sunbeam, depth_of_field, collarbone, slender_waist, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "storyJa": "【寧々・大人のアフターストーリー・・・結婚式の朝に絶対堕ちる】白いガーゼ越しに、散らかったベッドに朝の日差しが柔らかく差し込む。寧々はだぶだぶの白いシャツを着ているだけで、ボタンは全開で、半分露出した肩と繊細な鎖骨が致命的な誘惑をにじみ出させています。彼女は熱い顔であなたにまたがり、ヘアバンドは片側に乱雑に散らばっており、頭のアホ毛はすでに柔らかくなり、極度の感情のために完璧な愛の形に結ばれていました。彼女はとろけそうなぼやけた目であなたを見下ろし、呼吸が速くなりました。――「もう、朝からからかわないでください……魔女のおはようのキス、まだ足りないんですから。」",
     "rating": "R15",
-    "animaCaption": "In the morning light filtered through white sheer curtains, Ayachi Nene wearing only the viewer's loose white shirt with the buttons wide open straddles his waist, her bared shoulder and collarbone glowing in the backlight. Her pink ribbon lies aside on the sheet; she looks down with a melting dazed blush and heart-shaped ahoge, breathing fast.",
+    "animaCaption": "In the morning sunlight, Nene in only an oversized loose white shirt kneels on the bed, leaning in close in an intimate POV view, her warm breath quick and cheeks flushed with a sleepy, obedient blush as golden morning light backlights her silver twintails.",
     "auditRevision": "careful-batch11-2026-08-27"
   },
   {
@@ -2085,7 +2085,7 @@
       "unbuttoned_shirt",
       "no_underwear",
       "cleavage",
-      "sitting_on_lap",
+      "kneeling_on_bed",
       "straddling_viewer",
       "grabbing_viewer_shirt",
       "bare_legs",
@@ -2107,11 +2107,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink, hair, ribbon, sweater, oversized_sweater, sweating, sitting, straddling, sitting_on_lap, blush, bedroom, on_bed, depth_of_field, collarbone, slender_waist, warm_lighting, soft_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, oversized_knit_sweater, beige_sweater, off-shoulder, bare_legs, no_pants, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, reaching_towards_viewer, sweating, heavy_blush, bedroom, on_bed, warm_lighting, soft_lighting, depth_of_field, collarbone, slender_waist, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "storyJa": "【寧々・大人のアフターストーリー · ·ニットセーターバキューム極高エネルギー】深夜、鍵のかかった寝室は息が詰まるほど熱い空気が漂っていた。寧々は、昼間のツンデレのせいで、あなたによって「柊史……このニット、やっぱり変じゃないですか？　そんなに見つめないで……早く寧々を抱きしめてください。」",
     "rating": "R15",
-    "animaCaption": "In the hot locked bedroom late at night, Ayachi Nene wearing only the viewer's loose knit sweater with the front buttons completely undone, nothing underneath, sits astride him gripping his shirt front with both hands. Her exposed chest flushes as she looks down with dazed teary eyes, a heart-shaped ahoge and her fallen pink ribbon on the sheet.",
+    "animaCaption": "In the quiet warm bedroom at midnight, Nene wearing an oversized beige knit sweater kneels on the bed, leaning forward in a vulnerable POV composition, reaching toward the viewer with sweat on her flushed cheeks and an intensely sweet, affectionate gaze.",
     "auditRevision": "careful-batch11-2026-08-27"
   },
   {
