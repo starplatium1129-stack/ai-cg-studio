@@ -132,7 +132,7 @@ for (const character of characters) {
     const existing = manifest.entries.find(e => e.id === entryId && e.type === 'popular');
     if (REDO_MINE) {
       // 只重出由旧版 gap-render 生成的条目（provenance notes 指纹识别），绝不覆盖用户手动上传或其他来源的样张
-      if (!existing || !/gap-render/.test(existing.provenance?.review?.notes || existing.provenance?.notes || '')) continue;
+      if (!existing || !/(?:gap-render|fill-gaps 批量补齐)/.test(existing.provenance?.review?.notes || existing.provenance?.notes || '')) continue;
     } else if (have.has(entryId)) continue;
     const [w, h] = String(bp.recommendedSize || '832x1216').split('x').map(Number);
     tasks.push({ character, bp, entryId, width: w || 832, height: h || 1216 });
