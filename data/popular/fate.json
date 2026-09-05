@@ -68,6 +68,22 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "bridal_dress",
+          "name": "纯白誓约露肩花嫁婚纱",
+          "prose": "an exquisite strapless white bridal gown with delicate lace embroidery, sheer translucent veil cascading over her golden braided updo, and an exposed sweetheart neckline",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "strapless_dress",
+            "bare_shoulders",
+            "cleavage",
+            "white_dress",
+            "lace_trim"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ],
       "canon": {
@@ -166,6 +182,43 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "bunny_suit",
+          "name": "深红魅惑漆皮兔女郎装",
+          "prose": "a glossy crimson latex bunny suit clinging to her slender waist, black bunny ears, white collar and bowtie, sheer black pantyhose, and stiletto heels",
+          "tokens": [
+            "bunny_suit",
+            "red_bunny_suit",
+            "glossy_latex",
+            "bunny_ears",
+            "bowtie",
+            "cuffs",
+            "bare_shoulders",
+            "cleavage",
+            "black_pantyhose",
+            "high_heels"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "virgin_killer_sweater",
+          "name": "赤红露背高领毛衣",
+          "prose": "her signature crimson shade in a virgin killer backless turtleneck sweater, bare back, prominent sideboob, and black thigh-high socks",
+          "tokens": [
+            "virgin_killer_sweater",
+            "red_sweater",
+            "backless_sweater",
+            "turtleneck_sweater",
+            "sleeveless_sweater",
+            "sideboob",
+            "bare_back",
+            "bare_shoulders",
+            "black_thighhighs"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ],
       "canon": {
