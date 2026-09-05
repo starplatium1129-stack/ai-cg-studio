@@ -150,7 +150,8 @@ function buildPrompt(identityProse, identity, outfitProse, outfit, viewTags) {
 //      anima-model-catalog 中 base/2.9b/yume 均列出 960x1536）
 const prodBuildWorkflow = require(path.join(ROOT, 'routes', 'anima', 'workflows.js')).buildWorkflow;
 const { MODELS } = require(path.join(ROOT, 'server', 'anima-model-catalog.js'));
-const MODEL_ID = 'anima-aesthetic-v1.1';
+// 2026-09-06：按用户指定参考库本轮统一切 MiaoMiao Harem Anima v1.6（TeaCache 生产默认不变）。
+const MODEL_ID = 'anima-miaomiao-v1.6';
 const MODEL = MODELS[MODEL_ID];
 
 function buildWorkflow(text, seed) {

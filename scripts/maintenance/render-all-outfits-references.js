@@ -5,7 +5,7 @@
  * 全量 35 角色 × 多服装形态（177 套服装 · 708 张）4 视角电影级资产批量渲染与断点续跑脚本
  * 
  * 规范：
- * - 引擎：MiaoMiao Harem Anima v1.2（半厚涂通透质感、二次元肉感解剖、高稳定性）
+ * - 引擎：MiaoMiao Harem Anima v1.6（2026-09-06 由 v1.2 升级，用户指定；TeaCache 加速全开）
  * - 并发：3 并发任务池（安全稳定不爆显存）
  * - 尺寸：832 × 1216（兼顾出图速度与画面精细度）
  * - 容错与断点：已存在且体积 > 10KB 的图片自动跳过；异常自动重试
@@ -16,7 +16,13 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
-const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
+// 2026-08-29 参考图迁出项目 → AI 工作区 CharacterReferences（运行时 /character-references 服务根）；
+// 新渲染直接落服务根，避免项目内副本与服务根漂移（与 sync-multi-outfit-standards.js 同一解析规则）。
+const OUT_BASE = (() => {
+  const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+  const candidate = path.join(ws, 'CharacterReferences');
+  return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
+})();
 const BASE = process.env.GATEWAY_URL || process.env.BASE || 'http://127.0.0.1:3123';
 const CONCURRENCY = 3;
 
@@ -85,6 +91,9 @@ function collectTasks() {
       fs.mkdirSync(targetDir, { recursive: true });
 
       for (const pers of standards.perspectives) {
+        // 设计图三视图（ref_design_*）归 reference:design / render-design-sheets.js 专管：
+        // 本脚本无其构图配置，混入只会逐任务三次空转失败（2026-09-06 修正）。
+        if (!PERSPECTIVE_CONFIGS[pers.id]) continue;
         const targetPath = path.join(targetDir, `${pers.id}.png`);
         
         // 检查是否已经存在（并且大小合格）
@@ -117,7 +126,7 @@ async function renderImage(task) {
   const { prompt, negative } = buildPrompt(char, outfit, task.persId);
 
   const payload = {
-    modelId: 'anima-miaomiao-v1.2',
+    modelId: 'anima-miaomiao-v1.6',
     prompt,
     negative,
     width: 832,

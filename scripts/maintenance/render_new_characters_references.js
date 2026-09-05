@@ -6,7 +6,13 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
-const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
+// 2026-08-29 参考图迁出项目 → AI 工作区 CharacterReferences（运行时 /character-references 服务根）；
+// 新渲染直接落服务根（与 render-all-outfits-references.js 同一解析规则）。
+const OUT_BASE = (() => {
+  const ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
+  const candidate = path.join(ws, 'CharacterReferences');
+  return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
+})();
 const BASE = process.env.GATEWAY_URL || 'http://127.0.0.1:3000';
 const CONCURRENCY = 3;
 
@@ -107,7 +113,7 @@ async function renderImage(task) {
   const { prompt, negative } = buildPrompt(charProfile, outfit, task.persId);
 
   const payload = {
-    modelId: 'anima-miaomiao-v1.2',
+    modelId: 'anima-miaomiao-v1.6',
     prompt,
     negative,
     width: 832,
