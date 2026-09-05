@@ -20,6 +20,7 @@ colors:
   info: "#90CAF9"
   # 2026-08-28: 浅色主题已下线（美术审计 · 方案 A），light-* 字段随之一并移除。
   # 2026-09-01: 升级为甜系 Galgame 夜主题：高饱和樱花粉 + 薰衣草紫。
+  # 2026-09-02: 方向 A 二次元博客质感优化：基底调校为澄澈绀蓝夜空、升级日系药丸胶囊微光标签与亚克力边缘高光。
   # 深色是唯一主题，上面的 primary / surface / text-* 即唯一真相。
   # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
   #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
