@@ -5709,10 +5709,10 @@
       "alt": "银镜伊织 样张立绘"
     },
     "visual_dna": {
-      "hair": "银白色顺滑双马尾",
+      "hair": "银白色顺滑双马尾 · 斜刘海遮单眼",
       "hair_color": "纯银白",
       "eyes": "赤红血瞳 · 小虎牙",
-      "hairstyle": "长双马尾 · 黑色兔耳发带 · 锯齿尖刺光环",
+      "hairstyle": "长双马尾 · 黑色兔耳发带 · 浅紫准星光环",
       "uniform": "歌赫娜风纪委员会黑红军装 · 黑色过膝袜军靴",
       "expression": "傲娇刚烈 · 羞怒炸毛 · 战意高昂",
       "style": "fierce tanned demon prefect",
@@ -5745,7 +5745,7 @@
       "黑皮褐肤",
       "白发双马尾",
       "兔耳发带",
-      "黑光环",
+      "浅紫准星光环",
       "狙击枪",
       "风纪委员会"
     ],
@@ -5772,6 +5772,7 @@
       "silver_hair",
       "white_hair",
       "twintails",
+      "hair_over_one_eye",
       "red_eyes",
       "hair_ribbon",
       "pointy_ears",
