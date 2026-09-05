@@ -865,10 +865,13 @@ export const QUALITY_OR_SCORE_RE = new RegExp(`^(?:${QUALITY_WORDS.join('|')}|sc
 /** 同一画面里出现两个以上服装族系会互相打架（校服 vs 泳装 vs 浴衣…） */
 const OUTFIT_FAMILIES: Array<{ name: string; tokens: string[] }> = [
   { name: '校服/水手服', tokens: ['school_uniform', 'sailor_uniform', 'blazer', 'serafuku', 'sailor_shirt', 'pleated_skirt', 'plaid_skirt'] },
-  { name: '泳装', tokens: ['swimsuit', 'school_swimsuit', 'one-piece_swimsuit', 'wet_swimsuit', 'tight_swimsuit', 'bikini'] },
+  { name: '泳装/水着', tokens: ['swimsuit', 'school_swimsuit', 'one-piece_swimsuit', 'wet_swimsuit', 'tight_swimsuit', 'bikini', 'triangle_bikini', 'front-tie_bikini', 'bandeau_bikini', 'criss-cross_bikini', 'micro_bikini', 'competitive_swimsuit', 'highleg_swimsuit'] },
   { name: '和服/旗袍', tokens: ['kimono', 'yukata', 'furisode', 'hakama', 'japanese_clothes', 'cheongsam', 'qipao', 'china_dress', 'hanbok'] },
-  { name: '睡衣/居家', tokens: ['pajamas', 'nightgown', 'sleepwear', 'roomwear'] },
+  { name: '睡衣/薄纱私密', tokens: ['pajamas', 'nightgown', 'sleepwear', 'roomwear', 'sheer_babydoll', 'open-front_negligee', 'silk_slip'] },
   { name: '女仆/侍应', tokens: ['maid', 'maid_apron', 'maid_headdress', 'waitress', 'cafe_uniform'] },
+  { name: '毛衣/针织战袍', tokens: ['virgin_killer_sweater', 'backless_sweater', 'turtleneck_sweater', 'ribbed_sweater', 'oversized_sweater', 'off_shoulder_sweater', 'keyhole_sweater'] },
+  { name: '兔女郎/紧身连体衣', tokens: ['bunny_suit', 'sheer_bunny_suit', 'reverse_bunny_suit', 'bodysuit', 'sleeveless_bodysuit', 'latex_catsuit'] },
+  { name: '节日/角色扮演', tokens: ['santa_costume', 'santa_capelet', 'succubus_costume'] },
   { name: '浴巾/半裸围裙', tokens: ['naked_apron', 'apron_only', 'bath_towel', 'towel_around_body', 'slipping_towel'] },
 ]
 

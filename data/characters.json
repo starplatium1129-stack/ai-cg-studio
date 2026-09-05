@@ -137,6 +137,50 @@
           "polka_dot",
           "short_sleeves",
           "twin_braids"
+        ],
+        "special_virgin_killer": [
+          "virgin_killer_sweater",
+          "backless_sweater",
+          "turtleneck_sweater",
+          "sleeveless_sweater",
+          "sideboob",
+          "bare_back",
+          "bare_shoulders",
+          "bare_legs",
+          "frilled_socks"
+        ],
+        "special_sheer_bunny": [
+          "sheer_bunny_suit",
+          "bunny_suit",
+          "bunny_ears",
+          "translucent_cloth",
+          "see-through",
+          "cleavage_cutout",
+          "bare_shoulders",
+          "garter_straps",
+          "black_thighhighs",
+          "stiletto_heels"
+        ],
+        "special_front_tie_bikini": [
+          "front-tie_bikini",
+          "triangle_bikini",
+          "striped_bikini",
+          "side-tie_panties",
+          "cleavage",
+          "bare_shoulders",
+          "bare_midriff",
+          "barefoot"
+        ],
+        "special_santa": [
+          "santa_costume",
+          "red_dress",
+          "white_fur_trim",
+          "santa_hat",
+          "santa_capelet",
+          "off_shoulder",
+          "black_belt",
+          "white_thighhighs",
+          "black_boots"
         ]
       }
     },
@@ -295,6 +339,48 @@
           "blue_shirt",
           "pillow",
           "on_bed"
+        ],
+        "special_virgin_killer": [
+          "virgin_killer_sweater",
+          "black_sweater",
+          "backless_sweater",
+          "turtleneck_sweater",
+          "sleeveless_sweater",
+          "sideboob",
+          "bare_back",
+          "bare_shoulders",
+          "bare_legs"
+        ],
+        "special_glossy_bunny": [
+          "bunny_suit",
+          "glossy_latex",
+          "bunny_ears",
+          "bowtie",
+          "cuffs",
+          "bare_shoulders",
+          "cleavage",
+          "fishnet_thighhighs",
+          "high_heels"
+        ],
+        "special_criss_cross_bikini": [
+          "criss-cross_bikini",
+          "black_bikini",
+          "wrap_bikini",
+          "side-tie_panties",
+          "midriff_straps",
+          "cleavage",
+          "bare_midriff",
+          "barefoot"
+        ],
+        "special_velvet_santa": [
+          "santa_costume",
+          "red_dress",
+          "white_fur_trim",
+          "santa_hat",
+          "off_shoulder",
+          "black_belt",
+          "black_thighhighs",
+          "high_heels"
         ]
       }
     },
