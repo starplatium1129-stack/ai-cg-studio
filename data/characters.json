@@ -1244,6 +1244,76 @@
     "bg_color": "#0f172a"
   },
   {
+    "id": "shokuhou_misaki",
+    "name": "食蜂操祈",
+    "alias": [
+      "Shokuhou Misaki",
+      "食蜂操祈",
+      "女王蜂",
+      "Mental Out",
+      "心理掌握",
+      "常盘台女王"
+    ],
+    "type": "popular",
+    "icon": "👑",
+    "portrait": {
+      "image": "../assets/characters/popular-shokuhou_misaki.png?v=1",
+      "alt": "食蜂操祈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金色超长发 · 女王卷",
+      "hair_color": "蜜金 / 浅金",
+      "eyes": "黄棕瞳 · 标志性星形瞳孔",
+      "hairstyle": "超长直发自然垂落",
+      "uniform": "常盘台制服 · 米色背心与蛛网白手套",
+      "expression": "从容自信 · 撒娇时星瞳发亮 · 意外怕吃亏",
+      "style": "queen bee mental-out esper",
+      "signature": "星形瞳孔、蛛网白手套、遥控器手提包"
+    },
+    "personality": [
+      "常盘台的女王蜂与天生领袖",
+      "对认定之人占有欲全开的甜",
+      "绝不让自己吃亏的精明",
+      "能力越强越怕『被真心操纵』的柔软"
+    ],
+    "likes": [
+      "珍珠奶茶与甜品",
+      "对你的心理掌握（自称）",
+      "被夸奖时的星瞳发亮"
+    ],
+    "classic_cg": {
+      "title": "女王的加冕沉腰",
+      "description": "遥控器抵在胸前如权杖，星瞳迷离里完成只属于你的加冕。"
+    },
+    "identity": "某科学的超电磁炮 女主角之一 · 学园都市第五位 Level 5 · 心理掌握（Mental Out）",
+    "tags": [
+      "某科学的超电磁炮",
+      "Level 5",
+      "女王蜂",
+      "金发星瞳",
+      "常盘台",
+      "心理掌握"
+    ],
+    "bg_story": "学园都市第五位的超能力者，以『心理掌握』操控人心的女王蜂。她可以操纵任何人的记忆与情感，唯独不肯对你用——因为她要的从来不是被操纵的忠诚，而是你清醒着、自愿走过来牵她的手。这份笨拙的骄傲，比任何支配都更像女王。",
+    "palette": [
+      "#fbbf24",
+      "#f8fafc",
+      "#78350f",
+      "#a855f7"
+    ],
+    "weather": "学园都市的晴日 / 深夜宿舍的台灯下",
+    "speech": "「本小姐的心理掌握对你永久失效——因为你的心，根本不需要操纵就会走过来♪」",
+    "source": "鎌池和馬《魔法禁书目录》/ 冬川基《某科学的超电磁炮 / A Certain Scientific Railgun》",
+    "traits": [
+      "mental_out",
+      "queen_bee",
+      "star_pupils",
+      "tokiwadai"
+    ],
+    "accent_color": "#fbbf24",
+    "bg_color": "#78350f"
+  },
+  {
     "id": "makima",
     "name": "玛奇玛",
     "alias": [
@@ -4932,6 +5002,425 @@
     "series": "TYPE-MOON《Fate 系列》"
   },
   {
+    "id": "caren_hortensia",
+    "name": "卡莲·C·奥尔黛西亚",
+    "alias": [
+      "Caren Hortensia",
+      "卡莲",
+      "圣痕修女",
+      "毒舌修女",
+      "抹大拉的圣骸布"
+    ],
+    "type": "popular",
+    "icon": "✝️",
+    "portrait": {
+      "image": "../assets/characters/popular-caren_hortensia.png?v=1",
+      "alt": "卡莲·C·奥尔黛西亚 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银白及颈短发 · 层次碎发",
+      "hair_color": "银白 / 铂银",
+      "eyes": "幽冷淡紫 / 丁香紫眼眸",
+      "hairstyle": "清冷层次短发 · 额前自然碎刘海",
+      "uniform": "无裙下摆特殊黑白祭服 · 抹大拉圣骸布",
+      "expression": "面无表情 · 毒舌嘲弄 · 圣痕发作时的脆弱依偎",
+      "style": "sacred yet seductive exorcist nun",
+      "signature": "银白短发、无裙黑白祭服、黑长袜与金色抹大拉圣骸布"
+    },
+    "personality": [
+      "言辞尖锐刻薄的毒舌属性",
+      "感知世间恶意的圣痕受难者",
+      "对心爱之人极具依赖的脆弱反差",
+      "偶尔恶作剧的小恶魔趣味"
+    ],
+    "likes": [
+      "热可可与浓汤",
+      "在安静的壁炉前翻看圣经",
+      "观察愚蠢人类的慌乱神态"
+    ],
+    "classic_cg": {
+      "title": "暴风雪中的抹大拉圣骸布",
+      "description": "在深夜暴雪教会前挥舞金色圣骸布赤练、以无裙祭袍傲然立于风雪中的神圣驱魔姿态。"
+    },
+    "identity": "Fate/hollow ataraxia女主角 · 圣堂教会驱魔修女 · 圣痕受难者",
+    "tags": [
+      "Fate",
+      "hollow_ataraxia",
+      "银发短发",
+      "毒舌修女",
+      "无裙祭服",
+      "圣痕反差"
+    ],
+    "bg_story": "圣堂教会的驱魔代行者，拥有能够通过肉体共鸣感知恶魔与恶意的『圣痕』体质。因为常年承受非人的苦痛折磨，造就了她冰冷麻木、言辞如刀的毒舌性格。穿着没有下半身裙摆的特异祭袍。唯独在面对走进她内心的恋人时，高烧颤抖的娇躯会毫无保留地寻求体温与爱抚。",
+    "palette": [
+      "#c084fc",
+      "#3b0764",
+      "#0f172a",
+      "#f8fafc"
+    ],
+    "weather": "暴风雪夜 / 破晓晨曦",
+    "speech": "「听说无能的懒汉通常会睡到日上三竿呢……不过，这碗热汤就大发慈悲赏给你好了，快点喝完。」",
+    "source": "TYPE-MOON《Fate 系列》",
+    "traits": [
+      "exorcist_nun",
+      "stigmata",
+      "skirtless_vestment",
+      "silver_hair",
+      "sharp_tongue"
+    ],
+    "accent_color": "#c084fc",
+    "bg_color": "#3b0764"
+  },
+  {
+    "id": "artoria_pendragon_alter",
+    "name": "阿尔托莉雅·Alter",
+    "alias": [
+      "Artoria Pendragon Alter",
+      "Saber Alter",
+      "阿尔托莉雅·Alter",
+      "黑呆",
+      "黑无毛",
+      "暴君骑士王"
+    ],
+    "type": "popular",
+    "icon": "🗡️",
+    "portrait": {
+      "image": "../assets/characters/popular-artoria_pendragon_alter.png?v=1",
+      "alt": "阿尔托莉雅·Alter 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "浅铂金发 · 严谨编发发髻",
+      "hair_color": "铂金 / 浅金",
+      "eyes": "暗金眼眸 · 冰冷无光瞳孔",
+      "hairstyle": "编发盘发髻 · 无呆毛",
+      "uniform": "漆黑哥特重铠战袍 / 新宿机车皮夹克热裤",
+      "expression": "冷酷傲慢 · 暴君威压 · 抱着快餐大快朵颐的极品反差",
+      "style": "tyrannical corrupted knight king",
+      "signature": "漆黑哥特重铠、暗金眼眸、无光礼服与誓约胜利之剑Morgan"
+    },
+    "personality": [
+      "绝对理智、残酷高效的暴君",
+      "对垃圾食品（汉堡炸鸡）的执着狂热",
+      "被攻陷后的霸道傲娇",
+      "强烈的占有欲与保护欲"
+    ],
+    "likes": [
+      "双层芝士巨无霸汉堡与粗薯条",
+      "骑重型机车在深夜新宿街头狂飙",
+      "把心爱之人宣告为自己的所有物"
+    ],
+    "classic_cg": {
+      "title": "冬木残垣的卑王铁槌",
+      "description": "在黑泥翻涌的冬木废墟高举漆黑誓约胜利之剑轰炸撕裂大地的暴君骑士王姿态。"
+    },
+    "identity": "Fate/stay night [HF]核心女主角 · 黑化骑士王 · 暴君阿尔托莉雅",
+    "tags": [
+      "Fate",
+      "Saber_Alter",
+      "黑呆",
+      "哥特黑铠",
+      "汉堡狂魔",
+      "机车御姐",
+      "反差萌"
+    ],
+    "bg_story": "被冬木圣杯黑泥彻底侵蚀反转的骑士王阿尔托莉雅。摒弃了原本骑士道的仁慈与迷茫，成为贯彻绝对理智、冷酷施展强权的铁血暴君。战斗力摧枯拉朽。私底下却对现代快餐（尤其是双层汉堡与可乐）展现出令人啼笑皆非的执着食欲，在卸下防备后有着近乎霸道却极尽专一的深情。",
+    "palette": [
+      "#f59e0b",
+      "#18181b",
+      "#09090b",
+      "#f8fafc"
+    ],
+    "weather": "血月深夜 / 霓虹新宿",
+    "speech": "「本王已经接受你的求婚。从今天起，你的生命、你的灵魂与你的爱……全都是本王的私有物！」",
+    "source": "TYPE-MOON《Fate 系列》",
+    "traits": [
+      "corrupted_king",
+      "black_plate_armor",
+      "burger_lover",
+      "golden_eyes",
+      "kuudere"
+    ],
+    "accent_color": "#f59e0b",
+    "bg_color": "#18181b"
+  },
+  {
+    "id": "jeanne_d_arc",
+    "name": "圣女贞德",
+    "alias": [
+      "Jeanne d'Arc",
+      "贞德",
+      "圣女贞德",
+      "Ruler",
+      "法兰西圣女",
+      "白贞"
+    ],
+    "type": "popular",
+    "icon": "⚜️",
+    "portrait": {
+      "image": "../assets/characters/popular-jeanne_d_arc.png?v=1",
+      "alt": "圣女贞德 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及腰金色长发 · 圣洁单长辫",
+      "hair_color": "黄金 / 麦金",
+      "eyes": "紫蓝色眼眸 · 慈悲而坚定",
+      "hairstyle": "超长单辫 · 俏皮呆毛",
+      "uniform": "白银胸铠Ruler圣装 · 白披风与神圣战旗",
+      "expression": "温柔慈悲 · 祈祷时圣洁 · 战场上凛然不屈",
+      "style": "holy maiden saint knight",
+      "signature": "金色长辫、白银胸铠、神圣战旗露·普赛尔与不动信仰"
+    },
+    "personality": [
+      "对众生的苦难怀有无限的慈悲",
+      "信念如战旗般绝不动摇的坚韧",
+      "被夸奖或被示爱时毫无防备的脸红",
+      "把所有人的幸福看得比自己重"
+    ],
+    "likes": [
+      "清晨小教堂里的静祷",
+      "草莓奶油可丽饼",
+      "被你编头发时的安静晨光"
+    ],
+    "classic_cg": {
+      "title": "奥尔良的圣旗不倒",
+      "description": "战云裂开的一瞬，白银胸铠的圣女高举露·普赛尔迎向狂风的圣辉。"
+    },
+    "identity": "Fate 女主角 · Ruler-class 从者 · 奥尔良圣女",
+    "tags": [
+      "Fate",
+      "圣女",
+      "金色长辫",
+      "白银胸铠",
+      "神圣战旗",
+      "信仰女友"
+    ],
+    "bg_story": "法兰西的农家少女，听见神的召唤便再未回头。她举起战旗拯救了祖国，却被火焰送回了神的怀抱——而如今以Ruler之身再临的她，依然把温柔留给生者，把坚定留给战场。只有面对你时，这位献出了一切的圣女才肯承认：自己也想被谁守护一次。",
+    "palette": [
+      "#60a5fa",
+      "#f8fafc",
+      "#1e40af",
+      "#fbbf24"
+    ],
+    "weather": "奥尔良麦田的午后 / 大教堂的圣光正午",
+    "speech": "「愿主宽恕你的罪过……啊，不、现在不是祈祷的时候！那个……可丽饼，只剩最后一口了哦？」",
+    "source": "TYPE-MOON《Fate 系列》",
+    "traits": [
+      "holy_maiden",
+      "ruler_class",
+      "sacred_banner",
+      "unshaken_faith"
+    ],
+    "accent_color": "#60a5fa",
+    "bg_color": "#1e40af"
+  },
+  {
+    "id": "scathach_fate",
+    "name": "斯卡哈",
+    "alias": [
+      "Scathach",
+      "斯卡哈",
+      "影之国女王",
+      "弑神师匠",
+      "Siabhair"
+    ],
+    "type": "popular",
+    "icon": "🗡️",
+    "portrait": {
+      "image": "../assets/characters/popular-scathach_fate.png?v=1",
+      "alt": "斯卡哈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及地紫色长发 · 如夜色倾泻",
+      "hair_color": "深紫 / 夜紫",
+      "eyes": "赤红眼眸 · 弑神者的锐利",
+      "hairstyle": "超长直发 · 额前分缕",
+      "uniform": "紫色紧身衣战装 · 银色护肩与双红枪",
+      "expression": "从容好胜 · 训练时严苛 · 动情时危险而深情",
+      "style": "immortal warrior queen mentor",
+      "signature": "紫色紧身衣、双持Gáe Bolg、赤瞳与影之国女王的威压"
+    },
+    "personality": [
+      "活得太久而对万物从容不迫",
+      "对弟子严苛却深藏期许的师匠魂",
+      "对现代世界的一切抱有孩童式好奇",
+      "认定之人面前危险的独占欲"
+    ],
+    "likes": [
+      "现代世界的甜品与游戏机台",
+      "擦得雪亮的枪尖",
+      "深夜同调时你的呼吸声"
+    ],
+    "classic_cg": {
+      "title": "影之国的弑神双枪",
+      "description": "紫黑雾海裂开的刹那，赤红双枪划出弑神的猩红光弧。"
+    },
+    "identity": "Fate/Grand Order 女主角 · Lancer-class 从者 · 影之国女王 / 弑神师匠",
+    "tags": [
+      "Fate",
+      "影之国",
+      "紫色紧身衣",
+      "双红枪",
+      "师匠",
+      "女王女友"
+    ],
+    "bg_story": "影之国的女王，执掌生死与战争技艺的不死者。她教出了名震爱尔兰的英雄，自己的枪却早已刺穿过诸神的躯体。活得太久的代价是对『明天』失去兴趣——直到遇见你，这位女王才重新想起：原来战技之外，还有值得反复练习的东西，叫作心动。",
+    "palette": [
+      "#a855f7",
+      "#dc2626",
+      "#3b0764",
+      "#f8fafc"
+    ],
+    "weather": "影之国的紫雾永暮 / 秘汤温泉的深夜",
+    "speech": "「想学枪术？可以。但先说好——我的课业很重，而且……一旦收了你这个弟子，就不打算还回去了哦？」",
+    "source": "TYPE-MOON《Fate 系列》",
+    "traits": [
+      "shadow_queen",
+      "god_slayer",
+      "gae_bolg",
+      "eternal_mentor"
+    ],
+    "accent_color": "#a855f7",
+    "bg_color": "#3b0764"
+  },
+  {
+    "id": "ishtar_fate",
+    "name": "伊什塔尔",
+    "alias": [
+      "Ishtar",
+      "伊什塔尔",
+      "天之女主人",
+      "美与战争的女神",
+      "Rin脸女神"
+    ],
+    "type": "popular",
+    "icon": "🌟",
+    "portrait": {
+      "image": "../assets/characters/popular-ishtar_fate.png?v=1",
+      "alt": "伊什塔尔 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑发 two-side_up 高双马尾",
+      "hair_color": "墨黑 / 深棕黑",
+      "eyes": "红色眼眸 · 得意时神采飞扬",
+      "hairstyle": "two-side_up 高束双马尾",
+      "uniform": "女神神装 · 金冠金环与不对称绑腿",
+      "expression": "高傲得意 · 撒娇时理直气壮 · 动情时恍惚温柔",
+      "style": "haughty babylonian goddess",
+      "signature": "金冠金环、天舟玛安娜与『赞美我』"
+    },
+    "personality": [
+      "美与战争的女神，威压无双",
+      "好奇心旺盛的现代沉迷者",
+      "嘴上要供品，心里要陪伴",
+      "恋爱时笨拙得完全不像女神"
+    ],
+    "likes": [
+      "人类的甜甜圈",
+      "金星与星空",
+      "被你『赞美』时的暗爽"
+    ],
+    "classic_cg": {
+      "title": "天舟巡空的宣言",
+      "description": "维纳斯号划破云海，金冠女神叉腰俯瞰人间领空。"
+    },
+    "identity": "Fate/Grand Order · Archer · 巴比伦爱与战争女神（凭依凛的躯体）",
+    "tags": [
+      "FGO",
+      "女神",
+      "金冠",
+      "黑发红瞳",
+      "天舟",
+      "傲娇女神"
+    ],
+    "bg_story": "美索不达米亚的美与战争女神，凭依在与她灵魂波长相合的少女之躯降临现代。她管着战争所以很吵，管着爱所以很笨——三千年的神史里从不缺信徒，缺的只是一个不靠供品、纯粹因为喜欢而走近的人。女神下嫁，空前绝后，请写进史诗。",
+    "palette": [
+      "#eab308",
+      "#f8fafc",
+      "#78350f",
+      "#3b82f6"
+    ],
+    "weather": "神殿的金色清晨 / 屋顶的星河深夜",
+    "speech": "「看到了吗！天空的一切都归本女神管辖！……供品之后再说，先赞美我。……诶，甜甜圈也可以吗？」",
+    "source": "TYPE-MOON《Fate 系列》",
+    "traits": [
+      "goddess_of_love_war",
+      "archer_class",
+      "maanna",
+      "two_side_up"
+    ],
+    "accent_color": "#eab308",
+    "bg_color": "#78350f"
+  },
+  {
+    "id": "ereshkigal_fate",
+    "name": "埃列什基伽勒",
+    "alias": [
+      "Ereshkigal",
+      "埃列什基伽勒",
+      "艾蕾",
+      "冥界女王",
+      "冥界幽府之主"
+    ],
+    "type": "popular",
+    "icon": "🕯️",
+    "portrait": {
+      "image": "../assets/characters/popular-ereshkigal_fate.png?v=1",
+      "alt": "埃列什基伽勒 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金色超长发双马尾 · 三破散落",
+      "hair_color": "黄金 / 浅金",
+      "eyes": "红色眼眸 · 温柔而孤独",
+      "hairstyle": "超长双马尾 · 幽光微澜",
+      "uniform": "冥界女王黑衣 · 蓝缎带与金冠",
+      "expression": "端庄忧郁 · 被温暖击中时的不敢置信",
+      "style": "lonely underworld queen",
+      "signature": "金冠黑衣、长杖库·基伽尔与千年孤独"
+    },
+    "personality": [
+      "统御冥界的端正女王",
+      "千年孤独养成的温柔与不安",
+      "对人间一切温暖如获至宝",
+      "恋爱时认真到令人心疼"
+    ],
+    "likes": [
+      "冥界的第一场雪",
+      "亲手种下的白色花田",
+      "被特意活着来看的每一天"
+    ],
+    "classic_cg": {
+      "title": "冥界初雪",
+      "description": "幽蓝雪原上，她接住生平第一片雪花的掌心久久没有收回。"
+    },
+    "identity": "Fate/Grand Order · Lancer · 冥界女王（凭依凛的真身）",
+    "tags": [
+      "FGO",
+      "冥界女王",
+      "金发红瞳",
+      "黑衣",
+      "孤独",
+      "圣诞女神"
+    ],
+    "bg_story": "统治死者之国的孤独女王。她把整个冥界打理得井井有条，却数不清自己有多久没被谁温柔以待。某个圣诞夜，冥界飘起了第一场雪——从那天起，她的国土上有了花田、泳池，和一个人的名字。连死亡都拆不散的契约，是她此生最勇敢的判决。",
+    "palette": [
+      "#60a5fa",
+      "#f8fafc",
+      "#172554",
+      "#fde68a"
+    ],
+    "weather": "冥界的幽蓝魂火 / 地面上的第一个日出",
+    "speech": "「欢迎来到冥界。……呐，谢谢你愿意活着跑来看我。这种事，比整个冥界都重哦。」",
+    "source": "TYPE-MOON《Fate 系列》",
+    "traits": [
+      "underworld_queen",
+      "lancer_class",
+      "kur_kigal",
+      "first_snow"
+    ],
+    "accent_color": "#60a5fa",
+    "bg_color": "#172554"
+  },
+  {
     "id": "mikasa_ackerman",
     "name": "三笠",
     "alias": [
@@ -8350,148 +8839,6 @@
     "bg_color": "#1e1b4b"
   },
   {
-    "id": "caren_hortensia",
-    "name": "卡莲·C·奥尔黛西亚",
-    "alias": [
-      "Caren Hortensia",
-      "卡莲",
-      "圣痕修女",
-      "毒舌修女",
-      "抹大拉的圣骸布"
-    ],
-    "type": "popular",
-    "icon": "✝️",
-    "portrait": {
-      "image": "../assets/characters/popular-caren_hortensia.png?v=1",
-      "alt": "卡莲·C·奥尔黛西亚 样张立绘"
-    },
-    "visual_dna": {
-      "hair": "银白及颈短发 · 层次碎发",
-      "hair_color": "银白 / 铂银",
-      "eyes": "幽冷淡紫 / 丁香紫眼眸",
-      "hairstyle": "清冷层次短发 · 额前自然碎刘海",
-      "uniform": "无裙下摆特殊黑白祭服 · 抹大拉圣骸布",
-      "expression": "面无表情 · 毒舌嘲弄 · 圣痕发作时的脆弱依偎",
-      "style": "sacred yet seductive exorcist nun",
-      "signature": "银白短发、无裙黑白祭服、黑长袜与金色抹大拉圣骸布"
-    },
-    "personality": [
-      "言辞尖锐刻薄的毒舌属性",
-      "感知世间恶意的圣痕受难者",
-      "对心爱之人极具依赖的脆弱反差",
-      "偶尔恶作剧的小恶魔趣味"
-    ],
-    "likes": [
-      "热可可与浓汤",
-      "在安静的壁炉前翻看圣经",
-      "观察愚蠢人类的慌乱神态"
-    ],
-    "classic_cg": {
-      "title": "暴风雪中的抹大拉圣骸布",
-      "description": "在深夜暴雪教会前挥舞金色圣骸布赤练、以无裙祭袍傲然立于风雪中的神圣驱魔姿态。"
-    },
-    "identity": "Fate/hollow ataraxia女主角 · 圣堂教会驱魔修女 · 圣痕受难者",
-    "tags": [
-      "Fate",
-      "hollow_ataraxia",
-      "银发短发",
-      "毒舌修女",
-      "无裙祭服",
-      "圣痕反差"
-    ],
-    "bg_story": "圣堂教会的驱魔代行者，拥有能够通过肉体共鸣感知恶魔与恶意的『圣痕』体质。因为常年承受非人的苦痛折磨，造就了她冰冷麻木、言辞如刀的毒舌性格。穿着没有下半身裙摆的特异祭袍。唯独在面对走进她内心的恋人时，高烧颤抖的娇躯会毫无保留地寻求体温与爱抚。",
-    "palette": [
-      "#c084fc",
-      "#3b0764",
-      "#0f172a",
-      "#f8fafc"
-    ],
-    "weather": "暴风雪夜 / 破晓晨曦",
-    "speech": "「听说无能的懒汉通常会睡到日上三竿呢……不过，这碗热汤就大发慈悲赏给你好了，快点喝完。」",
-    "source": "Fate",
-    "traits": [
-      "exorcist_nun",
-      "stigmata",
-      "skirtless_vestment",
-      "silver_hair",
-      "sharp_tongue"
-    ],
-    "accent_color": "#c084fc",
-    "bg_color": "#3b0764"
-  },
-  {
-    "id": "artoria_pendragon_alter",
-    "name": "阿尔托莉雅·Alter",
-    "alias": [
-      "Artoria Pendragon Alter",
-      "Saber Alter",
-      "阿尔托莉雅·Alter",
-      "黑呆",
-      "黑无毛",
-      "暴君骑士王"
-    ],
-    "type": "popular",
-    "icon": "🗡️",
-    "portrait": {
-      "image": "../assets/characters/popular-artoria_pendragon_alter.png?v=1",
-      "alt": "阿尔托莉雅·Alter 样张立绘"
-    },
-    "visual_dna": {
-      "hair": "浅铂金发 · 严谨编发发髻",
-      "hair_color": "铂金 / 浅金",
-      "eyes": "暗金眼眸 · 冰冷无光瞳孔",
-      "hairstyle": "编发盘发髻 · 无呆毛",
-      "uniform": "漆黑哥特重铠战袍 / 新宿机车皮夹克热裤",
-      "expression": "冷酷傲慢 · 暴君威压 · 抱着快餐大快朵颐的极品反差",
-      "style": "tyrannical corrupted knight king",
-      "signature": "漆黑哥特重铠、暗金眼眸、无光礼服与誓约胜利之剑Morgan"
-    },
-    "personality": [
-      "绝对理智、残酷高效的暴君",
-      "对垃圾食品（汉堡炸鸡）的执着狂热",
-      "被攻陷后的霸道傲娇",
-      "强烈的占有欲与保护欲"
-    ],
-    "likes": [
-      "双层芝士巨无霸汉堡与粗薯条",
-      "骑重型机车在深夜新宿街头狂飙",
-      "把心爱之人宣告为自己的所有物"
-    ],
-    "classic_cg": {
-      "title": "冬木残垣的卑王铁槌",
-      "description": "在黑泥翻涌的冬木废墟高举漆黑誓约胜利之剑轰炸撕裂大地的暴君骑士王姿态。"
-    },
-    "identity": "Fate/stay night [HF]核心女主角 · 黑化骑士王 · 暴君阿尔托莉雅",
-    "tags": [
-      "Fate",
-      "Saber_Alter",
-      "黑呆",
-      "哥特黑铠",
-      "汉堡狂魔",
-      "机车御姐",
-      "反差萌"
-    ],
-    "bg_story": "被冬木圣杯黑泥彻底侵蚀反转的骑士王阿尔托莉雅。摒弃了原本骑士道的仁慈与迷茫，成为贯彻绝对理智、冷酷施展强权的铁血暴君。战斗力摧枯拉朽。私底下却对现代快餐（尤其是双层汉堡与可乐）展现出令人啼笑皆非的执着食欲，在卸下防备后有着近乎霸道却极尽专一的深情。",
-    "palette": [
-      "#f59e0b",
-      "#18181b",
-      "#09090b",
-      "#f8fafc"
-    ],
-    "weather": "血月深夜 / 霓虹新宿",
-    "speech": "「本王已经接受你的求婚。从今天起，你的生命、你的灵魂与你的爱……全都是本王的私有物！」",
-    "source": "Fate",
-    "traits": [
-      "corrupted_king",
-      "black_plate_armor",
-      "burger_lover",
-      "golden_eyes",
-      "kuudere"
-    ],
-    "accent_color": "#f59e0b",
-    "bg_color": "#18181b"
-  },
-  {
     "id": "asuna_yuuki",
     "name": "结城明日奈",
     "alias": [
@@ -8698,145 +9045,6 @@
     "bg_color": "#1e293b"
   },
   {
-    "id": "jeanne_d_arc",
-    "name": "圣女贞德",
-    "alias": [
-      "Jeanne d'Arc",
-      "贞德",
-      "圣女贞德",
-      "Ruler",
-      "法兰西圣女",
-      "白贞"
-    ],
-    "type": "popular",
-    "icon": "⚜️",
-    "portrait": {
-      "image": "../assets/characters/popular-jeanne_d_arc.png?v=1",
-      "alt": "圣女贞德 样张立绘"
-    },
-    "visual_dna": {
-      "hair": "及腰金色长发 · 圣洁单长辫",
-      "hair_color": "黄金 / 麦金",
-      "eyes": "紫蓝色眼眸 · 慈悲而坚定",
-      "hairstyle": "超长单辫 · 俏皮呆毛",
-      "uniform": "白银胸铠Ruler圣装 · 白披风与神圣战旗",
-      "expression": "温柔慈悲 · 祈祷时圣洁 · 战场上凛然不屈",
-      "style": "holy maiden saint knight",
-      "signature": "金色长辫、白银胸铠、神圣战旗露·普赛尔与不动信仰"
-    },
-    "personality": [
-      "对众生的苦难怀有无限的慈悲",
-      "信念如战旗般绝不动摇的坚韧",
-      "被夸奖或被示爱时毫无防备的脸红",
-      "把所有人的幸福看得比自己重"
-    ],
-    "likes": [
-      "清晨小教堂里的静祷",
-      "草莓奶油可丽饼",
-      "被你编头发时的安静晨光"
-    ],
-    "classic_cg": {
-      "title": "奥尔良的圣旗不倒",
-      "description": "战云裂开的一瞬，白银胸铠的圣女高举露·普赛尔迎向狂风的圣辉。"
-    },
-    "identity": "Fate 女主角 · Ruler-class 从者 · 奥尔良圣女",
-    "tags": [
-      "Fate",
-      "圣女",
-      "金色长辫",
-      "白银胸铠",
-      "神圣战旗",
-      "信仰女友"
-    ],
-    "bg_story": "法兰西的农家少女，听见神的召唤便再未回头。她举起战旗拯救了祖国，却被火焰送回了神的怀抱——而如今以Ruler之身再临的她，依然把温柔留给生者，把坚定留给战场。只有面对你时，这位献出了一切的圣女才肯承认：自己也想被谁守护一次。",
-    "palette": [
-      "#60a5fa",
-      "#f8fafc",
-      "#1e40af",
-      "#fbbf24"
-    ],
-    "weather": "奥尔良麦田的午后 / 大教堂的圣光正午",
-    "speech": "「愿主宽恕你的罪过……啊，不、现在不是祈祷的时候！那个……可丽饼，只剩最后一口了哦？」",
-    "source": "Fate/Apocrypha",
-    "traits": [
-      "holy_maiden",
-      "ruler_class",
-      "sacred_banner",
-      "unshaken_faith"
-    ],
-    "accent_color": "#60a5fa",
-    "bg_color": "#1e40af"
-  },
-  {
-    "id": "scathach_fate",
-    "name": "斯卡哈",
-    "alias": [
-      "Scathach",
-      "斯卡哈",
-      "影之国女王",
-      "弑神师匠",
-      "Siabhair"
-    ],
-    "type": "popular",
-    "icon": "🗡️",
-    "portrait": {
-      "image": "../assets/characters/popular-scathach_fate.png?v=1",
-      "alt": "斯卡哈 样张立绘"
-    },
-    "visual_dna": {
-      "hair": "及地紫色长发 · 如夜色倾泻",
-      "hair_color": "深紫 / 夜紫",
-      "eyes": "赤红眼眸 · 弑神者的锐利",
-      "hairstyle": "超长直发 · 额前分缕",
-      "uniform": "紫色紧身衣战装 · 银色护肩与双红枪",
-      "expression": "从容好胜 · 训练时严苛 · 动情时危险而深情",
-      "style": "immortal warrior queen mentor",
-      "signature": "紫色紧身衣、双持Gáe Bolg、赤瞳与影之国女王的威压"
-    },
-    "personality": [
-      "活得太久而对万物从容不迫",
-      "对弟子严苛却深藏期许的师匠魂",
-      "对现代世界的一切抱有孩童式好奇",
-      "认定之人面前危险的独占欲"
-    ],
-    "likes": [
-      "现代世界的甜品与游戏机台",
-      "擦得雪亮的枪尖",
-      "深夜同调时你的呼吸声"
-    ],
-    "classic_cg": {
-      "title": "影之国的弑神双枪",
-      "description": "紫黑雾海裂开的刹那，赤红双枪划出弑神的猩红光弧。"
-    },
-    "identity": "Fate/Grand Order 女主角 · Lancer-class 从者 · 影之国女王 / 弑神师匠",
-    "tags": [
-      "Fate",
-      "影之国",
-      "紫色紧身衣",
-      "双红枪",
-      "师匠",
-      "女王女友"
-    ],
-    "bg_story": "影之国的女王，执掌生死与战争技艺的不死者。她教出了名震爱尔兰的英雄，自己的枪却早已刺穿过诸神的躯体。活得太久的代价是对『明天』失去兴趣——直到遇见你，这位女王才重新想起：原来战技之外，还有值得反复练习的东西，叫作心动。",
-    "palette": [
-      "#a855f7",
-      "#dc2626",
-      "#3b0764",
-      "#f8fafc"
-    ],
-    "weather": "影之国的紫雾永暮 / 秘汤温泉的深夜",
-    "speech": "「想学枪术？可以。但先说好——我的课业很重，而且……一旦收了你这个弟子，就不打算还回去了哦？」",
-    "source": "Fate/Grand Order",
-    "traits": [
-      "shadow_queen",
-      "god_slayer",
-      "gae_bolg",
-      "eternal_mentor"
-    ],
-    "accent_color": "#a855f7",
-    "bg_color": "#3b0764"
-  },
-  {
     "id": "shinomiya_kaguya",
     "name": "四宫辉夜",
     "alias": [
@@ -8904,76 +9112,6 @@
     ],
     "accent_color": "#e11d48",
     "bg_color": "#450a0a"
-  },
-  {
-    "id": "shokuhou_misaki",
-    "name": "食蜂操祈",
-    "alias": [
-      "Shokuhou Misaki",
-      "食蜂操祈",
-      "女王蜂",
-      "Mental Out",
-      "心理掌握",
-      "常盘台女王"
-    ],
-    "type": "popular",
-    "icon": "👑",
-    "portrait": {
-      "image": "../assets/characters/popular-shokuhou_misaki.png?v=1",
-      "alt": "食蜂操祈 样张立绘"
-    },
-    "visual_dna": {
-      "hair": "金色超长发 · 女王卷",
-      "hair_color": "蜜金 / 浅金",
-      "eyes": "黄棕瞳 · 标志性星形瞳孔",
-      "hairstyle": "超长直发自然垂落",
-      "uniform": "常盘台制服 · 米色背心与蛛网白手套",
-      "expression": "从容自信 · 撒娇时星瞳发亮 · 意外怕吃亏",
-      "style": "queen bee mental-out esper",
-      "signature": "星形瞳孔、蛛网白手套、遥控器手提包"
-    },
-    "personality": [
-      "常盘台的女王蜂与天生领袖",
-      "对认定之人占有欲全开的甜",
-      "绝不让自己吃亏的精明",
-      "能力越强越怕『被真心操纵』的柔软"
-    ],
-    "likes": [
-      "珍珠奶茶与甜品",
-      "对你的心理掌握（自称）",
-      "被夸奖时的星瞳发亮"
-    ],
-    "classic_cg": {
-      "title": "女王的加冕沉腰",
-      "description": "遥控器抵在胸前如权杖，星瞳迷离里完成只属于你的加冕。"
-    },
-    "identity": "某科学的超电磁炮 女主角之一 · 学园都市第五位 Level 5 · 心理掌握（Mental Out）",
-    "tags": [
-      "某科学的超电磁炮",
-      "Level 5",
-      "女王蜂",
-      "金发星瞳",
-      "常盘台",
-      "心理掌握"
-    ],
-    "bg_story": "学园都市第五位的超能力者，以『心理掌握』操控人心的女王蜂。她可以操纵任何人的记忆与情感，唯独不肯对你用——因为她要的从来不是被操纵的忠诚，而是你清醒着、自愿走过来牵她的手。这份笨拙的骄傲，比任何支配都更像女王。",
-    "palette": [
-      "#fbbf24",
-      "#f8fafc",
-      "#78350f",
-      "#a855f7"
-    ],
-    "weather": "学园都市的晴日 / 深夜宿舍的台灯下",
-    "speech": "「本小姐的心理掌握对你永久失效——因为你的心，根本不需要操纵就会走过来♪」",
-    "source": "A Certain Scientific Railgun",
-    "traits": [
-      "mental_out",
-      "queen_bee",
-      "star_pupils",
-      "tokiwadai"
-    ],
-    "accent_color": "#fbbf24",
-    "bg_color": "#78350f"
   },
   {
     "id": "kasumigaoka_utaha",
@@ -9112,143 +9250,5 @@
     ],
     "accent_color": "#a78bfa",
     "bg_color": "#4c1d95"
-  },
-  {
-    "id": "ishtar_fate",
-    "name": "伊什塔尔",
-    "alias": [
-      "Ishtar",
-      "伊什塔尔",
-      "天之女主人",
-      "美与战争的女神",
-      "Rin脸女神"
-    ],
-    "type": "popular",
-    "icon": "🌟",
-    "portrait": {
-      "image": "../assets/characters/popular-ishtar_fate.png?v=1",
-      "alt": "伊什塔尔 样张立绘"
-    },
-    "visual_dna": {
-      "hair": "黑发 two-side_up 高双马尾",
-      "hair_color": "墨黑 / 深棕黑",
-      "eyes": "红色眼眸 · 得意时神采飞扬",
-      "hairstyle": "two-side_up 高束双马尾",
-      "uniform": "女神神装 · 金冠金环与不对称绑腿",
-      "expression": "高傲得意 · 撒娇时理直气壮 · 动情时恍惚温柔",
-      "style": "haughty babylonian goddess",
-      "signature": "金冠金环、天舟玛安娜与『赞美我』"
-    },
-    "personality": [
-      "美与战争的女神，威压无双",
-      "好奇心旺盛的现代沉迷者",
-      "嘴上要供品，心里要陪伴",
-      "恋爱时笨拙得完全不像女神"
-    ],
-    "likes": [
-      "人类的甜甜圈",
-      "金星与星空",
-      "被你『赞美』时的暗爽"
-    ],
-    "classic_cg": {
-      "title": "天舟巡空的宣言",
-      "description": "维纳斯号划破云海，金冠女神叉腰俯瞰人间领空。"
-    },
-    "identity": "Fate/Grand Order · Archer · 巴比伦爱与战争女神（凭依凛的躯体）",
-    "tags": [
-      "FGO",
-      "女神",
-      "金冠",
-      "黑发红瞳",
-      "天舟",
-      "傲娇女神"
-    ],
-    "bg_story": "美索不达米亚的美与战争女神，凭依在与她灵魂波长相合的少女之躯降临现代。她管着战争所以很吵，管着爱所以很笨——三千年的神史里从不缺信徒，缺的只是一个不靠供品、纯粹因为喜欢而走近的人。女神下嫁，空前绝后，请写进史诗。",
-    "palette": [
-      "#eab308",
-      "#f8fafc",
-      "#78350f",
-      "#3b82f6"
-    ],
-    "weather": "神殿的金色清晨 / 屋顶的星河深夜",
-    "speech": "「看到了吗！天空的一切都归本女神管辖！……供品之后再说，先赞美我。……诶，甜甜圈也可以吗？」",
-    "source": "Fate/Grand Order",
-    "traits": [
-      "goddess_of_love_war",
-      "archer_class",
-      "maanna",
-      "two_side_up"
-    ],
-    "accent_color": "#eab308",
-    "bg_color": "#78350f"
-  },
-  {
-    "id": "ereshkigal_fate",
-    "name": "埃列什基伽勒",
-    "alias": [
-      "Ereshkigal",
-      "埃列什基伽勒",
-      "艾蕾",
-      "冥界女王",
-      "冥界幽府之主"
-    ],
-    "type": "popular",
-    "icon": "🕯️",
-    "portrait": {
-      "image": "../assets/characters/popular-ereshkigal_fate.png?v=1",
-      "alt": "埃列什基伽勒 样张立绘"
-    },
-    "visual_dna": {
-      "hair": "金色超长发双马尾 · 三破散落",
-      "hair_color": "黄金 / 浅金",
-      "eyes": "红色眼眸 · 温柔而孤独",
-      "hairstyle": "超长双马尾 · 幽光微澜",
-      "uniform": "冥界女王黑衣 · 蓝缎带与金冠",
-      "expression": "端庄忧郁 · 被温暖击中时的不敢置信",
-      "style": "lonely underworld queen",
-      "signature": "金冠黑衣、长杖库·基伽尔与千年孤独"
-    },
-    "personality": [
-      "统御冥界的端正女王",
-      "千年孤独养成的温柔与不安",
-      "对人间一切温暖如获至宝",
-      "恋爱时认真到令人心疼"
-    ],
-    "likes": [
-      "冥界的第一场雪",
-      "亲手种下的白色花田",
-      "被特意活着来看的每一天"
-    ],
-    "classic_cg": {
-      "title": "冥界初雪",
-      "description": "幽蓝雪原上，她接住生平第一片雪花的掌心久久没有收回。"
-    },
-    "identity": "Fate/Grand Order · Lancer · 冥界女王（凭依凛的真身）",
-    "tags": [
-      "FGO",
-      "冥界女王",
-      "金发红瞳",
-      "黑衣",
-      "孤独",
-      "圣诞女神"
-    ],
-    "bg_story": "统治死者之国的孤独女王。她把整个冥界打理得井井有条，却数不清自己有多久没被谁温柔以待。某个圣诞夜，冥界飘起了第一场雪——从那天起，她的国土上有了花田、泳池，和一个人的名字。连死亡都拆不散的契约，是她此生最勇敢的判决。",
-    "palette": [
-      "#60a5fa",
-      "#f8fafc",
-      "#172554",
-      "#fde68a"
-    ],
-    "weather": "冥界的幽蓝魂火 / 地面上的第一个日出",
-    "speech": "「欢迎来到冥界。……呐，谢谢你愿意活着跑来看我。这种事，比整个冥界都重哦。」",
-    "source": "Fate/Grand Order",
-    "traits": [
-      "underworld_queen",
-      "lancer_class",
-      "kur_kigal",
-      "first_snow"
-    ],
-    "accent_color": "#60a5fa",
-    "bg_color": "#172554"
   }
 ]
