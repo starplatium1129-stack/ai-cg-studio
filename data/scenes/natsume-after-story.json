@@ -56,33 +56,36 @@
     "tags": [
       "mole_under_eye",
       "bath_towel",
+      "white_bath_towel",
       "bare_shoulders",
       "collarbone",
+      "water_droplets",
+      "wet_skin",
+      "clinging_wet_hair",
       "bathroom_doorway",
       "slipping",
       "falling_into_arms",
       "steam",
-      "flushed",
-      "night",
-      "full_body",
+      "cowboy_shot",
+      "heavy_blush",
       "depth_of_field"
     ],
     "mature": false,
     "location": "公寓浴室门口",
     "weather": "晴",
-    "camera": "接住动作半身近景",
+    "camera": "七分身接住动作特写",
     "lighting": "浴室暖光与蒸汽漫射",
     "usage": [
       "展示图",
       "头像",
       "R15"
     ],
-    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bare_shoulders, bar, water, droplets, body, one, hand, clutching, the, towel, edge, tripping, wet, tiles, and, pitching, arms, bathroom, warm_lighting, soft, focus, cinematic, bokeh, delicate, waist, slender, shoulders, full_body, sunlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, clinging_wet_hair, cowboy_shot, pov, bath_towel, white_bath_towel, towel_around_body, bare_shoulders, collarbone, water_droplets, wet_skin, clutching_towel, falling_into_arms, slipping_pose, leaning_forward, close_to_viewer, heavy_blush, shy, parted_lips, breathless, bathroom_doorway, steam, misty, warm_ambient_lighting, bathroom_interior_bokeh, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目・浴室の出入り口のバランスが崩れている】ある冬の夜、夏目はバスタオルを巻いてバスルームから出てきました。水蒸気で濡れた足元の床タイルが滑り、彼女はあなたの腕の中に落ちてしまいました。彼女がしっかり立っているのを確認すると、すぐにタオルの端を押さえた。彼女の顔全体は耳まで赤くなりましたが、それでもあなたが最初に彼女を殴ったかどうかを確認しました。――「私は平気。さっきは足元が滑っただけ……先に向こうを向いて。服を着たら、次はあなたの腕を手当てするから。」",
     "rating": "R15",
-    "animaCaption": "On the wet bathroom tiles of a winter night, Shiki Natsume wrapped only in a white bath towel slips and pitches forward into your arms, one hand desperately holding the towel edge as her face flushes to the ears; once steadied she still checks whether she hurt you before asking you to turn around, in the warm steam. Water droplets still bead on her glistening shoulders.",
-    "auditRevision": "careful-batch10-2026-08-27"
+    "animaCaption": "On a quiet winter night outside the steaming bathroom doorway, Shiki Natsume wrapped only in a white bath towel slips on the wet floor tiles and pitches forward into your arms in a dynamic cowboy shot; clutching the towel tightly across her chest to keep it secure, her cheeks are deeply flushed with embarrassed tsundere warmth while water droplets glisten on her bare collarbone and shoulders amid the warm diffused bathroom steam, no text, no extra people.",
+    "auditRevision": "skill-refine-sc061-2026-09-05"
   },
   {
     "id": "sc063",
@@ -203,8 +206,8 @@
     "weather": "晴",
     "camera": "肩后回避视角中景",
     "lighting": "浴室柔光与蒸汽漫射",
-    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bar, water, droplets, body, hug, bathrobe, blush, bathroom, night, bokeh, focus, cinematic, glow, delicate, waist, and, slender, shoulders, medium_shot, sunlight, soft_diffused_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, two_red_hairclips, water_droplets, wet_skin, bathrobe, loose_bathrobe, heavy_blush, bathroom, steam, night, bokeh, delicate_waist, slender_shoulders, medium_shot, soft_diffused_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "usage": [
       "展示图",
       "R15"
@@ -491,8 +494,8 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, backless, blush, bar, sheer_thighhighs, black_thighhighs, lying, on_back, arms, weakly, locked, around, your, neck, parted_lips, neon_lights, messy_bed, night, warm_lighting, cinematic, depth, field, full_body, cool_lighting, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, clothed, cropped_feet, upper_body, artist_name, chromatic_aberration, brassiere, panties, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, backless_dress, black_evening_gown, open_back, sheer_black_thighhighs, lying_on_bed, on_back, arms_around_neck, heavy_blush, parted_lips, breathless, neon_lights_through_window, messy_bed, night, warm_lighting, cool_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目・イブニングドレスは究極の秋のロックを解除します】豪華な晩餐会を終えた五つ星ホテルのプレジデンシャルスイート。窓の外には都会の喧騒のネオンがいつまでも輝き、部屋はほんのり暖かい。普段は上品で飄々としていた夏目が、この時は力が抜けたあなたに大きなダブルベッドに押し倒されました。彼女の黒い背中の開いたハイスリットのシルクイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に弱々しくスライドし、官能的なラインの広い領域、感情的な紅潮を伴う美しい裸の背中と横の胸を明らかにします。脚に巻きついたセクシーな極薄の黒ストッキングが、暗い光の下で非常に眩しい光沢を放ちます。目尻の泣きぼくろが真っ赤に染まっている。彼女はあえぎ、うめき声​​を上げながらあなたの首を強く締め付けます。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
     "rating": "R15",
     "animaCaption": "Pushed down onto the wide double bed of the presidential suite after the banquet, Shiki Natsume's black backless high-slit silk evening gown hangs open with its zipper fully undone, the fabric sliding off both sides to bare her flushed back and the curve of one side breast; thin sheer black stockings gleam on her legs as she weakly locks her arms around your neck and moans with half-lidded eyes, her tear-mole flushed red under the mix of bedside lamp and city neon.",
@@ -867,8 +870,8 @@
       "旅行氛围",
       "R15"
     ],
-    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, bare_shoulders, onsen, steam, bar, water, droplets, body, leaning_back, night, gazing, the, cool, moon, travel, short, break, relaxed, serene, expression, softened, sharp, eyes, warm_lighting, cinematic, depth, field, medium_shot, moonlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, barefoot, black_tights, cropped_feet, upper_body, artist_name, chromatic_aberration, crowd, daylight, harsh_lighting, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, outdoor_onsen, hot_springs, steam, bare_shoulders, water_droplets, wet_skin, leaning_back, relaxing, gazing_at_moon, serene_expression, softened_eyes, night, warm_lighting, moonlight, water_reflections, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【大人のAfter Story・夏目・月下の露天風呂での小休戦】旅の最終夜、露天風呂の外には虫の声と遠い山風だけが残っていた。夏目は濡れた黒髪を背中へ払って湯の縁にもたれ、月を見上げている。普段は鋭い眼差しも、湯気の中では少しずつほどけていった。あなたの足音に気づいても振り返らず、隣の場所だけを空けて言う。――「今回の休暇は、あなたの勝ちでいい。ここに座りなさい。でも、この静けさを騒がしくするのは許さないから。」",
     "animaCaption": "On the last night of the trip at the mountain inn's private outdoor onsen, Shiki Natsume pushes her soaked black hair back behind her shoulders and leans against the edge of the bath, looking up at the cool moon with her usual sharp eyes slowly relaxing in the steam; moonlight and lantern glow dance on the water surface around her bare shoulders. Water droplets glisten on her bare shoulders above the surface.",
     "auditRevision": "careful-batch10-2026-08-27"
@@ -961,12 +964,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, shirt, nightgown, pencil_skirt, office, sitting, straddling, blush, slipping, her, frozen, red, hands, inside, your, clothes, steal, body, warmth, trembling, cold, blushing_ears, red_ears, white, breath, freezing, the, air, night, faint, green, emergency, indicator, light, steel, shelf, bokeh, and, frost, mist, cinematic, depth, field, medium_shot, cool_lighting, soft_diffused_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, fire, flames, burning ears",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, white_shirt, unbuttoned_shirt, black_lace_lingerie_visible, pencil_skirt, sitting, straddling, cheek_pressed_to_neck, hands_inside_clothes, frozen_hands, body_warmth, trembling, cold, heavy_blush, white_breath, freezing_cold, underground_storage, steel_shelves, faint_green_emergency_light, cool_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, bare_legs, cropped_feet, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目】【ナツメ・極寒冷蔵庫の絶対的熱交換】深夜、不意の停電に見舞われ、重い金属の扉がロックされてしまったカフェ・ステラの地下冷蔵庫。周囲の温度は氷点下まで急降下し、空気中には白い霧が立ち込めていた。普段は冷静沈着なナツメも、今は寒さでガタガタと震えており、先ほどの暗闇での手探りのせいでシャツのボタンが数個引きちぎられ、中の繊細な下着のレースが寒気の中で見え隠れしていた。生き延びるため、彼女は唇を噛み、なんと自らあなたの大腿の上に跨り、熱い頬をあなたの首元に強く押し当て、凍えるほど冷たい両手をあなたの服の中に滑り込ませて体温を貪った。極限の親密さに耳の裏まで真っ赤に染まっているものの、口を開けば相変わらず冷静で毒舌な口調で動揺を隠していた――「……勘違いしないで。これは単なる熱効率の物理的交換。この温度で身体接触を行わなければ、十分もしないうちに二人とも凍傷になるわ。大変态、そんな目で私を見ないで……文句があるなら、別の暖房方法を提案してみなさいよ」",
     "rating": "R15",
-    "animaCaption": "In the dead-locked underground cold storage during the power-failed midnight, the temperature far below freezing, Shiki Natsume shivers in a shirt whose buttons were torn open in her earlier fumbling, fine lingerie lace showing through; for survival she takes the startling initiative to sit astride your thighs, pressing her hot cheek against the hollow of your neck and slipping her frozen red hands inside your clothes to steal your warmth, her ears flushed crimson while white breath frosts the air under the faint green emergency light.",
-    "auditRevision": "fix-no-burn-ears-2026-09-05"
+    "animaCaption": "In the dead-locked underground cold storage during the power-failed midnight, the temperature far below freezing, Shiki Natsume shivers in a shirt whose buttons were torn open in her earlier fumbling, fine lingerie lace showing through; for survival she takes the startling initiative to sit astride your thighs, pressing her hot cheek against the hollow of your neck and slipping her frozen red hands inside your clothes to steal your warmth, with heavily flushed cheeks while white breath frosts the air under the faint green emergency light.",
+    "auditRevision": "fix-no-burn-ears-sc214-2026-09-05"
   },
   {
     "id": "sc218",
@@ -1059,12 +1062,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, nude, camisole, bare_breasts, straddling, clinging, your, shoulders, steady, herself, dead, fish, eyes, filled, shamed, wavering, dim_lighting, broken, wooden, ladder, and, scattered, ancient, books, nearby, night, cinematic, depth, field, medium_shot, cool_lighting, soft_lighting, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, fire, flames, burning ears",
+    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, black_silk_camisole, low_cut_camisole, cleavage, sideboob, bare_shoulders, delicate_collarbone, straddling, sitting_on_lap, clinging_to_shoulders, fallen_pose, dead-fish_eyes, shamed_expression, heavy_blush, library, underground_library, bookshelves, broken_wooden_ladder, scattered_books, night, dim_lighting, green_emergency_light, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目】【ナツメ・密閉書庫の予期せぬ落下】深夜、システム障害で閉じ込められた大学図書館の地下書庫。換気が止まり、静かな本棚の間には微熱がこもっていた。暑さにカーディガンを脱いだナツメは、薄手のシルクキャミソール姿。高所の古書を取ろうとした瞬間、梯子がぐらつき、下で見守っていたあなたの腕の中へと落ちてきた。温かな温もりが胸元に飛び込み、普段は涼やかな金の瞳が動揺に揺れる。薄暗い非常灯の下で耳まで赤くしながら、彼女は視線を逸らして呟いた――「……勘違いしないで。怪我を防ぐための咄嗟の緩衝動作よ。……ちょっと、どこ触ってるの。変なこと考えたら秘密処刑にするからね」",
     "rating": "R15",
-    "animaCaption": "Locked deep in the stuffy underground stacks of the university library at night, Shiki Natsume wears only a very low-cut silk camisole with nothing beneath, her plump side breasts hinting with every hurried breath; when the old wooden ladder snaps she falls from the top and lands astride in your arms below, clinging to your shoulders, her dead-fish eyes dissolving into shamed wavering as her ears flush crimson in the dim green fluorescence of the emergency light.",
-    "auditRevision": "fix-no-burn-ears-2026-09-05"
+    "animaCaption": "Locked deep in the stuffy underground stacks of the university library at night, Shiki Natsume wears only a very low-cut silk camisole with nothing beneath, her plump side breasts hinting with every hurried breath; when the old wooden ladder snaps she falls from the top and lands astride in your arms below, clinging to your shoulders, her dead-fish eyes dissolving into shamed wavering with flushed cheeks in the dim green fluorescence of the emergency light.",
+    "auditRevision": "fix-no-burn-ears-sc221-2026-09-05"
   },
   {
     "id": "sc231",
@@ -1202,12 +1205,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, front-tie_bikini, black_bikini_untied, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_at_poolside, water_lapping_bodies, wet_skin, water_droplets, clinging_wet_hair, blushing_ears, red_ears, teary_watery_eyes, night_pool, moonlight_reflections, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, fire, flames, burning ears, fire effects, text, watermark, signature, child, loli, underage",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, front-tie_bikini, black_bikini_untied, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_at_poolside, water_lapping_bodies, wet_skin, water_droplets, clinging_wet_hair, heavy_blush, shy, teary_watery_eyes, night_pool, moonlight_reflections, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, fire, flames, burning ears, fiery ears, fire effects, text, watermark, signature, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・夜のプールサイド】深夜、静まり返った屋内プール。月明かりに濡れた紺のスク水姿のナツメは、プールサイドで足を滑らせ、デッキチェアのあなたの上へと倒れ込んでしまう。肌と肌が触れ合い、水滴が滴る中、目尻の泣きぼくろを揺らしながら耳を赤くして必死に平静を装う――「……勘違いしないで。足が滑っただけよ。……動かないで、少し息を整えるから。……バカ、どこ見てるの」",
     "rating": "R15",
-    "animaCaption": "Late at night beside the quiet rippling indoor landscape pool, Shiki Natsume in a dark navy swimsuit soaked through and clinging to her bare curves slips on the wet marble and tumbles astride onto your lap on the lounger, pressing flush against you with no gap; she grips your shoulders with her ears flushed crimson and shamed watery eyes, keeping an impossibly calm voice under the cool moonlight and the swaying water reflections.",
-    "auditRevision": "fix-no-burn-ears-2026-09-05"
+    "animaCaption": "Late at night beside the quiet rippling indoor landscape pool, Shiki Natsume in a dark navy swimsuit soaked through and clinging to her bare curves slips on the wet marble and tumbles astride onto your lap on the lounger, pressing flush against you with no gap; she grips your shoulders with a heavy blush and shamed watery eyes, keeping an impossibly calm voice under the cool moonlight and the swaying water reflections.",
+    "auditRevision": "fix-no-burn-ears-sc237-2026-09-05"
   },
   {
     "id": "sc249",
@@ -1226,34 +1229,36 @@
     "tags": [
       "mole_under_eye",
       "white_shirt",
-      "unbuttoned",
+      "unbuttoned_shirt",
       "lingerie_visible",
+      "collarbone",
       "messy_hair",
-      "leaning_on_chest",
-      "embracing",
+      "leaning_on_viewer",
       "car_backseat",
-      "vehicle",
+      "car_interior",
       "rain",
+      "rain_on_window",
       "night",
       "lightning",
-      "close_up",
+      "cowboy_shot",
+      "heavy_blush",
       "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
     "location": "特工车辆后座",
     "weather": "暴雨",
-    "camera": "近景主观特写",
-    "lighting": "车外闪电与车内微弱指示灯光",
+    "camera": "七分身主观近景",
+    "lighting": "车外暴雨雷电冷白闪光与车内仪表盘微弱琥珀暖光折射",
     "usage": [
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, shirt, white_shirt, nightgown, sliding, your, arms, the, vehicle, jolts, bodies, pressed, tightly, without, gap, narrow, back, seat, leaning, her, head, against, chest, feeling, heartbeat, blush, night, rain, dim_lighting, cinematic, depth, field, close_up, warm_lighting, lightning_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, skirt, thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, messy_hair, cowboy_shot, pov, white_shirt, unbuttoned_shirt, collarbone, black_lace_lingerie_visible, disheveled_clothes, leaning_on_viewer, pressed_together, head_on_chest, sitting_in_car_backseat, trembling, heavy_blush, shy, parted_lips, looking_away, car_interior, car_backseat, night, pouring_rain, raindrops_on_glass, lightning, lightning_flash, dim_lighting, amber_dashboard_glow, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目・豪雨の車内】深夜の豪雨で停車した任務車両。疲労の残る夏目は後部座席で息を整えていたが、車体の揺れであなたの腕の中へと滑り込んでしまう。狭い車内で密着し、あなたの鼓動が直に伝わる中、耳を赤くしながらも必死に平静を装う――「……勘違いしないで。ただの慣性よ。それに、くっついてた方が暖かいし。……でも、あなたの心臓の音、少しうるさすぎるわ」",
-    "animaCaption": "On the rainy midnight country road the agent vehicle waits at the roadside; exhausted Shiki Natsume, her usually tied-up black hair loosened messily over her shoulders and the top two buttons of her shirt popped open to the edge of fine lingerie, loses her balance with the jolt and slides straight into your arms, the narrow back seat pressing you together with no gap as she clearly feels your heartbeat; ears flushed red, she still analyzes calmly in the dim indicator light with lightning and rain beyond the window.",
-    "auditRevision": "careful-batch05-2026-08-27"
+    "animaCaption": "During a midnight thunderstorm parked along a deserted country road, exhausted agent Shiki Natsume rests in the back seat of the mission vehicle, her disheveled long black hair cascading across her shoulders and her crisp white shirt unbuttoned at the collar to reveal fine black lace lingerie. Jolted by the wind, she slides into your embrace with no gap between your bodies, her cheek pressed softly against your chest to hear your rapid heartbeat; her cheeks are heavily flushed crimson while cool blue lightning flashes through rain-streaked windows to illuminate her amber eyes in an intimate cowboy shot framing.",
+    "auditRevision": "skill-refine-sc249-2026-09-05"
   },
   {
     "id": "sc253",
@@ -1774,35 +1779,36 @@
       "see_through_clothing",
       "wet_clothes",
       "unbuttoned_shirt",
-      "shirt_discarded",
+      "off_shoulder",
       "bare_shoulders",
-      "topless",
+      "black_lace_bra",
+      "water_droplets",
+      "clinging_wet_hair",
       "pulling_lapel",
-      "embracing",
+      "standing_close",
       "genkan",
-      "apartment",
       "night",
       "rain",
       "streetlight",
-      "darkness",
-      "close_up",
+      "cowboy_shot",
+      "heavy_blush",
       "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
     "location": "公寓玄关",
     "weather": "暴雨",
-    "camera": "近景特写",
-    "lighting": "玄关昏暗顶灯与窗外闪电",
+    "camera": "七分身主观近景特写",
+    "lighting": "雨夜窗外路灯幽蓝冷光与玄关阴影构成的强烈轮廓光",
     "usage": [
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, shirt, white_shirt, wet_clothes, see-through, wet, fabric, sliding, off, her, shoulders, and, piling, feet, bar, rain, reaching, out, grab, your, lapel, pull, you, the, quiet, golden_eyes, night, hot, heavy, silence, between, two, cinematic, depth, field, close_up, backlight, rim_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, clothed, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, brassiere, panties, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, wet_hair, clinging_wet_hair, cowboy_shot, pov, wet_skin, water_droplets, unbuttoned_shirt, white_shirt, off_shoulder, shirt_slipping_off, bare_shoulders, collarbone, black_lace_bra, see-through_shirt, disheveled_clothes, grabbing_lapel, pulling_viewer_closer, standing_close, heavy_blush, breathless, parted_lips, intense_gaze, looking_at_viewer, apartment_entrance, genkan, dark_room, night, pouring_rain, rain_on_window, streetlight_through_window, rim_light, chiaroscuro, cinematic_lighting, volumetric_lighting, cinematic_depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目・大人のAfter Story・雨に濡れた後】深夜の豪雨に二人はずぶ濡れになって玄関に辿り着いた。夏目の白いブラウスは濡れて肌に張り付いている。彼女は後ろ手に扉を閉め、明かりはつけなかった——暗闇には窓の外の街灯の光と、彼女の微かに荒い呼吸だけがあった。彼女は振り返り、指を襟元に置いて、濡れたブラウスのボタンを一つずつ外していった。濡れた布地が肩から滑り落ち、足元に積もった。彼女は顔を上げた。琥珀色の瞳が薄暗がりの中で驚くほどに輝いていた——もう何も言わなかった。彼女は手を伸ばしてあなたの襟を掴み、雨に打たれた熱い沈黙の中へと引き込んだ。窓の外では雨音が止まず、彼女の肌の感触は、すべての言葉よりも誠実だった。",
-    "animaCaption": "Drenched by the midnight downpour and stumbling into the dark apartment genkan with the door shut behind her and no lights on, Shiki Natsume's white shirt is soaked transparent against her skin; she unbuttons it one button at a time, the wet fabric sliding off her shoulders and pooling at her feet. Her amber eyes glow astonishingly in the darkness as she reaches out and grabs your lapel, pulling you into the rain-soaked, intimate silence while the storm keeps raging outside the window.",
-    "auditRevision": "fix-no-burn-ears-2026-09-05"
+    "animaCaption": "Drenched by the midnight downpour and tumbling into the dark apartment entrance with the door shut behind you and the lights off, Shiki Natsume stands in the intimate shadows with rain dripping from her long glossy black hair. Her white shirt is thoroughly soaked transparent and completely unbuttoned, sliding off her bare shoulders to reveal delicate black lace lingerie and glistening water droplets along her collarbone. In an intimate cowboy shot framing, her amber eyes glow passionately in the dim streetlamp backlight streaming through the rain-streaked window; without a word, her trembling hand reaches out to firmly grip your lapel, pulling you close into the hot, breathless silence. Cinematic chiaroscuro lighting, dramatic rim light, moody rainy atmosphere, no text, no extra people.",
+    "auditRevision": "skill-refine-sc286-2026-09-05"
   },
   {
     "id": "sc287",
@@ -1877,7 +1883,7 @@
       "fluorescent_light",
       "cold_light",
       "evening",
-      "medium_shot",
+      "cowboy_shot",
       "depth_of_field"
     ],
     "mature": false,
@@ -1890,11 +1896,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, sweat, sweater, sheer_thighhighs, black_thighhighs, hug, bare_legs, setting, the, pen, down, top, cardboard, box, reaching, out, grab, your, collar, other, hand, standing, close, front, you, narrow, space, chin, raised, slightly, low, serious, voice, golden_eyes, looking_at_viewer, warehouse, full, boxes, and, doujinshi, merch, event, cold, buzzing, fluorescent, tube, light, shadows, cinematic, depth, field, medium_shot, cool_lighting, rim_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, white_thighhighs, bare_legs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, male, man, boy, 1boy, couple, two_people, second_person, extra_person, additional_person, two_girls, couple_pose, couple_embrace, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, additional_woman, another_woman, background_person",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, pov, grey_sweater, dark_pleated_skirt, sheer_black_tights, grabbing_collar, grabbing_clothes, pulling_viewer_closer, standing_close, chin_up, serious_look, slight_blush, eye_contact, warehouse, cardboard_boxes, stacked_boxes, event_merchandise, fluorescent_lighting, cold_lighting, dramatic_shadows, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目・大人のAfter Story・倉庫整理の越境】同人イベント終了後の倉庫は、まだ整理されていない段ボール箱とグッズで溢れていた。夏目は隅にしゃがみ込み、残数を数えていた。黒い長髪が前屈みになった拍子に垂れ落ち、横顔を隠している。あなたが後ろから伝票板を差し出した時、指がうっかり彼女の首筋を掠めた。彼女の動きが止まったが、振り返らなかった。倉庫の蛍光灯が微かに唸り、半開きの鉄扉の向こうからは遠くの撤収の喧騒が聞こえていた。彼女はゆっくりと立ち上がり、振り返った時もまだペンを握りしめていた。金色の瞳が狭い空間の中でひときわ鋭く光っていた——「あと三箱残ってるんだけど……まさか本当に用事があって来たって言うんじゃないでしょうね。」彼女は後退せず、むしろ半歩前に出た。あなたと彼女の間には伝票板一枚分の距離しか残っていなかった。段ボールの影が彼女の顔に落ち、彼女はわずかに顎を上げた。声は半音低くなり、段ボールの影の中でひときわ軽く響いた——「もういい……伝票のことは、後で話す。」そう言ってペンを箱の上に置き、手を伸ばしてあなたの襟を掴んだ。",
-    "animaCaption": "In the warehouse behind the event venue piled with unopened cardboard boxes and merchandise, Shiki Natsume rises from her inventory count and turns to you, still holding the pen, her golden eyes sharp in the narrow space; she sets the pen down on a box top and reaches up to grab your collar, chin raised slightly in the cardboard shadows, her voice dropping low and serious under the cold buzzing fluorescent light.",
-    "auditRevision": "careful-batch13-2026-08-27"
+    "animaCaption": "In the warehouse behind the event venue piled high with cardboard boxes and merchandise, Shiki Natsume stands up from inventory count and steps close to you in a tense cowboy shot framing. Wearing a fitted grey knit sweater, pleated miniskirt, and sheer black tights, she sets her pen on a cardboard box and boldly grabs your collar with one hand, her chin slightly raised and her sharp golden eyes staring directly into yours under the buzzing cold fluorescent tube lighting and dramatic box shadows, no text, no extra people.",
+    "auditRevision": "skill-refine-sc293-2026-09-05"
   },
   {
     "id": "sc294",
@@ -1913,15 +1919,14 @@
     "tags": [
       "mole_under_eye",
       "black_camisole",
-      "nightgown",
       "lying_on_side",
-      "turned_away",
-      "holding_hand",
-      "holding_arm",
+      "on_bed",
       "under_blanket",
-      "bed",
+      "holding_wrist",
+      "holding_arm",
+      "messy_hair",
       "dawn",
-      "dim_light",
+      "pale_blue_light",
       "close_up",
       "depth_of_field"
     ],
@@ -1935,11 +1940,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, natsume_r18, shiki_natsume, black_hair, very_long_hair, pillow, yellow_eyes, mole_under_eye, camisole, black_camisole, nightgown, night, lying, blanket, fingertips, sliding, down, your, arm, curl, around, wrist, eyes, still, closed, sleepily, nuzzling, closer, side, morning, dim_lighting, messy_bed, cinematic, depth, field, close_up, morning_light, sunlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, messy_hair, lying_on_side, on_bed, under_blanket, duvet, pillow, black_silk_camisole, bare_shoulders, delicate_collarbone, reaching_out, holding_arm, holding_wrist, sleepy_eyes, one_eye_closed, subtle_blush, gentle_expression, bedroom, messy_sheets, dawn, pale_blue_morning_light, curtain_gap_light, soft_ambient_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目・大人のAfter Story・夜明け前の布団の温度】空はまだ完全には明るくなっておらず、カーテンの隙間から淡い青色の光が差し込んでいた。夏目はあなたに背を向けて横向きに寝ていた。黒い長髪が枕に広がり、呼吸は穏やかでまだ起きていないようだった。しかし、あなたがそっと起き上がろうとすると、彼女の手が布団から伸びてあなたの腕を押さえた——力は強くなかったが、その意思は明確で無視できなかった。振り返ると、彼女はまだ目を開けていなかったが、あなたの方へ少し移動した。声には起きたばかりのかすれがあった——「5時47分……週末は仕事ないよ。」そう言っても手を離さず、指先があなたの前腕をゆっくりと伝い、手首にそっと絡まった。布団の中では彼女の体温とあなたの体温が混ざり合っていた。彼女は片目だけ開けてあなたを見て、また閉じた——「眠れないなら……一緒に横になって話してていいよ。でも、朝ごはんを作りに行くなら——あと30分待って。」",
-    "animaCaption": "Before dawn with pale blue light seeping through the curtain gap, Shiki Natsume lies on her side turned away from you under the covers, her black hair spread over the pillow; when you try to get up her hand slips out of the duvet and presses your forearm, fingertips trailing down your arm to curl gently around your wrist—she still has not opened her eyes, just nuzzles a little closer in the dim blue morning.",
-    "auditRevision": "careful-batch02-2026-08-27"
+    "animaCaption": "Before dawn with pale cyan morning light seeping through the curtain gap, Shiki Natsume lies on her side in the cozy bed in a delicate black silk camisole, her silky black hair scattered across the pillow; as you try to get up, her slender hand emerges from under the duvet to firmly grasp your wrist, sleepily nuzzling closer into your warmth with a soft blush under the dim blue dawn ambiance, no text, no extra people.",
+    "auditRevision": "skill-refine-sc294-2026-09-05"
   },
   {
     "id": "sc296",

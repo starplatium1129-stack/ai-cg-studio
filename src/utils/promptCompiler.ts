@@ -259,7 +259,7 @@ const MOOD_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   tsundere: 'guarded and flustered', sensual: 'sensual', intimate: 'intimate',
   romantic_atmosphere: 'romantic', seductive_look: 'seductive', passionate_look: 'passionate',
   expressionless: 'composed and expressionless', in_love: 'quietly affectionate',
-  soft_eyes: 'soft-eyed', bright_eyes: 'bright-eyed', red_ears: 'flushed at the ears',
+  soft_eyes: 'soft-eyed', bright_eyes: 'bright-eyed', red_ears: 'flushed cheeks',
   heavy_breathing: 'breathless',
 })
 
@@ -628,10 +628,12 @@ function compactActions(values: string[], limit: number): string[] {
 export function sanitizeVisualArtifacts(text: string): string {
   if (!text) return ''
   return text
-    .replace(/\b(?:ears?\s+(?:burn(?:ing)?|flam(?:ing)?)(?:\s+completely)?(?:\s+bright)?(?:\s+red)?|(?:burn(?:ing)?|flam(?:ing)?)\s+(?:bright\s+)?red\s+ears?)\b/gi, 'ears flushed crimson')
-    .replace(/\b(?:flaming|burning)\s+red\s+ears?\b/gi, 'flushed crimson ears')
-    .replace(/\bburning_red_ears\b/gi, 'blushing_ears')
+    .replace(/\b(?:ears?\s+(?:burn(?:ing)?|flam(?:ing)?)(?:\s+completely)?(?:\s+bright)?(?:\s+red)?|(?:burn(?:ing)?|flam(?:ing)?)\s+(?:bright\s+)?red\s+ears?)\b/gi, 'flushed cheeks')
+    .replace(/\b(?:flaming|burning)\s+red\s+ears?\b/gi, 'flushed cheeks')
+    .replace(/\bburning_red_ears\b/gi, 'blush')
     .replace(/\bburning\s+(?:face|cheeks?)\b/gi, 'flushed cheeks')
+    .replace(/\b(?:red|blushing|crimson)\s+ears?\b/gi, 'flushed cheeks')
+    .replace(/\bears?\s+(?:flushed\s+crimson|flush\s+(?:bright\s+)?crimson)\b/gi, 'flushed cheeks')
 }
 
 function buildStudioAnimaCaption(plan: PromptPlan): string {
@@ -776,7 +778,7 @@ function allTags(plan: PromptPlan, includeStyle = true): string[] {
     ...plan.composition, ...plan.manual ].filter(Boolean)
   return raw.map(tag => {
     const k = normalizeProseKey(tag)
-    if (k === 'burning_red_ears') return 'blushing_ears'
+    if (k === 'burning_red_ears' || k === 'blushing_ears' || k === 'red_ears') return 'blush'
     return tag
   })
 }

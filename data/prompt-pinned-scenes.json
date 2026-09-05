@@ -1,6 +1,6 @@
 {
   "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-  "pinnedAt": "2026-09-04T19:29:56",
+  "pinnedAt": "2026-09-05T09:20:54",
   "scenes": {
     "sc264": {
       "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, medium_close-up, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, moist_eyes, tearful_gaze, heavy_blush, sweat_on_face, parted_lips, embarrassed, plaid_skirt, pleated_skirt, miniskirt, skirt_lift, lifted_by_self, pink_panties, bow_panties, pantyshot, black_thighhighs, zettai_ryouiki, narrow_library_aisle, bookshelf, library, indoors, golden_hour, rim_light, warm_atmosphere, <lora:ayachi_nene_v18_wd14:0.95>",
@@ -919,9 +919,9 @@
       ]
     },
     "sc233": {
-      "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_stella_cafe_uniform_with_white_blouse_and_navy_apron_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, black_mary_jane_shoes_on_cafe_floor, standing_behind_cafe_counter_with_both_hands_on_counter_and_gentle_shy_blush, warm_cafe_counter_light_with_cup_and_apron_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, late_night, night_shift, <lora:shiki_natsume_v18_wd14:0.85>",
-      "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
-      "animaCaption": "Behind a cafe counter, Shiki Natsume in a Stella cafe uniform with glossy black tights stands with both hands on the counter, gentle shy blush under warm cafe light.",
+      "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, looking_at_viewer, head_tilt, gentle_shy_blush, subtle_smile, wearing_stella_cafe_uniform, white_blouse, navy_apron, red_necktie, leaning_on_cafe_counter, one_hand_on_cheek, offering_coffee_cup, hot_macchiato_cup_on_counter, cafe_counter, sheer_black_tights, warm_hanging_lamp_light, cafe_interior_bokeh, cinematic_depth_of_field, late_night, night_shift, <lora:shiki_natsume_v18_wd14:0.85>",
+      "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, extra limbs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, white_thighhighs, bare_legs, coat, nsfw, nude, explicit",
+      "animaCaption": "Late at night behind the warm cafe counter, Shiki Natsume in her Stella cafe uniform and sheer black tights rests her cheek on one hand and pushes a cup of hot macchiato toward the viewer in a cowboy shot, sleepy golden eyes and gentle shy blush under the warm hanging lamp.",
       "recommendedSize": "1344×768",
       "rating": "All",
       "mature": false,
