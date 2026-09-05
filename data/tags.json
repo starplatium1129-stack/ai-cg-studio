@@ -4858,5 +4858,149 @@
     "cn": "涂指甲油脚趾",
     "weight": 0.8,
     "related": []
+  },
+  {
+    "id": "tag_614",
+    "cat": "Clothing",
+    "en": "wet_white_shirt",
+    "cn": "湿透白衬衫",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_615",
+    "cat": "Clothing",
+    "en": "bikini_under_clothes",
+    "cn": "内穿比基尼 (若隐若现)",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_616",
+    "cat": "Clothing",
+    "en": "see-through_shirt",
+    "cn": "透光薄衬衫",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_617",
+    "cat": "Clothing",
+    "en": "competition_swimsuit",
+    "cn": "专业竞速死库水",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_618",
+    "cat": "Clothing",
+    "en": "white_competition_swimsuit",
+    "cn": "纯白高开叉竞泳水着",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_619",
+    "cat": "Clothing",
+    "en": "minimal_fabric",
+    "cn": "极少极窄布料",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_620",
+    "cat": "Clothing",
+    "en": "monokini",
+    "cn": "挂脖镂空连体泳衣 (Monokini)",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_621",
+    "cat": "Clothing",
+    "en": "halterneck_swimsuit",
+    "cn": "挂脖系带泳装",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_622",
+    "cat": "Clothing",
+    "en": "side_cutout",
+    "cn": "腰侧大面积镂空",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_623",
+    "cat": "Clothing",
+    "en": "cleavage_cutout",
+    "cn": "胸口开孔镂空",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_624",
+    "cat": "Clothing",
+    "en": "heart_cutout",
+    "cn": "心形开胸镂空",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_625",
+    "cat": "Clothing",
+    "en": "cleavage_opening",
+    "cn": "深邃开胸露乳线",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_626",
+    "cat": "Clothing",
+    "en": "sleeveless_turtleneck",
+    "cn": "无袖修身高领",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_627",
+    "cat": "Clothing",
+    "en": "oversized_jersey",
+    "cn": "宽大男友风运动球衣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_628",
+    "cat": "Clothing",
+    "en": "basketball_jersey",
+    "cn": "无袖篮球背心球衣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_629",
+    "cat": "Clothing",
+    "en": "sleeveless_jersey",
+    "cn": "无袖透气球衣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_630",
+    "cat": "Clothing",
+    "en": "skin-tight",
+    "cn": "极致紧致包裹 / 贴肤",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_631",
+    "cat": "Clothing",
+    "en": "backless_bodysuit",
+    "cn": "大露背紧身连体衣",
+    "weight": 0.8,
+    "related": []
   }
 ]
