@@ -2109,27 +2109,27 @@
       "white_blouse",
       "pencil_skirt",
       "sheer_black_tights",
-      "smooth_thighs",
+      "cowboy_shot",
+      "adjusting_necktie",
+      "standing_on_tiptoe",
       "genkan",
-      "full_body",
-      "pumps",
       "morning_light",
       "depth_of_field"
     ],
     "mature": false,
     "location": "公寓玄关",
     "weather": "晴朗晨曦",
-    "camera": "近景特写",
+    "camera": "七分身亲密平视",
     "lighting": "柔和侧窗光",
     "usage": [
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, white_silk_blouse, tight_black_pencil_skirt, sheer_black_pantyhose, black_pumps, standing_on_tiptoe_at_apartment_entrance, both_hands_adjusting_necktie_of_viewer, close_distance, blushing_ears, tsundere_pout, morning_sunlight_from_door, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, coat",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, cowboy_shot, looking_at_viewer, head_tilt, tsundere_pout, heavy_blush, blushing_ears, both_hands_adjusting_necktie_of_viewer, pulling_necktie, white_silk_blouse, tight_black_pencil_skirt, sheer_black_pantyhose, standing_on_tiptoe, genkan, apartment_entrance, morning_sunlight, rim_light, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, coat, text, watermark, signature, nsfw, nude, explicit",
     "storyJa": "【夏目・職場での同棲】アパートの床から天井まで届く窓から、早朝の日差しが白いシャツを柔らかく照らします。すでに社会人になっている夏目さんが、つま先立ちで不器用ながらも丁寧に仕事のネクタイを片付けるお手伝いをしてくれます。あなたが彼女を、ますます良い妻、良い母親のようになっているとからかったので、彼女はわざと手に力を入れ、怒ったようにネクタイを引っ張り、首を傾げてあなたを睨みつけました。朝の光に照らされて赤くなった頬と温かい泣きぼくろが絶望的に​​可愛かった。――「は？　ばかなの？　これ以上変なことを言ったら、今日は家に縛りつけて、仕事に行かせないから！」",
     "rating": "All",
-    "animaCaption": "In the sunlit apartment genkan, Shiki Natsume stands on tiptoe to adjust the viewer's necktie, her crisp white blouse and navy pencil skirt hugging smooth thighs in glossy black tights. Morning light through the entrance highlights her pouting tsundere blush and the mole under her eye, black pumps neatly placed on the wooden floor.",
-    "auditRevision": "careful-batch01-2026-08-27"
+    "animaCaption": "In the sunlit apartment genkan on a bright morning, Shiki Natsume stands on tiptoe in a cowboy shot framing, looking up at the viewer with a cute tsundere pout and flustered blush as her hands pull firmly at the viewer's necktie to adjust it; she wears a crisp white silk blouse and tight black pencil skirt hugging smooth thighs in sheer black pantyhose, morning window light catching the beauty mark under her amber eye.",
+    "auditRevision": "fix-cowboy-framing-sc146-2026-09-05"
   }
 ]

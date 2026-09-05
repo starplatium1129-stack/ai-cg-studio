@@ -621,8 +621,21 @@ function compactActions(values: string[], limit: number): string[] {
     .map(item => item.value)
 }
 
+/**
+ * 全局视觉瑕疵防御过滤器：
+ * 阻断将「耳红/害羞」误译为 burning ears / flaming red 的病态词导致模型画出物理火苗/耳朵冒火。
+ */
+export function sanitizeVisualArtifacts(text: string): string {
+  if (!text) return ''
+  return text
+    .replace(/\b(?:ears?\s+(?:burn(?:ing)?|flam(?:ing)?)(?:\s+completely)?(?:\s+bright)?(?:\s+red)?|(?:burn(?:ing)?|flam(?:ing)?)\s+(?:bright\s+)?red\s+ears?)\b/gi, 'ears flushed crimson')
+    .replace(/\b(?:flaming|burning)\s+red\s+ears?\b/gi, 'flushed crimson ears')
+    .replace(/\bburning_red_ears\b/gi, 'blushing_ears')
+    .replace(/\bburning\s+(?:face|cheeks?)\b/gi, 'flushed cheeks')
+}
+
 function buildStudioAnimaCaption(plan: PromptPlan): string {
-  const explicit = proseClause(String(plan.scene?.animaCaption || ''))
+  const explicit = sanitizeVisualArtifacts(proseClause(String(plan.scene?.animaCaption || '')))
   if (explicit) return sentence(explicit)
 
   const identityKeys = new Set(plan.identity.map(normalizeProseKey))
@@ -758,9 +771,14 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
 }
 
 function allTags(plan: PromptPlan, includeStyle = true): string[] {
-  return [ ...plan.quality, ...plan.rating, ...plan.identity, ...plan.exactControls, ...plan.artists,
+  const raw = [ ...plan.quality, ...plan.rating, ...plan.identity, ...plan.exactControls, ...plan.artists,
     ...(includeStyle ? plan.style : []), ...plan.sceneVisualFragments, ...plan.emotion, ...plan.camera, ...plan.lighting,
     ...plan.composition, ...plan.manual ].filter(Boolean)
+  return raw.map(tag => {
+    const k = normalizeProseKey(tag)
+    if (k === 'burning_red_ears') return 'blushing_ears'
+    return tag
+  })
 }
 
 /** Krea 散文禁词（score/质量词），由 promptPolicy.QUALITY_WORDS 单一清单派生。 */
@@ -774,14 +792,14 @@ const KREA_BANNED_WORDS_RE = new RegExp(`\\b(?:${QUALITY_WORDS.join('|')}|score_
  * clean()，场景模板里的 (xxx:1.5) 会以字面文本进入 Krea）。
  */
 function sanitizeKreaProse(value: string): string {
-  return String(value || '')
+  return sanitizeVisualArtifacts(String(value || '')
     .replace(/<lora:[^>]+>/gi, '')
     .replace(/\bBREAK\b/gi, ', ')
     .replace(/\(([^()\n]*[a-z][^()\n]*):\s*-?\d+(?:\.\d+)?\s*\)/gi, '$1')
     .replace(KREA_BANNED_WORDS_RE, '')
     .replace(/_/g, ' ')
     .replace(/\s+/g, ' ')
-    .trim()
+    .trim())
 }
 
 export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile?: ModelProfile | null): { prompt: string; negative: string } {
