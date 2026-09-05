@@ -314,12 +314,9 @@ const universalWardrobePresets = computed(() => UNIVERSAL_WARDROBE_PRESETS)
 
 function isPresetActive(tags: string[]): boolean {
   if (!tags.length) return false
-  if (pb.isPopular) {
-    if (pb.outfitOverride) {
-      const set = new Set(pb.outfitOverride.tokens)
-      return tags.every(t => set.has(t))
-    }
-    return tags.every(t => pb.manualTags.has(t))
+  if (pb.isPopular && pb.outfitOverride) {
+    const set = new Set(pb.outfitOverride.tokens)
+    return tags.every(t => set.has(t))
   }
   return tags.every(t => pb.manualTags.has(t))
 }
@@ -328,8 +325,9 @@ function toggleUniversalPreset(tags: string[], label: string) {
   if (isPresetActive(tags)) {
     if (pb.isPopular) {
       pb.clearOutfitOverride()
+    } else {
+      toggleOutfitBundle(tags)
     }
-    toggleOutfitBundle(tags)
     pb.flash(`已卸下「${label}」`)
     return
   }

@@ -162,11 +162,11 @@
           @generate="callGenerate()"
           @cancel="cancelGeneration"
         />
-        <!-- 反推服装顶替提示：仅热门角色服装被参考图顶替时出现，附一键恢复 -->
+        <!-- 特典服装换装提示：当服装被通用特典或反推顶替时出现，附一键恢复 -->
         <div v-if="outfitOverridden" class="outfit-override-note" role="status">
           <ArchiveIcon name="wardrobe" class="outfit-override-icon" />
           <span class="outfit-override-text">
-            服装已按参考图顶替为「{{ outfitOverrideTokens.slice(0, 3).join('、') }}」<template v-if="outfitReplacedLabel">（原{{ outfitReplacedLabel }}）</template>
+            已换装为「{{ outfitReplacedLabel || outfitOverrideTokens.slice(0, 3).join('、') }}」
           </span>
           <button type="button" class="outfit-override-restore" @click="pb.clearOutfitOverride()">
             恢复默认服装
