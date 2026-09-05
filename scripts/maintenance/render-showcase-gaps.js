@@ -162,8 +162,8 @@ async function worker(queue) {
         const imgBuf = await (async () => {
           const jobId = await submitAnimaJob({
             modelId: MODEL_ID, prompt, negative: plan.negative,
-            width: t.width, height: t.height, steps: 28,
-            cfg: t.bp.adult ? 5.2 : 4.5,
+            width: t.width, height: t.height, steps: 30,
+            cfg: 4.5,
             teaCache: true, teaCacheThresh: 0.08,
             seed: baseSeed + (attempt - 1) * 7919,
           });
