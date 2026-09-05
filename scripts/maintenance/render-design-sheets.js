@@ -311,8 +311,7 @@ async function main() {
     fail(`ComfyUI 不可达（${HOST}）——请先启动 ComfyUI（--disable-smart-memory）再跑`);
   }
 if (!tasks.length) {
-  log('没有待跑任务（全部已完成或已被过滤），退出');
-  process.exit(0);
+  log('没有待跑任务（全部已完成或已被过滤），继续执行 view.json 回填后退出');
 }
 
 log(`待跑 ${tasks.length} 张（跳过：已存在 ${skipped.existing} / 缺 token ${skipped.missingTokens}）`);
@@ -347,12 +346,16 @@ try {
     for (const o of profile.outfits || []) {
       for (const ref of o.references || []) {
         if (!ref.id || !String(ref.id).startsWith('ref_design_') || !ref.pending) continue;
-        const hasCustomDir = fs.existsSync(path.join(REF_ROOT, profile.characterId, o.outfitId));
-        const rel = hasCustomDir
-          ? `/character-references/${profile.characterId}/${o.outfitId}/${ref.id}.png`
-          : `/character-references/${profile.characterId}/${ref.id}.png`;
-        if (fs.existsSync(path.join(REF_ROOT, rel.replace(/^\/character-references\//, '')))) {
-          ref.url = rel;
+        // 双路径探测：服装子目录优先、角色根兜底。与 targetRelPath 的 isDefault
+        // 语义解耦——此前 hasCustomDir 启发式在服装目录被 4 视角渲染创建后猜错
+        // 路径，导致已渲染文件永远回填不上（2026-09-06 实测漏 57 条）。
+        const candidates = [
+          `/character-references/${profile.characterId}/${o.outfitId}/${ref.id}.png`,
+          `/character-references/${profile.characterId}/${ref.id}.png`,
+        ];
+        const hit = candidates.find((c) => fs.existsSync(path.join(REF_ROOT, c.replace(/^\/character-references\//, ''))));
+        if (hit) {
+          ref.url = hit;
           delete ref.pending;
           filled++;
         }
