@@ -26,7 +26,7 @@
         "mystic_eyes_of_death_perception",
         "cold_gaze"
       ],
-      "promptProse": "Stepping through a blizzard of swirling snow beneath a solitary streetlamp outside a quiet bamboo grove, Ryougi Shiki unsheathes her combat knife in a fluid reverse grip. Her Mystic Eyes of Death Perception blaze with ethereal rings of sapphire and crimson, tracing the lines of mortality in the frigid air. Her red leather jacket contrasts sharply with her white kimono and dark layered hair. Breathtaking low-angle anime masterpiece, solo 1girl, no text.",
+      "promptProse": "Stepping through a blizzard of swirling snow beneath a solitary streetlamp outside a quiet bamboo grove, Ryougi Shiki unsheathes her combat knife in a fluid reverse grip. Her Mystic Eyes of Death Perception blaze with ethereal rings of sapphire and crimson, tracing the lines of mortality in the frigid air. Her red leather jacket contrasts sharply with her white kimono and dark layered hair. Breathtaking low-angle anime key visual, solo 1girl, no text.",
       "promptTokens": [
         "snow",
         "falling_snow",
@@ -322,7 +322,7 @@
         "close_distance",
         "gentle_gaze"
       ],
-      "promptProse": "Walking closely together beneath a single black umbrella through a rain-slicked cobblestone alley, Ryougi Shiki leans gently against the viewer's side to stay sheltered from the falling mist. Raindrops patter musically against the canvas as her red leather jacket brushes against the viewer's arm. Looking up through the soft grey rainfall with deep, quiet tenderness, her black eyes soften completely. Atmospheric anime masterpiece, solo 1girl, no text.",
+      "promptProse": "Walking closely together beneath a single black umbrella through a rain-slicked cobblestone alley, Ryougi Shiki leans gently against the viewer's side to stay sheltered from the falling mist. Raindrops patter musically against the canvas as her red leather jacket brushes against the viewer's arm. Looking up through the soft grey rainfall with deep, quiet tenderness, her black eyes soften completely. Atmospheric anime film visual style, solo 1girl, no text.",
       "promptTokens": [
         "rain",
         "rainy_alley",
@@ -381,7 +381,7 @@
         "blushing_ears",
         "gentle_smile"
       ],
-      "promptProse": "Standing in the snow-blanketed courtyard of the traditional Ryougi estate beneath frosted bamboo, Ryougi Shiki is resplendent in pristine bridal Shiromuku attire. The pure white silk kimono with subtle woven crests frames her porcelain face beneath a bridal hood. With hands delicately folded at her waist, a bashful rosy blush warms her cheeks as she gazes with quiet, eternal devotion. Solemn, breathtaking anime masterpiece, solo 1girl, no text.",
+      "promptProse": "Standing in the snow-blanketed courtyard of the traditional Ryougi estate beneath frosted bamboo, Ryougi Shiki is resplendent in pristine bridal Shiromuku attire. The pure white silk kimono with subtle woven crests frames her porcelain face beneath a bridal hood. With hands delicately folded at her waist, a bashful rosy blush warms her cheeks as she gazes with quiet, eternal devotion. Solemn, breathtaking anime visual novel art style, solo 1girl, no text.",
       "promptTokens": [
         "japanese_garden",
         "snowing",
@@ -476,7 +476,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -492,16 +494,16 @@
     },
     {
       "id": "shiki_nsfw_wooden_desk_bent_over_prone",
-      "title": "两仪式 · 木质案几俯身的咬唇承受",
+      "title": "两仪式 · 木案前和服半褪的更衣自抚·「别看……笨蛋，身体会变奇怪的」",
       "category": "私密承载",
       "characterId": "ryougi_shiki",
-      "description": "【两仪式 · 木质案几俯身的咬唇承受】伽蓝之堂空无一人的深处，两仪式的和服下摆被高高掀至后腰，双手撑在深色实木大长案上俯身弓腰，紧致圆润的雪白蜜桃臀翘起。POV视角的双手牢牢掐在她滑腻紧绷的细腰两侧受力。每一次深沉有力的后入挺进都让她手指紧紧抓皱桌上的白纸，咬住下唇发出按捺不住的短促娇啼，耳根红透，回头红眸迷离水润——「啊……等等……太深了……力道慢一点啊……笨蛋……！」",
+      "description": "【两仪式 · 木案前和服半褪的更衣自抚】伽蓝之堂空无一人的深处，两仪式的和服下摆被解开半褪至腰际，露出紧致白皙的曼妙裸背与翘臀曲线。式双手撑在深色实木大长案上俯身弓背，单手探入和服裙底拉开内裤边缘轻揉敏感花瓣。她咬住下唇发出细碎轻颤的娇啼，耳根红透，侧脸回眸带着一层羞涩水光——「别一直……盯着看啊……身体自己……擅自变得好热……」",
       "location": "伽蓝之堂深处摆放古董雕件的长木案台旁",
-      "action": "双手撑在木案上俯身弓腰翘臀，和服撩起，POV双手扶腰受力，回头咬唇含泪娇吟",
+      "action": "双手撑在木案上俯身弓腰翘臀，和服半褪单手探入内裤自抚花瓣，回头咬唇含泪娇吟",
       "timeOfDay": "深夜月影",
       "lighting": "百叶窗斜投下来的月光银色横条光泽",
-      "camera": "cowboy shot, horizontal framing, Dutch angle POV",
-      "mood": "咬牙沉沦",
+      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+      "mood": "咬牙沉沦、唯美自抚",
       "sceneTags": [
         "office",
         "wooden_desk",
@@ -510,15 +512,19 @@
         "hands_on_desk",
         "skirt_lift",
         "kimono",
-        "bare_buttocks",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
+        "pussy_juice",
         "heavy_blush",
         "blushing_ears",
         "looking_back",
         "horizontal_shot"
       ],
-      "promptProse": "Bent forward over the polished dark wood desk in the shadowed office, Ryougi Shiki arches her slender spine in trembling abandon. Her kimono is gathered high over her hips, revealing her smooth, firm buttocks and glistening core. Deep rear thrusts and penetration drive forward as strong POV hands grip her waist tightly. Looking back over her bare shoulder with tears shining in her eyes and red flushed ears, she bites her lip in overwhelming sensation. Dynamic horizontal anime CG, solo 1girl focus, no text.",
+      "promptProse": "Bent forward over the polished dark wood desk in the shadowed office, Ryougi Shiki arches her slender spine in trembling solitary surrender. Her white kimono is loosened and drawn high over her hips, hands gripping the smooth wood while her fingers slide down to draw her panties aside and caress her dripping, sensitive folds. Looking back over her bare shoulder with tears shining in her dark eyes and red flushed ears, she bites her lip in overwhelming sensation under striped moonlight. Dynamic horizontal anime visual novel composition, solo 1girl, no text.",
       "promptTokens": [
+        "sensual_solo",
+        "touching_own_body",
+        "hand_under_clothes",
         "office",
         "wooden_table",
         "bent_over",
@@ -526,10 +532,9 @@
         "hands_on_table",
         "skirt_lift",
         "white_kimono",
-        "bare_buttocks",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
         "pussy_juice",
-        "pov_hands_on_hips",
         "looking_back",
         "heavy_blush",
         "blushing_ears",
@@ -549,7 +554,9 @@
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
-        "self-harm, choking"
+        "self-harm, choking",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
@@ -560,18 +567,18 @@
       "coverageTags": [
         "nsfw",
         "prone",
-        "doggystyle_pov",
+        "solo",
         "special_nsfw"
       ]
     },
     {
       "id": "shiki_nsfw_passionate_cowgirl_straddle",
-      "title": "两仪式 · 卸下防备的深吻主动骑乘",
+      "title": "两仪式 · 卸下防备的深情主动骑乘",
       "category": "主控骑乘",
       "characterId": "ryougi_shiki",
-      "description": "【两仪式 · 卸下防备的深吻主动骑乘】铺着白布的卧榻上，两仪式浑身香汗淋漓跨坐在你的腰跨之上。她双手按在你的双肩上，短发随着腰肢的剧烈起伏在耳侧轻柔晃荡。平坦的小腹与紧致的身段随每一次下沉而剧烈收缩，小巧坚挺的玉乳在微光下泛着晶莹的水光。她俯下身堵住你的唇瓣激烈深吻，眼角溢出幸福的泪水，含糊地在接吻间隙娇喘——「呜……唔……今天不准停……再爱我多一点……」",
+      "description": "【两仪式 · 卸下防备的深情主动骑乘】铺着白布的卧榻上，两仪式浑身香汗淋漓跨坐在你的腰跨之上。她双手按在你的双肩上，短发随着腰肢的剧烈起伏在耳侧轻柔晃荡。平坦的小腹与紧致的身段随每一次下沉而剧烈收缩，小巧坚挺的玉乳在微光下泛着晶莹的水光。她俯下身眼神水润情动，眼角溢出幸福的泪水，娇喘连连——「呜……唔……今天不准停……再多抱我一点……」",
       "location": "和室深处安静被单铺设的床榻中央",
-      "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸肩，俯身深吻，眼神水润情动",
+      "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸肩，俯身轻喘，眼神水润情动",
       "timeOfDay": "深夜",
       "lighting": "昏暗温暖的壁灯勾勒出白皙后背的线条",
       "camera": "cowboy shot, vertical framing, low angle POV",
@@ -585,12 +592,12 @@
         "small_breasts",
         "pink_nipples",
         "sweat",
-        "kissing",
         "heavy_blush",
         "teary_eyes"
       ],
-      "promptProse": "Straddling the viewer's waist in desperate, passionate abandon atop soft bedding, completely naked Ryougi Shiki takes control of the rhythm. Her perky natural breasts with taut pink nipples bounce in steady cadence with her undulating hips, glistening with sweet perspiration. Leaning down to claim the viewer's mouth in a fervent, breathless kiss with tears in her eyes, she surrenders completely to love. Intense vertical anime CG, solo 1girl focus, no text.",
+      "promptProse": "Straddling the viewer's waist in passionate abandon atop soft bedding, completely naked Ryougi Shiki takes control of the rhythm. Her perky natural breasts with taut pink nipples bounce in steady cadence with her undulating hips, glistening with sweet perspiration. Leaning down with breathy words and tears shining in her dark eyes, she surrenders completely to love. Intense vertical anime CG, solo 1girl focus, no text.",
       "promptTokens": [
+        "sensual_solo",
         "bedroom",
         "straddling",
         "cowgirl_position",
@@ -599,14 +606,12 @@
         "small_breasts",
         "pink_nipples",
         "areola",
-        "pussy",
-        "vaginal_penetration",
-        "penis_in_pussy",
+        "exposed_pussy",
+        "pussy_juice",
         "sweat_drops",
         "heavy_blush",
         "blushing_ears",
         "parted_lips",
-        "kissing",
         "black_hair",
         "vertical_shot",
         "low_angle",
@@ -620,7 +625,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -687,7 +694,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "black_lace_sensual_lingerie",

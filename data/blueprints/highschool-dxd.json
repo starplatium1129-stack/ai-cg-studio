@@ -379,7 +379,7 @@
         "gentle_smile",
         "holy"
       ],
-      "promptProse": "Standing before the grand altar of an ancient cathedral illuminated by radiant stained-glass light rays, Rias Gremory appears breathtaking in an off-shoulder white bridal wedding gown and gossamer veil. Her vibrant crimson hair contrasts exquisitely with the pure white lace. Holding a delicate bouquet, her aquamarine eyes glisten with tears of absolute devotion and boundless happiness. Cinematic anime masterpiece, solo 1girl, no text.",
+      "promptProse": "Standing before the grand altar of an ancient cathedral illuminated by radiant stained-glass light rays, Rias Gremory appears breathtaking in an off-shoulder white bridal wedding gown and gossamer veil. Her vibrant crimson hair contrasts exquisitely with the pure white lace. Holding a delicate bouquet, her aquamarine eyes glisten with tears of absolute devotion and boundless happiness. Cinematic anime visual novel style, solo 1girl, no text.",
       "promptTokens": [
         "cathedral",
         "stained_glass",
@@ -473,7 +473,9 @@
         "bad hands",
         "extra limbs",
         "fire, flames, burning ears",
-        "censored"
+        "censored",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -487,19 +489,19 @@
       ],
       "kreaStyleHint": "r18_explicit_h_cg",
       "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwProse": "Lying supine upon crimson silk bedsheets in warm candlelight, nude Rias Gremory looks up at the viewer with overwhelming desire and affection. Her lush crimson hair fans across the white pillows framing her heavily blushing face. Her magnificent full breasts with erect pink nipples heave with rapid breaths, and her slender thighs are parted invitingly. She reaches up with one trembling hand toward the viewer for intimate intercourse and fingering, lips parted in breathless surrender. Sensual anime CG, solo 1girl, no text."
+      "nsfwProse": "Lying supine upon crimson silk bedsheets in warm candlelight, nude Rias Gremory looks up at the viewer with overwhelming desire and affection. Her lush crimson hair fans across the white pillows framing her heavily blushing face. Her magnificent full breasts with erect pink nipples heave with rapid breaths, and her slender thighs are parted invitingly. She reaches up with one trembling hand toward the viewer for sensual self-touching, lips parted in breathless surrender. Sensual anime CG, solo 1girl, no text."
     },
     {
       "id": "rias_nsfw_desk_bent_over_prone",
-      "title": "莉雅丝 · 办公桌沿的俯身承欢",
+      "title": "莉雅丝 · 办公桌前的更衣自抚·「被你一直看着的话……身体会忍不住变热的」",
       "category": "私密承载",
       "characterId": "rias_gremory",
-      "description": "【莉雅丝 · 办公桌沿的俯身承欢】空无一人的部长室内，月光透过落地窗倾泻在红木长桌上。莉雅丝上身制服半敞露出圆润雪胸，下身百褶裙被彻底撩至腰际，双掌撑在大理石桌面上俯身弓腰。POV视角双手紧紧箍住她丰润圆润的髋部，每一次深入撞击都在她滑腻的翘臀上留下受力凹痕。莉雅丝咬住下唇忍耐着娇喘，耳根红透，后背凹出极致的S曲线——「啊……不行……会留下印子的……慢一点……」",
+      "description": "【莉雅丝 · 办公桌前的更衣自抚】空无一人的部长室内，月光透过落地窗倾泻在红木长桌上。莉雅丝上身制服半敞露出圆润雪胸与粉嫩乳头，下身百褶裙被撩至腰际，双掌撑在大理石桌面上俯身弓腰。她反弓起曼妙惹火的曲线，单手探入裙底拉开内裤边缘自抚花瓣，咬住下唇忍耐着娇喘，耳根红透——「水温和体温……都在升高……身体好奇怪……」",
       "location": "神秘学研究部办公室宽大红木长桌",
-      "action": "双手撑在桌面上俯身弓腰，下半身裙摆被撩起，POV视角双手扶住腰臀受力，回头含泪喘息",
+      "action": "双手撑在桌面上俯身弓腰，下半身裙摆被撩起，单手探入内裤自抚敏感花瓣，回头含羞喘息",
       "timeOfDay": "深夜月光",
       "lighting": "落地窗外清冷月色与桌边小暖灯",
-      "camera": "cowboy shot, horizontal framing, Dutch angle POV",
+      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
       "mood": "失控受力",
       "sceneTags": [
         "office",
@@ -508,15 +510,19 @@
         "arched_back",
         "hands_on_desk",
         "skirt_lift",
-        "pov_hands_on_hips",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
+        "pussy_juice",
         "heavy_blush",
         "blushing_ears",
         "looking_back",
         "horizontal_shot"
       ],
-      "promptProse": "Bent forward over the mahogany office desk under the soft moonlight, Rias Gremory arches her spine in sheer sensual abandon. Her school skirt is hiked up to her slender waist, exposing her smooth, voluptuous buttocks and wet flower. Deep rear thrusts and penetration drive forward as strong POV hands grip firmly onto her hips, indenting her supple flesh as she looks back over her bare shoulder with biting lips and flushed red ears, gasping in delicious overload. Horizontal dynamic anime composition, solo 1girl focus, no text.",
+      "promptProse": "Bent forward over the mahogany office desk in the student council room under soft moonlight, Rias Gremory arches her back in a breathtaking moment of solo surrender. Her school uniform skirt is hitched up, hands resting against the wood while her fingers reach down between her thighs to pull her lace panties aside and gently stroke her wet core. Looking back over her bare shoulder with biting lip and blushing red ears, her crimson locks tumble over the desk. Horizontal dynamic anime visual novel composition, solo 1girl, no text.",
       "promptTokens": [
+        "sensual_solo",
+        "touching_own_body",
+        "hand_under_clothes",
         "office",
         "desk",
         "bent_over",
@@ -525,10 +531,9 @@
         "skirt_lift",
         "kuoh_academy_uniform",
         "unbuttoned_shirt",
-        "bare_buttocks",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
         "pussy_juice",
-        "pov_hands_on_hips",
         "looking_back",
         "heavy_blush",
         "blushing_ears",
@@ -548,7 +553,9 @@
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
-        "self-harm, choking"
+        "self-harm, choking",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
@@ -557,19 +564,19 @@
       "coverageTags": [
         "nsfw",
         "prone",
-        "doggystyle_pov",
+        "solo",
         "special_nsfw"
       ],
       "kreaStyleHint": "r18_explicit_h_cg",
       "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwProse": "Bent forward over the mahogany office desk under the soft moonlight, Rias Gremory arches her spine in sheer sensual abandon. Her school skirt is hiked up to her slender waist, exposing her smooth, voluptuous buttocks and wet flower. Deep rear thrusts and penetration drive forward as strong POV hands grip firmly onto her hips, indenting her supple flesh as she looks back over her bare shoulder with biting lips and flushed red ears, gasping in delicious overload. Horizontal dynamic anime composition, solo 1girl focus, no text."
+      "nsfwProse": "bent forward over office desk, skirt lifted, unbuttoned shirt, pulling panties aside, touching wet pussy, looking back over shoulder, biting lip, heavy blush, crimson hair"
     },
     {
       "id": "rias_nsfw_dominant_cowgirl_straddle",
       "title": "莉雅丝 · 反客为主的红发女皇骑乘",
       "category": "主控骑乘",
       "characterId": "rias_gremory",
-      "description": "【莉雅丝 · 反客为主的红发女皇骑乘】宽敞的卧榻上，莉雅丝浑身泛着晶莹汗珠跨坐在你腰腹之上。她挺直腰背居高临下注视着你，长发如燃烧的赤焰随身体摇曳。双手十指相扣按在你的胸膛上，主动沉腰主导着深沉的吞吐。沉甸甸的玉乳随着动作剧烈晃动，粉色乳晕泛着诱人光泽，眼神里既有公爵女皇的傲然，又有彻底沦陷的深情——「今晚……全都要听我的。把你的一切，都尽数交给我吧。」",
+      "description": "【莉雅丝 · 反客为主的红发女皇骑乘】宽敞的卧榻上，莉雅丝浑身泛着晶莹汗珠跨坐在你腰腹之上。她挺直腰背居高临下注视着你，长发如燃烧的赤焰随身体摇曳。双手按在你的胸膛上，主动沉腰主导着韵律。沉甸甸的玉乳随着动作剧烈晃动，粉色乳晕泛着诱人光泽，眼神里既有公爵女皇的傲然，又有彻底沦陷的深情——「今晚……全都要听我的。把你的一切，都尽数交给我吧。」",
       "location": "华丽卧榻深色软垫中央",
       "action": "全裸跨坐在视角腰间，居高临下主导骑乘，双手按在胸口，长发翻飞胸脯起伏",
       "timeOfDay": "深夜",
@@ -591,6 +598,7 @@
       ],
       "promptProse": "Straddling the viewer's hips in a commanding cowgirl position atop soft silk bedding, completely naked Rias Gremory reigns supreme. Her breathtaking, heavy breasts with firm pink nipples bounce in steady rhythm with her undulating hips. Her hands press firmly against the viewer's chest while her crimson locks cascade like wild silk. She gazes down with half-lidded, bliss-filled cyan eyes, asserting her passionate, possessive dominance. Vertical low-angle anime CG, solo 1girl focus, no text.",
       "promptTokens": [
+        "sensual_solo",
         "bedroom",
         "straddling",
         "cowgirl_position",
@@ -600,9 +608,8 @@
         "bouncing_breasts",
         "nipples",
         "areola",
-        "pussy",
-        "vaginal_penetration",
-        "penis_in_pussy",
+        "exposed_pussy",
+        "pussy_juice",
         "sweat_drops",
         "heavy_blush",
         "blushing_ears",
@@ -620,7 +627,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -661,7 +670,7 @@
         "heavy_blush",
         "sensual_solo"
       ],
-      "promptProse": "Lounging against the smooth marble ledge of a steaming bath strewn with red rose petals, Rias Gremory is drenched in sensuality. Her sheer crimson silk robe is thoroughly soaked and clinging like a second skin, exposing the distinct curves of her full bust and taut pink nipples through the translucent fabric. One hand glides gently beneath the rippling water between her thighs as she gasps with a rosy flush spreading across her cheeks and neck. Masterpiece anime watercolor lighting, solo 1girl, no text.",
+      "promptProse": "Lounging against the smooth marble ledge of a steaming bath strewn with red rose petals, Rias Gremory is drenched in sensuality. Her sheer crimson silk robe is thoroughly soaked and clinging like a second skin, exposing the distinct curves of her full bust and taut pink nipples through the translucent fabric. One hand glides gently beneath the rippling water between her thighs as she gasps with a rosy flush spreading across her cheeks and neck. Ambient anime watercolor lighting, solo 1girl, no text.",
       "promptTokens": [
         "onsen",
         "luxury_bathroom",
@@ -690,7 +699,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "crimson_silk_lingerie",
@@ -1085,7 +1096,7 @@
         "shy_smile",
         "blush"
       ],
-      "promptProse": "Surrounded by softly falling snow in a quiet winter shrine garden, Akeno Himejima stands resplendent in traditional Japanese bridal Shiromuku attire. The immaculate white silk kimono with delicate crane embroidery frames her porcelain face, her black hair styled in traditional elegance. Her cheeks blush with tender bashfulness as she gazes at the viewer with eternal devotion. Ethereal, romantic anime masterpiece, solo 1girl, no text.",
+      "promptProse": "Surrounded by softly falling snow in a quiet winter shrine garden, Akeno Himejima stands resplendent in traditional Japanese bridal Shiromuku attire. The immaculate white silk kimono with delicate crane embroidery frames her porcelain face, her black hair styled in traditional elegance. Her cheeks blush with tender bashfulness as she gazes at the viewer with eternal devotion. Ethereal, romantic anime visual novel style, solo 1girl, no text.",
       "promptTokens": [
         "winter_shrine",
         "snowing",
@@ -1147,6 +1158,7 @@
       ],
       "promptProse": "Straddling the viewer atop traditional tatami mats in candlelit seclusion, completely nude Akeno Himejima commands the night. Her glossy black ponytail swings with each passionate bounce of her hips, while her dark feathered wings twitch with pleasure behind her back. Her heavy breasts and rosy areolas glisten with sweet sweat as she looks down with half-closed, lustrous purple eyes, whispering intoxicating words. Intimate vertical anime CG, solo 1girl focus, no text.",
       "promptTokens": [
+        "sensual_solo",
         "tatami_room",
         "candlelight",
         "straddling",
@@ -1155,11 +1167,11 @@
         "completely_nude",
         "fallen_angel_wings",
         "large_breasts",
+        "bouncing_breasts",
         "nipples",
         "areola",
-        "pussy",
-        "vaginal_penetration",
-        "penis_in_pussy",
+        "exposed_pussy",
+        "pussy_juice",
         "sweat_drops",
         "heavy_blush",
         "blushing_ears",
@@ -1177,7 +1189,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -1195,16 +1209,16 @@
     },
     {
       "id": "akeno_nsfw_veranda_bent_over_prone",
-      "title": "姬岛朱乃 · 神社缘侧的俯身承受",
+      "title": "姬岛朱乃 · 神社缘侧的罗裳半褪自抚·「在神明面前……不可以发出声音哦」",
       "category": "私密承载",
       "characterId": "akeno_himejima",
-      "description": "【姬岛朱乃 · 神社缘侧的俯身承受】夜幕降临的神社回廊外，清凉的夜风吹拂竹林。朱乃上身巫女白衣半敞，下身红色绯袴完全被掀起堆在腰间。她双手撑在木制栏杆上俯身翘臀，POV视角的双手有力地掐在她丰润的大腿根部与纤腰上。猛烈的撞击让她十指紧紧抠住木栏，平日里威严从容的巫女此刻眼角溢出泪水，后背因极致的欢愉弓成一道优美的绝景——「啊……等等……在神明大人面前这样……会坏掉的……！」",
+      "description": "【姬岛朱乃 · 神社缘侧的罗裳半褪自抚】夜幕降临的神社回廊外，清凉的夜风吹拂竹林。朱乃上身巫女白衣半敞露出丰满白皙的胸脯，红色绯袴系带解脱堆在腰间。她双手轻扶在木制栏杆上俯身弓腰，单手探入裙底拉开薄透内裤边缘轻揉水润敏感的花瓣。回廊灯笼映照下，朱乃眼角泛着羞耻泪光，回眸轻咬下唇娇喘连连——「啊啦……在神明面前……身体反而比平时更加敏感了呢……」",
       "location": "神社僻静后院木质走廊缘侧栏杆旁",
-      "action": "双手抓紧木质走廊栏杆俯身翘臀，绯袴被彻底掀起，POV视角双手扶腰受力，回头含泪潮红喘息",
+      "action": "双手扶木质走廊栏杆俯身翘臀，绯袴半解单手探入自抚花瓣，回头含羞潮红喘息",
       "timeOfDay": "深夜月明",
       "lighting": "庭院月光与廊下微弱纸灯笼光晕",
-      "camera": "cowboy shot, horizontal framing, Dutch angle POV",
-      "mood": "禁忌快感",
+      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+      "mood": "禁忌自抚、唯美心动",
       "sceneTags": [
         "shrine_veranda",
         "wooden_railing",
@@ -1212,15 +1226,19 @@
         "arched_back",
         "skirt_lift",
         "miko",
-        "pov_hands_on_hips",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
+        "pussy_juice",
         "heavy_blush",
         "blushing_ears",
         "looking_back",
         "horizontal_shot"
       ],
-      "promptProse": "Bent forward over the polished wooden veranda railing of the moonlit shrine, Akeno Himejima arches her back helplessly. Her red miko hakama skirt is pulled high over her waist, revealing her voluptuous, creamy hips and glistening folds. Deep rear thrusts and penetration drive forward as strong POV hands grip her waist tightly, indenting her flesh as she glances back with tear-rimmed purple eyes and flushed red ears, gasping in delicious, forbidden ecstasy. Dynamic horizontal anime CG, solo 1girl focus, no text.",
+      "promptProse": "Bent forward over the polished wooden veranda railing of the moonlit shrine, Akeno Himejima arches her back in solitary, breathless abandon. Her red miko hakama skirt is gathered high at her waist, hands gripping the lacquered wood while her fingers reach down to draw her lace panties aside and gently caress her wet, sensitive folds. She glances back over her shoulder with tear-rimmed violet eyes and flushed red ears, gasping softly in the quiet night breeze. Dynamic horizontal anime visual novel art, solo 1girl, no text.",
       "promptTokens": [
+        "sensual_solo",
+        "touching_own_body",
+        "hand_under_clothes",
         "shrine_veranda",
         "wooden_railing",
         "bent_over",
@@ -1229,10 +1247,9 @@
         "white_kimono",
         "hakama_skirt",
         "skirt_lift",
-        "bare_buttocks",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
         "pussy_juice",
-        "pov_hands_on_hips",
         "looking_back",
         "heavy_blush",
         "blushing_ears",
@@ -1252,7 +1269,9 @@
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
-        "self-harm, choking"
+        "self-harm, choking",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
@@ -1266,7 +1285,7 @@
       ],
       "kreaStyleHint": "r18_explicit_h_cg",
       "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwProse": "Bent forward over the polished wooden veranda railing of the moonlit shrine, Akeno Himejima arches her back helplessly. Her red miko hakama skirt is pulled high over her waist, revealing her voluptuous, creamy hips and glistening folds. Deep rear thrusts and penetration drive forward as strong POV hands grip her waist tightly, indenting her flesh as she glances back with tear-rimmed purple eyes and flushed red ears, gasping in delicious, forbidden ecstasy. Dynamic horizontal anime CG, solo 1girl focus, no text."
+      "nsfwProse": "bent forward over shrine veranda railing, miko skirt lifted, pulling panties aside, touching wet pussy, looking back over shoulder, biting lip, heavy blush, teary purple eyes"
     },
     {
       "id": "akeno_nsfw_miko_robe_disheveled_supine",
@@ -1325,7 +1344,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -1366,7 +1387,7 @@
         "hand_between_legs",
         "sensual_solo"
       ],
-      "promptProse": "Reclining against warm natural rocks in a secluded outdoor onsen beneath bamboo shadows, Akeno Himejima is bathed in rising steam. Her semi-sheer violet lace negligee is thoroughly soaked and clinging transparently to her voluptuous figure, revealing the outline of her heavy breasts and pink areolas. One hand glides gently beneath the warm water between her thighs as she gasps with intoxicating shyness. Masterpiece anime hot spring illustration, solo 1girl, no text.",
+      "promptProse": "Reclining against warm natural rocks in a secluded outdoor onsen beneath bamboo shadows, Akeno Himejima is bathed in rising steam. Her semi-sheer violet lace negligee is thoroughly soaked and clinging transparently to her voluptuous figure, revealing the outline of her heavy breasts and pink areolas. One hand glides gently beneath the warm water between her thighs as she gasps with intoxicating shyness. Luminous anime hot spring illustration, solo 1girl, no text.",
       "promptTokens": [
         "onsen",
         "hot_springs",
@@ -1397,7 +1418,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "purple_lace_negligee",

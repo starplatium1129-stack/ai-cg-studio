@@ -266,7 +266,7 @@
         "holding_teacup",
         "loving_smile"
       ],
-      "promptProse": "Kneeling beside the grand obsidian throne late at night, Albedo rests her cheek lovingly against the viewer's knee. Her large black feathered wings gently curve forward, cocooning the space in private warmth. Holding a steaming porcelain teacup, her golden eyes look up with absolute, unwavering adoration in the dim candlelight. Intimate, atmospheric anime masterpiece, solo 1girl, no text.",
+      "promptProse": "Kneeling beside the grand obsidian throne late at night, Albedo rests her cheek lovingly against the viewer's knee. Her large black feathered wings gently curve forward, cocooning the space in private warmth. Holding a steaming porcelain teacup, her golden eyes look up with absolute, unwavering adoration in the dim candlelight. Intimate, atmospheric anime key visual style, solo 1girl, no text.",
       "promptTokens": [
         "throne_room",
         "throne",
@@ -387,7 +387,7 @@
         "radiant_smile",
         "vow"
       ],
-      "promptProse": "Walking down an aisle lined with thousands of white roses toward the grand altar, Albedo is radiant in a lavish bridal wedding gown and delicate lace veil draped over her curved horns. Her obsidian wings spread gently behind the sweeping train of pure white silk. Tears of overwhelming, sublime joy sparkle in her golden eyes as she clasps her hands to her heart. Breathtaking anime masterpiece, solo 1girl, no text.",
+      "promptProse": "Walking down an aisle lined with thousands of white roses toward the grand altar, Albedo is radiant in a lavish bridal wedding gown and delicate lace veil draped over her curved horns. Her obsidian wings spread gently behind the sweeping train of pure white silk. Tears of overwhelming, sublime joy sparkle in her golden eyes as she clasps her hands to her heart. Breathtaking anime visual novel art, solo 1girl, no text.",
       "promptTokens": [
         "wedding_chapel",
         "white_roses",
@@ -481,7 +481,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -495,20 +497,20 @@
       ],
       "kreaStyleHint": "r18_explicit_h_cg",
       "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwProse": "Lying completely nude upon black velvet bedding in soft candlelight, Albedo opens her body and soul to the viewer. Her feathered wings spread wide across the ruffled pillows as her magnificent full breasts with erect pink nipples heave with uncontrolled gasps. Parting her smooth thighs in total abandon, she guides the viewer's hands for intimate intercourse and fingering onto her chest with a blissfully flushed face and trembling lips. Sensual, high-end anime CG, solo 1girl, no text."
+      "nsfwProse": "Lying completely nude upon black velvet bedding in soft candlelight, Albedo opens her body and soul to the viewer. Her feathered wings spread wide across the ruffled pillows as her magnificent full breasts with erect pink nipples heave with uncontrolled gasps. Parting her smooth thighs in total abandon, she guides the viewer's hands for sensual self-touching onto her chest with a blissfully flushed face and trembling lips. Sensual, high-end anime CG, solo 1girl, no text."
     },
     {
       "id": "albedo_nsfw_marble_table_bent_over_prone",
-      "title": "雅儿贝德 · 大理石案前的展翼承欢",
+      "title": "雅儿贝德 · 大理石案台的白裙更衣自抚·「只要一想到是您在看着……这里就会融化掉」",
       "category": "私密承载",
       "characterId": "albedo_overlord",
-      "description": "【雅儿贝德 · 大理石案前的展翼承欢】总管书房深处冰凉的黑色大理石案几前，雅儿贝德纯白礼服完全被推至胸口，丰腴饱满的雪臀高高翘起，双手死死按住大理石桌面俯身弓腰。POV视角双手紧紧箍住她被黑色羽翼簇拥的纤细髋骨，每一次深入的桩击都让羽翼不受控制地狂乱拍打。雅儿贝德咬着下唇回眸，耳根红透，含泪的金色眼眸泛着被彻底征服的狂热春水——「啊……哈……进得好深……要把雅儿贝德彻底融化掉了……！」",
+      "description": "【雅儿贝德 · 大理石案台的白裙更衣自抚】总管书房深处冰凉的黑色大理石案几前，雅儿贝德纯白礼服半解拉至胸下，饱满雪乳溢出，雪白丰臀在月色中弓起动人曲线。她双手按在大理石桌面上俯身弓腰，漆黑的巨大羽翼在身后因燥热微微颤抖。单手探入裙底拉开薄透内裤边缘自抚水润花瓣，咬着下唇回眸，金色竖瞳泛着被爱意与快感填满的狂热春水——「啊……哈……身体好热……雅儿贝德的心与身体……全部只属于您一个人……」",
       "location": "黑曜石与大理石精工雕刻的长案几旁",
-      "action": "双手按在案几上俯身翘臀，下身完全暴露，POV视角双手扶住腰臀受力，双翼乱颤回头哭泣喘息",
+      "action": "双手按案几俯身翘臀，白裙半解羽翼微颤，单手探入自抚敏感花瓣，回眸含情喘息",
       "timeOfDay": "深夜月光",
       "lighting": "透过彩色穹顶照在大理石上的幽冷月色",
-      "camera": "cowboy shot, horizontal framing, Dutch angle POV",
-      "mood": "狂乱受力",
+      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+      "mood": "狂热自抚、痴缠动情",
       "sceneTags": [
         "office",
         "marble_table",
@@ -516,17 +518,21 @@
         "arched_back",
         "hands_on_table",
         "skirt_lift",
-        "pov_hands_on_hips",
+        "panties_aside",
         "black_wings",
         "wing_flutter",
-        "pussy",
+        "exposed_pussy",
+        "pussy_juice",
         "heavy_blush",
         "blushing_ears",
         "looking_back",
         "horizontal_shot"
       ],
-      "promptProse": "Bent forward across a cold black marble table inside her private study, Albedo arches her slender spine in shuddering ecstasy. Her white dress is pulled high up to her ribs, exposing her plump, creamy buttocks and dripping core. Deep rear thrusts and penetration drive forward as strong POV hands grip her waist firmly beneath her trembling black wings. Looking back over her bare shoulder with tears in her golden eyes and red flushed ears, she cries out in overwhelming surrender. Horizontal dynamic anime composition, solo 1girl focus, no text.",
+      "promptProse": "Bent forward across a cold black marble table inside her private study, Albedo arches her slender spine in shuddering solo ecstasy. Her white dress is loosened and pulled up, hands resting flat against the dark polished stone while her fingers reach down to pull her panties aside and caress her dripping, sensitive folds. Her massive black feathered wings twitch softly with heat, and looking back over her bare shoulder with tears in her slit golden eyes, she sighs with boundless devotion. Horizontal dynamic anime composition, solo 1girl, no text.",
       "promptTokens": [
+        "sensual_solo",
+        "touching_own_body",
+        "hand_under_clothes",
         "study",
         "marble_desk",
         "bent_over",
@@ -534,12 +540,11 @@
         "hands_on_table",
         "white_dress",
         "open_clothes",
-        "bare_buttocks",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
         "pussy_juice",
         "black_wings",
         "curved_horns",
-        "pov_hands_on_hips",
         "looking_back",
         "heavy_blush",
         "blushing_ears",
@@ -559,7 +564,9 @@
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
-        "self-harm, choking"
+        "self-harm, choking",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
@@ -568,12 +575,12 @@
       "coverageTags": [
         "nsfw",
         "prone",
-        "doggystyle_pov",
+        "solo",
         "special_nsfw"
       ],
       "kreaStyleHint": "r18_explicit_h_cg",
       "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwProse": "Bent forward across a cold black marble table inside her private study, Albedo arches her slender spine in shuddering ecstasy. Her white dress is pulled high up to her ribs, exposing her plump, creamy buttocks and dripping core. Deep rear thrusts and penetration drive forward as strong POV hands grip her waist firmly beneath her trembling black wings. Looking back over her bare shoulder with tears in her golden eyes and red flushed ears, she cries out in overwhelming surrender. Horizontal dynamic anime composition, solo 1girl focus, no text."
+      "nsfwProse": "bent forward over marble table, white dress loosened, pulling panties aside, touching wet pussy, black wings twitching, curved horns, looking back over shoulder, slit golden eyes, heavy blush"
     },
     {
       "id": "albedo_nsfw_insane_love_cowgirl_straddle",
@@ -603,6 +610,7 @@
       ],
       "promptProse": "Straddling the viewer's waist in wild, possessive abandon atop silk bedding, naked Albedo rides with relentless, fervent passion. Her massive black wings beat the air slowly for balance as her heavy, glistening breasts bounce violently with each descent. With slit golden eyes glowing with sweet yandere obsession, she leans down to press her lips close, panting in boundless ecstasy. Intense, high-impact vertical anime CG, solo 1girl focus, no text.",
       "promptTokens": [
+        "sensual_solo",
         "bedroom",
         "straddling",
         "cowgirl_position",
@@ -612,9 +620,8 @@
         "bouncing_breasts",
         "nipples",
         "areola",
-        "pussy",
-        "vaginal_penetration",
-        "penis_in_pussy",
+        "exposed_pussy",
+        "pussy_juice",
         "black_wings",
         "curved_horns",
         "sweat_drops",
@@ -634,7 +641,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -706,7 +715,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "official_white_dress",

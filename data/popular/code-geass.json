@@ -16,7 +16,7 @@
         "披萨魔女",
         "共犯"
       ],
-      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, a Geass sigil on her forehead when glowing, and a serene, detached yet intimately teasing smile",
+      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, and a serene, detached yet intimately teasing smile",
       "identityTokens": [
         "c.c.",
         "c.c._(code_geass)",
@@ -126,7 +126,7 @@
         {
           "id": "nsfw_nude",
           "name": "纯净圣洁胴体",
-          "prose": "her completely bare, slender immortal body with long green hair pooling beneath her, pale ivory skin, tender natural breasts with small pink nipples, and a red bird-like Geass mark visible on her forehead or upper chest",
+          "prose": "her completely bare, slender immortal body with long silky green hair pooling beneath her, porcelain ivory skin, tender natural breasts with small pink nipples, and a slender graceful waist",
           "tokens": [
             "completely_nude",
             "bare_breasts",
@@ -135,7 +135,6 @@
             "areola",
             "pussy",
             "navel",
-            "geass_sigil",
             "slender_body"
           ]
         }

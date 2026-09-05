@@ -1219,7 +1219,7 @@
         "mini_kimono",
         "seductive_smile"
       ],
-      "promptProse": "Peeking out through the parted fold of heavy crimson velvet stage curtains, Sparkle executes a theatrical curtsy, delicately pinching the hem of her black and red mini kimono. With an index finger pressed over her cherry lips and one glowing ruby eye winking playfully, she casts a spellbinding, coquettish spell under the dim golden spotlights. Masterpiece anime theater CG, solo 1girl, no text.",
+      "promptProse": "Peeking out through the parted fold of heavy crimson velvet stage curtains, Sparkle executes a theatrical curtsy, delicately pinching the hem of her black and red mini kimono. With an index finger pressed over her cherry lips and one glowing ruby eye winking playfully, she casts a spellbinding, coquettish spell under the dim golden spotlights. Theatrical anime key visual finish, solo 1girl, no text.",
       "promptTokens": [
         "theater_stage",
         "velvet_curtain",
@@ -1281,6 +1281,7 @@
       ],
       "promptProse": "Straddling the viewer atop silk sheets in dim purple ambient lighting, naked Sparkle is caught in overwhelming passion. Her wrists are pinned lightly against the viewer's chest as she rides in helpless, feverish rhythm. Her petite, firm breasts with tender rosebud nipples bounce as she takes every inch into her dripping core. Biting her lip through breathless moans with tears shining in her flustered red eyes, her teasing arrogance completely surrenders to pleasure. High-energy vertical anime CG, solo 1girl focus, no text.",
       "promptTokens": [
+        "sensual_solo",
         "bedroom",
         "straddling",
         "cowgirl_position",
@@ -1289,9 +1290,8 @@
         "small_breasts",
         "pink_nipples",
         "areola",
-        "pussy",
-        "vaginal_penetration",
-        "penis_in_pussy",
+        "exposed_pussy",
+        "pussy_juice",
         "twintails",
         "sweat_drops",
         "heavy_blush",
@@ -1310,7 +1310,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -1328,43 +1330,44 @@
     },
     {
       "id": "sparkle_nsfw_tatami_pinned_wrists_prone",
-      "title": "花火 · 榻榻米按腕俯身的嘴硬承受",
+      "title": "花火 · 榻榻米和风短裙半褪的更衣自抚·「笨、笨蛋……才没有在想色色的事情呢」",
       "category": "私密承载",
       "characterId": "sparkle_hsr",
-      "description": "【花火 · 榻榻米按腕俯身的嘴硬承受】和风茶室的草席上，花火的和风短裙完全被掀翻堆在腰间，双手手腕被反剪扣在后腰上方，双膝跪地俯身趴在榻榻米上。POV视角的双手牢牢扣住她纤细的腰肢受力撞击，她雪白圆润的小巧蜜桃臀随着每一次深入而剧烈晃荡，榻榻米凹陷下深浅不一的折痕。花火把小脸埋在手臂弯里侧头回望，耳根红透，眼角挂着泪滴却还在嘴硬——「唔……笨蛋……慢一点啦……要被你弄坏了……混蛋……」",
+      "description": "【花火 · 榻榻米和风短裙半褪的更衣自抚】和风茶室的草席上，花火的和风短裙系带松脱，短裙被撩起堆在腰间。她双膝跪地俯身趴在榻榻米上弓起柔美曲线，单手探入裙底拉开内裤边缘自抚湿润的花瓣。小脸半埋在手臂弯里侧头回眸，耳根红透，眼角挂着羞耻的泪珠却还在嘴硬——「唔……笨蛋……看什么看啦……身体自己变得好奇怪……」",
       "location": "幽静和风茶室铺满软席的榻榻米中央",
-      "action": "双手被扣在后腰俯身翘臀，下身短裙撩起，POV视角扶腰受力，回头咬唇含泪娇嗔",
+      "action": "双手伏在榻榻米上俯身翘臀，短裙撩起单手探入自抚花瓣，回头咬唇含泪娇嗔",
       "timeOfDay": "深夜月光",
       "lighting": "障子门外洒进来的银白月光照亮雪白翘臀",
-      "camera": "cowboy shot, horizontal framing, Dutch angle POV",
-      "mood": "嘴硬破防",
+      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+      "mood": "嘴硬破防、唯美自抚",
       "sceneTags": [
         "tatami",
         "bent_over",
         "arched_back",
         "skirt_lift",
         "mini_kimono",
-        "hands_behind_back",
-        "pov_hands_on_hips",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
+        "pussy_juice",
         "heavy_blush",
         "blushing_ears",
         "looking_back",
         "horizontal_shot"
       ],
-      "promptProse": "Bent forward across a fragrant tatami floor with her mini kimono pushed high over her slender waist, Sparkle's wrists are pinned behind her arched back. Her smooth, perky buttocks and glistening petals shudder beneath each forceful thrust as strong POV hands grip her small hips tight. Looking back over her bare shoulder with flushed red ears and tears welling in her ruby eyes, her mouth quivers between defiant pouting and ecstatic gasps. Dynamic horizontal anime illustration, solo 1girl focus, no text.",
+      "promptProse": "Bent forward across a fragrant tatami floor with her mini kimono pushed high over her slender waist, Sparkle arches her back in flustered solo surrender. Hands resting against the woven straw mats, her fingers reach down to draw her panties aside and caress her dripping petals. Looking back over her bare shoulder with flushed red ears and tears welling in her ruby eyes, her mouth quivers between defiant pouting and ecstatic gasps under cool moonlight. Dynamic horizontal anime illustration, solo 1girl, no text.",
       "promptTokens": [
+        "sensual_solo",
+        "touching_own_body",
+        "hand_under_clothes",
         "tatami_room",
         "bent_over",
         "arched_back",
         "skirt_lift",
         "mini_kimono",
-        "hands_behind_back",
-        "bare_buttocks",
-        "pussy",
+        "panties_aside",
+        "exposed_pussy",
         "pussy_juice",
         "twintails",
-        "pov_hands_on_hips",
         "looking_back",
         "heavy_blush",
         "blushing_ears",
@@ -1384,7 +1387,9 @@
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
-        "self-harm, choking"
+        "self-harm, choking",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1536x1152",
       "adult": true,
@@ -1393,12 +1398,12 @@
       "coverageTags": [
         "nsfw",
         "prone",
-        "doggystyle_pov",
+        "solo",
         "special_nsfw"
       ],
       "kreaStyleHint": "r18_explicit_h_cg",
       "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwProse": "Bent forward across a fragrant tatami floor with her mini kimono pushed high over her slender waist, Sparkle's wrists are pinned behind her arched back. Her smooth, perky buttocks and glistening petals shudder beneath each forceful thrust as strong POV hands grip her small hips tight. Looking back over her bare shoulder with flushed red ears and tears welling in her ruby eyes, her mouth quivers between defiant pouting and ecstatic gasps. Dynamic horizontal anime illustration, solo 1girl focus, no text."
+      "nsfwProse": "bent forward over tatami floor, mini kimono pushed up, pulling panties aside, touching wet pussy, twintails, looking back over shoulder, biting lip, flushed ears, ruby eyes, heavy blush"
     },
     {
       "id": "sparkle_nsfw_supine_spread_legs_climax",
@@ -1459,7 +1464,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "adult": true,
@@ -1529,7 +1536,9 @@
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "official_kimono_dress",
@@ -1543,7 +1552,7 @@
       "sampleRating": "R18",
       "kreaStyleHint": "r18_explicit_h_cg",
       "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwProse": "Hidden behind the curtain of a compact boutique dressing room, Sparkle experiences a tantalizing private moment. Her mini kimono has slipped off her shoulders, revealing her bare, perky bust and soft pink nipples in the mirror. Trembling with bashful excitement, she slides one hand beneath her black lace panties, parting the fabric to tease her soaked entrance with gentle fingering and masturbation. Her cheeks glow bright crimson as her ruby eyes glance furtively toward the curtain gap. Exquisite sensual anime illustration, solo 1girl, no text."
+      "nsfwProse": "Hidden behind the curtain of a compact boutique dressing room, Sparkle experiences a tantalizing private moment. Her mini kimono has slipped off her shoulders, revealing her bare, perky bust and soft pink nipples in the mirror. Trembling with bashful excitement, she slides one hand beneath her black lace panties, parting the fabric to tease her soaked entrance with gentle gentle touching and masturbation. Her cheeks glow bright crimson as her ruby eyes glance furtively toward the curtain gap. Exquisite sensual anime illustration, solo 1girl, no text."
     }
   ]
 }

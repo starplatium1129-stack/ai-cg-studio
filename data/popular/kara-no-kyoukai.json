@@ -14,16 +14,14 @@
         "直死之魔眼",
         "伽蓝之堂"
       ],
-      "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome combatant with chin-length layered raven-black hair, piercing dual-colored Mystic Eyes of Death Perception flashing between azure-blue and crimson, wearing a traditional white kimono under a vibrant red leather jacket, holding an antique knife with deadly grace",
+      "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome beauty with chin-length layered raven-black hair, calm deep dark eyes, and a cool, graceful and composed demeanor",
       "identityTokens": [
         "ryougi_shiki",
         "black_hair",
         "short_hair",
-        "mystic_eyes_of_death_perception",
         "blue_eyes",
-        "kimono",
-        "leather_jacket",
-        "holding_knife",
+        "dark_eyes",
+        "slender_body",
         "cool_beauty"
       ],
       "exactTokens": [
