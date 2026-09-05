@@ -5,6 +5,7 @@ import { useChatConversation } from '@/composables/chat/useChatConversation'
 import { useChatStorage, type ChatMessage } from '@/composables/chat/useChatStorage'
 import { useChatProvider } from '@/composables/chat/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
+import { usePolling } from '@/composables/usePolling'
 import { controlApi } from '@/api/controlApi'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
@@ -63,8 +64,6 @@ export function useCharacterRoomSession() {
 
   let statusTimer = 0
   let errorTimer = 0
-  let roomPollTimer = 0
-  let roomPollRequest: AbortController | null = null
   let roomActionRequest: AbortController | null = null
 
   function setError(message: string, kind = 'error', timeout = 7000) {
@@ -340,33 +339,47 @@ export function useCharacterRoomSession() {
     await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
   }
 
-  async function pollRoomOperation(operationId: string) {
-    roomPollRequest?.abort()
-    const controller = new AbortController()
-    roomPollRequest = controller
-    try {
-      const data = await controlApi.getStatus({ signal: controller.signal })
-      if (roomPollRequest !== controller || controller.signal.aborted) return
-      const operation = data.operation
-      if (!operation || operation.id !== operationId) return
-      roomSetupText.value = operation.message || '正在准备本地服务…'
-      if (operation.status === 'running') return
-      clearInterval(roomPollTimer)
-      roomPollTimer = 0
-      preparingRoom.value = false
-      if (operation.status === 'failed') {
-        setError(operation.error || '聊天环境准备失败，请到控制面板查看。')
-        roomSetupText.value = '准备失败；可以到控制面板查看服务状态。'
-        return
+  /** 房间准备操作轮询（审计 2026-09-05 P2-05：迁移到 usePolling 底座）。
+   *  旧实现 setInterval + 每次先 abort 上一个请求：响应慢于 1.8s 时完成态永远读不到。
+   *  底座的 in-flight 去重保证最多一个查询、完成一次再排下一次；代际守卫保证
+   *  重入/卸载后旧 tick 的回写被丢弃。返回 false = 轮询结束（底座自动 stop）。 */
+  let roomPollOperationId = ''
+  let roomPollRequest: AbortController | null = null
+  const roomPoll = usePolling({
+    intervalMs: 1800,
+    tick: async () => {
+      const controller = new AbortController()
+      roomPollRequest = controller
+      try {
+        const data = await controlApi.getStatus({ signal: controller.signal })
+        if (roomPollRequest !== controller) return false
+        const operation = data.operation
+        if (!operation || operation.id !== roomPollOperationId) return false
+        roomSetupText.value = operation.message || '正在准备本地服务…'
+        if (operation.status === 'running') return // void = 继续，完成本次后由底座排下一次
+        preparingRoom.value = false
+        if (operation.status === 'failed') {
+          setError(operation.error || '聊天环境准备失败，请到控制面板查看。')
+          roomSetupText.value = '准备失败；可以到控制面板查看服务状态。'
+          return false
+        }
+        await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
+        roomSetupText.value = '聊天环境已就绪。'
+        return false
+      } catch {
+        if (controller.signal.aborted) return false
+        roomSetupText.value = '仍在后台准备；状态暂时无法读取。'
+        return // 瞬时网络抖动：完成本次查询后再安排下一次
+      } finally {
+        if (roomPollRequest === controller) roomPollRequest = null
       }
-      await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
-      roomSetupText.value = '聊天环境已就绪。'
-    } catch {
-      if (controller.signal.aborted) return
-      roomSetupText.value = '仍在后台准备；状态暂时无法读取。'
-    } finally {
-      if (roomPollRequest === controller) roomPollRequest = null
-    }
+    },
+  })
+
+  function stopRoomPolling() {
+    roomPoll.stop()
+    roomPollRequest?.abort()
+    roomPollRequest = null
   }
 
   async function prepareRoom() {
@@ -387,9 +400,11 @@ export function useCharacterRoomSession() {
         await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
         return
       }
-      clearInterval(roomPollTimer)
-      roomPollTimer = window.setInterval(() => { void pollRoomOperation(operationId) }, 1800) as unknown as number
-      void pollRoomOperation(operationId)
+      roomPollRequest?.abort()
+      roomPollRequest = null
+      roomPoll.stop()
+      roomPollOperationId = operationId
+      roomPoll.start()
     } catch (error) {
       if (controller.signal.aborted) return
       preparingRoom.value = false
@@ -497,8 +512,7 @@ export function useCharacterRoomSession() {
   onUnmounted(() => {
     window.removeEventListener('storage', onChatAuxStorage)
     clearInterval(statusTimer)
-    clearInterval(roomPollTimer)
-    roomPollRequest?.abort()
+    stopRoomPolling()
     roomActionRequest?.abort()
     roomPollRequest = null
     roomActionRequest = null

@@ -276,3 +276,51 @@ describe('sceneStore · 多目标并发（审计 2026-09-05 P1-02）', () => {
     expect(store.loading).toBe(false)
   })
 })
+
+describe('sceneStore · 目录页轻载（审计 2026-09-05 P2-02）', () => {
+  const fullRoutes = () => ({
+    'scenes-shared.json': [scene('sc001')],
+    'scenes-nene.json': [scene('sc002')],
+    'scenes-natsume.json': [scene('sc003')],
+    'curation.json': { signatureSceneIds: ['sc002'] },
+    'characters.json': [{ id: 'char-1' }],
+    'loras.json': [], 'tags.json': [], 'presets.json': [],
+    'popular-characters.json': { characters: [] },
+    'scene-blueprints.json': { blueprints: [] },
+  })
+  const fetchCount = (file: string) => calls.filter(u => u.split('?')[0].endsWith(`/${file}`)).length
+
+  it('loadHome 只拉轻元数据 + 三分片，不请求蓝图等重元数据', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    const store = useSceneStore()
+
+    await store.loadHome()
+
+    expect(store.scenes.map(s => s.id).sort()).toEqual(['sc001', 'sc002', 'sc003'])
+    expect(store.popularCharacters).toEqual([])
+    expect(fetchCount('scene-blueprints.json')).toBe(0)
+    expect(fetchCount('characters.json')).toBe(0)
+    expect(fetchCount('loras.json')).toBe(0)
+    expect(fetchCount('scenes-nene.json')).toBe(1)
+    // 轻载有意不置全量完成标志：重元数据尚未就绪
+    expect(store.loaded).toBe(false)
+  })
+
+  it('轻载后全量 load() 增量补拉重元数据，已成功资源不重复请求', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    const store = useSceneStore()
+    await store.loadHome()
+
+    await store.load()
+
+    expect(store.loaded).toBe(true)
+    expect(fetchCount('scene-blueprints.json')).toBe(1)
+    expect(fetchCount('characters.json')).toBe(1)
+    // 轻载阶段已成功的资源不重复请求
+    expect(fetchCount('popular-characters.json')).toBe(1)
+    expect(fetchCount('scenes-nene.json')).toBe(1)
+    expect(fetchCount('curation.json')).toBe(1)
+  })
+})

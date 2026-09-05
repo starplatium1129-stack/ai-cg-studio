@@ -389,7 +389,8 @@ function pickFeatured(ids: string[], scenes: HomeScene[], count: number): HomeSc
 
 async function loadSceneHighlights() {
   try {
-    await sceneStore.load()
+    // 审计 2026-09-05 P2-02：首页只需要精选/最近场景与计数，轻载不再拉 3.4MB 蓝图
+    await sceneStore.loadHome()
     const scenes = sceneStore.scenes.filter(isHomeScene)
     const curation = sceneStore.curation
     const signatures: string[] = Array.isArray(curation.signatureSceneIds) ? curation.signatureSceneIds : []

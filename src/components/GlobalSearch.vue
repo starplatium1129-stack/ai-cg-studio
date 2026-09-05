@@ -196,6 +196,7 @@ function openPanel(source: 'keyboard' | 'pointer' = 'keyboard') {
   query.value = ''
   activeIndex.value = 0
   void loadWorks()
+  void loadScenesOnce()
   void nextTick(() => { inputEl.value?.focus() })
 }
 
@@ -256,7 +257,9 @@ async function loadWorks() {
 
 async function loadScenes() {
   try {
-    await sceneStore.load()
+    // 审计 2026-09-05 P2-02：搜索只需要场景分片与轻元数据，走 loadHome 轻载，
+    // 不再借全量 load() 把 3.4MB 蓝图拖进每个页面的首屏
+    await sceneStore.loadHome()
     scenes.value = sceneStore.scenes.map((scene) => {
       const s = scene as Record<string, unknown>
       return {
@@ -271,6 +274,14 @@ async function loadScenes() {
       } satisfies SceneItem
     })
   } catch { /* 场景索引失败不影响搜索 */ }
+}
+
+/** 场景索引只建一次：首次打开面板时才拉（此前是挂载即拉，把数据请求摊进每个页面首屏） */
+let scenesRequested = false
+function loadScenesOnce() {
+  if (scenesRequested) return
+  scenesRequested = true
+  void loadScenes()
 }
 
 useFocusTrap(panelEl, () => open.value, {
@@ -291,7 +302,8 @@ watch(openRequest, () => {
 
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
-  void loadScenes()
+  // 场景索引延迟到首次打开面板（loadScenesOnce）；挂载即拉会把全量数据请求
+  // 摊进包括首页在内的每个页面首屏（审计 2026-09-05 P2-02）
 })
 onUnmounted(() => {
   document.removeEventListener('keydown', onKeydown)

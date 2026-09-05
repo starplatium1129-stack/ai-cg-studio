@@ -146,19 +146,21 @@ export const useSceneStore = defineStore('scenes', () => {
     file: string
     /** 必需资源失败必须让整次加载失败并可见；可选资源失败保留上次成功数据。 */
     required: boolean
+    /** lite=true：目录页（首页/全局搜索）轻载也需要的资源。 */
+    lite: boolean
     parse: (raw: unknown) => unknown
     apply: (data: unknown) => void
   }
 
   const META_SPECS: MetaSpec[] = [
-    { file: 'curation.json', required: false, parse: (raw) => raw ?? {}, apply: (d) => { curation.value = d as CurationData } },
-    { file: 'characters.json', required: true, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { characters.value = d as Array<Record<string, unknown>> } },
-    { file: 'loras.json', required: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { loras.value = d as LoraMeta[] } },
-    { file: 'tags.json', required: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
-    { file: 'presets.json', required: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
-    { file: 'scenes-index.json', required: false, parse: (raw) => raw ?? null, apply: (d) => { index.value = d as SceneIndex | null } },
-    { file: 'popular-characters.json', required: true, parse: (raw) => parsePopularCharacters(raw), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
-    { file: 'scene-blueprints.json', required: true, parse: (raw) => parseSceneBlueprints(raw), apply: (d) => { sceneBlueprints.value = d as SceneBlueprint[] } },
+    { file: 'curation.json', required: false, lite: true, parse: (raw) => raw ?? {}, apply: (d) => { curation.value = d as CurationData } },
+    { file: 'characters.json', required: true, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { characters.value = d as Array<Record<string, unknown>> } },
+    { file: 'loras.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { loras.value = d as LoraMeta[] } },
+    { file: 'tags.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
+    { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
+    { file: 'scenes-index.json', required: false, lite: true, parse: (raw) => raw ?? null, apply: (d) => { index.value = d as SceneIndex | null } },
+    { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(raw), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
+    { file: 'scene-blueprints.json', required: true, lite: false, parse: (raw) => parseSceneBlueprints(raw), apply: (d) => { sceneBlueprints.value = d as SceneBlueprint[] } },
   ]
 
   /** 已成功资源的解析结果：重试只补失败项，不重复请求已成功资源；force 时逐项重取。 */
@@ -167,11 +169,12 @@ export const useSceneStore = defineStore('scenes', () => {
   /** 在途元数据加载的持有者：finally 里比对持有者身份清槽，避免自引用 promise。 */
   let metaInflight: { promise: Promise<void> } | null = null
 
-  async function runMetaLoad(force: boolean): Promise<void> {
+  async function runMetaLoad(force: boolean, lite = false): Promise<void> {
     const v = version.value
     const failedNow = new Set<string>()
     const requiredFailures: string[] = []
-    await Promise.all(META_SPECS.map(async (spec) => {
+    const specs = lite ? META_SPECS.filter((spec) => spec.lite) : META_SPECS
+    await Promise.all(specs.map(async (spec) => {
       if (!force && metaOk.has(spec.file)) {
         spec.apply(metaOk.get(spec.file))
         return
@@ -193,12 +196,12 @@ export const useSceneStore = defineStore('scenes', () => {
     }
   }
 
-  function loadMeta(force = false): Promise<void> {
+  function loadMeta(force = false, lite = false): Promise<void> {
     if (!force && metaLoaded) return Promise.resolve()
     if (!force && metaInflight) return metaInflight.promise
     const entry: { promise: Promise<void> } = { promise: Promise.resolve() }
-    entry.promise = runMetaLoad(force)
-      .then(() => { metaLoaded = true })
+    entry.promise = runMetaLoad(force, lite)
+      .then(() => { metaLoaded = META_SPECS.every((spec) => metaOk.has(spec.file)) })
       .finally(() => { if (metaInflight === entry) metaInflight = null })
     metaInflight = entry
     return entry.promise
@@ -356,6 +359,24 @@ export const useSceneStore = defineStore('scenes', () => {
     return load(true)
   }
 
+  /**
+   * 目录页轻载（审计 2026-09-05 P2-02）：首页与全局搜索只吃 curation/角色目录/索引
+   * 与三分片；3.4MB 场景蓝图与 prompt 元数据不在此拉取，由创作页的 load()/
+   * loadCharacter()/loadCore() 依据逐资源缓存增量补拉。有意不置 loaded 标志——
+   * 它只代表"重元数据也齐了"的全量完成态。
+   */
+  function loadHome(): Promise<void> {
+    return beginTargetLoad('home', async () => {
+      await loadMeta(false, true)
+      const [shared, nene, natsume] = await Promise.all([
+        loadShard('shared'),
+        loadShard('nene'),
+        loadShard('natsume'),
+      ])
+      return mergeScenes(shared, nene, natsume)
+    })
+  }
+
   function byId(id: string) {
     return scenes.value.find((s) => s.id === id) ?? null
   }
@@ -366,6 +387,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets, index,
     popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadCharacter, loadCore, ensureCharacter, ensureCore, reload, byId, count,
+    load, loadHome, loadCharacter, loadCore, ensureCharacter, ensureCore, reload, byId, count,
   }
 })
