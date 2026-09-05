@@ -39502,5 +39502,40 @@
     "source": "Kara no Kyoukai",
     "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome combatant with chin-length layered raven-black hair, piercing dual-colored Mystic Eyes of Death Perception flashing between azure-blue and crimson, wearing a traditional white kimono under a vibrant red leather jacket, holding an antique knife with deadly grace",
     "outfits": []
+  },
+  "jeanne_d_arc": {
+    "characterId": "jeanne_d_arc",
+    "displayName": "圣女贞德",
+    "source": "Fate",
+    "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair in a long braid, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
+    "outfits": []
+  },
+  "scathach_fate": {
+    "characterId": "scathach_fate",
+    "displayName": "斯卡哈",
+    "source": "Fate",
+    "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a towering alluring beauty with very long purple hair and piercing crimson-red eyes, clad in her skin-tight purple bodysuit that leaves little of her voluptuous figure to imagination",
+    "outfits": []
+  },
+  "vladilena_milize": {
+    "characterId": "vladilena_milize",
+    "displayName": "芙拉蒂蕾娜·米利杰",
+    "source": "86 -Eighty Six-",
+    "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, the valiant commander known as Bloody Reina, an aristocratic beauty with long silky silver-white hair and two antenna-like ahoge strands, expressive silver-grey eyes, wearing the blue San Magnolia Republic military uniform with a tactical Para-RAID headset and unwavering resolve",
+    "outfits": []
+  },
+  "asuna_yuuki": {
+    "characterId": "asuna_yuuki",
+    "displayName": "结城明日奈",
+    "source": "Sword Art Online",
+    "identityProse": "Asuna Yuuki from Sword Art Online, the famed Lightning Flash and sub-leader of the Knights of the Blood, a beautiful warrior with waist-length chestnut-honey hair styled with a half-up side braid, warm hazel-amber eyes, an earnest confident smile, and an athletic yet feminine hourglass figure",
+    "outfits": []
+  },
+  "violet_evergarden": {
+    "characterId": "violet_evergarden",
+    "displayName": "薇尔莉特·伊芙加登",
+    "source": "Violet Evergarden",
+    "identityProse": "Violet Evergarden from Violet Evergarden, an ethereal and pristine former soldier turned Auto Memories Doll, with mid-back braided golden-blonde hair tied with red ribbons, luminous azure-blue eyes, articulated silver prosthetic mechanical hands, and a doll-like porcelain face brimming with tender emotion",
+    "outfits": []
   }
 }

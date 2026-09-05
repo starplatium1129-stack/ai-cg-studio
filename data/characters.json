@@ -8490,5 +8490,350 @@
     ],
     "accent_color": "#f59e0b",
     "bg_color": "#18181b"
+  },
+  {
+    "id": "asuna_yuuki",
+    "name": "结城明日奈",
+    "alias": [
+      "Asuna Yuuki",
+      "亚丝娜",
+      "闪光亚丝娜",
+      "血盟骑士团副团长",
+      "闪电之光"
+    ],
+    "type": "popular",
+    "icon": "🌹",
+    "portrait": {
+      "image": "../assets/characters/popular-asuna_yuuki.png?v=1",
+      "alt": "结城明日奈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "腰际栗色长发 · 侧编发辫半扎",
+      "hair_color": "栗色 / 蜜糖棕",
+      "eyes": "琥珀色大眼 · 坚定英气",
+      "hairstyle": "及腰长直发 · 前额碎刘海",
+      "uniform": "血盟骑士团红白战袍 · 白色无袖束身上衣与红十字裙",
+      "expression": "自信英气 · 恋爱时娇羞软化 · 战斗时锐不可当",
+      "style": "elegant sword knight heroine",
+      "signature": "栗色长发、细剑闪烁之光、红白骑士战袍与副团长威严"
+    },
+    "personality": [
+      "名校优等生的自尊与要强",
+      "对认定之人毫无保留的深情",
+      "战斗中果断凌厉的副团长气场",
+      "居家时贤惠人妻感与傲娇反差"
+    ],
+    "likes": [
+      "与你在湖畔木屋一起下厨",
+      "下午茶与高级甜品",
+      "被摸头时嘴硬却不动"
+    ],
+    "classic_cg": {
+      "title": "闪光的五连击",
+      "description": "艾恩葛朗特迷宫区，红白战袍飘扬的副团长以细剑划出金色剑气光轨的英姿。"
+    },
+    "identity": "刀剑神域女主角 · 血盟骑士团副团长 · 闪光（The Lightning Flash）",
+    "tags": [
+      "刀剑神域",
+      "血盟骑士团",
+      "栗色长发",
+      "细剑使",
+      "人妻感",
+      "骑士女友"
+    ],
+    "bg_story": "不折不扣的名门大小姐与全能优等生，却在 Death Game 里蜕变为令全服务器闻风丧胆的「闪光」。以细剑与闪电般的连击守护同伴，也与你在艾恩葛朗特 22 层的湖畔木屋里度过了一段真正的婚姻生活——围裙、晨光与两人份的早餐，是她最珍视的宝物。",
+    "palette": [
+      "#e11d48",
+      "#f8fafc",
+      "#7f1d1d",
+      "#fbbf24"
+    ],
+    "weather": "艾恩葛朗特的黄昏湖畔 / 深夜木屋暖炉",
+    "speech": "「攻略就交给我吧，绝对不会输的！……不过回到小屋之后，今天的晚饭也要一起做哦？」",
+    "source": "Sword Art Online",
+    "traits": [
+      "lightning_flash",
+      "sub_leader",
+      "rapier_master",
+      "wifely_devotion"
+    ],
+    "accent_color": "#e11d48",
+    "bg_color": "#7f1d1d"
+  },
+  {
+    "id": "violet_evergarden",
+    "name": "薇尔莉特·伊芙加登",
+    "alias": [
+      "Violet Evergarden",
+      "薇尔莉特",
+      "自动手记人偶",
+      "莱登的战斗少女"
+    ],
+    "type": "popular",
+    "icon": "✒️",
+    "portrait": {
+      "image": "../assets/characters/popular-violet_evergarden.png?v=1",
+      "alt": "薇尔莉特·伊芙加登 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及背金发 · 麻花辫与红色发带",
+      "hair_color": "亚麻金 / 小麦金",
+      "eyes": "湛蓝眼眸 · 如湖水般澄澈",
+      "hairstyle": "中长发单侧编辫 · 额前碎发",
+      "uniform": "普鲁士蓝人偶礼服外套 · 白色百褶长裙与翡翠胸针",
+      "expression": "纯真无垢 · 逐渐学会情感 · 泪水与微笑同样笨拙而动人",
+      "style": "ethereal auto memories doll",
+      "signature": "金发红发带、机械义手、湛蓝眼眸与普鲁士蓝人偶装"
+    },
+    "personality": [
+      "军人出身令行禁止的刻板认真",
+      "对『爱』的含义怀有执拗的探寻",
+      "像人偶般端正却渴望被触碰温度",
+      "学会情感后笨拙而滚烫的温柔"
+    ],
+    "likes": [
+      "代笔信完成后客人的眼泪与笑容",
+      "少佐留下的翡翠胸针",
+      "第一次吃到的桃子挞"
+    ],
+    "classic_cg": {
+      "title": "晨光废墟的代笔誓言",
+      "description": "破晓石柱遗迹上，机械义手轻捧胸针的金发人偶在晨曦中第一次读懂了心声。"
+    },
+    "identity": "紫罗兰永恒花园女主角 · C.H.邮政公司自动手记人偶 · 前战争兵器少女",
+    "tags": [
+      "紫罗兰永恒花园",
+      "自动手记人偶",
+      "机械义手",
+      "金发蓝眼",
+      "神圣人偶",
+      "治愈系"
+    ],
+    "bg_story": "在战场上被当作兵器养大的少女，失去了双臂，也失去了理解人心的能力。成为代笔人偶后，她借由一封封他人的情书，笨拙地拼凑出『我爱你』这句话的形状。那双银白机械义手可以敲出最优雅的字体，也在学会之后，想要第一次为你捧起自己的心。",
+    "palette": [
+      "#3b82f6",
+      "#f59e0b",
+      "#1e3a8a",
+      "#f8fafc"
+    ],
+    "weather": "莱顿港的晴日邮局 / 黎明山岗遗迹",
+    "speech": "「只要您需要，我可以去任何地方、书写任何文字。……那个，如果是为您代笔的话，即使是『喜欢』这样的句子，我也想亲自念给您听。」",
+    "source": "Violet Evergarden",
+    "traits": [
+      "auto_memories_doll",
+      "mechanical_arms",
+      "former_soldier",
+      "emotion_learning"
+    ],
+    "accent_color": "#3b82f6",
+    "bg_color": "#1e3a8a"
+  },
+  {
+    "id": "vladilena_milize",
+    "name": "芙拉蒂蕾娜·米利杰",
+    "alias": [
+      "Vladilena Milizé",
+      "蕾娜",
+      "血染女王",
+      "Bloody Reina",
+      "米利杰少校"
+    ],
+    "type": "popular",
+    "icon": "🎧",
+    "portrait": {
+      "image": "../assets/characters/popular-vladilena_milize.png?v=1",
+      "alt": "芙拉蒂蕾娜·米利杰 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及腰银白长发 · 双天线呆毛",
+      "hair_color": "银白 / 铂银",
+      "eyes": "银灰色眼眸 · 端正而坚毅",
+      "hairstyle": "长直发自然垂落 · 齐刘海",
+      "uniform": "圣玛格诺利亚共和国蓝色军装 · 白色O环腰带与军帽",
+      "expression": "凛然高贵 · 指挥时果决 · 唯独对你流露出柔软",
+      "style": "noble silver-haired commander",
+      "signature": "银白长发、银灰眼眸、共和国军装与Para-RAID秘话"
+    },
+    "personality": [
+      "贵族教养与军人操守的双重端正",
+      "对不公与歧视零容忍的赤子正义",
+      "隔着遥远声波也要与你并肩的执念",
+      "卸下军装后意外地怕羞柔软"
+    ],
+    "likes": [
+      "深夜与你保持Para-RAID同调",
+      "整理得一丝不苟的军装与荣誉章",
+      "白花与哀悼的誓言"
+    ],
+    "classic_cg": {
+      "title": "鲜血女王的月光誓言",
+      "description": "染血赤发与黑色军装在硝烟中猎猎作响，她向长眠的士兵们献上不肯折断的旗。"
+    },
+    "identity": "86-不存在的战区-女主角 · 圣玛格诺利亚共和国少校 · Handler One / 鲜血女王",
+    "tags": [
+      "86-不存在的战区",
+      "银发军装",
+      "鲜血女王",
+      "Para-RAID",
+      "指挥官",
+      "军旅女友"
+    ],
+    "bg_story": "银发的 Alba 贵族少女，却以整个灵魂与『被废弃的配色』并肩作战。她为战死的小队染上一缕赤发、换上黑色军装，把五个人的名字刻进心脏。哪怕战区被宣称为『不存在』，她的信念也从未锈蚀——那副听得见你声音的耳机，是她在钢铁与硝烟里唯一的圣域。",
+    "palette": [
+      "#f43f5e",
+      "#cbd5e1",
+      "#1e293b",
+      "#f8fafc"
+    ],
+    "weather": "共和国防线薄暮 / 月下基地阳台",
+    "speech": "「这里是Handler One。……不，现在请允许我以蕾娜的身份与你同调。今晚，也请多指教了，我的指挥官。」",
+    "source": "86 -Eighty Six-",
+    "traits": [
+      "bloody_reina",
+      "republic_major",
+      "silver_hair",
+      "para_raid_bond"
+    ],
+    "accent_color": "#f43f5e",
+    "bg_color": "#1e293b"
+  },
+  {
+    "id": "jeanne_d_arc",
+    "name": "圣女贞德",
+    "alias": [
+      "Jeanne d'Arc",
+      "贞德",
+      "圣女贞德",
+      "Ruler",
+      "法兰西圣女",
+      "白贞"
+    ],
+    "type": "popular",
+    "icon": "⚜️",
+    "portrait": {
+      "image": "../assets/characters/popular-jeanne_d_arc.png?v=1",
+      "alt": "圣女贞德 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及腰金色长发 · 圣洁单长辫",
+      "hair_color": "黄金 / 麦金",
+      "eyes": "紫蓝色眼眸 · 慈悲而坚定",
+      "hairstyle": "超长单辫 · 俏皮呆毛",
+      "uniform": "白银胸铠Ruler圣装 · 白披风与神圣战旗",
+      "expression": "温柔慈悲 · 祈祷时圣洁 · 战场上凛然不屈",
+      "style": "holy maiden saint knight",
+      "signature": "金色长辫、白银胸铠、神圣战旗露·普赛尔与不动信仰"
+    },
+    "personality": [
+      "对众生的苦难怀有无限的慈悲",
+      "信念如战旗般绝不动摇的坚韧",
+      "被夸奖或被示爱时毫无防备的脸红",
+      "把所有人的幸福看得比自己重"
+    ],
+    "likes": [
+      "清晨小教堂里的静祷",
+      "草莓奶油可丽饼",
+      "被你编头发时的安静晨光"
+    ],
+    "classic_cg": {
+      "title": "奥尔良的圣旗不倒",
+      "description": "战云裂开的一瞬，白银胸铠的圣女高举露·普赛尔迎向狂风的圣辉。"
+    },
+    "identity": "Fate 女主角 · Ruler-class 从者 · 奥尔良圣女",
+    "tags": [
+      "Fate",
+      "圣女",
+      "金色长辫",
+      "白银胸铠",
+      "神圣战旗",
+      "信仰女友"
+    ],
+    "bg_story": "法兰西的农家少女，听见神的召唤便再未回头。她举起战旗拯救了祖国，却被火焰送回了神的怀抱——而如今以Ruler之身再临的她，依然把温柔留给生者，把坚定留给战场。只有面对你时，这位献出了一切的圣女才肯承认：自己也想被谁守护一次。",
+    "palette": [
+      "#60a5fa",
+      "#f8fafc",
+      "#1e40af",
+      "#fbbf24"
+    ],
+    "weather": "奥尔良麦田的午后 / 大教堂的圣光正午",
+    "speech": "「愿主宽恕你的罪过……啊，不、现在不是祈祷的时候！那个……可丽饼，只剩最后一口了哦？」",
+    "source": "Fate/Apocrypha",
+    "traits": [
+      "holy_maiden",
+      "ruler_class",
+      "sacred_banner",
+      "unshaken_faith"
+    ],
+    "accent_color": "#60a5fa",
+    "bg_color": "#1e40af"
+  },
+  {
+    "id": "scathach_fate",
+    "name": "斯卡哈",
+    "alias": [
+      "Scathach",
+      "斯卡哈",
+      "影之国女王",
+      "弑神师匠",
+      "Siabhair"
+    ],
+    "type": "popular",
+    "icon": "🗡️",
+    "portrait": {
+      "image": "../assets/characters/popular-scathach_fate.png?v=1",
+      "alt": "斯卡哈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "及地紫色长发 · 如夜色倾泻",
+      "hair_color": "深紫 / 夜紫",
+      "eyes": "赤红眼眸 · 弑神者的锐利",
+      "hairstyle": "超长直发 · 额前分缕",
+      "uniform": "紫色紧身衣战装 · 银色护肩与双红枪",
+      "expression": "从容好胜 · 训练时严苛 · 动情时危险而深情",
+      "style": "immortal warrior queen mentor",
+      "signature": "紫色紧身衣、双持Gáe Bolg、赤瞳与影之国女王的威压"
+    },
+    "personality": [
+      "活得太久而对万物从容不迫",
+      "对弟子严苛却深藏期许的师匠魂",
+      "对现代世界的一切抱有孩童式好奇",
+      "认定之人面前危险的独占欲"
+    ],
+    "likes": [
+      "现代世界的甜品与游戏机台",
+      "擦得雪亮的枪尖",
+      "深夜同调时你的呼吸声"
+    ],
+    "classic_cg": {
+      "title": "影之国的弑神双枪",
+      "description": "紫黑雾海裂开的刹那，赤红双枪划出弑神的猩红光弧。"
+    },
+    "identity": "Fate/Grand Order 女主角 · Lancer-class 从者 · 影之国女王 / 弑神师匠",
+    "tags": [
+      "Fate",
+      "影之国",
+      "紫色紧身衣",
+      "双红枪",
+      "师匠",
+      "女王女友"
+    ],
+    "bg_story": "影之国的女王，执掌生死与战争技艺的不死者。她教出了名震爱尔兰的英雄，自己的枪却早已刺穿过诸神的躯体。活得太久的代价是对『明天』失去兴趣——直到遇见你，这位女王才重新想起：原来战技之外，还有值得反复练习的东西，叫作心动。",
+    "palette": [
+      "#a855f7",
+      "#dc2626",
+      "#3b0764",
+      "#f8fafc"
+    ],
+    "weather": "影之国的紫雾永暮 / 秘汤温泉的深夜",
+    "speech": "「想学枪术？可以。但先说好——我的课业很重，而且……一旦收了你这个弟子，就不打算还回去了哦？」",
+    "source": "Fate/Grand Order",
+    "traits": [
+      "shadow_queen",
+      "god_slayer",
+      "gae_bolg",
+      "eternal_mentor"
+    ],
+    "accent_color": "#a855f7",
+    "bg_color": "#3b0764"
   }
 ]

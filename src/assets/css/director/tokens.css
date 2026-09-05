@@ -633,6 +633,36 @@
     --character-soft:rgba(245,158,11,.16); --character-glow:rgba(245,158,11,.34);
     --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(15,23,42,.28);
   }
+  /* 派生：刀剑神域 · 结城明日奈 */
+  .pb[data-character="asuna_yuuki"] {
+    --character-accent:#e11d48; --character-accent-hover:#fb7185;
+    --character-soft:rgba(225,29,72,.16); --character-glow:rgba(225,29,72,.34);
+    --character-aura:rgba(225,29,72,.32); --character-aura-secondary:rgba(245,158,11,.22);
+  }
+  /* 派生：紫罗兰永恒花园 · 薇尔莉特·伊芙加登 */
+  .pb[data-character="violet_evergarden"] {
+    --character-accent:#3b82f6; --character-accent-hover:#60a5fa;
+    --character-soft:rgba(59,130,246,.16); --character-glow:rgba(59,130,246,.34);
+    --character-aura:rgba(59,130,246,.32); --character-aura-secondary:rgba(245,158,11,.22);
+  }
+  /* 派生：86 · 芙拉蒂蕾娜·米利杰 */
+  .pb[data-character="vladilena_milize"] {
+    --character-accent:#f43f5e; --character-accent-hover:#fb7185;
+    --character-soft:rgba(244,63,94,.16); --character-glow:rgba(244,63,94,.34);
+    --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(203,213,225,.24);
+  }
+  /* 派生：Fate · 圣女贞德 */
+  .pb[data-character="jeanne_d_arc"] {
+    --character-accent:#60a5fa; --character-accent-hover:#93c5fd;
+    --character-soft:rgba(96,165,250,.16); --character-glow:rgba(96,165,250,.34);
+    --character-aura:rgba(96,165,250,.32); --character-aura-secondary:rgba(251,191,36,.22);
+  }
+  /* 派生：Fate · 斯卡哈 */
+  .pb[data-character="scathach_fate"] {
+    --character-accent:#a855f7; --character-accent-hover:#c084fc;
+    --character-soft:rgba(168,85,247,.16); --character-glow:rgba(168,85,247,.34);
+    --character-aura:rgba(168,85,247,.32); --character-aura-secondary:rgba(220,38,38,.24);
+  }
 
   /* 角色氛围光斑：把 .pb 上的角色色透传到页面背景 orb，形成柔和体积漫反射光 */
   body:has(.pb[data-character])::before {
@@ -755,4 +785,9 @@
   body:has(.pb[data-character="ciel_tsukihime"]) { --character-aura:rgba(37,99,235,.32); --character-aura-secondary:rgba(241,245,249,.24); }
   body:has(.pb[data-character="caren_hortensia"]) { --character-aura:rgba(192,132,252,.30); --character-aura-secondary:rgba(220,38,38,.20); }
   body:has(.pb[data-character="artoria_pendragon_alter"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(15,23,42,.28); }
+  body:has(.pb[data-character="asuna_yuuki"]) { --character-aura:rgba(225,29,72,.32); --character-aura-secondary:rgba(245,158,11,.22); }
+  body:has(.pb[data-character="violet_evergarden"]) { --character-aura:rgba(59,130,246,.32); --character-aura-secondary:rgba(245,158,11,.22); }
+  body:has(.pb[data-character="vladilena_milize"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(203,213,225,.24); }
+  body:has(.pb[data-character="jeanne_d_arc"]) { --character-aura:rgba(96,165,250,.32); --character-aura-secondary:rgba(251,191,36,.22); }
+  body:has(.pb[data-character="scathach_fate"]) { --character-aura:rgba(168,85,247,.32); --character-aura-secondary:rgba(220,38,38,.24); }
 

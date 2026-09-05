@@ -1678,6 +1678,46 @@
       "outfits": []
     },
     {
+      "id": "jeanne_d_arc",
+      "displayName": "圣女贞德",
+      "originalName": "ジャンヌ・ダルク",
+      "source": "Fate",
+      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair in a long braid, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
+      "identityTokens": [
+        "jeanne d'arc (fate)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "braid",
+        "ahoge",
+        "purple_eyes",
+        "gentle_smile",
+        "holy_motherly"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "scathach_fate",
+      "displayName": "斯卡哈",
+      "originalName": "スカサハ",
+      "source": "Fate",
+      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a towering alluring beauty with very long purple hair and piercing crimson-red eyes, clad in her skin-tight purple bodysuit that leaves little of her voluptuous figure to imagination",
+      "identityTokens": [
+        "scathach (fate)",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "very_long_hair",
+        "red_eyes",
+        "tall_female",
+        "mature_female",
+        "bodysuit",
+        "confident_smile"
+      ],
+      "outfits": []
+    },
+    {
       "id": "hatsune_miku",
       "displayName": "初音未来",
       "originalName": "Hatsune Miku",
@@ -8122,9 +8162,11 @@
       "identityProse": "Rias Gremory from High School DxD, a voluptuous pureblood devil noblewoman with knee-length vivid crimson-red hair, an expressive ahoge on top, striking aquamarine-cyan eyes, and a regal yet deeply affectionate demeanor",
       "identityTokens": [
         "rias_gremory",
+        "red_hair",
         "crimson_hair",
         "very_long_hair",
         "ahoge",
+        "blue_eyes",
         "cyan_eyes",
         "large_breasts",
         "hourglass_figure"
@@ -8138,11 +8180,13 @@
       "source": "High School DxD",
       "identityProse": "Akeno Himejima from High School DxD, a ravishing half-human half-fallen-angel beauty with very long raven-black hair tied into a sleek high ponytail with a delicate orange ribbon, alluring violet-purple eyes, a gentle mature smile, and an intoxicatingly teasing aura",
       "identityTokens": [
+        "himejima_akeno",
         "akeno_himejima",
         "black_hair",
         "very_long_hair",
         "high_ponytail",
         "orange_hair_ribbon",
+        "orange_ribbon",
         "purple_eyes",
         "large_breasts",
         "seductive_smile"
@@ -8178,6 +8222,7 @@
       "source": "Code Geass",
       "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, a Geass sigil on her forehead when glowing, and a serene, detached yet intimately teasing smile",
       "identityTokens": [
+        "c.c.",
         "c.c._(code_geass)",
         "green_hair",
         "very_long_hair",
@@ -8185,7 +8230,8 @@
         "golden_eyes",
         "slender_waist",
         "calm_expression",
-        "seductive_smile"
+        "seductive_smile",
+        "code_geass"
       ],
       "outfits": []
     },
@@ -8241,6 +8287,64 @@
         "leather_jacket",
         "holding_knife",
         "cool_beauty"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "vladilena_milize",
+      "displayName": "芙拉蒂蕾娜·米利杰",
+      "originalName": "ヴラディレーナ・ミリーゼ",
+      "source": "86 -Eighty Six-",
+      "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, the valiant commander known as Bloody Reina, an aristocratic beauty with long silky silver-white hair and two antenna-like ahoge strands, expressive silver-grey eyes, wearing the blue San Magnolia Republic military uniform with a tactical Para-RAID headset and unwavering resolve",
+      "identityTokens": [
+        "vladilena_millize",
+        "silver_hair",
+        "long_hair",
+        "antenna_hair",
+        "grey_eyes",
+        "military_uniform",
+        "peaked_cap",
+        "boots",
+        "headset",
+        "slender_figure"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "asuna_yuuki",
+      "displayName": "结城明日奈",
+      "originalName": "結城明日奈",
+      "source": "Sword Art Online",
+      "identityProse": "Asuna Yuuki from Sword Art Online, the famed Lightning Flash and sub-leader of the Knights of the Blood, a beautiful warrior with waist-length chestnut-honey hair styled with a half-up side braid, warm hazel-amber eyes, an earnest confident smile, and an athletic yet feminine hourglass figure",
+      "identityTokens": [
+        "yuuki_asuna",
+        "chestnut_hair",
+        "long_hair",
+        "half_updo",
+        "side_braid",
+        "brown_eyes",
+        "hazel_eyes",
+        "athletic_body",
+        "confident_smile"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "violet_evergarden",
+      "displayName": "薇尔莉特·伊芙加登",
+      "originalName": "ヴァイオレット・エヴァーガーデン",
+      "source": "Violet Evergarden",
+      "identityProse": "Violet Evergarden from Violet Evergarden, an ethereal and pristine former soldier turned Auto Memories Doll, with mid-back braided golden-blonde hair tied with red ribbons, luminous azure-blue eyes, articulated silver prosthetic mechanical hands, and a doll-like porcelain face brimming with tender emotion",
+      "identityTokens": [
+        "violet_evergarden",
+        "blonde_hair",
+        "braid",
+        "hair_ribbon",
+        "blue_eyes",
+        "mechanical_hands",
+        "prosthetic_hands",
+        "doll-like_face",
+        "slender_figure"
       ],
       "outfits": []
     }

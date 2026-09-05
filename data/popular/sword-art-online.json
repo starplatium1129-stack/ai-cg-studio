@@ -1,0 +1,135 @@
+{
+  "version": "1.0.0",
+  "franchise": "Sword Art Online",
+  "characters": [
+    {
+      "id": "asuna_yuuki",
+      "displayName": "结城明日奈",
+      "originalName": "結城明日奈",
+      "franchise": "Sword Art Online",
+      "aliases": [
+        "Asuna Yuuki",
+        "亚丝娜",
+        "闪光亚丝娜",
+        "血盟骑士团副团长"
+      ],
+      "identityProse": "Asuna Yuuki from Sword Art Online, the famed Lightning Flash and sub-leader of the Knights of the Blood, a beautiful warrior with waist-length chestnut-honey hair styled with a half-up side braid, warm hazel-amber eyes, an earnest confident smile, and an athletic yet feminine hourglass figure",
+      "identityTokens": [
+        "yuuki_asuna",
+        "chestnut_hair",
+        "long_hair",
+        "half_updo",
+        "side_braid",
+        "brown_eyes",
+        "hazel_eyes",
+        "athletic_body",
+        "confident_smile"
+      ],
+      "exactTokens": [
+        "yuuki_asuna"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yuuki_asuna"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "abec",
+        "Shingo Adachi"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_knights_of_blood_uniform",
+          "name": "血盟骑士团红白战袍副团长装",
+          "prose": "her iconic Knights of the Blood Oath battle uniform: a tailored white sleeveless tunic with crimson cross insignias, red pleated mini skirt, white thigh-high stockings with red cross garters, silver breastplate accents, and holding the rapier Lambent Light",
+          "tokens": [
+            "knights_of_the_blood_uniform",
+            "white_tunic",
+            "red_cross",
+            "pleated_skirt",
+            "thighhighs",
+            "white_thighhighs",
+            "rapier",
+            "holding_sword",
+            "lambent_light"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_real_world_uniform",
+          "name": "现实世界私立高中制服",
+          "prose": "her real-world high school uniform: a grey tailored blazer over a crisp white collared shirt, red ribbon bow tie, pleated navy skirt, and dark brown loafers",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_shirt",
+            "ribbon_tie",
+            "pleated_skirt",
+            "black_stockings"
+          ]
+        },
+        {
+          "id": "casual_home_apron_sweater",
+          "name": "22层湖畔木屋毛衣围裙人妻装",
+          "prose": "a cozy domestic outfit: an oversized cream knit sweater, pink floral cooking apron tied around her waist, bare legs, holding a wooden spoon with sweet domestic warmth",
+          "tokens": [
+            "apron",
+            "cooking_apron",
+            "sweater",
+            "knit_sweater",
+            "bare_legs",
+            "holding_spoon",
+            "domestic"
+          ]
+        },
+        {
+          "id": "sensual_bikini_swimsuit",
+          "name": "深红修身细带比基尼泳装",
+          "prose": "a flattering crimson two-piece bikini with white cross-string ties, accentuating her sun-kissed athletic curves and toned stomach beside the water",
+          "tokens": [
+            "bikini",
+            "red_bikini",
+            "string_bikini",
+            "halterneck",
+            "cleavage",
+            "wet_skin",
+            "toned_abs"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, toned and feminine body with long chestnut hair flowing over her shoulders, full natural breasts with delicate pink nipples, slender waist, and smooth fair skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hourglass_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

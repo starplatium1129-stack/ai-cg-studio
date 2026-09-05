@@ -201,6 +201,21 @@
       "file": "kara-no-kyoukai.json",
       "franchise": "Kara no Kyoukai",
       "count": 11
+    },
+    {
+      "file": "eighty-six.json",
+      "franchise": "86 -Eighty Six-",
+      "count": 11
+    },
+    {
+      "file": "sword-art-online.json",
+      "franchise": "Sword Art Online",
+      "count": 11
+    },
+    {
+      "file": "violet-evergarden.json",
+      "franchise": "Violet Evergarden",
+      "count": 11
     }
   ]
 }

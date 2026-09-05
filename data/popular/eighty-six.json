@@ -1,0 +1,149 @@
+{
+  "version": "1.0.0",
+  "franchise": "86 -Eighty Six-",
+  "characters": [
+    {
+      "id": "vladilena_milize",
+      "displayName": "芙拉蒂蕾娜·米利杰",
+      "originalName": "ヴラディレーナ・ミリーゼ",
+      "franchise": "86 -Eighty Six-",
+      "aliases": [
+        "Vladilena Milizé",
+        "蕾娜",
+        "鲜血女王",
+        "米利杰少校"
+      ],
+      "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, the valiant commander known as Bloody Reina, an aristocratic beauty with long silky silver-white hair and two antenna-like ahoge strands, expressive silver-grey eyes, wearing the blue San Magnolia Republic military uniform with a tactical Para-RAID headset and unwavering resolve",
+      "identityTokens": [
+        "vladilena_millize",
+        "silver_hair",
+        "long_hair",
+        "antenna_hair",
+        "grey_eyes",
+        "military_uniform",
+        "peaked_cap",
+        "boots",
+        "headset",
+        "slender_figure"
+      ],
+      "exactTokens": [
+        "vladilena_millize"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, vladilena_millize"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Shirabii",
+        "Tetsuya Kawakami"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_republic_military_uniform",
+          "name": "圣玛格诺利亚共和国蓝色军装",
+          "prose": "her crisp San Magnolia Republic Handler uniform: a blue high-collared cropped military jacket with an armband and rank insignia, a white shirt with blue and gold trim, a blue high-waist skirt, a white o-ring belt, white thighhighs supported by garter straps, tall blue officer boots, and a blue peaked cap",
+          "tokens": [
+            "military_uniform",
+            "blue_jacket",
+            "cropped_jacket",
+            "high_collar",
+            "armband",
+            "white_shirt",
+            "blue_skirt",
+            "high-waist_skirt",
+            "o-ring_belt",
+            "white_thighhighs",
+            "garter_straps",
+            "blue_footwear",
+            "boots",
+            "peaked_cap",
+            "military_hat",
+            "officer"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "bloody_reina_black_uniform",
+          "name": "染血赤发鲜血女王黑色军装",
+          "prose": "her hardened Bloody Reina attire: the black variant of her Republic uniform with a sharp black cropped jacket, black skirt, a single blood-red streak dyed into her silver bangs, black thighhighs, black boots, and the tactical Para-RAID headset glowing at her neck",
+          "tokens": [
+            "military_uniform",
+            "black_jacket",
+            "black_skirt",
+            "single_hair_streak",
+            "red_hair",
+            "streaked_hair",
+            "two-tone_hair",
+            "black_thighhighs",
+            "black_footwear",
+            "headset",
+            "boots",
+            "cool_beauty"
+          ]
+        },
+        {
+          "id": "casual_summer_dress",
+          "name": "夏日淡紫花朵私服连身裙",
+          "prose": "a delicate light lilac summer sundress patterned with soft blossoms, ribbon tied at her slender waist, bare shoulders, and a light cardigan draped over her arms",
+          "tokens": [
+            "sundress",
+            "floral_dress",
+            "purple_dress",
+            "bare_shoulders",
+            "bare_legs",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "sensual_silk_nightwear",
+          "name": "深蓝真丝吊带情趣睡裙",
+          "prose": "a luxurious midnight-blue silk nightgown with fine lace trim along her bust, plunging backline showing her delicate shoulder blades, and short hem skimming her thighs",
+          "tokens": [
+            "nightgown",
+            "blue_nightgown",
+            "camisole",
+            "silk_lingerie",
+            "lace_trim",
+            "cleavage",
+            "bare_legs",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, slender and regal body with silver hair brushing her waist, perky natural breasts with delicate pink nipples, slender waist, and smooth fair skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

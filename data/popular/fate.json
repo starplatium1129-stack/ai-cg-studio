@@ -955,17 +955,20 @@
       "franchise": "Fate",
       "aliases": [
         "Caren Hortensia",
+        "caren_hortensia",
+        "caren_ortensia",
+        "caren ortensia",
         "卡莲",
         "圣痕修女",
         "毒舌修女",
         "抹大拉的圣骸布"
       ],
-      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued exorcist nun with chin-length layered platinum-silver hair, piercing lilac-purple eyes, wearing a unique skirtless white and black clerical vestment revealing her slender bare thighs, wielding the golden Shroud of Magdalene with cold grace",
+      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued exorcist nun with chin-length layered platinum-silver hair, piercing amber-yellow eyes, wearing a unique skirtless white and black clerical vestment revealing her slender bare thighs, wielding the golden Shroud of Magdalene with cold grace",
       "identityTokens": [
         "caren_hortensia",
         "white_hair",
         "short_hair",
-        "purple_eyes",
+        "yellow_eyes",
         "clerical_vestment",
         "shroud_of_magdalene",
         "slender_legs",
@@ -973,10 +976,12 @@
         "deadpan"
       ],
       "exactTokens": [
-        "caren_hortensia"
+        "caren_hortensia",
+        "caren_ortensia"
       ],
       "exactPrefixes": [
-        "1girl, solo, caren_hortensia"
+        "1girl, solo, caren_hortensia",
+        "1girl, solo, caren_ortensia"
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
@@ -1088,6 +1093,8 @@
       "aliases": [
         "Artoria Pendragon Alter",
         "Saber Alter",
+        "saber_alter",
+        "artoria_pendragon_alter",
         "阿尔托莉雅·Alter",
         "黑呆",
         "黑无毛",
@@ -1101,7 +1108,6 @@
         "yellow_eyes",
         "golden_eyes",
         "black_armor",
-        "excalibur_morgan",
         "dark_aura",
         "kuudere",
         "cool_beauty"
@@ -1209,6 +1215,277 @@
             "pussy",
             "navel",
             "hourglass_body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jeanne_d_arc",
+      "displayName": "圣女贞德",
+      "originalName": "ジャンヌ・ダルク",
+      "franchise": "Fate",
+      "aliases": [
+        "Jeanne d'Arc",
+        "贞德",
+        "圣女贞德",
+        "Ruler",
+        "法兰西圣女",
+        "白贞"
+      ],
+      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair in a long braid, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
+      "identityTokens": [
+        "jeanne d'arc (fate)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "braid",
+        "ahoge",
+        "purple_eyes",
+        "gentle_smile",
+        "holy_motherly"
+      ],
+      "exactTokens": [
+        "jeanne d'arc (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, jeanne d'arc (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Takeuchi Takashi",
+        "konoe ototsu"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_ruler_flag_armor",
+          "name": "白银胸铠圣旗Ruler圣装",
+          "prose": "her iconic Ruler-class vestments: a white and blue armored dress with a silver breastplate and faulds, white gauntlets over slender arms, a flowing white cape, and the sacred banner La Pucelle raised as a flag-tipped spear",
+          "tokens": [
+            "white_dress",
+            "armored_dress",
+            "breastplate",
+            "faulds",
+            "gauntlets",
+            "white_cape",
+            "flag",
+            "holding_flag",
+            "holding_polearm",
+            "la_pucelle"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_french_civilian",
+          "name": "奥尔良乡野白裙私服",
+          "prose": "a rustic French countryside outfit: a soft white blouse with lace collar, a long royal-blue skirt, a woven straw hat tied with a ribbon, and simple leather walking shoes",
+          "tokens": [
+            "white_blouse",
+            "lace_trim",
+            "long_skirt",
+            "blue_skirt",
+            "straw_hat",
+            "casual_wear",
+            "sun_hat"
+          ]
+        },
+        {
+          "id": "summer_beach_swimsuit",
+          "name": "海滨纯白比基尼泳装",
+          "prose": "a pure white bikini with delicate blue ribbon accents and a sheer gauzy pareo draped at her hips, sun-kissed and radiant beside the summer sea",
+          "tokens": [
+            "bikini",
+            "white_bikini",
+            "sarong",
+            "bare_shoulders",
+            "bare_legs",
+            "cleavage",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "sensual_white_lace_lingerie",
+          "name": "纯白天使蕾丝圣衣",
+          "prose": "an angelic white lace lingerie set: a sheer lace bra barely containing her full bust, a matching garter belt cinching her waist, and white thighhighs with lace tops that frame her soft thighs",
+          "tokens": [
+            "white_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "garter_straps",
+            "white_thighhighs",
+            "lace-trimmed",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, divine and feminine body with golden braid undone in flowing waves, full natural breasts with delicate pink nipples, slender waist, and smooth porcelain skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "divine_body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scathach_fate",
+      "displayName": "斯卡哈",
+      "originalName": "スカサハ",
+      "franchise": "Fate",
+      "aliases": [
+        "Scathach",
+        "斯卡哈",
+        "影之国女王",
+        "弑神师匠",
+        "Siabhair"
+      ],
+      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a towering alluring beauty with very long purple hair and piercing crimson-red eyes, clad in her skin-tight purple bodysuit that leaves little of her voluptuous figure to imagination",
+      "identityTokens": [
+        "scathach (fate)",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "very_long_hair",
+        "red_eyes",
+        "tall_female",
+        "mature_female",
+        "bodysuit",
+        "confident_smile"
+      ],
+      "exactTokens": [
+        "scathach (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, scathach (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Koyama Hirokazu"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_lancer_bodysuit",
+          "name": "影之国紫色紧身衣双红枪",
+          "prose": "her signature Lancer battle attire: a skin-tight purple bodysuit with an open chest window and cutout hips that bares her sides, silver pauldrons and gauntlets, dark sheer panels along her thighs, and the twin crimson death spears Gae Bolg wielded in both hands",
+          "tokens": [
+            "bodysuit",
+            "purple_bodysuit",
+            "leotard",
+            "pauldrons",
+            "gauntlets",
+            "bare_shoulders",
+            "sideboob",
+            "hip_vent",
+            "holding_polearm",
+            "dual_wield",
+            "gae_bolg"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_traveling_outfit",
+          "name": "影之国旅装斗篷便服",
+          "prose": "a worldly traveling outfit: a crisp white shirt under a brown corset vest, a long worn travel coat, a wide-brimmed hat shading her eyes, tall leather boots, and a staff pack slung over her shoulder",
+          "tokens": [
+            "traveling_outfit",
+            "white_shirt",
+            "corset",
+            "brown_vest",
+            "long_coat",
+            "hat",
+            "boots",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "summer_swimsuit_assassin",
+          "name": "黑纱泳装杀手度假装",
+          "prose": "a daring black string bikini with gold ring accents and a sheer violet sarong knotted at her hip, her long purple hair loose over sunlit shoulders beside the summer sea",
+          "tokens": [
+            "bikini",
+            "black_bikini",
+            "string_bikini",
+            "sarong",
+            "bare_shoulders",
+            "bare_legs",
+            "cleavage",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "sensual_crimson_lace_lingerie",
+          "name": "绯影蕾丝女王内衣",
+          "prose": "a black and crimson lace lingerie set: a strappy lace bra digging into her full breasts, a matching garter belt and black lace thighhighs sheathing her long powerful legs, and thin crimson straps crossing her toned stomach",
+          "tokens": [
+            "black_lingerie",
+            "lace_bra",
+            "garter_straps",
+            "black_thighhighs",
+            "tight_straps",
+            "cleavage",
+            "underboob",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, statuesque warrior body with purple hair cascading free, full firm breasts with dusky pink nipples, toned abs and powerful long legs, and flawless pale skin",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "toned_body"
           ]
         }
       ]

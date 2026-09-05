@@ -1,0 +1,137 @@
+{
+  "version": "1.0.0",
+  "franchise": "Violet Evergarden",
+  "characters": [
+    {
+      "id": "violet_evergarden",
+      "displayName": "薇尔莉特·伊芙加登",
+      "originalName": "ヴァイオレット・エヴァーガーデン",
+      "franchise": "Violet Evergarden",
+      "aliases": [
+        "Violet Evergarden",
+        "薇尔莉特",
+        "自动手记人偶",
+        "战争兵器少女"
+      ],
+      "identityProse": "Violet Evergarden from Violet Evergarden, an ethereal and pristine former soldier turned Auto Memories Doll, with mid-back braided golden-blonde hair tied with red ribbons, luminous azure-blue eyes, articulated silver prosthetic mechanical hands, and a doll-like porcelain face brimming with tender emotion",
+      "identityTokens": [
+        "violet_evergarden",
+        "blonde_hair",
+        "braid",
+        "hair_ribbon",
+        "blue_eyes",
+        "mechanical_hands",
+        "prosthetic_hands",
+        "doll-like_face",
+        "slender_figure"
+      ],
+      "exactTokens": [
+        "violet_evergarden"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, violet_evergarden"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Kyoto Animation",
+      "curatedArtistStyles": [
+        "Akiko Takase",
+        "Taichi Ishidate"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_auto_memories_doll_attire",
+          "name": "自动手记人偶宝蓝骑士礼服",
+          "prose": "her signature Auto Memories Doll attire: a tailored Prussian-blue officer jacket with ruffled ascot, an emerald brooch at her collar, a pleated pure white Prussian silk skirt, brown leather travel boots, and intricate articulated silver mechanical prosthetic hands",
+          "tokens": [
+            "blue_jacket",
+            "white_dress",
+            "pleated_skirt",
+            "brooch",
+            "ascot",
+            "boots",
+            "mechanical_hands",
+            "parasol"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_white_summer_dress",
+          "name": "夏日草帽纯白无袖连身裙",
+          "prose": "a simple and elegant pure white cotton summer dress with lace hem, a wide-brim straw hat tied with a blue ribbon over her blonde braids, and leather sandals",
+          "tokens": [
+            "white_dress",
+            "sundress",
+            "straw_hat",
+            "sunhat",
+            "bare_arms",
+            "mechanical_hands",
+            "sandals"
+          ]
+        },
+        {
+          "id": "charming_nightgown_slip",
+          "name": "闺房纯白真丝细带吊带睡裙",
+          "prose": "a delicate pure white silk camisole nightgown with soft ruffles, thin straps resting on her porcelain shoulders, her golden hair unbraided in soft waves, and bare feet",
+          "tokens": [
+            "nightgown",
+            "white_nightgown",
+            "camisole",
+            "bare_shoulders",
+            "cleavage",
+            "bare_legs",
+            "mechanical_hands",
+            "barefoot"
+          ]
+        },
+        {
+          "id": "festive_ballgown_dress",
+          "name": "莱顿博罗盛宴翡翠绿晚礼裙",
+          "prose": "a luxurious emerald-green velvet ballgown with off-shoulder neckline, gold filigree trim around her waist, flowing satin skirt, and matching velvet choker",
+          "tokens": [
+            "ball_gown",
+            "green_dress",
+            "evening_gown",
+            "bare_shoulders",
+            "cleavage",
+            "choker",
+            "mechanical_hands"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, doll-like porcelain body with golden hair unpinned around her waist, perky natural breasts with delicate rose-pink nipples, silver mechanical hands resting gently, and slender waist",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "mechanical_hands",
+            "slender_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

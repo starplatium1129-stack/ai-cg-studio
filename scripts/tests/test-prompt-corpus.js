@@ -118,7 +118,7 @@ function planFor(scene, profile, engine) {
 test('corpus: all scenes infer only valid shot/lighting/mood/composition ids and orientations', () => {
   // 2026-08-15 新增 4 个真正露点的 R18 场景（sc301-sc304），2026-08-23 新增 sc305；
   // 2026-08-28 删除 sc196/sc198 两个真重复场景（1a77ad7），303 → 301
-  assert.strictEqual(scenes.length, 301, 'corpus must cover the full scene library');
+  assert.strictEqual(scenes.length, 302, 'corpus must cover the full scene library');
   const shotIds = new Set(infer.SHOT_IDS)
   const lightingIds = new Set(infer.LIGHTING_IDS)
   const moodIds = new Set(infer.MOOD_IDS)
@@ -153,18 +153,18 @@ test('golden scenes: sc001 medium/window, sc153 close, sc050 holding-hands prese
   // 单人净化保留 POV / 望向 viewer / 牵手 / 中心互动。
   const anima050 = policy.sceneTemplateText(byId.sc050, { char: 'natsume', engine: 'anima' })
   assert(anima050.includes('holding hands'), 'sc050 must preserve holding hands for solo engines')
-  assert(anima050.includes('moonlight'), 'sc050 must preserve moonlight')
+  assert(anima050.includes('movie screen'), 'sc050 must preserve its cinema screen-light anchor (1326be66 肃清后月光改为银幕光)')
   assert(!/1girl|shiki_natsume|black_hair/.test(anima050), 'sc050 must drop redundant identity anchors')
-  assert(anima050.includes('one viewer hand entering from lower foreground'), 'sc050 must specify the off-frame viewer hand')
+  assert(anima050.includes('hand on armrest'), 'sc050 must specify the off-frame viewer hand (1326be66 改写后以扶手受力锚点表述)')
 
   const anima010 = policy.sceneTemplateText(byId.sc010, { char: 'nene', engine: 'anima' })
-  assert(anima010.includes('carrying sandals in one hand'), 'sc010 must carry its core sandals prop')
+  assert(anima010.includes('holding sun hat'), 'sc010 must carry its core sun-hat prop (场景重写后核心道具为阳伞帽)')
 
   const anima166 = policy.sceneTemplateText(byId.sc166, { char: 'nene', engine: 'anima' })
-  assert(anima166.includes('viewer sees the backs of both hands'), 'sc166 must constrain mirror-facing hand orientation')
+  assert(anima166.includes('backs of both hands visible to camera'), 'sc166 must constrain mirror-facing hand orientation')
 
   const anima280 = policy.sceneTemplateText(byId.sc280, { char: 'natsume', engine: 'anima' })
-  assert(anima280.includes('folded opaque brown kraft paper pouch'), 'sc280 must make the opaque kraft-paper wrapper explicit')
+  assert(anima280.includes('holding pastry pouch'), 'sc280 must make the opaque pastry pouch explicit (防断词改写后锚点词)')
 
   const explicitCaptionIds = ['sc001', 'sc010', 'sc012', 'sc015', 'sc029', 'sc030', 'sc034', 'sc037', 'sc050', 'sc053', 'sc056', 'sc075', 'sc141', 'sc166', 'sc280']
   for (const id of explicitCaptionIds) {
