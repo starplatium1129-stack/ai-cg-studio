@@ -87,7 +87,7 @@ function ensurePopularBuilt({ onlyIfMissing = false } = {}) {
 function ensureBlueprintsBuilt({ onlyIfMissing = false } = {}) {
   if (onlyIfMissing && fs.existsSync(blueprintsAggregatePath)) return { rebuilt: false };
   if (blueprintsIsCurrent()) return { rebuilt: false };
-  const { blueprints } = loadBlueprintShards();
+  loadBlueprintShards(); // 分片损坏会在此抛出（见下方注释）；聚合由 writeBlueprintAggregate 内部自取
   const count = writeBlueprintAggregate();
   refreshPrecompressed([blueprintsAggregatePath]);
   return { rebuilt: true, count };

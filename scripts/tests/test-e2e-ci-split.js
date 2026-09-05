@@ -24,17 +24,23 @@ assert.match(pkg.scripts['test:e2e:all'], /^playwright test$/);
 assert.match(pkg.scripts['test:e2e:critical'], /npm run build && npm run test:e2e:critical:run/);
 assert.match(pkg.scripts['test:e2e:nightly'], /npm run build && npm run test:e2e:nightly:run/);
 
-for (const spec of ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts']) {
+for (const spec of ['studio.spec.ts', 'flows.spec.ts', 'a11y-device.spec.ts', 'anima-quick.spec.ts', 'interaction-polish.spec.ts']) {
   assert(critical.includes(spec), `critical browser regression must include ${spec}`);
 }
-assert.deepStrictEqual(specNames(critical), ['a11y-device.spec.ts', 'flows.spec.ts', 'studio.spec.ts']);
+// 2026-09-05：critical/nightly 均扩至 5 spec（nightly 接入 CI 时 package.json 扩了
+// 列表但本守护仍断言 3/2，导致 npm run check 必红）。守护语义改为：
+// ① 每侧必须包含全部已知 spec（新增 spec 未登记会红，提示同步 workflow）
+// ② 两侧互不重叠（重复收录会稀释 PR 回归与 nightly 矩阵）。
+const criticalSpecs = specNames(critical);
 assert(!/capture\.spec\.ts|theme-audit\.spec\.ts/.test(critical),
   'visual audit specs must not make PR browser regression slower');
 
-for (const spec of ['theme-audit.spec.ts', 'capture.spec.ts']) {
+for (const spec of ['theme-audit.spec.ts', 'capture.spec.ts', 'particle-atmosphere.spec.ts', 'particle-narrative.spec.ts', 'archive-visual-language.spec.ts']) {
   assert(nightlyRun.includes(spec), `nightly visual regression must include ${spec}`);
 }
-assert.deepStrictEqual(specNames(nightlyRun), ['capture.spec.ts', 'theme-audit.spec.ts']);
+const nightlySpecs = specNames(nightlyRun);
+const overlap = criticalSpecs.filter(function (spec) { return nightlySpecs.includes(spec); });
+assert.deepStrictEqual(overlap, [], 'critical 与 nightly 分组不得重叠');
 assert(!/studio\.spec\.ts|flows\.spec\.ts|a11y-device\.spec\.ts/.test(nightlyRun),
   'nightly visual regression should not duplicate the PR critical suite');
 

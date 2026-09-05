@@ -111,7 +111,7 @@
   font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: 0.12em;
   color: var(--on-art-primary); background: color-mix(in srgb, var(--art-scrim-soft) 88%, var(--bg-deep));
   padding: 2px var(--s-2); border-radius: var(--r-sm); backdrop-filter: blur(6px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 var(--hl-inset-08), 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 .sc-badge {
   position: absolute; z-index: var(--z-raised); top: var(--s-2); right: var(--s-2); font-size: var(--fs-mono-sm);
@@ -129,7 +129,7 @@
   background: color-mix(in srgb, var(--accent) 62%, var(--art-scrim));
   border: 1px solid var(--on-art-line);
   padding: 2px var(--s-2); border-radius: var(--r-pill); backdrop-filter: blur(8px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 8px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 1px 0 var(--hl-inset-18), 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 .sc-tier.signature {
   color: color-mix(in srgb, var(--natsume-amber) 34%, white);
@@ -149,7 +149,7 @@
   border: 1px solid var(--border-soft);
   color: var(--text-secondary);
   letter-spacing: 0.02em;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 var(--hl-inset-06);
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover);
 }
 .sc-tag:hover {

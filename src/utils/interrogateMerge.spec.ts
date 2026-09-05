@@ -120,7 +120,7 @@ describe('interrogateMerge · 互斥组冲突消解（2026-08-29 修复「校服
       identityTokens: ['swimsuit'],
     })
     expect(result.outfitReplacement).toEqual(['school_uniform'])
-    expect(result.replacedOutfitGroup).toBe('泳装')
+    expect(result.replacedOutfitGroup).toBe('泳装/水着')
     expect(result.accepted).toEqual([])
   })
 

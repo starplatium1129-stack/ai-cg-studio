@@ -78,6 +78,16 @@
 
   --nav-bg: rgba(21, 16, 36, 0.84);
   --glass-highlight: rgba(255, 228, 248, 0.18);
+  /* inset 玻璃高光令牌族（2026-09-05 收纳星夜绀紫主题引入的系统性用法，
+     保持视觉值逐字节一致；使用点一律走令牌，见 scan-style-literals 门禁） */
+  --hl-inset-04: rgba(255, 255, 255, 0.04);
+  --hl-inset-06: rgba(255, 255, 255, 0.06);
+  --hl-inset-08: rgba(255, 255, 255, 0.08);
+  --hl-inset-10: rgba(255, 255, 255, 0.10);
+  --hl-inset-16: rgba(255, 255, 255, 0.16);
+  --hl-inset-18: rgba(255, 255, 255, 0.18);
+  --hl-inset-22: rgba(255, 255, 255, 0.22);
+  --hl-inset-32: rgba(255, 255, 255, 0.32);
   --glass-fill: rgba(30, 22, 46, 0.68);
   --glass-fill-strong: rgba(46, 33, 68, 0.84);
   --glass-edge: rgba(255, 220, 246, 0.16);
@@ -897,7 +907,7 @@ p  { color: var(--text-secondary); margin-bottom: var(--s-3); }
   background: var(--accent-soft);
   padding: 4px 11px; border-radius: var(--r-pill);
   border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border-soft));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 2px 0 color-mix(in srgb, var(--accent) 16%, transparent);
+  box-shadow: inset 0 1px 0 var(--hl-inset-10), 0 2px 0 color-mix(in srgb, var(--accent) 16%, transparent);
   margin-bottom: var(--s-3);
   transform: rotate(-1deg);
 }
@@ -1154,12 +1164,12 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
   font: 700 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .04em;
   white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 2px 8px color-mix(in srgb, var(--badge-color, var(--text-muted)) 20%, transparent);
+  box-shadow: inset 0 1px 0 var(--hl-inset-16), 0 2px 8px color-mix(in srgb, var(--badge-color, var(--text-muted)) 20%, transparent);
   transition: border-color var(--motion-hover), box-shadow var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .badge:hover {
   border-color: var(--badge-color, var(--text-muted));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 10px color-mix(in srgb, var(--badge-color, var(--text-muted)) 32%, transparent);
+  box-shadow: inset 0 1px 0 var(--hl-inset-22), 0 0 10px color-mix(in srgb, var(--badge-color, var(--text-muted)) 32%, transparent);
 }
 .badge::before {
   content: ""; width: 5px; height: 5px; border-radius: 50%;
@@ -1284,7 +1294,7 @@ body.overlay-open { overflow: hidden; }
   border: 1px solid var(--border-soft);
   color: var(--text-secondary);
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20), inset 0 1px 0 var(--hl-inset-08);
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover),
               box-shadow var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
@@ -1293,14 +1303,14 @@ body.overlay-open { overflow: hidden; }
 .chip:hover {
   border-color: var(--accent); color: var(--text-primary);
   background: color-mix(in srgb, var(--accent) 14%, var(--bg-elevated));
-  box-shadow: 0 3px 10px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: 0 3px 10px var(--accent-glow), inset 0 1px 0 var(--hl-inset-16);
   transform: translateY(-1px);
 }
 .chip.active {
   background: linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--accent-violet) 18%, transparent));
   border-color: var(--accent);
   color: var(--accent);
-  box-shadow: 0 0 12px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 12px var(--accent-glow), inset 0 1px 0 var(--hl-inset-22);
 }
 
 /* ---- Prompt code block(统一 4 套语法高亮:scenario / color-script / prompt-spec / art-direction)
@@ -1902,7 +1912,7 @@ textarea { scrollbar-width: thin; }
   box-shadow: var(--shadow-glass-elevated);
 }
 .glow-bloom {
-  box-shadow: 0 0 22px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+  box-shadow: 0 0 22px var(--accent-glow), inset 0 1px 0 var(--hl-inset-32);
 }
 
 /* ── 键盘快捷键徽章 (<kbd> Keyboard Shortcut Badge) ── */

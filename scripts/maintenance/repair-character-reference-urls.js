@@ -188,7 +188,7 @@ function main() {
   }
 
   const backupDir = snapshotBackup(renames);
-  fs.writeFileSync(VIEW_FILE, JSON.stringify(view, null, 2));
+  fs.writeFileSync(VIEW_FILE, JSON.stringify(view, null, 2) + '\n');
   fs.writeFileSync(STANDARDS_FILE, JSON.stringify(standards, null, 2) + '\n');
   console.log(`[ref-url-repair] 已备份并写盘: ${path.relative(ROOT, backupDir)}`);
 }
