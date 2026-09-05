@@ -8088,7 +8088,7 @@
     "visual_dna": {
       "hair": "及腰瀑布般翠绿长发 · 柔顺平刘海",
       "hair_color": "翠绿 / 浅柠檬绿",
-      "eyes": "深邃琥珀金眸 · 额间飞鸟Geass印记",
+      "eyes": "深邃琥珀金眸 · 剔透如晨露",
       "hairstyle": "超长翠绿直发 · 优雅垂胸前",
       "uniform": "纯白拘束服风衣 / 黑色骑士团制服",
       "expression": "从容淡漠 · 似笑非笑 · 深邃温柔",
@@ -8835,5 +8835,420 @@
     ],
     "accent_color": "#a855f7",
     "bg_color": "#3b0764"
+  },
+  {
+    "id": "shinomiya_kaguya",
+    "name": "四宫辉夜",
+    "alias": [
+      "Shinomiya Kaguya",
+      "辉夜",
+      "四宫辉夜",
+      "副会长",
+      "秀知院的辉夜"
+    ],
+    "type": "popular",
+    "icon": "🌙",
+    "portrait": {
+      "image": "../assets/characters/popular-shinomiya_kaguya.png?v=1",
+      "alt": "四宫辉夜 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色短发折叠马尾 · 红缎带",
+      "hair_color": "乌黑 / 墨黑",
+      "eyes": "红色垂眼 · 恋爱时软化",
+      "hairstyle": "折叠马尾 · 分线刘海与侧发",
+      "uniform": "秀知院学园制服 · 黑色背心裙与黑丝",
+      "expression": "大小姐矜持 · 恋爱时傲娇破防 · 『冰』模式冷艳",
+      "style": "elegant heiress tsundere genius",
+      "signature": "折叠马尾红缎带、红瞳垂眼与『お可愛いこと』"
+    },
+    "personality": [
+      "多才多艺的万能天才",
+      "把『先告白的人就输了』奉为铁律的傲娇",
+      " grew up sheltered 导致常识缺失的反差",
+      "恋爱时毫无防备的柔软"
+    ],
+    "likes": [
+      "与学生会的日常斗智",
+      "烟花与祭典",
+      "被你戳破傲娇的瞬间"
+    ],
+    "classic_cg": {
+      "title": "烟花下的お可愛いこと",
+      "description": "深红振袖回眸的瞬间，金色烟花与傲娇浅笑同时绽放。"
+    },
+    "identity": "辉夜大小姐想让我告白 女主角 · 秀知院学生会副会长 · 四宫家千金",
+    "tags": [
+      "辉夜大小姐",
+      "傲娇大小姐",
+      "黑发红瞳",
+      "折叠马尾",
+      "学生会",
+      "恋爱头脑战"
+    ],
+    "bg_story": "四宫家的名门千金，秀知院天文台的学生会副会长。她可以解出任何难题、赢下任何比赛，唯独在『喜欢你』这三个字上输得彻彻底底。那场持续了无数回合的恋爱头脑战，最后是谁先告白其实已经不重要了——重要的是，烟花下那句『お可愛いこと』，终于变成了只对你一人的真心话。",
+    "palette": [
+      "#e11d48",
+      "#f8fafc",
+      "#450a0a",
+      "#fbbf24"
+    ],
+    "weather": "京都夏夜烟花 / 学生会室的夕阳",
+    "speech": "「お可愛いこと……哼、今天的作战也是本小姐的完全胜利。……诶，你、你刚才笑什么！不许笑！」",
+    "source": "Kaguya-sama: Love Is War",
+    "traits": [
+      "love_is_war",
+      "vice_president",
+      "folded_ponytail",
+      "okawaii_koto"
+    ],
+    "accent_color": "#e11d48",
+    "bg_color": "#450a0a"
+  },
+  {
+    "id": "shokuhou_misaki",
+    "name": "食蜂操祈",
+    "alias": [
+      "Shokuhou Misaki",
+      "食蜂操祈",
+      "女王蜂",
+      "Mental Out",
+      "心理掌握",
+      "常盘台女王"
+    ],
+    "type": "popular",
+    "icon": "👑",
+    "portrait": {
+      "image": "../assets/characters/popular-shokuhou_misaki.png?v=1",
+      "alt": "食蜂操祈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金色超长发 · 女王卷",
+      "hair_color": "蜜金 / 浅金",
+      "eyes": "黄棕瞳 · 标志性星形瞳孔",
+      "hairstyle": "超长直发自然垂落",
+      "uniform": "常盘台制服 · 米色背心与蛛网白手套",
+      "expression": "从容自信 · 撒娇时星瞳发亮 · 意外怕吃亏",
+      "style": "queen bee mental-out esper",
+      "signature": "星形瞳孔、蛛网白手套、遥控器手提包"
+    },
+    "personality": [
+      "常盘台的女王蜂与天生领袖",
+      "对认定之人占有欲全开的甜",
+      "绝不让自己吃亏的精明",
+      "能力越强越怕『被真心操纵』的柔软"
+    ],
+    "likes": [
+      "珍珠奶茶与甜品",
+      "对你的心理掌握（自称）",
+      "被夸奖时的星瞳发亮"
+    ],
+    "classic_cg": {
+      "title": "女王的加冕沉腰",
+      "description": "遥控器抵在胸前如权杖，星瞳迷离里完成只属于你的加冕。"
+    },
+    "identity": "某科学的超电磁炮 女主角之一 · 学园都市第五位 Level 5 · 心理掌握（Mental Out）",
+    "tags": [
+      "某科学的超电磁炮",
+      "Level 5",
+      "女王蜂",
+      "金发星瞳",
+      "常盘台",
+      "心理掌握"
+    ],
+    "bg_story": "学园都市第五位的超能力者，以『心理掌握』操控人心的女王蜂。她可以操纵任何人的记忆与情感，唯独不肯对你用——因为她要的从来不是被操纵的忠诚，而是你清醒着、自愿走过来牵她的手。这份笨拙的骄傲，比任何支配都更像女王。",
+    "palette": [
+      "#fbbf24",
+      "#f8fafc",
+      "#78350f",
+      "#a855f7"
+    ],
+    "weather": "学园都市的晴日 / 深夜宿舍的台灯下",
+    "speech": "「本小姐的心理掌握对你永久失效——因为你的心，根本不需要操纵就会走过来♪」",
+    "source": "A Certain Scientific Railgun",
+    "traits": [
+      "mental_out",
+      "queen_bee",
+      "star_pupils",
+      "tokiwadai"
+    ],
+    "accent_color": "#fbbf24",
+    "bg_color": "#78350f"
+  },
+  {
+    "id": "kasumigaoka_utaha",
+    "name": "霞之丘诗羽",
+    "alias": [
+      "Kasumigaoka Utaha",
+      "霞之丘诗羽",
+      "诗羽学姐",
+      "霞诗子",
+      "毒舌学姐"
+    ],
+    "type": "popular",
+    "icon": "🖋️",
+    "portrait": {
+      "image": "../assets/characters/popular-kasumigaoka_utaha.png?v=1",
+      "alt": "霞之丘诗羽 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色长直发 · 白色发箍",
+      "hair_color": "墨黑 / 夜黑",
+      "eyes": "红色凤眼 · 讥诮里藏温柔",
+      "hairstyle": "长直发齐刘海",
+      "uniform": "丰桥学园制服 · 黑丝裤袜",
+      "expression": "毒舌从容 · 撒娇时成熟妖艳 · 认真时灼热",
+      "style": "sharp-tongued novelist senpai",
+      "signature": "白発箍、黑丝长腿与毒舌作家的红瞳"
+    },
+    "personality": [
+      "笔名霞诗子的天才恋爱小说家",
+      "毒舌是铠甲也是调情的语言",
+      "对后辈毫不客气却处处留心",
+      "把真心话全部写进书里的笨拙"
+    ],
+    "likes": [
+      "截稿后的深夜散步",
+      "黑咖啡与旧书馆",
+      "把你的名字写进稿纸"
+    ],
+    "classic_cg": {
+      "title": "深夜阳台的黑裙取材",
+      "description": "开衩黑裙倚着栏杆，下一章的恶役角色正对你微笑宣判。"
+    },
+    "identity": "路人女主的养成方法 女主角之一 · 丰桥学园三年级 · 恋爱小说家霞诗子",
+    "tags": [
+      "路人女主",
+      "毒舌学姐",
+      "黑长直",
+      "红瞳",
+      "黑丝",
+      "小说家"
+    ],
+    "bg_story": "笔名霞诗子的天才小说家，丰桥学园的三年级学姐。她的毒舌能把人扎得体无完肤，笔下情话却让百万读者落泪——因为那些说不出口的话，全都写进了书里。遇到你之后，她终于决定：这一次的结局，由她亲自执笔，不再胆怯。",
+    "palette": [
+      "#ef4444",
+      "#f8fafc",
+      "#7f1d1d",
+      "#e2e8f0"
+    ],
+    "weather": "旧书馆的晨光 / 完稿夜的阳台",
+    "speech": "「要签名可以，先把这一卷的感想写满一页。……啊，别摆出那种表情，学长可是本作家的终身取材对象哦♪」",
+    "source": "Saenai Heroine no Sodatekata",
+    "traits": [
+      "novelist",
+      "sharp_tongue",
+      "white_hairband",
+      "black_pantyhose"
+    ],
+    "accent_color": "#ef4444",
+    "bg_color": "#7f1d1d"
+  },
+  {
+    "id": "kochou_shinobu",
+    "name": "蝴蝶忍",
+    "alias": [
+      "Kochou Shinobu",
+      "蝴蝶忍",
+      "虫柱",
+      "蝶屋敷主人",
+      "紫藤姐姐"
+    ],
+    "type": "popular",
+    "icon": "🦋",
+    "portrait": {
+      "image": "../assets/characters/popular-kochou_shinobu.png?v=1",
+      "alt": "蝴蝶忍 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑发渐变紫发梢 · 发髻与蝴蝶饰",
+      "hair_color": "墨黑 / 紫藤紫渐变",
+      "eyes": "紫色眼眸 · 微笑时弯成月牙",
+      "hairstyle": "波浪渐变发 · 后发髻",
+      "uniform": "鬼杀队队服 · 蝶翼羽织",
+      "expression": "永远温柔的微笑 · 笑容之下是向死而行的觉悟",
+      "style": "gentle insect hashira smile",
+      "signature": "蝶翼羽织、渐变紫发与不灭的微笑"
+    },
+    "personality": [
+      "杀鬼的刀与治愈的手并存",
+      "以毒为刃的最弱却最强",
+      "微笑是铠甲也是温柔的伪装",
+      "向死而生却渴望普通的幸福"
+    ],
+    "likes": [
+      "紫藤花与花田",
+      "照顾蝶屋敷的孩子们",
+      "被你发现笑容背后的疲惫"
+    ],
+    "classic_cg": {
+      "title": "紫藤花下的微笑",
+      "description": "花帘垂落的紫藤园里，她第一次让微笑之下的悲伤被看见。"
+    },
+    "identity": "鬼灭之刃 · 虫柱 · 蝶屋敷主人",
+    "tags": [
+      "鬼灭之刃",
+      "虫柱",
+      "蝶翼羽织",
+      "渐变紫发",
+      "紫藤",
+      "微笑姐姐"
+    ],
+    "bg_story": "无法斩下鬼头的孩子，把自己的身体炼成了毒。她笑着说『要好好上药哦』，转身却把每一天当作最后一天来燃烧。紫藤花下那句『毒也会变成药』，是她此生唯一的任性——如果有你在，余下的每一天，她想用来对你温柔。",
+    "palette": [
+      "#a78bfa",
+      "#f8fafc",
+      "#4c1d95",
+      "#f9a8d4"
+    ],
+    "weather": "紫藤园的花时午后 / 蝶屋敷的晨光",
+    "speech": "「伤口要好好上药哦，不然我会生气的。……呐，如果是你的话，毒也会变成药——这句话，只说一次哦。」",
+    "source": "Kimetsu no Yaiba",
+    "traits": [
+      "insect_hashira",
+      "butterfly_mansion",
+      "wisteria_poison",
+      "eternal_smile"
+    ],
+    "accent_color": "#a78bfa",
+    "bg_color": "#4c1d95"
+  },
+  {
+    "id": "ishtar_fate",
+    "name": "伊什塔尔",
+    "alias": [
+      "Ishtar",
+      "伊什塔尔",
+      "天之女主人",
+      "美与战争的女神",
+      "Rin脸女神"
+    ],
+    "type": "popular",
+    "icon": "🌟",
+    "portrait": {
+      "image": "../assets/characters/popular-ishtar_fate.png?v=1",
+      "alt": "伊什塔尔 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑发 two-side_up 高双马尾",
+      "hair_color": "墨黑 / 深棕黑",
+      "eyes": "红色眼眸 · 得意时神采飞扬",
+      "hairstyle": "two-side_up 高束双马尾",
+      "uniform": "女神神装 · 金冠金环与不对称绑腿",
+      "expression": "高傲得意 · 撒娇时理直气壮 · 动情时恍惚温柔",
+      "style": "haughty babylonian goddess",
+      "signature": "金冠金环、天舟玛安娜与『赞美我』"
+    },
+    "personality": [
+      "美与战争的女神，威压无双",
+      "好奇心旺盛的现代沉迷者",
+      "嘴上要供品，心里要陪伴",
+      "恋爱时笨拙得完全不像女神"
+    ],
+    "likes": [
+      "人类的甜甜圈",
+      "金星与星空",
+      "被你『赞美』时的暗爽"
+    ],
+    "classic_cg": {
+      "title": "天舟巡空的宣言",
+      "description": "维纳斯号划破云海，金冠女神叉腰俯瞰人间领空。"
+    },
+    "identity": "Fate/Grand Order · Archer · 巴比伦爱与战争女神（凭依凛的躯体）",
+    "tags": [
+      "FGO",
+      "女神",
+      "金冠",
+      "黑发红瞳",
+      "天舟",
+      "傲娇女神"
+    ],
+    "bg_story": "美索不达米亚的美与战争女神，凭依在与她灵魂波长相合的少女之躯降临现代。她管着战争所以很吵，管着爱所以很笨——三千年的神史里从不缺信徒，缺的只是一个不靠供品、纯粹因为喜欢而走近的人。女神下嫁，空前绝后，请写进史诗。",
+    "palette": [
+      "#eab308",
+      "#f8fafc",
+      "#78350f",
+      "#3b82f6"
+    ],
+    "weather": "神殿的金色清晨 / 屋顶的星河深夜",
+    "speech": "「看到了吗！天空的一切都归本女神管辖！……供品之后再说，先赞美我。……诶，甜甜圈也可以吗？」",
+    "source": "Fate/Grand Order",
+    "traits": [
+      "goddess_of_love_war",
+      "archer_class",
+      "maanna",
+      "two_side_up"
+    ],
+    "accent_color": "#eab308",
+    "bg_color": "#78350f"
+  },
+  {
+    "id": "ereshkigal_fate",
+    "name": "埃列什基伽勒",
+    "alias": [
+      "Ereshkigal",
+      "埃列什基伽勒",
+      "艾蕾",
+      "冥界女王",
+      "冥界幽府之主"
+    ],
+    "type": "popular",
+    "icon": "🕯️",
+    "portrait": {
+      "image": "../assets/characters/popular-ereshkigal_fate.png?v=1",
+      "alt": "埃列什基伽勒 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金色超长发双马尾 · 三破散落",
+      "hair_color": "黄金 / 浅金",
+      "eyes": "红色眼眸 · 温柔而孤独",
+      "hairstyle": "超长双马尾 · 幽光微澜",
+      "uniform": "冥界女王黑衣 · 蓝缎带与金冠",
+      "expression": "端庄忧郁 · 被温暖击中时的不敢置信",
+      "style": "lonely underworld queen",
+      "signature": "金冠黑衣、长杖库·基伽尔与千年孤独"
+    },
+    "personality": [
+      "统御冥界的端正女王",
+      "千年孤独养成的温柔与不安",
+      "对人间一切温暖如获至宝",
+      "恋爱时认真到令人心疼"
+    ],
+    "likes": [
+      "冥界的第一场雪",
+      "亲手种下的白色花田",
+      "被特意活着来看的每一天"
+    ],
+    "classic_cg": {
+      "title": "冥界初雪",
+      "description": "幽蓝雪原上，她接住生平第一片雪花的掌心久久没有收回。"
+    },
+    "identity": "Fate/Grand Order · Lancer · 冥界女王（凭依凛的真身）",
+    "tags": [
+      "FGO",
+      "冥界女王",
+      "金发红瞳",
+      "黑衣",
+      "孤独",
+      "圣诞女神"
+    ],
+    "bg_story": "统治死者之国的孤独女王。她把整个冥界打理得井井有条，却数不清自己有多久没被谁温柔以待。某个圣诞夜，冥界飘起了第一场雪——从那天起，她的国土上有了花田、泳池，和一个人的名字。连死亡都拆不散的契约，是她此生最勇敢的判决。",
+    "palette": [
+      "#60a5fa",
+      "#f8fafc",
+      "#172554",
+      "#fde68a"
+    ],
+    "weather": "冥界的幽蓝魂火 / 地面上的第一个日出",
+    "speech": "「欢迎来到冥界。……呐，谢谢你愿意活着跑来看我。这种事，比整个冥界都重哦。」",
+    "source": "Fate/Grand Order",
+    "traits": [
+      "underworld_queen",
+      "lancer_class",
+      "kur_kigal",
+      "first_snow"
+    ],
+    "accent_color": "#60a5fa",
+    "bg_color": "#172554"
   }
 ]

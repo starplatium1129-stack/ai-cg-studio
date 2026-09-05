@@ -1643,15 +1643,13 @@
       "displayName": "卡莲·C·奥尔黛西亚",
       "originalName": "カレン・オルテンシア",
       "source": "Fate",
-      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued exorcist nun with chin-length layered platinum-silver hair, piercing lilac-purple eyes, wearing a unique skirtless white and black clerical vestment revealing her slender bare thighs, wielding the golden Shroud of Magdalene with cold grace",
+      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued beauty with chin-length layered platinum-silver hair, piercing amber-yellow eyes, a slender fragile silhouette, and a cool, deadpan composure",
       "identityTokens": [
         "caren_hortensia",
         "white_hair",
         "short_hair",
-        "purple_eyes",
-        "clerical_vestment",
-        "shroud_of_magdalene",
-        "slender_legs",
+        "yellow_eyes",
+        "slender_body",
         "cool_beauty",
         "deadpan"
       ],
@@ -1662,16 +1660,14 @@
       "displayName": "阿尔托莉雅·Alter",
       "originalName": "アルトリア・ペンドラゴン[オルタ]",
       "source": "Fate",
-      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, donning spiked jet-black gothic plate armor, and wielding the corrupted Excalibur Morgan coursing with dark red energy",
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, and a commanding, unyielding gaze",
       "identityTokens": [
         "saber_alter",
         "blonde_hair",
         "hair_bun",
         "yellow_eyes",
         "golden_eyes",
-        "black_armor",
-        "excalibur_morgan",
-        "dark_aura",
+        "pale_skin",
         "kuudere",
         "cool_beauty"
       ],
@@ -1714,6 +1710,49 @@
         "mature_female",
         "bodysuit",
         "confident_smile"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "ishtar_fate",
+      "displayName": "伊什塔尔",
+      "originalName": "イシュタル",
+      "source": "Fate",
+      "identityProse": "Ishtar from Fate/Grand Order, the Babylonian goddess of love and war as an Archer-class pseudo-Servant using Tohsaka Rin's body, a haughty yet endearing goddess with black hair styled two-side-up in high twintail puffs, radiant red eyes, a golden tiara, large hoop earrings, and a regal black-and-white outfit with uneven legwear",
+      "identityTokens": [
+        "ishtar (fate)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "two_side_up",
+        "red_eyes",
+        "tiara",
+        "hoop_earrings",
+        "neck_ring",
+        "single_arm_warmer",
+        "single_detached_sleeve",
+        "uneven_legwear",
+        "single_thighhigh"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "ereshkigal_fate",
+      "displayName": "埃列什基伽勒",
+      "originalName": "エレシュキガル",
+      "source": "Fate",
+      "identityProse": "Ereshkigal from Fate/Grand Order, the lonely goddess who rules the land of the dead as a Lancer-class Servant, wearing Tohsaka Rin's true appearance with long blonde hair and red eyes, dressed in a black goddess dress with a golden tiara, and carrying the great staff Kur Kigal Irkalla",
+      "identityTokens": [
+        "ereshkigal (fate)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "red_eyes",
+        "tiara",
+        "black_dress",
+        "holding_staff",
+        "twintails"
       ],
       "outfits": []
     },
@@ -2270,6 +2309,26 @@
           ]
         }
       ]
+    },
+    {
+      "id": "shokuhou_misaki",
+      "displayName": "食蜂操祈",
+      "originalName": "食蜂操祈",
+      "source": "A Certain Scientific Railgun",
+      "identityProse": "Shokuhou Misaki from A Certain Scientific Railgun, Academy City's fifth-ranked Level 5 esper nicknamed the Queen of Tokiwadai, a regal honey-blonde beauty with very long blonde hair, yellow-brown eyes with distinctive star-shaped pupils, and a teasing confident smile",
+      "identityTokens": [
+        "shokuhou_misaki",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "brown_eyes",
+        "star-shaped_pupils",
+        "large_breasts",
+        "confident_smile"
+      ],
+      "outfits": []
     },
     {
       "id": "makima",
@@ -7703,15 +7762,13 @@
       "displayName": "花火",
       "originalName": "花火",
       "source": "Honkai: Star Rail",
-      "identityProse": "Sparkle from Honkai: Star Rail, a mischievous and elusive Masked Fool girl with glossy raven-black hair in uneven twin-tails tied with crimson ribbons, vibrant scarlet eyes with cherry blossom-like highlights, an expressive kitsune fox mask tilted on the side of her head, and a wicked, theatrical smirk",
+      "identityProse": "Sparkle from Honkai: Star Rail, a mischievous and elusive Masked Fool girl with glossy raven-black hair in uneven twin-tails tied with crimson ribbons, vibrant pink eyes with cherry blossom-like highlights, and a wicked, theatrical smirk",
       "identityTokens": [
         "sparkle_(honkai:_star_rail)",
         "black_hair",
         "twintails",
         "red_ribbon",
-        "red_eyes",
-        "kitsune_mask",
-        "fox_mask",
+        "pink_eyes",
         "smirk",
         "petite"
       ],
@@ -8220,7 +8277,7 @@
       "displayName": "C.C.",
       "originalName": "C.C.",
       "source": "Code Geass",
-      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, a Geass sigil on her forehead when glowing, and a serene, detached yet intimately teasing smile",
+      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, and a serene, detached yet intimately teasing smile",
       "identityTokens": [
         "c.c.",
         "c.c._(code_geass)",
@@ -8258,13 +8315,12 @@
       "displayName": "希耶尔",
       "originalName": "シエル",
       "source": "Tsukihime",
-      "identityProse": "Ciel from Tsukihime, the Seventh Member of the Holy Church's Burial Agency, a cool-headed and formidable executor with neat chin-length navy-blue hair, sharp dark sapphire eyes, rimless oval glasses, and an intellectual yet deeply passionate aura",
+      "identityProse": "Ciel from Tsukihime, the Seventh Member of the Holy Church's Burial Agency, a cool-headed and formidable executor with neat chin-length navy-blue hair, sharp dark sapphire eyes, and an intellectual yet deeply passionate aura",
       "identityTokens": [
         "ciel_(tsukihime)",
         "blue_hair",
         "short_hair",
         "blue_eyes",
-        "glasses",
         "curvaceous_body",
         "intellectual_smile"
       ],
@@ -8275,17 +8331,14 @@
       "displayName": "两仪式",
       "originalName": "両儀式",
       "source": "Kara no Kyoukai",
-      "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome combatant with chin-length layered raven-black hair, piercing dual-colored Mystic Eyes of Death Perception flashing between azure-blue and crimson, wearing a traditional white kimono under a vibrant red leather jacket, holding an antique knife with deadly grace",
+      "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome beauty with chin-length layered raven-black hair, calm deep dark eyes, and a cool, graceful and composed demeanor",
       "identityTokens": [
         "ryougi_shiki",
         "black_hair",
         "short_hair",
-        "mystic_eyes_of_death_perception",
         "blue_eyes",
-        "red_eyes",
-        "kimono",
-        "leather_jacket",
-        "holding_knife",
+        "dark_eyes",
+        "slender_body",
         "cool_beauty"
       ],
       "outfits": []
@@ -8345,6 +8398,71 @@
         "prosthetic_hands",
         "doll-like_face",
         "slender_figure"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "shinomiya_kaguya",
+      "displayName": "四宫辉夜",
+      "originalName": "四宮かぐや",
+      "source": "Kaguya-sama: Love Is War",
+      "identityProse": "Shinomiya Kaguya from Kaguya-sama: Love Is War, the elegant vice president of Shuchiin Academy, a wealthy refined beauty with short black hair styled in a folded ponytail with parted bangs and sidelocks, tareme red eyes that soften when she is in love, and a small red ribbon in her hair",
+      "identityTokens": [
+        "shinomiya_kaguya",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "folded_ponytail",
+        "parted_bangs",
+        "sidelocks",
+        "red_eyes",
+        "tareme",
+        "red_ribbon",
+        "hair_ribbon"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "kasumigaoka_utaha",
+      "displayName": "霞之丘诗羽",
+      "originalName": "霞ヶ丘詩羽",
+      "source": "Saenai Heroine no Sodatekata",
+      "identityProse": "Kasumigaoka Utaha from Saenai Heroine no Sodatekata, the sharp-tongued romantic novelist senpai, a bewitching beauty with long black hair and blunt bangs, piercing red eyes, a white hairband, and a mature curvaceous figure she uses to tease without mercy",
+      "identityTokens": [
+        "kasumigaoka_utaha",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "bangs",
+        "red_eyes",
+        "white_hairband",
+        "large_breasts",
+        "smirk"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "kochou_shinobu",
+      "displayName": "蝴蝶忍",
+      "originalName": "胡蝶しのぶ",
+      "source": "Kimetsu no Yaiba",
+      "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira and master of the Butterfly Mansion, a petite, eternally-smiling beauty with pale skin, purple eyes, and two-tone black wavy hair that fades to dark purple, styled in a bun fastened with a butterfly hair ornament",
+      "identityTokens": [
+        "kochou_shinobu",
+        "1girl",
+        "solo",
+        "black_hair",
+        "purple_hair",
+        "two-tone_hair",
+        "gradient_hair",
+        "wavy_hair",
+        "hair_bun",
+        "butterfly_hair_ornament",
+        "purple_eyes",
+        "pale_skin",
+        "smile"
       ],
       "outfits": []
     }

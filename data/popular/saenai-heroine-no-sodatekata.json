@@ -1,0 +1,142 @@
+{
+  "version": "1.0.0",
+  "franchise": "Saenai Heroine no Sodatekata",
+  "characters": [
+    {
+      "id": "kasumigaoka_utaha",
+      "displayName": "霞之丘诗羽",
+      "originalName": "霞ヶ丘詩羽",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "aliases": [
+        "Kasumigaoka Utaha",
+        "霞之丘诗羽",
+        "诗羽学姐",
+        "霞诗子",
+        "毒舌学姐"
+      ],
+      "identityProse": "Kasumigaoka Utaha from Saenai Heroine no Sodatekata, the sharp-tongued romantic novelist senpai, a bewitching beauty with long black hair and blunt bangs, piercing red eyes, a white hairband, and a mature curvaceous figure she uses to tease without mercy",
+      "identityTokens": [
+        "kasumigaoka_utaha",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "bangs",
+        "red_eyes",
+        "white_hairband",
+        "large_breasts",
+        "smirk"
+      ],
+      "exactTokens": [
+        "kasumigaoka_utaha"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kasumigaoka_utaha"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Fukashigi"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_toyogasaki_uniform",
+          "name": "丰桥学园黑丝学姐制服",
+          "prose": "her Toyogasaki Academy school uniform: a navy blazer with a red ribbon tie over a white blouse, a pleated skirt, a white hairband in her long black hair, and glossy black pantyhose she crosses elegantly",
+          "tokens": [
+            "toyogasaki_academy_school_uniform",
+            "school_uniform",
+            "blazer",
+            "navy_jacket",
+            "white_shirt",
+            "ribbon_tie",
+            "pleated_skirt",
+            "black_pantyhose",
+            "white_hairband"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "elegant_black_dress",
+          "name": "深夜作家黑裙礼服",
+          "prose": "an elegant off-shoulder black evening dress hugging her mature curves, a long side slit revealing one black-stockinged leg, silver earrings, and her white hairband traded for a low chignon",
+          "tokens": [
+            "evening_dress",
+            "black_dress",
+            "off_shoulder",
+            "side_slit",
+            "black_stockings",
+            "jewelry",
+            "chignon",
+            "mature_female"
+          ]
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "海水浴场黑肤意外比基尼",
+          "prose": "a mature garnet-red one-piece swimsuit with a plunging neckline and side cutouts, her long black hair tied up with the white hairband, and translucent white sarong draped at her hips",
+          "tokens": [
+            "swimsuit",
+            "red_swimsuit",
+            "one-piece_swimsuit",
+            "plunging_neckline",
+            "side_slit",
+            "sarong",
+            "hairband",
+            "bare_shoulders"
+          ]
+        },
+        {
+          "id": "sensual_lace_lingerie",
+          "name": "毒舌学姐纯黑蕾丝",
+          "prose": "a pure black lace lingerie set: a balconette bra framing her large breasts, matching hipster panties, black lace thighhighs with garter straps, and a thin silk kimono robe worn loose off both shoulders",
+          "tokens": [
+            "black_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "black_thighhighs",
+            "garter_straps",
+            "kimono_robe",
+            "off_shoulder",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, mature and voluptuous body with long black hair loose to her waist, full soft breasts with dusky pink nipples, a narrow waist, and long elegant legs",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "large_breasts",
+            "long_legs"
+          ]
+        }
+      ]
+    }
+  ]
+}

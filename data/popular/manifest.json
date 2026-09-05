@@ -25,7 +25,7 @@
     {
       "file": "fate.json",
       "franchise": "Fate",
-      "count": 9
+      "count": 13
     },
     {
       "file": "vocaloid.json",
@@ -50,7 +50,7 @@
     {
       "file": "a-certain-scientific-railgun.json",
       "franchise": "A Certain Scientific Railgun",
-      "count": 1
+      "count": 2
     },
     {
       "file": "chainsaw-man.json",
@@ -215,6 +215,21 @@
     {
       "file": "violet-evergarden.json",
       "franchise": "Violet Evergarden",
+      "count": 1
+    },
+    {
+      "file": "kaguya-sama.json",
+      "franchise": "Kaguya-sama: Love Is War",
+      "count": 1
+    },
+    {
+      "file": "saenai-heroine-no-sodatekata.json",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "count": 1
+    },
+    {
+      "file": "kimetsu-no-yaiba.json",
+      "franchise": "Kimetsu no Yaiba",
       "count": 1
     }
   ]

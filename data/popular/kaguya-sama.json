@@ -1,0 +1,142 @@
+{
+  "version": "1.0.0",
+  "franchise": "Kaguya-sama: Love Is War",
+  "characters": [
+    {
+      "id": "shinomiya_kaguya",
+      "displayName": "四宫辉夜",
+      "originalName": "四宮かぐや",
+      "franchise": "Kaguya-sama: Love Is War",
+      "aliases": [
+        "Shinomiya Kaguya",
+        "辉夜",
+        "四宫辉夜",
+        "副会长",
+        "秀知院的辉夜"
+      ],
+      "identityProse": "Shinomiya Kaguya from Kaguya-sama: Love Is War, the elegant vice president of Shuchiin Academy, a wealthy refined beauty with short black hair styled in a folded ponytail with parted bangs and sidelocks, tareme red eyes that soften when she is in love, and a small red ribbon in her hair",
+      "identityTokens": [
+        "shinomiya_kaguya",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "folded_ponytail",
+        "parted_bangs",
+        "sidelocks",
+        "red_eyes",
+        "tareme",
+        "red_ribbon",
+        "hair_ribbon"
+      ],
+      "exactTokens": [
+        "shinomiya_kaguya"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shinomiya_kaguya"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Aka Akasaka"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_shuchiin_uniform",
+          "name": "私立秀知院学园制服",
+          "prose": "her Shuchiin Academy school uniform: a pristine white long-sleeved blouse with a black sleeveless dress over it, a stiff white collar with a small dark ribbon tie, a red ribbon in her folded-ponytail black hair, and sheer black pantyhose",
+          "tokens": [
+            "shuuchiin_academy_school_uniform",
+            "school_uniform",
+            "white_shirt",
+            "black_dress",
+            "pinafore_dress",
+            "collar",
+            "ribbon_tie",
+            "black_pantyhose",
+            "red_ribbon",
+            "folded_ponytail"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "festive_furisode_kimono",
+          "name": "红叶烟花振袖和服",
+          "prose": "a luxurious silk furisode kimono in deep crimson with golden maple-leaf patterns, wide flowing sleeves, an ornate obi sash tied at her back, and her black folded ponytail adorned with a red ribbon",
+          "tokens": [
+            "furisode",
+            "kimono",
+            "red_kimono",
+            "maple_leaf_pattern",
+            "wide_sleeves",
+            "obi",
+            "japanese_clothes",
+            "hair_ribbon"
+          ]
+        },
+        {
+          "id": "casual_summer_dress",
+          "name": "盛夏纯白连衣裙",
+          "prose": "a light summer one-piece dress in soft white cotton with a navy ribbon at the chest, thin shoulder straps over her fair shoulders, and a flared skirt reaching her knees",
+          "tokens": [
+            "summer_dress",
+            "white_dress",
+            "sundress",
+            "bare_shoulders",
+            "ribbon",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "sensual_lace_lingerie",
+          "name": "绯红蕾丝大小姐内衣",
+          "prose": "an elegant crimson lace lingerie set: a delicate lace bra barely containing her modest chest, matching lace panties, a thin silk robe slipping off one shoulder, and a garter strap high on her pale thigh",
+          "tokens": [
+            "red_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "silk_robe",
+            "off_shoulder",
+            "garter_straps",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, porcelain-skinned body with black hair let down past her shoulders in her soft 'ice-melted' mode, modest perky breasts with pink nipples, and an elegant slender frame",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hair_down",
+            "slender_body"
+          ]
+        }
+      ]
+    }
+  ]
+}

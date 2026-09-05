@@ -107,6 +107,146 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "shokuhou_misaki",
+      "displayName": "食蜂操祈",
+      "originalName": "食蜂操祈",
+      "franchise": "A Certain Scientific Railgun",
+      "aliases": [
+        "Shokuhou Misaki",
+        "食蜂操祈",
+        "女王蜂",
+        "Mental Out",
+        "心理掌握",
+        "常盘台女王"
+      ],
+      "identityProse": "Shokuhou Misaki from A Certain Scientific Railgun, Academy City's fifth-ranked Level 5 esper nicknamed the Queen of Tokiwadai, a regal honey-blonde beauty with very long blonde hair, yellow-brown eyes with distinctive star-shaped pupils, and a teasing confident smile",
+      "identityTokens": [
+        "shokuhou_misaki",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "brown_eyes",
+        "star-shaped_pupils",
+        "large_breasts",
+        "confident_smile"
+      ],
+      "exactTokens": [
+        "shokuhou_misaki"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shokuhou_misaki"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "J.C.Staff",
+      "curatedArtistStyles": [
+        "Motoi Fuyukawa"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_tokiwadai_uniform",
+          "name": "常盘台女王蜂制服",
+          "prose": "her Tokiwadai Middle School uniform: a beige sweater vest over a crisp white short-sleeved shirt, a grey pleated skirt, white under-elbow gloves printed with spider webs, white thighhighs with the same spider web print, and her handbag holding a row of television remote controls",
+          "tokens": [
+            "tokiwadai_school_uniform",
+            "school_uniform",
+            "sweater_vest",
+            "beige_vest",
+            "white_shirt",
+            "pleated_skirt",
+            "grey_skirt",
+            "white_gloves",
+            "spider_web_print",
+            "under-elbow_gloves",
+            "white_thighhighs",
+            "handbag",
+            "remote_control"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_white_summer_dress",
+          "name": "女王私服纯白连衣裙",
+          "prose": "a queenly off-duty outfit: a flowy white sundress with a wide-brimmed straw hat, sun visor shading her star-pupiled eyes, a thin bracelet on her gloved wrist, and sandals",
+          "tokens": [
+            "sundress",
+            "white_dress",
+            "straw_hat",
+            "sun_hat",
+            "bare_shoulders",
+            "casual_wear",
+            "jewelry"
+          ]
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "女王蜂白金比基尼",
+          "prose": "a regal white-and-gold two-piece swimsuit with a small golden crown charm at the hip, her very long blonde hair loose over sunlit skin, and a gauzy see-through sarong knotted low",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "white_bikini",
+            "gold_trim",
+            "sarong",
+            "see-through",
+            "bare_shoulders",
+            "cleavage",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "sensual_lace_lingerie",
+          "name": "星眸女王黑金内衣",
+          "prose": "a black-and-gold lace lingerie set: a strappy lace bra lifting her large breasts, a matching garter belt and sheer black thighhighs, and thin gold chains crossing her soft stomach",
+          "tokens": [
+            "black_lingerie",
+            "gold_trim",
+            "lace_bra",
+            "garter_straps",
+            "black_thighhighs",
+            "cleavage",
+            "underboob",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, regal body with very long blonde hair spilling loose, large soft breasts with pale pink nipples, a slim waist, and flawless skin — her star-shaped pupils still glinting even when she blushes",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "large_breasts",
+            "star-shaped_pupils"
+          ]
+        }
+      ]
     }
   ]
 }

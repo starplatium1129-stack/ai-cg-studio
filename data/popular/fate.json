@@ -963,15 +963,13 @@
         "毒舌修女",
         "抹大拉的圣骸布"
       ],
-      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued exorcist nun with chin-length layered platinum-silver hair, piercing amber-yellow eyes, wearing a unique skirtless white and black clerical vestment revealing her slender bare thighs, wielding the golden Shroud of Magdalene with cold grace",
+      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued beauty with chin-length layered platinum-silver hair, piercing amber-yellow eyes, a slender fragile silhouette, and a cool, deadpan composure",
       "identityTokens": [
         "caren_hortensia",
         "white_hair",
         "short_hair",
         "yellow_eyes",
-        "clerical_vestment",
-        "shroud_of_magdalene",
-        "slender_legs",
+        "slender_body",
         "cool_beauty",
         "deadpan"
       ],
@@ -1100,15 +1098,14 @@
         "黑无毛",
         "暴君骑士王"
       ],
-      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, donning spiked jet-black gothic plate armor, and wielding the corrupted Excalibur Morgan coursing with dark red energy",
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, and a commanding, unyielding gaze",
       "identityTokens": [
         "saber_alter",
         "blonde_hair",
         "hair_bun",
         "yellow_eyes",
         "golden_eyes",
-        "black_armor",
-        "dark_aura",
+        "pale_skin",
         "kuudere",
         "cool_beauty"
       ],
@@ -1486,6 +1483,292 @@
             "pussy",
             "navel",
             "toned_body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ishtar_fate",
+      "displayName": "伊什塔尔",
+      "originalName": "イシュタル",
+      "franchise": "Fate",
+      "aliases": [
+        "Ishtar",
+        "伊什塔尔",
+        "天之女主人",
+        "美与战争的女神",
+        "Rin脸女神"
+      ],
+      "identityProse": "Ishtar from Fate/Grand Order, the Babylonian goddess of love and war as an Archer-class pseudo-Servant using Tohsaka Rin's body, a haughty yet endearing goddess with black hair styled two-side-up in high twintail puffs, radiant red eyes, a golden tiara, large hoop earrings, and a regal black-and-white outfit with uneven legwear",
+      "identityTokens": [
+        "ishtar (fate)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "two_side_up",
+        "red_eyes",
+        "tiara",
+        "hoop_earrings",
+        "neck_ring",
+        "single_arm_warmer",
+        "single_detached_sleeve",
+        "uneven_legwear",
+        "single_thighhigh"
+      ],
+      "exactTokens": [
+        "ishtar (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ishtar (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Morii Shizuki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_goddess_attire",
+          "name": "天之女主人神装",
+          "prose": "her goddess attire: a black fitted top with white detached sleeves worn on one arm, a golden neck ring, large hoop earrings and a golden tiara, a black miniskirt with uneven legwear — one sheer white thighhigh on one leg and a golden anklet — and the Heavenly Boat Maanna gliding beside her",
+          "tokens": [
+            "black_top",
+            "white_detached_sleeve",
+            "single_detached_sleeve",
+            "neck_ring",
+            "hoop_earrings",
+            "tiara",
+            "black_skirt",
+            "uneven_legwear",
+            "single_thighhigh",
+            "anklet",
+            "bare_shoulders",
+            "holding_polearm"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_modern_date",
+          "name": "女神的现代私服",
+          "prose": "a modern off-duty goddess outfit: a fitted white crop tee under a denim jacket, high-waist shorts, golden hoop earrings still gleaming, and sneakers — her tiara traded for a star-shaped hairpin",
+          "tokens": [
+            "casual_wear",
+            "crop_top",
+            "white_shirt",
+            "denim_jacket",
+            "shorts",
+            "denim_shorts",
+            "sneakers",
+            "hairpin",
+            "hoop_earrings"
+          ]
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "女神度假不对称比基尼",
+          "prose": "a daring mismatched bikini — one black halter cup and one gold-string side, with a sheer red sarong — celebrating summer like the noisy goddess she is, tiara firmly in place",
+          "tokens": [
+            "swimsuit",
+            "mismatched_bikini",
+            "bikini",
+            "black_bikini",
+            "gold_trim",
+            "sarong",
+            "see-through",
+            "tiara",
+            "bare_shoulders",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "sensual_golden_lace_lingerie",
+          "name": "神域金纱内衣",
+          "prose": "a gold-and-black divine lingerie set: a golden lace bra fit for a goddess, matching panties with a jeweled waist chain, sheer black thighhighs with garter straps, and a translucent veil cape",
+          "tokens": [
+            "gold_lingerie",
+            "black_lingerie",
+            "lace_bra",
+            "waist_chain",
+            "jewelry",
+            "black_thighhighs",
+            "garter_straps",
+            "veil",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, divine body with black hair let loose from its two-side-up style, pert goddess breasts with pink nipples, a slim divine waist, and golden earrings still on — even naked she is radiantly regal",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "hoop_earrings",
+            "divine_body"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ereshkigal_fate",
+      "displayName": "埃列什基伽勒",
+      "originalName": "エレシュキガル",
+      "franchise": "Fate",
+      "aliases": [
+        "Ereshkigal",
+        "埃列什基伽勒",
+        "艾蕾",
+        "冥界女王",
+        "冥界幽府之主"
+      ],
+      "identityProse": "Ereshkigal from Fate/Grand Order, the lonely goddess who rules the land of the dead as a Lancer-class Servant, wearing Tohsaka Rin's true appearance with long blonde hair and red eyes, dressed in a black goddess dress with a golden tiara, and carrying the great staff Kur Kigal Irkalla",
+      "identityTokens": [
+        "ereshkigal (fate)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "red_eyes",
+        "tiara",
+        "black_dress",
+        "holding_staff",
+        "twintails"
+      ],
+      "exactTokens": [
+        "ereshkigal (fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ereshkigal (fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "CloverWorks",
+      "curatedArtistStyles": [
+        "Morii Shizuki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_lancer_attire",
+          "name": "冥界女王黑衣神装",
+          "prose": "her goddess attire as ruler of the underworld: a flowing black dress with pale blue ribbons, a golden tiara over her long blonde hair, red eyes gentle yet regal, a long ornate staff in her hands, and pale blue underglow of the underworld swirling at her feet",
+          "tokens": [
+            "black_dress",
+            "blue_ribbon",
+            "tiara",
+            "blonde_hair",
+            "very_long_hair",
+            "red_eyes",
+            "holding_staff",
+            "glowing",
+            "twintails"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_winter_date",
+          "name": "冥界圣诞冬装约会",
+          "prose": "her beloved winter-date outfit: a white knit sweater dress with a red scarf, a wool beret over her blonde twin-tails, dark tights, and knee boots — the outfit she treasures from her Christmas in the underworld",
+          "tokens": [
+            "sweater_dress",
+            "white_sweater",
+            "red_scarf",
+            "beret",
+            "wool_hat",
+            "pantyhose",
+            "dark_pantyhose",
+            "knee_boots",
+            "winter_clothes",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "冥界女王夏日比基尼",
+          "prose": "a modest yet lovely black-and-blue frilled bikini, her blonde twin-tails tied with pale blue ribbons, a sheer sarong wrap, and sunscreen smelling faintly of lilies",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "blue_bikini",
+            "frilled_swimsuit",
+            "sarong",
+            "hair_ribbon",
+            "bare_shoulders",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "sensual_lace_lingerie",
+          "name": "冥府幽蓝蕾丝内衣",
+          "prose": "a pale-blue and black lace lingerie set: a soft lace bra over her modest chest, matching panties with a blue ribbon at the hip, sheer blue thighhighs, and a translucent black peignoir like the veil of the underworld",
+          "tokens": [
+            "blue_lingerie",
+            "black_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "blue_thighhighs",
+            "peignoir",
+            "ribbon",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, graceful body with very long blonde hair unbound and glowing faintly in the underworld's pale light, modest soft breasts with pink nipples, and skin cool as the underworld yet warm to the touch",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "very_long_hair",
+            "hair_down",
+            "glowing"
           ]
         }
       ]
