@@ -48,6 +48,7 @@
 | **角色调研：狂三/美琴** | [`research/characters/character-research-kurumi-mikoto.md`](research/characters/character-research-kurumi-mikoto.md) | 时崎狂三、御坂美琴原作设定与多形态提示词调研。 |
 | **美琴 Danbooru 标签调研** | [`research/characters/research-misaka-mikoto-danbooru-tags.md`](research/characters/research-misaka-mikoto-danbooru-tags.md) | 御坂美琴 Danbooru / 社区标签消歧与精准提示词映射。 |
 | **8 位热门角色深度设定调研** | [`character-onboarding-research-2026-08-31.md`](character-onboarding-research-2026-08-31.md) | 艾莉丝/星野爱/黑川茜/伊冯/摩根/玛修/三笠/希斯特里亚 8 位角色的官方设定、Danbooru 标签消歧与服装形态。 |
+| **未来项目热门角色候选规划** | [`future-popular-characters-candidate-plan.md`](future-popular-characters-candidate-plan.md) | **49 位全景候选角色规划总库**：涵盖 8 大核心领域、490 套 SFW 心动日常/战斗高光 + 196 套唯美成人（NSFW）双引擎蓝图，恪守解耦与去粗俗化四支柱铁律。 |
 | **热门角色场景唯美重构与设定纠偏规划** | [`character-scenes-and-dna-overhaul-plan.md`](character-scenes-and-dna-overhaul-plan.md) | **2026-09-02 核心规划**：彻底破除场景模板化/粗暴直白、确立「1 战斗 + 9 反差日常」与「半解唯美 NSFW」黄金法则，并修复一之濑明日奈狗耳 DNA 乌龙。 |
 | **明日方舟干员官方画师考据** | [`arknights-artists-research-2026-08-31.html`](arknights-artists-research-2026-08-31.html) | 明日方舟 14 位干员官方原画师与社区辨识画师交叉考据档案（静态 HTML 交互版）。 |
 | **热门角色审视优化留档** | [`research/characters/popular-characters-audit-2026-08-18.md`](research/characters/popular-characters-audit-2026-08-18.md) | 2026-08-18 热门角色数据审视与优化记录。 |
