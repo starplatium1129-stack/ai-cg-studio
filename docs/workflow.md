@@ -11,7 +11,7 @@
 |---|---|---|
 | 校验/构建/发布 | `workflow check:full` / `build:web` | `npm run validate` / `npm run build` |
 | 数据：聚合/校验/评级 | `workflow data:build` / `data:validate` | `npm run scenes:build` / `validate-content-contracts.js` |
-| 参考库：出图/审核/修复 | `workflow reference:render` / `reference:audit --force --keys k` / `reference:repair` | `render-all-outfits-references.js` / `pure-vision-audit.js` / `fine-tuned-repair.js` |
+| 参考库：登记/出图/审核/修复 | `workflow reference:register --dry-run` / `reference:render` / `reference:audit --force --keys k` / `reference:repair` | `register-pending-reference-outfits.js` / `render-all-outfits-references.js` / `pure-vision-audit.js` / `fine-tuned-repair.js` |
 | 样张：批量出图/审核/发布 | `workflow showcase:batch --source popular` | `generate-*-anima11.js` / `audit-showcase-rella.js` / `publish-*.js` |
 | 一站式新角色 | `workflow character:onboard` | `npm run character:onboard` |
 | 桌面部署 | `workflow deploy:desktop` | `deploy-desktop-quick.ps1 -SkipBuild` |
@@ -59,6 +59,10 @@ npm run workflow -- check:full
 ```powershell
 # 全链路
 node scripts/workflow.js reference:full
+
+# 登记尚无资产的角色形态（standards 空 + view 已有形态 → 两侧漂移时先用这条对账）
+node scripts/workflow.js reference:register --dry-run
+node scripts/workflow.js reference:register --ids=katou_megumi,shiina_mahiru
 
 # 单步
 node scripts/workflow.js reference:render

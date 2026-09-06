@@ -77,6 +77,12 @@ const WORKFLOWS = {
     docs: 'scripts/maintenance/apply-chunks.js:1',
     opts: '--target popular|scenes --chunks 1-17',
   },
+  'reference:register': {
+    desc: '登记尚无参考资产的角色形态（standards/view 形态集合对账，pending 占位不制造断链）',
+    cmd: ['node', 'scripts/maintenance/register-pending-reference-outfits.js'],
+    docs: 'scripts/maintenance/register-pending-reference-outfits.js:1',
+    opts: '[--dry-run] [--ids=a,b,c] 默认处理所有「standards 空 + view 已有形态」的角色；登记后仍需 reference:render 出图',
+  },
   'reference:render': {
     desc: '参考库批量出图 59 角色×多服装（MiaoMiao v1.2 832x1216, 并发3）',
     cmd: ['node', 'scripts/maintenance/render-all-outfits-references.js'],
