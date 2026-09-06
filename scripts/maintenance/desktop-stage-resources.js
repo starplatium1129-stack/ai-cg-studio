@@ -43,6 +43,10 @@ const RUNTIME_DEPENDENCIES = [
   // 本地真实反推（WD14 ONNX，server/interrogate-engine.js）
   'onnxruntime-node',
   'sharp',
+  // ComfyUI 出图进度 WebSocket 客户端（server/comfy-progress.js）。
+  // 2026-09-06 教训：ws 原先靠前端依赖搭车进包，闭包派生后缺失，
+  // 出图进度接口 500 → 桌面端主页面打不开、桌宠不显示。
+  'ws',
 ];
 
 function copyDir(src, dest, includeFile = () => true) {
@@ -85,7 +89,7 @@ function copySelectedFiles(src, dest, relativeFiles) {
  * Missing/<pkg> from lock file。查找顺序模拟 Node 解析：沿父包祖先链逐级
  * 向上找同名包，最后落到根提升版本。
  */
-function collectRuntimeClosure(rootLock) {
+function collectRuntimeClosure(rootLock, logger) {
   const packages = rootLock.packages;
   const resolve = (name, parentPath) => {
     let prefix = parentPath;
@@ -101,27 +105,37 @@ function collectRuntimeClosure(rootLock) {
       }
       prefix = prefix.slice(0, cut);
     }
-    throw new Error(`runtime dependency is missing from package-lock.json: ${name}`);
+    return null;
   };
 
   const closure = {};
-  const queue = RUNTIME_DEPENDENCIES.map((name) => ({ name, parentPath: '' }));
+  // field 记录来源：常规 dependencies 缺失是硬错误（运行时必崩）；
+  // optional/peer 缺失跳过（如 ws 的 bufferutil 可选加速层，有纯 JS 回退）。
+  const queue = RUNTIME_DEPENDENCIES.map((name) => ({ name, parentPath: '', field: 'root' }));
   while (queue.length) {
-    const { name, parentPath } = queue.shift();
-    const { entry, lockPath } = resolve(name, parentPath);
+    const { name, parentPath, field } = queue.shift();
+    const found = resolve(name, parentPath);
+    if (!found) {
+      if (field === 'dependencies' || field === 'root') {
+        throw new Error(`runtime dependency is missing from package-lock.json: ${name}`);
+      }
+      if (logger) logger(`[stage] 跳过未入锁的可选依赖 ${name}（来源 ${field}）`);
+      continue;
+    }
+    const { entry, lockPath } = found;
     if (closure[lockPath]) continue;
     closure[lockPath] = entry;
-    for (const field of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
-      for (const depName of Object.keys(entry[field] || {})) {
-        queue.push({ name: depName, parentPath: lockPath });
+    for (const depField of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
+      for (const depName of Object.keys(entry[depField] || {})) {
+        queue.push({ name: depName, parentPath: lockPath, field: depField });
       }
     }
   }
   return closure;
 }
 
-function buildGatewayPackage(rootPkg, rootLock) {
-  const closure = collectRuntimeClosure(rootLock);
+function buildGatewayPackage(rootPkg, rootLock, logger) {
+  const closure = collectRuntimeClosure(rootLock, logger);
   const dependencies = Object.fromEntries(RUNTIME_DEPENDENCIES.map((name) => {
     const entry = closure[`node_modules/${name}`];
     if (!entry || typeof entry.version !== 'string') {
@@ -306,7 +320,7 @@ function stageResources(options = {}) {
 
     const rootPkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
     const rootLock = JSON.parse(fs.readFileSync(path.join(root, 'package-lock.json'), 'utf8'));
-    const gateway = buildGatewayPackage(rootPkg, rootLock);
+    const gateway = buildGatewayPackage(rootPkg, rootLock, logger);
     const gatewayDir = path.join(tempStage, 'gateway');
     fs.writeFileSync(path.join(gatewayDir, 'package.json'), JSON.stringify(gateway.manifest, null, 2) + '\n');
     fs.writeFileSync(path.join(gatewayDir, 'package-lock.json'), JSON.stringify(gateway.lock, null, 2) + '\n');

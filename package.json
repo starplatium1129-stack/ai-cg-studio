@@ -1,6 +1,6 @@
 {
   "name": "ai-cg-studio",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "private": true,
   "author": "AI-CG-Studio",
   "description": "个人使用的 Galgame 风格 AI CG 场景工作台与 SD WebUI / ComfyUI (Anima/Krea/Wan/H3) 网关",
