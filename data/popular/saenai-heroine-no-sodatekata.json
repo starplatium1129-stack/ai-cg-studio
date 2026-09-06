@@ -136,6 +136,139 @@
           ]
         }
       ]
+    },
+    {
+      "id": "katou_megumi",
+      "displayName": "加藤惠",
+      "originalName": "加藤恵",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "aliases": [
+        "Megumi Kato",
+        "加藤惠",
+        "圣人惠",
+        "惠",
+        "路人女主"
+      ],
+      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair in a simple short bob with parted bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
+      "identityTokens": [
+        "katou_megumi",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "short_hair",
+        "bob_cut",
+        "bangs",
+        "brown_eyes"
+      ],
+      "exactTokens": [
+        "katou_megumi"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, katou_megumi"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Kurehito Misaki"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_toyogasaki_uniform",
+          "name": "丰之崎学园水手服与红开衫",
+          "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "navy_dress",
+            "white_collar",
+            "ribbon_tie",
+            "red_cardigan",
+            "open_cardigan",
+            "white_socks",
+            "loafers"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "white_beret_dress",
+          "name": "春日坡道命运白裙与贝雷帽",
+          "prose": "the iconic white one-piece summer dress with short puff sleeves, a flowing flared skirt fluttering in the spring breeze, and her signature white beret resting lightly on her short brown bob",
+          "tokens": [
+            "white_dress",
+            "one-piece_dress",
+            "puff_sleeves",
+            "flared_skirt",
+            "white_beret",
+            "beret",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "casual_ponytail_summer",
+          "name": "后期长发马尾夏日私服",
+          "prose": "her later-series mature style: her brown hair grown longer and tied in a neat ponytail with a hair scrunchie, wearing a sleeveless pastel pink knit top and a cream pleated midi skirt",
+          "tokens": [
+            "casual_clothes",
+            "pink_top",
+            "sleeveless",
+            "knit_top",
+            "pleated_skirt",
+            "midi_skirt",
+            "long_hair",
+            "ponytail",
+            "hair_scrunchie"
+          ]
+        },
+        {
+          "id": "sensual_lace_lingerie",
+          "name": "纯白纯棉蕾丝内衣",
+          "prose": "a delicate pure white cotton lingerie set trimmed with soft floral lace: a soft-cup bra framing her modest breasts, matching lace-trimmed hipster panties, and a pale pink chiffon robe slipping off both shoulders",
+          "tokens": [
+            "white_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "cotton_panties",
+            "chiffon_robe",
+            "off_shoulder",
+            "cleavage",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, porcelain-skinned body with her brown hair falling softly around her delicate collarbones, modest perky breasts with tender pink nipples, a smooth flat stomach, and a slender frame",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body",
+            "pale_skin"
+          ]
+        }
+      ]
     }
   ]
 }

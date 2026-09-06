@@ -38493,5 +38493,341 @@
     "source": "Kimetsu no Yaiba",
     "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira and master of the Butterfly Mansion, a petite, eternally-smiling beauty with pale skin, purple eyes, and two-tone black wavy hair that fades to dark purple, styled in a bun fastened with a butterfly hair ornament",
     "outfits": []
+  },
+  "katou_megumi": {
+    "characterId": "katou_megumi",
+    "displayName": "加藤惠",
+    "source": "Saenai Heroine no Sodatekata",
+    "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair in a simple short bob with parted bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
+    "outfits": [
+      {
+        "outfitId": "official_toyogasaki_uniform",
+        "outfitName": "丰之崎学园水手服与红开衫",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers",
+        "references": []
+      },
+      {
+        "outfitId": "white_beret_dress",
+        "outfitName": "春日坡道命运白裙与贝雷帽",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "the iconic white one-piece summer dress with short puff sleeves, a flowing flared skirt fluttering in the spring breeze, and her signature white beret resting lightly on her short brown bob",
+        "references": []
+      },
+      {
+        "outfitId": "casual_ponytail_summer",
+        "outfitName": "后期长发马尾夏日私服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her later-series mature style: her brown hair grown longer and tied in a neat ponytail with a hair scrunchie, wearing a sleeveless pastel pink knit top and a cream pleated midi skirt",
+        "references": []
+      },
+      {
+        "outfitId": "sensual_lace_lingerie",
+        "outfitName": "纯白纯棉蕾丝内衣",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "a delicate pure white cotton lingerie set trimmed with soft floral lace: a soft-cup bra framing her modest breasts, matching lace-trimmed hipster panties, and a pale pink chiffon robe slipping off both shoulders",
+        "references": []
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯净圣洁胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her completely bare, porcelain-skinned body with her brown hair falling softly around her delicate collarbones, modest perky breasts with tender pink nipples, a smooth flat stomach, and a slender frame",
+        "references": []
+      }
+    ]
+  },
+  "shiina_mahiru": {
+    "characterId": "shiina_mahiru",
+    "displayName": "椎名真昼",
+    "source": "Otonari no Tenshi-sama",
+    "identityProse": "Mahiru Shiina from The Angel Next Door, the perfect school angel with silky flaxen blonde hair reaching her waist, striking amber-gold eyes, a graceful slender figure, and an unconsciously radiant, gentle smile",
+    "outfits": [
+      {
+        "outfitId": "official_school_uniform",
+        "outfitName": "私立高校水手西装制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her high school uniform: a tailored navy blazer with gold crest buttons over a crisp white dress shirt and striped necktie, a pleated grey skirt, dark brown tights, and neat leather school shoes",
+        "references": []
+      },
+      {
+        "outfitId": "home_cooking_apron",
+        "outfitName": "邻家料理粉白围裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her cozy homestyle outfit: a pastel-pink ruffled cooking apron tied over an oversized beige knit sweater and long dark skirt, her golden hair tied up in a loose side ponytail",
+        "references": []
+      },
+      {
+        "outfitId": "casual_winter_coat",
+        "outfitName": "冬日散步白色羽绒大衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a warm winter date outfit: an ivory hooded duffle coat with toggles, a fluffy red-and-white plaid wool scarf wrapped around her neck, black stockings, and ankle boots",
+        "references": []
+      },
+      {
+        "outfitId": "sensual_lace_lingerie",
+        "outfitName": "天使薄纱纯白内衣",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "an angelic pure white and pale gold lace lingerie set: a demi-cup bra lifting her modest breasts with delicate scalloped lace, matching low-rise lace panties, and a gossamer silk robe slipping down both arms",
+        "references": []
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯净圣洁胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her completely bare, angelically fair body with waist-length golden hair draping across her shoulders, perky soft breasts with delicate pink nipples, a slender waist, and flawless glowing porcelain skin",
+        "references": []
+      }
+    ]
+  },
+  "chitanda_eru": {
+    "characterId": "chitanda_eru",
+    "displayName": "千反田爱瑠",
+    "source": "Hyouka",
+    "identityProse": "Eru Chitanda from Hyouka, the polite and curious heiress of the Chitanda estate, with long lustrous black hair, enormous expressive purple eyes that sparkle with intense curiosity, and a graceful dignified bearing",
+    "outfits": [
+      {
+        "outfitId": "official_kamiyama_uniform",
+        "outfitName": "神山高校水手长裙制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her Kamiyama High School sailor uniform: a crisp white short-sleeved blouse with a navy blue sailor collar, a black silk scarf tie, a pleated navy skirt falling just below the knees, white ankle socks, and black leather school shoes",
+        "references": []
+      },
+      {
+        "outfitId": "festive_shrine_kimono",
+        "outfitName": "新春参拜雅致和服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a traditional high-class silk furisode kimono in pale wisteria purple patterned with white cranes and cherry blossoms, cinched with a golden obi sash, and her long black hair styled in an elegant chignon with a floral kanzashi",
+        "references": []
+      },
+      {
+        "outfitId": "casual_summer_onepiece",
+        "outfitName": "豪农千金素雅长裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a refined summer casual outfit: a sleeveless pale lavender cotton maxi sundress with fine pintucks down the bodice, a thin white cardigan draped loosely over her forearms, and woven flat sandals",
+        "references": []
+      },
+      {
+        "outfitId": "sensual_lace_lingerie",
+        "outfitName": "和风素雅纯白蕾丝内衣",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "an elegant ivory silk and French lace lingerie set: a balconette bra lifting her surprisingly generous breasts, matching high-waisted lace panties, and a sheer silk kimono-style dressing robe with flowing bell sleeves",
+        "references": []
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯净圣洁胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her completely bare, noble body with her long inky-black hair cascading down her back and chest, full natural breasts with pale rose nipples, a soft feminine waist, and flawless milky-white skin",
+        "references": []
+      }
+    ]
+  },
+  "isshiki_iroha": {
+    "characterId": "isshiki_iroha",
+    "displayName": "一色彩羽",
+    "source": "Oregairu",
+    "identityProse": "Iroha Isshiki from Oregairu, the mischievous yet hardworking student council president kouhai, a fashionable beauty with shoulder-length wavy honey-brown hair in low side twintails, hazel-brown eyes, and a sly, playfully teasing smirk",
+    "outfits": [
+      {
+        "outfitId": "official_sobu_uniform",
+        "outfitName": "总武高水手西装制服与开衫",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her Sobu High school uniform: an unbuttoned navy blazer over a light cream knit cardigan, a white collared blouse with a thin red ribbon tie, a short pleated plaid skirt, sheer black pantyhose, and loafers",
+        "references": []
+      },
+      {
+        "outfitId": "student_council_blazer",
+        "outfitName": "学生会执行干练正装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her student council executive attire: a neatly buttoned navy blazer with an armband on her left sleeve, crisp white shirt with collar pins, a slightly longer pleated skirt, and sheer black tights",
+        "references": []
+      },
+      {
+        "outfitId": "casual_shopping_date",
+        "outfitName": "商业街甜美私服约会装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a cute and stylish date outfit: an oversized soft pastel pink mohair sweater hanging off one shoulder, a brown plaid wool miniskirt, thigh-high black socks, and a small leather shoulder bag",
+        "references": []
+      },
+      {
+        "outfitId": "sensual_lace_lingerie",
+        "outfitName": "鹅黄薄纱小恶魔内衣",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "a flirty pale-yellow and black lace lingerie set: a balconette bra lifting her perky young breasts with contrasting black ribbon bows, matching lace boyshort panties with a cheeky peekaboo cutout, and garter straps",
+        "references": []
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯净圣洁胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her completely bare, youthful and enticing body with soft honey-brown wavy locks framing her collarbones, pert rounded breasts with sweet pink nipples, a smooth tummy, and shapely slender legs",
+        "references": []
+      }
+    ]
+  },
+  "yukinoshita_haruno": {
+    "characterId": "yukinoshita_haruno",
+    "displayName": "雪之下阳乃",
+    "source": "Oregairu",
+    "identityProse": "Haruno Yukinoshita from Oregairu, the alluring and enigmatic older sister of Yukino, a captivating beauty with shoulder-length glossy black hair, piercing sharp dark eyes with a dangerous intoxicating gaze, and a voluptuous mature figure",
+    "outfits": [
+      {
+        "outfitId": "casual_winter_trenchcoat",
+        "outfitName": "名媛双排扣长风衣与黑丝",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her signature elegant winter outfit: a belted beige double-breasted trench coat worn open over a form-fitting black turtleneck sweater and pencil skirt, glossy black pantyhose, and pointed leather high heels",
+        "references": []
+      },
+      {
+        "outfitId": "elegant_evening_gown",
+        "outfitName": "深夜社交开衩黑丝绒礼服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a glamorous backless black velvet evening gown with a plunging neckline hugging her hourglass curves, a high thigh slit revealing her long black-stockinged leg, diamond drop earrings, and red lipstick",
+        "references": []
+      },
+      {
+        "outfitId": "casual_home_shirt",
+        "outfitName": "单身公寓大号男式衬衫",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her off-duty apartment lounge attire: an oversized white button-down shirt slipping down both her smooth shoulders, unbuttoned low to reveal her deep cleavage, no pants, and bare legs",
+        "references": []
+      },
+      {
+        "outfitId": "sensual_black_lace_lingerie",
+        "outfitName": "极魅纯黑蕾丝吊带内衣",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "a provocative sheer black floral lace lingerie set: an underwire balconette bra lifting her large heavy breasts, matching strappy garter belt holding sheer black thigh-high stockings, and a black silk peignoir robe",
+        "references": []
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯净圣洁胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her completely bare, voluptuous mature body with glossy black hair falling around her bare shoulders, full heavy breasts with dusky rose nipples, a narrow sculpted waist, curvy hips, and long shapely legs",
+        "references": []
+      }
+    ]
+  },
+  "yamada_anna": {
+    "characterId": "yamada_anna",
+    "displayName": "山田杏奈",
+    "source": "The Dangers in My Heart",
+    "identityProse": "Anna Yamada from The Dangers in My Heart, a towering 172cm junior-high school model with glossy jet-black hair tied in a high ponytail, deep blue-black eyes, a charming beauty mark mole under her left eye, and an astonishingly voluptuous, curvy frame",
+    "outfits": [
+      {
+        "outfitId": "official_school_uniform",
+        "outfitName": "圣立学园初中部制服与长开衫",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her school uniform: an unbuttoned white collared blouse under an oversized beige knit cardigan draped loose off her shoulders, a short navy pleated skirt, black over-knee socks, and white sneakers, with a snack bag peeking out of her tote",
+        "references": []
+      },
+      {
+        "outfitId": "model_casual_oversized",
+        "outfitName": "杂志模特街拍大号卫衣短裤",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a trendy model off-duty look: an oversized dark charcoal hoodie with sleeves hanging past her knuckles, super-short denim shorts barely visible under the hem, showcasing her endlessly long bare legs, and chunky platform sneakers",
+        "references": []
+      },
+      {
+        "outfitId": "summer_beach_bikini",
+        "outfitName": "盛夏海滩条纹运动比基尼",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a vibrant navy-and-white striped halterneck bikini that struggles to contain her enormous natural bust, paired with matching tie-side bikini bottoms, her long black hair tied in a messy high ponytail",
+        "references": []
+      },
+      {
+        "outfitId": "sensual_lace_lingerie",
+        "outfitName": "纯白纯棉大号运动蕾丝内衣",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "a pure white cotton-and-lace lingerie set designed for full figures: a supportive underwire bra framing her heavy breasts with scalloped lace, matching high-cut lace-trimmed briefs hugging her wide hips, and sheer thigh-high stockings",
+        "references": []
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯净圣洁胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her completely bare, statuesque 172cm model body with inky black hair spilling down her back, enormous natural breasts with pale pink nipples, a toned flat belly, plush wide hips, and endlessly long sculpted legs",
+        "references": []
+      }
+    ]
+  },
+  "waguri_kaoruko": {
+    "characterId": "waguri_kaoruko",
+    "displayName": "和栗薰子",
+    "source": "Kaoru Hana wa Rin to Saku",
+    "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, the sweet and pure-hearted bakery heiress, with long golden-blonde hair styled in loose twin braids, large bright amber-brown eyes, a warm radiant smile, and a surprisingly lush, rounded figure",
+    "outfits": [
+      {
+        "outfitId": "official_chidori_uniform",
+        "outfitName": "千鸟女子高校名媛水手制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "her prestigious Kikyo Girls' High School uniform: an elegant white-and-navy sailor blazer with a crisp pleated white collar, a navy necktie, a pleated navy skirt below the knees, white knee-high socks, and polished dark loafers",
+        "references": []
+      },
+      {
+        "outfitId": "bakery_pastry_apron",
+        "outfitName": "蛋糕工坊甜品烘焙围裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "her warm bakery work attire: a soft cafe-brown cooking apron worn over a yellow pastel knit sweater and long floral skirt, with flour smudges on her cheek and a small chef's bandana tying back her blonde braids",
+        "references": []
+      },
+      {
+        "outfitId": "festive_summer_yukata",
+        "outfitName": "夏祭牵牛花浅蓝浴衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, carrying a goldfish pouch in one hand and her golden braids pinned with floral clips",
+        "references": []
+      },
+      {
+        "outfitId": "sensual_lace_lingerie",
+        "outfitName": "甜粉草莓蕾丝内衣",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "a delightfully sweet pastel pink and ivory lace lingerie set: a balconette bra framing her full soft breasts with tiny strawberry ribbon bows, matching scalloped lace hipster panties, and a sheer pink chiffon peignoir",
+        "references": []
+      },
+      {
+        "outfitId": "nsfw_nude",
+        "outfitName": "纯净圣洁胴体",
+        "isDefault": false,
+        "isNsfw": true,
+        "prose": "her completely bare, sweet and voluptuous body with golden-blonde hair spilling loose over her shoulders, full rounded breasts with soft peach-pink nipples, a gentle tummy, and smooth radiant porcelain skin",
+        "references": []
+      }
+    ]
   }
 }

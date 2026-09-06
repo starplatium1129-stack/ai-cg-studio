@@ -1,0 +1,147 @@
+{
+  "version": "1.0.0",
+  "franchise": "The Dangers in My Heart",
+  "characters": [
+    {
+      "id": "yamada_anna",
+      "displayName": "山田杏奈",
+      "originalName": "山田杏奈",
+      "franchise": "The Dangers in My Heart",
+      "aliases": [
+        "Anna Yamada",
+        "山田杏奈",
+        "山田",
+        "吃货超模",
+        "我心里危险的东西"
+      ],
+      "identityProse": "Anna Yamada from The Dangers in My Heart, a towering 172cm junior-high school model with glossy jet-black hair tied in a high ponytail, deep blue-black eyes, a charming beauty mark mole under her left eye, and an astonishingly voluptuous, curvy frame",
+      "identityTokens": [
+        "yamada_anna",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "ponytail",
+        "black_eyes",
+        "mole_under_eye",
+        "large_breasts",
+        "tall_female"
+      ],
+      "exactTokens": [
+        "yamada_anna"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yamada_anna"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "Shin-Ei Animation",
+      "curatedArtistStyles": [
+        "Norio Sakurai"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_school_uniform",
+          "name": "圣立学园初中部制服与长开衫",
+          "prose": "her school uniform: an unbuttoned white collared blouse under an oversized beige knit cardigan draped loose off her shoulders, a short navy pleated skirt, black over-knee socks, and white sneakers, with a snack bag peeking out of her tote",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "open_cardigan",
+            "beige_cardigan",
+            "pleated_skirt",
+            "navy_skirt",
+            "thighhighs",
+            "black_socks",
+            "sneakers",
+            "tall_female"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "model_casual_oversized",
+          "name": "杂志模特街拍大号卫衣短裤",
+          "prose": "a trendy model off-duty look: an oversized dark charcoal hoodie with sleeves hanging past her knuckles, super-short denim shorts barely visible under the hem, showcasing her endlessly long bare legs, and chunky platform sneakers",
+          "tokens": [
+            "oversized_hoodie",
+            "black_hoodie",
+            "denim_shorts",
+            "short_shorts",
+            "bare_legs",
+            "long_legs",
+            "sneakers",
+            "tall_female",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "summer_beach_bikini",
+          "name": "盛夏海滩条纹运动比基尼",
+          "prose": "a vibrant navy-and-white striped halterneck bikini that struggles to contain her enormous natural bust, paired with matching tie-side bikini bottoms, her long black hair tied in a messy high ponytail",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "striped_bikini",
+            "halterneck",
+            "cleavage",
+            "large_breasts",
+            "bare_shoulders",
+            "wet_skin",
+            "tall_female"
+          ]
+        },
+        {
+          "id": "sensual_lace_lingerie",
+          "name": "纯白纯棉大号运动蕾丝内衣",
+          "prose": "a pure white cotton-and-lace lingerie set designed for full figures: a supportive underwire bra framing her heavy breasts with scalloped lace, matching high-cut lace-trimmed briefs hugging her wide hips, and sheer thigh-high stockings",
+          "tokens": [
+            "white_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "cotton_panties",
+            "white_thighhighs",
+            "cleavage",
+            "large_breasts",
+            "tall_female",
+            "sensual"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, statuesque 172cm model body with inky black hair spilling down her back, enormous natural breasts with pale pink nipples, a toned flat belly, plush wide hips, and endlessly long sculpted legs",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "large_breasts",
+            "tall_female",
+            "long_legs",
+            "mole_under_eye"
+          ]
+        }
+      ]
+    }
+  ]
+}

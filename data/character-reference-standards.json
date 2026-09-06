@@ -8465,6 +8465,137 @@
         "smile"
       ],
       "outfits": []
+    },
+    {
+      "id": "katou_megumi",
+      "displayName": "加藤惠",
+      "originalName": "加藤恵",
+      "source": "Saenai Heroine no Sodatekata",
+      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair in a simple short bob with parted bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
+      "identityTokens": [
+        "katou_megumi",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "short_hair",
+        "bob_cut",
+        "bangs",
+        "brown_eyes"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "shiina_mahiru",
+      "displayName": "椎名真昼",
+      "originalName": "椎名真昼",
+      "source": "Otonari no Tenshi-sama",
+      "identityProse": "Mahiru Shiina from The Angel Next Door, the perfect school angel with silky flaxen blonde hair reaching her waist, striking amber-gold eyes, a graceful slender figure, and an unconsciously radiant, gentle smile",
+      "identityTokens": [
+        "shiina_mahiru",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "very_long_hair",
+        "amber_eyes",
+        "slender_body"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "chitanda_eru",
+      "displayName": "千反田爱瑠",
+      "originalName": "千反田える",
+      "source": "Hyouka",
+      "identityProse": "Eru Chitanda from Hyouka, the polite and curious heiress of the Chitanda estate, with long lustrous black hair, enormous expressive purple eyes that sparkle with intense curiosity, and a graceful dignified bearing",
+      "identityTokens": [
+        "chitanda_eru",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "bangs",
+        "purple_eyes",
+        "large_breasts"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "isshiki_iroha",
+      "displayName": "一色彩羽",
+      "originalName": "一色いろは",
+      "source": "Oregairu",
+      "identityProse": "Iroha Isshiki from Oregairu, the mischievous yet hardworking student council president kouhai, a fashionable beauty with shoulder-length wavy honey-brown hair in low side twintails, hazel-brown eyes, and a sly, playfully teasing smirk",
+      "identityTokens": [
+        "isshiki_iroha",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "wavy_hair",
+        "low_twintails",
+        "brown_eyes",
+        "smirk"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "yukinoshita_haruno",
+      "displayName": "雪之下阳乃",
+      "originalName": "雪ノ下陽乃",
+      "source": "Oregairu",
+      "identityProse": "Haruno Yukinoshita from Oregairu, the alluring and enigmatic older sister of Yukino, a captivating beauty with shoulder-length glossy black hair, piercing sharp dark eyes with a dangerous intoxicating gaze, and a voluptuous mature figure",
+      "identityTokens": [
+        "yukinoshita_haruno",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "brown_eyes",
+        "dark_eyes",
+        "mature_female",
+        "large_breasts",
+        "smirk"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "yamada_anna",
+      "displayName": "山田杏奈",
+      "originalName": "山田杏奈",
+      "source": "The Dangers in My Heart",
+      "identityProse": "Anna Yamada from The Dangers in My Heart, a towering 172cm junior-high school model with glossy jet-black hair tied in a high ponytail, deep blue-black eyes, a charming beauty mark mole under her left eye, and an astonishingly voluptuous, curvy frame",
+      "identityTokens": [
+        "yamada_anna",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "ponytail",
+        "black_eyes",
+        "mole_under_eye",
+        "large_breasts",
+        "tall_female"
+      ],
+      "outfits": []
+    },
+    {
+      "id": "waguri_kaoruko",
+      "displayName": "和栗薰子",
+      "originalName": "和栗薫子",
+      "source": "Kaoru Hana wa Rin to Saku",
+      "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, the sweet and pure-hearted bakery heiress, with long golden-blonde hair styled in loose twin braids, large bright amber-brown eyes, a warm radiant smile, and a surprisingly lush, rounded figure",
+      "identityTokens": [
+        "waguri_kaoruko",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "twin_braids",
+        "amber_eyes",
+        "brown_eyes",
+        "smile",
+        "large_breasts"
+      ],
+      "outfits": []
     }
   ]
 }

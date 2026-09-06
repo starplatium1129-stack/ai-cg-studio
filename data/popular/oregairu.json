@@ -246,6 +246,285 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "feel. (studio), official anime screencap, anime coloring"
+    },
+    {
+      "id": "isshiki_iroha",
+      "displayName": "一色彩羽",
+      "originalName": "一色いろは",
+      "franchise": "Oregairu",
+      "aliases": [
+        "Iroha Isshiki",
+        "一色彩羽",
+        "彩羽",
+        "一色",
+        "小恶魔学妹",
+        "后辈君"
+      ],
+      "identityProse": "Iroha Isshiki from Oregairu, the mischievous yet hardworking student council president kouhai, a fashionable beauty with shoulder-length wavy honey-brown hair in low side twintails, hazel-brown eyes, and a sly, playfully teasing smirk",
+      "identityTokens": [
+        "isshiki_iroha",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "wavy_hair",
+        "low_twintails",
+        "brown_eyes",
+        "smirk"
+      ],
+      "exactTokens": [
+        "isshiki_iroha"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, isshiki_iroha"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "feel.",
+      "curatedArtistStyles": [
+        "Ponkan8"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "official_sobu_uniform",
+          "name": "总武高水手西装制服与开衫",
+          "prose": "her Sobu High school uniform: an unbuttoned navy blazer over a light cream knit cardigan, a white collared blouse with a thin red ribbon tie, a short pleated plaid skirt, sheer black pantyhose, and loafers",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "navy_jacket",
+            "cardigan",
+            "cream_cardigan",
+            "white_shirt",
+            "ribbon_tie",
+            "pleated_skirt",
+            "plaid_skirt",
+            "black_pantyhose"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "student_council_blazer",
+          "name": "学生会执行干练正装",
+          "prose": "her student council executive attire: a neatly buttoned navy blazer with an armband on her left sleeve, crisp white shirt with collar pins, a slightly longer pleated skirt, and sheer black tights",
+          "tokens": [
+            "formal_wear",
+            "blazer",
+            "navy_jacket",
+            "armband",
+            "white_shirt",
+            "pleated_skirt",
+            "black_pantyhose",
+            "professional"
+          ]
+        },
+        {
+          "id": "casual_shopping_date",
+          "name": "商业街甜美私服约会装",
+          "prose": "a cute and stylish date outfit: an oversized soft pastel pink mohair sweater hanging off one shoulder, a brown plaid wool miniskirt, thigh-high black socks, and a small leather shoulder bag",
+          "tokens": [
+            "casual_wear",
+            "oversized_sweater",
+            "pink_sweater",
+            "off_shoulder",
+            "miniskirt",
+            "plaid_skirt",
+            "thighhighs",
+            "black_thighhighs",
+            "shoulder_bag"
+          ]
+        },
+        {
+          "id": "sensual_lace_lingerie",
+          "name": "鹅黄薄纱小恶魔内衣",
+          "prose": "a flirty pale-yellow and black lace lingerie set: a balconette bra lifting her perky young breasts with contrasting black ribbon bows, matching lace boyshort panties with a cheeky peekaboo cutout, and garter straps",
+          "tokens": [
+            "yellow_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "black_ribbon",
+            "garter_straps",
+            "cleavage",
+            "sensual",
+            "flirty"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, youthful and enticing body with soft honey-brown wavy locks framing her collarbones, pert rounded breasts with sweet pink nipples, a smooth tummy, and shapely slender legs",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "slender_body",
+            "youthful",
+            "pale_skin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yukinoshita_haruno",
+      "displayName": "雪之下阳乃",
+      "originalName": "雪ノ下陽乃",
+      "franchise": "Oregairu",
+      "aliases": [
+        "Haruno Yukinoshita",
+        "雪之下阳乃",
+        "阳乃",
+        "阳乃小姐",
+        "魔性姐姐"
+      ],
+      "identityProse": "Haruno Yukinoshita from Oregairu, the alluring and enigmatic older sister of Yukino, a captivating beauty with shoulder-length glossy black hair, piercing sharp dark eyes with a dangerous intoxicating gaze, and a voluptuous mature figure",
+      "identityTokens": [
+        "yukinoshita_haruno",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "brown_eyes",
+        "dark_eyes",
+        "mature_female",
+        "large_breasts",
+        "smirk"
+      ],
+      "exactTokens": [
+        "yukinoshita_haruno"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yukinoshita_haruno"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "animeStudio": "feel.",
+      "curatedArtistStyles": [
+        "Ponkan8"
+      ],
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "missing fingers",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfits": [
+        {
+          "id": "casual_winter_trenchcoat",
+          "name": "名媛双排扣长风衣与黑丝",
+          "prose": "her signature elegant winter outfit: a belted beige double-breasted trench coat worn open over a form-fitting black turtleneck sweater and pencil skirt, glossy black pantyhose, and pointed leather high heels",
+          "tokens": [
+            "trench_coat",
+            "beige_coat",
+            "open_coat",
+            "black_sweater",
+            "turtleneck",
+            "pencil_skirt",
+            "black_pantyhose",
+            "high_heels",
+            "mature_female"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "elegant_evening_gown",
+          "name": "深夜社交开衩黑丝绒礼服",
+          "prose": "a glamorous backless black velvet evening gown with a plunging neckline hugging her hourglass curves, a high thigh slit revealing her long black-stockinged leg, diamond drop earrings, and red lipstick",
+          "tokens": [
+            "evening_dress",
+            "black_dress",
+            "velvet_dress",
+            "backless",
+            "plunging_neckline",
+            "high_slit",
+            "black_stockings",
+            "jewelry",
+            "lipstick",
+            "mature_female"
+          ]
+        },
+        {
+          "id": "casual_home_shirt",
+          "name": "单身公寓大号男式衬衫",
+          "prose": "her off-duty apartment lounge attire: an oversized white button-down shirt slipping down both her smooth shoulders, unbuttoned low to reveal her deep cleavage, no pants, and bare legs",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "open_shirt",
+            "bare_shoulders",
+            "cleavage",
+            "bottomless",
+            "no_pants",
+            "bare_legs",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "sensual_black_lace_lingerie",
+          "name": "极魅纯黑蕾丝吊带内衣",
+          "prose": "a provocative sheer black floral lace lingerie set: an underwire balconette bra lifting her large heavy breasts, matching strappy garter belt holding sheer black thigh-high stockings, and a black silk peignoir robe",
+          "tokens": [
+            "black_lingerie",
+            "lace_bra",
+            "lace_panties",
+            "garter_straps",
+            "black_thighhighs",
+            "silk_robe",
+            "cleavage",
+            "large_breasts",
+            "sensual",
+            "mature_female"
+          ]
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "纯净圣洁胴体",
+          "prose": "her completely bare, voluptuous mature body with glossy black hair falling around her bare shoulders, full heavy breasts with dusky rose nipples, a narrow sculpted waist, curvy hips, and long shapely legs",
+          "tokens": [
+            "completely_nude",
+            "bare_breasts",
+            "pink_nipples",
+            "areola",
+            "pussy",
+            "navel",
+            "large_breasts",
+            "mature_female",
+            "curvy_body",
+            "long_legs"
+          ]
+        }
+      ]
     }
   ]
 }

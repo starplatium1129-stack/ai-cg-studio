@@ -40,7 +40,7 @@
     {
       "file": "oregairu.json",
       "franchise": "Oregairu",
-      "count": 20
+      "count": 42
     },
     {
       "file": "wandering-witch.json",
@@ -225,11 +225,31 @@
     {
       "file": "saenai-heroine-no-sodatekata.json",
       "franchise": "Saenai Heroine no Sodatekata",
-      "count": 11
+      "count": 22
     },
     {
       "file": "kimetsu-no-yaiba.json",
       "franchise": "Kimetsu no Yaiba",
+      "count": 11
+    },
+    {
+      "file": "otonari-no-tenshi-sama.json",
+      "franchise": "Otonari no Tenshi-sama",
+      "count": 11
+    },
+    {
+      "file": "hyouka.json",
+      "franchise": "Hyouka",
+      "count": 11
+    },
+    {
+      "file": "the-dangers-in-my-heart.json",
+      "franchise": "The Dangers in My Heart",
+      "count": 11
+    },
+    {
+      "file": "kaoru-hana-wa-rin-to-saku.json",
+      "franchise": "Kaoru Hana wa Rin to Saku",
       "count": 11
     }
   ]
