@@ -40,7 +40,11 @@
     },
     "windows": {
       "nsis": {
-        "installMode": "perMachine"
+        "installMode": "perMachine",
+        "headerImage": "installer/header.bmp",
+        "sidebarImage": "installer/sidebar.bmp",
+        "languages": ["SimpChinese"],
+        "displayLanguageSelector": false
       }
     }
   },
