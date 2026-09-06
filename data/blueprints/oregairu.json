@@ -306,6 +306,8 @@
         "japanese_room",
         "tatami",
         "futon",
+        "yukata",
+        "japanese_clothes",
         "candlelight",
         "cowboy_shot",
         "detailed_background",
@@ -387,7 +389,7 @@
       ],
       "nsfwProse": "Lying on the tatami futon with her ice-queen demeanor completely melted, nude Yukino parts her slender thighs with tearful, devoted love.",
       "adultArtistHint": "@tiv",
-      "outfitId": "casual",
+      "outfitId": "relax_yukata",
       "sampleRating": "R18"
     },
     {
@@ -1784,7 +1786,7 @@
       "title": "由比滨结衣 · 结衣家的厨房",
       "category": "温馨日常",
       "characterId": "yuigahama_yui",
-      "outfitId": "dog_pajamas",
+      "outfitId": "home_cooking_apron",
       "adult": false,
       "description": "【由比滨结衣 · 结衣家的厨房】结衣家飘满黄油香气的厨房里，系着粉色围裙的女孩正笨拙而认真地搅拌着碗里的手工曲奇面糊，鼻尖上不小心蹭了一抹白面粉。她有些慌乱地转过头——「等、等一下不要笑啦！虽然卖相可能一般，但味道绝对会很用心的！」",
       "location": "结衣家厨房",

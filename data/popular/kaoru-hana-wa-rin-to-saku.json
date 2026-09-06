@@ -137,6 +137,20 @@
             "plump_body",
             "pale_skin"
           ]
+        },
+        {
+          "id": "bridal_wedding_dress",
+          "name": "糖霜白花蕾丝蓬蓬婚纱",
+          "prose": "a dreamy pure white lace princess wedding gown with a puffy layered skirt like whipped cream, a white flower bridal veil, and a bouquet decorated with fresh strawberries and sugar-frosted lilies",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "lace",
+            "puffy_sleeves",
+            "bouquet",
+            "white_flowers",
+            "jewelry"
+          ]
         }
       ]
     }

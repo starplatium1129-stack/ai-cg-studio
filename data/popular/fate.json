@@ -1080,6 +1080,19 @@
             "navel",
             "slender_body"
           ]
+        },
+        {
+          "id": "bridal_dress",
+          "name": "破晓圣坛圣骸布花嫁婚纱",
+          "prose": "a pure white off-shoulder wedding gown with her golden shroud worn as a veil and trailing train, holding a bouquet of white lilies",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "off_shoulder",
+            "bouquet",
+            "lily",
+            "jewelry"
+          ]
         }
       ]
     },

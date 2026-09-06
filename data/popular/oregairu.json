@@ -78,6 +78,18 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "relax_yukata",
+          "name": "和室私居浅紫浴衣",
+          "prose": "a pale lavender relaxed home yukata loosely draped and slipping slightly off her shoulder, tied with a simple obi",
+          "tokens": [
+            "yukata",
+            "japanese_clothes",
+            "obi",
+            "short_sleeves",
+            "loose_clothes"
+          ]
         }
       ],
       "canon": {
@@ -205,6 +217,17 @@
           "styleHint": "sensual soft room lighting",
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "home_cooking_apron",
+          "name": "粉色料理围裙居家装",
+          "prose": "a cute pink cooking apron worn over a casual short-sleeve top",
+          "tokens": [
+            "apron",
+            "pink_apron",
+            "short_sleeves",
+            "casual_wear"
+          ]
         }
       ],
       "negativeTokens": [

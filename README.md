@@ -17,7 +17,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 ## Features
 
 - **Scene & Character Libraries**:
-  - 302 searchable and filterable Scenes (+1,247 Scene Blueprints), classified as All, R15, or R18 by depicted content.
+  - 302 searchable and filterable Scenes (+1,249 Scene Blueprints), classified as All, R15, or R18 by depicted content.
   - 116 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
   - 335+ verified showcase samples in `AI/SceneShowcase/` with direct links back into the studio.
 - **4-Perspective Character Reference Bible**:

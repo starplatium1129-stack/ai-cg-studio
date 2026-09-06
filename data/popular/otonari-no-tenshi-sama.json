@@ -132,6 +132,20 @@
             "pale_skin",
             "very_long_hair"
           ]
+        },
+        {
+          "id": "bridal_wedding_dress",
+          "name": "圣洁教堂纯白花嫁婚纱",
+          "prose": "an angelically pure white wedding gown with a sweeping cathedral train and delicate lace embroidery, a translucent bridal veil over her waist-length blonde hair, and a bouquet of white calla lilies",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "lace-trimmed_dress",
+            "bouquet",
+            "white_flowers",
+            "jewelry",
+            "white_footwear"
+          ]
         }
       ]
     }

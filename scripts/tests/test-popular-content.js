@@ -86,7 +86,7 @@ test('blueprints: 109 characters x (6-7 prototype + 4-5 adult), all owned by a c
   // 2026-09-02 天降与出包专栏：新增 6 位核心角色（6 位角色各 11 蓝图 = +66 场景，88 角色 = 939 场景）。
   // 2026-09-02 第一批殿堂级女神：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，93 角色 = 994 场景）。
   // 2026-09-02 第二批型月神作三大源流：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，98 角色 = 1049 场景）。
-  assert.strictEqual(blueprints.length, 1247, 'expected 1247 character scenes, got ' + blueprints.length);
+  assert.strictEqual(blueprints.length, 1249, 'expected 1249 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -105,7 +105,7 @@ test('blueprints: 109 characters x (6-7 prototype + 4-5 adult), all owned by a c
     assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must own 10, 11, 13 or 15 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 43, 11: 67, 13: 5, 15: 1 }, 'scene distribution must be 43x10 + 67x11 + 5x13 + 1x15');
+  assert.deepStrictEqual(sceneDist, { 10: 43, 11: 66, 13: 6, 15: 1 }, 'scene distribution must be 43x10 + 66x11 + 6x13 + 1x15');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4、5 或 6 个带 characterId 的成人场景。
@@ -116,7 +116,7 @@ test('blueprints: 109 characters x (6-7 prototype + 4-5 adult), all owned by a c
       entry[0] + ' must own 4, 5 or 6 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 104, 5: 11, 6: 1 }, 'adult distribution must be 104x4 + 11x5 + 1x6');
+  assert.deepStrictEqual(adultDist, { 4: 103, 5: 12, 6: 1 }, 'adult distribution must be 103x4 + 12x5 + 1x6');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');
