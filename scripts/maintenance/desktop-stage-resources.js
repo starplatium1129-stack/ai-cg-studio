@@ -75,13 +75,59 @@ function copySelectedFiles(src, dest, relativeFiles) {
   }
 }
 
+/**
+ * 从根 lock 派生运行时依赖闭包：从 RUNTIME_DEPENDENCIES 出发沿 dependencies /
+ * optionalDependencies / peerDependencies 走传递闭包（npm ≥7 默认安装 peers，
+ * sharp 的平台二进制在 optionalDependencies 里，漏走都会导致桌面端缺包）。
+ *
+ * 条目按根 lock 原始路径（含 node_modules/<parent>/node_modules/<name> 嵌套）
+ * 原样保留，不可拍平——npm ci 会校验树结构一致性，把嵌套版本写到顶层会报
+ * Missing/<pkg> from lock file。查找顺序模拟 Node 解析：沿父包祖先链逐级
+ * 向上找同名包，最后落到根提升版本。
+ */
+function collectRuntimeClosure(rootLock) {
+  const packages = rootLock.packages;
+  const resolve = (name, parentPath) => {
+    let prefix = parentPath;
+    for (;;) {
+      const candidate = prefix ? `${prefix}/node_modules/${name}` : `node_modules/${name}`;
+      const entry = packages[candidate];
+      if (entry && typeof entry.version === 'string') return { entry, lockPath: candidate };
+      const cut = prefix ? prefix.lastIndexOf('/node_modules/') : -1;
+      if (cut === -1) {
+        if (!prefix) break;
+        prefix = '';
+        continue;
+      }
+      prefix = prefix.slice(0, cut);
+    }
+    throw new Error(`runtime dependency is missing from package-lock.json: ${name}`);
+  };
+
+  const closure = {};
+  const queue = RUNTIME_DEPENDENCIES.map((name) => ({ name, parentPath: '' }));
+  while (queue.length) {
+    const { name, parentPath } = queue.shift();
+    const { entry, lockPath } = resolve(name, parentPath);
+    if (closure[lockPath]) continue;
+    closure[lockPath] = entry;
+    for (const field of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
+      for (const depName of Object.keys(entry[field] || {})) {
+        queue.push({ name: depName, parentPath: lockPath });
+      }
+    }
+  }
+  return closure;
+}
+
 function buildGatewayPackage(rootPkg, rootLock) {
+  const closure = collectRuntimeClosure(rootLock);
   const dependencies = Object.fromEntries(RUNTIME_DEPENDENCIES.map((name) => {
-    const lockEntry = rootLock.packages[`node_modules/${name}`];
-    if (!lockEntry || typeof lockEntry.version !== 'string') {
+    const entry = closure[`node_modules/${name}`];
+    if (!entry || typeof entry.version !== 'string') {
       throw new Error(`runtime dependency is missing from package-lock.json: ${name}`);
     }
-    return [name, lockEntry.version];
+    return [name, entry.version];
   }));
 
   const packages = {
@@ -91,10 +137,8 @@ function buildGatewayPackage(rootPkg, rootLock) {
       dependencies,
     },
   };
-  for (const [packagePath, packageInfo] of Object.entries(rootLock.packages)) {
-    if (packagePath !== '' && !packageInfo.dev) {
-      packages[packagePath] = packageInfo;
-    }
+  for (const [lockPath, entry] of Object.entries(closure)) {
+    packages[lockPath] = entry;
   }
 
   return {
