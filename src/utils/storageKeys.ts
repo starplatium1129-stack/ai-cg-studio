@@ -57,6 +57,19 @@ export const VIDEO_CONTEXT_KEY = 'aics_video_ctx'
 export const VIDEO_SHOTS_CONTEXT_KEY = 'aics_video_shots_ctx'
 /** 剧本模式分幕 → 分镜短片跨页上下文（sessionStorage，2026-08-23 剧本模式激活）。 */
 export const VIDEO_SCENARIO_CONTEXT_KEY = 'aics_video_scenario_ctx'
+/**
+ * 视频页创作草稿（sessionStorage，2026-09-06 体验报告 F1）：
+ * 模式/描述/参数/首帧图 IndexedDB 引用，切页与刷新后恢复；图片本体在 IndexedDB。
+ */
+export const VIDEO_DRAFT_KEY = 'aics_video_draft_v1'
+/** 视频在途/最近任务记录（sessionStorage）：离页后按 jobId 重连真实状态。 */
+export const VIDEO_TASK_KEY = 'aics_video_task_v1'
+/** 分镜短片编辑草稿（sessionStorage）：镜头列表 + 身份锚点 + 参考卡元信息。 */
+export const VIDEO_SHOTS_DRAFT_KEY = 'aics_video_shots_draft_v1'
+/** 分镜整批任务记录（sessionStorage）：离页后按 batchId 重连真实进度。 */
+export const VIDEO_SHOTS_BATCH_KEY = 'aics_video_shots_batch_v1'
+/** 绘图页未入册临时成片指针（sessionStorage，2026-09-06 体验报告 F2；blob 在 IndexedDB）。 */
+export const TEMP_RESULT_KEY = 'aics_pb_temp_result_v1'
 
 /**
  * SD 出图队列快照（2026-08-30 UX 审计 P0-5）。队列任务在离开绘图页 / 刷新后

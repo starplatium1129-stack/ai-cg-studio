@@ -401,18 +401,16 @@ import {
   createVideoJob,
   fetchVideoJob,
   fetchVideoStatus,
-  uploadVideoImage,
   type VideoDefaults,
   type VideoJob,
   type VideoMode,
   type VideoStatusResponse,
 } from '@/api/videoApi'
-import { imgGet } from '@/composables/useImageStore'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { classifySDError } from '@/utils/sdError'
-import type { VideoCtxPayload } from '@/composables/useVideoBridge'
 import { useVideoStore } from '@/stores/videoStore'
-import { useSceneStore } from '@/stores/sceneStore'
+import { useVideoFrames } from '@/components/video/useVideoFrames'
+import { useVideoStudioDraft } from '@/components/video/useVideoStudioDraft'
 
 type StudioMode = VideoMode | 'shots'
 
@@ -512,7 +510,6 @@ const jobErrorReport = computed(() => {
 })
 
 // ── 图片动起来（I2VA）状态：首帧来自绘图页「出视频」的跨页上下文 ────────────
-const sceneStore = useSceneStore()
 const videoImageId = ref('')
 const videoImageUrl = ref('')
 const uploadingImage = ref(false)
@@ -520,6 +517,7 @@ const uploadingImage = ref(false)
 // ── 首尾帧过渡（FL2VA）状态：首帧可来自绘图页或本地上传，尾帧仅本地上传 ────
 const firstFrameName = ref('')
 const lastFrameName = ref('')
+const lastFrameImageId = ref('')
 const lastFrameUrl = ref('')
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
@@ -673,140 +671,35 @@ async function loadStatus() {
   }
 }
 
-// ── 绘图页「出视频」跨页上下文（一次性消费，videoStore 承载）──────────────
-function consumeVideoCtx() {
-  const ctx = useVideoStore().consumeImageCtx()
-  if (!ctx || !ctx.imageId) return
-  void applyVideoCtx(ctx)
-}
+// ── 绘图页「出视频」跨页上下文与首帧/尾帧素材（已下沉 useVideoFrames）──────
+// 草稿持久化与任务重连（F1）归 useVideoStudioDraft。
+const {
+  consumeVideoCtx,
+  clearFirstFrame,
+  clearLastFrame,
+  handleFrameFile,
+  resolveSubmitFrames,
+} = useVideoFrames({
+  selectedMode, aspectRatio, selectedModelId, prompt,
+  videoImageId, videoImageUrl, firstFrameName,
+  lastFrameImageId, lastFrameUrl, lastFrameName,
+  uploadingImage, status, statusError,
+})
 
-async function applyVideoCtx(ctx: VideoCtxPayload) {
-  try {
-    const blob = await imgGet(ctx.imageId)
-    if (blob) {
-      if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-      videoImageUrl.value = URL.createObjectURL(blob)
-      videoImageId.value = ctx.imageId
-    }
-  } catch { /* 图失效则不挂预览，上下文其余部分照常 */ }
-  selectedMode.value = 'image'
-  // 首帧比例跟随原图，避免固定画幅拉伸（如 832x1216 出图 → 480x832 画布会变形）。
-  aspectRatio.value = 'original'
-  // 图生视频只有支持 image 的模型可用（本机目录里即 MiniMax H3）；Wan 5B 会静默丢掉首帧，
-  // 这里直接选到 H3，避免用户带着首帧落到「文字成片」模型上。
-  if (status.value?.models.some(model => model.id === 'minimax-h3')) {
-    selectedModelId.value = 'minimax-h3'
-  }
-  const composed = composeVideoPrompt(ctx)
-  if (composed && composed.trim().length >= 4) prompt.value = composed
-}
-
-/**
- * 跨页上下文 → 视频提示词（确定性组装，不做 tag 翻译）：
- * 1. 实际出图提示词（ctx.prompt，跟随用户对词条/角色/场景的最新修改）直接作为视频主描述；
- * 2. prompt 为空时回退用户写的 story；
- * 3. story 为空时，用场景预设的结构化字段——优先英文 promptProse（Anima/Krea 自然语言，
- *    场景/动作/光线都已写成可驱动视频的英文句，符合 H3 官方「英文改写」输出规则）；
- *    promptProse 缺失时才回退中文 description + action + lighting；
- * 4. I2VA 首帧图已在后端按官方规范锁定角色/服装/场景（<Picture 1> 指令），
- *    身份描述如与画面冲突可在文本框手动删减，这里只做搬运不做裁剪。
- */
-function composeVideoPrompt(ctx: VideoCtxPayload): string {
-  const prompt = (ctx.prompt || '').trim()
-  if (prompt) return prompt
-  const story = (ctx.story || '').trim()
-  if (story) return story
-  if (ctx.blueprintId) {
-    const bp = sceneStore.sceneBlueprints.find(item => item.id === ctx.blueprintId)
-    if (bp) {
-      const prose = (bp.promptProse || '').trim()
-      if (prose) return prose
-      // 最后兜底：中文结构化字段（H3 官方要求英文，仅当蓝图缺英文散文时使用）。
-      return [bp.description, bp.action, bp.lighting].filter(Boolean).join('，')
-    }
-  }
-  return ''
-}
-
-function clearFirstFrame() {
-  if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-  videoImageUrl.value = ''
-  videoImageId.value = ''
-  firstFrameName.value = ''
-}
-
-function clearLastFrame() {
-  if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
-  lastFrameUrl.value = ''
-  lastFrameName.value = ''
-}
-
-/** 本地上传首帧/尾帧：base64 → 网关 → 受控文件名 + 本地预览。 */
-async function handleFrameFile(event: Event, slot: 'first' | 'last') {
-  const input = event.target as HTMLInputElement
-  const file = input.files?.[0]
-  input.value = ''
-  if (!file) return
-  if (!file.type.startsWith('image/')) {
-    statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'
-    return
-  }
-  uploadingImage.value = true
-  statusError.value = ''
-  try {
-    const upload = await uploadVideoImage(await blobToBase64(file))
-    const preview = URL.createObjectURL(file)
-    if (slot === 'first') {
-      if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-      videoImageUrl.value = preview
-      firstFrameName.value = upload.name
-      videoImageId.value = ''
-    } else {
-      if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
-      lastFrameUrl.value = preview
-      lastFrameName.value = upload.name
-    }
-  } catch (error) {
-    statusError.value = error instanceof Error ? error.message : '图片上传失败'
-  } finally {
-    uploadingImage.value = false
-  }
-}
-
-function blobToBase64(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      const result = typeof reader.result === 'string' ? reader.result : ''
-      const comma = result.indexOf(',')
-      resolve(comma >= 0 ? result.slice(comma + 1) : result)
-    }
-    reader.onerror = () => reject(reader.error ?? new Error('图片编码失败'))
-    reader.readAsDataURL(blob)
-  })
-}
+const videoDraftTools = useVideoStudioDraft({
+  selectedMode, prompt, negative, selectedModelId, aspectRatio, quality,
+  steps, duration, camera, motion, seedText,
+  videoImageId, lastFrameImageId, videoImageUrl, lastFrameUrl,
+  onPersistError: (message) => { statusError.value = message },
+})
+const stopDraftWatch = videoDraftTools.startDraftWatch()
 
 async function submitVideo() {
   if (!canGenerate.value) return
   submitting.value = true
   try {
-    let image: string | undefined
-    let lastFrame: string | undefined
-    if (selectedMode.value === 'image' || selectedMode.value === 'first-last-frame') {
-      if (firstFrameName.value) {
-        image = firstFrameName.value
-      } else if (videoImageId.value) {
-        const blob = await imgGet(videoImageId.value)
-        if (!blob) throw new Error('首帧图片读取失败，请重新带入')
-        uploadingImage.value = true
-        const upload = await uploadVideoImage(await blobToBase64(blob))
-        image = upload.name
-      }
-      if (selectedMode.value === 'first-last-frame') {
-        if (!lastFrameName.value) throw new Error('尾帧图片读取失败，请重新上传')
-        lastFrame = lastFrameName.value
-      }
-    }
+    // 帧图解析（受控名优先、IndexedDB 凭据重上传兜底）已下沉 useVideoFrames。
+    const { image, lastFrame } = await resolveSubmitFrames(selectedMode.value)
     const response = await createVideoJob({
       prompt: prompt.value.trim(),
       negative: negative.value.trim() || undefined,
@@ -824,6 +717,8 @@ async function submitVideo() {
       adultEnabled: isLocalStudioHost(),
     })
     job.value = response.job
+    // 任务记录（F1）：离页后按 jobId 重连真实状态。
+    useVideoStore().recordVideoTask({ jobId: response.job.id, mode: selectedMode.value, submittedAt: Date.now() })
     schedulePoll()
   } catch (error) {
     // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；
@@ -880,10 +775,29 @@ onMounted(() => {
     void router.replace({ query: {} })
   }
   void loadStatus()
-  consumeVideoCtx()
+  void (async () => {
+    // 草稿先回、跨页上下文后覆盖（F1：ctx 是更新的明确意图，优先级更高）。
+    // 分镜模式下草稿由 ShotListEditor 自己的分镜草稿承担，这里跳过。
+    if (selectedMode.value !== 'shots') {
+      const { firstFrameLost, lastFrameLost } = await videoDraftTools.restoreDraft()
+      if (firstFrameLost || lastFrameLost) {
+        statusError.value = '草稿已恢复，但部分帧图原文件已失效，请重新选择对应图片'
+      }
+    }
+    consumeVideoCtx()
+    // 任务重连（F1）：离页不丢任务——按 jobId 拉回真实状态并恢复轮询。
+    const reconnect = await videoDraftTools.reconnectTask()
+    if (reconnect.kind === 'job') {
+      job.value = reconnect.job
+      schedulePoll()
+    } else if (reconnect.kind === 'lost') {
+      statusError.value = '上次任务已随网关重启中断，结果无法找回；草稿已保留，可重新提交'
+    }
+  })()
 })
 onBeforeUnmount(() => {
   disposed = true
+  stopDraftWatch()
   window.clearTimeout(pollTimer)
   if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
   if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)

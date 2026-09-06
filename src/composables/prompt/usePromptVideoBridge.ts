@@ -1,6 +1,7 @@
 import { ref, type ComputedRef, type Ref } from 'vue'
 import type { HistoryEntry } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
+import type { AnimaResultContext } from '@/types/anima'
 import { imgGet } from '@/composables/useImageStore'
 
 /**
@@ -10,6 +11,11 @@ import { imgGet } from '@/composables/useImageStore'
  * （单图 bridgeToVideo / 逐张 appendShotsCtx）、维护「已加入分镜」角标。
  * blob 落 IndexedDB、sessionStorage 持久化、一次性消费语义都在 videoStore /
  * useVideoBridge 层，这里不碰存储细节。
+ *
+ * 2026-09-06 体验报告 F3：角色/服装/蓝图/故事必须来自「这张图生成时冻结的
+ * 快照」（resultContext），而非当前表单——否则画布是角色 A 的图，参考卡却
+ * 装配了后来选中的角色 B。无快照（理论上只有本功能上线前的会话内结果）才
+ * 回退当前表单，行为不劣于修复前。
  */
 
 export interface PromptVideoBridgeDeps {
@@ -21,12 +27,14 @@ export interface PromptVideoBridgeDeps {
   /** SD 最近一次实际提交的提示词。 */
   sdResultPrompt: Ref<string | undefined>
   /** Anima/Krea 会话状态（取其中的 result.blob 与 result.metadata.prompt）。 */
-  animaState: Ref<{ result?: { blob?: Blob | null; metadata?: { prompt?: string } } | null }>
+  animaState: Ref<{ result?: { blob?: Blob | null; metadata?: { prompt?: string }; resultContext?: AnimaResultContext | null } | null }>
   /** 场景描述文本（pb.story）。 */
   story: () => string
   /** 工作室场景 id（pb.sceneId）。 */
   sceneId: () => string | null
-  subject: () => { kind: string; blueprintId?: string | null; characterId?: string }
+  subject: () => { kind: string; blueprintId?: string | null; characterId?: string; outfitId?: string }
+  /** 当前显示结果的冻结上下文（F3）：Anima 读会话 state，SD 读视图 ref。 */
+  resultContext: () => AnimaResultContext | null
   flash: (message: string) => void
 }
 
@@ -56,14 +64,23 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
     // 词条流 → 自然语言（H3 是自然语言模型；已像自然语言的提示词原样保留）。
     // 转换器只有「出视频/加入分镜」点击时才需要，随 useVideoBridge 一起按需拉取。
     const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
+    // F3：归属信息以生成时冻结快照为准；无快照（本功能前的会话内结果）才回退表单。
+    const frozen = deps.resultContext()
     return {
       displayUrl: url,
       animaBlob: deps.drawEngine.value !== 'sd' ? deps.animaState.value.result?.blob ?? null : null,
       prompt: tagsToVideoProse(usedPrompt),
-      story: deps.story() || '',
-      blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : deps.sceneId(),
-      characterId: subject.kind === 'popular' ? subject.characterId ?? '' : '',
-      sceneId: deps.sceneId(),
+      story: frozen?.story ?? (deps.story() || ''),
+      blueprintId: frozen
+        ? (frozen.blueprintId ?? null)
+        : (subject.kind === 'popular' ? (subject.blueprintId ?? null) : deps.sceneId()),
+      characterId: frozen
+        ? (frozen.characterId ?? '')
+        : (subject.kind === 'popular' ? subject.characterId ?? '' : ''),
+      outfitId: frozen
+        ? (frozen.outfitId ?? null)
+        : (subject.kind === 'popular' ? (subject.outfitId ?? null) : null),
+      sceneId: frozen ? (frozen.sceneId ?? null) : deps.sceneId(),
     }
   }
 
@@ -103,7 +120,13 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
       push: async () => {},
     })
     if (!ctx) return
-    shotsPending.value = appendShotsCtx(ctx)
+    // F4：存储失败如实回报并回滚（旧语义静默挤掉最旧镜头）。
+    const appended = appendShotsCtx(ctx)
+    if (!appended.ok) {
+      flash('分镜待带入列表写入失败（存储空间不足）：请先到视频页消费或清理已加入的镜头')
+      return
+    }
+    shotsPending.value = appended.count
     flashAdded(shotsPending.value)
   }
 
@@ -134,12 +157,19 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
         story: entry.story || '',
         blueprintId: entry.blueprintId ?? null,
         characterId: entry.characterId ?? '',
+        // F3：历史条目自带生成时的服装归属，参考卡按同一套服装装配。
+        outfitId: entry.outfitId ?? null,
         sceneId: entry.scene ?? null,
         flash,
         push: async () => {},
       })
       if (!ctx) return
-      shotsPending.value = appendShotsCtx(ctx)
+      const appended = appendShotsCtx(ctx)
+      if (!appended.ok) {
+        flash('分镜待带入列表写入失败（存储空间不足）：请先到视频页消费或清理已加入的镜头')
+        return
+      }
+      shotsPending.value = appended.count
       flashAdded(shotsPending.value)
     } catch (error) {
       flash('加入分镜失败')
@@ -165,12 +195,19 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
           story: entry.story || '',
           blueprintId: entry.blueprintId ?? null,
           characterId: entry.characterId ?? '',
+          outfitId: entry.outfitId ?? null,
           sceneId: entry.scene ?? null,
           flash: () => {},
           push: async () => {},
         })
         if (!ctx) { failed += 1; continue }
-        appendShotsCtx(ctx)
+        const appended = appendShotsCtx(ctx)
+        if (!appended.ok) {
+          // 存储写失败：不再追加后续，已加入的保留，如实汇报
+          flash(`存储空间不足：已加入 ${added} 张，其余未能加入`)
+          shotsPending.value = readShotsCtx().length
+          return
+        }
         added += 1
       } catch (error) {
         failed += 1

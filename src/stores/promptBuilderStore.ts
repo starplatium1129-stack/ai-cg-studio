@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { historyFromResultContext } from '@/utils/resultContext'
 import { ref, reactive, computed, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
@@ -556,6 +557,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   // ── History entry commit (IndexedDB image save) ──────────────────────────
   async function commitHistoryEntry(entry: Partial<HistoryEntry> & {
+    context?: import('@/types/anima').AnimaResultContext | null
     blob: Blob; seed?: number; size?: string; negative?: string; prompt: string
     engine?: DrawEngine; profile?: string; model?: string
     loraId?: string | null; loraStrength?: number | null
@@ -569,6 +571,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     parentId?: number | null
   }): Promise<HistoryEntry | null> {
     let imageId = ''
+    entry = { ...entry, ...historyFromResultContext(entry.context) }
     try {
       imageId = await imgPut(entry.blob)
       void cacheThumbnail(imageId, entry.blob)
@@ -577,7 +580,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
       // removeHistoryEntry 可能误删另一条；加模块级序号保证唯一。
       const id = historyStore.historyIdSeq(now)
-      const currentSubject = subject.value
+      const currentSubject = entry.subject === 'popular'
+        ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId }
+        : entry.subject === 'studio' ? { kind: 'studio' as const } : subject.value
       const isPopular = currentSubject.kind === 'popular'
       const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null
       const popBlueprint = isPopular && currentSubject.blueprintId
@@ -590,20 +595,22 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       const historyEntry: HistoryEntry = {
         id,
         timestamp: now,
-        character: isPopular ? ((currentSubject.characterId as unknown as CharKey) || char.value) : char.value,
+        character: entry.character ?? (isPopular ? ((currentSubject.characterId as unknown as CharKey) || char.value) : char.value),
         // 2026-08-29 修复：队列/批量入册优先用任务入队时快照的 story/scene/sceneTitle
         // （entry.story ?? …），避免出图期间改了故事导致作品册与成片不符。
         scene: isPopular ? (currentSubject.blueprintId ?? null) : (entry.scene !== undefined ? entry.scene : sceneId.value),
         sceneTitle: entry.sceneTitle ?? resolvedSceneTitle,
         story: entry.story ?? story.value,
-        visualDescription: visualDescription.value,
+        visualDescription: entry.visualDescription ?? visualDescription.value,
         prompt: entry.prompt,
         negative: entry.negative ?? '',
         seed: entry.seed ?? lastSeed.value ?? -1,
-        emotion: [...selections.emotion],
-        shot: selections.shot, lighting: selections.lighting, composition: selections.composition,
-        colorMood: colorMood.value,
-        manual_tags: [...manualTags.value],
+        emotion: [...(entry.emotion ?? selections.emotion)],
+        shot: entry.shot !== undefined ? entry.shot : selections.shot,
+        lighting: entry.lighting !== undefined ? entry.lighting : selections.lighting,
+        composition: entry.composition !== undefined ? entry.composition : selections.composition,
+        colorMood: entry.colorMood !== undefined ? entry.colorMood : colorMood.value,
+        manual_tags: [...(entry.manual_tags ?? manualTags.value)],
         // 2026-08-29 修复：热门角色为无 LoRA 创作，lora 相关字段一律落空——
         // 此前会兜底到 studio 的 loraLine（<ayachi_nene:…>）或残留的 anima loraId。
         lora: isPopular ? null : ((entry.lora ?? loraLine.value) || null),
@@ -629,7 +636,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         width: measured.width, height: measured.height,
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',
-        version: 1, parent_id: entry.parentId ?? null, project: projectId.value,
+        version: 1, parent_id: entry.parentId ?? null, project: entry.project ?? projectId.value,
         subject: isPopular ? 'popular' : 'studio',
         characterId: isPopular ? currentSubject.characterId : undefined,
         outfitId: isPopular ? currentSubject.outfitId : undefined,

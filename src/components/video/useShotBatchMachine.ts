@@ -185,6 +185,23 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     }
   }
 
+  /**
+   * 离页重连（2026-09-06 体验报告 F1）：批量任务在服务端续跑，前端只停轮询；
+   * 回到分镜页时按记录的 batchId 拉取真实状态并恢复轮询。批次不存在返回
+   * false，由宿主清记录并向用户解释。
+   */
+  async function reconnectBatch(id: string): Promise<boolean> {
+    if (batch.value) return true
+    try {
+      const response = await fetchVideoBatch(id)
+      batch.value = response.batch
+      schedulePoll()
+      return true
+    } catch {
+      return false
+    }
+  }
+
   onBeforeUnmount(() => {
     disposed = true
     window.clearTimeout(pollTimer)
@@ -205,5 +222,6 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     retryShotAt,
     retryAllFailed,
     concatBatch,
+    reconnectBatch,
   }
 }

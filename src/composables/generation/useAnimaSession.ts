@@ -5,6 +5,7 @@ import type {
   AnimaJobMetadata,
   AnimaOption,
   AnimaResult,
+  AnimaResultContext,
 } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -77,6 +78,11 @@ export interface AnimaSessionOptions {
   getFamily: () => 'anima' | 'krea2'
   /** 视图侧 prompt 组装；返回 null 表示拒绝生成（内部已提示原因） */
   getRequest: () => AnimaRequest | null
+  /**
+   * 提交时冻结创作上下文（F3：角色/服装/蓝图/场景/故事）。在 generate() 的
+   * 提交瞬间采样——任务跑多久、用户中途怎么改表单都不影响这张图的归属。
+   */
+  getSubmitContext?: () => AnimaResultContext | null
   /** 出图成功：视图做跨引擎协调（如清空 SD 结果） */
   onResult: (result: AnimaResult) => void
   flash: (message: string) => void
@@ -93,7 +99,7 @@ const INITIAL_STATE: AnimaGenerationState = {
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
   hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
   teaCache: true, teaCacheThresh: 0.08,
-  job: null, result: null, statusText: '', errorMsg: '', errorReport: null,
+  job: null, result: null, resultContext: null, statusText: '', errorMsg: '', errorReport: null,
 }
 
 export const ANIMA_LORA_BY_CHARACTER = {
@@ -208,6 +214,19 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let statusRequest: AbortController | null = null
   let jobRequest: AbortController | null = null
 
+  /**
+   * 上一次成功成片的临时缓冲（2026-09-06 体验报告 F2）。
+   *
+   * 旧行为：新一轮 generate() 一提交就 clearResult()——新请求哪怕网络失败，
+   * 上一张未入册成片也连同 blob URL 一起销毁，用户无从找回。
+   * 现在：提交前把当前结果连带冻结上下文移入 stash（不 revoke）；新结果成功
+   * 才丢弃 stash；失败/取消时视图可提供「找回上一张」。stash 与舞台结果是
+   * 两条独立生命线，互不 revoke。
+   */
+  const stashedResult = ref<{ result: AnimaResult; context: AnimaResultContext | null } | null>(null)
+  /** 本轮提交的冻结上下文（generate 采样 → 成功时落到 state.resultContext）。 */
+  let pendingContext: AnimaResultContext | null = null
+
   const modelId = computed({
     get: () => state.value.modelId,
     set: value => applyModel(value),
@@ -239,6 +258,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * 会在下一次心跳被静默改回。
    */
   let defaultsAppliedFor: string | null = null
+
+  function restoreSettings(patch: Partial<AnimaGenerationState>) {
+    defaultsAppliedFor = patch.modelId ?? state.value.modelId
+    patchState(patch)
+  }
 
   function applyModel(modelIdToApply: string) {
     const model = state.value.models.find(item => item.id === modelIdToApply)
@@ -441,7 +465,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       // 会话拥有成功态与结果持有：先释放旧结果再写入新结果。
       const previous = state.value.result
       if (previous && previous.url !== result.url) URL.revokeObjectURL(previous.url)
-      patchState({ result, job: metadata, phase: 'succeeded', progress: 1, progressText: '生成完成', currentNode: null, statusText: '生成完成', errorMsg: '', errorReport: null })
+      // 新成片落地即超越 stash（上一张未入册成片由临时缓冲/作品册接管）。
+      discardStashedResult()
+      patchState({ result, job: metadata, resultContext: pendingContext, phase: 'succeeded', progress: 1, progressText: '生成完成', currentNode: null, statusText: '生成完成', errorMsg: '', errorReport: null })
       options.onResult(result)
       return
     }
@@ -473,7 +499,45 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   function clearResult() {
     const previous = state.value.result
     if (previous) URL.revokeObjectURL(previous.url)
-    patchState({ result: null, job: null, progress: null, elapsedSeconds: 0, progressText: '', currentNode: null })
+    patchState({ result: null, job: null, progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, resultContext: null })
+  }
+
+  /** generate 提交前调用：当前结果移入 stash（所有权移交，不 revoke）。 */
+  function stashCurrentResult() {
+    const current = state.value.result
+    if (!current) return // 连续失败重试仍保留最近一次成功成片。
+    if (stashedResult.value && stashedResult.value.result.url !== current?.url) {
+      URL.revokeObjectURL(stashedResult.value.result.url)
+    }
+    stashedResult.value = current
+      ? { result: current, context: state.value.resultContext ?? null }
+      : null
+    patchState({ result: null, job: null, progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, resultContext: null })
+  }
+
+  /** 新结果成功：stash 被超越，释放其 blob URL。 */
+  function discardStashedResult() {
+    if (stashedResult.value) URL.revokeObjectURL(stashedResult.value.result.url)
+    stashedResult.value = null
+  }
+
+  /** 失败/取消后找回上一张：stash 回舞台，错误态复位为「已恢复」。 */
+  function restoreStashedResult(): boolean {
+    if (['submitting', 'running', 'cancelling'].includes(state.value.phase)) return false
+    const stashed = stashedResult.value
+    if (!stashed) return false
+    stashedResult.value = null
+    patchState({
+      result: stashed.result,
+      job: stashed.result.metadata,
+      resultContext: stashed.context,
+      phase: 'succeeded',
+      progress: 1,
+      statusText: '已恢复上一张未入册的成片',
+      errorMsg: '',
+      errorReport: null,
+    })
+    return true
   }
 
   async function generate(overrides: Partial<AnimaRequest> = {}): Promise<void> {
@@ -486,7 +550,10 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     jobRequest?.abort()
     const controller = new AbortController()
     jobRequest = controller
-    clearResult()
+    const context = options.getSubmitContext?.()
+    pendingContext = context ? JSON.parse(JSON.stringify(context)) as AnimaResultContext : null
+    // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
+    stashCurrentResult()
     patchState({ phase: 'submitting', progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     try {
       const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(state.value.family), {
@@ -540,6 +607,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     }
     const result = state.value.result
     if (result) URL.revokeObjectURL(result.url)
+    // stash 一并释放（blob 本体已在成功时写入临时成片记录，可跨页找回）。
+    discardStashedResult()
   }
 
   // 在组件上下文里自动挂载清理；被普通函数调用时（如测试）跳过
@@ -549,6 +618,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     state,
     modelId,
     patchState,
+    restoreSettings,
     syncCharacter,
     applyModel,
     refreshBackend,
@@ -558,5 +628,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     cancel,
     clearResult,
     dispose,
+    stashedResult,
+    restoreStashedResult,
+    discardStashedResult,
   }
 }

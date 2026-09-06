@@ -104,7 +104,8 @@ export function useSDGenerate() {
     progress.value   = 0
     statusText.value = '正在生成…'
     errorMsg.value   = ''
-    resultUrl.value  = ''
+    // 2026-09-06 体验报告 F2：提交不再清掉上一张成片——旧图在生成期间保持可见，
+    // 新图落地时才由下方 revoke+替换接管；失败/取消时旧图从未离开，自然还在。
 
     abortCtrl = new AbortController()
 
@@ -235,6 +236,19 @@ export function useSDGenerate() {
     resultSeed.value = null; resultPrompt.value = ''; errorMsg.value = ''; statusText.value = ''; progress.value = 0
   }
 
+  /**
+   * 领养一张外部恢复的结果（2026-09-06 体验报告 F2 临时成片找回）：
+   * 把 blob URL 与它的 seed/prompt 挂回会话，舞台与「出视频/加入分镜」随即可用。
+   */
+  function adoptResult(url: string, seed: number | null, prompt: string) {
+    if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
+    resultUrl.value = url
+    resultSeed.value = seed
+    resultPrompt.value = prompt
+    errorMsg.value = ''
+    statusText.value = '已找回上次未入册的成片'
+  }
+
   /** 组件卸载时收尾：取消 in-flight 任务并释放 blob，防止出图途中离开页面泄漏。 */
   function dispose() {
     cancel()
@@ -254,6 +268,6 @@ export function useSDGenerate() {
     schedulers: readonly(schedulers), upscalers: readonly(upscalers),
     models: readonly(models), provider: readonly(provider),
     lastLoras: readonly(lastLoras),
-    checkStatus, generate, cancel, clearResult, dispose,
+    checkStatus, generate, cancel, clearResult, adoptResult, dispose,
   }
 }

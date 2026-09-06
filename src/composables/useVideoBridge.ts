@@ -15,8 +15,9 @@ export { prepareVideoCtx }
  * 迁移至 videoStore，零引用故移除；key 本体仍由 storageKeys 单点管理。
  */
 
-/** 把一张出图追加到「分镜短片」待带入列表（videoStore 持久化）。 */
-export function appendShotsCtx(ctx: VideoCtxPayload): number {
+/** 把一张出图追加到「分镜短片」待带入列表（videoStore 持久化）。
+ *  返回 { ok, count }（F4）：存储写失败 ok=false 且内存回滚，调用方必须如实提示。 */
+export function appendShotsCtx(ctx: VideoCtxPayload): { ok: boolean; count: number } {
   return useVideoStore().appendShotCtx(ctx)
 }
 

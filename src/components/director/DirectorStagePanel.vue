@@ -47,6 +47,10 @@
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('generate')">再试一次，宁宁会更努力的！</button>
+            <!-- F2：本次失败不毁掉上一张未入册成片——它还在暂存里，一键找回 -->
+            <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
+              找回上一张未入册成片
+            </button>
           </div>
         </div>
         <div v-else-if="generationStopped" class="stage-idle">
@@ -57,6 +61,9 @@
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('generate')">继续定格这一幕</button>
+            <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
+              找回上一张未入册成片
+            </button>
           </div>
         </div>
         <div v-else class="stage-idle">
@@ -108,6 +115,10 @@
       />
       <img v-else class="result-image" :src="displayResultUrl" alt="生成的图片" />
       <div class="result-image-actions">
+        <!-- F2：入册状态如实标注——未入册的成片在临时缓冲里，离页/失败也能找回 -->
+        <span v-if="resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived">
+          {{ resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册 · 请保存快照' }}
+        </span>
         <button
           class="btn btn-ghost"
           type="button"
@@ -228,6 +239,11 @@ const props = defineProps<{
   inpaintCompareActive: boolean
   shotsPending: number
   hasPrevResult: boolean
+  /** 当前结果是否已入册（null = 画布无结果，不显示徽章）。 */
+  resultArchived?: boolean | null
+  resultTemporary?: boolean
+  /** Anima/Krea 暂存里还有上一张未入册成片（失败/取消后可找回）。 */
+  hasStashedResult?: boolean
 }>()
 
 /**
@@ -251,6 +267,7 @@ const emit = defineEmits<{
   saveResult: []
   openCompare: []
   clearResult: []
+  restoreStashed: []
   interrogateResult: [result: InterrogateResult]
   interrogateError: [message: string]
 }>()
@@ -336,3 +353,21 @@ async function interrogateCurrentImage() {
   }
 }
 </script>
+
+<style scoped>
+/* F2：入册状态徽章（设计令牌，深色模式对比度由令牌保证） */
+.stage-archive-badge {
+  align-self: center;
+  padding: 3px var(--s-2);
+  border-radius: var(--r-pill);
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+}
+.stage-archive-badge[data-archived="true"] {
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: var(--success-text);
+}
+.stage-archive-badge[data-archived="false"] {
+  background: color-mix(in srgb, var(--warning) 12%, transparent);
+  color: var(--warning-text);
+}
+</style>

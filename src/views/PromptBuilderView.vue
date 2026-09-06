@@ -135,6 +135,9 @@
           :inpaint-compare-active="inpaintCompareActive"
           :shots-pending="shotsPending"
           :has-prev-result="!!prevResult"
+          :result-archived="resultArchived"
+          :result-temporary="resultTemporary"
+          :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
           @openInpaint="inpaintOpen = true"
           @exploreScenes="router.push('/scene-explorer')"
@@ -145,7 +148,8 @@
           @goShots="goToShots"
           @saveResult="saveResult"
           @openCompare="compareOpen = true"
-          @clearResult="clearDisplayedResult"
+          @clearResult="onClearResult"
+          @restoreStashed="onRestoreStashed"
           @interrogateResult="handleInterrogateResult"
           @interrogateError="handleInterrogateError"
         />
@@ -184,7 +188,7 @@
           :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
           :open="pb.directorMode === 'pro'"
           @copy="copyPrompt"
-          @save="saveHistory"
+          @save="saveCurrentResult"
         />
 
         <ArtistStylePicker
@@ -296,6 +300,7 @@
           <SDRecoveryPanel :report="sdErrorReport" @recover="runRecovery" @dismiss="dismissError" />
           <GenerationQueuePanel v-if="drawEngine === 'sd'"
             :total="sdQueue.total.value"
+            :done="sdQueue.done.value"
             :paused="sdQueue.paused.value"
             :active-job="sdQueue.activeJob.value"
             :queue="sdQueue.queue.value"
@@ -410,11 +415,10 @@ import {
 import { useSceneStore } from '@/stores/sceneStore'
 import { usePopularPromptAssembly } from '@/composables/prompt/usePopularPromptAssembly'
 import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge'
-import { usePromptHistoryApply } from '@/composables/prompt/usePromptHistoryApply'
 import { useQuickCreateApply } from '@/composables/prompt/useQuickCreateApply'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink'
-import type { AnimaResult } from '@/types/anima'
+import type { AnimaResult, AnimaResultContext } from '@/types/anima'
 import { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint'
 import { useSDGenerate } from '@/composables/generation/useSDGenerate'
@@ -422,10 +426,11 @@ import { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue'
+import { useTempResult } from '@/composables/prompt/useTempResult'
+import { captureResultContext as snapshotResultContext } from '@/utils/resultContext'
 import { imgGet } from '@/composables/useImageStore'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
-import { characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interrogateMerge'
 import { useDirectorCatalog } from '@/composables/scene/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/scene/useDirectorDerived'
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine'
@@ -513,11 +518,23 @@ const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
 // 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动写作品册）。
 const autoSaveToGallery = ref(settingsRepository.get(AUTO_SAVE_TO_GALLERY_SETTING) ?? false)
 watch(autoSaveToGallery, (value) => settingsRepository.set(AUTO_SAVE_TO_GALLERY_SETTING, value))
+
+/**
+ * 当前显示结果的冻结上下文（2026-09-06 体验报告 F3）。
+ * Anima/Krea 由会话在提交时采样（state.resultContext）；SD 由 usePromptSdQueue
+ * 在 runJob 成功时写入本 ref。跨页交接与入册一律读它，不读实时表单。
+ */
+const resultContext = ref<AnimaResultContext | null>(null)
+function captureResultContext(): AnimaResultContext {
+  return snapshotResultContext(pb)
+}
+
 const animaSession = useAnimaSession({
   getCharacter: () => pb.char,
   isPopular: () => pb.isPopular,
   getFamily: () => drawEngine.value === 'krea2' ? 'krea2' : 'anima',
   getRequest: () => buildAnimaRequest(),
+  getSubmitContext: captureResultContext,
   onResult: result => onAnimaResult(result),
   flash: message => pb.flash(message),
   preferredSize: () => pb.lastRecommendedSize,
@@ -540,43 +557,10 @@ const {
 function buildAnimaRequest() {
   return engine.buildAnimaRequest()
 }
+// Anima/Krea 结果编排（自动入册 vs 临时缓冲）已下沉 useTempResult.handleAnimaResult。
 function onAnimaResult(result: AnimaResult) {
   engine.onAnimaResult(result)
-  // 直出自动入册（2026-08-30 UX 审计 P0-8，2026-08-31 起受偏好开关控制，
-  // 默认关——用户不想每次出图都自动进作品册；要开在出图结果面板打开开关）。
-  // 字段口径对齐批量路径（usePromptBatchRunners.runBatchAnima）；inpaint 换装
-  // 结果同样入册——它也是成片，且 parent_id 打通后将成为重绘对比的锚点。
-  if (!autoSaveToGallery.value) {
-    displayedResultHistoryId.value = null
-    return
-  }
-  void (async () => {
-    try {
-      if (!result.blob.size) throw new Error('成片数据为空')
-      // 2026-08-30 UX 审计 P1-14：initImage 非空即说明这次是 inpaint 重绘，
-      // 把来源条目记进 parent_id，作品册对比滑块才有「重绘前 vs 重绘后」的
-      // 真实语义。来源是上传图等无条目场景时为 null，退回旧的自身对比。
-      const isInpaint = Boolean(result.metadata.initImage)
-      const saved = await pb.commitHistoryEntry({
-        blob: result.blob,
-        seed: result.metadata.seed,
-        negative: result.metadata.negative ?? '',
-        prompt: result.metadata.prompt,
-        ...historyGenerationFields(),
-        story: String(pb.story || '').trim(),
-        scene: pb.sceneId,
-        hiresFix: result.metadata.hiresFix === true,
-        hiresScale: typeof result.metadata.hiresScale === 'number' ? result.metadata.hiresScale : undefined,
-        hiresDenoise: typeof result.metadata.hiresDenoise === 'number' ? result.metadata.hiresDenoise : undefined,
-        parentId: isInpaint ? (inpaintSourceHistoryId.value ?? undefined) : undefined,
-      })
-      if (saved) displayedResultHistoryId.value = saved.id
-      pb.flash('已自动存入作品册')
-    } catch (e) {
-      console.warn('anima direct autosave failed', e)
-      pb.flash('自动入册失败，可手动点「保存快照」')
-    }
-  })()
+  void tempResultTools.handleAnimaResult(result, inpaintSourceHistoryId.value)
 }
 
 // currentCuratedArtistStyles 已迁入 promptBuilderStore（2026-09-05 单体拆分，纯 store 派生）
@@ -861,73 +845,9 @@ function detachScene() {
   pb.flash('已脱离场景，仅保留故事')
 }
 
-function handleInterrogateResult(result: unknown) {
-  if (!result || typeof result !== 'object') return
-  const payload = result as { mode?: string; caption?: string; tags?: unknown; characterTags?: unknown; warning?: string }
-  if (payload.mode === 'caption' && typeof payload.caption === 'string' && payload.caption.trim()) {
-    pb.visualDescription = String(payload.caption).trim()
-    pb.flash('已反推为自然语言，已填入画面描述（Krea2 直出，切人保留）')
-    const warning = payload.warning
-    if (warning) setTimeout(() => pb.flash(warning), 2600)
-    return
-  }
-  const tags: string[] = Array.isArray(payload.tags) ? (payload.tags as string[]) : []
-  const characterTags: string[] = Array.isArray(payload.characterTags) ? (payload.characterTags as string[]) : []
-  // 三重去重 + 身份域冲突消解（studio：charPrompt+场景行；popular：角色词条+蓝图行）
-  const subject = pb.subject
-  const popularChar = subject.kind === 'popular' ? findCharacter(pb.popularCharacters, subject.characterId) : null
-  const context = collectInterrogateContext(subject.kind === 'popular'
-    ? {
-        kind: 'popular',
-        character: popularChar
-          ? {
-              identityTokens: popularChar.identityTokens,
-              exactTokens: popularChar.exactTokens,
-              outfitTokens: (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
-            }
-          : null,
-        blueprintTokens: subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId)?.promptTokens ?? [] : [],
-      }
-    : {
-        kind: 'studio',
-        charPrompt: pb.charPrompt,
-        scenePrompt: pb.activeScene?.prompt,
-        sceneTags: pb.activeScene?.tags,
-      })
-  const merged = mergeInterrogatedTags({
-    tags,
-    manualTags: pb.manualTags,
-    identityTokens: context.identityTokens,
-    sceneTokens: context.sceneTokens,
-  })
-  for (const tag of merged.accepted) pb.toggleManualTag(tag)
-  // 服装跨族：顶替角色默认服装，而不是追加到 manualTags —— 追加会被角色那 12 个
-  // 服装 tag 与 "She wears ..." 散文淹没，参考图服装根本出不来（2026-08-29 实测）。
-  // 仅 popular 需要：studio（宁宁/夏目）无默认服装注入，反推词直接生效。
-  if (subject.kind === 'popular' && merged.outfitReplacement.length) {
-    pb.setOutfitOverride(merged.outfitReplacement, merged.replacedOutfitGroup)
-  }
-  const note = characterConflictNote(characterTags, context.identityTokens)
-  const parts: string[] = []
-  if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条，可切人直出`)
-  if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)
-  if (merged.outfitReplacement.length) {
-    const from = merged.replacedOutfitGroup ? `（原${merged.replacedOutfitGroup}）` : ''
-    parts.push(`已用参考图服装顶替角色默认服装${from}：${merged.outfitReplacement.slice(0, 3).join('、')}`)
-  }
-  if (merged.conflicts.length) {
-    // 只列 tag 名（swimsuit）用户看不懂为什么被拦，故优先展示 reason
-    // （含「反推出什么 / 当前是什么 / 怎么改」）。冲突含身份域与互斥组两类。
-    const first = merged.conflicts[0]
-    const detail = merged.conflicts.length === 1
-      ? first.reason
-      : `${first.reason} 等 ${merged.conflicts.length} 项`
-    parts.push(`跳过冲突词条 ${merged.conflicts.length} 个：${detail}`)
-  }
-  if (note) parts.push(note)
-  pb.flash(parts.length ? parts.join('；') : '反推完成，无新增词条')
-  const warning = payload.warning
-  if (warning) setTimeout(() => pb.flash(warning), 2600)
+async function handleInterrogateResult(result: unknown) {
+  const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult')
+  await applyInterrogateResult(pb, result)
 }
 
 function handleInterrogateError(message: string) {
@@ -950,18 +870,9 @@ watch(displayResultUrl, (url, oldUrl) => {
 })
 
 /**
- * 舞台当前结果对应的作品册条目 id（2026-08-30 UX 审计 P1-14）。
- *
- * 作品册的对比滑块靠 `parent_id` 找 before 图，而全库唯一的写入点一直是
- * null——于是拿同一张图的缩略图当 before，拉滑块看到的是「糊版 vs 高清版」，
- * 会得出错误的重绘判断。
- *
- * 这里记录「舞台这张图是作品册里的哪一条」，供 inpaint 结果回指来源。换
- * result 即清空：来源不明的图（上传/Remix 载入/历史回看）不配对比锚点，
- * 宁可没有也不能指错——指错会让用户以为自己看到的是重绘前后。
+ * 舞台当前结果 ↔ 作品册条目锚点（P1-14 inpaint 对比语义）与「未入册成片」
+ * 临时缓冲（F2）已一并下沉 useTempResult；displayedResultHistoryId 来自其返回。
  */
-const displayedResultHistoryId = ref<number | null>(null)
-watch(displayResultUrl, () => { displayedResultHistoryId.value = null })
 
 /** 重绘来源条目：在换装弹窗打开的瞬间定格，弹窗期间舞台结果不变。 */
 const inpaintSourceHistoryId = ref<number | null>(null)
@@ -991,7 +902,34 @@ const {
   modelProfile,
   animaState,
   displayResultSeed,
+  setResultContext: (ctx) => { resultContext.value = ctx },
 })
+
+// ── 未入册成片临时缓冲（F2）+ 舞台↔作品册锚点 + 手动入册（已下沉 useTempResult）──
+const tempResultTools = useTempResult({
+  pb,
+  sd,
+  drawEngine,
+  animaState,
+  patchAnimaState,
+  displayResultUrl,
+  displayResultSeed,
+  livePrompt,
+  negativePrompt,
+  historyGenerationFields,
+  commitJobResult,
+  resultContext,
+  autoSaveToGallery,
+  setDrawEngine,
+})
+const {
+  displayedResultHistoryId,
+  resultArchived,
+  resultTemporary,
+  saveCurrentResult,
+  restoreTempResult,
+  discardTemp,
+} = tempResultTools
 
 // ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
 // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
@@ -1111,19 +1049,8 @@ async function callGenerate(opts: { disableLora?: boolean } = {}) {
     sdErrorReport.value = classifySDError({ message: sd.errorMsg.value })
     return
   }
-  // 直出自动入册（2026-08-30 UX 审计 P0-8，2026-08-31 起受偏好开关控制，
-  // 默认关——用户不想每次出图都自动进作品册；要开在出图结果面板打开开关）。
-  // 与队列/批量同路径写历史；后台写不阻塞舞台展示；失败只提示不重试。
-  if (url && autoSaveToGallery.value) {
-    try {
-      const saved = await commitJobResult(job, url)
-      if (saved) displayedResultHistoryId.value = saved.id
-      pb.flash('已自动存入作品册')
-    } catch (e) {
-      console.warn('direct autosave failed', e)
-      pb.flash('自动入册失败，可手动点「保存快照」')
-    }
-  }
+  // 直出结果处置（自动入册 vs 临时缓冲，F2/F3）已下沉 useTempResult.handleSdResult。
+  if (url) void tempResultTools.handleSdResult(job, url)
 }
 
 /** 分类恢复：对应旧版 runSDRecovery */
@@ -1173,45 +1100,7 @@ async function copyPrompt() {
   catch { pb.flash('复制失败，请手动选取') }
 }
 
-async function saveHistory() {
-  try {
-    const url = displayResultUrl.value
-    if (!url) { pb.flash('暂无可保存的成片'); return }
-    let blob: Blob
-    let prompt = livePrompt.value
-    let negative = negativePrompt.value
-    if (drawEngine.value !== 'sd') {
-      const result = animaState.value.result
-      if (!result) { pb.flash('成片数据已失效，请重新生成'); return }
-      blob = result.blob
-      prompt = result.metadata.prompt
-      negative = result.metadata.negative
-    } else {
-      // SD blob URL 仍由浏览器生成，写入 IndexedDB 前检查响应类型。
-      const response = await fetch(url, { cache: 'no-store' })
-      const contentType = response.headers.get('content-type') || ''
-      if (!response.ok || !contentType.startsWith('image/')) {
-        pb.flash('成片响应无效，请重新生成')
-        return
-      }
-      blob = await response.blob()
-      // 按图取词：SD 结果记录的是提交时实际使用的提示词，面板后续修改不漂移。
-      prompt = sd.resultPrompt.value || prompt
-    }
-    // 空 blob 会入册成一条打不开的记录，宁可报错
-    if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
-    const entry = await pb.commitHistoryEntry({
-      blob,
-      seed: displayResultSeed.value ?? undefined,
-      size: sdSize.value,
-      negative,
-      prompt,
-      ...historyGenerationFields(),
-    })
-    if (entry) pb.flash('快照已存入本地作品册')
-    else pb.flash('保存失败')
-  } catch (e) { pb.flash('保存失败'); console.warn(e) }
-}
+/** 手动「保存快照」：实现已下沉 useTempResult.saveCurrentResult（含入册后释放临时缓冲）。 */
 
 
 // ── 出视频 / 分镜短片（编排已下沉 usePromptVideoBridge）──────────────────
@@ -1233,13 +1122,15 @@ const {
   story: () => pb.story,
   sceneId: () => pb.sceneId,
   subject: () => pb.subject,
+  // F3：交接归属以生成时冻结快照为准（Anima 在会话 state，SD 在视图 ref）。
+  resultContext: () => drawEngine.value !== 'sd' ? (animaState.value.resultContext ?? null) : resultContext.value,
   flash: message => pb.flash(message),
 })
 async function goToVideo() { await goVideoBridge(path => router.push(path)) }
 async function goToShots() { await goShotsNav(path => router.push(path)) }
 
 
-function saveResult() { saveHistory() }
+function saveResult() { saveCurrentResult() }
 
 async function upscaleCurrentResult() {
   if (drawEngine.value === 'anima') {
@@ -1338,6 +1229,19 @@ function retryAnima() {
   void generateAnima()
 }
 
+// ── F2：上一张未入册成片的找回 / 显式丢弃 ─────────────────────────────
+/** 失败/取消后画布旁可「找回上一张」（Anima/Krea 暂存；SD 旧图从未离开画布）。 */
+const hasStashedResult = computed(() => Boolean(animaSession.stashedResult.value))
+function onRestoreStashed() {
+  if (animaSession.restoreStashedResult()) pb.flash('已恢复上一张未入册的成片，可保存快照或继续新作')
+}
+/** 「清除」是显式丢弃：临时缓冲同步清掉，避免下次进页又被找回。 */
+function onClearResult() {
+  discardTemp()
+  animaSession.discardStashedResult()
+  clearDisplayedResult()
+}
+
 function reuseLastSeed() {
   const seed = displayResultSeed.value ?? pb.lastSeed
   if (seed == null || seed < 0) { pb.flash('还没有可复用的 seed'); return }
@@ -1349,22 +1253,26 @@ function reuseLastSeed() {
 const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize })
 
 // ── 历史应用（恢复/复制/删除/复用配方）已下沉 usePromptHistoryApply ────────
-const {
-  applyHistory,
-  reuseSuccessfulRecipe,
-  resumeHistory,
-  duplicateHistory,
-  deleteHistory,
-} = usePromptHistoryApply({
+// 历史恢复与删除只在用户操作或历史深链时加载，普通出图首屏不下载这段代码。
+let historyTools: Promise<ReturnType<typeof import('@/composables/prompt/usePromptHistoryApply')['usePromptHistoryApply']>> | null = null
+function getHistoryTools() {
+  return historyTools ??= import('@/composables/prompt/usePromptHistoryApply').then(({ usePromptHistoryApply }) => usePromptHistoryApply({
   pb,
   animaState,
-  patchAnimaState,
+  patchAnimaState: animaSession.restoreSettings,
   clearAnimaResult,
   refreshAnimaBackend,
   setDrawEngine,
   resetBlueprintRotation,
   sdSize,
-})
+}))
+}
+async function applyHistory(entry: HistoryEntry, variant = false) { (await getHistoryTools()).applyHistory(entry, variant) }
+function resumeHistory(entry: HistoryEntry) { return applyHistory(entry) }
+function duplicateHistory(entry: HistoryEntry) { return applyHistory(entry, true) }
+async function deleteHistory(entry: HistoryEntry) { await (await getHistoryTools()).deleteHistory(entry) }
+async function reuseSuccessfulRecipe(id: number) { (await getHistoryTools()).reuseSuccessfulRecipe(id) }
+
 
 /** 「清空并重来」：会清空故事、场景关联、全部词条与导演决策，先确认再执行 */
 async function resetAll() {
@@ -1402,9 +1310,9 @@ const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
 
 // 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：URL 场景参数变化但组件还是旧实例，
 // 这里按「状态与 URL 不一致」重放深链，让场景与提示词跟随新选择。
-watch(() => route.query, (q) => {
+watch(() => route.query, async (q) => {
   if (!deepLinkNeeded(q)) return
-  if (applyDeepLink(q) && !generationBusy.value) {
+  if (await applyDeepLink(q) && !generationBusy.value) {
     if (pb.directorMode === 'basic') void applyManagedRoute({ silent: true })
     else void refreshManagedRoute()
   }
@@ -1431,8 +1339,13 @@ onMounted(async () => {
   await pb.loadHistory()
 
   // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
-  const handledDeepLink = applyDeepLink(route.query)
+  const handledDeepLink = await applyDeepLink(route.query)
   if (!handledDeepLink) pb.restoreDraft()
+
+  // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。
+  if ((!handledDeepLink || route.query.resume === '1') && !displayResultUrl.value) {
+    await restoreTempResult()
+  }
   // 推荐尺寸同步到出图选择
   if (pb.lastRecommendedSize) sdSize.value = pb.lastRecommendedSize
   if (pb.directorMode === 'basic') await applyManagedRoute({ silent: true })

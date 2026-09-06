@@ -20,6 +20,7 @@ const os = require('os');
 const path = require('path');
 
 const { createLogger } = require('../../server/logger');
+function dateKey(d) { return String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); }
 
 function touch(full, mtime) {
   fs.writeFileSync(full, 'x');
@@ -37,7 +38,7 @@ test('logger sweepRetention：双判据回收 + 新鲜文件保留', () => {
   touch(path.join(dir, 'gateway.log'), oldDate);          // 收口前旧格式残留
   touch(path.join(dir, 'translate.log'), oldDate);        // mtime 超期的旁路日志
   // 应保留
-  touch(path.join(dir, 'gateway-20260822.log'), freshDate); // 保留期内按天日志
+  touch(path.join(dir, 'gateway-' + dateKey(new Date()) + '.log'), freshDate); // 保留期内按天日志
   touch(path.join(dir, 'comfyui.stderr.log'), new Date());  // 活跃旁路日志
   touch(path.join(dir, 'notes.txt'), oldDate);              // 非 .log 不越权
 
@@ -46,7 +47,7 @@ test('logger sweepRetention：双判据回收 + 新鲜文件保留', () => {
     const left = fs.readdirSync(dir).sort();
     assert.deepEqual(
       left.filter((n) => n.endsWith('.log')).sort(),
-      ['comfyui.stderr.log', 'gateway-20260822.log'],
+      ['comfyui.stderr.log', 'gateway-' + dateKey(new Date()) + '.log'],
     );
     assert.ok(left.includes('notes.txt'), '非日志文件不越权清理');
   } finally {
@@ -63,7 +64,7 @@ test('logger sizeGuard：超大无日期旁路日志归档为按天名，未超�
   const big = path.join(dir, 'control.log');
   fs.writeFileSync(big, Buffer.alloc(9 * 1024 * 1024, 'a')); // 9MB > 8MB 阈值
   fs.writeFileSync(path.join(dir, 'tiny.log'), 'x');
-  fs.writeFileSync(path.join(dir, 'gateway-20260822.log'), 'dated');
+  fs.writeFileSync(path.join(dir, 'gateway-' + dateKey(new Date()) + '.log'), 'dated');
 
   try {
     createLogger({ dir, prefix: 'gateway', retainDays: 14, maxBytes: 8 * 1024 * 1024 });
@@ -71,7 +72,7 @@ test('logger sizeGuard：超大无日期旁路日志归档为按天名，未超�
     assert.ok(left.includes('control-' + today + '.log'), '超大旁路日志应归档为按天名');
     assert.ok(!left.includes('control.log'), '归档后原名字不再保留');
     assert.ok(left.includes('tiny.log'), '未超限文件不归档');
-    assert.ok(left.includes('gateway-20260822.log'), '按天日志不触发大小守卫');
+    assert.ok(left.includes('gateway-' + dateKey(new Date()) + '.log'), '按天日志不触发大小守卫');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

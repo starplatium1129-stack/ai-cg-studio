@@ -30,7 +30,7 @@ export interface PromptDeepLinkDeps {
   selectScene: (scene: Scene) => void
   applyRecommendedEngine: (character: PopularCharacter | null) => void
   setDirectorMode: (mode: 'basic' | 'pro') => void
-  applyHistory: (entry: HistoryEntry, keepAsVariant?: boolean) => void
+  applyHistory: (entry: HistoryEntry, keepAsVariant?: boolean) => void | Promise<void>
 }
 
 /**
@@ -45,7 +45,7 @@ export interface PromptDeepLinkDeps {
 export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
   const { pb, sdSize, patchAnimaState, showAllBlueprints } = deps
 
-  function applyDeepLink(q: Record<string, unknown>): boolean {
+  async function applyDeepLink(q: Record<string, unknown>): Promise<boolean> {
     let handled = false
     const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
     if (scenarioId) {
@@ -104,7 +104,7 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
       const targetId = Number(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
       const entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
       if (entry) {
-        deps.applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
+        await deps.applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
         if (typeof q.remix === 'string') {
           deps.setDirectorMode('pro')
           pb.flash('已载入作品参数与配方，可自由调整细节')

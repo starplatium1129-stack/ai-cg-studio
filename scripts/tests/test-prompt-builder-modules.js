@@ -255,7 +255,7 @@ const wiring = [
   ['GenerationParamsPanel', 'director must mount the dedicated generation parameter component'],
   ['GenerationOutputControls', 'director must mount the dedicated generation output controls'],
   ['SDRecoveryPanel', 'director must mount the classified SD recovery component'],
-  ['commitHistoryEntry', 'generated art must be committed to IndexedDB-backed history'],
+  ['useTempResult', 'generated art must use the result persistence composable'],
   ['applyModelProfile', 'SD params must follow the matched checkpoint profile'],
   ['HistoryPanel', 'director must render the artwork history panel'],
   ['VoiceStudio', 'director must mount the dedicated voice studio component'],

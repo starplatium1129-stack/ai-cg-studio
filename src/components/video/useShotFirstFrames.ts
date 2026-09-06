@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { apiClient } from '@/api/client'
 import { uploadVideoImage } from '@/api/videoApi'
+import { imgPut } from '@/composables/useImageStore'
 import type { ShotDraft } from './shotListTypes'
 
 /**
@@ -93,6 +94,8 @@ export function useShotFirstFrames(options: { onError: (message: string) => void
           if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
           shot.imageName = upload.name
           shot.imageUrl = URL.createObjectURL(blob)
+          // IndexedDB 耐久凭据：草稿恢复与失败重试用（F1/F4）；失败不阻断主链路。
+          shot.imageId = await imgPut(blob).catch(() => shot.imageId || '')
         } catch {
           failed += 1
         }

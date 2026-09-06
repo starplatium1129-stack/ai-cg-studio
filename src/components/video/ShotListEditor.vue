@@ -412,6 +412,11 @@
               <button v-else class="btn btn-ghost" type="button" :disabled="batchActive" @click="pickFrame(index)">
                 上传首帧（可选 · 锁定本镜构图）
               </button>
+              <!-- F4：首帧挂载失败/恢复失效的镜头有 IndexedDB 凭据但无受控名，给精确重试入口 -->
+              <button v-if="!shot.imageUrl && shot.imageId" class="btn btn-ghost" type="button" :disabled="batchActive" @click="retryShotFrame(index)">
+                重试首帧挂载
+              </button>
+              <span v-if="!shot.imageUrl && shot.imageId" class="shot-chain-note">首帧待处理（原图在暂存库）</span>
               <button v-if="shot.imageUrl" class="btn btn-ghost" type="button" :disabled="batchActive" @click="clearFrame(index)">
                 移除首帧
               </button>
@@ -554,12 +559,14 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useShotDraft } from './useShotDraft'
 import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useReferenceCards } from './useReferenceCards'
 import { useShotBatchMachine } from './useShotBatchMachine'
 import { useShotAiTools } from './useShotAiTools'
 import { useShotFirstFrames } from './useShotFirstFrames'
+import { useShotImport, inferShotParams } from './useShotImport'
 import type { ShotDraft } from './shotListTypes'
 import {
   createVideoStoryboard,
@@ -569,8 +576,7 @@ import {
   type VideoQuality,
   type VideoStatusResponse,
 } from '@/api/videoApi'
-import { imgGet } from '@/composables/useImageStore'
-import { clearShotsCtx, readShotsCtx } from '@/composables/useVideoBridge'
+import { imgPut } from '@/composables/useImageStore'
 import { confirmAction } from '@/composables/useConfirm'
 import { useVideoStore } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -704,6 +710,7 @@ const {
   retryShotAt,
   retryAllFailed,
   concatBatch,
+  reconnectBatch,
 } = useShotBatchMachine({
   shots,
   identityCard,
@@ -751,6 +758,24 @@ const {
   batchActive,
   referenceCards,
 })
+
+// ── 绘图页「加入分镜」导入（逐镜确认 + 失败可重试，已下沉 useShotImport）──
+const { importShotsFromDrawing, retryPendingFrames, mountShotFrame } = useShotImport({
+  shots,
+  identityCard,
+  referenceCards,
+  autoLoadCharacterReferences,
+  popularIdentityProse: (charId) =>
+    popularCharacters.value.find((item) => item.id === charId)?.identityProse || '',
+})
+
+/** 单镜首帧重试（F4）：导入失败/草稿恢复图失效的镜头可单独补救。 */
+async function retryShotFrame(index: number) {
+  const shot = shots.value[index]
+  if (!shot?.imageId || shot.imageName) return
+  const ok = await mountShotFrame(shot, shot.imageId)
+  batchError.value = ok ? '' : `镜头 ${index + 1} 首帧挂载失败：原图已失效，请重新上传`
+}
 const submitTitle = computed(() => {
   if (batchActive.value) return '整批正在生成中'
   if (!props.status?.online) return '先启动 ComfyUI'
@@ -799,31 +824,8 @@ function addShot() {
   })
 }
 
-// ── 参数自动推断：按描述关键词选景别/镜头/主体运动（中英文都认）。
-// 与服务端「文案已带镜头/动作意图时自动句让位」互为镜像：描述里写了
-// 运镜词就把控制器选到对应档，语义一致不会打架。
-function inferShotParams(prompt: string): {
-  shotSize: ShotDraft['shotSize']
-  camera: ShotDraft['camera']
-  motion: ShotDraft['motion']
-} {
-  const text = String(prompt || '')
-  let shotSize: ShotDraft['shotSize'] = ''
-  if (/(特写|近景|大头|close-?up|face\s*shot|macro|脸部)/i.test(text)) shotSize = 'closeup'
-  else if (/(全景|远景|全身|wide\s*shot|establishing|full\s+body|long\s*shot)/i.test(text)) shotSize = 'wide'
-  else if (/(中景|腰部|medium\s*shot|waist)/i.test(text)) shotSize = 'medium'
+// 参数自动推断与导入链共用同一实现（useShotImport）。
 
-  let camera: ShotDraft['camera'] = 'still'
-  if (/(推进|推近|推入|推镜|push\s*in|zoom\s*in|dolly\s*in|前推)/i.test(text)) camera = 'push'
-  else if (/(拉远|拉近|拉镜|拉出|pull\s*(?:out|back)|zoom\s*out|dolly\s*out)/i.test(text)) camera = 'pull'
-  else if (/(横移|平移|摇镜|pan(?:ning)?|tracking|跟拍)/i.test(text)) camera = 'pan'
-  else if (/(环绕|环绕镜头|orbit|arc\s*around|绕行)/i.test(text)) camera = 'orbit'
-
-  let motion: ShotDraft['motion'] = 'subtle'
-  if (/(表现力|夸张|激烈|戏剧|爆发|expressive|dramatic|intense|energetic)/i.test(text)) motion = 'expressive'
-  else if (/(转身|回头|回望|回眸|奔跑|跑向|跑进|跑出|走向|走进|走出|走到|坐下|躺下|站起|起身|跳跃|跳起|跳向|起舞|挥手|挥动|举起|拿起|放下|端起|推开|拉开|打开|关上|翻页|弹奏|歌唱|呼喊|微笑|轻笑|大笑|哭泣|仰望|俯身|弯腰|行走|跑动|迈步|踱步|跪下|拥抱|亲吻|抬头|低头|转头|伸手|伸手|捡起|拾起|抱起|坐下|\bmov(?:e|es|ed|ing)\b|\bwalk(?:s|ed|ing)\b|\brun(?:s|ning)\b|\bjump(?:s|ed|ing)\b|\bturn(?:s|ed|ing)\b|\brais(?:e|es|ed|ing)\b|\breach(?:es|ed|ing)\b|\bstand(?:s|ing)\b|\bsit(?:s|ting)\b|\bdanc(?:e|es|ed|ing)\b|\blift(?:s|ed|ing)\b|\bplac(?:e|es|ed|ing)\b|\bopen(?:s|ed|ing)\b|\bclos(?:e|es|ed|ing)\b|\bwav(?:e|es|ed|ing)\b|\bgrab(?:s|bed|bing)\b|\bstep(?:s|ped|ping)\b|\blean(?:s|ed|ing)\b|\bbend(?:s|ing)\b|\bkneel(?:s|ing)\b|\bbow(?:s|ing)\b|\bnod(?:s|ded|ding)\b|\bsmil(?:e|es|ed|ing)\b|\blaugh(?:s|ed|ing)\b|\bwhisper(?:s|ed|ing)\b|\bspeak(?:s|ing)\b|\bsay(?:s|ing)\b|\bsing(?:s|ing)\b|\bsigh(?:s|ed|ing)\b)/i.test(text)) motion = 'natural'
-  return { shotSize, camera, motion }
-}
 /**
  * 删除 / 清空的破坏性确认（2026-08-30 UX 审计 P1）。
  *
@@ -936,6 +938,8 @@ async function onFramePicked(index: number, event: Event) {
     if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
     shot.imageName = upload.name
     shot.imageUrl = URL.createObjectURL(file)
+    // IndexedDB 耐久凭据：草稿恢复/失败重试都靠它（服务端受控名会被清理）。
+    shot.imageId = await imgPut(file).catch(() => shot.imageId || '')
     batchError.value = ''
   } catch (error) {
     batchError.value = error instanceof Error ? error.message : '首帧上传失败'
@@ -948,6 +952,7 @@ function clearFrame(index: number) {
   if (shot) {
     shot.imageUrl = ''
     shot.imageName = ''
+    shot.imageId = ''
   }
 }
 
@@ -960,87 +965,15 @@ function readBlobAsDataURL(blob: Blob): Promise<string> {
   })
 }
 
-// ── 绘图页「加入分镜」批量带入（一次性消费 + 全自动多角色参考图装配）──────────────────────────────
-async function importShotsFromDrawing() {
-  const list = readShotsCtx()
-  if (!list.length) return
-  clearShotsCtx()
-
-  // 1. 分析所有镜头涉及的角色列表（去重且保序）
-  const uniqueCharIds = Array.from(
-    new Set(list.map((ctx) => ctx.characterId).filter(Boolean))
-  ) as string[]
-
-  // 2. 如果涉及角色数超过当前卡槽，自动增加卡槽（最多 4 个）
-  while (referenceCards.value.length < uniqueCharIds.length && referenceCards.value.length < 4) {
-    referenceCards.value.push({ label: '', images: [] })
-  }
-
-  // 3. 全自动并行装配各角色的 4 视角标准参考图
-  const loadPromises = uniqueCharIds.slice(0, 4).map((charId, index) => {
-    return autoLoadCharacterReferences(charId, index)
-  })
-  void Promise.all(loadPromises)
-
-  // 4. 角色身份锚点填充（优先取第一个出场角色的标准人设描述）
-  if (!identityCard.value && uniqueCharIds.length > 0) {
-    const firstCharId = uniqueCharIds[0]
-    const stdProfile = getCharacterReferences(firstCharId)
-    if (stdProfile?.identityProse) {
-      identityCard.value = stdProfile.identityProse
-    } else {
-      const character = popularCharacters.value.find((item) => item.id === firstCharId)
-      if (character?.identityProse) identityCard.value = character.identityProse
-    }
-  }
-
-  // 5. 导入镜头并自动绑定对应角色的出场标记（cast: 1, 2, 3, 4）
-  let imported = 0
-  for (const ctx of list) {
-    const inferred = inferShotParams(ctx.prompt || '')
-
-    // 匹配该镜头角色在参考卡中的卡槽编号
-    let assignedCast = ''
-    if (ctx.characterId) {
-      const charIndex = uniqueCharIds.indexOf(ctx.characterId)
-      if (charIndex >= 0 && charIndex < 4) {
-        assignedCast = String(charIndex + 1)
-      }
-    }
-
-    const draft: ShotDraft = {
-      prompt: ctx.prompt || '',
-      dialogue: '',
-      shotSize: inferred.shotSize,
-      camera: inferred.camera,
-      motion: inferred.motion,
-      duration: 5,
-      seedText: '',
-      imageName: '',
-      imageUrl: '',
-      cast: (assignedCast || (uniqueCharIds.length === 1 ? '1' : '')) as '' | '1' | '2' | '12',
-    }
-    try {
-      const blob = await imgGet(ctx.imageId)
-      if (blob) {
-        const dataUrl = await readBlobAsDataURL(blob)
-        const comma = dataUrl.indexOf(',')
-        if (comma >= 0) {
-          const upload = await uploadVideoImage(dataUrl.slice(comma + 1))
-          draft.imageName = upload.name
-          draft.imageUrl = URL.createObjectURL(blob)
-        }
-      }
-    } catch {
-      // 原图失效则不挂首帧（提示词照常带入），不影响其余镜头。
-    }
-    shots.value.push(draft)
-    imported += 1
-  }
-  if (imported) {
-    batchError.value = `已从绘图页带入 ${imported} 个镜头，首帧已自动挂载，可直接生成。`
-    aiFlowStep.value = 0
-  }
+// ── 绘图页「加入分镜」批量带入（F4：逐镜确认 + 如实汇报；实现已下沉 useShotImport）──
+async function runImportFromDrawing() {
+  const outcome = await importShotsFromDrawing()
+  if (!outcome) return
+  const parts = [`已从绘图页带入 ${outcome.imported} 个镜头`, `首帧就绪 ${outcome.framesReady} 张`]
+  if (outcome.framesPending) parts.push(`${outcome.framesPending} 张待处理（可在镜头上单独重试）`)
+  if (outcome.refCardsFailed) parts.push(`${outcome.refCardsFailed} 张角色参考卡装配失败，请检查参考库`)
+  batchError.value = parts.join('，') + '。'
+  aiFlowStep.value = 0
 }
 
 // ── 剧本模式分幕带入（2026-08-23 激活）：剧本页「送入分镜短片」一次性消费 ──
@@ -1064,9 +997,37 @@ function importScenarioActs() {
   batchError.value = `已载入剧本 ${acts.length} 幕。建议挂角色参考卡（锁身份）后点「一键首帧」，再批量生成。`
 }
 
+// ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
+// 切模式（v-if 卸载）/切页/刷新后恢复：镜头文本 + 身份锚点 + 参考卡元信息。
+// 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
+const { restoreShotsDraft } = useShotDraft({
+  aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
+  batchError, autoLoadCharacterReferences, retryPendingFrames,
+})
+
+/** 整批任务重连（F1）：离页不中断服务端批次，回来按 batchId 接回真实进度。 */
+async function reconnectShotsBatch() {
+  const record = videoStore.shotsBatch
+  if (!record || batch.value) return
+  const ok = await reconnectBatch(record.batchId)
+  if (!ok) {
+    videoStore.clearShotsBatch()
+    batchError.value = '上一批分镜任务已不存在（网关重启或已过期），镜头草稿仍在，可重新提交'
+  }
+}
+
+// 批次提交成功即记录 batchId；重连/新提交都会刷新这份记录。
+watch(() => batch.value?.id, (id) => {
+  if (id) videoStore.recordShotsBatch({ batchId: id, submittedAt: Date.now() })
+})
+
 onMounted(() => {
-  void importShotsFromDrawing()
-  importScenarioActs()
+  void (async () => {
+    await restoreShotsDraft()
+    await runImportFromDrawing()
+    importScenarioActs()
+    await reconnectShotsBatch()
+  })()
   // 参考档案为运行时 JSON：挂载即预取，参考卡/身份卡读取时数据通常已就位
   void ensureCharacterReferencesLoaded().catch(() => undefined)
   const charParam = typeof route.query.character === 'string' ? route.query.character.trim() : ''

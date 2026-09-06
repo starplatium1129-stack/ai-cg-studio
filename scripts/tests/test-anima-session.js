@@ -304,3 +304,50 @@ test('syncCharacter：triad 与热门角色清空 LoRA，普通角色按白名�
   popular.syncCharacter('nene');
   assert.equal(popular.state.value.loraId, '');
 });
+
+test('F2/F3：新一轮失败不清掉上一张成片与冻结上下文，可一键找回', async () => {
+  let submitted = 0;
+  const client = fakeClient({
+    '/api/anima/jobs|POST': () => {
+      submitted += 1;
+      if (submitted === 1) {
+        return { ok: true, job: { id: 'j1', status: 'queued', seed: 7, resultAvailable: false, resultUrl: null, error: null, code: null } };
+      }
+      throw new Error('network down');
+    },
+    '/api/anima/jobs/j1|GET': () => ({
+      ok: true,
+      job: { id: 'j1', status: 'succeeded', seed: 7, resultAvailable: true, resultUrl: '/api/anima/jobs/j1/result', metadata: { id: 'j1', seed: 7, prompt: '1girl', negative: 'bad' }, error: null, code: null },
+    }),
+  });
+  const session = useAnimaSession({
+    ...baseOptions({ client, getSubmitContext: () => ({ characterId: 'raiden_shogun', outfitId: 'shogun_robes' }) }),
+  });
+  session.patchState({ online: true });
+  await session.generate();
+  assert.equal(session.state.value.phase, 'succeeded');
+  const firstUrl = session.state.value.result.url;
+  // F3：成功结果的上下文来自提交时冻结快照
+  assert.equal(session.state.value.resultContext?.characterId, 'raiden_shogun');
+  assert.equal(session.state.value.resultContext?.outfitId, 'shogun_robes');
+
+  // 第二张提交即网络失败：旧 result 不再被销毁，进入 stash
+  await session.generate();
+  assert.equal(session.state.value.phase, 'failed');
+  assert.equal(session.state.value.result, null);
+  assert.ok(session.stashedResult.value);
+  assert.equal(session.stashedResult.value.result.url, firstUrl);
+  assert.equal(session.stashedResult.value.context?.characterId, 'raiden_shogun');
+
+  await session.generate();
+  assert.equal(session.stashedResult.value.result.url, firstUrl, '连续失败不能销毁上一张成功结果');
+
+  // 找回：结果与冻结上下文一并回到舞台，错误态复位
+  assert.equal(session.restoreStashedResult(), true);
+  assert.equal(session.state.value.phase, 'succeeded');
+  assert.equal(session.state.value.result.url, firstUrl);
+  assert.equal(session.state.value.resultContext?.outfitId, 'shogun_robes');
+  assert.equal(session.state.value.errorMsg, '');
+  assert.equal(session.restoreStashedResult(), false, 'stash 一次性消费');
+  session.dispose();
+});

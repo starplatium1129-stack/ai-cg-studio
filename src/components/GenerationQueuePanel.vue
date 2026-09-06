@@ -2,10 +2,11 @@
   <div v-if="total" class="sd-queue advanced-decision">
     <div class="sd-queue-head">
       <!--
-        2026-08-30 UX 审计：原来只有「N 个」，用户看不出跑到第几张，暂停后也
-        不知道为什么停（队列在任务失败时会自动暂停，见 useSDQueue）。
+        2026-09-06 体验报告 F6：位置与总量分别来自 done / batchTotal——
+        旧算法 total（等待+在途）随完成缩水，运行中恒显示「第 1 张」。
+        运行中：第 done+1 / 共 done+total；暂停空闲：已完成 done · 等待 N。
       -->
-      <span>出图队列 · 第 {{ position }} / 共 {{ total }}{{ paused ? '（已暂停）' : '' }}</span>
+      <span>出图队列 · {{ headerText }}</span>
       <span class="row-tight">
         <button v-if="paused" class="btn btn-ghost btn-sm" type="button" @click="emit('resume')">继续</button>
         <button v-else class="btn btn-ghost btn-sm" type="button" @click="emit('pause')">暂停</button>
@@ -43,7 +44,7 @@
         <span class="fx-onome is-popping">ドンッ</span>
       </div>
       <div v-for="(job, index) in queue" :key="job.id" class="sd-queue-item">
-        <span class="sd-queue-index">{{ index + 1 }}</span>
+        <span class="sd-queue-index">{{ waitingIndex(index) }}</span>
         <div class="sd-queue-copy">
           <div class="sd-queue-title">{{ job.title }}</div>
           <div class="sd-queue-meta">{{ job.size }} · seed {{ seedLabel(job.seed) }}</div>
@@ -61,6 +62,8 @@ import '@/assets/css/director/components/GenerationQueuePanel.css'
 
 const props = defineProps<{
   total: number
+  /** 本轮已成功出完的张数（只增不减，新一轮归零）。 */
+  done: number
   paused: boolean
   activeJob: Readonly<SDQueueJob> | null
   queue: ReadonlyArray<Readonly<SDQueueJob>>
@@ -81,8 +84,20 @@ function seedLabel(seed: number) {
   return seed < 0 ? '随机' : seed
 }
 
-/** 当前跑到第几张：总数减去还没开始的。 */
-const position = computed(() => props.total - props.queue.length + (props.activeJob ? 0 : 1))
+/** 本轮总量固定为 done+total（total=等待+在途），分母不再随完成漂移（F6）。 */
+const batchTotal = computed(() => props.done + props.total)
+
+/** 头部进度文案：运行中报「第几/共几」，暂停空闲时如实报「已完成·等待」。 */
+const headerText = computed(() => {
+  const pausedSuffix = props.paused ? '（已暂停）' : ''
+  if (props.activeJob) return `第 ${props.done + 1} / 共 ${batchTotal.value}${pausedSuffix}`
+  return `已完成 ${props.done} · 等待 ${props.queue.length} 张${pausedSuffix}`
+})
+
+/** 等待列表的绝对序号：接续「已完成 + 在途」之后，不再是每行都从 1 数起。 */
+function waitingIndex(index: number) {
+  return props.done + (props.activeJob ? 1 : 0) + index + 1
+}
 
 /** 未传 / null 都算「后端给不出进度」，统一走 indeterminate。 */
 const progressKnown = computed(() => typeof props.progress === 'number')

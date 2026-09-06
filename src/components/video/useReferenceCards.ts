@@ -73,11 +73,16 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     await autoLoadCharacterReferences(card.characterId, cardIndex, outfitId)
   }
 
-  async function autoLoadCharacterReferences(charId: string, cardIndex: number = 0, outfitId?: string) {
+  /**
+   * 自动装配角色参考图（角色 → 服装 → 4 视角基准图）。
+   * 返回成功装配的张数（2026-09-06 体验报告 F4：导入汇报需要逐卡如实计数，
+   * 不再让装配失败被「全部成功」的文案掩盖）。
+   */
+  async function autoLoadCharacterReferences(charId: string, cardIndex: number = 0, outfitId?: string): Promise<number> {
     const profile = getCharacterReferences(charId)
-    if (!profile) return
+    if (!profile) return 0
 
-    if (cardIndex < 0 || cardIndex >= referenceCards.value.length) return
+    if (cardIndex < 0 || cardIndex >= referenceCards.value.length) return 0
     const targetCard = referenceCards.value[cardIndex]
 
     // 匹配特定 outfit 或默认 outfit
@@ -99,6 +104,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
 
     loadingRefAssets.value = true
     loadingRefCardIndex.value = cardIndex
+    let loaded = 0
     try {
       // 自动加载基准图（特写 / 半身 / 全身 / 侧后背影）；设计图基线占位（pending 无 url）排除
       // 关键修复：加入时间戳与 no-cache，杜绝浏览器拉取旧缓存图片
@@ -116,6 +122,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
           name: upload.name,
           url: URL.createObjectURL(blob),
         })
+        loaded += 1
       }
       updateMultiCharacterIdentity()
     } catch (error) {
@@ -124,6 +131,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       loadingRefAssets.value = false
       loadingRefCardIndex.value = null
     }
+    return loaded
   }
 
   /**

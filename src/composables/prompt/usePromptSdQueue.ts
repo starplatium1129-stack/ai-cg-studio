@@ -8,6 +8,8 @@ import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useSDGenerate } from '@/composables/generation/useSDGenerate'
 import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import { useSDQueue, type SDQueueJob } from '@/composables/generation/useSDQueue'
+import type { AnimaResultContext } from '@/types/anima'
+import { captureResultContext } from '@/utils/resultContext'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -26,6 +28,11 @@ export interface PromptSdQueueDeps {
   modelProfile: PromptAssembly['modelProfile']
   animaState: AnimaSession['state']
   displayResultSeed: ComputedRef<number | null>
+  /**
+   * SD 直出/队列成功时写入冻结上下文（2026-09-06 体验报告 F3）：
+   * captureJob 快照的场景与故事跟随成片，跨页交接不读当前表单。
+   */
+  setResultContext?: (ctx: AnimaResultContext | null) => void
 }
 
 /**
@@ -80,6 +87,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     const scene = effectiveScene.value
     const story = String(pb.story || '').trim()
     return {
+      context: captureResultContext(pb),
       title: scene?.title || (story ? story.slice(0, 28) : (pb.char === 'natsume' ? '夏目构图' : '宁宁构图')),
       prompt: livePrompt.value,
       negative: negativePrompt.value,
@@ -224,6 +232,24 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
 
     if (displayResultSeed.value) pb.sdParams.seed = displayResultSeed.value
     if (url) {
+      // F3：SD 结果的冻结上下文——入队时快照的 scene/story 即这张图的归属。
+      deps.setResultContext?.({
+        ...job.context,
+        characterId: '',
+        outfitId: null,
+        blueprintId: null,
+        sceneId: job.sceneId ?? null,
+        story: job.story,
+        char: job.char,
+        history: {
+          ...job.context?.history,
+          engine: 'sd', model: job.checkpoint, cfg: job.cfg, steps: job.steps,
+          sampler: job.sampler, scheduler: job.scheduler, size: job.size,
+          negative: job.negative, hiresFix: job.hiresFix, hiresScale: job.hiresScale,
+          hiresUpscaler: job.hiresUpscaler, hiresSteps: job.hiresSteps,
+          hiresDenoise: job.denoisingStrength, faceDetailer: job.faceDetailer,
+        },
+      })
       writeQuickCreate({
         checkpoint: job.checkpoint,
         sampler: job.sampler,
@@ -256,6 +282,7 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     // 返回落库条目：直出路径用它把「舞台这张图 = 作品册哪一条」记下来，
     // 后续 inpaint 重绘才有对比锚点（2026-08-30 UX 审计 P1-14）。
     return await pb.commitHistoryEntry({
+      context: job.context ?? { char: job.char, story: job.story, sceneId: job.sceneId },
       blob, seed: sd.resultSeed.value ?? undefined,
       size: job.size, negative: job.negative, prompt: job.prompt,
       ...historyGenerationFields(),

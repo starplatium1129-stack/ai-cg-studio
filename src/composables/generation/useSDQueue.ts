@@ -9,6 +9,7 @@ import { ref, computed, readonly } from 'vue'
 export const SD_QUEUE_LIMIT = 8
 
 export interface SDQueueJob {
+  context?: import('@/types/anima').AnimaResultContext
   id: string
   title: string
   prompt: string
@@ -51,7 +52,19 @@ export function useSDQueue(options: {
   const activeJob = ref<SDQueueJob | null>(null)
   const paused = ref(false)
 
+  /**
+   * 本轮已完成张数（2026-09-06 体验报告 F6）。
+   *
+   * 原「第 N / 共 M」用 total（等待+在途）反推位置：每出完一张 total 就缩 1，
+   * 运行时位置恒等于 1、分母持续缩水，用户无法回答「现在做到哪一步」。
+   * 现在固定语义：done 只增不减（成功才计数），本轮总量 = done + 等待 + 在途，
+   * 分母不再随完成漂移；失败/取消任务 retain 回队首仍计为等待，不算完成。
+   */
+  const done = ref(0)
+
   const total = computed(() => queue.value.length + (activeJob.value ? 1 : 0))
+  /** 本轮总量（已完成 + 等待 + 在途）：进度展示用，与容量上限无关。 */
+  const batchTotal = computed(() => done.value + total.value)
   const canEnqueue = computed(() => total.value < SD_QUEUE_LIMIT)
 
   function makeId() {
@@ -64,6 +77,8 @@ export function useSDQueue(options: {
       return false
     }
     if (!job.prompt) { onFlash('请先生成 Prompt'); return false }
+    // 上一轮已全部跑完（无等待无在途）时重新开一轮：done 归零，批次语义重启。
+    if (!queue.value.length && !activeJob.value) done.value = 0
     queue.value.push({ ...job, id: makeId() } as SDQueueJob)
     onFlash('已加入队列：' + (job.title || '未命名'))
     void process()
@@ -76,6 +91,8 @@ export function useSDQueue(options: {
 
   function clear() {
     queue.value = []
+    // 清空等待即终结本轮：无在途任务时完成数一并归零，下一轮从 0 计。
+    if (!activeJob.value) done.value = 0
   }
 
   async function process(): Promise<void> {
@@ -100,6 +117,8 @@ export function useSDQueue(options: {
         retain(outcome?.status === 'cancelled'
           ? '队列已停止并暂停，当前任务已保留'
           : '队列已暂停，失败任务已保留在队首')
+      } else {
+        done.value += 1
       }
     } catch (e) {
       console.error('queue task failed unexpectedly', e)
@@ -129,6 +148,8 @@ export function useSDQueue(options: {
     if (!fresh.length) return 0
     queue.value = [...queue.value, ...fresh].slice(0, SD_QUEUE_LIMIT)
     paused.value = true
+    // 恢复快照即开新一轮：完成数归零，本轮总量 = 恢复进来的等待数。
+    done.value = 0
     return fresh.length
   }
 
@@ -136,7 +157,8 @@ export function useSDQueue(options: {
     queue: readonly(queue),
     activeJob: readonly(activeJob),
     paused: readonly(paused),
-    total, canEnqueue,
+    done: readonly(done),
+    total, batchTotal, canEnqueue,
     enqueue, remove, clear, pause, resume, process, restore,
   }
 }
