@@ -77,7 +77,7 @@
    - **何时增量、何时必须完整安装，见 `docs/desktop-deployment.md`**（口诀：只动会被复制进去的文件 → 增量；动 `node_modules` 或 exe → 完整安装）。
 5. **推送远端（交付闭环）**：`git push` 成功后才算交付完成（红线 5，2026-08-29 教训固化）。`npm run backup:git` 可随时手动做 bundle 快照。
 
-> **统一工作流入口（2026-08-26 新增，2026-08-31 审计修正）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等高频脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`，现注册 46 个工作流命令；`scripts/maintenance/` 仍有 100 个脚本，其中未注册者按 `node scripts/maintenance/<name>.js` 直调，但红线 10 要求新增脚本必须同时登记 workflow）。一站式索引见 `docs/workflow.md:1`（含协作者义务章节）；旧 `node scripts/maintenance/*.js` 仍兼容。
+> **统一工作流入口（2026-08-26 新增，2026-08-31 审计修正）：** 日常 `data:build/validate`、参考库 `reference:render/audit/repair`、样张 `showcase:batch`、质检 `check:full` 等高频脚本已收敛至 `scripts/workflow.js --help`（`npm run workflow -- --help`，现注册 52 个工作流命令；`scripts/maintenance/` 现有 109 个脚本，其中未注册者按 `node scripts/maintenance/<name>.js` 直调，但红线 10 要求新增脚本必须同时登记 workflow）。一站式索引见 `docs/workflow.md:1`（含协作者义务章节）；旧 `node scripts/maintenance/*.js` 仍兼容。
 
 > **单体体量门禁（2026-08-31 新增）：** 600 行拆分红线已门禁化——`node scripts/tests/test-monolith-budget.js`（已入 `npm run check` 并发池与 check 套件）。有效行数（跳空行/注释，与 eslint max-lines 同口径）超 600 的存量文件以 `scripts/tests/monolith-baseline.json` 豁免基线管理，**只降不升**：基线外新增超线文件或基线内文件回涨一律失败；拆分后用 `--update-baseline` 收编。eslint 侧 `max-lines warn@1000` 继续作预警层。
 
