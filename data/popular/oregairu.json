@@ -260,15 +260,16 @@
         "小恶魔学妹",
         "后辈君"
       ],
-      "identityProse": "Iroha Isshiki from Oregairu, the mischievous yet hardworking student council president kouhai, a fashionable beauty with shoulder-length wavy honey-brown hair in low side twintails, hazel-brown eyes, and a sly, playfully teasing smirk",
+      "identityProse": "Iroha Isshiki from Oregairu, the mischievous yet hardworking student council president kouhai, a fashionable beauty with shoulder-length honey-brown hair parted to the side with bangs, warm hazel-brown eyes, and a sly, playfully teasing smirk",
       "identityTokens": [
         "isshiki_iroha",
         "1girl",
         "solo",
         "brown_hair",
-        "wavy_hair",
-        "low_twintails",
+        "medium_hair",
+        "side_bangs",
         "brown_eyes",
+        "medium_breasts",
         "smirk"
       ],
       "exactTokens": [
@@ -396,17 +397,17 @@
         "阳乃小姐",
         "魔性姐姐"
       ],
-      "identityProse": "Haruno Yukinoshita from Oregairu, the alluring and enigmatic older sister of Yukino, a captivating beauty with shoulder-length glossy black hair, piercing sharp dark eyes with a dangerous intoxicating gaze, and a voluptuous mature figure",
+      "identityProse": "Haruno Yukinoshita from Oregairu, the alluring and enigmatic older sister of Yukino, a captivating beauty with shoulder-length glossy black hair, piercing sharp brown eyes with a dangerous intoxicating gaze, and a mature, composed figure",
       "identityTokens": [
         "yukinoshita_haruno",
         "1girl",
         "solo",
         "black_hair",
-        "short_hair",
+        "medium_hair",
         "brown_eyes",
-        "dark_eyes",
+        "purple_eyes",
         "mature_female",
-        "large_breasts",
+        "medium_breasts",
         "smirk"
       ],
       "exactTokens": [
