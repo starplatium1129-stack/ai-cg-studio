@@ -24,6 +24,13 @@ const OUT_BASE = (() => {
   return fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets', 'character-references');
 })();
 const BASE = process.env.GATEWAY_URL || process.env.BASE || 'http://127.0.0.1:3123';
+// 2026-09-06 审计 P1-04：--ids=a,b,c 定向渲染指定角色（如 7 位新角色参考资产补齐），
+// 缺省仍为全量断点续跑（>20KB 已存在文件自动跳过）。登记占位见
+// register-pending-reference-outfits.js —— 先登记 pending 再渲染回填。
+const IDS_ARG = process.argv.find((a) => a.startsWith('--ids='));
+const ONLY_IDS = IDS_ARG
+  ? new Set(IDS_ARG.slice('--ids='.length).split(',').map((s) => s.trim()).filter(Boolean))
+  : null;
 const CONCURRENCY = 3;
 
 const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
@@ -85,6 +92,7 @@ function buildPrompt(char, outfit, persId) {
 function collectTasks() {
   const tasks = [];
   for (const char of standards.characters) {
+    if (ONLY_IDS && !ONLY_IDS.has(char.id)) continue;
     for (const outfit of char.outfits) {
       // 目标目录：如果是默认服装且主目录已存在旧单服装图，则放入 outfit 子目录；非默认服装放 outfit 子目录
       const targetDir = path.join(OUT_BASE, char.id, outfit.id);

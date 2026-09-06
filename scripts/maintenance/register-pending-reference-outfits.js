@@ -13,7 +13,7 @@
  * 本脚本做的是**登记**不是**渲染**：
  *   - standards 补齐形态条目（id/name/prose/tokens/isDefault/isNsfw 与 view 逐字段对齐）
  *   - view 补齐 7 个标准视角定义，全部 pending（无 url）→ check:ref-urls 跳过，不制造断链
- *   真实资产由 render-all-outfits-references.js / render_new_characters_references.js 渲染，
+ *   真实资产由 render-all-outfits-references.js 渲染（--ids= 定向），
  *   渲染后跑 sync-multi-outfit-standards.js 回填 url 并自动去掉 pending。
  *
  * 只处理「standards 为空但 view 已有形态」的角色，不动任何已登记资产的角色。
