@@ -25,6 +25,15 @@ const DEFAULT_BUDGETS = Object.freeze({
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。
   lazyChunk: 1000 * 1024,
+  // 入口静态依赖闭包（2026-09-06 审计 P2-03）：路由预算只看路由自身 chunk，
+  // 而 main.ts 同步 import 的公共模块（prompt/live2d 命名块、vendor 等）才是
+  // 每个页面的真实首屏负担。以 2026-09-06 manifest 实测 342.6 KiB 为基线，
+  // 预算 390 KiB（告警线 351 KiB ≈ 当前 +8 KiB）。
+  entryClosureJavaScript: 390 * 1024,
+  // 最大路由静态闭包（2026-09-06 审计 P2-03）：防「路由自身变小、代码搬进
+  // 同步共享块」的造假 —— 路由闭包含入口链与全部静态共享模块，去重后统计。
+  // 以实测最大的 PromptBuilderView 515.3 KiB 为基线，预算 580 KiB。
+  routeClosureJavaScript: 580 * 1024,
 });
 
 function routeEntries(manifest) {
@@ -48,6 +57,31 @@ function entryEntry(manifest) {
     .find(entry => entry.isEntry === true) || null;
 }
 
+// 静态 import 闭包（不含 dynamicImports）：从起点沿 imports BFS 收集全部
+// manifest key。闭包大小只统计 .js 产物（CSS 已有独立预算），去重后求和。
+function staticClosureKeys(manifest, startKey) {
+  const seen = new Set([startKey]);
+  const queue = [startKey];
+  while (queue.length) {
+    const entry = manifest[queue.shift()];
+    if (!entry) continue;
+    for (const dep of entry.imports || []) {
+      if (!seen.has(dep)) {
+        seen.add(dep);
+        queue.push(dep);
+      }
+    }
+  }
+  return [...seen];
+}
+
+function staticClosureSize(manifest, startKey, sizeOf) {
+  return staticClosureKeys(manifest, startKey).reduce((total, key) => {
+    const file = manifest[key] && manifest[key].file;
+    return file && /\.js$/.test(file) ? total + sizeOf(file) : total;
+  }, 0);
+}
+
 function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
   const routes = routeEntries(manifest).map(entry => {
     const cssFiles = [...new Set(entry.css || [])];
@@ -56,6 +90,9 @@ function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
       file: entry.file,
       javascript: sizeOf(entry.file),
       css: cssFiles.reduce((total, file) => total + sizeOf(file), 0),
+      // 2026-09-06 审计 P2-03：路由自身 chunk + 全部静态共享依赖（去重）。
+      // 路由 javascript 变小而闭包变大 = 代码被搬进同步共享块，同样算回涨。
+      closureJavaScript: staticClosureSize(manifest, entry.key, sizeOf),
     };
   });
 
@@ -71,6 +108,11 @@ function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
       violations.push(`${route.route} CSS ${route.css} > ${budgets.routeCss}`);
     } else if (route.css > budgets.routeCss * 0.9) {
       warnings.push(`${route.route} CSS ${kib(route.css)} > 90% of ${kib(budgets.routeCss)}`);
+    }
+    if (route.closureJavaScript > budgets.routeClosureJavaScript) {
+      violations.push(`${route.route} static closure JavaScript ${route.closureJavaScript} > ${budgets.routeClosureJavaScript}`);
+    } else if (route.closureJavaScript > budgets.routeClosureJavaScript * 0.9) {
+      warnings.push(`${route.route} static closure JavaScript ${kib(route.closureJavaScript)} > 90% of ${kib(budgets.routeClosureJavaScript)}`);
     }
   }
   return { routes, violations, warnings };
@@ -120,14 +162,27 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
       + '\n字体声明走 src/assets/fonts.ts 异步 chunk，勿在 main.ts 同步 import @fontsource 或大样式。');
   }
 
+  // 2026-09-06 审计 P2-03：入口静态闭包 = 每个页面的真实首屏 JS 负担。
+  if (entry) {
+    const entryClosure = staticClosureSize(manifest, entry.key, sizeOf);
+    if (entryClosure > DEFAULT_BUDGETS.entryClosureJavaScript) {
+      throw new Error(`Entry static closure budget exceeded: ${entryClosure} > ${DEFAULT_BUDGETS.entryClosureJavaScript}`
+        + '\nmain.ts 链上新挂的同步 import 会进入每个页面：重模块改为首次调用动态 import（参照 tagMeaning / videoPromptProse）。');
+    }
+    result.entryClosureJavaScript = entryClosure;
+  }
+
   const largestJs = [...result.routes].sort((a, b) => b.javascript - a.javascript)[0];
   const largestCss = [...result.routes].sort((a, b) => b.css - a.css)[0];
   const largestLazy = lazy.sort((a, b) => b.javascript - a.javascript)[0];
+  const largestClosure = [...result.routes].sort((a, b) => b.closureJavaScript - a.closureJavaScript)[0];
   console.log(
     `Route bundle budget passed: ${result.routes.length} routes; `
     + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `
     + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}; `
     + `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}; `
+    + `entry closure JS ${kib(result.entryClosureJavaScript ?? 0)} / ${kib(DEFAULT_BUDGETS.entryClosureJavaScript)}; `
+    + `largest route closure ${largestClosure.route} ${kib(largestClosure.closureJavaScript)} / ${kib(DEFAULT_BUDGETS.routeClosureJavaScript)}; `
     + `entry CSS ${kib(entryCssBytes)} / ${kib(DEFAULT_BUDGETS.entryCss)}`,
   );
   if (result.warnings && result.warnings.length) {
@@ -147,4 +202,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { DEFAULT_BUDGETS, evaluateManifest, routeEntries, lazyChunks, run };
+module.exports = { DEFAULT_BUDGETS, evaluateManifest, routeEntries, lazyChunks, staticClosureKeys, staticClosureSize, run };
