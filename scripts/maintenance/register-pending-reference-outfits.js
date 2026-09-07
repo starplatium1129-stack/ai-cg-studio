@@ -44,7 +44,6 @@ function main() {
   const perspectives = standards.perspectives;
 
   const popularById = new Map((popular.characters || []).map((c) => [c.id, c]));
-  const standardById = new Map(standards.characters.map((c) => [c.id, c]));
 
   const targets = standards.characters.filter((c) => {
     if (c.outfits.length > 0) return false;

@@ -51,6 +51,9 @@ function createFixture() {
       'node_modules/http-proxy-middleware': { version: '1.0.0' },
       'node_modules/onnxruntime-node': { version: '1.0.0' },
       'node_modules/sharp': { version: '1.0.0' },
+      // 2026-09-06 补入 RUNTIME_DEPENDENCIES（ComfyUI 进度 WebSocket 客户端），
+      // fixture 须与清单同步，否则闭包派生会因缺包抛错。
+      'node_modules/ws': { version: '1.0.0' },
     },
   }, null, 2) + '\n');
   return root;
@@ -98,7 +101,7 @@ test('production stage uses exact runtime outputs and atomic replacement', () =>
 
     const manifest = JSON.parse(fs.readFileSync(path.join(stage, 'gateway', 'package.json'), 'utf8'));
     assert.deepEqual(Object.keys(manifest.dependencies).sort(), [
-      'compression', 'express', 'http-proxy-middleware', 'onnxruntime-node', 'sharp',
+      'compression', 'express', 'http-proxy-middleware', 'onnxruntime-node', 'sharp', 'ws',
     ]);
   } finally {
     remove(root);

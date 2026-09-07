@@ -215,7 +215,7 @@ function textViolation(kind, message, source, index) {
   return { kind, message, ...location };
 }
 
-function scanText(bytes, expectedEol) {
+function scanText(bytes, expectedEol, relativePath = '') {
   let source;
   try {
     source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
@@ -224,8 +224,15 @@ function scanText(bytes, expectedEol) {
   }
 
   const violations = [];
-  for (let index = source.indexOf('\ufeff'); index >= 0; index = source.indexOf('\ufeff', index + 1)) {
-    violations.push(textViolation('bom', 'UTF-8 BOM is not allowed', source, index));
+  /* Windows PowerShell 5.1 读取无 BOM 的 UTF-8 脚本时按系统 ANSI 代码页解码，
+     含中文的 .ps1 会整片乱码（deploy-desktop-quick.ps1 有 1000+ 中文字符，
+     .gitattributes 亦规定 *.ps1 走 crlf）。故 .ps1 必须保留 BOM —— 此处放行，
+     避免门禁逼出一份「一执行就乱码」的部署脚本。 */
+  const bomAllowed = path.posix.extname(relativePath).toLowerCase() === '.ps1';
+  if (!bomAllowed) {
+    for (let index = source.indexOf('\ufeff'); index >= 0; index = source.indexOf('\ufeff', index + 1)) {
+      violations.push(textViolation('bom', 'UTF-8 BOM is not allowed', source, index));
+    }
   }
 
   const controlPattern = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/g;
@@ -358,7 +365,7 @@ function unknownViolation(target, relativePath) {
 }
 
 function appendBlobViolations(result, target, relativePath, bytes, allowanceLookup) {
-  const violations = scanText(bytes, expectedLineEnding(target, relativePath));
+  const violations = scanText(bytes, expectedLineEnding(target, relativePath), relativePath);
   if (violations.length === 0) return;
   const digest = sha256(bytes);
   const allowed = target !== 'untracked' && allowanceLookup.get(relativePath)?.has(digest);
