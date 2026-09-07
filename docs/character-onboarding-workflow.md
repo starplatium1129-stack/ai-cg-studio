@@ -1,53 +1,17 @@
-# 热门角色一站式接入与全量资产流水线规范 (Character Onboarding Pipeline)
+# 热门角色接入工作流
 
-> **基线日期**：2026-08-18
-> **核心目标**：实现新热门角色（Popular Character）从“设定调研”到“全量资产生成、样张上架、参考图构建、点阵粒子场与契约质检”的一站式全自动闭环。
+> 2026-09-08。完整规则见 [工程契约](engineering-contracts.md#角色接入)。自动化辅助不能代替六层真实验收。
 
----
+## 交付清单
 
-## 一、 为什么需要统一接入流水线？
+1. 在 data/popular 分片和 characters.json 维护档案、视觉 DNA、服装与蓝图，运行 popular:build；保持归属与 outfitId 一致。
+2. 注册 director/tokens.css 的角色强调色与全局氛围，两种主题均需视觉验收。
+3. 按既有内容契约逐条编写场景；检查编译 Token 与真实成图；保护 pinned 场景。
+4. 原图生成后同步 WebP 头像，并按需要重建对应点云，核对图片指纹。
+5. standards 与 view 中登记全部服装：4 种参考机位 + 3 种设计机位。先 reference:register，再 render/design、同步 URL 和审核；pending 不能计为完成。
+6. 类型、内容、接口、前端与 build 门禁通过，按需桌面部署，精准 commit + push。
 
-在过去，添加一个新角色需要手动跨越 8 个独立步骤与 7 个配置文件：
-1. `data/popular-characters.json`：录入角色基本信息与 3-5 套服装。
-2. `data/characters.json`：同步角色音色与特征 DNA。
-3. `data/scene-blueprints.json`：编写 6 个 SFW 场景 + 4-5 个 NSFW 场景（含足控、解剖学私处等）。
-4. `assets/characters/popular-<id>.png`：渲染全年龄正统校园立绘。
-5. `assets/particles/p_<id>.json`：运行 Python 脚本生成 200x292 粒子点阵。
-6. `data/character-reference-standards.json` & `src/utils/characterReferenceData.ts`：注册 4 视角参考规范（含 `nsfw_nude` 纯粹私密全裸形态）。
-7. `assets/character-references/<id>/`：渲染 5 服装形态 $\times$ 4 视角 = 20 张电影级参考图（Character Reference Bible）。
-8. `AI/SceneShowcase/2026-08-15_v23/`：渲染 11 个场景的官方 Showcase 样张（`images/` 与 `thumbs/`）并同步 `manifest.json`。
-9. `src/stores/sceneStore.ts`：计算数据哈希并升级 `DATA_VERSION`。
-
-若人工逐项操作极易遗漏（如漏算版本哈希、漏建粒子点阵、提示词画风未统一），因此项目建立了统一的自动化接入引擎：
-**`scripts/maintenance/workflow-onboard-popular-character.js`**。
-
----
-
-## 二、 角色资产标准契约
-
-### 1. 场景蓝图配比（6 SFW + 4-5 NSFW）
-- **6 个 SFW 原型场景**：
-  - 教室窗边/回眸（校园日常）
-  - 核心身份场景（如学生会室、工坊、舞台、战场）
-  - 天气与氛围场景（雨后车站、晴空林荫道、雪夜）
-  - 室内知性/阅读场景（图书馆、书架）
-  - 休闲约会场景（街角露天咖啡厅）
-  - 传统/节日场景（夏日祭典浴衣、烟火大会）
-- **4-5 个高阶 NSFW 场景**（须包含显式解剖学与特色视角）：
-  1. **床榻私密·足底大透视与娇喘**：双腿屈膝/分腿朝向镜头，大透视 85mm 微距足弓与严格 5 趾特写，私处清晰显露（`exposed_pussy, detailed_vulva, pink_nipples, uncensored, 5_toes`）。
-  2. **放学后空教室·课桌私语**：制服全敞露乳、下身一丝不挂、黑丝褪至脚踝（`topless, bottomless, exposed_pussy, unbuttoned_shirt`）。
-  3. **浴室水汽·湿发与薄透水痕**：淋浴间花洒、湿漉发丝贴背、水珠滑落与私处显露（`wet_skin, water_drops, exposed_pussy, detailed_vulva`）。
-  4. **晨光沙发·半解衬衫与绝对领域**：单穿宽大男士衬衫解扣敞开、光裸双腿与私密（`nude_under_shirt, open_shirt, spread_thighs, exposed_pussy`）。
-  5. **私密镜前·正面遮羞与双重倒影**：落地镜前正面展露、镜中倒映裸背、腰窝与翘臀（`mirror_reflection, bare_back, bare_buttocks, exposed_pussy`）。
-
-### 2. 4 视角参考资产库（Character Reference Bible）
-每位角色必须包含 researched 常规服装 + `🔞 私密全裸 / 纯粹形态`（`nsfw_nude`），输出 4 视角：
-- `ref_01_face_closeup`：85mm f/1.4 浅景深面部微表情特写。
-- `ref_02_half_medium`：50mm 3/4 半身定妆中景。
-- `ref_03_full_dynamic`：50mm 正面全身立姿无裁切（全裸形态包含私密解剖结构）。
-- `ref_04_back_rear`：85mm 45° 侧后背影/回眸轮廓光。
-
----
+样张发布目录从配置解析，不能沿用历史固定版本目录；参考资产不入 Git。
 
 ## 三、 一键运行流水线
 
@@ -69,13 +33,7 @@ node scripts/workflow.js character:onboard --character <character_id> --deploy
 
 ---
 
-## 四、 自动化校验门禁
 
-流水线末尾自动触发 5 重防护测试，确保系统 0 坏死点：
-1. `npm run typecheck:app`：前端 TS 类型 100% 严谨。
-2. `npm run build`：生产环境打包与体积预算通过。
-3. `validate-content-contracts.js`：角色、LoRA、场景与 `DATA_VERSION` 严格哈希校验。
-4. `test-popular-content.js`：断言热门角色数量、服装默认态、蓝图归属与成人 fail-closed。
-5. `test-repo-hygiene.js`：全库换行与文本卫生扫描。
+## 验收
 
-
+执行 [完整门禁](workflow.md#门禁与构建)，另逐层核对主题、头像、参考图片与实际样张。--skip-render 只表示跳过生成，不是完成资产验收。

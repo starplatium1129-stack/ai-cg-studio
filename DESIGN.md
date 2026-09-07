@@ -18,10 +18,10 @@ colors:
   warning: "#FFA726"
   danger: "#FF9B8F"
   info: "#90CAF9"
-  # 2026-08-28: 浅色主题已下线（美术审计 · 方案 A），light-* 字段随之一并移除。
+  # 2026-09-08: 此元数据表描述深色基线；浅色覆盖见 src/assets/css/light-theme.css。
   # 2026-09-01: 升级为甜系 Galgame 夜主题：高饱和樱花粉 + 薰衣草紫。
   # 2026-09-02: 方向 A 二次元博客质感优化：基底调校为澄澈绀蓝夜空、升级日系药丸胶囊微光标签与亚克力边缘高光。
-  # 深色是唯一主题，上面的 primary / surface / text-* 即唯一真相。
+  # 应用支持深浅主题；两种主题都需要视觉验收。
   # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
   #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
   #   on-primary→--text-inverse, neutral→--bg-base, surface→--bg-surface,
@@ -170,13 +170,10 @@ The theme is dark only. Backgrounds are violet-black instead of flat black, and
 surfaces are slightly lighter with restrained translucency where it improves
 hierarchy.
 
-> **2026-08-28 · 浅色主题下线（美术审计 · 方案 A）**
-> 此前是 dark / light 双主题，但两者并不对等：设计系统的 154 个令牌本来就
-> 围绕深色调设计，浅色是后补的 50 个覆盖，覆盖率只有 32.5%，20 套角色主题
-> 里 17 套没有浅色版。对单人使用的创作工具，维护两套完整主题是纯负债 ——
-> 每新增一个颜色都要写两遍。现已锁定深色：浅色覆盖、`AppThemeToggle`、
-> `theme-fade` 切换过渡均已移除，`preferredTheme()` 恒为 `dark`。
-> 若日后要恢复双主题，先补角色主题浅色版，再放开开关，不要只开开关。
+> **2026-09-08 · 当前双主题契约**
+> 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
+> 本文色板为深色基线；新增颜色需适配两个主题，角色强调色与图片上文字分别验收。
+> check-contrast.js 当前只核算深色，不能代替浅色计算样式与视觉审查。
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.

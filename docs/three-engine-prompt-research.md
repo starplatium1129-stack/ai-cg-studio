@@ -1,5 +1,8 @@
 # 三引擎提示词调研与精细化配置基线（Krea 2 / Anima / SD-Illustrious）
 
+> 2026-09-08 状态说明：本文保留专题方案或历史实验依据；其中规模、参数与待办不作为当前状态。现状见 [项目状态](project-status.md)，执行优先级见 [未来规划](roadmap.md)；实施前核对当前数据与生产配置。
+
+
 > 状态：2026-08-14 · 为提示词精细化配置人员提供依据。
 > 范围：Krea 2 Turbo（自然语言）、Anima Base/Aesthetic（标签流+Qwen LLM）、WAI Illustrious SDXL v17（Danbooru 标签流）。
 > 本文 = 外部调研（官方文档/社区，标注置信度）+ 项目既有契约（presets.json / quality-prompt-contract.js / promptCompiler.ts）+ 本项目实机验证结论。

@@ -1,5 +1,8 @@
 # 莱万汀调研复核（真相订正版）+ 7 角色 48 场 SFW 评审 + 5 场 P0 中英混杂修复
 
+> 历史记录：归档不表示全部问题已解决；测试结果只代表原记录时点。未闭环事项统一由 [未来规划](../../roadmap.md) 跟踪，实施前重新复现。
+
+
 **日期**：2026-09-01 20:48 + 21:25 真相订正
 **作者**：WorkBuddy 主会话
 **用户原话**："你这边调研一下莱万汀的样貌提示词和服装提示词，已经优化几轮了，但是一点改进没有，还越改越差。然后再对新加的几个热门角色场景进行逐一评审，看是否符合背景丰富，人物细节丰富，服装细节丰富，目前伊冯的都满足上述要求。你优先改sfw场景。"
@@ -124,7 +127,7 @@ JSON.parse(4 data files)                            → OK
 | `data/character-reference-view.json` | 同上（含早期错版"黑战术服"纠正） |
 | `data/scene-blueprints.json` | 莱万汀 6 SFW 重写 + 5 场 P0 中英混杂修复 |
 | `src/stores/sceneStore.ts` | DATA_VERSION 同步 |
-| `docs/audit-laevatain-recheck-2026-09-01.md` | 本报告（21:25 订正） |
+| `docs/archive/audits/audit-laevatain-recheck-2026-09-01.md` | 本报告（21:25 订正） |
 
 ---
 

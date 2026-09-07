@@ -70,8 +70,8 @@
 
 | # | 文件 | 位置 | 问题 | 建议 |
 |---|---|---|---|---|
-| 1 | `docs/companion-voice-roadmap.md` | L6 | 头部「全部阶段暂缓」与正文 P0/P1/P2 已完成矛盾 | 头部改为「P0-P2 已完成，P3/P4 暂缓」 |
-| 2 | `docs/prompt-image-quality-roadmap.md` | L101-105 | 声称 short-prompt-batch 对全部单角色场景注入 R18 token；实际 `short-prompt-builder.js:183-184` 按场景 rating 门控（仅 R18/mature 注入 nsfw） | 改为「对 R18/mature 单角色场景注入 nsfw token」 |
+| 1 | `docs/archive/research/companion-voice-roadmap.md` | L6 | 头部「全部阶段暂缓」与正文 P0/P1/P2 已完成矛盾 | 头部改为「P0-P2 已完成，P3/P4 暂缓」 |
+| 2 | `docs/archive/research/prompt-image-quality-roadmap.md` | L101-105 | 声称 short-prompt-batch 对全部单角色场景注入 R18 token；实际 `short-prompt-builder.js:183-184` 按场景 rating 门控（仅 R18/mature 注入 nsfw） | 改为「对 R18/mature 单角色场景注入 nsfw token」 |
 | 3 | `docs/live2d-native-runtime.md` | L62 | 验证证据 21/21、3/3 过期；实测 test-live2d-backend.js 24/24、test-live2d-native-contract.js 5/5（合计 29/29，与 L85 一致） | 更新单个脚本用例数 |
 | 4 | `docs/live2d-native-overlay-plan.md` | §8 L137-142 | 「前端侧交付尚未提交」；实际已提交（2a1e49b、b09de8e） | 勾销该项并注明提交号 |
 | 5 | `docs/showcase-generation-craft.md` | L37/L54 | `popularContent.ts` 缺路径前缀 | 补写为 `src/utils/popularContent.ts` |

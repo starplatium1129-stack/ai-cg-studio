@@ -1,5 +1,8 @@
 # AI-CG-Studio 产品与运营全维审计报告（2026-08-29）
 
+> 历史记录：归档不表示全部问题已解决；测试结果只代表原记录时点。未闭环事项统一由 [未来规划](../../roadmap.md) 跟踪，实施前重新复现。
+
+
 > 审计方式：六个只读探查通道并行取证（产品完整度 / UX / 数据内容 / 运行时性能 / 运维可持续 / 成本与 AI 协作），主审对关键证据现场复核。全程零改动。
 > 特别说明：审计期间（2026-08-29 00:06–00:54）有另一 AI 会话在本仓库并行执行工程审计（`engineering-audit-2026-08-28.html`）修复，期间发生 `.git` 对象库崩毁事故（见第 5 节事故快报）；本报告的性能数据部分已被该会话当场修复，文中逐处标注。
 > 关联文档：`docs/engineering-audit-2026-08-28.html`（工程质量八维 7.8 分）、`docs/design-audit-2026-08-28.html`（美术设计 6.7 分）。本报告补齐产品与运营视角，三者互补、不重叠。
@@ -63,7 +66,7 @@
 **三个硬伤：**
 1. **参考图库 232/1168（19.9%）url 断链**（`data/character-reference-view.json` 全量 existsSync 验证）：212 条为批量改名未回写的命名漂移（磁盘前缀式命名 vs json 裸名），20 条真缺失（alisa 夏日浴衣等 5 个「幽灵形态」×4 视角），外加 alisa 重复 outfitId=`nsfw_nude`。最刺眼：**检查器 `scripts/maintenance/check-ref-urls.js` 早已写好、schema 也在，但没接进任何门禁**——工具在手、门没装，所以长期无人报红。
 2. **分级字段三套并存、互不校验**：蓝图侧 `adult`(true 205/false 98/缺失 205)、`sampleRating`(缺失 262)、`adultEligibility`(缺失 481) 各管各的——5 条 `adult=true` 却标 R15/All，31 条含敏感措辞却无任何分级（27 条连 rating 都没有）。直接踩自家红线 4「fail-closed」精神：内容侧没关死。
-3. `docs/character-reference-audit-pending.md` 停在 2026-08-17 快照（自报 45/236/944 vs 实际 50/292/1168），75 项待修（21 角色）无人对照，占 1168 视角 6.4%。
+3. `docs/archive/audits/character-reference-audit-pending.md` 停在 2026-08-17 快照（自报 45/236/944 vs 实际 50/292/1168），75 项待修（21 角色）无人对照，占 1168 视角 6.4%。
 
 另：tag 层模板化属生产特征而非敷衍（top1 前 3 token 签名 x60/508 = 11.8%，负面词 boilerplate 三件套 100% 共享）；唯一真卫生问题是 camera 同义变体未归一（`medium shot` x108 与 `medium_shot` x43 并存）。
 

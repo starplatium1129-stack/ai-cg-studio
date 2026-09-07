@@ -52,7 +52,7 @@
 | `server.js` | 只负责组装网关、中间件、静态资源、SD 代理和进程启动 | 新增顶层能力时编辑 |
 | `server/config.js`、`server/security.js` | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
 | `routes/*.js` | HTTP 输入校验、响应格式与客户端断开处理 | API 契约变化时编辑 |
-| `services/*.js` | Ollama、翻译、GPT-SoVITS、Live2D 检查及串行资源调度 | 上游协议或调度策略变化时编辑 |
+| `services/*.ts`（源码）/ `*.js`（编译产物） | Ollama、翻译、GPT-SoVITS、Live2D 检查及串行资源调度 | 上游协议或调度策略变化时编辑 |
 | `src/views/ChatView.vue`、`src/composables/useChatStorage.ts`、`useVoice.ts`、`useLive2D.ts` | 角色房间编排、存储、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
 | `src/assets/css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
 

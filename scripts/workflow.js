@@ -84,9 +84,9 @@ const WORKFLOWS = {
     opts: '[--dry-run] [--ids=a,b,c] 默认处理所有「standards 空 + view 已有形态」的角色；登记后仍需 reference:render 出图',
   },
   'reference:render': {
-    desc: '参考库批量出图 59 角色×多服装（MiaoMiao v1.2 832x1216, 并发3）',
+    desc: '参考库批量出图（按当前角色与服装索引）（MiaoMiao v1.2 832x1216, 并发3）',
     cmd: ['node', 'scripts/maintenance/render-all-outfits-references.js'],
-    docs: 'docs/character-reference-audit-pending.md',
+    docs: 'docs/workflow.md#参考库',
     needs: 'ComfyUI + gateway http://127.0.0.1:3000',
   },
   'reference:audit': {
@@ -158,9 +158,9 @@ const WORKFLOWS = {
     steps: ['showcase:generate', 'showcase:audit', 'showcase:publish'],
   },
   'check:quick': {
-    desc: '并行质量门 npm run check（13项全跑；与 gate:quick 区别：本命令全量并行，gate:quick 按改动面积只跑相关）',
+    desc: '并行质量门 npm run check（注册项全跑；与 gate:quick 区别：本命令全量并行，gate:quick 按改动面积只跑相关）',
     cmd: ['npm', 'run', 'check'],
-    docs: 'AGENTS.md#质量门禁',
+    docs: 'AGENTS.md#实施与交付',
   },
   'gate:quick': {
     desc: '按改动类型分层门禁（ui|server|data|all；与 check:quick 区别：只跑改动相关面积，更快，缺省自动检测 git 改动）',
@@ -186,7 +186,7 @@ const WORKFLOWS = {
   'build:web': {
     desc: '前端构建 + 预算 + 预压',
     cmd: ['npm', 'run', 'build'],
-    docs: 'AGENTS.md:53',
+    docs: 'AGENTS.md#实施与交付',
   },
   'build:runtime': {
     desc: '编译 services/*.ts -> .js',
@@ -196,16 +196,16 @@ const WORKFLOWS = {
   'deploy:desktop': {
     desc: '桌面增量部署（跳过构建）',
     cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/deploy-desktop-quick.ps1', '-SkipBuild'],
-    docs: 'AGENTS.md:56',
+    docs: 'docs/desktop-deployment.md',
   },
   'deploy:desktop:full': {
     desc: '桌面完整部署（前端构建 + 复制 + 清缓存 + 验证 + 重启）',
     cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/deploy-desktop-quick.ps1'],
-    docs: 'AGENTS.md:56',
+    docs: 'docs/desktop-deployment.md',
   },
   // ── check: 单项门禁（可单独跑或组合）──────────────────────────────
   'check:monolith': {
-    desc: '600 行红线只降不升门禁（基线 20 文件，回涨/超线/死条目 FAIL）',
+    desc: '600 行红线只降不升门禁（以 monolith-baseline.json 为准）',
     cmd: ['node', 'scripts/tests/test-monolith-budget.js'],
     docs: 'scripts/tests/test-monolith-budget.js:1',
     opts: '[--update-baseline] 重新生成基线（体量真降后用）',
@@ -213,27 +213,27 @@ const WORKFLOWS = {
   'check:contrast': {
     desc: '深色主题文字对比度门禁（WCAG AA）',
     cmd: ['node', 'scripts/maintenance/check-contrast.js', '--check'],
-    docs: 'AGENTS.md#动效与视觉性能铁律',
+    docs: 'AGENTS.md#质量红线',
   },
   'check:animations': {
     desc: 'GPU 合成属性门禁（禁 left/top/width/height 补间）',
     cmd: ['npm', 'run', 'lint:animations'],
-    docs: 'AGENTS.md#动效与视觉性能铁律',
+    docs: 'AGENTS.md#质量红线',
   },
   'check:ref-urls': {
-    desc: '参考库 URL 断链门禁（1869 条目全量）',
+    desc: '参考库 URL 断链门禁（按当前索引，pending 不算已发布）',
     cmd: ['node', 'scripts/maintenance/check-ref-urls.js'],
     docs: 'scripts/maintenance/check-ref-urls.js:1',
   },
   'check:pinned-scenes': {
     desc: '定稿场景字节级保护门禁（100 条手工定稿）',
     cmd: ['node', 'scripts/tests/test-pinned-scene-prompts.js'],
-    docs: 'AGENTS.md#定稿场景提示词保护',
+    docs: 'AGENTS.md#质量红线',
   },
   'check:rewrite': {
     desc: '批量改写完整性门禁（覆盖率/模板签名/跨条目雷同）',
     cmd: ['node', 'scripts/tests/test-prompt-rewrite-integrity.js'],
-    docs: 'AGENTS.md#严禁偷懒式批量交付',
+    docs: 'AGENTS.md#质量红线',
     opts: '[--delivery <交付文件>] 复检指定交付',
   },
   'check:popular': {
@@ -257,9 +257,9 @@ const WORKFLOWS = {
     docs: 'package.json:53',
   },
   'check:bundle': {
-    desc: '140KB 打包预算门禁（全站 19 路由，build:web 隐含，单独跑入口）',
+    desc: '打包预算门禁（路由与依赖闭包，build:web 隐含）',
     cmd: ['node', 'scripts/maintenance/check-bundle-budget.js'],
-    docs: 'AGENTS.md#质量门禁',
+    docs: 'AGENTS.md#实施与交付',
   },
   // ── backup / runtime: 磁盘债治理 ────────────────────────────────
   'backup:git': {
@@ -287,7 +287,7 @@ const WORKFLOWS = {
     docs: 'package.json',
   },
   'test:e2e:critical': {
-    desc: '关键 e2e 套件（5 spec 132 tests，studio/flows/a11y/anima-quick/interaction-polish）',
+    desc: '关键 e2e 套件（用例数以执行结果为准；studio/flows/a11y/anima-quick/interaction-polish）',
     cmd: ['npm', 'run', 'test:e2e:critical:run'],
     docs: 'package.json',
     needs: 'playwright 浏览器已安装（npx playwright install）',

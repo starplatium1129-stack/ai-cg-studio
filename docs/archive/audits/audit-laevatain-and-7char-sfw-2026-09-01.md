@@ -1,5 +1,8 @@
 # 莱万汀还原提示词调研 + 8 角色 42 场 SFW 竖版修复
 
+> 历史记录：归档不表示全部问题已解决；测试结果只代表原记录时点。未闭环事项统一由 [未来规划](../../roadmap.md) 跟踪，实施前重新复现。
+
+
 **日期**：2026-09-01
 **作者**：WorkBuddy 主会话（用户授权 19:14-style 全量修复）
 **任务来源**：用户原话 "你这边调研一下莱万汀的相关提示词，想在项目里怎么写都不还原。然后再把新加的8个角色的sfw场景看一下，除了伊冯的"
@@ -141,7 +144,7 @@ node scripts/workflow.js data:validate                       → 仅余 krista_l
 - `data/character-reference-standards.json`（莱万汀 standards，本次为新改）
 - `data/scene-blueprints.json`（8 张剩余 full body 修复 + 莱万汀 outfitId ignition 重设）
 - `src/stores/sceneStore.ts`（DATA_VERSION）
-- `docs/audit-laevatain-and-7char-sfw-2026-09-01.md`（本报告）
+- `docs/archive/audits/audit-laevatain-and-7char-sfw-2026-09-01.md`（本报告）
 
 ---
 

@@ -1,5 +1,8 @@
 # Showcase 出图实战经验（2026-08-12 ~ 2026-08-13）
 
+> 2026-09-08 状态说明：本文保留专题方案或历史实验依据；其中规模、参数与待办不作为当前状态。现状见 [项目状态](project-status.md)，执行优先级见 [未来规划](roadmap.md)；实施前核对当前数据与生产配置。
+
+
 > **状态基线**：2026-08-13。本文记录这两天从"批量生成 298 场景 + 774 热门 + 26 画师"到"逐场景手工修复"过程中踩出来的全部经验。
 > 这是**实测结论**，部分推翻了 `model-prompting-and-parameters-guide.md` 的基线建议（见 §4），以本文为准。
 > 配套工具：`scripts/maintenance/scene-fix.js`（单场景手工链路）、`short-prompt-builder.js`、`sc300-repro-verify.js`。

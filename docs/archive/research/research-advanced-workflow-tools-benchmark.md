@@ -270,4 +270,4 @@ GenerationOptions {
 - 社区/实测（B/C 级）：ComfyUI custom node 生态、mold、PTT/CivArchive 社区经验（见 `docs/three-engine-prompt-research.md` 四级证据表）。
 - 本项目实测（A 级）：`anima-training-record.md`、`showcase-generation-craft.md`、各场景人工审核链。
 
-（外部来源 URL 见本文第 1 节各维度内联链接，以及 `docs/three-engine-prompt-research.md`「附录 A」与 `docs/prompt-image-quality-roadmap.md`「资料来源」。）
+（外部来源 URL 见本文第 1 节各维度内联链接，以及 `docs/three-engine-prompt-research.md`「附录 A」与 `docs/archive/research/prompt-image-quality-roadmap.md`「资料来源」。）

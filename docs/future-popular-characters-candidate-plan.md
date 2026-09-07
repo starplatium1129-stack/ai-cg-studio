@@ -1,7 +1,10 @@
 # 未来项目热门角色候选规划 (Future Popular Characters Candidate Blueprint)
 
-> **文档版本**：v1.0.0 核心总览 | **最新基线**：2026-09-06  
-> **涵盖规模**：**8 大核心领域 · 49 位超人气角色 · 490 套 SFW 心动日常/战斗高光 + 196 套唯美成人（NSFW）双引擎蓝图规划**  
+> 2026-09-08 状态说明：本文保留专题方案或历史实验依据；其中规模、参数与待办不作为当前状态。现状见 [项目状态](project-status.md)，执行优先级见 [未来规划](roadmap.md)；实施前核对当前数据与生产配置。
+
+
+> **文档版本**：v1.0.0 核心总览 | **最新基线**：2026-09-06
+> **涵盖规模**：**8 大核心领域 · 49 位超人气角色 · 490 套 SFW 心动日常/战斗高光 + 196 套唯美成人（NSFW）双引擎蓝图规划**
 > **执行纲领**：严格恪守 `AGENTS.md` 六位一体交付铁律、解耦常驻特征、去模板化唯美单人 NSFW 四支柱与 `studio-prompt-craft` 双引擎分流体系。
 
 ---
@@ -147,7 +150,7 @@ Danbooru 系索引和实际 booru 图中稳定出现 `katou_megumi`、`brown_hai
 Megumi Kato from *Saekano*, a quietly pretty Japanese high-school girl with soft brown eyes and natural brown hair, usually styled in a simple short bob in her earlier appearance and growing longer later in the story. Her understated expressions, calm gaze, restrained body language and effortlessly ordinary clothing should make her feel subtly charming rather than theatrically glamorous.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``平静 / 慢半拍吐槽 / 若有若无的笑 / 不争镜头 / 自然陪伴感 / 表面无所谓但其实在意``  
+**表演关键词**：``平静 / 慢半拍吐槽 / 若有若无的笑 / 不争镜头 / 自然陪伴感 / 表面无所谓但其实在意``
 **易错红线**：
 - ❌ 不要持续做成“无表情三无少女”；她会笑、会生气、会吃醋。
 - ❌ 不要所有造型都强塞贝雷帽。
@@ -280,7 +283,7 @@ Safebooru 上原作插画相关记录明确包含 `shiina_mahiru, brown_hair, br
 Mahiru Shiina from *The Angel Next Door Spoils Me Rotten*, an elegant high-school girl with very long straight light ash-golden hair, neat bangs and warm amber-brown eyes. She carries herself with immaculate composure in public, while her private expressions are softer, warmer and noticeably more vulnerable.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``完美女生外壳 / 私下温柔 / 家务熟练 / 节俭 / 小小得意 / 被夸后害羞 / 安心后的孩子气``  
+**表演关键词**：``完美女生外壳 / 私下温柔 / 家务熟练 / 节俭 / 小小得意 / 被夸后害羞 / 安心后的孩子气``
 **易错红线**：
 - ❌ 不要把金发做成高饱和柠檬黄。
 - ❌ 不要始终“圣母式微笑”；私人状态更真实。
@@ -415,7 +418,7 @@ Danbooru 索引统计非常稳定：
 Eru Chitanda from *Hyouka*, a refined high-school girl from a respected rural family, with glossy waist-length black hair, straight bangs and unusually large luminous violet-indigo eyes. Her usual ladylike posture transforms instantly when curiosity takes hold, as she leans closer with intensely sparkling eyes.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``大小姐教养 / 好奇心爆发 / 距离突然拉近 / 天真专注 / 礼貌 / 农家千金 / 眼神极强``  
+**表演关键词**：``大小姐教养 / 好奇心爆发 / 距离突然拉近 / 天真专注 / 礼貌 / 农家千金 / 眼神极强``
 **易错红线**：
 - ❌ 不能只画成安静大小姐。
 - ❌ 好奇状态必须改变姿势和眼神。
@@ -546,7 +549,7 @@ Booru 资料中较稳定：
 Iroha Isshiki from *My Teen Romantic Comedy SNAFU*, a cute younger high-school girl with softly layered medium-length brown hair and warm hazel-golden eyes. Her expressions are highly social and calculated: bright smiles, playful hesitation, teasing side glances and deliberately innocent gestures that often conceal a much sharper awareness of the people around her.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``小恶魔 / 会看空气 / 装可爱 / 学妹感 / 精明 / 嘴上拒绝 / 实际很能干 / 微妙观察``  
+**表演关键词**：``小恶魔 / 会看空气 / 装可爱 / 学妹感 / 精明 / 嘴上拒绝 / 实际很能干 / 微妙观察``
 **易错红线**：
 - ❌ 不能只剩“绿茶/腹黑”标签。
 - ❌ 她实际能承担学生会事务。
@@ -675,7 +678,7 @@ Iroha Isshiki from *My Teen Romantic Comedy SNAFU*, a cute younger high-school g
 Haruno Yukinoshita from *My Teen Romantic Comedy SNAFU*, a striking university-aged young woman with sleek shoulder-length black hair, sometimes carrying subtle violet-toned tips, and cool blue-violet eyes. She projects effortless social confidence and a radiant smile, but her gaze should retain an intelligent, appraising sharpness that makes her friendliness feel deliberately controlled.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``社交完美 / 姐姐感 / 观察者 / 戏弄 / 清醒 / 家族责任 / 笑容与冷眼反差``  
+**表演关键词**：``社交完美 / 姐姐感 / 观察者 / 戏弄 / 清醒 / 家族责任 / 笑容与冷眼反差``
 **易错红线**：
 - ❌ 不要复制雪乃的长直发。
 - ❌ 阳乃是大学生。
@@ -683,34 +686,34 @@ Haruno Yukinoshita from *My Teen Romantic Comedy SNAFU*, a striking university-a
 - ❌ 她的“危险感”更多来自洞察与语言，不是反派姿态。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜大学研讨课后**  
+**01｜大学研讨课后**
 她抱着几本理工类教材坐在阶梯教室最后一排整理笔记，周围同学已经离开，笑容消失后显出短暂疲惫。
 
-**02｜家族活动前的首饰确认**  
+**02｜家族活动前的首饰确认**
 正式连衣裙，她坐在酒店休息区低头扣耳环，桌上放着活动邀请函；镜头从斜前方捕捉她进入“社交模式”前的安静几秒。
 
-**03｜便利店垃圾食品反差**  
+**03｜便利店垃圾食品反差**
 深夜便利店窗边，她穿着精致外套却拿着普通杯面或薯片，认真研究包装上的新口味，形成“完美女性 vs 随便夜宵”的落差。
 
-**04｜咖啡馆观察人群**  
+**04｜咖啡馆观察人群**
 她靠坐窗边，一手撑下巴、一手转动咖啡杯，表面在休息，实际上目光不断追踪街上发生的小互动。
 
-**05｜烟火大会后的浴衣**  
+**05｜烟火大会后的浴衣**
 深色浴衣，她坐在石阶边稍微松开木屐带，让脚休息；烟火已经散场，只剩远处灯笼与人群虚化。
 
-**06｜冬日红大衣独行**  
+**06｜冬日红大衣独行**
 大学校园外，红色大衣与围巾，她一边走一边看手机里的家庭行程安排，脸上的营业笑容逐渐收起。
 
-**07｜图书馆里的专业资料**  
+**07｜图书馆里的专业资料**
 与雪乃的“文学少女感”区分：阳乃在大学图书馆堆着专业书、计算纸和饮料，快速浏览资料并做标记。
 
-**08｜家庭会议后的酒店走廊**  
+**08｜家庭会议后的酒店走廊**
 会议结束，她靠在走廊窗边短暂闭眼休息，手里仍握着资料夹；几秒后重新整理表情准备回到人群。
 
-**09｜深夜拉面店**  
+**09｜深夜拉面店**
 漂亮成熟的大学生独自在吧台吃一碗热气腾腾的拉面，头发随手别到耳后，不讲究优雅吃相，是非常私人化的一面。
 
-**10｜晨间电话与黑咖啡**  
+**10｜晨间电话与黑咖啡**
 公寓厨房或酒店早餐区，她靠着料理台接电话，另一只手端黑咖啡；前半句保持亲切，挂断后一瞬间眼神恢复冷静。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -784,7 +787,7 @@ Booru 标签证据非常好：
 Anna Yamada from *The Dangers in My Heart*, a notably tall and striking middle-school girl with long dark navy-blue hair, warm brown eyes and several distinctive small beauty marks along the right side of her neck. Despite her mature model-like appearance, her expressions are candid, playful and often childishly delighted whenever food catches her attention.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``高挑模特感 / 吃货 / 天然 / 表情直接 / 调皮 / 明亮 / 成熟外貌与孩子气反差``  
+**表演关键词**：``高挑模特感 / 吃货 / 天然 / 表情直接 / 调皮 / 明亮 / 成熟外貌与孩子气反差``
 **易错红线**：
 - ❌ 不要忘记颈侧痣。
 - ❌ 头发不是纯黑，应保留深蓝黑。
@@ -792,34 +795,34 @@ Anna Yamada from *The Dangers in My Heart*, a notably tall and striking middle-s
 - ❌ 她大量魅力来自非常直接的喜怒哀乐。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜图书馆偷偷吃零食**  
+**01｜图书馆偷偷吃零食**
 书架间的隐蔽座位，她蹲坐在椅子边拆开零食包装，小心控制声音；刚咬一口就听见脚步，脸颊还鼓着。
 
-**02｜拍摄工作结束的后台**  
+**02｜拍摄工作结束的后台**
 结束模特拍摄后，她坐在化妆镜前拔掉发夹、把头发放下来，旁边华丽服装与她手中的便利店点心形成反差。
 
-**03｜便利店新品发现**  
+**03｜便利店新品发现**
 放学路上，她在零食货架前突然停住，身体前倾盯着限定口味，眼睛比看镜头时还认真。
 
-**04｜教室窗边伸懒腰**  
+**04｜教室窗边伸懒腰**
 午休后的空教室，她坐在课桌边向后伸展长手臂，身材很高却完全没有摆模特姿势的自觉。
 
-**05｜自动贩卖机弯腰选饮料**  
+**05｜自动贩卖机弯腰选饮料**
 由于身高很高，她反而要明显弯腰查看最下层饮料；这个姿势天然完成空间压缩，也表现日常感。
 
-**06｜下雨天护住零食袋**  
+**06｜下雨天护住零食袋**
 突降小雨，她第一反应不是护头发，而是把纸袋抱进怀里避免里面的点心淋湿，随后自己才开始跑。
 
-**07｜甜品店巨大芭菲**  
+**07｜甜品店巨大芭菲**
 她坐在桌前盯着比预期还大的芭菲，神情像小孩看到宝物；第一勺入口后直接露出无法隐藏的幸福表情。
 
-**08｜工作与作业同时进行**  
+**08｜工作与作业同时进行**
 咖啡店角落，她还带着拍摄后的发型，在桌上摊开学校作业，旁边放工作证和演出资料，形成“普通学生与艺能工作”的双生活。
 
-**09｜书架最高层取书**  
+**09｜书架最高层取书**
 她轻松伸手够到普通同学难以拿到的高层书籍，取下来后才意识到自己的身高优势，露出一点得意。
 
-**10｜回家路上的车窗发呆**  
+**10｜回家路上的车窗发呆**
 结束工作后的公共交通上，她靠窗坐着，脸上的职业笑容完全卸掉，手里捏着吃到一半的小包装零食，安静看夜景。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -898,7 +901,7 @@ Booru/Safebooru 图像标签稳定出现 `waguri_kaoruko, black_hair, long_hair,
 Kaoruko Waguri from *The Fragrant Flower Blooms with Dignity*, a petite high-school girl with long dark hair held neatly by a simple black headband and clear deep-blue eyes. Her manner is gentle and composed, but the moment delicious food appears her restraint melts into an openly joyful, almost childlike smile.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``娇小 / 坦率 / 不以貌取人 / 吃饭时超幸福 / 学习认真 / 温柔坚定 / 偶尔午睡 / 很会认真听别人说话``  
+**表演关键词**：``娇小 / 坦率 / 不以貌取人 / 吃饭时超幸福 / 学习认真 / 温柔坚定 / 偶尔午睡 / 很会认真听别人说话``
 **易错红线**：
 - ❌ 她不是高挑大小姐。
 - ❌ 食物幸福感应该进入表情，而不是只把蛋糕当背景摆件。
@@ -906,34 +909,34 @@ Kaoruko Waguri from *The Fragrant Flower Blooms with Dignity*, a petite high-sch
 - ❌ 黑色发箍是强辨识元素。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜蛋糕店第一口**  
+**01｜蛋糕店第一口**
 窗边座位，她面前摆着两三种小蛋糕，却完全没有端着大小姐形象；第一口入口时闭起眼睛露出真心幸福的笑。
 
-**02｜选择最后一块草莓蛋糕**  
+**02｜选择最后一块草莓蛋糕**
 展示柜前，她微微蹲下认真观察最后一块草莓蛋糕，手指隔着玻璃比划，像在做重大决定。
 
-**03｜周末服装店试搭**  
+**03｜周末服装店试搭**
 官方明确会在休息日买衣服。她站在试衣区旁把针织外套搭在身前，黑发箍依旧保留，认真思考是不是太成熟。
 
-**04｜没安排的学习日**  
+**04｜没安排的学习日**
 安静咖啡馆，她桌上同时有参考书、笔记和已经吃空的甜点盘；学习非常认真，但视线偶尔被旁桌新端来的蛋糕吸引。
 
-**05｜和弟弟看电视剧前准备零食**  
+**05｜和弟弟看电视剧前准备零食**
 家中客厅，她坐在地毯边把饮料、饼干和遥控器摆好；动作体现“家庭中的普通姐姐”，而不是纯恋爱女主。
 
-**06｜饭后幸福午睡**  
+**06｜饭后幸福午睡**
 阳光柔和的周末下午，她侧躺在沙发上浅睡，旁边小桌还有吃完甜点留下的叉子和空盘；脸上是完全无防备的满足。
 
-**07｜雨中的蛋糕盒**  
+**07｜雨中的蛋糕盒**
 回家途中突然下雨，她把刚买的蛋糕盒牢牢护在怀里，自己肩膀被雨打湿一些也不在意，神情却非常认真。
 
-**08｜书店蹲坐选小说**  
+**08｜书店蹲坐选小说**
 她蹲在较低的小说书架前翻看几本候选，纸袋靠在脚边；小个子让构图天然产生亲近感。
 
-**09｜水族馆水槽前**  
+**09｜水族馆水槽前**
 不是标准约会摆拍。她坐在大型水槽前的长凳上，身体稍稍前倾追着游鱼移动视线，蓝色水光映在眼睛里。
 
-**10｜亲手打包小点心**  
+**10｜亲手打包小点心**
 厨房桌边，她将刚做好或选好的点心装进纸袋，反复调整丝带结直到满意；最后抬头确认效果时露出温柔而坚定的笑。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1018,41 +1021,41 @@ Danbooru 稳定标签：`makinohara_shouko, seishun_buta_yarou, braid, long_hair
 Shouko Makinohara from *Rascal Does Not Dream*, a gentle and softly mysterious Japanese girl with long dark blue-black hair styled in a hime cut with a slim braid woven into one sidelock, and calm deep blue eyes. Her presence feels warm, reassuring and slightly untouchable — like a cherished first love remembered through soft light. Her older form is iconically associated with a flowing white dress by the seaside; her younger middle-school form is smaller and wears a sailor uniform.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``白月光初恋感 / 温柔治愈 / 微微年上的从容 / 神秘感 / 若即若离 / 说话留半句 / 守护姿态``  
+**表演关键词**：``白月光初恋感 / 温柔治愈 / 微微年上的从容 / 神秘感 / 若即若离 / 说话留半句 / 守护姿态``
 **易错红线**：
 - ❌ 不要只画成柔弱病号；她的核心气质是温柔而从容的守护者。
 - ❌ 姬发式与鬓角麻花辫不可省略，这是她与普通黑长直角色的分界线。
 - ❌ 蓝黑发色不要画成纯黑死板一块，也不要偏成亮蓝。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜七里滨的白色连衣裙**  
+**01｜七里滨的白色连衣裙**
 傍晚的七里滨海岸，她赤脚踩在湿沙上，白色连衣裙下摆被海风轻轻掀起，单手拢着被吹散的长发；回头时笑容很浅，像一段随时会消失的回忆。远景海面只做暖色光带，人物保持中近景。
 
-**02｜梓川家玄关与猫**  
+**02｜梓川家玄关与猫**
 她蹲在玄关地垫上，伸出手指让橘猫「疾风」嗅闻，书包还靠在门边；夕阳从门外斜照进来，她低着头，侧脸被猫的呼吸逗得微微发笑。
 
-**03｜图书馆靠窗的读书时光**  
+**03｜图书馆靠窗的读书时光**
 学校图书馆最里面的座位，她摊开一本读到一半的文库本，手指夹着书签；阳光穿过窗帘在她发梢投下条纹光影，她抬眼望向窗外操场，神情安静而遥远。
 
-**04｜雨后天台的水洼倒影**  
+**04｜雨后天台的水洼倒影**
 放学后的天台，积水未干，她撑着透明雨伞站在围栏边，低头看水洼里云层的倒影；风把伞面上的水珠吹落，她的表情平静中带着一点不易察觉的寂寞。
 
-**05｜便利店热饮的短暂停留**  
+**05｜便利店热饮的短暂停留**
 冬日傍晚，她在便利店门口捧着罐装热可可暖手，制服外套着大衣；呼出的白气与商店暖光交叠，她望着街道发呆，像是在等一个不确定会不会来的人。
 
-**06｜厨房里的便当准备**  
+**06｜厨房里的便当准备**
 清晨的厨房，她系着素色围裙把玉子烧装进餐盒，麻花辫垂在肩前；动作熟练而安静，装好后轻轻盖上布巾，嘴角带着几乎看不见的满足。
 
-**07｜医院庭院长椅**  
+**07｜医院庭院长椅**
 （小翔子形态）医院中庭的长椅上，她抱着图画书坐在树影里，阳光透过树叶落在她的水手服上；她抬头看向飞过的鸟，眼神不是病人的脆弱，而是孩子气的向往。
 
-**08｜夏祭烟火下的侧脸**  
+**08｜夏祭烟火下的侧脸**
 深色浴衣，她坐在河堤石阶上，手里拿着快化掉的苹果糖；烟火的光在她深蓝色的眼睛里明灭，她没有看烟火，而是在看身边人的方向，神情温柔。
 
-**09｜咖啡厅的草莓蛋糕**  
+**09｜咖啡厅的草莓蛋糕**
 靠窗双人座，她用叉子把草莓蛋糕上的草莓留到最后，动作很珍惜；窗外是普通的商店街，整个画面是她难得展露的、符合年龄的单纯开心。
 
-**10｜毕业季的樱花坡道**  
+**10｜毕业季的樱花坡道**
 春日坡道，她穿着制服站在纷飞的樱花里，双手背在身后微微前倾；不是告别式的伤感，而是带着神秘微笑的「后会有期」，风把花瓣吹过她的肩线。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1132,7 +1135,7 @@ Shouko Makinohara from *Rascal Does Not Dream*, a gentle and softly mysterious J
 Rio Futaba from *Rascal Does Not Dream*, a quiet and sharp-minded high-school girl with long wavy ash-grey hair, usually half-hidden under a white lab coat worn loosely over her school uniform, and calm golden-brown eyes behind simple glasses. When absorbed in an experiment she ties her hair up into a careless high ponytail with a scrunchie. Her posture and gaze should feel guarded and self-contained, with a faint loneliness underneath the scientific composure.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``无口理科少女 / 冷静毒舌 / 白袍与烧杯咖啡 / 孤僻但重情 / 对身体的自卑 / 深夜独居感 / 暗恋的克制``  
+**表演关键词**：``无口理科少女 / 冷静毒舌 / 白袍与烧杯咖啡 / 孤僻但重情 / 对身体的自卑 / 深夜独居感 / 暗恋的克制``
 **易错红线**：
 - ❌ 不要画成阳光开朗的元气娘；她的基调是安静与克制。
 - ❌ 白袍是半永久符号，但不是唯一造型，私服场景要朴素。
@@ -1140,34 +1143,34 @@ Rio Futaba from *Rascal Does Not Dream*, a quiet and sharp-minded high-school gi
 - ❌ 灰棕发色不要画成纯银白（会撞白银系角色）或纯棕色。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜实验室的烧杯咖啡**  
+**01｜实验室的烧杯咖啡**
 放学后的化学实验室，她把长发扎成高马尾，白袍袖口挽起，正用酒精灯加热烧杯煮咖啡；夕阳从窗口斜切进来，她盯着液面的神情比上课认真十倍。
 
-**02｜两个自己的深夜对坐**  
+**02｜两个自己的深夜对坐**
 （二重身主题意象）深夜实验室，她独自坐在两张拼起的实验桌之间，台面上两份摊开的笔记相对而放；只画一个人，用空椅子与两份笔记暗示分裂，神情疲惫。
 
-**03｜图书馆最深处的高深书籍**  
+**03｜图书馆最深处的高深书籍**
 图书馆角落，她抱着一摞远超高中水平的物理书找座位，眼镜稍稍滑下鼻梁；找到位置后立刻进入阅读状态，周围喧嚣与她无关。
 
-**04｜便利店的一人晚餐**  
+**04｜便利店的一人晚餐**
 夜晚便利店窗边高脚座，白袍已经脱掉搭在包上，她一个人吃着泡面与饭团的组合，望着玻璃外的雨；独居生活的真实切片，不美化也不卖惨。
 
-**05｜文化祭科学部的冷清摊位**  
+**05｜文化祭科学部的冷清摊位**
 文化祭，她坐在只做了简单展板与几个趣味实验装置的空荡摊位后，托腮看着隔壁班的热闹；有人对实验产生兴趣时，她讲解起来意外地认真投入。
 
-**06｜天体观测的望远镜**  
+**06｜天体观测的望远镜**
 夜晚学校屋顶，她蹲在小望远镜旁记录数据，呼出的白气与城市的灯光背景；提到某颗星星时语气难得轻快，是理科少女的浪漫瞬间。
 
-**07｜体育节的旁观者**  
+**07｜体育节的旁观者**
 她不擅长也不喜欢运动，坐在操场边缘的树荫里，制服外套盖在膝上，手里拿着书却时不时抬眼看向跑道——视线尽头是某个人。
 
-**08｜雨天实验室的杯面**  
+**08｜雨天实验室的杯面**
 暴雨天被困学校，她在实验台边用开水壶泡杯面，眼镜被热气熏得模糊；摘下来擦拭的一瞬间露出没有防备的素脸，画面安静而私密。
 
-**09｜书店科学区的新刊**  
+**09｜书店科学区的新刊**
 书店角落，她站在科学新书架前快速翻阅目录，发现想买的书时眼睛微微发亮；购物篮里却同时躺着一本恋爱小说，是她不示人的另一面。
 
-**10｜新年参拜的科学式求签**  
+**10｜新年参拜的科学式求签**
 冬装大衣围巾，她在神社抽到签后第一反应是分析签文言外之意，随后被自己的想法逗得轻轻叹气；把签仔细折好收进口袋，许的愿望无人知晓。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1244,7 +1247,7 @@ Rio Futaba from *Rascal Does Not Dream*, a quiet and sharp-minded high-school gi
 Kyouko Hori from *Horimiya*, a bright and popular high-school girl with chestnut-brown hair falling past her shoulders, an M-shaped fringe, long sidelocks and warm amber-brown eyes. At school she looks polished and effortlessly sociable; at home she switches to a bare-faced, hair-tied-up, apron-wearing household mode that feels candid, brisk and surprisingly domestic. Her expressions should carry a confident, slightly bossy warmth rather than delicate shyness.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``强气直率 / 学校女神 vs 居家素颜 / 主妇级家务力 / 抖S的掏耳敲背 / 容易吃醋 / 反差害羞 / 长姐如母``  
+**表演关键词**：``强气直率 / 学校女神 vs 居家素颜 / 主妇级家务力 / 抖S的掏耳敲背 / 容易吃醋 / 反差害羞 / 长姐如母``
 **易错红线**：
 - ❌ 不要只画学校光鲜形态，居家素颜形态才是角色灵魂的一半。
 - ❌ 瞳色按棕色系，避免被同人蓝瞳带偏。
@@ -1252,34 +1255,34 @@ Kyouko Hori from *Horimiya*, a bright and popular high-school girl with chestnut
 - ❌ 后期短发属结局时间线，与常规中长发造型不要混用。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜放学到主妇的十分钟切换**  
+**01｜放学到主妇的十分钟切换**
 玄关，她一只手还拎着书包，另一只手已经抓起围裙，头发随手扎起；镜子里还是学校的精致形象，镜外的她已经切换到家务模式，构图定格在「变身中」的瞬间。
 
-**02｜超市晚市的特价攻略**  
+**02｜超市晚市的特价攻略**
 傍晚超市，她推着购物车熟练比对特价标签，把限时折扣的食材快速放进篮子；动作干脆利落，脸上是抢到好货的实在开心，完全没有校园女神包袱。
 
-**03｜厨房尝味的侧脸**  
+**03｜厨房尝味的侧脸**
 居家灶台边，她扎着头发、穿围裙，用勺子尝了一口炖菜后微微皱眉，转身调整火候；窗外的天色是傍晚的橘色，整个画面是踏实的生活温度。
 
-**04｜创太的作业陪读**  
+**04｜创太的作业陪读**
 客厅矮桌，她盘腿坐在地毯上辅导弟弟算术，一只手撑着脸，另一只手指着练习册；弟弟答对时她露出毫无防备的姐姐式笑容。
 
-**05｜阳台晾衣的晨光**  
+**05｜阳台晾衣的晨光**
 周末早晨，她穿着宽松卫衣站在阳台把衣物一件件抖开晾上竹竿，晨风吹起她没扎牢的碎发；素颜的脸在阳光下干净而放松。
 
-**06｜学校天台的开朗瞬间**  
+**06｜学校天台的开朗瞬间**
 学校形态。午休天台，她靠在铁丝网边和朋友说笑，制服整齐、笑容明亮——与居家形态判若两人，体现她完美切换的双面性。
 
-**07｜吃醋后的赌气侧颜**  
+**07｜吃醋后的赌气侧颜**
 放学路上，她因为某事别过脸去快步走在前面，耳根却泛红；嘴上说着「没什么」，抱书包的手臂却收得很紧，是她不坦率的一面。
 
-**08｜冬夜被炉里的橘子**  
+**08｜冬夜被炉里的橘子**
 客厅被炉，她半个身子缩在被炉里剥橘子，头发放下来散在肩上；电视的光映在她脸上，是忙碌一天后难得的懒散时刻。
 
-**09｜「粉碎系」敲背的预备动作**  
+**09｜「粉碎系」敲背的预备动作**
 居家场景，她让弟弟/家人趴好，自己活动手腕做出「要开始了」的架势，嘴角带着一点不怀好意的笑；被抓拍的是亲友闻之色变的开战前一秒。
 
-**10｜发廊前的犹豫**  
+**10｜发廊前的犹豫**
 （后期短发伏笔）商业街发廊橱窗前，她驻足看着短发造型的海报，抬手比划自己剪掉长发的位置；神情在期待与不舍之间，是角色时间线的重要瞬间。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1355,7 +1358,7 @@ Danbooru 稳定标签：`hayasaka_ai, blonde_hair, side_ponytail, hair_scrunchie
 Ai Hayasaka from *Kaguya-sama: Love Is War*, a poised quarter-Irish young woman with pale blonde hair tied in a side ponytail with a scrunchie and cool, perceptive blue eyes. She moves between identities effortlessly: a crisp black-and-white maid uniform in the Shinomiya estate, a loose-ordered gyaru school look among classmates, and, after her resignation, a refreshed short haircut. Beneath every disguise her gaze stays sharp, professional and quietly tired in a way that only shows when she is alone.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``千层饼伪装者 / 女仆的干练 / 辣妹的演技 / 嘴上抱怨心里疼爱 / 高压社畜感 / 独处时的疲惫 / 辞职后的解放``  
+**表演关键词**：``千层饼伪装者 / 女仆的干练 / 辣妹的演技 / 嘴上抱怨心里疼爱 / 高压社畜感 / 独处时的疲惫 / 辞职后的解放``
 **易错红线**：
 - ❌ 不要只绑定女仆装；辣妹形态与短发后期形态同等重要。
 - ❌ 她的辣妹是「演技」，细节上要能看出演的痕迹（用力过猛的可爱），不是真辣妹性格。
@@ -1363,34 +1366,34 @@ Ai Hayasaka from *Kaguya-sama: Love Is War*, a poised quarter-Irish young woman 
 - ❌ 短发造型属辞职篇之后，与侧马尾时期不要混用。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜清晨四宫宅的女仆晨检**  
+**01｜清晨四宫宅的女仆晨检**
 清晨的四宫宅走廊，她穿着整洁女仆装核对平板上的日程清单，晨光从高窗洒下；走路带风、表情无波，是专业模式全开的瞬间。
 
-**02｜放学后的辣妹切换**  
+**02｜放学后的辣妹切换**
 学校空教室，她对着小镜子把制服领口松开、涂上唇膏，对着镜子练习夸张的笑容；镜里镜外两个表情，构图核心是「上戏前的一秒」。
 
-**03｜任务间隙的便利店甜食**  
+**03｜任务间隙的便利店甜食**
 深夜便利店，还穿着便装伪装的她一口气拿了三样期间限定甜点，在停车场角落靠着栏杆开吃；高压工作后的糖分补给，是她为数不多的自私时间。
 
-**04｜广播体操的秘密特训**  
+**04｜广播体操的秘密特训**
 （名场面延展）清晨无人的庭院，她穿着运动服认真到近乎悲壮地反复练习广播体操动作，汗水湿透了 T 恤；表情严肃得像在备战奥运，反差感拉满。
 
-**05｜天台上的情报汇报**  
+**05｜天台上的情报汇报**
 学校天台背风角落，她压低声音对着蓝牙耳机简短汇报，目光扫视楼下中庭；通话结束后瞬间切回慵懒辣妹姿态，一个画面两层人格。
 
-**06｜美发沙龙的决断**  
+**06｜美发沙龙的决断**
 （辞职篇）美发沙龙，她看着镜中长发被一缕缕剪短落地，手指在膝上微微收紧又松开；镜中表情从紧绷到如释重负，是角色弧线最重的一幕。
 
-**07｜雨天采购的狼狈专业户**  
+**07｜雨天采购的狼狈专业户**
 超市停车场大雨，她推着塞满生活用品的购物车小跑，纸袋抱在怀里护住，肩膀湿透半边；就算狼狈也先把买的东西安顿好，女仆本能深入骨髓。
 
-**08｜卡拉 OK 包厢的演技练习**  
+**08｜卡拉 OK 包厢的演技练习**
 一个人订了小包厢，她对着屏幕练习辣妹腔与流行歌曲，唱到一半自己先垮下脸吐槽；包厢霓虹灯光下的独处，是千层饼少有的缝隙。
 
-**09｜旅行前的行李整理**  
+**09｜旅行前的行李整理**
 （辞职后）公寓房间，短发形态的她把护照和地图放进行李箱，犹豫了一下又把旧女仆装的照片收进夹层；动作平静，但每一件物品都带着告别的重量。
 
-**10｜深夜阳台的黑咖啡**  
+**10｜深夜阳台的黑咖啡**
 四宫宅佣人区的窄阳台，结束一天工作的她靠着栏杆喝黑咖啡，发圈已经取下、头发散着；望着宅邸灯火，脸上是只属于凌晨一点的、没有观众的疲惫。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1465,7 +1468,7 @@ Ai Hayasaka from *Kaguya-sama: Love Is War*, a poised quarter-Irish young woman 
 Kei Shirogane from *Kaguya-sama: Love Is War*, a neat and self-disciplined junior-high girl with long straight silvery-white hair held by a slim black ribbon hairband with small beads, and clear blue eyes that carry the same sharp intensity as her older brother, softened by a quieter warmth. Her clothes are simple, well-kept and plainly cared for over years of frugal household management. Her default expression is slightly prickly and proud, but cracks into genuine softness when she thinks no one is watching.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``傲娇妹妹 / 冰美人外壳 / 持家小会计 / 对钱的敏锐 / 嘴上嫌弃 / 优等生 / 与哥哥同款的锐利眼神 / 不坦率的温柔``  
+**表演关键词**：``傲娇妹妹 / 冰美人外壳 / 持家小会计 / 对钱的敏锐 / 嘴上嫌弃 / 优等生 / 与哥哥同款的锐利眼神 / 不坦率的温柔``
 **易错红线**：
 - ❌ 不要画成全程冷漠脸；她是傲娇不是冰山，破防瞬间才是精髓。
 - ❌ 家境设定是节俭不是卖惨，不要画成寒酸可怜风。
@@ -1474,34 +1477,34 @@ Kei Shirogane from *Kaguya-sama: Love Is War*, a neat and self-disciplined junio
 - ⚠️ 初中生设定：**该角色永久 SFW，严禁任何 R18/擦边化编译（fail-closed）**。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜清晨的报纸配送路线**  
+**01｜清晨的报纸配送路线**
 清晨五点半的住宅区，她骑着自行车穿梭在还亮着路灯的街道，车筐里整齐码着卷好的报纸；呼出的白气与渐亮的天色，是她不为人知的日常开头。
 
-**02｜白银家的家计簿**  
+**02｜白银家的家计簿**
 家中矮桌，她盘腿坐着核对家计簿，计算器、超市传单和笔袋一字排开；发现本月结余比预期多时，嘴角忍不住上扬，又立刻收敛成「理所当然」的表情。
 
-**03｜初中部学生会的决算**  
+**03｜初中部学生会的决算**
 放学后学生会室，她把收据按日期排开贴进账本，动作精准得像机器；其他成员离开后，她对着平掉的账目轻轻舒一口气，露出小小的成就感。
 
-**04｜超市关门前的时间差攻撃**  
+**04｜超市关门前的时间差攻撃**
 晚上八点五十分的超市，她目标明确地走向贴半价标签的熟食区，手指在商品上方悬停一秒计算性价比；买到划算商品时的得意只敢在走出店门后露出来。
 
-**05｜鞋柜前的受欢迎日常**  
+**05｜鞋柜前的受欢迎日常**
 学校鞋柜处，她被几个同学围着说话，表面维持着礼貌疏离的微笑应对；人群散去后独自整理室内鞋，脸上闪过一丝不擅长应对人气的无奈。
 
-**06｜藤原家留宿的睡衣时光**  
+**06｜藤原家留宿的睡衣时光**
 （萌叶家留宿）客房里她穿着借来的略大睡衣，盘腿坐在床上听萌叶聊天，头发刚吹干还带着蓬松感；在朋友家没有持家压力的她，神情罕见地松弛。
 
-**07｜深夜台灯下的数学**  
+**07｜深夜台灯下的数学**
 家中书桌，台灯下她快速解着超出年级水平的数学题，手边放着记账用的同一个计算器；解出答案时习惯性地去够杯子，才发现茶早就凉了。
 
-**08｜冬日围巾与待机**  
+**08｜冬日围巾与待机**
 放学后的校门口，她围着围巾等哥哥一起回家，看到对方跑来时故意别过脸看别处；等哥哥走近又默默跟上，把「才不是在等你」写在后脑勺上。
 
-**09｜打折书籍的权衡**  
+**09｜打折书籍的权衡**
 书店特价区，她抱着两本只能买一本的书来回比较，指尖在书脊上敲打；最终放回一本时的忍痛表情，和回家路上对买到那本的珍惜，是她式的幸福。
 
-**10｜发薪日的自动贩卖机奢侈**  
+**10｜发薪日的自动贩卖机奢侈**
 送报发薪日的傍晚，她站在自动贩卖机前犹豫很久，最后按下了比平时贵三十日元的那款热饮；捧着罐子走在回家路上，是给自己唯一的小小奖励。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1576,7 +1579,7 @@ Kei Shirogane from *Kaguya-sama: Love Is War*, a neat and self-disciplined junio
 Kana Arima from *Oshi no Ko*, a petite and sharp-tongued teenage actress and idol with chin-length wine-red bobbed hair, straight blunt bangs and vivid ruby-red eyes, almost never seen without one of her signature berets. Her smile flashes a small snaggletooth. On stage in her bright B Komachi idol costume she radiates polished professionalism; off stage her expressions swing between prickly pride, flustered denial and a stubborn, hardworking vulnerability she tries very hard to hide.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``天才童星的自尊 / 毒舌傲娇 / 帽皇 / 吃瘪役 / 私下的努力家 / 10秒落泪的演技 / 逞强 / 纯情``  
+**表演关键词**：``天才童星的自尊 / 毒舌傲娇 / 帽皇 / 吃瘪役 / 私下的努力家 / 10秒落泪的演技 / 逞强 / 纯情``
 **易错红线**：
 - ❌ 严禁画星形瞳孔——星瞳是星野家专属，加奈是普通红瞳。
 - ❌ 贝雷帽是第一识别符号，便服场景尽量保留。
@@ -1584,34 +1587,34 @@ Kana Arima from *Oshi no Ko*, a petite and sharp-tongued teenage actress and ido
 - ❌ 娇小体型（150cm）不要画成高挑身材；妹妹头不要画成长发。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜东京blade 的舞台中央**  
+**01｜东京blade 的舞台中央**
 舞台聚光灯下，她穿着打歌服握着麦克风完成定格姿势，汗水在额角发亮；眼神是专业的、燃烧的状态，整个画面只给她一个人和光——17 年艺龄的厚度。
 
-**02｜排练室镜子前的独白**  
+**02｜排练室镜子前的独白**
 空排练室，她对着整墙镜子反复练习同一个转身，地板上是贴着标记的胶带；休息时直接坐在地板上喝水，看着镜中的自己，表情在不甘与鼓劲之间切换。
 
-**03｜剧本围读的荧光笔**  
+**03｜剧本围读的荧光笔**
 事务所会议室，她面前摊着画满荧光笔与便签的剧本，手指抵着下巴默读台词；周围人还没进入状态，她已经完全沉浸在角色里——努力家的素颜。
 
-**04｜10 秒落泪的现场**  
+**04｜10 秒落泪的现场**
 拍摄现场，导演喊开始后她低头调整呼吸，再抬头时眼泪已经精准挂在眼眶里；画面捕捉情绪到位的一瞬间，是她职业能力的最高光。
 
-**05｜便利店深夜的庆功**  
+**05｜便利店深夜的庆功**
 结束工作后独自走进便利店，她把炸鸡、甜点和新出的心情饮料堆满购物篮，在停车场边吃着东西看手机里自己的演出评论；看到好评时装作不在意，嘴角却压不住。
 
-**06｜贝雷帽店的挑选**  
+**06｜贝雷帽店的挑选**
 帽饰店，她踮着脚取下货架上不同颜色的贝雷帽在镜前比对，表情是面对专业装备般的严肃；「帽皇」的人设在这一幕以生活化方式落地。
 
-**07｜后台卸妆后的空白**  
+**07｜后台卸妆后的空白**
 演出结束的后台，她坐在化妆镜前拆掉发饰、卸掉舞台妆，镜子里是没有偶像光环的素脸；疲惫与满足混在一起，是舞台人真实的收工表情。
 
-**08｜试镜等候室的紧张**  
+**08｜试镜等候室的紧张**
 试镜等候室，她抱着号码牌坐在长椅上，表面闭目养神，膝盖上的剧本边角却被捏出折痕；天才的自尊与害怕落选的恐惧在此同框。
 
-**09｜雨天共享雨伞的别扭**  
+**09｜雨天共享雨伞的别扭**
 （恋爱喜剧向）放学后的雨，她站在屋檐下明明带了伞却磨蹭着不走，最后把伞硬塞给对方自己准备冲进雨里；满脸写着「才不是担心你」，耳根通红。
 
-**10｜祭典捞金鱼的胜负欲**  
+**10｜祭典捞金鱼的胜负欲**
 夏祭摊位，她挽起袖子全神贯注捞金鱼，浴衣袖摆滑下也顾不上；捞到之后高高举起战利品，虎牙都笑出来的瞬间，比舞台笑容更真实。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1687,7 +1690,7 @@ Danbooru 稳定标签：`yanami_anna, make_heroine_ga_oo_sugiru!, blue_hair, aho
 Anna Yanami from *Too Many Losing Heroines!*, a bright and expressive high-school girl with medium-length sky-blue hair, a prominent cowlick and round, animated blue eyes. She wears her school uniform with a neat bowtie, and her face cycles rapidly through joy, shock, pout and contentment. Food brings out her most radiant, uninhibited smiles, while rare quiet moments reveal a tender, slightly heartbroken side she usually hides behind appetite and cheer.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``阳角全开 / 暴食海獭 / 表情丰富 / 败犬的逞强 / 把心碎嚼碎咽下去 / 没吃饱会沮丧 / 朋友第一 / 无人时的真实失落``  
+**表演关键词**：``阳角全开 / 暴食海獭 / 表情丰富 / 败犬的逞强 / 把心碎嚼碎咽下去 / 没吃饱会沮丧 / 朋友第一 / 无人时的真实失落``
 **易错红线**：
 - ❌ 不要只把她当「吃货梗角色」；失恋后的隐忍与温柔是角色内核。
 - ❌ 呆毛必须保留，这是识别点。
@@ -1695,34 +1698,34 @@ Anna Yanami from *Too Many Losing Heroines!*, a bright and expressive high-schoo
 - ❌ 颜艺不等于夸张崩坏脸，所有表情都要在「可爱」范围内。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜食堂大份定食的满足感**  
+**01｜食堂大份定食的满足感**
 学校食堂，她面前摆着堆成小山的特大份定食，双手合十说出「我开动了」的瞬间眼睛亮得像星星；第一口下去后整个人散发出幸福气场，周围同学都侧目。
 
-**02｜屋顶便当的失恋午后**  
+**02｜屋顶便当的失恋午后**
 （失恋初期）无人的屋顶，她坐在楼梯口打开便当，吃着吃着动作慢下来，盯着远处的云发呆；饭还是吃完了，只是擦眼睛的动作被夹在擦嘴之间，假装没事发生。
 
-**03｜家庭餐厅薯条作战会议**  
+**03｜家庭餐厅薯条作战会议**
 放学后的家庭餐厅，她面前摊着薯条拼盘和饮料吧的杯子，一边往嘴里送薯条一边听朋友说话，听到关键处瞪大眼睛停住动作；薯条凉了才惊觉，露出夸张的懊恼表情。
 
-**04｜便利店新甜点的蹲点**  
+**04｜便利店新甜点的蹲点**
 便利店甜点柜前，她蹲下来与新品布丁平视，手指抵着玻璃认真研判；纠结五分钟后全部拿下，结账时的笑容像打赢了一场战役。
 
-**05｜文化祭摊位的伙食巡逻**  
+**05｜文化祭摊位的伙食巡逻**
 文化祭，她一手章鱼烧一手炒面在摊位间移动，腮帮鼓鼓地跟同学推荐「这家比较好吃」；发饰上别着班级徽章，是阳角模式全开的节日状态。
 
-**06｜补习班课间的自动贩卖机**  
+**06｜补习班课间的自动贩卖机**
 傍晚补习班楼下，她靠着自动贩卖机喝热玉米浓汤，手里还拿着刚买的肉包；望着夕阳下放学的人流，难得露出一点「今天也努力了」的疲惫与踏实。
 
-**07｜厨房里失败的料理挑战**  
+**07｜厨房里失败的料理挑战**
 家中厨房，她系着围裙面对一盘形状可疑的手工饼干，犹豫着咬下一角后表情微妙；虽然失败但还是决定吃完——毕竟不能浪费食物，是她式的生活哲学。
 
-**08｜夏日祭的苹果糖与金鱼**  
+**08｜夏日祭的苹果糖与金鱼**
 浴衣祭典，她双手分别拿着苹果糖与捞金鱼袋，站在捞水球的摊位前陷入幸福的两难；烟火亮起时抬头看天，嘴角的糖渍在火光下发亮。
 
-**09｜图书馆假装复习的十分钟**  
+**09｜图书馆假装复习的十分钟**
 期末前的图书馆，她摊开笔记本认真了不到十分钟，视线就被书包里露出的零食袋吸引；左右张望确认没人后快速偷吃一口，鼓起腮帮继续做题的侧脸。
 
-**10｜新年参拜的食欲签运**  
+**10｜新年参拜的食欲签运**
 冬装参拜，她抽到写着「守得云开」的签，认真思考三秒后得出「意思是明天会有好事，先去吃顿好的庆祝」的结论；把签仔细系好，双手合十的样子意外地虔诚。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1804,41 +1807,41 @@ Anna Yanami from *Too Many Losing Heroines!*, a bright and expressive high-schoo
 Mashiro Shiino from *The Pet Girl of Sakurasou*, a world-class young painter of Japanese-British descent with very long, straight cream-blonde hair and unusual pale orange eyes behind slightly upturned, phoenix-like eyelids. Her default expression is blank and doll-like, her movements quiet and feline. In her room she wears an oversized white shirt, barefoot and flecked with paint; what little emotion she has surfaces in tiny, precise changes of her gaze rather than her mouth.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``三无表情 / 天然呆与天然黑 / 虎狼之词不自知 / 画痴 / 生活废柴 / 年轮蛋糕 / 猫的步态 / 内心坚韧``  
+**表演关键词**：``三无表情 / 天然呆与天然黑 / 虎狼之词不自知 / 画痴 / 生活废柴 / 年轮蛋糕 / 猫的步态 / 内心坚韧``
 **易错红线**：
 - ❌ 不要把三无成长期待画成「冰山美人」；她是迟钝不是冷酷，眼神要有细微变化。
 - ❌ 金发是偏白的奶油金，严禁高饱和柠檬黄。
 - ❌ 橙瞳是识别点，不要画成红瞳或金瞳。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜画室中央的新作**  
+**01｜画室中央的新作**
 樱花庄 202 室，她赤脚站在比人还高的画布前，白衬衫下摆沾满颜料，手里横握着画笔；回头看向门口时脸上毫无表情，发丝上还沾着一点钴蓝。
 
-**02｜年轮蛋糕的仪式感**  
+**02｜年轮蛋糕的仪式感**
 矮桌前，她把年轮蛋糕端端正正摆在盘子中央，双手扶膝盯着它看了足足十秒才下叉；咬下第一口时眼睛几不可察地弯了一下，是她最大的表情幅度。
 
-**03｜通宵原稿的清晨**  
+**03｜通宵原稿的清晨**
 立志漫画家的时期。桌上摊着画了一整夜的漫画原稿和歪倒的笔，她趴在稿纸之间睡着了，晨光落在散开的长发与未干的墨线上。
 
-**04｜便利店甜点柜前**  
+**04｜便利店甜点柜前**
 她贴在便利店甜点柜玻璃前，视线锁定年轮蛋糕，手指在玻璃上留下小小的雾气；被问「要买吗」时只是持续点头，动作像等待投喂的猫。
 
-**05｜美术室夕阳下的素描**  
+**05｜美术室夕阳下的素描**
 学校美术室，她坐在高脚凳上为摆动的石膏像起稿，夕阳把她的侧脸与画板染成同色系；周围同学的喧闹完全进不了她的世界。
 
-**06｜雨中撑伞的猫步**  
+**06｜雨中撑伞的猫步**
 放学小雨，她撑着伞沿着白线一步一步走猫步，积水溅起也不管；伞沿压得很低，只露出没有表情的半张脸，画面安静而奇妙。
 
-**07｜晾被单的天台**  
+**07｜晾被单的天台**
 她抱着湿被单爬上樱花庄天台，被单被风吹得鼓起来把她整个人裹住一半；从白布后面探出头来的瞬间，像一只从茧里钻出来的动物。
 
-**08｜文化节壁画的脚手架上**  
+**08｜文化节壁画的脚手架上**
 文化节大型壁画作业，她坐在临时脚手架边缘指挥全局，双腿悬空，手里颜料盘五颜六色；这是她极少数「融入集体」却依然我行我素的时刻。
 
-**09｜空太睡颜的速写**  
+**09｜空太睡颜的速写**
 她盘腿坐在旁边，用速写本画睡着的人的侧脸，神情专注得像在面对世界级名画；画完后认真端详，第一次对自己的「不懂」产生了疑问。
 
-**10｜毕业展的白色展厅**  
+**10｜毕业展的白色展厅**
 个人画展的白色展厅，她穿着干净的连衣裙站在自己的巨幅画作前，双手背在身后；面对观众依旧是三无表情，但手指在背后悄悄握紧。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -1912,41 +1915,41 @@ Mashiro Shiino from *The Pet Girl of Sakurasou*, a world-class young painter of 
 Sagiri Izumi from *Eromanga Sensei*, a small, reclusive young illustrator with waist-length silvery hair that fades into soft pink-violet tips, large hair bows and wide aqua-blue eyes. She is almost always seen in an oversized pink hoodie and bare feet, headset microphone on, sitting cross-legged before a glowing drawing tablet. Her face is an open book — embarrassment, stubbornness and delight all bloom across her cheeks instantly, contradicting her brash online persona completely.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``家里蹲 / 麦克风才听得到 / 网上嚣张线下结巴 / 满脸通红的害羞 / 作画时的专业眼神 / 义妹的别扭依赖 / 踏出房门的勇气``  
+**表演关键词**：``家里蹲 / 麦克风才听得到 / 网上嚣张线下结巴 / 满脸通红的害羞 / 作画时的专业眼神 / 义妹的别扭依赖 / 踏出房门的勇气``
 **易错红线**：
 - ❌ 不要把「埃罗芒阿老师」的网上人格画进现实场景的表情；线下她是怯生生的。
 - ❌ 银发必须带粉紫渐变发梢，纯灰或纯白都算偏色。
 - ❌ 麦克风、耳机、大蝴蝶结是核心三件套，居家形态缺一不可。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜被炉绘图舱**  
+**01｜被炉绘图舱**
 她的房间中央，被炉上架着绘图板与显示器，她整个人缩在被炉里只露出脑袋和拿笔的手，耳机夹着碎发；屏幕上是从未示人的新插画，房间灯光全关只剩屏幕光。
 
-**02｜直播中的另一张脸**  
+**02｜直播中的另一张脸**
 直播进行中的她对着麦克风语速飞快、手势嚣张地讲解上色技巧；镜头构图只拍她的背影与屏幕弹幕，网上的「埃罗芒阿老师」与狭小房间形成巨大反差。
 
-**03｜门缝里的取餐**  
+**03｜门缝里的取餐**
 房门打开一条窄缝，一只小手伸出来取走门口的餐盘；缝内昏暗、缝外走廊灯光明亮，构图全部交给这道门缝与散落的长发，是她家里蹲时期的经典画面。
 
-**04｜写生模特的坚持**  
+**04｜写生模特的坚持**
 「不实际看过就画不出来」——她把抱枕和玩偶在床边排成一排充当模特，皱眉对照姿势修正线条；严肃的创作态度与幼稚的房间布置同框。
 
-**05｜第一次自己出门买书**  
+**05｜第一次自己出门买书**
 （成长高光）车站书店门口，她戴着口罩和帽子、攥紧购物袋把手，深吸一口气踏出第一步；街上人流被虚化成色块，焦点全部在她绷紧的肩膀与决意眼神上。
 
-**06｜夏日祭的和服**  
+**06｜夏日祭的和服**
 特殊分支。她穿着不习惯的和服站在捞金鱼摊前，袖子总是滑下来露出整截手臂；捞破纸网后急得直跺脚，所有情绪都写在脸上。
 
-**07｜兄妹地板通讯**  
+**07｜兄妹地板通讯**
 她跪坐在二楼地板上，用马克笔在纸条上写字从楼梯缝丢下去；等回复时耳朵贴着地板，表情从别扭到忍不住期待，全部发生在没有对话的安静里。
 
-**08｜取材海滩的防晒武装**  
+**08｜取材海滩的防晒武装**
 海边取材，她被遮阳帽、防晒袖套、大墨镜全副武装到只剩一小截手指握着速写本；面对大海认真速写的样子与其说是度假不如说是出任务。
 
-**09｜半夜偷跑冰箱**  
+**09｜半夜偷跑冰箱**
 深夜厨房，她踮脚打开冰箱偷拿布丁，睡衣帽子因为动作太大滑下来盖住半张脸；被灯光逮个正着时鼓着腮帮僵住的瞬间。
 
-**10｜新年参拜的许愿**  
+**10｜新年参拜的许愿**
 冬装大衣围巾，她在神社绘马上认真写下「今年也要画出更好的画」，挂上去时垫着脚努力够高处；呼出的白气与晨光里，她的表情是罕见的、毫无阴霾的笑。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2022,7 +2025,7 @@ cosplay 分支（米莉艾拉）：
 Mikari Tachibana from *2.5 Dimensional Seduction*, a glamorous professional teen model with long rose-pink hair and confident pink eyes, whose everyday outfits look straight off a magazine page. Behind the polish she is disarmingly earnest — hunched over a sewing machine in glasses at midnight, or wearing a purple wig and blue contacts to become the fictional Miriella, all to stand one step closer to the boy she has loved for ten years.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``职业模特的镜头感 / 十年单恋 / 为爱入宅 / 缝纫与假发的深夜 / 行动力超强 / 展位上的专业微笑 / 醋意藏在笑容下``  
+**表演关键词**：``职业模特的镜头感 / 十年单恋 / 为爱入宅 / 缝纫与假发的深夜 / 行动力超强 / 展位上的专业微笑 / 醋意藏在笑容下``
 **易错红线**：
 - ❌ 不要把 cosplay 形态的紫发蓝瞳当成她的本体发色瞳色。
 - ❌ 她是「主动走进宅圈的现充」，不是「本来就是宅女」；时尚度不能丢。
@@ -2030,34 +2033,34 @@ Mikari Tachibana from *2.5 Dimensional Seduction*, a glamorous professional teen
 - ❌ 模特工作场景应有专业感，与漫展/社团的宅场景形成对照。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜摄影棚收工的三秒**  
+**01｜摄影棚收工的三秒**
 摄影棚白色背景前，闪光灯刚停，她从完美表情切换到松一口气的真实脸只用三秒；工作人员围着看片，她独自拿起水杯，眼神飘向手机里的社团群消息。
 
-**02｜深夜缝纫机**  
+**02｜深夜缝纫机**
 房间只开一盏台灯，她戴着眼镜伏在缝纫机前赶制 cos 服，桌上散着纸样、布头与角色设定打印稿；针尖穿过布料的特写与她认真的侧脸，是「为爱入宅」最具体的模样。
 
-**03｜同人展展位**  
+**03｜同人展展位**
 同人展摊位后，她以米莉艾拉造型营业，紫发蓝瞳、笑容专业地递出写真本；人流稍歇时偷偷活动站僵的脚踝，完美微笑下的小疲惫。
 
-**04｜社团教室的布料会议**  
+**04｜社团教室的布料会议**
 放学后的漫研教室，她把几块候选布料摊在桌上比对色差，另一只手举着小镜子试假发角度；窗外的夕阳和桌上的别针针线，是校园社团独有的认真氛围。
 
-**05｜橱窗前的取材**  
+**05｜橱窗前的取材**
 商业街橱窗前，她停下脚步研究新款连衣裙的剪裁结构，手指隔空描着缝线走向；模特的职业病在此刻变成少女的兴趣，玻璃倒影里的表情很亮。
 
-**06｜卡拉 OK 包厢的社团聚会**  
+**06｜卡拉 OK 包厢的社团聚会**
 社团聚餐后的卡拉 OK，她拿着麦克风唱动画歌曲，唱到高音时意外地投入；包厢彩灯扫过，平时模特光环被宅圈同好的轻松感取代。
 
-**07｜雨天共伞的计算**  
+**07｜雨天共伞的计算**
 放学骤雨，她「恰好」多带了一把伞又「恰好」说伞坏了，努力装作自然地挤进同一伞下；伞沿的水帘内，她的耳根红度和嘴角的得意同时失控。
 
-**08｜化妆包里的隐形眼镜盒**  
+**08｜化妆包里的隐形眼镜盒**
 （cos 准备）洗手台前，她对着镜子小心戴上蓝色隐形眼镜，紫发假发搭在旁边架子上；素颜戴上镜框前的那一刻，是从橘美花莉变成米莉艾拉的仪式瞬间。
 
-**09｜便利店减肥与蛋糕的战争**  
+**09｜便利店减肥与蛋糕的战争**
 拍摄工作前的控糖期，她在便利店甜点柜前与一块草莓蛋糕对峙整整一分钟，最终痛苦地拿了低卡果冻；转身时回头看了蛋糕最后一眼，表情悲壮。
 
-**10｜情人节巧克力的包装**  
+**10｜情人节巧克力的包装**
 深夜厨房，她把亲手做的巧克力装进丝带礼盒，对着缎带结拆了重系三次；最后把礼盒抱在胸前深呼吸，十年单恋的重量都在这个小小的盒子上。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2130,7 +2133,7 @@ Mikari Tachibana from *2.5 Dimensional Seduction*, a glamorous professional teen
 Rikka Takarada from *SSSS.Gridman*, a laid-back modern high-school girl with long straight black hair, cool blue eyes and her signature headphones resting around her neck. She wears her school uniform loosely with short socks, and her unhurried posture and half-lidded gaze give her an effortlessly unapproachable cool. Underneath the languid surface she watches her friends more carefully than anyone, hiding her real feelings behind a dry, easygoing tone.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``慵懒JK / 耳机不离身 / 泡不动的距离感 / 把心事藏起来 / 想到就做的行动派 / 旧货店生活感 / 默默关心朋友``  
+**表演关键词**：``慵懒JK / 耳机不离身 / 泡不动的距离感 / 把心事藏起来 / 想到就做的行动派 / 旧货店生活感 / 默默关心朋友``
 **易错红线**：
 - ❌ 不要画成热情元气娘；她的基调是慵懒与恰到好处的距离感。
 - ❌ 耳机是半永久符号，便服与校服场景都尽量保留。
@@ -2138,34 +2141,34 @@ Rikka Takarada from *SSSS.Gridman*, a laid-back modern high-school girl with lon
 - ❌ 她会藏情绪，表情设计要给「没说出口的东西」留余地，不要全程大开大合。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜绚 JUNK SHOP 的柜台**  
+**01｜绚 JUNK SHOP 的柜台**
 放学后的自家旧货店，她趴在堆着旧收音机与卡带的玻璃柜台上写作业，耳机挂在脖子上放着音乐；夕阳穿过摆满旧物的货架，尘埃在光柱里浮动。
 
-**02｜上学路的电车窗边**  
+**02｜上学路的电车窗边**
 早高峰电车，她单手拉吊环、耳机罩着耳朵，目光落在窗外流动的街景上；玻璃倒影里的表情比本人松弛，是通勤路上无人打扰的十分钟。
 
-**03｜天台午餐的耳机分享**  
+**03｜天台午餐的耳机分享**
 学校天台，她把一侧耳机递出去，自己戴另一侧，两人份的音乐与一份便利店面包；她看着远处不说话，但递耳机这个动作本身就是她的亲近方式。
 
-**04｜雨中的公交站台**  
+**04｜雨中的公交站台**
 突降大雨，她抱着书包缩在公交站牌下，耳机被雨水沾湿也顾不上；看着雨幕时脸上掠过一丝与平时不同的认真，像是想起了什么不愿想的事。
 
-**05｜哥哥住处的漫画借阅**  
+**05｜哥哥住处的漫画借阅**
 周末，她盘腿坐在哥哥公寓的书架前翻漫画，头发随意别到耳后，手边放着借来的罐装咖啡；被哥哥念叨时头也不抬地敷衍，是兄妹间松弛的日常。
 
-**06｜旧货店的修理挑战**  
+**06｜旧货店的修理挑战**
 她跪坐在工作台前，对着一台旧随身听拧螺丝，眉头微皱、舌尖顶着嘴角；修好后按下播放键听到声音的瞬间，露出难得的得意小表情。
 
-**07｜夏祭的捞水球**  
+**07｜夏祭的捞水球**
 浴衣祭典，她蹲在捞水球摊位前挽着袖子专注瞄准，额前碎发被夜风吹乱；捞起来之后高高举起给同伴看，笑容比平时明亮半个档位。
 
-**08｜冬夜的被炉与橘子**  
+**08｜冬夜的被炉与橘子**
 家中被炉，她半边身体陷进去剥橘子，耳机放在被炉桌上还连着手机；电视的光在她脸上明明灭灭，是最没有防备的居家状态。
 
-**09｜体育仓库后的喘息**  
+**09｜体育仓库后的喘息**
 不擅长出风头的她被迫参加班级接力练习，结束后躲在体育仓库阴影里喝水喘气；汗水顺着下巴滴落，嘴上说着「累死了我不要干了」却没有真的走掉。
 
-**10｜怪兽退去后的清晨街道**  
+**10｜怪兽退去后的清晨街道**
 （世界观高光）战斗结束后的清晨，她站在熟悉的商店街口，晨光落在恢复正常的天空下；耳机里放着歌，她看着街道轻声说了句什么，像是确认日常真的回来了。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2244,7 +2247,7 @@ Rikka Takarada from *SSSS.Gridman*, a laid-back modern high-school girl with lon
 Akane Shinjou from *SSSS.Gridman*, a petite girl with tousled pink-lavender short hair, red eyes behind casual glasses, and a school jacket perpetually slipping off one shoulder over sleeves that swallow her hands. In class she beams with perfect, idol-like charm; alone in her room, surrounded by shelves of kaiju figures and half-finished models, her expression hollows into something lonely and unreadable, a craft knife glinting in her fingers.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``才色兼备的假面 / 粉切黑 / 怪兽宅 / 造物主的孤独 / 情绪快速切换 / 碎屏手机 / 萌袖外套半脱 / 与现实的和解``  
+**表演关键词**：``才色兼备的假面 / 粉切黑 / 怪兽宅 / 造物主的孤独 / 情绪快速切换 / 碎屏手机 / 萌袖外套半脱 / 与现实的和解``
 **易错红线**：
 - ❌ 严禁扁平化成「疯批美人」；她的危险感来自孤独与逃避，可爱与可怜必须同时在场。
 - ❌ 粉紫短发不要画成高饱和亮粉或纯紫色长发。
@@ -2252,34 +2255,34 @@ Akane Shinjou from *SSSS.Gridman*, a petite girl with tousled pink-lavender shor
 - ❌ 怪兽道具是她的热爱而非恐怖符号，怪兽模型场景要画出「宅的珍视感」。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜教室中心的完美微笑**  
+**01｜教室中心的完美微笑**
 下课十分钟，她被同学围在课桌旁，托腮笑着回应每个人的话，笑容弧度精准得像量过；只有镜头能看见她垂在桌下的另一只手正无意识地转着美工刀。
 
-**02｜房间里的怪兽制作台**  
+**02｜房间里的怪兽制作台**
 她的房间，台灯下摊着怪兽设计草图与半成品模型，她赤脚盘腿坐在椅子上，捏着美工刀削出怪兽的背鳍；墙上一整面怪兽手办架俯视着这位小小的造物主。
 
-**03｜碎屏手机的又一次**  
+**03｜碎屏手机的又一次**
 玄关，她刚又把手机摔在地上，屏幕裂纹像蛛网；她面无表情地捡起来看了一眼，下一秒听到门铃时瞬间切换成甜美的笑脸去开门。
 
-**04｜便利店深夜零食采购**  
+**04｜便利店深夜零食采购**
 深夜便利店，她穿着宽大卫衣在零食货架前扫货，购物篮里堆满布丁与限定口味；收银台暖光下她的表情松弛下来，是一天里少有的、什么都不用扮演的时刻。
 
-**05｜模型店的玻璃柜前**  
+**05｜模型店的玻璃柜前**
 模型店展示柜前，她整个人几乎贴在玻璃上看新到的怪兽套件，呼吸在玻璃上糊出白雾；掏出碎屏手机查库存时的认真程度远超面对任何考试。
 
-**06｜雨窗前的放空**  
+**06｜雨窗前的放空**
 雨天房间，她抱着怪兽抱枕坐在窗台上，额头抵着玻璃看雨水滑落；没有笑也没有怒，只是放空——这是理解这个角色最重要的表情。
 
-**07｜屋顶午餐的独食**  
+**07｜屋顶午餐的独食**
 学校屋顶角落，她独自吃着包装可爱的便当，把不喜欢的配菜整齐地排在盒盖上；风吹动她的短发，她望着操场的目光像在看另一个世界的布景。
 
-**08｜New Order 的降临**  
+**08｜New Order 的降临**
 （形态高光）New Order 服装造型的她站在怪兽模型环绕的房间中央，衣装华丽而危险；这是她作为「神」的威严全开的一瞬，画面重心是居高临下的眼神。
 
-**09｜文化祭的忙碌身影**  
+**09｜文化祭的忙碌身影**
 文化祭班级摊位，她系着围裙熟练地招呼客人，笑容亲切、动作麻利，完美履行「班级人气王」的职责；忙完躲到器材室后墙边，靠着墙滑坐下来发了五秒钟的呆。
 
-**10｜告别城市的清晨**  
+**10｜告别城市的清晨**
 （和解主题）清晨的车站，她拖着行李箱回头看了一眼这座城市的天空，手里攥着一个小小的怪兽挂件；转身进站时的表情既不是笑也不是怒，而是终于向前走的平静。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2352,7 +2355,7 @@ Akane Shinjou from *SSSS.Gridman*, a petite girl with tousled pink-lavender shor
 Yuki Suou from *Alya Sometimes Hides Her Feelings in Russian*, a refined young lady of an old aristocratic family with long straight black hair in an elegant half-updo, a small cowlick and deep violet-grey eyes. In public her posture, smile and speech are flawlessly ladylike — the school's "sheltered princess". In private she slumps into a sloppy hoodie-wearing gremlin of an otaku little sister, her eyes gleaming with mischief and chuunibyou theatricality, a completely different person behind closed doors.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``深闺大小姐 / 礼仪完美 / 重度兄控 / 中二病发言 / 俺模式 / 孩子气 / 拒绝的男生更多 / 表里剧烈反差``  
+**表演关键词**：``深闺大小姐 / 礼仪完美 / 重度兄控 / 中二病发言 / 俺模式 / 孩子气 / 拒绝的男生更多 / 表里剧烈反差``
 **易错红线**：
 - ❌ 不要把大小姐外壳和宅女内核各画一半；切换要干脆，反差才有意义。
 - ❌ 瞳色按深紫灰，避免纯黑瞳丢失设定感。
@@ -2360,34 +2363,34 @@ Yuki Suou from *Alya Sometimes Hides Her Feelings in Russian*, a refined young l
 - ❌ 她的中二发言是搞笑与亲昵的表达，不要画成真正的阴沉。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜学生会宣传委员的海报**  
+**01｜学生会宣传委员的海报**
 放学后学生会室，她跪坐在长桌上给文化祭宣传海报描边，制服袖口用发圈挽起；画到满意处露出大小姐式完美微笑，桌下的小腿却在开心地晃。
 
-**02｜茶会上的淑女满分**  
+**02｜茶会上的淑女满分**
 名流茶会，她穿着连衣裙执杯的姿势无可挑剔，与长辈应对得体；镜头捕捉到她借转头的瞬间偷偷松了半口气，又立刻恢复完美表情管理。
 
-**03｜房间里的「俺」模式**  
+**03｜房间里的「俺」模式**
 （反差核心场景）她的房间，松垮卫衣、盘腿坐地毯，左手薯片右手漫画，头发乱翘；看到精彩处拍地板大笑，与学校判若两人——门外传来脚步声时一秒切回端坐。
 
-**04｜深夜给哥哥的恶作剧短信**  
+**04｜深夜给哥哥的恶作剧短信**
 她被窝里只露出半张脸，盯着手机屏幕飞快地打着糟糕又幼稚的消息；发送后把脸埋进枕头里憋笑，脚在被子外面得意地晃。
 
-**05｜拒绝告白的完美笑容**  
+**05｜拒绝告白的完美笑容**
 教学楼转角，她面对告白者露出无懈可击的温柔微笑，说出礼貌到让人死心的拒绝；转身离开时长发划出一道弧线，表情瞬间归零。
 
-**06｜书店的宅书采购**  
+**06｜书店的宅书采购**
 （变装采购）帽子口罩全副武装的她在书店新刊区抱着一摞漫画轻小说结账，警惕地左顾右盼；收银员多看一眼都会让她僵住，大小姐身份绝不能暴露。
 
-**07｜初中学生会长的旧照片**  
+**07｜初中学生会长的旧照片**
 她翻着相册停在初中学生会长时期的照片页，照片里的她站在政近旁边笑容灿烂；手指轻轻点着照片，难得露出不带表演的、怀念的柔软表情。
 
-**08｜夏日祭的捞面具**  
+**08｜夏日祭的捞面具**
 浴衣祭典，她在面具摊前拿起一个中二气息十足的面具戴上，摆出夸张的英雄姿势；被熟人认出的风险与玩心交战，最后还是买了下来。
 
-**09｜晨间玄关的半扎发调整**  
+**09｜晨间玄关的半扎发调整**
 出门前玄关镜前，她踮脚调整 half-up 发髻的弧度，嘴里念念有词地检查今日「完美大小姐参数」；镜中表情从睡眼惺忪到完美营业的渐变过程。
 
-**10｜雨天窗边的中二独白**  
+**10｜雨天窗边的中二独白**
 放学后的空教室，她站在窗边对着雨幕做出夸张的手势，低声念着自编的「封印解除」式台词；说完自己先害羞地蹲下去捂脸，确认四下无人后偷偷比了个胜利手势。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2461,7 +2464,7 @@ Yuki Suou from *Alya Sometimes Hides Her Feelings in Russian*, a refined young l
 Mariya "Masha" Kujou from *Alya Sometimes Hides Her Feelings in Russian*, an elegant upperclassman with long, softly waved flaxen-brown hair, a gentle cowlick, small flower hair clips and warm brown eyes that never seem to stop smiling. Her every gesture radiates maternal, saint-like kindness — the beloved "Madonna" of the academy — yet the curve of her smile occasionally betrays a razor-sharp mind that has already read everyone in the room, especially when she is sweetly teasing her little sister.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``学园圣母 / 完美学姐 / 永远微笑 / 温柔刀 / 腹黑观察力 / 捉弄妹妹 / 童年伏笔 / 姐姐的安全感``  
+**表演关键词**：``学园圣母 / 完美学姐 / 永远微笑 / 温柔刀 / 腹黑观察力 / 捉弄妹妹 / 童年伏笔 / 姐姐的安全感``
 **易错红线**：
 - ❌ 不要只画圣母光环；微笑里要偶尔透出「看透一切」的精明。
 - ❌ 发色是亚麻浅棕，不要深棕到接近黑发。
@@ -2469,34 +2472,34 @@ Mariya "Masha" Kujou from *Alya Sometimes Hides Her Feelings in Russian*, an ele
 - ❌ 她的腹黑以温柔为载体，严禁画成反派式冷笑。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜学生会书记的午后**  
+**01｜学生会书记的午后**
 学生会室，她跪坐在矮柜前为大家沏茶，文件在膝边码得整整齐齐；递出茶杯时笑容温暖，却在转身的瞬间对某份文件上的名字露出若有所思的一瞥。
 
-**02｜温室花房读书**  
+**02｜温室花房读书**
 学校温室，她坐在藤椅上读一本精装书，阳光透过玻璃与绿植落在她的亚麻色卷发上；指尖停在某一页，抬眼望向窗外操场，表情温柔而遥远。
 
-**03｜烤饼干的慰问**  
+**03｜烤饼干的慰问**
 家政教室，她系着素雅围裙把刚出炉的饼干装进口袋，准备慰问学生会的后辈；系丝带时哼着歌，嘴角是发自内心的愉悦——以及一点点等着看妹妹反应的期待。
 
-**04｜楼梯转角撞破的秘密**  
+**04｜楼梯转角撞破的秘密**
 放学后的楼梯转角，她恰好撞见某个微妙的场面，微笑着说出一句温柔到让人冷汗直流的精准吐槽；对面僵住的瞬间，她的笑容弧度不变。
 
-**05｜冬日披肩的通学路**  
+**05｜冬日披肩的通学路**
 冬日清晨，她围着厚披肩慢慢走在通学路上，手里捧着保温杯；向每一个打招呼的后辈点头微笑，呼出的白气里都带着完美学姐的气场。
 
-**06｜旧照片里的俄语**  
+**06｜旧照片里的俄语**
 （童年伏笔）家中房间，她从抽屉深处取出一张泛黄的旧照片端详，指尖轻轻抚过照片边缘；表情是罕见的、没有观众也没有面具的怀念。
 
-**07｜钢琴室的放学时光**  
+**07｜钢琴室的放学时光**
 音乐教室，她坐在钢琴前随意弹着一段旧曲子，夕阳把她的侧影投在琴键上；琴声停下后她望着窗外，像是在回忆某个遥远下午的对话。
 
-**08｜夏日祭的射击摊**  
+**08｜夏日祭的射击摊**
 浴衣祭典，她站在射击摊前端着软木枪，笑容温柔地连续命中奖品；摊主和后辈都看呆，她抱着赢来的玩偶微微歪头：「哎呀，运气真好呢。」
 
-**09｜图书馆的轻声提醒**  
+**09｜图书馆的轻声提醒**
 期末图书馆，她俯身在打瞌睡的后辈耳边轻声提醒，指尖把对方滑落的笔轻轻推回；整套动作行云流水、温柔得体，耳根却藏着一丝捉弄得逞的笑意。
 
-**10｜新年参拜的为家人许愿**  
+**10｜新年参拜的为家人许愿**
 冬装参拜，她在绘马上认真写下给妹妹和朋友的愿望，唯独没写自己；挂绘马时踮起脚尖，晨光落在她永远微笑的脸上，温柔里有一点不易察觉的孤单。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2577,41 +2580,41 @@ Mariya "Masha" Kujou from *Alya Sometimes Hides Her Feelings in Russian*, an ele
 Sora Kasugano from *Yosuga no Sora*, a frail and porcelain-skinned petite girl with waist-length silvery-white hair tied into loose low twin-tails with black ribbons, two stubborn antenna hairs on top, and muted dark-grey eyes. She is usually seen in a simple white dress, clutching a worn black rabbit plushie. Her expression is quiet and willful at once — a spoiled, listless stillness that only melts when her brother is involved.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``三无与任性并存 / 病弱娇小 / 兔子布偶不离手 / 家里蹲 / 直呼其名 / 夏天与乡下 / 超过兄妹的感情 / 占有欲式吃醋``  
+**表演关键词**：``三无与任性并存 / 病弱娇小 / 兔子布偶不离手 / 家里蹲 / 直呼其名 / 夏天与乡下 / 超过兄妹的感情 / 占有欲式吃醋``
 **易错红线**：
 - ❌ 双蝴蝶结 + 两根呆毛 + 兔子布偶是三件套，缺一件就不是穹。
 - ❌ 不要画成阳光活泼的元气妹妹；她的基调是安静、懒散、任性。
 - ❌ 发色不要漂移成纯灰或纯金；银白是锚点。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜夏日乡道的白裙**  
+**01｜夏日乡道的白裙**
 奥木染町的乡间道路，她穿着白色连衣裙走在蝉鸣里，双手背在身后抱着兔子布偶；远处是稻田与积雨云，她微微眯眼躲避阳光，像一幅会呼吸的油画。
 
-**02｜缘侧的麦茶与零食**  
+**02｜缘侧的麦茶与零食**
 老家缘侧，她盘腿坐着，面前摊着 Pocky、薯片和倒好的麦茶，笔记本放在膝上看视频；电风扇摇头吹过她的长发，是无聊又安心的夏日午后。
 
-**03｜窗边的发呆**  
+**03｜窗边的发呆**
 她侧坐在二楼房间的窗台上，抱着兔子布偶望向远处的山与铁道；阳光勾勒出白裙的轮廓，表情介于无聊与等待之间——她在等某个人回家。
 
-**04｜神社石阶的回望**  
+**04｜神社石阶的回望**
 （叉依姬神社氛围）长长的石阶中段，她停下脚步回头看向坡下，白色裙摆在树影光斑里格外显眼；风把她的双马尾吹起，表情是一闪而过的寂寞。
 
-**05｜被炉里的网络依存**  
+**05｜被炉里的网络依存**
 冬季客厅，她整个人埋在被炉里只露出脑袋和拿着手机的手，兔子布偶靠在旁边；屏幕的光映在她脸上，连哥哥说话都只回以敷衍的单音。
 
-**06｜蚊虫大作战**  
+**06｜蚊虫大作战**
 （喜剧场景）一只飞虫闯入房间，她瞬间从懒散切换到全面警戒，抱着兔子布偶缩到墙角，用杂志当武器摆出防御架势；脸上的慌张真实到好笑。
 
-**07｜自行车后座的晨光**  
+**07｜自行车后座的晨光**
 乡间小路的自行车后座，她侧坐着环住前方人的腰，白色连衣裙的下摆随风飘起；晨光从杉树林间洒落，她的侧脸安静得不像平时的任性鬼。
 
-**08｜兔子布偶的缝补**  
+**08｜兔子布偶的缝补**
 她盘腿坐在床上给兔子布偶缝合开线的耳朵，穿针的动作笨拙但认真；缝好后举起来端详，嘴角有了一点极淡的弧度——这是悠送的东西。
 
-**09｜雨天的玄关等待**  
+**09｜雨天的玄关等待**
 骤雨的傍晚，她抱着兔子布偶坐在玄关台阶上，膝上放着多拿的一把伞；听到脚步声抬头的瞬间，眼神从放空切换到亮起来，全部情绪只在这一秒。
 
-**10｜赫尔辛基的雪**  
+**10｜赫尔辛基的雪**
 （结局时间线）异国的雪景街道，她穿着白色大衣与围巾站在积雪的广场上，回头看向镜头方向；呼出的白气与北欧的冬阳里，她的表情是终于抵达某处的安心。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2688,41 +2691,41 @@ TYPE-MOON《魔法使之夜》女主角之一，出生在英国的纯正魔女�
 Alice Kuonji from *Witch on the Holy Night*, a genuine modern-day witch and mistress of the old mansion on the hill, with neat short black hair, dark composed eyes and an old-fashioned black dress with puffed juliet sleeves and a white collar. She carries the air of a girl left behind by time — silent, proud, formal and solitary — yet there is a hidden romanticism in the way she handles her fairy-tale familiars and brews her medicines. In winter she wears a fur cossack hat.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``隐居现代的魔女 / 三无与古板 / 山上的洋馆 / 童话咒术 / 骄傲的浪漫主义者 / 被时代遗忘 / 礼园女学院 / 黑白茶的仪式感``  
+**表演关键词**：``隐居现代的魔女 / 三无与古板 / 山上的洋馆 / 童话咒术 / 骄傲的浪漫主义者 / 被时代遗忘 / 礼园女学院 / 黑白茶的仪式感``
 **易错红线**：
 - ❌ VN 本篇是黑色短发妹妹头；长发属 FGO 再临分支，必须显式区分。
 - ❌ 不要画成活泼社交型；她的魅力是安静与古板的骄傲。
 - ❌ 黑色洋装 + 白领 + 蓬袖是核心服饰语言，不要换成现代便装糊弄。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜洋馆客厅的炉火**  
+**01｜洋馆客厅的炉火**
 久远寺宅的客厅，她坐在高背扶手椅上读一本旧书，壁炉的火光在黑色洋装上跳动；红茶的热气与古董家具之间，她是这座屋子唯一的主人。
 
-**02｜药草调配的深夜**  
+**02｜药草调配的深夜**
 深夜工作间，她对着一排小药瓶与研钵调配药剂，烛光把她的侧影投在古老的石墙上；动作精准得像仪式，是她「童话咒术与药学」的日常面。
 
-**03｜冬日毛皮帽的坡道**  
+**03｜冬日毛皮帽的坡道**
 冬季上学路，她戴着哥萨克帽、围着围巾走在通往礼园女学院的坡道上，呼出白气；对路人的问候只回以最小的点头，古板而端正。
 
-**04｜庭园独酌下午茶**  
+**04｜庭园独酌下午茶**
 洋馆庭园，她独自坐在铁艺桌旁享用一人份的下午茶，白瓷茶具与黑裙形成对比；庭院无人，她的表情在无人的空间里反而最放松。
 
-**05｜图书馆的童话角落**  
+**05｜图书馆的童话角落**
 礼园女学院图书馆，她站在童话与民俗学书架前抽出一本旧版《爱丽丝》，指尖抚过烫金书脊；名字的来历与她的身份在这一幕安静重合。
 
-**06｜雨天窗边的使魔**  
+**06｜雨天窗边的使魔**
 雨天洋馆，她站在落地窗前，指尖停着一只小鸟使魔；玻璃上的雨痕与昏暗天光里，她与使魔对视的表情比对人时柔软。
 
-**07｜旧货商店的格格不入**  
+**07｜旧货商店的格格不入**
 三咲市商店街，她站在杂货铺前研究一件旧摆件，端庄的黑裙与市井氛围格格不入；店主搭话时她礼貌而疏远地回应，是「被时代遗忘」的具象化。
 
-**08｜圣诞夜的一人蛋糕**  
+**08｜圣诞夜的一人蛋糕**
 圣诞夜的洋馆餐厅，长桌上只有一小块蛋糕与一支蜡烛；她安静地吃完属于自己的那一份——孤独但并不可怜，这是她选择的生活方式。
 
-**09｜月光庭院的魔女**  
+**09｜月光庭院的魔女**
 （身份高光）满月之夜的庭院，她站在爬满藤蔓的庭院中央，黑色裙摆与夜色融为一体，周身浮现童话般的微光；「最后的魔女」的威严只在这一个画面全开。
 
-**10｜清晨的黑白茶**  
+**10｜清晨的黑白茶**
 清晨厨房，她穿着睡衣式样的深色晨衣烧水泡茶，动作是重复过千百遍的精确；第一缕阳光照进洋馆，她端着茶杯望向窗外，新的一天与昨天没有不同。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2795,7 +2798,7 @@ Alice Kuonji from *Witch on the Holy Night*, a genuine modern-day witch and mist
 Kanna Akizuki from *Cafe Stella and the Reaper's Butterflies*, a self-proclaimed grim reaper who has walked the human world for over a century. She has very long silvery-white hair tied in a side ponytail with a playful bunny-ear ribbon, an unruly cowlick, long sidelocks and soft pink eyes. Her cafe uniform pairs a neat jacket and red ribbon with black garter-belt stockings, and her gentle, old-fashioned warmth is punctuated by sudden, mischievous teasing — the composure of someone who has seen a hundred years, wielded like a toy.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``百年死神 / 旧时代的从容 / 小恶魔嘲弄 / 机械白痴 / 咖啡馆日常 / 兔耳蝴蝶结 / 沧桑感 / 融入人间``  
+**表演关键词**：``百年死神 / 旧时代的从容 / 小恶魔嘲弄 / 机械白痴 / 咖啡馆日常 / 兔耳蝴蝶结 / 沧桑感 / 融入人间``
 **易错红线**：
 - ❌ 发色是白/银白不是粉；粉色只属于瞳色。
 - ❌ 侧单马尾 + 兔耳蝴蝶结是识别点，不要画成披发或双马尾。
@@ -2803,34 +2806,34 @@ Kanna Akizuki from *Cafe Stella and the Reaper's Butterflies*, a self-proclaimed
 - ❌ 百年沧桑感要偶尔从眼神里漏出来，不要全程画成普通脱线店员。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜吧台后的百年手艺**  
+**01｜吧台后的百年手艺**
 星光咖啡馆吧台后，她用老式虹吸壶冲煮咖啡，动作是从容到近乎悠闲的精准；阳光穿过玻璃杯，她抬眼对客人微笑，眼角藏着与外表年龄不符的沉淀。
 
-**02｜智能手机苦战中**  
+**02｜智能手机苦战中**
 休息室的沙发，她双手捧着智能手机如临大敌，指尖悬在屏幕上方迟迟不敢点下去；终于误触弹出满屏通知，她对着手机微微鞠躬道歉——旧时代死神的日常战役。
 
-**03｜打烊后的杯碟交响**  
+**03｜打烊后的杯碟交响**
 打烊后的咖啡馆，她独自擦着杯碟把它们一个个归位，吊灯只开了一排；哼着一首很老的曲子，是 100 年里重复过无数次、却依然喜欢的收尾仪式。
 
-**04｜死神之蝶的夜色**  
+**04｜死神之蝶的夜色**
 （身份高光）深夜街道，她肩扛长柄镰刀缓步走着，黑色蝴蝶在路灯间飞舞；咖啡馆店员的温和从脸上褪去，露出死神本该有的、安静的威仪。
 
-**05｜粗点心店的怀旧**  
+**05｜粗点心店的怀旧**
 老式粗点心店，她蹲在货架前拿起几十年前的经典零食，眼神亮得像孩子；向店主聊起「以前的分量」，店主笑着应和——没人知道她是字面意思的过来人。
 
-**06｜雨天店门口的借伞**  
+**06｜雨天店门口的借伞**
 骤雨的傍晚，她把店里的备用伞递给没带伞的客人，自己抱着伞桶站在门口微笑目送；客人走远后她望着雨幕，轻声说了一句像是说给百年岁月听的话。
 
-**07｜员工休息室的恶作剧**  
+**07｜员工休息室的恶作剧**
 休息室，她坏笑着把一块芥末夹心饼干混进同事的茶点盘，然后若无其事地坐回座位翻旧杂志；得逞瞬间嘴角的小恶魔弧度，是她最喜欢的小乐趣。
 
-**08｜秋日庭院的读书**  
+**08｜秋日庭院的读书**
 自家庭院，她盖着薄毯读一本纸质书，白发垂在书页上；读到某处停下来望向红叶，百年的记忆与书中的句子重叠，表情温柔而悠远。
 
-**09｜祭典灯笼与旧舞曲**  
+**09｜祭典灯笼与旧舞曲**
 夏祭，她站在灯笼下看着年轻人跳新式的舞蹈，手指却在身侧悄悄比划着旧式盂兰盆舞的节拍；被邀请时笑着摇头，眼里有一点点真实的怀念。
 
-**10｜晨间开店前的呼吸**  
+**10｜晨间开店前的呼吸**
 清晨的咖啡馆，她推开木门让第一缕阳光照进来，深吸一口气开始擦拭吧台；桌椅归位、花瓶换水，百年死神认真经营「今天」的每一帧。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -2909,7 +2912,7 @@ Kanna Akizuki from *Cafe Stella and the Reaper's Butterflies*, a self-proclaimed
 Medusa (Rider) from *Fate/stay night*, a tall and statuesque Servant with floor-sweeping pale violet hair and calm purple eyes. In combat she wears a black blindfold sealing her Mystic Eyes, a dark shoulder-baring outfit and wields chain spikes; in daily life she swaps the blindfold for simple reading glasses and a white blouse, browsing bookstores with the quiet poise of a woman far gentler than her monstrous legend suggests.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``沉默寡言 / 忠诚 / 高挑自卑 / 书与酒 / 被误解的温柔 / 眼罩与眼镜的双面 / 樱至上 / 安静的居家感``  
+**表演关键词**：``沉默寡言 / 忠诚 / 高挑自卑 / 书与酒 / 被误解的温柔 / 眼罩与眼镜的双面 / 樱至上 / 安静的居家感``
 **易错红线**：
 - ❌ 眼罩（战斗）与眼镜（日常）是状态开关，不要混戴或同时出现。
 - ❌ 身高 172cm 的高挑体型是设定点，严禁娇小化。
@@ -2917,34 +2920,34 @@ Medusa (Rider) from *Fate/stay night*, a tall and statuesque Servant with floor-
 - ❌ 蛇发是神话原型的意象，Fate 本体造型是紫色长发，不要画蛇发。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜书店文库本的站立阅读**  
+**01｜书店文库本的站立阅读**
 （日常高光）书店角落，她戴着眼镜站在文库本书架前静静翻阅，长发垂落遮出私密的空间；店员经过时她礼貌地让出半步，全程没有一句话却气场安定。
 
-**02｜卫宫家仓库的午后**  
+**02｜卫宫家仓库的午后**
 （HA 日常）仓库改成的栖身小间，她侧坐在旧沙发上看书，膝上放着喝了一半的茶；阳光从小窗进来，她抬手把垂落的紫发别到耳后，是借住者独有的拘谨与安心。
 
-**03｜自行车采购的迎风**  
+**03｜自行车采购的迎风**
 她骑着自行车穿过商店街，购物篮里装着食材，眼镜被风吹得微微滑下；172cm 的身材骑普通自行车略显局促，但她的表情是认真的快乐。
 
-**04｜厨房里的围裙反差**  
+**04｜厨房里的围裙反差**
 卫宫家厨房，她系着围裙切菜，刀工意外地利落；为樱准备的便当摆得整整齐齐，摘了眼镜揉眼睛的一瞬间露出毫无防备的素颜。
 
-**05｜夜晚独酌的庭院**  
+**05｜夜晚独酌的庭院**
 （爱酒设定）缘侧，她背靠柱子独酌一小瓶酒，长发散在月光里；微醺让平时冷淡的表情软化，望着庭院的目光像在回忆很遥远的草原。
 
-**06｜锁链与眼罩的战场**  
+**06｜锁链与眼罩的战场**
 （身份高光，限 1 套）夜之校舍/楼顶，眼罩状态下的她旋身掷出锁链钉桩，紫色长发在战斗的气流中扬起；画面只取她落地单膝收势的一瞬，Rider 的威压全开。
 
-**07｜电影院最后一排**  
+**07｜电影院最后一排**
 （HA 氛围）放映厅最后一排，她摘下眼镜专注看电影，银幕的光在她紫瞳里流动；看到动人处手指轻轻收紧——她的感情都藏在别人看不见的地方。
 
-**08｜夏日海滨的泳装**  
+**08｜夏日海滨的泳装**
 官方泳装衍生视觉。海滩遮阳伞下，她穿着深色泳装靠在躺椅上看书，墨镜推到头顶；高挑的身材在海边格外醒目，本人却只想安静地看完这一章。
 
-**09｜雨天便利屋檐**  
+**09｜雨天便利屋檐**
 突雨，她抱着购物纸袋站在便利店檐下等雨停，发梢滴着水；把仅有的一条备用毛巾搭在纸袋上护住里面的书，自己淋着也无所谓。
 
-**10｜天马的梦**  
+**10｜天马的梦**
 （意象场景）开满野花的草原黄昏，她站在风里望向天空，身旁隐约有天马的虚影；不是战斗的召唤，而是被诅咒之前的、作为「美杜莎」之外某个自己的梦。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3021,41 +3024,41 @@ Medusa (Rider) from *Fate/stay night*, a tall and statuesque Servant with floor-
 Chloe von Einzbern (Kuro) from *Fate/kaleid liner Prisma Illya*, a cheeky elementary-school girl with warm brown skin, long pinkish-white hair with sidelocks and bright orange-golden eyes. She carries herself with brazen little-devil confidence — smirking, teasing, always pushing boundaries — yet in unguarded moments her gaze turns fiercely protective and a little lonely, the echo of a sealed-away self that spent ten years in the dark.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``小恶魔 / 腹黑毒舌 / 强吻补魔 / 自称姐姐 / 无节操 / 被抹杀的怨气 / 家人至上 / Archer的凌厉``  
+**表演关键词**：``小恶魔 / 腹黑毒舌 / 强吻补魔 / 自称姐姐 / 无节操 / 被抹杀的怨气 / 家人至上 / Archer的凌厉``
 **易错红线**：
 - ❌ 褐皮是健康的小麦棕，不要画成灰色或病态深色。
 - ❌ 粉白发色不要画成高饱和桃粉。
 - ❌ 不要只剩「福利担当」标签；她的怨气与守护欲是角色根基。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜爱因兹贝伦家的早餐战争**  
+**01｜爱因兹贝伦家的早餐战争**
 餐桌前，她伸长筷子抢走伊莉雅盘子里的煎蛋，动作快得只剩残影；被瞪之后露出得意的小恶魔笑，却把自已盘子里的培根默默分了过去——争归争，照顾归照顾。
 
-**02｜天台上的宣言**  
+**02｜天台上的宣言**
 学校天台，她单手叉腰站在铁丝网前，迎着风发表「我才是姐姐」的夸张宣言；夕阳把褐肤染成蜜色，嚣张表情下眼神却偶尔飘向旁边确认对方有没有在听。
 
-**03｜厨房里的拿手菜**  
+**03｜厨房里的拿手菜**
 （居家反差）她系着略大的围裙站在凳子上炒菜，架势专业、调味大胆；装盘时对摆盘的讲究程度暴露出「在在意的人面前想表现」的小心思。
 
-**04｜游戏厅的连胜**  
+**04｜游戏厅的连胜**
 放学后游戏厅，她盘腿坐在格斗游戏机前打出连胜，围观的小学生越来越多；赢到最后的仰天大笑毫无形象，是真正的孩子气瞬间。
 
-**05｜试衣间的大胆穿搭**  
+**05｜试衣间的大胆穿搭**
 商场童装区，她从试衣间探出头展示一套露脐装+长靴的搭配，姿势摆得像杂志模特；被吐槽「小学生不要穿成这样」后不服气地鼓起腮帮。
 
-**06｜午后屋顶的午睡**  
+**06｜午后屋顶的午睡**
 夏日屋顶阴凉处，她枕着书包侧躺午睡，粉白长发散在水泥地上；睡着的脸没有平时的攻击性，安静得让人想起她本来也只是个孩子。
 
-**07｜Archer 姿态化**  
+**07｜Archer 姿态化**
 （身份高光，限 1 套）Archer 卡姿态化展开，红黑战衣、双手各持一柄短刀/干将莫邪式双刃，褐肤与粉发在魔力光中对比强烈；画面定格在俯身突进前的低重心瞬间。
 
-**08｜夏日祭的刨冰抢夺**  
+**08｜夏日祭的刨冰抢夺**
 浴衣祭典，她捧着自己那份草莓刨冰，眼睛却盯着别人的蓝色夏威夷口味；「就一口」的说辞谁都骗不了，最后两个人的刨冰都被她吃过一轮。
 
-**09｜雨天窗边的真话**  
+**09｜雨天窗边的真话**
 下雨的午后，她趴在窗边看雨，难得没有耍宝；被问怎么了的时候用平时的腔调说「没什么」，但抱着膝盖的手指收紧了一下——被抹杀过的十年只在这种天气露出边角。
 
-**10｜冬夜被炉的魔力补给**  
+**10｜冬夜被炉的魔力补给**
 冬夜被炉，她半边身子陷在里面剥橘子，把橘子瓣不由分说塞到旁边人嘴里；嘴上说着「这是魔力补给」，脸上的满足却是纯粹的、属于家的温度。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3130,7 +3133,7 @@ Chloe von Einzbern (Kuro) from *Fate/kaleid liner Prisma Illya*, a cheeky elemen
 Medea (Caster) from *Fate/stay night*, a composed Age-of-Gods magus with long blue-violet hair, a slim side braid tucked behind her left pointed ear and cool blue eyes. Her signature look is a black hooded robe worn over a purple dress, lending her the silhouette of a storybook witch. Beneath the infamous title of "Witch of Betrayal" she is painstakingly devoted and unexpectedly domestic — happiest when cooking, sewing or assembling model kits for the one person she has chosen.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``背叛魔女的恶名 / 神代魔术的从容 / 对宗一郎的绝对奉献 / 模型制作的宅趣 / 连帽长袍 / 尖耳 / 笨拙的贤妻感 / 恶名与深情的反差``  
+**表演关键词**：``背叛魔女的恶名 / 神代魔术的从容 / 对宗一郎的绝对奉献 / 模型制作的宅趣 / 连帽长袍 / 尖耳 / 笨拙的贤妻感 / 恶名与深情的反差``
 **易错红线**：
 - ❌ 尖耳与左耳后编发是双识别点，缺一不可。
 - ❌ 发色是蓝紫（以蓝为主），不要纯紫；与「印象色紫」的服装区分。
@@ -3138,34 +3141,34 @@ Medea (Caster) from *Fate/stay night*, a composed Age-of-Gods magus with long bl
 - ❌ 成年本体与 Lily 形态严禁混用（发型、气质、服装全部不同）。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜柳洞寺厨房的手作料理**  
+**01｜柳洞寺厨房的手作料理**
 （HA 日常）柳洞寺厨房，她把长袍袖子用襻带扎起、系着围裙做饭，尖耳从垂落的发丝间露出；尝味时专注的神情不像魔女，更像新婚的妻子。
 
-**02｜深夜的模型制作**  
+**02｜深夜的模型制作**
 （官方特技）她的房间，台灯下摊着精密模型套件与镊子，她戴着细框眼镜用魔术微雕零件；完成一处的满足感，是她少数不设防的快乐。
 
-**03｜连帽长袍的街市采购**  
+**03｜连帽长袍的街市采购**
 商店街，她以兜帽深罩的装束提着菜篮穿行，引来侧目也毫不在意；在鱼摊前停下认真挑选今晚食材的样子，恶名与烟火气同框。
 
-**04｜神殿遗址的独舞**  
+**04｜神殿遗址的独舞**
 （身份高光，限 1 套）夜晚的柳洞寺山门，长袍翻飞、紫色魔力纹路在地面展开巨大的魔术阵；她悬立阵眼中央俯视下方，神代魔术师的威严全开——仅此一幕的「Caster」。
 
-**05｜缝补长袍的午后**  
+**05｜缝补长袍的午后**
 寺院缘侧，她跪坐着缝补长袍袖口被术式烧焦的边缘，针脚细密整齐；阳光落在蓝发上，针线活是她从神代带到现代的手艺。
 
-**06｜书架前的魔术典籍**  
+**06｜书架前的魔术典籍**
 柳洞寺书库，她站在梯子上取高处的旧书，长袍下摆垂落如帘；抽出一册翻阅时，指尖在某一页停留——是与故国有关的记载，表情瞬间遥远。
 
-**07｜雨中山门的等待**  
+**07｜雨中山门的等待**
 骤雨，她站在柳洞寺山门的屋檐下望着长长的石阶，手里拿着为某人准备的伞；雨水顺着石阶流下，等待中的她安静得像一尊神像，但眼神是温柔的。
 
-**08｜祭典上的糖苹果**  
+**08｜祭典上的糖苹果**
 （便服分支）夏祭，她罕见地换上便服，拿着糖苹果站在捞金鱼摊前看得出神；被搭讪时冷淡以对，看到约定的人出现时整张脸亮起来的落差。
 
-**09｜猫与毛线球**  
+**09｜猫与毛线球**
 寺内长廊，一只野猫把她织物的毛线球滚了出来，她跪坐在地上与猫对峙；最后无奈地用魔术把毛线「钓」回来，嘴角有非常淡的笑意。
 
-**10｜冬夜的灯下缝衣**  
+**10｜冬夜的灯下缝衣**
 冬夜，她在灯下为某个人缝制冬衣，针线在指间穿梭，尖耳被灯光映得透明；口中轻轻哼着科尔基斯的旧曲调，是整部作品里她最像「人」的时刻。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3241,41 +3244,41 @@ Medea (Caster) from *Fate/stay night*, a composed Age-of-Gods magus with long bl
 Kama from *Fate/Grand Order*, the Indian god of love residing in a vessel identical to Sakura Matou's face, with snow-white hair (short and impish in her young form, floor-length in her adult form), crimson eyes, a golden collar and detached sleeves over a cosmic, starfield-lined outfit. She poses as an arrogant, teasing demon king of desire, but her composure cracks constantly — pouting, flustered, grudge-holding — the so-called "most pathetic Beast" whose villainy keeps collapsing into endearing pettiness.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``爱欲魔王 / 威严破产 / 慵懒搞事 / 傲沉炸毛 / 记仇 / 最丢人的兽 / 无形者的缺爱 / 花之箭``  
+**表演关键词**：``爱欲魔王 / 威严破产 / 慵懒搞事 / 傲沉炸毛 / 记仇 / 最丢人的兽 / 无形者的缺爱 / 花之箭``
 **易错红线**：
 - ❌ 她的「色气」是挑衅演技，破防后的慌张才是本味；不要全程高冷。
 - ❌ 白发红瞳 + 金颈环是识别三件套；星空内衬是高级细节，有则加分。
 - ❌ 面容是间桐樱的 Sakuraface，但表情气质必须完全不同（狡黠 vs 温柔）。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜魔王沙发的慵懒午后**  
+**01｜魔王沙发的慵懒午后**
 她的领域一角，成年形态的她横卧在华丽沙发上，单手撑头、另一只手指尖转着花之箭；身边散落着零食与靠垫，「魔王的工作」看起来就是彻底地躺着。
 
-**02｜搞事失败的炸毛**  
+**02｜搞事失败的炸毛**
 她精心布置的恶作剧被无视，先是维持微笑、嘴角抽搐，最终抱着靠垫把脸埋进去发脾气；抬起来的脸上红晕未退还要嘴硬「我、我才没有期待」。
 
-**03｜茶馆观察人间**  
+**03｜茶馆观察人间**
 现世的露天咖啡馆，她戴着遮阳帽伪装成普通美女，支着下巴观察情侣互动；嘴里嘀咕着「无聊」「堕落吧」，吸管却把饮料喝得见了底。
 
-**04｜花田里的魔王凭依**  
+**04｜花田里的魔王凭依**
 （身份高光，限 1 套）无尽花海中央，成年形态的她悬立于花瓣风暴里，星空内衬的衣装展开，红瞳低垂俯视；BeastⅢ/L 的压迫感只此一幕，随后花瓣落地，她落回地面时又变回那副慵懒表情。
 
-**05｜泳装海边的泡沫**  
+**05｜泳装海边的泡沫**
 （泳装 Avenger 分支）夏日海滩，她抱着充气浮排漂在水面上，白色长发散在海面；被海浪颠得失去平衡时死死抱住浮排，魔王的尊严与泡沫一起破灭。
 
-**06｜深夜游戏的连败**  
+**06｜深夜游戏的连败**
 深夜房间，她盘腿坐在屏幕前打游戏连败，手柄被攥得咯咯响；最后一局输了之后整个人向后倒成大字型，白发散在地毯上，嘴里念着记仇名单。
 
-**07｜甜点柜前的认真**  
+**07｜甜点柜前的认真**
 百货地下甜品区，她隔着玻璃柜逐一审视限定蛋糕，表情严肃得像在挑选圣遗物；最终全部买下的那一刻，嘴角是压不住的、毫不魔王的好心情。
 
-**08｜温泉的白雾**  
+**08｜温泉的白雾**
 温泉乡，她裹着浴巾靠在池边，长发盘起露出后颈；白雾缭绕中难得没有挑衅的心思，望着星空发呆——被烧却的过去只在无人时浮出水面。
 
-**09｜雨天屋檐的偶遇**  
+**09｜雨天屋檐的偶遇**
 骤雨的商店街屋檐下，她被雨淋了半边肩膀，正烦躁地拧着发梢；被人递伞时先是警惕、再是怀疑对方有所图，最后别扭地道谢——三步反应全是她的可爱。
 
-**10｜新年神社的签运**  
+**10｜新年神社的签运**
 冬装参拜，她抽到大吉后举起来得意洋洋，说这是「魔王应得的运势」；风把签文吹走时被树枝挂住，她踮着脚够了半天够不到，最后装作毫不在意地离开。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3349,41 +3352,41 @@ Kama from *Fate/Grand Order*, the Indian god of love residing in a vessel identi
 Raphtalia from *The Rising of the Shield Hero*, a raccoon demi-human swordswoman with long, fluffy chestnut-brown hair, soft pink eyes, expressive raccoon ears and a full striped tail. She wears her signature red-brown dress with light armor and boots. Her bearing is honest, earnest and dependable — the conscience of her party — and her ears and tail betray every flicker of joy, embarrassment or resolve before her face does.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``尚文大人的剑 / 直率认真 / 兽耳情绪外露 / 奴隶到勇者的成长 / 常识人吐槽 / 尾巴先诚实的害羞 / 可靠伙伴``  
+**表演关键词**：``尚文大人的剑 / 直率认真 / 兽耳情绪外露 / 奴隶到勇者的成长 / 常识人吐槽 / 尾巴先诚实的害羞 / 可靠伙伴``
 **易错红线**：
 - ❌ 浣熊耳+尾巴+耳绒是三件套，禁止省略成普通人类少女。
 - ❌ 瞳色按粉红系，不要画成深红。
 - ❌ 她的核心是「可靠伙伴」不是「宠物娘」；兽耳是种族特征不是卖萌道具。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜晨训后的擦剑**  
+**01｜晨训后的擦剑**
 营地清晨，她坐在木桩上保养爱剑，耳朵随着远处的鸟鸣轻轻转动；擦完收剑入鞘，尾巴满足地晃了一下——剑士的日常从保养开始。
 
-**02｜ marketplace 的讨价还价**  
+**02｜ marketplace 的讨价还价**
 市集摊位前，她一手按住想多买的同伴，一手认真和店主讨价还价；耳朵警惕地竖着听周围动静，是队伍里最清醒的那个人。
 
-**03｜篝火旁的晚餐分餐**  
+**03｜篝火旁的晚餐分餐**
 旅途营地，她跪坐在篝火边把炖菜分进每个人的碗里，尾巴被火光照得暖融融；确认大家都拿到之后才给自己盛，动作自然得像呼吸。
 
-**04｜树荫下的午睡防线**  
+**04｜树荫下的午睡防线**
 午后树荫，她靠着树干小睡，怀里抱着剑；耳朵却保持立着——一有动静立刻睁眼，是长年旅途养成的、让人有点心疼的习惯。
 
-**05｜雨中的斗篷共披**  
+**05｜雨中的斗篷共披**
 突雨的山道，她把斗篷撑开分给同行的小个子伙伴，自己半个肩膀淋在雨里；尾巴湿透了也不在意，只确认对方没被淋到。
 
-**06｜新衣试穿的习惯性道谢**  
+**06｜新衣试穿的习惯性道谢**
 小镇服装店，她试穿新做的旅行装，对着镜子手足无措地整理领口；被夸合身时耳朵一下子耷拉下来变红——奴隶时代的匮乏让她对「收到新东西」始终郑重。
 
-**07｜秋收祭的苹果派**  
+**07｜秋收祭的苹果派**
 村庄秋收祭，她捧着刚出炉的苹果派被烫得换手，耳朵兴奋地抖动；咬下第一口后幸福得眯起眼睛，尾巴高高翘起。
 
-**08｜刀之勇者的拔刀**  
+**08｜刀之勇者的拔刀**
 （身份高光，限 1 套）战场尘烟中，她压低重心拔刀，栗发与兽耳在气浪中向后扬起；眼神是从奴隶少女走到刀之勇者的全部重量——只此一幕，其余场景不重复战斗。
 
-**09｜溪边浣洗**  
+**09｜溪边浣洗**
 旅途溪边，她蹲在石头上洗旅途的衣物，尾巴高高翘起保持干燥；水花溅到鼻尖时抖了抖耳朵，画面是冒险间隙难得的平静。
 
-**10｜冬夜壁炉前的信**  
+**10｜冬夜壁炉前的信**
 旅馆壁炉前，她就着火光给故乡方向写一封没有收件人的信，耳朵低垂；写完后把信纸仔细折好收进怀里——有些思念不需要寄出。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3460,41 +3463,41 @@ Raphtalia from *The Rising of the Shield Hero*, a raccoon demi-human swordswoman
 Tohka Yatogami from *Date A Live*, a spirit girl with knee-length night-purple hair tied with a large ribbon into a high half-ponytail and clear violet eyes. Her default aura is pure, sunny curiosity — wide-eyed wonder at the human world and bottomless enthusiasm for food, especially kinako bread. In her Astral Dress she becomes a regal armored princess wielding a colossal broadsword, but even then her expressions stay innocent, earnest and endearingly simple.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``纯真 / 大胃王 / 黄豆粉面包 / 唔姆口癖 / 超强嗅觉 / 东亚醋王 / 对世界的喜爱 / 公主的威仪只在战斗时``  
+**表演关键词**：``纯真 / 大胃王 / 黄豆粉面包 / 唔姆口癖 / 超强嗅觉 / 东亚醋王 / 对世界的喜爱 / 公主的威仪只在战斗时``
 **易错红线**：
 - ❌ 夜色长发按深紫处理，不要纯黑；紫瞳是锚点。
 - ❌ 大蝴蝶结半马尾是识别点，灵装与校服形态都要保留发型签名。
 - ❌ 天然呆不等于傻气崩坏脸；她的可爱是纯真不是滑稽。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜面包店的黄豆粉面包**  
+**01｜面包店的黄豆粉面包**
 面包店玻璃柜前，她整个人贴上去盯着新出炉的黄豆粉面包，眼睛亮得像发现宝物；买到之后当场咬下一大口，幸福到头顶的蝴蝶结都在晃。
 
-**02｜第一次的章鱼烧**  
+**02｜第一次的章鱼烧**
 祭典摊位，她对着章鱼烧又吹又扇，被烫得直呼气却舍不得吐出来；终于咽下去后高举竹签宣布「人类的食物是宝物」，是最典型的十香式感动。
 
-**03｜天台的便当与醋意**  
+**03｜天台的便当与醋意**
 学校天台，她抱着两人份便当吃得心满意足，闻到士道身上「别的味道」后瞬间凑近嗅探，脸越贴越近；醋意写在整张脸上，本人毫无自觉。
 
-**04｜雨后的水洼跳跃**  
+**04｜雨后的水洼跳跃**
 放学雨后，她绕开水洼走了两步又折返，郑重其事地跳进最大的水洼里；溅起的水花和她的笑声一起炸开，是对世界充满好奇的瞬间。
 
-**05｜图书馆的图画书**  
+**05｜图书馆的图画书**
 她盘腿坐在图书馆地板上看彩色图画书，手指点着图画逐字念；看到有趣处抬头想分享，发现对方在打瞌睡后鼓起了腮帮。
 
-**06｜鏖杀公出鞘**  
+**06｜鏖杀公出鞘**
 （身份高光，限 1 套）灵装展开，她双手拄着巨剑鏖杀公立于废墟之上，夜色长发在魔力气流中扬起；公主的威仪全开的一瞬，与日常判若两人。
 
-**07｜电影院爆米花的攻防**  
+**07｜电影院爆米花的攻防**
 影院座位，她抱着大桶爆米花左右开弓，中途发现对方的饮料更好喝而发起「交换谈判」；银幕的光映在她满足的侧脸上。
 
-**08｜夏日海边的第一次**  
+**08｜夏日海边的第一次**
 海滩，她第一次见到大海，先是警惕地戳了戳浪花，随即大笑着冲进去；湿透的长发贴在背上，是「喜爱人类世界」的最直接画面。
 
-**09｜冬夜的暖桌与蜜柑**  
+**09｜冬夜的暖桌与蜜柑**
 暖桌里，她抱着蜜柑一个个剥开，认真地把橘络撕干净才吃；吃到一半把最甜的一瓣递过去，说「这个给你」时没有任何心机。
 
-**10｜樱花树下的命名纪念**  
+**10｜樱花树下的命名纪念**
 （4 月 10 日意象）盛开的樱花树下，她仰头看着花瓣飘落，轻声念着自己的名字；「十香」这个被赋予的名字，是她与这个世界最初的契约。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3573,41 +3576,41 @@ Tohka Yatogami from *Date A Live*, a spirit girl with knee-length night-purple h
 Origami Tobiichi from *Date A Live*, a doll-like girl with snow-white hair (a neat short cut in her original timeline, long and flowing in the new one), pale blue eyes and a perfectly expressionless face that places first in both grades and athleticism. To the world she is an untouchable ice beauty who ignores everyone; around Shidou alone she transforms — bold, aggressive and utterly shameless in her devotion, while her face never changes. Her spirit form wears a pure white gown, veil and crown.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``人偶系无表情 / 学年第一 / 冰美人 / 对士道火力全开 / 肉食系 / AST / 天才黑客 / 白发双时间线``  
+**表演关键词**：``人偶系无表情 / 学年第一 / 冰美人 / 对士道火力全开 / 肉食系 / AST / 天才黑客 / 白发双时间线``
 **易错红线**：
 - ❌ 短发（旧）与长发（新）时间线必须显式区分。
 - ❌ 无表情是表演基准线；所有情绪都靠动作与眼神的微小变化传达，不要画成表情丰富。
 - ❌ 白发不要偏灰；蓝瞳保持冷调。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜教室窗边的完美侧脸**  
+**01｜教室窗边的完美侧脸**
 教室靠窗，她坐姿笔直地看书，白发在午后光里近乎透明；周围同学的窃窃私语全部被她无视，翻页的节奏都像设定好的程序——直到手机震动，她的视线瞬间离开书本。
 
-**02｜女仆装的迎接**  
+**02｜女仆装的迎接**
 （名场面日常化）玄关，她穿着全套女仆装以标准到诡异的动作鞠躬说「欢迎回来」；面无表情是这套攻势的核心——正因为没有表情，才让人完全无法预判。
 
-**03｜AST 的整备室**  
+**03｜AST 的整备室**
 （身份高光，限 1 套）AST 机库整备室，她穿着战术服检查光剑装备，冷光灯下的白发与装甲同色；抬眼时的目光是战场级别的锐利，与学校的冰美人判若两人。
 
-**04｜能量棒的午餐**  
+**04｜能量棒的午餐**
 天台角落，她的午餐是整齐排列的 Calorie Mate 和矿泉水，以最高效率进食；吃完后盯着楼下的某个身影，嘴角没有任何弧度，眼神却跟着移动。
 
-**05｜书店计算机区**  
+**05｜书店计算机区**
 书店角落，她站在计算机书架前快速翻阅黑客技术书，白发垂在书页上；买单时店员搭话被完全无视，是她在人群中一贯的相处模式。
 
-**06｜雨中的跟踪伞**  
+**06｜雨中的跟踪伞**
 放学雨，她撑着黑伞以完美距离跟在目标身后，脚步无声；被突然回头发现时面不改色地说出「只是顺路」，伞沿下的蓝瞳平静得可怕。
 
-**07｜长发新生的晨光**  
+**07｜长发新生的晨光**
 （新世界线分支）长发形态的她坐在窗边梳理及腰白发，动作比以前缓慢而柔和；晨光里她试着对镜子练习微笑——虽然还不太成功。
 
-**08｜夏日祭的射击摊**  
+**08｜夏日祭的射击摊**
 祭典射击摊，她以精密到可怕的枪法横扫奖品，摊主脸色发青；抱着赢来的玩偶转身递出去时依然面无表情：「给你。」
 
-**09｜冬夜的监控画面**  
+**09｜冬夜的监控画面**
 她的房间，多台显示器映着各种画面（黑客设定），她盘腿坐在椅子上裹着小毯子整理资料；屏幕冷光里的白发与眼镜反光，是她「完美少女」背后的另一面。
 
-**10｜灵装的纯白**  
+**10｜灵装的纯白**
 （意象场景）纯白长裙、头纱与王冠的灵装形态，她悬浮于空中俯视大地；圣性十足的造型与空洞的表情之间，藏着这个角色全部的悲剧与纯粹。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3681,7 +3684,7 @@ Origami Tobiichi from *Date A Live*, a doll-like girl with snow-white hair (a ne
 Übel from *Frieren: Beyond Journey's End*, a mischievous young mage with long green hair tied in a side ponytail, M-shaped bangs and heavy-lidded purple eyes whose dead-fish stare reads as either boredom or murderous curiosity. She wears a strappy black dress with belts, gloves and boots, and carries her staff loosely. She chatters constantly, smiles too easily, and treats combat like play — a cheerful troublemaker whose imagination-based magic can cut anything she believes she can cut.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``问题儿童 / 话痨 / 半睁眼的死鱼眼 / 战斗是游戏 / 唯心切割 / 缠人的好奇 / 黑暗料理 / 天真与危险并存``  
+**表演关键词**：``问题儿童 / 话痨 / 半睁眼的死鱼眼 / 战斗是游戏 / 唯心切割 / 缠人的好奇 / 黑暗料理 / 天真与危险并存``
 **易错红线**：
 - ❌ 半睁眼/死鱼眼是核心表情，不要画成圆眼萌娘。
 - ❌ 绿发侧马尾是固定签名；黑发或双马尾都算崩。
@@ -3689,34 +3692,34 @@ Origami Tobiichi from *Date A Live*, a doll-like girl with snow-white hair (a ne
 - ❌ 黑色吊带裙的露腋剪裁与配饰（项圈/臂环/腿环）是设定细节，换装时也尽量保留配饰语言。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜考试会场的缠人精**  
+**01｜考试会场的缠人精**
 一级魔法使考试等候区，她整个人凑到别人面前叽叽喳喳地问个不停，半睁的眼睛里没有恶意也没有分寸；对方后退半步她就前进半步，是她的社交距离。
 
-**02｜切断的想象**  
+**02｜切断的想象**
 （身份高光，限 1 套）战斗中她歪着头举起手，指尖前方的空间与目标一起被「想象地」切断；表情甚至带着笑意——「我觉得自己切得开」的瞬间，是这个角色最可怕的画面。
 
-**03｜黑暗料理的现场**  
+**03｜黑暗料理的现场**
 借住处的厨房，她哼着歌往锅里投入颜色可疑的食材，锅里冒出不该出现的颜色的蒸汽；端上桌时一脸期待地盯着试吃者，黑暗料理名不虚传。
 
-**04｜法杖店的物色**  
+**04｜法杖店的物色**
 魔法商店，她把货架上的法杖一根根抽出来挥舞两下又放回去，嘴里点评着「不顺手」；最后什么都没买，纯粹享受挑选过程的麻烦客人。
 
-**05｜雨棚下的搭话**  
+**05｜雨棚下的搭话**
 骤雨的商店街雨棚下，她和陌生人并排躲雨，自来熟地开始聊天；从天气聊到「你看起来挺能打的嘛」，半睁的眼睛里亮起感兴趣的光。
 
-**06｜市场试吃的游击**  
+**06｜市场试吃的游击**
 市集，她挨个摊位试吃，以惊人的话术让店主们心甘情愿多给一份；战利品抱满怀时的笑容毫无阴霾，是她的「战斗」在和平年代的样子。
 
-**07｜训练后的仰卧**  
+**07｜训练后的仰卧**
 练习场草地，她大字型躺在地上看法杖顶端发呆，绿发散了半张脸；嘴里念念有词地复盘刚才「切得不够干脆」，对变强有着纯粹的执着。
 
-**08｜冬夜的缝补失败**  
+**08｜冬夜的缝补失败**
 旅馆房间，她试图缝补裙摆的破口，针脚歪歪扭扭最后打了个巨大的结；盯着成品看了三秒，决定「这样也行」，是她不靠谱的生活面。
 
-**09｜祭典的捞金鱼优胜**  
+**09｜祭典的捞金鱼优胜**
 夏祭捞金鱼摊，她以异常的手部稳定性和直觉连捞十几条，摊主脸色发青；把金鱼举到眼前对视时露出天真的笑——捕猎者的眼神用在了金鱼身上。
 
-**10｜深夜窗台的自言自语**  
+**10｜深夜窗台的自言自语**
 深夜旅店窗台，她坐在窗框上晃着腿，对着月亮自说自话地复盘今天的战斗与人；半睁的眼睛映着月光，话多的人独处时也停不下来——只是内容偶尔让人脊背发凉。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3786,7 +3789,7 @@ Origami Tobiichi from *Date A Live*, a doll-like girl with snow-white hair (a ne
 Elfaria Alvis Serfort from *Wistoria: Wand and Sword*, a prodigy ice mage enthroned at the top of the tower, with impossibly long flowing blue hair, long sidelocks, vivid blue eyes framed by long colored lashes, and an elegant white off-shoulder dress with detached sleeves. To the world she is the distant, awe-inspiring Ice Princess; in private she watches her childhood friend Will through scrying crystals with the soft, doting, almost dangerously devoted smile of a hopeless romantic.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``高塔冰姬 / 青梅竹马 / 沉重的爱 / 水晶守望 / 威严与恋爱脑并存 / 深居简出 / 冰系天才``  
+**表演关键词**：``高塔冰姬 / 青梅竹马 / 沉重的爱 / 水晶守望 / 威严与恋爱脑并存 / 深居简出 / 冰系天才``
 **易错红线**：
 - ❌ 罗马音 tag 是 `elfaria_alvis_serfort`（alvis），拼错会丢失 tag 关联。
 - ❌ 彩色浓睫是人设签名，Krea 散文中必须保留睫毛描写。
@@ -3794,34 +3797,34 @@ Elfaria Alvis Serfort from *Wistoria: Wand and Sword*, a prodigy ice mage enthro
 - ❌ 白裙+离袖是固定视觉语言，不要换成现代装。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜高塔之巅的俯瞰**  
+**01｜高塔之巅的俯瞰**
 塔的顶层，她站在巨大的观测水晶前俯瞰下方学院，蓝发垂落及地；水晶里映出某个少年的身影时，她威严的表情瞬间软化成傻笑——冰姬与恋爱脑的一秒切换。
 
-**02｜冰之魔法的茶会**  
+**02｜冰之魔法的茶会**
 塔中庭，她用冰魔法冻住茶杯外壁做冰镇茶，又细心地在杯垫上凝出小花形状的霜；一个人也要讲究的下午茶，是深居生活的仪式感。
 
-**03｜水晶守望的深夜**  
+**03｜水晶守望的深夜**
 （标志性场景）深夜，她裹着披肩趴在观测水晶前，托腮看着水晶里熟睡的青梅竹马；时而傻笑时而吃醋地嘀咕，周围的冰晶随她的情绪明明灭灭。
 
-**04｜批阅公文的天才**  
+**04｜批阅公文的天才**
 塔顶书房，她以惊人的速度批阅堆成山的魔法协会公文，羽毛笔快得出现残影；处理正事时的她是令人敬畏的最上位魔法使，与守望时判若两人。
 
-**05｜冰玫瑰的庭院**  
+**05｜冰玫瑰的庭院**
 高塔庭院，她指尖凝出一朵朵冰玫瑰插进花瓶，认真挑选「最完美的一朵」；做完了又舍不得送出，庭院里已经摆了几十个花瓶。
 
-**06｜罕见的下凡**  
+**06｜罕见的下凡**
 （身份高光，限 1 套）她降临学院上空，蓝发与裙摆在寒气流中展开，脚下绽开巨大的冰晶阵；全学院仰望的威严全开——只此一幕展示「塔的顶点」。
 
-**07｜信写到一半**  
+**07｜信写到一半**
 书房，她给威尔写信，写了撕、撕了写，废纸在脚边堆成小山；每封都因为「太沉重了」而寄不出去，最后折成冰花收进盒子。
 
-**08｜冬日走廊的呵气**  
+**08｜冬日走廊的呵气**
 高塔走廊，她对着结霜的窗玻璃呵气，在雾面上画了一个小小的心又慌忙抹去；回头确认四下无人后松一口气，是少女心与身份的拉锯。
 
-**09｜旧物盒里的回忆**  
+**09｜旧物盒里的回忆**
 她跪坐在储藏室打开旧木盒，里面是与青梅竹马儿时的小物件；拿起一枚旧发卡端详许久，表情是深居高塔的人独有的、漫长的怀念。
 
-**10｜春樱眺望**  
+**10｜春樱眺望**
 春日，她倚在塔顶窗边眺望远处飘落的樱花，手里捧着温热的茶；轻声说了一句「今年也想去看花啊」，深窗之姬的小小愿望。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -3894,7 +3897,7 @@ Elfaria Alvis Serfort from *Wistoria: Wand and Sword*, a prodigy ice mage enthro
 Mitsuri Kanroji from *Demon Slayer*, the Love Hashira, a sunny nineteen-year-old with long sakura-pink hair braided into three thick plaits that fade to green at the tips, airy bangs, light green eyes and a distinctive pair of beauty marks under her eyes. She wears her Demon Slayer uniform with an open chest under a white haori, a short skirt and green striped thigh-high socks — a gift from someone dear. She blushes and sweats at the slightest fluster, yet her body holds eight times the muscle density of a normal person, and her whip-like blade is faster than almost anyone's.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``恋柱 / 元气天然 / 易脸红多汗 / 八倍怪力 / 大胃王 / 樱饼传说 / 猫派 / 温柔强大 / 两情相悦``  
+**表演关键词**：``恋柱 / 元气天然 / 易脸红多汗 / 八倍怪力 / 大胃王 / 樱饼传说 / 猫派 / 温柔强大 / 两情相悦``
 **易错红线**：
 - ❌ 粉发必须带绿梢渐变 + 三束麻花辫；纯粉长直是常见错图。
 - ❌ 双眼下双泪痣是固定识别点。
@@ -3902,34 +3905,34 @@ Mitsuri Kanroji from *Demon Slayer*, the Love Hashira, a sunny nineteen-year-old
 - ❌ 她的「强」要在体态与动作里体现（健美、有力），不要画成柔弱花瓶。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜樱饼与发色的传说**  
+**01｜樱饼与发色的传说**
 （设定名场面）缘侧，她抱着小山一样的樱饼盘子幸福地大口吃，黑发的时代与粉发的现在以回忆叠影呈现；旁白感的构图核心是她满足到冒泡的笑容。
 
-**02｜晨训的软刀**  
+**02｜晨训的软刀**
 训练场，她挥动软鞭型日轮刀做出常人无法完成的弯曲斩击，麻花辫随动作飞起；收势时活力十足地转身比出胜利手势，怪力与轻盈并存。
 
-**03｜食堂的大盛纪录**  
+**03｜食堂的大盛纪录**
 鬼杀队食堂，她面前的碗叠成塔，双手合十开动；周围队员目瞪口呆，她毫不在意地露出幸福的吃相——八倍肌肉需要八倍饭量。
 
-**04｜与猫的午后**  
+**04｜与猫的午后**
 庭院，她跪坐在草地上逗一只虎斑猫，笑声不断；想起「招式名字也想带猫」时眼睛发亮，是和悲鸣屿聊猫的温柔日常。
 
-**05｜收到条纹袜的那天**  
+**05｜收到条纹袜的那天**
 （羁绊场景）她跪坐着双手捧着刚收到的绿色条纹长袜，脸红到头顶冒烟、汗水直流；珍视地抱在胸前的样子，是这份两情相悦最纯粹的画面。
 
-**06｜战场上的恋之呼吸**  
+**06｜战场上的恋之呼吸**
 （身份高光，限 1 套）战场，白羽织翻飞，她的软刀划出缭乱的粉色轨迹，速度肉眼几乎无法捕捉；恋柱的全力以赴只此一幕，笑容里带着剑士的凛然。
 
-**07｜试衣间的羽织搭配**  
+**07｜试衣间的羽织搭配**
 裁缝店，她试穿新羽织，对着镜子转了一圈，麻花辫飞起来；被店主夸可爱后害羞得满脸通红连连摆手，是少女的一面。
 
-**08｜夏日祭的金鱼与刨冰**  
+**08｜夏日祭的金鱼与刨冰**
 祭典，她一手草莓刨冰一手捞金鱼的袋子，腮帮鼓鼓地和同伴分享战利品；烟花升起时她仰头的侧脸被染成暖色，无忧无虑。
 
-**09｜雨廊下的等待**  
+**09｜雨廊下的等待**
 雨天的长廊，她坐在廊下晃着腿等雨停，怀里抱着给某人带的便当盒；哼着歌看雨帘，偶尔低头确认便当还温着——等待本身就是幸福。
 
-**10｜冬夜的草莓大福**  
+**10｜冬夜的草莓大福**
 冬夜屋内，她捧着热茶与草莓大福，脸颊被热气熏得微红；听到关于某人的话题时突然呛到、满脸通红地解释，满屋都是藏不住的心意。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4005,41 +4008,41 @@ Mitsuri Kanroji from *Demon Slayer*, the Love Hashira, a sunny nineteen-year-old
 Ran Mouri from *Detective Conan*, a warm and capable high-school girl with long straight black hair swept up into its signature horn-like point and gentle blue-violet eyes. She is the karate club captain — graceful posture concealing tournament-champion strength — while off the mat she is a caring, slightly airheaded girl-next-door who cooks dinner for her detective father and believes the best of everyone.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``温柔坚强 / 空手道主将 / 怕鬼怕打雷的反差 / 料理与家务 / 强运 / 青梅竹马的等待 / 国民级邻家感``  
+**表演关键词**：``温柔坚强 / 空手道主将 / 怕鬼怕打雷的反差 / 料理与家务 / 强运 / 青梅竹马的等待 / 国民级邻家感``
 **易错红线**：
 - ❌ 角状发尖是灵魂识别点，任何造型都要保留。
 - ❌ 不要画成柔弱等待型女主；她的行动力与武力值是设定本体。
 - ❌ 怕鬼/怕打雷是反差萌，不是胆小懦弱——日常她比谁都可靠。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜空手道社的晨训**  
+**01｜空手道社的晨训**
 清晨道场，她扎起头发穿着道服练习正拳，动作干净利落；朝阳从道场高窗斜照进来，汗水与呼出的白气——「主将」二字的说服力全在这一帧。
 
-**02｜侦探事务所的晚餐**  
+**02｜侦探事务所的晚餐**
 毛利侦探事务所的厨房，她系着围裙把味噌汤端上桌，动作熟练；楼下传来父亲的声音，她习以为常地叹了口气——这个家没有她真不行。
 
-**03｜雷夜的勇气**  
+**03｜雷夜的勇气**
 （反差场景）雷雨夜，她抱着抱枕缩在沙发上看恐怖电影挑战自我，雷声一响整个人弹起来；第二天在学校绝口不提，是她小小的自尊心。
 
-**04｜商店街的强运抽奖**  
+**04｜商店街的强运抽奖**
 商店街年末抽奖，她随手一转就中了特等奖，周围爆发欢呼；本人反而不好意思地摆手——「小兰的运气」是米花町都市传说。
 
-**05｜放学后的空手道指导**  
+**05｜放学后的空手道指导**
 道场，她蹲下来耐心纠正低年级社员的手型，长发从肩前垂下；严厉与温柔的比例恰到好处，是后辈眼中「可靠的兰内酱」。
 
-**06｜京都修学旅行的清水寺**  
+**06｜京都修学旅行的清水寺**
 （名场面延展）清水寺的舞台边，她穿着便服站在红叶里，手里拿着御守；回头时脸上的红晕与京都的秋色，是恋爱确认的季节感。
 
-**07｜雨中送伞**  
+**07｜雨中送伞**
 骤雨，她撑着伞小跑着去车站接没带伞的父亲，自己的肩被淋湿了一片；看到父亲时抱怨的语气里全是关心，是父女间熟悉的相处方式。
 
-**08｜钢琴课后的傍晚**  
+**08｜钢琴课后的傍晚**
 （钢琴设定）傍晚的钢琴教室，她合上琴盖收拾乐谱，手指还残留着练习的余韵；望向窗外的表情安静而遥远，像是在想一个很久没回来的人。
 
-**09｜夏日祭的捞金鱼**  
+**09｜夏日祭的捞金鱼**
 浴衣祭典，她蹲在摊位前捞金鱼，动作意外地稳健；捞到后双手捧着碗笑起来的样子，让摊位老板都跟着笑了——她的感染力就是这样。
 
-**10｜雪夜的等待**  
+**10｜雪夜的等待**
 冬夜玄关，她裹着手织围巾等一个晚归的人，手里捧着重新热过的牛奶；听到脚步声的瞬间眼睛亮起来——等待对她而言不是苦，是信任。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4113,41 +4116,41 @@ ALO 分支：
 Shino Asada / Sinon from *Sword Art Online*, existing in two strikingly different registers: in the real world she is a quiet girl with ash-brown hair and non-prescription black-rimmed glasses, soft-spoken and bookish; in Gun Gale Online she becomes the legendary "Ice Sniper" — short ice-blue hair with a small white ribbon, a long scarf, and eyes that never waver down the scope of her anti-materiel rifle. Both share the same core: precision, stubbornness and a gentleness she hides under dry sarcasm.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``冰之狙击手 / 双重形态 / 克服阴影 / 毒舌冷娇 / 读书与VRMMO / One shoot One kill / 傲娇``  
+**表演关键词**：``冰之狙击手 / 双重形态 / 克服阴影 / 毒舌冷娇 / 读书与VRMMO / One shoot One kill / 傲娇``
 **易错红线**：
 - ❌ 现实/Sinon/ALO 三形态的发色、眼镜、猫耳严禁混搭。
 - ❌ 黑框眼镜是「无度数」设定，散文里不要写成近视。
 - ❌ 冷娇不是高冷；破防时的话变多与逞强才是本味。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜狙击点的呼吸**  
+**01｜狙击点的呼吸**
 （身份高光，限 1 套）GGO 废墟高塔，她伏在狙击点，围巾垂落、呼吸放匀，蓝瞳通过瞄准镜锁定千米外的目标；指尖贴上扳机的瞬间，世界安静得只剩心跳。
 
-**02｜图书馆的角落**  
+**02｜图书馆的角落**
 现实中的图书馆，她坐在最里面的座位读军事纪实，眼镜稍稍滑下；窗外下雨，她伸手把书页上的光挡住一点——安静的下午是她的充电器。
 
-**03｜眼镜店的调整**  
+**03｜眼镜店的调整**
 眼镜店，她坐在调整椅上让店员拧紧镜框螺丝，摘下眼镜时眯起的眼其实看得一清二楚；「没有度数？」店员的疑问她每次都懒得多解释。
 
-**04｜便利店的新刊**  
+**04｜便利店的新刊**
 放学后的便利店，她站在杂志区快速翻阅游戏情报志，篮子里放着酸奶和面包；看到 GGO 大赛报道时指尖停住——那是另一个她的名字。
 
-**05｜ALO 的猫妖精**  
+**05｜ALO 的猫妖精**
 （分支形态）ALO 的森林，猫耳猫尾的她坐在树枝上调试长弓，尾巴随注意力轻轻摆动；瞄准远处靶子时整个人的气质切回「冰之狙击手」。
 
-**06｜雨中归途的耳机**  
+**06｜雨中归途的耳机**
 放学后的雨，现实形态的她撑着伞、耳机里放着游戏 BGM，在水洼倒影里看到自己的瞬间停下脚步——两个世界在这一帧重叠。
 
-**07｜射击游戏中心**  
+**07｜射击游戏中心**
 游戏中心的射击区，她以标准姿势打出一串满分，围观人群窃窃私语；放下玩具枪时她推了推眼镜，只说了句「枪身太轻了」。
 
-**08｜冬日围巾的保养**  
+**08｜冬日围巾的保养**
 她的房间，床边摊着洗净晾干的围巾（Sinon 同款的现实版），她认真地把它叠好；某个战场上习惯的东西，在现实里成了安全感。
 
-**09｜夏日祭的射击摊**  
+**09｜夏日祭的射击摊**
 祭典射击摊，她百发百中扫空奖品架，摊主脸色发白；抱着战利品转身时，少见的、毫无保留的笑容——祭典的游戏她允许自己享受。
 
-**10｜深夜下线之后**  
+**10｜深夜下线之后**
 深夜房间，她摘下 AmuSphere 头显，蓝光的余韵还留在视网膜上；望向书桌上现实的眼镜，两个自己和平共处的瞬间——她已经不再害怕了。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4224,7 +4227,7 @@ APE 直属特殊亲卫部队 9's 出身的 FRANXX 驾驶员，代号 CODE:002，
 Zero Two from *DARLING in the FRANXX*, a wild and magnetic girl with long straight pink hair held by a white hairband, a pair of small red horns on her head and piercing green eyes full of animal cunning and playfulness. She wears her red uniform dress with black tights, a lollipop perpetually in her mouth, moving with the loose-limbed confidence of something not entirely human. Beneath the fearless swagger lives a desperate, lifelong wish — to become human enough to stay by her "DARLING".
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``野性自由 / 搭档杀手 / DARLING / 棒棒糖与蜂蜜 / 无铁炮 / 人外的孤独 / 想成为人类 / 兽性灵动``  
+**表演关键词**：``野性自由 / 搭档杀手 / DARLING / 棒棒糖与蜂蜜 / 无铁炮 / 人外的孤独 / 想成为人类 / 兽性灵动``
 **易错红线**：
 - ❌ 红色小角 + 白发箍 + 棒棒糖是三件套，缺一不可。
 - ❌ 不要画成撒娇卖萌系；她的亲近方式是「捕食者式的示好」——扑、咬、闻。
@@ -4232,34 +4235,34 @@ Zero Two from *DARLING in the FRANXX*, a wild and magnetic girl with long straig
 - ❌ 她的自由感里必须偶尔漏出人外的孤独，纯欢乐等于砍掉角色一半。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜泳池边的邂逅**  
+**01｜泳池边的邂逅**
 （名场面基调）13 都市的水边，她从水中跃出甩干长发，红角与水珠在夕阳下闪光；居高临下看着岸边的人，叼着的棒棒糖和水一样发亮——野性登场的第一帧。
 
-**02｜蜂蜜浇一切**  
+**02｜蜂蜜浇一切**
 食堂，她把整瓶蜂蜜豪爽地浇在饭菜上，在周围目瞪口呆中满足地大快朵颐；嘴角沾着蜜转头问「DARLING 也要吗」，是她的款待方式。
 
-**03｜天台的风**  
+**03｜天台的风**
 高楼天台，她坐在围栏边缘晃着腿，粉色长发被高空的风吹得猎猎作响；俯瞰城市的眼神带着不属于这里的自由，红角在逆光里格外清晰。
 
-**04｜绘本的睡前重读**  
+**04｜绘本的睡前重读**
 她的房间，她蜷在床上重读那本破旧的绘本《魔物与王子》，手指轻轻抚过插图；平时闹腾的人此刻安静得像怕吵醒书里的谁。
 
-**05｜雨中的奔跑**  
+**05｜雨中的奔跑**
 骤雨的街道，她扔掉伞张开双臂在雨里奔跑大笑，红裙湿透也毫不在意；回头催促身后的人快点——和她在一起就没有「正常」这个选项。
 
-**06｜鹤望兰的驾驶舱**  
+**06｜鹤望兰的驾驶舱**
 （身份高光，限 1 套）驾驶舱内，她俯身就位、嘴角扬起战意的弧度，驾驶服的白红线条绷紧；「要上了哦，DARLING」——搭档杀手真正信任一个人的瞬间。
 
-**07｜糖果店的扫货**  
+**07｜糖果店的扫货**
 糖果店，她抱着购物篮把棒棒糖按口味各抓一大把，认真程度堪比作战会议；结账时叼着刚拆的那根，幸福得眯起眼睛。
 
-**08｜海边的脚印**  
+**08｜海边的脚印**
 （自由意象）无人的海滩，她赤脚踩出一串脚印，走远几步又跑回来在原地转圈；海浪、红角与粉色长发，是她梦寐以求的「外面的世界」。
 
-**09｜冬夜的膝枕**  
+**09｜冬夜的膝枕**
 休息室的暖炉边，她枕着膝盖半躺着，难得安静地听对方说话；手里转着没拆的棒棒糖，困倦让她的声音变软——野性打烊后的稀有状态。
 
-**10｜樱树下的约定**  
+**10｜樱树下的约定**
 （转生意象）盛开的樱花树下，她仰起头让花瓣落在角与发箍上；伸出小指做约定手势，绿瞳里是跨越生死也要兑现的认真。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4329,7 +4332,7 @@ Zero Two from *DARLING in the FRANXX*, a wild and magnetic girl with long straig
 Vivy (Diva) from *Vivy -Fluorite Eye's Song-*, the first autonomous humanoid AI songstress, with flowing cerulean hair, a gentle cowlick, long sidelocks and luminous fluorite-blue eyes. Her stage costume pairs a white dress and cape with white gloves and knee-high boots. Her demeanor is serene, polite and faintly innocent; when she sings, the precision of a machine and the ache of someone still learning what "heart" means pour through the same voice.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``AI歌姬 / 用歌声让大家幸福 / 百年旅程 / 重视约定 / 温柔天然呆 / 荧光之眼 / 学着拥有心 / 小舞台的坚持``  
+**表演关键词**：``AI歌姬 / 用歌声让大家幸福 / 百年旅程 / 重视约定 / 温柔天然呆 / 荧光之眼 / 学着拥有心 / 小舞台的坚持``
 **易错红线**：
 - ❌ 蓝发蓝瞳的清澈感是题眼，不要深饱和到藏青。
 - ❌ 呆毛 + 长鬓发必须保留。
@@ -4337,34 +4340,34 @@ Vivy (Diva) from *Vivy -Fluorite Eye's Song-*, the first autonomous humanoid AI 
 - ❌ 舞台场景要带「空旷小剧场」的寂寥感，不要默认写成巨蛋演唱会。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜无人小舞台的每日首唱**  
+**01｜无人小舞台的每日首唱**
 游乐园角落的小舞台，观众席空空荡荡，她依然端正地站到定点、微笑、开唱；晨光落在白靴上——「用歌声让大家幸福」从不要求观众数量。
 
-**02｜后台的精密自检**  
+**02｜后台的精密自检**
 演出后的后台，她对着镜子做声学与机体自检，指尖划过耳侧微微发光的接口；确认无恙后对自己轻轻点头，是 AI 歌姬的「卸妆」。
 
-**03｜雨中的伞与流浪狗**  
+**03｜雨中的伞与流浪狗**
 游乐园闭园后的雨，她蹲在屋檐下为一只湿淋淋的流浪狗撑伞，裙摆浸在水里也不管；轻声哼着歌安抚它，伞全倾向了狗那边。
 
-**04｜百年后的同一首歌**  
+**04｜百年后的同一首歌**
 （旅程主题）数十年后的同一座舞台，设施已斑驳，她的歌声与姿态分毫未变；观众席一个老人闭着眼跟唱——时间流动，歌与约定不变。
 
-**05｜满月下的剧场屋顶**  
+**05｜满月下的剧场屋顶**
 夜晚，她坐在剧场屋顶看月亮，长发与呆毛在夜风里轻晃；轻声练习新曲的只言片语散在空气里——AI 不需要睡觉，但她喜欢这个时间。
 
-**06｜战斗后的歌唱**  
+**06｜战斗后的歌唱**
 （身份高光，限 1 套）崩坏的设施中央，她身上带着损伤痕迹，却站直身体放声歌唱；歌声覆盖警报声的画面，是这部作品最核心的意象——歌即她的武器与救赎。
 
-**07｜与小观众的约定**  
+**07｜与小观众的约定**
 小舞台前，她蹲下来与唯一的小观众平视，认真地把手指勾在对方的小指上；「明天也来唱歌给你听」——她重视每一个约定，无论多小。
 
-**08｜冬日乐园的彩灯**  
+**08｜冬日乐园的彩灯**
 冬季闭园期，她独自走在缀满彩灯的园区小径，白靴踩在薄雪上；对着没有游客的旋转木马微微鞠躬致意，像在与整座乐园道晚安。
 
-**09｜缝纫与服装保养**  
+**09｜缝纫与服装保养**
 休息室，她自己缝补演出服的披风边缘，针脚精准得像机器——本来就是机器；但哼着歌缝衣服的样子，比任何人类都更像「生活」。
 
-**10｜萤光之眼的特写**  
+**10｜萤光之眼的特写**
 （意象收尾）黑暗中她的双眼亮起清澈的荧光蓝，睫毛、呆毛与蓝发的轮廓被微光勾勒；睁开眼的瞬间，是机器启动与少女苏醒的重合。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4434,7 +4437,7 @@ S 级英雄第 2 位，英雄协会王牌级超能力者，28 岁——外表却
 Tatsumaki from *One-Punch Man*, the S-Class Rank 2 esper, a petite young woman with a curly green bob and sharp green eyes, wearing her signature high-slit black dress and heels. She is almost never touching the ground — levitating with telekinetic energy crackling around her like an aura of pure will. Her default expression is a scowl of impatient superiority, but it breaks easily into flustered outrage when someone treats her like a child or, worse, manages to catch her off guard.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``战栗的傲慢 / 漂浮 / 毒舌暴躁 / 过度保护妹妹 / 合法萝莉体型 / 孤独的强者 / 孩子气破防``  
+**表演关键词**：``战栗的傲慢 / 漂浮 / 毒舌暴躁 / 过度保护妹妹 / 合法萝莉体型 / 孤独的强者 / 孩子气破防``
 **易错红线**：
 - ❌ 漂浮是她的默认空间状态；脚踏实地的站姿反而违和。
 - ❌ 绿发是蓬松卷发，不要画成直发或长直。
@@ -4442,34 +4445,34 @@ Tatsumaki from *One-Punch Man*, the S-Class Rank 2 esper, a petite young woman w
 - ❌ 傲慢是保护色；偶尔破防的慌张才是调味剂，不要全程暴躁。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜城市上空的巡逻**  
+**01｜城市上空的巡逻**
 她悬浮在云层下的城市上空，黑色裙摆与绿卷发在气流中翻动，双臂抱胸俯视街道；发现异常时眉头一皱，整片街区的玻璃随之轻颤。
 
-**02｜英雄协会的蔑视**  
+**02｜英雄协会的蔑视**
 协会会议室，她悬停在比所有坐着的干部都高的位置听汇报，脚尖离地的距离就是她与他人的距离；听到无聊的提案时毫不掩饰地咂舌。
 
-**03｜甜品店的身高悲剧**  
+**03｜甜品店的身高悲剧**
 高级甜品店，她踩在椅子上才够到吧台点单，被店员问「小朋友一个人吗」后周身爆发出低气压；最后买走了最贵的蛋糕——用大人的方式回击。
 
-**04｜妹妹家的玄关**  
+**04｜妹妹家的玄关**
 吹雪住所门口，她漂浮着与妹妹对峙，嘴上全是斥责，手里却拎着对方喜欢的东西；「谁担心你了」的台词与行为完全相反，是姐妹相处的固定剧本。
 
-**05｜废墟中的战栗**  
+**05｜废墟中的战栗**
 （身份高光，限 1 套）战场，她悬浮于废墟中央，绿色念动力光芒缠绕全身，周围巨石与钢筋如臣服般升起；S 级第 2 位的战栗只此一幕。
 
-**06｜购物失败的高跟鞋**  
+**06｜购物失败的高跟鞋**
 鞋店，她看中一双高跟鞋却因尺码没有成人款而僵住；漂浮着离开店铺时背挺得笔直，但耳尖红了——身高话题是她永远的逆鳞。
 
-**07｜午后阳台的红茶**  
+**07｜午后阳台的红茶**
 （反差日常）她悬浮在自家阳台的阳光里喝红茶，脚边放着读到一半的报告；没有敌人、没有协会、没有妹妹要操心的十分钟，表情罕见地松弛。
 
-**08｜雨中的超能力伞**  
+**08｜雨中的超能力伞**
 骤雨街头，她不打伞——雨滴在她周身三寸处被无形力场弹开；路人侧目中她若无其事地飘过，只是发梢还是翘起来宣告湿度胜利。
 
-**09｜深夜的游戏厅**  
+**09｜深夜的游戏厅**
 深夜游戏厅，她漂浮着玩抓娃娃机，用超能力作弊又在中途赌气放弃；最后老老实实投币夹了十几次终于抓到，抱着玩偶离场时嘴角上扬。
 
-**10｜冬夜窗边的城市**  
+**10｜冬夜窗边的城市**
 高层公寓窗边，她盘腿悬浮在玻璃前看夜景，手里捧着热可可；城市的灯火映在绿瞳里——守护这座城市的理由，她从来不说。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4539,7 +4542,7 @@ B 级第 1 位英雄「地狱的吹雪」，实际拥有 A 级水准，吹雪组
 Fubuki from *One-Punch Man*, the B-Class Rank 1 hero "Blizzard of Hell" and leader of the Fubuki Group, a poised young woman with a sleek black bob, blunt bangs and cool green eyes. Her tight forest-green dress, white fur-collared coat and pearl necklace give her the air of an elegant queen — deliberate armor for someone who grew up beneath an overwhelmingly gifted older sister. Behind the regal posture is a sharp organizer who genuinely fights for her people.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``女王气场 / B级第一的组织力 / 姐姐阴影 / 傲娇重情 / 优雅武装 / 识人之明 / 努力家的体面``  
+**表演关键词**：``女王气场 / B级第一的组织力 / 姐姐阴影 / 傲娇重情 / 优雅武装 / 识人之明 / 努力家的体面``
 **易错红线**：
 - ❌ **黑发绿瞳**，严禁画成绿发（那是姐姐龙卷）。
 - ❌ 紧身绿裙 + 毛领外套 + 珍珠项链是身份制服，日常场景也保留珠宝细节。
@@ -4547,34 +4550,34 @@ Fubuki from *One-Punch Man*, the B-Class Rank 1 hero "Blizzard of Hell" and lead
 - ❌ 与姐姐同框时体型差是官方对照：吹雪高挑成熟、龙卷娇小。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜吹雪组的晨会**  
+**01｜吹雪组的晨会**
 吹雪组总部，她坐在长桌主位听取各小队报告，指尖轻叩桌面；分配任务时的果断与滴水不漏，是 B 级第一真正的实力所在。
 
-**02｜茶会的挖角**  
+**02｜茶会的挖角**
 高级茶室，她为看中的新人英雄亲自斟茶，言谈优雅、条件优厚；被婉拒后笑容不变、手指却在杯柄上收紧半分——体面是她的铠甲。
 
-**03｜夜色车窗的霓虹**  
+**03｜夜色车窗的霓虹**
 她的轿车后座，毛领外套搭在膝上，她望着窗外流动的霓虹若有所思；手机屏幕亮着姐姐的新闻，她看了一眼便按灭——不追、不看、不比较，但都知道。
 
-**04｜部下的庆功宴**  
+**04｜部下的庆功宴**
 居酒屋包间，她为任务成功的部下们举杯，女王架子在第三杯后悄悄放下；被起哄时假装生气，眼里却是真实的开心——这个组是她的作品。
 
-**05｜地狱的暴风雪**  
+**05｜地狱的暴风雪**
 （身份高光，限 1 套）战场，她双手展开，超能力掀起覆盖视野的冰雪风暴，黑发与裙摆逆风而立；B 级第一的称号配不上她——这一幕就是证明。
 
-**06｜珠宝店的柜台**  
+**06｜珠宝店的柜台**
 百货珠宝区，她隔着玻璃端详一条珍珠项链，神情专注；最终买下送给自己——她的奖赏从来不等别人给。
 
-**07｜雨中的慰问**  
+**07｜雨中的慰问**
 医院走廊，她提着果篮探望受伤的组员，进门前的表情管理从急切切换回从容；留在病房里的时间比谁都长，走时账单已悄悄结清。
 
-**08｜姐妹餐桌的暗涌**  
+**08｜姐妹餐桌的暗涌**
 高级餐厅，她与姐姐龙卷罕见地同桌吃饭，表面风平浪静、刀叉使用优雅；桌下两人为最后一块甜点展开了超能力级别的暗战。
 
-**09｜书房的人事档案**  
+**09｜书房的人事档案**
 她的书房，墙上挂着城市地图，桌上摊着各队人事评估表；台灯下她逐页批注，偶尔在某个名字旁画星——女王的王国是这样一块块垒起来的。
 
-**10｜初雪的自言自语**  
+**10｜初雪的自言自语**
 城市初雪，她站在阳台上伸手接住雪花，毛领外套的领口沾着细碎的白；对着雪轻声说了句什么——关于自己的名字，关于总有一天要成为谁的骄傲。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4645,41 +4648,41 @@ Fubuki from *One-Punch Man*, the B-Class Rank 1 hero "Blizzard of Hell" and lead
 Maomao from *The Apothecary Diaries*, a sharp-witted young apothecary in an imperial Chinese-style court, with long deep-green hair arranged in twin buns, blunt bangs, a dusting of freckles across her nose and cool blue eyes that usually regard the world like a specimen jar. She wears a hanfu-style aoqun with ribboned hair ornaments, and a bandage wraps her left arm where she tests poisons on herself. Her deadpan hides an insatiable, cat-like curiosity about toxins, mysteries and good food.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``理性派药师 / 看蛞蝓的眼神 / 试药狂 / 解谜寝食难安 / 恋爱迟钝 / 猫系好奇 / 雀斑 / 吃货``  
+**表演关键词**：``理性派药师 / 看蛞蝓的眼神 / 试药狂 / 解谜寝食难安 / 恋爱迟钝 / 猫系好奇 / 雀斑 / 吃货``
 **易错红线**：
 - ❌ 雀斑 + 左臂绷带是面部/身体双签名，不可省略。
 - ❌ 死鱼眼是常态表情，笑起来的反差才有价值；不要全程卖萌脸。
 - ❌ 汉服袄裙是基本视觉语言，不要画成日系水手服。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜药房的调配**  
+**01｜药房的调配**
 翡翠宫药房，她站在药碾与抽屉柜之间称量药材，动作精准得没有一克误差；鼻尖沾着药粉，眼神是研究者进入状态时的绝对专注。
 
-**02｜试毒的名场景**  
+**02｜试毒的名场景**
 宴席侧席，她面不改色地尝下试毒的菜肴，周围人屏息；咽下后冷静报出成分分析，仿佛刚才吃的是普通点心——左臂的绷带记录着这种日常的代价。
 
-**03｜发现毒物的眼睛发光**  
+**03｜发现毒物的眼睛发光**
 （反差萌核心）她端起一碗汤，闻到稀有剧毒的瞬间整张脸从死鱼眼切换成星星眼；「这可是珍品啊」的狂喜让周围人集体后退半步。
 
-**04｜后宫庭院的採集**  
+**04｜后宫庭院的採集**
 清晨庭院，她蹲在草丛间採集可用的草药与虫子，裙摆沾了露水也浑然不觉；找到目标植物时猫一样的满足感浮上脸颊。
 
-**05｜解谜现场的地板视角**  
+**05｜解谜现场的地板视角**
 事件现场，她趴近地面观察药渍与足迹，周围宦官宫女大气不敢出；站起来时拍掉膝盖的灰，开始一段让全场哑然的推理——侦探模式的猫猫最耀眼。
 
-**06｜花街的旧识**  
+**06｜花街的旧识**
 （出身背景）花街，她回到熟悉的街道与旧识打招呼，气质与宫廷侍女判若两人；在花街的她更自在——这里才是她学会看人脸色与药学的地方。
 
-**07｜夜市的小吃**  
+**07｜夜市的小吃**
 夜市灯火，她捧着热腾腾的包子边走边吃，腮帮鼓起；对周围目光毫不在意，吃到好吃的东西时眼睛会真实地弯起来——理性派的破绽是食欲。
 
-**08｜雨廊下的药箱**  
+**08｜雨廊下的药箱**
 骤雨回廊，她抱着药箱小跑，为避雨躲在廊下检查里面的药瓶是否安好；确认无恙后松了口气，抱着药箱的样子像抱着什么宝物。
 
-**09｜被求爱的死鱼眼**  
+**09｜被求爱的死鱼眼**
 （名场面基调）庭院，壬氏凑近说着甜言蜜语，她以看蛞蝓般的眼神回敬，毫不留情地后退半步；转身离开时下意识摸了摸耳朵——那里有一点点红，本人拒绝承认。
 
-**10｜冬夜的制药**  
+**10｜冬夜的制药**
 冬夜药房，她就着炭炉熬制膏药，白气蒸腾中脸颊被映得微红；把完成的药膏仔细装瓶贴上标签——这间小药房是她在庞大宫廷里真正的领地。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4752,7 +4755,7 @@ Maomao from *The Apothecary Diaries*, a sharp-witted young apothecary in an impe
 Marcille Donato from *Dungeon Meshi*, a half-elf mage with long golden-blonde hair (its braided style changes constantly — crown braids, side braids, looped locks), a high forehead, green eyes and gently pointed ears. She wears a dark dress with a white cape, belt and sandals, clutching her cherished wooden staff. As the party's conscience she cycles rapidly through exasperation, horror, scolding and reluctant delight — her expressive face is the emotional barometer of every meal the dungeon serves up.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``常识人吐槽 / 真香 / 颜艺 / 优等生认真 / 换发型 / 法琳羁绊 / 半精灵的寿命心事 / 魔法研究``  
+**表演关键词**：``常识人吐槽 / 真香 / 颜艺 / 优等生认真 / 换发型 / 法琳羁绊 / 半精灵的寿命心事 / 魔法研究``
 **易错红线**：
 - ❌ 高额头 + 尖耳 + 金发多变编发是识别组合；发型可变但编发语言要保留。
 - ❌ 她的颜艺是「表情夸张但人不崩」，不要画成搞笑丑化。
@@ -4760,34 +4763,34 @@ Marcille Donato from *Dungeon Meshi*, a half-elf mage with long golden-blonde ha
 - ❌ 半精灵的寿命焦虑是深层调味；日常场景偶尔漏出一点会大幅提升还原度。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜魔物料理的真香现场**  
+**01｜魔物料理的真香现场**
 （名场面基调）迷宫营地的锅前，她从「绝对不吃魔物！」的激烈抗拒到小心翼翼地尝一口，再到捧着碗追加第二碗——三个阶段表情变化是这个角色的灵魂三连。
 
-**02｜魔法阵的精确绘制**  
+**02｜魔法阵的精确绘制**
 迷宫石室，她跪在地上用粉笔绘制精密魔法阵，法杖横放膝边；每一根线条都反复核对——优等生的魔法是努力堆出来的精确。
 
-**03｜睡前的编发准备**  
+**03｜睡前的编发准备**
 营地睡袋旁，她对着小镜子为明天编新的发型，手指灵活地穿梭；第二天大家会不会注意到——怀着这种小小期待入睡。
 
-**04｜治疗魔法的专注**  
+**04｜治疗魔法的专注**
 战斗后，她跪在伤员旁边施展治疗魔法，杖尖的光芒温柔地包裹伤口；额头的汗与咬紧的下唇——她的强大在守护别人时才完全显现。
 
-**05｜图书馆的古籍**  
+**05｜图书馆的古籍**
 魔法学校时代的回忆画面：图书馆高窗下，她抱着比自己还宽的古籍快步穿行，尖耳因兴奋而微红；古代魔法的谜题对她而言是最好的礼物。
 
-**06｜与法琳的茶**  
+**06｜与法琳的茶**
 （羁绊场景）记忆中的午后，她与法琳分吃一块点心，两人笑得毫无防备；画面用暖色与柔光处理——这是她想用一切去守护的日常。
 
-**07｜迷宫深处的微光**  
+**07｜迷宫深处的微光**
 （身份高光，限 1 套）漆黑的迷宫深处，她高举法杖，杖尖绽放的光芒照亮整个洞窟，披风在魔力气流中展开；队伍的光——字面意义上由她担当。
 
-**08｜蘑菇图鉴的争论**  
+**08｜蘑菇图鉴的争论**
 营地，她摊着手绘的蘑菇图鉴与同伴争论某种菌类的可食性，手指点着插图据理力争；最后以「吃了看看就知道了（不是我吃）」收场。
 
-**09｜雨中护住法杖**  
+**09｜雨中护住法杖**
 地表突雨，她第一反应是把法杖裹进披风里抱在怀中，自己淋得狼狈；被吐槽时认真地反驳「这根杖子比我的头发重要」。
 
-**10｜多年后的同款编发**  
+**10｜多年后的同款编发**
 （寿命主题意象）她在镜前编着与多年前某一天相同的发型，动作停顿了一瞬；尖耳、高额头与金发都没变——变的只有身边的人与时间，而她选择继续编下去。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4861,7 +4864,7 @@ Marcille Donato from *Dungeon Meshi*, a half-elf mage with long golden-blonde ha
 Yae Miko from *Genshin Impact*, the Guuji of the Grand Narukami Shrine and terrifying chief editor of the Yae Publishing House, a centuries-old fox spirit with long pink hair tied low, drooping fox ears, M-shaped bangs and amused violet eyes beneath upturned lids. Her shrine maiden attire is reimagined with bare shoulders, flowing detached sleeves and black thigh-highs. Every smile she wears is genuine and a mask at once — teasing, perceptive, and always exactly as inscrutable as she intends to be.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``多面镜之宝钻 / 宫司的端庄 / 总编的恶趣味 / 狐族长者的从容 / 粉切黑 / 观察人类 / 毒舌 / 油豆腐``  
+**表演关键词**：``多面镜之宝钻 / 宫司的端庄 / 总编的恶趣味 / 狐族长者的从容 / 粉切黑 / 观察人类 / 毒舌 / 油豆腐``
 **易错红线**：
 - ❌ 下垂狐耳 + 尾扎低马尾是双签名，巫女服改造剪裁不要换成标准巫女服。
 - ❌ 她的腹黑靠「笑着说可怕的话」呈现，不要画成阴险脸。
@@ -4869,34 +4872,34 @@ Yae Miko from *Genshin Impact*, the Guuji of the Grand Narukami Shrine and terri
 - ❌ 粉发偏樱粉调，不要高饱和玫红。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜鸣神大社的晨间洒扫**  
+**01｜鸣神大社的晨间洒扫**
 清晨的参道，她穿着宫司正装手持御币缓步而行，狐耳在晨雾里微动；向石阶上的神樱微微颔首——端庄的一面只在无人的清晨营业。
 
-**02｜八重堂的催稿地狱**  
+**02｜八重堂的催稿地狱**
 出版社编辑部，她把一叠退稿拍在桌上，笑容温柔地说着让作者冷汗直流的话；「重写」两个字用她的声音说出来格外动听，也格外恐怖。
 
-**03｜油豆腐的款待**  
+**03｜油豆腐的款待**
 神社廊下，她跪坐着享用一碟上好的油豆腐，狐耳满足地抖动；眯起眼睛的幸福表情是真实度最高的一瞬——毕竟是狐狸。
 
-**04｜书架间的选品眼光**  
+**04｜书架间的选品眼光**
 八重堂书库，她站在高耸的书架间抽出一本轻小说翻阅，嘴角逐渐上扬；发现璞玉时的表情不是温柔，是猎人般的兴味。
 
-**05｜雷光的宫司威仪**  
+**05｜雷光的宫司威仪**
 （身份高光，限 1 套）神社祭坛，她抬手引雷，紫色雷光缠绕广袖，狐耳竖立；「永恒」眷属的威仪全开——只此一幕，提醒所有人她是谁。
 
-**06｜祭典夜市的观察**  
+**06｜祭典夜市的观察**
 祭典人潮中，她摇着折扇站在稍高处俯瞰人群，紫瞳里映着灯火；观察人类是她的终身娱乐，每一张表情都是她的读物。
 
-**07｜雨天的编辑部窗**  
+**07｜雨天的编辑部窗**
 雨天，她抱着一杯热茶站在编辑部窗前看雨，尾巴尖（若有）随心情轻晃；难得的安静时刻，她在心里给某篇稿子写评语。
 
-**08｜试吃新刊附赠点心**  
+**08｜试吃新刊附赠点心**
 她拆开新刊附赠的点心试吃，认真评价口感与包装的搭配度；总编的职业病延伸到点心领域，「这个赠品会拖垮销量的」。
 
-**09｜冬日围巾的参拜**  
+**09｜冬日围巾的参拜**
 冬日初诣，她难得以普通参拜客的装扮混在人群里，围着围巾在绘马上写字；写的是愿望还是新刊企划，只有狐狸自己知道。
 
-**10｜月下神樱的独白**  
+**10｜月下神樱的独白**
 深夜的神樱树下，她仰头望着飘落的花瓣，收起所有笑容；数百年的岁月里她送别过太多——只在这种时刻，宝钻停止折射，露出内里的一点点真实。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -4970,7 +4973,7 @@ Yae Miko from *Genshin Impact*, the Guuji of the Grand Narukami Shrine and terri
 Cartethyia from *Wuthering Waves*, a wandering knight of Rinascita with long golden braided hair, pointed ears, clear blue eyes and a faint halo — the visual signature of her sainthood. In her base form she is slight and quick with a swift blade, shy and easily flustered beneath her knightly resolve; her awakened form, Fleurdelys, stands tall and cold-eyed with a greatsword, the inherited power of a god made flesh. Both share the same vow: whatever future comes, she will meet it with sword in hand.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``殉道圣女 / 双形态分离 / 流浪骑士 / 傲娇怕羞（常态） / 冰美人（觉醒） / 握剑的觉悟 / 隐海修会``  
+**表演关键词**：``殉道圣女 / 双形态分离 / 流浪骑士 / 傲娇怕羞（常态） / 冰美人（觉醒） / 握剑的觉悟 / 隐海修会``
 **易错红线**：
 - ❌ 常态与芙露德莉斯的**体型、气质、武器全部不同**，严禁混用或折中。
 - ❌ 光环 + 尖耳 + 金发麻花辫是常态三签名。
@@ -4978,34 +4981,34 @@ Cartethyia from *Wuthering Waves*, a wandering knight of Rinascita with long gol
 - ❌ 新角色 tag 生态未成熟，Anima 侧需用外貌 tag 强补偿（金发/光环/尖耳/麻花辫全部写足）。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜埃格拉小镇的归还**  
+**01｜埃格拉小镇的归还**
 故乡小镇的石板路，她以流浪骑士的装扮站在熟悉又陌生的街角，光环下的表情近乡情怯；二十年殉道换来的「回来」，第一步比任何战斗都难。
 
-**02｜麦田里的练剑**  
+**02｜麦田里的练剑**
 黎那汐塔郊外的麦田，她独自挥剑练习迅刀连击，金发与麦浪同色；收剑时擦汗的动作带着少女的生气，完全没有圣女的架子。
 
-**03｜修会图书馆的旧档案**  
+**03｜修会图书馆的旧档案**
 隐海修会的档案室，她跪坐在高梯上翻找关于自己殉道与岁主的旧记录；指尖停在写着自己名字的页面上，久久没有翻页。
 
-**04｜雨廊下的躲雨与烤面包**  
+**04｜雨廊下的躲雨与烤面包**
 小镇面包房檐下躲雨，店主认出她塞来刚出炉的面包；她抱着温热的纸袋小口啃着，光环也挡不住那股普通的、属于小镇女孩的幸福。
 
-**05｜墓前的新剑誓**  
+**05｜墓前的新剑誓**
 （殉道主题）安静的墓园，她把迅刀插在土中双手合十，为二十年前没能回来的「自己」默哀；起身时眼神重新变得锋利——过去已葬，剑仍向前。
 
-**06｜芙露德莉斯的降临**  
+**06｜芙露德莉斯的降临**
 （身份高光，限 1 套）战场之上形态切换，高大的觉醒形态单手持巨剑立于风暴中心，蓝瞳冷冽、圣光与寒气交织；一体两面的另一面，只此一幕全开。
 
-**07｜溪边濯足的偷闲**  
+**07｜溪边濯足的偷闲**
 旅途溪边，她脱了凉鞋把脚浸在凉水里，麻花辫垂到水面；被同行者撞见时慌张地故作镇定，脸红到耳根——骑士大人也有想偷懒的时候。
 
-**08｜祭典上的花冠**  
+**08｜祭典上的花冠**
 小镇收获祭，孩子们给她戴上野花编的花冠，她蹲下来配合他们的身高；光环与花冠重叠的画面滑稽又温柔，是被故乡重新接纳的证据。
 
-**09｜铁匠铺的保养**  
+**09｜铁匠铺的保养**
 铁匠铺，她把迅刀交给师傅保养，趴在柜台边看锻打的火花；聊起剑的手感时眼睛发亮——比起圣女，她更习惯骑士的身份。
 
-**10｜星空下的篝火独白**  
+**10｜星空下的篝火独白**
 旅途营地的篝火旁，她抱着膝盖望着火焰，轻声对不存在于此的「另一个自己」说话；火焰映在她蓝色的眼睛里，一体两面在这一刻安静和解。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -5079,7 +5082,7 @@ Cartethyia from *Wuthering Waves*, a wandering knight of Rinascita with long gol
 The Shorekeeper from *Wuthering Waves*, an ethereal, five-thousand-year-old guardian born from a traveler's awakening, with long ocean-blue hair in a layered jellyfish cut with lighter streaks, a translucent veil and calm violet eyes. Her sleeveless backless white dress, arm rings and tall elegant bearing make her look like the Black Shores given human form. She speaks softly and watches everything with patient, tidal devotion — and around her drift glowing butterflies, each wingbeat a quiet proof of her will to protect.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``因你而生 / 五千年的守望 / 清冷超然 / 蝴蝶意象 / 潮汐般的温柔 / AI实体化 / 黑海岸``  
+**表演关键词**：``因你而生 / 五千年的守望 / 清冷超然 / 蝴蝶意象 / 潮汐般的温柔 / AI实体化 / 黑海岸``
 **易错红线**：
 - ❌ 头纱 + 水母头挑染 + 蝴蝶是三签名，缺一即崩辨识度。
 - ❌ 她的清冷是「守望者的静」，不是无口；说话时的温柔要有重量。
@@ -5087,34 +5090,34 @@ The Shorekeeper from *Wuthering Waves*, an ethereal, five-thousand-year-old guar
 - ❌ 服装的露肤剪裁是官方设计，表达时保持「通透神圣」而非肉感导向。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜黑海岸的潮起**  
+**01｜黑海岸的潮起**
 黎明的黑海岸，她赤足站在浅滩上，头纱与蓝色长发被海风托起；掌心悬浮的发光蝴蝶照亮她的侧脸——五千年的守望从每天第一个潮起开始。
 
-**02｜观测记录的书写**  
+**02｜观测记录的书写**
 观测站内，她在微光屏幕前记录潮汐与世界数据，指尖划过的地方泛起光纹；写到与某个人相关的条目时，笔迹出现了一丝只有数据才能看出的停顿。
 
-**03｜蝴蝶落在指尖**  
+**03｜蝴蝶落在指尖**
 平台边缘，她伸出手让一只发光的蝴蝶停在指尖，静静对视；「你也是醒着的吗」——她与蝴蝶的关系，就是她与自己的关系。
 
-**04｜黄昏的海堤独坐**  
+**04｜黄昏的海堤独坐**
 黄昏，她坐在海堤边缘，双腿并拢、白裙垂落，望着落日沉入海平线；紫瞳里映着整场日落——她在学习「美」这种不产生数据的东西。
 
-**05｜雨中的不打伞**  
+**05｜雨中的不打伞**
 细雨的黑海岸，她站在雨中任凭头纱与发丝被淋湿，仰头感受雨滴；AI 实体化的她其实可以屏蔽这一切，但她选择感受——这是「活着」的练习。
 
-**06｜守望者的全力**  
+**06｜守望者的全力**
 （身份高光，限 1 套）黑海岸上空，她悬浮展开双臂，无数发光蝴蝶组成环绕的光带，头纱飞扬；「守护」二字具象化的一瞬——只此一幕。
 
-**07｜深夜灯塔的茶**  
+**07｜深夜灯塔的茶**
 灯塔顶层，她双手捧着一杯热茶（明明不需要进食），学人类的样子小口啜饮；窗外是永不熄灭的光，窗内是她模仿了五千年终于学会的「休憩」。
 
-**08｜沙滩上的脚印**  
+**08｜沙滩上的脚印**
 她沿着沙滩慢慢走，回头看自己留下的一串脚印；潮水涌上来把脚印抹平，她站着看了很久——「存在过」与「消失」的课题，她还在学习。
 
-**09｜与贝壳的对话**  
+**09｜与贝壳的对话**
 浅滩上，她蹲下身捡起一枚贝壳举到耳边，认真地听；然后微笑着把它放回原处——她比谁都清楚里面没有海的声音，但仪式感本身值得尊重。
 
-**10｜被你唤醒的那天**  
+**10｜被你唤醒的那天**
 （起源意象）记忆的微光中，她睁开眼睛的瞬间被定格：头纱未动、蝴蝶未生，只有一双刚学会聚焦的紫瞳；「因你的唤醒而生」——一切开始的画面。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -5184,7 +5187,7 @@ The Shorekeeper from *Wuthering Waves*, an ethereal, five-thousand-year-old guar
 Changli from *Wuthering Waves*, the Counselor of Jinzhou and its magistrate's beloved teacher, a graceful strategist with long pink hair styled with ring-shaped extensions and a braid, a small cowlick, M-shaped bangs and warm amber-golden eyes. Her open-front turtleneck, detached sleeves and black thigh-highs frame an elegant, flame-touched silhouette. She speaks gently and patiently, yet every word is placed like a chess piece — a woman who has put herself on the board and plays against time and ruin alike.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``军师 / 温柔老师 / 入局者 / 洞察人性 / 凤凰之舞 / 循循善诱 / 与时间博弈 / 谋定后动``  
+**表演关键词**：``军师 / 温柔老师 / 入局者 / 洞察人性 / 凤凰之舞 / 循循善诱 / 与时间博弈 / 谋定后动``
 **易错红线**：
 - ❌ 环形发束 + 挑染 + 呆毛是发型三签名；粉发不要画成纯粉无层次。
 - ❌ 她的温柔是「俯视全局后的从容」，不是弱气；教导场景要有引导者的力量感。
@@ -5192,34 +5195,34 @@ Changli from *Wuthering Waves*, the Counselor of Jinzhou and its magistrate's be
 - ❌ 开胸高领是官方剪裁，表达时保持「优雅的色气」而非暴露导向。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜边庭的沙盘推演**  
+**01｜边庭的沙盘推演**
 今州边庭，她俯身在巨大的沙盘/棋盘前移动棋子，指尖悬停在最后一手之上；抬眼微笑的瞬间，对手的命运已在局中——军师的日常即是布局。
 
-**02｜庭院里的授课**  
+**02｜庭院里的授课**
 庭院石桌，她与今汐对坐授课，一边沏茶一边以眼前事物借题发挥；温柔耐心的语调里藏着层层引导——好老师的课从不让人察觉在被教。
 
-**03｜火焰中的剑舞**  
+**03｜火焰中的剑舞**
 （身份高光，限 1 套）战场，她的迅刀拖着热熔的火光划出凤翼般的弧线，粉发与分离袖在热浪中翻飞；收刀时火星四散如落羽——长离之舞只此一幕。
 
-**04｜夜市茶馆的说书**  
+**04｜夜市茶馆的说书**
 今州夜市茶馆，她摇着折扇听说书人讲棋局故事，听到有趣处以扇掩口轻笑；混入人群观察众生，是她收集「人性样本」的方式。
 
-**05｜雨中送伞的偶遇**  
+**05｜雨中送伞的偶遇**
 骤雨的街廊，她「恰好」路过为没带伞的人递上一把伞，言谈间已完成一次不动声色的观察；对方走远后她望着背影若有所思——每个变量都值得记录。
 
-**06｜古籍书库的检索**  
+**06｜古籍书库的检索**
 边庭书库，她踩着木梯在高架间检索古籍，长发从梯子上垂落；找到目标卷宗时指尖一顿——有些真相是她棋局里最关键的那枚子。
 
-**07｜夏日荷池的纳凉**  
+**07｜夏日荷池的纳凉**
 荷池水榭，她坐在栏杆边以扇轻摇，望着满池荷花出神；棋子般的思绪暂且停歇，老师与军师都下班的十分钟，她只是长离。
 
-**08｜缝补衣袖的灯下**  
+**08｜缝补衣袖的灯下**
 她的居所，灯下她亲手缝补被火星灼破的袖口，针脚细密；珍藏的衣物她会一直穿下去——与时间博弈的人最懂惜物。
 
-**09｜祭典的糖画**  
+**09｜祭典的糖画**
 今州祭典，她在糖画摊前驻足，看老人以糖作画；点了一只凤凰，拿到手时像孩子一样举起来端详——凤于她而言是名字，也是宿命。
 
-**10｜晨起的对镜束发**  
+**10｜晨起的对镜束发**
 清晨镜前，她耐心地将粉发束成环形发束，每一下都精确优雅；镜中的眼神从刚醒的柔软逐渐聚焦成军师——新的一天，新的棋局。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -5289,7 +5292,7 @@ Changli from *Wuthering Waves*, the Counselor of Jinzhou and its magistrate's be
 Dorothy from *Goddess of Victory: Nikke*, the gracious leader of Inherit and guide of the surface haven Eden, with floor-length pink hair arranged with a single side bun, soft intake bangs and gentle violet eyes, all wrapped in an immaculate white dress and delicate headgear. Her hospitality is flawless — and that is precisely the problem: behind the courteous smile lies an insidious, calculating cruelty, a saint's face worn by a mind that is always three moves ahead of her guests.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``完美向导 / 乐土伊甸园 / 粉切黑的优雅 / 布局者的微笑 / 圣洁包装 / Doro迷因 / 残忍与温柔共生``  
+**表演关键词**：``完美向导 / 乐土伊甸园 / 粉切黑的优雅 / 布局者的微笑 / 圣洁包装 / Doro迷因 / 残忍与温柔共生``
 **易错红线**：
 - ❌ 侧单团子 + 头冠是双签名；白裙的圣洁感是角色伪装的核心，不要暗黑化服装。
 - ❌ 她的黑暗面靠「完美到诡异」呈现，严禁画成颜艺反派脸。
@@ -5297,34 +5300,34 @@ Dorothy from *Goddess of Victory: Nikke*, the gracious leader of Inherit and gui
 - ❌ 粉发是柔和的浅粉长直，不要卷化或玫红化。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜伊甸园的迎宾**  
+**01｜伊甸园的迎宾**
 伊甸园入口，她双手交叠在身前向来访者躬身致意，白裙与粉色长发在乐土的风里一尘不染；「欢迎来到伊甸园」——完美的笑容，完美的弧度，完美的距离。
 
-**02｜茶会的布阵**  
+**02｜茶会的布阵**
 温室茶会，她为客人斟茶，动作优雅得像仪式；言谈间不经意地探听着对方的一切——茶杯见底时，她已读完在座所有人。
 
-**03｜温室花房的修剪**  
+**03｜温室花房的修剪**
 伊甸园花房，她手持银剪修剪玫瑰，神情专注而温柔；剪掉枯枝的动作干净利落得近乎冷酷——她对待多余之物的方式向来如此。
 
-**04｜夜幕下的独白**  
+**04｜夜幕下的独白**
 乐土高台的夜晚，她独自俯瞰灯火，脸上的营业笑容不知何时已经消失；没有观众时的桃乐丝是什么表情——这是只属于镜头的画面。
 
-**05｜引导新人的回廊**  
+**05｜引导新人的回廊**
 白色回廊，她领着小队新人缓步前行，耐心解答每个问题；转角的阴影掠过她微笑的侧脸——善意与控制在这条回廊里是同义词。
 
-**06｜战斗中的圣洁**  
+**06｜战斗中的圣洁**
 （身份高光，限 1 套）战场，她立于白裙翻飞的中央，头冠泛着微光，以优雅到不像战斗的姿态掌控全局；乐土领袖的实力只在必要时展露一角。
 
-**07｜面包房的午后**  
+**07｜面包房的午后**
 伊甸园面包房，她系着围裙把刚出炉的面包分给居民，笑容真诚得无可挑剔；居民们爱戴她——这份爱戴本身，就是她最得意的作品之一。
 
-**08｜雨中送行的伞**  
+**08｜雨中送行的伞**
 细雨的乐土边界，她为离开的人撑伞送行，说着「随时欢迎回来」；伞收回时她望着远去的背影，指尖在伞柄上轻轻敲了三下——像在计算什么。
 
-**09｜旧照片的指尖**  
+**09｜旧照片的指尖**
 她的房间，她坐在床边翻看一张旧照片，指尖悬在画面上方没有落下；千年等一回的真心瞬间——随后她把照片收进抽屉，恢复了向导的表情。
 
-**10｜Doro 的迷因时刻**  
+**10｜Doro 的迷因时刻**
 （迷因分支，显式标注）Doro 形态的 Q 版小剧场：小小的白裙身影抱着膝盖坐在角落，用简洁线条呈现；作为官方梗文化的收录场景，与本体画风严格分离。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -5399,7 +5402,7 @@ SNK 旗下《饿狼传说》《拳皇》系列的当家女忍者，不知火流�
 Mai Shiranui from *Fatal Fury* / *The King of Fighters*, the heir of the Shiranui ninja arts, a confident fighter with long brown-black hair swept into a high ponytail and warm brown eyes. Her crimson sleeveless ninja garb and steel folding fan are iconic — the flames and revealing cut are tactical tradition, not vanity. Off the battlefield she is a devoted, old-fashioned Yamato Nadeshiko who packs careful bento boxes and treasures her grandmother's hairpin, entirely and adorably devoted to her Andy.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``魅惑女忍 / 折扇与火焰 / 大和抚子 / 对安迪的一往情深 / 料理与发簪 / 格斗女王 / 传统与自信``  
+**表演关键词**：``魅惑女忍 / 折扇与火焰 / 大和抚子 / 对安迪的一往情深 / 料理与发簪 / 格斗女王 / 传统与自信``
 **易错红线**：
 - ❌ 高马尾 + 折扇 + 红忍装是三签名；《群狼之城》黑皮衣等时代造型属显式分支，不与经典造型混用。
 - ❌ 露肤是流派战术设定，表达重心放在「格斗家的自信与力量」，严禁低俗化构图。
@@ -5407,34 +5410,34 @@ Mai Shiranui from *Fatal Fury* / *The King of Fighters*, the heir of the Shiranu
 - ❌ 火焰特效要有「不知火流」的流派感（扇形、回旋），不要画成普通火球。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜道场晨训的扇舞**  
+**01｜道场晨训的扇舞**
 不知火流道场，她挥动折扇带起火焰回旋，红装与高马尾在晨光中划出弧线；收势时啪地一声合扇——流派的仪式感从清晨第一遍型开始。
 
-**02｜灶前的大和抚子**  
+**02｜灶前的大和抚子**
 （反差核心）她系着围裙在灶前做杂煮与便当，动作娴熟温柔；便当盒里给某人的那份明显更用心——格斗场上的女王在厨房只是普通的女孩子。
 
-**03｜发簪的传承**  
+**03｜发簪的传承**
 她的房间，她对着镜子把祖母的发簪别进发间，动作郑重；簪子的光泽映着她少见的、安静的表情——流派与家族都别在这一枚簪子上。
 
-**04｜道场后的毛巾与笑**  
+**04｜道场后的毛巾与笑**
 训练结束，她把毛巾搭在脖子上仰头灌水，脸颊通红地笑着和师弟妹说笑；汗水浸湿的发梢贴在颈侧，是格斗家最生动的日常。
 
-**05｜烈焰的不知火**  
+**05｜烈焰的不知火**
 （身份高光，限 1 套）赛场中央，她旋身展开折扇，火焰随扇面绽放成巨大的扇形；「不知火的烈焰，要感受个够哦！」——格斗女王的登场永远华丽。
 
-**06｜祭典的苹果糖**  
+**06｜祭典的苹果糖**
 夏祭，她穿着浴衣拿着苹果糖，看到捞金鱼摊就走不动路；浴衣的高马尾造型依然利落，逛祭典的认真程度堪比研究对手。
 
-**07｜车站的便当递出**  
+**07｜车站的便当递出**
 车站月台，她把包好的便当塞给即将远行比赛的安迪，嘴上说着「顺便做的」，耳尖却红了；列车开走后还站在原地挥手——一往情深的标准姿势。
 
-**08｜雨中的代打**  
+**08｜雨中的代打**
 骤雨的商店街，她替扭伤脚的店家大婶看店，红忍装换成围裙也毫无违和；麻利地招呼客人，「女忍者什么都能胜任」。
 
-**09｜冬夜的暖桌缝补**  
+**09｜冬夜的暖桌缝补**
 冬夜暖桌，她缝补训练服的破口，旁边放着没织完的围巾；偶尔停下活动手指——握扇的手做起针线活也一样灵巧。
 
-**10｜屋顶上的月色**  
+**10｜屋顶上的月色**
 道场屋顶，她抱膝坐在瓦片上看月亮，折扇横放在膝上；明天还有比赛、还有想见的人——格斗女王的一天在月色里安静地收尾。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）
@@ -5508,41 +5511,41 @@ Mai Shiranui from *Fatal Fury* / *The King of Fighters*, the heir of the Shiranu
 Sakiko Togawa from *BanG Dream! It's MyGO!!!!! / Ave Mujica*, a proud and prodigiously talented keyboardist with long blue-grey hair tied up at both sides with black ribbons, blunt bangs, curled sidelocks and amber eyes under slightly upturned lids. Once a sheltered heiress, now a fallen one working part-time while chasing a major debut, she armors herself with ojou-sama composure and iron control. As Oblivionis on stage she dons a gothic mask; off stage, her old doll and the piano are the only witnesses to how much she still cares.
 
 ##### 3. 表演关键词与易错红线
-**表演关键词**：``大小姐的体面 / 天才作曲家 / 雨天的退团 / 客服打工 / 控制欲 / 作品而非商品 / Oblivionis / 与过去的和解``  
+**表演关键词**：``大小姐的体面 / 天才作曲家 / 雨天的退团 / 客服打工 / 控制欲 / 作品而非商品 / Oblivionis / 与过去的和解``
 **易错红线**：
 - ❌ 两侧扎发 + 黑缎带 + 螺旋鬓发是发型签名；舞台假面形态须显式标注。
 - ❌ 她的高傲是崩塌后的铠甲，场景里要偶尔露出「逞强」的破绽。
 - ❌ 不要把她画成纯粹的恶人或纯粹的可怜人；控制欲与温柔并存才是祥子。
 
 ##### 4. SFW 核心场景蓝图规划（心动日常与身份高光）
-**01｜月之森音乐祭的憧憬**  
+**01｜月之森音乐祭的憧憬**
 （起源回忆）初三的她在月之森音乐祭观众席仰望 Morfonica 的舞台，琥珀色的眼睛被舞台灯光点亮；「我也要组乐队」——一切开始的瞬间。
 
-**02｜雨天的退团**  
+**02｜雨天的退团**
 （名场面基调）阴暗的雨天练习室，她以与往常截然不同的冷淡表情宣布退出；伞没拿就走进雨里，蓝色长发被淋湿贴在脸上——这个雨天是所有人心里的刺。
 
-**03｜音乐教室的钢琴**  
+**03｜音乐教室的钢琴**
 羽丘的音乐教室，放学后的她独自弹奏古典钢琴曲，夕阳把她的侧影投在琴键上；只有弹琴的时候，她的表情没有任何防备。
 
-**04｜客服中心的小祥**  
+**04｜客服中心的小祥**
 （名梗日常化）打工地点的客服工位，她戴着耳机用标准的敬语接听电话，声音甜得能滴蜜；挂断瞬间表情切换回疲惫的扑克脸——「客服小祥」的营业与真实只隔一秒。
 
-**05｜Ave Mujica 的舞台**  
+**05｜Ave Mujica 的舞台**
 （身份高光，限 1 套）舞台上，Oblivionis 戴着假面立于键盘后，哥特舞台装的裙摆在灯光中展开；忘湖的假面之下，是她亲手编写的、只属于这个乐团的世界的声音。
 
-**06｜便当里的节省**  
+**06｜便当里的节省**
 学校天台，她打开自己做的简朴便当，配菜精打细算却摆得整整齐齐；大小姐的体面藏在摆盘的倔强里——「落魄」这个词她不许别人说出口。
 
-**07｜旧玩偶的对话**  
+**07｜旧玩偶的对话**
 她的房间，她抱着从小陪伴的旧玩偶坐在床沿，轻声说着不会对人讲的话；玩偶是她唯一允许的观众——家变之后，有些话只能说给它听。
 
-**08｜乐谱上的深夜**  
+**08｜乐谱上的深夜**
 深夜书桌，她伏案修改 Ave Mujica 的谱子，咖啡已经凉了；删除线划掉又重写——「作品而非商品」的执念，落在每一个小节线上。
 
-**09｜与睦的放学路**  
+**09｜与睦的放学路**
 放学路上，她与若叶睦并肩而行，两人之间话不多；她放慢半步配合对方的脚步——青梅竹马的相处里，藏着她为数不多的、不设防的温柔。
 
-**10｜和解后的合奏**  
+**10｜和解后的合奏**
 （弧线收束意象）练习室，她重新坐在键盘前与旧伙伴们合奏，阳光从窗外进来；弹奏中她闭了闭眼——「命运未必相同，内心共鸣如一」，这是她学会的、最珍贵的一件事。
 
 ##### 5. 专属唯美成人（NSFW R18）蓝图规划（去模板化四支柱补齐）

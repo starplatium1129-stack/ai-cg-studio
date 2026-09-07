@@ -1,5 +1,8 @@
 # AI-CG-Studio 高质量出片 Prompt 与横竖构图升级方案
 
+> 历史记录：归档不表示全部问题已解决；测试结果只代表原记录时点。未闭环事项统一由 [未来规划](../../roadmap.md) 跟踪，实施前重新复现。
+
+
 > 调研基线：2026-08-13
 > 范围：WAI Illustrious SDXL v17、Anima Base/Aesthetic、Krea 2 Turbo，以及现有场景库、Prompt 编译、生成和人工审核链路。
 > 本文是实施方案，不直接修改当前 Prompt 默认行为。

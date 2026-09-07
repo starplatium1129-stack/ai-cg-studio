@@ -1,218 +1,73 @@
-# 统一工作流手册（Workflow）
+# 统一工作流手册
 
-> 入口：`node scripts/workflow.js --help` 或 `npm run workflow -- --help`
-> 目标：把 `scripts/maintenance/` 下 100 个分散脚本（83 .js + 12 .py + 5 .ps1/.mjs；2026-08-31 归档 13 个一次性孤儿后）收敛到一套可发现、可复现、带帮助的入口，降低新同学上手成本。旧脚本仍可直接 `node` 调用，本手册仅做薄封装转发。
+> 维护日期：2026-09-08。命令注册与默认参数以 scripts/workflow.js 为准；此页解释操作顺序，不重复易漂移的脚本数量、角色规模和历史测试用例数。
 
----
+## 先查入口
 
-## 1. 快速导航
+`npm run workflow -- --help` 查看全部命令，`node scripts/workflow.js reference --help` 查看分组。具体命令帮助会转发到脚本，执行前应阅读脚本参数；不能假定所有脚本都实现 --dry-run。
 
-| 我想做 | 统一入口 | 直达脚本（兼容） |
-|---|---|---|
-| 校验/构建/发布 | `workflow check:full` / `build:web` | `npm run validate` / `npm run build` |
-| 数据：聚合/校验/评级 | `workflow data:build` / `data:validate` | `npm run scenes:build` / `validate-content-contracts.js` |
-| 参考库：登记/出图/审核/修复 | `workflow reference:register --dry-run` / `reference:render` / `reference:audit --force --keys k` / `reference:repair` | `register-pending-reference-outfits.js` / `render-all-outfits-references.js` / `pure-vision-audit.js` / `fine-tuned-repair.js` |
-| 样张：批量出图/审核/发布 | `workflow showcase:batch --source popular` | `generate-*-anima11.js` / `audit-showcase-rella.js` / `publish-*.js` |
-| 一站式新角色 | `workflow character:onboard` | `npm run character:onboard` |
-| 桌面部署 | `workflow deploy:desktop` | `deploy-desktop-quick.ps1 -SkipBuild` |
+没有入口时查 scripts/maintenance 或运行 `npm run workflow -- audit:orphans --json`。有现成流程必须复用；新增脚本同时登记 WORKFLOWS、本手册分组，新增文档登记 INDEX.md；一次性脚本用完归入 scripts/archive。
 
----
+## 数据维护
 
-## 2. 统一入口用法
+| 操作 | 入口 | 注意事项 |
+| --- | --- | --- |
+| 场景分片聚合 | data:build | data/scenes → scenes.json |
+| 热门角色聚合 | popular:build | data/popular → popular-characters.json |
+| 蓝图聚合 | blueprints:build | 使用既有蓝图分片源，不直接改聚合产物 |
+| 聚合反向写回分片 | data:import / popular:import / blueprints:import | 覆盖写入操作，先核对 diff；popular:split/blueprints:split 只拆分 |
+| 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
+| 分类与规范化 | data:normalize | 会写数据，不用于只读文档审计；遵守定稿保护 |
 
-```powershell
-# 查看全部
-node scripts/workflow.js --help
-npm run workflow -- --help
+详细文件职责见 [维护手册](maintenance.md#文件职责)。构建脚本会同步版本；校验失败需定位来源，不能只改版本掩盖数据漂移。
 
-# 查看分组
-node scripts/workflow.js data --help
-node scripts/workflow.js reference --help
-node scripts/workflow.js showcase --help
+## 参考库
 
-# 执行
-node scripts/workflow.js data:validate
-node scripts/workflow.js reference:audit --force --keys alisa_mikhailovna_kujou/school_uniform/ref_01_face_closeup
-node scripts/workflow.js showcase:batch --source popular --batch-size 10 --dry-run
-npm run workflow -- check:full
-```
+1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。
+2. `reference:render` 生成参考图；`reference:design` 补三视图设计图。合计 4 种肖像机位 + 3 种设计机位。
+3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
+4. `check:ref-urls` 检查已发布 URL；pending 不等于真实资产，也不等于通过视觉审核。
 
-实现：`scripts/workflow.js:1` 仅做参数校验与 `spawnSync` 转发，不接管业务逻辑，完全兼容旧入口。
+`reference:full` 是 render → audit → repair，不包含自动完成所有新增形态登记与设计图的承诺。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
 
----
+## 样张
 
-## 3. 分组详解
+| 操作 | 入口 |
+| --- | --- |
+| 热门/场景批量调度 | showcase:batch --source popular 或 --source scenes |
+| 当前 MiaoMiao 批次 | showcase:batch-miaomiao |
+| 活跃 manifest 缺口补齐 | showcase:fill-gaps |
+| 生成、审核、发布 | showcase:generate / showcase:audit / showcase:audit:scene / showcase:publish |
+| 复合链路 | showcase:full（generate → audit → publish） |
 
-### 3.1 数据（data）— 场景是分片，聚合是产物
+发布目标必须使用配置解析的活跃版本目录，不写死日期目录。旧参数与实测方法见 [样张工艺记录](showcase-generation-craft.md)，当前 checkpoint 以脚本/网关配置为准。
 
-- `data:build` → `scripts/maintenance/build-scenes.js:1` 聚合 `data/scenes/*.json` → `data/scenes.json`（`scripts/lib/scene-store.js` 读写层）
-- `data:import` → `split-scenes.js --write` 逆向分片（覆盖写入，显式操作）
-- `data:normalize` → `npm run scenes:normalize`（`classify-scene-ratings.js --write && optimize-scenes.js --write && validate-scenes.js`）
-- `data:validate` → `validate-content-contracts.js:1` 校验 `DATA_VERSION`（`src/stores/sceneStore.ts:66`）与分片一致性，`data/*.json` 13 文件 SHA1 派生
+## 角色接入
 
-> 日常改场景优先走网页 `场景管理 → 保存到项目`，仅批量改分片时走命令行。
+`character:onboard --character <id>` 为自动化辅助；`--skip-render` 跳过出图，不能据此声明资产完成；`--deploy` 涉及桌面同步。必须同时核对 [六层契约](engineering-contracts.md#角色接入) 和 [接入步骤](character-onboarding-workflow.md)。
 
-### 3.2 参考库（reference）— 51 角色 × 267 形态（参考图 + 设计图 = 1869 条目）
+## 门禁与构建
 
-链路：`character-reference-standards.json:1` → `render-all-outfits-references.js:114`（Anima 832x1216，并发3，>20KB 跳过）→ `pure-vision-audit.js:52`（Gemini 4并发，`image-inspect.js`）→ `fine-tuned-repair.js:185`（每项3次重渲染+重审）
+| 入口 | 实际范围 |
+| --- | --- |
+| gate:quick ui/server/data/all | 按变更面积分层；默认检测 Git 改动 |
+| check:quick | npm run check 的全部已注册并行检查 |
+| check:full | npm run validate：check + frontend + unit + contract；不包含 typecheck:app 或 build |
+| gate:full | typecheck + check + frontend + unit + contract + build，提交前完整入口 |
+| build:web / build:runtime | 前端与预算/预压；服务 TypeScript 编译 |
+| check:style-debt | 样式字面值、颜色、动画和深色对比度；浅色另做视觉验收 |
+| check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery |
+| check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
+| test:contract / test:e2e:critical | 契约套件与关键浏览器回归 |
 
-```powershell
-# 全链路
-node scripts/workflow.js reference:full
+预算包括路由 JS 140 KiB、CSS、入口与依赖闭包等，完整阈值见 check-bundle-budget.js。测试规模与路由数量以当次输出为准；历史 PASS 不能代替本次检查。
 
-# 登记尚无资产的角色形态（standards 空 + view 已有形态 → 两侧漂移时先用这条对账）
-node scripts/workflow.js reference:register --dry-run
-node scripts/workflow.js reference:register --ids=katou_megumi,shiina_mahiru
+## 服务与桌面部署
 
-# 单步
-node scripts/workflow.js reference:render
-node scripts/workflow.js reference:audit --help
-node scripts/workflow.js reference:audit --force --keys frieren/nsfw_nude/ref_01_face_closeup
-node scripts/workflow.js reference:repair
-```
+参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
 
-`pure-vision-audit.js` 新增 `--force` / `--keys`（`scripts/maintenance/pure-vision-audit.js:135`），无需手动清理 `runtime/multi-outfit-audit-report.json`。
+桌面唯一入口是 `deploy-desktop.bat`。`deploy:desktop` 默认跳过构建，必须已有新构建；`deploy:desktop:full` 执行完整增量流程。依赖/exe 变化的完整安装与 UAC 见 [部署指南](desktop-deployment.md)。
 
-### 3.3 样张（showcase）— 热门/场景 双轨
+## 备份与清理
 
-- 生成：`generate-popular-showcase-anima11.js:1` / `generate-scene-showcase-anima11.js:1`（`/api/anima/jobs`，`anima-aesthetic-v1.1`，`--gateway 3123 --concurrency 3`）
-- 审核：`audit-showcase-rella.js:1`（popular，`workflow showcase:fill-gaps — 样张缺口补齐（对照活跃manifest批量渲染缺失pc_样张，miaomiao，--only/--concurrency）
-showcase:audit`）/ `audit-scene-showcase-run.js:1`（scene，`workflow showcase:audit:scene`）（`image-inspect.js` 8维）
-- 发布：`publish-popular-showcase.js` / `publish-scene-showcase-anima11.js`（原子重命名 + `DATA_VERSION` + `precompress`）
-- **统一批量**：`scripts/maintenance/run-batch.js:1` 合并 8 个 `run-batch-*.js`
-  ```powershell
-  node scripts/workflow.js showcase:batch --source popular --batch-size 10 --concurrency 3 --dry-run
-  node scripts/workflow.js showcase:batch --source scenes --ids sc001,sc002 --attempt 2
-  ```
-
-- **全链路**：`showcase:full` 复合命令 = generate → audit → publish（与 `reference:full` 对称）
-  ```powershell
-  node scripts/workflow.js showcase:full
-  ```
-
-### 3.4 生图/视频
-
-- 生图：`routes/generation.js:19`（SD WebUI, `waiIllustriousSDXL_v170`）、`routes/anima.js:1`（Anima/Krea2, `anima-aesthetic-v1.1`）、`routes/video/*.js`（Wan/H3）
-- 训练模块已于 2026-08-29 连根删除（commit 2afd449，`training-service.ts` + `routes/training.js` + ~1370 行测试同删，无残留引用）；指令式稳定换装走 Qwen-Image-Edit 路线（评估完成待下载，见 AGENTS.md#后续稳定演进方向）
-- 统一校验：`npm run workflow -- check:content` 检查 LoRA/角色/场景引用
-- ComfyUI 启动：`node scripts/workflow.js comfy:start`（reference/showcase 链路依赖前置，`--disable-smart-memory`）
-
-### 3.5 质量门与构建
-
-```powershell
-node scripts/workflow.js gate:quick     # 按改动类型分层门禁（缺省自动检测 git 改动）
-node scripts/workflow.js gate:quick ui  # 显式指定面积：ui / server / data / all
-node scripts/workflow.js gate:full      # 全量：typecheck + check + 前端 + unit + contract + 打包预算
-node scripts/workflow.js check:quick    # npm run check (并行 13 项)
-node scripts/workflow.js check:full     # npm run validate
-node scripts/workflow.js build:web      # vite build + 140KB预算 + 预压
-node scripts/workflow.js build:runtime  # tsc -p tsconfig.runtime.json
-```
-
-单项门禁（可单独跑或组合进 CI；`--help` 看各脚本参数）：
-
-```powershell
-node scripts/workflow.js check:monolith        # 600 行红线只降不升（基线 20 文件）
-node scripts/workflow.js check:contrast       # 深色主题 WCAG AA 对比度
-node scripts/workflow.js check:animations     # GPU 合成属性（禁 left/top/width/height 补间）
-node scripts/workflow.js check:ref-urls       # 参考库 URL 断链（1869 条目全量）
-node scripts/workflow.js check:pinned-scenes  # 定稿场景字节级保护（100 条）
-node scripts/workflow.js check:rewrite        # 批量改写完整性（覆盖率/模板签名/跨条目雷同）
-node scripts/workflow.js check:popular        # 热门角色与提示词契约
-node scripts/workflow.js check:anima-routes   # Anima 接口与生成边界契约
-node scripts/workflow.js check:frontend       # 前端单测（vitest）
-node scripts/workflow.js check:style-debt    # 样式债聚合（style-literals+contrast+colors+animations）
-node scripts/workflow.js check:bundle        # 140KB 打包预算（build:web 隐含，单独跑）
-```
-
-### 3.6 磁盘债治理（backup / runtime）
-
-```powershell
-node scripts/workflow.js backup:git           # git bundle 异地快照（v2 增量链：锚点×2 + 增量×10）
-node scripts/workflow.js runtime:clean        # 实验孤儿目录清理（dry-run 默认）
-node scripts/workflow.js runtime:clean --prune --days 60   # 真删 + 改门槛
-```
-
-`backup:git` 排入 `start.ps1` 每次启动尽力执行；首次无状态落全量锚点，之后按增量链，磁盘上界 ~405MB（v1 全量模式曾达 1.2GB 且 KEEP=14 上限 2.9GB）。`runtime:clean` 白名单保护 `git-backups`/`desktop-updates`/`logs`/`keys`/`outputs` 等操作型目录，未识别目录只报告不删。
-
-### 3.7 测试套件（test）
-
-```powershell
-node scripts/workflow.js test:contract       # 契约套件（内容/接口/热门/Anima 聚合）
-node scripts/workflow.js test:e2e:critical    # 关键 e2e（5 spec 132 tests，需 npx playwright install）
-```
-
-`gate:quick` 面积映射：`ui` = typecheck + vitest（纯前端改动，约 1-2 分钟）；
-`server` = Anima/生成/视频/聊天/安全/桌面工具/控制 7 个契约套件；
-`data` = 聚合一致性 + 内容契约 + 分片/参考库/定稿/语料契约（约 15 秒）；
-`all` = 三块连跑；`full` 另加 check 套件与打包预算。横切重构（目录改名、
-模块搬迁、依赖变更）直接 `gate:full`——爆炸半径无法事先界定。
-套件执行器 `run-quality-suite.js` 默认摘要模式（逐文件一行 ✔/✘ + 用时，
-失败才展开摘录，末尾 `sum [label]: PASS/FAIL` 汇总行，失败退出码非零）；
-`--all` 失败后连跑全部求全貌，`--verbose` 恢复日志直通。
-
-门禁见 `AGENTS.md:39`，预算见 `scripts/maintenance/check-bundle-budget.js:18`。
-
-### 3.8 部署
-
-```powershell
-node scripts/workflow.js deploy:desktop
-# 等价 powershell -ExecutionPolicy Bypass -File scripts/maintenance/deploy-desktop-quick.ps1 -SkipBuild
-```
-
----
-
-## 4. 已优化项
-
-| 优化 | 变更 | 收益 |
-|---|---|---|
-| 统一入口 | 新增 `scripts/workflow.js:1` + `package.json:workflow` | 新同学 `workflow --help` 即可发现全部链路，无需全局 grep |
-| 审核强制重审 | `pure-vision-audit.js:135` 增加 `--force` / `--keys` | 重渲染后无需手动编辑 JSON，`--force --keys <prefix>` 精准复审 |
-| 批量合并 | 新增 `scripts/maintenance/run-batch.js:1` 统一 8 个 `run-batch-*.js` | 参数化 `--source/--batch-size/--concurrency`，`--dry-run` 预览，旧脚本保留作薄封装 |
-| 文档收敛 | 新增 `docs/workflow.md`，`docs/INDEX.md` 登记 | 单一入口文档，避免在 `maintenance.md`/`project-status.md` 间跳转 |
-
----
-
-## 5. 约定与注意事项
-
-- **DATA_VERSION**：`data/*.json` 13 文件 SHA1 派生，`validate-content-contracts.js` 强制校验，改数据后 `npm run workflow -- data:validate` 会提示期望值，同步至 `src/stores/sceneStore.ts:66`。
-- **原子写入**：`runtime/*.json` 与 `assets/character-references/` 已用 `writeFileSync tmp + rename`，多进程并发仍需避免双开审核。
-- **网关重启**：`publish-*` 后需重启网关（`TOKEN` 持久化）方可使新 `SceneShowcase` 生效，见 `docs/showcase-generation-craft.md:120`。
-- **Comfy 依赖**：`reference`/`showcase` 链路需 `ComfyUI` 在线（`http://127.0.0.1:8188`）与 `gateway`（`http://127.0.0.1:3123`），`--dry-run` 可先验证参数。
-- **保留旧入口**：所有 `node scripts/maintenance/*.js` 仍可用，`workflow` 仅转发，便于渐进迁移。
-
----
-
-## 6. 常见序列
-
-```powershell
-# 日常提交前
-npm run workflow -- check:full
-
-# 新增一个场景后
-npm run workflow -- data:validate
-
-# 重刷参考库某角色的失败项
-node scripts/workflow.js reference:audit --force --keys alisa_mikhailovna_kujou
-node scripts/workflow.js reference:repair
-
-# 热门样张批量二轮
-node scripts/workflow.js showcase:batch --source popular --attempt 2 --concurrency 3
-
-# 构建并本地验证
-npm run workflow -- build:web
-```
-
----
-
-## 7. 协作者义务（禁止造简陋轮子）
-
-> **红线**：做任何事务前，必须先查是否有现成工作流。AGENTS.md §一.10 同步收录此红线。
-
-1. **先查工作流**：跑 `npm run workflow -- --help` 或读本手册，判断是否有现成命令覆盖该事务。
-2. **再查脚本**：若无 workflow 入口，跑 `npm run workflow -- audit:orphans --json` 或 grep `scripts/maintenance/`，判断是否已有现成脚本（哪怕未被 workflow 收录）。
-3. **复用优先**：有现成工作流/脚本则用之，哪怕需补参数或读 `--help`；禁止因"不熟/嫌麻烦"而另写简陋脚本。
-4. **新增需三处登记**：确需新增脚本时，须同时登记到 `scripts/workflow.js` 的 WORKFLOWS + 本手册对应分组 + `docs/INDEX.md`（如涉及新文档），三处缺一视为未完成交付。
-5. **一次性脚本归档**：用完的一次性脚本及时移入 `scripts/archive/`（gitignored，git 历史可取回），避免堆积成孤儿（`audit:orphans` 会捕获零引用脚本）。
-
-**反面案例（禁止）**：已有 `showcase:batch` 统一批量调度，却另写 `run-batch-popular-v2.js` 造轮子；已有 `check:style-debt` 聚合五项样式门禁，却单独跑 `lint-colors` 漏掉其他四项。
+`backup:git` 创建本地 bundle 增量链（2 个锚点 + 默认 10 个增量），不能替代 push 或异地副本。`runtime:clean` 默认只预览；`--prune --days 60` 会实际清理。先检查路径与白名单，避免清除当前运行资料。

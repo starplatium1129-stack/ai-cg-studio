@@ -6,11 +6,13 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
+
 ## About
 
 绫季绘境 (Lingji Atelier) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
-The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **116 popular anime/game characters** across 579 outfit forms (118 character profiles / 2,534 active reference URLs in the Reference Bible, pending design placeholders excluded; counts follow `DATA_VERSION`). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
+The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **116 popular anime/game characters** across 586 outfit forms (118 character profiles / 2,534 active reference URLs in the Reference Bible, pending design placeholders excluded; counts follow `DATA_VERSION`). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
 
 This is an unofficial, non-commercial fan project and is not affiliated with or endorsed by the original rights holders.
 
@@ -24,9 +26,9 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
   - 118 characters $\times$ 397 registered outfit forms (2,779 reference entries: 2,534 published + 245 pending): four cinematic perspectives — Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`) — plus 1,191 three-view design-sheet baselines (`reference:design` pipeline).
   - Automated closed-loop pipeline: 3-concurrency generation, 4-concurrency pure-vision Gemini 3.7 Flash audit pool, and fine-tuned repair engine.
   - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
-- **Multi-Engine Generation & 38 Curated Artist Styles**:
+- **Multi-Engine Generation & Curated Artist Styles**:
   - Automatic prompt compilation across Stable Diffusion / WAI (Danbooru tags), Anima (native `@artist` + tag format, current default checkpoint MiaoMiao Harem v1.2), and Krea 2 Turbo (natural language prose).
-  - 38 curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
+  - Curated anime artist & chief animation director styles (e.g. Nekotomi Chao / 猫富ちゃお, Kyoji Asano / WIT Studio, Rella moonlight, Misaki Kurehito, Muririn, Kobuichi, So-bin, etc.).
   - Regional Prompter dual-character composition stabilization on reForge.
 - **AI Narrative Video Studio**:
   - Local AI video creation supporting Wan 2.2 TI2V and MiniMax H3 (Ref2VA reference image binding).

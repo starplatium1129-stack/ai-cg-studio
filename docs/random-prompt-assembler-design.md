@@ -1,5 +1,8 @@
 # 随机灵感（Random Prompt Assembler）设计文档
 
+> 2026-09-08 状态说明：本文保留专题方案或历史实验依据；其中规模、参数与待办不作为当前状态。现状见 [项目状态](project-status.md)，执行优先级见 [未来规划](roadmap.md)；实施前核对当前数据与生产配置。
+
+
 > **状态**：P0 已落地（2026-08-29）；P1/P2 待做
 > **范围**：导演台「随机灵感」骰子按钮，复用项目现有标签资产与编译管线，输出 SD / Anima / Krea2 三引擎兼容提示词。
 > **P0 交付**：`src/utils/randomPromptAssembler.ts`（纯函数采样器）、`src/stores/promptBuilderStore.ts`（snapshot/restoreStyleLayers 撤销）、`src/composables/useRandomInspiration.ts`（桥接）、`src/components/RandomInspirationButton.vue`（骰子按钮 + 随机画师开关 + 撤销）、`ArchiveIcon` 新增手绘 `dice` 图标、`scripts/tests/test-random-prompt.js`（9 用例全过，已纳入 quality-test-inventory）。

@@ -1,5 +1,8 @@
 # 8 位新热门角色 SFW 场景提示词检查报告
 
+> 历史记录：归档不表示全部问题已解决；测试结果只代表原记录时点。未闭环事项统一由 [未来规划](../../roadmap.md) 跟踪，实施前重新复现。
+
+
 **日期**：2026-09-01
 **范围**：8-31 `acc3a62` 接入的 8 位新角色（eris_greyrat / hoshino_ai / kurokawa_akane / yvonne_arknights / morgan_le_fay_fate / mash_kyrielight / mikasa_ackerman / krista_lenz）共 48 个 SFW 蓝图
 **重点**：用户指定伊冯（yvonne_arknights）可跳过 → 实际审 7 角色 42 SFW
@@ -412,7 +415,7 @@ node scripts/maintenance/precompress.js → 171 文件重压完成
 
 3 场摩根 prose 改动 + DATA_VERSION 同步（`sceneStore.ts` 2649053353）已在本人会话外的并发 commit `e76b10b fix(popular): 终极锁定莱万汀原版露背吊带小黑裙+短红碎发+熔融巨剑反差美学`（2026-09-01 19:58:22 +0800）中被工作树快照吸收。事后 `git diff HEAD` 已不显示这 3 场的 prose 差异（即并发 commit 的 `data/scene-blueprints.json` 与 `src/stores/sceneStore.ts` 改动合计吸收了本会话的摩根修改）。**这意味着我无法独立确认自己写的最终 prose 字面是否被一字不差保留，但功能等价（同场次、相同 1152x1536 竖版、相同 DNA 关键词、相同 full_body 构图、相同背景元素列表）的修改已在 HEAD。**
 
-本次 commit 仅包含本报告 `docs/audit-new8-sfw-prompts-2026-09-01.md`（新增文件），不触碰并发会话未提交的工作树改动（莱万汀 `orange_lining/jagged_hem/official_art` 标签）。
+本次 commit 仅包含本报告 `docs/archive/audits/audit-new8-sfw-prompts-2026-09-01.md`（新增文件），不触碰并发会话未提交的工作树改动（莱万汀 `orange_lining/jagged_hem/official_art` 标签）。
 
 ### 11.9 commit / push 范围（红线 5/9）
 
@@ -529,7 +532,7 @@ tokens: wolf_ears, wolf_tail, claws
 | `src/stores/sceneStore.ts` | DATA_VERSION 同步（1 行）|
 | `data/*.br` / `data/*.gz` | precompress 同步（gitignored）|
 | `scripts/archive/fix-mash-dangerous-beast-and-7-solo-2026-09-01.js` | 一次性修复脚本归档 |
-| `docs/audit-new8-sfw-prompts-2026-09-01.md` | 本 §12 增补 |
+| `docs/archive/audits/audit-new8-sfw-prompts-2026-09-01.md` | 本 §12 增补 |
 
 **不 commit**（避免与并发会话冲突，待用户裁定）：
 - 其他 28 场非摩根场景的 camera/size 当前 cowboy/832x1216（并发回退状态）
