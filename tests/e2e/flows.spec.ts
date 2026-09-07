@@ -134,15 +134,15 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   await expect(page.locator('.prompt-health-body')).toContainText('lora');
 
   // 固定尺寸与 seed，好让断言不依赖推荐值
-  await page.locator('.sd-inline-options select').first().selectOption('896x1344');
+  await page.locator('.gen-bar-size select').selectOption('896x1344');
   await toggle(page, '.ctrl-seed input[type="checkbox"]', true);
   await page.locator('.ctrl-seed input[type="number"]').fill('4242');
 
   await page.getByRole('button', { name: '生成图片' }).click();
 
   // 生成中的等待态：舞台切到 RENDERING，进度条出现
-  await expect(page.locator('.stage-ready')).toHaveText('RENDERING');
-  await expect(page.locator('.sd-progress')).toBeVisible();
+  await expect(page.locator('.stage-ready')).toHaveText('正在显影');
+  await expect(page.locator('.stage-progress-ring')).toBeVisible();
   await expect(page.locator('.stage-generating-sub')).toContainText(/%/);
 
   // 成片出现 → blob URL 来自 mock 返回的 base64 PNG
@@ -157,7 +157,7 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
 
   // 保存快照 → IndexedDB 落盘 + 历史面板出现记录
   await page.getByRole('button', { name: '保存快照' }).click();
-  await expect(page.locator('.pb-toast')).toContainText('快照已存入本地作品册');
+  await expect(page.locator('.toast-msg')).toContainText('快照已存入本地作品册');
   // 场景模式会收起高级历史面板，但记录仍应真实写入 DOM / IndexedDB。
   await expect(page.locator('.history-item')).toHaveCount(1);
   await expect(page.locator('.history-item').first().locator('.history-meta')).toContainText('seed 4242');
@@ -182,7 +182,7 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
   await switchToSdEngine(page);
 
   await openGenerationSettings(page);
-  await page.locator('.sd-inline-options select').first().selectOption('1216x832');
+  await page.locator('.gen-bar-size select').selectOption('1216x832');
   await toggle(page, page.getByRole('checkbox', { name: 'hires.fix', exact: true }), true);
   await page.getByRole('button', { name: '生成图片' }).click();
 
@@ -206,8 +206,8 @@ test('flow 1c · 出图队列：串行执行、自动入册', async ({ page, req
   await page.goto('/prompt-builder?scene=sc001');
   await switchToSdEngine(page);
 
-  await page.getByRole('button', { name: '加入队列' }).click();
-  await page.getByRole('button', { name: '加入队列' }).click();
+  await page.getByRole('button', { name: '加入队列', exact: true }).click();
+  await page.getByRole('button', { name: '加入队列', exact: true }).click();
 
   // 队列跑完：两张图都出，且都自动写进历史
   await expect(page.locator('.sd-queue')).toBeHidden({ timeout: 20_000 });
@@ -234,6 +234,7 @@ test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ p
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
   await page.locator('.engine-switch button').nth(1).click();
   await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 10_000 });
+  await page.locator('[aria-controls="material-story"]').click();
   await page.locator('.story-input').fill('夏目在咖啡馆里对我微笑');
   await expect(page.getByTestId('anima-generate')).toBeEnabled({ timeout: 10_000 });
   await page.getByTestId('anima-generate').click();
@@ -271,6 +272,7 @@ test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV
    * 而 mock 栈的网关跨用例长活着 —— 前面的用例已经激活过宁宁的权重，于是
    * "本次是否 set_*_weights" 会随执行顺序漂移。换声线强制重新激活，断言才稳定。
    */
+  await page.getByRole('button', { name: '展开配音面板' }).click();
   await page.locator('.voice-field select').first().selectOption('natsume');
   await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
@@ -309,6 +311,7 @@ test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不�
   await page.goto('/prompt-builder');
   await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
+  await page.getByRole('button', { name: '展开配音面板' }).click();
   await page.locator('.voice-caption-text').fill('测试失败路径。');
   await page.locator('.voice-field select').nth(1).selectOption('zh');  // 跳过翻译
   await page.getByRole('button', { name: '生成 AI 声线' }).click();
@@ -538,11 +541,28 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
   await expect(card.locator('.pb-backup-summary')).toContainText('1 条历史');
   await expect(card.locator('.pb-backup-summary')).toContainText('1 张图片');
 
-  page.once('dialog', dialog => dialog.accept());
   await card.getByRole('button', { name: '覆盖本地' }).click();
+  const confirmation = page.getByRole('alertdialog');
+  await expect(confirmation.getByRole('button', { name: '取消', exact: true })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(confirmation.getByRole('button', { name: '覆盖', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(confirmation).toBeHidden();
+  await expect(card).toBeVisible();
+  await card.getByRole('button', { name: '覆盖本地' }).click();
+  await confirmation.getByRole('button', { name: '覆盖', exact: true }).click();
 
   // restore() 会 reload；恢复后历史回来了
-  await expect(page.locator('.history-item')).toHaveCount(1, { timeout: 15_000 });
+  await expect.poll(() => page.evaluate(() => new Promise<number>((resolve, reject) => {
+    const request = indexedDB.open('aics_kv_store', 1);
+    request.onsuccess = () => {
+      const db = request.result;
+      const read = db.transaction('kv').objectStore('kv').get('aics_pb_history');
+      read.onsuccess = () => { db.close(); resolve(Array.isArray(read.result?.value) ? read.result.value.length : 0); };
+      read.onerror = () => { db.close(); reject(read.error); };
+    };
+    request.onerror = () => reject(request.error);
+  })), { timeout: 15_000 }).toBe(1);
 
   expect(errors).toEqual([]);
 });
@@ -555,7 +575,7 @@ test('flow 4b · 备份：损坏文件不得污染本地数据', async ({ page }
     mimeType: 'application/json',
     buffer: Buffer.from('{"app":"ai-cg-studio","data":{}}'),
   });
-  await expect(page.locator('.pb-toast')).toContainText('备份文件里没有可恢复的数据');
+  await expect(page.locator('.toast-msg').filter({ hasText: '备份文件里没有可恢复的数据' })).toBeVisible();
   await expect(page.locator('.pb-backup-card')).toHaveCount(0);
 });
 
@@ -666,7 +686,9 @@ test('flow 6b · 深链：无场景时 ?char 生效', async ({ page }) => {
 test('flow 6c · 深链：?resume=1 恢复上次草稿', async ({ page }) => {
   // 先留下一份草稿
   await page.goto('/prompt-builder');
+  await page.locator('[aria-controls="material-story"]').click();
   await page.locator('.story-input').fill('雪天围围巾的温柔一瞬');
+  await page.locator('[aria-controls="material-character"]').click();
   await page.locator('.trait-chip').first().click();
   // 等草稿保存包含 manualTags（saveDraft 有 280ms debounce，仅检查 non-null 会命中
   // 早于 trait-chip 点击的草稿快照，导致恢复后缺少 tag）
@@ -726,7 +748,9 @@ test('flow 6e · 深链：未知场景 id 不得让导演台崩在半途', async
   await page.goto('/prompt-builder?scene=sc999&mood=not-a-mood');
 
   // 无效参数应被忽略，页面保持可用
+  await page.locator('[aria-controls="material-story"]').click();
   await expect(page.locator('.story-input')).toBeVisible();
+  await page.locator('[aria-controls="material-scenes"]').click();
   await expect(page.locator('.scene-list button.scene-card').first()).toBeVisible();
   await expect(page.locator('.scene-context-title')).toHaveCount(0);
   expect(errors).toEqual([]);

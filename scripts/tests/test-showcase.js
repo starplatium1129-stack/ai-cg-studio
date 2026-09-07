@@ -38,7 +38,7 @@ test('showcase source contract: view, router, nav, server allowlist, exporter wo
     'showcase view must load the approved manifest',
   );
   assert(
-    view.includes('/prompt-builder?scene='),
+    view.includes('showcaseDestination') && read('src/utils/showcaseDestination.ts').includes('/prompt-builder?scene='),
     'approved scene samples must link back to the director',
   );
   assert(view.includes('loading="lazy"'), 'sample thumbnails must lazy-load');
@@ -298,12 +298,9 @@ test('showcase view renders entry-type grouping, gated CTA, metadata and the mob
   assert(view.includes('currentEntry.meta.checkpoint'), 'checkpoint meta row must be conditional');
   assert(view.includes('currentEntry.meta.loraId'), 'LoRA id meta row must be conditional');
   assert(view.includes('currentEntry.meta.seed !== undefined'), 'seed meta row must be conditional on presence');
-  assert(view.includes("currentEntry.type === 'scene'"), 'scene-only CTA must not appear for non-scene entries');
-  // 2026-08-16 审计：CTA 已精简为单一「type === 'scene'」守卫（旧实现按
-  // artist/lora 各写一个分支）。对非 scene 条目一律不渲染 CTA——语义等价且更清晰，
-  // 逐字断言「artist/lora 双分支出现」已不再成立，改为断言守卫唯一且正确落于 scene。
-  const sceneCtaGuards = (view.match(/currentEntry\.type === 'scene'/g) || []).length;
-  assert.strictEqual(sceneCtaGuards, 1, 'exactly one scene CTA guard: artist/lora/… never render the ?scene= CTA');
+  assert(view.includes('v-if="workspaceTarget"') && view.includes(':to="workspaceTarget.to"'), 'CTA must use the catalog-aware destination resolver');
+  const destination = read('src/utils/showcaseDestination.ts');
+  assert(destination.includes("entry.type === 'scene'") && destination.includes("entry.type === 'popular'"), 'scene and popular samples must resolve their own identities');
   assert(view.includes('overflow-wrap:anywhere'), 'long meta values must not overflow the viewer pills');
 
   // 热门角色样张的自定义资源路径（manifest 提供 image/thumb 时优先于 id 推导）。

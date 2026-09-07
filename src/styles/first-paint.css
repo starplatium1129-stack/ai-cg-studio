@@ -11,10 +11,17 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: #0d0b14;
-  color: #a093b5;
+  background: var(--first-paint-background);
+  color: var(--first-paint-text);
   font: 600 13px/1.6 "PingFang SC", "Microsoft YaHei", sans-serif;
   letter-spacing: 0.34em;
 }
 
-:root[data-theme="light"] #app:empty::before { background: #f8f5f8; color: #645c6e; }
+:root {
+  --first-paint-background: #0d0b14;
+  --first-paint-text: #a093b5;
+}
+:root[data-theme="light"] {
+  --first-paint-background: #f8f5f8;
+  --first-paint-text: #645c6e;
+}

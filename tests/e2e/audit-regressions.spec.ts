@@ -1,0 +1,28 @@
+import { expect, test } from '@playwright/test'
+
+test('single studio characters can select Comfy engines; dual characters remain restricted', async ({ page }) => {
+  await page.goto('/prompt-builder')
+  await page.getByRole('button', { name: '夏目', exact: true }).click()
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  const engines = page.locator('.engine-switch button')
+  await expect(engines.nth(1)).toBeEnabled()
+  await expect(engines.nth(2)).toBeEnabled()
+  await engines.nth(1).click()
+  await expect(engines.nth(1)).toHaveClass(/active/)
+  await page.locator('.char-row .char-btn').last().click()
+  await expect(engines.nth(1)).toBeDisabled()
+  await expect(engines.nth(2)).toBeDisabled()
+  await page.getByRole('button', { name: '宁宁', exact: true }).click()
+  await expect(engines.nth(1)).toBeEnabled()
+})
+
+test('missing local reference images become unavailable cards without opening a broken viewer', async ({ page }) => {
+  await page.route('**/character-references/**', route => route.fulfill({ status: 404 }))
+  await page.goto('/character?character=nene')
+  const card = page.locator('.char-ref-card').first()
+  await card.scrollIntoViewIfNeeded()
+  await expect(card).toContainText('本机暂无参考图')
+  await expect(card).toHaveAttribute('aria-disabled', 'true')
+  await expect(card).toBeDisabled()
+  await expect(page.locator('dialog[open]')).toHaveCount(0)
+})

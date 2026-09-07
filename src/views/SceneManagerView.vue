@@ -635,6 +635,7 @@
 </template>
 
 <script setup lang="ts">
+import { highlightSearchText as hl } from '@/utils/highlightSearchText'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -944,15 +945,6 @@ const stats = computed(() => {
     { label:'Tags',   value: tags.value.length },
   ]
 })
-
-function escapeRegExp(s: string) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') }
-function hl(text: string, query: string) {
-  const t = String(text ?? '')
-  const q = String(query ?? '').trim()
-  if (!q) return esc(t)
-  const re = new RegExp('(' + escapeRegExp(q) + ')', 'gi')
-  return esc(t).replace(re, '<mark class="search-hl">$1</mark>')
-}
 
 const filtered = computed(() => {
   const q = searchDebounced.value.toLowerCase()

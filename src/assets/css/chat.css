@@ -2141,7 +2141,7 @@ body:has(.chat-page) .sakura-fall {
   .chat-page > .chat-layout { flex: 1; min-height: 0; height: auto; }
   .chat-page > .chat-head { flex-shrink: 0; margin-bottom: var(--s-4); }
   .chat-page .portrait-stage { min-height: 0; }
-  .aics-desktop-shell .chat-page { height: calc(100dvh - 110px); }
+  .chat-page:where(.aics-desktop-shell *) { height: calc(100dvh - 110px); }
 }
 
 /* Keep biography and wardrobe expansion from taking height away from the stage. */

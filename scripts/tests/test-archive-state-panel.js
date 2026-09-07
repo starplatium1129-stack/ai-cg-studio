@@ -17,7 +17,7 @@ test('archive state language contract', () => {
 
   assert(panel.includes("'loading' | 'empty' | 'filtered' | 'error' | 'success'"), 'state union must distinguish filtered results');
   assert(panel.includes("filtered:'search'"), 'filtered state must use a search icon');
-  assert(panel.includes("filtered:'NO FILTER MATCH'"), 'filtered state must have a distinct default code');
+  assert(panel.includes('v-if="code"'), 'optional diagnostic codes must stay hidden unless supplied');
   assert(panel.includes(':data-kind="kind"'), 'state kind must be exposed for styling and tests');
   assert(panel.includes(':aria-busy="kind === \'loading\' ? \'true\' : undefined"'), 'loading states must expose aria-busy');
   assert(panel.includes("props.kind === 'loading' ? 'status'"), 'loading must remain a status announcement');

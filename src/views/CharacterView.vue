@@ -112,27 +112,29 @@
             :key="refItem.id"
             class="char-ref-card"
             role="button"
-            tabindex="0"
-            :aria-label="`查看 ${refItem.name} 高清大图`"
+            :tabindex="refItem.url && !unavailableReferences.has(refItem.url) ? 0 : -1"
+            :aria-disabled="!refItem.url || unavailableReferences.has(refItem.url)"
+            :aria-label="refItem.url && !unavailableReferences.has(refItem.url) ? `查看 ${refItem.name} 高清大图` : `${refItem.name} · 本机暂无参考图`"
             @click="openRefViewer(idx)"
             @keydown.enter="openRefViewer(idx)"
             @keydown.space.prevent="openRefViewer(idx)"
           >
             <div class="char-ref-image-wrap">
               <img
-                v-if="refItem.url"
+                v-if="refItem.url && !unavailableReferences.has(refItem.url)"
                 :src="`${refItem.url}?t=${refVersion}`"
                 :alt="refItem.name"
+                @error="unavailableReferences.add(refItem.url)"
                 class="char-ref-image"
                 loading="lazy"
               />
               <!-- 2026-08-31 设计图基线占位：pending 无 url，显示待生成卡片不请求 404 -->
               <div v-else class="char-ref-image char-ref-pending">
                 <ArchiveIcon name="spark" />
-                <span>待生成</span>
+                <span>{{ refItem.url ? '本机暂无参考图' : '待生成' }}</span>
               </div>
               <span class="char-ref-badge">{{ refItem.shotType }}</span>
-              <div class="char-ref-hover-hint"><ArchiveIcon name="spark" /> 点击放大审查</div>
+              <div v-if="refItem.url && !unavailableReferences.has(refItem.url)" class="char-ref-hover-hint"><ArchiveIcon name="spark" /> 点击放大审查</div>
             </div>
             <div class="char-ref-info">
               <h3 class="char-ref-title">{{ refItem.name }}</h3>
@@ -315,6 +317,7 @@ const activeOutfit = computed(() => {
   }
   return characterReferences.value.outfits.find(o => o.isDefault) || characterReferences.value.outfits[0]
 })
+const unavailableReferences = ref(new Set<string>())
 const refVersion = ref(Date.now())
 
 const refDialogEl = ref<HTMLDialogElement | null>(null)
@@ -327,7 +330,7 @@ const activeRefModal = computed(() => {
 function openRefViewer(index: number) {
   const refItem = activeOutfit.value?.references?.[index]
   // 2026-08-31 设计图基线占位：pending 无 url，不打开查看器（避免加载坏图）。
-  if (!refItem || !refItem.url) return
+  if (!refItem || !refItem.url || unavailableReferences.value.has(refItem.url)) return
   activeRefIndex.value = index
   nextTick(() => {
     refDialogEl.value?.showModal()
@@ -342,9 +345,12 @@ function closeRefViewer() {
 function moveRef(delta: number) {
   if (!activeOutfit.value?.references.length) return
   const len = activeOutfit.value.references.length
-  const next = activeRefIndex.value + delta
-  if (next >= 0 && next < len) {
-    activeRefIndex.value = next
+  for (let next = activeRefIndex.value + delta; next >= 0 && next < len; next += delta) {
+    const item = activeOutfit.value.references[next]
+    if (item?.url && !unavailableReferences.value.has(item.url)) {
+      activeRefIndex.value = next
+      break
+    }
   }
 }
 

@@ -91,43 +91,12 @@ for (const file of vueFiles) {
   assert(/<template>/.test(source), `${rel} must define a <template>`);
 }
 
-// ── 4. 热页面共享 atelier chrome ─────────────────────────────────────────
-// 返回入口 + kicker 排版原语，保持各页顶部信息结构一致。
-// 工作台页面（控制台 / 模型架 / 训练台）自第八轮起使用 WorkspaceArchiveBar
-// 承载档案编号与机读状态，不再重复输出同义英文 Kicker（见
-// docs/archive/expired/visual-architecture-roadmap.md「第六轮：工作台标签去重」）。
-const chromeViews = [
-  ['src/views/PromptBuilderView.vue', /\bpb-kicker\b/],
-  ['src/views/ChatView.vue', /\bpage-kicker\b/],
-  ['src/views/GalleryView.vue', /\bgallery-kicker\b/],
-  ['src/views/ShowcaseView.vue', /\bpage-kicker\b/],
-  ['src/views/SceneExplorerView.vue', /\bpage-kicker\b/],
-  ['src/views/SceneManagerView.vue', /\bpage-kicker\b/],
-  ['src/views/ControlView.vue', /\bWorkspaceArchiveBar\b/],
-  ['src/views/CharacterView.vue', /\bpage-kicker\b/],
-  ['src/views/ColorScriptView.vue', /\bpage-kicker\b/],
-  ['src/views/LoraView.vue', /\bWorkspaceArchiveBar\b/],
-  ['src/views/StyleView.vue', /\bpage-kicker\b/],
-];
-for (const [rel, kickerRe] of chromeViews) {
-  const source = read(rel);
-  assert(kickerRe.test(source), `${rel} must expose a kicker chrome primitive`);
+// Each main page exposes a human-readable heading; navigation belongs to AppLayout.
+for (const rel of ['PromptBuilder', 'Chat', 'Gallery', 'Showcase', 'SceneExplorer', 'SceneManager', 'Control', 'Character', 'ColorScript', 'Lora', 'Style']) {
+  assert(/<h1\b/.test(read('src/views/' + rel + 'View.vue')), rel + ' must expose a page heading');
 }
-assert(
-  !/\bany\b/.test(read('src/views/ColorScriptView.vue')),
-  'ColorScriptView must keep its mood catalog explicitly typed',
-);
-
-// 除首页与控制面板外，其余页面提供返回入口
-const backLinkViews = [
-  'src/views/PromptBuilderView.vue',
-  'src/views/ChatView.vue',
-  'src/views/ShowcaseView.vue',
-  'src/views/StyleView.vue',
-];
-for (const rel of backLinkViews) {
-  assert(/\bnav-back\b/.test(read(rel)), `${rel} must expose nav-back chrome`);
-}
+assert(read('src/components/AppLayout.vue').includes('AppNav'), 'shared layout must retain navigation');
+assert(!/\bany\b/.test(read('src/views/ColorScriptView.vue')), 'ColorScriptView must keep its catalog typed');
 
 // ── 5. 关键 composable / store / util 必须存在 ───────────────────────────
 const requiredModules = [

@@ -193,7 +193,7 @@ async function restoreReplace() {
     danger: true,
   })
   if (!ok) return
-  await backup.restore('replace')
+  await backup.restore('replace', true)
 }
 
 async function onBackupFilePicked(event: Event) {

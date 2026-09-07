@@ -234,12 +234,12 @@
               SD 引擎 <span class="engine-sub">{{ pb.isPopular ? '仅工作室角色' : 'WebUI · v18 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
-              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('anima'))" :title="engineTitle('anima')"
+              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('anima'))" :title="engineTitle('anima')"
               @click="setDrawEngine('anima')">
               Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v21 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
-              :disabled="generationBusy || (!pb.isPopular && !supportsDualCharacter('krea2'))" :title="engineTitle('krea2')" @click="setDrawEngine('krea2')">
+              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('krea2'))" :title="engineTitle('krea2')" @click="setDrawEngine('krea2')">
               Krea 2 <span class="engine-sub">{{ pb.isPopular ? '自然语言 · 身份优先' : 'ComfyUI · 自然语言实验' }}</span>
             </button>
           </div>
@@ -1026,7 +1026,7 @@ const BUSY_HINT = '生成中，请稍候'
 function engineTitle(engine: DrawEngine) {
   if (generationBusy.value) return BUSY_HINT
   if (engine === 'sd') return pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined
-  if (!pb.isPopular && !supportsDualCharacter(engine)) {
+  if (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter(engine)) {
     return '双人模式请使用 SD 引擎'
   }
   return undefined

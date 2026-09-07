@@ -105,9 +105,6 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
       }
       handled = true
     }
-    if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
-      pb.setColorMood(q.mood); handled = true
-    }
     if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
       const targetId = Number(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
       let entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
@@ -133,6 +130,11 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     } else if (q.quick === '1' && !pb.story) {
       pb.setStory('用一张画面来讲今天想画的故事')
       handled = true
+    }
+    // An explicit scene-link mood wins over inferred scene defaults; saved snapshots keep their own mood.
+    if (!q.remix && !q.regen && !q.variant && q.resume !== '1'
+      && typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
+      pb.setColorMood(q.mood); handled = true
     }
     return handled
   }

@@ -1,3 +1,4 @@
+import { useConfirmState } from '@/composables/useConfirm'
 import { ref, watch, onUnmounted, nextTick, type Ref } from 'vue'
 
 /**
@@ -36,6 +37,7 @@ export function useFocusTrap(
   options: FocusTrapOptions = {},
 ) {
   const { onEscape, lockScroll = true, initialFocus } = options
+  const confirmation = useConfirmState()
   /** 打开前的焦点位置，关闭后要还回去 */
   const returnFocus = ref<HTMLElement | null>(null)
 
@@ -46,7 +48,7 @@ export function useFocusTrap(
   }
 
   function onKeydown(event: KeyboardEvent) {
-    if (!isOpen()) return
+    if (!isOpen() || confirmation.value.visible || event.defaultPrevented) return
 
     if (event.key === 'Escape' && onEscape) {
       event.preventDefault()

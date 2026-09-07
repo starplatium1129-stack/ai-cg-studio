@@ -95,7 +95,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 .confirm-overlay {
   position: fixed;
   inset: 0;
-  z-index: var(--z-overlay);
+  z-index: var(--z-confirm);
   display: flex;
   align-items: center;
   justify-content: center;

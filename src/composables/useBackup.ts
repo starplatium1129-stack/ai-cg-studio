@@ -201,10 +201,10 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
 
   function discard() { pending.value = null; pendingName.value = '' }
 
-  async function restore(mode: 'replace' | 'merge'): Promise<boolean> {
+  async function restore(mode: 'replace' | 'merge', confirmed = false): Promise<boolean> {
     if (!pending.value || busy.value) return false
     const replace = mode === 'replace'
-    if (replace && !window.confirm('覆盖恢复会替换当前项目、历史记录和本地图片。建议先导出一份当前备份。确定继续吗？')) {
+    if (replace && !confirmed && !window.confirm('覆盖恢复会替换当前项目、历史记录和本地图片。建议先导出一份当前备份。确定继续吗？')) {
       return false
     }
     busy.value = true
