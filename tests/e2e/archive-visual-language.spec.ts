@@ -17,7 +17,8 @@ test('core browsing pages share the archive hero and semantic particle language'
     await expect(hero).toBeVisible()
     await expect(hero).toHaveClass(/is-ready/)
     await expect(hero.getByRole('heading', { level: 1, name: entry.heading })).toBeVisible()
-    await expect(hero.locator('.archive-register strong')).toHaveText(entry.chapter)
+    // 2026-09-07: 章节号由 .archive-register 迁入粒子场 figcaption（如 COLLECTION 06 / 08）。
+    await expect(hero.locator('.particle-caption')).toContainText(entry.chapter)
     await expect(hero.locator('.archive-particles canvas')).toBeVisible()
 
     const bitmap = await hero.locator('canvas').evaluate((canvas: HTMLCanvasElement) => ({

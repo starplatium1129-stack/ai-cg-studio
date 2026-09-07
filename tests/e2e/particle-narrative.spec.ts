@@ -17,7 +17,9 @@ test('route atmosphere persists and updates its archive identity across navigati
   await page.getByRole('link', { name: /作品册/ }).click()
   await expect(page).toHaveURL(/\/gallery$/)
   await expect(page.locator('.route-atmosphere')).toHaveCount(1)
-  await expect(page.locator('.archive-page-hero .archive-register strong')).toHaveText('06')
+  // 2026-09-07: 归档栏精简后章节号迁入粒子场 figcaption；
+  // 各页均为 compact，.archive-register 不再渲染。
+  await expect(page.locator('.archive-page-hero .particle-caption')).toContainText('06')
   await expect(page.locator('.route-atmosphere canvas')).toHaveCount(0)
   await expect(page.locator('.archive-page-hero canvas')).toBeVisible()
   await expect(page.locator('canvas')).toHaveCount(1)
@@ -64,14 +66,19 @@ test('narrative atmosphere respects reduced motion and mobile width', async ({ p
   await page.goto('/chat')
 
   await expect(page.locator('.route-atmosphere .semantic-particle-field')).toHaveClass(/is-static/)
-  const motion = await page.evaluate(() => ({
-    scan: getComputedStyle(document.querySelector('.route-scan')!).display,
-    radar: getComputedStyle(document.querySelector('.workspace-radar i:last-child')!).animationName,
-    viewport: window.innerWidth,
-    document: document.documentElement.scrollWidth,
-    body: document.body.scrollWidth,
-  }))
+  const motion = await page.evaluate(() => {
+    /* 2026-09-07: 装饰性雷达（.workspace-radar）随归档栏精简移除，
+       改为断言现存的状态点；元素缺席时按"无动画"处理而非抛错。 */
+    const dot = document.querySelector('.workspace-state-dot')
+    return {
+      scan: getComputedStyle(document.querySelector('.route-scan')!).display,
+      pulse: dot ? getComputedStyle(dot).animationName : 'none',
+      viewport: window.innerWidth,
+      document: document.documentElement.scrollWidth,
+      body: document.body.scrollWidth,
+    }
+  })
   expect(motion.scan).toBe('none')
-  expect(motion.radar).toBe('none')
+  expect(motion.pulse).toBe('none')
   expect(Math.max(motion.document, motion.body)).toBeLessThanOrEqual(motion.viewport + 1)
 })

@@ -97,7 +97,9 @@ test('home renders hero, featured scenes and live counts', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/');
 
-  await expect(page.locator('.hero-title')).toContainText('绫季绘境');
+  // 2026-09-07: hero 主标题改为角色导向文案，品牌名迁至 .hero-register。
+  await expect(page.locator('.hero-register')).toContainText('绫季绘境');
+  await expect(page.locator('.hero-title')).toBeVisible();
   // 精选场景来自 scenes.json + curation.json，必须真的渲染出卡片
   await expect(page.locator('.strip-scroll .sc').first()).toBeVisible();
   await expect(page.locator('#featuredScenesLabel')).not.toContainText('场景加载中');
