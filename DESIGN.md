@@ -3,17 +3,17 @@ version: "alpha"
 name: "Lingji Atelier"
 description: "A sweet, image-first Galgame creation desk for Ayachi Nene and Shiki Natsume."
 colors:
-  primary: "#FF8FC4"
-  on-primary: "#241331"
-  primary-hover: "#FFB3D9"
-  secondary: "#D8B4FE"
+  primary: "#F4A7C1"
+  on-primary: "#120C1A"
+  primary-hover: "#FFC4D8"
+  secondary: "#B784F6"
   tertiary: "#7FE7FF"
-  neutral: "#2B1823"
-  neutral-deep: "#1B1017"
-  surface: "#4D2236"
-  surface-elevated: "#6A2F4A"
-  text-primary: "#FFF5FB"
-  text-secondary: "#E8D3E1"
+  neutral: "#16171E"
+  neutral-deep: "#101116"
+  surface: "#1E2029"
+  surface-elevated: "#282B36"
+  text-primary: "#FFF7FC"
+  text-secondary: "#C8BED6"
   success: "#81C784"
   warning: "#FFA726"
   danger: "#FF9B8F"
@@ -28,7 +28,7 @@ colors:
   #   surface-elevated→--bg-elevated, disabled-text→--text-disabled,
   #   nene→--nene-violet, natsume→--natsume-amber。tertiary 为历史语义色无直接对应。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
-  disabled-text: "#C9AEC0"
+  disabled-text: "#A6A9BC"
   nene: "#D8B4FE"
   natsume: "#F2BB68"
 typography:
@@ -427,3 +427,17 @@ subtle behind controls and fully legible on character or result-focused pages.
 - Do not show every advanced option merely because space is available.
 - Do not redesign one page in isolation without checking navigation, director,
   scene library, showcase, character pages, and control panel as one family.
+
+## 2026-09-07 · 夜色手帐布局
+
+采用二次元博客的角色封面、日文短句与私人画室语气，结合克制的深色表面、留白和明确操作层级。全站基础表面统一为石墨蓝灰，樱粉只强调主要操作与少量标题；角色专属主题继续由 director/tokens.css 管理。
+
+首页顺序为封面与继续创作、四个常用入口、精选场景、角色横条、档案、最近作品。首页样式由 src/assets/css/home.css 独立维护；取消标题滚动淡出，避免阅读与点击目标漂移。导航采用悬浮圆角容器，手机折叠菜单允许内部滚动，归档选中后自动收起。
+
+布局在 1000 / 768 / 480px 分级适配，卡片只使用 transform 进行位移动效，遵循 reduced-motion。图标复用 ArchiveIcon；文案不展示 LoRA 契约等内部实现细节。
+
+## 2026-09-07 · 绘制区素材抽屉
+
+绘制区沿用夜色手帐风格：左侧创作素材按角色、场景、描述分类，专家模式额外提供历史；分类通过 v-show 保持组件实例，避免切换丢失草稿或搜索状态。中央保留画布、尺寸与生成条、输出设置；专家模式在宽屏提供独立右侧调校栏。工作台表面与响应式规则统一由 director/workspace.css 持有，角色强调色与生成状态继续复用原有令牌和状态机。
+
+1200px 以下右侧调校移到中央下方，900px 以下单列排列并提供素材、画布、输出锚点导航。吸附顶部留出 90px 避让导航，专注模式恢复单画布。背景粒子不覆盖绘制工作区，动效只使用合成属性。

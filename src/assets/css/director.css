@@ -7,3 +7,5 @@
 @import './director/layout.css';
 @import './director/stage.css';
 @import './director/panels.css';
+
+@import './director/workspace.css';

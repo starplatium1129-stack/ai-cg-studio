@@ -13,33 +13,33 @@
      Galgame 梦幻夜空 & 水晶亚克力质感系统 (Cosmic Indigo & Crystal Acrylic) ——
      深邃澄澈的星夜底色 + 樱花粉 / 薰衣草紫 / 汽水苏打青三色糖果流光点睛；
      对比度按 WCAG AA 严格把关。 */
-  --bg-deep:       #0c0a17;     /* 最深夜空: 澄澈深绀蓝紫夜空 */
-  --bg-base:       #151024;     /* 页面背景: 梦幻二次元星夜绀紫 */
-  --bg-surface:    rgba(30, 22, 46, 0.70); /* 玻璃卡片: 水晶亚克力透亮面板 */
-  --bg-elevated:   rgba(46, 33, 68, 0.80); /* 浮层/输入框: 星尘柔和提亮 */
-  --bg-hover:      rgba(72, 50, 106, 0.65); /* 悬停态: 星尘紫光 */
+  --bg-deep:       #101116;     /* 最深夜空: 澄澈深绀蓝紫夜空 */
+  --bg-base:       #16171e;     /* 页面背景: 梦幻二次元星夜绀紫 */
+  --bg-surface:    #1e2029; /* 玻璃卡片: 水晶亚克力透亮面板 */
+  --bg-elevated:   #282b36; /* 浮层/输入框: 星尘柔和提亮 */
+  --bg-hover:      #323542; /* 悬停态: 星尘紫光 */
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: #1d152e;
+  --bg-surface-elevated: #282b36;
 
-  --border-soft:   rgba(255, 220, 246, 0.14);
-  --border-strong: rgba(255, 210, 245, 0.32);
+  --border-soft:   rgba(220, 224, 246, 0.10);
+  --border-strong: rgba(220, 224, 246, 0.24);
 
   /* ---- Text ---- */
   --text-primary:   #fff7fc;   /* 主文字: 暖白带微弱恋爱温润感 */
   --text-secondary: #c8bed6;   /* 副文字: 淡薰衣草紫灰 */
   /* 占位/说明。合成到 --bg-elevated 仍 ≥4.5:1。 */
-  --text-muted:     #a093b5;
+  --text-muted:     #adb0c2;
   --text-inverse:   #120c1a;   /* 浅色高光底深色字反色 */
   /* 三级说明文字别名：页面代码按 primary/secondary/tertiary 三级引用。 */
   --text-tertiary:  var(--text-muted);
   /* 禁用态文字：直接用达标色值，不再用 opacity 压字。合成到 --bg-elevated 仍 ≥4.5:1。 */
-  --text-disabled:  #9487aa;
+  --text-disabled:  #a6a9bc;
 
   /* ---- Accent (糖果樱花粉 & 二次元梦幻强调色) ---- */
-  --accent:         #ff75a0;
-  --accent-hover:   #ffa3c2;
-  --accent-soft:    rgba(255, 117, 160, 0.16);
-  --accent-glow:    rgba(255, 117, 160, 0.38);
+  --accent:         #f4a7c1;
+  --accent-hover:   #ffc4d8;
+  --accent-soft:    rgba(244, 167, 193, 0.10);
+  --accent-glow:    rgba(244, 167, 193, 0.16);
   --accent-violet:  #b784f6;
   --archive-blue:   #5eead4;
   --archive-blue-soft: rgba(94, 234, 212, 0.16);
@@ -76,8 +76,8 @@
   --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(21, 16, 36, 0.84);
-  --glass-highlight: rgba(255, 228, 248, 0.18);
+  --nav-bg: rgba(30, 32, 41, 0.92);
+  --glass-highlight: rgba(220, 224, 246, 0.08);
   /* inset 玻璃高光令牌族（2026-09-05 收纳星夜绀紫主题引入的系统性用法，
      保持视觉值逐字节一致；使用点一律走令牌，见 scan-style-literals 门禁） */
   --hl-inset-04: rgba(255, 255, 255, 0.04);
@@ -88,8 +88,8 @@
   --hl-inset-18: rgba(255, 255, 255, 0.18);
   --hl-inset-22: rgba(255, 255, 255, 0.22);
   --hl-inset-32: rgba(255, 255, 255, 0.32);
-  --glass-fill: rgba(30, 22, 46, 0.68);
-  --glass-fill-strong: rgba(46, 33, 68, 0.84);
+  --glass-fill: rgba(30, 32, 41, 0.92);
+  --glass-fill-strong: #282b36;
   --glass-edge: rgba(255, 220, 246, 0.16);
   --glass-specular: color-mix(in srgb, #fff2fa 26%, transparent);
   --glass-shadow: 0 18px 48px rgba(8, 5, 18, 0.52);
@@ -300,14 +300,8 @@ body {
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
   overflow-x: hidden;
-  /* 网点纹理层:萌系杂志网点，色值随主题走 --border-strong */
-  background-image:
-    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--border-strong) 32%, transparent) 1px, transparent 0),
-    linear-gradient(118deg, color-mix(in srgb, white 4%, transparent), transparent 34%),
-    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 30rem),
-    radial-gradient(circle at 88% 28%, color-mix(in srgb, var(--accent-hover) 16%, transparent), transparent 32rem),
-    radial-gradient(circle at 55% 96%, color-mix(in srgb, var(--accent-hover) 9%, transparent), transparent 26rem);
-  background-size: 24px 24px, auto, auto, auto, auto;
+  /* 留白承载界面层级，淡淡的樱色只停在页面上缘。 */
+  background-image: radial-gradient(ellipse at 15% 0%, var(--accent-soft), transparent 45rem);
 }
 
 /* 装饰层统一加图层隔离（2026-08-28）：contain 把重绘范围锁在图层自身，
@@ -344,6 +338,10 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
   opacity: .62;
 }
 @keyframes float-orb { to { transform: translate3d(3rem, 1.5rem, 0) scale(1.05); } }
+
+/* 首页以封面和留白为主，星野保留在画册等沉浸页面。 */
+body:has(.home-page) .starfield { display: none; }
+body:has(.home-page)::before, body:has(.home-page)::after { animation: none; opacity: .18; }
 
 /* ---- 日系竖排假名水印（工坊签名层） ----
    DOM 在 AppLayout；fixed + z-below 与光斑同级（body 的 isolation 保证
@@ -382,7 +380,7 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .p
 }
 /* 内容密集页（导演台 / 训练台）水印会与面板叠压，与 route-index 同策略隐藏 */
 body:has(.pb) .kana-watermark { opacity: 0; }
-@media (max-width: 600px) { .kana-watermark { opacity: 0; } }
+@media (max-width: 600px) { .page-root .kana-watermark { display: none; } }
 
 /* ---- 星野层：rella 化（2026-08-15） ----
    两层结构：① 细碎星点（多档大小、白蓝紫三色，缓慢上浮呼吸）；
@@ -502,34 +500,16 @@ body > *:has(+ .footer),
 
 /* ---- Top nav ---- */
 .nav {
-  position: sticky; top: 0; z-index: var(--z-nav);
-  isolation:isolate;
-  background:
-    /* 甜系化：导航玻璃层叠粉色星辉与薰衣草紫光 */
-    radial-gradient(28rem 10rem at 82% -40%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 68%),
-    radial-gradient(20rem 8rem at 12% -60%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 66%),
-    linear-gradient(110deg, var(--glass-specular), transparent 26%, transparent 72%, color-mix(in srgb,var(--accent) 10%,transparent)),
-    var(--nav-bg);
-  -webkit-backdrop-filter: blur(26px) saturate(155%) contrast(1.03);
-  backdrop-filter: blur(26px) saturate(155%) contrast(1.03);
-  border-bottom: 1px solid color-mix(in srgb, var(--glass-edge) 72%, transparent);
-  padding: var(--s-3) 0;
-  box-shadow: inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent), 0 12px 34px color-mix(in srgb,var(--bg-deep) 20%,transparent);
-  view-transition-name:site-navigation;
-}
-.nav::before {
-  content:""; position:absolute; z-index:var(--z-below); inset:0; pointer-events:none;
-  background:linear-gradient(90deg,transparent 8%,var(--glass-specular) 34%,transparent 58%);
-  opacity:.18; transform:translateX(-36%);
-}
-.nav::after {
-  content:""; position:absolute; left:0; right:0; top:100%; height:18px; pointer-events:none;
-  background:linear-gradient(180deg,color-mix(in srgb,var(--bg-deep) 9%,transparent),transparent);
-  opacity:.72;
+  position: sticky; top: var(--s-3); z-index: var(--z-nav);
+  isolation: isolate; width: calc(100% - 40px); max-width: 1440px;
+  margin: var(--s-3) auto 0; padding: var(--s-3) 0;
+  background: var(--nav-bg); border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl); backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-sm); view-transition-name: site-navigation;
 }
 .nav-inner {
-  position:relative; z-index:var(--z-base); display: flex; align-items: center; justify-content: space-between;
-  max-width: min(96vw, 3200px); margin: 0 auto; padding: 0 var(--s-5);
+  position: relative; display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s-4); margin: 0 auto; padding: 0 var(--s-5);
 }
 .nav-brand {
   font-weight: 700; font-size: var(--fs-title-xs);
@@ -550,7 +530,7 @@ body > *:has(+ .footer),
   border: 1px solid var(--border-soft); background: var(--bg-elevated);
   color: var(--text-primary); cursor: pointer; font-size: var(--fs-title-xs);
 }
-.nav-links { display: flex; gap: var(--s-3); align-items: center; }
+.nav-links { display: flex; gap: var(--s-1); align-items: center; }
 .nav-links a {
   position:relative; display:inline-flex; align-items:center; gap:6px;
   color: var(--text-secondary); font-size: var(--fs-body-sm); font-weight: 600;
@@ -1089,8 +1069,8 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { color: var(--danger-text
 .btn-icon { min-width: 40px; padding: var(--s-2); }
 .btn-block { width: 100%; }
 /* 主入口的光晕:只在 .btn-lg.btn-primary 上出现一次,避免每页自定义阴影 */
-.btn-lg.btn-primary { box-shadow: var(--glow-sm); }
-.btn-lg.btn-primary:hover { box-shadow: var(--glow-md), var(--shadow-sm); }
+.btn-lg.btn-primary { box-shadow: var(--shadow-sm); }
+.btn-lg.btn-primary:hover { box-shadow: var(--shadow-sm); }
 
 @media (hover: hover) and (pointer: fine) {
   .card-create:hover { transform: translateY(-2px); }
@@ -1793,7 +1773,7 @@ body:has(.pb) .route-atmosphere .route-index {
     background: var(--bg-surface); border: 1px solid var(--border-soft);
     border-radius: var(--r-lg); box-shadow: var(--shadow-lg);
   }
-  .nav-links.open { display: grid; }
+  .nav-links.open { display: grid; max-height: calc(100dvh - 100px); overflow-y: auto; overscroll-behavior: contain; }
   .nav-links.open {
     transform-origin:top right;
     transition:opacity var(--motion-hover),transform var(--motion-surface) var(--ease-out);

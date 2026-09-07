@@ -1,6 +1,6 @@
 <template>
   <article
-    class="pb"
+    class="pb journal-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
     :data-subject="pb.subject.kind"
     :data-director-mode="pb.directorMode"
@@ -75,15 +75,24 @@
       @reuse="reuseSuccessfulRecipe"
     />
 
+    <nav class="drawing-jump-links" aria-label="绘制区快捷导航">
+      <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
+    </nav>
     <div class="director-workspace">
 
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
-      <div class="director-col col-left">
+      <div class="director-col col-left" id="drawing-materials">
+        <DirectorMaterialDrawer :expert="pb.directorMode === 'pro'">
+        <template #story>
 
         <DirectorStoryPanel />
 
+        </template>
+        <template #character>
         <DirectorCharacterPanel :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
 
+        </template>
+        <template #scenes>
         <DirectorScenesPanel
           :popular-blueprint-pool="popularBlueprintPool"
           :blueprint-categories="blueprintCategories"
@@ -107,6 +116,8 @@
           @selectScene="selectScene"
           @update:sceneLimit="sceneLimit = $event"
         />
+        </template>
+        <template #history>
         <HistoryPanel class="advanced-decision"
           :history="pb.history"
           @resume="resumeHistory"
@@ -115,10 +126,12 @@
           @to-shots="handleHistoryToShots"
           @to-shots-batch="handleHistoryToShotsBatch"
         />
+        </template>
+        </DirectorMaterialDrawer>
       </div>
 
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
-      <div class="director-col col-center">
+      <div class="director-col col-center" id="drawing-canvas">
 
         <DirectorStagePanel
           :display-result-url="displayResultUrl"
@@ -404,6 +417,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
+import DirectorMaterialDrawer from '@/components/director/DirectorMaterialDrawer.vue'
 import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from 'vue'
 import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router'
 import {

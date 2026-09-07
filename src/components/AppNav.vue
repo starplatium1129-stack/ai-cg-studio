@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav">
+  <nav class="nav" aria-label="主导航">
     <div class="nav-inner">
       <!-- 用真 RouterLink:role="link" 的 div 没有 href,没有右键菜单、
            中键新标签页,而 Space 激活链接也不是标准行为 -->
@@ -7,7 +7,7 @@
         <img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" />
       </RouterLink>
 
-      <div ref="linksEl" class="nav-links" :class="{ open: menuOpen }">
+      <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }">
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
           v-for="item in primaryNav"
@@ -66,6 +66,7 @@
       <button
         type="button"
         class="nav-menu-toggle"
+        aria-controls="primary-navigation"
         :aria-expanded="menuOpen ? 'true' : 'false'"
         :aria-label="menuOpen ? '关闭导航菜单' : '打开导航菜单'"
         @click="toggleMenu"
@@ -140,7 +141,10 @@ const activeId = computed(() => {
 
 const secondaryActive = computed(() => secondaryNav.some(n => n.id === activeId.value))
 
-function closeMenu() { menuOpen.value = false }
+function closeMenu() {
+  menuOpen.value = false
+  if (moreEl.value) moreEl.value.open = false
+}
 function toggleMenu() { menuOpen.value = !menuOpen.value }
 
 /**
@@ -157,9 +161,7 @@ function onDocClick(e: MouseEvent) {
   }
 }
 function onDocKey(e: KeyboardEvent) {
-  if (e.key === 'Escape' && menuOpen.value) {
-    menuOpen.value = false
-  }
+  if (e.key === 'Escape') closeMenu()
 }
 
 onMounted(() => {

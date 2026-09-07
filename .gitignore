@@ -105,3 +105,6 @@ scripts/archive/
 
 # AI 会话工作记忆目录（.workbuddy），个人工具状态不入库（2026-08-29 审计 P2 顺带收口）
 .workbuddy/
+
+# Local development caches and UI verification artifacts
+.cache/
