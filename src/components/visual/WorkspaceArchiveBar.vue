@@ -1,23 +1,21 @@
 <template>
   <section class="workspace-archive-bar" :data-state="state" :data-shape="shape" :aria-label="`${title}状态`">
     <div class="workspace-code" aria-hidden="true">
-      <span>{{ chapter }}</span><small>/ 14</small>
+      <span>{{ chapter }}</span>
     </div>
     <div class="workspace-copy">
       <strong>{{ title }}</strong>
       <span>{{ subtitle }}</span>
     </div>
-    <div class="workspace-line" aria-hidden="true"><i :key="revision"></i></div>
     <div class="workspace-state" role="status" aria-live="polite">
       <span class="workspace-state-dot" aria-hidden="true"></span>
       {{ status }}
     </div>
-    <div class="workspace-radar" aria-hidden="true"><i></i><i></i><i></i></div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import type { ParticleShapeId } from '@/utils/particleShapes'
 import { emitParticleSignal, type ParticleSignalState } from '@/utils/particleSignal'
 
@@ -32,10 +30,8 @@ const props = withDefaults(defineProps<{
   state: 'idle',
   shape: 'atelier',
 })
-const revision = ref(0)
 
 function signal() {
-  revision.value += 1
   emitParticleSignal({
     state: props.state,
     shape: props.shape,
@@ -49,74 +45,15 @@ watch(() => [props.state, props.shape, props.status], signal)
 </script>
 
 <style scoped>
-.workspace-archive-bar {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(180px,auto) minmax(42px,1fr) auto 46px;
-  align-items: center;
-  gap: clamp(10px,1.6vw,22px);
-  min-height: 58px;
-  margin-bottom: var(--s-4);
-  padding: 8px 12px 8px 9px;
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb,var(--border-soft) 84%,transparent);
-  border-radius: var(--r-md);
-  background: color-mix(in srgb,var(--bg-surface) 72%,transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(120%);
-  backdrop-filter: blur(16px) saturate(120%);
-}
-.workspace-archive-bar::before {
-  content:"";
-  position:absolute;
-  inset:0 auto 0 0;
-  width:2px;
-  background:var(--archive-blue);
-}
-.workspace-code {
-  display:flex;
-  align-items:baseline;
-  gap:3px;
-  min-width:62px;
-  color:var(--archive-blue);
-  font:760 var(--fs-title-xs) var(--font-mono);
-  letter-spacing:-.04em;
-}
-.workspace-code small { color:var(--text-secondary); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.06em; }
-.workspace-copy { display:grid; min-width:0; gap:2px; }
-.workspace-copy strong { color:var(--text-primary); font:750 var(--fs-mono-sm) var(--font-mono); letter-spacing:.11em; }
-.workspace-copy span { overflow:hidden; color:var(--text-muted); font-size:var(--fs-label-xs); text-overflow:ellipsis; white-space:nowrap; }
-.workspace-line { height:1px; overflow:hidden; background:var(--border-soft); }
-.workspace-line i { display:block; width:34%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-blue),transparent); animation:workspace-scan .82s var(--ease-out) both; }
-.workspace-state { display:flex; align-items:center; gap:7px; color:var(--text-secondary); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
-.workspace-state-dot { position:relative; width:6px; height:6px; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
-/* 审计修复：脉冲圈原为逐帧补间 box-shadow（无限循环 → 每帧重绘），
-   改为伪元素静态光晕 + transform:scale/opacity（合成器属性，零重绘）。
-   放大到 3.3 倍 ≈ 原 box-shadow 7px spread 的扩散半径。 */
-[data-state="active"] .workspace-state-dot { background:var(--archive-blue); }
-[data-state="active"] .workspace-state-dot::after {
-  content:""; position:absolute; inset:0; z-index:-1;
-  border-radius:50%; background:color-mix(in srgb,var(--archive-blue) 40%,transparent);
-  animation:workspace-pulse 1.15s ease-in-out infinite;
-}
-[data-state="success"] .workspace-state-dot { background:var(--success); }
-[data-state="warning"] .workspace-state-dot { background:var(--warning); }
-.workspace-radar { position:relative; width:36px; height:36px; }
-.workspace-radar i { position:absolute; inset:50%; border:1px solid color-mix(in srgb,var(--archive-blue) 42%,transparent); border-radius:50%; transform:translate(-50%,-50%); }
-.workspace-radar i:nth-child(1){width:8px;height:8px}.workspace-radar i:nth-child(2){width:20px;height:20px}.workspace-radar i:nth-child(3){width:34px;height:34px;border-style:dashed}
-[data-state="active"] .workspace-radar i:nth-child(3){animation:workspace-rotate 3.2s linear infinite}
-@keyframes workspace-scan { from{transform:translateX(-110%)} to{transform:translateX(310%)} }
-@keyframes workspace-pulse { 0%{transform:scale(1);opacity:.6} 50%{transform:scale(3.3);opacity:0} 100%{transform:scale(1);opacity:0} }
-@keyframes workspace-rotate { to{transform:translate(-50%,-50%) rotate(360deg)} }
-@media(max-width: 768px){
-  .workspace-archive-bar{grid-template-columns:auto minmax(0,1fr) auto;gap:10px}
-  .workspace-line,.workspace-radar{display:none}
-  .workspace-copy span{max-width:42vw}
-}
-/* 440 → 480：对齐断点表的 --bp-2xs。档外值会让这一档在相邻两档之外自己再
-   跳一次，出问题的时候极难定位是哪条规则生效（2026-08-30 UX 审计 P2） */
-@media(max-width:480px){
-  .workspace-archive-bar{grid-template-columns:auto minmax(0,1fr);padding:9px}
-  .workspace-state{grid-column:1/-1;padding-top:7px;border-top:1px solid var(--border-soft)}
-}
-@media(prefers-reduced-motion:reduce){.workspace-line i,.workspace-state-dot,.workspace-radar i{animation:none!important}}
+.workspace-archive-bar { display: flex; align-items: center; gap: var(--s-4); min-height: 44px; margin-bottom: var(--s-5); padding: var(--s-3) 0; border-bottom: 1px solid var(--border-soft); }
+.workspace-code { flex: 0 0 auto; color: var(--character-accent); font: 500 var(--fs-label)/var(--lh-label) var(--font-mono); }
+.workspace-copy { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-3); flex: 1; min-width: 0; }
+.workspace-copy strong { color: var(--text-secondary); font: 500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing: .1em; }
+.workspace-copy > span { color: var(--text-muted); font-size: var(--fs-label-xs); overflow-wrap: anywhere; }
+.workspace-state { display: flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font: 500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.workspace-state-dot { width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: var(--text-muted); }
+[data-state="active"] .workspace-state-dot { background: var(--character-accent); }
+[data-state="success"] .workspace-state-dot { background: var(--success); }
+[data-state="warning"] .workspace-state-dot { background: var(--warning); }
+@media(max-width: 480px) { .workspace-archive-bar { flex-wrap: wrap; gap: var(--s-2); } .workspace-state { margin-left: auto; } }
 </style>

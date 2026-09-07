@@ -11,13 +11,13 @@
   >
     <div class="guest-guide-card">
       <div class="guest-guide-body">
-        <span class="guest-guide-kicker">FIRST VISIT · {{ isLocalHost ? '一次导览' : '访客导览' }}</span>
-        <h2 id="guest-guide-title">{{ isLocalHost ? '欢迎回到 绫季绘境' : '欢迎来到 绫季绘境' }}</h2>
+        <span class="guest-guide-kicker">初次见面 · {{ isLocalHost ? '一次导览' : '访客导览' }}</span>
+        <h2 id="guest-guide-title">{{ isLocalHost ? '欢迎来到 绫季绘境' : '欢迎来到 绫季绘境' }}</h2>
 
         <!-- 本机主人：讲的是「怎么上手」，不是「这是谁的电脑」 -->
         <template v-if="isLocalHost">
           <p id="guest-guide-description">
-            三步就能出第一张图，剩下的慢慢逛：
+            从一个场景开始，留下你的第一张作品。
           </p>
           <ul>
             <li><strong>灵感</strong>：挑一个场景，或去「热门角色场景」找你推的那位。</li>

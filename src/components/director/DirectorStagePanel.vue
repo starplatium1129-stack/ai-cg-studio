@@ -16,12 +16,11 @@
       aria-label="成片监看区"
     >
       <div class="stage-chrome">
-        <span>CANVAS</span>
+        <span>画布预览</span>
         <span class="stage-ready">
-          {{ generationBusy ? 'RENDERING' : (generationError ? 'ATTENTION' : (generationStopped ? 'PAUSED' : 'READY')) }}
+          {{ generationBusy ? '正在显影' : (generationError ? '需要处理' : (generationStopped ? '已暂停' : '等待创作')) }}
         </span>
       </div>
-      <CornerFrame />
       <i class="stage-magic-ring" aria-hidden="true"></i>
       <img class="stage-muse nene" :src="stageMuseUrl.nene" alt="" aria-hidden="true" decoding="async">
       <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
@@ -105,7 +104,6 @@
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-      <CornerFrame variant="ghost" />
       <ImageSplitCompare
         v-if="inpaintCompareActive && inpaintOriginalUrl"
         :before-src="inpaintOriginalUrl"
@@ -218,7 +216,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import CornerFrame from '@/components/visual/CornerFrame.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'

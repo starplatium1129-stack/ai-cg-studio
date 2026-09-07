@@ -48,7 +48,7 @@ import { motifDefs } from './icons/motif.ts'
 import { toolDefs } from './icons/tool.ts'
 
 export type ArchiveIconName =
-  | 'scene' | 'spark' | 'chat' | 'image' | 'gallery'
+  | 'chevron-down' | 'scene' | 'spark' | 'chat' | 'image' | 'gallery'
   | 'character' | 'palette' | 'model' | 'manager'
   | 'info' | 'success' | 'error' | 'warning' | 'sound' | 'mute'
   | 'close' | 'refresh' | 'sun' | 'moon' | 'menu'

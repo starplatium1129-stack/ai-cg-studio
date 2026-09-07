@@ -1,0 +1,63 @@
+import { expect, test } from '@playwright/test'
+
+async function openAtelier(page: import('@playwright/test').Page, route = '/') {
+  await page.goto(route)
+  const guide = page.getByRole('dialog', { name: '访客导览' })
+  await expect(guide).toBeVisible()
+  await guide.getByRole('button', { name: '开始创作', exact: true }).click()
+  await expect(guide).toBeHidden()
+}
+
+test('home character selection keeps artwork, caption and accent together', async ({ page }) => {
+  await openAtelier(page)
+  const hero = page.locator('.home-hero')
+  await expect(hero).toHaveAttribute('data-muse', 'nene')
+  await expect(hero.locator('.hero-character.is-current')).toHaveAttribute('alt', '绫地宁宁')
+  const violet = await hero.evaluate(el => getComputedStyle(el).getPropertyValue('--accent'))
+  const natsume = hero.getByRole('button', { name: '四季夏目', exact: true })
+  await natsume.focus()
+  await page.keyboard.press('Enter')
+  await expect(natsume).toHaveAttribute('aria-pressed', 'true')
+  await expect(hero.locator('.hero-character.is-current')).toHaveAttribute('alt', '四季夏目')
+  await expect(hero.locator('.orbit-label')).toContainText('SHIKI NATSUME')
+  const amber = await hero.evaluate(el => getComputedStyle(el).getPropertyValue('--accent'))
+  expect(amber).not.toBe(violet)
+  expect(await hero.locator('.hero-character.is-current').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+  await expect(page.locator('.sakura-fall')).toHaveCount(0)
+  await expect(page.locator('#continueCta')).toHaveAttribute('href', '/prompt-builder')
+})
+
+test('reduced motion stops character transitions', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await openAtelier(page)
+  expect(await page.locator('.hero-character').first().evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s')
+})
+
+for (const width of [1440, 768, 390]) {
+  test('navigation remains operable at ' + width, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 })
+    await openAtelier(page)
+    const toggle = page.getByRole('button', { name: '打开导航菜单' })
+    if (await toggle.isVisible()) await toggle.click()
+    await page.locator('.nav-more summary').click()
+    await page.locator('.nav-more-menu').getByRole('link', { name: '角色档案' }).click()
+    await expect(page).toHaveURL(/character$/)
+    await expect(page.locator('.nav-more')).not.toHaveAttribute('open', '')
+    await expect(page.locator('.nav-more')).toHaveAttribute('data-active', 'true')
+  })
+  test('main screens fit at ' + width, async ({ page }) => {
+    test.setTimeout(90000)
+    await page.setViewportSize({ width, height: 1000 })
+    const errors: string[] = []
+    page.on('pageerror', e => errors.push(e.message))
+    await openAtelier(page)
+    for (const route of ['/', '/prompt-builder', '/scene-explorer', '/gallery', '/showcase', '/character', '/video-studio', '/chat', '/style', '/lora', '/color-script', '/scenario', '/control', '/scene-manager', '/popular-scenes']) {
+      await page.goto(route)
+      await expect(page.locator('main h1')).toHaveCount(1)
+      await expect(page.locator('main h1')).toBeVisible()
+      const fits = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)
+      expect(fits, route + ' must fit the viewport').toBe(true)
+    }
+    expect(errors).toEqual([])
+  })
+}

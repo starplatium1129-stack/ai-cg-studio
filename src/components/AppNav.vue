@@ -24,7 +24,7 @@
         <!-- 归档 · 分组下拉：发现/美学/工坊，5 项主导航之外全部收口 -->
         <details class="nav-more" :data-active="secondaryActive || undefined" ref="moreEl">
           <!-- 不加 aria-label:它会盖掉可见文字"归档",违反 SC 2.5.3 Label in Name -->
-          <summary>归档<span class="nav-more-chevron" aria-hidden="true">⌄</span></summary>
+          <summary>归档<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></summary>
           <div class="nav-more-menu">
             <template v-for="group in archiveGroups" :key="group.heading">
               <div class="nav-more-group-label">{{ group.heading }}</div>
@@ -192,8 +192,8 @@ onUnmounted(() => {
 .nav-search {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 1px solid var(--border-soft);
   border-radius: 50%;

@@ -99,19 +99,8 @@ const ROUTES_WITH_OWN_PARTICLES = new Set([
   '/color-script',
   '/scenario',
 ])
-const ROUTES_WITH_SAKURA = new Set([
-  '/',
-  '/prompt-builder',
-  '/scene-explorer',
-  '/popular-scenes',
-  '/character',
-  '/style',
-  '/showcase',
-  '/gallery',
-  '/color-script',
-  '/scenario',
-  '/chat',
-])
+// Foreground petals belong to the character room; reading and creation surfaces stay clear.
+const ROUTES_WITH_SAKURA = new Set(['/chat'])
 // 密集工作台（导演台）上全强度前景花雨会压住标题与面板文本（2026-08-16 视觉
 // 审核实锤）；这类路由保留花雨但整体降噪，浏览页仍是完整花雨。
 const ROUTES_WITH_DIM_SAKURA = new Set(['/prompt-builder'])
@@ -312,7 +301,7 @@ onUnmounted(() => {
   position: absolute;
   border-radius: 50%;
   filter: blur(85px);
-  opacity: 0.38;
+  opacity: 0.18;
   will-change: transform, opacity;
   pointer-events: none;
 }

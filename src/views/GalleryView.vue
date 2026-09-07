@@ -12,7 +12,7 @@
       <div>
         <div class="gallery-kicker">Private collection</div>
         <h1 class="gallery-title">作品册</h1>
-        <p class="gallery-subtitle">以纯净的原始比例安静欣赏。沉浸于画面，参数仅在需要时优雅呈现。</p>
+        <p class="gallery-subtitle">每一次心动，都收在这里。翻看、收藏，或从喜欢的作品继续创作。</p>
       </div>
       <template #meta><div class="gallery-count">{{ countLabel }}</div></template>
     </ArchivePageHero>

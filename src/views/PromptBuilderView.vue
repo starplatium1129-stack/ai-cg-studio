@@ -14,9 +14,9 @@
 
     <WorkspaceArchiveBar
       chapter="01"
-      title="DIRECTOR CONSOLE"
+      title="绘境工作台"
       :subtitle="pb.isPopular ? popularCharacter?.displayName || '热门角色' : (pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式'))"
-      :status="pb.isPopular ? 'POPULAR · NO LORA' : (pb.directorMode === 'basic' ? 'SCENE MODE' : 'PRO MODE')"
+      :status="pb.isPopular ? '角色创作' : (pb.directorMode === 'basic' ? '场景模式' : '专家模式')"
       :state="pb.isPopular ? 'active' : (pb.directorMode === 'basic' ? 'success' : 'active')"
       :shape="archiveBarShape"
     />

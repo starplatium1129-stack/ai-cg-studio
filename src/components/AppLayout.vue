@@ -31,13 +31,6 @@
         <a class="site-footer-link" href="/docs/index.html" target="_blank" rel="noopener">文档索引</a>
       </p>
     </footer>
-    <!-- 日系竖排假名水印：纯装饰层（aria-hidden），样式与主题适配在 design-system.css -->
-    <div class="kana-watermark" aria-hidden="true">
-      <span class="kana-main">あとりえ</span>
-      <span class="kana-sub">ATELIER ARCHIVE</span>
-    </div>
-    <!-- 博客式星光层：纯装饰（aria-hidden），样式在 design-system.css -->
-    <div class="starfield" aria-hidden="true"></div>
   </div>
 </template>
 

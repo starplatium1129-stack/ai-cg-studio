@@ -1,105 +1,27 @@
 <template>
   <article class="home-page">
-    <!-- Hero -->
-    <section class="container">
-      <div class="home-hero">
+    <section class="container home-opening" aria-label="画室序章">
+      <div class="home-hero" :data-muse="homeMuse">
         <div class="hero-copy">
-          <div class="hero-register" aria-label="本期绘境信息">
-            <span class="archive-kicker">A LITTLE SPACE FOR IMAGINATION</span>
-            <span>创作手帐</span>
-          </div>
-          <span class="eyebrow">宁宁与夏目的私人画室</span>
-          <h1 class="hero-title">收藏心动，<br /><span class="hero-title-accent">慢慢画成日常。</span></h1>
-          <p class="hero-sub">一间属于你的二次元创作小屋。从一个灵感开始，让喜欢的角色、故事与光影在这里相遇。</p>
-          <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
+          <span class="hero-register">绫季绘境 · 私人画室</span>
+          <h1 class="hero-title">让心动，<br /><span class="hero-title-accent">有迹可循。</span></h1>
+          <p class="hero-sub">一个喜欢的角色，一段想留下的时光。<br />从这里，把想象画成故事。</p>
           <div class="ctas">
-            <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta">
-              <span class="ic"><ArchiveIcon :name="continueIconName" /></span> {{ continueLink.label }}
-            </RouterLink>
-            <RouterLink to="/showcase" class="btn btn-lg btn-ghost"><span class="ic"><ArchiveIcon name="image" /></span> 翻翻画册</RouterLink>
+            <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
+            <RouterLink to="/showcase" class="btn btn-lg btn-ghost">翻开画册 <ArchiveIcon name="image" /></RouterLink>
           </div>
-          <div class="continue-hint" v-if="continueHint">
-            <strong>{{ continueHint }}</strong>
+          <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
+          <div class="hero-muses" role="group" aria-label="首页角色视觉">
+            <button type="button" :aria-pressed="homeMuse === 'nene'" @click="homeMuse = 'nene'"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
+            <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="homeMuse = 'natsume'"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
           </div>
         </div>
         <aside class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
-        <div class="hero-watermark" aria-hidden="true">ATELIER</div>
-        <!-- 2026-08-15：Hero 粒子场已移除——角色立绘（同层后绘制、52%+52% 拼满）完全盖住粒子，
-             右下角 caption 亦不可见，保留纯属空耗 GPU。 -->
-        <!-- width/height 是内在尺寸（实测 1024×1344），用来预留版位避免布局抖动；
-             CSS 仍然控制显示尺寸。这两张是首屏 LCP 候选，故不 lazy 且给高优先级。 -->
-        <picture>
-          <img
-            class="hero-character nene"
-            :src="heroAssets.nene"
-            alt="绫地宁宁"
-            width="1024"
-            height="1344"
-            sizes="(max-width: 768px) 100vw, 42vw"
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-          />
-        </picture>
-        <picture>
-          <img
-            class="hero-character natsume"
-            :src="heroAssets.natsume"
-            alt="四季夏目"
-            width="1024"
-            height="1344"
-            sizes="(max-width: 768px) 100vw, 42vw"
-            loading="eager"
-            decoding="async"
-          />
-        </picture>
-          <div class="orbit-label"><strong>NENE × NATSUME</strong><span>把今天的心动，收进画面。</span></div>
+          <img class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :src="heroAssets.nene" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" />
+          <img class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :src="heroAssets.natsume" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1344" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" />
+          <div class="orbit-label" aria-live="polite"><span>{{ homeMuse === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ homeMuse === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
-
-      </div>
-    </section>
-
-    <!-- 创作入口 -->
-    <section class="container home-section" data-reveal>
-      <div class="home-section-head">
-        <div>
-          <span class="eyebrow">THE STUDIO / 创作日常</span>
-          <h2>今天，想创作些什么？</h2>
-          <p class="hint">从画一张图，到讲一个故事。让灵感有个去处。</p>
-        </div>
-      </div>
-      <div class="tools-grid">
-        <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">01 / MAKE</span>
-          <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
-          <span class="d">调和镜头、光影与克制的情绪，将心动一瞬定格为专属 CG。</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">02 / SCENE</span>
-          <span class="ic"><ArchiveIcon name="scene" /></span><span class="t">灵感场景</span>
-          <span class="d">{{ sceneLibraryCopy }}</span>
-          <span class="go">→ 打开</span>
-        </RouterLink>
-        <RouterLink to="/video-studio" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">03 / MOTION</span>
-          <span class="ic"><ArchiveIcon name="play" /></span><span class="t">AI 视频创作</span>
-          <span class="d">让静止的画面，成为一段会呼吸的故事。</span>
-          <span class="go">→ 开始创作</span>
-        </RouterLink>
-        <RouterLink to="/chat" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">04 / ROOM</span>
-          <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
-          <span class="d">与宁宁或夏目静享片刻独白，全流程本地语音温情陪伴。</span>
-          <span class="go">→ 进入房间</span>
-        </RouterLink>
-        <!-- 宽屏下第 5 张卡拉通为横幅入口，避免 4+1 网格出现孤行 -->
-        <RouterLink to="/showcase" class="tool-card card-create card-level-2 tool-card-banner">
-          <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
-          <span class="ic"><ArchiveIcon name="image" /></span>
-          <span class="banner-copy"><span class="t">效果样张</span><span class="d">经人工细致复核的定稿画册，凝结帧帧动人的画面叙事。</span></span>
-          <span class="go">→ 浏览完整画册</span>
-        </RouterLink>
+        <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
       </div>
     </section>
 
@@ -145,6 +67,50 @@
             </RouterLink>
           </div>
         </div>
+    </section>
+
+    <!-- 创作入口 -->
+    <section class="container home-section" data-reveal>
+      <div class="home-section-head">
+        <div>
+          <span class="eyebrow">创作，从一个念头开始</span>
+          <h2>今天，想创作些什么？</h2>
+          <p class="hint">从画一张图，到讲一个故事。让灵感有个去处。</p>
+        </div>
+      </div>
+      <div class="tools-grid">
+        <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">01 / MAKE</span>
+          <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
+          <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
+          <span class="go">→ 打开</span>
+        </RouterLink>
+        <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">02 / SCENE</span>
+          <span class="ic"><ArchiveIcon name="scene" /></span><span class="t">灵感场景</span>
+          <span class="d">{{ sceneLibraryCopy }}</span>
+          <span class="go">→ 打开</span>
+        </RouterLink>
+        <RouterLink to="/video-studio" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">03 / MOTION</span>
+          <span class="ic"><ArchiveIcon name="play" /></span><span class="t">故事短片</span>
+          <span class="d">让静止的画面，成为一段会呼吸的故事。</span>
+          <span class="go">→ 开始创作</span>
+        </RouterLink>
+        <RouterLink to="/chat" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">04 / ROOM</span>
+          <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
+          <span class="d">与宁宁或夏目静享片刻独白，聊聊今天的心情。</span>
+          <span class="go">→ 进入房间</span>
+        </RouterLink>
+        <!-- 宽屏下第 5 张卡拉通为横幅入口，避免 4+1 网格出现孤行 -->
+        <RouterLink to="/showcase" class="tool-card card-create card-level-2 tool-card-banner">
+          <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
+          <span class="ic"><ArchiveIcon name="image" /></span>
+          <span class="banner-copy"><span class="t">效果样张</span><span class="d">翻阅角色与场景的定稿样张，找到下一张画的灵感。</span></span>
+          <span class="go">→ 浏览完整画册</span>
+        </RouterLink>
+      </div>
     </section>
 
     <!-- 资料区 -->
@@ -273,6 +239,7 @@ const recentScenes = ref<HomeScene[]>([])
 const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
+const homeMuse = ref<'nene' | 'natsume'>('nene')
 const heroAssets = reactive({
   nene: '/assets/characters/nene-home-cg-1024.webp',
   natsume: '/assets/characters/natsume-home-cg-1024.webp',

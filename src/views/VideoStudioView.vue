@@ -14,7 +14,7 @@
         <div class="page-kicker">Local AI Video</div>
         <h1 class="page-title">AI 视频创作</h1>
         <p class="page-subtitle">
-          描述一段动态镜头的叙事意图，工坊将自动调度稳定的本地视频工作流。复杂参数与推理链路尽归后台，留给您最纯粹的导演视界。
+          从一张画面或一段描述开始，让角色的故事继续。选择创作方式，再准备镜头与首帧。
         </p>
       </div>
       <button class="btn btn-ghost" type="button" :disabled="statusLoading" @click="loadStatus">

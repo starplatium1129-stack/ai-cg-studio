@@ -1,7 +1,7 @@
 ---
 version: "alpha"
 name: "Lingji Atelier"
-description: "A sweet, image-first Galgame creation desk for Ayachi Nene and Shiki Natsume."
+description: "A character-led Galgame atelier with the clarity, materials, and interaction discipline of Apple design."
 colors:
   primary: "#F4A7C1"
   on-primary: "#120C1A"
@@ -13,7 +13,7 @@ colors:
   surface: "#1E2029"
   surface-elevated: "#282B36"
   text-primary: "#FFF7FC"
-  text-secondary: "#C8BED6"
+  text-secondary: "#C8C7D2"
   success: "#81C784"
   warning: "#FFA726"
   danger: "#FF9B8F"
@@ -29,27 +29,27 @@ colors:
   #   nene→--nene-violet, natsume→--natsume-amber。tertiary 为历史语义色无直接对应。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
   disabled-text: "#A6A9BC"
-  nene: "#D8B4FE"
-  natsume: "#F2BB68"
+  nene: "#B784F6"
+  natsume: "#FBB040"
 typography:
   display:
-    fontFamily: "Noto Sans SC, HarmonyOS Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
+    fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
     fontSize: "2.2rem"
     fontWeight: 700
     lineHeight: 1.25
     letterSpacing: "-0.02em"
   heading:
-    fontFamily: "Noto Sans SC, HarmonyOS Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
+    fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
     fontSize: "1.5rem"
     fontWeight: 600
     lineHeight: 1.3
   body:
-    fontFamily: "Noto Sans SC, HarmonyOS Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
+    fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.7
   label:
-    fontFamily: "Noto Sans SC, HarmonyOS Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
+    fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
     fontSize: "0.85rem"
     fontWeight: 600
     lineHeight: 1.4
@@ -69,10 +69,10 @@ spacing:
   4xl: "64px"
 rounded:
   # 2026-09-01: 甜系升级，与 design-system.css --r-* 对齐（大圆角萌系贴纸感）。
-  sm: "10px"
-  md: "14px"
-  lg: "18px"
-  xl: "22px"
+  sm: "8px"
+  md: "10px"
+  lg: "16px"
+  xl: "20px"
   pill: "999px"
 components:
   page-dark:
@@ -147,19 +147,16 @@ artwork, not website UI.
 
 ## Product character
 
-The product has two coordinated voices:
+Anime and Galgame establish the identity: characters, intimate dialogue, artwork,
+and the feeling of entering a story. Apple supplies the discipline: a predictable
+layout, optical spacing, readable typography, quiet materials, and immediate
+feedback. Every surface belongs to this same atelier.
 
-- Narrative surfaces borrow the intimacy and route-specific atmosphere of a
-  polished Galgame: character art, short personal copy, quiet transitions, and
-  scene-first choices.
-- Operational surfaces borrow the clarity of a serious field terminal: service
-  state, queue state, current model, recovery action, and generation decisions
-  are explicit and compact.
-
-Do not copy the visual skin, iconography, naming, or lore of another game.
-Arknights and Endfield are references for information discipline; Yuzusoft is a
-reference for character intimacy. 绫季绘境 must still look and sound like one
-original personal atelier.
+The home opening is a single character scene with a calm reading plane and
+manual Nene/Natsume selection. Scene and character discovery precede the tool
+catalog. Utilities use short labels and progressive disclosure. Status bars
+communicate actual state without decorative radar, arbitrary coordinates, or
+repeated chapter totals. Compact collection headers reserve the space for works.
 
 Ayachi Nene and Shiki Natsume are the primary routes rather than interchangeable
 skins. Empty states, conversation starters, scene discovery, and character
@@ -205,7 +202,8 @@ Chinese text is primary. English labels such as Scene, Prompt, LoRA, Seed, and
 SD WebUI may appear when they are established terms, but must not make an action
 harder to understand.
 
-- Use the sans stack for all interface and reading text.
+- Use the system sans stack for controls and reading. The home opening and short
+  character dialogue may use the serif stack for visual-novel intimacy.
 - Use the mono stack only for prompts, seeds, model names, ports, paths, and
   machine-readable state.
 - Headings are compact and confident, not oversized landing-page slogans.
@@ -269,7 +267,7 @@ Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
 Use `8–10px` radii for inputs and compact controls, `14–20px` for cards and
 sections, and pill shapes only for filters, small status badges, and segmented
 controls. The artwork viewer or main stage may use a larger optical radius (up
-to 24px) when it reads as one continuous frame.
+to 32px) when it reads as one continuous frame.
 
 Do not mix sharp system-tool rectangles, soft consumer-app pills, and oversized
 glass bubbles in the same control group. Icon geometry, border weight, radius,
@@ -277,32 +275,28 @@ and padding must make adjacent controls feel like one family.
 
 ## Anime Visual Language
 
-Established 2026-08-01. This project reads as a blog-style anime atelier: dark
-violet night as the single theme. The
-"anime" feel comes from light layering, sticker-like details, and motion
-rhythm — never from oversaturation (see Colors) or from copying an official
-game site.
+The identity comes from authored character artwork, emotional scene choices,
+short dialogue, and restrained character color. Controls are flat, precise,
+and consistently spaced. Glowing surfaces and stickers are not a substitute
+for character presence.
 
 ### Theme semantics
 
-- The single theme is "night studio": violet-black base, sakura pink accent,
-  star specks and drifting petals as quiet atmosphere.
-- Everything must pass the contrast gate. Disabled controls use the
-  `--text-disabled` token rather than opacity.
-- (2026-08-28) The former "pink-white dream" light theme is retired; see the
-  note under Colors before reinstating it.
+- Dark graphite-violet surfaces remain the only theme.
+- Preserve all per-character director tokens and body aura mappings in
+  src/assets/css/director/tokens.css.
+- Accent colors identify selections, focus, and primary actions. Neutral text
+  remains readable across every character palette.
+- Disabled controls use the text-disabled token directly.
 
-### Decor layers (all fixed, pointer-events: none, aria-hidden)
+### Decor layers
 
-- `body` background: 1px dot grid (24px cell, derived from `--border-strong`)
-  plus two character-color light orbs that float on artistic pages.
-- `.kana-watermark`: vertical kana signature ("あとりえ / ATELIER ARCHIVE") on
-  the right mid-edge; hidden on the director, training, and narrow screens.
-- `.starfield`: sparse pink-violet star specks drifting slowly; must never
-  compete with reading contrast.
-- Sakura petals fall as a foreground layer on artistic pages.
-- New floating decorations must be token-colored, reduced-motion safe, and
-  either hidden or severely dimmed on content-dense pages.
+- Use a restrained static ambient wash and the existing character-aware aura.
+- Foreground petals are reserved for the character room. Home, discovery,
+  collections, and workspaces keep text and controls clear.
+- The global starfield and vertical watermark are retired.
+- Still artwork has no perpetual floating animation. User-triggered character
+  changes crossfade with opacity/transform and respect reduced motion.
 
 ### Sticker & polaroid rules
 
@@ -341,7 +335,7 @@ Shared atelier chrome lives in `src/assets/css/design-system.css`: `.nav-back`,
 `.page-kicker` (aliases `.pb-kicker` / `.gallery-kicker`), `.page-title`,
 `.page-subtitle`, `.page-intro`, `.atelier-shell`, `.sticky-toolbar`,
 `.filter-pill`, and `.empty-state`. Prefer these over page-local copies.
-Director-only layout lives in `css/director.css`.
+Director-only layout lives in `src/assets/css/director/workspace.css`.
 
 ### Buttons
 

@@ -1,6 +1,7 @@
 import type { ArchiveIconDef } from './types.ts'
 
 export const navDefs: Record<string, ArchiveIconDef> = {
+  'chevron-down': { paths: ['M6.2 9.2 Q9 11.7 12 14.5 Q15.2 11.8 17.8 9.1'] },
 // ── 导航（手绘主笔）────────────────────────────────────────────
   scene: {
     paths: [
