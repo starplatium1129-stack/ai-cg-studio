@@ -1,56 +1,31 @@
 import { onMounted, onUnmounted } from 'vue'
 
-/**
- * 为目标元素添加进入视口时的淡入动画
- * 用法：在 .vue 的 onMounted 里调用 useScrollReveal('[data-reveal]')
- */
+/** Reveal content once as it enters the viewport, including late-loading collections. */
 export function useScrollReveal(selector = '[data-reveal]', options?: IntersectionObserverInit) {
   let observer: IntersectionObserver | null = null
+  let mutations: MutationObserver | null = null
+  let media: MediaQueryList | null = null
+  let frame = 0
   const seen = new WeakSet<Element>()
-  // 2026-08-16 审计：延迟重扫的定时器此前不保存、卸载时不清除，高频进出列表页
-  // 每次挂载泄漏最多 3 个待执行定时器。
-  const recheckTimers: number[] = []
-
   function observeAll() {
-    if (!observer) return
     document.querySelectorAll(selector).forEach(el => {
+      if (media?.matches || !observer) { el.classList.add('revealed'); return }
       if (seen.has(el)) return
       seen.add(el)
-      observer!.observe(el)
+      observer.observe(el)
     })
   }
-
+  function schedule() { cancelAnimationFrame(frame); frame = requestAnimationFrame(observeAll) }
   onMounted(() => {
-    // 无 IO 或用户要求减少动效时，直接全部显形，不留隐藏元素
-    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
-    if (typeof IntersectionObserver === 'undefined' || reduced) {
-      document.querySelectorAll(selector).forEach(el => el.classList.add('revealed'))
-      return
-    }
-
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed')
-          observer?.unobserve(entry.target)
-        }
-      })
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px', ...options })
-
+    media = matchMedia('(prefers-reduced-motion: reduce)')
+    if ('IntersectionObserver' in window) observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('revealed'); observer?.unobserve(entry.target) } })
+    }, { threshold: 0.04, rootMargin: '0px 0px -24px 0px', ...options })
+    media.addEventListener('change', observeAll)
+    mutations = new MutationObserver(schedule)
+    mutations.observe(document.querySelector('main') || document.body, { childList: true, subtree: true })
     observeAll()
-    // 场景/作品是异步载入的，首帧观察不到；补几次重扫
-    ;[120, 400, 1200].forEach(delay => {
-      const timer = window.setTimeout(observeAll, delay)
-      recheckTimers.push(timer)
-    })
   })
-
-  onUnmounted(() => {
-    recheckTimers.forEach(timer => window.clearTimeout(timer))
-    recheckTimers.length = 0
-    observer?.disconnect()
-    observer = null
-  })
-
+  onUnmounted(() => { observer?.disconnect(); mutations?.disconnect(); media?.removeEventListener('change', observeAll); cancelAnimationFrame(frame) })
   return { observeAll }
 }

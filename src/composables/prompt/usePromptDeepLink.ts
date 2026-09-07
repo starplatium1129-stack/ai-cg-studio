@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import { getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry, type Scene } from '@/stores/promptBuilderStore'
 import { isCharKey } from '@/composables/scene/useDirectorCatalog'
 import { COLOR_MOODS } from '@/config/promptConstants'
@@ -44,8 +44,16 @@ export interface PromptDeepLinkDeps {
  */
 export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
   const { pb, sdSize, patchAnimaState, showAllBlueprints } = deps
+  let lastHistoryLink = ''
+  let historyRequest = 0
+  if (getCurrentScope()) onScopeDispose(() => { historyRequest += 1 })
+  function historyKey(q: Record<string, unknown>) {
+    const mode = ['remix', 'regen', 'variant'].find(key => typeof q[key] === 'string')
+    return mode ? mode + ':' + q[mode] : ''
+  }
 
   async function applyDeepLink(q: Record<string, unknown>): Promise<boolean> {
+    const request = ++historyRequest
     let handled = false
     const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
     if (scenarioId) {
@@ -102,8 +110,14 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     }
     if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
       const targetId = Number(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
-      const entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
+      let entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
+      if (!entry && Number.isFinite(targetId)) {
+        await pb.loadHistory()
+        if (request !== historyRequest) return handled
+        entry = pb.history.find(h => h.id === targetId)
+      }
       if (entry) {
+        lastHistoryLink = historyKey(q)
         await deps.applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
         if (typeof q.remix === 'string') {
           deps.setDirectorMode('pro')
@@ -125,6 +139,9 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
 
   /** URL 场景参数与当前选中不一致时才需要重放深链（避免覆盖用户手动编辑的状态）。 */
   function deepLinkNeeded(q: Record<string, unknown>): boolean {
+    const history = historyKey(q)
+    if (history) return history !== lastHistoryLink
+    lastHistoryLink = ''
     if (typeof q.popular === 'string') {
       const blueprint = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
       return pb.subject.kind !== 'popular'

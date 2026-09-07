@@ -1,35 +1,17 @@
 <template>
   <article class="page showcase-page">
-    <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
-    <ArchivePageHero
-      class="showcase-archive"
-      chapter="05"
-      section="Approved works"
-      shape="atelier"
-      label="审核样张档案的工作室粒子标记"
-      caption="SHOWCASE 05 / 08"
-    >
-      <div class="showcase-copy">
-        <div class="page-kicker">Approved Scene Gallery</div>
-        <h1>定稿样张 · Verified Showcase</h1>
-        <p>每一幅皆由当前前沿模型组合实机生成、并经人工细致复核甄选。先赏定稿成片，再赴心动创作。</p>
-        <div class="hero-actions">
-          <button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机翻一张</button>
-          <RouterLink class="btn btn-ghost" to="/scene-explorer">去灵感场景</RouterLink>
-        </div>
-        <div class="hero-stats">
-          <div class="hero-stat"><strong>{{ stats.total }}</strong><span>审核通过样张</span></div>
-          <div class="hero-stat"><strong>{{ stats.safe }}</strong><span>全年龄</span></div>
-          <div class="hero-stat"><strong>{{ stats.r15 }}</strong><span>R15</span></div>
-        </div>
+    <header class="showcase-heading">
+      <div><div class="page-kicker">CG COLLECTION / 二次元画册</div><h1>把心动，一页页收藏。</h1><p>角色的一个回眸，故事的一束光。慢慢翻，总有一幅让你停留。</p>
+        <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
       </div>
-    </ArchivePageHero>
+      <div class="collection-count"><strong>{{ stats.total }}</strong><span>幅角色与场景 CG</span></div>
+    </header>
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row">
         <div class="search-field">
-          <input v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" placeholder="搜索场景、情绪、角色或关键词…" />
-          <button class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery=''">×</button>
+          <input v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" aria-label="搜索画册" @keydown.esc.prevent="searchQuery = ''" placeholder="搜索场景、情绪、角色或关键词…" />
+          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery=''">×</button>
         </div>
         <div class="filter-group">
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
@@ -48,12 +30,14 @@
         <div class="filter-group">
           <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
         </div>
-        <span class="result-meta" id="resultMeta">
+        <button v-if="hasFilters" class="filter-pill" type="button" @click="resetFilters">清除筛选</button>
+        <span class="result-meta" id="resultMeta" role="status">
           显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊
         </span>
       </div>
     </div>
 
+    <p v-if="reloadError && !unavailable" role="status">{{ reloadError }}</p>
     <ArchiveStatePanel
       v-if="unavailable"
       class="empty empty-block"
@@ -61,7 +45,8 @@
       title="展示素材暂未连接"
       message="重新启动控制面板后会自动连接 AI/SceneShowcase 中最新的审核展示集。"
     >
-      <RouterLink class="btn btn-primary" to="/scene-explorer">先逛灵感场景</RouterLink>
+      <button class="btn btn-primary" type="button" @click="loadManifest">重新读取样张</button>
+      <RouterLink class="btn btn-ghost" to="/scene-explorer">先逛灵感场景</RouterLink>
     </ArchiveStatePanel>
 
     <ArchiveStatePanel
@@ -105,8 +90,8 @@
           </span>
           <span class="sample-caption">
             <span class="sample-kicker">
-              <span>{{ entry.id }} · {{ charLabel(entry.char) }}</span>
-              <span><ArchiveIcon name="success" /> {{ entry.attempt }} 次通过</span>
+              <span>{{ charLabel(entry.char) }}</span>
+
             </span>
             <strong class="sample-title">{{ entry.title }}</strong>
           </span>
@@ -124,6 +109,7 @@
            设 open 属性只是非模态 dialog —— 没有 top layer、没有 ::backdrop、
            背景不 inert，Tab 能直接跑到下面的网格里 -->
       <dialog ref="dialogEl" class="showcase-viewer" aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
+        <button class="viewer-close viewer-close-on-art" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
         <div v-if="currentEntry" class="viewer-layout">
           <div class="viewer-art">
             <ZoomableImageViewer
@@ -138,29 +124,27 @@
             </ZoomableImageViewer>
           </div>
           <div class="viewer-copy">
-            <button class="viewer-close" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer"><ArchiveIcon name="close" /></button>
-            <div class="viewer-kicker">Artwork</div>
+            <div class="viewer-kicker">画中一刻 / CG JOURNAL</div>
             <h2>{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
               <span>{{ currentEntry.id }}</span>
               <span>{{ charLabel(currentEntry.char) }}</span>
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
-              <span><ArchiveIcon name="success" /> {{ currentEntry.attempt }} 次通过</span>
             </div>
-            <div v-if="currentEntry.meta" class="viewer-meta viewer-meta-gen">
+            <details v-if="currentEntry.meta" class="viewer-production"><summary>创作参数</summary><div class="viewer-meta viewer-meta-gen">
               <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
               <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
               <span v-if="currentEntry.meta.model">模型 {{ currentEntry.meta.model }}</span>
               <span v-if="currentEntry.meta.loraId">LoRA {{ currentEntry.meta.loraId }}<template v-if="currentEntry.meta.loraVersion"> · v{{ currentEntry.meta.loraVersion }}</template></span>
               <span v-if="currentEntry.meta.seed !== undefined">Seed {{ currentEntry.meta.seed }}</span>
             </div>
+            </details>
             <div class="viewer-story">{{ currentEntry.story }}</div>
             <div class="viewer-actions">
-              <RouterLink v-if="currentEntry.type === 'scene'" class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'"><ArchiveIcon name="spark" /> 画这个场景</RouterLink>
-              <RouterLink v-else class="btn btn-primary" :to="'/prompt-builder'"><ArchiveIcon name="spark" /> 去导演台创作</RouterLink>
-              <button class="btn btn-ghost" type="button" title="上一张 (键盘 ←)" @click="move(-1)">← <kbd>←</kbd></button>
-              <button class="btn btn-ghost" type="button" title="下一张 (键盘 →)" @click="move(1)"><kbd>→</kbd> →</button>
+              <RouterLink v-if="workspaceTarget" class="btn btn-primary" :to="workspaceTarget.to" :title="workspaceTarget.hint"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
+              <span class="viewer-position" aria-live="polite">{{ currentIdx + 1 }} / {{ filtered.length }} · 方向键切换，Esc 关闭</span>
+              <div class="viewer-paging"><button class="btn btn-ghost" type="button" aria-label="上一张" @click="move(-1)">← 上一张</button><button class="btn btn-ghost" type="button" aria-label="下一张" @click="move(1)">下一张 →</button></div>
             </div>
           </div>
         </div>
@@ -170,9 +154,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
-import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { showcaseDestination } from '@/utils/showcaseDestination'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
@@ -185,6 +170,8 @@ import {
 } from '@/utils/showcaseManifest'
 
 const sceneStore = useSceneStore()
+const route = useRoute()
+const router = useRouter()
 useScrollReveal()
 
 const PAGE_SIZE = 24
@@ -224,9 +211,12 @@ function markThumbLoaded(entry: ShowcaseEntry) {
   }
 }
 const viewerVersion = ref(0)
-const imgVersion = Date.now()
+const imgVersion = ref(Date.now())
+const reloadError = ref('')
+let manifestRevision = 0
 const manifestController = new AbortController()
 let unmounted = false
+let viewActive = true
 
 // Reset visible count whenever filters change
 watch([searchQuery, scope, typeFilter, charFilter, ratingFilter], () => { visibleCount.value = PAGE_SIZE })
@@ -235,21 +225,19 @@ watch(typeFilter, () => { charFilter.value = 'all' })
 function norm(s: string) { return String(s||'').trim().toLocaleLowerCase('zh-CN') }
 function ratingLabel(v: string) { return LABELS[v] || v || '未分级' }
 function typeLabel(v: string) { return TYPE_LABELS[v] || '场景' }
-function charLabel(v: string) {
-  if (LABELS[v]) return LABELS[v]
-  if (v) {
-    const hit = entries.value.find(entry => entry.char === v && entry.displayName)
-    if (hit?.displayName) return hit.displayName
-    const popChar = sceneStore.popularCharacters.find(c => c.id === v)
-    if (popChar?.displayName) return popChar.displayName
-  }
-  return v || '角色'
-}
+const characterLabels = computed(() => {
+  const labels = new Map(sceneStore.popularCharacters.map(character => [character.id, character.displayName]))
+  for (const entry of entries.value) if (entry.displayName && !labels.has(entry.char)) labels.set(entry.char, entry.displayName)
+  return labels
+})
+function charLabel(value: string) { return LABELS[value] || characterLabels.value.get(value) || value || '角色' }
+const searchIndex = computed(() => new Map(entries.value.map(entry => [entry.id, norm([entry.id, entry.title, entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' '))])))
+const hasFilters = computed(() => Boolean(searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
 function thumbSrc(entry: ShowcaseEntry) {
-  return entry.thumb ? `/scene-showcase/${entry.thumb}?cv=${imgVersion}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}`
+  return entry.thumb ? `/scene-showcase/${entry.thumb}?cv=${imgVersion.value}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}`
 }
 function imgSrc(entry: ShowcaseEntry) {
-  return entry.image ? `/scene-showcase/${entry.image}?cv=${imgVersion}&v=${viewerVersion.value}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}&v=${viewerVersion.value}`
+  return entry.image ? `/scene-showcase/${entry.image}?cv=${imgVersion.value}&v=${viewerVersion.value}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion.value}&v=${viewerVersion.value}`
 }
 function markThumbError(entry: ShowcaseEntry) {
   brokenThumbs.value = new Set([...brokenThumbs.value, entry.id])
@@ -285,20 +273,47 @@ const allCharOptions = computed<{ v: string; l: string }[]>(() => {
 
 const filtered = computed(() => {
   const term = norm(searchQuery.value)
-  return entries.value.filter(e => {
+  const matches = entries.value.filter(e => {
     if (scope.value === 'featured' && !featured.value.has(e.id)) return false
     if (typeFilter.value !== 'all' && e.type !== typeFilter.value) return false
     if (charFilter.value !== 'all' && e.char !== charFilter.value) return false
     if (ratingFilter.value !== 'all' && e.rating !== ratingFilter.value) return false
-    return !term || norm([e.id, e.title, e.story, e.category, e.displayName || '', charLabel(e.char), ratingLabel(e.rating), typeLabel(e.type)].join(' ')).includes(term)
+    return !term || searchIndex.value.get(e.id)?.includes(term)
   })
+  if (!term) return matches
+  const relevance = (entry: ShowcaseEntry) => norm(entry.title) === term ? 3 : norm(entry.title).includes(term) ? 2 : norm(entry.id).includes(term) ? 1 : 0
+  return matches.sort((a, b) => relevance(b) - relevance(a))
 })
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
 const currentIdx = computed(() => filtered.value.findIndex(e => e.id === currentId.value))
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
+const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) { currentId.value = id }
-function closeViewer() { currentId.value = '' }
+function openLinkedScene() {
+  if (!viewActive || route.path !== '/showcase') return
+  const id = route.query.scene
+  if (typeof id === 'string' && entries.value.some(entry => entry.id === id && entry.rating !== 'R18')) currentId.value = id
+}
+watch(() => route.query.scene, openLinkedScene)
+let viewerAnimation: Animation | undefined
+let closingViewer = false
+function clearLinkedScene() {
+  if (route.path !== '/showcase') return
+  if (typeof route.query.scene !== 'string') return
+  const query = { ...route.query }
+  delete query.scene
+  void router.replace({ query })
+}
+function closeViewer() {
+  if (closingViewer) return
+  const dialog = dialogEl.value
+  if (!dialog || matchMedia('(prefers-reduced-motion: reduce)').matches) { currentId.value = ''; clearLinkedScene(); return }
+  closingViewer = true
+  viewerAnimation?.cancel()
+  viewerAnimation = dialog.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 170, easing: 'ease-out' })
+  viewerAnimation.onfinish = () => { currentId.value = ''; closingViewer = false; clearLinkedScene() }
+}
 
 /**
  * 真模态由浏览器负责：showModal() 给我们 top layer、inert 背景、
@@ -306,12 +321,13 @@ function closeViewer() { currentId.value = '' }
  */
 watch(currentEntry, (entry) => {
   const dialog = dialogEl.value
-  if (!dialog) return
+  if (!dialog || !viewActive || route.path !== '/showcase') return
   if (entry && !dialog.open) {
     viewerImageFailed.value = false
     viewerImageReady.value = false
     viewerVersion.value = Date.now()
     dialog.showModal()
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) viewerAnimation = dialog.animate([{ opacity: 0, transform: 'translateY(18px) scale(.965)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.22,1,.36,1)' })
     document.body.classList.add('overlay-open')
   } else if (entry) {
     viewerImageFailed.value = false
@@ -337,15 +353,17 @@ function openRandom() {
 function resetFilters() { searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
 
 function onKey(e: KeyboardEvent) {
-  if (!currentEntry.value) return
+  if (!currentEntry.value || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return
+  if (e.target instanceof Element && e.target.closest('input,textarea,select,[contenteditable="true"]')) return
   if (e.key === 'ArrowLeft') move(-1)
   if (e.key === 'ArrowRight') move(1)
   // Escape 交给 <dialog> 原生处理（@cancel），这里不再重复
 }
 
-onMounted(async () => {
-  unmounted = false
-  document.addEventListener('keydown', onKey)
+async function loadManifest() {
+  const revision = ++manifestRevision
+  reloadError.value = ''
+  unavailable.value = false
   manifestLoading.value = true
   try {
     // manifest 是样张目录（非 data/），仍单独取；curation 走共享 store
@@ -353,11 +371,15 @@ onMounted(async () => {
       fetch('/scene-showcase/manifest.json', { cache: 'no-cache', signal: manifestController.signal }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
       sceneStore.load().catch(() => {})
     ])
-    if (unmounted) return
+    if (unmounted || revision !== manifestRevision) return
     manifestLoading.value = false
+    imgVersion.value = Date.now()
+    loadedThumbs.value = new Set()
+    brokenThumbs.value = new Set()
     const parsed = parseShowcaseManifest(manifest)
     const curation = sceneStore.curation
     entries.value = parsed.entries
+    openLinkedScene()
     featured.value = new Set([...(curation.signatureSceneIds ?? []), ...(curation.curatedSceneIds ?? [])])
     stats.value = {
       total: String(parsed.entries.length),
@@ -365,11 +387,29 @@ onMounted(async () => {
       r15: String(parsed.counts.R15)
     }
   } catch (err) {
-    if (manifestController.signal.aborted) return
+    if (manifestController.signal.aborted || revision !== manifestRevision) return
     console.warn('Showcase unavailable:', err)
     manifestLoading.value = false
-    unavailable.value = true
+    unavailable.value = entries.value.length === 0
+    reloadError.value = '暂时无法读取样张目录，请确认媒体磁盘已连接后重试。'
   }
+}
+
+onActivated(() => { viewActive = true; document.addEventListener('keydown', onKey); if (entries.value.length) openLinkedScene(); if (loadSentinel.value) sentinelObserver?.observe(loadSentinel.value) })
+onDeactivated(() => {
+  viewActive = false
+  document.removeEventListener('keydown', onKey)
+  sentinelObserver?.disconnect()
+  viewerAnimation?.cancel()
+  closingViewer = false
+  currentId.value = ''
+  if (dialogEl.value?.open) dialogEl.value.close()
+  document.body.classList.remove('overlay-open')
+})
+onMounted(async () => {
+  unmounted = false
+  document.addEventListener('keydown', onKey)
+  await loadManifest()
   // 无限滚动：哨兵进入视口（提前 600px 预载）即自动追加一页，直到全部加载完
   if ('IntersectionObserver' in window) {
     sentinelObserver = new IntersectionObserver(
@@ -383,6 +423,7 @@ onMounted(async () => {
 })
 onUnmounted(() => {
   unmounted = true
+  viewerAnimation?.cancel()
   sentinelObserver?.disconnect()
   sentinelObserver = null
   manifestController.abort()
@@ -393,24 +434,29 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.showcase-heading { display: flex; justify-content: space-between; align-items: center; gap: var(--s-7); padding-block: var(--s-5) var(--s-7); }
+.showcase-heading h1 { font: 500 clamp(2rem, 3.8vw, 3rem)/1.35 var(--font-serif); margin-block: var(--s-4); }
+.showcase-heading p { color: var(--text-muted); }
+.collection-count { display: grid; gap: var(--s-2); text-align: right; flex-shrink: 0; }
+.collection-count strong { font: 300 clamp(2rem, 4vw, 3.5rem)/1 var(--font-display); letter-spacing: -.05em; }
+.collection-count span { font-size: var(--fs-label); color: var(--text-muted); }
+.viewer-position { font-size: var(--fs-label-xs); color: var(--text-muted); text-align: center; }
+.viewer-paging { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+.viewer-production { padding-block: var(--s-3); border-block: 1px solid var(--border-soft); margin-block: var(--s-4); color: var(--text-muted); font-size: var(--fs-label); }
+.viewer-production summary { cursor: pointer; min-height: 32px; }
+@media (max-width: 600px) { .showcase-heading { align-items: start; flex-direction: column; gap: var(--s-4); } .collection-count { display: flex; align-items: baseline; gap: var(--s-3); text-align: left; } }
+
 /* 空状态:替代原先的内联 padding/text-align/font-size */
 .empty-block { padding:var(--s-8) 0; text-align:center; }
 .empty-glyph { font-size:var(--fs-glyph); }
-.showcase-archive { margin-bottom:var(--s-5); }
-.showcase-copy h1 { font-size:clamp(1.6rem,3vw,2.8rem); font-weight:800; margin-bottom:var(--s-3); }
-.showcase-copy p { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-loose); margin-bottom:var(--s-4); }
 .hero-actions { display:flex; gap:var(--s-2); flex-wrap:wrap; margin-bottom:var(--s-4); }
-.hero-stats { display:flex; gap:var(--s-3); flex-wrap:wrap; }
-.hero-stat { min-width:100px; padding:var(--s-3) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); text-align:center; }
-.hero-stat strong { display:block; font-size:var(--fs-title-xs); font-weight:800; color:var(--accent); }
-.hero-stat span { font-size:var(--fs-label-xs); color:var(--text-muted); }
 
 /* 唯一一层磨砂容器：不要再和内部 .search-row 各套一个圆角面 */
 .toolbar-shell {
   position:sticky; top:70px; z-index:var(--z-sticky);
   margin-bottom:var(--s-5); padding:var(--s-3);
   border:1px solid color-mix(in srgb,var(--border-soft) 80%,transparent);
-  border-left:3px solid var(--archive-blue); border-radius:var(--r-dossier);
+  border-radius:var(--r-lg);
   background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
   box-shadow:var(--shadow-sm);
   -webkit-backdrop-filter:blur(22px) saturate(135%);
@@ -422,10 +468,10 @@ onUnmounted(() => {
 .scene-search:focus { border-color:var(--accent); }
 .scene-search-clear { position:absolute; top:50%; right:8px; transform:translateY(-50%); width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
 .filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; align-items:center; }
-.filter-dropdowns { display:flex; gap:var(--s-2); align-items:center; }
+.filter-dropdowns { display:grid; grid-template-columns:minmax(100px,.6fr) minmax(0,1fr); flex:1 1 300px; min-width:0; gap:var(--s-2); align-items:center; }
 .filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
 .filter-pill.active,.filter-pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
-.filter-select { max-width:100%; height:32px; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; transition:border-color var(--motion-hover),color var(--motion-hover); }
+.filter-select { width:100%; min-width:0; max-width:100%; height:32px; padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; transition:border-color var(--motion-hover),color var(--motion-hover); }
 .filter-select:hover { border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); }
 .filter-select:focus { border-color:var(--accent); color:var(--text-primary); }
 .result-meta { margin-left:auto; color:var(--text-muted); font-size:var(--fs-label-sm); white-space:nowrap; }
@@ -480,7 +526,10 @@ onUnmounted(() => {
 
 @media(max-width:1000px) { .showcase-grid { grid-template-columns:repeat(3, minmax(0,1fr)); } }
 @media(max-width: 768px) {
-  .search-row { flex-direction:column; align-items:stretch; }
+  .search-row { flex-direction:column; align-items:stretch; min-width:0; }
+  .search-field, .filter-dropdowns { flex:none; width:100%; }
+  .filter-group { min-width:0; }
+  .result-meta { margin-left:0; }
   .toolbar-shell { position:relative; top:auto; }
   .result-meta { white-space:normal; }
   .showcase-grid { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
@@ -501,11 +550,12 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
 }
 .showcase-viewer:not([open]) { display: none; }
+.showcase-viewer > .viewer-close { position:absolute; top:var(--s-4); right:var(--s-4); z-index:var(--z-raised); }
 .showcase-viewer .viewer-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
   width: min(1160px, 96vw);
-  max-height: min(92vh, 900px);
+  height: min(92dvh, 900px);
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--on-art-line) 42%, transparent);
   border-radius: var(--r-stage);
@@ -520,6 +570,8 @@ onUnmounted(() => {
   padding: clamp(16px, 3vw, 40px);
   background: radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, var(--accent-glow) 20%, transparent), transparent 60%), var(--art-backdrop);
 }
+.showcase-viewer .viewer-art :deep(.zoomable-img) { max-height: 100%; }
+.showcase-viewer .viewer-art :deep(.zoom-transform-layer) { height: 100%; width: 100%; }
 .showcase-viewer .viewer-art img {
   display: block; max-width: 100%; max-height: min(88vh, 860px);
   width: auto; height: auto; object-fit: contain; border-radius: var(--r-lg);

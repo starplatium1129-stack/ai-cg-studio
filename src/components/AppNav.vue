@@ -8,6 +8,7 @@
       </RouterLink>
 
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }">
+        <AnimatedSelection target=":scope > a.active" />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
           v-for="item in primaryNav"
@@ -40,6 +41,7 @@
                 <span>{{ item.label }}</span>
               </RouterLink>
             </template>
+            <button class="nav-help" type="button" @click="openGuide">初次来访 · 使用指南</button>
           </div>
         </details>
 
@@ -79,6 +81,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
+import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { openGlobalSearch } from '@/composables/useGlobalSearch'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 
@@ -95,18 +98,18 @@ interface NavItem {
 }
 
 const primaryNav: NavItem[] = [
+  { id: 'showcase', label: 'CG 画册', to: '/showcase', icon: 'image' },
+  { id: 'popular-scenes', label: '角色', to: '/popular-scenes', icon: 'character' },
   { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
   { id: 'director', label: '绘制',   to: '/prompt-builder', icon: 'spark' },
-  { id: 'video',    label: '视频',   to: '/video-studio',   icon: 'play' },
   { id: 'chat',     label: '房间',   to: '/chat',           icon: 'chat' },
-  { id: 'gallery',  label: '作品册', to: '/gallery',        icon: 'gallery' },
 ]
 const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
   {
     heading: '发现',
     items: [
-      { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'star' },
-      { id: 'showcase', label: '效果样张', to: '/showcase',       icon: 'image' },
+      { id: 'gallery', label: '作品册', to: '/gallery', icon: 'gallery' },
+      { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
       { id: 'character', label: '角色档案', to: '/character',    icon: 'character' },
     ],
   },
@@ -151,6 +154,8 @@ function toggleMenu() { menuOpen.value = !menuOpen.value }
  * 唤起全局搜索。面板由 App.vue 挂在路由之外，与导航没有父子关系，
  * 走 useGlobalSearch 单例通道；传 'pointer' 是为了让面板按鼠标来源定位焦点。
  */
+function openGuide() { closeMenu(); window.dispatchEvent(new Event('atelier:welcome')) }
+
 function openSearch() {
   openGlobalSearch('pointer')
 }
@@ -175,6 +180,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.nav-help { grid-column: 1 / -1; padding: var(--s-3); margin-top: var(--s-2); border: 0; border-top: 1px solid var(--border-soft); background: transparent; color: var(--text-muted); text-align: left; font: inherit; font-size: var(--fs-label); cursor: pointer; }
+
 /* logo.svg 是 236×48 的完整字标（图形 + 绫季绘境），
    只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */
 .nav-logo {

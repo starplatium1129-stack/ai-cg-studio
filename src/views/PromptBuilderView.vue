@@ -10,7 +10,6 @@
       'character-shifting': characterShifting,
     }"
   >
-    <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
 
     <WorkspaceArchiveBar
       chapter="01"
@@ -23,7 +22,6 @@
 
     <div class="pb-topline">
       <div class="pb-header">
-        <div class="pb-kicker">Nene &amp; Natsume Private Atelier</div>
         <h1 class="pb-title">开始绘制</h1>
         <p class="pb-sub">{{ modeDescription }}</p>
       </div>
@@ -82,7 +80,7 @@
 
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
       <div class="director-col col-left" id="drawing-materials">
-        <DirectorMaterialDrawer :expert="pb.directorMode === 'pro'">
+        <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
         <template #story>
 
         <DirectorStoryPanel />
@@ -153,7 +151,7 @@
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
           @openInpaint="inpaintOpen = true"
-          @exploreScenes="router.push('/scene-explorer')"
+          @exploreScenes="materialDrawer?.selectSection('scenes')"
           @update:inpaintCompareActive="inpaintCompareActive = $event"
           @upscale="upscaleCurrentResult"
           @goVideo="goToVideo"
@@ -299,7 +297,7 @@
               class="btn btn-ghost"
               type="button"
               :disabled="generationBusy || batchRunning"
-              :title="generationBusy ? BUSY_HINT : (batchRunning ? '批量任务正在跑，等它出完' : '多选场景蓝图或同词条多角色漫游，成片在面板里直接预览挑选，全部自动入册历史')"
+              :title="generationBusy ? BUSY_HINT : (batchRunning ? '批量任务进行中' : '批量选择场景或角色，生成后预览成片并自动入册')"
               @click="batchOpen = true"
             >批量出图 · 场景 / 多角色</button>
             <span v-if="shotsPending" class="batch-entry-count">
@@ -417,7 +415,8 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import DirectorMaterialDrawer from '@/components/director/DirectorMaterialDrawer.vue'
+const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/director/DirectorMaterialDrawer.vue'))
+const materialDrawer = ref<InstanceType<typeof DirectorMaterialDrawer> | null>(null)
 import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from 'vue'
 import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router'
 import {
@@ -1016,7 +1015,7 @@ function resetSdParams() {
  *
  * 同样的文案在 DirectorStagePanel 里也有一份，改动时记得两边一起改。
  */
-const BUSY_HINT = '生成中，等这一张出完就能用'
+const BUSY_HINT = '生成中，请稍候'
 
 /**
  * 引擎按钮的悬停说明：优先讲「为什么点不了」。
@@ -1028,15 +1027,13 @@ function engineTitle(engine: DrawEngine) {
   if (generationBusy.value) return BUSY_HINT
   if (engine === 'sd') return pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined
   if (!pb.isPopular && !supportsDualCharacter(engine)) {
-    return engine === 'anima'
-      ? '双人模式不支持 Anima，请使用 SD 引擎'
-      : 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎'
+    return '双人模式请使用 SD 引擎'
   }
   return undefined
 }
 
 const generateBlockReason = computed(() => {
-  if (!livePrompt.value) return '先选一个场景，或写点故事，我才知道要画什么'
+  if (!livePrompt.value) return '先选择场景或填写故事'
   if (pb.isPopular && drawEngine.value === 'sd') return '热门角色请切到 Anima 或 Krea 2'
   return ''
 })

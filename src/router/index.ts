@@ -60,6 +60,7 @@ const router = createRouter({
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
+    if (to.path === from.path && !to.hash && !from.hash) return false
     if (to.hash) return { el: to.hash, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }
     return { top: 0 }
   }

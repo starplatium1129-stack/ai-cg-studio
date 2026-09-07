@@ -83,12 +83,12 @@
                 :aria-pressed="current?.id === c.id" @click="selectCharacter(c.id)">
                 <span class="cb-avatar">
                   <img v-if="c.portrait?.image && !brokenPortraits.has(c.id)"
-                    :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async"
-                    @error="markPortraitBroken(c.id)" />
+                    :src="avatarSrc(c)" :alt="c.name" loading="lazy" decoding="async"
+                    @error="onAvatarError(c)" />
                   <span v-else class="cb-avatar-fallback" :style="{ '--avatar-a': avatarGradient(c.id)[0], '--avatar-b': avatarGradient(c.id)[1] }">{{ c.name.charAt(0) }}</span>
                 </span>
                 <span class="cb-name">{{ c.name }}</span>
-                <span v-if="group.merged" class="cb-original">{{ franchiseLabel(c.source) }}</span>
+                <span v-if="group.merged" class="cb-original">{{ franchiseLabel(franchiseKey(c.source)) }}</span>
               </button>
             </div>
           </section>
@@ -119,8 +119,8 @@
             :src="current.portrait.image" :alt="current.portrait.alt || current.name"
             loading="eager" decoding="async"
             @error="markPortraitBroken(current.id)" />
-          <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> 官方角色立绘</span>
-          <span class="portrait-source">{{ current.source }}</span>
+          <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> {{ isPopular ? '角色场景样张' : '角色立绘' }}</span>
+          <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
         </div>
         <div>
           <h2 class="character-name">{{ current.name }}</h2>
@@ -331,7 +331,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
-import { franchiseLabel } from '@/utils/franchiseLabel'
+import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 import {
@@ -361,12 +361,12 @@ const keyword = computed(() => search.value.trim().toLowerCase())
 const filtered = computed(() => {
   if (keyword.value) {
     return characters.value.filter(c =>
-      [c.name, ...(c.alias || []), String(c.source || '')]
+      [c.name, ...(c.alias || []), String(c.source || ''), franchiseLabel(franchiseKey(c.source)), franchiseKey(c.source)]
         .some(text => text.toLowerCase().includes(keyword.value)),
     )
   }
   if (activeFranchise.value) {
-    return characters.value.filter(c => c.source === activeFranchise.value)
+    return characters.value.filter(c => franchiseKey(c.source) === activeFranchise.value)
   }
   return characters.value
 })
@@ -374,7 +374,8 @@ const filtered = computed(() => {
 const franchises = computed(() => {
   const seen = new Map<string, number>()
   for (const c of characters.value) {
-    seen.set(c.source, (seen.get(c.source) ?? 0) + 1)
+    const key = franchiseKey(c.source)
+    seen.set(key, (seen.get(key) ?? 0) + 1)
   }
   return [...seen.entries()]
     .map(([source, count]) => ({ source, label: franchiseLabel(source), count }))
@@ -401,7 +402,7 @@ const grouped = computed<CharacterGroup[] | null>(() => {
   const groups: CharacterGroup[] = []
   const minor: CharacterProfile[] = []
   for (const f of franchises.value) {
-    const members = characters.value.filter(c => c.source === f.source)
+    const members = characters.value.filter(c => franchiseKey(c.source) === f.source)
     if (!members.length) continue
     if (members.length >= MIN_GROUP_SIZE) {
       groups.push({ source: f.source, label: f.label, members, merged: false })
@@ -436,6 +437,17 @@ function avatarGradient(id: string): readonly [string, string] {
 /** 数据里人人都有 portrait 路径，但多数 popular-<id>.png 实际不存在；
  *  加载失败时记入集合，用渐变首字占位替换破碎 <img>。 */
 const brokenPortraits = ref(new Set<string>())
+const brokenAvatarThumbs = ref(new Set<string>())
+function avatarSrc(character: CharacterProfile): string {
+  return character.type === 'popular' && !brokenAvatarThumbs.value.has(character.id)
+    ? '/assets/characters/thumbs/popular-' + character.id + '.webp'
+    : character.portrait?.image || ''
+}
+function onAvatarError(character: CharacterProfile) {
+  if (character.type === 'popular' && !brokenAvatarThumbs.value.has(character.id)) {
+    brokenAvatarThumbs.value = new Set(brokenAvatarThumbs.value).add(character.id)
+  } else markPortraitBroken(character.id)
+}
 function markPortraitBroken(id: string) {
   if (brokenPortraits.value.has(id)) return
   brokenPortraits.value = new Set(brokenPortraits.value).add(id)

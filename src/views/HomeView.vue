@@ -3,15 +3,16 @@
     <section class="container home-opening" aria-label="画室序章">
       <div class="home-hero" :data-muse="homeMuse">
         <div class="hero-copy">
-          <span class="hero-register">绫季绘境 · 私人画室</span>
-          <h1 class="hero-title">让心动，<br /><span class="hero-title-accent">有迹可循。</span></h1>
-          <p class="hero-sub">一个喜欢的角色，一段想留下的时光。<br />从这里，把想象画成故事。</p>
+          <span class="hero-register">ANIME · CG · STORIES</span>
+          <h1 class="hero-title">心动的世界，<br /><span class="hero-title-accent">不止于想象。</span></h1>
+          <p class="hero-sub">一本写给二次元的影像手帖。<br />收藏喜欢的角色、光影，与故事里的日常。</p>
           <div class="ctas">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
-            <RouterLink to="/showcase" class="btn btn-lg btn-ghost">翻开画册 <ArchiveIcon name="image" /></RouterLink>
+            <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost">开始创作 <ArchiveIcon name="spark" /></RouterLink>
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses" role="group" aria-label="首页角色视觉">
+            <AnimatedSelection />
             <button type="button" :aria-pressed="homeMuse === 'nene'" @click="homeMuse = 'nene'"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
             <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="homeMuse = 'natsume'"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
           </div>
@@ -25,32 +26,13 @@
       </div>
     </section>
 
+    <HomeArtJournal :scenes="featuredScenes" />
+
     <section class="container home-inspiration" aria-label="场景与角色灵感">
-        <div class="hero-strip" aria-labelledby="featuredScenesLabel">
-          <div class="strip-label" id="featuredScenesLabel">
-            <span class="dot"></span> 今天可以从这里开始 · <span>{{ sceneCountCopy }}</span>
-          </div>
-          <div ref="stripEl" class="strip-scroll">
-            <!--
-              不带 &generate=1：点场景卡的意图是「用这个场景开始」，不是「立刻
-              出图」。带上它会在落地瞬间静默启动一次分钟级任务，用户既没预览
-              也没确认，只能干等或手忙脚乱地取消（2026-08-30 UX 审计 P1）。
-              「调整后生成 / 画这个场景」这类写明动作的按钮才带这个参数。
-            -->
-            <RouterLink
-              v-for="s in featuredScenes"
-              :key="s.id"
-              class="sc-link"
-              :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
-            >
-              <SceneCard :scene="s" mode="strip" :clickable="false" />
-            </RouterLink>
-          </div>
-        </div>
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
         <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
           <div class="strip-label" id="popStripLabel">
-            <span class="dot"></span> 热门角色 · <span>{{ popularCharacters.length }} 位角色样张</span>
+            <span class="dot"></span> 在这里，遇见你的本命 · <span>{{ popularCharacters.length }} 位角色</span>
           </div>
           <div class="pop-scroll">
             <RouterLink
@@ -62,7 +44,7 @@
               <img :src="portraitSrc(c.id)" :alt="c.displayName" loading="lazy" decoding="async" />
               <span class="pop-cap">
                 <span class="pop-cap-name">{{ c.displayName }}</span>
-                <span class="pop-cap-franchise">{{ c.franchise }}</span>
+                <span class="pop-cap-franchise">{{ franchiseLabel(c.franchise) }}</span>
               </span>
             </RouterLink>
           </div>
@@ -209,9 +191,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, reactive, nextTick } from 'vue'
-import { maintenanceApi } from '../api/maintenanceApi.ts'
+import { ref, computed, onMounted, onUnmounted, reactive } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
+import { franchiseLabel } from '@/utils/franchiseLabel'
+import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
@@ -227,10 +211,9 @@ useScrollReveal()
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
-const sceneCountCopy = ref('场景加载中')
 const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
-const continueIconName = ref<ArchiveIconName>('spark')
-const continueLink = ref({ to: '/prompt-builder', label: '开始绘制' })
+const continueIconName = ref<ArchiveIconName>('image')
+const continueLink = ref({ to: '/showcase', label: '翻开 CG 画册' })
 const continueHint = ref('')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 
@@ -240,13 +223,13 @@ const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 const homeMuse = ref<'nene' | 'natsume'>('nene')
-const heroAssets = reactive({
+// Bundled approved covers are authoritative; copied showcase editions may contain older home art.
+const heroAssets = Object.freeze({
   nene: '/assets/characters/nene-home-cg-1024.webp',
   natsume: '/assets/characters/natsume-home-cg-1024.webp',
 })
 /** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
 let unmounted = false
-const stripEl = ref<HTMLElement | null>(null)
 
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
 const popularCharacters = computed(() => sceneStore.popularCharacters)
@@ -257,12 +240,6 @@ function portraitSrc(id: string): string {
   return `/assets/characters/thumbs/popular-${id}.webp?v=${sceneStore.version || 3}`
 }
 
-/** 横条只在真正可滚动时显示右缘渐隐，避免宽屏误遮最后一张卡 */
-function updateStripFade() {
-  const el = stripEl.value
-  if (!el) return
-  el.classList.toggle('can-scroll', el.scrollWidth > el.clientWidth + 4)
-}
 
 function charName(id: string | undefined) {
   return id === 'nene' ? '宁宁' : id === 'natsume' ? '夏目' : id || '·'
@@ -316,7 +293,7 @@ function initContinueDraft() {
 function pickFeatured(ids: string[], scenes: HomeScene[], count: number): HomeScene[] {
   const pool = ids
     .map(id => scenes.find(scene => scene.id === id))
-    .filter((scene): scene is HomeScene => Boolean(scene && !scene.mature))
+    .filter((scene): scene is HomeScene => Boolean(scene && !scene.mature && scene.rating !== 'R18'))
   if (!pool.length) return []
   const dayKey = new Date().toISOString().slice(0, 10)
   let seed = 0
@@ -336,7 +313,6 @@ async function loadSceneHighlights() {
     const signatures: string[] = Array.isArray(curation.signatureSceneIds) ? curation.signatureSceneIds : []
     const curated: string[] = Array.isArray(curation.curatedSceneIds) ? curation.curatedSceneIds : []
     const ids = [...signatures, ...curated.filter((id: string) => !signatures.includes(id))]
-    sceneCountCopy.value = `${ids.length} 个精选场景`
     sceneLibraryCopy.value = `${ids.length} 个招牌与精选，完整库共 ${scenes.length} 个。`
 
     featuredScenes.value = pickFeatured(ids, scenes, 6)
@@ -349,21 +325,8 @@ async function loadSceneHighlights() {
       .slice(0, 6)
     recentScenes.value = recentPicks
   } catch (err) {
-    sceneCountCopy.value = '精选场景'
     console.warn('场景加载失败：', errorMessage(err))
   }
-}
-
-async function loadHomeHeroAssets() {
-  try {
-    const payload = await maintenanceApi.getHomeHero()
-    for (const key of ['nene', 'natsume'] as const) {
-      const image = payload.entries[key]?.image
-      if (typeof image === 'string' && /^\/scene-showcase\/home\/(nene|natsume)\.jpg(?:\?[^"'<>]*)?$/.test(image)) {
-        heroAssets[key] = image
-      }
-    }
-  } catch { /* maintenance API is optional; bundled fallback remains available */ }
 }
 
 async function loadRecentWorks() {
@@ -399,23 +362,15 @@ async function loadRecentWorks() {
 
 onMounted(async () => {
   initContinueDraft()
-  await loadHomeHeroAssets()
   await loadSceneHighlights()
   try {
     await kvInit()
     await loadRecentWorks()
   } catch (e) { console.warn('KV store unavailable', e) }
-  // 横条内容是异步载入的，DOM 渲染完成后才能判断是否真的可滚动；
-  // 图片解码会进一步撑宽卡片，再延时重测一次避免漏判
-  await nextTick()
-  updateStripFade()
-  window.setTimeout(updateStripFade, 500)
-  window.addEventListener('resize', updateStripFade)
 })
 
 onUnmounted(() => {
   unmounted = true
-  window.removeEventListener('resize', updateStripFade)
   // 首页封面是 IndexedDB blob，不释放就会一直挂在内存里
   Object.keys(coverUrls).forEach((key) => {
     if (coverUrls[key]) URL.revokeObjectURL(coverUrls[key])

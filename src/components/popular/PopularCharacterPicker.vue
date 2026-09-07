@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 
 const props = defineProps<{
   characters: PopularCharacter[]
@@ -30,20 +31,21 @@ const filteredCharacters = computed(() => {
   const base = !keyword.value
     ? props.characters
     : props.characters.filter(character =>
-        [character.displayName, character.originalName, character.id, character.franchise, ...character.aliases]
+        [character.displayName, character.originalName, character.id, character.franchise, franchiseLabel(franchiseKey(character.franchise)), ...character.aliases]
           .some(text => text.toLowerCase().includes(keyword.value)),
       )
   if (keyword.value || activeFranchise.value === 'all') return base
-  return base.filter(character => character.franchise === activeFranchise.value)
+  return base.filter(character => franchiseKey(character.franchise) === activeFranchise.value)
 })
 
 const franchises = computed(() => {
   const seen = new Map<string, number>()
   for (const character of props.characters) {
-    seen.set(character.franchise, (seen.get(character.franchise) ?? 0) + 1)
+    const key = franchiseKey(character.franchise)
+    seen.set(key, (seen.get(key) ?? 0) + 1)
   }
   return [...seen.entries()].map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN'))
+    .sort((a, b) => b.count - a.count || franchiseLabel(a.name).localeCompare(franchiseLabel(b.name), 'zh-CN'))
 })
 
 /** 按作品分组的角色列表；搜索命中时保持原样（已按关键词过滤） */
@@ -51,7 +53,7 @@ const groupedCharacters = computed(() => {
   if (keyword.value || activeFranchise.value !== 'all') return null
   const groups: { franchise: string; characters: PopularCharacter[] }[] = []
   for (const franchise of franchises.value) {
-    const members = filteredCharacters.value.filter(c => c.franchise === franchise.name)
+    const members = filteredCharacters.value.filter(c => franchiseKey(c.franchise) === franchise.name)
     if (members.length) groups.push({ franchise: franchise.name, characters: members })
   }
   return groups
@@ -82,12 +84,12 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
       <button v-for="franchise in franchises" :key="franchise.name" type="button"
         class="franchise-chip" :class="{ active: activeFranchise === franchise.name }"
         :aria-pressed="activeFranchise === franchise.name" @click="activeFranchise = franchise.name">
-        {{ franchise.name }} <span class="franchise-count">{{ franchise.count }}</span>
+        {{ franchiseLabel(franchise.name) }} <span class="franchise-count">{{ franchise.count }}</span>
       </button>
     </div>
     <div v-if="groupedCharacters" class="popular-groups" role="group" aria-label="热门角色">
       <section v-for="group in groupedCharacters" :key="group.franchise" class="popular-group">
-        <h4 class="popular-group-head">{{ group.franchise }}<span class="popular-group-count">{{ group.characters.length }}</span></h4>
+        <h4 class="popular-group-head">{{ franchiseLabel(group.franchise) }}<span class="popular-group-count">{{ group.characters.length }}</span></h4>
         <div class="popular-grid">
           <button v-for="character in group.characters" :key="character.id"
             type="button" class="popular-card"
@@ -146,7 +148,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
           </span>
         </span>
         <span class="popular-card-name">{{ character.displayName }}</span>
-        <span class="popular-card-franchise">{{ character.franchise }}</span>
+        <span class="popular-card-franchise">{{ franchiseLabel(character.franchise) }}</span>
       </button>
     </div>
     <div v-if="selectedCharacter" class="popular-outfits">

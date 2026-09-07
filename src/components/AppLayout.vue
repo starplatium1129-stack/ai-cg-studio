@@ -11,7 +11,7 @@
           <!-- 作品册缓存：数百张大图的 blob URL 与解码结果常驻内存，
                切到其他页再回来不重新从 IndexedDB 读图，秒开。
                其余页面按需重建（各自 onMounted 拉最新数据）。 -->
-          <KeepAlive :include="['GalleryView']">
+          <KeepAlive :include="['GalleryView', 'ShowcaseView']">
             <component :is="Component" :key="route.path" class="route-view" />
           </KeepAlive>
         </Transition>
@@ -80,13 +80,12 @@ function onEnter(el: Element, done: () => void) {
   stopActive(el)
   const doneOnce = onceDone(done)
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const routeCut = document.documentElement.dataset.routeMotion === 'cut'
-  const controls = reduced || routeCut
-    ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0.12 })
+  const controls = reduced
+    ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0 })
     : animateMini(
         el as HTMLElement,
         { opacity: [0, 1], transform: ['translateY(10px) scale(.994)', 'translateY(0) scale(1)'] },
-        { type: 'spring', bounce: 0, duration: 0.32 },
+        { type: 'spring', bounce: 0, duration: 0.44 },
       )
   trackAnimation(el, controls, doneOnce)
 }
@@ -94,10 +93,8 @@ function onEnter(el: Element, done: () => void) {
 function onLeave(el: Element, done: () => void) {
   stopActive(el)
   const doneOnce = onceDone(done)
-  const routeCut = document.documentElement.dataset.routeMotion === 'cut'
-  const controls = routeCut
-    ? animateMini(el as HTMLElement, { opacity: 0 }, { duration: 0.08, ease: 'easeOut' })
-    : animateMini(el as HTMLElement, { opacity: 0, transform: 'translateY(-4px)' }, { duration: 0.12, ease: 'easeOut' })
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const controls = animateMini(el as HTMLElement, { opacity: 0 }, { duration: reduced ? 0 : 0.12, ease: 'easeOut' })
   trackAnimation(el, controls, doneOnce)
 }
 </script>

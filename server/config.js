@@ -63,45 +63,23 @@ function boundedInteger(value, fallback, min, max) {
 }
 
 function resolveSceneShowcaseDir(rootDir, configured, workspaceRoot) {
-  if (configured) {
-    var configuredPath = path.resolve(configured);
-    if (fs.existsSync(path.join(configuredPath, 'manifest.json'))) return configuredPath;
+  // Accept either a published collection or its parent library folder.
+  var roots = [];
+  if (typeof configured === 'string' && configured.trim()) roots.push(path.resolve(configured));
+  if (workspaceRoot) roots.push(path.join(workspaceRoot, 'SceneShowcase'));
+  roots.push(path.resolve(rootDir, '..', 'AI', 'SceneShowcase'));
+  for (var root of [...new Set(roots)]) {
+    if (fs.existsSync(path.join(root, 'manifest.json'))) return root;
+    try {
+      var collections = fs.readdirSync(root, { withFileTypes:true })
+        .filter(entry => entry.isDirectory() && !entry.name.startsWith('.')
+          && fs.existsSync(path.join(root, entry.name, 'manifest.json')))
+        .map(entry => path.join(root, entry.name))
+        .sort((a, b) => path.basename(b).localeCompare(path.basename(a), 'zh-CN'));
+      if (collections.length) return collections[0];
+    } catch { /* A disconnected disk must not prevent the gateway from starting. */ }
   }
-  // 桌面版把 AI_WORKSPACE_ROOT 显式传给网关（appRoot 可能在安装目录，
-  // 父目录没有 AI/）；样张目录优先从工作区解析，其次是 appRoot 兄弟目录。
-  var bases = workspaceRoot
-    ? [workspaceRoot, path.resolve(rootDir, '..', 'AI')]
-    : [path.resolve(rootDir, '..', 'AI')];
-  var root = '';
-  for (var i = 0; i < bases.length; i++) {
-    var candidate = path.join(bases[i], 'SceneShowcase');
-    if (fs.existsSync(path.join(candidate, 'manifest.json'))) {
-      root = candidate;
-      break;
-    }
-    if (fs.existsSync(candidate)) {
-      root = candidate;
-      break;
-    }
-  }
-  if (!root) return '';
-  try {
-    return fs.readdirSync(root, { withFileTypes:true })
-      .filter(function (entry) {
-        // 排除隐藏目录与构建中目录（.building-<pid>）：2026-08-15 实机
-        // .2026-08-15_v21.building-518872 被当成最新版本，导致 home-hero
-        // 读到空 manifest，首页回退旧立绘。
-        return entry.isDirectory()
-          && !entry.name.startsWith('.')
-          && fs.existsSync(path.join(root, entry.name, 'manifest.json'));
-      })
-      .map(function (entry) { return path.join(root, entry.name); })
-      .sort(function (a, b) {
-        return path.basename(b).localeCompare(path.basename(a), 'zh-CN');
-      })[0] || '';
-  } catch (error) {
-    return '';
-  }
+  return '';
 }
 
 /**
@@ -176,7 +154,7 @@ function loadGatewayConfig(rootDir, env) {
     // 恒为默认 5000ms。这里补上 env 解析，让配置真正生效。
     SELF_HEALING_INTERVAL_MS:boundedInteger(env.SELF_HEALING_INTERVAL_MS, 5000, 1000, 60000),
     LIVE2D_ROOT:path.join(assetsRoot, 'live2d'),
-    SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR, workspaceRoot),
+    SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR || saved.sceneShowcaseDir, workspaceRoot),
     CHARACTER_REF_ROOT:resolveCharRefRoot(appRoot, env, workspaceRoot),
     DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
     // 桌面打包模式（Tauri 壳仅在打包模式注入，见 main_shared.rs gateway_env）：

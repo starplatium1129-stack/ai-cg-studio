@@ -25,6 +25,7 @@
 
     <!-- 2026-08-15：作品筛选条 + 角色横排（按作品收敛，33 个不再一滚到底） -->
     <div class="pop-char-area">
+      <div class="character-find"><input v-model="characterQuery" type="search" aria-label="搜索角色或作品" placeholder="输入角色名或作品名，快速找到角色…" @keydown.enter="stripCharacters[0] && selectCharacter(stripCharacters[0].id)" /><button v-if="characterQuery" class="btn btn-ghost btn-sm" type="button" @click="characterQuery = ''">清除</button></div>
       <div class="pop-franchise-strip" role="group" aria-label="按作品筛选角色">
         <button type="button" class="pop-franchise" :class="{ active: activeFranchise === '' }"
           :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
@@ -36,6 +37,7 @@
           {{ f.label }} <span class="pop-franchise-count">{{ f.count }}</span>
         </button>
       </div>
+      <p v-if="!stripCharacters.length" class="character-find-empty" role="status">没有匹配的角色。可以清除搜索或切换作品；下方仍显示{{ selectedCharacter?.displayName }}的场景。</p>
       <div class="pop-char-strip" role="group" aria-label="选择热门角色">
         <button
           v-for="character in stripCharacters" :key="character.id" type="button"
@@ -43,7 +45,7 @@
           :aria-pressed="selectedId === character.id"
           @click="selectCharacter(character.id)">
           <strong>{{ character.displayName }}</strong>
-          <small>{{ franchiseLabel(character.franchise) }}</small>
+          <small>{{ franchiseLabel(franchiseKey(character.franchise)) }}</small>
         </button>
       </div>
     </div>
@@ -140,7 +142,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
-import { franchiseLabel } from '@/utils/franchiseLabel'
+import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 
 const route = useRoute()
 const sceneStore = useSceneStore()
@@ -165,21 +167,23 @@ const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprint
 
 // 2026-08-15：角色选择条按作品筛选——先选作品，横排只显示该作品角色（33 个不再一滚到底）。
 const activeFranchise = ref('')
+const characterQuery = ref('')
 
 const franchises = computed(() => {
   const seen = new Map<string, number>()
-  for (const c of characters.value) seen.set(c.franchise, (seen.get(c.franchise) ?? 0) + 1)
+  for (const c of characters.value) { const key = franchiseKey(c.franchise); seen.set(key, (seen.get(key) ?? 0) + 1) }
   return [...seen.entries()]
     .map(([name, count]) => ({ name, label: franchiseLabel(name), count }))
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-CN'))
 })
 
 /** 角色条：按作品筛选后的角色；「全部」时仍全量横排 */
-const stripCharacters = computed(() =>
-  activeFranchise.value
-    ? characters.value.filter(c => c.franchise === activeFranchise.value)
-    : characters.value,
-)
+const stripCharacters = computed(() => {
+  const term = characterQuery.value.trim().toLocaleLowerCase()
+  return characters.value.filter(character => (!activeFranchise.value || franchiseKey(character.franchise) === activeFranchise.value)
+    && (!term || [character.displayName, character.id, character.franchise, franchiseLabel(character.franchise)].join(' ').toLocaleLowerCase().includes(term)))
+    .sort((a, b) => Number(b.displayName.toLocaleLowerCase() === term) - Number(a.displayName.toLocaleLowerCase() === term))
+})
 
 /** 当前角色的全部蓝图（资格按成熟开关收敛）。 */
 const selectedCharacter = computed(() =>
@@ -339,6 +343,10 @@ onMounted(() => { void init() })
 </script>
 
 <style scoped>
+.character-find { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
+.character-find input { width: min(440px, 100%); padding: var(--s-3) var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); color: var(--text-primary); font: inherit; }
+.character-find-empty { color: var(--text-muted); font-size: var(--fs-label); margin: var(--s-3) 0; }
+
 .page { --page-max: 1100px; }
 .title { margin-bottom: var(--s-3); }
 

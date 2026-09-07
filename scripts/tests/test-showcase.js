@@ -897,3 +897,24 @@ test('showcase actual assets are self-consistent (skipped without AI workspace)'
     assert(isShowcaseAssetPath('/' + thumb), `thumb not allowlisted: ${entry.id} ${thumb}`);
   }
 });
+
+
+test('local showcase config accepts a published collection or a parent library', () => {
+  const os = require('os');
+  const { resolveSceneShowcaseDir, loadGatewayConfig } = require('../../server/config');
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'atelier-library-'));
+  try {
+    const library = path.join(temp, 'SceneShowcase');
+    const edition = path.join(library, '2026-09-02-published');
+    const staging = path.join(library, '.building-new');
+    for (const dir of [edition, staging]) { fs.mkdirSync(dir, { recursive:true }); fs.writeFileSync(path.join(dir, 'manifest.json'), '{"entries":[]}'); }
+    assert.strictEqual(resolveSceneShowcaseDir(temp, library), edition);
+    assert.strictEqual(resolveSceneShowcaseDir(temp, edition), edition);
+    const runtime = path.join(temp, 'runtime');
+    fs.mkdirSync(runtime);
+    fs.writeFileSync(path.join(runtime, 'config.json'), JSON.stringify({ sceneShowcaseDir:library }));
+    const config = loadGatewayConfig(temp, { AICS_RUNTIME_ROOT:runtime, AICS_DISABLE_LEGACY_RUNTIME_MIGRATION:'1' });
+    assert.strictEqual(config.SCENE_SHOWCASE_DIR, edition, 'saved local media path survives a gateway restart');
+    assert.strictEqual(resolveSceneShowcaseDir(temp, path.join(temp, 'disconnected')), '');
+  } finally { fs.rmSync(temp, { recursive:true, force:true }); }
+});

@@ -54,14 +54,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const isLocalHost = isLocalStudioHost()
 const forcedGuest = new URLSearchParams(window.location.search).get('guest') === '1'
-const dismissed = settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING) ?? false
 
 /**
  * 首次访问一律展示，文案按本机 / 访客分流（2026-08-30 UX 审计 P1）。
@@ -69,7 +68,7 @@ const dismissed = settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING) ?? false
  * 原先这里要求 isNonLocal，而本项目是单人本机部署，条件恒为假——主人自己
  * 反而永远看不到引导。`?guest=1` 保留作「强制再看一次」的开关。
  */
-const shouldShow = forcedGuest || !dismissed
+const shouldShow = forcedGuest
 const visible = ref(false)
 const guideEl = ref<HTMLElement | null>(null)
 const dismissButton = ref<HTMLElement | null>(null)
@@ -79,9 +78,12 @@ useFocusTrap(guideEl, () => visible.value, {
   initialFocus: dismissButton,
 })
 
+function openGuide() { visible.value = true }
 onMounted(() => {
   if (shouldShow) visible.value = true
+  window.addEventListener('atelier:welcome', openGuide)
 })
+onUnmounted(() => window.removeEventListener('atelier:welcome', openGuide))
 
 function dismiss() {
   visible.value = false

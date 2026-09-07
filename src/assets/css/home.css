@@ -1,7 +1,7 @@
 /* Character opening: artwork and an opaque reading plane share one stage. */
 .home-page { padding-bottom: var(--s-8); }
 .home-opening { padding-top: var(--s-6); }
-.home-hero { position: relative; isolation: isolate; display: grid; grid-template-columns: .9fr 1.1fr; min-height: 580px; overflow: hidden; border-radius: var(--r-stage); background: var(--bg-deep); border: 1px solid var(--border-soft); }
+.home-hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 1.25fr; min-height: 620px; overflow: hidden; border-radius: var(--r-stage); background: var(--bg-deep); border: 1px solid var(--border-soft); }
 /* 首页角色视觉取 design-system 的全局角色令牌（--nene-violet / --natsume-amber）。
    2026-09-07 起全项目已统一到这一组值：director/tokens.css、
    characterParticleTheme.ts、config/characters.ts 与此处同源，改色需四处同步。
@@ -10,7 +10,7 @@
 .home-hero[data-muse="natsume"] { --accent: var(--natsume-amber); --accent-hover: color-mix(in srgb, var(--natsume-amber) 78%, #fff); }
 .hero-copy { position: relative; z-index: var(--z-raised); min-width: 0; padding: var(--s-8) 0 var(--s-7) var(--s-7); align-self: center; }
 .hero-register { color: var(--text-secondary); font-size: var(--fs-label); letter-spacing: .12em; }
-.hero-title { margin: var(--s-6) 0 var(--s-5); font: 500 clamp(2.6rem, 4.1vw, 4rem)/1.3 var(--font-serif); letter-spacing: -.04em; color: var(--text-primary); }
+.hero-title { margin: var(--s-6) 0 var(--s-5); font: 500 clamp(2.4rem, 3.6vw, 3.5rem)/1.3 var(--font-serif); letter-spacing: -.04em; color: var(--text-primary); }
 .hero-title-accent { color: var(--accent); }
 .hero-sub { color: var(--text-secondary); font-size: var(--fs-body); line-height: var(--lh-loose); margin-bottom: var(--s-6); }
 .ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); }
@@ -25,9 +25,9 @@
 .orbit-label span { display: block; color: var(--accent); font-size: var(--fs-label-xs); letter-spacing: .14em; margin-bottom: var(--s-2); }
 .orbit-label strong { color: var(--text-primary); font: 400 var(--fs-title-xs)/var(--lh-loose) var(--font-serif); }
 .hero-jp { position: absolute; bottom: var(--s-4); left: var(--s-7); color: var(--text-muted); font: 400 var(--fs-label-xs)/var(--lh-label) var(--font-serif); letter-spacing: .14em; }
-.hero-muses { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-7); }
-.hero-muses button { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) var(--s-3); border: 1px solid transparent; border-radius: var(--r-pill); color: var(--text-muted); background: transparent; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor: pointer; transition: transform var(--motion-hover); }
-.hero-muses button[aria-pressed="true"] { background: var(--bg-elevated); color: var(--text-primary); border-color: var(--border-strong); }
+.hero-muses { position: relative; isolation: isolate; display: flex; width: fit-content; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-7); }
+.hero-muses button { position: relative; z-index: var(--z-raised); display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: var(--s-2) var(--s-3); border: 1px solid transparent; border-radius: var(--r-pill); color: var(--text-muted); background: transparent; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor: pointer; transition: transform var(--motion-hover); }
+.hero-muses button[aria-pressed="true"] { background: transparent; color: var(--text-primary); border-color: transparent; }
 .hero-muses button:active { transform: scale(.97); }
 .muse-marker { width: 6px; height: 6px; border-radius: 50%; }
 .muse-marker-nene { background: var(--nene-violet); }
@@ -42,7 +42,7 @@
 .tools-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3); }
 .tool-card { position: relative; display: flex; flex-direction: column; gap: var(--s-3); padding: var(--s-5); min-width: 0; border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); box-shadow: none; color: var(--text-primary); text-decoration: none; transition: transform var(--motion-hover); }
 .tool-card::before, .tool-card::after { display: none; }
-.tool-card .tool-index { position: absolute; top: var(--s-5); right: var(--s-4); font: 500 var(--fs-mono-xs) var(--font-mono); color: var(--text-muted); letter-spacing: .06em; }
+.tool-card .tool-index { display: none; position: absolute; top: var(--s-5); right: var(--s-4); font: 500 var(--fs-mono-xs) var(--font-mono); color: var(--text-muted); letter-spacing: .06em; }
 .tool-card .ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r-md); color: var(--accent); background: var(--accent-soft); font-size: var(--fs-title-sm); }
 .tool-card .t { font-size: var(--fs-title-xs); font-weight: 600; }
 .tool-card .d { flex: 1; color: var(--text-secondary); font-size: var(--fs-label); line-height: var(--lh-loose); }
@@ -53,15 +53,14 @@
 .tool-card-banner .go { margin: 0 0 0 auto; white-space: nowrap; }
 .banner-copy { display: flex; flex-direction: column; gap: var(--s-1); }
 .home-inspiration { display: grid; gap: var(--s-3); margin-top: var(--s-6); margin-bottom: var(--s-8); }
-.hero-strip, .pop-strip { min-width: 0; padding: var(--s-5) 0; border-bottom: 1px solid var(--border-soft); }
+.pop-strip { min-width: 0; padding: var(--s-5) 0; border-bottom: 1px solid var(--border-soft); }
 .strip-label { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); color: var(--text-primary); font-size: var(--fs-body-sm); font-weight: 600; }
 .strip-label > span:last-child { color: var(--text-muted); font-weight: 400; }
 .strip-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-.strip-scroll, .pop-scroll, .recent-scenes-row { display: flex; gap: var(--s-3); overflow-x: auto; padding: var(--s-1) var(--s-1) var(--s-3); scroll-snap-type: x proximity; scrollbar-width: thin; }
+.pop-scroll, .recent-scenes-row { display: flex; gap: var(--s-3); overflow-x: auto; padding: var(--s-1) var(--s-1) var(--s-3); scroll-snap-type: x proximity; scrollbar-width: thin; }
 .sc-link { display: block; color: inherit; text-decoration: none; scroll-snap-align: start; }
-.strip-scroll .sc-link { flex: 0 0 auto; }
-.pop-card-mini { flex: 0 0 112px; min-width: 0; scroll-snap-align: start; text-decoration: none; border-radius: var(--r-md); transition: transform var(--motion-hover); }
-.pop-card-mini img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 22%; border-radius: var(--r-lg); background: var(--bg-elevated); }
+.pop-card-mini { flex: 0 0 140px; min-width: 0; scroll-snap-align: start; text-decoration: none; border-radius: var(--r-md); transition: transform var(--motion-hover); }
+.pop-card-mini img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 22%; border-radius: var(--r-lg); background: var(--bg-elevated); }
 .pop-cap { display: flex; flex-direction: column; gap: var(--s-1); padding: var(--s-2) var(--s-1) 0; }
 .pop-cap-name { color: var(--text-primary); font-size: var(--fs-label-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pop-cap-franchise { color: var(--text-muted); font-size: var(--fs-label-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -113,7 +112,7 @@
   .tool-card-banner .banner-copy { flex: 1; }
   .tool-card-banner .go { width: 100%; }
   .home-section-head { align-items: start; flex-direction: column; gap: var(--s-1); }
-  .hero-strip, .pop-strip { padding: var(--s-4) 0; }
+  .pop-strip { padding: var(--s-4) 0; }
   .recent-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {

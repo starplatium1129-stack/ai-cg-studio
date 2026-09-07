@@ -3,8 +3,7 @@ import { expect, test } from '@playwright/test'
 async function openAtelier(page: import('@playwright/test').Page, route = '/') {
   await page.goto(route)
   const guide = page.getByRole('dialog', { name: '访客导览' })
-  await expect(guide).toBeVisible()
-  await guide.getByRole('button', { name: '开始创作', exact: true }).click()
+  await expect(page.locator('main h1')).toBeVisible()
   await expect(guide).toBeHidden()
 }
 
@@ -24,7 +23,7 @@ test('home character selection keeps artwork, caption and accent together', asyn
   expect(amber).not.toBe(violet)
   expect(await hero.locator('.hero-character.is-current').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
   await expect(page.locator('.sakura-fall')).toHaveCount(0)
-  await expect(page.locator('#continueCta')).toHaveAttribute('href', '/prompt-builder')
+  await expect(page.locator('#continueCta')).toHaveAttribute('href', '/showcase')
 })
 
 test('reduced motion stops character transitions', async ({ page }) => {
@@ -75,11 +74,51 @@ test('discovery companion selection displays matching readable artwork', async (
   await expect(atlas.locator('canvas')).toHaveCount(0)
 })
 
-test('drawing invitation leads to scene discovery without starting generation', async ({ page }) => {
+test('drawing invitation opens materials without starting generation', async ({ page }) => {
   let submissions = 0
   page.on('request', request => { if (request.method() === 'POST' && /anima\/jobs$/.test(request.url())) submissions++ })
   await openAtelier(page, '/prompt-builder')
   await page.locator('.stage-idle').getByRole('button', { name: '挑选场景', exact: true }).click()
-  await expect(page).toHaveURL(/scene-explorer/)
+  await expect(page).toHaveURL(/prompt-builder/)
+  await expect(page.locator('#material-scenes')).toBeVisible()
   expect(submissions).toBe(0)
+})
+
+
+test('gallery is an accessible image viewer and journal deep links open the right artwork', async ({ page }) => {
+  await openAtelier(page)
+  const entry = page.locator('.journal-entry').first()
+  await expect(entry).toBeVisible()
+  const href = await entry.getAttribute('href')
+  expect(href).toMatch(/showcase\?scene=sc/)
+  await entry.click()
+  const dialog = page.getByRole('dialog', { name: '样张查看器' })
+  await expect(dialog).toBeVisible()
+  await expect.poll(() => dialog.locator('.zoomable-img').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+  await expect(dialog.locator('.viewer-production')).not.toHaveAttribute('open', '')
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+})
+
+test('selection motion settles on the final choice after rapid changes', async ({ page }) => {
+  await openAtelier(page)
+  const group = page.getByRole('group', { name: '首页角色视觉' })
+  await group.getByRole('button', { name: '四季夏目', exact: true }).click()
+  await group.getByRole('button', { name: '绫地宁宁', exact: true }).click()
+  await group.getByRole('button', { name: '四季夏目', exact: true }).click()
+  await expect.poll(async () => group.evaluate(el => {
+    const active = el.querySelector('[aria-pressed="true"]')!.getBoundingClientRect()
+    const indicator = el.querySelector('.animated-selection')!.getBoundingClientRect()
+    return Math.abs(active.left - indicator.left) + Math.abs(active.width - indicator.width)
+  })).toBeLessThan(2)
+})
+
+test('welcome guide is optional and keyboard dismissible', async ({ page }) => {
+  await openAtelier(page)
+  await page.locator('.nav-more summary').click()
+  await page.getByRole('button', { name: '初次来访 · 使用指南' }).click()
+  const dialog = page.getByRole('dialog', { name: '访客导览' })
+  await expect(dialog).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
 })

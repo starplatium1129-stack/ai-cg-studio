@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div v-if="open" class="global-search" @pointerdown.self="close">
+    <div v-if="open" class="global-search" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
         <div class="gs-input-row">
           <ArchiveIcon name="search" class="gs-search-icon" />
@@ -104,8 +104,8 @@ interface SearchItem {
 }
 
 interface PageItem extends SearchItem { path: string }
-interface SceneItem { id: string; title: string; meta: string; keywords: string }
-interface WorkItem { id: string | number; title: string; meta: string; keywords: string }
+interface SceneItem { path: string; id: string; title: string; meta: string; keywords: string }
+interface WorkItem { path: string; id: string | number; title: string; meta: string; keywords: string }
 
 const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 
@@ -119,7 +119,7 @@ const panelEl = ref<HTMLElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)
 const scenes = ref<SceneItem[]>([])
 const works = ref<WorkItem[]>([])
-let worksLoaded = false
+let worksLoading = false
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
 
@@ -130,7 +130,7 @@ const PAGES: PageItem[] = [
   { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },
   { id: 'popular-scenes', label: '热门角色场景', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图 雷电将军 芙莉莲' },
   { id: 'chat', label: '角色房间', icon: 'chat', path: '/chat', keywords: '聊天 角色 宁宁 夏目' },
-  { id: 'showcase', label: '效果样张', icon: 'image', path: '/showcase', keywords: '样张 展示 定稿' },
+  { id: 'showcase', label: 'CG 画册', icon: 'image', path: '/showcase', keywords: 'CG 画册 样张 展示 定稿 gallery showcase' },
   { id: 'gallery', label: '作品册', icon: 'gallery', path: '/gallery', keywords: '作品 图库 收藏' },
   { id: 'character', label: '角色档案', icon: 'character', path: '/character', keywords: '角色 档案 人设' },
   { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画风 色彩 色板' },
@@ -157,7 +157,7 @@ function match(keywords: string): boolean {
   return q.split(/\s+/).every(part => keywords.toLowerCase().includes(part))
 }
 
-const filteredPages = computed(() => PAGES.filter(p => match(p.keywords)))
+const filteredPages = computed(() => PAGES.filter(p => match(p.label + ' ' + p.keywords)))
 const filteredActions = computed(() => ACTIONS.filter(a => match(a.keywords)))
 const filteredScenes = computed(() => scenes.value.filter(s => match(s.keywords)).slice(0, 8))
 const filteredWorks = computed(() => works.value.filter(w => match(w.keywords)).slice(0, 5))
@@ -171,12 +171,8 @@ const flat = computed<(SearchItem | SceneItem | WorkItem)[]>(() => {
 function run(index: number) {
   const item = flat.value[index]
   if (!item) return
-  close()
-  const path = (item as SearchItem).path
-  if (path) router.push(path)
-  else if ('id' in item && typeof item.id === 'string' && (item as SceneItem).title) {
-    router.push(`/prompt-builder?scene=${encodeURIComponent((item as SceneItem).id)}`)
-  }
+  close(false)
+  void router.push(item.path)
 }
 
 function move(step: number) {
@@ -200,14 +196,11 @@ function openPanel(source: 'keyboard' | 'pointer' = 'keyboard') {
   void nextTick(() => { inputEl.value?.focus() })
 }
 
-function close() {
+function close(restoreFocus = true) {
   open.value = false
-  if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
-    void nextTick(() => {
-      previousActiveElement?.focus()
-      previousActiveElement = null
-    })
-  }
+  const previous = previousActiveElement
+  previousActiveElement = null
+  if (restoreFocus && previous?.isConnected) void nextTick(() => previous.focus({ preventScroll: true }))
 }
 
 function onKeydown(event: KeyboardEvent) {
@@ -227,32 +220,35 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 async function loadWorks() {
-  if (worksLoaded) return
-  worksLoaded = true
+  if (worksLoading) return
+  worksLoading = true
   try {
     await kvInit()
     const raw = await kvGet<unknown[]>(HISTORY_KEY)
-    const list = Array.isArray(raw) ? raw.slice(0, 300) : []
+    const list = Array.isArray(raw) ? raw.slice() : []
     // 2026-08-30 UX 审计：这里原来是 `!r`（写反了），任何非空条目都会被判为
     // 非对象而被丢掉——「作品」分组永远为空，用户搜不到旧作会误判「那张图没
     // 了」。口径与 App.vue 的 `!!r` 对齐。
     works.value = list
-      .filter((r): r is Record<string, unknown> => !!r && typeof r === 'object')
+      .filter((r): r is Record<string, unknown> => !!r && typeof r === 'object' && ['string', 'number'].includes(typeof (r as Record<string, unknown>).id))
+      .sort((a, b) => (Number(b.timestamp) || Date.parse(String(b.timestamp)) || 0) - (Number(a.timestamp) || Date.parse(String(a.timestamp)) || 0))
+      .slice(0, 300)
       .map((entry) => {
         const title = String(entry.sceneTitle || entry.title || entry.scene || '未命名作品')
-        const time = typeof entry.timestamp === 'number'
+        const time = typeof entry.timestamp === 'number' || typeof entry.timestamp === 'string'
           ? new Date(entry.timestamp).toLocaleDateString()
           : ''
         const size = String(entry.size || '')
         const prompt = String(entry.prompt || '')
         return {
           id: String(entry.id),
+          path: `/prompt-builder?regen=${encodeURIComponent(String(entry.id))}`,
           title,
           meta: [time, size].filter(Boolean).join(' · '),
           keywords: `${title} ${prompt} ${entry.story || ''} ${entry.character || ''}`,
         } satisfies WorkItem
       })
-  } catch { /* 作品索引失败不影响搜索 */ }
+  } catch { /* 作品索引失败不影响搜索 */ } finally { worksLoading = false }
 }
 
 async function loadScenes() {
@@ -264,6 +260,7 @@ async function loadScenes() {
       const s = scene as Record<string, unknown>
       return {
         id: String(s.id || ''),
+        path: `/prompt-builder?scene=${encodeURIComponent(String(s.id || ''))}`,
         title: String(s.title || s.id || ''),
         meta: [String(s.category || ''), String(s.emotion || '')].filter(Boolean).join(' · '),
         keywords: [
@@ -273,7 +270,7 @@ async function loadScenes() {
         ].filter(Boolean).join(' '),
       } satisfies SceneItem
     })
-  } catch { /* 场景索引失败不影响搜索 */ }
+  } catch { scenesRequested = false /* 下一次打开允许重新读取 */ }
 }
 
 /** 场景索引只建一次：首次打开面板时才拉（此前是挂载即拉，把数据请求摊进每个页面首屏） */

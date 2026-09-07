@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "collection": "2026-09-02_v27-miaomiao",
+  "entries": {
+    "katou_megumi": {
+      "entryId": "pc_katou_megumi_megumi_slope_white_beret",
+      "sourceImage": "images/pc_katou_megumi_megumi_slope_white_beret.jpg",
+      "rating": "All",
+      "reason": "白色贝雷帽与白裙，角色辨识度高。",
+      "sourceSha256": "d8d09b92c56b191e206327d3d1e9725b148b6e87546e8321530b5df0d035ac5a",
+      "portraitSha256": "9c528c109d519ddca1e592260dc9c522608cc736378147204eefaa5f6f37b226"
+    },
+    "shiina_mahiru": {
+      "entryId": "pc_shiina_mahiru_mahiru_kitchen_apron_morning",
+      "sourceImage": "images/pc_shiina_mahiru_mahiru_kitchen_apron_morning.jpg",
+      "rating": "All",
+      "reason": "厨房围裙场景，脸部清晰、姿态自然。",
+      "sourceSha256": "5ffd4289ab7b482f5873243fbd969c5a5b60c021990be4f8a306175b78ceb661",
+      "portraitSha256": "3c053bc964b88312f95eb178c1f6454acbdf44aa977f7a2b216fa386d9d3d376"
+    },
+    "chitanda_eru": {
+      "entryId": "pc_chitanda_eru_chitanda_library_ladder_books",
+      "sourceImage": "images/pc_chitanda_eru_chitanda_library_ladder_books.jpg",
+      "rating": "All",
+      "reason": "图书馆校服场景，人物独立完整。",
+      "sourceSha256": "5df42bbaeb5c14ead32e3c011a8032e093382e1cedf32d06c6d47d4a02249e8f",
+      "portraitSha256": "242bb8f298d71a720007766fd6804080bf722886c0f69416265963f3a1910f6e"
+    },
+    "isshiki_iroha": {
+      "entryId": "pc_isshiki_iroha_iroha_corridor_chasing_pout",
+      "sourceImage": "images/pc_isshiki_iroha_iroha_corridor_chasing_pout.jpg",
+      "rating": "All",
+      "reason": "校服与社团资料，正面表情清晰。",
+      "sourceSha256": "8b56fbb07b993779d585d629b1c4ab749c8244b5928de3fd50af0bd8a0382a48",
+      "portraitSha256": "89a74190986a8307e932a919aa4ee4da67667e6bb523f7e169a2d2ede2f48dd2"
+    },
+    "yukinoshita_haruno": {
+      "entryId": "pc_yukinoshita_haruno_haruno_cafe_terrace_teasing_gaze",
+      "sourceImage": "images/pc_yukinoshita_haruno_haruno_cafe_terrace_teasing_gaze.jpg",
+      "rating": "All",
+      "reason": "咖啡馆大衣造型，短发与成熟气质明确。",
+      "sourceSha256": "74e261877d795c14cd51ffd1cbb2b05a3f3164e349d3c2f4ef23f967787d296a",
+      "portraitSha256": "59ea23a6f75e8f1a54c1b633e71b7f7d48501662a26deb8f1b1c63d6beef6691"
+    },
+    "yamada_anna": {
+      "entryId": "pc_yamada_anna_yamada_basketball_court_towel_water",
+      "sourceImage": "images/pc_yamada_anna_yamada_basketball_court_towel_water.jpg",
+      "rating": "All",
+      "reason": "运动后校服场景，人物轮廓完整、面部可辨。",
+      "sourceSha256": "1224b5fc13fa484fd0e7744c8a91d5119917e5e5819b17bccf189b1e255c2756",
+      "portraitSha256": "b7206082db0be3f8cfa897eae29b5c2658ee1bae3ecf7f1ac5e5b45d7a0d2071"
+    },
+    "waguri_kaoruko": {
+      "entryId": "pc_waguri_kaoruko_waguri_oven_fresh_bread_blush",
+      "sourceImage": "images/pc_waguri_kaoruko_waguri_oven_fresh_bread_blush.jpg",
+      "rating": "All",
+      "reason": "烘焙围裙场景，面部清楚且符合角色日常。",
+      "sourceSha256": "e3c9eaa4b4fbae1d3c78033906a8826573542eed695ecaf2a62230ce79c61bdb",
+      "portraitSha256": "5bf5a50cf45f2d58ed52ff527dfd5f237d99ec294d560d740386b7696045a7ff"
+    }
+  }
+}
