@@ -23,8 +23,10 @@ interface ThemeSeed {
 /** 角色级覆盖：形状尽量贴合角色意象（雷电=spark、女仆萌系=heart、魔女之夜=moon…）。 */
 const CHARACTER_SEEDS: Record<string, ThemeSeed> = {
   // 工作室角色
-  nene: { shape: 'moon', colors: ['#b895ff', '#f4a6d7'] },
-  natsume: { shape: 'lantern', colors: ['#f2bb68', '#8b6258'] },
+  // 工作室角色主色对齐 design-system.css 的全局角色令牌（2026-09-07 统一）：
+  // nene→--nene-violet #b784f6、natsume→--natsume-amber #fbb040。
+  nene: { shape: 'moon', colors: ['#b784f6', '#f4a6d7'] },
+  natsume: { shape: 'lantern', colors: ['#fbb040', '#8b6258'] },
   // 热门角色
   rem_rezero: { shape: 'heart', colors: ['#5a96ff', '#d28cf0'] },
   emilia_rezero: { shape: 'spark', colors: ['#cdb4ff', '#e8f0ff'] },

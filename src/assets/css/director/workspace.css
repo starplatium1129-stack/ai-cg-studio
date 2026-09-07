@@ -1,11 +1,23 @@
 /* Night journal: layout and surface ownership for the drawing workspace.
    The extra root class keeps lazy-loaded panel styles from changing the shell. */
-.pb.journal-workspace { --drawing-sticky-top: 80px; max-width: 1680px; padding: var(--s-6) var(--s-5); }
+.pb.journal-workspace {
+  /* 吸顶基准 = 贴顶导航(.nav)占用高度 + 呼吸余量。导航高度变化时只改这一处，
+     下方 max-height / scroll-margin-top 全部由它派生，避免三处魔数各自漂移。 */
+  --drawing-sticky-top: 80px;
+  /* 侧栏底部净空：含视口底安全区，吸顶基准之外再留出的高度 */
+  --drawing-sticky-bottom-gap: 30px;
+  /* 锚点跳转时标题上方的额外留白 */
+  --drawing-anchor-offset: 20px;
+  max-width: 1680px;
+  padding: var(--s-6) var(--s-5);
+}
 body:has(.pb.journal-workspace) .route-atmosphere-field,
 body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace > .nav-back { display: none; }
 .pb.journal-workspace .workspace-archive-bar { min-height: 0; padding: var(--s-2) var(--s-4); margin-bottom: var(--s-4); background: transparent; border-color: var(--border-soft); box-shadow: none; }
-.pb.journal-workspace .workspace-code, .pb.journal-workspace .workspace-radar, .pb.journal-workspace .workspace-line { display: none; }
+/* 2026-09-07: .workspace-radar / .workspace-line 的 DOM 已随归档栏精简移除，
+   只保留仍在渲染的 .workspace-code（工作台不展示归档编号）。 */
+.pb.journal-workspace .workspace-code { display: none; }
 .pb.journal-workspace .workspace-copy { flex: 1; display: flex; flex-direction: row; gap: var(--s-3); align-items: center; min-width: 0; }
 .pb.journal-workspace .workspace-copy strong { color: var(--text-muted); font-size: var(--fs-mono-xs); }
 .pb.journal-workspace .pb-topline { align-items: flex-start; gap: var(--s-5); margin-bottom: var(--s-4); }
@@ -19,7 +31,7 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .pb-managed-route-banner { margin-bottom: var(--s-4); border-color: var(--border-soft); background: var(--bg-surface); box-shadow: none; }
 .pb.journal-workspace .director-workspace { grid-template-columns: 310px minmax(0, 1fr) 270px; grid-template-areas: "story stage decisions"; gap: var(--s-4); align-items: start; }
 .pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: 330px minmax(0, 1fr); grid-template-areas: "story stage"; }
-.pb.journal-workspace .col-left, .pb.journal-workspace .col-right { position: sticky; top: var(--drawing-sticky-top); max-height: calc(100dvh - 110px); overflow-y: auto; padding-right: 0; scrollbar-width: thin; overscroll-behavior: contain; }
+.pb.journal-workspace .col-left, .pb.journal-workspace .col-right { position: sticky; top: var(--drawing-sticky-top); max-height: calc(100dvh - var(--drawing-sticky-top) - var(--drawing-sticky-bottom-gap)); overflow-y: auto; padding-right: 0; scrollbar-width: thin; overscroll-behavior: contain; }
 .pb.journal-workspace .col-right { display: flex; flex-direction: column; }
 .pb.journal-workspace[data-director-mode="basic"] .col-right { display: none; }
 .pb.journal-workspace .col-center { gap: var(--s-3); }
@@ -41,7 +53,7 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .gen-bar-actions .btn-primary:not(:disabled) { box-shadow: none; }
 .pb.journal-workspace .col-center > #stepResult { order: 2; }
 .pb.journal-workspace .drawing-jump-links { display: none; }
-.pb.journal-workspace #drawing-materials, .pb.journal-workspace #drawing-canvas, .pb.journal-workspace #stepResult { scroll-margin-top: 100px; }
+.pb.journal-workspace #drawing-materials, .pb.journal-workspace #drawing-canvas, .pb.journal-workspace #stepResult { scroll-margin-top: calc(var(--drawing-sticky-top) + var(--drawing-anchor-offset)); }
 @media (max-width: 1200px) {
   .pb.journal-workspace .director-workspace { grid-template-columns: 300px minmax(0, 1fr); grid-template-areas: "story stage" "story decisions"; }
   .pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: 300px minmax(0, 1fr); }

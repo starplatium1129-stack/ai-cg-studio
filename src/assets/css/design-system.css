@@ -186,10 +186,8 @@
 
   /* ---- Radius (DESIGN.md §Shapes) ----
      sm/md 输入与紧凑控件 | lg/xl 卡片与区块 | 2xl 浮层 | stage 画面框 | pill 筛选与状态
-     当前阶梯（2026-08-01 定稿）：博客式二次元圆润感，已从早期的方舟战术小圆角
-     （md 4 / lg 6）放宽到 md 10 / lg 14 / xl 16，与 DESIGN.md §Shapes 的
-     「控件 8–10px、卡片 14–20px、主舞台可到 24px」同步。
-     变更史不写在这里 —— 令牌区注释与声明不一致会让 AI 按错误基准改样式。 */
+     取值区间以 DESIGN.md §Shapes 为准：控件 8–10px、卡片 14–20px、主舞台可到 32px。
+     不记录变更史；改值必须同步 DESIGN.md —— 令牌区注释与声明不一致会让 AI 按错误基准改样式。 */
   --r-sm: 8px; --r-md: 10px; --r-lg: 16px; --r-xl: 20px;
   --r-2xl: 26px; --r-3xl: 30px; --r-stage: 32px; --r-pill: 999px;
   --r-brand-mark: 9px 15px 9px 15px;
@@ -1883,8 +1881,8 @@ dialog[open],
   }
 
   /* 图片回退：无法保证对比的装饰性背景直接隐藏，避免噪音 */
-  .hero-orbit::after,
-  .starfield::before {
+  /* 2026-09-07: .starfield 随装饰层退役移除，此处同步摘除死选择器 */
+  .hero-orbit::after {
     display: none;
   }
 }

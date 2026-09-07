@@ -1509,7 +1509,7 @@ html.companion-mode:not(.companion-desktop) body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 
+/*
 /*   ============================================================
    提醒气泡与剪贴卡（进出场动画）
   ============================================================ */
@@ -2061,7 +2061,7 @@ html.companion-immersive .companion-presence-cue {
  * 2026-08-16 桌宠主角化布局（用户照片反馈修复）
  * 现象：正常模式下顶栏下方的角色切换标签/状态胶囊/立绘状态按钮压在
  *       角色头部上，底部对话面板（气泡+语音提示条+输入栏）盖住膝盖
- *       以下；夏目（accent #f2bb68）的舞台背景光晕呈现为一大块黄色。
+ *       以下；夏目（accent #fbb040）的舞台背景光晕呈现为一大块黄色。
  * 修复：
  *  1) 桌面窗口改 flex 纵向三段（顶栏 / 立绘 / 对话面板），立绘占剩余
  *     高度并自适应缩放，UI 永不与角色重叠；
@@ -2204,7 +2204,7 @@ html.companion-desktop .companion-stage::after {
 }
 
 /* 立绘投影去主题色（关键）：presence 态原规则给 live2d-host 加
-   accent 色 drop-shadow（夏目 accent=#f2bb68 → 角色下半身一圈黄色
+   accent 色 drop-shadow（夏目 accent=#fbb040 → 角色下半身一圈黄色
    光晕，就是用户一直看到的"黄色块"）。桌面模式一律改中性深影。 */
 html.companion-desktop .companion-page .live2d-host,
 html.companion-desktop .companion-page .portrait-stage[data-presence="attentive"] .live2d-host,

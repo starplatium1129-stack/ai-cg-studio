@@ -46,8 +46,11 @@
          **不要**按发色去"纠正"它们。
        · 自动派生（带「派生：<依据>」注释）：按 characters.json 的 visual_dna
          发色/瞳色生成，未经目视校准，需人工复核后再定稿。
-     nene 不在此列：它沿用 .pb 默认态（accent 樱花粉 + aura 银紫 #b895ff），
+     nene 不在此列：它沿用 .pb 默认态（accent 樱花粉 + aura 银紫），
      这正是 DESIGN.md 写明的角色语义，不需要独立块覆盖。
+     工作室两位主角的主色以 design-system.css 的全局角色令牌为准（2026-09-07 统一）：
+     nene→--nene-violet #b784f6、natsume→--natsume-amber #fbb040。
+     改这两位的主色时必须同步 characterParticleTheme.ts 与 config/characters.ts。
      历史债：此前 20 套里 12 套的 id 在角色数据中根本不存在（6 套日文/英文
      语序写反、1 套简写、5 套死代码），等于只有 9 套真正生效。 */
   /* 派生：银白发 · 艾莉莎·米哈伊洛夫娜·九条 */
@@ -262,9 +265,11 @@
     --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
   }
   .pb[data-character="natsume"] {
-    --character-accent:#f2bb68; --character-accent-hover:#ffd08b;
-    --character-soft:rgba(242,187,104,.16); --character-glow:rgba(242,187,104,.28);
-    --character-aura:rgba(242,187,104,.26); --character-aura-secondary:rgba(139,98,88,.18);
+    /* 2026-09-07: 与 design-system.css 的 --natsume-amber(#fbb040) 对齐；
+       aura-secondary 沿用角色配对棕(#8b6258)，与 characterParticleTheme 一致。 */
+    --character-accent:#fbb040; --character-accent-hover:#fcc879;
+    --character-soft:rgba(251,176,64,.16); --character-glow:rgba(251,176,64,.28);
+    --character-aura:rgba(251,176,64,.26); --character-aura-secondary:rgba(139,98,88,.18);
   }
   /* 派生：青绿发 · 佩丽卡 */
   .pb[data-character="perlica_arknights"] {
@@ -384,7 +389,7 @@
     --character-aura:rgba(255,115,160,.32); --character-aura-secondary:rgba(120,210,255,.22);
   }
 
-  
+
   /* 派生：粉毛/蓝瞳 · 后藤一里 */
   .pb[data-character="gotoh_hitori"] {
     --character-accent:#f472b6; --character-accent-hover:#f9a8d4;
@@ -713,7 +718,7 @@
   body:has(.pb[data-character="misaka_mikoto"]) { --character-aura:rgba(255,160,40,.34); --character-aura-secondary:rgba(100,190,255,.22); }
   body:has(.pb[data-character="misono_mika"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
   body:has(.pb[data-character="mudrock_arknights"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="natsume"]) { --character-aura:rgba(242,187,104,.30); --character-aura-secondary:rgba(230,120,80,.20); }
+  body:has(.pb[data-character="natsume"]) { --character-aura:rgba(251,176,64,.30); --character-aura-secondary:rgba(230,120,80,.20); }
   body:has(.pb[data-character="perlica_arknights"]) { --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20); }
   body:has(.pb[data-character="quillpen_arknights"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
   body:has(.pb[data-character="raiden_shogun"]) { --character-aura:rgba(148,85,255,.34); --character-aura-secondary:rgba(235,185,75,.22); }
