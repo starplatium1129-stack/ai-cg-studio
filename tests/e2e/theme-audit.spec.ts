@@ -1,4 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { THEME_KEY } from '../../src/utils/storageKeys';
 
 // 美术巡检 —— 全局美术校准后的回归网。
 // 检查三类会真实破相的问题:
@@ -7,9 +9,7 @@ import { test, expect, type Page } from '@playwright/test';
 //   3. 文字/背景对比度不足(白字压白底的那类缺陷)
 // 前两类是硬失败;对比度做保守判定,只抓"几乎不可读"的极端值。
 //
-// 2026-08-28: 主题锁定深色(美术审计 · 方案 A),浅色分支已从全部样式树移除。
-// 这里仍保留 THEMES 数组与 applyTheme 的写属性动作 —— 属性写入本身是幂等的,
-// 且未来若恢复双主题,只需往数组里加回 'light' 即可,不必重写测试骨架。
+// 应用已恢复双主题，启动偏好与运行中的切换均须覆盖。
 
 // Vue Router 路径（重构前是 /tools/*.html）
 const PAGES = [
@@ -38,7 +38,7 @@ const PAGES = [
   '/docs/getting-started.html'
 ];
 
-const THEMES = ['dark'] as const;
+const THEMES = ['dark', 'light'] as const;
 
 function collectErrors(page: Page): string[] {
   const errors: string[] = [];
@@ -65,6 +65,7 @@ for (const theme of THEMES) {
   for (const target of PAGES) {
     test(`[${theme}] ${target} renders without errors, overflow or unreadable text`, async ({ page }) => {
       const errors = collectErrors(page);
+      await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: THEME_KEY, value: theme });
       await page.goto(target);
       await applyTheme(page, theme);
       // SPA 路由要等异步场景数据与图片落位，否则会在半渲染状态上做判定。
@@ -87,9 +88,20 @@ for (const theme of THEMES) {
 
       // ---- 3. 对比度:抓"几乎不可读"的文字 ----
       const unreadable = await page.evaluate(() => {
+        const colorCanvas = document.createElement('canvas');
+        colorCanvas.width = colorCanvas.height = 1;
+        const colorContext = colorCanvas.getContext('2d', { willReadFrequently: true })!;
         function parse(color: string): [number, number, number, number] | null {
           const match = color.match(/rgba?\(([^)]+)\)/);
-          if (!match) return null;
+          if (!match) {
+            // Chromium 对 color-mix 返回 color(srgb ...)，漏掉它会把深色遮罩当透明。
+            if (!CSS.supports('color', color)) return null;
+            colorContext.clearRect(0, 0, 1, 1);
+            colorContext.fillStyle = color;
+            colorContext.fillRect(0, 0, 1, 1);
+            const [r, g, b, alpha] = colorContext.getImageData(0, 0, 1, 1).data;
+            return [r, g, b, alpha / 255];
+          }
           const parts = match[1].split(',').map((value) => parseFloat(value.trim()));
           return [parts[0], parts[1], parts[2], parts.length > 3 ? parts[3] : 1];
         }
@@ -178,4 +190,48 @@ for (const theme of THEMES) {
       expect(unreadable, `${target} @ ${theme} 存在几乎不可读的文字`).toEqual([]);
     });
   }
+}
+
+
+for (const theme of THEMES) {
+  test('[' + theme + '] character accent meets AA on computed workspace surfaces', async ({ page }) => {
+    const css = readFileSync('src/assets/css/director/tokens.css', 'utf8');
+    const ids = [...new Set([...css.matchAll(/\.pb\[data-character="([^"]+)"\]/g)].map(m => m[1]))];
+    await page.addInitScript(({ key, value }) => localStorage.setItem(key, value), { key: THEME_KEY, value: theme });
+    await page.goto('/prompt-builder');
+    await expect(page.locator('.pb').first()).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    const failures = await page.evaluate((characters) => {
+      const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1;
+      const context = canvas.getContext('2d', { willReadFrequently: true })!;
+      function rgb(color: string) {
+        context.clearRect(0, 0, 1, 1); context.fillStyle = color; context.fillRect(0, 0, 1, 1);
+        return [...context.getImageData(0, 0, 1, 1).data].slice(0, 3);
+      }
+      function luminance(values: number[]) {
+        const v = values.map(n => { const c = n / 255; return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4; });
+        return v[0] * .2126 + v[1] * .7152 + v[2] * .0722;
+      }
+      const host = document.createElement('div'); host.className = 'pb'; host.style.transition = 'none';
+      const probe = document.createElement('span'); probe.style.color = 'var(--accent)'; host.append(probe);
+      document.body.append(host);
+      const failures: string[] = [];
+      try {
+        for (const id of characters) {
+          host.dataset.character = id;
+          for (const surface of ['--bg-deep', '--bg-base', '--bg-surface', '--bg-elevated']) {
+            probe.style.backgroundColor = 'var(' + surface + ')';
+            const computed = getComputedStyle(probe);
+            const a = luminance(rgb(computed.color)), b = luminance(rgb(computed.backgroundColor));
+            const contrast = (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+            if (contrast < 4.5) failures.push(id + '/' + surface + ': ' + contrast.toFixed(2));
+          }
+        }
+      } finally { host.remove(); }
+      return failures;
+    }, ids);
+    expect(ids.length).toBeGreaterThan(100);
+    expect(failures).toEqual([]);
+    await page.screenshot({ path: 'runtime/theme-workspace-' + theme + '.png', fullPage: true });
+  });
 }

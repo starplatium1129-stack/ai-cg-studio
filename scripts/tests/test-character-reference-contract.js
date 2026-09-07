@@ -119,3 +119,32 @@ test('character reference view: urls use external /character-references/ prefix 
     }
   }
 });
+
+
+test('reference asset audit shares gateway roots, rejects missing URLs and directories', (t) => {
+  const os = require('node:os');
+  const { auditReferenceView } = require('../maintenance/check-ref-urls');
+  const { resolveCharRefRoot } = require('../../server/config');
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-ref-root-'));
+  t.after(() => {
+    assert.ok(path.resolve(temp).startsWith(path.resolve(os.tmpdir()) + path.sep));
+    fs.rmSync(temp, { recursive: true, force: true });
+  });
+  const custom = path.join(temp, 'custom');
+  const legacy = path.join(temp, 'assets', 'character-references');
+  fs.mkdirSync(custom); fs.mkdirSync(legacy, { recursive: true });
+  fs.writeFileSync(path.join(custom, 'face.png'), 'fixture');
+  fs.writeFileSync(path.join(legacy, 'face.png'), 'fixture');
+  const view = refs => ({ example: { outfits: [{ outfitId: 'default', references: refs }] } });
+  const modern = view([{ url: '/character-references/face.png' }, { pending: true }]);
+  assert.equal(resolveCharRefRoot(temp, {}, ''), legacy);
+  assert.equal(auditReferenceView(modern, temp, {}).missing, 0);
+  const explicit = { AICS_CHARACTER_REF_ROOT: custom };
+  assert.equal(auditReferenceView(modern, temp, explicit).refRoot, resolveCharRefRoot(temp, explicit));
+  assert.equal(auditReferenceView(modern, temp, explicit).pending, 1);
+  assert.equal(auditReferenceView(view([{ url: '/assets/character-references/face.png' }]), temp, {}).missing, 0);
+  const invalid = view([{}, { url: '/character-references/%2e%2e/face.png' }, { url: '/character-references/' }]);
+  assert.equal(auditReferenceView(invalid, temp, explicit).missing, 3);
+  assert.equal(auditReferenceView(modern, temp, { AICS_CHARACTER_REF_ROOT: path.join(temp, 'absent') }).missing, 1);
+  assert.equal(resolveCharRefRoot(temp, { AICS_CHARACTER_REF_ROOT: path.join(custom, 'face.png') }), '');
+});

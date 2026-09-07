@@ -26,7 +26,7 @@
 1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。
 2. `reference:render` 生成参考图；`reference:design` 补三视图设计图。合计 4 种肖像机位 + 3 种设计机位。
 3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
-4. `check:ref-urls` 检查已发布 URL；pending 不等于真实资产，也不等于通过视觉审核。
+4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。
 
 `reference:full` 是 render → audit → repair，不包含自动完成所有新增形态登记与设计图的承诺。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
 
@@ -55,7 +55,7 @@
 | check:full | npm run validate：check + frontend + unit + contract；不包含 typecheck:app 或 build |
 | gate:full | typecheck + check + frontend + unit + contract + build，提交前完整入口 |
 | build:web / build:runtime | 前端与预算/预压；服务 TypeScript 编译 |
-| check:style-debt | 样式字面值、颜色、动画和深色对比度；浅色另做视觉验收 |
+| check:style-debt | 样式字面值、颜色、动画和双主题全局/角色令牌对比度；动态组件另做视觉验收 |
 | check:monolith / check:pinned-scenes / check:rewrite | 体量、定稿与改写完整性；rewrite 交付需传 --delivery |
 | check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
 | test:contract / test:e2e:critical | 契约套件与关键浏览器回归 |

@@ -173,7 +173,7 @@ hierarchy.
 > **2026-09-08 · 当前双主题契约**
 > 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
 > 本文色板为深色基线；新增颜色需适配两个主题，角色强调色与图片上文字分别验收。
-> check-contrast.js 当前只核算深色，不能代替浅色计算样式与视觉审查。
+> check-contrast.js 核算双主题全局令牌与角色强调色；浏览器计算样式和视觉审查仍须覆盖动态组件与图片叠字。
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.

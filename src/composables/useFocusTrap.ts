@@ -1,4 +1,4 @@
-import { useConfirmState } from '@/composables/useConfirm'
+import { useConfirmState } from './useConfirm.ts'
 import { ref, watch, onUnmounted, nextTick, type Ref } from 'vue'
 
 /**

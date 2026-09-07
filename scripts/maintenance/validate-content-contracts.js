@@ -296,49 +296,10 @@ function checkReferenceViewUrls() {
   } catch (error) {
     return ['character-reference-view.json cannot be parsed: ' + error.message];
   }
-  var errors = [];
-  var total = 0;
-  var missing = 0;
-  Object.keys(view).forEach(function (cid) {
-    var seenOutfits = {};
-    ((view[cid] && view[cid].outfits) || []).forEach(function (outfit) {
-      var refs = outfit.references || [];
-      if (seenOutfits[outfit.outfitId]) {
-        errors.push('character-reference-view: ' + cid + ' 存在重复形态条目 ' + outfit.outfitId
-          + '（跑 node scripts/maintenance/repair-character-reference-urls.js 修复）');
-      }
-      seenOutfits[outfit.outfitId] = true;
-      refs.forEach(function (ref) {
-        // 2026-08-31 设计图基线占位：pending 无 url（图未生成），前端渲染占位卡、
-        // check-ref-urls 门禁跳过；此处同口径跳过（total 只统计可检查条目），
-        // 避免占位条目被误报断链（sync-multi-outfit-standards.js 会为无资产形态写 pending）。
-        if (ref.pending || !ref.url) return;
-        total++;
-        // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences（url 前缀
-        // /character-references/）；找不到外部目录时退回项目 assets 兼容旧环境。
-        var rel = String(ref.url || '');
-        var target;
-        if (rel.indexOf('/character-references/') === 0) {
-          var ws = process.env.AI_WORKSPACE_ROOT || path.resolve(ROOT, '..', 'AI');
-          var candidate = path.join(ws, 'CharacterReferences');
-          var base = fs.existsSync(candidate) ? candidate : path.join(ROOT, 'assets');
-          target = path.join(base, rel.replace(/^\/character-references\//, ''));
-        } else {
-          target = path.join(ROOT, 'assets', rel.replace(/^\/assets\//, ''));
-        }
-        if (!rel || !fs.existsSync(target)) {
-          missing++;
-          if (missing <= 10) {
-            errors.push('character-reference-view 断链: ' + cid + '/' + outfit.outfitId + ' -> ' + ref.url);
-          }
-        }
-      });
-    });
-  });
-  if (missing > 10) {
-    errors.push('character-reference-view 断链共 ' + missing + '/' + total
-      + ' 条（跑 node scripts/maintenance/repair-character-reference-urls.js 修复，修复前先看 runtime/maintenance-backups/ 的快照）');
-  }
+  var result = require('./check-ref-urls').auditReferenceView(view, ROOT);
+  var errors = result.errors.map(function (error) { return 'character-reference-view: ' + error; });
+  if (result.missing) errors.push('参考图缺失 ' + result.missing + '/' + result.total
+    + '；素材根目录: ' + (result.refRoot || '(未配置)') + '。先确认素材路径与同步，不自动改写索引。');
   return errors;
 }
 

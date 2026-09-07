@@ -89,17 +89,23 @@ function resolveSceneShowcaseDir(rootDir, configured, workspaceRoot) {
  * 无参考图优雅降级，server 侧不挂 /character-references 路由）。
  */
 function resolveCharRefRoot(appRoot, env, workspaceRoot) {
+  function isDirectory(candidate) {
+    try { return fs.statSync(candidate).isDirectory(); } catch { return false; }
+  }
   if (env.AICS_CHARACTER_REF_ROOT) {
     var explicit = path.resolve(env.AICS_CHARACTER_REF_ROOT);
-    if (fs.existsSync(explicit)) return explicit;
+    if (isDirectory(explicit)) return explicit;
+    return ''; // 显式配置失效时不静默切换到另一份素材。
   }
   var bases = workspaceRoot
     ? [workspaceRoot, path.resolve(appRoot, '..', 'AI')]
     : [path.resolve(appRoot, '..', 'AI')];
   for (var i = 0; i < bases.length; i++) {
     var candidate = path.join(bases[i], 'CharacterReferences');
-    if (fs.existsSync(candidate)) return candidate;
+    if (isDirectory(candidate)) return candidate;
   }
+  var legacy = path.join(path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets')), 'character-references');
+  if (isDirectory(legacy)) return legacy;
   return '';
 }
 

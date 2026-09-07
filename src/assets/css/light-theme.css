@@ -68,7 +68,7 @@
 }
 /* Every registered character keeps its hue. Bright source accents become readable ink. */
 :root[data-theme="light"] .pb {
-  --accent: color-mix(in srgb, var(--character-accent) 48%, var(--ink-base));
+  --accent: color-mix(in srgb, var(--character-accent) 40%, var(--ink-base));
   --accent-hover: color-mix(in srgb, var(--character-accent) 34%, var(--ink-base));
   --character-ink: var(--accent);
 }
@@ -82,7 +82,7 @@
 :root[data-theme="light"] .home-hero[data-muse] { --accent-hover: var(--accent); }
 :root[data-theme="light"] .nav-logo { filter: brightness(.42); }
 
-:root[data-theme="light"] .chat-page { --character-ink: color-mix(in srgb, var(--character-accent) 48%, var(--ink-base)); }
+:root[data-theme="light"] .chat-page { --character-ink: color-mix(in srgb, var(--character-accent) 40%, var(--ink-base)); }
 
 /* Count labels remain readable instead of inheriting translucent dark-theme treatments. */
 :root[data-theme="light"] :is(.pop-franchise-count, .pop-char-btn small, .pop-cat em, .franchise-count, .popular-group-count, .cb-count) { opacity: 1; color: var(--text-muted); }

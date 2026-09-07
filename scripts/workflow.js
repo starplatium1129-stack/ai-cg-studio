@@ -211,7 +211,7 @@ const WORKFLOWS = {
     opts: '[--update-baseline] 重新生成基线（体量真降后用）',
   },
   'check:contrast': {
-    desc: '深色主题文字对比度门禁（WCAG AA）',
+    desc: '双主题全局与角色强调色对比度门禁（WCAG AA）',
     cmd: ['node', 'scripts/maintenance/check-contrast.js', '--check'],
     docs: 'AGENTS.md#质量红线',
   },

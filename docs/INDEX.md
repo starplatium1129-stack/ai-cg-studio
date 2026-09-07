@@ -16,6 +16,8 @@
 | [桌面部署](desktop-deployment.md) | 增量、完整安装与 UAC |
 | [本次文档审计](documentation-audit-2026-09-08.md) | 漂移修正、检查结果和边界 |
 
+本次已完成修复见 [非主机代码修复与验证](archive/completed/code-only-repairs-2026-09-08.md)。
+
 ## 专题指南与待复核底稿
 
 专题中的历史数字和实验参数只适用于记录时点；未来任务统一以 roadmap 排序。

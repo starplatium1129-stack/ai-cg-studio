@@ -4,6 +4,8 @@
 
 ## 已完成与整理前快照
 
+- [非主机代码修复与验证](completed/code-only-repairs-2026-09-08.md)
+
 - [001 — 修复高频交互的合成层性能](completed/001-interaction-compositor-fixes.md)
 - [002 — 补齐导演台状态交接与退出反馈](completed/002-director-workflow-continuity.md)
 - [003 — 收敛动效令牌并保留 reduced-motion 反馈](completed/003-motion-accessibility-tokens.md)

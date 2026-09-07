@@ -18,7 +18,8 @@
     --character-accent:#ff75a0; --character-accent-hover:#ffa3c2;
     --character-soft:rgba(255,117,160,.16); --character-glow:rgba(255,117,160,.38);
     --character-aura:rgba(183,132,246,.28); --character-aura-secondary:rgba(255,117,160,.20);
-    --accent:var(--character-accent); --accent-hover:var(--character-accent-hover);
+    /* 深色文字强调色提亮，原始角色色继续用于氛围光；浅色由 light-theme.css 覆盖。 */
+    --accent:color-mix(in srgb, var(--character-accent) 60%, var(--text-primary)); --accent-hover:var(--character-accent-hover);
     --accent-soft:var(--character-soft); --accent-glow:var(--character-glow);
     /* 刻意设计：角色主题切换时 6 个继承型 @property 颜色在 --motion-atmosphere
        （当前 560ms）内整树渐变，配合 characterGlassSweep 扫光完成换装交接。

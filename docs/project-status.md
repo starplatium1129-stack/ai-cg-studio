@@ -18,7 +18,7 @@
 ## 已有能力与边界
 
 - Vue 3、Vite、TypeScript、Pinia；Express 网关与 Tauri 2 桌面壳。业务状态在 composable/store，服务端服务以 TypeScript 源与生成产物协同维护。
-- 深浅主题已接入，默认深色；实现见 useTheme.ts、AppThemeToggle.vue、light-theme.css。对比度脚本目前只核算深色，浅色需补自动门禁并持续做视觉验收。
+- 深浅主题已接入，默认深色；实现见 useTheme.ts、AppThemeToggle.vue、light-theme.css。对比度脚本已覆盖双主题全局令牌与角色强调色；组件级动态样式仍需浏览器视觉验收。
 - SD/WAI、Anima、Krea 2 分引擎编译。Anima 当前默认 MiaoMiao Harem v1.2；具体模型/采样参数从生产配置与路由读取，不沿用历史实验表。
 - Krea 2 的基础 T-Enhancer 已接线（routes/anima/workflows.js），旧文档“Enhancer 关闭”失效；高级节点与风格 API 仍需独立验证。
 - 场景/热门角色/参考库、作品册、聊天/语音/Live2D、视频分镜与桌宠已有实现。已有实现不等于本轮真实设备或出图复验通过。

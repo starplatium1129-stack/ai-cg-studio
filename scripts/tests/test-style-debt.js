@@ -225,3 +225,25 @@ const carriers = [...htmlFiles, ...sfcFiles].reduce((total, rel) => {
 }, 0);
 console.log('inline style occurrences: ' + carriers);
 });
+
+
+test('contrast: parses real theme overrides, nested mixes and alpha without silent skips', () => {
+  const assert = require('node:assert/strict');
+  const { block, resolveColor, ratio, themes, characterThemes } = require('../maintenance/check-contrast');
+  const css = ':root[data-theme="light"] { --ink: #111; } :root { --ink: #fff; }';
+  assert.equal(block(':root', css)['--ink'], '#fff');
+  assert.throws(() => block('.missing', css), /Missing CSS token block/);
+  assert.equal(themes.length, 2);
+  assert.notEqual(themes[0][1]['--text-primary'], themes[1][1]['--text-primary']);
+  const mix = resolveColor({ '--a': '#ffffff', '--b': '#000000' }, 'color-mix(in srgb, var(--a) 40%, var(--b))');
+  assert.deepEqual(mix, [102, 102, 102]);
+  assert.equal(ratio([0, 0, 0], [255, 255, 255]), 21);
+  assert.deepEqual(resolveColor({}, '#fff0', [10, 20, 30]), [10, 20, 30]);
+  assert.deepEqual(resolveColor({}, 'rgba(255,255,255,50%)', [0, 0, 0]), [127.5,127.5,127.5]);
+  assert.deepEqual(resolveColor({}, 'var(--missing, #abc)'), [170,187,204]);
+  assert.equal(resolveColor({ '--a': 'var(--a)' }, 'var(--a)'), null);
+  assert.equal(resolveColor({}, 'unsupported(blue)'), null);
+  assert.equal(resolveColor({}, 'rgba(..,0,0,1)'), null);
+  assert.equal(resolveColor({}, 'color-mix(in srgb, #fff ..%, #000)'), null);
+  assert.ok(characterThemes().some(([name]) => name.startsWith('light /')));
+});
