@@ -18,6 +18,8 @@
 
 本次已完成修复见 [非主机代码修复与验证](archive/completed/code-only-repairs-2026-09-08.md)。
 
+图标规范见 [DESIGN](../DESIGN.md#iconography)，逐枚升级记录见 [图标完成记录](archive/completed/icon-refinement-2026-09-08.md)。
+
 ## 专题指南与待复核底稿
 
 专题中的历史数字和实验参数只适用于记录时点；未来任务统一以 roadmap 排序。

@@ -4,6 +4,8 @@
 
 ## 已完成与整理前快照
 
+- [手绘图标逐枚升级](completed/icon-refinement-2026-09-08.md)
+
 - [非主机代码修复与验证](completed/code-only-repairs-2026-09-08.md)
 
 - [001 — 修复高频交互的合成层性能](completed/001-interaction-compositor-fixes.md)
