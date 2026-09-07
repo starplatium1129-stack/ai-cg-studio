@@ -268,14 +268,15 @@
               <strong>{{ activeModel.label }}</strong>
               <p>{{ activeModel.summary }}</p>
             </div>
-            <ul v-if="activeModel.missing.length" class="video-missing-list">
-              <li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li>
-            </ul>
+            <details v-if="activeModel.missing.length" class="video-advanced">
+              <summary>需要安装 {{ activeModel.missing.length }} 项资源 · 查看详情</summary>
+              <ul class="video-missing-list"><li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li></ul>
+            </details>
             <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
-              ComfyUI 节点已支持；安装以上权重后即可启用生成按钮。
+              ComfyUI 节点已支持；安装所列资源后即可启用生成按钮。
             </p>
             <p v-else-if="activeModel.missing.length" class="video-install-note">
-              以上是该路线的最小模型组合；应用配方与真实 GPU 验证完成前保持不可生成。
+              所列资源是该路线的最小模型组合；应用配方与真实 GPU 验证完成前保持不可生成。
             </p>
             <div v-if="activeModel.id === 'minimax-h3'" class="video-route-note">
               <strong>推荐用法</strong>

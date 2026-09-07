@@ -1,42 +1,27 @@
 import { expect, test } from '@playwright/test'
 
-test('scene atlas particles morph with the selected archive theme', async ({ page }) => {
+// Discovery uses character artwork; particle contracts remain on the other narrative surfaces.
+test.beforeEach(async ({ page }) => {
   await page.goto('/scene-explorer')
-
-  const field = page.locator('.scene-atlas-particles')
-  await expect(field).toBeVisible()
-  await expect(field).toHaveAttribute('aria-label', /全部场景/)
-  await expect(field.locator('canvas')).toBeVisible()
-
-  const canvasSize = await field.locator('canvas').evaluate((canvas: HTMLCanvasElement) => ({
-    cssWidth: canvas.getBoundingClientRect().width,
-    cssHeight: canvas.getBoundingClientRect().height,
-    bitmapWidth: canvas.width,
-    bitmapHeight: canvas.height,
-  }))
-  expect(canvasSize.cssWidth).toBeGreaterThan(240)
-  expect(canvasSize.cssHeight).toBeGreaterThan(200)
-  expect(canvasSize.bitmapWidth).toBeGreaterThanOrEqual(canvasSize.cssWidth)
-  expect(canvasSize.bitmapHeight).toBeGreaterThanOrEqual(canvasSize.cssHeight)
-
-  await page.locator('.scene-cats').getByRole('button', { name: /恋爱/ }).click()
-  await expect(field).toHaveAttribute('aria-label', /恋爱场景/)
-  await expect(field.locator('.particle-caption')).toHaveText('ARCHIVE 02 / 09')
+  const guide = page.getByRole('dialog', { name: '访客导览' })
+  if (await guide.isVisible()) await guide.getByRole('button', { name: '开始创作', exact: true }).click()
 })
 
-test('particle atmosphere respects reduced motion and narrow screens', async ({ page }) => {
+test('discovery theme changes preserve the selected character portrait', async ({ page }) => {
+  const atlas = page.locator('.scene-atlas')
+  await atlas.getByRole('button', { name: '四季夏目', exact: true }).click()
+  await page.locator('.scene-cats').getByRole('button', { name: /恋爱/ }).click()
+  await expect(atlas.locator('.eyebrow')).toContainText('恋爱')
+  await expect(atlas.locator('img.current')).toHaveAttribute('alt', '四季夏目')
+  await expect(atlas.locator('canvas')).toHaveCount(0)
+})
+
+test('discovery artwork respects reduced motion and leaves search reachable on phones', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/scene-explorer')
-
-  const field = page.locator('.scene-atlas-particles')
-  await expect(field).toHaveClass(/is-static/)
-  await expect(field.locator('canvas')).toBeVisible()
-
-  const overflow = await page.evaluate(() => ({
-    viewport: window.innerWidth,
-    document: document.documentElement.scrollWidth,
-    body: document.body.scrollWidth,
-  }))
-  expect(Math.max(overflow.document, overflow.body)).toBeLessThanOrEqual(overflow.viewport + 1)
+  await page.evaluate(() => scrollTo(0, 0))
+  const portrait = page.locator('.scene-atlas-portrait img.current')
+  expect(await portrait.evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s')
+  await expect(page.locator('#sceneSearch')).toBeInViewport()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(391)
 })

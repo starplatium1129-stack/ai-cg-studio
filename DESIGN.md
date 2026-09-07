@@ -393,6 +393,17 @@ Nene context may use silver-violet accents; Natsume context may use amber-coffee
 accents. Character art is meaningful identity content, not a watermark. Keep it
 subtle behind controls and fully legible on character or result-focused pages.
 
+## Character presence and operational clarity
+
+Discovery uses readable character artwork and a brief line of dialogue, with the
+same integrated lower-edge caption treatment as home. Do not reintroduce a
+technical particle scanner in place of the character. On phones, shorten the
+introduction so search remains visible in the first viewport.
+
+Invitations can be emotional; action labels, progress, and failures must be
+literal and useful. Missing previews are explicitly labeled. Resource filenames
+belong inside installation details, not in the default creative composition.
+
 ## Do's and Don'ts
 
 ### Do

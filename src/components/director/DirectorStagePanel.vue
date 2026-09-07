@@ -28,7 +28,7 @@
         <div v-if="generationBusy" class="stage-generating-copy">
           <div class="stage-generating-title">心动画面正在显影…</div>
           <div class="stage-generating-sub">
-            {{ generationStatusText || '宁宁：“魔女的星辉正在汇聚……” · 夏目：“……模型还在跑，不准急着刷新。”' }}
+            {{ generationStatusText || '正在绘制这一幕，请稍候。' }}
             <template v-if="generationProgress !== null"> {{ Math.round(generationProgress * 100) }}%</template>
             <template v-else-if="drawEngine !== 'sd'"> · 已等待 {{ animaElapsed }} 秒</template>
             <template v-if="drawEngine !== 'sd' && animaCurrentNode"> · 节点 {{ animaCurrentNode }}</template>
@@ -38,14 +38,13 @@
           </div>
         </div>
         <div v-else-if="generationError" class="stage-idle">
-          <div class="stage-placeholder-title">「呜哇……这次施法好像打了个喷嚏」</div>
+          <div class="stage-placeholder-title">这次画面未能生成</div>
           <div class="stage-placeholder-copy">
-            宁宁：“对不起！是不是哪里没衔接好……”<br>
-            夏目：“……别慌，检查一下提示词或显存，重新施法一次就好。”
+            查看下方原因，调整后再试一次。
             <span v-if="generationError" class="stage-error-detail">（{{ generationError }}）</span>
           </div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('generate')">再试一次，宁宁会更努力的！</button>
+            <button class="btn btn-primary" type="button" @click="$emit('generate')">重新生成</button>
             <!-- F2：本次失败不毁掉上一张未入册成片——它还在暂存里，一键找回 -->
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
               找回上一张未入册成片
@@ -53,25 +52,24 @@
           </div>
         </div>
         <div v-else-if="generationStopped" class="stage-idle">
-          <div class="stage-placeholder-title">「诶？先停下来了吗？」</div>
+          <div class="stage-placeholder-title">已停止生成</div>
           <div class="stage-placeholder-copy">
-            夏目：“草稿给你收进柜子里了。调整好参数，随时都能继续定格。”<br>
-            宁宁：“宁宁随时都在等您再启笔哦~”
+            可以调整场景与参数，准备好后继续。
           </div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('generate')">继续定格这一幕</button>
+            <button class="btn btn-primary" type="button" @click="$emit('generate')">继续生成</button>
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
               找回上一张未入册成片
             </button>
           </div>
         </div>
         <div v-else class="stage-idle">
-          <div class="stage-placeholder-title">「呐，今天要把哪一幕心动画成 CG 呢？」</div>
+          <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">
-            宁宁：“那个……画布和光线都调好啦，随时告诉我你的构思吧！”<br>
-            夏目：“……别愣着。从左边挑一个场景，或者自己写一段故事。”
+            先挑一个场景，或在创作素材里写下你的构思。
           </div>
           <div class="stage-quick-actions">
+            <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
             <button
               v-if="drawEngine === 'anima'"
               class="btn btn-ghost"
@@ -80,7 +78,7 @@
               @click="$emit('openInpaint')"
             >
               <ArchiveIcon name="inpaint" />
-              <span>魔法衣橱 · 换装工坊</span>
+              <span>导入图片换装</span>
             </button>
             <button class="btn btn-ghost" type="button"
               :disabled="interrogateBusy"
@@ -88,12 +86,9 @@
               @click="triggerInterrogatePick"
               @paste="onInterrogatePaste">
               <ArchiveIcon name="search" />
-              <span>{{ interrogateBusy ? '夏目正在读心…' : '夏目的读心术 · 反推灵感' }}</span>
+              <span>{{ interrogateBusy ? '正在读取图片…' : '从图片提取灵感' }}</span>
             </button>
-            <button class="btn btn-ghost" type="button"
-              @click="$emit('exploreScenes')">
-              翻开场景图鉴 · 挑选心动瞬间
-            </button>
+
           </div>
           <div v-if="interrogateError" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
           <input ref="interrogateInputRef" class="sr-only" type="file" accept="image/*" @change="onInterrogateFile" />

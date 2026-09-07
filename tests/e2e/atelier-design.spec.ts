@@ -61,3 +61,25 @@ for (const width of [1440, 768, 390]) {
     expect(errors).toEqual([])
   })
 }
+
+
+test('discovery companion selection displays matching readable artwork', async ({ page }) => {
+  await openAtelier(page, '/scene-explorer')
+  const atlas = page.locator('.scene-atlas')
+  await atlas.getByRole('button', { name: '四季夏目', exact: true }).click()
+  await expect(atlas).toHaveAttribute('data-companion', 'natsume')
+  const portrait = atlas.locator('.scene-atlas-portrait img.current')
+  await expect(portrait).toHaveAttribute('alt', '四季夏目')
+  await expect.poll(() => portrait.evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+  await expect(atlas.locator('figcaption')).toContainText('今天的故事，由你来选')
+  await expect(atlas.locator('canvas')).toHaveCount(0)
+})
+
+test('drawing invitation leads to scene discovery without starting generation', async ({ page }) => {
+  let submissions = 0
+  page.on('request', request => { if (request.method() === 'POST' && /anima\/jobs$/.test(request.url())) submissions++ })
+  await openAtelier(page, '/prompt-builder')
+  await page.locator('.stage-idle').getByRole('button', { name: '挑选场景', exact: true }).click()
+  await expect(page).toHaveURL(/scene-explorer/)
+  expect(submissions).toBe(0)
+})

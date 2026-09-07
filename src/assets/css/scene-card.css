@@ -192,3 +192,6 @@
 /* 位移量：层宽 220%，要让右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
 @keyframes archive-skeleton-shimmer { to { transform: translateX(-54.5%); } }
 @media (prefers-reduced-motion: reduce) { .sc-thumb-skeleton.visible { animation:none; } }
+
+/* An unavailable preview is explicit; keep frame dimensions stable while it loads. */
+.sc-preview-unavailable { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--s-4); color: var(--text-muted); font-size: var(--fs-label-sm); background: var(--bg-deep); }

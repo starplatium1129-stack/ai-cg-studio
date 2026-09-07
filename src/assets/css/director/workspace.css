@@ -46,7 +46,8 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
 .pb.journal-workspace .stage-placeholder-title { font-size: var(--fs-title-sm); line-height: var(--lh-label); }
 .pb.journal-workspace .stage-placeholder-copy { max-width: 380px; color: var(--text-secondary); }
 .pb.journal-workspace .stage-quick-actions { gap: var(--s-2); }
-.pb.journal-workspace .stage-quick-actions .btn { background: var(--bg-surface); font-size: var(--fs-label-sm); }
+.pb.journal-workspace .stage-quick-actions .btn { font-size: var(--fs-label-sm); }
+.pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
 .pb.journal-workspace .result-image-wrap { border-color: var(--border-soft); border-radius: var(--r-xl); box-shadow: none; }
 .pb.journal-workspace .gen-bar { top: var(--drawing-sticky-top); padding: var(--s-3) var(--s-4); background: var(--bg-surface); border-color: var(--border-soft); border-radius: var(--r-lg); box-shadow: none; backdrop-filter: none; transition: none; }
 .pb.journal-workspace .gen-bar-actions .btn { border-radius: var(--r-md); min-height: 42px; }

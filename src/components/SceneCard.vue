@@ -28,6 +28,7 @@
         @load="thumbLoaded = true"
         @error="thumbFailed = true"
       />
+      <span v-if="thumbFailed || !thumbId" class="sc-preview-unavailable">样张暂缺 · 场景可用</span>
       <span v-if="thumbId" class="sc-id">{{ thumbId.toUpperCase() }}</span>
       <span v-if="contentRating === 'R18'" class="sc-badge sc-rating r18">R18</span>
       <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
