@@ -1,17 +1,7 @@
 <template>
   <article class="chat-page">
-    <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
-    <WorkspaceArchiveBar
-      chapter="09"
-      title="CHARACTER ROOM"
-      :subtitle="`${currentCharacter.name} · PRIVATE MEMORY`"
-      :status="busy ? 'COMPOSING' : (voiceActive ? 'VOICE PLAYBACK' : (chatReady ? 'ROOM READY' : 'ROOM OFFLINE'))"
-      :state="busy || voiceActive ? 'active' : (chatReady ? 'success' : 'warning')"
-      :shape="activeChar === 'natsume' ? 'lantern' : 'heart'"
-    />
     <header class="chat-head">
       <div>
-        <div class="page-kicker">人物記録 / Character room</div>
         <h1 class="chat-title">角色房间 <span>静かな対話室</span></h1>
         <p class="chat-subtitle">让宁宁或夏目陪你聊一会儿。对谈、声线与温暖记忆，都安静珍藏于本机。</p>
       </div>
@@ -315,7 +305,6 @@ import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
 import ChatUserProfilePanel from '@/components/ChatUserProfilePanel.vue'
 import ChatMemoryPanel from '@/components/ChatMemoryPanel.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
-import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useVoiceInput, type VoiceTextSource, type VoiceInputState } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'

@@ -102,8 +102,8 @@ export function createLayoutFitController(
       // 用实际 canvas 尺寸做比例（不同模型画布不同），不硬编码 420×610
       const canvasSize = ctx.session?.getCanvasSize() ?? { width: 420, height: 610 }
       const ws = ctx.hostEl.clientWidth / canvasSize.width, hs = ctx.hostEl.clientHeight / canvasSize.height
-      // 舞台按角色卡片尺寸缩放画布；上限放宽到 1.28，让模型尽量撑满
-      const scale = Math.min(1.28, Math.min(ws, hs) * 0.995)
+      // Follow the available stage even on tall desktop windows; a fixed cap leaves empty space.
+      const scale = Math.min(ws, hs) * 0.995
       ctx.session?.setStageScale(scale > 0 ? scale : 1)
       fit()
     } catch {}

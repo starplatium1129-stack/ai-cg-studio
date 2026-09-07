@@ -68,8 +68,11 @@
           <span>{{ chatStatusText }}</span>
         </div>
       </div>
-      <p class="character-caption">{{ character.caption }}</p>
-      <p class="character-description" :title="character.description">{{ character.description }}</p>
+      <details class="character-about">
+        <summary>关于{{ character.name }}</summary>
+        <p class="character-caption">{{ character.caption }}</p>
+        <p class="character-description">{{ character.description }}</p>
+      </details>
       <div
         v-if="live2d.ready.value"
         class="live2d-wardrobe"

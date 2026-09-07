@@ -26,11 +26,11 @@
       <div class="library-layout">
         <CharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail">
-      <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
+      <section v-if="current" ref="profileAnchor" :style="{ '--portrait-ratio': portraitRatio }" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }">
           <img v-if="current.portrait?.image && !brokenPortraits.has(current.id)" class="portrait-image"
             :src="current.portrait.image" :alt="current.portrait.alt || current.name"
-            loading="eager" decoding="async"
+            loading="eager" decoding="async" @load="measurePortrait"
             @error="markPortraitBroken(current.id)" />
           <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> {{ isPopular ? '角色场景样张' : '角色立绘' }}</span>
           <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
@@ -260,6 +260,11 @@ const route = useRoute()
 const router = useRouter()
 const characters = ref<CharacterProfile[]>([])
 const scenes = ref<CharacterScene[]>([])
+const portraitRatio = ref(0.7)
+function measurePortrait(event: Event) {
+  const image = event.target as HTMLImageElement
+  if (image.naturalHeight) portraitRatio.value = image.naturalWidth / image.naturalHeight
+}
 const loading = ref(true)
 const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
