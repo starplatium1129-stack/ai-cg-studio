@@ -100,6 +100,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-security.js',
     'test-tunnel-restart.js',
     'test-upstream-health.js',
+    'test-precompressed.js',
     'test-video-ai.js',
     'test-video-routes.js',
   ]),

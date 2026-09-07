@@ -16,3 +16,5 @@
   font: 600 13px/1.6 "PingFang SC", "Microsoft YaHei", sans-serif;
   letter-spacing: 0.34em;
 }
+
+:root[data-theme="light"] #app:empty::before { background: #f8f5f8; color: #645c6e; }

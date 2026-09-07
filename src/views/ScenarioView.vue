@@ -1,5 +1,5 @@
 <template>
-  <article class="page" style="--page-max:1100px">
+  <article class="page scenario-page" style="--page-max:1450px">
     <ArchivePageHero
       chapter="08"
       section="Narrative sequence"
@@ -12,20 +12,22 @@
       <h1 class="title">剧本模式</h1>
       <p class="subtitle">将一段动人的相遇拆解为多幕 CG 叙事；每一幕均凝炼完整的场景结构、色彩基调与意象表达。</p>
     </ArchivePageHero>
+    <CreativeLibraryNav />
 
     <div class="info-callout" data-reveal>
       <strong>◎ 叙事美学</strong> | 每一幕皆为独立而连贯的动态叙事画面。切换右上角角色后，全分幕的镜头与构图意象将在宁宁与夏目之间灵动流转。
       当前灵感场景共有 <strong>{{ sceneCount }}</strong> 个。
     </div>
 
+    <div class="scenario-workspace">
     <!-- 剧本列表 -->
-    <div v-if="!activeScenario" class="scenario-list stagger-container" data-reveal data-reveal-delay="1">
+    <div class="scenario-list" data-reveal data-reveal-delay="1">
       <!-- 必须是 button:这是进入剧本查看器的唯一入口,
            原先是 <div @click>,没有 role/tabindex/keydown → 键盘完全进不去 -->
       <button
         v-for="s in SCENARIOS" :key="s.id"
         type="button"
-        class="scenario-card card-create card-level-2"
+        class="scenario-card" :class="{ active: activeScenario?.id === s.id }" :aria-pressed="activeScenario?.id === s.id"
         @click="openScenario(s)"
       >
         <span class="scenario-icon" aria-hidden="true"><ArchiveIcon :name="s.iconName" /></span>
@@ -37,7 +39,7 @@
     </div>
 
     <!-- 分幕查看器 -->
-    <div v-else class="viewer show">
+    <div v-if="activeScenario" class="viewer show">
       <div class="viewer-header-row">
         <div>
           <h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" /> {{ activeScenario.name }}</h2>
@@ -104,12 +106,13 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-ghost" type="button" @click="activeScenario = null">← 返回剧本列表</button>
+    </div>
     </div>
   </article>
 </template>
 
 <script setup lang="ts">
+import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -143,7 +146,7 @@ const BASE_NEG = 'lowres, bad anatomy, bad hands, text, error, missing fingers, 
 const RES_MAP = SCENARIO_RES_MAP
 const CHARACTER_OPTIONS = [...SCENARIO_CHARACTERS] as const
 
-const activeScenario = ref<Scenario | null>(null)
+const activeScenario = ref<Scenario | null>(SCENARIOS[0] || null)
 const currentChar = ref<ScenarioCharacter>('nene')
 const sceneCount = ref('--')
 
@@ -229,6 +232,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.scenario-workspace { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: var(--s-6); align-items: start; }
+.scenario-page .scenario-list { position: sticky; top: 82px; display: grid; grid-template-columns: 1fr; gap: var(--s-3); }
+.scenario-page .scenario-card { min-height: 0; padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-primary); text-align: left; }
+.scenario-page .scenario-card.active { border-color: var(--accent); background: var(--accent-soft); }
+.scenario-page .scenario-en { display: none; }
+.scenario-page .viewer-header-row { position: sticky; top: 72px; z-index: var(--z-sticky); background: var(--bg-surface); padding: var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-lg); }
+@media(max-width:900px) { .scenario-workspace { grid-template-columns: 1fr; } .scenario-page .scenario-list { position: static; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media(max-width:600px) { .scenario-page .scenario-list { grid-template-columns: 1fr; } }
+
 .info-callout { margin-bottom:var(--s-5); padding:var(--s-3) var(--s-4); border:1px solid var(--accent); border-radius:var(--r-md); background:var(--accent-soft); font-size:var(--fs-body-sm); }
 .info-callout strong { color:var(--accent); }
 .scenario-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--s-4); }

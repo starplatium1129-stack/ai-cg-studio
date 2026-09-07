@@ -49,6 +49,7 @@
       <span v-if="!t8State.available" class="video-t8-hint">任务会自动重新探测，无需重启</span>
     </div>
 
+    <nav v-if="selectedMode !== 'shots'" class="video-jump-nav" aria-label="视频工作区导航"><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">任务状态</a></nav>
     <div class="video-workspace">
       <div class="video-creation-column">
         <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
@@ -106,7 +107,7 @@
           </p>
         </section>
 
-        <section class="video-panel video-brief-panel">
+        <section id="video-brief" class="video-panel video-brief-panel">
           <div class="video-panel-heading">
             <div>
               <span class="video-step">01 · 镜头意图</span>
@@ -132,7 +133,7 @@
           </div>
         </section>
 
-        <section class="video-panel">
+        <section id="video-settings" class="video-panel">
           <div class="video-panel-heading">
             <div>
               <span class="video-step">02 · 成片方向</span>
@@ -313,7 +314,7 @@
           </button>
         </section>
 
-        <section class="video-panel video-queue-panel" aria-live="polite">
+        <section id="video-queue" class="video-panel video-queue-panel" aria-live="polite">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
               <span class="video-step">任务队列</span>
@@ -806,6 +807,10 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.video-jump-nav { display: flex; gap: var(--s-3); margin-bottom: var(--s-4); }
+.video-jump-nav a { padding: var(--s-2) var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-md); font-size: var(--fs-label); color: var(--text-secondary); background: var(--bg-surface); }
+#video-brief, #video-settings, #video-queue { scroll-margin-top: 90px; }
+
 .video-studio {
   --page-max: 1480px;
   width: min(var(--page-max), calc(100% - clamp(28px, 5vw, 72px)));

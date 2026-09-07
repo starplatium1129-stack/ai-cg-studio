@@ -1,10 +1,14 @@
 <template>
-  <article class="page" style="--page-max: 1100px;">
+  <article class="page library-page" style="--page-max:1500px;">
+    <header class="library-header"><div><div class="page-kicker">SCENE LIBRARY / 角色场景库</div><h1>角色场景</h1><p>选角色、挑场景，再带着完整设定进入绘图工作台。</p></div><RouterLink :to="'/character?character=' + encodeURIComponent(selectedId)" class="btn btn-ghost">查看角色档案</RouterLink></header>
+    <div class="library-layout">
+      <CharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
+      <div class="library-detail">
     <section class="pop-hero">
       <div class="pop-hero-copy">
-        <div class="page-kicker">Popular scene library / 热门角色场景库</div>
-        <h1 class="title">角色场景</h1>
-        <p class="subtitle">{{ characters.length }} 位热门角色的全部场景蓝图，每一幕均已预设镜头、光线与叙事氛围；成人场景独立标注，可一键直达绘图页。</p>
+        <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
+        <h2>{{ selectedCharacter?.displayName || '选择一个角色' }}</h2>
+        <p class="subtitle">每个场景都已配好镜头与光线。选择喜欢的一幕，在工作台继续调整。</p>
         <div class="pop-hero-stat" aria-label="场景统计">
           <strong>{{ totalScenes }}</strong><span>场景蓝图</span>
           <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
@@ -22,33 +26,6 @@
         :style="{ '--archive-blue': particleTheme.accent, '--character-aura': particleTheme.aura }"
       />
     </section>
-
-    <!-- 2026-08-15：作品筛选条 + 角色横排（按作品收敛，33 个不再一滚到底） -->
-    <div class="pop-char-area">
-      <div class="character-find"><input v-model="characterQuery" type="search" aria-label="搜索角色或作品" placeholder="输入角色名或作品名，快速找到角色…" @keydown.enter="stripCharacters[0] && selectCharacter(stripCharacters[0].id)" /><button v-if="characterQuery" class="btn btn-ghost btn-sm" type="button" @click="characterQuery = ''">清除</button></div>
-      <div class="pop-franchise-strip" role="group" aria-label="按作品筛选角色">
-        <button type="button" class="pop-franchise" :class="{ active: activeFranchise === '' }"
-          :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
-          全部 <span class="pop-franchise-count">{{ characters.length }}</span>
-        </button>
-        <button v-for="f in franchises" :key="f.name" type="button"
-          class="pop-franchise" :class="{ active: activeFranchise === f.name }"
-          :aria-pressed="activeFranchise === f.name" @click="pickFranchise(f.name)">
-          {{ f.label }} <span class="pop-franchise-count">{{ f.count }}</span>
-        </button>
-      </div>
-      <p v-if="!stripCharacters.length" class="character-find-empty" role="status">没有匹配的角色。可以清除搜索或切换作品；下方仍显示{{ selectedCharacter?.displayName }}的场景。</p>
-      <div class="pop-char-strip" role="group" aria-label="选择热门角色">
-        <button
-          v-for="character in stripCharacters" :key="character.id" type="button"
-          class="pop-char-btn" :class="{ active: selectedId === character.id }"
-          :aria-pressed="selectedId === character.id"
-          @click="selectCharacter(character.id)">
-          <strong>{{ character.displayName }}</strong>
-          <small>{{ franchiseLabel(franchiseKey(character.franchise)) }}</small>
-        </button>
-      </div>
-    </div>
 
     <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" message="正在载入热门角色档案与场景蓝图。" />
     <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景读取失败" :message="loadError">
@@ -126,13 +103,16 @@
         </article>
       </div>
     </template>
+      </div>
+    </div>
   </article>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
+import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
 import {
   inferBlueprintDecisions,
   type PopularCharacter,
@@ -145,6 +125,7 @@ import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 
 const route = useRoute()
+const router = useRouter()
 const sceneStore = useSceneStore()
 
 const loading = ref(true)
@@ -165,25 +146,10 @@ const showMature = ref(true)
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
 
-// 2026-08-15：角色选择条按作品筛选——先选作品，横排只显示该作品角色（33 个不再一滚到底）。
-const activeFranchise = ref('')
-const characterQuery = ref('')
-
-const franchises = computed(() => {
-  const seen = new Map<string, number>()
-  for (const c of characters.value) { const key = franchiseKey(c.franchise); seen.set(key, (seen.get(key) ?? 0) + 1) }
-  return [...seen.entries()]
-    .map(([name, count]) => ({ name, label: franchiseLabel(name), count }))
-    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-CN'))
-})
-
-/** 角色条：按作品筛选后的角色；「全部」时仍全量横排 */
-const stripCharacters = computed(() => {
-  const term = characterQuery.value.trim().toLocaleLowerCase()
-  return characters.value.filter(character => (!activeFranchise.value || franchiseKey(character.franchise) === activeFranchise.value)
-    && (!term || [character.displayName, character.id, character.franchise, franchiseLabel(character.franchise)].join(' ').toLocaleLowerCase().includes(term)))
-    .sort((a, b) => Number(b.displayName.toLocaleLowerCase() === term) - Number(a.displayName.toLocaleLowerCase() === term))
-})
+const directoryItems = computed(() => characters.value.map(character => ({
+  id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases,
+  image: '/assets/characters/thumbs/popular-' + character.id + '.webp',
+})))
 
 /** 当前角色的全部蓝图（资格按成熟开关收敛）。 */
 const selectedCharacter = computed(() =>
@@ -285,13 +251,9 @@ function timeLabel(value: string): string {
 
 function selectCharacter(id: string) {
   selectedId.value = id
+  if (route.query.character !== id) void router.replace({ query: { ...route.query, character: id } })
   category.value = 'all'
-}
-function pickFranchise(name: string) {
-  activeFranchise.value = name
-  category.value = 'all'
-  const first = stripCharacters.value[0]
-  if (first) selectedId.value = first.id
+  query.value = ''
 }
 function drawUrl(blueprint: SceneBlueprint): string {
   return `/prompt-builder?popular=${encodeURIComponent(selectedId.value)}&blueprint=${encodeURIComponent(blueprint.id)}`

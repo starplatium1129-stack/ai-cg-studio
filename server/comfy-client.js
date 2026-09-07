@@ -20,8 +20,7 @@
 
 var crypto = require('crypto');
 var fs = require('fs');
-var http = require('http');
-var https = require('https');
+var requestBuffered = require('./buffered-request').requestBuffered;
 var path = require('path');
 
 var CLIENT_ID_PATTERN = /^[a-zA-Z0-9-]{8,80}$/;
@@ -76,56 +75,24 @@ function comfyError(status, code, message, detail) {
  * 字节上限/错误分类口径互不一致；server 内部另有一份更旧的残部）。
  * 返回 {status,headers,body(Buffer)}，不解析 JSON；默认 10s 超时 / 2MB 上限。
  */
-function requestComfy(config, method, pathname, body, timeoutMs, maxBytes) {
-  return new Promise(function (resolve, reject) {
-    var target;
-    try { target = new URL(config.COMFY_HOST); } catch (error) {
-      reject(comfyError(502, 'COMFY_CONFIG_INVALID', 'ComfyUI 地址无效'));
-      return;
-    }
-    var rawPath = String(pathname || '/');
-    var queryIndex = rawPath.indexOf('?');
-    target.pathname = queryIndex >= 0 ? rawPath.slice(0, queryIndex) : rawPath;
-    target.search = queryIndex >= 0 ? rawPath.slice(queryIndex) : '';
-    var payload = body === undefined || body === null ? null : Buffer.from(JSON.stringify(body));
-    var client = target.protocol === 'https:' ? https : http;
-    var headers = { Accept: 'application/json' };
-    if (payload) {
-      headers['Content-Type'] = 'application/json';
-      headers['Content-Length'] = payload.length;
-    }
-    var request = client.request({
-      protocol: target.protocol,
-      hostname: target.hostname,
-      port: target.port,
-      method: method,
-      path: target.pathname + target.search,
-      headers: headers,
-      timeout: timeoutMs || 10000,
-    }, function (response) {
-      var chunks = [];
-      var size = 0;
-      response.on('data', function (chunk) {
-        size += chunk.length;
-        if (size > (maxBytes || 2 * 1024 * 1024)) {
-          request.destroy(comfyError(502, 'COMFY_RESPONSE_TOO_LARGE', 'ComfyUI 响应过大'));
-          return;
-        }
-        chunks.push(chunk);
-      });
-      response.on('end', function () {
-        resolve({ status: response.statusCode || 0, headers: response.headers, body: Buffer.concat(chunks) });
-      });
-    });
-    request.on('error', function (error) {
-      if (error && error.code) reject(error);
-      else reject(comfyError(502, 'COMFY_UNAVAILABLE', error && error.message || 'ComfyUI 不可用'));
-    });
-    request.on('timeout', function () {
-      request.destroy(comfyError(504, 'COMFY_TIMEOUT', 'ComfyUI 请求超时'));
-    });
-    if (payload) request.write(payload);
-    request.end();
+async function requestComfy(config, method, pathname, body, timeoutMs, maxBytes) {
+  let target;
+  try { target = new URL(config.COMFY_HOST); } catch { throw comfyError(502, 'COMFY_CONFIG_INVALID', 'ComfyUI 地址无效'); }
+  const rawPath = String(pathname || '/');
+  const queryIndex = rawPath.indexOf('?');
+  target.pathname = queryIndex >= 0 ? rawPath.slice(0, queryIndex) : rawPath;
+  target.search = queryIndex >= 0 ? rawPath.slice(queryIndex) : '';
+  const payload = body === undefined || body === null ? null : Buffer.from(JSON.stringify(body));
+  const headers = { Accept:'application/json' };
+  if (payload) { headers['Content-Type'] = 'application/json'; headers['Content-Length'] = payload.length; }
+  return requestBuffered(target, {
+    method, headers, body:payload, timeoutMs:timeoutMs || 10000, maxBytes:maxBytes || 2 * 1024 * 1024,
+    makeError(kind, error) {
+      if (kind === 'timeout') return comfyError(504, 'COMFY_TIMEOUT', 'ComfyUI 请求超时');
+      if (kind === 'tooLarge') return comfyError(502, 'COMFY_RESPONSE_TOO_LARGE', 'ComfyUI 响应过大');
+      if (kind === 'network' && error?.code) return error;
+      return comfyError(502, 'COMFY_UNAVAILABLE', error?.message || 'ComfyUI 连接中断');
+    },
   });
 }
 

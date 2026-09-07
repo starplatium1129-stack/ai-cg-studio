@@ -90,7 +90,7 @@ test('a failed media load can be retried in place', async ({ page }) => {
 test('character names can be found directly and selected with Enter', async ({ page }) => {
   await page.goto('/popular-scenes')
   await page.getByRole('searchbox', { name: '搜索角色或作品' }).fill('芙莉莲')
-  await expect(page.locator('.pop-char-btn strong').first()).toHaveText('芙莉莲')
+  await expect(page.locator('.directory-label strong').first()).toHaveText('芙莉莲')
   await page.getByRole('searchbox', { name: '搜索角色或作品' }).press('Enter')
-  await expect(page.locator('.pop-char-btn').first()).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('.directory-item').first()).toHaveAttribute('aria-pressed', 'true')
 })

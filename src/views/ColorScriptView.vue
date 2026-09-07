@@ -12,6 +12,7 @@
       <h1 class="title">色彩情绪</h1>
       <p class="subtitle">诉说今日的心境与情绪，为画面的每一缕光色与阴影谱写专属基调。</p>
     </ArchivePageHero>
+    <CreativeLibraryNav />
 
     <div class="info-callout" data-reveal>
       <strong>◎ 色彩美学</strong> | 色相与情绪深度共鸣（暖金之温馨、樱粉之悸动、幽蓝之静谧深邃）。选择一抹情绪，工坊将自动推演出对应的色彩语言、光影理由与提示词标签。
@@ -95,6 +96,7 @@
 </template>
 
 <script setup lang="ts">
+import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
 import { ref, computed } from 'vue'
 import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'

@@ -667,7 +667,7 @@ onMounted(() => { init() })
 .scene-atlas .subtitle { max-width:38rem; color:var(--text-secondary); line-height:var(--lh-loose); }
 .scene-atlas[data-companion="nene"] { --accent: var(--nene-violet); }
 .scene-atlas[data-companion="natsume"] { --accent: var(--natsume-amber); }
-.scene-atlas-portrait { position: relative; min-height: 320px; overflow: hidden; border-radius: var(--r-lg); background: var(--bg-deep); }
+.scene-atlas-portrait { position: relative; min-height: 230px; overflow: hidden; border-radius: var(--r-lg); background: var(--bg-deep); }
 .scene-atlas-portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0; transition: opacity var(--motion-atmosphere); }
 .scene-atlas-portrait img.current { opacity: 1; }
 .scene-atlas-portrait figcaption { position: absolute; inset: auto 0 0; padding: var(--s-6) var(--s-5) var(--s-4); background: linear-gradient(0deg, var(--bg-deep) 72%, transparent); color: var(--text-primary); font: 400 var(--fs-body)/var(--lh-loose) var(--font-serif); }

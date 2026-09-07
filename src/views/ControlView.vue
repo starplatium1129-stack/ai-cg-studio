@@ -11,7 +11,7 @@
         </RouterLink>
         <div class="nav-local-actions">
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
-          <AppSoundToggle />
+          <AppThemeToggle /><AppSoundToggle />
         </div>
       </div>
     </nav>
@@ -335,6 +335,7 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
+import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { useToast } from '@/composables/useToast'
@@ -460,9 +461,10 @@ onUnmounted(() => { status.stopPolling() })
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
 }
 .control-rail-brand {
-  display: flex; align-items: center; gap: var(--s-3); padding: 0 var(--s-3) var(--s-5);
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-3); padding: 0 var(--s-3) var(--s-5);
   color: var(--text-primary); text-decoration: none;
 }
+.control-rail-brand .nav-logo { max-width: 160px; width: 100%; height: auto; }
 .control-rail-brand strong { display: block; font: 750 var(--fs-body-sm) var(--font-sans); letter-spacing: .02em; }
 .control-rail-brand small {
   display: block; margin-top: 2px; color: var(--text-muted);

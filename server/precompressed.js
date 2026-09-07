@@ -25,65 +25,48 @@ var MIME_BY_EXT = {
   '.map': 'application/json; charset=utf-8'
 };
 
-function precompressed(rootDir) {
-  return function (req, res, next) {
+function precompressed(rootDir, options) {
+  const root = path.resolve(rootDir);
+  const assetRoot = path.resolve(options?.assetsRoot || path.join(root, 'assets'));
+  const stat = file => fs.promises.stat(file).catch(() => null);
+  return async function (req, res, next) {
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-    if (!PRECOMPRESSIBLE.test(req.path)) return next();
-
-    var accept = String(req.headers['accept-encoding'] || '');
-    var encoding = /\bbr\b/.test(accept) ? 'br' : (/\bgzip\b/.test(accept) ? 'gzip' : '');
-    if (!encoding) return next();
-
-    // 只服务白名单目录，且必须落在 root 内（防目录穿越）
-    var allowed = /^\/(?:_app\/|data\/|assets\/|css\/|docs\/|index\.html$)/.test(req.path);
-    if (!allowed) return next();
-
-    var base = req.path === '/index.html' || req.path.indexOf('/_app/') === 0
-      ? path.join(rootDir, 'dist', req.path)
-      : path.join(rootDir, req.path);
-    var resolved = path.resolve(base);
-    if (resolved.indexOf(path.resolve(rootDir) + path.sep) !== 0) return next();
-
-    var suffix = encoding === 'br' ? '.br' : '.gz';
-    var compressedFile = resolved + suffix;
-    if (!fs.existsSync(compressedFile)) return next();
-
-    // data/ 的公开白名单与 server.js 同源（server/public-data.js）：防止 data/
-    // 下新增 json（如个人内容）经由预压产物绕过白名单直接外发。
-    if (req.path.indexOf('/data/') === 0) {
-      var name = req.path.replace(/^\/data\//, '');
-      if (publicDataFiles.indexOf(name) === -1) return next();
-    }
-
-    // 直接把预压文件发出去。改写 req.url 交给下游是不行的：
-    // 后面的 /data 白名单会看到 "scenes.json.br" 而拒掉。
-    res.setHeader('Content-Encoding', encoding);
-    res.setHeader('Vary', 'Accept-Encoding');
-    // 必须手工设置 Content-Type：实际文件名是双扩展名（如 scenes.json.br），
-    // send 库按完整扩展名判定会得到错误类型；且 send 对已存在的头不覆盖，
-    // 所以先在这里按"原始扩展名"给出正确类型。Express 5 起 serve-static v2
-    // 移除了 express.static.mime，这里用与 PRECOMPRESSIBLE 同范围的零依赖映射。
-    var type = MIME_BY_EXT[path.extname(resolved).toLowerCase()];
-    if (type) {
-      res.setHeader('Content-Type', type);
-    }
-    // 缓存策略要与未压缩版本一致
-    if (req.path.indexOf('/_app/') === 0 || req.path.indexOf('/data/') === 0) {
-      // _app 带内容 hash；data 由客户端 ?v=DATA_VERSION 版本化，均可长期缓存
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    } else if (/\.(?:html|json)$/i.test(req.path)) {
-      res.setHeader('Cache-Control', 'no-cache');
-    }
-    res.sendFile(compressedFile, function (error) {
-      // 发送失败（文件刚被删等）就回退到未压缩路径
-      if (error && !res.headersSent) {
-        res.removeHeader('Content-Encoding');
+    let pathname;
+    try { pathname = decodeURIComponent(req.path); } catch { return next(); }
+    if (!PRECOMPRESSIBLE.test(pathname) || /[\\\0]/.test(pathname) || pathname.split('/').some(part => part.startsWith('.'))) return next();
+    if (!/^\/(?:_app\/|data\/|assets\/|css\/|docs\/|index\.html$)/.test(pathname)) return next();
+    if (!req.acceptsEncodings('br', 'gzip')) return next();
+    if (pathname.startsWith('/data/') && !publicDataFiles.includes(pathname.slice(6))) return next();
+    const isAsset = pathname.startsWith('/assets/');
+    const base = isAsset ? assetRoot : root;
+    const relative = isAsset ? pathname.slice(8) : (pathname === '/index.html' || pathname.startsWith('/_app/') ? 'dist' + pathname : pathname.slice(1));
+    const original = path.resolve(base, relative);
+    if (!original.startsWith(base + path.sep)) return next();
+    try {
+      const [source, brotli, gzip] = await Promise.all([stat(original), stat(original + '.br'), stat(original + '.gz')]);
+      if (res.destroyed) return;
+      if (!source?.isFile()) return next();
+      const available = [];
+      if (brotli?.isFile() && brotli.mtimeMs >= source.mtimeMs) available.push('br');
+      if (gzip?.isFile() && gzip.mtimeMs >= source.mtimeMs) available.push('gzip');
+      if (!available.length) return next();
+      const encoding = req.acceptsEncodings(available);
+      if (!encoding) return next();
+      const file = original + (encoding === 'br' ? '.br' : '.gz');
+      res.setHeader('Content-Encoding', encoding);
+      res.vary('Accept-Encoding');
+      const type = MIME_BY_EXT[path.extname(original).toLowerCase()];
+      if (type) res.setHeader('Content-Type', type);
+      const versioned = pathname.startsWith('/_app/') || (pathname.startsWith('/data/') && pathname !== '/data/character-reference-view.json');
+      res.setHeader('Cache-Control', versioned ? 'public, max-age=31536000, immutable' : 'no-cache');
+      res.sendFile(file, error => {
+        if (!error) return;
+        if (res.headersSent) return next(error);
+        for (const name of ['Content-Encoding', 'Content-Length', 'ETag', 'Last-Modified', 'Content-Range']) res.removeHeader(name);
         next();
-      }
-    });
+      });
+    } catch (error) { next(error); }
   };
 }
 
-module.exports = {
-  precompressed:precompressed
-};
+module.exports = { precompressed };

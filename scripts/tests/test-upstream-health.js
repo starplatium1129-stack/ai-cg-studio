@@ -171,3 +171,34 @@ test('pingOllamaDetail：/api/ps 汇总模型与显存，非 2xx 回落 /api/tag
     }
   });
 });
+
+
+test('bounded transports reject partial responses and enforce a total deadline', async () => {
+  const comfy = require('../../server/comfy-client');
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type':'application/json' });
+    res.write(' ');
+    if (req.url === '/partial') { setTimeout(() => res.destroy(), 15); return; }
+    const timer = setInterval(() => res.write(' '), 15);
+    res.on('close', () => clearInterval(timer));
+  });
+  const base = await listen(server);
+  try {
+    await assert.rejects(health.requestJson(base, '/partial', null, 500), /aborted|reset|hang up/i);
+    await assert.rejects(comfy.requestComfy({ COMFY_HOST:base }, 'GET', '/partial', null, 500), error => error.code === 'COMFY_UNAVAILABLE');
+    const start = Date.now();
+    await assert.rejects(health.requestJson(base, '/trickle', null, 90), /timeout/);
+    await assert.rejects(comfy.requestComfy({ COMFY_HOST:base }, 'GET', '/trickle', null, 90), error => error.code === 'COMFY_TIMEOUT');
+    assert.ok(Date.now() - start < 1500, 'trickled data must not keep a probe pending indefinitely');
+  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
+});
+
+test('requestJson preserves an explicitly supplied false JSON payload', async () => {
+  const server = http.createServer((req, res) => {
+    let body = ''; req.on('data', chunk => { body += chunk; });
+    req.on('end', () => res.end(JSON.stringify({ method:req.method, body })));
+  });
+  const base = await listen(server);
+  try { assert.deepEqual((await health.requestJson(base, '/', false, 500)).data, { method:'POST', body:'false' }); }
+  finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
+});

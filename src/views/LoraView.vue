@@ -14,6 +14,7 @@
         <p class="subtitle">专属模型凝结着角色的容颜细节与神态气质。出图时由工坊智能调度，在此浏览核心特征与最佳推荐权重。</p>
       </div>
     </div>
+    <CreativeLibraryNav />
     <ArchiveStatePanel
       v-if="loading"
       kind="loading"
@@ -35,14 +36,18 @@
       message="导入模型后，专属角色与画风档案将在此静候取用。"
     >
     </ArchiveStatePanel>
-    <div v-else class="lora-grid">
-      <div v-for="l in loras" :key="l.id" class="lora-card">
+    <template v-else>
+    <div class="model-search-row"><input v-model="modelQuery" type="search" aria-label="搜索模型" placeholder="按模型、角色或触发词查找…" /><span role="status">{{ visibleLoras.length }} / {{ loras.length }} 个模型</span></div>
+    <p v-if="!visibleLoras.length">没有匹配的模型。<button class="btn btn-ghost btn-sm" @click="modelQuery = ''">清除搜索</button></p>
+    <div class="lora-grid">
+      <div v-for="l in visibleLoras" :key="l.id" class="lora-card">
         <div class="lora-header">
           <span class="lora-name">{{ l.name }}</span>
           <span v-if="l.version" class="lora-version">v{{ l.version }}</span>
           <span v-if="l.experimental" class="badge badge-warning">实验预览</span>
         </div>
         <div v-if="l.description" class="lora-desc">{{ l.description }}</div>
+        <details v-if="l.description && l.description.length > 100" class="model-details"><summary>展开完整说明</summary><p>{{ l.description }}</p></details>
         <div class="lora-meta">
           <span v-if="l.recommendedWeight" class="lora-pill">推荐权重 {{ formatLoraWeight(l.recommendedWeight) }}</span>
           <span v-if="l.baseModel" class="lora-pill">{{ l.baseModel }}</span>
@@ -81,11 +86,13 @@
         </section>
       </div>
     </div>
+    </template>
   </article>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
+import { ref, computed, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
@@ -97,6 +104,8 @@ import {
 
 const sceneStore = useSceneStore()
 const loras = ref<LoraCatalogEntry[]>([])
+const modelQuery = ref('')
+const visibleLoras = computed(() => { const term = modelQuery.value.trim().toLocaleLowerCase(); return loras.value.filter(model => !term || [model.name, model.character, model.baseModel, model.description, ...model.triggerWords].join(' ').toLocaleLowerCase().includes(term)) })
 const loading = ref(true)
 const loadError = ref('')
 
@@ -117,6 +126,13 @@ onMounted(() => { void loadCatalog() })
 </script>
 
 <style scoped>
+.model-details { font-size: var(--fs-label); color: var(--text-secondary); margin-bottom: var(--s-3); }
+.model-details summary { cursor: pointer; }
+.lora-grid .lora-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.model-search-row { display: flex; align-items: center; gap: var(--s-4); margin-bottom: var(--s-5); }
+.model-search-row input { width: min(440px, 100%); min-height: 42px; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); background: var(--bg-surface); font: inherit; }
+.model-search-row span { color: var(--text-muted); font-size: var(--fs-label); }
+
 .lora-title-row {
   display:flex;
   align-items:flex-end;

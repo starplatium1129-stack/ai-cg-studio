@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
+import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
 
 const props = defineProps<{
   characters: PopularCharacter[]
@@ -17,47 +17,9 @@ const emit = defineEmits<{
   'select-outfit': [outfitId: string]
 }>()
 
-/** 2026-08-15：33 角色分组布局——作品筛选条 + franchise 分区网格 */
-const activeFranchise = ref('all')
-const brokenPortraits = ref(new Set<string>())
-
-const keyword = computed(() => props.search.trim().toLowerCase())
-// v-model 走 update:search 事件回写父级，不直接改 prop（单向数据流）
-const searchProxy = computed({
-  get: () => props.search,
-  set: value => emit('update:search', value),
-})
-const filteredCharacters = computed(() => {
-  const base = !keyword.value
-    ? props.characters
-    : props.characters.filter(character =>
-        [character.displayName, character.originalName, character.id, character.franchise, franchiseLabel(franchiseKey(character.franchise)), ...character.aliases]
-          .some(text => text.toLowerCase().includes(keyword.value)),
-      )
-  if (keyword.value || activeFranchise.value === 'all') return base
-  return base.filter(character => franchiseKey(character.franchise) === activeFranchise.value)
-})
-
-const franchises = computed(() => {
-  const seen = new Map<string, number>()
-  for (const character of props.characters) {
-    const key = franchiseKey(character.franchise)
-    seen.set(key, (seen.get(key) ?? 0) + 1)
-  }
-  return [...seen.entries()].map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count || franchiseLabel(a.name).localeCompare(franchiseLabel(b.name), 'zh-CN'))
-})
-
-/** 按作品分组的角色列表；搜索命中时保持原样（已按关键词过滤） */
-const groupedCharacters = computed(() => {
-  if (keyword.value || activeFranchise.value !== 'all') return null
-  const groups: { franchise: string; characters: PopularCharacter[] }[] = []
-  for (const franchise of franchises.value) {
-    const members = filteredCharacters.value.filter(c => franchiseKey(c.franchise) === franchise.name)
-    if (members.length) groups.push({ franchise: franchise.name, characters: members })
-  }
-  return groups
-})
+const searchProxy = computed({ get: () => props.search, set: value => emit('update:search', value) })
+const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: '/assets/characters/thumbs/popular-' + character.id + '.webp' })))
+function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) emit('select', character) }
 
 const selectedCharacter = computed<PopularCharacter | null>(() =>
   props.characters.find(c => c.id === props.selectedCharacterId) ?? null,
@@ -71,86 +33,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 
 <template>
   <div class="popular-picker">
-    <div class="popular-search-wrap">
-      <ArchiveIcon name="search" class="popular-search-icon" />
-      <input v-model="searchProxy" class="popular-search" type="search"
-        placeholder="搜索角色或作品，如 raiden / Saber / Re:Zero" aria-label="搜索热门角色" />
-    </div>
-    <div v-if="!keyword" class="popular-franchises" role="group" aria-label="按作品筛选">
-      <button type="button" class="franchise-chip" :class="{ active: activeFranchise === 'all' }"
-        :aria-pressed="activeFranchise === 'all'" @click="activeFranchise = 'all'">
-        全部 <span class="franchise-count">{{ characters.length }}</span>
-      </button>
-      <button v-for="franchise in franchises" :key="franchise.name" type="button"
-        class="franchise-chip" :class="{ active: activeFranchise === franchise.name }"
-        :aria-pressed="activeFranchise === franchise.name" @click="activeFranchise = franchise.name">
-        {{ franchiseLabel(franchise.name) }} <span class="franchise-count">{{ franchise.count }}</span>
-      </button>
-    </div>
-    <div v-if="groupedCharacters" class="popular-groups" role="group" aria-label="热门角色">
-      <section v-for="group in groupedCharacters" :key="group.franchise" class="popular-group">
-        <h4 class="popular-group-head">{{ franchiseLabel(group.franchise) }}<span class="popular-group-count">{{ group.characters.length }}</span></h4>
-        <div class="popular-grid">
-          <button v-for="character in group.characters" :key="character.id"
-            type="button" class="popular-card"
-            :class="{ active: character.id === props.selectedCharacterId }"
-            :aria-pressed="character.id === props.selectedCharacterId"
-            @click="emit('select', character)">
-            <span class="popular-card-avatar" aria-hidden="true">
-              <img
-                v-if="!brokenPortraits.has(character.id)"
-                :src="`/assets/characters/thumbs/popular-${character.id}.webp`"
-                :alt="character.displayName"
-                class="popular-avatar-img"
-                loading="lazy"
-                decoding="async"
-                @error="brokenPortraits.add(character.id)"
-              />
-              <span v-else class="popular-card-fallback">
-                <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
-                  <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
-                  <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
-                  <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
-                </svg>
-                <span class="initial-text">{{ character.displayName.charAt(0) }}</span>
-              </span>
-            </span>
-            <span class="popular-card-name">{{ character.displayName }}</span>
-          </button>
-        </div>
-      </section>
-    </div>
-    <div v-else class="popular-grid" role="group" aria-label="热门角色">
-      <button v-for="character in filteredCharacters" :key="character.id"
-        type="button" class="popular-card"
-        :class="{ active: character.id === props.selectedCharacterId }"
-        :aria-pressed="character.id === props.selectedCharacterId"
-        @click="emit('select', character)">
-        <span class="popular-card-avatar" aria-hidden="true">
-          <img
-            v-if="!brokenPortraits.has(character.id)"
-            :src="`/assets/characters/thumbs/popular-${character.id}.webp`"
-            :alt="character.displayName"
-            class="popular-avatar-img"
-            loading="lazy"
-            decoding="async"
-            @error="brokenPortraits.add(character.id)"
-          />
-          <span v-else class="popular-card-fallback">
-            <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
-              <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.2" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
-              <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
-              <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
-            </svg>
-            <span class="initial-text">{{ character.displayName.charAt(0) }}</span>
-          </span>
-        </span>
-        <span class="popular-card-name">{{ character.displayName }}</span>
-        <span class="popular-card-franchise">{{ franchiseLabel(character.franchise) }}</span>
-      </button>
-    </div>
+    <CharacterDirectory :items="directoryItems" :selected-id="selectedCharacterId" v-model:search="searchProxy" @select="selectFromDirectory" />
     <div v-if="selectedCharacter" class="popular-outfits">
       <div class="popular-outfits-head">
         <ArchiveIcon name="wardrobe" class="outfits-head-icon" />
@@ -172,6 +55,8 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 </template>
 
 <style scoped>
+.popular-picker :deep(.character-directory) { position: static; max-height: 400px; border: 0; border-radius: 0; background: transparent; }
+
 .popular-picker {
   display: contents;
 }

@@ -1,23 +1,6 @@
 <template>
-  <article class="page character-page" style="--page-max:1100px">
-    <ArchivePageHero
-      chapter="03"
-      section="Identity file"
-      :shape="heroTheme.shape"
-      :portrait-id="current?.id || ''"
-      :label="`${current?.name || '角色'}的人物剪影粒子标记`"
-      caption="PERSONA 03 / 08"
-      compact
-      :style="{ '--archive-blue': heroTheme.accent, '--character-aura': heroTheme.aura }"
-    >
-      <div class="page-kicker">Character routes</div>
-      <h1 class="title">角色档案</h1>
-      <p class="subtitle">视觉特征、性格轨迹与专属模型——珍藏她们在绘境工坊中的每一缕灵动设定。</p>
-      <template #meta>
-        <span class="archive-status">LOCAL PROFILE</span>
-        <span class="archive-status">{{ characters.length || '—' }} SUBJECTS</span>
-      </template>
-    </ArchivePageHero>
+  <article class="page character-page library-page" style="--page-max:1500px">
+    <header class="library-header"><div><div class="page-kicker">CHARACTER LIBRARY / 角色资料库</div><h1>角色档案</h1><p>从左侧查找角色，在这里查看形象、设定与创作参考。</p></div><RouterLink to="/popular-scenes" class="btn btn-ghost">浏览角色场景</RouterLink></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -40,79 +23,9 @@
       message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
-      <!-- 2026-08-15：全量角色浏览——作品筛选条 + 分区网格 + 搜索；选中后下方展示档案 -->
-      <div class="character-browse" data-reveal>
-        <div class="cb-search-wrap">
-          <ArchiveIcon name="search" class="cb-search-icon" />
-          <input v-model="search" class="cb-search" type="search"
-            placeholder="搜索角色名或作品，如 宁宁 / Surtr / Fate" aria-label="搜索角色" />
-        </div>
-        <div v-if="!search.trim()" class="cb-franchises" role="group" aria-label="按作品筛选">
-          <button type="button" class="cb-franchise" :class="{ active: activeFranchise === '' }"
-            :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
-            全部 <span class="cb-count">{{ characters.length }}</span>
-          </button>
-          <button v-for="f in majorFranchises" :key="f.source" type="button"
-            class="cb-franchise" :class="{ active: activeFranchise === f.source }"
-            :aria-pressed="activeFranchise === f.source" @click="activeFranchise = f.source">
-            {{ f.label }} <span class="cb-count">{{ f.count }}</span>
-          </button>
-          <!-- 单角色作品（count=1）收进折叠，避免 pill 条被低频项占满两行 -->
-          <template v-if="minorFranchises.length">
-            <template v-for="f in minorFranchises" :key="f.source">
-              <button v-if="showMinorFranchises || activeFranchise === f.source" type="button"
-                class="cb-franchise cb-franchise-minor" :class="{ active: activeFranchise === f.source }"
-                :aria-pressed="activeFranchise === f.source" @click="activeFranchise = f.source">
-                {{ f.label }} <span class="cb-count">{{ f.count }}</span>
-              </button>
-            </template>
-            <button type="button" class="cb-franchise cb-franchise-toggle"
-              :aria-expanded="showMinorFranchises ? 'true' : 'false'"
-              @click="showMinorFranchises = !showMinorFranchises">
-              {{ showMinorFranchises ? '收起' : `更多单角色作品 ${minorFranchises.length}` }}<span class="cb-caret" aria-hidden="true">{{ showMinorFranchises ? '▴' : '▾' }}</span>
-            </button>
-          </template>
-        </div>
-
-        <div v-if="grouped" class="cb-groups" role="group" aria-label="角色">
-          <section v-for="group in grouped" :key="group.label" class="cb-group">
-            <h4 class="cb-group-head">{{ group.label }}<span class="cb-group-count">{{ group.members.length }}</span></h4>
-            <div class="cb-grid">
-              <button v-for="c in group.members" :key="c.id" type="button" class="cb-card"
-                :class="{ active: current?.id === c.id }"
-                :aria-pressed="current?.id === c.id" @click="selectCharacter(c.id)">
-                <span class="cb-avatar">
-                  <img v-if="c.portrait?.image && !brokenPortraits.has(c.id)"
-                    :src="avatarSrc(c)" :alt="c.name" loading="lazy" decoding="async"
-                    @error="onAvatarError(c)" />
-                  <span v-else class="cb-avatar-fallback" :style="{ '--avatar-a': avatarGradient(c.id)[0], '--avatar-b': avatarGradient(c.id)[1] }">{{ c.name.charAt(0) }}</span>
-                </span>
-                <span class="cb-name">{{ c.name }}</span>
-                <span v-if="group.merged" class="cb-original">{{ franchiseLabel(franchiseKey(c.source)) }}</span>
-              </button>
-            </div>
-          </section>
-        </div>
-        <div v-else class="cb-grid" role="group" aria-label="角色">
-          <button v-for="c in filtered" :key="c.id" type="button" class="cb-card"
-            :class="{ active: current?.id === c.id }"
-            :aria-pressed="current?.id === c.id" @click="selectCharacter(c.id)">
-            <span class="cb-avatar">
-              <img v-if="c.portrait?.image && !brokenPortraits.has(c.id)"
-                :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async"
-                @error="markPortraitBroken(c.id)" />
-              <span v-else class="cb-avatar-fallback" :style="{ '--avatar-a': avatarGradient(c.id)[0], '--avatar-b': avatarGradient(c.id)[1] }">{{ c.name.charAt(0) }}</span>
-            </span>
-            <span class="cb-name">{{ c.name }}</span>
-            <span class="cb-original">{{ franchiseLabel(c.source) }}</span>
-          </button>
-        </div>
-        <div v-if="!filtered.length" class="cb-empty">
-          <p>没有匹配的角色，换个关键词或作品试试。</p>
-          <button class="btn btn-ghost" type="button" @click="search = ''; activeFranchise = ''">重置筛选</button>
-        </div>
-      </div>
-
+      <div class="library-layout">
+        <CharacterDirectory :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
+        <div class="library-detail">
       <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }">
           <img v-if="current.portrait?.image && !brokenPortraits.has(current.id)" class="portrait-image"
@@ -318,21 +231,22 @@
           </RouterLink>
         </div>
       </section>
+        </div>
+      </div>
     </template>
   </article>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
-import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
-import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 import {
   parseCharacterProfiles,
@@ -343,6 +257,7 @@ import {
 
 const sceneStore = useSceneStore()
 const route = useRoute()
+const router = useRouter()
 const characters = ref<CharacterProfile[]>([])
 const scenes = ref<CharacterScene[]>([])
 const loading = ref(true)
@@ -350,104 +265,12 @@ const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
 useScrollReveal()
 
-// 2026-08-15：全量角色浏览——作品筛选 + 搜索 + 分组网格（heroine 与 popular 同台）。
-const search = ref('')
-const activeFranchise = ref('')
+const directoryItems = computed(() => characters.value.map(character => ({
+  id: character.id, name: character.name, source: character.source, aliases: character.alias,
+  image: character.type === 'popular' ? '/assets/characters/thumbs/popular-' + character.id + '.webp' : character.portrait?.image,
+})))
 
-/** 作品展示名：映射表优先 → 《》内纯汉字段 → 《》内 CJK 段 → 原文（见 utils/franchiseLabel.ts）。 */
-
-const keyword = computed(() => search.value.trim().toLowerCase())
-/** 搜索优先于作品筛选：有关键词时全量匹配，无关键词时按作品收敛 */
-const filtered = computed(() => {
-  if (keyword.value) {
-    return characters.value.filter(c =>
-      [c.name, ...(c.alias || []), String(c.source || ''), franchiseLabel(franchiseKey(c.source)), franchiseKey(c.source)]
-        .some(text => text.toLowerCase().includes(keyword.value)),
-    )
-  }
-  if (activeFranchise.value) {
-    return characters.value.filter(c => franchiseKey(c.source) === activeFranchise.value)
-  }
-  return characters.value
-})
-
-const franchises = computed(() => {
-  const seen = new Map<string, number>()
-  for (const c of characters.value) {
-    const key = franchiseKey(c.source)
-    seen.set(key, (seen.get(key) ?? 0) + 1)
-  }
-  return [...seen.entries()]
-    .map(([source, count]) => ({ source, label: franchiseLabel(source), count }))
-    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-CN'))
-})
-
-/** pill 条降噪：≥2 人的作品外露，单角色作品收进「更多」折叠（与分组网格的 MIN_GROUP_SIZE 同口径）。 */
-const showMinorFranchises = ref(false)
-const majorFranchises = computed(() => franchises.value.filter(f => f.count >= MIN_GROUP_SIZE))
-const minorFranchises = computed(() => franchises.value.filter(f => f.count < MIN_GROUP_SIZE))
-
-/** 无搜索时按作品分组；搜索/筛选时平铺。
- *  2人及以上同一作品的角色单独成组展示（如明日方舟、Fate 系列、葬送的芙莉莲、电锯人、春物、无职转生等）；
- *  仅 1 人的独立作品合并为「更多经典作品」。 */
-interface CharacterGroup {
-  source: string
-  label: string
-  members: CharacterProfile[]
-  merged: boolean
-}
-const MIN_GROUP_SIZE = 2
-const grouped = computed<CharacterGroup[] | null>(() => {
-  if (keyword.value || activeFranchise.value) return null
-  const groups: CharacterGroup[] = []
-  const minor: CharacterProfile[] = []
-  for (const f of franchises.value) {
-    const members = characters.value.filter(c => franchiseKey(c.source) === f.source)
-    if (!members.length) continue
-    if (members.length >= MIN_GROUP_SIZE) {
-      groups.push({ source: f.source, label: f.label, members, merged: false })
-    } else {
-      minor.push(...members)
-    }
-  }
-  if (minor.length) groups.push({ source: '', label: '更多作品', members: minor, merged: true })
-  return groups
-})
-
-/** 粒子主题随当前角色切换（形状+主色），与角色场景库共享同一映射。 */
-const heroTheme = computed(() => characterParticleTheme(current.value?.id || '', current.value?.source))
-
-/** 缺头像的角色不再裸白圆：按 id 稳定取一组中饱和渐变做占位底（白色首字可读）。 */
-const AVATAR_GRADIENTS: ReadonlyArray<readonly [string, string]> = [
-  ['#8b6fd6', '#e08fb8'],
-  ['#4f7ddb', '#5bc3d9'],
-  ['#4dbfa8', '#8fd9a0'],
-  ['#e0b055', '#e88a72'],
-  ['#a37fe0', '#7fa8f0'],
-  ['#e08a94', '#f0a8c4'],
-  ['#7a68d9', '#b49ae8'],
-  ['#54a8d9', '#8fc0e8'],
-]
-function avatarGradient(id: string): readonly [string, string] {
-  let hash = 5381
-  for (let index = 0; index < id.length; index += 1) hash = (hash * 33) ^ id.charCodeAt(index)
-  return AVATAR_GRADIENTS[(hash >>> 0) % AVATAR_GRADIENTS.length]
-}
-
-/** 数据里人人都有 portrait 路径，但多数 popular-<id>.png 实际不存在；
- *  加载失败时记入集合，用渐变首字占位替换破碎 <img>。 */
 const brokenPortraits = ref(new Set<string>())
-const brokenAvatarThumbs = ref(new Set<string>())
-function avatarSrc(character: CharacterProfile): string {
-  return character.type === 'popular' && !brokenAvatarThumbs.value.has(character.id)
-    ? '/assets/characters/thumbs/popular-' + character.id + '.webp'
-    : character.portrait?.image || ''
-}
-function onAvatarError(character: CharacterProfile) {
-  if (character.type === 'popular' && !brokenAvatarThumbs.value.has(character.id)) {
-    brokenAvatarThumbs.value = new Set(brokenAvatarThumbs.value).add(character.id)
-  } else markPortraitBroken(character.id)
-}
 function markPortraitBroken(id: string) {
   if (brokenPortraits.value.has(id)) return
   brokenPortraits.value = new Set(brokenPortraits.value).add(id)
@@ -458,6 +281,7 @@ function selectCharacter(id: string) {
   const found = characters.value.find(c => String(c.id) === id)
   if (!found) return
   current.value = found
+  if (route.query.character !== id) void router.replace({ query: { ...route.query, character: id } })
   selectedOutfitId.value = ''
   bgExpanded.value = false
   // 点击卡片联动档案大卡：档案区不在视口内才平滑滚过去（已在视野内不打扰浏览）
@@ -465,7 +289,7 @@ function selectCharacter(id: string) {
     const anchor = profileAnchor.value
     if (!anchor) return
     const rect = anchor.getBoundingClientRect()
-    const inView = rect.top < window.innerHeight * 0.9 && rect.bottom > 0
+    const inView = rect.top >= 70 && rect.top < window.innerHeight * 0.9
     if (inView) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     anchor.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })

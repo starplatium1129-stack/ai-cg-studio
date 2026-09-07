@@ -26,6 +26,7 @@ SemanticParticleField 的 portraitId 重组为完整图片的点阵成像。
     每格最近主色量化 → base36 字符画输出。
 """
 import json
+import hashlib
 import sys
 from pathlib import Path
 
@@ -129,6 +130,7 @@ def build_one(char_id: str, source: Path) -> bool:
     out = OUT_DIR / f"p_{char_id}.json"
     payload = {
         "id": char_id,
+        "sourceSha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "aspect": round(aspect, 4),
         "palette": palette,
         "grid": {"w": int(grid_w), "h": int(grid_h), "cells": cells},

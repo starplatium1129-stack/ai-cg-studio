@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
-import { loadPortraitCloud, samplePortraitPoints, shouldUnderlay, type PortraitCloud } from '@/utils/particlePortrait'
+import { loadPortraitCloud, samplePortraitPoints, particleNeedsOutline, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 
 const props = withDefaults(defineProps<{
@@ -74,6 +74,8 @@ const canvasAvailable = ref(true)
 /** 深色主题下图片点阵用 screen 混合：暗部自然隐入页面底色、亮部发光，
     消除"贴上去的彩色马赛克"突兀感（2026-08-16 用户反馈）。 */
 let darkTheme = true
+let particleSurface = '#f0edf4'
+let particleOutline = '#3c3548'
 
 /** 角色形象点云：null = 用抽象形状。异步加载由 token 防竞态。 */
 let portraitCloud: PortraitCloud | null = null
@@ -167,10 +169,12 @@ function readPalette() {
   if (!host.value) return
   darkTheme = (document.documentElement.dataset.theme || 'dark') !== 'light'
   const style = getComputedStyle(host.value)
+  particleSurface = style.getPropertyValue('--particle-surface').trim() || '#f0edf4'
+  particleOutline = style.getPropertyValue('--particle-outline').trim() || '#3c3548'
   palette = {
     primary: style.getPropertyValue('--text-primary').trim() || '#d9d5df',
     secondary: style.getPropertyValue('--text-muted').trim() || '#77717f',
-    accent: style.getPropertyValue('--accent').trim() || style.getPropertyValue('--accent-violet').trim() || '#ff8fc4',
+    accent: style.getPropertyValue('--particle-accent').trim() || style.getPropertyValue('--accent').trim() || '#ff8fc4',
   }
   draw()
 }
@@ -369,17 +373,11 @@ function draw() {
   // 运动拖尾（对齐参考实现的残影流光）：粒子位移超过阈值时连一条
   // 上一帧→当前帧线段；静止粒子不入路径——空闲观感不变，交互涟漪带出流光。
   const tailPaths = paths.map(() => new Path2D())
-  // 极亮色右下偏移阴影（2026-08-16 用户反馈「白发区还要更白」）：
-  // 亮度 >0.72 的白/近白点在浅底上隐形，描边方案让白点视觉 70% 是灰边
-  // （白发区仍偏深灰）；改为「浮雕式」——点右下方 0.5px 处垫一枚浅灰圆
-  // （半径 ×1.15），点本体保持纯白无灰边，界定来自阴影、白色感保留。
-  const shadowFlags = paints ? paints.map((color) => shouldUnderlay(color)) : null
-  const shadowPaths = shadowFlags && shadowFlags.some(Boolean)
-    ? shadowFlags.map((light) => (light ? new Path2D() : null))
-    : null
-  // 阴影颜色：深色主题用近黑（screen 下≈不可见，无副作用）；浅色主题用
-  // 中深灰 #565b68（合成 ~0.6 vs 底 0.95，够界定又不压暗点本体）。
-  const underColor = darkTheme ? '#0c0e14' : '#565b68'
+  // Light-mode points retain their original colors. A thin concentric ink edge
+  // separates low-contrast colors from the paper surface without darkening their centers.
+  const shadowFlags = paints && !darkTheme ? paints.map(color => particleNeedsOutline(color, particleSurface)) : null
+  const shadowPaths = shadowFlags?.some(Boolean) ? shadowFlags.map(outline => outline ? new Path2D() : null) : null
+  const underColor = particleOutline
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
 
   for (const particle of particles) {
@@ -393,7 +391,7 @@ function draw() {
     const baseRadius = paints
       ? (portraitRadii[pathIndex] || 1)
       : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
-    const radius = baseRadius * energyScale * particle.size
+    const radius = baseRadius * (paints && !darkTheme ? 1.35 : 1) * energyScale * particle.size
     const dx = particle.x - particle.prevX
     const dy = particle.y - particle.prevY
     if (dx * dx + dy * dy > 0.12) {
@@ -404,8 +402,8 @@ function draw() {
       const shadow = shadowPaths[pathIndex]
       if (shadow) {
         // 阴影圆：右下偏移 0.5px、半径 ×1.15（比点本体略大，露一圈阴影边）
-        shadow.moveTo(particle.x + 0.5 + radius * 1.15, particle.y + 0.6)
-        shadow.arc(particle.x + 0.5, particle.y + 0.6, radius * 1.15, 0, Math.PI * 2)
+        shadow.moveTo(particle.x + radius * 1.12, particle.y)
+        shadow.arc(particle.x, particle.y, radius * 1.12, 0, Math.PI * 2)
       }
     }
     path.moveTo(particle.x + radius, particle.y)
@@ -420,7 +418,7 @@ function draw() {
     // alpha 0.42：0.5 实测阴影圆偏重、密集白发区显脏（干净度降）。
     if (shadowPaths) {
       ctx.globalCompositeOperation = 'source-over'
-      ctx.globalAlpha = .42
+      ctx.globalAlpha = .88
       ctx.fillStyle = underColor
       shadowPaths.forEach((path) => { if (path) ctx.fill(path) })
       ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
@@ -442,7 +440,7 @@ function draw() {
     // 图片点阵：深色主题 screen 混合（暗部隐入底色、亮部发光，与档案风融合）；
     // 浅色主题正常混合、主点透明度 0.95（几乎不透明：颜色还原原图，与深色
     // 主题一致——0.86 时与浅底混合 14% 会把颜色漂白）。
-    ctx.globalAlpha = darkTheme ? .88 : .95
+    ctx.globalAlpha = darkTheme ? .88 : 1
     paints.forEach((color, index) => {
       ctx.fillStyle = color
       ctx.fill(paths[index])
@@ -457,10 +455,10 @@ function draw() {
     ctx.stroke(tailPaths[1])
     ctx.strokeStyle = palette.accent
     ctx.stroke(tailPaths[2])
-    ctx.globalAlpha = .72
+    ctx.globalAlpha = darkTheme ? .72 : 1
     ctx.fillStyle = palette.primary
     ctx.fill(paths[0])
-    ctx.globalAlpha = .46
+    ctx.globalAlpha = darkTheme ? .46 : .9
     ctx.fillStyle = palette.secondary
     ctx.fill(paths[1])
     ctx.globalAlpha = .9

@@ -15,50 +15,23 @@
  * 这里只服务本机回环上游，不走代理。
  */
 
-var http = require('http');
-var https = require('https');
+var requestBuffered = require('./buffered-request').requestBuffered;
 
 var MAX_JSON_BYTES = 8 * 1024 * 1024;
 
-function requestJson(baseUrl, apiPath, body, timeoutMs, maxBytes) {
-  return new Promise(function (resolve, reject) {
-    var u;
-    try {
-      u = new URL(apiPath, baseUrl);
-    } catch (e) { reject(e); return; }
-    var lib = u.protocol === 'https:' ? https : http;
-    var payload = body ? JSON.stringify(body) : null;
-    var req = lib.request({
-      hostname: u.hostname,
-      port: u.port,
-      path: u.pathname + (u.search || ''),
-      method: payload ? 'POST' : 'GET',
-      headers: payload ? { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } : {},
-      timeout: timeoutMs || 4000
-    }, function (res) {
-      // 响应体上限：防止被探测的本机服务返回异常大响应时网关内存无界累积。
-      var chunks = [];
-      var size = 0;
-      res.on('data', function (c) {
-        size += c.length;
-        if (size > (maxBytes || MAX_JSON_BYTES)) {
-          req.destroy(new Error('response too large'));
-          return;
-        }
-        chunks.push(c);
-      });
-      res.on('end', function () {
-        var raw = Buffer.concat(chunks).toString('utf8');
-        var data = null;
-        try { data = raw ? JSON.parse(raw) : null; } catch {}
-        resolve({ status: res.statusCode || 0, data: data, raw: raw });
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', function () { req.destroy(new Error('timeout')); });
-    if (payload) req.write(payload);
-    req.end();
+async function requestJson(baseUrl, apiPath, body, timeoutMs, maxBytes) {
+  const target = new URL(apiPath, baseUrl);
+  const payload = body === null || body === undefined ? null : JSON.stringify(body);
+  const response = await requestBuffered(target, {
+    method: payload === null ? 'GET' : 'POST', body: payload,
+    headers: payload === null ? {} : { 'Content-Type':'application/json', 'Content-Length':Buffer.byteLength(payload) },
+    timeoutMs: timeoutMs || 4000, maxBytes: maxBytes || MAX_JSON_BYTES,
+    makeError(kind, error) { return error || new Error(kind === 'tooLarge' ? 'response too large' : kind === 'aborted' ? 'upstream response aborted' : kind); },
   });
+  const raw = response.body.toString('utf8');
+  let data = null;
+  try { data = raw ? JSON.parse(raw) : null; } catch {}
+  return { status: response.status, data, raw };
 }
 
 function reachable(status) {

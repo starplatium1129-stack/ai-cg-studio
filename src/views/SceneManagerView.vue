@@ -50,6 +50,7 @@
     </ArchiveStatePanel>
 
     <template v-if="!loading && !loadError">
+      <details class="manager-summary"><summary>场景概况 · {{ scenes.length }} 条</summary>
       <!-- Stats: 4 groups — 总览 / 角色 / 分级 / Tags -->
       <div class="stats">
         <div class="stat-group stat-group--overview">
@@ -94,6 +95,7 @@
         </div>
       </div>
 
+      </details>
       <!-- Tabs -->
       <div class="tab-row">
         <button v-for="t in TABS" :key="t.id" class="tab-btn" :class="{active: tab===t.id}" type="button" @click="tab=t.id">{{ t.label }}</button>
@@ -102,24 +104,24 @@
       <!-- 场景表 -->
       <template v-if="tab==='scenes'">
         <div class="toolbar">
-          <input v-model="search" class="search-input" type="search" placeholder="搜索 ID、标题、故事、标签…" />
-          <select v-model="fCat" class="filter-select">
+          <input v-model="search" class="search-input" type="search" aria-label="搜索管理场景" placeholder="搜索 ID、标题、故事、标签…" />
+          <select v-model="fCat" class="filter-select" aria-label="筛选场景分类">
             <option value="">全部分类</option>
             <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
           </select>
-          <select v-model="fChar" class="filter-select">
+          <select v-model="fChar" class="filter-select" aria-label="筛选场景角色">
             <option value="">全部角色</option>
             <option value="nene">宁宁</option>
             <option value="natsume">夏目</option>
             <option value="triad">双人</option>
           </select>
-          <select v-model="fRating" class="filter-select">
+          <select v-model="fRating" class="filter-select" aria-label="筛选场景分级">
             <option value="">全部分级</option>
             <option value="All">All</option>
             <option value="R15">R15</option>
             <option value="R18">R18</option>
           </select>
-          <select v-model="sortBy" class="filter-select">
+          <select v-model="sortBy" class="filter-select" aria-label="场景排序">
             <option value="id">ID</option>
             <option value="title">标题</option>
             <option value="category">分类</option>
@@ -1072,10 +1074,14 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.manager-summary { margin-bottom: var(--s-4); color: var(--text-secondary); font-size: var(--fs-body-sm); }
+.manager-summary summary { cursor: pointer; padding: var(--s-3) 0; }
+.manager-summary .stats { margin-top: var(--s-3); }
+
 /* 替代原先散落的 6 处内联 style */
 .hint-sm { color:var(--text-muted); font-size:var(--fs-label-sm); }
 .id-code { font-size:var(--fs-mono-xs); }
-.sm-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-5); flex-wrap:wrap; }
+.sm-head { position:sticky; top:70px; z-index:var(--z-sticky); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-5); flex-wrap:wrap; }
 .sm-head-actions { display:flex; gap:var(--s-2); flex-shrink:0; }
 .maintenance-state { display:inline-flex; align-items:center; gap:var(--s-2); margin-top:var(--s-2); padding:4px 12px; border-radius:var(--r-pill); background:color-mix(in srgb,var(--success) 10%,transparent); color:var(--success-text); font-size:var(--fs-label-sm); }
 .maintenance-state.dirty { background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning-text); }
@@ -1114,7 +1120,7 @@ onMounted(async () => {
 .tab-row { display:flex; gap:var(--s-2); margin-bottom:var(--s-4); flex-wrap:wrap; }
 .tab-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
 .tab-btn.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
-.table-wrap { overflow-x:auto; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); margin-bottom:var(--s-4); }
+.table-wrap { max-height:calc(100dvh - 340px); overflow:auto; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); margin-bottom:var(--s-4); }
 table { width:100%; border-collapse:collapse; font-size:var(--fs-body-sm); }
 th { background:var(--bg-deep); padding:var(--s-3); text-align:left; font-weight:700; color:var(--text-secondary); font-size:var(--fs-label-sm); text-transform:uppercase; letter-spacing:.05em; }
 td { padding:var(--s-2) var(--s-3); border-top:1px solid var(--border-soft); vertical-align:top; }

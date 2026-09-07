@@ -11,6 +11,8 @@ import type { ParticlePoint } from './particleShapes'
  */
 export interface PortraitCloud {
   id: string
+  /** Hash of the portrait used by the offline point-cloud build. */
+  sourceSha256?: string
   /** 图片宽高比（w/h）。 */
   aspect: number
   /** k-means 主色（按占比降序，最多 36 色支持 base36 索引）。 */
@@ -207,4 +209,18 @@ function estimateCoverage(cloud: PortraitCloud, backgrounds: Set<number> | null)
   }
   const ratio = filled / Math.max(1, cells.length)
   return Math.min(0.98, Math.max(0.25, ratio))
+}
+
+/** WCAG luminance comparison for the actual point color and its local canvas surface. */
+export function particleNeedsOutline(color: string, surface: string): boolean {
+  const luminance = (hex: string) => {
+    const match = /^#([0-9a-f]{6})$/i.exec(hex.trim())
+    if (!match) return null
+    const values = [0, 2, 4].map(offset => parseInt(match[1].slice(offset, offset + 2), 16) / 255)
+      .map(channel => channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4)
+    return values[0] * .2126 + values[1] * .7152 + values[2] * .0722
+  }
+  const a = luminance(color), b = luminance(surface)
+  if (a === null || b === null) return true
+  return (Math.max(a, b) + .05) / (Math.min(a, b) + .05) < 3
 }

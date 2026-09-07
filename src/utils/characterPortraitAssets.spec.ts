@@ -18,6 +18,10 @@ describe('character portrait identity', () => {
   it.each(Object.entries(selected.entries))('keeps the selected sample and rebuilt thumbnail for %s', (id, source) => {
     expect(source.entryId.startsWith('pc_' + id + '_')).toBe(true)
     expect(source.rating).toBe('All')
+    const cloud = JSON.parse(read('assets/particles/p_' + id + '.json').toString())
+    expect(cloud.sourceSha256).toBe(source.portraitSha256)
+    expect(cloud.id).toBe(id)
+    expect(cloud.grid.cells.length).toBe(cloud.grid.w * cloud.grid.h)
     expect(digest('assets/characters/popular-' + id + '.png')).toBe(source.portraitSha256)
     expect(digest('assets/characters/thumbs/popular-' + id + '.webp')).not.toBe(digest('assets/characters/thumbs/popular-kasumigaoka_utaha.webp'))
   })

@@ -60,7 +60,7 @@
           @click="openSearch"
         ><ArchiveIcon name="search" /></button>
 
-        <!-- 主题已锁定深色（2026-08-28 审计 · 方案 A），切换按钮移除 -->
+        <AppThemeToggle />
         <AppSoundToggle />
       </div>
 
@@ -81,6 +81,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
+import AppThemeToggle from './AppThemeToggle.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { openGlobalSearch } from '@/composables/useGlobalSearch'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'

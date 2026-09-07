@@ -317,7 +317,7 @@
 .chat-page .room-signal span {
   padding-left: 7px;
   border-left: 2px solid var(--character-accent);
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
   font: 800 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .12em;
 }
@@ -510,7 +510,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .live2d-enable-cta:hover {
-  border-color: var(--character-accent);
+  border-color: var(--character-ink, var(--character-accent));
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 28%, transparent), transparent 72%),
     color-mix(in srgb, var(--bg-deep) 82%, transparent);
@@ -518,7 +518,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .live2d-enable-cta-kicker {
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
   font: 750 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .1em;
 }
@@ -598,7 +598,7 @@ body:has(.chat-page) .sakura-fall {
   border: 1px solid color-mix(in srgb, var(--character-accent) 40%, transparent);
   border-radius: 50%;
   background: color-mix(in srgb, var(--character-accent) 12%, transparent);
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
 }
 
 .chat-page .wardrobe-copy {
@@ -684,11 +684,11 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .wardrobe-option.active {
   border-color: color-mix(in srgb, var(--character-accent) 26%, transparent);
   background: color-mix(in srgb, var(--character-accent) 14%, transparent);
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
 }
 
 .chat-page .wardrobe-option.active i {
-  border-color: var(--character-accent);
+  border-color: var(--character-ink, var(--character-accent));
   background: var(--character-accent);
   box-shadow: 0 0 10px color-mix(in srgb, var(--character-accent) 65%, transparent);
 }
@@ -858,7 +858,7 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .provider-switch button.active {
   background: var(--bg-elevated);
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
   box-shadow: var(--shadow-sm);
 }
 
@@ -877,7 +877,7 @@ body:has(.chat-page) .sakura-fall {
   border: 1px solid color-mix(in srgb, var(--character-accent) 36%, var(--border-soft));
   border-radius: var(--r-sm);
   background: var(--accent-soft);
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
   cursor: pointer;
   font: 650 var(--fs-mono-sm) var(--font-sans);
   text-overflow: ellipsis;
@@ -936,7 +936,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .api-title-lockup > div > small {
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
   font: 700 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .13em;
 }
@@ -957,7 +957,7 @@ body:has(.chat-page) .sakura-fall {
   border: 1px solid color-mix(in srgb, var(--character-accent) 36%, var(--border-soft));
   border-radius: var(--r-lg);
   background: color-mix(in srgb, var(--character-accent) 11%, var(--bg-deep));
-  color: var(--character-accent) !important;
+  color: var(--character-ink, var(--character-accent)) !important;
   font-size: var(--fs-title-sm) !important;
 }
 
@@ -1070,7 +1070,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .api-vendor-picker button.active span {
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
 }
 
 .chat-page .api-settings-grid {
@@ -1101,7 +1101,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .api-field > span i {
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
   font: 700 var(--fs-mono-xs) var(--font-mono);
 }
 
@@ -1121,7 +1121,7 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .api-field input:focus,
 .chat-page .api-field select:focus {
-  border-color: var(--character-accent);
+  border-color: var(--character-ink, var(--character-accent));
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--character-accent) 16%, transparent);
 }
 
@@ -1224,7 +1224,7 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .chat-empty-kicker {
   display: block;
   margin-bottom: var(--s-2);
-  color: var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
   font: 750 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .12em;
 }
@@ -1249,7 +1249,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .chat-starters button:hover {
-  border-color: var(--character-accent);
+  border-color: var(--character-ink, var(--character-accent));
   color: var(--text-primary);
   transform: translateX(2px);
 }
@@ -2133,4 +2133,13 @@ body:has(.chat-page) .sakura-fall {
   .chat-page .keyboard-hint {
     display: none;
   }
+}
+
+/* Desktop room keeps the composer in the viewport; only the conversation scrolls. */
+@media (min-width: 1000px) {
+  .chat-page { height: calc(100dvh - 72px); display: flex; flex-direction: column; margin-bottom: 0; padding-block: var(--s-4); }
+  .chat-page > .chat-layout { flex: 1; min-height: 0; height: auto; }
+  .chat-page > .chat-head, .chat-page > .workspace-archive-bar { flex-shrink: 0; }
+  .chat-page .portrait-stage { min-height: 0; }
+  .aics-desktop-shell .chat-page { height: calc(100dvh - 110px); }
 }
