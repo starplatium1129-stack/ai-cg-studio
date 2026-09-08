@@ -11,7 +11,7 @@
           <!-- 作品册缓存：数百张大图的 blob URL 与解码结果常驻内存，
                切到其他页再回来不重新从 IndexedDB 读图，秒开。
                其余页面按需重建（各自 onMounted 拉最新数据）。 -->
-          <KeepAlive :include="['GalleryView', 'ShowcaseView']">
+          <KeepAlive :include="['GalleryView', 'ShowcaseView', 'PromptBuilderView', 'VideoStudioView']">
             <component :is="Component" :key="route.path" class="route-view" />
           </KeepAlive>
         </Transition>

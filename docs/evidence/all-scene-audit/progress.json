@@ -1,0 +1,90 @@
+{
+  "updatedAt": "2026-09-08T16:37:41.162Z",
+  "goalStatus": "active",
+  "batch": "old-2",
+  "characterTarget": 50,
+  "internalSemanticCharacters": 50,
+  "nonAdultTarget": 345,
+  "internalSemanticScenes": 345,
+  "withFindings": 244,
+  "fullSceneAuditsCompleted": 0,
+  "currentVerifiedRepairImages": 10,
+  "currentFirstBatchRepairImages": 4,
+  "nextCharacterIndex": 0,
+  "nextCharacterId": "arcueid_brunestud",
+  "semanticReports": [
+    "old2-characters01-05-semantic-review.json",
+    "old2-characters06-08-semantic-review.json",
+    "old2-characters09-14-semantic-review.json",
+    "old2-characters15-20-semantic-review.json",
+    "old2-characters21-27-semantic-review.json",
+    "old2-characters28-33-semantic-review.json",
+    "old2-characters34-39-semantic-review.json",
+    "old2-characters40-45-semantic-review.json",
+    "old2-characters46-50-semantic-review.json"
+  ],
+  "sourceChangesSinceSemanticReview": [
+    {
+      "id": "artoria_burger_shop",
+      "recognizedRepair": true
+    },
+    {
+      "id": "artoria_laundromat",
+      "recognizedRepair": true
+    },
+    {
+      "id": "artoria_autumn_park",
+      "recognizedRepair": true
+    },
+    {
+      "id": "saber_alter_sofa_armor_off_cuddle",
+      "recognizedRepair": true
+    },
+    {
+      "id": "misaki_dorm_late_night_snack",
+      "recognizedRepair": true
+    }
+  ],
+  "remaining": [
+    "old-3: 9 characters / 63 non-R18 source scenes",
+    "new49 current-source and evidence reconciliation",
+    "302 standalone scene audits",
+    "R18 existing-source semantic/age assessment beyond metadata",
+    "canonical research and existing-image review for all batches",
+    "Saber Alter failed visual repair and other confirmed priority repairs",
+    "remote/browser/dual-theme validation",
+    "28 pending reference views for 4 registered forms",
+    "publish verified images and integrate branch changes when appropriate"
+  ],
+  "checks": {
+    "previousOwnedRepairGate": "pass",
+    "currentSafeBindingGate": "pass",
+    "rewrite": {
+      "exitStatus": "pass",
+      "entries": 2,
+      "tokenRetention": 0.581,
+      "proseSimilarity": 0.19,
+      "caveat": "Retention exceeds the printed 50% recommendation; checker does not enforce that average threshold"
+    },
+    "adultDisabledPlanning": "1292/1292 blocked as expected",
+    "currentSafeBindingGateLog": "safe-binding-gate-full.log"
+  },
+  "partialVisualBindingRepairs": [
+    "misaki_dorm_late_night_snack",
+    "ciel_chapel_cross_bridal_vow"
+  ],
+  "failedVisualRepairs": [
+    "saber_alter_sofa_armor_off_cuddle"
+  ],
+  "nextStage": "old-3 nine-character source audit, then standalone scenes and canonical/visual/rating closure",
+  "cumulativeInternalSemanticCharacters": 100,
+  "cumulativeInternalSemanticScenes": 659,
+  "cumulativeRowsWithFindings": 485,
+  "checkpoint": {
+    "branch": "codex/all-scene-audit",
+    "sourceCommit": "ed1cef5a18303dd1f17721f4773ee491e726b25e",
+    "sourcePushed": true,
+    "sourceWorktree": "E:/code/2/lora/AI-CG-Studio-audit",
+    "sourceValidation": "gate:full pass in isolated worktree after initial build"
+  }
+}

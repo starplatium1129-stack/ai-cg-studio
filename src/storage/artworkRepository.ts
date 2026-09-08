@@ -445,7 +445,31 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     return operation
   }
 
-  return { deleteArtwork, patchArtwork, softDeleteArtwork, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
+  function patchArtworks(patches: Array<{ id: string | number; patch: Record<string, unknown> }>): Promise<void> {
+    const operation = mutationTail.then(async () => {
+      const history = arrayValue(await kv.get(ARTWORK_HISTORY_KEY)) ?? []
+      const byId = new Map(patches.map(item => [comparableId(item.id), item.patch]))
+      if ([...byId.keys()].some(id => !history.some(item => recordId(item) === id))) throw new Error('部分作品已不在作品册')
+      const next = history.map(item => { const patch = byId.get(recordId(item)); return patch ? { ...record(item), ...patch } : item })
+      await kv.set(ARTWORK_HISTORY_KEY, next)
+    })
+    mutationTail = operation.then(() => undefined, () => undefined)
+    return operation
+  }
+
+  function appendArtwork<T extends { id: string | number }>(entry: T): Promise<T[]> {
+    const operation = mutationTail.then(async () => {
+      const history = arrayValue(await kv.get(ARTWORK_HISTORY_KEY)) ?? []
+      if (history.some(item => recordId(item) === comparableId(entry.id))) throw new Error('作品编号已存在')
+      const next = [...history, entry]
+      await kv.set(ARTWORK_HISTORY_KEY, next)
+      return next as T[]
+    })
+    mutationTail = operation.then(() => undefined, () => undefined)
+    return operation
+  }
+
+  return { deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, restoreArtwork, purgeExpiredTrash, listTrash: listTrashNow }
 }
 
 export const artworkRepository = createArtworkRepository()

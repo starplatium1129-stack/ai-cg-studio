@@ -300,7 +300,7 @@ assert(
   'ZoomableImageViewer must disable transition during panning and use motion tokens for transform easing',
 );
 
-const videoStudioSource = read('src/views/VideoStudioView.vue');
+const videoStudioSource = read('src/views/VideoStudioView.vue') + '\n' + read('src/assets/css/video-studio-view.css');
 assert(
   /transform:\s*scaleX\(var\(--progress,\s*0%\)\)/.test(videoStudioSource)
     && /transition:\s*transform\s+var\(--motion-surface\)\s+var\(--ease-out\)/.test(videoStudioSource)

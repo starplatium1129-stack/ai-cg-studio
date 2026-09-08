@@ -1,3 +1,4 @@
+import { useTrackedTask } from '@/composables/useTaskCenter'
 import { ref } from 'vue'
 
 export type InterrogateMode = 'tag' | 'caption'
@@ -93,5 +94,6 @@ export function useInterrogate() {
     }
   }
 
+  useTrackedTask(() => ({ kind: 'interrogate', title: '图片反推', route: '/prompt-builder', status: busy.value ? 'running' : error.value ? 'failed' : lastResult.value ? 'succeeded' : 'idle', message: error.value || (busy.value ? '正在读取图片特征…' : '反推结果已送回工作台') }))
   return { busy, error, lastResult, interrogate }
 }

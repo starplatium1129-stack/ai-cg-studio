@@ -257,6 +257,23 @@
             "navel",
             "hourglass_body"
           ]
+        },
+        {
+          "id": "sfw_white_bridal_gown",
+          "name": "纯白誓约婚纱",
+          "prose": "an opaque floor-length white bridal gown with a fitted off-shoulder neckline, floral lace layered over solid fabric, a flowing white veil and simple white formal shoes",
+          "tokens": [
+            "wedding_dress",
+            "white_dress",
+            "long_dress",
+            "off_shoulder",
+            "lace_trim",
+            "opaque_fabric",
+            "bridal_veil",
+            "white_shoes"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ],
       "dna_lock": {

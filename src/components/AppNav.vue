@@ -14,6 +14,9 @@
           v-for="item in primaryNav"
           :key="item.id"
           :to="item.to"
+          :target="openBesideTask(item.to) ? '_blank' : undefined"
+          :rel="openBesideTask(item.to) ? 'noopener' : undefined"
+          :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
           :class="{ active: activeId === item.id }"
           :aria-current="activeId === item.id ? 'page' : undefined"
           @click="closeMenu"
@@ -33,6 +36,9 @@
                 v-for="item in group.items"
                 :key="item.id"
                 :to="item.to"
+          :target="openBesideTask(item.to) ? '_blank' : undefined"
+          :rel="openBesideTask(item.to) ? 'noopener' : undefined"
+          :title="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
                 :class="{ active: activeId === item.id }"
                 :aria-current="activeId === item.id ? 'page' : undefined"
                 @click="closeMenu"
@@ -60,6 +66,7 @@
           @click="openSearch"
         ><ArchiveIcon name="search" /></button>
 
+        <TaskCenterButton />
         <AppThemeToggle />
         <AppSoundToggle />
       </div>
@@ -82,11 +89,16 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
 import AppThemeToggle from './AppThemeToggle.vue'
+import TaskCenterButton from './tasks/TaskCenterButton.vue'
+import { useTaskCenter } from '@/composables/useTaskCenter'
+import { needsDocumentReload } from '@/router'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { openGlobalSearch } from '@/composables/useGlobalSearch'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 
 const route = useRoute()
+const { activeCount } = useTaskCenter()
+function openBesideTask(path: string) { return activeCount.value > 0 && needsDocumentReload(route.path, path) && !location.hostname.includes('tauri') }
 const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
 const moreEl = ref<HTMLDetailsElement | null>(null)

@@ -198,6 +198,7 @@
             <template v-else>
               <span class="batch-hint">成功成片已自动入册历史，可在历史里「加入分镜」攒片</span>
               <div class="batch-foot-actions">
+                <RouterLink v-if="comparisonIds.length >= 2" class="btn btn-primary" :to="`/gallery?compare=${comparisonIds.join(',')}`" @click="emit('close')">{{ progress.succeeded > 4 ? '对比前 4 张' : '对比本批候选' }}</RouterLink>
                 <button v-if="retryableCount" class="btn btn-ghost" type="button" @click="onRetryFailed">
                   <ArchiveIcon name="spark" /> 重试失败 / 未执行 {{ retryableCount }} 张
                 </button>
@@ -279,6 +280,7 @@ const currentPromptPreview = computed(() => {
 const engineReady = computed(() => batchEngine.value === 'sd' ? props.sdAvailable && batchMode.value === 'character' && [...selectedCharSet].every(id => ['nene', 'natsume'].includes(id)) : props.animaAvailable)
 const isRunning = computed(() => batchDraw.running.value)
 const jobs = computed(() => batchDraw.jobs.value)
+const comparisonIds = computed(() => jobs.value.filter(job => job.historyId != null).slice(0, 4).map(job => encodeURIComponent(String(job.historyId))))
 const progress = computed(() => batchDraw.progress.value)
 const retryableCount = computed(() =>
   jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled').length)

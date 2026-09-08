@@ -1,3 +1,4 @@
+import { useTrackedTask } from '@/composables/useTaskCenter'
 import { ref, shallowRef, type Ref } from 'vue'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { identityDomainOf } from '@/utils/interrogateMerge'
@@ -430,7 +431,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     const saved = await pb.commitHistoryEntry(entry)
     if (!saved) return { ok: false, error: '图片已生成，入册失败；重试会重新保存，不重复出图', resultUrl: URL.createObjectURL(entry.blob) }
     pendingSaves.delete(key)
-    return { ok: true, resultUrl: URL.createObjectURL(entry.blob) }
+    return { ok: true, resultUrl: URL.createObjectURL(entry.blob), historyId: saved.id }
   }
 
   const batchDraw = useBatchDraw({
@@ -518,5 +519,6 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     await batchDraw.retryFailed()
   }
 
+  useTrackedTask(() => ({ kind: 'batch', title: `批量出图 · ${batchDraw.progress.value.total} 张`, route: '/prompt-builder?taskCenter=batch', resultRoute: batchDraw.progress.value.succeeded ? '/gallery?batch=' + encodeURIComponent(String(batchDraw.jobs.value.filter(job => job.historyId != null).at(-1)?.historyId || '')) : undefined, status: batchDraw.running.value ? 'running' : !batchDraw.jobs.value.length ? 'idle' : batchDraw.progress.value.failed ? 'failed' : batchDraw.progress.value.cancelled ? 'cancelled' : 'succeeded', progress: batchDraw.progress.value.total ? batchDraw.progress.value.done / batchDraw.progress.value.total * 100 : null, message: `${batchDraw.jobs.value.find(job => job.status === 'running')?.message || ''} ${batchDraw.progress.value.succeeded} 张成功 · ${batchDraw.progress.value.failed} 张失败 · ${batchDraw.progress.value.cancelled} 张未执行` }), { cancel: batchDraw.cancel, retry: onRetryFailed })
   return { batchEngine, batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed }
 }
