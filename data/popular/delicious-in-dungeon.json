@@ -33,7 +33,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -87,6 +87,46 @@
             "white_blouse",
             "long_skirt",
             "academic_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "玛露希尔·成人私密造型",
+          "prose": "a private adult ensemble built around robe, blue_robe, completely_nude",
+          "tokens": [
+            "robe",
+            "blue_robe",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "玛露希尔·圣洁花嫁",
+          "prose": "a blue-and-white elven bridal robe with a translucent veil, braided gold hair and a bouquet of glowing dungeon flowers",
+          "tokens": [
+            "wedding_robe",
+            "blue_white_gown",
+            "elven_veil",
+            "braided_hair",
+            "glowing_flower_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "玛露希尔·海滨泳装",
+          "prose": "a practical blue swimsuit with a cream travel robe, sun hat and a basket of carefully prepared mushroom dishes",
+          "tokens": [
+            "blue_swimsuit",
+            "cream_travel_robe",
+            "sun_hat",
+            "mushroom_basket",
+            "picnic_rock"
           ],
           "default": false,
           "isDefault": false

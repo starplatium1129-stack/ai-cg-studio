@@ -30,7 +30,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "underage",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -101,6 +101,18 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "宝多六花·成人私密造型",
+          "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+          "tokens": [
+            "private_lingerie",
+            "sheer_lace",
+            "soft_shadows"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -132,7 +144,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -186,6 +198,44 @@
             "white_blouse",
             "pleated_skirt",
             "cream_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "新条茜·成人私密造型",
+          "prose": "a private adult ensemble built around completely_nude",
+          "tokens": [
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "新条茜·圣洁花嫁",
+          "prose": "a lavender bridal dress with pink ribbons, a short veil and a bouquet mixing roses with tiny monster figurines",
+          "tokens": [
+            "wedding_dress",
+            "lavender_dress",
+            "pink_ribbons",
+            "short_veil",
+            "monster_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "新条茜·海滨泳装",
+          "prose": "a lavender swimsuit with a white sun shirt, shell hair clips and a small monster sand sculpture kit",
+          "tokens": [
+            "lavender_swimsuit",
+            "white_sun_shirt",
+            "shell_hair_clips",
+            "sand_sculpture_kit",
+            "monster_sandcastle"
           ],
           "default": false,
           "isDefault": false

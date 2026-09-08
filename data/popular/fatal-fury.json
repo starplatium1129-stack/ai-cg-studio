@@ -31,7 +31,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -98,6 +98,46 @@
             "cream_shirt",
             "long_sleeves",
             "dark_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "不知火舞·成人私密造型",
+          "prose": "a private adult ensemble built around completely_nude, dressing_room",
+          "tokens": [
+            "completely_nude",
+            "dressing_room"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "不知火舞·圣洁花嫁",
+          "prose": "a red-and-white bridal kimono with a long red sash, white veil, folding fan and floral hairpins",
+          "tokens": [
+            "bridal_kimono",
+            "red_white_gown",
+            "red_sash",
+            "white_veil",
+            "folding_fan",
+            "floral_hairpins"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "不知火舞·海滨泳装",
+          "prose": "a crimson athletic swimsuit with a white wrap shirt, folding fan and red ribbon sandals",
+          "tokens": [
+            "crimson_swimsuit",
+            "white_wrap_shirt",
+            "folding_fan",
+            "red_ribbon_sandals",
+            "wooden_sea_deck"
           ],
           "default": false,
           "isDefault": false

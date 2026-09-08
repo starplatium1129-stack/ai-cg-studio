@@ -537,7 +537,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -592,6 +592,46 @@
             "collar",
             "red_skirt",
             "jacket"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "明月栞那·成人私密造型",
+          "prose": "a private adult ensemble built around dressing_room, garter_straps, completely_nude",
+          "tokens": [
+            "dressing_room",
+            "garter_straps",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "明月栞那·圣洁花嫁",
+          "prose": "a white bridal dress with a café-apron waist detail, rose-gold buttons and a small coffee-flower bouquet",
+          "tokens": [
+            "wedding_dress",
+            "white_gown",
+            "cafe_apron_detail",
+            "rose_gold_buttons",
+            "coffee_flower_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "明月栞那·海滨泳装",
+          "prose": "a cream-colored swimsuit with a pale overshirt, café apron tied loosely and a glass of iced latte",
+          "tokens": [
+            "cream_swimsuit",
+            "pale_overshirt",
+            "loose_apron",
+            "iced_latte",
+            "cafe_cart"
           ],
           "default": false,
           "isDefault": false

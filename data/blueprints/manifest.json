@@ -5,27 +5,27 @@
     {
       "file": "genshin-impact.json",
       "franchise": "Genshin Impact",
-      "count": 38
+      "count": 42
     },
     {
       "file": "rascal-does-not-dream-of-bunny-girl-senpai.json",
       "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
-      "count": 22
+      "count": 32
     },
     {
       "file": "date-a-live.json",
       "franchise": "Date A Live",
-      "count": 22
+      "count": 32
     },
     {
       "file": "frieren-beyond-journeys-end.json",
       "franchise": "Frieren: Beyond Journey's End",
-      "count": 27
+      "count": 31
     },
     {
       "file": "fate.json",
       "franchise": "Fate",
-      "count": 164
+      "count": 181
     },
     {
       "file": "vocaloid.json",
@@ -90,7 +90,7 @@
     {
       "file": "alya-sometimes-hides-her-feelings-in-russian.json",
       "franchise": "Alya Sometimes Hides Her Feelings in Russian",
-      "count": 23
+      "count": 31
     },
     {
       "file": "spy-x-family.json",
@@ -160,7 +160,7 @@
     {
       "file": "yuzusoft.json",
       "franchise": "YUZUSOFT",
-      "count": 39
+      "count": 44
     },
     {
       "file": "grisaia.json",
@@ -210,7 +210,7 @@
     {
       "file": "sword-art-online.json",
       "franchise": "Sword Art Online",
-      "count": 17
+      "count": 21
     },
     {
       "file": "violet-evergarden.json",
@@ -220,7 +220,7 @@
     {
       "file": "kaguya-sama.json",
       "franchise": "Kaguya-sama: Love Is War",
-      "count": 27
+      "count": 31
     },
     {
       "file": "saenai-heroine-no-sodatekata.json",
@@ -230,7 +230,7 @@
     {
       "file": "kimetsu-no-yaiba.json",
       "franchise": "Kimetsu no Yaiba",
-      "count": 17
+      "count": 22
     },
     {
       "file": "otonari-no-tenshi-sama.json",
@@ -265,7 +265,7 @@
     {
       "file": "ssss-gridman.json",
       "franchise": "SSSS.GRIDMAN",
-      "count": 16
+      "count": 20
     },
     {
       "file": "horimiya.json",
@@ -275,82 +275,82 @@
     {
       "file": "the-rising-of-the-shield-hero.json",
       "franchise": "The Rising of the Shield Hero",
-      "count": 6
+      "count": 10
     },
     {
       "file": "darling-in-the-franxx.json",
       "franchise": "DARLING in the FRANXX",
-      "count": 6
+      "count": 10
     },
     {
       "file": "one-punch-man.json",
       "franchise": "One-Punch Man",
-      "count": 12
+      "count": 20
     },
     {
       "file": "detective-conan.json",
       "franchise": "Detective Conan",
-      "count": 6
+      "count": 10
     },
     {
       "file": "yosuga-no-sora.json",
       "franchise": "Yosuga no Sora",
-      "count": 6
+      "count": 10
     },
     {
       "file": "witch-on-the-holy-night.json",
       "franchise": "Witch on the Holy Night",
-      "count": 6
+      "count": 10
     },
     {
       "file": "wuthering-waves.json",
       "franchise": "Wuthering Waves",
-      "count": 18
+      "count": 31
     },
     {
       "file": "too-many-losing-heroines.json",
       "franchise": "Too Many Losing Heroines!",
-      "count": 6
+      "count": 11
     },
     {
       "file": "2-5-dimensional-seduction.json",
       "franchise": "2.5 Dimensional Seduction",
-      "count": 6
+      "count": 10
     },
     {
       "file": "wistoria-wand-and-sword.json",
       "franchise": "Wistoria: Wand and Sword",
-      "count": 6
+      "count": 10
     },
     {
       "file": "vivy-fluorite-eyes-song.json",
       "franchise": "Vivy: Fluorite Eye's Song",
-      "count": 6
+      "count": 10
     },
     {
       "file": "the-apothecary-diaries.json",
       "franchise": "The Apothecary Diaries",
-      "count": 6
+      "count": 11
     },
     {
       "file": "delicious-in-dungeon.json",
       "franchise": "Delicious in Dungeon",
-      "count": 6
+      "count": 11
     },
     {
       "file": "goddess-of-victory-nikke.json",
       "franchise": "Goddess of Victory: NIKKE",
-      "count": 6
+      "count": 10
     },
     {
       "file": "fatal-fury.json",
       "franchise": "Fatal Fury",
-      "count": 6
+      "count": 11
     },
     {
       "file": "bang-dream.json",
       "franchise": "BanG Dream!",
-      "count": 6
+      "count": 10
     }
   ]
 }

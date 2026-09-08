@@ -34,7 +34,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -89,6 +89,47 @@
             "burgundy_sweater",
             "long_skirt",
             "wool_shawl"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "拉芙塔莉雅·成人私密造型",
+          "prose": "a private adult ensemble built around armor, leather_armor, dressing_room, completely_nude",
+          "tokens": [
+            "armor",
+            "leather_armor",
+            "dressing_room",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "拉芙塔莉雅·圣洁花嫁",
+          "prose": "an ivory wedding dress with a short veil, chestnut ribbon details and practical lace-up boots",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "ivory_dress",
+            "ribbon_details",
+            "lace_up_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "拉芙塔莉雅·海滨泳装",
+          "prose": "a modest red-brown one-piece swimsuit with a cream beach shirt, woven belt and light sandals",
+          "tokens": [
+            "one_piece_swimsuit",
+            "red_brown_swimsuit",
+            "beach_shirt",
+            "woven_belt",
+            "sandals"
           ],
           "default": false,
           "isDefault": false

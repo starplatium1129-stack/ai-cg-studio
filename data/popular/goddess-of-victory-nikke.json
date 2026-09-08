@@ -32,7 +32,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -87,6 +87,48 @@
             "rose_cardigan",
             "white_blouse",
             "navy_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "桃乐丝·成人私密造型",
+          "prose": "a private adult ensemble built around dress, white_dress, completely_nude, dressing_room, gown",
+          "tokens": [
+            "dress",
+            "white_dress",
+            "completely_nude",
+            "dressing_room",
+            "gown"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "桃乐丝·圣洁花嫁",
+          "prose": "a pristine white-and-pink bridal gown with a long veil, pearl details and folded white wings",
+          "tokens": [
+            "wedding_dress",
+            "white_pink_gown",
+            "long_veil",
+            "pearl_details",
+            "folded_wings"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "桃乐丝·海滨泳装",
+          "prose": "a white-and-pink resort swimsuit with a sheer garden wrap, rose hair ribbon and a glass of rose iced tea",
+          "tokens": [
+            "white_pink_swimsuit",
+            "garden_wrap",
+            "rose_hair_ribbon",
+            "rose_iced_tea",
+            "garden_shears"
           ],
           "default": false,
           "isDefault": false

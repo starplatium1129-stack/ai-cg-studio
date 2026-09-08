@@ -32,7 +32,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -88,6 +88,44 @@
             "high_collar",
             "long_robe",
             "shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "猫猫·成人私密造型",
+          "prose": "a private adult ensemble built around completely_nude",
+          "tokens": [
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "猫猫·圣洁花嫁",
+          "prose": "a pale green bridal robe with botanical embroidery, a cream veil, practical hair bun and a bouquet of safe medicinal flowers",
+          "tokens": [
+            "wedding_robe",
+            "pale_green_gown",
+            "botanical_embroidery",
+            "cream_veil",
+            "medicinal_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "猫猫·海滨泳装",
+          "prose": "a deep green swimsuit with a short cream cape, herb pouch and a glass of chilled citrus herbal tea",
+          "tokens": [
+            "deep_green_swimsuit",
+            "cream_cape",
+            "herb_pouch",
+            "citrus_tea",
+            "market_stall"
           ],
           "default": false,
           "isDefault": false

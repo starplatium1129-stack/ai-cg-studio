@@ -33,7 +33,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -87,6 +87,47 @@
             "long_sleeves",
             "red_skirt",
             "long_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "02·成人私密造型",
+          "prose": "a private adult ensemble built around red_bodysuit, completely_nude, dressing_room, red_dress",
+          "tokens": [
+            "red_bodysuit",
+            "completely_nude",
+            "dressing_room",
+            "red_dress"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "02·圣洁花嫁",
+          "prose": "a white bridal dress with red ribbon accents, a short veil and subtle red-horn embroidery",
+          "tokens": [
+            "wedding_dress",
+            "white_dress",
+            "red_ribbon",
+            "short_veil",
+            "horn_embroidery"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "02·海滨泳装",
+          "prose": "a red-and-white sailor swimsuit with a loose white overshirt, striped socks and a candy pouch",
+          "tokens": [
+            "sailor_swimsuit",
+            "red_white_swimsuit",
+            "overshirt",
+            "candy_pouch",
+            "striped_socks"
           ],
           "default": false,
           "isDefault": false

@@ -167,7 +167,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -224,6 +224,44 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "周防有希·成人私密造型",
+          "prose": "a private adult ensemble built around small_towel",
+          "tokens": [
+            "small_towel"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "周防有希·圣洁花嫁",
+          "prose": "a white bridal dress with a violet sash, black ribbon veil and a neat half-up hairstyle",
+          "tokens": [
+            "wedding_dress",
+            "white_dress",
+            "violet_sash",
+            "black_ribbon_veil",
+            "half_up_hair"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "周防有希·海滨泳装",
+          "prose": "a violet-and-white swimsuit with a short yukata jacket, ribbon hair tie and a star festival mask",
+          "tokens": [
+            "violet_white_swimsuit",
+            "short_yukata_jacket",
+            "ribbon_hair_tie",
+            "star_mask",
+            "festival_bag"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -257,7 +295,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -313,6 +351,47 @@
             "cream_shawl",
             "long_skirt",
             "winter_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "玛夏·成人私密造型",
+          "prose": "a private adult ensemble built around dressing_room, evening_dress, green_dress, completely_nude",
+          "tokens": [
+            "dressing_room",
+            "evening_dress",
+            "green_dress",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "玛夏·圣洁花嫁",
+          "prose": "a warm white bridal gown with a soft veil, light-brown ribbon, pearl buttons and a bouquet of family flowers",
+          "tokens": [
+            "wedding_dress",
+            "warm_white_gown",
+            "soft_veil",
+            "brown_ribbon",
+            "pearl_buttons"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "玛夏·海滨泳装",
+          "prose": "a warm brown resort swimsuit with a cream shawl, pearl hairpin and a steaming cocoa mug",
+          "tokens": [
+            "brown_resort_swimsuit",
+            "cream_shawl",
+            "pearl_hairpin",
+            "cocoa_mug",
+            "coastal_onsen"
           ],
           "default": false,
           "isDefault": false

@@ -163,7 +163,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "underage",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -266,6 +266,18 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "早坂爱·成人私密造型",
+          "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+          "tokens": [
+            "private_lingerie",
+            "sheer_lace",
+            "soft_shadows"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -300,7 +312,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -353,6 +365,44 @@
             "white_top",
             "long_pants",
             "sneakers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "白银圭·成人私密造型",
+          "prose": "a private adult ensemble built around small_towel",
+          "tokens": [
+            "small_towel"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "白银圭·圣洁花嫁",
+          "prose": "a simple silver-white bridal dress with a black ribbon headband, modest veil and a small budget-friendly flower bouquet",
+          "tokens": [
+            "wedding_dress",
+            "silver_white_dress",
+            "black_headband",
+            "modest_veil",
+            "small_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "白银圭·海滨泳装",
+          "prose": "a slate-blue swimsuit with a light windbreaker, black headband and a chilled canned drink",
+          "tokens": [
+            "slate_blue_swimsuit",
+            "light_windbreaker",
+            "black_headband",
+            "canned_drink",
+            "seaside_vending_machine"
           ],
           "default": false,
           "isDefault": false

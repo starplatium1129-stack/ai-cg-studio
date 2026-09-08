@@ -34,7 +34,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -90,6 +90,46 @@
             "wool",
             "pants",
             "winter_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "春日野穹·成人私密造型",
+          "prose": "a private adult ensemble built around garter_straps, completely_nude, dress",
+          "tokens": [
+            "garter_straps",
+            "completely_nude",
+            "dress"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "春日野穹·圣洁花嫁",
+          "prose": "a simple white bridal dress with a narrow ribbon veil, lace cuffs and a small rabbit charm",
+          "tokens": [
+            "wedding_dress",
+            "white_dress",
+            "ribbon_veil",
+            "lace_cuffs",
+            "rabbit_charm"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "春日野穹·海滨泳装",
+          "prose": "a black-and-white swimsuit with a light cardigan, white headphones and a half-finished soda",
+          "tokens": [
+            "black_white_swimsuit",
+            "light_cardigan",
+            "white_headphones",
+            "soda",
+            "beach_chair"
           ],
           "default": false,
           "isDefault": false

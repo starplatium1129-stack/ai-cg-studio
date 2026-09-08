@@ -177,7 +177,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -232,6 +232,45 @@
             "floral_print",
             "pink_obi",
             "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "甘露寺蜜璃·成人私密造型",
+          "prose": "a private adult ensemble built around dressing_room, completely_nude",
+          "tokens": [
+            "dressing_room",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "甘露寺蜜璃·圣洁花嫁",
+          "prose": "a pink-and-white wedding dress with a green sash, petal embroidery and a long translucent veil",
+          "tokens": [
+            "wedding_dress",
+            "pink_white_dress",
+            "green_sash",
+            "petal_embroidery",
+            "long_veil"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "甘露寺蜜璃·海滨泳装",
+          "prose": "a pink-and-green floral swimsuit with a light wrap skirt, striped beach towel and ribbon sandals",
+          "tokens": [
+            "floral_swimsuit",
+            "pink_green_swimsuit",
+            "wrap_skirt",
+            "striped_towel",
+            "ribbon_sandals"
           ],
           "default": false,
           "isDefault": false

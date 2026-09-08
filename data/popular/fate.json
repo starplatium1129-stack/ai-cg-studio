@@ -1804,7 +1804,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -1861,6 +1861,46 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "美杜莎 Rider·成人私密造型",
+          "prose": "a private adult ensemble built around bodysuit, highleg_bodysuit, completely_nude",
+          "tokens": [
+            "bodysuit",
+            "highleg_bodysuit",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "美杜莎 Rider·圣洁花嫁",
+          "prose": "a deep violet bridal gown with a long translucent veil, silver trim and a small book-shaped bouquet charm",
+          "tokens": [
+            "wedding_dress",
+            "violet_gown",
+            "long_veil",
+            "silver_trim",
+            "book_charm"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "美杜莎 Rider·海滨泳装",
+          "prose": "a black-and-violet swimsuit with a long sheer cover-up, reading glasses and a lemon soda",
+          "tokens": [
+            "black_violet_swimsuit",
+            "long_cover_up",
+            "reading_glasses",
+            "lemon_soda",
+            "beach_bench"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -1894,7 +1934,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -1952,6 +1992,47 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "克洛伊·成人私密造型",
+          "prose": "a private adult ensemble built around wet_towel, small_towel, dressing_room, completely_nude",
+          "tokens": [
+            "wet_towel",
+            "small_towel",
+            "dressing_room",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "克洛伊·圣洁花嫁",
+          "prose": "a white-and-pink bridal dress with a short veil, rose ribbons and a candy-filled bouquet",
+          "tokens": [
+            "wedding_dress",
+            "pink_white_dress",
+            "short_veil",
+            "rose_ribbons",
+            "candy_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "克洛伊·海滨泳装",
+          "prose": "a white-and-pink ruffled swimsuit with a short beach cape, ribbon sandals and a double-scoop ice cream",
+          "tokens": [
+            "ruffled_swimsuit",
+            "pink_white_swimsuit",
+            "beach_cape",
+            "ribbon_sandals",
+            "ice_cream"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -1985,7 +2066,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2044,6 +2125,46 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "美狄亚·成人私密造型",
+          "prose": "a private adult ensemble built around robe, purple_robe, completely_nude",
+          "tokens": [
+            "robe",
+            "purple_robe",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "美狄亚·圣洁花嫁",
+          "prose": "a deep navy long-sleeved bridal gown with silver thread, a modest veil and a hand-woven blue flower wreath",
+          "tokens": [
+            "wedding_dress",
+            "navy_gown",
+            "silver_thread",
+            "modest_veil",
+            "blue_wreath"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "美狄亚·海滨泳装",
+          "prose": "a violet-blue wrap swimsuit with a light hooded cover-up, shell bracelets and a clear glass bottle",
+          "tokens": [
+            "wrap_swimsuit",
+            "violet_blue_swimsuit",
+            "hooded_cover_up",
+            "shell_bracelets",
+            "glass_bottle"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -2074,7 +2195,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2128,6 +2249,46 @@
             "plum_scarf",
             "pants",
             "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "迦摩·成人私密造型",
+          "prose": "a private adult ensemble built around sheer_cloth, palace, completely_nude",
+          "tokens": [
+            "sheer_cloth",
+            "palace",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "迦摩·圣洁花嫁",
+          "prose": "a black-and-rose bridal gown with gold trim, a sheer veil and star-shaped celestial flowers",
+          "tokens": [
+            "wedding_dress",
+            "black_rose_gown",
+            "gold_trim",
+            "sheer_veil",
+            "star_flowers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "迦摩·海滨泳装",
+          "prose": "a black-and-crimson resort swimsuit with gold jewelry, a sheer beach wrap and a chilled fruit drink",
+          "tokens": [
+            "resort_swimsuit",
+            "black_crimson_swimsuit",
+            "gold_jewelry",
+            "beach_wrap",
+            "fruit_drink"
           ],
           "default": false,
           "isDefault": false

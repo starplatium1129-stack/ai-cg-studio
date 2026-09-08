@@ -32,7 +32,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -85,6 +85,46 @@
           "tokens": [
             "blue_sweater",
             "long_cream_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "艾尔菲利亚·成人私密造型",
+          "prose": "a private adult ensemble built around robe, dressing_room, completely_nude",
+          "tokens": [
+            "robe",
+            "dressing_room",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "艾尔菲利亚·圣洁花嫁",
+          "prose": "a snow-white bridal robe with icy-blue embroidery, a crystal veil and a bouquet of magically preserved ice roses",
+          "tokens": [
+            "wedding_dress",
+            "snow_white_robe",
+            "icy_embroidery",
+            "crystal_veil",
+            "ice_rose_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "艾尔菲利亚·海滨泳装",
+          "prose": "an ice-blue swimsuit with a white shoulder wrap, crystal hair clasp and a chilled fruit drink",
+          "tokens": [
+            "ice_blue_swimsuit",
+            "white_shoulder_wrap",
+            "crystal_hair_clasp",
+            "fruit_drink",
+            "ice_bird"
           ],
           "default": false,
           "isDefault": false

@@ -31,7 +31,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -88,6 +88,45 @@
             "scarf",
             "winter_hat",
             "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "久远寺有珠·成人私密造型",
+          "prose": "a private adult ensemble built around black_dress, completely_nude",
+          "tokens": [
+            "black_dress",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "久远寺有珠·圣洁花嫁",
+          "prose": "a modest black bridal gown with a silver rune veil, white collar and a small bluebird bouquet charm",
+          "tokens": [
+            "wedding_dress",
+            "black_gown",
+            "silver_rune_veil",
+            "white_collar",
+            "bluebird_charm"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "久远寺有珠·海滨泳装",
+          "prose": "a deep blue one-piece swimsuit with a long dark cover-up, shell clasp and a clear glass jar",
+          "tokens": [
+            "deep_blue_swimsuit",
+            "one_piece_swimsuit",
+            "dark_cover_up",
+            "shell_clasp",
+            "glass_jar"
           ],
           "default": false,
           "isDefault": false

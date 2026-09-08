@@ -8,9 +8,9 @@
 | --- | ---: | --- |
 | 角色档案 | 160 | data/characters.json 数组长度 |
 | 热门角色 | 158 | data/popular-characters.json 的 characters；候选四十九位已全部接入 |
-| 热门服装形态 | 723 | 上述 characters[].outfits 长度之和 |
+| 热门服装形态 | 837 | 上述 characters[].outfits 长度之和 |
 | 通用场景 | 302 | data/scenes.json 数组长度 |
-| 场景蓝图 | 1,525 | data/scene-blueprints.json 的 blueprints |
+| 场景蓝图 | 1,681 | data/scene-blueprints.json 的 blueprints |
 | 参考库角色 / 已登记形态 | 160 / 534 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
 | 参考条目 | 3,738 | view 中全部 outfits[].references |
 | 非 pending 且有 URL / pending | 2,534 / 1,204 | 登记统计，不代表出图或视觉审核完成 |
@@ -24,8 +24,9 @@
 - 场景/热门角色/参考库、作品册、聊天/语音/Live2D、视频分镜与桌宠已有实现。已有实现不等于本轮真实设备或出图复验通过。
 - 训练页面与路由已移除；历史 LoRA 训练协议仍可查阅 [训练记录](anima-training-record.md)，不是当前在线模块。
 - 分级遵循本机/远程边界，素材占位与真实图片分开计数。参考图不入 Git，经 view 索引懒加载。
+- 当前 158 位热门角色均登记为成年资格；R18 蓝图仍必须经过本机授权与成人开关，远程/未知状态继续 fail-closed。
 - Git bundle 当前是最多 2 个全量锚点与默认 10 个增量（git-bundle-backup.js），属于本地第二副本；提交后仍须推送远端。
 
 ## 验证与后续
 
-文档审计结果见 [审计记录](documentation-audit-2026-09-08.md)。按用户更新的“先角色、每人约六条日常、出图后补”范围，第六至九批角色数据与应用接入已完成，见[接入记录](popular-sfw-batches-complete-2026-09-08.md)；图片、参考图与样张仍按待补状态管理。此前的测试、截图、模型和桌面验收只代表各自记录时点，集中保留在 [归档](archive/README.md)。后续工作只在 [未来规划](roadmap.md) 排序。
+文档审计结果见 [审计记录](documentation-audit-2026-09-08.md)。第五批 6 位与第六至九批 36 位角色现已按用户确认统一登记为成年角色；新增角色均具备完整 R18 蓝图，第六至九批另补齐 6~7 条 SFW（含圣洁花嫁与海滨泳装）。36 条首条 R18 样张已使用生产 MiaoMiao v1.2 完成本地真实渲染抽查，完整图像发布、参考图与其余样张仍按待补状态管理。此前的测试、截图、模型和桌面验收只代表各自记录时点，集中保留在 [归档](archive/README.md)。后续工作只在 [未来规划](roadmap.md) 排序。

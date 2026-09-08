@@ -32,7 +32,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -86,6 +86,47 @@
             "cream_blouse",
             "long_sleeves",
             "navy_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "Vivy·成人私密造型",
+          "prose": "a private adult ensemble built around dress, white_dress, completely_nude, dressing_room",
+          "tokens": [
+            "dress",
+            "white_dress",
+            "completely_nude",
+            "dressing_room"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "Vivy·圣洁花嫁",
+          "prose": "an opaque white-and-blue bridal stage dress with covered shoulders, a translucent veil, earpiece and white boots",
+          "tokens": [
+            "wedding_dress",
+            "white_blue_stage_gown",
+            "covered_shoulders",
+            "translucent_veil",
+            "white_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "Vivy·海滨泳装",
+          "prose": "a white-and-blue resort swimsuit with a light stage jacket, waterproof earpiece and compact recorder",
+          "tokens": [
+            "white_blue_swimsuit",
+            "stage_jacket",
+            "waterproof_earpiece",
+            "compact_recorder",
+            "seaside_stage"
           ],
           "default": false,
           "isDefault": false

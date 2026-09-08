@@ -161,7 +161,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -219,6 +219,48 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "牧之原翔子·成人私密造型",
+          "prose": "a private adult ensemble built around white_dress, small_towel, dressing_room, wedding_dress, hospital_gown",
+          "tokens": [
+            "white_dress",
+            "small_towel",
+            "dressing_room",
+            "wedding_dress",
+            "hospital_gown"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "牧之原翔子·圣洁花嫁",
+          "prose": "a soft white bridal dress with a sea-blue sash, short veil and a bouquet of white coastal flowers",
+          "tokens": [
+            "wedding_dress",
+            "soft_white_dress",
+            "sea_blue_sash",
+            "short_veil",
+            "coastal_flowers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "牧之原翔子·海滨泳装",
+          "prose": "a pale blue swimsuit with a loose white shirt, canvas tote and a lemon soda",
+          "tokens": [
+            "pale_blue_swimsuit",
+            "white_shirt",
+            "canvas_tote",
+            "lemon_soda",
+            "seawall_bench"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -251,7 +293,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -306,6 +348,45 @@
             "wool_scarf",
             "pants",
             "glasses"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "双叶理央·成人私密造型",
+          "prose": "a private adult ensemble built around sheer lace and soft shadows",
+          "tokens": [
+            "private_lingerie",
+            "sheer_fabric"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "双叶理央·圣洁花嫁",
+          "prose": "a clean white bridal dress with a silver-grey sash, simple veil, black-rimmed glasses and a tiny blue-flower beaker",
+          "tokens": [
+            "wedding_dress",
+            "white_dress",
+            "silver_sash",
+            "simple_veil",
+            "flower_beaker"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "双叶理央·海滨泳装",
+          "prose": "a navy athletic swimsuit with a white sun jacket, waterproof tablet pouch and clear safety glasses",
+          "tokens": [
+            "navy_athletic_swimsuit",
+            "white_sun_jacket",
+            "tablet_pouch",
+            "safety_glasses",
+            "tide_pool"
           ],
           "default": false,
           "isDefault": false

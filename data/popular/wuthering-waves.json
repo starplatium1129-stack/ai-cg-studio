@@ -33,7 +33,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -89,6 +89,45 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "长离·成人私密造型",
+          "prose": "a private adult ensemble built around robe, completely_nude",
+          "tokens": [
+            "robe",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "长离·圣洁花嫁",
+          "prose": "a layered white-and-red bridal gown with phoenix embroidery, a light veil and a white flower fan",
+          "tokens": [
+            "wedding_dress",
+            "red_white_gown",
+            "phoenix_embroidery",
+            "light_veil",
+            "white_flower_fan"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "长离·海滨泳装",
+          "prose": "a peach-red swimsuit with a cream long overshirt, embroidered sash and a glass of chilled tea",
+          "tokens": [
+            "peach_swimsuit",
+            "cream_overshirt",
+            "embroidered_sash",
+            "chilled_tea",
+            "wooden_deck"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -121,7 +160,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -179,6 +218,46 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "守岸人·成人私密造型",
+          "prose": "a private adult ensemble built around dress, black_and_white_dress, completely_nude",
+          "tokens": [
+            "dress",
+            "black_and_white_dress",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "守岸人·圣洁花嫁",
+          "prose": "an opaque white bridal gown with blue embroidery, a light coastal veil and a small bouquet of sea flowers",
+          "tokens": [
+            "wedding_dress",
+            "white_gown",
+            "blue_embroidery",
+            "coastal_veil",
+            "sea_flower_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "守岸人·海滨泳装",
+          "prose": "a blue-and-white coastal swimsuit with a translucent shoulder wrap, shell bracelet and bare feet",
+          "tokens": [
+            "coastal_swimsuit",
+            "blue_white_swimsuit",
+            "shoulder_wrap",
+            "shell_bracelet",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -213,7 +292,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -269,6 +348,49 @@
             "long_sleeves",
             "blue_skirt",
             "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "卡提希娅·成人私密造型",
+          "prose": "a private adult ensemble built around armor, plate_armor, silver_armor, armory, completely_nude",
+          "tokens": [
+            "armor",
+            "plate_armor",
+            "silver_armor",
+            "armory",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "卡提希娅·圣洁花嫁",
+          "prose": "a pale blue bridal gown with a cream mantle, braided gold trim, a flower crown and a delicate halo",
+          "tokens": [
+            "wedding_dress",
+            "pale_blue_gown",
+            "cream_mantle",
+            "gold_braid_trim",
+            "flower_crown",
+            "halo"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "卡提希娅·海滨泳装",
+          "prose": "a pale blue long-skirt swimsuit with a cream cardigan, gold braid and simple water sandals",
+          "tokens": [
+            "long_skirt_swimsuit",
+            "pale_blue_swimsuit",
+            "cream_cardigan",
+            "gold_braid",
+            "water_sandals"
           ],
           "default": false,
           "isDefault": false

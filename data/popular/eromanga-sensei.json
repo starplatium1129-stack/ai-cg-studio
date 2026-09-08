@@ -33,7 +33,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "underage",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -115,6 +115,18 @@
             "pink_scarf",
             "pants",
             "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "和泉纱雾·成人私密造型",
+          "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+          "tokens": [
+            "private_lingerie",
+            "sheer_lace",
+            "soft_shadows"
           ],
           "default": false,
           "isDefault": false

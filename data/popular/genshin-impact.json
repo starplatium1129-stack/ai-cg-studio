@@ -483,7 +483,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -539,6 +539,46 @@
             "cream_scarf",
             "wool",
             "japanese_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "八重神子·成人私密造型",
+          "prose": "a private adult ensemble built around completely_nude, dressing_room, robe",
+          "tokens": [
+            "completely_nude",
+            "dressing_room",
+            "robe"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "八重神子·圣洁花嫁",
+          "prose": "a red-and-white shrine bridal kimono with a translucent veil, gold cords and a sacred sakura bouquet",
+          "tokens": [
+            "wedding_kimono",
+            "red_white_bridal",
+            "translucent_veil",
+            "gold_cords",
+            "sacred_sakura_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "八重神子·海滨泳装",
+          "prose": "a pink-and-white resort swimsuit with a light festival robe, gold hair ornaments and a chilled tofu-flavored drink",
+          "tokens": [
+            "resort_swimsuit",
+            "pink_white_swimsuit",
+            "festival_robe",
+            "gold_ornaments",
+            "chilled_drink"
           ],
           "default": false,
           "isDefault": false

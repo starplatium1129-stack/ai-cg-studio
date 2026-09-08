@@ -31,7 +31,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -86,6 +86,49 @@
             "wool",
             "pants",
             "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "毛利兰·成人私密造型",
+          "prose": "a private adult ensemble built around small_towel, dressing_room, bikini, red_bikini, strap_slip, completely_nude",
+          "tokens": [
+            "small_towel",
+            "dressing_room",
+            "bikini",
+            "red_bikini",
+            "strap_slip",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "毛利兰·圣洁花嫁",
+          "prose": "a white bridal gown with a pale blue sash, short veil, cherry blossom embroidery and flat shoes",
+          "tokens": [
+            "wedding_dress",
+            "white_gown",
+            "blue_sash",
+            "short_veil",
+            "cherry_embroidery"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "毛利兰·海滨泳装",
+          "prose": "a blue-and-white sporty swimsuit with a light visor, ankle bands and a beach volleyball",
+          "tokens": [
+            "sporty_swimsuit",
+            "blue_white_swimsuit",
+            "visor",
+            "ankle_bands",
+            "beach_volleyball"
           ],
           "default": false,
           "isDefault": false

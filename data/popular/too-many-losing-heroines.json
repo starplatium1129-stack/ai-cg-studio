@@ -31,7 +31,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -87,6 +87,45 @@
             "floral_print",
             "yellow_obi",
             "geta"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "八奈见杏菜·成人私密造型",
+          "prose": "a private adult ensemble built around small_towel, completely_nude",
+          "tokens": [
+            "small_towel",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "八奈见杏菜·圣洁花嫁",
+          "prose": "a blue-and-white bridal dress with a short veil, ribbon sash and an apple-candy bouquet charm",
+          "tokens": [
+            "wedding_dress",
+            "blue_white_dress",
+            "short_veil",
+            "ribbon_sash",
+            "apple_candy_charm"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "八奈见杏菜·海滨泳装",
+          "prose": "a bright blue swimsuit with a white overshirt, striped sun hat and an oversized box of fries",
+          "tokens": [
+            "blue_swimsuit",
+            "white_overshirt",
+            "striped_sun_hat",
+            "box_of_fries",
+            "iced_tea"
           ],
           "default": false,
           "isDefault": false

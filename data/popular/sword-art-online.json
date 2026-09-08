@@ -159,7 +159,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -212,6 +212,46 @@
           "tokens": [
             "blue_sweater",
             "grey_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "朝田诗乃·成人私密造型",
+          "prose": "a private adult ensemble built around bodysuit, completely_nude, dressing_room",
+          "tokens": [
+            "bodysuit",
+            "completely_nude",
+            "dressing_room"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "朝田诗乃·圣洁花嫁",
+          "prose": "a blue-and-white bridal gown with a simple veil, silver hair ornament and a small blue bouquet",
+          "tokens": [
+            "wedding_dress",
+            "blue_white_dress",
+            "simple_veil",
+            "silver_hair_ornament",
+            "blue_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "朝田诗乃·海滨泳装",
+          "prose": "a slate-blue athletic swimsuit with a pale windbreaker, waterproof headphones and a utility pouch",
+          "tokens": [
+            "athletic_swimsuit",
+            "slate_blue_swimsuit",
+            "windbreaker",
+            "waterproof_headphones",
+            "utility_pouch"
           ],
           "default": false,
           "isDefault": false

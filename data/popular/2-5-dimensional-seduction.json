@@ -30,7 +30,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -86,6 +86,48 @@
             "white_blouse",
             "ribbon",
             "pleated_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "橘美花莉·成人私密造型",
+          "prose": "a private adult ensemble built around micro_bikini, gold_bikini, dressing_room, bodysuit, completely_nude",
+          "tokens": [
+            "micro_bikini",
+            "gold_bikini",
+            "dressing_room",
+            "bodysuit",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "橘美花莉·圣洁花嫁",
+          "prose": "a white-and-gold bridal cosplay gown with a layered veil, satin corset, gold ribbons and a fantasy bouquet",
+          "tokens": [
+            "wedding_dress",
+            "white_gold_gown",
+            "layered_veil",
+            "gold_ribbons",
+            "fantasy_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "橘美花莉·海滨泳装",
+          "prose": "a metallic gold swimsuit with a sheer black beach wrap, small wing accessories and a themed iced drink",
+          "tokens": [
+            "gold_swimsuit",
+            "metallic_swimsuit",
+            "sheer_beach_wrap",
+            "wing_accessories",
+            "themed_iced_drink"
           ],
           "default": false,
           "isDefault": false

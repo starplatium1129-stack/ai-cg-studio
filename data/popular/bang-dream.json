@@ -32,7 +32,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -86,6 +86,45 @@
           "tokens": [
             "cream_sweater",
             "blue_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "丰川祥子·成人私密造型",
+          "prose": "a private adult ensemble built around black_dress, completely_nude",
+          "tokens": [
+            "black_dress",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "丰川祥子·圣洁花嫁",
+          "prose": "a black-and-indigo bridal gown with feather trim, a delicate veil, pearl buttons and a small music-note bouquet",
+          "tokens": [
+            "wedding_dress",
+            "black_indigo_gown",
+            "feather_trim",
+            "delicate_veil",
+            "music_note_bouquet"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "丰川祥子·海滨泳装",
+          "prose": "a deep indigo swimsuit with a black sheer overshirt, ribbon hair ties and a strand of blue stage lights",
+          "tokens": [
+            "indigo_swimsuit",
+            "black_overshirt",
+            "ribbon_hair_ties",
+            "blue_string_lights",
+            "seaside_stage"
           ],
           "default": false,
           "isDefault": false

@@ -31,7 +31,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -88,6 +88,45 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "战栗的龙卷·成人私密造型",
+          "prose": "a private adult ensemble built around black_dress, completely_nude",
+          "tokens": [
+            "black_dress",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "战栗的龙卷·圣洁花嫁",
+          "prose": "a black-and-emerald bridal gown with a floating layered veil, rose embroidery and polished black shoes",
+          "tokens": [
+            "wedding_dress",
+            "emerald_gown",
+            "layered_veil",
+            "rose_embroidery",
+            "black_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "战栗的龙卷·海滨泳装",
+          "prose": "a black-and-emerald swimsuit with a short wrap skirt, lime parasol and chilled citrus soda",
+          "tokens": [
+            "emerald_swimsuit",
+            "black_swimsuit",
+            "wrap_skirt",
+            "lime_parasol",
+            "citrus_soda"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -120,7 +159,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -175,6 +214,49 @@
             "long_sleeves",
             "high_neck",
             "pearl_necklace"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "吹雪·成人私密造型",
+          "prose": "a private adult ensemble built around evening_dress, green_dress, pearl_necklace, black_lace, dressing_room, completely_nude",
+          "tokens": [
+            "evening_dress",
+            "green_dress",
+            "pearl_necklace",
+            "black_lace",
+            "dressing_room",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "吹雪·圣洁花嫁",
+          "prose": "an emerald-and-white bridal gown with pearl jewelry, a structured veil and white rose bouquet",
+          "tokens": [
+            "wedding_dress",
+            "emerald_gown",
+            "pearl_jewelry",
+            "structured_veil",
+            "white_roses"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "吹雪·海滨泳装",
+          "prose": "an emerald one-piece swimsuit with a white beach coat, pearl earrings and a woven sun hat",
+          "tokens": [
+            "emerald_one_piece",
+            "white_beach_coat",
+            "pearl_earrings",
+            "woven_sun_hat",
+            "beach_table"
           ],
           "default": false,
           "isDefault": false

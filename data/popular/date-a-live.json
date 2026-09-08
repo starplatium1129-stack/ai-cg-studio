@@ -134,7 +134,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -193,6 +193,47 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "夜刀神十香·成人私密造型",
+          "prose": "a private adult ensemble built around astral_dress, armor, completely_nude, dressing_room",
+          "tokens": [
+            "astral_dress",
+            "armor",
+            "completely_nude",
+            "dressing_room"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "夜刀神十香·圣洁花嫁",
+          "prose": "a luminous white bridal gown with a large violet ribbon, crystal embroidery and a sheer veil",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "violet_ribbon",
+            "crystal_embroidery",
+            "white_gloves"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "夜刀神十香·海滨泳装",
+          "prose": "a violet ruffled swimsuit with a large ribbon, a light cover-up skirt and barefoot sandals",
+          "tokens": [
+            "violet_swimsuit",
+            "ruffled_swimsuit",
+            "large_ribbon",
+            "cover_up_skirt",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     },
@@ -224,7 +265,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -280,6 +321,47 @@
             "long_sleeves",
             "long_skirt",
             "long_hair"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "鸢一折纸·成人私密造型",
+          "prose": "a private adult ensemble built around bodysuit, white_bodysuit, wedding_dress, completely_nude",
+          "tokens": [
+            "bodysuit",
+            "white_bodysuit",
+            "wedding_dress",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "鸢一折纸·圣洁花嫁",
+          "prose": "a tailored white bridal gown with a clean short veil, silver fastening and a single white rose",
+          "tokens": [
+            "wedding_dress",
+            "short_veil",
+            "white_rose",
+            "silver_fastening",
+            "clean_lines"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "鸢一折纸·海滨泳装",
+          "prose": "a navy-and-white athletic swimsuit with a light windbreaker tied at the waist and waterproof sandals",
+          "tokens": [
+            "athletic_swimsuit",
+            "navy_swimsuit",
+            "white_trim",
+            "windbreaker_tied_waist",
+            "waterproof_sandals"
           ],
           "default": false,
           "isDefault": false

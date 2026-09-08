@@ -281,7 +281,7 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -336,6 +336,45 @@
             "charcoal_cardigan",
             "cream_blouse",
             "long_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_boudoir",
+          "name": "尤贝尔·成人私密造型",
+          "prose": "a private adult ensemble built around black_dress, completely_nude",
+          "tokens": [
+            "black_dress",
+            "completely_nude"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_bridal",
+          "name": "尤贝尔·圣洁花嫁",
+          "prose": "a black long-sleeved bridal gown with a translucent veil, green embroidery and a wildflower bouquet",
+          "tokens": [
+            "black_wedding_dress",
+            "bridal_veil",
+            "green_embroidery",
+            "wildflower_bouquet",
+            "long_sleeves"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "尤贝尔·海滨泳装",
+          "prose": "a deep green layered swimsuit with a short black beach skirt, shell jewelry and bare feet",
+          "tokens": [
+            "green_swimsuit",
+            "layered_swimsuit",
+            "black_beach_skirt",
+            "shell_jewelry",
+            "barefoot"
           ],
           "default": false,
           "isDefault": false
