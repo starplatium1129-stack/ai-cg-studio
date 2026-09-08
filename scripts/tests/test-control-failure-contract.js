@@ -16,6 +16,9 @@ var runtimePaths = require('../lib/runtime-paths');
 var gatewayTestStack = require('./gateway-test-stack');
 
 var projectRoot = path.resolve(__dirname, '..', '..');
+var WINDOWS_POWERSHELL_TEST = process.platform === 'win32'
+  ? {}
+  : { skip:'requires Windows PowerShell process ownership semantics' };
 
 function listen(server) {
   return new Promise(function (resolve, reject) {
@@ -373,7 +376,7 @@ function waitForExit(child) {
   });
 }
 
-test('managed-comfyui Stop refuses to kill an unrelated process on the configured port', async () => {
+test('managed-comfyui Stop refuses to kill an unrelated process on the configured port', WINDOWS_POWERSHELL_TEST, async () => {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-script-'));
   // 端口被与本项目无关的进程占用（这里就是测试进程自己）：命令行不含 main.py，
   // Stop 必须视之为不可识别并保持不碰。
@@ -408,7 +411,7 @@ test('managed-comfyui Stop refuses to kill an unrelated process on the configure
   }
 });
 
-test('managed-comfyui Stop closes a recognized externally started ComfyUI', async () => {
+test('managed-comfyui Stop closes a recognized externally started ComfyUI', WINDOWS_POWERSHELL_TEST, async () => {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-stop-'));
   var fake = await startFakeService({ entryName:'main.py', healthPath:'/system_stats' });
   var base = 'http://127.0.0.1:' + fake.port;
@@ -439,7 +442,7 @@ test('managed-comfyui Stop closes a recognized externally started ComfyUI', asyn
   }
 });
 
-test('managed-webui Stop closes a recognized externally started reForge', async () => {
+test('managed-webui Stop closes a recognized externally started reForge', WINDOWS_POWERSHELL_TEST, async () => {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-webui-stop-'));
   var fake = await startFakeService({ entryName:'launch.py', healthPath:'/sdapi/v1/sd-models' });
   var base = 'http://127.0.0.1:' + fake.port;
