@@ -3,7 +3,7 @@
     <div class="titlebar-brand">
       <span class="titlebar-dot" aria-hidden="true"></span>
       <span class="titlebar-name">绫季绘境 Atelier</span>
-      <span v-if="pageTitle" class="titlebar-page">{{ pageTitle }}</span>
+      <span v-if="pageTitle" class="titlebar-page" :title="pageTitle">{{ pageTitle }}</span>
     </div>
     <div class="titlebar-controls">
       <button class="tb-btn" type="button" aria-label="最小化" title="最小化" @click="bridge?.minimizeWindow()">
@@ -36,37 +36,38 @@ const pageTitle = computed(() => {
   return ''
 })
 const visible = computed(() => Boolean(bridge) && route.path !== '/companion' && route.path !== '/companion-chat')
-let maximizedSub = 0
+let maximizedSub: number | null = null
+let disposed = false
+let receivedWindowEvent = false
 
 onMounted(async () => {
   // 挂载早期 route.path 可能尚未就绪，用 location.pathname 硬守卫桌宠表面
   if (!bridge || location.pathname === '/companion' || location.pathname === '/companion-chat') return
   document.documentElement.classList.add('aics-desktop-shell')
+  maximizedSub = bridge.onMaximizedChanged(value => {
+    receivedWindowEvent = true
+    maximized.value = value
+  })
   try {
     const state = await bridge.getWindowState()
-    maximized.value = state.maximized
+    if (!disposed && !receivedWindowEvent) maximized.value = state.maximized
   } catch { /* 窗口状态查询失败时保持默认 */ }
-  maximizedSub = bridge.onMaximizedChanged(value => { maximized.value = value })
 })
 onUnmounted(() => {
-  if (bridge && maximizedSub) bridge.offMaximizedChanged(maximizedSub)
+  disposed = true
+  if (bridge && maximizedSub !== null) bridge.offMaximizedChanged(maximizedSub)
   document.documentElement.classList.remove('aics-desktop-shell')
 })
 </script>
 
 <style scoped>
 .desktop-titlebar {
-  --desktop-titlebar-bg-top: #181130;
-  --desktop-titlebar-bg-bottom: #0e0b1d;
-  --desktop-titlebar-dot-start: #b48cf2;
-  --desktop-titlebar-dot-end: #f2c98c;
-  --desktop-titlebar-text: #b3aad0;
-  --desktop-titlebar-name: #ddd6f0;
-  --desktop-titlebar-page: #857baa;
-  --desktop-titlebar-hover: #f4f1fb;
-  --desktop-titlebar-hover-bg: color-mix(in srgb, white 8%, transparent);
-  --desktop-titlebar-press-bg: color-mix(in srgb, white 13%, transparent);
-  --desktop-titlebar-close: #e81123;
+  --desktop-titlebar-text: var(--text-secondary);
+  --desktop-titlebar-name: var(--text-primary);
+  --desktop-titlebar-page: var(--text-secondary);
+  --desktop-titlebar-hover: var(--text-primary);
+  --desktop-titlebar-hover-bg: var(--bg-elevated);
+  --desktop-titlebar-press-bg: var(--accent-soft);
   position: relative;
   flex: none;
   display: flex;
@@ -74,10 +75,8 @@ onUnmounted(() => {
   justify-content: space-between;
   height: 38px;
   padding: 0 0 0 14px;
-  background:
-    radial-gradient(26rem 6rem at 10% -140%, rgba(180, 140, 242, 0.2), transparent 62%),
-    linear-gradient(180deg, var(--desktop-titlebar-bg-top), var(--desktop-titlebar-bg-bottom));
-  box-shadow: inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
+  background: var(--bg-surface);
+  box-shadow: inset 0 -1px 0 var(--border-soft);
   -webkit-app-region: drag;
   user-select: none;
   color: var(--desktop-titlebar-text);
@@ -92,7 +91,7 @@ onUnmounted(() => {
   right: 0;
   bottom: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent 2%, rgba(168, 138, 236, 0.34) 18%, rgba(168, 138, 236, 0.12) 55%, transparent 98%);
+  background: linear-gradient(90deg, transparent 2%, var(--accent-soft) 18%, transparent 98%);
   pointer-events: none;
 }
 .titlebar-brand {
@@ -108,8 +107,7 @@ onUnmounted(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--desktop-titlebar-dot-start), var(--desktop-titlebar-dot-end));
-  box-shadow: 0 0 10px rgba(180, 140, 242, 0.55), 0 0 2px color-mix(in srgb, white 35%, transparent);
+  background: var(--accent);
 }
 .titlebar-name {
   color: var(--desktop-titlebar-name);
@@ -118,7 +116,7 @@ onUnmounted(() => {
 }
 .titlebar-page {
   padding-left: 10px;
-  border-left: 1px solid color-mix(in srgb, white 10%, transparent);
+  border-left: 1px solid var(--border-soft);
   color: var(--desktop-titlebar-page);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -141,7 +139,6 @@ onUnmounted(() => {
   background: transparent;
   color: var(--desktop-titlebar-text);
   cursor: default;
-  transition: background var(--motion-press) ease, color var(--motion-press) ease;
 }
 .tb-btn:hover {
   background: var(--desktop-titlebar-hover-bg);
@@ -151,15 +148,15 @@ onUnmounted(() => {
   background: var(--desktop-titlebar-press-bg);
 }
 .tb-btn:focus-visible {
-  outline: 2px solid rgba(214, 196, 250, 0.55);
+  outline: 2px solid var(--accent);
   outline-offset: -2px;
 }
 .tb-close:hover {
-  background: linear-gradient(180deg, #ee2a3c, var(--desktop-titlebar-close));
-  color: #fff;
+  background: color-mix(in srgb, var(--danger) 12%, var(--bg-surface));
+  color: var(--danger-text);
 }
 .tb-close:active {
-  background: linear-gradient(180deg, var(--desktop-titlebar-close), #a80d1b);
+  background: color-mix(in srgb, var(--danger) 18%, var(--bg-surface));
 }
 @media (max-width: 600px) {
   .titlebar-page { display: none; }

@@ -1,0 +1,40 @@
+<template>
+  <section v-if="isDesktop" id="control-personalization" class="desktop-preferences" aria-labelledby="desktop-preferences-title">
+    <div>
+      <h2 id="desktop-preferences-title">我的桌面工作台</h2>
+      <p>从常用页面开始，外观沿用你选择的深浅主题。</p>
+    </div>
+    <label for="desktop-start-page">打开工作台时</label>
+    <select id="desktop-start-page" :value="startPage" @change="saveStartPage">
+      <option v-for="page in desktopPages" :key="page.value" :value="page.value">{{ page.label }}</option>
+      <option value="last">回到上次工作页</option>
+    </select>
+    <p class="desktop-preferences-note" role="status">{{ feedback || '仅记住页面位置；从作品或场景打开时仍进入对应内容。' }}</p>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { settingsRepository } from '@/storage/settingsRepository'
+import { desktopPages, DESKTOP_START_PAGE_SETTING } from '@/storage/desktopPreferences'
+const isDesktop = Boolean(window.companionDesktop)
+const startPage = ref(settingsRepository.get(DESKTOP_START_PAGE_SETTING) || '/')
+const feedback = ref('')
+function saveStartPage(event: Event) {
+  const value = DESKTOP_START_PAGE_SETTING.parse((event.target as HTMLSelectElement).value)
+  if (!value) return
+  settingsRepository.set(DESKTOP_START_PAGE_SETTING, value)
+  const saved = settingsRepository.get(DESKTOP_START_PAGE_SETTING)
+  startPage.value = saved || '/'
+  feedback.value = saved === value ? '已保存，下次打开工作台时生效。' : '设置未能保存，请检查本地存储后重试。'
+}
+</script>
+
+<style scoped>
+.desktop-preferences { display: grid; gap: var(--s-3); padding: var(--s-5); margin-block: var(--s-5); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); }
+.desktop-preferences h2 { margin: 0 0 var(--s-2); color: var(--text-primary); font-size: var(--fs-body); }
+.desktop-preferences p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); }
+.desktop-preferences label { color: var(--text-primary); }
+.desktop-preferences select { width: 100%; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-elevated); color: var(--text-primary); font: inherit; }
+.desktop-preferences select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>

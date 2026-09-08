@@ -18,6 +18,8 @@ export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 /** 绘图页引擎选择；键名保持不变以兼容已保存的 Anima 偏好。 */
 export const DRAW_ENGINE_KEY = 'aics_draw_engine'
 export const THEME_KEY = 'aics_theme'
+export const DESKTOP_START_PAGE_KEY = 'aics_desktop_start_page'
+export const DESKTOP_LAST_PAGE_KEY = 'aics_desktop_last_page'
 export const INTERFACE_SOUND_KEY = 'aics_interface_sound_v1'
 /** 成人内容展示开关（灵感场景页/热门场景页共用语义：本机默认开）。 */
 export const MATURE_SETTING_KEY = 'aics_show_mature'
@@ -79,6 +81,8 @@ export const TEMP_RESULT_KEY = 'aics_pb_temp_result_v1'
 export const SD_QUEUE_SNAPSHOT_KEY = 'aics_sd_queue_snapshot_v1'
 
 export const LIVE_LOCAL_KEYS = [
+  DESKTOP_START_PAGE_KEY,
+  DESKTOP_LAST_PAGE_KEY,
   THEME_KEY,
   INTERFACE_SOUND_KEY,
   'aics_sd_last_success_v1',

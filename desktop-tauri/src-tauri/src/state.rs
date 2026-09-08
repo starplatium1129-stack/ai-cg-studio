@@ -23,7 +23,7 @@ impl AppState {
         Self {
             paths,
             gateway_url: Mutex::new(String::new()),
-            ignore_mouse_events: AtomicBool::new(false),
+            ignore_mouse_events: AtomicBool::new(preferences.ignore_mouse_events),
             quitting: AtomicBool::new(false),
             live2d_enabled: Mutex::new(preferences.live2d_enabled),
             preferences: Mutex::new(preferences),

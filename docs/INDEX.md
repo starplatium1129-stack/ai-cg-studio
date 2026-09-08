@@ -14,6 +14,7 @@
 | [工程契约](engineering-contracts.md) | 模块约束、Live2D 与角色接入六层要求 |
 | [维护手册](maintenance.md) | 文件职责与日常维护 |
 | [桌面部署](desktop-deployment.md) | 增量、完整安装与 UAC |
+| [桌面个性化审计](desktop-personalization-audit-2026-09-08.md) | 启动工作页、偏好恢复、双主题标题栏与本轮验收边界 |
 | [本次文档审计](documentation-audit-2026-09-08.md) | 漂移修正、检查结果和边界 |
 
 本次已完成修复见 [非主机代码修复与验证](archive/completed/code-only-repairs-2026-09-08.md)。

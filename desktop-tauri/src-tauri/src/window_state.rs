@@ -13,12 +13,13 @@ pub struct WindowBounds {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct CompanionPreferences {
-    #[serde(default)]
+    #[serde(default, alias = "always_on_top")]
     pub always_on_top: bool,
-    #[serde(default)]
+    #[serde(default, alias = "ignore_mouse_events")]
     pub ignore_mouse_events: bool,
-    #[serde(default)]
+    #[serde(default, alias = "live2d_enabled")]
     pub live2d_enabled: Option<bool>,
 }
 
@@ -113,11 +114,7 @@ pub fn load_companion_preferences(file_path: &Path) -> CompanionPreferences {
 pub fn save_companion_preferences(file_path: &Path, preferences: &CompanionPreferences) {
     save_json_atomic(
         file_path,
-        &serde_json::json!({
-            "alwaysOnTop": preferences.always_on_top,
-            "ignoreMouseEvents": preferences.ignore_mouse_events,
-            "live2dEnabled": preferences.live2d_enabled,
-        }),
+        &serde_json::to_value(preferences).expect("companion preferences must serialize"),
     );
 }
 
@@ -182,6 +179,38 @@ pub fn save_ai_workspace(file_path: &Path, root: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn companion_preferences_survive_save_and_restart() {
+        let tmp = std::env::temp_dir().join(format!("aics-prefs-test-{}", std::process::id()));
+        let file = tmp.join("preferences.json");
+        let preferences = CompanionPreferences {
+            always_on_top: true, ignore_mouse_events: true, live2d_enabled: Some(false),
+        };
+        save_companion_preferences(&file, &preferences);
+        let loaded = load_companion_preferences(&file);
+        assert!(loaded.always_on_top);
+        assert!(loaded.ignore_mouse_events);
+        assert_eq!(loaded.live2d_enabled, Some(false));
+        save_companion_preferences(&file, &CompanionPreferences::default());
+        let loaded = load_companion_preferences(&file);
+        assert!(!loaded.always_on_top);
+        assert!(!loaded.ignore_mouse_events);
+        assert_eq!(loaded.live2d_enabled, None);
+        let _ = fs::remove_dir_all(tmp);
+    }
+
+    #[test]
+    fn legacy_snake_case_preferences_remain_readable() {
+        let preferences: CompanionPreferences = serde_json::from_str(
+            r#"{"always_on_top":true,"ignore_mouse_events":true,"live2d_enabled":false}"#,
+        ).unwrap();
+        assert!(preferences.always_on_top && preferences.ignore_mouse_events);
+        assert_eq!(preferences.live2d_enabled, Some(false));
+        let json = serde_json::to_value(preferences).unwrap();
+        assert_eq!(json["alwaysOnTop"], true);
+        assert!(json.get("always_on_top").is_none());
+    }
 
     #[test]
     fn round_trip_window_bounds() {

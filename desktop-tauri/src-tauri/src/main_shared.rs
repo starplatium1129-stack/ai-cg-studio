@@ -1,3 +1,4 @@
+use std::sync::atomic::Ordering;
 use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
 
 use crate::paths::DesktopPaths;
@@ -180,6 +181,11 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, s
         .visible(false)
         .initialization_script(shim)
         .build()?;
+    let ignore_mouse_events = state.ignore_mouse_events.load(Ordering::Relaxed);
+    if let Err(error) = win.set_ignore_cursor_events(ignore_mouse_events) {
+        state.ignore_mouse_events.store(false, Ordering::Relaxed);
+        state.warn(&format!("restore mouse passthrough failed: {error}"));
+    }
     if show_on_start {
         let _ = win.show();
         let _ = win.emit("aics:shown", ());

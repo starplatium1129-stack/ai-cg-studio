@@ -23,11 +23,19 @@ import GlobalSearch from '@/components/GlobalSearch.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
+import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
 
 // 键名统一出处：src/utils/storageKeys.ts
 const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 const route = useRoute()
 const router = useRouter()
+let detachDesktopWorkspace: (() => void) | undefined
+onMounted(() => {
+  if (window.companionDesktop && !location.pathname.startsWith('/companion')) {
+    detachDesktopWorkspace = attachDesktopWorkspace(router)
+  }
+})
+onUnmounted(() => detachDesktopWorkspace?.())
 const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')
 
 interface ThumbWarmEntry { image_id?: string }
