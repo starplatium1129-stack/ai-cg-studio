@@ -146,5 +146,13 @@ test('reference asset audit shares gateway roots, rejects missing URLs and direc
   const invalid = view([{}, { url: '/character-references/%2e%2e/face.png' }, { url: '/character-references/' }]);
   assert.equal(auditReferenceView(invalid, temp, explicit).missing, 3);
   assert.equal(auditReferenceView(modern, temp, { AICS_CHARACTER_REF_ROOT: path.join(temp, 'absent') }).missing, 1);
+  const ciAudit = auditReferenceView(modern, temp, {
+    AICS_CHARACTER_REF_ROOT: path.join(temp, 'absent'),
+    AICS_REFERENCE_AUDIT_MODE: 'structure',
+  });
+  assert.equal(ciAudit.missing, 0, 'CI structure mode cannot require intentionally untracked external media');
+  assert.equal(ciAudit.unverified, 1);
+  assert.equal(auditReferenceView(invalid, temp, { AICS_REFERENCE_AUDIT_MODE: 'structure' }).missing, 3,
+    'structure mode must still reject missing, traversal, and empty URLs');
   assert.equal(resolveCharRefRoot(temp, { AICS_CHARACTER_REF_ROOT: path.join(custom, 'face.png') }), '');
 });

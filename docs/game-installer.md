@@ -45,4 +45,11 @@ updater 签名、`latest.json` 与 SHA-256 作为同版本 GitHub Release 附件
 - 8 项桌面打包测试通过，含分发包签名校验与篡改拒绝；前后端类型检查、ESLint、生产构建及包预算通过；前端 278 项、单元 399 项、接口契约 25 组通过。
 - 仓库文本扫描通过。全量门禁仍有 scenes:optimize、scenes:ratings、scenes:validate 三个既有场景策略失败，以及 test:check 的 Windows 临时目录 ENOTEMPTY；不声明全量门禁通过。
 - 已通过 deploy-desktop.bat -UseInstaller -QuietInstall 完整升级本机，ProductVersion=1.5.8，部署日志成功，网关健康检查 HTTP 200。安装 exe 与构建 exe 仅有 Tauri 的 UNK→NSS 三字节安装类型标记差异，符合打包行为。
-- 最终发行 exe 由应用公钥验证 updater 签名。自下一版本起源码与附件统一发布到主项目；签名是 updater 完整性签名，不是 Windows Authenticode 证书。
+- 最终发行 exe 由应用公钥验证 updater 签名。自 1.5.9 起源码与附件统一发布到主项目；签名是 updater 完整性签名，不是 Windows Authenticode 证书。
+
+## 1.5.9 主项目统一发行（2026-09-08）
+
+- 所有已完成分支统一进入 `main`，主项目远端仅保留 `main`。
+- 自动更新端点切换为主项目公开 GitHub Releases；启动只检测，用户点击后才下载安装。
+- 全量门禁通过；最终现代安装包 318,439,424 字节，SHA-256 为 `5ED43E381A81C714544F5678E63ABA49DA2AD91B2D9F112ABEEFB43676768A7E`。
+- `v1.5.9` Release 包含 `latest.json`、安装包、updater 签名与 SHA-256 文件，标签指向对应应用源码提交。

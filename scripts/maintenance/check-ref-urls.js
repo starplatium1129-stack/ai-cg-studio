@@ -8,7 +8,8 @@ function auditReferenceView(data, root, env = process.env) {
   const appRoot = path.resolve(env.AICS_APP_ROOT || root);
   const assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
   const refRoot = resolveCharRefRoot(appRoot, env, env.AI_WORKSPACE_ROOT);
-  const result = { total: 0, missing: 0, pending: 0, refRoot, errors: [] };
+  const structureOnly = env.AICS_REFERENCE_AUDIT_MODE === 'structure';
+  const result = { total: 0, missing: 0, pending: 0, unverified: 0, refRoot, errors: [] };
   for (const [id, profile] of Object.entries(data)) {
     const seen = new Set();
     for (const outfit of profile.outfits || []) {
@@ -22,13 +23,18 @@ function auditReferenceView(data, root, env = process.env) {
         const prefix = url.startsWith('/character-references/') ? '/character-references/' :
           url.startsWith('/assets/') ? '/assets/' : '';
         const base = prefix === '/character-references/' ? refRoot : assetsRoot;
-        if (prefix && base) {
+        const validationBase = base || path.join(appRoot, '.external-reference-audit');
+        if (prefix) {
           try {
             const suffix = decodeURIComponent(url.slice(prefix.length));
-            const candidate = path.resolve(base, suffix);
-            const relative = path.relative(base, candidate);
+            const candidate = path.resolve(validationBase, suffix);
+            const relative = path.relative(validationBase, candidate);
             if (relative && !relative.startsWith('..') && !path.isAbsolute(relative) && !/[?#\0]/.test(suffix)) target = candidate;
           } catch { /* 无效编码视作断链，不访问越界路径。 */ }
+        }
+        if (target && !base && structureOnly && prefix === '/character-references/') {
+          result.unverified++;
+          continue;
         }
         let exists = false;
         try { exists = Boolean(target) && fs.statSync(target).isFile(); } catch { /* 缺图 */ }
@@ -46,7 +52,8 @@ function main() {
   const root = path.resolve(__dirname, '..', '..');
   const data = JSON.parse(fs.readFileSync(path.join(root, 'data/character-reference-view.json'), 'utf8'));
   const result = auditReferenceView(data, root);
-  console.log('total urls:', result.total, '| missing:', result.missing, '| pending:', result.pending, '| refRoot:', result.refRoot || '(not configured)');
+  console.log('total urls:', result.total, '| missing:', result.missing, '| pending:', result.pending,
+    '| unverified:', result.unverified, '| refRoot:', result.refRoot || '(not configured)');
   for (const error of result.errors) console.error('REFERENCE:', error);
   if (result.errors.length) {
     console.error('先核对 AICS_CHARACTER_REF_ROOT / AI_WORKSPACE_ROOT 与素材同步；不要用修改索引或 pending 掩盖缺图。');

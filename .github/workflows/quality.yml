@@ -13,6 +13,8 @@ jobs:
     timeout-minutes: 35
     env:
       AICS_HYGIENE_BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+      # 参考媒体按项目契约不入 Git；CI 验证索引结构，本机 gate:full 仍逐文件查验。
+      AICS_REFERENCE_AUDIT_MODE: structure
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
