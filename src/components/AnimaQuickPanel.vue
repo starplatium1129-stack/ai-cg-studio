@@ -61,7 +61,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 <template>
   <details class="panel step-panel anima-quick-panel">
     <summary class="panel-title">
-       <span>{{ state.family === 'krea2' ? 'Krea 2 · Comfy 创作引擎' : 'Anima 引擎（应用安全 API）' }}</span>
+       <span>{{ state.family === 'krea2' ? 'Krea 2 · Comfy 创作引擎' : 'Anima · 生成参数' }}</span>
       <span class="anima-status" :class="state.online ? 'is-on' : 'is-off'">{{ state.online ? '● 在线' : '○ 离线' }}</span>
     </summary>
     <div class="anima-body">
@@ -78,14 +78,6 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <label :for="idOf('strength')" class="anima-inline">强度</label>
         <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
        </div>
-      <label :for="idOf('prompt')" class="anima-label">正向提示词</label>
-      <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="anima-textarea" readonly></textarea>
-
-       <template v-if="capabilities.negative">
-         <label :for="idOf('negative')" class="anima-label">负向提示词</label>
-         <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="anima-textarea" readonly></textarea>
-       </template>
-
       <div class="anima-row">
         <label :for="idOf('seed')">Seed</label>
         <input :id="idOf('seed')" v-model.number="seed" type="number" class="anima-num anima-seed" :disabled="busy" />
@@ -121,6 +113,16 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </template>
       </div>
 
+      <details class="anima-prompt-details"><summary>查看引擎接收的提示词</summary>
+      <label :for="idOf('prompt')" class="anima-label">正向提示词</label>
+      <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="anima-textarea" readonly></textarea>
+
+       <template v-if="capabilities.negative">
+         <label :for="idOf('negative')" class="anima-label">负向提示词</label>
+         <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="anima-textarea" readonly></textarea>
+       </template>
+
+      </details>
       <div v-if="busy" class="anima-progress" aria-live="polite">
         <div class="anima-progress-copy">
           <span>{{ state.progressText || state.statusText || 'ComfyUI 正在推理…' }}<template v-if="state.currentNode"> · 节点 {{ state.currentNode }}</template></span>

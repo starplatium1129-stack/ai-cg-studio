@@ -188,6 +188,7 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
 
   // 分类结果必须是显存不足，而不是笼统的"生成失败"
   await expect(page.locator('.sd-recovery-title')).toHaveText('显存不足');
+  await page.getByRole('button', { name: '查看恢复选项', exact: true }).click();
   const recovery = page.getByRole('button', { name: '降低负载后重试' });
   await expect(recovery).toBeVisible();
 

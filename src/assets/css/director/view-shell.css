@@ -1,0 +1,113 @@
+/* 反推服装顶替提示条（2026-08-29）：热门角色服装被参考图顶替时的告知与恢复 */
+.outfit-override-note {
+  display: flex; align-items: center; gap: var(--s-2);
+  margin-bottom: var(--s-3); padding: var(--s-2) var(--s-3);
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--border-soft));
+  border-radius: var(--r-md); background: var(--accent-soft);
+  font-size: var(--fs-label-xs); line-height: var(--lh-label);
+}
+.outfit-override-icon { flex: 0 0 auto; width: 15px; height: 15px; color: var(--accent); }
+.outfit-override-text { flex: 1 1 auto; min-width: 0; color: var(--text-secondary); }
+.outfit-override-restore {
+  flex: 0 0 auto; padding: 4px 10px; border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill); background: var(--bg-elevated);
+  color: var(--text-primary); font-size: var(--fs-label-xs); cursor: pointer;
+  transition: border-color var(--motion-hover), background var(--motion-hover);
+}
+.outfit-override-restore:hover { border-color: var(--accent); background: var(--bg-hover); }
+.outfit-override-restore:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* 多场景批量出图入口行 */
+.batch-entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin: var(--s-2) 0; }
+.batch-entry-count { color: var(--text-secondary); font-size: var(--fs-label-xs); }
+.linklike { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
+.auto-save-gallery-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: var(--s-2) 0;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+.auto-save-gallery-label { font-size: var(--fs-label-sm); color: var(--text-primary); }
+.auto-save-gallery-hint { font-size: var(--fs-label-xs); color: var(--text-secondary); }
+.pb {
+  --pb-active: var(--mood-love);
+  --pb-active-text: var(--mood-love-text);
+  --pb-active-grad: var(--mood-tension);
+  --pb-badge-blue: var(--info);
+  --pb-badge-green: var(--success);
+  /* 2026-08-15 rella 化：导演台静态夜空衬底（工作台不浮动，只留静谧辉光） */
+  position: relative;
+  isolation: isolate;
+}
+.pb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-below);
+  pointer-events: none;
+  background:
+    radial-gradient(30rem 20rem at 92% -6%, var(--rella-glow-cyan), transparent 64%),
+    radial-gradient(26rem 18rem at -4% 88%, var(--rella-glow-violet), transparent 62%);
+}
+.engine-switch {
+  --engine-active-border: var(--mood-love);
+  --engine-active-text: var(--mood-love-text);
+  display: flex;
+  gap: 8px;
+  margin: 4px 0 10px;
+  flex-wrap: wrap;
+}
+.engine-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  padding: 7px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-soft);
+  background: var(--glass-fill);
+  color: inherit;
+  font-size: var(--fs-label);
+  cursor: pointer;
+  transition: border-color var(--motion-hover), background var(--motion-hover);
+}
+.engine-btn.active {
+  border-color: var(--engine-active-border);
+  background: color-mix(in srgb, var(--mood-love) 14%, transparent);
+  color: var(--engine-active-text);
+}
+.engine-sub {
+  font-size: var(--fs-mono-sm);
+  opacity: 0.6;
+}
+.base-model-picker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-deep);
+}
+.base-model-picker label { color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 700; }
+.base-model-picker select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: var(--fs-label-sm);
+}
+
+/* char-source / popular-tags-note / btn-video-action 已外移至 src/assets/css/director/panels.css（.pb 全局），scoped 内不再保留以免抽离后失活 */

@@ -39,8 +39,9 @@
         </div>
         <div v-else-if="generationError" class="stage-idle">
           <div class="stage-placeholder-title">这次画面未能生成</div>
+          <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
-            查看下方原因，调整后再试一次。
+            查看错误原因，调整后再试一次。
             <span v-if="generationError" class="stage-error-detail">（{{ generationError }}）</span>
           </div>
           <div class="stage-quick-actions">
@@ -250,6 +251,7 @@ const BUSY_HINT = '生成中，等这一张出完就能用'
 const emit = defineEmits<{
   generate: []
   openInpaint: []
+  openRecovery: []
   exploreScenes: []
   'update:inpaintCompareActive': [value: boolean]
   upscale: []

@@ -11,7 +11,7 @@
     }"
   >
 
-    <WorkspaceArchiveBar
+    <WorkspaceArchiveBar v-if="pb.directorMode !== 'pro'"
       chapter="01"
       title="绘境工作台"
       :subtitle="pb.isPopular ? popularCharacter?.displayName || '热门角色' : (pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式'))"
@@ -49,7 +49,7 @@
             :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
             @click="recheckEngineConnection">
             <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
-            <span>{{ engineOnline ? `${drawEngineLabel} 已连接` : engineStatusText }}</span>
+            <span>{{ engineOnline ? `${drawEngineLabel} 已连接` : (pb.directorMode === 'pro' ? `${drawEngineLabel} 未连接` : engineStatusText) }}</span>
           </button>
           <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
         </div>
@@ -62,18 +62,7 @@
       </div>
     </div>
 
-    <ManagedDrawingRouteCard v-if="managedRoute"
-      class="pb-managed-route-banner"
-      :route="managedRoute"
-      :history="pb.history"
-      :subject="pb.subject"
-      :expert="pb.directorMode === 'pro'"
-      :busy="generationBusy"
-      @apply="applyManagedRoute"
-      @reuse="reuseSuccessfulRecipe"
-    />
-
-    <nav class="drawing-jump-links" aria-label="绘制区快捷导航">
+    <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links" aria-label="绘制区快捷导航">
       <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
     </nav>
     <div class="director-workspace">
@@ -151,6 +140,7 @@
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
           @openInpaint="inpaintOpen = true"
+          @openRecovery="inspector?.selectSection(drawEngine === 'sd' ? 'delivery' : 'render')"
           @exploreScenes="materialDrawer?.selectSection('scenes')"
           @update:inpaintCompareActive="inpaintCompareActive = $event"
           @upscale="upscaleCurrentResult"
@@ -188,43 +178,24 @@
           </button>
         </div>
 
-        <DirectorTagWorkbench />
-
-        <PromptHealthPanel
-          class="advanced-decision basic-visible"
-          :prompt="previewPromptView"
-          :model-name="modelProfileView?.name"
-          :report="reportView"
-          :art-violations="artViolationsView"
-          :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
-          :open="pb.directorMode === 'pro'"
-          @copy="copyPrompt"
-          @save="saveCurrentResult"
-        />
-
-        <ArtistStylePicker
-          v-if="pb.directorMode === 'pro'"
-          :selected="pb.artistStyleIds"
-          :engine="drawEngine"
-          :curated-artist-styles="pb.currentCuratedArtistStyles"
-          @update:selected="pb.setArtistStyleIds"
-          @limit-reached="onArtistLimitReached"
-        />
-
-        <!-- SD params -->
-        <GenerationParamsPanel v-if="drawEngine === 'sd' && pb.directorMode === 'pro'"
-          v-model:params="pb.sdParams"
-          :samplers="sd.samplers.value"
-          :schedulers="sd.schedulers.value"
-          :result-seed="displayResultSeed"
-          @touch="pb.markParamTouched"
-          @reuse-seed="reuseLastSeed"
-          @reset="resetSdParams"
-        />
-
+      </div>
+      <DirectorInspector ref="inspector" :expert="pb.directorMode === 'pro'" :queue-count="sdQueue.total.value" :busy="generationBusy">
+        <template #render>
+          <details class="inspector-route" :open="pb.directorMode === 'basic'"><summary>推荐配方与复用</summary>
+<ManagedDrawingRouteCard v-if="managedRoute"
+      class="pb-managed-route-banner"
+      :route="managedRoute"
+      :history="pb.history"
+      :subject="pb.subject"
+      :expert="pb.directorMode === 'pro'"
+      :busy="generationBusy"
+      @apply="applyManagedRoute"
+      @reuse="reuseSuccessfulRecipe"
+    />
+          </details>
         <!-- Result panel -->
         <div class="result-frame step-panel" id="stepResult">
-          <div class="panel-title">出图结果</div>
+          <div class="panel-title">引擎与输出</div>
 
           <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
@@ -259,6 +230,28 @@
             </select>
           </div>
 
+
+
+
+        </div>
+        <!-- SD params -->
+        <GenerationParamsPanel :open="true" v-if="drawEngine === 'sd' && pb.directorMode === 'pro'"
+          v-model:params="pb.sdParams"
+          :samplers="sd.samplers.value"
+          :schedulers="sd.schedulers.value"
+          :result-seed="displayResultSeed"
+          @touch="pb.markParamTouched"
+          @reuse-seed="reuseLastSeed"
+          @reset="resetSdParams"
+        />
+
+        <AnimaQuickPanel :open="true" v-if="drawEngine !== 'sd' && pb.directorMode === 'pro'"
+          :state="animaState"
+          :no-lora="animaNoLoraMode"
+          @update:state="patchAnimaState"
+          @retry="retryAnima"
+        />
+
           <GenerationOutputControls
             :engine="drawEngine"
             :expert="pb.directorMode === 'pro'"
@@ -282,7 +275,45 @@
             @reuse-seed="reuseLastSeed"
             @reset="resetAll"
           />
+        </template>
+        <template #style>
+      <DirectorDecisionsRail
+        :emotion-summary="emotionSummary"
+        :shot-summary="shotSummary"
+        :lighting-summary="lightingSummary"
+        :composition-summary="compositionSummary"
+        :mood-summary="moodSummary"
+      />
+        <ArtistStylePicker
+          v-if="pb.directorMode === 'pro'"
+          :selected="pb.artistStyleIds"
+          :engine="drawEngine"
+          :curated-artist-styles="pb.currentCuratedArtistStyles"
+          @update:selected="pb.setArtistStyleIds"
+          @limit-reached="onArtistLimitReached"
+        />
 
+
+        </template>
+        <template #prompt>
+        <DirectorTagWorkbench />
+
+        <PromptHealthPanel
+          class="advanced-decision basic-visible"
+          :prompt="previewPromptView"
+          :model-name="modelProfileView?.name"
+          :report="reportView"
+          :art-violations="artViolationsView"
+          :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
+          :open="pb.directorMode === 'pro'"
+          @copy="copyPrompt"
+          @save="saveCurrentResult"
+        />
+
+
+        </template>
+        <template #delivery>
+          <div class="result-frame inspector-delivery">
           <!-- 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动进作品册，
                批量/队列不受此开关影响，它们按收集语义始终入册） -->
           <div class="auto-save-gallery-row" role="group" aria-label="出图自动入册">
@@ -338,23 +369,10 @@
             @close="batchOpen = false"
             @running-change="batchRunning = $event"
           />
-        </div>
 
-        <AnimaQuickPanel v-if="drawEngine !== 'sd' && pb.directorMode === 'pro'"
-          :state="animaState"
-          :no-lora="animaNoLoraMode"
-          @update:state="patchAnimaState"
-          @retry="retryAnima"
-        />
-      </div>
-
-      <DirectorDecisionsRail
-        :emotion-summary="emotionSummary"
-        :shot-summary="shotSummary"
-        :lighting-summary="lightingSummary"
-        :composition-summary="compositionSummary"
-        :mood-summary="moodSummary"
-      />
+          </div>
+        </template>
+      </DirectorInspector>
     </div>
 
     <!-- Toast 已于 2026-08-29 UX 收编退役，统一走全局 useToast（AppToast）；空壳 Transition 一并清除 -->
@@ -416,6 +434,7 @@
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
 const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/director/DirectorMaterialDrawer.vue'))
+const inspector = ref<InstanceType<typeof DirectorInspector> | null>(null)
 const materialDrawer = ref<InstanceType<typeof DirectorMaterialDrawer> | null>(null)
 import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from 'vue'
 import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router'
@@ -451,6 +470,7 @@ import { useDirectorPopular } from '@/composables/scene/useDirectorPopular'
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots'
 // 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
 // 降低导演台路由块体积（预算上限 JS 140KB / CSS 115KB）。
+const DirectorInspector = defineAsyncComponent(() => import('@/components/director/DirectorInspector.vue'))
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
 const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
 const PromptHealthPanel = defineAsyncComponent(() => import('@/components/PromptHealthPanel.vue'))
@@ -1476,118 +1496,4 @@ watch(() => drawEngine.value, engine => {
 })
 </script>
 
-<style scoped>
-/* 反推服装顶替提示条（2026-08-29）：热门角色服装被参考图顶替时的告知与恢复 */
-.outfit-override-note {
-  display: flex; align-items: center; gap: var(--s-2);
-  margin-bottom: var(--s-3); padding: var(--s-2) var(--s-3);
-  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--border-soft));
-  border-radius: var(--r-md); background: var(--accent-soft);
-  font-size: var(--fs-label-xs); line-height: var(--lh-label);
-}
-.outfit-override-icon { flex: 0 0 auto; width: 15px; height: 15px; color: var(--accent); }
-.outfit-override-text { flex: 1 1 auto; min-width: 0; color: var(--text-secondary); }
-.outfit-override-restore {
-  flex: 0 0 auto; padding: 4px 10px; border: 1px solid var(--border-strong);
-  border-radius: var(--r-pill); background: var(--bg-elevated);
-  color: var(--text-primary); font-size: var(--fs-label-xs); cursor: pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover);
-}
-.outfit-override-restore:hover { border-color: var(--accent); background: var(--bg-hover); }
-.outfit-override-restore:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-/* 多场景批量出图入口行 */
-.batch-entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); margin: var(--s-2) 0; }
-.batch-entry-count { color: var(--text-secondary); font-size: var(--fs-label-xs); }
-.linklike { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
-
-/* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
-.auto-save-gallery-row {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  margin: var(--s-2) 0;
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-}
-.auto-save-gallery-label { font-size: var(--fs-label-sm); color: var(--text-primary); }
-.auto-save-gallery-hint { font-size: var(--fs-label-xs); color: var(--text-secondary); }
-.pb {
-  --pb-active: var(--mood-love);
-  --pb-active-text: var(--mood-love-text);
-  --pb-active-grad: var(--mood-tension);
-  --pb-badge-blue: var(--info);
-  --pb-badge-green: var(--success);
-  /* 2026-08-15 rella 化：导演台静态夜空衬底（工作台不浮动，只留静谧辉光） */
-  position: relative;
-  isolation: isolate;
-}
-.pb::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: var(--z-below);
-  pointer-events: none;
-  background:
-    radial-gradient(30rem 20rem at 92% -6%, var(--rella-glow-cyan), transparent 64%),
-    radial-gradient(26rem 18rem at -4% 88%, var(--rella-glow-violet), transparent 62%);
-}
-.engine-switch {
-  --engine-active-border: var(--mood-love);
-  --engine-active-text: var(--mood-love-text);
-  display: flex;
-  gap: 8px;
-  margin: 4px 0 10px;
-  flex-wrap: wrap;
-}
-.engine-btn {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: flex-start;
-  padding: 7px 14px;
-  border-radius: var(--r-md);
-  border: 1px solid var(--border-soft);
-  background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-label);
-  cursor: pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover);
-}
-.engine-btn.active {
-  border-color: var(--engine-active-border);
-  background: color-mix(in srgb, var(--mood-love) 14%, transparent);
-  color: var(--engine-active-text);
-}
-.engine-sub {
-  font-size: var(--fs-mono-sm);
-  opacity: 0.6;
-}
-.base-model-picker {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background: var(--bg-deep);
-}
-.base-model-picker label { color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 700; }
-.base-model-picker select {
-  width: 100%;
-  min-width: 0;
-  padding: 7px 9px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-sm);
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  font-size: var(--fs-label-sm);
-}
-
-/* char-source / popular-tags-note / btn-video-action 已外移至 src/assets/css/director/panels.css（.pb 全局），scoped 内不再保留以免抽离后失活 */
-</style>
+<style scoped src="@/assets/css/director/view-shell.css"></style>
