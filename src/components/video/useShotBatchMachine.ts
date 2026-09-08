@@ -1,3 +1,4 @@
+import { useTrackedTask } from '@/composables/useTaskCenter'
 import { computed, onBeforeUnmount, ref, type ComputedRef, type Ref } from 'vue'
 import {
   cancelVideoBatch,
@@ -207,6 +208,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     window.clearTimeout(pollTimer)
   })
 
+  useTrackedTask(() => ({ kind: 'video', title: '分镜批量视频', route: '/video-studio?mode=shots', resultRoute: '/video-studio?mode=shots', status: submitting.value || concating.value || batchActive.value ? 'running' : !batch.value ? 'idle' : batchError.value || batch.value.status === 'paused' || batch.value.progress.failed ? 'failed' : batch.value.status === 'cancelled' ? 'cancelled' : 'succeeded', progress: progressPercent.value, message: batchError.value || (concating.value ? '正在拼接成片…' : batch.value ? `${batch.value.progress.succeeded} / ${batch.value.progress.total} 镜完成` : '') }), { get cancel() { return concating.value ? undefined : cancelBatch }, get retry() { return batch.value?.progress.failed ? retryAllFailed : undefined } })
   return {
     batch,
     submitting,

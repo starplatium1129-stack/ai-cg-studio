@@ -1,3 +1,5 @@
+import { useTaskCenter, approveTaskReload } from '@/composables/useTaskCenter'
+import { confirmAction } from '@/composables/useConfirm'
 import { createRouter, createWebHistory } from 'vue-router'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 
@@ -24,6 +26,10 @@ function markStrictCsp() {
 }
 function isStrictCsp(): boolean {
   try { return sessionStorage.getItem(STRICT_FLAG) === '1' } catch { return false }
+}
+
+export function needsDocumentReload(fromPath: string, toPath: string): boolean {
+  return isStrictCsp() && LIVE2D_PATHS.has(fromPath) !== LIVE2D_PATHS.has(toPath)
 }
 
 const router = createRouter({
@@ -88,7 +94,7 @@ export function prefetchRoute(path: string): void {
   }
 }
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   // 首帧就地判定：当前文档若禁 eval，说明服务端在按路由收紧 CSP
   if (!evalAllowed()) markStrictCsp()
 
@@ -103,6 +109,8 @@ router.beforeEach((to, from) => {
 
   // 进 Live2D 页面换到带 unsafe-eval 的文档；离开时换回严格文档，
   // 顺带彻底释放 WebGL 上下文与 Pixi ticker
+  if (useTaskCenter().activeCount.value && !(await confirmAction({ title: '这个页面需要重新载入应用', message: '为保持页面安全隔离，打开房间会重载应用。页面内批量与反推将中断，已保存的图片不受影响。可取消并等任务完成。', confirmLabel: '仍要打开' }))) return false
+  approveTaskReload()
   window.location.assign(to.fullPath)
   return false
 })

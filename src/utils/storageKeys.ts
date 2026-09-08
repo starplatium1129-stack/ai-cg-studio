@@ -41,6 +41,8 @@ export const BACKUP_AT_KEY = 'aics_backup_last_at'
 // 这两类不参与 localStorage 备份白名单（见文件头规则），但常量化在这里统一出处，
 // 杜绝同一键名在多处以字面量重复定义（曾致 aics_pb_history 散落 9 处）。
 
+/** 任务中心摘要（IndexedDB；不包含图片或可执行回调）。 */
+export const TASK_CENTER_KV_KEY = 'aics_task_center_v1'
 /** 作品册历史（IndexedDB aics_kv_store 主存储；localStorage 同名键仅作旧数据迁移读取）。 */
 export const ARTWORK_HISTORY_KV_KEY = 'aics_pb_history'
 /** 历史损坏隔离区（storageHealth 使用，刻意不参与备份导出）。 */

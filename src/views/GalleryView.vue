@@ -54,6 +54,7 @@
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
       <span class="gallery-bulk-count" aria-live="polite">已选 {{ selectedIds.size }} / {{ visible.length }}</span>
       <span class="gallery-bulk-actions">
+        <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!visible.length"
           @click="selectAllVisible">{{ allVisibleSelected ? '取消全选' : '全选当前' }}</button>
         <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size || bulkDeleting"
@@ -62,6 +63,7 @@
       </span>
     </div>
 
+    <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
     <section aria-live="polite" data-reveal data-reveal-delay="1">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
       <div v-if="trashMode" class="trash-wall">
@@ -340,6 +342,7 @@
 </template>
 
 <script setup lang="ts">
+import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import { ref, computed, reactive, onMounted, onActivated, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -440,6 +443,10 @@ const deleting = ref(false)
 /** 多选模式与已选集合（2026-08-30 UX 审计 P1：批量清理） */
 const selectMode = ref(false)
 const selectedIds = ref(new Set<string | number>())
+const compareOpen = ref(false), compareIds = ref<string[]>([])
+const compareItems = computed(() => history.value.filter(item => compareIds.value.includes(String(item.id))))
+function compareSelected() { compareIds.value = [...selectedIds.value].map(String).slice(0, 4); compareOpen.value = compareIds.value.length >= 2 }
+function compareFromRoute() { if (route.path !== '/gallery' || typeof route.query.compare !== 'string') return; compareIds.value = route.query.compare.split(',').slice(0, 4); compareOpen.value = compareItems.value.length >= 2 }
 const bulkDeleting = ref(false)
 // ── 回收站视图（2026-08-31）：软删条目列表 + 逐条恢复 ────────────────────
 const trashMode = ref(false)
@@ -1262,7 +1269,7 @@ onMounted(async () => {
  * 列表若真有变化，watch(visible) 会自动补缩略图并重挂观察器。
  */
 onActivated(() => {
-  void loadGalleryStorage()
+  void loadGalleryStorage().then(compareFromRoute)
 })
 
 onUnmounted(() => {
@@ -1280,6 +1287,7 @@ onUnmounted(() => {
 })
 
 watch(visible, () => {
+  const ids = new Set(visible.value.map(item => item.id)); selectedIds.value = new Set([...selectedIds.value].filter(id => ids.has(id)))
   void hydrateThumbs()
   void nextTick(() => scanWallCards())
 })
@@ -1320,6 +1328,7 @@ watch(sentinelEl, el => {
   if (el) moreObserver.observe(el)
 })
 
+watch(() => [route.query.compare, route.query.batch], () => { if (route.path === '/gallery') void loadGalleryStorage().then(compareFromRoute) })
 // 筛选变化回到第一页，让用户始终从最新作品看起
 watch([favoriteOnly, projectFilter, searchQuery], () => {
   renderLimit.value = PAGE_SIZE; selectedIds.value = new Set()
@@ -1327,157 +1336,8 @@ watch([favoriteOnly, projectFilter, searchQuery], () => {
 })
 </script>
 
-<style scoped>
-.gallery-shell { width:min(1880px,100%); margin:0 auto; padding:clamp(24px,4vw,64px) clamp(14px,3vw,48px) var(--s-8); }
-.gallery-intro { margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
-.gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,3.8vw,3.95rem); font-weight:760; letter-spacing:-.045em; line-height:var(--lh-flush); }
-.gallery-subtitle { max-width:660px; margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:var(--lh-loose); }
-.gallery-count { color:var(--text-muted); font:650 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
+<style scoped src="@/assets/css/gallery-view.css"></style>
 
-.gallery-toolbar { max-width:1500px; margin:0 auto clamp(24px,3vw,38px); display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
-/* 展墙搜索：占满富余宽度但设下限，窄屏自己换行 */
-.gallery-search-field { position:relative; flex:1 1 220px; min-width:180px; max-width:340px; }
-.gallery-search {
-  width:100%; min-height:36px; padding:0 34px 0 var(--s-3);
-  border:1px solid var(--border-soft); border-radius:var(--r-terminal);
-  background:var(--bg-deep); color:var(--text-primary);
-  font:400 var(--fs-label-sm) var(--font-sans); outline:none;
-  -webkit-appearance:none; appearance:none; /* 去掉 WebKit 原生清除钮，避免两个 × */
-  transition:border-color var(--motion-hover);
-}
-.gallery-search::placeholder { color:var(--text-muted); }
-.gallery-search:focus { border-color:var(--accent); }
-.gallery-search-clear { position:absolute; top:50%; right:6px; transform:translateY(-50%); display:grid; place-items:center; width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); font-size:var(--fs-body-lg); cursor:pointer; }
-.gallery-search-clear:hover { color:var(--text-primary); }
-.gallery-search-clear:focus-visible { outline:2px solid var(--accent); outline-offset:1px; border-radius:var(--r-sm); }
-.gallery-filter { min-height:36px; padding:0 15px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--motion-hover),background var(--motion-hover),color var(--motion-hover); }
-.gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
-.gallery-project { min-height:36px; min-width:140px; padding:0 34px 0 13px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; outline:none; }
-.gallery-project:focus { border-color:var(--accent); }
-.gallery-toolbar-note { margin-left:auto; padding-right:var(--s-3); color:var(--text-muted); font-size:var(--fs-mono-sm); white-space:nowrap; }
-
-/* 批量操作条（2026-08-30 UX 审计 P1）：只在勾选态出现，避免常态占一行 */
-.gallery-bulkbar { max-width:1500px; margin:0 auto var(--s-3); display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-2) var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-dossier); background:var(--accent-soft); }
-.gallery-bulk-count { color:var(--text-primary); font:650 var(--fs-label-sm) var(--font-mono); white-space:nowrap; }
-.gallery-bulk-actions { display:flex; align-items:center; gap:var(--s-2); margin-left:auto; flex-wrap:wrap; }
-
-/* 画廊多列瀑布流展墙：等宽列流式拼接，上下紧密咬合，零垂直多余空位 */
-.gallery-wall {
-  max-width: 1560px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
-}
-.gallery-columns {
-  display: grid;
-  grid-template-columns: repeat(var(--wall-cols, 4), minmax(0, 1fr));
-  gap: clamp(16px, 1.8vw, 24px);
-  align-items: start;
-}
-.gallery-col {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 1.8vw, 24px);
-  min-width: 0;
-}
-.gallery-loading-wall { min-height:340px; }
-.artwork { width:100%; position:relative; margin:0; overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); content-visibility: auto; contain-intrinsic-size: auto 340px; transition:transform var(--motion-surface),box-shadow var(--motion-surface),border-color var(--motion-surface); }
-.artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }
-.artwork:hover { border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); transform:translateY(-4px); }
-.artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
-.artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
-.artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:3px; padding:3px; opacity:0; transform:translateY(-4px); pointer-events:none; border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
-.artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
-/* 多选选中态：外描边用 box-shadow 而非 border 位移，不改布局、不触发重排 */
-.artwork-selected { border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 42%,transparent), var(--shadow-md); }
-.artwork-check { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:1.5px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
-.artwork-selected .artwork-check { border-color:var(--accent); background:var(--accent); color:var(--text-inverse); }
-.artwork-tool { display:inline-flex; align-items:center; gap:5px; min-height:28px; padding:0 11px; border:1px solid transparent; border-radius:var(--r-pill); background:transparent; color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover); }
-.artwork-tool:hover:not(:disabled) { border-color:var(--on-art-sheen); background:var(--on-art-fill); }
-/* 全局 a:hover 链接色 (0,1,1) 会盖过 .artwork-tool 的 on-art 墨色——深色画膜上变暗梅色难以辨认，钉回 */
-a.artwork-tool:hover { color:var(--on-art-primary); }
-.artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 28%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 12%,transparent); color:color-mix(in srgb,var(--danger-text) 92%,white); }
-.artwork-tool.danger:hover:not(:disabled) { background:color-mix(in srgb,var(--danger) 78%,var(--art-scrim)); border-color:var(--danger); color:var(--text-inverse); }
-.artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
-/* 审计修复: 处理中态也要读得清 */
-.artwork-tool:disabled { cursor:wait; color: var(--text-disabled); border-color: var(--border-soft); background: transparent; }
-/* 收藏激活态：画膜上要够亮才看得见，用 on-art 令牌而非全局强调色（后者在深色膜上偏暗） */
-.artwork-tool-on { border-color:color-mix(in srgb,var(--accent) 42%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 20%,transparent); color:var(--on-art-primary); }
-.artwork-tool :deep(.archive-icon) { width:14px; height:14px; vertical-align:-.12em; }
-.artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,var(--glass-specular)),var(--art-mat)); }
-.artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s var(--ease-out); transition:transform var(--motion-surface); }
-.artwork:hover .artwork-image { transform:scale(1.025); }
-/* HD 层叠在缩略图之上，解码完成后淡入（is-loaded 由 @load 触发），
-   消除缩略图→HD 硬切 src 造成的「闪一下变高清」。 */
-.artwork-image-hd { position:absolute; inset:0; opacity:0; animation:none; transition:opacity .28s var(--ease-out); }
-.artwork-image-hd.is-loaded { opacity:1; }
-.artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
-/* 审计修复：骨架微光原为逐帧补间 background-position（无限循环 → 每帧重绘整块渐变），
-   改为伪元素承载渐变 + transform:translateX 位移（合成器属性，零重绘）。 */
-.artwork-skeleton { position:absolute; inset:0; overflow:hidden; }
-.artwork-skeleton::after {
-  content:""; position:absolute; top:0; bottom:0; left:0; width:220%;
-  background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%);
-  animation:gallerySkeleton 1.3s linear infinite;
-}
-.artwork-caption { position:absolute; inset:auto 0 0; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-3); padding:40px var(--s-3) var(--s-3); color:var(--on-art-primary); background:linear-gradient(transparent,var(--art-scrim)); opacity:0; transform:translateY(8px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); text-align:left; pointer-events:none; }
-.artwork-button:focus-visible .artwork-caption { opacity:1; transform:none; }
-.artwork-name { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-label-sm); font-weight:700; }
-.artwork-date { display:block; margin-top:2px; color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
-.artwork-mark { flex:0 0 auto; font-size:var(--fs-label-sm); }
-
-.gallery-section { grid-column:1 / -1; display:flex; align-items:center; gap:var(--s-3); margin:var(--s-4) 0 var(--s-3); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
-.gallery-more { grid-column:1 / -1; display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:var(--s-5) 0 0; padding:var(--s-3); color:var(--text-muted); font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
-.gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
-
-@media (hover: hover) and (pointer: fine) {
-  .artwork:hover { transform:translateY(-4px); }
-  .artwork:hover .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
-  .artwork:hover .artwork-caption { opacity:1; transform:none; }
-}
-
-@media (max-width:1200px) {
-  .gallery-columns { grid-template-columns:repeat(3, minmax(0,1fr)); }
-}
-@media (max-width:900px) { .gallery-count { display:none; } }
-@media (max-width:820px) {
-  .gallery-columns { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
-  .gallery-col { gap:var(--s-3); }
-}
-@media (max-width:600px) {
-  .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
-  .artwork { border-radius:var(--r-dossier); }
-  .artwork-caption { opacity:1; transform:none; padding:34px var(--s-2) var(--s-2); }
-  .artwork-name { font-size:var(--fs-mono-sm); }
-  .artwork-date { display:none; }
-  .artwork-tools { opacity:0; transform:translateY(-4px); pointer-events:none; }
-  .artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
-}
-@media (max-width:480px) {
-  .gallery-columns { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
-  .gallery-col { gap:var(--s-3); }
-}
-@media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
-/* 位移量：层宽 220%，右端对齐容器右缘需左移 1.2 倍容器宽 = 层宽的 54.5% */
-@keyframes gallerySkeleton { to { transform: translateX(-54.5%); } }
-/* 2026-08-22 动效审计 #13：入场去掉 blur 补间（绘制级且随懒加载滚动反复触发），只走 opacity/transform */
-@keyframes galleryImageIn { from { opacity:0; transform:scale(.985); } to { opacity:1; transform:scale(1); } }
-/* ── 回收站（2026-08-31）── */
-.trash-wall { max-width:1500px; margin:0 auto; }
-.trash-toolbar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-4); color:var(--text-secondary); }
-.trash-hint { font-size:var(--fs-body-sm); }
-.trash-count { font-weight:500; color:var(--text-primary); }
-.trash-card { position:relative; border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; background:var(--bg-surface); }
-.trash-card .artwork-media { height:100%; }
-.trash-card .artwork-caption { position:static; opacity:1; transform:none; pointer-events:auto; background:none; padding:var(--s-2) var(--s-3) var(--s-3); color:var(--text-primary); }
-.trash-card .artwork-name { display:block; font-size:var(--fs-body-sm); line-height:1.4; }
-.trash-card .artwork-date { display:block; margin-top:2px; font-size:var(--fs-label-xs); color:var(--text-secondary); }
-.trash-card .artwork-tools { position:static; opacity:1; transform:none; pointer-events:auto; justify-content:flex-start; margin:0 var(--s-3) var(--s-3); background:none; border:none; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; padding:0; }
-.trash-card .artwork-tool { color:var(--text-secondary); }
-.trash-card .artwork-tool:hover { color:var(--text-primary); }
-.trash-card .artwork-placeholder { min-height:200px; display:grid; place-items:center; color:var(--text-tertiary); }
-</style>
 
 <style>
 /* 非 scoped：Teleport 到 body 的查看器 */

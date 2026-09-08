@@ -12,6 +12,7 @@
     }"
   >
 
+    <DrawingTaskObserver :sd="sd" :anima="animaSession" />
     <WorkspaceArchiveBar v-if="pb.directorMode !== 'pro'"
       chapter="01"
       title="绘境工作台"
@@ -432,6 +433,7 @@
 </template>
 
 <script setup lang="ts">
+import { onDeactivated, onActivated } from 'vue'
 import { hasOnboardingTheme } from '@/utils/popularPortraitSource'
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
@@ -439,7 +441,7 @@ const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/d
 const inspector = ref<InstanceType<typeof DirectorInspector> | null>(null)
 const materialDrawer = ref<InstanceType<typeof DirectorMaterialDrawer> | null>(null)
 import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from 'vue'
-import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
   type CharKey,
@@ -484,6 +486,7 @@ const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQui
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
 const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
+const DrawingTaskObserver = defineAsyncComponent(() => import('@/components/tasks/DrawingTaskObserver.vue'))
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))
@@ -970,6 +973,8 @@ const {
 // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
 // ComfyUI 任务）→ 每张自动入册历史 → 面板内直接预览挑选。
 const batchOpen = ref(false)
+onDeactivated(() => { batchOpen.value = false })
+onActivated(() => { if (route.query.taskCenter === 'batch') batchOpen.value = true })
 const batchRunning = ref(false)
 // ref/函数引用在 setup 期即稳定，面板内部用这份快照接线 usePromptBatchRunners。
 const batchPanelDeps = {
@@ -987,32 +992,8 @@ const batchPanelDeps = {
   currentLivePrompt: () => livePrompt.value,
 }
 
-/**
- * 离开导演台前拦一次（2026-08-30 UX 审计 P0-5）。
- *
- * sd.dispose() 挂在 onUnmounted，组件一卸载就 cancel() 在途任务；出图队列只
- * 活在本视图作用域、无持久化。于是「排了 8 张、切到角色页看个设定再回来」
- * 的结果是队列空了、正在跑的那张也没了，**且没有任何解释**——用户不会归因
- * 于切换页面，只会觉得软件不稳定。
- *
- * 防泄漏的设计意图是对的，这里补的是代价：在途 / 有队列 / 批量跑着的时候
- * 先问一次，让用户自己决定要不要付这个代价。
- */
-onBeforeRouteLeave(async () => {
-  const queued = sdQueue.queue.value.length
-  if (!generationBusy.value && !queued && !batchRunning.value) return true
-  const detail = [
-    generationBusy.value ? '正在生成的这一张会被取消' : '',
-    queued ? `队列中还有 ${queued} 张未开始` : '',
-    batchRunning.value ? '批量出图会被中断' : '',
-  ].filter(Boolean).join('，')
-  return await confirmAction({
-    title: '离开会中断出图，确定吗？',
-    message: `${detail}。离开后无法恢复；已经完成的成片不受影响。`,
-    confirmLabel: '仍要离开',
-    danger: true,
-  })
-})
+// 普通跨页保留工作台任务；整页重载交由全局路由提示。
+
 
 /**
  * 出图前的可见校验（2026-08-30 UX 审计 P1）。
@@ -1344,7 +1325,7 @@ const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
 // 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：URL 场景参数变化但组件还是旧实例，
 // 这里按「状态与 URL 不一致」重放深链，让场景与提示词跟随新选择。
 watch(() => route.query, async (q) => {
-  if (!deepLinkNeeded(q)) return
+  if (route.path !== '/prompt-builder' || !deepLinkNeeded(q)) return
   if (await applyDeepLink(q) && !generationBusy.value) {
     if (pb.directorMode === 'basic') void applyManagedRoute({ silent: true })
     else void refreshManagedRoute()

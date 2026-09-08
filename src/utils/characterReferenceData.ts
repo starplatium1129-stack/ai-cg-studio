@@ -8,6 +8,7 @@ export interface CharacterReferenceItem {
   lens: string
   targetUsage: string[]
   url: string
+  pending?: boolean
 }
 
 export interface CharacterOutfitReference {
@@ -38,20 +39,24 @@ export interface CharacterReferenceProfile {
  */
 const standards = shallowRef<Record<string, CharacterReferenceProfile>>({})
 let loading: Promise<void> | null = null
+let revision = 0
 
 /** 预取参考标准数据；视图挂载时调用一次。失败可重试（下次调用重新发起）。 */
-export function ensureCharacterReferencesLoaded(): Promise<void> {
+export function ensureCharacterReferencesLoaded(refresh = false): Promise<void> {
+  if (refresh) loading = null
   if (!loading) {
+    const requested = ++revision
     loading = fetch('/data/character-reference-view.json')
       .then((response) => {
         if (!response.ok) throw new Error(`character-reference-view ${response.status}`)
         return response.json() as Promise<Record<string, CharacterReferenceProfile>>
       })
       .then((data) => {
-        standards.value = data
+        if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('参考目录格式无效')
+        if (requested === revision) standards.value = data
       })
       .catch((error) => {
-        loading = null
+        if (requested === revision) loading = null
         throw error
       })
   }

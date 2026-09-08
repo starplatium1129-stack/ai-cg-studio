@@ -9,8 +9,7 @@
     </div>
     <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
       <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
-        <img v-if="item.image && !broken.has(item.id)" :src="item.image" alt="" width="48" height="60" loading="lazy" decoding="async" @error="broken = new Set(broken).add(item.id)" />
-        <span v-else class="directory-placeholder" aria-hidden="true">{{ item.name.charAt(0) }}</span>
+        <CharacterPortrait :src="item.image" :name="item.name" />
         <span class="directory-label"><strong>{{ item.name }}</strong><small :title="franchiseLabel(franchiseKey(item.source))">{{ franchiseLabel(franchiseKey(item.source)) }}</small></span>
         <span v-if="selectedId === item.id" class="directory-selected" aria-hidden="true"><ArchiveIcon name="success" /></span>
       </button>
@@ -27,6 +26,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import CharacterPortrait from './CharacterPortrait.vue'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; aliases?: string[] }
 const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
@@ -36,7 +36,6 @@ const query = defineModel<string>('search', { default: '' })
 const series = ref('')
 const page = ref(1)
 const list = ref<HTMLElement | null>(null)
-const broken = ref(new Set<string>())
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
 watch(() => props.selectedId, async () => { await nextTick(); list.value?.querySelector<HTMLElement>('[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest' }) }, { immediate: true })
 const groups = computed(() => {

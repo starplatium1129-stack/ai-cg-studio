@@ -5,17 +5,15 @@ import { storeToRefs } from 'pinia'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { mutualGroupOf, membersOfMutualGroup, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
 import { imgPut, imgDelete } from '@/composables/useImageStore'
-import { kvSet } from '@/composables/useKVStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { applyModelProfileToParams } from '@/utils/promptModelProfile'
-import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useToast } from '@/composables/useToast'
 
 const toast = useToast()
 
-const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
 import {
   isSDParamKey,
   parsePresetCatalog,
@@ -645,11 +643,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         styleLoraId: entry.styleLoraId ?? null,
         artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
       }
-      const updated = [...history.value, historyEntry]
       // 2026-08-16 审计：先持久化再提交内存态——此前 kvSet 失败会「内存已入册、
       // 磁盘没写」，刷新后条目静默丢失且刚写入的图片成为孤儿 blob。
-      await kvSet(HISTORY_STORAGE_KEY, updated)
-      history.value = updated
+      history.value = await artworkRepository.appendArtwork(historyEntry)
       return historyEntry
     } catch (e) {
       console.warn('commitHistoryEntry failed', e)

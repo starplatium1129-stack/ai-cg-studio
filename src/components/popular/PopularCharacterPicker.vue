@@ -4,6 +4,7 @@ import { computed, ref, useId } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
+import CharacterPortrait from '@/components/library/CharacterPortrait.vue'
 
 const props = defineProps<{
   characters: PopularCharacter[]
@@ -20,10 +21,9 @@ const emit = defineEmits<{
 
 const browserDialog = ref<HTMLDialogElement | null>(null)
 const dialogTitle = useId()
-const portraitBroken = ref(false)
 const searchProxy = computed({ get: () => props.search, set: value => emit('update:search', value) })
 const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: popularPortraitSrc(character.id) })))
-function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) { emit('select', character); portraitBroken.value = false; browserDialog.value?.close() } }
+function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) { emit('select', character); browserDialog.value?.close() } }
 
 const selectedCharacter = computed<PopularCharacter | null>(() =>
   props.characters.find(c => c.id === props.selectedCharacterId) ?? null,
@@ -38,8 +38,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 <template>
   <div class="popular-picker">
     <button type="button" class="character-browse-trigger" aria-haspopup="dialog" @click="browserDialog?.showModal()">
-      <img v-if="selectedCharacter && !portraitBroken" :src="popularPortraitSrc(selectedCharacter.id)" alt="" @error="portraitBroken = true" />
-      <ArchiveIcon v-else name="character" />
+      <CharacterPortrait :src="selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined" :name="selectedCharacter?.displayName || '角色'" />
       <span><small>当前角色</small><strong>{{ selectedCharacter?.displayName || '选择创作角色' }}</strong><small>{{ selectedCharacter?.franchise || '从作品与肖像中挑选' }}</small></span>
     </button>
     <button type="button" class="character-browse-all" aria-haspopup="dialog" @click="browserDialog?.showModal()"><ArchiveIcon name="search" />浏览全部 {{ characters.length }} 位角色</button>

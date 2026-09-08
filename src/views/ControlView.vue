@@ -10,6 +10,7 @@
           <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
         <div class="nav-local-actions">
+          <TaskCenterButton />
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
           <AppThemeToggle /><AppSoundToggle />
         </div>
@@ -22,6 +23,7 @@
           <img class="nav-logo" src="/assets/logo.svg" alt="" aria-hidden="true" />
           <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
+        <TaskCenterButton />
         <nav class="control-rail-nav" aria-label="控制区">
           <a class="control-rail-link" href="#control-overview"><ArchiveIcon name="eye" /><span>概览状态</span></a>
           <a class="control-rail-link" href="#control-resources"><ArchiveIcon name="model" /><span>显存调度</span></a>
@@ -326,6 +328,7 @@
 </template>
 
 <script setup lang="ts">
+import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
 import { computed, onMounted, onUnmounted } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
@@ -488,6 +491,7 @@ onUnmounted(() => { status.stopPolling() })
 }
 .control-content { min-width: 0; }
 .nav-local {
+  flex-wrap: wrap; gap: var(--s-2);
   display: flex; align-items: center; justify-content: space-between;
   width: min(1100px, 100%); margin: 0 auto; padding: 0 var(--s-5);
 }

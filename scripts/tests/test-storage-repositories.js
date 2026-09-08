@@ -224,3 +224,36 @@ for (const [label, failure] of [
     assert.deepStrictEqual(stateOf(fixture), before, `${label} failure must leave no half-deleted state`);
   });
 }
+
+
+test('comparison marks update together without deleting images or touching prompts', async () => {
+  const fixture = createArtworkFixture();
+  await fixture.repository.patchArtworks([{ id: 1, patch: { reviewState: 'preferred', favorite: true } }, { id: 2, patch: { reviewState: 'candidate' } }]);
+  const history = fixture.values.get(ARTWORK_HISTORY_KEY);
+  assert.strictEqual(history[0].reviewState, 'preferred');
+  assert.strictEqual(history[1].reviewState, 'candidate');
+  assert.deepStrictEqual(history.map(item => item.prompt), ['one', 'two']);
+  assert.strictEqual(fixture.imageRecords.size, 2);
+});
+
+test('failed comparison save leaves the complete previous selection intact', async () => {
+  const fixture = createArtworkFixture({ failOnce: [`set:${ARTWORK_HISTORY_KEY}`] });
+  await assert.rejects(fixture.repository.patchArtworks([{ id: 1, patch: { reviewState: 'preferred' } }, { id: 2, patch: { reviewState: 'candidate' } }]));
+  assert.strictEqual(fixture.values.get(ARTWORK_HISTORY_KEY)[0].reviewState, undefined);
+  assert.strictEqual(fixture.values.get(ARTWORK_HISTORY_KEY)[1].reviewState, undefined);
+  await assert.rejects(fixture.repository.patchArtworks([{ id: 999, patch: { reviewState: 'preferred' } }]));
+});
+
+
+test('background generation preserves comparison choices and concurrent new images', async () => {
+  const fixture = createArtworkFixture();
+  await Promise.all([
+    fixture.repository.patchArtworks([{ id: 1, patch: { reviewState: 'preferred', favorite: true } }]),
+    fixture.repository.appendArtwork({ id: 3, prompt: 'new image' }),
+    fixture.repository.appendArtwork({ id: 4, prompt: 'another image' }),
+  ]);
+  const history = fixture.values.get(ARTWORK_HISTORY_KEY);
+  assert.deepStrictEqual(history.map(item => item.id), [1, 2, 3, 4]);
+  assert.strictEqual(history[0].reviewState, 'preferred');
+  await assert.rejects(fixture.repository.appendArtwork({ id: 3, prompt: 'duplicate' }));
+});

@@ -3,11 +3,12 @@
   <RouteRecoveryBanner />
   <DesktopUpdateBanner v-if="!isCompanion" />
   <div class="route-stage">
-    <RouterView />
+    <RouterView v-slot="{ Component }"><KeepAlive include="AppLayout"><component :is="Component" /></KeepAlive></RouterView>
   </div>
   <AppInteractionLayer v-if="!isCompanion" />
   <AppToast v-if="!isCompanion" />
   <ConfirmDialog />
+  <TaskCenter v-if="!isCompanion" />
   <GlobalSearch v-if="!isCompanion" />
 </template>
 
@@ -20,6 +21,7 @@ import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import TaskCenter from '@/components/tasks/TaskCenter.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'

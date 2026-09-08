@@ -13,6 +13,7 @@ export interface ArtworkRecord {
   seed?: string | number
   sampler?: string
   favorite?: boolean
+  reviewState?: 'candidate' | 'preferred' | 'rejected'
   version?: string | number
   width?: string | number | null
   height?: string | number | null

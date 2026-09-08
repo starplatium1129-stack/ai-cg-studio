@@ -223,3 +223,98 @@ for (const theme of ['dark', 'light']) {
     await panel.screenshot({ path: `.review-shots/batch-${theme}.png` })
   })
 }
+
+
+for (const theme of ['dark', 'light']) {
+  test(`candidate comparison persists a preferred choice ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.addInitScript(value => {
+      localStorage.setItem('aics_theme', value)
+      localStorage.setItem('aics_pb_history', JSON.stringify([
+        { id: 'compare-one', sceneTitle: '候选甲', prompt: 'first', seed: 101, size: '832x1216', image_url: '/assets/characters/thumbs/popular-furina.webp' },
+        { id: 'compare-two', sceneTitle: '候选乙', prompt: 'second', seed: 202, size: '832x1216', image_url: '/assets/characters/thumbs/popular-raiden_shogun.webp' },
+      ]))
+    }, theme)
+    await page.goto('/gallery?compare=compare-one,compare-two')
+    const compare = page.getByRole('dialog', { name: '对比挑选', exact: true })
+    await expect(compare).toBeVisible()
+    await expect(compare.locator('.candidate-card')).toHaveCount(2)
+    const imageBox = (await compare.locator('.candidate-image').first().boundingBox())!
+    const picture = (await compare.locator('.candidate-image img').first().boundingBox())!
+    expect(picture.height).toBeLessThanOrEqual(imageBox.height + 1)
+    await compare.locator('.candidate-card').first().getByRole('button', { name: '选为首选' }).click()
+    await expect(compare.locator('.candidate-card').first()).toHaveAttribute('data-choice', 'preferred')
+    await compare.locator('.candidate-card').nth(1).getByRole('button', { name: '暂不采用' }).click()
+    await expect(compare.locator('.candidate-card').nth(1)).toHaveAttribute('data-choice', 'rejected')
+    await compare.screenshot({ path: `.review-shots/candidate-compare-${theme}.png` })
+    await compare.getByRole('button', { name: '关闭对比' }).click()
+    await page.reload()
+    await expect(compare.locator('.candidate-card').first()).toHaveAttribute('data-choice', 'preferred')
+    await expect(compare.locator('.candidate-card').nth(1)).toHaveAttribute('data-choice', 'rejected')
+    await compare.locator('.candidate-card').nth(1).getByRole('button', { name: '恢复候选' }).click()
+    await expect(compare.locator('.candidate-card').nth(1)).toHaveAttribute('data-choice', 'candidate')
+    await compare.getByRole('button', { name: '关闭对比' }).click()
+    await page.getByRole('button', { name: '欣赏作品：候选甲', exact: true }).click()
+    await expect(page.locator('.art-viewer')).toHaveCSS('position', 'fixed')
+    await expect.poll(async () => Math.abs((await page.locator('.art-viewer').boundingBox())!.width - page.viewportSize()!.width)).toBeLessThanOrEqual(1)
+    await page.locator('.art-viewer .viewer-close').click()
+  })
+}
+
+test('global task center retains a batch while visiting the gallery and control panel', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  let submitted = 0, finish = false
+  await page.route('**/api/anima/jobs', async route => {
+    if (route.request().method() !== 'POST') return route.continue()
+    submitted++
+    await route.fulfill({ json: { ok: true, job: { id: 'center-audit-' + submitted, status: 'queued' } } })
+  })
+  await page.route(/\/api\/anima\/jobs\/center-audit-\d+$/, route => route.fulfill({ json: { ok: true, job: { id: 'center-audit-1', status: finish ? 'succeeded' : 'running', seed: 42, resultAvailable: finish, resultUrl: '/center-result.svg' } } }))
+  await page.route('**/center-result.svg', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="16" height="16" fill="gray"/></svg>' }))
+  await page.goto('/prompt-builder')
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await page.getByRole('tab', { name: '任务', exact: true }).click()
+  await page.getByRole('button', { name: '批量出图 · 场景 / 多角色', exact: true }).click()
+  const batch = page.getByRole('dialog', { name: '批量出图', exact: true })
+  await batch.getByRole('button', { name: 'Anima', exact: true }).click()
+  await batch.locator('.batch-scene-card').filter({ hasNot: page.locator('.batch-scene-adult') }).first().click()
+  await batch.getByRole('button', { name: '开始批量出图', exact: true }).click()
+  await expect(batch.locator('.batch-progress-head')).toContainText('正在逐张出图')
+  await batch.getByRole('button', { name: '关闭', exact: true }).click()
+  await expect(page.getByRole('link', { name: '房间', exact: true })).toHaveAttribute('target', '_blank')
+  await page.locator('.nav-more summary').click()
+  await page.getByRole('link', { name: '作品册', exact: true }).click()
+  await expect(page.getByRole('heading', { name: '作品册', exact: true })).toBeVisible()
+  await page.locator('.task-center-button:visible').click()
+  const center = page.getByRole('dialog', { name: /任务中心/ })
+  await expect(center.locator('.task-card[data-state="running"]')).toHaveCount(1)
+  await center.screenshot({ path: '.review-shots/task-center-running.png' })
+  await center.getByRole('button', { name: '关闭任务中心' }).click()
+  await page.locator('.nav-more summary').click()
+  await page.getByRole('link', { name: '控制面板', exact: true }).click()
+  await expect(page.locator('.control-page')).toBeVisible()
+  await page.locator('.task-center-button:visible').click()
+  await expect(center.locator('.task-card[data-state="running"]')).toHaveCount(1)
+  finish = true
+  await expect(center.locator('.task-card[data-state="succeeded"]')).toHaveCount(1)
+  await center.getByRole('link', { name: '查看结果', exact: true }).click()
+  await expect(page.getByRole('heading', { name: '作品册', exact: true })).toBeVisible()
+  await expect(page.locator('.artwork')).toHaveCount(1)
+  expect(submitted).toBe(1)
+})
+
+
+for (const theme of ['dark', 'light']) {
+  test(`character portraits and asset health stay readable ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.goto('/character?character=furina')
+    const assets = page.getByRole('region', { name: '角色素材状态' })
+    await expect(assets).toContainText('7 / 7 可读取')
+    await expect(page.locator('.directory-item[data-character="furina"] .character-portrait')).toHaveAttribute('data-state', 'image')
+    await assets.screenshot({ path: `.review-shots/character-assets-${theme}.png` })
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+  })
+}

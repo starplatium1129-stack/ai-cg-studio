@@ -48,6 +48,7 @@ export interface BatchDrawJob {
   message?: string
   /** 成功张的预览 objectURL（面板缩略图直出；下一批 start/reset 统一 revoke）。 */
   resultUrl?: string
+  historyId?: string | number
 }
 
 export interface BatchDrawRunnerInput {
@@ -64,6 +65,7 @@ export interface BatchDrawRunnerResult {
   error?: string
   /** 成功时回传预览 URL（从入册 blob 克隆的 objectURL，归本执行器统一释放）。 */
   resultUrl?: string
+  historyId?: string | number
 }
 
 export interface BatchDrawRunOptions {
@@ -182,6 +184,7 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
         result = { ok: false, error: error instanceof Error ? error.message : String(error) }
       }
       // 当前张的结果先落定（run 内部可能已请求取消——取消只影响后续张）。
+      if (result.historyId != null) job.historyId = result.historyId
       job.status = result.cancelled ? 'cancelled' : result.ok ? 'succeeded' : 'failed'
       if (!result.ok && !result.cancelled) job.error = result.error || '生成失败'
       if (result.resultUrl) {
