@@ -48,6 +48,7 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   const scripts = JSON.parse(read('package.json')).scripts;
   const quality = read('.github/workflows/quality.yml');
   const native = read('.github/workflows/windows-native.yml');
+  const nightly = read('.github/workflows/nightly-e2e.yml');
 
   // 2026-08-22 加入 test:frontend（Vitest）道：validate 必须先跑前端单测再进 unit/contract。
   assert.equal(scripts.validate, 'npm run check && npm run test:frontend && npm run test:unit && npm run test:contract');
@@ -89,7 +90,7 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.match(native, /self-hosted, Windows, X64, live2d-cubism/);
   assert.match(native, /github\.ref == 'refs\/heads\/main'/);
   assert.match(native, /persist-credentials: false/);
-  assert.doesNotMatch(`${quality}\n${native}`, /uses:\s+actions\/(?:checkout|setup-node|cache|upload-artifact)@v\d+/,
+  assert.doesNotMatch(`${quality}\n${native}\n${nightly}`, /uses:\s+actions\/(?:checkout|setup-node|cache|upload-artifact)@v\d+/,
     'official actions must be pinned to immutable commit SHAs');
   assert.match(native, /LIVE2D_CUBISM_SDK_DIR/);
   assert.match(native, /npm run build:tauri/);

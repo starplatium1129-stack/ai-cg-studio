@@ -63,9 +63,9 @@ function suiteFiles(names, label, { verbose, keepGoing }) {
 }
 
 const AREA_STEPS = {
-  ui({ verbose }) {
+  ui({ verbose, keepGoing }) {
     let code = runNpmStep('typecheck:app', 'typecheck:app', 300_000, verbose);
-    if (code === 0 || verbose) code = runNpmStep('vitest', 'test:frontend', 300_000, verbose) || code;
+    if (code === 0 || keepGoing) code = runNpmStep('vitest', 'test:frontend', 300_000, verbose) || code;
     return code;
   },
   server({ verbose, keepGoing }) {
@@ -102,27 +102,28 @@ const AREA_STEPS = {
   },
 };
 
-function detectAreas() {
-  const gitArgs = (args) => spawnSync('git', args, { cwd: root, encoding: 'utf8', shell: process.platform === 'win32' });
-  const collect = (args) => String((gitArgs(args).stdout || '')).split(/\r?\n/).filter(Boolean);
-  const files = [
-    ...collect(['diff', '--name-only', 'HEAD']),
-    ...collect(['ls-files', '--others', '--exclude-standard']),
-  ];
+function classifyFiles(files) {
   const areas = new Set();
   for (const raw of files) {
     const p = raw.replace(/\\/g, '/');
-    if (/^(src)\//.test(p) || /\.(vue|ts)$/i.test(p)) areas.add('ui');
-    if (/^(routes|server|services)\//.test(p)) areas.add('server');
-    if (/^data\//.test(p)) areas.add('data');
-    // scripts/ 是横切层（被 server/测试/桌面打包共同消费），保守升级为全量三块
-    if (/^scripts\//.test(p)) {
-      areas.add('ui');
-      areas.add('server');
-      areas.add('data');
-    }
+    if (/^(scripts|desktop-tauri|tests|\.github)\//.test(p)
+      || /^(package(?:-lock)?\.json|.*config\.[^/]+|deploy-desktop\.bat)$/.test(p)) return ['full'];
+    if (/^(src|css|public)\//.test(p) || p === 'index.html') areas.add('ui');
+    if (/^(routes|server|services)\//.test(p) || p === 'server.js') areas.add('server');
+    if (/^(data|assets)\//.test(p)) areas.add('data');
+    if (!/^(docs\/|.*\.md$)/.test(p) && !/^(src|css|public|routes|server|services|data|assets)\//.test(p)
+      && !['index.html', 'server.js'].includes(p)) return ['full'];
   }
   return [...areas];
+}
+
+function detectAreas() {
+  const collect = (args) => {
+    const result = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+    if (result.error || result.status !== 0) throw new Error(`Git 改动检测失败: ${result.error?.message || result.stderr}`);
+    return result.stdout.split('\0').filter(Boolean);
+  };
+  return classifyFiles([...collect(['diff', '--name-only', '-z', 'HEAD']), ...collect(['ls-files', '-z', '--others', '--exclude-standard'])]);
 }
 
 function main(argv) {
@@ -130,6 +131,11 @@ function main(argv) {
     console.log('用法: node scripts/maintenance/gate-quick.js [ui|server|data|all|full] [--verbose] [--all]');
     console.log('缺省按 git 改动自动选面积；--all 失败后继续；--verbose 子进程输出直通。');
     return 0;
+  }
+  const invalid = argv.filter(arg => !['ui', 'server', 'data', 'all', 'full', '--verbose', '--all'].includes(arg));
+  if (invalid.length || argv.filter(arg => !arg.startsWith('--')).length > 1) {
+    console.error(`无效门禁参数: ${argv.join(' ')}`);
+    return 2;
   }
   const verbose = argv.includes('--verbose');
   const keepGoing = argv.includes('--all');
@@ -140,9 +146,9 @@ function main(argv) {
     // 'full' 保持原样走下方 full 专属分支（含 check 套件与打包预算）；'all' 展开三块
     areas = areaArg === 'all' ? ['ui', 'server', 'data'] : [areaArg];
   } else {
-    areas = detectAreas();
+    try { areas = detectAreas(); } catch (error) { console.error(error.message); return 1; }
     if (!areas.length) {
-      console.log('gate:quick 未检测到 git 改动；显式指定面积或用 full。');
+      console.log('gate:quick 未检测到需运行门禁的代码改动（可能仅文档）；显式指定面积或用 full。');
       return 0;
     }
     console.log(`gate:quick 自动检测面积: ${areas.join(' + ')}`);
@@ -151,9 +157,10 @@ function main(argv) {
   let exitCode = 0;
   const started = Date.now();
   for (const area of areas) {
+    if (exitCode && !keepGoing) break;
     console.log(`── gate ${area} ──`);
     if (area === 'ui') {
-      exitCode = AREA_STEPS.ui({ verbose }) || exitCode;
+      exitCode = AREA_STEPS.ui({ verbose, keepGoing }) || exitCode;
       continue;
     }
     if (area === 'server') {
@@ -189,4 +196,4 @@ if (require.main === module) {
   process.exitCode = main(process.argv.slice(2));
 }
 
-module.exports = { detectAreas, AREA_STEPS };
+module.exports = { detectAreas, classifyFiles, main, AREA_STEPS };

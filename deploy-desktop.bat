@@ -14,6 +14,8 @@ echo.
 echo 若弹出 UAC 窗口，请点「是」。
 echo.
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\maintenance\deploy-desktop-quick.ps1" -Cleanup %*
+set "DEPLOY_EXIT=%ERRORLEVEL%"
 echo.
-echo === 结束（exit=%ERRORLEVEL%），请查看提权窗口的输出 ===
-pause
+echo === 结束（exit=%DEPLOY_EXIT%），请查看提权窗口的输出 ===
+if not defined AICS_WORKFLOW_NONINTERACTIVE pause
+exit /b %DEPLOY_EXIT%

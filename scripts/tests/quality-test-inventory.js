@@ -5,6 +5,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-repo-hygiene.js',
     'test-repo-hygiene-contract.js',
     'test-bundle-budget.js',
+    'test-workflow-runner.js',
     'test-desktop-staging.js',
     'test-e2e-ci-split.js',
     'test-page-architecture.js',

@@ -4,9 +4,27 @@
 
 ## 先查入口
 
-`npm run workflow -- --help` 查看全部命令，`node scripts/workflow.js reference --help` 查看分组。具体命令帮助会转发到脚本，执行前应阅读脚本参数；不能假定所有脚本都实现 --dry-run。
+`npm run workflow -- --help` 查看全部命令，`node scripts/workflow.js reference --help` 查看分组。具体命令帮助只展示注册信息，绝不启动底层脚本。`--plan` 统一预览实际命令，不出图、不写数据；`--dry-run` 是底层脚本参数，仅在该脚本明确支持时使用。
 
 没有入口时查 scripts/maintenance 或运行 `npm run workflow -- audit:orphans --json`。有现成流程必须复用；新增脚本同时登记 WORKFLOWS、本手册分组，新增文档登记 INDEX.md；一次性脚本用完归入 scripts/archive。
+
+## 日常快捷操作
+
+统一短入口：`npm run wf -- <命令>`（与 workflow 完全等价）。
+
+| 想做什么 | 命令 |
+| --- | --- |
+| 查找命令 | `npm run wf -- search 样张`（中英文关键词均可） |
+| 查看一个分组 | `npm run wf -- reference` |
+| 查看参数与依赖 | `npm run wf -- reference:design --help` |
+| 预览即将执行的命令 | `npm run wf -- data:build --plan` |
+| 检查入口是否失效 | `npm run wf -- audit:workflows --json` |
+| 检查工作流行为回归 | `npm run wf -- check:workflows` |
+| 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
+| 按当前改动验证 | `npm run wf -- gate:quick` |
+| 提交前全量验证 | `npm run wf -- gate:full` |
+
+所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 不接受公共参数，定向操作请分别调用子步骤。只读审计覆盖注册文件、npm 入口、文档存在性和复合依赖循环，不代表模型、账户、外部服务或桌面安装已经验收。
 
 ## 数据维护
 
@@ -40,9 +58,11 @@
 | 当前 MiaoMiao 批次 | showcase:batch-miaomiao |
 | 活跃 manifest 缺口补齐 | showcase:fill-gaps |
 | 生成、审核、发布 | showcase:generate / showcase:audit / showcase:audit:scene / showcase:publish |
-| 复合链路 | showcase:full（generate → audit → publish） |
+| 复合链路 | showcase:full（generate → audit → 发布预览） |
 
-发布目标必须使用配置解析的活跃版本目录，不写死日期目录。旧参数与实测方法见 [样张工艺记录](showcase-generation-craft.md)，当前 checkpoint 以脚本/网关配置为准。
+候选生成必须传 `--output`，热门审核传 `--manifest` 和 `--out`，场景审核传 `--manifest`，发布传 `--from`、`--source` 和 `--target`，避免底层历史脚本选中旧批次。source 填实际现有版本，target 填新版本。
+
+`npm run wf -- showcase:full --output "E:/候选目录/本轮" --source <现有版本> --target <新版本> --plan` 可先检查链路；去掉 --plan 后会生成并审核，最后只预览发布。三步共用同一份 generation-manifest.json 和 audit-results.json。审核后用 `showcase:publish --from <该manifest> --source <现有版本> --target <新版本> --apply` 实际写入发布目录。该旧发布器并不自动切换网关配置，发布后还需按样张工艺检查活跃目录。旧参数与实测方法见 [样张工艺记录](showcase-generation-craft.md)，当前 checkpoint 以脚本/网关配置为准。
 
 ## 角色接入
 
@@ -52,9 +72,9 @@
 
 | 入口 | 实际范围 |
 | --- | --- |
-| gate:quick ui/server/data/all | 按变更面积分层；默认检测 Git 改动 |
+| gate:quick ui/server/data/all | 按变更面积分层；默认检测 Git 改动；脚本、依赖、配置及未知代码路径升级 full；纯文档跳过 |
 | check:quick | npm run check 的全部已注册并行检查 |
-| check:full | npm run validate：check + frontend + unit + contract；不包含 typecheck:app 或 build |
+| check:full | npm run validate：check + frontend + unit + contract；包含 check 内的 typecheck:app，不包含 build |
 | gate:full | typecheck + check + frontend + unit + contract + build，提交前完整入口 |
 | build:web / build:runtime | 前端与预算/预压；服务 TypeScript 编译 |
 | check:style-debt | 样式字面值、颜色、动画和双主题全局/角色令牌对比度；动态组件另做视觉验收 |
@@ -75,8 +95,18 @@
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
 
-桌面唯一入口是 `deploy-desktop.bat`。`deploy:desktop` 默认跳过构建，必须已有新构建；`deploy:desktop:full` 执行完整增量流程。依赖/exe 变化的完整安装与 UAC 见 [部署指南](desktop-deployment.md)。
+桌面唯一入口是 `deploy-desktop.bat`，两个 deploy 工作流均调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。`deploy:desktop` 默认跳过构建，必须已有新构建；`deploy:desktop:full` 执行完整增量流程。依赖/exe 变化的完整安装与 UAC 见 [部署指南](desktop-deployment.md)。
 
 ## 备份与清理
 
 `backup:git` 创建本地 bundle 增量链（2 个锚点 + 默认 10 个增量），不能替代 push 或异地副本。`runtime:clean` 默认只预览；`--prune --days 60` 会实际清理。先检查路径与白名单，避免清除当前运行资料。
+
+## 自动化检查与本次审计
+
+| 自动化 | 触发与范围 |
+| --- | --- |
+| Quality | push / PR：构建、静态检查、前端覆盖率、unit、contract、关键浏览器回归 |
+| Nightly visual regression | 每日北京时间 02:00 / 手动：主题、截图与视觉矩阵 |
+| Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
+
+本次检查结果与未执行范围见 [工作流审计](workflow-audit-2026-09-08.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。

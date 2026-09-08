@@ -4,7 +4,7 @@
 /**
  * scripts/workflow.js — 统一工作流入口
  *
- * 解决：140 个 maintenance 脚本分散、入口难发现、参数不统一。
+ * 解决：maintenance 脚本分散、入口难发现、参数不统一。
  * 用法：
  *   node scripts/workflow.js --help
  *   node scripts/workflow.js <group> --help
@@ -15,12 +15,15 @@
  * 保持对现有脚本的完全兼容（直接 node 旧脚本仍可用）。
  */
 
-const { spawnSync } = require('child_process');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  'audit:workflows': { desc: '只读审计注册入口、npm 脚本、文档及复合依赖', builtin: 'audit', docs: 'docs/workflow.md' },
+  'check:workflows': { desc: '工作流执行与门禁路由回归测试', cmd: ['node', 'scripts/tests/test-workflow-runner.js'], docs: 'docs/workflow.md' },
+  'dev:web': { desc: '启动前端开发服务', cmd: ['npm', 'run', 'dev'], docs: 'docs/workflow.md' },
+  'dev:server': { desc: '编译并启动网关', cmd: ['npm', 'start'], docs: 'docs/workflow.md' },
   'installer:modern': {
     desc: '构建现代原生安装器（--preview --capture 可安全预览，不安装）',
     cmd: ['node', 'scripts/maintenance/build-modern-installer.js'],
@@ -57,7 +60,7 @@ const WORKFLOWS = {
     docs: 'docs/maintenance.md',
   },
   'popular:import': {
-    desc: 'popular→分片+重建聚合（popular:split 超集，改完分片后跑此重建）',
+    desc: 'popular→分片+重建聚合（popular:split 超集，从聚合文件导入；改分片用 build）',
     cmd: ['npm', 'run', 'popular:import'],
     docs: 'docs/maintenance.md',
   },
@@ -72,19 +75,19 @@ const WORKFLOWS = {
     docs: 'docs/maintenance.md',
   },
   'blueprints:import': {
-    desc: 'blueprints→分片+重建聚合（blueprints:split 超集，改完分片后跑此重建）',
+    desc: 'blueprints→分片+重建聚合（blueprints:split 超集，从聚合文件导入；改分片用 build）',
     cmd: ['npm', 'run', 'blueprints:import'],
     docs: 'docs/maintenance.md',
   },
   'data:import': {
-    desc: 'scenes.json -> 分片（覆盖写入）',
-    cmd: ['node', 'scripts/maintenance/split-scenes.js', '--write'],
+    desc: 'scenes.json -> 分片 + 重建聚合（覆盖写入）',
+    cmd: ['npm', 'run', 'scenes:import'],
     docs: 'docs/maintenance.md',
   },
   'data:normalize': {
     desc: '分类评级 + 规范标签 + 校验',
     cmd: ['npm', 'run', 'scenes:normalize'],
-    docs: 'package.json:93',
+    docs: 'package.json',
   },
   'data:validate': {
     desc: '内容契约 + DATA_VERSION 校验',
@@ -93,7 +96,7 @@ const WORKFLOWS = {
   },
   'data:apply': {
     desc: '合并 refine-map chunks (替代 4 个 apply-*.js)',
-    cmd: ['node', 'scripts/maintenance/apply-chunks.js', '--help'],
+    cmd: ['node', 'scripts/maintenance/apply-chunks.js'],
     docs: 'scripts/maintenance/apply-chunks.js:1',
     opts: '--target popular|scenes --chunks 1-17',
   },
@@ -134,10 +137,11 @@ const WORKFLOWS = {
     steps: ['reference:render', 'reference:audit', 'reference:repair'],
   },
   'showcase:generate': {
-    desc: 'Anima 批量出图（热门/场景）',
-    cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js', '--help'],
+    desc: 'Anima 热门角色 × 蓝图候选出图',
+    cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js'],
     docs: 'docs/showcase-generation-craft.md',
-    opts: '--gateway 3123 --keys a,b --concurrency 3',
+    required: ['--output'],
+    opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys a,b --concurrency 3',
   },
   'showcase:batch-miaomiao': {
     desc: 'MiaoMiao v1.2 全库场景样张批量生成与自动发布流水线（832x1216/1216x832，3并发）',
@@ -151,28 +155,31 @@ const WORKFLOWS = {
     opts: '[--only <charId1,charId2>] [--concurrency <n>] [--gateway <url>] [--redo-mine]',
   },
   'showcase:audit': {
+    required: ['--manifest', '--out'],
     desc: '批量审核 popular showcase (Gemini 4并发，rella)',
-    cmd: ['node', 'scripts/maintenance/audit-showcase-rella.js', '--help'],
+    cmd: ['node', 'scripts/maintenance/audit-showcase-rella.js'],
     docs: 'scripts/maintenance/audit-showcase-rella.js:1',
   },
   'showcase:audit:scene': {
+    required: ['--manifest'],
     desc: '批量审核 scene showcase (Gemini 4并发，scene 版)',
-    cmd: ['node', 'scripts/maintenance/audit-scene-showcase-run.js', '--help'],
+    cmd: ['node', 'scripts/maintenance/audit-scene-showcase-run.js'],
     docs: 'scripts/maintenance/audit-scene-showcase-run.js:1',
   },
   'showcase:publish': {
-    desc: '发布审核通过的样张到线上',
-    cmd: ['node', 'scripts/maintenance/publish-popular-showcase.js', '--help'],
+    required: ['--from', '--source', '--target'],
+    desc: '预览审核通过的样张发布（--apply 写入版本目录）',
+    cmd: ['node', 'scripts/maintenance/publish-popular-showcase.js'],
     docs: 'docs/showcase-generation-craft.md',
   },
   'showcase:batch': {
     desc: '统一批量调度（替代 8 个 run-batch-* 脚本）',
-    cmd: ['node', 'scripts/maintenance/run-batch.js', '--help'],
+    cmd: ['node', 'scripts/maintenance/run-batch.js'],
     docs: 'scripts/maintenance/run-batch.js:1',
     opts: '--source popular|scenes --batch-size 10 --concurrency 3',
   },
   'showcase:full': {
-    desc: '样张全链路：generate -> audit -> publish',
+    desc: '样张链路：generate -> audit -> 发布预览（--output / --source / --target 必填）',
     cmd: null,
     docs: 'docs/showcase-generation-craft.md',
     steps: ['showcase:generate', 'showcase:audit', 'showcase:publish'],
@@ -211,16 +218,16 @@ const WORKFLOWS = {
   'build:runtime': {
     desc: '编译 services/*.ts -> .js',
     cmd: ['npm', 'run', 'build:runtime'],
-    docs: 'package.json:29',
+    docs: 'package.json',
   },
   'deploy:desktop': {
     desc: '桌面增量部署（跳过构建）',
-    cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/deploy-desktop-quick.ps1', '-SkipBuild'],
+    cmd: ['deploy-desktop.bat', '-SkipBuild'],
     docs: 'docs/desktop-deployment.md',
   },
   'deploy:desktop:full': {
     desc: '桌面完整部署（前端构建 + 复制 + 清缓存 + 验证 + 重启）',
-    cmd: ['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'scripts/maintenance/deploy-desktop-quick.ps1'],
+    cmd: ['deploy-desktop.bat'],
     docs: 'docs/desktop-deployment.md',
   },
   // ── check: 单项门禁（可单独跑或组合）──────────────────────────────
@@ -237,7 +244,7 @@ const WORKFLOWS = {
   },
   'check:animations': {
     desc: 'GPU 合成属性门禁（禁 left/top/width/height 补间）',
-    cmd: ['npm', 'run', 'lint:animations'],
+    cmd: ['npm', 'run', 'lint:animations', '--', '--check'],
     docs: 'AGENTS.md#质量红线',
   },
   'check:ref-urls': {
@@ -274,7 +281,7 @@ const WORKFLOWS = {
   'check:style-debt': {
     desc: '样式债聚合门禁（style-debt + style-literals + contrast + colors + animations）',
     cmd: ['npm', 'run', 'test:style-debt'],
-    docs: 'package.json:53',
+    docs: 'package.json',
   },
   'check:bundle': {
     desc: '打包预算门禁（路由与依赖闭包，build:web 隐含）',
@@ -283,7 +290,7 @@ const WORKFLOWS = {
   },
   // ── backup / runtime: 磁盘债治理 ────────────────────────────────
   'backup:git': {
-    desc: 'git bundle 异地快照（v2 增量链：锚点×2 + 增量×10）',
+    desc: 'git bundle 本地第二副本（v2 增量链：锚点×2 + 增量×10）',
     cmd: ['node', 'scripts/maintenance/git-bundle-backup.js'],
     docs: 'scripts/maintenance/git-bundle-backup.js:1',
     opts: '[--keep N] 增量保留份数（默认 10）',
@@ -320,130 +327,11 @@ const WORKFLOWS = {
   },
   'character:onboard': {
     desc: '一站式新角色接入（档案/标准/粒子/参考图/样张/DATA_VERSION）',
-    cmd: ['npm', 'run', 'character:onboard', '--', '--help'],
+    cmd: ['npm', 'run', 'character:onboard'],
     docs: 'docs/character-onboarding-workflow.md',
   },
 };
 
-function printHelp(group) {
-  const allKeys = Object.keys(WORKFLOWS).sort();
-  if (!group) {
-    console.log(`
-AI-CG-Studio 统一工作流  (scripts/workflow.js)
-
-用法:
-  node scripts/workflow.js <workflow> [options]
-  npm run workflow -- <workflow> [options]
-
-工作流一览:
-`);
-    const groups = {};
-    for (const k of allKeys) {
-      const g = k.split(':')[0];
-      if (!groups[g]) groups[g] = [];
-      groups[g].push(k);
-    }
-    for (const [g, keys] of Object.entries(groups)) {
-      console.log(`  ${g}:`);
-      for (const k of keys) {
-        const w = WORKFLOWS[k];
-        console.log(`    ${k.padEnd(22)} ${w.desc}`);
-      }
-    }
-    console.log(`
-示例:
-  node scripts/workflow.js data:validate
-  node scripts/workflow.js reference:audit --force --keys alisa_mikhailovna_kujou/school_uniform/ref_01_face_closeup
-  node scripts/workflow.js showcase:batch --source popular --batch-size 10
-  node scripts/workflow.js check:full
-
-查看子工作流帮助:
-  node scripts/workflow.js <workflow> --help
-
-文档总览: docs/workflow.md  |  维护手册: docs/maintenance.md  |  门禁: AGENTS.md
-`);
-    return;
-  }
-  // group help: filter keys by group prefix
-  const matched = allKeys.filter(k => k === group || k.startsWith(group + ':'));
-  if (!matched.length) {
-    console.error(`未知工作流: ${group}\n`);
-    printHelp();
-    process.exitCode = 1;
-    return;
-  }
-  if (matched.length === 1 && WORKFLOWS[matched[0]]) {
-    const w = WORKFLOWS[matched[0]];
-    console.log(`\n${matched[0]} — ${w.desc}`);
-    if (w.docs) console.log(`文档: ${w.docs}`);
-    if (w.needs) console.log(`依赖: ${w.needs}`);
-    if (w.opts) console.log(`参数: ${w.opts}`);
-    if (w.cmd) console.log(`执行: ${w.cmd.join(' ')}`);
-    if (w.steps) console.log(`步骤: ${w.steps.join(' -> ')}`);
-    console.log('');
-    // forward --help to underlying cmd if exists
-    if (w.cmd) {
-      spawnSync(w.cmd[0], [...w.cmd.slice(1), '--help'], { stdio: 'inherit', cwd: ROOT, shell: w.cmd[0] === 'npm' || w.cmd[0] === 'powershell' });
-      // ignore exit
-    }
-    return;
-  }
-  console.log(`\n${group} 分组:`);
-  for (const k of matched) console.log(`  ${k.padEnd(22)} ${WORKFLOWS[k].desc}`);
-  console.log('');
-}
-
-function main() {
-  const args = process.argv.slice(2);
-  if (!args.length || args.includes('--help') || args.includes('-h')) {
-    const group = args.find(a => !a.startsWith('-'));
-    // if --help with specific workflow, show that workflow help
-    if (group && group !== '--help' && group !== '-h') {
-      printHelp(group);
-      return;
-    }
-    printHelp();
-    return;
-  }
-
-  const workflow = args[0];
-  const extra = args.slice(1);
-  const def = WORKFLOWS[workflow];
-
-  // support group -> list
-  if (!def) {
-    const maybeGroup = Object.keys(WORKFLOWS).some(k => k.startsWith(workflow + ':'));
-    if (maybeGroup) {
-      printHelp(workflow);
-      return;
-    }
-    console.error(`未知工作流: ${workflow}`);
-    printHelp();
-    process.exitCode = 1;
-    return;
-  }
-
-  if (def.steps) {
-    console.log(`执行复合工作流: ${workflow} -> ${def.steps.join(' -> ')}`);
-    for (const step of def.steps) {
-      console.log(`\n=== ${step} ===`);
-      const sdef = WORKFLOWS[step];
-      const result = spawnSync(sdef.cmd[0], [...sdef.cmd.slice(1), ...extra], { stdio: 'inherit', cwd: ROOT, shell: sdef.cmd[0] === 'npm' || sdef.cmd[0] === 'powershell' });
-      if (result.status !== 0) {
-        console.error(`步骤 ${step} 失败，终止`);
-        process.exitCode = result.status || 1;
-        return;
-      }
-    }
-    return;
-  }
-
-  const cmd = def.cmd[0];
-  const cmdArgs = [...def.cmd.slice(1), ...extra];
-  const useShell = cmd === 'npm' || cmd === 'powershell';
-  const result = spawnSync(cmd, cmdArgs, { stdio: 'inherit', cwd: ROOT, shell: useShell });
-  process.exitCode = result.status ?? 1;
-}
-
-if (require.main === module) main();
+const { main } = require('./lib/workflow-runner');
+if (require.main === module) process.exitCode = main(process.argv.slice(2), WORKFLOWS, ROOT);
 module.exports = { WORKFLOWS };

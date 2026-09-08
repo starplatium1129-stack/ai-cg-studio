@@ -46,12 +46,14 @@ const STEPS = [
 // 数据聚合产物自 2026-08-28 起不入库：并发池启动前先补齐缺失产物（fresh clone），
 // 否则 scenes:optimize / content-contracts 等读取方会与自愈构建产生缺文件竞态。
 // 已构建但陈旧的状态不在这一步补 —— 交给下方 build-scenes/popular --check 报红守卫。
-require('../lib/ensure-data-build').ensureAll({ onlyIfMissing: true });
+
 
 if (process.argv.includes('--list')) {
   for (const [name, cmd] of STEPS) console.log(`${name.padEnd(20)} ${cmd}`);
   process.exit(0);
 }
+
+require('../lib/ensure-data-build').ensureAll({ onlyIfMissing: true });
 
 const POOL = Math.max(1, Math.min(STEPS.length, Number(process.env.CHECK_JOBS) || 6));
 const results = new Map(); // name -> { code, ms, output }
