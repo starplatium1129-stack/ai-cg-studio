@@ -2,7 +2,7 @@
   <details class="artist-style-picker advanced-decision" data-testid="artist-style-picker">
     <summary>
       <div class="artist-summary-title">
-        <span>画师风格 · Artist tags</span>
+        <span>画师风格</span>
         <small v-if="selected.length" class="artist-active-pill">已启用 {{ selected.length }}/2</small>
       </div>
       <div class="artist-summary-right">
@@ -72,7 +72,8 @@
           <input
             v-model.trim="query"
             type="search"
-            placeholder="搜索画师名/作品（如：米山舞、EVA、86、柚子社、星空）"
+            placeholder="搜索画师或作品"
+            aria-label="搜索画师或作品"
             autocomplete="off"
           >
         </label>
@@ -260,6 +261,9 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-style-picker summary {
   display: flex;
+  flex-wrap: wrap;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body);
   align-items: center;
   justify-content: space-between;
   gap: var(--s-3);
@@ -270,6 +274,7 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-summary-title {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--s-2);
 }
@@ -283,11 +288,16 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-summary-right {
   display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  width: 100%;
   align-items: center;
   gap: var(--s-2);
   margin-left: auto;
 }
 .artist-summary-right strong {
+  overflow-wrap: anywhere;
+  flex: 1;
   color: var(--text-muted);
   font-size: var(--fs-label);
 }
@@ -332,7 +342,7 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-presets-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
   gap: var(--s-2);
 }
 .artist-combo-btn {
@@ -365,7 +375,7 @@ function applyCombo(artistIds: readonly string[]) {
   font-weight: 700;
 }
 .combo-tagline {
-  font-size: var(--fs-mono-xs);
+  font-size: var(--fs-label-sm);
   color: var(--text-muted);
 }
 
@@ -379,7 +389,7 @@ function applyCombo(artistIds: readonly string[]) {
 .artist-category-tabs {
   display: flex;
   gap: 4px;
-  overflow-x: auto;
+  flex-wrap: wrap;
   padding-bottom: 2px;
   scrollbar-width: thin;
 }
@@ -455,7 +465,7 @@ function applyCombo(artistIds: readonly string[]) {
 /* 画师网格 */
 .artist-style-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
   gap: var(--s-2);
   max-height: 360px;
   overflow-y: auto;
@@ -463,7 +473,8 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-style-grid button {
   display: grid;
-  gap: 4px;
+  gap: var(--s-2);
+  line-height: var(--lh-body);
   min-width: 0;
   padding: var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
@@ -491,10 +502,12 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-style-name {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--s-2);
 }
+.artist-style-name strong { display: grid; min-width: 0; gap: var(--s-1); overflow-wrap: anywhere; }
 .artist-cn-name {
   font-size: var(--fs-label-sm);
   font-weight: 700;
@@ -502,13 +515,13 @@ function applyCombo(artistIds: readonly string[]) {
   color: var(--text-primary);
 }
 .artist-en-name {
-  font-size: var(--fs-label-xs);
+  font-size: var(--fs-label-sm);
   color: var(--text-muted);
   font-weight: 500;
 }
 .artist-desc {
   color: var(--text-muted);
-  font-size: var(--fs-label-xs);
+  font-size: var(--fs-label-sm);
   line-height: var(--lh-label);
 }
 .artist-masterpiece {
@@ -589,6 +602,7 @@ function applyCombo(artistIds: readonly string[]) {
 }
 .artist-style-tokens {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: var(--s-2);
   margin-top: var(--s-3);
@@ -620,12 +634,4 @@ function applyCombo(artistIds: readonly string[]) {
   font-size:var(--fs-label-sm); line-height:var(--lh-label);
 }
 
-@media (max-width: 900px) {
-  .artist-presets-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .artist-style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 600px) {
-  .artist-presets-row { grid-template-columns: 1fr; }
-  .artist-style-grid { grid-template-columns: 1fr; }
-}
 </style>

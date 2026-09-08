@@ -1,13 +1,14 @@
 <template>
-  <aside class="character-directory" aria-label="角色目录">
+  <aside class="character-directory" :class="{ 'directory-catalog': catalog }" aria-label="角色目录">
     <div class="directory-tools">
       <label class="directory-heading" :for="inputId">选择角色 <span>{{ items.length }}</span></label>
       <input :id="inputId" v-model="query" type="search" aria-label="搜索角色或作品" placeholder="角色名、作品或别名…" @keydown.enter="results[0] && emit('select', results[0].id)" @keydown.down.prevent="focusFirst" />
-      <select v-model="series" aria-label="筛选角色系列"><option value="">全部系列</option><option v-for="group in groups" :key="group.key" :value="group.key">{{ group.label }} · {{ group.count }}</option></select>
+      <div v-if="catalog" class="directory-series" role="group" aria-label="按作品浏览"><button type="button" :aria-pressed="!series" @click="series = ''">全部作品</button><button v-for="group in groups" :key="group.key" type="button" :aria-pressed="series === group.key" @click="series = group.key">{{ group.label }} <span>{{ group.count }}</span></button></div>
+      <select v-else v-model="series" aria-label="筛选角色系列"><option value="">全部系列</option><option v-for="group in groups" :key="group.key" :value="group.key">{{ group.label }} · {{ group.count }}</option></select>
       <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="query = ''; series = ''">清除筛选</button></div>
     </div>
     <div ref="list" class="directory-list" role="group" aria-label="角色列表" @keydown.down.prevent="move(1)" @keydown.up.prevent="move(-1)">
-      <button v-for="item in results" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
+      <button v-for="item in visibleResults" :key="item.id" type="button" class="directory-item" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
         <img v-if="item.image && !broken.has(item.id)" :src="item.image" alt="" width="48" height="60" loading="lazy" decoding="async" @error="broken = new Set(broken).add(item.id)" />
         <span v-else class="directory-placeholder" aria-hidden="true">{{ item.name.charAt(0) }}</span>
         <span class="directory-label"><strong>{{ item.name }}</strong><small :title="franchiseLabel(franchiseKey(item.source))">{{ franchiseLabel(franchiseKey(item.source)) }}</small></span>
@@ -15,6 +16,11 @@
       </button>
       <div v-if="!results.length" class="directory-empty">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
     </div>
+    <nav v-if="pageCount > 1" class="directory-pagination" aria-label="角色分页">
+      <button type="button" :disabled="page === 1" @click="page--">上一页</button>
+      <label>第 <select v-model.number="page" aria-label="跳转角色页"><option v-for="n in pageCount" :key="n" :value="n">{{ n }}</option></select> / {{ pageCount }} 页</label>
+      <button type="button" :disabled="page === pageCount" @click="page++">下一页</button>
+    </nav>
     <div class="directory-current"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
   </aside>
 </template>
@@ -23,11 +29,12 @@ import { computed, nextTick, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; aliases?: string[] }
-const props = defineProps<{ items: DirectoryCharacter[]; selectedId: string }>()
+const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
 const emit = defineEmits<{ select: [id: string] }>()
 const inputId = useId()
 const query = defineModel<string>('search', { default: '' })
 const series = ref('')
+const page = ref(1)
 const list = ref<HTMLElement | null>(null)
 const broken = ref(new Set<string>())
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
@@ -35,7 +42,7 @@ watch(() => props.selectedId, async () => { await nextTick(); list.value?.queryS
 const groups = computed(() => {
   const counts = new Map<string, number>()
   for (const item of props.items) { const key = franchiseKey(item.source); counts.set(key, (counts.get(key) || 0) + 1) }
-  return [...counts].map(([key, count]) => ({ key, count, label: franchiseLabel(key) })).sort((a, b) => a.label.localeCompare(b.label, 'zh-CN'))
+  return [...counts].map(([key, count]) => ({ key, count, label: franchiseLabel(key) })).sort((a, b) => (props.catalog ? b.count - a.count : 0) || a.label.localeCompare(b.label, 'zh-CN'))
 })
 const indexed = computed(() => props.items.map(item => ({ item, key: franchiseKey(item.source), text: [item.id, item.name, item.source, franchiseLabel(franchiseKey(item.source)), ...(item.aliases || [])].join(' ').toLocaleLowerCase() })))
 const results = computed(() => {
@@ -43,6 +50,11 @@ const results = computed(() => {
   return indexed.value.filter(row => (!series.value || row.key === series.value) && (!term || row.text.includes(term))).map(row => row.item)
     .sort((a, b) => Number(b.name.toLocaleLowerCase() === term) - Number(a.name.toLocaleLowerCase() === term))
 })
+const pageCount = computed(() => props.pageSize ? Math.max(1, Math.ceil(results.value.length / props.pageSize)) : 1)
+const visibleResults = computed(() => props.pageSize ? results.value.slice((page.value - 1) * props.pageSize, page.value * props.pageSize) : results.value)
+watch([query, series], () => { page.value = 1 })
+watch(pageCount, count => { page.value = Math.min(page.value, count) })
+watch(page, async () => { await nextTick(); if (list.value) list.value.scrollTop = 0 })
 function focusFirst() { list.value?.querySelector<HTMLButtonElement>('button')?.focus() }
 function move(step: number) {
   const buttons = [...(list.value?.querySelectorAll<HTMLButtonElement>('button') || [])]
@@ -51,6 +63,9 @@ function move(step: number) {
 }
 async function locateSelected() {
   query.value = ''; series.value = ''; await nextTick()
+  const index = results.value.findIndex(item => item.id === props.selectedId)
+  page.value = props.pageSize && index >= 0 ? Math.floor(index / props.pageSize) + 1 : 1
+  await nextTick()
   const button = list.value?.querySelector<HTMLButtonElement>('[aria-pressed="true"]')
   button?.scrollIntoView({ block: 'nearest' }); button?.focus({ preventScroll: true })
 }
@@ -78,4 +93,20 @@ async function locateSelected() {
 .directory-empty { padding: var(--s-5) var(--s-3); color: var(--text-muted); font-size: var(--fs-label); }
 @media (max-width: 900px) { .character-directory { position: static; max-height: 360px; } }
 @media (prefers-reduced-motion: reduce) { .directory-item { transition: none; } }
+.directory-catalog { position: static; max-height: none; min-height: 0; flex: 1; border: 0; background: transparent; }
+.directory-catalog .directory-tools { padding: var(--s-3) 0; }
+.directory-catalog .directory-list { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: var(--s-2); padding: var(--s-1); align-content: start; }
+.directory-catalog .directory-item { margin: 0; min-width: 0; background: var(--bg-deep); border-color: var(--border-soft); }
+.directory-catalog .directory-item[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.directory-catalog .directory-label strong { overflow-wrap: anywhere; line-height: var(--lh-body); }
+.directory-catalog .directory-empty { grid-column: 1 / -1; }
+.directory-series { display: flex; flex-wrap: wrap; gap: var(--s-2); max-height: 120px; overflow-y: auto; padding: var(--s-1); }
+.directory-series button, .directory-pagination button, .directory-pagination select { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); min-height: 36px; color: var(--text-secondary); background: var(--bg-deep); font: inherit; font-size: var(--fs-label); cursor: pointer; }
+.directory-series button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.directory-series button span { margin-left: var(--s-1); color: var(--text-muted); }
+.directory-pagination { display: flex; justify-content: space-between; align-items: center; gap: var(--s-2); padding: var(--s-3) 0; color: var(--text-secondary); font-size: var(--fs-label); flex-shrink: 0; }
+.directory-pagination button:disabled { color: var(--text-disabled); cursor: default; }
+.directory-catalog button:focus-visible, .directory-pagination select:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.directory-catalog .directory-current { padding-inline: 0; }
+@media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: 1fr; } .directory-series { max-height: 92px; } }
 </style>
