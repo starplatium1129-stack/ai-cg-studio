@@ -126,9 +126,13 @@ function resolveColor(tokens, expr, parentRgb, depth = 0) {
 
 function characterThemes() {
   const director = sources.read('src/assets/css/director/tokens.css');
+  const registered = new Set(require('../../data/popular-onboarding.json').characters.map(c => c.id));
+  const onboarding = block('.pb[data-onboarding-theme="true"]', director);
   const selectors = [...new Set([...director.matchAll(/\.pb\[data-character="[^"]+"\]/g)].map(m => m[0]))];
   return themes.flatMap(([theme, tokens]) => selectors.map(selector => [theme + ' / ' + selector, {
-    ...tokens, ...block('.pb', director), ...block(selector, director),
+    ...tokens, ...block('.pb', director),
+    ...(registered.has(selector.match(/data-character="([^"]+)"/)[1]) ? onboarding : {}),
+    ...block(selector, director),
     ...(theme === 'light' ? block(':root[data-theme="light"] .pb', lightCss) : {}),
   }]));
 }

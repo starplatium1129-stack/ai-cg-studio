@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "defaultModelId": "anima-miaomiao-v1.2",
+  "scope": "SFW character and scene onboarding; image generation deferred",
+  "characters": [
+    {
+      "id": "raphtalia",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "yatogami_tohka",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "tobiichi_origami",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "ubel_frieren",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "kanroji_mitsuri",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "zero_two",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "asada_shino",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "tatsumaki",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "fubuki_one_punch",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "mouri_ran",
+      "batch": 6,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "medusa_rider",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "chloe_von_einzbern",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "medea_caster",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "kama_fate",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "kasugano_sora",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "kuonji_alice",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "akizuki_kanna",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "yae_miko",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "changli_wuthering",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "shorekeeper",
+      "batch": 7,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "makinohara_shouko",
+      "batch": 8,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "futaba_rio",
+      "batch": 8,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "shirogane_kei",
+      "batch": 8,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "yanami_anna",
+      "batch": 8,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "tachibana_mikari",
+      "batch": 8,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "shinjou_akane",
+      "batch": 8,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "suou_yuki",
+      "batch": 8,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "maria_mikhailovna_kujou",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "elfaria_alvis_serfort",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "vivy",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "maomao",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "marcille_donato",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "cartethyia",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "dorothy_nikke",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "shiranui_mai",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    },
+    {
+      "id": "togawa_sakiko",
+      "batch": 9,
+      "portraitPending": true,
+      "references": "pending",
+      "samples": "deferred",
+      "sceneCount": 6
+    }
+  ]
+}

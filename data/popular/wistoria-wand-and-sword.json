@@ -1,0 +1,95 @@
+{
+  "version": "1.0.0",
+  "franchise": "Wistoria: Wand and Sword",
+  "characters": [
+    {
+      "id": "elfaria_alvis_serfort",
+      "displayName": "艾尔菲利亚",
+      "originalName": "Elfaria Alvis Serfort",
+      "franchise": "Wistoria: Wand and Sword",
+      "aliases": [
+        "艾尔菲利亚",
+        "Elfaria Alvis Serfort"
+      ],
+      "identityProse": "Elfaria Alvis Serfort from Wistoria: Wand and Sword, an ice mage with very long blue hair, long sidelocks, blue eyes and pale colored lashes. Her formal stillness can soften quickly at an old memory.",
+      "identityTokens": [
+        "elfaria_alvis_serfort",
+        "tsue_to_tsurugi_no_wistoria",
+        "blue_hair",
+        "very_long_hair",
+        "long_sidelocks",
+        "blue_eyes",
+        "colored_eyelashes"
+      ],
+      "exactTokens": [
+        "elfaria_alvis_serfort"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, elfaria_alvis_serfort"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_tower",
+          "name": "高塔议事长袍",
+          "prose": "a pale blue long robe with white embroidered layers, high collar and covered sleeves",
+          "tokens": [
+            "blue_robe",
+            "white_layers",
+            "embroidery",
+            "high_collar",
+            "long_sleeves"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_garden",
+          "name": "庭院休憩长裙",
+          "prose": "an opaque white ankle-length dress with a light blue cardigan",
+          "tokens": [
+            "white_dress",
+            "long_dress",
+            "blue_cardigan"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_study",
+          "name": "夜间书房针织便装",
+          "prose": "a soft blue sweater and a long cream skirt",
+          "tokens": [
+            "blue_sweater",
+            "long_cream_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

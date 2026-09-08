@@ -130,6 +130,93 @@
           ]
         }
       ]
+    },
+    {
+      "id": "asada_shino",
+      "displayName": "朝田诗乃",
+      "originalName": "Shino Asada",
+      "franchise": "Sword Art Online",
+      "aliases": [
+        "朝田诗乃",
+        "Shino Asada"
+      ],
+      "identityProse": "Shino Asada from Sword Art Online in her real-world appearance, with medium-length ash-brown hair, brown eyes and optional non-prescription black-rimmed glasses. Her gestures are precise and her manner quietly thoughtful; no game-avatar ears or cyan hair are mixed into this form.",
+      "identityTokens": [
+        "asada_shino",
+        "sword_art_online",
+        "brown_hair",
+        "medium_hair",
+        "brown_eyes"
+      ],
+      "exactTokens": [
+        "asada_shino"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, asada_shino"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "现实形态校服与眼镜",
+          "prose": "a neat navy school blazer, white shirt, knee-length skirt and non-prescription black-rimmed glasses",
+          "tokens": [
+            "school_uniform",
+            "navy_blazer",
+            "white_shirt",
+            "pleated_skirt",
+            "black-framed_eyewear"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_casual",
+          "name": "现实形态周末便装",
+          "prose": "a grey cardigan, white top and dark trousers",
+          "tokens": [
+            "grey_cardigan",
+            "white_shirt",
+            "dark_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_home",
+          "name": "下线后的居家针织装",
+          "prose": "a soft blue sweater and grey lounge trousers",
+          "tokens": [
+            "blue_sweater",
+            "grey_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

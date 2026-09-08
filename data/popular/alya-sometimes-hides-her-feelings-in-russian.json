@@ -136,6 +136,188 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "doga kobo, official anime screencap, nekotomi chao, anime coloring, crisp lineart"
+    },
+    {
+      "id": "suou_yuki",
+      "displayName": "周防有希",
+      "originalName": "Yuki Suou",
+      "franchise": "Alya Sometimes Hides Her Feelings in Russian",
+      "aliases": [
+        "周防有希",
+        "Yuki Suou"
+      ],
+      "identityProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian, with long black hair in a half-up style, a small ahoge and violet eyes. Her formal smile can shift quickly into lively, unguarded enthusiasm at home.",
+      "identityTokens": [
+        "suou_yuki",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "black_hair",
+        "long_hair",
+        "half_updo",
+        "ahoge",
+        "purple_eyes"
+      ],
+      "exactTokens": [
+        "suou_yuki"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, suou_yuki"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "学生会端庄制服",
+          "prose": "a navy school jacket, white blouse, ribbon and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "navy_jacket",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_casual",
+          "name": "居家漫画连帽衫",
+          "prose": "a roomy opaque grey hoodie and loose dark trousers",
+          "tokens": [
+            "grey_hoodie",
+            "dark_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_formal",
+          "name": "茶会与祭典端庄和装",
+          "prose": "a modest pale violet kimono-style dress with opaque layers and a cream sash",
+          "tokens": [
+            "violet_dress",
+            "kimono_style",
+            "opaque_layers",
+            "cream_sash"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "maria_mikhailovna_kujou",
+      "displayName": "玛夏",
+      "originalName": "Mariya Mikhailovna Kujou (Masha)",
+      "franchise": "Alya Sometimes Hides Her Feelings in Russian",
+      "aliases": [
+        "玛夏",
+        "Mariya Mikhailovna Kujou (Masha)"
+      ],
+      "identityProse": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",
+      "identityTokens": [
+        "maria_mikhailovna_kujou",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "brown_hair",
+        "long_hair",
+        "wavy_hair",
+        "ahoge",
+        "brown_eyes"
+      ],
+      "exactTokens": [
+        "maria_mikhailovna_kujou"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, maria_mikhailovna_kujou"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "学生会与音乐教室制服",
+          "prose": "a navy school jacket, white blouse, ribbon tie and knee-length skirt",
+          "tokens": [
+            "school_uniform",
+            "navy_jacket",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "家政教室素雅围裙装",
+          "prose": "a cream long-sleeved blouse, long brown skirt and pale pink apron",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "pink_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季披肩通学装",
+          "prose": "a warm beige coat, thick cream shawl, long skirt and winter shoes",
+          "tokens": [
+            "beige_coat",
+            "cream_shawl",
+            "long_skirt",
+            "winter_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

@@ -268,6 +268,96 @@
           "isDefault": false
         }
       ]
+    },
+    {
+      "id": "shirogane_kei",
+      "displayName": "白银圭",
+      "originalName": "Kei Shirogane",
+      "franchise": "Kaguya-sama: Love Is War",
+      "aliases": [
+        "白银圭",
+        "Kei Shirogane"
+      ],
+      "identityProse": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",
+      "identityTokens": [
+        "shirogane_kei",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "grey_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_eyes",
+        "black_hairband",
+        "ribbon"
+      ],
+      "exactTokens": [
+        "shirogane_kei"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shirogane_kei"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "学生会整齐校服",
+          "prose": "a dark school uniform with a white collar, knee-length skirt and black headband",
+          "tokens": [
+            "school_uniform",
+            "white_collar",
+            "pleated_skirt",
+            "black_hairband"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "居家家计针织装",
+          "prose": "a cream knitted pullover and navy lounge trousers",
+          "tokens": [
+            "cream_sweater",
+            "navy_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_delivery",
+          "name": "清晨配送防风装",
+          "prose": "a blue windbreaker over a white top, long trousers and practical sneakers",
+          "tokens": [
+            "blue_windbreaker",
+            "white_top",
+            "long_pants",
+            "sneakers"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

@@ -103,6 +103,94 @@
           "isDefault": false
         }
       ]
+    },
+    {
+      "id": "shinjou_akane",
+      "displayName": "新条茜",
+      "originalName": "Akane Shinjou",
+      "franchise": "SSSS.GRIDMAN",
+      "aliases": [
+        "新条茜",
+        "Akane Shinjou"
+      ],
+      "identityProse": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and clear red eyes. Her polished social smile contrasts with the absorbed, quieter expression she has while designing monster models; glasses are optional workwear.",
+      "identityTokens": [
+        "shinjou_akane",
+        "gridman_universe",
+        "short_hair",
+        "purple_hair",
+        "red_eyes"
+      ],
+      "exactTokens": [
+        "shinjou_akane"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shinjou_akane"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "教室整齐制服",
+          "prose": "a white school blouse, blue cardigan and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "blue_cardigan",
+            "pleated_skirt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_model",
+          "name": "怪兽模型工作便装",
+          "prose": "an oversized opaque lavender sweatshirt, grey trousers and craft glasses",
+          "tokens": [
+            "lavender_sweatshirt",
+            "grey_pants",
+            "glasses"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_festival",
+          "name": "文化祭工作围裙装",
+          "prose": "a blue school cardigan over a white blouse, knee-length skirt and cream apron",
+          "tokens": [
+            "blue_cardigan",
+            "white_blouse",
+            "pleated_skirt",
+            "cream_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "franchise": "Witch on the Holy Night",
+  "characters": [
+    {
+      "id": "kuonji_alice",
+      "displayName": "久远寺有珠",
+      "originalName": "Alice Kuonji",
+      "franchise": "Witch on the Holy Night",
+      "aliases": [
+        "久远寺有珠",
+        "Alice Kuonji"
+      ],
+      "identityProse": "Alice Kuonji from Witch on the Holy Night, a reserved witch with short dark hair, lifted side sections near the temples and deep dark eyes. Her still expression and precise movements suit quiet rooms and careful rituals.",
+      "identityTokens": [
+        "kuonji_alice",
+        "mahou_tsukai_no_yoru",
+        "black_hair",
+        "short_hair",
+        "hair_intakes",
+        "black_eyes"
+      ],
+      "exactTokens": [
+        "kuonji_alice"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kuonji_alice"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_house",
+          "name": "洋馆黑色长袖洋装",
+          "prose": "a modest black long-sleeved dress with a white collar, dark tights and indoor shoes",
+          "tokens": [
+            "black_dress",
+            "long_sleeves",
+            "white_collar",
+            "tights",
+            "indoor_shoes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_work",
+          "name": "工作间深蓝晨衣",
+          "prose": "a closed dark blue robe over a high-neck cotton dress, with sleeves tied back",
+          "tokens": [
+            "blue_robe",
+            "high_neck",
+            "cotton_dress",
+            "tied_sleeves"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季学院大衣与毛帽",
+          "prose": "a dark wool coat, plain scarf, rounded fur-trimmed winter hat and boots",
+          "tokens": [
+            "dark_coat",
+            "wool",
+            "scarf",
+            "winter_hat",
+            "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

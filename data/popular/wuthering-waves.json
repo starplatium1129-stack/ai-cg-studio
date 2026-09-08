@@ -1,0 +1,279 @@
+{
+  "version": "1.0.0",
+  "franchise": "Wuthering Waves",
+  "characters": [
+    {
+      "id": "changli_wuthering",
+      "displayName": "长离",
+      "originalName": "Changli",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "长离",
+        "Changli"
+      ],
+      "identityProse": "Changli from Wuthering Waves, with long pink hair arranged into distinctive looped sections, an ahoge and warm orange eyes. Her attentive smile and measured hands convey a patient teacher’s confidence.",
+      "identityTokens": [
+        "changli_(wuthering_waves)",
+        "wuthering_waves",
+        "pink_hair",
+        "long_hair",
+        "ring_hair_extensions",
+        "braid",
+        "orange_eyes",
+        "ahoge"
+      ],
+      "exactTokens": [
+        "changli_(wuthering_waves)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, changli_(wuthering_waves)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_formal",
+          "name": "今州端庄议事长袍",
+          "prose": "a layered white-and-red long robe with an opaque high-collared inner blouse and embroidered cuffs",
+          "tokens": [
+            "white_robe",
+            "red_layers",
+            "high_collar",
+            "embroidered_cuffs"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_garden",
+          "name": "庭院茶叙轻便和装",
+          "prose": "a soft peach jacket over a cream blouse and ankle-length red skirt",
+          "tokens": [
+            "peach_jacket",
+            "cream_blouse",
+            "long_red_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_morning",
+          "name": "清晨束发针织便装",
+          "prose": "a cream long-sleeved blouse and comfortable dark trousers",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "dark_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "shorekeeper",
+      "displayName": "守岸人",
+      "originalName": "The Shorekeeper",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "守岸人",
+        "The Shorekeeper"
+      ],
+      "identityProse": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",
+      "identityTokens": [
+        "the_shorekeeper_(wuthering_waves)",
+        "wuthering_waves",
+        "blue_hair",
+        "long_hair",
+        "purple_eyes",
+        "jellyfish_cut"
+      ],
+      "exactTokens": [
+        "the_shorekeeper_(wuthering_waves)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, the_shorekeeper_(wuthering_waves)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_coast",
+          "name": "黑海岸不透内衬长裙",
+          "prose": "an opaque white ankle-length dress with blue embroidered outer layers and a light veil over her blue hair",
+          "tokens": [
+            "white_dress",
+            "long_dress",
+            "blue_embroidery",
+            "layered_clothes",
+            "veil"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_records",
+          "name": "观测站端庄工作装",
+          "prose": "a pale blue high-collared jacket, long white skirt and flat shoes",
+          "tokens": [
+            "blue_jacket",
+            "high_collar",
+            "long_white_skirt",
+            "flat_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_rest",
+          "name": "灯塔休憩针织装",
+          "prose": "a soft white cardigan over a blue blouse and long cream skirt",
+          "tokens": [
+            "white_cardigan",
+            "blue_blouse",
+            "long_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "cartethyia",
+      "displayName": "卡提希娅",
+      "originalName": "Cartethyia",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "卡提希娅",
+        "Cartethyia"
+      ],
+      "identityProse": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",
+      "identityTokens": [
+        "cartethyia",
+        "wuthering_waves",
+        "blonde_hair",
+        "long_hair",
+        "braid",
+        "blue_eyes",
+        "pointy_ears",
+        "halo"
+      ],
+      "exactTokens": [
+        "cartethyia"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, cartethyia"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "流浪骑士轻便旅行装",
+          "prose": "a cream high-collared tunic, blue travel jacket, practical trousers and boots",
+          "tokens": [
+            "cream_tunic",
+            "high_collar",
+            "blue_jacket",
+            "pants",
+            "boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_town",
+          "name": "小镇节日长裙",
+          "prose": "an opaque pale blue ankle-length dress with a cream cardigan and flat shoes",
+          "tokens": [
+            "blue_dress",
+            "long_dress",
+            "cream_cardigan",
+            "flat_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_rest",
+          "name": "溪边休憩长裙装",
+          "prose": "a white long-sleeved blouse, long blue skirt and simple sandals",
+          "tokens": [
+            "white_blouse",
+            "long_sleeves",
+            "blue_skirt",
+            "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

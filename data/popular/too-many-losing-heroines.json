@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "franchise": "Too Many Losing Heroines!",
+  "characters": [
+    {
+      "id": "yanami_anna",
+      "displayName": "八奈见杏菜",
+      "originalName": "Anna Yanami",
+      "franchise": "Too Many Losing Heroines!",
+      "aliases": [
+        "八奈见杏菜",
+        "Anna Yanami"
+      ],
+      "identityProse": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, a lively ahoge and expressive blue eyes. Her open reactions and enthusiasm for food coexist with quieter moments of reflection.",
+      "identityTokens": [
+        "yanami_anna",
+        "make_heroine_ga_oo_sugiru!",
+        "blue_hair",
+        "medium_hair",
+        "ahoge",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "yanami_anna"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yanami_anna"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "石蕗高校整齐制服",
+          "prose": "a white school blouse, blue bow, navy knee-length skirt and black socks",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "blue_bow",
+            "navy_skirt",
+            "black_socks"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "厨房围裙日常装",
+          "prose": "a yellow long-sleeved top, blue trousers and a cream apron",
+          "tokens": [
+            "yellow_shirt",
+            "long_sleeves",
+            "blue_pants",
+            "cream_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭蓝色花纹浴衣",
+          "prose": "a blue floral yukata with a yellow obi and wooden sandals",
+          "tokens": [
+            "blue_yukata",
+            "floral_print",
+            "yellow_obi",
+            "geta"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

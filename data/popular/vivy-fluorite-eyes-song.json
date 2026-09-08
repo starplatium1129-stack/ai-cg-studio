@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "franchise": "Vivy: Fluorite Eye's Song",
+  "characters": [
+    {
+      "id": "vivy",
+      "displayName": "Vivy",
+      "originalName": "Vivy",
+      "franchise": "Vivy: Fluorite Eye's Song",
+      "aliases": [
+        "Vivy",
+        "Vivy"
+      ],
+      "identityProse": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and luminous blue eyes. Her precise posture is softened by the care she brings to music and small promises.",
+      "identityTokens": [
+        "vivy",
+        "vivy:_fluorite_eye's_song",
+        "blue_hair",
+        "long_hair",
+        "ahoge",
+        "long_sidelocks",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "vivy"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, vivy"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_stage",
+          "name": "白蓝舞台端庄长袖装",
+          "prose": "an opaque white-and-blue stage dress with covered shoulders, knee-length skirt, small earpiece and white boots",
+          "tokens": [
+            "white_blue_dress",
+            "covered_shoulders",
+            "knee_length_skirt",
+            "earpiece",
+            "white_boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_rain",
+          "name": "闭园雨天蓝色外套",
+          "prose": "a blue waterproof coat over the stage outfit, opaque tights and practical boots",
+          "tokens": [
+            "blue_raincoat",
+            "tights",
+            "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_rest",
+          "name": "后台修补针织便装",
+          "prose": "a cream long-sleeved blouse and comfortable navy trousers",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "navy_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

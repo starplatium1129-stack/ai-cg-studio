@@ -14,6 +14,45 @@ var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
 var sfwOnlyIds = new Set(characterData.characters.filter(c => c.adultEligibility !== 'adult').map(c => c.id));
 var sfwOnlyBlueprints = blueprints.filter(b => sfwOnlyIds.has(b.characterId));
+var remainingOnboarding = require('../../data/popular-onboarding.json').characters;
+var sixSceneIds = new Set(remainingOnboarding.map(c => c.id));
+
+test('remaining batches: complete roster, six scenes each, MiaoMiao default and both-engine SFW compilation', function () {
+  const fs = require('node:fs'), path = require('node:path');
+  const planSource = fs.readFileSync(path.join(__dirname, '../../docs/future-popular-characters-candidate-plan.md'), 'utf8');
+  const candidateNames = [...planSource.matchAll(/^#### 🎭 ([^（\r\n]+)/gm)].map(m => m[1].trim());
+  assert.strictEqual(candidateNames.length, 49);
+  for (const name of candidateNames) assert.ok(characters.some(c => c.displayName === name), name + ' from the approved candidate plan must be registered');
+  const { resolveModelProfile } = require('../../src/utils/promptPolicy.ts');
+  const catalog = persistence.parsePresetCatalog(require('../../data/presets.json'));
+  assert.strictEqual(sixSceneIds.size, 36);
+  const counts = {};
+  for (const entry of remainingOnboarding) {
+    counts[entry.batch] = (counts[entry.batch] || 0) + 1;
+    const character = characters.find(c => c.id === entry.id);
+    assert.ok(character, entry.id + ' must appear in the parsed catalog');
+    assert.strictEqual(character.recommendedEngine, 'anima-miaomiao-v1.2');
+    const owned = blueprints.filter(b => b.characterId === entry.id);
+    assert.strictEqual(owned.length, 6, entry.id + ' must have six parsed scenes');
+    assert.strictEqual(entry.sceneCount, owned.length);
+    assert.strictEqual(entry.portraitPending, true, 'no generated art is claimed in this data-first delivery');
+    for (const blueprint of owned) {
+      const outfit = character.outfits.find(o => o.id === blueprint.outfitId);
+      assert.ok(outfit, blueprint.id + ' must resolve an outfit');
+      assert.strictEqual(blueprint.adult, false);
+      for (const engine of ['anima', 'krea2']) {
+        const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
+        const profile = resolveModelProfile(catalog.modelProfiles, model, engine);
+        const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
+        assert.ok(plan, blueprint.id + ' must compile for ' + engine);
+        assert.strictEqual(plan.adult, false);
+        assert.ok(!/\bnsfw\b|\bnude\b|\blingerie\b|bare breasts|exposed pussy/i.test(plan.prompt));
+        if (engine === 'krea2') assert.strictEqual(plan.negative, '');
+      }
+    }
+  }
+  assert.deepStrictEqual(counts, { 6: 10, 7: 10, 8: 7, 9: 9 });
+});
 
 test('batch five: six new characters each have ten SFW scenes and fail closed in both engines', function () {
   const ids = ['shiina_mashiro', 'izumi_sagiri', 'takarada_rikka', 'hayasaka_ai', 'arima_kana', 'hori_kyouko'];
@@ -132,10 +171,11 @@ test('blueprints: preserve existing scenes, add SFW-only batches, and fail close
   // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、15=未花专属双场景扩容（1 角色）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
-    assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must own 10, 11, 13 or 15 scenes, got ' + entry[1]);
+    if (sixSceneIds.has(entry[0])) assert.strictEqual(entry[1], 6, entry[0] + ' must own six daily scenes');
+    else assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must preserve its existing scene count, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 43 + sfwOnlyIds.size, 11: 66, 13: 6, 15: 1 }, 'new SFW-only characters each own ten daily scenes');
+  assert.deepStrictEqual(sceneDist, { 6: sixSceneIds.size, 10: 43 + sfwOnlyIds.size - sixSceneIds.size, 11: 66, 13: 6, 15: 1 }, 'remaining batches add six daily scenes without removing existing content');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4、5 或 6 个带 characterId 的成人场景。
@@ -244,7 +284,7 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
     // New daily scenes specify their actual light source rather than forcing fog and
     // cinematic volumetric light into every kitchen, classroom and shop.
     if (sfwOnlyIds.has(blueprint.characterId)) {
-      assert.ok(blueprint.promptTokens.some(t => /light|sunset|sunrise|dawn|morning|afternoon|noon|night|evening|lantern|neon/.test(t)), blueprint.id + ' must specify scene lighting or time');
+      assert.ok(blueprint.promptTokens.some(t => /light|sun|dawn|morning|afternoon|noon|night|evening|lantern|neon|lamp|shade/.test(t)), blueprint.id + ' must specify scene lighting or time');
       assert.ok(blueprint.promptProse.length >= 300, blueprint.id + ' needs a complete independently written scene');
     } else ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
       assert.ok(blueprint.promptTokens.includes(token),

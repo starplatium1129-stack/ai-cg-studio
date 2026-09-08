@@ -9705,6 +9705,2057 @@
           ]
         }
       ]
+    },
+    {
+      "id": "raphtalia",
+      "displayName": "拉芙塔莉雅",
+      "originalName": "Raphtalia",
+      "source": "The Rising of the Shield Hero",
+      "identityProse": "Raphtalia from The Rising of the Shield Hero, a dependable raccoon demi-human swordswoman with fluffy chestnut hair, soft pink eyes, rounded raccoon ears with pale inner fluff and a striped bushy tail.",
+      "identityTokens": [
+        "raphtalia",
+        "tate_no_yuusha_no_nariagari",
+        "brown_hair",
+        "long_hair",
+        "messy_hair",
+        "pink_eyes",
+        "raccoon_ears",
+        "raccoon_tail",
+        "animal_ear_fluff"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "轻装旅行服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a red-brown travel tunic over a cream blouse, light leather vest, practical trousers and boots",
+          "tokens": [
+            "red_tunic",
+            "cream_blouse",
+            "leather_vest",
+            "pants",
+            "boots"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "营地料理便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved blouse, brown ankle-length skirt and blue cooking apron",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "blue_apron"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季旅馆针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a warm burgundy sweater, long brown skirt and wool shawl",
+          "tokens": [
+            "burgundy_sweater",
+            "long_skirt",
+            "wool_shawl"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yatogami_tohka",
+      "displayName": "夜刀神十香",
+      "originalName": "Tohka Yatogami",
+      "source": "Date A Live",
+      "identityProse": "Tohka Yatogami from Date A Live, a curious spirit with very long dark-purple hair gathered into a high half ponytail with a large ribbon and bright violet eyes. Her expressions show earnest wonder at ordinary human life.",
+      "identityTokens": [
+        "yatogami_tohka",
+        "date_a_live",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes",
+        "ponytail",
+        "ribbon"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "来禅高校日常制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a neat white school blouse, navy jacket, ribbon tie, knee-length pleated skirt and loafers",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "navy_jacket",
+            "ribbon",
+            "pleated_skirt",
+            "loafers"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭紫色浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a securely wrapped violet floral yukata, pale pink obi and wooden sandals",
+          "tokens": [
+            "purple_yukata",
+            "floral_print",
+            "pink_obi",
+            "geta"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "冬季居家针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream knitted sweater, soft purple trousers and warm socks",
+          "tokens": [
+            "cream_sweater",
+            "purple_pants",
+            "warm_socks"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tobiichi_origami",
+      "displayName": "鸢一折纸",
+      "originalName": "Origami Tobiichi",
+      "source": "Date A Live",
+      "identityProse": "Origami Tobiichi from Date A Live, a reserved girl with snow-white hair and pale blue eyes. Her composed face reveals feelings through small shifts of her gaze; hair length belongs to the selected timeline outfit.",
+      "identityTokens": [
+        "tobiichi_origami",
+        "date_a_live",
+        "white_hair",
+        "blue_eyes",
+        "hair_ornament"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "旧时间线短发制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a navy school blazer, white blouse and pleated skirt, with a neat short white haircut",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_blouse",
+            "pleated_skirt",
+            "short_hair"
+          ]
+        },
+        {
+          "id": "sfw_ast",
+          "name": "AST装备整备服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a closed grey technical jacket, reinforced trousers and work gloves, with short white hair",
+          "tokens": [
+            "grey_jacket",
+            "tactical_pants",
+            "gloves",
+            "short_hair"
+          ]
+        },
+        {
+          "id": "sfw_home_long",
+          "name": "新时间线长发居家装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale blue long-sleeved blouse and ankle-length skirt, with flowing waist-length white hair",
+          "tokens": [
+            "blue_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "long_hair"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ubel_frieren",
+      "displayName": "尤贝尔",
+      "originalName": "Übel",
+      "source": "Frieren: Beyond Journey's End",
+      "identityProse": "Übel from Frieren: Beyond Journey's End, a curious mage with long green hair in a side ponytail, M-shaped bangs and heavy-lidded purple eyes. Her easy smile and unhurried gaze suggest a habit of asking intrusive questions.",
+      "identityTokens": [
+        "ubel_(sousou_no_frieren)",
+        "sousou_no_frieren",
+        "green_hair",
+        "long_hair",
+        "side_ponytail",
+        "purple_eyes",
+        "half-closed_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "黑裙旅行装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a modest knee-length black dress with a fitted belt, opaque tights and practical boots",
+          "tokens": [
+            "black_dress",
+            "knee_length_dress",
+            "belt",
+            "opaque_tights",
+            "boots"
+          ]
+        },
+        {
+          "id": "sfw_kitchen",
+          "name": "借宿厨房围裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a green long-sleeved shirt, black trousers and a plain linen apron",
+          "tokens": [
+            "green_shirt",
+            "long_sleeves",
+            "black_pants",
+            "linen_apron"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬夜修补针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a charcoal knitted cardigan over a cream blouse and long skirt",
+          "tokens": [
+            "charcoal_cardigan",
+            "cream_blouse",
+            "long_skirt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kanroji_mitsuri",
+      "displayName": "甘露寺蜜璃",
+      "originalName": "Mitsuri Kanroji",
+      "source": "Kimetsu no Yaiba",
+      "identityProse": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",
+      "identityTokens": [
+        "kanroji_mitsuri",
+        "kimetsu_no_yaiba",
+        "pink_hair",
+        "green_hair",
+        "gradient_hair",
+        "long_hair",
+        "multiple_braids",
+        "green_eyes",
+        "mole_under_eye"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_daily",
+          "name": "庭院端庄日常和装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a pale pink kimono securely wrapped with a green obi and opaque inner collar",
+          "tokens": [
+            "pink_kimono",
+            "green_obi",
+            "inner_collar",
+            "japanese_clothes"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "食堂料理围裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved blouse, green long skirt and pink apron",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "green_skirt",
+            "pink_apron"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭花纹浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a light green floral yukata with a pink obi and sandals",
+          "tokens": [
+            "green_yukata",
+            "floral_print",
+            "pink_obi",
+            "sandals"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zero_two",
+      "displayName": "02",
+      "originalName": "Zero Two",
+      "source": "DARLING in the FRANXX",
+      "identityProse": "Zero Two from DARLING in the FRANXX, a spirited girl with long pink hair, vivid green eyes, small red horns and a white headband. Her energy softens into thoughtful attention when she reads a familiar picture book.",
+      "identityTokens": [
+        "zero_two_(darling_in_the_franxx)",
+        "darling_in_the_franxx",
+        "pink_hair",
+        "long_hair",
+        "green_eyes",
+        "horns",
+        "red_horns",
+        "white_hairband"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_uniform",
+          "name": "红色长袖日常制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a buttoned red long-sleeved coat-dress with a white collar, dark tights and boots",
+          "tokens": [
+            "red_coat",
+            "long_sleeves",
+            "white_collar",
+            "tights",
+            "boots"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "绘本时间宽松便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream sweatshirt and relaxed red trousers",
+          "tokens": [
+            "cream_sweatshirt",
+            "red_pants"
+          ]
+        },
+        {
+          "id": "sfw_seaside",
+          "name": "海边轻便衬衫长裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a white long-sleeved shirt and an opaque red ankle-length skirt",
+          "tokens": [
+            "white_shirt",
+            "long_sleeves",
+            "red_skirt",
+            "long_skirt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "asada_shino",
+      "displayName": "朝田诗乃",
+      "originalName": "Shino Asada",
+      "source": "Sword Art Online",
+      "identityProse": "Shino Asada from Sword Art Online in her real-world appearance, with medium-length ash-brown hair, brown eyes and optional non-prescription black-rimmed glasses. Her gestures are precise and her manner quietly thoughtful; no game-avatar ears or cyan hair are mixed into this form.",
+      "identityTokens": [
+        "asada_shino",
+        "sword_art_online",
+        "brown_hair",
+        "medium_hair",
+        "brown_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "现实形态校服与眼镜",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a neat navy school blazer, white shirt, knee-length skirt and non-prescription black-rimmed glasses",
+          "tokens": [
+            "school_uniform",
+            "navy_blazer",
+            "white_shirt",
+            "pleated_skirt",
+            "black-framed_eyewear"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "现实形态周末便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a grey cardigan, white top and dark trousers",
+          "tokens": [
+            "grey_cardigan",
+            "white_shirt",
+            "dark_pants"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "下线后的居家针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft blue sweater and grey lounge trousers",
+          "tokens": [
+            "blue_sweater",
+            "grey_pants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tatsumaki",
+      "displayName": "战栗的龙卷",
+      "originalName": "Tatsumaki",
+      "source": "One-Punch Man",
+      "identityProse": "Tatsumaki from One-Punch Man, a confident esper with a short curly green bob and sharp green eyes. Her controlled hovering and impatient expressions are identity cues, while clothing belongs to the selected everyday outfit.",
+      "identityTokens": [
+        "tatsumaki",
+        "one-punch_man",
+        "green_hair",
+        "curly_hair",
+        "short_hair",
+        "green_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_official",
+          "name": "黑色长袖及膝连衣裙",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a closed-neck black long-sleeved knee-length dress, opaque tights and simple shoes",
+          "tokens": [
+            "black_dress",
+            "long_sleeves",
+            "high_neck",
+            "opaque_tights",
+            "shoes"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "周末绿色针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a moss-green knitted cardigan, cream top and ankle-length black skirt",
+          "tokens": [
+            "green_cardigan",
+            "cream_top",
+            "long_black_skirt"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬夜温暖家居装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream turtleneck sweater and loose green trousers",
+          "tokens": [
+            "cream_sweater",
+            "turtleneck",
+            "green_pants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fubuki_one_punch",
+      "displayName": "吹雪",
+      "originalName": "Fubuki",
+      "source": "One-Punch Man",
+      "identityProse": "Fubuki from One-Punch Man, an organized hero with a sleek black bob, straight bangs and cool green eyes. Her deliberate posture and composed expressions suggest the care she takes in leading her group.",
+      "identityTokens": [
+        "fubuki_(one-punch_man)",
+        "one-punch_man",
+        "black_hair",
+        "short_hair",
+        "blunt_bangs",
+        "green_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_formal",
+          "name": "吹雪组绿色正装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque forest-green midi dress, pearl necklace and white collared coat",
+          "tokens": [
+            "green_dress",
+            "midi_dress",
+            "pearl_necklace",
+            "white_coat"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "日常会议针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a dark green cardigan over a cream blouse and black tailored trousers, with pearl earrings",
+          "tokens": [
+            "green_cardigan",
+            "cream_blouse",
+            "black_pants",
+            "pearl_earrings"
+          ]
+        },
+        {
+          "id": "sfw_evening",
+          "name": "晚间端庄聚会装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a long-sleeved emerald dress with a modest neckline and pearl necklace",
+          "tokens": [
+            "emerald_dress",
+            "long_sleeves",
+            "high_neck",
+            "pearl_necklace"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mouri_ran",
+      "displayName": "毛利兰",
+      "originalName": "Ran Mouri",
+      "source": "Detective Conan",
+      "identityProse": "Ran Mouri from Detective Conan, a capable girl with long dark hair rising into its distinctive horn-like forelock and gentle blue-violet eyes. Her assured posture combines athletic confidence with everyday warmth.",
+      "identityTokens": [
+        "mouri_ran",
+        "meitantei_conan",
+        "black_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_horn"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_karate",
+          "name": "空手道训练道服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a properly wrapped white karate gi, white martial-arts trousers and black belt",
+          "tokens": [
+            "karate_gi",
+            "white_dougi",
+            "white_pants",
+            "black_belt"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "日常针织上衣与长裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream cardigan over a pale blue blouse and navy knee-length skirt",
+          "tokens": [
+            "cream_cardigan",
+            "blue_blouse",
+            "navy_skirt"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬日手织围巾装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a navy wool coat, hand-knitted cream scarf, warm trousers and boots",
+          "tokens": [
+            "navy_coat",
+            "cream_scarf",
+            "wool",
+            "pants",
+            "boots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "medusa_rider",
+      "displayName": "美杜莎 Rider",
+      "originalName": "Medusa (Rider)",
+      "source": "Fate",
+      "identityProse": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+      "identityTokens": [
+        "medusa_(fate)",
+        "fate/stay_night",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_casual",
+          "name": "书店与采购针织便装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a black long-sleeved knit top, ankle-length purple skirt and simple reading glasses",
+          "tokens": [
+            "black_sweater",
+            "long_sleeves",
+            "long_purple_skirt",
+            "glasses"
+          ]
+        },
+        {
+          "id": "sfw_kitchen",
+          "name": "卫宫家料理围裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream blouse, dark trousers and a purple apron",
+          "tokens": [
+            "cream_blouse",
+            "dark_pants",
+            "purple_apron"
+          ]
+        },
+        {
+          "id": "sfw_meadow",
+          "name": "草原白色长裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque white long-sleeved maxi dress and flat sandals",
+          "tokens": [
+            "white_dress",
+            "long_sleeves",
+            "maxi_dress",
+            "sandals"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chloe_von_einzbern",
+      "displayName": "克洛伊",
+      "originalName": "Chloe von Einzbern",
+      "source": "Fate",
+      "identityProse": "Chloe von Einzbern from Fate/kaleid liner Prisma Illya, a lively girl with warm brown skin, long pale pink hair, face-framing sidelocks and bright orange eyes. Her confident grin gives way to quieter feelings when she is alone.",
+      "identityTokens": [
+        "chloe_von_einzbern",
+        "fate/kaleid_liner_prisma_illya",
+        "dark_skin",
+        "pink_hair",
+        "long_hair",
+        "sidelocks",
+        "orange_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_home",
+          "name": "早餐料理围裙便装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a peach long-sleeved T-shirt, loose brown trousers and a blue apron",
+          "tokens": [
+            "peach_shirt",
+            "long_sleeves",
+            "brown_pants",
+            "blue_apron"
+          ]
+        },
+        {
+          "id": "sfw_school",
+          "name": "放学后的整齐制服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a white school blouse, red cardigan and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "red_cardigan",
+            "pleated_skirt"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "草莓色夏祭浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a properly wrapped strawberry-pink floral yukata, cream obi and sandals",
+          "tokens": [
+            "pink_yukata",
+            "floral_print",
+            "cream_obi",
+            "sandals"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "medea_caster",
+      "displayName": "美狄亚",
+      "originalName": "Medea (Caster)",
+      "source": "Fate",
+      "identityProse": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and clear blue eyes. Her precise hands and restrained expression reveal the same patience in craftwork as in magic.",
+      "identityTokens": [
+        "medea_(caster)_(fate)",
+        "fate/stay_night",
+        "blue_hair",
+        "long_hair",
+        "side_braid",
+        "pointy_ears",
+        "blue_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_kitchen",
+          "name": "寺院料理襻带围裙装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a closed navy robe with its sleeves tied back, a linen apron and practical indoor shoes",
+          "tokens": [
+            "navy_robe",
+            "tied_sleeves",
+            "linen_apron",
+            "indoor_shoes"
+          ]
+        },
+        {
+          "id": "sfw_craft",
+          "name": "模型与针线便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale blue long-sleeved blouse, dark ankle-length skirt and fine-framed craft glasses",
+          "tokens": [
+            "blue_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "glasses"
+          ]
+        },
+        {
+          "id": "sfw_travel",
+          "name": "商店街兜帽长袍",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a dark purple hooded robe over a high-collared inner dress and boots",
+          "tokens": [
+            "purple_robe",
+            "hood",
+            "high_collar",
+            "inner_dress",
+            "boots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kama_fate",
+      "displayName": "迦摩",
+      "originalName": "Kama",
+      "source": "Fate",
+      "identityProse": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "identityTokens": [
+        "kama_(fate)",
+        "fate/grand_order",
+        "white_hair",
+        "red_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_home",
+          "name": "游戏时间宽松家居装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque plum sweatshirt and full-length charcoal lounge trousers",
+          "tokens": [
+            "plum_sweatshirt",
+            "long_sleeves",
+            "charcoal_pants"
+          ]
+        },
+        {
+          "id": "sfw_city",
+          "name": "咖啡馆遮阳帽便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale lavender blouse, long cream skirt, sunhat and small gold earrings",
+          "tokens": [
+            "lavender_blouse",
+            "long_skirt",
+            "sunhat",
+            "gold_earrings"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季参拜大衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream winter coat, plum scarf, warm trousers and ankle boots",
+          "tokens": [
+            "cream_coat",
+            "plum_scarf",
+            "pants",
+            "boots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kasugano_sora",
+      "displayName": "春日野穹",
+      "originalName": "Sora Kasugano",
+      "source": "Yosuga no Sora",
+      "identityProse": "Sora Kasugano from Yosuga no Sora, with very long straight white hair, ribbon-tied twin tails, fine antenna-like strands and quiet grey eyes. Her reserved expressions become more open around familiar comforts.",
+      "identityTokens": [
+        "kasugano_sora",
+        "yosuga_no_sora",
+        "white_hair",
+        "very_long_hair",
+        "straight_hair",
+        "twintails",
+        "black_ribbon",
+        "antenna_hair",
+        "grey_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_summer",
+          "name": "乡间白色连衣裙",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque white knee-length dress with short sleeves, black hair ribbons and flat shoes",
+          "tokens": [
+            "white_dress",
+            "short_sleeves",
+            "knee_length_dress",
+            "black_ribbon",
+            "flat_shoes"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "居家针织衫与长裤",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved sweater and loose grey trousers",
+          "tokens": [
+            "cream_sweater",
+            "long_sleeves",
+            "grey_pants"
+          ]
+        },
+        {
+          "id": "sfw_snow",
+          "name": "异国雪景白色大衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a white wool coat, soft grey scarf, warm trousers and winter boots",
+          "tokens": [
+            "white_coat",
+            "grey_scarf",
+            "wool",
+            "pants",
+            "winter_boots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kuonji_alice",
+      "displayName": "久远寺有珠",
+      "originalName": "Alice Kuonji",
+      "source": "Witch on the Holy Night",
+      "identityProse": "Alice Kuonji from Witch on the Holy Night, a reserved witch with short dark hair, lifted side sections near the temples and deep dark eyes. Her still expression and precise movements suit quiet rooms and careful rituals.",
+      "identityTokens": [
+        "kuonji_alice",
+        "mahou_tsukai_no_yoru",
+        "black_hair",
+        "short_hair",
+        "hair_intakes",
+        "black_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_house",
+          "name": "洋馆黑色长袖洋装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a modest black long-sleeved dress with a white collar, dark tights and indoor shoes",
+          "tokens": [
+            "black_dress",
+            "long_sleeves",
+            "white_collar",
+            "tights",
+            "indoor_shoes"
+          ]
+        },
+        {
+          "id": "sfw_work",
+          "name": "工作间深蓝晨衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a closed dark blue robe over a high-neck cotton dress, with sleeves tied back",
+          "tokens": [
+            "blue_robe",
+            "high_neck",
+            "cotton_dress",
+            "tied_sleeves"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季学院大衣与毛帽",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a dark wool coat, plain scarf, rounded fur-trimmed winter hat and boots",
+          "tokens": [
+            "dark_coat",
+            "wool",
+            "scarf",
+            "winter_hat",
+            "boots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "akizuki_kanna",
+      "displayName": "明月栞那",
+      "originalName": "Kanna Akizuki",
+      "source": "YUZUSOFT",
+      "identityProse": "Kanna Akizuki from Cafe Stella and the Reapers’ Butterflies, with very long white hair, a side ponytail, ribbon, ahoge and gentle pink eyes. Her relaxed smile suggests long experience behind a playful manner.",
+      "identityTokens": [
+        "akizuki_kanna",
+        "cafe_stella_to_shinigami_no_chou",
+        "white_hair",
+        "very_long_hair",
+        "ahoge",
+        "sidelocks",
+        "side_ponytail",
+        "hair_ribbon",
+        "pink_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_cafe",
+          "name": "星光咖啡馆端庄工作服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a crisp white long-sleeved blouse, dark waistcoat, ankle-length skirt and cafe apron",
+          "tokens": [
+            "white_blouse",
+            "long_sleeves",
+            "waistcoat",
+            "long_skirt",
+            "cafe_apron"
+          ]
+        },
+        {
+          "id": "sfw_break",
+          "name": "休息日浅色针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale pink cardigan over a white top and comfortable dark trousers",
+          "tokens": [
+            "pink_cardigan",
+            "white_top",
+            "dark_pants"
+          ]
+        },
+        {
+          "id": "sfw_errand",
+          "name": "粗点心店外出便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream collared blouse, dark red midi skirt and light jacket",
+          "tokens": [
+            "cream_blouse",
+            "collar",
+            "red_skirt",
+            "jacket"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yae_miko",
+      "displayName": "八重神子",
+      "originalName": "Yae Miko",
+      "source": "Genshin Impact",
+      "identityProse": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief; no permanent fox tail is added to the everyday form.",
+      "identityTokens": [
+        "yae_miko",
+        "genshin_impact",
+        "pink_hair",
+        "long_hair",
+        "low-tied_long_hair",
+        "purple_eyes",
+        "floppy_ears",
+        "animal_ears"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_shrine",
+          "name": "鸣神大社端庄宫司和装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a red-and-white shrine robe with an opaque inner layer, wide sleeves and a neatly secured obi",
+          "tokens": [
+            "shrine_robes",
+            "white_robe",
+            "red_hakama",
+            "wide_sleeves",
+            "obi"
+          ]
+        },
+        {
+          "id": "sfw_editor",
+          "name": "八重堂编辑便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale pink kimono-style jacket, cream high-collared blouse and long dark skirt",
+          "tokens": [
+            "pink_jacket",
+            "cream_blouse",
+            "high_collar",
+            "long_skirt"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "初诣围巾和服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a warm plum kimono, cream wool scarf and closed winter sandals",
+          "tokens": [
+            "plum_kimono",
+            "cream_scarf",
+            "wool",
+            "japanese_clothes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "changli_wuthering",
+      "displayName": "长离",
+      "originalName": "Changli",
+      "source": "Wuthering Waves",
+      "identityProse": "Changli from Wuthering Waves, with long pink hair arranged into distinctive looped sections, an ahoge and warm orange eyes. Her attentive smile and measured hands convey a patient teacher’s confidence.",
+      "identityTokens": [
+        "changli_(wuthering_waves)",
+        "wuthering_waves",
+        "pink_hair",
+        "long_hair",
+        "ring_hair_extensions",
+        "braid",
+        "orange_eyes",
+        "ahoge"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_formal",
+          "name": "今州端庄议事长袍",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a layered white-and-red long robe with an opaque high-collared inner blouse and embroidered cuffs",
+          "tokens": [
+            "white_robe",
+            "red_layers",
+            "high_collar",
+            "embroidered_cuffs"
+          ]
+        },
+        {
+          "id": "sfw_garden",
+          "name": "庭院茶叙轻便和装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft peach jacket over a cream blouse and ankle-length red skirt",
+          "tokens": [
+            "peach_jacket",
+            "cream_blouse",
+            "long_red_skirt"
+          ]
+        },
+        {
+          "id": "sfw_morning",
+          "name": "清晨束发针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved blouse and comfortable dark trousers",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "dark_pants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shorekeeper",
+      "displayName": "守岸人",
+      "originalName": "The Shorekeeper",
+      "source": "Wuthering Waves",
+      "identityProse": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",
+      "identityTokens": [
+        "the_shorekeeper_(wuthering_waves)",
+        "wuthering_waves",
+        "blue_hair",
+        "long_hair",
+        "purple_eyes",
+        "jellyfish_cut"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_coast",
+          "name": "黑海岸不透内衬长裙",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque white ankle-length dress with blue embroidered outer layers and a light veil over her blue hair",
+          "tokens": [
+            "white_dress",
+            "long_dress",
+            "blue_embroidery",
+            "layered_clothes",
+            "veil"
+          ]
+        },
+        {
+          "id": "sfw_records",
+          "name": "观测站端庄工作装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale blue high-collared jacket, long white skirt and flat shoes",
+          "tokens": [
+            "blue_jacket",
+            "high_collar",
+            "long_white_skirt",
+            "flat_shoes"
+          ]
+        },
+        {
+          "id": "sfw_rest",
+          "name": "灯塔休憩针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft white cardigan over a blue blouse and long cream skirt",
+          "tokens": [
+            "white_cardigan",
+            "blue_blouse",
+            "long_skirt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "makinohara_shouko",
+      "displayName": "牧之原翔子",
+      "originalName": "Shouko Makinohara",
+      "source": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "identityProse": "Shouko Makinohara from Rascal Does Not Dream, with long dark hair, softly cut side locks and calm blue eyes. Her small smiles and considerate gestures carry the quiet warmth associated with the seaside.",
+      "identityTokens": [
+        "makinohara_shouko",
+        "seishun_buta_yarou",
+        "black_hair",
+        "long_hair",
+        "hime_cut",
+        "blue_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_coast",
+          "name": "七里滨白色连衣裙",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque white short-sleeved summer dress with a knee-length hem and simple sandals",
+          "tokens": [
+            "white_dress",
+            "short_sleeves",
+            "knee_length_dress",
+            "sandals"
+          ]
+        },
+        {
+          "id": "sfw_school",
+          "name": "校园水手制服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a neat navy sailor uniform with a white collar, knee-length skirt and school shoes",
+          "tokens": [
+            "sailor_uniform",
+            "white_collar",
+            "navy_skirt",
+            "school_shoes"
+          ]
+        },
+        {
+          "id": "sfw_kitchen",
+          "name": "晨间料理素色围裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream blouse, long blue skirt and plain cotton apron, with her hair gathered into a braid",
+          "tokens": [
+            "cream_blouse",
+            "long_blue_skirt",
+            "cotton_apron",
+            "braid"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "futaba_rio",
+      "displayName": "双叶理央",
+      "originalName": "Rio Futaba",
+      "source": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "identityProse": "Rio Futaba from Rascal Does Not Dream, a thoughtful science-club member with long wavy grey-brown hair and brown eyes. Her practical glasses and reserved movements fit the selected school or study outfit.",
+      "identityTokens": [
+        "futaba_rio",
+        "seishun_buta_yarou",
+        "grey_hair",
+        "long_hair",
+        "wavy_hair",
+        "brown_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "科学部校服与白大褂",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a white laboratory coat over a fully buttoned school blouse and navy skirt, with plain glasses",
+          "tokens": [
+            "labcoat",
+            "school_blouse",
+            "navy_skirt",
+            "glasses"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "书店灰色针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a grey knitted cardigan, cream blouse, dark trousers and plain glasses",
+          "tokens": [
+            "grey_cardigan",
+            "cream_blouse",
+            "dark_pants",
+            "glasses"
+          ]
+        },
+        {
+          "id": "sfw_night",
+          "name": "观星保暖外套",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a dark padded jacket, wool scarf, warm trousers and glasses",
+          "tokens": [
+            "padded_jacket",
+            "wool_scarf",
+            "pants",
+            "glasses"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shirogane_kei",
+      "displayName": "白银圭",
+      "originalName": "Kei Shirogane",
+      "source": "Kaguya-sama: Love Is War",
+      "identityProse": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",
+      "identityTokens": [
+        "shirogane_kei",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "grey_hair",
+        "long_hair",
+        "straight_hair",
+        "blue_eyes",
+        "black_hairband",
+        "ribbon"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "学生会整齐校服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a dark school uniform with a white collar, knee-length skirt and black headband",
+          "tokens": [
+            "school_uniform",
+            "white_collar",
+            "pleated_skirt",
+            "black_hairband"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "居家家计针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream knitted pullover and navy lounge trousers",
+          "tokens": [
+            "cream_sweater",
+            "navy_pants"
+          ]
+        },
+        {
+          "id": "sfw_delivery",
+          "name": "清晨配送防风装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a blue windbreaker over a white top, long trousers and practical sneakers",
+          "tokens": [
+            "blue_windbreaker",
+            "white_top",
+            "long_pants",
+            "sneakers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yanami_anna",
+      "displayName": "八奈见杏菜",
+      "originalName": "Anna Yanami",
+      "source": "Too Many Losing Heroines!",
+      "identityProse": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, a lively ahoge and expressive blue eyes. Her open reactions and enthusiasm for food coexist with quieter moments of reflection.",
+      "identityTokens": [
+        "yanami_anna",
+        "make_heroine_ga_oo_sugiru!",
+        "blue_hair",
+        "medium_hair",
+        "ahoge",
+        "blue_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "石蕗高校整齐制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a white school blouse, blue bow, navy knee-length skirt and black socks",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "blue_bow",
+            "navy_skirt",
+            "black_socks"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "厨房围裙日常装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a yellow long-sleeved top, blue trousers and a cream apron",
+          "tokens": [
+            "yellow_shirt",
+            "long_sleeves",
+            "blue_pants",
+            "cream_apron"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭蓝色花纹浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a blue floral yukata with a yellow obi and wooden sandals",
+          "tokens": [
+            "blue_yukata",
+            "floral_print",
+            "yellow_obi",
+            "geta"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tachibana_mikari",
+      "displayName": "橘美花莉",
+      "originalName": "Mikari Tachibana",
+      "source": "2.5 Dimensional Seduction",
+      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a dedicated model and costume maker with long pink hair and bright pink eyes. Her professional composure becomes lively concentration when she works on a creative project.",
+      "identityTokens": [
+        "tachibana_mikari",
+        "2.5_jigen_no_ririsa",
+        "pink_hair",
+        "long_hair",
+        "pink_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_studio",
+          "name": "摄影棚端庄衬衫裙",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a white collared blouse and opaque pink knee-length skirt with flat shoes",
+          "tokens": [
+            "white_blouse",
+            "collar",
+            "pink_skirt",
+            "knee_length_skirt",
+            "flat_shoes"
+          ]
+        },
+        {
+          "id": "sfw_craft",
+          "name": "缝纫工作针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a lavender long-sleeved cardigan, white shirt and comfortable dark trousers",
+          "tokens": [
+            "lavender_cardigan",
+            "white_shirt",
+            "dark_pants"
+          ]
+        },
+        {
+          "id": "sfw_school",
+          "name": "漫研社整齐制服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shinjou_akane",
+      "displayName": "新条茜",
+      "originalName": "Akane Shinjou",
+      "source": "SSSS.GRIDMAN",
+      "identityProse": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and clear red eyes. Her polished social smile contrasts with the absorbed, quieter expression she has while designing monster models; glasses are optional workwear.",
+      "identityTokens": [
+        "shinjou_akane",
+        "gridman_universe",
+        "short_hair",
+        "purple_hair",
+        "red_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "教室整齐制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a white school blouse, blue cardigan and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "blue_cardigan",
+            "pleated_skirt"
+          ]
+        },
+        {
+          "id": "sfw_model",
+          "name": "怪兽模型工作便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an oversized opaque lavender sweatshirt, grey trousers and craft glasses",
+          "tokens": [
+            "lavender_sweatshirt",
+            "grey_pants",
+            "glasses"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "文化祭工作围裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a blue school cardigan over a white blouse, knee-length skirt and cream apron",
+          "tokens": [
+            "blue_cardigan",
+            "white_blouse",
+            "pleated_skirt",
+            "cream_apron"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suou_yuki",
+      "displayName": "周防有希",
+      "originalName": "Yuki Suou",
+      "source": "Alya Sometimes Hides Her Feelings in Russian",
+      "identityProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian, with long black hair in a half-up style, a small ahoge and violet eyes. Her formal smile can shift quickly into lively, unguarded enthusiasm at home.",
+      "identityTokens": [
+        "suou_yuki",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "black_hair",
+        "long_hair",
+        "half_updo",
+        "ahoge",
+        "purple_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "学生会端庄制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a navy school jacket, white blouse, ribbon and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "navy_jacket",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "居家漫画连帽衫",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a roomy opaque grey hoodie and loose dark trousers",
+          "tokens": [
+            "grey_hoodie",
+            "dark_pants"
+          ]
+        },
+        {
+          "id": "sfw_formal",
+          "name": "茶会与祭典端庄和装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a modest pale violet kimono-style dress with opaque layers and a cream sash",
+          "tokens": [
+            "violet_dress",
+            "kimono_style",
+            "opaque_layers",
+            "cream_sash"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "maria_mikhailovna_kujou",
+      "displayName": "玛夏",
+      "originalName": "Mariya Mikhailovna Kujou (Masha)",
+      "source": "Alya Sometimes Hides Her Feelings in Russian",
+      "identityProse": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",
+      "identityTokens": [
+        "maria_mikhailovna_kujou",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+        "brown_hair",
+        "long_hair",
+        "wavy_hair",
+        "ahoge",
+        "brown_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "学生会与音乐教室制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a navy school jacket, white blouse, ribbon tie and knee-length skirt",
+          "tokens": [
+            "school_uniform",
+            "navy_jacket",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "家政教室素雅围裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved blouse, long brown skirt and pale pink apron",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "pink_apron"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季披肩通学装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a warm beige coat, thick cream shawl, long skirt and winter shoes",
+          "tokens": [
+            "beige_coat",
+            "cream_shawl",
+            "long_skirt",
+            "winter_shoes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "elfaria_alvis_serfort",
+      "displayName": "艾尔菲利亚",
+      "originalName": "Elfaria Alvis Serfort",
+      "source": "Wistoria: Wand and Sword",
+      "identityProse": "Elfaria Alvis Serfort from Wistoria: Wand and Sword, an ice mage with very long blue hair, long sidelocks, blue eyes and pale colored lashes. Her formal stillness can soften quickly at an old memory.",
+      "identityTokens": [
+        "elfaria_alvis_serfort",
+        "tsue_to_tsurugi_no_wistoria",
+        "blue_hair",
+        "very_long_hair",
+        "long_sidelocks",
+        "blue_eyes",
+        "colored_eyelashes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_tower",
+          "name": "高塔议事长袍",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a pale blue long robe with white embroidered layers, high collar and covered sleeves",
+          "tokens": [
+            "blue_robe",
+            "white_layers",
+            "embroidery",
+            "high_collar",
+            "long_sleeves"
+          ]
+        },
+        {
+          "id": "sfw_garden",
+          "name": "庭院休憩长裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque white ankle-length dress with a light blue cardigan",
+          "tokens": [
+            "white_dress",
+            "long_dress",
+            "blue_cardigan"
+          ]
+        },
+        {
+          "id": "sfw_study",
+          "name": "夜间书房针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft blue sweater and a long cream skirt",
+          "tokens": [
+            "blue_sweater",
+            "long_cream_skirt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vivy",
+      "displayName": "Vivy",
+      "originalName": "Vivy",
+      "source": "Vivy: Fluorite Eye's Song",
+      "identityProse": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and luminous blue eyes. Her precise posture is softened by the care she brings to music and small promises.",
+      "identityTokens": [
+        "vivy",
+        "vivy:_fluorite_eye's_song",
+        "blue_hair",
+        "long_hair",
+        "ahoge",
+        "long_sidelocks",
+        "blue_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_stage",
+          "name": "白蓝舞台端庄长袖装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque white-and-blue stage dress with covered shoulders, knee-length skirt, small earpiece and white boots",
+          "tokens": [
+            "white_blue_dress",
+            "covered_shoulders",
+            "knee_length_skirt",
+            "earpiece",
+            "white_boots"
+          ]
+        },
+        {
+          "id": "sfw_rain",
+          "name": "闭园雨天蓝色外套",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a blue waterproof coat over the stage outfit, opaque tights and practical boots",
+          "tokens": [
+            "blue_raincoat",
+            "tights",
+            "boots"
+          ]
+        },
+        {
+          "id": "sfw_rest",
+          "name": "后台修补针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved blouse and comfortable navy trousers",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "navy_pants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "maomao",
+      "displayName": "猫猫",
+      "originalName": "Maomao",
+      "source": "The Apothecary Diaries",
+      "identityProse": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, blue eyes and small freckles across her face. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
+      "identityTokens": [
+        "maomao_(kusuriya_no_hitorigoto)",
+        "kusuriya_no_hitorigoto",
+        "green_hair",
+        "long_hair",
+        "blue_eyes",
+        "freckles",
+        "hair_bun"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_pharmacy",
+          "name": "药房长袖襦裙",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a modest green long-sleeved jacket over a cream inner collar and ankle-length skirt",
+          "tokens": [
+            "green_jacket",
+            "long_sleeves",
+            "cream_collar",
+            "aoqun",
+            "long_skirt"
+          ]
+        },
+        {
+          "id": "sfw_market",
+          "name": "街巷外出襦裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale rose long-sleeved blouse, dark green ankle-length skirt and small cloth bag",
+          "tokens": [
+            "rose_blouse",
+            "long_sleeves",
+            "green_skirt",
+            "cloth_bag"
+          ]
+        },
+        {
+          "id": "sfw_rain",
+          "name": "回廊防雨披肩装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a dark green cape over a closed-collar long robe and practical shoes",
+          "tokens": [
+            "green_cape",
+            "high_collar",
+            "long_robe",
+            "shoes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "marcille_donato",
+      "displayName": "玛露希尔",
+      "originalName": "Marcille Donato",
+      "source": "Delicious in Dungeon",
+      "identityProse": "Marcille Donato from Delicious in Dungeon, with long blonde hair, a high forehead, pointed ears and lively green eyes. Her carefully arranged braids and expressive reactions reveal an earnest, studious mage.",
+      "identityTokens": [
+        "marcille_donato",
+        "dungeon_meshi",
+        "blonde_hair",
+        "long_hair",
+        "green_eyes",
+        "pointy_ears",
+        "high_forehead",
+        "braid"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "迷宫旅行蓝色长袍",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a practical blue long-sleeved robe over a cream tunic, leggings and boots",
+          "tokens": [
+            "blue_robe",
+            "long_sleeves",
+            "cream_tunic",
+            "leggings",
+            "boots"
+          ]
+        },
+        {
+          "id": "sfw_rest",
+          "name": "营地休息针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream knit top and comfortable brown trousers",
+          "tokens": [
+            "cream_sweater",
+            "brown_pants"
+          ]
+        },
+        {
+          "id": "sfw_academy",
+          "name": "学院古籍阅读装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a tidy blue academic jacket, white blouse and ankle-length skirt",
+          "tokens": [
+            "blue_jacket",
+            "white_blouse",
+            "long_skirt",
+            "academic_clothes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cartethyia",
+      "displayName": "卡提希娅",
+      "originalName": "Cartethyia",
+      "source": "Wuthering Waves",
+      "identityProse": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",
+      "identityTokens": [
+        "cartethyia",
+        "wuthering_waves",
+        "blonde_hair",
+        "long_hair",
+        "braid",
+        "blue_eyes",
+        "pointy_ears",
+        "halo"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "流浪骑士轻便旅行装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a cream high-collared tunic, blue travel jacket, practical trousers and boots",
+          "tokens": [
+            "cream_tunic",
+            "high_collar",
+            "blue_jacket",
+            "pants",
+            "boots"
+          ]
+        },
+        {
+          "id": "sfw_town",
+          "name": "小镇节日长裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque pale blue ankle-length dress with a cream cardigan and flat shoes",
+          "tokens": [
+            "blue_dress",
+            "long_dress",
+            "cream_cardigan",
+            "flat_shoes"
+          ]
+        },
+        {
+          "id": "sfw_rest",
+          "name": "溪边休憩长裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a white long-sleeved blouse, long blue skirt and simple sandals",
+          "tokens": [
+            "white_blouse",
+            "long_sleeves",
+            "blue_skirt",
+            "sandals"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dorothy_nikke",
+      "displayName": "桃乐丝",
+      "originalName": "Dorothy",
+      "source": "Goddess of Victory: NIKKE",
+      "identityProse": "Dorothy from Goddess of Victory: NIKKE, with very long pink hair, a single side bun, lifted temple sections and violet eyes. Her carefully measured smile and elegant posture carry the composure of an experienced guide.",
+      "identityTokens": [
+        "dorothy_(nikke)",
+        "goddess_of_victory:_nikke",
+        "pink_hair",
+        "very_long_hair",
+        "single_side_bun",
+        "hair_intakes",
+        "purple_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_guide",
+          "name": "伊甸园白色端庄长裙",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque white long-sleeved midi dress with a pale pink jacket and closed shoes",
+          "tokens": [
+            "white_dress",
+            "long_sleeves",
+            "midi_dress",
+            "pink_jacket",
+            "closed_shoes"
+          ]
+        },
+        {
+          "id": "sfw_garden",
+          "name": "花房园艺围裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream blouse, long pink skirt, gardening apron and work gloves",
+          "tokens": [
+            "cream_blouse",
+            "long_pink_skirt",
+            "gardening_apron",
+            "gloves"
+          ]
+        },
+        {
+          "id": "sfw_private",
+          "name": "私人房间针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale rose cardigan, white blouse and navy trousers",
+          "tokens": [
+            "rose_cardigan",
+            "white_blouse",
+            "navy_pants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shiranui_mai",
+      "displayName": "不知火舞",
+      "originalName": "Mai Shiranui",
+      "source": "Fatal Fury",
+      "identityProse": "Mai Shiranui from Fatal Fury and The King of Fighters, with long brown hair gathered into a high ponytail and warm brown eyes. Her assured movement and cheerful expressions carry the confidence of an experienced martial artist.",
+      "identityTokens": [
+        "shiranui_mai",
+        "fatal_fury",
+        "brown_hair",
+        "long_hair",
+        "ponytail",
+        "brown_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_training",
+          "name": "不知火流端庄训练服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a securely wrapped red martial-arts jacket, white training trousers and a broad belt",
+          "tokens": [
+            "red_dougi",
+            "white_pants",
+            "wide_belt",
+            "long_sleeves"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "厨房与针线日常便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved shirt, dark trousers and a red apron",
+          "tokens": [
+            "cream_shirt",
+            "long_sleeves",
+            "dark_pants",
+            "red_apron"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭红白花纹浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a modest red-and-white floral yukata with an opaque inner collar and a dark obi",
+          "tokens": [
+            "red_yukata",
+            "floral_print",
+            "inner_collar",
+            "dark_obi"
+          ]
+        },
+        {
+          "id": "sfw_station",
+          "name": "车站送行简洁便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream long-sleeved shirt and tailored dark trousers",
+          "tokens": [
+            "cream_shirt",
+            "long_sleeves",
+            "dark_pants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "togawa_sakiko",
+      "displayName": "丰川祥子",
+      "originalName": "Sakiko Togawa",
+      "source": "BanG Dream!",
+      "identityProse": "Sakiko Togawa from BanG Dream!, with long blue hair tied into two side sections with ribbons and clear amber-yellow eyes. Her careful posture softens when she concentrates on the piano or an unfinished score.",
+      "identityTokens": [
+        "togawa_sakiko",
+        "bang_dream!",
+        "blue_hair",
+        "two_side_up",
+        "hair_ribbon",
+        "yellow_eyes",
+        "long_hair"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "音乐教室端正制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a tidy navy school blazer, white blouse, ribbon and knee-length skirt",
+          "tokens": [
+            "school_uniform",
+            "navy_blazer",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ]
+        },
+        {
+          "id": "sfw_work",
+          "name": "客服工位简洁便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pale blue collared blouse, dark trousers and a simple work cardigan",
+          "tokens": [
+            "blue_blouse",
+            "collar",
+            "dark_pants",
+            "cardigan"
+          ]
+        },
+        {
+          "id": "sfw_practice",
+          "name": "乐团练习针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream knitted top and comfortable blue trousers",
+          "tokens": [
+            "cream_sweater",
+            "blue_pants"
+          ]
+        }
+      ]
     }
   ]
 }

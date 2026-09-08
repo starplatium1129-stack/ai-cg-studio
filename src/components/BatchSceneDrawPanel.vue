@@ -225,6 +225,7 @@
 </template>
 
 <script setup lang="ts">
+import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { computed, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBatchRunners, type PromptBatchRunnersDeps } from '@/composables/prompt/usePromptBatchRunners'
@@ -330,7 +331,7 @@ const allCharacters = computed<CharacterOption[]>(() => {
         id: pop.id,
         displayName: pop.displayName,
         franchise: pop.franchise || '其他',
-        avatarUrl: `/assets/characters/thumbs/popular-${pop.id}.webp`,
+        avatarUrl: popularPortraitSrc(pop.id),
       })
     }
   })

@@ -1,4 +1,5 @@
 import type { ParticlePoint } from './particleShapes'
+import { isPopularPortraitPending } from './popularPortraitSource.ts'
 
 /**
  * 角色形象粒子（2026-08-16）：粒子直接重组为「这个角色的剪影」，形状与
@@ -62,7 +63,7 @@ export function portraitCloudUrl(id: string): string {
 
 /** 懒加载角色点云；不存在（404）或失败返回 null，结果缓存（含失败，避免反复 404）。 */
 export function loadPortraitCloud(id: string): Promise<PortraitCloud | null> {
-  if (!id) return Promise.resolve(null)
+  if (!id || isPopularPortraitPending(id)) return Promise.resolve(null)
   const cached = cloudCache.get(id)
   if (cached !== undefined) return Promise.resolve(cached)
   const pending = pendingLoads.get(id)

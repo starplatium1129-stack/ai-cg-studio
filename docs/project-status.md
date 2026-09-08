@@ -1,19 +1,19 @@
 # 项目当前状态
 
-> 2026-09-08 仓库快照；版本 1.5.5（package.json）。本页是规模与已实现能力的唯一总入口。数据变化后重新统计，不把 DATA_VERSION 当作固定发布日期。
+> 2026-09-08 仓库快照；版本 1.5.6（package.json）。本页是规模与已实现能力的唯一总入口。数据变化后重新统计，不把 DATA_VERSION 当作固定发布日期。
 
 ## 数据规模
 
 | 项目 | 数量 | 事实源与口径 |
 | --- | ---: | --- |
-| 角色档案 | 124 | data/characters.json 数组长度 |
-| 热门角色 | 122 | data/popular-characters.json 的 characters；含第五批六位全年龄接入稿 |
-| 热门服装形态 | 614 | 上述 characters[].outfits 长度之和 |
+| 角色档案 | 160 | data/characters.json 数组长度 |
+| 热门角色 | 158 | data/popular-characters.json 的 characters；候选四十九位已全部接入 |
+| 热门服装形态 | 723 | 上述 characters[].outfits 长度之和 |
 | 通用场景 | 302 | data/scenes.json 数组长度 |
-| 场景蓝图 | 1,309 | data/scene-blueprints.json 的 blueprints |
-| 参考库角色 / 已登记形态 | 124 / 425 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
-| 参考条目 | 2,975 | view 中全部 outfits[].references |
-| 非 pending 且有 URL / pending | 2,534 / 441 | 登记状态统计；新增196条仍为pending，不代表出图完成 |
+| 场景蓝图 | 1,525 | data/scene-blueprints.json 的 blueprints |
+| 参考库角色 / 已登记形态 | 160 / 534 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
+| 参考条目 | 3,738 | view 中全部 outfits[].references |
+| 非 pending 且有 URL / pending | 2,534 / 1,204 | 登记统计，不代表出图或视觉审核完成 |
 
 ## 已有能力与边界
 
@@ -28,4 +28,4 @@
 
 ## 验证与后续
 
-文档审计结果见 [审计记录](documentation-audit-2026-09-08.md)。其后的第五批全年龄接入尚未完成资产与发布验收，见 [接入进度](popular-sfw-batch5-progress-2026-09-08.md)。此前的测试、截图、模型和桌面验收只代表各自记录时点，集中保留在 [归档](archive/README.md)。后续工作只在 [未来规划](roadmap.md) 排序。
+文档审计结果见 [审计记录](documentation-audit-2026-09-08.md)。按用户更新的“先角色、每人约六条日常、出图后补”范围，第六至九批角色数据与应用接入已完成，见[接入记录](popular-sfw-batches-complete-2026-09-08.md)；图片、参考图与样张仍按待补状态管理。此前的测试、截图、模型和桌面验收只代表各自记录时点，集中保留在 [归档](archive/README.md)。后续工作只在 [未来规划](roadmap.md) 排序。

@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "franchise": "BanG Dream!",
+  "characters": [
+    {
+      "id": "togawa_sakiko",
+      "displayName": "丰川祥子",
+      "originalName": "Sakiko Togawa",
+      "franchise": "BanG Dream!",
+      "aliases": [
+        "丰川祥子",
+        "Sakiko Togawa"
+      ],
+      "identityProse": "Sakiko Togawa from BanG Dream!, with long blue hair tied into two side sections with ribbons and clear amber-yellow eyes. Her careful posture softens when she concentrates on the piano or an unfinished score.",
+      "identityTokens": [
+        "togawa_sakiko",
+        "bang_dream!",
+        "blue_hair",
+        "two_side_up",
+        "hair_ribbon",
+        "yellow_eyes",
+        "long_hair"
+      ],
+      "exactTokens": [
+        "togawa_sakiko"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, togawa_sakiko"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "音乐教室端正制服",
+          "prose": "a tidy navy school blazer, white blouse, ribbon and knee-length skirt",
+          "tokens": [
+            "school_uniform",
+            "navy_blazer",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_work",
+          "name": "客服工位简洁便装",
+          "prose": "a pale blue collared blouse, dark trousers and a simple work cardigan",
+          "tokens": [
+            "blue_blouse",
+            "collar",
+            "dark_pants",
+            "cardigan"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_practice",
+          "name": "乐团练习针织便装",
+          "prose": "a cream knitted top and comfortable blue trousers",
+          "tokens": [
+            "cream_sweater",
+            "blue_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

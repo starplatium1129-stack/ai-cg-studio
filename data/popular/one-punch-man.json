@@ -1,0 +1,185 @@
+{
+  "version": "1.0.0",
+  "franchise": "One-Punch Man",
+  "characters": [
+    {
+      "id": "tatsumaki",
+      "displayName": "战栗的龙卷",
+      "originalName": "Tatsumaki",
+      "franchise": "One-Punch Man",
+      "aliases": [
+        "战栗的龙卷",
+        "Tatsumaki"
+      ],
+      "identityProse": "Tatsumaki from One-Punch Man, a confident esper with a short curly green bob and sharp green eyes. Her controlled hovering and impatient expressions are identity cues, while clothing belongs to the selected everyday outfit.",
+      "identityTokens": [
+        "tatsumaki",
+        "one-punch_man",
+        "green_hair",
+        "curly_hair",
+        "short_hair",
+        "green_eyes"
+      ],
+      "exactTokens": [
+        "tatsumaki"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, tatsumaki"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_official",
+          "name": "黑色长袖及膝连衣裙",
+          "prose": "a closed-neck black long-sleeved knee-length dress, opaque tights and simple shoes",
+          "tokens": [
+            "black_dress",
+            "long_sleeves",
+            "high_neck",
+            "opaque_tights",
+            "shoes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_casual",
+          "name": "周末绿色针织便装",
+          "prose": "a moss-green knitted cardigan, cream top and ankle-length black skirt",
+          "tokens": [
+            "green_cardigan",
+            "cream_top",
+            "long_black_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬夜温暖家居装",
+          "prose": "a cream turtleneck sweater and loose green trousers",
+          "tokens": [
+            "cream_sweater",
+            "turtleneck",
+            "green_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "fubuki_one_punch",
+      "displayName": "吹雪",
+      "originalName": "Fubuki",
+      "franchise": "One-Punch Man",
+      "aliases": [
+        "吹雪",
+        "Fubuki"
+      ],
+      "identityProse": "Fubuki from One-Punch Man, an organized hero with a sleek black bob, straight bangs and cool green eyes. Her deliberate posture and composed expressions suggest the care she takes in leading her group.",
+      "identityTokens": [
+        "fubuki_(one-punch_man)",
+        "one-punch_man",
+        "black_hair",
+        "short_hair",
+        "blunt_bangs",
+        "green_eyes"
+      ],
+      "exactTokens": [
+        "fubuki_(one-punch_man)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, fubuki_(one-punch_man)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_formal",
+          "name": "吹雪组绿色正装",
+          "prose": "an opaque forest-green midi dress, pearl necklace and white collared coat",
+          "tokens": [
+            "green_dress",
+            "midi_dress",
+            "pearl_necklace",
+            "white_coat"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_casual",
+          "name": "日常会议针织装",
+          "prose": "a dark green cardigan over a cream blouse and black tailored trousers, with pearl earrings",
+          "tokens": [
+            "green_cardigan",
+            "cream_blouse",
+            "black_pants",
+            "pearl_earrings"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_evening",
+          "name": "晚间端庄聚会装",
+          "prose": "a long-sleeved emerald dress with a modest neckline and pearl necklace",
+          "tokens": [
+            "emerald_dress",
+            "long_sleeves",
+            "high_neck",
+            "pearl_necklace"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@
   <article
     class="pb journal-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
+    :data-onboarding-theme="hasOnboardingTheme(popularCharacter?.id)"
     :data-subject="pb.subject.kind"
     :data-director-mode="pb.directorMode"
     :class="{
@@ -431,6 +432,7 @@
 </template>
 
 <script setup lang="ts">
+import { hasOnboardingTheme } from '@/utils/popularPortraitSource'
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
 const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/director/DirectorMaterialDrawer.vue'))

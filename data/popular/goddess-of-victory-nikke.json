@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "franchise": "Goddess of Victory: NIKKE",
+  "characters": [
+    {
+      "id": "dorothy_nikke",
+      "displayName": "桃乐丝",
+      "originalName": "Dorothy",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "桃乐丝",
+        "Dorothy"
+      ],
+      "identityProse": "Dorothy from Goddess of Victory: NIKKE, with very long pink hair, a single side bun, lifted temple sections and violet eyes. Her carefully measured smile and elegant posture carry the composure of an experienced guide.",
+      "identityTokens": [
+        "dorothy_(nikke)",
+        "goddess_of_victory:_nikke",
+        "pink_hair",
+        "very_long_hair",
+        "single_side_bun",
+        "hair_intakes",
+        "purple_eyes"
+      ],
+      "exactTokens": [
+        "dorothy_(nikke)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, dorothy_(nikke)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_guide",
+          "name": "伊甸园白色端庄长裙",
+          "prose": "an opaque white long-sleeved midi dress with a pale pink jacket and closed shoes",
+          "tokens": [
+            "white_dress",
+            "long_sleeves",
+            "midi_dress",
+            "pink_jacket",
+            "closed_shoes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_garden",
+          "name": "花房园艺围裙装",
+          "prose": "a cream blouse, long pink skirt, gardening apron and work gloves",
+          "tokens": [
+            "cream_blouse",
+            "long_pink_skirt",
+            "gardening_apron",
+            "gloves"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_private",
+          "name": "私人房间针织便装",
+          "prose": "a pale rose cardigan, white blouse and navy trousers",
+          "tokens": [
+            "rose_cardigan",
+            "white_blouse",
+            "navy_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

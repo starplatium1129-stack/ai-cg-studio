@@ -1,0 +1,100 @@
+{
+  "version": "1.0.0",
+  "franchise": "Yosuga no Sora",
+  "characters": [
+    {
+      "id": "kasugano_sora",
+      "displayName": "春日野穹",
+      "originalName": "Sora Kasugano",
+      "franchise": "Yosuga no Sora",
+      "aliases": [
+        "春日野穹",
+        "Sora Kasugano"
+      ],
+      "identityProse": "Sora Kasugano from Yosuga no Sora, with very long straight white hair, ribbon-tied twin tails, fine antenna-like strands and quiet grey eyes. Her reserved expressions become more open around familiar comforts.",
+      "identityTokens": [
+        "kasugano_sora",
+        "yosuga_no_sora",
+        "white_hair",
+        "very_long_hair",
+        "straight_hair",
+        "twintails",
+        "black_ribbon",
+        "antenna_hair",
+        "grey_eyes"
+      ],
+      "exactTokens": [
+        "kasugano_sora"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kasugano_sora"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_summer",
+          "name": "乡间白色连衣裙",
+          "prose": "an opaque white knee-length dress with short sleeves, black hair ribbons and flat shoes",
+          "tokens": [
+            "white_dress",
+            "short_sleeves",
+            "knee_length_dress",
+            "black_ribbon",
+            "flat_shoes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "居家针织衫与长裤",
+          "prose": "a cream long-sleeved sweater and loose grey trousers",
+          "tokens": [
+            "cream_sweater",
+            "long_sleeves",
+            "grey_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_snow",
+          "name": "异国雪景白色大衣",
+          "prose": "a white wool coat, soft grey scarf, warm trousers and winter boots",
+          "tokens": [
+            "white_coat",
+            "grey_scarf",
+            "wool",
+            "pants",
+            "winter_boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

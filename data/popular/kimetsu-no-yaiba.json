@@ -144,6 +144,99 @@
           ]
         }
       ]
+    },
+    {
+      "id": "kanroji_mitsuri",
+      "displayName": "甘露寺蜜璃",
+      "originalName": "Mitsuri Kanroji",
+      "franchise": "Kimetsu no Yaiba",
+      "aliases": [
+        "甘露寺蜜璃",
+        "Mitsuri Kanroji"
+      ],
+      "identityProse": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",
+      "identityTokens": [
+        "kanroji_mitsuri",
+        "kimetsu_no_yaiba",
+        "pink_hair",
+        "green_hair",
+        "gradient_hair",
+        "long_hair",
+        "multiple_braids",
+        "green_eyes",
+        "mole_under_eye"
+      ],
+      "exactTokens": [
+        "kanroji_mitsuri"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kanroji_mitsuri"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_daily",
+          "name": "庭院端庄日常和装",
+          "prose": "a pale pink kimono securely wrapped with a green obi and opaque inner collar",
+          "tokens": [
+            "pink_kimono",
+            "green_obi",
+            "inner_collar",
+            "japanese_clothes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "食堂料理围裙装",
+          "prose": "a cream long-sleeved blouse, green long skirt and pink apron",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "green_skirt",
+            "pink_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭花纹浴衣",
+          "prose": "a light green floral yukata with a pink obi and sandals",
+          "tokens": [
+            "green_yukata",
+            "floral_print",
+            "pink_obi",
+            "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

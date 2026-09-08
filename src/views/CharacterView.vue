@@ -32,7 +32,7 @@
             :src="current.portrait.image" :alt="current.portrait.alt || current.name"
             loading="eager" decoding="async" @load="measurePortrait"
             @error="markPortraitBroken(current.id)" />
-          <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> {{ isPopular ? '角色场景样张' : '角色立绘' }}</span>
+          <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> {{ isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
           <span class="portrait-source" :title="current.source">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
         </div>
         <div>
@@ -251,7 +251,7 @@ import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import { ensureCharacterReferencesLoaded, getCharacterReferences } from '@/utils/characterReferenceData'
 import {
-  parseCharacterProfiles,
+  parseCharacterProfiles, popularPortraitSrc, isPopularPortraitPending,
   parseCharacterScenes,
   type CharacterProfile,
   type CharacterScene,
@@ -274,7 +274,7 @@ useScrollReveal()
 
 const directoryItems = computed(() => characters.value.map(character => ({
   id: character.id, name: character.name, source: character.source, aliases: character.alias,
-  image: character.type === 'popular' ? '/assets/characters/thumbs/popular-' + character.id + '.webp' : character.portrait?.image,
+  image: character.type === 'popular' ? popularPortraitSrc(character.id) : character.portrait?.image,
 })))
 
 const brokenPortraits = ref(new Set<string>())

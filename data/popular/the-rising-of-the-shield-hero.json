@@ -1,0 +1,99 @@
+{
+  "version": "1.0.0",
+  "franchise": "The Rising of the Shield Hero",
+  "characters": [
+    {
+      "id": "raphtalia",
+      "displayName": "拉芙塔莉雅",
+      "originalName": "Raphtalia",
+      "franchise": "The Rising of the Shield Hero",
+      "aliases": [
+        "拉芙塔莉雅",
+        "Raphtalia"
+      ],
+      "identityProse": "Raphtalia from The Rising of the Shield Hero, a dependable raccoon demi-human swordswoman with fluffy chestnut hair, soft pink eyes, rounded raccoon ears with pale inner fluff and a striped bushy tail.",
+      "identityTokens": [
+        "raphtalia",
+        "tate_no_yuusha_no_nariagari",
+        "brown_hair",
+        "long_hair",
+        "messy_hair",
+        "pink_eyes",
+        "raccoon_ears",
+        "raccoon_tail",
+        "animal_ear_fluff"
+      ],
+      "exactTokens": [
+        "raphtalia"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, raphtalia"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "轻装旅行服",
+          "prose": "a red-brown travel tunic over a cream blouse, light leather vest, practical trousers and boots",
+          "tokens": [
+            "red_tunic",
+            "cream_blouse",
+            "leather_vest",
+            "pants",
+            "boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "营地料理便装",
+          "prose": "a cream long-sleeved blouse, brown ankle-length skirt and blue cooking apron",
+          "tokens": [
+            "cream_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "blue_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季旅馆针织装",
+          "prose": "a warm burgundy sweater, long brown skirt and wool shawl",
+          "tokens": [
+            "burgundy_sweater",
+            "long_skirt",
+            "wool_shawl"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

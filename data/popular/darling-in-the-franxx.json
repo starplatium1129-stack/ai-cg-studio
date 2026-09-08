@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "franchise": "DARLING in the FRANXX",
+  "characters": [
+    {
+      "id": "zero_two",
+      "displayName": "02",
+      "originalName": "Zero Two",
+      "franchise": "DARLING in the FRANXX",
+      "aliases": [
+        "02",
+        "Zero Two"
+      ],
+      "identityProse": "Zero Two from DARLING in the FRANXX, a spirited girl with long pink hair, vivid green eyes, small red horns and a white headband. Her energy softens into thoughtful attention when she reads a familiar picture book.",
+      "identityTokens": [
+        "zero_two_(darling_in_the_franxx)",
+        "darling_in_the_franxx",
+        "pink_hair",
+        "long_hair",
+        "green_eyes",
+        "horns",
+        "red_horns",
+        "white_hairband"
+      ],
+      "exactTokens": [
+        "zero_two_(darling_in_the_franxx)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, zero_two_(darling_in_the_franxx)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_uniform",
+          "name": "红色长袖日常制服",
+          "prose": "a buttoned red long-sleeved coat-dress with a white collar, dark tights and boots",
+          "tokens": [
+            "red_coat",
+            "long_sleeves",
+            "white_collar",
+            "tights",
+            "boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "绘本时间宽松便装",
+          "prose": "a cream sweatshirt and relaxed red trousers",
+          "tokens": [
+            "cream_sweatshirt",
+            "red_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_seaside",
+          "name": "海边轻便衬衫长裙",
+          "prose": "a white long-sleeved shirt and an opaque red ankle-length skirt",
+          "tokens": [
+            "white_shirt",
+            "long_sleeves",
+            "red_skirt",
+            "long_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

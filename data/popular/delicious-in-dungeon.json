@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "franchise": "Delicious in Dungeon",
+  "characters": [
+    {
+      "id": "marcille_donato",
+      "displayName": "玛露希尔",
+      "originalName": "Marcille Donato",
+      "franchise": "Delicious in Dungeon",
+      "aliases": [
+        "玛露希尔",
+        "Marcille Donato"
+      ],
+      "identityProse": "Marcille Donato from Delicious in Dungeon, with long blonde hair, a high forehead, pointed ears and lively green eyes. Her carefully arranged braids and expressive reactions reveal an earnest, studious mage.",
+      "identityTokens": [
+        "marcille_donato",
+        "dungeon_meshi",
+        "blonde_hair",
+        "long_hair",
+        "green_eyes",
+        "pointy_ears",
+        "high_forehead",
+        "braid"
+      ],
+      "exactTokens": [
+        "marcille_donato"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, marcille_donato"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "迷宫旅行蓝色长袍",
+          "prose": "a practical blue long-sleeved robe over a cream tunic, leggings and boots",
+          "tokens": [
+            "blue_robe",
+            "long_sleeves",
+            "cream_tunic",
+            "leggings",
+            "boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_rest",
+          "name": "营地休息针织便装",
+          "prose": "a cream knit top and comfortable brown trousers",
+          "tokens": [
+            "cream_sweater",
+            "brown_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_academy",
+          "name": "学院古籍阅读装",
+          "prose": "a tidy blue academic jacket, white blouse and ankle-length skirt",
+          "tokens": [
+            "blue_jacket",
+            "white_blouse",
+            "long_skirt",
+            "academic_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

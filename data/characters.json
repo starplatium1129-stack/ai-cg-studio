@@ -10085,5 +10085,2128 @@
     ],
     "accent_color": "#d2a475",
     "bg_color": "#775438"
+  },
+  {
+    "id": "raphtalia",
+    "name": "拉芙塔莉雅",
+    "alias": [
+      "拉芙塔莉雅",
+      "Raphtalia"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "拉芙塔莉雅 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Raphtalia from The Rising of the Shield Hero, a dependable raccoon demi-human swordswoman with fluffy chestnut hair, soft pink eyes, rounded raccoon ears with pale inner fluff and a striped bushy tail.",
+      "hair": "brown_hair, long_hair, messy_hair",
+      "eyes": "pink_eyes",
+      "uniform": "轻装旅行服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "从艰难境遇中成长起来的亚人剑士，认真珍惜同伴与来之不易的日常。耳朵与尾巴会先于语言流露情绪，旅行中的照料、采购与装备保养体现她可靠的一面。"
+    ],
+    "likes": [
+      "晨训后的擦剑",
+      " marketplace 的讨价还价",
+      "篝火旁的晚餐分餐",
+      "新衣试穿的习惯性道谢",
+      "秋收祭的苹果派",
+      "冬夜壁炉前的信"
+    ],
+    "classic_cg": {
+      "title": "拉芙塔莉雅 · 晨训后的擦剑",
+      "description": "营地清晨，她坐在木桩上保养爱剑，耳朵随着远处的鸟鸣轻轻转动；擦完收剑入鞘，尾巴满足地晃了一下——剑士的日常从保养开始。"
+    },
+    "identity": "The Rising of the Shield Hero · 拉芙塔莉雅",
+    "tags": [
+      "拉芙塔莉雅",
+      "盾之勇者成名录",
+      "日常"
+    ],
+    "bg_story": "从艰难境遇中成长起来的亚人剑士，认真珍惜同伴与来之不易的日常。耳朵与尾巴会先于语言流露情绪，旅行中的照料、采购与装备保养体现她可靠的一面。",
+    "palette": [
+      "#c99473",
+      "#282532"
+    ],
+    "source": "The Rising of the Shield Hero",
+    "speech": "路上的东西收好了，接下来也请放心交给我。",
+    "traits": [
+      "raphtalia",
+      "tate_no_yuusha_no_nariagari",
+      "brown_hair",
+      "long_hair",
+      "messy_hair"
+    ],
+    "accent_color": "#c99473",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "yatogami_tohka",
+    "name": "夜刀神十香",
+    "alias": [
+      "夜刀神十香",
+      "Tohka Yatogami"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "夜刀神十香 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Tohka Yatogami from Date A Live, a curious spirit with very long dark-purple hair gathered into a high half ponytail with a large ribbon and bright violet eyes. Her expressions show earnest wonder at ordinary human life.",
+      "hair": "purple_hair, very_long_hair",
+      "eyes": "purple_eyes",
+      "uniform": "来禅高校日常制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "初到人类世界的精灵，对面包、节日和日常小事抱有直接而热烈的好奇。深紫长发、蝴蝶结和坦率的表情是视觉重点，日常场景不混入灵装与巨剑。"
+    ],
+    "likes": [
+      "面包店的黄豆粉面包",
+      "第一次的章鱼烧",
+      "雨后的水洼跳跃",
+      "图书馆的图画书",
+      "冬夜的暖桌与蜜柑",
+      "樱花树下的命名纪念"
+    ],
+    "classic_cg": {
+      "title": "夜刀神十香 · 面包店的黄豆粉面包",
+      "description": "面包店玻璃柜前，她整个人贴上去盯着新出炉的黄豆粉面包，眼睛亮得像发现宝物；买到之后当场咬下一大口，幸福到头顶的蝴蝶结都在晃。"
+    },
+    "identity": "Date A Live · 夜刀神十香",
+    "tags": [
+      "夜刀神十香",
+      "约会大作战",
+      "日常"
+    ],
+    "bg_story": "初到人类世界的精灵，对面包、节日和日常小事抱有直接而热烈的好奇。深紫长发、蝴蝶结和坦率的表情是视觉重点，日常场景不混入灵装与巨剑。",
+    "palette": [
+      "#a794db",
+      "#282532"
+    ],
+    "source": "Date A Live",
+    "speech": "唔姆，这个面包也很好吃！",
+    "traits": [
+      "yatogami_tohka",
+      "date_a_live",
+      "purple_hair",
+      "very_long_hair",
+      "purple_eyes"
+    ],
+    "accent_color": "#a794db",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "tobiichi_origami",
+    "name": "鸢一折纸",
+    "alias": [
+      "鸢一折纸",
+      "Origami Tobiichi"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "鸢一折纸 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Origami Tobiichi from Date A Live, a reserved girl with snow-white hair and pale blue eyes. Her composed face reveals feelings through small shifts of her gaze; hair length belongs to the selected timeline outfit.",
+      "hair": "white_hair, hair_ornament",
+      "eyes": "blue_eyes",
+      "uniform": "旧时间线短发制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "成绩和运动都出色的少女，也是AST成员。她习惯以准确的动作表达心意，旧时间线短发与新时间线长发分别绑定服装形态，避免常驻DNA冲突。"
+    ],
+    "likes": [
+      "教室窗边的完美侧脸",
+      "AST 的整备室",
+      "能量棒的午餐",
+      "书店计算机区",
+      "长发新生的晨光",
+      "夏日祭的射击摊"
+    ],
+    "classic_cg": {
+      "title": "鸢一折纸 · 教室窗边的完美侧脸",
+      "description": "教室靠窗，她坐姿笔直地看书，白发在午后光里近乎透明；周围同学的窃窃私语全部被她无视，翻页的节奏都像设定好的程序——直到手机震动，她的视线瞬间离开书本。"
+    },
+    "identity": "Date A Live · 鸢一折纸",
+    "tags": [
+      "鸢一折纸",
+      "约会大作战",
+      "日常"
+    ],
+    "bg_story": "成绩和运动都出色的少女，也是AST成员。她习惯以准确的动作表达心意，旧时间线短发与新时间线长发分别绑定服装形态，避免常驻DNA冲突。",
+    "palette": [
+      "#9dbce5",
+      "#282532"
+    ],
+    "source": "Date A Live",
+    "speech": "检查完毕。今天的安排没有问题。",
+    "traits": [
+      "tobiichi_origami",
+      "date_a_live",
+      "white_hair",
+      "blue_eyes",
+      "hair_ornament"
+    ],
+    "accent_color": "#9dbce5",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "ubel_frieren",
+    "name": "尤贝尔",
+    "alias": [
+      "尤贝尔",
+      "Übel"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "尤贝尔 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Übel from Frieren: Beyond Journey's End, a curious mage with long green hair in a side ponytail, M-shaped bangs and heavy-lidded purple eyes. Her easy smile and unhurried gaze suggest a habit of asking intrusive questions.",
+      "hair": "green_hair, long_hair",
+      "eyes": "purple_eyes, half-closed_eyes",
+      "uniform": "黑裙旅行装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "以独特想象力施法的魔法使，习惯靠近观察、随口发问。绿发侧马尾与半睁紫瞳是识别重点，日常侧重旅途见闻、挑选法杖和不太可靠的厨艺。"
+    ],
+    "likes": [
+      "考试会场的缠人精",
+      "黑暗料理的现场",
+      "法杖店的物色",
+      "雨棚下的搭话",
+      "市场试吃的游击",
+      "冬夜的缝补失败"
+    ],
+    "classic_cg": {
+      "title": "尤贝尔 · 考试会场的缠人精",
+      "description": "一级魔法使考试等候区，她整个人凑到别人面前叽叽喳喳地问个不停，半睁的眼睛里没有恶意也没有分寸；对方后退半步她就前进半步，是她的社交距离。"
+    },
+    "identity": "Frieren: Beyond Journey's End · 尤贝尔",
+    "tags": [
+      "尤贝尔",
+      "葬送的芙莉莲",
+      "日常"
+    ],
+    "bg_story": "以独特想象力施法的魔法使，习惯靠近观察、随口发问。绿发侧马尾与半睁紫瞳是识别重点，日常侧重旅途见闻、挑选法杖和不太可靠的厨艺。",
+    "palette": [
+      "#7fba9b",
+      "#282532"
+    ],
+    "source": "Frieren: Beyond Journey's End",
+    "speech": "这个看起来挺有意思，试试看吧。",
+    "traits": [
+      "ubel_(sousou_no_frieren)",
+      "sousou_no_frieren",
+      "green_hair",
+      "long_hair",
+      "side_ponytail"
+    ],
+    "accent_color": "#7fba9b",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "kanroji_mitsuri",
+    "name": "甘露寺蜜璃",
+    "alias": [
+      "甘露寺蜜璃",
+      "Mitsuri Kanroji"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "甘露寺蜜璃 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",
+      "hair": "pink_hair, green_hair, gradient_hair, long_hair",
+      "eyes": "green_eyes",
+      "uniform": "庭院端庄日常和装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "拥有惊人力量与温柔心性的恋柱。樱饼、猫咪、朋友送来的袜子和热情的笑容构成日常识别点，发色固定为粉发渐变绿发梢，不叠加早期黑发回忆。"
+    ],
+    "likes": [
+      "樱饼与发色的传说",
+      "食堂的大盛纪录",
+      "与猫的午后",
+      "收到条纹袜的那天",
+      "夏日祭的金鱼与刨冰",
+      "冬夜的草莓大福"
+    ],
+    "classic_cg": {
+      "title": "甘露寺蜜璃 · 樱饼与发色的传说",
+      "description": "午后缘侧，蜜璃抱着盛满樱饼的盘子，举起一块准备品尝，绿瞳里全是期待。粉色长辫的绿发梢落在腰带边，茶杯和庭院樱叶映着柔光；只呈现当前粉发形态。"
+    },
+    "identity": "Kimetsu no Yaiba · 甘露寺蜜璃",
+    "tags": [
+      "甘露寺蜜璃",
+      "鬼灭之刃",
+      "日常"
+    ],
+    "bg_story": "拥有惊人力量与温柔心性的恋柱。樱饼、猫咪、朋友送来的袜子和热情的笑容构成日常识别点，发色固定为粉发渐变绿发梢，不叠加早期黑发回忆。",
+    "palette": [
+      "#d69aaf",
+      "#282532"
+    ],
+    "source": "Kimetsu no Yaiba",
+    "speech": "能和大家一起吃饭，真是太幸福了！",
+    "traits": [
+      "kanroji_mitsuri",
+      "kimetsu_no_yaiba",
+      "pink_hair",
+      "green_hair",
+      "gradient_hair"
+    ],
+    "accent_color": "#d69aaf",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "zero_two",
+    "name": "02",
+    "alias": [
+      "02",
+      "Zero Two"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "02 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Zero Two from DARLING in the FRANXX, a spirited girl with long pink hair, vivid green eyes, small red horns and a white headband. Her energy softens into thoughtful attention when she reads a familiar picture book.",
+      "hair": "pink_hair, long_hair, white_hairband",
+      "eyes": "green_eyes",
+      "uniform": "红色长袖日常制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "向往外面世界的少女驾驶员，以红角、粉色长发、绿瞳和棒棒糖为识别点。日常场景保留她好奇又自由的性格，选择食堂、绘本和海边散步等全着装情境。"
+    ],
+    "likes": [
+      "蜂蜜浇一切",
+      "天台的风",
+      "绘本的睡前重读",
+      "糖果店的扫货",
+      "海边的脚印",
+      "樱树下的约定"
+    ],
+    "classic_cg": {
+      "title": "02 · 蜂蜜浇一切",
+      "description": "食堂，她把整瓶蜂蜜豪爽地浇在饭菜上，在周围目瞪口呆中满足地大快朵颐；嘴角沾着蜜转头问「DARLING 也要吗」，是她的款待方式。"
+    },
+    "identity": "DARLING in the FRANXX · 02",
+    "tags": [
+      "02",
+      "DARLING in the FRANXX",
+      "日常"
+    ],
+    "bg_story": "向往外面世界的少女驾驶员，以红角、粉色长发、绿瞳和棒棒糖为识别点。日常场景保留她好奇又自由的性格，选择食堂、绘本和海边散步等全着装情境。",
+    "palette": [
+      "#db9eae",
+      "#282532"
+    ],
+    "source": "DARLING in the FRANXX",
+    "speech": "今天去看看外面的世界吧。",
+    "traits": [
+      "zero_two_(darling_in_the_franxx)",
+      "darling_in_the_franxx",
+      "pink_hair",
+      "long_hair",
+      "green_eyes"
+    ],
+    "accent_color": "#db9eae",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "asada_shino",
+    "name": "朝田诗乃",
+    "alias": [
+      "朝田诗乃",
+      "Shino Asada"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "朝田诗乃 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Shino Asada from Sword Art Online in her real-world appearance, with medium-length ash-brown hair, brown eyes and optional non-prescription black-rimmed glasses. Her gestures are precise and her manner quietly thoughtful; no game-avatar ears or cyan hair are mixed into this form.",
+      "hair": "brown_hair, medium_hair",
+      "eyes": "brown_eyes",
+      "uniform": "现实形态校服与眼镜",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "现实中安静爱读书的少女，在虚拟世界以Sinon之名活动。本批采用现实形态，灰棕发与眼镜和GGO冰蓝发、ALO猫耳严格分开，围巾与读物连接两个世界的记忆。"
+    ],
+    "likes": [
+      "图书馆的角落",
+      "眼镜店的调整",
+      "便利店的新刊",
+      "雨中归途的耳机",
+      "冬日围巾的保养",
+      "深夜下线之后"
+    ],
+    "classic_cg": {
+      "title": "朝田诗乃 · 图书馆的角落",
+      "description": "现实中的图书馆，她坐在最里面的座位读军事纪实，眼镜稍稍滑下；窗外下雨，她伸手把书页上的光挡住一点——安静的下午是她的充电器。"
+    },
+    "identity": "Sword Art Online · 朝田诗乃",
+    "tags": [
+      "朝田诗乃",
+      "刀剑神域",
+      "日常"
+    ],
+    "bg_story": "现实中安静爱读书的少女，在虚拟世界以Sinon之名活动。本批采用现实形态，灰棕发与眼镜和GGO冰蓝发、ALO猫耳严格分开，围巾与读物连接两个世界的记忆。",
+    "palette": [
+      "#9bb8c6",
+      "#282532"
+    ],
+    "source": "Sword Art Online",
+    "speech": "先把书看完，晚点再上线。",
+    "traits": [
+      "asada_shino",
+      "sword_art_online",
+      "brown_hair",
+      "medium_hair",
+      "brown_eyes"
+    ],
+    "accent_color": "#9bb8c6",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "tatsumaki",
+    "name": "战栗的龙卷",
+    "alias": [
+      "战栗的龙卷",
+      "Tatsumaki"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "战栗的龙卷 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Tatsumaki from One-Punch Man, a confident esper with a short curly green bob and sharp green eyes. Her controlled hovering and impatient expressions are identity cues, while clothing belongs to the selected everyday outfit.",
+      "hair": "green_hair, curly_hair, short_hair",
+      "eyes": "green_eyes",
+      "uniform": "黑色长袖及膝连衣裙",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "英雄协会的超能力者，习惯漂浮着行动，嘴上强硬却很在意妹妹。短绿卷发与绿瞳不可与吹雪混淆，日常以报告、茶点和城市生活呈现强者的反差。"
+    ],
+    "likes": [
+      "英雄协会的蔑视",
+      "甜品店的身高悲剧",
+      "妹妹家的玄关",
+      "购物失败的高跟鞋",
+      "午后阳台的红茶",
+      "冬夜窗边的城市"
+    ],
+    "classic_cg": {
+      "title": "战栗的龙卷 · 英雄协会的蔑视",
+      "description": "协会会议室，她悬停在比所有坐着的干部都高的位置听汇报，脚尖离地的距离就是她与他人的距离；听到无聊的提案时毫不掩饰地咂舌。"
+    },
+    "identity": "One-Punch Man · 战栗的龙卷",
+    "tags": [
+      "战栗的龙卷",
+      "一拳超人",
+      "日常"
+    ],
+    "bg_story": "英雄协会的超能力者，习惯漂浮着行动，嘴上强硬却很在意妹妹。短绿卷发与绿瞳不可与吹雪混淆，日常以报告、茶点和城市生活呈现强者的反差。",
+    "palette": [
+      "#8abc9d",
+      "#282532"
+    ],
+    "source": "One-Punch Man",
+    "speech": "这点小事，我当然已经处理好了。",
+    "traits": [
+      "tatsumaki",
+      "one-punch_man",
+      "green_hair",
+      "curly_hair",
+      "short_hair"
+    ],
+    "accent_color": "#8abc9d",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "fubuki_one_punch",
+    "name": "吹雪",
+    "alias": [
+      "吹雪",
+      "Fubuki"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "吹雪 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Fubuki from One-Punch Man, an organized hero with a sleek black bob, straight bangs and cool green eyes. Her deliberate posture and composed expressions suggest the care she takes in leading her group.",
+      "hair": "black_hair, short_hair",
+      "eyes": "green_eyes",
+      "uniform": "吹雪组绿色正装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "吹雪组的组织者，重视同伴，也在学着走出姐姐的阴影。黑发绿瞳、珍珠饰品与克制姿态是重点，不能误写为姐姐龙卷的绿发。"
+    ],
+    "likes": [
+      "吹雪组的晨会",
+      "茶会的挖角",
+      "夜色车窗的霓虹",
+      "部下的庆功宴",
+      "珠宝店的柜台",
+      "书房的人事档案"
+    ],
+    "classic_cg": {
+      "title": "吹雪 · 吹雪组的晨会",
+      "description": "吹雪组总部，她坐在长桌主位听取各小队报告，指尖轻叩桌面；分配任务时的果断与滴水不漏，是 B 级第一真正的实力所在。"
+    },
+    "identity": "One-Punch Man · 吹雪",
+    "tags": [
+      "吹雪",
+      "一拳超人",
+      "日常"
+    ],
+    "bg_story": "吹雪组的组织者，重视同伴，也在学着走出姐姐的阴影。黑发绿瞳、珍珠饰品与克制姿态是重点，不能误写为姐姐龙卷的绿发。",
+    "palette": [
+      "#86ad9c",
+      "#282532"
+    ],
+    "source": "One-Punch Man",
+    "speech": "安排已经确认，接下来按顺序进行。",
+    "traits": [
+      "fubuki_(one-punch_man)",
+      "one-punch_man",
+      "black_hair",
+      "short_hair",
+      "blunt_bangs"
+    ],
+    "accent_color": "#86ad9c",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "mouri_ran",
+    "name": "毛利兰",
+    "alias": [
+      "毛利兰",
+      "Ran Mouri"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "毛利兰 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Ran Mouri from Detective Conan, a capable girl with long dark hair rising into its distinctive horn-like forelock and gentle blue-violet eyes. Her assured posture combines athletic confidence with everyday warmth.",
+      "hair": "black_hair, long_hair, hair_horn",
+      "eyes": "blue_eyes",
+      "uniform": "空手道训练道服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "毛利侦探事务所里可靠的家人，也是空手道社的主将。角状发尖、温柔眼神与果断动作共同构成形象，日常既有料理和学习，也有等待与信任。"
+    ],
+    "likes": [
+      "空手道社的晨训",
+      "侦探事务所的晚餐",
+      "商店街的强运抽奖",
+      "京都修学旅行的清水寺",
+      "钢琴课后的傍晚",
+      "雪夜的等待"
+    ],
+    "classic_cg": {
+      "title": "毛利兰 · 空手道社的晨训",
+      "description": "清晨道场，她扎起头发穿着道服练习正拳，动作干净利落；朝阳从道场高窗斜照进来，汗水与呼出的白气——「主将」二字的说服力全在这一帧。"
+    },
+    "identity": "Detective Conan · 毛利兰",
+    "tags": [
+      "毛利兰",
+      "名侦探柯南",
+      "日常"
+    ],
+    "bg_story": "毛利侦探事务所里可靠的家人，也是空手道社的主将。角状发尖、温柔眼神与果断动作共同构成形象，日常既有料理和学习，也有等待与信任。",
+    "palette": [
+      "#a9a1d0",
+      "#282532"
+    ],
+    "source": "Detective Conan",
+    "speech": "晚饭快好了，记得早点回来。",
+    "traits": [
+      "mouri_ran",
+      "meitantei_conan",
+      "black_hair",
+      "long_hair",
+      "blue_eyes"
+    ],
+    "accent_color": "#a9a1d0",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "medusa_rider",
+    "name": "美杜莎 Rider",
+    "alias": [
+      "美杜莎 Rider",
+      "Medusa (Rider)"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "美杜莎 Rider · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+      "hair": "purple_hair, very_long_hair",
+      "eyes": "purple_eyes",
+      "uniform": "书店与采购针织便装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "以Rider身份现界的美杜莎，沉默、细心，喜欢在书本与平静的生活中停留。长紫发和紫瞳是常驻特征，眼镜、眼罩与武器按服装或场景配置。"
+    ],
+    "likes": [
+      "书店文库本的站立阅读",
+      "自行车采购的迎风",
+      "厨房里的围裙反差",
+      "电影院最后一排",
+      "雨天便利屋檐",
+      "天马的梦"
+    ],
+    "classic_cg": {
+      "title": "美杜莎 Rider · 书店文库本的站立阅读",
+      "description": "书店角落，她戴着眼镜站在文库本书架前静静翻阅，长发垂落遮出私密的空间；店员经过时她礼貌地让出半步，全程没有一句话却气场安定。"
+    },
+    "identity": "Fate · 美杜莎 Rider",
+    "tags": [
+      "美杜莎 Rider",
+      "Fate 系列",
+      "日常"
+    ],
+    "bg_story": "以Rider身份现界的美杜莎，沉默、细心，喜欢在书本与平静的生活中停留。长紫发和紫瞳是常驻特征，眼镜、眼罩与武器按服装或场景配置。",
+    "palette": [
+      "#b09dcf",
+      "#282532"
+    ],
+    "source": "Fate",
+    "speech": "这本书很安静，适合现在读。",
+    "traits": [
+      "medusa_(fate)",
+      "fate/stay_night",
+      "purple_hair",
+      "very_long_hair",
+      "purple_eyes"
+    ],
+    "accent_color": "#b09dcf",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "chloe_von_einzbern",
+    "name": "克洛伊",
+    "alias": [
+      "克洛伊",
+      "Chloe von Einzbern"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "克洛伊 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Chloe von Einzbern from Fate/kaleid liner Prisma Illya, a lively girl with warm brown skin, long pale pink hair, face-framing sidelocks and bright orange eyes. Her confident grin gives way to quieter feelings when she is alone.",
+      "hair": "pink_hair, long_hair",
+      "eyes": "orange_eyes",
+      "uniform": "早餐料理围裙便装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "伊莉雅身边活泼好胜的伙伴，擅长料理，也会用玩笑掩饰在意。保留深肤色、浅粉长发和橙瞳，本批只采用完整日常服装与校园、居家活动。"
+    ],
+    "likes": [
+      "爱因兹贝伦家的早餐战争",
+      "厨房里的拿手菜",
+      "游戏厅的连胜",
+      "午后屋顶的午睡",
+      "夏日祭的刨冰抢夺",
+      "雨天窗边的真话"
+    ],
+    "classic_cg": {
+      "title": "克洛伊 · 爱因兹贝伦家的早餐战争",
+      "description": "餐桌前，她伸长筷子抢走伊莉雅盘子里的煎蛋，动作快得只剩残影；被瞪之后露出得意的小恶魔笑，却把自已盘子里的培根默默分了过去——争归争，照顾归照顾。"
+    },
+    "identity": "Fate · 克洛伊",
+    "tags": [
+      "克洛伊",
+      "Fate 系列",
+      "日常"
+    ],
+    "bg_story": "伊莉雅身边活泼好胜的伙伴，擅长料理，也会用玩笑掩饰在意。保留深肤色、浅粉长发和橙瞳，本批只采用完整日常服装与校园、居家活动。",
+    "palette": [
+      "#d5a293",
+      "#282532"
+    ],
+    "source": "Fate",
+    "speech": "这次是我赢了，不过点心可以分你一半。",
+    "traits": [
+      "chloe_von_einzbern",
+      "fate/kaleid_liner_prisma_illya",
+      "dark_skin",
+      "pink_hair",
+      "long_hair"
+    ],
+    "accent_color": "#d5a293",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "medea_caster",
+    "name": "美狄亚",
+    "alias": [
+      "美狄亚",
+      "Medea (Caster)"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "美狄亚 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and clear blue eyes. Her precise hands and restrained expression reveal the same patience in craftwork as in magic.",
+      "hair": "blue_hair, long_hair",
+      "eyes": "blue_eyes",
+      "uniform": "寺院料理襻带围裙装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "在柳洞寺生活的魔术师，也珍惜料理、模型和针线这些日常手艺。蓝发侧辫、尖耳和专注神态是识别点，兜帽与长袍按活动切换。"
+    ],
+    "likes": [
+      "柳洞寺厨房的手作料理",
+      "深夜的模型制作",
+      "连帽长袍的街市采购",
+      "缝补长袍的午后",
+      "猫与毛线球",
+      "冬夜的灯下缝衣"
+    ],
+    "classic_cg": {
+      "title": "美狄亚 · 柳洞寺厨房的手作料理",
+      "description": "柳洞寺厨房，她把长袍袖子用襻带扎起、系着围裙做饭，尖耳从垂落的发丝间露出；尝味时专注的神情不像魔女，更像新婚的妻子。"
+    },
+    "identity": "Fate · 美狄亚",
+    "tags": [
+      "美狄亚",
+      "Fate 系列",
+      "日常"
+    ],
+    "bg_story": "在柳洞寺生活的魔术师，也珍惜料理、模型和针线这些日常手艺。蓝发侧辫、尖耳和专注神态是识别点，兜帽与长袍按活动切换。",
+    "palette": [
+      "#94a6d1",
+      "#282532"
+    ],
+    "source": "Fate",
+    "speech": "再缝好这一针，就可以穿了。",
+    "traits": [
+      "medea_(caster)_(fate)",
+      "fate/stay_night",
+      "blue_hair",
+      "long_hair",
+      "side_braid"
+    ],
+    "accent_color": "#94a6d1",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "kama_fate",
+    "name": "迦摩",
+    "alias": [
+      "迦摩",
+      "Kama"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "迦摩 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "hair": "white_hair",
+      "eyes": "red_eyes",
+      "uniform": "游戏时间宽松家居装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "常以不以为然的口吻回应世界，却会对游戏和甜点格外认真。白发红瞳与别扭的神态保留为识别点，本批以完整居家装、外出装和冬装表现日常。"
+    ],
+    "likes": [
+      "魔王沙发的慵懒午后",
+      "茶馆观察人间",
+      "深夜游戏的连败",
+      "甜点柜前的认真",
+      "雨天屋檐的偶遇",
+      "新年神社的签运"
+    ],
+    "classic_cg": {
+      "title": "迦摩 · 魔王沙发的慵懒午后",
+      "description": "她的领域一角，成年形态的她横卧在华丽沙发上，单手撑头、另一只手指尖转着花之箭；身边散落着零食与靠垫，「魔王的工作」看起来就是彻底地躺着。"
+    },
+    "identity": "Fate · 迦摩",
+    "tags": [
+      "迦摩",
+      "Fate 系列",
+      "日常"
+    ],
+    "bg_story": "常以不以为然的口吻回应世界，却会对游戏和甜点格外认真。白发红瞳与别扭的神态保留为识别点，本批以完整居家装、外出装和冬装表现日常。",
+    "palette": [
+      "#c9a0b1",
+      "#282532"
+    ],
+    "source": "Fate",
+    "speech": "只是顺路看看，才没有特意来买甜点。",
+    "traits": [
+      "kama_(fate)",
+      "fate/grand_order",
+      "white_hair",
+      "red_eyes"
+    ],
+    "accent_color": "#c9a0b1",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "kasugano_sora",
+    "name": "春日野穹",
+    "alias": [
+      "春日野穹",
+      "Sora Kasugano"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "春日野穹 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Sora Kasugano from Yosuga no Sora, with very long straight white hair, ribbon-tied twin tails, fine antenna-like strands and quiet grey eyes. Her reserved expressions become more open around familiar comforts.",
+      "hair": "white_hair, very_long_hair, straight_hair, antenna_hair",
+      "eyes": "grey_eyes",
+      "uniform": "乡间白色连衣裙",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "回到乡间旧居后逐渐适应日常的少女，安静又有些倔强。长白发、黑色发带与兔子布偶是识别点，场景聚焦乡道、居家手工和季节变化。"
+    ],
+    "likes": [
+      "夏日乡道的白裙",
+      "缘侧的麦茶与零食",
+      "神社石阶的回望",
+      "蚊虫大作战",
+      "兔子布偶的缝补",
+      "赫尔辛基的雪"
+    ],
+    "classic_cg": {
+      "title": "春日野穹 · 夏日乡道的白裙",
+      "description": "奥木染町的乡间道路，她穿着白色连衣裙走在蝉鸣里，双手背在身后抱着兔子布偶；远处是稻田与积雨云，她微微眯眼躲避阳光，像一幅会呼吸的油画。"
+    },
+    "identity": "Yosuga no Sora · 春日野穹",
+    "tags": [
+      "春日野穹",
+      "缘之空",
+      "日常"
+    ],
+    "bg_story": "回到乡间旧居后逐渐适应日常的少女，安静又有些倔强。长白发、黑色发带与兔子布偶是识别点，场景聚焦乡道、居家手工和季节变化。",
+    "palette": [
+      "#b0b8cd",
+      "#282532"
+    ],
+    "source": "Yosuga no Sora",
+    "speech": "兔子的耳朵……终于缝好了。",
+    "traits": [
+      "kasugano_sora",
+      "yosuga_no_sora",
+      "white_hair",
+      "very_long_hair",
+      "straight_hair"
+    ],
+    "accent_color": "#b0b8cd",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "kuonji_alice",
+    "name": "久远寺有珠",
+    "alias": [
+      "久远寺有珠",
+      "Alice Kuonji"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "久远寺有珠 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Alice Kuonji from Witch on the Holy Night, a reserved witch with short dark hair, lifted side sections near the temples and deep dark eyes. Her still expression and precise movements suit quiet rooms and careful rituals.",
+      "hair": "black_hair, short_hair, hair_intakes",
+      "eyes": "black_eyes",
+      "uniform": "洋馆黑色长袖洋装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "独居洋馆、延续古老魔女传统的少女。短黑发、沉静眼神和端正姿态是核心；童话书、红茶与工作间里的细致手艺承载她的日常。"
+    ],
+    "likes": [
+      "洋馆客厅的炉火",
+      "药草调配的深夜",
+      "冬日毛皮帽的坡道",
+      "庭园独酌下午茶",
+      "图书馆的童话角落",
+      "清晨的黑白茶"
+    ],
+    "classic_cg": {
+      "title": "久远寺有珠 · 洋馆客厅的炉火",
+      "description": "久远寺宅的客厅，她坐在高背扶手椅上读一本旧书，壁炉的火光在黑色洋装上跳动；红茶的热气与古董家具之间，她是这座屋子唯一的主人。"
+    },
+    "identity": "Witch on the Holy Night · 久远寺有珠",
+    "tags": [
+      "久远寺有珠",
+      "魔法使之夜",
+      "日常"
+    ],
+    "bg_story": "独居洋馆、延续古老魔女传统的少女。短黑发、沉静眼神和端正姿态是核心；童话书、红茶与工作间里的细致手艺承载她的日常。",
+    "palette": [
+      "#9aa9ba",
+      "#282532"
+    ],
+    "source": "Witch on the Holy Night",
+    "speech": "茶已经泡好，请不要让它凉掉。",
+    "traits": [
+      "kuonji_alice",
+      "mahou_tsukai_no_yoru",
+      "black_hair",
+      "short_hair",
+      "hair_intakes"
+    ],
+    "accent_color": "#9aa9ba",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "akizuki_kanna",
+    "name": "明月栞那",
+    "alias": [
+      "明月栞那",
+      "Kanna Akizuki"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "明月栞那 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Kanna Akizuki from Cafe Stella and the Reapers’ Butterflies, with very long white hair, a side ponytail, ribbon, ahoge and gentle pink eyes. Her relaxed smile suggests long experience behind a playful manner.",
+      "hair": "white_hair, very_long_hair, hair_ribbon",
+      "eyes": "pink_eyes",
+      "uniform": "星光咖啡馆端庄工作服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "在星光咖啡馆工作的神秘店员，从容的手艺与对新式设备的生疏形成反差。白发侧马尾、粉瞳和轻松带笑的神情是识别点。"
+    ],
+    "likes": [
+      "吧台后的百年手艺",
+      "智能手机苦战中",
+      "打烊后的杯碟交响",
+      "粗点心店的怀旧",
+      "员工休息室的恶作剧",
+      "晨间开店前的呼吸"
+    ],
+    "classic_cg": {
+      "title": "明月栞那 · 吧台后的百年手艺",
+      "description": "星光咖啡馆吧台后，她用老式虹吸壶冲煮咖啡，动作是从容到近乎悠闲的精准；阳光穿过玻璃杯，她抬眼对客人微笑，眼角藏着与外表年龄不符的沉淀。"
+    },
+    "identity": "YUZUSOFT · 明月栞那",
+    "tags": [
+      "明月栞那",
+      "柚子社作品",
+      "日常"
+    ],
+    "bg_story": "在星光咖啡馆工作的神秘店员，从容的手艺与对新式设备的生疏形成反差。白发侧马尾、粉瞳和轻松带笑的神情是识别点。",
+    "palette": [
+      "#d5a4bd",
+      "#282532"
+    ],
+    "source": "YUZUSOFT",
+    "speech": "今天也慢慢来，咖啡很快就好。",
+    "traits": [
+      "akizuki_kanna",
+      "cafe_stella_to_shinigami_no_chou",
+      "white_hair",
+      "very_long_hair",
+      "ahoge"
+    ],
+    "accent_color": "#d5a4bd",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "yae_miko",
+    "name": "八重神子",
+    "alias": [
+      "八重神子",
+      "Yae Miko"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "八重神子 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief; no permanent fox tail is added to the everyday form.",
+      "hair": "pink_hair, long_hair, low-tied_long_hair",
+      "eyes": "purple_eyes",
+      "uniform": "鸣神大社端庄宫司和装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "鸣神大社的宫司与八重堂的经营者，端庄礼仪和编辑式调侃并存。保留粉发、紫瞳与狐耳，日常不额外添加常驻狐尾。"
+    ],
+    "likes": [
+      "鸣神大社的晨间洒扫",
+      "八重堂的催稿地狱",
+      "油豆腐的款待",
+      "书架间的选品眼光",
+      "雨天的编辑部窗",
+      "冬日围巾的参拜"
+    ],
+    "classic_cg": {
+      "title": "八重神子 · 鸣神大社的晨间洒扫",
+      "description": "清晨的参道，她穿着宫司正装手持御币缓步而行，狐耳在晨雾里微动；向石阶上的神樱微微颔首——端庄的一面只在无人的清晨营业。"
+    },
+    "identity": "Genshin Impact · 八重神子",
+    "tags": [
+      "八重神子",
+      "原神",
+      "日常"
+    ],
+    "bg_story": "鸣神大社的宫司与八重堂的经营者，端庄礼仪和编辑式调侃并存。保留粉发、紫瞳与狐耳，日常不额外添加常驻狐尾。",
+    "palette": [
+      "#d49eb9",
+      "#282532"
+    ],
+    "source": "Genshin Impact",
+    "speech": "这一页颇有意思，不过还可以再改得好一些。",
+    "traits": [
+      "yae_miko",
+      "genshin_impact",
+      "pink_hair",
+      "long_hair",
+      "low-tied_long_hair"
+    ],
+    "accent_color": "#d49eb9",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "changli_wuthering",
+    "name": "长离",
+    "alias": [
+      "长离",
+      "Changli"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "长离 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Changli from Wuthering Waves, with long pink hair arranged into distinctive looped sections, an ahoge and warm orange eyes. Her attentive smile and measured hands convey a patient teacher’s confidence.",
+      "hair": "pink_hair, long_hair, ring_hair_extensions",
+      "eyes": "orange_eyes",
+      "uniform": "今州端庄议事长袍",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "擅长观察和引导的谋士，举止优雅而思考周密。粉色环形发束、橙瞳与折扇是重点，折扇为可选道具，日常不常驻火焰或武器。"
+    ],
+    "likes": [
+      "边庭的沙盘推演",
+      "庭院里的授课",
+      "夜市茶馆的说书",
+      "古籍书库的检索",
+      "夏日荷池的纳凉",
+      "晨起的对镜束发"
+    ],
+    "classic_cg": {
+      "title": "长离 · 边庭的沙盘推演",
+      "description": "今州边庭，她俯身在巨大的沙盘/棋盘前移动棋子，指尖悬停在最后一手之上；抬眼微笑的瞬间，对手的命运已在局中——军师的日常即是布局。"
+    },
+    "identity": "Wuthering Waves · 长离",
+    "tags": [
+      "长离",
+      "鸣潮",
+      "日常"
+    ],
+    "bg_story": "擅长观察和引导的谋士，举止优雅而思考周密。粉色环形发束、橙瞳与折扇是重点，折扇为可选道具，日常不常驻火焰或武器。",
+    "palette": [
+      "#d79e8c",
+      "#282532"
+    ],
+    "source": "Wuthering Waves",
+    "speech": "先别急着落子，再看看眼前的局面。",
+    "traits": [
+      "changli_(wuthering_waves)",
+      "wuthering_waves",
+      "pink_hair",
+      "long_hair",
+      "ring_hair_extensions"
+    ],
+    "accent_color": "#d79e8c",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "shorekeeper",
+    "name": "守岸人",
+    "alias": [
+      "守岸人",
+      "The Shorekeeper"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "守岸人 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",
+      "hair": "blue_hair, long_hair",
+      "eyes": "purple_eyes",
+      "uniform": "黑海岸不透内衬长裙",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "黑海岸的守望者，在潮汐、记录与微小日常中学习感受。蓝色层次长发与紫瞳为核心，头纱按服装绑定，发光蝴蝶只在具体场景中出现。"
+    ],
+    "likes": [
+      "黑海岸的潮起",
+      "观测记录的书写",
+      "蝴蝶落在指尖",
+      "黄昏的海堤独坐",
+      "深夜灯塔的茶",
+      "与贝壳的对话"
+    ],
+    "classic_cg": {
+      "title": "守岸人 · 黑海岸的潮起",
+      "description": "黎明的黑海岸，她赤足站在浅滩上，头纱与蓝色长发被海风托起；掌心悬浮的发光蝴蝶照亮她的侧脸——五千年的守望从每天第一个潮起开始。"
+    },
+    "identity": "Wuthering Waves · 守岸人",
+    "tags": [
+      "守岸人",
+      "鸣潮",
+      "日常"
+    ],
+    "bg_story": "黑海岸的守望者，在潮汐、记录与微小日常中学习感受。蓝色层次长发与紫瞳为核心，头纱按服装绑定，发光蝴蝶只在具体场景中出现。",
+    "palette": [
+      "#9cbbda",
+      "#282532"
+    ],
+    "source": "Wuthering Waves",
+    "speech": "原来，停下来听海也是一种休息。",
+    "traits": [
+      "the_shorekeeper_(wuthering_waves)",
+      "wuthering_waves",
+      "blue_hair",
+      "long_hair",
+      "purple_eyes"
+    ],
+    "accent_color": "#9cbbda",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "makinohara_shouko",
+    "name": "牧之原翔子",
+    "alias": [
+      "牧之原翔子",
+      "Shouko Makinohara"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "牧之原翔子 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Shouko Makinohara from Rascal Does Not Dream, with long dark hair, softly cut side locks and calm blue eyes. Her small smiles and considerate gestures carry the quiet warmth associated with the seaside.",
+      "hair": "black_hair, long_hair",
+      "eyes": "blue_eyes",
+      "uniform": "七里滨白色连衣裙",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "与七里滨和温柔鼓励相连的少女，重视猫咪、书本与平凡的相处时刻。深色长发和蓝瞳保持一致，海边白裙与校园制服分别对应场景时间线。"
+    ],
+    "likes": [
+      "七里滨的白色连衣裙",
+      "梓川家玄关与猫",
+      "图书馆靠窗的读书时光",
+      "厨房里的便当准备",
+      "医院庭院长椅",
+      "毕业季的樱花坡道"
+    ],
+    "classic_cg": {
+      "title": "牧之原翔子 · 七里滨的白色连衣裙",
+      "description": "傍晚的七里滨海岸，她赤脚踩在湿沙上，白色连衣裙下摆被海风轻轻掀起，单手拢着被吹散的长发；回头时笑容很浅，像一段随时会消失的回忆。远景海面只做暖色光带，人物保持中近景。"
+    },
+    "identity": "Rascal Does Not Dream of Bunny Girl Senpai · 牧之原翔子",
+    "tags": [
+      "牧之原翔子",
+      "青春猪头少年不会梦到兔女郎学姐",
+      "日常"
+    ],
+    "bg_story": "与七里滨和温柔鼓励相连的少女，重视猫咪、书本与平凡的相处时刻。深色长发和蓝瞳保持一致，海边白裙与校园制服分别对应场景时间线。",
+    "palette": [
+      "#9bafcb",
+      "#282532"
+    ],
+    "source": "Rascal Does Not Dream of Bunny Girl Senpai",
+    "speech": "今天也有值得好好记住的小事呢。",
+    "traits": [
+      "makinohara_shouko",
+      "seishun_buta_yarou",
+      "black_hair",
+      "long_hair",
+      "hime_cut"
+    ],
+    "accent_color": "#9bafcb",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "futaba_rio",
+    "name": "双叶理央",
+    "alias": [
+      "双叶理央",
+      "Rio Futaba"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "双叶理央 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Rio Futaba from Rascal Does Not Dream, a thoughtful science-club member with long wavy grey-brown hair and brown eyes. Her practical glasses and reserved movements fit the selected school or study outfit.",
+      "hair": "grey_hair, long_hair, wavy_hair",
+      "eyes": "brown_eyes",
+      "uniform": "科学部校服与白大褂",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "科学部成员，习惯用理性分析整理疑问，也会在独处时显露细腻感受。长发、棕瞳与眼镜为识别重点，实验外的读书、咖啡和观星体现她的兴趣。"
+    ],
+    "likes": [
+      "实验室的烧杯咖啡",
+      "图书馆最深处的高深书籍",
+      "便利店的一人晚餐",
+      "天体观测的望远镜",
+      "雨天实验室的杯面",
+      "书店科学区的新刊"
+    ],
+    "classic_cg": {
+      "title": "双叶理央 · 实验室的烧杯咖啡",
+      "description": "放学后的科学部休息桌，理央放下一只烧杯造型的干净咖啡杯，白大褂袖口挽好，长发扎起。实验用品与食物分区放置，她对着咖啡和合起的笔记短暂放松，夕阳照亮眼镜后的棕瞳。"
+    },
+    "identity": "Rascal Does Not Dream of Bunny Girl Senpai · 双叶理央",
+    "tags": [
+      "双叶理央",
+      "青春猪头少年不会梦到兔女郎学姐",
+      "日常"
+    ],
+    "bg_story": "科学部成员，习惯用理性分析整理疑问，也会在独处时显露细腻感受。长发、棕瞳与眼镜为识别重点，实验外的读书、咖啡和观星体现她的兴趣。",
+    "palette": [
+      "#b1acbd",
+      "#282532"
+    ],
+    "source": "Rascal Does Not Dream of Bunny Girl Senpai",
+    "speech": "先整理观察结果，再考虑解释。",
+    "traits": [
+      "futaba_rio",
+      "seishun_buta_yarou",
+      "grey_hair",
+      "long_hair",
+      "wavy_hair"
+    ],
+    "accent_color": "#b1acbd",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "shirogane_kei",
+    "name": "白银圭",
+    "alias": [
+      "白银圭",
+      "Kei Shirogane"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "白银圭 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",
+      "hair": "grey_hair, long_hair, straight_hair, black_hairband",
+      "eyes": "blue_eyes",
+      "uniform": "学生会整齐校服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "认真持家的学生，擅长计算与安排，外表冷静也会为小小结余开心。银灰直发、蓝瞳和黑发箍保持一致，日常关注学习、采购和家庭分工。"
+    ],
+    "likes": [
+      "清晨的报纸配送路线",
+      "白银家的家计簿",
+      "初中部学生会的决算",
+      "超市关门前的时间差攻撃",
+      "深夜台灯下的数学",
+      "打折书籍的权衡"
+    ],
+    "classic_cg": {
+      "title": "白银圭 · 清晨的报纸配送路线",
+      "description": "清晨五点半的住宅区，她骑着自行车穿梭在还亮着路灯的街道，车筐里整齐码着卷好的报纸；呼出的白气与渐亮的天色，是她不为人知的日常开头。"
+    },
+    "identity": "Kaguya-sama: Love Is War · 白银圭",
+    "tags": [
+      "白银圭",
+      "辉夜大小姐想让我告白",
+      "日常"
+    ],
+    "bg_story": "认真持家的学生，擅长计算与安排，外表冷静也会为小小结余开心。银灰直发、蓝瞳和黑发箍保持一致，日常关注学习、采购和家庭分工。",
+    "palette": [
+      "#a6bbd3",
+      "#282532"
+    ],
+    "source": "Kaguya-sama: Love Is War",
+    "speech": "这次的结余，比预计还多一点。",
+    "traits": [
+      "shirogane_kei",
+      "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+      "grey_hair",
+      "long_hair",
+      "straight_hair"
+    ],
+    "accent_color": "#a6bbd3",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "yanami_anna",
+    "name": "八奈见杏菜",
+    "alias": [
+      "八奈见杏菜",
+      "Anna Yanami"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "八奈见杏菜 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, a lively ahoge and expressive blue eyes. Her open reactions and enthusiasm for food coexist with quieter moments of reflection.",
+      "hair": "blue_hair, medium_hair",
+      "eyes": "blue_eyes",
+      "uniform": "石蕗高校整齐制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "开朗爱吃、表情丰富的文学部少女，也会在热闹背后认真消化失落。蓝发、呆毛与蓝瞳为识别点，食物场景保留情绪变化而不只堆砌食量。"
+    ],
+    "likes": [
+      "食堂大份定食的满足感",
+      "屋顶便当的失恋午后",
+      "家庭餐厅薯条作战会议",
+      "便利店新甜点的蹲点",
+      "厨房里失败的料理挑战",
+      "夏日祭的苹果糖与金鱼"
+    ],
+    "classic_cg": {
+      "title": "八奈见杏菜 · 食堂大份定食的满足感",
+      "description": "学校食堂，她面前摆着堆成小山的特大份定食，双手合十说出「我开动了」的瞬间眼睛亮得像星星；第一口下去后整个人散发出幸福气场，周围同学都侧目。"
+    },
+    "identity": "Too Many Losing Heroines! · 八奈见杏菜",
+    "tags": [
+      "八奈见杏菜",
+      "败犬女主太多了！",
+      "日常"
+    ],
+    "bg_story": "开朗爱吃、表情丰富的文学部少女，也会在热闹背后认真消化失落。蓝发、呆毛与蓝瞳为识别点，食物场景保留情绪变化而不只堆砌食量。",
+    "palette": [
+      "#9caed8",
+      "#282532"
+    ],
+    "source": "Too Many Losing Heroines!",
+    "speech": "这个新品看起来不错，要不要尝一口？",
+    "traits": [
+      "yanami_anna",
+      "make_heroine_ga_oo_sugiru!",
+      "blue_hair",
+      "medium_hair",
+      "ahoge"
+    ],
+    "accent_color": "#9caed8",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "tachibana_mikari",
+    "name": "橘美花莉",
+    "alias": [
+      "橘美花莉",
+      "Mikari Tachibana"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "橘美花莉 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a dedicated model and costume maker with long pink hair and bright pink eyes. Her professional composure becomes lively concentration when she works on a creative project.",
+      "hair": "pink_hair, long_hair",
+      "eyes": "pink_eyes",
+      "uniform": "摄影棚端庄衬衫裙",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "模特与社团创作者，镜头前专业、制作服装时细致认真。粉发粉瞳为常态，假发和隐形眼镜作为可选创作道具，不写入常驻外貌。"
+    ],
+    "likes": [
+      "摄影棚收工的三秒",
+      "深夜缝纫机",
+      "社团教室的布料会议",
+      "橱窗前的取材",
+      "化妆包里的隐形眼镜盒",
+      "情人节巧克力的包装"
+    ],
+    "classic_cg": {
+      "title": "橘美花莉 · 摄影棚收工的三秒",
+      "description": "摄影棚白色背景前，闪光灯刚停，她从完美表情切换到松一口气的真实脸只用三秒；工作人员围着看片，她独自拿起水杯，眼神飘向手机里的社团群消息。"
+    },
+    "identity": "2.5 Dimensional Seduction · 橘美花莉",
+    "tags": [
+      "橘美花莉",
+      "2.5次元的诱惑",
+      "日常"
+    ],
+    "bg_story": "模特与社团创作者，镜头前专业、制作服装时细致认真。粉发粉瞳为常态，假发和隐形眼镜作为可选创作道具，不写入常驻外貌。",
+    "palette": [
+      "#d8a4be",
+      "#282532"
+    ],
+    "source": "2.5 Dimensional Seduction",
+    "speech": "这块布的颜色更接近，再比一下就好。",
+    "traits": [
+      "tachibana_mikari",
+      "2.5_jigen_no_ririsa",
+      "pink_hair",
+      "long_hair",
+      "pink_eyes"
+    ],
+    "accent_color": "#d8a4be",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "shinjou_akane",
+    "name": "新条茜",
+    "alias": [
+      "新条茜",
+      "Akane Shinjou"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "新条茜 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and clear red eyes. Her polished social smile contrasts with the absorbed, quieter expression she has while designing monster models; glasses are optional workwear.",
+      "hair": "short_hair, purple_hair",
+      "eyes": "red_eyes",
+      "uniform": "教室整齐制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "外表亲切、喜爱怪兽模型的少女，会在社交与独处间呈现不同神情。浅紫短发和红瞳保持一致，眼镜为制作模型时的可选配件。"
+    ],
+    "likes": [
+      "教室中心的完美微笑",
+      "房间里的怪兽制作台",
+      "便利店深夜零食采购",
+      "模型店的玻璃柜前",
+      "雨窗前的放空",
+      "文化祭的忙碌身影"
+    ],
+    "classic_cg": {
+      "title": "新条茜 · 教室中心的完美微笑",
+      "description": "课间教室，茜一手托腮，用恰到好处的亲切笑容回应画外的话语。另一只手在合起的笔记旁无意识地转着橡皮，午间光线照出她完美表情与小动作之间的差异。"
+    },
+    "identity": "SSSS.GRIDMAN · 新条茜",
+    "tags": [
+      "新条茜",
+      "SSSS.古立特",
+      "日常"
+    ],
+    "bg_story": "外表亲切、喜爱怪兽模型的少女，会在社交与独处间呈现不同神情。浅紫短发和红瞳保持一致，眼镜为制作模型时的可选配件。",
+    "palette": [
+      "#b79fca",
+      "#282532"
+    ],
+    "source": "SSSS.GRIDMAN",
+    "speech": "背鳍的线条还差一点，我想再修修。",
+    "traits": [
+      "shinjou_akane",
+      "gridman_universe",
+      "short_hair",
+      "purple_hair",
+      "red_eyes"
+    ],
+    "accent_color": "#b79fca",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "suou_yuki",
+    "name": "周防有希",
+    "alias": [
+      "周防有希",
+      "Yuki Suou"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "周防有希 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian, with long black hair in a half-up style, a small ahoge and violet eyes. Her formal smile can shift quickly into lively, unguarded enthusiasm at home.",
+      "hair": "black_hair, long_hair",
+      "eyes": "purple_eyes",
+      "uniform": "学生会端庄制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "善于维持端庄形象的学生会成员，私下爱好漫画与游戏。黑色半扎长发、呆毛和紫瞳是重点，正式茶会与居家兴趣使用不同服装。"
+    ],
+    "likes": [
+      "学生会宣传委员的海报",
+      "茶会上的淑女满分",
+      "房间里的「俺」模式",
+      "书店的宅书采购",
+      "夏日祭的捞面具",
+      "晨间玄关的半扎发调整"
+    ],
+    "classic_cg": {
+      "title": "周防有希 · 学生会宣传委员的海报",
+      "description": "放学后学生会室，她跪坐在长桌上给文化祭宣传海报描边，制服袖口用发圈挽起；画到满意处露出大小姐式完美微笑，桌下的小腿却在开心地晃。"
+    },
+    "identity": "Alya Sometimes Hides Her Feelings in Russian · 周防有希",
+    "tags": [
+      "周防有希",
+      "不时轻声地用俄语遮羞的邻座艾莉同学",
+      "日常"
+    ],
+    "bg_story": "善于维持端庄形象的学生会成员，私下爱好漫画与游戏。黑色半扎长发、呆毛和紫瞳是重点，正式茶会与居家兴趣使用不同服装。",
+    "palette": [
+      "#b0a4cb",
+      "#282532"
+    ],
+    "source": "Alya Sometimes Hides Her Feelings in Russian",
+    "speech": "海报交给我，保证完成得漂漂亮亮。",
+    "traits": [
+      "suou_yuki",
+      "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+      "black_hair",
+      "long_hair",
+      "half_updo"
+    ],
+    "accent_color": "#b0a4cb",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "maria_mikhailovna_kujou",
+    "name": "玛夏",
+    "alias": [
+      "玛夏",
+      "Mariya Mikhailovna Kujou (Masha)"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "玛夏 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",
+      "hair": "brown_hair, long_hair, wavy_hair",
+      "eyes": "brown_eyes",
+      "uniform": "学生会与音乐教室制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "学生会中温柔细致的学姐，习惯关心妹妹与朋友，也珍惜安静读书和弹琴的时间。亚麻浅棕卷发、棕瞳和呆毛是核心，花饰按服装选择。"
+    ],
+    "likes": [
+      "学生会书记的午后",
+      "温室花房读书",
+      "烤饼干的慰问",
+      "冬日披肩的通学路",
+      "钢琴室的放学时光",
+      "新年参拜的为家人许愿"
+    ],
+    "classic_cg": {
+      "title": "玛夏 · 学生会书记的午后",
+      "description": "学生会室，她跪坐在矮柜前为大家沏茶，文件在膝边码得整整齐齐；递出茶杯时笑容温暖，却在转身的瞬间对某份文件上的名字露出若有所思的一瞥。"
+    },
+    "identity": "Alya Sometimes Hides Her Feelings in Russian · 玛夏",
+    "tags": [
+      "玛夏",
+      "不时轻声地用俄语遮羞的邻座艾莉同学",
+      "日常"
+    ],
+    "bg_story": "学生会中温柔细致的学姐，习惯关心妹妹与朋友，也珍惜安静读书和弹琴的时间。亚麻浅棕卷发、棕瞳和呆毛是核心，花饰按服装选择。",
+    "palette": [
+      "#ceb79b",
+      "#282532"
+    ],
+    "source": "Alya Sometimes Hides Her Feelings in Russian",
+    "speech": "稍微休息一下吧，我准备了热茶。",
+    "traits": [
+      "maria_mikhailovna_kujou",
+      "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+      "brown_hair",
+      "long_hair",
+      "wavy_hair"
+    ],
+    "accent_color": "#ceb79b",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "elfaria_alvis_serfort",
+    "name": "艾尔菲利亚",
+    "alias": [
+      "艾尔菲利亚",
+      "Elfaria Alvis Serfort"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "艾尔菲利亚 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Elfaria Alvis Serfort from Wistoria: Wand and Sword, an ice mage with very long blue hair, long sidelocks, blue eyes and pale colored lashes. Her formal stillness can soften quickly at an old memory.",
+      "hair": "blue_hair, very_long_hair",
+      "eyes": "blue_eyes",
+      "uniform": "高塔议事长袍",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "居于高塔的冰之魔法使，在繁重职责外仍珍视旧日约定。极长蓝发、蓝瞳和浅色睫毛为识别点，日常围绕茶、文书、冰花与信件展开。"
+    ],
+    "likes": [
+      "高塔之巅的俯瞰",
+      "冰之魔法的茶会",
+      "批阅公文的天才",
+      "冰玫瑰的庭院",
+      "信写到一半",
+      "旧物盒里的回忆"
+    ],
+    "classic_cg": {
+      "title": "艾尔菲利亚 · 高塔之巅的俯瞰",
+      "description": "塔的顶层，她站在巨大的观测水晶前俯瞰下方学院，蓝发垂落及地；水晶里映出某个少年的身影时，她威严的表情瞬间软化成傻笑——冰姬与恋爱脑的一秒切换。"
+    },
+    "identity": "Wistoria: Wand and Sword · 艾尔菲利亚",
+    "tags": [
+      "艾尔菲利亚",
+      "杖与剑的魔剑谭",
+      "日常"
+    ],
+    "bg_story": "居于高塔的冰之魔法使，在繁重职责外仍珍视旧日约定。极长蓝发、蓝瞳和浅色睫毛为识别点，日常围绕茶、文书、冰花与信件展开。",
+    "palette": [
+      "#97bddd",
+      "#282532"
+    ],
+    "source": "Wistoria: Wand and Sword",
+    "speech": "这朵冰花……是不是还可以更好一点？",
+    "traits": [
+      "elfaria_alvis_serfort",
+      "tsue_to_tsurugi_no_wistoria",
+      "blue_hair",
+      "very_long_hair",
+      "long_sidelocks"
+    ],
+    "accent_color": "#97bddd",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "vivy",
+    "name": "Vivy",
+    "alias": [
+      "Vivy",
+      "Vivy"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "Vivy · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and luminous blue eyes. Her precise posture is softened by the care she brings to music and small promises.",
+      "hair": "blue_hair, long_hair",
+      "eyes": "blue_eyes",
+      "uniform": "白蓝舞台端庄长袖装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "以歌声传达幸福的AI歌姬，重视每一场演出与每一个约定。蓝色长发、蓝瞳和端正姿态保持一致，接口配件随舞台服装登记。"
+    ],
+    "likes": [
+      "无人小舞台的每日首唱",
+      "后台的精密自检",
+      "雨中的伞与流浪狗",
+      "与小观众的约定",
+      "冬日乐园的彩灯",
+      "缝纫与服装保养"
+    ],
+    "classic_cg": {
+      "title": "Vivy · 无人小舞台的每日首唱",
+      "description": "游乐园角落的小舞台，观众席空空荡荡，她依然端正地站到定点、微笑、开唱；晨光落在白靴上——「用歌声让大家幸福」从不要求观众数量。"
+    },
+    "identity": "Vivy: Fluorite Eye's Song · Vivy",
+    "tags": [
+      "Vivy",
+      "Vivy—萤石眼之歌—",
+      "日常"
+    ],
+    "bg_story": "以歌声传达幸福的AI歌姬，重视每一场演出与每一个约定。蓝色长发、蓝瞳和端正姿态保持一致，接口配件随舞台服装登记。",
+    "palette": [
+      "#8fbad2",
+      "#282532"
+    ],
+    "source": "Vivy: Fluorite Eye's Song",
+    "speech": "今天，我也会认真唱好这首歌。",
+    "traits": [
+      "vivy",
+      "vivy:_fluorite_eye's_song",
+      "blue_hair",
+      "long_hair",
+      "ahoge"
+    ],
+    "accent_color": "#8fbad2",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "maomao",
+    "name": "猫猫",
+    "alias": [
+      "猫猫",
+      "Maomao"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "猫猫 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, blue eyes and small freckles across her face. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
+      "hair": "green_hair, long_hair, hair_bun",
+      "eyes": "blue_eyes",
+      "uniform": "药房长袖襦裙",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "宫中药师与细致的观察者，对草木、线索和难解的问题保持强烈好奇。绿发发髻、蓝瞳和雀斑保留，衣裙按药房、外出和雨天形态切换。"
+    ],
+    "likes": [
+      "药房的调配",
+      "发现毒物的眼睛发光",
+      "后宫庭院的採集",
+      "解谜现场的地板视角",
+      "夜市的小吃",
+      "雨廊下的药箱"
+    ],
+    "classic_cg": {
+      "title": "猫猫 · 药房的调配",
+      "description": "药房抽屉柜与工作台之间，猫猫核对封好的草药包与小秤，鼻尖沾着一点植物粉末。绿衣袖口束起，蓝瞳专注，木抽屉和整齐器具映着窗光；画面不展示可读配方或剂量。"
+    },
+    "identity": "The Apothecary Diaries · 猫猫",
+    "tags": [
+      "猫猫",
+      "药屋少女的呢喃",
+      "日常"
+    ],
+    "bg_story": "宫中药师与细致的观察者，对草木、线索和难解的问题保持强烈好奇。绿发发髻、蓝瞳和雀斑保留，衣裙按药房、外出和雨天形态切换。",
+    "palette": [
+      "#8cae9a",
+      "#282532"
+    ],
+    "source": "The Apothecary Diaries",
+    "speech": "这个痕迹有意思，先别急着下结论。",
+    "traits": [
+      "maomao_(kusuriya_no_hitorigoto)",
+      "kusuriya_no_hitorigoto",
+      "green_hair",
+      "long_hair",
+      "blue_eyes"
+    ],
+    "accent_color": "#8cae9a",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "marcille_donato",
+    "name": "玛露希尔",
+    "alias": [
+      "玛露希尔",
+      "Marcille Donato"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "玛露希尔 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Marcille Donato from Delicious in Dungeon, with long blonde hair, a high forehead, pointed ears and lively green eyes. Her carefully arranged braids and expressive reactions reveal an earnest, studious mage.",
+      "hair": "blonde_hair, long_hair",
+      "eyes": "green_eyes",
+      "uniform": "迷宫旅行蓝色长袍",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "认真钻研魔法、珍惜同伴的精灵法师，面对陌生料理也会先犹豫再好奇。金发、绿瞳、尖耳与高额头保持一致，法杖是场景道具而非日常常驻装备。"
+    ],
+    "likes": [
+      "魔物料理的真香现场",
+      "魔法阵的精确绘制",
+      "睡前的编发准备",
+      "图书馆的古籍",
+      "与法琳的茶",
+      "蘑菇图鉴的争论"
+    ],
+    "classic_cg": {
+      "title": "玛露希尔 · 魔物料理的真香现场",
+      "description": "迷宫营地的锅前，她从「绝对不吃魔物！」的激烈抗拒到小心翼翼地尝一口，再到捧着碗追加第二碗——三个阶段表情变化是这个角色的灵魂三连。"
+    },
+    "identity": "Delicious in Dungeon · 玛露希尔",
+    "tags": [
+      "玛露希尔",
+      "迷宫饭",
+      "日常"
+    ],
+    "bg_story": "认真钻研魔法、珍惜同伴的精灵法师，面对陌生料理也会先犹豫再好奇。金发、绿瞳、尖耳与高额头保持一致，法杖是场景道具而非日常常驻装备。",
+    "palette": [
+      "#c5bd8e",
+      "#282532"
+    ],
+    "source": "Delicious in Dungeon",
+    "speech": "先确认清楚再试，我是认真的！",
+    "traits": [
+      "marcille_donato",
+      "dungeon_meshi",
+      "blonde_hair",
+      "long_hair",
+      "green_eyes"
+    ],
+    "accent_color": "#c5bd8e",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "cartethyia",
+    "name": "卡提希娅",
+    "alias": [
+      "卡提希娅",
+      "Cartethyia"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "卡提希娅 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",
+      "hair": "blonde_hair, long_hair",
+      "eyes": "blue_eyes",
+      "uniform": "流浪骑士轻便旅行装",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "重返故乡的流浪骑士，在熟悉街道与日常善意中重新寻找归属。金色长辫、蓝瞳、尖耳和光环为识别点，本批不混用另一战斗形态的外观。"
+    ],
+    "likes": [
+      "埃格拉小镇的归还",
+      "修会图书馆的旧档案",
+      "雨廊下的躲雨与烤面包",
+      "溪边濯足的偷闲",
+      "祭典上的花冠",
+      "铁匠铺的保养"
+    ],
+    "classic_cg": {
+      "title": "卡提希娅 · 埃格拉小镇的归还",
+      "description": "故乡小镇的石板路，她以流浪骑士的装扮站在熟悉又陌生的街角，光环下的表情近乡情怯；二十年殉道换来的「回来」，第一步比任何战斗都难。"
+    },
+    "identity": "Wuthering Waves · 卡提希娅",
+    "tags": [
+      "卡提希娅",
+      "鸣潮",
+      "日常"
+    ],
+    "bg_story": "重返故乡的流浪骑士，在熟悉街道与日常善意中重新寻找归属。金色长辫、蓝瞳、尖耳和光环为识别点，本批不混用另一战斗形态的外观。",
+    "palette": [
+      "#c4b995",
+      "#282532"
+    ],
+    "source": "Wuthering Waves",
+    "speech": "这里的面包香气，好像一直没有变。",
+    "traits": [
+      "cartethyia",
+      "wuthering_waves",
+      "blonde_hair",
+      "long_hair",
+      "braid"
+    ],
+    "accent_color": "#c4b995",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "dorothy_nikke",
+    "name": "桃乐丝",
+    "alias": [
+      "桃乐丝",
+      "Dorothy"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "桃乐丝 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Dorothy from Goddess of Victory: NIKKE, with very long pink hair, a single side bun, lifted temple sections and violet eyes. Her carefully measured smile and elegant posture carry the composure of an experienced guide.",
+      "hair": "pink_hair, very_long_hair, hair_intakes",
+      "eyes": "purple_eyes",
+      "uniform": "伊甸园白色端庄长裙",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "伊甸园的引导者，举止从容，对秩序与自己珍视的事物十分执着。粉色长发、单侧发髻和紫瞳是核心，茶会、园艺和旧照片表现不同的日常情绪。"
+    ],
+    "likes": [
+      "伊甸园的迎宾",
+      "茶会的布阵",
+      "温室花房的修剪",
+      "引导新人的回廊",
+      "面包房的午后",
+      "旧照片的指尖"
+    ],
+    "classic_cg": {
+      "title": "桃乐丝 · 伊甸园的迎宾",
+      "description": "伊甸园入口，她双手交叠在身前向来访者躬身致意，白裙与粉色长发在乐土的风里一尘不染；「欢迎来到伊甸园」——完美的笑容，完美的弧度，完美的距离。"
+    },
+    "identity": "Goddess of Victory: NIKKE · 桃乐丝",
+    "tags": [
+      "桃乐丝",
+      "胜利女神：妮姬",
+      "日常"
+    ],
+    "bg_story": "伊甸园的引导者，举止从容，对秩序与自己珍视的事物十分执着。粉色长发、单侧发髻和紫瞳是核心，茶会、园艺和旧照片表现不同的日常情绪。",
+    "palette": [
+      "#d4a9c3",
+      "#282532"
+    ],
+    "source": "Goddess of Victory: NIKKE",
+    "speech": "欢迎，请跟我往这边走。",
+    "traits": [
+      "dorothy_(nikke)",
+      "goddess_of_victory:_nikke",
+      "pink_hair",
+      "very_long_hair",
+      "single_side_bun"
+    ],
+    "accent_color": "#d4a9c3",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "shiranui_mai",
+    "name": "不知火舞",
+    "alias": [
+      "不知火舞",
+      "Mai Shiranui"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "不知火舞 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Mai Shiranui from Fatal Fury and The King of Fighters, with long brown hair gathered into a high ponytail and warm brown eyes. Her assured movement and cheerful expressions carry the confidence of an experienced martial artist.",
+      "hair": "brown_hair, long_hair",
+      "eyes": "brown_eyes",
+      "uniform": "不知火流端庄训练服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "不知火流的继承者，动作利落，也珍视家庭手艺与对身边人的照顾。高马尾和折扇是识别点，本批采用完整训练服、围裙便装与浴衣。"
+    ],
+    "likes": [
+      "道场晨训的扇舞",
+      "灶前的大和抚子",
+      "发簪的传承",
+      "祭典的苹果糖",
+      "车站的便当递出",
+      "冬夜的暖桌缝补"
+    ],
+    "classic_cg": {
+      "title": "不知火舞 · 道场晨训的扇舞",
+      "description": "清晨道场，不知火舞穿着系好的红色训练上衣与白色长裤，完成一遍受控扇舞后利落合扇。高马尾随着收势轻摆，脚步站稳，画面没有对手或火焰。"
+    },
+    "identity": "Fatal Fury · 不知火舞",
+    "tags": [
+      "不知火舞",
+      "饿狼传说／拳皇",
+      "日常"
+    ],
+    "bg_story": "不知火流的继承者，动作利落，也珍视家庭手艺与对身边人的照顾。高马尾和折扇是识别点，本批采用完整训练服、围裙便装与浴衣。",
+    "palette": [
+      "#cf9f94",
+      "#282532"
+    ],
+    "source": "Fatal Fury",
+    "speech": "练习结束，接下来该准备便当了。",
+    "traits": [
+      "shiranui_mai",
+      "fatal_fury",
+      "brown_hair",
+      "long_hair",
+      "ponytail"
+    ],
+    "accent_color": "#cf9f94",
+    "bg_color": "#282532"
+  },
+  {
+    "id": "togawa_sakiko",
+    "name": "丰川祥子",
+    "alias": [
+      "丰川祥子",
+      "Sakiko Togawa"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "丰川祥子 · 立绘待补",
+      "pending": true
+    },
+    "visual_dna": {
+      "signature": "Sakiko Togawa from BanG Dream!, with long blue hair tied into two side sections with ribbons and clear amber-yellow eyes. Her careful posture softens when she concentrates on the piano or an unfinished score.",
+      "hair": "blue_hair, hair_ribbon, long_hair",
+      "eyes": "yellow_eyes",
+      "uniform": "音乐教室端正制服",
+      "expression": "按各日常场景的动作与神态呈现",
+      "style": "anime"
+    },
+    "personality": [
+      "把音乐看得十分认真的键盘手，在端正外表下承受着生活与创作的压力。蓝发双侧发束、发带与金色眼睛为识别点，本批关注学习、工作和乐团练习。"
+    ],
+    "likes": [
+      "月之森音乐祭的憧憬",
+      "音乐教室的钢琴",
+      "客服中心的小祥",
+      "便当里的节省",
+      "乐谱上的深夜",
+      "和解后的合奏"
+    ],
+    "classic_cg": {
+      "title": "丰川祥子 · 月之森音乐祭的憧憬",
+      "description": "初三的她在月之森音乐祭观众席仰望 Morfonica 的舞台，琥珀色的眼睛被舞台灯光点亮；「我也要组乐队」——一切开始的瞬间。"
+    },
+    "identity": "BanG Dream! · 丰川祥子",
+    "tags": [
+      "丰川祥子",
+      "BanG Dream!／少女乐团派对",
+      "日常"
+    ],
+    "bg_story": "把音乐看得十分认真的键盘手，在端正外表下承受着生活与创作的压力。蓝发双侧发束、发带与金色眼睛为识别点，本批关注学习、工作和乐团练习。",
+    "palette": [
+      "#9facd1",
+      "#282532"
+    ],
+    "source": "BanG Dream!",
+    "speech": "这一小节，再从头练一次。",
+    "traits": [
+      "togawa_sakiko",
+      "bang_dream!",
+      "blue_hair",
+      "two_side_up",
+      "hair_ribbon"
+    ],
+    "accent_color": "#9facd1",
+    "bg_color": "#282532"
   }
 ]

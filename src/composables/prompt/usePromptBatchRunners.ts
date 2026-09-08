@@ -1,4 +1,5 @@
 import { ref, type Ref } from 'vue'
+import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '@/stores/promptBuilderStore'
 import { apiClient } from '@/api/client'
 import {
@@ -448,7 +449,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           characterId: pop.id,
           title: pop.displayName,
           subtitle: pop.franchise,
-          avatarUrl: `/assets/characters/thumbs/popular-${pop.id}.webp`,
+          avatarUrl: popularPortraitSrc(pop.id),
           prose: basePrompt,
           kind: 'character',
         }
@@ -460,7 +461,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
           characterId: id,
           title: name,
           subtitle: '星光咖啡馆与死神之蝶',
-          avatarUrl: `/assets/characters/thumbs/popular-${id}.webp`,
+          avatarUrl: popularPortraitSrc(id),
           prose: basePrompt,
           kind: 'character',
         }
@@ -499,7 +500,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
             characterId: pop.id,
             title: pop.displayName,
             subtitle: pop.franchise,
-            avatarUrl: `/assets/characters/thumbs/popular-${pop.id}.webp`,
+            avatarUrl: popularPortraitSrc(pop.id),
             prose: job.subtitle || deps.currentBasePrompt?.() || pb.story || '',
             kind: 'character',
           })
@@ -509,7 +510,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
             characterId: job.sceneId,
             title: job.sceneTitle || job.sceneId,
             subtitle: '星光咖啡馆与死神之蝶',
-            avatarUrl: `/assets/characters/thumbs/popular-${job.sceneId}.webp`,
+            avatarUrl: popularPortraitSrc(job.sceneId),
             prose: deps.currentBasePrompt?.() || pb.story || '',
             kind: 'character',
           })

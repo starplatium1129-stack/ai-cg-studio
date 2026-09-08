@@ -109,6 +109,7 @@
 </template>
 
 <script setup lang="ts">
+import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -148,7 +149,7 @@ const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprint
 
 const directoryItems = computed(() => characters.value.map(character => ({
   id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases,
-  image: '/assets/characters/thumbs/popular-' + character.id + '.webp',
+  image: popularPortraitSrc(character.id),
 })))
 
 /** 当前角色的全部蓝图（资格按成熟开关收敛）。 */

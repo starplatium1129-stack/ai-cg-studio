@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "franchise": "The Apothecary Diaries",
+  "characters": [
+    {
+      "id": "maomao",
+      "displayName": "猫猫",
+      "originalName": "Maomao",
+      "franchise": "The Apothecary Diaries",
+      "aliases": [
+        "猫猫",
+        "Maomao"
+      ],
+      "identityProse": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, blue eyes and small freckles across her face. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
+      "identityTokens": [
+        "maomao_(kusuriya_no_hitorigoto)",
+        "kusuriya_no_hitorigoto",
+        "green_hair",
+        "long_hair",
+        "blue_eyes",
+        "freckles",
+        "hair_bun"
+      ],
+      "exactTokens": [
+        "maomao_(kusuriya_no_hitorigoto)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, maomao_(kusuriya_no_hitorigoto)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_pharmacy",
+          "name": "药房长袖襦裙",
+          "prose": "a modest green long-sleeved jacket over a cream inner collar and ankle-length skirt",
+          "tokens": [
+            "green_jacket",
+            "long_sleeves",
+            "cream_collar",
+            "aoqun",
+            "long_skirt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_market",
+          "name": "街巷外出襦裙",
+          "prose": "a pale rose long-sleeved blouse, dark green ankle-length skirt and small cloth bag",
+          "tokens": [
+            "rose_blouse",
+            "long_sleeves",
+            "green_skirt",
+            "cloth_bag"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_rain",
+          "name": "回廊防雨披肩装",
+          "prose": "a dark green cape over a closed-collar long robe and practical shoes",
+          "tokens": [
+            "green_cape",
+            "high_collar",
+            "long_robe",
+            "shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

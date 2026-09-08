@@ -70,6 +70,22 @@ const FRANCHISE_CN: Record<string, string> = {
   "Eromanga Sensei": "埃罗芒阿老师",
   "SSSS.GRIDMAN": "SSSS.古立特",
   "Horimiya": "堀与宫村",
+  "The Rising of the Shield Hero": "盾之勇者成名录",
+  "DARLING in the FRANXX": "DARLING in the FRANXX／国家队",
+  "One-Punch Man": "一拳超人",
+  "Detective Conan": "名侦探柯南",
+  "Yosuga no Sora": "缘之空",
+  "Witch on the Holy Night": "魔法使之夜",
+  "Wuthering Waves": "鸣潮",
+  "Too Many Losing Heroines!": "败犬女主太多了！",
+  "2.5 Dimensional Seduction": "2.5次元的诱惑",
+  "Wistoria: Wand and Sword": "杖与剑的魔剑谭",
+  "Vivy: Fluorite Eye's Song": "Vivy—萤石眼之歌—",
+  "The Apothecary Diaries": "药屋少女的呢喃",
+  "Delicious in Dungeon": "迷宫饭",
+  "Goddess of Victory: NIKKE": "胜利女神：妮姬",
+  "Fatal Fury": "饿狼传说／拳皇",
+  "BanG Dream!": "BanG Dream!／少女乐团派对",
 }
 
 /** Every catalog franchise must explicitly register a display label. Unknown imports remain identifiable. */

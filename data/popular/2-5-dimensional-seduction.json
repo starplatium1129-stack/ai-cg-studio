@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "franchise": "2.5 Dimensional Seduction",
+  "characters": [
+    {
+      "id": "tachibana_mikari",
+      "displayName": "橘美花莉",
+      "originalName": "Mikari Tachibana",
+      "franchise": "2.5 Dimensional Seduction",
+      "aliases": [
+        "橘美花莉",
+        "Mikari Tachibana"
+      ],
+      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a dedicated model and costume maker with long pink hair and bright pink eyes. Her professional composure becomes lively concentration when she works on a creative project.",
+      "identityTokens": [
+        "tachibana_mikari",
+        "2.5_jigen_no_ririsa",
+        "pink_hair",
+        "long_hair",
+        "pink_eyes"
+      ],
+      "exactTokens": [
+        "tachibana_mikari"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, tachibana_mikari"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_studio",
+          "name": "摄影棚端庄衬衫裙",
+          "prose": "a white collared blouse and opaque pink knee-length skirt with flat shoes",
+          "tokens": [
+            "white_blouse",
+            "collar",
+            "pink_skirt",
+            "knee_length_skirt",
+            "flat_shoes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_craft",
+          "name": "缝纫工作针织便装",
+          "prose": "a lavender long-sleeved cardigan, white shirt and comfortable dark trousers",
+          "tokens": [
+            "lavender_cardigan",
+            "white_shirt",
+            "dark_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_school",
+          "name": "漫研社整齐制服",
+          "prose": "a dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

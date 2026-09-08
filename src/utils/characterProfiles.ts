@@ -1,4 +1,5 @@
 import type { Scene } from '@/stores/sceneStore'
+export { popularPortraitSrc, isPopularPortraitPending } from './popularPortraitSource.ts'
 
 export interface CharacterIdentity {
   role?: string

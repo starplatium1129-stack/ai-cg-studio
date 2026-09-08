@@ -250,6 +250,97 @@
         "research": "2026-08-18 调研"
       },
       "animeStudio": "madhouse, official anime screencap, anime coloring"
+    },
+    {
+      "id": "ubel_frieren",
+      "displayName": "尤贝尔",
+      "originalName": "Übel",
+      "franchise": "Frieren: Beyond Journey's End",
+      "aliases": [
+        "尤贝尔",
+        "Übel"
+      ],
+      "identityProse": "Übel from Frieren: Beyond Journey's End, a curious mage with long green hair in a side ponytail, M-shaped bangs and heavy-lidded purple eyes. Her easy smile and unhurried gaze suggest a habit of asking intrusive questions.",
+      "identityTokens": [
+        "ubel_(sousou_no_frieren)",
+        "sousou_no_frieren",
+        "green_hair",
+        "long_hair",
+        "side_ponytail",
+        "purple_eyes",
+        "half-closed_eyes"
+      ],
+      "exactTokens": [
+        "ubel_(sousou_no_frieren)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, ubel_(sousou_no_frieren)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_travel",
+          "name": "黑裙旅行装",
+          "prose": "a modest knee-length black dress with a fitted belt, opaque tights and practical boots",
+          "tokens": [
+            "black_dress",
+            "knee_length_dress",
+            "belt",
+            "opaque_tights",
+            "boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_kitchen",
+          "name": "借宿厨房围裙装",
+          "prose": "a green long-sleeved shirt, black trousers and a plain linen apron",
+          "tokens": [
+            "green_shirt",
+            "long_sleeves",
+            "black_pants",
+            "linen_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬夜修补针织装",
+          "prose": "a charcoal knitted cardigan over a cream blouse and long skirt",
+          "tokens": [
+            "charcoal_cardigan",
+            "cream_blouse",
+            "long_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

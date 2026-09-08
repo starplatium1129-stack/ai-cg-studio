@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
+import { isPopularPortraitPending, popularPortraitSrc } from './popularPortraitSource'
 const read = (path: string) => readFileSync(path)
 const digest = (path: string) => createHash('sha256').update(read(path)).digest('hex')
 const selected = JSON.parse(read('assets/characters/portrait-selections.json').toString()) as { entries: Record<string, { entryId: string; rating: string; portraitSha256: string }> }
@@ -10,6 +11,10 @@ describe('character portrait identity', () => {
   it('does not reuse one portrait file for distinct character identities', () => {
     const seen = new Map<string, string>()
     for (const { id } of catalog.characters) {
+      if (isPopularPortraitPending(id)) {
+        expect(popularPortraitSrc(id)).toBe('/assets/characters/portrait-pending.svg')
+        continue
+      }
       const hash = digest('assets/characters/popular-' + id + '.png')
       expect(seen.get(hash), id + ' must not reuse another character portrait').toBeUndefined()
       seen.set(hash, id)

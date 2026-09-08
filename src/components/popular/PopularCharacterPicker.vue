@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { computed } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -18,7 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const searchProxy = computed({ get: () => props.search, set: value => emit('update:search', value) })
-const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: '/assets/characters/thumbs/popular-' + character.id + '.webp' })))
+const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: popularPortraitSrc(character.id) })))
 function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) emit('select', character) }
 
 const selectedCharacter = computed<PopularCharacter | null>(() =>

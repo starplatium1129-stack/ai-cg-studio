@@ -1775,6 +1775,364 @@
           ]
         }
       ]
+    },
+    {
+      "id": "medusa_rider",
+      "displayName": "美杜莎 Rider",
+      "originalName": "Medusa (Rider)",
+      "franchise": "Fate",
+      "aliases": [
+        "美杜莎 Rider",
+        "Medusa (Rider)"
+      ],
+      "identityProse": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+      "identityTokens": [
+        "medusa_(fate)",
+        "fate/stay_night",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes"
+      ],
+      "exactTokens": [
+        "medusa_(fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, medusa_(fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_casual",
+          "name": "书店与采购针织便装",
+          "prose": "a black long-sleeved knit top, ankle-length purple skirt and simple reading glasses",
+          "tokens": [
+            "black_sweater",
+            "long_sleeves",
+            "long_purple_skirt",
+            "glasses"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_kitchen",
+          "name": "卫宫家料理围裙装",
+          "prose": "a cream blouse, dark trousers and a purple apron",
+          "tokens": [
+            "cream_blouse",
+            "dark_pants",
+            "purple_apron"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_meadow",
+          "name": "草原白色长裙",
+          "prose": "an opaque white long-sleeved maxi dress and flat sandals",
+          "tokens": [
+            "white_dress",
+            "long_sleeves",
+            "maxi_dress",
+            "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "chloe_von_einzbern",
+      "displayName": "克洛伊",
+      "originalName": "Chloe von Einzbern",
+      "franchise": "Fate",
+      "aliases": [
+        "克洛伊",
+        "Chloe von Einzbern"
+      ],
+      "identityProse": "Chloe von Einzbern from Fate/kaleid liner Prisma Illya, a lively girl with warm brown skin, long pale pink hair, face-framing sidelocks and bright orange eyes. Her confident grin gives way to quieter feelings when she is alone.",
+      "identityTokens": [
+        "chloe_von_einzbern",
+        "fate/kaleid_liner_prisma_illya",
+        "dark_skin",
+        "pink_hair",
+        "long_hair",
+        "sidelocks",
+        "orange_eyes"
+      ],
+      "exactTokens": [
+        "chloe_von_einzbern"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, chloe_von_einzbern"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_home",
+          "name": "早餐料理围裙便装",
+          "prose": "a peach long-sleeved T-shirt, loose brown trousers and a blue apron",
+          "tokens": [
+            "peach_shirt",
+            "long_sleeves",
+            "brown_pants",
+            "blue_apron"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_school",
+          "name": "放学后的整齐制服",
+          "prose": "a white school blouse, red cardigan and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "red_cardigan",
+            "pleated_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_festival",
+          "name": "草莓色夏祭浴衣",
+          "prose": "a properly wrapped strawberry-pink floral yukata, cream obi and sandals",
+          "tokens": [
+            "pink_yukata",
+            "floral_print",
+            "cream_obi",
+            "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "medea_caster",
+      "displayName": "美狄亚",
+      "originalName": "Medea (Caster)",
+      "franchise": "Fate",
+      "aliases": [
+        "美狄亚",
+        "Medea (Caster)"
+      ],
+      "identityProse": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and clear blue eyes. Her precise hands and restrained expression reveal the same patience in craftwork as in magic.",
+      "identityTokens": [
+        "medea_(caster)_(fate)",
+        "fate/stay_night",
+        "blue_hair",
+        "long_hair",
+        "side_braid",
+        "pointy_ears",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "medea_(caster)_(fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, medea_(caster)_(fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_kitchen",
+          "name": "寺院料理襻带围裙装",
+          "prose": "a closed navy robe with its sleeves tied back, a linen apron and practical indoor shoes",
+          "tokens": [
+            "navy_robe",
+            "tied_sleeves",
+            "linen_apron",
+            "indoor_shoes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_craft",
+          "name": "模型与针线便装",
+          "prose": "a pale blue long-sleeved blouse, dark ankle-length skirt and fine-framed craft glasses",
+          "tokens": [
+            "blue_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "glasses"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_travel",
+          "name": "商店街兜帽长袍",
+          "prose": "a dark purple hooded robe over a high-collared inner dress and boots",
+          "tokens": [
+            "purple_robe",
+            "hood",
+            "high_collar",
+            "inner_dress",
+            "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "kama_fate",
+      "displayName": "迦摩",
+      "originalName": "Kama",
+      "franchise": "Fate",
+      "aliases": [
+        "迦摩",
+        "Kama"
+      ],
+      "identityProse": "Kama from Fate/Grand Order, with white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "identityTokens": [
+        "kama_(fate)",
+        "fate/grand_order",
+        "white_hair",
+        "red_eyes"
+      ],
+      "exactTokens": [
+        "kama_(fate)"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, kama_(fate)"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_home",
+          "name": "游戏时间宽松家居装",
+          "prose": "an opaque plum sweatshirt and full-length charcoal lounge trousers",
+          "tokens": [
+            "plum_sweatshirt",
+            "long_sleeves",
+            "charcoal_pants"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_city",
+          "name": "咖啡馆遮阳帽便装",
+          "prose": "a pale lavender blouse, long cream skirt, sunhat and small gold earrings",
+          "tokens": [
+            "lavender_blouse",
+            "long_skirt",
+            "sunhat",
+            "gold_earrings"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季参拜大衣",
+          "prose": "a cream winter coat, plum scarf, warm trousers and ankle boots",
+          "tokens": [
+            "cream_coat",
+            "plum_scarf",
+            "pants",
+            "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

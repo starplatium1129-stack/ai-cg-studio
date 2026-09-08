@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "franchise": "Detective Conan",
+  "characters": [
+    {
+      "id": "mouri_ran",
+      "displayName": "毛利兰",
+      "originalName": "Ran Mouri",
+      "franchise": "Detective Conan",
+      "aliases": [
+        "毛利兰",
+        "Ran Mouri"
+      ],
+      "identityProse": "Ran Mouri from Detective Conan, a capable girl with long dark hair rising into its distinctive horn-like forelock and gentle blue-violet eyes. Her assured posture combines athletic confidence with everyday warmth.",
+      "identityTokens": [
+        "mouri_ran",
+        "meitantei_conan",
+        "black_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_horn"
+      ],
+      "exactTokens": [
+        "mouri_ran"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, mouri_ran"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_karate",
+          "name": "空手道训练道服",
+          "prose": "a properly wrapped white karate gi, white martial-arts trousers and black belt",
+          "tokens": [
+            "karate_gi",
+            "white_dougi",
+            "white_pants",
+            "black_belt"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_casual",
+          "name": "日常针织上衣与长裙",
+          "prose": "a cream cardigan over a pale blue blouse and navy knee-length skirt",
+          "tokens": [
+            "cream_cardigan",
+            "blue_blouse",
+            "navy_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬日手织围巾装",
+          "prose": "a navy wool coat, hand-knitted cream scarf, warm trousers and boots",
+          "tokens": [
+            "navy_coat",
+            "cream_scarf",
+            "wool",
+            "pants",
+            "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

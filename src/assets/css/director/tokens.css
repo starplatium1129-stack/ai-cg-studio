@@ -55,7 +55,15 @@
      历史债：此前 20 套里 12 套的 id 在角色数据中根本不存在（6 套日文/英文
      语序写反、1 套简写、5 套死代码），等于只有 9 套真正生效。 */
   /* 派生：银白发 · 艾莉莎·米哈伊洛夫娜·九条 */
-  .pb[data-character="alisa_mikhailovna_kujou"] {
+  .pb[data-character="alisa_mikhailovna_kujou"],
+  .pb[data-character="elaina"],
+  .pb[data-character="emilia_rezero"],
+  .pb[data-character="exusiai_arknights"],
+  .pb[data-character="jeanne_alter"],
+  .pb[data-character="lemuen_arknights"],
+  .pb[data-character="mimori_byakuya"],
+  .pb[data-character="misono_mika"],
+  .pb[data-character="mudrock_arknights"] {
     --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
     --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
     --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
@@ -66,47 +74,27 @@
     --character-aura:rgba(45,135,255,.32); --character-aura-secondary:rgba(245,200,75,.24);
   }
   /* 派生：金发 · 飞鸟马时 */
-  .pb[data-character="asuma_toki"] {
+  .pb[data-character="asuma_toki"],
+  .pb[data-character="eunectes_arknights"],
+  .pb[data-character="kitagawa_marin"],
+  .pb[data-character="makima"] {
     --character-accent:#edc15a; --character-accent-hover:#f2d48c;
     --character-soft:rgba(237,193,90,.16); --character-glow:rgba(237,193,90,.34);
     --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20);
   }
   /* 派生：青绿发 · 陈 */
-  .pb[data-character="chen_arknights"] {
+  .pb[data-character="chen_arknights"],
+  .pb[data-character="dusk_arknights"],
+  .pb[data-character="goldenglow_arknights"] {
     --character-accent:#66d6c7; --character-accent-hover:#92e2d7;
     --character-soft:rgba(102,214,199,.16); --character-glow:rgba(102,214,199,.34);
     --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20);
   }
   /* 派生：青绿发 · 夕 */
-  .pb[data-character="dusk_arknights"] {
-    --character-accent:#66d6c7; --character-accent-hover:#92e2d7;
-    --character-soft:rgba(102,214,199,.16); --character-glow:rgba(102,214,199,.34);
-    --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20);
-  }
   /* 派生：银白发 · 伊雷娜 */
-  .pb[data-character="elaina"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 派生：银白发 · 爱蜜莉雅 */
-  .pb[data-character="emilia_rezero"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 派生：金发 · 森蚺 */
-  .pb[data-character="eunectes_arknights"] {
-    --character-accent:#edc15a; --character-accent-hover:#f2d48c;
-    --character-soft:rgba(237,193,90,.16); --character-glow:rgba(237,193,90,.34);
-    --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20);
-  }
   /* 派生：银白发 · 能天使 */
-  .pb[data-character="exusiai_arknights"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 调校：狂犬烈火红发 · 艾莉丝·格雷拉特 */
   .pb[data-character="eris_greyrat"] {
     --character-accent:#ef4444; --character-accent-hover:#f87171;
@@ -156,13 +144,16 @@
     --character-aura:rgba(202,138,4,.34); --character-aura-secondary:rgba(125,211,252,.22);
   }
   /* 派生：粉发 · 艾雅法拉 */
-  .pb[data-character="eyjafjalla_arknights"] {
+  .pb[data-character="eyjafjalla_arknights"],
+  .pb[data-character="kisara_engage_kiss"],
+  .pb[data-character="kyouyama_kazusa"] {
     --character-accent:#ec8db0; --character-accent-hover:#f4bdd1;
     --character-soft:rgba(236,141,176,.16); --character-glow:rgba(236,141,176,.34);
     --character-aura:rgba(236,141,195,.30); --character-aura-secondary:rgba(236,151,141,.20);
   }
   /* 派生：紫发/紫瞳 · 菲伦 */
-  .pb[data-character="fern_frieren"] {
+  .pb[data-character="fern_frieren"],
+  .pb[data-character="matou_sakura"] {
     --character-accent:#c08eeb; --character-accent-hover:#dbbef4;
     --character-soft:rgba(192,142,235,.16); --character-glow:rgba(192,142,235,.34);
     --character-aura:rgba(173,142,235,.30); --character-aura-secondary:rgba(235,142,235,.20);
@@ -173,11 +164,6 @@
     --character-aura:rgba(100,210,240,.28); --character-aura-secondary:rgba(210,235,255,.24);
   }
   /* 派生：青绿发 · 澄闪 */
-  .pb[data-character="goldenglow_arknights"] {
-    --character-accent:#66d6c7; --character-accent-hover:#92e2d7;
-    --character-soft:rgba(102,214,199,.16); --character-glow:rgba(102,214,199,.34);
-    --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20);
-  }
   .pb[data-character="hatsune_miku"] {
     --character-accent:#39c5bb; --character-accent-hover:#6ee0d8;
     --character-soft:rgba(57,197,187,.16); --character-glow:rgba(57,197,187,.34);
@@ -189,11 +175,6 @@
     --character-aura:rgba(215,130,245,.30); --character-aura-secondary:rgba(255,180,210,.22);
   }
   /* 派生：银白发 · 贞德[Alter] */
-  .pb[data-character="jeanne_alter"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 派生：绿发 · 凯尔希 */
   .pb[data-character="kaltsit_arknights"] {
     --character-accent:#6cd08d; --character-accent-hover:#96deae;
@@ -201,23 +182,8 @@
     --character-aura:rgba(108,208,121,.30); --character-aura-secondary:rgba(108,208,188,.20);
   }
   /* 派生：粉发 · 木更 */
-  .pb[data-character="kisara_engage_kiss"] {
-    --character-accent:#ec8db0; --character-accent-hover:#f4bdd1;
-    --character-soft:rgba(236,141,176,.16); --character-glow:rgba(236,141,176,.34);
-    --character-aura:rgba(236,141,195,.30); --character-aura-secondary:rgba(236,151,141,.20);
-  }
   /* 派生：金发 · 喜多川海梦 */
-  .pb[data-character="kitagawa_marin"] {
-    --character-accent:#edc15a; --character-accent-hover:#f2d48c;
-    --character-soft:rgba(237,193,90,.16); --character-glow:rgba(237,193,90,.34);
-    --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20);
-  }
   /* 派生：粉发 · 杏山和纱 */
-  .pb[data-character="kyouyama_kazusa"] {
-    --character-accent:#ec8db0; --character-accent-hover:#f4bdd1;
-    --character-soft:rgba(236,141,176,.16); --character-glow:rgba(236,141,176,.34);
-    --character-aura:rgba(236,141,195,.30); --character-aura-secondary:rgba(236,151,141,.20);
-  }
   /* 派生：红发/红瞳 · 莱万汀 */
   .pb[data-character="laevatain_arknights"] {
     --character-accent:#ea7571; --character-accent-hover:#f1a4a2;
@@ -225,46 +191,16 @@
     --character-aura:rgba(234,113,133,.30); --character-aura-secondary:rgba(234,173,113,.20);
   }
   /* 派生：银白发 · 蕾缪安 */
-  .pb[data-character="lemuen_arknights"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 派生：金发 · 玛奇玛 */
-  .pb[data-character="makima"] {
-    --character-accent:#edc15a; --character-accent-hover:#f2d48c;
-    --character-soft:rgba(237,193,90,.16); --character-glow:rgba(237,193,90,.34);
-    --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20);
-  }
   /* 派生：紫发/紫瞳 · 间桐樱 */
-  .pb[data-character="matou_sakura"] {
-    --character-accent:#c08eeb; --character-accent-hover:#dbbef4;
-    --character-soft:rgba(192,142,235,.16); --character-glow:rgba(192,142,235,.34);
-    --character-aura:rgba(173,142,235,.30); --character-aura-secondary:rgba(235,142,235,.20);
-  }
   /* 派生：银白发 · 深森白夜 */
-  .pb[data-character="mimori_byakuya"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   .pb[data-character="misaka_mikoto"] {
     --character-accent:#ffb443; --character-accent-hover:#ffd17d;
     --character-soft:rgba(255,180,67,.16); --character-glow:rgba(255,180,67,.34);
     --character-aura:rgba(255,160,40,.32); --character-aura-secondary:rgba(100,190,255,.22);
   }
   /* 派生：银白发 · 圣园未花 */
-  .pb[data-character="misono_mika"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 派生：银白发 · 泥岩 */
-  .pb[data-character="mudrock_arknights"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   .pb[data-character="natsume"] {
     /* 2026-09-07: 与 design-system.css 的 --natsume-amber(#fbb040) 对齐；
        aura-secondary 沿用角色配对棕(#8b6258)，与 characterParticleTheme 一致。 */
@@ -273,13 +209,16 @@
     --character-aura:rgba(251,176,64,.26); --character-aura-secondary:rgba(139,98,88,.18);
   }
   /* 派生：青绿发 · 佩丽卡 */
-  .pb[data-character="perlica_arknights"] {
+  .pb[data-character="perlica_arknights"],
+  .pb[data-character="sylphiette"] {
     --character-accent:#66d6c7; --character-accent-hover:#92e2d7;
     --character-soft:rgba(102,214,199,.16); --character-glow:rgba(102,214,199,.34);
     --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20);
   }
   /* 派生：银白发 · 羽毛笔 */
-  .pb[data-character="quillpen_arknights"] {
+  .pb[data-character="quillpen_arknights"],
+  .pb[data-character="skadi_arknights"],
+  .pb[data-character="sorasaki_hina"] {
     --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
     --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
     --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
@@ -317,35 +256,16 @@
     --character-aura:rgba(90,120,240,.30); --character-aura-secondary:rgba(240,160,210,.20);
   }
   /* 派生：银白发 · 斯卡蒂 */
-  .pb[data-character="skadi_arknights"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 派生：银白发 · 空崎日奈 */
-  .pb[data-character="sorasaki_hina"] {
-    --character-accent:#ccd1e1; --character-accent-hover:#eff1f6;
-    --character-soft:rgba(204,209,225,.16); --character-glow:rgba(204,209,225,.34);
-    --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20);
-  }
   /* 派生：金发 · 史尔特尔 */
-  .pb[data-character="surtr_arknights"] {
-    --character-accent:#edc15a; --character-accent-hover:#f2d48c;
-    --character-soft:rgba(237,193,90,.16); --character-glow:rgba(237,193,90,.34);
-    --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20);
-  }
-  /* 派生：金发 · 铃兰 */
+  .pb[data-character="surtr_arknights"],
   .pb[data-character="suzuran_arknights"] {
     --character-accent:#edc15a; --character-accent-hover:#f2d48c;
     --character-soft:rgba(237,193,90,.16); --character-glow:rgba(237,193,90,.34);
     --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20);
   }
+  /* 派生：金发 · 铃兰 */
   /* 派生：青绿发 · 希露菲叶特 */
-  .pb[data-character="sylphiette"] {
-    --character-accent:#66d6c7; --character-accent-hover:#92e2d7;
-    --character-soft:rgba(102,214,199,.16); --character-glow:rgba(102,214,199,.34);
-    --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20);
-  }
   .pb[data-character="tohsaka_rin"] {
     --character-accent:#e63946; --character-accent-hover:#ff636f;
     --character-soft:rgba(230,57,70,.16); --character-glow:rgba(230,57,70,.34);
@@ -362,17 +282,13 @@
     --character-aura:rgba(216,180,254,.28); --character-aura-secondary:rgba(242,187,104,.18);
   }
   /* 派生：红发/红瞳 · 调月莉音 */
-  .pb[data-character="tsukatsuki_rio"] {
-    --character-accent:#ea7571; --character-accent-hover:#f1a4a2;
-    --character-soft:rgba(234,117,113,.16); --character-glow:rgba(234,117,113,.34);
-    --character-aura:rgba(234,113,133,.30); --character-aura-secondary:rgba(234,173,113,.20);
-  }
-  /* 派生：红发/红瞳 · 约尔·福杰 */
+  .pb[data-character="tsukatsuki_rio"],
   .pb[data-character="yor_forger"] {
     --character-accent:#ea7571; --character-accent-hover:#f1a4a2;
     --character-soft:rgba(234,117,113,.16); --character-glow:rgba(234,117,113,.34);
     --character-aura:rgba(234,113,133,.30); --character-aura-secondary:rgba(234,173,113,.20);
   }
+  /* 派生：红发/红瞳 · 约尔·福杰 */
   /* 派生：橙发 · 由比滨结衣 */
   .pb[data-character="yuigahama_yui"] {
     --character-accent:#ee9e58; --character-accent-hover:#f4bc8b;
@@ -691,111 +607,342 @@
     background: radial-gradient(circle, var(--character-aura-secondary, rgba(255,143,196,.28)) 0, transparent 72%);
     transition: opacity var(--motion-atmosphere) var(--ease-out);
   }
-  body:has(.pb[data-character="alisa_mikhailovna_kujou"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="artoria_pendragon"]) { --character-aura:rgba(45,135,255,.34); --character-aura-secondary:rgba(245,200,75,.24); }
-  body:has(.pb[data-character="asuma_toki"]) { --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20); }
-  body:has(.pb[data-character="chen_arknights"]) { --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20); }
-  body:has(.pb[data-character="dusk_arknights"]) { --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20); }
-  body:has(.pb[data-character="elaina"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="emilia_rezero"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="eunectes_arknights"]) { --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20); }
-  body:has(.pb[data-character="exusiai_arknights"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="eyjafjalla_arknights"]) { --character-aura:rgba(236,141,195,.30); --character-aura-secondary:rgba(236,151,141,.20); }
-  body:has(.pb[data-character="fern_frieren"]) { --character-aura:rgba(173,142,235,.30); --character-aura-secondary:rgba(235,142,235,.20); }
-  body:has(.pb[data-character="frieren"]) { --character-aura:rgba(100,210,240,.30); --character-aura-secondary:rgba(210,235,255,.24); }
-  body:has(.pb[data-character="goldenglow_arknights"]) { --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20); }
-  body:has(.pb[data-character="hatsune_miku"]) { --character-aura:rgba(57,197,187,.34); --character-aura-secondary:rgba(240,120,180,.22); }
-  body:has(.pb[data-character="illyasviel_von_einzbern"]) { --character-aura:rgba(215,130,245,.32); --character-aura-secondary:rgba(255,180,210,.22); }
-  body:has(.pb[data-character="jeanne_alter"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="kaltsit_arknights"]) { --character-aura:rgba(108,208,121,.30); --character-aura-secondary:rgba(108,208,188,.20); }
-  body:has(.pb[data-character="kisara_engage_kiss"]) { --character-aura:rgba(236,141,195,.30); --character-aura-secondary:rgba(236,151,141,.20); }
-  body:has(.pb[data-character="kitagawa_marin"]) { --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20); }
-  body:has(.pb[data-character="kyouyama_kazusa"]) { --character-aura:rgba(236,141,195,.30); --character-aura-secondary:rgba(236,151,141,.20); }
-  body:has(.pb[data-character="laevatain_arknights"]) { --character-aura:rgba(234,113,133,.30); --character-aura-secondary:rgba(234,173,113,.20); }
-  body:has(.pb[data-character="lemuen_arknights"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="makima"]) { --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20); }
-  body:has(.pb[data-character="matou_sakura"]) { --character-aura:rgba(173,142,235,.30); --character-aura-secondary:rgba(235,142,235,.20); }
-  body:has(.pb[data-character="mimori_byakuya"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="misaka_mikoto"]) { --character-aura:rgba(255,160,40,.34); --character-aura-secondary:rgba(100,190,255,.22); }
-  body:has(.pb[data-character="misono_mika"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="mudrock_arknights"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="natsume"]) { --character-aura:rgba(251,176,64,.30); --character-aura-secondary:rgba(230,120,80,.20); }
-  body:has(.pb[data-character="perlica_arknights"]) { --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20); }
-  body:has(.pb[data-character="quillpen_arknights"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="raiden_shogun"]) { --character-aura:rgba(148,85,255,.34); --character-aura-secondary:rgba(235,185,75,.22); }
-  body:has(.pb[data-character="rem_rezero"]) { --character-aura:rgba(60,150,255,.32); --character-aura-secondary:rgba(210,140,240,.20); }
-  body:has(.pb[data-character="reze_chainsaw"]) { --character-aura:rgba(236,141,195,.30); --character-aura-secondary:rgba(236,151,141,.20); }
-  body:has(.pb[data-character="roxy_migurdia"]) { --character-aura:rgba(70,160,255,.32); --character-aura-secondary:rgba(170,120,230,.22); }
-  body:has(.pb[data-character="saint_cecilia"]) { --character-aura:rgba(108,208,121,.30); --character-aura-secondary:rgba(108,208,188,.20); }
-  body:has(.pb[data-character="sakurajima_mai"]) { --character-aura:rgba(90,120,240,.32); --character-aura-secondary:rgba(240,160,210,.20); }
-  body:has(.pb[data-character="skadi_arknights"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="sorasaki_hina"]) { --character-aura:rgba(204,213,225,.30); --character-aura-secondary:rgba(208,204,225,.20); }
-  body:has(.pb[data-character="surtr_arknights"]) { --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20); }
-  body:has(.pb[data-character="suzuran_arknights"]) { --character-aura:rgba(237,163,90,.30); --character-aura-secondary:rgba(212,237,90,.20); }
-  body:has(.pb[data-character="sylphiette"]) { --character-aura:rgba(102,214,177,.30); --character-aura-secondary:rgba(102,177,214,.20); }
-  body:has(.pb[data-character="tohsaka_rin"]) { --character-aura:rgba(220,40,60,.34); --character-aura-secondary:rgba(80,150,240,.22); }
-  body:has(.pb[data-character="tokisaki_kurumi"]) { --character-aura:rgba(220,30,60,.34); --character-aura-secondary:rgba(220,170,60,.22); }
-  body:has(.pb[data-character="triad"]) { --character-aura:rgba(216,180,254,.32); --character-aura-secondary:rgba(242,187,104,.20); }
-  body:has(.pb[data-character="tsukatsuki_rio"]) { --character-aura:rgba(234,113,133,.30); --character-aura-secondary:rgba(234,173,113,.20); }
-  body:has(.pb[data-character="yor_forger"]) { --character-aura:rgba(234,113,133,.30); --character-aura-secondary:rgba(234,173,113,.20); }
-  body:has(.pb[data-character="yuigahama_yui"]) { --character-aura:rgba(238,128,88,.30); --character-aura-secondary:rgba(238,228,88,.20); }
-  body:has(.pb[data-character="yukinoshita_yukino"]) { --character-aura:rgba(90,145,255,.32); --character-aura-secondary:rgba(180,210,255,.22); }
-  body:has(.pb[data-character="yuzuriha_inori"]) { --character-aura:rgba(255,115,160,.34); --character-aura-secondary:rgba(120,210,255,.22); }
+  body:has(.pb[data-character="alisa_mikhailovna_kujou"]),
+  body:has(.pb[data-character="elaina"]),
+  body:has(.pb[data-character="emilia_rezero"]),
+  body:has(.pb[data-character="exusiai_arknights"]),
+  body:has(.pb[data-character="jeanne_alter"]),
+  body:has(.pb[data-character="lemuen_arknights"]),
+  body:has(.pb[data-character="mimori_byakuya"]),
+  body:has(.pb[data-character="misono_mika"]),
+  body:has(.pb[data-character="mudrock_arknights"]),
+  body:has(.pb[data-character="quillpen_arknights"]),
+  body:has(.pb[data-character="skadi_arknights"]),
+  body:has(.pb[data-character="sorasaki_hina"]) {
+    --character-aura:rgba(204,213,225,.30);
+    --character-aura-secondary:rgba(208,204,225,.20);
+  }
+  body:has(.pb[data-character="artoria_pendragon"]) {
+    --character-aura:rgba(45,135,255,.34);
+    --character-aura-secondary:rgba(245,200,75,.24);
+  }
+  body:has(.pb[data-character="asuma_toki"]),
+  body:has(.pb[data-character="eunectes_arknights"]),
+  body:has(.pb[data-character="kitagawa_marin"]),
+  body:has(.pb[data-character="makima"]),
+  body:has(.pb[data-character="surtr_arknights"]),
+  body:has(.pb[data-character="suzuran_arknights"]) {
+    --character-aura:rgba(237,163,90,.30);
+    --character-aura-secondary:rgba(212,237,90,.20);
+  }
+  body:has(.pb[data-character="chen_arknights"]),
+  body:has(.pb[data-character="dusk_arknights"]),
+  body:has(.pb[data-character="goldenglow_arknights"]),
+  body:has(.pb[data-character="perlica_arknights"]),
+  body:has(.pb[data-character="sylphiette"]) {
+    --character-aura:rgba(102,214,177,.30);
+    --character-aura-secondary:rgba(102,177,214,.20);
+  }
+  body:has(.pb[data-character="eyjafjalla_arknights"]),
+  body:has(.pb[data-character="kisara_engage_kiss"]),
+  body:has(.pb[data-character="kyouyama_kazusa"]),
+  body:has(.pb[data-character="reze_chainsaw"]) {
+    --character-aura:rgba(236,141,195,.30);
+    --character-aura-secondary:rgba(236,151,141,.20);
+  }
+  body:has(.pb[data-character="fern_frieren"]),
+  body:has(.pb[data-character="matou_sakura"]) {
+    --character-aura:rgba(173,142,235,.30);
+    --character-aura-secondary:rgba(235,142,235,.20);
+  }
+  body:has(.pb[data-character="frieren"]) {
+    --character-aura:rgba(100,210,240,.30);
+    --character-aura-secondary:rgba(210,235,255,.24);
+  }
+  body:has(.pb[data-character="hatsune_miku"]) {
+    --character-aura:rgba(57,197,187,.34);
+    --character-aura-secondary:rgba(240,120,180,.22);
+  }
+  body:has(.pb[data-character="illyasviel_von_einzbern"]) {
+    --character-aura:rgba(215,130,245,.32);
+    --character-aura-secondary:rgba(255,180,210,.22);
+  }
+  body:has(.pb[data-character="kaltsit_arknights"]),
+  body:has(.pb[data-character="saint_cecilia"]) {
+    --character-aura:rgba(108,208,121,.30);
+    --character-aura-secondary:rgba(108,208,188,.20);
+  }
+  body:has(.pb[data-character="laevatain_arknights"]),
+  body:has(.pb[data-character="tsukatsuki_rio"]),
+  body:has(.pb[data-character="yor_forger"]) {
+    --character-aura:rgba(234,113,133,.30);
+    --character-aura-secondary:rgba(234,173,113,.20);
+  }
+  body:has(.pb[data-character="misaka_mikoto"]) {
+    --character-aura:rgba(255,160,40,.34);
+    --character-aura-secondary:rgba(100,190,255,.22);
+  }
+  body:has(.pb[data-character="natsume"]) {
+    --character-aura:rgba(251,176,64,.30);
+    --character-aura-secondary:rgba(230,120,80,.20);
+  }
+  body:has(.pb[data-character="raiden_shogun"]) {
+    --character-aura:rgba(148,85,255,.34);
+    --character-aura-secondary:rgba(235,185,75,.22);
+  }
+  body:has(.pb[data-character="rem_rezero"]) {
+    --character-aura:rgba(60,150,255,.32);
+    --character-aura-secondary:rgba(210,140,240,.20);
+  }
+  body:has(.pb[data-character="roxy_migurdia"]) {
+    --character-aura:rgba(70,160,255,.32);
+    --character-aura-secondary:rgba(170,120,230,.22);
+  }
+  body:has(.pb[data-character="sakurajima_mai"]) {
+    --character-aura:rgba(90,120,240,.32);
+    --character-aura-secondary:rgba(240,160,210,.20);
+  }
+  body:has(.pb[data-character="tohsaka_rin"]) {
+    --character-aura:rgba(220,40,60,.34);
+    --character-aura-secondary:rgba(80,150,240,.22);
+  }
+  body:has(.pb[data-character="tokisaki_kurumi"]) {
+    --character-aura:rgba(220,30,60,.34);
+    --character-aura-secondary:rgba(220,170,60,.22);
+  }
+  body:has(.pb[data-character="triad"]) {
+    --character-aura:rgba(216,180,254,.32);
+    --character-aura-secondary:rgba(242,187,104,.20);
+  }
+  body:has(.pb[data-character="yuigahama_yui"]) {
+    --character-aura:rgba(238,128,88,.30);
+    --character-aura-secondary:rgba(238,228,88,.20);
+  }
+  body:has(.pb[data-character="yukinoshita_yukino"]) {
+    --character-aura:rgba(90,145,255,.32);
+    --character-aura-secondary:rgba(180,210,255,.22);
+  }
+  body:has(.pb[data-character="yuzuriha_inori"]) {
+    --character-aura:rgba(255,115,160,.34);
+    --character-aura-secondary:rgba(120,210,255,.22);
+  }
 
-  body:has(.pb[data-character="gotoh_hitori"]) { --character-aura:rgba(244,114,182,.30); --character-aura-secondary:rgba(56,189,248,.20); }
-  body:has(.pb[data-character="ayanami_rei"]) { --character-aura:rgba(147,197,253,.30); --character-aura-secondary:rgba(248,113,113,.20); }
-  body:has(.pb[data-character="asuka_langley"]) { --character-aura:rgba(248,113,113,.30); --character-aura-secondary:rgba(251,191,36,.22); }
-  body:has(.pb[data-character="furina"]) { --character-aura:rgba(56,189,248,.32); --character-aura-secondary:rgba(147,197,253,.22); }
-  body:has(.pb[data-character="hu_tao"]) { --character-aura:rgba(251,113,133,.32); --character-aura-secondary:rgba(251,191,36,.20); }
-  body:has(.pb[data-character="kafka"]) { --character-aura:rgba(192,132,252,.30); --character-aura-secondary:rgba(244,114,182,.20); }
-  body:has(.pb[data-character="hayase_yuuka"]) { --character-aura:rgba(96,165,250,.30); --character-aura-secondary:rgba(45,212,191,.22); }
-  body:has(.pb[data-character="shiromi_iori"]) { --character-aura:rgba(248,113,113,.30); --character-aura-secondary:rgba(203,213,225,.24); }
-  body:has(.pb[data-character="texas_arknights"]) { --character-aura:rgba(56,189,248,.30); --character-aura-secondary:rgba(251,191,36,.20); }
-  body:has(.pb[data-character="lappland_arknights"]) { --character-aura:rgba(192,132,252,.30); --character-aura-secondary:rgba(226,232,240,.24); }
-  body:has(.pb[data-character="viviana_arknights"]) { --character-aura:rgba(251,191,36,.32); --character-aura-secondary:rgba(253,230,138,.22); }
-  body:has(.pb[data-character="eris_greyrat"]) { --character-aura:rgba(220,38,38,.32); --character-aura-secondary:rgba(245,158,11,.22); }
-  body:has(.pb[data-character="hoshino_ai"]) { --character-aura:rgba(225,29,72,.34); --character-aura-secondary:rgba(192,132,252,.24); }
-  body:has(.pb[data-character="kurokawa_akane"]) { --character-aura:rgba(37,99,235,.32); --character-aura-secondary:rgba(168,85,247,.22); }
-  body:has(.pb[data-character="yvonne_arknights"]) { --character-aura:rgba(217,119,6,.32); --character-aura-secondary:rgba(56,189,248,.22); }
-  body:has(.pb[data-character="morgan_le_fay_fate"]) { --character-aura:rgba(30,58,138,.36); --character-aura-secondary:rgba(224,242,254,.24); }
-  body:has(.pb[data-character="mash_kyrielight"]) { --character-aura:rgba(147,51,234,.32); --character-aura-secondary:rgba(96,165,250,.22); }
-  body:has(.pb[data-character="mikasa_ackerman"]) { --character-aura:rgba(159,18,57,.34); --character-aura-secondary:rgba(148,163,184,.22); }
-  body:has(.pb[data-character="historia_reiss"]) { --character-aura:rgba(202,138,4,.34); --character-aura-secondary:rgba(125,211,252,.22); }
-  body:has(.pb[data-character="ellen_joe"]) { --character-aura:rgba(239,68,68,.32); --character-aura-secondary:rgba(15,23,42,.28); }
-  body:has(.pb[data-character="hoshimi_miyabi"]) { --character-aura:rgba(56,189,248,.32); --character-aura-secondary:rgba(241,245,249,.24); }
-  body:has(.pb[data-character="cheshire_azur"]) { --character-aura:rgba(56,189,248,.32); --character-aura-secondary:rgba(16,185,129,.22); }
-  body:has(.pb[data-character="taihou_azur"]) { --character-aura:rgba(220,38,38,.34); --character-aura-secondary:rgba(245,158,11,.24); }
-  body:has(.pb[data-character="ichinose_asuna"]) { --character-aura:rgba(251,191,36,.32); --character-aura-secondary:rgba(254,243,199,.22); }
-  body:has(.pb[data-character="lucy_cyberpunk"]) { --character-aura:rgba(192,132,252,.32); --character-aura-secondary:rgba(34,211,238,.24); }
-  body:has(.pb[data-character="yorha_2b"]) { --character-aura:rgba(148,163,184,.30); --character-aura-secondary:rgba(186,230,253,.22); }
-  body:has(.pb[data-character="murasame"]) { --character-aura:rgba(134,239,172,.32); --character-aura-secondary:rgba(56,189,248,.22); }
-  body:has(.pb[data-character="hitachi_mako"]) { --character-aura:rgba(34,197,94,.30); --character-aura-secondary:rgba(15,23,42,.28); }
-  body:has(.pb[data-character="tomotake_yoshino"]) { --character-aura:rgba(186,230,253,.32); --character-aura-secondary:rgba(239,68,68,.20); }
-  body:has(.pb[data-character="kazami_kazuki"]) { --character-aura:rgba(252,165,165,.32); --character-aura-secondary:rgba(241,245,249,.24); }
-  body:has(.pb[data-character="suou_amane"]) { --character-aura:rgba(244,63,94,.34); --character-aura-secondary:rgba(30,58,138,.24); }
-  body:has(.pb[data-character="komine_sachi"]) { --character-aura:rgba(244,114,182,.32); --character-aura-secondary:rgba(186,230,253,.22); }
-  body:has(.pb[data-character="harudera_yuria"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(30,41,59,.28); }
-  body:has(.pb[data-character="ikaros"]) { --character-aura:rgba(244,114,182,.32); --character-aura-secondary:rgba(56,189,248,.22); }
-  body:has(.pb[data-character="golden_darkness"]) { --character-aura:rgba(234,179,8,.32); --character-aura-secondary:rgba(239,68,68,.24); }
-  body:has(.pb[data-character="lala_satalin_deviluke"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(52,211,153,.22); }
-  body:has(.pb[data-character="momo_velia_deviluke"]) { --character-aura:rgba(192,132,252,.32); --character-aura-secondary:rgba(244,114,182,.22); }
-  body:has(.pb[data-character="kotegawa_yui"]) { --character-aura:rgba(16,185,129,.30); --character-aura-secondary:rgba(239,68,68,.20); }
-  body:has(.pb[data-character="nana_asta_deviluke"]) { --character-aura:rgba(251,113,133,.32); --character-aura-secondary:rgba(168,85,247,.20); }
-  body:has(.pb[data-character="rias_gremory"]) { --character-aura:rgba(229,43,80,.32); --character-aura-secondary:rgba(15,23,42,.24); }
-  body:has(.pb[data-character="akeno_himejima"]) { --character-aura:rgba(147,51,234,.32); --character-aura-secondary:rgba(239,68,68,.22); }
-  body:has(.pb[data-character="albedo_overlord"]) { --character-aura:rgba(234,179,8,.30); --character-aura-secondary:rgba(15,23,42,.28); }
-  body:has(.pb[data-character="sparkle_hsr"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(15,23,42,.24); }
-  body:has(.pb[data-character="cc_code_geass"]) { --character-aura:rgba(132,204,22,.30); --character-aura-secondary:rgba(245,158,11,.22); }
-  body:has(.pb[data-character="ryougi_shiki"]) { --character-aura:rgba(220,38,38,.32); --character-aura-secondary:rgba(15,23,42,.24); }
-  body:has(.pb[data-character="arcueid_brunestud"]) { --character-aura:rgba(234,179,8,.32); --character-aura-secondary:rgba(220,38,38,.22); }
-  body:has(.pb[data-character="ciel_tsukihime"]) { --character-aura:rgba(37,99,235,.32); --character-aura-secondary:rgba(241,245,249,.24); }
-  body:has(.pb[data-character="caren_hortensia"]) { --character-aura:rgba(192,132,252,.30); --character-aura-secondary:rgba(220,38,38,.20); }
-  body:has(.pb[data-character="artoria_pendragon_alter"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(15,23,42,.28); }
-  body:has(.pb[data-character="asuna_yuuki"]) { --character-aura:rgba(225,29,72,.32); --character-aura-secondary:rgba(245,158,11,.22); }
-  body:has(.pb[data-character="violet_evergarden"]) { --character-aura:rgba(59,130,246,.32); --character-aura-secondary:rgba(245,158,11,.22); }
-  body:has(.pb[data-character="vladilena_milize"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(203,213,225,.24); }
-  body:has(.pb[data-character="jeanne_d_arc"]) { --character-aura:rgba(96,165,250,.32); --character-aura-secondary:rgba(251,191,36,.22); }
-  body:has(.pb[data-character="scathach_fate"]) { --character-aura:rgba(168,85,247,.32); --character-aura-secondary:rgba(220,38,38,.24); }
+  body:has(.pb[data-character="gotoh_hitori"]) {
+    --character-aura:rgba(244,114,182,.30);
+    --character-aura-secondary:rgba(56,189,248,.20);
+  }
+  body:has(.pb[data-character="ayanami_rei"]) {
+    --character-aura:rgba(147,197,253,.30);
+    --character-aura-secondary:rgba(248,113,113,.20);
+  }
+  body:has(.pb[data-character="asuka_langley"]) {
+    --character-aura:rgba(248,113,113,.30);
+    --character-aura-secondary:rgba(251,191,36,.22);
+  }
+  body:has(.pb[data-character="furina"]) {
+    --character-aura:rgba(56,189,248,.32);
+    --character-aura-secondary:rgba(147,197,253,.22);
+  }
+  body:has(.pb[data-character="hu_tao"]) {
+    --character-aura:rgba(251,113,133,.32);
+    --character-aura-secondary:rgba(251,191,36,.20);
+  }
+  body:has(.pb[data-character="kafka"]) {
+    --character-aura:rgba(192,132,252,.30);
+    --character-aura-secondary:rgba(244,114,182,.20);
+  }
+  body:has(.pb[data-character="hayase_yuuka"]) {
+    --character-aura:rgba(96,165,250,.30);
+    --character-aura-secondary:rgba(45,212,191,.22);
+  }
+  body:has(.pb[data-character="shiromi_iori"]) {
+    --character-aura:rgba(248,113,113,.30);
+    --character-aura-secondary:rgba(203,213,225,.24);
+  }
+  body:has(.pb[data-character="texas_arknights"]) {
+    --character-aura:rgba(56,189,248,.30);
+    --character-aura-secondary:rgba(251,191,36,.20);
+  }
+  body:has(.pb[data-character="lappland_arknights"]) {
+    --character-aura:rgba(192,132,252,.30);
+    --character-aura-secondary:rgba(226,232,240,.24);
+  }
+  body:has(.pb[data-character="viviana_arknights"]) {
+    --character-aura:rgba(251,191,36,.32);
+    --character-aura-secondary:rgba(253,230,138,.22);
+  }
+  body:has(.pb[data-character="eris_greyrat"]) {
+    --character-aura:rgba(220,38,38,.32);
+    --character-aura-secondary:rgba(245,158,11,.22);
+  }
+  body:has(.pb[data-character="hoshino_ai"]) {
+    --character-aura:rgba(225,29,72,.34);
+    --character-aura-secondary:rgba(192,132,252,.24);
+  }
+  body:has(.pb[data-character="kurokawa_akane"]) {
+    --character-aura:rgba(37,99,235,.32);
+    --character-aura-secondary:rgba(168,85,247,.22);
+  }
+  body:has(.pb[data-character="yvonne_arknights"]) {
+    --character-aura:rgba(217,119,6,.32);
+    --character-aura-secondary:rgba(56,189,248,.22);
+  }
+  body:has(.pb[data-character="morgan_le_fay_fate"]) {
+    --character-aura:rgba(30,58,138,.36);
+    --character-aura-secondary:rgba(224,242,254,.24);
+  }
+  body:has(.pb[data-character="mash_kyrielight"]) {
+    --character-aura:rgba(147,51,234,.32);
+    --character-aura-secondary:rgba(96,165,250,.22);
+  }
+  body:has(.pb[data-character="mikasa_ackerman"]) {
+    --character-aura:rgba(159,18,57,.34);
+    --character-aura-secondary:rgba(148,163,184,.22);
+  }
+  body:has(.pb[data-character="historia_reiss"]) {
+    --character-aura:rgba(202,138,4,.34);
+    --character-aura-secondary:rgba(125,211,252,.22);
+  }
+  body:has(.pb[data-character="ellen_joe"]) {
+    --character-aura:rgba(239,68,68,.32);
+    --character-aura-secondary:rgba(15,23,42,.28);
+  }
+  body:has(.pb[data-character="hoshimi_miyabi"]) {
+    --character-aura:rgba(56,189,248,.32);
+    --character-aura-secondary:rgba(241,245,249,.24);
+  }
+  body:has(.pb[data-character="cheshire_azur"]) {
+    --character-aura:rgba(56,189,248,.32);
+    --character-aura-secondary:rgba(16,185,129,.22);
+  }
+  body:has(.pb[data-character="taihou_azur"]) {
+    --character-aura:rgba(220,38,38,.34);
+    --character-aura-secondary:rgba(245,158,11,.24);
+  }
+  body:has(.pb[data-character="ichinose_asuna"]) {
+    --character-aura:rgba(251,191,36,.32);
+    --character-aura-secondary:rgba(254,243,199,.22);
+  }
+  body:has(.pb[data-character="lucy_cyberpunk"]) {
+    --character-aura:rgba(192,132,252,.32);
+    --character-aura-secondary:rgba(34,211,238,.24);
+  }
+  body:has(.pb[data-character="yorha_2b"]) {
+    --character-aura:rgba(148,163,184,.30);
+    --character-aura-secondary:rgba(186,230,253,.22);
+  }
+  body:has(.pb[data-character="murasame"]) {
+    --character-aura:rgba(134,239,172,.32);
+    --character-aura-secondary:rgba(56,189,248,.22);
+  }
+  body:has(.pb[data-character="hitachi_mako"]) {
+    --character-aura:rgba(34,197,94,.30);
+    --character-aura-secondary:rgba(15,23,42,.28);
+  }
+  body:has(.pb[data-character="tomotake_yoshino"]) {
+    --character-aura:rgba(186,230,253,.32);
+    --character-aura-secondary:rgba(239,68,68,.20);
+  }
+  body:has(.pb[data-character="kazami_kazuki"]) {
+    --character-aura:rgba(252,165,165,.32);
+    --character-aura-secondary:rgba(241,245,249,.24);
+  }
+  body:has(.pb[data-character="suou_amane"]) {
+    --character-aura:rgba(244,63,94,.34);
+    --character-aura-secondary:rgba(30,58,138,.24);
+  }
+  body:has(.pb[data-character="komine_sachi"]) {
+    --character-aura:rgba(244,114,182,.32);
+    --character-aura-secondary:rgba(186,230,253,.22);
+  }
+  body:has(.pb[data-character="harudera_yuria"]) {
+    --character-aura:rgba(245,158,11,.32);
+    --character-aura-secondary:rgba(30,41,59,.28);
+  }
+  body:has(.pb[data-character="ikaros"]) {
+    --character-aura:rgba(244,114,182,.32);
+    --character-aura-secondary:rgba(56,189,248,.22);
+  }
+  body:has(.pb[data-character="golden_darkness"]) {
+    --character-aura:rgba(234,179,8,.32);
+    --character-aura-secondary:rgba(239,68,68,.24);
+  }
+  body:has(.pb[data-character="lala_satalin_deviluke"]) {
+    --character-aura:rgba(244,63,94,.32);
+    --character-aura-secondary:rgba(52,211,153,.22);
+  }
+  body:has(.pb[data-character="momo_velia_deviluke"]) {
+    --character-aura:rgba(192,132,252,.32);
+    --character-aura-secondary:rgba(244,114,182,.22);
+  }
+  body:has(.pb[data-character="kotegawa_yui"]) {
+    --character-aura:rgba(16,185,129,.30);
+    --character-aura-secondary:rgba(239,68,68,.20);
+  }
+  body:has(.pb[data-character="nana_asta_deviluke"]) {
+    --character-aura:rgba(251,113,133,.32);
+    --character-aura-secondary:rgba(168,85,247,.20);
+  }
+  body:has(.pb[data-character="rias_gremory"]) {
+    --character-aura:rgba(229,43,80,.32);
+    --character-aura-secondary:rgba(15,23,42,.24);
+  }
+  body:has(.pb[data-character="akeno_himejima"]) {
+    --character-aura:rgba(147,51,234,.32);
+    --character-aura-secondary:rgba(239,68,68,.22);
+  }
+  body:has(.pb[data-character="albedo_overlord"]) {
+    --character-aura:rgba(234,179,8,.30);
+    --character-aura-secondary:rgba(15,23,42,.28);
+  }
+  body:has(.pb[data-character="sparkle_hsr"]) {
+    --character-aura:rgba(244,63,94,.32);
+    --character-aura-secondary:rgba(15,23,42,.24);
+  }
+  body:has(.pb[data-character="cc_code_geass"]) {
+    --character-aura:rgba(132,204,22,.30);
+    --character-aura-secondary:rgba(245,158,11,.22);
+  }
+  body:has(.pb[data-character="ryougi_shiki"]) {
+    --character-aura:rgba(220,38,38,.32);
+    --character-aura-secondary:rgba(15,23,42,.24);
+  }
+  body:has(.pb[data-character="arcueid_brunestud"]) {
+    --character-aura:rgba(234,179,8,.32);
+    --character-aura-secondary:rgba(220,38,38,.22);
+  }
+  body:has(.pb[data-character="ciel_tsukihime"]) {
+    --character-aura:rgba(37,99,235,.32);
+    --character-aura-secondary:rgba(241,245,249,.24);
+  }
+  body:has(.pb[data-character="caren_hortensia"]) {
+    --character-aura:rgba(192,132,252,.30);
+    --character-aura-secondary:rgba(220,38,38,.20);
+  }
+  body:has(.pb[data-character="artoria_pendragon_alter"]) {
+    --character-aura:rgba(245,158,11,.32);
+    --character-aura-secondary:rgba(15,23,42,.28);
+  }
+  body:has(.pb[data-character="asuna_yuuki"]) {
+    --character-aura:rgba(225,29,72,.32);
+    --character-aura-secondary:rgba(245,158,11,.22);
+  }
+  body:has(.pb[data-character="violet_evergarden"]) {
+    --character-aura:rgba(59,130,246,.32);
+    --character-aura-secondary:rgba(245,158,11,.22);
+  }
+  body:has(.pb[data-character="vladilena_milize"]) {
+    --character-aura:rgba(244,63,94,.32);
+    --character-aura-secondary:rgba(203,213,225,.24);
+  }
+  body:has(.pb[data-character="jeanne_d_arc"]) {
+    --character-aura:rgba(96,165,250,.32);
+    --character-aura-secondary:rgba(251,191,36,.22);
+  }
+  body:has(.pb[data-character="scathach_fate"]) {
+    --character-aura:rgba(168,85,247,.32);
+    --character-aura-secondary:rgba(220,38,38,.24);
+  }
 
   /* 领域 01 新增角色主题令牌与氛围光晕 */
   .pb[data-character="katou_megumi"] {
@@ -834,18 +981,199 @@
     --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(16,185,129,.22);
   }
 
-  body:has(.pb[data-character="katou_megumi"]) { --character-aura:rgba(244,63,94,.32); --character-aura-secondary:rgba(253,224,71,.20); }
-  body:has(.pb[data-character="shiina_mahiru"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(56,189,248,.20); }
-  body:has(.pb[data-character="chitanda_eru"]) { --character-aura:rgba(139,92,246,.32); --character-aura-secondary:rgba(16,185,129,.20); }
-  body:has(.pb[data-character="isshiki_iroha"]) { --character-aura:rgba(245,158,11,.30); --character-aura-secondary:rgba(236,72,153,.22); }
-  body:has(.pb[data-character="yukinoshita_haruno"]) { --character-aura:rgba(225,29,72,.34); --character-aura-secondary:rgba(59,130,246,.22); }
-  body:has(.pb[data-character="yamada_anna"]) { --character-aura:rgba(59,130,246,.32); --character-aura-secondary:rgba(244,63,94,.20); }
-  body:has(.pb[data-character="waguri_kaoruko"]) { --character-aura:rgba(245,158,11,.32); --character-aura-secondary:rgba(16,185,129,.22); }
+  body:has(.pb[data-character="katou_megumi"]) {
+    --character-aura:rgba(244,63,94,.32);
+    --character-aura-secondary:rgba(253,224,71,.20);
+  }
+  body:has(.pb[data-character="shiina_mahiru"]) {
+    --character-aura:rgba(245,158,11,.32);
+    --character-aura-secondary:rgba(56,189,248,.20);
+  }
+  body:has(.pb[data-character="chitanda_eru"]) {
+    --character-aura:rgba(139,92,246,.32);
+    --character-aura-secondary:rgba(16,185,129,.20);
+  }
+  body:has(.pb[data-character="isshiki_iroha"]) {
+    --character-aura:rgba(245,158,11,.30);
+    --character-aura-secondary:rgba(236,72,153,.22);
+  }
+  body:has(.pb[data-character="yukinoshita_haruno"]) {
+    --character-aura:rgba(225,29,72,.34);
+    --character-aura-secondary:rgba(59,130,246,.22);
+  }
+  body:has(.pb[data-character="yamada_anna"]) {
+    --character-aura:rgba(59,130,246,.32);
+    --character-aura-secondary:rgba(244,63,94,.20);
+  }
+  body:has(.pb[data-character="waguri_kaoruko"]) {
+    --character-aura:rgba(245,158,11,.32);
+    --character-aura-secondary:rgba(16,185,129,.22);
+  }
 
 /* 第五批全年龄角色：日常形态共用角色色，深浅主题沿用全局对比度映射。 */
-.pb[data-character="shiina_mashiro"], body:has(.pb[data-character="shiina_mashiro"]) { --character-accent:#d6b586; --character-accent-hover:color-mix(in srgb, #d6b586 75%, white); --character-soft:rgba(214,181,134,.16); --character-glow:rgba(214,181,134,.32); --character-aura:rgba(214,181,134,.22); --character-aura-secondary:rgba(214,181,134,.14); }
-.pb[data-character="izumi_sagiri"], body:has(.pb[data-character="izumi_sagiri"]) { --character-accent:#a9bced; --character-accent-hover:color-mix(in srgb, #a9bced 75%, white); --character-soft:rgba(169,188,237,.16); --character-glow:rgba(169,188,237,.32); --character-aura:rgba(169,188,237,.22); --character-aura-secondary:rgba(169,188,237,.14); }
-.pb[data-character="takarada_rikka"], body:has(.pb[data-character="takarada_rikka"]) { --character-accent:#91b5dc; --character-accent-hover:color-mix(in srgb, #91b5dc 75%, white); --character-soft:rgba(145,181,220,.16); --character-glow:rgba(145,181,220,.32); --character-aura:rgba(145,181,220,.22); --character-aura-secondary:rgba(145,181,220,.14); }
-.pb[data-character="hayasaka_ai"], body:has(.pb[data-character="hayasaka_ai"]) { --character-accent:#8ea9d7; --character-accent-hover:color-mix(in srgb, #8ea9d7 75%, white); --character-soft:rgba(142,169,215,.16); --character-glow:rgba(142,169,215,.32); --character-aura:rgba(142,169,215,.22); --character-aura-secondary:rgba(142,169,215,.14); }
-.pb[data-character="arima_kana"], body:has(.pb[data-character="arima_kana"]) { --character-accent:#d79baf; --character-accent-hover:color-mix(in srgb, #d79baf 75%, white); --character-soft:rgba(215,155,175,.16); --character-glow:rgba(215,155,175,.32); --character-aura:rgba(215,155,175,.22); --character-aura-secondary:rgba(215,155,175,.14); }
-.pb[data-character="hori_kyouko"], body:has(.pb[data-character="hori_kyouko"]) { --character-accent:#d2a475; --character-accent-hover:color-mix(in srgb, #d2a475 75%, white); --character-soft:rgba(210,164,117,.16); --character-glow:rgba(210,164,117,.32); --character-aura:rgba(210,164,117,.22); --character-aura-secondary:rgba(210,164,117,.14); }
+.pb[data-character="shiina_mashiro"], body:has(.pb[data-character="shiina_mashiro"]) {
+    --character-accent:#d6b586;
+    --character-accent-hover:color-mix(in srgb, #d6b586 75%, white);
+    --character-soft:rgba(214,181,134,.16);
+    --character-glow:rgba(214,181,134,.32);
+    --character-aura:rgba(214,181,134,.22);
+    --character-aura-secondary:rgba(214,181,134,.14);
+  }
+.pb[data-character="izumi_sagiri"], body:has(.pb[data-character="izumi_sagiri"]) {
+    --character-accent:#a9bced;
+    --character-accent-hover:color-mix(in srgb, #a9bced 75%, white);
+    --character-soft:rgba(169,188,237,.16);
+    --character-glow:rgba(169,188,237,.32);
+    --character-aura:rgba(169,188,237,.22);
+    --character-aura-secondary:rgba(169,188,237,.14);
+  }
+.pb[data-character="takarada_rikka"], body:has(.pb[data-character="takarada_rikka"]) {
+    --character-accent:#91b5dc;
+    --character-accent-hover:color-mix(in srgb, #91b5dc 75%, white);
+    --character-soft:rgba(145,181,220,.16);
+    --character-glow:rgba(145,181,220,.32);
+    --character-aura:rgba(145,181,220,.22);
+    --character-aura-secondary:rgba(145,181,220,.14);
+  }
+.pb[data-character="hayasaka_ai"], body:has(.pb[data-character="hayasaka_ai"]) {
+    --character-accent:#8ea9d7;
+    --character-accent-hover:color-mix(in srgb, #8ea9d7 75%, white);
+    --character-soft:rgba(142,169,215,.16);
+    --character-glow:rgba(142,169,215,.32);
+    --character-aura:rgba(142,169,215,.22);
+    --character-aura-secondary:rgba(142,169,215,.14);
+  }
+.pb[data-character="arima_kana"], body:has(.pb[data-character="arima_kana"]) {
+    --character-accent:#d79baf;
+    --character-accent-hover:color-mix(in srgb, #d79baf 75%, white);
+    --character-soft:rgba(215,155,175,.16);
+    --character-glow:rgba(215,155,175,.32);
+    --character-aura:rgba(215,155,175,.22);
+    --character-aura-secondary:rgba(215,155,175,.14);
+  }
+.pb[data-character="hori_kyouko"], body:has(.pb[data-character="hori_kyouko"]) {
+    --character-accent:#d2a475;
+    --character-accent-hover:color-mix(in srgb, #d2a475 75%, white);
+    --character-soft:rgba(210,164,117,.16);
+    --character-glow:rgba(210,164,117,.32);
+    --character-aura:rgba(210,164,117,.22);
+    --character-aura-secondary:rgba(210,164,117,.14);
+  }
+
+/* 第六至九批日常角色；颜色仍经全局深浅主题文字映射。 */
+.pb[data-character="raphtalia"], body:has(.pb[data-character="raphtalia"]) {
+    --character-accent:#c99473;
+  }
+.pb[data-character="yatogami_tohka"], body:has(.pb[data-character="yatogami_tohka"]) {
+    --character-accent:#a794db;
+  }
+.pb[data-character="tobiichi_origami"], body:has(.pb[data-character="tobiichi_origami"]) {
+    --character-accent:#9dbce5;
+  }
+.pb[data-character="ubel_frieren"], body:has(.pb[data-character="ubel_frieren"]) {
+    --character-accent:#7fba9b;
+  }
+.pb[data-character="kanroji_mitsuri"], body:has(.pb[data-character="kanroji_mitsuri"]) {
+    --character-accent:#d69aaf;
+  }
+.pb[data-character="zero_two"], body:has(.pb[data-character="zero_two"]) {
+    --character-accent:#db9eae;
+  }
+.pb[data-character="asada_shino"], body:has(.pb[data-character="asada_shino"]) {
+    --character-accent:#9bb8c6;
+  }
+.pb[data-character="tatsumaki"], body:has(.pb[data-character="tatsumaki"]) {
+    --character-accent:#8abc9d;
+  }
+.pb[data-character="fubuki_one_punch"], body:has(.pb[data-character="fubuki_one_punch"]) {
+    --character-accent:#86ad9c;
+  }
+.pb[data-character="mouri_ran"], body:has(.pb[data-character="mouri_ran"]) {
+    --character-accent:#a9a1d0;
+  }
+.pb[data-character="medusa_rider"], body:has(.pb[data-character="medusa_rider"]) {
+    --character-accent:#b09dcf;
+  }
+.pb[data-character="chloe_von_einzbern"], body:has(.pb[data-character="chloe_von_einzbern"]) {
+    --character-accent:#d5a293;
+  }
+.pb[data-character="medea_caster"], body:has(.pb[data-character="medea_caster"]) {
+    --character-accent:#94a6d1;
+  }
+.pb[data-character="kama_fate"], body:has(.pb[data-character="kama_fate"]) {
+    --character-accent:#c9a0b1;
+  }
+.pb[data-character="kasugano_sora"], body:has(.pb[data-character="kasugano_sora"]) {
+    --character-accent:#b0b8cd;
+  }
+.pb[data-character="kuonji_alice"], body:has(.pb[data-character="kuonji_alice"]) {
+    --character-accent:#9aa9ba;
+  }
+.pb[data-character="akizuki_kanna"], body:has(.pb[data-character="akizuki_kanna"]) {
+    --character-accent:#d5a4bd;
+  }
+.pb[data-character="yae_miko"], body:has(.pb[data-character="yae_miko"]) {
+    --character-accent:#d49eb9;
+  }
+.pb[data-character="changli_wuthering"], body:has(.pb[data-character="changli_wuthering"]) {
+    --character-accent:#d79e8c;
+  }
+.pb[data-character="shorekeeper"], body:has(.pb[data-character="shorekeeper"]) {
+    --character-accent:#9cbbda;
+  }
+.pb[data-character="makinohara_shouko"], body:has(.pb[data-character="makinohara_shouko"]) {
+    --character-accent:#9bafcb;
+  }
+.pb[data-character="futaba_rio"], body:has(.pb[data-character="futaba_rio"]) {
+    --character-accent:#b1acbd;
+  }
+.pb[data-character="shirogane_kei"], body:has(.pb[data-character="shirogane_kei"]) {
+    --character-accent:#a6bbd3;
+  }
+.pb[data-character="yanami_anna"], body:has(.pb[data-character="yanami_anna"]) {
+    --character-accent:#9caed8;
+  }
+.pb[data-character="tachibana_mikari"], body:has(.pb[data-character="tachibana_mikari"]) {
+    --character-accent:#d8a4be;
+  }
+.pb[data-character="shinjou_akane"], body:has(.pb[data-character="shinjou_akane"]) {
+    --character-accent:#b79fca;
+  }
+.pb[data-character="suou_yuki"], body:has(.pb[data-character="suou_yuki"]) {
+    --character-accent:#b0a4cb;
+  }
+.pb[data-character="maria_mikhailovna_kujou"], body:has(.pb[data-character="maria_mikhailovna_kujou"]) {
+    --character-accent:#ceb79b;
+  }
+.pb[data-character="elfaria_alvis_serfort"], body:has(.pb[data-character="elfaria_alvis_serfort"]) {
+    --character-accent:#97bddd;
+  }
+.pb[data-character="vivy"], body:has(.pb[data-character="vivy"]) {
+    --character-accent:#8fbad2;
+  }
+.pb[data-character="maomao"], body:has(.pb[data-character="maomao"]) {
+    --character-accent:#8cae9a;
+  }
+.pb[data-character="marcille_donato"], body:has(.pb[data-character="marcille_donato"]) {
+    --character-accent:#c5bd8e;
+  }
+.pb[data-character="cartethyia"], body:has(.pb[data-character="cartethyia"]) {
+    --character-accent:#c4b995;
+  }
+.pb[data-character="dorothy_nikke"], body:has(.pb[data-character="dorothy_nikke"]) {
+    --character-accent:#d4a9c3;
+  }
+.pb[data-character="shiranui_mai"], body:has(.pb[data-character="shiranui_mai"]) {
+    --character-accent:#cf9f94;
+  }
+.pb[data-character="togawa_sakiko"], body:has(.pb[data-character="togawa_sakiko"]) {
+    --character-accent:#9facd1;
+  }
+/* Shared derivation preserves each registered accent without repeating six declarations per character. */
+.pb[data-onboarding-theme="true"], body:has(.pb[data-onboarding-theme="true"]) {
+  --character-accent-hover:color-mix(in srgb, var(--character-accent) 75%, white);
+  --character-soft:color-mix(in srgb, var(--character-accent) 16%, transparent);
+  --character-glow:color-mix(in srgb, var(--character-accent) 32%, transparent);
+  --character-aura:color-mix(in srgb, var(--character-accent) 22%, transparent);
+  --character-aura-secondary:color-mix(in srgb, var(--character-accent) 14%, transparent);
+}

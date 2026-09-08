@@ -451,6 +451,99 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "yae_miko",
+      "displayName": "八重神子",
+      "originalName": "Yae Miko",
+      "franchise": "Genshin Impact",
+      "aliases": [
+        "八重神子",
+        "Yae Miko"
+      ],
+      "identityProse": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief; no permanent fox tail is added to the everyday form.",
+      "identityTokens": [
+        "yae_miko",
+        "genshin_impact",
+        "pink_hair",
+        "long_hair",
+        "low-tied_long_hair",
+        "purple_eyes",
+        "floppy_ears",
+        "animal_ears"
+      ],
+      "exactTokens": [
+        "yae_miko"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yae_miko"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_shrine",
+          "name": "鸣神大社端庄宫司和装",
+          "prose": "a red-and-white shrine robe with an opaque inner layer, wide sleeves and a neatly secured obi",
+          "tokens": [
+            "shrine_robes",
+            "white_robe",
+            "red_hakama",
+            "wide_sleeves",
+            "obi"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_editor",
+          "name": "八重堂编辑便装",
+          "prose": "a pale pink kimono-style jacket, cream high-collared blouse and long dark skirt",
+          "tokens": [
+            "pink_jacket",
+            "cream_blouse",
+            "high_collar",
+            "long_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "初诣围巾和服",
+          "prose": "a warm plum kimono, cream wool scarf and closed winter sandals",
+          "tokens": [
+            "plum_kimono",
+            "cream_scarf",
+            "wool",
+            "japanese_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

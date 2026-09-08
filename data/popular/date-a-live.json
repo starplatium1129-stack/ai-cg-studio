@@ -103,6 +103,188 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "yatogami_tohka",
+      "displayName": "夜刀神十香",
+      "originalName": "Tohka Yatogami",
+      "franchise": "Date A Live",
+      "aliases": [
+        "夜刀神十香",
+        "Tohka Yatogami"
+      ],
+      "identityProse": "Tohka Yatogami from Date A Live, a curious spirit with very long dark-purple hair gathered into a high half ponytail with a large ribbon and bright violet eyes. Her expressions show earnest wonder at ordinary human life.",
+      "identityTokens": [
+        "yatogami_tohka",
+        "date_a_live",
+        "purple_hair",
+        "very_long_hair",
+        "purple_eyes",
+        "ponytail",
+        "ribbon"
+      ],
+      "exactTokens": [
+        "yatogami_tohka"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, yatogami_tohka"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "来禅高校日常制服",
+          "prose": "a neat white school blouse, navy jacket, ribbon tie, knee-length pleated skirt and loafers",
+          "tokens": [
+            "school_uniform",
+            "white_blouse",
+            "navy_jacket",
+            "ribbon",
+            "pleated_skirt",
+            "loafers"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭紫色浴衣",
+          "prose": "a securely wrapped violet floral yukata, pale pink obi and wooden sandals",
+          "tokens": [
+            "purple_yukata",
+            "floral_print",
+            "pink_obi",
+            "geta"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_home",
+          "name": "冬季居家针织装",
+          "prose": "a cream knitted sweater, soft purple trousers and warm socks",
+          "tokens": [
+            "cream_sweater",
+            "purple_pants",
+            "warm_socks"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    },
+    {
+      "id": "tobiichi_origami",
+      "displayName": "鸢一折纸",
+      "originalName": "Origami Tobiichi",
+      "franchise": "Date A Live",
+      "aliases": [
+        "鸢一折纸",
+        "Origami Tobiichi"
+      ],
+      "identityProse": "Origami Tobiichi from Date A Live, a reserved girl with snow-white hair and pale blue eyes. Her composed face reveals feelings through small shifts of her gaze; hair length belongs to the selected timeline outfit.",
+      "identityTokens": [
+        "tobiichi_origami",
+        "date_a_live",
+        "white_hair",
+        "blue_eyes",
+        "hair_ornament"
+      ],
+      "exactTokens": [
+        "tobiichi_origami"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, tobiichi_origami"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "旧时间线短发制服",
+          "prose": "a navy school blazer, white blouse and pleated skirt, with a neat short white haircut",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_blouse",
+            "pleated_skirt",
+            "short_hair"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_ast",
+          "name": "AST装备整备服",
+          "prose": "a closed grey technical jacket, reinforced trousers and work gloves, with short white hair",
+          "tokens": [
+            "grey_jacket",
+            "tactical_pants",
+            "gloves",
+            "short_hair"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_home_long",
+          "name": "新时间线长发居家装",
+          "prose": "a pale blue long-sleeved blouse and ankle-length skirt, with flowing waist-length white hair",
+          "tokens": [
+            "blue_blouse",
+            "long_sleeves",
+            "long_skirt",
+            "long_hair"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }
