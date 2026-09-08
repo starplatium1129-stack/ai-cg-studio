@@ -97,12 +97,11 @@ test('home renders hero, featured scenes and live counts', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/');
 
-  // 2026-09-07: hero 主标题改为角色导向文案，品牌名迁至 .hero-register。
-  await expect(page.locator('.hero-register')).toContainText('绫季绘境');
+  await expect(page.locator('.nav-brand .nav-logo')).toHaveAttribute('alt', '绫季绘境');
+  await expect(page.locator('.hero-register')).toContainText('ANIME · CG · STORIES');
   await expect(page.locator('.hero-title')).toBeVisible();
-  // 精选场景来自 scenes.json + curation.json，必须真的渲染出卡片
-  await expect(page.locator('.strip-scroll .sc').first()).toBeVisible();
-  await expect(page.locator('#featuredScenesLabel')).not.toContainText('场景加载中');
+  // 精选场景来自 scenes.json + curation.json，必须真的渲染进画册手帖
+  await expect(page.locator('.journal-entry').first()).toBeVisible();
   // 主要创作入口
   await expect(page.getByRole('link', { name: /开始绘制/ }).first()).toBeVisible();
 
@@ -115,12 +114,15 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await page.goto('/prompt-builder');
 
   await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'basic');
+  await expect(page.locator('.material-switch button[aria-controls="material-character"]')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('.material-switch button[aria-controls="material-story"]').click();
   await expect(page.locator('.story-input')).toBeVisible();
+  await expect(page.locator('.voice-studio')).toBeVisible();
+  await page.locator('.material-switch button[aria-controls="material-scenes"]').click();
   await expect(page.locator('.scene-list button.scene-card').first()).toBeVisible();
   await expect(page.locator('.scene-list button.scene-card')).toHaveCount(6);
   await expect(page.locator('#stepTags')).toBeHidden();
   await expect(page.locator('#projectSelect')).toHaveCount(0);
-  await expect(page.locator('.voice-studio')).toBeVisible();
   const shellWidth = await page.locator('.pb').evaluate(element => element.getBoundingClientRect().width);
   const viewportWidth = await page.evaluate(() => window.innerWidth);
   expect(shellWidth).toBeGreaterThanOrEqual(1000);
@@ -132,7 +134,9 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   });
   expect(basicColumns.left).toBeGreaterThanOrEqual(320);
   expect(basicColumns.center).toBeGreaterThan(basicColumns.left * 1.75);
-  expect(basicColumns.right).toBe(0);
+  expect(basicColumns.right).toBeGreaterThan(0);
+  await expect(page.locator('.director-inspector')).toBeVisible();
+  await expect(page.locator('.inspector-tabs')).toBeHidden();
   // 受控路线：basic 模式由系统自动选择引擎，底模选择器只在专家模式出现
   await expect(page.locator('#baseModel')).toBeHidden();
   await expect(page.locator('.managed-route-card')).toBeVisible();
@@ -145,8 +149,9 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   // 专家模式放开引擎选择；SD 格式断言（<lora: / [NEG]）需显式切回 SD 引擎
   await page.locator('.engine-switch button').first().click();
   await expect(page.locator('#baseModel')).toBeVisible();
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('#stepTags')).toBeVisible();
-  await expect(page.locator('.col-center > #stepTags')).toHaveCount(1);
+  await expect(page.locator('.inspector-section[data-panel="prompt"] > #stepTags')).toHaveCount(1);
   await expect(page.locator('#stepCamera')).not.toHaveAttribute('open', '');
   await expect(page.locator('.tag-results button')).toHaveCount(72);
   await page.getByPlaceholder('搜索中文或 Danbooru 词条').fill('校服');
@@ -173,22 +178,29 @@ test('director expert artist tags use model-native syntax and stay out of scene 
   await page.goto('/prompt-builder');
   await expect(page.getByTestId('artist-style-picker')).toHaveCount(0);
   await page.getByRole('button', { name: /专家模式/ }).click();
+  await page.getByRole('tab', { name: '画面', exact: true }).click();
   const picker = page.getByTestId('artist-style-picker');
   await expect(picker).toBeVisible();
   await picker.locator('summary').click();
   await picker.locator('[data-artist-style-id="kantoku"]').click();
   // 有 prompt 后面板渲染结构化 token 流，画师词条以 chip 呈现
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.prompt-health-body')).toContainText('kantoku');
+  await page.getByRole('tab', { name: '生成', exact: true }).click();
   await page.getByRole('button', { name: /Anima 引擎/ }).click();
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.prompt-health-body')).toContainText('@kantoku');
+  await page.getByRole('tab', { name: '生成', exact: true }).click();
   await page.getByRole('button', { name: /Krea 2/ }).click();
-  await expect(page.locator('.prompt-health-body')).toContainText('visual styling inspired by Kantoku');
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
+  await expect(page.locator('.prompt-health-body')).toContainText('clear and soft Japanese anime style');
   await page.getByRole('button', { name: /场景模式/ }).click();
   await expect(page.getByTestId('artist-style-picker')).toHaveCount(0);
   // 场景模式收起专家编译面板；无论空态还是结构态，kantoku 都不得出现
   await expect(page.locator('.prompt-health-body')).not.toContainText(/kantoku/i);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: /专家模式/ }).click();
+  await page.getByRole('tab', { name: '画面', exact: true }).click();
   const mobilePicker = page.getByTestId('artist-style-picker');
   await mobilePicker.locator('summary').click();
   // 画师库随调研持续扩容（20→37），断言下限而非写死
@@ -205,10 +217,13 @@ test('director restores state from a scene deep link', async ({ page }) => {
 
   // 深链必须把场景真正装进导演台
   await expect(page.locator('.pb')).toHaveAttribute('data-character', /nene|natsume|triad/);
+  await expect(page.locator('.material-switch button[aria-controls="material-scenes"]')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('.material-switch button[aria-controls="material-story"]').click();
   await expect(page.locator('.scene-context-title')).toBeVisible();
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
   // 受控路线下 basic 自动走 Anima；SD LoRA 断言需在专家模式切回 SD 引擎
   await page.locator('.engine-switch button').first().click();
+  await page.getByRole('tab', { name: '提示词', exact: true }).click();
   await expect(page.locator('.prompt-health-body')).toContainText('lora');
 
   expect(errors).toEqual([]);
@@ -397,7 +412,6 @@ test('character room mounts portrait, composer and voice console', async ({ page
   });
   await page.goto('/chat');
 
-  await expect(page.locator('.page-kicker')).toContainText('Character room');
   await expect(page.getByRole('heading', { name: '角色房间', level: 1 })).toBeVisible();
   await expect(page.locator('.chat-input')).toBeVisible();
   await expect(page.locator('.send-btn')).toBeVisible();
@@ -1056,20 +1070,18 @@ test('Natsume Live2D eyes blink symmetrically via the blink scheduler', async ({
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
 
   // 眨眼调度器把双眼参数逐帧写同一值（stage.dataset.blink = 1 睁 / 0 闭）。
-  // 采样 12 秒：必须出现至少一次完整眨眼，且眨眼结束后回到全睁。
+  // 低负载和共享 CI runner 的采样频率差异很大，按状态轮询完整闭眼→睁眼周期。
   const stage = page.locator('.portrait-stage');
-  const samples: string[] = [];
-  const deadline = Date.now() + 12_000;
-  while (Date.now() < deadline) {
-    samples.push(await stage.getAttribute('data-blink') || '');
-    await page.waitForTimeout(120);
-  }
-  const values = samples.map(Number).filter(v => Number.isFinite(v));
-  expect(values.length).toBeGreaterThan(50);
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  expect(min, `12 秒内应出现至少一次眨眼（实测最小值 ${min}）`).toBeLessThan(0.5);
-  expect(max, '眨眼之间眼睛应回到全睁').toBe(1);
+  await expect.poll(async () => Number(await stage.getAttribute('data-blink')), {
+    message: '20 秒内应出现至少一次闭眼状态',
+    timeout: 20_000,
+    intervals: [80],
+  }).toBeLessThan(0.5);
+  await expect.poll(async () => Number(await stage.getAttribute('data-blink')), {
+    message: '眨眼结束后眼睛应回到全睁',
+    timeout: 3_000,
+    intervals: [40],
+  }).toBe(1);
   expect(errors).toEqual([]);
 });
 
@@ -1298,7 +1310,7 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
   await expect(page.locator('.scene-facet-panel')).toBeHidden();
   await page.locator('.filter-toggle').click();
   await expect(page.locator('.scene-facet-panel')).toBeVisible();
-  await expect(page.getByRole('checkbox', { name: /显示成人内容/ })).toBeChecked();
+  await expect(page.locator('.mature-hint')).toContainText(/成人 \d+ · 已展示/);
   const hiddenToggle = page.getByRole('checkbox', { name: /管理已隐藏/ });
   await expect(hiddenToggle).toHaveAccessibleName(/1/);
   await hiddenToggle.check();
@@ -1332,7 +1344,7 @@ test('scene explorer promotes locally used scenes without deleting the archive',
 
 test('home page stays inside the performance budget', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('.strip-scroll .sc').first()).toBeVisible();
+  await expect(page.locator('.journal-entry').first()).toBeVisible();
   const heroImages = page.locator('.hero-character');
   await expect(heroImages).toHaveCount(2);
   await expect(heroImages.first()).toHaveAttribute('width', '1024');
@@ -1376,9 +1388,9 @@ test('home page stays inside the performance budget', async ({ page }) => {
   // data 0.4MB、应用 chunk 0.24MB、立绘缩略图 0.17-0.56MB——全部为真实内容成本。
   expect(budget.payloadBytes).toBeLessThanOrEqual(3_750_000);
   expect(budget.domNodes).toBeLessThanOrEqual(1_800);
-  // 2026-08-21 调整 120 → 180：热门角色横条（43 卡 × 卡片+img 的 hover 过渡）
-  // 带来 +86 个带过渡元素，属功能存在的合理成本；其余区块无滥用。
-  expect(budget.animated).toBeLessThanOrEqual(180);
+  // 画册手帖与角色目录改版后首屏新增卡片级 hover 反馈；216 为当前实测，
+  // 留约 10% 时序浮动，同时继续阻止全局 * transition 回潮。
+  expect(budget.animated).toBeLessThanOrEqual(240);
   expect(budget.font500).toBe(0);
 });
 
@@ -1386,21 +1398,21 @@ test('roadmap points to the markdown roadmap document', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/docs/roadmap.html');
   await expect(page.getByRole('heading', { name: '产品路线图', level: 1 })).toBeVisible();
-  await expect(page.locator('a[href="archive/expired/visual-architecture-roadmap.md"]')).toBeVisible();
+  await expect(page.locator('a[href="roadmap.md"]')).toContainText('docs/roadmap.md');
   expect(errors).toEqual([]);
 });
 
-test('guest first visit shows a one-time guide and dismissal persists', async ({ page }) => {
+test('guest query forces the guide and local dismissal persists', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/?guest=1');
   await expect(page.getByRole('dialog', { name: '访客导览' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '欢迎来到 绫季绘境' })).toBeVisible();
-  await page.getByRole('button', { name: '知道了，开始浏览' }).click();
+  await page.getByRole('button', { name: '开始创作' }).click();
   await expect(page.getByRole('dialog', { name: '访客导览' })).toBeHidden();
   const dismissed = await page.evaluate(() => localStorage.getItem('aics_guest_guide_dismissed'));
   expect(dismissed).toBe('1');
   await page.goto('/?guest=1');
-  await expect(page.getByRole('dialog', { name: '访客导览' })).toBeHidden();
+  await expect(page.getByRole('dialog', { name: '访客导览' })).toBeVisible();
   expect(errors).toEqual([]);
 });
 
