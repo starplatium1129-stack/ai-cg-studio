@@ -2,7 +2,7 @@
 
 日期：2026-09-08。范围：个人本机 Web → Express 网关 → 本机 ComfyUI → Anima；兼顾共用队列、角色数据、生成界面和本地运行环境。未新增公网部署、多用户登录或鉴权体系，保留现有本机分级边界。
 
-**结论：本轮代码修复与本地 Web 验收已收尾。全量 gate:full 通过，最终浏览器整批 73/73 通过；角色数据原始渲染字段与定稿基线保持不变。桌面同步使用标准入口，UAC 与安装目录验证单独记录。**
+**结论：本轮代码修复与本地 Web 验收已收尾。全量 gate:full 通过，最终浏览器整批 73/73 通过；角色数据原始渲染字段与定稿基线保持不变。桌面同步已通过标准入口完成，并核对安装目录、原生依赖和安装版真实生成。**
 
 ## 审查范围与证据
 
@@ -82,7 +82,7 @@ WD14 变更发生在本机 ComfyUI 环境，不属于本仓库 Git 文件。原 
 
 没有进行全角色出图、长时间显存压力测试或所有可选 ComfyUI 节点推理验收；这些不作为本轮已完成项目。WD14 已能加载，不等于全部反推模型已下载。
 
-本轮不夹带其他会话的 deploy-desktop-quick.ps1 改动。桌面同步使用项目唯一入口 deploy-desktop.bat；Windows UAC 需要用户在系统安全桌面操作，不绕过权限边界。
+本轮不夹带其他会话的 deploy-desktop-quick.ps1 改动。桌面同步已调用唯一入口 deploy-desktop.bat -SkipBuild；安装目录 routes/server/services/scripts/lib/data/dist 共 1309 个文件与交付源一致。桌面网关 3123 在线，onnxruntime-node 与 sharp 实际加载成功；安装版 Anima 真实出图 9 秒完成，重复下载字节一致。证据：runtime/closeout-desktop-verification.json、runtime/closeout-desktop-render.log、runtime/desktop-audit-render.png。
 
 ## 本轮验证汇总
 
@@ -98,7 +98,9 @@ WD14 变更发生在本机 ComfyUI 环境，不属于本仓库 Git 文件。原 
 | 真实 Anima | 通过；最终图片及 JSON/日志已保存 |
 | 四组参数面板浏览器检查 | 4/4 通过；基础模式截图另保存在 runtime/audit-basic-*.png |
 | 最终浏览器整批回归 | 73/73 通过，runtime/closeout-browser-acceptance.log |
-| 桌面同步 | 待标准入口执行与 UAC |
+| 桌面同步 | 完成；1309 文件一致、原生依赖加载、桌面 Anima 出图与重复下载验证通过 |
 | gate:full --all | 通过；完整日志 runtime/closeout-acceptance.log |
 
 本轮完整受控文件打包在 `runtime/local-studio-audit-code.zip`，包含源码、测试、报告与文件哈希清单；本机环境修复及被忽略的验收日志不冒充 Git 代码变更。
+
+实现提交：88bf706b，已推送到 codex/popular-sfw-complete；最终验收记录更新另随 Git 历史保存。

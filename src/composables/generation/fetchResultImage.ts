@@ -20,4 +20,3 @@ export async function fetchResultImage(url: string, signal: AbortSignal): Promis
       signal.removeEventListener('abort', onAbort)
     }
   }
-
