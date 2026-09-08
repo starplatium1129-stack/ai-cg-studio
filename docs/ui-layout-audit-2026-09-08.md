@@ -44,6 +44,9 @@
 | 类型、样式、全局双主题对比度与体量门禁 | 通过 |
 | gate:full --all | 通过 |
 | 生产构建与打包预算 | 通过 |
+| 已安装界面文件 | 714 个文件与更新包一致 |
+| 已安装数据保护 | 175 份 JSON 内容保持不变 |
+| 安装目录专项 UI 复验 | 12/12 通过；通过隔离端口加载安装目录文件，不依赖托盘进程持续运行 |
 
 ## 使用与交付
 
@@ -52,3 +55,7 @@
 源码与报告提交范围不包含并行会话的角色/蓝图修改。审计截图保存在本轮 runtime 证据目录，结果记录分别为 ui-regression-final.log、ui-gate-final.log、ui-survey-final.log 与 ui-states-final.log。
 
 本轮是界面验收，不宣称所有生成模型、所有角色图片或所有桌面原生窗口都已重新测试。
+
+界面已同步到桌面安装目录。为避免混入并行编辑的数据，发布使用已安装数据的副本构建，并在发布前后核对内容一致性。桌面日志中的退出记录为托盘退出；安装目录复验使用独立临时服务完成。
+
+主要前后截图位于 `runtime/ui-layout-audit/`：`expert-before.png` / `expert-after.png`、`companion-before.png` / `companion-after.png`、`inpaint-before.png` / `inpaint-after.png`。实现提交为 d75db633；验收记录另随 Git 历史保存。
