@@ -8,9 +8,11 @@ deploy-desktop.bat                  :: 增量部署（默认）
 deploy-desktop.bat -UseInstaller    :: 完整安装（跑安装包）
 deploy-desktop.bat -SkipBuild       :: 已手动 build 过，跳过前端构建
 deploy-desktop.bat -NoRestart       :: 部署后不自动启动
+deploy-desktop.bat -UseInstaller -QuietInstall :: UAC 确认后自动安装并启动
 ```
 
 两者都会：停应用 → 清 WebView2 缓存 → 验证反推依赖 → 重启桌面端。
+`-QuietInstall` 仅用于完整安装，仍需要用户确认 UAC；安装器非零退出会明确报错。部署日志追加到 `runtime/desktop-deploy-last.log`，便于核对实际安装结果。
 `-Cleanup` 默认已带（清理源端已删除的历史残留）。
 
 ---

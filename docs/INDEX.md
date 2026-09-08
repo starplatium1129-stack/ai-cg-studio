@@ -14,6 +14,7 @@
 | [工程契约](engineering-contracts.md) | 模块约束、Live2D 与角色接入六层要求 |
 | [维护手册](maintenance.md) | 文件职责与日常维护 |
 | [桌面部署](desktop-deployment.md) | 增量、完整安装与 UAC |
+| [场景维护工作台](scene-maintenance-workspace.md) | 列表详情布局、只读浏览、编辑契约与 1.5.7 验证 |
 | [游戏式安装界面](game-installer.md) | 原生安装旅程、模板维护、安全预览和私密发行 |
 | [桌面个性化审计](desktop-personalization-audit-2026-09-08.md) | 启动工作页、偏好恢复、双主题标题栏与本轮验收边界 |
 | [本次文档审计](documentation-audit-2026-09-08.md) | 漂移修正、检查结果和边界 |

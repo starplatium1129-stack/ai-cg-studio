@@ -21,6 +21,7 @@ param(
   [switch]$SkipBuild,
   [switch]$Cleanup,
   [switch]$UseInstaller,
+  [switch]$QuietInstall,
   [switch]$NoRestart
 )
 
@@ -43,10 +44,19 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($SkipBuild)    { $argList += '-SkipBuild' }
   if ($Cleanup)      { $argList += '-Cleanup' }
   if ($UseInstaller) { $argList += '-UseInstaller' }
+  if ($QuietInstall) { $argList += '-QuietInstall' }
   if ($NoRestart)    { $argList += '-NoRestart' }
-  Start-Process powershell -Verb RunAs -ArgumentList ($argList -join ' ')
+  if ($QuietInstall) {
+    $argList = @($argList | Where-Object { $_ -ne '-NoExit' })
+    Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ')
+  } else {
+    Start-Process powershell -Verb RunAs -ArgumentList ($argList -join ' ')
+  }
   exit 0
 }
+
+if ($QuietInstall -and -not $UseInstaller) { throw '-QuietInstall 仅可与 -UseInstaller 一起使用' }
+Start-Transcript -Path (Join-Path $root 'runtime\desktop-deploy-last.log') -Append | Out-Null
 
 # 安装包里已经带好了构建产物，用它安装时无需本地构建
 if ($UseInstaller) { $SkipBuild = $true }
@@ -104,7 +114,12 @@ if ($UseInstaller) {
     Sort-Object LastWriteTime -Descending | Select-Object -First 1
   if (-not $setup) { Write-Error 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri'; exit 1 }
   Write-Host "  $($setup.Name)（$([math]::Round($setup.Length / 1MB, 1)) MB）" -ForegroundColor DarkGray
-  Start-Process -FilePath $setup.FullName -Wait
+  $setupProcess = if ($QuietInstall) {
+    Start-Process -FilePath $setup.FullName -ArgumentList '/S' -Wait -PassThru
+  } else {
+    Start-Process -FilePath $setup.FullName -Wait -PassThru
+  }
+  if ($setupProcess.ExitCode -ne 0) { throw "安装程序未成功结束，退出码 $($setupProcess.ExitCode)" }
   Write-Host '  安装程序已退出' -ForegroundColor DarkGray
 } else {
   # 复制顺序很重要（2026-08-15 回归）：data 必须早于 dist。
@@ -235,3 +250,4 @@ if (-not $NoRestart) {
 $after = [math]::Round((Get-ChildItem -Path $installDir -Recurse -File -ErrorAction SilentlyContinue |
   Measure-Object -Property Length -Sum).Sum / 1MB, 1)
 Write-Host "完成。安装目录当前 $after MB" -ForegroundColor Green
+Stop-Transcript | Out-Null

@@ -1,5 +1,5 @@
 <template>
-  <article class="page" style="--page-max:1400px">
+  <article class="page scene-maintenance-page" :class="{ 'is-catalog': tab === 'scenes' || tab === 'blueprints' }" style="--page-max:1640px">
     <WorkspaceArchiveBar
       chapter="12"
       title="SCENE MAINTENANCE"
@@ -11,17 +11,17 @@
     <header class="sm-head">
       <div>
         <div class="page-kicker">Scene manager</div>
-        <h1 class="title">场景管理</h1>
+        <h1 class="title">场景维护</h1>
         <div class="maintenance-state" :class="{ dirty: dirty }">
           <strong id="maintenanceTitle">{{ loading ? '正在读取场景档案' : (loadError ? '场景档案暂不可用' : (dirty ? '有尚未保存的修改' : '已同步')) }}</strong>
-          <span id="maintenanceHint">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
+          <span v-if="!desktopPackaged" id="maintenanceHint">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
           <span v-if="saving && savingPhase" class="saving-phase">{{ savingPhase }}</span>
         </div>
       </div>
       <div class="sm-head-actions">
         <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="!scenes.length"><ArchiveIcon name="download" /> 导出 JSON</button>
         <button class="btn btn-primary" type="button" :disabled="!dirty || saving || desktopPackaged" :title="desktopPackaged ? '桌面应用模式不支持保存场景内容' : ''" @click="saveToProject">
-          {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '▣ 保存到项目') }}
+          {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '保存到项目') }}
         </button>
       </div>
     </header>
@@ -33,12 +33,7 @@
       message="正在从本地数据源同步场景、标签和维护记录。"
     />
 
-    <ArchiveStatePanel
-      v-if="desktopPackaged"
-      kind="warning"
-      title="桌面应用为只读模式"
-      message="场景内容位于只读应用包内，仅可浏览与导出，保存与维护任务不可用。请用源码开发模式编辑。"
-    />
+    <p v-if="desktopPackaged" class="manager-readonly" role="status"><ArchiveIcon name="eye" />桌面只读模式：可查看完整内容、复制和导出；编辑与保存请在开发工作区中进行。</p>
 
     <ArchiveStatePanel
       v-if="!loading && loadError"
@@ -96,143 +91,15 @@
       </div>
 
       </details>
-      <!-- Tabs -->
-      <div class="tab-row">
-        <button v-for="t in TABS" :key="t.id" class="tab-btn" :class="{active: tab===t.id}" type="button" @click="tab=t.id">{{ t.label }}</button>
-      </div>
-
-      <!-- 场景表 -->
-      <template v-if="tab==='scenes'">
-        <div class="toolbar">
-          <input v-model="search" class="search-input" type="search" aria-label="搜索管理场景" placeholder="搜索 ID、标题、故事、标签…" />
-          <select v-model="fCat" class="filter-select" aria-label="筛选场景分类">
-            <option value="">全部分类</option>
-            <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
-          </select>
-          <select v-model="fChar" class="filter-select" aria-label="筛选场景角色">
-            <option value="">全部角色</option>
-            <option value="nene">宁宁</option>
-            <option value="natsume">夏目</option>
-            <option value="triad">双人</option>
-          </select>
-          <select v-model="fRating" class="filter-select" aria-label="筛选场景分级">
-            <option value="">全部分级</option>
-            <option value="All">All</option>
-            <option value="R15">R15</option>
-            <option value="R18">R18</option>
-          </select>
-          <select v-model="sortBy" class="filter-select" aria-label="场景排序">
-            <option value="id">ID</option>
-            <option value="title">标题</option>
-            <option value="category">分类</option>
-            <option value="char">角色</option>
-          </select>
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" :title="desktopPackaged ? '桌面只读模式不可编辑' : ''" @click="openAddModal">＋ 新增场景</button>
-          <span class="list-meta">{{ filtered.length }} / {{ scenes.length }} 条</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table-scenes">
-            <thead>
-              <tr>
-                <th>ID</th><th>标题</th><th>分类</th><th>角色</th><th>分级</th><th>层级</th><th>故事</th><th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="loading" class="table-state-row">
-                <td colspan="8">
-                  <ArchiveStatePanel compact kind="loading" title="正在读取场景记录" message="同步本机场景、标签与维护状态。" />
-                </td>
-              </tr>
-              <tr v-else-if="!filtered.length" class="table-state-row">
-                <td colspan="8">
-                  <ArchiveStatePanel compact kind="filtered" title="没有匹配的场景" message="调整筛选条件，或新建一条场景记录。" />
-                </td>
-              </tr>
-              <template v-else>
-                <tr v-for="s in paged" :key="s.id">
-                  <td><code class="id-code">{{ s.id }}</code></td>
-                  <td v-html="hl(s.title, searchDebounced)"></td>
-                  <td>{{ s.category }}</td>
-                  <td>{{ charIcon(s.char) }}</td>
-                  <td><span class="rating-badge" :class="'rating-' + s.rating">{{ s.rating || 'All' }}</span></td>
-                  <td><span v-if="curationTier(s.id)!=='normal'" class="tier-badge" :class="'tier-' + curationTier(s.id)">{{ tierLabel(curationTier(s.id)) }}</span><span v-else class="muted">—</span></td>
-                  <td><div class="story-preview">{{ s.story }}</div></td>
-                  <td>
-                    <div class="action-btns">
-                      <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="openEditModal(s.id)">编辑</button>
-                      <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="duplicateScene(s.id)">复制</button>
-                      <button class="btn btn-danger btn-sm" type="button" :disabled="desktopPackaged" @click="deleteScene(s.id)">下架</button>
-                    </div>
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
-        <div v-if="totalPages > 1" class="pagination">
-          <button class="btn btn-ghost btn-sm" :disabled="page <= 1" @click="page--">← 上一页</button>
-          <span class="hint-sm">{{ page }} / {{ totalPages }}</span>
-          <button class="btn btn-ghost btn-sm" :disabled="page >= totalPages" @click="page++">下一页 →</button>
-        </div>
-      </template>
-
-      <!-- 蓝图库 -->
-      <template v-if="tab==='blueprints'">
-        <div class="toolbar">
-          <input v-model="bpSearch" class="search-input" type="search" placeholder="搜索蓝图 ID、标题、角色、标签、Prompt…" />
-          <select v-model="bpChar" class="filter-select">
-            <option value="">全部角色</option>
-            <option v-for="c in bpCharacters" :key="c" :value="c">{{ charLabel(c) }}</option>
-          </select>
-          <select v-model="bpCat" class="filter-select">
-            <option value="">全部分类</option>
-            <option v-for="c in bpCategories" :key="c" :value="c">{{ c }}</option>
-          </select>
-          <select v-model="bpAdult" class="filter-select">
-            <option value="">全部内容</option>
-            <option value="safe">普通</option>
-            <option value="adult">成人</option>
-          </select>
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" :title="desktopPackaged ? '桌面只读模式不可编辑' : ''" @click="openBlueprintAddModal">＋ 新增蓝图</button>
-          <span class="list-meta">{{ filteredBlueprints.length }} / {{ blueprints.length }} 条</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table-scenes">
-            <thead>
-              <tr><th>ID</th><th>标题</th><th>角色</th><th>分类</th><th>定级</th><th>动作</th><th>操作</th></tr>
-            </thead>
-            <tbody>
-              <tr v-if="!filteredBlueprints.length" class="table-state-row">
-                <td colspan="7">
-                  <ArchiveStatePanel compact kind="filtered" title="没有匹配的蓝图" message="调整筛选条件，或新建一条蓝图。" />
-                </td>
-              </tr>
-              <template v-else>
-                <tr v-for="b in pagedBlueprints" :key="b.id">
-                  <td><code class="id-code">{{ b.id }}</code></td>
-                  <td>{{ b.title }}</td>
-                  <td>{{ charLabel(b.characterId) }}</td>
-                  <td>{{ b.category }}</td>
-                  <td><span class="rating-badge" :class="'rating-' + (b.sampleRating || (b.adult ? 'R18' : 'All'))">{{ b.sampleRating || (b.adult ? 'R18' : 'All') }}</span></td>
-                  <td><div class="story-preview">{{ b.action }}</div></td>
-                  <td>
-                    <div class="action-btns">
-                      <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="openBlueprintEditModal(b.id)">编辑</button>
-                      <button class="btn btn-ghost btn-sm" type="button" :disabled="desktopPackaged" @click="duplicateBlueprint(b.id)">复制</button>
-                      <button class="btn btn-danger btn-sm" type="button" :disabled="desktopPackaged" @click="deleteBlueprint(b.id)">删除</button>
-                    </div>
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
-        <div v-if="bpTotalPages > 1" class="pagination">
-          <button class="btn btn-ghost btn-sm" :disabled="bpPage <= 1" @click="bpPage--">← 上一页</button>
-          <span class="hint-sm">{{ bpPage }} / {{ bpTotalPages }}</span>
-          <button class="btn btn-ghost btn-sm" :disabled="bpPage >= bpTotalPages" @click="bpPage++">下一页 →</button>
-        </div>
-      </template>
+      <div class="manager-workspace">
+      <nav class="manager-nav" aria-label="维护分区">
+        <span class="manager-nav-heading">内容与维护</span>
+        <button v-for="t in TABS" :key="t.id" type="button" :aria-pressed="tab === t.id" @click="tab = t.id"><span>{{ t.label }}</span><small v-if="recordCounts[t.id] !== undefined">{{ recordCounts[t.id] }}</small></button>
+        <p>选择记录查看详情。编辑后先保存草稿，再保存到项目。</p>
+      </nav>
+      <div class="manager-content">
+      <MaintenanceCatalog v-show="tab === 'scenes'" :records="sceneRecords" kind="scene" label="场景" :readonly="desktopPackaged" @add="openAddModal" @edit="openEditModal" @duplicate="duplicateScene" @remove="deleteScene" />
+      <MaintenanceCatalog v-show="tab === 'blueprints'" :records="blueprintRecords" kind="blueprint" label="蓝图" :readonly="desktopPackaged" @add="openBlueprintAddModal" @edit="openBlueprintEditModal" @duplicate="duplicateBlueprint" @remove="deleteBlueprint" />
 
       <!-- 标签库 -->
       <template v-if="tab==='tags'">
@@ -426,6 +293,8 @@
           </template>
         </section>
       </template>
+      </div>
+      </div>
     </template>
 
     <!-- 编辑 Modal -->
@@ -642,7 +511,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 // 场景编辑器的领域模型契约。原先整块是 any[] / any —— 这个视图会全量覆盖写回
 // data/scenes/*.json，字段拼错或丢字段等于静默删数据。
 import type {
-  SceneDraft, TagRecord, CurationData, CurationTier,
+  SceneDraft, TagRecord, CurationData,
 } from '@/types/api'
 import type { SceneBlueprint } from '@/utils/popularContent'
 import { useFocusTrap } from '@/composables/useFocusTrap'
@@ -654,6 +523,8 @@ import { useSceneMaintenance } from '@/composables/scene/useSceneMaintenance'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import MaintenanceCatalog from '@/components/maintenance/MaintenanceCatalog.vue'
+import { sceneMaintenanceRecord, blueprintMaintenanceRecord } from '@/utils/maintenanceRecords'
 import { confirmAction } from '@/composables/useConfirm'
 
 const sceneStore = useSceneStore()
@@ -674,7 +545,6 @@ const TABS = [
 ]
 
 const DUP_KEYWORDS = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛衣','衬衫','图书馆','天台','烟花','神社','巫女','咖啡','卧室','寝室','影音室','休息室','后厨','厨房','吧台','晚礼服','魔女','洛丽塔','浴衣','和服','赛车','冰箱','冷藏','露台','阳台','泳池','书房','试衣']
-const PAGE_SIZE = 30
 
 const scenes = ref<SceneDraft[]>([])
 const blueprints = ref<SceneBlueprint[]>([])
@@ -686,16 +556,7 @@ const maintenanceHint = ref('所有改动已同步')
 const loading = ref(true)
 const loadError = ref('')
 const tab = ref('scenes')
-const search = ref(''); const searchDebounced = ref(''); let searchTimer: ReturnType<typeof setTimeout> | null = null
-watch(search, (v) => { if (searchTimer) clearTimeout(searchTimer); searchTimer = setTimeout(() => { searchDebounced.value = v }, 250) })
-const fCat = ref(''); const fChar = ref(''); const fRating = ref('')
-const sortBy = ref('id'); const page = ref(1)
-
-// ── 热门角色蓝图编辑状态 ────────────────────────────────────────────────
-const bpSearch = ref(''); const bpSearchDebounced = ref(''); let bpSearchTimer: ReturnType<typeof setTimeout> | null = null
-watch(bpSearch, (v) => { if (bpSearchTimer) clearTimeout(bpSearchTimer); bpSearchTimer = setTimeout(() => { bpSearchDebounced.value = v }, 250) })
-const bpChar = ref(''); const bpCat = ref(''); const bpAdult = ref('')
-const bpPage = ref(1)
+// 蓝图编辑状态与浏览筛选独立，切换记录不丢失编辑快照。
 const bpEditing = ref<SceneBlueprint | null>(null)
 const bpEditingId = ref('')
 const bpTriedSave = ref(false)
@@ -755,6 +616,11 @@ const {
   copyJson,
 } = useSceneEditorModal({ scenes, curation, markDirty })
 
+const recordCounts = computed<Record<string, number>>(() => ({ scenes: scenes.value.length, blueprints: blueprints.value.length, tags: tags.value.length }))
+const characterNames = computed(() => new Map(sceneStore.popularCharacters.map(character => [character.id, character.displayName])))
+const sceneRecords = computed(() => scenes.value.map(scene => sceneMaintenanceRecord(scene, charLabel(scene.char), curationTier(scene.id))))
+const blueprintRecords = computed(() => blueprints.value.map(blueprint => blueprintMaintenanceRecord(blueprint, characterNames.value.get(blueprint.characterId || '') || charLabel(blueprint.characterId))))
+
 // ── 导入 / 导出（已下沉 useSceneImportExport）─────────────────────────────
 const { importInput, importResult, importScenes, exportJSON } = useSceneImportExport({
   scenes,
@@ -791,29 +657,6 @@ const {
   dirty,
   maintenanceHint,
   invalidateSceneCache: () => { sceneStore.loaded = false },
-})
-
-const categories = computed(() => [...new Set(scenes.value.map(s => s.category))].sort())
-const bpCategories = computed(() => [...new Set(blueprints.value.map(b => b.category).filter(Boolean))].sort())
-const bpCharacters = computed(() => [...new Set(blueprints.value.map(b => b.characterId).filter(Boolean))].sort())
-const filteredBlueprints = computed(() => {
-  const needle = bpSearchDebounced.value.trim().toLowerCase()
-  return blueprints.value.filter(b => {
-    if (bpChar.value && b.characterId !== bpChar.value) return false
-    if (bpCat.value && b.category !== bpCat.value) return false
-    if (bpAdult.value === 'adult' && !b.adult) return false
-    if (bpAdult.value === 'safe' && b.adult) return false
-    if (!needle) return true
-    return [
-      b.id, b.title, b.characterId, b.category, b.description, b.location, b.action,
-      ...(b.sceneTags || []), ...(b.promptTokens || []),
-    ].join(' ').toLowerCase().includes(needle)
-  })
-})
-const bpTotalPages = computed(() => Math.max(1, Math.ceil(filteredBlueprints.value.length / PAGE_SIZE)))
-const pagedBlueprints = computed(() => {
-  const start = (bpPage.value - 1) * PAGE_SIZE
-  return filteredBlueprints.value.slice(start, start + PAGE_SIZE)
 })
 
 function blankBlueprint(): SceneBlueprint {
@@ -946,31 +789,6 @@ const stats = computed(() => {
   ]
 })
 
-const filtered = computed(() => {
-  const q = searchDebounced.value.toLowerCase()
-  let r = scenes.value.filter(s => {
-    if (fCat.value && s.category !== fCat.value) return false
-    if (fChar.value && s.char !== fChar.value) return false
-    if (fRating.value && s.rating !== fRating.value) return false
-    if (q) {
-      const hay = [s.id, s.title, s.story, s.category, s.char, ...(s.tags||[])].join(' ').toLowerCase()
-      if (!hay.includes(q)) return false
-    }
-    return true
-  })
-  return r.sort((a,b) => {
-    if (sortBy.value === 'title') return String(a.title).localeCompare(String(b.title), 'zh-CN')
-    if (sortBy.value === 'category') return String(a.category).localeCompare(String(b.category))
-    if (sortBy.value === 'char') return String(a.char).localeCompare(String(b.char))
-    return String(a.id).localeCompare(String(b.id))
-  })
-})
-
-watch([searchDebounced, fCat, fChar, fRating, sortBy], () => { page.value = 1 })
-
-const totalPages = computed(() => Math.max(1, Math.ceil(filtered.value.length / PAGE_SIZE)))
-const paged = computed(() => filtered.value.slice((page.value-1)*PAGE_SIZE, page.value*PAGE_SIZE))
-
 // ── 重复检测 ──────────────────────────────────────────────────────────────
 const dupGroups = ref<Array<{ keyword: string; scenes: SceneDraft[] }>>([])
 const dupResult = ref('')
@@ -995,18 +813,12 @@ function deleteSceneFromDup(id: string) {
   detectDuplicates()
 }
 
-  function charIcon(v: string) { return v==='nene'?'宁':v==='natsume'?'夏':v==='triad'||v==='both'?'双':'—' }
 function charLabel(v: string | undefined) { return v==='nene'?'宁宁':v==='natsume'?'夏目':v==='triad'||v==='both'?'双人':(v || '—') }
 function errorMessage(error: unknown, fallback: string) {
   if (error instanceof Error && error.message) return error.message
   const text = String(error ?? '').trim()
   return text || fallback
 }
-const TIER_LABELS: Record<CurationTier, string> = {
-  signature: '招牌', curated: '精选', review: '待审', normal: '',
-}
-function tierLabel(v: string) { return TIER_LABELS[v as CurationTier] || '' }
-
 function markDirty(message: string) {
   dirty.value = true
   maintenanceHint.value = message
@@ -1073,7 +885,7 @@ onMounted(async () => {
 /* 替代原先散落的 6 处内联 style */
 .hint-sm { color:var(--text-muted); font-size:var(--fs-label-sm); }
 .id-code { font-size:var(--fs-mono-xs); }
-.sm-head { position:sticky; top:70px; z-index:var(--z-sticky); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-5); flex-wrap:wrap; }
+.sm-head { position:relative; top:auto; z-index:var(--z-sticky); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-5); flex-wrap:wrap; }
 .sm-head-actions { display:flex; gap:var(--s-2); flex-shrink:0; }
 .maintenance-state { display:inline-flex; align-items:center; gap:var(--s-2); margin-top:var(--s-2); padding:4px 12px; border-radius:var(--r-pill); background:color-mix(in srgb,var(--success) 10%,transparent); color:var(--success-text); font-size:var(--fs-label-sm); }
 .maintenance-state.dirty { background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning-text); }
@@ -1109,9 +921,6 @@ onMounted(async () => {
 .stat-card--danger .stat-value { color:var(--danger-text); }
 .stat-value { font-size:var(--fs-title-xs); font-weight:800; color:var(--accent); }
 .stat-label { font-size:var(--fs-label-xs); color:var(--text-muted); }
-.tab-row { display:flex; gap:var(--s-2); margin-bottom:var(--s-4); flex-wrap:wrap; }
-.tab-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
-.tab-btn.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
 .table-wrap { max-height:calc(100dvh - 340px); overflow:auto; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); margin-bottom:var(--s-4); }
 table { width:100%; border-collapse:collapse; font-size:var(--fs-body-sm); }
 th { background:var(--bg-deep); padding:var(--s-3); text-align:left; font-weight:700; color:var(--text-secondary); font-size:var(--fs-label-sm); text-transform:uppercase; letter-spacing:.05em; }
@@ -1121,11 +930,6 @@ tr:hover td { background:var(--bg-elevated); }
 .rating-All { background:color-mix(in srgb,var(--success) 22%,transparent); color:var(--success-text); }
 .rating-R15 { background:color-mix(in srgb,var(--warning) 22%,transparent); color:var(--warning-text); }
 .rating-R18 { background:color-mix(in srgb,var(--danger) 22%,transparent); color:var(--danger-text); }
-.tier-badge { display:inline-block; padding:2px 8px; border-radius:var(--r-pill); font-size:var(--fs-label-xs); font-weight:700; }
-.tier-signature { background:color-mix(in srgb,var(--natsume-amber) 26%,transparent); color:var(--natsume-amber); }
-.tier-curated { background:var(--accent-soft); color:var(--accent); }
-.tier-review { background:var(--bg-elevated); color:var(--text-secondary); }
-.story-preview { max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .action-btns { display:flex; gap:var(--s-1); white-space:nowrap; }
 .table-state-row > td { padding:0; }
 .table-state-row .archive-state-panel { border:0; border-radius:0; box-shadow:none; }
@@ -1210,7 +1014,7 @@ tr:hover td { background:var(--bg-elevated); }
 .filter-select { padding:var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font-size:var(--fs-body-sm); width:100%; }
 .form-hint { color:var(--danger-text); font-size:var(--fs-label-sm); margin:0 0 var(--s-3); }
 .form-check { display:flex; align-items:center; gap:var(--s-2); }
-.modal-actions { display:flex; gap:var(--s-2); margin-top:var(--s-2); flex-wrap:wrap; }
+.modal-actions { position:sticky; bottom:calc(-1 * var(--s-6)); padding:var(--s-3) 0; background:var(--bg-elevated); border-top:1px solid var(--border-soft); display:flex; gap:var(--s-2); margin-top:var(--s-2); flex-wrap:wrap; }
 .search-hl { background:color-mix(in srgb,var(--accent) 22%,transparent); color:var(--accent); padding:0 2px; border-radius:var(--r-xs); }
 @media(max-width: 768px) { .form-grid { grid-template-columns:1fr; } .sm-head { flex-direction:column; } }
 </style>

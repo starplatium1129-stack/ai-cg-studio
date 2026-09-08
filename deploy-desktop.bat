@@ -7,6 +7,7 @@ echo.
 echo 可选参数（可直接追加在本文件名后面）：
 echo   -SkipBuild 跳过前端构建      -Cleanup 清理历史残留（默认已带）
 echo   -UseInstaller 用完整安装包   -NoRestart 部署后不启动
+echo   -QuietInstall 完整安装时自动执行，仅需确认 UAC
 echo.
 echo 例：deploy-desktop.bat -UseInstaller -NoRestart
 echo.

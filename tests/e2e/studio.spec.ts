@@ -218,7 +218,7 @@ test('scene manager loads project data and opens the editor without dirtying sta
   const errors = collectRuntimeErrors(page);
   await page.goto('/scene-manager');
 
-  await expect(page.locator('table tbody tr').first()).toBeVisible();
+  await expect(page.locator('.catalog-record').first()).toBeVisible();
   await expect(page.locator('.stats')).toContainText('302');
   // 未改动时保存按钮必须不可用
   await expect(page.getByRole('button', { name: /保存到项目/ })).toBeDisabled();
@@ -240,12 +240,12 @@ test('scene manager protects unsaved changes during internal navigation', async 
   await page.getByRole('button', { name: '保存', exact: true }).click();
   await expect(page.getByRole('button', { name: /保存到项目/ })).toBeEnabled();
 
-  page.once('dialog', dialog => dialog.dismiss());
-  await page.getByRole('link', { name: '灵感场景' }).click();
+  await page.locator('.nav-links a[href="/scene-explorer"]').click();
+  await page.getByRole('alertdialog').getByRole('button', { name: '取消', exact: true }).click();
   await expect(page).toHaveURL(/\/scene-manager$/);
 
-  page.once('dialog', dialog => dialog.accept());
-  await page.getByRole('link', { name: '灵感场景' }).click();
+  await page.locator('.nav-links a[href="/scene-explorer"]').click();
+  await page.getByRole('alertdialog').getByRole('button', { name: '确认', exact: true }).click();
   await expect(page).toHaveURL(/\/scene-explorer$/);
 });
 
