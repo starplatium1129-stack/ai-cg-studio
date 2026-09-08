@@ -224,3 +224,26 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
     'unlock',
   ]);
 });
+
+
+test('updater verifies distributed bytes and rejects tampering', () => {
+  const crypto = require('node:crypto');
+  const { verifyUpdaterSignature } = require('../maintenance/build-modern-installer');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-updater-signature-'));
+  try {
+    const file = path.join(root, 'fixture.exe');
+    fs.writeFileSync(file, 'installer fixture');
+    const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519');
+    const id = Buffer.from('12345678');
+    const key = Buffer.concat([Buffer.from('Ed'), id, publicKey.export({ type: 'spki', format: 'der' }).subarray(-32)]);
+    const raw = crypto.sign(null, crypto.createHash('blake2b512').update(fs.readFileSync(file)).digest(), privateKey);
+    const packet = Buffer.concat([Buffer.from('ED'), id, raw]);
+    const comment = 'timestamp:1';
+    const global = crypto.sign(null, Buffer.concat([raw, Buffer.from(comment)]), privateKey);
+    const signature = Buffer.from(['untrusted comment: fixture', packet.toString('base64'), 'trusted comment: ' + comment, global.toString('base64')].join('\n')).toString('base64');
+    const pub = Buffer.from('untrusted comment: fixture\n' + key.toString('base64')).toString('base64');
+    assert.equal(verifyUpdaterSignature(file, signature, pub), true);
+    fs.appendFileSync(file, 'tampered');
+    assert.throws(() => verifyUpdaterSignature(file, signature, pub), /signature verification failed/);
+  } finally { remove(root); }
+});

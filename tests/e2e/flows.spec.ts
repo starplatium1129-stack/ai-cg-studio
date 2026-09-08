@@ -602,13 +602,13 @@ test('flow 5 · 场景保存：编辑 → 脏态 → POST 全量场景 + 标签 
   });
 
   await page.goto('/scene-manager');
-  await expect(page.locator('table tbody tr').first()).toBeVisible();
+  await expect(page.locator('.maintenance-catalog:visible .catalog-record').first()).toBeVisible();
 
   const saveButton = page.getByRole('button', { name: /保存到项目/ });
   await expect(saveButton).toBeDisabled();
 
   // 改一个已有场景的标题
-  await page.locator('table tbody tr').first().getByRole('button', { name: '编辑' }).click();
+  await page.locator('.maintenance-catalog:visible').getByRole('button', { name: '编辑', exact: true }).click();
   const modal = page.locator('.modal-card');
   await expect(modal).toBeVisible();
   const sceneId = await modal.locator('input').first().inputValue();
@@ -642,8 +642,8 @@ test('flow 5b · 场景保存失败：错误如实回显，脏态保留', async 
   }));
 
   await page.goto('/scene-manager');
-  await expect(page.locator('table tbody tr').first()).toBeVisible();
-  await page.locator('table tbody tr').first().getByRole('button', { name: '编辑' }).click();
+  await expect(page.locator('.maintenance-catalog:visible .catalog-record').first()).toBeVisible();
+  await page.locator('.maintenance-catalog:visible').getByRole('button', { name: '编辑', exact: true }).click();
   await page.locator('.modal-card .form-group', { hasText: '标题' }).locator('input').fill('会被拒绝的标题');
   await page.locator('.modal-card').getByRole('button', { name: '保存' }).click();
 

@@ -18,7 +18,7 @@ const TEXT_EXTENSIONS = new Set([
   '.h', '.hpp', '.html', '.ini', '.java', '.js', '.json', '.json5', '.jsx',
   '.lock', '.md', '.mjs', '.mts', '.properties', '.ps1', '.py', '.rs', '.sh',
   '.sql', '.svg', '.toml', '.ts', '.tsx', '.txt', '.vue', '.wgsl', '.xml',
-  '.yaml', '.yml', '.nsi', '.nsh',
+  '.yaml', '.yml', '.nsi', '.nsh', '.cs', '.xaml', '.manifest',
 ]);
 const BINARY_EXTENSIONS = new Set([
   '.7z', '.avif', '.bin', '.bmp', '.db', '.dll', '.dylib', '.eot', '.exe',
