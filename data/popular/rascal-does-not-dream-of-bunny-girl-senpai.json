@@ -261,6 +261,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "浅蓝衬衫裙",
+          "prose": "an opaque pale-blue long-sleeved shirt dress with a calf-length hem, a white knit vest and brown flats",
+          "tokens": [
+            "blue_shirtdress",
+            "sweater_vest",
+            "long_sleeves",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -390,6 +403,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "深红连帽夹克",
+          "prose": "a burgundy hooded jacket over a grey crewneck T-shirt, black straight trousers and plain rectangular glasses",
+          "tokens": [
+            "burgundy_jacket",
+            "hood",
+            "grey_shirt",
+            "black_pants",
+            "glasses"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

@@ -167,6 +167,34 @@
             "high_heels",
             "jewelry"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "黄色雨衣与牛仔背带裤",
+          "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots",
+          "tokens": [
+            "yellow_raincoat",
+            "striped_shirt",
+            "long_sleeves",
+            "overalls",
+            "rain_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_basketball_tracksuit",
+          "name": "篮球练习运动套装",
+          "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck",
+          "tokens": [
+            "blue_track_jacket",
+            "white_sports_shirt",
+            "track_pants",
+            "white_sneakers",
+            "towel_around_neck"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

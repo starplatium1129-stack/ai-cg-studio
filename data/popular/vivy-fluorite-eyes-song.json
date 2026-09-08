@@ -130,6 +130,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "淡蓝衬衫与白色长裤",
+          "prose": "a pale-blue long-sleeved collared shirt, white wide-leg full-length trousers and simple dark flats",
+          "tokens": [
+            "blue_shirt",
+            "long_sleeves",
+            "white_pants",
+            "wide_leg_pants",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

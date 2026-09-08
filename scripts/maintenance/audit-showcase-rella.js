@@ -40,22 +40,23 @@ function writeJsonAtomic(file, value) {
 
 const characters = readJson(path.join(ROOT, 'data', 'popular-characters.json')).characters;
 
-function expectedFeatures(character) {
+function expectedFeatures(character, outfitId) {
   const top = (character.identityTokens || []).filter(t => !['1girl', 'solo', 'arknights'].includes(t)).slice(0, 10).join(' / ');
-  const outfit = (character.outfits || []).find(o => o.default) || (character.outfits || [])[0];
+  const outfit = (character.outfits || []).find(o => o.id === outfitId)
+    || (character.outfits || []).find(o => o.isDefault) || (character.outfits || [])[0];
   return `${character.displayName}（${character.originalName}）\n身份描述：${character.identityProse}\n关键标识：${top}\n主服装：${outfit ? outfit.prose : '（未定义）'}`;
 }
 
 function buildPrompt(record) {
   const character = characters.find(c => c.id === record.characterId) || { displayName: record.characterId, identityProse: '', identityTokens: [] };
-  const expected = expectedFeatures(character);
+  const expected = expectedFeatures(character, record.outfitId) + `\n本张实际提交的场景：${record.prompt || record.blueprintTitle}`;
   return `你是画师样张审核员。这是「${record.displayName}」的出图审核（画师 @rella 风格，蓝图「${record.blueprintTitle}」）。\n\n【该角色的预期特征】\n${expected}\n\n请逐项审核并严格按格式输出：\n1) 角色身份：画面中的人物是否确实是「${character.displayName}」本人？必须逐项对照预期特征（发色/瞳色/发型/标志特征/服装），明确回答 是 或 否，并说明依据（若不像，说清被画成了什么/哪里不像）；\n2) 单人主体【判定规则】：a) 若画面出现第二个『同一主角』的完整人物（分身/复制体/镜像克隆/并排双主角），一律判不通过；b) 背景出现的明显不同路人/宾客/顾客（小尺寸、远离主角、非主角同款），属于合理的场景人物，可通过；c) 若画面有镜面元素（镜子/水面倒影/玻璃反光），同一主角的自然镜像可通过，镜中出现另一个完整人物/镜像与主体不一致则判不通过。请明确说明：主角是否仅一人、有无同款分身/复制体、背景路人情况、有无镜面及其合理性；\n3) 肢体与面部：有无崩坏（手/脸/肢体/穿模/结构错误）；\n4) 乱码伪影：有无文字乱码、水印、生成伪影；\n5) 场景契合：场景与蓝图主题是否匹配（蓝图：${record.blueprintTitle}）。\n\n【输出格式】（必须两行开头，后面可加详细说明）\n第一行：结论：通过 / 不通过 / 需注意\n第二行：角色身份：是 / 否\n之后：逐项说明。行内不要使用代码片段符号。`;
 }
 
 /** 新旧对比审核提示词（旧样张已存在时使用）：左图=新生成，右图=线上旧版。 */
 function buildComparePrompt(record) {
   const character = characters.find(c => c.id === record.characterId) || { displayName: record.characterId, identityProse: '', identityTokens: [] };
-  const expected = expectedFeatures(character);
+  const expected = expectedFeatures(character, record.outfitId);
   return `你是画师样张审核员。这是「${record.displayName}」的新旧样张对比审核（画师 @rella 风格，蓝图「${record.blueprintTitle}」）。\n\n【该角色的预期特征】\n${expected}\n\n图中左图=新生成样张，右图=当前线上旧版样张。请逐项对比并严格按格式输出：\n1) 角色身份：两张图是否都正确还原「${character.displayName}」？（发色/瞳色/发型/标志特征/服装），分别回答 是/否；\n2) 单人主体【判定规则】：a) 任一张图若出现第二个『同一主角』的完整人物（分身/复制体/镜像克隆/并排双主角），则该图判不通过；b) 背景出现的明显不同路人/宾客/顾客（小尺寸、远离主角、非主角同款），属于合理的场景人物，可通过；c) 镜面元素（镜子/水面倒影/玻璃反光）：同一主角自然镜像可通过，镜中出现另一个完整人物/镜像与主体不一致则判不通过。请分别说明两图：主角是否仅一人、有无同款分身、背景路人情况、有无镜面及合理性；\n3) 画质对比：哪张完成度更高（线条/光影/细节/背景）？哪张有崩坏/伪影/乱码/水印？\n4) 场景契合：哪张更符合蓝图「${record.blueprintTitle}」的主题与构图？\n5) 表情与氛围：哪张的表情更符合角色性格与场景氛围？\n\n【输出格式】（必须两行开头，后面可加详细说明）\n第一行：结论：新图更好 / 旧图更好 / 差不多 / 新图不通过 / 旧图不通过 / 都不通过\n第二行：角色身份：新=是/否，旧=是/否\n之后：逐项说明。行内不要使用代码片段符号。`;
 }
 
@@ -166,7 +167,7 @@ async function main() {
     });
     const output = (result.stdout || '') + (result.stderr || '');
     const { verdict, summary, identityLine } = parseVerdict(output);
-    audit[record.recordId] = { ok: true, verdict, summary, identityLine, compare, inspectedAt: new Date().toISOString() };
+    audit[record.recordId] = { ok: result.status === 0 && !result.error, verdict, summary, identityLine, compare, inspectedAt: new Date().toISOString() };
     inspected += 1;
     if (verdict === 'pass') pass += 1;
     else if (verdict === 'fail') fail += 1;

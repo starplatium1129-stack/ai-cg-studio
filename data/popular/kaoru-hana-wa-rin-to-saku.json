@@ -15,14 +15,13 @@
         "蛋糕店小吃货",
         "薰香花朵"
       ],
-      "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, the sweet and pure-hearted bakery heiress, with long blackish-purple hair styled in twin braids, large blue eyes, a warm radiant smile, and a petite gentle figure",
+      "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, a sincere Kikyo Girls Academy student with long blackish-purple hair, large blue eyes and a warm, expressive smile. Braids and work aprons belong to the selected daily outfit rather than a permanent identity.",
       "identityTokens": [
         "waguri_kaoruko",
         "1girl",
         "solo",
         "black_hair",
         "long_hair",
-        "twin_braids",
         "blue_eyes",
         "smile"
       ],
@@ -78,7 +77,7 @@
         {
           "id": "bakery_pastry_apron",
           "name": "蛋糕工坊甜品烘焙围裙",
-          "prose": "her warm bakery work attire: a soft cafe-brown cooking apron worn over a yellow pastel knit sweater and long floral skirt, with flour smudges on her cheek and a small chef's bandana tying back her blonde braids",
+          "prose": "her warm bakery work attire: a soft cafe-brown cooking apron worn over a yellow pastel knit sweater and long floral skirt, with flour smudges on her cheek and a small chef's bandana tying back her blackish-purple braids",
           "tokens": [
             "apron",
             "brown_apron",
@@ -93,7 +92,7 @@
         {
           "id": "festive_summer_yukata",
           "name": "夏祭牵牛花浅蓝浴衣",
-          "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, carrying a goldfish pouch in one hand and her golden braids pinned with floral clips",
+          "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, carrying a goldfish pouch in one hand and her blackish-purple braids pinned with floral clips",
           "tokens": [
             "yukata",
             "blue_yukata",
@@ -151,6 +150,34 @@
             "white_flowers",
             "jewelry"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "烘焙体验格纹衬衫",
+          "prose": "a cream-and-brown checked long-sleeved shirt, dark straight trousers, a mint-green cotton apron and padded oven mitts",
+          "tokens": [
+            "checkered_shirt",
+            "long_sleeves",
+            "pants",
+            "green_apron",
+            "oven_mitts"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_cake_cafe",
+          "name": "草莓红开衫便装",
+          "prose": "a strawberry-red cardigan over a cream collared blouse, a navy calf-length skirt and a narrow cream hairband",
+          "tokens": [
+            "red_cardigan",
+            "cream_blouse",
+            "collared_blouse",
+            "navy_long_skirt",
+            "hairband"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

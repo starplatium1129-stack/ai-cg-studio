@@ -131,6 +131,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "粉灰针织烘焙便装",
+          "prose": "a dusty-rose long-sleeved knit top, a charcoal ankle-length skirt and a plain ivory waist apron",
+          "tokens": [
+            "pink_sweater",
+            "long_sleeves",
+            "long_skirt",
+            "waist_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

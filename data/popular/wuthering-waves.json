@@ -128,6 +128,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "青金绣边茶馆便装",
+          "prose": "a teal long-sleeved robe with restrained gold embroidery, an opaque ivory high-collared inner blouse and a navy sash",
+          "tokens": [
+            "teal_robe",
+            "gold_embroidery",
+            "long_sleeves",
+            "high_collar",
+            "navy_sash"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -258,6 +272,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "海蓝针织休憩装",
+          "prose": "a sea-blue long-sleeved cable-knit sweater over an opaque ivory ankle-length dress, with flat closed shoes and no veil",
+          "tokens": [
+            "blue_cable_knit_sweater",
+            "long_sleeves",
+            "ivory_long_dress",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -394,6 +421,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "栗色短斗篷旅行装",
+          "prose": "a chestnut short hooded cape over a pale-blue long-sleeved tunic, cream trousers and sturdy brown boots",
+          "tokens": [
+            "brown_cape",
+            "blue_tunic",
+            "long_sleeves",
+            "cream_pants",
+            "boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

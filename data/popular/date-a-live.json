@@ -234,6 +234,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "橙色雨后出游装",
+          "prose": "an orange rain jacket over a white cotton top, navy full-length dungarees and yellow rubber boots",
+          "tokens": [
+            "orange_raincoat",
+            "white_shirt",
+            "overalls",
+            "yellow_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -365,6 +378,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "青白运动休息装",
+          "prose": "a pale teal track jacket over a white T-shirt, charcoal athletic trousers and plain trainers",
+          "tokens": [
+            "teal_track_jacket",
+            "white_t-shirt",
+            "track_pants",
+            "sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

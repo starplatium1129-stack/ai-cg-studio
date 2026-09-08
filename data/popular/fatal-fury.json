@@ -141,6 +141,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "靛蓝练习作务衣",
+          "prose": "a securely tied indigo long-sleeved samue jacket, matching loose full-length trousers and white tabi socks",
+          "tokens": [
+            "indigo_samue",
+            "long_sleeves",
+            "loose_pants",
+            "tabi"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

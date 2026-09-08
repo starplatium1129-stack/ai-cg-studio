@@ -8,12 +8,12 @@
 | --- | ---: | --- |
 | 角色档案 | 160 | data/characters.json 数组长度 |
 | 热门角色 | 158 | data/popular-characters.json 的 characters；候选四十九位已全部接入 |
-| 热门服装形态 | 837 | 上述 characters[].outfits 长度之和 |
+| 热门服装形态 | 896 | 上述 characters[].outfits 长度之和 |
 | 通用场景 | 302 | data/scenes.json 数组长度 |
 | 场景蓝图 | 1,681 | data/scene-blueprints.json 的 blueprints |
-| 参考库角色 / 已登记形态 | 160 / 534 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
-| 参考条目 | 3,738 | view 中全部 outfits[].references |
-| 非 pending 且有 URL / pending | 2,534 / 1,204 | 登记统计，不代表出图或视觉审核完成 |
+| 参考库角色 / 已登记形态 | 160 / 593 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
+| 参考条目 | 4,151 | view 中全部 outfits[].references |
+| 非 pending 且有 URL / pending | 2,534 / 1,617 | 登记统计，不代表出图或视觉审核完成 |
 
 ## 已有能力与边界
 
@@ -28,5 +28,7 @@
 - Git bundle 当前是最多 2 个全量锚点与默认 10 个增量（git-bundle-backup.js），属于本地第二副本；提交后仍须推送远端。
 
 ## 验证与后续
+
+新增 49 位角色本轮已补充 36 位待补立绘，并精修 71 条全年龄场景、新增 59 套日常服装。样张生成与逐图发布进度见[本轮记录](new49-character-refinement-2026-09-08.md)，新增服装的参考机位仍为 pending。
 
 文档审计结果见 [审计记录](documentation-audit-2026-09-08.md)。第五批 6 位与第六至九批 36 位角色现已按用户确认统一登记为成年角色；新增角色均具备完整 R18 蓝图，第六至九批另补齐 6~7 条 SFW（含圣洁花嫁与海滨泳装）。36 条首条 R18 样张已使用生产 MiaoMiao v1.2 完成本地真实渲染抽查，完整图像发布、参考图与其余样张仍按待补状态管理。此前的测试、截图、模型和桌面验收只代表各自记录时点，集中保留在 [归档](archive/README.md)。后续工作只在 [未来规划](roadmap.md) 排序。

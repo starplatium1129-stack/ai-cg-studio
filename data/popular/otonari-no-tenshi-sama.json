@@ -146,6 +146,33 @@
             "jewelry",
             "white_footwear"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "奶油针织居家服",
+          "prose": "an opaque cream cable-knit sweater, loose pale-blue full-length lounge trousers and soft house socks",
+          "tokens": [
+            "cream_sweater",
+            "cable_knit",
+            "pajama_pants",
+            "socks"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_care_cardigan",
+          "name": "薄荷色照料家居装",
+          "prose": "a mint-green buttoned cardigan over an opaque ivory round-neck blouse, loose grey full-length lounge trousers and soft slippers",
+          "tokens": [
+            "mint_cardigan",
+            "buttoned_cardigan",
+            "ivory_blouse",
+            "pajama_pants",
+            "slippers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

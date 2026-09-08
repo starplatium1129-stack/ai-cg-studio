@@ -1901,6 +1901,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "米色骑行风衣",
+          "prose": "a knee-length beige lightweight coat over a black turtleneck, dark straight trousers, simple glasses and low leather shoes",
+          "tokens": [
+            "beige_coat",
+            "black_turtleneck",
+            "pants",
+            "glasses",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -2033,6 +2047,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "橙色格纹厨房装",
+          "prose": "an orange checked long-sleeved shirt, loose cream full-length trousers and a navy cotton apron",
+          "tokens": [
+            "orange_shirt",
+            "checkered",
+            "long_sleeves",
+            "cream_pants",
+            "navy_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -2165,6 +2193,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "梅紫针织手作装",
+          "prose": "a plum long-sleeved knitted dress, an ivory shawl and a small linen sewing apron",
+          "tokens": [
+            "purple_knit_dress",
+            "long_sleeves",
+            "ivory_shawl",
+            "linen_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -2292,6 +2333,18 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "紫色运动家居服",
+          "prose": "an opaque violet sweatshirt, loose charcoal full-length joggers and soft indoor socks",
+          "tokens": [
+            "purple_sweatshirt",
+            "joggers",
+            "socks"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

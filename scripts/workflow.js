@@ -141,7 +141,7 @@ const WORKFLOWS = {
     cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js'],
     docs: 'docs/showcase-generation-craft.md',
     required: ['--output'],
-    opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys a,b --concurrency 3',
+    opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys popular:角色:蓝图 --model anima-miaomiao-v1.2 --concurrency 3',
   },
   'showcase:batch-miaomiao': {
     desc: 'MiaoMiao v1.2 全库场景样张批量生成与自动发布流水线（832x1216/1216x832，3并发）',

@@ -274,6 +274,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "桃色小纹与工作围裙",
+          "prose": "a securely wrapped peach floral long-sleeved kimono with a cream cotton work apron and plain tabi socks",
+          "tokens": [
+            "peach_kimono",
+            "floral_print",
+            "long_sleeves",
+            "cream_apron",
+            "tabi"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

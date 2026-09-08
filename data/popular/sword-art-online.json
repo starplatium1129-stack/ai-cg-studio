@@ -255,6 +255,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "灰蓝雨天夹克",
+          "prose": "a slate-blue hooded jacket over a grey knit top, black straight jeans and black-rimmed glasses",
+          "tokens": [
+            "blue_hooded_jacket",
+            "grey_sweater",
+            "black_jeans",
+            "glasses"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

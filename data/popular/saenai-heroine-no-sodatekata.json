@@ -267,6 +267,47 @@
             "slender_body",
             "pale_skin"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "夜归连帽外套",
+          "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers",
+          "tokens": [
+            "green_hoodie",
+            "white_t-shirt",
+            "jeans",
+            "sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_kitchen_apron",
+          "name": "柠檬黄厨房围裙",
+          "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers",
+          "tokens": [
+            "white_blouse",
+            "long_sleeves",
+            "yellow_apron",
+            "dark_pants",
+            "slippers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_bridal_lace",
+          "name": "蕾丝长袖花嫁",
+          "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps",
+          "tokens": [
+            "ivory_wedding_dress",
+            "long_sleeves",
+            "lace_overlay",
+            "long_skirt",
+            "bridal_veil"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

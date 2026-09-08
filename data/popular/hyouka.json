@@ -134,6 +134,48 @@
             "long_hair",
             "pale_skin"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "文集工作围裙裙装",
+          "prose": "a lavender long-sleeved blouse beneath a navy pinafore dress, with an ankle-length skirt and flat brown shoes",
+          "tokens": [
+            "lavender_blouse",
+            "long_sleeves",
+            "pinafore_dress",
+            "long_skirt",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_library_cardigan",
+          "name": "浅绿开衫图书馆便装",
+          "prose": "a pale-green cardigan over an ivory high-collared blouse, a charcoal calf-length skirt and flat brown shoes",
+          "tokens": [
+            "green_cardigan",
+            "ivory_blouse",
+            "high_collar",
+            "long_skirt",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_shiromuku",
+          "name": "白无垢婚礼和服",
+          "prose": "a formal opaque white shiromuku wedding kimono, white brocade obi, layered white uchikake and a simple white bridal hair ornament",
+          "tokens": [
+            "shiromuku",
+            "white_kimono",
+            "white_uchikake",
+            "white_obi",
+            "bridal_hair_ornament"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

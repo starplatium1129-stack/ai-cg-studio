@@ -128,6 +128,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "浅灰针织外出装",
+          "prose": "a light-grey knitted cardigan over a pale-blue collared blouse, a navy calf-length skirt and polished brown loafers",
+          "tokens": [
+            "grey_cardigan",
+            "blue_blouse",
+            "long_skirt",
+            "brown_loafers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

@@ -378,6 +378,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "酒红旅店便装",
+          "prose": "a burgundy long-sleeved shirt, a dark brown waistcoat, loose black trousers and flat ankle boots",
+          "tokens": [
+            "burgundy_shirt",
+            "long_sleeves",
+            "brown_vest",
+            "black_pants",
+            "ankle_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

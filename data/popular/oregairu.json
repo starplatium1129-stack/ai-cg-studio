@@ -405,6 +405,47 @@
             "youthful",
             "pale_skin"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "球场应援运动外套",
+          "prose": "a coral windbreaker over an ivory sweatshirt, charcoal straight athletic trousers and white trainers",
+          "tokens": [
+            "coral_jacket",
+            "windbreaker",
+            "sweatshirt",
+            "track_pants",
+            "white_sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_weekend_trench",
+          "name": "浅蓝周末风衣",
+          "prose": "a pale-blue lightweight trench coat over a cream crewneck knit top, navy full-length trousers and white trainers",
+          "tokens": [
+            "blue_trench_coat",
+            "cream_sweater",
+            "navy_pants",
+            "white_sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_rain_utility",
+          "name": "米白防雨工作外套",
+          "prose": "a cream waterproof utility jacket over a red long-sleeved shirt, charcoal cargo trousers and rubber-soled work shoes",
+          "tokens": [
+            "cream_rain_jacket",
+            "red_shirt",
+            "long_sleeves",
+            "cargo_pants",
+            "work_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -547,6 +588,50 @@
             "curvy_body",
             "long_legs"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "墨蓝缎面晚宴套装",
+          "prose": "a midnight-blue satin jacket with matching wide-leg evening trousers, a high-neck ivory silk blouse and small silver earrings",
+          "tokens": [
+            "blue_suit",
+            "satin",
+            "wide_leg_pants",
+            "ivory_blouse",
+            "high_collar",
+            "silver_earrings"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_coastal_linen",
+          "name": "海滨亚麻衬衫套装",
+          "prose": "a buttoned ivory linen long-sleeved shirt, camel wide-leg linen trousers, flat leather sandals and sunglasses resting on her head",
+          "tokens": [
+            "ivory_linen_shirt",
+            "buttoned_shirt",
+            "long_sleeves",
+            "linen_pants",
+            "sandals",
+            "sunglasses_on_head"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_izakaya_knit",
+          "name": "酒馆里的墨绿针织装",
+          "prose": "a fully covering forest-green turtleneck sweater, a calf-length black skirt, opaque tights and small silver stud earrings",
+          "tokens": [
+            "green_turtleneck",
+            "long_sleeves",
+            "black_long_skirt",
+            "opaque_tights",
+            "stud_earrings"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

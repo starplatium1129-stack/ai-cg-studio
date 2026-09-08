@@ -130,6 +130,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "苔绿露营斗篷装",
+          "prose": "a moss-green short cape over a rust-colored long-sleeved tunic, cream trousers and brown travel boots",
+          "tokens": [
+            "green_cape",
+            "rust_tunic",
+            "long_sleeves",
+            "cream_pants",
+            "boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

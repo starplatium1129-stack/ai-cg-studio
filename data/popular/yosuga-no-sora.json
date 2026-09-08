@@ -133,6 +133,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "蓝灰背带裙",
+          "prose": "a slate-blue calf-length pinafore over a white long-sleeved blouse, opaque white socks and dark Mary Jane shoes",
+          "tokens": [
+            "blue_pinafore",
+            "white_blouse",
+            "long_sleeves",
+            "socks",
+            "mary_janes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

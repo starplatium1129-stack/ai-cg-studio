@@ -132,6 +132,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "烟粉针织休息装",
+          "prose": "a muted rose cardigan over an opaque ivory blouse, a charcoal calf-length pleated skirt and closed low shoes",
+          "tokens": [
+            "rose_cardigan",
+            "ivory_blouse",
+            "long_pleated_skirt",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

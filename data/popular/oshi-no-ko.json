@@ -354,6 +354,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "格纹短外套",
+          "prose": "a rust-brown checked jacket over a cream blouse, navy wide-leg trousers and a soft brown beret",
+          "tokens": [
+            "checkered_jacket",
+            "cream_blouse",
+            "wide_leg_pants",
+            "brown_beret"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

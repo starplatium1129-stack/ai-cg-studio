@@ -131,6 +131,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "白色园艺衬衫装",
+          "prose": "a white long-sleeved cotton shirt with rolled cuffs, olive full-length overalls and practical brown boots",
+          "tokens": [
+            "white_shirt",
+            "rolled_sleeves",
+            "green_overalls",
+            "boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

@@ -41,7 +41,12 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
       entry.id + ' must use a supported onboarding scene count');
     assert.strictEqual(owned.length, expectedSceneCount, entry.id + ' must have its complete parsed scene set');
     assert.strictEqual(entry.sceneCount, owned.length);
-    assert.strictEqual(entry.portraitPending, true, 'no generated art is claimed in this data-first delivery');
+    assert.strictEqual(typeof entry.portraitPending, 'boolean');
+    if (!entry.portraitPending) {
+      for (const asset of [`assets/characters/popular-${entry.id}.png`, `assets/characters/thumbs/popular-${entry.id}.webp`, `assets/particles/p_${entry.id}.json`]) {
+        assert.ok(fs.existsSync(path.join(__dirname, '../..', asset)), entry.id + ' published portrait requires ' + asset);
+      }
+    }
     assert.strictEqual(owned.filter(blueprint => blueprint.adult).length,
       expectedSceneCount >= 10 ? 4 : 0,
       entry.id + ' adult scene count must follow its eligibility');

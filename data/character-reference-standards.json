@@ -8568,6 +8568,47 @@
             "slender_body",
             "pale_skin"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "夜归连帽外套",
+          "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers",
+          "tokens": [
+            "green_hoodie",
+            "white_t-shirt",
+            "jeans",
+            "sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_kitchen_apron",
+          "name": "柠檬黄厨房围裙",
+          "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers",
+          "tokens": [
+            "white_blouse",
+            "long_sleeves",
+            "yellow_apron",
+            "dark_pants",
+            "slippers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_bridal_lace",
+          "name": "蕾丝长袖花嫁",
+          "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps",
+          "tokens": [
+            "ivory_wedding_dress",
+            "long_sleeves",
+            "lace_overlay",
+            "long_skirt",
+            "bridal_veil"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -8673,6 +8714,33 @@
             "pale_skin",
             "very_long_hair"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "奶油针织居家服",
+          "prose": "an opaque cream cable-knit sweater, loose pale-blue full-length lounge trousers and soft house socks",
+          "tokens": [
+            "cream_sweater",
+            "cable_knit",
+            "pajama_pants",
+            "socks"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_care_cardigan",
+          "name": "薄荷色照料家居装",
+          "prose": "a mint-green buttoned cardigan over an opaque ivory round-neck blouse, loose grey full-length lounge trousers and soft slippers",
+          "tokens": [
+            "mint_cardigan",
+            "buttoned_cardigan",
+            "ivory_blouse",
+            "pajama_pants",
+            "slippers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -8780,6 +8848,48 @@
             "long_hair",
             "pale_skin"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "文集工作围裙裙装",
+          "prose": "a lavender long-sleeved blouse beneath a navy pinafore dress, with an ankle-length skirt and flat brown shoes",
+          "tokens": [
+            "lavender_blouse",
+            "long_sleeves",
+            "pinafore_dress",
+            "long_skirt",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_library_cardigan",
+          "name": "浅绿开衫图书馆便装",
+          "prose": "a pale-green cardigan over an ivory high-collared blouse, a charcoal calf-length skirt and flat brown shoes",
+          "tokens": [
+            "green_cardigan",
+            "ivory_blouse",
+            "high_collar",
+            "long_skirt",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_shiromuku",
+          "name": "白无垢婚礼和服",
+          "prose": "a formal opaque white shiromuku wedding kimono, white brocade obi, layered white uchikake and a simple white bridal hair ornament",
+          "tokens": [
+            "shiromuku",
+            "white_kimono",
+            "white_uchikake",
+            "white_obi",
+            "bridal_hair_ornament"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -8888,6 +8998,47 @@
             "youthful",
             "pale_skin"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "球场应援运动外套",
+          "prose": "a coral windbreaker over an ivory sweatshirt, charcoal straight athletic trousers and white trainers",
+          "tokens": [
+            "coral_jacket",
+            "windbreaker",
+            "sweatshirt",
+            "track_pants",
+            "white_sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_weekend_trench",
+          "name": "浅蓝周末风衣",
+          "prose": "a pale-blue lightweight trench coat over a cream crewneck knit top, navy full-length trousers and white trainers",
+          "tokens": [
+            "blue_trench_coat",
+            "cream_sweater",
+            "navy_pants",
+            "white_sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_rain_utility",
+          "name": "米白防雨工作外套",
+          "prose": "a cream waterproof utility jacket over a red long-sleeved shirt, charcoal cargo trousers and rubber-soled work shoes",
+          "tokens": [
+            "cream_rain_jacket",
+            "red_shirt",
+            "long_sleeves",
+            "cargo_pants",
+            "work_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9002,6 +9153,50 @@
             "curvy_body",
             "long_legs"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "墨蓝缎面晚宴套装",
+          "prose": "a midnight-blue satin jacket with matching wide-leg evening trousers, a high-neck ivory silk blouse and small silver earrings",
+          "tokens": [
+            "blue_suit",
+            "satin",
+            "wide_leg_pants",
+            "ivory_blouse",
+            "high_collar",
+            "silver_earrings"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_coastal_linen",
+          "name": "海滨亚麻衬衫套装",
+          "prose": "a buttoned ivory linen long-sleeved shirt, camel wide-leg linen trousers, flat leather sandals and sunglasses resting on her head",
+          "tokens": [
+            "ivory_linen_shirt",
+            "buttoned_shirt",
+            "long_sleeves",
+            "linen_pants",
+            "sandals",
+            "sunglasses_on_head"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_izakaya_knit",
+          "name": "酒馆里的墨绿针织装",
+          "prose": "a fully covering forest-green turtleneck sweater, a calf-length black skirt, opaque tights and small silver stud earrings",
+          "tokens": [
+            "green_turtleneck",
+            "long_sleeves",
+            "black_long_skirt",
+            "opaque_tights",
+            "stud_earrings"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9115,6 +9310,34 @@
             "long_legs",
             "mole_under_eye"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "黄色雨衣与牛仔背带裤",
+          "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots",
+          "tokens": [
+            "yellow_raincoat",
+            "striped_shirt",
+            "long_sleeves",
+            "overalls",
+            "rain_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_basketball_tracksuit",
+          "name": "篮球练习运动套装",
+          "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck",
+          "tokens": [
+            "blue_track_jacket",
+            "white_sports_shirt",
+            "track_pants",
+            "white_sneakers",
+            "towel_around_neck"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9123,18 +9346,15 @@
       "displayName": "和栗薰子",
       "originalName": "和栗薫子",
       "source": "Kaoru Hana wa Rin to Saku",
-      "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, the sweet and pure-hearted bakery heiress, with long golden-blonde hair styled in loose twin braids, large bright amber-brown eyes, a warm radiant smile, and a surprisingly lush, rounded figure",
+      "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, a sincere Kikyo Girls Academy student with long blackish-purple hair, large blue eyes and a warm, expressive smile. Braids and work aprons belong to the selected daily outfit rather than a permanent identity.",
       "identityTokens": [
         "waguri_kaoruko",
         "1girl",
         "solo",
-        "blonde_hair",
+        "black_hair",
         "long_hair",
-        "twin_braids",
-        "amber_eyes",
-        "brown_eyes",
-        "smile",
-        "large_breasts"
+        "blue_eyes",
+        "smile"
       ],
       "outfits": [
         {
@@ -9161,7 +9381,7 @@
           "name": "蛋糕工坊甜品烘焙围裙",
           "isDefault": false,
           "isNsfw": false,
-          "prose": "her warm bakery work attire: a soft cafe-brown cooking apron worn over a yellow pastel knit sweater and long floral skirt, with flour smudges on her cheek and a small chef's bandana tying back her blonde braids",
+          "prose": "her warm bakery work attire: a soft cafe-brown cooking apron worn over a yellow pastel knit sweater and long floral skirt, with flour smudges on her cheek and a small chef's bandana tying back her blackish-purple braids",
           "tokens": [
             "apron",
             "brown_apron",
@@ -9178,7 +9398,7 @@
           "name": "夏祭牵牛花浅蓝浴衣",
           "isDefault": false,
           "isNsfw": false,
-          "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, carrying a goldfish pouch in one hand and her golden braids pinned with floral clips",
+          "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, carrying a goldfish pouch in one hand and her blackish-purple braids pinned with floral clips",
           "tokens": [
             "yukata",
             "blue_yukata",
@@ -9226,6 +9446,34 @@
             "plump_body",
             "pale_skin"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "烘焙体验格纹衬衫",
+          "prose": "a cream-and-brown checked long-sleeved shirt, dark straight trousers, a mint-green cotton apron and padded oven mitts",
+          "tokens": [
+            "checkered_shirt",
+            "long_sleeves",
+            "pants",
+            "green_apron",
+            "oven_mitts"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_cake_cafe",
+          "name": "草莓红开衫便装",
+          "prose": "a strawberry-red cardigan over a cream collared blouse, a navy calf-length skirt and a narrow cream hairband",
+          "tokens": [
+            "red_cardigan",
+            "cream_blouse",
+            "collared_blouse",
+            "navy_long_skirt",
+            "hairband"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9296,6 +9544,20 @@
             "short_sleeves",
             "flat_shoes"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "亚麻画室工作服",
+          "prose": "an oatmeal linen artist smock with rolled cuffs over an opaque charcoal dress, dark leggings and flat shoes",
+          "tokens": [
+            "artist_smock",
+            "linen",
+            "rolled_sleeves",
+            "dark_dress",
+            "leggings"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9381,6 +9643,20 @@
             "pants",
             "boots"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "薄荷熊耳连帽家居服",
+          "prose": "a fully zipped mint fleece hoodie with small bear ears on the hood, loose navy lounge trousers and thick socks",
+          "tokens": [
+            "mint_hoodie",
+            "fleece",
+            "long_pants",
+            "pajama_pants",
+            "socks"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9449,6 +9725,19 @@
             "track_pants",
             "sneakers"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "牛仔短外套周末装",
+          "prose": "a light denim jacket over a dark green cotton shirt, black straight trousers and white canvas sneakers",
+          "tokens": [
+            "denim_jacket",
+            "green_shirt",
+            "black_pants",
+            "canvas_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9634,6 +9923,19 @@
             "obi",
             "sandals"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "格纹短外套",
+          "prose": "a rust-brown checked jacket over a cream blouse, navy wide-leg trousers and a soft brown beret",
+          "tokens": [
+            "checkered_jacket",
+            "cream_blouse",
+            "wide_leg_pants",
+            "brown_beret"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9703,6 +10005,19 @@
             "dark_pants",
             "hair_down"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "薄荷条纹家务装",
+          "prose": "a mint-and-white striped long-sleeved cotton shirt, indigo full-length dungarees and indoor slippers",
+          "tokens": [
+            "striped_shirt",
+            "long_sleeves",
+            "overalls",
+            "slippers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9762,6 +10077,19 @@
             "long_skirt",
             "wool_shawl"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "青绿市集便装",
+          "prose": "a teal long-sleeved tunic, a cream waistcoat, brown straight trousers and sturdy lace-up boots",
+          "tokens": [
+            "teal_tunic",
+            "cream_vest",
+            "brown_pants",
+            "boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9820,6 +10148,19 @@
             "purple_pants",
             "warm_socks"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "橙色雨后出游装",
+          "prose": "an orange rain jacket over a white cotton top, navy full-length dungarees and yellow rubber boots",
+          "tokens": [
+            "orange_raincoat",
+            "white_shirt",
+            "overalls",
+            "yellow_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9876,6 +10217,19 @@
             "long_skirt",
             "long_hair"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "青白运动休息装",
+          "prose": "a pale teal track jacket over a white T-shirt, charcoal athletic trousers and plain trainers",
+          "tokens": [
+            "teal_track_jacket",
+            "white_t-shirt",
+            "track_pants",
+            "sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9933,6 +10287,20 @@
             "cream_blouse",
             "long_skirt"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "酒红旅店便装",
+          "prose": "a burgundy long-sleeved shirt, a dark brown waistcoat, loose black trousers and flat ankle boots",
+          "tokens": [
+            "burgundy_shirt",
+            "long_sleeves",
+            "brown_vest",
+            "black_pants",
+            "ankle_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9992,6 +10360,20 @@
             "pink_obi",
             "sandals"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "桃色小纹与工作围裙",
+          "prose": "a securely wrapped peach floral long-sleeved kimono with a cream cotton work apron and plain tabi socks",
+          "tokens": [
+            "peach_kimono",
+            "floral_print",
+            "long_sleeves",
+            "cream_apron",
+            "tabi"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10049,6 +10431,19 @@
             "red_skirt",
             "long_skirt"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "白色园艺衬衫装",
+          "prose": "a white long-sleeved cotton shirt with rolled cuffs, olive full-length overalls and practical brown boots",
+          "tokens": [
+            "white_shirt",
+            "rolled_sleeves",
+            "green_overalls",
+            "boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10102,6 +10497,19 @@
             "blue_sweater",
             "grey_pants"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "灰蓝雨天夹克",
+          "prose": "a slate-blue hooded jacket over a grey knit top, black straight jeans and black-rimmed glasses",
+          "tokens": [
+            "blue_hooded_jacket",
+            "grey_sweater",
+            "black_jeans",
+            "glasses"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10157,6 +10565,19 @@
             "turtleneck",
             "green_pants"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "薄荷飞行夹克便装",
+          "prose": "a mint bomber jacket over an opaque cream turtleneck, navy straight trousers and white sneakers",
+          "tokens": [
+            "mint_bomber_jacket",
+            "cream_turtleneck",
+            "navy_pants",
+            "white_sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10213,6 +10634,19 @@
             "high_neck",
             "pearl_necklace"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "黑白格纹休息日套装",
+          "prose": "a black-and-white checked blazer over a forest-green blouse, cream wide-leg trousers and small pearl earrings",
+          "tokens": [
+            "checkered_blazer",
+            "green_blouse",
+            "cream_pants",
+            "pearl_earrings"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10269,6 +10703,19 @@
             "pants",
             "boots"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "砖红冬季牛角扣大衣",
+          "prose": "a brick-red duffle coat over a cream turtleneck, navy full-length trousers and brown ankle boots",
+          "tokens": [
+            "red_duffle_coat",
+            "cream_turtleneck",
+            "navy_pants",
+            "ankle_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10323,6 +10770,20 @@
             "maxi_dress",
             "sandals"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "米色骑行风衣",
+          "prose": "a knee-length beige lightweight coat over a black turtleneck, dark straight trousers, simple glasses and low leather shoes",
+          "tokens": [
+            "beige_coat",
+            "black_turtleneck",
+            "pants",
+            "glasses",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10380,6 +10841,20 @@
             "cream_obi",
             "sandals"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "橙色格纹厨房装",
+          "prose": "an orange checked long-sleeved shirt, loose cream full-length trousers and a navy cotton apron",
+          "tokens": [
+            "orange_shirt",
+            "checkered",
+            "long_sleeves",
+            "cream_pants",
+            "navy_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10438,6 +10913,19 @@
             "inner_dress",
             "boots"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "梅紫针织手作装",
+          "prose": "a plum long-sleeved knitted dress, an ivory shawl and a small linen sewing apron",
+          "tokens": [
+            "purple_knit_dress",
+            "long_sleeves",
+            "ivory_shawl",
+            "linen_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10491,6 +10979,18 @@
             "pants",
             "boots"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "紫色运动家居服",
+          "prose": "an opaque violet sweatshirt, loose charcoal full-length joggers and soft indoor socks",
+          "tokens": [
+            "purple_sweatshirt",
+            "joggers",
+            "socks"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10551,6 +11051,20 @@
             "pants",
             "winter_boots"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "蓝灰背带裙",
+          "prose": "a slate-blue calf-length pinafore over a white long-sleeved blouse, opaque white socks and dark Mary Jane shoes",
+          "tokens": [
+            "blue_pinafore",
+            "white_blouse",
+            "long_sleeves",
+            "socks",
+            "mary_janes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10609,6 +11123,20 @@
             "winter_hat",
             "boots"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "烟灰羊毛居家裙",
+          "prose": "a smoke-grey long-sleeved wool dress with a high ivory collar, a dark plum shawl and opaque tights",
+          "tokens": [
+            "grey_dress",
+            "wool",
+            "high_collar",
+            "shawl",
+            "opaque_tights"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10668,6 +11196,20 @@
             "red_skirt",
             "jacket"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "藏蓝工作连体服",
+          "prose": "a navy long-sleeved utility jumpsuit with rolled cuffs, a pale grey waist apron and flat closed work shoes",
+          "tokens": [
+            "navy_jumpsuit",
+            "long_sleeves",
+            "rolled_sleeves",
+            "waist_apron",
+            "work_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10727,6 +11269,20 @@
             "wool",
             "japanese_clothes"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "藤紫日常小纹",
+          "prose": "an opaque wisteria-purple long-sleeved komon kimono with a pale cream obi and a discreet pink hair tie",
+          "tokens": [
+            "purple_kimono",
+            "komon",
+            "long_sleeves",
+            "cream_obi",
+            "hair_tie"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10783,6 +11339,20 @@
             "long_sleeves",
             "dark_pants"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "青金绣边茶馆便装",
+          "prose": "a teal long-sleeved robe with restrained gold embroidery, an opaque ivory high-collared inner blouse and a navy sash",
+          "tokens": [
+            "teal_robe",
+            "gold_embroidery",
+            "long_sleeves",
+            "high_collar",
+            "navy_sash"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10839,6 +11409,19 @@
             "blue_blouse",
             "long_skirt"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "海蓝针织休憩装",
+          "prose": "a sea-blue long-sleeved cable-knit sweater over an opaque ivory ankle-length dress, with flat closed shoes and no veil",
+          "tokens": [
+            "blue_cable_knit_sweater",
+            "long_sleeves",
+            "ivory_long_dress",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10895,6 +11478,19 @@
             "cotton_apron",
             "braid"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "浅蓝衬衫裙",
+          "prose": "an opaque pale-blue long-sleeved shirt dress with a calf-length hem, a white knit vest and brown flats",
+          "tokens": [
+            "blue_shirtdress",
+            "sweater_vest",
+            "long_sleeves",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -10951,6 +11547,20 @@
             "pants",
             "glasses"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "深红连帽夹克",
+          "prose": "a burgundy hooded jacket over a grey crewneck T-shirt, black straight trousers and plain rectangular glasses",
+          "tokens": [
+            "burgundy_jacket",
+            "hood",
+            "grey_shirt",
+            "black_pants",
+            "glasses"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11007,6 +11617,19 @@
             "long_pants",
             "sneakers"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "杏色针织周末装",
+          "prose": "an apricot knit cardigan over a navy collared shirt, a calf-length grey pleated skirt and brown loafers",
+          "tokens": [
+            "orange_cardigan",
+            "collared_shirt",
+            "long_skirt",
+            "loafers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11064,6 +11687,19 @@
             "yellow_obi",
             "geta"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "蓝白棒球衫野餐装",
+          "prose": "a blue-and-white baseball jacket over a yellow T-shirt, full-length light denim jeans and comfortable trainers",
+          "tokens": [
+            "baseball_jacket",
+            "yellow_shirt",
+            "jeans",
+            "sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11120,6 +11756,19 @@
             "ribbon",
             "pleated_skirt"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "粉灰针织烘焙便装",
+          "prose": "a dusty-rose long-sleeved knit top, a charcoal ankle-length skirt and a plain ivory waist apron",
+          "tokens": [
+            "pink_sweater",
+            "long_sleeves",
+            "long_skirt",
+            "waist_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11174,6 +11823,20 @@
             "pleated_skirt",
             "cream_apron"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "紫灰运动套装",
+          "prose": "a lavender-grey zip track jacket with matching loose full-length trousers, a white T-shirt and slip-on trainers",
+          "tokens": [
+            "tracksuit",
+            "purple_jacket",
+            "track_pants",
+            "white_shirt",
+            "sneakers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11230,6 +11893,20 @@
             "opaque_layers",
             "cream_sash"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "淡黄针织背心便装",
+          "prose": "a butter-yellow knitted vest over a white puff-sleeved blouse, a navy calf-length skirt and lace-up ankle boots",
+          "tokens": [
+            "yellow_sweater_vest",
+            "white_blouse",
+            "puff_sleeves",
+            "long_skirt",
+            "ankle_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11288,6 +11965,20 @@
             "long_skirt",
             "winter_shoes"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "鼠尾草绿温室裙装",
+          "prose": "a sage-green ankle-length cotton dress with long sleeves, a cream cropped cardigan and simple brown flats",
+          "tokens": [
+            "green_dress",
+            "long_sleeves",
+            "long_dress",
+            "cream_cardigan",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11343,6 +12034,20 @@
             "blue_sweater",
             "long_cream_skirt"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "冰蓝高领针织裙",
+          "prose": "an opaque ice-blue high-neck knitted maxi dress, a white wool capelet and soft flat shoes",
+          "tokens": [
+            "blue_knit_dress",
+            "turtleneck",
+            "long_dress",
+            "white_capelet",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11399,6 +12104,20 @@
             "long_sleeves",
             "navy_pants"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "淡蓝衬衫与白色长裤",
+          "prose": "a pale-blue long-sleeved collared shirt, white wide-leg full-length trousers and simple dark flats",
+          "tokens": [
+            "blue_shirt",
+            "long_sleeves",
+            "white_pants",
+            "wide_leg_pants",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11457,6 +12176,19 @@
             "long_robe",
             "shoes"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "靛蓝晒药工作衣",
+          "prose": "an indigo long-sleeved cotton work jacket, a pale beige ankle-length skirt and a plain linen waist apron",
+          "tokens": [
+            "indigo_jacket",
+            "long_sleeves",
+            "beige_long_skirt",
+            "linen_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11514,6 +12246,20 @@
             "long_skirt",
             "academic_clothes"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "苔绿露营斗篷装",
+          "prose": "a moss-green short cape over a rust-colored long-sleeved tunic, cream trousers and brown travel boots",
+          "tokens": [
+            "green_cape",
+            "rust_tunic",
+            "long_sleeves",
+            "cream_pants",
+            "boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11573,6 +12319,20 @@
             "blue_skirt",
             "sandals"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "栗色短斗篷旅行装",
+          "prose": "a chestnut short hooded cape over a pale-blue long-sleeved tunic, cream trousers and sturdy brown boots",
+          "tokens": [
+            "brown_cape",
+            "blue_tunic",
+            "long_sleeves",
+            "cream_pants",
+            "boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11630,6 +12390,19 @@
             "white_blouse",
             "navy_pants"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "烟粉针织休息装",
+          "prose": "a muted rose cardigan over an opaque ivory blouse, a charcoal calf-length pleated skirt and closed low shoes",
+          "tokens": [
+            "rose_cardigan",
+            "ivory_blouse",
+            "long_pleated_skirt",
+            "flat_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11698,6 +12471,19 @@
             "long_sleeves",
             "dark_pants"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "靛蓝练习作务衣",
+          "prose": "a securely tied indigo long-sleeved samue jacket, matching loose full-length trousers and white tabi socks",
+          "tokens": [
+            "indigo_samue",
+            "long_sleeves",
+            "loose_pants",
+            "tabi"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -11754,6 +12540,19 @@
             "cream_sweater",
             "blue_pants"
           ]
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "浅灰针织外出装",
+          "prose": "a light-grey knitted cardigan over a pale-blue collared blouse, a navy calf-length skirt and polished brown loafers",
+          "tokens": [
+            "grey_cardigan",
+            "blue_blouse",
+            "long_skirt",
+            "brown_loafers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

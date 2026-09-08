@@ -5,7 +5,7 @@
  * Generate showcase candidates for EVERY popular character × EVERY scene
  * blueprint (SFW + R18), unified contract:
  *
- *   - engine : anima-aesthetic-v1.1, no-LoRA mode (identity anchored by tokens)
+ *   - engine : MiaoMiao v1.2 by default; --model selects an explicit Anima profile
  *   - prompt : buildPopularPromptPlan (identity + outfit + blueprint scene +
  *              inferred shot/lighting/composition) with artist tag @rella
  *   - params : 30 steps / CFG 4.5 (global Anima default since 2026-08-14)
@@ -32,8 +32,8 @@ const AI_ROOT = path.resolve(ROOT, '..', 'AI');
 const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
 const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', '2026-08-14_v18-popular-all-rella');
 const MANIFEST_NAME = 'generation-manifest.json';
-const ANIMA_MODEL_ID = 'anima-aesthetic-v1.1';
-const ANIMA_PROFILE_ID = 'anima_aesthetic_v11';
+const ANIMA_MODEL_ID = argument('--model', 'anima-miaomiao-v1.2');
+const ANIMA_PROFILE_ID = (presets.model_profiles || []).find(item => item.model_id === ANIMA_MODEL_ID)?.id;
 const ARTIST_TAG = 'rella';
 
 function argument(name, fallback = '') {
@@ -64,6 +64,9 @@ function assertIsolated(output) {
   return resolved;
 }
 function resolveProfile() {
+  if (!animaConstants.MODELS[ANIMA_MODEL_ID] || !ANIMA_MODEL_ID.startsWith('anima-')) {
+    throw new Error(`unsupported Anima model: ${ANIMA_MODEL_ID}`);
+  }
   const profile = (presets.model_profiles || []).find(item => item.id === ANIMA_PROFILE_ID);
   if (!profile) throw new Error(`presets.json missing profile ${ANIMA_PROFILE_ID}`);
   return profile;
@@ -134,6 +137,8 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
     width, height,
     steps: animaGenerationContract.ANIMA_DEFAULTS.steps,
     cfg: animaGenerationContract.ANIMA_DEFAULTS.cfg,
+    teaCache: !process.argv.includes('--no-tea-cache'),
+    teaCacheThresh: 0.08,
     sampler: animaGenerationContract.ANIMA_DEFAULTS.sampler,
     scheduler: animaGenerationContract.ANIMA_DEFAULTS.scheduler,
     seed: stableSeed(character.id, blueprint.id, seedAttempt),
@@ -174,7 +179,12 @@ function buildSubmissionBody(candidate) {
     prompt: candidate.prompt, negative: candidate.negative,
     modelId: candidate.modelId, width: candidate.width, height: candidate.height,
     steps: candidate.steps, cfg: candidate.cfg, seed: candidate.seed,
+    teaCache: candidate.teaCache, teaCacheThresh: candidate.teaCacheThresh,
   };
+}
+function canReuseCandidate(previous, candidate) {
+  const fields = ['modelId', 'profileId', 'checkpoint', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'sampler', 'scheduler', 'teaCache', 'teaCacheThresh'];
+  return previous?.status === 'succeeded' && fields.every(field => previous[field] === candidate[field]);
 }
 async function submitCandidate(base, candidate) {
   const route = '/api/anima/jobs';
@@ -245,7 +255,7 @@ async function main() {
     const previous = records.get(candidate.recordId);
     const imageRel = `images/${candidate.characterId}/${candidate.blueprintId}/attempt-${attempt}.png`;
     const imageFile = path.join(output, imageRel.split('/').join(path.sep));
-    if (!force && previous?.status === 'succeeded' && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {
+    if (!force && canReuseCandidate(previous, candidate) && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {
       console.log(`[reuse] ${candidate.recordId}`);
       return false;
     }
@@ -290,6 +300,7 @@ async function main() {
     left.characterId.localeCompare(right.characterId) || left.blueprintId.localeCompare(right.blueprintId) || left.attempt - right.attempt);
   writeJsonAtomic(manifestPath, normalized);
   console.log(JSON.stringify({ output, planned: selected.length, generated, failed }, null, 2));
+  if (failed) process.exitCode = 1;
 }
 
 if (require.main === module) {
@@ -303,6 +314,7 @@ module.exports = {
   buildCandidate,
   planAll,
   buildSubmissionBody,
+  canReuseCandidate,
   nearestAnimaSize,
   stableSeed,
   constants: { DEFAULT_OUTPUT, ANIMA_MODEL_ID, ANIMA_PROFILE_ID, ARTIST_TAG },

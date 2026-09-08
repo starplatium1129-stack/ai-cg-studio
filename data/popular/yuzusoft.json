@@ -635,6 +635,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "藏蓝工作连体服",
+          "prose": "a navy long-sleeved utility jumpsuit with rolled cuffs, a pale grey waist apron and flat closed work shoes",
+          "tokens": [
+            "navy_jumpsuit",
+            "long_sleeves",
+            "rolled_sleeves",
+            "waist_apron",
+            "work_shoes"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

@@ -51,12 +51,374 @@
       "portraitSha256": "b7206082db0be3f8cfa897eae29b5c2658ee1bae3ecf7f1ac5e5b45d7a0d2071"
     },
     "waguri_kaoruko": {
-      "entryId": "pc_waguri_kaoruko_waguri_oven_fresh_bread_blush",
-      "sourceImage": "images/pc_waguri_kaoruko_waguri_oven_fresh_bread_blush.jpg",
+      "entryId": "pc_waguri_kaoruko_waguri_cake_tasting_cream_cheek",
+      "sourceImage": "images/waguri_kaoruko/waguri_cake_tasting_cream_cheek/attempt-3.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao-kaoruko",
       "rating": "All",
-      "reason": "烘焙围裙场景，面部清楚且符合角色日常。",
-      "sourceSha256": "e3c9eaa4b4fbae1d3c78033906a8826573542eed695ecaf2a62230ce79c61bdb",
-      "portraitSha256": "5bf5a50cf45f2d58ed52ff527dfd5f237d99ec294d560d740386b7696045a7ff"
+      "reason": "黑紫发与蓝眼一致；作为蛋糕店客人的日常场景。",
+      "sourceSha256": "95daffe55c0d952ab976859bcba958162eb9fcfa1772e1bc9292cd9bef886c9e",
+      "portraitSha256": "95daffe55c0d952ab976859bcba958162eb9fcfa1772e1bc9292cd9bef886c9e",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "akizuki_kanna": {
+      "entryId": "pc_akizuki_kanna_akizuki_kanna_sfw_b7_01",
+      "sourceImage": "images/akizuki_kanna/akizuki_kanna_sfw_b7_01/attempt-3.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao-corrected",
+      "rating": "All",
+      "reason": "Corrected setting and clear character portrait.",
+      "sourceSha256": "31d906cc344d6374be96164ffc77b2a277f879da5c46b5fd0ff06c0fc5a9037c",
+      "portraitSha256": "31d906cc344d6374be96164ffc77b2a277f879da5c46b5fd0ff06c0fc5a9037c",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "asada_shino": {
+      "entryId": "pc_asada_shino_asada_shino_sfw_b6_01",
+      "sourceImage": "images/asada_shino/asada_shino_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "ecd3cc2d0a80c913e97e0ee752512136fcacc36ec06020012153b23665c43343",
+      "portraitSha256": "ecd3cc2d0a80c913e97e0ee752512136fcacc36ec06020012153b23665c43343",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "cartethyia": {
+      "entryId": "pc_cartethyia_cartethyia_sfw_b9_01",
+      "sourceImage": "images/cartethyia/cartethyia_sfw_b9_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "09e806ae5a04e99a3548b67aaf64cb8b923f56200a28a8fc6a01b5720fd8df2a",
+      "portraitSha256": "09e806ae5a04e99a3548b67aaf64cb8b923f56200a28a8fc6a01b5720fd8df2a",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "changli_wuthering": {
+      "entryId": "pc_changli_wuthering_changli_wuthering_sfw_b7_01",
+      "sourceImage": "images/changli_wuthering/changli_wuthering_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "7a175364f42ea0896eaa2b4a107854aff6994fd5efe156b5e8646d89e0b009ca",
+      "portraitSha256": "7a175364f42ea0896eaa2b4a107854aff6994fd5efe156b5e8646d89e0b009ca",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "chloe_von_einzbern": {
+      "entryId": "pc_chloe_von_einzbern_chloe_von_einzbern_sfw_b7_01",
+      "sourceImage": "images/chloe_von_einzbern/chloe_von_einzbern_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "6ea4fcf35fa1cf179f69047b4d6ecaca073343462664e906aef298e78d600ee5",
+      "portraitSha256": "6ea4fcf35fa1cf179f69047b4d6ecaca073343462664e906aef298e78d600ee5",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "dorothy_nikke": {
+      "entryId": "pc_dorothy_nikke_dorothy_nikke_sfw_b9_01",
+      "sourceImage": "images/dorothy_nikke/dorothy_nikke_sfw_b9_01/attempt-3.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao-corrected",
+      "rating": "All",
+      "reason": "Corrected setting and clear character portrait.",
+      "sourceSha256": "c61c176d88aebb85df0b1777c03c4c9dfa771ce4499a0c813073616a4093c260",
+      "portraitSha256": "c61c176d88aebb85df0b1777c03c4c9dfa771ce4499a0c813073616a4093c260",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "elfaria_alvis_serfort": {
+      "entryId": "pc_elfaria_alvis_serfort_elfaria_alvis_serfort_sfw_b9_01",
+      "sourceImage": "images/elfaria_alvis_serfort/elfaria_alvis_serfort_sfw_b9_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "0c90874c76def733961a8da36c05f27b383d36c1c26a2a8979b9bb5233a468eb",
+      "portraitSha256": "0c90874c76def733961a8da36c05f27b383d36c1c26a2a8979b9bb5233a468eb",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "fubuki_one_punch": {
+      "entryId": "pc_fubuki_one_punch_fubuki_one_punch_sfw_b6_01",
+      "sourceImage": "images/fubuki_one_punch/fubuki_one_punch_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "f24daad1911806e7edd4e268f1b44d953ffe3b3fc98086580926e0b6e284871d",
+      "portraitSha256": "f24daad1911806e7edd4e268f1b44d953ffe3b3fc98086580926e0b6e284871d",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "futaba_rio": {
+      "entryId": "pc_futaba_rio_futaba_rio_sfw_b8_01",
+      "sourceImage": "images/futaba_rio/futaba_rio_sfw_b8_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "7bdb3383cb713e2c73cf79ad86f343e9552ad8bfec3cf11f4f880b5c484a49e8",
+      "portraitSha256": "7bdb3383cb713e2c73cf79ad86f343e9552ad8bfec3cf11f4f880b5c484a49e8",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "kama_fate": {
+      "entryId": "pc_kama_fate_kama_fate_sfw_b7_01",
+      "sourceImage": "images/kama_fate/kama_fate_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "498092ed6c8d7c3acc7fbeccd7b8af2a535a631848d5903deb47a0811cbb6f73",
+      "portraitSha256": "498092ed6c8d7c3acc7fbeccd7b8af2a535a631848d5903deb47a0811cbb6f73",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "kanroji_mitsuri": {
+      "entryId": "pc_kanroji_mitsuri_kanroji_mitsuri_sfw_b6_01",
+      "sourceImage": "images/kanroji_mitsuri/kanroji_mitsuri_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "d33d7374ebbb56a8cfc3bfb0b97cedc41886daa308bb1ea9315f3429d7b22bf9",
+      "portraitSha256": "d33d7374ebbb56a8cfc3bfb0b97cedc41886daa308bb1ea9315f3429d7b22bf9",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "kasugano_sora": {
+      "entryId": "pc_kasugano_sora_kasugano_sora_sfw_b7_01",
+      "sourceImage": "images/kasugano_sora/kasugano_sora_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "4d13d58d7002d58b238dee9e1caec16d06bd7506f6091797cebf48ed09373da5",
+      "portraitSha256": "4d13d58d7002d58b238dee9e1caec16d06bd7506f6091797cebf48ed09373da5",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "makinohara_shouko": {
+      "entryId": "pc_makinohara_shouko_makinohara_shouko_sfw_b8_01",
+      "sourceImage": "images/makinohara_shouko/makinohara_shouko_sfw_b8_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "a43372d741641f584e6f9c8b722115ccb5102e2027f16c4649dcadb9c36872de",
+      "portraitSha256": "a43372d741641f584e6f9c8b722115ccb5102e2027f16c4649dcadb9c36872de",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "maomao": {
+      "entryId": "pc_maomao_maomao_sfw_b9_01",
+      "sourceImage": "images/maomao/maomao_sfw_b9_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "8da2ceae359330e0f0a84b6079b010d9b51af1acf5e366ca33716dd13d34723c",
+      "portraitSha256": "8da2ceae359330e0f0a84b6079b010d9b51af1acf5e366ca33716dd13d34723c",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "marcille_donato": {
+      "entryId": "pc_marcille_donato_marcille_donato_sfw_b9_01",
+      "sourceImage": "images/marcille_donato/marcille_donato_sfw_b9_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "382309c85bd9cb1ca628cd957e9c3fe812d9301971c5e5becc57930b4e72ed71",
+      "portraitSha256": "382309c85bd9cb1ca628cd957e9c3fe812d9301971c5e5becc57930b4e72ed71",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "maria_mikhailovna_kujou": {
+      "entryId": "pc_maria_mikhailovna_kujou_maria_mikhailovna_kujou_sfw_b9_01",
+      "sourceImage": "images/maria_mikhailovna_kujou/maria_mikhailovna_kujou_sfw_b9_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "9c3031c8deb5f31b5b192b728f218950f2d6c84eb4b73ae3291ae5533ae594bd",
+      "portraitSha256": "9c3031c8deb5f31b5b192b728f218950f2d6c84eb4b73ae3291ae5533ae594bd",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "medea_caster": {
+      "entryId": "pc_medea_caster_medea_caster_sfw_b7_01",
+      "sourceImage": "images/medea_caster/medea_caster_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "62354105c844845d6b3d113e4ba9c643d36739708a65c06e70a472a31fa3e3dc",
+      "portraitSha256": "62354105c844845d6b3d113e4ba9c643d36739708a65c06e70a472a31fa3e3dc",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "medusa_rider": {
+      "entryId": "pc_medusa_rider_medusa_rider_sfw_b7_01",
+      "sourceImage": "images/medusa_rider/medusa_rider_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "8bacdb352eda7e92ba3d3c9ae23fc7b384d05dac3a4adcda6c5a09384b4f8306",
+      "portraitSha256": "8bacdb352eda7e92ba3d3c9ae23fc7b384d05dac3a4adcda6c5a09384b4f8306",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "mouri_ran": {
+      "entryId": "pc_mouri_ran_mouri_ran_sfw_b6_01",
+      "sourceImage": "images/mouri_ran/mouri_ran_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "9cd5568f5619e5a5d76a9e0d2ce7a189ffe156b27ba7e2599f149c7eede5907c",
+      "portraitSha256": "9cd5568f5619e5a5d76a9e0d2ce7a189ffe156b27ba7e2599f149c7eede5907c",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "raphtalia": {
+      "entryId": "pc_raphtalia_raphtalia_sfw_b6_01",
+      "sourceImage": "images/raphtalia/raphtalia_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "faab887e9062127f0d9d41821849aab0ee4ce31b0a0b0e8686027025ff577b2d",
+      "portraitSha256": "faab887e9062127f0d9d41821849aab0ee4ce31b0a0b0e8686027025ff577b2d",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "shinjou_akane": {
+      "entryId": "pc_shinjou_akane_shinjou_akane_sfw_b8_01",
+      "sourceImage": "images/shinjou_akane/shinjou_akane_sfw_b8_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "3f8d3257c08880d82f78e579398bebca2581b1e22e7f3445e5134334658a1300",
+      "portraitSha256": "3f8d3257c08880d82f78e579398bebca2581b1e22e7f3445e5134334658a1300",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "shiranui_mai": {
+      "entryId": "pc_shiranui_mai_shiranui_mai_sfw_b9_01",
+      "sourceImage": "images/shiranui_mai/shiranui_mai_sfw_b9_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "a8ff88099e5189a67368899f60e697ea572a470615d29dbb3b223f8580ef2e3b",
+      "portraitSha256": "a8ff88099e5189a67368899f60e697ea572a470615d29dbb3b223f8580ef2e3b",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "shirogane_kei": {
+      "entryId": "pc_shirogane_kei_shirogane_kei_sfw_b8_01",
+      "sourceImage": "images/shirogane_kei/shirogane_kei_sfw_b8_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "6f93fc8b9ffecc196138c2f53ff17ad7d142d3d5e97ec1abf4b17e9251712366",
+      "portraitSha256": "6f93fc8b9ffecc196138c2f53ff17ad7d142d3d5e97ec1abf4b17e9251712366",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "shorekeeper": {
+      "entryId": "pc_shorekeeper_shorekeeper_sfw_b7_01",
+      "sourceImage": "images/shorekeeper/shorekeeper_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "3a3601415204465afc3634465b602dd3094ad1ee251173d3fa555b50b96e124e",
+      "portraitSha256": "3a3601415204465afc3634465b602dd3094ad1ee251173d3fa555b50b96e124e",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "suou_yuki": {
+      "entryId": "pc_suou_yuki_suou_yuki_sfw_b8_01",
+      "sourceImage": "images/suou_yuki/suou_yuki_sfw_b8_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "0ae9e780d43c34da37a187b0fed1783b81c1ada5c57a2c12e3abb68b45c4409c",
+      "portraitSha256": "0ae9e780d43c34da37a187b0fed1783b81c1ada5c57a2c12e3abb68b45c4409c",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "tachibana_mikari": {
+      "entryId": "pc_tachibana_mikari_tachibana_mikari_sfw_b8_01",
+      "sourceImage": "images/tachibana_mikari/tachibana_mikari_sfw_b8_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "e0504624b5104561b923633ded3050a7c69bc0de538332d0a4ebedc3d4e30827",
+      "portraitSha256": "e0504624b5104561b923633ded3050a7c69bc0de538332d0a4ebedc3d4e30827",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "tobiichi_origami": {
+      "entryId": "pc_tobiichi_origami_tobiichi_origami_sfw_b6_01",
+      "sourceImage": "images/tobiichi_origami/tobiichi_origami_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "a17f22bad3d82b572a5aab788185eee26b86a85f5ce676f290d00707ab3a6800",
+      "portraitSha256": "a17f22bad3d82b572a5aab788185eee26b86a85f5ce676f290d00707ab3a6800",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "togawa_sakiko": {
+      "entryId": "pc_togawa_sakiko_togawa_sakiko_sfw_b9_01",
+      "sourceImage": "images/togawa_sakiko/togawa_sakiko_sfw_b9_01/attempt-3.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao-corrected",
+      "rating": "All",
+      "reason": "Corrected setting and clear character portrait.",
+      "sourceSha256": "4f1d3dbfdccda52034db2effdbc4d1e701863acdf20db7034946bcbd89048d99",
+      "portraitSha256": "4f1d3dbfdccda52034db2effdbc4d1e701863acdf20db7034946bcbd89048d99",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "ubel_frieren": {
+      "entryId": "pc_ubel_frieren_ubel_frieren_sfw_b6_01",
+      "sourceImage": "images/ubel_frieren/ubel_frieren_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "a5631bb658e2c34ffb824d59db2d5bbffc2f613a7b45d6d1988e3e3a1947cf89",
+      "portraitSha256": "a5631bb658e2c34ffb824d59db2d5bbffc2f613a7b45d6d1988e3e3a1947cf89",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "vivy": {
+      "entryId": "pc_vivy_vivy_sfw_b9_01",
+      "sourceImage": "images/vivy/vivy_sfw_b9_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "50bfbc472ac9e6f1b53f99f14ad5b2b3efe1bb213e527f8f258b42d9522bd12d",
+      "portraitSha256": "50bfbc472ac9e6f1b53f99f14ad5b2b3efe1bb213e527f8f258b42d9522bd12d",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "yae_miko": {
+      "entryId": "pc_yae_miko_yae_miko_sfw_b7_01",
+      "sourceImage": "images/yae_miko/yae_miko_sfw_b7_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "f44911885f716d06ebd81427fbc7e69da73778d223f0bf4fc223957806ee6799",
+      "portraitSha256": "f44911885f716d06ebd81427fbc7e69da73778d223f0bf4fc223957806ee6799",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "yanami_anna": {
+      "entryId": "pc_yanami_anna_yanami_anna_sfw_b8_01",
+      "sourceImage": "images/yanami_anna/yanami_anna_sfw_b8_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "9b01ab0ba67ec309774c28ec112713e768654c9a3b06b9e558cd3ee1709b4e73",
+      "portraitSha256": "9b01ab0ba67ec309774c28ec112713e768654c9a3b06b9e558cd3ee1709b4e73",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "yatogami_tohka": {
+      "entryId": "pc_yatogami_tohka_yatogami_tohka_sfw_b6_01",
+      "sourceImage": "images/yatogami_tohka/yatogami_tohka_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "f8970923b37845ca3519a53f9a96b33aa4a1bae30366da98e636579c87cf06d0",
+      "portraitSha256": "f8970923b37845ca3519a53f9a96b33aa4a1bae30366da98e636579c87cf06d0",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "zero_two": {
+      "entryId": "pc_zero_two_zero_two_sfw_b6_01",
+      "sourceImage": "images/zero_two/zero_two_sfw_b6_01/attempt-1.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Face and identity cues readable, coherent single clothed character; suitable as archive portrait.",
+      "sourceSha256": "7f86138c68a372bebed5d9dcdd72d3fc7b80ff0c0f032706e4d2a3f4a58bf283",
+      "portraitSha256": "7f86138c68a372bebed5d9dcdd72d3fc7b80ff0c0f032706e4d2a3f4a58bf283",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "kuonji_alice": {
+      "entryId": "pc_kuonji_alice_kuonji_alice_sfw_b7_01",
+      "sourceImage": "E:\\code\\2\\lora\\AI\\Reviews\\ShowcaseRefresh\\2026-09-08-new49-miaomiao-retries\\images\\kuonji_alice\\kuonji_alice_sfw_b7_01\\attempt-2.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Original-size visual review: coherent single figure, readable face, corrected composition; replaces rejected attempt 1.",
+      "sourceSha256": "badc3f5ca62e74986d1d2a67cedc8d7eb0b3c6132513e8ff6861d3352237484d",
+      "portraitSha256": "badc3f5ca62e74986d1d2a67cedc8d7eb0b3c6132513e8ff6861d3352237484d",
+      "modelId": "anima-miaomiao-v1.2"
+    },
+    "tatsumaki": {
+      "entryId": "pc_tatsumaki_tatsumaki_sfw_b6_01",
+      "sourceImage": "E:\\code\\2\\lora\\AI\\Reviews\\ShowcaseRefresh\\2026-09-08-new49-miaomiao-tatsumaki-retry\\images\\tatsumaki\\tatsumaki_sfw_b6_01\\attempt-2.png",
+      "sourceCollection": "E:/code/2/lora/AI/Reviews/ShowcaseRefresh/2026-09-08-new49-miaomiao",
+      "rating": "All",
+      "reason": "Original-size visual review: coherent single figure, readable face, corrected composition; replaces rejected attempt 1.",
+      "sourceSha256": "228405a552c118a9c905daaf7f52ee22d539e47a90e57bc8668b6d634a30ffcd",
+      "portraitSha256": "228405a552c118a9c905daaf7f52ee22d539e47a90e57bc8668b6d634a30ffcd",
+      "modelId": "anima-miaomiao-v1.2"
     }
   }
 }

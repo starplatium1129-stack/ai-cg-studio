@@ -582,6 +582,20 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "藤紫日常小纹",
+          "prose": "an opaque wisteria-purple long-sleeved komon kimono with a pale cream obi and a discreet pink hair tie",
+          "tokens": [
+            "purple_kimono",
+            "komon",
+            "long_sleeves",
+            "cream_obi",
+            "hair_tie"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }

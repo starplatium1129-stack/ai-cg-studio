@@ -22,7 +22,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const test = require('node:test');
 const assert = require('node:assert');
 
@@ -155,11 +155,28 @@ function crossEntryAudit(deliveryMap) {
 }
 
 function getBaselineData(baselineCommit) {
+  const git = args => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+  const readList = (aggregate, directory, key) => {
+    let data;
+    try { data = JSON.parse(git(['show', `${baselineCommit}:${aggregate}`])); }
+    catch {
+      const files = git(['ls-tree', '-r', '--name-only', baselineCommit, '--', directory])
+        .trim().split(/\r?\n/).filter(file => file.endsWith('.json') && !file.endsWith('/manifest.json'));
+      if (!files.length) throw new Error(`No baseline data: ${directory}`);
+      return files.flatMap(file => {
+        const shard = JSON.parse(git(['show', `${baselineCommit}:${file}`]));
+        const list = key ? shard[key] : shard;
+        if (!Array.isArray(list)) throw new Error(`Invalid baseline shard: ${file}`);
+        return list;
+      });
+    }
+    const list = key ? data[key] : data;
+    if (!Array.isArray(list)) throw new Error(`Invalid baseline aggregate: ${aggregate}`);
+    return list;
+  };
   try {
-    const bpJson = execSync(`git show ${baselineCommit}:data/scene-blueprints.json`, { encoding: 'utf8', maxBuffer: 10 * 1024 * 1024 });
-    const scJson = execSync(`git show ${baselineCommit}:data/scenes.json`, { encoding: 'utf8', maxBuffer: 10 * 1024 * 1024 });
-    const bpList = JSON.parse(bpJson).blueprints || JSON.parse(bpJson);
-    const scList = JSON.parse(scJson);
+    const bpList = readList('data/scene-blueprints.json', 'data/blueprints', 'blueprints');
+    const scList = readList('data/scenes.json', 'data/scenes');
 
     const map = new Map();
     bpList.forEach(bp => {
@@ -182,8 +199,7 @@ function getBaselineData(baselineCommit) {
     });
     return map;
   } catch (err) {
-    console.warn(`[基线读取失败，使用当前库比对]`, err.message);
-    return null;
+    throw new Error(`基线读取失败，拒绝宣称改写验收通过: ${err.message}`);
   }
 }
 

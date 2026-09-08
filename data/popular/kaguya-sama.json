@@ -406,6 +406,19 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "sfw_refined_daily",
+          "name": "杏色针织周末装",
+          "prose": "an apricot knit cardigan over a navy collared shirt, a calf-length grey pleated skirt and brown loafers",
+          "tokens": [
+            "orange_cardigan",
+            "collared_shirt",
+            "long_skirt",
+            "loafers"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     }
