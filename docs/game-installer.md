@@ -1,16 +1,18 @@
-# 绫季绘境 · 游戏式安装界面
+# 绫季绘境 · 现代安装界面
 
-安装器使用生成的角色主视觉、原生中文文字、粉色主按钮和独立路径页。欢迎、安装位置、升级维护、进度、完成页面组成同一段安装旅程。
+正式发行采用 WPF 无边框展示层：全幅自有角色主视觉、统一矢量控件、底部路径与磁盘信息、单一安装主按钮。深浅主题覆盖安装区，画面叠字使用固定深色遮罩。保留 NSIS 作为安装核心，不改变文件清单、卸载与 WebView2 处理。
 
 ## 构建与预览
 
-- `npm run workflow -- installer:build`：从固定的 Tauri 2.11.4 模板生成安装脚本与 BMP。
-- `npm run workflow -- installer:preview --capture --page=welcome`：编译不提权、不安装的原生预览并截图。
-- page 可取 welcome、directory、install、finish、maintenance；截图位于 runtime/installer-对应页面-preview.png。
-- `npm run package:tauri` 自动调用构建步骤；正式签名与版本递增使用 `node scripts/maintenance/release-desktop-update.js --bump patch`。
-- 已构建同版本程序、仅调整安装界面时可用 `npm run workflow -- installer:bundle`，刷新安装器并重新签名；原生代码或前端有变动时仍须完整构建。
+- `npm run workflow -- installer:modern --preview --capture --theme=dark --state=ready --dpi=144`：编译原生预览；主题支持 dark/light，状态支持 ready/installing/done/error，DPI 支持 96–240。预览版本以及任何 --capture 调用都禁止安装。
+- `modern/Installer.xaml` 管布局与主题，`controls.svg` 为手绘线条源；`InstallerWindow.cs` 管展示状态，`InstallEngine.cs` 管路径、校验、提权和安装结果。
+- `node scripts/maintenance/release-desktop-update.js --bump patch`：构建应用与 NSIS 核心，再嵌入现代展示层，**签名最终分发的 exe**，更新 latest.json。不能拿内层 NSIS 签名验证外层安装器。
+- `npm run workflow -- installer:bundle`：已有同版本程序时仅重打包安装器；应用变更仍需完整构建。
+- `installer:build` 和 `installer:preview --capture --page=welcome` 维护底层 NSIS 模板及诊断预览；`package:tauri` 单独运行只产生该核心，发行使用上面的 release 入口。
 
-`installer/generated/` 为可再生输出，不入 Git。唯一需维护的自有 UI 文件是 game-ui.nsh，模板原件及许可证在 vendor；背景是 imagegen 生成的全年龄专用主视觉。按钮是带键盘/可访问名称的真实 Win32 按钮，位图仅负责外观。
+Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行服务。编译器和资源输出均在被忽略的 installer/generated/ 中。每次构建执行原生自测，验证路径、静默参数、预览隔离、嵌入资源哈希及深浅主题对比度。截图由实际 WPF 控件渲染，仍需目视检查各状态和缩放。
+
+资源准备按实际复制字节显示进度；安装阶段显示不定进度，不假报百分比。开始安装前检查目标与临时磁盘空间，对提取的 NSIS 做 SHA-256 校验，完成后核对安装目录中 exe 的版本。管理员授权取消允许重试；安装核心运行时关闭窗口会提示等待或最小化。支持 /S、/P、/R、/NS、/D=（路径必须最后），更新模式交给内层 NSIS。显示界面本身不要求管理员权限。
 
 ## 安装逻辑边界
 
@@ -33,3 +35,13 @@
 - 完整应用构建与最终 NSIS 重打包、updater 签名成功；未在本机执行覆盖安装。
 
 首个桌面个性化提交为 2309331a；完整源码和 v1.5.6 标签仅推送到私密发行仓库的 codex/desktop-game-installer 分支。
+
+
+## 1.5.8 本次验收（2026-09-08）
+
+- WPF 自测通过：中文/空格路径、系统目录拒绝、静默及更新参数、真实预览安装拦截、嵌入 NSIS 哈希、深浅主题文本与进度条对比度、禁用按钮文字。
+- 已目视检查原生准备、安装中、完成和失败状态，覆盖 100%、125%、150% 输出；不是网页效果图。未执行全部控件的人工点击回归。
+- 8 项桌面打包测试通过，含分发包签名校验与篡改拒绝；前后端类型检查、ESLint、生产构建及包预算通过；前端 278 项、单元 399 项、接口契约 25 组通过。
+- 仓库文本扫描通过。全量门禁仍有 scenes:optimize、scenes:ratings、scenes:validate 三个既有场景策略失败，以及 test:check 的 Windows 临时目录 ENOTEMPTY；不声明全量门禁通过。
+- 已通过 deploy-desktop.bat -UseInstaller -QuietInstall 完整升级本机，ProductVersion=1.5.8，部署日志成功，网关健康检查 HTTP 200。安装 exe 与构建 exe 仅有 Tauri 的 UNK→NSS 三字节安装类型标记差异，符合打包行为。
+- 最终发行 exe 由应用公钥验证 updater 签名；源码和附件仅推送 private-release 私密仓库。签名是 updater 完整性签名，不是 Windows Authenticode 证书。

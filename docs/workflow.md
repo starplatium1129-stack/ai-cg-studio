@@ -64,7 +64,9 @@
 
 ## 服务与桌面部署
 
-游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
+现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
+
+底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
 仅更改安装界面且已有同版本程序时，`installer:bundle` 重新打包并签名；它不编译应用源码。
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。

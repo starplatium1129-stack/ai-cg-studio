@@ -118,9 +118,20 @@ function main() {
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const exeName = artifact.exe;
-  fs.copyFileSync(path.join(BUNDLE_DIR, artifact.exe), path.join(OUT_DIR, exeName));
-  const signature = fs.readFileSync(path.join(BUNDLE_DIR, artifact.sig), 'utf8').trim();
-  fs.writeFileSync(path.join(OUT_DIR, `${exeName}.sig`), signature + '\n');
+  const executable = path.join(OUT_DIR, exeName);
+  require('./build-modern-installer').buildModernInstaller({
+    payload: path.join(BUNDLE_DIR, artifact.exe), output: executable,
+  });
+  // Sign the distributed wrapper, never reuse the embedded NSIS signature.
+  const signerEnv = { ...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE, TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '' };
+  delete signerEnv.TAURI_SIGNING_PRIVATE_KEY;
+  execFileSync(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'signer', 'sign', executable], {
+    cwd: ROOT, stdio: 'inherit', windowsHide: true,
+    env: signerEnv,
+  });
+  const signature = fs.readFileSync(`${executable}.sig`, 'utf8').trim();
+  const updater = JSON.parse(fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8')).plugins.updater;
+  require('./build-modern-installer').verifyUpdaterSignature(executable, signature, updater.pubkey);
 
   const manifest = {
     version,

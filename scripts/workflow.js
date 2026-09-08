@@ -21,6 +21,11 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  'installer:modern': {
+    desc: '构建现代原生安装器（--preview --capture 可安全预览，不安装）',
+    cmd: ['node', 'scripts/maintenance/build-modern-installer.js'],
+    docs: 'docs/game-installer.md',
+  },
   'installer:bundle': {
     desc: '仅重打包已构建的桌面程序并签名（只改安装界面时使用）',
     cmd: ['node', 'scripts/maintenance/release-desktop-update.js', '--bundle-only'],
