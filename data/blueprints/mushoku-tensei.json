@@ -293,8 +293,8 @@
       "title": "洛琪希 · 魔导教师的私人时间",
       "category": "成人",
       "characterId": "roxy_migurdia",
-      "description": "【洛琪希 · 魔导教师的私人时间】昏暗的单身宿舍里，褪去宽大法袍的洛琪希仅着内衣斜倚在床上，水蓝色的长发凌乱地铺在枕间。她红着脸将头顶的魔女帽往下压了压遮住眼睛——「身为导师……却在学生面前露出这种毫无防备的模样……请不要一直盯着我看，太令人害羞了。」",
-      "location": "魔法学院教师宿舍",
+      "description": "【洛琪希 · 魔导教师的私人时间】昏暗的单身宿舍里，褪去宽大法袍的洛琪希仅着内衣斜倚在床上，水蓝色的长发凌乱地铺在枕间。她红着脸将头顶的魔女帽往下压了压遮住眼睛——「身为导师……却在成年同事面前露出这种毫无防备的模样……请不要一直盯着我看，太令人害羞了。」",
+      "location": "魔法成人研修院教师宿舍",
       "action": "法袍半褪斜倚在床上",
       "timeOfDay": "夜晚",
       "lighting": "warm oil lamp and soft fireplace glow",
@@ -309,7 +309,7 @@
         "intimate",
         "night"
       ],
-      "promptProse": "Lying nude on her side across the study bed beside discarded robes, Roxy looks up with an adorable, flustered teacher’s blush.",
+      "promptProse": "Oil lamps surround adult Roxy Migurdia reclining alone on her side across a study bed beside folded teaching robes. Completely nude, she bends one leg over the other and props her head on an open grimoire, compressing her mature figure into a clear horizontal frame. One hand steadies the book while the other touches herself between her thighs, making a small water spell tremble above the sheets. Long blue hair and blue eyes frame a scholarly frown breaking into a deep blush. No text or extra people.",
       "promptTokens": [
         "magic_study",
         "bed",
@@ -380,7 +380,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -392,7 +392,7 @@
         "shy_smile",
         "heavy_blush"
       ],
-      "nsfwProse": "Lying nude on her side across the study bed beside discarded robes, Roxy looks up with an adorable, flustered teacher’s blush.",
+      "nsfwProse": "",
       "adultArtistHint": "@anmi",
       "outfitId": "lingerie_only",
       "sampleRating": "R18"
@@ -693,11 +693,11 @@
     },
     {
       "id": "roxy_migurdia_r18_academy_bath",
-      "title": "洛琪希 · 学院浴室",
+      "title": "洛琪希 · 成人研修院浴室",
       "category": "成人",
       "characterId": "roxy_migurdia",
-      "description": "【洛琪希 · 学院浴室】弥漫着浓厚水雾的石砌大浴池里，洛琪希整个人浸在清澈的水中，水蓝色发丝漂浮在水面上。水流勾勒出她娇小玲珑却比例完美的雪白身躯，她红着脸把下半张脸埋入水中——「进、进来之前好歹先敲一下门啊……不过既然进来了，就只能麻烦你帮我擦背了。」",
-      "location": "魔法学院浴室",
+      "description": "【洛琪希 · 成人研修院浴室】弥漫着浓厚水雾的石砌大浴池里，洛琪希整个人浸在清澈的水中，水蓝色发丝漂浮在水面上。水流勾勒出她娇小玲珑却比例完美的雪白身躯，她红着脸把下半张脸埋入水中——「进、进来之前好歹先敲一下门啊……不过既然进来了，就只能麻烦你帮我擦背了。」",
+      "location": "魔法成人研修院浴室",
       "action": "泡在石砌浴池中",
       "timeOfDay": "夜晚",
       "lighting": "warm steam and soft lamplight",
@@ -711,7 +711,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on the marble hot spring bench clutching a small bath towel over her bust, Roxy blushes deeply through the swirling steam.",
+      "promptProse": "After lessons, adult Roxy Migurdia sits alone on a marble bench inside a private faculty bath. Steam turns the tiled chamber soft while a soaked towel clings translucent across bare breasts and a second towel lies beneath one raised foot. She keeps one palm against the wet stone and moves the other beneath the water between her legs, sending a controlled blue spiral around her knees. Damp blue hair, focused eyes and red ears remain crisp in the compact seated composition. No text or extra people.",
       "promptTokens": [
         "academy_bathhouse",
         "marble_bench",
@@ -790,7 +790,7 @@
         "water_droplets",
         "heavy_blush"
       ],
-      "nsfwProse": "Sitting on the marble hot spring bench clutching a small bath towel over her bust, Roxy blushes deeply through the swirling steam.",
+      "nsfwProse": "",
       "adultArtistHint": "@anmi",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -815,7 +815,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Leaning over her study desk covered in completed water magic scrolls, Roxy rubs her drowsy blue eyes with a flustered blush, her loose nightwear slipping off her shoulders in the soft oil lamp glow.",
+      "promptProse": "A late oil lamp illuminates adult Roxy Migurdia leaning alone over a desk covered in completed water-magic scrolls. Her loose nightwear has fallen open and gathered at the waist, exposing bare breasts above the desk edge. One hand presses a curling parchment flat while the other slips under the fabric between her thighs, causing inked droplets to lift from the page. Blue hair pools around drowsy eyes and flushed cheeks as bookshelves recede into shadow. Horizontal medium study portrait, no text or extra people.",
       "promptTokens": [
         "study_room",
         "study_desk",
@@ -885,7 +885,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -898,7 +898,7 @@
         "heavy_blush",
         "flustered"
       ],
-      "nsfwProse": "Leaning over her study desk covered in completed water magic scrolls, Roxy rubs her drowsy blue eyes with a flustered blush, her loose nightwear slipping off her shoulders in the soft oil lamp glow.",
+      "nsfwProse": "",
       "adultArtistHint": "@jazz_jack",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -909,7 +909,7 @@
       "category": "成人",
       "characterId": "roxy_migurdia",
       "description": "【洛琪希 · 白丝与油灯】昏暗的木屋卧房内，洛琪希坐在高木椅上，将穿着纯白过膝袜的纤细双腿搭在椅子横梁上，足尖在灯影下轻轻晃动。她低下头害羞地抓着衣角——「为什么特意让我换上这双白色长袜呢？……要是你真的喜欢看的话，随你怎么看都可以哦。」",
-      "location": "学院宿舍",
+      "location": "成人研修院宿舍",
       "action": "白丝脚搭在椅子横梁上",
       "timeOfDay": "夜晚",
       "lighting": "warm oil lamp",
@@ -924,7 +924,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on the study chair in white thigh-highs with her petite chest exposed, Roxy offers a sweet, trembling smile.",
+      "promptProse": "Inside a quiet wooden study, adult Roxy Migurdia sits alone backward on a chair, nude except for white thigh-high stockings. She folds her arms across the backrest beneath bare breasts and raises one heel onto the seat, using two fingers to roll the stocking welt down a mature thigh. An oil lamp catches the pressure mark, curled toes and blue hair spilling over one shoulder. Her blue gaze is direct despite a trembling smile and reddened ears. Vertical intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "wooden_study",
         "desk",
@@ -1008,7 +1008,7 @@
         "sitting_on_chair",
         "shy_smile"
       ],
-      "nsfwProse": "Sitting on the study chair in white thigh-highs with her petite chest exposed, Roxy offers a sweet, trembling smile.",
+      "nsfwProse": "",
       "adultArtistHint": "@tiv",
       "outfitId": "casual",
       "sampleRating": "R18",
@@ -1022,7 +1022,7 @@
       "category": "成人",
       "characterId": "roxy_migurdia",
       "description": "【洛琪希 · 晨光魔导书】清晨的第一抹金色晨曦透过窗帘缝隙洒在大床上，洛琪希光着身子趴在松软的棉被里翻看魔法书，雪白圆润的翘臀与修长小腿在晨光下一览无遗。她侧过头软软一笑——「早上好。昨晚折腾得那么晚……今天早上的魔术课，我们一起翘掉好不好？」",
-      "location": "学院宿舍",
+      "location": "成人研修院宿舍",
       "action": "晨光里趴在床上翻看魔法书，双腿翘起",
       "timeOfDay": "清晨",
       "lighting": "soft morning light",
@@ -1036,7 +1036,7 @@
         "bookshelf",
         "intimate"
       ],
-      "promptProse": "Lying on her stomach on the sunny bed with her feet curled in the air, nude Roxy flips through her grimoire with a shy morning smile, warm sunbeams illuminating her soft curves and petite figure.",
+      "promptProse": "Morning light stretches across adult Roxy Migurdia lying alone on her stomach over white bedding with a grimoire open between her elbows. She is nude, her bare breasts resting against a pillow while both lower legs lift and crossed feet curl above the sheets. One hand follows a spell diagram and the other reaches beneath her hips, making blue water runes brighten around her fingers. Long blue hair fans across the page as she glances sideways with a shy, knowing blush. Horizontal reading portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -1112,7 +1112,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -1126,7 +1126,7 @@
         "shy_smile",
         "heavy_blush"
       ],
-      "nsfwProse": "Lying on her stomach on the sunny bed with her feet curled in the air, nude Roxy flips through her grimoire with a shy morning smile, warm sunbeams illuminating her soft curves and petite figure.",
+      "nsfwProse": "",
       "adultArtistHint": "@kousaki rui",
       "outfitId": "witch_outfit",
       "sampleRating": "R18"
@@ -1425,7 +1425,7 @@
         "elf_ears",
         "blushing"
       ],
-      "promptProse": "Lying nude across the newlywed bed in top-down POV, Sylphiette spreads her soft thighs with a blushing, deeply affectionate gaze.",
+      "promptProse": "Soft morning light surrounds adult Sylphiette lying alone on a newlywed bed in a top-down view. Completely nude, she draws both knees toward her chest and extends one bare sole into gentle foreground foreshortening while the other leg remains folded. One hand holds her thigh steady and the other touches herself between parted legs, keeping every finger readable. Pale green hair spreads over the pillow around wet eyes, flushed elf ears and an affectionate smile. Vertical intimate solo composition, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -1515,7 +1515,7 @@
         "bent_knees",
         "heavy_blush"
       ],
-      "nsfwProse": "Lying nude across the newlywed bed in top-down POV, Sylphiette spreads her soft thighs with a blushing, deeply affectionate gaze.",
+      "nsfwProse": "",
       "category": "私密写真",
       "location": "格雷拉特宅邸温馨主卧",
       "action": "躺在蓬松羽绒大床上，双手轻轻拉着床单遮住胸口，双腿抬起展露极具透视感的白嫩双足与蜷缩趾尖，尖耳通红",
@@ -1547,7 +1547,7 @@
         "detailed_vulva",
         "sunglasses"
       ],
-      "promptProse": "Perched on the wooden study desk in the empty library, Sylphiette unbuttons her white butler shirt as her tinted glasses slide down her nose, revealing her flushed elf ears and soft bosom.",
+      "promptProse": "Library sunlight finds adult Sylphiette perched alone on a wide wooden desk in her Fitz attire. Her white butler shirt is unbuttoned and pulled below bare breasts, while dark trousers open at the waist above one knee drawn onto the tabletop. Tinted glasses slide down her nose as one hand braces among books and the other reaches beneath the loosened waistband. Pale hair frames deeply red elf ears and green eyes startled by her own reflection in a polished brass lamp. Vertical medium solo portrait, no text or extra people.",
       "promptTokens": [
         "study_room",
         "wooden_desk",
@@ -1651,7 +1651,7 @@
         "heavy_blush",
         "flustered_expression"
       ],
-      "nsfwProse": "Perched on the wooden study desk in the empty library, Sylphiette unbuttons her white butler shirt as her tinted glasses slide down her nose, revealing her flushed elf ears and soft bosom.",
+      "nsfwProse": "",
       "category": "私密写真",
       "location": "宅邸书房宽大书桌",
       "action": "半解白色执事衬衫坐在书桌沿，墨镜滑落鼻梁",
@@ -1679,7 +1679,7 @@
         "elf_ears",
         "firelight"
       ],
-      "promptProse": "Soaking in the steaming wooden tub at the Greyrat home, nude Sylphiette touches her sensitive wet elf ears with a sweet blush.",
+      "promptProse": "Lantern glow fills the Greyrat bath where adult Sylphiette reclines alone in a steaming wooden tub. Wet pale hair trails over bare breasts as she raises one knee above the water and draws a soft washcloth along her pointed ear. Her free hand follows the resulting shiver beneath the surface between her thighs, sending small ripples through floating herbs. Green eyes blur with sensation and both elf ears deepen to rose against the cedar walls. Compact three-quarter bath portrait, no text or extra people.",
       "promptTokens": [
         "wooden_tub",
         "bathroom",
@@ -1774,7 +1774,7 @@
         "water_droplets",
         "heavy_blush"
       ],
-      "nsfwProse": "Soaking in the steaming wooden tub at the Greyrat home, nude Sylphiette touches her sensitive wet elf ears with a sweet blush.",
+      "nsfwProse": "",
       "category": "私密写真",
       "location": "格雷拉特家木质汤浴间",
       "action": "泡在汤浴中，绯红的尖耳在水汽里若隐若现",
@@ -2076,7 +2076,7 @@
         "soft_light",
         "intimate"
       ],
-      "promptProse": "Stretching nude under the rumpled morning bedsheets in top-down POV, Sylphiette welcomes Rudy with a sleepy, loving smile.",
+      "promptProse": "Dawn enters a quiet bedroom where adult Sylphiette lies alone on her back beneath rumpled sheets. The linen has fallen below bare breasts and bunches at her hips as she raises both arms in a sleepy stretch, then folds one knee into the vertical frame. One hand settles above her head while the other gathers the sheet between her thighs. Pale green hair and pointed ears glow in the window light, framing drowsy green eyes and a private loving blush. Top-down solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -2159,7 +2159,7 @@
         "bystanders"
       ],
       "recommendedSize": "1152x1536",
-      "nsfwProse": "Stretching nude under the rumpled morning bedsheets in top-down POV, Sylphiette welcomes Rudy with a sleepy, loving smile.",
+      "nsfwProse": "",
       "nsfwTokens": [
         "completely_nude",
         "bare_breasts",
@@ -2798,9 +2798,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -2852,7 +2849,7 @@
         "full_body",
         "daylight"
       ],
-      "promptProse": "Standing beside the inn table in morning sunbeams unbuttoning her combat shirt, Eris glares with a fierce, blushing tsundere challenge.",
+      "promptProse": "Sunbeams cross a village inn where adult Eris Greyrat stands alone beside a scarred training table. She has unbuttoned her combat shirt to the waist, leaving bare breasts above fitted trousers while one boot rests on a low stool. One hand grips the shirt collar and the other tightens a leather thigh strap, making the muscle and pressure mark visible. Long red hair catches the dawn around fierce green eyes, sweat and a furious blush. Vertical medium fighter-at-rest portrait, no text or extra people.",
       "promptTokens": [
         "village_inn",
         "wooden_table",
@@ -2876,7 +2873,7 @@
         "standing",
         "blushing_frown"
       ],
-      "nsfwProse": "Standing beside the inn table in morning sunbeams unbuttoning her combat shirt, Eris glares with a fierce, blushing tsundere challenge.",
+      "nsfwProse": "",
       "adultArtistHint": "@anmi",
       "coverageTags": [
         "special_nsfw"
@@ -2919,9 +2916,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -2973,7 +2967,7 @@
         "full_body",
         "daylight"
       ],
-      "promptProse": "Unstrapping her leather armor inside the forest tent as morning sunlight pours in, Eris reveals her toned, bare bust with a proud flush.",
+      "promptProse": "Early sunlight enters a forest tent where adult Eris Greyrat kneels alone beside cooling campfire gear. Her leather armor is unbuckled and spread around the hips, exposing bare breasts and a toned abdomen above crossed legs. She pulls one stubborn shoulder strap with both hands, compressing the chest and leaving clear marks across sun-warmed skin. A sword, bedroll and steaming cup layer the background as red hair frames proud green eyes and reddened cheeks. Compact vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "forest_tent",
         "morning_sun",
@@ -2995,7 +2989,7 @@
         "standing",
         "heavy_blush"
       ],
-      "nsfwProse": "Unstrapping her leather armor inside the forest tent as morning sunlight pours in, Eris reveals her toned, bare bust with a proud flush.",
+      "nsfwProse": "",
       "coverageTags": [
         "intimate"
       ]
@@ -3037,9 +3031,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -3091,7 +3082,7 @@
         "full_body",
         "daylight"
       ],
-      "promptProse": "Leaning against a wooden dojo pillar with her workout shirt open and sweat dripping across her bare chest, Eris pants with intense passion.",
+      "promptProse": "After dawn practice, adult Eris Greyrat leans alone against a wooden dojo pillar with one knee raised on a bench. Her sweat-soaked workout shirt hangs open beneath bare breasts, and training wraps remain around her wrists and powerful thighs. She uses one hand to pull a wrap tight while the other wipes moisture from her inner leg, keeping the pose athletic and readable. Copper light catches damp red hair, clenched teeth and green eyes still burning through a heavy blush. Vertical medium portrait, no text or extra people.",
       "promptTokens": [
         "dojo",
         "wooden_pillar",
@@ -3115,7 +3106,7 @@
         "tsundere_frown",
         "heavy_blush"
       ],
-      "nsfwProse": "Leaning against a wooden dojo pillar with her workout shirt open and sweat dripping across her bare chest, Eris pants with intense passion.",
+      "nsfwProse": "",
       "coverageTags": []
     },
     {
@@ -3155,9 +3146,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -3209,7 +3197,7 @@
         "full_body",
         "daylight"
       ],
-      "promptProse": "Sitting nude on the natural rock steps of the sunny outdoor onsen, Eris looks over her shoulder with a flustered, tsundere shout and a wave, crystal water droplets beading across her athletic red-haired figure.",
+      "promptProse": "Bright steam surrounds adult Eris Greyrat seated alone on broad rock steps in an outdoor bath. Completely nude, she twists into a compact three-quarter pose with one knee above the water and one hand braced behind her. The other hand pours a wooden ladle over her thigh, droplets following toned muscle toward the pool. Wet red hair sticks to her back as she looks over one shoulder with green eyes, an embarrassed shout and a defiant flush. Horizontal bath portrait with clear hands and feet, no text or extra people.",
       "promptTokens": [
         "outdoor_onsen",
         "natural_rocks",
@@ -3225,7 +3213,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "outfitId": "sword_king",
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -3240,7 +3228,7 @@
         "heavy_blush",
         "tsundere_smile"
       ],
-      "nsfwProse": "Sitting nude on the natural rock steps of the sunny outdoor onsen, Eris looks over her shoulder with a flustered, tsundere shout and a wave, crystal water droplets beading across her athletic red-haired figure.",
+      "nsfwProse": "",
       "coverageTags": []
     }
   ]

@@ -641,30 +641,26 @@
       "coverageTags": [
         "cowgirl"
       ],
-      "description": "【2B · 凯妮蕾丝战装跨坐骑乘与上下轻摇】营地静谧帐篷内的软垫上，2B 身穿浅蓝蕾丝的清凉战衣装束，薄纱下身轻敞。她主动跨坐在伴侣结实的腰腹之上，双手按在伴侣胸膛上借力，挺动柔韧修长的柳腰上下轻柔起伏。饱满迷人的雪白双峰在镂空蕾丝边缘随着动作轻微晃荡，唇下美人痣在泛红面颊上格外妩媚——「不用动……这是……为了调节战术机能的主动接触……哈啊……」",
+      "description": "【成年2B · 营地软垫的单人休整】成年2B独自跨坐折叠软垫，蓝白战斗内衣松开，一手撑住床褥、一手在腿间自抚，武器与Pod均关闭置于远处。",
       "location": "抵抗军营地帐篷行军榻",
-      "action": "身穿蕾丝战装跨坐骑乘，双手抵胸借力轻柔起伏，双乳波涛起伏，唇下痣迷人",
+      "action": "独自跨坐软垫，一手撑床、一手腿间自抚",
       "timeOfDay": "夜间",
       "lighting": "营火透过帐篷帆布透射的暖橙光晕照亮玉体",
       "camera": "straddling pov, looking up at heaving bust and mole under mouth",
       "mood": "极乐沉沦",
       "sceneTags": [
         "cowgirl_position",
-        "riding",
         "straddling",
         "lingerie",
         "large_breasts",
-        "penetration",
         "blindfold",
         "mole_under_mouth",
         "heavy_blush"
       ],
-      "promptProse": "Straddling her lover upon a camp futon in delicate blue and white battle lingerie, 2B rides in rhythmic cowgirl motion as her full breasts heave in sensual cadence beneath ambient lantern light.",
+      "promptProse": "A ruined camp lantern frames adult 2B seated alone astride a folded futon. Blue-white battle lingerie is loosened beneath bare breasts and pulled aside at the hips, while black thigh-highs tighten around folded legs. She braces on the bedding with one gloved hand and fingers herself with the other, her sword and Pod resting powered down in the background. White bobbed hair and blindfold frame parted lips and a restrained blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
-        "riding",
         "straddling",
-        "penetration",
         "lingerie",
         "large_breasts",
         "blindfold",
@@ -698,13 +694,12 @@
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "cowgirl",
-        "riding",
         "straddling",
         "large_breasts",
         "lingerie",
         "heavy_blush"
       ],
-      "nsfwProse": "Taking composed control in the camp tent, 2B straddles and rides with graceful hip rhythm, her lace lingerie slipping aside as warmth blossoms between them."
+      "nsfwProse": ""
     },
     {
       "id": "yorha_2b_r18_flooded_pillar_pussy_fingering",
@@ -732,7 +727,7 @@
         "mole_under_mouth",
         "heavy_blush"
       ],
-      "promptProse": "Leaning against a solitary marble pillar in secluded flooded city ruins with her black evening gown gathered over her lap, 2B gently touches her intimate warmth with gloved fingers while supporting her full chest, lips parted in wonder.",
+      "promptProse": "Reflected sky surrounds adult 2B leaning alone against a marble pillar in flooded city ruins. Her black evening gown is open beneath bare breasts and gathered above one bent thigh, while shallow water reaches her ankles. One gloved hand supports her chest and the other fingers herself beneath the lifted skirt, sending ripples through white petals. Short white hair and black blindfold frame parted lips, damp skin and quiet wonder. Vertical environmental solo portrait, no text or extra people.",
       "promptTokens": [
         "submerged_ruins",
         "marble_pillar",
@@ -778,7 +773,7 @@
         "large_breasts",
         "heavy_blush"
       ],
-      "nsfwProse": "Alone among the flooded ruins in evening gold, 2B touches her intimate self beneath her raised dress, sighing softly as unfamiliar longing stirs within her heart."
+      "nsfwProse": ""
     }
   ]
 }

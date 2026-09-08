@@ -296,7 +296,7 @@
         "intimate",
         "night"
       ],
-      "promptProse": "Kneeling on the bed with her maid bodice unlaced, Rem offers her bare bust to Subaru with complete, devoted love.",
+      "promptProse": "Candlelight surrounds adult, age-twenty-plus Rem kneeling near a mansion bed. Her maid bodice is unlaced beneath bare breasts, while an apron ribbon winds around her wrists as both hands cover her racing heart. One knee sinks into dark bedding and the other opens to the side, keeping her mature figure compact. Blue hair veils one tear-bright eye, and her small horn glows through a devoted blush. Vertical medium solo portrait, no text or extra people.",
       "promptTokens": [
         "maid_bedroom",
         "bed",
@@ -657,9 +657,9 @@
       "title": "雷姆 · 宅邸浴汤",
       "category": "成人",
       "characterId": "rem_rezero",
-      "description": "【雷姆 · 宅邸浴汤】热汽蒸腾的宅邸豪华大理石大浴池里，雷姆整个人浸在清澈的热水中，水蓝色的湿发贴在纤细娇嫩的后背上。她害羞地用毛巾半遮在胸前——「昴君……能亲自让雷姆为您擦背吗？只要能侍奉昴君，雷姆什么都愿意做。」",
+      "description": "【成年雷姆 · 宅邸浴汤】二十岁以上成年版本的雷姆独自在罗兹瓦尔宅大理石浴池中斜倚池沿。湿透的白毛巾贴在裸露胸前并变得半透明，一腿屈起露出水面，另一腿在清水下延伸；她一手压住池沿，另一手沿水波探向腿间。水蓝短发粘在后背，烛光穿过蒸汽照亮潮红脸颊与专注蓝眸，私密而不出现第二个人。",
       "location": "罗兹瓦尔宅浴室",
-      "action": "泡在石砌大理石浴池中，毛巾半遮胸口回眸",
+      "action": "独自斜倚大理石浴池，湿毛巾半透明贴胸，一腿屈起出水，一手撑池沿、一手在水下探向腿间",
       "timeOfDay": "夜晚",
       "lighting": "warm steam and candlelight",
       "camera": "side view, medium shot, horizontal framing",
@@ -672,7 +672,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Submerged in the steaming marble pool of the Roswaal mansion, Rem clutches a white bath towel across her chest with a loving, bashful blush, her wet blue hair clinging to her bare back as candlelit steam swirls around her.",
+      "promptProse": "Candlelit steam fills the Roswaal mansion bath where adult, age-twenty-plus Rem reclines alone against the marble pool edge. A soaked white towel clings translucent across bare breasts while one bent knee rises above clear water and the other leg extends below it. She grips the stone with one hand and lets the other follow the ripples between her thighs. Short blue hair sticks to her back, and droplets brighten a deep blush and focused blue gaze. Horizontal three-quarter bath portrait with a complete folded pose, no text or extra people.",
       "promptTokens": [
         "mansion_bath",
         "marble_pool",
@@ -686,7 +686,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -742,7 +746,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -754,9 +758,13 @@
         "water_droplets",
         "in_pool",
         "heavy_blush",
-        "devoted_gaze"
+        "devoted_gaze",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Submerged in the steaming marble pool of the Roswaal mansion, Rem clutches a white bath towel across her chest with a loving, bashful blush, her wet blue hair clinging to her bare back as candlelit steam swirls around her.",
+      "nsfwProse": "",
       "adultArtistHint": "@anmi",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -781,7 +789,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting nude on the garden stone bench amid fragrant moonlit roses, Rem smiles with tender, breathless devotion.",
+      "promptProse": "Moonlit roses frame adult, age-twenty-plus Rem seated on a stone bench in a translucent sleep robe. Dew soaks the fabric against bare breasts and thighs; she draws one leg onto the bench and slips a hand beneath the wet hem while the other steadies a silver watering can. Pale blue horn-light turns droplets into tiny sparks. Short blue hair, a soft smile and wet eye remain clear against dark flower beds. Intimate three-quarter solo composition, no text or extra people.",
       "promptTokens": [
         "mansion_garden",
         "stone_bench",
@@ -892,7 +900,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on the bed in white lace thigh-highs with bare breasts exposed, Rem beckons her beloved with an adoring blush.",
+      "promptProse": "Warm light finds adult, age-twenty-plus Rem sitting sideways on a bed with her maid blouse open across bare breasts. She rolls one white lace thigh-high to the ankle while the other stays taut, crossing both legs so the bare sole reaches toward the foreground. Pressure marks ring her thigh and curled toes catch light without hiding her face. Blue hair falls over one eye as the other glistens above a devoted blush. Medium foot-focused solo portrait, no text or extra people.",
       "promptTokens": [
         "maid_bedroom",
         "bed",
@@ -1275,7 +1283,7 @@
       "title": "爱蜜莉雅 · 银发精灵的寝宫",
       "category": "成人",
       "characterId": "emilia_rezero",
-      "description": "【爱蜜莉雅 · 银发精灵的寝宫】寝殿内幽暗的月光透过薄纱窗帘洒在大床上，白紫礼裙半褪的爱蜜莉雅双手抱在胸前，紫色的眼眸中带着少女的天真与强烈的羞涩——「帕克今晚不在……昴，面对这么奇怪的气氛，我的心跳一直跳得好快……这就是大家所说的‘恋慕’吗？」",
+      "description": "【爱蜜莉雅 · 银发精灵的寝宫】寝殿内幽暗的月光透过薄纱窗帘洒在大床上，白紫礼裙半褪的爱蜜莉雅双手抱在胸前，紫色的眼眸中带着成年女性的天真与强烈的羞涩——「帕克今晚不在……昴，面对这么奇怪的气氛，我的心跳一直跳得好快……这就是大家所说的‘恋慕’吗？」",
       "location": "王城寝宫",
       "action": "白礼裙半褪坐在床边",
       "timeOfDay": "夜晚",
@@ -1291,7 +1299,7 @@
         "intimate",
         "night"
       ],
-      "promptProse": "Sitting on her bed with her lilac dress loosened, Emilia covers her bare bust with an adorable, innocent blush.",
+      "promptProse": "Moonlight enters the royal bedroom where adult, age-twenty-plus Emilia sits alone near the center of a canopy bed. Her lilac dress is unlaced and gathered beneath bare breasts, with one knee raised among crystal-lit sheets. She holds the loose bodice with one hand while the other traces the inside of her thigh, pale ice motes gathering around her fingers. Long silver hair frames violet eyes, flushed pointed ears and a breathless, trusting expression. Vertical intimate portrait with both hands visible, no text or extra people.",
       "promptTokens": [
         "royal_bedroom",
         "canopy_bed",
@@ -1375,7 +1383,7 @@
         "innocent_blush",
         "parted_lips"
       ],
-      "nsfwProse": "Sitting on her bed with her lilac dress loosened, Emilia covers her bare bust with an adorable, innocent blush.",
+      "nsfwProse": "",
       "adultArtistHint": "@anmi",
       "outfitId": "white_dress",
       "sampleRating": "R18"
@@ -1683,7 +1691,7 @@
         "winter",
         "intimate"
       ],
-      "promptProse": "Clutching a small white bath towel across her chest in the snowy open-air hot spring, Emilia blushes shyly through the rising steam.",
+      "promptProse": "Snow falls around adult, age-twenty-plus Emilia reclining alone on a submerged stone step in an open-air spring. A small white towel has soaked translucent across her breasts while one bent knee rises from the steaming water. She grips the rock edge with one hand and lets the other travel beneath the ripples between her thighs, making tiny ice crystals melt on contact. Wet silver hair clings to red pointed ears and luminous violet eyes. Compact three-quarter winter bath portrait, no text or extra people.",
       "promptTokens": [
         "open-air_hot_spring",
         "rocks",
@@ -1768,7 +1776,7 @@
         "water_droplets",
         "innocent_blush"
       ],
-      "nsfwProse": "Clutching a small white bath towel across her chest in the snowy open-air hot spring, Emilia blushes shyly through the rising steam.",
+      "nsfwProse": "",
       "adultArtistHint": "@anmi",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -1792,7 +1800,7 @@
         "tall_windows",
         "intimate"
       ],
-      "promptProse": "Sitting on the edge of the sun-drenched bed in the morning sun, Emilia rubs her sleepy violet eyes as the satin sheets slip to her hips, exposing her slender back and lovely bust in a soft golden glow.",
+      "promptProse": "Sunbeams cross the royal chamber as adult, age-twenty-plus Emilia sits alone on the edge of a rumpled bed. Satin sheets have slipped to her hips, revealing bare breasts and a slender mature back while one leg folds onto the mattress. She rubs sleep from one violet eye and gathers the sheet between her thighs with the other hand. Loose silver hair glows against carved wood, and a few fading ice motes catch the warm light around her flushed ears. Vertical medium morning portrait, no text or extra people.",
       "promptTokens": [
         "royal_bedroom",
         "bed",
@@ -1881,7 +1889,7 @@
         "rubbing_eyes",
         "innocent_blush"
       ],
-      "nsfwProse": "Sitting on the edge of the sun-drenched bed in the morning sun, Emilia rubs her sleepy violet eyes as the satin sheets slip to her hips, exposing her slender back and lovely bust in a soft golden glow.",
+      "nsfwProse": "",
       "adultArtistHint": "@atdan",
       "outfitId": "white_dress",
       "sampleRating": "R18"
@@ -1907,7 +1915,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on the canopy bed in white thigh-highs with her chest exposed, Emilia looks at Subaru with tender, pleading eyes.",
+      "promptProse": "A crystal lamp lights adult, age-twenty-plus Emilia seated alone beneath a royal canopy, nude except for white lace thigh-highs. She draws one leg toward her chest and rolls the opposite stocking down with both hands, leaving a soft pressure mark around the thigh. Bare toes point toward the lower foreground while silver hair falls over full breasts without hiding her face. Violet eyes, pink elf ears and a proud but pleading blush remain clear against moonlit curtains. Vertical stocking-focused solo portrait, no text or extra people.",
       "promptTokens": [
         "royal_bedroom",
         "canopy_bed",
@@ -1990,7 +1998,7 @@
         "sitting_on_bed",
         "innocent_blush"
       ],
-      "nsfwProse": "Sitting on the canopy bed in white thigh-highs with her chest exposed, Emilia looks at Subaru with tender, pleading eyes.",
+      "nsfwProse": "",
       "adultArtistHint": "@tiv",
       "outfitId": "white_dress",
       "sampleRating": "R18",
@@ -2018,7 +2026,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Lying on her stomach across plush bed pillows under a warm bedside lamp, Emilia playfully kicks her bare feet while reading an illustrated fairy tale, her sheer nightgown revealing her delicate curves as she smiles invitingly.",
+      "promptProse": "Warm lamplight finds adult, age-twenty-plus Emilia lying diagonally on her stomach across a bed with an illustrated storybook open before her. A sheer nightgown has slipped from the shoulders and rides above the hips, revealing bare breasts against a pillow while both feet curl in the air. One hand turns a page and the other wanders beneath the gathered fabric at her waist. Silver hair, violet eyes and reddened pointed ears sharpen against the soft royal room. Horizontal intimate reading portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -2082,7 +2090,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -2096,7 +2104,7 @@
         "gentle_smile",
         "blushing"
       ],
-      "nsfwProse": "Lying on her stomach across plush bed pillows under a warm bedside lamp, Emilia playfully kicks her bare feet while reading an illustrated fairy tale, her sheer nightgown revealing her delicate curves as she smiles invitingly.",
+      "nsfwProse": "",
       "adultArtistHint": "@anmi",
       "outfitId": "casual",
       "sampleRating": "R18"

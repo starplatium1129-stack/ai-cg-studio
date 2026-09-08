@@ -282,7 +282,7 @@
       "title": "伊雷娜 · 灰之魔女的旅夜",
       "category": "成人",
       "characterId": "elaina",
-      "description": "【伊蕾娜 · 灰之魔女的旅夜】异国小旅馆的单人木床上，脱下魔女帽与外套的伊蕾娜仅着轻薄内衬，优雅地倚靠在床头翻阅画册。她微微掀起眼帘，嘴角噙着一抹狡黠自恋的弧度——「特意在深夜敲响绝世美少女魔女的房门……你该不会，正对着我这副毫无防备的模样动歪脑筋吧？」",
+      "description": "【伊蕾娜 · 灰之魔女的旅夜】异国小旅馆的单人木床上，脱下魔女帽与外套的伊蕾娜仅着轻薄内衬，优雅地倚靠在床头翻阅画册。她微微掀起眼帘，嘴角噙着一抹狡黠自恋的弧度——「特意在深夜敲响绝世美成年魔女魔女的房门……你该不会，正对着我这副毫无防备的模样动歪脑筋吧？」",
       "location": "魔法旅店房间",
       "action": "法袍半褪坐在床边看书",
       "timeOfDay": "夜晚",
@@ -297,7 +297,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on the inn bed after a long day of flying with her robes discarded, Elaina reveals her slender bust with an adorable, smug blush.",
+      "promptProse": "Lantern light fills a foreign inn room where adult Elaina sits alone against a wooden headboard after flying all day. Her grey witch robe and hat lie over a travel trunk, while a thin inner blouse is unfastened beneath bare breasts. She balances an illustrated journal on one raised knee and traces a route across the page with a fingertip, the other hand hidden under the loose hem between her thighs. Silver hair, violet eyes and a self-satisfied blush remain crisp above the book. Compact seated portrait, no text or extra people.",
       "promptTokens": [
         "inn_bedroom",
         "bed",
@@ -678,7 +678,7 @@
         "dusk",
         "intimate"
       ],
-      "promptProse": "Soaking in a mountain hot spring clutching a small towel across her chest, Elaina blushes deeply as steam curls around her grey hair.",
+      "promptProse": "Mountain dusk surrounds adult Elaina reclining alone against the stone edge of a secluded hot spring. A white travel camisole is soaked translucent across bare breasts and waist while one knee rises through the milky water. She gathers silver hair over one shoulder with one hand and lets the other move beneath the ripples between her thighs. Steam, maple leaves and a small witch hat on the rocks frame violet eyes narrowed in a proud, embarrassed smile. Medium three-quarter bath portrait, no text or extra people.",
       "promptTokens": [
         "open-air_hot_spring",
         "rocks",
@@ -787,7 +787,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Perched nude on the stone tower balustrade under a galaxy of stars, Elaina poses with her signature beautiful, narcissistic blush.",
+      "promptProse": "A galaxy turns above adult Elaina seated alone on a broad stone ledge at the top of an old city tower. A sheer violet travel robe has blown open across bare breasts and hips; she hooks one heel on the balustrade and grips her broom between folded legs to steady herself against the wind. Silver hair and loose ribbons stream toward the stars while warm windows glow far below. Her violet gaze stays confident despite reddened cheeks and parted lips. Vertical low-angle environmental portrait, no text or extra people.",
       "promptTokens": [
         "stone_tower",
         "starry_sky",
@@ -897,7 +897,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on the inn bed wearing only black thigh-high stockings, nude Elaina covers her blushing cheeks in flustered modesty.",
+      "promptProse": "Amber sconces frame adult Elaina sitting sideways on an inn bed, nude except for black thigh-high stockings and her witch hat. She crosses one leg over the other, then rolls the upper stocking down with both hands until the welt bites softly into her thigh and the bare foot points toward the lens. A spellbook and travel pouch anchor the background while silver hair spills over exposed breasts. Violet eyes peek beneath the hat brim with a smug blush rather than false modesty. Medium foot-focused solo portrait, no text or extra people.",
       "promptTokens": [
         "inn_bedroom",
         "bed",
@@ -1008,7 +1008,7 @@
         "travel",
         "intimate"
       ],
-      "promptProse": "Packing her leather travel suitcase in the morning with her white shirt open, Elaina looks back with a cute, flustered start.",
+      "promptProse": "Golden morning light finds adult Elaina kneeling alone beside an open leather suitcase in a small inn room. Her oversized white shirt hangs open across bare breasts and rides above the waist as she leans over folded clothes, one hand pressing the case lid back and the other retrieving black lace caught beneath her knee. A grey witch hat, broom and maps create layered travel detail around the compact pose. Silver hair falls across a startled violet gaze and deepening blush. Medium diagonal solo composition, no text or extra people.",
       "promptTokens": [
         "inn_room",
         "leather_suitcase",
@@ -1080,7 +1080,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",

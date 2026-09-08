@@ -301,7 +301,7 @@
         "night",
         "discarded_yukata"
       ],
-      "promptProse": "Lying on the tatami futon with her ice-queen demeanor completely melted, nude Yukino parts her slender thighs with tearful, devoted love.",
+      "promptProse": "A low paper lantern lights adult, age-twenty-plus Yukino Yukinoshita seated alone on a tatami futon in a private ryokan room. Her indigo yukata has fallen from both shoulders and opened across bare breasts while one knee folds beneath her and the other rises toward the frame. She grips the loosened obi with one hand and slips the other between her thighs, breaking her usual composure through deliberate self-touch. Long black hair, blue eyes, wet lashes and crimson ears remain sharply defined. Intimate vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "japanese_room",
         "tatami",
@@ -681,7 +681,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Stepping out of the steaming wooden bath clutching a white towel over her chest, Yukino blushes furiously with trembling vulnerability.",
+      "promptProse": "Steam surrounds adult, age-twenty-plus Yukino Yukinoshita sitting alone on the cedar rim of a private bath. A soaked white towel clings translucent across bare breasts and narrow waist while one foot remains in the water and the other rests on a small stool. She twists the towel with both hands, compressing the wet cloth and leaving pressure marks along her chest and thigh. Pinned black hair exposes a damp nape as blue eyes lower through a fierce blush. Medium three-quarter bath portrait, no text or extra people.",
       "promptTokens": [
         "japanese_bath",
         "wooden_tub",
@@ -775,9 +775,9 @@
       "title": "雪之下雪乃 · 闭馆后的图书馆",
       "category": "成人",
       "characterId": "yukinoshita_yukino",
-      "description": "【雪之下雪乃 · 闭馆后的图书馆】闭馆熄灯后的图书馆陷入深邃的黑暗，唯有清冷月光透过高窗洒落在昏暗书架间。雪乃被你轻轻抵在书架旁，衣衫半解呼吸急促，眼中水光潋滟却强忍着羞耻——「要是被巡夜的老师发现……会被开除的。……小声一点，拜托你。」",
+      "description": "【成年 After Story · 雪之下雪乃 · 闭馆后的社区图书馆】二十岁以上成年后的雪乃完成社区读书会工作，独自坐在闭馆书架间的滚轮梯上。修身藏青衬衫被抬起的膝盖勾住并向两侧绷开，一手抓稳梯栏，另一手探入黑色蕾丝裙摆；月光与阅读灯照亮成熟胸线和泛红耳垂。她咬唇压低呼吸——「工作已经结束了……至少在最后一盏灯熄灭前，让我只对自己诚实一次。」",
       "location": "图书馆",
-      "action": "靠在书架旁",
+      "action": "独坐书架滚轮梯，一膝抬起勾住衬衫下摆，一手抓梯栏一手探入蕾丝裙摆",
       "timeOfDay": "深夜",
       "lighting": "dim aisle lights and pale moonlight",
       "camera": "intimate medium shot, three-quarter view",
@@ -790,7 +790,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Pressed against library shelves in the moonlight after hours with her uniform unbuttoned, Yukino bites her lip in stifled ecstasy.",
+      "promptProse": "After closing an adult community library, age-twenty-plus Yukino Yukinoshita sits alone on a rolling ladder between moonlit shelves. Her fitted navy blouse is unbuttoned and caught beneath one raised knee, pulling the fabric open across bare breasts. One hand grips the ladder rail while the other disappears under a black lace skirt, keeping the pose grounded without another person. Book spines and a brass reading lamp frame blue eyes, a bitten lip and the first visible crack in her calm expression. Medium vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "school_library",
         "bookshelf",
@@ -892,7 +892,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting at the veranda foot bath with her yukata slipping off her shoulders, Yukino looks back with an enticing, flushed gaze.",
+      "promptProse": "Moonlight crosses a quiet garden veranda where adult, age-twenty-plus Yukino Yukinoshita sits alone beside a warm foot bath. Her yukata slips from one shoulder and opens over bare breasts while black stockings are rolled to the ankles. She lifts one wet foot onto the cedar edge and dries its arch with the loose obi, toes curling as the other foot stirs the water. Long black hair trails over the boards, and averted blue eyes betray a controlled blush. Intimate seated foot-focused portrait, no text or extra people.",
       "promptTokens": [
         "onsen_veranda",
         "foot_bath",
@@ -1294,11 +1294,11 @@
     {
       "id": "yui_r18_service_club_desk_afterschool",
       "characterId": "yuigahama_yui",
-      "title": "由比滨结衣 · 放学后空教室·课桌上的粉嫩坦白",
-      "description": "【由比滨结衣 · 放学后空教室·课桌上的粉嫩坦白】放学后空无一人的侍奉部教室里，结衣坐在拼起的课桌边缘，水手服衬衫已被悄然解开大半。她眼眶泛红噙着泪光，既害羞又鼓起全部勇气抓紧你的衣角——「我……我不想再只当默默看着你们的团子了。自力酱，请好好看着真正的我……好吗？」",
+      "title": "由比滨结衣 · 放学后空私人工作室·课桌上的粉嫩坦白",
+      "description": "【成年 After Story · 由比滨结衣 · 志愿工作室的坦白】二十岁以上成年后的结衣结束社区志愿活动，独自坐在租用工作室拼起的长桌边缘。珊瑚色衬衫完全敞开，修身裙被抬起的大腿推到腰间；她双手向后撑住桌面，让成熟丰满的身体在夕照里保持平衡。会议便签和狗狗钥匙扣散在一旁，她眼眶泛红却认真直视镜头——「现在已经不是那个只会看着别人的团子了……请好好看着我自己的选择。」",
       "outfitId": "sobu_uniform",
       "sceneTags": [
-        "classroom",
+        "private_studio",
         "desk",
         "open_shirt",
         "bottomless",
@@ -1309,7 +1309,7 @@
         "pink_nipples",
         "heavy_blush"
       ],
-      "promptProse": "Sitting on the Service Club desk at sunset with her uniform shirt completely unbuttoned, Yui confesses her desires with intense, tearful blushes.",
+      "promptProse": "Sunset fills a rented volunteer-office studio where adult, age-twenty-plus Yui Yuigahama sits alone on the edge of a joined worktable. Her coral blouse is unbuttoned and folded beneath bare breasts, while a fitted skirt rides above one raised thigh as she leans back on both palms. Meeting notes, a dog-shaped keychain and stacked chairs establish the adult workspace without school uniforms. Peach hair frames warm eyes wet with nervous resolve and a bright blush. Medium seated solo portrait, no text or extra people.",
       "promptTokens": [
         "service_club_room",
         "desk",
@@ -1376,8 +1376,8 @@
       ],
       "nsfwProse": "Sitting on the Service Club desk at sunset with her uniform shirt completely unbuttoned, Yui confesses her desires with intense, tearful blushes.",
       "category": "私密写真",
-      "location": "放学后空无一人的教室",
-      "action": "坐在课桌边缘，制服敞开，眼眶泛红",
+      "location": "放学后空无一人的私人工作室",
+      "action": "坐在成人志愿工作室长桌边缘，珊瑚衬衫敞开、修身裙推至腰间，双手后撑直视镜头",
       "timeOfDay": "evening",
       "lighting": "golden_hour",
       "camera": "medium_shot",
@@ -1391,7 +1391,7 @@
       "id": "yui_r18_bedroom_soles_black_socks",
       "characterId": "yuigahama_yui",
       "title": "由比滨结衣 · 午后卧室的狗爪小憩",
-      "description": "【由比滨结衣 · 午后卧室的狗爪小憩】周末午后，阳光把由比滨家的卧室晒得暖洋洋。结衣穿着毛茸茸的狗睡衣侧坐在床边，怀里的抱枕被揉得变形。她鼓起勇气把亲手烤的曲奇盒子递到你面前，耳朵尖红红的——「那个……这是我做的曲奇！不是特意给你烤的……只是、只是烤多了而已啦！」",
+      "description": "【成年 After Story · 由比滨结衣 · 午后卧室的黑袜曲奇】二十岁以上成年后的结衣独自横卧在卧室床上，毛茸茸的狗睡衣上衣拉开并压在丰满胸线下，只留下黑色短袜。她一腿折在身侧，一腿伸向前景，把烤歪的曲奇盒压在脚边；一手扶住变形纸盒，另一手擦去落在大腿内侧的碎屑。她红着耳朵嘟囔——「还是烤多了……但这次不许只看曲奇，连失败的我也要一起看完。」",
       "outfitId": "nsfw_nude",
       "sceneTags": [
         "bed",
@@ -1403,7 +1403,7 @@
         "pajamas",
         "window"
       ],
-      "promptProse": "Lounging nude in bed wearing only black socks, busty Yui stretches lazily with flushed cheeks and pleading, affectionate eyes.",
+      "promptProse": "Weekend light reaches adult, age-twenty-plus Yui Yuigahama reclining alone across her bedroom bed. A fluffy dog pajama top is unzipped and pushed beneath full bare breasts while black socks remain on her feet; one leg folds under her and the other extends toward a cookie box in the foreground. She steadies the bent carton with one hand and brushes crumbs from her inner thigh with the other. Peach hair, warm brown eyes and reddened cheeks keep her clumsy sweetness intact. Horizontal intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -1496,12 +1496,12 @@
       "nsfwProse": "Lounging nude in bed wearing only black socks, busty Yui stretches lazily with flushed cheeks and pleading, affectionate eyes.",
       "category": "私密写真",
       "location": "由比滨家卧室窗边",
-      "action": "侧坐床沿抱着狗睡衣尾巴，害羞递出手作曲奇",
+      "action": "横卧床面，一腿折叠一腿伸向前景，狗睡衣上衣敞开，以双手扶曲奇盒并擦去大腿碎屑",
       "timeOfDay": "午后",
       "lighting": "warm golden afternoon sunlight, soft dust motes, gentle window light",
       "camera": "medium shot",
       "mood": "明媚娇憨",
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
@@ -1513,7 +1513,7 @@
       "id": "yui_r18_sofa_morning_hoodie",
       "characterId": "yuigahama_yui",
       "title": "由比滨结衣 · 晨光厨房的笨拙早餐",
-      "description": "【由比滨结衣 · 晨光厨房的笨拙早餐】周末清晨的由比滨家厨房，晨光把煎锅里的油花照得金灿灿。结衣穿着狗睡衣打了个大大的哈欠，手忙脚乱地翻着煎蛋，蛋的边缘焦了一小块。她端着盘子回头，笑得有点心虚——「……那个，焦了的部分我会自己吃掉的！保证！」",
+      "description": "【成年 After Story · 由比滨结衣 · 晨光沙发的早餐事故】二十岁以上成年后的结衣端着煎坏的早餐回到客厅，独自蜷坐在晨光沙发里。宽大连帽衫前襟敞开，一腿屈起藏在下摆中；盘边融化的黄油滴到大腿内侧，她红着脸用两根手指擦去，丰满胸线随慌乱呼吸起伏。她把焦边煎蛋藏到盘底小声保证——「焦掉的我会负责……这个意外也会自己收拾，不许笑。」",
       "outfitId": "dog_pajamas",
       "sceneTags": [
         "kitchen",
@@ -1524,7 +1524,7 @@
         "frying_pan",
         "dog_ears"
       ],
-      "promptProse": "Sitting on the living room couch in an open oversized hoodie, Yui shyly reveals her voluptuous breasts with a sweet, cheerful blush.",
+      "promptProse": "Morning light catches adult, age-twenty-plus Yui Yuigahama curled alone in a living-room sofa after a failed breakfast. An oversized hoodie hangs open around bare breasts and soft waist while one knee rises under the hem. She balances a plate of uneven eggs on the cushion and wipes a streak of butter from her inner thigh with two fingers, embarrassed by the intimate accident. Peach hair is loosely tied, and warm brown eyes meet the viewer above a sheepish smile. Compact seated solo composition, no text or extra people.",
       "promptTokens": [
         "living_room",
         "sofa",
@@ -1621,7 +1621,7 @@
       "nsfwProse": "Sitting on the living room couch in an open oversized hoodie, Yui shyly reveals her voluptuous breasts with a sweet, cheerful blush.",
       "category": "私密写真",
       "location": "由比滨家晨光厨房",
-      "action": "穿着狗睡衣打哈欠，笨手笨脚煎蛋",
+      "action": "蜷坐晨光沙发，连帽衫敞开，一手端早餐盘、一手擦去大腿内侧融化黄油",
       "timeOfDay": "清晨",
       "lighting": "bright golden morning kitchen light, warm counter reflections, soft steam from pan",
       "camera": "medium shot",
@@ -1886,9 +1886,9 @@
       "characterId": "yuigahama_yui",
       "outfitId": "nsfw_nude",
       "adult": true,
-      "description": "【由比滨结衣 · 结衣家浴缸的泡泡歌谣】夜晚的由比滨家浴室，暖黄的灯把水面照得波光粼粼。结衣把整个身子埋进满是泡泡的浴缸里，只露出红扑扑的脸，一边哼着不成调的歌，一边用指尖戳着堆成小山的泡泡。她朝门口探过头——「……水还热着哦！要不要一起……啊、不是！我是说——」",
+      "description": "【成年 After Story · 由比滨结衣 · 浴缸泡泡歌谣】二十岁以上成年后的结衣独自在暖黄灯光的浴缸里哼歌。她让一条腿屈膝露出泡沫，一手托住丰满裸胸，另一手在大腿上堆出一只歪歪的泡泡小狗；水珠沿桃色发丝和肩颈滚落，浴室音箱闪着节拍灯。她发现自己又唱跑调，红着脸笑道——「这首只有我听见……所以跑调和现在的样子都不准外传。」",
       "location": "由比滨家浴室",
-      "action": "泡在浴缸里哼歌，指尖戳着泡泡堆",
+      "action": "独自斜倚浴缸屈膝露出泡沫，一手托胸、一手在大腿上堆泡泡小狗并哼歌",
       "timeOfDay": "夜晚",
       "lighting": "warm bathroom lamp glow, glistening water reflections, soft steam haze",
       "camera": "medium close-up shot",
@@ -1901,7 +1901,7 @@
         "warm_light",
         "steam"
       ],
-      "promptProse": "Singing softly in the bubble-filled bathtub, nude Yui covers her cleavage with soapy hands, blushing warmly at the visitor.",
+      "promptProse": "Warm amber light surrounds adult, age-twenty-plus Yui Yuigahama reclining alone in a bubble-filled bathtub. She raises one knee above the foam and shapes a small dog from bubbles on her thigh, while her other soapy hand cups a bare breast instead of hiding it. Water beads across peach hair, full chest and rounded shoulders as a bath speaker glows beside folded towels. Brown eyes widen when her off-key humming stops, then soften into a flustered grin. Medium bath solo portrait, no text or extra people.",
       "promptTokens": [
         "bathroom",
         "bathtub",
@@ -2497,11 +2497,11 @@
     },
     {
       "id": "iroha_nsfw_desk_straddle",
-      "title": "一色彩羽 · 学生会室桌上的小恶魔跨坐 ·「前辈……是在向我求欢吗？真拿你没办法♪」",
+      "title": "一色彩羽 · 成年同事会室桌上的小恶魔跨坐 ·「前辈……是在向我求欢吗？真拿你没办法♪」",
       "category": "主控骑乘",
       "characterId": "isshiki_iroha",
-      "description": "【学生会办公室·熄灯后】门锁咔哒一声合上。彩羽跳上会议桌，顺势跨坐在你的大腿上，总武高制服裙被撩到大腿根部。她伸出食指抵在你的嘴唇上，小恶魔般的浅笑在潮红的脸颊上绽放——「前辈要是露出这种可怜巴巴的眼神……就算被你欺负一下，我也只能负起责任了呢♪」",
-      "location": "学生会办公室·熄灯后",
+      "description": "【成年同事会办公室·熄灯后】门锁咔哒一声合上。彩羽跳上会议桌，顺势跨坐在你的大腿上，总武高制服裙被撩到大腿根部。她伸出食指抵在你的嘴唇上，小恶魔般的浅笑在潮红的脸颊上绽放——「前辈要是露出这种可怜巴巴的眼神……就算被你欺负一下，我也只能负起责任了呢♪」",
+      "location": "成年同事会办公室·熄灯后",
       "action": "跨坐腰间制服裙高撩，食指抵唇小恶魔浅笑，波浪发轻晃起伏",
       "timeOfDay": "深夜",
       "lighting": "柔和暖光与唯美阴影交错",
@@ -2514,13 +2514,12 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Iroha Isshiki from Oregairu perches on the edge of the dark student council conference table and straddles your lap with wicked confidence. Her school blazer is unbuttoned and uniform skirt hitched up past her stockinged thighs, exposing modest perky breasts that bounce with her intentional, teasing hip rhythm. Her soft brown wavy hair sways as she presses one finger against your lips, smirk giving way to a breathless, flush-cheeked sigh as she takes full charge. Vertical low-angle cowgirl perspective, amber sunset glow fading into room darkness, detailed office background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Iroha Isshiki from Oregairu perches on the edge of the dark student council conference table and straddles your lap with wicked confidence. Her school blazer is unbuttoned and uniform skirt hitched up past her stockinged thighs, exposing modest perky breasts that bounce with her intentional, teasing hip rhythm. Her soft brown wavy hair sways as she presses one finger against your lips, smirk giving way to a breathless, flush-cheeked sigh as she takes full charge. Vertical low-angle cowgirl perspective, amber sunset glow fading into room darkness, detailed office background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Iroha Isshiki from Oregairu perches on the edge of the dark adult researcher council conference table and straddles your lap with wicked confidence. Her school blazer is unbuttoned and uniform skirt hitched up past her stockinged thighs, exposing modest perky breasts that bounce with her intentional, teasing hip rhythm. Her soft brown wavy hair sways as she presses one finger against your lips, smirk giving way to a breathless, flush-cheeked sigh as she takes full charge. Vertical low-angle cowgirl perspective, amber sunset glow fading into room darkness, detailed office background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Iroha Isshiki from Oregairu perches on the edge of the dark adult researcher council conference table and straddles your lap with wicked confidence. Her school blazer is unbuttoned and uniform skirt hitched up past her stockinged thighs, exposing modest perky breasts that bounce with her intentional, teasing hip rhythm. Her soft brown wavy hair sways as she presses one finger against your lips, smirk giving way to a breathless, flush-cheeked sigh as she takes full charge. Vertical low-angle cowgirl perspective, amber sunset glow fading into room darkness, detailed office background, depth of field, solo 1girl, no extra people.",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "school_uniform",
         "blazer",
         "skirt_lift",
@@ -2643,7 +2642,7 @@
       "title": "一色彩羽 · 活动室百褶裙拉链卡壳事故 ·「别装君子啦……前辈明明想看很久了吧」",
       "category": "更衣事故",
       "characterId": "isshiki_iroha",
-      "description": "【奉仕部活动室·放学后】换便服时制服百褶裙的侧边拉链突然卡死在丝袜边缘。彩羽双手撑在活动室窗台上，腰部被勒紧，裙摆卡在一半露出蕾丝内裤与饱满臀型。她侧脸回头，娇嗔地咬着下唇——「拉链真的拉不开了啦！前辈如果趁机碰奇怪的地方……我会去学生会举报你的哦？」",
+      "description": "【奉仕部活动室·放学后】换便服时制服百褶裙的侧边拉链突然卡死在丝袜边缘。彩羽双手撑在活动室窗台上，腰部被勒紧，裙摆卡在一半露出蕾丝内裤与饱满臀型。她侧脸回头，娇嗔地咬着下唇——「拉链真的拉不开了啦！前辈如果趁机碰奇怪的地方……我会去成年同事会举报你的哦？」",
       "location": "奉仕部活动室·放学后",
       "action": "撑窗台塌腰回眸双手反剪扯拉链，百褶裙卡死勒出黑丝软肉，咬唇假意抗拒",
       "timeOfDay": "深夜",
@@ -2657,12 +2656,12 @@
         "exposed_pussy",
         "special_nsfw"
       ],
-      "promptProse": "Iroha Isshiki leans forward over the classroom windowsill as her uniform skirt zipper jams tight along her hip, catching against her sheer black tights. Her arched back presents a tantalizing curve, the hem stuck high enough to expose delicate lace and flushed skin under tension. Looking back over her bare shoulder with a tearful pout and crimson cheeks, she warns you against touching while shifting her weight to accentuate the squeeze. Cinematic horizontal composition, golden dusk lighting striking her stockinged legs and ruffled fabric, detailed classroom background, depth of field, solo 1girl, no extra people.",
-      "nsfwProse": "Iroha Isshiki leans forward over the classroom windowsill as her uniform skirt zipper jams tight along her hip, catching against her sheer black tights. Her arched back presents a tantalizing curve, the hem stuck high enough to expose delicate lace and flushed skin under tension. Looking back over her bare shoulder with a tearful pout and crimson cheeks, she warns you against touching while shifting her weight to accentuate the squeeze. Cinematic horizontal composition, golden dusk lighting striking her stockinged legs and ruffled fabric, detailed classroom background, depth of field, solo 1girl, no extra people.",
+      "promptProse": "Iroha Isshiki leans forward over the private studio windowsill as her uniform skirt zipper jams tight along her hip, catching against her sheer black tights. Her arched back presents a tantalizing curve, the hem stuck high enough to expose delicate lace and flushed skin under tension. Looking back over her bare shoulder with a tearful pout and crimson cheeks, she warns you against touching while shifting her weight to accentuate the squeeze. Cinematic horizontal composition, golden dusk lighting striking her stockinged legs and ruffled fabric, detailed private studio background, depth of field, solo 1girl, no extra people.",
+      "nsfwProse": "Iroha Isshiki leans forward over the private studio windowsill as her uniform skirt zipper jams tight along her hip, catching against her sheer black tights. Her arched back presents a tantalizing curve, the hem stuck high enough to expose delicate lace and flushed skin under tension. Looking back over her bare shoulder with a tearful pout and crimson cheeks, she warns you against touching while shifting her weight to accentuate the squeeze. Cinematic horizontal composition, golden dusk lighting striking her stockinged legs and ruffled fabric, detailed private studio background, depth of field, solo 1girl, no extra people.",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
-        "classroom",
+        "private_studio",
         "window",
         "school_uniform",
         "pleated_skirt",

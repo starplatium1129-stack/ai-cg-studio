@@ -604,30 +604,26 @@
       "coverageTags": [
         "cowgirl"
       ],
-      "description": "【艾莲·乔 · 泳池边湿身骑乘与主动轻晃】闭馆的私人温水室内泳池畔，艾莲浑身湿透，黑色分体泳装下摆微敞。她主动跨坐在恋人腹部上方呈骑乘姿势，双臂支撑在恋人结实的胸膛上。被温水浸透的鲨鱼尾巴在水池中激起阵阵碧蓝涟漪，随着腰肢轻柔起伏，平日冷淡犯困的脸蛋满是红霞与娇媚春色——「别小看鲨鱼的耐力……今天不许喊停哦……」",
+      "description": "【成年艾莲 · 室内泳池台阶的独处】成年艾莲独自跨坐宽池阶，深色泳装滑至胸下，一手撑石面、一手在腿间自抚，鲨鱼尾巴于身后水中清晰分离。",
       "location": "夜间室内温水泳池水边台阶",
-      "action": "跨坐骑乘轻柔起伏套弄，双手抵在恋人胸口，湿透的鲨鱼尾在水中荡漾，眼带水汽",
+      "action": "独自跨坐池阶，一手撑地、一手腿间自抚",
       "timeOfDay": "夜间",
       "lighting": "泳池碧蓝水底灯打在湿润肌肤上的水波焦散光与柔和阴影",
       "camera": "straddling pov, medium shot, looking up at flushed face and heaving wet chest",
       "mood": "极乐沉沦",
       "sceneTags": [
         "cowgirl_position",
-        "riding",
         "straddling",
         "wet_skin",
         "swimsuit",
         "shark_tail",
         "poolside",
-        "penetration",
         "heavy_blush"
       ],
-      "promptProse": "Straddling her lover in a wet cowgirl position on warm indoor pool steps with her dark swimsuit loosened, Ellen rides in steady rhythmic hip sways while her heavy wet shark tail ripples the azure water in breathless sensual ecstasy.",
+      "promptProse": "Azure light surrounds adult Ellen Joe sitting alone astride a wide indoor pool step. Her dark swimsuit is loosened below bare breasts and pulled aside at the hips, while her heavy shark tail rests through the water behind both legs. She braces on the stone with one hand and fingers herself between her thighs with the other, making ripples follow her slow hip motion. Black-red hair and tired red eyes sharpen through sweat and a shy blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
-        "riding",
         "straddling",
-        "penetration",
         "wet_skin",
         "poolside",
         "shark_tail",
@@ -662,24 +658,23 @@
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "cowgirl",
-        "riding",
         "straddling",
         "wet_skin",
         "shark_tail",
         "heavy_blush"
       ],
-      "nsfwProse": "Mounted atop her partner by the warm pool edge, Ellen rides with gentle rhythmic bounces as blue water ripples reflect against her heaving chest."
+      "nsfwProse": ""
     },
     {
       "id": "ellen_r18_classroom_desk_fingering_masturbation",
-      "title": "艾莲·乔 · 放学后无人物理教室的私密自抚",
+      "title": "艾莲·乔 · 放学后无人物理私人工作室的私密自抚",
       "category": "私密探索",
       "characterId": "ellen_joe",
       "outfitId": "school_uniform",
       "coverageTags": [
         "solo_nsfw"
       ],
-      "description": "【艾莲·乔 · 放学后无人物理教室的私密自抚】夕阳西下的空寂实验室课桌旁，艾莲反锁了房门。百褶裙被轻轻撩起推在腰间。她靠坐在讲台长凳边，纤细的手指轻柔探入湿润花径深处，白皙指尖在温热花褶中慢慢摩挲。硕大的鲨鱼尾巴在身侧蜷曲轻颤，嘴唇微张溢出甜软的低语——「唔嗯……哈啊……明明今天只是想快点回家睡觉的……怎么会变成这样……」",
+      "description": "【艾莲·乔 · 放学后无人物理私人工作室的私密自抚】夕阳西下的空寂实验室课桌旁，艾莲反锁了房门。百褶裙被轻轻撩起推在腰间。她靠坐在讲台长凳边，纤细的手指轻柔探入湿润花径深处，白皙指尖在温热花褶中慢慢摩挲。硕大的鲨鱼尾巴在身侧蜷曲轻颤，嘴唇微张溢出甜软的低语——「唔嗯……哈啊……明明今天只是想快点回家睡觉的……怎么会变成这样……」",
       "location": "放学后空无一人的物理实验室讲台",
       "action": "裙子撩起坐在讲台上自抚，手指轻抚私处自我探索，鲨鱼尾蜷缩轻颤，面红耳赤微喘",
       "timeOfDay": "日落",
@@ -694,13 +689,13 @@
         "shark_tail",
         "teary_eyes"
       ],
-      "promptProse": "Sitting atop the quiet laboratory teacher podium in warm golden sunset glow with her sailor skirt gathered over her lap, Ellen touches herself gently with slender fingers while her massive shark tail curls in sweet trembling release.",
+      "promptProse": "Golden sunset enters a private post-graduation laboratory where adult Ellen sits alone on an instructor podium. Her sailor-inspired blouse is open below bare breasts and skirt gathered over her lap, with a large shark tail curled safely beside the desk. One hand steadies a beaker rack and the other fingers herself between parted thighs. Black-red hair, red eyes and sharp teeth frame a sleepy expression breaking into a deep blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
-        "classroom_desk",
+        "private_studio_desk",
         "masturbation",
         "fingering",
         "skirt_lift",
-        "school_uniform",
+        "office_uniform",
         "heavy_blush",
         "teary_eyes",
         "shark_tail",
@@ -737,7 +732,7 @@
         "heavy_blush",
         "teary_eyes"
       ],
-      "nsfwProse": "Alone in the empty lab bathed in sunset gold, Ellen touches her intimate warmth beneath her uniform skirt, murmuring sweet sleepy sighs as pleasure warms her heart."
+      "nsfwProse": ""
     },
     {
       "id": "miyabi_section6_iaido_moonlit_slash",
@@ -1378,16 +1373,15 @@
       "coverageTags": [
         "cowgirl"
       ],
-      "description": "【星见雅 · 浴衣半解跨坐骑乘与娇喘起伏】夏夜祭典后的温泉旅馆榻榻米上，雅的深蓝浴衣腰带被解开，香肩半露，浑圆雪白的酥胸在敞开的衣襟间随着动作轻柔晃荡。她微红着脸主动跨坐在恋人腹部上方，双手撑在对方胸前借力，挺动柔软纤细的柳腰上下起伏。平时冷傲的剑道课长此刻眼角泛红、贝齿轻咬下唇发出甜美动人的低喘，白狐尾巴在身后轻扫——「不要……一直盯着我看……我只是……想要自己掌控节奏而已……」",
+      "description": "【成年星见雅 · 榻榻米软垫的月下独处】成年星见雅独自跨坐厚软垫，深蓝浴衣松至腰间，一手扶腿、一手在腿间自抚，白色狐尾避开四肢。",
       "location": "温泉旅馆榻榻米和室",
-      "action": "跨坐骑乘轻柔起伏套弄，浴衣敞露香肩丰胸，双手抵胸，狐耳微颤咬唇娇喘",
+      "action": "独自跨坐软垫，一手扶腿、一手腿间自抚",
       "timeOfDay": "深夜",
       "lighting": "和纸灯笼透出的暖黄柔光打在渗汗的玉肌与白狐尾上",
       "camera": "straddling, cowgirl, medium shot looking up at blushing face and parted robes",
       "mood": "极乐沉沦",
       "sceneTags": [
         "cowgirl_position",
-        "riding",
         "straddling",
         "yukata",
         "open_clothes",
@@ -1396,12 +1390,10 @@
         "fox_tail",
         "heavy_blush"
       ],
-      "promptProse": "Straddling her lover with her dark blue yukata loosely untied around her shoulders, Miyabi gracefully rides in rhythmic cowgirl motion, her fluffy white fox tail sweeping softly across the tatami as she bites her lip in shy pleasure.",
+      "promptProse": "Moonlight crosses adult Hoshimi Miyabi seated alone astride a thick tatami cushion. Her dark blue yukata is untied and gathered below bare breasts while one knee folds on each side of the cushion. She rests one hand on her thigh and fingers herself with the other, her fluffy white fox tail sweeping clear of both legs. Long dark hair, fox ears and blue eyes stay disciplined through a bitten lip and shy flush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
-        "riding",
         "straddling",
-        "penetration",
         "yukata",
         "open_shirt",
         "off-shoulder",
@@ -1438,14 +1430,13 @@
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "cowgirl",
-        "riding",
         "straddling",
         "large_breasts",
         "wet_pussy",
         "fox_tail",
         "heavy_blush"
       ],
-      "nsfwProse": "Taking delicate charge upon the tatami, Miyabi rides his length in slow, graceful hip sways, her untied yukata revealing her heaving curves as genuine warmth colors her cheeks."
+      "nsfwProse": ""
     },
     {
       "id": "miyabi_r18_office_desk_clit_fingering_blush",
@@ -1472,7 +1463,7 @@
         "fox_tail",
         "heavy_blush"
       ],
-      "promptProse": "Leaning against her executive mahogany desk in the quiet high-rise office at night, Miyabi touches herself with trembling fingers beneath her lifted uniform skirt, her fluffy white fox tail quivering as she blushes intensely in sweet secret longing.",
+      "promptProse": "High-rise night lights surround adult Miyabi leaning alone against an executive desk. Her uniform jacket is open and skirt lifted above one stockinged thigh, while her sheathed katana rests flat beyond reach. She braces on the mahogany with one hand and fingers herself beneath the skirt with the other. Dark hair, fox ears and a white tail frame blue eyes, wet lashes and an intensely controlled blush. Horizontal office solo portrait, no text or extra people.",
       "promptTokens": [
         "modern_office",
         "masturbation",
@@ -1505,7 +1496,7 @@
         "deformed",
         "signature"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "sampleRating": "R18",
       "kreaStyleHint": "r18_sensual_cg",
@@ -1517,7 +1508,7 @@
         "fox_tail",
         "heavy_blush"
       ],
-      "nsfwProse": "Alone in the quiet office after hours, Miyabi pleasures herself beneath her uniform skirt, sighing softly as private affection for her partner melts away her swordmaster composure."
+      "nsfwProse": ""
     }
   ]
 }

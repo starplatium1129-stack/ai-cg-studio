@@ -287,7 +287,7 @@
         "barefoot",
         "5_toes"
       ],
-      "promptProse": "Sitting on the inn bed after a warm bath with her white robe falling open, Frieren blushes with drowsy, innocent affection.",
+      "promptProse": "Firelight warms adult Frieren seated alone on a northern inn bed after bathing. Her white mage robe hangs open and damp around the waist, framing bare breasts while wet silver hair trails across her collarbone. She props one heel on the mattress and uses a folded towel to dry the inner thigh, compressing her long body into a clear cowboy view. Rosy pointed ears, half-lidded green eyes and a small knowing blush remain sharp against timber walls and snow beyond the window. No text or extra people.",
       "promptTokens": [
         "wooden_inn",
         "fireplace",
@@ -648,9 +648,9 @@
       "title": "芙莉莲 · 炉火夜话",
       "category": "成人",
       "characterId": "frieren",
-      "description": "【芙莉莲 · 炉火夜话】雪夜被封锁的深山木屋里，暖红色的壁炉烈火将地板照得一片通红。芙莉莲裹着粗毛毯坐在厚地毯上，任由你从身后将她轻轻环抱，尖耳敏感地轻轻颤动——「精灵并不常感到寒冷……但被你这样抱紧的时候，心口确实会觉得格外安定呢。」",
+      "description": "【成年芙莉莲 · 炉火夜话】雪夜封住深山木屋，成年精灵芙莉莲独自坐在壁炉前厚地毯上。粗毛毯从肩头滑落，在腰间围出柔软框架，裸露胸部被炉火照出暖色；她屈起双膝，把一只手藏进毯下沿大腿内侧缓慢探索，另一手抓紧绒边。尖耳因刺激泛红，银发贴着潮湿锁骨，她望着火星露出罕见而克制的迷离神情。",
       "location": "旅店房间",
-      "action": "裹着毯子坐在壁炉前，粗毛毯滑落",
+      "action": "独坐壁炉地毯，毛毯滑至腰间，一手抓住绒边、一手在毯下沿腿间自抚，尖耳潮红",
       "timeOfDay": "夜晚",
       "lighting": "warm fireplace glow",
       "camera": "side view, medium shot, horizontal framing",
@@ -663,7 +663,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on a soft fur rug before the roaring fireplace in a snowbound cabin, Frieren hugs a coarse blanket loosely around herself, her pointy ears blushing red as the warm hearthfire illuminates her delicate shoulders and bust.",
+      "promptProse": "Snow closes around a mountain cabin where adult elf Frieren sits alone on a thick rug before the hearth. A coarse blanket has slipped from her shoulders and circles her waist, leaving bare breasts warmed by the fire. She draws both knees close, grips the wool edge with one hand, and lets the other travel beneath it along her inner thigh. Silver hair sticks to a damp collarbone while pointed ears redden and green eyes grow quietly unfocused. Firewood, travel boots and frosted windows give the compact seated portrait depth, no text or extra people.",
       "promptTokens": [
         "wooden_cabin",
         "fireplace",
@@ -678,7 +678,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -750,9 +754,13 @@
         "sitting_on_rug",
         "clutching_blanket",
         "blushing_ears",
-        "drowsy_smile"
+        "drowsy_smile",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Sitting on a soft fur rug before the roaring fireplace in a snowbound cabin, Frieren hugs a coarse blanket loosely around herself, her pointy ears blushing red as the warm hearthfire illuminates her delicate shoulders and bust.",
+      "nsfwProse": "",
       "adultArtistHint": "@kousaki rui",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -762,9 +770,9 @@
       "title": "芙莉莲 · 魔导塔星夜",
       "category": "成人",
       "characterId": "frieren",
-      "description": "【芙莉莲 · 魔导塔星夜】星光灿烂的魔导塔顶层书斋内，古老的星象仪静静旋转。芙莉莲伏在堆满魔导书的书桌前，单薄的衣衫滑落露出白皙滑腻的香肩与纤细后背，眼神迷离地轻声呢喃——「研究魔法虽然有趣……但现在我的注意力，好像全都被你的视线牵引过去了。」",
+      "description": "【成年芙莉莲 · 魔导塔星夜】星象仪在魔导塔顶层缓慢旋转，成年芙莉莲独自横伏在铺满魔导书的宽桌边。松开的法袍从肩背滑落，裸露胸部被桌沿轻压，她一手撑住摊开的星图，另一手探入腰间衣褶；每次指尖动作都让淡蓝魔力沿墨线亮起。银发垂到桌面，尖耳绯红，她在星光下露出困倦又失控的喘息。",
       "location": "魔法塔书斋",
-      "action": "伏在魔导书桌上假寐，单薄衣衫滑落",
+      "action": "独自横伏魔导书桌，法袍滑落露胸，一手撑星图、一手探入腰间自抚，魔力沿墨线发亮",
       "timeOfDay": "夜晚",
       "lighting": "cool starlight and candle glow",
       "camera": "side view, medium shot, horizontal framing",
@@ -778,7 +786,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Leaning over her cluttered desk of grimoires and star charts at the top of the mage tower, Frieren rests her head with a sleepy blush as her loose tunic slips off her pale shoulders and bare back beneath starry nebula light.",
+      "promptProse": "An astrolabe turns above adult Frieren alone in the highest room of a mage tower. She leans diagonally across a broad desk crowded with grimoires and star charts, her loosened white robe sliding from both shoulders so bare breasts press softly against the table edge. One hand steadies an open chart while the other slips beneath the robe at her waist; pale blue magic follows each motion through the ink. Silver hair pools around flushed pointed ears and wet green eyes under cold nebula light. Horizontal medium portrait, no text or extra people.",
       "promptTokens": [
         "mage_tower",
         "study_desk",
@@ -793,7 +801,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -854,7 +866,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -865,9 +877,13 @@
         "pink_nipples",
         "leaning_on_desk",
         "sleepy",
-        "heavy_blush"
+        "heavy_blush",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Leaning over her cluttered desk of grimoires and star charts at the top of the mage tower, Frieren rests her head with a sleepy blush as her loose tunic slips off her pale shoulders and bare back beneath starry nebula light.",
+      "nsfwProse": "",
       "adultArtistHint": "@atdan",
       "outfitId": "wizard_robe",
       "sampleRating": "R18"
@@ -877,9 +893,9 @@
       "title": "芙莉莲 · 耳尖的触碰",
       "category": "成人",
       "characterId": "frieren",
-      "description": "【芙莉莲 · 耳尖的触碰】静谧的卧房内烛光柔和，芙莉莲微微侧过头，任由你的指尖轻轻拂过她最敏感修长的精灵尖耳。她呼吸微乱，双颊泛起难得一见的浓郁红晕——「精灵的耳朵……可不是能随便乱摸的地方。要是碰得太久，我可能……也会做出一些违背理智的事哦。」",
+      "description": "【成年芙莉莲 · 耳尖的自我触碰】静谧卧房里烛光柔和，成年精灵芙莉莲独自侧卧在床褥间，用一根白羽沿自己最敏感的尖耳缓慢描过。每次羽梢越过耳尖，她的脚趾便蜷紧，另一只手也不自觉探进松开的法袍。银发贴上潮红脸颊，她呼吸微乱地自言自语——「活了这么久，居然还会被这种小动作扰乱魔力……这可不能让菲伦知道。」",
       "location": "旅店房间",
-      "action": "任由你的指尖拂过她敏感的精灵尖耳",
+      "action": "侧卧床褥用白羽轻扫自己的精灵尖耳，法袍敞开，另一手随魔力颤动探向腿间",
       "timeOfDay": "夜晚",
       "lighting": "warm fireplace glow and soft candlelight",
       "camera": "intimate close-up on her face and ear",
@@ -893,7 +909,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Reclining nude on the bed as her sensitive pointed elf ears are gently stroked, Frieren shivers with an overwhelmed, cute blush.",
+      "promptProse": "A candle gutters beside adult elf Frieren lying alone across an inn bed, her open white robe pooled beneath a slim mature body. She draws a white feather along one pointed ear while her other hand follows the magic tremor between her thighs. Each touch curls her toes and sends pale blue motes over bare breasts and silver hair. The diagonal pose keeps ear, wet green eyes, flushed face and both hands legible without implying another person. Intimate horizontal portrait, no text or extra people.",
       "promptTokens": [
         "inn_room",
         "bed",
@@ -964,7 +980,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -1004,7 +1020,7 @@
         "wooden_room",
         "intimate"
       ],
-      "promptProse": "Sitting up in bed with her nightgown slipping off her shoulders in morning sunbeams, sleepy Frieren blushes faintly at Sensei.",
+      "promptProse": "Morning sun enters an inn room where adult Frieren sits alone among rumpled sheets, both knees drawn toward her chest. A loose nightgown has slipped to the waist, leaving bare breasts in warm light while one hand rubs a sleepy eye and the other rests beneath the blanket between folded thighs. Silver hair falls free of its ties, and pink-tipped elf ears emerge through the strands. Her drowsy green gaze and quiet blush stay at the center of the compact seated composition. No text or extra people.",
       "promptTokens": [
         "inn_room",
         "bed",
@@ -1388,7 +1404,7 @@
         "blushing",
         "morning_light"
       ],
-      "promptProse": "Sitting on the bed with her loose nightgown falling open across her voluptuous bust, Fern pouts with puffed cheeks and an intense blush.",
+      "promptProse": "Dawn light finds adult Fern half-reclining against white pillows in an inn room. Her violet nightgown strains open across a full chest while both arms fold beneath it, lifting fabric and deepening pressure around her breasts. One knee rises under the blanket to compress her body into a vertical medium frame. Long purple hair fans over the headboard as she turns aside with puffed cheeks, wet violet eyes and reddened ears, annoyed by her visible reaction. No text or extra people.",
       "promptTokens": [
         "inn_bedroom",
         "bed",
@@ -1492,7 +1508,7 @@
       "id": "fern_r18_bedroom_soles_stockings",
       "characterId": "fern_frieren",
       "title": "菲伦 · 旅店壁炉边的赌气",
-      "description": "【菲伦 · 旅店壁炉边的赌气】风雪交加的夜里，旅店的壁炉烧得噼啪作响。菲伦裹着毯子坐在炉前的地毯上，紫色长发被火光镀上一层暖色。她气鼓鼓地别过脸，把脸埋进毯子里，只露出一双幽怨的紫眸——「……芙莉莲大人今天又把我忘了。明明说好一起逛集市的……菲伦生气了，要哄很久很久才行。」",
+      "description": "【成年菲伦 · 壁炉边的黑丝足尖】风雪交加的夜里，成年菲伦独坐在旅店壁炉前的厚地毯上。松开的睡袍盖住腰际，她把一条黑色长袜缓慢卷到脚踝，另一条腿仍被薄纱紧紧包裹；裸足伸向火光，脚趾因冷热交替蜷起，褪袜的双手在大腿留下清晰勒痕。紫色长发垂过丰满胸线，她气鼓鼓地别脸——「既然一直盯着，就把哪一边更暖看清楚……真是不知羞耻。」",
       "outfitId": "nsfw_nude",
       "sceneTags": [
         "fireplace",
@@ -1503,7 +1519,7 @@
         "night",
         "purple_hair"
       ],
-      "promptProse": "Curled up by the warm hearth wrapped in a slipping blanket, Fern sulks with flushed cheeks as firelight sculpts her curvy chest.",
+      "promptProse": "Snow beats the inn window while adult Fern sits on a rug before the hearth, her robe open over bare breasts. Both hands roll one black stocking down her thigh to the ankle as the other leg remains sheathed. The bare sole reaches toward the fire, toes curling from the heat and creating foreground depth; pressure marks lead back to her rounded body. Purple hair catches copper light while she pouts sideways with wet eyes and red ears. Horizontal intimate portrait, no text or extra people.",
       "promptTokens": [
         "inn",
         "fireplace",
@@ -1595,12 +1611,12 @@
       "nsfwProse": "Curled up by the warm hearth wrapped in a slipping blanket, Fern sulks with flushed cheeks as firelight sculpts her curvy chest.",
       "category": "私密写真",
       "location": "雪夜旅店壁炉前地毯",
-      "action": "裹毯子坐在炉前地毯上气鼓鼓别过脸",
+      "action": "坐在壁炉地毯上，一腿黑丝褪至脚踝、一腿仍完整包裹，双手卷袜并让裸足伸向前景火光",
       "timeOfDay": "风雪夜",
       "lighting": "warm crackling fireplace glow, flickering amber light, soft snow reflection from window",
-      "camera": "medium close-up shot",
+      "camera": "horizontal medium portrait, bare sole in gentle foreground foreshortening",
       "mood": "赌气娇嗔",
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
@@ -1612,7 +1628,7 @@
       "id": "fern_r18_hotel_mirror_dressing_gown",
       "characterId": "fern_frieren",
       "title": "菲伦 · 更衣镜前·睡袍滑落与镜中圆润倒影",
-      "description": "【菲伦 · 更衣镜前·睡袍滑落与镜中圆润倒影】旅馆古雅的穿衣镜前，松垮的丝质睡袍从菲伦圆润的香肩悄然滑落，镜中毫无保留地映出她丰腴饱满的成熟身段。她慌乱地转过身试图遮掩——「您进来的时候为什么不敲门！……看、看够了吗？还不快点把毛巾递给我……」",
+      "description": "【成年菲伦 · 更衣镜前的睡袍系带事故】成年菲伦独自在旅馆更衣角整理丝质睡袍，腰后系带却卡进古镜雕花边框。她背对镜头扭身回望，一手够向被拉紧的系带，另一手按住从肩头滑落的衣料；镜面被蒸汽覆成柔光，只留下不成形的紫色轮廓，绝不出现第二张脸。紧绷丝绸勾出成熟圆润身段，她红着耳朵抱怨——「别看镜子，看着我的手……先把它解开。」",
       "outfitId": "nsfw_nude",
       "sceneTags": [
         "mirror",
@@ -1625,7 +1641,7 @@
         "detailed_vulva",
         "huge_breasts"
       ],
-      "promptProse": "Caught stepping out of her robe before the full-length mirror, nude Fern turns away in flustered panic with jiggling curves.",
+      "promptProse": "Adult Fern twists before a mirror after her silk robe sash catches on its carved frame. One hand reaches behind toward the ribbon while the other presses slipping fabric against a full breast, keeping tension and her rounded body readable. Steam turns the mirror opaque so it reflects only violet color and lamp glow, never a second face. Purple hair trails over her back as she looks over one shoulder with wet eyes and burning ears. Medium rear three-quarter portrait, no text or extra people.",
       "promptTokens": [
         "dressing_room",
         "mirror",
@@ -1728,7 +1744,7 @@
       "nsfwProse": "Caught stepping out of her robe before the full-length mirror, nude Fern turns away in flustered panic with jiggling curves.",
       "category": "私密写真",
       "location": "旅馆更衣镜前",
-      "action": "睡袍从肩头滑落，镜中映出圆润倒影",
+      "action": "背对镜头扭身回望，一手够向卡在镜框的睡袍系带，一手按住滑肩衣料，雾镜只映模糊色块",
       "timeOfDay": "night",
       "lighting": "warm_light",
       "camera": "back_view",
@@ -2084,7 +2100,7 @@
         "snow",
         "magic_book"
       ],
-      "promptProse": "Soaking in the steaming cedar tub in the snowbound inn, nude Fern rests her massive breasts on the water with a shy, blissful blush.",
+      "promptProse": "Candlelight warms an inn bathroom where adult Fern reclines against a steaming cedar tub. Purple hair is pinned up, leaving wet shoulders and full breasts above water while one bent knee rises beside a floating spellbook. She traces a rune beneath the surface; violet magic follows the intimate motion and turns each ripple luminous. Timber walls, a towel and snow beyond the window add depth as closed eyes open into a shy, breathless blush. Medium bath portrait, no text or extra people.",
       "promptTokens": [
         "wooden_tub",
         "bathroom",

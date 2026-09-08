@@ -614,29 +614,25 @@
       "coverageTags": [
         "cowgirl"
       ],
-      "description": "【露西 · 公寓皮椅跨坐主动骑乘起伏】暗色系的公寓真皮扶手椅上，露西的银灰晚礼服被轻撩至腰腹。她主动跨坐在爱人身上，双手揽住爱人的后颈，挺动柔软纤细的柳腰上下轻柔起伏。小巧挺拔的胸部随着动作起伏，迷离深情的紫色眼眸中泛着动人水汽——「别动……由我来掌控……今天无论如何……都不会放你离开……」",
+      "description": "【成年露西 · 霓虹皮椅的独处】成年露西独自跨坐深色皮椅，金属裙堆至腰际，一手抓椅背、一手在腿间自抚，断开的接口线只留在墙面。",
       "location": "公寓复古真皮高背扶手单人椅",
-      "action": "跨坐骑乘轻柔起伏套弄，双手揽住对方脖颈，纤细娇躯起伏微晃，紫眸含情凝视",
+      "action": "独自跨坐皮椅，一手抓椅背、一手腿间自抚",
       "timeOfDay": "深夜",
       "lighting": "室内红蓝色温对比强烈的暗调赛博柔和氛围光",
       "camera": "straddling pov, medium close-up looking upward into flushed face and heaving bust",
       "mood": "极乐沉沦",
       "sceneTags": [
         "cowgirl_position",
-        "riding",
         "straddling",
         "leather_chair",
         "evening_dress",
         "skirt_lift",
-        "penetration",
         "heavy_blush"
       ],
-      "promptProse": "Straddling her lover inside a dark leather armchair with her metallic dress gathered above her hips, Lucy passionately rides in rhythmic cowgirl motion with her arms looped affectionately around his neck.",
+      "promptProse": "Night City neon surrounds adult Lucy seated alone astride a dark leather chair. Her metallic dress is gathered below bare breasts and pulled aside over folded thighs, while interface cables remain disconnected on the wall. She grips the chair back with one hand and fingers herself between her legs with the other, cyan light tracing mature curves. Split white hair frames violet eyes, chrome makeup and a guarded expression dissolving into a blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
-        "riding",
         "straddling",
-        "penetration",
         "armchair",
         "evening_dress",
         "skirt_lift",
@@ -671,14 +667,13 @@
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "cowgirl",
-        "riding",
         "straddling",
         "wet_pussy",
         "sweat",
         "cyberware",
         "heavy_blush"
       ],
-      "nsfwProse": "Taking tender control in the leather chair, Lucy rides in steady rhythmic hip sways, gasping softly as deep mutual affection and warmth envelop them."
+      "nsfwProse": ""
     },
     {
       "id": "lucy_r18_deep_dive_tub_sensual_fingering",
@@ -706,7 +701,7 @@
         "cyberware",
         "heavy_blush"
       ],
-      "promptProse": "Resting back inside a gently glowing water-filled tub in her private tech hideout, Lucy softly touches her intimate warmth beneath the clear rippling water while murmuring in sweet longing.",
+      "promptProse": "Cyan panels illuminate adult Lucy reclining alone in a water-filled deep-dive tub. Completely nude, she raises one knee above the clear surface and rests the other leg along the molded shell. She steadies a dormant cable with one hand and fingers herself beneath the ripples with the other, producing concentric interface light across bare breasts. Short split-color hair frames violet eyes, parted lips and a rare tender flush. Horizontal solo portrait, no text or extra people.",
       "promptTokens": [
         "bathtub",
         "water_reflections",
@@ -737,7 +732,7 @@
         "deformed",
         "signature"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "sampleRating": "R18",
       "kreaStyleHint": "r18_sensual_cg",
@@ -749,7 +744,7 @@
         "cyberware",
         "heavy_blush"
       ],
-      "nsfwProse": "Reclining within the illuminated water tub, Lucy touches her intimate self beneath the ripples, whispering her lover's name as peaceful warmth spreads across her soul."
+      "nsfwProse": ""
     }
   ]
 }

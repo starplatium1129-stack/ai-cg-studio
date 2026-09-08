@@ -607,30 +607,26 @@
       "coverageTags": [
         "cowgirl"
       ],
-      "description": "【丛雨 · 榻榻米跨坐骑乘与娇羞起伏】温泉热气微醺的寝居内，丛雨的改良和服衣襟微敞，露出光洁精致的锁骨与小巧胸口。她红着脸主动跨坐在将臣身上，两只小手撑在将臣胸膛上借力。她咬着下唇，笨拙却认真地挺动纤细的腰肢上下起伏套弄，狭窄的花径将滚烫一点点包裹，红宝石般的双眼满是羞赧与欢喜——「汝、汝不准笑！我辈可是在认真侍奉汝呢……哈啊……好舒服……！」",
+      "description": "【成年丛雨 · 榻榻米软垫的羞涩独处】成年丛雨独自跨坐厚软垫，和服松至腰间，一手握住发带、一手在腿间自抚，刀鞘安稳放在席外。",
       "location": "温热和室榻榻米坐席中央",
-      "action": "跨坐骑乘轻柔起伏套弄，双手抵在对方胸前，娇羞咬唇腰肢起伏，红瞳凝视",
+      "action": "独自跨坐软垫，一手握发带、一手腿间自抚",
       "timeOfDay": "夜间",
       "lighting": "和纸灯笼柔和温暖的光线洒在晶莹细腻的雪肤上",
       "camera": "straddling pov, looking up into blushing face and swaying hair ribbons",
       "mood": "极乐沉沦",
       "sceneTags": [
         "cowgirl_position",
-        "riding",
         "straddling",
         "kimono",
         "bare_shoulders",
-        "penetration",
         "blushing",
         "ahoge",
         "petite"
       ],
-      "promptProse": "Straddling her lover upon a warm tatami futon with her kimono loosened, Murasame shyly rides in measured rhythmic cowgirl motion as her green hair ribbons sway gently in sweet embarrassment.",
+      "promptProse": "Paper lanterns illuminate adult Murasame seated alone astride a thick futon cushion. Her pale kimono is loosened and gathered below bare breasts, one knee folded on each side while a sheathed katana rests beyond the mat. She holds a green hair ribbon in one hand and fingers herself between her thighs with the other, keeping all limbs clear. Long green hair frames red eyes, wet lashes and a shy, astonished blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
-        "riding",
         "straddling",
-        "penetration",
         "kimono",
         "off-shoulder",
         "petite",
@@ -665,13 +661,12 @@
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "cowgirl",
-        "riding",
         "straddling",
         "petite",
         "flat_chest",
         "blush"
       ],
-      "nsfwProse": "Taking gentle control upon the futon, Murasame straddles and rides in slow rhythmic hip motions, gasping sweetly as loving warmth fills her petite frame."
+      "nsfwProse": ""
     },
     {
       "id": "murasame_r18_shrine_room_solitary_fingering",
@@ -699,7 +694,7 @@
         "heavy_blush",
         "teary_eyes"
       ],
-      "promptProse": "Leaning back against an antique wooden katana stand inside the quiet night shrine hall with her kimono skirt gathered over her lap, Murasame touches herself gently with small fingers while blushing deeply in sweet, solitary wonder.",
+      "promptProse": "Moonlight enters a quiet shrine room where adult Murasame reclines alone against an antique wooden sword stand. Her kimono skirt is gathered over one raised thigh and the upper robe opens beneath bare breasts. She braces on the polished wood with one hand and fingers herself with the other, while the sheathed blade remains secured above her. Green hair ribbons frame red eyes, parted breath and sweet solitary wonder. Horizontal intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "shrine_hall",
         "katana_stand",
@@ -732,7 +727,7 @@
         "deformed",
         "signature"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "sampleRating": "R18",
       "kreaStyleHint": "r18_sensual_cg",
@@ -744,7 +739,7 @@
         "ahoge",
         "heavy_blush"
       ],
-      "nsfwProse": "Alone within the moonlit shrine chamber, Murasame touches her private warmth beneath her raised kimono, sighing in gentle solitary release as affectionate thoughts of her companion warm her soul."
+      "nsfwProse": ""
     },
     {
       "id": "mako_ninja_rooftop_vigilance_kunai",
@@ -1363,21 +1358,17 @@
       "mood": "极乐沉沦",
       "sceneTags": [
         "cowgirl_position",
-        "riding",
         "straddling",
         "bikini",
         "bouncing_breasts",
-        "penetration",
         "cat_mouth",
         "large_breasts",
         "heavy_blush"
       ],
-      "promptProse": "Straddling her lover upon the outdoor wooden veranda with her bikini unfastened, Mako gently rides in rhythmic cowgirl motion, her generous breasts heaving in soft cadence as her cute cat mouth parts in breathless pleasure.",
+      "promptProse": "Summer lanterns frame adult Hitachi Mako seated alone astride a thick engawa cushion. Her dark shinobi wrap is loosened and gathered beneath bare breasts while one knee folds on each side of the cushion. She grips the veranda edge with one hand and fingers herself with the other, keeping a sheathed blade safely behind her. Long dark hair, red eyes and foxlike alertness soften through sweat and a fierce blush. Vertical single-subject portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
-        "riding",
         "straddling",
-        "penetration",
         "bikini",
         "bouncing_breasts",
         "cat_mouth",
@@ -1412,13 +1403,12 @@
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "cowgirl",
-        "riding",
         "straddling",
         "large_breasts",
         "cat_mouth",
         "heavy_blush"
       ],
-      "nsfwProse": "Taking spirited command on the veranda, Mako rides in rhythmic hip sways, her breasts heaving gently as waves of mutual affection carry them to climax."
+      "nsfwProse": ""
     },
     {
       "id": "mako_r18_tatami_solo_fingering_blush",
@@ -1429,7 +1419,7 @@
       "coverageTags": [
         "solo_nsfw"
       ],
-      "description": "【常陆茉子 · 闺房暗夜的私密情愫自抚】深夜反锁的少女卧房内，茉子坐在被褥边缘，白色围裙与长裙被轻轻撩起推在腰间。她一只玉手轻托着自己沉甸甸的丰满乳房，另一只手的手指轻柔探入湿润花径深处。纤细细指在花褶间慢慢摩挲，水声细碎，猫嘴紧咬溢出灼热喘息——「哈啊……将臣……脑子里全都是将臣的身影……身体怎么会这么想念你……」",
+      "description": "【常陆茉子 · 闺房暗夜的私密情愫自抚】深夜反锁的成年女性卧房内，茉子坐在被褥边缘，白色围裙与长裙被轻轻撩起推在腰间。她一只玉手轻托着自己沉甸甸的丰满乳房，另一只手的手指轻柔探入湿润花径深处。纤细细指在花褶间慢慢摩挲，水声细碎，猫嘴紧咬溢出灼热喘息——「哈啊……将臣……脑子里全都是将臣的身影……身体怎么会这么想念你……」",
       "location": "私密卧房被褥边缘坐姿",
       "action": "撩起长裙开腿微张自抚，单手托胸，另一手深入湿热私处自我探索，猫嘴咬唇微喘",
       "timeOfDay": "深夜",
@@ -1445,7 +1435,7 @@
         "heavy_blush",
         "teary_eyes"
       ],
-      "promptProse": "Sitting upon her private futon in the quiet night with her skirts gathered over her lap, Mako touches herself gently with slender fingers while cradling her own full breast, cat mouth trembling as secret affection overwhelms her.",
+      "promptProse": "Moonlight enters a quiet tatami room where adult Mako reclines alone against a low armrest. Her fitted black robe is open below bare breasts and the skirt rests above one raised thigh. She braces on the lacquered wood with one hand and fingers herself with the other, red cords and throwing tools ordered far behind her. Dark hair frames crimson eyes, wet lashes and a breathless, embarrassed smile. Horizontal intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "traditional_bedroom",
         "futon",
@@ -1477,7 +1467,7 @@
         "deformed",
         "signature"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "sampleRating": "R18",
       "kreaStyleHint": "r18_sensual_cg",
@@ -1489,7 +1479,7 @@
         "cat_mouth",
         "heavy_blush"
       ],
-      "nsfwProse": "Alone in the quiet room, Mako pleasures herself beneath her raised skirt, whispering her partner's name as sweet solitary release relaxes her athletic frame."
+      "nsfwProse": ""
     },
     {
       "id": "yoshino_shrine_kagura_dance_bells",
@@ -2116,21 +2106,17 @@
       "mood": "极乐沉沦",
       "sceneTags": [
         "cowgirl_position",
-        "riding",
         "straddling",
         "dog_ears",
         "animal_ears",
         "bouncing_breasts",
         "large_breasts",
-        "penetration",
         "blushing"
       ],
-      "promptProse": "Straddling her lover upon a warm tatami futon with her ceremonial robes loosened, Yoshino rides in gentle rhythmic cowgirl motion as her fluffy white dog ears quiver with shy pleasure.",
+      "promptProse": "Paper lamps illuminate adult Tomotake Yoshino seated alone astride a folded futon cushion. Her shrine robe is loosened beneath bare breasts and gathered at the hips, while dog ears and a fluffy tail remain clear of her folded legs. She holds one sleeve in her teeth and fingers herself between her thighs with both hands visible. Long dark hair frames bright eyes, wet lashes and a playful blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "cowgirl_position",
-        "riding",
         "straddling",
-        "penetration",
         "dog_ears",
         "animal_ears",
         "bouncing_breasts",
@@ -2165,14 +2151,13 @@
       "animaStyleHint": "r18_explicit_h_cg",
       "nsfwTokens": [
         "cowgirl",
-        "riding",
         "straddling",
         "bouncing_breasts",
         "large_breasts",
         "dog_ears",
         "heavy_blush"
       ],
-      "nsfwProse": "Mounted with gentle grace upon the futon, Yoshino rides with rhythmic hip motions, her fluffy dog ears twitching softly as sweet warmth brings her to trembling climax."
+      "nsfwProse": ""
     },
     {
       "id": "yoshino_r18_shrine_chamber_pantyhose_fingering",
@@ -2199,7 +2184,7 @@
         "heavy_blush",
         "teary_eyes"
       ],
-      "promptProse": "Sitting on a wooden dressing bench in the quiet dark shrine chamber with her hakama set aside, Yoshino gently touches herself by caressing her intimate warmth while blushing deeply, her silver twintails draping gracefully over her shoulders.",
+      "promptProse": "Candlelight warms an inner shrine room where adult Yoshino sits alone on a low chest. Her white robe is open below bare breasts and black pantyhose are torn along one inner thigh. She holds the split fabric apart with one hand and fingers herself through it with the other, dog tail curling behind the chest. Dark hair and ears frame shining eyes, parted lips and a deep private blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "shrine_hall",
         "masturbation",
@@ -2242,7 +2227,7 @@
         "twintails",
         "heavy_blush"
       ],
-      "nsfwProse": "Alone in the quiet shrine chamber, Yoshino softly pleasures herself beneath her loosened robes, sighing gently as secret longing for her partner warms her soul."
+      "nsfwProse": ""
     },
     {
       "id": "akizuki_kanna_sfw_b7_01",
@@ -2669,7 +2654,7 @@
       "title": "明月栞那 · 咖啡馆打烊吧台的女仆装主控跨坐 ·「主人大人……死神今晚要收取你的灵魂与精气哦♪」",
       "category": "主控骑乘",
       "characterId": "akizuki_kanna",
-      "description": "【Cafe Stella吧台·打烊熄灯】死神少女的专属打工时光。栞那把黑白死神女仆裙推到腰部，跨坐在你的腰间。头顶标志性的巨大红色蝴蝶结微晃，黑色死神羽翼在身后轻轻张开。绯红色的眸子里带着柚子社标志性的傲娇与魅惑，双手撑在你的胸膛主动摆动细腰——「作为让你死而复生的代价……今晚不把我喂饱的话……可不准走哦！」",
+      "description": "【Cafe Stella吧台·打烊熄灯】死神成年女性的专属打工时光。栞那把黑白死神女仆裙推到腰部，跨坐在你的腰间。头顶标志性的巨大红色蝴蝶结微晃，黑色死神羽翼在身后轻轻张开。绯红色的眸子里带着柚子社标志性的傲娇与魅惑，双手撑在你的胸膛主动摆动细腰——「作为让你死而复生的代价……今晚不把我喂饱的话……可不准走哦！」",
       "location": "Cafe Stella吧台·打烊熄灯",
       "action": "跨坐吧台死神女仆装半敞，黑羽翼微展红瞳傲娇挑逗，小腰主动起伏",
       "timeOfDay": "night",
@@ -2683,7 +2668,6 @@
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "maid_uniform",
         "apron",
         "black_wings",
@@ -2694,7 +2678,6 @@
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "maid_uniform",
         "apron",
         "black_wings",
@@ -2749,7 +2732,6 @@
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "maid_uniform",
         "apron",
         "black_wings",

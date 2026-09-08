@@ -660,9 +660,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -711,7 +708,7 @@
         "firm_breasts",
         "daylight"
       ],
-      "promptProse": "Standing nude by the cabin hearth wearing only her red scarf, Mikasa looks at Eren with devoted, smoldering affection.",
+      "promptProse": "Firelight fills a mountain cabin where adult Mikasa stands alone, nude except for her red scarf. She places one boot on a low stool and tightens the scarf around one raised thigh with both hands, compressing her athletic body into a readable pose. Folded military gear rests beyond the hearth rather than on her skin. Short black hair frames grey eyes, a scar and a rare smoldering blush as snow gathers outside. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "forest_cabin",
         "fireplace",
@@ -736,7 +733,7 @@
         "toned_stomach",
         "heavy_blush"
       ],
-      "nsfwProse": "Standing nude by the cabin hearth wearing only her red scarf, Mikasa looks at Eren with devoted, smoldering affection.",
+      "nsfwProse": "",
       "adultArtistHint": "@jazz_jack",
       "coverageTags": [
         "special_nsfw"
@@ -779,9 +776,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -835,7 +829,7 @@
         "firm_breasts",
         "daylight"
       ],
-      "promptProse": "Wiping sweat from her toned chest in the sunlit barracks washroom with her military shirt open, Mikasa turns with a startled flush.",
+      "promptProse": "Sunlight enters a barracks washroom where adult Mikasa sits alone on a wooden bench after training. Her military shirt hangs open below bare breasts and trousers loosen over one bent leg, showing a toned abdomen. She wipes sweat from her chest with one cloth while the other hand unwraps a damp thigh bandage. Black hair and grey eyes turn toward the lens with startled focus and flushed cheeks. Vertical athletic solo portrait, no text or extra people.",
       "promptTokens": [
         "training_barracks",
         "shower",
@@ -860,7 +854,7 @@
         "wiping_chest",
         "heavy_blush"
       ],
-      "nsfwProse": "Wiping sweat from her toned chest in the sunlit barracks washroom with her military shirt open, Mikasa turns with a startled flush.",
+      "nsfwProse": "",
       "coverageTags": []
     },
     {
@@ -900,9 +894,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -953,7 +944,7 @@
         "cleavage",
         "daylight"
       ],
-      "promptProse": "Sitting by the sunlit hotel window in an open white shirt catching ocean breezes, Mikasa offers a rare, tender blush.",
+      "promptProse": "Ocean light reaches adult Mikasa seated alone on a wide hotel window ledge. An oversized white shirt is open and gathered at the hips, exposing bare breasts above one leg folded inward and the other extending along the bench. She holds her red scarf in one hand and fingers herself beneath the shirt with the other as curtains lift in the breeze. Black hair frames grey eyes and a rare tender blush. Horizontal seaside solo portrait, no text or extra people.",
       "promptTokens": [
         "marley_hotel",
         "french_window",
@@ -965,7 +956,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "outfitId": "marley_uniform",
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -977,7 +968,7 @@
         "calm_expression",
         "heavy_blush"
       ],
-      "nsfwProse": "Sitting by the sunlit hotel window in an open white shirt catching ocean breezes, Mikasa offers a rare, tender blush.",
+      "nsfwProse": "",
       "coverageTags": []
     },
     {
@@ -1017,9 +1008,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -1070,7 +1058,7 @@
         "slender_waist",
         "daylight"
       ],
-      "promptProse": "Soaking in a snowy mountain hot spring clutching a small towel over her bust, nude Mikasa blushes through the rising steam.",
+      "promptProse": "Snow drifts around adult Mikasa reclining alone in a mountain hot spring. A soaked white towel clings translucent across bare breasts while one knee rises from steaming water and the red scarf remains dry on a nearby rock. She braces against the edge with one hand and lets the other move below the surface between her thighs. Wet black hair frames steady grey eyes, damp lashes and a quiet blush. Horizontal bath solo portrait, no text or extra people.",
       "promptTokens": [
         "open-air_hot_spring",
         "snow",
@@ -1082,7 +1070,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "outfitId": "casual",
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -1094,7 +1082,7 @@
         "toned_body",
         "heavy_blush"
       ],
-      "nsfwProse": "Soaking in a snowy mountain hot spring clutching a small towel over her bust, nude Mikasa blushes through the rising steam.",
+      "nsfwProse": "",
       "coverageTags": [
         "intimate"
       ]
@@ -1761,9 +1749,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -1814,7 +1799,7 @@
         "sunbeam",
         "daylight"
       ],
-      "promptProse": "Lying nude across royal silk bedding in morning sunbeams, Queen Historia parts her thighs with gentle, loving grace.",
+      "promptProse": "Royal morning light surrounds adult Queen Historia lying alone on silk bedding. Completely nude, she raises both knees and holds one thigh with a ringed hand while the other fingers herself between her legs, keeping her mature body compact in the vertical frame. A small crown and folded cloak rest beyond the pillow. Long blonde hair spreads around blue eyes, wet lashes and a gentle but self-possessed blush. Top-down solo portrait, no text or extra people.",
       "promptTokens": [
         "royal_bedroom",
         "canopy_bed",
@@ -1840,7 +1825,7 @@
         "queenly_smile",
         "heavy_blush"
       ],
-      "nsfwProse": "Lying nude across royal silk bedding in morning sunbeams, Queen Historia parts her thighs with gentle, loving grace.",
+      "nsfwProse": "",
       "adultArtistHint": "@atdan",
       "coverageTags": [
         "special_nsfw"
@@ -1883,9 +1868,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -1935,7 +1917,7 @@
         "cleavage",
         "daylight"
       ],
-      "promptProse": "Pausing in the moonlit palace colonnade with her coronation dress pulled open, Historia looks back with a sweet, blushing smile.",
+      "promptProse": "Moonlight crosses a palace colonnade where adult Queen Historia sits alone on a stone bench. Her coronation dress is unlaced and pulled below bare breasts, one slipper removed and one leg folded toward her. She keeps the bodice open with one hand and reaches beneath the layered skirt with the other. Blonde hair and blue eyes glow through cool arches, damp lashes and a sweet private blush. Vertical royal solo portrait, no text or extra people.",
       "promptTokens": [
         "palace_corridor",
         "archway",
@@ -1959,7 +1941,7 @@
         "gentle_smile",
         "heavy_blush"
       ],
-      "nsfwProse": "Pausing in the moonlit palace colonnade with her coronation dress pulled open, Historia looks back with a sweet, blushing smile.",
+      "nsfwProse": "",
       "coverageTags": []
     },
     {
@@ -1999,9 +1981,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -2050,7 +2029,7 @@
         "cleavage",
         "daylight"
       ],
-      "promptProse": "Sitting on the farm cabin windowsill in an open white shirt feeling the summer breeze, Historia welcomes her visitor with open arms.",
+      "promptProse": "Summer wind enters a farm cabin where adult Historia sits alone on a broad windowsill. Her white work shirt hangs open below bare breasts and riding trousers loosen above one knee drawn inward. She braces on the frame with one hand and fingers herself beneath the waistband with the other, hay and wildflowers layering the room behind her. Blonde hair frames blue eyes, freckles and an open-hearted blush. Vertical rustic solo portrait, no text or extra people.",
       "promptTokens": [
         "farm_cabin",
         "window",
@@ -2062,7 +2041,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "outfitId": "corps_uniform",
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -2073,7 +2052,7 @@
         "sitting_on_sill",
         "heavy_blush"
       ],
-      "nsfwProse": "Sitting on the farm cabin windowsill in an open white shirt feeling the summer breeze, Historia welcomes her visitor with open arms.",
+      "nsfwProse": "",
       "coverageTags": []
     },
     {
@@ -2113,9 +2092,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -2165,7 +2141,7 @@
         "bare_legs",
         "daylight"
       ],
-      "promptProse": "Lounging nude on golden farm hay in morning sunbeams, Historia stretches her slender body with an affectionate, sleepy blush.",
+      "promptProse": "Golden dawn finds adult Historia reclining alone diagonally across clean farm hay beneath an open loft window. Completely nude, she stretches one arm above her head and folds one leg, with the other hand moving between her thighs. A white sheet frames bare breasts without hiding the body, and a crown-shaped hairpin rests nearby. Blonde hair spreads around blue eyes, sleepy lips and an affectionate flush. Horizontal pastoral solo portrait, no text or extra people.",
       "promptTokens": [
         "hayloft",
         "soft_hay",
@@ -2177,7 +2153,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "outfitId": "casual",
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -2189,7 +2165,7 @@
         "sleepy_smile",
         "heavy_blush"
       ],
-      "nsfwProse": "Lounging nude on golden farm hay in morning sunbeams, Historia stretches her slender body with an affectionate, sleepy blush.",
+      "nsfwProse": "",
       "coverageTags": [
         "intimate"
       ]

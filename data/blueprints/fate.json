@@ -287,9 +287,9 @@
       "title": "阿尔托莉雅 · 纯白誓约的花嫁初夜",
       "category": "成人",
       "characterId": "artoria_pendragon",
-      "description": "【阿尔托莉雅 · 纯白誓约的花嫁初夜】烛光摇曳的卡美洛静谧寝殿内，曾经孤高的骑士王换上了一身圣洁的抹胸纯白婚纱，轻薄头纱笼罩着金色的盘发。婚纱侧边的系带已被轻轻解开，抹胸滑落露出雪白酥胸与粉嫩乳头，她双手撑在锦缎床榻上，白皙双颊染满娇羞的绯红——「即便身为不列颠的王者……今夜，我只愿做属于你一个人的新娘。」",
+      "description": "【成年阿尔托莉雅 · 纯白誓约后的独处】卡美洛寝殿烛光摇曳，二十岁以上成年版本的骑士王独坐在华盖床中央。抹胸婚纱松开后堆在腰际，头纱仍覆着金色盘发；她屈起双腿，一手托住裸露胸部，另一手拨开白色蕾丝沿腿间缓慢自抚。翠绿眼睛含着羞意却保持坚定，床侧的剑鞘与王冠说明这是卸下王者职责后的私人一刻。",
       "location": "王城寝宫",
-      "action": "卸甲后蓝白裙装半褪斜倚天鹅绒大床",
+      "action": "独坐华盖床中央，婚纱松至腰际，一手托胸、一手拨开白蕾丝自抚，头纱与王冠仍在",
       "timeOfDay": "夜晚",
       "lighting": "warm fireplace and silver moonlight through arched window",
       "camera": "intimate medium shot, side angle",
@@ -303,7 +303,7 @@
         "intimate",
         "night"
       ],
-      "promptProse": "Sitting delicately on a grand canopy bed in an unlaced strapless bridal gown and translucent veil, Artoria Pendragon blushes profoundly as her dress slips to expose her full bare breasts and pink nipples. Parting her trembling thighs in the warm candlelight, she guides her lover's hands onto her waist, arching her back with breathless sighs of passionate intimate penetration.",
+      "promptProse": "Warm candles frame adult, age-twenty-plus Artoria Pendragon seated alone at the center of a Camelot canopy bed. Her unlaced white bridal gown is gathered at the waist while a translucent veil remains over her golden braided bun. She folds both legs into the vertical frame, cups one bare breast, and draws white lace aside with the other hand to touch herself. Excalibur in its blue scabbard and a small crown rest nearby as green eyes hold disciplined resolve through a profound blush and damp lashes. Intimate solo bridal portrait, no text or extra people.",
       "promptTokens": [
         "wedding_dress",
         "bridal_veil",
@@ -330,7 +330,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -398,12 +402,15 @@
         "dress_pulled_down",
         "bare_breasts",
         "pink_nipples",
-        "lying_on_side",
         "undressing",
         "heavy_blush",
-        "gentle_smile"
+        "gentle_smile",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Reclining on her opulent velvet canopy bed after unfastening her heavy battle armor, Artoria rests with her blue-and-white dress pulled down, gazing with a flustered yet tender blush under warm chamber lamps.",
+      "nsfwProse": "",
       "adultArtistHint": "@kousaki rui",
       "outfitId": "bridal_dress",
       "sampleRating": "R18"
@@ -703,7 +710,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Soaking in the steaming castle stone bath, Artoria shyly shields her bare breasts with both hands, blushing deeply in the flickering candlelight.",
+      "promptProse": "Torchlight warms adult Artoria Pendragon reclining alone on the submerged step of a castle stone bath. Wet linen clings below her bare breasts while one armored gauntlet rests beside Excalibur on the rim, grounding her identity without battle clutter. She raises one knee through the steam and gathers loosened golden hair with both hands, exposing a damp nape and mature athletic torso. Emerald eyes lower through a rare blush as ripples catch blue and gold light. Medium three-quarter bath portrait, no text or extra people.",
       "promptTokens": [
         "stone_bathtub",
         "castle_bathroom",
@@ -799,9 +806,9 @@
       "title": "阿尔托莉雅 · 公寓晨光",
       "category": "成人",
       "characterId": "artoria_pendragon",
-      "description": "【阿尔托莉雅 · 公寓晨光】清晨温暖的金色阳光透过窗纱洒在双人床上，阿尔托莉雅穿着宽松的白衬衫坐在床沿伸了个舒展的懒腰，白皙匀称的修长双腿在晨光下熠熠生辉——「呼……昨晚睡得格外沉稳呢。士郎，今天的晨间体能训练，我们也要一起努力。」",
+      "description": "【成年阿尔托莉雅 · 公寓晨光】二十岁以上成年版本的阿尔托莉雅独坐在卫宫宅卧室床沿，宽松白衬衫敞至腰际。她把双臂举过头顶伸展，裸露胸部随动作抬起，一腿屈在床面、另一腿垂向地板；晨光穿过窗纱照亮肌肤与散开的金发。她用膝间夹住滑落衣摆，翠绿眼睛仍带着骑士般认真，却因私密晨间姿态染红耳尖。",
       "location": "冬木市卫宫宅卧室",
-      "action": "清晨坐在双人床沿伸懒腰，宽松白衬衫微敞",
+      "action": "独坐床沿举臂伸展，白衬衫敞至腰际，一腿屈起夹住衣摆，晨光照亮裸露胸线与潮红神情",
       "timeOfDay": "清晨",
       "lighting": "bright morning sun through curtains",
       "camera": "intimate medium shot, front view",
@@ -813,7 +820,7 @@
         "morning_sunlight",
         "intimate"
       ],
-      "promptProse": "Sitting on the edge of the sunlit apartment bed, Artoria stretches her arms with a contented morning yawn, her unbuttoned white shirt slipping open to reveal her slender waist and perky bust in the golden morning light.",
+      "promptProse": "Golden morning light finds adult, age-twenty-plus Artoria Pendragon alone on the edge of a bed in the Emiya residence. An oversized white shirt hangs open to her waist as she raises both arms in a long stretch, lifting bare breasts into the window glow. One leg folds onto the mattress while the other reaches toward the floor, and her knees catch the slipping hem to keep the pose compact. Loose golden hair frames clear green eyes, a disciplined expression and reddened ears. Vertical medium portrait with both hands visible, no text or extra people.",
       "promptTokens": [
         "modern_bedroom",
         "bed",
@@ -829,7 +836,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -896,9 +907,13 @@
         "pantyless",
         "sitting_on_bed",
         "stretching_arms",
-        "morning_blush"
+        "morning_blush",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Sitting on the edge of the sunlit apartment bed, Artoria stretches her arms with a contented morning yawn, her unbuttoned white shirt slipping open to reveal her slender waist and perky bust in the golden morning light.",
+      "nsfwProse": "",
       "adultArtistHint": "@jazz_jack",
       "outfitId": "casual",
       "sampleRating": "R18"
@@ -924,7 +939,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Standing before the vanity mirror at night, nude Artoria unfastens her blue hair ribbon, gazing back over her slender shoulder with a blushing gaze.",
+      "promptProse": "A single candle lights adult Artoria Pendragon seated alone before an opaque vanity mirror in her castle chamber. Nude except for a blue ribbon around one wrist, she raises both arms to release her braided bun, letting golden hair fall across bare shoulders and breasts. The glass reflects only warm haze, never a duplicate face; Excalibur's blue scabbard rests across the stool beneath her. She turns enough to show green eyes, flushed ears and the vulnerable nape in one compact rear three-quarter frame. No text or extra people.",
       "promptTokens": [
         "bedroom",
         "mirror",
@@ -996,7 +1011,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1536x1152",
+      "recommendedSize": "1152x1536",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -1284,9 +1299,9 @@
       "title": "远坂凛 · 工坊深夜的赤红露背诱惑",
       "category": "成人",
       "characterId": "tohsaka_rin",
-      "description": "【远坂凛 · 工坊深夜的赤红露背诱惑】远坂宅邸深夜的魔术工房内，魔术结界的红宝石微光在空气中静静流淌。傲娇的大小姐身穿一袭深红色的露背高领毛衣，正面严谨高挑，侧身大露背却直露到腰窝。毛衣被双手撩起至胸口，大汗淋漓地跨坐在你的膝头，眼神含泪而倔强——「看什么看……笨蛋！这种衣服我只穿给你一个人看而已，不准移开视线……」",
+      "description": "【成年远坂凛 · 工房宝石回路过载】二十岁以上成年版本的凛独自在远坂宅魔术工房跨坐皮凳。深红露背毛衣被卷到胸上，黑色过膝袜紧贴屈起双腿；她一手按住发光宝石阵，另一手伸入腰间自抚，魔力从大腿勒痕一路亮到指尖。双马尾散乱，碧蓝眼睛含泪仍不肯移开，倔强神情与失控呼吸形成鲜明反差。",
       "location": "远坂宅邸卧室",
-      "action": "红色洋装半褪斜倚床上",
+      "action": "独自跨坐工房皮凳，红色毛衣卷至胸上，一手按宝石阵、一手在腿间自抚，魔力沿黑丝勒痕发亮",
       "timeOfDay": "夜晚",
       "lighting": "warm glowing fireplace and candlelight",
       "camera": "intimate medium shot, three-quarter view",
@@ -1300,7 +1315,7 @@
         "intimate",
         "night"
       ],
-      "promptProse": "Straddling her partner's lap inside her dimly lit mage workshop in a crimson backless virgin killer turtleneck sweater, Tohsaka Rin lifts the sweater hem to reveal her heaving bare breasts and pink nipples. Taking her lover inside her trembling core with breathless gasps, her flushed face tears up in proud tsundere passion.",
+      "promptProse": "Ruby light fills the Tohsaka workshop as adult, age-twenty-plus Rin sits alone astride a padded leather stool. Her crimson backless sweater is rolled above bare breasts and black thigh-highs tighten around folded legs. One hand presses a glowing jewel circle on the workbench while the other slips beneath the waistline between her thighs, sending prana along stocking pressure marks to her fingertips. Loose twin tails frame blue eyes that remain fiercely direct despite wet lashes, reddened ears and uneven breath. Compact vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "virgin_killer_sweater",
         "red_sweater",
@@ -1330,7 +1345,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -1403,9 +1422,13 @@
         "on_back",
         "spread_legs",
         "bent_knees",
-        "heavy_blush"
+        "heavy_blush",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Reclining on her canopy bed with her red sweater pushed up and black thigh-highs on, Rin covers her blushing face while opening her thighs.",
+      "nsfwProse": "",
       "adultArtistHint": "@kousaki rui",
       "outfitId": "virgin_killer_sweater",
       "sampleRating": "R18"
@@ -1700,7 +1723,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Soaking in a steaming marble tub at candlelight, nude Rin toys with a glowing red jewel while blushing furiously at the viewer.",
+      "promptProse": "Red gemlight fills a marble bath where adult, age-twenty-plus Rin Tohsaka reclines alone against the tub rim. One leg rises above the steaming water while the other folds beneath it, and a soaked black lace wrap turns translucent across bare breasts. She rolls a glowing jewel along her inner thigh with one hand while the other braces on wet stone, red mana branching through the ripples. Twin tails cling to her collarbone as blue eyes glare through a furious blush and bitten lip. Medium bath solo portrait, no text or extra people.",
       "promptTokens": [
         "marble_bathroom",
         "clawfoot_tub",
@@ -1796,9 +1819,9 @@
       "title": "远坂凛 · 天台夕照",
       "category": "成人",
       "characterId": "tohsaka_rin",
-      "description": "【远坂凛 · 天台夕照】落日余晖将学校无人天台染成血红，被你抵在铁丝网上的凛衣衫半解，黑色领结松散垂落。她急促地喘息着，水汪汪的蓝眸中交织着羞耻与深情——「在这里要是被巡逻的老师看到……就全完了……唔，轻一点，笨蛋……」",
+      "description": "【成年 After Story · 远坂凛 · 魔术研究院天台夕照】二十岁以上成年后的凛独自在魔术研究院屋顶露台检查结界。修身红衬衫被安全铁网勾住并从胸前扯开，她一手抓住网格保持平衡，一手反剪到腰后试图解开线头；一膝踩上设备箱让成熟身体折入中近景。落日点燃双马尾和宝石耳坠，她蓝眸含泪地咬唇——「只是结界事故……在我自己解开之前，不许笑。」",
       "location": "学校天台",
-      "action": "倚着围栏被落日勾勒",
+      "action": "成年魔术师独自倚靠研究院天台铁网，一膝踩设备箱，一手抓网一手解开勾住衬衫的线头",
       "timeOfDay": "黄昏",
       "lighting": "warm golden sunset, backlit",
       "camera": "intimate medium shot, backlit",
@@ -1811,7 +1834,7 @@
         "evening",
         "intimate"
       ],
-      "promptProse": "Backed against the rooftop fence under a fiery sunset, Rin grips the wire mesh with her shirt pulled open, panting with intense tsundere shame.",
+      "promptProse": "Sunset burns across the rooftop terrace of an adult mage research institute where age-twenty-plus Rin Tohsaka stands alone beside the safety mesh. Her fitted red blouse is unbuttoned and caught on the wire, pulling one side below a bare breast while she reaches behind to free the snag. One knee bends onto a low service box, compressing her pose and keeping both hands visible. Red jewel earrings and loose twin tails flare in the wind as blue eyes meet the lens through anger, wet lashes and a deep blush. Medium solo frame, no text or extra people.",
       "promptTokens": [
         "school_rooftop",
         "wire_fence",
@@ -1916,7 +1939,7 @@
         "standing",
         "tsundere"
       ],
-      "promptProse": "Sitting on the moonlit bedroom window sill in black thigh-highs and pulled-up sweater, Rin averts her blushing gaze in flustered elegance.",
+      "promptProse": "Moonlight enters the Tohsaka manor as adult, age-twenty-plus Rin sits alone on a broad window seat in black thigh-highs. Her red turtleneck is rolled above bare breasts, and both hands pull one stocking down to mid-thigh while the other leg remains taut for contrast. A ruby pendant rests against her stomach and loose twin tails brush the glass. Pressure marks, curled toes and blue eyes turned aside beneath burning ears give the elegant pose physical tension. Intimate seated portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "window_sill",
@@ -2006,9 +2029,9 @@
       "title": "远坂凛 · 魔术工坊的深红兔女郎试穿",
       "category": "成人",
       "characterId": "tohsaka_rin",
-      "description": "【远坂凛 · 魔术工坊的深红兔女郎试穿】深夜的远坂家私密书斋内，大小姐难为情地换上了一袭深红色的反光漆皮兔女郎装。紧绷的抹胸将丰满的胸部挤压得呼之欲出，双手背在身后护住圆滚滚的白兔尾巴，一双黑丝修长美腿踩着细高跟在暗红地毯上局促踩动，深蓝色的眼眸满是羞恼——「看、看什么看！这不过是解析异界魔力载体的战术伪装！不准露出那种傻笑，笨蛋御主……！」",
+      "description": "【成年远坂凛 · 书斋兔装拉链事故】深夜私人书斋里，二十岁以上成年版本的凛独自跨坐木椅，深红乳胶兔女郎服的背部拉链卡在腰间。她反手拉扯金属扣，紧绷领口向下滑开露出胸部，另一手隔着开档蕾丝探向腿间；桌上红宝石随动作闪烁，兔耳歪向一侧。她咬唇瞪向镜头，羞恼与魔力过载同时写在潮红脸上。",
       "location": "远坂宅书斋",
-      "action": "伏在宝石与魔法书间，单薄睡衣滑落",
+      "action": "独自跨坐书斋木椅，兔女郎服背拉链卡死，一手反拉金属扣、一手隔开档蕾丝自抚，宝石随之发亮",
       "timeOfDay": "深夜",
       "lighting": "warm lamp light and gem glow",
       "camera": "side view, medium shot, horizontal framing",
@@ -2022,7 +2045,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Wearing a glossy crimson latex bunny suit and bunny ears inside her private study, Tohsaka Rin turns with intense bashful blush as the outfit hugs her slender curves and heaving chest. Guided into her partner's lap, she gasps with breathless pleasure as she takes him deep inside her wet core, her tears shimmering in the warm candlelight.",
+      "promptProse": "Adult, age-twenty-plus Rin Tohsaka sits alone astride a wooden chair in her private study after midnight. The back zipper of a crimson latex bunny suit is jammed at the waist, forcing its taut neckline below bare breasts. She reaches behind with one hand to pull the hot metal tab while the other moves through a crotchless lace panel between her thighs. Red jewels flare across the desk and one rabbit ear tilts sideways as blue eyes glare through tears, a bitten lip and an indignant blush. Vertical medium solo composition, no text or extra people.",
       "promptTokens": [
         "bunny_suit",
         "red_bunny_suit",
@@ -2054,7 +2077,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -2114,9 +2141,13 @@
         "leaning_on_desk",
         "twintails",
         "heavy_blush",
-        "sleepy_eyes"
+        "sleepy_eyes",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Slumped over her wooden study desk covered in glowing gems and magic manuscripts, Rin rubs her tired eyes with a deep blush, her silky pajamas slipping off her shoulder in the warm oil lamp glow.",
+      "nsfwProse": "",
       "adultArtistHint": "@tiv",
       "outfitId": "bunny_suit",
       "sampleRating": "R18"
@@ -2398,7 +2429,7 @@
       "title": "伊莉雅丝菲尔 · 城堡冬夜",
       "category": "成人",
       "characterId": "illyasviel_von_einzbern",
-      "description": "【伊莉雅 · 城堡冬夜】城堡温暖的书房内壁炉烈火熊熊燃烧，褪下一半毛皮大衣的伊莉雅坐在厚实的熊皮地毯上，白皙纤弱的小小香肩在火光映照下泛着柔粉色。她抱着膝盖红着脸仰望你——「大哥哥的眼神好温柔……今晚就允许大哥哥像这样一直抱着我取暖哦。」",
+      "description": "【成年 After Story · 伊莉雅 · 城堡冬夜】二十岁以上成年后的伊莉雅独坐在城堡书房的熊皮地毯上，红色毛皮大衣从成熟肩颈滑落并敞开胸前。她屈起一条修长腿靠近壁炉，一手抓住厚实衣领，另一手探入大衣下摆，银发与红瞳被火光染暖——「已经不是需要别人哄睡的年纪了……今晚的温度，由我自己决定。」",
       "location": "冬夜古堡寝房",
       "action": "红冬大衣半褪坐在壁炉前",
       "timeOfDay": "夜晚",
@@ -2414,7 +2445,7 @@
         "intimate",
         "night"
       ],
-      "promptProse": "Sitting nude on the soft bearskin rug before the roaring hearth, Illyasviel hugs her knees, looking up with innocent, blushing affection.",
+      "promptProse": "Firelight surrounds the unmistakably adult, age-twenty-plus Illyasviel seated alone on a bearskin rug in the Einzbern study. Her red winter coat has slipped from both shoulders and opened across a mature nude body, while she draws one knee up and warms a bare foot near the hearth. One hand grips the fur collar and the other rests between her thighs beneath the coat hem. Long silver hair, ruby eyes and flushed cheeks remain clearly adult in proportion and expression. Compact seated solo portrait, no text or extra people.",
       "promptTokens": [
         "castle_bedroom",
         "fireplace",
@@ -2776,7 +2807,7 @@
       "title": "伊莉雅丝菲尔 · 城堡浴缸",
       "category": "成人",
       "characterId": "illyasviel_von_einzbern",
-      "description": "【伊莉雅 · 城堡浴缸】城堡浴室奢华的复古圆形铜质浴缸里注满了温热的花瓣水，伊莉雅娇小的身躯浸在清澈的水中，两只雪白小巧的小脚丫在水面上拍打出欢快的水花——「大哥哥快进来呀！浴缸很大很暖和哦，伊莉雅一个人洗澡会觉得无聊嘛。」",
+      "description": "【成年 After Story · 伊莉雅 · 城堡浴缸】二十岁以上成年后的伊莉雅独自在复古铜浴缸中泡着温热花瓣水。成熟修长的身体贴着弧形缸壁，一条长腿屈起穿过泡沫，银发盘在湿润肩头；她一手托住胸口，另一手在水下缓慢自抚，红瞳因热气泛湿——「城堡这么安静，正好让我听清自己的呼吸……不需要任何人替我决定。」",
       "location": "城堡浴室",
       "action": "泡在圆形铜浴缸里",
       "timeOfDay": "夜晚",
@@ -2792,7 +2823,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Splashing gently in the warm bubble-filled copper tub, nude Illyasviel covers her petite chest while giggling in the warm firelight.",
+      "promptProse": "Rose petals circle the unmistakably adult, age-twenty-plus Illyasviel reclining alone in a copper castle bathtub. Her mature body is folded against the curved rim with one long leg lifted through foam and silver hair pinned above wet shoulders. She cups one breast while the other hand trails below the water between her thighs, sending warm ripples toward a candlelit stone arch. Ruby eyes shine through damp lashes and a breathless blush without childish gestures or proportions. Medium vertical bath portrait, no text or extra people.",
       "promptTokens": [
         "castle_bathroom",
         "copper_bathtub",
@@ -2887,7 +2918,7 @@
       "title": "伊莉雅丝菲尔 · 雪夜窗边",
       "category": "成人",
       "characterId": "illyasviel_von_einzbern",
-      "description": "【伊莉雅 · 雪夜窗边】窗外大雪纷飞的冬夜，伊莉雅裹着厚厚的羊绒毛毯盘腿坐在窗台上，清冷的雪光将她瓷娃娃般娇嫩的面颊映得晶莹剔透。她拉开毛毯的一角向你招手——「外面好冷……大哥哥快钻进毯子里来，这样我们两个人就都暖和了。」",
+      "description": "【成年 After Story · 伊莉雅 · 雪夜窗边】二十岁以上成年后的伊莉雅独自跪坐在城堡飘窗的深红软垫上，羊绒毛毯从成熟肩头滑落并聚在腰际。她一手贴住冰冷玻璃，一手将毛毯压进分开的腿间，银色长发和修长身体被雪光描亮；红瞳含着克制笑意——「外面很冷，但我早已学会自己选择要保留的温度。」",
       "location": "城堡卧室",
       "action": "裹着毯子坐在窗台",
       "timeOfDay": "夜晚",
@@ -2902,7 +2933,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Kneeling nude on the velvet bay window cushion overlooking falling snow, Illyasviel glances back with a playful, affectionate blush.",
+      "promptProse": "Snow fills the bay window behind the unmistakably adult, age-twenty-plus Illyasviel kneeling alone on a velvet cushion. A thick cashmere blanket has opened and pooled at her waist, framing a mature nude torso while one hand presses against cold glass and the other draws the blanket between parted thighs. Long silver hair reflects blue winter light and a small red ribbon rests beside her knee. She looks back over one shoulder with ruby eyes, wet lashes and a controlled blush. Medium rear three-quarter solo portrait, no text or extra people.",
       "promptTokens": [
         "castle_bedroom",
         "window_sill",
@@ -2991,7 +3022,7 @@
       "title": "伊莉雅丝菲尔 · 白丝与暖炉",
       "category": "成人",
       "characterId": "illyasviel_von_einzbern",
-      "description": "【伊莉雅 · 白丝与暖炉】古堡壁炉前的软榻上，伊莉雅将包裹着纯白过膝袜的纤细双腿伸向温暖的炉火，足尖在火光中微微翘起。她侧过身眨着绯红的大眼睛向你撒娇——「大哥哥，我的脚趾刚才在雪地里冻僵了……能用大哥哥温暖的手帮我揉一揉吗？」",
+      "description": "【成年 After Story · 伊莉雅 · 白丝与暖炉】二十岁以上成年后的伊莉雅独坐在古堡壁炉前软榻上，只穿白色蕾丝过膝袜。她把一条修长腿伸向炉火，双手将另一条袜口从成熟大腿卷到脚踝，勒痕与蜷起足尖被火光照亮；银发垂过丰满胸线，她红着耳朵轻笑——「在雪地里走了这么久，先让我自己把每一寸温度找回来。」",
       "location": "城堡卧室",
       "action": "白丝长腿伸向暖炉",
       "timeOfDay": "冬夜",
@@ -3007,7 +3038,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "Sitting on the edge of her antique bed in white lace thigh-highs, nude Illyasviel dangles her toes with a sweet, flustered smile.",
+      "promptProse": "The unmistakably adult, age-twenty-plus Illyasviel sits alone on an antique bed near the Einzbern hearth, nude except for white lace thigh-highs. She extends one long leg toward the warmth while both hands roll the other stocking down to the ankle, leaving clear pressure marks around a mature thigh. Bare toes curl in the foreground and silver hair spills across full breasts without hiding her face. Ruby eyes and reddened ears hold a proud, flustered look rather than childlike playfulness. Horizontal foot-focused solo portrait, no text.",
       "promptTokens": [
         "castle_bedroom",
         "canopy_bed",
@@ -3066,7 +3097,7 @@
         "second person",
         "two people"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -3092,7 +3123,7 @@
       "title": "伊莉雅丝菲尔 · 晨光与玩偶",
       "category": "成人",
       "characterId": "illyasviel_von_einzbern",
-      "description": "【伊莉雅 · 晨光与玩偶】清晨的阳光斜洒在城堡宽大的四柱大床上，伊莉雅光着身子揉着眼睛从柔软的被单间坐起身，怀里紧紧抱着毛绒小熊。她迷迷糊糊地用小脑袋蹭着你的胸口——「唔……大哥哥，早安……今天大哥哥也必须一整天都陪着伊莉雅玩哦。」",
+      "description": "【成年 After Story · 伊莉雅 · 晨光与熊形靠垫】二十岁以上成年后的伊莉雅独自在四柱大床上醒来，大号熊形靠垫垫在背后而不是抱在怀里。红色睡衣敞到腰际，她把修长双腿收进晨光，一手揉着困倦红瞳，另一手探入下摆；成熟身体与银色长发铺在白床单间——「早安……今天不需要谁陪我玩，只想把醒来的第一段时间留给自己。」",
       "location": "城堡卧室",
       "action": "抱着毛绒熊醒来",
       "timeOfDay": "清晨",
@@ -3107,7 +3138,7 @@
         "frosty_window",
         "intimate"
       ],
-      "promptProse": "Sitting up nude in bed hugging her plush bear, sleepy Illyasviel rubs her ruby eyes as morning sunlight warms her porcelain skin.",
+      "promptProse": "Morning light reaches the unmistakably adult, age-twenty-plus Illyasviel sitting alone among the canopy bed's white sheets. A large bear cushion supports her back rather than being hugged like a toy, while a loose red nightshirt hangs open below mature bare breasts. She draws both long legs beneath the shirt and rubs one sleepy ruby eye as the other hand rests under the hem. Silver hair spreads over pillows and the adult proportions remain clear from face through folded thighs. Intimate seated solo frame, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -3478,7 +3509,7 @@
         "white_hair",
         "haughty_blush"
       ],
-      "promptProse": "Reclining nude on her obsidian throne inside an open leather jacket, Jeanne Alter props her long legs on the armrests with a commanding smirk.",
+      "promptProse": "Black flames rim an obsidian throne where adult Jeanne Alter reclines alone inside an open leather jacket. Bare breasts and a long pale torso remain centered while one booted leg hooks over an armrest and the other bends toward the seat, compressing her dominant pose. She grips a shortened black flagpole across her thighs with both hands, keeping limbs grounded and the weapon away from her face. Wet silver hair, golden eyes and a contemptuous blush glow against cathedral shadows. Vertical low-angle solo portrait, no text or extra people.",
       "promptTokens": [
         "gothic_throne_room",
         "obsidian_throne",
@@ -3598,7 +3629,7 @@
         "wet_hair",
         "leather_jacket"
       ],
-      "promptProse": "Sitting on the bed unzipping her leather boots with her jacket pulled open, Jeanne Alter hides her burning blush behind a tsundere glare.",
+      "promptProse": "New Shinjuku rain glows behind adult Jeanne Alter seated alone on a high-rise bed with her leather jacket open across bare breasts. She plants one boot on the mattress and uses both hands to drag its zipper down, exposing a wet stocking and leaving the other boot half unlaced on the floor. Platinum hair clings to her cheek as neon reflections shape a powerful folded torso and long legs. Golden eyes glare sideways above burning ears, refusing to admit the intimate strain. Medium diagonal solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed_edge",
@@ -3698,7 +3729,7 @@
       "lighting": "rainy neon city glow, blue and magenta street reflections, dim warm apartment light",
       "camera": "medium shot, slightly low angle",
       "mood": "傲娇冷冽",
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
       "sampleRating": "R18",
@@ -3720,7 +3751,7 @@
         "shadow",
         "confessional"
       ],
-      "promptProse": "Standing before the dimly lit mirror, completely nude Jeanne Alter casts an intense, seductive backward glance over her bare shoulder.",
+      "promptProse": "Adult Jeanne Alter stands alone beside a fogged confessional mirror in a dark cathedral dressing room. A black lace mantle hangs from one shoulder while the rest of her mature body remains nude; she drags one gloved fingertip through the condensation and braces the other hand on the carved frame. The opaque glass shows only candle smears, never a second face. Silver hair exposes her back and golden eyes cut over one shoulder with defiance softened by wet lashes. Medium rear portrait with clear hands, no text or extra people.",
       "promptTokens": [
         "hotel_room",
         "mirror",
@@ -4013,7 +4044,7 @@
         "pink_nipples",
         "teary_blush"
       ],
-      "promptProse": "Lying on the tatami futon in a loose apron, Sakura parts her soft thighs with a shy, loving smile, offering herself completely.",
+      "promptProse": "A low lantern lights adult, age-twenty-plus Sakura Matou kneeling alone on a tatami futon in a white apron. The apron ties frame bare breasts and a mature soft waist while she sits back on her heels, then opens one knee and gathers the hem with both hands. Purple hair falls over one shoulder as faint violet mana threads curl around her thighs without forming another subject. Her green eyes rise through tears, a deep blush and a steady, chosen expression. Vertical intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "japanese_room",
         "tatami",
@@ -4119,7 +4150,7 @@
       "id": "sakura_r18_bedroom_soles_tights_peel",
       "characterId": "matou_sakura",
       "title": "间桐樱 · 卫宫家月夜的温柔与晦暗",
-      "description": "【间桐樱 · 卫宫家月夜的温柔与晦暗】卫宫家寝室的月光清冷如水。樱侧卧在床沿，紫色的长发散在枕边，黑丝在月光下泛着微光。她的眼神在温柔的微笑与幽深的晦暗之间流转，指尖轻轻搭在你的手背上——「……只要前辈在，樱就是幸福的。哪怕这幸福，是偷来的。」",
+      "description": "【成年 After Story · 间桐樱 · 月夜黑丝褪落】二十岁以上成年后的樱独坐在卧室床沿，柔软梅色开衫敞开，紫色长发散在枕边。她双手把一条黑色连裤袜从成熟大腿缓慢卷向脚踝，另一条腿仍被薄纱包裹，裸足在月光前蜷起；烹饪笔记压在被角，绿眸中的温柔不再依附任何人——「现在的幸福不是偷来的……连选择让谁看见，也由我自己决定。」",
       "outfitId": "nsfw_nude",
       "sceneTags": [
         "bed",
@@ -4130,7 +4161,7 @@
         "tights",
         "window"
       ],
-      "promptProse": "Sitting on the bed slowly peeling down her black tights with her uniform unbuttoned, Sakura gazes up with sweet, needy eyes.",
+      "promptProse": "Moonlight fills the adult bedroom of age-twenty-plus Sakura Matou as she sits alone on the bed in a soft plum cardigan opened over bare breasts. Both hands peel black tights down one full thigh while the other leg remains covered, creating a clear contrast without any school uniform. The rolled fabric presses into her skin and a bare foot turns toward the lens. Long violet hair pools beside a cooking notebook on the pillow as green eyes hold a gentle but self-possessed blush. Medium foot-focused solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "bed_edge",
@@ -4220,7 +4251,7 @@
       "nsfwProse": "Sitting on the bed slowly peeling down her black tights with her uniform unbuttoned, Sakura gazes up with sweet, needy eyes.",
       "category": "私密写真",
       "location": "卫宫家寝室月光下",
-      "action": "侧卧床沿，神情在温柔与晦暗间流转",
+      "action": "成年樱坐在床沿，开衫敞开，双手将一侧黑丝从大腿卷至脚踝，另一腿保持完整薄纱",
       "timeOfDay": "月夜",
       "lighting": "cold silver moonlight, soft violet shadows, gentle window glow",
       "camera": "intimate medium shot",
@@ -4237,7 +4268,7 @@
       "id": "sakura_r18_dark_shadow_bedroom",
       "characterId": "matou_sakura",
       "title": "间桐樱 · 黑化私密·红黑魔力流转与完全释放",
-      "description": "【间桐樱 · 黑化私密·红黑魔力流转与完全释放】翻滚着狂暴魔力的虚无空间内，完全觉醒的黑樱赤身漂浮在红黑色的暗影触手之上。猩红的令咒纹路在她雪白的肌肤上流淌，她嘴角勾起妖艳而病娇的弧度——「学长……现在的我已经不再是那个无能为力的弱小樱了。把你的全部，都献给我吧……」",
+      "description": "【成年间桐樱 · 黑化结界的自持】红黑魔力翻滚的虚无结界中，二十岁以上成年版本的黑樱独自悬浮在由她操纵的暗影带上。破碎黑裙停在腰际，令咒纹路沿裸露胸部与腹部发光；两条影带托住大腿并迫使双膝折起，她一手控制影带的轨迹，另一手按在自己腿间感受魔力回流。紫发向上漂散，红瞳含泪却带着清醒而危险的笑。",
       "outfitId": "nsfw_nude",
       "sceneTags": [
         "dark_room",
@@ -4250,7 +4281,7 @@
         "pink_nipples",
         "intense_blush"
       ],
-      "promptProse": "Floating nude supported by ethereal black-and-crimson shadow tendrils in the void, dark Sakura smiles with intoxicating devotion as glowing red command seals swirl across her pale skin.",
+      "promptProse": "Crimson darkness surrounds adult, age-twenty-plus Sakura Matou floating alone inside her own shadow bounded field. A torn black dress rests at the waist while command-seal patterns glow across bare breasts and abdomen. Two controlled shadow ribbons support her thighs and fold both knees upward; one hand directs their arc while the other presses between her legs where the magic returns. Violet hair streams weightlessly around wet red eyes and a lucid, dangerous smile. Vertical medium fantasy portrait with every limb separated, no text or extra people.",
       "promptTokens": [
         "void_space",
         "dark_magic_tendrils",
@@ -4265,7 +4296,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4342,12 +4377,16 @@
         "body_markings",
         "yandere_smile",
         "red_eyes",
-        "heavy_blush"
+        "heavy_blush",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Floating nude supported by ethereal black-and-crimson shadow tendrils in the void, dark Sakura smiles with intoxicating devotion as glowing red command seals swirl across her pale skin.",
+      "nsfwProse": "",
       "category": "私密写真",
       "location": "幽暗黑化结界",
-      "action": "黑化形态赤身漂浮于黑暗触手之上，红纹流转",
+      "action": "独自悬浮于自控暗影带上，破碎黑裙停在腰际，一手驾驭影带、一手按向腿间，令咒沿成熟身体发光",
       "timeOfDay": "night",
       "lighting": "crimson_glow",
       "camera": "medium_shot",
@@ -4660,9 +4699,9 @@
       "characterId": "jeanne_alter",
       "outfitId": "evening_black_dress",
       "adult": true,
-      "description": "【贞德[Alter] · 闺阁烛光】烛影摇曳的奢华卧室内，黑贞坐在床沿，黑色的晚礼服吊带从雪白的香肩缓缓滑落，露出大片白皙细腻的肌肤。她目光迷离地侧过头，声音带着少见的低沉与柔情——「今夜没有战斗也没有复仇……就只是我和你。……还不快点过来抱紧我？」",
+      "description": "【成年贞德 Alter · 闺阁烛光】二十岁以上成年版本的黑贞独坐在奢华卧室床沿，黑色晚礼服两侧吊带滑落，紧绷胸衣被她向下拉到乳下。她一手撑住天鹅绒床褥，另一手沿高叉裙摆探向腿间，黑色蕾丝与吊带袜在大腿留下勒痕。烛火映亮银发与金色眼睛，她倔强地偏开脸，却藏不住湿润眼角和咬紧的唇。",
       "location": "私密闺阁",
-      "action": "坐在床沿晚礼服吊带滑落肩头，侧头微红",
+      "action": "独坐床沿将黑色胸衣拉至乳下，一手撑床、一手沿高叉裙摆探向腿间，烛光下倔强含泪",
       "timeOfDay": "night",
       "lighting": "candlelight",
       "camera": "medium_shot",
@@ -4677,7 +4716,7 @@
         "night",
         "warm_glow"
       ],
-      "promptProse": "Sitting on the edge of her candlelit canopy bed, Jeanne Alter turns her face aside with a fierce tsundere blush as the straps of her elegant black evening gown slide off her pale shoulders.",
+      "promptProse": "Candle flames surround adult, age-twenty-plus Jeanne Alter seated alone on the edge of a velvet canopy bed. Both straps of her black evening gown have slipped away and she has drawn the fitted bodice below bare breasts, while garter straps bite gently into her thighs. One hand braces on the mattress and the other follows the high slit between her legs beneath pooled fabric. Silver hair and golden eyes catch the amber light as she looks aside with a stubborn blush, wet lashes and a bitten lip. Vertical intimate portrait, no text or extra people.",
       "promptTokens": [
         "boudoir",
         "canopy_bed",
@@ -4692,7 +4731,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -4759,7 +4802,7 @@
         "mutated hands"
       ],
       "recommendedSize": "1152x1536",
-      "nsfwProse": "Sitting on the edge of her candlelit canopy bed, Jeanne Alter turns her face aside with a fierce tsundere blush as the straps of her elegant black evening gown slide off her pale shoulders.",
+      "nsfwProse": "",
       "nsfwTokens": [
         "off-shoulder_dress",
         "bare_breasts",
@@ -4767,7 +4810,11 @@
         "sitting_on_bed",
         "undressing",
         "tsundere_blush",
-        "looking_aside"
+        "looking_aside",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -5094,7 +5141,7 @@
         "purple_hair",
         "window"
       ],
-      "promptProse": "Wiping mist from the bathroom mirror with a towel wrapped loosely around her bust, Sakura greets the viewer with a sweet, blushing smile.",
+      "promptProse": "Morning steam surrounds adult, age-twenty-plus Sakura Matou seated alone on a bathroom vanity with a towel loose at the waist. Wet violet hair lies across bare breasts while one hand wipes a narrow arc through an opaque mirror and the other wrings water from a long strand. The glass reflects only warm light and color, never a duplicate body. A breakfast apron and folded towel wait on a stool, grounding the domestic setting as green eyes and flushed cheeks remain gentle but mature. Medium solo portrait, no text or extra people.",
       "promptTokens": [
         "bathroom",
         "mirror",
@@ -5806,9 +5853,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -5859,7 +5903,7 @@
         "lying",
         "daylight"
       ],
-      "promptProse": "Lying nude upon a plush white rug flooded with sunbeams, Queen Morgan parts her slender legs with soft loving devotion for her spouse.",
+      "promptProse": "Winter sun pours across a white wool rug where adult Queen Morgan reclines alone beneath the high glass roof of her palace. A black silk mantle pools at the waist, leaving bare breasts and long legs framed by blue crystal reflections. She props herself on one elbow, bends one knee and traces a frost rune along the inner thigh with her free hand, making pale light gather at her fingertips. Silver hair spreads across the fur while ice-blue eyes soften through a regal blush. Medium diagonal solo portrait, no text or extra people.",
       "promptTokens": [
         "palace_bedroom",
         "white_rug",
@@ -5871,7 +5915,7 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "outfitId": "winter_queen",
       "kreaStyleHint": "r18_elegant_boudoir",
       "animaStyleHint": "r18_elegant_boudoir",
@@ -5928,9 +5972,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -5961,7 +6002,7 @@
       "title": "摩根 · 林间魔女木屋晴窗",
       "category": "成人",
       "characterId": "morgan_le_fay_fate",
-      "description": "【摩根 · 林间魔女木屋晴窗】妖精秘境的林间小木屋窗边，明媚阳光倾泻，梣（雨之魔女）滑落宽大的蓝色魔女法袍立姿倚窗，显露出妖精女王少女时期白皙纤细的锁骨与饱满胸脯，眼神羞涩而真挚。",
+      "description": "【成年梣形态 · 林间魔女木屋晴窗】妖精秘境的林间木屋里，二十岁以上成年梣形态的摩根独坐深窗台。宽大蓝色魔女法袍滑落并聚在腰际，显露成熟锁骨与丰满胸线；她把一条腿踩在法术箱上，用双手收紧刻有雨之卢恩的腿带，蓝光映出肌肤勒痕。银发在晴窗前发亮，冰蓝眼眸保留梣的真挚，却明确呈现成年女王体态。",
       "location": "妖精森林日光木屋",
       "action": "木屋晴窗前解开魔女长袍立姿半遮回眸",
       "timeOfDay": "白天",
@@ -5982,7 +6023,7 @@
         "standing",
         "daylight"
       ],
-      "promptProse": "Standing beside the sunlit cabin window, young Aesc lets her oversized blue robe fall, revealing her perky bare breasts with a tender blush.",
+      "promptProse": "Forest sunlight enters a cabin where the unmistakably adult, age-twenty-plus Aesc form of Morgan sits alone on a deep window bench. An oversized blue witch robe has fallen open and gathered beneath mature bare breasts, while one knee folds toward her chest and the other foot rests on a spell trunk. She tightens a rune-marked sash around one thigh with both hands, blue magic illuminating pressure marks and long silver hair. Ice-blue eyes and a sincere blush retain Aesc's gentleness without a youthful body. Medium seated solo portrait, no text.",
       "promptTokens": [
         "forest_cabin",
         "window",
@@ -6006,7 +6047,7 @@
         "standing",
         "tender_blush"
       ],
-      "nsfwProse": "Standing beside the sunlit cabin window, young Aesc lets her oversized blue robe fall, revealing her perky bare breasts with a tender blush.",
+      "nsfwProse": "",
       "coverageTags": []
     },
     {
@@ -6046,9 +6087,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -6100,7 +6138,7 @@
         "lying",
         "daylight"
       ],
-      "promptProse": "Reclining on a seaside terrace daybed, Morgan unties her bikini halter strings, presenting her full bust with an affectionate blush.",
+      "promptProse": "Sea light surrounds adult Queen Morgan reclining alone on a villa terrace daybed in a white halter bikini. She lies along the horizontal axis with one knee raised, using both hands to loosen the wet top until it slips below bare breasts and leaves clear strap marks. Wind spreads silver hair across blue cushions while a crown and water-goblet anchor the foreground. Ice-blue eyes turn toward the horizon through an unexpectedly warm blush, and the mature body remains complete from face to crossed ankles. Horizontal solo portrait, no text or extra people.",
       "promptTokens": [
         "seaside_balcony",
         "lounge_chair",
@@ -6165,9 +6203,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -6217,7 +6252,7 @@
         "daylight",
         "rim_lighting"
       ],
-      "promptProse": "Beside her palace throne in a backless silk gown, Morgan looks over her bare shoulder, high-key sunbeams sculpting her graceful curves.",
+      "promptProse": "High winter light fills the throne hall where adult Queen Morgan stands alone beside her seat in a black backless silk gown. One hand steadies the crown on the armrest while the other draws a side strap down, revealing side breast and the long line of her back without fully removing the dress. She turns at the waist so both ice-blue eyes and both hands remain visible, silver hair flowing over one shoulder. Sunbeams and blue crystal floor reflections carve a regal mature silhouette. Medium rear three-quarter solo portrait, no text or extra people.",
       "promptTokens": [
         "throne_room",
         "throne",
@@ -6951,9 +6986,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -6993,9 +7025,9 @@
       "title": "玛修 · 前辈书桌前晨光热茶",
       "category": "成人",
       "characterId": "mash_kyrielight",
-      "description": "【玛修 · 前辈书桌前晨光热茶】清晨前辈房间的阳光木书桌旁，玛修端着早茶立姿递给你，身上的宽大针织毛衣滑落半肩，捂着泛红脸颊娇羞垂首，丰满可人的胸型、纤细腰肢与修长美腿在晨光下满是后辈的信赖与爱意。",
+      "description": "【成年玛修 · 宿舍晨茶事故】清晨的迦勒底私人宿舍里，二十岁以上成年版本的玛修独自坐在木书桌边。宽大针织毛衣从双肩滑落并卷到胸下，热茶因她屈膝转身洒在大腿，薄薄蒸汽沿裸露胸线上升。她一手稳住茶杯，另一手探入毛衣下摆擦拭腿间水迹，紫色短发贴着红透的脸颊，隔着眼镜露出慌乱而信赖的目光。",
       "location": "迦勒底宿舍晨景",
-      "action": "书桌旁立姿递茶，宽松大毛衣滑落半肩娇羞微笑",
+      "action": "独坐书桌边稳住热茶，宽大毛衣滑至胸下，一手擦拭大腿与腿间水迹，隔着眼镜羞红凝视",
       "timeOfDay": "清晨",
       "lighting": "百叶窗透射的明亮淡金晨光与室内漫射天光",
       "camera": "side view, medium shot, horizontal framing",
@@ -7013,7 +7045,7 @@
         "blush",
         "daylight"
       ],
-      "promptProse": "Standing beside Senpai's sunlit wooden desk offering a cup of morning tea, Mash blushes furiously as her oversized knit sweater slides off one shoulder, showcasing her cute shyness and curvaceous figure.",
+      "promptProse": "Morning light reaches adult, age-twenty-plus Mash Kyrielight seated alone beside a wooden desk in a private Chaldea dormitory. Her oversized knit sweater has slipped from both shoulders and gathered below bare breasts. A tilted tea cup leaves warm droplets across one raised thigh; she steadies it with one hand while the other reaches beneath the hem to wipe the moisture between her legs. Steam outlines her mature curves as short violet hair clings to flushed cheeks and anxious eyes meet the lens through glasses. Vertical medium portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "wooden_desk",
@@ -7028,7 +7060,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "recommendedSize": "1152x1536",
       "outfitId": "chaldea_casual",
@@ -7042,9 +7078,13 @@
         "holding_tea_cup",
         "covering_face",
         "heavy_blush",
-        "shy_smile"
+        "shy_smile",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
-      "nsfwProse": "Standing beside Senpai's sunlit wooden desk offering a cup of morning tea, Mash blushes furiously as her oversized knit sweater slides off one shoulder, showcasing her cute shyness and curvaceous figure.",
+      "nsfwProse": "",
       "adultArtistHint": "@hiten (hitenkei)",
       "coverageTags": [
         "special_nsfw"
@@ -7087,9 +7127,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -7151,7 +7188,7 @@
         "blush",
         "daylight"
       ],
-      "promptProse": "Clutching a small white towel loosely across her chest in the outdoor hot spring, Mash smiles shyly as steam curls in the morning light.",
+      "promptProse": "Morning steam rises around adult, age-twenty-plus Mash Kyrielight seated alone on the stone step of a private outdoor spring. A thin white towel is soaked translucent across full breasts and waist while one leg remains in the water and the other bends onto the ledge. She holds the towel edge with one hand and smooths water from her inner thigh with the other, creating a stable folded pose. Pink bobbed hair, violet eyes and faint glasses marks stay clear against cedar fencing and summer leaves. Medium bath solo portrait, no text or extra people.",
       "promptTokens": [
         "hot_spring",
         "onsen",
@@ -7217,9 +7254,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -7277,7 +7311,7 @@
         "blush",
         "daylight"
       ],
-      "promptProse": "Leaning forward over the sofa pillow in natural daylight, Mash looks lovingly at Senpai, her bare bust spilling forward intimately.",
+      "promptProse": "Daylight enters a Chaldea lounge where adult, age-twenty-plus Mash Kyrielight kneels alone on a fabric sofa behind a broad cushion. Her loose cardigan is open and the cushion compresses full bare breasts as she leans forward, forearms braced on its top edge and hips folded over her heels. Thin glasses slide down her nose, keeping both hands and violet eyes visible while pink hair brushes the upholstery. The compact horizontal pose emphasizes physical pressure without another person. Intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "lounge_sofa",
         "pillow",
@@ -7343,9 +7377,6 @@
         "signature",
         "artist name",
         "chromatic aberration",
-        "nsfw",
-        "nude",
-        "explicit",
         "split image",
         "split screen",
         "split panel",
@@ -7404,7 +7435,7 @@
         "sitting",
         "bright_room"
       ],
-      "promptProse": "Sitting on the locker room bench with her black plugsuit unzipped down to her waist, Mash rests her bare breasts with a happy blush.",
+      "promptProse": "Bright training-room light finds adult, age-twenty-plus Mash Kyrielight seated alone on a wooden locker bench after removing heavy armor. Her black combat undersuit is unzipped to the waist and peeled below bare breasts; one hand grips the resistant zipper while the other wipes sweat from the inner thigh above a folded greave. A shield leans safely in the background, and pink hair clings to her damp cheek. Violet eyes behind glasses soften into a relieved blush within a compact seated frame. No text or extra people.",
       "promptTokens": [
         "locker_room",
         "wooden_bench",
@@ -7851,9 +7882,9 @@
       "title": "卡莲 · 教会软榻的深情仰卧索吻",
       "category": "私密温存",
       "characterId": "caren_hortensia",
-      "description": "【卡莲 · 教会软榻的深情仰卧索吻】空无一人的教会静室里，卡莲全身赤裸仰卧在深色天鹅绒长榻上。银白短发铺散在软枕间，修长紧致的双腿大开自然曲起，毫无遮拦地向你展现出她最敏感纯净的湿润花径。小巧坚挺的玉乳因急促喘息起伏剧烈，粉嫩小巧的乳头在微光中挺立泛红。她主动伸手环抱住你的后颈索吻，紫眸水光盈盈娇吟——「把我弄脏……让我身上全沾满你的气味……」",
+      "description": "【成年卡莲 · 圣堂绒榻的缎带约束】烛光圣堂里，二十岁以上成年版本的卡莲独自斜卧深色绒榻。白色礼装敞开并堆在腰侧，红色圣骸布绕过手腕与一条屈起大腿，形成由她控制的柔软张力；她一手收紧缎带，一手沿裸露腿间缓慢自抚。银发铺在靠垫上，紫色眼睛安静含泪，克制神情让私密动作更显危险。",
       "location": "教会幽静祷告室深处天鹅绒长榻中央",
-      "action": "全裸仰卧软榻上，双腿大开曲膝，双手勾住视角颈项索吻，眼眸迷离泛红娇喘",
+      "action": "独自斜卧圣堂绒榻，以圣骸布绕住手腕和屈腿，一手收紧缎带、一手在腿间自抚",
       "timeOfDay": "深夜",
       "lighting": "昏暗柔和的壁灯与烛火勾勒娇躯线条",
       "camera": "upper body to knees, vertical framing, high angle POV",
@@ -7870,7 +7901,7 @@
         "heavy_blush",
         "parted_lips"
       ],
-      "promptProse": "Lying completely nude upon a dark velvet couch in the candlelit sanctuary, Caren Hortensia surrenders her slender, porcelain body in total vulnerability. Her silver hair splays against the cushions as she parts her long, shapely thighs in total abandon. Her perky breasts with tender pink nipples heave with breathless sighs. Interlocking her fingers with the viewer's during intimate intercourse and fingering, she looks up with heavy-lidded violet eyes shining with tearful, intoxicating devotion. Sensual vertical anime CG, solo 1girl, no text.",
+      "promptProse": "Candles illuminate adult, age-twenty-plus Caren Hortensia reclining alone across a dark velvet couch inside the sanctuary. Her white ceremonial dress lies open at the waist while red holy shroud ribbons loop around one wrist and a raised thigh under her own control. She tightens the silk with one hand and touches herself with the other, keeping bare breasts, folded legs and both hands readable. Silver hair spreads over the cushions as violet eyes remain eerily calm behind wet lashes and a restrained blush. Diagonal intimate solo portrait, no text or extra people.",
       "promptTokens": [
         "church_interior",
         "candlelight",
@@ -7891,12 +7922,16 @@
         "saliva_trail",
         "white_hair",
         "purple_eyes",
-        "vertical_shot",
+        "wide_shot",
         "high_angle",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -7907,7 +7942,7 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": true,
       "sampleRating": "R18",
       "kreaStyleHint": "r18_explicit_h_cg",
@@ -7917,6 +7952,13 @@
         "nsfw",
         "supine",
         "special_nsfw"
+      ],
+      "nsfwProse": "",
+      "nsfwTokens": [
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ]
     },
     {
@@ -8033,7 +8075,6 @@
         "bedroom",
         "straddling",
         "cowgirl_position",
-        "riding",
         "completely_nude",
         "small_breasts",
         "pink_nipples",
@@ -8570,9 +8611,9 @@
       "title": "黑呆 · 黑色丝绸大床的傲慢仰卧交付",
       "category": "私密温存",
       "characterId": "artoria_pendragon_alter",
-      "description": "【黑呆 · 黑色丝绸大床的傲慢仰卧交付】深邃奢华的黑色丝绸大床上，黑呆浑身赤裸仰卧其中。浅金色的发髻散开披散在枕间，双腿微曲大开，饱满坚挺的雪白双乳随急促的心跳剧烈起伏，粉嫩的乳头因情动而挺立。她原本冷酷倨傲的面庞此刻泛着潮红，暗金色的眼眸浮起一层水雾，双手十指紧紧扣住你的手腕引向自己的胸膛——「还愣着干什么……快点进来，把你的烙印，深深地刻在我的身体里！」",
+      "description": "【成年黑化阿尔托莉雅 · 黑绸魔力回响】二十岁以上成年版本的黑化骑士王独自仰卧在黑色丝绸床褥上。暗色礼裙与胸甲已经解开并堆在腰侧，她屈起双腿，一手按住裸露胸部，另一手探向腿间；紫黑魔力从指尖沿床单扩散，金色眼睛在阴影里保持命令般的凝视。散落的王冠与黑剑只作背景，不出现任何伴侣。",
       "location": "奢华主卧铺着黑色丝绸被单的大床中央",
-      "action": "全裸仰卧在黑丝绸大床上，双腿大开曲膝，双手拉着视角手掌扣在胸膛，眼神泛水雾",
+      "action": "独自仰卧黑绸床褥，暗色礼裙与胸甲解至腰侧，一手按胸、一手探向腿间，紫黑魔力沿床单扩散",
       "timeOfDay": "深夜",
       "lighting": "床头昏暗柔和的暖黄烛光照亮瓷白肌肤",
       "camera": "upper body to knees, vertical framing, high angle POV",
@@ -8589,7 +8630,7 @@
         "heavy_blush",
         "parted_lips"
       ],
-      "promptProse": "Lying completely nude upon black silk sheets under the soft amber candlelight, Artoria Pendragon Alter demands absolute intimacy. Her golden hair pools across the pillows, framing her intensely flushed face. Her firm, perfect breasts with erect pink nipples heave with breathless sighs as she parts her pale thighs in total invitation. Interlocking her fingers with the viewer's during intimate intercourse and fingering, her golden eyes burn with proud, breathless surrender. Sensual vertical anime CG, solo 1girl, no text.",
+      "promptProse": "Amber candlelight cuts across adult, age-twenty-plus Artoria Pendragon Alter lying alone on black silk sheets. Her dark ceremonial gown and breastplate are unfastened and gathered at the waist, exposing bare breasts above both knees drawn into the vertical frame. One hand presses her chest while the other moves between her thighs, releasing violet-black mana through the bedding. A discarded crown and blackened sword remain in the background as golden eyes keep an imperious stare through flushed cheeks and parted lips. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
         "black_sheets",
@@ -8614,7 +8655,11 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8635,6 +8680,13 @@
         "nsfw",
         "supine",
         "special_nsfw"
+      ],
+      "nsfwProse": "",
+      "nsfwTokens": [
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ]
     },
     {
@@ -8748,7 +8800,6 @@
         "bedroom",
         "straddling",
         "cowgirl_position",
-        "riding",
         "completely_nude",
         "large_breasts",
         "bouncing_breasts",
@@ -9354,7 +9405,7 @@
         "panties_aside"
       ],
       "promptProse": "Jeanne d'Arc from Fate experiencing an intensely sacred yet sensual wardrobe malfunction alone in the dark cathedral confessional late at night. Leaning forward over the carved wooden kneeling bench, the intricate back corset ties of her pure white vestments have become stubbornly tangled, forcing open the front collar to reveal her bountiful, immaculate breasts with firm rose nipples glistening under trembling candlelight. With one hand straining behind her arched back to untangle the knots and her other hand sliding beneath her white skirts to pull her lace panties aside, her fingertips stroke her wet, sensitive petals. Biting her hand to suppress breathless whimpers, her violet eyes glisten with shy tears. Gothic stone arches, shadows, cinematic anime film aesthetic, solo 1girl, no text, no extra people.",
-      "nsfwProse": "open white vestment, bare breasts spilling out, firm pink nipples, skirt lifted, pulling lace panties aside, hand touching wet pussy, biting hand, heavy blush, teary eyes",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "touching_own_body",
@@ -9431,7 +9482,7 @@
         "hand_on_breast"
       ],
       "promptProse": "A breathtakingly pure, profoundly sensual anime illustration of Jeanne d'Arc from Fate reclining solo across a luxurious bridal satin bed on her wedding night. Her magnificent pure white bridal gown is loosened and bunched at her waist, with her delicate gossamer veil spread across the pillows. She lies on her back with her slender thighs parted gently in sweet surrender, adorned in exquisite translucent white crotchless panties that reveal her glistening pink pussy. Her delicate hands cup her heaving, bare porcelain breasts with soft pink nipples, long golden hair spilling like molten gold across the sheets. Flickering candlelight catches happy tears sparkling in her violet-blue eyes, heavy blush, vertical framing, high-end key visual finish, solo 1girl, no text, no extra people.",
-      "nsfwProse": "crotchless white panties, exposed wet pussy, parted thighs on bed, wedding dress loosened, bare breasts, pink nipples, hands cupping breasts, spread golden hair, happy tears",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "on_back",
@@ -9510,12 +9561,11 @@
         "white_thighhighs"
       ],
       "promptProse": "Straddling the center of the frame in an intimate solo cowgirl perspective in the warm candlelit bedchamber, Jeanne d'Arc from Fate rides with slow, devoted rhythm. One delicate shoulder strap of her angelic white lace lingerie has slipped down, baring her voluptuous breasts with erect pink nipples bobbing gently as white garter straps hug her soft thighs. Her glistening wet pussy is fully revealed in the golden glow, droplets trickling down her skin. She smiles down through happy tears with deep violet-blue eyes, golden hair cascading like a veil around her shoulders. Low-angle vertical composition, cinema anime art, solo 1girl, no text, no extra people.",
-      "nsfwProse": "cowgirl straddling pose, nude solo, bra slipping off shoulder, bare bouncing breasts, pink nipples, garter-strained white thighhighs, exposed wet pussy, golden hair veil, happy tears",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "cowgirl_position",
         "straddling",
-        "riding",
         "white_lingerie",
         "lace_bra",
         "bra_pull",
@@ -9585,7 +9635,7 @@
         "moonlight"
       ],
       "promptProse": "Reclining against the rim of a moonlit holy spring behind the chapel, Jeanne d'Arc wears her angelic white lace lingerie soaked to translucent sheerness, clinging to the full pale curves of her chest. Water beads roll down her collarbone as one trembling hand glides beneath the surface between her parted thighs, wet blonde hair drifting across the water like melted moonlight. Tears mingle with steam on her flushed cheeks as she finally admits the yearning to be touched was never a sin. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric moon haze, detailed stone spring background, depth of field.",
-      "nsfwProse": "wet translucent white lace clinging to skin, nipples visible through wet fabric, hand between thighs underwater, touching herself, heavy blush, teary eyes, parted lips, trembling thighs",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -10116,7 +10166,7 @@
         "sweat"
       ],
       "promptProse": "Scathach from Fate suffering a stunning wardrobe malfunction in the shadowed underground dojo of the Land of Shadows after a grueling training session. Leaning forward against a fallen wooden practice pillar, the rear zipper of her iconic skin-tight purple bodysuit has burst open down to her hips, completely freeing her firm, glistening bare back and letting her heavy, voluptuous breasts spill bare from the front with erect dark-rose nipples exposed. One hand reaches beneath the unzipped purple fabric to touch her dripping, sensitive core, while beads of sweat gleam across her athletic porcelain curves in the flickering brazier fire. Glancing back over her shoulder with glowing crimson eyes and a breathless, teasing smirk, deep anime visual novel key visual, solo 1girl, no text, no extra people.",
-      "nsfwProse": "wardrobe malfunction, unzipped purple bodysuit, bare back, bare heavy breasts, erect dark rose nipples, hand touching wet pussy, sweat beads, crimson eyes, teasing smirk",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "touching_own_body",
@@ -10192,7 +10242,7 @@
         "curtains"
       ],
       "promptProse": "Lying solo across lavish black silk bedding beneath hanging violet curtains in the royal chamber of the Land of Shadows, Scathach is completely nude, her regal poise melting into intoxicating private pleasure. Her long athletic thighs are spread wide across the covers, one hand cupping her full, firm breast while her other hand slides between her parted thighs to caress her wet, glistening pussy. Her magnificent violet hair is fanned out like spilled ink over the pillows, with glistening sweat catching the warm candlelight filtering through silk. Her glowing ruby eyes gaze up with heavy-lidded climactic ecstasy, parted lips sighing in blissful surrender. High-impact vertical framing, cinematic dark fantasy anime style, solo 1girl, no text, no extra people.",
-      "nsfwProse": "nude on back on silk bed, parted long thighs, hand between legs touching wet pussy, hand on bare breast, erect pink nipples, violet hair spread on sheets, ruby eyes rolling, heavy blush",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "on_back",
@@ -10251,9 +10301,9 @@
       "title": "斯卡哈 · 师匠的主控反客为主骑乘特训·「今晚的课业只有一项：撑住，不许昏过去」",
       "category": "主控骑乘",
       "characterId": "scathach_fate",
-      "description": "【居城寝室·深夜特训】斯卡哈正面跨坐在床榻中央，处于绝对主控中心。黑色蕾丝胸衣褪至胸下，黑色吊袜带绷紧修长有力的大腿。她双手撑膝主动起伏研磨腰肢，挺拔饱满的双乳随着节奏剧烈颤动，湿润诱人的私密处毫无保留地对准镜头。她微微俯身，灼热的赤瞳燃着好胜与征服的烈火，在喘息中下达绝不认输的战书。",
+      "description": "【成年斯卡哈 · 居城寝室深夜特训】二十岁以上成年版本的斯卡哈独自在床榻中央跨坐狭长训练软垫。黑色蕾丝胸衣褪至胸下，吊袜带绷紧修长有力的大腿；她双手撑膝，以缓慢腰部动作压住软垫并磨蹭自己的敏感处。挺拔胸线随呼吸起伏，湿润私密处对准低机位，灼热赤瞳仍像训练时一样发出不容退缩的挑战。",
       "location": "居城寝室大床",
-      "action": "反客为主正面主控骑乘机位，黑蕾丝半褪吊袜带绷腿，挺拔双乳剧烈律动，俯身眼神凌厉挑衅",
+      "action": "独自跨坐狭长训练软垫，黑蕾丝半褪、吊袜带绷腿，双手撑膝以腰部动作自我磨蹭并俯视镜头",
       "timeOfDay": "深夜",
       "lighting": "床头幽暗暖光与蕾丝黑红的诱惑光泽",
       "camera": "cowgirl straddle POV, vertical framing, dominant lean-in, low angle",
@@ -10269,13 +10319,12 @@
         "exposed_pussy",
         "dominant"
       ],
-      "promptProse": "In an exhilarating solo frontal cowgirl perspective in her private bedchamber, Scathach from Fate commands the space with athletic grace. Leaning slightly forward with hands placed firmly on her own thighs, her black-and-crimson lace lingerie is pushed down to fully reveal her gorgeous, bouncing breasts and taut rose nipples. Her long shapely legs are framed by taut black garter straps, her glistening wet pussy open and dripping with heat. Fierce crimson eyes burn with dominant intensity, daring the viewer to keep up with her relentless pace. Flying purple hair, vertical low-angle composition, cinematic anime film style, solo 1girl, no text, no extra people.",
-      "nsfwProse": "cowgirl straddling pose, solo, black lace lingerie pushed down, bare bouncing breasts, pink nipples, garter-strained black thighhighs, exposed wet pussy, red eyes, dominant tease",
+      "promptProse": "Inside her private bedchamber, adult, age-twenty-plus Scathach straddles a narrow training cushion alone in a frontal low-angle view. Black-and-crimson lace has slipped below bare breasts while taut garter straps frame powerful folded thighs. Both hands press into her own knees as she grinds against the cushion and touches herself, keeping every limb readable. Violet hair lifts with the motion and wet skin catches torchlight while fierce crimson eyes challenge the lens through a deep blush and parted breath. Vertical intimate solo portrait, no text or extra people.",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "cowgirl_position",
         "straddling",
-        "riding",
         "black_lingerie",
         "lace_bra",
         "bra_pull",
@@ -10299,7 +10348,10 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ],
       "negativeTokens": [
         "worst quality",
@@ -10321,6 +10373,12 @@
         "nsfw",
         "cowgirl",
         "special_nsfw"
+      ],
+      "nsfwTokens": [
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs"
       ]
     },
     {
@@ -10346,7 +10404,7 @@
         "steam"
       ],
       "promptProse": "Reclining against the rock rim of a violet-misted open-air hot spring in the Land of Shadows, Scathach wears her purple bodysuit soaked to translucent sheerness with a torn seam curling at her chest, the wet fabric clinging to every saturated curve. Her long purple hair drifts across the steaming water as one hand glides beneath the surface between her thighs, fingertips stroking her most sensitive core while her crimson eyes fall half-lidded, murmuring that even immortality wearies on nights like this. Ambient steam and lantern glow in a sensual solo composition, cinematic lighting, volumetric mist, detailed onsen background, depth of field.",
-      "nsfwProse": "wet translucent purple bodysuit clinging to skin, nipples visible through wet fabric, hand between thighs underwater, touching herself, heavy blush, teary eyes, parted lips, trembling thighs",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -10882,7 +10940,7 @@
         "jewelry"
       ],
       "promptProse": "On the temple's sacred marble throne steps with translucent bridal-thin veils scattered around her, Ishtar arches her slender back in an overwhelming rush of divine ecstasy. Her fingers clutch the carved armrests while her golden hoop earrings catch the warm candlelight, ruby red eyes glistening with rare, vulnerable tears no mortal has ever witnessed. Her small divine chest rises and falls rapidly as one trembling hand touches her inner thigh, protesting between ragged gasps that mortal audacity on the goddess's throne has exceeded all bounds. Intimate vertical composition, cinematic lighting, golden volumetric glow, detailed temple background, depth of field.",
-      "nsfwProse": "sensual supine solo on throne, arched back, spread legs, hand between legs touching own body, exposed petite breasts, pink nipples, exposed pussy, pussy juice, heavy blush, teary red eyes, parted lips, hoop earrings",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -10956,12 +11014,11 @@
         "romance"
       ],
       "promptProse": "A night with a goddess is a night that enters mythology. Ishtar straddles your waist in her gold-and-black lingerie, fine chains chiming with every roll of her hips while the tiara sits abandoned on the nightstand. She offers a fraction more tenderness than usual tonight — because it is you — her red eyes glazing as bouncing breasts and heavy blush compete with her regal composure. Vertical low-angle cowgirl composition, cinematic lighting, volumetric city glow, depth of field.",
-      "nsfwProse": "cowgirl straddling, riding on lap, gold chain lingerie, bouncing breasts, rolling hips, pussy juice, heavy blush, glazing red eyes, parted lips",
+      "nsfwProse": "",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "gold_lingerie",
         "lace_bra",
         "waist_chain",
@@ -11028,7 +11085,7 @@
         "biting_lip"
       ],
       "promptProse": "Ishtar sweeps the ceremonial offerings aside and leans forward over the temple table at dusk, her short black skirt lifted as the delicate gold chains around her hips chime with every breath. Looking back over her bare shoulder with a defiant, blushing glare in her ruby eyes, she bites her full lower lip while trembling fingers steady her arched posture. Warm amber twilight spills across the offering altar, highlighting the graceful curve of her back, taut waist, and flushed thighs in an arresting horizontal composition, detailed background, depth of field.",
-      "nsfwProse": "bent over offering table, leaning forward, skirt lifted, gold lingerie, waist chain, exposed pussy, pussy juice, biting lip, looking back, heavy blush, arched back, wet thighs, parted lips",
+      "nsfwProse": "",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -11097,7 +11154,7 @@
         "steam"
       ],
       "promptProse": "During the goddess's private bath, Ishtar reclines against the rim of the sacred spring in a gold-veiled gown soaked to translucence, the wet fabric outlining curves divine and dangerous alike. One hand glides beneath the water over herself while her red eyes glance sidelong at your hiding spot, naming the viewing fee for a goddess's bath and offering to collect the balance by other means. Sensual solo composition, wet translucent veil, cinematic lighting, volumetric steam, detailed spring background, depth of field.",
-      "nsfwProse": "wet translucent gold veil clinging to skin, nipples visible through wet fabric, hand between thighs underwater, touching herself, heavy blush, teary eyes, parted lips",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -11627,7 +11684,7 @@
         "tears"
       ],
       "promptProse": "The quiet land of the dead knows profound warmth for the very first time. Lying back upon a grand bed draped in gossamer pale-blue gauze, Ereshkigal lets her magnificent golden hair spill out like liquid moonlight across the pillows. Her delicate chest rises and falls with trembling, sacred breaths, pink nipples taut beneath the ghostly soul-glow as her slender fingers drift between her parted pale thighs. Tears of long-buried longing glisten in her crimson eyes, whispering through parted lips that this warmth is far heavier and more precious than the entire underworld. Sensual vertical composition, cinematic lighting, ethereal blue volumetric glow, detailed underworld background, depth of field.",
-      "nsfwProse": "sensual supine solo, arched back on bedsheet, spread legs, hand between legs touching own body, exposed petite breasts, pink nipples, exposed pussy, pussy juice, heavy blush, teary red eyes, parted lips, glowing underworld light",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "lying_on_back",
@@ -11703,7 +11760,7 @@
         "biting_lip"
       ],
       "promptProse": "Caught in a rare unshielded moment on the dark stone steps of her underworld throne, Ereshkigal leans forward with both hands bracing against the cold marble, her staff set aside and her black dress gathered at her hips. Looking back over her slender arched back with a tearful, crimson-eyed gaze, she bites her lip in flushed embarrassment while soul-fire light illuminates the lovely curve of her waist and thighs. Ghostly blue luminescence dances across her trembling form in a breathtaking horizontal composition, detailed background, depth of field.",
-      "nsfwProse": "bent over throne steps, leaning forward, black dress hitched up, crotchless panties, exposed pussy, pussy juice, biting lip, looking back, heavy blush, arched back, trembling thighs, parted lips",
+      "nsfwProse": "",
       "promptTokens": [
         "bent_over",
         "leaning_forward",
@@ -11772,12 +11829,11 @@
         "night"
       ],
       "promptProse": "Even the queen of the dead practices being proactive. Straddling your waist with the ribbons of her blue-black lace half undone and blonde hair curtaining your faces, Ereshkigal moves with earnest, unpracticed rolls while studying every micro-change of your expression like a judgment, red eyes wet as she admits that being watched makes her composure crack. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, volumetric soul glow, depth of field.",
-      "nsfwProse": "cowgirl straddling, riding on lap, earnest unpracticed rolls, ribbons undone, bouncing breasts, pussy juice, heavy blush, wet watching eyes, parted lips",
+      "nsfwProse": "",
       "promptTokens": [
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "blue_lingerie",
         "lace_bra",
         "bra_pull",
@@ -11843,7 +11899,7 @@
         "steam"
       ],
       "promptProse": "The queen who tends all the underworld's dead tends herself for once. Reclining at the rim of the soul spring in blue-black lace soaked to translucence, Ereshkigal lets her blonde hair drift across the water while trembling fingers trace her most private curves, red eyes unfocused in the ghostly glow as she adds a page to her official diary about checking the compatibility of soul and body — a page forbidden from archiving. Sensual solo composition, wet translucent lace, cinematic lighting, volumetric steam, detailed spring background, depth of field.",
-      "nsfwProse": "wet translucent blue lace clinging to skin, nipples visible through wet fabric, hand between thighs underwater, touching herself, heavy blush, teary eyes, parted lips",
+      "nsfwProse": "",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -11898,7 +11954,7 @@
       "category": "水光私语",
       "characterId": "caren_hortensia",
       "outfitId": "sacred_white_swimsuit",
-      "description": "【卡莲 · 黄昏泳池白泳装的圣女卸防低吟】黄昏的教会学校泳池，晚霞把水面染成蜜金色。卡莲穿着那件圣洁纯白的高开叉竞速泳装泡在池中，浸水的泳衣紧贴纤细的身段，侧腰开衩处毫无遮拦地露出雪白的肌肤。确认四周无人后，她终于卸下圣女的伪装，把泳衣裆部的布料轻轻拨到一侧，指尖在温水下滑入早已湿透的花径，银白短发滴着水珠，琥珀色的眼眸蒙上迷离的水雾——「哈啊……只有在这里……谁也不用我拯救……白之圣女……也只是个普通的女孩而已……」",
+      "description": "【卡莲 · 黄昏泳池白泳装的圣女卸防低吟】黄昏的教会学校泳池，晚霞把水面染成蜜金色。卡莲穿着那件圣洁纯白的高开叉竞速泳装泡在池中，浸水的泳衣紧贴纤细的身段，侧腰开衩处毫无遮拦地露出雪白的肌肤。确认四周无人后，她终于卸下圣女的伪装，把泳衣裆部的布料轻轻拨到一侧，指尖在温水下滑入早已湿透的花径，银白短发滴着水珠，琥珀色的眼眸蒙上迷离的水雾——「哈啊……只有在这里……谁也不用我拯救……白之圣女……也只是个普通的成年女性而已……」",
       "location": "晚霞弥漫的教会学校室内泳池浅水区",
       "action": "斜靠池壁浸水而坐，泳衣裆布拨开探指自抚，仰头咬唇压抑娇喘",
       "timeOfDay": "黄昏闭馆时分",
@@ -14182,7 +14238,6 @@
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "dark_skin",
         "tan",
         "red_hair",
@@ -14193,7 +14248,6 @@
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "dark_skin",
         "tan",
         "red_hair",
@@ -14248,7 +14302,6 @@
         "straddling",
         "cowgirl_position",
         "on_lap",
-        "riding",
         "dark_skin",
         "tan",
         "red_hair",
@@ -14401,7 +14454,7 @@
     },
     {
       "id": "chloe_von_einzbern_r18_b7_03",
-      "title": "克洛伊 · 学院旧泳装拉伸崩裂的更衣事故 ·「呀！泳衣胸口崩线了……士郎快用嘴帮我挡住♪」",
+      "title": "克洛伊 · 成人研修院旧泳装拉伸崩裂的更衣事故 ·「呀！泳衣胸口崩线了……士郎快用嘴帮我挡住♪」",
       "category": "更衣事故",
       "characterId": "chloe_von_einzbern",
       "description": "【学校室内泳池更衣室·放学后】偷偷试穿伊莉雅的小号旧式深蓝连体泳衣，因为身材过于凹凸有致导致胸前缝线整条崩断。小黑双手撑在更衣长椅上，泳衣胸口大敞，雪白与褐色交界的饱满胸脯完全弹跳出来，下身泳衣被卡进股沟。她坏笑着回头眨眼——「哎呀呀……被士郎看到了呢……既然弄坏了衣服，就拿你的身体来赔偿吧？」",
