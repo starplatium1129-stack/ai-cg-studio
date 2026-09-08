@@ -574,6 +574,24 @@ function identityWithoutOutfit(prose: string): string {
     .trim()
 }
 
+/**
+ * 成人蓝图必须把「成年版本」落实到最终提示词，而不能只依赖 UI 门禁字段。
+ * 角色库仍需保留原作身份供 SFW 使用，因此仅在 adultGranted 分支转换容易把
+ * 模型拉回学生/少女形态的称谓，并在 Krea/Anima caption 中加入明确年龄锚点。
+ */
+function adultIdentityProse(prose: string): string {
+  const identity = identityWithoutOutfit(prose)
+    .replace(/\b(?:young\s+)?girl\b/gi, 'adult woman')
+    .replace(/\bschoolgirl\b/gi, 'adult woman')
+    .replace(/\b(?:middle|junior high|high)[- ]school student\b/gi, 'adult alumna')
+    .replace(/\bstudent\b/gi, 'adult alumna')
+    .replace(/\bteen(?:age|aged)?\b/gi, 'adult')
+  return `The unmistakably adult, age-twenty-plus version of ${identity}`
+}
+
+const ADULT_IDENTITY_EXCLUDE_RE =
+  /^(?:child|children|loli|underage|minor|young_girl|schoolgirl|student|teenager|middle_school_student|junior_high_student|high_school_student)$/
+
 /** 渲染模板自带动词（Krea "wearing X" / Anima "She wears X"），服装 prose 若
  *  自带 "wearing/dressed in" 开头必须剥除，否则编译出 "wearing wearing"。
  *  2026-08-24 实测：8 角色 37 套服装踩坑（yor/reze/fern/jalter/sakura/yui/sylphiette/mimori/cecilia）。 */
@@ -708,9 +726,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
         ...(AMBIENCE_TOKENS[lightingKey] || []).filter(token => token && !KREA_PROSE_LIGHT_DROP.test(token)).slice(0, 4)])]
       : []
     const plan = createPromptPlan({
-      subjectProse: outfitActive
-        ? identityWithoutOutfit(character.identityProse)
-        : proseWithoutOutfit(character.identityProse),
+      subjectProse: adultGranted
+        ? adultIdentityProse(character.identityProse)
+        : (outfitActive
+            ? identityWithoutOutfit(character.identityProse)
+            : proseWithoutOutfit(character.identityProse)),
       outfitProse,
       sceneProse,
       emotion: emotionTokens,
@@ -736,9 +756,12 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     : character.identityTokens.filter(token =>
         mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
     .filter(token => !dnaAvoid.has(normalizeProseKey(token)))
+    .filter(token => !adultGranted || (!isGarmentToken(token)
+      && !ADULT_IDENTITY_EXCLUDE_RE.test(String(token || '').trim().toLowerCase())))
   const exactControls = [...new Set([
     ...((adultGranted || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
     ...(character.exactTokens || []),
+    ...(adultGranted ? ['adult'] : []),
     ...nsfwTokens,
   ])]
   // 2026-08-29 需求变更：画师仅来自用户手动选择（artistTags），
@@ -760,9 +783,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     negative: (blueprint?.negativeTokens || []).join(', '),
     rating: rating || (ratingLevel === 'R18' ? 'nsfw' : ''),
     visualDescription: userVisual,
-    subjectProse: outfitActive
-      ? identityWithoutOutfit(character.identityProse)
-      : proseWithoutOutfit(character.identityProse),
+    subjectProse: adultGranted
+      ? adultIdentityProse(character.identityProse)
+      : (outfitActive
+          ? identityWithoutOutfit(character.identityProse)
+          : proseWithoutOutfit(character.identityProse)),
     // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支已置空）。
     // renderPromptPlan('anima') 会在 outfitProse 存在时渲染 "She wears {outfit}",
     // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。
@@ -791,7 +816,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 与场景生成器同款多格/重复主体压制；单人场景追加第二人压制（壁纸级第一）。
   // 2026-08-15 增强：补 duplicate/extra person/1boy/2boys/crowd（R18 双人分身问题）；
   // 不加 mirror/reflection，避免误伤合法镜面/倒影场景（如浴室镜）。
-  const panelSuppress = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people, duplicate, duplicated person, extra person, 1boy, 2boys, crowd, bystanders'
+  const panelSuppress = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people, duplicate, duplicated person, extra person, extra limbs, 1boy, 2boys, crowd, bystanders'
   // 2026-08-15 审计：panelSuppress 必须走整条去重管道（tokenize→normalizeKey→按 token 去重），
   // 否则与蓝图负面重复（150 个蓝图含 multiple girls、6 个含 crowd，最终负面各出现两次）。
   const finalNegative = mergeTokenText(negative, panelSuppress)

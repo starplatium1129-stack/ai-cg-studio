@@ -472,6 +472,37 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
   assert.ok(!/completely deserted|not a single other person|no commuters/i.test(kreaText), 'Krea must not force every public scene to be deserted');
 });
 
+test('adult blueprints compile as explicit adult versions in both engines', function () {
+  var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
+  assert.ok(adultBlueprints.length > 0, 'adult blueprint corpus must not be empty');
+  adultBlueprints.forEach(function (blueprint) {
+    var character = popular.findCharacter(characters, blueprint.characterId);
+    var outfit = character.outfits.find(function (item) { return item.id === blueprint.outfitId; })
+      || character.outfits.find(function (item) { return item.default; })
+      || character.outfits[0];
+    var anima = popular.buildPopularPromptPlan({
+      character: character, outfit: outfit, blueprint: blueprint,
+      engine: 'anima', profile: null, adultEnabled: true,
+    });
+    var krea = popular.buildPopularPromptPlan({
+      character: character, outfit: outfit, blueprint: blueprint,
+      engine: 'krea2', profile: null, adultEnabled: true,
+    });
+    assert.ok(anima && krea, blueprint.id + ' must compile for both adult engines');
+    assert.ok(anima.prompt.split('\n')[0].split(',').map(function (token) { return token.trim(); }).includes('adult'),
+      blueprint.id + ' Anima prompt must carry the exact adult token');
+    assert.ok(/unmistakably adult, age-twenty-plus version/i.test(krea.prompt),
+      blueprint.id + ' Krea prompt must explicitly describe the adult version');
+    assert.strictEqual(krea.negative, '', blueprint.id + ' Krea negative must stay empty');
+    ['nsfw', 'nude', 'explicit'].forEach(function (token) {
+      assert.ok(!anima.negative.split(',').map(function (part) { return part.trim().toLowerCase(); }).includes(token),
+        blueprint.id + ' Anima negative must not block ' + token);
+    });
+    assert.ok(anima.negative.split(',').map(function (part) { return part.trim().toLowerCase(); }).includes('extra limbs'),
+      blueprint.id + ' Anima negative must suppress extra limbs');
+  });
+});
+
 test('blueprint decisions: angle keywords outrank framing substrings; every blueprint resolves a shot', function () {
   var thunderNight = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; });
   var decision = popular.inferBlueprintDecisions(thunderNight);

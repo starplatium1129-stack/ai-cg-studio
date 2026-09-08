@@ -110,7 +110,7 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
   // R18 场景双人/分身高发：额外加强 solo/1girl 权重与无路人压制（2026-08-15 用户反馈）。
   const cloneGuard = '(no clone:1.4), (no duplicate:1.4), (no twin:1.3), no duplicated character, no second copy, no doppelganger, no double body, no mirror copy, single subject only';
   const soloGuard = adult
-    ? `(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), (no second person:1.3), no other person, no bystanders, no background people, ${cloneGuard}`
+    ? `(solo:1.5), (1girl:1.4), (single girl only:1.5), (one person only:1.5), (no second person:1.3), no other person, no bystanders, no background people, ${cloneGuard}`
     : `(single girl only:1.4), (one person only:1.4), no second person, no other person, ${cloneGuard}`;
   const prompt = result.prompt.includes('\n')
     ? result.prompt.replace('\n', `, ${soloGuard}\n`)
@@ -119,9 +119,17 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
   // blueprint 级负面原样追加：anima profile 的 negative_mode=replace(boilerplate) 会把
   // blueprint negativeTokens 里的大部分词（2girls/clone/twin/inset image 等）当样板过滤掉，
   // 导致场景级负面定制从未生效（2026-08-15 人物数核查发现）。维护脚本在此强制补回。
-  const blueprintNegative = Array.isArray(blueprint.negativeTokens)
+  const blueprintNegativeRaw = Array.isArray(blueprint.negativeTokens)
     ? blueprint.negativeTokens.join(', ').trim()
     : String(blueprint.negativeTokens || '').trim();
+  // 成人蓝图不得把正向分级词重新追加进负面。buildPopularPromptPlan 已按评级
+  // 清洗一次，这里的场景级兜底必须保持同一契约。
+  const adultNegativeBlockers = new Set(['nsfw', 'nude', 'explicit']);
+  const blueprintNegative = blueprintNegativeRaw
+    .split(',')
+    .map(token => token.trim())
+    .filter(token => token && (!adult || !adultNegativeBlockers.has(token.toLowerCase().replace(/_/g, ' '))))
+    .join(', ');
   // 2026-08-18 增强：分身/复制体负面压制（社交场景出同款第二主角共性根因）。
   const cloneNegative = 'duplicate, clone, copy, doppelganger, twin, two of her, second instance of her, duplicated subject, multiple girls, extra girl, same character twice';
   const negative = [result.negative, blueprintNegative, cloneNegative].filter(Boolean).join(', ');
