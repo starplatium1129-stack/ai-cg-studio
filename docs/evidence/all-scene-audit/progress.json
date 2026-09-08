@@ -1,27 +1,27 @@
 {
-  "updatedAt": "2026-09-08T15:19:35.167Z",
+  "updatedAt": "2026-09-08T16:37:41.162Z",
   "goalStatus": "active",
-  "batch": "old-1",
+  "batch": "old-2",
   "characterTarget": 50,
   "internalSemanticCharacters": 50,
-  "nonAdultTarget": 314,
-  "internalSemanticScenes": 314,
-  "withFindings": 241,
+  "nonAdultTarget": 345,
+  "internalSemanticScenes": 345,
+  "withFindings": 244,
   "fullSceneAuditsCompleted": 0,
   "currentVerifiedRepairImages": 10,
   "currentFirstBatchRepairImages": 4,
-  "nextCharacterIndex": 50,
-  "nextCharacterId": null,
+  "nextCharacterIndex": 0,
+  "nextCharacterId": "arcueid_brunestud",
   "semanticReports": [
-    "old1-first10-semantic-review.json",
-    "old1-next3-semantic-review.json",
-    "old1-next2-semantic-review.json",
-    "old1-next5-semantic-review.json",
-    "old1-characters21-26-semantic-review.json",
-    "old1-characters27-32-semantic-review.json",
-    "old1-characters33-36-semantic-review.json",
-    "old1-characters37-42-semantic-review.json",
-    "old1-characters43-50-semantic-review.json"
+    "old2-characters01-05-semantic-review.json",
+    "old2-characters06-08-semantic-review.json",
+    "old2-characters09-14-semantic-review.json",
+    "old2-characters15-20-semantic-review.json",
+    "old2-characters21-27-semantic-review.json",
+    "old2-characters28-33-semantic-review.json",
+    "old2-characters34-39-semantic-review.json",
+    "old2-characters40-45-semantic-review.json",
+    "old2-characters46-50-semantic-review.json"
   ],
   "sourceChangesSinceSemanticReview": [
     {
@@ -46,15 +46,15 @@
     }
   ],
   "remaining": [
-    "first-batch canonical and existing-image verification",
-    "207 first-batch R18 source semantic audit beyond metadata",
-    "failed Saber Alter visual repair",
-    "old-2 and old-3 per-scene audit",
-    "302 standalone scene audit",
-    "new49 completed-source reconciliation",
-    "remote/browser/dual-theme verification",
-    "reference image assets: 28 pending views for 4 registered forms",
-    "publish reviewed images and coordinate precise commit/push"
+    "old-3: 9 characters / 63 non-R18 source scenes",
+    "new49 current-source and evidence reconciliation",
+    "302 standalone scene audits",
+    "R18 existing-source semantic/age assessment beyond metadata",
+    "canonical research and existing-image review for all batches",
+    "Saber Alter failed visual repair and other confirmed priority repairs",
+    "remote/browser/dual-theme validation",
+    "28 pending reference views for 4 registered forms",
+    "publish verified images and integrate branch changes when appropriate"
   ],
   "checks": {
     "previousOwnedRepairGate": "pass",
@@ -76,5 +76,15 @@
   "failedVisualRepairs": [
     "saber_alter_sofa_armor_off_cuddle"
   ],
-  "nextStage": "Complete first-batch canonical/visual and adult-source audit; continue old-2 source audit and prioritize identified safety bindings"
+  "nextStage": "old-3 nine-character source audit, then standalone scenes and canonical/visual/rating closure",
+  "cumulativeInternalSemanticCharacters": 100,
+  "cumulativeInternalSemanticScenes": 659,
+  "cumulativeRowsWithFindings": 485,
+  "checkpoint": {
+    "branch": "codex/all-scene-audit",
+    "sourceCommit": "ed1cef5a18303dd1f17721f4773ee491e726b25e",
+    "sourcePushed": true,
+    "sourceWorktree": "E:/code/2/lora/AI-CG-Studio-audit",
+    "sourceValidation": "gate:full pass in isolated worktree after initial build"
+  }
 }

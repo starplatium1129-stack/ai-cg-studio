@@ -1,6 +1,6 @@
 # 全项目场景审计：目标与批次
 
-> 最新进度：old-1 的50角色/314条非R18源场景已全部逐条读取并核对内部语义，241条有问题或待查线索；207条R18目前为元数据初筛。正史、画面和全部参数的逐条验收尚未完成。机器可接续进度见 [progress.json](evidence/all-scene-audit/progress.json)。
+> 最新进度（2026-09-09）：old-1与old-2共100角色、659条非R18标签场景已逐条核对内部语义，485条有问题或查证线索；两批414条R18仍为元数据初筛。正史、画面和完整分级验收尚未完成。源修复检查点已在独立分支提交并推送。机器可接续进度见 [progress.json](evidence/all-scene-audit/progress.json)。
 
 用户要求扩大为全项目审计，每批约 50 个角色。已建立持续目标，约尔五条先行验证不再作为完整大批次交付。以下为 2026-09-08 本次源分片快照，不代表全部人工审计完成。
 
@@ -11,7 +11,7 @@
 | 批次 | 角色数 | 全部场景 | 非 R18 场景 | 当前阶段 |
 | --- | ---: | ---: | ---: | --- |
 | old-1 | 50 | 521 | 314 | 非R18内部语义314/314完成；正史、画面及R18深入审核待完成 |
-| old-2 | 50 | 552 | 345 | 已建清单、完成相同初筛 |
+| old-2 | 50 | 552 | 345 | 非R18内部语义345/345完成；设定、画面、R18深入审核待完成 |
 | old-3 | 9 | 99 | 63 | 已建清单、完成相同初筛 |
 | new49-readonly | 49 | 509 | 313 | 只读初筛，待新批次交付证据对账 |
 | studio-1～7 | 宁宁/夏目/双人组 | 302 | 286 | 每组50条，末组2条；初筛完成 |
@@ -88,3 +88,15 @@
 [最终双引擎计划](evidence/all-scene-audit/safe-binding-final-dual-plans.json)在关闭成人开关时不再含内衣词，Krea负向为空。3条均真实出图：[逐图审核](evidence/all-scene-audit/safe-binding-visual-review.json)。食蜂第二次和希耶尔第一次通过衣装及主要道具核对，手部支撑位置和面部占比等偏差已记录；黑呆仍混入装甲、蓝色衣装与错误依靠对象，明确视觉失败待修，不发布、不计完整通过。
 
 最初门禁暴露了本次新参考形态缺默认登记，以及黑呆旧定义变成无引用的实际问题，均已处理。最终[本轮全量门禁日志](evidence/all-scene-audit/safe-binding-gate-full.log)通过，耗时约1分49秒；仍未执行样张发布、浏览器双主题验收、桌面部署或Git写操作。第一大批完整审计未完成，全项目目标保持active。
+
+## 第四轮：第二批源审计与远端检查点（2026-09-09）
+
+第二批50角色、552条蓝图中，345条非R18标签场景全部逐条读取并核对了故事、动作、英文、标签、衣装、机位、尺寸和光照；244条有冲突或查证线索，101条未见重大内部冲突。已检查唯一ID覆盖与当前源哈希，没有遗漏、重复或未解释的源漂移。[整批摘要](evidence/all-scene-audit/old2-semantic-summary.json)。207条R18尚未完成深入语义、年龄资格及画面审核。
+
+逐条证据：[01～05](evidence/all-scene-audit/old2-characters01-05-semantic-review.json)、[06～08](evidence/all-scene-audit/old2-characters06-08-semantic-review.json)、[09～14](evidence/all-scene-audit/old2-characters09-14-semantic-review.json)、[15～20](evidence/all-scene-audit/old2-characters15-20-semantic-review.json)、[21～27](evidence/all-scene-audit/old2-characters21-27-semantic-review.json)、[28～33](evidence/all-scene-audit/old2-characters28-33-semantic-review.json)、[34～39](evidence/all-scene-audit/old2-characters34-39-semantic-review.json)、[40～45](evidence/all-scene-audit/old2-characters40-45-semantic-review.json)、[46～50](evidence/all-scene-audit/old2-characters46-50-semantic-review.json)。约尔五条使用本会话最终修复快照重核，未沿用旧稿。
+
+关键问题包括：拉普兰德居家白T/海滩比基尼仍绑佣兵/皮衣；佩丽卡恒温生态舱绑极寒装备；明日香黄泳装仍绑Q黑夹克眼罩且英文误名Asuna；2B白衬衫及婚纱分别绑战裙和黑礼服；C.C.米色风衣草帽绑黑骑士制服。枪械、容器、食物、发瞳色和双人接触的矛盾均有逐条证据。部分非R18条目实际带明显性化描写，必须先做年龄/分级资格评估，不允许按`adult=false`批量直接送去生成。
+
+本轮没有继续更改源数据，先把已有54个受控文件复制到独立工作区`E:/code/2/lora/AI-CG-Studio-audit`。首次冷启动门禁因缺少SPA构建产物导致chat路由契约失败，已核对测试依赖并补构建；随后[独立工作区全量门禁](evidence/all-scene-audit/isolated-checkpoint-gate.log)通过（约1分53秒）。大型机器证据仅压缩JSON空白，经解析比较确认内容未变。精准提交并推送了[源检查点 ed1cef5a](https://github.com/starplatium1129-stack/ai-cg-studio/commit/ed1cef5a18303dd1f17721f4773ee491e726b25e)至`codex/all-scene-audit`，未混入其他会话代码，未合并main。以上日期较早的“未进行Git写操作”是当时状态，以本节检查点记录为准。
+
+下一步为old-3的9角色/63条非R18源场景、独立302场景及新49当前交付证据对账；所有已发现问题的设定、真实画面、分级和修复闭环继续保留，不能以两批源码核对完成宣称全项目完成。
