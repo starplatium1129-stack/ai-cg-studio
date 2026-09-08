@@ -34,6 +34,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-control-operation.js',
     'test-data-backup.js',
     'test-desktop-native-evidence.js',
+    'test-desktop-updates.js',
     'test-desktop-import.js',
     'test-drawing-route.js',
     'test-emotion-runtime.js',

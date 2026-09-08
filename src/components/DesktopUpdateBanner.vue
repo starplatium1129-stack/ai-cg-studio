@@ -2,7 +2,7 @@
 /**
  * 全局桌面端自动更新横幅（2026-08-31 收敛自 ControlView）。
  * 任何页面可见：挂载即主动查询（不依赖 Rust 启动事件——懒加载路由会丢事件），
- * 发现新版本显示「一键升级」，检查失败显示原因（不再静默）。
+ * 发现新版本显示「一键升级」。后台检查失败静默，不用底层网络错误打扰用户。
  * 审计 2026-09-05 P2-04：横幅只在桌面壳内渲染；普通浏览器既不检查也不显示，
  * 不会再看到与自己无关的「仅桌面端支持自动更新」报错。
  */
@@ -19,7 +19,7 @@ const {
   install: installUpdate,
 } = useDesktopUpdater()
 
-onMounted(() => { if (supported) checkForUpdate() })
+onMounted(() => { if (supported) checkForUpdate(true) })
 </script>
 
 <template>

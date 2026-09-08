@@ -40,15 +40,15 @@ export function useDesktopUpdater() {
     }).then((off) => offs.push(off))
   }
 
-  async function check(): Promise<void> {
+  async function check(silent = false): Promise<void> {
     if (!api) return
     try {
       const version = (await api.core.invoke('desktop_update_check')) as string | null
       if (version && !installing.value) availableVersion.value = version
       errorText.value = '' // 重试成功：清掉上一次失败留下的旧错误
     } catch (error) {
-      // 2026-08-31：检查失败不再静默——横幅区直接显示原因（端点不可达/命令缺失等）。
-      errorText.value = error instanceof Error ? error.message : String(error)
+      // 启动时的自动检查属于可选能力；离线或网关短暂重启不应展示底层网络错误。
+      errorText.value = silent ? '' : (error instanceof Error ? error.message : String(error))
     }
   }
 

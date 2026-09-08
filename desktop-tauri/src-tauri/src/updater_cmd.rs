@@ -1,8 +1,8 @@
 //! 桌面端自动更新（2026-08-29 产品运营审计 P1：Tauri updater 落地）。
 //!
-//! 端点与公钥在 tauri.conf.json `plugins.updater`（sidecar 网关固定伺服
-//! `/desktop-updates/latest.json`，产物由 scripts/maintenance/release-desktop-update.js
-//! 签名发布）。启动时后台检查一次：发现新版本 → 系统通知 + 全局事件
+//! 公钥与 GitHub Releases 端点在 tauri.conf.json `plugins.updater`；产物由
+//! scripts/maintenance/release-desktop-update.js 签名发布。启动时后台检查一次：
+//! 发现新版本 → 系统通知 + 全局事件
 //! `desktop-update-found`；控制面板横幅点击后经 `desktop_update_install`
 //! 下载安装并由安装器重启（passive 模式，不弹交互向导）。
 

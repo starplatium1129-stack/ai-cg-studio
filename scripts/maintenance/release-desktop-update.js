@@ -5,22 +5,22 @@
  * 桌面端更新发布（2026-08-29 产品运营审计 P1：Tauri updater 落地）。
  *
  * 流程：package:tauri（NSIS + updater 签名产物）→ 拷贝安装包与 .sig 到
- * runtime/desktop-updates/ → 生成 latest.json（tauri-plugin-updater 清单格式）。
- * 网关已把 /desktop-updates 伺服到该目录，应用端点固定指向本网关 3123。
+ * runtime/desktop-updates/ → 生成 latest.json（tauri-plugin-updater 清单格式）
+ * 与 SHA-256，再按需发布到主项目 GitHub Releases。
  *
  * 前置：签名密钥 runtime/keys/aics-updater.key（`npx tauri signer generate` 生成，
  * 私钥不入库；丢失则无法再给已装客户端推送更新）。
  *
- * 用法：node scripts/maintenance/release-desktop-update.js [--skip-build] [--bump patch|minor|major]
+ * 用法：node scripts/maintenance/release-desktop-update.js [--skip-build] [--bump patch|minor|major] [--publish]
  *   --bump  发布前先递增版本号（package.json 与 tauri.conf.json 同步），例如
  *           --bump patch 1.5.0 → 1.5.1。客户端 updater 只在远端版本 > 当前安装
  *           版本时提示，日常发版必须 bump，否则永远检不到更新。
- * 局域网其它机器升级：把 latest.json 里的 127.0.0.1 换成主机局域网 IP 即可。
  */
 
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const crypto = require('crypto');
 
 // 盘符大写归一（2026-08-31 破案）：bash 会话下 __dirname 可能带小写盘符 e:\，
 // 作为 execFileSync 的 cwd 会让 npm/vite 模块 ID 盘符分裂，build 秒失败且零输出。
@@ -33,6 +33,8 @@ const SKIP_BUILD = process.argv.includes('--skip-build');
 const BUNDLE_ONLY = process.argv.includes('--bundle-only');
 const BUMP_INDEX = process.argv.indexOf('--bump');
 const BUMP_KIND = BUMP_INDEX >= 0 ? String(process.argv[BUMP_INDEX + 1] || 'patch') : '';
+const PUBLISH = process.argv.includes('--publish');
+const RELEASE_REPOSITORY = 'starplatium1129-stack/ai-cg-studio';
 
 function fail(message) {
   console.error(`[release-desktop-update] ${message}`);
@@ -71,6 +73,62 @@ function bumpVersion(kind) {
   fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n', 'utf8');
   console.log(`[release-desktop-update] 版本 ${match[0]} → ${next}`);
   return next;
+}
+
+function releaseTag(version) {
+  return `v${version}`;
+}
+
+function createManifest(version, signature, exeName, publishedAt = new Date()) {
+  const tag = releaseTag(version);
+  return {
+    version,
+    notes: `AI-CG-Studio ${version}`,
+    pub_date: publishedAt.toISOString(),
+    platforms: {
+      'windows-x86_64': {
+        signature,
+        url: `https://github.com/${RELEASE_REPOSITORY}/releases/download/${tag}/${encodeURIComponent(exeName)}`,
+      },
+    },
+  };
+}
+
+function assertPublishReady(version) {
+  if (BUMP_KIND) fail('--publish 不能与 --bump 同时使用：请先构建、提交并推送版本，再用 --skip-build --publish');
+  const branch = execFileSync('git', ['branch', '--show-current'], { cwd: ROOT, encoding: 'utf8' }).trim();
+  if (branch !== 'main') fail(`发布必须在 main 执行，当前分支为 ${branch || '(detached)'}`);
+  const dirty = execFileSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' }).trim();
+  if (dirty) fail('发布前工作区必须干净，确保安装包对应已提交源码');
+  const repository = JSON.parse(execFileSync('gh', [
+    'repo', 'view', RELEASE_REPOSITORY, '--json', 'nameWithOwner,isPrivate,defaultBranchRef',
+  ], { cwd: ROOT, encoding: 'utf8', windowsHide: true }));
+  if (repository.nameWithOwner !== RELEASE_REPOSITORY || repository.isPrivate) {
+    fail(`发布目标必须是公开主项目 ${RELEASE_REPOSITORY}`);
+  }
+  const head = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+  const remoteHead = execFileSync('git', ['rev-parse', 'origin/main'], { cwd: ROOT, encoding: 'utf8' }).trim();
+  if (head !== remoteHead) fail(`main 尚未与 origin/main 同步：HEAD=${head.slice(0, 8)} remote=${remoteHead.slice(0, 8)}`);
+  if (version !== require(path.join(ROOT, 'package.json')).version) fail('发布版本读取漂移');
+  return head;
+}
+
+function publishRelease(version, head, files) {
+  const tag = releaseTag(version);
+  const notes = [
+    `AI-CG-Studio ${version} 桌面版`,
+    '',
+    '- 启动时自动检查更新，用户确认后才下载并安装。',
+    '- 安装包由 Tauri updater 签名验证；SHA-256 文件供手工校验。',
+  ].join('\n');
+  execFileSync('gh', [
+    'release', 'create', tag, ...files,
+    '--repo', RELEASE_REPOSITORY,
+    '--target', head,
+    '--title', `AI-CG-Studio ${version}`,
+    '--notes', notes,
+    '--latest',
+  ], { cwd: ROOT, stdio: 'inherit', windowsHide: true });
 }
 
 function main() {
@@ -133,21 +191,23 @@ function main() {
   const updater = JSON.parse(fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8')).plugins.updater;
   require('./build-modern-installer').verifyUpdaterSignature(executable, signature, updater.pubkey);
 
-  const manifest = {
-    version,
-    notes: `AI-CG-Studio ${version}`,
-    pub_date: new Date().toISOString(),
-    platforms: {
-      'windows-x86_64': {
-        signature,
-        url: `http://127.0.0.1:3123/desktop-updates/${encodeURIComponent(exeName)}`,
-      },
-    },
-  };
-  fs.writeFileSync(path.join(OUT_DIR, 'latest.json'), JSON.stringify(manifest, null, 2) + '\n');
+  const manifestPath = path.join(OUT_DIR, 'latest.json');
+  const manifest = createManifest(version, signature, exeName);
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+  const sha256 = crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex').toUpperCase();
+  const shaPath = path.join(OUT_DIR, `${exeName}.sha256`);
+  fs.writeFileSync(shaPath, `${sha256}  ${exeName}\n`);
 
-  console.log(`[release-desktop-update] ${version} 已发布到 runtime/desktop-updates/`);
-  console.log('[release-desktop-update] 客户端重启或「检查更新」即拉取；局域网机器请把 latest.json 的 127.0.0.1 换成主机 IP');
+  console.log(`[release-desktop-update] ${version} 已生成到 runtime/desktop-updates/`);
+  if (PUBLISH) {
+    const head = assertPublishReady(version);
+    publishRelease(version, head, [manifestPath, executable, `${executable}.sig`, shaPath]);
+    console.log(`[release-desktop-update] ${releaseTag(version)} 已发布到 ${RELEASE_REPOSITORY}`);
+  } else {
+    console.log('[release-desktop-update] 提交并推送 main 后，用 --skip-build --publish 发布 GitHub Release');
+  }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { RELEASE_REPOSITORY, createManifest, releaseTag };

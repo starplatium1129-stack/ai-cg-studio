@@ -215,7 +215,7 @@ fn main() {
 
             state.info("Companion starting (tauri shell)");
 
-            // 桌面自动更新：启动后台检查一次，发现新版本走通知+控制面板横幅（审计 P1）
+            // GitHub Releases 更新检查不依赖本地网关；失败静默，不影响离线启动。
             updater_cmd::spawn_startup_check(app.handle().clone());
 
             // 深链注册（dev 模式插件不会自动写注册表，需显式注册）

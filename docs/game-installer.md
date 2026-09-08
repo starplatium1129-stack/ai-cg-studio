@@ -20,11 +20,12 @@ Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行
 
 自定义目录页拒绝空路径、盘符根、Windows 系统目录与通用用户/程序根目录；选择独立应用文件夹。安装包不包含生成模型。预览脚本不调用真实安装、启动或快捷方式函数。
 
-## 私密发布
+## GitHub Release 发布
 
-发行目标是 `starplatium1129-stack/ai-cg-studio-releases`，必须用 GitHub API 确认 isPrivate=true 后上传。源代码通过独立分支与版本标签保存，安装包、updater 签名及 SHA-256 校验文件作为 Release 附件；大型 exe 不入 Git。
-
-源码 origin 仓库为公开仓库，本次发行不向该远端推送。完整门禁中仍存在的历史场景/Windows 清理失败在发布说明中列明，不伪称全绿。安装后的系统目录替换与 UAC 仍按 desktop-deployment.md 处理。
+发行目标统一为公开主项目 `starplatium1129-stack/ai-cg-studio`。源码进入 `main`，安装包、
+updater 签名、`latest.json` 与 SHA-256 作为同版本 GitHub Release 附件；大型 exe 不入 Git。
+客户端只自动检测版本，用户点击后才下载安装。完整门禁中的失败必须在发布说明中列明，
+不伪称全绿；安装后的系统目录替换与 UAC 仍按 desktop-deployment.md 处理。
 
 ## 1.5.6 发行验证
 
@@ -44,4 +45,4 @@ Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行
 - 8 项桌面打包测试通过，含分发包签名校验与篡改拒绝；前后端类型检查、ESLint、生产构建及包预算通过；前端 278 项、单元 399 项、接口契约 25 组通过。
 - 仓库文本扫描通过。全量门禁仍有 scenes:optimize、scenes:ratings、scenes:validate 三个既有场景策略失败，以及 test:check 的 Windows 临时目录 ENOTEMPTY；不声明全量门禁通过。
 - 已通过 deploy-desktop.bat -UseInstaller -QuietInstall 完整升级本机，ProductVersion=1.5.8，部署日志成功，网关健康检查 HTTP 200。安装 exe 与构建 exe 仅有 Tauri 的 UNK→NSS 三字节安装类型标记差异，符合打包行为。
-- 最终发行 exe 由应用公钥验证 updater 签名；源码和附件仅推送 private-release 私密仓库。签名是 updater 完整性签名，不是 Windows Authenticode 证书。
+- 最终发行 exe 由应用公钥验证 updater 签名。自下一版本起源码与附件统一发布到主项目；签名是 updater 完整性签名，不是 Windows Authenticode 证书。
