@@ -6,7 +6,7 @@
 
 - `npm run workflow -- installer:build`：从固定的 Tauri 2.11.4 模板生成安装脚本与 BMP。
 - `npm run workflow -- installer:preview --capture --page=welcome`：编译不提权、不安装的原生预览并截图。
-- page 可取 welcome、directory、install、finish；截图位于 runtime/installer-对应页面-preview.png。
+- page 可取 welcome、directory、install、finish、maintenance；截图位于 runtime/installer-对应页面-preview.png。
 - `npm run package:tauri` 自动调用构建步骤；正式签名与版本递增使用 `node scripts/maintenance/release-desktop-update.js --bump patch`。
 - 已构建同版本程序、仅调整安装界面时可用 `npm run workflow -- installer:bundle`，刷新安装器并重新签名；原生代码或前端有变动时仍须完整构建。
 
@@ -26,7 +26,7 @@
 
 ## 1.5.6 发行验证
 
-- 原生欢迎、目录、安装进度、完成页预览已编译并截图检查（本机 175% DPI）。预览不会执行真实安装。
+- 原生欢迎、目录、安装进度、完成及旧版本维护页预览已编译并截图检查（本机 175% DPI）。维护页的单选项关闭 Windows 默认主题绘制，以保证深色底上的文字对比度。预览不会执行真实安装。
 - 7 项桌面打包测试通过，其中新增安装/卸载/WebView2/维护代码段与上游一致性检查。
 - 前后端类型检查、ESLint、主题/动效、内容结构和生产打包通过。
 - 全量 check 仍有既有的三个场景策略步骤及 Windows 临时目录清理失败，发行说明明确保留这些限制。

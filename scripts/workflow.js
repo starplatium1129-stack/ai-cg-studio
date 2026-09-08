@@ -32,7 +32,7 @@ const WORKFLOWS = {
     docs: 'docs/game-installer.md',
   },
   'installer:preview': {
-    desc: '编译安全界面预览（不安装、不提权；--page=welcome|directory|install|finish）',
+    desc: '编译安全界面预览（不安装、不提权；--page=welcome|directory|install|finish|maintenance）',
     cmd: ['node', 'scripts/maintenance/build-game-installer.js', '--preview'],
     docs: 'docs/game-installer.md',
   },

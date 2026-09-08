@@ -33,9 +33,9 @@ function customizeTemplate(source, background, uiFile) {
   output = replaceOnce(output, '${NSD_CreateLabel} 0 0 100% 24u $R1\n    Pop $R1',
     '${NSD_CreateLabel} 56% 40% 38% 18% $R1\n    Pop $R1\n    SetCtlColors $R1 "CED0DF" "14192D"\n    SendMessage $R1 ${WM_SETFONT} $GameFont 1');
   output = replaceOnce(output, '${NSD_CreateRadioButton} 30u 50u -30u 8u $R2\n    Pop $R2',
-    '${NSD_CreateRadioButton} 56% 62% 38% 8% $R2\n    Pop $R2\n    SetCtlColors $R2 "F6F0FA" "14192D"');
+    '${NSD_CreateRadioButton} 56% 62% 38% 8% $R2\n    Pop $R2\n    System::Call \'uxtheme::SetWindowTheme(p $R2,w "",w "")\'\n    SendMessage $R2 ${WM_SETFONT} $GameSmallFont 1\n    SetCtlColors $R2 "F6F0FA" "14192D"');
   output = replaceOnce(output, '${NSD_CreateRadioButton} 30u 70u -30u 8u $R3\n    Pop $R3',
-    '${NSD_CreateRadioButton} 56% 73% 38% 8% $R3\n    Pop $R3\n    SetCtlColors $R3 "F6F0FA" "14192D"');
+    '${NSD_CreateRadioButton} 56% 73% 38% 8% $R3\n    Pop $R3\n    System::Call \'uxtheme::SetWindowTheme(p $R3,w "",w "")\'\n    SendMessage $R3 ${WM_SETFONT} $GameSmallFont 1\n    SetCtlColors $R3 "F6F0FA" "14192D"');
   output = replaceOnce(output, '    nsDialogs::Show', '    Call GameShowPage');
   return output;
 }
@@ -72,7 +72,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
   const uiFile = path.join(INSTALLER, 'game-ui.nsh');
   fs.writeFileSync(path.join(generated, 'installer.nsi'), customizeTemplate(vendor.toString('utf8'), background, uiFile));
   if (preview) {
-    if (!['welcome', 'directory', 'finish', 'install'].includes(page)) throw new Error('Unknown preview page');
+    if (!['welcome', 'directory', 'finish', 'install', 'maintenance'].includes(page)) throw new Error('Unknown preview page');
     const compiler = path.join(process.env.LOCALAPPDATA, 'tauri/NSIS/makensis.exe');
     const result = spawnSync(compiler, ['/INPUTCHARSET', 'UTF8', '/V2', `/DGAME_BACKGROUND=${background}`, `/DGAME_ASSET_DIR=${generated}`, `/DGAME_UI=${uiFile}`, `/DGAME_PREVIEW_PAGE=${page}`, path.join(INSTALLER, 'preview.nsi')], {
       cwd: generated, stdio: 'inherit', windowsHide: true,
@@ -99,7 +99,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  if (args.includes('--help')) console.log('Build native game-style installer UI. Options: --preview [--capture] [--page=welcome|directory|install|finish]');
+  if (args.includes('--help')) console.log('Build native game-style installer UI. Options: --preview [--capture] [--page=welcome|directory|install|finish|maintenance]');
   else buildGameInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find(arg => arg.startsWith('--page='))?.slice(7) || 'welcome' }).catch(error => { console.error(error.message); process.exitCode = 1; });
 }
 module.exports = { buildGameInstaller, customizeTemplate };
