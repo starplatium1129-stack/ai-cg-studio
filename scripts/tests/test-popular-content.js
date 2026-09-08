@@ -12,8 +12,37 @@ var blueprintData = require('../../data/scene-blueprints.json');
 
 var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
+var sfwOnlyIds = new Set(characterData.characters.filter(c => c.adultEligibility !== 'adult').map(c => c.id));
+var sfwOnlyBlueprints = blueprints.filter(b => sfwOnlyIds.has(b.characterId));
 
-test('popular data: 88 characters, unique ids, exactly one default outfit per character', function () {
+test('batch five: six new characters each have ten SFW scenes and fail closed in both engines', function () {
+  const ids = ['shiina_mashiro', 'izumi_sagiri', 'takarada_rikka', 'hayasaka_ai', 'arima_kana', 'hori_kyouko'];
+  const { resolveModelProfile } = require('../../src/utils/promptPolicy.ts');
+  const catalog = persistence.parsePresetCatalog(require('../../data/presets.json'));
+  for (const id of ids) {
+    const character = characters.find(c => c.id === id);
+    assert.ok(character, id + ' must be registered');
+    assert.strictEqual(character.adultEligibility, 'underage');
+    const owned = blueprints.filter(b => b.characterId === id);
+    assert.strictEqual(owned.length, 10, id + ' needs its ten individually written daily scenes');
+    for (const blueprint of owned) {
+      assert.strictEqual(blueprint.adult, false);
+      const outfit = character.outfits.find(o => o.id === blueprint.outfitId);
+      assert.ok(outfit, blueprint.id + ' must resolve its exact outfit');
+      for (const engine of ['anima', 'krea2']) {
+        const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
+        const profile = resolveModelProfile(catalog.modelProfiles, model, engine);
+        const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: true });
+        assert.ok(plan, blueprint.id + ' must compile for ' + engine);
+        assert.strictEqual(plan.adult, false);
+        assert.ok(!/rating:explicit|\bnsfw\b|\bnude\b|bare breasts|exposed pussy/i.test(plan.prompt), blueprint.id + ' positive prompt must stay SFW');
+        if (engine === 'krea2') assert.strictEqual(plan.negative, '');
+      }
+    }
+  }
+});
+
+test('popular data: preserve existing catalog, unique ids, exactly one default outfit per character', function () {
   // 2026-08-31 扩容：新增 11 位现象级角色（波奇酱/EVA双壁/芙宁娜/胡桃/卡芙卡/优香/伊织/德克萨斯/拉普兰德/薇薇安娜），57 -> 68。
   // 2026-09-02 扩容：新增 7 位顶流热门角色（艾莲·乔/星见雅/柴郡/大凤/一之濑明日奈/露西/2B），68 -> 75。
   // 2026-09-02 柚子社专栏：新增 3 位千恋万花核心角色（丛雨/常陆茉子/朝武芳乃），75 -> 78。
@@ -21,9 +50,9 @@ test('popular data: 88 characters, unique ids, exactly one default outfit per ch
   // 2026-09-02 天降与出包专栏：新增 6 位核心角色（伊卡洛斯/小暗/菈菈/梦梦/古手川唯/娜娜），82 -> 88。
   // 2026-09-02 第一批殿堂级女神：新增 5 位角色（莉雅丝/朱乃/雅儿贝德/花火/C.C.，5 位各 11 蓝图 = +55 场景，93 角色 = 994 场景）。
   // 2026-09-02 第二批型月神作三大源流：新增 5 位角色（两仪式/爱尔奎特/希耶尔/卡莲/黑呆，5 位各 11 蓝图 = +55 场景，98 角色 = 1049 场景）。
-  assert.strictEqual(characters.length, 116, 'must ship exactly 116 characters');
+  assert.strictEqual(characters.length, 116 + sfwOnlyIds.size, 'preserve the 116 existing characters and add SFW-only characters');
   var ids = new Set(characters.map(function (character) { return character.id; }));
-  assert.strictEqual(ids.size, 116, 'character ids must be unique');
+  assert.strictEqual(ids.size, characters.length, 'character ids must be unique');
   characters.forEach(function (character) {
     // 2026-08-24 B1 衣橱扩容：上限 8 -> 10（陈衍生服装试点 10 套；后续角色扩容按需再演进）。
     assert.ok(character.outfits.length >= 2 && character.outfits.length <= 10, character.id + ' must have 2-10 outfits (researched official skins + derived casual wear)');
@@ -44,9 +73,10 @@ test('popular data: 88 characters, unique ids, exactly one default outfit per ch
 var adults = characters.filter(function (character) { return character.adultEligibility === 'adult'; });
   var nonAdults = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
   assert.ok(adults.length >= 1, 'at least one clearly-adult character must be available for adult blueprints');
-  // 2026-08-14 用户决策「全部开放」：18 角色全部 adultEligibility=adult；
-  // fail-closed 语义（adultEnabled=false、unknown/underage 分类）由下方合成对象用例继续保证。
-  assert.strictEqual(nonAdults.length, 0, 'all popular characters are adult-eligible after the full-open decision');
+  // 本批只接入全年龄内容；真实非成人角色与合成对象共同验证 fail-closed。
+  nonAdults.forEach(function (character) {
+    assert.ok(!blueprints.some(b => b.characterId === character.id && b.adult), character.id + ' SFW-only onboarding must not include adult scenes');
+  });
 });
 
 test('popular data: all character fields never leak nene/natsume anchors', function () {
@@ -67,7 +97,7 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
-test('blueprints: 109 characters x (6-7 prototype + 4-5 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
+test('blueprints: preserve existing scenes, add SFW-only batches, and fail closed for non-adults', function () {
   // 2026-08-15 扩容：新增 15 位方舟/终末地热门角色；2026-08-18 新增 9 位跨作品热门角色
   // （43 角色 = 9x6 + 27x10 + 7x11 = 401 场景）；
   // 2026-08-18 审视优化：9 位新角色场景补足至每角色 10 个（6 原型 + 4 成人）
@@ -86,7 +116,7 @@ test('blueprints: 109 characters x (6-7 prototype + 4-5 adult), all owned by a c
   // 2026-09-02 天降与出包专栏：新增 6 位核心角色（6 位角色各 11 蓝图 = +66 场景，88 角色 = 939 场景）。
   // 2026-09-02 第一批殿堂级女神：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，93 角色 = 994 场景）。
   // 2026-09-02 第二批型月神作三大源流：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，98 角色 = 1049 场景）。
-  assert.strictEqual(blueprints.length, 1249, 'expected 1249 character scenes, got ' + blueprints.length);
+  assert.strictEqual(blueprints.length, 1249 + sfwOnlyBlueprints.length, 'preserve existing scenes alongside SFW-only onboarding');
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -105,13 +135,17 @@ test('blueprints: 109 characters x (6-7 prototype + 4-5 adult), all owned by a c
     assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must own 10, 11, 13 or 15 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 43, 11: 66, 13: 6, 15: 1 }, 'scene distribution must be 43x10 + 66x11 + 6x13 + 1x15');
+  assert.deepStrictEqual(sceneDist, { 10: 43 + sfwOnlyIds.size, 11: 66, 13: 6, 15: 1 }, 'new SFW-only characters each own ten daily scenes');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4、5 或 6 个带 characterId 的成人场景。
   var adultDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
     var adultOwned = blueprints.filter(function (blueprint) { return blueprint.characterId === entry[0] && blueprint.adult; });
+    if (sfwOnlyIds.has(entry[0])) {
+      assert.strictEqual(adultOwned.length, 0, entry[0] + ' must remain SFW-only');
+      return;
+    }
     assert.ok(adultOwned.length === 4 || adultOwned.length === 5 || adultOwned.length === 6,
       entry[0] + ' must own 4, 5 or 6 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
@@ -173,6 +207,10 @@ test('scene coverage: every outfit referenced, >=1 iconic + >=1 daily per charac
     assert.ok(hasTag('iconic'), character.id + ' must own at least one iconic scene');
     assert.ok(hasTag('daily'), character.id + ' must own at least one daily scene');
     var ownedAdult = owned.filter(function (blueprint) { return blueprint.adult; });
+    if (sfwOnlyIds.has(character.id)) {
+      assert.strictEqual(ownedAdult.length, 0, character.id + ' must remain SFW-only');
+      return;
+    }
     assert.ok(ownedAdult.length >= 4, character.id + ' must own adult scenes');
     assert.ok(ownedAdult.some(function (blueprint) {
       return Array.isArray(blueprint.coverageTags) && blueprint.coverageTags.includes('special_nsfw');
@@ -203,7 +241,12 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
       assert.ok(!blueprint.promptTokens.includes(token),
         blueprint.id + ' promptTokens must not carry assembly-layer quality word ' + token);
     });
-    ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
+    // New daily scenes specify their actual light source rather than forcing fog and
+    // cinematic volumetric light into every kitchen, classroom and shop.
+    if (sfwOnlyIds.has(blueprint.characterId)) {
+      assert.ok(blueprint.promptTokens.some(t => /light|sunset|sunrise|dawn|morning|afternoon|noon|night|evening|lantern|neon/.test(t)), blueprint.id + ' must specify scene lighting or time');
+      assert.ok(blueprint.promptProse.length >= 300, blueprint.id + ' needs a complete independently written scene');
+    } else ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
       assert.ok(blueprint.promptTokens.includes(token),
         blueprint.id + ' promptTokens missing wallpaper lighting token ' + token);
     });

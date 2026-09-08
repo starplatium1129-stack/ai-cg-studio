@@ -115,7 +115,7 @@
     {
       "file": "oshi-no-ko.json",
       "franchise": "Oshi no Ko",
-      "count": 20
+      "count": 30
     },
     {
       "file": "attack-on-titan.json",
@@ -220,7 +220,7 @@
     {
       "file": "kaguya-sama.json",
       "franchise": "Kaguya-sama: Love Is War",
-      "count": 11
+      "count": 21
     },
     {
       "file": "saenai-heroine-no-sodatekata.json",
@@ -251,6 +251,26 @@
       "file": "kaoru-hana-wa-rin-to-saku.json",
       "franchise": "Kaoru Hana wa Rin to Saku",
       "count": 11
+    },
+    {
+      "file": "the-pet-girl-of-sakurasou.json",
+      "franchise": "The Pet Girl of Sakurasou",
+      "count": 10
+    },
+    {
+      "file": "eromanga-sensei.json",
+      "franchise": "Eromanga Sensei",
+      "count": 10
+    },
+    {
+      "file": "ssss-gridman.json",
+      "franchise": "SSSS.GRIDMAN",
+      "count": 10
+    },
+    {
+      "file": "horimiya.json",
+      "franchise": "Horimiya",
+      "count": 10
     }
   ]
 }

@@ -6,14 +6,14 @@
 
 | 项目 | 数量 | 事实源与口径 |
 | --- | ---: | --- |
-| 角色档案 | 118 | data/characters.json 数组长度 |
-| 热门角色 | 116 | data/popular-characters.json 的 characters |
-| 热门服装形态 | 586 | 上述 characters[].outfits 长度之和 |
+| 角色档案 | 124 | data/characters.json 数组长度 |
+| 热门角色 | 122 | data/popular-characters.json 的 characters；含第五批六位全年龄接入稿 |
+| 热门服装形态 | 614 | 上述 characters[].outfits 长度之和 |
 | 通用场景 | 302 | data/scenes.json 数组长度 |
-| 场景蓝图 | 1,249 | data/scene-blueprints.json 的 blueprints |
-| 参考库角色 / 已登记形态 | 118 / 397 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
-| 参考条目 | 2,779 | view 中全部 outfits[].references |
-| 非 pending 且有 URL / pending | 2,534 / 245 | 登记状态统计，不代表文件存在或画面合格 |
+| 场景蓝图 | 1,309 | data/scene-blueprints.json 的 blueprints |
+| 参考库角色 / 已登记形态 | 124 / 425 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
+| 参考条目 | 2,975 | view 中全部 outfits[].references |
+| 非 pending 且有 URL / pending | 2,534 / 441 | 登记状态统计；新增196条仍为pending，不代表出图完成 |
 
 ## 已有能力与边界
 
@@ -28,4 +28,4 @@
 
 ## 验证与后续
 
-本轮是文档审计；检查结果与未覆盖项见 [审计记录](documentation-audit-2026-09-08.md)。此前的测试、截图、模型和桌面验收只代表各自记录时点，集中保留在 [归档](archive/README.md)。后续工作只在 [未来规划](roadmap.md) 排序。
+文档审计结果见 [审计记录](documentation-audit-2026-09-08.md)。其后的第五批全年龄接入尚未完成资产与发布验收，见 [接入进度](popular-sfw-batch5-progress-2026-09-08.md)。此前的测试、截图、模型和桌面验收只代表各自记录时点，集中保留在 [归档](archive/README.md)。后续工作只在 [未来规划](roadmap.md) 排序。

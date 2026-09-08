@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "franchise": "SSSS.GRIDMAN",
+  "characters": [
+    {
+      "id": "takarada_rikka",
+      "displayName": "宝多六花",
+      "originalName": "Rikka Takarada",
+      "franchise": "SSSS.GRIDMAN",
+      "aliases": [
+        "宝多六花",
+        "Rikka Takarada"
+      ],
+      "identityProse": "Rikka Takarada from SSSS.GRIDMAN, a thoughtful schoolgirl with long straight black hair, cool blue eyes and a relaxed, half-lidded gaze. Her understated posture and small changes of expression reveal attention beneath an easygoing manner.",
+      "identityTokens": [
+        "takarada_rikka",
+        "ssss.gridman",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "takarada_rikka"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, takarada_rikka"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_uniform",
+          "name": "杜鹃台高校制服与耳机",
+          "prose": "a white school shirt, navy cardigan, pleated school skirt, ankle socks",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "navy_cardigan",
+            "pleated_skirt",
+            "ankle_socks"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_casual",
+          "name": "周末宽松帽衫与长裤",
+          "prose": "a roomy grey hoodie and relaxed dark trousers",
+          "tokens": [
+            "grey_hoodie",
+            "dark_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭靛蓝浴衣",
+          "prose": "an indigo floral yukata secured with a cream obi and wooden sandals",
+          "tokens": [
+            "yukata",
+            "blue_yukata",
+            "floral_print",
+            "obi",
+            "geta"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_sports",
+          "name": "接力练习运动服",
+          "prose": "an opaque white sports T-shirt, navy tracksuit trousers and running shoes",
+          "tokens": [
+            "sportswear",
+            "white_t-shirt",
+            "track_pants",
+            "sneakers"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

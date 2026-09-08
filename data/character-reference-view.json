@@ -42434,5 +42434,3161 @@
         ]
       }
     ]
+  },
+  "shiina_mashiro": {
+    "characterId": "shiina_mashiro",
+    "displayName": "椎名真白",
+    "source": "The Pet Girl of Sakurasou",
+    "identityProse": "Mashiro Shiina from The Pet Girl of Sakurasou, a quiet young painter with very long straight cream-blonde hair, pale orange eyes and slightly upturned eyelids. Her expression changes through tiny shifts of her gaze rather than broad smiles.",
+    "outfits": [
+      {
+        "outfitId": "sfw_studio",
+        "outfitName": "画室衬衫与长裤",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "a buttoned white cotton shirt with paint marks on its hem and navy ankle-length trousers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_uniform",
+        "outfitName": "水明艺大附高校服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a white school blouse with a red ribbon, navy school blazer and knee-length pleated skirt",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_home",
+        "outfitName": "柔软针织居家装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a cream knitted sweater and loose brown trousers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_gallery",
+        "outfitName": "毕业展浅色连衣裙",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an opaque ivory knee-length dress with short sleeves and flat shoes",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  },
+  "izumi_sagiri": {
+    "characterId": "izumi_sagiri",
+    "displayName": "和泉纱雾",
+    "source": "Eromanga Sensei",
+    "identityProse": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",
+    "outfits": [
+      {
+        "outfitId": "sfw_drawing",
+        "outfitName": "粉色连帽衫绘画装",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "an opaque pink hoodie, loose grey trousers and a drawing headset",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_outside",
+        "outfitName": "初次外出的帽衫便装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a zipped pink hoodie over a white T-shirt, loose blue jeans, a sun cap and a plain face mask",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_festival",
+        "outfitName": "夏祭淡蓝花纹浴衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a properly wrapped pale blue floral yukata with a pink obi and sandals",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_beach",
+        "outfitName": "海边写生防晒装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a long-sleeved opaque sun jacket, full-length trousers, a broad sunhat and large sunglasses",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_winter",
+        "outfitName": "冬季参拜大衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a cream winter coat over trousers, a pink wool scarf and warm boots",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  },
+  "takarada_rikka": {
+    "characterId": "takarada_rikka",
+    "displayName": "宝多六花",
+    "source": "SSSS.GRIDMAN",
+    "identityProse": "Rikka Takarada from SSSS.GRIDMAN, a thoughtful schoolgirl with long straight black hair, cool blue eyes and a relaxed, half-lidded gaze. Her understated posture and small changes of expression reveal attention beneath an easygoing manner.",
+    "outfits": [
+      {
+        "outfitId": "sfw_uniform",
+        "outfitName": "杜鹃台高校制服与耳机",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "a white school shirt, navy cardigan, pleated school skirt, ankle socks",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_casual",
+        "outfitName": "周末宽松帽衫与长裤",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a roomy grey hoodie and relaxed dark trousers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_festival",
+        "outfitName": "夏祭靛蓝浴衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an indigo floral yukata secured with a cream obi and wooden sandals",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_sports",
+        "outfitName": "接力练习运动服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an opaque white sports T-shirt, navy tracksuit trousers and running shoes",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  },
+  "hayasaka_ai": {
+    "characterId": "hayasaka_ai",
+    "displayName": "早坂爱",
+    "source": "Kaguya-sama: Love Is War",
+    "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",
+    "outfits": [
+      {
+        "outfitId": "sfw_maid",
+        "outfitName": "四宫宅长发女仆装",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "a long-sleeved black maid dress with a white apron, modest collar, maid headband and pale blonde side ponytail tied with a scrunchie",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_school",
+        "outfitName": "秀知院校服侧马尾",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a dark Shuchiin school uniform with a white collar, red ribbon, loose socks and a blonde side ponytail",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_casual",
+        "outfitName": "任务间隙便装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an opaque navy zip jacket, cream T-shirt, straight jeans and a blonde side ponytail",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_sports",
+        "outfitName": "庭院体操运动装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an opaque blue sports T-shirt, grey tracksuit trousers and a blonde side ponytail",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_short",
+        "outfitName": "离职后短发旅行装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a light blue jacket over a cream top and dark trousers, with her pale blonde hair cut in a neat short bob",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_night",
+        "outfitName": "夜间散发针织装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a warm cream cardigan over a buttoned cotton shirt and navy trousers, her blonde hair loose around her shoulders",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  },
+  "arima_kana": {
+    "characterId": "arima_kana",
+    "displayName": "有马加奈",
+    "source": "Oshi no Ko",
+    "identityProse": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
+    "outfits": [
+      {
+        "outfitId": "sfw_stage",
+        "outfitName": "B小町舞台打歌服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "an opaque red-and-white idol stage dress with layered knee-length skirt, fitted jacket, gloves and polished shoes",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_practice",
+        "outfitName": "排练室运动便装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a charcoal T-shirt, burgundy tracksuit trousers and white sneakers",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_casual",
+        "outfitName": "贝雷帽与针织便装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a burgundy beret, cream knit cardigan, white blouse and navy knee-length skirt",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_school",
+        "outfitName": "阳东高校制服",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a tidy dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_festival",
+        "outfitName": "夏祭红白花纹浴衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a properly wrapped red-and-white floral yukata with a dark obi and sandals",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
+  },
+  "hori_kyouko": {
+    "characterId": "hori_kyouko",
+    "displayName": "堀京子",
+    "source": "Horimiya",
+    "identityProse": "Kyouko Hori from Horimiya, an energetic schoolgirl with chestnut-brown hair, an M-shaped fringe, long sidelocks and warm brown eyes. Her confident expressions carry brisk, practical warmth, with a more relaxed manner at home.",
+    "outfits": [
+      {
+        "outfitId": "sfw_school",
+        "outfitName": "片桐高校长发制服",
+        "isDefault": true,
+        "isNsfw": false,
+        "prose": "a white wing-collar school shirt, dark blazer and knee-length pleated skirt, her chestnut hair worn long",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_home",
+        "outfitName": "家务围裙与束发",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a blue cotton apron over an opaque cream T-shirt and comfortable dark trousers, with chestnut hair tied up",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_weekend",
+        "outfitName": "周末宽松卫衣",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "an opaque pale grey sweatshirt and loose navy trousers, with her chestnut hair loosely tied back",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      },
+      {
+        "outfitId": "sfw_winter",
+        "outfitName": "冬夜针织居家装",
+        "isDefault": false,
+        "isNsfw": false,
+        "prose": "a warm cream sweater and dark trousers, with chestnut hair loose around her shoulders",
+        "references": [
+          {
+            "id": "ref_01_face_closeup",
+            "name": "面部特写",
+            "shotType": "特写 · 85mm 浅景深",
+            "lens": "85mm f/1.4 Portrait Lens",
+            "targetUsage": [
+              "对白特写",
+              "微表情",
+              "情绪反应镜头",
+              "台词对峙"
+            ],
+            "fileName": "ref_01_face_closeup.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_02_half_medium",
+            "name": "3/4半身定妆",
+            "shotType": "半身 · 中景",
+            "lens": "50mm Medium Lens",
+            "targetUsage": [
+              "对话交互",
+              "过肩推拉",
+              "室内中景",
+              "双人互动"
+            ],
+            "fileName": "ref_02_half_medium.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_03_full_dynamic",
+            "name": "正面全身立姿",
+            "shotType": "全身 · 广角 50mm",
+            "lens": "50mm Wide Frame",
+            "targetUsage": [
+              "登场走入",
+              "全景走位",
+              "全身动作",
+              "空间交代"
+            ],
+            "fileName": "ref_03_full_dynamic.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_04_back_rear",
+            "name": "45°侧后背影",
+            "shotType": "侧后 · 轮廓光",
+            "lens": "85mm Cinematic Edge",
+            "targetUsage": [
+              "过肩反打",
+              "转身离去",
+              "背影叙事",
+              "神秘氛围"
+            ],
+            "fileName": "ref_04_back_rear.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_front",
+            "name": "设计图·正面",
+            "shotType": "正面 · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡正面",
+              "身份锁定",
+              "服装正面结构"
+            ],
+            "fileName": "ref_design_front.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_side",
+            "name": "设计图·侧面",
+            "shotType": "侧面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡侧面",
+              "发型厚度",
+              "服装层次"
+            ],
+            "fileName": "ref_design_side.png",
+            "url": "",
+            "pending": true
+          },
+          {
+            "id": "ref_design_back",
+            "name": "设计图·背面",
+            "shotType": "背面 90° · 对称站姿",
+            "lens": "Standard Design Sheet",
+            "targetUsage": [
+              "3渲2 角色卡背面",
+              "背后服装结构",
+              "发型背面轮廓"
+            ],
+            "fileName": "ref_design_back.png",
+            "url": "",
+            "pending": true
+          }
+        ]
+      }
+    ]
   }
 }

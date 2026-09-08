@@ -9228,6 +9228,483 @@
           ]
         }
       ]
+    },
+    {
+      "id": "shiina_mashiro",
+      "displayName": "椎名真白",
+      "originalName": "Mashiro Shiina",
+      "source": "The Pet Girl of Sakurasou",
+      "identityProse": "Mashiro Shiina from The Pet Girl of Sakurasou, a quiet young painter with very long straight cream-blonde hair, pale orange eyes and slightly upturned eyelids. Her expression changes through tiny shifts of her gaze rather than broad smiles.",
+      "identityTokens": [
+        "shiina_mashiro",
+        "sakura-sou_no_pet_na_kanojo",
+        "blonde_hair",
+        "long_hair",
+        "straight_hair",
+        "orange_eyes",
+        "hair_between_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_studio",
+          "name": "画室衬衫与长裤",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a buttoned white cotton shirt with paint marks on its hem and navy ankle-length trousers",
+          "tokens": [
+            "white_shirt",
+            "long_sleeves",
+            "buttoned_shirt",
+            "blue_pants",
+            "paint_splatter"
+          ]
+        },
+        {
+          "id": "sfw_uniform",
+          "name": "水明艺大附高校服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a white school blouse with a red ribbon, navy school blazer and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "red_ribbon",
+            "blazer",
+            "pleated_skirt"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "柔软针织居家装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream knitted sweater and loose brown trousers",
+          "tokens": [
+            "cream_sweater",
+            "knitwear",
+            "brown_pants"
+          ]
+        },
+        {
+          "id": "sfw_gallery",
+          "name": "毕业展浅色连衣裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque ivory knee-length dress with short sleeves and flat shoes",
+          "tokens": [
+            "white_dress",
+            "short_sleeves",
+            "flat_shoes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "izumi_sagiri",
+      "displayName": "和泉纱雾",
+      "originalName": "Sagiri Izumi",
+      "source": "Eromanga Sensei",
+      "identityProse": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",
+      "identityTokens": [
+        "izumi_sagiri",
+        "eromanga_sensei",
+        "grey_hair",
+        "long_hair",
+        "gradient_hair",
+        "blue_eyes",
+        "hair_bow",
+        "sidelocks"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_drawing",
+          "name": "粉色连帽衫绘画装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque pink hoodie, loose grey trousers and a drawing headset",
+          "tokens": [
+            "pink_hoodie",
+            "grey_pants",
+            "headphones"
+          ]
+        },
+        {
+          "id": "sfw_outside",
+          "name": "初次外出的帽衫便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a zipped pink hoodie over a white T-shirt, loose blue jeans, a sun cap and a plain face mask",
+          "tokens": [
+            "pink_hoodie",
+            "t-shirt",
+            "jeans",
+            "cap",
+            "face_mask"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭淡蓝花纹浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a properly wrapped pale blue floral yukata with a pink obi and sandals",
+          "tokens": [
+            "blue_yukata",
+            "floral_print",
+            "pink_obi",
+            "sandals"
+          ]
+        },
+        {
+          "id": "sfw_beach",
+          "name": "海边写生防晒装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a long-sleeved opaque sun jacket, full-length trousers, a broad sunhat and large sunglasses",
+          "tokens": [
+            "sunhat",
+            "sunglasses",
+            "long_sleeves",
+            "jacket",
+            "pants"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季参拜大衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream winter coat over trousers, a pink wool scarf and warm boots",
+          "tokens": [
+            "winter_coat",
+            "pink_scarf",
+            "pants",
+            "boots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "takarada_rikka",
+      "displayName": "宝多六花",
+      "originalName": "Rikka Takarada",
+      "source": "SSSS.GRIDMAN",
+      "identityProse": "Rikka Takarada from SSSS.GRIDMAN, a thoughtful schoolgirl with long straight black hair, cool blue eyes and a relaxed, half-lidded gaze. Her understated posture and small changes of expression reveal attention beneath an easygoing manner.",
+      "identityTokens": [
+        "takarada_rikka",
+        "ssss.gridman",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_uniform",
+          "name": "杜鹃台高校制服与耳机",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a white school shirt, navy cardigan, pleated school skirt, ankle socks",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "navy_cardigan",
+            "pleated_skirt",
+            "ankle_socks"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "周末宽松帽衫与长裤",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a roomy grey hoodie and relaxed dark trousers",
+          "tokens": [
+            "grey_hoodie",
+            "dark_pants"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭靛蓝浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an indigo floral yukata secured with a cream obi and wooden sandals",
+          "tokens": [
+            "yukata",
+            "blue_yukata",
+            "floral_print",
+            "obi",
+            "geta"
+          ]
+        },
+        {
+          "id": "sfw_sports",
+          "name": "接力练习运动服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque white sports T-shirt, navy tracksuit trousers and running shoes",
+          "tokens": [
+            "sportswear",
+            "white_t-shirt",
+            "track_pants",
+            "sneakers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hayasaka_ai",
+      "displayName": "早坂爱",
+      "originalName": "Ai Hayasaka",
+      "source": "Kaguya-sama: Love Is War",
+      "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",
+      "identityTokens": [
+        "hayasaka_ai",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "blonde_hair",
+        "blue_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_maid",
+          "name": "四宫宅长发女仆装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a long-sleeved black maid dress with a white apron, modest collar, maid headband and pale blonde side ponytail tied with a scrunchie",
+          "tokens": [
+            "maid",
+            "black_dress",
+            "long_sleeves",
+            "white_apron",
+            "maid_headdress",
+            "side_ponytail",
+            "hair_scrunchie"
+          ]
+        },
+        {
+          "id": "sfw_school",
+          "name": "秀知院校服侧马尾",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a dark Shuchiin school uniform with a white collar, red ribbon, loose socks and a blonde side ponytail",
+          "tokens": [
+            "shuuchiin_academy_school_uniform",
+            "white_collar",
+            "red_ribbon",
+            "loose_socks",
+            "side_ponytail",
+            "hair_scrunchie"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "任务间隙便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque navy zip jacket, cream T-shirt, straight jeans and a blonde side ponytail",
+          "tokens": [
+            "navy_jacket",
+            "t-shirt",
+            "jeans",
+            "side_ponytail"
+          ]
+        },
+        {
+          "id": "sfw_sports",
+          "name": "庭院体操运动装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque blue sports T-shirt, grey tracksuit trousers and a blonde side ponytail",
+          "tokens": [
+            "blue_t-shirt",
+            "track_pants",
+            "sportswear",
+            "side_ponytail"
+          ]
+        },
+        {
+          "id": "sfw_short",
+          "name": "离职后短发旅行装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a light blue jacket over a cream top and dark trousers, with her pale blonde hair cut in a neat short bob",
+          "tokens": [
+            "blue_jacket",
+            "cream_shirt",
+            "dark_pants",
+            "short_hair",
+            "bob_cut"
+          ]
+        },
+        {
+          "id": "sfw_night",
+          "name": "夜间散发针织装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a warm cream cardigan over a buttoned cotton shirt and navy trousers, her blonde hair loose around her shoulders",
+          "tokens": [
+            "cream_cardigan",
+            "buttoned_shirt",
+            "navy_pants",
+            "hair_down"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arima_kana",
+      "displayName": "有马加奈",
+      "originalName": "Kana Arima",
+      "source": "Oshi no Ko",
+      "identityProse": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
+      "identityTokens": [
+        "arima_kana",
+        "oshi_no_ko",
+        "red_hair",
+        "short_hair",
+        "blunt_bangs",
+        "red_eyes"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_stage",
+          "name": "B小町舞台打歌服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "an opaque red-and-white idol stage dress with layered knee-length skirt, fitted jacket, gloves and polished shoes",
+          "tokens": [
+            "idol_clothes",
+            "red_dress",
+            "white_jacket",
+            "layered_skirt",
+            "gloves",
+            "stage_shoes"
+          ]
+        },
+        {
+          "id": "sfw_practice",
+          "name": "排练室运动便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a charcoal T-shirt, burgundy tracksuit trousers and white sneakers",
+          "tokens": [
+            "t-shirt",
+            "track_pants",
+            "sneakers"
+          ]
+        },
+        {
+          "id": "sfw_casual",
+          "name": "贝雷帽与针织便装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a burgundy beret, cream knit cardigan, white blouse and navy knee-length skirt",
+          "tokens": [
+            "beret",
+            "red_beret",
+            "cream_cardigan",
+            "white_blouse",
+            "navy_skirt"
+          ]
+        },
+        {
+          "id": "sfw_school",
+          "name": "阳东高校制服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a tidy dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ]
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭红白花纹浴衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a properly wrapped red-and-white floral yukata with a dark obi and sandals",
+          "tokens": [
+            "yukata",
+            "red_yukata",
+            "floral_print",
+            "obi",
+            "sandals"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hori_kyouko",
+      "displayName": "堀京子",
+      "originalName": "Kyouko Hori",
+      "source": "Horimiya",
+      "identityProse": "Kyouko Hori from Horimiya, an energetic schoolgirl with chestnut-brown hair, an M-shaped fringe, long sidelocks and warm brown eyes. Her confident expressions carry brisk, practical warmth, with a more relaxed manner at home.",
+      "identityTokens": [
+        "hori_kyouko",
+        "hori-san_to_miyamura-kun",
+        "brown_hair",
+        "long_hair",
+        "brown_eyes",
+        "sidelocks"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "片桐高校长发制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a white wing-collar school shirt, dark blazer and knee-length pleated skirt, her chestnut hair worn long",
+          "tokens": [
+            "katagiri_senior_high_school_uniform",
+            "white_shirt",
+            "wing_collar",
+            "blazer",
+            "pleated_skirt",
+            "long_hair"
+          ]
+        },
+        {
+          "id": "sfw_home",
+          "name": "家务围裙与束发",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a blue cotton apron over an opaque cream T-shirt and comfortable dark trousers, with chestnut hair tied up",
+          "tokens": [
+            "blue_apron",
+            "cream_t-shirt",
+            "dark_pants",
+            "hair_up"
+          ]
+        },
+        {
+          "id": "sfw_weekend",
+          "name": "周末宽松卫衣",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque pale grey sweatshirt and loose navy trousers, with her chestnut hair loosely tied back",
+          "tokens": [
+            "grey_sweatshirt",
+            "navy_pants",
+            "ponytail"
+          ]
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬夜针织居家装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a warm cream sweater and dark trousers, with chestnut hair loose around her shoulders",
+          "tokens": [
+            "cream_sweater",
+            "dark_pants",
+            "hair_down"
+          ]
+        }
+      ]
     }
   ]
 }

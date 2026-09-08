@@ -1,0 +1,109 @@
+{
+  "version": "1.0.0",
+  "franchise": "Horimiya",
+  "characters": [
+    {
+      "id": "hori_kyouko",
+      "displayName": "堀京子",
+      "originalName": "Kyouko Hori",
+      "franchise": "Horimiya",
+      "aliases": [
+        "堀京子",
+        "Kyouko Hori"
+      ],
+      "identityProse": "Kyouko Hori from Horimiya, an energetic schoolgirl with chestnut-brown hair, an M-shaped fringe, long sidelocks and warm brown eyes. Her confident expressions carry brisk, practical warmth, with a more relaxed manner at home.",
+      "identityTokens": [
+        "hori_kyouko",
+        "hori-san_to_miyamura-kun",
+        "brown_hair",
+        "long_hair",
+        "brown_eyes",
+        "sidelocks"
+      ],
+      "exactTokens": [
+        "hori_kyouko"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, hori_kyouko"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_school",
+          "name": "片桐高校长发制服",
+          "prose": "a white wing-collar school shirt, dark blazer and knee-length pleated skirt, her chestnut hair worn long",
+          "tokens": [
+            "katagiri_senior_high_school_uniform",
+            "white_shirt",
+            "wing_collar",
+            "blazer",
+            "pleated_skirt",
+            "long_hair"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_home",
+          "name": "家务围裙与束发",
+          "prose": "a blue cotton apron over an opaque cream T-shirt and comfortable dark trousers, with chestnut hair tied up",
+          "tokens": [
+            "blue_apron",
+            "cream_t-shirt",
+            "dark_pants",
+            "hair_up"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_weekend",
+          "name": "周末宽松卫衣",
+          "prose": "an opaque pale grey sweatshirt and loose navy trousers, with her chestnut hair loosely tied back",
+          "tokens": [
+            "grey_sweatshirt",
+            "navy_pants",
+            "ponytail"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬夜针织居家装",
+          "prose": "a warm cream sweater and dark trousers, with chestnut hair loose around her shoulders",
+          "tokens": [
+            "cream_sweater",
+            "dark_pants",
+            "hair_down"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

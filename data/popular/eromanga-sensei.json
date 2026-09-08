@@ -1,0 +1,125 @@
+{
+  "version": "1.0.0",
+  "franchise": "Eromanga Sensei",
+  "characters": [
+    {
+      "id": "izumi_sagiri",
+      "displayName": "和泉纱雾",
+      "originalName": "Sagiri Izumi",
+      "franchise": "Eromanga Sensei",
+      "aliases": [
+        "和泉纱雾",
+        "Sagiri Izumi"
+      ],
+      "identityProse": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",
+      "identityTokens": [
+        "izumi_sagiri",
+        "eromanga_sensei",
+        "grey_hair",
+        "long_hair",
+        "gradient_hair",
+        "blue_eyes",
+        "hair_bow",
+        "sidelocks"
+      ],
+      "exactTokens": [
+        "izumi_sagiri"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, izumi_sagiri"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_drawing",
+          "name": "粉色连帽衫绘画装",
+          "prose": "an opaque pink hoodie, loose grey trousers and a drawing headset",
+          "tokens": [
+            "pink_hoodie",
+            "grey_pants",
+            "headphones"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_outside",
+          "name": "初次外出的帽衫便装",
+          "prose": "a zipped pink hoodie over a white T-shirt, loose blue jeans, a sun cap and a plain face mask",
+          "tokens": [
+            "pink_hoodie",
+            "t-shirt",
+            "jeans",
+            "cap",
+            "face_mask"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭淡蓝花纹浴衣",
+          "prose": "a properly wrapped pale blue floral yukata with a pink obi and sandals",
+          "tokens": [
+            "blue_yukata",
+            "floral_print",
+            "pink_obi",
+            "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_beach",
+          "name": "海边写生防晒装",
+          "prose": "a long-sleeved opaque sun jacket, full-length trousers, a broad sunhat and large sunglasses",
+          "tokens": [
+            "sunhat",
+            "sunglasses",
+            "long_sleeves",
+            "jacket",
+            "pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_winter",
+          "name": "冬季参拜大衣",
+          "prose": "a cream winter coat over trousers, a pink wool scarf and warm boots",
+          "tokens": [
+            "winter_coat",
+            "pink_scarf",
+            "pants",
+            "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

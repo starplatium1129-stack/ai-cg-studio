@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "franchise": "The Pet Girl of Sakurasou",
+  "characters": [
+    {
+      "id": "shiina_mashiro",
+      "displayName": "椎名真白",
+      "originalName": "Mashiro Shiina",
+      "franchise": "The Pet Girl of Sakurasou",
+      "aliases": [
+        "椎名真白",
+        "Mashiro Shiina"
+      ],
+      "identityProse": "Mashiro Shiina from The Pet Girl of Sakurasou, a quiet young painter with very long straight cream-blonde hair, pale orange eyes and slightly upturned eyelids. Her expression changes through tiny shifts of her gaze rather than broad smiles.",
+      "identityTokens": [
+        "shiina_mashiro",
+        "sakura-sou_no_pet_na_kanojo",
+        "blonde_hair",
+        "long_hair",
+        "straight_hair",
+        "orange_eyes",
+        "hair_between_eyes"
+      ],
+      "exactTokens": [
+        "shiina_mashiro"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, shiina_mashiro"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_studio",
+          "name": "画室衬衫与长裤",
+          "prose": "a buttoned white cotton shirt with paint marks on its hem and navy ankle-length trousers",
+          "tokens": [
+            "white_shirt",
+            "long_sleeves",
+            "buttoned_shirt",
+            "blue_pants",
+            "paint_splatter"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_uniform",
+          "name": "水明艺大附高校服",
+          "prose": "a white school blouse with a red ribbon, navy school blazer and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_shirt",
+            "red_ribbon",
+            "blazer",
+            "pleated_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_home",
+          "name": "柔软针织居家装",
+          "prose": "a cream knitted sweater and loose brown trousers",
+          "tokens": [
+            "cream_sweater",
+            "knitwear",
+            "brown_pants"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_gallery",
+          "name": "毕业展浅色连衣裙",
+          "prose": "an opaque ivory knee-length dress with short sleeves and flat shoes",
+          "tokens": [
+            "white_dress",
+            "short_sleeves",
+            "flat_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
+    }
+  ]
+}

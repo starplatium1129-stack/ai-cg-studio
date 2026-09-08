@@ -135,6 +135,139 @@
           ]
         }
       ]
+    },
+    {
+      "id": "hayasaka_ai",
+      "displayName": "早坂爱",
+      "originalName": "Ai Hayasaka",
+      "franchise": "Kaguya-sama: Love Is War",
+      "aliases": [
+        "早坂爱",
+        "Ai Hayasaka"
+      ],
+      "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",
+      "identityTokens": [
+        "hayasaka_ai",
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "blonde_hair",
+        "blue_eyes"
+      ],
+      "exactTokens": [
+        "hayasaka_ai"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, hayasaka_ai"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_maid",
+          "name": "四宫宅长发女仆装",
+          "prose": "a long-sleeved black maid dress with a white apron, modest collar, maid headband and pale blonde side ponytail tied with a scrunchie",
+          "tokens": [
+            "maid",
+            "black_dress",
+            "long_sleeves",
+            "white_apron",
+            "maid_headdress",
+            "side_ponytail",
+            "hair_scrunchie"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_school",
+          "name": "秀知院校服侧马尾",
+          "prose": "a dark Shuchiin school uniform with a white collar, red ribbon, loose socks and a blonde side ponytail",
+          "tokens": [
+            "shuuchiin_academy_school_uniform",
+            "white_collar",
+            "red_ribbon",
+            "loose_socks",
+            "side_ponytail",
+            "hair_scrunchie"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_casual",
+          "name": "任务间隙便装",
+          "prose": "an opaque navy zip jacket, cream T-shirt, straight jeans and a blonde side ponytail",
+          "tokens": [
+            "navy_jacket",
+            "t-shirt",
+            "jeans",
+            "side_ponytail"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_sports",
+          "name": "庭院体操运动装",
+          "prose": "an opaque blue sports T-shirt, grey tracksuit trousers and a blonde side ponytail",
+          "tokens": [
+            "blue_t-shirt",
+            "track_pants",
+            "sportswear",
+            "side_ponytail"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_short",
+          "name": "离职后短发旅行装",
+          "prose": "a light blue jacket over a cream top and dark trousers, with her pale blonde hair cut in a neat short bob",
+          "tokens": [
+            "blue_jacket",
+            "cream_shirt",
+            "dark_pants",
+            "short_hair",
+            "bob_cut"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_night",
+          "name": "夜间散发针织装",
+          "prose": "a warm cream cardigan over a buttoned cotton shirt and navy trousers, her blonde hair loose around her shoulders",
+          "tokens": [
+            "cream_cardigan",
+            "buttoned_shirt",
+            "navy_pants",
+            "hair_down"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

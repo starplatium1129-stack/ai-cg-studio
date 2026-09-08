@@ -17,6 +17,7 @@
 | [游戏式安装界面](game-installer.md) | 原生安装旅程、模板维护、安全预览和私密发行 |
 | [桌面个性化审计](desktop-personalization-audit-2026-09-08.md) | 启动工作页、偏好恢复、双主题标题栏与本轮验收边界 |
 | [本次文档审计](documentation-audit-2026-09-08.md) | 漂移修正、检查结果和边界 |
+| [热门角色第五批全年龄接入进度](popular-sfw-batch5-progress-2026-09-08.md) | 新增角色、真实出图、测试和未完成验收；附[交付快照](evidence/popular-sfw-batch5-delivery.json) |
 
 本次已完成修复见 [非主机代码修复与验证](archive/completed/code-only-repairs-2026-09-08.md)。
 

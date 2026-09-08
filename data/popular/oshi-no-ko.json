@@ -224,6 +224,126 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "arima_kana",
+      "displayName": "有马加奈",
+      "originalName": "Kana Arima",
+      "franchise": "Oshi no Ko",
+      "aliases": [
+        "有马加奈",
+        "Kana Arima"
+      ],
+      "identityProse": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
+      "identityTokens": [
+        "arima_kana",
+        "oshi_no_ko",
+        "red_hair",
+        "short_hair",
+        "blunt_bangs",
+        "red_eyes"
+      ],
+      "exactTokens": [
+        "arima_kana"
+      ],
+      "exactPrefixes": [
+        "1girl, solo, arima_kana"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfits": [
+        {
+          "id": "sfw_stage",
+          "name": "B小町舞台打歌服",
+          "prose": "an opaque red-and-white idol stage dress with layered knee-length skirt, fitted jacket, gloves and polished shoes",
+          "tokens": [
+            "idol_clothes",
+            "red_dress",
+            "white_jacket",
+            "layered_skirt",
+            "gloves",
+            "stage_shoes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "sfw_practice",
+          "name": "排练室运动便装",
+          "prose": "a charcoal T-shirt, burgundy tracksuit trousers and white sneakers",
+          "tokens": [
+            "t-shirt",
+            "track_pants",
+            "sneakers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_casual",
+          "name": "贝雷帽与针织便装",
+          "prose": "a burgundy beret, cream knit cardigan, white blouse and navy knee-length skirt",
+          "tokens": [
+            "beret",
+            "red_beret",
+            "cream_cardigan",
+            "white_blouse",
+            "navy_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_school",
+          "name": "阳东高校制服",
+          "prose": "a tidy dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "blazer",
+            "white_blouse",
+            "ribbon",
+            "pleated_skirt"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_festival",
+          "name": "夏祭红白花纹浴衣",
+          "prose": "a properly wrapped red-and-white floral yukata with a dark obi and sandals",
+          "tokens": [
+            "yukata",
+            "red_yukata",
+            "floral_print",
+            "obi",
+            "sandals"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ]
     }
   ]
 }

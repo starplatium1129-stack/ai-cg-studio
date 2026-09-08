@@ -66,6 +66,10 @@ const FRANCHISE_CN: Record<string, string> = {
   "Violet Evergarden": "紫罗兰永恒花园",
   "YUZUSOFT": "柚子社作品",
   "Zenless Zone Zero": "绝区零",
+  "The Pet Girl of Sakurasou": "樱花庄的宠物女孩",
+  "Eromanga Sensei": "埃罗芒阿老师",
+  "SSSS.GRIDMAN": "SSSS.古立特",
+  "Horimiya": "堀与宫村",
 }
 
 /** Every catalog franchise must explicitly register a display label. Unknown imports remain identifiable. */
