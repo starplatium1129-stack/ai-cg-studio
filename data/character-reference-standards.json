@@ -2328,7 +2328,47 @@
         "large_breasts",
         "confident_smile"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_tokiwadai_uniform",
+          "name": "常盘台女王蜂制服",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "her Tokiwadai Middle School uniform: a beige sweater vest over a crisp white short-sleeved shirt, a grey pleated skirt, white under-elbow gloves printed with spider webs, white thighhighs with the same spider web print, and her handbag holding a row of television remote controls",
+          "tokens": [
+            "tokiwadai_school_uniform",
+            "school_uniform",
+            "sweater_vest",
+            "beige_vest",
+            "white_shirt",
+            "pleated_skirt",
+            "grey_skirt",
+            "white_gloves",
+            "spider_web_print",
+            "under-elbow_gloves",
+            "white_thighhighs",
+            "handbag",
+            "remote_control"
+          ]
+        },
+        {
+          "id": "sfw_silk_dorm_robe",
+          "name": "宿舍丝绸长睡袍",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque pale-blue silk dressing gown with long sleeves, a closed overlapping front securely tied at the waist, and an ankle-length hem worn over full-length pajamas",
+          "tokens": [
+            "dressing_gown",
+            "blue_robe",
+            "long_sleeves",
+            "closed_front",
+            "waist_sash",
+            "opaque_fabric",
+            "long_robe",
+            "pajamas"
+          ]
+        }
+      ]
     },
     {
       "id": "makima",
@@ -8324,7 +8364,42 @@
         "curvaceous_body",
         "intellectual_smile"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_burial_agency_habit",
+          "name": "埋葬机关修女法衣战袍",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "her Burial Agency combat habit: a deep navy-blue sleeveless high-collar clergy tunic with white accents, gold crucifixes, dark blue short skirt, sheer black pantyhose, and throwing black keys between her gloved fingers",
+          "tokens": [
+            "nun",
+            "habit",
+            "church_uniform",
+            "blue_dress",
+            "cross",
+            "gloves",
+            "black_pantyhose",
+            "black_keys_(type-moon)"
+          ]
+        },
+        {
+          "id": "sfw_white_bridal_gown",
+          "name": "纯白誓约婚纱",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque floor-length white bridal gown with a fitted off-shoulder neckline, floral lace layered over solid fabric, a flowing white veil and simple white formal shoes",
+          "tokens": [
+            "wedding_dress",
+            "white_dress",
+            "long_dress",
+            "off_shoulder",
+            "lace_trim",
+            "opaque_fabric",
+            "bridal_veil",
+            "white_shoes"
+          ]
+        }
+      ]
     },
     {
       "id": "ryougi_shiki",

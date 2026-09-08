@@ -1,0 +1,80 @@
+{
+  "updatedAt": "2026-09-08T15:19:35.167Z",
+  "goalStatus": "active",
+  "batch": "old-1",
+  "characterTarget": 50,
+  "internalSemanticCharacters": 50,
+  "nonAdultTarget": 314,
+  "internalSemanticScenes": 314,
+  "withFindings": 241,
+  "fullSceneAuditsCompleted": 0,
+  "currentVerifiedRepairImages": 10,
+  "currentFirstBatchRepairImages": 4,
+  "nextCharacterIndex": 50,
+  "nextCharacterId": null,
+  "semanticReports": [
+    "old1-first10-semantic-review.json",
+    "old1-next3-semantic-review.json",
+    "old1-next2-semantic-review.json",
+    "old1-next5-semantic-review.json",
+    "old1-characters21-26-semantic-review.json",
+    "old1-characters27-32-semantic-review.json",
+    "old1-characters33-36-semantic-review.json",
+    "old1-characters37-42-semantic-review.json",
+    "old1-characters43-50-semantic-review.json"
+  ],
+  "sourceChangesSinceSemanticReview": [
+    {
+      "id": "artoria_burger_shop",
+      "recognizedRepair": true
+    },
+    {
+      "id": "artoria_laundromat",
+      "recognizedRepair": true
+    },
+    {
+      "id": "artoria_autumn_park",
+      "recognizedRepair": true
+    },
+    {
+      "id": "saber_alter_sofa_armor_off_cuddle",
+      "recognizedRepair": true
+    },
+    {
+      "id": "misaki_dorm_late_night_snack",
+      "recognizedRepair": true
+    }
+  ],
+  "remaining": [
+    "first-batch canonical and existing-image verification",
+    "207 first-batch R18 source semantic audit beyond metadata",
+    "failed Saber Alter visual repair",
+    "old-2 and old-3 per-scene audit",
+    "302 standalone scene audit",
+    "new49 completed-source reconciliation",
+    "remote/browser/dual-theme verification",
+    "reference image assets: 28 pending views for 4 registered forms",
+    "publish reviewed images and coordinate precise commit/push"
+  ],
+  "checks": {
+    "previousOwnedRepairGate": "pass",
+    "currentSafeBindingGate": "pass",
+    "rewrite": {
+      "exitStatus": "pass",
+      "entries": 2,
+      "tokenRetention": 0.581,
+      "proseSimilarity": 0.19,
+      "caveat": "Retention exceeds the printed 50% recommendation; checker does not enforce that average threshold"
+    },
+    "adultDisabledPlanning": "1292/1292 blocked as expected",
+    "currentSafeBindingGateLog": "safe-binding-gate-full.log"
+  },
+  "partialVisualBindingRepairs": [
+    "misaki_dorm_late_night_snack",
+    "ciel_chapel_cross_bridal_vow"
+  ],
+  "failedVisualRepairs": [
+    "saber_alter_sofa_armor_off_cuddle"
+  ],
+  "nextStage": "Complete first-batch canonical/visual and adult-source audit; continue old-2 source audit and prioritize identified safety bindings"
+}

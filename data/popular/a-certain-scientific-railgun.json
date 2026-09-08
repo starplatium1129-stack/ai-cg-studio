@@ -245,6 +245,23 @@
             "large_breasts",
             "star-shaped_pupils"
           ]
+        },
+        {
+          "id": "sfw_silk_dorm_robe",
+          "name": "宿舍丝绸长睡袍",
+          "prose": "an opaque pale-blue silk dressing gown with long sleeves, a closed overlapping front securely tied at the waist, and an ankle-length hem worn over full-length pajamas",
+          "tokens": [
+            "dressing_gown",
+            "blue_robe",
+            "long_sleeves",
+            "closed_front",
+            "waist_sash",
+            "opaque_fabric",
+            "long_robe",
+            "pajamas"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     }
