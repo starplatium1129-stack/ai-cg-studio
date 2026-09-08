@@ -2,16 +2,16 @@
   <Teleport to="body">
     <Transition name="layer-pop">
     <div v-if="open" class="batch-overlay" @click.self="emit('close')">
-      <section class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
+      <section ref="panel" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
         <header class="batch-head">
           <div>
             <span class="batch-step">BATCH · {{ batchMode === 'scene' ? 'SCENES' : 'CHARACTERS' }}</span>
             <h2>批量出图 · {{ batchMode === 'scene' ? '多场景蓝图' : '多角色漫游' }}</h2>
             <p>{{ phase === 'config'
               ? (batchMode === 'scene'
-                  ? '勾选场景一次出齐，成片直接在面板里预览挑选，全部自动入册历史。'
+                  ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。'
                   : '使用当前词条，一次性勾选多位角色批量出图，成片自动归入各角色画廊。')
-              : '逐张串行生成，可离开页面；点缩略图看大图，失败项可单独重跑。' }}</p>
+              : '逐张串行生成，可关闭面板留在当前页；点缩略图看大图，失败项可单独重跑。' }}</p>
           </div>
           <button class="btn btn-ghost" type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
         </header>
@@ -34,7 +34,7 @@
                   @click="batchEngine = 'sd'">SD</button>
                 <button type="button" :class="{ active: batchEngine === 'anima' }" :disabled="!animaAvailable"
                   :title="!animaAvailable ? 'ComfyUI 当前离线' : undefined"
-                  @click="batchEngine = 'anima'">Anima</button>
+                  @click="batchEngine = 'anima'">{{ props.deps.animaState.value.family === 'krea2' ? 'Krea 2' : 'Anima' }}</button>
               </div>
             </div>
             <div class="batch-field">
@@ -49,18 +49,18 @@
           <!-- 场景蓝图选择视图 -->
           <template v-if="batchMode === 'scene'">
             <div class="batch-scene-toolbar">
-              <input v-model="filter" class="input" type="search" placeholder="搜索场景标题 / 地点…" />
+              <input v-model="filter" class="input" type="search" aria-label="搜索批量场景" placeholder="搜索场景 / 角色 / 地点…" />
               <select v-model="categoryFilter" class="select" aria-label="按分类过滤">
                 <option value="">全部分类</option>
                 <option v-for="name in categories" :key="name" :value="name">{{ name }}</option>
               </select>
-              <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllScenes">{{ allFilteredScenesSelected ? '取消全选' : '全选' }}</button>
+              <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllScenes">{{ allFilteredScenesSelected ? '取消全选' : '全选匹配项' }}</button>
               <button class="btn btn-ghost btn-sm" type="button" @click="clearSceneSelection">清空</button>
             </div>
 
             <div class="batch-scene-grid">
               <button
-                v-for="scene in filteredScenes"
+                v-for="scene in filteredScenes.slice(0, sceneLimit)"
                 :key="scene.id"
                 type="button"
                 class="batch-scene-card"
@@ -71,7 +71,7 @@
                 <span class="batch-scene-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
                 <strong class="batch-scene-title">{{ scene.title }}</strong>
                 <small class="batch-scene-meta">
-                  {{ scene.category }}<template v-if="scene.location"> · {{ scene.location }}</template>
+                  {{ props.deps.pb.popularCharacters.find(character => character.id === scene.characterId)?.displayName }} · {{ scene.category }}<template v-if="scene.location"> · {{ scene.location }}</template>
                   <ArchiveIcon v-if="scene.adult" name="lock" class="batch-scene-adult" title="成人场景" />
                 </small>
               </button>
@@ -79,6 +79,7 @@
                 没有匹配的场景{{ props.scenes.length ? '（换个关键词或分类试试）' : '（场景蓝图为空）' }}。
               </p>
             </div>
+            <button v-if="filteredScenes.length > sceneLimit" class="btn btn-ghost" type="button" @click="sceneLimit += 30">再显示 30 个场景（共 {{ filteredScenes.length }} 个匹配）</button>
           </template>
 
           <!-- 多角色漫游选择视图 -->
@@ -97,18 +98,18 @@
             </div>
 
             <div class="batch-scene-toolbar">
-              <input v-model="charFilter" class="input" type="search" placeholder="搜索角色名 / 原作…" />
+              <input v-model="charFilter" class="input" type="search" aria-label="搜索批量角色" placeholder="搜索角色名 / 原作…" />
               <select v-model="franchiseFilter" class="select" aria-label="按作品过滤">
                 <option value="">全部作品</option>
                 <option v-for="name in franchises" :key="name" :value="name">{{ name }}</option>
               </select>
-              <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllCharacters">{{ allFilteredCharsSelected ? '取消全选' : '全选' }}</button>
+              <button class="btn btn-ghost btn-sm" type="button" @click="toggleAllCharacters">{{ allFilteredCharsSelected ? '取消全选' : '全选匹配项' }}</button>
               <button class="btn btn-ghost btn-sm" type="button" @click="clearCharSelection">清空</button>
             </div>
 
             <div class="batch-char-grid">
               <button
-                v-for="char in filteredCharacters"
+                v-for="char in filteredCharacters.slice(0, charLimit)"
                 :key="char.id"
                 type="button"
                 class="batch-char-card"
@@ -129,6 +130,7 @@
                 没有匹配的角色（换个关键词试试）。
               </p>
             </div>
+            <button v-if="filteredCharacters.length > charLimit" class="btn btn-ghost" type="button" @click="charLimit += 30">再显示 30 位角色（共 {{ filteredCharacters.length }} 位匹配）</button>
           </template>
 
           <footer class="batch-foot">
@@ -143,10 +145,10 @@
             <button
               class="btn btn-primary"
               type="button"
-              :disabled="batchMode === 'scene' ? !selectedSceneCount : !selectedCharCount"
+              :disabled="isRunning || !engineReady || (batchMode === 'scene' ? !selectedSceneCount : !selectedCharCount)"
               @click="submit"
             >
-              <ArchiveIcon name="spark" /> 开始批量出图
+              <ArchiveIcon name="spark" /> {{ engineReady ? '开始批量出图' : '请选择可用的 Anima / Krea 2 引擎' }}
             </button>
           </footer>
         </template>
@@ -154,9 +156,9 @@
         <!-- ── 结果态（进行中与完成后统一，完成后不自动弹回配置）── -->
         <template v-else>
           <div class="batch-progress-head">
-            <strong>{{ isRunning ? '正在逐张出图…' : '本批完成' }}</strong>
+            <strong>{{ isRunning ? (batchDraw.cancelRequested.value ? '当前张完成后停止…' : '正在逐张出图…') : (progress.cancelled ? '本批已停止' : '本批完成') }}</strong>
             <span class="batch-count-label">
-              {{ progress.succeeded }} / {{ progress.total }} 张成功<template v-if="progress.failed"> · {{ progress.failed }} 失败</template>
+              {{ progress.succeeded }} / {{ progress.total }} 张成功<template v-if="progress.failed"> · {{ progress.failed }} 失败</template><template v-if="progress.cancelled"> · {{ progress.cancelled }} 未执行</template>
             </span>
           </div>
           <div class="batch-progress"><i :style="{ '--progress': progressPercent + '%' }"></i></div>
@@ -183,20 +185,21 @@
                   <span class="batch-card-title">{{ job.sceneTitle }}<em v-if="job.variant > 0"> · {{ job.variant + 1 }}</em></span>
                 </div>
                 <span class="batch-card-seed">{{ job.subtitle ? job.subtitle + ' · ' : '' }}{{ job.seed >= 0 ? 'seed ' + job.seed : '随机' }}</span>
+              <p v-if="job.error" class="batch-card-error">{{ job.error }}</p>
               </figcaption>
             </figure>
           </div>
 
           <footer class="batch-foot">
             <template v-if="isRunning">
-              <span class="batch-hint">可离开页面，任务在后台继续</span>
-              <button class="btn btn-danger" type="button" @click="batchDraw.cancel">停止（当前张完成后停）</button>
+              <span class="batch-hint">关闭面板可继续；离开页面会停止后续任务</span>
+              <button class="btn btn-danger" type="button" :disabled="batchDraw.cancelRequested.value" @click="batchDraw.cancel">停止（当前张完成后停）</button>
             </template>
             <template v-else>
-              <span class="batch-hint">全部成片已自动入册历史，可在历史里「加入分镜」攒片</span>
+              <span class="batch-hint">成功成片已自动入册历史，可在历史里「加入分镜」攒片</span>
               <div class="batch-foot-actions">
                 <button v-if="retryableCount" class="btn btn-ghost" type="button" @click="onRetryFailed">
-                  <ArchiveIcon name="spark" /> 重跑失败 {{ retryableCount }} 张
+                  <ArchiveIcon name="spark" /> 重试失败 / 未执行 {{ retryableCount }} 张
                 </button>
                 <button class="btn btn-ghost" type="button" @click="resetToConfig">再来一批</button>
                 <button class="btn btn-primary" type="button" @click="emit('close')">完成</button>
@@ -226,7 +229,8 @@
 
 <script setup lang="ts">
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch, onUnmounted } from 'vue'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBatchRunners, type PromptBatchRunnersDeps } from '@/composables/prompt/usePromptBatchRunners'
 import type { BatchDrawJob } from '@/composables/generation/useBatchDraw'
@@ -248,12 +252,15 @@ const emit = defineEmits<{
   'running-change': [running: boolean]
 }>()
 
+const panel = ref<HTMLElement | null>(null)
+useFocusTrap(panel, () => props.open, { onEscape: () => previewJob.value ? previewJob.value = null : emit('close') })
 const batchMode = ref<'scene' | 'character'>('scene')
 const count = ref<1 | 3>(1)
 const phase = ref<'config' | 'results'>('config')
 const previewJob = ref<BatchDrawJob | null>(null)
 
 // ── 场景选择态 ──
+const sceneLimit = ref(30), charLimit = ref(30)
 const filter = ref('')
 const categoryFilter = ref('')
 const selectedSceneSet = reactive(new Set<string>())
@@ -269,6 +276,7 @@ const currentPromptPreview = computed(() => {
   return props.deps.currentLivePrompt?.() || props.deps.currentBasePrompt?.() || props.deps.pb.story || props.deps.pb.visualDescription || ''
 })
 
+const engineReady = computed(() => batchEngine.value === 'sd' ? props.sdAvailable && batchMode.value === 'character' && [...selectedCharSet].every(id => ['nene', 'natsume'].includes(id)) : props.animaAvailable)
 const isRunning = computed(() => batchDraw.running.value)
 const jobs = computed(() => batchDraw.jobs.value)
 const progress = computed(() => batchDraw.progress.value)
@@ -285,9 +293,11 @@ const categories = computed(() =>
 const filteredScenes = computed(() => {
   const keyword = filter.value.trim().toLowerCase()
   return props.scenes.filter(scene => {
+    if (scene.adult && !props.deps.pb.showMatureScenes) return false
     if (categoryFilter.value && scene.category !== categoryFilter.value) return false
     if (!keyword) return true
-    return [scene.title, scene.location, scene.category]
+    const owner = props.deps.pb.popularCharacters.find(character => character.id === scene.characterId)
+    return [scene.title, scene.location, scene.category, owner?.displayName]
       .some(text => String(text || '').toLowerCase().includes(keyword))
   })
 })
@@ -300,8 +310,9 @@ function toggleScene(id: string) {
   else selectedSceneSet.add(id)
 }
 function toggleAllScenes() {
+  const clear = allFilteredScenesSelected.value
   filteredScenes.value.forEach(scene => {
-    if (allFilteredScenesSelected.value) selectedSceneSet.delete(scene.id)
+    if (clear) selectedSceneSet.delete(scene.id)
     else selectedSceneSet.add(scene.id)
   })
 }
@@ -359,8 +370,9 @@ function toggleChar(id: string) {
   else selectedCharSet.add(id)
 }
 function toggleAllCharacters() {
+  const clear = allFilteredCharsSelected.value
   filteredCharacters.value.forEach(char => {
-    if (allFilteredCharsSelected.value) selectedCharSet.delete(char.id)
+    if (clear) selectedCharSet.delete(char.id)
     else selectedCharSet.add(char.id)
   })
 }
@@ -371,12 +383,13 @@ function clearCharSelection() {
 }
 
 async function submit() {
+  if (isRunning.value || !engineReady.value) return
   if (batchMode.value === 'scene') {
-    const sceneIds = filteredScenes.value.map(s => s.id).filter(id => selectedSceneSet.has(id))
+    const sceneIds = props.scenes.map(s => s.id).filter(id => selectedSceneSet.has(id))
     if (!sceneIds.length) return
     await onBatchStart({ sceneIds, count: count.value })
   } else {
-    const characterIds = filteredCharacters.value.map(c => c.id).filter(id => selectedCharSet.has(id))
+    const characterIds = allCharacters.value.map(c => c.id).filter(id => selectedCharSet.has(id))
     if (!characterIds.length) return
     await onBatchStartCharacters({ characterIds, count: count.value })
   }
@@ -391,258 +404,26 @@ function resetToConfig() {
 
 function placeholderText(job: BatchDrawJob): string {
   if (job.status === 'failed') return job.error || '生成失败'
-  if (job.status === 'running') return '生成中…'
+  if (job.status === 'running') return job.message || '生成中…'
   if (job.status === 'pending') return '排队中'
+  if (job.status === 'cancelled') return '未执行（已停止）'
   return '已入册'
 }
 
+watch([filter, categoryFilter], () => { sceneLimit.value = 30 })
+watch([charFilter, franchiseFilter], () => { charLimit.value = 30 })
 watch(() => props.open, (open) => {
   if (open) {
     filter.value = ''
     categoryFilter.value = ''
     charFilter.value = ''
     franchiseFilter.value = ''
-    count.value = 1
+    if (!isRunning.value && !engineReady.value) batchEngine.value = props.animaAvailable ? 'anima' : 'sd'
   }
 })
 
-watch(isRunning, running => emit('running-change', running), { immediate: true })
+watch(isRunning, running => { if (running) phase.value = 'results'; emit('running-change', running) }, { immediate: true })
+onUnmounted(() => batchDraw.dispose())
 </script>
 
-<style scoped>
-.batch-overlay {
-  position: fixed; inset: 0; z-index: var(--z-dock);
-  display: grid; place-items: center;
-  padding: clamp(12px, 3vw, 32px);
-  background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
-  backdrop-filter: blur(4px);
-}
-.batch-panel {
-  position: relative;
-  width: min(920px, 100%);
-  max-height: min(88vh, 940px);
-  display: grid; gap: var(--s-4);
-  padding: clamp(18px, 2.6vw, 28px);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-xl);
-  background: var(--bg-surface);
-  box-shadow: var(--shadow-md);
-  overflow: auto;
-}
-.batch-panel::before {
-  position: absolute; top: -1px; left: var(--s-5); width: 44px; height: 1px;
-  background: linear-gradient(90deg, var(--archive-cyan), transparent); content: "";
-}
-.batch-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
-.batch-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }
-.batch-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: var(--lh-body); }
-.batch-step { color: var(--accent); font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
-
-/* ── 配置态 ── */
-.batch-config-row { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-6); }
-.batch-field { display: grid; gap: var(--s-2); }
-.batch-seg {
-  display: inline-flex; padding: 3px;
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-deep);
-}
-.batch-seg button {
-  min-height: 30px; padding: 0 var(--s-3);
-  border: 0; border-radius: var(--r-sm);
-  background: transparent; color: var(--text-muted);
-  font-size: var(--fs-label-sm); cursor: pointer;
-  transition: background var(--motion-hover), color var(--motion-hover);
-}
-.batch-seg button:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
-.batch-seg button.active { background: var(--accent); color: var(--text-inverse); }
-
-.batch-scene-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
-.batch-scene-toolbar .input { flex: 1 1 200px; }
-.batch-scene-toolbar .select { flex: 0 1 auto; max-width: 160px; }
-
-.batch-scene-grid {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2);
-  max-height: 40vh; overflow: auto; padding: var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-deep);
-}
-.batch-scene-card {
-  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto;
-  column-gap: var(--s-2); align-items: center;
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-surface); color: inherit; text-align: left; cursor: pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover);
-}
-.batch-scene-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
-.batch-scene-card.selected {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface));
-}
-.batch-scene-check {
-  grid-row: 1 / span 2;
-  display: grid; place-items: center;
-  width: 22px; height: 22px;
-  border: 1px solid var(--border-strong); border-radius: 50%;
-  color: transparent;
-  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
-}
-.batch-scene-card.selected .batch-scene-check {
-  border-color: var(--accent); background: var(--accent); color: var(--text-inverse);
-}
-.batch-scene-check .archive-icon { width: 12px; }
-.batch-scene-title {
-  min-width: 0; font-size: var(--fs-body-sm);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.batch-scene-meta {
-  display: flex; align-items: center; gap: 4px;
-  color: var(--text-muted); font-size: var(--fs-label-xs);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.batch-scene-adult { flex: 0 0 auto; width: 12px; color: var(--accent); opacity: .8; }
-
-/* ── 角色卡网格 ── */
-.batch-char-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: var(--s-2);
-  max-height: 40vh; overflow: auto; padding: var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-deep);
-}
-.batch-char-card {
-  display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--s-2);
-  padding: var(--s-3) var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-surface); color: inherit; cursor: pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-press);
-}
-.batch-char-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
-.batch-char-card.selected {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface));
-}
-.batch-char-avatar-wrap {
-  position: relative; width: 56px; height: 56px;
-  border-radius: var(--r-pill); overflow: hidden;
-  border: 1px solid var(--border-soft); background: var(--bg-deep);
-}
-.batch-char-avatar { width: 100%; height: 100%; object-fit: cover; }
-.batch-char-check {
-  position: absolute; right: 0; bottom: 0;
-  display: grid; place-items: center;
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  border: 1px solid var(--border-strong);
-  background: var(--bg-surface); color: transparent;
-  transition: background var(--motion-hover), color var(--motion-hover), border-color var(--motion-hover);
-}
-.batch-char-card.selected .batch-char-check {
-  border-color: var(--accent); background: var(--accent); color: var(--text-inverse);
-}
-.batch-char-check .archive-icon { width: 11px; }
-.batch-char-info { display: grid; gap: 2px; width: 100%; }
-.batch-char-name {
-  font-size: var(--fs-label-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-.batch-char-franchise {
-  font-size: var(--fs-label-xs); color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-
-.batch-empty { grid-column: 1 / -1; margin: 0; padding: var(--s-4); color: var(--text-muted); font-size: var(--fs-body-sm); }
-
-/* ── 提示词基底卡片 ── */
-.batch-prompt-preview-card {
-  display: grid; gap: var(--s-1);
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: color-mix(in srgb, var(--accent) 4%, var(--bg-deep));
-}
-.batch-prompt-preview-head {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2);
-}
-.batch-prompt-preview-title {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: var(--fs-label-sm); font-weight: 600; color: var(--accent);
-}
-.batch-prompt-preview-title .archive-icon { width: 14px; }
-.batch-prompt-preview-badge {
-  font-size: var(--fs-label-xs); color: var(--text-muted);
-}
-.batch-prompt-preview-text {
-  margin: 0; font-size: var(--fs-label-xs); line-height: 1.4; color: var(--text-secondary);
-  max-height: 4.2em; overflow-y: auto; word-break: break-all;
-}
-
-/* ── 结果态 ── */
-.batch-progress-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-2); }
-.batch-count-label { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
-.batch-progress { height: 3px; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
-.batch-progress i {
-  display: block; height: 100%; width: 100%; transform-origin: left;
-  background: linear-gradient(90deg, var(--archive-cyan), var(--accent));
-  transform: scaleX(var(--progress, 0%));
-  transition: transform var(--motion-surface) var(--ease-out);
-}
-.batch-result-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3);
-  max-height: 44vh; overflow: auto; padding: var(--s-1);
-}
-.batch-card { display: grid; gap: var(--s-1); margin: 0; }
-.batch-thumb-btn {
-  padding: 0; border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-deep); cursor: zoom-in; overflow: hidden;
-  transition: border-color var(--motion-hover), transform var(--motion-press) var(--ease-out);
-}
-.batch-thumb-btn:hover { border-color: var(--accent); }
-.batch-thumb-btn:active { transform: scale(.98); }
-.batch-thumb { display: block; width: 100%; height: auto; object-fit: contain; }
-.batch-thumb-placeholder {
-  display: grid; place-content: center; justify-items: center; gap: var(--s-2);
-  aspect-ratio: 3 / 4;
-  border: 1px dashed var(--border-soft); border-radius: var(--r-md);
-  background: var(--bg-deep); color: var(--text-muted);
-  font-size: var(--fs-label-xs); text-align: center; padding: var(--s-2);
-  overflow: hidden;
-}
-.batch-thumb-placeholder .archive-icon { width: 20px; opacity: .7; }
-.batch-thumb-placeholder[data-state="running"] { border-style: solid; border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft)); color: var(--accent); }
-.batch-thumb-placeholder[data-state="running"] .archive-icon { animation: batchPulse 1.4s ease-in-out infinite; }
-.batch-thumb-placeholder[data-state="failed"] { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); color: var(--danger-text); }
-@keyframes batchPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.88); } }
-@media (prefers-reduced-motion: reduce) { .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; } }
-
-.batch-card-caption { display: grid; gap: 1px; min-width: 0; }
-.batch-card-header-line { display: flex; align-items: center; gap: 6px; min-width: 0; }
-.batch-card-avatar { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
-.batch-card-title { font-size: var(--fs-label-sm); color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.batch-card-title em { color: var(--text-muted); font-style: normal; }
-.batch-card[data-state="failed"] .batch-card-title { color: var(--danger-text); }
-.batch-card-seed { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); font-size: var(--fs-label-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-.batch-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
-.batch-foot-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-.batch-hint { color: var(--text-muted); font-size: var(--fs-label-xs); }
-
-/* 大图预览 */
-.batch-lightbox {
-  position: sticky; bottom: 0;
-  display: grid; justify-items: center; gap: var(--s-2);
-  padding: var(--s-4);
-  border: 1px solid var(--border-soft); border-radius: var(--r-lg);
-  background: color-mix(in srgb, var(--bg-deep) 85%, transparent);
-  backdrop-filter: blur(6px);
-}
-.batch-lightbox img {
-  max-width: 100%; max-height: 58vh;
-  border-radius: var(--r-md); border: 1px solid var(--border-soft);
-  object-fit: contain; background: var(--bg-deep);
-}
-.batch-lightbox-caption { margin: 0; color: var(--text-secondary); font-size: var(--fs-label-sm); }
-.batch-lightbox-caption em { color: var(--text-muted); font-style: normal; }
-.batch-lightbox-close { position: absolute; top: var(--s-3); right: var(--s-3); }
-
-@media (max-width: 768px) {
-  .batch-scene-grid { grid-template-columns: 1fr; }
-  .batch-result-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-}
-</style>
+<style scoped src="@/assets/css/batch-scene-draw-panel.css"></style>

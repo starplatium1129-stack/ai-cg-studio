@@ -45,6 +45,7 @@ export interface BatchDrawJob {
   variant: number
   status: 'pending' | 'running' | 'succeeded' | 'failed' | 'cancelled'
   error?: string
+  message?: string
   /** 成功张的预览 objectURL（面板缩略图直出；下一批 start/reset 统一 revoke）。 */
   resultUrl?: string
 }
@@ -54,10 +55,12 @@ export interface BatchDrawRunnerInput {
   seed: number
   /** 候选序号（0 起；同场景第 2、3 张 = 1、2）。 */
   variant: number
+  report?: (message: string) => void
 }
 
 export interface BatchDrawRunnerResult {
   ok: boolean
+  cancelled?: boolean
   error?: string
   /** 成功时回传预览 URL（从入册 blob 克隆的 objectURL，归本执行器统一释放）。 */
   resultUrl?: string
@@ -76,13 +79,16 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
   const running = ref(false)
   const cancelRequested = ref(false)
   const currentSeed = ref(-1)
+  let targets = new Map<string, BatchTargetItem>()
+  let disposed = false
 
   const progress = computed(() => {
     const total = jobs.value.length
     const done = jobs.value.filter(j => j.status === 'succeeded' || j.status === 'failed' || j.status === 'cancelled').length
     const succeeded = jobs.value.filter(j => j.status === 'succeeded').length
     const failed = jobs.value.filter(j => j.status === 'failed').length
-    return { total, done, succeeded, failed }
+    const cancelled = jobs.value.filter(j => j.status === 'cancelled').length
+    return { total, done, succeeded, failed, cancelled }
   })
 
   function makeId() {
@@ -113,28 +119,30 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
   }
 
   async function start(items: BatchTargetItem[], count: number, baseSeed: number, unitLabel = '个项目'): Promise<void> {
-    if (running.value) return
+    if (running.value || disposed) return
     if (!items.length) return
     releaseResultUrls()
-    const list = buildJobs(items, Math.max(1, Math.min(3, count)), baseSeed)
-    jobs.value = list
+    targets = new Map(items.map(item => [item.id, { ...item }]))
+    const amount = Number.isFinite(count) ? Math.max(1, Math.min(3, Math.floor(count))) : 1
+    jobs.value = buildJobs([...targets.values()], amount, Number.isFinite(baseSeed) ? baseSeed : -1)
+    const list = jobs.value
     running.value = true
     cancelRequested.value = false
     onFlash(`批量出图开始：${list.length} 张（${items.length} ${unitLabel}）`)
 
-    await runList(list, items)
+    await runList(list)
 
     running.value = false
     currentSeed.value = -1
-    const { total, succeeded, failed } = progress.value
-    onFlash(failed
+    const { total, succeeded, failed, cancelled } = progress.value
+    onFlash(cancelled ? `批量已停止：${succeeded} 张成功，${failed} 张失败，${cancelled} 张未执行` : failed
       ? `批量完成：${succeeded}/${total} 张成功，${failed} 张失败（可在结果里只重跑失败项）`
       : `批量完成：${succeeded}/${total} 张全部入册`)
   }
 
   /** 只重跑失败/已取消的张（同目标同 seed 同候选序号）。 */
-  async function retryFailed(items: BatchTargetItem[]): Promise<void> {
-    if (running.value) return
+  async function retryFailed(_items?: BatchTargetItem[]): Promise<void> {
+    if (running.value || disposed) return
     const list = jobs.value.filter(j => j.status === 'failed' || j.status === 'cancelled')
     if (!list.length) return
     list.forEach(job => { job.status = 'pending'; job.error = undefined })
@@ -142,15 +150,15 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
     cancelRequested.value = false
     onFlash(`重跑 ${list.length} 张失败任务`)
 
-    await runList(list, items)
+    await runList(list)
 
     running.value = false
     currentSeed.value = -1
     const failed = progress.value.failed
-    onFlash(failed ? `重跑完成：仍有 ${failed} 张失败` : '重跑完成：全部成功')
+    onFlash(progress.value.cancelled ? `重跑已停止：${progress.value.cancelled} 张未执行` : failed ? `重跑完成：仍有 ${failed} 张失败` : '重跑完成：全部成功')
   }
 
-  async function runList(list: BatchDrawJob[], items: BatchTargetItem[]): Promise<void> {
+  async function runList(list: BatchDrawJob[]): Promise<void> {
     for (let index = 0; index < list.length; index += 1) {
       const job = list[index]
       if (cancelRequested.value) {
@@ -159,11 +167,13 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
       }
       job.status = 'running'
       currentSeed.value = job.seed
-      const target = items.find(s => s.id === job.sceneId)
+      const target = targets.get(job.sceneId)
+      if (!target) { job.status = 'failed'; job.error = '原始任务素材不可用'; continue }
       const input: BatchDrawRunnerInput = {
-        scene: target ?? { id: job.sceneId, title: job.sceneTitle, prose: '' },
+        scene: { ...target },
         seed: job.seed,
         variant: job.variant,
+        report: message => { job.message = message },
       }
       let result: BatchDrawRunnerResult
       try {
@@ -172,9 +182,13 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
         result = { ok: false, error: error instanceof Error ? error.message : String(error) }
       }
       // 当前张的结果先落定（run 内部可能已请求取消——取消只影响后续张）。
-      job.status = result.ok ? 'succeeded' : 'failed'
-      if (!result.ok) job.error = result.error || '生成失败'
-      else if (result.resultUrl) job.resultUrl = result.resultUrl
+      job.status = result.cancelled ? 'cancelled' : result.ok ? 'succeeded' : 'failed'
+      if (!result.ok && !result.cancelled) job.error = result.error || '生成失败'
+      if (result.resultUrl) {
+        if (job.resultUrl) URL.revokeObjectURL(job.resultUrl)
+        if (disposed) URL.revokeObjectURL(result.resultUrl)
+        else job.resultUrl = result.resultUrl
+      }
       if (cancelRequested.value) {
         for (let rest = index + 1; rest < list.length; rest += 1) list[rest].status = 'cancelled'
         break
@@ -198,7 +212,9 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
   }
 
   function reset() {
+    if (running.value) return
     releaseResultUrls()
+    targets.clear()
     jobs.value = []
     running.value = false
     cancelRequested.value = false
@@ -212,5 +228,7 @@ export function useBatchDraw(options: BatchDrawRunOptions) {
     retryFailed,
     cancel,
     reset,
+    cancelRequested: readonly(cancelRequested),
+    dispose() { disposed = true; cancelRequested.value = true; releaseResultUrls() },
   }
 }

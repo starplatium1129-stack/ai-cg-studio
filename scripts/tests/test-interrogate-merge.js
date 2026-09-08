@@ -108,7 +108,7 @@ test('collectInterrogateContext：studio 用 charPrompt+场景，popular 用角�
   });
   assert.ok(studio.identityTokens.includes('ayachi_nene'));
   assert.ok(studio.sceneTokens.includes('classroom'));
-  assert.ok(studio.sceneTokens.includes('hair_ribbon'));
+  assert.ok(!studio.sceneTokens.includes('hair_ribbon'), '搜索标签不参与编译上下文');
 
   const popular = collectInterrogateContext({
     kind: 'popular',

@@ -328,10 +328,10 @@
             <button
               class="btn btn-ghost"
               type="button"
-              :disabled="generationBusy || batchRunning"
-              :title="generationBusy ? BUSY_HINT : (batchRunning ? '批量任务进行中' : '批量选择场景或角色，生成后预览成片并自动入册')"
+              :disabled="generationBusy"
+              :title="generationBusy ? BUSY_HINT : (batchRunning ? '查看本批出图进度' : '批量选择场景或角色，生成后预览成片并自动入册')"
               @click="batchOpen = true"
-            >批量出图 · 场景 / 多角色</button>
+            >{{ batchRunning ? '查看批量进度' : '批量出图 · 场景 / 多角色' }}</button>
             <span v-if="shotsPending" class="batch-entry-count">
               分镜待带入 {{ shotsPending }} 镜 · <button class="linklike" type="button" @click="goToShots">去分镜短片</button>
             </span>

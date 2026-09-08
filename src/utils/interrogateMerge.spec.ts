@@ -167,3 +167,45 @@ describe('interrogateMerge · 互斥组冲突消解（2026-08-29 修复「校服
     expect(result.conflicts).toEqual([])
   })
 })
+
+
+describe('反推冲突审计回归', () => {
+  const merge = (tags: string[], identityTokens: string[] = [], sceneTokens: string[] = [], manualTags = new Set<string>()) => mergeInterrogatedTags({ tags, identityTokens, sceneTokens, manualTags })
+  it('服装不与时段或天气跨类别冲突', () => {
+    const result = merge(['day', 'clear_sky'], ['school_uniform'])
+    expect(result.accepted).toEqual(['day', 'clear_sky'])
+    expect(result.conflicts).toEqual([])
+  })
+  it('场景与手动词条的时段天气参与冲突判断', () => {
+    const result = merge(['day', 'sunny'], [], ['night'], new Set(['rain']))
+    expect(result.accepted).toEqual([])
+    expect(result.conflicts.map(item => item.domain)).toEqual(['时段', '天气'])
+  })
+  it('归一去重且同一批反推中只保留首个互斥取值', () => {
+    const result = merge(['Blush', 'pink_hair', 'pink hair', 'blue_hair'], [], [], new Set(['blush']))
+    expect(result.accepted).toEqual(['pink_hair'])
+    expect(result.duplicates).toEqual(['blush', 'pink_hair'])
+    expect(result.conflicts.map(item => item.tag)).toEqual(['blue_hair'])
+  })
+  it('泳装不能误替换夜间，多个服装家族择一', () => {
+    expect(merge(['swimsuit'], ['night']).accepted).toEqual(['swimsuit'])
+    const result = merge(['swimsuit', 'bikini', 'maid'], ['school_uniform'])
+    expect(result.outfitReplacement).toEqual(['swimsuit', 'bikini'])
+    expect(result.conflicts.map(item => item.tag)).toEqual(['maid'])
+  })
+  it('单人与 solo 可共存，不能扩成双人', () => {
+    const result = merge(['1girl', 'solo', '2girls'])
+    expect(result.accepted).toEqual(['1girl', 'solo'])
+    expect(result.conflicts.map(item => item.tag)).toEqual(['2girls'])
+  })
+  it('保留明确镜头，拒绝反推全身与特写并存', () => {
+    const result = mergeInterrogatedTags({ tags: ['full_body', 'face_focus'], identityTokens: [], manualTags: new Set(), shot: 'close' })
+    expect(result.accepted).toEqual(['face_focus'])
+    expect(result.conflicts.map(item => item.tag)).toEqual(['full_body'])
+  })
+  it('工作室无法替换场景服装时明确拒绝冲突，而不是丢失反推服装', () => {
+    const result = mergeInterrogatedTags({ tags: ['swimsuit'], identityTokens: [], sceneTokens: ['school_uniform'], manualTags: new Set(), replaceOutfit: false })
+    expect(result.outfitReplacement).toEqual([])
+    expect(result.conflicts.map(item => item.tag)).toEqual(['swimsuit'])
+  })
+})

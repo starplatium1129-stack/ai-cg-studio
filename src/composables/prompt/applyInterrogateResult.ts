@@ -1,3 +1,4 @@
+import { mutualGroupWithCategory } from '@/utils/promptPolicy'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 
@@ -7,13 +8,13 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const payload = result as { mode?: string; caption?: string; tags?: unknown; characterTags?: unknown; warning?: string }
   if (payload.mode === 'caption' && typeof payload.caption === 'string' && payload.caption.trim()) {
     pb.visualDescription = String(payload.caption).trim()
-    pb.flash('已反推为自然语言，已填入画面描述（Krea2 直出，切人保留）')
+    pb.flash('自然语言已填入画面描述；请核对人物外观与服装，散文中的语义冲突仍需人工确认')
     const warning = payload.warning
     if (warning) setTimeout(() => pb.flash(warning), 2600)
     return
   }
-  const tags: string[] = Array.isArray(payload.tags) ? (payload.tags as string[]) : []
-  const characterTags: string[] = Array.isArray(payload.characterTags) ? (payload.characterTags as string[]) : []
+  const tags: string[] = Array.isArray(payload.tags) ? payload.tags.filter((tag): tag is string => typeof tag === 'string') : []
+  const characterTags: string[] = Array.isArray(payload.characterTags) ? payload.characterTags.filter((tag): tag is string => typeof tag === 'string') : []
   // 三重去重 + 身份域冲突消解（studio：charPrompt+场景行；popular：角色词条+蓝图行）
   const subject = pb.subject
   const popularChar = subject.kind === 'popular' ? findCharacter(pb.popularCharacters, subject.characterId) : null
@@ -24,7 +25,8 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
           ? {
               identityTokens: popularChar.identityTokens,
               exactTokens: popularChar.exactTokens,
-              outfitTokens: (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
+              aliases: popularChar.aliases,
+              outfitTokens: pb.outfitOverride?.tokens ?? (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
             }
           : null,
         blueprintTokens: subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId)?.promptTokens ?? [] : [],
@@ -40,15 +42,20 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     manualTags: pb.manualTags,
     identityTokens: context.identityTokens,
     sceneTokens: context.sceneTokens,
+    shot: pb.selections.shot,
+    replaceOutfit: subject.kind === 'popular',
   })
-  for (const tag of merged.accepted) pb.toggleManualTag(tag)
+  const next = new Set([...pb.manualTags, ...merged.accepted])
   // 服装跨族：顶替角色默认服装，而不是追加到 manualTags —— 追加会被角色那 12 个
   // 服装 tag 与 "She wears ..." 散文淹没，参考图服装根本出不来（2026-08-29 实测）。
   // 仅 popular 需要：studio（宁宁/夏目）无默认服装注入，反推词直接生效。
   if (subject.kind === 'popular' && merged.outfitReplacement.length) {
+    const group = mutualGroupWithCategory(merged.outfitReplacement[0])?.group
+    for (const tag of next) { const hit = mutualGroupWithCategory(tag); if (hit?.category === 'outfit' && hit.group !== group) next.delete(tag) }
     pb.setOutfitOverride(merged.outfitReplacement, merged.replacedOutfitGroup)
   }
-  const note = characterConflictNote(characterTags, context.identityTokens)
+  pb.manualTags = next
+  const note = characterConflictNote(characterTags, context.identityTokens, context.aliases)
   const parts: string[] = []
   if (merged.accepted.length) parts.push(`本地反推已叠加 ${merged.accepted.length} 个词条，可切人直出`)
   if (merged.duplicates.length) parts.push(`跳过已有词条 ${merged.duplicates.length} 个`)

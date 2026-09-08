@@ -179,3 +179,47 @@ for (const theme of ['dark', 'light']) {
     } finally { release() }
   })
 }
+
+
+for (const theme of ['dark', 'light']) {
+  test(`batch selection progress and stop stay consistent ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    let submitted = 0, finish = false
+    await page.route('**/api/anima/jobs', async route => {
+      if (route.request().method() !== 'POST') return route.continue()
+      submitted++
+      await route.fulfill({ json: { ok: true, job: { id: 'batch-audit-' + submitted, status: 'queued' } } })
+    })
+    await page.route(/\/api\/anima\/jobs\/batch-audit-\d+$/, route => route.fulfill({ json: { ok: true, job: { id: 'batch-audit-1', status: finish ? 'succeeded' : 'running', seed: 42, resultAvailable: finish, resultUrl: '/batch-audit-result.svg' } } }))
+    await page.route('**/batch-audit-result.svg', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="16" height="16" fill="gray"/></svg>' }))
+    await page.goto('/prompt-builder')
+    await page.getByRole('button', { name: '专家模式', exact: true }).click()
+    await page.getByRole('tab', { name: '任务', exact: true }).click()
+    await page.getByRole('button', { name: '批量出图 · 场景 / 多角色', exact: true }).click()
+    const panel = page.getByRole('dialog', { name: '批量出图', exact: true })
+    await panel.getByRole('button', { name: 'Anima', exact: true }).click()
+    await expect(panel.locator('.batch-scene-card')).toHaveCount(30)
+    await panel.getByRole('button', { name: '全选匹配项', exact: true }).click()
+    await panel.getByRole('button', { name: '取消全选', exact: true }).click()
+    await expect(panel.locator('.batch-hint')).toContainText('已选 0 个场景')
+    const safe = panel.locator('.batch-scene-card').filter({ hasNot: page.locator('.batch-scene-adult') })
+    await safe.nth(0).click(); await safe.nth(1).click()
+    await panel.getByLabel('搜索批量场景').fill('没有任何匹配_audit')
+    await expect(panel.locator('.batch-hint')).toContainText('已选 2 个场景')
+    await panel.getByRole('button', { name: '开始批量出图', exact: true }).click()
+    await expect(panel.locator('.batch-result-grid .batch-card')).toHaveCount(2)
+    await expect(panel.locator('.batch-progress-head')).toContainText('正在逐张出图')
+    await panel.getByRole('button', { name: '关闭', exact: true }).click()
+    await page.getByRole('button', { name: '查看批量进度', exact: true }).click()
+    await expect(panel.locator('.batch-progress-head')).toContainText('正在逐张出图')
+    await panel.getByRole('button', { name: '停止（当前张完成后停）', exact: true }).click()
+    finish = true
+    await expect(panel.locator('.batch-card[data-state="cancelled"]')).toHaveCount(1)
+    await expect(panel.locator('.batch-count-label')).toContainText('1 未执行')
+    await expect(panel.locator('.batch-card[data-state="succeeded"]')).toHaveCount(1)
+    expect(submitted).toBe(1)
+    await panel.screenshot({ path: `.review-shots/batch-${theme}.png` })
+  })
+}

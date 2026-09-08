@@ -1,4 +1,4 @@
-import { mutualGroupWithCategory, normalizeKey, tokenize } from './promptPolicy.ts'
+import { mutualGroupWithCategory, normalizeKey, tokenize, resolveFramingMode } from './promptPolicy.ts'
 
 /**
  * 反推词条合并器（2026-08-29，随机灵感/反推优化）。
@@ -96,6 +96,8 @@ export interface InterrogateMergeInput {
   identityTokens: ReadonlyArray<string>
   /** 场景行词条：studio 为场景 prompt+tags；popular 为蓝图 promptTokens。 */
   sceneTokens?: ReadonlyArray<string>
+  shot?: string | null
+  replaceOutfit?: boolean
 }
 
 export interface InterrogateMergeResult {
@@ -131,101 +133,67 @@ function toKeySet(tokens: ReadonlyArray<string>): Set<string> {
 
 /** 三重去重 + 身份域冲突消解后的可叠加词条。 */
 export function mergeInterrogatedTags(input: InterrogateMergeInput): InterrogateMergeResult {
-  const manualKeys = input.manualTags
-  const identityKeys = toKeySet(input.identityTokens)
-  const sceneKeys = toKeySet(input.sceneTokens ?? [])
-
-  // 身份行按域分组：域 → 身份行已占用的 key 集（含跨域词条归一后的匹配）
-  const identityDomainKeys = new Map<string, Set<string>>()
-  for (const key of identityKeys) {
-    for (const domain of IDENTITY_DOMAINS) {
-      if (domain.test(key)) {
-        const bucket = identityDomainKeys.get(domain.name) ?? new Set<string>()
-        bucket.add(key)
-        identityDomainKeys.set(domain.name, bucket)
-      }
-    }
-  }
-
-  // 身份行占用的互斥组：组名 → 该组已占用的 key 集（服装/时段/天气）。
-  // 组间互斥：反推词条属 B 组而身份行占着 A 组（A≠B）→ 冲突；同组则放行。
-  const identityGroupKeys = new Map<string, Set<string>>()
-  for (const key of identityKeys) {
-    const hit = mutualGroupWithCategory(key)
-    if (!hit) continue
-    const bucket = identityGroupKeys.get(hit.group) ?? new Set<string>()
-    bucket.add(key)
-    identityGroupKeys.set(hit.group, bucket)
-  }
-
-  const accepted: string[] = []
-  const duplicates: string[] = []
+  const occupied = toKeySet([...input.identityTokens, ...(input.sceneTokens ?? []), ...input.manualTags])
+  const seen = new Set(occupied)
+  const accepted: string[] = [], duplicates: string[] = [], filtered: string[] = [], outfitReplacement: string[] = []
   const conflicts: InterrogateTagConflict[] = []
-  const filtered: string[] = []
-  const outfitReplacement: string[] = []
   let replacedOutfitGroup: string | null = null
+  let incomingOutfit: string | null = null
+  const selectedFraming = resolveFramingMode(input.shot)
+  const conflict = (tag: string, domain: string, reason: string) => conflicts.push({ tag, domain, reason })
 
   for (const raw of input.tags) {
     const key = normalizeKey(raw)
     if (!key) continue
-    // 马赛克/打码类词条自动过滤（不提示、不计数为重复）。
-    if (CENSOR_TAGS.has(key)) {
-      filtered.push(key)
-      continue
-    }
-    if (manualKeys.has(key) || identityKeys.has(key) || sceneKeys.has(key)) {
-      duplicates.push(key)
-      continue
-    }
-    // 身份域冲突：词条属某身份域，且身份行在该域已有取值但不含此词条 → 跳过。
-    const domain = IDENTITY_DOMAINS.find(item => item.test(key))
+    if (CENSOR_TAGS.has(key)) { filtered.push(key); continue }
+    if (seen.has(key)) { duplicates.push(key); continue }
+    seen.add(key)
+    const domain = identityDomainOf(key)
     if (domain) {
-      const occupied = identityDomainKeys.get(domain.name)
-      if (occupied && occupied.size && !occupied.has(key)) {
-        conflicts.push({
-          tag: key,
-          domain: domain.label,
-          reason: `${domain.label}与当前角色（${[...occupied].slice(0, 3).join('、')}）冲突`,
-        })
+      const values = [...occupied].filter(value => domain.test(value))
+      const incompatible = values.filter(value => !(domain.name === 'subjectCount'
+        && ((key === 'solo' && ['1girl', '1boy'].includes(value)) || (value === 'solo' && ['1girl', '1boy'].includes(key)))))
+      if (incompatible.length) {
+        conflict(key, domain.label, `${domain.label}与当前角色或已采用词条（${incompatible.slice(0, 3).join('、')}）冲突`)
         continue
       }
     }
-    // 互斥组冲突（服装/时段/天气）：身份行已占用**另一个**组。
-    // 能走到这里说明 key 不在身份行（否则上面已判为重复），故同组必不命中。
-    const groupHit = mutualGroupWithCategory(key)
-    if (groupHit && identityGroupKeys.size) {
-      const foreign = [...identityGroupKeys.entries()].find(([group]) => group !== groupHit.group)
-      if (foreign) {
-        if (groupHit.category === 'outfit') {
-          // 服装跨族：**不跳过**，收集起来顶替角色默认服装。
-          // 若按普通冲突处理（跳过）或用 accepted 追加到 manualTags 末尾，都还原不了
-          // 参考图——实测角色侧有 12 个服装 tag 加一整段 "She wears ..." 散文，
-          // 孤零零一个 swimsuit 追加在末尾会被彻底淹没（2026-08-29 实测）。
-          outfitReplacement.push(key)
-          replacedOutfitGroup = foreign[0]
-        } else {
-          // 时段/天气没有「可替换的部件」语义（角色数据里没有"当前时段"这种字段），
-          // 只能跳过并说明。
-          conflicts.push({
-            tag: key,
-            domain: groupHit.label,
-            reason: `${groupHit.label}冲突：反推出「${groupHit.group}」，当前已定为「${foreign[0]}」，已按当前设定保留`,
-          })
+    const framing = resolveFramingMode(null, [key])
+    if (framing) {
+      const fixed = selectedFraming || [...occupied].map(value => resolveFramingMode(null, [value])).find(Boolean)
+      if (fixed && fixed !== framing) { conflict(key, '镜头', '景别与当前镜头或已采用词条冲突，已保留当前构图'); continue }
+    }
+    const hit = mutualGroupWithCategory(key)
+    if (hit) {
+      const prior = [...occupied].map(mutualGroupWithCategory).filter(value => value?.category === hit.category)
+      if (hit.category === 'outfit') {
+        if (incomingOutfit && incomingOutfit !== hit.group) {
+          conflict(key, hit.label, `反推结果包含多套服装，已优先采用「${incomingOutfit}」`)
+          continue
         }
+        incomingOutfit = hit.group
+      }
+      const foreign = prior.find(value => value?.group !== hit.group)
+      if (foreign) {
+        if (hit.category === 'outfit' && input.replaceOutfit !== false) {
+          outfitReplacement.push(key)
+          replacedOutfitGroup = foreign.group
+          continue
+        }
+        conflict(key, hit.label, `${hit.label}冲突：反推出「${hit.group}」，当前已定为「${foreign.group}」`)
         continue
       }
     }
     accepted.push(key)
+    occupied.add(key)
   }
-
-  return {
-    accepted,
-    duplicates,
-    conflicts,
-    filtered,
-    outfitReplacement,
-    replacedOutfitGroup,
+  // Keep all accepted members of the chosen clothing family in the replacement.
+  if (outfitReplacement.length) {
+    for (let i = accepted.length - 1; i >= 0; i--) {
+      if (mutualGroupWithCategory(accepted[i])?.group === incomingOutfit) outfitReplacement.unshift(...accepted.splice(i, 1))
+    }
   }
+  return { accepted, duplicates, conflicts, filtered, outfitReplacement, replacedOutfitGroup }
 }
 
 /**
@@ -333,7 +301,7 @@ export function collectInterrogateContext(params: InterrogateContextParams): {
     identityTokens: tokenize(String(params.charPrompt || '')),
     sceneTokens: [
       ...tokenize(String(params.scenePrompt || '')),
-      ...(params.sceneTags ?? []),
+      // Search/index tags are not part of the compiled scene prompt.
     ],
     aliases: [],
   }

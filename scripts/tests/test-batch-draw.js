@@ -191,3 +191,50 @@ test('支持 character 类型通用实体：avatarUrl 与 subtitle 正确落任�
   assert.equal(batch.jobs.value[0].avatarUrl, '/thumb/kaltsit.webp');
   assert.equal(batch.jobs.value[0].kind, 'character');
 });
+
+
+test('执行中状态响应式更新；不能 reset 绕过并发保护', async () => {
+  let release;
+  const batch = useBatchDraw({ run: async () => { await new Promise(resolve => { release = resolve; }); return { ok: true }; } });
+  const run = batch.start(scenes(1), 1, 42);
+  assert.equal(batch.jobs.value[0].status, 'running');
+  batch.reset();
+  assert.equal(batch.running.value, true);
+  assert.equal(batch.jobs.value.length, 1);
+  release(); await run;
+  assert.equal(batch.progress.value.succeeded, 1);
+});
+
+test('重试使用初次任务素材而非修改后的目录', async () => {
+  let attempt = 0;
+  const texts = [];
+  const items = scenes(1);
+  const batch = useBatchDraw({ run: async input => { texts.push(input.scene.prose); return { ok: ++attempt > 1 }; } });
+  await batch.start(items, 1, 42);
+  items[0].prose = 'changed';
+  await batch.retryFailed(items);
+  assert.deepEqual(texts, ['prose 0', 'prose 0']);
+});
+
+test('取消不宣称全部入册，并保留未执行计数', async () => {
+  const messages = [];
+  const batch = useBatchDraw({ onFlash: message => messages.push(message), run: async () => { batch.cancel(); return { ok: true }; } });
+  await batch.start(scenes(2), 1, 42);
+  assert.equal(batch.progress.value.cancelled, 1);
+  assert.match(messages.at(-1), /未执行/);
+  assert.doesNotMatch(messages.at(-1), /全部入册/);
+});
+
+test('销毁后不启动下一张，晚到的预览被释放', async () => {
+  let release;
+  const revoked = [];
+  const previous = URL.revokeObjectURL;
+  URL.revokeObjectURL = url => revoked.push(url);
+  try {
+    const batch = useBatchDraw({ run: async () => { await new Promise(resolve => { release = resolve; }); return { ok: true, resultUrl: 'blob:late' }; } });
+    const run = batch.start(scenes(2), 1, 42);
+    batch.dispose(); release(); await run;
+    assert.deepEqual(revoked, ['blob:late']);
+    assert.equal(batch.jobs.value[1].status, 'cancelled');
+  } finally { URL.revokeObjectURL = previous; }
+});
