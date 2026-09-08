@@ -1,3 +1,4 @@
+import { copyText } from '../utils/clipboard.ts'
 /**
  * 控制面板 · 操作编排（从 ControlView.vue 拆出）。
  *
@@ -36,9 +37,10 @@ export function useControlActions(
     const text = String(error ?? '').trim()
     return text || fallback
   }
-  function copy(text: string) {
+  async function copy(text: string) {
     if (!text) return
-    navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板')).catch(() => showToast('复制失败', true))
+    const copied = await copyText(text)
+    showToast(copied ? '已复制到剪贴板' : '复制未完成，请选中内容后手动复制', !copied)
   }
 
   function toggleTunnel() {
@@ -62,13 +64,17 @@ export function useControlActions(
     }
   }
 
+  const savingConfig = ref(false)
   async function saveConfig() {
+    if (savingConfig.value) return
+    savingConfig.value = true
     status.feedbackText.value = '正在保存并重新检测…'
     try {
       await control.saveConfig(buildConfigPayload())
       showToast('生成服务配置已保存')
       status.pollStatus(true)
     } catch (e) { showToast(errorMessage(e, '保存失败'), true); status.pollStatus() }
+    finally { savingConfig.value = false }
   }
 
   async function saveAutoStartVoice() {
@@ -186,7 +192,7 @@ export function useControlActions(
   }
 
   return {
-    tunnelEnabled, errorMessage, copy, toggleTunnel, saveConfig, saveAutoStartVoice,
+    tunnelEnabled, errorMessage, copy, toggleTunnel, saveConfig, savingConfig, saveAutoStartVoice,
     serviceAction, switchMode, doStart, doStop, exportDiag,
     buildWeb, buildingWeb,
   }

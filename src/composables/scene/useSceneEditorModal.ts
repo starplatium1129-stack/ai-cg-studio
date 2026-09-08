@@ -1,3 +1,4 @@
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import { ref, type Ref } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
 import type { SceneDraft, CurationData } from '@/types/api'
@@ -174,7 +175,7 @@ export function useSceneEditorModal(deps: SceneEditorModalDeps) {
 
   function copyJson() {
     if (!editing.value) return
-    navigator.clipboard.writeText(JSON.stringify(editing.value, null, 2))
+    void copyWithFeedback(JSON.stringify(editing.value, null, 2), '场景 JSON 已复制')
   }
 
   return {

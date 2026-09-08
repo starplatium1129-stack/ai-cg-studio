@@ -79,3 +79,103 @@ test('repeated navigation keeps a visible route view mounted', async ({ page }) 
     }))).toBe(true)
   }
 })
+
+for (const theme of ['dark', 'light']) {
+  test(`copy failure has recovery feedback ${theme}`, async ({ page }) => {
+    await page.addInitScript(value => {
+      localStorage.setItem('aics_theme', value)
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: undefined })
+      document.execCommand = () => false
+    }, theme)
+    await page.goto('/color-script')
+    await page.locator('.mood-card').first().click()
+    await page.getByRole('button', { name: /复制 Prompt/ }).click()
+    await expect(page.locator('.toast-msg')).toContainText('复制未完成')
+    await expect(page.locator('.toast-msg')).not.toContainText('已复制')
+    await expect(page.getByRole('button', { name: /复制 Prompt/ })).toBeFocused()
+    await page.screenshot({ path: `.review-shots/feature-copy-${theme}.png`, fullPage: true })
+  })
+  test(`failed page navigation can be recovered ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: theme === 'dark' ? 390 : 1440, height: 900 })
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.route(/\/_app\/ScenarioView-[^/]+\.js$/, route => route.abort())
+    await page.goto('/style')
+    await page.getByRole('link', { name: '剧本与分幕', exact: true }).click()
+    const recovery = page.getByRole('alert', { name: '页面加载恢复' })
+    await expect(recovery).toBeVisible()
+    await expect(page.getByRole('heading', { name: '画风', exact: true })).toBeVisible()
+    await expect(recovery.getByRole('link', { name: '重新打开目标页面' })).toHaveAttribute('href', '/scenario')
+    await page.screenshot({ path: `.review-shots/feature-recovery-${theme}.png`, fullPage: true })
+    await page.unroute(/\/_app\/ScenarioView-[^/]+\.js$/)
+    await recovery.getByRole('link', { name: '重新打开目标页面' }).click()
+    await expect(page.getByRole('heading', { name: '剧本模式', exact: true })).toBeVisible()
+    await expect(recovery).not.toBeVisible()
+  })
+}
+
+test('gallery filtering does not retain hidden selections', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_pb_history', JSON.stringify([
+      { id: 'audit-one', sceneTitle: '审计甲', prompt: 'audit first', favorite: true },
+      { id: 'audit-two', sceneTitle: '审计乙', prompt: 'audit second', favorite: false },
+    ]))
+  })
+  await page.goto('/gallery')
+  await page.getByRole('button', { name: '选择', exact: true }).click()
+  await page.getByRole('button', { name: /全选/ }).click()
+  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 2 / 2')
+  await page.getByLabel('搜索作品', { exact: true }).fill('审计甲')
+  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 0 / 1')
+  await expect(page.getByRole('button', { name: '移入回收站（0）', exact: true })).toBeDisabled()
+})
+
+
+test('gallery keeps failed bulk items selected for retry', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_pb_history', JSON.stringify([
+      { id: 'audit-one', sceneTitle: '审计甲', prompt: 'audit first' },
+      { id: 'audit-two', sceneTitle: '审计乙', prompt: 'audit second' },
+    ]))
+    const put = IDBObjectStore.prototype.put
+    IDBObjectStore.prototype.put = function (value, key) {
+      if (value?.key === 'aics_pb_history' && Array.isArray(value.value) && value.value.length === 0) throw new DOMException('Test quota failure', 'QuotaExceededError')
+      return key === undefined ? put.call(this, value) : put.call(this, value, key)
+    }
+  })
+  await page.goto('/gallery')
+  await page.getByRole('button', { name: '选择', exact: true }).click()
+  await page.getByRole('button', { name: /全选/ }).click()
+  await page.getByRole('button', { name: '移入回收站（2）', exact: true }).click()
+  await page.getByRole('alertdialog').getByRole('button', { name: '移入回收站', exact: true }).click()
+  await expect(page.locator('.toast-msg')).toContainText('1 幅没成功')
+  await expect(page.locator('.gallery-bulk-count')).toContainText('已选 1 / 1')
+  await expect(page.getByRole('button', { name: '移入回收站（1）', exact: true })).toBeEnabled()
+})
+
+
+for (const theme of ['dark', 'light']) {
+  test(`control configuration shows pending state and allows retry ${theme}`, async ({ page }) => {
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    let release!: () => void
+    const pending = new Promise<void>(resolve => { release = resolve })
+    let requests = 0
+    await page.route('**/api/config', async route => {
+      if (route.request().method() !== 'POST') return route.continue()
+      requests++
+      await pending
+      await route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({ ok: false, error: '模拟保存失败' }) })
+    })
+    try {
+      await page.goto('/control')
+      await page.getByRole('button', { name: '保存全部并检测', exact: true }).first().click()
+      const buttons = page.getByRole('button', { name: '正在保存…', exact: true })
+      await expect(buttons).toHaveCount(3)
+      for (const button of await buttons.all()) await expect(button).toBeDisabled()
+      await page.locator('#sd-host').press('Enter')
+      expect(requests).toBe(1)
+      await page.locator('.service-config-panel').screenshot({ path: `.review-shots/feature-control-${theme}.png` })
+      release()
+      await expect(page.getByRole('button', { name: '保存全部并检测', exact: true }).first()).toBeEnabled()
+    } finally { release() }
+  })
+}

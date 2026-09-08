@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import { installRouteRecovery } from './composables/useRouteRecovery'
 import { initializeTheme } from './composables/useTheme'
 // 字体声明移入独立异步 chunk（2026-08-28 审计 P1-7）：315 条 @font-face
 // 不再打进入口 CSS（453KB → ~85KB），首帧用 fallback 渲染、swap 无闪换。
@@ -19,5 +20,6 @@ import './assets/css/light-theme.css'
 import './assets/css/workspace-layout.css'
 
 initializeTheme()
+installRouteRecovery(router)
 
 createApp(App).use(createPinia()).use(router).mount('#app')

@@ -340,6 +340,7 @@
 </template>
 
 <script setup lang="ts">
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import { ref, computed, reactive, onMounted, onActivated, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { LocationQueryRaw } from 'vue-router'
@@ -1036,7 +1037,7 @@ async function bulkDelete() {
       if (viewerIndex.value >= 0) closeViewer()
       // 软删已在仓储层摘掉项目引用，整体重载一次即可同步展墙与项目下拉
       for (const id of ids) if (!failed.includes(id)) releaseCardResources(id)
-      selectedIds.value = new Set()
+      selectedIds.value = new Set(failed)
       await loadGalleryStorage()
     }
 
@@ -1081,16 +1082,13 @@ async function undoDelete(item: ArtworkRecord) {
   }
 }
 
-function copyPrompt() {
+async function copyPrompt() {
   const text = current.value?.prompt
   if (!text) return
-  navigator.clipboard.writeText(text)
-    .then(() => {
-      copiedPrompt.value = true
-      showToast('Prompt 已复制')
-      setTimeout(() => { copiedPrompt.value = false }, 2000)
-    })
-    .catch(() => showToast('复制失败，请手动选取'))
+  if (await copyWithFeedback(text, 'Prompt 已复制')) {
+    copiedPrompt.value = true
+    setTimeout(() => { copiedPrompt.value = false }, 2000)
+  }
 }
 
 /** 下载当前作品的原图文件（优先 IndexedDB 原图 blob，注入 Civitai 级元数据） */
@@ -1324,7 +1322,7 @@ watch(sentinelEl, el => {
 
 // 筛选变化回到第一页，让用户始终从最新作品看起
 watch([favoriteOnly, projectFilter, searchQuery], () => {
-  renderLimit.value = PAGE_SIZE
+  renderLimit.value = PAGE_SIZE; selectedIds.value = new Set()
   syncFiltersToQuery()
 })
 </script>

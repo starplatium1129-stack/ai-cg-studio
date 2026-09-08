@@ -112,6 +112,7 @@
 </template>
 
 <script setup lang="ts">
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -184,9 +185,7 @@ function renderModules(a: ScenarioAct) {
 
 function copyPrompt(a: ScenarioAct) {
   const text = buildFullPrompt(a, currentChar.value)
-  navigator.clipboard.writeText(text)
-    .then(() => showToast('⧉ 已复制 (' + text.split(',').length + ' tokens)'))
-    .catch(() => prompt('请手动复制', text))
+  void copyWithFeedback(text, '已复制本幕提示词')
 }
 
 function openScenario(s: Scenario) { activeScenario.value = s }

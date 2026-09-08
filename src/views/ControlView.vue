@@ -196,21 +196,21 @@
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
         <div class="field-row">
           <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" :title="sdHost" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
-          <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
+          <button class="btn btn-ghost" type="button" :disabled="savingConfig" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button>
         </div>
         <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
         <div class="field-row">
           <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" :title="comfyHost" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
-          <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
+          <button class="btn btn-ghost" type="button" :disabled="savingConfig" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button>
         </div>
         <p class="field-help">仅接受 loopback HTTP；本阶段不改变现有出图 provider。</p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row">
           <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" :title="ttsHost" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
-          <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
+          <button class="btn btn-ghost" type="button" :disabled="savingConfig" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button>
         </div>
         <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
 
@@ -372,7 +372,7 @@ const {
 
 // 模板引用解构：操作域
 const {
-  tunnelEnabled, copy, toggleTunnel, saveConfig, saveAutoStartVoice,
+  tunnelEnabled, copy, toggleTunnel, saveConfig, savingConfig, saveAutoStartVoice,
   serviceAction, switchMode, doStart, doStop, exportDiag, buildWeb, buildingWeb,
 } = actions
 

@@ -1,5 +1,6 @@
 <template>
   <DesktopTitleBar />
+  <RouteRecoveryBanner />
   <DesktopUpdateBanner v-if="!isCompanion" />
   <div class="route-stage">
     <RouterView />
@@ -21,6 +22,7 @@ import AppToast from '@/components/AppToast.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
+import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { ARTWORK_HISTORY_KV_KEY } from '@/utils/storageKeys'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'

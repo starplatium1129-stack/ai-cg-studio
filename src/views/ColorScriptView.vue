@@ -96,9 +96,9 @@
 </template>
 
 <script setup lang="ts">
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryNav from '@/components/library/CreativeLibraryNav.vue'
 import { ref, computed } from 'vue'
-import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
@@ -162,9 +162,7 @@ function select(m: ColorMood) { selected.value = m }
 function copyPrompt() {
   if (!selected.value) return
   const text = selected.value.prompt
-  navigator.clipboard.writeText(text)
-    .then(() => showToast('⧉ 已复制到剪贴板'))
-    .catch(() => prompt('请手动复制', text))
+  void copyWithFeedback(text)
 }
 
 function exportTxt() {
@@ -179,7 +177,6 @@ function exportTxt() {
 
 // 走全局 AppToast。原先手搓 DOM 并挂 class="cs-toast" —— 而 .cs-toast
 // 在任何样式表里都没有定义，那个提示一直是页面底部的无样式裸文本。
-const { show: showToast } = useToast()
 </script>
 
 <style scoped>

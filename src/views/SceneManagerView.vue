@@ -504,12 +504,12 @@
 </template>
 
 <script setup lang="ts">
+import { nextCopyId } from '@/utils/copyId'
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import { highlightSearchText as hl } from '@/utils/highlightSearchText'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
-// 场景编辑器的领域模型契约。原先整块是 any[] / any —— 这个视图会全量覆盖写回
-// data/scenes/*.json，字段拼错或丢字段等于静默删数据。
 import type {
   SceneDraft, TagRecord, CurationData,
 } from '@/types/api'
@@ -763,7 +763,7 @@ function duplicateBlueprint(id: string) {
   const source = blueprints.value.find(b => b.id === id)
   if (!source) return
   const copy = JSON.parse(JSON.stringify(source)) as SceneBlueprint
-  copy.id = source.id + '_copy'
+  copy.id = nextCopyId(source.id, blueprints.value.map(item => item.id))
   copy.title = source.title + ' · 副本'
   blueprints.value.push(copy)
   markDirty('已复制蓝图，请编辑副本内容')
@@ -772,7 +772,7 @@ function duplicateBlueprint(id: string) {
 
 function copyBlueprintJson() {
   if (!bpEditing.value) return
-  navigator.clipboard.writeText(JSON.stringify(bpEditing.value, null, 2))
+  void copyWithFeedback(JSON.stringify(bpEditing.value, null, 2), '蓝图 JSON 已复制')
 }
 
 const stats = computed(() => {
