@@ -1,0 +1,93 @@
+{
+  "auditedAt": "2026-09-08T23:04:13.5795394+08:00",
+  "baselineCommit": "3acc7270",
+  "manifest": "../AI/Reviews/ShowcaseRefresh/2026-09-08-nsfw-opt-batch01-misaka/generation-manifest.json",
+  "engine": "anima-miaomiao-v1.2",
+  "protectedScenesModified": 0,
+  "results": [
+    {
+      "id": "misaka_mikoto_r18_dorm",
+      "attempt": 1,
+      "verdict": "pass",
+      "promptSha256": "4e7ec95f324589832bdafe304818aae324e9b51a0aded50ddc39a985cd37081e",
+      "negativeSha256": "d21b6a18724505b6cc6a677c1d95121219f504ab6332ff355980e3fd34285a0b",
+      "imageSha256": "120baa26bc3c40451aa993fe5f18179bd32eef8812f0a751a2faf73f35cc0e83",
+      "image": "images/misaka_mikoto/misaka_mikoto_r18_dorm/attempt-1.png",
+      "checks": {
+        "adultDepiction": true,
+        "singleSubject": true,
+        "characterIdentity": true,
+        "anatomy": true,
+        "storyAction": true,
+        "environment": true
+      },
+      "notes": "Rainy high-rise sofa, brown bob and flower clips, static arcs, cardigan and seated self-touch all read clearly; face remains the visual center."
+    },
+    {
+      "id": "misaka_mikoto_r18_shower",
+      "attempt": 3,
+      "verdict": "pass",
+      "promptSha256": "bd52a512882e8892f2d3f27048b2bdbb62152c9cfc59d9ba2f6b5819b70c2ec1",
+      "negativeSha256": "a75365bc8d15b7916d61b3f0678dab27a602a17a57132183961ebb4481975c98",
+      "imageSha256": "79404bf3984f5dc5a72fb391f2b2953bf43e26856e2a0a72dba390abbda0b701",
+      "image": "images/misaka_mikoto/misaka_mikoto_r18_shower/attempt-3.png",
+      "checks": {
+        "adultDepiction": true,
+        "singleSubject": true,
+        "characterIdentity": true,
+        "anatomy": true,
+        "storyAction": true,
+        "environment": true
+      },
+      "notes": "Third seed resolves the raised-leg stool pose, wet translucent camisole, hand placement, shower droplets and blue electrical rim light without extra limbs."
+    },
+    {
+      "id": "misaka_mikoto_r18_rooftop_moon",
+      "attempt": 3,
+      "verdict": "pass",
+      "promptSha256": "f3d3b527aab0174dab62e976c8f8b52b38e5080e657ac150b202011c8affefa6",
+      "negativeSha256": "5a6309e0e2d84bed3cb1eb6ca0a055bd436d2c37d7d547cd119bfcab28dee844",
+      "imageSha256": "7ceb0a2a3e0dfaf8eeb35d1afb25c9327d70220be7d1ee04d71bf17cec3b69be",
+      "image": "images/misaka_mikoto/misaka_mikoto_r18_rooftop_moon/attempt-3.png",
+      "checks": {
+        "adultDepiction": true,
+        "singleSubject": true,
+        "characterIdentity": true,
+        "anatomy": true,
+        "storyAction": true,
+        "environment": true
+      },
+      "notes": "After rewriting the unstable back-zip pose, the third render clearly shows the front zipper, opposite hem pull, black lace, city observation view and both hands."
+    },
+    {
+      "id": "misaka_mikoto_r18_thighs",
+      "attempt": 1,
+      "verdict": "pass",
+      "promptSha256": "2b412da5fb76c43f64d57e9a186e8c26f90a8b16dc7aef15e84a38336f59c11a",
+      "negativeSha256": "1dd785108819ca7fcaa26e031922a4d560eba83f04ae5fe3f690d7fce6681214",
+      "imageSha256": "ceac9f2d4d1cbd5017f2175a366cc55334b4f3f553fa8d8c368acb87f2714747",
+      "image": "images/misaka_mikoto/misaka_mikoto_r18_thighs/attempt-1.png",
+      "checks": {
+        "adultDepiction": true,
+        "singleSubject": true,
+        "characterIdentity": true,
+        "anatomy": true,
+        "storyAction": true,
+        "environment": true
+      },
+      "notes": "Sunset window bench, open shirt, single black stocking, folded legs, foreground depth and static-assisted hand action match the rewritten blueprint."
+    }
+  ],
+  "rejectedAttempts": [
+    {
+      "id": "misaka_mikoto_r18_shower",
+      "attempts": [1, 2],
+      "reason": "The first two images did not make the raised-leg private hand action sufficiently legible."
+    },
+    {
+      "id": "misaka_mikoto_r18_rooftop_moon",
+      "attempts": [1, 2],
+      "reason": "Both images converted the authored back-zip struggle into a stable front-zip pose; the blueprint was rewritten to the visually reliable action before attempt 3."
+    }
+  ]
+}
