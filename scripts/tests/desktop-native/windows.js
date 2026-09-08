@@ -284,6 +284,47 @@ try {
   powershell(script)
 }
 
+// Isolated native UI previews may be hidden. Paint briefly without activation,
+// capture only the selected HWND, then restore its original visibility.
+function captureWindow(hwnd, filePath) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  const escaped = filePath.replace(/'/g, "''");
+  return powershell(`
+Add-Type -AssemblyName System.Drawing
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+public class D10CaptureWindow {
+  [StructLayout(LayoutKind.Sequential)] public struct RECT { public int L,T,R,B; }
+  [DllImport("user32.dll")] public static extern bool SetProcessDpiAwarenessContext(IntPtr context);
+  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr window);
+  [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr window, int command);
+  [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr window, out RECT rect);
+  [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr window, IntPtr dc, uint flags);
+}
+'@
+[D10CaptureWindow]::SetProcessDpiAwarenessContext([IntPtr](-4)) | Out-Null
+$target = [IntPtr]${Number(hwnd)}
+$wasVisible = [D10CaptureWindow]::IsWindowVisible($target)
+try {
+  if (-not $wasVisible) { [D10CaptureWindow]::ShowWindow($target, 4) | Out-Null }
+  Start-Sleep -Milliseconds 200
+  $rect = New-Object D10CaptureWindow+RECT
+  if (-not [D10CaptureWindow]::GetWindowRect($target, [ref]$rect)) { throw 'Window unavailable' }
+  $bitmap = New-Object Drawing.Bitmap(($rect.R-$rect.L), ($rect.B-$rect.T))
+  $graphics = [Drawing.Graphics]::FromImage($bitmap)
+  $dc = $graphics.GetHdc()
+  try {
+    if (-not [D10CaptureWindow]::PrintWindow($target, $dc, 2)) { throw 'PrintWindow failed' }
+  } finally { $graphics.ReleaseHdc($dc) }
+  try { $bitmap.Save('${escaped}', [Drawing.Imaging.ImageFormat]::Png) }
+  finally { $graphics.Dispose(); $bitmap.Dispose() }
+} finally {
+  if (-not $wasVisible) { [D10CaptureWindow]::ShowWindow($target, 0) | Out-Null }
+}
+`);
+}
+
 function processesByExecutable(executable) {
   const escaped = path.resolve(executable).replace(/'/g, "''")
   const script = `
@@ -465,6 +506,7 @@ function terminateOwnedPids(pids) {
 
 module.exports = {
   captureDesktop,
+  captureWindow,
   collectEnvironment,
   findUninstallEntry,
   findWindow,

@@ -108,3 +108,5 @@ scripts/archive/
 
 # Local development caches and UI verification artifacts
 .cache/
+# Derived native installer template, bitmap and UI previews.
+desktop-tauri/src-tauri/installer/generated/

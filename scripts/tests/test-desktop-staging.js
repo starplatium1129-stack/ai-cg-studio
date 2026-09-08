@@ -14,6 +14,21 @@ const {
 } = require('../maintenance/desktop-build-lock');
 const { resolveNpmInvocation, stageResources } = require('../maintenance/desktop-stage-resources');
 const { runTauri } = require('../maintenance/run-tauri');
+const { customizeTemplate } = require('../maintenance/build-game-installer');
+
+test('game installer preserves upstream install and maintenance behavior', () => {
+  const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/installer/vendor/tauri-2.11.4.nsi'), 'utf8');
+  const themed = customizeTemplate(source, 'C:\\preview\\art.bmp', 'C:\\preview\\game-ui.nsh');
+  const sections = text => text.slice(text.indexOf('Section EarlyChecks'));
+  assert.equal(sections(themed), sections(source), 'payload, WebView2, uninstall and shortcut sections must remain upstream-owned');
+  for (const name of ['.onInit', 'PageLeaveReinstall', 'RunMainBinary']) {
+    const block = text => text.slice(text.indexOf(`Function ${name}`), text.indexOf('FunctionEnd', text.indexOf(`Function ${name}`)));
+    assert.equal(block(themed), block(source), name);
+  }
+  assert.match(themed, /Page custom GameDirectory GameDirectoryLeave/);
+  assert.match(themed, /Page custom GameFinish GameFinishLeave/);
+  assert.throws(() => customizeTemplate(source.replace('!insertmacro MUI_PAGE_WELCOME', '; removed'), 'a', 'b'), /anchor drift/);
+});
 
 function write(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });

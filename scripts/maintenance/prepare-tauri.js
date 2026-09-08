@@ -129,6 +129,7 @@ async function ensureNodeSidecar(options = {}) {
 }
 
 async function prepareTauri(options = {}) {
+  await require('./build-game-installer').buildGameInstaller();
   const root = options.root || ROOT;
   const webDir = options.webDir || path.join(root, 'desktop-tauri', 'web');
   const sidecarDir = options.sidecarDir || path.join(root, 'desktop-tauri', 'src-tauri', 'binaries');

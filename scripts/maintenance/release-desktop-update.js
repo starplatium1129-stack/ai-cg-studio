@@ -30,6 +30,7 @@ const KEY_FILE = path.join(ROOT, 'runtime', 'keys', 'aics-updater.key');
 const OUT_DIR = path.join(ROOT, 'runtime', 'desktop-updates');
 const BUNDLE_DIR = path.join(ROOT, 'desktop-tauri', 'src-tauri', 'target', 'release', 'bundle', 'nsis');
 const SKIP_BUILD = process.argv.includes('--skip-build');
+const BUNDLE_ONLY = process.argv.includes('--bundle-only');
 const BUMP_INDEX = process.argv.indexOf('--bump');
 const BUMP_KIND = BUMP_INDEX >= 0 ? String(process.argv[BUMP_INDEX + 1] || 'patch') : '';
 
@@ -63,6 +64,11 @@ function bumpVersion(kind) {
   conf.version = next;
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
   fs.writeFileSync(tauriPath, JSON.stringify(conf, null, 2) + '\n', 'utf8');
+  const lockPath = path.join(ROOT, 'package-lock.json');
+  const lock = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+  lock.version = next;
+  if (lock.packages?.['']) lock.packages[''].version = next;
+  fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n', 'utf8');
   console.log(`[release-desktop-update] 版本 ${match[0]} → ${next}`);
   return next;
 }
@@ -75,12 +81,23 @@ function main() {
   const version = require(path.join(ROOT, 'package.json')).version;
 
   if (!SKIP_BUILD) {
-    console.log('[release-desktop-update] npm run package:tauri（含 updater 签名，可能需要数分钟）');
-    execFileSync('npm', ['run', 'package:tauri'], {
-      cwd: ROOT,
+    if (BUNDLE_ONLY) {
+      const binary = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe');
+      if (!fs.existsSync(binary)) fail('缺少已构建桌面程序，请先完整构建');
+      const binaryVersion = execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command',
+        `(Get-Item -LiteralPath '${binary.replace(/'/g, "''")}').VersionInfo.ProductVersion`],
+      { encoding: 'utf8', windowsHide: true }).trim();
+      if (binaryVersion !== version) fail(`已构建程序版本 ${binaryVersion} 与发行版本 ${version} 不一致，请完整构建`);
+      execFileSync(process.execPath, [path.join(ROOT, 'scripts/maintenance/build-game-installer.js')], { cwd: ROOT, stdio: 'inherit' });
+    }
+    console.log(BUNDLE_ONLY ? '[release-desktop-update] 重新打包已构建程序（含 updater 签名）' : '[release-desktop-update] npm run package:tauri（含 updater 签名，可能需要数分钟）');
+    execFileSync(BUNDLE_ONLY ? process.execPath : 'npm', BUNDLE_ONLY
+      ? [require.resolve('@tauri-apps/cli/tauri.js'), 'bundle', '--bundles', 'nsis', '--ci']
+      : ['run', 'package:tauri'], {
+      cwd: BUNDLE_ONLY ? path.join(ROOT, 'desktop-tauri') : ROOT,
       stdio: 'inherit',
-      shell: true,
-      env: Object.assign({}, process.env, {
+      shell: !BUNDLE_ONLY,
+      env: Object.assign({}, require('./run-tauri').tauriEnvironment(), {
         // 走 TAURI_SIGNING_PRIVATE_KEY_PATH：密钥文件含换行，环境变量传内容在
         // Windows spawn 层可能被截断/转义出错（实测 -k 传内容同样报 base64 错）。
         // 构建期签名只认内容变量；PATH 变量一并传，双保险。
@@ -93,7 +110,7 @@ function main() {
 
   // 找出本次产出的安装包与签名（NSIS：*-setup.exe + .sig）
   const artifacts = fs.readdirSync(BUNDLE_DIR)
-    .filter((f) => /-setup\.exe$/i.test(f))
+    .filter((f) => f.endsWith(`_${version}_x64-setup.exe`))
     .map((exe) => ({ exe, sig: `${exe}.sig` }))
     .filter((a) => fs.existsSync(path.join(BUNDLE_DIR, a.sig)));
   if (!artifacts.length) fail(`${BUNDLE_DIR} 下没有 updater 安装包（*-setup.exe + .sig）`);

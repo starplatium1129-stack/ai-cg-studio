@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import type { CompanionDesktopBridge } from '../../src/types/desktop'
 import { DESKTOP_START_PAGE_KEY, GUEST_GUIDE_DISMISSED_KEY, THEME_KEY } from '../../src/utils/storageKeys'
 
 test.beforeEach(async ({ page }) => {
@@ -10,7 +11,7 @@ test.beforeEach(async ({ page }) => {
       onMaximizedChanged: () => 1,
       offMaximizedChanged: () => {},
       minimizeWindow: () => {}, toggleMaximizeWindow: () => {}, closeWindow: () => {},
-    } as unknown as NonNullable<typeof window.companionDesktop>
+    } as unknown as CompanionDesktopBridge
   }, GUEST_GUIDE_DISMISSED_KEY)
 })
 

@@ -21,6 +21,21 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  'installer:bundle': {
+    desc: '仅重打包已构建的桌面程序并签名（只改安装界面时使用）',
+    cmd: ['node', 'scripts/maintenance/release-desktop-update.js', '--bundle-only'],
+    docs: 'docs/game-installer.md',
+  },
+  'installer:build': {
+    desc: '构建二游风格原生安装界面（固定版本 Tauri 模板）',
+    cmd: ['node', 'scripts/maintenance/build-game-installer.js'],
+    docs: 'docs/game-installer.md',
+  },
+  'installer:preview': {
+    desc: '编译安全界面预览（不安装、不提权；--page=welcome|directory|install|finish）',
+    cmd: ['node', 'scripts/maintenance/build-game-installer.js', '--preview'],
+    docs: 'docs/game-installer.md',
+  },
   'data:build': {
     desc: '聚合场景分片 -> scenes.json（热门角色见 popular:build）',
     cmd: ['node', 'scripts/maintenance/build-scenes.js'],
