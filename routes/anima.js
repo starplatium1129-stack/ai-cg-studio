@@ -81,34 +81,7 @@ function requestOwner(req) {
   return crypto.createHash('sha256').update(String(token)).digest('hex');
 }
 
-function publicJob(job, routeBase) {
-  routeBase = routeBase || (job.input && job.input.family === 'krea2' ? '/api/creative' : '/api/anima');
-  var elapsedSeconds = Math.max(0, Math.floor(((job.status === 'succeeded' || job.status === 'failed' || job.status === 'cancelled') ? (job.finishedAt || Date.now()) : Date.now()) - job.createdAt) / 1000);
-  var progress = job.status === 'succeeded' ? 1 : (typeof job.progress === 'number' ? job.progress : (job.status === 'queued' ? 0 : null));
-  var result = {
-    id:job.id,
-    status:job.status,
-    provider:job.provider || 'comfy',
-    progress:progress,
-    elapsedSeconds:elapsedSeconds,
-    currentNode:job.currentNode || null,
-     progressText:job.progressText || (job.status === 'queued' ? '等待 ComfyUI 调度…' : job.status === 'running' ? 'ComfyUI 正在推理…' : job.status === 'succeeded' ? '生成完成' : job.status === 'failed' ? '生成失败' : job.status === 'cancelling' ? '正在取消…' : ''),
-    modelId:job.input.modelId,
-    loraId:job.input.loraId,
-    character:job.input.character,
-    seed:job.input.seed,
-    createdAt:job.createdAt,
-    resultAvailable:Boolean(job.result && !job.resultConsumed),
-    resultUrl:job.result && !job.resultConsumed ? routeBase + '/jobs/' + encodeURIComponent(job.id) + '/result' : null,
-    metadata:Object.assign({}, job.metadata, {
-      resultUrl:job.result && !job.resultConsumed ? routeBase + '/jobs/' + encodeURIComponent(job.id) + '/result' : null
-    }),
-    error:job.error || null,
-    code:job.errorCode || null
-  };
-  return result;
-}
-
+var publicJob = require('./anima/job-state').publicJob;
 
 function createAnimaService(config, options) {
   options = options || {};
@@ -141,7 +114,7 @@ function createAnimaService(config, options) {
   }
   // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI
   // 任务（立即 + 30s 后各试一次，重试幂等无害）；2026-08-21 收口到 comfy-client。
-  var clientId = comfyClient.clientIdFor(config, 'anima');
+  var clientId = comfyClient.clientIdFor(config, engine);
   comfyClient.sweepOrphanPromptsAfterStart(config, clientId, 'anima');
   var progressMonitor = comfyProgress.createComfyProgressMonitor(config, clientId);
   // 显存保护：按当前 ComfyUI 实例记录最近一次提交的底模家族；Anima ⇄ Krea2
@@ -168,10 +141,12 @@ function createAnimaService(config, options) {
   function failJob(job, error, fallbackCode) {
     if (job.status === 'cancelled' || job.status === 'cancelling') return;
     job.status = 'failed';
+    job.finishedAt = Date.now();
+    if (job.upstreamId) progressMonitor.unwatch(job.upstreamId);
     job.errorCode = error && error.code || fallbackCode || 'ANIMA_FAILED';
     job.error = error && error.code === 'INVALID_RESULT'
       ? '生成结果未通过安全校验'
-      : (error && error.status >= 500 ? 'Anima 上游暂不可用' : error && error.message || 'Anima 生成失败');
+      : (error && error.message || 'Anima 生成失败');
     if (job.pollTimer) { clearTimeout(job.pollTimer); job.pollTimer = null; }
   }
 
@@ -209,6 +184,8 @@ function createAnimaService(config, options) {
   function finishCancellation(job) {
     if (job.pollTimer) { clearTimeout(job.pollTimer); job.pollTimer = null; }
     job.status = 'cancelled';
+    job.finishedAt = Date.now();
+    if (job.upstreamId) progressMonitor.unwatch(job.upstreamId);
     job.error = '任务已取消';
     job.errorCode = 'ANIMA_CANCELLED';
     removeResult(job);
@@ -217,6 +194,8 @@ function createAnimaService(config, options) {
   function failCancellation(job) {
     if (job.pollTimer) { clearTimeout(job.pollTimer); job.pollTimer = null; }
     job.status = 'failed';
+    job.finishedAt = Date.now();
+    if (job.upstreamId) progressMonitor.unwatch(job.upstreamId);
     job.error = '无法确认上游任务已安全取消';
     job.errorCode = 'ANIMA_CANCEL_FAILED';
     removeResult(job);
@@ -278,17 +257,20 @@ function createAnimaService(config, options) {
   }
 
   async function poll(job) {
-    if (registry.isClosed() || job.status === 'cancelled' || !job.upstreamId) return;
+    if (registry.isClosed() || jobRunner.isTerminalStatus(job.status) || !job.upstreamId) return;
     if (job.status === 'cancelling') {
       await confirmCancellation(job);
       return;
     }
     if (Date.now() > job.deadline) {
+      void requestTargetedCancel(job).catch(function () {});
       failJob(job, serviceError(504, 'ANIMA_TIMEOUT', 'Anima 生成超时'), 'ANIMA_TIMEOUT');
       return;
     }
     try {
       var history = await requestComfyJson(config, 'GET', '/history/' + encodeURIComponent(job.upstreamId), null, 10000);
+      if (registry.isClosed() || job.status !== 'running') return;
+      job.pollFailures = 0;
       var entry = history && history[job.upstreamId];
       if (!entry) {
         schedulePoll(job, POLL_INTERVAL_MS);
@@ -298,7 +280,11 @@ function createAnimaService(config, options) {
        job.progress = null;
        job.progressText = status === 'success' ? '生成完成' : status === 'error' || status === 'failed' ? 'ComfyUI 执行失败' : 'ComfyUI 正在推理…';
       if (status === 'error' || status === 'failed') {
-        failJob(job, serviceError(502, 'COMFY_EXECUTION_FAILED', 'ComfyUI 执行失败'), 'COMFY_EXECUTION_FAILED');
+        var messages = entry.status && entry.status.messages;
+        var executionError = Array.isArray(messages) && messages.find(function (item) { return item[0] === 'execution_error'; });
+        var detail = executionError && executionError[1];
+        var reason = detail ? String(detail.exception_type || '') + ': ' + String(detail.exception_message || '').slice(0, 1500) : 'ComfyUI 执行失败';
+        failJob(job, serviceError(502, 'COMFY_EXECUTION_FAILED', reason), 'COMFY_EXECUTION_FAILED');
         return;
       }
       if (status !== 'success') {
@@ -318,17 +304,19 @@ function createAnimaService(config, options) {
       // 2026-08-16 审计（与 video.js 同款）：materialize 期间用户可能已取消——
       // 状态离开 running 时丢弃结果并保持取消流程，避免「取消后任务复活为
       // succeeded」且残留结果文件。
-      if (job.status !== 'running') {
+      if (registry.isClosed() || job.status !== 'running') {
         removeResult(job);
         return;
       }
       job.status = 'succeeded';
+      job.finishedAt = Date.now();
+      progressMonitor.unwatch(job.upstreamId);
       job.error = null;
       job.errorCode = null;
       if (job.pollTimer) { clearTimeout(job.pollTimer); job.pollTimer = null; }
     } catch (error) {
       if (job.status === 'cancelled') return;
-      if (error && (error.code === 'INVALID_RESULT' || error.code === 'COMFY_NO_IMAGE')) {
+      if (error && ['INVALID_RESULT', 'COMFY_NO_IMAGE', 'RESULT_SAVE_FAILED'].includes(error.code)) {
         failJob(job, error, error.code);
         return;
       }
@@ -343,6 +331,7 @@ function createAnimaService(config, options) {
   }
 
   async function submit(job) {
+    if (registry.isClosed() || job.status !== 'queued') throw serviceError(409, 'JOB_NOT_QUEUED', '任务已结束或服务已关闭');
     validateResources(job.input);
     // WAI/generation 复用本服务时 input 没有 family，用 engine 兜底为 'sd'，
     // 这样 Anima/Krea2/SD 三条 Comfy 链路之间切换也能正确触发卸载。
@@ -353,6 +342,7 @@ function createAnimaService(config, options) {
     if (lastLoadedFamily === undefined || lastLoadedFamily !== family) {
       await unloadComfyModels(config);
     }
+    if (registry.isClosed() || job.status !== 'queued') return;
     var response = await requestComfyJson(config, 'POST', '/prompt', {
       prompt:buildWorkflowForJob(job.input),
       client_id:clientId
@@ -363,7 +353,7 @@ function createAnimaService(config, options) {
     }
     job.upstreamId = promptId;
     lastFamilyByComfyHost.set(comfyHostKey, family);
-    if (job.status === 'cancelling' || job.status === 'cancelled') {
+    if (registry.isClosed() || job.status === 'cancelling' || job.status === 'cancelled') {
       void requestTargetedCancel(job).catch(function () {});
       return;
     }
@@ -374,6 +364,7 @@ function createAnimaService(config, options) {
   }
 
   function create(input, owner) {
+    if (registry.isClosed()) throw serviceError(503, 'SERVICE_CLOSED', '生成服务已关闭');
     if (pendingCount() >= MAX_PENDING) throw serviceError(429, 'ANIMA_QUEUE_FULL', 'Anima 队列已满，请稍后再试');
     var id = crypto.randomBytes(18).toString('hex');
     var createdAt = Date.now();
@@ -613,13 +604,14 @@ function createAnimaRouter(config, dependencies) {
     var job;
     try {
       job = service.create(input, requestOwner(req));
+      res.once('close', function () { if (!res.writableFinished) void service.cancel(job); });
       await service.submit(job);
     } catch (error) {
       if (job) {
         service.cancel(job);
       }
       return envelope.fail(res, error.status === 503 ? 503 : (error.status >= 500 ? 502 : (error.status || 502)),
-        error.status >= 500 ? 'ComfyUI 暂不可用' : error.message || 'Anima 提交失败',
+        error.message || 'Anima 提交失败',
         { code:error.code || 'ANIMA_SUBMIT_FAILED' });
     }
     res.status(202);
@@ -646,7 +638,7 @@ function createAnimaRouter(config, dependencies) {
       res.setHeader('Content-Type', job.result.mime);
       res.setHeader('Content-Length', String(stat.size));
       res.setHeader('X-Content-Type-Options', 'nosniff');
-       res.once('finish', function () { service.consumeResult(job); });
+       // 下载完成不等于浏览器已经持久化；允许 TTL 内重读，避免一次断线丢图。
        var stream = fs.createReadStream(realTarget);
        stream.on('error', function () {
          if (!res.headersSent) envelope.fail(res, 404, '结果不存在', { code:'RESULT_NOT_FOUND' });

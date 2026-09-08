@@ -164,9 +164,10 @@ test('primary navigation is reachable and marks the active route', async ({ page
   }
 
   // 限定在顶栏：首页正文里也有指向 /showcase 的入口卡
-  await page.locator('.nav-links').getByRole('link', { name: /效果样张/ }).click();
+  await page.locator('.nav-more > summary').click();
+  await page.locator('.nav-links a[href="/showcase"]').click();
   await expect(page).toHaveURL(/\/showcase/);
-  await expect(page.locator('.nav-links a.active')).toContainText('效果样张');
+  await expect(page.locator('.nav-links a[href="/showcase"]')).toHaveAttribute('aria-current', 'page');
   expect(errors).toEqual([]);
 });
 
@@ -206,6 +207,7 @@ test('gallery viewer traps focus and restores it on Escape', async ({ page }) =>
 test('narrow viewports keep the director usable without horizontal scroll', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/prompt-builder');
+  await page.locator('.material-switch button[aria-controls="material-story"]').click();
   await expect(page.locator('.story-input')).toBeVisible();
   const overflow = await page.evaluate(() =>
     document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -226,7 +228,7 @@ test('narrow viewports keep the home hero inside the viewport', async ({ page })
   expect(errors).toEqual([]);
 });
 
-test('樱花与动效在触屏和减弱动效设备上收口', async ({ page }) => {
+test('静态氛围层在触屏和减弱动效设备上不引入动态负担', async ({ page }) => {
   await page.addInitScript(() => {
     const nativeMatchMedia = window.matchMedia.bind(window);
     window.matchMedia = (query: string) => {
@@ -239,30 +241,19 @@ test('樱花与动效在触屏和减弱动效设备上收口', async ({ page }) 
   });
   await page.goto('/');
 
-  const sakura = page.locator('.sakura-fall span:visible');
-  const visibleSakuraCount = await sakura.count();
-  expect(visibleSakuraCount).toBeGreaterThan(0);
-  expect(visibleSakuraCount).toBeLessThanOrEqual(8);
-  const sakuraStyle = await sakura.first().evaluate((element) => {
-    const style = getComputedStyle(element);
-    return { filter: style.filter, boxShadow: style.boxShadow, willChange: style.willChange };
-  });
-  expect(sakuraStyle.filter).toBe('none');
-  expect(sakuraStyle.boxShadow).toBe('none');
-  expect(sakuraStyle.willChange).not.toBe('transform');
-
   await page.goto('/prompt-builder');
   await expect.poll(() => page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
-  await page.mouse.move(100, 100);
-  const shift = await page.locator('.route-atmosphere').evaluate((element) => ({
-    x: getComputedStyle(element).getPropertyValue('--route-shift-x').trim(),
-    y: getComputedStyle(element).getPropertyValue('--route-shift-y').trim(),
+  const atmosphere = page.locator('.route-atmosphere');
+  await expect(atmosphere).toHaveAttribute('aria-hidden', 'true');
+  const motion = await atmosphere.locator('i').evaluateAll(elements => elements.map(el => {
+    const style = getComputedStyle(el);
+    return { animation: style.animationName, transform: style.transform, pointerEvents: style.pointerEvents };
   }));
-  expect(shift).toEqual({ x: '0px', y: '0px' });
-
+  expect(motion).toHaveLength(2);
+  expect(motion.every(item => item.animation === 'none' && item.transform === 'none' && item.pointerEvents === 'none')).toBe(true);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.locator('.route-loader')).not.toHaveClass(/active/);
-  await expect(page.locator('.route-cut')).not.toHaveClass(/active/);
+  await expect(page.locator('.route-cut.active')).toHaveCount(0);
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.routeMotion || '')).toBe('');
 });
 

@@ -1,33 +1,12 @@
-# AI-CG-Studio ComfyUI launcher (2026-08-17, v2)
-# Starts ComfyUI with the VERIFIED STABLE combo:
-#   ComfyUI b1693ec (v0.30.0, 2026-08-02) + comfy-aimdo 0.4.8 + DynamicVRAM.
-#
-# WHY THIS COMBO:
-# - comfy-aimdo 0.4.13 (and the 8-07 ComfyUI) hangs forever while unloading a
-#   resident model and loading the 20GB H3 main model (Anima -> H3 switch) -
-#   GPU pegged at 99%, no progress, HTTP server eventually dies. Reproduced 4x,
-#   matches Comfy-Org/ComfyUI issue #15255 (regression after Aug 3 2026 update).
-# - Rolling ComfyUI back to 8-02 (b1693ec) AND comfy-aimdo back to 0.4.8 makes
-#   the full Anima-draw -> H3 15s-video pipeline run end to end (583s measured).
-# - Do NOT add --disable-dynamic-vram (traditional mode is slow) and do NOT add
-#   --disable-pinned-memory (was present before, not the culprit, but defaults
-#   are the verified baseline).
-# - 2026-08-25 added --use-sage-attention: sageattention 2.2.0 wheel
-#   (cu130torch2.13.0, cp311) installed into the venv (exact torch/cuda/py
-#   match). ComfyUI attention_sage() has per-call fallback to pytorch
-#   attention, so a missing/broken kernel degrades to baseline instead of
-#   crashing. Verified by scripts/tests/benchmark-anima-teacache.js same-seed
-#   A/B for models that use ComfyUI's global attention dispatcher; Anima's
-#   native SDPA path is audited separately in docs/showcase-generation-craft.md.
-#
-# NOTE: a venv python.exe appears as TWO processes (venv launcher + base
-# interpreter) - that is ONE instance, not two. Never kill just one of them.
-#
-# Usage: powershell -ExecutionPolicy Bypass -File scripts/maintenance/start-comfyui.ps1
-# Logs:  E:\code\2\lora\AI\ComfyUI\user\comfyui-run.log / comfyui-run.err.log
+# AI-CG-Studio local ComfyUI launcher.
+# Historical version experiments: docs/archive/troubleshooting/comfyui-dynamic-vram-crash.md.
+# Report installed versions at launch; do not claim an old dependency combination is active.
+# This command starts only one local instance and preserves the installed model environment.
 
 $ErrorActionPreference = 'Stop'
-$comfyRoot = 'E:\code\2\lora\AI\ComfyUI'
+$projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..'))
+$workspaceRoot = if ($env:AI_WORKSPACE_ROOT) { $env:AI_WORKSPACE_ROOT } else { Join-Path $projectRoot '..\AI' }
+$comfyRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot 'ComfyUI'))
 $python = Join-Path $comfyRoot 'venv\Scripts\python.exe'
 $logDir = Join-Path $comfyRoot 'user'
 
@@ -43,7 +22,8 @@ if ($existing) {
   exit 0
 }
 
-Write-Host 'Starting ComfyUI (stable combo: b1693ec + aimdo 0.4.8 + DynamicVRAM)...'
+Write-Host 'Starting local ComfyUI with the installed environment...'
+& $python -c "import importlib.metadata as m; print('torch=' + m.version('torch') + ' comfy-aimdo=' + m.version('comfy-aimdo'))"
 $out = Join-Path $logDir 'comfyui-run.log'
 $err = Join-Path $logDir 'comfyui-run.err.log'
 Start-Process -FilePath $python -ArgumentList @(

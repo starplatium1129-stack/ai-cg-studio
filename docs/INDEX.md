@@ -11,6 +11,7 @@
 | [项目状态](project-status.md) | 当前能力、规模与边界 |
 | [未来规划](roadmap.md) | 唯一项目级优先级与验收目标 |
 | [工作流](workflow.md) | 常用命令与操作顺序 |
+| [本地生图工作台审查与修复](local-studio-audit-2026-09-08.md) | 任务链路、数据、视觉、本地依赖、本轮代码修复与未通过项 |
 | [工程契约](engineering-contracts.md) | 模块约束、Live2D 与角色接入六层要求 |
 | [维护手册](maintenance.md) | 文件职责与日常维护 |
 | [桌面部署](desktop-deployment.md) | 增量、完整安装与 UAC |

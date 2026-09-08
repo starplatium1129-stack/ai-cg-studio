@@ -24,6 +24,8 @@ var requestBuffered = require('./buffered-request').requestBuffered;
 var path = require('path');
 
 var CLIENT_ID_PATTERN = /^[a-zA-Z0-9-]{8,80}$/;
+// 每次网关进程唯一；30 秒重扫不得取消本次启动新提交的任务。
+var sessionId = crypto.randomBytes(16).toString('hex');
 
 function stateDir(config) {
   if (config && config.RUNTIME && config.RUNTIME.state) return config.RUNTIME.state;
@@ -82,6 +84,9 @@ async function requestComfy(config, method, pathname, body, timeoutMs, maxBytes)
   const queryIndex = rawPath.indexOf('?');
   target.pathname = queryIndex >= 0 ? rawPath.slice(0, queryIndex) : rawPath;
   target.search = queryIndex >= 0 ? rawPath.slice(queryIndex) : '';
+  if (method === 'POST' && rawPath === '/prompt' && body) {
+    body = { ...body, extra_data: { ...body.extra_data, aics_session_id: sessionId } };
+  }
   const payload = body === undefined || body === null ? null : Buffer.from(JSON.stringify(body));
   const headers = { Accept:'application/json' };
   if (payload) { headers['Content-Type'] = 'application/json'; headers['Content-Length'] = payload.length; }
@@ -101,10 +106,11 @@ async function requestComfyJson(config, method, pathname, body, timeoutMs, maxBy
   const response = await requestComfy(config, method, pathname, body, timeoutMs, maxBytes || 2 * 1024 * 1024);
   let data = null;
   try { data = response.body.length ? JSON.parse(response.body.toString('utf8')) : null; } catch (error) {
-    throw comfyError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 返回了无效 JSON');
+    throw comfyError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 返回了无效 JSON', { upstreamStatus: response.status });
   }
   if (response.status < 200 || response.status >= 300) {
-    throw comfyError(502, 'COMFY_UPSTREAM_ERROR', 'ComfyUI 请求失败', {
+    const reason = data && data.error && (data.error.message || data.error.type);
+    throw comfyError(502, 'COMFY_UPSTREAM_ERROR', 'ComfyUI 请求失败' + (reason ? '：' + String(reason).slice(0, 1000) : ''), {
       upstreamStatus: response.status,
       upstream: data,
     });
@@ -116,8 +122,11 @@ async function requestComfyJson(config, method, pathname, body, timeoutMs, maxBy
 function ownedPromptIds(queue, clientId) {
   var ids = [];
   (Array.isArray(queue) ? queue : []).forEach(function (item) {
-    // ComfyUI 队列项结构：[exec_info, prompt_id, number, client_id, ...]
-    if (Array.isArray(item) && item[1] && item[3] === clientId) ids.push(String(item[1]));
+    // ComfyUI: [number, prompt_id, prompt, extra_data, outputs_to_execute]。
+    if (!Array.isArray(item) || !item[1]) return;
+    var extra = item[3];
+    if (extra && typeof extra === 'object' && extra.client_id === clientId
+      && extra.aics_session_id !== sessionId) ids.push(String(item[1]));
   });
   return ids;
 }
@@ -189,4 +198,5 @@ module.exports = {
   unloadComfyModels: unloadComfyModels,
   requestComfy: requestComfy,
   requestComfyJson: requestComfyJson,
+  ownedPromptIds: ownedPromptIds,
 };

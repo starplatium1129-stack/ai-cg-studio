@@ -21,6 +21,8 @@
 
 详细文件职责见 [维护手册](maintenance.md#文件职责)。构建脚本会同步版本；校验失败需定位来源，不能只改版本掩盖数据漂移。
 
+场景语义门禁复用工作台的镜头过滤和负向组装（scripts/lib/scene-render-contract.js），检索 tags 不冒充发送给模型的词条。`optimize-scenes --check` 检查持久化数据的实际编译结果；changed 表示可选的格式改写建议，不要求机械改写提示词。分级脚本只维护分级/使用元数据，不再改写 negative；任何提示词改写仍须独立真实出图和定稿保护验收。
+
 ## 参考库
 
 1. `reference:register --dry-run` 对账待登记形态；核对后按需登记。

@@ -213,12 +213,13 @@
     "camera": "半身中景",
     "lighting": "圣诞灯串暖光与雪地反射光",
     "usage": [
-      "展示图"
+      "展示图",
+      "R15"
     ],
     "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, santa_costume, red_dress, white_fur_trim, santa_hat, santa_capelet, off_shoulder, black_belt, bare_shoulders, cleavage, white_thighhighs, black_boots, holding_gift, Christmas_gift_box, holding_present_with_both_hands, looking_at_viewer, gentle_smile, blush, snowy_night, Christmas_lights, bokeh, night, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, generic coat, winter_coat, school_uniform",
     "storyJa": "【寧々・クリスマスイブの手作りプレゼント】クリスマスストリートのストリングライトの間に雪が降りました。寧々はスカーフを鼻の先まで引っ張り、あまりにも丁寧に梱包された小さな箱をあなたに手渡す前に、長い間ためらっていました。箱の中には彼女が作ったお守りが入っていた。縫製は完璧ではありませんが、祝福が書かれた小さな紙が付いています。ありがとうと言おうとした瞬間、彼女は慌てて顔をそむけた。――「そんなに高いものじゃありませんよ。ただ……来年の今日も、あなたが無事に私の前にいてくれたらって。」",
-    "rating": "All",
+    "rating": "R15",
     "animaCaption": "Standing in a snowy Christmas street in a warm beige winter coat with red scarf and pleated miniskirt with silky white thighhighs, Ayachi Nene holds a gift box with a gentle shy smile under warm christmas street light with snow.",
     "auditRevision": "careful-batch14-2026-08-27"
   },
@@ -345,12 +346,13 @@
     "camera": "半身中景",
     "lighting": "窗光",
     "usage": [
-      "展示图"
+      "展示图",
+      "R15"
     ],
     "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, virgin_killer_sweater, white_sweater, backless_sweater, turtleneck_sweater, sleeveless_sweater, sideboob, bare_back, bare_shoulders, bare_legs, sitting_on_chair, leaning_forward_on_table, holding_coffee_mug_with_both_hands, shy, heavy_blush, looking_away, cafe, wooden_table, warm_afternoon_light, depth_of_field, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, school_uniform, shirt, blazer, casual_clothes",
     "storyJa": "【寧々・コーヒーカップの横を覗いてください】秋の午後、寧々さんは窓際に座って軽い漫画を読んでいましたが、コーヒーの熱さで時折表情が見えなくなりました。彼女は、あなたが向かい側から自分を見ていることにずっと気づいていましたが、わざとさらに2ページめくって目を上げ、アホ毛は不満そうに首を振りました。あなたが目をそらすと、彼女はデザートをテーブルの中央に押し込みます――「そんなにじっと見つめるのは失礼ですよ。お詫びに、このケーキは私と半分こです。」",
-    "rating": "All",
+    "rating": "R15",
     "auditRevision": "careful-batch04-2026-08-27",
     "animaCaption": "By a cafe window in an oversized cream knit sweater and light grey pleated miniskirt with silky white thighhighs, Ayachi Nene sits holding a steaming latte mug with both hands, gentle loving smile in warm autumn afternoon cafe light."
   },
@@ -394,13 +396,14 @@
     "camera": "全身远景",
     "lighting": "黄金时刻",
     "usage": [
-      "展示图"
+      "展示图",
+      "R15"
     ],
     "animaCaption": "A full-body wide view shows her walking barefoot along the sunset shoreline while carrying both sandals by their straps in one hand.",
     "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, front-tie_bikini, triangle_bikini, pink_and_white_striped_bikini, side-tie_panties, cleavage, bare_shoulders, bare_midriff, bare_legs, barefoot, standing_on_sand, wet_skin, holding_sun_hat, beach, ocean, summer_dusk, golden_hour, sunset, warm_lighting, looking_at_viewer, emotional_expression, blush, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dress, one-piece_swimsuit, school_uniform",
     "storyJa": "【寧々・潮の終わりの抵抗】旅行最終日の夕暮れ時、寧々さんは潮が引いた後のビーチを裸足でサンダルを履いて歩いた。夕日が二人の影を長く伸ばした。彼女は何度か何か言おうとしたが、海風に吹き飛ばされてしまっていた。彼女が波打ち際で立ち止まって振り返ったのは、帰路の時間が近づいてきたときだった。――「帰るのが嫌なわけじゃないんです……ただ、あなたとここにいると、時間が過ぎるのが早すぎて。今度も同じ海を一緒に見ましょうね。」",
-    "rating": "All"
+    "rating": "R15"
   },
   {
     "id": "sc012",
@@ -737,12 +740,13 @@
     "camera": "枕边面部近景",
     "lighting": "手机屏幕微光与床头灯",
     "usage": [
-      "展示图"
+      "展示图",
+      "R15"
     ],
     "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, sheer_babydoll, open-front_negligee, white_translucent_cloth, see-through, cleavage, bare_shoulders, bare_legs, sitting_on_bed, holding_smartphone_to_ear, arched_back, heavy_blush, shy_smile, bedroom, night, bedside_lamp, warm_dim_lighting, soft_shadows, depth_of_field, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, pajamas, sleepwear_shirt",
     "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
-    "rating": "All",
+    "rating": "R15",
     "animaCaption": "In a bedroom at night, Ayachi Nene in a soft pink pajama set sits on the bed edge with slender bare legs, bare feet on sheets, holding a phone to her ear with a gentle affectionate blush under warm night light.",
     "auditRevision": "careful-batch03-2026-08-27"
   },
@@ -1846,10 +1850,11 @@
     "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, silk_slip, pink_camisole, lace_trim, spaghetti_straps, falling_strap, bare_shoulders, cleavage, bare_legs, lying_down, looking_up_at_viewer, head_tilt, close-up, affectionate_gaze, gentle_smile, heavy_blush, tatami_room, tatami_mat, afternoon_light, cozy, sensual, depth_of_field, collarbone, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_clothes, pajamas",
     "usage": [
-      "展示图"
+      "展示图",
+      "R15"
     ],
     "storyJa": "【寧々・膝に映る目】秋の午後、寧々はあなたの膝の上に寝そべって、窓の外に揺れる木々の影を眺めていましたが、突然顔を向けてあなたを真剣に見つめました。この角度からは普段無視していた表情が見えると言い、そっと掌紋を指でなぞってくれました。何を考えているのかと尋ねると、彼女は目を細めて微笑んだ。――「好きな人がまだここにいるか、確かめていたんです。答えは変わっていないから、安心してもう少し眠れます。」",
-    "rating": "All",
+    "rating": "R15",
     "animaCaption": "Lying on the tatami mat on a sunlit afternoon in a first-person POV perspective, Ayachi Nene in a soft pink knit camisole and silk slip tilts her head slightly, looking directly up at the viewer with an affectionate, moist gaze and a gentle loving blush.",
     "auditRevision": "careful-batch01-2026-08-27"
   },

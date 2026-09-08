@@ -1,3 +1,4 @@
+const { renderedScene } = require('../lib/scene-render-contract');
 const fs = require('fs');
 const path = require('path');
 const { loadSceneShards, writeSceneSet } = require('../lib/scene-store');
@@ -184,26 +185,29 @@ const scenes = loadSceneShards().scenes;
 const optimized = scenes.map(optimize);
 const issues = [];
 const ids = new Set();
-for (const scene of optimized) {
+// 门禁检查真实持久化数据，不检查优化器在内存里自动修正后的副本。
+for (const scene of check ? scenes : optimized) {
   if (ids.has(scene.id)) issues.push(`${scene.id}: duplicate id`);
   ids.add(scene.id);
   if (!scene.title || !scene.story || !scene.prompt || !scene.negative) issues.push(`${scene.id}: missing required content`);
   if (/\{[^}]+\}/.test(scene.prompt)) issues.push(`${scene.id}: unresolved prompt placeholder`);
   if (scene.char === 'triad' && !scene.tags.includes('2girls')) issues.push(`${scene.id}: dual scene missing 2girls`);
   if (scene.char !== 'triad' && scene.tags.includes('2girls')) issues.push(`${scene.id}: solo scene contains 2girls`);
+  const effective = renderedScene(scene);
   const isPinned = Boolean(pinnedScenes[scene.id]);
   if (!isPinned) {
-    if (scene.rating === 'All' && !/(^|, )nsfw(,|$)/.test(scene.negative)) issues.push(`${scene.id}: All scene lacks nsfw exclusion`);
-    if (scene.rating === 'R15' && /(^|, )nsfw(,|$)/.test(scene.negative)) issues.push(`${scene.id}: R15 negative blocks the intended suggestive rating`);
-    adultSafetyIssues(scene).forEach((issue) => issues.push(`${scene.id}: ${issue}`));
+    if (scene.rating === 'All' && !/(^|, )nsfw(,|$)/.test(effective.negative)) issues.push(`${scene.id}: All scene lacks nsfw exclusion`);
+    if (scene.rating === 'R15' && /(^|, )nsfw(,|$)/.test(effective.negative)) issues.push(`${scene.id}: R15 negative blocks the intended suggestive rating`);
+    adultSafetyIssues(effective).forEach((issue) => issues.push(`${scene.id}: ${issue}`));
   }
-  framingConflicts(scene).forEach((issue) => issues.push(`${scene.id}: conflicting framing ${issue}`));
-  poseConflicts(scene).forEach((issue) => issues.push(`${scene.id}: conflicting pose ${issue}`));
-  gazeConflicts(scene).forEach((issue) => issues.push(`${scene.id}: conflicting gaze ${issue}`));
+  framingConflicts(effective).forEach((issue) => issues.push(`${scene.id}: conflicting framing ${issue}`));
+  poseConflicts(effective).forEach((issue) => issues.push(`${scene.id}: conflicting pose ${issue}`));
+  gazeConflicts(effective).forEach((issue) => issues.push(`${scene.id}: conflicting gaze ${issue}`));
 }
 
 const changed = optimized.reduce((count, scene, index) => count + (JSON.stringify(scene) !== JSON.stringify(scenes[index]) ? 1 : 0), 0);
 console.log(`scenes=${optimized.length} changed=${changed} issues=${issues.length}`);
 issues.forEach((issue) => console.error(issue));
 if (write) writeSceneSet(optimized);
-if (issues.length || (check && changed)) process.exitCode = 1;
+// 可机械改写不等于有缺陷；提示词改写须独立真实渲染，不能由门禁强迫执行。
+if (issues.length) process.exitCode = 1;

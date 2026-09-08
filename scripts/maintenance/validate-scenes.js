@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadSceneShards } = require('../lib/scene-store');
+const { renderedScene } = require('../lib/scene-render-contract');
 const {
   adultSafetyIssues,
   auMetadataIssues,
@@ -160,8 +161,9 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.prompt === 'string' && /\{[^}]+\}/.test(scene.prompt)) {
     errors.push(label + ': unresolved prompt placeholder');
   }
+  const effective = renderedScene(scene);
   if (typeof scene.negative === 'string') {
-    const negativeTokens = scene.negative.split(',').map(tokenKey).filter(Boolean);
+    const negativeTokens = effective.negative.split(',').map(tokenKey).filter(Boolean);
     for (const token of ['text', 'watermark', 'signature', 'bad_hands', 'extra_fingers', 'missing_fingers']) {
       if (!negativeTokens.includes(token)) errors.push(label + ': negative prompt missing ' + token.replace(/_/g, ' '));
     }
@@ -179,23 +181,23 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
           if (!negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative prompt missing ' + token);
         }
       }
-      const overlap = [...scenePositiveKeys(scene)].filter((token) => negativeTokens.includes(token));
+      const overlap = [...scenePositiveKeys(effective)].filter((token) => negativeTokens.includes(token));
       if (overlap.length) {
         errors.push(label + ': positive/negative token overlap: ' + [...new Set(overlap)].join(', '));
       }
     }
   }
-  if (!isPinned) adultSafetyIssues(scene).forEach((issue) => errors.push(label + ': ' + issue));
-  framingConflicts(scene).forEach((issue) => errors.push(label + ': conflicting framing ' + issue));
-  poseConflicts(scene).forEach((issue) => errors.push(label + ': conflicting pose ' + issue));
-  gazeConflicts(scene).forEach((issue) => errors.push(label + ': conflicting gaze ' + issue));
+  if (!isPinned) adultSafetyIssues(effective).forEach((issue) => errors.push(label + ': ' + issue));
+  framingConflicts(effective).forEach((issue) => errors.push(label + ': conflicting framing ' + issue));
+  poseConflicts(effective).forEach((issue) => errors.push(label + ': conflicting pose ' + issue));
+  gazeConflicts(effective).forEach((issue) => errors.push(label + ': conflicting gaze ' + issue));
   auMetadataIssues(scene).forEach((issue) => errors.push(label + ': ' + issue));
   if (Array.isArray(scene.character) && typeof scene.prompt === 'string') {
     for (const character of scene.character) {
       const trigger = promptTrigger[character];
       if (trigger && !scene.prompt.includes(trigger)) errors.push(label + ': prompt missing ' + trigger);
       const lora = promptLora[character];
-      if (lora && scene.prompt.includes('<lora:') && !scene.prompt.includes('<lora:' + lora + ':') && !scene.prompt.includes('anima') && !scene.prompt.includes('v21')) {
+      if (lora && scene.prompt.includes('<lora:') && !scene.prompt.includes('<lora:' + lora + ':') && !String(scene.lora || '').includes(lora) && !scene.prompt.includes('anima') && !scene.prompt.includes('v21')) {
         errors.push(label + ': prompt missing LoRA ' + lora);
       }
     }

@@ -146,6 +146,27 @@ describe('sceneStore · 按需加载与并发去重', () => {
 })
 
 describe('sceneStore · 失败恢复（审计 2026-09-05 P1-01）', () => {
+  it('损坏 JSON 容器与重复角色 id 必须可见，恢复后可重新加载', async () => {
+    routes = fullRoutes()
+    stubFetch()
+    const store = useSceneStore()
+    await store.load()
+    const previous = JSON.parse(JSON.stringify(store.characters))
+    routes['characters.json'] = { invalid: true }
+    await store.load(true)
+    expect(store.error).toContain('characters.json')
+    expect(store.characters).toEqual(previous)
+    routes['characters.json'] = [{ id: 'same' }, { id: 'same' }]
+    await store.load(true)
+    expect(store.error).toContain('重复 id')
+    routes = fullRoutes()
+    routes['popular-characters.json'] = { characters: null }
+    await store.load(true)
+    expect(store.error).toContain('popular-characters.json')
+    routes = fullRoutes()
+    await store.load(true)
+    expect(store.error).toBeNull()
+  })
   const fullRoutes = () => ({
     'scenes-shared.json': [scene('sc001')],
     'scenes-nene.json': [scene('sc002')],

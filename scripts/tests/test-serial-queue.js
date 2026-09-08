@@ -152,3 +152,21 @@ function checkAbortDequeue() {
 }
 
 });
+
+
+test('queued abort settles before a blocked head and repeated aborts retain no backlog', async () => {
+  const q = new SerialQueue('blocked', 2);
+  let release;
+  const head = q.run(() => new Promise(resolve => { release = resolve; }));
+  await new Promise(resolve => setImmediate(resolve));
+  try {
+    for (let i = 0; i < 100; i += 1) {
+      const controller = new AbortController();
+      const abandoned = q.run(() => assert.fail('cancelled task executed'), { signal: controller.signal });
+      controller.abort();
+      await assert.rejects(abandoned, { name: 'AbortError' });
+      assert.equal(q.status().pending, 0);
+      assert.equal(q.entries.length, 0);
+    }
+  } finally { release(); await head; }
+});

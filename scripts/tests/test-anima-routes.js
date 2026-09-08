@@ -207,6 +207,11 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     var unknownModel = await postJson(port, '/api/anima/jobs', validJob({ modelId:'unknown-model' }));
     assert.strictEqual(unknownModel.status, 400);
     assert.strictEqual(unknownModel.json.code, 'UNKNOWN_MODEL');
+    for (const modelId of ['constructor', '__proto__', 'toString']) {
+      const invalidCatalogKey = await postJson(port, '/api/anima/jobs', validJob({ modelId }));
+      assert.strictEqual(invalidCatalogKey.status, 400);
+      assert.strictEqual(invalidCatalogKey.json.code, 'UNKNOWN_MODEL');
+    }
     var browserProfile = await postJson(port, '/api/anima/jobs', validJob({ profileId:'anima_base_v10' }));
     assert.strictEqual(browserProfile.status, 400, 'profile metadata must be derived by the server, not accepted from the browser');
     assert.strictEqual(browserProfile.json.code, 'UNKNOWN_PARAMETER');
@@ -286,9 +291,12 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     var detailResult = await request(port, { path:detailDone.resultUrl });
     assert.strictEqual(detailResult.status, 200);
     await new Promise(function (resolve) { setTimeout(resolve, 20); });
-    assert.strictEqual(fs.readdirSync(path.join(runtime.outputs, 'anima')).length, 0, 'normal result consumption must remove the runtime file');
+    assert.ok(fs.readdirSync(path.join(runtime.outputs, 'anima')).length > 0, 'results remain available until TTL or explicit deletion');
     var consumedAgain = await request(port, { path:succeeded.resultUrl });
-    assert.strictEqual(consumedAgain.status, 404, 'consumed result must not remain readable');
+    assert.strictEqual(consumedAgain.status, 200, 'result download must be retryable');
+    assert.deepStrictEqual(consumedAgain.body, result.body);
+    await request(port, { method:'DELETE', path:'/api/anima/jobs/' + succeeded.id });
+    assert.strictEqual((await request(port, { path:succeeded.resultUrl })).status, 404, 'explicit deletion removes the result');
 
     await mockFault(comfy.port, { historyTransient:2, renderMs:10 });
     var transientJob = await postJson(port, '/api/anima/jobs', validJob({ seed:4243 }));

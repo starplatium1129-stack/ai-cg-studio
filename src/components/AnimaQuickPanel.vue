@@ -47,7 +47,11 @@ const size = computed({
 })
 
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
-const progressStyle = computed(() => ({ '--progress': `${(props.state.progress ?? 0) * 100}%` }))
+const progressStyle = computed(() => ({ '--progress': Math.max(0, Math.min(1, props.state.progress ?? 0)) }))
+const outputSize = computed(() => {
+  const scale = props.state.hiresFix ? (props.state.hiresScale ?? 2) : 1
+  return `${Math.round(props.state.width * scale / 8) * 8} × ${Math.round(props.state.height * scale / 8) * 8}`
+})
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
 const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 /** 当前底模能力表：引擎默认值 + 后端模型能力合并（UI 不再按 family 散落判断）。 */
@@ -66,7 +70,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
     </summary>
     <div class="anima-body">
        <p class="anima-hint">{{ state.checkMsg }}</p>
-       <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份不保证；Prompt Enhancer 未启用。</p>
+       <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份还原需以实际出图为准。</p>
         <p v-else-if="noLoraMode" class="anima-preview-note"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
@@ -78,38 +82,49 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <label :for="idOf('strength')" class="anima-inline">强度</label>
         <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
        </div>
-      <div class="anima-row">
-        <label :for="idOf('seed')">Seed</label>
-        <input :id="idOf('seed')" v-model.number="seed" type="number" class="anima-num anima-seed" :disabled="busy" />
-        <button type="button" class="anima-btn" :disabled="busy" @click="randomSeed">随机</button>
-        <label :for="idOf('steps')" class="anima-inline">Steps</label>
-         <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
-        <label :for="idOf('cfg')" class="anima-inline">CFG</label>
-         <input :id="idOf('cfg')" v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
-        <label :for="idOf('size')" class="anima-inline">尺寸</label>
-        <select :id="idOf('size')" v-model="size" class="anima-num" :disabled="busy">
-           <option v-for="item in availableSizes" :key="item" :value="item">{{ item.replace('x', '×') }}</option>
-        </select>
+      <div class="anima-parameter-grid">
+        <div class="anima-field anima-seed-field">
+          <label :for="idOf('seed')">随机种子</label>
+          <div class="anima-seed-control">
+            <input :id="idOf('seed')" v-model.number="seed" type="number" min="0" step="1" class="anima-num anima-seed" :disabled="busy" />
+            <button type="button" class="anima-btn" :disabled="busy" @click="randomSeed">随机</button>
+          </div>
+        </div>
+        <div class="anima-field">
+          <label :for="idOf('steps')">采样步数</label>
+          <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
+        </div>
+        <div class="anima-field">
+          <label :for="idOf('cfg')">引导强度 · CFG</label>
+          <input :id="idOf('cfg')" v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
+        </div>
+        <div class="anima-field">
+          <label :for="idOf('size')">画布尺寸</label>
+          <select :id="idOf('size')" v-model="size" class="anima-num" :disabled="busy">
+            <option v-for="item in availableSizes" :key="item" :value="item">{{ item.replace('x', '×') }}</option>
+          </select>
+        </div>
       </div>
+      <p class="anima-output-note"><ArchiveIcon name="spark" />预计成片 {{ outputSize }}<span>放大倍率越高，显存与等待时间通常越多</span></p>
 
       <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
       <div v-if="capabilities.hires || capabilities.teaCache" class="anima-row anima-hires-row">
         <ToggleSwitch v-model="teaCache" :disabled="busy" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
-          <span>渲染加速 (TeaCache 2.4×)</span>
+          <span>特征缓存加速 · TeaCache</span>
         </ToggleSwitch>
         <ToggleSwitch v-model="hiresFix" :disabled="busy" label="高清放大修复" class="anima-hires-toggle">
           <ArchiveIcon name="spark" class="anima-hires-icon" />
-          <span>高清放大修复 (Hires.fix 2x)</span>
+          <span>高清放大</span>
         </ToggleSwitch>
         <template v-if="hiresFix">
-          <span class="anima-inline">倍率</span>
-          <select v-model.number="hiresScale" class="anima-num" :disabled="busy">
+          <label :for="idOf('scale')" class="anima-inline">倍率</label>
+          <select :id="idOf('scale')" v-model.number="hiresScale" class="anima-num" :disabled="busy">
             <option :value="1.5">1.5×</option>
-            <option :value="2.0">2.0× (4K)</option>
+            <option :value="2.0">2.0×</option>
           </select>
-          <span class="anima-inline">重绘幅度</span>
-          <input v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy" />
+          <label :for="idOf('denoise')" class="anima-inline">重绘幅度</label>
+          <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy" />
         </template>
       </div>
 
@@ -159,24 +174,24 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 </template>
 
 <style scoped>
-.anima-quick-panel { margin-top: 14px }
+.anima-quick-panel { margin-top: 14px; min-width: 0; border-color: var(--border-strong); background: var(--bg-surface) }
 .anima-status { margin-left: auto; font-size: var(--fs-label-xs); padding: 2px 8px; border-radius: var(--r-pill) }
 .anima-status.is-on { color: var(--success-text); background: color-mix(in srgb, var(--success) 12%, transparent) }
 .anima-status.is-off { color: var(--danger-text); background: color-mix(in srgb, var(--danger) 12%, transparent) }
 .anima-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px }
-.anima-hint { font-size: var(--fs-label-xs); opacity: 0.65; margin: 0 }
+.anima-hint { font-size: var(--fs-label-xs); color: var(--text-secondary); margin: 0 }
 .anima-preview-note { margin: 0; color: var(--warning-text); font-size: var(--fs-label-xs); line-height: var(--lh-label)}
 .anima-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap }
 .anima-hires-row { padding-top: 6px; border-top: 1px dashed var(--border-soft); margin-top: 2px }
 .anima-hires-toggle { font-size: var(--fs-label-xs); font-weight: 600; color: var(--accent) }
 .anima-hires-icon { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0 }
-.anima-row label, .anima-label { font-size: var(--fs-label-xs); opacity: 0.8; min-width: 44px }
+.anima-row label, .anima-label { font-size: var(--fs-label-xs); color: var(--text-secondary); min-width: 44px }
 .anima-label { margin-top: 4px }
 .anima-row select, .anima-num { background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 4px 8px; font-size: var(--fs-label-xs) }
 .anima-row select { flex: 1; min-width: 120px }
 .anima-num { width: 72px }
 .anima-seed { width: 140px }
-.anima-inline { font-size: var(--fs-label-xs); opacity: 0.6 }
+.anima-inline { font-size: var(--fs-label-xs); color: var(--text-secondary) }
 /* 行内标签原本是裸 span，改为 label 后会继承上一行 .anima-row label 的 44px
    最小宽，把 Steps/CFG/尺寸撑开。这里还原成原来的紧凑外观，只换语义不换版式 */
 .anima-row label.anima-inline { min-width: 0 }
@@ -185,17 +200,17 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-progress-copy { display: flex; justify-content: space-between; gap: 8px; color: var(--text-secondary); font-size: var(--fs-label-xs); }
 .anima-progress-copy strong { color: var(--accent); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .anima-progress-track { height: 5px; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
-.anima-progress-track i { display: block; width: 100%; height: 100%; transform-origin: left center; transform: scaleX(var(--progress, 0%)); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: transform var(--motion-surface) var(--ease-out); }
+.anima-progress-track i { display: block; width: 100%; height: 100%; transform-origin: left center; transform: scaleX(var(--progress, 0)); background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: transform var(--motion-surface) var(--ease-out); }
 .anima-progress-track i.indeterminate { width: 38%; transform: translateX(-120%); animation: anima-progress-flow 1.15s linear infinite; }
 .anima-progress small { color: var(--text-muted); font-size: var(--fs-mono-xs); }
 @keyframes anima-progress-flow { to { transform: translateX(290%); } }
 @media (prefers-reduced-motion: reduce) { .anima-progress-track i.indeterminate { animation: none; transform: translateX(0); } }
-.anima-actions { display: flex; align-items: center; gap: 10px; margin-top: 4px }
+.anima-actions { min-width: 0; flex-wrap: wrap; overflow-wrap: anywhere; display: flex; align-items: center; gap: 10px; margin-top: 4px }
 .anima-btn { background: var(--bg-hover); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 5px 12px; font-size: var(--fs-label-xs); cursor: pointer }
 /* 审计修复: 不用 opacity 压字 */
 .anima-btn:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed }
 .anima-primary { background: var(--accent); border-color: var(--accent); color: var(--text-inverse); font-weight: 600 }
-.anima-status-text { font-size: var(--fs-label-xs); opacity: 0.7 }
+.anima-status-text { font-size: var(--fs-label-xs); color: var(--text-secondary) }
 .anima-error { font-size: var(--fs-label-xs); color: var(--danger-text) }
 .anima-error-block { display: flex; flex-direction: column; gap: 4px }
 .anima-error-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap }
@@ -207,7 +222,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 }
 .anima-retry:hover:not(:disabled) { background: color-mix(in srgb, var(--danger) 24%, transparent) }
 .anima-retry:disabled { cursor: not-allowed; color: var(--text-disabled); border-color: var(--border-soft); background: transparent }
-.anima-error-detail summary { font-size: var(--fs-label-xs); opacity: 0.65; cursor: pointer }
+.anima-error-detail summary { font-size: var(--fs-label-xs); color: var(--text-secondary); cursor: pointer }
 .anima-error-detail code {
   display: block; margin-top: 4px; padding: 6px 8px; border-radius: var(--r-sm);
   background: var(--bg-deep); font-size: var(--fs-label-xs); line-height: var(--lh-label);
@@ -215,4 +230,19 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 }
 .anima-result { margin-top: 8px }
 .anima-result img { max-width: 100%; border-radius: var(--r-lg); border: 1px solid var(--border-soft) }
+.anima-parameter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 148px), 1fr)); gap: 12px; }
+.anima-field { display: grid; align-content: start; gap: 6px; min-width: 0; }
+.anima-field label { color: var(--text-secondary); font-size: var(--fs-label-xs); }
+.anima-field .anima-num { width: 100%; min-width: 0; min-height: 36px; box-sizing: border-box; font-variant-numeric: tabular-nums; }
+.anima-seed-control { display: flex; gap: 6px; min-width: 0; }
+.anima-seed-control .anima-btn { flex-shrink: 0; }
+.anima-output-note { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px; margin: 4px 0; border: 1px solid var(--border-soft); border-radius: var(--r-sm); color: var(--text-primary); background: var(--accent-soft); font-size: var(--fs-label-xs); font-variant-numeric: tabular-nums; }
+.anima-output-note svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+.anima-output-note span { flex-basis: 100%; color: var(--text-secondary); }
+.anima-quick-panel :is(input, select):disabled { opacity: 1; color: var(--text-disabled); -webkit-text-fill-color: var(--text-disabled); cursor: not-allowed; }
+.anima-quick-panel :is(input, select, textarea, button, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.anima-quick-panel :is(button):active:not(:disabled) { transform: scale(.97); }
+.anima-progress-copy > span, .anima-error-block { min-width: 0; overflow-wrap: anywhere; }
+.anima-status { white-space: nowrap; }
+.anima-quick-panel > summary > span:first-child { min-width: 0; overflow-wrap: anywhere; }
 </style>

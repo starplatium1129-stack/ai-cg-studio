@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { requireDataRecords, requireDataCollection } from '@/utils/dataRecords'
 import {
   parsePopularCharacters,
   parseSceneBlueprints,
@@ -69,7 +70,7 @@ export interface TagMeta {
  * 改过 data/*.json 后 `npm run validate` 会提示这里该改成什么。
  * 以前是手动计数（曾到 15），现在由内容锁定，不会再出现"改数据忘升版本"。
  */
-export const DATA_VERSION = 1361729598
+export const DATA_VERSION = 1717170832
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function fetchJson<T>(file: string, version: number): Promise<T> {
@@ -154,13 +155,13 @@ export const useSceneStore = defineStore('scenes', () => {
 
   const META_SPECS: MetaSpec[] = [
     { file: 'curation.json', required: false, lite: true, parse: (raw) => raw ?? {}, apply: (d) => { curation.value = d as CurationData } },
-    { file: 'characters.json', required: true, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { characters.value = d as Array<Record<string, unknown>> } },
+    { file: 'characters.json', required: true, lite: false, parse: (raw) => requireDataRecords(raw, 'characters.json'), apply: (d) => { characters.value = d as Array<Record<string, unknown>> } },
     { file: 'loras.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { loras.value = d as LoraMeta[] } },
     { file: 'tags.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
     { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
     { file: 'scenes-index.json', required: false, lite: true, parse: (raw) => raw ?? null, apply: (d) => { index.value = d as SceneIndex | null } },
-    { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(raw), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
-    { file: 'scene-blueprints.json', required: true, lite: false, parse: (raw) => parseSceneBlueprints(raw), apply: (d) => { sceneBlueprints.value = d as SceneBlueprint[] } },
+    { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
+    { file: 'scene-blueprints.json', required: true, lite: false, parse: (raw) => parseSceneBlueprints(requireDataCollection(raw, 'blueprints')), apply: (d) => { sceneBlueprints.value = d as SceneBlueprint[] } },
   ]
 
   /** 已成功资源的解析结果：重试只补失败项，不重复请求已成功资源；force 时逐项重取。 */
@@ -221,7 +222,7 @@ export const useSceneStore = defineStore('scenes', () => {
     const entry: { promise: Promise<Scene[]> } = { promise: Promise.resolve([]) }
     entry.promise = fetchJson<Scene[]>(SHARD_FILES[char], version.value)
       .then((list) => {
-        shardCache[char] = Array.isArray(list) ? list : []
+        shardCache[char] = requireDataRecords(list, SHARD_FILES[char]) as Scene[]
         loadedShards.value = new Set([...loadedShards.value, char])
         return shardCache[char] as Scene[]
       })

@@ -119,24 +119,6 @@ function normalizeUsage(scene, rating) {
   return usage;
 }
 
-function normalizeNegative(scene, rating) {
-  const values = String(scene.negative || '').split(',').map((value) => value.trim()).filter(Boolean);
-  // 2026-08-15 用户裁定：裸体压制只在 All 评级保留；R15 与 R18 一样剥离并补未成年保护。
-  if (rating === 'All') {
-    const seen = new Set(values.map((value) => value.toLowerCase()));
-    for (const token of ['nsfw', 'nude', 'explicit']) {
-      if (!seen.has(token)) values.push(token);
-    }
-    return values.join(', ');
-  }
-  const blocked = new Set(['nsfw', 'nude', 'naked', 'explicit']);
-  const normalized = values.filter((value) => !blocked.has(value.toLowerCase()));
-  const seen = new Set(normalized.map((value) => value.toLowerCase()));
-  ['child', 'loli', 'underage'].forEach((value) => {
-    if (!seen.has(value)) normalized.push(value);
-  });
-  return normalized.join(', ');
-}
 
 /**
  * 2026-08-15 样张视觉定级的人工降级表（用户裁定：多数标 R18 的样张实际顶多 R15），
@@ -162,8 +144,8 @@ for (const scene of scenes) {
   const force = scene.mature === true || scene.rating === 'R18';
   const manual = MANUAL_RATINGS[scene.id];
   const rating = manual || (force ? 'R18' : ratingFor(scene));
-  const next = { rating, mature: rating === 'R18', category: categoryFor(scene, rating), usage: normalizeUsage(scene, rating), negative: normalizeNegative(scene, rating) };
-  if (scene.rating !== next.rating || scene.mature !== next.mature || scene.category !== next.category || JSON.stringify(scene.usage) !== JSON.stringify(next.usage) || scene.negative !== next.negative) changed += 1;
+  const next = { rating, mature: rating === 'R18', category: categoryFor(scene, rating), usage: normalizeUsage(scene, rating) };
+  if (scene.rating !== next.rating || scene.mature !== next.mature || scene.category !== next.category || JSON.stringify(scene.usage) !== JSON.stringify(next.usage)) changed += 1;
   Object.assign(scene, next);
   totals[rating] += 1;
 }

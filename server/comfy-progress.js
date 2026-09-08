@@ -47,14 +47,16 @@ function createComfyProgressMonitor(config, clientId, options) {
     if (typeof reconnectTimer.unref === 'function') reconnectTimer.unref();
   }
 
-  function handleMessage(raw) {
+  function handleMessage(raw, isBinary) {
+    // 预览帧是二进制图片；不解码为字符串，也不尝试 JSON.parse。
+    if (isBinary === true) return;
     var message = readMessage(raw);
     if (!message || typeof message.type !== 'string') return;
     var data = message.data && typeof message.data === 'object' ? message.data : {};
     var promptId = data.prompt_id || message.prompt_id;
     if (!promptId || !subscriptions.has(String(promptId))) return;
     var job = subscriptions.get(String(promptId));
-    if (!job || job.status === 'succeeded' || job.status === 'failed' || job.status === 'cancelled') return;
+    if (!job || job.status !== 'running') return;
 
     if (message.type === 'execution_start') {
       job.progress = null;

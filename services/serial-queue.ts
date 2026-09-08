@@ -58,7 +58,7 @@ class SerialQueue {
   pending: number;
   active: number;
   maxPending: number;
-  tail: Promise<unknown>;
+  private entries: Array<{ execute: () => void }> = [];
 
   constructor(name?: string, maxPending?: number) {
     this.name = name || 'queue';
@@ -66,7 +66,7 @@ class SerialQueue {
     this.active = 0;
     this.maxPending = typeof maxPending === 'number' && maxPending > 0
       ? maxPending : DEFAULT_MAX_PENDING;
-    this.tail = Promise.resolve();
+
   }
 
   run<T>(task: QueueTask<T>, options?: QueueRunOptions): Promise<T> {
@@ -85,54 +85,47 @@ class SerialQueue {
       return Promise.reject(new QueueFullError(queue.name, queue.maxPending));
     }
     queue.pending += 1;
+    return new Promise<T>((resolve, reject) => {
+      let waiting = true;
+      const cleanup = () => {
+        if (signal && typeof signal.removeEventListener === 'function') {
+          signal.removeEventListener('abort', onAbort);
+        }
+      };
+      const entry = { execute: () => {
+        waiting = false;
+        cleanup();
+        queue.pending -= 1;
+        queue.active += 1;
+        Promise.resolve()
+          .then(() => {
+            if (signal?.aborted) throw abortError();
+            return task({ queue: queue.name, waitMs: Date.now() - queuedAt });
+          })
+          .finally(() => { queue.active -= 1; queue.drain(); })
+          .then(resolve, reject);
+      } };
+      const onAbort = () => {
+        if (!waiting) return;
+        waiting = false;
+        const index = queue.entries.indexOf(entry);
+        if (index >= 0) queue.entries.splice(index, 1);
+        queue.pending -= 1;
+        cleanup();
+        reject(abortError());
+      };
+      queue.entries.push(entry);
+      if (signal && typeof signal.addEventListener === 'function') {
+        signal.addEventListener('abort', onAbort, { once: true });
+      }
+      if (signal?.aborted) onAbort();
+      queueMicrotask(() => queue.drain());
+    });
+  }
 
-    // 2026-08-16 审计：排队期间客户端断开 → 立即释放 pending 槽，而不是等排到
-    // 队首才检查。此前被放弃的请求会占着槽位拖慢后面所有真实请求（16 个幽灵槽
-    // 就能把 GPU 队列塞满）。槽位释放是幂等的，execute() 与 abort 回调只生效一次。
-    let slotReleased = false;
-    const releaseSlot = function (): void {
-      if (slotReleased) return;
-      slotReleased = true;
-      queue.pending -= 1;
-    };
-    const onAbort = function (): void {
-      releaseSlot();
-      if (signal && typeof signal.removeEventListener === 'function') {
-        try { signal.removeEventListener('abort', onAbort); } catch {}
-      }
-    };
-    if (signal && typeof signal.addEventListener === 'function') {
-      try { signal.addEventListener('abort', onAbort, { once: true }); } catch {}
-    }
-
-    function execute(): Promise<T> {
-      if (slotReleased) {
-        // abort 已在排队期间释放槽位：跳过执行，不重复操作计数。
-        return Promise.reject(abortError());
-      }
-      if (signal && signal.aborted) {
-        // 排到队首才发现的 abort：此刻释放槽位并拒绝（GPU 未执行）。
-        releaseSlot();
-        return Promise.reject(abortError());
-      }
-      // 正事开始：abort 不应再碰队列计数（任务已转 active）。
-      if (signal && typeof signal.removeEventListener === 'function') {
-        try { signal.removeEventListener('abort', onAbort); } catch {}
-      }
-      queue.pending -= 1;
-      queue.active += 1;
-      return Promise.resolve()
-        .then(function () {
-          return task({ queue: queue.name, waitMs: Date.now() - queuedAt });
-        })
-        .finally(function () {
-          queue.active -= 1;
-        });
-    }
-
-    const result = queue.tail.then(execute, execute) as Promise<T>;
-    queue.tail = result.catch(function () {});
-    return result;
+  private drain(): void {
+    if (this.active) return;
+    this.entries.shift()?.execute();
   }
 
   status(): QueueStatus {

@@ -174,14 +174,17 @@ async function materializeResult(config, job, image, options) {
   var temporary = target + '.' + process.pid + '.' + crypto.randomBytes(4).toString('hex') + '.tmp';
   // 异步落盘（2026-08-21 性能审计 #1）：≤20MB 的 writeFileSync 同步写会短暂
   // 冻结事件循环，与视频/聊天流共享同一个进程。
-  await fs.promises.writeFile(temporary, response.body, { flag:'wx', mode:0o600 });
   try {
+    await fs.promises.writeFile(temporary, response.body, { flag:'wx', mode:0o600 });
     await fs.promises.rename(temporary, target);
     var realRoot = fs.realpathSync(root);
     var realTarget = fs.realpathSync(target);
     if (realTarget.indexOf(realRoot + path.sep) !== 0) throw serviceError(500, 'MEDIA_PATH_INVALID', '应用媒体路径无效');
   } catch (error) {
     try { fs.unlinkSync(temporary); } catch (ignore) {}
+    if (['ENOSPC', 'EACCES', 'EPERM', 'EROFS', 'EIO'].includes(error.code)) {
+      throw serviceError(507, 'RESULT_SAVE_FAILED', '生成图片保存失败，请检查本地磁盘空间和目录写入权限（' + error.code + '）');
+    }
     throw error;
   }
   return { path:target, mime:info.mime, bytes:response.body.length };

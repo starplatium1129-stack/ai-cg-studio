@@ -91,15 +91,15 @@ function validateInput(reqOrBody, expectedFamilyOrBody, maybeExpectedFamily) {
     throw serviceError(400, 'INVALID_PARAMETER', 'negative 需为不超过 ' + MAX_NEGATIVE_LENGTH + ' 字符的文本');
   }
   assertAdultAllowed(req, body);
-  var model = MODELS[body.modelId];
+  var model = typeof body.modelId === 'string' && hasOwn(MODELS, body.modelId) ? MODELS[body.modelId] : null;
   if (!model) throw serviceError(400, 'UNKNOWN_MODEL', '未知生成模型');
   if (expectedFamily && model.family !== expectedFamily) throw serviceError(400, 'WRONG_ROUTE_FAMILY', '请求路径与模型 family 不匹配');
   var expectedProfile = PROFILE_BY_MODEL[body.modelId];
-  var lora = body.loraId ? LORAS[body.loraId] : null;
+  var lora = typeof body.loraId === 'string' && hasOwn(LORAS, body.loraId) ? LORAS[body.loraId] : null;
   if (model.family !== 'krea2' && body.styleLoraId !== undefined) throw serviceError(400, 'WRONG_ROUTE_FAMILY', 'Style LoRA 仅适用于 Krea 2');
   if (model.family === 'krea2') {
     if (body.loraId || body.loraStrength !== undefined || (body.negative && String(body.negative).trim())) throw serviceError(400, 'KREA_UNSUPPORTED_PARAMETER', 'Krea 2 不接受角色 LoRA 或负向 Prompt');
-    if (body.styleLoraId !== undefined && !KREA_STYLE_LORAS[body.styleLoraId]) throw serviceError(400, 'UNKNOWN_STYLE_LORA', '未知 Krea 2 官方 Style LoRA');
+    if (body.styleLoraId !== undefined && (typeof body.styleLoraId !== 'string' || !hasOwn(KREA_STYLE_LORAS, body.styleLoraId))) throw serviceError(400, 'UNKNOWN_STYLE_LORA', '未知 Krea 2 官方 Style LoRA');
   } else if (model.noLora === true && !body.loraId) {
     // 无 LoRA 创作模式：loraId/character 缺省或 character=null 即放行。
     // 若调用方提供了 lora，则落到下面的原校验，UNKNOWN_LORA /
@@ -115,7 +115,7 @@ function validateInput(reqOrBody, expectedFamilyOrBody, maybeExpectedFamily) {
   } else {
     if (!lora) throw serviceError(400, 'UNKNOWN_LORA', '未知 Anima LoRA');
     if (lora.compatibleModels.indexOf(body.modelId) === -1) throw serviceError(400, 'INCOMPATIBLE_MODEL_LORA', '底模与 LoRA 组合不受支持');
-    var character = CHARACTERS[body.character];
+    var character = typeof body.character === 'string' && hasOwn(CHARACTERS, body.character) ? CHARACTERS[body.character] : null;
     if (!character || character.loraId !== body.loraId) throw serviceError(400, 'INCOMPATIBLE_CHARACTER', '角色与 LoRA 组合不受支持');
   }
   var loraStrength = lora ? validateNumber(body.loraStrength, 'loraStrength', lora.minStrength, lora.maxStrength, false) : null;

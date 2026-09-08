@@ -144,12 +144,13 @@
     "camera": "篝火旁双人中景",
     "lighting": "篝火暖光与星空冷光",
     "usage": [
-      "展示图"
+      "展示图",
+      "R15"
     ],
     "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, santa_costume, red_velvet_dress, white_fur_trim, santa_hat, off_shoulder, black_belt, bare_shoulders, cleavage, black_pantyhose, stiletto_heels, sitting_by_fireplace, holding_wine_glass, seductive_smirk, confident_expression, warm_glow, Christmas_tree_bokeh, night, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_jacket, coat, cafe_uniform",
     "storyJa": "【夏目・キャンプファイヤーの曲がった写真】夏の夜、キャンプ場に残るのは薪が燃える柔らかな音だけ。夏目が撮ったばかりの写真を渡しました。写真の中の星空は半分傾いていたが、思いがけず彼女を振り返った瞬間を残した。あなたがそれを保管したいと言うと、彼女はすぐに手を伸ばしてそれを掴み、焚き火の光で頬を赤らめました。――「構図に失敗した写真なんて、残してどうするの……まあいいわ。あなたのスマホだけに保存して、誰にも送らないで。」",
-    "rating": "All",
+    "rating": "R15",
     "animaCaption": "Beside a crackling campfire at night, Shiki Natsume in a thick oversized cream knit sweater dress with glossy black tights sits on a wooden log holding an instant photo, warm fire glow mixing with cool starlight.",
     "auditRevision": "careful-batch05-2026-08-27"
   },
@@ -302,12 +303,13 @@
     "lighting": "高窗斜射光",
     "usage": [
       "展示图",
-      "头像"
+      "头像",
+      "R15"
     ],
     "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, virgin_killer_sweater, black_sweater, backless_sweater, turtleneck_sweater, sleeveless_sweater, sideboob, bare_back, bare_shoulders, bare_legs, leaning_against_storage_shelf, arms_crossed_under_breasts, looking_at_viewer_with_amused_smirk, storeroom, dust_motes, dim_sunlight_slanted_through_slats, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, gym_uniform, school_uniform, shirt",
     "storyJa": "【夏目・機器室に5分間閉じ込められる】大学の体育館での活動後、夏目さんから機材の返却を手伝ってほしいと頼まれましたが、風で誤ってドアが閉まってしまいました。狭い倉庫には高窓から光が漏れてくるだけだった。ドアの鍵を確認したときはまだ冷静だったが、振り返って二人が近すぎることに気づくと、すぐに顔を赤らめた。――「まずは扉を開ける方法を考えて。そんな顔しないの。それと……少し離れて。緊張してるんじゃなくて、ここが蒸し暑いだけだから。」",
-    "rating": "All",
+    "rating": "R15",
     "auditRevision": "careful-batch08-2026-08-27",
     "animaCaption": "Sitting on a gym mat in an equipment room in a white T-shirt with navy gym shorts, Shiki Natsume shows slender bare legs with soft skin sheen, bare feet and white sneakers on floor, knees drawn up with a shy embarrassed blush."
   },
@@ -699,12 +701,13 @@
     "lighting": "春日柔和晨光",
     "usage": [
       "展示图",
-      "头像"
+      "头像",
+      "R15"
     ],
     "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sheer_babydoll, open-front_negligee, black_translucent_cloth, see-through, cleavage, bare_shoulders, bare_legs, reclining_on_pillows, looking_at_viewer, bedroom, soft_morning_light, sheer_curtains, sensual, playful_smile, blush, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, blue_shirt, pajamas",
     "storyJa": "【夏目・朝の光で目覚めるという真実】春の朝の光がカーテンを通り抜け、夏目はまだ布団の中で丸まってぐっすり眠っていました。あなたは彼女のまぶしい光を遮りました。彼女が目を覚ましたとき、彼女は顔を隠そうとしましたが、あなたの手が窓の上に置かれていることに気づきました。数秒の沈黙の後、彼女はあなたにキルトの半分を渡します。――「人の寝顔をずっと見ているなんて失礼ね。でも今日は謝らなくていい……あと十分だけ、このまま。目覚ましが鳴ったら起きましょう。」",
-    "rating": "All",
+    "rating": "R15",
     "animaCaption": "In a sunlit spring bedroom, Shiki Natsume lies half-covered by a blanket in a pale blue pajama shirt with white piping and shorts, slender bare legs with morning skin sheen, bare feet on sheets, holding the blanket edge for the viewer with a sleepy, gentle blush.",
     "auditRevision": "careful-batch01-2026-08-27"
   },
@@ -788,13 +791,14 @@
     "lighting": "冬日下午窗光与室内柔光",
     "usage": [
       "展示图",
-      "头像"
+      "头像",
+      "R15"
     ],
     "animaCaption": "Sitting on the laundromat bench leaning on the viewer's shoulder, Shiki Natsume in a loose white T-shirt and denim shorts shows glossy black tights hugging toned thighs, white sneakers on the bench, warm window light with drum reflections.",
     "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sleeveless_bodysuit, black_bodysuit, skin-tight, highleg, cleavage, bare_shoulders, bare_legs, sitting_on_washing_machine, leaning_back_on_hands, crossing_legs, laundromat, neon_sign_glow, night, urban, sensual, smirk, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, casual_clothes, coat, skirt",
     "storyJa": "【夏目・乾燥終了10分前】冬の午後、セルフサービスのランドリールームに残るのは、ドラムが回る低い音だけだ。夏目はベンチに座ってカウントダウンを見守った。眠くなってくると無意識にあなたの肩にもたれかかってきました。目が覚めて自分の姿勢に気づいた後、彼女はすぐには正座せず、回転する衣服に目を移しただけでした。――「あと十分だから、動くほうが面倒。しばらくそのままでいて……肩がつらくなったら、早めに言って。」",
-    "rating": "All",
+    "rating": "R15",
     "auditRevision": "audit-v25-2026-08-26-batch3"
   },
   {
@@ -870,12 +874,13 @@
     "lighting": "海边午后柔光",
     "usage": [
       "展示图",
-      "头像"
+      "头像",
+      "R15"
     ],
     "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, front-tie_bikini, black_bikini, bath_towel_draped_over_shoulders, bare_shoulders, cleavage, bare_legs, barefoot, sitting_on_beach_blanket, wet_skin, water_droplets, parasol_shadow, bright_summer_sunlight, ocean_background, blush, looking_at_viewer, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dress, coat",
     "storyJa": "【夏目・波が引いたらバスタオル】泳ぎ終えた夏目さんは大きなバスタオルを肩に巻き、長い黒髪に水が滴ったまま傘の下に座っていた。彼女はあなたが手渡した温かい飲み物に気づきました。一瞬の沈黙の後、彼女はベンチの内側に移動し、タオルの角をあなたの足の上に置きました。――「海風、思ったより冷たい。近くに座るのは風よけのためだから……飲み物、おいしい。ありがとう。」",
-    "rating": "All",
+    "rating": "R15",
     "animaCaption": "After swimming, Shiki Natsume in a dark navy one-piece swimsuit sits on the beach bench under the parasol with a large white towel over her shoulders, long black hair still dripping. She notices the warm drink handed to her, silently shifts to the inner side of the bench, and drapes one corner of the towel over the viewer's lap with a composed, shy blush.",
     "auditRevision": "careful-batch03-2026-08-27"
   },
@@ -1123,13 +1128,14 @@
     "usage": [
       "展示图",
       "头像",
-      "CG"
+      "CG",
+      "R15"
     ],
     "animaCaption": "Standing inside a darkened aquarium tunnel with palms gently pressed against the acrylic glass, Shiki Natsume is completely entranced by the graceful flight of glowing manta rays and jellyfish. The radiant cyan and deep blue waters cast dancing caustic light waves across her black hair and porcelain features.",
     "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, criss-cross_bikini, black_bikini, wrap_bikini, midriff_straps, side-tie_panties, cleavage, bare_shoulders, bare_midriff, bare_legs, barefoot, sitting_by_pool_edge, dipping_feet_in_water, night_pool, glowing_blue_water_reflections, moonlight, seductive_glance, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, dress, one-piece_swimsuit",
     "storyJa": "【夏目・青い光の中で忘却のひととき】水族館の巨大なガラスのカーテンウォールの前で、夏目は周囲の環境を忘れることなく頭を上げて泳ぐ魚の群れを追いかけます。青い波紋が彼女の黒髪と目の下の泣きぼくろに広がった。彼女が正気に戻るまでに、あなたは彼女に二度電話しました。彼女はそっとガラスに寄りかかったが、口調はまだ穏やかだった――「魚のほうが誰かさんより静かなのは確か。でも……あなたがここにいても邪魔ではないから、もう少し付き合って。」",
-    "rating": "All"
+    "rating": "R15"
   },
   {
     "id": "sc077",

@@ -351,3 +351,43 @@ test('F2/F3：新一轮失败不清掉上一张成片与冻结上下文，可一
   assert.equal(session.restoreStashedResult(), false, 'stash 一次性消费');
   session.dispose();
 });
+
+
+test('engine changes during generation keep polling and cancellation bound to original job', async () => {
+  let reads = 0;
+  let cancelled = false;
+  const client = fakeClient({
+    '/api/anima/jobs|POST': () => ({ ok: true, job: { id: 'bound', seed: 1 } }),
+    '/api/anima/jobs/bound|GET': () => { reads++; return { ok: true, job: { id: 'bound', seed: 1, status: cancelled ? 'cancelled' : 'running' } }; },
+    '/api/anima/jobs/bound|DELETE': () => { cancelled = true; return { job: { status: 'cancelled' } }; },
+  });
+  const session = useAnimaSession(baseOptions({ client }));
+  session.patchState({ online: true });
+  const generation = session.generate();
+  await new Promise(resolve => setImmediate(resolve));
+  session.patchState({ family: 'krea2' });
+  await new Promise(resolve => setTimeout(resolve, 1100));
+  assert.equal(reads, 1);
+  await session.cancel();
+  assert.equal(cancelled, true);
+  await generation;
+  assert.equal(session.state.value.phase, 'cancelled');
+  session.dispose();
+});
+
+test('late submit response after dispose is cancelled without reviving state', async () => {
+  let release;
+  let deleted = false;
+  const client = fakeClient({
+    '/api/anima/jobs|POST': () => new Promise(resolve => { release = resolve; }),
+    '/api/anima/jobs/late|DELETE': () => { deleted = true; return {}; },
+  });
+  const session = useAnimaSession(baseOptions({ client }));
+  session.patchState({ online: true });
+  const generation = session.generate();
+  session.dispose();
+  release({ ok: true, job: { id: 'late', seed: 1 } });
+  await generation;
+  assert.equal(deleted, true);
+  assert.notEqual(session.state.value.phase, 'running');
+});

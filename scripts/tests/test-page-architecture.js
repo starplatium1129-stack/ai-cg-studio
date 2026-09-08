@@ -93,7 +93,10 @@ for (const file of vueFiles) {
 
 // Each main page exposes a human-readable heading; navigation belongs to AppLayout.
 for (const rel of ['PromptBuilder', 'Chat', 'Gallery', 'Showcase', 'SceneExplorer', 'SceneManager', 'Control', 'Character', 'ColorScript', 'Lora', 'Style']) {
-  assert(/<h1\b/.test(read('src/views/' + rel + 'View.vue')), rel + ' must expose a page heading');
+  const view = read('src/views/' + rel + 'View.vue');
+  const heading = rel === 'Control' && /<ControlIntro\b/.test(view)
+    ? read('src/components/ControlIntro.vue') : view;
+  assert(/<h1\b/.test(heading), rel + ' must expose a page heading');
 }
 assert(read('src/components/AppLayout.vue').includes('AppNav'), 'shared layout must retain navigation');
 assert(!/\bany\b/.test(read('src/views/ColorScriptView.vue')), 'ColorScriptView must keep its catalog typed');
@@ -189,6 +192,11 @@ function readDirectorCss() {
   const parts = [entry];
   if (fs.existsSync(dir)) {
     for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.css'))) {
+      if (name === 'view-shell.css') {
+        assert(/<style\s+scoped\s+src="@\/assets\/css\/director\/view-shell\.css"/.test(read('src/views/PromptBuilderView.vue')));
+        assert(!entry.includes('view-shell.css'), 'scoped view CSS must not enter the global CSS entry');
+        continue;
+      }
       parts.push(read(path.join('src/assets/css/director', name)));
     }
     const componentsDir = path.join(dir, 'components');

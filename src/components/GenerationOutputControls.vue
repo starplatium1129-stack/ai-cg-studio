@@ -33,20 +33,6 @@
       </details>
     </div>
 
-    <!-- Anima 专属快捷高清修复开关 -->
-    <div v-else-if="engine === 'anima' && expert" class="sd-inline-options">
-      <label class="hires-label advanced-decision">
-        <ToggleSwitch
-          :model-value="Boolean(animaHiresFix)"
-          label="高清放大修复"
-          @update:model-value="$emit('update:animaHiresFix', $event)"
-        >
-          <ArchiveIcon name="spark" class="control-icon-inline" />
-          <span>高清放大修复 (Hires.fix 2x)</span>
-        </ToggleSwitch>
-      </label>
-    </div>
-
     <div v-if="presetSummary" class="generation-auto-summary">
       <span>自动参数</span>
       <strong>{{ presetSummary }}</strong>
@@ -58,11 +44,11 @@
         class="btn btn-ghost btn-hires-action-quick"
         type="button"
         :disabled="generating"
-        title="使用当前 Seed 锁定并执行 2x 潜空间高清放大精修 (4K)"
+        title="使用当前 Seed 生成放大版本，最终尺寸取决于原画布"
         @click="$emit('upscale-current')"
       >
         <ArchiveIcon name="spark" class="control-icon-inline" />
-        <span>高清放大 2x (4K)</span>
+        <span>高清放大 2×</span>
       </button>
       <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue')">加入队列</button>
       <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" title="一键将 3 组不同 Seed 候选变体加入队列" @click="$emit('enqueue-variants')">3 组候选</button>

@@ -64,6 +64,7 @@ body:has(.pb.journal-workspace) .sakura-fall { display: none; }
   .pb.journal-workspace .pb-top-actions { width: 100%; justify-content: flex-start; }
 }
 @media (max-width: 900px) {
+  .pb.journal-workspace[data-director-mode="basic"] .director-workspace > .col-left { grid-row: auto; }
   .pb.journal-workspace .director-workspace,
   .pb.journal-workspace[data-director-mode="basic"] .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "story" "stage" "decisions"; }
   .pb.journal-workspace.has-result .director-workspace { grid-template-areas: "stage" "story" "decisions"; }

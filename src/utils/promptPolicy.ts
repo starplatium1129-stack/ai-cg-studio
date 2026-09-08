@@ -1,3 +1,5 @@
+import { framingShot, type PromptScene } from './sceneFraming.ts'
+export type { PromptScene } from './sceneFraming.ts'
 // Prompt policy — 从重构前 tools/prompt-policy.js + prompt-builder/prompt.js 迁移
 // 负责：Danbooru 标签规范化、模型 profile 质量/负面前缀、LoRA 权重策略、
 //       framing 冲突消解、场景模板净化、结构健康报告
@@ -89,16 +91,7 @@ export interface LoraMeta {
   [k: string]: unknown
 }
 
-export interface PromptScene {
-  char?: string
-  prompt?: string
-  tags?: string[]
-  lora?: string
-  category?: string
-  rating?: string
-  mature?: boolean
-  negative?: string
-}
+
 
 const NEGATIVE_BOILERPLATE = new Set([
   'bad_quality', 'worst_quality', 'low_quality', 'normal_quality', 'worst_detail',
@@ -678,7 +671,7 @@ export function sceneTemplateText(
   if (!isDualScene || !capabilities.dualCharacter) {
     template = sanitizeSoloTemplate(template)
   }
-  return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), opts.shot)
+  return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), framingShot(opts.shot, scene.camera))
 }
 
 // ── LoRA 权重策略 ─────────────────────────────────────────────────────────

@@ -121,6 +121,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
 
   function selectPopularSource(source: 'studio' | 'popular') {
     if (source === 'studio' && pb.isPopular) {
+      patchAnimaState({ online: false, checkMsg: '正在恢复工作室模型与 LoRA…' })
       pb.clearScene({ keepStory: true })
       pb.setStudioSubject()
       // 立即恢复 nene/natsume 的 model/lora 白名单，不等 15s 状态轮询。

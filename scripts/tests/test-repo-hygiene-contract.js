@@ -28,6 +28,7 @@ function write(repositoryRoot, relativePath, content) {
 function createRepository(t) {
   const repositoryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-repo-hygiene-'));
   t.after(() => {
+    assert.strictEqual(path.dirname(path.resolve(repositoryRoot)), path.resolve(os.tmpdir()));
     // Windows：git 子进程（pack-objects/index）句柄释放略有滞后，立即 rmSync
     // 会 ENOTEMPTY/EBUSY。有界重试只处理清理，不吞业务断言结果（审计 2026-09-05 P2-01）。
     for (let attempt = 0; ; attempt += 1) {
@@ -41,7 +42,8 @@ function createRepository(t) {
       }
     }
   });
-  git(repositoryRoot, ['init', '--quiet']);
+  // 夹具不使用符号链接，避免 Git 初始化探测遗留重解析点。
+  git(repositoryRoot, ['-c', 'core.symlinks=false', 'init', '--quiet']);
   git(repositoryRoot, ['config', 'user.email', 'repo-hygiene@example.invalid']);
   git(repositoryRoot, ['config', 'user.name', 'Repo Hygiene Test']);
   git(repositoryRoot, ['config', 'core.autocrlf', 'false']);

@@ -211,6 +211,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   let statusTimer: ReturnType<typeof setInterval> | null = null
   let requestSerial = 0
+  let activeFamily: 'anima' | 'krea2' = 'anima'
   let statusRequest: AbortController | null = null
   let jobRequest: AbortController | null = null
 
@@ -308,7 +309,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const familyLoras = family === 'krea2' ? [] : (options.isPopular() ? [] : loras)
       const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId)
         ? state.value.modelId
-        : (visibleModels[0]?.id || '')
+        : (visibleModels.find(model => model.available)?.id || visibleModels[0]?.id || '')
       const loraId = familyLoras.some(lora => lora.id === state.value.loraId)
         ? state.value.loraId
         : (familyLoras[0]?.id || '')
@@ -323,6 +324,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         if (Number.isInteger(nextWidth) && Number.isInteger(nextHeight)) { width = nextWidth; height = nextHeight }
       }
       const familyLabel = family === 'krea2' ? 'Krea 2' : 'Anima'
+      const online = data.online === true && selectedModel?.available === true
       /**
        * 底模默认值只在「换底模」时才重施（2026-08-30 UX 审计 P0-2）。
        *
@@ -338,10 +340,10 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         ? state.value.styleLoraId
         : ''
       patchState({
-        online: data.online === true,
-        checkMsg: data.online === true
+        online,
+        checkMsg: online
           ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
-          : `${familyLabel} 离线（ComfyUI 未启动或网关不可用）`,
+          : `${familyLabel} 不可用（请检查 ComfyUI 与当前模型文件）`,
         models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
         family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
         steps: shouldApplyDefaults ? (Number(selectedModel?.defaults?.steps) || state.value.steps) : state.value.steps,
@@ -374,7 +376,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const metadata = supplied && supplied.prompt === request.prompt && supplied.negative === request.negative
       ? supplied
       : {
-          engine: state.value.family,
+          engine: activeFamily,
           id: job.id,
           prompt: request.prompt,
           negative: request.negative,
@@ -401,27 +403,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     return Object.freeze({ ...metadata, resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
   }
 
-  async function fetchImage(url: string, signal: AbortSignal): Promise<Blob> {
-    const controller = new AbortController()
-    const onAbort = () => controller.abort()
-    signal.addEventListener('abort', onAbort, { once: true })
-    const timeout = setTimeout(() => controller.abort(), 30_000)
-    try {
-      const response = await fetch(url, { cache: 'no-store', signal: controller.signal })
-      const contentType = String(response.headers.get('content-type') || '')
-      if (!response.ok) throw new Error(`图片读取失败（HTTP ${response.status}）`)
-      if (!contentType.startsWith('image/')) throw new Error('网关返回的结果不是图片')
-      const blob = await response.blob()
-      if (!blob.size) throw new Error('生成结果为空')
-      return blob
-    } catch (error) {
-      if (controller.signal.aborted) throw new Error(signal.aborted ? '请求已取消' : '图片读取超时（30 秒）')
-      throw error
-    } finally {
-      clearTimeout(timeout)
-      signal.removeEventListener('abort', onAbort)
-    }
-  }
 
   async function pollJob(jobId: string, request: AnimaRequest, serial: number, signal: AbortSignal): Promise<void> {
     const deadline = Date.now() + 10 * 60 * 1000
@@ -430,11 +411,14 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (serial !== requestSerial) return
       let data: { ok?: boolean; job?: AnimaPublicJob; error?: string }
       try {
-        data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(state.value.family, jobId), {
+        data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(activeFamily, jobId), {
           cache: 'no-store', signal, timeoutMs: 15_000,
         })
       } catch (error) {
-        if (error instanceof ApiClientError && error.kind === 'http' && error.status >= 500) continue
+        if (error instanceof ApiClientError && (error.kind === 'network' || error.kind === 'timeout' || (error.kind === 'http' && error.status >= 500))) {
+          patchState({ progressText: '连接暂时中断，正在重新读取任务进度…' })
+          continue
+        }
         throw error
       }
       if (serial !== requestSerial) return
@@ -458,7 +442,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')
       if (job.status !== 'succeeded' || !job.resultAvailable || !job.resultUrl) continue
 
-      const blob = await fetchImage(job.resultUrl, signal)
+      const { fetchResultImage } = await import('./fetchResultImage.ts')
+      const blob = await fetchResultImage(job.resultUrl, signal)
       if (serial !== requestSerial) return
       const metadata = metadataFromJob(job, request)
       const result: AnimaResult = { url: URL.createObjectURL(blob), blob, metadata }
@@ -471,7 +456,10 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       options.onResult(result)
       return
     }
-    if (serial === requestSerial) throw new Error('Anima 生成超时')
+    if (serial === requestSerial) {
+      await cancel()
+      throw new Error('Anima 生成超时，已请求取消上游任务')
+    }
   }
 
   /**
@@ -547,6 +535,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const request: AnimaRequest = { ...baseRequest, ...overrides }
     if (!state.value.online) { options.flash('Anima ComfyUI 当前未连接'); return }
     const serial = ++requestSerial
+    activeFamily = state.value.family
     jobRequest?.abort()
     const controller = new AbortController()
     jobRequest = controller
@@ -556,13 +545,17 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     stashCurrentResult()
     patchState({ phase: 'submitting', progress: null, elapsedSeconds: 0, progressText: '正在连接 ComfyUI…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     try {
-      const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(state.value.family), {
+      const data = await client.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(jobPath(activeFamily), {
         method: 'POST',
         body: animaRequestPayload(request),
         signal: controller.signal,
         timeoutMs: 30_000,
       })
       if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
+      if (serial !== requestSerial) {
+        void client.request(jobPath(activeFamily, data.job.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
+        return
+      }
       const metadata = metadataFromJob(data.job, request)
       patchState({ phase: 'running', statusText: '生成中…', job: metadata })
       await pollJob(data.job.id, request, serial, controller.signal)
@@ -584,12 +577,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     if (!job || !['running', 'cancelling'].includes(state.value.phase)) return
     patchState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '', errorReport: null })
     try {
-      const data = await client.request<{ job?: AnimaPublicJob }>(jobPath(state.value.family, job.id), {
+      const data = await client.request<{ job?: AnimaPublicJob }>(jobPath(activeFamily, job.id), {
         method: 'DELETE', timeoutMs: 15_000,
       })
       if (data.job?.status === 'cancelled') patchState({ phase: 'cancelled', statusText: '任务已取消' })
     } catch (error) {
-      patchState(failurePatch(error, '取消失败'))
+      patchState({ statusText: '取消尚未确认，正在继续查询任务', errorMsg: error instanceof Error ? error.message : '取消请求失败' })
     }
   }
 
@@ -603,7 +596,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     stopStatusPolling()
     const activeJob = state.value.job
     if (activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
-      void client.request<{ ok?: boolean }>(jobPath(state.value.family, activeJob.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
+      void client.request<{ ok?: boolean }>(jobPath(activeFamily, activeJob.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
     }
     const result = state.value.result
     if (result) URL.revokeObjectURL(result.url)
