@@ -79,9 +79,9 @@
           </div>
           <div class="companion-pop-group">
             <strong>工作台</strong>
-            <button type="button" class="companion-pop-item" title="打开完整工作台（Ctrl+Shift+A）" @click="desktopBridge ? desktopBridge.openAtelier() : undefined">打开完整工作台</button>
-            <button type="button" class="companion-pop-item" @click="desktopBridge ? desktopBridge.openAtelier('/chat') : undefined">完整房间（聊天）</button>
-            <RouterLink v-if="!desktopBridge" class="companion-pop-item" to="/chat">完整房间（聊天）</RouterLink>
+            <button type="button" class="companion-pop-item" title="打开完整工作台（Ctrl+Shift+A）" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')">打开完整工作台</button>
+            <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier('/chat')">完整房间（聊天）</button>
+            <RouterLink v-else class="companion-pop-item" to="/chat">完整房间（聊天）</RouterLink>
           </div>
           <div v-if="desktopBridge" class="companion-pop-group">
             <strong>诊断</strong>

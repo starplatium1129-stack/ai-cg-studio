@@ -399,7 +399,7 @@
   .pb .api-status .badge { cursor:pointer; margin-right:4px; padding:var(--s-2) var(--s-3); border-radius:var(--r-pill); border:1px solid var(--border-soft); font-size:var(--fs-label-xs); white-space:nowrap; transition:border-color var(--motion-hover),background var(--motion-hover),opacity var(--motion-hover); }
   .pb .api-status .badge:hover { border-color:var(--accent); }
   /* SD 已连接时淡化状态徽章：连接中保持醒目，就绪后不抢操作区 */
-  .pb .api-status .badge.badge-online { opacity:.72; }
+  .pb .api-status .badge.badge-online { opacity:1; }
   .pb .api-status .badge.badge-online:hover { opacity:1; }
   .pb .api-recovery-link { color:var(--accent); font-size:var(--fs-label-xs); white-space:nowrap; }
   .pb .sd-budget-hint { width:100%; margin-top:-5px; color:var(--text-muted); font-size:var(--fs-mono-sm); }

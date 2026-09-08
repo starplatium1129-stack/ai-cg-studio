@@ -1,0 +1,123 @@
+import { test, expect, type Locator, type Page } from '@playwright/test'
+
+const base = process.env.AICS_UI_AUDIT_URL || 'http://127.0.0.1:3000'
+const routes = ['/', '/scene-explorer', '/popular-scenes', '/prompt-builder', '/video-studio', '/chat', '/showcase', '/gallery', '/character', '/style', '/lora', '/scene-manager', '/color-script', '/scenario', '/companion', '/companion-chat', '/control']
+
+async function open(page: Page, route: string, theme: string, width: number, height = 640) {
+  await page.setViewportSize({ width, height })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+  await page.goto(base + route, { waitUntil: 'domcontentloaded' })
+  await expect(page.locator('h1').first()).toBeVisible()
+}
+
+async function contrast(locator: Locator, pseudo: string | null = null) {
+  return locator.evaluate((element, pseudo) => {
+    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1
+    const context = canvas.getContext('2d', { willReadFrequently: true })!
+    const rgb = (color: string) => {
+      context.clearRect(0, 0, 1, 1); context.fillStyle = color; context.fillRect(0, 0, 1, 1)
+      const values = [...context.getImageData(0, 0, 1, 1).data]; values[3] /= 255; return values
+    }
+    const blend = (a: number[], b: number[]) => a.slice(0, 3).map((v, i) => v * a[3] + b[i] * (1 - a[3]))
+    const luminance = (a: number[]) => a.slice(0, 3).map(v => {
+      v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4
+    }).reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0)
+    const layers: number[][] = []
+    let node: Element | null = element
+    while (node) {
+      const style = getComputedStyle(node)
+      if (style.backgroundImage !== 'none') throw new Error('Image backgrounds need visual review')
+      const value = rgb(style.backgroundColor); layers.push(value)
+      if (value[3] >= .999) break
+      node = node.parentElement
+    }
+    let background = [255, 255, 255]
+    for (let i = layers.length - 1; i >= 0; i--) background = blend(layers[i], background)
+    const color = rgb(getComputedStyle(element, pseudo).color)
+    const a = luminance(blend(color, background)), b = luminance(background)
+    return (Math.max(a, b) + .05) / (Math.min(a, b) + .05)
+  }, pseudo)
+}
+
+for (const theme of ['dark', 'light']) {
+  for (const width of [1440, 768, 390]) {
+    for (const route of routes) {
+      test(`layout ${theme} ${width} ${route}`, async ({ page }) => {
+        const errors: string[] = []
+        page.on('pageerror', error => errors.push(error.message))
+        await open(page, route, theme, width)
+        await page.waitForTimeout(600)
+        expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+        expect(errors).toEqual([])
+      })
+    }
+  }
+
+  for (const width of [1024, 390]) {
+    test(`material and inspector do not overlap ${theme} ${width}`, async ({ page }) => {
+      await open(page, '/prompt-builder', theme, width)
+      await page.getByRole('button', { name: '专家模式', exact: true }).click()
+      await page.locator('#inspector-tab-prompt').click()
+      const material = (await page.locator('#drawing-materials').boundingBox())!
+      const inspector = (await page.locator('.director-inspector').boundingBox())!
+      const overlapWidth = Math.min(material.x + material.width, inspector.x + inspector.width) - Math.max(material.x, inspector.x)
+      const overlapHeight = Math.min(material.y + material.height, inspector.y + inspector.height) - Math.max(material.y, inspector.y)
+      expect(overlapWidth <= 1 || overlapHeight <= 1).toBe(true)
+      await page.locator('.trait-chip').first().click({ trial: true })
+    })
+  }
+
+  test(`toast remains dismissible without covering startup ${theme}`, async ({ page }) => {
+    await open(page, '/prompt-builder', theme, 768)
+    await expect(page.locator('.api-status .badge')).toBeVisible()
+    await page.waitForTimeout(900)
+    await expect(page.locator('.toast-item')).toHaveCount(0)
+    await page.getByRole('button', { name: '专家模式', exact: true }).click()
+    await page.locator('.engine-switch button').nth(2).click()
+    await expect(page.locator('.toast-item')).toHaveCount(1)
+    await page.locator('.toast-close').click()
+    await expect(page.locator('.toast-item')).toHaveCount(0)
+  })
+
+  test(`rating badges retain AA contrast ${theme}`, async ({ page }) => {
+    await open(page, '/scene-explorer', theme, 1440)
+    await expect(page.locator('.sc').first()).toBeVisible()
+    // Test the actual shared badge rules independently of the current filter pool.
+    await page.evaluate(() => {
+      const host = document.createElement('div'); host.className = 'sc'; host.id = 'rating-audit'
+      host.innerHTML = '<span class="sc-badge sc-rating r15">R15</span><span class="sc-badge sc-rating r18">R18</span>'
+      document.body.append(host)
+    })
+    expect(await contrast(page.locator('#rating-audit .r15'))).toBeGreaterThanOrEqual(4.5)
+    expect(await contrast(page.locator('#rating-audit .r18'))).toBeGreaterThanOrEqual(4.5)
+  })
+
+  test(`companion settings are above portrait controls ${theme}`, async ({ page }) => {
+    await open(page, '/companion', theme, 390)
+    await page.getByRole('button', { name: '设置', exact: true }).click()
+    const popover = page.locator('.companion-settings-popover')
+    await expect(popover).toBeVisible()
+    await popover.locator('input').first().click({ trial: true })
+    expect(await contrast(page.locator('.companion-input'))).toBeGreaterThanOrEqual(4.5)
+    expect(await contrast(page.locator('.companion-send'))).toBeGreaterThanOrEqual(4.5)
+    await expect(popover.getByText('完整房间（聊天）', { exact: true })).toHaveCount(1)
+    await popover.getByRole('button', { name: '打开完整工作台', exact: true }).click()
+    await expect(page).toHaveURL(/\/prompt-builder$/)
+  })
+
+  test(`inpaint controls remain readable and reachable ${theme}`, async ({ page }) => {
+    await open(page, '/prompt-builder', theme, 390)
+    await page.getByRole('button', { name: '导入图片换装', exact: true }).click()
+    const modal = page.getByRole('dialog', { name: '智能局部换装', exact: true })
+    await expect(modal).toBeVisible()
+    expect(await contrast(modal.locator('.dropzone-hint'))).toBeGreaterThanOrEqual(4.5)
+    await modal.locator('.mask-mode-switch button').first().click()
+    expect(await contrast(modal.locator('.mask-mode-switch button.active'))).toBeGreaterThanOrEqual(4.5)
+    expect(await contrast(modal.locator('.prompt-textarea').first(), '::placeholder')).toBeGreaterThanOrEqual(4.5)
+    await modal.locator('.preset-card:not(.is-nsfw)').first().click()
+    expect(await contrast(modal.locator('.preset-card.active'))).toBeGreaterThanOrEqual(4.5)
+    await modal.getByRole('button', { name: '关闭', exact: true }).click()
+    await expect(modal).not.toBeVisible()
+  })
+}

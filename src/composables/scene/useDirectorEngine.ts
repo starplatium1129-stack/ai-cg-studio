@@ -98,7 +98,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     return resolveDrawCapabilities(engine).dualCharacter
   }
 
-  function setDrawEngine(v: DrawEngine) {
+  function setDrawEngine(v: DrawEngine, options: { silent?: boolean } = {}) {
     if (v === 'sd' && pb.isPopular) {
       flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2，请保留 Comfy 引擎')
       return
@@ -122,7 +122,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
       syncAnimaCharacter(pb.char)
       void refreshAnimaBackend()
     }
-    flash(v === 'anima'
+    if (!options.silent) flash(v === 'anima'
       ? (pb.isPopular ? '已切换到 Anima Aesthetic（无 LoRA 热门角色模式）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
       : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
   }

@@ -72,6 +72,8 @@ interface DragSession {
 let activeDrag: DragSession | null = null
 
 function onPointerDown(e: PointerEvent, id: number) {
+  // 按钮保留自己的点击目标；父容器捕获指针会把 click 重定向到提示条。
+  if ((e.target as Element).closest('button, a, input, select, textarea')) return
   const el = e.currentTarget as HTMLElement
   activeDrag = {
     id,
@@ -160,13 +162,17 @@ function onToastLeave(el: Element, done: () => void) {
 .toast-stack {
   position: fixed;
   bottom: var(--s-6);
-  left: 50%;
-  transform: translateX(-50%);
+  right: var(--s-4);
+  left: auto;
+  width: min(360px, calc(100vw - 2 * var(--s-4)));
+  max-height: min(40dvh, 320px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   /* 走 z 阶梯。9999 会盖住 --z-skip(500) 的跳转链接 */
   z-index: var(--z-toast);
   display: flex;
   flex-direction: column-reverse;
-  align-items: center;
+  align-items: stretch;
   gap: var(--s-2);
   pointer-events: none;
 }
@@ -200,8 +206,10 @@ function onToastLeave(el: Element, done: () => void) {
 }
 
 .toast-icon { display:grid; place-items:center; font-size: 1em; flex-shrink: 0; }
-.toast-msg  { flex: 1; }
+.toast-msg  { flex: 1; min-width: 0; line-height: var(--lh-label); }
 .toast-action {
+  max-width: 45%;
+  white-space: normal;
   flex-shrink: 0;
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border-soft));
   background: color-mix(in srgb, var(--accent) 14%, transparent);
@@ -219,7 +227,8 @@ function onToastLeave(el: Element, done: () => void) {
   border-color: color-mix(in srgb, var(--accent) 65%, var(--border-soft));
 }
 .toast-action:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.toast-close { display:grid; place-items:center; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:var(--s-1); font-size:.9em; line-height:var(--lh-flush); }
+.toast-close { display:grid; place-items:center; min-width:28px; min-height:28px; flex-shrink:0; background:none; border:none; color:var(--text-secondary); cursor:pointer; padding:var(--s-1); font-size:.9em; line-height:var(--lh-flush); }
+.toast-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
 
 /* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
    (原 token 是给色块/描边调的,浅色主题下当图标只有 1.9–2.6:1) */

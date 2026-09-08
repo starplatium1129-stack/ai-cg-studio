@@ -24,7 +24,7 @@ export interface UseDirectorPopularInput {
   pb: PromptBuilderStore
   sd: SDGenerate
   drawEngine: Readonly<Ref<DrawEngine>>
-  setDrawEngine: (engine: DrawEngine) => void
+  setDrawEngine: (engine: DrawEngine, options?: { silent?: boolean }) => void
   applyRecommendedSize: (size: string) => void
   generationBusy: Readonly<Ref<boolean>>
   animaState: AnimaSession['state']
@@ -220,7 +220,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       && selectedModel.includes(route.modelId)
       && (route.engine === 'sd' || route.engine === 'krea2' || animaState.value.loraId === route.loraId)
     if (alreadyApplied) return
-    if (route.engine !== drawEngine.value) setDrawEngine(route.engine)
+    if (route.engine !== drawEngine.value) setDrawEngine(route.engine, { silent: options.silent })
     if (route.engine === 'sd') {
       const model = sd.models.value.find(item => item.includes(route.modelId))
       if (model) {

@@ -249,6 +249,7 @@ html.companion-mode body {
    桌宠舞台：立绘 / 场景层 / 背景氛围
   ============================================================ */
 .companion-page .companion-stage {
+  isolation: isolate;
   position: relative;
   height: calc(100dvh - 78px);
   /* 同上：死值下限在矮窗里会把底部内容顶出视口 */
@@ -1530,7 +1531,7 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-page .companion-reminder-bubble > span {
   display: block;
   margin-bottom: 2px;
-  color: var(--character-accent);
+  color: var(--accent);
   font: 700 var(--fs-mono-xs) var(--font-mono);
 }
 
@@ -1880,8 +1881,8 @@ html.companion-immersive .companion-page {
 .companion-page .companion-settings-btn:hover,
 .companion-page .companion-settings-btn:focus-visible,
 .companion-page .companion-settings-btn[aria-expanded="true"] {
-  border-color: var(--character-accent);
-  color: var(--character-accent);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* —— 设置弹层（毛玻璃，悬于顶栏下方右侧） —— */
@@ -1899,7 +1900,7 @@ html.companion-immersive .companion-page {
   padding: var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-lg);
-  background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
+  background: var(--bg-surface);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
   backdrop-filter: blur(18px) saturate(1.25);
   box-shadow: var(--shadow-lg);
@@ -1955,11 +1956,17 @@ html.companion-immersive .companion-page {
   padding: var(--s-3);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-lg);
-  background: color-mix(in srgb, var(--bg-deep) 45%, transparent);
+  background: var(--bg-surface);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
   box-shadow: var(--shadow-md);
 }
+.companion-page .companion-composer .companion-input { color: var(--text-primary); background: var(--bg-deep); border-color: var(--border-soft); }
+.companion-page .companion-composer .companion-input::placeholder { color: var(--text-muted); }
+.companion-page .companion-composer .companion-input:focus { background: var(--bg-elevated); border-color: var(--accent); }
+.companion-page .companion-send { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
+.companion-page .companion-send:disabled { opacity: 1; background: var(--bg-elevated); color: var(--text-disabled); border-color: var(--border-soft); }
+
 .companion-page .companion-composer-meta {
   display: flex;
   align-items: center;
@@ -2283,6 +2290,7 @@ html:has(.companion-chat-window) body {
   color: var(--character-accent);
 }
 .companion-chat-title {
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2788,5 +2796,3 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
 }
 .companion-float-reminder[data-kind="event"] { border-style: dashed; cursor: default; }
 .companion-float-reminder.companion-reminder-link { cursor: pointer; }
-
-

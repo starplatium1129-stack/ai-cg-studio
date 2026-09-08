@@ -3,7 +3,7 @@
     <header class="desktop-titlebar companion-chat-titlebar">
       <div class="companion-chat-identity">
         <ArchiveIcon name="chat" class="companion-chat-brand-icon" />
-        <span class="companion-chat-title">与{{ currentCharacter.name }}聊天</span>
+        <h1 class="companion-chat-title">与{{ currentCharacter.name }}聊天</h1>
       </div>
       <div class="titlebar-controls">
         <div class="companion-chat-char-switch" aria-label="切换角色">

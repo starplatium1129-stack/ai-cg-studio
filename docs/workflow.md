@@ -62,6 +62,8 @@
 | check:popular / check:anima-routes / check:frontend | 热门、Anima 接口与前端单测 |
 | test:contract / test:e2e:critical | 契约套件与关键浏览器回归 |
 
+关键浏览器回归包含 `ui-layout.spec.ts` 的双主题/多尺寸布局与可读性检查。独立 UI 预览可用 `AICS_UI_AUDIT_URL` 指向隔离服务；默认检查本机 3000，不依赖 networkidle 等待长轮询停止。
+
 预算包括路由 JS 140 KiB、CSS、入口与依赖闭包等，完整阈值见 check-bundle-budget.js。测试规模与路由数量以当次输出为准；历史 PASS 不能代替本次检查。
 
 ## 服务与桌面部署
