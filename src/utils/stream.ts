@@ -169,16 +169,25 @@ export async function parseNdjsonResponse(response: Response, onEvent: (event: C
     if (event.type === 'done') sawTerminal = true
     await onEvent(event)
   }
-  while (true) {
-    const result = await reader.read()
-    buffer += decoder.decode(result.value || new Uint8Array(), { stream: !result.done })
-    const lines = buffer.split('\n'); buffer = lines.pop()!
-    for (const line of lines) await consume(line)
-    if (result.done) break
+  try {
+    while (!sawTerminal) {
+      const result = await reader.read()
+      buffer += decoder.decode(result.value || new Uint8Array(), { stream: !result.done })
+      const lines = buffer.split('\n'); buffer = lines.pop()!
+      for (const line of lines) {
+        await consume(line)
+        if (sawTerminal) break
+      }
+      if (result.done) break
+    }
+    buffer += decoder.decode()
+    if (!sawTerminal && buffer.trim()) await consume(buffer)
+    if (!sawTerminal) throw new Error('聊天流意外中断（未收到完成事件）')
+  } finally {
+    // 完成事件或消费失败后立即释放连接，不等待服务端继续关闭流。
+    void reader.cancel().catch(() => {})
+    reader.releaseLock()
   }
-  buffer += decoder.decode()
-  if (buffer.trim()) await consume(buffer)
-  if (!sawTerminal) throw new Error('聊天流意外中断（未收到完成事件）')
 }
 
 export function isAbortError(error: unknown): boolean {

@@ -454,6 +454,30 @@ test('flow 3d · 聊天中断：停止后已生成的片段保留并标记', asy
   await expect(page.locator('.message.assistant.streaming')).toHaveCount(0);
 });
 
+for (const theme of ['dark', 'light']) {
+  test(`chat recovery ${theme} · 断线保留回复并能继续发送`, async ({ page }) => {
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme);
+    await page.goto('/chat');
+    await useLocalChat(page);
+    await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
+    // 故障注入只覆盖前端断流恢复；其余 flow 3 用例继续验证真实网关中继。
+    await page.route('**/api/chat', route => route.fulfill({
+      contentType: 'application/x-ndjson',
+      body: JSON.stringify({ type: 'token', content: '这段回复需要保留' }) + '\n',
+    }));
+    await page.locator('.chat-input').fill('请回复');
+    await page.locator('.send-btn').click();
+    await expect(page.locator('.chat-error')).toContainText('意外中断');
+    await expect(page.locator('.message.assistant .message-bubble').last()).toContainText('这段回复需要保留');
+    await page.reload();
+    await expect(page.locator('.message.assistant .message-bubble').last()).toContainText('这段回复需要保留');
+    await page.unroute('**/api/chat');
+    await page.locator('.chat-input').fill('继续聊');
+    await page.locator('.send-btn').click();
+    await expect(page.locator('.message.assistant .message-bubble').last()).toContainText('今天也辛苦了', { timeout: 15_000 });
+  });
+}
+
 test('flow 3e · 情绪标签协议：标签剥离不进展示/历史，显式驱动情绪', async ({ page, request }) => {
   const errors = collectRuntimeErrors(page);
   // 逐字流式延迟：给"流式期间协议情绪生效"留出断言窗口（回合结束会复位 neutral）

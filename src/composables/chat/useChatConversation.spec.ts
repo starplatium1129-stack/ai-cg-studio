@@ -1,0 +1,127 @@
+import { computed, ref } from 'vue'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { CHARACTERS } from '@/config/characters'
+import { useChatConversation } from './useChatConversation'
+
+vi.mock('@/composables/useCompanionAffection', () => ({ useCompanionAffection: () => ({ addScore: vi.fn() }) }))
+
+function stream(events: object[], close = true) {
+  return new Response(new ReadableStream({ start(controller) {
+    controller.enqueue(new TextEncoder().encode(events.map(event => JSON.stringify(event)).join('\n') + '\n'))
+    if (close) controller.close()
+  } }))
+}
+function setup() {
+  const messages: Array<{ role: string; content: string; stopped: boolean }> = []
+  const busy = ref(false)
+  const options = {
+    storage: { messages: () => messages, trim: vi.fn(), save: vi.fn(), setDraft: vi.fn(), setApiSettings: vi.fn(), setModel: vi.fn() },
+    voice: { ensureAudioContext: vi.fn(), startTurn: vi.fn(), append: vi.fn(), finishTurn: vi.fn(), stop: vi.fn(), isActive: () => false },
+    activeChar: ref('nene'), currentCharacter: computed(() => CHARACTERS.nene), busy,
+    chatReady: computed(() => true), chatProvider: ref('api'), currentModel: ref('gpt-4'),
+    apiBaseUrl: ref('http://localhost:1234/v1'), apiModel: ref('gpt-4'), apiKey: ref('test'),
+    webSearchEnabled: ref(false), useHostConfig: ref(false), companionTools: ref(true),
+    reasoning: ref('off'), userProfile: ref({}), recallMemories: () => [],
+    setBusy: (value: boolean) => { busy.value = value }, onError: vi.fn(), nearBottom: () => false, scrollBottom: vi.fn(),
+  }
+  const conversation = useChatConversation(options as unknown as Parameters<typeof useChatConversation>[0])
+  return { conversation, options, messages, busy }
+}
+afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); delete window.companionDesktop })
+
+describe('chat recovery and tool lifecycle', () => {
+  it('preserves received text when the connection ends unexpectedly', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(stream([{ type: 'token', content: '已经收到的回复' }])))
+    const { conversation, messages, options, busy } = setup()
+    await conversation.sendMessage('你好')
+    expect(messages.at(-1)).toMatchObject({ content: '已经收到的回复', stopped: true })
+    expect(options.onError).toHaveBeenLastCalledWith(expect.stringContaining('意外中断'))
+    expect(busy.value).toBe(false)
+  })
+
+  it('cancels a pending native tool and never starts the next tool or chat round', async () => {
+    const runTool = vi.fn(() => new Promise<{ ok: boolean; output: string }>(() => {}))
+    window.companionDesktop = { runTool } as unknown as NonNullable<Window['companionDesktop']>
+    const fetchMock = vi.fn().mockResolvedValue(stream([
+      { type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{}' },
+      { type: 'tool-call', id: 'two', name: 'read_image', arguments: '{}' }, { type: 'done' },
+    ]))
+    vi.stubGlobal('fetch', fetchMock)
+    const { conversation, busy } = setup()
+    const pending = conversation.sendMessage('看一下屏幕')
+    await vi.waitFor(() => expect(runTool).toHaveBeenCalledTimes(1))
+    conversation.stopEverything()
+    await pending
+    expect(busy.value).toBe(false)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(runTool).toHaveBeenCalledTimes(1)
+  })
+
+  it('sends captured screen pixels to the next model request', async () => {
+    const image = 'data:image/png;base64,aGVsbG8='
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(stream([{ type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{}' }, { type: 'done' }]))
+      .mockResolvedValueOnce(Response.json({ ok: true, output: '截图完成', imageDataUrl: image }))
+      .mockResolvedValueOnce(stream([{ type: 'token', content: '看到了' }, { type: 'done' }]))
+    vi.stubGlobal('fetch', fetchMock)
+    const { conversation } = setup()
+    await conversation.sendMessage('看一下屏幕')
+    const body = JSON.parse(fetchMock.mock.calls[2][1].body)
+    expect(body.messages.at(-1).content).toContainEqual({ type: 'image_url', image_url: { url: image } })
+  })
+
+  it('returns invalid tool arguments as an error without executing the tool', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(stream([{ type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{bad' }, { type: 'done' }]))
+      .mockResolvedValueOnce(stream([{ type: 'token', content: '参数错误' }, { type: 'done' }]))
+    vi.stubGlobal('fetch', fetchMock)
+    const { conversation } = setup()
+    await conversation.sendMessage('看一下屏幕')
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(JSON.parse(fetchMock.mock.calls[1][1].body).messages.at(-1).content).toContain('有效 JSON')
+  })
+
+  it('does not resurrect a sent draft from the debounce timer', async () => {
+    vi.useFakeTimers()
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(stream([{ type: 'token', content: '你好' }, { type: 'done' }])))
+    const { conversation, options } = setup()
+    conversation.inputText.value = '草稿'
+    conversation.onInputChange()
+    await conversation.sendMessage()
+    await vi.advanceTimersByTimeAsync(300)
+    expect(options.storage.setDraft).toHaveBeenLastCalledWith('nene', '')
+  })
+
+  it('aborts a gateway tool request and prevents subsequent operations', async () => {
+    let toolSignal: AbortSignal | undefined
+    const fetchMock = vi.fn().mockResolvedValueOnce(stream([
+      { type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{}' }, { type: 'done' },
+    ])).mockImplementationOnce((_url, init) => {
+      toolSignal = init.signal
+      return new Promise((_resolve, reject) => toolSignal!.addEventListener('abort', () => reject(toolSignal!.reason)))
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    const { conversation, busy } = setup()
+    const pending = conversation.sendMessage('看屏幕')
+    await vi.waitFor(() => expect(toolSignal).toBeDefined())
+    conversation.stopEverything()
+    await pending
+    expect(toolSignal!.aborted).toBe(true)
+    expect(busy.value).toBe(false)
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
+
+  it('reports the tool round limit rather than presenting an empty successful reply', async () => {
+    const runTool = vi.fn().mockResolvedValue({ ok: true, output: '完成' })
+    window.companionDesktop = { runTool } as unknown as NonNullable<Window['companionDesktop']>
+    vi.stubGlobal('fetch', vi.fn().mockImplementation(() => Promise.resolve(stream([
+      { type: 'tool-call', id: 'one', name: 'capture_screen', arguments: '{}' }, { type: 'done' },
+    ]))))
+    const { conversation, options, messages } = setup()
+    await conversation.sendMessage('继续')
+    expect(runTool).toHaveBeenCalledTimes(4)
+    expect(options.onError).toHaveBeenLastCalledWith(expect.stringContaining('达到上限'))
+    expect(messages).toHaveLength(1)
+    expect(options.voice.finishTurn).not.toHaveBeenCalled()
+  })
+})

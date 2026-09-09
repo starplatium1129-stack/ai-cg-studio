@@ -25,6 +25,7 @@
 - [办公机工程债务治理](archive/audits/engineering-debt-2026-09-09.md)：页面拆分、任务恢复、测试门槛与本轮验收边界。
 - [六维补充审计](archive/audits/remaining-dimensions-2026-09-09.md)：安全、数据、性能、可访问性、失败恢复与供应链检查。
 - [网站体验审计](archive/audits/website-experience-2026-09-09.md)：九维体验评估、首页创作路径与上手指南优化、本轮验证和限制。
+- [聊天与桌宠闭环修复](archive/audits/chat-functional-recovery-2026-09-09.md)：工具取消、看屏回传、断线保留、草稿恢复与本轮验证边界。
 - [版本更新](releases/v1.5.10.md)：按发布版本保留的说明。
 - [暂缓提案](../plans/README.md)：未启动的专项提案。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)：面向使用者的静态手册。

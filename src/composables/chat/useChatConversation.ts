@@ -13,6 +13,7 @@ import { extractMoodTag } from '@/utils/moodTag'
 import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { useCompanionAffection } from '@/composables/useCompanionAffection'
+import { abortableTask } from '@/utils/abortableTask'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
 // 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
@@ -147,6 +148,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     messages.push(assistant)
     options.storage.save()
     if (customText === undefined) {
+      clearTimeout(draftTimer)
       inputText.value = ''
       options.storage.setDraft(characterId, '')
     }
@@ -235,26 +237,34 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   // ── Pipeline 步骤④：单个工具执行（fallible，异常由调用方转译为失败结果）──
-  async function executeToolCall(call: PendingToolCall, characterId: string): Promise<ToolCallResult> {
+  async function executeToolCall(call: PendingToolCall, characterId: string, signal: AbortSignal): Promise<ToolCallResult> {
+    signal.throwIfAborted()
     let parsedArgs: Record<string, unknown> = {}
     try {
       parsedArgs = JSON.parse(call.arguments || '{}')
     } catch {
-      parsedArgs = {}
+      return { ok: false, output: '工具参数不是有效 JSON，请修正后重试。' }
+    }
+    if (!parsedArgs || typeof parsedArgs !== 'object' || Array.isArray(parsedArgs)) {
+      return { ok: false, output: '工具参数必须是 JSON 对象。' }
     }
     let result: ToolCallResult
     if (window.companionDesktop) {
-      result = await window.companionDesktop.runTool(call.name, parsedArgs)
+      result = await abortableTask(() => window.companionDesktop!.runTool(call.name, parsedArgs), signal)
     } else {
       const res = await fetch('/api/desktop-tools', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal,
         // adultEnabled 是传输层授权信号（网关 fail-closed 双门的第二道）：
         // 仅本机直连视为已授权，与模型可控的 args 隔离。
         body: JSON.stringify({ name: call.name, args: parsedArgs, adultEnabled: isLocalStudioHost() }),
       })
       result = await res.json()
+      if (!res.ok) return { ok: false, output: String((result as unknown as { error?: string }).error || `工具请求失败（${res.status}）`) }
     }
+    signal.throwIfAborted()
+    result.output = typeof result.output === 'string' ? result.output : (result.ok ? '工具已完成。' : '工具执行失败，未返回详情。')
     if (call.name === 'generate_character_image' && result.ok) {
       const affection = useCompanionAffection()
       affection.addScore(characterId, 2, '生成画作')
@@ -361,6 +371,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         })
       }
       while (true) {
+        controller.signal.throwIfAborted()
         const hostMode = options.chatProvider.value === 'api' && options.useHostConfig.value
         const useVision = visionRound && options.chatProvider.value === 'api' && !hostMode
         visionRound = false
@@ -384,6 +395,7 @@ export function useChatConversation(options: ChatConversationOptions) {
 
         const toolCalls: PendingToolCall[] = []
         await parseNdjsonResponse(response, async event => {
+          controller.signal.throwIfAborted()
           watchdog.touch()
           if (event.type === 'meta' && event.model) {
             applyModelWriteback(event.model, hostMode, useVision)
@@ -406,8 +418,9 @@ export function useChatConversation(options: ChatConversationOptions) {
         })
 
         if (!toolCalls.length) break
+        if (!toolsEnabled) throw new Error('当前未启用桌宠工具，已停止执行。')
         toolRounds += 1
-        if (toolRounds > MAX_TOOL_ROUNDS) break
+        if (toolRounds > MAX_TOOL_ROUNDS) throw new Error('本次工具调用已达到上限，已停止。请缩小任务范围后继续。')
         roundMessages.push({
           role: 'assistant',
           content: '',
@@ -419,22 +432,25 @@ export function useChatConversation(options: ChatConversationOptions) {
           })),
         })
         for (const call of toolCalls) {
+          controller.signal.throwIfAborted()
           watchdog.touch()
           options.onToolActivity?.(`正在执行 ${call.name}…`)
           let result: ToolCallResult
           try {
-            result = await executeToolCall(call, turn.characterId)
+            result = await executeToolCall(call, turn.characterId, controller.signal)
           } catch (error) {
+            if (controller.signal.aborted) throw error
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }
           }
+          controller.signal.throwIfAborted()
           roundMessages.push({ role: 'tool', tool_call_id: call.id, content: result.output.slice(0, 60000) })
           // read_image 成功时把图片作为多模态 user 消息附加，供视觉模型理解；
           // 下一轮自动切到本地 Gemini 视觉轮，看完成回到原聊天模型
-          if (call.name === 'read_image' && result.ok && result.imageDataUrl) {
+          if (['read_image', 'capture_screen'].includes(call.name) && result.ok && result.imageDataUrl) {
             roundMessages.push({
               role: 'user',
               content: [
-                { type: 'text', text: '（这是 read_image 返回的图片，请结合它回答）' },
+                { type: 'text', text: `（这是 ${call.name} 返回的图片，请结合它回答）` },
                 { type: 'image_url', image_url: { url: result.imageDataUrl } },
               ],
             })
@@ -450,21 +466,22 @@ export function useChatConversation(options: ChatConversationOptions) {
       replyAnnouncement.value = `${options.currentCharacter.value.name}说：${turn.assistant.content}`
       options.voice.finishTurn()
     } catch (error) {
+      // 中断时保留已收到的内容，避免读到一半的回复突然消失。
+      turn.assistant.content = turn.assistant.content.trim()
+      turn.assistant.stopped = Boolean(turn.assistant.content)
+      if (!turn.assistant.content) {
+        const index = turn.messages.indexOf(turn.assistant)
+        if (index >= 0) turn.messages.splice(index, 1)
+      }
       if (isAbortError(error)) {
         if (watchdog.idleTimedOut) {
           // 超时中断：与用户主动停止不同，按失败处理并给出可理解的提示。
-          turn.messages.splice(turn.messages.indexOf(turn.assistant), 1)
           options.voice.stop({ preserveMessageAudio: true, silent: true })
           options.onError(watchdog.sawFirstEvent
             ? '对话长时间无响应，已中断，请重试。'
             : '对话等待超时（长时间未开始），请重试。')
-        } else {
-          turn.assistant.content = turn.assistant.content.trim()
-          turn.assistant.stopped = Boolean(turn.assistant.content)
-          if (!turn.assistant.content) turn.messages.splice(turn.messages.indexOf(turn.assistant), 1)
         }
       } else {
-        turn.messages.splice(turn.messages.indexOf(turn.assistant), 1)
         options.voice.stop({ preserveMessageAudio: true, silent: true })
         options.onError(streamErrorMessage(
           error,
