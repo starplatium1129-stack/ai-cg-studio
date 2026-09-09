@@ -11,6 +11,7 @@ it('cached-page task switches keep the latest identity even when old responses a
     signals.set(key, signal)
     return new Promise<string>(resolve => replies.set(key, resolve))
   }, apply, failed))
+  await nextTick()
   id.value = 'second'; await nextTick()
   replies.get('second')!('second result'); await nextTick()
   replies.get('first')!('late first result'); await nextTick()
@@ -28,9 +29,24 @@ it('leaving the page aborts selection and suppresses its late error', async () =
   scope.run(() => useBackendSelection(() => id.value, () => undefined, (_key, value) => {
     signal = value; return new Promise((_resolve, fail) => { reject = fail })
   }, apply, failed))
+  await nextTick()
   id.value = ''; await nextTick()
   expect(signal.aborted).toBe(true)
   reject(new Error('aborted')); await nextTick()
   expect(failed).not.toHaveBeenCalled()
   scope.stop()
+})
+
+it('the same task can retry after failure and concurrent retries share one request', async () => {
+  const fetch = vi.fn().mockRejectedValueOnce(new Error('offline')).mockResolvedValue('recovered')
+  const apply = vi.fn(), failed = vi.fn(), scope = effectScope()
+  const selection = scope.run(() => useBackendSelection(() => 'one', () => undefined, fetch, apply, failed))!
+  await selection.retry()
+  expect(failed).toHaveBeenCalledOnce()
+  await Promise.all([selection.retry(), selection.retry()])
+  expect(fetch).toHaveBeenCalledTimes(2)
+  expect(apply).toHaveBeenCalledWith('recovered')
+  scope.stop()
+  await selection.retry()
+  expect(fetch).toHaveBeenCalledTimes(2)
 })

@@ -94,7 +94,7 @@ assert(
   'useFocusTrap must implement a real Tab cycle',
 );
 assert(
-  /returnFocus\.value\?\.focus\?\./.test(trap),
+  /returnFocus\.value(?:\?\.)?\.?focus(?:\?\.)?\(/.test(trap),
   'useFocusTrap must restore focus to the opener on close',
 );
 assert(

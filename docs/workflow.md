@@ -91,6 +91,8 @@
 
 无参考素材的办公机可沿用 CI 的 `AICS_REFERENCE_AUDIT_MODE=structure` 执行结构校验；报告必须注明该模式，不能据此声明参考 URL 或图片验收通过。主力机不设置该变量，继续核对实际素材文件。2026-09-09 工程治理范围与验证见[本轮记录](archive/audits/engineering-debt-2026-09-09.md)。
 
+每周 Dependency Audit 同时检查运行时与完整依赖树，高危/致命阻断，并保留 JSON 报告 14 天。中危告警须按实际调用路径评估，不能把流程通过理解为零漏洞；当前剩余项见[六维补充审计](archive/audits/remaining-dimensions-2026-09-09.md)。
+
 预算包括路由 JS 140 KiB、CSS、入口与依赖闭包等，完整阈值见 check-bundle-budget.js。测试规模与路由数量以当次输出为准；历史 PASS 不能代替本次检查。
 
 ## 服务与桌面部署

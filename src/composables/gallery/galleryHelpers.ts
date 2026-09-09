@@ -3,6 +3,15 @@ import type { TrashEntry } from '@/storage/artworkRepository'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import type { PopularCharacter } from '@/utils/popularContent'
 
+export function characterName(value: string | undefined, item: ArtworkRecord | undefined, characters: PopularCharacter[]): string {
+  if (value === 'nene') return '绫地宁宁'
+  if (value === 'natsume') return '四季夏目'
+  if (value === 'triad' || value === 'both') return '宁宁与夏目'
+  const id = item?.characterId || value
+  const character = id ? characters.find(candidate => candidate.id === id) : undefined
+  return character?.displayName ?? (value || '—')
+}
+
 /**
  * 一条作品的检索文本。
  * 拼接场景名、角色、故事、所属项目、Prompt，用于展墙全文检索。

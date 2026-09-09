@@ -23,6 +23,7 @@
 - [研究与候选方案](research/README.md)：调研依据与待评估提案。
 - [历史记录](archive/README.md)：审计、批次、实验、故障与过期方案。
 - [办公机工程债务治理](archive/audits/engineering-debt-2026-09-09.md)：页面拆分、任务恢复、测试门槛与本轮验收边界。
+- [六维补充审计](archive/audits/remaining-dimensions-2026-09-09.md)：安全、数据、性能、可访问性、失败恢复与供应链检查。
 - [版本更新](releases/v1.5.10.md)：按发布版本保留的说明。
 - [暂缓提案](../plans/README.md)：未启动的专项提案。
 - [浏览器阅读入口](index.html)与[上手教程](getting-started.html)：面向使用者的静态手册。

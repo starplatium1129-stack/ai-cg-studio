@@ -10,7 +10,11 @@ export interface GalleryProject {
 const HISTORY_KEY = ARTWORK_HISTORY_KV_KEY;
 const PROJECT_KEY = ARTWORK_PROJECTS_KV_KEY;
 const LEGACY_PROJECT_KEY = 'aics_projects';
+const loadVersions = new WeakMap<object, number>();
 export async function loadGalleryStorageAction({ galleryLoading, galleryError, history, projects }: Pick<ReturnType<typeof useGalleryWorkspace>, "galleryLoading" | "galleryError" | "history" | "projects">): Promise<void> {
+        const version = (loadVersions.get(history) || 0) + 1;
+        loadVersions.set(history, version);
+        const isCurrent = () => loadVersions.get(history) === version;
         galleryLoading.value = true;
         galleryError.value = '';
         try {
@@ -52,6 +56,7 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
                     localStorage.removeItem(LEGACY_PROJECT_KEY);
                 }
             }
+            if (!isCurrent()) return;
             history.value = parseArtworkRecords(historyRaw);
             projects.value = Array.isArray(projectRaw)
                 ? projectRaw.flatMap((item): GalleryProject[] => {
@@ -71,9 +76,9 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
                 : [];
         }
         catch (e) {
-            galleryError.value = e instanceof Error ? e.message : String(e);
+            if (isCurrent()) galleryError.value = e instanceof Error ? e.message : String(e);
         }
         finally {
-            galleryLoading.value = false;
+            if (isCurrent()) galleryLoading.value = false;
         }
     }

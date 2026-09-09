@@ -2,8 +2,8 @@
 var { normalizeMultimodalContent } = require('./chat-content');
 
 var express = require('express');
-var fs = require('fs');
-var path = require('path');
+
+
 var StringDecoder = require('string_decoder').StringDecoder;
 var httpClient = require('../services/http-client');
 var security = require('../server/security');
@@ -15,46 +15,7 @@ var createOllamaService = require('../services/ollama-service').createOllamaServ
 // ── 站主 API 配置托管 ──────────────────────────────────────────────
 // 公网分享时访客的浏览器里没有主人的密钥；这套配置让访客直接使用
 // 站主配好的 API，而 GET 接口永远不回传 apiKey。
-function chatHostConfigPath(config) {
-  return path.join(config.RUNTIME.state, 'chat_api_config.json');
-}
-
-// 托管配置读取缓存（2026-08-21 性能审计 #9）：每个 /api/chat 访客请求都要读这份
-// 小 JSON；按 (mtimeMs,size) 失效，写/删路径主动失效，命中时零磁盘 IO。
-var hostConfigCache = { mtimeMs:-1, size:-1, value:null };
-
-function readHostConfig(config) {
-  var filePath = chatHostConfigPath(config);
-  var stat = null;
-  try { stat = fs.statSync(filePath); } catch (error) { return null; }
-  if (hostConfigCache.value && hostConfigCache.mtimeMs === stat.mtimeMs
-    && hostConfigCache.size === stat.size) {
-    return Object.assign({}, hostConfigCache.value);
-  }
-  try {
-    var parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    var baseUrl = String(parsed && parsed.baseUrl || '').trim();
-    var model = String(parsed && parsed.model || '').trim();
-    var apiKey = String(parsed && parsed.apiKey || '').trim();
-    if (!baseUrl || !model) return null;
-    // 旧格式没有 pathname：用 baseUrl 重拼一次
-    var pathname = typeof parsed.pathname === 'string' && parsed.pathname
-      ? parsed.pathname
-      : new URL('chat/completions', baseUrl.replace(/\/+$/, '') + '/').pathname;
-    var result = { baseUrl:baseUrl, pathname:pathname, model:model, apiKey:apiKey };
-    hostConfigCache = { mtimeMs:stat.mtimeMs, size:stat.size, value:result };
-    return Object.assign({}, result);
-  } catch (error) {
-    // 半写状态/损坏文件不缓存，下次请求重读
-    return null;
-  }
-}
-
-function writeHostConfig(config, value) {
-  fs.mkdirSync(config.RUNTIME.state, { recursive:true });
-  fs.writeFileSync(chatHostConfigPath(config), JSON.stringify(value, null, 2), { mode:0o600 });
-  hostConfigCache = { mtimeMs:-1, size:-1, value:null };
-}
+var { readHostConfig, writeHostConfig, deleteHostConfig } = require('../server/chat-host-config');
 
 function hostConfigPublic(config) {
   var stored = readHostConfig(config);
@@ -559,10 +520,7 @@ function createChatRouter(config, dependencies) {
   });
 
   router.delete('/api/chat-provider/host-config', security.localOnly, function (req, res) {
-    try {
-      fs.unlinkSync(chatHostConfigPath(config));
-    } catch (error) { /* 不存在也视为成功 */ }
-    hostConfigCache = { mtimeMs:-1, size:-1, value:null };
+    deleteHostConfig(config);
     envelope.ok(res, { configured:false });
   });
 

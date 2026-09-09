@@ -14,6 +14,32 @@ beforeEach(() => {
 })
 const context = () => ({ galleryLoading: ref(false), galleryError: ref(''), history: ref<ArtworkRecord[]>([{ id: 'existing', prompt: 'keep me' } as ArtworkRecord]), projects: ref<GalleryProject[]>([]) })
 
+it('an older load cannot overwrite a newer completed refresh', async () => {
+  const ctx = context()
+  let release!: (value: unknown) => void
+  storage.get.mockImplementationOnce(() => new Promise(resolve => { release = resolve }))
+    .mockImplementation(key => Promise.resolve(key === ARTWORK_HISTORY_KV_KEY ? [{ id: 'new', prompt: 'new' }] : []))
+  const old = loadGalleryStorageAction(ctx)
+  await Promise.resolve()
+  await loadGalleryStorageAction(ctx)
+  release([{ id: 'old', prompt: 'old' }]); await old
+  expect(ctx.history.value[0].id).toBe('new')
+})
+
+it('completion of an old request cannot clear the loading indicator of a newer request', async () => {
+  const ctx = context()
+  let oldReply!: (value: unknown) => void, newReply!: (value: unknown) => void
+  storage.get.mockImplementationOnce(() => new Promise(resolve => { oldReply = resolve }))
+    .mockImplementationOnce(() => new Promise(resolve => { newReply = resolve })).mockResolvedValue([])
+  const old = loadGalleryStorageAction(ctx); await Promise.resolve()
+  const latest = loadGalleryStorageAction(ctx); await Promise.resolve()
+  oldReply([]); await old
+  expect(ctx.galleryLoading.value).toBe(true)
+  newReply([{ id: 'latest', prompt: 'latest' }]); await latest
+  expect(ctx.galleryLoading.value).toBe(false)
+  expect(ctx.history.value[0].id).toBe('latest')
+})
+
 it('read failure preserves displayed artwork and the next load can recover', async () => {
   const ctx = context()
   storage.get.mockRejectedValueOnce(new Error('temporarily unavailable'))

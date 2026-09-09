@@ -1,6 +1,38 @@
 import { expect, test, type Page } from '@playwright/test'
 import MOCK_PORTS from './mock-ports.json'
 
+test('large gallery keeps its initial render bounded and searches the complete archive', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_pb_history', JSON.stringify(Array.from({ length: 3000 }, (_, index) => ({
+      id: 'scale-' + index, sceneTitle: '规模条目 ' + index, prompt: 'archive performance fixture', timestamp: index + 1000,
+    }))))
+  })
+  await page.goto('/gallery')
+  await expect(page.locator('.gallery-count')).toContainText('3000')
+  await expect(page.locator('.artwork')).toHaveCount(60)
+  await page.getByRole('searchbox', { name: '搜索作品' }).fill('规模条目 2999')
+  await expect(page.locator('.artwork')).toHaveCount(1)
+  await expect(page.locator('.artwork')).toContainText('规模条目 2999')
+})
+
+test('video task query retries from the workspace without navigating away', async ({ page }) => {
+  let recovered = false, requests = 0
+  await page.route('**/api/video/jobs/retry-query', route => {
+    requests += 1
+    return recovered
+      ? route.fulfill({ json: { ok: true, job: { id: 'retry-query', modelId: 'minimax-h3', prompt: 'A quiet afternoon', createdAt: 1, status: 'cancelled', progress: 0, resultAvailable: false, resultUrl: null, error: null } } })
+      : route.fulfill({ status: 503, json: { ok: false, error: '任务查询暂时失败' } })
+  })
+  await page.goto('/video-studio?job=retry-query')
+  await expect(page.locator('.video-inline-message.error')).toContainText('任务查询暂时失败')
+  const before = requests
+  recovered = true
+  await page.getByRole('button', { name: '重新检测', exact: true }).click()
+  await expect(page.locator('.video-job-state')).toHaveAttribute('data-state', 'cancelled')
+  expect(requests).toBe(before + 1)
+  await expect(page).toHaveURL(/job=retry-query/)
+})
+
 async function mockDrawingStatus(page: Page) {
   for (const path of ['/api/anima/status', '/api/creative/status']) {
     const response = await page.request.get(`http://127.0.0.1:${MOCK_PORTS.gateway}${path}`)

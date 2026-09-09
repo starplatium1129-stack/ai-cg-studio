@@ -331,6 +331,7 @@ function schedulePoll() {
 
 
 async function loadStatus() {
+  void taskSelection.retry()
   statusLoading.value = true
   statusError.value = ''
   try {
@@ -465,7 +466,7 @@ watch(selectedMode, (mode) => {
 
 let activatedOnce = false
 
-useBackendSelection(
+const taskSelection = useBackendSelection(
   () => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '',
   () => job.value?.id,
   fetchVideoJob,

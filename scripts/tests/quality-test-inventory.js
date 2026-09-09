@@ -26,6 +26,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-blink-scheduler.js',
     'test-character-profiles.js',
     'test-chat-storage.js',
+    'test-chat-host-config.js',
     'test-companion-behavior.js',
     'test-companion-affection.js',
     'test-companion-vision.js',

@@ -1,8 +1,7 @@
 name: Dependency Audit
 
 # 每周依赖安全扫描（2026-08-28 审计 P1-13：门禁盲区补齐）。
-# 运行时依赖仅 12 个，审计面用 --omit=dev 聚焦真实供应链；audit-level=high
-# 让中等公告（单人本地部署威胁模型）不打扰主线，高危/致命才告警。
+# 运行时与完整依赖树都检查；高危/致命阻断，中危保留在 JSON 证据中。
 on:
   schedule:
     - cron: '0 3 * * 1' # 每周一 03:00 UTC（北京 11:00）
@@ -26,8 +25,18 @@ jobs:
           node-version: 24.18.0
           cache: npm
       - name: Install dependencies
+        id: install
         run: npm ci
       - name: Audit runtime dependencies
         run: npm audit --omit=dev --audit-level=high
-      - name: Audit full tree (report only)
-        run: npm audit --audit-level=high || true # dev 依赖公告只报告，不阻断
+      - name: Audit full dependency tree
+        if: always() && steps.install.outcome == 'success'
+        run: npm audit --json --audit-level=high > dependency-audit.json
+      - name: Preserve dependency audit evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: dependency-audit
+          path: dependency-audit.json
+          if-no-files-found: ignore
+          retention-days: 14

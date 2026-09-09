@@ -1,3 +1,4 @@
+import { characterName as resolveCharacterName } from './galleryHelpers';
 import { formatTrashTime,hiresLabel,modelName,loraName as resolveLoraName,sceneTitle as resolveSceneTitle,searchHaystack,trashPrompt,} from '@/composables/gallery/galleryHelpers';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { buildMasonryGroups,useMasonryColumns } from '@/composables/gallery/useMasonryWall';
@@ -244,21 +245,7 @@ export function useGalleryWorkspace() {
     function loraName(id: string | null | undefined) {
         return resolveLoraName(id, loras.value);
     }
-    function characterName(v: string | undefined, item?: ArtworkRecord) {
-        if (v === 'nene')
-            return '绫地宁宁';
-        if (v === 'natsume')
-            return '四季夏目';
-        if (v === 'triad' || v === 'both')
-            return '宁宁与夏目';
-        const popId = item?.characterId || v;
-        if (popId) {
-            const popChar = sceneStore.popularCharacters.find(c => c.id === popId);
-            if (popChar)
-                return popChar.displayName;
-        }
-        return v || '—';
-    }
+    function characterName(v: string | undefined, item?: ArtworkRecord) { return resolveCharacterName(v, item, sceneStore.popularCharacters); }
     /** 时间戳兜底：老记录可能把 timestamp 存成字符串，或干脆没有 */
     function stamp(item: ArtworkRecord): number { return artworkTimestamp(item); }
 
@@ -405,6 +392,7 @@ export function useGalleryWorkspace() {
         pumpCardQueue();
     }
     function pumpCardQueue() {
+        if (unmounted) { cardQueue.length = 0; queuedCardIds.clear(); return; }
         while (cardWorkers < CARD_CONCURRENCY && cardQueue.length) {
             const item = cardQueue.shift()!;
             cardWorkers += 1;
@@ -616,6 +604,7 @@ export function useGalleryWorkspace() {
         unmounted = false;
         document.addEventListener('keydown', onKeydown);
         await loadGalleryStorage();
+        compareFromRoute();
         // 回收站懒清理（2026-08-30 UX 审计 P0-8）：真删超期软删条目的图片与
         // 缩略图。不阻塞首屏，失败静默（下次挂载再试）。
         void artworkRepository.purgeExpiredTrash().catch(e => console.warn('[gallery] trash purge failed', e));
@@ -645,7 +634,9 @@ export function useGalleryWorkspace() {
      * 缓存期间不触发）——既修掉陈旧列表，又不丢 KeepAlive 的意义。
      * 列表若真有变化，watch(visible) 会自动补缩略图并重挂观察器。
      */
+    let activatedOnce = false;
     onActivated(() => {
+        if (!activatedOnce) { activatedOnce = true; return; }
         void loadGalleryStorage().then(compareFromRoute);
     });
     onUnmounted(() => {
