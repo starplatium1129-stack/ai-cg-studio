@@ -57,12 +57,18 @@ export function createLifecycleController(
    */
   const NATIVE_STOPPED_RETRY_LIMIT = 3
   let nativeStoppedRetries = 0
+  let nativeRetryTimer = 0
+  let entranceTimer = 0
+  let runtimeGeneration = 0
+  let finishPendingLoad: ((value: boolean) => void) | null = null
   function scheduleNativeStoppedRetry() {
     if (ctx.destroyed.value || !ctx.enabled.value) return
+    if (nativeRetryTimer) return
     if (nativeStoppedRetries >= NATIVE_STOPPED_RETRY_LIMIT) return
     nativeStoppedRetries += 1
     const delay = 1200 * nativeStoppedRetries
-    window.setTimeout(() => {
+    nativeRetryTimer = window.setTimeout(() => {
+      nativeRetryTimer = 0
       if (ctx.destroyed.value || !ctx.enabled.value || ctx.ready.value) return
       void retry()
     }, delay)
@@ -85,7 +91,9 @@ export function createLifecycleController(
       : findLive2DOutfit(options.outfit || ctx.outfit.value).id
     setState('checking', '检查 Live2D…')
     try {
-      ctx.catalog = readLive2DCatalog(await mediaStatusApi.getLive2DStatus())
+      const catalog = readLive2DCatalog(await mediaStatusApi.getLive2DStatus())
+      if (ctx.destroyed.value) return
+      ctx.catalog = catalog
       const selection = selectLive2DBackend(options.backendKind)
       ctx.backend = selection.backend
       ctx.backendKind.value = selection.effectiveKind
@@ -105,6 +113,7 @@ export function createLifecycleController(
         setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
       }
     } catch (e) {
+      if (ctx.destroyed.value) return
       fallback('Live2D 未就绪', errorMessage(e))
     }
   }
@@ -114,9 +123,11 @@ export function createLifecycleController(
   }
 
   async function setCharacter(char: string) {
+    if (ctx.destroyed.value) return
     ctx.character.value = char
     const info = modelInfo(char)
     if (!info?.available || !info?.modelUrl) {
+      destroyRuntime()
       setVisible(false)
       ctx.interactionHint.value = ''
       setState('static', '静态立绘', info?.source || '该角色暂无 Live2D 模型')
@@ -198,6 +209,9 @@ export function createLifecycleController(
         // 顺序反了会把刚创建的 canvas 一起清掉。库加载失败时旧模型也随之
         // 销毁并进入 fallback（原实现残留旧模型的行为不一致，一并修正）。
         destroyRuntime()
+        const generation = runtimeGeneration
+        const isCurrent = () => generation === runtimeGeneration && !ctx.destroyed.value
+          && ctx.enabled.value && char === ctx.character.value
         if (ctx.hostEl) ctx.hostEl.innerHTML = ''
         // 加载状态必须在 connect 之前显示：原生后端 setCharacter 在渲染线程
         // 加载模型与纹理可能耗时数秒，期间 UI 线程保持空闲，loading 立即可见。
@@ -212,6 +226,7 @@ export function createLifecycleController(
             character: char,
           })
         } catch (e) {
+          if (!isCurrent()) { ctx.loading = null; resolve(false); return }
           const message = errorMessage(e)
           // 原生 IPC、GPU 或模型初始化任一步失败，都回退浏览器后端再试一次。
           if (ctx.backendKind.value === 'native' && ctx.backend?.kind === 'native') {
@@ -230,7 +245,7 @@ export function createLifecycleController(
                 character: char,
               })
             } catch (e2) {
-              fallback('Live2D 初始化失败', errorMessage(e2))
+              if (isCurrent()) fallback('Live2D 初始化失败', errorMessage(e2))
               ctx.loading = null
               resolve(false); return
             }
@@ -240,7 +255,7 @@ export function createLifecycleController(
             resolve(false); return
           }
         }
-        if (ctx.destroyed.value || char !== ctx.character.value) {
+        if (!isCurrent()) {
           nextSession.destroy()
           ctx.loading = null
           resolve(false); return
@@ -250,11 +265,14 @@ export function createLifecycleController(
         let settled = false
         const finish = (v: boolean) => {
           if (settled) return; settled = true
+          finishPendingLoad = null
           clearTimeout(ctx.timers.load); ctx.loading = null; resolve(v)
         }
-        ctx.timers.load = window.setTimeout(() => { fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化'); finish(false) }, 20000)
+        finishPendingLoad = finish
+        ctx.timers.load = window.setTimeout(() => { destroyRuntime(); fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化') }, 20000)
         ctx.session.onModelLoaded((m: Live2DModelHandle) => {
-          if (ctx.destroyed.value || char !== ctx.character.value) { finish(false); return }
+          if (!isCurrent()) { finish(false); return }
+          if (settled) return
           ctx.model = m; ctx.loadedCharacter.value = char; ctx.ready.value = true
           // 模型重新加载成功 = 渲染已恢复（含自动重试路径），清零重试计数
           nativeStoppedRetries = 0
@@ -267,10 +285,12 @@ export function createLifecycleController(
           finish(true)
         })
         ctx.session.onModelError((e: Error) => {
+          if (!isCurrent()) return
           const detail = errorMessage(e)
           // 原生渲染线程停止：overlay 已销毁，模型不可用，必须提示并允许
           // 重试重新拉起线程（与"动作/换装失败但模型仍显示"的退化不同）。
           if (e.name === NATIVE_RENDER_STOPPED) {
+            destroyRuntime()
             setState('degraded', 'Live2D 渲染已停止', detail, true)
             scheduleNativeStoppedRetry()
             return
@@ -307,6 +327,7 @@ export function createLifecycleController(
     if (prefersReducedMotion()) return
     if (!ctx.model) return
     const motionFn = ctx.model.motion
+    const generation = runtimeGeneration
     if (typeof motionFn !== 'function') return
     // 浏览器路径：从 wl-live2d 的 motionManager.definitions 探测 Start 组
     // （原生后端由 Rust 接管入场动作，不会走到这里）。
@@ -315,12 +336,13 @@ export function createLifecycleController(
     // 因组内全部未就绪直接返回 false；这里重试直到登场动作真正启动。
     let attempts = 0
     const tryStart = () => {
-      if (attempts++ > 40 || ctx.destroyed.value || !ctx.model) return
+      if (attempts++ > 40 || generation !== runtimeGeneration || !ctx.enabled.value || ctx.destroyed.value || !ctx.model) return
       const result = motionFn.call(ctx.model, ENTRANCE_GROUP, undefined, 2)
       const started = isCatchable(result)
         ? result.then((v: unknown) => v === true).catch(() => false)
         : Promise.resolve(result === true)
       void started.then((ok: boolean) => {
+        if (generation !== runtimeGeneration || !ctx.enabled.value || ctx.destroyed.value) return
         if (ok) {
           ctx.entranceUntil = performance.now() + ENTRANCE_MAX_MS
           // 登场结束后（entranceUntil 过期）叠层参数由 parameterFrame.apply 的
@@ -329,7 +351,7 @@ export function createLifecycleController(
           // idle 不带回，残留会成半透明重影。
           return
         }
-        window.setTimeout(tryStart, 250)
+        entranceTimer = window.setTimeout(tryStart, 250)
       })
     }
     tryStart()
@@ -425,6 +447,10 @@ export function createLifecycleController(
   }
 
   function destroyRuntime() {
+    runtimeGeneration += 1
+    clearTimeout(nativeRetryTimer); nativeRetryTimer = 0
+    clearTimeout(entranceTimer); entranceTimer = 0
+    finishPendingLoad?.(false)
     controllers.interactions.stopAudio()
     clearTimeout(ctx.timers.load); ctx.timers.load = 0
     clearTimeout(ctx.timers.interaction); ctx.timers.interaction = 0; ctx.activeInteraction = ''
