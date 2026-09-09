@@ -1,0 +1,10 @@
+{
+  "updatedAt": "2026-09-09T02:13:20.823Z",
+  "verifiedCurrent": 273,
+  "replaced": [],
+  "limits": [
+    "Prompt, negative, sampler, dimensions, model and actual seed verified from job metadata.",
+    "Only manifest JSON and image-file existence were checked. No image content was opened or uploaded.",
+    "The obsolete provisional shrine refresh is not selected because the original image again matches the retained authored morning-light recipe."
+  ]
+}

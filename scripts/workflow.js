@@ -149,6 +149,13 @@ const WORKFLOWS = {
     docs: 'docs/showcase-generation-craft.md',
     opts: '[--force] [--character <id>] [--limit <n>]',
   },
+  'showcase:scene-candidates': {
+    desc: '独立场景 MiaoMiao v1.2 候选生成（仅指定 ID，不发布）',
+    cmd: ['node', 'scripts/maintenance/generate-scene-showcase-anima11.js', '--model', 'anima-miaomiao-v1.2'],
+    docs: 'docs/workflow.md#样张',
+    required: ['--output', '--ids'],
+    opts: '--output <候选目录> --ids sc001,sc002 [--concurrency 1] [--dry-run]',
+  },
   'showcase:fill-gaps': {
     desc: '样张缺口补齐：对照活跃版本manifest批量渲染缺失的pc_<角色>_<场景>样张（miaomiao v1.2，按蓝图recommendedSize出图，并发3）',
     cmd: ['node', 'scripts/maintenance/render-showcase-gaps.js'],

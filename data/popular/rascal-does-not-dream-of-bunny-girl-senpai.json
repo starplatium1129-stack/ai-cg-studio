@@ -13,7 +13,7 @@
         "mai-san",
         "bunny girl senpai"
       ],
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, carrying a composed alluring presence",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, with a composed, attentive manner",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
@@ -21,7 +21,6 @@
         "long_black_hair",
         "straight_hair",
         "purple_eyes",
-        "brown_eyes",
         "bangs",
         "ahoge",
         "rabbit_hair_ornament",
@@ -108,6 +107,51 @@
           "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "sfw_clock_square_coat",
+          "name": "钟楼广场风衣围巾装",
+          "prose": "a fitted beige winter trench coat, a plaid muffler, a low-brimmed beret, dark trousers and ankle boots",
+          "tokens": [
+            "beige_trench_coat",
+            "plaid_scarf",
+            "beret",
+            "dark_pants",
+            "ankle_boots"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_grocery_disguise",
+          "name": "针织帽眼镜采购便服",
+          "prose": "a soft cardigan over a simple blouse, a long skirt, plain clear-lens glasses and a knitted beanie",
+          "tokens": [
+            "cardigan",
+            "blouse",
+            "long_skirt",
+            "glasses",
+            "knit_hat"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_kitchen_apron",
+          "name": "晨间围裙便服",
+          "prose": "a long-sleeved knit top and casual skirt beneath a light kitchen apron, with long black hair gathered clear of the stove",
+          "tokens": [
+            "long_sleeves",
+            "knit_top",
+            "skirt",
+            "light_apron",
+            "hair_tied_back"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ],
       "canon": {
@@ -184,12 +228,12 @@
         {
           "id": "sfw_coast",
           "name": "七里滨白色连衣裙",
-          "prose": "an opaque white short-sleeved summer dress with a knee-length hem and simple sandals",
+          "prose": "an opaque white short-sleeved summer dress with a knee-length hem, worn barefoot on the shore",
           "tokens": [
             "white_dress",
             "short_sleeves",
             "knee_length_dress",
-            "sandals"
+            "barefoot"
           ],
           "default": true,
           "isDefault": true

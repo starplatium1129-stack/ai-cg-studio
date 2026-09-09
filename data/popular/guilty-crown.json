@@ -90,6 +90,20 @@
           ],
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "sfw_baking_apron",
+          "name": "烘焙围裙便服",
+          "prose": "a long-sleeved knee-length casual dress beneath a plain white kitchen apron",
+          "tokens": [
+            "casual_dress",
+            "long_sleeves",
+            "knee_length_dress",
+            "white_apron"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ],
       "canon": {

@@ -234,9 +234,10 @@
         "blushing_ears",
         "tsundere",
         "bells",
-        "sunset"
+        "sunset",
+        "rose_bouquet"
       ],
-      "promptProse": "Tatsumaki from One-Punch Man wears a black-and-emerald bridal gown with a floating layered veil, rose embroidery and polished black shoes. She hovers just above the rose path, telekinesis lifting the layered veil into a green-black halo. She complains about the ceremony with one hand on her hip, then turns away from the viewer as the bells begin and an unwilling blush reaches her ears. emerald sunset with rim light around the veil.",
+      "promptProse": "Tatsumaki from One-Punch Man wears a black-and-emerald bridal gown with a floating layered veil, rose embroidery and polished black shoes. She hovers just above the rose path, telekinesis lifting the layered veil into a green-black halo. She complains about the ceremony with one hand on her hip and a rose bouquet held in the other, then turns away from the viewer as the bells begin and an unwilling blush reaches her ears. emerald sunset with rim light around the veil.",
       "promptTokens": [
         "wedding_dress",
         "bridal_veil",
@@ -248,7 +249,8 @@
         "tsundere",
         "bells",
         "sunset",
-        "twilight_light"
+        "twilight_light",
+        "rose_bouquet"
       ],
       "negativeTokens": [
         "worst_quality",

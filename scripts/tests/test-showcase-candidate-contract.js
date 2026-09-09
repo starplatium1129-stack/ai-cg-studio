@@ -27,6 +27,19 @@ const os = require('os');
 const path = require('path');
 const { test } = require('node:test');
 
+test('standalone MiaoMiao selection reaches profile, checkpoint and submission without losing character LoRA', () => {
+  const generator = require('../maintenance/generate-scene-showcase-anima11.js');
+  const scene = require('../../data/scenes.json').find(scene => scene.id === 'sc002');
+  const candidate = generator.buildAnimaCandidate(scene, 1, 1, { modelId: 'anima-miaomiao-v1.2' });
+  const model = require('../../routes/anima.js').constants.MODELS[candidate.modelId];
+  assert.strictEqual(candidate.profileId, 'anima_miaomiao_v12');
+  assert.strictEqual(candidate.checkpoint, model.file);
+  assert.ok(model.sizes.includes(`${candidate.width}x${candidate.height}`));
+  assert.strictEqual(candidate.loraId, 'L_NENE_V21_ANIMA');
+  assert.strictEqual(generator.buildSubmissionBody(candidate).modelId, 'anima-miaomiao-v1.2');
+  assert.throws(() => generator.buildAnimaCandidate(scene, 1, 1, { modelId: 'missing-model' }), /unsupported Anima model/);
+});
+
 const gen = require('../../scripts/maintenance/generate-showcase-candidates.js');
 const sceneGen = require('../../scripts/maintenance/generate-scene-showcase-candidates.js');
 const popularData = require('../../data/popular-characters.json');
@@ -477,6 +490,8 @@ test(`popular batch covers all ${popularCount} characters with default outfit an
       assert.ok(!/(nsfw|nude|explicit)/i.test(item.prompt), `${character.id} non-adult character must stay safe`);
     }
     const scene = sceneBlueprints.find(blueprint => blueprint.id === item.sceneId);
+    assert.ok(scene && !scene.adult && scene.sampleRating !== 'R18', `${character.id} default batch must skip adult records`);
+    assert.strictEqual(scene.outfitId, defaultOutfit.id, `${character.id} scene must match the default outfit being rendered`);
     assert.ok(scene && scene.characterId === character.id,
       `${character.id} must use its own prototype scene, got ${item.sceneId}`);
   }
@@ -534,9 +549,9 @@ test('single-character scene candidates use the audited short prompt and correct
   const scenes = require('../../data/scenes.json');
   const singles = scenes.filter(item => item.char === 'nene' || item.char === 'natsume');
   const candidates = sceneGen.planScenes(singles, 1);
-  // 2026-08-16 审计（用户决策）：场景评级按实际出图结论设定（如 sc122 R15），词条与
-  // 提示词一律不动；健康检查对「safe 提示词含显式词」的不一致场景由 planScenes
-  // 逐条隔离（跳过 + 警告，不再整批爆炸）。
+  // 既有生成健康检查逐条隔离「safe 提示词含显式词」的错标场景。
+  // 2026-09-09 已按用户要求将明确成人源改正为 R18；下方仍构造错标副本
+  // 验证拦截，不能为了让测试通过而要求生产数据继续保留错误评级。
   // 2026-08-28 修订：skip 判定权威在编译后 short prompt 的健康检查
   // （quality-prompt-contract 的 leak 检测），原始 tags 只是必要条件——部分显式 tag
   //（如 sc178 completely_naked）不进入 short prompt，故这里只断言
@@ -545,8 +560,18 @@ test('single-character scene candidates use the audited short prompt and correct
   const explicitSusppects = new Set(singles.filter(item =>
     Array.isArray(item.tags) && item.tags.some(tag => EXPLICIT.has(tag))
     && String(item.rating || '').toUpperCase() !== 'R18' && item.mature !== true).map(item => item.id));
-  assert.ok(candidates.skipped.length >= 1,
-    'known inconsistent scenes (sc122/sc126/sc180/sc200) must be skipped, not planned');
+  // Explicit sources now carry R18 per the user's 2026-09-09 classification.
+  // Exercise the leak guard with a deliberately incorrect rating instead of
+  // requiring the production corpus to retain a known unsafe classification.
+  for (const id of ['sc122', 'sc126', 'sc180', 'sc200']) {
+    const source = singles.find(scene => scene.id === id);
+    assert.strictEqual(source.rating, 'R18', `${id} must retain its adult classification`);
+    assert.strictEqual(source.mature, true, `${id} must remain behind the mature boundary`);
+  }
+  const wronglyRated = { ...singles.find(scene => scene.id === 'sc122'), rating: 'All', mature: false };
+  const rejected = sceneGen.planScenes([wronglyRated], 1);
+  assert.strictEqual(rejected.length, 0, 'an explicit source mislabeled All must never be planned');
+  assert.strictEqual(rejected.skipped.length, 1, 'the leak guard must report the rejected source');
   for (const item of candidates.skipped) {
     assert.ok(explicitSusppects.has(item.sceneId),
       `${item.sceneId} skipped without explicit-tag backing: ${item.reason}`);
@@ -583,11 +608,8 @@ test('single-character scene candidates use the audited short prompt and correct
   assert.strictEqual(nene.generationCharacter, 'nene');
   assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene');
 
-  // 2026-08-16 审计（用户决策）：sc122 评级 R15 且词条/提示词不动——它属于被
-  // planScenes 隔离的场景（safe 提示词含显式词），不应出现在候选里；隔离清单
-  // 里有它且带原因即符合预期。
-  const sc122Skipped = candidates.skipped.find(item => item.sceneId === 'sc122');
-  assert.ok(sc122Skipped, 'sc122 must be skipped (safe prompt carries explicit words, rating stays R15)');
+  const sc122Skipped = rejected.skipped.find(item => item.sceneId === 'sc122');
+  assert.ok(sc122Skipped, 'the deliberately misrated sc122 copy must be isolated');
   assert.ok(sc122Skipped.reason.includes('显式成人词'), `skip reason must explain: ${sc122Skipped.reason}`);
 
   const natsume = candidates.find(item => item.characterId === 'natsume');

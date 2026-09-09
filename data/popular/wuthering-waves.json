@@ -411,13 +411,12 @@
         {
           "id": "sfw_beach",
           "name": "卡提希娅·海滨泳装",
-          "prose": "a pale blue long-skirt swimsuit with a cream cardigan, gold braid and simple water sandals",
+          "prose": "a pale blue long-skirt swimsuit with a cream cardigan, gold braid",
           "tokens": [
             "long_skirt_swimsuit",
             "pale_blue_swimsuit",
             "cream_cardigan",
-            "gold_braid",
-            "water_sandals"
+            "gold_braid"
           ],
           "default": false,
           "isDefault": false

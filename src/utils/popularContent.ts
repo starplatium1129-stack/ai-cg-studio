@@ -6,7 +6,6 @@ import { createPromptPlan, renderPromptPlan, type PromptPlan } from './promptCom
 import {
   assembleNegative,
   isManualR18Tags,
-  mergeTokenText,
   mutualGroupWithCategory,
   profileRatingTag,
   type ModelProfile,
@@ -21,6 +20,8 @@ import {
 } from './popularParseGuards.ts'
 import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
+import { inferBlueprintLighting, existingBlueprintDecisions } from './blueprintLighting.ts'
+import { blueprintNegative, compositionTokens, parseCompositionIntent, type BlueprintCompositionIntent } from './blueprintComposition.ts'
 
 export type AdultEligibility = 'adult' | 'unknown' | 'underage'
 
@@ -59,6 +60,7 @@ export interface PopularCharacter {
 }
 
 export interface SceneBlueprint {
+  compositionIntent?: BlueprintCompositionIntent
   id: string
   title: string
   category: string
@@ -226,6 +228,7 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     negativeTokens: negativeStringList(value.negativeTokens),
     recommendedSize: requiredString(value, 'recommendedSize'),
     adult: value.adult === true,
+    compositionIntent: parseCompositionIntent(value.compositionIntent),
     kreaStyleHint: stringValue(value.kreaStyleHint),
     animaStyleHint: stringValue(value.animaStyleHint),
     adultArtistHint: stringValue(value.adultArtistHint),
@@ -313,7 +316,7 @@ const CAMERA_TO_SHOT: Record<string, string> = {
   'cowboy shot': 'medium', cowboy_shot: 'medium', cowboy: 'medium',
   'wide shot': 'wide', wide_shot: 'wide', full_body: 'wide', wide: 'wide',
   pov: 'pov', 'high angle': 'high', from_above: 'high', 'low angle': 'low',
-  from_below: 'low', 'side view': 'side', looking_back: 'turn', 'front view': 'turn',
+  from_below: 'low', 'side view': 'side', looking_back: 'turn',
 }
 /** 蓝图 camera 字段漏网短语补映射（2026-08-24 全量审计：23 例 shot=null）。 */
 const EXTRA_CAMERA_TO_SHOT: ReadonlyArray<readonly [RegExp, string]> = [
@@ -327,6 +330,7 @@ const EXTRA_CAMERA_TO_SHOT: ReadonlyArray<readonly [RegExp, string]> = [
   // back_view/back shot：ShotId 枚举无「背面」槽位，取中景为中性框架，
   // 背面视角语义由蓝图 promptProse 自由文本兜底。
   [/back[_ ](?:view|shot)/, 'medium'],
+  [/front[_ ]view/, 'medium'],
 ]
 /**
  * 角度词优先预扫：低/高机位是比取景景别更罕见的作者意图信号。
@@ -345,19 +349,6 @@ function blueprintAngleShot(cameraText: string): string | null {
   const text = String(cameraText || '').toLowerCase()
   if (!text) return null
   return BLUEPRINT_ANGLE_RE.find(([pattern]) => pattern.test(text))?.[1] ?? null
-}
-const LIGHTING_TO_ID: Record<string, string> = {
-  golden: 'golden', 'golden hour': 'golden', sunset: 'golden', dusk: 'golden',
-  // 2026-08-24 全量审计补映射：晨光/日光/秋光/余晖是蓝图 lighting 字段高频
-  // 作者意图，此前 105/438 蓝图连补偿命中都拿不到，AMBIENCE 光影词包不附加。
-  morning: 'golden', sunlight: 'golden', autumn: 'golden', 余晖: 'golden',
-  柴火: 'lantern', 炉火: 'lantern',
-  // 2026-08-24 B1 试点审计：舞台/柜台聚光灯误命中 prose 里的 night -> 月光；
-  // spotlight 归入 lantern 暖光族（5 处全量影响均为语义改善）。
-  spotlight: 'lantern',
-  window: 'window', 'window light': 'window', backlight: 'back', backlit: 'back',
-  'rim light': 'back', moonlight: 'moon', moon: 'moon', night: 'moon',
-  lantern: 'lantern', candlelight: 'lantern', candle: 'lantern', lamp: 'lantern', overcast: 'overcast',
 }
 const MOOD_TO_COLOR: Record<string, string> = {
   warm: 'warmth', cozy: 'warmth', tender: 'warmth',
@@ -408,9 +399,11 @@ export function inferBlueprintDecisions(blueprint: SceneBlueprint | null): Popul
   const hay = [blueprint.camera, blueprint.lighting, blueprint.mood, blueprint.promptProse, blueprint.sceneTags.join(', ')].join(' ').toLowerCase()
   const angleShot = blueprintAngleShot(blueprint.camera)
   const cameraText = String(blueprint.camera || '').toLowerCase()
-  let shot = angleShot ?? matchFirst(hay, CAMERA_TO_SHOT)
-  if (!shot) shot = EXTRA_CAMERA_TO_SHOT.find(([pattern]) => pattern.test(cameraText))?.[1] ?? null
-  const lighting = matchFirst(hay, LIGHTING_TO_ID)
+  const prior = blueprint.adult ? existingBlueprintDecisions(blueprint) : null
+  const shot = prior ? prior.shot : angleShot ?? matchFirst(cameraText, CAMERA_TO_SHOT)
+    ?? EXTRA_CAMERA_TO_SHOT.find(([pattern]) => pattern.test(cameraText))?.[1]
+    ?? matchFirst(hay, CAMERA_TO_SHOT)
+  const lighting = prior ? prior.lighting : inferBlueprintLighting(blueprint)
   const colorMood = matchFirst(hay, MOOD_TO_COLOR)
   const moodGrammar = matchMoodGrammar(blueprint.mood)
   return {
@@ -770,11 +763,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const rating = profileRatingTag(profile, { rating: ratingLevel })
   const plan = createPromptPlan({
     profile,
-    identity: identityTokens.join(', '),
-    controls: exactControls,
+    identity: compositionTokens(identityTokens, blueprint).join(', '),
+    controls: compositionTokens(exactControls, blueprint),
     artists: effectiveArtists,
-    exactTokens: character.exactTokens,
-    scenePrompt: (blueprint?.promptTokens || []).join(', '),
+    exactTokens: compositionTokens(character.exactTokens || [], blueprint),
+    scenePrompt: compositionTokens(blueprint?.promptTokens || [], blueprint).join(', '),
     emotion: emotionTokens,
     camera: shotToken ? [shotToken] : [],
     lighting: [...lightingTokens, ...moodGrammarTokens].length ? [...new Set([...lightingTokens, ...moodGrammarTokens])] : [],
@@ -813,12 +806,6 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     'anima',
     { shot: options.shot, character: character.id },
   )
-  // 与场景生成器同款多格/重复主体压制；单人场景追加第二人压制（壁纸级第一）。
-  // 2026-08-15 增强：补 duplicate/extra person/1boy/2boys/crowd（R18 双人分身问题）；
-  // 不加 mirror/reflection，避免误伤合法镜面/倒影场景（如浴室镜）。
-  const panelSuppress = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people, duplicate, duplicated person, extra person, extra limbs, 1boy, 2boys, crowd, bystanders'
-  // 2026-08-15 审计：panelSuppress 必须走整条去重管道（tokenize→normalizeKey→按 token 去重），
-  // 否则与蓝图负面重复（150 个蓝图含 multiple girls、6 个含 crowd，最终负面各出现两次）。
-  const finalNegative = mergeTokenText(negative, panelSuppress)
+  const finalNegative = blueprintNegative(negative, blueprint)
   return { plan, prompt: rendered.prompt, negative: finalNegative, adult }
 }

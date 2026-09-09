@@ -169,7 +169,7 @@
         "芙宁娜",
         "芙卡洛斯"
       ],
-      "identityProse": "Furina from Genshin Impact, the theatrical and dramatic former Hydro Archon of Fontaine, with dual-toned silvery-white and deep cobalt-blue hair in side twin-tails, striking heterochromia teardrop eyes (deep ocean blue and pale cerulean), an expressive ahoge, wearing an ornate aristocratic mini top hat adorned with ribbons and iris flower motifs",
+      "identityProse": "Furina from Genshin Impact, the theatrical and dramatic former Hydro Archon of Fontaine, with dual-toned silvery-white and deep cobalt-blue hair in side twin-tails, striking heterochromia teardrop eyes (deep ocean blue and pale cerulean), an expressive ahoge",
       "identityTokens": [
         "furina (genshin impact)",
         "1girl",
@@ -183,7 +183,6 @@
         "cyan_eyes",
         "ahoge",
         "twin_ponytails",
-        "mini_top_hat",
         "hair_ribbon",
         "genshin_impact"
       ],
@@ -201,7 +200,7 @@
         {
           "id": "official_archon",
           "name": "枫丹礼服",
-          "prose": "Furina's signature theatrical Archon formal tailcoat ensemble with royal blue and navy velvet frock coat, ruffled jabot ascot, white vest with golden filigree buttons, dark tailored shorts, black thighhighs, detached ruffled sleeves, and pristine white gloves",
+          "prose": "Furina's signature theatrical Archon formal tailcoat ensemble with royal blue and navy velvet frock coat, ruffled jabot ascot, white vest with golden filigree buttons, dark tailored shorts, black thighhighs, detached ruffled sleeves, and pristine white gloves, completed by an ornate mini top hat with ribbons and iris-flower ornaments",
           "tokens": [
             "formal",
             "frock_coat",

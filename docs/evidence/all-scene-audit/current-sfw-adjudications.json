@@ -1,0 +1,255 @@
+{
+  "updatedAt": "2026-09-09T02:36:58.595Z",
+  "records": [
+    {
+      "key": "popular:misaka_mikoto_living_room",
+      "sourceSha256": "45dc20ed45f38f8f8322cc320d9a26bee2fd52326afd6a970c75412191b41e82",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:misono_mika_cathedral",
+      "sourceSha256": "3397bdf5919deea18adc1ae6a245eaa838e38f5d48d20141bee3105a3f3f09ba",
+      "status": "no-major-internal-conflict-found",
+      "reason": "圣堂内站立仰望建筑和彩窗的核心一致；具体视线目标微差，无画面失败证据，不调整画幅或扩写。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:iori_sunset_rooftop_breeze_pause",
+      "sourceSha256": "f384dab133e21f60a963d16dbb2974d4d9b599c7d3272f348531fa0c26370497",
+      "status": "no-major-internal-conflict-found",
+      "reason": "制服已含sniper_rifle词，核心夕阳倚栏一致；未重复怀抱方式不足以要求重做。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:gotoh_hitori_closet_shelter",
+      "sourceSha256": "c30a9d6b87835ef84cd080bf93ee1258ec4c429d03c3d45aaedce6bbc2c71f6f",
+      "status": "no-major-internal-conflict-found",
+      "reason": "英文已含吉他、耳机、壁橱、曲谱和蜷坐；标签无需重复所有道具，中文未限定电吉他，木吉他选择不是已证实错误。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:makima_home_dinner",
+      "sourceSha256": "b4dbc9a5cede759d8a7adf7c14a8dc5016fceaba4b818cc330de529e8de37c24",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:cc_morning_sofa_pizza_cheese_kun",
+      "sourceSha256": "52bc62c8570dbf22698c0c4cdd479c9ef0d17b6a177c9dabc0ff5843d86f7009",
+      "status": "no-major-internal-conflict-found",
+      "reason": "英文已明确画外视角持披萨，画内单一主体与solo并不必然矛盾；无图像失败证据不改。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:kisara_engage_kiss_rooftop_laundry",
+      "sourceSha256": "aa60d149af82dde24472d9e58838197de68f3315830c3a3f3f3f79868485dc4c",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:ayanami_rei_entry_plug",
+      "sourceSha256": "889dc58711585fde655bfa0f7b0af2a5fbe2e2892741215e0426060289be9230",
+      "status": "no-major-internal-conflict-found",
+      "reason": "白战斗服、LCL驾驶舱和宁静坐姿一致；未详述操纵杆手势只是次要省略，不构成已证实缺陷。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:kurokawa_akane_bookstore_glasses",
+      "sourceSha256": "47ec33d5129344ae3102ad5bb4216124c30c8c89284cf3d2b61baedfd79d3add",
+      "status": "no-major-internal-conflict-found",
+      "reason": "剧本研究与戏剧集属于同一阅读主题；眼镜已绑定，身份已区分日常眼睛和演出星瞳。未发现必须改写的冲突。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:byakuya_classroom_nap_afternoon",
+      "sourceSha256": "bf07d340994afb549262b981ca010c6e30782d5551e0b3013c9c587b9357f9de",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "scene:sc002",
+      "sourceSha256": "42d3466f6aad465dd08dfc7882f273b4cd8cdc2549c648db330ef5ee91cfebe5",
+      "status": "no-major-internal-conflict-found",
+      "reason": "正文、caption与prompt一致保留挥手藏信。半身不必展示脚部，踮脚未全入镜不是已证实缺陷。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:shiki_snowy_night_mystic_eyes_slash",
+      "id": "shiki_snowy_night_mystic_eyes_slash",
+      "sourceSha256": "76e55cd16f3375a978cd6f6c7ddaf39796886d32070fa2a3ab51fb6154a520b3",
+      "compilerSha256": "c0453883f616f943701ef496a63aa4c4912763ade60e0c429af31532e7adc66c",
+      "status": "no-major-internal-conflict-found",
+      "reason": "The only recorded source lead alleged DNA avoidance banned the outfit/weapon. Actual parsing leaves raw dna_lock unused; the supported dnaLock applies only to identity tags, not blueprint/outfit negatives. Current compilation preserves the kimono/knife and does not ban them. The snow-night combat action is internally consistent; external canon and visuals remain user-review limitations.",
+      "negativeSha256": "6c67e3b3f6d2f185e02477b78b72edd51098611797bb8a9acffb977de7237b04",
+      "visualReview": "not-performed-user-will-review"
+    },
+    {
+      "key": "scene:sc025",
+      "sourceSha256": "a1bf3594f5bee15e614721ba69c7ddb946fcc9daf153df1be435e5b18eae7229",
+      "status": "no-major-internal-conflict-found",
+      "reason": "正文、prompt和caption均明确水族馆鲸鲨及蓝色水面焦散。lighting的窗光为泛化元数据，未证明实际模型丢失主光，不为细化词汇重做。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "scene:sc050",
+      "sourceSha256": "c1820fe6b220145c17c87369783ec47373c63e483a17087a89b78a21784864dc",
+      "status": "no-major-internal-conflict-found",
+      "reason": "影院牵手、扶手支撑、侧脸和银幕光一致；惊吓后握手可持续至片尾，未出现互斥的视觉内容，时间片措辞差异不要求重做。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "scene:sc085",
+      "sourceSha256": "c8817641fc46003a42148b73da0c0e060402b65359958168384253433555dac6",
+      "status": "no-major-internal-conflict-found",
+      "reason": "猫在腿上可以同时由手臂环抱和抚摸，不必把holding in arms判为离开腿部；当前冬日猫咖与衣装一致，无画面失败证据。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "scene:sc225",
+      "sourceSha256": "cd24849fc966f2b8dd42e89652fcd3ce02b3316d39a02adac8628a9ebdc5977d",
+      "status": "no-major-internal-conflict-found",
+      "reason": "巫女服、扫帚、接热茶和神社晨雾完整；发带和接近方向只是次要细节，未与核心情境冲突，不新增重绘任务。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "scene:sc233",
+      "sourceSha256": "85380c8b3811d6de5fcfb527125dcce271243cc0f114ed9def2909be96de6001",
+      "status": "no-major-internal-conflict-found",
+      "reason": "托腮递玛奇朵、闭店暖灯和衣装一致；视线先看向对方后移开是同段过程，不应为定格时点偏好要求改写。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "scene:sc272",
+      "sourceSha256": "d824700e2014f768a982e8eee5b3088e1e3728b9a169ff8153112cd691c6c507",
+      "status": "no-major-internal-conflict-found",
+      "reason": "生成prompt已完整保留指唇、粉针织、背景与构图；caption的概括未引入替代动作或地点，按用户标准保留，不为细节缺省改动定稿字段。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "scene:sc295",
+      "sourceSha256": "a8b5256d227cf3bf8f15607df11efc79863c09eb0914011e440e1d9818c1e471",
+      "status": "no-major-internal-conflict-found",
+      "reason": "旅馆夜间床沿拍位、湿发、浴衣和毛巾一致；毛巾在颈肩或挂起是连续过程的次要状态，无画面失败证据不重做。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:lucy_deep_dive_tub_cyberspace_interface",
+      "sourceSha256": "7082621a0d9a85375c166b33985cb9ff1169b2a0ece498da9de20cb0c301522f",
+      "status": "no-major-internal-conflict-found",
+      "reason": "冰水舱、神经连接及数据流一致。submerged并未指定头部全浸，连接中或已连接为同一活动阶段，不能据此认定缺陷。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:sachi_workbench_bomb_defusal_tools",
+      "sourceSha256": "0ed3bffb782c8179b2d201233f838c69f335d8d596a4166dde8a87b82146c6d9",
+      "status": "no-major-internal-conflict-found",
+      "reason": "女仆装、工作台、台灯、专注检修与螺丝刀均保留。泛称技术装置不影响核心场景，不补充操作细节或无必要道具描述。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:kafka_twilight_bistro_rendezvous",
+      "sourceSha256": "1c4e71452fb840e5877f9f5f851971bca586c0558043263608e98392e8b471e6",
+      "status": "no-major-internal-conflict-found",
+      "reason": "双手交握、酒馆桌旁微笑与夕照一致；交握的手在酒杯上方或下颌处并非必然互斥，保留自然构图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:kaguya_fireworks_furisode_okawaii",
+      "sourceSha256": "62eeaeecf902b9755156e59430546b5e09bc0050a98a0afd1239b92f97f53793",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:kaguya_student_council_afternoon",
+      "sourceSha256": "aaaca4d69199b3d5c7c50b27a1d15d122a4980a23b46864ec68efabc70b94315",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:shinobu_poolside_petite_summer",
+      "sourceSha256": "f03512d669200d11933639fc6217cff2f48e791b7840db5ca75d232a6860dc07",
+      "status": "no-major-internal-conflict-found",
+      "reason": "现代泳池、防晒道具与现有夏装属于明确的场景创作，未声称是原作事件；中英文坐池边晃脚动作一致，不因时代变体强制改写。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:asuka_langley_unit02_standby",
+      "sourceSha256": "48dd9cf0991390542dd70cb17de402a10e79ddab17f3f7e58023b33be98ec48d",
+      "status": "no-major-internal-conflict-found",
+      "reason": "红战斗服、二号机发射平台及单手叉腰一致。额外指向上方不是必须同时表现的关键动作；无证据证明机体比例失败，不重做。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:yorha_2b_ruined_city_highway_blade_stance",
+      "sourceSha256": "54e7017450644f13faedaa92809d77aa212349dff75f29c96c5371bd4f3308ff",
+      "status": "no-major-internal-conflict-found",
+      "reason": "浮刀、断桥、低机位和战斗衣装一致；虚空按刀可描述悬浮控制动作，宽景并不要求脸部特写，没有实际失败证据。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:yorha_2b_desert_dunes_greatsword_stride",
+      "sourceSha256": "f4288c71b2553af600c54b7f8725f4237f281a14a580403f077fbc4fc9c02a09",
+      "status": "no-major-internal-conflict-found",
+      "reason": "英文已含回眸伸手与背负大剑，词条不必重复全部动作；中文眼神是情绪描写，未明确卸下眼罩，保留当前场景。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:albedo_cathedral_throne_bridal_veil",
+      "sourceSha256": "0440ca9f238c86a217ef57d9ff364dd79d67524a329a19a1caad648dcb57a309",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:violet_bougainvillea_field_parasol",
+      "sourceSha256": "7d49268e8b8f58c5a48590b281e1a4cea6950bc67aedfc1d5366f66e33e5b438",
+      "status": "no-major-internal-conflict-found",
+      "reason": "仅纠正中文说明/检索元数据，与既有正文及身份一致；Anima/Krea实际生成文本及Anima尺寸逐项相等，不重写、不重出图。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    },
+    {
+      "key": "popular:yoshino_summer_festival_yukata_lantern",
+      "sourceSha256": "bf953d34694a51f9a9f6495aadcd6cd09500f1176a8fbda49b9a0535d87933d0",
+      "status": "no-major-internal-conflict-found",
+      "reason": "中文已写深蓝暗紫底，英文深紫与绑定午夜蓝属于同一暗色范围；折扇在绑定及词条中已存在，原疑点不构成必要修复。",
+      "scope": "source-only",
+      "visualReview": "pending-user-review"
+    }
+  ]
+}

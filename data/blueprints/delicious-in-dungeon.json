@@ -13,36 +13,38 @@
       "action": "迷宫营地的锅前，她从「绝对不吃魔物！」的激烈抗拒到小心翼翼地尝一口，再到捧着碗追加第二碗——三个阶段表情变化是这个角色的灵魂三连",
       "timeOfDay": "日间",
       "lighting": "firelight",
-      "camera": "medium shot",
+      "camera": "three-panel horizontal triptych, medium shot in each panel",
       "mood": "自然日常",
       "sceneTags": [
+        "triptych",
+        "three_panels",
         "dungeon_camp",
         "cooking_pot",
         "bowl",
         "spoon",
+        "refusal",
         "tasting",
         "surprised",
-        "green_eyes",
-        "pointy_ears",
-        "firelight",
-        "medium_shot"
+        "second_helping",
+        "embarrassed_smile",
+        "firelight"
       ],
-      "promptProse": "Marcille cautiously tastes a spoonful from her bowl beside the camp’s cooking pot. Her green eyes move from doubt to surprised interest, and her pointed ears lift slightly above the blue robe collar. A folded cloth and neatly arranged bowls fill the foreground. Warm firelight keeps the reaction in one continuous close view, allowing an unfamiliar fictional meal to become a small discovery rather than a sequence of separate panels.",
+      "promptProse": "A horizontal three-panel sequence follows Marcille beside the same dungeon camp cooking pot. In the left panel, she leans away from the offered bowl with an emphatic frown and one open palm raised in refusal. In the middle panel, she cautiously tastes one spoonful, green eyes widening in surprise. In the right panel, she holds her empty bowl forward for a second helping, smiling with embarrassed enthusiasm. Each panel shows Marcille once in the same blue travel robe, cream tunic and braided blonde hair. Warm firelight and the repeated pot connect the three moments. Clear panel divisions, no speech balloons or lettering.",
       "promptTokens": [
-        "1girl",
-        "solo",
         "marcille_donato",
         "dungeon_meshi",
+        "triptych",
+        "three_panels",
         "dungeon_camp",
         "cooking_pot",
         "bowl",
         "spoon",
+        "refusal",
         "tasting",
         "surprised",
-        "green_eyes",
-        "pointy_ears",
-        "firelight",
-        "medium_shot"
+        "second_helping",
+        "embarrassed_smile",
+        "firelight"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -56,13 +58,11 @@
         "watermark",
         "text",
         "signature",
-        "2girls",
-        "1boy",
         "nude",
         "underwear",
         "see-through"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": false,
       "sampleRating": "SFW",
       "kreaStyleHint": "anime_portrait_sharp",
@@ -70,7 +70,8 @@
       "coverageTags": [
         "iconic",
         "daily"
-      ]
+      ],
+      "compositionIntent": "triptych"
     },
     {
       "id": "marcille_donato_sfw_b9_02",

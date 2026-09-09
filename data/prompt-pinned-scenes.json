@@ -1,6 +1,6 @@
 {
   "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-  "pinnedAt": "2026-09-05T09:20:54",
+  "pinnedAt": "2026-09-08T17:31:14",
   "scenes": {
     "sc264": {
       "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, medium_close-up, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, moist_eyes, tearful_gaze, heavy_blush, sweat_on_face, parted_lips, embarrassed, plaid_skirt, pleated_skirt, miniskirt, skirt_lift, lifted_by_self, pink_panties, bow_panties, pantyshot, black_thighhighs, zettai_ryouiki, narrow_library_aisle, bookshelf, library, indoors, golden_hour, rim_light, warm_atmosphere, <lora:ayachi_nene_v18_wd14:0.95>",
@@ -28,8 +28,8 @@
       "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, bare_shoulders, undressing, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage",
       "animaCaption": "In an intimate close-up shot inside the dimly lit clubroom at night, Ayachi Nene in her official witch outfit sits astride on the viewer's lap with her costume partially loosened, blushing deeply with teary eyes under soft warm ambient lighting.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "64a3152"
       ]
@@ -48,8 +48,8 @@
       "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, costume_straps_loosened, undressing, bare_shoulders, lying_on_bed, straddling, ahoge, heavy_blush, intense_look, heavy_breathing, bedroom, night, dim_lighting, sweat, warm_lighting, white_hair, very_long_hair, low_twintails, purple_eyes, hair_ribbon, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage",
       "animaCaption": "In an intimate bedroom view at night on soft bedding, Ayachi Nene lies on the bed with her official witch costume partially unfastened, looking up at the viewer with an intense blushing gaze under soft warm lamplight.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "35e5382"
       ]
@@ -59,8 +59,8 @@
       "negative": "bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature, border, white border, framed, letterbox, pillarbox, padding, margin, inset, comic panel, split screen, worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration, 3d render, photorealistic, child, loli, underage, school uniform, gym uniform, generic witch dress, plain black dress, full-length gown, simple witch costume",
       "animaCaption": "In an intimate close-up shot in a moonlit bedroom, Ayachi Nene in her fitted official witch outfit sits on the viewer's lap, holding onto the viewer's collar with a flustered blushing expression, bathed in cool silver moonlight and subtle backlighting.",
       "recommendedSize": "1216×832",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "png-reference"
       ]
@@ -213,8 +213,8 @@
       "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_tight_tactical_catsuit_unzipped_to_navel, firm_shapely_breasts_fully_exposed, pink_nipples, exposed_pussy, slender_waist, crouching_on_narrow_steel_beam_atop_skyscraper_helipad, holding_silenced_pistol, looking_back_over_shoulder_with_sharp_seductive_smirk, entire_legs_and_feet_fully_visible_in_frame, sleek_tactical_boots_gripping_metal_beam, panoramic_cyberpunk_tokyo_night_skyline_with_glowing_neon_holograms_and_radiant_full_moon, cool_cyan_rim_light_and_warm_amber_ambient_city_glow, cinematic_chiaroscuro, full_body, @rella",
       "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
       "animaCaption": "Crouching on a steel girder high above a neon-lit futuristic metropolis, Shiki Natsume's tactical agent catsuit is zipped down to expose her bare, firm breasts and toned stomach. Holding a silenced pistol with a daring, seductive smirk, the dazzling full moon and radiant cyan city lights cast sharp rim highlights across her curves and combat boots against the dark sky.",
-      "rating": "All",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "3d07e1a"
       ]
@@ -223,8 +223,8 @@
       "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_unbuttoned_black_office_blazer_over_sheer_lace_lingerie, bare_breasts, pink_nipples, sheer_black_gartered_stockings, sitting_astride_executive_mahogany_desk_late_at_night, leaning_forward_with_dominant_flustered_smirk, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet_with_glossy_high_heels_dangling_from_toes, high-tech_office_suite_illuminated_by_floor-to-ceiling_rainy_city_windows_and_warm_amber_desk_lamp, cinematic_chiaroscuro, full_body, @rella",
       "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
       "animaCaption": "Dominating the mahogany executive desk in a darkened corner office, Shiki Natsume leans forward in an open tailored blazer, exposing her lace-trimmed bare breasts and sheer gartered thigh-highs. Floor-to-ceiling windows overlooking a rainy nighttime skyline cast moody blue tones that contrast with the warm desk lamp, clearly illuminating her slender stocking-clad legs and dangling heels.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "3d07e1a"
       ]
@@ -233,8 +233,8 @@
       "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, black_hair, long_hair_pinned_up_in_messy_bun, yellow_eyes, mole_under_eye, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, reclining_against_smooth_cedar_edge_of_private_hot_spring_tub, water_droplets_on_body, propping_head_on_arms_along_rim, bare_armpits, smooth_underarm_contours, entire_legs_and_feet_visible_through_clear_steaming_water, smooth_soles, detailed_toes, relaxed_blushing_smile_looking_at_viewer, luxury_onsen_suite_with_bamboo_screen_and_glowing_stone_lanterns_under_starry_night, soft_volumetric_steam_diffusing_warm_golden_lantern_light, cinematic_chiaroscuro, full_body, @rella",
       "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
       "animaCaption": "Reclining comfortably in a private outdoor cedar hot spring bath, Shiki Natsume rests her upper body along the smooth tub edge, completely naked with her hair pinned in a relaxed bun. Soft amber lantern light filters through rising steam under a starry night sky, highlighting the gentle curves of her bare underarms, shapely breasts, and legs visible beneath the crystal-clear water. Water droplets glisten on her bare shoulders and breasts above the surface.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "3d07e1a"
       ]
@@ -323,8 +323,8 @@
       "prompt": "1girl, ayachi_nene, nene_school_uniform, hair_ribbon, ahoge, school_uniform, unbuttoned_shirt, shirt_lift, bare_shoulders, cleavage, trapped_by_viewer, heavy_blush, tears_in_eyes, classroom, sunset, golden_hour, shadows, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
       "animaCaption": "In a close-up framing by the large windows of an empty classroom, she looks forward toward the viewer, as warm golden-hour sunlight illuminates the scene.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -333,8 +333,8 @@
       "prompt": "(traditional photographic darkroom under saturated red safelight:1.7), hanging photographic prints, photo enlarger with lens column, shallow chemical developing trays, Nene lying on darkroom workbench, (photography darkroom:1.55), sensor cable, 1girl, ayachi_nene, hair_ribbon, ahoge, unbuttoned_shirt, lace_lingerie, lying_on_table, bare_shoulders, cleavage, bare_legs, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, darkroom, night, red_light, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, bedroom, bed, hotel room, hospital, clinic, medical tray, medical equipment, kitchen, blue lighting, daylight, child, loli, underage",
       "animaCaption": "In a close-up framing in a quiet room, she rests comfortably against soft pillows with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -343,8 +343,8 @@
       "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, ayachi_nene, hair_ribbon, ahoge, nightgown, translucent_clothing, see_through_clothing, bare_legs, lying_on_couch, heavy_blush, shy_smile, cafe_interior, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, child, loli, underage",
       "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -373,8 +373,8 @@
       "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, child, loli, underage",
       "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she looks forward toward the viewer with a soft, reassuring smile, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "61f4ab9"
       ]
@@ -393,8 +393,8 @@
       "prompt": "(unzipped evening gown still visibly worn:1.55), open-back formal gown, gown fabric wrapped around body and spread over bed, 1girl, ayachi_nene, hair_ribbon, ahoge, evening_gown, dress_unzipped, bare_back, sideboob, cleavage, lying_on_bed, heavy_blush, tears_in_eyes, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, pajamas, nightgown, lingerie only, nude without gown, child, loli, underage",
       "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer with a soft, reassuring smile, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -403,8 +403,8 @@
       "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, lingerie, camisole, lying_on_bed, lying_on_stomach, bare_shoulders, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, indoors, window_light, soft_lighting, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
       "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as clear window sunlight streams across the frame.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -413,8 +413,8 @@
       "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
       "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she looks forward toward the viewer with a soft, reassuring smile, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "61f4ab9"
       ]
@@ -474,8 +474,8 @@
       "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked_apron, apron_only, sitting_on_counter, legs_apart, bare_back, bare_legs, blush, embarrassed, tears_in_eyes, tsundere, cafe_interior, night, shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
       "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -484,8 +484,8 @@
       "prompt": "1girl, ayachi_nene, low_twintails, pink_hair_ribbons, ahoge, undressing, shirt_slid_down, bare_shoulders, bare_back, dressing_mirror, mirror_reflection, hands_on_mirror, back_view_facing_mirror, both_palms_pressed_flat_on_mirror, backs_of_both_hands_visible_to_camera, single_aligned_reflection, breath_fog_on_mirror, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, night, dim_lighting, sensual, warm_lighting, a_large_walnut_dressing_mirror_fills_the_center_of_the_frame._ayachi_nene_stands_with_her_back_to_the_viewer_and_presses_both_palms_flat_against_the_glass_so_the_viewer_sees_the_backs_of_both_hands._her_reflected_face_and_exposed_shoulders_align_directly_in_front_of_her_real_body_without_any_overlapping_duplicate_torso, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, missing_mirror, no_reflection, rear_view_only, reflection_mismatch, duplicate_body_outside_mirror, missing_hair_ribbon, one_hand_holding_clothes, hand_away_from_mirror, palms_facing_viewer, reversed_hand_orientation, mismatched_reflection_clothes, duplicate_reflection, child, loli, underage",
       "animaCaption": "Viewed from behind at a large walnut vanity mirror, she presses both palms flat against the glass; the camera sees both hand backs and one aligned reflection.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -528,8 +528,8 @@
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
       "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
       "recommendedSize": "1344×768",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -636,8 +636,8 @@
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing, child, loli, underage",
       "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
       "recommendedSize": "1344×768",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "2bf23e1"
       ]
@@ -782,8 +782,8 @@
       "prompt": "(both wrists visibly tied to separate chair armrests with black silk ribbons:1.7), open palms, ribbon knots clearly visible, seated upright in metal chair, black tactical vest and thigh holster, (black tactical vest:1.55), concrete safehouse wall, thigh holster, torn and partly unzipped tactical gear, 1girl, shiki_natsume, mole_under_eye, sitting_on_chair, tactical_gear, unzipped, cleavage, bare_legs, black_pantyhose, heavy_blush, tears_in_eyes, tsundere, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, ordinary office, business suit, unbound hands, hands behind head, arms overhead, hidden hands, free wrists, extra hand, detached hand, malformed hand, child, loli, underage",
       "animaCaption": "In a close-up framing in a serene snow-dusted winter setting, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "35e5382"
       ]
@@ -802,8 +802,8 @@
       "prompt": "1girl, solo, (POV male hand firmly pinning her wrist overhead against concrete wall:1.7), second male hand lifting her chin, close face-to-face distance, black tactical vest, thigh holster, (black tactical vest:1.55), utility belts, pinned against a concrete safehouse wall, tense close contact, shiki_natsume, mole_under_eye, tactical_gear, unzipped, cleavage, trapped_by_viewer, leaning_against_wall, heavy_blush, tears_in_eyes, tsundere, bare_legs, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, pants, panties, hoodie, swimsuit, casual jacket, standing alone, empty hands, no interaction, distant full body, child, loli, underage",
       "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "35e5382"
       ]
@@ -812,8 +812,8 @@
       "prompt": "(nude body wearing only a frilled cooking apron:1.55), apron clearly tied at the bare back, bar counter, cooking utensils, 1girl, adult, ayachi_nene, nene_r18, hair_ribbon, ahoge, naked_apron, apron_only, lying_on_table, legs_apart, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, cafe_interior, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, towel, bath towel, bathrobe, dress under apron",
       "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "35e5382"
       ]
@@ -892,8 +892,8 @@
       "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_oversized_thick_knit_sweater, one_sleeve_slipped_off_shoulder_with_neckline_slid_below_arm, sideboob, no_underwear, lying_on_back_on_thick_fur_carpet_before_fireplace, slender_bare_legs_relaxed_with_soft_skin_sheen_catching_firelight, barefoot_with_soft_toes_on_rug, relaxed_contented_blush_with_ahoge_drooping_into_heart_shape, warm_fireplace_crackling_light_with_rug_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, snowy_night, blizzard_outside, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, sitting, standing, stockings, thighhighs, cropped_feet, upper_body",
       "animaCaption": "By the crackling fireplace of the snowy cabin, Nene lies relaxed on her back on the thick fur carpet wearing only an oversized knit sweater whose wide neckline has slipped below one arm, exposing her round shoulder and the swell of one breast, bare legs glowing in the warm orange firelight, the ahoge drooping into a heart.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "a530053"
       ]
@@ -912,8 +912,8 @@
       "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_tight_high_cut_backless_race_queen_style_patent_leather_catsuit, zipper_half_open_exposing_chest, cleavage, no_underwear, reverse_straddling_partner_thighs, sitting_on_lap_facing_away, upper_body_turned_looking_back_at_partner, one_hand_frantically_grasping_partner_arm, heavy_blush, crying_teary_eyes, open_mouth, ahoge_curling_into_heart_shape, underground_garage_with_tire_stack_and_overhead_work_spotlight, cinematic_depth_of_field, slender_waist_and_collarbone, full_body, late_night, night_garage, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, lying, stockings, thighhighs, cropped_feet, upper_body, helmet, child, loli, underage",
       "animaCaption": "In the fully locked underground pit garage, Nene in a tight high-cut backless patent leather race queen catsuit with the chest zipper stuck half-open stumbles and ends up reverse-straddling her partner's thighs, turning back with flushed tearful eyes as the stuck zipper slips a few more centimeters, under the overhead work spotlight.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "a530053"
       ]
@@ -933,8 +933,8 @@
       "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dudou, undergarment, translucent_clothing, see_through_clothing, no_bra, backless, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, panicked, open_mouth, bedroom, night, soft_lighting, sensual, heavy_snow_outside, snowfall_visible, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
       "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she sits gracefully with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "a530053"
       ]
@@ -963,8 +963,8 @@
       "prompt": "1girl, solo, natsume_official_qipao, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_dark_crimson_silk_qipao_with_high_slit_torn_open_to_her_thigh_roots_by_you, ripped_qipao_revealing_smooth_white_absolute_domain_of_thighs, glossy_sheer_black_stockings_gleaming_in_dim_light, sitting_on_the_cold_private_bar_counter_surface, both_arms_locked_around_your_neck_pulling_you_into_a_deep_kiss, closed_eyes_with_heavy_blush_and_breathless_expression, tear_mole_flushed_dark_red_with_extreme_excitement, private_retro_lounge_booth_after_closing_with_spotlight_on_her_face, red_wine_and_warm_dim_atmosphere, cinematic_depth_of_field, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, white_thighhighs, cropped_feet, upper_body",
       "animaCaption": "In the empty private booth of the vintage lounge after closing, Shiki Natsume sits on the cold bar counter in a gorgeous dark crimson silk high-slit qipao that you have torn open to her thigh roots, exposing smooth white thighs above the gleam of glossy black stockings; she locks both arms around your neck and pulls you into a deep kiss, her tear-mole flushed dark red with building excitement under the spotlight.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "b7171c2"
       ]
@@ -973,8 +973,8 @@
       "prompt": "1girl, nene_school_uniform, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_stella_school_uniform_fully_unbuttoned_over_black_lace_lingerie, navy_skirt, sheer_white_thighhigh_socks, lying_on_back_on_wide_office_desk_with_both_hands_gripping_desk_edge, teary_faced_looking_up_at_viewer_with_heavy_flushed_blush_and_heart_shaped_ahoge_and_open_mouth_heavy_breathing, violent_rain_lashing_outside_window_of_locked_club_room_at_night, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, black_thighhighs, bare_legs, cropped_feet, upper_body",
       "animaCaption": "In the locked occult club room while a storm lashes the window, Ayachi Nene lies on her back across the wide office desk, her school uniform fully unbuttoned over black lace lingerie, both hands gripping the desk edge as she looks up at the viewer with teary eyes, a heavy blush and a heart-shaped ahoge, her lips parted in quick breathing.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "b7171c2"
       ]
@@ -983,8 +983,8 @@
       "prompt": "1girl, nene_school_uniform, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_half_unbuttoned_white_shirt_with_navy_pleated_miniskirt_and_slender_bare_legs, smooth_bare_thighs_and_calf_with_soft_skin_sheen_sitting_on_library_desk, barefoot_with_detailed_toes_and_loafers_placed_on_floor, sitting_on_library_desk_with_skirt_slightly_lifted_and_one_hand_bracing_desk_with_heavy_teary_blush, warm_closed_library_night_light_with_bookshelf_bokeh_and_desk_texture, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
       "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, child, loli",
       "animaCaption": "In a closed library after hours, Ayachi Nene in a half-unbuttoned white shirt and navy pleated miniskirt sits on a desk with slender bare legs, bare feet and loafers on the floor, skirt slightly lifted, heavy teary blush under warm library light.",
-      "rating": "R15",
-      "mature": false,
+      "rating": "R18",
+      "mature": true,
       "pinSource": [
         "b7171c2"
       ]

@@ -14,7 +14,7 @@
         "oregairu",
         "yahari ore no seishun"
       ],
-      "identityProse": "Yukinoshita Yukino from Oregairu, a sharp elegant young woman with long straight black hair with a glossy mirror shine, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
+      "identityProse": "Yukinoshita Yukino from Oregairu, an elegant high-school student with long straight black hair with a glossy mirror shine, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
       "identityTokens": [
         "yukinoshita_yukino",
         "1girl",
@@ -68,13 +68,13 @@
         },
         {
           "id": "snow_dress",
-          "name": "雪夜礼服",
-          "prose": "a pure white dress like snow under winter lights",
+          "name": "冬季大衣围巾装",
+          "prose": "a warm navy duffle coat, a plaid knitted scarf, dark tights and winter boots",
           "tokens": [
-            "white_dress",
-            "evening_gown",
-            "long_sleeves",
-            "dress"
+            "navy_duffle_coat",
+            "plaid_scarf",
+            "dark_tights",
+            "winter_boots"
           ],
           "isDefault": false,
           "default": false
@@ -90,6 +90,21 @@
             "short_sleeves",
             "loose_clothes"
           ]
+        },
+        {
+          "id": "sfw_kotatsu_homewear",
+          "name": "暖桌针织家居服",
+          "prose": "a soft long-sleeved knit top, comfortable lounge trousers and warm socks beneath the kotatsu blanket",
+          "tokens": [
+            "knit_top",
+            "long_sleeves",
+            "lounge_pants",
+            "warm_socks",
+            "kotatsu_blanket"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ],
       "canon": {
@@ -632,6 +647,23 @@
           ],
           "isDefault": false,
           "isNsfw": false
+        },
+        {
+          "id": "sfw_winter_trenchcoat_boots",
+          "name": "雪街束腰风衣与高跟长靴",
+          "prose": "a camel double-breasted winter trench coat fastened and belted over a black turtleneck and pencil skirt, with opaque black tights and knee-high black leather heeled boots",
+          "tokens": [
+            "camel_trench_coat",
+            "belted_coat",
+            "closed_coat",
+            "black_turtleneck",
+            "pencil_skirt",
+            "black_tights",
+            "knee_high_boots",
+            "heeled_boots"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     }

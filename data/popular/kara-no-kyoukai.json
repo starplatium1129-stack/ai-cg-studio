@@ -126,6 +126,34 @@
             "navel",
             "slender_body"
           ]
+        },
+        {
+          "id": "sfw_white_kimono_without_jacket",
+          "name": "白和服·卸下夹克",
+          "prose": "a simple opaque white kimono with its collar neatly overlapped and a dark woven obi",
+          "tokens": [
+            "white_kimono",
+            "opaque_fabric",
+            "closed_collar",
+            "dark_obi"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sfw_white_shiromuku",
+          "name": "白无垢与角隐",
+          "prose": "a formal opaque white shiromuku bridal kimono with a white obi, woven silk motifs, a white tsunokakushi head covering and white tabi socks",
+          "tokens": [
+            "shiromuku",
+            "white_bridal_kimono",
+            "white_obi",
+            "tsunokakushi",
+            "white_tabi",
+            "opaque_fabric"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ],
       "dna_lock": {

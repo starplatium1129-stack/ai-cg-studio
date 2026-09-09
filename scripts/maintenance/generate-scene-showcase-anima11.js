@@ -85,9 +85,9 @@ function loraById(id) {
   if (!lora) throw new Error(`loras.json missing ${id}`);
   return lora;
 }
-function nearestAnimaSize(scene) {
+function nearestAnimaSize(scene, modelId = ANIMA_MODEL_ID) {
   const desired = sceneInference.sceneRecommendedSize(scene);
-  const sizes = animaConstants.MODELS[ANIMA_MODEL_ID].sizes;
+  const sizes = animaConstants.MODELS[modelId].sizes;
   if (sizes.includes(desired)) return desired;
   const [desiredWidth, desiredHeight] = desired.split('x').map(Number);
   const ratio = desiredWidth / desiredHeight;
@@ -97,8 +97,10 @@ function nearestAnimaSize(scene) {
     return Math.abs(lw / lh - ratio) - Math.abs(rw / rh - ratio);
   })[0];
 }
-function animaProfileFor(loraIds) {
-  const base = profileById(ANIMA_PROFILE_ID);
+function animaProfileFor(loraIds, modelId = ANIMA_MODEL_ID) {
+  const base = modelId === ANIMA_MODEL_ID ? profileById(ANIMA_PROFILE_ID)
+    : (presets.model_profiles || []).find(profile => profile.model_id === modelId && profile.engine === 'anima');
+  if (!base || !animaConstants.MODELS[modelId]) throw new Error(`unsupported Anima model: ${modelId}`);
   const contract = (loraIds || []).map(id => (loraById(id).prompt_contract || {}));
   return Object.assign({}, base, {
     exact_tokens: [...new Set([...(base.exact_tokens || []), ...contract.flatMap(c => c.exact_tokens || [])])],
@@ -119,7 +121,8 @@ function buildAnimaCandidate(scene, attempt, seedAttempt = attempt, overrides = 
   const isTriad = characterId === 'triad';
   const loraIds = isTriad ? ['L_NENE_V21_ANIMA', 'L_NAT_V21_ANIMA'] : [ANIMA_LORA_BY_CHARACTER[characterId]];
   if (!isTriad && !loraIds[0]) throw new Error(`scene ${scene.id} has unsupported Anima character ${characterId}`);
-  const profile = animaProfileFor(loraIds);
+  const modelId = overrides.modelId || ANIMA_MODEL_ID;
+  const profile = animaProfileFor(loraIds, modelId);
   const shot = sceneInference.sceneShot(scene);
   let prompt = promptPolicy.formatPromptForEngine(originalPrompt(scene), 'anima', profile.exact_tokens, profile.exact_prefixes);
   // 单人场景强化（如 "extra person" 类失败时注入）：保持原有提示词内容，
@@ -137,7 +140,7 @@ function buildAnimaCandidate(scene, attempt, seedAttempt = attempt, overrides = 
   if (negativeAppend) negative = negative ? `${negative}, ${negativeAppend}` : negativeAppend;
   negative = negative ? `${negative}, ${ANIMA_PANEL_SUPPRESS}` : ANIMA_PANEL_SUPPRESS;
   if (!isTriad) negative = `${negative}, ${ANIMA_EXTRA_PERSON_SUPPRESS}`;
-  const [width, height] = nearestAnimaSize(scene).split('x').map(Number);
+  const [width, height] = nearestAnimaSize(scene, modelId).split('x').map(Number);
   const steps = Number(overrides.steps) || animaGenerationContract.ANIMA_DEFAULTS.steps;
   const cfg = Number(overrides.cfg) || animaGenerationContract.ANIMA_DEFAULTS.cfg;
   const hiresFix = Boolean(overrides.hires);
@@ -147,8 +150,8 @@ function buildAnimaCandidate(scene, attempt, seedAttempt = attempt, overrides = 
     batch: 'scene', key: `scene:${scene.id}`, recordId: `scene:${scene.id}@attempt-${attempt}`,
     sceneId: scene.id, title: scene.title, category: scene.category, story: scene.story,
     characterId, rating: scene.rating, attempt,
-    engine: 'anima', profileId: profile.id, modelId: ANIMA_MODEL_ID,
-    checkpoint: animaConstants.MODELS[ANIMA_MODEL_ID].file,
+    engine: 'anima', profileId: profile.id, modelId,
+    checkpoint: animaConstants.MODELS[modelId].file,
     loraId: loraId || null, loraFile: loraId ? animaConstants.LORAS[loraId].file : null, loraStrength,
     artistTag: ARTIST_TAG,
     width, height,
@@ -248,6 +251,7 @@ async function main() {
   const negativeAppend = argument('--negative-append', '');
   if (stepsArg > 0) overrides.steps = stepsArg;
   if (cfgArg > 0) overrides.cfg = cfgArg;
+  overrides.modelId = argument('--model', ANIMA_MODEL_ID);
   if (promptAppend) overrides.promptAppend = promptAppend;
   if (negativeAppend) overrides.negativeAppend = negativeAppend;
   if (process.argv.includes('--hires')) overrides.hires = true;
@@ -272,7 +276,8 @@ async function main() {
     const previous = records.get(candidate.recordId);
     const imageRel = `images/${candidate.sceneId}/attempt-${attempt}.png`;
     const imageFile = path.join(output, imageRel.split('/').join(path.sep));
-    if (!force && previous?.status === 'succeeded' && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {
+    const matching = previous && ['modelId', 'checkpoint', 'profileId', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'loraId', 'loraStrength'].every(key => previous[key] === candidate[key]);
+    if (!force && matching && previous?.status === 'succeeded' && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {
       console.log(`[reuse] ${candidate.recordId}`);
       return false;
     }

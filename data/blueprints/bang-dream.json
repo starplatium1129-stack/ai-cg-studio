@@ -250,7 +250,7 @@
       "description": "【Ave Mujica 后台礼堂·夜】祥子穿着黑蓝色婚礼礼服坐在钢琴旁，羽毛半面具放在捧花边；她轻触琴键弹出一段克制旋律，抬眼面对镜头时，舞台上的高贵与卸下面具后的真心同时出现。",
       "location": "Ave Mujica backstage ceremony room",
       "action": "后台钢琴旁弹完克制旋律抬眼，舞台高贵与卸下面具后的真心同时出现",
-      "timeOfDay": "黄昏",
+      "timeOfDay": "夜间",
       "lighting": "blue stage lamps with a warm piano rim light",
       "camera": "medium full shot, vertical framing",
       "mood": "把面具放下的音乐花嫁",
@@ -277,8 +277,7 @@
         "indigo_hair",
         "honest_smile",
         "stage_light",
-        "night",
-        "twilight_light"
+        "night"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -386,36 +385,40 @@
       "action": "练习室，她重新坐在键盘前与旧伙伴们合奏，阳光从窗外进来",
       "timeOfDay": "日间",
       "lighting": "afternoon_light",
-      "camera": "medium shot",
+      "camera": "wide ensemble shot, keyboard foreground and bandmates visible behind",
       "mood": "自然日常",
       "sceneTags": [
         "rehearsal_room",
         "keyboard",
         "playing",
         "closed_eyes",
+        "band",
+        "5girls",
+        "microphone",
+        "guitar",
+        "bass_guitar",
+        "drum_set",
         "music_stands",
-        "cream_sweater",
-        "blue_hair",
-        "relaxed",
         "afternoon_light",
-        "medium_shot"
+        "wide_shot"
       ],
-      "promptProse": "At the rehearsal keyboard, Sakiko closes her eyes briefly while continuing a familiar phrase with steady hands. Her cream knit top and blue trousers are relaxed practice clothes, hair ribbons softly lit by the window. Empty music stands and a waiting chair suggest the shared room without adding other figures. Warm afternoon light gives the nearby view a quiet sense of renewed trust in making music together.",
+      "promptProse": "Sakiko plays the rehearsal keyboard in the foreground, closing her amber eyes briefly as her former bandmates join the phrase. A vocalist stands beside a microphone, a guitarist and bassist face inward with their instruments, and a drummer keeps time at the rear. The five musicians have distinct hairstyles and separate positions; they share the same rehearsal room and visibly play together. Sakiko wears a cream knit top and blue trousers, with ribbons holding her blue hair. Afternoon window light crosses the keyboard and occupied music stands. An imagined reconciliation rendered as a warm ensemble scene, no lettering.",
       "promptTokens": [
-        "1girl",
-        "solo",
         "togawa_sakiko",
         "bang_dream!",
         "rehearsal_room",
         "keyboard",
         "playing",
         "closed_eyes",
+        "band",
+        "5girls",
+        "microphone",
+        "guitar",
+        "bass_guitar",
+        "drum_set",
         "music_stands",
-        "cream_sweater",
-        "blue_hair",
-        "relaxed",
         "afternoon_light",
-        "medium_shot"
+        "wide_shot"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -429,20 +432,19 @@
         "watermark",
         "text",
         "signature",
-        "2girls",
-        "1boy",
         "nude",
         "underwear",
         "see-through"
       ],
-      "recommendedSize": "1152x1536",
+      "recommendedSize": "1536x1152",
       "adult": false,
       "sampleRating": "SFW",
       "kreaStyleHint": "anime_portrait_sharp",
       "animaStyleHint": "anime_portrait_sharp",
       "coverageTags": [
         "daily"
-      ]
+      ],
+      "compositionIntent": "group"
     },
     {
       "id": "togawa_sakiko_r18_b9_01",

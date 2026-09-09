@@ -249,7 +249,7 @@
       "close_up",
       "pov"
     ],
-    "mature": false,
+    "mature": true,
     "location": "安全屋冰冷墙边",
     "weather": "静谧",
     "camera": "主观近景特写",
@@ -261,7 +261,7 @@
     "prompt": "1girl, solo, (POV male hand firmly pinning her wrist overhead against concrete wall:1.7), second male hand lifting her chin, close face-to-face distance, black tactical vest, thigh holster, (black tactical vest:1.55), utility belts, pinned against a concrete safehouse wall, tense close contact, shiki_natsume, mole_under_eye, tactical_gear, unzipped, cleavage, trapped_by_viewer, leaning_against_wall, heavy_blush, tears_in_eyes, tsundere, bare_legs, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, pants, panties, hoodie, swimsuit, casual jacket, standing alone, empty hands, no interaction, distant full body, child, loli, underage",
     "storyJa": "【夏目・緻密な戦術的統一守備が崩壊】任務が撤収された後の秘密の隠れ家は、空気がほんのりと暖かかった。普段は飄々として堅物だった夏目が、あなたに後ろ手に組まれて少し恥ずかしい様子で壁に釘付けになりました。彼が着ていたぴったりとした黒のエージェントジャンプスーツは、襟から腹部まで引き開かれ、誇らしげなラインと内側の繊細で赤らんだ皮膚の広い領域が明らかになりました。極度の恥ずかしさと素早い喘ぎに、彼女の目尻の泣きぼくろが激しく震えた。彼女はまだ執拗に悪態をつきながらも、あなたの強引なキスを歓迎するために、率先して涙目で目を閉じました。――「もう、この変態店長……それ以上からかったら、本気で怒るから。」",
-    "rating": "R15",
+    "rating": "R18",
     "auditRevision": "careful-batch11-2026-08-27",
     "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
   },
@@ -296,19 +296,19 @@
       "full_body",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "同居客厅沙发",
     "weather": "微醉炙热",
     "camera": "俯视主观特写",
     "lighting": "电视荧幕微弱弱光",
     "usage": [
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, pov, red_lace_lingerie, bra_lift, exposed_breasts, bare_breasts, nipples, areola, garter_straps, torn_thighhighs, laddering, tight_straps, crotchless_panties, exposed_pussy, pussy_juice, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, arched_back, heavy_blush, flushed_cheeks, intoxicated, biting_lip, bedroom, candlelight, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform, fully_clothed, child, loli, underage",
     "storyJa": "【夏目・家にある大きなセーターは絶対に特別なもの】深夜、同棲しているアパートのリビング。普段は理性を語るエージェント女子夏目が、今夜は酒の影響で完全に防御力を失っていた。彼女はあなたをソファに乱暴に放り投げると、彼女が着ていた緩い厚手のニットのセーターが片方の腕から完全に滑り落ち、内部は完全な真空状態になりました。露出した面積の広い肩と豊満でセクシーな胸がテレビ画面の薄明かりの中で眩しかった。彼女の目の隅にある泣きぼくろは、究極の独占欲で輝いていました。彼女は頭を下げ、ささやきながらあなたの鎖骨を強く噛みました。――「あなたは私のもの。これから先も、絶対に手放してあげないんだから……ばか。」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "Inside the candlelit bedroom, Shiki Natsume kneels on the bed in sheer red lace lingerie with torn garter thighhighs, her breasts and core exposed, leaning in close toward the viewer with an arched back, biting her lip with flushed, intoxicated cheeks.",
     "auditRevision": "careful-batch12-2026-08-27"
   },
@@ -341,7 +341,7 @@
       "full_body",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "独立长官办公室",
     "weather": "微热",
     "camera": "平视中景近景",
@@ -349,12 +349,12 @@
     "usage": [
       "核心协议",
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, open-front_negligee, sheer_babydoll, black_translucent_cloth, see-through, garter_straps, torn_thighhighs, tight_straps, bra_lift, exposed_breasts, bare_breasts, nipples, areola, sitting_on_executive_desk, moonlight_through_blinds, heavy_blush, panting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, business_suit, fully_clothed, child, loli, underage",
     "storyJa": "【夏目・職場の狭いスカートは絶対ダメだよ】司令官の独立した執務室は深夜に施錠された。飄々とした職場で、OL夏目は顔を赤らめながら、あなたに大きな机の端に強引に抱きしめられました。彼女の体のプロ仕様のお尻を覆うスカートはあなたによって腰まで完全に持ち上げられ、彼女の脚のセクシーな薄い黒のストッキングはあなたによって完全に引き裂かれ、白く繊細な絶対領域の広い範囲が露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
-    "rating": "R15",
+    "rating": "R18",
     "auditRevision": "careful-batch12-2026-08-27",
     "animaCaption": "In the locked commander office under faint moonlight through the venetian blinds, Shiki Natsume sits on the edge of the wide desk with both hands propped behind her, her black pencil skirt lifted to her waist and thin black stockings torn wide open over fair thighs; mole trembling from the sensory shock, she turns her head away with a shameful breathless moan."
   },
@@ -386,19 +386,19 @@
       "night",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "反锁控制室机房",
     "weather": "设备微热",
     "camera": "仰视主观近景",
     "lighting": "机柜幽蓝冷光与警示弱光",
     "usage": [
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, agent_jumpsuit, unzipped_bodysuit, open_front, skin-tight_leather, exposed_breasts, bare_breasts, nipples, areola, straddling_viewer, leaning_forward, hands_on_viewer, pinning_down, server_room, blinking_blue_led_lights, cool_lighting, sweat_sheen, heavy_blush, teary_eyes, parted_lips, panting, sensual, possessive, cowboy_shot, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, hands on neck, gripping neck, choking, strangling, self-harm, neck hold, fully_zipped, text, watermark, signature, child, loli, underage",
     "storyJa": "【夏目・タイツを破いて究極の官能を】中央制御室は深夜に完全に施錠された。周囲にはサーバーの濃い青色の表示灯が点滅し、空気は装置のわずかな熱で満たされていました。普段は飄々として堅物なエージェントの女の子夏目が、今では大量の汗をかきながらあなたの腰にまたがっています。彼女が着ていたダークエージェントのジャンプスーツは、襟元から腹部にかけて乱暴に開かれ、その内側にある人々の血を騒がせる誇らしげなラインが露わになった。頬の紅潮で目尻の泣きぼくろが完全に濡れていた。あなたの胸を両手で強く押さえつけて身動きを封じ、身を乗り出して狂気じみた独占欲の混じる荒い息を吐き出しました。――「店長……ここの通信は完全に切れてる。今夜は、私のそばから逃げられると思わないで。」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "Deep in the locked server room with racks of blue indicator lights blinking in the dark, Shiki Natsume, drenched in sweat, straddles your waist with her black agent jumpsuit unzipped all the way down to her abdomen over heaving bare breasts; mole soaked in blush and eyes glinting with possessive fervor, she pins you down by pressing both hands firmly onto your chest, leaning forward as she pants breathlessly, whispering that you will never escape her tonight.",
     "auditRevision": "finetune-sc118-no-choke-2026-09-05"
   },
@@ -434,7 +434,7 @@
       "sensual",
       "close_up"
     ],
-    "mature": false,
+    "mature": true,
     "location": "温馨卧榻被窝",
     "weather": "温暖初晴",
     "camera": "平视近景特写",
@@ -442,12 +442,12 @@
     "usage": [
       "壁纸级",
       "核心协议",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, very_long_hair, messy_bed, yellow_eyes, mole_under_eye, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, wrapped, loosely, white, silk, bedsheet, like, cocoon, leaning_back, morning, soft_blush, serene, affectionate, glance, luxury_hotel_bedroom, morning_light, rim_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, artist_name, chromatic_aberration, clothes, underwear, bra, panties, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
     "storyJa": "【夏目・裸シーツに恋して】どこまでも怠惰な早朝、暖かく柔らかな朝の光が白いガーゼのカーテンを通して射し込んでいた。夏目は昨夜、二日酔いで散らかったベッドから目覚めました。彼女は世界中の服をすべて脱いで、真っ白でふわふわのベルベットのベッドの真ん中に裸で横たわっていました。愛の痕跡が詰まった完璧なボディを、半透明の白いシーツだけで優しく覆った。彼女の顔の熱い赤面は耳の根元まで達し、彼女の明るい目は半開きで、目の端の泣きぼくろは、太陽の光の中で極度の愛着と無限の魅力で輝いていました。彼女は眉を上げてそっと右手をあなたに開いた――「おはよう、この大変態。いつまで見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "Propping herself up on one elbow in a sun-drenched hotel bed the morning after, Shiki Natsume is completely nude, wrapped loosely like a cocoon in crisp white silk sheets. Her golden eyes gaze with soft, lingering affection and peaceful surrender as golden dawn light illuminates her bare shoulders and firm breasts."
   },
   {
@@ -485,19 +485,19 @@
       "full_body",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "酒店套房大床",
     "weather": "霓虹闪烁",
     "camera": "主观平视近景",
     "lighting": "落地窗透进的霓虹弱光与床头灯",
     "usage": [
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, backless_dress, black_evening_gown, open_back, sheer_black_thighhighs, lying_on_bed, on_back, arms_around_neck, heavy_blush, parted_lips, breathless, neon_lights_through_window, messy_bed, night, warm_lighting, cool_lighting, cinematic_depth_of_field, volumetric_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
     "storyJa": "【夏目・イブニングドレスは究極の秋のロックを解除します】豪華な晩餐会を終えた五つ星ホテルのプレジデンシャルスイート。窓の外には都会の喧騒のネオンがいつまでも輝き、部屋はほんのり暖かい。普段は上品で飄々としていた夏目が、この時は力が抜けたあなたに大きなダブルベッドに押し倒されました。彼女の黒い背中の開いたハイスリットのシルクイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に弱々しくスライドし、官能的なラインの広い領域、感情的な紅潮を伴う美しい裸の背中と横の胸を明らかにします。脚に巻きついたセクシーな極薄の黒ストッキングが、暗い光の下で非常に眩しい光沢を放ちます。目尻の泣きぼくろが真っ赤に染まっている。彼女はあえぎ、うめき声​​を上げながらあなたの首を強く締め付けます。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "Pushed down onto the wide double bed of the presidential suite after the banquet, Shiki Natsume's black backless high-slit silk evening gown hangs open with its zipper fully undone, the fabric sliding off both sides to bare her flushed back and the curve of one side breast; thin sheer black stockings gleam on her legs as she weakly locks her arms around your neck and moans with half-lidded eyes, her tear-mole flushed red under the mix of bedside lamp and city neon.",
     "auditRevision": "careful-batch04-2026-08-27"
   },
@@ -579,7 +579,7 @@
       "medium_shot",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "双人床榻被窝",
     "weather": "温暖初晴",
     "camera": "平视近景特写",
@@ -587,12 +587,12 @@
     "usage": [
       "壁纸级",
       "绝对独占",
-      "R15"
+      "成人向"
     ],
-    "prompt": "1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, shirt, oversized_shirt, open_shirt, disheveled_clothes, bare_shoulders, nude, bare_legs, leaning_back, possessive, tsundere, teasing, smile, morning, cinematic, depth, field, medium_shot, morning_light, backlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "prompt": "adult, 1girl, natsume_r18, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, shirt, oversized_shirt, open_shirt, disheveled_clothes, bare_shoulders, nude, bare_legs, leaning_back, possessive, tsundere, teasing, smile, morning, cinematic, depth, field, medium_shot, morning_light, backlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
     "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, pants, underwear, bra, panties, child, loli, underage, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
     "storyJa": "【夏目・モーニングバキュームビッグシャツ絶対独占】限りなく怠惰な休日の朝、床から天井まで届く大きな窓から金色の夜明けの光が差し込みます。昨夜二日酔いの後、夏目は大きな白いベッドの真ん中で目を覚ましました。彼女はあなたの真っ黒な長袖シャツをラフに着ているだけで、中は完全に真空でした。シャツのボタンは大きく開き、前立ては丸い肩の両側に垂れ下がっています。長くて色白でまっすぐな脚が無造作に露出します。目尻の泣きぼくろが朝日に照らされて、どうしようもなくセクシーです。彼女は体を半分伸ばして横目であなたを見つめ、非常に独占的で傲慢な笑顔でささやきました。――「おはよう、この大変態。いつまで脚を見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "At a lazy holiday dawn with golden light streaming through the huge window, Shiki Natsume in the white bed wears only your oversized black long-sleeve shirt with every button undone, the open front hanging off her round shoulders and completely bare beneath; her pale slender legs are crossed and exposed as she props herself up on one elbow and slants a possessive, teasing glance at you, the tear-mole lit by the rising sunlight.",
     "auditRevision": "careful-batch12-2026-08-27"
   },
@@ -628,7 +628,7 @@
       "medium_shot",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "打烊后的私人吧台",
     "weather": "炙热",
     "camera": "主观俯视近景",
@@ -640,7 +640,7 @@
     "prompt": "1girl, solo, natsume_official_qipao, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_dark_crimson_silk_qipao_with_high_slit_torn_open_to_her_thigh_roots_by_you, ripped_qipao_revealing_smooth_white_absolute_domain_of_thighs, glossy_sheer_black_stockings_gleaming_in_dim_light, sitting_on_the_cold_private_bar_counter_surface, both_arms_locked_around_your_neck_pulling_you_into_a_deep_kiss, closed_eyes_with_heavy_blush_and_breathless_expression, tear_mole_flushed_dark_red_with_extreme_excitement, private_retro_lounge_booth_after_closing_with_spotlight_on_her_face, red_wine_and_warm_dim_atmosphere, cinematic_depth_of_field, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, white_thighhighs, cropped_feet, upper_body",
     "storyJa": "【夏目・シルクのチャイナドレスが高エネルギーを引き裂く】閉店後のレトロな個室ラウンジボックスは空いていて、赤ワインとちょっと熱めのホルモンで空気が満ちていました。普段は飄々として控えめなエージェントの女の子夏目が、顔を赤らめながら冷たいバーのテーブルに座っていた。極めてゴージャスな深紅のシルクハイスリットチャイナドレスが太ももの上まで激しく引き裂かれ、官能的な雪白の絶対領域が広範囲に露出している。彼女の脚にはセクシーな極薄の黒ストッキングが光の下で眩しく反射します。極度の興奮で目尻の泣きぼくろは真っ赤に染まっていた。彼女はあなたの首に腕をしっかりと巻きつけ、あなたを引き寄せてディープキスをしました。――「店長……任務はもう終わった。ここからは、私が大切なものを全部取り戻す番。」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "In the empty private booth of the vintage lounge after closing, Shiki Natsume sits on the cold bar counter in a gorgeous dark crimson silk high-slit qipao that you have torn open to her thigh roots, exposing smooth white thighs above the gleam of glossy black stockings; she locks both arms around your neck and pulls you into a deep kiss, her tear-mole flushed dark red with building excitement under the spotlight.",
     "auditRevision": "careful-batch11-2026-08-27"
   },
@@ -676,19 +676,19 @@
       "medium_shot",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "指挥官办公室桌上",
     "weather": "微热",
     "camera": "略微仰视近景特写",
     "lighting": "局部台灯打在面部强阴影",
     "usage": [
       "新手推荐",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, white_office_shirt, open_shirt, pencil_skirt_unzipped, garter_straps, torn_thighhighs, tight_straps, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, sitting_on_office_desk, leaning_back_on_hands, heavy_blush, biting_lip, panting, night, office_window_city_lights, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
     "storyJa": "【夏目・職場OLの狭いスカートが絶対波打つ】シークレットサービス指令センターのオフィスは深夜、人影もなく、散発的に都会のネオンがブラインドから差し込んでいた。寒い職場で、OL夏目は顔を真っ赤にして冷たい机の端に座っています。あなたは体の白いシャツのほとんどのボタンを外し、非常に魅力的な豊満な曲線を明らかにしています。あなたの脚のセクシーな黒ストッキングはあなたによって激しく引き裂かれ、滑らかで繊細な太ももの絶対領域が露出します。彼女は両手を背中の後ろでしっかりと握り、電気スタンドの強い影の下で目の端の泣きぼくろが非常に感情的で危険な赤面をにじみ出し、彼女は息を呑んでうめき声を上げました。――「店長……今夜の『秘密の越境尋問』は、あなたの勝ち。だからもう少しだけ……私のそばにいて。」",
-    "rating": "R15",
+    "rating": "R18",
     "auditRevision": "careful-batch11-2026-08-27",
     "animaCaption": "In the empty command center office at midnight with faint city neon seeping through the blinds, Shiki Natsume sits on the edge of the cold desk with her hands braced behind her, her white office shirt unbuttoned most of the way to reveal her alluring full curves, black stockings torn open over large patches of smooth bare thigh; she pants with parted lips, her tear-mole glowing with a dangerously aroused red in the harsh shadow of the desk lamp."
   },
@@ -906,7 +906,7 @@
       "medium_shot",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "双人床榻温热被窝",
     "weather": "温暖初晴",
     "camera": "近景特写",
@@ -914,12 +914,12 @@
     "usage": [
       "绝对独占",
       "壁纸级",
-      "R15"
+      "成人向"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, white_shirt, unbuttoned_collar, falling_strap, bare_shoulders, bare_legs, bottomless, sitting_leaning_back_on_bed, pulling_blanket_shyly, tsundere_side_glance, heavy_blush, bright_morning_sunlight, soft_white_sheets, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, oversized_shirt, white_shirt, unbuttoned_collar, falling_strap, bare_shoulders, bare_legs, bottomless, sitting_leaning_back_on_bed, pulling_blanket_shyly, tsundere_side_glance, heavy_blush, bright_morning_sunlight, soft_white_sheets, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, pajamas_pants, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・真空ビッグシャツの絶対的独占】物憂げな休日の早朝、金色の暁の光がフランス窓から差し込んでいた。昨夜の激しい絡み合いの後、心地よい布団から起き上がったナツメは、体の上にあなたのあの真っ黒な大きめのメンズシャツを緩く羽織っているだけで、中には何も身に着けていない真空状態だった。シャツのボタンはほとんど開いており、丸みを帯びたセクシーな肩の片側に斜めに掛けられ、広範囲にわたるキメ細かく白い美脚が無防備に重ねられて露出し、究極の曲線美の誘惑が余すところなく表れている。彼女は少し脱力した様子で体を半分支えながらあなたを斜めに見つめ、目尻の泣きぼくろが昇り始めた朝日に照らされていた。冷淡なツンデレの口調で必死に否定しているものの、完全に真っ赤になった耳の裏が彼女の果てしない愛着を裏切っていた――「……勘違いしないで。私はただ、この方が効率的だと思っただけ。服を全部あなたに汚されたんだから、何も着ないわけにはいかないでしょ。大変態、人の脚をずっと見てて飽きないわけ？ 見飽きたなら……こっち来て抱きしめて」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "On a lazy holiday morning after a fierce night together, Shiki Natsume sits up from the warm duvet wearing only your oversized black men's shirt with nearly every button undone, the fabric hanging diagonally off one round shoulder with nothing beneath; her fair long legs are crossed and fully exposed, and although she forces a calm tsundere denial while looking at you, her ears and neck are flushed to the roots, giving her dependence away in the golden dawn light.",
     "auditRevision": "careful-batch10-2026-08-27"
   },
@@ -1003,7 +1003,7 @@
       "medium_shot",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "温泉旅馆私密汤池边",
     "weather": "水汽氤氲",
     "camera": "近景平视特写",
@@ -1011,12 +1011,12 @@
     "usage": [
       "绝对独占",
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, small_white_bath_towel, towel_loosely_held_at_chest, exposed_breasts, bare_breasts, nipples, areola, bare_legs, wet_skin, water_droplets, sitting_at_poolside, steam_rising, outdoor_onsen, night, bamboo_fence, lantern_lighting, heavy_blush, panting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・客室露天の月下のぬくもり】深夜、静まり返った温泉旅館の客室露天風呂。湯上がりのナツメは白いバスタオルをまとい、全身にきらめく水滴を湛え、肌はほんのり桜色に上気していた。滑りやすい足元に足を取られ、彼女は思わず池の端に座るあなたの胸元へと倒れ込んでしまう。緩んだタオルが腰元まで滑り落ち、二人の距離は一瞬で零になった。ナツメは咄嗟にあなたの肩に手を置き、目尻の泣きぼくろを月光に震わせながら、真っ赤になった耳を隠すように呟く――「……勘違いしないで。ただ滑っただけ。……濡れたんだから、少しこのままでいなさい。……変なところ見ないでよね、聞こえた？」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "At the misty edge of the private onsen pool late at night, Shiki Natsume has just stepped out wrapped in only a narrow white mini towel, her body beaded with glistening water; she slips on the wet stone and tumbles straight into your lap, landing astride your thighs with the towel hanging loosely askew at her slender waist, her plump breasts fully exposed as she covers them with both hands in shame, red ears betraying her calm denial under the cold moonlight.",
     "auditRevision": "careful-batch13-2026-08-27"
   },
@@ -1147,7 +1147,7 @@
       "close_up",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "夏目公寓卧室双人床榻",
     "weather": "微热密闭",
     "camera": "近景主观正面特写",
@@ -1155,12 +1155,12 @@
     "usage": [
       "核心协议",
       "绝对独占",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sheer_babydoll, open-front_negligee, black_translucent_cloth, see-through, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_on_bed, grabbing_viewer_shirt_collar, teary_eyes, heavy_blush, panting, bedroom_night, warm_lamp, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・二人きりの寝室で】深夜、画面の淡い光だけが照らす静かな部屋。普段カフェで見せる冷淡さを解いたナツメは、部屋着のままあなたに寄り添っていた。温かな抱擁を受け止めながら、澄んだ金の瞳に潤みを帯び、耳まで紅潮させている。彼女はそっとあなたのシャツを掴み、震える声で呟いた――「……勘違いしないで。あなた相手なら、もう無理に強がらなくていいと思っただけ。……バカ、優しく抱きしめて」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "In the pitch-dark private bedroom of her apartment lit only by the faint computer glow, Shiki Natsume in a loose black home camisole and thin short pants with nothing beneath obediently sits astride your thighs; her hands grab your lapels to stop your teasing while her dead-fish eyes swim with shamed tears and her face and ears flush to the roots, her cool tsundere murmur trembling.",
     "auditRevision": "careful-batch10-2026-08-27"
   },
@@ -1195,7 +1195,7 @@
       "close_up",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "室内池边奢华皮质躺椅上",
     "weather": "水汽氤氲",
     "camera": "主观略微仰视近景特写",
@@ -1203,12 +1203,12 @@
     "usage": [
       "绝对独占",
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, front-tie_bikini, black_bikini_untied, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_at_poolside, water_lapping_bodies, wet_skin, water_droplets, clinging_wet_hair, heavy_blush, shy, teary_watery_eyes, night_pool, moonlight_reflections, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, fire, flames, burning ears, fiery ears, fire effects, text, watermark, signature, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・夜のプールサイド】深夜、静まり返った屋内プール。月明かりに濡れた紺のスク水姿のナツメは、プールサイドで足を滑らせ、デッキチェアのあなたの上へと倒れ込んでしまう。肌と肌が触れ合い、水滴が滴る中、目尻の泣きぼくろを揺らしながら耳を赤くして必死に平静を装う――「……勘違いしないで。足が滑っただけよ。……動かないで、少し息を整えるから。……バカ、どこ見てるの」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "Late at night beside the quiet rippling indoor landscape pool, Shiki Natsume in a dark navy swimsuit soaked through and clinging to her bare curves slips on the wet marble and tumbles astride onto your lap on the lounger, pressing flush against you with no gap; she grips your shoulders with a heavy blush and shamed watery eyes, keeping an impossibly calm voice under the cool moonlight and the swaying water reflections.",
     "auditRevision": "fix-no-burn-ears-sc237-2026-09-05"
   },
@@ -1292,7 +1292,7 @@
       "medium_shot",
       "depth_of_field"
     ],
-    "mature": false,
+    "mature": true,
     "location": "公寓主卧温热双人床中央",
     "weather": "微热密闭",
     "camera": "近景主观正面视线特写",
@@ -1300,12 +1300,12 @@
     "usage": [
       "绝对独占",
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, sheer_babydoll, black_translucent_cloth, see-through, bra_lift, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, sitting_straddling_viewer_on_futon, blushing_ears, golden_eyes, flushed_cheeks, night, dim_lamp_light, soft_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, fire, flames, burning ears, fire effects, text, watermark, signature, child, loli, underage, fully_clothed",
     "storyJa": "【夏目】【ナツメ・ルームウェアの余温と効率的密着】深夜、静まり返り居心地の良い、暖色系のベッドサイドランプだけが灯るマンションの寝室。ナツメは非常にクリーンで可愛らしい部屋着に着替えていた。身体にぴったりと密着した柔らかい純白のコットン製細キャミソールと快適なショートパンツのパジャマで、その中身は何も身に着けていない完全な真空状態だった。エアコンの冷気がベッド頭に直撃するため、寒がりの彼女はわずかに唇を噛み、無表情ながらも極めて能動的にベッドの端に座っていたあなたの大腿の上に跨り、しなやかな黒髪が温かい吐息と共にあなたの頬をかすめた。コットンの織物が身体のラインに合わせて、白く豊かな側乳と整った脚のラインを余すところなく描き出している。ジト目は羞恥の動揺で満たされ、真っ赤になった耳の裏が完全に暴露されているものの、口を開けば相変わらず効率を重んじる口調だった――「……勘違いしないで。これは最も合理的な部屋の温度管理対応プロトコル。冷気の直撃は明日のシフト効率を低下させるし、今こうして密着するのが最も早く体温均衡を達成できるの。大変態、手を乱雑に置かないで……聞こえた？」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "Deep at night in the warm master bedroom lit by a single amber bedside lamp, Shiki Natsume in a soft pure-white cotton strap camisole and comfortable short pajama pants with nothing beneath bites her lip against the cold draft and, expressionless, takes the initiative to sit astride your thighs at the bed edge, her soft black hair brushing your cheek with her warm breath; the cotton traces her fair side breasts and leg lines while her golden eyes waver with shame and her ears flushed deep crimson with embarrassment.",
     "auditRevision": "fix-no-burn-ears-2026-09-05"
   },
@@ -1353,7 +1353,7 @@
       "close_up",
       "pov"
     ],
-    "mature": false,
+    "mature": true,
     "location": "度假别墅二楼露天木质连廊躺椅上",
     "weather": "雨夜暖灯",
     "camera": "近景主观平视特写",
@@ -1361,12 +1361,12 @@
     "usage": [
       "绝对独占",
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, pov, white_dress, wet_clothes, wet_dress, see_through_clothing, no_bra, cleavage, bare_legs, sitting_on_bench, leaning_forward, close_up, looking_at_viewer, reaching_towards_viewer, red_ears, heavy_blush, shy_look, balcony, night, rainy_night, moonlight, shadows, sensual, lightning_light, backlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
     "storyJa": "【夏目】【ナツメ・別荘テラスの夜雨】深夜、急な激しい雨に見舞われた海辺のテラス。白いサマードレス姿のナツメは突風で傘を飛ばされ、全身が雨に濡れてしまう。風雨を避けるため、彼女は屋根下のデッキチェアにいたあなたの胸元へと飛び込み、肩にすがりついた。冷たい雨と温かな体温のコントラストの中、耳を真っ赤にしながら唇を噛みしめる――「……勘違いしないで、風が強すぎただけ。……寒いの、少し温まるまでこのままでいさせて。……抱きしめてるだけで、動かないでね」",
-    "rating": "R15",
+    "rating": "R18",
     "animaCaption": "On the windy resort balcony during a sudden rainstorm, Shiki Natsume in a drenched, translucent white sundress sits on the wooden bench, leaning in close toward the viewer with red ears and a shy, breathtaking blush under flashes of distant lightning."
   },
   {
@@ -1392,7 +1392,7 @@
       "adult",
       "natsume_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -1401,12 +1401,12 @@
       "官方CG灵感",
       "实机审核通过",
       "展示图",
-      "R15"
+      "成人向"
     ],
     "prompt": "natsume_r18, adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair_flowing_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "R15",
+    "rating": "R18",
     "officialCgCandidate": "ocs10",
     "audit": {
       "reviewer": "direct-vision",
@@ -1841,15 +1841,15 @@
       "medium_shot",
       "depth_of_field"
     ],
-    "mature": false,
-    "rating": "R15",
+    "mature": true,
+    "rating": "R18",
     "location": "高层酒店屋顶恒温无边泳池",
     "weather": "晴朗夏夜",
     "camera": "水中平视近景",
     "lighting": "池底蓝色灯光与城市夜景反射",
     "usage": [
       "壁纸级",
-      "R15"
+      "成人向"
     ],
     "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, micro_bikini, black_string_bikini, untied_bikini_top, exposed_breasts, bare_breasts, nipples, areola, string_panties, exposed_pussy, resting_back_against_pool_edge_in_water, pressing_forehead_gently_to_viewer, trembling_breath, golden_eyes, night_pool, blue_underwater_lights, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",

@@ -56,6 +56,7 @@
 | --- | --- |
 | 热门/场景批量调度 | showcase:batch --source popular 或 --source scenes |
 | 当前 MiaoMiao 批次 | showcase:batch-miaomiao |
+| 指定独立场景 MiaoMiao v1.2 候选（不发布） | showcase:scene-candidates --ids sc001,sc002 --output <新候选目录> |
 | 活跃 manifest 缺口补齐 | showcase:fill-gaps |
 | 生成、审核、发布 | showcase:generate / showcase:audit / showcase:audit:scene / showcase:publish |
 | 复合链路 | showcase:full（generate → audit → 发布预览） |
