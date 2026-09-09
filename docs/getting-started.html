@@ -4,10 +4,11 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新手教程 · 绫季绘境</title>
+<title>新手教程 · 绘遇 HUIYU</title>
 <link rel="stylesheet" href="../src/assets/css/design-system.css">
+<link rel="stylesheet" href="../src/assets/css/light-theme.css">
 <link rel="stylesheet" href="../css/docs.css?v=1">
-<script src="../tools/nav.js?v=8"></script>
+<script src="../tools/nav.js?v=9"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
   .subtitle { margin-bottom: var(--s-7); font-size: var(--fs-title-xs); }
@@ -49,7 +50,7 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-brand"><span class="sr-only">绫季绘境</span></div>
+    <div class="nav-brand"><span class="sr-only">绘遇 HUIYU</span></div>
     <div class="nav-links"></div>
   </div>
 </nav>
@@ -57,26 +58,26 @@
 <article class="page page-narrow">
   <a href="index.html" class="nav-back">← 手册</a>
 
-  <h1 class="title title-gradient">🧭 5 分钟上手</h1>
-  <p class="subtitle">从打开网站到看到你人生第一张 AI 生成的 Galgame CG 图，只需要记住三个步骤。</p>
+  <h1 class="title title-gradient">开始你的第一张 CG</h1>
+  <p class="subtitle">选场景、确认画面、生成并保存。先浏览灵感，再按自己的节奏开始创作。</p>
 
   <div class="prereq">
-    <h3>🗄 前提：你电脑上已经有 SD WebUI</h3>
+    <h3>生成前，确认绘图服务可用</h3>
     <ul>
-      <li>安装了 Stability Matrix 并在里面装好了 AUTOMATIC1111 / Forge / ReForge</li>
-      <li>WebUI 启动参数里加了 <code>--api --port 7860</code></li>
-      <li>用 <strong>control.bat</strong> 打开这个网站（而不是双击 index.html）</li>
+      <li>浏览参考画册与场景不需要先启动绘图模型。</li>
+      <li>生成需要对应的服务：SD 使用 WebUI，Anima / Krea 2 使用 ComfyUI。</li>
+      <li>在绘制台选择引擎并查看连接状态；服务未就绪时先完成配置。等待时间取决于设备、模型与画幅。</li>
     </ul>
-    <p class="note-sm">如果没有装好，先看 <a href="../STARTUP.md" target="_blank">STARTUP.md</a> 一步一步来。</p>
+    <p class="note-sm">本机用户可打开<a href="../control">控制面板</a>检查服务。远程访客请联系画室管理者确认生成权限与服务状态。</p>
   </div>
 
   <div class="step">
     <div class="step-num">1</div>
     <div class="step-body">
       <h2>浏览灵感场景</h2>
-      <p>打开顶栏的"灵感场景"，你会看到几百个精心整理的故事卡片。每个卡片都是一个可以立刻变成图的"想法"——故事、角色、季节、动作、表情全都写好了。</p>
-      <div class="tip">💡 如果你只是想先看看这个项目能出什么样子的图，先点"效果样张"浏览已经生成好的成品。</div>
-      <a class="cta" href="../scene-explorer">🌸 打开灵感场景 →</a>
+      <p>打开顶栏的「灵感」，浏览场景的故事、角色与画面设定；想寻找特定角色时，使用「角色场景」。</p>
+      <div class="tip">先到<a href="../showcase">参考画册</a>了解构图与风格。样张用于参考，每次生成不保证完全一致。</div>
+      <a class="cta" href="../scene-explorer">浏览灵感场景 →</a>
     </div>
   </div>
 
@@ -84,29 +85,29 @@
     <div class="step-num">2</div>
     <div class="step-body">
       <h2>选一个你喜欢的场景</h2>
-      <p>在搜索框里输入你想画的题材（比如"教室""夏日""咖啡"），或者直接浏览。找到心仪的场景后，卡片右下角会有一个<strong>"开始绘制"</strong>按钮。</p>
-      <p>这个按钮会带你进入「开始绘制」，自动填好这个场景的提示词、模型和出图参数。</p>
+      <p>搜索「教室」「夏日」「咖啡」等题材，打开喜欢的场景查看设定，再从场景进入绘制台。</p>
+      <p>场景设定会带入绘制台。生成前再次确认角色、服装、引擎与画幅，按需要调整画面。</p>
     </div>
   </div>
 
   <div class="step">
     <div class="step-num">3</div>
     <div class="step-body">
-      <h2>在开始绘制里出图</h2>
-      <p>点了「开始绘制」后会进入绘制页。右边是故事和画面选项（不用改，都给你调好了），左边是实时生成的提示词预览。</p>
-      <p>直接点底部那个大大的 <strong>「绘制这张 CG」</strong> 按钮。第一次生成大概需要几十秒到一分钟。等一会儿，图就出来了。</p>
-      <div class="tip">💡 如果你的 SD WebUI 还没启动，右下角会有提示。打开控制面板点一下启动就行。</div>
-      <a class="cta" href="../prompt-builder">✦ 打开开始绘制 →</a>
+      <h2>确认后生成图片</h2>
+      <p>确认画面与连接状态后，使用绘制台的生成按钮提交任务。打开「任务」查看执行进度。</p>
+      <p>生成失败时，先阅读页面提示并检查服务，再重试。模型、参数和随机种子都会影响最终画面。</p>
+      <div class="tip">先用一张图确认效果，再考虑批量创作。</div>
+      <a class="cta" href="../prompt-builder">打开绘制台 →</a>
     </div>
   </div>
 
   <div class="tip tip-success">
-    <strong>🎉 第一批图出来后——</strong><br>
-    你可以把喜欢的图存到作品册、给它打评分、加备注。下次想画类似图的时候，点一下「快速出图」就能用上次成功的参数再来一张。慢慢来，不着急。
+    <strong>生成后，保存你的作品</strong><br>
+    在<a href="../gallery">我的作品</a>回看已保存的图片，或回到首页继续最近的创作。重要作品请下载备份：本地档案与当前浏览器或桌面应用的数据有关，清理浏览器数据前先确认已保存。
   </div>
 
   <footer class="footer">
-    <p>绫季绘境 · 从故事到画面</p>
+    <p>绘遇 HUIYU · 从故事到画面</p>
     <p class="muted mt-4">还有疑问？去 <a href="index.html">创作手册</a> 看详细的创作标准。</p>
   </footer>
 </article>

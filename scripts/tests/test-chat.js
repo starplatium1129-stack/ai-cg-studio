@@ -829,6 +829,9 @@ async function run() {
     });
     assert((cssResponse.headers.get('cache-control') || '').includes('max-age=86400'), 'versioned CSS and JS should use a one-day browser cache');
     assert(cssResponse.headers.get('content-encoding') === 'gzip', 'text assets larger than 1 KB should be compressed');
+    var lightCssResponse = await fetch(gatewayBase + '/src/assets/css/light-theme.css');
+    assert(lightCssResponse.ok && (await lightCssResponse.text()).includes(':root[data-theme="light"]'), 'documentation must receive the shared light theme');
+    assert((await fetch(gatewayBase + '/src/assets/css/home.css')).status === 404, 'documentation styles must not expose unrelated source files');
 
     var dataResponse = await fetch(gatewayBase + '/data/scenes.json');
     assert((dataResponse.headers.get('cache-control') || '').includes('immutable'), 'data files are cached immutable; freshness is versioned by ?v=DATA_VERSION and enforced by validate-content-contracts');

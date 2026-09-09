@@ -168,9 +168,9 @@ function createGateway(options) {
   });
   app.use('/css', express.static(path.join(config.ROOT_DIR, 'css'), staticOptions(ONE_DAY)));
   // docs/*.html 引用设计系统的唯一一份实现（src/assets/css）。
-  // 之前 css/ 下有一份分叉副本，token 已经开始漂移；只暴露这一个文件而不是整个 src/。
+  // 只提供深浅主题的两份共享样式，不开放整个 src/。
   app.use('/src/assets/css', function (req, res, next) {
-    if (req.path !== '/design-system.css') return res.status(404).end();
+    if (!['/design-system.css', '/light-theme.css'].includes(req.path)) return res.status(404).end();
     next();
   }, express.static(path.join(config.ROOT_DIR, 'src', 'assets', 'css'), staticOptions(ONE_DAY)));
   // Live2D manifests reference unhashed moc/texture/motion files. Revalidate

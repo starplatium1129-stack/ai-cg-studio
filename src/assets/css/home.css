@@ -95,7 +95,7 @@
   .hero-jp { display: none; }
   .orbit-label { padding-inline: var(--s-5); }
   .hero-register { margin-bottom: var(--s-4); }
-  .hero-orbit { grid-row: 1; height: 380px; }
+  .hero-orbit { height: 380px; }
   .hero-orbit::after { background: linear-gradient(0deg, var(--bg-deep), transparent 45%); }
   .hero-title { font-size: clamp(2.4rem, 7vw, 3.8rem); }
   .recent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

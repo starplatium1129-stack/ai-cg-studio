@@ -23,7 +23,7 @@ test('home character selection keeps artwork, caption and accent together', asyn
   expect(amber).not.toBe(violet)
   expect(await hero.locator('.hero-character.is-current').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
   await expect(page.locator('.sakura-fall')).toHaveCount(0)
-  await expect(page.locator('#continueCta')).toHaveAttribute('href', '/showcase')
+  await expect(page.locator('#continueCta')).toHaveAttribute('href', '/scene-explorer')
 })
 
 test('reduced motion stops character transitions', async ({ page }) => {

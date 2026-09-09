@@ -18,7 +18,8 @@ export default defineConfig(async ({ mode }) => {
       configureServer(server) {
         server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: (err?: unknown) => void) => {
           const url = req.url ?? ''
-          if (!url.startsWith('/assets/') || url.includes('import')) return next()
+          // JSON module imports must reach Vite; runtime data still comes from the gateway.
+          if ((!url.startsWith('/assets/') && !url.startsWith('/data/')) || new URL(url, 'http://localhost').searchParams.has('import')) return next()
           return createProxyMiddleware({
             target: 'http://127.0.0.1:3000',
             changeOrigin: true
@@ -58,7 +59,7 @@ export default defineConfig(async ({ mode }) => {
       '/adetailer':   { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/scene-showcase': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/character-references': { target: 'http://127.0.0.1:3000', changeOrigin: true },
-      '/data':        { target: 'http://127.0.0.1:3000', changeOrigin: true },
+      '/docs':        { target: 'http://127.0.0.1:3000', changeOrigin: true },
       // dev 模式下 tools/ 由 Express 提供，Vite 需转发
       // （/assets/ 见上方 express-assets-conditional-proxy 插件）
       '/tools':       { target: 'http://127.0.0.1:3000', changeOrigin: true }

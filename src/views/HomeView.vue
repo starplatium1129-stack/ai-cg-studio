@@ -3,12 +3,12 @@
     <section class="container home-opening" aria-label="画室序章">
       <div class="home-hero" :data-muse="homeMuse">
         <div class="hero-copy">
-          <span class="hero-register">ANIME · CG · STORIES</span>
-          <h1 class="hero-title">心动的世界，<br /><span class="hero-title-accent">不止于想象。</span></h1>
-          <p class="hero-sub">一本写给二次元的影像手帖。<br />收藏喜欢的角色、光影，与故事里的日常。</p>
+          <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
+          <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
+          <p class="hero-sub">选角色、挑场景，用 AI 生成二次元 CG。<br />从现成灵感开始，也能自己编排画面与光影。</p>
           <div class="ctas">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
-            <RouterLink :to="museSceneLink" class="btn btn-lg btn-ghost">和{{ homeMuse === 'nene' ? '宁宁' : '夏目' }}开始 <ArchiveIcon name="spark" /></RouterLink>
+            <RouterLink to="/showcase" class="btn btn-lg btn-ghost">先看参考样张 <ArchiveIcon name="image" /></RouterLink>
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses" role="group" aria-label="首页角色视觉">
@@ -26,6 +26,7 @@
       </div>
     </section>
 
+    <HomeCreationGuide />
     <HomeArtJournal :scenes="featuredScenes" />
 
     <section class="container home-inspiration" aria-label="场景与角色灵感">
@@ -67,7 +68,7 @@
           <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
-        <RouterLink :to="museSceneLink" class="tool-card card-create card-level-2">
+        <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">02 / SCENE</span>
           <span class="ic"><ArchiveIcon name="scene" /></span><span class="t">灵感场景</span>
           <span class="d">{{ sceneLibraryCopy }}</span>
@@ -176,7 +177,7 @@
             :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
           >
             <div class="recent-cover" :data-image-id="h.image_id">
-              <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" class="recent-cover-img" />
+              <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" class="recent-cover-img" loading="lazy" decoding="async" />
               <ArchiveIcon v-else name="image" class="placeholder" />
             </div>
             <div class="recent-body">
@@ -196,6 +197,7 @@ import { ref, computed, onMounted, onUnmounted, reactive } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
+import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
@@ -213,9 +215,9 @@ useScrollReveal()
 const DRAFT_KEY = 'aics_pb_last_draft'
 
 const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
-const continueIconName = ref<ArchiveIconName>('image')
-const continueLink = ref({ to: '/showcase', label: '翻开参考画册' })
-const continueHint = ref('')
+const continueIconName = ref<ArchiveIconName>('spark')
+const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
+const continueHint = ref('先选喜欢的画面；确认参数后再生成。')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 
 const recentWorks = ref<ArtworkRecord[]>([])
@@ -224,7 +226,6 @@ const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 const homeMuse = ref<'nene' | 'natsume'>('nene')
-const museSceneLink = computed(() => `/scene-explorer?character=${homeMuse.value}`)
 // Bundled approved covers are authoritative; copied showcase editions may contain older home art.
 const heroAssets = Object.freeze({
   nene: '/assets/characters/nene-home-cg-1024.webp',
@@ -364,7 +365,7 @@ async function loadRecentWorks() {
 
 onMounted(async () => {
   initContinueDraft()
-  await loadSceneHighlights()
+  void loadSceneHighlights()
   try {
     await kvInit()
     await loadRecentWorks()

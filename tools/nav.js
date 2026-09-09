@@ -14,11 +14,11 @@
   // 用户可见的导航项(创作流,概念已折叠)
   // Create = 全站最大入口,Director 为内部实现名,对用户隐身
   var PRIMARY_NAV = [
-    { id:'scene',     label:'灵感场景',       href:'scene-explorer', icon:'🌸' },
-    { id:'director',  label:'开始绘制',       href:'prompt-builder', icon:'✦' },
-    { id:'chat',      label:'角色房间',       href:'chat',           icon:'☕' },
-    { id:'showcase',  label:'效果样张',       href:'showcase',       icon:'🖼' },
-    { id:'gallery',   label:'作品册',         href:'gallery',        icon:'🎞' }
+    { id:'scene',     label:'灵感',           href:'scene-explorer', icon:'🌸' },
+    { id:'director',  label:'绘制',           href:'prompt-builder', icon:'✦' },
+    { id:'chat',      label:'房间',           href:'chat',           icon:'☕' },
+    { id:'showcase',  label:'参考画册',       href:'showcase',       icon:'🖼' },
+    { id:'gallery',   label:'我的作品',       href:'gallery',        icon:'🎞' }
   ];
   var SECONDARY_NAV = [
     { id:'guide',      label:'新手教程',       href:'docs/getting-started.html',  icon:'🧭' },
@@ -47,7 +47,7 @@
     if (document.querySelector('style[data-nav-style]')) return;
     var style = document.createElement('style');
     style.dataset.navStyle = 'true';
-    style.textContent = '.nav-logo{height:32px;width:auto}';
+    style.textContent = '.nav-logo{height:32px;width:auto}.nav-logo-light{display:none}[data-theme="light"] .nav-logo-dark{display:none}[data-theme="light"] .nav-logo-light{display:inline}';
     document.head.appendChild(style);
   }
 
@@ -60,7 +60,7 @@
     if (brand) {
       brand.setAttribute('role', 'link');
       brand.tabIndex = 0;
-      brand.innerHTML = '<img class="nav-logo" src="' + d + 'assets/logo.svg" alt="绫季绘境" aria-hidden="true"><span class="sr-only">绫季绘境</span>';
+      brand.innerHTML = '<img class="nav-logo nav-logo-dark" src="' + d + 'assets/logo.svg" alt="" aria-hidden="true"><img class="nav-logo nav-logo-light" src="' + d + 'assets/logo-light.svg" alt="" aria-hidden="true"><span class="sr-only">绘遇 HUIYU</span>';
       brand.onclick = function(){ window.location.href = brandLink(); };
       brand.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = brandLink(); } };
     }
