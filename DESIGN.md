@@ -394,9 +394,11 @@ subtle behind controls and fully legible on character or result-focused pages.
 ## Character presence and operational clarity
 
 Discovery uses readable character artwork and a brief line of dialogue, with the
-same integrated lower-edge caption treatment as home. Do not reintroduce a
-technical particle scanner in place of the character. On phones, shorten the
-introduction so search remains visible in the first viewport.
+same integrated lower-edge caption treatment as home. The character scene library
+preserves its interactive character particle portraits as a signature brand feature,
+including character-switch reassembly and pointer feedback. Do not replace these
+portraits with static images as a general simplification. Keep particles clear of
+reading and control areas, and respect reduced-motion preferences.
 
 Invitations can be emotional; action labels, progress, and failures must be
 literal and useful. Missing previews are explicitly labeled. Resource filenames
