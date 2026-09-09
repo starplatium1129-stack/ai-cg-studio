@@ -73,7 +73,8 @@ function errorMessage(error: unknown): string {
 /** 包装 wl-live2d model 为统一句柄（原 useLive2D 中对 model 的全部操作都在这里） */
 function wrapModel(model: WlLive2DModel): Live2DModelHandle {
   return {
-    visible: model.visible,
+    get visible() { return model.visible },
+    set visible(value: boolean) { model.visible = value },
     motion(group, index, priority) {
       if (typeof model.motion !== 'function') return false
       return model.motion(group, index, priority)
@@ -132,6 +133,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
       if (typeof document === 'undefined') throw new Error('wl-live2d 需要浏览器 DOM')
       let app: WlLive2DApp
       let modelHandle: Live2DModelHandle | null = null
+      let destroyed = false
       let screenSize = { width: options.canvasWidth, height: options.canvasHeight }
 
       app = library.wlLive2d({
@@ -166,6 +168,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
         capability: BROWSER_CAPABILITY,
         onModelLoaded(callback) {
           app.onModelLoaded((model) => {
+            if (destroyed) { model.visible = false; return }
             modelHandle = wrapModel(model)
             screenSize = {
               width: Number(app.app?.screen?.width) || options.canvasWidth,
@@ -175,15 +178,17 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           })
         },
         onModelError(callback) {
-          app.onModelError(callback)
+          app.onModelError(error => { if (!destroyed) callback(error) })
         },
         setPaused(paused) {
+          if (destroyed) return
           const ticker = app.app?.ticker
           if (!ticker) return
           if (paused) { if (ticker.started) ticker.stop(); return }
           if (!ticker.started) ticker.start()
         },
         setMaxFps(fps) {
+          if (destroyed) return
           const ticker = app.app?.ticker
           if (ticker) ticker.maxFPS = fps
         },
@@ -199,6 +204,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           }
         },
         setStageScale(scale) {
+          if (destroyed) return
           if (typeof document === 'undefined') return
           const host = document.querySelector<HTMLElement>(options.selector)
           const wrapper = host?.firstElementChild as HTMLElement | null
@@ -211,6 +217,10 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           return host?.querySelector('canvas') ?? null
         },
         destroy() {
+          if (destroyed) return
+          destroyed = true
+          const ticker = app.app?.ticker
+          if (ticker?.started) ticker.stop()
           if (modelHandle) modelHandle.visible = false
           modelHandle = null
           if (typeof app.destroy === 'function') { try { app.destroy() } catch { /* 与原 destroyRuntime 一致 */ } }

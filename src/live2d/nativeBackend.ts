@@ -71,7 +71,9 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       // 表面抖动。参数未变时整条 IPC 直接跳过，位置同步不依赖它（Rust 侧自己
       // 按 Companion HWND 跟随）。2026-08-30 桌宠表面闪烁修复。
       let pushedFrame: { rect: { x: number; y: number; width: number; height: number }; visible: boolean } | null = null
+      let pushedFps: { value: number } | null = null
       const pushFrame = () => {
+        if (destroyed) return
         if (
           pushedFrame
           && pushedFrame.visible === lastVisible
@@ -80,8 +82,12 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           && pushedFrame.rect.width === lastRect.width
           && pushedFrame.rect.height === lastRect.height
         ) return
-        pushedFrame = { rect: { ...lastRect }, visible: lastVisible }
-        void Promise.resolve(bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1 })).catch(() => {})
+        const frame = { rect: { ...lastRect }, visible: lastVisible }
+        pushedFrame = frame
+        void Promise.resolve(bridge.setFrame({ ...frame, opacity: 1 })).catch(() => {
+          // 只撤销失败请求自己的缓存，旧失败不能覆盖较新的成功更新。
+          if (pushedFrame === frame) pushedFrame = null
+        })
       }
 
       const pushGaze = (x: number, y: number) => {
@@ -126,19 +132,22 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       const handle: Live2DModelHandle = {
         visible: true,
         motion(group, index, priority) {
+          if (destroyed) return false
           return bridge.playMotion(group, index, PRIORITY_MAP[priority ?? 3] ?? 'force')
             .then((result) => result.ok)
             .catch(() => false)
         },
         expression(name) {
+          if (destroyed) return false
           return bridge.setExpression(name)
             .then((result) => result.ok)
             .catch(() => false)
         },
         hitTest(x, y) {
+          if (destroyed) return []
           void bridge.hitTest(x, y).then((result) => {
             if (!destroyed) for (const listener of hitTestListeners) listener(result.areas)
-          })
+          }).catch(() => { /* 窗口关闭或桥断开时忽略已失效的点击查询 */ })
           return []
         },
         focus() { /* 原生端凝视由 Rust 经 setGaze 驱动，桌面场景用全局鼠标 */ },
@@ -159,43 +168,58 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           if (!destroyed) callback(handle)
         },
         onModelError(callback) {
+          if (destroyed) return
           errorListeners.add(callback)
         },
         setPaused(paused) {
+          if (destroyed) return
           lastVisible = !paused
           pushFrame()
         },
         setMaxFps(fps) {
+          if (destroyed) return
           // 原生渲染线程接电目标 165fps；上限放行到 165，不被浏览器 120 限制。
-          void Promise.resolve(bridge.setMaxFps(Math.max(24, Math.min(165, Math.round(fps) || 60)))).catch(() => {})
+          const value = Math.max(24, Math.min(165, Math.round(fps) || 60))
+          if (pushedFps?.value === value) return
+          const request = { value }
+          pushedFps = request
+          void Promise.resolve(bridge.setMaxFps(value)).catch(() => {
+            if (pushedFps === request) pushedFps = null
+          })
         },
         getScreenSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         getCanvasSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         setStageScale() { /* overlay 尺寸由 live2dOverlayLayout 计算后经 updateOverlay 下发 */ },
         updateOverlay(rect, visible) {
-          lastRect = rect
+          if (destroyed) return
+          lastRect = { ...rect }
           lastVisible = visible
           pushFrame()
         },
         canvasElement() { return null },
         onNativeHitTest(callback) {
+          if (destroyed) return () => {}
           hitTestListeners.add(callback)
           return () => { hitTestListeners.delete(callback) }
         },
         onMotionFailed(callback) {
+          if (destroyed) return () => {}
           motionFailedListeners.add(callback)
           return () => { motionFailedListeners.delete(callback) }
         },
         sendMouthLevel(level) {
+          if (destroyed) return
           void Promise.resolve(bridge.setMouthLevel(Math.max(0, Math.min(1, level)))).catch(() => {})
         },
         sendEmotion(name, intensity) {
+          if (destroyed) return
           void Promise.resolve(bridge.setEmotion(name, Math.max(0, Math.min(1, intensity)))).catch(() => {})
         },
         sendGaze(x, y) {
           pushGaze(Math.max(-1, Math.min(1, x)), Math.max(-1, Math.min(1, y)))
         },
         destroy() {
+          if (destroyed) return
           destroyed = true
           queuedGaze = null
           hitTestListeners.clear()

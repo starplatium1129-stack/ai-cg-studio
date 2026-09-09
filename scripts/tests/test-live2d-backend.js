@@ -335,6 +335,77 @@ test('Live2DNativeBridge 契约：命令与事件方法齐全', () => {
 
 // ---------- stub 桥 ----------
 
+test('原生后端：相同帧率不重复发送，失败后允许下一次重试', async () => {
+  const bridge = createStubBridge();
+  let reject;
+  bridge.setMaxFps = fps => {
+    bridge.calls.setMaxFps.push([fps]);
+    return new Promise((_, fail) => { reject = fail; });
+  };
+  const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  for (let i = 0; i < 120; i++) session.setMaxFps(60);
+  assert.equal(bridge.calls.setMaxFps.length, 1);
+  reject(new Error('IPC unavailable'));
+  await new Promise(resolve => setImmediate(resolve));
+  session.setMaxFps(60);
+  assert.equal(bridge.calls.setMaxFps.length, 2);
+  session.destroy();
+});
+
+test('原生后端：失败帧可重试，迟到的旧失败不清除新帧缓存', async () => {
+  const bridge = createStubBridge();
+  const failures = [];
+  bridge.setFrame = frame => {
+    bridge.calls.setFrame.push([frame]);
+    return new Promise((_, reject) => failures.push(reject));
+  };
+  const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  const rect = { x: 0, y: 0, width: 300, height: 480 };
+  session.updateOverlay(rect, true);
+  failures[0](new Error('first failure'));
+  await new Promise(resolve => setImmediate(resolve));
+  session.updateOverlay(rect, true);
+  assert.equal(bridge.calls.setFrame.length, 2);
+  session.updateOverlay({ ...rect, x: 10 }, true);
+  failures[1](new Error('old failure'));
+  await new Promise(resolve => setImmediate(resolve));
+  session.updateOverlay({ ...rect, x: 10 }, true);
+  assert.equal(bridge.calls.setFrame.length, 3);
+  session.destroy();
+});
+
+test('原生后端：销毁幂等，旧句柄和会话不能再发命令', async () => {
+  const bridge = createStubBridge();
+  const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  let handle;
+  session.onModelLoaded(model => { handle = model; });
+  session.destroy();
+  session.destroy();
+  session.setPaused(false);
+  session.updateOverlay({ x: 0, y: 0, width: 300, height: 480 }, true);
+  session.setMaxFps(60);
+  session.sendMouthLevel(1);
+  session.sendEmotion('happy', 1);
+  session.sendGaze(0, 0);
+  assert.equal(await handle.motion('TapHead'), false);
+  assert.equal(await handle.expression('school'), false);
+  assert.deepEqual(handle.hitTest(0.5, 0.5), []);
+  for (const [name, calls] of Object.entries(bridge.calls)) {
+    assert.equal(calls.length, ['setCharacter', 'destroy'].includes(name) ? 1 : 0, name);
+  }
+});
+
+test('原生后端：点击查询拒绝不会产生未处理异常', async () => {
+  const bridge = createStubBridge();
+  bridge.hitTest = async () => { throw new Error('closed'); };
+  const session = await createNativeLive2DBackend(() => bridge).connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  let handle;
+  session.onModelLoaded(model => { handle = model; });
+  assert.deepEqual(handle.hitTest(0.5, 0.5), []);
+  await new Promise(resolve => setImmediate(resolve));
+  session.destroy();
+});
+
 function createStubBridge() {
   const calls = {
     setCharacter: [],
