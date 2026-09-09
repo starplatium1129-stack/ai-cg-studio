@@ -19,7 +19,26 @@ function customizeTemplate(source, background, uiFile) {
   const escapePath = value => value.replace(/\$/g, '$$$$');
   let output = replaceOnce(source, '; Installer pages, must be ordered as they appear',
     `!define GAME_BACKGROUND "${escapePath(background)}"\n!define GAME_ASSET_DIR "${escapePath(path.dirname(background))}"\n!include "${escapePath(uiFile)}"\n\n; Installer pages, must be ordered as they appear`);
-  output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绫季绘境 · 安装旅程"');
+  output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绘遇 · 安装旅程"');
+  // Display branding is separate from PRODUCTNAME: that name is the legacy
+  // uninstall registry key and installation directory used by update discovery.
+  output = replaceOnce(output, 'WriteRegStr SHCTX "${UNINSTKEY}" "DisplayName" "${PRODUCTNAME}"', 'WriteRegStr SHCTX "${UNINSTKEY}" "DisplayName" "绘遇 · HUIYU"');
+  output = replaceOnce(output, 'VIAddVersionKey "ProductName" "${PRODUCTNAME}"', 'VIAddVersionKey "ProductName" "绘遇 · HUIYU"');
+  output = replaceOnce(output, 'VIAddVersionKey "FileDescription" "${PRODUCTNAME}"', 'VIAddVersionKey "FileDescription" "绘遇安装器"');
+  output = output.replaceAll('${PRODUCTNAME}.lnk', '绘遇 HUIYU.lnk');
+  // Rename only an existing shortcut targeting this installation. Preserve the
+  // user's no-shortcut choice and never overwrite an unrelated named shortcut.
+  const migrateShortcut = location => `
+  !insertmacro IsShortcutTarget "${location}\\\${PRODUCTNAME}.lnk" "$INSTDIR\\\${MAINBINARYNAME}.exe"
+  Pop $0
+  \${If} $0 = 1
+    \${IfNot} \${FileExists} "${location}\\绘遇 HUIYU.lnk"
+      Rename "${location}\\\${PRODUCTNAME}.lnk" "${location}\\绘遇 HUIYU.lnk"
+    \${EndIf}
+  \${EndIf}
+`;
+  output = replaceOnce(output, 'Function CreateOrUpdateDesktopShortcut', 'Function CreateOrUpdateDesktopShortcut' + migrateShortcut('$DESKTOP'));
+  output = replaceOnce(output, 'Function CreateOrUpdateStartMenuShortcut', 'Function CreateOrUpdateStartMenuShortcut' + migrateShortcut('$SMPROGRAMS') + migrateShortcut('$SMPROGRAMS\\$AppStartMenuFolder'));
   output = replaceOnce(output, '!define INSTALLERICON "{{installer_icon}}"', `!define INSTALLERICON "${escapePath(path.resolve(path.dirname(uiFile), '../icons/icon.ico'))}"`);
   output = replaceOnce(output, '!define MUI_PAGE_CUSTOMFUNCTION_PRE SkipIfPassive\n!insertmacro MUI_PAGE_WELCOME', 'Page custom GameWelcome');
   output = replaceOnce(output, '!define MUI_PAGE_CUSTOMFUNCTION_PRE SkipIfPassive\n!insertmacro MUI_PAGE_DIRECTORY', 'Page custom GameDirectory GameDirectoryLeave');
@@ -63,7 +82,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
   await bitmap(path.join(INSTALLER, 'atelier-keyart.png'), background);
   const leftArt = await sharp(path.join(INSTALLER, 'atelier-keyart.png')).resize(1920, 1200).extract({ left: 0, top: 0, width: 998, height: 1200 }).png().toBuffer();
   await bitmap(leftArt, path.join(generated, 'atelier-left.bmp'), 998, 1200);
-  for (const [name, label] of Object.entries({ welcome: '开始旅程  →', install: '安装绘境  →', continue: '继续  →', finish: '进入绘境  →', cancel: '暂别', back: '返回' })) {
+  for (const [name, label] of Object.entries({ welcome: '开始旅程  →', install: '安装绘遇  →', continue: '继续  →', finish: '进入绘遇  →', cancel: '暂别', back: '返回' })) {
     const secondary = name === 'cancel' || name === 'back';
     const width = secondary ? 280 : 440;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="72"><rect width="${width}" height="72" fill="${secondary ? '#252b43' : '#e7bcd2'}"/><text x="${width / 2}" y="47" text-anchor="middle" font-family="Microsoft YaHei UI" font-size="32" font-weight="600" fill="${secondary ? '#f6f0fa' : '#14192d'}">${label}</text></svg>`;

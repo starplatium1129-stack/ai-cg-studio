@@ -435,7 +435,7 @@ function startGateway(options) {
 
   var server = gateway.app.listen(config.PORT, config.HOST, function () {    console.log('');
     console.log('  ══════════════════════════════════════════');
-    console.log('  🔗 绫季绘境 联机网关已启动');
+    console.log('  🔗 绘遇 · HUIYU 联机网关已启动');
     console.log('  📗 端口: ' + config.PORT);
     console.log('  🛡️ 监听: ' + config.HOST);
     console.log('  🎨 SD 后端: ' + config.SD_HOST);

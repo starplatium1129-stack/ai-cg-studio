@@ -27,7 +27,7 @@ async fn notify_if_update_available(app: &AppHandle) -> Result<(), String> {
     let _ = app.emit("desktop-update-found", version.clone());
     app.notification()
         .builder()
-        .title("AI-CG-Studio 有新版本")
+        .title("绘遇 · HUIYU 有新版本")
         .body(format!("发现 {version}，到控制面板可一键升级。"))
         .show()
         .map_err(|error| error.to_string())?;

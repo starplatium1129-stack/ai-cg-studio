@@ -47,7 +47,7 @@ namespace Ayaki.Installer {
       if (options.Update) shortcut.Visibility = Visibility.Collapsed;
       Get<TextBlock>("VersionText").Text = "V" + PayloadInfo.Version + "  ·  WINDOWS x64";
       Get<TextBlock>("ExistingText").Text = String.IsNullOrEmpty(installed.Version) ? "" : "已安装 " + installed.Version;
-      SetAction(String.IsNullOrEmpty(installed.Version) ? "安装绘境" : installed.Version == PayloadInfo.Version ? "重新安装" : "更新绘境");
+      SetAction(String.IsNullOrEmpty(installed.Version) ? "安装绘遇" : installed.Version == PayloadInfo.Version ? "重新安装" : "更新绘遇");
       if (options.Preview) Get<TextBlock>("Footnote").Text = "界面预览 · 不会安装或修改现有软件";
       ApplyTheme(options.Theme == "light");
       RefreshSpace();
@@ -76,10 +76,10 @@ namespace Ayaki.Installer {
       light = value;
       string[] names = { "Surface", "Card", "Line", "Text", "Muted", "Disabled", "DisabledText", "Error", "Success" };
       string[] colors = value
-        ? new [] { "#F5F3EE", "#FFFFFF", "#B7BEC7", "#1D2A39", "#536173", "#E5E7EA", "#526173", "#A32642", "#236A50" }
-        : new [] { "#101923", "#182330", "#334354", "#ECF0F6", "#ADB9C9", "#27374A", "#B0BECE", "#FFBBC9", "#A8D8C6" };
+        ? new [] { "#FFF8F4", "#FFFFFF", "#B7BEC7", "#211C30", "#536173", "#E5E7EA", "#526173", "#A32642", "#236A50" }
+        : new [] { "#211C30", "#272135", "#334354", "#FFF8F4", "#ADB9C9", "#27374A", "#B0BECE", "#FFBBC9", "#A8D8C6" };
       for (int i = 0; i < names.Length; i++) View.Resources[names[i]] = Color(colors[i]);
-      View.Resources["ProgressColor"] = Color(value ? "#876638" : "#E0CBA5");
+      View.Resources["ProgressColor"] = Color(value ? "#92365F" : "#F2A8BE");
       View.Resources["ControlLine"] = Color(value ? "#7B899A" : "#657D96");
       Get<Button>("ThemeButton").Content = value ? "切换深色" : "切换浅色";
     }
@@ -140,10 +140,10 @@ namespace Ayaki.Installer {
       sweep.BeginAnimation(TranslateTransform.XProperty, null); sweepBar.Visibility = Visibility.Collapsed; scale.ScaleX = 1;
       Get<TextBlock>("ExistingText").Text = "已安装 " + PayloadInfo.Version;
       status.Text = "安装完成"; status.SetResourceReference(TextBlock.ForegroundProperty, "Success");
-      Get<TextBlock>("HeroTitle").Text = "绘境已就绪";
+      Get<TextBlock>("HeroTitle").Text = "绘遇已就绪";
       Get<TextBlock>("HeroSubtitle").Text = "你的角色与故事，正在等待下一次相遇。";
       space.Text = "已安装至 " + directory.Text;
-      SetAction("进入绘境"); main.IsEnabled = true;
+      SetAction("进入绘遇"); main.IsEnabled = true;
       directory.IsReadOnly = true; browse.IsEnabled = false; shortcut.IsEnabled = false;
     }
     private void Reset(string error) {

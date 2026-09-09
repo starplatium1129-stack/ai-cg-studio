@@ -124,7 +124,7 @@ const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
 
 const PAGES: PageItem[] = [
-  { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绫季绘境' },
+  { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绘遇' },
   { id: 'director', label: '开始绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 导演台 prompt 出图' },
   { id: 'video', label: 'AI 视频创作', icon: 'play', path: '/video-studio', keywords: '视频 动画 本地模型 wan comfyui' },
   { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },

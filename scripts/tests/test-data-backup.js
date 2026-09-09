@@ -51,8 +51,8 @@ assert.equal(legacyMerged.length, 2);
 assert.equal(legacyMerged[0].prompt, 'legacy imported');
 
 assert.throws(() => backup.normalizeBackup({ schemaVersion:99 }), /更新版本/);
-assert.throws(() => backup.normalizeBackup({ schemaVersion:1, type:'other-backup', data:{} }), /不是绫季绘境备份/);
-assert.throws(() => backup.normalizeBackup({ schemaVersion:2, app:'other-app', data:{ settings:{ key:'value' } } }), /不是绫季绘境备份/);
+assert.throws(() => backup.normalizeBackup({ schemaVersion:1, type:'other-backup', data:{} }), /不是绘遇备份/);
+assert.throws(() => backup.normalizeBackup({ schemaVersion:2, app:'other-app', data:{ settings:{ key:'value' } } }), /不是绘遇备份/);
 assert.throws(() => backup.normalizeBackup({ foo:'bar' }), /不包含可恢复/);
 assert.throws(() => backup.normalizeBackup(null), /有效对象/);
 assert.throws(() => backup.normalizeBackup({

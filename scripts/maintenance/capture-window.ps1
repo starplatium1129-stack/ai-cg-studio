@@ -1,7 +1,7 @@
 # capture-window.ps1 — 窗口级截图（PrintWindow 截取指定窗口，不截桌面）
-# 用法: powershell -File capture-window.ps1 -Title "绫季 Companion" -Out "out.png" [-Pid 1234]
+# 用法: powershell -File capture-window.ps1 -Title "绘遇 Companion" -Out "out.png" [-Pid 1234]
 param(
-  [string]$Title = '绫季 Companion',
+  [string]$Title = '绘遇 Companion',
   [string]$Out = '',
   [int]$ProcessId = 0,
   [int]$Scale = 2

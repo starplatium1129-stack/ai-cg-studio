@@ -1,5 +1,5 @@
 /* ============================================================
-   绫季绘境 · Color mood cards
+   绘遇 · Color mood cards
    原先同一组件在 css/director.css、tools/color-script.html、tools/style.html
    三处各有一份不同取值(网格列宽/圆角/色带高度/字号)。此处收敛为一份基准
    + 两个尺寸修饰类,尺寸差异用 .mood-grid-sm / .mood-grid-lg 表达。

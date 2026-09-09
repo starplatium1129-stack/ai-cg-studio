@@ -1,4 +1,4 @@
-# Lingji Atelier · 绫季绘境
+# 绘遇 · HUIYU
 
 > A local creative studio for turning story moments into Galgame-style AI CGs, 4-perspective character reference bibles, and AI narrative short films.
 
@@ -10,7 +10,7 @@ Current counts and capability boundaries: [Project status](docs/project-status.m
 
 ## About
 
-绫季绘境 (Lingji Atelier) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
+绘遇 (HUIYU) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
 The system supports Ayachi Nene, Shiki Natsume, and a growing catalog of anime/game characters and outfits. A Scene keeps story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together. Current counts and incomplete assets are tracked only in [Project status](docs/project-status.md).
 

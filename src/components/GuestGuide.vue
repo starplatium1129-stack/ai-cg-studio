@@ -12,7 +12,7 @@
     <div class="guest-guide-card">
       <div class="guest-guide-body">
         <span class="guest-guide-kicker">初次见面 · {{ isLocalHost ? '一次导览' : '访客导览' }}</span>
-        <h2 id="guest-guide-title">{{ isLocalHost ? '欢迎来到 绫季绘境' : '欢迎来到 绫季绘境' }}</h2>
+        <h2 id="guest-guide-title">欢迎来到 绘遇</h2>
 
         <!-- 本机主人：讲的是「怎么上手」，不是「这是谁的电脑」 -->
         <template v-if="isLocalHost">

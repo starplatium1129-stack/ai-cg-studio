@@ -25,7 +25,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
     let icon = tauri::image::Image::new(rgba.as_raw().as_slice(), rgba.width(), rgba.height());
     let tray = TrayIconBuilder::with_id("main")
         .icon(icon)
-        .tooltip("绫季 Companion")
+        .tooltip("绘遇 Companion")
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click { button: MouseButton::Left, .. } = event {
                 let _ = tray.app_handle().emit("aics:tray-left-click", ());

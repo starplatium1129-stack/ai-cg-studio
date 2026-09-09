@@ -1,8 +1,8 @@
 <template>
   <header v-if="visible" class="desktop-titlebar" aria-label="窗口标题栏">
     <div class="titlebar-brand">
-      <span class="titlebar-dot" aria-hidden="true"></span>
-      <span class="titlebar-name">绫季绘境 Atelier</span>
+      <img class="titlebar-dot" src="/assets/favicon.svg" alt="" aria-hidden="true" />
+      <span class="titlebar-name">绘遇 · HUIYU</span>
       <span v-if="pageTitle" class="titlebar-page" :title="pageTitle">{{ pageTitle }}</span>
     </div>
     <div class="titlebar-controls">
@@ -104,10 +104,8 @@ onUnmounted(() => {
 }
 .titlebar-dot {
   flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
+  width: 22px;
+  height: 22px;
 }
 .titlebar-name {
   color: var(--desktop-titlebar-name);

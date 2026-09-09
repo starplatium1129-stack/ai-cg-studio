@@ -190,11 +190,11 @@ function tokenAuth(token) {
       return envelope.fail(res, 401, 'Unauthorized — 缺少 token 参数');
     }
     return res.status(403).send(
-      '<!DOCTYPE html><html><head><meta charset="utf-8"><title>绫季绘境</title>' +
+      '<!DOCTYPE html><html><head><meta charset="utf-8"><title>绘遇 · HUIYU</title>' +
       '<style>body{background:#1a1a2e;color:#e8e8f0;font-family:system-ui;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}' +
       '.card{background:#2a2a40;border-radius:16px;padding:40px;max-width:480px;text-align:center}h1{margin-top:0;color:#f06292}' +
       'code{color:#90caf9}</style></head><body><div class="card">' +
-      '<h1>🔗 绫季绘境</h1><p>请使用包含 token 的链接访问，格式：</p>' +
+      '<h1>绘遇 · HUIYU</h1><p>请使用包含 token 的链接访问，格式：</p>' +
       '<code>http://地址:端口/?token=你的token</code>' +
       '<p style="margin-top:24px;color:#a8a8c0">朋友分享的链接中应当已经包含 token。</p>' +
       '</div></body></html>');

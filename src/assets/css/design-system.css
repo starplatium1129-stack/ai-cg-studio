@@ -1,5 +1,5 @@
 /* ============================================================
-   绫季绘境 · Design System
+   绘遇 · Design System
    Source contract: ../DESIGN.md
    Style: 甜蜜、亲密、以画面为主的 Galgame 创作工作台
    Theme: dark 默认；light-theme.css 提供纸白浅色覆盖
@@ -13,19 +13,19 @@
      Galgame 梦幻夜空 & 水晶亚克力质感系统 (Cosmic Indigo & Crystal Acrylic) ——
      深邃澄澈的星夜底色 + 樱花粉 / 薰衣草紫 / 汽水苏打青三色糖果流光点睛；
      对比度按 WCAG AA 严格把关。 */
-  --bg-deep:       #101116;     /* 最深夜空: 澄澈深绀蓝紫夜空 */
-  --bg-base:       #16171e;     /* 页面背景: 梦幻二次元星夜绀紫 */
-  --bg-surface:    #1e2029; /* 玻璃卡片: 水晶亚克力透亮面板 */
-  --bg-elevated:   #282b36; /* 浮层/输入框: 星尘柔和提亮 */
-  --bg-hover:      #323542; /* 悬停态: 星尘紫光 */
+  --bg-deep:       #181420;     /* 最深夜空: 澄澈深绀蓝紫夜空 */
+  --bg-base:       #211c30;     /* 页面背景: 梦幻二次元星夜绀紫 */
+  --bg-surface:    #272135; /* 玻璃卡片: 水晶亚克力透亮面板 */
+  --bg-elevated:   #30283d; /* 浮层/输入框: 星尘柔和提亮 */
+  --bg-hover:      #3a3048; /* 悬停态: 星尘紫光 */
   /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: #282b36;
+  --bg-surface-elevated: #30283d;
 
   --border-soft:   rgba(220, 224, 246, 0.10);
   --border-strong: rgba(220, 224, 246, 0.24);
 
   /* ---- Text ---- */
-  --text-primary:   #fff7fc;   /* 主文字: 暖白带微弱恋爱温润感 */
+  --text-primary:   #fff8f4;   /* 主文字: 暖白带微弱恋爱温润感 */
   --text-secondary: #c8c7d2;   /* 副文字: 淡薰衣草紫灰 */
   /* 占位/说明。合成到 --bg-elevated 仍 ≥4.5:1。 */
   --text-muted:     #adb0c2;
@@ -36,10 +36,10 @@
   --text-disabled:  #a6a9bc;
 
   /* ---- Accent (糖果樱花粉 & 二次元梦幻强调色) ---- */
-  --accent:         #f4a7c1;
+  --accent:         #f2a8be;
   --accent-hover:   #ffc4d8;
-  --accent-soft:    rgba(244, 167, 193, 0.10);
-  --accent-glow:    rgba(244, 167, 193, 0.16);
+  --accent-soft:    rgba(242, 168, 190, 0.10);
+  --accent-glow:    rgba(242, 168, 190, 0.16);
   --accent-violet:  #b784f6;
   --archive-blue:   #5eead4;
   --archive-blue-soft: rgba(94, 234, 212, 0.16);
@@ -76,7 +76,7 @@
   --r-terminal:          10px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(30, 32, 41, 0.92);
+  --nav-bg: rgba(39, 33, 53, 0.92);
   --glass-highlight: rgba(220, 224, 246, 0.08);
   /* inset 玻璃高光令牌族（2026-09-05 收纳星夜绀紫主题引入的系统性用法，
      保持视觉值逐字节一致；使用点一律走令牌，见 scan-style-literals 门禁） */
@@ -88,8 +88,8 @@
   --hl-inset-18: rgba(255, 255, 255, 0.18);
   --hl-inset-22: rgba(255, 255, 255, 0.22);
   --hl-inset-32: rgba(255, 255, 255, 0.32);
-  --glass-fill: rgba(30, 32, 41, 0.92);
-  --glass-fill-strong: #282b36;
+  --glass-fill: rgba(39, 33, 53, 0.92);
+  --glass-fill-strong: #30283d;
   --glass-edge: rgba(255, 220, 246, 0.16);
   --glass-specular: color-mix(in srgb, #fff2fa 26%, transparent);
   --glass-shadow: 0 18px 48px rgba(8, 5, 18, 0.52);
@@ -361,7 +361,7 @@ a:hover { color: var(--accent-hover); }
 
 img { max-width: 100%; display: block; }
 
-::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff7fc; }
+::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff8f4; }
 
 /* ============================================================
    Layout
@@ -1674,7 +1674,7 @@ body:has(.pb) .route-atmosphere .route-index {
 
 /* ── 全局质感：字体渲染 / 选区 / 滚动条 / 数字对齐 / 按压 / 图片入场 ── */
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff7fc; }
+::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff8f4; }
 /* ── 滚动条 ──
    标准属性打底（Chrome 121+ / Firefox / Safari 18.2+，含 overlay 滚动条模式）：
    新版浏览器默认 overlay scrollbars，::-webkit-scrollbar 会被忽略，

@@ -20,7 +20,27 @@ test('game installer preserves upstream install and maintenance behavior', () =>
   const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/installer/vendor/tauri-2.11.4.nsi'), 'utf8');
   const themed = customizeTemplate(source, 'C:\\preview\\art.bmp', 'C:\\preview\\game-ui.nsh');
   const sections = text => text.slice(text.indexOf('Section EarlyChecks'));
-  assert.equal(sections(themed), sections(source), 'payload, WebView2, uninstall and shortcut sections must remain upstream-owned');
+  let payload = sections(themed);
+  for (const location of ['$DESKTOP', '$SMPROGRAMS', '$SMPROGRAMS\\$AppStartMenuFolder']) {
+    const migration = `
+  !insertmacro IsShortcutTarget "${location}\\\${PRODUCTNAME}.lnk" "$INSTDIR\\\${MAINBINARYNAME}.exe"
+  Pop $0
+  \${If} $0 = 1
+    \${IfNot} \${FileExists} "${location}\\绘遇 HUIYU.lnk"
+      Rename "${location}\\\${PRODUCTNAME}.lnk" "${location}\\绘遇 HUIYU.lnk"
+    \${EndIf}
+  \${EndIf}
+`;
+    assert.equal(payload.split(migration).length, 2, 'migration must check ownership and collisions');
+    payload = payload.replace(migration, '');
+  }
+  payload = payload.replaceAll('绘遇 HUIYU.lnk', '${PRODUCTNAME}.lnk')
+    .replace('"DisplayName" "绘遇 · HUIYU"', '"DisplayName" "${PRODUCTNAME}"');
+  assert.equal(payload, sections(source), 'only display name and guarded shortcut migration may differ; payload and upgrade behavior stay upstream-owned');
+  for (const key of ['PRODUCTNAME', 'UNINSTKEY', 'MANUPRODUCTKEY']) {
+    const definition = new RegExp(`!define ${key} [^\\r\\n]+`);
+    assert.equal(themed.match(definition)?.[0], source.match(definition)?.[0], key);
+  }
   for (const name of ['.onInit', 'PageLeaveReinstall', 'RunMainBinary']) {
     const block = text => text.slice(text.indexOf(`Function ${name}`), text.indexOf('FunctionEnd', text.indexOf(`Function ${name}`)));
     assert.equal(block(themed), block(source), name);

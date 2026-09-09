@@ -76,7 +76,7 @@ Function GameGuiInit
   System::Call 'dwmapi::DwmSetWindowAttribute(p $HWNDPARENT, i 20, *i 1, i 4)'
   SetCtlColors $HWNDPARENT "F6F0FA" "14192D"
   ; Native caption retains window dragging and keyboard/system-menu behavior.
-  SendMessage $HWNDPARENT ${WM_SETTEXT} 0 "STR:绫季绘境 · 安装旅程"
+  SendMessage $HWNDPARENT ${WM_SETTEXT} 0 "STR:绘遇 · 安装旅程"
   System::Call '*(i 0,i 0,i 0,i 0) p.r0'
   System::Call 'user32::GetClientRect(p $HWNDPARENT,p r0)'
   System::Call '*$0(i,i,i.r1,i.r2)'
@@ -191,8 +191,8 @@ Function GameCreatePage
   Pop $GameImage
   ${NSD_AddStyle} $GameImage ${WS_CLIPSIBLINGS}
   SendMessage $GameImage 0x0172 0 $GameLeftBitmap
-  !insertmacro GameLabel 56% 10% 38% 5% "AYAKI  /  ATELIER" $GameSmallFont "E7BCD2"
-  !insertmacro GameLabel 56% 86% 38% 5% "绫季绘境  ·  ${VERSION}  /  Windows x64" $GameSmallFont "BFC2D3"
+  !insertmacro GameLabel 56% 10% 38% 5% "HUIYU  /  ATELIER" $GameSmallFont "E7BCD2"
+  !insertmacro GameLabel 56% 86% 38% 5% "绘遇  ·  ${VERSION}  /  Windows x64" $GameSmallFont "BFC2D3"
   Call GameFooter
 FunctionEnd
 
@@ -200,7 +200,7 @@ Function GameWelcome
   Call SkipIfPassive
   Call GameCreatePage
   !insertmacro GameLabel 56% 22% 40% 21% "让灵感，$\r$\n在此相遇。" $GameTitleFont "F6F0FA"
-  !insertmacro GameLabel 56% 49% 37% 16% "属于你的角色、故事与创作。$\r$\n将绘境安放在电脑里，开启新的旅程。" $GameFont "CED0DF"
+  !insertmacro GameLabel 56% 49% 37% 16% "属于你的角色、故事与创作。$\r$\n将绘遇安放在电脑里，开启新的旅程。" $GameFont "CED0DF"
   !insertmacro GameLabel 56% 71% 38% 8% "角色陪伴  /  图像创作  /  剧情短片" $GameSmallFont "E7BCD2"
   GetDlgItem $0 $HWNDPARENT 1
   SendMessage $0 ${WM_SETTEXT} 0 "STR:开始旅程  →"
@@ -213,7 +213,7 @@ FunctionEnd
 Function GameDirectory
   Call SkipIfPassive
   Call GameCreatePage
-  !insertmacro GameLabel 56% 22% 40% 13% "安放你的绘境" $GameTitleFont "F6F0FA"
+  !insertmacro GameLabel 56% 22% 40% 13% "安放你的绘遇" $GameTitleFont "F6F0FA"
   !insertmacro GameLabel 56% 38% 38% 10% "选择安装位置。角色与创作空间将在这里准备就绪。" $GameFont "CED0DF"
   !insertmacro GameLabel 56% 53% 38% 5% "安装位置" $GameSmallFont "E7BCD2"
   ${NSD_CreateDirRequest} 56% 60% 28% 5% "$INSTDIR"
@@ -229,7 +229,7 @@ Function GameDirectory
   !insertmacro GameLabel 56% 69% 38% 5% "所需空间约 $GameRequiredSize MB" $GameSmallFont "E7BCD2"
   !insertmacro GameLabel 56% 76% 38% 9% "安装会保留个人设置与创作记录。$\r$\n生成模型不包含在此安装包中。" $GameSmallFont "BFC2D3"
   GetDlgItem $0 $HWNDPARENT 1
-  SendMessage $0 ${WM_SETTEXT} 0 "STR:安装绘境  →"
+  SendMessage $0 ${WM_SETTEXT} 0 "STR:安装绘遇  →"
   Push 1
   Push "install"
   Call GameButton
@@ -237,7 +237,7 @@ Function GameDirectory
 FunctionEnd
 
 Function GameBrowse
-  nsDialogs::SelectFolderDialog "选择绘境的安装位置" "$INSTDIR"
+  nsDialogs::SelectFolderDialog "选择绘遇的安装位置" "$INSTDIR"
   Pop $0
   ${If} $0 != error
     ${NSD_SetText} $GamePath "$0\${PRODUCTNAME}"
@@ -291,7 +291,7 @@ Function GameInstallShow
   IntOp $3 $3 / 100
   IntOp $4 $GameHeight * 10
   IntOp $4 $4 / 100
-  System::Call 'user32::CreateWindowExW(i 0,w "STATIC",w "正在唤醒绘境",i 0x50000000,i r0,i r4,i r2,i 90,p $HWNDPARENT,p 0,p 0,p 0) p.s'
+  System::Call 'user32::CreateWindowExW(i 0,w "STATIC",w "正在唤醒绘遇",i 0x50000000,i r0,i r4,i r2,i 90,p $HWNDPARENT,p 0,p 0,p 0) p.s'
   Pop $GameHeadline
   SendMessage $GameHeadline ${WM_SETFONT} $GameTitleFont 1
   SetCtlColors $GameHeadline "F6F0FA" "14192D"
@@ -318,7 +318,7 @@ FunctionEnd
 Function GameFinish
   Call SkipIfPassive
   Call GameCreatePage
-  !insertmacro GameLabel 56% 22% 40% 21% "绘境已就绪。$\r$\n故事，由你开启。" $GameTitleFont "F6F0FA"
+  !insertmacro GameLabel 56% 22% 40% 21% "绘遇已就绪。$\r$\n故事，由你开启。" $GameTitleFont "F6F0FA"
   !insertmacro GameLabel 56% 49% 38% 10% "欢迎回来，创作者。$\r$\n从一个角色、一束光，或一个念头开始。" $GameFont "CED0DF"
   ${NSD_CreateCheckbox} 56% 65% 38% 6% "创建桌面快捷方式"
   Pop $GameShortcut
@@ -326,14 +326,14 @@ Function GameFinish
   System::Call 'uxtheme::SetWindowTheme(p $GameShortcut,w "",w "")'
   SetCtlColors $GameShortcut "CED0DF" "14192D"
   ${NSD_Check} $GameShortcut
-  ${NSD_CreateCheckbox} 56% 73% 38% 6% "完成后打开绫季绘境"
+  ${NSD_CreateCheckbox} 56% 73% 38% 6% "完成后打开绘遇"
   Pop $GameRun
   SendMessage $GameRun ${WM_SETFONT} $GameSmallFont 1
   System::Call 'uxtheme::SetWindowTheme(p $GameRun,w "",w "")'
   SetCtlColors $GameRun "CED0DF" "14192D"
   ${NSD_Check} $GameRun
   GetDlgItem $0 $HWNDPARENT 1
-  SendMessage $0 ${WM_SETTEXT} 0 "STR:进入绘境  →"
+  SendMessage $0 ${WM_SETTEXT} 0 "STR:进入绘遇  →"
   Push 1
   Push "finish"
   Call GameButton

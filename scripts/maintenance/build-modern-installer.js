@@ -28,8 +28,8 @@ function buildModernInstaller({ payload, output, preview = false, capture = fals
   const estimated = fs.existsSync(nsisFile) ? /!define ESTIMATEDSIZE "(\d+)"/.exec(fs.readFileSync(nsisFile, 'utf8')) : null;
   const required = Number(estimated?.[1] || 520000) * 1024;
   const metadata = `using System.Reflection;
-[assembly: AssemblyTitle("绫季绘境安装器")]
-[assembly: AssemblyProduct("AI-CG-Studio")]
+[assembly: AssemblyTitle("绘遇安装器")]
+[assembly: AssemblyProduct("绘遇 · HUIYU")]
 [assembly: AssemblyVersion("${version}.0")]
 [assembly: AssemblyFileVersion("${version}.0")]
 namespace Ayaki.Installer { internal static class PayloadInfo {

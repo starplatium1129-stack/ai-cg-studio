@@ -15,6 +15,7 @@
 | 想做什么 | 命令 |
 | --- | --- |
 | 查找命令 | `npm run wf -- search 样张`（中英文关键词均可） |
+| 生成品牌图标 | `npm run wf -- brand:build`（母版 `assets/brand-mark.svg` → 深浅字标、favicon、Windows ICO、安装器线条） |
 | 文档迁移后检查链接 | `npm run wf -- docs:check`（含旧地址映射；不联网核验外部来源） |
 | 查看一个分组 | `npm run wf -- reference` |
 | 查看参数与依赖 | `npm run wf -- reference:design --help` |

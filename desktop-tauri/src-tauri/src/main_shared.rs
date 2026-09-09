@@ -140,7 +140,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
             }
         };
         match WebviewWindowBuilder::new(&app, "atelier", WebviewUrl::External(parsed))
-            .title("绫季绘境 Atelier")
+            .title("绘遇 · HUIYU")
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
             .min_inner_size(1024.0, 720.0)
@@ -169,7 +169,7 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, s
     let url = format!("{gateway_url}/companion");
     let parsed = url.parse::<tauri::Url>().expect("companion url must parse");
     let win = WebviewWindowBuilder::new(app, "companion", WebviewUrl::External(parsed))
-        .title("绫季 Companion")
+        .title("绘遇 Companion")
         .inner_size(bounds.width as f64, bounds.height as f64)
         .position(bounds.x as f64, bounds.y as f64)
         .min_inner_size(360.0, 480.0)
@@ -232,7 +232,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
             return;
         };
         match WebviewWindowBuilder::new(&app, "companion-chat", WebviewUrl::External(parsed))
-            .title("绫季聊天")
+            .title("绘遇聊天")
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
             .min_inner_size(380.0, 460.0)

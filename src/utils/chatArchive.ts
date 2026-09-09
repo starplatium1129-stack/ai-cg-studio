@@ -137,7 +137,7 @@ export function chatArchiveToMarkdown(
   archive: ChatArchive,
   characterNames: Record<string, string>,
 ): string {
-  const lines: string[] = ['# 角色聊天归档', '', '> 由 绫姬绘境 导出 · 仅保存对话文本与停止标记', '']
+  const lines: string[] = ['# 角色聊天归档', '', '> 由 绘遇 导出 · 仅保存对话文本与停止标记', '']
   for (const [characterId, messages] of Object.entries(archive.archived)) {
     const name = characterNames[characterId] || characterId
     lines.push(`## ${name}（${messages.length} 条）`, '')

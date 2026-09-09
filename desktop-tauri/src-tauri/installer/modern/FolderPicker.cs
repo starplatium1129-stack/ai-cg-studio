@@ -8,7 +8,7 @@ namespace Ayaki.Installer {
       IShellItem item = null;
       try {
         Marshal.ThrowExceptionForHR(dialog.SetOptions(0x20 | 0x40 | 0x800 | 0x8));
-        dialog.SetTitle("选择绫季绘境的安装位置");
+        dialog.SetTitle("选择绘遇的安装位置");
         dialog.SetOkButtonLabel("选择此文件夹");
         int result = dialog.Show(owner);
         if (result == unchecked((int)0x800704C7)) return null;

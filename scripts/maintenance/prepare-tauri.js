@@ -31,7 +31,7 @@ const WEB_INDEX = `<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <title>AI-CG-Studio</title>
+  <title>绘遇 · HUIYU</title>
 </head>
 <body>
   <p>runtime navigates to the local gateway</p>

@@ -6,7 +6,7 @@
    module found" 构建失败。外链 CSS 走正常 link 打包路径，无此 bug，且
    <link rel=stylesheet> 在 head 中 render-blocking，防白屏效果等价。 */
 #app:empty::before {
-  content: "绫季绘境";
+  content: "绘遇 · HUIYU";
   position: fixed;
   inset: 0;
   display: grid;
@@ -18,10 +18,10 @@
 }
 
 :root {
-  --first-paint-background: #0d0b14;
-  --first-paint-text: #a093b5;
+  --first-paint-background: #211c30;
+  --first-paint-text: #fff8f4;
 }
 :root[data-theme="light"] {
-  --first-paint-background: #f8f5f8;
+  --first-paint-background: #fff8f4;
   --first-paint-text: #645c6e;
 }

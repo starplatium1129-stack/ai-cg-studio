@@ -1,15 +1,15 @@
 /* Day atelier: paper surfaces and ink accents; artwork colors stay independent. */
 :root[data-theme="light"] {
   --ink-base: #1c1624;
-  --bg-deep: #f1edf4;
-  --bg-base: #f8f5f8;
+  --bg-deep: #f3ebe8;
+  --bg-base: #fff8f4;
   --bg-surface: #ffffff;
   --bg-elevated: #eee8f0;
   --bg-surface-elevated: #eee8f0;
   --bg-hover: #e4dce8;
   --border-soft: rgba(62, 44, 72, .14);
   --border-strong: rgba(62, 44, 72, .32);
-  --text-primary: #29232e;
+  --text-primary: #211c30;
   --text-secondary: #504858;
   --text-muted: #645c6e;
   --text-disabled: #665d6e;
@@ -30,7 +30,7 @@
   --archive-line: rgba(62, 44, 72, .15);
   --archive-grid: rgba(62, 44, 72, .04);
   --archive-glass: rgba(255, 255, 255, .88);
-  --nav-bg: rgba(250, 247, 251, .94);
+  --nav-bg: rgba(255, 248, 244, .94);
   --glass-fill: rgba(255, 255, 255, .94);
   --glass-fill-strong: #ffffff;
   --glass-edge: rgba(62, 44, 72, .16);
@@ -80,7 +80,7 @@
 :root[data-theme="light"] .semantic-particle-field canvas { opacity: 1; mix-blend-mode: normal; }
 :root[data-theme="light"] .showcase-viewer { --text-primary: var(--on-art-primary); --text-secondary: var(--on-art-secondary); --text-muted: var(--on-art-secondary); }
 :root[data-theme="light"] .home-hero[data-muse] { --accent-hover: var(--accent); }
-:root[data-theme="light"] .nav-logo { filter: brightness(.42); }
+/* BrandLogo selects a dedicated ink wordmark for the active theme. */
 
 :root[data-theme="light"] .chat-page { --character-ink: color-mix(in srgb, var(--character-accent) 40%, var(--ink-base)); }
 
@@ -94,7 +94,7 @@
 
 :root[data-theme="light"] .desktop-titlebar {
   --desktop-titlebar-bg-top: #fcf9fd;
-  --desktop-titlebar-bg-bottom: #f1edf4;
+  --desktop-titlebar-bg-bottom: #f3ebe8;
   --desktop-titlebar-text: var(--text-secondary);
   --desktop-titlebar-name: var(--text-primary);
   --desktop-titlebar-page: var(--text-muted);

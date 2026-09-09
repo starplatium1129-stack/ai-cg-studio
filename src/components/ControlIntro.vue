@@ -1,7 +1,7 @@
 <template>
   <header class="control-intro">
     <div>
-      <p class="control-eyebrow">绫季绘境 / 本机控制室</p>
+      <p class="control-eyebrow">绘遇 / 本机控制室</p>
       <h1 class="control-title">把画室，准备好。</h1>
       <p class="control-subtitle">管理创作服务、安排显存，让每一次心动顺利成画。</p>
     </div>

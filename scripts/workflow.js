@@ -20,6 +20,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  'brand:build': { desc: '从手绘 SVG 母版生成绘遇字标、网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md' },
   'docs:check': { desc: '检查文档文件链接与旧地址映射', cmd: ['node', 'scripts/maintenance/check-doc-links.js'], docs: 'docs/workflow.md' },
   'audit:workflows': { desc: '只读审计注册入口、npm 脚本、文档及复合依赖', builtin: 'audit', docs: 'docs/workflow.md' },
   'check:workflows': { desc: '工作流执行与门禁路由回归测试', cmd: ['node', 'scripts/tests/test-workflow-runner.js'], docs: 'docs/workflow.md' },

@@ -83,15 +83,15 @@ export function normalizeBackup(raw: unknown): BackupFile {
   const source = raw as Record<string, unknown>
   const version = Math.max(0, Math.floor(finite(source.schemaVersion)))
   if (version > BACKUP_SCHEMA_VERSION) throw new Error('该备份来自更新版本，请先升级网站')
-  if (source.type != null && source.type !== BACKUP_TYPE) throw new Error('该文件不是绫季绘境备份')
-  if (source.app != null && source.app !== BACKUP_APP) throw new Error('该文件不是绫季绘境备份')
+  if (source.type != null && source.type !== BACKUP_TYPE) throw new Error('该文件不是绘遇备份')
+  if (source.app != null && source.app !== BACKUP_APP) throw new Error('该文件不是绘遇备份')
 
   const hasLegacyData = ['history', 'projects', 'settings', 'images']
     .some(key => Object.prototype.hasOwnProperty.call(source, key))
   const hasNestedData = Object.prototype.hasOwnProperty.call(source, 'data')
     && Boolean(source.data && typeof source.data === 'object' && !Array.isArray(source.data))
   const nested = object(source.data)
-  if (!hasNestedData && !hasLegacyData) throw new Error('该文件不包含可恢复的绫季绘境数据')
+  if (!hasNestedData && !hasLegacyData) throw new Error('该文件不包含可恢复的绘遇数据')
 
   const data = hasNestedData ? nested : source
   const normalized: BackupFile = {

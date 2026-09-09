@@ -24,7 +24,7 @@
         印章 ::after 是行内元素，所以链接并入同一行，印章仍收在行尾。
       -->
       <p>
-        © {{ currentYear }} 绫季绘境 · 个人创作工作台
+        © {{ currentYear }} 绘遇 HUIYU · 让想象成形，让故事相遇
         <span class="site-footer-sep" aria-hidden="true">·</span>
         <a class="site-footer-link" href="/docs/getting-started.html" target="_blank" rel="noopener">使用指南</a>
         <span class="site-footer-sep" aria-hidden="true">·</span>

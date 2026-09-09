@@ -15,7 +15,7 @@
     <DrawingTaskObserver :sd="sd" :anima="animaSession" />
     <WorkspaceArchiveBar v-if="pb.directorMode !== 'pro'"
       chapter="01"
-      title="绘境工作台"
+      title="绘遇工作台"
       :subtitle="pb.isPopular ? popularCharacter?.displayName || '热门角色' : (pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式'))"
       :status="pb.isPopular ? '角色创作' : (pb.directorMode === 'basic' ? '场景模式' : '专家模式')"
       :state="pb.isPopular ? 'active' : (pb.directorMode === 'basic' ? 'success' : 'active')"

@@ -97,7 +97,7 @@ test('home renders hero, featured scenes and live counts', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/');
 
-  await expect(page.locator('.nav-brand .nav-logo')).toHaveAttribute('alt', '绫季绘境');
+  await expect(page.locator('.nav-brand .nav-logo')).toHaveAttribute('alt', '绘遇 · HUIYU');
   await expect(page.locator('.hero-register')).toContainText('ANIME · CG · STORIES');
   await expect(page.locator('.hero-title')).toBeVisible();
   // 精选场景来自 scenes.json + curation.json，必须真的渲染进画册手帖
@@ -1406,7 +1406,7 @@ test('guest query forces the guide and local dismissal persists', async ({ page 
   const errors = collectRuntimeErrors(page);
   await page.goto('/?guest=1');
   await expect(page.getByRole('dialog', { name: '访客导览' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: '欢迎来到 绫季绘境' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '欢迎来到 绘遇' })).toBeVisible();
   await page.getByRole('button', { name: '开始创作' }).click();
   await expect(page.getByRole('dialog', { name: '访客导览' })).toBeHidden();
   const dismissed = await page.evaluate(() => localStorage.getItem('aics_guest_guide_dismissed'));

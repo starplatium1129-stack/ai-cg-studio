@@ -1,18 +1,18 @@
 ---
 version: "alpha"
-name: "Lingji Atelier"
-description: "A character-led Galgame atelier with the clarity, materials, and interaction discipline of Apple design."
+name: "绘遇 · HUIYU"
+description: "绘遇 HUIYU：温暖、细腻的角色创作与故事画室。让想象成形，让故事相遇。"
 colors:
-  primary: "#F4A7C1"
+  primary: "#F2A8BE"
   on-primary: "#120C1A"
   primary-hover: "#FFC4D8"
   secondary: "#B784F6"
   tertiary: "#7FE7FF"
-  neutral: "#16171E"
-  neutral-deep: "#101116"
-  surface: "#1E2029"
-  surface-elevated: "#282B36"
-  text-primary: "#FFF7FC"
+  neutral: "#211C30"
+  neutral-deep: "#181420"
+  surface: "#272135"
+  surface-elevated: "#30283D"
+  text-primary: "#FFF8F4"
   text-secondary: "#C8C7D2"
   success: "#81C784"
   warning: "#FFA726"
@@ -457,3 +457,13 @@ belong inside installation details, not in the default creative composition.
 - 场景用开放风景、剧情用场记板、服装用衣架；镜头用画框与人物裁切层级，三分构图使用真正九宫格。情绪用眼口和少量情绪标记区分。
 - 图标不承担文字标签职责；纯图标按钮仍须有可访问名称。图标本体不获取焦点，交互状态由宿主按钮呈现。
 - 深浅主题继承宿主的语义颜色，不在图标内部固定颜色。新图标在所属 icons 分组登记，类型从实际定义推导；交付前检查路径合法性、画布边界和实际页面。
+
+## 绘遇品牌（2026-09-09）
+
+名称：绘遇 · HUIYU。标语：让想象成形，让故事相遇。画框与翻页线条象征角色从画面进入故事，沿用 ArchiveIcon 的圆头手绘描边。
+
+品牌色为墨紫 `#211C30`、暖白 `#FFF8F4`、樱花粉 `#F2A8BE`、浅紫藤 `#C5B5E8`；浅色背景上的小字与图标使用墨紫或深玫瑰，不能用浅粉压低对比度。
+
+母版为 `assets/brand-mark.svg`；`npm run wf -- brand:build` 生成深浅字标、favicon、七尺寸 ICO 和原生安装器路径。字标由 BrandLogo 跟随应用主题切换，不使用滤镜或发光覆盖文字。业务功能色和角色强调色保留独立语义。
+
+兼容约束：`com.aics.studio`、内部 AI-CG-Studio 安装标识、可执行文件名、注册表路径、存储键和备份协议继续保留，用户可见名称统一为绘遇。

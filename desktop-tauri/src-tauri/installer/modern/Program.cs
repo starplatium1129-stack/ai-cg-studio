@@ -18,14 +18,14 @@ namespace Ayaki.Installer {
         app.Run(window.View);
         return window.ExitCode;
       } catch (Exception ex) {
-        if (!options.Silent && !options.SelfTest && String.IsNullOrEmpty(options.Capture)) MessageBox.Show(ex.Message, "绫季绘境", MessageBoxButton.OK, MessageBoxImage.Information);
+        if (!options.Silent && !options.SelfTest && String.IsNullOrEmpty(options.Capture)) MessageBox.Show(ex.Message, "绘遇", MessageBoxButton.OK, MessageBoxImage.Information);
         Console.Error.WriteLine(ex.ToString());
         return 1;
       }
     }
     private static int SelfTest() {
-      string valid = InstallEngine.NormalizeDirectory(@"D:\Games\绫季绘境\");
-      if (valid != @"D:\Games\绫季绘境") throw new Exception("Unicode path normalization failed");
+      string valid = InstallEngine.NormalizeDirectory(@"D:\Games\绘遇\");
+      if (valid != @"D:\Games\绘遇") throw new Exception("Unicode path normalization failed");
       foreach (string invalid in new [] { "", "relative\\path", @"C:\", Environment.GetFolderPath(Environment.SpecialFolder.Windows), @"C:\test?invalid" }) {
         bool rejected = false;
         try { InstallEngine.NormalizeDirectory(invalid); } catch (ArgumentException) { rejected = true; }

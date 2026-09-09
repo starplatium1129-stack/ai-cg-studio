@@ -6,12 +6,12 @@
     <nav class="nav control-mobile-nav">
       <div class="nav-inner nav-local">
         <RouterLink to="/" class="nav-local-brand">
-          <img class="nav-logo" src="/assets/logo.svg" alt="" aria-hidden="true" />
+          <BrandLogo class="nav-logo" />
           <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
         <div class="nav-local-actions">
           <TaskCenterButton />
-          <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
+          <RouterLink class="nav-local-home" to="/">← 回绘遇</RouterLink>
           <AppThemeToggle /><AppSoundToggle />
         </div>
       </div>
@@ -20,7 +20,7 @@
     <div class="control-layout">
       <aside class="control-rail" aria-label="控制室导航">
         <RouterLink to="/" class="control-rail-brand">
-          <img class="nav-logo" src="/assets/logo.svg" alt="" aria-hidden="true" />
+          <BrandLogo class="nav-logo" />
           <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
         <TaskCenterButton />
@@ -33,7 +33,7 @@
         </nav>
         <div class="control-rail-note"><ArchiveIcon name="coffee" /><p>让工具准备好，<br />把时间留给创作。</p></div>
         <div class="control-rail-foot">
-          <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
+          <RouterLink class="nav-local-home" to="/">← 回绘遇</RouterLink>
           <AppThemeToggle /><AppSoundToggle />
         </div>
       </aside>
@@ -294,6 +294,7 @@
 </template>
 
 <script setup lang="ts">
+import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
 import { computed, onMounted, onUnmounted } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'

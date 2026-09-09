@@ -4,7 +4,7 @@
       <!-- 用真 RouterLink:role="link" 的 div 没有 href,没有右键菜单、
            中键新标签页,而 Space 激活链接也不是标准行为 -->
       <RouterLink to="/" class="nav-brand">
-        <img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" />
+        <BrandLogo class="nav-logo" />
       </RouterLink>
 
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }">
@@ -85,6 +85,7 @@
 </template>
 
 <script setup lang="ts">
+import BrandLogo from '@/components/BrandLogo.vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
@@ -195,7 +196,7 @@ onUnmounted(() => {
 <style scoped>
 .nav-help { grid-column: 1 / -1; padding: var(--s-3); margin-top: var(--s-2); border: 0; border-top: 1px solid var(--border-soft); background: transparent; color: var(--text-muted); text-align: left; font: inherit; font-size: var(--fs-label); cursor: pointer; }
 
-/* logo.svg 是 236×48 的完整字标（图形 + 绫季绘境），
+/* logo.svg 是 132×48 的完整字标（图形 + 绘遇），
    只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */
 .nav-logo {
   display: block;
