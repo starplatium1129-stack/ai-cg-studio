@@ -388,3 +388,95 @@ Dangerous Beast的[官方商品文字](https://www.goodsmile.info/ja/product/773
 ## 用户要求提前提交当前检查点
 
 本次提交保留未完成状态：541条仍待判定，不能声称全部SFW审计完成。提交前[全量门禁](evidence/all-scene-audit/main-checkpoint-gate.txt)通过1m54s；逐条对比原有662条成人源记录与本分支既有检查点，记录内容一致。此前新增生成禁用与资格改动已撤回。后续任务生成统一MiaoMiao v1.2；历史候选未自动换模，所有当前候选继续等待用户人工视觉审核。提交/推送结果以Git实际记录为准。
+
+## main检查点之后的继续审计
+
+在68fba3d6之后追加[6条连续动作疑点裁决](evidence/all-scene-audit/moment-review-adjudication.json)：5条保留原样，艾雅法拉温泉测温一条只将动作元数据与既有英文蹲姿统一。双引擎生成文本和尺寸前后一致，无新出图；蓝图重建及差异检查通过，未重复全量门禁。当前535条待判定；本段为检查点之后的工作，未包含在68fba3d6中。
+
+## 三条真实负向冲突的最小修复
+
+只删除莱万汀工坊/火锅及伊冯工坊与当前身份、衣装、场景相反的负向词，正向正文未重写，共三条SFW。见[字段差异](evidence/all-scene-audit/negative-conflicts3-changes.json)、[实际编译结果](evidence/all-scene-audit/negative-conflicts3-compiled.json)。三条MiaoMiao v1.2候选生成及参数对账成功，[人工队列](evidence/all-scene-audit/negative-conflicts3-human-review-queue.json)保留视觉待审；当前276条候选对账通过，无看图或上传。伊冯转一把枪并不排除另一手持枪，余下微动作不构成必要重写。希耶尔厨房眼镜冲突误报已排除，另[七条DNA疑点](evidence/all-scene-audit/remaining-dna-compiler-probes.json)也未在实际负向词出现，其他源问题仍待判定。当前待判定531条。[全量门禁](evidence/all-scene-audit/negative-conflicts3-gate.txt)通过1m53s；本轮未追加提交main。
+
+## 三条字段纠正与三条双人构图修复
+
+[动作字段三条](evidence/all-scene-audit/action-metadata3-adjudication.json)仅纠正洛琪希调料罐、和纱长椅及白夜坐位/检索发色，双引擎生成文本与尺寸前后一致，不重出图。[食蜂三条](evidence/all-scene-audit/misaki-composition3-changes.json)本来明确two-shot却受单人守卫排斥，现仅设置group构图，保留源故事、衣装、画幅与正向词；[三张MiaoMiao候选](evidence/all-scene-audit/misaki-composition3-human-review-queue.json)均生成成功并完成元数据对账，未看图、未上传。60项热门/候选契约通过，279条当前候选对账通过；未在本轮重复全量门禁或追加提交main。剩余525条待判定。
+
+## 伊蕾娜五条待办
+
+按已说明的临时默认方案，夜间魔法、甜品店、雨天书店三条仅将中文说明对齐原有自洽的生成内容；[逐项前后记录](evidence/all-scene-audit/elaina-minimal5-changes.json)保留原中文与选择依据，双引擎生成文本及尺寸逐项不变。此偏好尚未得到用户单独选项确认，不写成用户已确认。市集魔女袍绑定修正、屋顶扫帚负向冲突移除后，[两条MiaoMiao候选](evidence/all-scene-audit/elaina-render2-human-review-queue.json)真实生成并完成参数对账。60项相关契约通过，281条当前候选对账通过；图像均未查看或上传。当前520条待判定，未在本轮重复全量门禁或追加提交main。
+
+## 雷姆与爱蜜莉雅日常源裁决
+
+[雷姆六条](evidence/all-scene-audit/rem-minimal6-adjudication.json)：走廊端茶、雨夜牵手和书店三条保留；月夜浇花纠正水壶修剪及花种，咖啡厅明确爱心已画好并修正咖啡托盘字段，烘焙坊中文同步既有法棍篮子画面。[爱蜜莉雅两条](evidence/all-scene-audit/emilia-metadata2-adjudication.json)只纠正雪林错误跪姿字段与花束中文花种。八条中五条仅文案/元数据改动，双引擎生成文本和尺寸均未改变，没有重复出图。蓝图重建、分片契约与差异检查通过；本轮未重复全量门禁或提交main。剩余512条待判定，视觉验收仍由用户完成。
+
+## 木更三条日常待办
+
+[学校与便利店](evidence/all-scene-audit/kisara-text2-adjudication.json)只同步镜头描述和中文采购文案，双引擎生成内容及尺寸未变。居家账单场景中英文均要求白衬衫但旧绑定注入夹克牛仔裤，已[新增对应SFW居家衣装并改绑](evidence/all-scene-audit/kisara-home1-binding-change.json)，保留原场景正文与角色身份；7个参考机位全为pending占位，不计真实资产。[双引擎编译](evidence/all-scene-audit/kisara-home1-compiled.json)确认不再混入旧外套裤型，[一张MiaoMiao候选](evidence/all-scene-audit/kisara-home1-human-review-queue.json)生成成功，未看图或上传。60项相关契约及282条当前候选对账通过，剩余509条待判定。本轮未重复全量门禁或追加提交main。
+
+## 五条镜头/姿态旧疑点
+
+[逐条裁决](evidence/all-scene-audit/camera-metadata5-adjudication.json)：洛琪希村落、艾莉丝训练与凯尔希荒漠仅修正camera描述中的坐车/练后擦汗/看扫描仪，与既有正文一致；实际双引擎生成文本及尺寸均未改变。洛琪希荒野驻杖与行走、陈凭栏与按剑均存在兼容解释，未发现必须改写的排他冲突，原样保留。五条无需重新出图；蓝图重建、分片契约和差异检查通过。当前504条待判定，未重复全量门禁或追加提交main。
+
+## 卡芙卡三处局部错配
+
+[三条差异与编译记录](evidence/all-scene-audit/kafka-minimal3-changes.json)：酒店中文红酒杯同步为原生成已有的香槟杯，双引擎实际生成内容不变；雨巷将英文双枪改为一手冲锋枪一手伞，标题移除双枪字样；舷窗英文burgundy coat纠正为所选衣装的black leather coat。后二条[两张MiaoMiao候选](evidence/all-scene-audit/kafka-render2-human-review-queue.json)生成成功并核对参数，未查看或上传图片。60项相关契约及284条当前候选对账通过；当前501条待判定，本轮未重复全量门禁或追加提交main。
+
+## 蕾塞四条旧疑点裁决
+
+[逐条记录](evidence/all-scene-audit/reze-minimal4-adjudication.json)：电话亭实际编译保留夜间霓虹，overcast只带柔和漫射光，没有日光词，不能认定雨夜冲突；摩天轮英文未把人物指定在座舱外，衣装亦未禁止披穿，风险线索不当作真实失败，两条原样保留。泳池仅修正camera中错误的坐池边姿态，书店中文诗集同步为现有英文时尚杂志；两条双引擎生成文本及尺寸前后一致，无重复出图。蓝图重建、分片契约与差异检查通过；当前497条待判定，未重复全量门禁或追加提交main。
+
+## 玛奇玛四条剩余日常裁决
+
+[三条字段裁决](evidence/all-scene-audit/makima-metadata3-adjudication.json)中，遛狗与支配之夜只修动作/镜头描述，双引擎生成文本及尺寸不变；办公室外套可覆在西装外，保留原绑定。电影院[英文称呼](evidence/all-scene-audit/makima-cinema1-change.json)由Sensei同步为中文已有的Denji，[一张MiaoMiao候选](evidence/all-scene-audit/makima-cinema1-human-review-queue.json)真实生成并完成参数对账。60项相关契约和285条当前候选对账通过，未查看或上传图片。当前493条待判定，未在本轮重复全量门禁或追加提交main。
+
+## 陈的三条日常待办
+
+[逐条裁决](evidence/all-scene-audit/chen-daily3-adjudication.json)：夜市中文同步为当前生成已有的鱼丸串，雨站中文伞型同步为透明伞，两条双引擎生成文本和尺寸不变；火锅夹菜后擦汗与画外同席朋友可兼容，保留原场景。未生成、查看或上传图片。蓝图重建、分片契约和差异检查通过，当前490条待判定；本轮未重复全量门禁或追加提交main。
+
+## 三条轻微细节裁决与未确认设定
+
+[三条记录](evidence/all-scene-audit/minor-detail3-adjudication.json)：优香冲线后擦汗和白天体育场灯光可兼容，原样保留；未花动作字段同步取书，一姬中文发长去掉与英文不一致的具体长度，生成文本及尺寸均未改变。雪地白裙作为创作变体保留，不宣称原作事件或现实穿衣建议。飞鸟马时编号的官方域名文字检索未获得直接证据，保持未确认、未改数据；澄闪和莱万汀本轮读取的其他记录仍待判定。蓝图重建、分片契约及差异检查通过；当前487条待判定，无新出图、看图或上传，未重复全量门禁或追加提交main。
+
+## 结衣三条文案同步
+
+[三条前后记录](evidence/all-scene-audit/yui-text3-adjudication.json)：遛狗不再断言缺乏本次直接依据的具体犬种，保留原狗名；网球中文同步既有擦汗休息画面及团子发髻；甜品店中文同步现有草莓奶油可丽饼。双引擎生成文本和尺寸逐项不变，未重出图。侍奉部和祭典称呼未获直接官方文字证据，仍待判定，未据搜索中的二手材料改称呼；厨房时间/动作差异保留待办。当前484条待判定，未重复全量门禁或追加提交main。
+
+## 结衣剩余三条文案闭环
+
+[三条证据](evidence/all-scene-audit/yui-final3-adjudication.json)：厨房中文、时间和镜头字段同步到现有清晨端曲奇画面；侍奉部与祭典对话将自力酱统一为小企。[二手词条](https://zh.wikipedia.org/wiki/比企谷八幡)列有结衣使用ヒッキー及不同中文译法，本次采用网络常见译法，不冒充已核实官方唯一译名。持茶与递茶可兼容，一手团扇也不排除另一手牵手，不要求额外改写。三条双引擎生成文本及尺寸均未变化，无新出图、看图或上传。蓝图重建、分片契约与差异检查通过；当前481条待判定，未重复全量门禁或追加提交main。
+
+## 更正黑川茜的旧裁决
+
+[三个当前编译探针](evidence/all-scene-audit/akane-current-eye-probes.json)确认日常学校/咖啡店/书店均无条件接收身份词star_eyes。此前书店裁决仅依据identityProse中的表演条件，未验证实际身份词，因此该条重新进入待判定。此发现只说明生成输入，不证明实际图片或原作眼睛状态错误；尚不据此改共享角色数据或NSFW。眼镜与书店主题本身仍一致。当前待判定从481更正为482，不为保持数字下降而保留不足的通过结论。无新出图、看图、上传或源码修改；本轮未执行全量门禁或提交main。
+
+## 黑川茜咖啡店局部文案修正
+
+[局部前后记录](evidence/all-scene-audit/akane-cafe-partial-change.json)仅把中文咖啡/拿铁对谈同步为原生成已有的冰茶与角色分析笔记，保留原星瞳描述及共享身份数据。双引擎生成文本、负向和尺寸不变，未出图。三条星瞳编译探针已按当前源刷新；没有新增关闭记录，仍为482条待判定。眼睛状态待核这一限制未被文案修正掩盖。蓝图重建、分片契约和差异检查通过，本轮未执行全量门禁或提交main。
+
+## 莉音三条日常裁决
+
+[楼顶与冬日步道](evidence/all-scene-audit/rio-text2-adjudication.json)：楼顶大衣动作与暮夜时刻可兼容，保留；冬日中文同步为公园步道傍晚，双引擎生成内容和尺寸不变。地下档案馆[光源修正](evidence/all-scene-audit/rio-archive1-change.json)采用原英文已有的嵌入式顶灯，实际推导从window转为null，删除错误窗光附加而保留英文顶灯；[一张MiaoMiao候选](evidence/all-scene-audit/rio-archive1-human-review-queue.json)生成和参数核对成功。35项热门契约与286条当前候选对账通过，无看图或上传；当前479条待判定，未执行本轮全量门禁或追加提交main。
+
+## 两条手部与工具表述修复
+
+[雅儿贝德](evidence/all-scene-audit/albedo-ink1-adjudication.json)只把羽毛笔研磨墨水改为蘸墨处理公文，双引擎生成文本和尺寸不变。优香经核对衣装内置计算器后，[统一为一手叉腰、另一手托平板和账单](evidence/all-scene-audit/yuuka-budget1-change.json)，保留原衣装；[编译指令](evidence/all-scene-audit/yuuka-budget1-compiled.json)已核对，[一张MiaoMiao候选](evidence/all-scene-audit/yuuka-budget1-human-review-queue.json)生成和参数对账成功，未检查实际手部画面。35项热门契约及287条当前候选对账通过；当前477条待判定，无看图或上传，未执行本轮全量门禁或追加提交main。
+
+## 未花花卉与雨景两条
+
+[雨景文案](evidence/all-scene-audit/mika-rain1-adjudication.json)同步为已有雨中漫步及蕾丝洋伞，生成文本和尺寸不变；[休息室花种](evidence/all-scene-audit/mika-flowers1-change.json)将英文百合改为中文及正向标签已有的白蔷薇，并统一动作字段，保留稳定ID。[一张MiaoMiao候选](evidence/all-scene-audit/mika-flowers1-human-review-queue.json)生成并完成参数对账，未看图或上传。35项热门契约及288条当前候选对账通过；当前475条待判定，未执行本轮全量门禁或追加提交main。
+
+## 希耶尔三条日常裁决
+
+[三条记录](evidence/all-scene-audit/ciel-daily3-adjudication.json)：奉茶后推眼镜为顺序动作，查古旧参考书时指尖相触可保留画外同伴手，两条不强制改写。冬日公园只将动作字段双手伸袋改为正文及英文已有的一只手，双引擎生成文本及尺寸不变；风衣与围巾由既有场景补充，不新增重复衣装。既有眼镜负向冲突已在编译探针排除，学校版本不冒充新完成官方认证。蓝图重建、分片契约与差异检查通过；当前472条待判定，无新出图、看图或上传，未执行本轮全量门禁或追加提交main。
+
+## 茉子、幸与一姬三条裁决
+
+[茉子与幸](evidence/all-scene-audit/mako-sachi2-adjudication.json)的猫嘴表情、双侧束发小辫与动作可兼容，原样保留。一姬[文案修正](evidence/all-scene-audit/kazuki-cliff1-adjudication.json)去掉把雄二当作事故在场者的称呼，并移除与现有长发描述不一致的具体长度。[官方第11话](https://www.grisaia-anime.com/kajitsu/story/11.html)描述一姬带领部员与天音结识，[第13话](https://www.grisaia-anime.com/kajitsu/story/13.html)描述雄二听完回忆后前往现场。修正依据此时间关系，不宣称当前服装复刻原作。双引擎生成文本及尺寸不变，无出图、看图或上传；蓝图重建、分片契约和差异检查通过，当前469条待判定，未重复全量门禁或提交main。
+
+## 用户暂停审计并要求发布新版本
+
+本轮止于[澄闪两条衣装修复](evidence/all-scene-audit/goldenglow-outfit2-changes.json)，[两张最终候选](evidence/all-scene-audit/goldenglow-outfit2-human-review-queue.json)已生成并对账；花房继续使用原花房衣装，露台使用去环境描述的变体。当前290条候选未看图、未上传，等待用户人工验收；467条本任务SFW记录仍待判定，新49源证据对账也保留未完成状态。按用户指示停止后续审计，将当前检查点合入main并发布版本，不能把本次发布表述成全场景审核完成。
+
+发布整合已基于最新main完成，[整合记录](evidence/all-scene-audit/release-reconciliation.json)确认761条既有成人源记录未被本轮改动覆盖；[发布前全量门禁](evidence/all-scene-audit/release-1.5.10-gate.txt)通过1m58s。桌面程序ProductVersion为1.5.10，安装器自检与updater签名验证通过。审计保持暂停，不将此次发布视为未完成场景的视觉验收。
+
+独立发布副本再次通过[全量门禁](evidence/all-scene-audit/release-snapshot-gate.txt)，耗时1m53s；发布仅包含当前检查点和已合入main的更新。

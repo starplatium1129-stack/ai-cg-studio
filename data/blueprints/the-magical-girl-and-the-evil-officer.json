@@ -14,7 +14,7 @@
         "chain_link_fence",
         "bento",
         "eating",
-        "black_hair",
+        "white_hair",
         "straight_bangs",
         "melancholy_sun"
       ],
@@ -95,7 +95,7 @@
       "action": "夕阳下吃便当，清贫的平静",
       "timeOfDay": "sunset",
       "lighting": "golden_hour",
-      "camera": "medium shot, sitting on bench opening bento box",
+      "camera": "medium shot, sitting on rooftop concrete steps eating bento",
       "mood": "wistful",
       "recommendedSize": "1152x1536",
       "coverageTags": [

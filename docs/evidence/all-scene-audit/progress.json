@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-09-09T02:14:35.946Z",
-  "goalStatus": "active",
+  "goalStatus": "paused-by-user",
   "batch": "sfw-repair-queue",
   "characterTarget": 50,
   "internalSemanticCharacters": 50,
@@ -469,5 +469,325 @@
     "unchangedExistingAdultRecords": 662,
     "visualAcceptance": "pending user review; no image viewed/uploaded",
     "delivery": "current checkpoint only; audit incomplete"
+  },
+  "postMainCheckpoint": {
+    "baseCommit": "68fba3d6",
+    "adjudicated": 6,
+    "unchangedScenes": 5,
+    "metadataOnlyCorrections": 1,
+    "generationChanges": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 176,
+      "no-major-internal-conflict-found": 199,
+      "needs-adjudication-or-repair": 535
+    },
+    "evidence": "moment-review-adjudication.json",
+    "validation": "Both-engine compiled payload equality, blueprint rebuild and diff check; no new full gate or image generation"
+  },
+  "negativeConflictCheckpoint": {
+    "date": "2026-09-09T04:19:02.755Z",
+    "sfwNegativeListsRepaired": 3,
+    "newMiaoMiaoCandidates": 3,
+    "currentCandidateCount": 276,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 179,
+      "no-major-internal-conflict-found": 200,
+      "needs-adjudication-or-repair": 531
+    },
+    "disprovedAdditionalDnaLeads": 7,
+    "evidence": [
+      "negative-conflicts3-changes.json",
+      "negative-conflicts3-compiled.json",
+      "negative-conflicts3-human-review-queue.json",
+      "remaining-dna-compiler-probes.json"
+    ],
+    "gate": "negative-conflicts3-gate.txt PASS 1m53s"
+  },
+  "actionAndCompositionCheckpoint": {
+    "adjudicated": 6,
+    "metadataOnlyAndCompiledUnchanged": 3,
+    "compositionRepairs": 3,
+    "newMiaoMiaoCandidates": 3,
+    "currentCandidateCount": 279,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 182,
+      "no-major-internal-conflict-found": 203,
+      "needs-adjudication-or-repair": 525
+    },
+    "tests": "60/60 popular and showcase contracts; not a new full gate",
+    "provisionalPreference": "For text-only discrepancies preserve the existing generation unless the user selects otherwise; never treat this assumption as permission to erase confirmed errors."
+  },
+  "elainaCheckpoint": {
+    "adjudicated": 5,
+    "textOnly": 3,
+    "renderedRepairs": 2,
+    "currentCandidateCount": 281,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 184,
+      "no-major-internal-conflict-found": 206,
+      "needs-adjudication-or-repair": 520
+    },
+    "tests": "60 related contracts passed; full gate not repeated",
+    "sourcePreference": "provisional preserve-generation default, pending user preference response"
+  },
+  "remEmiliaCheckpoint": {
+    "adjudicated": 8,
+    "unchangedScenes": 3,
+    "textOrMetadataOnly": 5,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 184,
+      "no-major-internal-conflict-found": 214,
+      "needs-adjudication-or-repair": 512
+    },
+    "evidence": [
+      "rem-minimal6-adjudication.json",
+      "emilia-metadata2-adjudication.json"
+    ],
+    "validation": "Both-engine prompt/negative and size equality; blueprint rebuild and shard contract; no new full gate"
+  },
+  "kisaraCheckpoint": {
+    "adjudicated": 3,
+    "textOnly": 2,
+    "outfitBindingRepairs": 1,
+    "newMiaoMiaoCandidates": 1,
+    "referenceViewsPending": 7,
+    "currentCandidateCount": 282,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 185,
+      "no-major-internal-conflict-found": 216,
+      "needs-adjudication-or-repair": 509
+    },
+    "validation": "60 related contracts and candidate metadata reconciliation passed; full gate not repeated"
+  },
+  "cameraMetadataCheckpoint": {
+    "adjudicated": 5,
+    "unchangedScenes": 2,
+    "metadataOnlyCorrections": 3,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 185,
+      "no-major-internal-conflict-found": 221,
+      "needs-adjudication-or-repair": 504
+    },
+    "evidence": "camera-metadata5-adjudication.json",
+    "validation": "Both-engine payload/size equality, blueprint build and shard contract; no new full gate"
+  },
+  "kafkaCheckpoint": {
+    "adjudicated": 3,
+    "textOnly": 1,
+    "preciseGeneratedPromptCorrections": 2,
+    "newMiaoMiaoCandidates": 2,
+    "currentCandidateCount": 284,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 187,
+      "no-major-internal-conflict-found": 222,
+      "needs-adjudication-or-repair": 501
+    },
+    "validation": "60 related contracts and candidate metadata reconciliation passed; full gate not repeated"
+  },
+  "rezeCheckpoint": {
+    "adjudicated": 4,
+    "unchangedScenes": 2,
+    "textOrMetadataOnly": 2,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 187,
+      "no-major-internal-conflict-found": 226,
+      "needs-adjudication-or-repair": 497
+    },
+    "evidence": "reze-minimal4-adjudication.json",
+    "validation": "Both-engine payload/size equality, blueprint build and shard contract; no new full gate"
+  },
+  "makimaCheckpoint": {
+    "adjudicated": 4,
+    "unchangedScenes": 1,
+    "metadataOnlyCorrections": 2,
+    "englishNameCorrections": 1,
+    "newMiaoMiaoCandidates": 1,
+    "currentCandidateCount": 285,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 188,
+      "no-major-internal-conflict-found": 229,
+      "needs-adjudication-or-repair": 493
+    },
+    "validation": "60 related contracts and candidate reconciliation passed; full gate not repeated"
+  },
+  "chenDailyCheckpoint": {
+    "adjudicated": 3,
+    "unchangedScenes": 1,
+    "textOnlyCorrections": 2,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 188,
+      "no-major-internal-conflict-found": 232,
+      "needs-adjudication-or-repair": 490
+    },
+    "evidence": "chen-daily3-adjudication.json",
+    "validation": "Both-engine payload/size equality, blueprint build and shard contract; no new full gate"
+  },
+  "minorDetailCheckpoint": {
+    "adjudicated": 3,
+    "unchangedScenes": 1,
+    "metadataOnlyCorrections": 2,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 188,
+      "no-major-internal-conflict-found": 235,
+      "needs-adjudication-or-repair": 487
+    },
+    "evidence": "minor-detail3-adjudication.json",
+    "canonUnconfirmed": [
+      "asuma_toki_briefing agent number"
+    ],
+    "validation": "Both-engine payload/size equality, blueprint build and shard contract; no new full gate"
+  },
+  "yuiTextCheckpoint": {
+    "adjudicated": 3,
+    "textOnly": 3,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 188,
+      "no-major-internal-conflict-found": 238,
+      "needs-adjudication-or-repair": 484
+    },
+    "evidence": "yui-text3-adjudication.json",
+    "remaining": [
+      "nickname in club/festival dialogue unconfirmed against primary text",
+      "kitchen time/action discrepancy"
+    ],
+    "validation": "Both-engine payload/size equality; blueprint rebuild and diff check"
+  },
+  "yuiFinalCheckpoint": {
+    "adjudicated": 3,
+    "textAndMetadataOnly": 3,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 188,
+      "no-major-internal-conflict-found": 241,
+      "needs-adjudication-or-repair": 481
+    },
+    "evidence": "yui-final3-adjudication.json",
+    "validation": "Both-engine payload/size equality, blueprint build and shard contract; no new full gate"
+  },
+  "akaneRevalidation": {
+    "actualPlansChecked": 3,
+    "reopenedPriorAdjudications": 1,
+    "sourceMutations": 0,
+    "generations": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 188,
+      "no-major-internal-conflict-found": 240,
+      "needs-adjudication-or-repair": 482
+    },
+    "evidence": "akane-current-eye-probes.json",
+    "reason": "Compiled identity has unconditional star_eyes; earlier conditional-prose-only acceptance was insufficient."
+  },
+  "akaneCafePartial": {
+    "sourceRecordsChanged": 1,
+    "closedRecords": 0,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 188,
+      "no-major-internal-conflict-found": 240,
+      "needs-adjudication-or-repair": 482
+    },
+    "evidence": "akane-cafe-partial-change.json",
+    "remaining": "Shared star-eye state unresolved; record remains pending.",
+    "validation": "Both-engine payload/size equality, blueprint rebuild and shard contract; no full gate"
+  },
+  "rioCheckpoint": {
+    "adjudicated": 3,
+    "unchangedScenes": 1,
+    "textOnly": 1,
+    "lightingCorrections": 1,
+    "newMiaoMiaoCandidates": 1,
+    "currentCandidateCount": 286,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 189,
+      "no-major-internal-conflict-found": 242,
+      "needs-adjudication-or-repair": 479
+    },
+    "validation": "35 popular contracts and candidate reconciliation passed; full gate not repeated"
+  },
+  "handDetailsCheckpoint": {
+    "adjudicated": 2,
+    "textOnly": 1,
+    "handInstructionCorrections": 1,
+    "newMiaoMiaoCandidates": 1,
+    "currentCandidateCount": 287,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 190,
+      "no-major-internal-conflict-found": 243,
+      "needs-adjudication-or-repair": 477
+    },
+    "validation": "35 popular contracts and candidate reconciliation passed; full gate not repeated"
+  },
+  "mikaFlowersCheckpoint": {
+    "adjudicated": 2,
+    "textOnly": 1,
+    "flowerSpeciesCorrections": 1,
+    "newMiaoMiaoCandidates": 1,
+    "currentCandidateCount": 288,
+    "visualPass": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 191,
+      "no-major-internal-conflict-found": 244,
+      "needs-adjudication-or-repair": 475
+    },
+    "validation": "35 popular contracts and candidate reconciliation passed; full gate not repeated"
+  },
+  "cielDailyCheckpoint": {
+    "adjudicated": 3,
+    "unchangedScenes": 2,
+    "metadataOnlyCorrections": 1,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 191,
+      "no-major-internal-conflict-found": 247,
+      "needs-adjudication-or-repair": 472
+    },
+    "evidence": "ciel-daily3-adjudication.json",
+    "validation": "Both-engine payload/size equality, blueprint build and shard contract; no new full gate"
+  },
+  "makoSachiKazukiCheckpoint": {
+    "adjudicated": 3,
+    "unchangedScenes": 2,
+    "textOnlyCorrections": 1,
+    "generationChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 191,
+      "no-major-internal-conflict-found": 250,
+      "needs-adjudication-or-repair": 469
+    },
+    "evidence": [
+      "mako-sachi2-adjudication.json",
+      "kazuki-cliff1-adjudication.json"
+    ]
+  },
+  "releaseHandoff": {
+    "remainingOwnedSfw": 467,
+    "currentCandidates": 290,
+    "visualAcceptance": "pending user review",
+    "new49SourceReconciliation": "incomplete; see existing ledger",
+    "instruction": "Stop further audit; commit checkpoint to main and publish next patch version."
   }
 }

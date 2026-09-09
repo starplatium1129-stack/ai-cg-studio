@@ -1465,6 +1465,21 @@
           "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "sfw_pastel_tea_dress",
+          "name": "粉薄荷茶会裙（日常场景）",
+          "prose": "a cream-pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes",
+          "tokens": [
+            "lolita",
+            "dress",
+            "frills",
+            "ribbon",
+            "mary_janes"
+          ],
+          "default": false,
+          "isDefault": false,
+          "isNsfw": false
         }
       ],
       "canon": {

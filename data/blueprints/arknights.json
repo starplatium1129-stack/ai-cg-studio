@@ -1099,7 +1099,7 @@
       "action": "衣摆猎猎，遥望地平线",
       "timeOfDay": "黄昏",
       "lighting": "amber desert light and wind",
-      "camera": "medium shot, checking tactical scanner",
+      "camera": "medium shot, standing beside ancient desert ruins",
       "mood": "辽阔冷静",
       "sceneTags": [
         "desert",
@@ -1952,9 +1952,9 @@
       "title": "陈 · 龙门夜市",
       "category": "泰拉都市",
       "characterId": "chen_arknights",
-      "description": "【陈 · 龙门夜市】充满烟火气的龙门老街夜市里，蒸笼翻滚的热气与小吃香气扑面而来。陈在熟悉的肠粉摊位前驻足，指了指翻滚的油锅转过脸向你露出难得的微笑——「这里的生滚牛肉粥和叉烧包是龙门最地道的味道。巡逻了一整晚，今晚我请客，放开吃吧。」",
+      "description": "【陈 · 龙门夜市】龙门老街的小吃摊升起阵阵热气，红灯笼照着热闹的人群。陈穿着街头便服，拿起一串香辣鱼丸尝了一口，难得地露出满足的笑容——「巡逻了一整晚，先吃点东西吧。这家摊位我很熟，今晚我请客。」",
       "location": "龙门夜市",
-      "action": "驻足于摊位光影之间",
+      "action": "在龙门夜市摊位前品尝香辣鱼丸串",
       "timeOfDay": "夜晚",
       "lighting": "warm neon and lantern light",
       "camera": "medium shot",
@@ -2308,7 +2308,7 @@
       "title": "陈 · 雨夜车站",
       "category": "泰拉都市",
       "characterId": "chen_arknights",
-      "description": "【陈 · 雨夜车站】暴雨倾盆的龙门城际列车站台边缘，陈撑着一把黑色雨伞静静等候在雨幕之中，雨滴在伞面上敲击出密集的鼓点。看到列车舱门打开走出的你，她快步上前将伞倾斜过去——「路上辛苦了。车已经备好，我们直接回近卫局。」",
+      "description": "【陈 · 雨夜车站】暴雨倾盆的龙门城际列车站台边缘，陈撑着一把透明雨伞静静等候在雨幕之中，雨滴在伞面上敲击出密集的鼓点。看到列车舱门打开走出的你，她快步上前将伞倾斜过去——「路上辛苦了。车已经备好，我们直接回近卫局。」",
       "location": "龙门车站",
       "action": "撑伞立于站台边缘",
       "timeOfDay": "雨夜",
@@ -3241,7 +3241,7 @@
       "characterId": "eyjafjalla_arknights",
       "description": "【艾雅法拉 · 温泉考察】群山环抱的地热温泉岸边，艾雅法拉穿着防水探险服，将精密温度计探入升腾着白色水汽的泉水中。她甩了甩被打湿的袖口开心地向你挥手——「前辈快来看！这里的温泉富含对神经舒缓极其有益的矿物质，考察结束后我们一起泡温泉吧！」",
       "location": "泰拉温泉地带",
-      "action": "站在岸边记录水温",
+      "action": "蹲在温泉岸边，将温度计探入泉水测量水温",
       "timeOfDay": "清晨",
       "lighting": "misty morning light",
       "camera": "medium shot",
@@ -8075,7 +8075,6 @@
       "promptProse": "Inside the sun-drenched greenhouse of Rhodes Island, Goldenglow in her pastel tea dress lovingly waters blooming rose bushes and hanging ferns with a vintage copper watering can. Her feline ears twitch with delight as golden morning sunbeams create tiny rainbows through the misty air, electric sparks dancing playfully from her fingertips.",
       "promptTokens": [
         "atmospheric",
-        "black_clothes",
         "cinematic_lighting",
         "clean_face",
         "depth_of_field",
@@ -8086,7 +8085,6 @@
         "greenhouse",
         "medium_shot",
         "morning",
-        "pinafore_dress",
         "plants",
         "pleated_skirt",
         "scarf",
@@ -8096,8 +8094,7 @@
         "smooth_thighs",
         "thighhighs",
         "volumetric_lighting",
-        "watering",
-        "white_shirt"
+        "watering"
       ],
       "negativeTokens": [
         "worst quality",
@@ -8151,7 +8148,7 @@
         "two people"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "standard",
+      "outfitId": "greenhouse_tea",
       "coverageTags": [
         "daily"
       ]
@@ -8492,7 +8489,7 @@
         "lolita_dress",
         "frills",
         "ribbon",
-        "boots",
+        "mary_janes",
         "standing",
         "leaning_on_railing",
         "clasped_hands",
@@ -8567,7 +8564,7 @@
         "two people"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "greenhouse_tea",
+      "outfitId": "sfw_pastel_tea_dress",
       "coverageTags": [
         "daily"
       ]

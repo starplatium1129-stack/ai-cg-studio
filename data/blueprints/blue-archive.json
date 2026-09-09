@@ -1331,7 +1331,7 @@
       "characterId": "kyouyama_kazusa",
       "description": "【杏山和纱 · 天台微风与专属旋律】黄昏染红的教学楼天台上，和纱独自坐在长椅边缘，轻轻哼唱着新谱写的旋律。黑发被晚风轻柔拂起，粉瞳在夕阳下泛着温柔的波光。察觉到你的脚步声，她回过头露出淡淡的浅笑——「……你来啦，老师。这首曲子……其实是想着你写出来的，听听看吧。」",
       "location": "崔尼蒂学院天台",
-      "action": "坐栏杆边哼歌",
+      "action": "坐在天台长椅边缘轻轻哼唱旋律",
       "timeOfDay": "黄昏",
       "lighting": "金色夕光",
       "camera": "medium shot, backlight",
@@ -3034,10 +3034,10 @@
     {
       "category": "研讨会日常",
       "characterId": "tsukatsuki_rio",
-      "description": "【调月莉音 · 冬季街道漫步】飘着初雪的千年街道上，莉音穿着收腰长款风衣与保暖皮靴，黑色长发与雪白的围巾形成鲜明对比。她将冻得有些发红的双手插进大衣口袋，侧目看向你——「气温已经降至零度以下，但……像这样两个人并肩走在雪地里，体感温度似乎比数据预测的要温暖许多。」",
+      "description": "【调月莉音 · 冬季街道漫步】飘着初雪的城市公园步道上，莉音穿着收腰长款风衣与保暖皮靴，黑色长发与雪白的围巾形成鲜明对比。她将冻得有些发红的双手插进大衣口袋，侧目看向你——「气温已经降至零度以下，但……像这样两个人并肩走在雪地里，体感温度似乎比数据预测的要温暖许多。」",
       "location": "千年冬季街道",
       "action": "穿风衣走在雪中",
-      "timeOfDay": "冬季白天",
+      "timeOfDay": "冬日傍晚",
       "lighting": "雪天柔光",
       "camera": "medium shot, eye level",
       "mood": "清冷干练",
@@ -3212,7 +3212,7 @@
       "location": "千年图书馆",
       "action": "靠书架沉思",
       "timeOfDay": "下午",
-      "lighting": "窗边柔光",
+      "lighting": "soft recessed ceiling lights",
       "camera": "medium shot, shallow depth of field",
       "mood": "深不可测",
       "sceneTags": [
@@ -4014,7 +4014,7 @@
       "characterId": "misono_mika",
       "description": "【圣园未花 · 帕特尔派议事厅的小憩】帕特尔派的华丽休息室内，未花将一枝刚采摘的白蔷薇插在红茶杯旁，双手托腮笑眯眯地凝视着批改文件的你——「唔～文件有什么好看的嘛，明明可爱的未花就在你眼前！老师，再不理我我可就要捣蛋咯☆」",
       "location": "帕特尔派议事厅",
-      "action": "把白蔷薇放在文件上",
+      "action": "在茶具旁整理白蔷薇，回望微笑",
       "timeOfDay": "白天",
       "lighting": "侧窗冷光",
       "camera": "close-up, shallow depth of field",
@@ -4026,7 +4026,7 @@
         "white_rose",
         "tea_party"
       ],
-      "promptProse": "Arranging fresh white lilies in the Pater faction parlour, Mika glances back with a sweet, affectionate giggle. Soft morning daylight streams through arched French windows, highlighting her elegant Trinity princess posture.",
+      "promptProse": "Arranging fresh white roses in the Pater faction parlour, Mika glances back with a sweet, affectionate giggle. Soft morning daylight streams through arched French windows, highlighting her elegant Trinity princess posture.",
       "promptTokens": [
         "parlour",
         "meeting_room",
@@ -4100,7 +4100,7 @@
       "characterId": "misono_mika",
       "description": "【圣园未花 · 古老藏书库的秘密】静谧古老的旧藏书库角落，未花踮起脚尖在高高的书架前找寻着什么，粉发随动作轻扬，金瞳在烛光下熠熠生辉。她回头冲你俏皮地眨了眨眼——「嘘——老师，这是我们两个人的秘密探险哦，绝对不能告诉渚酱她们～」",
       "location": "崔尼蒂禁书库",
-      "action": "在禁书柜前翻阅旧书",
+      "action": "在古老藏书库的高书架前伸手取一本旧书",
       "timeOfDay": "深夜",
       "lighting": "烛光",
       "camera": "medium shot, eye level",
@@ -4183,9 +4183,9 @@
     {
       "category": "茶会权谋",
       "characterId": "misono_mika",
-      "description": "【圣园未花 · 雨后白蔷薇园的漫步】细雨初歇的圣三一庭园里，未花撑着一把蕾丝洋伞漫步在盛开的白蔷薇丛中，发丝与纯白羽翼上沾着晶莹的水珠。她转身朝你伸出手，金眸中满是依恋——「雨后的花香真好闻呢……不过只要有老师在身边，不管是晴天还是雨天，未花都觉得超幸福的☆」",
+      "description": "【圣园未花 · 雨中白蔷薇园的漫步】细雨轻落的圣三一庭园里，未花撑着一把蕾丝洋伞漫步在盛开的白蔷薇丛中，发丝与纯白羽翼上沾着晶莹的水珠。她转身朝你伸出手，金眸中满是依恋——「雨中的花香真好闻呢……不过只要有老师在身边，不管是晴天还是雨天，未花都觉得超幸福的☆」",
       "location": "崔尼蒂雨后庭园",
-      "action": "撑黑伞立于白蔷薇丛",
+      "action": "撑着蕾丝洋伞漫步白蔷薇园，微笑回望",
       "timeOfDay": "雨后",
       "lighting": "云隙光与湿润反光",
       "camera": "medium shot, back view to three-quarter",
@@ -4264,7 +4264,7 @@
         "daily"
       ],
       "id": "misono_mika_rain_garden",
-      "title": "圣园未花 · 雨后白蔷薇园的漫步"
+      "title": "圣园未花 · 雨中白蔷薇园的漫步"
     },
     {
       "category": "茶会权谋",
@@ -6143,9 +6143,9 @@
       "title": "早濑优香 · 夏莱办公室的说教与陪伴",
       "category": "学园日常",
       "characterId": "hayase_yuuka",
-      "description": "【早濑优香 · 夏莱办公室的说教与陪伴】夏莱总指挥室内，午后暖阳透过百叶窗洒下斑驳光影。优香双手叉腰站在老师的办公桌旁，手里紧紧捏着一叠被驳回的零食请款单，鼓起腮帮子故作威严地进行说教——「老师！怎么又偷偷买了这么多高价手办和点心！真拿老师没办法……这次的账目我帮您平了，但下不为例！」",
+      "description": "【早濑优香 · 夏莱办公室的说教与陪伴】夏莱总指挥室内，午后暖阳透过百叶窗洒下斑驳光影。优香一手叉腰站在老师的办公桌旁，另一手托着计算器平板和一叠被驳回的零食请款单，鼓起腮帮子故作威严地进行说教——「老师！怎么又偷偷买了这么多高价手办和点心！真拿老师没办法……这次的账目我帮您平了，但下不为例！」",
       "location": "夏莱（SCHALE）中央办公室",
-      "action": "单手叉腰另一手轻扬账单文件，鼓腮嘟嘴娇嗔，微微俯身注视老师",
+      "action": "一手叉腰，另一手托着计算器平板与账单文件，鼓腮说教",
       "timeOfDay": "下午",
       "lighting": "百叶窗透射的斜射暖阳与室内明亮荧光",
       "camera": "cowboy shot, medium angle",
@@ -6161,11 +6161,11 @@
         "tsundere",
         "school_uniform"
       ],
-      "promptProse": "Lecturing Sensei on budget management with hands planted on her hips in the Schale office, Yuuka pouts with endearing authority. Golden afternoon sunbeams streaming through office blinds illuminate her animated, adorable scolding.",
+      "promptProse": "Lecturing Sensei on budget management with one hand on her hip and the other supporting a calculator tablet with the bills held against it in the Schale office, Yuuka pouts with endearing authority. Golden afternoon sunbeams streaming through office blinds illuminate her animated, adorable scolding.",
       "promptTokens": [
         "schale_office",
         "documents",
-        "hands_on_hips",
+        "hand_on_hip",
         "tsundere_pout",
         "detailed_background",
         "cinematic_lighting",

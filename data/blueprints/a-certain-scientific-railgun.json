@@ -1160,7 +1160,8 @@
       "coverageTags": [
         "daily",
         "girlfriend"
-      ]
+      ],
+      "compositionIntent": "group"
     },
     {
       "id": "misaki_garden_walk_queens_stroll",
@@ -1227,7 +1228,8 @@
         "daily",
         "date",
         "girlfriend"
-      ]
+      ],
+      "compositionIntent": "group"
     },
     {
       "id": "misaki_poolside_crown_maintenance",
@@ -1509,7 +1511,8 @@
         "daily",
         "date",
         "girlfriend"
-      ]
+      ],
+      "compositionIntent": "group"
     },
     {
       "id": "misaki_nsfw_throne_straddle",

@@ -23,7 +23,7 @@
         "intimate",
         "city"
       ],
-      "promptProse": "Sitting in a darkened cinema watching the movie screen, Makima turns her head toward Sensei with an unreadable, gentle smile. Projector light beams cut through the theatre haze, casting luminous rim highlights across her reddish braid.",
+      "promptProse": "Sitting in a darkened cinema watching the movie screen, Makima turns her head toward Denji with an unreadable, gentle smile. Projector light beams cut through the theatre haze, casting luminous rim highlights across her reddish braid.",
       "promptTokens": [
         "movie_theater",
         "sitting_in_seat",
@@ -185,10 +185,10 @@
       "characterId": "makima",
       "description": "【玛奇玛 · 支配之夜】暴雨倾盆的神社鸟居长阶之上，玛奇玛撑着一把黑伞静静伫立在漫天雨幕中。她优雅地摘下黑色皮手套，身后缠绕着令人窒息的无形支配气场——「无论恶魔还是人类，在绝对的支配面前皆一视同仁。跪伏在我的脚下吧，这是你唯一的归宿。」",
       "location": "黄昏鸟居之巅与血色云海",
-      "action": "双手轻轻合十捏出手印，身后血色黄昏天际翻涌，圈圈金色恶魔之眼散发着令人窒息的支配威压",
+      "action": "撑着黑伞站在暴雨中的神社长阶上，俯视前方",
       "timeOfDay": "黄昏",
       "lighting": "暴雨中的阴晦天光与湿润反光",
-      "camera": "low angle epic cinematic shot, red sunset sky, dominating aura",
+      "camera": "low angle epic cinematic shot, storm clouds, dominating aura",
       "mood": "冰冷威严与危险魅惑",
       "sceneTags": [
         "torii_gate",
@@ -389,7 +389,7 @@
       "characterId": "makima",
       "description": "【玛奇玛 · 遛狗】午后阳光和煦的绿荫草坪上，玛奇玛穿着柔软的米色毛衣，手里牵着一群欢快摇尾巴的哈士奇与秋田犬。她蹲下身温柔地揉着狗狗的脑袋，眼中难得流露出一丝纯粹的喜爱——「狗狗真的很棒呢。忠诚、坦率、无论何时都会全心全意地听从主人的指令……」",
       "location": "城市公园",
-      "action": "牵着白色小狗散步",
+      "action": "蹲在公园草坪上，轻抚身边的哈士奇与秋田犬",
       "timeOfDay": "午后",
       "lighting": "明亮日光",
       "camera": "medium shot",
@@ -398,7 +398,7 @@
         "park",
         "dog",
         "leash",
-        "walking",
+        "squatting",
         "afternoon",
         "daylight",
         "outdoors"
@@ -1266,7 +1266,7 @@
       "action": "月下从水面轻盈出水",
       "timeOfDay": "night",
       "lighting": "moonlight",
-      "camera": "cowboy shot, sitting on pool edge dipping feet in moonlit water",
+      "camera": "cowboy shot, stepping out of the moonlit school pool",
       "mood": "serene",
       "recommendedSize": "1152x1536",
       "coverageTags": [
@@ -1778,7 +1778,7 @@
       "characterId": "reze_chainsaw",
       "outfitId": "sleeveless_white_shirt",
       "adult": false,
-      "description": "【蕾塞 · 旧书店午后】弥漫着旧纸墨香的街角二手书店内，蕾塞靠在狭窄的书架旁静静翻看着一本泛黄的俄语诗集，阳光在她的发梢镀上一层柔金。她合上书页转过身对你轻轻一笑——「即便是在遥远寒冷的北方雪国，人们对温暖与自由的向往，也和此刻站在这里的我们一模一样呢。」",
+      "description": "【蕾塞 · 旧书店午后】弥漫着旧纸墨香的街角二手书店内，蕾塞靠在狭窄的书架旁静静翻看着一本时尚杂志，阳光在她的发梢镀上一层柔金。她合上书页转过身对你轻轻一笑——「即便是在遥远寒冷的北方雪国，人们对温暖与自由的向往，也和此刻站在这里的我们一模一样呢。」",
       "location": "街角旧书店",
       "action": "靠在书架旁翻杂志",
       "timeOfDay": "afternoon",

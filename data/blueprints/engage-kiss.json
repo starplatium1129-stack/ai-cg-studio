@@ -184,7 +184,7 @@
         "two people"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "casual"
+      "outfitId": "sfw_home_white_shirt"
     },
     {
       "id": "kisara_school",
@@ -196,7 +196,7 @@
       "action": "穿着校服在走廊转身",
       "timeOfDay": "白天",
       "lighting": "明亮日光",
-      "camera": "medium shot, leaning against corridor locker with playful smile",
+      "camera": "medium shot, walking through the sunny school corridor with a playful smile",
       "mood": "活泼娇嗔",
       "sceneTags": [
         "school",
@@ -376,9 +376,9 @@
       "title": "木更 · 便利店日常",
       "category": "现代日常",
       "characterId": "kisara_engage_kiss",
-      "description": "【木更 · 便利店日常】深夜街角的便利店冷柜前，木更正为挑选特价便当还是高级布丁而陷入严肃的纠结。她鼓起腮帮子扯了扯你的衣角——「修，预算真的不够买两盒高级布丁了吗？哪怕少买一盒烟，我也想在这个晚上和你一起吃甜点嘛！」",
+      "description": "【木更 · 便利店日常】深夜的便利店灯光明亮，木更提着购物篮沿着货架慢慢挑选，最后认真比较起几款能量饮料。她回头望向修，带着一贯的关切与期待——「今晚还要忙很久吗？饮料我来挑，不过忙完以后也要好好休息哦。」",
       "location": "契约者公寓楼下便利店",
-      "action": "挑选零食",
+      "action": "提着购物篮在便利店挑选能量饮料",
       "timeOfDay": "夜晚",
       "lighting": "明亮灯光",
       "camera": "medium shot, picking snacks from illuminated store shelves",

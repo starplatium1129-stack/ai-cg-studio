@@ -152,6 +152,19 @@
           "styleHint": "soft cinematic lighting",
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "sfw_home_white_shirt",
+          "name": "居家白衬衫与休闲短裤",
+          "prose": "an oversized opaque white button-up shirt with long sleeves, worn over plain lounge shorts",
+          "tokens": [
+            "oversized_white_shirt",
+            "long_sleeves",
+            "lounge_shorts"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ],
       "canon": {
