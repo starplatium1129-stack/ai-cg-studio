@@ -70,9 +70,13 @@ export interface Live2DModelHandle {
   getNaturalSize(): { width: number; height: number }
   /** 动作组是否存在（浏览器探测 motionManager.definitions；原生端由 Rust 管理，返回 false） */
   hasMotionGroup?(group: string): boolean
+  /** 当前正在播放的动作组；null 表示已结束，undefined 表示运行库不支持查询。 */
+  getActiveMotionGroup?(): string | null | undefined
 }
 
 export interface Live2DConnectOptions {
+  /** 取消尚未完成的连接，防止超时或卸载后创建迟到的渲染会话。 */
+  signal?: AbortSignal
   /** 浏览器后端：wl-live2d 宿主选择器；原生后端忽略 */
   selector: string
   /** 模型 model3.json 路径（原生端由 Rust 从本地资产读取，不需要下载到 WebView2） */

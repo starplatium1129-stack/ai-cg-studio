@@ -39,6 +39,28 @@ const PRIORITY_MAP: Record<number, Live2DMotionPriority> = {
   3: 'force',
 }
 
+async function connectCharacter(bridge: Live2DNativeBridge, options: Live2DConnectOptions) {
+  const signal = options.signal
+  signal?.throwIfAborted()
+  let cancel: (() => void) | undefined
+  const cancelled = new Promise<never>((_, reject) => {
+    cancel = () => {
+      // 立即把清理排在当前加载之后、新连接之前；迟到的响应不再销毁新模型。
+      void bridge.destroy().catch(() => {})
+      reject(signal?.reason ?? new Error('Live2D 连接已取消'))
+    }
+    signal?.addEventListener('abort', cancel, { once: true })
+  })
+  try {
+    return await Promise.race([
+      bridge.setCharacter(options.modelUrl, { character: options.character || 'nene' }),
+      cancelled,
+    ])
+  } finally {
+    if (cancel) signal?.removeEventListener('abort', cancel)
+  }
+}
+
 export function createNativeLive2DBackend(provider: NativeBridgeProvider = defaultBridgeProvider): Live2DStageBackend {
   return {
     kind: 'native',
@@ -49,8 +71,7 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       if (!bridge) {
         throw new Error(NATIVE_BACKEND_UNAVAILABLE)
       }
-      const character = options.character || 'nene'
-      const result = await bridge.setCharacter(options.modelUrl, { character })
+      const result = await connectCharacter(bridge, options)
       if (!result.ok) {
         throw new Error(`原生 Live2D 加载失败：${result.error ?? '未知错误'}`)
       }

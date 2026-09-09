@@ -335,6 +335,28 @@ test('Live2DNativeBridge 契约：命令与事件方法齐全', () => {
 
 // ---------- stub 桥 ----------
 
+test('原生后端：取消挂起连接立即清理，迟到响应不影响重试会话', async () => {
+  const bridge = createStubBridge();
+  let release;
+  const originalSetCharacter = bridge.setCharacter;
+  bridge.setCharacter = () => new Promise(resolve => { release = resolve; });
+  const controller = new AbortController();
+  const options = { selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' };
+  const backend = createNativeLive2DBackend(() => bridge);
+  const pending = backend.connect({ ...options, signal: controller.signal });
+  controller.abort();
+  await assert.rejects(pending, { name: 'AbortError' });
+  assert.equal(bridge.calls.destroy.length, 1);
+  bridge.setCharacter = originalSetCharacter;
+  const session = await backend.connect(options);
+  release({ ok: true });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(bridge.calls.destroy.length, 1, '迟到结果不能再清理已经加载的新模型');
+  assert.equal(bridge._offCalls.length, 0);
+  session.destroy();
+  assert.equal(bridge.calls.destroy.length, 2);
+});
+
 test('原生后端：相同帧率不重复发送，失败后允许下一次重试', async () => {
   const bridge = createStubBridge();
   let reject;

@@ -6,6 +6,7 @@ async function setup() {
   const model = {
     visible: true, width: 420, height: 610, x: 0, y: 0,
     scale: { x: 1, y: 1, set: vi.fn() },
+    internalModel: { on: vi.fn(), motionManager: { state: { currentGroup: 'TapSkirt' as string | undefined } } },
   }
   let loaded!: (value: typeof model) => void
   let failed!: (error: Error) => void
@@ -26,6 +27,19 @@ async function setup() {
 afterEach(() => { Reflect.deleteProperty(window, 'wl-live2d') })
 
 describe('browser Live2D session', () => {
+  it('reports motion ownership from the runtime, including idle and completion', async () => {
+    const h = await setup()
+    let handle!: Live2DModelHandle
+    h.session.onModelLoaded(value => { handle = value })
+    h.loaded()
+    expect(handle.getActiveMotionGroup?.()).toBe('TapSkirt')
+    h.model.internalModel.motionManager.state.currentGroup = 'Idle'
+    expect(handle.getActiveMotionGroup?.()).toBe('Idle')
+    h.model.internalModel.motionManager.state.currentGroup = undefined
+    expect(handle.getActiveMotionGroup?.()).toBeNull()
+    h.session.destroy()
+  })
+
   it('visibility reads and writes the actual rendered model', async () => {
     const h = await setup()
     let handle!: Live2DModelHandle

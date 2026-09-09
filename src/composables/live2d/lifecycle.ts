@@ -61,6 +61,7 @@ export function createLifecycleController(
   let entranceTimer = 0
   let runtimeGeneration = 0
   let finishPendingLoad: ((value: boolean) => void) | null = null
+  let pendingConnection: AbortController | null = null
   function scheduleNativeStoppedRetry() {
     if (ctx.destroyed.value || !ctx.enabled.value) return
     if (nativeRetryTimer) return
@@ -203,13 +204,28 @@ export function createLifecycleController(
   function load(char: string, info: Live2DModelInfo): Promise<boolean> {
     if (ctx.loading) return ctx.loading
     if (!ctx.backend) return Promise.resolve(false)
+    // connect 会创建 canvas，必须先释放旧会话，再启动新连接。
+    destroyRuntime()
     ctx.loading = new Promise((resolve) => {
       void (async () => {
-        // 先停旧会话并清空宿主：wl-live2d 在 connect 时向 hostEl 创建 canvas，
-        // 顺序反了会把刚创建的 canvas 一起清掉。库加载失败时旧模型也随之
-        // 销毁并进入 fallback（原实现残留旧模型的行为不一致，一并修正）。
-        destroyRuntime()
         const generation = runtimeGeneration
+        const connection = new AbortController()
+        pendingConnection = connection
+        let settled = false
+        const finish = (v: boolean) => {
+          if (settled) return
+          settled = true
+          if (finishPendingLoad === finish) {
+            finishPendingLoad = null
+            clearTimeout(ctx.timers.load)
+            ctx.timers.load = 0
+            ctx.loading = null
+          }
+          resolve(v)
+        }
+        finishPendingLoad = finish
+        // 连接（含原生模型加载）与首帧共用截止时间，不能等 connect 返回后才计时。
+        ctx.timers.load = window.setTimeout(() => { destroyRuntime(); fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化') }, 20000)
         const isCurrent = () => generation === runtimeGeneration && !ctx.destroyed.value
           && ctx.enabled.value && char === ctx.character.value
         if (ctx.hostEl) ctx.hostEl.innerHTML = ''
@@ -219,6 +235,7 @@ export function createLifecycleController(
         let nextSession: Live2DStageSession
         try {
           nextSession = await ctx.backend!.connect({
+            signal: connection.signal,
             selector: ctx.hostSelector,
             modelUrl: info.modelUrl,
             canvasWidth: info.canvas?.width || 420,
@@ -226,7 +243,7 @@ export function createLifecycleController(
             character: char,
           })
         } catch (e) {
-          if (!isCurrent()) { ctx.loading = null; resolve(false); return }
+          if (!isCurrent()) { finish(false); return }
           const message = errorMessage(e)
           // 原生 IPC、GPU 或模型初始化任一步失败，都回退浏览器后端再试一次。
           if (ctx.backendKind.value === 'native' && ctx.backend?.kind === 'native') {
@@ -238,6 +255,7 @@ export function createLifecycleController(
             console.warn('[live2d]', ctx.backendFallback.value)
             try {
               nextSession = await ctx.backend!.connect({
+                signal: connection.signal,
                 selector: ctx.hostSelector,
                 modelUrl: info.modelUrl,
                 canvasWidth: info.canvas?.width || 420,
@@ -246,30 +264,20 @@ export function createLifecycleController(
               })
             } catch (e2) {
               if (isCurrent()) fallback('Live2D 初始化失败', errorMessage(e2))
-              ctx.loading = null
-              resolve(false); return
+              finish(false); return
             }
           } else {
             fallback('Live2D 初始化失败', message)
-            ctx.loading = null
-            resolve(false); return
+            finish(false); return
           }
         }
         if (!isCurrent()) {
           nextSession.destroy()
-          ctx.loading = null
-          resolve(false); return
+          finish(false); return
         }
+        if (pendingConnection === connection) pendingConnection = null
         ctx.session = nextSession
         const nativeCapability = ctx.session.kind === 'native' ? ctx.session.capability : null
-        let settled = false
-        const finish = (v: boolean) => {
-          if (settled) return; settled = true
-          finishPendingLoad = null
-          clearTimeout(ctx.timers.load); ctx.loading = null; resolve(v)
-        }
-        finishPendingLoad = finish
-        ctx.timers.load = window.setTimeout(() => { destroyRuntime(); fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化') }, 20000)
         ctx.session.onModelLoaded((m: Live2DModelHandle) => {
           if (!isCurrent()) { finish(false); return }
           if (settled) return
@@ -448,6 +456,8 @@ export function createLifecycleController(
 
   function destroyRuntime() {
     runtimeGeneration += 1
+    pendingConnection?.abort()
+    pendingConnection = null
     clearTimeout(nativeRetryTimer); nativeRetryTimer = 0
     clearTimeout(entranceTimer); entranceTimer = 0
     finishPendingLoad?.(false)

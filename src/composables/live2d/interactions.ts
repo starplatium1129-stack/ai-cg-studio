@@ -216,6 +216,10 @@ export function createInteractionController(
     // 基础调用契约保持 model.motion(interaction.group, undefined, 3) 兼容性
     const affection = useCompanionAffection()
     const dispatched = affection.dispatchInteractiveMotion(ctx.character.value, interaction.group)
+    if (!dispatched) {
+      ctx.interactionHint.value = '这个互动尚未解锁，先多陪伴她一会儿吧'
+      return
+    }
     const motionIndex = dispatched.index
     const customText = dispatched.entry?.text
       ? `“${dispatched.entry.text}”${dispatched.bonusAwarded ? ` (好感度+${dispatched.bonusAwarded})` : ''}`

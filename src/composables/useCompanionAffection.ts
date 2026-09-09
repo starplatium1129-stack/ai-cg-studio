@@ -106,12 +106,12 @@ export function useCompanionAffection() {
     index: number
     entry?: AffectionMotionEntry
     bonusAwarded?: number
-  } {
+  } | null {
     const currentScore = getScore(character)
     const picked = pickAffectionMotion(character, group, currentScore)
 
     if (!picked) {
-      return { index: 0 }
+      return null
     }
 
     let bonusAwarded: number | undefined
@@ -137,4 +137,3 @@ export function useCompanionAffection() {
     allScores: computed(() => state.value),
   }
 }
-

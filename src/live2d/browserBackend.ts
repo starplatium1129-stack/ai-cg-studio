@@ -29,7 +29,7 @@ interface WlLive2DModel {
     on(event: 'beforeModelUpdate', callback: () => void): void
     coreModel?: Live2DCoreModel
     settings?: { hitAreas?: unknown[] }
-    motionManager?: { definitions?: Record<string, unknown> }
+    motionManager?: { definitions?: Record<string, unknown>; state?: { currentGroup?: string } }
   }
   hitTest?(x: number, y: number): string[]
   focus?(x: number, y: number, instant?: boolean): void
@@ -120,6 +120,10 @@ function wrapModel(model: WlLive2DModel): Live2DModelHandle {
       const entry = defs?.[group]
       return Array.isArray(entry) && entry.length > 0
     },
+    getActiveMotionGroup() {
+      const state = model.internalModel?.motionManager?.state
+      return state ? state.currentGroup ?? null : undefined
+    },
   }
 }
 
@@ -130,6 +134,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
 
     async connect(options: Live2DConnectOptions): Promise<Live2DStageSession> {
       const library = await loadLibrary()
+      options.signal?.throwIfAborted()
       if (typeof document === 'undefined') throw new Error('wl-live2d 需要浏览器 DOM')
       let app: WlLive2DApp
       let modelHandle: Live2DModelHandle | null = null

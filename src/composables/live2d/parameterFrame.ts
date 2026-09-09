@@ -53,7 +53,16 @@ export function createParameterFrame(
       // 左右眼不同步造成的"单眼 Wink"，并保证定时眨眼（见 blinkScheduler）。
       // 登场动作（Start 组）期间暂停覆盖：其眼曲线左右同步（含开场闭眼），
       // 让作者动画原样呈现。
-      const inEntrance = now < ctx.entranceUntil
+      // Cubism 在本帧参数钩子之前更新动作状态。优先按实际结束交还控制权，
+      // 避免短变体结束后仍按整组最长时长放行叠层；旧运行库保留计时兜底。
+      const activeGroup = ctx.model.getActiveMotionGroup?.()
+      const inEntrance = now < ctx.entranceUntil && (activeGroup === undefined || activeGroup === 'Start')
+      if (!inEntrance) ctx.entranceUntil = 0
+      if (ctx.activeInteraction && activeGroup !== undefined && activeGroup !== ctx.activeInteraction) {
+        ctx.activeInteraction = ''
+        clearTimeout(ctx.timers.interaction)
+        ctx.timers.interaction = 0
+      }
       if (inEntrance) {
         if (ctx.stageEl) ctx.stageEl.dataset.blink = '1.000'
       } else {

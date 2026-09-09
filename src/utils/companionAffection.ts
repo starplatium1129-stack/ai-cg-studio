@@ -164,8 +164,7 @@ export function pickAffectionMotion(
   })
 
   if (candidates.length === 0) {
-    // 如果没有满足条件的（如某些部位全部为满好感解锁），回退到第 0 个常规项
-    return { index: 0, entry: entries[0] }
+    return null
   }
 
   const totalWeight = candidates.reduce((sum, item) => sum + item.weight, 0)
@@ -181,4 +180,3 @@ export function pickAffectionMotion(
   const fallback = candidates[candidates.length - 1]
   return { index: fallback.index, entry: fallback.entry }
 }
-

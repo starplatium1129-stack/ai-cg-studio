@@ -54,5 +54,11 @@ assert.ok(neneHead, '宁宁动作可正常调度');
 assert.ok(neneHead.entry.bonus && neneHead.entry.bonus > 0, '宁宁摸头应带有好感度加成');
 console.log('✓ 4. 宁宁专属好感度配置兼容良好');
 
-console.log('\nAll 4 tests passed successfully!');
-
+// 无普通候选的组必须保持锁定，不能回退到首个满好感动作。
+for (const [character, group] of [['natsume', 'TapFoot'], ['nene', 'TapLeftChest'], ['nene', 'TapRightChest']]) {
+  assert.strictEqual(pickAffectionMotion(character, group, 15, () => 0), null);
+  assert.strictEqual(pickAffectionMotion(character, group, 99, () => 0), null);
+  assert.strictEqual(pickAffectionMotion(character, group, 100, () => 0).entry.equalIntimacy, 100);
+}
+console.log('✓ 5. 整组锁定时不返回候选，达到门槛后解锁');
+console.log('\nAll 5 tests passed successfully!');

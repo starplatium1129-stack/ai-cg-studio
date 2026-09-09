@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createLive2DCtx } from './live2d/context'
 import { createLifecycleController } from './live2d/lifecycle'
-import { BROWSER_CAPABILITY, type Live2DModelHandle, type Live2DStageSession } from '@/live2d/types'
+import { BROWSER_CAPABILITY, type Live2DConnectOptions, type Live2DModelHandle, type Live2DStageSession } from '@/live2d/types'
 import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
 
@@ -31,7 +31,7 @@ function setup() {
     setPaused: vi.fn(), setMaxFps: vi.fn(), getScreenSize: model.getNaturalSize,
     getCanvasSize: model.getNaturalSize, setStageScale: vi.fn(), canvasElement: () => null, destroy: vi.fn(),
   }
-  const connect = vi.fn(async () => session)
+  const connect = vi.fn<(options: Live2DConnectOptions) => Promise<Live2DStageSession>>(async () => session)
   ctx.backend = { kind: 'browser', capability: BROWSER_CAPABILITY, connect }
   const setState = vi.fn()
   const lifecycle = createLifecycleController(ctx, {
@@ -45,6 +45,42 @@ function setup() {
 afterEach(() => { vi.clearAllTimers(); vi.useRealTimers() })
 
 describe('Live2D lifecycle races', () => {
+  it('a hanging connect times out, and its late result cannot clear a retry', async () => {
+    const h = setup()
+    const connection = deferred<Live2DStageSession>()
+    h.connect.mockReturnValueOnce(connection.promise)
+    const loading = h.lifecycle.setCharacter('nene')
+    const signal = h.connect.mock.calls[0]![0].signal
+    await vi.advanceTimersByTimeAsync(20000)
+    await loading
+    expect(signal?.aborted).toBe(true)
+    expect(h.ctx.loading).toBeNull()
+    expect(h.setState).toHaveBeenLastCalledWith('fallback', 'Live2D 加载超时', expect.any(String), true)
+    const retrying = h.lifecycle.retry()
+    await Promise.resolve()
+    const pendingRetry = h.ctx.loading
+    const stale = { ...h.session, destroy: vi.fn() }
+    connection.resolve(stale)
+    await Promise.resolve()
+    expect(stale.destroy).toHaveBeenCalledOnce()
+    expect(h.ctx.loading).toBe(pendingRetry)
+    h.loaded()
+    await retrying
+    expect(h.ctx.ready.value).toBe(true)
+    h.lifecycle.destroy()
+  })
+
+  it('destroy settles a connection that never answers', async () => {
+    const h = setup()
+    h.connect.mockReturnValueOnce(new Promise(() => {}))
+    const loading = h.lifecycle.setCharacter('nene')
+    h.lifecycle.destroy()
+    await loading
+    expect(h.connect.mock.calls[0]![0].signal?.aborted).toBe(true)
+    expect(h.ctx.loading).toBeNull()
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
   it('disabling during connect destroys the late session without making it visible', async () => {
     const h = setup()
     const connection = deferred<Live2DStageSession>()
