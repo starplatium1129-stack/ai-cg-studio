@@ -104,6 +104,8 @@ async function toggle(page: Page, target: string | Locator, on: boolean) {
 }
 
 async function useLocalChat(page: Page) {
+  const settings = page.locator('.room-model-settings');
+  if (await settings.getAttribute('open') === null) await settings.locator('summary').click();
   const button = page.getByRole('button', { name: '本地模型', exact: true });
   if (await button.getAttribute('aria-pressed') !== 'true') await button.click();
   await expect(button).toHaveAttribute('aria-pressed', 'true');

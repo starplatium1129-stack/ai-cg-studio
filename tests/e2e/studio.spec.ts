@@ -427,6 +427,7 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await page.locator('.live2d-enable-cta').click();
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
   await expect(page.locator('.live2d-host canvas')).toBeVisible();
+  await page.locator('.room-model-settings summary').click();
   await page.locator('.api-settings-toggle').click();
   await expect(page.locator('.api-settings')).toBeVisible();
   await page.locator('[data-vendor="deepseek"]').click();
@@ -1304,6 +1305,7 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
   await expect(page.locator('.scene-grid .sc')).toHaveCount(12);
   await expect(page.locator('.scene-count')).toContainText('人设核心 12');
   const firstScene = page.locator('.scene-grid .sc').first();
+  await firstScene.locator('.ex-more summary').click();
   await firstScene.getByRole('button', { name: '隐藏', exact: true }).click();
   await expect(page.locator('.scene-grid .sc')).toHaveCount(11);
   // 精细筛选默认收起，点开后才出现
@@ -1316,6 +1318,7 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
   await hiddenToggle.check();
   await expect(page.locator('.scene-grid .sc')).toHaveCount(1);
   const hiddenScene = page.locator('.scene-grid .sc').first();
+  await hiddenScene.locator('.ex-more summary').click();
   await hiddenScene.getByRole('button', { name: '↩ 恢复', exact: true }).click();
   await expect(page.locator('.scene-grid .sc')).toHaveCount(0);
 

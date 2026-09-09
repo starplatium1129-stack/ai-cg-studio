@@ -1,4 +1,84 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
+import MOCK_PORTS from './mock-ports.json'
+
+async function mockDrawingStatus(page: Page) {
+  for (const path of ['/api/anima/status', '/api/creative/status']) {
+    const response = await page.request.get(`http://127.0.0.1:${MOCK_PORTS.gateway}${path}`)
+    expect(response.ok()).toBe(true)
+    const body = await response.body()
+    await page.route(`**${path}`, route => route.fulfill({ status: 200, contentType: 'application/json', body }))
+  }
+}
+
+test('cached video workspace follows a different task-center link', async ({ page }) => {
+  await page.route(/\/api\/video\/jobs\/cached-(one|two)$/, route => {
+    const id = new URL(route.request().url()).pathname.split('/').pop()!
+    return route.fulfill({ json: { ok: true, job: { id, modelId: 'minimax-h3', prompt: 'A quiet afternoon', createdAt: 1, status: id.endsWith('one') ? 'cancelled' : 'failed', progress: 0, resultAvailable: false, resultUrl: null, error: null } } })
+  })
+  await page.goto('/gallery')
+  await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
+  await page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('aics_kv_store', 1)
+      request.onsuccess = () => resolve(request.result)
+      request.onerror = () => reject(request.error)
+    })
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction('kv', 'readwrite')
+      tx.objectStore('kv').put({ key: 'aics_task_center_v1', value: ['one', 'two'].map(id => ({ id, kind: 'video', title: '任务 ' + id, status: 'cancelled', route: '/video-studio?job=cached-' + id, backend: { kind: 'video', id: 'cached-' + id }, createdAt: 1, updatedAt: 1 })) })
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => reject(tx.error)
+    })
+    db.close()
+  })
+  await page.reload()
+  const center = page.getByRole('dialog', { name: /任务中心/ })
+  for (const [id, status] of [['one', 'cancelled'], ['two', 'failed']]) {
+    await page.locator('.task-center-button:visible').click()
+    await center.locator('.task-card').filter({ hasText: '任务 ' + id }).getByRole('link', { name: '返回工作台' }).click()
+    await expect(page.locator('.video-job-state')).toHaveAttribute('data-state', status)
+  }
+})
+
+for (const theme of ['dark', 'light']) {
+  test(`saved video tasks reconnect and cancel without resubmission ${theme}`, async ({ page }) => {
+    let status = 'running', reads = 0, cancels = 0, submissions = 0
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.route('**/api/video/jobs/recovery-one', async route => {
+      if (route.request().method() === 'DELETE') { cancels += 1; status = 'cancelled' }
+      else reads += 1
+      await route.fulfill({ json: { ok: true, job: { id: 'recovery-one', modelId: 'minimax-h3', prompt: 'A quiet afternoon', createdAt: 1, status, progress: .4, resultAvailable: false, resultUrl: null, error: null } } })
+    })
+    await page.route('**/api/video/jobs', async route => { submissions += 1; await route.abort() })
+    await page.goto('/gallery')
+    await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
+    await page.evaluate(async () => {
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const request = indexedDB.open('aics_kv_store', 1)
+        request.onsuccess = () => resolve(request.result)
+        request.onerror = () => reject(request.error)
+      })
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction('kv', 'readwrite')
+        tx.objectStore('kv').put({ key: 'aics_task_center_v1', value: [{ id: 'saved-video', kind: 'video', title: '待恢复视频', status: 'running', route: '/video-studio?job=recovery-one', backend: { kind: 'video', id: 'recovery-one' }, createdAt: 1, updatedAt: 1 }] })
+        tx.oncomplete = () => resolve()
+        tx.onerror = () => reject(tx.error)
+      })
+      db.close()
+    })
+    await page.reload()
+    await page.locator('.task-center-button:visible').click()
+    const center = page.getByRole('dialog', { name: /任务中心/ })
+    await expect(center.locator('.task-card[data-state="running"]')).toHaveCount(1)
+    await expect(center.getByRole('link', { name: '返回工作台' })).toHaveAttribute('href', '/video-studio?job=recovery-one')
+    await center.screenshot({ path: `.review-shots/task-recovery-${theme}.png` })
+    await center.getByRole('button', { name: '停止', exact: true }).click()
+    await expect(center.locator('.task-card[data-state="cancelled"]')).toHaveCount(1)
+    expect(cancels).toBe(1)
+    expect(reads).toBeGreaterThanOrEqual(2)
+    expect(submissions).toBe(0)
+  })
+}
 
 test('interface sound is opt-in and persists the explicit choice', async ({ page }) => {
   await page.goto('/')
@@ -167,9 +247,12 @@ for (const theme of ['dark', 'light']) {
     })
     try {
       await page.goto('/control')
-      await page.getByRole('button', { name: '保存全部并检测', exact: true }).first().click()
+      const saveButtons = page.getByRole('button', { name: '保存全部并检测', exact: true })
+      await expect(saveButtons.first()).toBeEnabled()
+      const saveButtonCount = await saveButtons.count()
+      await saveButtons.first().click()
       const buttons = page.getByRole('button', { name: '正在保存…', exact: true })
-      await expect(buttons).toHaveCount(3)
+      await expect(buttons).toHaveCount(saveButtonCount)
       for (const button of await buttons.all()) await expect(button).toBeDisabled()
       await page.locator('#sd-host').press('Enter')
       expect(requests).toBe(1)
@@ -183,6 +266,7 @@ for (const theme of ['dark', 'light']) {
 
 for (const theme of ['dark', 'light']) {
   test(`batch selection progress and stop stay consistent ${theme}`, async ({ page }) => {
+    await mockDrawingStatus(page)
     await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
@@ -263,6 +347,7 @@ for (const theme of ['dark', 'light']) {
 }
 
 test('global task center retains a batch while visiting the gallery and control panel', async ({ page }) => {
+  await mockDrawingStatus(page)
   await page.emulateMedia({ reducedMotion: 'reduce' })
   let submitted = 0, finish = false
   await page.route('**/api/anima/jobs', async route => {
@@ -307,6 +392,8 @@ test('global task center retains a batch while visiting the gallery and control 
 
 for (const theme of ['dark', 'light']) {
   test(`character portraits and asset health stay readable ${theme}`, async ({ page }) => {
+    // This is a UI test; physical reference files are checked separately on the asset host.
+    await page.route('**/character-references/**', route => route.fulfill({ status: 200, contentType: 'image/png', body: '' }))
     await page.setViewportSize({ width: theme === 'dark' ? 1440 : 390, height: 960 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)

@@ -23,7 +23,11 @@ const assert = require('node:assert');
 const ROOT = path.resolve(__dirname, '../..');
 
 function read(relPath) {
-  return fs.readFileSync(path.join(ROOT, relPath), 'utf8');
+  const owners = {
+    'src/views/GalleryView.vue': ['src/composables/gallery/useGalleryWorkspace.ts', 'src/composables/gallery/galleryMutations.ts'],
+    'src/views/SceneExplorerView.vue': ['src/composables/scene/useSceneExplorerWorkspace.ts'],
+  };
+  return [relPath, ...(owners[relPath] || [])].map(file => fs.readFileSync(path.join(ROOT, file), 'utf8')).join('\n');
 }
 
 /**
@@ -462,11 +466,11 @@ const CHECKS = [
       + '若只改数组而不 revokeObjectURL，相当于在 LRU 大图工程上捅一个洞——'
       + '删掉的卡片 blob 全部泄漏，几百张图白占内存。顺序必须是确认→软删→释放。',
     assert(source) {
-      const body = stripComments(extractFunction(source, 'bulkDelete'));
+      const body = stripComments(extractFunction(source, 'bulkDeleteAction'));
       if (!body) return false;
       const confirmAt = body.search(/await\s+confirmAction/);
       const deleteAt = body.search(/softDeleteArtwork/);
-      const releaseAt = body.search(/releaseCardResources/);
+      const releaseAt = body.search(/releaseCardResources\s*\(/);
       return confirmAt >= 0 && deleteAt > confirmAt && releaseAt > deleteAt;
     },
   },

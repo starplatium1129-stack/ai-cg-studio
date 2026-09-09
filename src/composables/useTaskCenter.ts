@@ -11,6 +11,7 @@ export interface TaskSummary {
   progress?: number | null
   route: string
   resultRoute?: string
+  backend?: { kind: 'video' | 'video-batch'; id: string }
 }
 export interface TaskRecord extends TaskSummary { id: string; createdAt: number; updatedAt: number }
 export interface TaskControls { cancel?: () => unknown; retry?: () => unknown }
@@ -53,11 +54,21 @@ export function hydrateTasks(): Promise<void> {
     const existing = new Set(tasks.value.map(task => task.id))
     for (const item of value.slice(0, 100)) {
       if (!item || typeof item.id !== 'string' || typeof item.title !== 'string' || typeof item.route !== 'string' || !item.route.startsWith('/') || item.route.startsWith('//') || existing.has(item.id)) continue
-      tasks.value.push({ ...item, resultRoute: typeof item.resultRoute === 'string' && item.resultRoute.startsWith('/') && !item.resultRoute.startsWith('//') ? item.resultRoute : undefined, status: item.status === 'running' ? 'interrupted' : item.status,
+      if (!['image', 'batch', 'video', 'interrogate'].includes(item.kind) || !['idle', 'running', 'succeeded', 'failed', 'cancelled', 'interrupted'].includes(item.status)) continue
+      const backend = item.backend && ['video', 'video-batch'].includes(item.backend.kind) && typeof item.backend.id === 'string' && /^[\w-]{1,160}$/.test(item.backend.id) ? { kind: item.backend.kind, id: item.backend.id } : undefined
+      if (backend && tasks.value.some(task => task.backend?.kind === backend.kind && task.backend?.id === backend.id)) continue
+      existing.add(item.id)
+      tasks.value.push({ ...item, backend, resultRoute: typeof item.resultRoute === 'string' && item.resultRoute.startsWith('/') && !item.resultRoute.startsWith('//') ? item.resultRoute : undefined, status: item.status === 'running' ? 'interrupted' : item.status,
         message: item.status === 'running' ? '这是其他页面会话留下的记录，请回工作台检查进度或已保存结果。' : item.message })
     }
     tasks.value.sort((a, b) => b.createdAt - a.createdAt)
-  }).catch(() => { storageError.value = '暂时无法读取之前的任务摘要。' })
+    storageError.value = ''
+  }).catch(error => { loading = undefined; storageError.value = '暂时无法读取之前的任务摘要，可重新尝试。'; throw error })
+}
+
+/** Reattach an owner to its persisted backend identity instead of creating a duplicate. */
+function findBackendTask(summary: TaskSummary) {
+  return summary.backend && tasks.value.find(task => task.backend?.kind === summary.backend?.kind && task.backend?.id === summary.backend?.id)
 }
 export function useTaskCenter() {
   return { tasks, opened, storageError, activeCount: computed(() => tasks.value.filter(task => task.status === 'running').length),
@@ -72,7 +83,15 @@ export function useTrackedTask(source: () => TaskSummary, controls: TaskControls
   let id = ''
   let previous: TaskStatus = 'idle'
   watch(source, summary => {
+    const prior = tasks.value.find(task => task.id === id)
+    if (summary.backend && prior?.backend && (summary.backend.id !== prior.backend.id || summary.backend.kind !== prior.backend.kind)) {
+      forgetTaskControls(id); id = ''; previous = 'idle'
+    }
     if (summary.status === 'idle') { if (id && previous === 'running') updateTask(id, { status: 'interrupted', message: summary.message || '任务未返回完成状态，请回工作台检查。' }); if (id) forgetTaskControls(id); id = ''; previous = 'idle'; return }
+    if (!id) {
+      const restored = findBackendTask(summary)
+      if (restored) { id = restored.id; actions.set(id, controls) }
+    }
     if (!id && summary.status !== 'running') { previous = summary.status; return }
     if (!id || !tasks.value.some(task => task.id === id) || (summary.status === 'running' && previous === 'succeeded')) {
       if (id) { const old = tasks.value.find(task => task.id === id); if (old?.resultRoute && !old.resultRoute.startsWith('/gallery')) updateTask(id, { resultRoute: undefined }); forgetTaskControls(id) }

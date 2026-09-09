@@ -1,4 +1,6 @@
 'use strict';
+var { readHostConfig } = require('./video-ai-config');
+var { extractJsonObject, cleanRewriteOutput } = require('./video-ai-output');
 
 /**
  * routes/video-ai.js — 分镜短片「AI 整理」服务
@@ -18,48 +20,21 @@
  */
 
 var express = require('express');
-var fs = require('fs');
-var path = require('path');
+
+
 var httpClient = require('../services/http-client');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var createOllamaService = require('../services/ollama-service').createOllamaService;
 
 // ── 站主 API 托管配置（与 routes/chat.js 完全同源，避免两套配置漂移）──────
-function chatHostConfigPath(config) {
-  return path.join(config.RUNTIME.state, 'chat_api_config.json');
-}
+
 
 // 与 routes/chat.js 完全同源的读取缓存：按 (mtimeMs,size) 失效，命中时零磁盘 IO
 // （2026-08-21 性能审计 #9）。本路由对配置只读，写路径在 chat.js 侧已失效。
-var hostConfigCache = { mtimeMs:-1, size:-1, value:null };
 
-function readHostConfig(config) {
-  var filePath = chatHostConfigPath(config);
-  var stat = null;
-  try { stat = fs.statSync(filePath); } catch (error) { return null; }
-  if (hostConfigCache.value && hostConfigCache.mtimeMs === stat.mtimeMs
-    && hostConfigCache.size === stat.size) {
-    return Object.assign({}, hostConfigCache.value);
-  }
-  try {
-    var parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    var baseUrl = String(parsed && parsed.baseUrl || '').trim();
-    var model = String(parsed && parsed.model || '').trim();
-    var apiKey = String(parsed && parsed.apiKey || '').trim();
-    if (!baseUrl || !model) return null;
-    // 旧格式没有 pathname：用 baseUrl 重拼一次（与 chat.js 一致）
-    var pathname = typeof parsed.pathname === 'string' && parsed.pathname
-      ? parsed.pathname
-      : new URL('chat/completions', baseUrl.replace(/\/+$/, '') + '/').pathname;
-    var result = { baseUrl:baseUrl, pathname:pathname, model:model, apiKey:apiKey };
-    hostConfigCache = { mtimeMs:stat.mtimeMs, size:stat.size, value:result };
-    return Object.assign({}, result);
-  } catch (error) {
-    // 半写状态/损坏文件不缓存
-    return null;
-  }
-}
+
+
 
 // ── 改写提示词（纯 ASCII；输出 JSON 是硬约束，逐字段规则给足）──────────────
 var REWRITE_SYSTEM_PROMPT = [
@@ -231,44 +206,11 @@ function validateRewriteBody(body) {
 }
 
 // 宽容提取 JSON 对象：模型可能包 markdown 围栏或前后缀，取首个 { 到末个 }。
-function extractJsonObject(text) {
-  var start = text.indexOf('{');
-  var end = text.lastIndexOf('}');
-  if (start < 0 || end <= start) return null;
-  try {
-    return JSON.parse(text.slice(start, end + 1));
-  } catch (error) {
-    return null;
-  }
-}
+
 
 // 字段清洗：枚举白名单之外一律回退输入原值；prompt 为空回退原描述，
 // 保证模型输出再离谱也不会把镜头参数或描述弄坏。
-function cleanRewriteOutput(parsed, original) {
-  var out = {
-    prompt:original.prompt,
-    shotSize:null,
-    camera:original.camera,
-    motion:original.motion,
-    dialogue:''
-  };
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return out;
-  var prompt = String(parsed.prompt || '').trim();
-  if (prompt && prompt.length <= 4000) out.prompt = prompt;
-  if (parsed.shotSize === null || parsed.shotSize === undefined || parsed.shotSize === '') {
-    out.shotSize = null;
-  } else {
-    var shotSize = String(parsed.shotSize);
-    out.shotSize = SHOT_SIZE_VALUES.indexOf(shotSize) !== -1 ? shotSize : null;
-  }
-  var camera = String(parsed.camera || '').trim();
-  if (CAMERA_VALUES.indexOf(camera) !== -1) out.camera = camera;
-  var motion = String(parsed.motion || '').trim();
-  if (MOTION_VALUES.indexOf(motion) !== -1) out.motion = motion;
-  var dialogue = String(parsed.dialogue || '').trim();
-  if (dialogue && dialogue.length <= 300) out.dialogue = dialogue;
-  return out;
-}
+
 
 async function callCompatibleApi(source, messages, signal) {
   var result = await httpClient.request(source.api.baseUrl, source.api.pathname, {

@@ -868,6 +868,7 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
   var path = require('path');
   var root = path.resolve(__dirname, '..', '..');
   var view = fs.readFileSync(path.join(root, 'src', 'views', 'PromptBuilderView.vue'), 'utf8');
+  view += '\n' + fs.readFileSync(path.join(root, 'src/composables/prompt/usePromptWorkspace.ts'), 'utf8');
   var panel = fs.readFileSync(path.join(root, 'src', 'components', 'AnimaQuickPanel.vue'), 'utf8');
 
   // Finding 1：popular 模式复制 Prompt 必须用 previewPromptView，不是 studio previewPrompt。

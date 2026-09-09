@@ -1,4 +1,6 @@
 'use strict';
+var { saveSnapshotBackup } = require('./maintenance-backup');
+var { sanitizeCuration, validateTags, decodeJpegDataUrl, readJson, writeFileAtomic, writeJson } = require('./maintenance-validation');
 
 var fs = require('fs');
 var path = require('path');
@@ -66,26 +68,11 @@ function syncSceneStoreDataVersion(rootDir) {
   return expected;
 }
 
-function readJson(source) {
-  return JSON.parse(fs.readFileSync(source, 'utf8'));
-}
 
-function writeFileAtomic(source, content) {
-  var dir = path.dirname(source);
-  fs.mkdirSync(dir, { recursive:true });
-  var temporary = path.join(dir, '.' + path.basename(source) + '.' + process.pid + '.' + Date.now() + '.tmp');
-  try {
-    fs.writeFileSync(temporary, content);
-    fs.renameSync(temporary, source);
-  } catch (error) {
-    try { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); } catch (cleanupError) {}
-    throw error;
-  }
-}
 
-function writeJson(source, data) {
-  writeFileAtomic(source, JSON.stringify(data, null, 2) + '\n');
-}
+
+
+
 
 function snapshotFiles(files) {
   return Array.from(new Set(files)).map(function (file) {
@@ -119,77 +106,16 @@ function attemptRollback(snapshot, label) {
   }
 }
 
-function saveSnapshotBackup(snapshot, backupRoot, label) {
-  fs.mkdirSync(backupRoot, { recursive:true });
-  var stamp = new Date().toISOString().replace(/[:.]/g, '-');
-  var target = path.join(backupRoot, stamp + '-' + label);
-  var filesDir = path.join(target, 'files');
-  fs.mkdirSync(filesDir, { recursive:true });
-  var manifest = snapshot.map(function (item, index) {
-    var backupName = item.exists ? String(index).padStart(3, '0') + '-' + path.basename(item.file) : '';
-    if (item.exists) fs.writeFileSync(path.join(filesDir, backupName), item.content);
-    return { source:item.file, existed:item.exists, backup:backupName };
-  });
-  writeJson(path.join(target, 'manifest.json'), { createdAt:new Date().toISOString(), label:label, files:manifest });
-  return target;
-}
+
 
 // ── 2. 校验与文件工具 ──
-function uniqueActiveIds(values, activeIds) {
-  var seen = new Set();
-  return (Array.isArray(values) ? values : []).filter(function (id) {
-    if (!activeIds.has(id) || seen.has(id)) return false;
-    seen.add(id);
-    return true;
-  });
-}
 
-function sanitizeCuration(value, activeIds) {
-  var curation = value && typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : {};
-  curation.curatedSceneIds = uniqueActiveIds(curation.curatedSceneIds, activeIds);
-  curation.signatureSceneIds = uniqueActiveIds(curation.signatureSceneIds, activeIds);
-  curation.signatureSceneIds.forEach(function (id) {
-    if (curation.curatedSceneIds.indexOf(id) < 0) curation.curatedSceneIds.push(id);
-  });
-  var curated = new Set(curation.curatedSceneIds);
-  curation.reviewSceneIds = uniqueActiveIds(curation.reviewSceneIds, activeIds).filter(function (id) { return !curated.has(id); });
-  var reasons = curation.recommendationReasons && typeof curation.recommendationReasons === 'object' ? curation.recommendationReasons : {};
-  curation.recommendationReasons = {};
-  Object.keys(reasons).forEach(function (id) {
-    if (activeIds.has(id) && String(reasons[id] || '').trim()) curation.recommendationReasons[id] = String(reasons[id]).trim();
-  });
-  curation.signatureSceneIds.forEach(function (id) {
-    if (!curation.recommendationReasons[id]) throw new Error(id + ' 标记为招牌场景时必须填写推荐理由');
-  });
-  return curation;
-}
 
-function validateTags(tags) {
-  if (!Array.isArray(tags) || tags.length > 2000) throw new Error('Tag 数据格式错误或数量超出限制');
-  var ids = new Set();
-  var names = new Set();
-  tags.forEach(function (tag) {
-    var id = String(tag && tag.id || '').trim();
-    var name = String(tag && tag.en || '').trim();
-    var category = String(tag && tag.cat || '').trim();
-    var chinese = String(tag && tag.cn || '').trim();
-    var weight = Number(tag && tag.weight);
-    if (!/^tag_\d+$/.test(id) || ids.has(id)) throw new Error('Tag ID 必须唯一且符合 tag_001 格式：' + id);
-    if (!/^[^\r\n<>]{1,120}$/.test(name) || names.has(name.toLowerCase())) throw new Error('Tag 英文名必须唯一且可用于 Prompt：' + name);
-    if (!category || !chinese) throw new Error(id + ' 必须填写分类和中文名');
-    if (!Number.isFinite(weight) || weight <= 0 || weight > 2) throw new Error(id + ' 的权重必须在 0 到 2 之间');
-    ids.add(id);
-    names.add(name.toLowerCase());
-  });
-}
 
-function decodeJpegDataUrl(value, label) {
-  var match = String(value || '').match(/^data:image\/jpeg;base64,([A-Za-z0-9+/=\r\n]+)$/);
-  if (!match) throw new Error(label + '必须是 JPEG 图片');
-  var buffer = Buffer.from(match[1].replace(/\s/g, ''), 'base64');
-  if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8 || buffer[2] !== 0xff) throw new Error(label + '不是有效的 JPEG 文件');
-  return buffer;
-}
+
+
+
+
 
 // ── 2. 校验与文件工具（续）── 本机判定与桌面打包判定
 // 判定「直连本机」的逻辑只保留 server/security.js 一份，避免副本再次漂移。

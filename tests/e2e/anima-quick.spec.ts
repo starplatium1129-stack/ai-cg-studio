@@ -1,5 +1,16 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import MOCK_PORTS from './mock-ports.json'
+
+async function chooseCharacter(page: Page, name: string) {
+  if (new URL(page.url()).pathname === '/prompt-builder') {
+    await page.locator('.character-browse-all').click()
+    const dialog = page.getByRole('dialog', { name: '挑选这一幕的主角' })
+    await dialog.getByRole('searchbox', { name: '搜索角色或作品' }).fill(name)
+    await dialog.locator('.directory-item').filter({ hasText: name }).click()
+  } else {
+    await page.locator('.directory-item').filter({ hasText: name }).click()
+  }
+}
 
 test('anima engine: main generate shows result in main frame through mock ComfyUI', async ({ page, request }) => {
   test.setTimeout(60000)
@@ -193,7 +204,7 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   await expect(page.locator('.popular-outfits')).toBeVisible()
   await expect(page.locator('.popular-nolora-badge')).toContainText('无需 LoRA')
 
@@ -254,7 +265,7 @@ test('popular creator · Krea 2 request has no negative and no LoRA', async ({ p
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-card').first().click()
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
@@ -291,7 +302,7 @@ test('popular creator · Krea style is inferred automatically from the selected 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
@@ -323,7 +334,7 @@ test('popular creator · manual style controls are available for all characters 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '樱岛麻衣' }).click()
+  await chooseCharacter(page, '樱岛麻衣')
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
   // 全部开放后任何角色都可选成人配方，专家模式风格区（ArtistStylePicker）不被 underage 隐藏。
   await expect(page.locator('[data-testid="artist-style-picker"]')).toHaveCount(1)
@@ -335,7 +346,7 @@ test('popular creator · adult gate requires the mature switch, not character un
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '樱岛麻衣' }).click()
+  await chooseCharacter(page, '樱岛麻衣')
   await expect(page.locator('.popular-outfits')).toBeVisible()
 
   // 全部开放（2026-08-14）：所有热门角色 adult，成人蓝图可见可达。
@@ -351,7 +362,7 @@ test('popular creator · draft round-trips subject/outfit/blueprint through relo
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.outfit-chip').filter({ hasText: '将军神装' }).click()
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
@@ -386,7 +397,7 @@ test('popular creator · copy copies the popular-aware prompt', async ({ page, c
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-card').first().click()
 
@@ -422,7 +433,7 @@ test('popular creator · select blueprint after Krea is active clamps size to Kr
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   // 先切 Krea，再选场景：blueprint 推荐尺寸必须收敛到 Krea 白名单，不能 400。
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(2).click()
@@ -459,7 +470,7 @@ test('popular creator · switching back to studio immediately restores the nene 
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   await expect(page.locator('.popular-nolora-badge')).toContainText('无需 LoRA')
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-card').first().click()
@@ -487,7 +498,7 @@ test('popular creator · adult blueprint stays reachable across all characters (
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   // 成年角色：默认成熟内容开关开启 → 成人蓝图可见。
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '雷电将军' }).click()
+  await chooseCharacter(page, '雷电将军')
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
   await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
@@ -498,7 +509,7 @@ test('popular creator · adult blueprint stays reachable across all characters (
   // 全部开放决策（2026-08-14）：切换任何热门角色，成人蓝图保持可达且已选蓝图不清空。
   // 切换角色会回到「只看推荐」，推荐轮换随角色池大小变化，在「查看全部」下断言保持数据无关。
   await page.locator('.material-switch button[aria-controls="material-character"]').click()
-  await page.locator('.directory-item').filter({ hasText: '樱岛麻衣' }).click()
+  await chooseCharacter(page, '樱岛麻衣')
   await page.locator('.material-switch button[aria-controls="material-scenes"]').click()
   await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
   await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
@@ -516,7 +527,7 @@ test('popular creator · scene library page deep-links character and blueprint i
   expect(charCount).toBeGreaterThanOrEqual(18)
   await page.locator('.character-directory .directory-item').filter({ hasText: '雷电将军' }).click()
   await page.locator('.pop-card').filter({ hasText: '花海逆光' }).first()
-    .getByRole('link', { name: '开始绘制' }).click()
+    .getByRole('link', { name: '开始绘制', exact: true }).click()
   // 深链：绘图页应预选角色 + 展开全部列表 + 激活目标蓝图。
   await page.waitForTimeout(3000)
   await expect(page.locator('.directory-item[aria-pressed="true"]')).toContainText('雷电将军')
@@ -527,7 +538,7 @@ test('popular creator · scene library page deep-links character and blueprint i
   await page.waitForTimeout(2500)
   await page.locator('.character-directory .directory-item').filter({ hasText: '樱岛麻衣' }).click()
   await expect(page.locator('.pop-card.adult').first()).toBeVisible()
-  await page.locator('.pop-card.adult').first().getByRole('link', { name: '开始绘制' }).click()
+  await page.locator('.pop-card.adult').first().getByRole('link', { name: '开始绘制', exact: true }).click()
   await page.waitForTimeout(3000)
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 })

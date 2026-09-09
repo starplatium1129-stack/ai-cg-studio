@@ -22,7 +22,7 @@ const root = path.resolve(__dirname, '..', '..');
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
 const { artworkTimestamp, parseArtworkRecords } = require('../../src/types/artwork.ts');
 
-const view = read('src/views/GalleryView.vue') + '\n' + read('src/assets/css/gallery-view.css');
+const view = read('src/composables/gallery/useGalleryWorkspace.ts') + '\n' + read('src/composables/gallery/galleryMutations.ts') + '\n' + read('src/composables/gallery/galleryStorage.ts') + '\n' + read('src/composables/gallery/useGalleryExports.ts') + '\n' + read('src/views/GalleryView.vue') + '\n' + read('src/assets/css/gallery-view.css');
 const home = read('src/views/HomeView.vue');
 const artworkTypes = read('src/types/artwork.ts');
 const artworkRepository = read('src/storage/artworkRepository.ts');

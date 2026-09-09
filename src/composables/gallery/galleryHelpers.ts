@@ -71,3 +71,30 @@ export function sceneTitle(
   if (item?.story) return item.story.slice(0, 20)
   return id || '未命名作品'
 }
+
+export function formatDate(ts: number) {
+        const d = new Date(ts);
+        return Number.isFinite(d.getTime())
+            ? d.toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+            : '时间未记录';
+    }
+
+export function dayGroup(ts: number) {
+        const date = new Date(ts);
+        const now = new Date();
+        const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const diff = (start.getTime() - date.getTime()) / 86400000;
+        return diff < 1 ? '今天' : diff < 7 ? '本周' : '更早';
+    }
+
+export function safeImageUrl(v: string | undefined) {
+        if (typeof v !== 'string' || !v.trim())
+            return '';
+        try {
+            const url = new URL(v.trim(), location.href);
+            return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : '';
+        }
+        catch {
+            return '';
+        }
+    }

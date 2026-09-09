@@ -1,0 +1,572 @@
+import { hasOnboardingTheme } from '@/utils/popularPortraitSource';
+import { onActivated,onDeactivated } from 'vue';
+import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
+// 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
+
+import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
+import { useAnimaSession } from '@/composables/generation/useAnimaSession';
+import { useSDGenerate } from '@/composables/generation/useSDGenerate';
+import { usePromptAssembly } from '@/composables/prompt/usePromptAssembly';
+import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
+import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
+
+import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge';
+import { useQuickCreateApply } from '@/composables/prompt/useQuickCreateApply';
+import { useTempResult } from '@/composables/prompt/useTempResult';
+
+import { useDirectorDerived } from '@/composables/scene/useDirectorDerived';
+import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
+import { useDirectorPopular } from '@/composables/scene/useDirectorPopular';
+import { useCompareSnapshots } from '@/composables/useCompareSnapshots';
+import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
+import { usePromptBuilderStore,type HistoryEntry,type Scene } from '@/stores/promptBuilderStore';
+import { useSceneStore } from '@/stores/sceneStore';
+import type { AnimaResult,AnimaResultContext } from '@/types/anima';
+import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
+import { type SDRecoveryId } from '@/utils/sdError';
+import { computed,onBeforeUnmount,ref,watch } from 'vue';
+import { useRoute,useRouter } from 'vue-router';
+// 吸附出图条承载主行动（生成按钮），同步导入保证首屏即位；体量小，不进异步分片。
+import { AUTO_SAVE_TO_GALLERY_SETTING,DRAW_ENGINE_SETTING,settingsRepository,type DrawEngine,} from '@/storage/settingsRepository';
+import { readHiddenScenes,recordSceneUsage,rememberRecent } from '@/utils/sceneUX';
+/** Owns workspace state and lifecycle; the view only binds presentation. */
+export function usePromptWorkspace() {
+    const inspector = ref<InstanceType<typeof import('@/components/director/DirectorInspector.vue')['default']> | null>(null);
+    const materialDrawer = ref<InstanceType<typeof import('@/components/director/DirectorMaterialDrawer.vue')['default']> | null>(null);
+    const router = useRouter();
+    const route = useRoute();
+    const pb = usePromptBuilderStore();
+    const sceneStore = useSceneStore();
+    const sd = useSDGenerate();
+
+    // ── UI state ──────────────────────────────────────────────────────────────
+    const sceneLimit = ref(20);
+    const sdSize = ref('832x1216');
+    const sceneCollection = ref<'core' | 'curated' | 'all'>('core');
+    const hiddenSceneIds = ref(readHiddenScenes());
+    const tagSearch = ref('');
+    const tagCategory = ref('all');
+    const voiceStudioRef = ref<{
+        setSuggestedCaption?: (caption: string) => void;
+    } | null>(null);
+    const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
+    const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
+    const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd');
+    // 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动写作品册）。
+    const autoSaveToGallery = ref(settingsRepository.get(AUTO_SAVE_TO_GALLERY_SETTING) ?? false);
+    watch(autoSaveToGallery, (value) => settingsRepository.set(AUTO_SAVE_TO_GALLERY_SETTING, value));
+    /**
+     * 当前显示结果的冻结上下文（2026-09-06 体验报告 F3）。
+     * Anima/Krea 由会话在提交时采样（state.resultContext）；SD 由 usePromptSdQueue
+     * 在 runJob 成功时写入本 ref。跨页交接与入册一律读它，不读实时表单。
+     */
+    const resultContext = ref<AnimaResultContext | null>(null);
+    function captureResultContext(): AnimaResultContext {
+        return snapshotResultContext(pb);
+    }
+    const animaSession = useAnimaSession({
+        getCharacter: () => pb.char,
+        isPopular: () => pb.isPopular,
+        getFamily: () => drawEngine.value === 'krea2' ? 'krea2' : 'anima',
+        getRequest: () => buildAnimaRequest(),
+        getSubmitContext: captureResultContext,
+        onResult: result => onAnimaResult(result),
+        flash: message => pb.flash(message),
+        preferredSize: () => pb.lastRecommendedSize,
+    });
+    const { state: animaState, patchState: patchAnimaState, modelId: animaModelId, refreshBackend: refreshAnimaBackend, syncCharacter: syncAnimaCharacter, applyModel, generate: generateAnima, cancel: cancelAnimaJob, clearResult: clearAnimaResult, startStatusPolling } = animaSession;
+    // Anima 会话先于引擎协调层创建：请求装配与结果协调经桥接函数转发到
+    // useDirectorEngine（生成/结果事件均在 setup 完成后才触发，沿用提升函数模式）。
+    function buildAnimaRequest() {
+        return engine.buildAnimaRequest();
+    }
+    // Anima/Krea 结果编排（自动入册 vs 临时缓冲）已下沉 useTempResult.handleAnimaResult。
+    function onAnimaResult(result: AnimaResult) {
+        engine.onAnimaResult(result);
+        void tempResultTools.handleAnimaResult(result, inpaintSourceHistoryId.value);
+    }
+    // currentCuratedArtistStyles 已迁入 promptBuilderStore（2026-09-05 单体拆分，纯 store 派生）
+    // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
+    const { emotionSummary, shotSummary, lightingSummary, compositionSummary, moodSummary, personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, modeDescription, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = useDirectorDerived({
+        pb,
+        hiddenSceneIds,
+        sceneCollection,
+        sceneLimit,
+        tagSearch,
+        tagCategory,
+        sdSize,
+    });
+    // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
+    const { currentTraits, modelProfile, effectiveScene, loraSpecs, negativePrompt } = usePromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
+    const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
+    const livePrompt = unified.positivePrompt;
+    const effectiveNegative = unified.negativePrompt;
+    const previewPromptView = unified.previewPrompt;
+    const modelProfileView = unified.modelProfile;
+    const reportView = unified.promptReport;
+    const artViolationsView = unified.artViolations;
+    const popular = unified.popular;
+    // ── 反推服装顶替（2026-08-29）────────────────────────────────────────────
+    // 热门角色默认会注入 12 个服装 tag 加一整段 "She wears ..." 散文，参考图服装
+    // 追加在末尾会被淹没。故反推出跨族服装时改为整体顶替，并给用户一键恢复的入口。
+    const outfitOverridden = computed(() => pb.isPopular && Boolean(pb.outfitOverride?.tokens.length));
+    const outfitOverrideTokens = computed(() => pb.outfitOverride?.tokens ?? []);
+    const outfitReplacedLabel = computed(() => pb.outfitOverride?.replaced ?? '');
+    // ── 引擎协调层（2026-08-28 编排下沉）：引擎切换守卫、能力表、在线/进度/错误
+    // 聚合展示、Anima 请求装配与推荐尺寸收敛，照 useAnimaInpaint 的依赖注入样板。
+    const engine = useDirectorEngine({
+        pb,
+        sd,
+        sdSize,
+        drawEngine,
+        animaState,
+        patchAnimaState,
+        refreshAnimaBackend,
+        syncAnimaCharacter,
+        applyModel,
+        cancelAnimaJob,
+        clearAnimaResult,
+        livePrompt,
+        effectiveNegative,
+        modelProfile,
+        modelProfileView,
+        popularProfile: popular.profile,
+        flash: message => pb.flash(message),
+    });
+    const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy, generationProgress, generationProgressStyle, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
+    // ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
+    // 先收敛到当前底模白名单（closestSupportedSize）再同步双引擎，防服务端 400。
+    const genBarSize = computed({
+        get: () => drawEngine.value === 'sd'
+            ? sdSize.value
+            : `${animaState.value.width}x${animaState.value.height}`,
+        set: (value: string) => {
+            if (drawEngine.value === 'sd')
+                sdSize.value = value;
+            else
+                applyRecommendedSize(value);
+        },
+    });
+    /** 出图条候选尺寸：当前底模白名单；当前生效值不在列时兜底置顶，避免 select 空显。 */
+    const animaBarSizes = computed<string[]>(() => {
+        const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId);
+        const sizes = activeModel?.sizes?.length ? [...activeModel.sizes] : ['832x1216', '1024x1024', '1216x832'];
+        const current = `${animaState.value.width}x${animaState.value.height}`;
+        if (!sizes.includes(current))
+            sizes.unshift(current);
+        return sizes;
+    });
+    // ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
+    // 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。
+    const { popularCategory, showAllBlueprints, popularCharacter, archiveBarShape, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, syncManagedRoute, restorePopularDraft } = useDirectorPopular({
+        pb,
+        sd,
+        drawEngine,
+        setDrawEngine,
+        applyRecommendedSize,
+        generationBusy,
+        animaState,
+        patchAnimaState,
+        refreshAnimaBackend,
+        applyModel,
+        sdSize,
+        flash: message => pb.flash(message),
+    });
+    // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
+    // URL 克隆保活/延迟释放/token 防乱序/焦点陷阱等生命周期归
+    // useCompareSnapshots（2026-08-21 拆出）；这里只保留业务元数据组装。
+    const compare = useCompareSnapshots<ResultSnapshot>({
+        build: (url) => buildResultSnapshot(url),
+    });
+    // 模板沿用原名绑定
+    const { prevResult, lastResult, compareOpen, compareEl, close: closeCompare } = compare;
+    /** 快照业务字段：URL 已由 composable 克隆保活，这里只读引擎状态组装元数据。 */
+    function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
+    // ── Actions ───────────────────────────────────────────────────────────────
+    function setDirectorMode(mode: 'basic' | 'pro') {
+        pb.directorMode = mode;
+        sceneCollection.value = mode === 'basic' ? 'core' : 'all';
+        sceneLimit.value = 20;
+        syncManagedRoute();
+    }
+    function setSceneCollection(collection: 'core' | 'curated' | 'all') {
+        if (collection === 'all' && pb.directorMode === 'basic') {
+            setDirectorMode('pro');
+            return;
+        }
+        sceneCollection.value = collection;
+        sceneLimit.value = 20;
+    }
+    const currentBlueprintData = computed(() => ({
+        char: pb.char,
+        sceneId: pb.sceneId,
+        story: pb.story,
+        manualTags: Array.from(pb.manualTags),
+        drawEngine: drawEngine.value,
+        sdParams: { ...pb.sdParams },
+        size: sdSize.value,
+    }));
+    async function handleLoadBlueprint(data: Record<string, unknown>): Promise<void> { const { loadBlueprint } = await import('./promptBlueprintActions'); loadBlueprint(data, { pb, selectScene, setDrawEngine, sdSize }) }
+    function selectScene(scene: Scene) {
+        if (pb.isPopular) {
+            // 热门角色模式直接切到工作室场景（?scene= 深链/左侧场景卡）：立即刷新 Anima
+            // 后端白名单，让 studio 的宁宁/夏目模型与 LoRA 立即可选（不等 15s 轮询）；
+            // subject 切回 studio 由 loadScene 内部兜底，保证提示词跟随本场景。
+            void refreshAnimaBackend();
+        }
+        pb.loadScene(scene);
+        pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value, { applySize: false });
+        applyRecommendedSize(pb.lastRecommendedSize);
+        patchAnimaState({ styleLoraId: '' });
+        voiceStudioRef.value?.setSuggestedCaption?.(scene.story ?? '');
+        rememberRecent(scene);
+        recordSceneUsage(scene);
+        sceneLimit.value = 20;
+        syncManagedRoute();
+    }
+    async function handleInterrogateResult(result: unknown) {
+        const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult');
+        await applyInterrogateResult(pb, result);
+    }
+    function handleInterrogateError(message: string) {
+        pb.flash('反推失败：' + message);
+    }
+    // 新一轮生成开始时结果会被清空，完成后再写入新值；
+    // 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用）。
+    // 快照 blob 克隆保活与 token 防乱序在 useCompareSnapshots 内部处理。
+    watch(displayResultUrl, (url, oldUrl) => {
+        if (!url || url === oldUrl)
+            return;
+        compare.rotate(url);
+    });
+    /**
+     * 舞台当前结果 ↔ 作品册条目锚点（P1-14 inpaint 对比语义）与「未入册成片」
+     * 临时缓冲（F2）已一并下沉 useTempResult；displayedResultHistoryId 来自其返回。
+     */
+    /** 重绘来源条目：在换装弹窗打开的瞬间定格，弹窗期间舞台结果不变。 */
+    const inpaintSourceHistoryId = ref<number | null>(null);
+    // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
+    // 一条 runJob 路径三处消费：直出 callGenerate / 队列串行 / 批量 runners 注入。
+    const { sdErrorReport, dismissError, captureJob, historyGenerationFields, runJob, commitJobResult, sdQueue, restoredCount, enqueueCurrent, enqueue3Variants } = usePromptSdQueue({
+        pb,
+        sd,
+        sdSize,
+        drawEngine,
+        livePrompt,
+        negativePrompt,
+        effectiveScene,
+        loraSpecs,
+        modelProfile,
+        animaState,
+        displayResultSeed,
+        setResultContext: (ctx) => { resultContext.value = ctx; },
+    });
+    // ── 未入册成片临时缓冲（F2）+ 舞台↔作品册锚点 + 手动入册（已下沉 useTempResult）──
+    const tempResultTools = useTempResult({
+        pb,
+        sd,
+        drawEngine,
+        animaState,
+        patchAnimaState,
+        displayResultUrl,
+        displayResultSeed,
+        livePrompt,
+        negativePrompt,
+        historyGenerationFields,
+        commitJobResult,
+        resultContext,
+        autoSaveToGallery,
+        setDrawEngine,
+    });
+    const { displayedResultHistoryId, resultArchived, resultTemporary, saveCurrentResult, restoreTempResult, discardTemp } = tempResultTools;
+    // ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
+    // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
+    // ComfyUI 任务）→ 每张自动入册历史 → 面板内直接预览挑选。
+    const batchOpen = ref(false);
+    onDeactivated(() => { batchOpen.value = false; });
+    onActivated(() => {
+        if (route.query.taskCenter === 'batch')
+            batchOpen.value = true;
+    });
+    const batchRunning = ref(false);
+    // ref/函数引用在 setup 期即稳定，面板内部用这份快照接线 usePromptBatchRunners。
+    const batchPanelDeps = {
+        pb,
+        sd,
+        sdSize,
+        negativePrompt,
+        loraSpecs,
+        modelProfile,
+        animaState,
+        runJob,
+        historyGenerationFields,
+        sceneBlueprints: () => sceneStore.sceneBlueprints,
+        popularCharacters: () => sceneStore.popularCharacters,
+        currentLivePrompt: () => livePrompt.value,
+    };
+    // 普通跨页保留工作台任务；整页重载交由全局路由提示。
+    /**
+     * 出图前的可见校验（2026-08-30 UX 审计 P1）。
+     *
+     * 规则必须与 callGenerate 里的守卫保持一致：两处一旦漂移，结果就是「按钮亮着
+     * 但点了才报错」，比没校验更让人困惑。callGenerate 的守卫保留作防御，这里
+     * 负责让原因在点之前就看得见。
+     */
+    /**
+     * 出图参数恢复底模推荐值（2026-08-30 UX 审计 P1）。
+     *
+     * 默认值按 checkpoint 匹配 profile，只有 store 知道，所以实际动作在 store 里；
+     * 这里只负责如实反馈结果——套不上档位时也要说，不能点了没反应。
+     */
+    function resetSdParams() {
+        if (pb.resetParamsToProfile())
+            pb.flash('已恢复这套底模的推荐参数');
+        else
+            pb.flash('当前底模没有对应的推荐参数档位，未能恢复');
+    }
+    /**
+     * 生成中禁用控件的统一说明（2026-08-30 UX 审计 P2）。
+     *
+     * 同样的文案在 DirectorStagePanel 里也有一份，改动时记得两边一起改。
+     */
+    const BUSY_HINT = '生成中，请稍候';
+    /**
+     * 引擎按钮的悬停说明：优先讲「为什么点不了」。
+     *
+     * 顺序是 生成中 > 该引擎不支持当前配置。原先这些按钮在生成中冒出来的仍是
+     * 功能介绍，用户面对「点不动 + 一堆功能说明」只会以为软件坏了。
+     */
+    function engineTitle(engine: DrawEngine) {
+        if (generationBusy.value)
+            return BUSY_HINT;
+        if (engine === 'sd')
+            return pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined;
+        if (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter(engine)) {
+            return '双人模式请使用 SD 引擎';
+        }
+        return undefined;
+    }
+    const generateBlockReason = computed(() => {
+        if (!livePrompt.value)
+            return '先选择场景或填写故事';
+        if (pb.isPopular && drawEngine.value === 'sd')
+            return '热门角色请切到 Anima 或 Krea 2';
+        return '';
+    });
+    /** 分类恢复：对应旧版 runSDRecovery */
+    async function copyPrompt() {
+        try {
+            await navigator.clipboard.writeText(previewPromptView.value);
+            pb.flash('Prompt 已复制');
+        }
+        catch {
+            pb.flash('复制失败，请手动选取');
+        }
+    }
+    /** 手动「保存快照」：实现已下沉 useTempResult.saveCurrentResult（含入册后释放临时缓冲）。 */
+    // ── 出视频 / 分镜短片（编排已下沉 usePromptVideoBridge）──────────────────
+    const { goToVideo: goVideoBridge, shotsPending, refreshShotsPending, addToShots, goToShots: goShotsNav, handleHistoryToShots, handleHistoryToShotsBatch } = usePromptVideoBridge({
+        displayResultUrl,
+        drawEngine,
+        livePrompt,
+        sdResultPrompt: sd.resultPrompt,
+        animaState,
+        story: () => pb.story,
+        sceneId: () => pb.sceneId,
+        subject: () => pb.subject,
+        // F3：交接归属以生成时冻结快照为准（Anima 在会话 state，SD 在视图 ref）。
+        resultContext: () => drawEngine.value !== 'sd' ? (animaState.value.resultContext ?? null) : resultContext.value,
+        flash: message => pb.flash(message),
+    });
+    async function goToVideo() { await goVideoBridge(path => router.push(path)); }
+    async function goToShots() { await goShotsNav(path => router.push(path)); }
+    function saveResult() { saveCurrentResult(); }
+    // ── Anima 智能局部换装（编排已下沉 useAnimaInpaint）───────────────────────
+    // 热门角色换装：取出角色 Danbooru 身份标签（exactTokens + identityTokens），
+    // 换装时拼入提示词锁定「衣服穿在谁身上」；studio 桌宠角色为空数组不影响。
+    const inpaintPopularTokens = computed(() => {
+        const subject = pb.subject;
+        if (subject.kind !== 'popular')
+            return [];
+        const match = sceneStore.popularCharacters.find(c => c.id === subject.characterId);
+        if (!match)
+            return [];
+        return [...(match.exactTokens ?? []), ...(match.identityTokens ?? [])];
+    });
+    const { inpaintOpen, inpaintOriginalUrl, inpaintCompareActive, inpaintCharacter, handleInpaintSubmit } = useAnimaInpaint({
+        pb,
+        drawEngine,
+        animaState,
+        displayResultUrl,
+        generateAnima,
+        isPopular: computed(() => pb.isPopular),
+        popularIdentityTokens: inpaintPopularTokens,
+    });
+    // 弹窗一打开就定格来源：此时舞台上的正是要被重绘的那张图；等结果回来再取
+    // 就已经是新图了（inpaint 是覆盖式提交，结果直接顶掉舞台）。
+    watch(inpaintOpen, (open) => {
+        if (open)
+            inpaintSourceHistoryId.value = displayedResultHistoryId.value;
+    });
+    /**
+     * 画师选满后再点（2026-08-30 UX 审计 P1）：面板内已有就地提示，这里补一条
+     * toast——画师网格在折叠面板里，提示有可能被滚出视野。
+     */
+    function onArtistLimitReached(max: number) {
+        pb.flash(`最多同时选 ${max} 位画师，先取消一位再选`);
+    }
+    /**
+     * 队列为什么暂停（2026-08-30 UX 审计 P1）。
+     *
+     * 队列面板原本只写「已暂停」——用户不知道是任务失败了、还是自己按的暂停。
+     * 失败时 sdErrorReport 里已有分类结论（中文标题 + 建议），直接引过来；快照
+     * 恢复导致的暂停单独说明来源。手动暂停不需要解释，返回空串。
+     */
+    const queuePausedReason = computed(() => {
+        if (!sdQueue.paused.value)
+            return '';
+        if (sdErrorReport.value)
+            return `${sdErrorReport.value.title}：${sdErrorReport.value.message}`;
+        if (restoredCount > 0)
+            return '这些任务来自上次离开时的队列，确认参数后点「继续」';
+        return '';
+    });
+    /**
+     * Anima / Krea 2 失败后重试（2026-08-30 UX 审计）。
+     *
+     * 面板里的「重试」按当前面板配置原样重发一次——Comfy 侧最常命中 OOM 与模型
+     * 未就绪，重发是确定有效的动作；SD 那套「切回 WebUI 当前模型」之类的恢复在
+     * 这里并不适用，所以不复用 SDRecoveryPanel 的动作集。
+     */
+    function retryAnima() {
+        if (generationBusy.value)
+            return;
+        void generateAnima();
+    }
+    // ── F2：上一张未入册成片的找回 / 显式丢弃 ─────────────────────────────
+    /** 失败/取消后画布旁可「找回上一张」（Anima/Krea 暂存；SD 旧图从未离开画布）。 */
+    const hasStashedResult = computed(() => Boolean(animaSession.stashedResult.value));
+    function onRestoreStashed() {
+        if (animaSession.restoreStashedResult())
+            pb.flash('已恢复上一张未入册的成片，可保存快照或继续新作');
+    }
+    /** 「清除」是显式丢弃：临时缓冲同步清掉，避免下次进页又被找回。 */
+    function onClearResult() {
+        discardTemp();
+        animaSession.discardStashedResult();
+        clearDisplayedResult();
+    }
+    function reuseLastSeed() {
+        const seed = displayResultSeed.value ?? pb.lastSeed;
+        if (seed == null || seed < 0) {
+            pb.flash('还没有可复用的 seed');
+            return;
+        }
+        pb.sdParams.seed = seed;
+        pb.sdParams.seedLock = true;
+        pb.flash(`已锁定 seed ${seed}`);
+    }
+    const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize });
+    // ── 历史应用（恢复/复制/删除/复用配方）已下沉 usePromptHistoryApply ────────
+    // 历史恢复与删除只在用户操作或历史深链时加载，普通出图首屏不下载这段代码。
+    let historyTools: Promise<ReturnType<typeof import('@/composables/prompt/usePromptHistoryApply')['usePromptHistoryApply']>> | null = null;
+    function getHistoryTools() {
+        return historyTools ??= import('@/composables/prompt/usePromptHistoryApply').then(({ usePromptHistoryApply }) => usePromptHistoryApply({
+            pb,
+            animaState,
+            patchAnimaState: animaSession.restoreSettings,
+            clearAnimaResult,
+            refreshAnimaBackend,
+            setDrawEngine,
+            resetBlueprintRotation,
+            sdSize,
+        }));
+    }
+    async function applyHistory(entry: HistoryEntry, variant = false) { (await getHistoryTools()).applyHistory(entry, variant); }
+    function resumeHistory(entry: HistoryEntry) { return applyHistory(entry); }
+    function duplicateHistory(entry: HistoryEntry) { return applyHistory(entry, true); }
+    async function deleteHistory(entry: HistoryEntry) { await (await getHistoryTools()).deleteHistory(entry); }
+    async function reuseSuccessfulRecipe(id: number) { (await getHistoryTools()).reuseSuccessfulRecipe(id); }
+    // ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
+    // onMounted 首放 + watch(route.query) 按 deepLinkNeeded 条件重放：
+    // 组件复用 / 后退恢复（bfcache）时组件不会重挂载、onMounted 不重跑，
+    // URL 变了状态却不更新——按「URL 与当前选中不一致」重放，保证
+    // 「点场景卡片后提示词跟随新场景」。八类参数全部走视图注入的同一路径动作。
+    const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
+        pb,
+        sdSize,
+        patchAnimaState,
+        showAllBlueprints,
+        selectPopularSource,
+        selectBlueprint,
+        selectScene,
+        applyRecommendedEngine,
+        setDirectorMode,
+        applyHistory,
+    });
+    // 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：URL 场景参数变化但组件还是旧实例，
+    // 这里按「状态与 URL 不一致」重放深链，让场景与提示词跟随新选择。
+    watch(() => route.query, async (q) => {
+        if (route.path !== '/prompt-builder' || !deepLinkNeeded(q))
+            return;
+        if (await applyDeepLink(q) && !generationBusy.value) {
+            if (pb.directorMode === 'basic')
+                void applyManagedRoute({ silent: true });
+            else
+                void refreshManagedRoute();
+        }
+    });
+    // plans/002 Step 6：character-shifting 舞台类挂载——CSS 侧（DirectorStagePanel.css
+    // 扫光 characterGlassSweep + tokens.css 侧栏/令牌过渡）早已备好但从未挂载，属死代码。
+    // 有效身份 = studio 的 pb.char 或 popular 的 characterId；切换后 760ms 清理类名
+    // （扫光 .72s + 余量），快速连切只重置计时不会堆叠；卸载清计时器防泄漏。
+    const characterShifting = ref(false);
+    let characterShiftTimer: ReturnType<typeof setTimeout> | null = null;
+    watch(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char, () => {
+        characterShifting.value = true;
+        if (characterShiftTimer)
+            clearTimeout(characterShiftTimer);
+        characterShiftTimer = setTimeout(() => { characterShifting.value = false; }, 760);
+    });
+    onBeforeUnmount(() => {
+        if (characterShiftTimer)
+            clearTimeout(characterShiftTimer);
+    });
+    const generationContext = { pb, applyManagedRoute, drawEngine, sd, livePrompt, currentCapabilities, generateAnima, sdErrorReport, captureJob, runJob, tempResultTools, sdSize, animaState, patchAnimaState, displayResultSeed, resetBlueprintRotation }
+    function callGenerate(opts: {
+        disableLora?: boolean;
+    } = {}): Promise<void> { return import('./promptGenerationActions').then(({ callGenerateAction }) => callGenerateAction(generationContext, opts)); }
+    function runRecovery(id: SDRecoveryId): Promise<void> { return import('./promptGenerationActions').then(({ runRecoveryAction }) => runRecoveryAction(generationContext, id)); }
+    function upscaleCurrentResult(): Promise<void> { return import('./promptGenerationActions').then(({ upscaleCurrentResultAction }) => upscaleCurrentResultAction(generationContext)); }
+    function resetAll(): Promise<void> { return import('./promptGenerationActions').then(({ resetAllAction }) => resetAllAction(generationContext)); }
+    return {
+compareEl,
+voiceStudioRef,
+        pb, displayResultUrl, characterShifting, hasOnboardingTheme, popularCharacter, sd,
+        animaSession, archiveBarShape, modeDescription, setDirectorMode, engineOnline, engineStatusText,
+        recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
+        selectPopularSource, selectPopularCharacter, selectPopularOutfit, popularBlueprintPool, blueprintCategories, recommendedBlueprints,
+        filteredPopularBlueprints, popularCategory, showAllBlueprints, availableScenes, visibleScenes, sceneCollection,
+        personaCoreCount, curatedCount, personaCoreIds, sceneLimit, selectBlueprint, rotateBlueprintSet,
+        toggleBlueprintList, setSceneCollection, selectScene, resumeHistory, duplicateHistory, deleteHistory,
+        handleHistoryToShots, handleHistoryToShotsBatch, generationBusy, generationError, generationStopped, generationStatusText,
+        generationProgress, generationProgressStyle, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
+        shotsPending, prevResult, resultArchived, resultTemporary, hasStashedResult, callGenerate,
+        inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo, addToShots,
+        goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed, handleInterrogateResult,
+        handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason, cancelGeneration,
+        outfitOverridden, outfitReplacedLabel, outfitOverrideTokens, sdQueue, managedRoute, applyManagedRoute,
+        reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
+        displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, retryAnima,
+        vramHint, vramLevel, baseResolutionRisk, baseResolutionHint, canUseFaceDetailer, enqueueCurrent,
+        enqueue3Variants, resetAll, emotionSummary, shotSummary, lightingSummary, compositionSummary,
+        moodSummary, onArtistLimitReached, previewPromptView, modelProfileView, reportView, artViolationsView,
+        loraSpecs, copyPrompt, saveCurrentResult, autoSaveToGallery, batchRunning, batchOpen,
+        sdErrorReport, runRecovery, dismissError, queuePausedReason, sceneStore, batchPanelDeps,
+        lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
+        refreshShotsPending, refreshAnimaBackend, startStatusPolling, DIRECTOR_MODE_KEY, applyDeepLink, restoreTempResult,
+        sdSize, refreshManagedRoute, restorePopularDraft, applyQuickCreateSettings, effectiveNegative,
+        updateAnimaPromptState, syncManagedRoute, syncAnimaCharacter, applyRecommendedSize, currentCapabilities,
+        generateAnima, captureJob, runJob, tempResultTools, resetBlueprintRotation,
+    };
+}

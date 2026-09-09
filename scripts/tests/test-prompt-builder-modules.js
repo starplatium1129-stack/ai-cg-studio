@@ -134,7 +134,7 @@ if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test
 }
 
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
-const view = read('src/views/PromptBuilderView.vue');
+const view = read('src/views/PromptBuilderView.vue') + '\n' + read('src/composables/prompt/usePromptWorkspace.ts') + '\n' + read('src/composables/prompt/usePromptLifecycle.ts') + '\n' + read('src/composables/prompt/promptGenerationActions.ts');
 const promptAssembly = read('src/composables/prompt/usePromptAssembly.ts');
 const drawingRoute = read('src/utils/drawingRoute.ts');
 const animaPanel = read('src/components/AnimaQuickPanel.vue');

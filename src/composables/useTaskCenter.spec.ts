@@ -6,6 +6,56 @@ const storage = vi.hoisted(() => ({ get: vi.fn(), set: vi.fn() }))
 vi.mock('@/composables/useKVStore', () => ({ kvGet: storage.get, kvSet: storage.set }))
 beforeEach(() => { vi.resetModules(); storage.get.mockReset().mockResolvedValue([]); storage.set.mockReset().mockResolvedValue(undefined) })
 
+it('a failed read can be retried and never overwrites unseen history', async () => {
+  storage.get.mockRejectedValueOnce(new Error('unavailable'))
+  const module = await import('./useTaskCenter')
+  module.createTask({ kind: 'image', title: '新任务', status: 'running', route: '/prompt-builder' })
+  await module.flushTaskSummaries()
+  expect(storage.set).not.toHaveBeenCalled()
+  storage.get.mockResolvedValue([{ id: 'old', kind: 'image', title: '旧任务', status: 'succeeded', route: '/gallery', createdAt: 1 }])
+  await module.hydrateTasks()
+  expect(module.useTaskCenter().tasks.value.map(task => task.title)).toContain('旧任务')
+  expect(module.useTaskCenter().storageError.value).toBe('')
+})
+
+it('reconnecting a finished backend job updates its existing history record', async () => {
+  storage.get.mockResolvedValue([{ id: 'old', kind: 'video', title: '视频', status: 'running', route: '/video-studio', backend: { kind: 'video', id: 'job-1' }, createdAt: 1 }])
+  const module = await import('./useTaskCenter')
+  await module.hydrateTasks()
+  const owner = mount(defineComponent({ setup() {
+    module.useTrackedTask(() => ({ kind: 'video', title: '视频', status: 'succeeded', route: '/video-studio', backend: { kind: 'video', id: 'job-1' } }))
+    return () => h('div')
+  } }))
+  expect(module.useTaskCenter().tasks.value).toHaveLength(1)
+  expect(module.useTaskCenter().tasks.value[0]).toMatchObject({ id: 'old', status: 'succeeded' })
+  owner.unmount(); await module.flushTaskSummaries()
+})
+
+it('invalid persisted status and backend paths cannot become actionable jobs', async () => {
+  storage.get.mockResolvedValue([
+    { id: 'bad', kind: 'video', title: 'bad', status: 'invented', route: '/video-studio' },
+    { id: 'path', kind: 'video', title: 'path', status: 'running', route: '/video-studio', backend: { kind: 'video', id: '../control' } },
+  ])
+  const module = await import('./useTaskCenter')
+  await module.hydrateTasks()
+  expect(module.useTaskCenter().tasks.value).toHaveLength(1)
+  expect(module.useTaskCenter().tasks.value[0].backend).toBeUndefined()
+})
+
+it('switching backend identities preserves the previous running task', async () => {
+  const module = await import('./useTaskCenter')
+  const backendId = ref('one')
+  const owner = mount(defineComponent({ setup() {
+    module.useTrackedTask(() => ({ kind: 'video', title: '视频', status: 'running', route: '/video-studio', backend: { kind: 'video', id: backendId.value } }))
+    return () => h('div')
+  } }))
+  backendId.value = 'two'; await nextTick()
+  const records = module.useTaskCenter().tasks.value
+  expect(records.map(task => task.backend?.id).sort()).toEqual(['one', 'two'])
+  expect(module.useTaskCenter().controls(records.find(task => task.backend?.id === 'one')!.id)).toBeUndefined()
+  owner.unmount(); await module.flushTaskSummaries()
+})
+
 it('new tasks merge with restored summaries and old running work is not reported as live', async () => {
   storage.get.mockResolvedValue([{ id: 'previous', kind: 'batch', title: '旧批次', status: 'running', route: '/prompt-builder', createdAt: 1, updatedAt: 1 }])
   const module = await import('./useTaskCenter')

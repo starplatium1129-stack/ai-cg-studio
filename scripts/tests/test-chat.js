@@ -204,6 +204,7 @@ async function run() {
   // 网站角色房间与 Companion 是独立视图，只共享最小会话编排。
   var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
   var companionHtml = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
+  companionHtml += '\n' + fs.readFileSync(path.join(root, 'src/composables/chat/useCompanionWorkspace.ts'), 'utf8');
   // 2026-08-22 行为运行时（30s 心跳：syncReminders + reconcileAutoListen）自
   // CompanionView 下沉，tick 哨兵随之迁移；同轮语音输入簇（按住说话/Space
   // 保持/唤醒会话/auto-listen gating）下沉 useCompanionSpeechInput。

@@ -45,6 +45,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   const concating = ref(false)
   let pollTimer = 0
   let disposed = false
+  let reconnectSerial = 0
 
   const batchActive = computed(() => batch.value?.status === 'running')
   const canSubmit = computed(() =>
@@ -115,8 +116,10 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
 
   async function pollBatch() {
     if (!batch.value || disposed) return
+    const id = batch.value.id
     try {
-      const response = await fetchVideoBatch(batch.value.id)
+      const response = await fetchVideoBatch(id)
+      if (disposed || batch.value?.id !== id) return
       batch.value = response.batch
     } catch (error) {
       batchError.value = error instanceof Error ? error.message : '批量状态读取失败'
@@ -192,9 +195,11 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
    * false，由宿主清记录并向用户解释。
    */
   async function reconnectBatch(id: string): Promise<boolean> {
-    if (batch.value) return true
+    if (batch.value?.id === id) return true
+    const serial = ++reconnectSerial
     try {
       const response = await fetchVideoBatch(id)
+      if (disposed || serial !== reconnectSerial) return true
       batch.value = response.batch
       schedulePoll()
       return true
@@ -208,7 +213,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     window.clearTimeout(pollTimer)
   })
 
-  useTrackedTask(() => ({ kind: 'video', title: '分镜批量视频', route: '/video-studio?mode=shots', resultRoute: '/video-studio?mode=shots', status: submitting.value || concating.value || batchActive.value ? 'running' : !batch.value ? 'idle' : batchError.value || batch.value.status === 'paused' || batch.value.progress.failed ? 'failed' : batch.value.status === 'cancelled' ? 'cancelled' : 'succeeded', progress: progressPercent.value, message: batchError.value || (concating.value ? '正在拼接成片…' : batch.value ? `${batch.value.progress.succeeded} / ${batch.value.progress.total} 镜完成` : '') }), { get cancel() { return concating.value ? undefined : cancelBatch }, get retry() { return batch.value?.progress.failed ? retryAllFailed : undefined } })
+  useTrackedTask(() => ({ kind: 'video', title: '分镜批量视频', backend: !submitting.value && batch.value ? { kind: 'video-batch', id: batch.value.id } : undefined, route: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : '/video-studio?mode=shots', resultRoute: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : undefined, status: submitting.value || concating.value || batchActive.value ? 'running' : !batch.value ? 'idle' : batchError.value || batch.value.status === 'paused' || batch.value.progress.failed ? 'failed' : batch.value.status === 'cancelled' ? 'cancelled' : 'succeeded', progress: progressPercent.value, message: batchError.value || (concating.value ? '正在拼接成片…' : batch.value ? `${batch.value.progress.succeeded} / ${batch.value.progress.total} 镜完成` : '') }), { get cancel() { return concating.value ? undefined : cancelBatch }, get retry() { return batch.value?.progress.failed ? retryAllFailed : undefined } })
   return {
     batch,
     submitting,
