@@ -29,7 +29,7 @@ function blobName(blob: Blob): string {
 
 function openDb(): Promise<IDBDatabase> {
   if (dbPromise) return dbPromise
-  dbPromise = new Promise((resolve, reject) => {
+  dbPromise = new Promise<IDBDatabase>((resolve, reject) => {
     const idb = globalThis.indexedDB
     if (!idb) { reject(new Error('当前浏览器不支持 IndexedDB')); return }
     const req = idb.open(DB_NAME, DB_VERSION)
@@ -42,7 +42,10 @@ function openDb(): Promise<IDBDatabase> {
       db.onversionchange = () => { db.close(); dbPromise = null }
       resolve(db)
     }
-    req.onerror = () => { dbPromise = null; reject(req.error ?? new Error('图片数据库打开失败')) }
+    req.onerror = () => reject(req.error ?? new Error('图片数据库打开失败'))
+  }).catch(error => {
+    dbPromise = null
+    throw error
   })
   return dbPromise
 }
@@ -128,8 +131,8 @@ export async function imgCount(): Promise<number> {
   return new Promise((resolve, reject) => {
     let transaction: IDBTransaction
     try { transaction = db.transaction(STORE_NAME, 'readonly') } catch (e) { reject(e); return }
-    const req = transaction.objectStore(STORE_NAME).getAllKeys()
-    req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result.length : 0)
+    const req = transaction.objectStore(STORE_NAME).count()
+    req.onsuccess = () => resolve(req.result)
     req.onerror   = () => reject(req.error ?? new Error('图片计数失败'))
   })
 }

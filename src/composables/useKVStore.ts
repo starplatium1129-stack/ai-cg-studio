@@ -8,7 +8,7 @@ let dbPromise: Promise<IDBDatabase> | null = null
 
 function openDb(): Promise<IDBDatabase> {
   if (dbPromise) return dbPromise
-  dbPromise = new Promise((resolve, reject) => {
+  dbPromise = new Promise<IDBDatabase>((resolve, reject) => {
     if (!globalThis.indexedDB) { reject(new Error('当前浏览器不支持 IndexedDB')); return }
     const req = indexedDB.open(DB_NAME, DB_VERSION)
     req.onupgradeneeded = () => {
@@ -20,7 +20,10 @@ function openDb(): Promise<IDBDatabase> {
       db.onversionchange = () => { db.close(); dbPromise = null }
       resolve(db)
     }
-    req.onerror = () => { dbPromise = null; reject(req.error ?? new Error('KV 数据库打开失败')) }
+    req.onerror = () => reject(req.error ?? new Error('KV 数据库打开失败'))
+  }).catch(error => {
+    dbPromise = null
+    throw error
   })
   return dbPromise
 }

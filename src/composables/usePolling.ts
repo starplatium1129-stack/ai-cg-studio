@@ -52,7 +52,7 @@ export function usePolling(options: UsePollingOptions): UsePollingHandle {
   const active: Ref<boolean> = ref(false)
 
   async function runTick(): Promise<void> {
-    if (inFlight) return
+    if (!active.value || inFlight || options.paused?.()) return
     const currentGeneration = generation
     inFlight = true
     try {
@@ -72,8 +72,8 @@ export function usePolling(options: UsePollingOptions): UsePollingHandle {
     // 暂停门控在 start 前生效时：保持 active 语义（调用方已请求轮询），
     // 但不排程；paused 翻回 false 后由 sync() 续跑。
     if (options.paused && options.paused()) return
-    if (immediate && !inFlight) void runTick()
     timer = setTimer(() => { void runTick() }, intervalMs)
+    if (immediate && !inFlight) void runTick()
   }
 
   function stop(): void {
@@ -91,8 +91,8 @@ export function usePolling(options: UsePollingOptions): UsePollingHandle {
       clearTimer(timer)
       timer = null
     } else if (!shouldPause && timer === null) {
-      if (!inFlight) void runTick()
       timer = setTimer(() => { void runTick() }, intervalMs)
+      if (!inFlight) void runTick()
     }
   }
 

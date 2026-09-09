@@ -18,10 +18,53 @@ function fakeTimers() {
       await Promise.resolve()
     },
     pendingCount: () => tasks.size,
+    queuedCallbacks: () => [...tasks.values()],
   }
 }
 
 describe('usePolling —— 轮询通用底座', () => {
+  it('立即回调中 stop 不会遗留定时器', () => {
+    const t = fakeTimers()
+    const polling = usePolling({ intervalMs: 1000, tick: () => polling.stop(), ...t })
+    polling.start()
+    expect(polling.isActive()).toBe(false)
+    expect(t.pendingCount()).toBe(0)
+  })
+
+  it('暂停恢复的立即回调中 stop 也清理定时器', () => {
+    const t = fakeTimers()
+    let paused = true
+    const polling = usePolling({ intervalMs: 1000, paused: () => paused, tick: () => polling.stop(), ...t })
+    polling.start()
+    paused = false
+    polling.sync()
+    expect(polling.isActive()).toBe(false)
+    expect(t.pendingCount()).toBe(0)
+  })
+
+  it('停止后已经排队的回调不得继续请求', () => {
+    const t = fakeTimers()
+    const tick = vi.fn()
+    const polling = usePolling({ intervalMs: 1000, tick, immediate: false, ...t })
+    polling.start()
+    const [queued] = t.queuedCallbacks()
+    polling.stop()
+    queued!()
+    expect(tick).not.toHaveBeenCalled()
+  })
+
+  it('暂停条件已变化但尚未 sync 时不发起请求', async () => {
+    const t = fakeTimers()
+    let paused = false
+    const tick = vi.fn()
+    const polling = usePolling({ intervalMs: 1000, tick, paused: () => paused, immediate: false, ...t })
+    polling.start()
+    paused = true
+    await t.runDue()
+    expect(tick).not.toHaveBeenCalled()
+    polling.stop()
+  })
+
   it('start 立即 tick 一次并按 interval 排程；stop 清空计时器', async () => {
     const t = fakeTimers()
     const tick = vi.fn()

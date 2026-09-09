@@ -32,15 +32,22 @@ export async function blobThumbDataUrl(blob: Blob, maxWidth = 560, quality = 0.8
   try {
     if (typeof createImageBitmap === 'function') {
       const bitmap = await createImageBitmap(blob)
-      const out = canvasThumb(bitmap, bitmap.width, bitmap.height, maxWidth, quality)
-      bitmap.close?.()
-      if (out) return out
+      try {
+        const out = canvasThumb(bitmap, bitmap.width, bitmap.height, maxWidth, quality)
+        if (out) return out
+      } finally {
+        bitmap.close()
+      }
     }
   } catch { /* 落到 <img> 兜底 */ }
   return await new Promise(resolve => {
     const url = URL.createObjectURL(blob)
     const img = new Image()
-    img.onload = () => { resolve(jpegThumbDataUrl(img, maxWidth, quality)); URL.revokeObjectURL(url) }
+    img.onload = () => {
+      try { resolve(jpegThumbDataUrl(img, maxWidth, quality)) }
+      catch { resolve('') }
+      finally { URL.revokeObjectURL(url) }
+    }
     img.onerror = () => { resolve(''); URL.revokeObjectURL(url) }
     img.src = url
   })
