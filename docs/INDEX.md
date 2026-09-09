@@ -40,6 +40,8 @@
 
 专题中的历史数字和实验参数只适用于记录时点；未来任务统一以 roadmap 排序。
 
+- [提示词 Skill 调研与修订依据](prompt-skill-research-2026-09-09.md)
+- [项目提示词 Skill](../.agents/skills/studio-prompt-craft/SKILL.md)
 - [Anima 训练与晋级记录](anima-training-record.md)
 - [热门角色接入工作流](character-onboarding-workflow.md)
 - [热门角色场景唯美重构与设定纠偏总览规划书](character-scenes-and-dna-overhaul-plan.md)
