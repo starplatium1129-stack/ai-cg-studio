@@ -408,7 +408,7 @@
     ],
     "animaCaption": "Across the wet sand at sunset, Ayachi Nene pauses mid-step and looks back toward the viewer. Her right hand carries both sandals by their straps; her left keeps a light cardigan from slipping off her white summer dress. Retreating foam curls around her bare feet. A wide view includes the shoreline and long evening shadows, holding the quiet reluctance of a trip about to end.",
     "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_sundress, light_cardigan, holding_sandals, sandals_in_hand, barefoot, walking, looking_back, gentle_smile, beach, wet_sand, sea_foam, shoreline, sunset, long_shadows, golden_hour, full_body, wide_shot, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field, <lora:ayachi_nene_v21_anima:0.85>",
-    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extra limbs, split screen, transparent clothing, nsfw, nude, explicit",
     "storyJa": "【寧々・潮の終わりの抵抗】旅行最終日の夕暮れ時、寧々さんは潮が引いた後のビーチを裸足でサンダルを履いて歩いた。夕日が二人の影を長く伸ばした。彼女は何度か何か言おうとしたが、海風に吹き飛ばされてしまっていた。彼女が波打ち際で立ち止まって振り返ったのは、帰路の時間が近づいてきたときだった。――「帰るのが嫌なわけじゃないんです……ただ、あなたとここにいると、時間が過ぎるのが早すぎて。今度も同じ海を一緒に見ましょうね。」",
     "rating": "All",
     "recommendedSize": "1216×832"
@@ -1405,7 +1405,7 @@
       "展示图"
     ],
     "prompt": "safe, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, cream_winter_coat, burgundy_scarf, sitting_in_cable_car, hugging_viewer_arm, both_arms, looking_out_window, restrained_smile, gondola_window, snowy_mountains, winter, diffused_daylight, medium_shot, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field, <lora:ayachi_nene_v21_anima:0.85>",
-    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extra limbs, split screen, transparent clothing, nsfw, nude, explicit",
     "storyJa": "【寧々・ケーブルカーが揺れたらすみません】冬、ケーブルカーは雪を頂いた山々に向かってゆっくりと登っていきますが、車両は横風でわずかに揺れます。寧々は彼の向かい側に座っていましたが、震えた後、あなたの側に移動して、両手であなたの腕をしっかりと抱きました。風が止んでもなお衰えていないことに気づき、彼女は真剣に窓の外を眺めた。――「今手を離したら、また揺れてしまいますから。このままが一番安全なんです。頂上に着いてからも……もう少しだけ、借りていてもいいですか？」",
     "rating": "All",
     "animaCaption": "The cable car has steadied, but Ayachi Nene still keeps both arms around the viewer's arm. Her thick cream coat and burgundy scarf contrast with the snow-covered mountains outside the glass. Seated close beside him, she turns toward the window with an overly serious expression that almost hides her smile. Frame the linked arms and her face at eye level inside the gondola.",

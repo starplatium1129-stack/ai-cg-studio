@@ -444,8 +444,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, very_long_hair, messy_bed, yellow_eyes, mole_under_eye, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, wrapped, loosely, white, silk, bedsheet, like, cocoon, leaning_back, morning, soft_blush, serene, affectionate, glance, luxury_hotel_bedroom, morning_light, rim_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, artist_name, chromatic_aberration, clothes, underwear, bra, panties, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, natsume_r18, adult, black_hair, very_long_hair, messy_bed, yellow_eyes, mole_under_eye, nude, completely_naked, firm_shapely_breasts, pink_nipples, exposed_pussy, slender_waist, lying_on_bed, propped_up_on_elbow, wrapped_in_sheet, loosely_wrapped_in_white_silk_bedsheet, cocooned_in_sheet, half_open_eyes, right_hand_reaching_toward_viewer, morning, soft_blush, serene, affectionate, glance, luxury_hotel_bedroom, morning_light, rim_light, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, artist_name, chromatic_aberration, clothes, underwear, bra, panties, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【夏目・裸シーツに恋して】どこまでも怠惰な早朝、暖かく柔らかな朝の光が白いガーゼのカーテンを通して射し込んでいた。夏目は昨夜、二日酔いで散らかったベッドから目覚めました。彼女は世界中の服をすべて脱いで、真っ白でふわふわのベルベットのベッドの真ん中に裸で横たわっていました。愛の痕跡が詰まった完璧なボディを、半透明の白いシーツだけで優しく覆った。彼女の顔の熱い赤面は耳の根元まで達し、彼女の明るい目は半開きで、目の端の泣きぼくろは、太陽の光の中で極度の愛着と無限の魅力で輝いていました。彼女は眉を上げてそっと右手をあなたに開いた――「おはよう、この大変態。いつまで見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
     "rating": "R18",
     "animaCaption": "Propping herself up on one elbow in a sun-drenched hotel bed the morning after, Shiki Natsume is completely nude, wrapped loosely like a cocoon in crisp white silk sheets. Her golden eyes gaze with soft, lingering affection and peaceful surrender as golden dawn light illuminates her bare shoulders and firm breasts."
@@ -1338,9 +1338,10 @@
       "no_bra",
       "cleavage",
       "bare_legs",
-      "sitting_on_bench",
+      "sitting_on_lap",
       "straddling_viewer",
       "clinging_to_viewer",
+      "hands_on_viewer_shoulders",
       "red_ears",
       "heavy_blush",
       "shy_look",
@@ -1363,11 +1364,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, pov, white_dress, wet_clothes, wet_dress, see_through_clothing, no_bra, cleavage, bare_legs, sitting_on_bench, leaning_forward, close_up, looking_at_viewer, reaching_towards_viewer, red_ears, heavy_blush, shy_look, balcony, night, rainy_night, moonlight, shadows, sensual, lightning_light, backlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, pov, white_dress, wet_clothes, wet_dress, see_through_clothing, no_bra, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, hands_on_viewer_shoulders, leaning_forward, close_up, looking_at_viewer, red_ears, heavy_blush, shy_look, balcony, night, rainy_night, moonlight, shadows, sensual, lightning_light, backlight, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【夏目】【ナツメ・別荘テラスの夜雨】深夜、急な激しい雨に見舞われた海辺のテラス。白いサマードレス姿のナツメは突風で傘を飛ばされ、全身が雨に濡れてしまう。風雨を避けるため、彼女は屋根下のデッキチェアにいたあなたの胸元へと飛び込み、肩にすがりついた。冷たい雨と温かな体温のコントラストの中、耳を真っ赤にしながら唇を噛みしめる――「……勘違いしないで、風が強すぎただけ。……寒いの、少し温まるまでこのままでいさせて。……抱きしめてるだけで、動かないでね」",
     "rating": "R18",
-    "animaCaption": "On the windy resort balcony during a sudden rainstorm, Shiki Natsume in a drenched, translucent white sundress sits on the wooden bench, leaning in close toward the viewer with red ears and a shy, breathtaking blush under flashes of distant lightning."
+    "animaCaption": "On the windy resort balcony during a sudden rainstorm, Shiki Natsume in a drenched, translucent white sundress sits astride the viewer in the recliner's lap, both hands gripping his shoulders as she leans close with red ears and a shy, breathtaking blush under flashes of distant lightning."
   },
   {
     "id": "sc276",

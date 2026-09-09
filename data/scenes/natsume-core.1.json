@@ -1172,7 +1172,7 @@
     ],
     "animaCaption": "A school of fish turns behind the aquarium glass before Shiki Natsume notices the viewer calling. She stands in a navy cardigan, white blouse and light-grey trousers, with one palm resting on the glass at shoulder height. Her head is still tilted toward the fish and her golden eyes retain a look of absorbed wonder. Blue water reflections travel across her dark hair and the quiet side profile.",
     "prompt": "safe, 1girl, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, navy_cardigan, white_blouse, grey_trousers, standing, palm_on_glass, looking_up, side_view, attentive_expression, aquarium, large_aquarium_window, school_of_fish, blue_water, water_caustics, reflected_light, medium_shot, detailed_background, cinematic_lighting, volumetric_lighting, depth_of_field, <lora:shiki_natsume_v21_anima:0.85>",
-    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, duplicate, text, watermark, logo, signature, blurry, split screen, nude, explicit, transparent clothing",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extra limbs, split screen, transparent clothing, nsfw, nude, explicit",
     "storyJa": "【夏目・青い光の中で忘却のひととき】水族館の巨大なガラスのカーテンウォールの前で、夏目は周囲の環境を忘れることなく頭を上げて泳ぐ魚の群れを追いかけます。青い波紋が彼女の黒髪と目の下の泣きぼくろに広がった。彼女が正気に戻るまでに、あなたは彼女に二度電話しました。彼女はそっとガラスに寄りかかったが、口調はまだ穏やかだった――「魚のほうが誰かさんより静かなのは確か。でも……あなたがここにいても邪魔ではないから、もう少し付き合って。」",
     "rating": "All",
     "recommendedSize": "832×1216"
@@ -1934,6 +1934,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "cheongsam",
       "qipao",
       "high_slit",
@@ -1969,8 +1970,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, natsume_official_qipao, red_china_dress, high_slit, cleavage, bra_lift, exposed_breasts, bare_breasts, nipples, areola, black_thighhighs, sitting_cross-legged_on_velvet_sofa, tipsy, heavy_blush, holding_wine_glass, private_lounge, neon_city_lights_outside, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, daytime",
+    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, natsume_official_qipao, red_china_dress, high_slit, cleavage, bra_lift, exposed_breasts, bare_breasts, nipples, areola, black_thighhighs, sitting_cross_legged_on_arhat_bed, tipsy, heavy_blush, holding_wine_glass, private_lounge, night, antique_lamp_light, strong_side_shadows, neon_city_lights_outside, sensual, pov, slightly_low_angle, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, daytime, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【夏目・シルクチャイナドレスハイスリット】秘密の潜入任務を完了した後の中国風のプライベートクラブ。普段は笑顔のない夏目さんは、高いスリットが入った高級なダークレッドのシルクチャイナドレスを着て、まっすぐでふっくらとした美しいスレンダー脚を完璧に強調しました。彼女の脚はセクシーな薄い黒い絹で包まれていました。傲慢さはあるものの、顔は紅潮し、ほのかに酔っぱらった彼女は、冷たいマホガニーの羅漢ベッドの真ん中にあぐらをかいて座り、細い指で金色の酒の入ったグラスを振っていた。アンティークランプの強い横光の下では、目尻の泣きぼくろが非常に明るく魅惑的に見えます。――「ふん、店長。今夜はこのラウンジを貸し切りにした。入ってきた以上……私の尋問に最後まで付き合う覚悟をして。」",
     "rating": "R18",
     "animaCaption": "In the retro private lounge lit by antique lamps, Shiki Natsume sits cross-legged on the cool redwood arhat bed in a dark red silk qipao with a high slit, her slender legs wrapped in sheer black stockings, cheeks flushed with tipsy pride as she idly swirls a glass of golden liquor, the tear mole glowing bewitchingly under strong side shadows and neon-tinged low light."
