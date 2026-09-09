@@ -98,12 +98,13 @@ test('home renders hero, featured scenes and live counts', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.locator('.nav-brand .nav-logo')).toHaveAttribute('alt', '绘遇 · HUIYU');
-  await expect(page.locator('.hero-register')).toContainText('ANIME · CG · STORIES');
+  await expect(page.locator('.hero-register')).toContainText('绘遇 HUIYU · AI 角色创作画室');
   await expect(page.locator('.hero-title')).toBeVisible();
   // 精选场景来自 scenes.json + curation.json，必须真的渲染进画册手帖
   await expect(page.locator('.journal-entry').first()).toBeVisible();
   // 主要创作入口
-  await expect(page.getByRole('link', { name: /开始绘制/ }).first()).toBeVisible();
+  await expect(page.locator('#continueCta')).toHaveText(/选场景，开始创作/);
+  await expect(page.locator('#continueCta')).toHaveAttribute('href', '/scene-explorer');
 
   expect(errors).toEqual([]);
 });

@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import { downloadBlob } from "@/utils/downloadBlob"
 import { computed, ref } from 'vue'
 import { CHARACTERS } from '@/config/characters'
 import type { useChatStorage } from '@/composables/chat/useChatStorage'
@@ -58,12 +59,7 @@ const counts = computed(() => props.storage.archiveCount())
 const totalCount = computed(() => Object.values(counts.value).reduce((sum, n) => sum + n, 0))
 
 function download(name: string, content: string, mime: string) {
-  const url = URL.createObjectURL(new Blob([content], { type: mime }))
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = name
-  anchor.click()
-  URL.revokeObjectURL(url)
+  downloadBlob(new Blob([content], { type: mime }), name)
 }
 
 function exportJson() {
@@ -102,6 +98,8 @@ function onFile(event: Event) {
     } catch (error) {
       emit('notice', `无法读取归档：${error instanceof Error ? error.message : '文件已损坏'}`, 'error')
     }
+  }).catch(error => {
+    emit('notice', `无法读取归档：${error instanceof Error ? error.message : '文件读取失败'}`, 'error')
   })
 }
 

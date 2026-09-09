@@ -1,9 +1,12 @@
+import { restoreBackupData } from '@/storage/backupRestore'
+import { downloadBlob } from '@/utils/downloadBlob'
+import { version as appVersion } from '../../package.json'
+import { collectImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
 import { ref } from 'vue'
-import { kvGet, kvSet } from '@/composables/useKVStore'
-import { imgList, imgGet, imgPutRecord, imgDeleteMany } from '@/composables/useImageStore'
+import { kvGet } from '@/composables/useKVStore'
+import { imgList, imgGet, imgDeleteMany } from '@/composables/useImageStore'
 import {
   createBackup,
-  mergeBackupRecords,
   normalizeBackup,
   summarizeBackup,
   type BackupFile,
@@ -15,16 +18,13 @@ import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHea
 import {
   ARTWORK_HISTORY_KV_KEY,
   ARTWORK_PROJECTS_KV_KEY,
+  ARTWORK_TRASH_KV_KEY,
+  ARTWORK_HISTORY_QUARANTINE_KEY,
   BACKUP_AT_KEY,
-  CHAT_MEMORY_KEY,
   cleanDeadLocalKeys,
   collectLiveLocalSettings,
-  isLiveLocalKey,
 } from '@/utils/storageKeys'
-import { normalizeChatStorage } from '@/utils/chatStorageCore'
 import { buildArtworkFileName } from '@/utils/artworkFileName'
-import { CHAT_ARCHIVE_KEY, mergeChatArchives, normalizeChatArchive, serializeChatArchive } from '@/utils/chatArchive'
-import { mergeChatMemoryStates, normalizeChatMemoryState } from '@/utils/chatMemory'
 export type { BackupSummary } from '@/utils/backupCore'
 
 /**
@@ -55,15 +55,6 @@ function blobToDataUrl(blob: Blob): Promise<string> {
   })
 }
 
-function dataUrlToBlob(dataUrl: string): Blob {
-  const [head, body] = String(dataUrl || '').split(',')
-  const mime = /data:([^;]+)/.exec(head || '')?.[1] || 'image/png'
-  const bin = atob(body || '')
-  const bytes = new Uint8Array(bin.length)
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
-  return new Blob([bytes], { type: mime })
-}
-
 function collectSettings(): Record<string, string> {
   // 活键统一登记在 src/utils/storageKeys.ts：精确键 + 训练动态前缀。
   return collectLiveLocalSettings(localStorage)
@@ -79,6 +70,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const pending = ref<BackupFile | null>(null)
   const pendingName = ref('')
   const lastBackupAt = ref(readLastBackupAt())
+  let fileRequest = 0
 
   async function exportBackup(): Promise<void> {
     if (busy.value) return
@@ -103,10 +95,10 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
             created_at: record.created_at,
             dataUrl: await blobToDataUrl(record.blob),
           })
-        } catch (e) { console.warn('skip image', record.id, e) }
+        } catch { throw new Error(`图片 ${record.id} 无法读取，未生成不完整备份，请重试`) }
       }
       const backup = createBackup({
-        appVersion: '1.5.0',
+        appVersion,
         createdAt: new Date().toISOString(),
         history: Array.isArray(history) ? history : [],
         projects: Array.isArray(projects) ? projects : [],
@@ -115,13 +107,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       })
       const json = JSON.stringify(backup)
       const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
-      const url = URL.createObjectURL(blob)
       const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `aics-backup-${stamp}.json`
-      a.click()
-      URL.revokeObjectURL(url)
+      downloadBlob(blob, `aics-backup-${stamp}.json`)
       const info = summarizeBackup(backup)
       lastBackupAt.value = Date.now()
       try { localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value)) } catch {}
@@ -146,10 +133,11 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     try {
       const records = (await imgList()) || []
       let saved = 0
+      let failed = 0
       for (const record of records) {
         try {
           const blob = record.blob instanceof Blob ? record.blob : (record.id ? await imgGet(record.id) : null)
-          if (!blob) continue
+          if (!blob) { failed++; continue }
           const url = URL.createObjectURL(blob)
           const a = document.createElement('a')
           const ext = (blob.type || 'image/png').split('/')[1] || 'png'
@@ -168,11 +156,12 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
           // 大图下载完成后才释放 blob URL，避免下载中断
           window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
           saved++
-        } catch { /* 单张失败跳过 */ }
+        } catch { failed++ }
       }
       onFlash(saved
         ? `已开始下载 ${saved} 张作品图片（浏览器可能询问「允许下载多个文件」）`
         : '没有找到可导出的图片')
+      if (failed) onFlash(`已开始下载 ${saved} 张；${failed} 张读取或下载失败，请重试`)
     } catch (e) {
       console.error('export images failed', e)
       onFlash('导出图片失败：' + errorMessage(e, '请检查浏览器存储'))
@@ -182,16 +171,22 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   }
 
   async function loadFile(file: File): Promise<BackupSummary | null> {
-    if (!file) return null
+    if (!file || busy.value) return null
+    const request = ++fileRequest
+    pending.value = null
+    pendingName.value = ''
     if (file.size > 512 * 1024 * 1024) {
       onFlash('备份文件超过 512 MB，暂不支持直接恢复')
       return null
     }
     try {
-      pending.value = normalizeBackup(JSON.parse(await file.text()))
+      const normalized = normalizeBackup(JSON.parse(await file.text()))
+      if (request !== fileRequest) return null
+      pending.value = normalized
       pendingName.value = file.name
       return summarizeBackup(pending.value)
     } catch (e) {
+      if (request !== fileRequest) return null
       pending.value = null
       pendingName.value = ''
       onFlash('无法读取备份：' + errorMessage(e, '文件已损坏'))
@@ -199,93 +194,18 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  function discard() { pending.value = null; pendingName.value = '' }
+  function discard() { if (busy.value) return; fileRequest++; pending.value = null; pendingName.value = '' }
 
   async function restore(mode: 'replace' | 'merge', confirmed = false): Promise<boolean> {
     if (!pending.value || busy.value) return false
     const replace = mode === 'replace'
-    if (replace && !confirmed && !window.confirm('覆盖恢复会替换当前项目、历史记录和本地图片。建议先导出一份当前备份。确定继续吗？')) {
+    if (replace && !confirmed && !window.confirm('覆盖恢复会替换当前项目与历史记录。原图保留，确认恢复后可通过存储清理释放空间。确定继续吗？')) {
       return false
     }
     busy.value = true
     onFlash(replace ? '正在覆盖恢复…' : '正在合并恢复…')
     try {
-      const imported = pending.value
-      const [curHistory, curProjects] = await Promise.all([
-        kvGet<BackupRecord[]>(HISTORY_KEY),
-        kvGet<BackupRecord[]>(PROJECT_KEY),
-      ])
-      const history = replace
-        ? imported.data.history
-        : mergeBackupRecords(curHistory || [], imported.data.history)
-      const projects = replace
-        ? imported.data.projects
-        : mergeBackupRecords(curProjects || [], imported.data.projects)
-
-      if (replace) {
-        const existing = await imgList()
-        await imgDeleteMany((existing || []).map(r => r.id))
-      }
-      for (const img of imported.images) {
-        try {
-          await imgPutRecord({
-            id: img.id,
-            blob: dataUrlToBlob(img.dataUrl),
-            name: img.name,
-            type: img.type,
-            created_at: img.created_at,
-          })
-        } catch (e) { console.warn('restore image failed', img.id, e) }
-      }
-
-      await Promise.all([kvSet(HISTORY_KEY, history), kvSet(PROJECT_KEY, projects)])
-
-      if (replace) {
-        // 覆盖恢复：先清掉所有活键（含动态前缀），再按白名单写回。
-        const liveKeys: string[] = []
-        for (let index = 0; index < localStorage.length; index += 1) {
-          const key = localStorage.key(index)
-          if (key && isLiveLocalKey(key)) liveKeys.push(key)
-        }
-        for (const key of liveKeys) {
-          try { localStorage.removeItem(key) } catch {}
-        }
-      }
-      Object.entries(imported.data.settings || {}).forEach(([k, v]) => {
-        if (!isLiveLocalKey(k)) return
-        try {
-          if (!replace && k === CHAT_MEMORY_KEY) {
-            const current = normalizeChatMemoryState(JSON.parse(localStorage.getItem(k) || 'null'))
-            const incoming = normalizeChatMemoryState(JSON.parse(String(v)))
-            localStorage.setItem(k, JSON.stringify(mergeChatMemoryStates(current, incoming)))
-          } else if (!replace && k === CHAT_ARCHIVE_KEY) {
-            const current = normalizeChatArchive(JSON.parse(localStorage.getItem(k) || 'null'), ['nene', 'natsume'])
-            const incoming = normalizeChatArchive(JSON.parse(String(v)), ['nene', 'natsume'])
-            localStorage.setItem(k, serializeChatArchive(mergeChatArchives(current, incoming)))
-          } else if (!replace && k === 'aics_chat_v1') {
-            const current = normalizeChatStorage(JSON.parse(localStorage.getItem(k) || 'null'), '', {
-              characterIds: ['nene', 'natsume'], maxMessages: 20, version: 3,
-              createMessageId: () => `restore-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-            }).state
-            const incoming = normalizeChatStorage(JSON.parse(String(v)), '', {
-              characterIds: ['nene', 'natsume'], maxMessages: 20, version: 3,
-              createMessageId: () => `restore-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-            }).state
-            const merged = { ...incoming, histories: { ...current.histories } }
-            for (const char of ['nene', 'natsume']) {
-              const ids = new Set<string>()
-              merged.histories[char] = [...current.histories[char], ...incoming.histories[char]].filter(item => {
-                if (ids.has(item.mid)) return false
-                ids.add(item.mid)
-                return true
-              }).slice(-20)
-            }
-            localStorage.setItem(k, JSON.stringify(merged))
-          } else {
-            localStorage.setItem(k, String(v))
-          }
-        } catch { /* skip malformed optional setting */ }
-      })
+      await restoreBackupData(pending.value, replace)
 
       pending.value = null
       pendingName.value = ''
@@ -326,19 +246,24 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
 
   /** 清理未被历史引用的图片 */
   async function cleanOrphanImages(): Promise<number> {
+    if (busy.value) return 0
+    busy.value = true
     try {
-      const [history, images] = await Promise.all([kvGet<BackupRecord[]>(HISTORY_KEY), imgList()])
-      const report = inspectStorageHealth(history, images)
-      const orphanIds = new Set(report.orphanImageIds)
-      const orphans = (images || []).filter(r => orphanIds.has(String(r.id)))
+      const [history, projects, trash, quarantine, images] = await Promise.all([
+        kvGet(HISTORY_KEY), kvGet(PROJECT_KEY), kvGet(ARTWORK_TRASH_KV_KEY), kvGet(ARTWORK_HISTORY_QUARANTINE_KEY), imgList(),
+      ])
+      const referenced = collectImageReferences([history, projects, trash, quarantine, ...readSessionImageReferences(sessionStorage)])
+      const orphans = (images || []).filter(record => !referenced.has(String(record.id)))
       if (!orphans.length) { onFlash('没有需要清理的孤儿图片'); return 0 }
-      if (!window.confirm(`将删除 ${orphans.length} 张未被作品引用的图片。建议先导出备份。确定继续吗？`)) return 0
+      if (!window.confirm(`将删除 ${orphans.length} 张未被当前作品、回收站或草稿引用的图片。请先关闭其他创作标签页并导出备份。确定继续吗？`)) return 0
       await imgDeleteMany(orphans.map(r => r.id))
       onFlash(`已清理 ${orphans.length} 张孤儿图片`)
       return orphans.length
     } catch (e) {
       onFlash('清理失败：' + errorMessage(e, '请重试'))
       return 0
+    } finally {
+      busy.value = false
     }
   }
 

@@ -609,6 +609,72 @@ test('flow 4b · 备份：损坏文件不得污染本地数据', async ({ page }
 // ─────────────────────────────────────────────────────────────────────────────
 // 5. 场景保存
 // ─────────────────────────────────────────────────────────────────────────────
+for (const theme of ['dark', 'light']) {
+  test(`backup atomic recovery ${theme} · metadata failure preserves originals`, async ({ page }) => {
+    await page.addInitScript(value => {
+      localStorage.setItem('aics_theme', value)
+      const put = IDBObjectStore.prototype.put
+      IDBObjectStore.prototype.put = function (value, key) {
+        if (this.name === 'kv' && value?.key === 'aics_pb_projects' && value.value?.some?.((item: { id?: string }) => item.id === 'incoming-project')) {
+          throw new DOMException('Test storage quota failure', 'QuotaExceededError')
+        }
+        return key === undefined ? put.call(this, value) : put.call(this, value, key)
+      }
+    }, theme)
+    await page.goto('/prompt-builder')
+    await page.evaluate(async () => {
+      const db = await new Promise<IDBDatabase>((resolve, reject) => {
+        const request = indexedDB.open('aics_image_store', 1)
+        request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains('images')) request.result.createObjectStore('images', { keyPath: 'id' }) }
+        request.onsuccess = () => resolve(request.result)
+        request.onerror = () => reject(request.error)
+      })
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction('images', 'readwrite')
+        tx.objectStore('images').put({ id: 'original-image', blob: new Blob(['original-bytes']), name: 'original.png' })
+        tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error)
+      })
+      db.close()
+      const kvDb = await new Promise<IDBDatabase>((resolve, reject) => {
+        const request = indexedDB.open('aics_kv_store', 1)
+        request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains('kv')) request.result.createObjectStore('kv', { keyPath: 'key' }) }
+        request.onsuccess = () => resolve(request.result)
+        request.onerror = () => reject(request.error)
+      })
+      await new Promise<void>((resolve, reject) => {
+        const tx = kvDb.transaction('kv', 'readwrite')
+        tx.objectStore('kv').put({ key: 'aics_pb_history', value: [{ id: 'original-artwork', image_id: 'original-image', prompt: 'original' }] })
+        tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error)
+      })
+      kvDb.close()
+    })
+    await page.locator('.pb-backup-file-input').setInputFiles({ name: 'fault-test.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({
+      data: { history: [{ id: 'incoming-artwork', image_id: 'original-image' }], projects: [{ id: 'incoming-project' }], settings: { aics_theme: theme === 'dark' ? 'light' : 'dark' } },
+      images: [{ id: 'original-image', dataUrl: 'data:image/png;base64,YQ==' }],
+    })) })
+    const card = page.locator('.pb-backup-card')
+    await card.getByRole('button', { name: '覆盖本地', exact: true }).click()
+    await page.getByRole('alertdialog').getByRole('button', { name: '覆盖', exact: true }).click()
+    await expect(page.locator('.toast-msg').filter({ hasText: '原有作品与原图未删除' })).toBeVisible()
+    const stored = await page.evaluate(async () => {
+      async function read(database: string, store: string, key: string) {
+        const db = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open(database, 1); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error) })
+        return new Promise<any>((resolve, reject) => {
+          const request = db.transaction(store).objectStore(store).get(key)
+          request.onsuccess = () => { db.close(); resolve(request.result) }; request.onerror = () => { db.close(); reject(request.error) }
+        })
+      }
+      const history = await read('aics_kv_store', 'kv', 'aics_pb_history')
+      const image = await read('aics_image_store', 'images', 'original-image')
+      return { ids: history.value.map((item: { id: string }) => item.id), bytes: await image.blob.text(), theme: localStorage.getItem('aics_theme') }
+    })
+    expect(stored).toEqual({ ids: ['original-artwork'], bytes: 'original-bytes', theme })
+    await expect(card).toBeVisible()
+    await expect(card.getByRole('button', { name: '覆盖本地', exact: true })).toBeEnabled()
+    await page.screenshot({ path: `.review-shots/backup-atomic-recovery-${theme}.png`, fullPage: true })
+  })
+}
+
 test('flow 5 · 场景保存：编辑 → 脏态 → POST 全量场景 + 标签 + 策展', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
 

@@ -67,7 +67,7 @@ function image(value: unknown): BackupImage | null {
   const source = object(value)
   const id = typeof source.id === 'string' ? source.id.trim() : ''
   const dataUrl = typeof source.dataUrl === 'string' ? source.dataUrl : ''
-  if (!id || !/^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=\s]+$/i.test(dataUrl)) return null
+  if (!id || !/^data:image\/(?:png|jpeg|webp|gif|bmp|avif);base64,[a-z0-9+/=\s]+$/i.test(dataUrl)) return null
   return {
     id,
     name: typeof source.name === 'string' ? source.name : '',
@@ -94,6 +94,17 @@ export function normalizeBackup(raw: unknown): BackupFile {
   if (!hasNestedData && !hasLegacyData) throw new Error('该文件不包含可恢复的绘遇数据')
 
   const data = hasNestedData ? nested : source
+  for (const key of ['history', 'projects']) {
+    if (data[key] !== undefined && (!Array.isArray(data[key]) || records(data[key]).length !== (data[key] as unknown[]).length)) {
+      throw new Error(`备份 ${key} 数据损坏，已停止恢复`)
+    }
+  }
+  if (source.images !== undefined && !Array.isArray(source.images)) throw new Error('备份图片列表格式无效')
+  if (data.settings !== undefined && (!data.settings || typeof data.settings !== 'object' || Array.isArray(data.settings))) throw new Error('备份设置格式无效')
+  const rawImages = Array.isArray(source.images) ? source.images : []
+  const images = rawImages.map(image)
+  if (images.some(item => !item)) throw new Error('备份含无效图片，没有可恢复的完整图片集；请重新导出备份')
+  if (new Set(images.map(item => item!.id)).size !== images.length) throw new Error('备份包含重复图片 ID')
   const normalized: BackupFile = {
     app: String(source.app || BACKUP_APP),
     appVersion: String(source.appVersion || ''),
@@ -104,7 +115,7 @@ export function normalizeBackup(raw: unknown): BackupFile {
       projects: records(data.projects),
       settings: settings(data.settings),
     },
-    images: (Array.isArray(source.images) ? source.images : []).map(image).filter((item): item is BackupImage => Boolean(item)),
+    images: images as BackupImage[],
   }
   if (!normalized.data.history.length && !normalized.data.projects.length
       && !normalized.images.length && !Object.keys(normalized.data.settings).length) {

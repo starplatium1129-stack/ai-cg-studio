@@ -42,6 +42,18 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   const aiTotal = ref(0)
   const aiSnapshot = ref<ShotDraft[] | null>(null)
   const aiNote = ref('')
+  let rewriteTargets: ShotDraft[] = []
+  let polishTargets: ShotDraft[] = []
+  let reviewTargets: ShotDraft[] = []
+  let dialogueTarget: ShotDraft | null = null
+  const textFields = ['prompt', 'dialogue', 'shotSize', 'camera', 'motion'] as const
+  const unchanged = (target: ShotDraft, snapshot: ShotDraft) => textFields.every(key => target[key] === snapshot[key])
+  function restoreText(snapshot: ShotDraft[], targets: ShotDraft[]) {
+    targets.forEach((target, index) => {
+      if (shots.value.includes(target) && snapshot[index]) Object.assign(target, Object.fromEntries(textFields.map(key => [key, snapshot[index][key]])))
+    })
+  }
+  const anyAiBusy = () => aiBusy.value || scriptBusy.value || dialogueBusy.value || reviewBusy.value || batchActive.value
   /** 整批编排的独立快照：撤销编排只回编排前，不影响「AI 整理」的撤销。 */
   const polishSnapshot = ref<ShotDraft[] | null>(null)
 
@@ -60,21 +72,26 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   // 压上游）；失败单镜保留原内容，可再点一次重试；应用前整批快照，随时
   // 「撤销整理」恢复。
   async function runAiRewrite() {
-    if (aiBusy.value || batchActive.value || !shots.value.length) return
+    if (anyAiBusy() || !shots.value.length) return
+    aiBusy.value = true
     aiNote.value = ''
     let status: VideoAiStatusResponse
     try {
       status = await fetchVideoAiStatus()
     } catch (error) {
+      aiBusy.value = false
       aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
       return
     }
     if (!status.available) {
+      aiBusy.value = false
       aiNote.value = status.reason || 'AI 整理暂不可用'
       return
     }
     const total = shots.value.length
     aiSnapshot.value = shots.value.map((shot) => ({ ...shot }))
+    rewriteTargets = shots.value.slice()
+    const originals = aiSnapshot.value
     aiTotal.value = total
     aiProgress.value = 0
     aiBusy.value = true
@@ -88,13 +105,14 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         try {
           const response = await rewriteVideoShot({
             identity: identityCard.value.trim() || undefined,
-            prompt: shots.value[index].prompt,
-            shotSize: shots.value[index].shotSize || undefined,
-            camera: shots.value[index].camera,
-            motion: shots.value[index].motion,
-            dialogue: shots.value[index].dialogue || undefined,
+            prompt: originals[index].prompt,
+            shotSize: originals[index].shotSize || undefined,
+            camera: originals[index].camera,
+            motion: originals[index].motion,
+            dialogue: originals[index].dialogue || undefined,
           })
-          const shot = shots.value[index]
+          const shot = rewriteTargets[index]
+          if (!shots.value.includes(shot) || !unchanged(shot, originals[index])) throw new Error('镜头已编辑，保留用户改动')
           if (response.shot.prompt) shot.prompt = response.shot.prompt
           if (response.shot.shotSize) shot.shotSize = response.shot.shotSize
           shot.camera = response.shot.camera
@@ -117,11 +135,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   }
 
   function restoreAiSnapshot() {
-    if (!aiSnapshot.value) return
-    shots.value.forEach((shot) => {
-      if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-    })
-    shots.value = aiSnapshot.value
+    if (!aiSnapshot.value || anyAiBusy()) return
+    restoreText(aiSnapshot.value, rewriteTargets)
     aiSnapshot.value = null
     aiFlowStep.value = 0
     aiNote.value = '已撤销 AI 整理，恢复整理前内容。'
@@ -131,20 +146,25 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   // 一次 LLM 调用返回整批建议（index 对齐，null = 保持）；应用前独立快照，
   // 「撤销编排」只回编排前状态，与「AI 整理」的撤销互不干扰。
   async function runAiPolish() {
-    if (aiBusy.value || batchActive.value || shots.value.length < 2) return
+    if (anyAiBusy() || shots.value.length < 2) return
+    aiBusy.value = true
     aiNote.value = ''
     let status: VideoAiStatusResponse
     try {
       status = await fetchVideoAiStatus()
     } catch (error) {
+      aiBusy.value = false
       aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
       return
     }
     if (!status.available) {
+      aiBusy.value = false
       aiNote.value = status.reason || 'AI 编排暂不可用'
       return
     }
     polishSnapshot.value = shots.value.map((shot) => ({ ...shot }))
+    polishTargets = shots.value.slice()
+    const originals = polishSnapshot.value
     aiBusy.value = true
     aiNote.value = `AI 整批编排中（${status.label}）…`
     try {
@@ -160,8 +180,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       })
       let changed = 0
       response.shots.forEach((suggestion, index) => {
-        const shot = shots.value[index]
-        if (!shot) return
+        const shot = polishTargets[index]
+        if (!shot || !shots.value.includes(shot) || !unchanged(shot, originals[index])) return
         if (suggestion.shotSize && suggestion.shotSize !== shot.shotSize) {
           shot.shotSize = suggestion.shotSize
           changed += 1
@@ -192,11 +212,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   }
 
   function restorePolishSnapshot() {
-    if (!polishSnapshot.value) return
-    shots.value.forEach((shot) => {
-      if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-    })
-    shots.value = polishSnapshot.value
+    if (!polishSnapshot.value || anyAiBusy()) return
+    restoreText(polishSnapshot.value, polishTargets)
     polishSnapshot.value = null
     aiFlowStep.value = Math.min(aiFlowStep.value, 1)
     aiNote.value = '已撤销 AI 整批编排，恢复编排前内容。'
@@ -210,8 +227,10 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   const scriptBusy = ref(false)
 
   async function runAiScript() {
-    if (scriptBusy.value || !scriptStory.value.trim()) return
+    if (anyAiBusy() || !scriptStory.value.trim()) return
     scriptBusy.value = true
+    const originalShots = shots.value.slice()
+    const originalText = JSON.stringify(shots.value)
     aiNote.value = 'AI 生成分镜脚本中…'
     try {
       const cardLabels = referenceCards.value
@@ -228,6 +247,13 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         aiNote.value = 'AI 脚本生成为空，请调整故事梗概后重试'
         return
       }
+      if (JSON.stringify(shots.value) !== originalText || shots.value.some((shot, index) => shot !== originalShots[index])) {
+        aiNote.value = '生成期间镜头已编辑，已保留当前内容；请确认后重新生成脚本'
+        return
+      }
+      aiSnapshot.value = null
+      polishSnapshot.value = null
+      reviewIssues.value = []
       // 替换现有镜头清单（保留参考卡与整批方向）。
       shots.value.forEach((shot) => {
         if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
@@ -263,7 +289,8 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
 
   async function runAiDialogue(index: number) {
     const shot = shots.value[index]
-    if (!shot || dialogueBusy.value) return
+    if (!shot || anyAiBusy()) return
+    dialogueTarget = shot
     dialogueBusy.value = true
     dialogueIndex.value = index
     dialogueOptions.value = []
@@ -273,6 +300,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
         prompt: shot.prompt,
         currentDialogue: shot.dialogue.trim() || undefined,
       })
+      if (shots.value[index] !== shot) { dialogueIndex.value = -1; return }
       dialogueOptions.value = response.options
       if (!response.options.length) {
         dialogueIndex.value = -1
@@ -288,7 +316,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
 
   function applyDialogueOption(index: number, text: string) {
     const shot = shots.value[index]
-    if (!shot) return
+    if (!shot || shot !== dialogueTarget || anyAiBusy()) return
     shot.dialogue = text
     dialogueIndex.value = -1
     dialogueOptions.value = []
@@ -300,10 +328,11 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   const reviewBusy = ref(false)
 
   async function runAiReview() {
-    if (reviewBusy.value || !shots.value.length) return
+    if (anyAiBusy() || !shots.value.length) return
     reviewBusy.value = true
     aiNote.value = 'AI 质量检查中…'
     reviewIssues.value = []
+    reviewTargets = shots.value.slice()
     try {
       const response = await reviewVideoShots(shots.value.map(shot => ({
         prompt: shot.prompt,
@@ -326,16 +355,18 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   /** 应用质量检查建议（按字段回写镜头）。 */
   function applyReviewSuggestion(issue: VideoAiIssue) {
     const shot = shots.value[issue.index]
-    if (!shot || !issue.suggestion) return
+    if (!shot || shot !== reviewTargets[issue.index] || !issue.suggestion || anyAiBusy()) return
     if (issue.field === 'shotSize' && ['wide', 'medium', 'closeup'].includes(issue.suggestion)) {
       shot.shotSize = issue.suggestion as VideoShotSize
     } else if (issue.field === 'camera' && ['still', 'push', 'pull', 'pan', 'orbit'].includes(issue.suggestion)) {
       shot.camera = issue.suggestion as ShotDraft['camera']
     } else if (issue.field === 'motion' && ['subtle', 'natural', 'expressive'].includes(issue.suggestion)) {
       shot.motion = issue.suggestion as ShotDraft['motion']
-    } else if (issue.field === 'dialogue' || issue.field === 'prompt') {
+    } else if (issue.field === 'dialogue') {
       shot.dialogue = issue.suggestion.slice(0, 300)
-    }
+    } else if (issue.field === 'prompt') {
+      shot.prompt = issue.suggestion.slice(0, 4000)
+    } else return
     reviewIssues.value = reviewIssues.value.filter(item => item !== issue)
     aiNote.value = '已应用建议：' + issue.suggestion
   }

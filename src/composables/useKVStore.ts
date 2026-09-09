@@ -44,14 +44,21 @@ export async function kvGet<T = unknown>(key: string): Promise<T | null> {
 }
 
 export async function kvSet(key: string, value: unknown): Promise<void> {
-  const snapshot = JSON.parse(JSON.stringify(value))
+  return kvSetMany([{ key, value }])
+}
+
+/** Commit related records together; a quota failure must not split history from projects. */
+export async function kvSetMany(entries: Array<{ key: string; value: unknown }>): Promise<void> {
+  const snapshot = JSON.parse(JSON.stringify(entries)) as Array<{ key: string; value: unknown }>
   const db = await openDb()
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite')
-    tx.objectStore(STORE_NAME).put({ key, value: snapshot })
     tx.oncomplete = () => resolve()
     tx.onerror = () => reject(tx.error)
     tx.onabort = () => reject(tx.error ?? new Error('KV 事务已取消'))
+    try {
+      for (const entry of snapshot) tx.objectStore(STORE_NAME).put(entry)
+    } catch (error) { tx.abort(); reject(error) }
   })
 }
 

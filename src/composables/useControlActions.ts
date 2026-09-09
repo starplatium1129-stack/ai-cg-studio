@@ -1,3 +1,4 @@
+import { downloadBlob } from '../utils/downloadBlob.ts'
 import { copyText } from '../utils/clipboard.ts'
 /**
  * 控制面板 · 操作编排（从 ControlView.vue 拆出）。
@@ -156,11 +157,7 @@ export function useControlActions(
     try {
       const data = await control.getDiagnostics()
       const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-      const a = document.createElement('a')
-      a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }))
-      a.download = 'lingji-diagnostics-' + stamp + '.json'
-      a.click()
-      URL.revokeObjectURL(a.href)
+      downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }), 'lingji-diagnostics-' + stamp + '.json')
       showToast('诊断包已导出')
     } catch (e) { showToast(errorMessage(e, '诊断包导出失败'), true) }
   }

@@ -1,4 +1,5 @@
 import { ref, type Ref } from 'vue'
+import { downloadBlob } from '@/utils/downloadBlob'
 import type { SceneDraft, TagRecord, CurationData } from '@/types/api'
 
 export interface SceneImportExportDeps {
@@ -34,11 +35,8 @@ export function useSceneImportExport(deps: SceneImportExportDeps) {
       version: 1 as const,
     }
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
     const yyyymmdd = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-    a.href = url; a.download = `aics-maintenance-${yyyymmdd}.json`; a.click()
-    URL.revokeObjectURL(url)
+    downloadBlob(blob, `aics-maintenance-${yyyymmdd}.json`)
   }
 
   function importScenes() {

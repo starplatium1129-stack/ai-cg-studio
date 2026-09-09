@@ -76,6 +76,7 @@
 </template>
 
 <script setup lang="ts">
+import { downloadBlob } from "@/utils/downloadBlob"
 import { ref, computed } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { confirmAction } from '@/composables/useConfirm'
@@ -98,6 +99,7 @@ const backupFileEl = ref<HTMLInputElement | null>(null)
 const blueprintFileEl = ref<HTMLInputElement | null>(null)
 const utilityEl = ref<HTMLDetailsElement | null>(null)
 const pendingSummary = ref<BackupSummary | null>(null)
+let backupFileVersion = 0
 
 /** 超过 7 天未备份（或从未备份）时在触发器上亮角标，菜单内给提示 */
 const BACKUP_REMIND_DAYS = 7
@@ -136,13 +138,8 @@ function exportBlueprint() {
   }
   const json = JSON.stringify(payload, null, 2)
   const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
   const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `aics-blueprint-${stamp}.json`
-  a.click()
-  URL.revokeObjectURL(url)
+  downloadBlob(blob, `aics-blueprint-${stamp}.json`)
   emit('flash', '蓝图 JSON 已导出')
   if (utilityEl.value) utilityEl.value.open = false
 }
@@ -169,6 +166,7 @@ async function onBlueprintFilePicked(event: Event) {
 
 function discard() {
   if (backup.busy.value) return
+  backupFileVersion++
   backup.discard()
   pendingSummary.value = null
 }
@@ -188,7 +186,7 @@ async function restoreReplace() {
   const count = pendingSummary.value?.history ?? 0
   const ok = await confirmAction({
     title: '覆盖本地数据？',
-    message: `当前 ${count} 条历史、项目与图片会被这份备份整体替换，且无法撤销。若不确定，请先「导出备份 JSON」留一份，或改用「合并恢复」。`,
+    message: `当前 ${count} 条历史和项目将被替换。原图会保留，确认恢复结果后可通过存储清理释放空间。建议先导出备份，或改用合并恢复。`,
     confirmLabel: '覆盖',
     danger: true,
   })
@@ -200,8 +198,11 @@ async function onBackupFilePicked(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
-  pendingSummary.value = await backup.loadFile(file)
+  const version = ++backupFileVersion
   input.value = ''
+  const summary = await backup.loadFile(file)
+  if (version !== backupFileVersion) return
+  pendingSummary.value = summary
   if (utilityEl.value) utilityEl.value.open = false
 }
 </script>

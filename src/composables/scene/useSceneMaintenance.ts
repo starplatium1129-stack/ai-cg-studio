@@ -63,7 +63,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   }
 
   async function saveToProject() {
-    if (!dirty.value || saving.value) return
+    if (!dirty.value || saving.value || toolRunning.value || desktopPackaged.value) return
     saving.value = true
     savingPhase.value = '正在写入分片…'
     maintenanceHint.value = '正在保存并检查…'
@@ -72,15 +72,18 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
     phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在校验场景…' }, 750))
     phaseTimers.push(setTimeout(() => { if (saving.value) savingPhase.value = '正在更新版本…' }, 1150))
     try {
-      const data = await maintenanceApi.saveScenes({
+      const serialize = () => JSON.stringify({
         scenes: scenes.value,
         tags: tags.value,
         curation: curation.value,
         blueprints: blueprints.value,
       })
+      const snapshot = serialize()
+      const data = await maintenanceApi.saveScenes(JSON.parse(snapshot))
       savingPhase.value = '正在更新版本…'
-      dirty.value = false
+      dirty.value = serialize() !== snapshot
       maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
+        + (dirty.value ? '；保存期间有新修改，请再次保存' : '')
       // 作废共享缓存：其他页面正拿着写回前的旧副本
       deps.invalidateSceneCache()
     } catch (e) {
@@ -94,7 +97,7 @@ export function useSceneMaintenance(deps: SceneMaintenanceDeps) {
   }
 
   async function runTool(taskId: string) {
-    if (toolRunning.value) return
+    if (toolRunning.value || saving.value || desktopPackaged.value) return
     const tool = TOOLS.find(t => t.id === taskId)
     if (!tool) return
     toolRunning.value = true
