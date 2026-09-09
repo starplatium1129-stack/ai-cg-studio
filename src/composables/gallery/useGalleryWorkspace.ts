@@ -709,7 +709,7 @@ export function useGalleryWorkspace() {
         selectedIds.value = new Set();
         syncFiltersToQuery();
     });
-    const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast, cardUrls, viewerUrl, thumbUrls });
+    const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }
     const trashActions = useGalleryTrash({ trashItems, trashThumbs, trashBusy, showToast, loadGalleryStorage });
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }

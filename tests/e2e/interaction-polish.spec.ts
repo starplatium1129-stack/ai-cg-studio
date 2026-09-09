@@ -1,5 +1,43 @@
 import { expect, test, type Page } from '@playwright/test'
 import MOCK_PORTS from './mock-ports.json'
+import { readFileSync } from 'node:fs'
+
+for (const theme of ['dark', 'light']) {
+  test(`gallery original export preserves JPEG ${theme}`, async ({ page }) => {
+    await page.addInitScript(value => {
+      localStorage.setItem('aics_theme', value)
+      const canvas = document.createElement('canvas'); canvas.width = 8; canvas.height = 8
+      canvas.getContext('2d')!.fillRect(0, 0, 8, 8)
+      localStorage.setItem('aics_pb_history', JSON.stringify([{ id: 'jpeg-export', sceneTitle: '导出验证', prompt: 'Original JPEG', image_data: canvas.toDataURL('image/jpeg') }]))
+    }, theme)
+    await page.goto('/gallery')
+    await page.locator('.artwork').first().click()
+    const downloading = page.waitForEvent('download')
+    await page.getByRole('button', { name: '下载原图', exact: true }).click()
+    const download = await downloading
+    expect(download.suggestedFilename()).toMatch(/\.jpg$/)
+    const bytes = readFileSync((await download.path())!)
+    expect([...bytes.subarray(0, 3)]).toEqual([255, 216, 255])
+  })
+
+  test(`video submission error survives status refresh ${theme}`, async ({ page }) => {
+    await page.addInitScript(value => localStorage.setItem('aics_theme', value), theme)
+    await page.route('**/api/video/status', route => route.fulfill({ json: {
+      ok: true, online: true, pending: 0, maxPending: 2,
+      models: [{ id: 'minimax-h3', label: 'MiniMax H3', available: true, executable: true, modes: ['text', 'image', 'first-last-frame'], requirements: [], missing: [] }],
+      qualities: [], defaults: { modelId: 'minimax-h3' }, t8: { available: true, reason: '测试环境' },
+    } }))
+    await page.route('**/api/video/jobs', route => route.fulfill({ status: 503, json: { ok: false, error: '测试视频提交失败，请重试' } }))
+    await page.goto('/video-studio')
+    await page.locator('.video-prompt').fill('A calm afternoon by the window')
+    const submit = page.locator('.video-submit-panel button')
+    await expect(submit).toBeEnabled()
+    await submit.click()
+    await expect(page.locator('.video-inline-message.error')).toContainText('ComfyUI 未连接')
+    await expect(submit).toBeEnabled()
+    await page.screenshot({ path: `.review-shots/video-submit-recovery-${theme}.png`, fullPage: true })
+  })
+}
 
 test('large gallery keeps its initial render bounded and searches the complete archive', async ({ page }) => {
   await page.addInitScript(() => {

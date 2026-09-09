@@ -14,7 +14,7 @@ import { useSceneStore } from '@/stores/sceneStore'
  * 体验报告 F1 草稿化的前置拆分）。
  *
  * 职责：帧图上传/移除/预览 URL 生命周期、绘图页「出视频」ctx 的一次性消费应用、
- * 提交时的帧图解析（受控名优先，IndexedDB 凭据重上传兜底——服务端
+ * 提交时的帧图解析（IndexedDB 原图重上传，无耐久副本时受控名仅用一次——服务端
  * aics_video_input_ 前缀会随任务结束清理，刷新后旧名可能已失效）。
  */
 
@@ -56,6 +56,9 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   } = deps
   const videoStore = useVideoStore()
   const sceneStore = useSceneStore()
+  let firstVersion = 0
+  let lastVersion = 0
+  let pendingUploads = 0
 
   /**
    * 跨页上下文 → 视频提示词（确定性组装，不做 tag 翻译）：
@@ -83,14 +86,21 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   }
 
   async function applyVideoCtx(ctx: VideoCtxPayload) {
+    clearFirstFrame()
+    clearLastFrame()
+    const version = firstVersion
     try {
       const blob = await imgGet(ctx.imageId)
+      if (version !== firstVersion) return
       if (blob) {
         if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
         videoImageUrl.value = URL.createObjectURL(blob)
         videoImageId.value = ctx.imageId
+      } else {
+        statusError.value = '带入的首帧原图已失效，请重新选择图片'
       }
-    } catch { /* 图失效则不挂预览，上下文其余部分照常 */ }
+    } catch { if (version === firstVersion) statusError.value = '首帧图片读取失败，请重新选择图片' }
+    if (version !== firstVersion) return
     selectedMode.value = 'image'
     // 首帧比例跟随原图，避免固定画幅拉伸（如 832x1216 出图 → 480x832 画布会变形）。
     aspectRatio.value = 'original'
@@ -111,6 +121,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   }
 
   function clearFirstFrame() {
+    firstVersion++
     if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
     videoImageUrl.value = ''
     videoImageId.value = ''
@@ -118,6 +129,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   }
 
   function clearLastFrame() {
+    lastVersion++
     if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
     lastFrameUrl.value = ''
     lastFrameName.value = ''
@@ -137,12 +149,17 @@ export function useVideoFrames(deps: VideoFramesDeps) {
       statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'
       return
     }
+    const version = slot === 'first' ? ++firstVersion : ++lastVersion
+    const isCurrent = () => version === (slot === 'first' ? firstVersion : lastVersion)
+    pendingUploads++
     uploadingImage.value = true
     statusError.value = ''
     try {
       const upload = await uploadVideoImage(await blobToBase64(file))
-      const preview = URL.createObjectURL(file)
       const imageId = await imgPut(file).catch(() => '')
+      if (!isCurrent()) return
+      const preview = URL.createObjectURL(file)
+      if (!imageId) statusError.value = '图片可用于本次生成，但本地保存失败，刷新或再次生成前需重新选择图片'
       if (slot === 'first') {
         if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
         videoImageUrl.value = preview
@@ -155,44 +172,49 @@ export function useVideoFrames(deps: VideoFramesDeps) {
         lastFrameImageId.value = imageId
       }
     } catch (error) {
-      statusError.value = error instanceof Error ? error.message : '图片上传失败'
+      if (isCurrent()) statusError.value = error instanceof Error ? error.message : '图片上传失败'
     } finally {
-      uploadingImage.value = false
+      pendingUploads--
+      uploadingImage.value = pendingUploads > 0
     }
   }
 
   /**
-   * 提交时的帧图解析：本会话的新鲜受控名优先；草稿恢复场景（只有 IndexedDB
-   * 凭据）重新上传换新名，避免拿着已被服务端清理的旧文件名提交 400。
+   * 提交时优先用本地原图换取新受控名；服务端会在任务结束时清理旧文件。
+   * 没有耐久副本时仅使用一次本会话受控名，再次生成要求重新选择图片。
    */
   async function resolveSubmitFrames(mode: VideoMode | 'shots'): Promise<{ image?: string; lastFrame?: string }> {
     if (mode !== 'image' && mode !== 'first-last-frame') return {}
-    let image: string | undefined
-    if (firstFrameName.value) {
-      image = firstFrameName.value
-    } else if (videoImageId.value) {
-      const blob = await imgGet(videoImageId.value)
-      if (!blob) throw new Error('首帧图片读取失败，请重新带入')
-      uploadingImage.value = true
-      const upload = await uploadVideoImage(await blobToBase64(blob))
-      image = upload.name
-    }
-    let lastFrame: string | undefined
-    if (mode === 'first-last-frame') {
-      if (lastFrameName.value) {
-        lastFrame = lastFrameName.value
-      } else if (lastFrameImageId.value) {
-        const blob = await imgGet(lastFrameImageId.value)
-        if (!blob) throw new Error('尾帧图片读取失败，请重新上传')
-        uploadingImage.value = true
-        const upload = await uploadVideoImage(await blobToBase64(blob))
-        lastFrame = upload.name
-      } else {
-        throw new Error('尾帧图片读取失败，请重新上传')
+    const first = { id: videoImageId.value, name: firstFrameName.value, version: firstVersion }
+    const last = { id: lastFrameImageId.value, name: lastFrameName.value, version: lastVersion }
+    // 服务端会清理已提交的输入文件；有本地原图时每次重传，没有耐久副本时旧名只使用一次。
+    firstFrameName.value = ''
+    if (mode === 'first-last-frame') lastFrameName.value = ''
+    async function resolve(frame: { id: string; name: string }, label: string) {
+      if (frame.id) {
+        const blob = await imgGet(frame.id)
+        if (!blob) throw new Error(`${label}图片读取失败，请重新选择`)
+        return (await uploadVideoImage(await blobToBase64(blob))).name
       }
+      if (frame.name) return frame.name
+      throw new Error(`${label}图片读取失败，请重新选择`)
     }
-    return { image, lastFrame }
+    pendingUploads++
+    uploadingImage.value = true
+    try {
+      const image = await resolve(first, '首帧')
+      const lastFrame = mode === 'first-last-frame' ? await resolve(last, '尾帧') : undefined
+      if (first.version !== firstVersion || (mode === 'first-last-frame' && last.version !== lastVersion)) {
+        throw new Error('准备期间帧图已更换，请确认后重新生成')
+      }
+      return { image, lastFrame }
+    } finally {
+      pendingUploads--
+      uploadingImage.value = pendingUploads > 0
+    }
   }
+
+  function disposeFrames() { firstVersion++; lastVersion++ }
 
   return {
     applyVideoCtx,
@@ -201,5 +223,6 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     clearLastFrame,
     handleFrameFile,
     resolveSubmitFrames,
+    disposeFrames,
   }
 }

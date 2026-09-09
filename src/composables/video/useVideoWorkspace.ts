@@ -271,7 +271,7 @@ const canGenerate = computed(() => {
   const mode = selectedMode.value
   // 分镜模式走 ShotListEditor 自己的提交链路，不进单任务生成。
   if (mode === 'shots') return false
-  if (mode === 'image' && !videoImageId.value) return false
+  if (mode === 'image' && !videoImageId.value && !firstFrameName.value) return false
   if (mode === 'first-last-frame' && !firstFrameReady.value) return false
   return prompt.value.trim().length >= 8
     && prompt.value.length <= 4000
@@ -280,12 +280,13 @@ const canGenerate = computed(() => {
     && activeModel.value?.available === true
     && activeModel.value?.modes?.includes(mode) === true
     && !submitting.value
+    && !uploadingImage.value
     && !jobActive.value
 })
 
 // 首尾帧模式素材就绪：首帧（绘图页带入 或 本地上传）与尾帧（本地上传）齐备。
 const firstFrameReady = computed(() =>
-  Boolean(videoImageId.value || firstFrameName.value) && Boolean(lastFrameName.value))
+  Boolean(videoImageId.value || firstFrameName.value) && Boolean(lastFrameImageId.value || lastFrameName.value))
 
 
 const submitTitle = computed(() => {
@@ -295,7 +296,8 @@ const submitTitle = computed(() => {
   if (selectedMode.value === 'first-last-frame' && !firstFrameReady.value) {
     return videoImageId.value || firstFrameName.value ? '先上传一张尾帧图' : '先准备首帧与尾帧图'
   }
-  if (selectedMode.value === 'image' && !videoImageId.value) return '先带入一张首帧图'
+  if (selectedMode.value === 'image' && !videoImageId.value && !firstFrameName.value) return '先带入一张首帧图'
+  if (uploadingImage.value) return '正在准备帧图'
   if (activeModel.value && selectedMode.value !== 'shots'
     && !activeModel.value.modes?.includes(selectedMode.value as VideoMode)) {
     return selectedMode.value === 'image' ? '当前模型不支持首帧，请在模型目录选择 MiniMax H3' : '当前模型不支持该创作方式'
@@ -364,6 +366,7 @@ const {
   clearLastFrame,
   handleFrameFile,
   resolveSubmitFrames,
+  disposeFrames,
 } = useVideoFrames({
   selectedMode, aspectRatio, selectedModelId, prompt,
   videoImageId, videoImageUrl, firstFrameName,
@@ -387,8 +390,8 @@ async function submitVideo() {
   submitting.value = true
   try {
     // 帧图解析（受控名优先、IndexedDB 凭据重上传兜底）已下沉 useVideoFrames。
-    const { image, lastFrame } = await resolveSubmitFrames(selectedMode.value)
-    const response = await createVideoJob({
+    const mode = selectedMode.value
+    const request = {
       prompt: prompt.value.trim(),
       negative: negative.value.trim() || undefined,
       modelId: selectedModelId.value,
@@ -399,25 +402,26 @@ async function submitVideo() {
       seed: typeof parsedSeed.value === 'number' ? parsedSeed.value : undefined,
       quality: quality.value,
       steps: steps.value,
-      image,
-      lastFrame,
       // 成人内容传输层授权：本机直连默认 true，远程/隧道由服务端 fail-closed。
       adultEnabled: isLocalStudioHost(),
-    })
+    }
+    const frames = await resolveSubmitFrames(mode)
+    if (disposed) return
+    const response = await createVideoJob({ ...request, ...frames })
     job.value = response.job
     // 任务记录（F1）：离页后按 jobId 重连真实状态。
-    useVideoStore().recordVideoTask({ jobId: response.job.id, mode: selectedMode.value, submittedAt: Date.now() })
+    useVideoStore().recordVideoTask({ jobId: response.job.id, mode, submittedAt: Date.now() })
     schedulePoll()
   } catch (error) {
     // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；
     // 分类不出具体原因时仍退回原始消息，不丢信息。
     const report = classifySDError(error, 'comfy')
-    statusError.value = report.kind === 'unknown'
+    const submissionError = report.kind === 'unknown'
       ? (error instanceof Error ? error.message : '视频任务提交失败')
       : `${report.title}：${report.message}`
     await loadStatus()
+    statusError.value = submissionError
   } finally {
-    uploadingImage.value = false
     submitting.value = false
   }
 }
@@ -510,6 +514,7 @@ useTrackedTask(() => ({ kind: 'video', title: '视频创作', backend: !submitti
 
 onBeforeUnmount(() => {
   disposed = true
+  disposeFrames()
   stopDraftWatch()
   window.clearTimeout(pollTimer)
   if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)

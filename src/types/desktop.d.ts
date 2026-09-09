@@ -31,7 +31,7 @@ export interface CompanionDesktopBridge {
   isPackaged(): Promise<boolean>
   setAutostart(enabled: boolean): Promise<boolean>
   pickFiles(): Promise<DesktopFile[]>
-  saveImage(payload: { data: Uint8Array; name?: string }): Promise<{ saved: boolean; filePath?: string }>
+  saveImage(payload: { data: Uint8Array; name?: string }): Promise<{ saved: boolean; filePath?: string; error?: string }>
   openWorkspace(): Promise<boolean>
   openRuntime(): Promise<boolean>
   openLog(): Promise<boolean>
