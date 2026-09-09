@@ -536,20 +536,22 @@ test('useControlStatus stopPolling aborts isolated in-flight status and logs req
     },
   });
   status.startPolling();
-  // P1-9 迁移后 usePolling 默认 immediate:false：首拍在 3s 间隔触发而非启动瞬间。
-  // 等一个真实间隔；测试失败路径上轮询 interval 会留在事件循环里让 node --test
-  // 永不退出，所以 finally 里必须 stopPolling。
+  // 控制室打开后立即检测；下一拍替换仍在途的请求，停止时释放所有信号。
   try {
-    await new Promise(resolve => setTimeout(resolve, 3100));
     assert.equal(statusSignals.length, 1);
     assert.equal(logSignals.length, 1);
     assert.notEqual(statusSignals[0], logSignals[0]);
+    await new Promise(resolve => setTimeout(resolve, 3100));
+    assert.equal(statusSignals.length, 2);
+    assert.equal(logSignals.length, 2);
+    assert.equal(statusSignals[0].aborted, true);
+    assert.equal(logSignals[0].aborted, true);
   } finally {
     status.stopPolling();
   }
   await Promise.resolve();
-  assert.equal(statusSignals[0].aborted, true);
-  assert.equal(logSignals[0].aborted, true);
+  assert.equal(statusSignals.every(signal => signal.aborted), true);
+  assert.equal(logSignals.every(signal => signal.aborted), true);
 });
 
 test('useControlStatus aborts older same-kind requests and clears protected stale data', async () => {

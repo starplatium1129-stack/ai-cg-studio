@@ -4,6 +4,7 @@
    ============================================================ */
 (function () {
   'use strict';
+  var studioRoot = new URL('../', document.currentScript.src).pathname;
 
   var SERVICE_DEFS = [
     { id:'draw', label:'绘图', detail:'SD WebUI', icon:'◇' },
@@ -103,7 +104,7 @@
   function init() {
     var nav = document.querySelector('.nav-links');
     if (!nav || nav.querySelector('.local-status')) return;
-    var d = /\/(?:tools|docs)\//.test(window.location.pathname.replace(/\\/g, '/')) ? '../' : '';
+    var d = studioRoot;
     var host = document.createElement('div');
     host.className = 'local-status';
     host.innerHTML =

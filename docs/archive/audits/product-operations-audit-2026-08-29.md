@@ -5,7 +5,7 @@
 
 > 审计方式：六个只读探查通道并行取证（产品完整度 / UX / 数据内容 / 运行时性能 / 运维可持续 / 成本与 AI 协作），主审对关键证据现场复核。全程零改动。
 > 特别说明：审计期间（2026-08-29 00:06–00:54）有另一 AI 会话在本仓库并行执行工程审计（`engineering-audit-2026-08-28.html`）修复，期间发生 `.git` 对象库崩毁事故（见第 5 节事故快报）；本报告的性能数据部分已被该会话当场修复，文中逐处标注。
-> 关联文档：`docs/engineering-audit-2026-08-28.html`（工程质量八维 7.8 分）、`docs/design-audit-2026-08-28.html`（美术设计 6.7 分）。本报告补齐产品与运营视角，三者互补、不重叠。
+> 关联文档：`docs/archive/audits/engineering-audit-2026-08-28.html`（工程质量八维 7.8 分）、`docs/archive/audits/design-audit-2026-08-28.html`（美术设计 6.7 分）。本报告补齐产品与运营视角，三者互补、不重叠。
 
 ---
 
@@ -131,7 +131,7 @@
 **扣分项：**
 - **站主聊天 key 明文持久在客户端 storage**（`src/utils/chatStorageCore.ts:139-141`）并经网关中继——浏览器 profile 泄露即计费单点。
 - onboard 流水线并发=1（`workflow-onboard-popular-character.js:59-106` 串行 submit→poll），比自家批量脚本（3-4 并发）慢 3 倍墙钟。
-- 人眼终审仍是吞吐瓶颈：741 次裁定中 9.7% 是「AI 预审判过、人眼判不过」反向误差区（`docs/quality-audit-standards-charter.md:3-22`）。
+- 人眼终审仍是吞吐瓶颈：741 次裁定中 9.7% 是「AI 预审判过、人眼判不过」反向误差区（`docs/guides/characters/quality-audit-standards-charter.md:3-22`）。
 
 **建议：**
 1. 聊天 key 迁网关侧 storage 或环境变量，客户端只留「已配置」布尔位。

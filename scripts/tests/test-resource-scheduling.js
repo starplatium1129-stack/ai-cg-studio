@@ -102,7 +102,7 @@ assert(
 );
 
 // ─── 控制面板界面：调度面板 ───
-assert(controlView.includes('显存资源调度'), 'control panel must show the VRAM scheduling panel');
+assert(controlView.includes('id="control-resources"') && controlView.includes('服务与显存调度'), 'control panel must show the VRAM scheduling panel');
 assert(
   controlView.includes("switchMode('draw')") && controlView.includes("switchMode('chat')"),
   'control panel must offer draw/chat mode buttons',

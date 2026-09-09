@@ -59,7 +59,7 @@ var onboardingExtraSceneCount = remainingOnboarding.reduce((sum, c) => sum + Mat
 
 test('remaining batches: complete roster, ten scenes each, MiaoMiao default and both-engine compilation', function () {
   const fs = require('node:fs'), path = require('node:path');
-  const planSource = fs.readFileSync(path.join(__dirname, '../../docs/future-popular-characters-candidate-plan.md'), 'utf8');
+  const planSource = fs.readFileSync(path.join(__dirname, '../../docs/research/characters/future-popular-characters-candidate-plan.md'), 'utf8');
   const candidateNames = [...planSource.matchAll(/^#### 🎭 ([^（\r\n]+)/gm)].map(m => m[1].trim());
   assert.strictEqual(candidateNames.length, 49);
   for (const name of candidateNames) assert.ok(characters.some(c => c.displayName === name), name + ' from the approved candidate plan must be registered');

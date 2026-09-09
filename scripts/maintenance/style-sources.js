@@ -22,7 +22,7 @@ function rel(abs) {
   return path.relative(ROOT, abs).split(path.sep).join('/');
 }
 
-function walk(dir, test) {
+function walk(dir, test, includeArchive = false) {
   const abs = path.isAbsolute(dir) ? dir : path.join(ROOT, dir);
   if (!fs.existsSync(abs)) return [];
   const out = [];
@@ -30,8 +30,8 @@ function walk(dir, test) {
     if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
     const full = path.join(abs, entry.name);
     if (entry.isDirectory()) {
-      if (entry.name === 'vendor' || entry.name === 'archive') continue;
-      out.push(...walk(full, test));
+      if (entry.name === 'vendor' || (entry.name === 'archive' && !includeArchive)) continue;
+      out.push(...walk(full, test, includeArchive));
     } else if (test(entry.name)) {
       out.push(full);
     }
@@ -53,7 +53,7 @@ function sfcFiles() {
 function staticHtmlFiles() {
   const files = [];
   if (fs.existsSync(path.join(ROOT, 'index.html'))) files.push('index.html');
-  files.push(...walk('docs', (n) => n.endsWith('.html')).map(rel).sort());
+  files.push(...walk('docs', (n) => n.endsWith('.html'), true).map(rel).sort());
   return files;
 }
 
@@ -101,17 +101,17 @@ const DESIGN_SYSTEM = 'src/assets/css/design-system.css';
  * 名单须显式维护：新增自带样式的报告要评审后加入，禁止用通配符放行。
  */
 const STANDALONE_REPORTS = new Set([
-  'docs/design-audit-2026-08-28.html',
-  'docs/design-audit-recheck-2026-08-29.html',
-  'docs/engineering-audit-2026-08-28.html',
+  'docs/archive/audits/design-audit-2026-08-28.html',
+  'docs/archive/audits/design-audit-recheck-2026-08-29.html',
+  'docs/archive/audits/engineering-audit-2026-08-28.html',
   // 2026-08-30 UX 审计报告（与前三份同族、自带设计系统）；建报告时漏登记，
   // 合并 followup 后 27 处报告内字面量把应用预算撑爆（54/36），2026-08-31 补录。
-  'docs/ux-audit-2026-08-30.html',
-  'docs/seven-dimension-audit-2026-08-31.html',
-  'docs/arknights-artists-research-2026-08-31.html',
-  'docs/workflow-audit-2026-08-31.html',
+  'docs/archive/audits/ux-audit-2026-08-30.html',
+  'docs/archive/audits/seven-dimension-audit-2026-08-31.html',
+  'docs/research/prompts/arknights-artists-research-2026-08-31.html',
+  'docs/archive/audits/workflow-audit-2026-08-31.html',
   // 2026-09-05 完成度复审报告（同族、自带设计系统）
-  'docs/completion-audit-2026-09-05.html',
+  'docs/archive/audits/completion-audit-2026-09-05.html',
 ]);
 
 function isStandaloneReport(relPath) {
@@ -119,6 +119,7 @@ function isStandaloneReport(relPath) {
 }
 
 module.exports = {
+  docsScriptFiles: () => walk('docs', (n) => n.endsWith('.js'), true).map(rel).sort(),
   ROOT,
   rel,
   read,

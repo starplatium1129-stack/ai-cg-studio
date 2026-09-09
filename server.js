@@ -74,6 +74,7 @@ function createGateway(options) {
   var tunnelManager = null;
   app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }));
   app.use(security.tokenAuth(config.TOKEN));
+  app.use('/docs', require('./server/docs').redirectLegacyDocs);
   app.use(precompressed(config.ROOT_DIR, { assetsRoot: config.ASSETS_ROOT }));
   // 流式响应（聊天 NDJSON / SSE）不进 zlib 缓冲：compression 默认攒满才吐，
   // token 到达会变成一段一段的突发；X-Accel-Buffering 只对反代生效管不了它

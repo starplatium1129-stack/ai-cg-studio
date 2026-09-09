@@ -4,7 +4,7 @@
 
 ## 速查表
 
-以下是维护这个项目最常做的 10 件事。每项都可以在不懂全部代码的情况下完成。
+以下是维护这个项目的常见操作。每项都可以在不懂全部代码的情况下完成。
 
 | 我想做 | 改哪个文件 / 怎么操作 |
 |---|---|
@@ -13,16 +13,34 @@
 | 替换某张样张图片 | 打开场景管理 → 样张管理 → 搜索场景 → 选择新样张 |
 | 修改网站整体的颜色/风格 | 打开 `src/assets/css/design-system.css`，改 `:root` 下的 `--xxx` token 值 |
 | 修改设计 token 后检查遗漏 | 改完 `src/assets/css/design-system.css` 后运行 `npm run lint:colors` |
-| 新建一个页面 | 复制 `docs/page-template.html` → 重命名 → 按注释替换 → 在 `tools/nav.js` 加导航条目 |
-| 导航栏里加/删/改链接 | 编辑 `tools/nav.js` 中的 PRIMARY_NAV 或 SECONDARY_NAV 数组 |
+| 新建一个页面 | 新增 `src/views/*.vue` → 登记 `src/router/index.ts` → 按需更新 `src/components/AppNav.vue` |
+| 导航栏里加/删/改链接 | 应用导航编辑 `src/components/AppNav.vue`；静态手册导航才使用 `tools/nav.js` |
 | 添加一个新的 tag 标签 | 打开场景管理 → Tag 管理 → 新增 Tag → 保存到项目 |
 | 把场景设为精选或招牌 | 编辑场景 → 选择推荐层级 → 填写推荐理由 → 保存到项目 |
-| 运行所有检查确保没问题 | 命令行执行 `npm run validate`，全部通过即可提交 |
+| 运行所有检查确保没问题 | 运行 `npm run wf -- gate:full`；浏览器、实际出图与桌面验收按改动另做 |
 | 检查 CSS 是否有硬编码颜色 | 命令行执行 `npm run lint:colors`，输出 0 条就干净 |
 | 查看备份历史 | 场景管理 → 维护工具 → 备份历史 |
 
 所有颜色都应该通过 `var(--xxx)` 引用设计 token，不要直接写 `#XXXXXX`。
 做完任何 CSS 改动后养成运行 `npm run lint:colors` 的习惯，可以避免设计退化。
+
+## 目录与产物
+
+| 目录 | 职责 |
+| --- | --- |
+| src/ | Vue 页面、组件、状态、样式与浏览器 API |
+| server/、routes/、services/ | 网关基础能力、HTTP 路由和服务逻辑 |
+| data/、assets/ | 创作数据源与受版本控制的展示素材 |
+| desktop-tauri/ | 桌面壳、原生 Live2D 与安装器 |
+| scripts/、tests/ | 工作流、维护和自动化验证 |
+| docs/、plans/ | 文档分类与暂缓提案 |
+| css/、tools/ | 仍被静态文档站引用的样式与辅助工具 |
+| poc/ | 独立原型与比对实验，不作为生产入口 |
+
+`dist/`、`node_modules/`、`test-results/`、`.cache/` 为本地产物，已忽略，不需要为目录美观迁动生产路径。
+`runtime/` 含配置、凭据、备份、输出及运行记录；不能整体当缓存删除。
+一次性脚本与本轮验收文件归入被忽略的 `scripts/archive/`。旧实验清理先用 `npm run wf -- runtime:clean --days 60` 查看白名单结果，不删除未识别目录。
+静态文档页面模板仅用于 HTML 手册，不是新增应用页面的模板。
 
 ## 文件职责
 
@@ -42,7 +60,7 @@
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
 | `scripts/lib/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `src/utils/sceneUX.ts` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
-| `tools/nav.js`、`tools/local-status.js` | 全站导航与本机绘图/对话/语音状态汇总 | 页面入口或服务状态契约变化时编辑 |
+| `tools/nav.js`、`tools/local-status.js` | 静态 HTML 手册导航与轻量服务状态；不控制 Vue 应用导航 | 页面入口或服务状态契约变化时编辑 |
 | `src/utils/quickCreate.ts` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
 | `src/utils/storageHealth.ts` | 历史损坏、缺图、孤立图和容量诊断 | 存储体检规则变化时编辑 |
 | `src/utils/sdError.ts` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
@@ -53,7 +71,7 @@
 | `server/config.js`、`server/security.js` | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
 | `routes/*.js` | HTTP 输入校验、响应格式与客户端断开处理 | API 契约变化时编辑 |
 | `services/*.ts`（源码）/ `*.js`（编译产物） | Ollama、翻译、GPT-SoVITS、Live2D 检查及串行资源调度 | 上游协议或调度策略变化时编辑 |
-| `src/views/ChatView.vue`、`src/composables/useChatStorage.ts`、`useVoice.ts`、`useLive2D.ts` | 角色房间编排、存储、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
+| `src/views/ChatView.vue`、`src/composables/chat/useChatStorage.ts`、`useVoice.ts`、`useLive2D.ts` | 角色房间编排、存储、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
 | `src/assets/css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
 
 ## 角色聊天、实时语音与 Live2D
@@ -66,7 +84,7 @@
 4. `routes/` 只处理 HTTP 契约。上游请求、模型切换和 GPU 队列统一留在 `services/`，方便使用模拟上游做测试。
 5. Ollama 和 GPT-SoVITS 都必须在完整响应结束后才释放串行队列。客户端点击停止、切角色或关闭页面时，应通过 `AbortController` 一直取消到上游请求，避免后台继续占用显存。
 
-`tools/local-status.js` 是所有内容页共享的轻量状态入口，只探测现有
+`tools/local-status.js` 是静态 HTML 手册共享的轻量状态入口，只探测现有
 `/api/health`、`/api/chat-status`、`/api/tts-status` 和 SD 代理，不管理进程。
 启动、停止和显存模式切换仍由 `routes/control.js`、共享服务与控制台负责，避免
 每个页面各自实现一套调度逻辑。
@@ -109,7 +127,7 @@ npm run test:voice-quality
 
 `npm run test:e2e` 使用本机 Chrome/Edge 或 Playwright Chromium 打开首页、导演台、场景管理、作品册、控制面板与角色房间，覆盖外部控制器加载、场景数据、作品比例、沉浸观画、首页性能预算和热页 chrome。本机可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 或依赖配置中的本机浏览器探测。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
 
-前端由 `vue-tsc` 检查 SFC 与 TypeScript；网关运行时模块由 `tsconfig.runtime.json` 编译并提交同目录 `.js`/`.d.ts`。新增共享契约时优先定义在生产模块旁或 `src/types/`，测试直接加载生产 TypeScript，不再维护 JavaScript 测试副本。
+前端由 `vue-tsc` 检查 SFC 与 TypeScript；网关运行时模块由 `tsconfig.runtime.json` 编译为同目录 `.js`/`.d.ts`，这些产物被 Git 忽略，不提交。新增共享契约时优先定义在生产模块旁或 `src/types/`，测试直接加载生产 TypeScript，不再维护 JavaScript 测试副本。
 
 CI 在 `.github/workflows/quality.yml`：push 与 PR 执行 `npm ci` → `npm run validate` → Playwright Chromium e2e。
 

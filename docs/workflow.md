@@ -15,6 +15,7 @@
 | 想做什么 | 命令 |
 | --- | --- |
 | 查找命令 | `npm run wf -- search 样张`（中英文关键词均可） |
+| 文档迁移后检查链接 | `npm run wf -- docs:check`（含旧地址映射；不联网核验外部来源） |
 | 查看一个分组 | `npm run wf -- reference` |
 | 查看参数与依赖 | `npm run wf -- reference:design --help` |
 | 预览即将执行的命令 | `npm run wf -- data:build --plan` |
@@ -65,11 +66,11 @@
 
 热门候选生成默认采用 MiaoMiao v1.2 与 TeaCache 0.08 加速；`--no-tea-cache` 可关闭加速，`--model anima-miaomiao-v1.6` 可显式指定另一 MiaoMiao 版本。`--keys` 格式为 `popular:<角色id>:<蓝图id>`。续跑仅复用模型、提示词、画幅和采样参数全部一致的成功记录，换底模或精修场景会重新生成；不同底模建议使用独立候选目录。
 
-`npm run wf -- showcase:full --output "E:/候选目录/本轮" --source <现有版本> --target <新版本> --plan` 可先检查链路；去掉 --plan 后会生成并审核，最后只预览发布。三步共用同一份 generation-manifest.json 和 audit-results.json。审核后用 `showcase:publish --from <该manifest> --source <现有版本> --target <新版本> --apply` 实际写入发布目录。该旧发布器并不自动切换网关配置，发布后还需按样张工艺检查活跃目录。旧参数与实测方法见 [样张工艺记录](showcase-generation-craft.md)，当前 checkpoint 以脚本/网关配置为准。
+`npm run wf -- showcase:full --output "E:/候选目录/本轮" --source <现有版本> --target <新版本> --plan` 可先检查链路；去掉 --plan 后会生成并审核，最后只预览发布。三步共用同一份 generation-manifest.json 和 audit-results.json。审核后用 `showcase:publish --from <该manifest> --source <现有版本> --target <新版本> --apply` 实际写入发布目录。该旧发布器并不自动切换网关配置，发布后还需按样张工艺检查活跃目录。旧参数与实测方法见 [样张工艺记录](archive/troubleshooting/showcase-generation-craft.md)，当前 checkpoint 以脚本/网关配置为准。
 
 ## 角色接入
 
-`character:onboard --character <id>` 为自动化辅助；`--skip-render` 跳过出图，不能据此声明资产完成；`--deploy` 涉及桌面同步。必须同时核对 [六层契约](engineering-contracts.md#角色接入) 和 [接入步骤](character-onboarding-workflow.md)。
+`character:onboard --character <id>` 为自动化辅助；`--skip-render` 跳过出图，不能据此声明资产完成；`--deploy` 涉及桌面同步。必须同时核对 [六层契约](engineering-contracts.md#角色接入) 和 [接入步骤](guides/characters/character-onboarding-workflow.md)。
 
 ## 门禁与构建
 
@@ -93,7 +94,7 @@
 
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
 
-底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
+底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](guides/desktop/game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
 仅更改安装界面且已有同版本程序时，`installer:bundle` 重新打包并签名；它不编译应用源码。
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口。
@@ -112,4 +113,4 @@
 | Nightly visual regression | 每日北京时间 02:00 / 手动：主题、截图与视觉矩阵 |
 | Windows Native Live2D | main push / 手动：自托管 Windows 的 Tauri、Rust、原生自测与稳定性检查 |
 
-本次检查结果与未执行范围见 [工作流审计](workflow-audit-2026-09-08.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。
+本次检查结果与未执行范围见 [工作流审计](archive/audits/workflow-audit-2026-09-08.md)。本机 gate:full 不包含浏览器、真实出图或原生桌面验收，这些仍按改动另行执行。

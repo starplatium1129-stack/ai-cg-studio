@@ -14,7 +14,7 @@ description: 为 AI-CG-Studio 编写、转译、扩写和审查 Anima / Krea 2 �
 3. 确认模型 ID、checkpoint 版本、LoRA、profile、画幅、参考图用途。Anima Base / Aesthetic / Turbo / MiaoMiao 以及 Krea RAW / Turbo / 托管版本不能互相套用参数。
 4. 从当前角色、服装和蓝图数据读取身份与 ID，不复制历史速查表。热门无 LoRA 路径与宁宁/夏目 LoRA 路径分开，精确触发词不能改写。
 
-证据与版本差异见 [调研记录](../../../docs/prompt-skill-research-2026-09-09.md)。需要查模型能力或处理旧规范冲突时再读；项目字段约束另见 `docs/engineering-contracts.md`。
+证据与版本差异见 [调研记录](../../../docs/research/prompts/prompt-skill-research-2026-09-09.md)。需要查模型能力或处理旧规范冲突时再读；项目字段约束另见 `docs/engineering-contracts.md`。
 
 ## 把创意转换为可见事实
 

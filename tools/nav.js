@@ -9,6 +9,7 @@
    ============================================================ */
 (function () {
   'use strict';
+  var studioRoot = new URL('../', document.currentScript.src).pathname;
 
   // 用户可见的导航项(创作流,概念已折叠)
   // Create = 全站最大入口,Director 为内部实现名,对用户隐身
@@ -28,11 +29,7 @@
     { id:'docs',      label:'手册',           href:'docs/index.html',           icon:'📖' }
   ];
 
-  function depth(){
-    // pathname 含 /tools/ 或 /docs/ → 回退一层
-    var p = window.location.pathname.replace(/\\/g,'/');
-    return (/\/tools\//.test(p) || /\/docs\//.test(p)) ? '../' : '';
-  }
+  function depth(){ return studioRoot; }
 
   function brandLink(){ var d=depth(); return d + 'index.html'; }
 

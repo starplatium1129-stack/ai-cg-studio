@@ -255,7 +255,7 @@ ComfyUI/models/
 
 ## ✅ 已落地：P5–P8 · 剧情短片工作流（2026-08-16，用户指示本会话接管视频链路）
 
-> 调研基线：`docs/narrative-short-film-workflow.md`。行业共识流水线 = 剧本 → 分镜表 →
+> 调研基线：`docs/guides/video/narrative-short-film-workflow.md`。行业共识流水线 = 剧本 → 分镜表 →
 > 角色/场景资产 → 逐镜头图生视频 → 配音音效 → 剪辑合成；本项目缺的「分镜管理 +
 > 批量编排 + 跨镜一致性 + 合成」已在此次全部实现。
 

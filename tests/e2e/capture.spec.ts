@@ -29,7 +29,7 @@ const PAGES: [string, string][] = [
   ['scene-manager', '/scene-manager'],
   ['docs-index', '/docs/index.html'],
   ['docs-getting-started', '/docs/getting-started.html'],
-  ['docs-philosophy', '/docs/philosophy.html'],
+  ['docs-philosophy', '/docs/guides/art/philosophy.html'],
   ['docs-roadmap', '/docs/roadmap.html'],
 ];
 

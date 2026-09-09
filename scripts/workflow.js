@@ -20,6 +20,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  'docs:check': { desc: '检查文档文件链接与旧地址映射', cmd: ['node', 'scripts/maintenance/check-doc-links.js'], docs: 'docs/workflow.md' },
   'audit:workflows': { desc: '只读审计注册入口、npm 脚本、文档及复合依赖', builtin: 'audit', docs: 'docs/workflow.md' },
   'check:workflows': { desc: '工作流执行与门禁路由回归测试', cmd: ['node', 'scripts/tests/test-workflow-runner.js'], docs: 'docs/workflow.md' },
   'dev:web': { desc: '启动前端开发服务', cmd: ['npm', 'run', 'dev'], docs: 'docs/workflow.md' },
@@ -27,22 +28,22 @@ const WORKFLOWS = {
   'installer:modern': {
     desc: '构建现代原生安装器（--preview --capture 可安全预览，不安装）',
     cmd: ['node', 'scripts/maintenance/build-modern-installer.js'],
-    docs: 'docs/game-installer.md',
+    docs: 'docs/guides/desktop/game-installer.md',
   },
   'installer:bundle': {
     desc: '仅重打包已构建的桌面程序并签名（只改安装界面时使用）',
     cmd: ['node', 'scripts/maintenance/release-desktop-update.js', '--bundle-only'],
-    docs: 'docs/game-installer.md',
+    docs: 'docs/guides/desktop/game-installer.md',
   },
   'installer:build': {
     desc: '构建二游风格原生安装界面（固定版本 Tauri 模板）',
     cmd: ['node', 'scripts/maintenance/build-game-installer.js'],
-    docs: 'docs/game-installer.md',
+    docs: 'docs/guides/desktop/game-installer.md',
   },
   'installer:preview': {
     desc: '编译安全界面预览（不安装、不提权；--page=welcome|directory|install|finish|maintenance）',
     cmd: ['node', 'scripts/maintenance/build-game-installer.js', '--preview'],
-    docs: 'docs/game-installer.md',
+    docs: 'docs/guides/desktop/game-installer.md',
   },
   'data:build': {
     desc: '聚合场景分片 -> scenes.json（热门角色见 popular:build）',
@@ -139,14 +140,14 @@ const WORKFLOWS = {
   'showcase:generate': {
     desc: 'Anima 热门角色 × 蓝图候选出图',
     cmd: ['node', 'scripts/maintenance/generate-popular-showcase-anima11.js'],
-    docs: 'docs/showcase-generation-craft.md',
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
     required: ['--output'],
     opts: '--output <候选目录> --gateway http://127.0.0.1:3000 --keys popular:角色:蓝图 --model anima-miaomiao-v1.2 --concurrency 3',
   },
   'showcase:batch-miaomiao': {
     desc: 'MiaoMiao v1.2 全库场景样张批量生成与自动发布流水线（832x1216/1216x832，3并发）',
     cmd: ['node', 'scripts/maintenance/generate-all-scenes-showcase-miaomiao.js'],
-    docs: 'docs/showcase-generation-craft.md',
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
     opts: '[--force] [--character <id>] [--limit <n>]',
   },
   'showcase:scene-candidates': {
@@ -177,7 +178,7 @@ const WORKFLOWS = {
     required: ['--from', '--source', '--target'],
     desc: '预览审核通过的样张发布（--apply 写入版本目录）',
     cmd: ['node', 'scripts/maintenance/publish-popular-showcase.js'],
-    docs: 'docs/showcase-generation-craft.md',
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
   },
   'showcase:batch': {
     desc: '统一批量调度（替代 8 个 run-batch-* 脚本）',
@@ -188,7 +189,7 @@ const WORKFLOWS = {
   'showcase:full': {
     desc: '样张链路：generate -> audit -> 发布预览（--output / --source / --target 必填）',
     cmd: null,
-    docs: 'docs/showcase-generation-craft.md',
+    docs: 'docs/archive/troubleshooting/showcase-generation-craft.md',
     steps: ['showcase:generate', 'showcase:audit', 'showcase:publish'],
   },
   'check:quick': {
@@ -335,7 +336,7 @@ const WORKFLOWS = {
   'character:onboard': {
     desc: '一站式新角色接入（档案/标准/粒子/参考图/样张/DATA_VERSION）',
     cmd: ['npm', 'run', 'character:onboard'],
-    docs: 'docs/character-onboarding-workflow.md',
+    docs: 'docs/guides/characters/character-onboarding-workflow.md',
   },
 };
 

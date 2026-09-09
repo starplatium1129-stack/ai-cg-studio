@@ -107,9 +107,8 @@ for (const rel of htmlFiles) {
 const jsInlineHandlerRe = /(?:^|[\s"'`])on(?:click|change|input|submit|keydown|keyup|focus|blur|error)\s*=/;
 const docsDir = path.join(root, 'docs');
 if (fs.existsSync(docsDir)) {
-  for (const name of fs.readdirSync(docsDir).filter((n) => n.endsWith('.js'))) {
-    const rel = 'docs/' + name;
-    const source = fs.readFileSync(path.join(docsDir, name), 'utf8');
+  for (const rel of sources.docsScriptFiles()) {
+    const source = fs.readFileSync(path.join(root, rel), 'utf8');
     if (jsInlineHandlerRe.test(source)) fail(`${rel} 不得输出内联事件属性`);
     try {
       new (require('vm').Script)(source, { filename: rel });

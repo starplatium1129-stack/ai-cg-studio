@@ -27,14 +27,14 @@ const PAGES = [
   '/prompt-builder',
   '/chat',
   '/docs/index.html',
-  '/docs/philosophy.html',
+  '/docs/guides/art/philosophy.html',
   '/docs/roadmap.html',
-  '/docs/quality-standard.html',
-  '/docs/art-direction.html',
-  '/docs/scene-spec.html',
-  '/docs/prompt-spec.html',
-  '/docs/tag-standard.html',
-  '/docs/worldview.html',
+  '/docs/guides/art/quality-standard.html',
+  '/docs/guides/art/art-direction.html',
+  '/docs/guides/characters/scene-spec.html',
+  '/docs/guides/prompts/prompt-spec.html',
+  '/docs/guides/prompts/tag-standard.html',
+  '/docs/guides/art/worldview.html',
   '/docs/getting-started.html'
 ];
 

@@ -19,4 +19,14 @@
 
 先处理 P0 的验收可靠性，再做 P1 的内容与用户闭环，最后评估 P2 与新模型。每项完成后把证据放到 archive/completed 或 archive/audits，从此表移除；混合报告归档不代表其中所有问题已解决。
 
-详细底稿：[工程优化审计](optimization-report-2026-09-05.md)、[故事对齐清单](story-alignment-audit-2026-09-06.md)、[角色候选](future-popular-characters-candidate-plan.md)、[场景与 DNA 规划](character-scenes-and-dna-overhaul-plan.md)、[语音历史规划](archive/research/companion-voice-roadmap.md)、[画质历史规划](archive/research/prompt-image-quality-roadmap.md)、[暂缓提案](../plans/004-scene-save-from-interrogate.md)。
+详细底稿：[工程优化审计](archive/audits/optimization-report-2026-09-05.md)、[故事对齐清单](archive/audits/story-alignment-audit-2026-09-06.md)、[角色候选](research/characters/future-popular-characters-candidate-plan.md)、[场景与 DNA 规划](research/characters/character-scenes-and-dna-overhaul-plan.md)、[语音历史规划](archive/research/companion-voice-roadmap.md)、[画质历史规划](archive/research/prompt-image-quality-roadmap.md)、[暂缓提案](../plans/004-scene-save-from-interrogate.md)。
+
+## 历史记录中的待复验事项
+
+以下是进入原始证据的入口，不新增并行任务，也不把旧失败直接判为当前缺陷。先复现，再更新上表。
+
+- 场景审计的暂停检查点、正史/画面审核与新批次对账：[全场景台账](archive/audits/all-scene-audit-2026-09-08.md)。
+- 新角色样张、参考图与服装 pending：[批次记录索引](archive/README.md#batches)。
+- 存量内容校验、备份/素材和本机验收：[项目审计](archive/audits/project-audit-2026-09-08.md)、[功能审计](archive/audits/feature-experience-audit-2026-09-08.md)。
+- 原生桌面安装、窗口/托盘和真实音频回归：[桌面个性化记录](archive/audits/desktop-personalization-audit-2026-09-08.md)、[Live2D 运行时](guides/desktop/live2d-native-runtime.md)。
+- 粒子肖像继续保留；调参或接入新角色时沿用[粒子管线指南](guides/characters/particle-portrait-pipeline.md)，不要因旧文档曾归档而撤下该功能。

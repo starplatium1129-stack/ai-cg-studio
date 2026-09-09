@@ -170,5 +170,5 @@
 ---
 
 ## 含本项目标签规范的落地提示
-- 项目 `docs/tag-standard.html` 约定：角色专属服装使用**小写下划线canonical控制词**（如 `nene_witch_canonical`、`natsume_cafe_uniform`），界面显示中文，生成时用对应英文标签。
+- 项目 `docs/guides/prompts/tag-standard.html` 约定：角色专属服装使用**小写下划线canonical控制词**（如 `nene_witch_canonical`、`natsume_cafe_uniform`），界面显示中文，生成时用对应英文标签。
 - 若为这两位角色配置 LoRA，建议按同样式绑定**角色专属服装控制词**（狂三：如 `kurumi_elohim_astral_dress`；美琴：如 `mikoto_tokiwadai_uniform`），并把上文 Danbooru 标签作为**场景补充词（姿势/镜头/环境）**追加，不得把控制词改写为自然语言近义词。

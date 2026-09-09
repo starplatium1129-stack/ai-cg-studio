@@ -4,7 +4,7 @@ import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '../config/pro
 import { membersOfMutualGroup, mutualGroupOf } from '../utils/promptPolicy.ts'
 
 /**
- * 随机灵感采样器（2026-08-29，详见 docs/random-prompt-assembler-design.md）。
+ * 随机灵感采样器（2026-08-29，详见 docs/guides/engineering/random-prompt-assembler-design.md）。
  *
  * 纯函数：数据池与随机源全部注入，无 Vue / IO 依赖，可被 node:test 直接单测。
  * 只产出「风格层」采样结果（RandomDraw），三引擎渲染完全复用现有

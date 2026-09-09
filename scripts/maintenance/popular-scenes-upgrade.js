@@ -160,13 +160,13 @@ const HINT_FIX = {
 // ── ⑤ 壁纸级质感层 ─────────────────────────────────────────────────────────
 // 2026-08-23 复核修正（用户质询驱动）：质量词属于 profile 装配层（presets.json 的
 // quality_prefix 全句恰好一次），且 anima-aesthetic-v1.1 与 2.9B 均 strip_quality_tokens=true
-// —— 场景数据里的质量词运行时必被剥离（docs/three-engine-prompt-research.md §Anima）。
+// —— 场景数据里的质量词运行时必被剥离（docs/guides/prompts/three-engine-prompt-research.md §Anima）。
 // 因此数据层只保留具体光影/环境类 general tag，质量词与 AI 玄学词一律出清。
 const REMOVE_TOKENS = [
   // promptPolicy.QUALITY_WORDS 政策清单（装配层专属）
   'masterpiece', 'best_quality', 'amazing_quality', 'very_aesthetic',
   'absurdres', 'newest', 'highres', 'highly_detailed',
-  // AI 玄学细节词（docs/krea2-prompt-writing-guide.md：拉向 generic AI gloss）
+  // AI 玄学细节词（docs/guides/prompts/krea2-prompt-writing-guide.md：拉向 generic AI gloss）
   'intricate_details', 'ultra_detailed', '8k', '4k',
 ];
 

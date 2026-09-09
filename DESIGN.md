@@ -141,7 +141,7 @@ belongs to Ayachi Nene, while amber and coffee tones belong to Shiki Natsume.
 
 This file is the single source of truth for website and control-panel design.
 `src/assets/css/design-system.css` is its runtime implementation. When the two
-disagree, update the CSS to follow this document. `docs/art-direction.html` is
+disagree, update the CSS to follow this document. `docs/guides/art/art-direction.html` is
 intentionally separate: it specifies the visual direction of generated CG
 artwork, not website UI.
 

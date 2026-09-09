@@ -92,5 +92,5 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 与短片创作台，
 - `docs/INDEX.md`：全景文档分类与索引总览。
 - `docs/character-reference-audit-pending.md`：45 角色 4 视角参考库待精调清单与修复指南。
 - `docs/showcase-pipeline-lessons.md`：样张流水线 11 个疑难排查与教训留档。
-- `docs/archive/expired/video-generation-roadmap.md`、`docs/video-ai-storyboard.md`：视频工作台与智能分镜。
+- `docs/archive/expired/video-generation-roadmap.md`、`docs/guides/video/video-ai-storyboard.md`：视频工作台与智能分镜。
 - `docs/archive/expired/tauri-desktop-migration-plan.md`、`docs/desktop-update-research.md`：桌面端架构与更新机制。

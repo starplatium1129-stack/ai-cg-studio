@@ -12,18 +12,18 @@ Current counts and capability boundaries: [Project status](docs/project-status.m
 
 绫季绘境 (Lingji Atelier) is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
-The system supports the core heroines **Ayachi Nene** and **Shiki Natsume**, as well as a rich catalog of **116 popular anime/game characters** across 586 outfit forms (118 character profiles / 2,534 active reference URLs in the Reference Bible, pending design placeholders excluded; counts follow `DATA_VERSION`). A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
+The system supports Ayachi Nene, Shiki Natsume, and a growing catalog of anime/game characters and outfits. A Scene keeps story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together. Current counts and incomplete assets are tracked only in [Project status](docs/project-status.md).
 
 This is an unofficial, non-commercial fan project and is not affiliated with or endorsed by the original rights holders.
 
 ## Features
 
 - **Scene & Character Libraries**:
-  - 302 searchable and filterable Scenes (+1,249 Scene Blueprints), classified as All, R15, or R18 by depicted content.
-  - 116 popular characters across Arknights, Genshin Impact, Honkai Star Rail, Frieren, Fate, Re:Zero, Roshidere, Bunny Girl Senpai, SAO, Toaru, Date A Live, Guilty Crown, Mushoku Tensei, Monogatari, Bocchi the Rock, Chainsaw Man, Lycoris Recoil, Attack on Titan, etc.
-  - 335+ verified showcase samples in `AI/SceneShowcase/` with direct links back into the studio.
+  - Searchable Scenes and Scene Blueprints, classified as All, R15, or R18 by depicted content.
+  - Characters from multiple anime and game series, with character-specific outfits and scene presets.
+  - Reviewed showcase samples in `AI/SceneShowcase/`, with direct links into the studio; availability depends on local assets.
 - **4-Perspective Character Reference Bible**:
-  - 118 characters $\times$ 397 registered outfit forms (2,779 reference entries: 2,534 published + 245 pending): four cinematic perspectives — Face Close-up (`ref_01_face_closeup`, 85mm f/1.4), Medium 3/4 Shot (`ref_02_half_medium`), Full Body Dynamic (`ref_03_full_dynamic`), and Back/Turnaround (`ref_04_back_rear`) — plus 1,191 three-view design-sheet baselines (`reference:design` pipeline).
+  - Four cinematic reference perspectives plus front, side, and back design sheets. Registered, pending, available, and visually reviewed assets are distinguished in [Project status](docs/project-status.md).
   - Automated closed-loop pipeline: 3-concurrency generation, 4-concurrency pure-vision Gemini 3.7 Flash audit pool, and fine-tuned repair engine.
   - Standardized reference asset contract for downstream MiniMax H3 Ref2VA identity locking.
 - **Multi-Engine Generation & Curated Artist Styles**:

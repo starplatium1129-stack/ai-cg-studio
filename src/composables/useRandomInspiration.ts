@@ -4,7 +4,7 @@ import { randomPromptPlan, type RandomDraw, type RandomInspirationOptions } from
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent.ts'
 
 /**
- * 随机灵感桥接层（2026-08-29，见 docs/random-prompt-assembler-design.md）。
+ * 随机灵感桥接层（2026-08-29，见 docs/guides/engineering/random-prompt-assembler-design.md）。
  *
  * 职责：读 store 已加载数据（tags / loraMeta 官方服装 / popular 角色词条）→
  * 调纯函数采样器 randomPromptPlan → 写回 store 各风格层字段 → 维护撤销快照。

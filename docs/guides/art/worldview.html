@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目定位 · 绫季绘境</title>
+<link rel="stylesheet" href="../../../src/assets/css/design-system.css">
+<link rel="stylesheet" href="../../../css/docs.css?v=1">
+<script src="../../../tools/nav.js?v=8"></script>
+<script src="../../../tools/theme.js?v=5"></script>
+<style>
+  .page { --page-max: 720px; }
+  .page > .lede { margin-bottom: var(--s-6); font-size: var(--fs-title-xs); line-height: 1.8; }
+  .page > h2 {
+    margin-top: var(--s-7);
+    margin-bottom: var(--s-4);
+    color: var(--accent);
+    font-size: var(--fs-title-sm);
+    font-weight: 700;
+  }
+  .page > p {
+    margin-bottom: var(--s-4);
+    color: var(--text-secondary);
+    font-size: var(--fs-body-lg);
+    line-height: 1.9;
+  }
+  .page > p strong { color: var(--text-primary); font-weight: 600; }
+
+  .manifesto {
+    background: linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--mood-love) 4%, transparent));
+    border: 1px solid var(--accent);
+    border-radius: var(--r-xl);
+    padding: var(--s-6);
+    margin: var(--s-6) 0;
+    box-shadow: var(--glow-md);
+  }
+  .manifesto p {
+    font-size: var(--fs-title-xs);
+    color: var(--text-primary);
+    line-height: 1.9;
+    margin-bottom: var(--s-3);
+    text-align: center;
+  }
+  .manifesto .signature {
+    text-align: center;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: var(--fs-body);
+    margin-top: var(--s-4);
+  }
+
+  .quote-wide {
+    font-size: var(--fs-title-sm);
+    text-align: center;
+    padding: var(--s-6);
+    color: var(--text-primary);
+    font-style: italic;
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+    margin: var(--s-6) 0;
+  }
+  .quote-wide .quote-en { color: var(--text-muted); font: 400 var(--fs-body) var(--font-mono); }
+
+  /* 三条创作取向 */
+  .three-rules { display: grid; gap: var(--s-3); margin: var(--s-5) 0; }
+  .rule-card {
+    padding: var(--s-4);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r-lg);
+    background: var(--bg-surface);
+  }
+  .rule-num { color: var(--accent); font: 700 var(--fs-mono-sm) var(--font-mono); letter-spacing: .1em; }
+  .rule-name { margin-top: 2px; color: var(--text-primary); font-size: var(--fs-title-xs); font-weight: 700; }
+  .rule-desc { margin: var(--s-1) 0 0; color: var(--text-secondary); font-size: var(--fs-body); }
+</style>
+</head>
+<body data-nav="docs">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> 绫季绘境</div>
+    <div class="nav-links">
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../../../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title title-gradient">🌍 项目定位</h1>
+  <p class="lede">
+    这份文档不讲实现细节。<br>
+    只说明一件事：<strong>这个个人工具想解决什么，又明确不做什么。</strong>
+  </p>
+
+  <div class="manifesto">
+    <p>希望打开网站时，先看到一个值得画下来的瞬间，</p>
+    <p>再像整理 Galgame CG 分镜一样，</p>
+    <p>从<strong>故事</strong>、<strong>情绪</strong>、<strong>镜头</strong>和<strong>光影</strong>开始思考，</p>
+    <p>让每一张图片都成为一个有温度的场景。</p>
+    <div class="signature">— 绫季绘境 · 个人场景创作台</div>
+  </div>
+
+  <h2>一、问题：为什么 AI 图"少点什么"？</h2>
+  <p>
+    你试过吗？花了半小时拼 Prompt，加了十几个标签，出来的图—<br>
+    清晰、锐利、"好看"。
+  </p>
+  <p>
+    但总觉得<strong>少了点什么</strong>。
+  </p>
+  <p>
+    不是 Prompt 不够长。不是细节不够多。<br>
+    而是画面里没有一个人在<strong>等</strong>你。
+  </p>
+
+  <div class="quote-wide">
+    "没有导演思维的 AI 创作，只是堆标签。"
+  </div>
+
+  <h2>二、另一个世界：Galgame 是怎么创作的？</h2>
+  <p>
+    一张 Galgame CG，从来不是原画师一个人决定的。<br>
+    它是<strong>编剧、导演、原画、摄影、色彩</strong>五个角色共同决定的。
+  </p>
+  <p>
+    导演说："放学以后，她在校门口等你。"<br>
+    色彩说："夕阳，暖调，风。"<br>
+    摄影说："逆光，回头，浅景深。"
+  </p>
+  <p>
+    然后原画师才开始动笔。
+  </p>
+  <p>
+    最后那张 CG 放在游戏里，玩家看到的不是标签，<br>
+    <strong>是一个故事、一段回忆、一种情绪。</strong>
+  </p>
+
+  <h2>三、现状：AI 创作者面对的世界</h2>
+  <p>
+    现在 AI 创作者面对的是什么？
+  </p>
+  <p>
+    <code>1girl, smile, school uniform, sunset, masterpiece, best quality...</code>
+  </p>
+  <p>
+    一串标签。冷冰冰。没有故事。
+  </p>
+  <p>
+    想画的是“放学后她在樱花树下等人”，<br>
+    却只能输入"1girl, cherry blossom, waiting, school"。
+  </p>
+  <p>
+    AI 能听懂标签，但听不懂<strong>故事</strong>。<br>
+    — 工具要做的，就是把这个瞬间翻译成可生成的画面条件。
+  </p>
+
+  <h2>四、这个工具要做的事</h2>
+  <p>
+    它更像一张<strong>分镜工作纸</strong>：
+  </p>
+  <p>
+    先看到的不是一堆标签，<br>
+    而是自己脑海里的画面。
+  </p>
+  <p>
+    写下“我想画一张她放学后等人的 CG”后，<br>
+    再把故事整理成：
+  </p>
+  <p>
+    情绪（期待、温柔）<br>
+    → 镜头（远景、逆光、回头）<br>
+    → 色彩（夕阳、暖调、樱花色）<br>
+    → 构图（三分法、人物居中偏左）<br>
+    → Prompt（一串串精致的标签）<br>
+    → 最终画面
+  </p>
+  <p>
+    Prompt 不必成为第一步。<br>
+    想细调时，它仍然可以查看和修改。
+  </p>
+
+  <div class="quote-wide">
+    "Prompt 只是语言，Scene 才是画面。"
+  </div>
+
+  <h2>五、这个工具不准备变成什么</h2>
+  <p>
+    它不是一个 Prompt 收藏夹。<br>
+    它不是一个标签管理工具。<br>
+    它也不准备变成需要运营的公开绘图平台。
+  </p>
+  <p>
+    它是<strong>AI Galgame CG 创作工作台</strong>：
+  </p>
+  <p>
+    让自己和朋友可以像整理分镜一样思考，<br>
+    少一点重复堆标签，多一点对故事和画面的控制。
+  </p>
+
+  <h2>六、希望达到的状态</h2>
+  <p>
+    使用时不必先说：
+  </p>
+  <p>
+    "我不会写 Prompt。"
+  </p>
+  <p>
+    而是可以先说：
+  </p>
+  <p>
+    "我想画一个放学后在樱花树下等人的宁宁。"
+  </p>
+  <p>
+    然后由工具准备一个可靠起点，细节再根据实际出图调整。
+  </p>
+
+  <h2>七、创作取向</h2>
+  <p>
+    后续增加功能时，优先保持这三条：
+  </p>
+
+  <div class="three-rules">
+    <div class="rule-card">
+      <div class="rule-num">RULE 01</div>
+      <div class="rule-name">Scene First</div>
+      <p class="rule-desc">先整理 Scene，再组合 Prompt。</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">RULE 02</div>
+      <div class="rule-name">Character First</div>
+      <p class="rule-desc">人物是画面中心，背景与特效服务于角色。</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">RULE 03</div>
+      <div class="rule-name">Emotion First</div>
+      <p class="rule-desc">比起标签本身，更在意画面留下的情绪。</p>
+    </div>
+  </div>
+
+  <div class="quote-wide">
+    "从故事，到画面。"<br>
+    <span class="quote-en">From Story to Scene.</span>
+  </div>
+
+  <h2>八、维护边界</h2>
+  <p>
+    这是一个自用为主、偶尔分享朋友的项目。<br>
+    账号、社区、商店、订阅和长期云端服务都不在当前计划中。
+  </p>
+  <p>
+    新功能应先证明它能改善实际创作，<br>
+    并且不会让启动、安全和维护成本失去控制。
+  </p>
+  <p>
+    保持本地优先、分享可停止、内容可维护，<br>
+    比追求看起来完整的平台功能更重要。
+  </p>
+
+  <h2>九、一句话总结</h2>
+  <p>
+    <strong>Prompt 描述图片。Scene 描述瞬间。</strong>
+  </p>
+  <p>
+    一张优秀的 CG，不是因为 Prompt 很长而优秀，<br>
+    而是因为它捕捉到了一个值得记住的瞬间。
+  </p>
+  <p>这个工具不负责把项目写得宏大，只负责让想画的瞬间更容易落地。</p>
+
+  <div class="footer">
+    <p>绫季绘境 · 个人项目定位</p>
+    <p class="muted">随实际使用调整，但保持本地、简单和可停止分享。</p>
+  </div>
+</article>
+
+</body>
+</html>

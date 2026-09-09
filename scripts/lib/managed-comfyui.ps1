@@ -103,7 +103,7 @@ if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path
 }
 # 2026-08-25: --use-sage-attention 与 start-comfyui.ps1 保持一致（sageattention 2.2.0
 # wheel 已装入 venv，实测与契约见 scripts/tests/benchmark-anima-teacache.js 与
-# docs/showcase-generation-craft.md）。两条启动路径必须同步此 flag，否则面板重启后
+# docs/archive/troubleshooting/showcase-generation-craft.md）。两条启动路径必须同步此 flag，否则面板重启后
 # sage 静默失效。
 $arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port, '--disable-pinned-memory', '--use-sage-attention', '--fast-disk', '--vram-headroom', '1')
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $comfyRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru
