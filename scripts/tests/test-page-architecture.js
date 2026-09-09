@@ -308,10 +308,10 @@ assert(
   'VideoStudioView progress bar must use scaleX transform and eliminate single-axis scale squish',
 );
 
-const controlViewSource = read('src/views/ControlView.vue');
+const controlViewSource = read('src/views/ControlView.vue') + '\n' + read('src/assets/css/control-view.css');
 assert(
   /transition:\s*transform\s+var\(--motion-hover\)/.test(controlViewSource)
-    && /\.tunnel-switch\[aria-checked="true"\]\s+\.tunnel-switch-knob\s*\{\s*transform:\s*translateX\(20px\);?\s*\}/.test(controlViewSource)
+    && /\.tunnel-switch\[aria-checked="true"\]\s+\.tunnel-switch-knob\s*\{\s*transform:\s*translateX\(20px\);[^}]*\}/.test(controlViewSource)
     && !controlViewSource.includes('transition: left')
     && !controlViewSource.includes('left: 22px'),
   'ControlView tunnel switch knob must animate via transform translateX and eliminate left transition',

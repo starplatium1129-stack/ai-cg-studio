@@ -24,75 +24,42 @@
           <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
         <TaskCenterButton />
+        <span class="control-nav-label">工作台管理</span>
         <nav class="control-rail-nav" aria-label="控制区">
-          <a class="control-rail-link" href="#control-overview"><ArchiveIcon name="eye" /><span>概览状态</span></a>
-          <a class="control-rail-link" href="#control-resources"><ArchiveIcon name="model" /><span>显存调度</span></a>
-          <a class="control-rail-link" href="#control-services"><ArchiveIcon name="gear" /><span>本机服务</span></a>
-          <a class="control-rail-link" href="#control-share"><ArchiveIcon name="upload" /><span>公网分享</span></a>
-          <a class="control-rail-link" href="#control-logs"><ArchiveIcon name="book" /><span>运行日志</span></a>
+          <a v-for="item in sections" :key="item.id" class="control-rail-link" :href="'#' + item.id"
+            :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id)">
+            <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
+          </a>
         </nav>
+        <div class="control-rail-note"><ArchiveIcon name="coffee" /><p>让工具准备好，<br />把时间留给创作。</p></div>
         <div class="control-rail-foot">
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
-          <AppSoundToggle />
+          <AppThemeToggle /><AppSoundToggle />
         </div>
       </aside>
 
       <div class="control-content">
     <main id="control-main" class="control-shell" tabindex="-1">
-      <WorkspaceArchiveBar
-        chapter="13"
-        title="LOCAL CONTROL"
-         subtitle="GATEWAY · SD · COMFY · VOICE · CHAT"
-        :status="serviceChecking || opBusy ? 'CHECKING SERVICES' : feedbackText.toUpperCase()"
-        :state="serviceChecking || opBusy ? 'active' : (readyState === 'on' ? 'success' : 'warning')"
-        shape="spark"
-      />
-      <ControlIntro :ready-label="readyLabel" />
+      <ControlIntro :ready-label="readyLabel">
+        <template #actions>
+          <button class="btn btn-ghost" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
+            <ArchiveIcon name="refresh" :class="{ spin: serviceChecking }" /> {{ serviceChecking ? '检测中…' : '检测所有服务' }}
+          </button>
+          <RouterLink class="btn btn-primary" to="/prompt-builder"><ArchiveIcon name="spark" /> 回到创作</RouterLink>
+        </template>
+      </ControlIntro>
 
-      <!-- 状态墙：像作品册的安静卡片，而不是一排噪声徽章 -->
-      <DesktopPreferences />
-      <section id="control-overview" class="status-wall" aria-label="连接状态">
-        <article class="status-tile status-normal" :data-state="gatewayState">
-          <small>本地网关</small>
-          <strong>{{ gatewayLabel }}</strong>
-        </article>
-        <article class="status-tile" :class="{ attention: !sdOnline }" :data-state="sdOnline ? 'on' : 'off'">
-          <small>SD WebUI</small>
-          <strong>{{ sdOnline ? (webuiManaged ? '已连接 · 受控' : '已连接 · 手动') : '未连接' }}</strong>
-        </article>
-        <article class="status-tile" :class="{ attention: !comfyOnline }" :data-state="comfyOnline ? 'on' : 'off'">
-          <small>ComfyUI</small>
-          <strong>{{ comfyOnline ? (comfyManaged ? '已连接 · 受控' : '已连接 · 手动') : '未连接' }}</strong>
-        </article>
-        <article class="status-tile" :class="{ attention: !ttsOnline || ttsSelfHealing }" :data-state="ttsSelfHealing ? 'warn' : (ttsOnline ? 'on' : 'off')">
-          <small>GPT-SoVITS</small>
-          <strong>{{ ttsOnline ? '已连接' : (ttsSelfHealing ? '自愈中…' : '未连接') }}</strong>
-        </article>
-        <article class="status-tile" :class="{ attention: !ollamaOnline }" :data-state="ollamaOnline ? 'on' : 'off'">
-          <small>Ollama 聊天</small>
-          <strong>{{ ollamaBadgeText }}</strong>
-        </article>
-        <article class="status-tile" :class="{ attention: voiceConfiguredCount < 2 }" :data-state="voiceConfiguredCount === 2 ? 'on' : (voiceConfiguredCount ? 'warn' : 'off')">
-          <small>角色声线</small>
-          <strong>{{ voiceConfiguredCount === 2 ? '宁宁与夏目已配置' : (voiceConfiguredCount ? voiceConfiguredCount + ' / 2 已配置' : '尚未配置') }}</strong>
-        </article>
-        <article class="status-tile status-normal" :data-state="shareState">
-          <small>公网分享</small>
-          <strong>{{ shareLabel }}</strong>
-        </article>
-        <article class="status-tile primary" :data-state="readyState">
-          <small>创作状态</small>
-          <strong>{{ feedbackText }}</strong>
-          <p class="status-note">{{ actionNote }}</p>
-        </article>
+      <section id="control-overview" class="control-overview" aria-label="连接状态">
+        <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ feedbackText }}</h2><p>{{ actionNote || '正在读取本机服务状态。' }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
+        <div v-if="statusError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ statusError }}，服务状态待确认，请重新检测。</span><button class="btn btn-ghost btn-sm" @click="pollStatus(true)">重试检测</button></div>
+        <div class="status-wall">
+          <a v-for="service in serviceCards" :key="service.name" class="status-tile" href="#control-resources" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'" @click="openSection('control-resources')">
+            <span class="status-tile-head"><ArchiveIcon :name="service.icon" /><small>{{ service.name }}</small><span class="status-dot"></span></span>
+            <strong>{{ !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
+            <span class="status-tile-detail">{{ service.detail }}</span>
+          </a>
+        </div>
       </section>
-
-      <div class="control-toolbar sticky-toolbar">
-        <button class="gallery-filter" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
-          <ArchiveIcon name="refresh" :class="{ spin: serviceChecking }" /> 检测所有服务
-        </button>
-        <span class="toolbar-note">操作只影响本机进程；网站网关始终在运行</span>
-      </div>
 
       <!-- 操作进度 -->
       <div v-if="operation" class="panel-card operation-panel" :class="operation.status">
@@ -114,19 +81,18 @@
         </div>
       </div>
 
-      <div class="control-work-grid">
       <!-- 显存调度 -->
       <section id="control-resources" class="panel-card resource-panel">
-        <div class="panel-kicker">Resource</div>
-        <h2 class="panel-heading">显存资源调度</h2>
+        <div class="panel-kicker">01 / 常用操作</div>
+        <h2 class="panel-heading">服务与显存调度</h2>
         <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
         <div class="mode-grid">
-          <button class="mode-card" type="button" :disabled="opBusy || modeBusy" @click="switchMode('draw')">
-            <span class="mode-title">◉ 绘图优先</span>
+          <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
+            <span class="mode-title"><ArchiveIcon name="spark" /> 绘图优先<span class="mode-arrow">→</span></span>
             <span class="mode-desc">停止语音、卸载 Ollama，把显存让给 WebUI 出图。</span>
           </button>
-          <button class="mode-card" type="button" :disabled="opBusy || modeBusy" @click="switchMode('chat')">
-            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天优先</span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
+          <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
+            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天优先<span class="mode-arrow">→</span></span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
           </button>
         </div>
 
@@ -138,8 +104,8 @@
               <span class="service-row-meta">{{ sdOnline ? (webuiManaged ? '受控' : '手动') : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy || sdOnline" :title="sdOnline ? '已在运行' : '启动受控 WebUI'" @click="serviceAction('webui','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !sdOnline" :title="!sdOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('webui','stop')">停止</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || sdOnline" :title="sdOnline ? '已在运行' : '启动受控 WebUI'" @click="serviceAction('webui','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !sdOnline" :title="!sdOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('webui','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">
@@ -149,8 +115,8 @@
               <span class="service-row-meta">{{ comfyOnline ? (comfyManaged ? '受控' : '手动') : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy || comfyOnline" :title="comfyOnline ? '已在运行，无需重复启动' : '启动受控 ComfyUI'" @click="serviceAction('comfy','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !comfyOnline" :title="!comfyOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('comfy','stop')">停止</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || comfyOnline" :title="comfyOnline ? '已在运行，无需重复启动' : '启动受控 ComfyUI'" @click="serviceAction('comfy','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !comfyOnline" :title="!comfyOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('comfy','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">
@@ -160,8 +126,8 @@
               <span class="service-row-meta">{{ ttsOnline ? '在线' : '未运行' }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy || ttsOnline" :title="ttsOnline ? '已在运行' : '启动语音'" @click="serviceAction('voice','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !ttsOnline" :title="!ttsOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('voice','stop')">停止</button>
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="!statusUsable || opBusy || ttsOnline" :title="ttsOnline ? '已在运行' : '启动语音'" @click="serviceAction('voice','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ttsOnline" :title="!ttsOnline ? '未在运行' : '停止服务'" @click="confirmServiceAction('voice','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">
@@ -171,7 +137,7 @@
               <span class="service-row-meta" :title="ollamaMeta">{{ ollamaMeta }}</span>
             </span>
             <span class="service-row-actions">
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !ollamaModels.length" @click="serviceAction('ollama','unload')">卸载模型释放显存</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ollamaModels.length" @click="serviceAction('ollama','unload')">卸载模型释放显存</button>
             </span>
           </div>
         </div>
@@ -189,35 +155,33 @@
         </p>
       </section>
 
+      <div class="control-work-grid">
       <!-- 本机生成服务配置 -->
       <section id="control-services" class="panel-card service-config-panel">
-        <div class="panel-kicker">01 · Services</div>
-        <h2 class="panel-heading">确认本机生成服务</h2>
-        <p class="panel-desc">SD WebUI 负责画面，GPT-SoVITS 负责角色语音。未装语音时，网站仍可用系统声音试听。</p>
+        <div class="panel-kicker">02 / 连接设置</div>
+        <h2 class="panel-heading">服务地址与声线</h2>
+        <p class="panel-desc">设置绘图引擎与语音服务的本机地址。修改后统一保存并检测。</p>
 
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
         <div class="field-row">
           <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" :title="sdHost" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
-          <button class="btn btn-ghost" type="button" :disabled="savingConfig" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button>
         </div>
         <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
         <div class="field-row">
           <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" :title="comfyHost" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
-          <button class="btn btn-ghost" type="button" :disabled="savingConfig" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button>
         </div>
-        <p class="field-help">仅接受 loopback HTTP；本阶段不改变现有出图 provider。</p>
+        <p class="field-help">用于 Anima、Krea 与视频生成，请填写本机 HTTP 地址。</p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row">
           <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" :title="ttsHost" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
-          <button class="btn btn-ghost" type="button" :disabled="savingConfig" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button>
         </div>
         <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
 
         <details class="voice-config">
-          <summary>◈ 角色声线配置 · 参考音频必须是 GPT-SoVITS 能读取的本机路径</summary>
+          <summary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></summary>
           <div class="voice-grid">
             <div class="voice-card">
               <div class="voice-card-title">宁宁</div>
@@ -235,14 +199,13 @@
             </div>
           </div>
         </details>
+        <div class="config-save-row"><p>地址与声线一起保存，自动检测不会覆盖未保存的输入。</p><button class="btn btn-primary" type="button" :disabled="savingConfig || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
       </section>
-
-      </div>
 
       <!-- 公网分享 -->
       <section id="control-share" class="panel-card share-panel">
-        <div class="panel-kicker">02 · Share</div>
-        <h2 class="panel-heading">公网分享通道</h2>
+        <div class="panel-kicker">03 / 分享与访问</div>
+        <h2 class="panel-heading">邀请朋友来画室</h2>
         <p class="panel-desc">本机访问不需要 Token；公网分享会使用临时 Token。</p>
 
         <div class="tunnel-toggle-row">
@@ -301,10 +264,13 @@
         </div>
       </section>
 
+      </div>
+      <DesktopPreferences />
+
       <!-- 日志 -->
       <details id="control-logs" class="log-panel">
         <summary>
-          <span>▤ 运行日志</span>
+          <span class="log-summary-title"><ArchiveIcon name="book" /> 运行日志</span>
           <span class="summary-side">
             <button class="btn btn-ghost btn-sm" type="button" @click.stop="exportDiag">导出诊断包</button>
             <button class="btn btn-ghost btn-sm" type="button" @click.stop="clearLogs">清空显示</button>
@@ -330,14 +296,14 @@
 <script setup lang="ts">
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
 import { computed, onMounted, onUnmounted } from 'vue'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
-import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+import { useControlNavigation } from '@/composables/useControlNavigation'
 import { useToast } from '@/composables/useToast'
 // 桌面端更新横幅已收敛到全局 DesktopUpdateBanner（2026-08-31，任何页面可见）。
 // /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
@@ -364,12 +330,12 @@ const actions = useControlActions(status, { showToast })
 // 模板引用解构：状态域
 const {
   tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram,
-  modeBusy, operation, selfHealing, serviceChecking, scripts,
+  modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
   sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-  feedbackClass, feedbackText, actionNote, logs, logBoxEl,
+  feedbackText, actionNote, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
-  shareState, shareLabel, readyState, readyLabel,
+  readyLabel,
   pollStatus, clearLogs,
 } = status
 
@@ -412,419 +378,24 @@ async function confirmServiceAction(service: string, action: string): Promise<vo
   serviceAction(service, action)
 }
 
-// 网关是恒在线的（本页就是网关自身），保持模板可读的稳定标签
-const gatewayState = 'on'
-const gatewayLabel = '运行中'
+const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
+  { id: 'control-overview', label: '运行概览', icon: 'eye' },
+  { id: 'control-resources', label: '服务与显存', icon: 'model' },
+  { id: 'control-services', label: '连接与声线', icon: 'gear' },
+  { id: 'control-share', label: '分享与访问', icon: 'upload' },
+  { id: 'control-logs', label: '运行日志', icon: 'book' },
+]
+const { activeSection, openSection } = useControlNavigation(sections.map(section => section.id))
+const statusUsable = computed(() => statusLoaded.value && !statusError.value)
+const serviceCards = computed<Array<{ name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
+  { name: 'SD WebUI', icon: 'image', online: sdOnline.value, detail: sdOnline.value ? (webuiManaged.value ? '受控绘图服务' : '手动启动的绘图服务') : 'Stable Diffusion 绘图' },
+  { name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: 'Anima · Krea · 视频' },
+  { name: '角色语音', icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `GPT-SoVITS · ${voiceConfiguredCount.value} / 2 声线已配置` },
+  { name: '本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : 'Ollama · 按需加载模型' },
+])
 
 onMounted(() => { status.startPolling() })
 onUnmounted(() => { status.stopPolling() })
 </script>
 
-<style scoped>
-.desktop-update-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-  margin: var(--s-3) var(--s-4) 0;
-  padding: var(--s-3) var(--s-4);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-md);
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  font-size: var(--fs-body-sm);
-  line-height: var(--lh-body);
-}
-.desktop-update-text {
-  color: var(--text-secondary);
-}
-
-/* 常驻控制轨道 + 克制的玻璃分层；移动端回退为熟悉的顶部导航。 */
-.control-page {
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--accent-soft) 62%, transparent), transparent 30rem),
-    var(--bg-base);
-}
-.control-mobile-nav { display: none; }
-.control-layout {
-  display: grid; grid-template-columns: minmax(208px, 244px) minmax(0, 1fr);
-  width: min(1560px, 100%); min-height: 100vh; margin: 0 auto;
-  padding: 0 clamp(12px, 2vw, 28px);
-}
-.control-rail {
-  position: sticky; top: 0; display: flex; flex-direction: column; align-self: start;
-  height: 100vh; padding: clamp(20px, 3vw, 34px) 14px 18px;
-  border-right: 1px solid color-mix(in srgb, var(--border-soft) 80%, transparent);
-  background: color-mix(in srgb, var(--bg-surface) 68%, transparent);
-  box-shadow: inset -1px 0 color-mix(in srgb, var(--on-art-primary) 7%, transparent);
-  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-}
-.control-rail-brand {
-  display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-3); padding: 0 var(--s-3) var(--s-5);
-  color: var(--text-primary); text-decoration: none;
-}
-.control-rail-brand .nav-logo { max-width: 160px; width: 100%; height: auto; }
-.control-rail-brand strong { display: block; font: 750 var(--fs-body-sm) var(--font-sans); letter-spacing: .02em; }
-.control-rail-brand small {
-  display: block; margin-top: 2px; color: var(--text-muted);
-  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
-}
-.control-rail-nav { display: grid; gap: 5px; }
-.control-rail-link {
-  display: flex; align-items: center; gap: 11px; min-height: 42px; padding: 0 13px;
-  border: 1px solid transparent; border-radius: var(--r-lg); color: var(--text-secondary);
-  font: 650 var(--fs-label-sm) var(--font-sans); text-decoration: none;
-  transition: color var(--motion-hover), background var(--motion-hover), border-color var(--motion-hover), transform var(--motion-hover);
-}
-.control-rail-link .archive-icon { width: 15px; height: 15px; flex: none; color: var(--accent); }
-.control-rail-link:hover, .control-rail-link:focus-visible {
-  color: var(--text-primary); border-color: color-mix(in srgb, var(--accent) 22%, var(--border-soft));
-  background: color-mix(in srgb, var(--accent-soft) 54%, transparent);
-}
-@media (hover: hover) and (pointer: fine) {
-  .control-rail-link:hover { transform: translateX(2px); }
-}
-.control-rail-foot {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
-  margin-top: auto; padding: var(--s-3) 2px 0; border-top: 1px solid var(--border-soft);
-}
-.control-content { min-width: 0; }
-.nav-local {
-  flex-wrap: wrap; gap: var(--s-2);
-  display: flex; align-items: center; justify-content: space-between;
-  width: min(1100px, 100%); margin: 0 auto; padding: 0 var(--s-5);
-}
-.nav-local-brand {
-  display: flex; align-items: center; gap: var(--s-3);
-  color: var(--text-primary); text-decoration: none;
-}
-.nav-local-brand strong { display: block; font: 700 var(--fs-body-sm) var(--font-sans); letter-spacing: .02em; }
-.nav-local-brand small {
-  display: block; margin-top: 1px; color: var(--text-muted);
-  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
-}
-/* 字标只能按高度缩放，不能裁成方块 */
-.nav-logo { height: 30px; width: auto; max-width: 180px; display: block; }
-.nav-local-actions { display: flex; align-items: center; gap: var(--s-3); }
-.nav-local-home {
-  color: var(--text-secondary); font: 650 var(--fs-label-sm) var(--font-sans);
-  text-decoration: none; padding: 6px 10px; border-radius: var(--r-pill);
-}
-.nav-local-home:hover { color: var(--accent); background: var(--accent-soft); }
-
-.control-shell {
-  width: min(1180px, 100%);
-  margin: 0 auto;
-  padding: clamp(28px, 4vw, 58px) clamp(20px, 4vw, 58px) var(--s-8);
-}
-
-.status-wall {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--s-3);
-  padding: var(--s-3) var(--s-4);
-  border: 1px solid color-mix(in srgb, var(--border-soft) 70%, transparent);
-  border-radius: var(--r-dossier);
-  background: color-mix(in srgb, var(--bg-surface) 45%, transparent);
-  box-shadow: none;
-  backdrop-filter: blur(8px);
-  margin-bottom: var(--s-4);
-}
-.status-tile {
-  position: relative; min-width: 0; padding: 2px 0 2px var(--s-3);
-  border: 0; border-left: 2px solid color-mix(in srgb, var(--border-strong) 45%, transparent);
-  border-radius: 0; background: transparent; box-shadow: none; backdrop-filter: none;
-}
-.status-tile:not(.primary) { opacity: .72; }
-.status-tile.attention {
-  opacity: 1;
-  border-left-color: color-mix(in srgb, var(--warning) 72%, var(--border-strong));
-  background: color-mix(in srgb, var(--warning) 6%, transparent);
-}
-.status-tile.attention[data-state="off"] { border-left-color: color-mix(in srgb, var(--danger) 66%, var(--border-strong)); }
-.status-tile.attention[data-state="off"] strong { color: var(--danger-text); }
-.status-tile.status-normal { opacity: .58; }
-.status-tile::before { display: none; }
-.status-tile.primary { grid-column: 1 / -1; }
-.status-tile small {
-  display: block; color: var(--text-muted);
-  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
-}
-.status-tile strong {
-  display: block; margin-top: 8px; color: var(--text-primary);
-  font-size: var(--fs-body-sm); font-weight: 700; line-height: var(--lh-label);
-}
-.status-tile[data-state="on"] strong { color: var(--success-text); }
-.status-tile[data-state="warn"] strong { color: var(--warning-text); }
-.status-tile[data-state="off"] strong { color: var(--text-muted); }
-.status-note {
-  margin: 8px 0 0; color: var(--text-secondary);
-  font-size: var(--fs-label-sm); line-height: var(--lh-loose); font-weight: 400;
-}
-
-.control-toolbar {
-  position: sticky; top: 12px; z-index: var(--z-raised); display: flex; align-items: center; gap: var(--s-3);
-  margin-bottom: var(--s-5); padding: 8px 10px; border: 1px solid color-mix(in srgb, var(--border-soft) 82%, transparent);
-  border-radius: var(--r-dossier); background: color-mix(in srgb, var(--bg-surface) 78%, transparent);
-  box-shadow: var(--shadow-sm); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-}
-.gallery-filter {
-  min-height: 36px; padding: 0 15px; border: 1px solid transparent; border-radius: var(--r-terminal);
-  background: transparent; color: var(--text-secondary);
-  font: 650 var(--fs-label-sm) var(--font-sans); cursor: pointer;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
-}
-.gallery-filter:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--accent) 34%, var(--border-soft));
-  background: var(--accent-soft); color: var(--accent);
-}
-/* 审计修复: 不用 opacity 压字 */
-.gallery-filter:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; }
-.toolbar-note { margin-left: auto; color: var(--text-muted); font-size: var(--fs-mono-sm); white-space: nowrap; }
-/* 审计修复(2026-08-28)：删掉本地重复的 @keyframes spin —— design-system.css:1554
-   已有同义全局定义，两处并存会让「改了一处另一处没变」成为常态。 */
-.spin { display: inline-block; animation: spin .7s linear infinite; }
-
-.panel-card {
-  position: relative; margin-bottom: var(--s-4); padding: clamp(18px, 2.5vw, 28px);
-  border: 1px solid color-mix(in srgb, var(--border-soft) 86%, transparent);
-  border-radius: var(--r-dossier);
-  background: color-mix(in srgb, var(--bg-surface) 84%, transparent);
-  box-shadow: var(--shadow-sm); backdrop-filter: blur(12px);
-}
-.panel-card::before { content: ''; position: absolute; top: -1px; left: var(--s-4); width: 34px; height: var(--line-hairline); background: var(--archive-cyan); opacity: .76; }
-.control-work-grid {
-  display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr);
-  align-items: start; gap: var(--s-4); margin-bottom: var(--s-4);
-}
-.control-work-grid .panel-card { margin-bottom: 0; }
-.resource-panel .mode-grid { grid-template-columns: 1fr; }
-.service-config-panel .voice-grid { grid-template-columns: 1fr; }
-.share-panel { position: relative; overflow: hidden; }
-.share-panel::before {
-  content: ''; position: absolute; inset: 0 auto 0 0; width: 3px;
-  background: linear-gradient(var(--accent), color-mix(in srgb, var(--accent) 10%, transparent));
-}
-.panel-kicker {
-  margin-bottom: 6px; color: var(--text-muted);
-  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
-}
-.panel-heading {
-  margin: 0 0 8px; color: var(--text-primary);
-  font-size: clamp(1.05rem, 1.4vw, 1.3rem); font-weight: 760; letter-spacing: -.02em;
-}
-.panel-desc, .panel-foot {
-  margin: 0 0 var(--s-4); color: var(--text-secondary);
-  font-size: var(--fs-label-sm); line-height: var(--lh-loose);
-}
-.panel-foot { margin: var(--s-3) 0 0; color: var(--text-muted); font-size: var(--fs-mono-sm); }
-
-.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-bottom: var(--s-4); }
-.mode-card {
-  display: grid; gap: 8px; text-align: left; padding: var(--s-4);
-  border: 1px solid var(--border-soft); border-radius: var(--r-terminal);
-  background: var(--bg-deep); color: var(--text-primary); cursor: pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover);
-}
-.mode-card:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--accent) 42%, var(--border-soft));
-  background: color-mix(in srgb, var(--accent-soft) 55%, var(--bg-deep));
-}
-@media (hover: hover) and (pointer: fine) {
-  .mode-card:hover:not(:disabled) { transform: translateY(-2px); }
-}
-/* 审计修复: 不用 opacity 压字 */
-.mode-card:disabled { color: var(--text-disabled); border-color: var(--border-soft); cursor: not-allowed; transform: none; }
-.mode-title { font-size: var(--fs-body-sm); font-weight: 750; }
-.mode-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
-
-.service-rows { display: grid; gap: var(--s-2); }
-.service-row {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
-  padding: 12px 14px; border: 1px solid var(--border-soft); border-radius: var(--r-terminal);
-  background: var(--bg-deep); flex-wrap: wrap;
-}
-.service-row-name {
-  display: inline-flex; align-items: center; gap: 8px; min-width: 0;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font: 650 var(--fs-label-sm) var(--font-sans); color: var(--text-primary);
-}
-.service-row-name .dot {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0;
-}
-.service-row-name .dot.on {
-  background: var(--success);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 14%, transparent);
-}
-.service-row-meta { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); font: 500 var(--fs-mono-xs) var(--font-mono); }
-.service-row-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
-
-.autostart-row {
-  display: flex; align-items: flex-start; gap: var(--s-2);
-  margin-top: var(--s-3); padding: var(--s-3);
-  border: 1px dashed var(--border-soft); border-radius: var(--r-lg);
-  color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); cursor: pointer;
-}
-.script-hint { margin-top: var(--s-2); color: var(--warning-text); font-size: var(--fs-label-xs); line-height: var(--lh-body); }
-
-.field-label {
-  display: block; margin: var(--s-4) 0 var(--s-1);
-  color: var(--text-secondary); font: 650 var(--fs-label-sm) var(--font-sans);
-}
-.field-label:first-of-type { margin-top: 0; }
-.field-help {
-  margin: 6px 0 0; color: var(--text-muted);
-  font-size: var(--fs-label-xs); line-height: var(--lh-body);
-}
-.field-help code { color: var(--accent); font-family: var(--font-mono); }
-.field-row { display: flex; gap: var(--s-2); flex-wrap: wrap; }
-.field-row .input { flex: 1; min-width: 180px; }
-.input {
-  width: 100%; min-height: 42px; padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); border-radius: var(--r-terminal);
-  background: var(--bg-deep); color: var(--text-primary);
-  font: 400 var(--fs-body) / 1.5 var(--font-sans); outline: none;
-}
-.input-mono { font-family: var(--font-mono); font-size: var(--fs-label); }
-.input:focus { border-color: var(--accent); box-shadow: var(--ring); }
-
-.voice-config {
-  margin-top: var(--s-4); border: 1px solid var(--border-soft);
-  border-radius: var(--r-lg); background: var(--bg-deep); overflow: hidden;
-}
-.voice-config summary {
-  cursor: pointer; list-style: none; padding: var(--s-3) var(--s-4);
-  color: var(--text-secondary); font: 650 var(--fs-label-sm) var(--font-sans);
-}
-.voice-config summary::-webkit-details-marker { display: none; }
-.voice-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3);
-  padding: 0 var(--s-4) var(--s-4);
-}
-.voice-card {
-  padding: var(--s-3); border: 1px solid var(--border-soft);
-  border-radius: var(--r-md); background: var(--bg-surface);
-  display: grid; gap: var(--s-2);
-}
-.voice-card-title { color: var(--accent); font: 700 var(--fs-label-sm) var(--font-sans); }
-.voice-card .input { min-height: 36px; font-size: var(--fs-label-xs); }
-
-.tunnel-toggle-row {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
-  margin-bottom: var(--s-4); padding: var(--s-3) var(--s-4);
-  border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-deep);
-}
-.tunnel-toggle-text { display: block; font: 650 var(--fs-label) var(--font-sans); color: var(--text-primary); }
-.tunnel-toggle-hint { display: block; margin-top: 3px; color: var(--text-muted); font-size: var(--fs-mono-sm); }
-.tunnel-switch {
-  position: relative; width: 44px; height: 24px; flex-shrink: 0;
-  border: 1px solid var(--border-strong); border-radius: var(--r-pill);
-  background: var(--border-strong); cursor: pointer; padding: 0;
-  transition: background var(--motion-hover), border-color var(--motion-hover);
-}
-.tunnel-switch[aria-checked="true"] { background: var(--success); border-color: var(--success-text); }
-.tunnel-switch-knob {
-  position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--on-art-primary); box-shadow: 0 1px 3px var(--art-scrim-soft);
-  transition: transform var(--motion-hover) var(--ease-out);
-}
-.tunnel-switch[aria-checked="true"] .tunnel-switch-knob { transform: translateX(20px); }
-.btn-block { width: 100%; justify-content: center; }
-.action-note {
-  margin: var(--s-2) 0 var(--s-4); color: var(--text-muted);
-  font-size: var(--fs-label-xs); line-height: var(--lh-body); text-align: center;
-}
-
-.access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
-.access-card {
-  padding: var(--s-4); border: 1px solid var(--border-soft);
-  border-radius: var(--r-lg); background: var(--bg-deep);
-}
-.access-kicker {
-  color: var(--text-muted); font: 650 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .1em; text-transform: uppercase;
-}
-.access-title { margin-top: 4px; font: 700 var(--fs-body-sm) var(--font-sans); color: var(--text-primary); }
-.link-value {
-  margin: var(--s-3) 0 var(--s-2); min-height: 42px; padding: var(--s-2) var(--s-3);
-  display: flex; align-items: center;
-  color: var(--info-text); background: var(--bg-surface);
-  border: 1px solid var(--border-soft); border-radius: var(--r-sm);
-  font: var(--fs-mono-sm) var(--font-mono); word-break: break-all;
-}
-.link-value.waiting { color: var(--text-muted); font-family: var(--font-sans); }
-.inline-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
-.uptime { margin-top: var(--s-3); color: var(--text-muted); font-size: var(--fs-mono-sm); text-align: right; }
-.security-note {
-  margin-top: var(--s-3); padding: var(--s-3);
-  border-radius: var(--r-md); color: var(--text-secondary);
-  background: color-mix(in srgb, var(--warning) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--warning) 16%, transparent);
-  font-size: var(--fs-label-xs); line-height: var(--lh-body);
-}
-.build-card {
-  margin-top: var(--s-3); padding: var(--s-3) var(--s-4);
-  display: flex; flex-direction: column; gap: var(--s-2);
-  border: 1px solid var(--border-soft); border-radius: var(--r-md);
-  background: color-mix(in srgb, var(--bg-surface) 40%, transparent);
-}
-.build-card[data-stale="true"] {
-  border-color: color-mix(in srgb, var(--warning) 30%, transparent);
-  background: color-mix(in srgb, var(--warning) 6%, transparent);
-}
-.build-head { display: flex; align-items: baseline; gap: var(--s-2); }
-.build-kicker { font: var(--fs-mono-sm) var(--font-mono); color: var(--text-muted); letter-spacing: 0.06em; }
-.build-head strong { font-size: var(--fs-body-sm); }
-.build-card[data-stale="true"] .build-head strong { color: var(--warning); }
-.build-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: var(--lh-body); margin: 0; }
-.build-card .btn { align-self: flex-start; }
-
-.operation-panel.running { border-color: color-mix(in srgb, var(--warning) 42%, var(--border-soft)); }
-.operation-panel.completed { border-color: color-mix(in srgb, var(--success) 42%, var(--border-soft)); }
-.operation-panel.failed { border-color: color-mix(in srgb, var(--danger) 42%, var(--border-soft)); }
-.operation-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-3); }
-.op-state {
-  color: var(--text-muted); font: 650 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
-}
-.operation-msg { margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: var(--lh-body); }
-.operation-stages { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-3); }
-.op-stage {
-  padding: 3px 9px; border-radius: var(--r-pill); background: var(--bg-deep);
-  color: var(--text-muted); font-size: var(--fs-mono-xs);
-}
-.op-stage.done { color: var(--success-text); background: color-mix(in srgb, var(--success) 12%, transparent); }
-.op-stage.current { color: var(--warning-text); background: color-mix(in srgb, var(--warning) 14%, transparent); font-weight: 700; }
-.operation-panel.failed .meter-fill { background: var(--danger); }
-.operation-panel.completed .meter-fill { background: var(--success); }
-
-.log-panel {
-  margin-top: var(--s-2); border: 1px solid var(--border-soft);
-  border-radius: var(--r-2xl); background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
-  overflow: hidden; box-shadow: var(--shadow-sm);
-}
-.log-panel summary {
-  list-style: none; display: flex; align-items: center; justify-content: space-between;
-  gap: var(--s-3); padding: var(--s-4); cursor: pointer;
-  color: var(--text-secondary); font: 650 var(--fs-label) var(--font-sans); user-select: none;
-}
-.log-panel summary::-webkit-details-marker { display: none; }
-.summary-side { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
-.chevron { color: var(--text-muted); transition: transform var(--motion-hover); }
-details[open] .chevron { transform: rotate(90deg); }
-.log-wrap { padding: 0 var(--s-4) var(--s-4); }
-.log-box {
-  min-height: 58px; max-height: 240px; overflow: auto; padding: var(--s-3);
-  border-radius: var(--r-md); background: var(--bg-deep);
-  font: var(--fs-mono-sm) / 1.65 var(--font-mono); color: var(--text-secondary);
-}
-.log-box .time { color: var(--text-muted); }
-.log-box .info { color: var(--info-text); }
-.log-box .err { color: var(--danger-text); }
-.log-empty { color: var(--text-muted); font-family: var(--font-sans); text-align: center; padding: var(--s-4); }
-
-</style>
-
-<style scoped src="@/assets/css/control-responsive.css"></style>
+<style scoped src="@/assets/css/control-view.css"></style>

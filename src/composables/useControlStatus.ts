@@ -5,7 +5,7 @@
  * 上游在线状态、操作进度、日志缓冲与展示文案。
  */
 
-import { ref, computed, nextTick, watch } from 'vue'
+import { ref, computed, nextTick, watch, type Ref } from 'vue'
 import { usePolling } from './usePolling.ts'
 import { ApiClientError } from '../api/client.ts'
 import { controlApi, type ControlApi } from '../api/controlApi.ts'
@@ -32,6 +32,8 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const operation = ref<ControlOperationView | null>(null)
   const selfHealing = ref<ControlStatus['selfHealing'] | null>(null)
   const serviceChecking = ref(false)
+  const statusLoaded = ref(false)
+  const statusError = ref('')
   const scripts = ref({ voiceStart: true, voiceStop: true, webui: true, comfy: true })
 
   // renderStatus 会按焦点状态回填的配置回显（不主动覆盖正在输入的字段）
@@ -42,6 +44,14 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const voiceNenePrompt = ref('')
   const voiceNatsumeRef = ref('')
   const voiceNatsumePrompt = ref('')
+  // Polling updates clean fields; moving focus must never discard an unsaved draft.
+  const configFields = [sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt]
+  const syncedConfig = new Map(configFields.map(field => [field, field.value]))
+  function syncConfigField(field: Ref<string>, incoming: string | undefined) {
+    if (incoming === undefined) return
+    if (field.value === syncedConfig.get(field)) field.value = incoming
+    syncedConfig.set(field, incoming)
+  }
   const autoStartVoice = ref(false)
 
   const tunnelStatus = ref('')
@@ -127,13 +137,15 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const shareState = computed(() => tunnelActive.value ? 'on' : (tunnelStatus.value === 'disabled' ? 'off' : 'warn'))
   const shareLabel = computed(() => tunnelActive.value ? '通道已开' : (tunnelStatus.value === 'disabled' ? '仅本机' : '待启用'))
   const readyState = computed(() => {
-    if (sdOnline.value && ttsOnline.value) return 'on'
-    if (sdOnline.value || ttsOnline.value) return 'warn'
+    if ((sdOnline.value || comfyOnline.value) && ttsOnline.value) return 'on'
+    if (sdOnline.value || comfyOnline.value || ttsOnline.value) return 'warn'
     return 'off'
   })
   const readyLabel = computed(() => {
-    const n = [sdOnline.value, ttsOnline.value, ollamaOnline.value].filter(Boolean).length
-    return n + ' / 3 服务在线'
+    if (statusError.value) return '服务状态待确认'
+    if (!statusLoaded.value) return '正在检测服务…'
+    const n = [sdOnline.value, comfyOnline.value, ttsOnline.value, ollamaOnline.value].filter(Boolean).length
+    return n + ' / 4 服务在线'
   })
 
   function fmt(seconds: number) {
@@ -157,6 +169,8 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
 
   function renderStatus(data: ControlStatus) {
     lastStatus = data
+    statusLoaded.value = true
+    statusError.value = data.ok === false ? (data.error || '服务状态暂时不可用') : ''
     tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLinkAvailable)
     sdOnline.value = !!data.sdOnline
     comfyOnline.value = !!data.comfyOnline
@@ -188,17 +202,14 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     }
 
     const ae = document.activeElement as HTMLElement | null
-    const aeId = ae?.id || ''
-    if (aeId !== 'sd-host' && data.sdHost) sdHost.value = data.sdHost
-    if (aeId !== 'comfy-host' && data.comfyHost) comfyHost.value = data.comfyHost
-    if (aeId !== 'tts-host' && data.ttsHost) ttsHost.value = data.ttsHost
+    syncConfigField(sdHost, data.sdHost)
+    syncConfigField(comfyHost, data.comfyHost)
+    syncConfigField(ttsHost, data.ttsHost)
     const voices = data.voices || {}
-    const nene = voices.nene || {}
-    const natsume = voices.natsume || {}
-    if (aeId !== 'v-nene-ref') voiceNeneRef.value = nene.refAudioPath || voiceNeneRef.value
-    if (aeId !== 'v-nene-prompt') voiceNenePrompt.value = nene.promptText || voiceNenePrompt.value
-    if (aeId !== 'v-nat-ref') voiceNatsumeRef.value = natsume.refAudioPath || voiceNatsumeRef.value
-    if (aeId !== 'v-nat-prompt') voiceNatsumePrompt.value = natsume.promptText || voiceNatsumePrompt.value
+    syncConfigField(voiceNeneRef, voices.nene?.refAudioPath)
+    syncConfigField(voiceNenePrompt, voices.nene?.promptText)
+    syncConfigField(voiceNatsumeRef, voices.natsume?.refAudioPath)
+    syncConfigField(voiceNatsumePrompt, voices.natsume?.promptText)
     if (ae?.tagName !== 'INPUT' || (ae as HTMLInputElement).type !== 'checkbox') {
       autoStartVoice.value = !!data.autoStartVoice
     }
@@ -206,26 +217,27 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     actionBusy.value = !!(data.operation && data.operation.status === 'running')
     mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
 
-    if (data.sdOnline && data.ttsOnline && data.ollamaOnline) {
+    const imageOnline = data.sdOnline || data.comfyOnline
+    if (imageOnline && data.ttsOnline && data.ollamaOnline) {
       feedbackClass.value = 'config-feedback ok'
       feedbackText.value = '画面、语音与聊天均已就绪'
       actionNote.value = '可以完整使用绘制台、角色房间与配音。'
-    } else if (data.sdOnline && data.ttsOnline) {
+    } else if (imageOnline && data.ttsOnline) {
       feedbackClass.value = 'config-feedback ok'
       feedbackText.value = '画面与语音就绪'
       actionNote.value = '出图与 AI 声线可用；需要聊天时启动 Ollama。'
-    } else if (data.sdOnline) {
+    } else if (imageOnline) {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '画面创作就绪'
       actionNote.value = '可正常出图。需要声线时启动 GPT-SoVITS。'
     } else if (data.ttsOnline) {
       feedbackClass.value = 'config-feedback warn'
-      feedbackText.value = '语音已连接 · 等待 SD'
-      actionNote.value = '点「启动」SD WebUI，或切换到绘图优先。'
+      feedbackText.value = '语音已连接 · 等待绘图引擎'
+      actionNote.value = '按需启动 SD WebUI 或 ComfyUI，即可开始绘图。'
     } else {
       feedbackClass.value = 'config-feedback warn'
       feedbackText.value = '浏览可用 · 等待生成服务'
-      actionNote.value = '网站本身正常。用下方服务行启动 SD / 语音，或本机开好后再检测。'
+      actionNote.value = '网站本身正常。按需启动绘图或语音服务，也可以先浏览角色与场景。'
     }
     serviceChecking.value = false
   }
@@ -259,7 +271,10 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
       // 用户看到的是"点了没反应"而不是"探测失败"。
       if (data.ok === false && data.error) showToast('服务探测失败：' + data.error, true)
     } catch {
-      if (statusRequest === controller) serviceChecking.value = false
+      if (statusRequest === controller && !controller.signal.aborted) {
+        serviceChecking.value = false
+        statusError.value = '无法连接本机控制服务'
+      }
     } finally {
       if (statusRequest === controller) statusRequest = null
     }
@@ -306,7 +321,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     intervalMs: 3000,
     tick: () => { pollStatus(); pollLogs() },
     paused: () => typeof document !== 'undefined' && document.hidden,
-    immediate: false,
+    immediate: true,
   })
   function handleVisibilityChange() { polling.sync() }
   function bindPollingVisibility() {
@@ -339,7 +354,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
 
   return {
     tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
-    modeBusy, operation, serviceChecking, scripts,
+    modeBusy, operation, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackClass, feedbackText, actionNote, logs, logBoxEl, logIndex,
