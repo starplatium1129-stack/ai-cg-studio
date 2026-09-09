@@ -14,17 +14,10 @@
           <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
         </div>
       </div>
-      <!-- 2026-08-16：hero 粒子场——粒子直接重组为当前角色的剪影（离线 rembg 点云，
-           assets/particles/p_<id>.json）；无点云时回落 characterParticleTheme 抽象形状。 -->
-      <SemanticParticleField
-        class="pop-hero-field"
-        :shape="particleTheme.shape"
-        :portrait-id="selectedId"
-        :label="`${selectedCharacter?.displayName || '热门角色'}的人物剪影粒子`"
-        :caption="`SCENES ${String(totalScenes).padStart(2, '0')}`"
-        density="ambient"
-        :style="{ '--archive-blue': particleTheme.accent, '--character-aura': particleTheme.aura }"
-      />
+      <figure class="pop-hero-portrait" aria-label="当前角色形象">
+        <CharacterPortrait :src="popularPortraitSrc(selectedId)" :name="selectedCharacter?.displayName || '角色'" />
+        <figcaption>{{ selectedCharacter?.displayName || '角色' }} · 故事从这一幕开始</figcaption>
+      </figure>
     </section>
 
     <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" message="正在载入热门角色档案与场景蓝图。" />
@@ -66,8 +59,8 @@
         <article v-for="blueprint in filtered" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
-          <RouterLink v-if="thumbSrc(blueprint)" class="pop-thumb" :to="drawUrl(blueprint)"
-            :aria-label="`预览「${blueprint.title}」样张`">
+          <RouterLink v-if="thumbSrc(blueprint)" class="pop-thumb" :class="{ 'is-missing': thumbFailed[thumbSrc(blueprint)] }" :to="drawUrl(blueprint)"
+            :aria-label="`以「${blueprint.title}」开始绘制`">
             <span class="pop-thumb-skeleton" :class="{ visible: !thumbState[thumbSrc(blueprint)] && !thumbFailed[thumbSrc(blueprint)] }" aria-hidden="true"></span>
             <img :src="thumbSrc(blueprint)" alt="" loading="lazy" decoding="async"
               :class="{
@@ -76,7 +69,8 @@
                 'pop-thumb-ready': thumbState[thumbSrc(blueprint)],
               }"
               @load="onThumbLoad(thumbSrc(blueprint))" @error="onThumbError(thumbSrc(blueprint))" />
-            <span v-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
+            <span v-if="thumbFailed[thumbSrc(blueprint)]" class="pop-preview-missing">样张暂未就绪 · 可先查看场景</span>
+            <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
           </RouterLink>
           <header class="pop-card-head">
             <h3>{{ blueprint.title }}</h3>
@@ -121,8 +115,7 @@ import {
 } from '@/utils/popularContent'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
-import { characterParticleTheme } from '@/utils/characterParticleTheme'
+import CharacterPortrait from '@/components/library/CharacterPortrait.vue'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 
 const route = useRoute()
@@ -161,11 +154,6 @@ const pool = computed<SceneBlueprint[]>(() =>
     bp.characterId === selectedId.value
     && (!bp.adult || (showMature.value && selectedCharacter.value?.adultEligibility === 'adult')),
   ),
-)
-
-/** hero 粒子主题：形状+主色随当前角色切换。 */
-const particleTheme = computed(() =>
-  characterParticleTheme(selectedId.value, selectedCharacter.value?.franchise),
 )
 
 // 统计口径统一为「当前角色的可浏览池」，与成人数量同源（header 不再显示全局 336 与
@@ -322,12 +310,7 @@ onMounted(() => { void init() })
   overflow: hidden;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-xl);
-  background:
-    radial-gradient(24rem 16rem at 6% 10%, var(--rella-glow-cyan), transparent 62%),
-    linear-gradient(145deg, var(--glass-highlight), transparent 28%),
-    linear-gradient(160deg, color-mix(in srgb, var(--rella-night-soft) 60%, transparent), transparent 72%),
-    var(--bg-surface);
-  box-shadow: var(--shadow-glass-sm);
+  background: var(--bg-surface);
 }
 .pop-hero-copy {
   position: relative;
@@ -339,12 +322,11 @@ onMounted(() => { void init() })
   padding: var(--s-5);
 }
 .pop-hero-copy .subtitle { color: var(--text-secondary); line-height: var(--lh-loose); margin: 0; }
-.pop-hero-field {
-  min-width: 0;
-  /* 剪影点阵需要足够高度承载人物细节（脸部/服装结构） */
-  min-height: 330px;
-  border-left: 1px solid color-mix(in srgb, var(--border-soft) 72%, transparent);
-}
+.pop-hero-portrait { position: relative; min-width: 0; height: 260px; margin: 0; overflow: hidden; background: var(--bg-deep); }
+.pop-hero-portrait :deep(.character-portrait) { width: 100%; height: 100%; border: 0; border-radius: 0; }
+.pop-hero-portrait :deep(img) { object-fit: contain; transform: none; }
+.pop-hero-portrait figcaption { position: absolute; inset: auto 0 0; padding: var(--s-3) var(--s-4); background: var(--bg-surface); color: var(--text-secondary); font: 400 var(--fs-body-sm)/var(--lh-label) var(--font-serif); }
+.pop-preview-missing { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--s-4); color: var(--text-secondary); background: var(--bg-elevated); font-size: var(--fs-label); text-align: center; }
 .pop-hero-stat {
   display: flex;
   flex-wrap: wrap;
@@ -546,6 +528,7 @@ onMounted(() => { void init() })
   background: linear-gradient(145deg, color-mix(in srgb, var(--bg-deep) 72%, var(--bg-elevated)), var(--bg-elevated));
   text-decoration: none;
 }
+.pop-thumb.is-missing { aspect-ratio: auto; min-height: var(--s-8); }
 .pop-thumb img {
   position: absolute; inset: 0; z-index: var(--z-sc-media, 0);
   width: 100%; height: 100%;

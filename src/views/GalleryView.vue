@@ -11,7 +11,7 @@
     >
       <div>
         <div class="gallery-kicker">Private collection</div>
-        <h1 class="gallery-title">作品册</h1>
+        <h1 class="gallery-title">我的作品</h1>
         <p class="gallery-subtitle">每一次心动，都收在这里。翻看、收藏，或从喜欢的作品继续创作。</p>
       </div>
       <template #meta><div class="gallery-count">{{ countLabel }}</div></template>

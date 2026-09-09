@@ -148,11 +148,9 @@
             <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
             <div class="ex-actions">
               <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
-              <button class="btn btn-ghost scene-hide-action" type="button" @click.stop="toggleHidden(s2.id)">
-                {{ hiddenIds.has(s2.id) ? '↩ 恢复' : '隐藏' }}
-              </button>
+              <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
             </div>
-            <div class="ex-more">
+            <details class="ex-more"><summary>镜头与更多</summary>
               <div class="ex-decision">
                 <span>镜头 <strong>{{ dv(s2).shot }}</strong></span>
                 <span>光线 <strong>{{ dv(s2).lighting }}</strong></span>
@@ -160,11 +158,13 @@
               </div>
               <div class="ex-secondary">
                 <a class="btn btn-ghost btn-sm" :href="quickCreateUrl(s2.id)"><ArchiveIcon name="lightning" /> 直接出图</a>
-                <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
+              <button class="btn btn-ghost scene-hide-action" type="button" @click.stop="toggleHidden(s2.id)">
+                {{ hiddenIds.has(s2.id) ? '↩ 恢复' : '隐藏' }}
+              </button>
                 <button class="btn btn-ghost btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }"
                   type="button" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /> {{ favs.has(s2.id) ? '已收' : '收藏' }}</button>
               </div>
-            </div>
+            </details>
           </template>
       </SceneCard>
     </div>
@@ -186,7 +186,7 @@
           <div class="story-body">{{ drawerScene.story || '' }}</div>
           <div class="story-actions">
             <a class="btn btn-primary" :href="quickCreateUrl(drawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
-            <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id) + '&step=4&generate=1'"><ArchiveIcon name="clap" /> 调整后生成</RouterLink>
+            <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id)"><ArchiveIcon name="clap" /> 进入工作台调整</RouterLink>
             <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
           </div>
           </div>
@@ -772,10 +772,11 @@ onMounted(() => { init() })
   box-shadow:var(--glow-sm);
 }
 .ex-actions .scene-hide-action { flex:0 0 auto; font-weight:600; }
-/* compositor-exempt: hover/focus 一次性展开揭示（非高频路径），max-height 塌缩展开；
-   grid-template-rows 0fr 或 JS 测高对这个小卡片成本高于收益。 */
-.ex-more { display:grid; gap:var(--s-2); margin-top:var(--s-2); max-height:0; opacity:0; overflow:hidden; transition:max-height var(--motion-surface) var(--ease-out),opacity var(--motion-hover); }
-:deep(.sc:hover) .ex-more, :deep(.sc:focus-within) .ex-more { max-height:160px; opacity:1; }
+/* Explicit disclosure keeps story actions discoverable without hover. */
+.ex-more { margin-top:var(--s-2); color:var(--text-secondary); }
+.ex-more > summary { cursor:pointer; padding:var(--s-2) 0; font-size:var(--fs-label); }
+.ex-more[open] .ex-secondary { margin-top:var(--s-2); }
+
 .ex-decision { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-secondary); font-size:var(--fs-mono-sm); }
 .ex-decision::before { content:'镜头'; color:var(--text-muted); font:750 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }
 .ex-decision span+span::before { content:'·'; margin-right:var(--s-1); /* 审计修复：分隔符原用 --border-strong(2.73:1)，改 --text-muted */ color:var(--text-muted); }
@@ -797,7 +798,7 @@ onMounted(() => { init() })
 
 @media (max-width:768px) {
   .scene-grid { grid-template-columns:minmax(0,1fr); }
-  .ex-more { max-height:none; opacity:1; overflow:visible; }
+
   .ex-decision { display:none; }
   .scene-facet-grid { grid-template-columns:1fr 1fr; }
   .scene-more-filters .scene-facet-grid { grid-template-columns:1fr 1fr; }

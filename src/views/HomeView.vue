@@ -8,7 +8,7 @@
           <p class="hero-sub">一本写给二次元的影像手帖。<br />收藏喜欢的角色、光影，与故事里的日常。</p>
           <div class="ctas">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
-            <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost">开始创作 <ArchiveIcon name="spark" /></RouterLink>
+            <RouterLink :to="museSceneLink" class="btn btn-lg btn-ghost">和{{ homeMuse === 'nene' ? '宁宁' : '夏目' }}开始 <ArchiveIcon name="spark" /></RouterLink>
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses" role="group" aria-label="首页角色视觉">
@@ -32,11 +32,11 @@
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
         <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
           <div class="strip-label" id="popStripLabel">
-            <span class="dot"></span> 在这里，遇见你的本命 · <span>{{ popularCharacters.length }} 位角色</span>
+            <span class="dot"></span> 在这里，遇见你的本命 · <span>{{ popularCharacters.length }} 位角色</span><RouterLink to="/popular-scenes" class="link">查看全部角色 →</RouterLink>
           </div>
           <div class="pop-scroll">
             <RouterLink
-              v-for="c in popularCharacters"
+              v-for="c in popularCharacters.slice(0, 12)"
               :key="c.id"
               class="pop-card-mini"
               :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
@@ -67,7 +67,7 @@
           <span class="d">选好角色与场景，把脑海中的画面画出来。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
-        <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
+        <RouterLink :to="museSceneLink" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">02 / SCENE</span>
           <span class="ic"><ArchiveIcon name="scene" /></span><span class="t">灵感场景</span>
           <span class="d">{{ sceneLibraryCopy }}</span>
@@ -79,7 +79,7 @@
           <span class="d">让静止的画面，成为一段会呼吸的故事。</span>
           <span class="go">→ 开始创作</span>
         </RouterLink>
-        <RouterLink to="/chat" class="tool-card card-create card-level-2">
+        <RouterLink :to="`/chat?character=${homeMuse}`" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">04 / ROOM</span>
           <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
           <span class="d">与宁宁或夏目静享片刻独白，聊聊今天的心情。</span>
@@ -89,7 +89,7 @@
         <RouterLink to="/showcase" class="tool-card card-create card-level-2 tool-card-banner">
           <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
           <span class="ic"><ArchiveIcon name="image" /></span>
-          <span class="banner-copy"><span class="t">效果样张</span><span class="d">翻阅角色与场景的定稿样张，找到下一张画的灵感。</span></span>
+          <span class="banner-copy"><span class="t">参考画册</span><span class="d">翻阅角色与场景的定稿样张，找到下一张画的灵感。</span></span>
           <span class="go">→ 浏览完整画册</span>
         </RouterLink>
       </div>
@@ -125,7 +125,7 @@
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">08 / WORKS</span>
-          <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">作品册</span>
+          <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">我的作品</span>
           <span class="d">以纯净原始画幅，安静收存属于你的每一张心动创作。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
@@ -155,7 +155,7 @@
     <section class="container home-section" data-reveal>
       <div class="home-section-head">
         <h2>最近创作</h2>
-        <RouterLink to="/gallery" class="link">打开作品册 →</RouterLink>
+        <RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink>
       </div>
       <div class="recent-grid stagger-container" ref="recentWorksEl">
         <ArchiveStatePanel
@@ -214,7 +214,7 @@ const DRAFT_KEY = 'aics_pb_last_draft'
 
 const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
 const continueIconName = ref<ArchiveIconName>('image')
-const continueLink = ref({ to: '/showcase', label: '翻开 CG 画册' })
+const continueLink = ref({ to: '/showcase', label: '翻开参考画册' })
 const continueHint = ref('')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 
@@ -224,6 +224,7 @@ const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 const homeMuse = ref<'nene' | 'natsume'>('nene')
+const museSceneLink = computed(() => `/scene-explorer?character=${homeMuse.value}`)
 // Bundled approved covers are authoritative; copied showcase editions may contain older home art.
 const heroAssets = Object.freeze({
   nene: '/assets/characters/nene-home-cg-1024.webp',

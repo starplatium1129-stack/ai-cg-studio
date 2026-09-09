@@ -31,7 +31,7 @@
             {{ generationStatusText || '正在绘制这一幕，请稍候。' }}
             <template v-if="generationProgress !== null"> {{ Math.round(generationProgress * 100) }}%</template>
             <template v-else-if="drawEngine !== 'sd'"> · 已等待 {{ animaElapsed }} 秒</template>
-            <template v-if="drawEngine !== 'sd' && animaCurrentNode"> · 节点 {{ animaCurrentNode }}</template>
+            <details v-if="drawEngine !== 'sd' && animaCurrentNode" class="stage-progress-details"><summary>生成详情</summary>当前步骤：{{ animaCurrentNode }}</details>
           </div>
           <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }">
             <i :style="{ '--progress': (generationProgress ?? 0) * 100 + '%' }"></i>
@@ -108,100 +108,13 @@
         after-label="换装后成片"
       />
       <img v-else class="result-image" :src="displayResultUrl" alt="生成的图片" />
-      <div class="result-image-actions">
-        <!-- F2：入册状态如实标注——未入册的成片在临时缓冲里，离页/失败也能找回 -->
-        <span v-if="resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived">
-          {{ resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册 · 请保存快照' }}
-        </span>
-        <button
-          class="btn btn-ghost"
-          type="button"
-          :disabled="interrogateBusy"
-          :title="interrogateMode === 'caption' ? '对当前成片本地反推为Prose' : '对当前成片本地反推为Tag，可切人直出'"
-          @click="interrogateCurrentImage">
-          <ArchiveIcon name="search" />
-          <span>{{ interrogateBusy ? '反推中…' : '反推当前图' }}</span>
-        </button>
-        <button
-          class="btn btn-ghost"
-          type="button"
-          :disabled="interrogateBusy"
-          title="上传任意图片本地反推"
-          @click="triggerInterrogatePick">
-          <ArchiveIcon name="search" />
-          <span>上传反推</span>
-        </button>
-        <button
-          v-if="inpaintOriginalUrl && displayResultUrl"
-          class="btn btn-ghost btn-compare-inpaint"
-          :class="{ active: inpaintCompareActive }"
-          type="button"
-          :title="inpaintCompareActive ? '退出前后对比模式' : '左右滑动对比换装前后效果'"
-          @click="$emit('update:inpaintCompareActive', !inpaintCompareActive)"
-        >
-          <ArchiveIcon name="compare" />
-          <span>{{ inpaintCompareActive ? '退出对比' : '换装前后对比' }}</span>
-        </button>
-        <button
-          v-if="displayResultUrl && drawEngine === 'anima'"
-          class="btn btn-ghost btn-inpaint-action"
-          type="button"
-          :disabled="generationBusy"
-          :title="generationBusy ? BUSY_HINT : '锁定角色与背景，使用 AI 视觉语义识别一键更换服装'"
-          @click="$emit('openInpaint')"
-        >
-          <ArchiveIcon name="wardrobe" />
-          <span>局部换装</span>
-        </button>
-        <button
-          v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
-          class="btn btn-ghost btn-hires-action"
-          type="button"
-          :disabled="generationBusy"
-          :title="generationBusy ? BUSY_HINT : '使用 2x 高清超分放大'"
-          @click="$emit('upscale')"
-        >
-          <ArchiveIcon name="spark" />
-          <span>高清放大 2x</span>
-        </button>
-        <button
-          v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
-          class="btn btn-ghost btn-video-action"
-          type="button"
-          :disabled="generationBusy"
-          :title="generationBusy ? BUSY_HINT : '将当前成片作为首帧，到视频页生成短片（场景预设自动转视频提示词）'"
-          @click="$emit('goVideo')"
-        >
-          <ArchiveIcon name="play" />
-          <span>出视频</span>
-        </button>
-        <button
-          v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
-          class="btn btn-ghost btn-video-action"
-          type="button"
-          :disabled="generationBusy"
-          :title="generationBusy ? BUSY_HINT : '把当前成片作为分镜首帧，攒齐后到「分镜短片」整批生成'"
-          @click="$emit('addToShots')"
-        >
-          <ArchiveIcon name="gallery" />
-          <span>加入分镜</span>
-        </button>
-        <button
-          v-if="shotsPending > 0"
-          class="btn btn-primary btn-video-action"
-          type="button"
-          title="到视频页「分镜短片」，生成已加入的镜头"
-          @click="$emit('goShots')"
-        >
-          <ArchiveIcon name="play" />
-          <span>去分镜短片（{{ shotsPending }}）</span>
-        </button>
-        <button class="btn btn-ghost" type="button" @click="$emit('saveResult')">保存快照</button>
-        <button class="btn btn-ghost" type="button" :disabled="!hasPrevResult" @click="$emit('openCompare')">
-          与上一张对比
-        </button>
-        <button class="btn btn-ghost" type="button" @click="$emit('clearResult')">清除</button>
-      </div>
+      <DirectorResultTools
+        v-bind="{ generationBusy, interrogateBusy, interrogateMode, displayResultUrl, drawEngine, inpaintOriginalUrl, inpaintCompareActive, shotsPending, hasPrevResult, resultArchived, resultTemporary }"
+        @interrogateCurrent="interrogateCurrentImage" @interrogateUpload="triggerInterrogatePick"
+        @openInpaint="$emit('openInpaint')" @update:inpaintCompareActive="$emit('update:inpaintCompareActive', $event)"
+        @upscale="$emit('upscale')" @goVideo="$emit('goVideo')" @addToShots="$emit('addToShots')" @goShots="$emit('goShots')"
+        @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')" @clearResult="$emit('clearResult')"
+      />
       <div v-if="interrogateError && displayResultUrl" class="stage-interrogate-error" role="alert">{{ interrogateError }}</div>
     </div>
     <!-- 供两态共用的上传入口 -->
@@ -210,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, defineAsyncComponent } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
 import { useInterrogate } from '@/composables/useInterrogate'
@@ -239,14 +152,8 @@ const props = defineProps<{
   hasStashedResult?: boolean
 }>()
 
-/**
- * 生成中禁用控件的统一说明（2026-08-30 UX 审计 P2）。
- *
- * 这些按钮原本各有各的 title，但生成中一旦被禁用，悬停冒出来的仍是功能介绍，
- * 用户看到「点不动 + 一堆功能说明」，只会以为软件坏了。禁用时统一换成原因。
- * 同样的文案在 PromptBuilderView 里也有一份，改动时记得两边一起改。
- */
-const BUSY_HINT = '生成中，等这一张出完就能用'
+// Result-only tools load after an image exists.
+const DirectorResultTools = defineAsyncComponent(() => import('./DirectorResultTools.vue'))
 
 const emit = defineEmits<{
   generate: []

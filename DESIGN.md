@@ -166,9 +166,9 @@ or voice feedback—not to periodic transforms on a still portrait.
 
 ## Colors
 
-The theme is dark only. Backgrounds are violet-black instead of flat black, and
-surfaces are slightly lighter with restrained translucency where it improves
-hierarchy.
+The atelier supports dark and light themes, with dark as the default. Dark
+surfaces use graphite-violet; light surfaces use paper-white and readable ink
+accents. Both themes preserve the same layout, action hierarchy, and character identity.
 
 > **2026-09-08 · 当前双主题契约**
 > 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
@@ -177,8 +177,9 @@ hierarchy.
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.
-- Use Nene violet and Natsume amber to clarify character context. They are not
-  competing global action colors.
+- Use Nene violet and Natsume amber to clarify character context. Within a
+  character cover or director workspace, the primary action may inherit that
+  character accent; navigation and neutral pages retain sakura pink.
 - Keep body text neutral. Long paragraphs, parameters, and metadata must not use
   decorative gradients.
 - Success, warning, danger, and information colors communicate state only.
@@ -279,7 +280,7 @@ for character presence.
 
 ### Theme semantics
 
-- Dark graphite-violet surfaces remain the only theme.
+- Dark graphite-violet and light paper surfaces share the same semantic tokens.
 - Preserve all per-character director tokens and body aura mappings in
   src/assets/css/director/tokens.css.
 - Accent colors identify selections, focus, and primary actions. Neutral text

@@ -22,7 +22,7 @@
           <ul>
             <li><strong>灵感</strong>：挑一个场景，或去「热门角色场景」找你推的那位。</li>
             <li><strong>绘制</strong>：场景带过去，调词条与参数，点「生成图片」。</li>
-            <li><strong>作品册</strong>：出图会自动收进来，可收藏、批量清理，误删有 30 天回收站。</li>
+            <li><strong>我的作品</strong>：出图会自动收进来，可收藏、批量清理，误删有 30 天回收站。</li>
             <li><strong>找东西</strong>：顶栏的搜索（或 <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>K</kbd>）
               能一次搜到页面、场景和旧作。</li>
           </ul>

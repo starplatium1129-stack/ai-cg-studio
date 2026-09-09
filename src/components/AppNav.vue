@@ -28,7 +28,7 @@
         <!-- 归档 · 分组下拉：发现/美学/工坊，5 项主导航之外全部收口 -->
         <details class="nav-more" :data-active="secondaryActive || undefined" ref="moreEl">
           <!-- 不加 aria-label:它会盖掉可见文字"归档",违反 SC 2.5.3 Label in Name -->
-          <summary>归档<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></summary>
+          <summary>更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></summary>
           <div class="nav-more-menu">
             <template v-for="group in archiveGroups" :key="group.heading">
               <div class="nav-more-group-label">{{ group.heading }}</div>
@@ -111,8 +111,8 @@ interface NavItem {
 }
 
 const primaryNav: NavItem[] = [
-  { id: 'showcase', label: 'CG 画册', to: '/showcase', icon: 'image' },
-  { id: 'popular-scenes', label: '角色', to: '/popular-scenes', icon: 'character' },
+  { id: 'showcase', label: '参考画册', to: '/showcase', icon: 'image' },
+  { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
   { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
   { id: 'director', label: '绘制',   to: '/prompt-builder', icon: 'spark' },
   { id: 'chat',     label: '房间',   to: '/chat',           icon: 'chat' },
@@ -121,7 +121,7 @@ const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
   {
     heading: '发现',
     items: [
-      { id: 'gallery', label: '作品册', to: '/gallery', icon: 'gallery' },
+      { id: 'gallery', label: '我的作品', to: '/gallery', icon: 'gallery' },
       { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
       { id: 'character', label: '角色档案', to: '/character',    icon: 'character' },
     ],

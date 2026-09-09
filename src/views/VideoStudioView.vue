@@ -2,8 +2,8 @@
   <article class="video-studio page">
     <WorkspaceArchiveBar
       chapter="14"
-      title="MOTION STUDIO"
-      :subtitle="activeModel?.label || 'LOCAL VIDEO PIPELINE'"
+      title="故事短片"
+      subtitle="让这一幕，继续发生"
       :status="archiveStatus"
       :state="archiveState"
       shape="frame"
@@ -11,8 +11,8 @@
 
     <header class="video-header">
       <div>
-        <div class="page-kicker">Local AI Video</div>
-        <h1 class="page-title">AI 视频创作</h1>
+        <div class="page-kicker">画室 / 故事短片</div>
+        <h1 class="page-title">故事短片</h1>
         <p class="page-subtitle">
           从一张画面或一段描述开始，让角色的故事继续。选择创作方式，再准备镜头与首帧。
         </p>
@@ -68,7 +68,7 @@
             <span>在绘图页生成图片后点击「出视频」即可带到这里；图片将作为首帧，自动锁定角色与场景。</span>
           </p>
           <p v-if="videoImageUrl" class="video-install-note">
-            生成时后端会自动附加官方 I2VA 首帧指令（&lt;Picture 1&gt;）；画幅默认「跟随原图」，按首帧比例自动匹配画布，避免拉伸变形。
+            这张图将作为故事的起点。画幅默认跟随原图，你只需描述接下来发生的动作。
           </p>
         </section>
 
@@ -78,7 +78,7 @@
               <span class="video-step">00 · 首尾帧</span>
               <h2>锁定开始与结束画面</h2>
             </div>
-            <span class="video-count">H3 专属 · FL2VA</span>
+            <span class="video-count">首尾画面衔接</span>
           </div>
           <div class="video-dual-frame-grid">
             <div class="video-frame-slot">
@@ -103,7 +103,7 @@
             </div>
           </div>
           <p class="video-install-note">
-            生成时后端会自动按官方 FL2VA 规范锁定首尾画面（&lt;Picture 1&gt; / &lt;Last Frame&gt;）；画幅默认「跟随原图」，按首帧比例自动匹配画布。
+            首帧决定开始，尾帧决定结束。在镜头描述中写下两幅画面之间的动作，画幅默认跟随首帧。
           </p>
         </section>
 
@@ -137,7 +137,7 @@
           <div class="video-panel-heading">
             <div>
               <span class="video-step">02 · 成片方向</span>
-              <h2>控制节奏，不控制节点</h2>
+              <h2>画幅与节奏</h2>
             </div>
           </div>
 

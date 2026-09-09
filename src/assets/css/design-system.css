@@ -2,14 +2,14 @@
    绫季绘境 · Design System
    Source contract: ../DESIGN.md
    Style: 甜蜜、亲密、以画面为主的 Galgame 创作工作台
-   Theme: dark(甜系薰衣草紫黑) 唯一主题
+   Theme: dark 默认；light-theme.css 提供纸白浅色覆盖
    ============================================================ */
 
 /* 字体不在这里 @import —— 字体已本地自托管（@fontsource，见 src/main.ts），
    离线可用且不依赖 Google Fonts；这里只需声明 font-family。 */
 
 :root {
-  /* ---- Core palette (唯一主题：深色；2026-08-28 起不再有浅色覆盖) ----
+  /* ---- Core palette (深色基线；浅色由 light-theme.css 覆盖) ----
      Galgame 梦幻夜空 & 水晶亚克力质感系统 (Cosmic Indigo & Crystal Acrylic) ——
      深邃澄澈的星夜底色 + 樱花粉 / 薰衣草紫 / 汽水苏打青三色糖果流光点睛；
      对比度按 WCAG AA 严格把关。 */

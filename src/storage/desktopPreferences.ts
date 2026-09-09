@@ -4,7 +4,7 @@ import { DESKTOP_LAST_PAGE_KEY, DESKTOP_START_PAGE_KEY } from '@/utils/storageKe
 export const desktopPages = [
   { value: '/', label: '绘境首页' },
   { value: '/prompt-builder', label: '绘图工作台' },
-  { value: '/gallery', label: '作品册' },
+  { value: '/gallery', label: '我的作品' },
   { value: '/video-studio', label: '视频工作台' },
 ] as const
 export type DesktopPage = typeof desktopPages[number]['value']

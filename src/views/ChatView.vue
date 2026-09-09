@@ -70,7 +70,7 @@
       <section class="conversation-card">
         <div class="conversation-head">
           <strong>和{{ currentCharacter.name }}的房间</strong>
-          <div class="model-controls">
+          <details class="room-model-settings"><summary>对话设置</summary><div class="model-controls">
             <div class="provider-switch" role="group" aria-label="对话模型来源">
               <button type="button" :class="{ active: chatProvider === 'local' }"
                 :aria-pressed="chatProvider === 'local'"
@@ -106,7 +106,7 @@
                 {{ useHostConfig ? (hostApiModel || '站主 API') : (apiConfigured ? apiModel : '配置 API') }} <ArchiveIcon name="gear" />
               </button>
             </template>
-          </div>
+          </div></details>
         </div>
 
         <ChatApiSettings

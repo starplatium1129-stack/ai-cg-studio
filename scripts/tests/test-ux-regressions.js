@@ -286,7 +286,7 @@ const CHECKS = [
   },
   {
     id: 'P2 生成中禁用的控件必须说明原因',
-    file: 'src/components/director/DirectorStagePanel.vue',
+    file: 'src/components/director/DirectorResultTools.vue',
     why: '生成中这些按钮被禁用时，悬停冒出来的仍是功能介绍——用户面对「点不动 '
       + '+ 一堆功能说明」只会以为是软件坏了。禁用态必须优先讲为什么点不了。',
     assert(source) {

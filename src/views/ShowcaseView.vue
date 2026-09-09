@@ -1,7 +1,7 @@
 <template>
   <article class="page showcase-page">
     <header class="showcase-heading">
-      <div><div class="page-kicker">CG COLLECTION / 二次元画册</div><h1>把心动，一页页收藏。</h1><p>角色的一个回眸，故事的一束光。慢慢翻，总有一幅让你停留。</p>
+      <div><div class="page-kicker">CG COLLECTION / 参考画册</div><h1>把心动，一页页收藏。</h1><p>翻阅场景样张，找到想画的下一幕。自己的创作收在「我的作品」。</p>
         <div class="hero-actions"><button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost">按场景寻找灵感</RouterLink><button class="btn btn-ghost" type="button" :disabled="manifestLoading" @click="loadManifest"><ArchiveIcon name="refresh" /> {{ manifestLoading ? '正在读取…' : '刷新画册' }}</button></div>
       </div>
       <div class="collection-count"><strong>{{ stats.total }}</strong><span>幅角色与场景 CG</span></div>

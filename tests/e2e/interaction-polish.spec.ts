@@ -66,10 +66,10 @@ test('repeated navigation keeps a visible route view mounted', async ({ page }) 
 
   for (const destination of [
     { label: '灵感', url: /\/scene-explorer$/, heading: '灵感场景' },
-    { label: 'CG 画册', url: /\/showcase$/, heading: '把心动，一页页收藏。' },
-    { label: '作品册', url: /\/gallery$/, heading: '作品册' },
+    { label: '参考画册', url: /\/showcase$/, heading: '把心动，一页页收藏。' },
+    { label: '我的作品', url: /\/gallery$/, heading: '我的作品' },
   ]) {
-    if (destination.label === '作品册') await page.locator('.nav-more summary').click()
+    if (destination.label === '我的作品') await page.locator('.nav-more summary').click()
     await page.getByRole('navigation').getByRole('link', { name: destination.label, exact: true }).click()
     await expect(page).toHaveURL(destination.url)
     await expect(page.locator('#main')).toContainText(destination.heading)
@@ -284,8 +284,8 @@ test('global task center retains a batch while visiting the gallery and control 
   await batch.getByRole('button', { name: '关闭', exact: true }).click()
   await expect(page.getByRole('link', { name: '房间', exact: true })).toHaveAttribute('target', '_blank')
   await page.locator('.nav-more summary').click()
-  await page.getByRole('link', { name: '作品册', exact: true }).click()
-  await expect(page.getByRole('heading', { name: '作品册', exact: true })).toBeVisible()
+  await page.getByRole('link', { name: '我的作品', exact: true }).click()
+  await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
   await page.locator('.task-center-button:visible').click()
   const center = page.getByRole('dialog', { name: /任务中心/ })
   await expect(center.locator('.task-card[data-state="running"]')).toHaveCount(1)
@@ -299,7 +299,7 @@ test('global task center retains a batch while visiting the gallery and control 
   finish = true
   await expect(center.locator('.task-card[data-state="succeeded"]')).toHaveCount(1)
   await center.getByRole('link', { name: '查看结果', exact: true }).click()
-  await expect(page.getByRole('heading', { name: '作品册', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '我的作品', exact: true })).toBeVisible()
   await expect(page.locator('.artwork')).toHaveCount(1)
   expect(submitted).toBe(1)
 })

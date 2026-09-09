@@ -130,8 +130,8 @@ const PAGES: PageItem[] = [
   { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },
   { id: 'popular-scenes', label: '热门角色场景', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图 雷电将军 芙莉莲' },
   { id: 'chat', label: '角色房间', icon: 'chat', path: '/chat', keywords: '聊天 角色 宁宁 夏目' },
-  { id: 'showcase', label: 'CG 画册', icon: 'image', path: '/showcase', keywords: 'CG 画册 样张 展示 定稿 gallery showcase' },
-  { id: 'gallery', label: '作品册', icon: 'gallery', path: '/gallery', keywords: '作品 图库 收藏' },
+  { id: 'showcase', label: '参考画册', icon: 'image', path: '/showcase', keywords: '参考画册 CG 画册 样张 展示 定稿 gallery showcase' },
+  { id: 'gallery', label: '我的作品', icon: 'gallery', path: '/gallery', keywords: '我的作品 作品册 作品 图库 收藏' },
   { id: 'character', label: '角色档案', icon: 'character', path: '/character', keywords: '角色 档案 人设' },
   { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画风 色彩 色板' },
   { id: 'lora', label: '模型', icon: 'model', path: '/lora', keywords: '模型 lora 权重' },
@@ -148,7 +148,7 @@ const ACTIONS: SearchItem[] = [
   { id: 'video-create', label: '开始一段 AI 视频', icon: 'play', path: '/video-studio', keywords: '视频 动画 开始' },
   { id: 'browse', label: '逛一逛灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 逛' },
   { id: 'popular', label: '浏览热门角色蓝图', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图' },
-  { id: 'works', label: '打开作品册', icon: 'gallery', path: '/gallery', keywords: '作品' },
+  { id: 'works', label: '打开我的作品', icon: 'gallery', path: '/gallery', keywords: '作品' },
 ]
 
 function match(keywords: string): boolean {
