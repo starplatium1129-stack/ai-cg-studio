@@ -592,11 +592,12 @@ function artistBatch(seedBase) {
   });
 }
 
-/** 角色的默认原型场景：专属场景第一个；缺失时回退通用蓝图。 */
-function characterDefaultBlueprint(blueprints, characterId) {
-  const owned = blueprints.filter(bp => bp.characterId === characterId);
-  if (owned.length) return owned[0];
-  return blueprints.find(bp => !bp.characterId) || blueprints[0];
+/** 默认衣装样张必须选同衣装的全年龄场景，不能因排序选中成人条目。 */
+function characterDefaultBlueprint(blueprints, characterId, outfitId) {
+  const match = blueprints.find(bp => bp.characterId === characterId && !bp.adult && bp.outfitId === outfitId)
+    || blueprints.find(bp => !bp.characterId && !bp.adult);
+  if (!match) throw new Error(`no safe default-outfit blueprint for ${characterId}`);
+  return match;
 }
 
 function popularBatch(seedBase) {
@@ -605,7 +606,7 @@ function popularBatch(seedBase) {
   const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
   if (!profile) throw new Error('anima_aesthetic_v11 profile missing');
   return characters.map(character => {
-    const blueprint = characterDefaultBlueprint(blueprints, character.id);
+    const blueprint = characterDefaultBlueprint(blueprints, character.id, popularContent.defaultOutfit(character).id);
     const { prompt, negative, outfit } = buildPopularPrompt(character, blueprint, profile);
     const model = animaConst.MODELS[ANIMA_AESTHETIC_ID];
     const size = blueprint.recommendedSize.match(/(\d+)\s*[x×]\s*(\d+)/i);
@@ -706,7 +707,7 @@ function rebuildWithOverride(base, override) {
     const blueprints = popularContent.parseSceneBlueprints(blueprintData);
     const character = popularContent.findCharacter(characters, base.subject);
     const blueprint = popularContent.findBlueprint(blueprints, base.sceneId)
-      || characterDefaultBlueprint(blueprints, base.subject);
+      || characterDefaultBlueprint(blueprints, base.subject, popularContent.defaultOutfit(character).id);
     const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
     const { prompt, negative } = buildPopularPrompt(character, blueprint, profile, override);
     return Object.assign({}, base, { prompt, negative });

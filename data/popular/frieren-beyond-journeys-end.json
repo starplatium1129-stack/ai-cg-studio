@@ -13,15 +13,15 @@
         "frieren the slayer",
         "elf mage"
       ],
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes with a calm distant shimmer, pointed ears, and a serene wistful expression",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, an elf mage who has lived for over a thousand years, with very long silver-white hair in twintails, green eyes, pointed ears and a calm, contemplative expression",
       "identityTokens": [
         "frieren",
         "1girl",
         "solo",
         "long_white_hair",
         "very_long_hair",
-        "twin_braids",
-        "purple_eyes",
+        "twintails",
+        "green_eyes",
         "elf",
         "pointy_ears",
         "gold_earrings"
@@ -40,7 +40,7 @@
         {
           "id": "wizard_robe",
           "name": "魔导师袍",
-          "prose": "her plain white robe with a deep hood and simple adventurer belt, staff in hand",
+          "prose": "her plain white robe with a deep hood and simple adventurer belt",
           "tokens": [
             "robe",
             "white_robe",
@@ -114,57 +114,56 @@
         "solo",
         "long_hair",
         "purple_hair",
-        "side_ponytail",
-        "half-updo",
         "straight_bangs",
         "long_sidelocks",
-        "purple_eyes",
-        "large_breasts"
+        "purple_eyes"
       ],
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure",
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair, straight bangs and long sidelocks, violet eyes, delicate facial features and a quietly attentive manner",
       "outfits": [
         {
           "id": "journey_robe",
           "name": "旅途魔法长袍",
-          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
+          "prose": "a long black hooded wizard coat over a white high-collared dress, with practical boots and purple hair tied half up",
           "tokens": [
             "black_coat",
             "white_dress",
             "high_collar",
             "long_sleeves",
-            "magic_staff",
-            "boots"
+            "boots",
+            "half_updo"
           ],
           "default": true
         },
         {
           "id": "winter_coat",
           "name": "冬季厚风衣围巾装",
-          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
+          "prose": "a warm beige winter overcoat, a thick knitted muffler, gloves and boots, with purple hair tied half up",
           "tokens": [
             "winter_coat",
             "overcoat",
             "scarf",
             "muffler",
             "gloves",
-            "boots"
+            "boots",
+            "half_updo"
           ]
         },
         {
           "id": "town_casual",
           "name": "城镇甜品便服",
-          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
+          "prose": "a soft knitted cardigan over a blouse and a long pleated skirt, with purple hair tied half up",
           "tokens": [
             "cardigan",
             "long_skirt",
             "blouse",
-            "ribbon"
+            "ribbon",
+            "half_updo"
           ]
         },
         {
           "id": "noble_ball_dress",
           "name": "贵族舞会典雅深紫礼服",
-          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "prose": "a deep violet satin ball gown with elbow-length white gloves and a neat formal updo of purple hair",
           "tokens": [
             "evening_dress",
             "purple_dress",

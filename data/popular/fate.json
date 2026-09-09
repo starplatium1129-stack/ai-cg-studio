@@ -280,10 +280,10 @@
         {
           "id": "winter_coat",
           "name": "Fate 本篇冬装",
-          "prose": "her red winter coat with a hood and fur trim from the Fuyuki winter story",
+          "prose": "her purple winter coat with a hood and fur trim from the Fuyuki winter story",
           "tokens": [
             "coat",
-            "red_coat",
+            "purple_coat",
             "fur_trim",
             "hood",
             "winter_clothes"
@@ -294,11 +294,12 @@
         {
           "id": "casual",
           "name": "便服",
-          "prose": "a soft casual outfit",
+          "prose": "a simple long-sleeved cardigan over a knee-length casual dress with flat shoes",
           "tokens": [
             "casual_clothes",
             "dress",
-            "cardigan"
+            "cardigan",
+            "flat_shoes"
           ],
           "isDefault": false,
           "default": false
@@ -416,7 +417,7 @@
             "armored_boots",
             "flag"
           ],
-          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
+          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece",
           "styleHint": "dramatic dark fantasy rim light",
           "isDefault": true,
           "default": true
@@ -487,6 +488,22 @@
           "styleHint": "sharp cinematic studio rim lighting",
           "isDefault": false,
           "default": false
+        },
+        {
+          "id": "shinjuku_jacket_skirt",
+          "name": "新宿黑夹克短裙便服",
+          "prose": "a black leather biker jacket over a black tank top, a short black pleated skirt, dark tights, choker and boots",
+          "tokens": [
+            "leather_jacket",
+            "black_tank_top",
+            "black_pleated_skirt",
+            "dark_tights",
+            "choker",
+            "boots"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ],
       "negativeTokens": [
@@ -545,10 +562,9 @@
         "hair_ribbon",
         "red_ribbon",
         "purple_eyes",
-        "large_breasts",
         "fate/stay_night"
       ],
-      "identityProse": "Sakura Matou from Fate/stay night, a gentle girl with long purple hair flowing in soft silky waves, a red ribbon tied on the left side, deep violet eyes with a tender gleam, and a devoted affectionate gaze",
+      "identityProse": "Sakura Matou from Fate/stay night, a gentle girl with long purple hair, a red ribbon tied on the left side, deep violet eyes with a tender gleam, and a devoted affectionate gaze",
       "outfits": [
         {
           "id": "homurahara_uniform",
@@ -589,9 +605,10 @@
             "apron",
             "frilled_apron",
             "long_skirt",
-            "casual_clothes"
+            "casual_clothes",
+            "side_ponytail"
           ],
-          "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
+          "prose": "a light pink knit sweater, a white frilled kitchen apron and a long skirt, with purple hair tied over one shoulder clear of the cooking area",
           "styleHint": "warm domestic golden hour",
           "isDefault": false,
           "default": false
@@ -733,7 +750,7 @@
         {
           "id": "winter_queen",
           "name": "冬之女王本貌",
-          "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown and the holy lance Rhongomyniad",
+          "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown",
           "tokens": [
             "crown",
             "gothic_dress",
@@ -742,8 +759,7 @@
             "high_collar",
             "detached_sleeves",
             "layered_skirt",
-            "long_dress",
-            "rhongomyniad"
+            "long_dress"
           ],
           "default": true,
           "isDefault": true
@@ -792,6 +808,22 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "aesc_hooded_travel",
+          "name": "梣·雨后兜帽行旅变体",
+          "prose": "a closed blue hooded travelling robe over warm clothes and sturdy boots, carrying a wooden staff",
+          "tokens": [
+            "aesc (fate)",
+            "blue_hooded_robe",
+            "hood",
+            "robe",
+            "boots",
+            "staff"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ],
       "canon": {
@@ -886,14 +918,13 @@
         {
           "id": "summer_swimsuit",
           "name": "常夏泳装灵衣",
-          "prose": "her summer spiritron dress, a white dress-style swimsuit with a halterneck top",
+          "prose": "a white opaque one-piece halter swimsuit with a light dress-like outer hem",
           "tokens": [
             "swimsuit",
             "dress_swimsuit",
             "white_dress",
-            "bikini",
-            "crop_top",
-            "halterneck"
+            "halterneck",
+            "one_piece_swimsuit"
           ],
           "default": false,
           "isDefault": false
@@ -924,6 +955,21 @@
           ],
           "default": false,
           "isDefault": false
+        },
+        {
+          "id": "chaldea_cafeteria_jacket_off",
+          "name": "迦勒底午餐便服（外套脱下）",
+          "prose": "a black collared dress with a red necktie, black tights and glasses; the grey jacket is removed and rests on the chair back",
+          "tokens": [
+            "black_collared_dress",
+            "red_necktie",
+            "black_tights",
+            "glasses",
+            "jacket_on_chair"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ],
       "canon": {
@@ -1021,8 +1067,8 @@
             "shroud_of_magdalene",
             "cross"
           ],
-          "default": true,
-          "isDefault": true
+          "default": false,
+          "isDefault": false
         },
         {
           "id": "casual_winter_duffle_coat",
@@ -1036,7 +1082,9 @@
             "winter_clothes",
             "tights",
             "boots"
-          ]
+          ],
+          "isDefault": true,
+          "default": true
         },
         {
           "id": "sensual_black_camisole",
@@ -1050,7 +1098,9 @@
             "bare_shoulders",
             "bare_legs",
             "cleavage"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "sacred_white_swimsuit",
@@ -1064,7 +1114,9 @@
             "bare_legs",
             "cleavage",
             "wet_skin"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "nsfw_nude",
@@ -1079,12 +1131,14 @@
             "pussy",
             "navel",
             "slender_body"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         },
         {
           "id": "bridal_dress",
           "name": "破晓圣坛圣骸布花嫁婚纱",
-          "prose": "a pure white off-shoulder wedding gown with her golden shroud worn as a veil and trailing train, holding a bouquet of white lilies",
+          "prose": "an opaque floor-length white off-shoulder formal bridal gown, with the golden shroud arranged as a veil and trailing train, holding white lilies",
           "tokens": [
             "wedding_dress",
             "bridal_veil",
@@ -1092,7 +1146,9 @@
             "bouquet",
             "lily",
             "jewelry"
-          ]
+          ],
+          "isDefault": false,
+          "default": false
         }
       ]
     },
@@ -1111,11 +1167,10 @@
         "黑无毛",
         "暴君骑士王"
       ],
-      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, and a commanding, unyielding gaze",
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, with pale platinum-blonde hair, amber-gold eyes, ivory skin and a reserved, composed presence",
       "identityTokens": [
         "saber_alter",
         "blonde_hair",
-        "hair_bun",
         "yellow_eyes",
         "golden_eyes",
         "pale_skin",
@@ -1156,15 +1211,15 @@
         {
           "id": "official_black_armor",
           "name": "漆黑哥特重铠战袍",
-          "prose": "her iconic heavy black plate armor with jagged red filigree lines, dark blue gown accents, heavy iron gauntlets, and holding the jet-black corrupt sword Excalibur Morgan radiating dark red energy",
+          "prose": "heavy black plate armor with jagged red filigree, dark blue gown accents and iron gauntlets, with platinum-blonde hair secured in a braided bun",
           "tokens": [
             "black_armor",
             "plate_armor",
             "gauntlets",
-            "holding_sword",
             "excalibur_morgan",
             "dark_dress",
-            "red_trim"
+            "red_trim",
+            "hair_bun"
           ],
           "default": true,
           "isDefault": true
@@ -1172,7 +1227,7 @@
         {
           "id": "casual_gothic_lolita_dress",
           "name": "无光深黑哥特抹胸晚礼裙",
-          "prose": "her striking Heaven's Feel gothic evening dress: a strapless black velvet corset mini dress with black lace trim, exposing her pale porcelain shoulders, matching sheer black gloves, and knee-high leather boots",
+          "prose": "an opaque black velvet gothic dress with a strapless neckline, black lace trim, black gloves and knee-high boots, with platinum-blonde hair worn loose",
           "tokens": [
             "black_dress",
             "strapless_dress",
@@ -1180,13 +1235,14 @@
             "bare_shoulders",
             "gloves",
             "black_gloves",
-            "boots"
+            "boots",
+            "loose_hair"
           ]
         },
         {
           "id": "casual_shinjuku_jacket_shorts",
           "name": "新宿机车皮夹克热裤",
-          "prose": "her stylish Shinjuku modern casual wear: a black leather biker jacket over a white cropped tank top, black denim micro-shorts with belt, sheer black pantyhose, and studded choker",
+          "prose": "a black leather biker jacket over a white cropped top, black denim shorts, black tights and a studded choker, with platinum-blonde hair secured in a braided bun",
           "tokens": [
             "leather_jacket",
             "crop_top",
@@ -1196,7 +1252,8 @@
             "pantyhose",
             "black_pantyhose",
             "choker",
-            "streetwear"
+            "streetwear",
+            "hair_bun"
           ]
         },
         {
@@ -1212,6 +1269,49 @@
             "navel",
             "hourglass_body"
           ]
+        },
+        {
+          "id": "sfw_breakfast_sweater",
+          "name": "晨间宽松卫衣便服",
+          "prose": "an oversized dark biker-style sweatshirt with comfortable black trousers, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "oversized_sweatshirt",
+            "black_pants",
+            "hair_bun"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_winter_coffee",
+          "name": "雪中厚风衣装",
+          "prose": "a thick black winter overcoat with a dark scarf, gloves, trousers and winter boots, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "black_winter_coat",
+            "scarf",
+            "gloves",
+            "pants",
+            "winter_boots",
+            "hair_bun"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_white_bridal",
+          "name": "纯白哥特花嫁",
+          "prose": "an opaque white gothic bridal gown with a strapless neckline, a floor-length lace veil and white dress shoes, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "white_wedding_dress",
+            "lace_veil",
+            "white_shoes",
+            "hair_bun"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ]
     },
@@ -1228,14 +1328,13 @@
         "法兰西圣女",
         "白贞"
       ],
-      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair in a long braid, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
+      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
       "identityTokens": [
         "jeanne d'arc (fate)",
         "1girl",
         "solo",
         "blonde_hair",
         "very_long_hair",
-        "braid",
         "ahoge",
         "purple_eyes",
         "gentle_smile",
@@ -1275,7 +1374,7 @@
         {
           "id": "official_ruler_flag_armor",
           "name": "白银胸铠圣旗Ruler圣装",
-          "prose": "her iconic Ruler-class vestments: a white and blue armored dress with a silver breastplate and faulds, white gauntlets over slender arms, a flowing white cape, and the sacred banner La Pucelle raised as a flag-tipped spear",
+          "prose": "white-and-blue Ruler armored vestments with a silver breastplate, faulds, gauntlets and white cape, carrying the sacred banner Luminosite Eternelle, with golden hair in a long braid",
           "tokens": [
             "white_dress",
             "armored_dress",
@@ -1286,7 +1385,8 @@
             "flag",
             "holding_flag",
             "holding_polearm",
-            "la_pucelle"
+            "luminosite_eternelle",
+            "braid"
           ],
           "default": true,
           "isDefault": true
@@ -1294,7 +1394,7 @@
         {
           "id": "casual_french_civilian",
           "name": "奥尔良乡野白裙私服",
-          "prose": "a rustic French countryside outfit: a soft white blouse with lace collar, a long royal-blue skirt, a woven straw hat tied with a ribbon, and simple leather walking shoes",
+          "prose": "a rustic French countryside outfit: a soft white blouse with lace collar, a long royal-blue skirt, a woven straw hat tied with a ribbon, and simple leather walking shoes, with golden hair in a long braid",
           "tokens": [
             "white_blouse",
             "lace_trim",
@@ -1302,13 +1402,14 @@
             "blue_skirt",
             "straw_hat",
             "casual_wear",
-            "sun_hat"
+            "sun_hat",
+            "braid"
           ]
         },
         {
           "id": "summer_beach_swimsuit",
           "name": "海滨纯白比基尼泳装",
-          "prose": "a pure white bikini with delicate blue ribbon accents and a sheer gauzy pareo draped at her hips, sun-kissed and radiant beside the summer sea",
+          "prose": "a pure white bikini with delicate blue ribbon accents and a sheer gauzy pareo draped at her hips, sun-kissed and radiant beside the summer sea, with golden hair in a long braid",
           "tokens": [
             "bikini",
             "white_bikini",
@@ -1316,7 +1417,8 @@
             "bare_shoulders",
             "bare_legs",
             "cleavage",
-            "wet_skin"
+            "wet_skin",
+            "braid"
           ]
         },
         {
@@ -1347,6 +1449,60 @@
             "navel",
             "divine_body"
           ]
+        },
+        {
+          "id": "sfw_unarmored_prayer",
+          "name": "卸甲素白祈祷裙",
+          "prose": "a plain opaque white long-sleeved prayer dress, with bare hands and golden hair in a long braid",
+          "tokens": [
+            "plain_white_dress",
+            "long_sleeves",
+            "braid"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_loose_hair_civilian",
+          "name": "晨间散发室内便服",
+          "prose": "a soft white blouse and long blue skirt, with waist-length golden hair worn completely loose",
+          "tokens": [
+            "white_blouse",
+            "long_blue_skirt",
+            "loose_hair"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_market_shawl",
+          "name": "夜市披肩便服",
+          "prose": "a white blouse and long blue skirt beneath a soft evening shawl, with golden hair in a long braid",
+          "tokens": [
+            "white_blouse",
+            "long_blue_skirt",
+            "shawl",
+            "braid"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_white_bridal",
+          "name": "彩窗下纯白花嫁",
+          "prose": "an opaque floor-length white wedding gown with a long veil and train, with golden hair in a long braid beneath the veil",
+          "tokens": [
+            "white_wedding_dress",
+            "long_veil",
+            "train",
+            "braid"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ]
     },
@@ -1362,7 +1518,7 @@
         "弑神师匠",
         "Siabhair"
       ],
-      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a towering alluring beauty with very long purple hair and piercing crimson-red eyes, clad in her skin-tight purple bodysuit that leaves little of her voluptuous figure to imagination",
+      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a tall mature woman with very long purple hair, crimson-red eyes and a poised, confident presence",
       "identityTokens": [
         "scathach (fate)",
         "1girl",
@@ -1372,7 +1528,6 @@
         "red_eyes",
         "tall_female",
         "mature_female",
-        "bodysuit",
         "confident_smile"
       ],
       "exactTokens": [
@@ -1483,6 +1638,49 @@
             "navel",
             "toned_body"
           ]
+        },
+        {
+          "id": "sfw_home_tea",
+          "name": "茶室白衫居家装",
+          "prose": "a loose white long-sleeved house shirt and dark lounge trousers, with very long purple hair loosely tied back",
+          "tokens": [
+            "white_house_shirt",
+            "long_sleeves",
+            "dark_pants",
+            "loosely_tied_hair"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_shrine_coat_off",
+          "name": "夜谈旅装（外套脱下）",
+          "prose": "a white shirt, brown vest, dark trousers and leather boots with a wide-brimmed hat; the long traveling coat is removed and shared as a lap covering",
+          "tokens": [
+            "white_shirt",
+            "brown_vest",
+            "dark_pants",
+            "boots",
+            "hat",
+            "coat_on_lap"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_verdant_bridal",
+          "name": "花谷纯白花嫁",
+          "prose": "an opaque floor-length white wedding gown and a delicate veil, with purple hair braided into a floral arrangement",
+          "tokens": [
+            "white_wedding_gown",
+            "veil",
+            "flower_braid"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ]
     },
@@ -1540,7 +1738,7 @@
         {
           "id": "official_goddess_attire",
           "name": "天之女主人神装",
-          "prose": "her goddess attire: a black fitted top with white detached sleeves worn on one arm, a golden neck ring, large hoop earrings and a golden tiara, a black miniskirt with uneven legwear — one sheer white thighhigh on one leg and a golden anklet — and the Heavenly Boat Maanna gliding beside her",
+          "prose": "her goddess attire: a black fitted top with white detached sleeves worn on one arm, a golden neck ring, large hoop earrings and a golden tiara, a black miniskirt with uneven legwear — one sheer white thighhigh on one leg and a golden anklet",
           "tokens": [
             "black_top",
             "white_detached_sleeve",
@@ -1552,8 +1750,7 @@
             "uneven_legwear",
             "single_thighhigh",
             "anklet",
-            "bare_shoulders",
-            "holding_polearm"
+            "bare_shoulders"
           ],
           "default": true,
           "isDefault": true
@@ -1561,7 +1758,7 @@
         {
           "id": "casual_modern_date",
           "name": "女神的现代私服",
-          "prose": "a modern off-duty goddess outfit: a fitted white crop tee under a denim jacket, high-waist shorts, golden hoop earrings still gleaming, and sneakers — her tiara traded for a star-shaped hairpin",
+          "prose": "a fitted white crop tee under a denim jacket, high-waisted shorts, golden hoop earrings, sneakers and a star-shaped hairpin",
           "tokens": [
             "casual_wear",
             "crop_top",
@@ -1622,6 +1819,37 @@
             "hoop_earrings",
             "divine_body"
           ]
+        },
+        {
+          "id": "sfw_christmas_winter",
+          "name": "冥界送礼冬装",
+          "prose": "a warm white winter coat over a knit top and long trousers, a red scarf, gloves and boots, with a star-shaped hairpin",
+          "tokens": [
+            "white_winter_coat",
+            "knit_top",
+            "long_pants",
+            "red_scarf",
+            "gloves",
+            "boots",
+            "star_hairpin"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_gold_thread_bridal",
+          "name": "金线白纱花冠礼装",
+          "prose": "an opaque floor-length white wedding gown embroidered with gold thread, a long veil and a flower crown",
+          "tokens": [
+            "white_wedding_gown",
+            "gold_embroidery",
+            "veil",
+            "flower_crown"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ]
     },
@@ -1680,7 +1908,7 @@
         {
           "id": "official_lancer_attire",
           "name": "冥界女王黑衣神装",
-          "prose": "her goddess attire as ruler of the underworld: a flowing black dress with pale blue ribbons, a golden tiara over her long blonde hair, red eyes gentle yet regal, a long ornate staff in her hands, and pale blue underglow of the underworld swirling at her feet",
+          "prose": "a flowing black goddess dress with pale blue ribbons and a golden tiara over long blonde twintails",
           "tokens": [
             "black_dress",
             "blue_ribbon",
@@ -1688,8 +1916,6 @@
             "blonde_hair",
             "very_long_hair",
             "red_eyes",
-            "holding_staff",
-            "glowing",
             "twintails"
           ],
           "default": true,
@@ -1759,6 +1985,20 @@
             "hair_down",
             "glowing"
           ]
+        },
+        {
+          "id": "sfw_underworld_bridal",
+          "name": "冥界烛光纯白花嫁",
+          "prose": "an opaque floor-length white wedding gown with a long veil and golden tiara, holding a small white-flower bouquet",
+          "tokens": [
+            "white_wedding_gown",
+            "long_veil",
+            "golden_tiara",
+            "white_flower_bouquet"
+          ],
+          "isDefault": false,
+          "default": false,
+          "isNsfw": false
         }
       ]
     },

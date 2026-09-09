@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 
 const popularContent = require('../../src/utils/popularContent.ts');
+const { showcaseSubjectGuards, compositionNegative } = require('../../src/utils/blueprintComposition.ts');
 const { artistTagsForEngine } = require('../../src/config/artistStyles.ts');
 const animaConstants = require('../../routes/anima.js').constants;
 const animaGenerationContract = require('../../server/anima-generation-contract.js');
@@ -108,10 +109,8 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
   // 单人主体强化：压制主画面第二人（背景路人可接受，不强压 bystanders）。
   // 2026-08-18 增强：分身/复制体压制（Anima 爱在舞会/咖啡店/超市等社交场景画同款第二主角）。
   // R18 场景双人/分身高发：额外加强 solo/1girl 权重与无路人压制（2026-08-15 用户反馈）。
-  const cloneGuard = '(no clone:1.4), (no duplicate:1.4), (no twin:1.3), no duplicated character, no second copy, no doppelganger, no double body, no mirror copy, single subject only';
-  const soloGuard = adult
-    ? `(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), (no second person:1.3), no other person, no bystanders, no background people, ${cloneGuard}`
-    : `(single girl only:1.4), (one person only:1.4), no second person, no other person, ${cloneGuard}`;
+  const guards = showcaseSubjectGuards(blueprint);
+  const soloGuard = guards.prompt;
   const prompt = result.prompt.includes('\n')
     ? result.prompt.replace('\n', `, ${soloGuard}\n`)
     : `${result.prompt}, ${soloGuard}`;
@@ -123,8 +122,7 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
     ? blueprint.negativeTokens.join(', ').trim()
     : String(blueprint.negativeTokens || '').trim();
   // 2026-08-18 增强：分身/复制体负面压制（社交场景出同款第二主角共性根因）。
-  const cloneNegative = 'duplicate, clone, copy, doppelganger, twin, two of her, second instance of her, duplicated subject, multiple girls, extra girl, same character twice';
-  const negative = [result.negative, blueprintNegative, cloneNegative].filter(Boolean).join(', ');
+  const negative = compositionNegative([result.negative, blueprintNegative, guards.negative].filter(Boolean).join(', '), blueprint);
   return {
     batch: 'popular', key: `popular:${character.id}:${blueprint.id}`,
     recordId: `popular:${character.id}:${blueprint.id}@attempt-${attempt}`,
@@ -147,7 +145,7 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
     inferred: decisions,
   };
 }
-function planAll(attempt, seedAttempt = attempt) {
+function planAll(attempt, seedAttempt = attempt, keys = []) {
   const characters = popularContent.parsePopularCharacters(popularData);
   const blueprints = popularContent.parseSceneBlueprints(blueprintData);
   const profile = resolveProfile();
@@ -156,6 +154,7 @@ function planAll(attempt, seedAttempt = attempt) {
     const owned = blueprints.filter(bp => bp.characterId === character.id);
     if (!owned.length) throw new Error(`no blueprints for ${character.id}`);
     for (const blueprint of owned) {
+      if (keys.length && !keys.includes(`popular:${character.id}:${blueprint.id}`)) continue;
       candidates.push(buildCandidate(character, blueprint, profile, attempt, seedAttempt));
     }
   }
@@ -237,7 +236,7 @@ async function main() {
   const concurrency = Math.max(1, Math.min(4, Number(argument('--concurrency', '3')) || 3));
   const force = process.argv.includes('--force');
   const dryRun = process.argv.includes('--dry-run');
-  const planned = planAll(attempt, seedAttempt);
+  const planned = planAll(attempt, seedAttempt, keys);
   const selected = keys.length ? planned.filter(c => keys.includes(c.key)) : planned;
   if (keys.length && selected.length !== keys.length) {
     const found = new Set(selected.map(c => c.key));

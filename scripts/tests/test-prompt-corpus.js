@@ -158,7 +158,8 @@ test('golden scenes: sc001 medium/window, sc153 close, sc050 holding-hands prese
   assert(anima050.includes('hand on armrest'), 'sc050 must specify the off-frame viewer hand (1326be66 改写后以扶手受力锚点表述)')
 
   const anima010 = policy.sceneTemplateText(byId.sc010, { char: 'nene', engine: 'anima' })
-  assert(anima010.includes('holding sun hat'), 'sc010 must carry its core sun-hat prop (场景重写后核心道具为阳伞帽)')
+  assert(anima010.includes('holding sandals'), 'sc010 must preserve the sandals carried in its shoreline story')
+  assert(!anima010.includes('holding sun hat'), 'sc010 must not substitute a sun hat for its carried sandals')
 
   const anima166 = policy.sceneTemplateText(byId.sc166, { char: 'nene', engine: 'anima' })
   assert(anima166.includes('backs of both hands visible to camera'), 'sc166 must constrain mirror-facing hand orientation')

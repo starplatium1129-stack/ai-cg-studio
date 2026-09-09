@@ -4,7 +4,6 @@
 
 ## 模块边界
 
-
 - **前端架构**：Vue 3 + Vite + TypeScript + Pinia（`src/stores/` + `src/views/` 路由全懒加载）。
 - **组件与逻辑分层**：
   - 复杂业务逻辑与状态机下沉至专属 composable（如 `usePromptSdQueue`、`useAnimaInpaint`、`usePopularPromptAssembly`），保持 View 纯粹。
@@ -21,7 +20,9 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 
 ## 角色接入
 
-数据层沿用既有 `adultEligibility: "adult"` 默认约定；远程访问授权仍以网关门控为准，字段默认值不能替代访问授权判断。
+场景蓝图的 `compositionIntent` 可取 `single`（默认）、`group` 或 `triptych`。只有明确标记的 SFW 蓝图会放行多人或三格叙事；正文、人物数量、标签、镜头和画幅必须一起描述该构图。核心编译器与候选生成入口共用构图规则，不能在一端放行后又在另一端补回矛盾的单人/禁分格负面词。成人蓝图仍使用原有主体限制，构图字段不能改变成人资格或远程访问边界。未知取值视为无效蓝图。场景真实生成后由人工验收，不以参数通过替代画面通过。
+
+数据层沿用既有 `adultEligibility: "adult"` 默认约定；远程访问授权仍以网关门控为准，字段默认值不能替代访问授权判断，也不能证明角色在具体剧情时期已成年。
 
 角色接入必须同步完成以下六层：
 
@@ -31,6 +32,5 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 4. **立绘原图与 WebP 紧凑头像缩略图**：在发布样张原图（`assets/characters/popular-<id>.png`）后，**必须同步执行 `python scripts/maintenance/build-character-thumbs.py`** 编译生成 `assets/characters/thumbs/popular-<id>.webp`，确保生图左侧选择器、首页横条卡片不掉头像；
 5. **全视角参考标准库接入**：在 `data/character-reference-standards.json` 与 `data/character-reference-view.json` 中为新角色及所有服装形态注册 7 视角机位定义（面部特写/半身定妆/全身立姿/背影回眸 + 3 视角设计图），无资产形态先跑 `workflow reference:register` 登记 pending 占位（防 standards/view 漂移与断链），再执行 `node scripts/maintenance/render-all-outfits-references.js --ids=<角色id>` 完成资产补齐并跑 `sync-multi-outfit-standards.js` 回填 url；
 6. **门禁、质检与桌面端同步**：必须跑通 `node scripts/tests/test-popular-content.js`、`npm run typecheck:app` 与 `npm run build`，并执行 `deploy-desktop.bat -SkipBuild` 完成桌面端闭环同步与 Git 推送。
-
 
 自动化辅助入口见 [接入工作流](character-onboarding-workflow.md)。脚本执行成功不等于主题、头像、所有形态参考图和真实样张全部验收通过；必须逐层核对。场景数量是接入目标，不能为凑数覆盖已定稿内容；现存更多场景无需删减。

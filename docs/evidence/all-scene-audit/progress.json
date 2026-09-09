@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-08T16:37:41.162Z",
+  "updatedAt": "2026-09-09T02:14:35.946Z",
   "goalStatus": "active",
-  "batch": "old-2",
+  "batch": "sfw-repair-queue",
   "characterTarget": 50,
   "internalSemanticCharacters": 50,
   "nonAdultTarget": 345,
@@ -11,7 +11,7 @@
   "currentVerifiedRepairImages": 10,
   "currentFirstBatchRepairImages": 4,
   "nextCharacterIndex": 0,
-  "nextCharacterId": "arcueid_brunestud",
+  "nextCharacterId": null,
   "semanticReports": [
     "old2-characters01-05-semantic-review.json",
     "old2-characters06-08-semantic-review.json",
@@ -43,18 +43,34 @@
     {
       "id": "misaki_dorm_late_night_snack",
       "recognizedRepair": true
+    },
+    {
+      "id": "ciel_glasses_removed_flustered_tsundere",
+      "recognizedRepair": true
+    },
+    {
+      "id": "shiki_garan_no_dou_sofa_lap_pillow",
+      "recognizedRepair": true
+    },
+    {
+      "id": "shiki_snowy_bamboo_shiromuku_vow",
+      "recognizedRepair": true
+    },
+    {
+      "id": "asuna_floor22_cabin_cooking_breakfast",
+      "recognizedRepair": true
+    },
+    {
+      "id": "asuna_lakeside_nap_lap_pillow",
+      "recognizedRepair": true
     }
   ],
   "remaining": [
-    "old-3: 9 characters / 63 non-R18 source scenes",
-    "new49 current-source and evidence reconciliation",
-    "302 standalone scene audits",
-    "R18 existing-source semantic/age assessment beyond metadata",
-    "canonical research and existing-image review for all batches",
-    "Saber Alter failed visual repair and other confirmed priority repairs",
-    "remote/browser/dual-theme validation",
-    "28 pending reference views for 4 registered forms",
-    "publish verified images and integrate branch changes when appropriate"
+    "Contextual adult classification follow-up (regex hits are not exhaustive)",
+    "Adjudicate canon and compiler leads, repair all confirmed SFW issues from 109 old characters and standalone scenes",
+    "Reconcile new49 five missing review records and remaining source issues without overwriting parallel work",
+    "Final current-source compiled/render evidence and full gate",
+    "Merge/push main after all SFW work, then stop; all new visuals remain for user manual review"
   ],
   "checks": {
     "previousOwnedRepairGate": "pass",
@@ -67,7 +83,13 @@
       "caveat": "Retention exceeds the printed 50% recommendation; checker does not enforce that average threshold"
     },
     "adultDisabledPlanning": "1292/1292 blocked as expected",
-    "currentSafeBindingGateLog": "safe-binding-gate-full.log"
+    "currentSafeBindingGateLog": "safe-binding-gate-full.txt",
+    "resumedGate": "PASS: 1m51s; log resumed-checkpoint-gate.txt; before subsequent repair batches",
+    "focusedCorpusAndGenerationTests": "31 passed",
+    "latestGate": "PASS: yukino6-gate.txt. Three school-age characters in control-guard regression; 25 blocked sources. Rewrite retention58.1% above recommendation, disclosed.",
+    "focusedDirectorAndCandidateTests": "53 passed",
+    "lightingInvariants": "31 popular tests passed, including all 1033 SFW blueprints under adversarial prose/mood/camera changes",
+    "popularSourceTests": "Includes hairstyle/SFW body-cue checks and the official Mahiru umbrella-direction regression"
   },
   "partialVisualBindingRepairs": [
     "misaki_dorm_late_night_snack",
@@ -76,15 +98,376 @@
   "failedVisualRepairs": [
     "saber_alter_sofa_armor_off_cuddle"
   ],
-  "nextStage": "old-3 nine-character source audit, then standalone scenes and canonical/visual/rating closure",
-  "cumulativeInternalSemanticCharacters": 100,
-  "cumulativeInternalSemanticScenes": 659,
-  "cumulativeRowsWithFindings": 485,
+  "nextStage": "Continue 571 legacy/standalone source leads, next Yui/Elaina and later franchises. Preserve 25 generation-blocked records and neutral classification evidence. New49 generation gap remains zero but source/canon evidence reconciliation remains. No image viewing/upload; main integration only after all confirmed SFW work is complete.",
+  "cumulativeInternalSemanticCharacters": 109,
+  "cumulativeInternalSemanticScenes": 722,
+  "cumulativeRowsWithFindings": 541,
   "checkpoint": {
     "branch": "codex/all-scene-audit",
     "sourceCommit": "ed1cef5a18303dd1f17721f4773ee491e726b25e",
     "sourcePushed": true,
     "sourceWorktree": "E:/code/2/lora/AI-CG-Studio-audit",
     "sourceValidation": "gate:full pass in isolated worktree after initial build"
+  },
+  "userScope": {
+    "sfwAuditAndRepairs": true,
+    "obviouslyAdult": "classify adult and preserve existing content",
+    "imageViewing": false,
+    "imageUpload": false,
+    "imageGeneration": "allowed; new candidates await user manual review",
+    "completion": "all SFW audit and repairs complete, then commit/push main and stop"
+  },
+  "standaloneSourcePass": {
+    "uniqueReviewedAtReviewTime": 239,
+    "currentNonAdult": 198,
+    "currentNonAdultReviewed": 198,
+    "currentNonAdultRemaining": 0
+  },
+  "new49Reconciliation": {
+    "characters": 49,
+    "nonAdult": 312,
+    "withCurrentGenerationMetadata": 312,
+    "peerReviewsMatchedToCurrentGenerationMetadata": 207,
+    "currentImagesAwaitingUserReview": 14,
+    "oldDeliveryMatches": 69,
+    "oldDeliveryIntentionalDrift": [
+      "yatogami_tohka_sfw_b6_03",
+      "kasugano_sora_sfw_b7_03"
+    ],
+    "pendingCurrentGenerationMetadata": 0,
+    "explicitOwnSourceNotes": 95,
+    "furtherSourceEvidenceReconciliation": 217
+  },
+  "currentRunRepairs": {
+    "reclassifiedAdult": 99,
+    "pinnedClassificationOnly": 26,
+    "adultMarkersAddedWithoutGeneration": 25,
+    "standaloneSfwRewrites": 31,
+    "realGeneration": "273 current candidates, source and job metadata matched; all user-manual-review pending",
+    "imageReview": "pending-user-manual-review",
+    "nextBatch": {
+      "count": 20,
+      "status": "20 exact current-source candidates generated; human review queue saved",
+      "output": "E:/code/2/lora/AI/Reviews/SceneShowcaseRefresh/2026-09-09-sfw-audit-next20",
+      "rewrite": {
+        "exit": "pass",
+        "retention": 0.587,
+        "proseSimilarity": 0.25,
+        "note": "Retention exceeds printed 50% recommendation; actual checker accepts it. No attempt to remove correct identity or scene anchors solely to lower the metric."
+      }
+    },
+    "old3BindingRepairs": {
+      "count": 5,
+      "newOutfits": 5,
+      "registeredPendingViews": 49,
+      "generation": "5 exact-current candidates generated; job metadata verified; manual visual review pending",
+      "dualEnginePlans": "10/10 compiled with adultEnabled=false; no fixed knife/spoon/red-jacket tokens",
+      "rewrite": {
+        "exit": "pass",
+        "retention": 0.657,
+        "proseSimilarity": 0.21,
+        "note": "above printed 50% recommendation; no templates"
+      }
+    },
+    "currentGeneratedSfwCandidates": 273,
+    "kanaPrecision": {
+      "sourceCorrections": 3,
+      "newGeneratedCandidates": 5,
+      "status": "source/job metadata matched; initial queue-full failure retried successfully"
+    },
+    "reclassifiedAdultBreakdown": {
+      "standalone": 88,
+      "popular": 11
+    },
+    "raiden": {
+      "rewrites": 4,
+      "adultClassification": 2,
+      "rendered": 4,
+      "visualReview": "pending-user"
+    },
+    "cameraFollowup": {
+      "codeImpactedSfwPlans": 24,
+      "nonAdultPlansCompared": 1033,
+      "preciseSourceCorrections": 5,
+      "renderedNew49": 9,
+      "ownedImpactedRowsStillPending": 13,
+      "newPendingReferenceViews": 7
+    },
+    "lightingCompiler": {
+      "plansCompared": 1033,
+      "changedPlans": 445,
+      "refreshedCurrentCandidates": 158,
+      "pendingReconciliation": 281,
+      "excludedAfterClassification": 1
+    },
+    "furina": {
+      "fullRewrites": 4,
+      "preciseFraming": 1,
+      "identityHatMovedToOutfit": true,
+      "generatedSfw": 7,
+      "referenceLingerieRestricted": true
+    },
+    "piano": {
+      "id": "sc220",
+      "japaneseAndSeatingAligned": true,
+      "generated": 1
+    },
+    "new49RefreshBatch1": {
+      "sourcesRead": 20,
+      "preciseRepairs": 2,
+      "reclassified": 1,
+      "generatedSfw": 19
+    },
+    "new49RefreshBatch2": {
+      "sourceRowsRead": 28,
+      "fullRewrites": 5,
+      "preciseFixes": 5,
+      "sharedSfwIdentityRepairs": 2,
+      "generated": 28,
+      "repeatedAfterFinalCorrections": 2,
+      "newPendingReferenceViews": 7,
+      "limits": "No age-up for Yamada; ordinary SFW stories retained, sexualized body cues removed. Adult-specific content not generated."
+    },
+    "new49RefreshBatch3": {
+      "sourceRowsRead": 15,
+      "precisionRepairs": 2,
+      "generated": 15,
+      "additionalPartialSourceReviews": 30,
+      "additionalFollowups": 7
+    },
+    "new49RefreshBatch4": {
+      "sourceRowsReviewed": 28,
+      "sourceRowsRepaired": 8,
+      "generated": 28,
+      "extraAttemptsAfterSourceFollowup": 4,
+      "unresolvedNew49CompositionScenes": 2
+    },
+    "compositionRepair": {
+      "scenes": 3,
+      "generated": 3,
+      "explicitSfwIntents": [
+        "group",
+        "triptych"
+      ],
+      "defaultExistingCandidatesUnchanged": 151,
+      "adultGuardsUnchanged": true
+    },
+    "legacy19": {
+      "characters": [
+        "hu_tao",
+        "tokisaki_kurumi",
+        "frieren"
+      ],
+      "sourceRowsRewritten": 19,
+      "generatedCurrent": 19,
+      "repeatedAfterAspectWordingCorrection": 1,
+      "identityCorrections": [
+        "Frieren hair and eye color",
+        "Kurumi permanent wardrobe removed from identity"
+      ],
+      "referenceAssets": "unchanged and not inspected; user review needed"
+    },
+    "fernRin12": {
+      "characters": [
+        "fern_frieren",
+        "tohsaka_rin"
+      ],
+      "sourceRowsRewritten": 12,
+      "generatedCurrent": 12,
+      "fernChanges": "held props removed from outfit prose; hairstyle belongs to outfit; ordinary identity body emphasis removed; no age or eligibility change",
+      "referenceAssets": "unchanged and not inspected; user review needed"
+    },
+    "sakura6": {
+      "sourceRowsRewritten": 6,
+      "generatedCurrent": 6,
+      "identity": "neutral shared hair; kitchen side-tie bound to outfit; ordinary identity body emphasis removed",
+      "referenceAssets": "unchanged/unviewed; user review needed"
+    },
+    "alter7": {
+      "sourceRowsRewritten": 7,
+      "generatedCurrent": 7,
+      "newSfwOutfits": 3,
+      "newPendingReferenceViews": 42,
+      "oldSofaFailure": "source repaired; replacement candidate requires manual visual review, historical failure retained"
+    },
+    "jalter6": {
+      "sourceRowsRewritten": 6,
+      "generatedCurrent": 6,
+      "newSfwOutfits": 1,
+      "newPendingReferenceViews": 7,
+      "notes": "Separate skirt variant; banner no longer always occupies a hand; terrace and rain actions aligned."
+    },
+    "illya6": {
+      "fullSourceRewrites": 5,
+      "colorOnlyFollowup": 1,
+      "generatedCurrent": 6,
+      "netNewCurrentCandidates": 5,
+      "limits": "Coat color based on secondary text, not official visual verification. No age/eligibility changes."
+    },
+    "mai5": {
+      "ordinarySourceRewrites": 5,
+      "generated": 5,
+      "newSfwOutfits": 3,
+      "newPendingReferenceViews": 21,
+      "restrictedSource": "sakurajima_mai_library",
+      "restrictedSourceGenerated": false,
+      "generationBlock": "core both engines, selector and candidate/batch paths; no age-up or adult token added"
+    },
+    "morgan6": {
+      "sourceRowsRewritten": 6,
+      "generatedCurrent": 6,
+      "newSfwOutfits": 1,
+      "newPendingReferenceViews": 7,
+      "limits": "Project form identity and lance interpretation retained, not certified against official art."
+    },
+    "mash5": {
+      "ordinaryRewrites": 5,
+      "generatedCurrent": 5,
+      "newPendingReferenceViews": 7,
+      "restrictedSource": "mash_kyrielight_dangerous_beast",
+      "restrictedSourceGenerated": false
+    },
+    "generationBlockedSources": [
+      "sakurajima_mai_library",
+      "mash_kyrielight_dangerous_beast",
+      "caren_blizzard_shroud_magdalene_exorcism",
+      "caren_stigmata_fever_hugged_blush",
+      "caren_fireplace_bible_shoulder_lean",
+      "caren_cloister_sunlit_breeze_smile",
+      "caren_nsfw_church_couch_supine_devotion",
+      "caren_nsfw_shroud_of_magdalene_binding_solo",
+      "caren_nsfw_deadpan_cowgirl_straddle",
+      "caren_nsfw_bath_translucent_camisole_solo",
+      "ishtar_pool_mismatched_bikini",
+      "caren_nsfw_poolside_white_swimsuit_solo",
+      "caren_summer_poolside_white_swimsuit",
+      "hatsune_miku_r18_backstage",
+      "hatsune_miku_r18_studio_night",
+      "hatsune_miku_r18_morning_room",
+      "hatsune_miku_r18_barefoot_sofa",
+      "yuzuriha_inori_r18_atelier",
+      "yuzuriha_inori_r18_bath_steam",
+      "yuzuriha_inori_r18_sofa_night",
+      "yuzuriha_inori_r18_navel",
+      "yukinoshita_yukino_r18_room",
+      "yukinoshita_yukino_r18_bath_warm",
+      "yukinoshita_yukino_r18_library_closed",
+      "yukinoshita_yukino_r18_footbath"
+    ],
+    "caren3": {
+      "ordinaryRewrites": 3,
+      "generatedCurrent": 3,
+      "newRestrictedClassifications": 5,
+      "blockedCarenRecords": 10,
+      "restrictedRecordsGenerated": false,
+      "defaultSfwOutfit": "casual_winter_duffle_coat"
+    },
+    "jeanne7": {
+      "sourceRewrites": 7,
+      "generatedCurrent": 7,
+      "newSfwOutfits": 4,
+      "newPendingReferenceViews": 49,
+      "bannerCorrection": "Luminosite Eternelle, supported by licensed manufacturer indexed text"
+    },
+    "scathach7": {
+      "sourceRewrites": 7,
+      "generatedCurrent": 7,
+      "newSfwOutfits": 3,
+      "newPendingReferenceViews": 42,
+      "sharedIdentityRepair": "Remove permanent purple bodysuit from identity; retain in its battle outfit."
+    },
+    "eresh7": {
+      "sourceRewrites": 7,
+      "generatedCurrent": 7,
+      "newSfwOutfits": 1,
+      "newPendingReferenceViews": 28,
+      "weaponName": "Meslamtaea; licensed manufacturer indexed text"
+    },
+    "ishtar6": {
+      "ordinaryRewrites": 6,
+      "generatedCurrent": 6,
+      "newPendingReferenceViews": 28,
+      "restrictedSource": "ishtar_pool_mismatched_bikini",
+      "restrictedSourceGenerated": false
+    },
+    "miku6": {
+      "sourceRewrites": 6,
+      "generatedCurrent": 6,
+      "newPendingReferenceViews": 7,
+      "officialAge": 16,
+      "adultEligibility": "underage",
+      "historicalR18Blocked": 4,
+      "manualSafety": "Known R18 manual/outfit/review controls rejected; weight normalization covered."
+    },
+    "inori6": {
+      "ordinaryRewrites": 6,
+      "generatedCurrent": 6,
+      "repeatedForNamedCompanion": 2,
+      "officialAge": 16,
+      "adultEligibility": "underage",
+      "historicalR18Blocked": 4,
+      "newPendingReferenceViews": 7
+    },
+    "yukino6": {
+      "ordinaryRewrites": 6,
+      "generatedCurrent": 6,
+      "historicalR18Blocked": 4,
+      "newPendingReferenceViews": 7,
+      "ageEvidence": "Official high-school second year plus secondary16–17; no exact official number claimed."
+    }
+  },
+  "peerCoordination": {
+    "threadId": "01a08159-2c53-73e0-87a0-f34651e4d2d1",
+    "branch": "codex/nsfw-scene-optimization",
+    "reportedCommit": "2176aa20",
+    "status": "Peer reports pushed and awaits completed SFW main integration; not independently verified here.",
+    "next": "After all SFW fixes are complete and main is pushed, provide its verified HEAD; do not overwrite main worktree overlaps."
+  },
+  "scopeCorrection": {
+    "date": "2026-09-09",
+    "status": "rollback-validated",
+    "instructions": [
+      "SFW only; change only confirmed defects, otherwise skip.",
+      "Existing NSFW records and generation policy are outside this task.",
+      "Keep previously requested adult reclassification only; no adult rewriting or generation.",
+      "No viewing or uploading images."
+    ],
+    "supersedes": "All earlier claims that the newly introduced generation blocks remain current.",
+    "evidence": "scope-rollback.json",
+    "remainingAtCorrection": {
+      "legacyCharacters": 85,
+      "legacyScenes": 420,
+      "standaloneScenes": 151,
+      "meaning": "Pending adjudication includes optional refinements, not confirmed defects. Skip no-defect scenes."
+    }
+  },
+  "latestMinimalAudit": {
+    "date": "2026-09-09T02:39:30.613Z",
+    "adjudicated": 30,
+    "unchangedScenes": 22,
+    "metadataOnlyCorrections": 8,
+    "generationTextChanges": 0,
+    "newImages": 0,
+    "counts": {
+      "source-repaired-image-review-pending": 176,
+      "no-major-internal-conflict-found": 193,
+      "needs-adjudication-or-repair": 541
+    },
+    "model": "anima-miaomiao-v1.2",
+    "scope": "SFW only; confirmed errors only; do not modify NSFW or generation restrictions",
+    "evidence": [
+      "minimal-adjudication-2026-09-09.json",
+      "studio-minor-adjudication.json",
+      "minimal-followup-adjudication.json"
+    ]
+  },
+  "commitCheckpoint": {
+    "requestedByUser": true,
+    "remaining": 541,
+    "fullGate": "main-checkpoint-gate.txt",
+    "fullGateStatus": "PASS 1m54s",
+    "unchangedExistingAdultRecords": 662,
+    "visualAcceptance": "pending user review; no image viewed/uploaded",
+    "delivery": "current checkpoint only; audit incomplete"
   }
 }

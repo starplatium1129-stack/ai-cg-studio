@@ -1128,9 +1128,10 @@
         "gold_braid",
         "relaxed_smile",
         "sea_breeze",
-        "afternoon_light"
+        "afternoon_light",
+        "barefoot"
       ],
-      "promptProse": "Cartethyia from Wuthering Waves wears a pale blue long-skirt swimsuit with a cream cardigan, gold braid and simple water sandals. She sits where the river meets the sea, boots set aside while her toes test the cool water. A small flower crown rests on her knees, and she looks toward the viewer with the unguarded smile of a wandering knight enjoying a day without a road to follow. clear afternoon light on river and surf.",
+      "promptProse": "Cartethyia from Wuthering Waves wears a pale blue long-skirt swimsuit with a cream cardigan and a gold braid. She sits where the river meets the sea, boots set aside while her toes test the cool water. A small flower crown rests on her knees, and she looks toward the viewer with the unguarded smile of a wandering knight enjoying a day without a road to follow. clear afternoon light on river and surf.",
       "promptTokens": [
         "swimsuit",
         "long_skirt_swimsuit",
@@ -1141,7 +1142,8 @@
         "gold_braid",
         "relaxed_smile",
         "sea_breeze",
-        "afternoon_light"
+        "afternoon_light",
+        "barefoot"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -1191,13 +1193,14 @@
         "sheathed_sword",
         "padded_cloth",
         "maintenance",
-        "examining",
         "blue_jacket",
         "confident",
         "forge_light",
-        "medium_shot"
+        "medium_shot",
+        "leaning_on_counter",
+        "distant_forge"
       ],
-      "promptProse": "At the smithy counter, Cartethyia studies a cleaned, sheathed blade laid on a padded cloth after maintenance. Her hands remain on the safe side of the counter, blue eyes attentive as she notices the restored fittings. The cream tunic and travel jacket catch a warm reflection from the distant forge. The close view centers familiar equipment care and the quiet confidence of a working knight, without combat or exposed sparks near her.",
+      "promptProse": "At the smithy counter, Cartethyia has laid her sheathed sword on a padded cloth for maintenance. She rests her forearms on the counter and watches sparks rise from the distant forge where the smith works beyond the edge of the frame, blue eyes brightening as she talks about the feel of her blade. Her cream high-collared tunic, blue travel jacket and practical trousers retain the unassuming appearance of a wandering knight. Warm forge light reaches her blonde braid and the counter; the sparks stay around the far anvil, beyond her reach.",
       "promptTokens": [
         "1girl",
         "solo",
@@ -1208,11 +1211,12 @@
         "sheathed_sword",
         "padded_cloth",
         "maintenance",
-        "examining",
         "blue_jacket",
         "confident",
         "forge_light",
-        "medium_shot"
+        "medium_shot",
+        "leaning_on_counter",
+        "distant_forge"
       ],
       "negativeTokens": [
         "worst_quality",

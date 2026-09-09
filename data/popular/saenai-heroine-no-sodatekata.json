@@ -149,14 +149,12 @@
         "惠",
         "路人女主"
       ],
-      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair in a simple short bob with blunt bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
+      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair and blunt bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
       "identityTokens": [
         "katou_megumi",
         "1girl",
         "solo",
         "brown_hair",
-        "short_hair",
-        "bob_cut",
         "blunt_bangs",
         "brown_eyes"
       ],
@@ -193,7 +191,7 @@
         {
           "id": "official_toyogasaki_uniform",
           "name": "丰之崎学园水手服与红开衫",
-          "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers",
+          "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers, with her short brown bob",
           "tokens": [
             "school_uniform",
             "sailor_uniform",
@@ -203,7 +201,9 @@
             "red_cardigan",
             "open_cardigan",
             "white_socks",
-            "loafers"
+            "loafers",
+            "short_hair",
+            "bob_cut"
           ],
           "default": true,
           "isDefault": true
@@ -219,7 +219,9 @@
             "flared_skirt",
             "white_beret",
             "beret",
-            "casual_wear"
+            "casual_wear",
+            "short_hair",
+            "bob_cut"
           ]
         },
         {
@@ -271,12 +273,14 @@
         {
           "id": "sfw_refined_daily",
           "name": "夜归连帽外套",
-          "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers",
+          "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers, with her short brown bob",
           "tokens": [
             "green_hoodie",
             "white_t-shirt",
             "jeans",
-            "sneakers"
+            "sneakers",
+            "short_hair",
+            "bob_cut"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -284,13 +288,15 @@
         {
           "id": "sfw_kitchen_apron",
           "name": "柠檬黄厨房围裙",
-          "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers",
+          "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers, with her brown hair tied in a practical ponytail",
           "tokens": [
             "white_blouse",
             "long_sleeves",
             "yellow_apron",
             "dark_pants",
-            "slippers"
+            "slippers",
+            "ponytail",
+            "hair_scrunchie"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -298,13 +304,15 @@
         {
           "id": "sfw_bridal_lace",
           "name": "蕾丝长袖花嫁",
-          "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps",
+          "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps, with her short brown bob",
           "tokens": [
             "ivory_wedding_dress",
             "long_sleeves",
             "lace_overlay",
             "long_skirt",
-            "bridal_veil"
+            "bridal_veil",
+            "short_hair",
+            "bob_cut"
           ],
           "isDefault": false,
           "isNsfw": false

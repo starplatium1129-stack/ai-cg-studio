@@ -376,7 +376,7 @@
       "displayName": "芙宁娜",
       "originalName": "Furina",
       "source": "Genshin Impact",
-      "identityProse": "Furina from Genshin Impact, the theatrical and dramatic former Hydro Archon of Fontaine, with dual-toned silvery-white and deep cobalt-blue hair in side twin-tails, striking heterochromia teardrop eyes (deep ocean blue and pale cerulean), an expressive ahoge, wearing an ornate aristocratic mini top hat adorned with ribbons and iris flower motifs",
+      "identityProse": "Furina from Genshin Impact, the theatrical and dramatic former Hydro Archon of Fontaine, with dual-toned silvery-white and deep cobalt-blue hair in side twin-tails, striking heterochromia teardrop eyes (deep ocean blue and pale cerulean), an expressive ahoge",
       "identityTokens": [
         "furina (genshin impact)",
         "1girl",
@@ -390,7 +390,6 @@
         "cyan_eyes",
         "ahoge",
         "twin_ponytails",
-        "mini_top_hat",
         "hair_ribbon",
         "genshin_impact"
       ],
@@ -399,7 +398,7 @@
           "id": "official_archon",
           "name": "枫丹礼服",
           "isDefault": true,
-          "prose": "Furina's signature theatrical Archon formal tailcoat ensemble with royal blue and navy velvet frock coat, ruffled jabot ascot, white vest with golden filigree buttons, dark tailored shorts, black thighhighs, detached ruffled sleeves, and pristine white gloves",
+          "prose": "Furina's signature theatrical Archon formal tailcoat ensemble with royal blue and navy velvet frock coat, ruffled jabot ascot, white vest with golden filigree buttons, dark tailored shorts, black thighhighs, detached ruffled sleeves, and pristine white gloves, completed by an ornate mini top hat with ribbons and iris-flower ornaments",
           "tokens": [
             "formal",
             "frock_coat",
@@ -465,7 +464,7 @@
             "thighhighs",
             "bare_shoulders"
           ],
-          "isNsfw": false
+          "isNsfw": true
         },
         {
           "id": "nsfw_nude",
@@ -594,7 +593,7 @@
       "displayName": "樱岛麻衣",
       "originalName": "Sakurajima Mai",
       "source": "Rascal Does Not Dream of Bunny Girl Senpai",
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, carrying a composed alluring presence",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, with a composed, attentive manner",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
@@ -602,7 +601,6 @@
         "long_black_hair",
         "straight_hair",
         "purple_eyes",
-        "brown_eyes",
         "bangs",
         "ahoge",
         "rabbit_hair_ornament",
@@ -697,6 +695,48 @@
             "bare_legs",
             "bare_feet"
           ]
+        },
+        {
+          "id": "sfw_clock_square_coat",
+          "name": "钟楼广场风衣围巾装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a fitted beige winter trench coat, a plaid muffler, a low-brimmed beret, dark trousers and ankle boots",
+          "tokens": [
+            "beige_trench_coat",
+            "plaid_scarf",
+            "beret",
+            "dark_pants",
+            "ankle_boots"
+          ]
+        },
+        {
+          "id": "sfw_grocery_disguise",
+          "name": "针织帽眼镜采购便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft cardigan over a simple blouse, a long skirt, plain clear-lens glasses and a knitted beanie",
+          "tokens": [
+            "cardigan",
+            "blouse",
+            "long_skirt",
+            "glasses",
+            "knit_hat"
+          ]
+        },
+        {
+          "id": "sfw_kitchen_apron",
+          "name": "晨间围裙便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a long-sleeved knit top and casual skirt beneath a light kitchen apron, with long black hair gathered clear of the stove",
+          "tokens": [
+            "long_sleeves",
+            "knit_top",
+            "skirt",
+            "light_apron",
+            "hair_tied_back"
+          ]
         }
       ]
     },
@@ -705,7 +745,7 @@
       "displayName": "时崎狂三",
       "originalName": "Tokisaki Kurumi",
       "source": "Date A Live",
-      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes with an intense gleam, a pale elegant face, and a timeless black and crimson gothic wardrobe",
+      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes with an intense gleam, a pale elegant face, and an enigmatic, composed manner",
       "identityTokens": [
         "tokisaki_kurumi",
         "1girl",
@@ -789,15 +829,15 @@
       "displayName": "芙莉莲",
       "originalName": "Frieren",
       "source": "Frieren: Beyond Journey's End",
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes with a calm distant shimmer, pointed ears, and a serene wistful expression",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, an elf mage who has lived for over a thousand years, with very long silver-white hair in twintails, green eyes, pointed ears and a calm, contemplative expression",
       "identityTokens": [
         "frieren",
         "1girl",
         "solo",
         "long_white_hair",
         "very_long_hair",
-        "twin_braids",
-        "purple_eyes",
+        "twintails",
+        "green_eyes",
         "elf",
         "pointy_ears",
         "gold_earrings"
@@ -807,7 +847,7 @@
           "id": "wizard_robe",
           "name": "魔导师袍",
           "isDefault": true,
-          "prose": "her plain white robe with a deep hood and simple adventurer belt, staff in hand",
+          "prose": "her plain white robe with a deep hood and simple adventurer belt",
           "tokens": [
             "robe",
             "white_robe",
@@ -869,7 +909,7 @@
       "displayName": "菲伦",
       "originalName": "菲伦",
       "source": "Frieren: Beyond Journey's End",
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair tied low in a half-up side ponytail, straight bangs with long sidelocks, calm violet eyes, delicate facial features, and a tall slender-curvy figure",
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair, straight bangs and long sidelocks, violet eyes, delicate facial features and a quietly attentive manner",
       "identityTokens": [
         "fern (sousou no frieren)",
         "fern",
@@ -877,26 +917,23 @@
         "solo",
         "long_hair",
         "purple_hair",
-        "side_ponytail",
-        "half-updo",
         "straight_bangs",
         "long_sidelocks",
-        "purple_eyes",
-        "large_breasts"
+        "purple_eyes"
       ],
       "outfits": [
         {
           "id": "journey_robe",
           "name": "旅途魔法长袍",
           "isDefault": true,
-          "prose": "wearing her signature long black wizard coat with a hood over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
+          "prose": "a long black hooded wizard coat over a white high-collared dress, with practical boots and purple hair tied half up",
           "tokens": [
             "black_coat",
             "white_dress",
             "high_collar",
             "long_sleeves",
-            "magic_staff",
-            "boots"
+            "boots",
+            "half_updo"
           ],
           "isNsfw": false
         },
@@ -904,14 +941,15 @@
           "id": "winter_coat",
           "name": "冬季厚风衣围巾装",
           "isDefault": false,
-          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
+          "prose": "a warm beige winter overcoat, a thick knitted muffler, gloves and boots, with purple hair tied half up",
           "tokens": [
             "winter_coat",
             "overcoat",
             "scarf",
             "muffler",
             "gloves",
-            "boots"
+            "boots",
+            "half_updo"
           ],
           "isNsfw": false
         },
@@ -919,12 +957,13 @@
           "id": "town_casual",
           "name": "城镇甜品便服",
           "isDefault": false,
-          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
+          "prose": "a soft knitted cardigan over a blouse and a long pleated skirt, with purple hair tied half up",
           "tokens": [
             "cardigan",
             "long_skirt",
             "blouse",
-            "ribbon"
+            "ribbon",
+            "half_updo"
           ],
           "isNsfw": false
         },
@@ -932,7 +971,7 @@
           "id": "noble_ball_dress",
           "name": "贵族舞会典雅深紫礼服",
           "isDefault": false,
-          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "prose": "a deep violet satin ball gown with elbow-length white gloves and a neat formal updo of purple hair",
           "tokens": [
             "evening_dress",
             "purple_dress",
@@ -1201,10 +1240,10 @@
           "id": "winter_coat",
           "name": "Fate 本篇冬装",
           "isDefault": true,
-          "prose": "her red winter coat with a hood and fur trim from the Fuyuki winter story",
+          "prose": "her purple winter coat with a hood and fur trim from the Fuyuki winter story",
           "tokens": [
             "coat",
-            "red_coat",
+            "purple_coat",
             "fur_trim",
             "hood",
             "winter_clothes"
@@ -1215,11 +1254,12 @@
           "id": "casual",
           "name": "便服",
           "isDefault": false,
-          "prose": "a soft casual outfit",
+          "prose": "a simple long-sleeved cardigan over a knee-length casual dress with flat shoes",
           "tokens": [
             "casual_clothes",
             "dress",
-            "cardigan"
+            "cardigan",
+            "flat_shoes"
           ],
           "isNsfw": false
         },
@@ -1302,7 +1342,7 @@
           "id": "avenger_black_armor",
           "name": "复仇者黑铁战铠",
           "isDefault": true,
-          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece, and holding the dragon banner",
+          "prose": "wearing her iconic spiked black gothic armor with deep purple tattered cape, armored headpiece",
           "tokens": [
             "black_armor",
             "dragon_witch",
@@ -1376,6 +1416,21 @@
             "bare_feet"
           ],
           "isNsfw": true
+        },
+        {
+          "id": "shinjuku_jacket_skirt",
+          "name": "新宿黑夹克短裙便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a black leather biker jacket over a black tank top, a short black pleated skirt, dark tights, choker and boots",
+          "tokens": [
+            "leather_jacket",
+            "black_tank_top",
+            "black_pleated_skirt",
+            "dark_tights",
+            "choker",
+            "boots"
+          ]
         }
       ]
     },
@@ -1384,7 +1439,7 @@
       "displayName": "间桐樱",
       "originalName": "间桐樱",
       "source": "Fate",
-      "identityProse": "Sakura Matou from Fate/stay night, a gentle girl with long purple hair flowing in soft silky waves, a red ribbon tied on the left side, deep violet eyes with a tender gleam, and a devoted affectionate gaze",
+      "identityProse": "Sakura Matou from Fate/stay night, a gentle girl with long purple hair, a red ribbon tied on the left side, deep violet eyes with a tender gleam, and a devoted affectionate gaze",
       "identityTokens": [
         "matou_sakura",
         "1girl",
@@ -1394,7 +1449,6 @@
         "hair_ribbon",
         "red_ribbon",
         "purple_eyes",
-        "large_breasts",
         "fate/stay_night"
       ],
       "outfits": [
@@ -1431,13 +1485,14 @@
           "id": "kitchen_apron_homewear",
           "name": "居家粉色毛衣与围裙",
           "isDefault": false,
-          "prose": "wearing a cozy light pink knit sweater under a white frilled kitchen apron at the Emiya household",
+          "prose": "a light pink knit sweater, a white frilled kitchen apron and a long skirt, with purple hair tied over one shoulder clear of the cooking area",
           "tokens": [
             "pink_sweater",
             "apron",
             "frilled_apron",
             "long_skirt",
-            "casual_clothes"
+            "casual_clothes",
+            "side_ponytail"
           ],
           "isNsfw": false
         },
@@ -1483,7 +1538,7 @@
           "id": "winter_queen",
           "name": "冬之女王本貌",
           "isDefault": true,
-          "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown and the holy lance Rhongomyniad",
+          "prose": "her true form as the Winter Queen of Faerie Britain, an elaborate black-and-blue gothic gown with a high ruff collar, detached wing-like sleeves, a layered split skirt, royal crown",
           "tokens": [
             "crown",
             "gothic_dress",
@@ -1492,8 +1547,7 @@
             "high_collar",
             "detached_sleeves",
             "layered_skirt",
-            "long_dress",
-            "rhongomyniad"
+            "long_dress"
           ],
           "isNsfw": false
         },
@@ -1541,6 +1595,21 @@
             "smile"
           ],
           "isNsfw": true
+        },
+        {
+          "id": "aesc_hooded_travel",
+          "name": "梣·雨后兜帽行旅变体",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a closed blue hooded travelling robe over warm clothes and sturdy boots, carrying a wooden staff",
+          "tokens": [
+            "aesc (fate)",
+            "blue_hooded_robe",
+            "hood",
+            "robe",
+            "boots",
+            "staff"
+          ]
         }
       ]
     },
@@ -1598,14 +1667,13 @@
           "id": "summer_swimsuit",
           "name": "常夏泳装灵衣",
           "isDefault": false,
-          "prose": "her summer spiritron dress, a white dress-style swimsuit with a halterneck top",
+          "prose": "a white opaque one-piece halter swimsuit with a light dress-like outer hem",
           "tokens": [
             "swimsuit",
             "dress_swimsuit",
             "white_dress",
-            "bikini",
-            "crop_top",
-            "halterneck"
+            "halterneck",
+            "one_piece_swimsuit"
           ],
           "isNsfw": true
         },
@@ -1635,6 +1703,20 @@
             "armored_boots"
           ],
           "isNsfw": false
+        },
+        {
+          "id": "chaldea_cafeteria_jacket_off",
+          "name": "迦勒底午餐便服（外套脱下）",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a black collared dress with a red necktie, black tights and glasses; the grey jacket is removed and rests on the chair back",
+          "tokens": [
+            "black_collared_dress",
+            "red_necktie",
+            "black_tights",
+            "glasses",
+            "jacket_on_chair"
+          ]
         }
       ]
     },
@@ -1660,45 +1742,241 @@
       "displayName": "阿尔托莉雅·Alter",
       "originalName": "アルトリア・ペンドラゴン[オルタ]",
       "source": "Fate",
-      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, a ruthless and tyrannical corrupted king with pale platinum-blonde hair tied in a braided bun, hollow cold amber-gold eyes, ivory porcelain skin, and a commanding, unyielding gaze",
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, with pale platinum-blonde hair, amber-gold eyes, ivory skin and a reserved, composed presence",
       "identityTokens": [
         "saber_alter",
         "blonde_hair",
-        "hair_bun",
         "yellow_eyes",
         "golden_eyes",
         "pale_skin",
         "kuudere",
         "cool_beauty"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_black_armor",
+          "name": "漆黑哥特重铠战袍",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "heavy black plate armor with jagged red filigree, dark blue gown accents and iron gauntlets, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "black_armor",
+            "plate_armor",
+            "gauntlets",
+            "excalibur_morgan",
+            "dark_dress",
+            "red_trim",
+            "hair_bun"
+          ]
+        },
+        {
+          "id": "casual_gothic_lolita_dress",
+          "name": "无光深黑哥特抹胸晚礼裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque black velvet gothic dress with a strapless neckline, black lace trim, black gloves and knee-high boots, with platinum-blonde hair worn loose",
+          "tokens": [
+            "black_dress",
+            "strapless_dress",
+            "gothic_dress",
+            "bare_shoulders",
+            "gloves",
+            "black_gloves",
+            "boots",
+            "loose_hair"
+          ]
+        },
+        {
+          "id": "casual_shinjuku_jacket_shorts",
+          "name": "新宿机车皮夹克热裤",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a black leather biker jacket over a white cropped top, black denim shorts, black tights and a studded choker, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "leather_jacket",
+            "crop_top",
+            "midriff",
+            "short_shorts",
+            "denim_shorts",
+            "pantyhose",
+            "black_pantyhose",
+            "choker",
+            "streetwear",
+            "hair_bun"
+          ]
+        },
+        {
+          "id": "sfw_breakfast_sweater",
+          "name": "晨间宽松卫衣便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an oversized dark biker-style sweatshirt with comfortable black trousers, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "oversized_sweatshirt",
+            "black_pants",
+            "hair_bun"
+          ]
+        },
+        {
+          "id": "sfw_winter_coffee",
+          "name": "雪中厚风衣装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a thick black winter overcoat with a dark scarf, gloves, trousers and winter boots, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "black_winter_coat",
+            "scarf",
+            "gloves",
+            "pants",
+            "winter_boots",
+            "hair_bun"
+          ]
+        },
+        {
+          "id": "sfw_white_bridal",
+          "name": "纯白哥特花嫁",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque white gothic bridal gown with a strapless neckline, a floor-length lace veil and white dress shoes, with platinum-blonde hair secured in a braided bun",
+          "tokens": [
+            "white_wedding_dress",
+            "lace_veil",
+            "white_shoes",
+            "hair_bun"
+          ]
+        }
+      ]
     },
     {
       "id": "jeanne_d_arc",
       "displayName": "圣女贞德",
       "originalName": "ジャンヌ・ダルク",
       "source": "Fate",
-      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair in a long braid, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
+      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
       "identityTokens": [
         "jeanne d'arc (fate)",
         "1girl",
         "solo",
         "blonde_hair",
         "very_long_hair",
-        "braid",
         "ahoge",
         "purple_eyes",
         "gentle_smile",
         "holy_motherly"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_ruler_flag_armor",
+          "name": "白银胸铠圣旗Ruler圣装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "white-and-blue Ruler armored vestments with a silver breastplate, faulds, gauntlets and white cape, carrying the sacred banner Luminosite Eternelle, with golden hair in a long braid",
+          "tokens": [
+            "white_dress",
+            "armored_dress",
+            "breastplate",
+            "faulds",
+            "gauntlets",
+            "white_cape",
+            "flag",
+            "holding_flag",
+            "holding_polearm",
+            "luminosite_eternelle",
+            "braid"
+          ]
+        },
+        {
+          "id": "casual_french_civilian",
+          "name": "奥尔良乡野白裙私服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a rustic French countryside outfit: a soft white blouse with lace collar, a long royal-blue skirt, a woven straw hat tied with a ribbon, and simple leather walking shoes, with golden hair in a long braid",
+          "tokens": [
+            "white_blouse",
+            "lace_trim",
+            "long_skirt",
+            "blue_skirt",
+            "straw_hat",
+            "casual_wear",
+            "sun_hat",
+            "braid"
+          ]
+        },
+        {
+          "id": "summer_beach_swimsuit",
+          "name": "海滨纯白比基尼泳装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a pure white bikini with delicate blue ribbon accents and a sheer gauzy pareo draped at her hips, sun-kissed and radiant beside the summer sea, with golden hair in a long braid",
+          "tokens": [
+            "bikini",
+            "white_bikini",
+            "sarong",
+            "bare_shoulders",
+            "bare_legs",
+            "cleavage",
+            "wet_skin",
+            "braid"
+          ]
+        },
+        {
+          "id": "sfw_unarmored_prayer",
+          "name": "卸甲素白祈祷裙",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a plain opaque white long-sleeved prayer dress, with bare hands and golden hair in a long braid",
+          "tokens": [
+            "plain_white_dress",
+            "long_sleeves",
+            "braid"
+          ]
+        },
+        {
+          "id": "sfw_loose_hair_civilian",
+          "name": "晨间散发室内便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft white blouse and long blue skirt, with waist-length golden hair worn completely loose",
+          "tokens": [
+            "white_blouse",
+            "long_blue_skirt",
+            "loose_hair"
+          ]
+        },
+        {
+          "id": "sfw_market_shawl",
+          "name": "夜市披肩便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a white blouse and long blue skirt beneath a soft evening shawl, with golden hair in a long braid",
+          "tokens": [
+            "white_blouse",
+            "long_blue_skirt",
+            "shawl",
+            "braid"
+          ]
+        },
+        {
+          "id": "sfw_white_bridal",
+          "name": "彩窗下纯白花嫁",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque floor-length white wedding gown with a long veil and train, with golden hair in a long braid beneath the veil",
+          "tokens": [
+            "white_wedding_dress",
+            "long_veil",
+            "train",
+            "braid"
+          ]
+        }
+      ]
     },
     {
       "id": "scathach_fate",
       "displayName": "斯卡哈",
       "originalName": "スカサハ",
       "source": "Fate",
-      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a towering alluring beauty with very long purple hair and piercing crimson-red eyes, clad in her skin-tight purple bodysuit that leaves little of her voluptuous figure to imagination",
+      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a tall mature woman with very long purple hair, crimson-red eyes and a poised, confident presence",
       "identityTokens": [
         "scathach (fate)",
         "1girl",
@@ -1708,10 +1986,104 @@
         "red_eyes",
         "tall_female",
         "mature_female",
-        "bodysuit",
         "confident_smile"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_lancer_bodysuit",
+          "name": "影之国紫色紧身衣双红枪",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "her signature Lancer battle attire: a skin-tight purple bodysuit with an open chest window and cutout hips that bares her sides, silver pauldrons and gauntlets, dark sheer panels along her thighs, and the twin crimson death spears Gae Bolg wielded in both hands",
+          "tokens": [
+            "bodysuit",
+            "purple_bodysuit",
+            "leotard",
+            "pauldrons",
+            "gauntlets",
+            "bare_shoulders",
+            "sideboob",
+            "hip_vent",
+            "holding_polearm",
+            "dual_wield",
+            "gae_bolg"
+          ]
+        },
+        {
+          "id": "casual_traveling_outfit",
+          "name": "影之国旅装斗篷便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a worldly traveling outfit: a crisp white shirt under a brown corset vest, a long worn travel coat, a wide-brimmed hat shading her eyes, tall leather boots, and a staff pack slung over her shoulder",
+          "tokens": [
+            "traveling_outfit",
+            "white_shirt",
+            "corset",
+            "brown_vest",
+            "long_coat",
+            "hat",
+            "boots",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "summer_swimsuit_assassin",
+          "name": "黑纱泳装杀手度假装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a daring black string bikini with gold ring accents and a sheer violet sarong knotted at her hip, her long purple hair loose over sunlit shoulders beside the summer sea",
+          "tokens": [
+            "bikini",
+            "black_bikini",
+            "string_bikini",
+            "sarong",
+            "bare_shoulders",
+            "bare_legs",
+            "cleavage",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "sfw_home_tea",
+          "name": "茶室白衫居家装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a loose white long-sleeved house shirt and dark lounge trousers, with very long purple hair loosely tied back",
+          "tokens": [
+            "white_house_shirt",
+            "long_sleeves",
+            "dark_pants",
+            "loosely_tied_hair"
+          ]
+        },
+        {
+          "id": "sfw_shrine_coat_off",
+          "name": "夜谈旅装（外套脱下）",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a white shirt, brown vest, dark trousers and leather boots with a wide-brimmed hat; the long traveling coat is removed and shared as a lap covering",
+          "tokens": [
+            "white_shirt",
+            "brown_vest",
+            "dark_pants",
+            "boots",
+            "hat",
+            "coat_on_lap"
+          ]
+        },
+        {
+          "id": "sfw_verdant_bridal",
+          "name": "花谷纯白花嫁",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque floor-length white wedding gown and a delicate veil, with purple hair braided into a floral arrangement",
+          "tokens": [
+            "white_wedding_gown",
+            "veil",
+            "flower_braid"
+          ]
+        }
+      ]
     },
     {
       "id": "ishtar_fate",
@@ -1734,7 +2106,75 @@
         "uneven_legwear",
         "single_thighhigh"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_goddess_attire",
+          "name": "天之女主人神装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "her goddess attire: a black fitted top with white detached sleeves worn on one arm, a golden neck ring, large hoop earrings and a golden tiara, a black miniskirt with uneven legwear — one sheer white thighhigh on one leg and a golden anklet",
+          "tokens": [
+            "black_top",
+            "white_detached_sleeve",
+            "single_detached_sleeve",
+            "neck_ring",
+            "hoop_earrings",
+            "tiara",
+            "black_skirt",
+            "uneven_legwear",
+            "single_thighhigh",
+            "anklet",
+            "bare_shoulders"
+          ]
+        },
+        {
+          "id": "casual_modern_date",
+          "name": "女神的现代私服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a fitted white crop tee under a denim jacket, high-waisted shorts, golden hoop earrings, sneakers and a star-shaped hairpin",
+          "tokens": [
+            "casual_wear",
+            "crop_top",
+            "white_shirt",
+            "denim_jacket",
+            "shorts",
+            "denim_shorts",
+            "sneakers",
+            "hairpin",
+            "hoop_earrings"
+          ]
+        },
+        {
+          "id": "sfw_christmas_winter",
+          "name": "冥界送礼冬装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a warm white winter coat over a knit top and long trousers, a red scarf, gloves and boots, with a star-shaped hairpin",
+          "tokens": [
+            "white_winter_coat",
+            "knit_top",
+            "long_pants",
+            "red_scarf",
+            "gloves",
+            "boots",
+            "star_hairpin"
+          ]
+        },
+        {
+          "id": "sfw_gold_thread_bridal",
+          "name": "金线白纱花冠礼装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque floor-length white wedding gown embroidered with gold thread, a long veil and a flower crown",
+          "tokens": [
+            "white_wedding_gown",
+            "gold_embroidery",
+            "veil",
+            "flower_crown"
+          ]
+        }
+      ]
     },
     {
       "id": "ereshkigal_fate",
@@ -1754,7 +2194,74 @@
         "holding_staff",
         "twintails"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_lancer_attire",
+          "name": "冥界女王黑衣神装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "a flowing black goddess dress with pale blue ribbons and a golden tiara over long blonde twintails",
+          "tokens": [
+            "black_dress",
+            "blue_ribbon",
+            "tiara",
+            "blonde_hair",
+            "very_long_hair",
+            "red_eyes",
+            "twintails"
+          ]
+        },
+        {
+          "id": "casual_winter_date",
+          "name": "冥界圣诞冬装约会",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "her beloved winter-date outfit: a white knit sweater dress with a red scarf, a wool beret over her blonde twin-tails, dark tights, and knee boots — the outfit she treasures from her Christmas in the underworld",
+          "tokens": [
+            "sweater_dress",
+            "white_sweater",
+            "red_scarf",
+            "beret",
+            "wool_hat",
+            "pantyhose",
+            "dark_pantyhose",
+            "knee_boots",
+            "winter_clothes",
+            "casual_wear"
+          ]
+        },
+        {
+          "id": "summer_swimsuit",
+          "name": "冥界女王夏日比基尼",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a modest yet lovely black-and-blue frilled bikini, her blonde twin-tails tied with pale blue ribbons, a sheer sarong wrap, and sunscreen smelling faintly of lilies",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "black_bikini",
+            "blue_bikini",
+            "frilled_swimsuit",
+            "sarong",
+            "hair_ribbon",
+            "bare_shoulders",
+            "wet_skin"
+          ]
+        },
+        {
+          "id": "sfw_underworld_bridal",
+          "name": "冥界烛光纯白花嫁",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an opaque floor-length white wedding gown with a long veil and golden tiara, holding a small white-flower bouquet",
+          "tokens": [
+            "white_wedding_gown",
+            "long_veil",
+            "golden_tiara",
+            "white_flower_bouquet"
+          ]
+        }
+      ]
     },
     {
       "id": "hatsune_miku",
@@ -1773,7 +2280,6 @@
         "black_hairband",
         "hair_ribbon",
         "01_shoulder_tattoo",
-        "headset",
         "vocaloid"
       ],
       "outfits": [
@@ -1781,14 +2287,16 @@
           "id": "v2_classic",
           "name": "V2 经典",
           "isDefault": true,
-          "prose": "her classic sleeveless V2 outfit with a black necktie, short pleated skirt and white boots",
+          "prose": "a silver-grey sleeveless collared top with a teal necktie, a dark pleated skirt with teal edging, black detached arm covers, dark thigh-high legwear and black footwear",
           "tokens": [
-            "sleeveless",
-            "necktie",
-            "short_sleeves",
-            "pleated_skirt",
-            "white_boots",
-            "skin_tight"
+            "sleeveless_top",
+            "grey_top",
+            "teal_necktie",
+            "dark_pleated_skirt",
+            "teal_trim",
+            "detached_sleeves",
+            "dark_thighhighs",
+            "black_footwear"
           ],
           "isNsfw": false
         },
@@ -1876,6 +2384,20 @@
             "bare_legs",
             "bare_feet"
           ]
+        },
+        {
+          "id": "sfw_street_hoodie",
+          "name": "试听与便利店卫衣便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "an oversized teal hoodie with a dark knee-length skirt, opaque tights and sneakers",
+          "tokens": [
+            "oversized_hoodie",
+            "teal_hoodie",
+            "dark_skirt",
+            "opaque_tights",
+            "sneakers"
+          ]
         }
       ]
     },
@@ -1962,6 +2484,19 @@
             "bare_legs",
             "bare_feet"
           ]
+        },
+        {
+          "id": "sfw_baking_apron",
+          "name": "烘焙围裙便服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a long-sleeved knee-length casual dress beneath a plain white kitchen apron",
+          "tokens": [
+            "casual_dress",
+            "long_sleeves",
+            "knee_length_dress",
+            "white_apron"
+          ]
         }
       ]
     },
@@ -1970,7 +2505,7 @@
       "displayName": "雪之下雪乃",
       "originalName": "Yukinoshita Yukino",
       "source": "Oregairu",
-      "identityProse": "Yukinoshita Yukino from Oregairu, a sharp elegant young woman with long straight black hair with a glossy mirror shine, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
+      "identityProse": "Yukinoshita Yukino from Oregairu, an elegant high-school student with long straight black hair with a glossy mirror shine, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
       "identityTokens": [
         "yukinoshita_yukino",
         "1girl",
@@ -2014,14 +2549,14 @@
         },
         {
           "id": "snow_dress",
-          "name": "雪夜礼服",
+          "name": "冬季大衣围巾装",
           "isDefault": false,
-          "prose": "a pure white dress like snow under winter lights",
+          "prose": "a warm navy duffle coat, a plaid knitted scarf, dark tights and winter boots",
           "tokens": [
-            "white_dress",
-            "evening_gown",
-            "long_sleeves",
-            "dress"
+            "navy_duffle_coat",
+            "plaid_scarf",
+            "dark_tights",
+            "winter_boots"
           ],
           "isNsfw": false
         },
@@ -2042,6 +2577,20 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
+          ]
+        },
+        {
+          "id": "sfw_kotatsu_homewear",
+          "name": "暖桌针织家居服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft long-sleeved knit top, comfortable lounge trousers and warm socks beneath the kotatsu blanket",
+          "tokens": [
+            "knit_top",
+            "long_sleeves",
+            "lounge_pants",
+            "warm_socks",
+            "kotatsu_blanket"
           ]
         }
       ]
@@ -8398,6 +8947,21 @@
             "bridal_veil",
             "white_shoes"
           ]
+        },
+        {
+          "id": "sfw_school_uniform_without_glasses",
+          "name": "校服·摘镜时刻",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a neat navy school blazer over a white collared shirt and red necktie, a grey pleated skirt and opaque black stockings; her face has no eyewear",
+          "tokens": [
+            "school_uniform",
+            "navy_blazer",
+            "white_shirt",
+            "red_necktie",
+            "grey_pleated_skirt",
+            "opaque_black_stockings"
+          ]
         }
       ]
     },
@@ -8416,7 +8980,53 @@
         "slender_body",
         "cool_beauty"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_kimono_leather_jacket",
+          "name": "纯白和服赤红皮夹克",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "her iconic signature battle attire: a pure white traditional Japanese kimono with a dark patterned obi, worn under a stylish red leather biker jacket, brown lace-up combat boots, and holding an unsheathed Japanese combat knife",
+          "tokens": [
+            "kimono",
+            "white_kimono",
+            "obi",
+            "leather_jacket",
+            "red_jacket",
+            "boots",
+            "holding_knife",
+            "knife"
+          ]
+        },
+        {
+          "id": "sfw_white_kimono_without_jacket",
+          "name": "白和服·卸下夹克",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a simple opaque white kimono with its collar neatly overlapped and a dark woven obi",
+          "tokens": [
+            "white_kimono",
+            "opaque_fabric",
+            "closed_collar",
+            "dark_obi"
+          ]
+        },
+        {
+          "id": "sfw_white_shiromuku",
+          "name": "白无垢与角隐",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a formal opaque white shiromuku bridal kimono with a white obi, woven silk motifs, a white tsunokakushi head covering and white tabi socks",
+          "tokens": [
+            "shiromuku",
+            "white_bridal_kimono",
+            "white_obi",
+            "tsunokakushi",
+            "white_tabi",
+            "opaque_fabric"
+          ]
+        }
+      ]
     },
     {
       "id": "vladilena_milize",
@@ -8455,7 +9065,52 @@
         "athletic_body",
         "confident_smile"
       ],
-      "outfits": []
+      "outfits": [
+        {
+          "id": "official_knights_of_blood_uniform",
+          "name": "血盟骑士团红白战袍副团长装",
+          "isDefault": true,
+          "isNsfw": false,
+          "prose": "her iconic Knights of the Blood Oath battle uniform: a tailored white sleeveless tunic with crimson cross insignias, red pleated mini skirt, white thigh-high stockings with red cross garters, silver breastplate accents, and holding the rapier Lambent Light",
+          "tokens": [
+            "knights_of_the_blood_uniform",
+            "white_tunic",
+            "red_cross",
+            "pleated_skirt",
+            "thighhighs",
+            "white_thighhighs",
+            "rapier",
+            "holding_sword",
+            "lambent_light"
+          ]
+        },
+        {
+          "id": "sfw_cabin_apron",
+          "name": "木屋早餐围裙装",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a cream knit sweater under a pink floral cooking apron, a navy knee-length skirt and simple house slippers",
+          "tokens": [
+            "cream_knit_sweater",
+            "pink_floral_apron",
+            "navy_skirt",
+            "house_slippers"
+          ]
+        },
+        {
+          "id": "sfw_lakeside_knit",
+          "name": "湖畔休憩针织私服",
+          "isDefault": false,
+          "isNsfw": false,
+          "prose": "a soft cream knit sweater with a modest round neckline and a flowing navy knee-length skirt, with simple brown flats placed beside the picnic blanket",
+          "tokens": [
+            "cream_knit_sweater",
+            "round_neckline",
+            "navy_skirt",
+            "brown_flats"
+          ]
+        }
+      ]
     },
     {
       "id": "violet_evergarden",
@@ -8546,15 +9201,13 @@
       "displayName": "加藤惠",
       "originalName": "加藤恵",
       "source": "Saenai Heroine no Sodatekata",
-      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair in a simple short bob with parted bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
+      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair and blunt bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
       "identityTokens": [
         "katou_megumi",
         "1girl",
         "solo",
         "brown_hair",
-        "short_hair",
-        "bob_cut",
-        "bangs",
+        "blunt_bangs",
         "brown_eyes"
       ],
       "outfits": [
@@ -8563,7 +9216,7 @@
           "name": "丰之崎学园水手服与红开衫",
           "isDefault": true,
           "isNsfw": false,
-          "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers",
+          "prose": "her Toyogasaki Academy school uniform: a navy sailor dress with a white collar and red ribbon tie, paired with her favorite cherry-red cardigan worn open over it, white socks, and brown loafers, with her short brown bob",
           "tokens": [
             "school_uniform",
             "sailor_uniform",
@@ -8573,7 +9226,9 @@
             "red_cardigan",
             "open_cardigan",
             "white_socks",
-            "loafers"
+            "loafers",
+            "short_hair",
+            "bob_cut"
           ]
         },
         {
@@ -8589,7 +9244,9 @@
             "flared_skirt",
             "white_beret",
             "beret",
-            "casual_wear"
+            "casual_wear",
+            "short_hair",
+            "bob_cut"
           ]
         },
         {
@@ -8647,12 +9304,14 @@
         {
           "id": "sfw_refined_daily",
           "name": "夜归连帽外套",
-          "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers",
+          "prose": "a sage-green zip hoodie over a plain white T-shirt, straight navy jeans and canvas sneakers, with her short brown bob",
           "tokens": [
             "green_hoodie",
             "white_t-shirt",
             "jeans",
-            "sneakers"
+            "sneakers",
+            "short_hair",
+            "bob_cut"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -8660,13 +9319,15 @@
         {
           "id": "sfw_kitchen_apron",
           "name": "柠檬黄厨房围裙",
-          "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers",
+          "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers, with her brown hair tied in a practical ponytail",
           "tokens": [
             "white_blouse",
             "long_sleeves",
             "yellow_apron",
             "dark_pants",
-            "slippers"
+            "slippers",
+            "ponytail",
+            "hair_scrunchie"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -8674,13 +9335,15 @@
         {
           "id": "sfw_bridal_lace",
           "name": "蕾丝长袖花嫁",
-          "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps",
+          "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps, with her short brown bob",
           "tokens": [
             "ivory_wedding_dress",
             "long_sleeves",
             "lace_overlay",
             "long_skirt",
-            "bridal_veil"
+            "bridal_veil",
+            "short_hair",
+            "bob_cut"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -9177,7 +9840,7 @@
           "id": "casual_home_shirt",
           "name": "单身公寓大号男式衬衫",
           "isDefault": false,
-          "isNsfw": false,
+          "isNsfw": true,
           "prose": "her off-duty apartment lounge attire: an oversized white button-down shirt slipping down both her smooth shoulders, unbuttoned low to reveal her deep cleavage, no pants, and bare legs",
           "tokens": [
             "oversized_shirt",
@@ -9272,6 +9935,23 @@
           ],
           "isDefault": false,
           "isNsfw": false
+        },
+        {
+          "id": "sfw_winter_trenchcoat_boots",
+          "name": "雪街束腰风衣与高跟长靴",
+          "prose": "a camel double-breasted winter trench coat fastened and belted over a black turtleneck and pencil skirt, with opaque black tights and knee-high black leather heeled boots",
+          "tokens": [
+            "camel_trench_coat",
+            "belted_coat",
+            "closed_coat",
+            "black_turtleneck",
+            "pencil_skirt",
+            "black_tights",
+            "knee_high_boots",
+            "heeled_boots"
+          ],
+          "isDefault": false,
+          "isNsfw": false
         }
       ]
     },
@@ -9280,17 +9960,15 @@
       "displayName": "山田杏奈",
       "originalName": "山田杏奈",
       "source": "The Dangers in My Heart",
-      "identityProse": "Anna Yamada from The Dangers in My Heart, a towering 172cm junior-high school model with glossy jet-black hair tied in a high ponytail, deep blue-black eyes, a charming beauty mark mole under her left eye, and an astonishingly voluptuous, curvy frame",
+      "identityProse": "Anna Yamada from The Dangers in My Heart, a tall junior-high student who works as a model, with long glossy black hair, warm brown eyes and a small beauty mark on her neck; her expressive face often gives away her enthusiasm for everyday treats",
       "identityTokens": [
         "yamada_anna",
         "1girl",
         "solo",
         "black_hair",
         "long_hair",
-        "ponytail",
-        "black_eyes",
-        "mole_under_eye",
-        "large_breasts",
+        "brown_eyes",
+        "mole_on_neck",
         "tall_female"
       ],
       "outfits": [
@@ -9299,7 +9977,7 @@
           "name": "圣立学园初中部制服与长开衫",
           "isDefault": true,
           "isNsfw": false,
-          "prose": "her school uniform: an unbuttoned white collared blouse under an oversized beige knit cardigan draped loose off her shoulders, a short navy pleated skirt, black over-knee socks, and white sneakers, with a snack bag peeking out of her tote",
+          "prose": "her school uniform: a buttoned white collared blouse beneath a loose beige cardigan, a navy pleated skirt, black over-knee socks and white sneakers, with a snack bag in her tote, with her long black hair in a high ponytail",
           "tokens": [
             "school_uniform",
             "white_shirt",
@@ -9310,7 +9988,8 @@
             "thighhighs",
             "black_socks",
             "sneakers",
-            "tall_female"
+            "tall_female",
+            "ponytail"
           ]
         },
         {
@@ -9318,17 +9997,16 @@
           "name": "杂志模特街拍大号卫衣短裤",
           "isDefault": false,
           "isNsfw": false,
-          "prose": "a trendy model off-duty look: an oversized dark charcoal hoodie with sleeves hanging past her knuckles, super-short denim shorts barely visible under the hem, showcasing her endlessly long bare legs, and chunky platform sneakers",
+          "prose": "an oversized charcoal hoodie with full sleeves, mid-thigh denim shorts and chunky sneakers, with her long black hair in a high ponytail",
           "tokens": [
             "oversized_hoodie",
             "black_hoodie",
             "denim_shorts",
-            "short_shorts",
             "bare_legs",
-            "long_legs",
             "sneakers",
             "tall_female",
-            "casual_wear"
+            "casual_wear",
+            "ponytail"
           ]
         },
         {
@@ -9389,13 +10067,14 @@
         {
           "id": "sfw_refined_daily",
           "name": "黄色雨衣与牛仔背带裤",
-          "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots",
+          "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots, with her long black hair in a high ponytail",
           "tokens": [
             "yellow_raincoat",
             "striped_shirt",
             "long_sleeves",
             "overalls",
-            "rain_boots"
+            "rain_boots",
+            "ponytail"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -9403,13 +10082,28 @@
         {
           "id": "sfw_basketball_tracksuit",
           "name": "篮球练习运动套装",
-          "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck",
+          "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck, with her long black hair in a high ponytail",
           "tokens": [
             "blue_track_jacket",
             "white_sports_shirt",
             "track_pants",
             "white_sneakers",
-            "towel_around_neck"
+            "towel_around_neck",
+            "ponytail"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_studio_rest",
+          "name": "摄影休息室散发便服",
+          "prose": "an oversized charcoal hoodie, mid-thigh denim shorts and comfortable sneakers, with her long black hair worn loose",
+          "tokens": [
+            "oversized_hoodie",
+            "denim_shorts",
+            "sneakers",
+            "hair_down",
+            "long_hair"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -9473,7 +10167,7 @@
           "name": "夏祭牵牛花浅蓝浴衣",
           "isDefault": false,
           "isNsfw": false,
-          "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, carrying a goldfish pouch in one hand and her blackish-purple braids pinned with floral clips",
+          "prose": "a festive summer festival yukata in sky blue patterned with blooming morning glories, cinched with a yellow obi sash, with a goldfish pouch as a festival accessory and her blackish-purple braids pinned with floral clips",
           "tokens": [
             "yukata",
             "blue_yukata",
@@ -9959,13 +10653,11 @@
         },
         {
           "id": "sfw_casual",
-          "name": "贝雷帽与针织便装",
+          "name": "围读针织便装",
           "isDefault": false,
           "isNsfw": false,
-          "prose": "a burgundy beret, cream knit cardigan, white blouse and navy knee-length skirt",
+          "prose": "a cream knit cardigan over a white blouse and a navy knee-length skirt",
           "tokens": [
-            "beret",
-            "red_beret",
             "cream_cardigan",
             "white_blouse",
             "navy_skirt"
@@ -11520,12 +12212,12 @@
           "name": "七里滨白色连衣裙",
           "isDefault": true,
           "isNsfw": false,
-          "prose": "an opaque white short-sleeved summer dress with a knee-length hem and simple sandals",
+          "prose": "an opaque white short-sleeved summer dress with a knee-length hem, worn barefoot on the shore",
           "tokens": [
             "white_dress",
             "short_sleeves",
             "knee_length_dress",
-            "sandals"
+            "barefoot"
           ]
         },
         {

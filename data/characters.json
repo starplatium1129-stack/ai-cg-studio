@@ -686,14 +686,14 @@
       "alt": "芙莉莲 样张立绘"
     },
     "visual_dna": {
-      "hair": "银白极长发 · 低双马尾",
+      "hair": "银白极长发 · 双马尾",
       "hair_color": "银白",
-      "eyes": "淡紫",
-      "hairstyle": "低双马尾 · 齐刘海",
+      "eyes": "绿色",
+      "hairstyle": "双马尾",
       "uniform": "白色魔导斗篷 / 浅色裙装",
       "expression": "温和缄默 · 长寿者的疏离感",
       "style": "wistful elf mage",
-      "signature": "银白低双马尾、紫瞳与精灵长耳"
+      "signature": "银白双马尾、绿瞳与精灵长耳"
     },
     "personality": [
       "温和缄默",
@@ -720,8 +720,8 @@
     },
     "tags": [
       "银白长发",
-      "低双马尾",
-      "紫瞳",
+      "双马尾",
+      "绿瞳",
       "精灵耳",
       "魔导袍"
     ],
@@ -854,7 +854,7 @@
       "hair_color": "蓝绿（青绿）",
       "eyes": "蓝绿",
       "hairstyle": "超长双马尾 · 发梢微翘",
-      "uniform": "经典舞台装（无袖深色上衣+领带+臂套）",
+      "uniform": "V2灰色无袖上衣、青绿领带与分离臂套",
       "expression": "元气活泼 · 虚拟歌姬",
       "style": "cheerful virtual diva",
       "signature": "蓝绿超长双马尾与经典舞台装"
@@ -1738,7 +1738,7 @@
       "hair_color": "银白",
       "eyes": "红",
       "hairstyle": "长直发 · 鬓发",
-      "uniform": "紫色无袖短裙",
+      "uniform": "紫色冬装 / 便服洋装",
       "expression": "天真烂漫 · 隐藏冷酷",
       "style": "innocent homunculus girl",
       "signature": "银发红瞳与紫色裙装"
@@ -3439,7 +3439,7 @@
       "hair": "紫色长发 · 齐刘海",
       "hair_color": "紫（Violet）",
       "eyes": "紫（Deep Violet）",
-      "hairstyle": "长直发 · 脑后红色缎带",
+      "hairstyle": "日常长发 · 厨房侧束发",
       "uniform": "穗群原学园制服 / 白色连衣裙",
       "expression": "温柔沉静 · 含情目光",
       "style": "gentle violet-haired beauty",
@@ -3685,14 +3685,14 @@
       "alt": "菲伦 样张立绘"
     },
     "visual_dna": {
-      "hair": "紫色长发 · 低侧马尾",
+      "hair": "紫色长发",
       "hair_color": "紫（Violet）",
       "eyes": "紫（Calm Violet）",
-      "hairstyle": "低侧马尾 · 垂至腰际",
-      "uniform": "第一阶魔法使白袍 / 冬日大衣",
+      "hairstyle": "日常半束发 · 礼服盘发",
+      "uniform": "魔法长袍 / 冬日大衣",
       "expression": "冷静淡然 · 偶尔嘟嘴",
       "style": "cool composed mage",
-      "signature": "紫发侧马尾、紫瞳与冷静毒舌"
+      "signature": "紫色长发、紫瞳与冷静神情"
     },
     "source": "山田钟人《葬送的芙莉莲 / Sousou no Frieren》",
     "bg_story": "菲伦是《葬送的芙莉莲》的女主角之一，芙莉莲收留并养育的人类少女，成长为第一阶魔法使。紫色长发束成低侧马尾，紫色眼眸冷静而敏锐。她性格沉稳、偶尔毒舌，最爱睡懒觉，与芙莉莲、修塔尔克一同踏上漫长旅途。",
@@ -3735,10 +3735,8 @@
     },
     "tags": [
       "紫发",
-      "侧马尾",
       "魔法使",
-      "冷静",
-      "巨乳"
+      "冷静"
     ],
     "palette": [
       "紫藤",
@@ -5089,10 +5087,10 @@
       "alt": "阿尔托莉雅·Alter 样张立绘"
     },
     "visual_dna": {
-      "hair": "浅铂金发 · 严谨编发发髻",
+      "hair": "浅铂金发",
       "hair_color": "铂金 / 浅金",
       "eyes": "暗金眼眸 · 冰冷无光瞳孔",
-      "hairstyle": "编发盘发髻 · 无呆毛",
+      "hairstyle": "铠装与便服发髻 · 黑裙散发",
       "uniform": "漆黑哥特重铠战袍 / 新宿机车皮夹克热裤",
       "expression": "冷酷傲慢 · 暴君威压 · 抱着快餐大快朵颐的极品反差",
       "style": "tyrannical corrupted knight king",
@@ -5164,11 +5162,11 @@
       "hair": "及腰金色长发 · 圣洁单长辫",
       "hair_color": "黄金 / 麦金",
       "eyes": "紫蓝色眼眸 · 慈悲而坚定",
-      "hairstyle": "超长单辫 · 俏皮呆毛",
+      "hairstyle": "日常长辫 · 晨间梳发场景散发",
       "uniform": "白银胸铠Ruler圣装 · 白披风与神圣战旗",
       "expression": "温柔慈悲 · 祈祷时圣洁 · 战场上凛然不屈",
       "style": "holy maiden saint knight",
-      "signature": "金色长辫、白银胸铠、神圣战旗露·普赛尔与不动信仰"
+      "signature": "金色长辫、白银胸铠、神圣战旗吾主在此与不动信仰"
     },
     "personality": [
       "对众生的苦难怀有无限的慈悲",
@@ -5375,7 +5373,7 @@
       "uniform": "冥界女王黑衣 · 蓝缎带与金冠",
       "expression": "端庄忧郁 · 被温暖击中时的不敢置信",
       "style": "lonely underworld queen",
-      "signature": "金冠黑衣、长杖库·基伽尔与千年孤独"
+      "signature": "金冠黑衣、枪型宝具发热神殿与千年孤独"
     },
     "personality": [
       "统御冥界的端正女王",

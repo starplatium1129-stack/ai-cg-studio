@@ -303,11 +303,9 @@
         },
         {
           "id": "sfw_casual",
-          "name": "贝雷帽与针织便装",
-          "prose": "a burgundy beret, cream knit cardigan, white blouse and navy knee-length skirt",
+          "name": "围读针织便装",
+          "prose": "a cream knit cardigan over a white blouse and a navy knee-length skirt",
           "tokens": [
-            "beret",
-            "red_beret",
             "cream_cardigan",
             "white_blouse",
             "navy_skirt"

@@ -14,17 +14,15 @@
         "吃货超模",
         "我心里危险的东西"
       ],
-      "identityProse": "Anna Yamada from The Dangers in My Heart, a towering 172cm junior-high school model with glossy jet-black hair tied in a high ponytail, warm brown eyes, a charming beauty mark mole on her neck, and an astonishingly voluptuous, curvy frame",
+      "identityProse": "Anna Yamada from The Dangers in My Heart, a tall junior-high student who works as a model, with long glossy black hair, warm brown eyes and a small beauty mark on her neck; her expressive face often gives away her enthusiasm for everyday treats",
       "identityTokens": [
         "yamada_anna",
         "1girl",
         "solo",
         "black_hair",
         "long_hair",
-        "ponytail",
         "brown_eyes",
         "mole_on_neck",
-        "large_breasts",
         "tall_female"
       ],
       "exactTokens": [
@@ -60,7 +58,7 @@
         {
           "id": "official_school_uniform",
           "name": "圣立学园初中部制服与长开衫",
-          "prose": "her school uniform: an unbuttoned white collared blouse under an oversized beige knit cardigan draped loose off her shoulders, a short navy pleated skirt, black over-knee socks, and white sneakers, with a snack bag peeking out of her tote",
+          "prose": "her school uniform: a buttoned white collared blouse beneath a loose beige cardigan, a navy pleated skirt, black over-knee socks and white sneakers, with a snack bag in her tote, with her long black hair in a high ponytail",
           "tokens": [
             "school_uniform",
             "white_shirt",
@@ -71,7 +69,8 @@
             "thighhighs",
             "black_socks",
             "sneakers",
-            "tall_female"
+            "tall_female",
+            "ponytail"
           ],
           "default": true,
           "isDefault": true
@@ -79,17 +78,16 @@
         {
           "id": "model_casual_oversized",
           "name": "杂志模特街拍大号卫衣短裤",
-          "prose": "a trendy model off-duty look: an oversized dark charcoal hoodie with sleeves hanging past her knuckles, super-short denim shorts barely visible under the hem, showcasing her endlessly long bare legs, and chunky platform sneakers",
+          "prose": "an oversized charcoal hoodie with full sleeves, mid-thigh denim shorts and chunky sneakers, with her long black hair in a high ponytail",
           "tokens": [
             "oversized_hoodie",
             "black_hoodie",
             "denim_shorts",
-            "short_shorts",
             "bare_legs",
-            "long_legs",
             "sneakers",
             "tall_female",
-            "casual_wear"
+            "casual_wear",
+            "ponytail"
           ]
         },
         {
@@ -144,20 +142,21 @@
         {
           "id": "summer_festival_yukata",
           "name": "夏祭金鱼纹藏青浴衣",
-          "prose": "a navy-blue summer festival yukata with goldfish print tied with a dark red obi, worn with wooden geta sandals",
+          "prose": "a navy-blue summer festival yukata with goldfish print tied with a dark red obi, worn with wooden geta sandals, with her long black hair in a high ponytail",
           "tokens": [
             "yukata",
             "japanese_clothes",
             "floral_print",
             "obi",
             "geta",
-            "short_sleeves"
+            "short_sleeves",
+            "ponytail"
           ]
         },
         {
           "id": "bridal_wedding_dress",
           "name": "高定抹胸鱼尾花嫁婚纱",
-          "prose": "a top-model couture strapless mermaid wedding gown tailored for her tall figure, a dreamy long bridal veil, and a bouquet of white roses",
+          "prose": "a top-model couture strapless mermaid wedding gown tailored for her tall figure, a dreamy long bridal veil, and a bouquet of white roses, with her long black hair in a high ponytail",
           "tokens": [
             "wedding_dress",
             "bridal_veil",
@@ -165,19 +164,21 @@
             "bouquet",
             "white_flowers",
             "high_heels",
-            "jewelry"
+            "jewelry",
+            "ponytail"
           ]
         },
         {
           "id": "sfw_refined_daily",
           "name": "黄色雨衣与牛仔背带裤",
-          "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots",
+          "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots, with her long black hair in a high ponytail",
           "tokens": [
             "yellow_raincoat",
             "striped_shirt",
             "long_sleeves",
             "overalls",
-            "rain_boots"
+            "rain_boots",
+            "ponytail"
           ],
           "isDefault": false,
           "isNsfw": false
@@ -185,16 +186,31 @@
         {
           "id": "sfw_basketball_tracksuit",
           "name": "篮球练习运动套装",
-          "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck",
+          "prose": "a cobalt-blue zip track jacket over a white sports T-shirt, matching full-length track trousers, white trainers and a cotton towel around her neck, with her long black hair in a high ponytail",
           "tokens": [
             "blue_track_jacket",
             "white_sports_shirt",
             "track_pants",
             "white_sneakers",
-            "towel_around_neck"
+            "towel_around_neck",
+            "ponytail"
           ],
           "isDefault": false,
           "isNsfw": false
+        },
+        {
+          "id": "sfw_studio_rest",
+          "name": "摄影休息室散发便服",
+          "prose": "an oversized charcoal hoodie, mid-thigh denim shorts and comfortable sneakers, with her long black hair worn loose",
+          "tokens": [
+            "oversized_hoodie",
+            "denim_shorts",
+            "sneakers",
+            "hair_down",
+            "long_hair"
+          ],
+          "default": false,
+          "isDefault": false
         }
       ]
     }

@@ -96,9 +96,10 @@
         "pink_hair",
         "desk_lamp",
         "night",
-        "medium_shot"
+        "medium_shot",
+        "glasses"
       ],
-      "promptProse": "Mikari leans toward the sewing machine with both hands guiding a strip of fabric along the presser foot. Paper patterns, thread spools and a pinned costume sketch surround the work mat. Her lavender cardigan sleeves are rolled safely back, pink hair gathered clear of the moving needle. Warm desk-lamp light picks out her concentrated profile and the careful construction behind a finished costume.",
+      "promptProse": "Wearing her work glasses, Mikari leans toward the sewing machine with both hands guiding a strip of fabric along the presser foot. Paper patterns, thread spools and a pinned costume sketch surround the work mat. Her lavender cardigan sleeves are rolled safely back, pink hair gathered clear of the moving needle. Warm desk-lamp light picks out her concentrated profile and the careful construction behind a finished costume.",
       "promptTokens": [
         "1girl",
         "solo",
@@ -114,7 +115,8 @@
         "pink_hair",
         "desk_lamp",
         "night",
-        "medium_shot"
+        "medium_shot",
+        "glasses"
       ],
       "negativeTokens": [
         "worst_quality",
@@ -218,7 +220,7 @@
       "category": "圣洁花嫁",
       "characterId": "tachibana_mikari",
       "outfitId": "sfw_bridal",
-      "description": "【漫展摄影棚·黄昏】美花莉穿着细节华丽的白金婚纱站在柔光背景前，金色侧马尾绕过头纱，手里捧着为莉莉艾露设计的花束；她熟练摆出镜头角度后，忽然收起营业笑容，给镜头一个真实的害羞眨眼。",
+      "description": "【漫展摄影棚·黄昏】美花莉穿着细节华丽的白金婚纱站在柔光背景前，粉色侧马尾绕过头纱，手里捧着为莉莉艾露设计的花束；她熟练摆出镜头角度后，忽然收起营业笑容，给镜头一个真实的害羞眨眼。",
       "location": "comic-con photo studio after setup",
       "action": "柔光棚下完成镜头角度后收起营业笑，给镜头真实害羞眨眼",
       "timeOfDay": "黄昏",
@@ -234,9 +236,10 @@
         "gold_ribbons",
         "side_ponytail",
         "shy_wink",
-        "sunset"
+        "pink_hair",
+        "softbox_light"
       ],
-      "promptProse": "Mikari Tachibana from 2.5 Dimensional Seduction wears a white-and-gold bridal cosplay gown with a layered veil, satin corset, gold ribbons and a fantasy bouquet. She poses beneath the studio softbox with a bridal bouquet styled for her favorite fantasy heroine. She turns her golden side ponytail into the light, performs one perfect camera-ready angle, then lets the professional smile fall into a genuine shy wink for the viewer. golden studio light with soft pastel backdrop.",
+      "promptProse": "Mikari Tachibana from 2.5 Dimensional Seduction wears a white-and-gold bridal cosplay gown with a layered veil, satin corset, gold ribbons and a fantasy bouquet. She poses beneath the studio softbox with a bridal bouquet styled for her favorite fantasy heroine. She turns her pink side ponytail into the light, performs one perfect camera-ready angle, then lets the professional smile fall into a genuine shy wink for the viewer. golden studio light with soft pastel backdrop.",
       "promptTokens": [
         "wedding_dress",
         "bridal_veil",
@@ -246,8 +249,8 @@
         "gold_ribbons",
         "side_ponytail",
         "shy_wink",
-        "sunset",
-        "twilight_light"
+        "pink_hair",
+        "softbox_light"
       ],
       "negativeTokens": [
         "worst_quality",

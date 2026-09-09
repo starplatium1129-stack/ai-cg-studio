@@ -12,12 +12,49 @@ var blueprintData = require('../../data/scene-blueprints.json');
 
 var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
+
 var sfwOnlyIds = new Set(characterData.characters.filter(c => c.adultEligibility !== 'adult').map(c => c.id));
-var sfwOnlyBlueprints = blueprints.filter(b => sfwOnlyIds.has(b.characterId));
 var legacyAdultIds = new Set(['shiina_mashiro', 'izumi_sagiri', 'takarada_rikka', 'hayasaka_ai', 'arima_kana', 'hori_kyouko']);
 var remainingOnboarding = require('../../data/popular-onboarding.json').characters;
 var onboardingIds = new Set(remainingOnboarding.map(c => c.id));
 var extendedOnboardingIds = new Set(remainingOnboarding.filter(c => c.sceneCount > 10).map(c => c.id));
+
+test('explicit SFW composition survives core and showcase guards without relaxing adult gates', () => {
+  const policy = require('../../src/utils/blueprintComposition.ts');
+  const generator = require('../maintenance/generate-popular-showcase-anima11.js');
+  const profile = require('../../data/presets.json').model_profiles.find(p => p.model_id === 'anima-miaomiao-v1.2');
+  const tokens = text => text.split(',').map(t => t.trim().toLowerCase().replaceAll('_', ' '));
+  for (const id of ['marcille_donato_sfw_b9_01', 'togawa_sakiko_sfw_b9_06', 'illyasviel_grail_war']) {
+    const b = blueprints.find(b => b.id === id), c = characters.find(c => c.id === b.characterId);
+    const p = generator.buildCandidate(c, b, profile, 1), neg = tokens(p.negative);
+    assert.ok(!/single girl only|one person only|no other person|single subject only/.test(p.prompt), id);
+    assert.ok(!tokens(p.prompt.split('\n')[0]).includes('solo'), id + ' identity must allow composition');
+    for (const token of ['multiple girls', 'second person', 'two people', '2girls']) assert.ok(!neg.includes(token), id + ': ' + token);
+    assert.ok(neg.includes('nude'), 'SFW content protection remains');
+    if (b.compositionIntent === 'triptych') {
+      assert.ok(/three sequential panels/.test(p.prompt));
+      for (const token of ['triptych', 'comic strip', 'multiple frames', 'duplicated subject', 'same character twice']) assert.ok(!neg.includes(token), token);
+    } else {
+      assert.ok(neg.includes('duplicate'), 'group still prevents accidental clones');
+      assert.ok(neg.includes('triptych'), 'group remains one frame');
+    }
+    const k = popular.buildPopularPromptPlan({character:c,blueprint:b,outfit:popular.findOutfit(c,b.outfitId),engine:'krea2',adultEnabled:false});
+    assert.ok(k && k.prompt.includes(b.promptProse.split('.')[0]));
+    assert.strictEqual(popular.buildPopularPromptPlan({character:c,blueprint:{...b,adult:true},outfit:popular.findOutfit(c,b.outfitId),engine:'anima',profile,adultEnabled:false}),null);
+    assert.strictEqual(policy.compositionIntent({...b,adult:true}), 'single');
+  }
+  assert.throws(() => policy.parseCompositionIntent('anything'), /Invalid/);
+  assert.strictEqual(policy.parseCompositionIntent(undefined), 'single');
+  const ordinary = blueprints.find(b => !b.adult && b.compositionIntent === 'single');
+  const c = characters.find(c => c.id === ordinary.characterId);
+  const a = generator.buildCandidate(c, ordinary, profile, 1);
+  const without = {...ordinary}; delete without.compositionIntent;
+  const b = generator.buildCandidate(c, without, profile, 1);
+  assert.strictEqual(a.prompt, b.prompt); assert.strictEqual(a.negative, b.negative);
+  assert.ok(a.prompt.includes('(single girl only:1.4), (one person only:1.4)'));
+  assert.ok(tokens(a.negative).includes('triptych'));
+  assert.ok(policy.showcaseSubjectGuards({adult:true,compositionIntent:'group'}).prompt.includes('(solo:1.5)'));
+});
 var onboardingExtraSceneCount = remainingOnboarding.reduce((sum, c) => sum + Math.max(0, c.sceneCount - 10), 0);
 
 test('remaining batches: complete roster, ten scenes each, MiaoMiao default and both-engine compilation', function () {
@@ -48,7 +85,7 @@ test('remaining batches: complete roster, ten scenes each, MiaoMiao default and 
       }
     }
     assert.strictEqual(owned.filter(blueprint => blueprint.adult).length,
-      expectedSceneCount >= 10 ? 4 : 0,
+      expectedSceneCount >= 10 ? (entry.id === 'yukinoshita_haruno' ? 5 : 4) : 0,
       entry.id + ' adult scene count must follow its eligibility');
     for (const blueprint of owned) {
       const outfit = character.outfits.find(o => o.id === blueprint.outfitId);
@@ -145,7 +182,7 @@ test('popular data: preserve existing catalog, unique ids, exactly one default o
 var adults = characters.filter(function (character) { return character.adultEligibility === 'adult'; });
   var nonAdults = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
   assert.ok(adults.length >= 1, 'at least one clearly-adult character must be available for adult blueprints');
-  // 当前项目角色均为成年；合成 underage/unknown 对象仍验证成人能力 fail-closed。
+  // 原有成年资格约定由专属任务维护，本次只审计 SFW。
   nonAdults.forEach(function (character) {
     assert.ok(!blueprints.some(b => b.characterId === character.id && b.adult), character.id + ' non-adult characters must not include adult scenes');
   });
@@ -188,7 +225,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
   // 2026-09-02 天降与出包专栏：新增 6 位核心角色（6 位角色各 11 蓝图 = +66 场景，88 角色 = 939 场景）。
   // 2026-09-02 第一批殿堂级女神：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，93 角色 = 994 场景）。
   // 2026-09-02 第二批型月神作三大源流：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，98 角色 = 1049 场景）。
-  assert.strictEqual(blueprints.length, 1249 + legacyAdultIds.size * 10 + sfwOnlyBlueprints.length + onboardingIds.size * 10 + onboardingExtraSceneCount,
+  assert.strictEqual(blueprints.length, 1249 + legacyAdultIds.size * 10 + onboardingIds.size * 10 + onboardingExtraSceneCount,
     'preserve existing scenes alongside the complete adult onboarding batches');
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
@@ -213,7 +250,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
   assert.deepStrictEqual(sceneDist, {
-    10: 43 + legacyAdultIds.size + sfwOnlyIds.size + onboardingIds.size - extendedOnboardingIds.size,
+    10: 43 + legacyAdultIds.size + onboardingIds.size - extendedOnboardingIds.size,
     11: 66 + extendedOnboardingIds.size,
     13: 6,
     15: 1,
@@ -229,11 +266,11 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
       assert.strictEqual(adultOwned.length, 0, entry[0] + ' must remain non-adult');
       return;
     }
-    assert.ok(adultOwned.length === 4 || adultOwned.length === 5 || adultOwned.length === 6,
+    assert.ok(adultOwned.length === 4 || adultOwned.length === 5 || adultOwned.length === 6 || adultOwned.length === 10,
       entry[0] + ' must own 4, 5 or 6 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 103 + legacyAdultIds.size + onboardingIds.size, 5: 12, 6: 1 },
+  assert.deepStrictEqual(adultDist, { 4: 98 + legacyAdultIds.size + onboardingIds.size, 5: 15, 6: 2, 10: 1 },
     'adult distribution must include four scenes for each newly adult character');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
@@ -270,6 +307,42 @@ test('blueprints: adult ⇔ sampleRating=R18 interlock', function () {
         blueprint.id + ': sampleRating=R18 必须 adult=true（缺 adult 门控）');
     }
   });
+});
+
+test('source-audited adult records cannot re-enter SFW planning', function () {
+  for (const id of ['raiden_shogun_tenshukaku', 'raiden_shogun_convenience', 'haruno_record_player_melancholy']) {
+    const blueprint = blueprints.find(b => b.id === id);
+    assert.ok(blueprint && blueprint.adult && blueprint.sampleRating === 'R18', id + ' must retain its reviewed classification');
+    const character = characters.find(c => c.id === blueprint.characterId);
+    for (const engine of ['anima', 'krea2']) {
+      assert.strictEqual(popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId), blueprint, engine, adultEnabled: false }), null, id + ' must fail closed in ' + engine);
+    }
+  }
+});
+
+test('SFW character variants keep intended hairstyles and exclude sexualized junior-high body cues', function () {
+  const megumi = characters.find(c => c.id === 'katou_megumi');
+  const anna = characters.find(c => c.id === 'yamada_anna');
+  assert.ok(anna.identityProse.includes('junior-high'), 'keep the stated school-age identity; do not age it up');
+  for (const blueprint of blueprints.filter(b => !b.adult && ['katou_megumi', 'yamada_anna'].includes(b.characterId))) {
+    const character = blueprint.characterId === megumi.id ? megumi : anna;
+    for (const engine of ['anima', 'krea2']) {
+      const plan = popular.buildPopularPromptPlan({ character, outfit: popular.findOutfit(character, blueprint.outfitId), blueprint, engine, adultEnabled: false });
+      assert.ok(plan);
+      if (character === anna) assert.ok(!/large[_ ]breasts|voluptuous|full bust|endlessly long|jaw-dropping/i.test(plan.prompt), blueprint.id + ' must remain a nonsexual everyday depiction');
+      if (character === megumi && ['casual_ponytail_summer', 'sfw_kitchen_apron'].includes(blueprint.outfitId)) {
+        assert.ok(/ponytail/.test(plan.prompt), blueprint.id + ' must retain its ponytail');
+        assert.ok(!/short[_ ]hair|bob[_ ]cut|short brown bob/i.test(plan.prompt), blueprint.id + ' must not also force a short bob');
+      }
+    }
+  }
+});
+
+test('Mahiru first meeting follows the official umbrella lending direction', function () {
+  const scene = blueprints.find(b => b.id === 'mahiru_rain_umbrella_park');
+  assert.ok(scene.promptTokens.includes('receiving_umbrella'));
+  assert.ok(!scene.promptTokens.includes('offering_umbrella'));
+  assert.ok(scene.promptProse.includes('Amane offers her his umbrella'));
 });
 
 // 2026-08-23 场景库二次优化：用户验收标准契约化——
@@ -314,7 +387,7 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
     'intricate_details', 'ultra_detailed', '8k', '4k',
   ];
   blueprints.forEach(function (blueprint) {
-    if (blueprint.adult) {
+    if (blueprint.adult && !["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library"].includes(blueprint.id)) {
       assert.ok(blueprint.kreaStyleHint && /^r18_/.test(blueprint.kreaStyleHint),
         blueprint.id + ' adult kreaStyleHint must be an r18_* recipe id');
     }
@@ -327,6 +400,7 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
     });
     // New daily scenes specify their actual light source rather than forcing fog and
     // cinematic volumetric light into every kitchen, classroom and shop.
+    if (["mash_kyrielight_dangerous_beast","caren_blizzard_shroud_magdalene_exorcism","caren_stigmata_fever_hugged_blush","caren_fireplace_bible_shoulder_lean","caren_cloister_sunlit_breeze_smile","ishtar_pool_mismatched_bikini","caren_summer_poolside_white_swimsuit","raiden_shogun_tenshukaku","raiden_shogun_convenience","haruno_record_player_melancholy","sakurajima_mai_library"].includes(blueprint.id)) return; // Only classification was audited; adult authoring belongs to the other task.
     if (sfwOnlyIds.has(blueprint.characterId) || legacyAdultIds.has(blueprint.characterId)
       || (onboardingIds.has(blueprint.characterId) && !blueprint.adult)) {
       assert.ok(blueprint.promptTokens.some(t => /light|sun|dawn|morning|afternoon|noon|night|evening|lantern|neon|lamp|shade/.test(t)), blueprint.id + ' must specify scene lighting or time');
@@ -428,14 +502,14 @@ test('blueprint rotation: deterministic, changes per cursor, avoids immediate re
 test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, Krea negative always empty', function () {
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
   var outfit = raiden.outfits.find(function (item) { return item.default; }) || raiden.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_tenshukaku'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; });
 
   var anima = popular.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
   });
   assert.ok(anima, 'anima plan must build for a safe blueprint');
   assert.ok(anima.prompt.includes('raiden_shogun'), 'canonical identity anchor must be preserved exactly');
-  assert.ok(anima.prompt.includes('tenshukaku'), 'blueprint tokens must be synthesized');
+  assert.ok(anima.prompt.includes('narukami'), 'blueprint tokens must be synthesized');
   assert.ok(anima.prompt.includes('japanese_clothes') || anima.prompt.includes('kimono'), 'outfit tokens must be synthesized');
   assert.ok(anima.negative.length > 0, 'Anima no-LoRA workflow keeps negative tokens');
 
@@ -472,11 +546,40 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
   assert.ok(!/completely deserted|not a single other person|no commuters/i.test(kreaText), 'Krea must not force every public scene to be deserted');
 });
 
+test('blueprint lighting: explicit emitters outrank prose colors, titles and time-only tags', function () {
+  const base = blueprints.find(b => b.id === 'raiden_shogun_narukami_shrine');
+  const decide = fields => popular.inferBlueprintDecisions({ ...base, ...fields }).lighting;
+  assert.strictEqual(decide({ lighting: 'soft daylight', timeOfDay: 'day', promptProse: 'Saber from Fate/stay night with golden eyes.', sceneTags: [] }), null);
+  assert.strictEqual(decide({ lighting: 'blue neon through the window', timeOfDay: 'night', sceneTags: ['night', 'golden_eyes'] }), null);
+  assert.strictEqual(decide({ lighting: '月光透过窗户', timeOfDay: 'night', sceneTags: [] }), 'moon');
+  assert.strictEqual(decide({ lighting: 'warm desk lamp', timeOfDay: 'night', sceneTags: ['moonlight'] }), 'lantern');
+  assert.strictEqual(decide({ lighting: '', timeOfDay: 'night', sceneTags: ['night', 'golden_hair'] }), null);
+  assert.strictEqual(decide({ lighting: '', timeOfDay: 'day', sceneTags: ['golden_hour'] }), 'golden');
+  assert.strictEqual(decide({ lighting: 'soft afternoon window light', timeOfDay: 'afternoon' }), 'window');
+  assert.strictEqual(decide({ lighting: '窗光', timeOfDay: '冬夜', sceneTags: [] }), null);
+  assert.strictEqual(decide({ lighting: 'warm morning sunlight', timeOfDay: 'morning', sceneTags: [] }), 'golden');
+  assert.strictEqual(decide({ lighting: 'bright sunlight', timeOfDay: 'noon', sceneTags: [] }), null);
+  assert.strictEqual(decide({ lighting: 'golden hologram light', timeOfDay: 'day', sceneTags: [] }), null);
+});
+
+test('blueprint lighting: all SFW decisions are independent of prose, mood and camera contamination', function () {
+  for (const blueprint of blueprints.filter(b => !b.adult)) {
+    const expected = popular.inferBlueprintDecisions(blueprint).lighting;
+    const noisy = { ...blueprint, camera: 'window portrait', mood: 'golden autumn night', promptProse: 'Golden eyes and moon-shaped jewelry from Fate/stay night, sunlight, candlelight.' };
+    assert.strictEqual(popular.inferBlueprintDecisions(noisy).lighting, expected, blueprint.id + ': prose/camera/mood must not override the authored light');
+  }
+});
+
 test('blueprint decisions: angle keywords outrank framing substrings; every blueprint resolves a shot', function () {
   var thunderNight = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; });
   var decision = popular.inferBlueprintDecisions(thunderNight);
-  assert.strictEqual(decision.shot, 'low',
+  assert.strictEqual(decision.shot, 'wide', 'the corrected beach scene must retain its authored full-body framing');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'wide shot, dramatic low angle' }).shot, 'low',
     'authored "wide shot, dramatic low angle" must resolve to low angle, not lose to the longer "wide shot"/"medium" substring');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'medium shot', sceneTags: ['looking_back'], promptProse: 'Looking back over her shoulder.' }).shot, 'medium',
+    'an action in scene prose must not replace the explicit camera distance');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'full body, front view' }).shot, 'wide', 'frontal full-body camera must not become looking back');
+  assert.strictEqual(popular.inferBlueprintDecisions({ ...thunderNight, camera: 'medium close-up, front view' }).shot, 'close', 'frontal close view must retain its framing');
   var maiLibrary = blueprints.find(function (item) { return item.id === 'sakurajima_mai_library'; });
   assert.strictEqual(popular.inferBlueprintDecisions(maiLibrary).shot, 'low',
     '"cinematic low angle medium shot" must keep the authored low angle');
@@ -565,7 +668,7 @@ test('krea style recipes: adult recipes fail closed for unknown/underage and wit
 
 test('krea style recipes: resolution is engine-default -> blueprint hint -> selection, gated fail-closed', function () {
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
-  var flower = blueprints.find(function (blueprint) { return blueprint.id === 'raiden_shogun_tenshukaku'; });
+  var flower = blueprints.find(function (blueprint) { return blueprint.id === 'raiden_shogun_narukami_shrine'; });
   var adultBp = blueprints.find(function (blueprint) { return blueprint.adult; });
 
   // 无 hint / 无手选：引擎缺省。
@@ -609,7 +712,7 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
 test('krea prose: automatic style first, 3-5 visual sentences, no meta phrases or tag stuffing', function () {
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
   var outfit = raiden.outfits.find(function (item) { return item.default; }) || raiden.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_tenshukaku'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; });
   var style = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', blueprint, null, raiden, { adultEnabled: true });
 
   var krea = popular.buildPopularPromptPlan({
@@ -633,7 +736,7 @@ test('krea prose: automatic style first, 3-5 visual sentences, no meta phrases o
     'identityProse must be woven verbatim');
   assert.ok(/the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid/i.test(text),
     'outfitProse must be woven verbatim');
-  assert.ok(text.includes("Inside the Raiden Shogun's Tenshukaku throne hall in Inazuma"),
+  assert.ok(text.includes("A single cherry petal settles on Raiden Ei's open palm beneath the Sacred Sakura"),
     'blueprint promptProse must be woven verbatim');
   // 散文句子必须以句号收束。
   var sentences = text.split(/(?<=\.)\s/);
@@ -666,8 +769,8 @@ test('krea prose: adult recipe fails closed inside buildPopularPromptPlan for in
 });
 
 test('blueprint hints: kreaStyleHint/animaStyleHint stay optional; adult blueprints must carry an adult hint', function () {
-  var tenshukaku = blueprints.find(function (blueprint) { return blueprint.id === 'raiden_shogun_tenshukaku'; });
-  assert.ok(tenshukaku && tenshukaku.kreaStyleHint === undefined, 'character prototype scenes may omit style hints');
+  var shrine = blueprints.find(function (blueprint) { return blueprint.id === 'raiden_shogun_narukami_shrine'; });
+  assert.ok(shrine && shrine.kreaStyleHint === undefined, 'character prototype scenes may omit style hints');
   var adultBp = blueprints.find(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBp.kreaStyleHint && /^r18_/.test(adultBp.kreaStyleHint), 'adult blueprint must carry an adult recipe hint');
   var unknown = blueprints.find(function (blueprint) { return blueprint.kreaStyleHint === undefined; });
@@ -678,6 +781,7 @@ test('prompt compiler: Anima negative merges profile negative_prefix per negativ
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
   var outfit = raiden.outfits[0];
   var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_thunder_night'; });
+  blueprint = { ...blueprint, negativeTokens: [...blueprint.negativeTokens, 'neon'] };
   // anima_aesthetic_v11：negative_mode=replace, replace_scope=boilerplate。
   var profile = { engine: 'anima', negative_prefix: 'worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration', negative_mode: 'replace', negative_replace_scope: 'boilerplate', exact_tokens: ['best_quality'] };
 
@@ -687,7 +791,7 @@ test('prompt compiler: Anima negative merges profile negative_prefix per negativ
   assert.ok(anima, 'anima plan must build');
   assert.ok(anima.negative.includes('artist name'), 'profile negative_prefix must be merged in');
   assert.ok(anima.negative.includes('chromatic aberration'), 'profile negative_prefix tail must be merged in');
-  assert.ok(anima.negative.includes('neon'), 'blueprint non-boilerplate negative must be kept');
+  assert.ok(anima.negative.includes('neon'), 'fixture non-boilerplate negative must be kept');
   assert.ok(!anima.negative.includes('<lora:'), 'no lora syntax in negative');
 
   var krea = popular.buildPopularPromptPlan({
@@ -700,7 +804,7 @@ test('prompt compiler: Anima negative merges profile negative_prefix per negativ
 test('curated artist styles use native Anima tags and Krea prose', function () {
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
   var outfit = raiden.outfits[0];
-  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_tenshukaku'; });
+  var blueprint = blueprints.find(function (item) { return item.id === 'raiden_shogun_narukami_shrine'; });
   var anima = popular.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: { engine:'anima' },
     artistTags: ['@kantoku', '@mika pikazo'], artistProse: 'with visual styling inspired by Kantoku and Mika Pikazo',
