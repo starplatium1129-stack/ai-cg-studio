@@ -1,18 +1,32 @@
 {
-  "version": 1,
-  "franchise": "Attack on Titan",
   "characters": [
     {
-      "id": "mikasa_ackerman",
-      "displayName": "三笠",
-      "originalName": "Mikasa Ackerman",
-      "franchise": "Attack on Titan",
+      "adultEligibility": "adult",
       "aliases": [
         "mikasa_ackerman",
         "mikasa",
         "attack on titan",
         "shingeki no kyojin"
       ],
+      "animeStudio": "attack on titan, official anime art, WIT Studio style",
+      "canon": {
+        "era": "架空近代（墙内）",
+        "formNotes": "红围巾=全剧视觉锚点；立体机动装置 odm_gear；阿克曼血脉=战斗天赋；强调色 #B22222 暗红",
+        "research": "2026-08-31 调研",
+        "world": "高墙内人类世界（帕拉迪岛）"
+      },
+      "curatedArtistStyles": [
+        "asano_kyoji",
+        "isayama_hajime",
+        "yoneyama_mai"
+      ],
+      "displayName": "三笠",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "mikasa_ackerman"
+      ],
+      "franchise": "Attack on Titan",
+      "id": "mikasa_ackerman",
       "identityProse": "Mikasa Ackerman from Attack on Titan, a skilled soldier with chin-length black hair that covers her ears, gray eyes, pale skin and no scar, always wearing her iconic red scarf",
       "identityTokens": [
         "mikasa_ackerman",
@@ -24,95 +38,6 @@
         "pale_skin",
         "red_scarf",
         "attack_on_titan"
-      ],
-      "exactTokens": [
-        "mikasa_ackerman"
-      ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "outfits": [
-        {
-          "id": "survey_corps_uniform",
-          "name": "调查兵团制服 850 年",
-          "prose": "her Survey Corps uniform with a brown jacket, white shirt and pants, brown boots and green cape, ODM gear harness and blades, with the iconic red scarf",
-          "tokens": [
-            "survey_corps_uniform",
-            "brown_jacket",
-            "white_shirt",
-            "white_pants",
-            "brown_boots",
-            "green_cape",
-            "odm_gear",
-            "harness",
-            "swords",
-            "red_scarf",
-            "belt"
-          ],
-          "default": true,
-          "isDefault": true
-        },
-        {
-          "id": "training_corps",
-          "name": "训练兵团制服",
-          "prose": "her 104th Training Corps uniform, a white jacket and shirt with white pants and brown boots, with the red scarf",
-          "tokens": [
-            "white_jacket",
-            "white_shirt",
-            "white_pants",
-            "brown_boots",
-            "belt",
-            "red_scarf"
-          ],
-          "default": false,
-          "isDefault": false
-        },
-        {
-          "id": "casual",
-          "name": "常服便装",
-          "prose": "her daily casual outfit, a white long-sleeved button-up shirt with the iconic red scarf around her neck, black shorts, a brown leather belt and tall black boots",
-          "tokens": [
-            "white_shirt",
-            "red_scarf",
-            "black_shorts",
-            "belt",
-            "tall_boots",
-            "casual_clothes"
-          ],
-          "default": false,
-          "isDefault": false
-        },
-        {
-          "id": "marley_uniform",
-          "name": "马莱篇黑制服 854 年",
-          "prose": "her black military uniform from the Marley arc, with a breastplate and straps over a white shirt, the red scarf and a stern expression",
-          "tokens": [
-            "black_uniform",
-            "breastplate",
-            "straps",
-            "red_scarf",
-            "military_uniform",
-            "white_shirt"
-          ],
-          "default": false,
-          "isDefault": false
-        }
-      ],
-      "canon": {
-        "world": "高墙内人类世界（帕拉迪岛）",
-        "era": "架空近代（墙内）",
-        "formNotes": "红围巾=全剧视觉锚点；立体机动装置 odm_gear；阿克曼血脉=战斗天赋；强调色 #B22222 暗红",
-        "research": "2026-08-31 调研"
-      },
-      "animeStudio": "attack on titan, official anime art, WIT Studio style",
-      "curatedArtistStyles": [
-        "asano_kyoji",
-        "isayama_hajime",
-        "yoneyama_mai"
       ],
       "negativeTokens": [
         "scar",
@@ -127,13 +52,96 @@
         "lowres",
         "signature",
         "watermark"
+      ],
+      "originalName": "Mikasa Ackerman",
+      "outfits": [
+        {
+          "default": true,
+          "id": "survey_corps_uniform",
+          "isDefault": true,
+          "name": "调查兵团制服 850 年",
+          "prose": "her Survey Corps uniform with a brown jacket, white shirt and pants, brown boots and green cape, ODM gear harness and blades, with the iconic red scarf",
+          "tokens": [
+            "survey_corps_uniform",
+            "brown_jacket",
+            "white_shirt",
+            "white_pants",
+            "brown_boots",
+            "green_cape",
+            "odm_gear",
+            "harness",
+            "swords",
+            "red_scarf",
+            "belt"
+          ]
+        },
+        {
+          "default": false,
+          "id": "training_corps",
+          "isDefault": false,
+          "name": "训练兵团制服",
+          "prose": "her 104th Training Corps uniform, a white jacket and shirt with white pants and brown boots, with the red scarf",
+          "tokens": [
+            "white_jacket",
+            "white_shirt",
+            "white_pants",
+            "brown_boots",
+            "belt",
+            "red_scarf"
+          ]
+        },
+        {
+          "default": false,
+          "id": "casual",
+          "isDefault": false,
+          "name": "常服便装",
+          "prose": "her daily casual outfit, a white long-sleeved button-up shirt with the iconic red scarf around her neck, black shorts, a brown leather belt and tall black boots",
+          "tokens": [
+            "white_shirt",
+            "red_scarf",
+            "black_shorts",
+            "belt",
+            "tall_boots",
+            "casual_clothes"
+          ]
+        },
+        {
+          "default": false,
+          "id": "marley_uniform",
+          "isDefault": false,
+          "name": "马莱篇黑制服 854 年",
+          "prose": "her black military uniform from the Marley arc, with a breastplate and straps over a white shirt, the red scarf and a stern expression",
+          "tokens": [
+            "black_uniform",
+            "breastplate",
+            "straps",
+            "red_scarf",
+            "military_uniform",
+            "white_shirt"
+          ]
+        },
+        {
+          "default": false,
+          "id": "cafe_white_dress",
+          "isDefault": false,
+          "name": "咖啡店白裙开衫",
+          "prose": "a simple white day dress with a soft knit cardigan and dark boots",
+          "tokens": [
+            "white_dress",
+            "cardigan",
+            "dark_boots",
+            "casual_clothes"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "krista_lenz",
-      "displayName": "希斯特里亚",
-      "originalName": "Historia Reiss",
-      "franchise": "Attack on Titan",
+      "adultEligibility": "adult",
       "aliases": [
         "krista_lenz",
         "krista",
@@ -142,6 +150,25 @@
         "attack on titan",
         "queen of the walls"
       ],
+      "animeStudio": "attack on titan, official anime art, WIT Studio style",
+      "canon": {
+        "era": "架空近代（墙内）",
+        "formNotes": "主 tag=krista_lenz（historia_reiss 为别名）；金发=王族象征；加冕=854 年即位女王；强调色 #D4AF37 金",
+        "research": "2026-08-31 调研",
+        "world": "高墙内人类世界（帕拉迪岛）"
+      },
+      "curatedArtistStyles": [
+        "asano_kyoji",
+        "isayama_hajime",
+        "rella"
+      ],
+      "displayName": "希斯特里亚",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "krista_lenz"
+      ],
+      "franchise": "Attack on Titan",
+      "id": "krista_lenz",
       "identityProse": "Historia Reiss from Attack on Titan, also known as Krista Lenz, a petite girl with long blonde hair and blue eyes, a heart-shaped face and a gentle smile, who becomes the Queen of the Walls",
       "identityTokens": [
         "krista_lenz",
@@ -155,19 +182,21 @@
         "heart_shaped_face",
         "attack_on_titan"
       ],
-      "exactTokens": [
-        "krista_lenz"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Historia Reiss",
       "outfits": [
         {
+          "default": true,
           "id": "corps_uniform",
+          "isDefault": true,
           "name": "兵团制服 850 年",
           "prose": "her Training and Survey Corps uniform with a brown jacket, white shirt and pants, brown boots, green cape and a low ponytail",
           "tokens": [
@@ -178,12 +207,12 @@
             "brown_boots",
             "green_cape",
             "low_ponytail"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "queen_casual",
+          "isDefault": false,
           "name": "女王日常装 854 年",
           "prose": "her daily outfit as Queen, a pale coat over a white shirt and pants with dark boots and her hair up",
           "tokens": [
@@ -193,12 +222,12 @@
             "pants",
             "dark_boots",
             "hair_up"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "coronation_dress",
+          "isDefault": false,
           "name": "女王加冕礼服",
           "prose": "her coronation dress, an off-shoulder white gown with a cloak, crown and jewelry, radiant with gentle resolve",
           "tokens": [
@@ -208,44 +237,72 @@
             "cloak",
             "sandals",
             "jewelry"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "casual",
+          "isDefault": false,
           "name": "常服便装",
           "prose": "a soft casual look with a white dress and a gentle smile",
           "tokens": [
             "casual_clothes",
             "white_dress",
             "smile"
-          ],
+          ]
+        },
+        {
           "default": false,
-          "isDefault": false
+          "id": "coronation_investiture",
+          "isDefault": false,
+          "name": "加冕礼·受冠瞬间",
+          "prose": "her white coronation gown with an off-shoulder neckline, ceremonial cloak and gold jewelry, before the crown is placed",
+          "tokens": [
+            "white_dress",
+            "off_shoulder_dress",
+            "cloak",
+            "jewelry",
+            "formal"
+          ]
+        },
+        {
+          "default": false,
+          "id": "queen_garden_casual",
+          "isDefault": false,
+          "name": "女王花园便装",
+          "prose": "her pale queen's coat over a white shirt and trousers with dark boots, worn with her long blonde hair loose",
+          "tokens": [
+            "pale_coat",
+            "long_sleeves",
+            "white_shirt",
+            "pants",
+            "dark_boots",
+            "hair_down"
+          ]
+        },
+        {
+          "default": false,
+          "id": "coronation_winter_wall",
+          "isDefault": false,
+          "name": "雪墙加冕披袍",
+          "prose": "her white coronation gown with a ceremonial cloak and crown, paired with dark closed boots for the snowy Wall",
+          "tokens": [
+            "white_dress",
+            "cloak",
+            "crown",
+            "dark_boots",
+            "formal",
+            "winter"
+          ]
         }
       ],
-      "canon": {
-        "world": "高墙内人类世界（帕拉迪岛）",
-        "era": "架空近代（墙内）",
-        "formNotes": "主 tag=krista_lenz（historia_reiss 为别名）；金发=王族象征；加冕=854 年即位女王；强调色 #D4AF37 金",
-        "research": "2026-08-31 调研"
-      },
-      "animeStudio": "attack on titan, official anime art, WIT Studio style",
-      "curatedArtistStyles": [
-        "asano_kyoji",
-        "isayama_hajime",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Attack on Titan",
+  "version": 1
 }
