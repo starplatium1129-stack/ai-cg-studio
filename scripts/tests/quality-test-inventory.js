@@ -34,6 +34,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-comfy-progress.js',
     'test-comfy-client.js',
     'test-scene-render-contract.js',
+    'test-scene-patch.js',
     'test-control-operation.js',
     'test-data-backup.js',
     'test-desktop-native-evidence.js',
