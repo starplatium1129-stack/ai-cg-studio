@@ -4967,8 +4967,8 @@
       ],
       "nsfwProse": "",
       "nsfwTokens": [],
-      "outfitId": "swimsuit",
-      "promptProse": "At the edge of the summer pool, Hina patrols in a dark navy two-piece swimsuit with white ruffled trim and a light cover-up, keeping her serious expression as sunlight shimmers across the water.",
+      "outfitId": "summer_pool_patrol",
+      "promptProse": "At the edge of the summer pool, Hina patrols in a dark navy two-piece swimsuit with white ruffled trim and a light sun-protection cardigan, keeping her serious expression as sunlight shimmers across the water.",
       "promptTokens": [
         "swimming_pool",
         "pool_water",
@@ -5937,8 +5937,8 @@
       ],
       "nsfwProse": "",
       "nsfwTokens": [],
-      "outfitId": "evening_dress",
-      "promptProse": "Playing a grand piano gracefully in an elegant backless evening gown at the Gehenna banquet, Hina performs with poised dedication. Golden chandelier lighting and crimson velvet curtains frame her noble, enchanting musical performance.",
+      "outfitId": "midnight_piano_gown",
+      "promptProse": "At the Gehenna banquet, Hina sits at a grand piano in a deep-purple backless evening gown with her silver hair pinned up. Warm banquet light and the piano lamp fall across her poised hands as she plays a piece dedicated to the viewer.",
       "promptTokens": [
         "banquet_hall",
         "grand_piano",
@@ -6115,8 +6115,8 @@
         "nude",
         "explicit"
       ],
-      "outfitId": "casual_date",
-      "promptProse": "Holding a warm steaming coffee mug inside a rainy cafe, Yuuka hides her blushing cheeks behind her knit collar. Soft grey daylight and water streaks sliding down the window create a tender, romantic rainy day date mood.",
+      "outfitId": "rainy_cafe_sweater",
+      "promptProse": "Inside a rainy cafe, Yuuka sits on a wooden chair with both hands around a steaming coffee mug, shoulders slightly drawn in as she shyly looks across the table. Her beige trench coat rests over the chair back while cool window rain and a warm pendant light meet around the quiet date.",
       "promptTokens": [
         "cafe",
         "holding_coffee_cup",
@@ -6124,11 +6124,11 @@
         "window_rain",
         "turtleneck_sweater",
         "shy_blush",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "coat_on_chair"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -6236,20 +6236,21 @@
         "nude",
         "explicit"
       ],
-      "outfitId": "pajamas_loungewear",
-      "promptProse": "Curled up on her dorm sofa wearing red-framed reading glasses and an oversized knit sweater, Yuuka checks household accounts with a hot cocoa. Warm nightstand lamps cast a cozy, intimate domestic atmosphere across the room.",
+      "outfitId": "budget_cozy_no_mug",
+      "promptProse": "In her cozy dorm at night, Yuuka curls up on the fabric sofa wearing red-framed glasses, hugging a cushion with her household notebook open on her lap. A warm cocoa mug rests beside her while the bedside lamp and fireplace cast a quiet amber glow.",
       "promptTokens": [
         "dormitory",
         "couch",
         "red_framed_glasses",
         "oversized_sweater",
         "notebook",
-        "holding_mug",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hugging_cushion",
+        "notebook_on_lap",
+        "cocoa_on_table"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
