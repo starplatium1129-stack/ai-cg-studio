@@ -3,7 +3,7 @@ import { DATA_VERSION } from '@/stores/sceneStore'
 /**
  * 角色设定记忆（2026-08-28 路线图第 6 条 · 最小闭环）。
  *
- * 数据源：data/characters.json —— 50 个角色的既有真实档案
+ * 数据源：data/characters.json 中的既有角色档案
  * （bg_story / personality / likes / speech / identity / visual_dna），
  * 零新增数据文件、零编造。热门角色（40+）的 canon/identityProse 在
  * sceneStore.popularCharacters 中，出图侧已消费，此处专注聊天/陪伴注入。
@@ -36,12 +36,12 @@ export interface CharacterSettingRecord {
 const MAX_ITEM_TEXT = 240
 const MAX_ITEMS = 8
 
-function cleanText(value: unknown, fallback = ''): string {
+function cleanText(value: unknown, fallback = '', maxLength = MAX_ITEM_TEXT): string {
   const text = String(value ?? '')
     .replace(/[\u0000-\u001f\u007f]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
-    .slice(0, MAX_ITEM_TEXT)
+    .slice(0, maxLength)
   return text || fallback
 }
 
@@ -52,6 +52,10 @@ function stringList(value: unknown): string[] {
 }
 
 function parseIdentity(value: unknown): CharacterIdentityRecord | undefined {
+  if (typeof value === 'string') {
+    const role = cleanText(value)
+    return role ? { role } : undefined
+  }
   if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined
   const record = value as Record<string, unknown>
   const identity: CharacterIdentityRecord = {
@@ -72,7 +76,7 @@ function parseRecord(value: unknown): CharacterSettingRecord | null {
   return {
     id,
     name,
-    bgStory: cleanText(record.bg_story),
+    bgStory: cleanText(record.bg_story, '', 4000),
     personality: stringList(record.personality),
     likes: stringList(record.likes),
     speech: cleanText(record.speech),
@@ -96,18 +100,23 @@ export function parseCharacterSettingCards(value: unknown): CharacterSettingReco
 // ── 懒加载（data/characters.json 约几十 KB；DATA_VERSION 防浏览器缓存）─────
 let cardsCache: CharacterSettingRecord[] | null = null
 let cardsPromise: Promise<CharacterSettingRecord[]> | null = null
+let cardsRevision = 0
 
 export async function loadCharacterSettingCards(force = false): Promise<CharacterSettingRecord[]> {
   if (cardsCache && !force) return cardsCache
   if (!cardsPromise || force) {
+    const revision = ++cardsRevision
     cardsPromise = (async () => {
       const response = await fetch(`/data/characters.json?v=${DATA_VERSION}`, { cache: 'no-store' })
       if (!response.ok) throw new Error(`characters.json HTTP ${response.status}`)
       const data = await response.json()
       const cards = parseCharacterSettingCards(data)
-      cardsCache = cards
+      if (revision === cardsRevision) cardsCache = cards
       return cards
-    })()
+    })().catch(error => {
+      if (revision === cardsRevision) cardsPromise = null
+      throw error
+    })
   }
   return cardsPromise
 }
@@ -122,7 +131,9 @@ export function characterSettingCards(): CharacterSettingRecord[] {
 /** 单个角色设定 → 一组可注入的条目文本（预算受控）。 */
 export function buildCharacterSettingEntries(card: CharacterSettingRecord): string[] {
   const entries: string[] = []
-  if (card.bgStory) entries.push(`背景：${card.bgStory}`)
+  if (card.bgStory) {
+    entries.push(`背景：${card.bgStory.slice(0, MAX_ITEM_TEXT)}`)
+  }
   if (card.personality.length) entries.push(`性格：${card.personality.join('、')}`)
   if (card.likes.length) entries.push(`喜好：${card.likes.join('、')}`)
   if (card.speech) entries.push(`说话风格：${card.speech}`)
@@ -136,11 +147,12 @@ export function buildCharacterSettingEntries(card: CharacterSettingRecord): stri
     ].filter(Boolean)
     if (parts.length) entries.push(`设定：${parts.join('；')}`)
   }
-  return entries.slice(0, MAX_ITEMS)
+  for (let start = MAX_ITEM_TEXT; start < card.bgStory.length; start += MAX_ITEM_TEXT) entries.push(`背景：${card.bgStory.slice(start, start + MAX_ITEM_TEXT)}`)
+  return entries
 }
 
 function relevanceTerms(value: string): Set<string> {
-  const text = cleanText(value).toLocaleLowerCase()
+  const text = cleanText(value, '', 4000).toLocaleLowerCase()
   const terms = new Set<string>(text.match(/[a-z0-9][a-z0-9_-]+/g) || [])
   for (const sequence of text.match(/[\u3400-\u9fff]+/g) || []) {
     if (sequence.length === 1) terms.add(sequence)
@@ -161,8 +173,10 @@ export function recallCharacterSetting(
 ): string[] {
   const target = cards.find(card => card.id === characterId)
   if (!target) return []
+  const count = Math.max(0, Math.min(MAX_ITEMS, Number.isFinite(limit) ? Math.floor(limit) : 6))
+  if (!count) return []
   const entries = buildCharacterSettingEntries(target)
-  if (!query.trim()) return entries.slice(0, limit)
+  if (!query.trim()) return entries.slice(0, count)
 
   const queryTerms = relevanceTerms(query)
   const ranked = entries
@@ -175,6 +189,6 @@ export function recallCharacterSetting(
     .sort((left, right) => right.overlap - left.overlap)
   const selected = ranked.filter(item => item.overlap > 0).map(item => item.entry)
   // 关键词未命中任何条目时，退回角色基础设定（背景 + 性格），保证注入不空。
-  if (!selected.length) return entries.slice(0, 2)
-  return selected.slice(0, limit)
+  if (!selected.length) return entries.slice(0, Math.min(2, count))
+  return selected.slice(0, count)
 }

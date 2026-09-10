@@ -106,6 +106,7 @@ export function normalizeCompanionConfig(raw: unknown): CompanionBehaviorConfig 
 }
 
 function clampInt(value: unknown, min: number, max: number, fallback: number): number {
+  if (value == null || value === '' || typeof value === 'boolean') return fallback
   const number = Number(value)
   if (!Number.isInteger(number)) return fallback
   return Math.max(min, Math.min(max, number))
@@ -184,8 +185,8 @@ export function createCompanionBehavior(
     return enqueue('event', line, now, eventKind)
   }
 
-  function dequeue(_now = Date.now()): CompanionReminder | null {
-    if (config.dnd) return null
+  function dequeue(now = Date.now()): CompanionReminder | null {
+    if (!canProduce(now)) return null
     return queue.shift() ?? null
   }
 
@@ -208,6 +209,7 @@ export function createCompanionBehavior(
     clear: () => { queue.length = 0 },
     setConfig: patch => {
       Object.assign(config, normalizeCompanionConfig({ ...config, ...patch }))
+      if (queue.length > config.queueLimit) queue.splice(0, queue.length - config.queueLimit)
     },
     config: () => ({ ...config }),
   }

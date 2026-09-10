@@ -40,6 +40,7 @@ function normalizeCharacter(value: unknown): ChatMemoryCharacter {
 function normalizeItem(value: unknown, fallbackCharacter: ChatMemoryCharacter): ChatMemoryItem | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   const record = value as Record<string, unknown>
+  if (record.character != null && record.character !== 'nene' && record.character !== 'natsume') return null
   const text = cleanText(record.text)
   if (!text) return null
   const createdAt = Number(record.createdAt)
@@ -64,12 +65,13 @@ export function normalizeChatMemoryState(value: unknown): ChatMemoryState {
     const source = (byCharacter as Record<string, unknown>)[character]
     if (!Array.isArray(source)) continue
     const seen = new Set<string>()
-    for (const raw of source) {
-      const item = normalizeItem(raw, character)
-      if (!item || item.character !== character) continue
+    const seenIds = new Set<string>()
+    const items = source.map(raw => normalizeItem(raw, character)).filter((item): item is ChatMemoryItem => Boolean(item && item.character === character)).sort((a, b) => b.updatedAt - a.updatedAt)
+    for (const item of items) {
       const key = item.text.toLocaleLowerCase()
-      if (seen.has(key)) continue
+      if (seen.has(key) || seenIds.has(item.id)) continue
       seen.add(key)
+      seenIds.add(item.id)
       state.byCharacter[character].push(item)
       if (state.byCharacter[character].length >= MAX_ITEMS) break
     }
@@ -89,16 +91,29 @@ export function saveChatMemoryState(state: ChatMemoryState): void {
   localStorage.setItem(CHAT_MEMORY_KEY, JSON.stringify(normalizeChatMemoryState(state)))
 }
 
+/** Re-read persisted state before editing; a failed write never changes the displayed snapshot. */
+export function changeStoredChatMemory(change: (state: ChatMemoryState) => boolean): ChatMemoryState | null {
+  const state = normalizeChatMemoryState(JSON.parse(localStorage.getItem(CHAT_MEMORY_KEY) || 'null'))
+  if (!change(state)) return null
+  const normalized = normalizeChatMemoryState(state)
+  saveChatMemoryState(normalized)
+  return normalized
+}
+
 export function mergeChatMemoryStates(current: ChatMemoryState, incoming: ChatMemoryState): ChatMemoryState {
+  current = normalizeChatMemoryState(current)
+  incoming = normalizeChatMemoryState(incoming)
   const merged = emptyChatMemoryState()
   for (const character of ['nene', 'natsume'] as const) {
     const seen = new Set<string>()
+    const seenIds = new Set<string>()
     const items = [...current.byCharacter[character], ...incoming.byCharacter[character]]
       .sort((a, b) => b.updatedAt - a.updatedAt)
     for (const item of items) {
       const key = item.text.toLocaleLowerCase()
-      if (seen.has(key)) continue
+      if (seen.has(key) || seenIds.has(item.id)) continue
       seen.add(key)
+      seenIds.add(item.id)
       merged.byCharacter[character].push(item)
       if (merged.byCharacter[character].length >= MAX_ITEMS) break
     }
@@ -115,8 +130,9 @@ export function rememberChatFact(
   const text = cleanText(textValue)
   if (!text) return null
   const list = state.byCharacter[character]
-  const existing = list.find(item => item.text.toLocaleLowerCase() === text.toLocaleLowerCase())
+  const existing = list.find(item => (sourceMid && item.sourceMid === sourceMid) || item.text.toLocaleLowerCase() === text.toLocaleLowerCase())
   if (existing) {
+    existing.text = text
     existing.sourceMid = cleanText(sourceMid) || existing.sourceMid
     existing.updatedAt = Date.now()
     existing.pinned = true
@@ -137,6 +153,7 @@ export function editChatFact(state: ChatMemoryState, character: ChatMemoryCharac
   if (!item || !text) return false
   item.text = text
   item.updatedAt = Date.now()
+  state.byCharacter[character] = state.byCharacter[character].filter(memory => memory === item || memory.text.toLocaleLowerCase() !== text.toLocaleLowerCase())
   return true
 }
 
@@ -169,6 +186,7 @@ export function recallChatFacts(
   limit = 4,
   budget = 1000,
 ): string[] {
+  if (!state.byCharacter[character]) return []
   const queryTerms = relevanceTerms(query)
   const ranked = state.byCharacter[character].map(item => {
     const terms = relevanceTerms(item.text)

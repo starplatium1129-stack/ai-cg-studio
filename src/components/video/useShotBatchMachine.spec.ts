@@ -4,23 +4,34 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useShotBatchMachine } from './useShotBatchMachine'
 import * as api from '@/api/videoApi'
 import { ApiClientError } from '@/api/client'
+import type { ShotDraft } from './shotListTypes'
 vi.mock('@/composables/useTaskCenter', () => ({ useTrackedTask: vi.fn() }))
 vi.mock('@/api/videoApi', () => ({ cancelVideoBatch: vi.fn(), concatVideoBatch: vi.fn(), createVideoBatch: vi.fn(), fetchVideoBatch: vi.fn(), retryVideoShot: vi.fn() }))
 let wrapper: ReturnType<typeof mount> | undefined
 const batch = (status: api.VideoBatch['status'] = 'paused'): api.VideoBatch => ({ id: 'original', status, shots: [{ status: 'failed' }, { status: 'failed' }], progress: { total: 2, succeeded: 0, failed: 2 } } as api.VideoBatch)
 function setup() {
   const error = ref('')
+  const shots = ref<ShotDraft[]>([]), inputsBusy = ref(false)
   let machine!: ReturnType<typeof useShotBatchMachine>
   wrapper = mount(defineComponent({ setup() {
-    machine = useShotBatchMachine({ shots: ref([]), identityCard: ref(''), aspectRatio: ref('landscape'), quality: ref('standard'), steps: ref(4), linkLastFrame: ref(false), shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error })
+    machine = useShotBatchMachine({ shots, inputsBusy: computed(() => inputsBusy.value), identityCard: ref(''), aspectRatio: ref('landscape'), quality: ref('standard'), steps: ref(4), linkLastFrame: ref(false), shotReferences: () => undefined, h3Ready: computed(() => true), online: computed(() => true), batchError: error })
     return () => null
   } }))
   machine.batch.value = batch()
-  return { machine, error }
+  return { machine, error, shots, inputsBusy }
 }
 beforeEach(() => { vi.clearAllMocks(); vi.useFakeTimers() })
 afterEach(() => { wrapper?.unmount(); vi.useRealTimers() })
 describe('shot batch operation recovery', () => {
+  it('does not submit a batch while reference cards or first frames are being prepared', async () => {
+    const { machine, shots, inputsBusy } = setup()
+    shots.value = [{ prompt: 'A complete shot description', seedText: '' } as ShotDraft]
+    expect(machine.canSubmit.value).toBe(true)
+    inputsBusy.value = true
+    expect(machine.canSubmit.value).toBe(false)
+    await machine.submitBatch()
+    expect(api.createVideoBatch).not.toHaveBeenCalled()
+  })
   it('resumes polling if only part of a retry-all request succeeded', async () => {
     vi.mocked(api.retryVideoShot).mockResolvedValueOnce({ batch: batch('running') } as Awaited<ReturnType<typeof api.retryVideoShot>>).mockRejectedValueOnce(new Error('retry failed'))
     vi.mocked(api.fetchVideoBatch).mockResolvedValueOnce({ batch: batch('done') } as Awaited<ReturnType<typeof api.fetchVideoBatch>>)

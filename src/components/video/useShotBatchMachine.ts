@@ -26,6 +26,7 @@ export interface ShotBatchMachineDeps {
   h3Ready: ComputedRef<boolean>
   /** ComfyUI 在线（props.status.online）。 */
   online: ComputedRef<boolean>
+  inputsBusy?: ComputedRef<boolean>
   /** 宿主持有的用户可见错误通道（提交/轮询/重抽失败回写）。 */
   batchError: Ref<string>
 }
@@ -55,6 +56,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     shots.value.length > 0
     && shots.value.every((shot) => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000)
     && !submitting.value
+    && !deps.inputsBusy?.value
     && !retrying.value && !cancelling.value && !concating.value
     && h3Ready.value
     && shots.value.every(shot => !shot.seedText.trim() || (Number.isSafeInteger(Number(shot.seedText)) && Number(shot.seedText) >= 0 && Number(shot.seedText) <= 0x7fffffff))

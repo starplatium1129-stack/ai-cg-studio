@@ -23,29 +23,41 @@ const DEFAULT_SCORES: Record<string, number> = {
 
 const state = ref<AffectionStoreState>(loadInitialState())
 
-function loadInitialState(): AffectionStoreState {
+function loadInitialState(strict = false): AffectionStoreState {
   if (typeof localStorage === 'undefined') return {}
   try {
     const raw = localStorage.getItem(COMPANION_AFFECTION_KEY)
     if (!raw) return {}
     const parsed = JSON.parse(raw)
-    if (typeof parsed === 'object' && parsed !== null) {
-      return parsed
+    if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+      return Object.fromEntries(Object.entries(parsed).flatMap(([key, entry]) => {
+        const item = entry as Partial<CharacterAffectionState> | null
+        return item && typeof item.score === 'number' && Number.isFinite(item.score)
+          ? [[key, { score: Math.max(0, Math.min(100, item.score)), lastInteractedAt: Number(item.lastInteractedAt) || undefined }]] : []
+      }))
     }
+    if (strict) throw new Error('好感度存储格式无效')
   } catch (err) {
+    if (strict) throw err
     console.warn('[useCompanionAffection] Failed to load affection state:', err)
   }
   return {}
 }
 
 function saveState() {
-  if (typeof localStorage === 'undefined') return
+  if (typeof localStorage === 'undefined') return false
   try {
     localStorage.setItem(COMPANION_AFFECTION_KEY, JSON.stringify(state.value))
+    return true
   } catch (err) {
     console.warn('[useCompanionAffection] Failed to save affection state:', err)
+    return false
   }
 }
+
+if (typeof window !== 'undefined') window.addEventListener('storage', event => {
+  if (event.key === null || event.key === COMPANION_AFFECTION_KEY) state.value = loadInitialState()
+})
 
 export function useCompanionAffection() {
   function getScore(character: string): number {
@@ -61,7 +73,13 @@ export function useCompanionAffection() {
   }
 
   function addScore(character: string, delta: number, _reason?: string): { oldScore: number; newScore: number; levelUp: boolean } {
+    try { state.value = loadInitialState(true) } catch {
+      const score = getScore(character)
+      return { oldScore: score, newScore: score, levelUp: false }
+    }
     const current = getScore(character)
+    if (!Number.isFinite(delta)) return { oldScore: current, newScore: current, levelUp: false }
+    const previous = state.value
     const next = Math.max(0, Math.min(100, current + delta))
     const oldLevel = getAffectionLevel(current).level
     const newLevel = getAffectionLevel(next).level
@@ -73,7 +91,10 @@ export function useCompanionAffection() {
         lastInteractedAt: Date.now(),
       },
     }
-    saveState()
+    if (!saveState()) {
+      state.value = previous
+      return { oldScore: current, newScore: current, levelUp: false }
+    }
 
     return {
       oldScore: current,
@@ -83,6 +104,9 @@ export function useCompanionAffection() {
   }
 
   function setScore(character: string, score: number) {
+    if (!Number.isFinite(score)) return
+    try { state.value = loadInitialState(true) } catch { return }
+    const previous = state.value
     const valid = Math.max(0, Math.min(100, Math.round(score)))
     state.value = {
       ...state.value,
@@ -91,7 +115,7 @@ export function useCompanionAffection() {
         lastInteractedAt: Date.now(),
       },
     }
-    saveState()
+    if (!saveState()) state.value = previous
   }
 
   function resetScore(character: string) {
@@ -116,8 +140,8 @@ export function useCompanionAffection() {
 
     let bonusAwarded: number | undefined
     if (picked.entry.bonus && picked.entry.bonus > 0) {
-      addScore(character, picked.entry.bonus, `互动动作 ${picked.entry.name}`)
-      bonusAwarded = picked.entry.bonus
+      const change = addScore(character, picked.entry.bonus, `互动动作 ${picked.entry.name}`)
+      bonusAwarded = change.newScore - change.oldScore
     }
 
     return {

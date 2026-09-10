@@ -14,7 +14,17 @@ const {
 } = require('../maintenance/desktop-build-lock');
 const { resolveNpmInvocation, stageResources } = require('../maintenance/desktop-stage-resources');
 const { runTauri } = require('../maintenance/run-tauri');
+const { resolveSdkRoot } = require('../maintenance/desktop-build-environment');
 const { customizeTemplate } = require('../maintenance/build-game-installer');
+
+test('desktop SDK discovery supports the workspace and does not ignore an explicit broken path', () => {
+  const root = path.resolve('fixture-root');
+  const local = path.join(root, 'runtime/desktop-build-sdk/CubismSdkForNative-5-r.5');
+  assert.equal(resolveSdkRoot(root, {}, candidate => candidate.startsWith(local)), local);
+  const explicit = path.resolve('explicit-sdk');
+  assert.equal(resolveSdkRoot(root, { LIVE2D_CUBISM_SDK_DIR: explicit }, () => false), explicit);
+  assert.equal(resolveSdkRoot(root, {}, () => false), '');
+});
 
 test('game installer preserves upstream install and maintenance behavior', () => {
   const source = fs.readFileSync(path.join(__dirname, '../../desktop-tauri/src-tauri/installer/vendor/tauri-2.11.4.nsi'), 'utf8');
@@ -218,6 +228,7 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
   await runTauri(['build', '--no-bundle'], {
     root: 'fixture-root',
     npmCommand: 'npm',
+    checkEnvironment: () => { events.push('environment'); },
     withLock: async (options, callback) => {
       events.push('lock');
       const result = await callback();
@@ -237,6 +248,7 @@ test('runTauri holds the lock across build, verification, preparation and CLI', 
   });
   assert.deepEqual(events, [
     'lock',
+    'environment',
     'npm:run build',
     'npm:run test:services-generated',
     'prepare',

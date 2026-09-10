@@ -1,4 +1,4 @@
-import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import { usePolling } from './usePolling'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { controlApi } from '@/api/controlApi'
@@ -36,13 +36,14 @@ export interface CompanionBehaviorRuntimeDeps {
 export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) {
   const { activeChar, desktopBridge, desktopWindowVisible, reconcileAutoListen } = deps
 
-  const behavior = createCompanionBehavior(readBehaviorConfig())
-  const behaviorEnabled = computed(() => behavior.config().enabled)
+  const config = ref(readBehaviorConfig())
+  const behavior = createCompanionBehavior(config.value)
+  const behaviorEnabled = computed(() => config.value.enabled)
   const dnd = ref(behavior.config().dnd)
   const pendingReminders = ref<CompanionReminder[]>([])
   const inQuietHours = ref(behavior.inQuietHours())
   const quietHoursText = computed(() => {
-    const { quietStartHour, quietEndHour } = behavior.config()
+    const { quietStartHour, quietEndHour } = config.value
     return `安静时段 ${quietStartHour}:00 – ${quietEndHour}:00 不主动问候`
   })
 
@@ -74,8 +75,9 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   }
 
   function syncReminders() {
-    pendingReminders.value = behavior.pending().slice()
     inQuietHours.value = behavior.inQuietHours()
+    for (const reminder of behavior.pending()) if (Date.now() - reminder.at > 30 * 60_000) behavior.dismiss(reminder.id)
+    pendingReminders.value = behaviorEnabled.value && !dnd.value && !inQuietHours.value ? behavior.pending().slice() : []
   }
 
   function noteActivity() {
@@ -109,8 +111,10 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   function toggleDnd() {
     const next = !behavior.config().dnd
     behavior.setConfig({ dnd: next })
+    config.value = behavior.config()
     dnd.value = next
     persistBehaviorConfig()
+    syncReminders()
     reconcileAutoListen()
   }
 
@@ -123,23 +127,22 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   function currentGreetedSlotKey(): string {
     const now = new Date()
     const greeting = pickEnvironmentGreeting(activeChar.value, now)
-    return `${activeChar.value}:${greeting.slot}:${greeting.weekend ? 'w' : 'd'}`
+    return `${activeChar.value}:${now.toDateString()}:${greeting.slot}:${greeting.weekend ? 'w' : 'd'}`
   }
 
   function maybeGreetByTime(force = false) {
-    if (!behaviorEnabled.value) return
+    if (!behaviorEnabled.value || !desktopWindowVisible()) return
     const key = currentGreetedSlotKey()
     if (!force && key === greetedSlotKey) return
-    greetedSlotKey = key
     const greeting = pickEnvironmentGreeting(activeChar.value, new Date(), reminderLineOffset)
     reminderLineOffset += 1
     const reminder = behavior.noteReturn(greeting.line)
-    if (reminder) syncReminders()
+    if (reminder) { greetedSlotKey = key; syncReminders() }
   }
 
   function runBehaviorTick() {
     syncReminders()
-    const reminder = behavior.tick()
+    const reminder = desktopWindowVisible() ? behavior.tick() : null
     if (reminder) {
       reminderLineOffset += 1
       reminder.line = pickCompanionLine(activeChar.value, 'idle', reminderLineOffset)
@@ -152,6 +155,8 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
 
   async function pollCompanionEvents() {
     if (eventPolling || !alive) return
+    if (!desktopWindowVisible() || !behaviorEnabled.value || dnd.value || behavior.inQuietHours()) { eventDetector.reset(); return }
+    const character = activeChar.value
     eventPolling = true
     const controller = new AbortController()
     eventPollController = controller
@@ -160,9 +165,9 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
         controlApi.getStatus({ signal: controller.signal }).catch(() => null),
         imgCount().catch(() => -1),
       ])
-      if (!alive || controller.signal.aborted || !status || status.ok === false) return
+      if (!alive || controller.signal.aborted || !status || status.ok === false || character !== activeChar.value || !desktopWindowVisible()) return
       const events = eventDetector.ingest({
-        imageCount: imageCount >= 0 ? imageCount : 0,
+        imageCount: imageCount >= 0 ? imageCount : null,
         services: {
           sdOnline: status.sdOnline,
           ttsOnline: status.ttsOnline,
@@ -175,7 +180,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
         const reminder = behavior.noteEvent(event, line)
         if (reminder) {
           syncReminders()
-          if (desktopBridge) desktopBridge.notify(EVENT_NOTIFY_TITLE[event], line)
+          if (desktopBridge) void Promise.resolve(desktopBridge.notify(EVENT_NOTIFY_TITLE[event], line)).catch(() => {})
         }
       }
     } catch {
@@ -201,8 +206,23 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     eventDetector.reset()
   }
 
+  function onBehaviorStorage(event: StorageEvent) {
+    if (event.key !== null && event.key !== COMPANION_BEHAVIOR_KEY) return
+    config.value = readBehaviorConfig()
+    behavior.setConfig(config.value)
+    dnd.value = config.value.dnd
+    syncReminders()
+    reconcileAutoListen()
+  }
+  watch(activeChar, () => {
+    eventPollController?.abort()
+    behavior.clear(); eventDetector.reset(); greetedSlotKey = ''
+    syncReminders(); maybeGreetByTime()
+  })
+
   onMounted(() => {
     dnd.value = behavior.config().dnd
+    window.addEventListener('storage', onBehaviorStorage)
     behaviorPoll.start()
     eventPoll.start()
     syncReminders()
@@ -213,6 +233,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   onUnmounted(() => {
     alive = false
     eventPollController?.abort()
+    window.removeEventListener('storage', onBehaviorStorage)
     eventPollController = null
     behaviorPoll.stop()
     eventPoll.stop()

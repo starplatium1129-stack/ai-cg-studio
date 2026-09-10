@@ -16,7 +16,7 @@ export interface CompanionServicesSnapshot {
 
 export interface CompanionEventSnapshot {
   /** 作品库图片总数（IndexedDB 计数），增加视为出图完成 */
-  imageCount: number
+  imageCount: number | null
   services: CompanionServicesSnapshot
 }
 
@@ -38,7 +38,7 @@ export function createCompanionEventDetector(): CompanionEventDetector {
   function ingest(snapshot: CompanionEventSnapshot): CompanionDetectedEvent[] {
     const events: CompanionDetectedEvent[] = []
     if (baseline) {
-      if (snapshot.imageCount > baseline.imageCount) events.push('sd-done')
+      if (snapshot.imageCount != null && baseline.imageCount != null && snapshot.imageCount > baseline.imageCount) events.push('sd-done')
 
       for (const key of ['sdOnline', 'ttsOnline', 'ollamaOnline'] as const) {
         const was = baseline.services[key]
@@ -47,8 +47,8 @@ export function createCompanionEventDetector(): CompanionEventDetector {
         else if (was && !now) events.push('service-down')
       }
     }
-    baseline = snapshot
-    return events
+    baseline = { ...snapshot, imageCount: snapshot.imageCount ?? baseline?.imageCount ?? null, services: { ...snapshot.services } }
+    return [...new Set(events)]
   }
 
   function reset(): void {

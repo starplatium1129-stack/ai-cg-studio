@@ -13,6 +13,7 @@ import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY } from '@/utils/storageKeys'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import {
   editChatFact,
+  changeStoredChatMemory,
   emptyChatMemoryState,
   isChatFactRemembered,
   loadChatMemoryState,
@@ -21,6 +22,7 @@ import {
   removeChatFact,
   saveChatMemoryState,
   type ChatMemoryCharacter,
+  type ChatMemoryState,
 } from '@/utils/chatMemory'
 import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
 import { confirmAction } from '@/composables/useConfirm'
@@ -220,7 +222,7 @@ export function useCharacterRoomSession() {
   }
 
   function onChatAuxStorage(event: StorageEvent) {
-    if (event.key === CHAT_MEMORY_KEY) chatMemory.value = loadChatMemoryState()
+    if (event.key === null || event.key === CHAT_MEMORY_KEY) chatMemory.value = loadChatMemoryState()
     if (event.key === CHAT_USER_PROFILE_KEY) userProfile.value = loadChatUserProfile()
   }
 
@@ -242,29 +244,33 @@ export function useCharacterRoomSession() {
   function persistChatMemory() {
     try {
       saveChatMemoryState(chatMemory.value)
+      return true
     } catch {
       setError('长期记忆保存失败，请检查浏览器存储空间。', 'warning')
+      return false
     }
+  }
+
+  function changeMemory(change: (state: ChatMemoryState) => boolean, message: string) {
+    try {
+      const next = changeStoredChatMemory(change)
+      if (!next) return
+      chatMemory.value = next
+      setError(message, 'info', 2500)
+    } catch { setError('长期记忆保存失败，原有记忆已保留，请检查浏览器存储空间后重试。', 'warning') }
   }
 
   function rememberMessage(message: ChatMessage) {
     if (message.role !== 'user') return
-    const item = rememberChatFact(chatMemory.value, memoryCharacter(), message.content, message.mid)
-    if (!item) return
-    persistChatMemory()
-    setError('已加入长期记忆', 'info', 2500)
+    changeMemory(state => Boolean(rememberChatFact(state, memoryCharacter(), message.content, message.mid)), '已加入长期记忆')
   }
 
   function updateMemory(id: string, text: string) {
-    if (!editChatFact(chatMemory.value, memoryCharacter(), id, text)) return
-    persistChatMemory()
-    setError('长期记忆已更新', 'info', 2500)
+    changeMemory(state => editChatFact(state, memoryCharacter(), id, text), '长期记忆已更新')
   }
 
   function deleteMemory(id: string) {
-    if (!removeChatFact(chatMemory.value, memoryCharacter(), id)) return
-    persistChatMemory()
-    setError('已删除长期记忆', 'info', 2500)
+    changeMemory(state => removeChatFact(state, memoryCharacter(), id), '已删除长期记忆')
   }
 
   function messageRemembered(mid: string) {
@@ -299,6 +305,8 @@ export function useCharacterRoomSession() {
     reasoning,
     userProfile,
     recallMemories: (character, query) => {
+      if (character !== 'nene' && character !== 'natsume') return []
+      if (!characterSettingCards().length) void loadCharacterSettingCards().catch(() => {})
       // 角色设定记忆（2026-08-28 最小闭环）：从 data/characters.json 既有档案派生
       // 的角色设定卡，优先于会话事实注入——LLM 先对齐人设，再结合长期记忆。
       const setting = recallCharacterSetting(characterSettingCards(), memoryCharacter(character), query)
@@ -456,10 +464,10 @@ export function useCharacterRoomSession() {
     storage.clear()
     storage.clearArchive()
     chatMemory.value = emptyChatMemoryState()
-    persistChatMemory()
+    const memorySaved = persistChatMemory()
     userProfile.value = { callName: '', relationship: 'atelier_owner', note: '' }
     settingsRepository.remove({ key: CHAT_USER_PROFILE_KEY })
-    setError('全部本地聊天记忆已清除。', 'info', 3000)
+    if (memorySaved) setError('全部本地聊天记忆已清除。', 'info', 3000)
   }
 
   function onAutoVoiceChange() {

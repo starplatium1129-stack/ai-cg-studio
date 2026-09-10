@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue'
+import { ref, onScopeDispose, getCurrentScope, type Ref } from 'vue'
 import { getCharacterReferences } from '@/utils/characterReferenceData'
 import type { VideoImageUploadResponse } from '@/api/videoApi'
 
@@ -32,10 +32,16 @@ export interface ReferenceCardsDeps {
   batchError: Ref<string>
   readBlobAsDataURL: (blob: Blob) => Promise<string>
   uploadVideoImage: (base64: string, kind?: 'reference', signal?: AbortSignal) => Promise<VideoImageUploadResponse>
+  onCardRemoved?: (index: number) => void
 }
 
 const MAX_CARDS = 4
 const MAX_IMAGES_PER_CARD = 4
+
+export function removeCastSlot(cast: string, removedIndex: number): string {
+  if (!/^\d+$/.test(cast)) return cast
+  return [...new Set(cast.split('').map(Number).filter(slot => slot !== removedIndex + 1).map(slot => slot > removedIndex + 1 ? slot - 1 : slot))].join('')
+}
 
 export function useReferenceCards(deps: ReferenceCardsDeps) {
   const referenceCards = ref<ReferenceCard[]>([
@@ -45,6 +51,41 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   const referenceInputs = ref<HTMLInputElement[]>([])
   const loadingRefAssets = ref(false)
   const loadingRefCardIndex = ref<number | null>(null)
+  const operations = new Map<ReferenceCard, Set<AbortController>>()
+  let disposed = false
+  let lastAutoIdentity = ''
+  function syncLoading() {
+    loadingRefAssets.value = operations.size > 0
+    const index = referenceCards.value.findIndex(card => operations.has(card))
+    loadingRefCardIndex.value = index >= 0 ? index : null
+  }
+  function cancelCard(card: ReferenceCard) {
+    operations.get(card)?.forEach(controller => controller.abort())
+    operations.delete(card)
+    syncLoading()
+  }
+  function start(card: ReferenceCard) {
+    const controller = new AbortController()
+    const pending = operations.get(card) || new Set<AbortController>()
+    pending.add(controller); operations.set(card, pending); syncLoading()
+    return controller
+  }
+  const current = (card: ReferenceCard, controller: AbortController) => !disposed && !controller.signal.aborted && referenceCards.value.includes(card) && operations.get(card)?.has(controller)
+  function finish(card: ReferenceCard, controller: AbortController) {
+    const pending = operations.get(card)
+    pending?.delete(controller)
+    if (pending?.size === 0) operations.delete(card)
+    syncLoading()
+  }
+  function clearImages(card: ReferenceCard) {
+    card.images.forEach(image => { if (image.url) URL.revokeObjectURL(image.url) })
+    card.images = []
+  }
+  if (getCurrentScope()) onScopeDispose(() => {
+    disposed = true
+    for (const card of operations.keys()) cancelCard(card)
+    referenceCards.value.forEach(clearImages)
+  })
 
   function getCharOutfits(charId?: string) {
     if (!charId) return []
@@ -58,12 +99,15 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   }
 
   function removeReferenceCard(index: number) {
-    if (referenceCards.value.length <= 1) return
+    if (referenceCards.value.length <= 1 || !referenceCards.value[index]) return
     const card = referenceCards.value[index]
     if (card) {
-      card.images.forEach(img => { if (img.url) URL.revokeObjectURL(img.url) })
+      cancelCard(card)
+      clearImages(card)
     }
     referenceCards.value.splice(index, 1)
+    referenceInputs.value.splice(index, 1)
+    deps.onCardRemoved?.(index)
     updateMultiCharacterIdentity()
   }
 
@@ -79,15 +123,23 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
    * 不再让装配失败被「全部成功」的文案掩盖）。
    */
   async function autoLoadCharacterReferences(charId: string, cardIndex: number = 0, outfitId?: string): Promise<number> {
-    const profile = getCharacterReferences(charId)
-    if (!profile) return 0
-
     if (cardIndex < 0 || cardIndex >= referenceCards.value.length) return 0
     const targetCard = referenceCards.value[cardIndex]
+    cancelCard(targetCard)
+    clearImages(targetCard)
+    const profile = getCharacterReferences(charId)
+    if (!profile) {
+      targetCard.characterId = charId
+      targetCard.outfitId = ''
+      targetCard.label = ''
+      updateMultiCharacterIdentity()
+      deps.batchError.value = '角色参考档案尚未就绪，请稍后重新选择'
+      return 0
+    }
 
     // 匹配特定 outfit 或默认 outfit
     let chosenOutfit = profile.outfits.find(o => o.outfitId === outfitId)
-    if (!chosenOutfit) {
+    if (!chosenOutfit && !outfitId) {
       chosenOutfit = profile.outfits.find(o => o.isDefault) || profile.outfits[0]
     }
 
@@ -96,40 +148,42 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     targetCard.outfitId = chosenOutfit?.outfitId || ''
     targetCard.label = profile.displayName + (chosenOutfit && !chosenOutfit.isDefault ? ` · ${chosenOutfit.outfitName}` : '')
 
-    // 释放原有旧图
-    targetCard.images.forEach((img) => {
-      if (img.url) URL.revokeObjectURL(img.url)
-    })
-    targetCard.images = []
-
-    loadingRefAssets.value = true
-    loadingRefCardIndex.value = cardIndex
+    updateMultiCharacterIdentity()
+    if (!chosenOutfit) { deps.batchError.value = '该服装参考档案不存在，请重新选择'; return 0 }
+    const controller = start(targetCard)
     let loaded = 0
     try {
       // 自动加载基准图（特写 / 半身 / 全身 / 侧后背影）；设计图基线占位（pending 无 url）排除
       // 关键修复：加入时间戳与 no-cache，杜绝浏览器拉取旧缓存图片
-      const targets = (chosenOutfit?.references || []).filter(r => r.url).slice(0, MAX_IMAGES_PER_CARD)
+      const targets = chosenOutfit.references.filter(r => r.url && !r.pending).slice(0, MAX_IMAGES_PER_CARD)
       for (const item of targets) {
-        const imgUrl = `${item.url}?t=${Date.now()}`
-        const resp = await fetch(imgUrl, { cache: 'no-cache' })
+        if (!current(targetCard, controller)) return 0
+        if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
+        try {
+        const imgUrl = new URL(item.url, location.href)
+        imgUrl.searchParams.set('t', String(Date.now()))
+        const resp = await fetch(imgUrl.href, { cache: 'no-cache', signal: controller.signal })
         if (!resp.ok) continue
         const blob = await resp.blob()
+        if (!blob.size || blob.size > 20 * 1024 * 1024 || (blob.type && !blob.type.startsWith('image/'))) continue
         const dataUrl = await deps.readBlobAsDataURL(blob)
         const comma = dataUrl.indexOf(',')
         if (comma < 0) continue
-        const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference')
+        const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference', controller.signal)
+        if (!current(targetCard, controller)) return 0
+        if (targetCard.images.length >= MAX_IMAGES_PER_CARD) break
         targetCard.images.push({
           name: upload.name,
           url: URL.createObjectURL(blob),
         })
         loaded += 1
+        } catch { if (!current(targetCard, controller)) return 0 }
       }
-      updateMultiCharacterIdentity()
+      if (current(targetCard, controller)) deps.batchError.value = loaded === targets.length && loaded > 0 ? '' : `已装配 ${loaded}/${targets.length} 张参考图，缺失或待补素材未计入完成，可重新选择服装重试`
     } catch (error) {
       console.warn(`[ShotList] 自动装配角色 ${cardIndex + 1} 标准参考图失败:`, error)
     } finally {
-      loadingRefAssets.value = false
-      loadingRefCardIndex.value = null
+      finish(targetCard, controller)
     }
     return loaded
   }
@@ -160,14 +214,25 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     })
 
     if (activeDescriptions.length > 0) {
-      deps.identityCard.value = activeDescriptions.join('\n\n')
+      lastAutoIdentity = activeDescriptions.join('\n\n')
+      deps.identityCard.value = lastAutoIdentity
+    } else if (deps.identityCard.value === lastAutoIdentity) {
+      deps.identityCard.value = ''
+      lastAutoIdentity = ''
     }
   }
 
   async function onCardCharacterSelected(cardIndex: number, event: Event) {
     const select = event.target as HTMLSelectElement
     const charId = select.value
-    if (!charId) return
+    if (!charId) {
+      const card = referenceCards.value[cardIndex]
+      if (!card) return
+      cancelCard(card); clearImages(card)
+      card.characterId = undefined; card.outfitId = undefined; card.label = ''
+      updateMultiCharacterIdentity()
+      return
+    }
 
     // 装配参考图到对应卡槽
     await autoLoadCharacterReferences(charId, cardIndex)
@@ -179,7 +244,8 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     input.value = ''
     if (!file) return
     const card = referenceCards.value[cardIndex]
-    if (card.images.length >= MAX_IMAGES_PER_CARD) {
+    if (!card || disposed) return
+    if (card.images.length + (operations.get(card)?.size || 0) >= MAX_IMAGES_PER_CARD) {
       deps.batchError.value = '每个角色最多 4 张参考图（4 视角）'
       return
     }
@@ -187,15 +253,20 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       deps.batchError.value = '参考图需 ≤20MB'
       return
     }
+    if (!file.type.startsWith('image/')) { deps.batchError.value = '请选择图片文件'; return }
+    const controller = start(card)
     try {
       const dataUrl = await deps.readBlobAsDataURL(file)
       const comma = dataUrl.indexOf(',')
       if (comma < 0) throw new Error('图片编码失败')
-      const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference')
+      const upload = await deps.uploadVideoImage(dataUrl.slice(comma + 1), 'reference', controller.signal)
+      if (!current(card, controller) || card.images.length >= MAX_IMAGES_PER_CARD) return
       card.images.push({ name: upload.name, url: URL.createObjectURL(file) })
       deps.batchError.value = ''
     } catch (error) {
-      deps.batchError.value = error instanceof Error ? error.message : '参考图上传失败'
+      if (current(card, controller)) deps.batchError.value = error instanceof Error ? error.message : '参考图上传失败'
+    } finally {
+      finish(card, controller)
     }
   }
 
@@ -205,10 +276,13 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
 
   function setReferenceInput(el: unknown, cardIndex: number) {
     if (el) referenceInputs.value[cardIndex] = el as HTMLInputElement
+    else delete referenceInputs.value[cardIndex]
   }
 
   function removeReference(cardIndex: number, imageIndex: number) {
-    const image = referenceCards.value[cardIndex].images[imageIndex]
+    const card = referenceCards.value[cardIndex]
+    if (!card?.images[imageIndex]) return
+    const image = card.images[imageIndex]
     if (image?.url) URL.revokeObjectURL(image.url)
     referenceCards.value[cardIndex].images.splice(imageIndex, 1)
   }

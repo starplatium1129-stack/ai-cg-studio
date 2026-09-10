@@ -89,7 +89,7 @@
           @focus="composerFocused = true"
           @blur="composerFocused = false"
           @input="onInput"
-          @keydown.enter.exact.prevent="onSend"
+          @keydown.enter.exact="submitChatOnEnter($event, onSend)"
         ></textarea>
         <div class="companion-chat-actions">
           <button
@@ -122,9 +122,9 @@
             type="button"
             :disabled="!canSend"
             @click="onSend"
-          >{{ liveState.busy ? '回复中' : '发送' }}</button>
+          >{{ sending ? '发送中…' : liveState.busy ? '回复中' : '发送' }}</button>
         </div>
-        <div class="companion-chat-meta" aria-live="polite">
+        <div v-if="liveState.chatReady || errorText || speechSessionActive" class="companion-chat-meta" aria-live="polite">
           <span>{{ metaText }}</span>
           <span v-if="errorText" class="companion-chat-error">{{ errorText }}</span>
           <span v-if="speechSessionActive" class="companion-chat-continuous">
@@ -145,6 +145,8 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { submitChatOnEnter } from '@/utils/chatInput'
+import { usePolling } from '@/composables/usePolling'
 import { useRouter } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
@@ -190,6 +192,8 @@ const activeChar = computed<string>(() =>
 const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)
 
 const inputText = ref('')
+const sending = ref(false)
+let liveInitialized = false
 const composerFocused = ref(false)
 const listRef = ref<HTMLDivElement>()
 const inputRef = ref<HTMLTextAreaElement>()
@@ -199,10 +203,14 @@ const speechSession = createSpeechSession()
 const speechSessionState = ref(speechSession.state())
 const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
 const behavior = createCompanionBehavior(readBehaviorConfig())
-const quietHint = computed(() => behavior.inQuietHours())
+const quietHint = ref(behavior.inQuietHours())
+const quietClock = usePolling({ intervalMs: 30_000, immediate: false, tick: () => {
+  quietHint.value = behavior.inQuietHours()
+  reconcileAutoListen()
+} })
 
 const visibleMessages = computed(() => storage.messages(activeChar.value).slice(-40))
-const canSend = computed(() => Boolean(inputText.value.trim()) && !liveState.busy && liveState.chatReady)
+const canSend = computed(() => Boolean(inputText.value.trim()) && !sending.value && !liveState.busy && liveState.chatReady)
 
 const {
   state: speechState,
@@ -259,6 +267,7 @@ function readBehaviorConfig() {
 
 function readLive() {
   try {
+    const previousCharacter = activeChar.value
     const raw = JSON.parse(localStorage.getItem(COMPANION_CHAT_LIVE_KEY) || 'null')
     if (!raw || typeof raw !== 'object') return
     liveState.busy = Boolean(raw.busy)
@@ -269,16 +278,28 @@ function readLive() {
     }
     if (typeof raw.chatReady === 'boolean') liveState.chatReady = raw.chatReady
     liveState.ts = Number(raw.ts) || 0
+    if (liveInitialized && previousCharacter !== activeChar.value) {
+      clearTimeout(draftTimer)
+      storage.setDraft(previousCharacter, inputText.value)
+      inputText.value = storage.draft(activeChar.value)
+    }
   } catch { /* 解析失败保持现状 */ }
 }
 
-function onSend() {
+async function onSend() {
   const text = inputText.value.trim()
-  if (!text || liveState.busy || !liveState.chatReady) return
+  if (!canSend.value) return
   if (bridge) {
-    void bridge.chatRelay({ command: 'send', text })
-    inputText.value = ''
-    storage.setDraft(activeChar.value, '')
+    const character = activeChar.value
+    clearTimeout(draftTimer)
+    storage.setDraft(character, inputText.value)
+    sending.value = true
+    try {
+      await bridge.chatRelay({ command: 'send', text })
+      if (activeChar.value === character && inputText.value.trim() === text) inputText.value = ''
+      if (storage.draft(character).trim() === text) storage.setDraft(character, '')
+    } catch { listenerError('发送失败，草稿已保留，请重试。') }
+    finally { sending.value = false }
   } else {
     listenerError('桌宠桥未连接，无法发送（请在角色窗中打开聊天）。')
   }
@@ -425,8 +446,16 @@ let draftTimer = 0
 function onInput() {
   clearTimeout(draftTimer)
   const value = inputText.value
-  draftTimer = window.setTimeout(() => storage.setDraft(activeChar.value, value), 240) as unknown as number
+  const character = activeChar.value
+  draftTimer = window.setTimeout(() => storage.setDraft(character, value), 240) as unknown as number
 }
+function resizeComposer() {
+  const input = inputRef.value
+  if (!input) return
+  input.style.height = 'auto'
+  input.style.height = `${Math.min(input.scrollHeight, Math.max(64, Math.min(144, innerHeight * .24)))}px`
+}
+watch(inputText, () => { void nextTick(resizeComposer) })
 
 /* —— 自动滚动到底部 —— */
 watch([visibleMessages, () => liveState.busy, () => liveState.speaking], () => {
@@ -443,10 +472,14 @@ function onVisibilityChange() {
 }
 
 onMounted(() => {
+  quietClock.start()
   document.documentElement.classList.add('companion-mode')
   storage.load()
   readLive()
   inputText.value = storage.draft(activeChar.value)
+  liveInitialized = true
+  void nextTick(resizeComposer)
+  window.addEventListener('resize', resizeComposer)
   speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
   reconcileAutoListen()
   window.addEventListener('storage', onStorageChange)
@@ -459,13 +492,10 @@ onMounted(() => {
 
 function onStorageChange(event: StorageEvent) {
   if (event.key === COMPANION_CHAT_LIVE_KEY) readLive()
-  if (event.key === COMPANION_BEHAVIOR_KEY) {
+  if (event.key === null || event.key === COMPANION_BEHAVIOR_KEY) {
     behavior.setConfig(readBehaviorConfig())
+    quietHint.value = behavior.inQuietHours()
     reconcileAutoListen()
-  }
-  // 活动角色变化后草稿跟着切
-  if (event.key === COMPANION_CHAT_LIVE_KEY) {
-    inputText.value = storage.draft(activeChar.value)
   }
 }
 
@@ -475,6 +505,8 @@ function onDocFocus() {
 }
 
 onUnmounted(() => {
+  quietClock.stop()
+  window.removeEventListener('resize', resizeComposer)
   stopSpeechSessionWatch()
   clearTimeout(draftTimer)
   clearTimeout(errorTimer)

@@ -7,7 +7,7 @@ import { ensureCharacterReferencesLoaded,getCharacterReferences } from '@/utils/
 import { computed,onBeforeUnmount,onMounted,ref,watch } from 'vue';
 import { useRoute } from 'vue-router';
 import type { ShotDraft } from './shotListTypes';
-import { useReferenceCards } from './useReferenceCards';
+import { useReferenceCards, removeCastSlot } from './useReferenceCards';
 import { useShotAiTools } from './useShotAiTools';
 import { useShotBatchMachine } from './useShotBatchMachine';
 import { useShotDraft } from './useShotDraft';
@@ -104,11 +104,12 @@ export function useShotWorkspace(props: {
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
-    const { referenceCards, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, autoLoadCharacterReferences, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, shotReferences } = useReferenceCards({
+    const { referenceCards, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, autoLoadCharacterReferences, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, shotReferences } = useReferenceCards({
         identityCard,
         batchError,
         readBlobAsDataURL,
         uploadVideoImage,
+        onCardRemoved: index => { shots.value.forEach(shot => { shot.cast = removeCastSlot(shot.cast, index); }); },
     });
     // ── 批量提交状态机（提交/3s 轮询/取消/重抽/拼接）已下沉 useShotBatchMachine ──
     const { batch, submitting, cancelling, concating, batchActive, canSubmit, canConcat, progressPercent, serverShot, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
@@ -119,6 +120,7 @@ export function useShotWorkspace(props: {
         steps,
         linkLastFrame,
         shotReferences,
+        inputsBusy: computed(() => loadingRefAssets.value || firstFrameBusy.value),
         h3Ready,
         online: computed(() => props.status?.online === true),
         batchError,

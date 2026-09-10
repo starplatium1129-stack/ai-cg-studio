@@ -3,6 +3,18 @@
 统一入口只有一个：**`deploy-desktop.bat`**（项目根）。实现脚本也只有一个：
 `scripts/maintenance/deploy-desktop-quick.ps1`。不要再新建部署脚本。
 
+## 打包前检查
+
+先运行 `npm run wf -- desktop:doctor --json`，确认 Windows x64、Node.js、Rust MSVC、Visual C++、Windows SDK 和 Cubism Native SDK 全部就绪。`npm run package:tauri` 会在构建前自动执行同一检查，缺失时立即给出具体安装指引。
+
+Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x64 MSVC stable 工具链。入口会自动发现 `%USERPROFILE%\.cargo\bin`，无需重启终端或手动修改全局 PATH。C++/Windows SDK 要求见 [Tauri 官方前置条件](https://v2.tauri.app/start/prerequisites/)。
+
+项目使用 [Cubism SDK for Native R5](https://www.live2d.com/en/sdk/download/native/)。将完整 SDK 放到 `runtime/desktop-build-sdk/CubismSdkForNative-5-r.5`，或设置 `LIVE2D_CUBISM_SDK_DIR` 指向包含 Core/Framework 的根目录。显式配置失效时不会静默换库。SDK 仅保存在被忽略的本机目录，不提交其源码、压缩包或工具链到 Git；保留 SDK 随附许可证，发布仍沿用既有发布流程。
+
+生成安装包：`npm run package:tauri`。它只构建，不安装、不公开发布；完成后再按下面的部署入口选择增量同步或完整安装。
+
+本机反复验证可使用 `npm run wf -- desktop:package-local`：仍经过完整前端构建、资源暂存和原生编译，使用 `desktop-tauri/tauri.local.json` 跳过压缩，生成更大的本地安装包，避免反复等待压缩。普通打包入口使用默认 LZMA 压缩。本地无签名密钥时生成未签名安装包，不用于自动更新发布。
+
 ```bat
 deploy-desktop.bat                  :: 增量部署（默认）
 deploy-desktop.bat -UseInstaller    :: 完整安装（跑安装包）

@@ -240,7 +240,7 @@
             aria-label="桌宠聊天输入"
             @focus="composerFocused = true"
             @blur="composerFocused = false"
-            @keydown.enter.exact.prevent="handleSend"
+            @keydown.enter.exact="submitChatOnEnter($event, handleSend)"
             @input="onInputChange"
           ></textarea>
           <button
@@ -383,6 +383,7 @@
 <script setup lang="ts">
 import '@/assets/css/companion.css'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { submitChatOnEnter } from '@/utils/chatInput'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"

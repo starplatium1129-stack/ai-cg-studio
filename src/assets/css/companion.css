@@ -1188,7 +1188,7 @@ html.companion-mode:not(.companion-desktop) body {
   padding: 9px 11px;
   border-color: color-mix(in srgb, var(--character-accent) 72%, var(--companion-ink));
   border-radius: var(--r-xl);
-  background: linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 44%, var(--art-scrim)), color-mix(in srgb, var(--art-scrim) 86%, transparent));
+  background: color-mix(in srgb, var(--art-scrim) 92%, transparent);
   color: var(--companion-ink);
   box-shadow: var(--shadow-lg), 0 0 28px color-mix(in srgb, var(--character-accent) 18%, transparent), inset 0 1px 0 var(--companion-highlight);
   transform: none;
@@ -1196,12 +1196,13 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .live2d-enable-cta:hover,
 .companion-page .live2d-enable-cta:focus-visible {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 58%, var(--art-scrim)), color-mix(in srgb, var(--art-scrim) 78%, transparent));
+  background: color-mix(in srgb, var(--character-accent) 18%, var(--art-scrim));
   transform: translateY(-2px);
 }
 
-.companion-page .live2d-enable-cta-kicker {
-  color: color-mix(in srgb, var(--character-accent) 78%, var(--companion-ink));
+.companion-page .live2d-enable-cta-kicker,
+.companion-page .live2d-enable-cta small {
+  color: var(--companion-ink);
 }
 
 .companion-page .live2d-enable-cta p {
@@ -1863,6 +1864,8 @@ html.companion-immersive .companion-page {
    设置面板：角色形象 / 对话偏好 / 语音开关
   ============================================================ */
 .companion-page .companion-settings-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
   display: inline-flex;
   align-items: center;
   gap: var(--s-1);
@@ -1894,9 +1897,11 @@ html.companion-immersive .companion-page {
   z-index: var(--z-popover);
   top: calc(100% + var(--s-2));
   right: 0;
-  width: min(284px, calc(100vw - var(--s-4)));
-  max-height: min(62dvh, 480px);
+  width: min(320px, calc(100vw - var(--s-5)));
+  max-height: min(72dvh, 560px);
   overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
   padding: var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-lg);
@@ -2095,14 +2100,28 @@ html.companion-desktop .companion-page .companion-toolbar {
   left: auto;
   flex: none;
   min-height: 52px;
+  background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  border-color: var(--border-soft);
+  --companion-ink: var(--text-primary);
+  --companion-ink-soft: var(--text-secondary);
+}
+html.companion-desktop .companion-page .companion-toolbar-actions { flex: 0 0 auto; }
+html.companion-desktop .companion-page .companion-identity > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: none;
+  color: var(--text-secondary);
 }
 
 html.companion-desktop .companion-page .companion-identity {
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
 }
 
 html.companion-desktop .companion-page .companion-identity h1 {
+  text-shadow: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2148,6 +2167,7 @@ html.companion-desktop .companion-page .avatar-status {
 
 /* 顶栏角色切换分段控件 */
 html.companion-desktop .companion-char-switch {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 3px;
@@ -2158,6 +2178,8 @@ html.companion-desktop .companion-char-switch {
   background: var(--companion-wash);
 }
 html.companion-desktop .companion-char-switch button {
+  flex-shrink: 0;
+  white-space: nowrap;
   min-height: 26px;
   padding: 0 10px;
   border: 0;
@@ -2173,7 +2195,7 @@ html.companion-desktop .companion-char-switch button:focus-visible {
   color: var(--companion-ink);
 }
 html.companion-desktop .companion-char-switch button.active {
-  background: color-mix(in srgb, var(--character-accent) 32%, var(--art-scrim));
+  background: color-mix(in srgb, var(--character-accent) 18%, var(--bg-surface));
   color: var(--companion-ink);
   box-shadow: inset 0 1px 0 var(--companion-highlight);
 }
@@ -2504,9 +2526,11 @@ html:has(.companion-chat-window) body {
   border-radius: var(--r-md);
   background: color-mix(in srgb, var(--warning) 12%, var(--bg-surface));
   color: var(--text-muted);
-  font-size: var(--fs-label-xs);
+  font-size: var(--fs-label-sm);
 }
 .companion-chat-setup-action {
+  flex-shrink: 0;
+  white-space: nowrap;
   margin-left: auto;
   min-height: 24px;
   padding: 2px 10px;
@@ -2520,13 +2544,13 @@ html:has(.companion-chat-window) body {
 .companion-chat-input {
   width: 100%;
   min-height: 48px;
-  max-height: 96px;
+  max-height: min(144px, 24dvh);
   padding: 9px 11px;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-md);
   background: var(--bg-surface);
   color: var(--text-primary);
-  font: var(--fs-label)/1.5 var(--font-sans);
+  font: var(--fs-body)/1.5 var(--font-sans);
   resize: none;
 }
 .companion-chat-input:focus {
@@ -2698,8 +2722,8 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
   padding: 3px 12px;
   border: 1px solid var(--companion-edge);
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--art-scrim) 54%, transparent);
-  color: var(--companion-ink-soft);
+  background: color-mix(in srgb, var(--art-scrim) 88%, transparent);
+  color: var(--companion-ink);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
   backdrop-filter: blur(12px) saturate(1.2);
   font-size: var(--fs-label-xs);
@@ -2749,7 +2773,7 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   padding: 8px 26px 8px 12px;
   border: 1px solid color-mix(in srgb, var(--character-accent) 55%, var(--companion-edge));
   border-radius: var(--r-lg) var(--r-lg) var(--r-lg) var(--r-terminal);
-  background: color-mix(in srgb, var(--art-scrim) 78%, transparent);
+  background: color-mix(in srgb, var(--art-scrim) 92%, transparent);
   color: var(--companion-ink);
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);
   -webkit-backdrop-filter: blur(16px) saturate(1.25);
@@ -2759,10 +2783,11 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
 .companion-float-reminder > span {
   display: block;
   margin-bottom: 2px;
-  color: var(--character-accent);
+  color: var(--companion-ink);
   font: 700 var(--fs-mono-xs) var(--font-mono);
 }
 .companion-float-reminder p {
+  color: var(--companion-ink);
   margin: 0;
   font-size: var(--fs-body-sm);
   line-height: var(--lh-body);

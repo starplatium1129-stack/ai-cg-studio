@@ -397,6 +397,29 @@ test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', a
   await expect(page.getByLabel(/编辑记忆/)).toHaveValue('我每周五晚上会玩 MMORPG。');
 });
 
+test('chat memory write failure keeps the action retryable without a success message', async ({ page }) => {
+  await page.addInitScript(() => {
+    const original = Storage.prototype.setItem
+    Object.assign(window, { failMemoryWrites: true })
+    Storage.prototype.setItem = function (key, value) {
+      if (key === 'aics_chat_memories_v1' && (window as unknown as { failMemoryWrites: boolean }).failMemoryWrites) throw new DOMException('quota', 'QuotaExceededError')
+      original.call(this, key, value)
+    }
+  })
+  await page.goto('/chat')
+  await useLocalChat(page)
+  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false)
+  await page.locator('.chat-input').fill('我喜欢周五晚上散步')
+  await page.locator('.send-btn').click()
+  const remember = page.locator('.message.user .msg-memory-btn').first()
+  await remember.click()
+  await expect(page.locator('.chat-error')).toContainText('长期记忆保存失败')
+  await expect(remember).not.toHaveText('已记住')
+  await page.evaluate(() => { Object.assign(window, { failMemoryWrites: false }) })
+  await remember.click()
+  await expect(remember).toHaveText('已记住')
+})
+
 test('flow 3b · 聊天配音：开启实时配音后逐句走翻译 + TTS', async ({ page, request }) => {
   await page.goto('/chat');
   await useLocalChat(page);

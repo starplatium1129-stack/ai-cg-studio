@@ -25,6 +25,8 @@
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
 | 按当前改动验证 | `npm run wf -- gate:quick` |
 | 提交前全量验证 | `npm run wf -- gate:full` |
+| 检查本机桌面打包能力 | `npm run wf -- desktop:doctor --json`（只检测，不安装） |
+| 生成本机测试安装包 | `npm run wf -- desktop:package-local`（跳过压缩，不安装） |
 
 所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 不接受公共参数，定向操作请分别调用子步骤。只读审计覆盖注册文件、npm 入口、文档存在性和复合依赖循环，不代表模型、账户、外部服务或桌面安装已经验收。
 

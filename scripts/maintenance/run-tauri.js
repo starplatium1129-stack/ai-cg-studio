@@ -1,26 +1,16 @@
 'use strict';
 
 const { spawnSync } = require('node:child_process');
-const os = require('node:os');
 const path = require('node:path');
 const { withDesktopBuildLock } = require('./desktop-build-lock');
 const { resolveNpmInvocation } = require('./desktop-stage-resources');
 const { prepareTauri } = require('./prepare-tauri');
+const { desktopBuildEnvironment, assertDesktopBuildEnvironment } = require('./desktop-build-environment');
 
 const ROOT = path.resolve(__dirname, '../..');
 
-function tauriEnvironment() {
-  const env = { ...process.env };
-  const pathKey = Object.keys(env).find((key) => key.toLowerCase() === 'path') || 'PATH';
-  const rustBin = path.join(
-    process.env.USERPROFILE || os.homedir(),
-    '.rustup',
-    'toolchains',
-    'stable-x86_64-pc-windows-msvc',
-    'bin',
-  );
-  env[pathKey] = [rustBin, env[pathKey] || ''].filter(Boolean).join(path.delimiter);
-  return env;
+function tauriEnvironment(root = ROOT) {
+  return desktopBuildEnvironment(root);
 }
 
 function runCommand(command, args, options = {}) {
@@ -49,6 +39,7 @@ async function runTauri(argv, options = {}) {
   const workspaceRoot = options.root || ROOT;
   const lock = options.withLock || withDesktopBuildLock;
   return lock({ workspaceRoot }, async () => {
+    (options.checkEnvironment || assertDesktopBuildEnvironment)(workspaceRoot);
     const npm = options.npmCommand
       ? { command: options.npmCommand, args: options.npmArgs || [] }
       : resolveNpmInvocation();
@@ -66,7 +57,7 @@ async function runTauri(argv, options = {}) {
     return spawnTauri(process.execPath, [cli, mode, ...args], {
       cwd: path.join(workspaceRoot, 'desktop-tauri'),
       stdio: 'inherit',
-      env: options.env || tauriEnvironment(),
+      env: options.env || tauriEnvironment(workspaceRoot),
       windowsHide: false,
     });
   });

@@ -3,21 +3,22 @@
 //!
 //! SDK location resolution order:
 //!   1. `LIVE2D_CUBISM_SDK_DIR` env var (point at the SDK root containing Core/ and Framework/)
-//!   2. Known default: `E:\code\CubismSdkForNative-5-r.5\CubismSdkForNative-5-r.5`
+//!   2. Workspace-local `runtime/desktop-build-sdk/CubismSdkForNative-5-r.5`
+//!   3. Legacy `E:\code\CubismSdkForNative-5-r.5\CubismSdkForNative-5-r.5`
 
 use std::path::{Path, PathBuf};
 
 fn sdk_root() -> PathBuf {
     if let Ok(dir) = std::env::var("LIVE2D_CUBISM_SDK_DIR") {
         let p = PathBuf::from(dir);
-        if p.join("Core")
-            .join("include")
-            .join("Live2DCubismCore.h")
-            .exists()
-        {
+        if valid_sdk(&p) {
             return p;
         }
+        panic!("LIVE2D_CUBISM_SDK_DIR points to an incomplete Cubism Native SDK: {}", p.display());
     }
+    let local = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../runtime/desktop-build-sdk/CubismSdkForNative-5-r.5");
+    if valid_sdk(&local) { return local; }
     let default = Path::new("E:/code/CubismSdkForNative-5-r.5/CubismSdkForNative-5-r.5");
     if default
         .join("Core")
@@ -32,6 +33,12 @@ fn sdk_root() -> PathBuf {
          https://www.live2d.com/en/sdk/download/native/ and set LIVE2D_CUBISM_SDK_DIR \
          to the SDK root (contains Core/ and Framework/)"
     )
+}
+
+fn valid_sdk(root: &Path) -> bool {
+    ["Core/include/Live2DCubismCore.h", "Framework/src/CubismFramework.cpp",
+        "Core/lib/windows/x86_64/143/Live2DCubismCore_MD.lib"]
+        .iter().all(|part| root.join(part).exists())
 }
 
 fn main() {
