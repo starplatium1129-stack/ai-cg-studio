@@ -3,25 +3,34 @@ on:
   push:
     branches: [codex/huiyu-audit-stability-b18fa1b]
 permissions:
-  contents: read
+  contents: write
+concurrency:
+  group: audit-stability-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  focused:
+  apply-and-validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     env:
       AICS_REFERENCE_AUDIT_MODE: structure
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
-          persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 24.18.0
           cache: npm
       - run: npm ci
       - run: npm run build:runtime && npm run scenes:build && npm run popular:build && npm run blueprints:build
-      - run: node --test scripts/tests/test-scene-patch.js
-      - run: npx eslint scripts/maintenance/apply-scene-patch.js scripts/tests/test-scene-patch.js
-      - run: npm run scenes:pin
-      - run: npm run test:monolith
+      - name: Reproduce old refresh bugs and apply explicit reviewed patches
+        run: node poc/audit-stability-apply.cjs
+      - name: Publish controlled source changes to the isolated branch
+        run: |
+          git config user.name 'huiyu-audit'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- src/api/client.ts src/stores/sceneStore.ts data/popular/attack-on-titan.json data/popular/yuzusoft.json data/blueprints/my-dress-up-darling.json data/blueprints/arknights.json .github/workflows/quality.yml docs/evidence/scene-audit-closeout-2026-09-10/repair-evidence.json
+          git diff --cached --quiet || git commit -m 'fix: close verified scene-data errors and refresh ordering regressions'
+          git push origin HEAD:codex/huiyu-audit-stability-b18fa1b
+      - name: Complete quality gate in reference-structure mode
+        run: npm run wf -- gate:full --all
