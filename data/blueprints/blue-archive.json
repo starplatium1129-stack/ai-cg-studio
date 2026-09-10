@@ -259,13 +259,14 @@
       "title": "空崎日奈 · 射击训练场的专注姿态"
     },
     {
-      "action": "盯草莓蛋糕犹豫",
+      "action": "小口品尝草莓芭菲，并用勺子把最甜的草莓递给你；头顶的小翅膀开心拍打",
       "adult": false,
       "adultArtistHint": "",
       "animaStyleHint": "",
       "camera": "close-up, shallow depth of field",
       "category": "风纪日常",
       "characterId": "sorasaki_hina",
+      "compositionIntent": "group",
       "coverageTags": [
         "daily"
       ],
@@ -288,7 +289,6 @@
         "bad anatomy",
         "dark shadowed face",
         "flat lighting",
-        "extra characters",
         "bad hands",
         "missing fingers",
         "fused fingers",
@@ -308,9 +308,6 @@
         "multiple frames",
         "double exposure",
         "duplicated subject",
-        "multiple girls",
-        "second person",
-        "two people",
         "young-looking",
         "child",
         "loli",
@@ -319,42 +316,51 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "casual_black",
-      "promptProse": "Sitting at a sunny cafe table staring shyly at a slice of strawberry shortcake, Hina blushes faintly with cute gap-moe charm. Warm afternoon sunbeams stream through French cafe windows, creating a cozy and delightful slice-of-life scene.",
+      "promptProse": "Sitting across the cafe table from you, Hina takes a small spoonful of strawberry parfait and then offers you its sweetest strawberry. Her small wings flutter happily as her shy gap-moe smile warms the hidden corner table. Warm cafe light and a close two-shot keep the shared dessert and both sets of hands clear.",
       "promptTokens": [
         "cafe",
-        "cake",
-        "coffee_cup",
         "sitting",
-        "looking_at_food",
         "soft_expression",
         "daylight",
-        "medium_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "strawberry_parfait",
+        "strawberry",
+        "spoon",
+        "offering_strawberry",
+        "sitting_across_table",
+        "sharing_food",
+        "close_up",
+        "two_clothed_figures"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
       "sceneTags": [
         "cafe",
-        "cake",
         "coffee",
         "afternoon",
         "sweet",
-        "blue_archive"
+        "blue_archive",
+        "strawberry_parfait",
+        "strawberry",
+        "spoon",
+        "sharing_food",
+        "two_shot"
       ],
       "timeOfDay": "午后",
       "title": "空崎日奈 · 甜品店里的反差萌"
     },
     {
-      "action": "撑黑伞独自巡逻",
+      "action": "与你共撑黑伞在雨夜巡逻，微微仰头让伞面覆盖你们两人，制服下摆沾着雨水",
       "adult": false,
       "adultArtistHint": "",
       "animaStyleHint": "",
-      "camera": "medium shot, back view to three-quarter",
+      "camera": "medium two-shot, back view to three-quarter",
       "category": "风纪日常",
       "characterId": "sorasaki_hina",
+      "compositionIntent": "group",
       "coverageTags": [
         "daily"
       ],
@@ -363,7 +369,7 @@
       "kreaStyleHint": "",
       "lighting": "路灯与湿润反光",
       "location": "雨夜歌赫娜街道",
-      "mood": "孤独坚定",
+      "mood": "雨夜守护、温柔同行",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -377,7 +383,6 @@
         "bad anatomy",
         "dark shadowed face",
         "flat lighting",
-        "extra characters",
         "bad hands",
         "missing fingers",
         "fused fingers",
@@ -397,9 +402,6 @@
         "multiple frames",
         "double exposure",
         "duplicated subject",
-        "multiple girls",
-        "second person",
-        "two people",
         "young-looking",
         "child",
         "loli",
@@ -408,17 +410,20 @@
       "nsfwProse": "",
       "nsfwTokens": [],
       "outfitId": "gehenna_uniform",
-      "promptProse": "Walking on midnight patrol along a rain-washed street under a black umbrella, Hina glances back with a calm, protective gaze. Warm amber streetlights and shimmering pavement reflections illuminate the quiet city night.",
+      "promptProse": "On a rain-washed Gehenna street at night, Hina shifts her black umbrella so it covers both herself and you, her wet uniform hem catching the streetlight. She tilts her face up with a quiet protective warmth while the two of you walk close together through amber reflections. Medium two-shot, cinematic rain haze, detailed wet street background, depth of field.",
       "promptTokens": [
         "city_street",
         "rain",
-        "holding_umbrella",
         "walking",
         "night",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "shared_umbrella",
+        "standing_close",
+        "two_clothed_figures",
+        "medium_shot"
       ],
       "recommendedSize": "1152x1536",
       "sampleRating": "All",
@@ -427,8 +432,10 @@
         "street",
         "rain",
         "night",
-        "umbrella",
-        "patrol"
+        "patrol",
+        "shared_umbrella",
+        "two_shot",
+        "companion"
       ],
       "timeOfDay": "雨夜",
       "title": "空崎日奈 · 雨夜巡逻的伞下同行"
@@ -7812,7 +7819,7 @@
     },
     {
       "action": "双手背在身后微微倾身回眸甜笑，列车驶过的风吹动发丝与毛衣领口",
-      "camera": "medium shot, eye-level, captivating warm portrait",
+      "camera": "medium shot, eye-level, clear station portrait",
       "category": "城市街头",
       "characterId": "ichinose_asuna",
       "coverageTags": [
@@ -7841,7 +7848,7 @@
         "nude"
       ],
       "outfitId": "casual_sweater",
-      "promptProse": "Waiting patiently behind yellow safety lines at a bright modern subway platform, Asuna leans forward with a radiant smile as transit breezes rustle her golden hair. Crisp fluorescent station lighting highlights her bare shoulder and cozy oversized knit sweater in tender urban warmth.",
+      "promptProse": "Waiting behind the yellow safety line at a bright modern subway platform at night, Asuna keeps both hands behind her back and leans forward with a radiant smile as the passing train sends a breeze through her golden hair. Cool fluorescent station light and glowing signs frame the cozy oversized knit sweater in a clear urban portrait.",
       "promptTokens": [
         "subway_station",
         "train_platform",
@@ -7854,7 +7861,13 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hands_behind_back",
+        "yellow_safety_line",
+        "passing_train",
+        "station_breeze",
+        "night",
+        "medium_shot"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -7864,8 +7877,11 @@
         "sweater",
         "off_shoulder",
         "smiling",
-        "halo",
-        "blonde_hair"
+        "blonde_hair",
+        "safety_line",
+        "passing_train",
+        "hands_behind_back",
+        "night_lighting"
       ],
       "timeOfDay": "夜晚",
       "title": "一之濑明日奈 · 都会站台的甜美回眸"
