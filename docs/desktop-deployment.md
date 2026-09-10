@@ -102,6 +102,8 @@ Rust 侧（`updater_cmd.rs`）、前端横幅（`useDesktopUpdater.ts` + `Contro
 
 ### 发版工作流（一次命令）
 
+仓库现为 `starplatium1129-stack/huiyu`，发布标题使用“绘遇 HUIYU”。应用 identifier、公钥及内部安装兼容标识保留；不要为了仓库改名更换签名密钥或本地数据键。
+
 ```powershell
 node scripts/maintenance/release-desktop-update.js --bump patch
 # 提交并推送 main 后：
@@ -114,6 +116,16 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
 2. 提交并推送 `main` 后用 `--skip-build --publish`，脚本会确认目标是公开主项目、
    本地 `main` 与 `origin/main` 一致，再上传 `latest.json + setup.exe + .sig + .sha256`。
 3. 已装客户端下次启动自动检测；GitHub 暂时不可达时静默跳过，不影响本地使用。
+
+### 原签名私钥暂不可用时
+
+用户明确选择公开手动安装版时，可运行 `node scripts/maintenance/release-desktop-update.js --manual --bump minor` 构建，再提交并推送源码，最后运行 `node scripts/maintenance/release-desktop-update.js --manual --skip-build --publish`。
+
+该模式只上传安装包与 SHA-256，不生成或覆盖 `latest.json`，不把新 Release 设为自动更新使用的 latest。发布先创建草稿，确认资产上传完整后才公开；Release 顶部会明确提示未签名、需手动安装。
+
+原签名主机后续先获取标签并检出该版本的原始源码（`git fetch --tags`，然后 `git switch --detach v1.6.0`），按原密钥进行签名构建，再运行 `node scripts/maintenance/release-desktop-update.js --skip-build --publish --complete-manual` 补齐自动更新。补签必须匹配原版本标签，不能用后来修改过的同版本源码覆盖。密钥可位于默认 `runtime/keys/aics-updater.key`，或由 `TAURI_SIGNING_PRIVATE_KEY_PATH` 指定；不要将私钥粘贴到聊天、提交到 Git 或生成替代钥匙。
+
+发布脚本可发现本机 `runtime/github-cli/bin/gh.exe`，也支持系统 GitHub CLI。认证使用已登录的 GitHub CLI 或当前进程的 `GH_TOKEN`；不得把令牌写入仓库。
 
 ---
 
@@ -132,5 +144,4 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
 Bash 调 powershell）被安全策略拦截——这是命令校验规则，不是权限问题，只能由用户确认。
 
 **Q：安装包多大算正常？**
-迁移前 1074.5 MB → 当前 **178.0 MB**（含反推依赖）。打包内容 ≈ `desktop-tauri/src-tauri/resources`，
-健康值约 150–250 MB；突然变大先查是不是又把大媒体卷进来了。
+应与上一版采用相同压缩方式的安装包比较，以实际产物为准。打包内容主要来自 `desktop-tauri/src-tauri/resources`，还包含程序与 Node 运行时。本地测试包跳过压缩，通常明显更大；正式 LZMA 包突然变大时，检查是否误带入模型权重、参考素材或其他大媒体。

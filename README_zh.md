@@ -1,4 +1,6 @@
-# 绫季绘境
+# 绘遇 · HUIYU
+
+[下载 Windows 桌面版 1.6.0](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.6.0) · [查看更新说明](docs/releases/v1.6.0.md)
 
 > 从故事出发，把想画的瞬间整理成可以直接生成的 Galgame 风格 CG、4 视角角色参考档案与 AI 叙事短片。
 
@@ -10,7 +12,7 @@
 
 ## 项目定位
 
-绫季绘境 (Lingji Atelier) 是我为个人创作整理的一套本地工具，平时自己使用，也会临时分享给身边的朋友。它不是公开运营的平台，也不提供账号、社区、商店或云端同步。
+绘遇 HUIYU (Lingji Atelier) 是我为个人创作整理的一套本地工具，平时自己使用，也会临时分享给身边的朋友。它不是公开运营的平台，也不提供账号、社区、商店或云端同步。
 
 系统支持专属主角 **绫地宁宁** 与 **四季夏目**，以及持续扩展的动漫、游戏角色与服装。项目会把故事、角色、情绪、镜头、构图、光照和出图参数放在同一个 Scene 中，减少从空白 Prompt 开始反复试错的时间。规模和待补资产只在[项目状态](docs/project-status.md)维护。
 
@@ -60,8 +62,8 @@
 ### 第 1 步 — 获取代码
 
 ```bash
-git clone https://github.com/starplatium1129-stack/ai-cg-studio.git
-cd ai-cg-studio
+git clone https://github.com/starplatium1129-stack/huiyu.git
+cd huiyu
 ```
 
 ### 第 2 步 — 安装依赖
@@ -191,7 +193,7 @@ npm run test:e2e        # Playwright 端到端（会先构建）
 ## 项目结构
 
 ```text
-AI-CG-Studio/
+huiyu/
 ├── DESIGN.md               # 网站与控制面板的唯一总设计规范
 ├── AGENTS.md               # 项目约束、质量门槛与协作者开发指南
 ├── index.html              # Vite SPA 入口（无全局脚本注入）

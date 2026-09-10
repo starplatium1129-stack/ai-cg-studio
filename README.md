@@ -4,6 +4,8 @@
 
 [中文说明](README_zh.md)
 
+[Download HUIYU 1.6.0 for Windows](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.6.0) · [Release notes](docs/releases/v1.6.0.md)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Current counts and capability boundaries: [Project status](docs/project-status.md). Next steps: [Roadmap](docs/roadmap.md).
@@ -59,8 +61,8 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 ### Step 1 — Get the code
 
 ```bash
-git clone https://github.com/starplatium1129-stack/ai-cg-studio.git
-cd ai-cg-studio
+git clone https://github.com/starplatium1129-stack/huiyu.git
+cd huiyu
 ```
 
 ### Step 2 — Install dependencies
@@ -190,7 +192,7 @@ New documents and major updates must be registered in [docs/INDEX.md](docs/INDEX
 ## Project layout
 
 ```text
-AI-CG-Studio/
+huiyu/
 ├── DESIGN.md               # Website and control-panel design contract
 ├── AGENTS.md               # Collaboration rules, quality gates & operational constraints
 ├── index.html              # Vite SPA entry point (no global scripts)

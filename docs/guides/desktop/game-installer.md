@@ -22,7 +22,7 @@ Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行
 
 ## GitHub Release 发布
 
-发行目标统一为公开主项目 `starplatium1129-stack/ai-cg-studio`。源码进入 `main`，安装包、
+发行目标统一为公开主项目 `starplatium1129-stack/huiyu`。源码进入 `main`，安装包、
 updater 签名、`latest.json` 与 SHA-256 作为同版本 GitHub Release 附件；大型 exe 不入 Git。
 客户端只自动检测版本，用户点击后才下载安装。完整门禁中的失败必须在发布说明中列明，
 不伪称全绿；安装后的系统目录替换与 UAC 仍按 desktop-deployment.md 处理。
