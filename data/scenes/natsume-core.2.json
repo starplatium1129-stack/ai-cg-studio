@@ -1979,7 +1979,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she rests comfortably against soft pillows with glistening, emotive eyes, under soft ambient lighting.",
+    "animaCaption": "In a landscape official-event CG composition, Shiki Natsume lies on her side beneath a white blanket in pale blue pajamas, her black hair spread across white pillows. She makes quiet direct eye contact from the warm morning bed, her red-trimmed sleepwear and eye-under mole sharply framed in the soft light.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
@@ -1988,7 +1988,7 @@
       "reviewer": "direct-vision",
       "seedKey": "official-cg:ocs08:1"
     },
-    "auditRevision": "careful-batch02-2026-08-27",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "官方CG横幅构图",
     "category": "官方CG灵感",
     "char": "natsume",
@@ -2017,7 +2017,7 @@
       "solo"
     ],
     "time": "白天",
-    "timeOfDay": "afternoon",
+    "timeOfDay": "morning",
     "title": "枕边醒来的安静目光",
     "usage": [
       "官方CG灵感",
@@ -2027,7 +2027,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "animaCaption": "In a landscape official-event CG composition inside the cafe storage area, Shiki Natsume in her dark gray maid uniform carefully cups a small glowing blue magical object in both hands and presents it to the viewer. Cyan light illuminates her face and fingers while warm wooden shelves filled with jars occupy the background.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs09-a1.png",
@@ -2036,7 +2036,7 @@
       "reviewer": "direct-vision",
       "seedKey": "official-cg:ocs09:1"
     },
-    "auditRevision": "careful-batch05-2026-08-27",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "官方CG横幅构图",
     "category": "官方CG灵感",
     "char": "natsume",
@@ -2051,7 +2051,7 @@
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
     "officialCgCandidate": "ocs09",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_and_presenting_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level_to_viewer, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",
@@ -2075,7 +2075,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, under soft ambient lighting.",
+    "animaCaption": "In a landscape official-event CG extreme overhead face close-up, adult Shiki Natsume lies on the warm wooden floor beside an orange cushion. Her long black hair in twin braids and paired white rose ornaments frame her face as she presses one index finger softly to her lips, keeps her other hand near her ear, and stares at the viewer with flushed cheeks under warm indoor light.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
@@ -2084,7 +2084,7 @@
       "reviewer": "direct-vision",
       "seedKey": "official-cg:ocs13:1"
     },
-    "auditRevision": "careful-batch02-2026-08-27",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "官方CG横幅构图",
     "category": "官方CG灵感",
     "char": "natsume",
