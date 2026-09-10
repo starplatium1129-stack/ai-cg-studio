@@ -41,7 +41,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot by the tall window of an empty university lecture hall, Shiki Natsume keeps her eyes on the notebook while sliding a highlighted set of notes toward the viewer. Spring morning light catches her knit cardigan and restrained tsundere blush.",
+    "animaCaption": "Seated by a tall arched window in an empty university lecture amphitheater, Shiki Natsume turns around in surprise, pen in hand over her notebook with a flustered tsundere blush. Crisp golden morning sunbeams slice through the grand windows to highlight her long black hair, knit cardigan, and sheer black tights down to her leather shoes beneath the wooden desk.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "窗边半身中景",
     "category": "校园",
@@ -56,7 +56,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
-    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, smart_casual_college_knit_cardigan, checkered_skirt, sheer_black_tights, sitting_at_wooden_tiered_lecture_hall_desk_by_tall_window, organizing_lecture_notes, sliding_highlighted_notes_toward_viewer, looking_down_at_notebook, restrained_tsundere_blush, spring_morning, floating_dust_motes, tiered_university_lecture_hall, medium_shot, cinematic_morning_window_light, detailed_background, @rella",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_smart_casual_college_knit_cardigan_and_checkered_skirt, sheer_black_tights, sitting_at_wooden_tiered_lecture_hall_desk_by_tall_window, holding_pen_above_open_notebook, turning_head_with_startled_tsundere_blush_looking_at_viewer, entire_legs_and_feet_fully_visible_in_frame, dark_leather_shoes_under_desk, brilliant_morning_sunbeams_slicing_through_tall_windows_illuminating_floating_dust_motes, tiered_amphitheater_classroom_with_chalkboard_in_background, detailed_background, cinematic_lighting, full_body, @rella",
     "rating": "All",
     "season": "春",
     "story": "【夏目 · 大学教室的第一束晨光】春日清晨的大学阶梯教室还空着大半，夏目已经坐在窗边整理讲义，并顺手替你占了旁边的位置。你拉开椅子时，她没有抬头，只把一份标好重点的笔记推过来。晨光照亮她微红的耳廓——「昨天缺的内容我顺便整理了。别误会，我只是不想小组作业被你拖后腿。」",
@@ -170,7 +170,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot beneath a convenience-store eave on a rainy autumn night, Shiki Natsume holds one hot coffee can while offering the sweeter second can to the viewer with her other hand. Warm store light and steam glow against the wet pavement.",
+    "animaCaption": "Standing under a convenience store eaves on a rainy night, Shiki Natsume in a casual beige sweater with navy pleated miniskirt and glossy black tights holds a hot drink with both hands, composed blush under warm eaves light with steam.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "屋檐下半身中景",
     "category": "日常",
@@ -185,7 +185,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, upper_body",
-    "prompt": "1girl, pov, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, beige_sweater, navy_pleated_skirt, sheer_black_tights, standing_under_convenience_store_eaves, holding_one_hot_coffee_can_in_one_hand, offering_the_sweeter_hot_coffee_can_to_viewer_with_other_hand, shared_rain_shelter, composed_shy_expression, rainy_night, convenience_store_sign_glow, wet_pavement_reflections, medium_shot, warm_eaves_light, steam, cinematic_lighting, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_casual_beige_sweater_with_navy_pleated_miniskirt_and_sheer_black_tights, glossy_black_tights_hugging_smooth_thighs_and_calf_with_subtle_knee_contours, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_convenience_store_floor, standing_under_convenience_store_eaves_holding_hot_drink_with_both_hands_and_composed_blush, warm_convenience_store_eaves_light_with_hot_drink_steam_and_store_bokeh, cinematic_depth_of_field, slender_waist_and_hands, full_body, rainy_night, night_rain, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 便利店屋檐下的热饮】秋雨把夜色洗得发亮，你和夏目并肩困在便利店屋檐下。她买了两罐热咖啡，把更甜的那一罐塞进你手里，又自然地往你这边挪了半步替你避开溅起的雨水。你问她是不是担心，她看着街面回答——「只是买一送一。雨小一点再走，省得你感冒以后还要麻烦别人。」",
@@ -256,7 +256,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot at a low table in the apartment study, Shiki Natsume keeps the closed graduation photo album against her lap with one hand and rests her cheek on the other palm. Her nostalgic side glance softens in the spring afternoon window light.",
+    "animaCaption": "At the low apartment table holding an open photo album, Shiki Natsume rests her cheek on one palm with a nostalgic smile. Warm spring afternoon window light highlights her sheer black tights with glossy thigh sheen, smooth thighs at the plaid hem, and brown loafers fully visible on the wooden floor.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "日常",
@@ -271,7 +271,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, white_thighhighs, bare_legs, cropped_feet, classroom, upper_body",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, cream_oversized_cardigan, white_blouse, plaid_pleated_skirt, sheer_black_tights, sitting_at_low_apartment_table, holding_closed_photo_album_against_lap_with_one_hand, resting_cheek_on_other_palm, nostalgic_side_glance, spring_afternoon, apartment_study, soft_window_light, medium_shot, cinematic_lighting, depth_of_field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, wearing_natsume_winter_casual_with_cream_oversized_cardigan_over_white_blouse_and_plaid_miniskirt, sheer_black_tights_with_glossy_thigh_sheen_and_calf_contours, smooth_thighs_at_hem_with_soft_pressure_line, entire_legs_and_feet_fully_visible_in_frame, brown_loafers_on_apartment_wooden_floor, sitting_at_low_apartment_table_holding_open_photo_album_with_both_hands, resting_cheek_on_palm_with_nostalgic_soft_smile, warm_spring_afternoon_window_light_with_soft_shadows, cinematic_depth_of_field, graceful_neck_and_slender_fingers, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "春",
     "story": "【夏目 · 相册停留的那一页】春日午后，夏目在公寓整理大学毕业相册，翻到有你的小组照时停了很久。照片里的她仍刻意站得离人群稍远，目光却正好落在你身上。你从身后靠近，她立刻合上相册，却没有真正收走——「只是确认照片有没有拍糊。想看的话坐过来……但不准分析我的视线。」",
@@ -340,7 +340,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot inside a dark private emotion research lab late at night, adult Shiki Natsume sits in an ergonomic chair, holding a detached biometric sensor in one hand and touching her flushed cheek with the other while cyan heart-rate waveforms glow across the large monitors. Cool screen light defines her restrained vulnerable expression.",
+    "animaCaption": "Sitting in an ergonomic chair inside her darkened private emotion research lab late at night, adult Shiki Natsume wears an unbuttoned white lab coat over a black camisole and sheer black gartered stockings. Holding a detached biometric sensor in one hand while touching her deeply blushing cheek with the other, massive curved monitoring screens display pulsing cyan heart-rate waveforms in the background. The cool screen radiance clashes with a warm amber desk lamp in rich chiaroscuro, bringing vibrant, glowing warmth and subsurface scattering to her porcelain skin while clearly capturing her stocking-clad feet on the laboratory floor.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "监测屏前半身中景",
     "category": "Active_Sync_Scenes",
@@ -355,7 +355,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, fishnet, fishnets, clothes, child, loli",
-    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, white_lab_coat, black_camisole, sheer_black_thighhighs, sitting_in_ergonomic_lab_chair, holding_detached_biometric_sensor_in_one_hand, touching_flushed_cheek_with_other_hand, cyan_heart_rate_waveforms_on_large_monitor, private_emotion_research_lab, screen_glow_only, night, restrained_vulnerable_expression, medium_shot, cinematic_lighting, @rella",
+    "prompt": "safe, 1girl, solo, shiki_natsume, yellow_eyes, black_hair, long_hair, mole_under_eye, adult, wearing_unbuttoned_white_research_lab_coat_over_black_camisole, sheer_black_thighhigh_socks_with_lace_garters, sitting_in_ergonomic_lab_chair_before_massive_curved_biometric_monitoring_screens, holding_small_glowing_biometric_sensor_in_one_hand, raising_other_hand_to_touch_flustered_red_cheek, blushing_intensely_looking_away_with_restrained_vulnerable_gaze, entire_legs_and_feet_fully_visible_in_frame, sheer_black_stocking_feet_resting_firmly_on_anti-static_lab_floor, delicate_toe_contours_beneath_semi-translucent_fabric, dark_high-tech_private_emotion_laboratory_at_night, massive_holographic_screens_displaying_glowing_cyan_heartbeat_waveforms_and_vital_statistics_casting_cool_ambient_light, warm_amber_desk_gooseneck_lamp_casting_rich_bounce_light_on_skin, subsurface_scattering_on_porcelain_skin, cinematic_chiaroscuro, full_body, @rella\nSitting in an ergonomic chair inside her darkened private emotion research lab late at night, adult Shiki Natsume wears an unbuttoned white lab coat over a black camisole and sheer black gartered stockings. Holding a detached biometric sensor in one hand while touching her deeply blushing cheek with the other, massive curved monitoring screens display pulsing cyan heart-rate waveforms in the background. The cool screen radiance clashes with a warm amber desk lamp in rich chiaroscuro, bringing vibrant, glowing warmth and subsurface scattering to her porcelain skin while clearly capturing her stocking-clad feet on the laboratory floor.",
     "rating": "All",
     "season": "不限",
     "story": "【成年跨界 AU · 夏目的迟滞校准】深夜私人研究室只亮着监测屏的冷光。成年的夏目坚持完成最后一轮压力测试，直到系统把她刻意压低的心率与真实情绪同时投上大屏。她沉默地摘下传感器，眼下泪痣旁已经泛红——「机器偶尔也会误判。你如果敢把刚才的数据保存下来……至少先让我确认加密等级。」",
@@ -389,7 +389,7 @@
     "weather": "静谧"
   },
   {
-    "animaCaption": "In a medium shot just inside the apartment genkan on a winter night, Shiki Natsume holds a small birthday cake with its candle lit toward the viewer, caught early by the returning footsteps. The warm candlelight deepens her shy excited blush against the dark entryway.",
+    "animaCaption": "In an apartment genkan holding a birthday gift box behind her back, Shiki Natsume in a crisp white shirt with navy pleated miniskirt and glossy black tights stands with a shy excited blush under warm genkan light.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "门后半身中景",
     "category": "恋爱",
@@ -404,7 +404,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature, border, white border, framed, letterbox, pillarbox, padding, margin, inset, comic panel, split screen, worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration, 3d render, photorealistic, 2girls, white thighhighs, bare legs, cropped feet, upper body, nsfw, nude, explicit",
-    "prompt": "safe, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, white_shirt, navy_pleated_skirt, sheer_black_tights, standing_behind_partially_open_apartment_entry_door, holding_small_birthday_cake_with_lit_candle_toward_viewer, surprised_shy_blush, dim_genkan, warm_candlelight, winter_night, medium_shot, cinematic_lighting, depth_of_field, @rella",
+    "prompt": "safe, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, black headband, wearing crisp white shirt with navy pleated miniskirt and sheer black tights, glossy black tights hugging smooth thighs and calf with subtle knee contours, entire legs and feet fully visible in frame, black mary jane shoes on apartment floor, standing in apartment genkan holding birthday gift box behind back with shy excited blush, warm apartment genkan light with gift box and floor bokeh, cinematic depth of field, slender waist and hands, medium shot\n<lora:shiki_natsume_v21_anima:0.85>",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 门后藏不住的生日惊喜】冬夜公寓玄关没有开灯，夏目捧着小蛋糕躲在门后，本想等你进屋再点亮蜡烛，却被提前回家的脚步打乱。她僵在原地几秒，索性把蛋糕直接递来，脸颊比烛火更红——「只是大家都说生日应该有点仪式感。愿望快点许，奶油要化了……我没有等很久。」",
@@ -478,7 +478,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a full-body view on the stone steps of an ancient Kyoto temple, Shiki Natsume finishes her morning prayer and offers a small omamori charm to the viewer. Mist softens the autumn foliage and the gold-leaf kimono under the quiet early-morning light.",
+    "animaCaption": "Standing on the weathered stone steps of an ancient mountain shrine beneath a canopy of blazing red maple leaves, Shiki Natsume clutches a wooden prayer plaque to her chest, turning with an intense, vulnerable blush. Golden late afternoon sunlight filters through the vermilion torii gates, casting brilliant light across her ornate kimono and white tabi socks in geta clogs.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全身远景",
     "category": "旅行",
@@ -493,7 +493,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
-    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, traditional_autumn_kimono_with_gold_leaf_patterns, standing_on_ancient_kyoto_temple_stone_steps, hands_clasped_after_prayer, offering_small_omamori_charm_toward_viewer, calm_side_glance, morning_mist, white_tabi_socks, lacquered_geta, ancient_temple_entrance, soft_early_morning_diffused_light, detailed_background, cinematic_lighting, full_body, @rella",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_traditional_autumn_kimono_with_gold_leaf_patterns, holding_wooden_ema_prayer_tablet_against_chest, turning_around_on_ancient_stone_temple_steps, biting_lip_with_deeply_flustered_confessing_blush, entire_legs_and_feet_fully_visible_in_frame, white_tabi_socks_and_lacquered_geta_clogs_on_stone_steps, towering_vermilion_torii_gates_and_canopy_of_glowing_crimson_autumn_maple_leaves, soft_early_morning_light_filtering_through_mist_and_foliage, detailed_background, cinematic_lighting, full_body, @rella",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 古寺前没有说出的愿望】大学研修旅行的清晨，夏目在京都古寺前认真合掌，黑色长发被薄雾打湿。她睁眼后发现你一直等在石阶下，便若无其事地把御守塞进你手里。你问她求了什么，她略微侧过脸——「愿望说出来就没有意义。这个御守只是顺便买的……至少旅行结束前别弄丢。」",
@@ -529,7 +529,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a close-up along the sandy shoreline at sunset, Shiki Natsume holds a corked glass message bottle in both hands with a blank rolled note sealed inside. She turns her profile away toward the golden sea, keeping the wish hidden before the bottle is buried.",
+    "animaCaption": "In a close-up framing along the sandy shoreline with gentle ocean waves, she turns back over her shoulder with bright expectant eyes, as warm golden-hour sunlight illuminates the scene.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "手部与侧脸近景",
     "category": "恋爱",
@@ -544,7 +544,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "prompt": "(clear corked glass message bottle held in both hands:1.55), blank rolled note visibly sealed inside the bottle, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, sunset, profile, holding_message_bottle_in_both_hands, looking_away_over_shoulder, close_up, subtle_blush, ocean, clear_sky, golden_hour, expectant, bright_eyes, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "(clear corked glass message bottle held in both hands:1.55), blank rolled note visibly inside the bottle, seaside sunset, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, sunset, looking_back, close_up, message_bottle, holding_note, profile, subtle_blush, ocean, clear_sky, golden_hour, expectant, bright_eyes, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 许愿瓶里的空白纸条】海边黄昏，夏目把折好的纸条塞进玻璃瓶，却不肯让你看内容。瓶子埋进沙里以后，她又悄悄记下位置，显然并不打算让潮水带走。你故意追问，她迎着夕光别开脸——「没有写什么夸张的愿望。只是希望明年还能来这里……对象是谁，你自己想。」",
@@ -673,7 +673,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a close first-person shot on Café Stella's back stairwell after closing, Shiki Natsume removes a scrap of paper from the viewer's apron and presses him back against the rustic brick wall. She leans close before the promised one-minute kiss, her tender determined gaze and red ears caught between the warm stairwell bulb and cool night doorway.",
+    "animaCaption": "Pausing on the quiet back stairwell of Cafe Stella after closing, Shiki Natsume leans against the rustic brick wall in her cafe uniform and sheer black gartered stockings. A single warm hanging bulb casts dramatic chiaroscuro across her slender frame and reflective black shoes, illuminating her hesitant, tender expression as she looks back at you in the quiet corridor.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "主观近景特写",
     "category": "恋爱",
@@ -688,7 +688,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
-    "prompt": "safe, 1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, starlight_cafe_uniform, green_vest, white_blouse, pleated_black_skirt, sheer_black_thighhighs, garter_clips, standing_close_to_viewer_in_cafe_backstairwell, removing_paper_scrap_from_viewer's_apron, pushing_viewer_back_against_rustic_brick_wall, natsume_leaning_close_before_kiss, hesitant_tender_expression, warm_amber_stairwell_light, cool_night_doorway, close_up, cinematic_lighting, depth_of_field, @rella",
+    "prompt": "safe, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, wearing_starlight_cafe_uniform_with_green_vest_and_white_blouse, pleated_black_skirt, sheer_black_thighhigh_socks_with_garter_clips, leaning_back_against_cafe_backstairs_brick_wall_after_closing, arms_crossed_below_chest_with_soft_vulnerable_gaze, entire_legs_and_feet_fully_visible_in_frame, polished_black_work_shoes_on_concrete_stairs, warm_amber_stairwell_pendant_light_casting_dramatic_shadows_contrasting_with_cool_night_doorway, detailed_background, cinematic_lighting, full_body, @rella",
     "rating": "All",
     "season": "春",
     "story": "【夏目 · 闭店楼梯间的一分钟】Café Stella 闭店后，夏目在楼梯转角叫住准备离开的你。她先替你取下围裙上沾着的纸屑，又把你推回墙边，像是终于决定执行某件计划。吻落下前，她眼下的泪痣都被红晕包围——「只给你一分钟，不准得寸进尺。还有……明天见面时，不许装作什么都没发生。」",
@@ -1548,7 +1548,7 @@
     "weather": "雨"
   },
   {
-    "animaCaption": "In a wide full-body view on the sandy summer shoreline, Shiki Natsume adjusts the shoulder strap of her simple black swimsuit. She gives the viewer a warning glance at first, then straightens with a subtle blush as the sea wind lifts her black hair.",
+    "animaCaption": "In a wide full-body view along the sandy shoreline with gentle ocean waves, she stands poised with a gentle blush on her cheeks, under soft ambient lighting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全身中景",
     "category": "旅行",
@@ -1563,7 +1563,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "prompt": "1girl, solo, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, simple_black_swimsuit, adjusting_swimsuit_shoulder_strap, standing_on_sandy_shore, warning_glance_at_viewer, then_straightening_posture, windblown_hair, subtle_blush, calm_composed_expression, summer, afternoon, clear_sky, full_body, sunlight, warm_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, beach, swimsuit, blush, angry, hair_blowing, bikini, black_swimsuit, adjusting_strap, standing, windblown_hair, subtle_blush, summer, afternoon, clear_sky, full_body, calm, relaxed, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 沙滩上的黑色泳装】盛夏海滩，夏目穿着简洁的黑色泳装调整肩带，察觉你的视线后先用目光警告，随后又站直让你看清整体。海风吹起黑色长发，她眼下泪痣旁微微泛红——「提前说好，不接受夸张评价。……如果只是觉得合适，就正常地说出来。」",

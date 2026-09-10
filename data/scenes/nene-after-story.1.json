@@ -98,7 +98,7 @@
     "weather": "雨"
   },
   {
-    "animaCaption": "In a close over-the-shoulder view across the steaming outdoor hot spring on a snowy night, adult Ayachi Nene keeps her body hidden behind steam and rocks, leaving only her blushing face and silver hair visible as she inches closer after the viewer turns away. Moonlight and warm onsen lamps glow through the snowfall.",
+    "animaCaption": "In a close-up framing in the warm, steaming water of a quiet bath, she turns back over her shoulder with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings. Water droplets bead on her bare shoulders above the steaming water.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "隔着蒸汽的肩上近景",
     "category": "恋爱/After_Story",
@@ -113,7 +113,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, no phone, empty hands",
-    "prompt": "1girl, pov_partner, adult_ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, peeking_face_from_steam_and_rocks_at_outdoor_hot_spring, only_face_and_silver_hair_visible_above_steam, viewer_looking_away, moving_closer_through_steam, shy_blush, snowy_night, moonlight, warm_onsen_lamp, close_up, soft_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(smartphone held for a video call:1.55), phone screen facing viewer, outdoor hot spring, wet hair, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, water_droplets_on_body, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "冬",
     "story": "【成年 After Story · 雪夜温泉的视线约定】旅行的露天温泉被雪夜围住，成年的宁宁躲在蒸汽与岩石后，只露出泛红的脸。你主动转开视线，她才慢慢放松，隔着水声挪到不远处。月光落在银白长发上，她小声提出规则——「可以陪我说话，但不准突然回头。等我准备好了……我会自己走到你看得见的地方。」",

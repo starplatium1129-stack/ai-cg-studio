@@ -103,7 +103,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a side-back medium shot on the school rooftop at summer sunset, Ayachi Nene stands at the railing with one hand resting on it and the other nervously pinching her skirt hem. She looks toward the viewer as the sea horizon catches the last golden light.",
+    "animaCaption": "Perched upon a weathered bench on the school rooftop during golden hour, Ayachi Nene holds open a colorful bento box with a sweet, blushing gaze directed toward the viewer. Her silver-white low twintails and pink ribbons catch the dramatic sunset rays, highlighting the silky weave of her sheer black thigh-high stockings and clearly framing her polished school loafers resting on the rooftop floor.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "侧后方半身中景",
     "category": "校园",
@@ -118,7 +118,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, 1boy, child, loli",
-    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_prominent_pink_hair_ribbons_tying_low_twintails, classic_stella_school_uniform, navy_pleated_skirt, sheer_white_thighhigh_stockings, standing_at_school_rooftop_railing, one_hand_on_railing, pinching_skirt_hem_with_other_hand, nervous_shy_expression, looking_toward_viewer, summer_evening, sea_horizon, golden_sunset_backlight, chain_link_fence, medium_shot, cinematic_lighting, depth_of_field, @rella",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, two_prominent_pink_hair_ribbons_tying_low_twintails, wearing_classic_stella_school_uniform_and_navy_pleated_skirt, sheer_black_thighhigh_socks_with_white_stripes, sitting_on_rooftop_wooden_bench_with_knees_together, opening_bento_box_on_lap, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_resting_on_concrete_floor, looking_up_with_shy_teasing_smile, school_rooftop_at_golden_sunset, dramatic_orange_and_purple_clouds, chain-link_fence_with_fluttering_ribbons, cinematic_lighting, depth_of_field, full_body, @rella",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 只告诉你的天台秘密】放学后的天台被夏日晚风吹得格外安静，远处海面正吞下最后一层夕光。宁宁扶着栏杆，把一直不敢说出口的烦恼讲到一半，又因为你的注视紧张地捏住裙角。她深吸一口气，终于没有逃开——「我不是想让你替我解决一切……只是觉得，如果是你的话，可以知道真正的我。」",
@@ -559,7 +559,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot beside the large farewell blackboard after graduation, Ayachi Nene stands near her signature holding the second uniform button in one hand. Blurred chalk hearts and flowers fill the board behind her as tears brighten her relieved smile in the afternoon window light.",
+    "animaCaption": "In a medium shot by the large windows of an empty classroom, she stands poised with glistening, emotive eyes, as clear window sunlight streams across the frame.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "校园",
@@ -574,7 +574,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, diploma, certificate, scroll, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text",
-    "prompt": "(large classroom blackboard filled with colorful farewell chalk doodles:1.6), chalk hearts and flowers, deliberately blurred chalk marks, standing_beside_blackboard, holding_one_uniform_button, tearful_smile, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, cherry_blossoms, graduation_day, holding_button, tears_of_joy, afternoon, clear_sky, upper_body, medium_shot, window_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(large classroom blackboard filled with colorful farewell chalk doodles:1.6), chalk hearts and flowers, deliberately blurred chalk marks, holding one uniform button, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, cherry_blossoms, graduation_day, holding_button, tears_of_joy, afternoon, clear_sky, upper_body, medium_shot, window_light, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "春",
     "story": "【宁宁 · 最后一块黑板】毕业典礼后的教室里，黑板写满同学们留下的名字和祝福。宁宁站在自己的签名旁，认真替你补上一行“以后也要见面”。人群散去后，她把第二颗制服纽扣轻轻握在掌心，笑里带着泪光——「毕业不是结束，对吧？就算换了新的生活，我也想继续出现在你的每一天里。」",
@@ -603,7 +603,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "On a quiet snowy morning street, Ayachi Nene stands on tiptoe to re-tie her partner's loosened scarf with both hands, carefully smoothing the last corner as her frozen ear tips redden. The close view holds the scarf, her tender smile and soft snow bokeh.",
+    "animaCaption": "On a quiet snowy morning street, Ayachi Nene in a beige winter coat with a white scarf stands on tiptoe to re-tie her partner's loosened scarf, her frozen ear tips reddened while she carefully smooths the last corner.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "近景特写",
     "category": "日常",
@@ -618,7 +618,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, black_thighhighs, bare_legs, cropped_feet, upper_body",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, warm_beige_winter_coat, white_scarf, sheer_white_thighhigh_stockings, standing_on_tiptoe, retying_partner_scarf_with_both_hands, carefully_smoothing_the_last_scarf_corner, close_distance, shy_tender_smile, snowy_street, early_morning, snow_bokeh, close_up, cinematic_lighting, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_coat_with_white_scarf_and_pleated_miniskirt_and_sheer_white_thighhigh_stockings, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_lace_trim, entire_legs_and_feet_fully_visible_in_frame, brown_ankle_boots_on_snowy_street_pavement, standing_on_tiptoe_to_rewrap_partner_scarf_with_both_hands_carefully_smoothing_the_last_corner, reddened_ear_tips_with_shy_tender_smile, cool_snowy_street_light_with_snow_bokeh_and_scarf_reflections, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, early_morning, morning_air, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "冬",
     "story": "【宁宁 · 围巾里藏着的体温】雪后清晨的街道格外安静，宁宁发现你的围巾松开，便踮脚替你重新绕好。距离忽然拉近，她冻红的耳尖也变得更红，却仍认真把最后一角压平。退开前，她把自己的手也藏进围巾边缘暖了一下——「这样就不会漏风了。我的手很冷？那……借我握一会儿就好。」",
@@ -814,7 +814,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "At the finish line on the school track during an autumn sunset, Ayachi Nene braces her hands on her knees after the final lap, breathing hard with a relieved bright smile. Sweat and golden-hour light mark the determined effort she refused to abandon.",
+    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with a focused and calm expression, as warm golden-hour sunlight illuminates the scene.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "校园",
@@ -829,7 +829,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sport_clothes, sportswear, running_track, just_crossed_finish_line, hands_on_knees, breathing_hard, post_run, relieved_bright_smile, sweat, autumn_sunset, clear_sky, upper_body, medium_shot, golden_hour, cinematic_lighting, depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sport_clothes, sunset, sweat, sportswear, running_track, determined, reaching_finish_line, autumn, clear_sky, upper_body, medium_shot, golden_hour, serious, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 操场最后一圈】秋日社团活动结束后，宁宁独自在操场练习长跑，想证明自己也能坚持完成定下的目标。天色逐渐转暗，她在最后一圈被你追上，明明累得说不出话，仍抬手示意不要停。冲过终点后，她撑着膝盖笑起来——「看吧，我没有半途而废。下次……你从第一圈就陪我跑，好不好？」",
@@ -860,7 +860,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot at dawn in the school art room, Ayachi Nene leans tiredly beside the easel after the viewer takes the fine paintbrush from her. The large starry-sky canvas and blue-violet paint on her silver hair remain in the soft window light.",
+    "animaCaption": "Sitting cross-legged on the wooden floor of the school art studio at the break of dawn, Ayachi Nene works on a sprawling celestial canvas with a sleepy, radiant smile. Soft blue twilight and golden sunrise filter through high arched skylights to illuminate her silver-white hair and pink ribbons, framing her paint-speckled bare feet resting naturally on the canvas cloth.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "校园",
@@ -875,7 +875,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
-    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, loose_white_art_smock_over_pastel_pink_dress, standing_beside_easel, viewer_holding_paintbrush, large_canvas_of_starry_sky, blue_violet_paint_on_hair, leaning_toward_viewer_in_tired_relief, sleepy_happy_smile, early_morning_art_room, dawn_window_light, colorful_paint_palettes_and_easels, upper_body, medium_shot, cinematic_lighting, depth_of_field, @rella",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_loose_white_art_smock_over_pastel_pink_dress, sitting_cross-legged_on_wooden_art_studio_floor, holding_fine_detail_paintbrush_over_large_canvas_of_starry_sky, entire_legs_and_feet_fully_visible_in_frame, bare_feet_resting_on_canvas_drop_cloth, detailed_toes_with_blue_paint_smudge, sleepy_happy_smile, art_classroom_at_blue_dawn, golden_morning_twilight_filtering_through_tall_skylights, colorful_paint_palettes_and_easels_around, full_body, @rella",
     "rating": "All",
     "season": "春",
     "story": "【宁宁 · 把星空画到天亮】春日美术室里，宁宁为了完成社团海报，对着昨晚拍下的星空画了一整夜。晨光照进来时，她还在为最后一颗星调整颜色，银白长发沾上几道蓝紫颜料。你替她拿走画笔，她才疲惫地靠过来——「再一下就完成了……好吧，先休息五分钟。醒来以后，你要第一个看成品。」",
@@ -957,7 +957,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot on a rainy afternoon street, Ayachi Nene pauses beneath a streetlamp and turns back through the falling rain, clutching her red plaid muffler near her mouth with a teary, hurt glance. The umbrella edge and rain curtain frame the wet asphalt and warm lamp reflections.",
+    "animaCaption": "Pausing beneath a glowing streetlamp amidst gentle twilight snowfall, Ayachi Nene turns back to face the viewer, clutching her plaid scarf to her blushing face with teary affection. Her silver-white twintails peek out from beneath her scarf while glowing neighborhood shopfronts and lampposts create rich spatial depth behind her leather boots firmly planted in fresh white snow.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "隔雨回眸中景",
     "category": "恋爱",
@@ -972,7 +972,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, clothes, underwear, bra, child, loli",
-    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, warm_beige_winter_duffle_coat, red_plaid_muffler, sheer_white_thighhigh_stockings, stopping_and_turning_back_under_a_rainy_streetlamp, holding_white_umbrella_with_clenched_hand, clutching_muffler_close_to_mouth, teary_affectionate_glance, rainy_afternoon, rain_curtain, wet_asphalt, glowing_streetlamp, falling_rain_and_mist, medium_shot, overcast_diffused_light, depth_of_field, @rella",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_warm_beige_winter_duffle_coat_and_red_plaid_muffler, sheer_black_tights, stopping_and_turning_back_around_under_rainy_streetlamp, holding_white_umbrella_with_clenched_hand, clutching_muffler_close_to_mouth, entire_legs_and_feet_fully_visible_in_frame, brown_leather_winter_boots_standing_on_wet_asphalt, teary_affectionate_glance, twilight_rain_in_residential_street, glowing_warm_amber_streetlights_and_illuminated_shop_windows_in_background, falling_rain_and_mist, full_body, @rella",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 走了三步又回头】争吵后的雨天街道上，宁宁转身离开，走出三步却怎么也无法继续。她站在路灯下攥紧伞柄，直到你从身后叫住她，才带着委屈重新转回来。雨水沿伞缘落成一道帘，她终于说出真正难过的原因——「我不是想赢。我只是害怕，你有一天会连解释都不愿意听。」",
@@ -1002,7 +1002,7 @@
     "weather": "雨"
   },
   {
-    "animaCaption": "In a medium shot on the school award stage, Ayachi Nene receives a certificate beneath a focused spotlight and looks past the applauding crowd until she finds the viewer in the back row. Her bright smile finally opens with relieved gratitude.",
+    "animaCaption": "In a medium shot in a serene snow-dusted winter setting, she stands poised with bright expectant eyes, under soft ambient lighting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "领奖台半身中景",
     "category": "校园",
@@ -1096,7 +1096,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a close-up on the school rooftop beneath a breathtaking summer starry sky, Ayachi Nene leans on the viewer's shoulder while counting stars. After kissing his cheek, she hides her flushed face in his shoulder as the Milky Way and distant city lights glow behind them.",
+    "animaCaption": "Sitting on a wooden bench atop the school rooftop late at night, Ayachi Nene holds a warm tea can with both hands, looking toward you with deep, affectionate violet eyes. Her low silver twintails flutter gently against a backdrop of a brilliant Milky Way galaxy and distant city lights, with warm lantern glow balancing cool starlight across her sheer black stockings and loafers.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "近景特写",
     "category": "恋爱",
@@ -1111,7 +1111,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "bad anatomy, bad hands, extra fingers, missing fingers, deformed, text, watermark, logo, signature, blurry, jpeg artifacts, 2girls, child, loli",
-    "prompt": "safe, 1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_school_uniform_with_navy_pleated_skirt, sheer_white_thighhigh_stockings, sitting_close_to_viewer_on_school_rooftop, counting_stars, leaning_on_viewer's_shoulder_after_kissing_viewer's_cheek, hiding_flushed_face_in_viewer's_shoulder, breathtaking_starry_night_sky, glittering_milky_way, distant_city_skyline, cool_moonlight, close_up, cinematic_lighting, depth_of_field, @rella",
+    "prompt": "safe, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_school_uniform_with_navy_pleated_skirt, sheer_black_thighhigh_socks, sitting_on_rooftop_wooden_bench_under_breathtaking_starry_night_sky, leaning_forward_holding_warm_can_of_tea_with_both_hands, tender_affectionate_smile_looking_at_viewer, entire_legs_and_feet_fully_visible_in_frame, brown_loafers_resting_on_rooftop_floor, glittering_milky_way_galaxy_and_distant_glowing_city_skyline, warm_lantern_glow_contrasting_with_cool_starlight_and_lunar_rim_light, detailed_background, cinematic_lighting, full_body, @rella",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 屋顶星空下的第二个约定】夏夜的屋顶风很轻，宁宁靠在你肩上数星星，数到一半却总把同一颗重复计算。你拆穿她只是想延长独处时间，她索性抬头吻了一下你的脸侧，随后把发热的脸藏进你肩窝——「既然被发现就没办法了。那我们约好，下一次流星雨也一起看，不准让别人抢走这个位置。」",
@@ -1234,7 +1234,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium two-person shot beneath a bus-stop awning during heavy rain, Ayachi Nene in her wet navy Stella school uniform has the viewer's coat draped over her shoulders. She grips the coat front and worries that he will catch cold, her wet silver hair clinging to her caring, vulnerable blush.",
+    "animaCaption": "Under a bus stop awning in heavy rain, Ayachi Nene in a navy Stella school uniform shares a blazer as a makeshift umbrella, silky white thighhighs hugging smooth thighs with a thigh gap, brown loafers on wet pavement. Wet silver hair clings to her caring, vulnerable blush.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "屋檐下双人中景",
     "category": "恋爱",
@@ -1248,8 +1248,8 @@
     "location": "雨中校园",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet",
-    "prompt": "1girl, pov_partner, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_stella_school_uniform, pleated_miniskirt, sheer_white_thighhighs, brown_loafers, standing_under_bus_stop_awning_with_viewer, viewer_coat_draped_over_her_shoulders, gripping_coat_front, heavy_rain, wet_silver_hair_clinging_to_face, caring_vulnerable_blush, rain_bokeh, puddle_reflections, medium_shot, overcast_soft_light, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
+    "prompt": "1girl, nene_school_uniform, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_stella_school_uniform_blazer_and_pleated_miniskirt_with_sheer_white_thighhigh_stockings_and_wet_sheen, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_faint_garter_line, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_wet_pavement, sharing_one_large_blazer_as_makeshift_umbrella_over_both_heads_under_bus_stop_awning_in_heavy_rain, wet_hair_clinging_to_face_with_caring_vulnerable_blush, dramatic_rain_bokeh_and_puddle_reflections_with_overcast_soft_light, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 暴雨里的校服外套】放学时暴雨突至，宁宁的制服外套被雨水打湿，冷得缩起肩膀。你赶来把自己的外套披到她身上，她先担心你会着凉，确认两个人能一起躲进屋檐后才松口气。雨声里，她攥住外套前襟——「谢谢你来找我。衣服湿掉没关系……只是刚才一个人站着的时候，有一点害怕。」",
@@ -1610,7 +1610,7 @@
     "weather": "雪"
   },
   {
-    "animaCaption": "At sunset by the seaside tide line, Ayachi Nene in a breezy white sundress stops to face the viewer, her very long silver hair lifting in the sea wind as she holds a wistful gentle smile and makes direct eye contact over the sparkling water.",
+    "animaCaption": "On a seaside cliff with sea breeze blowing her very long silver hair, Ayachi Nene in a breezy white sundress and straw hat stands with sun-kissed bare legs, bare feet and white sandals on rock, holding her hat as she looks back with a wistful gentle smile.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "恋爱",
@@ -1624,8 +1624,8 @@
     "location": "海边",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, breezy_white_summer_sundress, walking_along_the_tide_line_then_stopping_to_face_viewer, barefoot_on_wet_sand, direct_eye_contact, wistful_gentle_smile, confessing_love, sparkling_blue_sea, clear_sky, warm_seaside_sunset_light, sea_spray_bokeh, half_body, cinematic_depth_of_field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair_blowing_in_wind, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_breezy_white_summer_sundress_with_puff_sleeves_and_straw_hat_tilted_by_wind, sun_kissed_bare_legs_with_smooth_thigh_and_calf_lines_standing_on_seaside_cliff, barefoot_with_detailed_toes_and_white_sandals_placed_on_rock, standing_on_seaside_rock_with_one_hand_holding_hat_against_sea_breeze_looking_back, wistful_gentle_smile_with_windblown_hair_and_soft_blush, sparkling_blue_sea_and_clear_sky_with_warm_seaside_sunlight_and_spray_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, golden_sunset_light, sunset_sky, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 海风里的心之碎片】黄昏海边，宁宁沿着潮线走了很久，终于停下来面对你。她说过去总把重要情绪拆成碎片藏好，害怕一旦交出去就无法收回。海风掀起银白长发，她却没有再避开视线——「现在我想把完整的心意告诉你。不是契约，也不是魔法……我喜欢你，一直都是。」",
@@ -1785,7 +1785,7 @@
     "weather": "彩虹"
   },
   {
-    "animaCaption": "In a wide full-body view inside the autumn art gallery, Ayachi Nene stands beside the viewer before a framed painting of stars and the road home. Without speaking, the backs of their hands touch as soft museum light falls across her silver-white hair.",
+    "animaCaption": "In a wide full-body view in a quiet room, she reaches forward and gently clasps the viewer's hand with a focused and calm expression, under diffused overcast daylight.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全身远景",
     "category": "日常",
@@ -1800,7 +1800,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, street, road, sidewalk, outdoors",
-    "prompt": "(indoor art gallery:1.55), standing_side_by_side_before_a_large_framed_starry_sky_painting, back_of_hand_gently_touching_viewer's_hand, 1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, looking_at_painting, art_gallery, standing_before_painting, soft_expression, museum_lighting, autumn, afternoon, clear_sky, full_body, wide_shot, soft_lighting, diffused_light, serious, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(indoor art gallery:1.55), standing directly in front of a large framed painting, museum spotlights, polished gallery floor, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, standing, looking_back, casual_clothes, looking_away, art_gallery, standing_before_painting, holding_hands, soft_expression, museum_lighting, autumn, afternoon, clear_sky, full_body, wide_shot, soft_lighting, diffused_light, serious, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 画框前共享的沉默】秋日下午，宁宁在画廊一幅描绘星空与归途的作品前停了很久。你走到身边后，她没有立刻解释感受，只悄悄把手背贴上你的手背。柔和顶光落在银白长发上——「有些画不需要说出答案。像现在这样一起看着，就已经能明白一点了。」",
@@ -1835,7 +1835,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a medium shot on an empty cherry-blossom path, Ayachi Nene stands amid the falling petals with one finger resting lightly on her pink hair ribbon. When the viewer calls her name, she turns back from surprise into a soft, reassuring smile in the clear spring morning.",
+    "animaCaption": "In a medium shot under blooming cherry blossom trees in the park, she turns back over her shoulder with a soft, reassuring smile, under soft ambient lighting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "恋爱",
@@ -1849,8 +1849,8 @@
     "location": "樱花道",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, naked, topless, bottomless, underwear, swimsuit, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text, 2girls, multiple girls, second white-haired girl, extra girl, clone, twin, background person, finger on lips, shushing, title",
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, complete_navy_school_uniform, navy_blazer, white_blouse, pleated_skirt, black_thighhighs, standing_on_empty_cherry_tree_path, one_finger_touching_pink_hair_ribbon, turning_back_when_called, surprised_then_reassured_smile, petals_in_wind, spring_morning, medium_shot, soft_morning_light, clear_sky, gentle_bokeh, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, naked, topless, bottomless, underwear, swimsuit, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text, 2girls, multiple girls, second white-haired girl, extra girl, clone, twin, background person, standing, finger on lips, shushing, title",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, (crouching alone in extreme foreground:1.5), (right index finger touching the ground and tracing one heart groove through fallen pink cherry petals:1.8), hand and petal heart clearly visible, empty cherry tree path, spring morning, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "春",
     "story": "【宁宁 · 樱吹雪中的名字】春日清晨的樱花道空无一人，宁宁站在花瓣形成的雪幕里，手指轻轻按住发带。你叫她名字时，她越过漫天粉白转身，先是惊讶，随后露出安心而温柔的笑——「原来被重要的人叫住，会觉得自己的名字也变得特别。再叫一次，可以吗？」",
@@ -1924,7 +1924,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In the newlywed apartment kitchen on a bright morning, Ayachi Nene wears the viewer's oversized white shirt beneath a small white apron while preparing breakfast. A frying pan levitates in front of her amid purple magic sparks, and she turns toward the doorway with a panicked blush and a heart-shaped ahoge.",
+    "animaCaption": "In a cozy morning kitchen, Ayachi Nene wears her official witch outfit with a small white apron over it, flustered and blushing as she panics over a magically levitating frying pan with purple magical sparks, illuminated by warm morning sunlight.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "日常",
@@ -1938,8 +1938,8 @@
     "location": "新婚公寓厨房",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, ordinary cook, generic witch dress, plain black dress, full-length gown, simple witch costume",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, viewer_oversized_white_button_up_shirt, white_apron, standing_in_newlywed_apartment_kitchen, preparing_breakfast, levitating_frying_pan, purple_magic_sparks, panicked_expression, heart_shaped_ahoge, embarrassed_blush, warm_morning_backlight, cozy_kitchen, medium_shot, cinematic_lighting, depth_of_field, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, plain apron only, full apron, ordinary cook, generic witch dress, plain black dress, full-length gown, simple witch costume",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, official_witch_outfit, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, black_boots, waist_apron, floating_cooking_pan, purple_magic_sparks, levitating_frying_pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
     "rating": "All",
     "season": "春",
     "story": "【宁宁 After Story】婚后清晨的公寓厨房里弥漫着面包的焦味。宁宁穿着你那件大号的衬衫、套着围裙，正手忙脚乱地准备早餐。因为平底锅快烧焦了，她慌乱间下意识用了魔力让锅子自己悬浮在半空，结果正好被推门而入的你撞个正着。她瞬间满脸通红，头顶的呆毛直接害羞地弯成了心形——「啊啊啊！不准看！魔女的料理魔法失败现场也是家务最高机密！」",

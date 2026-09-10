@@ -85,7 +85,7 @@
     "weather": "夏日晴朗"
   },
   {
-    "animaCaption": "In a medium shot beneath the narrow bus-stop awning during an after-school thunderstorm, Ayachi Nene protects a precious old book against her chest while the viewer holds an umbrella over both of them. She quietly reaches out with a handkerchief to wipe the rain from the viewer's soaked shoulder.",
+    "animaCaption": "In a close-up framing between tall wooden bookshelves in the tranquil library, she holds an open umbrella aloft with one hand, as warm golden-hour sunlight illuminates the scene.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "中景侧面特写",
     "category": "日常",
@@ -100,7 +100,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
-    "prompt": "1girl, pov_partner, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nene_school_uniform, white_thighhighs, holding_precious_old_book_against_chest, standing_under_bus_stop_awning, viewer_holding_umbrella_over_both, reaching_with_handkerchief_to_wipe_viewer's_wet_shoulder, concerned_expression, rainy_afternoon_thunderstorm, wet_uniform_sleeve, puddle_reflections, medium_shot, soft_diffused_rain_light, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, holding_book, umbrella, rain, bus_stop, subtle_blush, gentle_smile, concerned_expression, wet_clothes, street, evening, soft_lighting, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 雨中守护】放学后突然降临的雷阵雨把街道浇得透湿。宁宁站在公交站台的窄小顶棚下，怀里紧紧护着刚从图书馆借来的珍贵古籍。你撑着伞从雨幕中跑来，把伞倾向她那边时，自己的半边肩膀瞬间被雨水打透。宁宁看着你湿透的制服袖口，紫色的眼睛里闪过一丝心疼，头顶的呆毛微微垂了下来。她悄悄挪近半步，用手帕轻轻擦拭你肩上的雨水，声音小得几乎被雨声淹没——「笨蛋……伞明明可以再往你那边偏一点的。这样会感冒的，你知道吗？」",
@@ -141,7 +141,7 @@
     "weather": "雷阵雨"
   },
   {
-    "animaCaption": "In a medium shot before the ema rack at a shrine on the snowy first morning of the year, Ayachi Nene in a pink furisode hides the written prayer plaque behind her back after noticing the viewer. Her ornate updo, heavy blush and startled open mouth catch the soft winter sunlight.",
+    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she stands poised with a focused and calm expression, under soft ambient lighting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "中景正面特写",
     "category": "祭典・节日",
@@ -156,7 +156,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel",
-    "prompt": "(single girl only:1.5), (one person only:1.5), 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pink_furisode_kimono, high_updo_with_ornate_hair_accessory, standing_before_ema_rack_at_shrine, hiding_written_ema_behind_back, heavy_blush, startled_open_mouth, winter_morning, first_snow, sunlight, soft_lighting, medium_shot, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(single girl only:1.5), (one person only:1.5), holding a completely blank sheet of paper, empty background, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, holding_ema, shrine, snow, morning, sunlight, heavy_blush, panicked, open_mouth, romantic_atmosphere, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "冬",
     "story": "【宁宁 · 新年参拜】新年第一天的清晨，神社石阶上覆盖着薄薄的初雪。宁宁穿着一整套华丽的粉色振袖和服，银白色的长发用精致的发饰高高束起，在冬日的阳光下泛着柔和的光泽。她在绘马架前认真地写完愿望，刚要把绘马挂上去，却发现你正站在不远处含笑望着她。宁宁瞬间满脸通红，慌忙把绘马藏到身后，头顶的呆毛在寒风中微微颤抖——「不、不准看！愿望被看到就不灵了啦！才、才没有写关于柊史的事情呢……呜，笨蛋，转过头去！」",
@@ -447,7 +447,7 @@
     "weather": "秋日晴朗"
   },
   {
-    "animaCaption": "In a landscape official-event CG composition inside an empty afternoon classroom, Ayachi Nene raises both clasped hands below her chin and asks the viewer to stay a little longer. Her pleading gentle expression and subtle blush are framed by windblown curtains, the large classroom window and green trees outside.",
+    "animaCaption": "In a medium shot by the large windows of an empty classroom, she looks forward toward the viewer, under soft ambient lighting.",
     "audit": {
       "attempt": 2,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
@@ -471,7 +471,7 @@
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit",
     "officialCgCandidate": "ocn02",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), direct_eye_contact_with_viewer, front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, windblown_classroom_curtains, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",
@@ -495,7 +495,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a cinematic 16:9 medium close-up from above, Ayachi Nene sits upright in a pink bedroom bed wearing blue patterned button-up pajamas, a pale pink blanket at her waist, her silver hair spread over pink pillows, making quiet direct eye contact in soft morning window light.",
+    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she sits gracefully, under soft ambient lighting.",
     "audit": {
       "attempt": 2,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
@@ -543,7 +543,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a wide medium shot beneath warm golden stage lights and large star decorations, Ayachi Nene in her navy school uniform presents a black gift box filled with pink and white flowers to the viewer, her long silver hair flowing behind her and her shy smile lit by the stage.",
+    "animaCaption": "In a medium shot in a quiet room, she gently presents a wrapped gift box, under soft ambient lighting.",
     "audit": {
       "attempt": 3,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
@@ -565,9 +565,9 @@
     "location": "室内场景",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, single rose, one flower, shop, store shelves, fluorescent light, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, single rose, one flower, empty hands, shop, store shelves, fluorescent light, nsfw, nude, explicit",
     "officialCgCandidate": "ocn07",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, wide_medium_shot_matching_an_official_event_illustration, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer_with_gold_buttons, gold_bow, gray_plaid_skirt, black_thighhighs, standing_beneath_warm_golden_stage_lights_and_large_star_decorations, presenting_a_rectangular_black_gift_box_filled_with_pink_and_white_flowers_toward_viewer_with_both_arms, shy_gentle_smile, long_silver_hair_flowing_behind_her, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual_novel_event_cg, portrait_composition_matching_an_official_event_illustration, low_angle_full_body_shot, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer_with_gold_buttons, gold_bow, gray_plaid_skirt, black_thighhighs, standing_beneath_warm_golden_stage_lights_and_large_star_decorations, (holding_a_rectangular_black_gift_box_filled_with_a_bouquet_of_pink_and_white_flowers_against_her_chest_with_both_arms), shy_gentle_smile, long_silver_hair_flowing_behind_her, <lora:ayachi_nene_v18_wd14:0.9>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",

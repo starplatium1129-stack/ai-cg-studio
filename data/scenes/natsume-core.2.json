@@ -1633,7 +1633,7 @@
     "weather": "深夜静谧"
   },
   {
-    "animaCaption": "In a medium shot on an apartment balcony in the autumn afternoon, Shiki Natsume leans by the railing with an open book in both hands as the breeze blows her long black hair across the foreground toward the viewer. She meets the viewer's eyes at close range with red ears and a restrained blush.",
+    "animaCaption": "In a medium shot in a quiet room, she turns the page of an open book with a focused and calm expression, under soft ambient lighting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "恋爱",
@@ -1647,8 +1647,8 @@
     "location": "公寓阳台栏杆边",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, book cover facing viewer, title on book, decorated cover, title, loose paper, separate sheet, letter, note card, book left on table, table, desk, book on table",
-    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, white_casual_blouse, leaning_against_apartment_balcony_railing, outdoor_balcony, laundry_fluttering_behind_her, holding_open_book_in_both_hands_at_chest_height, strong_breeze_blowing_long_hair_toward_viewer, hair_crossing_foreground, close_eye_contact, red_ears, subtle_blush, autumn_afternoon_sunlight, medium_shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, book cover facing viewer, title on book, decorated cover, title, loose paper, separate sheet, letter, note card, book left on table, empty hands, closed book, table, desk, book on table, indoor room, closed window, still hair",
+    "prompt": "1girl, solo, shiki_natsume, black hair, very long hair, yellow eyes, two red hairclips, mole under eye, white casual blouse, (standing directly beside an apartment balcony railing:1.7), outdoor balcony clearly visible, laundry fluttering behind her, (one open book held in both hands at chest height:1.75), both hands gripping book covers, strong breeze blowing her long black hair sideways toward viewer, hair crossing foreground, close eye contact, red ears, subtle blush, autumn afternoon sunlight, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 风中的距离】秋日午后的公寓阳台，微风吹动着晾晒的衣物。夏目靠在栏杆边看书，乌黑的长发被风吹起，发梢轻轻拂过站在她身旁的你的脸颊。她似乎没有注意到这个亲密的距离，依旧专注地翻着书页。直到风再次吹起，她的整个发丝都缠绕在你的肩头，她才后知后觉地抬起头。四目相对的距离近得能感受到彼此的呼吸，她的耳根瞬间泛红，但依旧保持着那副冷淡的表情——「……别误会。是风的问题，不是我靠太近。而且……你也没躲开，大笨蛋。」",
@@ -1684,7 +1684,7 @@
     "weather": "秋日微风"
   },
   {
-    "animaCaption": "In a medium close-up on a brightly lit commercial street at night during the first snowfall, Shiki Natsume wears a camel double-breasted wool coat over an ivory turtleneck. The viewer wraps one scarf around both of them, and she lowers her golden eyes with reddening ears beneath the warm Christmas lights.",
+    "animaCaption": "In a close-up framing along the quiet city street, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "中景侧面拉近特写",
     "category": "日常",
@@ -1698,8 +1698,8 @@
     "location": "繁华商业街璀璨彩灯大树旁",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, duplicate character, cloned character",
-    "prompt": "1girl, pov_partner, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, camel_double_breasted_wool_coat, ivory_turtleneck_sweater, dark_jeans, winter_boots, sharing_one_scarf_with_viewer, viewer_wrapping_scarf_around_both, standing_close_on_commercial_street_during_first_snow, warm_christmas_lights, snowing, city_lights, bokeh, red_ears, lowered_gaze, subtle_blush, romantic_atmosphere, medium_close_up, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, coat, trench_coat, turtleneck_sweater, jeans, boots, scarf, sharing_scarf, street, snowing, city_lights, bokeh, red_ears, subtle_blush, expressionless, romantic_atmosphere, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 初雪街头的围巾温度】深夜初雪纷飞的繁华商业街，两旁亮满暖金色的节日彩灯。换下工作服的夏目身穿驼色双排扣毛呢大衣与米白高领毛衣，长发随风微扬。夜间气温骤降，你在雪中驻足时自然地解下围巾，绕过去将两个人圈在一起。夏目身子微微一缩，半垂着清冷的金瞳任由你动作。在璀璨灯火的映照下，她那泛红的耳根格外可爱，用微弱的音量小声说着——「……别误会，我只是觉得两个人围一条比较暖和，要是你感冒了明天就没人顶班了。……笨蛋，手要是冷的话，可以伸进我大衣口袋里。」",
@@ -1736,7 +1736,7 @@
     "weather": "初雪夜晚"
   },
   {
-    "animaCaption": "In a side medium shot inside Café Stella after closing, Shiki Natsume pushes one steaming hot chocolate toward the viewer on the counter while a dry towel hangs over the chair back. With her other hand she pretends to organize the ledger, keeping a reserved expression under the warm bar light and rain-streaked window.",
+    "animaCaption": "In a side-view composition inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands, under soft ambient lighting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "吧台侧面中景，人物与热饮同框",
     "category": "日常",
@@ -1751,7 +1751,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip, nsfw, nude, explicit",
-    "prompt": "1girl, pov_partner, shiki_natsume, natsume_cafe_uniform, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, dark_brown_cafe_suspender_dress, white_blouse, waist_apron, cafe_counter_after_closing, pushing_one_steaming_hot_chocolate_cup_toward_viewer_on_counter, dry_towel_draped_over_chair_back, pretending_to_organize_ledger_with_other_hand, rain_on_window, warm_lighting, night, reserved_expression, slight_blush, medium_shot, cinematic_composition, cozy, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, dark_brown_cafe_suspender_dress, white_blouse, waist_apron, cafe, holding_one_hot_chocolate_cup_with_both_hands, rain_on_window, warm_lighting, reserved_expression, slight_blush, looking_at_viewer, medium_shot, cinematic_composition, cozy, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 不必说明的照顾】Café Stella 打烊后，夏目把最后一盏吧台灯留了下来。你刚从雨里进门，她没有问太多，只是把一杯热可可推到你面前，又把干毛巾搭在椅背上。等你抬头时，她已经假装在整理账本——「……别误会。客人感冒会影响明天的营业效率。喝完再走。」",
@@ -1979,7 +1979,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a landscape official-event CG composition, Shiki Natsume lies on her side beneath a white blanket in pale blue pajamas, her black hair spread across white pillows. She makes quiet direct eye contact from the warm morning bed, her red-trimmed sleepwear and eye-under mole sharply framed in the soft light.",
+    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she rests comfortably against soft pillows with glistening, emotive eyes, under soft ambient lighting.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
@@ -2027,7 +2027,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a landscape official-event CG composition inside the cafe storage area, Shiki Natsume in her dark gray maid uniform carefully cups a small glowing blue magical object in both hands and presents it to the viewer. Cyan light illuminates her face and fingers while warm wooden shelves filled with jars occupy the background.",
+    "animaCaption": "In a medium shot inside the warm cafe with polished wooden tables, she cradles a warm steaming cup with both hands with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs09-a1.png",
@@ -2051,7 +2051,7 @@
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
     "officialCgCandidate": "ocs09",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_and_presenting_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level_to_viewer, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",
@@ -2075,7 +2075,7 @@
     "weather": "晴"
   },
   {
-    "animaCaption": "In a landscape official-event CG extreme overhead face close-up, adult Shiki Natsume lies on the warm wooden floor beside an orange cushion. Her long black hair in twin braids and paired white rose ornaments frame her face as she presses one index finger softly to her lips, keeps her other hand near her ear, and stares at the viewer with flushed cheeks under warm indoor light.",
+    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, under soft ambient lighting.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
