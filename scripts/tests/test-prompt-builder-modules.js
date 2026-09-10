@@ -46,7 +46,7 @@ const modules = [
   ['src/composables/useImageStore.ts', ['imgPut', 'imgGet', 'imgDeleteMany']],
   ['src/composables/useKVStore.ts', ['kvGet', 'kvSet']],
    ['src/components/HistoryPanel.vue', ['history-wrap', 'imgGet']],
-  ['src/components/VoiceStudio.vue', ['voice-studio', 'voiceApi.getStatus', 'voiceApi.prepare', 'voiceApi.translate', '/api/tts']],
+  ['src/components/VoiceStudio.vue', ['voice-studio', 'voiceApi.getStatus', 'voiceApi.prepare', 'voiceApi.translate', 'voiceApi.synthesize']],
   ['src/components/PromptDataTools.vue', ['useBackup', 'pb-backup-overlay', 'useFocusTrap']],
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
   ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
@@ -177,8 +177,8 @@ const promptPipeline = [
 for (const [marker, message] of promptPipeline) {
   if (!promptAssembly.includes(marker)) fail(message);
 }
-if (!view.includes('usePromptAssembly')) {
-  fail('PromptBuilderView must consume the dedicated prompt assembly composable');
+if (!view.includes('useUnifiedPromptAssembly') || !view.includes('= unified.studio')) {
+  fail('PromptBuilderView must reuse studio fields from the unified prompt assembly');
 }
 // 2026-08-28 编排下沉：受控绘图路线的推导/采用（recommendDrawingRoute、
 // refreshManagedRoute）归 src/composables/scene/useDirectorPopular.ts；
@@ -276,17 +276,18 @@ for (const param of ['scene', 'regen', 'variant', 'mood', 'resume', 'quick']) {
   if (!new RegExp(`q\\.${param}`).test(deepLinkSource)) fail('missing deep-link restoration for ?' + param);
 }
 
-// 配音工作室的 HTTP 接线归 VoiceStudio 所有；PromptBuilderView 只负责传入
-// 当前角色/故事默认值，避免它再次变成第六个子系统的宿主。
+// VoiceStudio 管理交互和操作生命周期，HTTP 接线统一归 voiceApi；
+// PromptBuilderView 只负责传入当前角色/故事默认值。
 const voiceStudio = read('src/components/VoiceStudio.vue');
 const voiceApi = read('src/api/voiceApi.ts');
-for (const marker of ["import { voiceApi } from '@/api/voiceApi'", 'voiceApi.getStatus', 'voiceApi.prepare', 'voiceApi.translate', '/api/tts', 'voice-studio']) {
+for (const marker of ["from '@/api/voiceApi'", 'voiceApi.getStatus', 'voiceApi.prepare', 'voiceApi.translate', 'voiceApi.synthesize', 'voice-studio']) {
   if (!voiceStudio.includes(marker)) fail('voice studio must own: ' + marker);
 }
-for (const endpoint of ['/api/tts-status', '/api/voice/prepare', '/api/translate']) {
+for (const endpoint of ['/api/tts-status', '/api/voice/prepare', '/api/translate', '/api/tts']) {
   if (!voiceApi.includes(endpoint)) fail('voice API module must own migrated endpoint: ' + endpoint);
-  if (voiceStudio.includes(endpoint)) fail('VoiceStudio must not own migrated JSON endpoint: ' + endpoint);
+  if (voiceStudio.includes(endpoint)) fail('VoiceStudio must not own migrated endpoint: ' + endpoint);
 }
+if (/\bfetch\s*\(/.test(voiceStudio)) fail('VoiceStudio requests must use voiceApi for timeout and cancellation');
 for (const marker of ['initial-voice', 'suggested-caption']) {
   if (!view.includes(marker)) fail('director must wire voice studio prop: ' + marker);
 }

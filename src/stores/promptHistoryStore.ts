@@ -5,16 +5,15 @@ import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY } from '@/utils/storageKeys'
 import { parseProjectOptions, type ProjectOption } from '@/utils/promptBuilderPersistence'
+import { parseArtworkRecords } from '@/types/artwork'
 
 const HISTORY_STORAGE_KEY = ARTWORK_HISTORY_KV_KEY
 const PROJECT_STORAGE_KEY = ARTWORK_PROJECTS_KV_KEY
 
-let historyIdLastMs = 0
-let historyIdCounter = 0
+let lastHistoryId = 0
 function historyIdSeq(now: number): number {
-  if (now !== historyIdLastMs) { historyIdLastMs = now; historyIdCounter = 0 }
-  historyIdCounter += 1
-  return now * 1000 + historyIdCounter
+  lastHistoryId = Math.max(now * 1000, lastHistoryId) + 1
+  return lastHistoryId
 }
 
 async function measureBlob(blob: Blob): Promise<{ width: number | null; height: number | null }> {
@@ -45,24 +44,28 @@ async function cacheThumbnail(imageId: string, blob: Blob): Promise<void> {
 export const usePromptHistoryStore = defineStore('promptHistory', () => {
   const history = ref<unknown[]>([])
   const projects = ref<ProjectOption[]>([])
+  let historyLoad = 0
+  let projectLoad = 0
 
   async function loadHistory() {
+    const request = ++historyLoad
     try {
       const raw = await kvGet<unknown[]>(HISTORY_STORAGE_KEY)
-      if (Array.isArray(raw)) history.value = raw
+      if (request === historyLoad) history.value = parseArtworkRecords(raw)
     } catch {}
     await loadProjects()
   }
 
   async function loadProjects() {
+    const request = ++projectLoad
     try {
       let raw: unknown = await kvGet(PROJECT_STORAGE_KEY)
       let parsed = parseProjectOptions(raw)
-      if (!parsed.length) {
+      if (!Array.isArray(raw)) {
         raw = await kvGet('aics_projects')
         parsed = parseProjectOptions(raw)
       }
-      projects.value = parsed
+      if (request === projectLoad) projects.value = parsed
     } catch {}
   }
 
@@ -73,20 +76,20 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
    * 保留 30 天，期间 restoreHistoryEntry 可整条恢复。历史面板与作品册两条
    * 删除路径共用同一实现，避免「这边可撤销、那边不可」的割裂。
    */
-  async function removeHistoryEntry(id: number) {
+  async function removeHistoryEntry(id: number | string) {
     const result = await artworkRepository.softDeleteArtwork(id)
     if (result.deleted) {
-      history.value = (history.value as unknown as Array<{ id: number }>).filter(entry => entry.id !== id) as unknown as typeof history.value
+      historyLoad += 1
+      history.value = parseArtworkRecords(history.value).filter(entry => String(entry.id).trim() !== String(id).trim())
       await loadProjects()
     }
   }
 
   /** 撤销软删：整条恢复并重新载入列表。 */
-  async function restoreHistoryEntry(id: number): Promise<boolean> {
+  async function restoreHistoryEntry(id: number | string): Promise<boolean> {
     const result = await artworkRepository.restoreArtwork(id)
     if (!result.restored) return false
     await loadHistory()
-    await loadProjects()
     return true
   }
 

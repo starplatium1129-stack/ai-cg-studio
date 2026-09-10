@@ -74,7 +74,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useToast } from '@/composables/useToast'
-import { voiceApi } from '@/api/voiceApi'
+import { voiceApi, type VoiceSynthesisPayload } from '@/api/voiceApi'
 import '@/assets/css/director/components/VoiceStudio.css'
 
 const props = defineProps<{
@@ -102,6 +102,9 @@ const voiceOnline = ref(false)
 const voiceConfigured = ref(false)
 const voiceAudioUrl = ref('')
 let voiceObjectUrl = ''
+const lifecycle = new AbortController()
+const callOptions = { signal: lifecycle.signal }
+let statusRequest = 0
 
 const voiceEmotion = ref('neutral')
 const voiceSpeed = ref(1)
@@ -119,7 +122,7 @@ const voiceStateLabel = computed(() => {
   if (voiceOnline.value) return '声线未配置'
   return '语音未启动'
 })
-const voiceDownloadName = computed(() => `aics_voice_${voiceChar.value}_${voiceLang.value}_${Date.now()}.wav`)
+const voiceDownloadName = ref('')
 
 function errorMessage(error: unknown, fallback: string) {
   if (error instanceof Error && error.message) return error.message
@@ -127,20 +130,25 @@ function errorMessage(error: unknown, fallback: string) {
 }
 
 async function refreshVoiceStatus() {
+  const request = ++statusRequest
+  const voice = voiceChar.value
   try {
-    const data = await voiceApi.getStatus()
+    const data = await voiceApi.getStatus(callOptions)
+    if (lifecycle.signal.aborted || request !== statusRequest) return
     voiceOnline.value = data.online
-    voiceConfigured.value = Boolean(data.voices[voiceChar.value])
+    voiceConfigured.value = Boolean(data.voices[voice])
+    if (voiceBusy.value) return
     if (voiceOnline.value && voiceConfigured.value) {
       voiceStatus.value = 'GPT-SoVITS 已连接；可翻译或生成角色声线。'
       // 预热是 best-effort：失败只让首次合成稍慢，真实错误会在生成时展示。
-      void voiceApi.prepare({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }).catch(() => {})
+      void voiceApi.prepare({ voice, translation: voiceLang.value === 'ja' }, callOptions).catch(() => {})
     } else if (voiceOnline.value) {
       voiceStatus.value = '语音服务在线，但当前角色参考音频尚未配置。'
     } else {
       voiceStatus.value = '语音服务未启动。可到控制面板启动 GPT-SoVITS。'
     }
   } catch {
+    if (lifecycle.signal.aborted || request !== statusRequest || voiceBusy.value) return
     voiceOnline.value = false
     voiceConfigured.value = false
     voiceStatus.value = '无法读取语音状态。'
@@ -153,17 +161,21 @@ function clearVoiceAudio() {
 }
 
 async function translateVoice() {
+  if (voiceBusy.value) return
   const text = voiceCaption.value.trim()
   if (!text) { toast.warning('请先写下中文字幕'); return }
   voiceBusy.value = true
   voiceStatus.value = '正在本机翻译成日语…'
   try {
-    const data = await voiceApi.translate(text)
+    const data = await voiceApi.translate(text, callOptions)
+    if (lifecycle.signal.aborted) return
+    if (voiceCaption.value.trim() !== text) { voiceStatus.value = '字幕已修改，请重新翻译。'; return }
     const translation = data.translation.trim()
     if (!translation) throw new Error('没有得到可用的日语译文')
     voiceScript.value = translation
     voiceStatus.value = '已生成日语配音稿；可直接生成角色语音，也可以先微调。'
   } catch (error) {
+    if (lifecycle.signal.aborted) return
     voiceStatus.value = errorMessage(error, '翻译失败')
     toast.error(voiceStatus.value)
   } finally { voiceBusy.value = false }
@@ -183,50 +195,41 @@ function previewVoice() {
 }
 
 async function generateVoice() {
+  if (voiceBusy.value) return
   const text = voicePlayText.value
   if (!text) { toast.warning('请先准备配音文本'); return }
   clearVoiceAudio()
   voiceBusy.value = true
   voiceStatus.value = '正在生成 AI 角色声线…'
+  const payload: VoiceSynthesisPayload = {
+    voice: voiceChar.value, text, language: voiceLang.value, emotion: voiceEmotion.value,
+    // 平静使用当前角色主参考音频；不静默替换为温柔声线。
+    referenceEmotion: voiceEmotion.value, consistency: 'locked', speed: voiceSpeed.value,
+  }
   try {
-    await refreshVoiceStatus()
-    if (!voiceConfigured.value) throw new Error('当前角色还没配置参考音频，请到控制面板的「角色声线配置」填写。')
-    // 同上：预热失败不阻断合成，/api/tts 会返回可读的真实失败原因。
-    await voiceApi.prepare({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }).catch(() => {})
-    const response = await fetch('/api/tts', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        voice: voiceChar.value, text, language: voiceLang.value, emotion: voiceEmotion.value,
-        // `neutral` deliberately uses the character's main reference clip.
-        // Do not silently substitute the gentle clip: that makes the visible
-        // 平静 choice sound warm/comforting and hides whether emotion routing
-        // is actually working.
-        referenceEmotion: voiceEmotion.value,
-        consistency: 'locked', speed: voiceSpeed.value,
-      }),
-    })
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({})) as { error?: string; detail?: string }
-      const detail = String(error.detail || '')
-      if (response.status === 502 && /ECONNREFUSED|9880/.test(detail)) {
-        throw new Error('GPT-SoVITS 未启动（127.0.0.1:9880 拒绝连接）。到控制面板点「启动语音」。')
-      }
-      throw new Error([error.error, detail].filter(Boolean).join('：') || `语音生成失败 (${response.status})`)
-    }
-    const blob = await response.blob()
-    if (!blob.size) throw new Error('语音服务返回了空音频')
+    const status = await voiceApi.getStatus(callOptions)
+    if (lifecycle.signal.aborted) return
+    voiceOnline.value = status.online
+    voiceConfigured.value = Boolean(status.voices[voiceChar.value])
+    if (!status.voices[payload.voice]) throw new Error('当前角色还没配置参考音频，请到控制面板的「角色声线配置」填写。')
+    // 预热失败不阻断合成；合成接口会返回可读的真实失败原因。
+    await voiceApi.prepare({ voice: payload.voice, translation: payload.language === 'ja' }, callOptions).catch(() => {})
+    if (lifecycle.signal.aborted) return
+    const { blob, queueWaitMs } = await voiceApi.synthesize(payload, callOptions)
+    if (lifecycle.signal.aborted) return
     voiceObjectUrl = URL.createObjectURL(blob)
     voiceAudioUrl.value = voiceObjectUrl
-    const wait = response.headers.get('X-Voice-Queue-Wait')
-    voiceStatus.value = 'AI 声线已生成，可试听或下载 WAV。' + (wait && Number(wait) > 0 ? `（排队 ${Math.round(Number(wait) / 100) / 10}s）` : '')
+    voiceDownloadName.value = `aics_voice_${payload.voice}_${payload.language}_${Date.now()}.wav`
+    voiceStatus.value = 'AI 声线已生成，可试听或下载 WAV。' + (queueWaitMs > 0 ? `（排队 ${Math.round(queueWaitMs / 100) / 10}s）` : '')
     toast.success('配音已生成')
   } catch (error) {
+    if (lifecycle.signal.aborted) return
     voiceStatus.value = errorMessage(error, '语音生成失败')
     toast.error(voiceStatus.value)
   } finally { voiceBusy.value = false }
 }
 
-watch(() => props.initialVoice, voice => { voiceChar.value = voice; void refreshVoiceStatus() })
+watch(() => props.initialVoice, voice => { voiceChar.value = voice })
 watch(() => props.suggestedCaption, caption => {
   const nextCaption = caption?.trim() || ''
   // 场景切换时，若当前字幕仍是上一个场景自动填入的内容，就替换成新场景；
@@ -241,7 +244,7 @@ watch(() => props.suggestedCaption, caption => {
 }, { immediate: true })
 watch(voiceChar, () => { void refreshVoiceStatus() })
 onMounted(() => { void refreshVoiceStatus() })
-onUnmounted(clearVoiceAudio)
+onUnmounted(() => { lifecycle.abort(); clearVoiceAudio() })
 
 function setSuggestedCaption(caption: string) {
   const nextCaption = caption.trim()

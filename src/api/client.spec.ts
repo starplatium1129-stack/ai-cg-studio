@@ -73,6 +73,28 @@ describe('apiClient GET inflight 去重与 TTL 缓存', () => {
     expect(calls).toEqual(['/api/ride'])
   })
 
+  it('取消旧状态请求后立即刷新会新建传输，旧请求清理不会破坏新请求去重', async () => {
+    const requests: Array<{ init: RequestInit | undefined; resolve: (response: Response) => void }> = []
+    const fetch: FetchImplementation = (_input, init) => new Promise((resolve, reject) => {
+      requests.push({ init, resolve })
+      init?.signal?.addEventListener('abort', () => reject(new DOMException('aborted', 'AbortError')), { once: true })
+    })
+    const client = createApiClient(fetch)
+    const controller = new AbortController()
+    const previous = client.request('/api/creative/status', { signal: controller.signal })
+    const cancelled = expect(previous).rejects.toMatchObject({ kind: 'aborted' })
+    controller.abort()
+    const refreshed = client.request('/api/creative/status')
+    const refreshedResult = refreshed.catch(error => error)
+    await cancelled
+    // The previous request has now run finally while its replacement remains pending.
+    const follower = client.request('/api/creative/status')
+    expect(requests).toHaveLength(2)
+    requests[1].resolve(okResponse({ online: true, loras: [{ character: 'natsume' }] }))
+    await expect(refreshedResult).resolves.toEqual({ online: true, loras: [{ character: 'natsume' }] })
+    await expect(follower).resolves.toEqual({ online: true, loras: [{ character: 'natsume' }] })
+  })
+
   it('失败的共享请求从 inflight 移除，后续 GET 重新发起', async () => {
     let fail = true
     const fetch: FetchImplementation = async () => {

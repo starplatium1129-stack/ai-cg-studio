@@ -1,6 +1,102 @@
 'use strict';
 const { test } = require('node:test');
 
+test('SD 代理：超过 15 秒的生成正常返回，复用连接不累积超时监听器', { timeout:25000 }, async () => {
+  const assert = require('node:assert/strict');
+  const http = require('node:http');
+  const stack = await require('./gateway-test-stack').start();
+  const agent = new http.Agent({ keepAlive:true, maxSockets:1 });
+  const timeoutListeners = [];
+  const sockets = new Set();
+  stack.server.on('request', (req, res) => {
+    if (!req.url.startsWith('/sdapi/')) return;
+    sockets.add(req.socket);
+    res.once('finish', () => timeoutListeners.push(req.socket.listenerCount('timeout')));
+  });
+  function request(path, method = 'GET') {
+    return new Promise((resolve, reject) => {
+      const req = http.request(stack.baseUrl + path, { method, agent }, (res) => {
+        let body = '';
+        res.on('data', (chunk) => { body += chunk; });
+        res.on('error', reject);
+        res.on('end', () => {
+          try { resolve({ status:res.statusCode, body:JSON.parse(body) }); } catch (error) { reject(error); }
+        });
+      });
+      req.on('error', reject);
+      req.setTimeout(20000, () => req.destroy(new Error('fixture request timed out')));
+      req.end();
+    });
+  }
+  try {
+    for (let attempt = 0; attempt < 15; attempt += 1) {
+      assert.equal((await request('/sdapi/v1/progress')).status, 200);
+    }
+    assert.equal(sockets.size, 1, 'regression must exercise a reused client socket');
+    assert.ok(Math.max(...timeoutListeners) <= timeoutListeners[0], 'polling must not keep adding socket timeout listeners');
+    stack.upstreams.sd.mock.state.faults.renderMs = 15500;
+    const generated = await request('/sdapi/v1/txt2img', 'POST');
+    assert.equal(generated.status, 200, 'generation must outlive the connection establishment deadline');
+    assert.equal(generated.body.images.length, 1);
+  } finally { agent.destroy(); await stack.close(); }
+});
+
+test('gateway WebSocket：活动隧道 Host 可升级，错误 Host、未鉴权与外站来源不可升级', async () => {
+  const assert = require('node:assert/strict');
+  const http = require('node:http');
+  const fs = require('node:fs');
+  const crypto = require('node:crypto');
+  const { EventEmitter } = require('node:events');
+  const token = 'websocket-fixture-token-0123456789abcdef';
+  const tunnelHost = 'gateway-contract.trycloudflare.com';
+  const stack = await require('./gateway-test-stack').start({
+    token,
+    configureConfig(config) { config.DISABLE_TUNNEL = false; config.CLOUDFLARED_PATH = __filename; },
+    spawn(command, args, options) {
+      fs.writeSync(options.stdio[1], 'https://' + tunnelHost + '\nRegistered tunnel connection\n');
+      const child = new EventEmitter();
+      child.pid = null; // 隔离假进程，清理不得触碰真实 PID。
+      child.unref = function () {};
+      return child;
+    },
+  });
+  let upstreamUpgrades = 0;
+  stack.upstreams.sd.mock.server.on('upgrade', (req, socket) => {
+    upstreamUpgrades += 1;
+    const accept = crypto.createHash('sha1').update(req.headers['sec-websocket-key'] + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64');
+    socket.end('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ' + accept + '\r\n\r\n');
+  });
+  function upgrade(headers) {
+    return new Promise((resolve) => {
+      const req = http.request(stack.baseUrl + '/sdapi/v1/progress', {
+        headers: { Connection:'Upgrade', Upgrade:'websocket', 'Sec-WebSocket-Version':'13', 'Sec-WebSocket-Key':'dGhlIHNhbXBsZSBub25jZQ==', ...headers },
+      });
+      req.on('upgrade', (res, socket) => { socket.destroy(); resolve(res.statusCode); });
+      req.on('response', (res) => { res.resume(); resolve(res.statusCode); });
+      req.on('error', () => resolve(0));
+      req.setTimeout(3000, () => req.destroy());
+      req.end();
+    });
+  }
+  try {
+    stack.gateway.startTunnel();
+    const headers = { Host:tunnelHost, 'x-forwarded-for':'203.0.113.9', Cookie:'aics_token=' + token, Origin:'https://' + tunnelHost };
+    let ready = false;
+    for (let attempt = 0; attempt < 50; attempt += 1) {
+      const response = await fetch(stack.baseUrl + '/api/status');
+      const status = await response.json();
+      if (status.tunnelStatus === 'active') { ready = true; break; }
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+    assert.ok(ready, 'fixture tunnel must become active via its normal log registration');
+    assert.equal(await upgrade(headers), 101, 'authenticated tunnel WebSocket must reach the same upstream as HTTP');
+    assert.notEqual(await upgrade({ ...headers, Host:'foreign.example' }), 101);
+    assert.notEqual(await upgrade({ ...headers, Cookie:'' }), 101);
+    assert.notEqual(await upgrade({ Host:'127.0.0.1:' + stack.address.port, Origin:'https://external.example' }), 101);
+    assert.equal(upstreamUpgrades, 1, 'rejected upgrade attempts must never reach upstream');
+  } finally { await stack.close(); }
+});
+
 test("gateway-contract", async () => {
 /**
  * scripts/tests/test-gateway-contract.js
@@ -101,6 +197,31 @@ async function main() {
 
     var localStatus = await request({ path:'/api/status', headers:LOCAL });
     assert.strictEqual(localStatus.status, 200, 'direct-local /api/status must still work');
+
+    // 外站 HTML 表单可以直连 localhost：无 JSON body 仍会执行 /api/start，必须在鉴权前挡住。
+    var beforeCrossSite = fs.existsSync(stack.runtime.config) ? fs.readFileSync(stack.runtime.config, 'utf8') : null;
+    var crossSiteStart = await request({
+      method:'POST', path:'/api/start',
+      headers:Object.assign({ Origin:'https://external.example', 'Content-Type':'application/x-www-form-urlencoded' }, LOCAL)
+    });
+    assert.strictEqual(crossSiteStart.status, 401, 'external form must not borrow loopback authorization');
+    assert.strictEqual(fs.existsSync(stack.runtime.config) ? fs.readFileSync(stack.runtime.config, 'utf8') : null,
+      beforeCrossSite, 'rejected external form must not change tunnel startup preferences');
+    var externalTool = await postJson('/api/desktop-tools', { name:'get_workspace_info', args:{} },
+      Object.assign({ Origin:'https://external.example', 'x-token':TOKEN }, LOCAL));
+    assert.strictEqual(externalTool.status, 403, 'even a shared token must not grant external origins desktop tools');
+    var developmentStart = await postJson('/api/start', { enableTunnel:false },
+      Object.assign({ Origin:'http://localhost:5173' }, LOCAL));
+    assert.strictEqual(developmentStart.status, 200, 'Vite local development must keep working across local ports');
+
+    var firstVisit = await request({
+      path:'/gallery?filter=recent&token=' + TOKEN,
+      headers:Object.assign({ 'x-forwarded-proto':'https' }, TUNNELED)
+    });
+    assert.strictEqual(firstVisit.status, 302);
+    assert.strictEqual(firstVisit.headers.location, '/gallery?filter=recent');
+    assert.strictEqual(firstVisit.headers['cache-control'], 'no-store');
+    assert.ok(firstVisit.headers['set-cookie'][0].includes('; Secure'), 'HTTPS tunnel backhaul must issue Secure cookie');
 
     // ---- S-3: 上游 host 只接受本机 http ----
     var ssrfHosts = ['http://169.254.169.254', 'http://evil.example.com:7860', 'https://127.0.0.1:7860', 'http://127.0.0.1:0'];

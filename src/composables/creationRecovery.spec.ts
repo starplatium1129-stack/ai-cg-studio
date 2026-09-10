@@ -11,10 +11,11 @@ import { readTempResult } from '@/utils/tempResult'
 import type { AnimaResult, AnimaGenerationState } from '@/types/anima'
 import type { ShotDraft } from '@/components/video/shotListTypes'
 import type { ReferenceCard } from '@/components/video/useReferenceCards'
+import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY } from '@/utils/storageKeys'
 
-const io = vi.hoisted(() => ({ put: vi.fn(), get: vi.fn(), remove: vi.fn(), upload: vi.fn(), fetchJob: vi.fn(), kvSet: vi.fn() }))
+const io = vi.hoisted(() => ({ put: vi.fn(), get: vi.fn(), remove: vi.fn(), upload: vi.fn(), fetchJob: vi.fn(), kvGet: vi.fn(), kvSet: vi.fn(), kvSetMany: vi.fn(), kv: new Map<string, unknown>() }))
 vi.mock('@/composables/useImageStore', () => ({ imgPut: io.put, imgGet: io.get, imgDelete: io.remove }))
-vi.mock('@/composables/useKVStore', () => ({ kvGet: vi.fn(), kvSet: io.kvSet }))
+vi.mock('@/composables/useKVStore', () => ({ kvGet: io.kvGet, kvSet: io.kvSet, kvSetMany: io.kvSetMany }))
 vi.mock('@/utils/imageThumb', () => ({ blobThumbDataUrl: vi.fn(), thumbKey: (id: string) => id }))
 vi.mock('@/api/videoApi', () => ({ uploadVideoImage: io.upload, fetchVideoJob: io.fetchJob }))
 vi.mock('@/utils/characterReferenceData', () => ({ getCharacterReferences: () => null }))
@@ -26,7 +27,16 @@ beforeEach(() => {
   io.put.mockResolvedValue('temp-image')
   io.get.mockResolvedValue(null)
   io.remove.mockResolvedValue(undefined)
-  io.kvSet.mockResolvedValue(undefined)
+  io.kv.clear()
+  io.kvGet.mockImplementation(async key => io.kv.get(key) ?? null)
+  io.kvSetMany.mockImplementation(async (entries: Array<{ key: string; value: unknown }>) => {
+    // Match production: serialize before committing all records in one transaction.
+    const snapshot = JSON.parse(JSON.stringify(entries)) as typeof entries
+    const next = new Map(io.kv)
+    for (const entry of snapshot) next.set(entry.key, entry.value)
+    io.kv = next
+  })
+  io.kvSet.mockImplementation((key, value) => io.kvSetMany([{ key, value }]))
   vi.stubGlobal('createImageBitmap', vi.fn().mockResolvedValue({ width: 832, height: 1216, close: vi.fn() }))
 })
 
@@ -42,6 +52,25 @@ describe('创作状态交接回归', () => {
     pb.visualDescription = 'Description B'
     const entry = await pb.commitHistoryEntry({ context, blob: new Blob(['image']), prompt: 'Prompt A', cfg: 0 })
     expect(entry).toMatchObject({ characterId: 'character-a', outfitId: 'outfit-a', blueprintId: 'blueprint-a', story: 'Story A', visualDescription: 'Description A', cfg: 0 })
+  })
+
+  it('入册后的软删与撤销通过默认仓库事务同步历史、项目和回收站', async () => {
+    const pb = usePromptBuilderStore()
+    const entry = await pb.commitHistoryEntry({ blob: new Blob(['image']), prompt: 'A quiet landscape' })
+    expect(entry).not.toBeNull()
+    io.kv.set(ARTWORK_PROJECTS_KV_KEY, [{ id: 'project', name: '作品项目', history_ids: [entry!.id] }])
+    io.kvSetMany.mockClear()
+    await pb.removeHistoryEntry(entry!.id)
+    expect(pb.history).toEqual([])
+    expect(io.kv.get(ARTWORK_TRASH_KV_KEY)).toHaveLength(1)
+    expect(await pb.restoreHistoryEntry(entry!.id)).toBe(true)
+    expect(pb.history).toEqual([entry])
+    expect(io.kv.get(ARTWORK_TRASH_KV_KEY)).toEqual([])
+    expect(io.kv.get(ARTWORK_PROJECTS_KV_KEY)).toEqual([{ id: 'project', name: '作品项目', history_ids: [String(entry!.id)] }])
+    expect(io.kvSetMany).toHaveBeenCalledTimes(2)
+    for (const [entries] of io.kvSetMany.mock.calls) {
+      expect(entries.map((item: { key: string }) => item.key)).toEqual([ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY])
+    }
   })
 
   it('参考卡在异步装配前分别占位，失败首帧保留重试凭据', async () => {

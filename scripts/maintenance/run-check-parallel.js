@@ -39,6 +39,7 @@ const STEPS = [
   ['scenes:ratings', 'node scripts/maintenance/classify-scene-ratings.js --check'],
   ['scenes:validate', 'node scripts/maintenance/validate-scenes.js'],
   ['content-contracts', 'node scripts/maintenance/validate-content-contracts.js'],
+  ['orphan-scripts', 'node scripts/maintenance/detect-orphan-scripts.js --check'],
   ['ref-urls', 'node scripts/maintenance/check-ref-urls.js'],
   ['design:lint', 'npm run design:lint'],
 ];

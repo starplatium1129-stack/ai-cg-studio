@@ -64,6 +64,21 @@ test('isDirectLocalRequest：本机直连识别与转发头拒绝', () => {
   assert.equal(security.isDirectLocalRequest(mockReq({ socket: { remoteAddress: '::1' } })), true);
   assert.equal(security.isDirectLocalRequest(mockReq({ headers: { 'x-forwarded-for': '1.2.3.4' } })), false);
   assert.equal(security.isDirectLocalRequest(mockReq({ socket: { remoteAddress: '8.8.8.8' } })), false);
+  for (const header of ['x-forwarded-for', 'cf-connecting-ip', 'forwarded', 'x-forwarded-host', 'x-forwarded-proto', 'x-real-ip']) {
+    assert.equal(security.isDirectLocalRequest(mockReq({ headers: { [header]: '' } })), false, `${header} present with an empty value must fail closed`);
+  }
+});
+
+test('本机权限：拒绝外站浏览器来源，保留桌面、Vite 与原生命令行', () => {
+  for (const origin of ['https://external.example', 'null', 'https://localhost.external.example', 'https://tauri.example', 'file://', 'http://localhost/path']) {
+    assert.equal(security.isDirectLocalRequest(mockReq({ headers: { origin } })), false, origin);
+  }
+  for (const origin of ['http://127.0.0.1:3000', 'http://localhost:5173', 'http://[::1]:5173', 'https://tauri.localhost', 'tauri://localhost']) {
+    assert.equal(security.isDirectLocalRequest(mockReq({ headers: { origin } })), true, origin);
+  }
+  assert.equal(security.isDirectLocalRequest(mockReq({ method: 'POST', headers: { 'sec-fetch-site': 'cross-site' } })), false);
+  assert.equal(security.isDirectLocalRequest(mockReq({ method: 'GET', headers: { 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'no-cors' } })), false);
+  assert.equal(security.isDirectLocalRequest(mockReq({ method: 'GET', headers: { 'sec-fetch-site': 'cross-site', 'sec-fetch-mode': 'navigate' } })), true);
 });
 
 test('tokenAuth：本机放行、远程拒绝、token 放行', async () => {
@@ -98,6 +113,22 @@ test('maintenanceLocalOnly：远程 403、本机放行', async () => {
 
   const localMaintenance = await runMiddleware(localOnly, mockReq({ path: '/api/maintenance/scenes' }));
   assert.equal(localMaintenance.nextCalled, true);
+});
+
+test('token 首访：清理 URL、禁缓存，HTTPS 回源也设置 Secure cookie', async () => {
+  const token = 'test-token-0123456789abcdef';
+  for (const transport of [{ secure: true }, { headers: { 'x-forwarded-proto': 'https' } }, {}]) {
+    const result = await runMiddleware(security.tokenAuth(token), mockReq({
+      socket: { remoteAddress: '8.8.8.8' }, query: { token },
+      originalUrl: '/gallery?filter=recent&token=' + token,
+      ...transport,
+    }));
+    assert.equal(result.res.statusCode, 302);
+    assert.equal(result.res.redirected, '/gallery?filter=recent');
+    assert.equal(result.res.headers['Cache-Control'], 'no-store');
+    assert.match(result.res.headers['Set-Cookie'], /HttpOnly; SameSite=Lax/);
+    assert.equal(result.res.headers['Set-Cookie'].includes('; Secure'), Boolean(transport.secure || transport.headers));
+  }
 });
 
 test('safeLocalUrl：只接受本机 http', () => {

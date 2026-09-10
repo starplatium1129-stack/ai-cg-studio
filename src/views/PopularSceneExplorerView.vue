@@ -46,7 +46,7 @@
               @click="ratingFilter = r.v">{{ r.l }}</button>
           </div>
           <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }}</span>
-          <span class="pop-count mature-hint" title="本机个人使用，成人内容默认展示，R18 仅作模糊遮罩区分">成人 <em>{{ adultCount }}</em> · 已展示</span>
+          <span class="pop-count mature-hint" :title="showMature ? '本机成人场景可浏览，R18 样张保留模糊遮罩' : '成人场景仅限本机访问'">{{ showMature ? `成人 ${adultCount} · 已展示` : '成人场景 · 仅限本机' }}</span>
         </div>
         <div class="pop-cats" role="group" aria-label="场景分类">
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
@@ -125,6 +125,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const route = useRoute()
 const router = useRouter()
@@ -142,8 +143,8 @@ const RATING_OPTS = [
   { v: 'R15', l: 'R15' },
   { v: 'R18', l: 'R18' }
 ] as const
-/** 本机个人使用：成人内容常驻展示，仅用模糊遮罩区分，不再设开关自锁。 */
-const showMature = ref(true)
+/** 成人场景仅限本机，远程和未知来源默认拒绝。 */
+const showMature = isLocalStudioHost()
 
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
@@ -160,7 +161,7 @@ const selectedCharacter = computed(() =>
 const pool = computed<SceneBlueprint[]>(() =>
   allBlueprints.value.filter(bp =>
     bp.characterId === selectedId.value
-    && (!bp.adult || (showMature.value && selectedCharacter.value?.adultEligibility === 'adult')),
+    && (!(bp.adult || bp.sampleRating === 'R18') || (showMature && selectedCharacter.value?.adultEligibility === 'adult')),
   ),
 )
 
@@ -268,6 +269,7 @@ function resetFilters() {
 
 /** 样张视觉定级：缺省按成人蓝图推导（R18/All）；2026-08-15 起样张实际画面定级优先。 */
 function sampleRatingOf(blueprint: SceneBlueprint): string {
+  if (blueprint.sampleRating === 'SFW') return 'All'
   return blueprint.sampleRating || (blueprint.adult ? 'R18' : 'All')
 }
 
@@ -365,65 +367,6 @@ onMounted(() => { void init() })
 .pop-hero-stat strong.adult { color: var(--danger-text); }
 .pop-hero-stat span { margin-left: 4px; }
 
-/* 「作品 → 角色」选择区：dossier 外壳，与下方筛选工具栏同构，收紧页面层级 */
-.pop-char-area {
-  display: grid;
-  gap: var(--s-2);
-  margin-bottom: var(--s-4);
-  padding: var(--s-3);
-  border: 1px solid color-mix(in srgb, var(--archive-cyan) 14%, var(--border-soft));
-  border-radius: var(--r-dossier);
-  background: color-mix(in srgb, var(--bg-surface) 62%, transparent);
-}
-.pop-franchise-strip { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-.pop-franchise {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill);
-  background: var(--bg-elevated); color: var(--text-secondary);
-  font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer;
-  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover);
-}
-.pop-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
-.pop-franchise.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-.pop-franchise-count { font: 650 var(--fs-mono-xs) var(--font-mono); opacity: .7; }
-
-.pop-char-strip {
-  display: flex;
-  gap: var(--s-2);
-  overflow-x: auto;
-  padding: var(--s-1) 0 var(--s-3);
-  scrollbar-width: thin;
-  scroll-snap-type: x proximity;
-  /* 两侧渐隐提示可横向滚动（角色多时不再一屏铺完） */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 30px), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 30px), transparent 100%);
-}
-.pop-char-btn { scroll-snap-align: start; }
-.pop-char-btn {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 128px;
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-lg);
-  background: var(--bg-elevated);
-  color: var(--text-secondary);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-hover);
-}
-.pop-char-btn strong { font-size: var(--fs-label); color: var(--text-primary); }
-.pop-char-btn small { font-size: var(--fs-mono-xs); opacity: .6; }
-.pop-char-btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
-.pop-char-btn.active {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
-  color: var(--accent);
-}
-.pop-char-btn.active strong { color: var(--accent); }
-
 .pop-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -491,21 +434,19 @@ onMounted(() => { void init() })
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
 .pop-cat:active { transform: translateY(1px) scale(.97); }
-.pop-cat em { font-style: normal; opacity: .55; font: 700 var(--fs-mono-xs) var(--font-mono); }
+.pop-cat em { font-style: normal; color: var(--text-muted); font: 700 var(--fs-mono-xs) var(--font-mono); }
 .pop-cat:hover, .pop-cat.active {
   border-color: var(--accent);
   background: var(--accent-soft);
   color: var(--accent);
 }
 .pop-cat.adult { border-color: color-mix(in srgb, var(--danger-text) 42%, var(--border-soft)); }
-.pop-cat.adult em { color: var(--danger-text); opacity: .9; }
+.pop-cat.adult em { color: var(--danger-text); }
 .pop-cat.adult:hover, .pop-cat.adult.active {
   border-color: var(--danger-text);
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  background: var(--bg-elevated);
   color: var(--danger-text);
 }
-.mature-toggle { display: inline-flex; align-items: center; gap: var(--s-2); margin-left: auto; color: var(--text-secondary); cursor: pointer; font-size: var(--fs-body-sm); white-space: nowrap; }
-.mature-toggle em { font-style: normal; opacity: .6; }
 
 .pop-empty {
   padding: var(--s-6);
@@ -645,7 +586,5 @@ onMounted(() => { void init() })
   .pop-hero { grid-template-columns: 1fr; }
   .pop-hero-field { min-height: 180px; border-left: 0; border-top: 1px solid var(--border-soft); }
   .pop-grid { grid-template-columns: minmax(0, 1fr); }
-  .pop-char-btn { min-width: 108px; }
-  .mature-toggle { margin-left: 0; }
 }
 </style>

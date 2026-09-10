@@ -142,7 +142,7 @@ function requestKey(url: string, method: string): string {
 
 export function createApiClient(fetchImplementation: FetchImplementation = defaultFetch): ApiClient {
   const responseCache = new Map<string, CacheEntry>()
-  const inflight = new Map<string, Promise<ApiResponseObject>>()
+  const inflight = new Map<string, { response: Promise<ApiResponseObject>; signal: AbortSignal }>()
 
   /** 搭车等待：共享响应与调用方自己的 abort/timeout 竞速，返回浅拷贝防跨消费者污染。 */
   async function awaitShared<T extends object>(
@@ -206,8 +206,8 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         if (cached) responseCache.delete(url)
 
         const pending = inflight.get(requestKey(url, method))
-        if (pending) {
-          return awaitShared<T>(pending, callerSignal, options.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+        if (pending && !pending.signal.aborted) {
+          return awaitShared<T>(pending.response, callerSignal, options.timeoutMs ?? DEFAULT_TIMEOUT_MS)
         }
       }
 
@@ -293,10 +293,11 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
           }
           return parsed
         } finally {
-          inflight.delete(key)
+          // A cancelled request may finish after its replacement has started.
+          if (inflight.get(key)?.signal === controller.signal) inflight.delete(key)
         }
       })()
-      if (isCacheableGet) inflight.set(key, shared)
+      if (isCacheableGet) inflight.set(key, { response: shared, signal: controller.signal })
 
       try {
         const parsed = await shared

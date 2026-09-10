@@ -22,6 +22,7 @@
 | 预览即将执行的命令 | `npm run wf -- data:build --plan` |
 | 检查入口是否失效 | `npm run wf -- audit:workflows --json` |
 | 检查工作流行为回归 | `npm run wf -- check:workflows` |
+| 检查维护脚本孤儿 | `npm run wf -- audit:orphans --check`（已纳入 check 与 CI，候选须人工复核） |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server`（分别在两个终端运行） |
 | 按当前改动验证 | `npm run wf -- gate:quick` |
 | 提交前全量验证 | `npm run wf -- gate:full` |
@@ -55,6 +56,8 @@
 
 `reference:full` 是 render → audit → repair，不包含自动完成所有新增形态登记与设计图的承诺。参考图片不入 Git；旧问题配方见 [历史参考审计](archive/audits/character-reference-audit-pending.md)。
 
+旧参考库 URL 迁移使用 `reference:repair-urls --dry-run` 预览；核对后移除 `--dry-run` 才会修改文件并生成备份。日常断链检查仍用 `check:ref-urls`。
+
 ## 样张
 
 | 操作 | 入口 |
@@ -65,6 +68,12 @@
 | 活跃 manifest 缺口补齐 | showcase:fill-gaps |
 | 生成、审核、发布 | showcase:generate / showcase:audit / showcase:audit:scene / showcase:publish |
 | 复合链路 | showcase:full（generate → audit → 发布预览） |
+| 人工逐图联系表 | showcase:review-sheets --audit <候选审核目录>（Python + Pillow） |
+| 汇总人工决定 | showcase:manual-review --manifest <生成清单> --decisions <决定文件> |
+| 旧独立场景发布 | showcase:scene-publish --from <生成清单> --source <旧版本> --target <新版本>（默认预览） |
+| 仅刷新分级清单 | showcase:rating-refresh --source <旧版本> --target <新版本>（默认预览） |
+
+人工决定按 `{"scene:sc001":{"verdict":"pass","recordId":"实际看过的生成记录ID","notes":"审核意见"}}` 填写，`verdict` 可为 pass/fail。缺少决定的图片保持 pending；旧图的决定不会自动转给重试生成的新图。`--latest-attempt` 会拒绝非最新成功记录的决定。旧独立场景发布器仍要求完整人工审核清单，`--apply` 才会写新版本；历史固定模型实验已归入被忽略的 `scripts/archive/`，不作为日常维护入口。
 
 候选生成必须传 `--output`，热门审核传 `--manifest` 和 `--out`，场景审核传 `--manifest`，发布传 `--from`、`--source` 和 `--target`，避免底层历史脚本选中旧批次。source 填实际现有版本，target 填新版本。
 
@@ -99,6 +108,8 @@
 预算包括路由 JS 140 KiB、CSS、入口与依赖闭包等，完整阈值见 check-bundle-budget.js。测试规模与路由数量以当次输出为准；历史 PASS 不能代替本次检查。
 
 ## 服务与桌面部署
+
+环境与本机凭据说明见 [启动与排错](../STARTUP.md)。H3 可选模型下载入口为 `models:download-h3 --models-root <ComfyUI模型目录>`；该操作下载大文件，不属于质量检查或普通安装的自动步骤。
 
 现代安装器：`installer:modern --preview --capture --theme=dark --state=ready --dpi=144` 编译安全预览（不安装），支持 dark/light 与 ready/installing/done/error。正式发行脚本将现代展示层与 NSIS 核心一起打包并对最终 exe 签名。
 

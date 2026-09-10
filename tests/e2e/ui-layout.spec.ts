@@ -1,4 +1,5 @@
 import { test, expect, type Locator, type Page } from '@playwright/test'
+import { textContrast } from './helpers/contrast'
 
 const base = process.env.AICS_UI_AUDIT_URL || 'http://127.0.0.1:3000'
 const routes = ['/', '/scene-explorer', '/popular-scenes', '/prompt-builder', '/video-studio', '/chat', '/showcase', '/gallery', '/character', '/style', '/lora', '/scene-manager', '/color-script', '/scenario', '/companion', '/companion-chat', '/control']
@@ -12,33 +13,31 @@ async function open(page: Page, route: string, theme: string, width: number, hei
 }
 
 async function contrast(locator: Locator, pseudo: string | null = null) {
-  return locator.evaluate((element, pseudo) => {
-    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1
-    const context = canvas.getContext('2d', { willReadFrequently: true })!
-    const rgb = (color: string) => {
-      context.clearRect(0, 0, 1, 1); context.fillStyle = color; context.fillRect(0, 0, 1, 1)
-      const values = [...context.getImageData(0, 0, 1, 1).data]; values[3] /= 255; return values
+  await locator.evaluate(async element => {
+    const animations: Animation[] = []
+    for (let node: Element | null = element; node; node = node.parentElement) {
+      animations.push(...node.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity))
     }
-    const blend = (a: number[], b: number[]) => a.slice(0, 3).map((v, i) => v * a[3] + b[i] * (1 - a[3]))
-    const luminance = (a: number[]) => a.slice(0, 3).map(v => {
-      v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4
-    }).reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0)
-    const layers: number[][] = []
-    let node: Element | null = element
-    while (node) {
-      const style = getComputedStyle(node)
-      if (style.backgroundImage !== 'none') throw new Error('Image backgrounds need visual review')
-      const value = rgb(style.backgroundColor); layers.push(value)
-      if (value[3] >= .999) break
-      node = node.parentElement
-    }
-    let background = [255, 255, 255]
-    for (let i = layers.length - 1; i >= 0; i--) background = blend(layers[i], background)
-    const color = rgb(getComputedStyle(element, pseudo).color)
-    const a = luminance(blend(color, background)), b = luminance(background)
-    return (Math.max(a, b) + .05) / (Math.min(a, b) + .05)
-  }, pseudo)
+    await Promise.all(animations.map(animation => animation.finished.catch(() => {})))
+  })
+  return locator.evaluate(textContrast, pseudo)
 }
+
+test('contrast audit includes text alpha and nested group opacity', async ({ page }) => {
+  await page.setContent(`<style>html, body { margin: 0; background: white }</style>
+    <span id="opaque" style="color: black">Text</span>
+    <span id="faded" style="color: black; opacity: .5">Text</span>
+    <span id="alpha" style="color: rgba(0, 0, 0, .5)">Text</span>
+    <div style="background: black"><div style="background: white; opacity: .5">
+      <span id="group" style="color: black">Text</span>
+      <span id="nested" style="color: black; opacity: .5">Text</span>
+    </div></div>`)
+  expect(await contrast(page.locator('#opaque'))).toBeCloseTo(21, 2)
+  expect(await contrast(page.locator('#faded'))).toBeCloseTo(3.977, 2)
+  expect(await contrast(page.locator('#alpha'))).toBeCloseTo(4.004, 2)
+  expect(await contrast(page.locator('#group'))).toBeCloseTo(5.281, 2)
+  expect(await contrast(page.locator('#nested'))).toBeCloseTo(2.617, 2)
+})
 
 for (const theme of ['dark', 'light']) {
   for (const width of [1440, 768, 390]) {
@@ -50,6 +49,13 @@ for (const theme of ['dark', 'light']) {
         await page.waitForTimeout(600)
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
         expect(errors).toEqual([])
+        if (route === '/popular-scenes') {
+          await expect(page.locator('.pop-cat').first()).toBeVisible()
+          // Check real count labels, including their own and ancestor opacity.
+          for (const count of await page.locator('.pop-cat:not(.active) em').all()) {
+            expect(await contrast(count)).toBeGreaterThanOrEqual(4.5)
+          }
+        }
       })
     }
   }

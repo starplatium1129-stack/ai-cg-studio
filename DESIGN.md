@@ -129,7 +129,7 @@ components:
 
 ## Overview
 
-绫季绘境 is a personal Galgame creation desk, not a generic dashboard and not
+绘遇 · HUIYU is a personal Galgame creation desk, not a generic dashboard and not
 a public AI platform. Its visual character is quiet, intimate, precise, and
 slightly romantic. It should feel like opening a private visual-novel art book
 inside a capable creative tool.
@@ -174,6 +174,7 @@ accents. Both themes preserve the same layout, action hierarchy, and character i
 > 浅色已恢复，入口为 AppThemeToggle/useTheme，覆盖在 light-theme.css。
 > 本文色板为深色基线；新增颜色需适配两个主题，角色强调色与图片上文字分别验收。
 > check-contrast.js 核算双主题全局令牌与角色强调色；浏览器计算样式和视觉审查仍须覆盖动态组件与图片叠字。
+> ui-layout.spec.ts 的实际文字检查逐层合成文字 alpha、背景与祖先 opacity；图片和渐变背景继续用实际像素与深浅主题截图验收，不能把令牌通过视作页面整体 AA 通过。
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.
@@ -214,6 +215,14 @@ harder to understand.
 Use the 4/8/12/16/24/32/48/64 spacing scale. Normal pages use a `1200px` content
 maximum. Dense creative workspaces may use the available viewport width while
 preserving at least `16px` outer breathing room.
+
+Shared page chrome uses `1000 / 768 / 480px` as its default responsive scale.
+Content-driven layouts can use their own thresholds: the director workspace
+uses `1200 / 900px` for its inspector and material rails; the character directory
+uses `900px` for its rail and `540px` for its dialog cards. These are local
+layout decisions, not additional global device categories. Prefer the shared
+scale unless actual content needs another threshold, document the reason near
+the owning rule, and verify both sides of each changed threshold in both themes.
 
 The director workspace follows an image-first hierarchy:
 
@@ -307,8 +316,9 @@ for character presence.
 
 ### Gradient text
 
-- `background-clip: text` is allowed only on `.hero-title`, `.page-header`,
-  and `.title-gradient` (enforced by test-style-debt.js).
+- `background-clip: text` is allowed only on `.hero-title`, headings within
+  `.page-header` (including `.page-header h1`), and `.title-gradient`
+  (enforced by test-style-debt.js).
 - Everywhere else, color stays flat and token-based.
 
 ### Q-version assets
@@ -439,7 +449,7 @@ belong inside installation details, not in the default creative composition.
 
 首页顺序为封面与继续创作、四个常用入口、精选场景、角色横条、档案、最近作品。首页样式由 src/assets/css/home.css 独立维护；取消标题滚动淡出，避免阅读与点击目标漂移。导航采用悬浮圆角容器，手机折叠菜单允许内部滚动，归档选中后自动收起。
 
-布局在 1000 / 768 / 480px 分级适配，卡片只使用 transform 进行位移动效，遵循 reduced-motion。图标复用 ArchiveIcon；文案不展示 LoRA 契约等内部实现细节。
+通用页面框架在 1000 / 768 / 480px 分级适配；绘制区、目录和弹窗按上文 Layout 的内容断点补充。卡片只使用 transform 进行位移动效，遵循 reduced-motion。图标复用 ArchiveIcon；文案不展示 LoRA 契约等内部实现细节。
 
 ## 2026-09-07 · 绘制区素材抽屉
 

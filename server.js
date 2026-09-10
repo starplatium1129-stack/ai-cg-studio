@@ -67,7 +67,7 @@ function createGateway(options) {
 
   app.disable('x-powered-by');
   app.use(security.responseHeaders);
-  // Host 白名单必须在 tokenAuth 之前：tokenAuth 对 loopback socket 无条件放行，
+  // Host 白名单必须在 tokenAuth 之前：本机请求可免 token，
   // 不校验 Host 时任意网页都能把域名 rebind 到 127.0.0.1 并以「本机」身份调控制接口。
   // precompressed 也必须在两者之后：否则远程无 token / rebinding 请求能直接拿到
   // _app、assets、docs 等预压产物，绕过 tokenAuth 与 hostGuard。
@@ -263,14 +263,28 @@ function createGateway(options) {
       return SD_PROXY_ALLOWLIST.indexOf(pathname) !== -1;
     },
     proxyTimeout:20 * 60 * 1000,
-    // timeout 只约束「到上游建立连接/收到响应头」的阶段；txt2img 那种长任务由
-    // proxyTimeout 放行。没有它，SD 宕机时连接阶段会挂满 20 分钟才报错
-    // （2026-08-21 性能审计 #7）。
-    timeout:15000,
     auth:config.SD_API_AUTH || undefined,
     on:{
       // 每次转发都打日志会把长时运行的日志刷成噪音；需要排查时用 DEBUG=1。
-      proxyReq:function () {
+      proxyReq:function (proxyReq) {
+        // httpxy 的 timeout 会限制整个客户端 socket，并在复用连接上累积监听器。
+        // 15 秒只等真正的上游 TCP 建连；连接成功后保留上面的 20 分钟生成时限。
+        var socket = proxyReq.socket;
+        if (socket && socket.connecting) {
+          var connectionTimer = setTimeout(function () {
+            var error = new Error('SD WebUI 连接超时');
+            error.code = 'ETIMEDOUT';
+            proxyReq.destroy(error);
+          }, 15000);
+          connectionTimer.unref();
+          var clearConnectionTimer = function () {
+            clearTimeout(connectionTimer);
+            socket.removeListener('connect', clearConnectionTimer);
+            proxyReq.removeListener('close', clearConnectionTimer);
+          };
+          socket.once('connect', clearConnectionTimer);
+          proxyReq.once('close', clearConnectionTimer);
+        }
         if (process.env.DEBUG === '1') console.log('  → SD API 请求已转发');
       },
       error:function (error, req, res) {
@@ -361,7 +375,8 @@ function createGateway(options) {
       if (SD_PROXY_ALLOWLIST.indexOf(pathname) === -1) { socket.destroy(); return; }
       // hostGuard 的 DNS rebinding 防御必须同样覆盖 WebSocket 升级路径。
       // 这里直接复用纯函数 hostAllowed（hostGuard 是 Express 中间件，依赖 res）。
-      if (!security.hostAllowed(req.headers.host, config.PORT, tunnelManager ? tunnelManager.getUrl() : '')) { socket.destroy(); return; }
+      var tunnelHost = security.tunnelHostFromUrl(tunnelManager ? tunnelManager.getUrl() : '');
+      if (!security.hostAllowed(req.headers.host, config.PORT, tunnelHost)) { socket.destroy(); return; }
 
       var authorized = security.isDirectLocalRequest(req);
       if (!authorized) {

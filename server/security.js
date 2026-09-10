@@ -13,8 +13,26 @@ function tokenMatches(expectedToken, value) {
 function isDirectLocalRequest(req) {
   var address = req.socket && req.socket.remoteAddress || '';
   var loopback = address.startsWith('127.') || address === '::1' || /^::ffff:127\.\d+\.\d+\.\d+$/.test(address);
-  var forwarded = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.headers.forwarded;
-  return loopback && !forwarded;
+  var forwarded = ['cf-connecting-ip', 'x-forwarded-for', 'forwarded', 'x-forwarded-host', 'x-forwarded-proto', 'x-real-ip']
+    .some(function (name) { return Object.prototype.hasOwnProperty.call(req.headers, name); });
+  return loopback && !forwarded && hasLocalBrowserOrigin(req);
+}
+
+// 外站表单也能直连 localhost；Host 白名单不能替代浏览器来源检查。
+// 允许本机不同端口，保留 Vite 开发代理与桌面入口；原生命令行无 Origin 仍可用。
+function hasLocalBrowserOrigin(req) {
+  if (Object.prototype.hasOwnProperty.call(req.headers, 'origin')) {
+    try {
+      var origin = new URL(req.headers.origin);
+      if (origin.username || origin.password || (origin.pathname && origin.pathname !== '/') || origin.search || origin.hash) return false;
+      if (origin.protocol === 'tauri:') return origin.hostname === 'localhost';
+      return (origin.protocol === 'http:' || origin.protocol === 'https:') &&
+        (LOOPBACK_HOSTNAMES.indexOf(origin.hostname) !== -1 || origin.hostname === 'tauri.localhost');
+    } catch (error) { return false; }
+  }
+  if (req.headers['sec-fetch-site'] !== 'cross-site') return true;
+  // 从其他页面点击本机链接仍可打开界面，跨站子资源与写操作不可借用本机权限。
+  return req.headers['sec-fetch-mode'] === 'navigate' && /^(GET|HEAD)$/.test(req.method || 'GET');
 }
 
 // 成人内容服务端锚点（2026-08-28）：本机直连默认授权（AGENTS.md 红线 #4，
@@ -50,7 +68,7 @@ function safeLocalUrl(value) {
 }
 
 // Host 白名单：阻断 DNS rebinding。
-// isDirectLocalRequest 对任何 loopback socket 无条件放行，所以若不校验 Host，
+// 本机请求可以免 token，且同源 GET 未必带 Origin，所以若不校验 Host，
 // 用户访问的任意网页都能把域名 rebind 到 127.0.0.1，进而以「本机」身份调用控制接口。
 // 只校验 hostname，不校验端口：rebinding 攻击靠的是把域名解析到 127.0.0.1，
 // 端口本来就是攻击者已知的；而比对端口会误杀挂在其他 listener 上的合法访问（含测试）。
@@ -70,13 +88,15 @@ function hostAllowed(hostHeader, port, tunnelHost) {
 function hostGuard(config, getTunnelUrl) {
   return function (req, res, next) {
     var tunnelHost = '';
-    try {
-      var tunnelUrl = getTunnelUrl && getTunnelUrl();
-      if (tunnelUrl) tunnelHost = new URL(tunnelUrl).host;
-    } catch (error) { tunnelHost = ''; }
+    try { tunnelHost = tunnelHostFromUrl(getTunnelUrl && getTunnelUrl()); } catch (error) {}
     if (hostAllowed(req.headers.host, config.PORT, tunnelHost)) return next();
     return envelope.fail(res, 421, 'Misdirected Request — Host 不在允许列表内');
   };
+}
+
+// HTTP 与 WebSocket 共用 URL → Host 转换，避免升级路径把 https:// 当域名比较。
+function tunnelHostFromUrl(value) {
+  try { return value ? new URL(value).host : ''; } catch (error) { return ''; }
 }
 
 /**
@@ -176,6 +196,7 @@ function tokenAuth(token) {
     if (tokenMatches(token, supplied)) {
       if (req.query.token) {
         var secure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+        res.setHeader('Cache-Control', 'no-store');
         res.setHeader('Set-Cookie',
           'aics_token=' + token + '; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400' + (secure ? '; Secure' : ''));
         var cleanUrl = new URL(req.originalUrl, 'http://localhost');
@@ -209,6 +230,7 @@ module.exports = {
   safeLocalUrl:safeLocalUrl,
   hostAllowed:hostAllowed,
   hostGuard:hostGuard,
+  tunnelHostFromUrl:tunnelHostFromUrl,
   createTokenBucket:createTokenBucket,
   rateLimit:rateLimit,
   normalizeRequestPath:normalizeRequestPath,

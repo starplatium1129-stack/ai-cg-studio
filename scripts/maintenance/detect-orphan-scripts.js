@@ -10,6 +10,7 @@
  * 用法：
  *   node scripts/maintenance/detect-orphan-scripts.js            # 列孤儿候选
  *   node scripts/maintenance/detect-orphan-scripts.js --json     # 机器可读
+ *   node scripts/maintenance/detect-orphan-scripts.js --check    # 有候选则失败
  *
  * 注意：本脚本只读，不移动/不删除任何文件。归档须人工复核后单独执行
  * （git mv 到 scripts/archive/，该目录已 .gitignore）。
@@ -33,7 +34,7 @@ const SKIP_DIRS = new Set([
 ]);
 
 // 只扫这些根级子树 + 根级配置文件（覆盖所有可能引用维护脚本的地方）
-const SCAN_ROOTS = ['scripts', 'src', 'routes', 'server', 'docs', 'tests', '.github', 'poc', 'tools', 'services', 'css', 'plans'];
+const SCAN_ROOTS = ['scripts', 'src', 'routes', 'server', 'docs', 'tests', '.github', 'desktop-tauri', 'poc', 'tools', 'services', 'css', 'plans'];
 const SCAN_ROOT_FILES = new Set(['package.json', 'package-lock.json', 'server.js', 'eslint.config.js', 'start.ps1', 'deploy-desktop.bat', 'control.bat', 'README.md', 'README_zh.md', 'AGENTS.md', 'DESIGN.md', 'STARTUP.md']);
 
 function walk(dir, out) {
@@ -42,8 +43,6 @@ function walk(dir, out) {
   for (const ent of entries) {
     if (ent.isDirectory()) {
       if (SKIP_DIRS.has(ent.name)) continue;
-      // desktop-tauri 整树跳过（7569 文件，Rust 构建产物，不会引用维护脚本）
-      if (dir === ROOT && ent.name === 'desktop-tauri') continue;
       walk(path.join(dir, ent.name), out);
     } else if (ent.isFile()) {
       out.push(path.join(dir, ent.name));
@@ -130,6 +129,7 @@ function main() {
 
   if (asJson) {
     console.log(JSON.stringify({ orphanCount: orphans.length, orphans, referencedCount: referenced.length, total: scripts.length }, null, 2));
+    if (process.argv.includes('--check') && orphans.length) process.exitCode = 1;
     return;
   }
 
@@ -141,6 +141,7 @@ function main() {
   console.log(`\n被引用：${referenced.length} 个（抽样前 3 出处）`);
   // 仅打印孤儿详情 + 已引用计数；已引用清单太长默认不展开
   console.log(`\n孤儿归档前请人工复核：确认无手动用途后 git mv <file> scripts/archive/（已 .gitignore）`);
+  if (process.argv.includes('--check') && orphans.length) process.exitCode = 1;
 }
 
 main();

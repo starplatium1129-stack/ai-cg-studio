@@ -20,6 +20,12 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 
 const WORKFLOWS = {
+  'showcase:review-sheets': { desc: '从候选审核目录生成逐图查看用联系表', cmd: ['python', 'scripts/maintenance/build-scene-manual-audit-sheets.py'], required: ['--audit'], docs: 'docs/workflow.md' },
+  'showcase:manual-review': { desc: '汇总明确人工决定；缺少决定的图片保持 pending', cmd: ['node', 'scripts/maintenance/build-scene-manual-review.js'], required: ['--manifest', '--decisions'], docs: 'docs/workflow.md' },
+  'showcase:scene-publish': { desc: '旧独立场景发布器：校验逐图审核后预览；--apply 写新版本', cmd: ['node', 'scripts/maintenance/publish-scene-showcase-anima11.js'], required: ['--from', '--source', '--target'], docs: 'docs/workflow.md' },
+  'showcase:rating-refresh': { desc: '仅刷新发布清单分级，默认预览；--apply 写新版本', cmd: ['node', 'scripts/maintenance/publish-rating-refresh.js'], required: ['--source', '--target'], docs: 'docs/workflow.md' },
+  'reference:repair-urls': { desc: '参考 URL 迁移修复并备份；先传 --dry-run 核对清单', cmd: ['node', 'scripts/maintenance/repair-character-reference-urls.js'], docs: 'docs/workflow.md' },
+  'models:download-h3': { desc: '下载 H3 可选模型（大文件；--models-root 指定目录）', cmd: ['node', 'scripts/maintenance/download-minimax-h3.js'], required: ['--models-root'], docs: 'docs/workflow.md' },
   'desktop:verify-gateway': { desc: '按安装包资源映射隔离验证网关和桌宠页面', cmd: ['node', 'scripts/maintenance/verify-desktop-gateway.js'], docs: 'docs/desktop-deployment.md' },
   'desktop:doctor': { desc: '检查 Windows 桌面打包工具链与 Cubism SDK', cmd: ['node', 'scripts/maintenance/desktop-build-environment.js'], docs: 'docs/desktop-deployment.md' },
   'desktop:package-local': { desc: '跳过压缩生成本机测试安装包', cmd: ['npm', 'run', 'package:tauri', '--', '--config', 'tauri.local.json'], docs: 'docs/desktop-deployment.md' },
@@ -335,7 +341,7 @@ const WORKFLOWS = {
     desc: '探测 scripts/maintenance/ 下零引用的孤儿脚本（只读，列清单不删）',
     cmd: ['node', 'scripts/maintenance/detect-orphan-scripts.js'],
     docs: 'scripts/maintenance/detect-orphan-scripts.js:1',
-    opts: '[--json] 机器可读输出',
+    opts: '[--json] 机器可读输出；[--check] 孤儿候选非零时失败',
   },
   'character:onboard': {
     desc: '一站式新角色接入（档案/标准/粒子/参考图/样张/DATA_VERSION）',

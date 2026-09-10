@@ -4,12 +4,11 @@
 /**
  * Build manual-review.json from a reviewer decisions file.
  *
- * decisions.json shape (only keys that differ from 'pass' need to appear):
- *   { "scene:sc001": { verdict: 'fail', notes: '...' }, ... }
+ * decisions.json shape (every reviewed image needs an explicit decision):
+ *   { "scene:sc001": { verdict: 'pass', recordId: '...', notes: '...' }, ... }
  *
- * Any succeeded key without a decision defaults to pass with the latest
- * succeeded recordId. Missing succeeded keys are reported; the publish gate
- * still enforces full coverage, this tool only builds the file.
+ * Missing decisions stay pending and are omitted from passing records. A
+ * decision is bound to its reviewed recordId, never transferred to a retry.
  *
  * Usage:
  *   node scripts/maintenance/build-scene-manual-review.js \
@@ -20,68 +19,58 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..', '..');
-const DEFAULT_DIR = path.join(
-  path.resolve(ROOT, '..', 'AI'),
-  'Reviews',
-  'SceneShowcaseRefresh',
-  '2026-08-14_v16-anima11-rella',
-);
-
 function argument(name, fallback = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
 
+function buildReview(records, decisions, { latestOnly = false, reviewedAt = new Date().toISOString() } = {}) {
+  if (!Array.isArray(records)) throw new Error('manifest must be an array');
+  if (!decisions || typeof decisions !== 'object' || Array.isArray(decisions)) throw new Error('decisions must be an object');
+  const succeeded = records.filter(record => record && record.status === 'succeeded');
+  const byId = new Map();
+  const latest = new Map();
+  for (const record of succeeded) {
+    if (!record.key || !record.recordId || byId.has(record.recordId)) throw new Error('missing or duplicate successful recordId');
+    byId.set(record.recordId, record);
+    const previous = latest.get(record.key);
+    if (!previous || Number(record.attempt) > Number(previous.attempt)) latest.set(record.key, record);
+  }
+  const recordsOut = Object.create(null);
+  for (const [key, decision] of Object.entries(decisions)) {
+    if (!decision || !['pass', 'fail'].includes(decision.verdict)) throw new Error(`invalid decision for ${key}`);
+    const record = byId.get(decision.recordId);
+    if (!record || record.key !== key) throw new Error(`decision for ${key} must identify its succeeded recordId`);
+    if (latestOnly && latest.get(key).recordId !== record.recordId) throw new Error(`decision for ${key} is not for the latest successful attempt`);
+    recordsOut[key] = { verdict: decision.verdict, recordId: record.recordId, notes: decision.notes || '', reviewedAt };
+  }
+  const pending = [...latest.keys()].filter(key => !Object.hasOwn(recordsOut, key));
+  return { version: 1, reviewedAt, records: recordsOut, pending };
+}
+
 function main() {
-  const manifestPath = path.resolve(argument('--manifest', path.join(DEFAULT_DIR, 'generation-manifest.json')));
-  const decisionsPath = path.resolve(argument('--decisions', path.join(DEFAULT_DIR, 'decisions.json')));
+  const manifestArg = argument('--manifest');
+  const decisionsArg = argument('--decisions');
+  if (!manifestArg || !decisionsArg) throw new Error('--manifest and --decisions are required');
+  const manifestPath = path.resolve(manifestArg);
+  const decisionsPath = path.resolve(decisionsArg);
   const outPath = path.resolve(argument('--out', path.join(path.dirname(manifestPath), 'manual-review.json')));
   const latestOnly = process.argv.includes('--latest-attempt');
 
   const records = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  const succeeded = records.filter(record => record.status === 'succeeded');
-  let selected = succeeded;
-  if (latestOnly) {
-    const best = new Map();
-    for (const record of succeeded) {
-      const previous = best.get(record.key);
-      if (!previous || record.attempt > previous.attempt) best.set(record.key, record);
-    }
-    selected = [...best.values()];
-  }
-  const byKey = new Map(selected.map(record => [record.key, record]));
-
-  let decisions = {};
-  if (fs.existsSync(decisionsPath)) {
-    decisions = JSON.parse(fs.readFileSync(decisionsPath, 'utf8'));
-  }
-  const reviewedAt = new Date().toISOString();
-  const recordsOut = {};
-  for (const [key, record] of byKey) {
-    const decision = decisions[key] || { verdict: 'pass' };
-    if (decision.verdict !== 'pass' && decision.verdict !== 'fail') {
-      throw new Error(`invalid decision for ${key}: ${JSON.stringify(decision)}`);
-    }
-    recordsOut[key] = {
-      verdict: decision.verdict,
-      recordId: record.recordId,
-      notes: decision.notes || '',
-      reviewedAt,
-    };
-  }
-  const output = { version: 1, reviewedAt, records: recordsOut };
+  const decisions = JSON.parse(fs.readFileSync(decisionsPath, 'utf8'));
+  const output = buildReview(records, decisions, { latestOnly });
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   const temporary = `${outPath}.${process.pid}.tmp`;
   fs.writeFileSync(temporary, `${JSON.stringify(output, null, 2)}\n`, 'utf8');
   fs.renameSync(temporary, outPath);
   const counts = { pass: 0, fail: 0 };
-  for (const entry of Object.values(recordsOut)) counts[entry.verdict] += 1;
-  console.log(JSON.stringify({ out: outPath, reviewed: Object.keys(recordsOut).length, counts }, null, 2));
+  for (const entry of Object.values(output.records)) counts[entry.verdict] += 1;
+  console.log(JSON.stringify({ out: outPath, reviewed: Object.keys(output.records).length, pending: output.pending.length, counts }, null, 2));
 }
 
 if (require.main === module) {
   main();
 }
 
-module.exports = { main };
+module.exports = { main, buildReview };

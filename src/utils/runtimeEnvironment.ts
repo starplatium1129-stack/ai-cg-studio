@@ -7,17 +7,15 @@
  * 现统一到这里。
  */
 
-const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]'] as const
+const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]', 'tauri.localhost'] as const
 
-export function isLocalStudioHost(hostname: string = window.location.hostname): boolean {
-  if ((LOCAL_HOSTNAMES as readonly string[]).includes(hostname)) return true
-  // Tauri 桌面端 WebView 的 hostname 为 tauri.localhost / __tauri__ 协议，仍属本机
-  if (hostname.includes('tauri')) return true
-  try {
-    const w = window as unknown as { companionDesktop?: { isDesktop?: boolean }; __TAURI__?: unknown }
-    if (w.companionDesktop?.isDesktop) return true
-    if (w.__TAURI__) return true
-    if (window.location.protocol === 'tauri:' || window.location.protocol === 'https:' && hostname === 'tauri.localhost') return true
-  } catch {}
-  return false
+export function isLocalStudioHost(hostname?: string): boolean {
+  if (hostname === undefined) {
+    if (typeof window === 'undefined') return false
+    if (!['http:', 'https:', 'tauri:'].includes(window.location.protocol)) return false
+    hostname = window.location.hostname
+  }
+  // 桌面桥对象和包含 tauri 的公网域名都不能授予本机权限。
+  // Windows WebView 使用 http(s)://tauri.localhost，其他桌面端使用 tauri://localhost。
+  return (LOCAL_HOSTNAMES as readonly string[]).includes(hostname.toLowerCase())
 }

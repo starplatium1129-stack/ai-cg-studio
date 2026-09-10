@@ -6,7 +6,6 @@ import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
 import { useSDGenerate } from '@/composables/generation/useSDGenerate';
-import { usePromptAssembly } from '@/composables/prompt/usePromptAssembly';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
 
@@ -97,8 +96,8 @@ export function usePromptWorkspace() {
         sdSize,
     });
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
-    const { currentTraits, modelProfile, effectiveScene, loraSpecs, negativePrompt } = usePromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
     const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
+    const { currentTraits, modelProfile, effectiveScene, loraSpecs, negativePrompt } = unified.studio;
     const livePrompt = unified.positivePrompt;
     const effectiveNegative = unified.negativePrompt;
     const previewPromptView = unified.previewPrompt;

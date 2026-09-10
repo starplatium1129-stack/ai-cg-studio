@@ -19,6 +19,8 @@
 
 ## 按需查阅
 
+- [启动与排错](../STARTUP.md)：干净工作区启动、AI 服务端点、模型目录与本机凭据恢复。
+- [项目评价复核与修复](archive/audits/project-evaluation-followup-2026-09-10.md)：19 项评价裁决、补充缺陷、当前修复与本次验证限制。
 - [专题指南](guides/README.md)：角色与粒子、提示词、美术、视频、桌面、工程设计。
 - [研究与候选方案](research/README.md)：调研依据与待评估提案。
 - [历史记录](archive/README.md)：审计、批次、实验、故障与过期方案。

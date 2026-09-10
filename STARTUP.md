@@ -1,6 +1,35 @@
-# 绫季绘境 启动与排错
+# 绘遇 HUIYU 启动与排错
 
-这份说明分为两种使用方式：连接 SD WebUI 的完整模式，以及只浏览页面的静态模式。角色语音是可选能力，不安装也不影响场景浏览、Prompt 或出图。
+本页是换机搭建和故障恢复入口。先启动网页与网关，再按需要连接生图、语音和聊天服务；缺少某个可选服务不影响浏览其他页面。以下端点与目录按 2026-09-10 源码核对，不代表这台机器上的模型已经安装或验收。
+
+## 从干净工作区启动
+
+1. 安装符合 `package.json` 的 Node.js（最低 22.18，CI 使用的具体版本见 `.github/workflows/quality.yml`），在项目根目录执行 `npm ci`。
+2. 执行 `npm run build` 生成网页，再执行 `npm start` 编译服务端 TypeScript 并启动网关。默认访问 `http://127.0.0.1:3000`。
+3. 开发网页时另外执行 `npm run wf -- dev:web`，访问 `http://localhost:5173`；保留网关进程，它提供 `/api`、`/data` 与素材。页面能打开但素材一直加载时，先检查网关是否在线。
+4. 数据聚合产物由现有构建流程补齐，不把生成的 `services/*.js` 或聚合 JSON 手工复制回 Git。源码分片修改后的构建入口见 [统一工作流](docs/workflow.md)。
+5. 在这台机器上执行 `npm run wf -- gate:full` 验证代码、数据契约和构建。缺参考素材的办公机才使用 `AICS_REFERENCE_AUDIT_MODE=structure`；它只验证索引结构，不能算作图片交付。
+
+## 本机 AI 服务与模型
+
+| 能力 | 默认地址 / 环境变量 | 资源与验证入口 |
+| --- | --- | --- |
+| SD / WAI | `http://127.0.0.1:7860` / `SD_HOST` | WebUI 需 `--api`；控制面板检查连接 |
+| Anima / Krea 2 / 视频 | `http://127.0.0.1:8188` / `COMFY_HOST` | 启动已有 ComfyUI 可用 `npm run wf -- comfy:start`；该入口不负责安装 ComfyUI 或下载模型 |
+| 角色语音 | `http://127.0.0.1:9880` / `TTS_HOST` | GPT-SoVITS 权重与参考音频；控制面板配置角色声线 |
+| 本地聊天 | `http://127.0.0.1:11434` / `OLLAMA_HOST` | Ollama 模型由 `OLLAMA_MODEL` 或页面选择 |
+
+模型文件名以 `server/anima-model-catalog.js`、`server/video-model-catalog.js` 为准，节点接线以 `routes/anima/workflows.js` 为准。Anima 当前默认 MiaoMiao v1.2 使用 `diffusion_models/miaomiaoHarem_anima12.safetensors`、`text_encoders/qwen_3_06b_base.safetensors` 与 `vae/qwen_image_vae.safetensors`；宁宁、夏目另从 `loras/` 加载目录中对应的 v21 LoRA。Krea 2 的 checkpoint 与编码器不同，不能拿 Anima 文件改名顶替。网关 `/api/anima/status` 返回按当前模型目录核查的可用状态；文件存在仍不代表节点或实际出图通过。
+
+AI 外部工作区默认是项目同级 `AI/`，迁移时设置 `AI_WORKSPACE_ROOT`。参考库可用 `AICS_CHARACTER_REF_ROOT` 明确指定，样张可用 `SCENE_SHOWCASE_DIR` 指定；这些大型资产不在 Git 中，需从自己的资产副本恢复。可选 H3 模型有 `npm run wf -- models:download-h3 --models-root <ComfyUI模型目录>` 入口，使用前检查磁盘与下载量，不随普通安装自动运行。
+
+## 运行配置与凭据恢复
+
+- 服务地址和语音配置保存在 `runtime/config.json`；环境变量优先于保存配置，具体映射见 `server/config.js`。上游仅支持当前电脑的 HTTP loopback 地址。
+- 分享令牌由网关自动生成并保存于 `runtime/state/gateway_token`，也可由 `TOKEN` 环境变量覆盖。记录所在位置即可，不把令牌正文写入文档、提交或截图。
+- 网关、控制面板与隧道日志位于 `runtime/logs/`。迁移时保留配置和必要凭据，PID 文件属于旧进程，不用作新机服务已启动的依据。
+- 本机使用不需要分享令牌。分享链接首次认证后会换为 HttpOnly cookie 并清除地址里的 token；停止分享后再进行配置迁移。排错时可用 `DISABLE_TUNNEL=1` 启动仅本机网关。
+- 桌面安装版可能使用独立的运行目录；从托盘的运行目录入口确认实际位置，部署与完整安装按 [桌面部署指南](docs/desktop-deployment.md) 操作。
 
 ## 完整模式：连接 SD WebUI
 
@@ -17,7 +46,7 @@
 --api --port 7860
 ```
 
-`--api` 不会关闭 WebUI 自带页面，也不会妨碍本地正常使用。它只是让 绫季绘境 可以通过接口读取配置和提交出图任务。
+`--api` 不会关闭 WebUI 自带页面，也不会妨碍本地正常使用。它让绘遇通过接口读取配置和提交出图任务。
 
 ### 启动步骤
 
@@ -47,7 +76,7 @@ Tauri 2 是桌面壳。开发执行 `npm run dev:tauri`，构建 NSIS 执行 `np
 - Companion 会自动拉起（或接管已运行的）本地网关，Atelier 工作台是完整网站窗口。
 - Tauri packaged 模式保留维护契约：场景维护相关接口返回 `501 DESKTOP_MAINTENANCE_UNAVAILABLE`；展示集与 home-hero 写入不受该限制。
 
-出图方面，SD/WAI 与 Anima/Krea 2（ComfyUI）双主路径并行：SD/WAI 走 WebUI，Anima/Krea 2 走固定 Comfy 工作流；WAI 兼容请求优先 Comfy，仅超出白名单时回退 WebUI。Krea 无负面词（Turbo CFG≈0 负面失效）；18 热门角色无专属 LoRA，角色一致性靠「角色名+系列+identityProse 外貌散文」锚定（见 `docs/research/prompts/krea2-prompt-research-2026-08-30.md`）；detailer 与 ControlNet 仍依赖 WebUI，仅当 Comfy 可用时的 latent `nearest-exact` hires（1.5x/20 steps/denoise 0.4）与 Remacri 2x 像素超分可走 Comfy 直出。
+出图方面，SD/WAI 与 Anima/Krea 2（ComfyUI）双主路径并行：SD/WAI 走 WebUI，Anima/Krea 2 走固定 Comfy 工作流；WAI 兼容请求优先 Comfy，仅超出白名单时回退 WebUI。Krea 无负面词（Turbo CFG≈0 负面失效）；热门角色默认无专属 LoRA，角色一致性靠「角色名+系列+identityProse 外貌散文」锚定（见 `docs/research/prompts/krea2-prompt-research-2026-08-30.md`）；detailer 与 ControlNet 仍依赖 WebUI，仅当 Comfy 可用时的 latent `nearest-exact` hires（1.5x/20 steps/denoise 0.4）与 Remacri 2x 像素超分可走 Comfy 直出。
 
 ## 可选：GPT-SoVITS 角色语音
 
@@ -134,22 +163,9 @@ $env:SD_API_AUTH = 'user:password'
 
 ## 只浏览页面
 
-普通静态服务器适合浏览场景、角色和文档，但不能直接调用 SD WebUI。
+不需要启动 GPU 或语音服务，完成网页构建后执行 `npm start` 即可浏览场景与角色。网关负责分片数据、素材目录与页面路由；可选 AI 服务离线只影响对应生成能力。
 
-### Python
-
-```powershell
-Set-Location E:\code\2\lora\绫季绘境
-python -m http.server 8090
-```
-
-然后打开 `http://127.0.0.1:8090/`。
-
-### 其他静态服务器
-
-VS Code Live Server、`npx serve` 或 `npx http-server` 也可以浏览页面。它们没有 `/sdapi` 与 `/api/tts` 网关，因此不能直接出图或生成 AI 声线，但系统声音试听仍可使用。
-
-不要直接双击 `index.html`。项目通过 `fetch()` 加载 JSON，`file://` 页面会被浏览器安全策略阻止。
+项目根目录的 `index.html` 是 Vite 源入口，不能直接交给 Python 静态服务器、Live Server 或 `file://`。即使单独托管 `dist/`，仍需配置数据与素材服务及 SPA 路由回退；日常浏览优先使用本机网关。
 
 ## 常见问题
 

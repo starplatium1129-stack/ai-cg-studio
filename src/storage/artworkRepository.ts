@@ -1,4 +1,4 @@
-import { kvGet, kvSet } from '../composables/useKVStore.ts'
+import { kvGet, kvSet, kvSetMany } from '../composables/useKVStore.ts'
 import {
   imgDeleteMany,
   imgGetRecord,
@@ -19,6 +19,7 @@ export const ARTWORK_TRASH_RETENTION_DAYS = 30
 export interface ArtworkKvAdapter {
   get(key: string): Promise<unknown | null>
   set(key: string, value: unknown): Promise<void>
+  setMany?(entries: Array<{ key: string; value: unknown }>): Promise<void>
   remove?(key: string): Promise<void>
 }
 
@@ -57,11 +58,11 @@ export class ArtworkDeletionError extends Error {
   readonly originalError: unknown
   readonly rollbackErrors: unknown[]
 
-  constructor(originalError: unknown, rollbackErrors: unknown[] = []) {
+  constructor(originalError: unknown, rollbackErrors: unknown[] = [], operation = '作品删除') {
     const detail = originalError instanceof Error ? originalError.message : String(originalError)
     super(rollbackErrors.length
-      ? `作品删除失败，补偿回滚也失败：${detail}`
-      : `作品删除失败，已补偿回滚：${detail}`)
+      ? `${operation}失败，补偿回滚也失败：${detail}`
+      : `${operation}失败，已补偿回滚：${detail}`)
     this.name = 'ArtworkDeletionError'
     this.originalError = originalError
     this.rollbackErrors = rollbackErrors
@@ -137,7 +138,8 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
   const kv: ArtworkKvAdapter = {
     get: dependencies.kv?.get ?? (key => kvGet(key)),
     set: dependencies.kv?.set ?? ((key, value) => kvSet(key, value)),
-    remove: dependencies.kv?.remove ?? (key => kvSet(key, null)),
+    setMany: dependencies.kv ? dependencies.kv.setMany : kvSetMany,
+    remove: dependencies.kv?.remove ?? (key => (dependencies.kv?.set ?? kvSet)(key, null)),
   }
   const images: ArtworkImageAdapter = {
     get: dependencies.images?.get ?? (id => imgGetRecord(id)),
@@ -147,6 +149,27 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
 
   // All UI callers share one instance; serialize deletes so each snapshot sees the prior commit.
   let mutationTail: Promise<void> = Promise.resolve()
+
+  /** History, project references and trash form one recoverable operation. */
+  async function commitRelatedRecords(entries: Array<{ key: string; value: unknown }>, operation: string): Promise<void> {
+    if (kv.setMany) return kv.setMany(entries)
+    // Custom adapters without transactions retain the same compensation contract.
+    const snapshots = await Promise.all(entries.map(entry => kv.get(entry.key)))
+    let attempted = 0
+    try {
+      for (const entry of entries) { attempted += 1; await kv.set(entry.key, entry.value) }
+    } catch (error) {
+      const rollbackErrors: unknown[] = []
+      for (let index = attempted - 1; index >= 0; index -= 1) {
+        const { key } = entries[index]
+        await callSafely(async () => {
+          if (snapshots[index] == null) await (kv.remove ? kv.remove(key) : kv.set(key, null))
+          else await kv.set(key, snapshots[index])
+        }, rollbackErrors)
+      }
+      throw new ArtworkDeletionError(error, rollbackErrors, operation)
+    }
+  }
 
   async function deleteArtworkNow(id: string | number): Promise<ArtworkDeleteResult> {
     const targetId = comparableId(id)
@@ -306,9 +329,11 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
       imageIds: ownedImageIds,
     })
 
-    await kv.set(ARTWORK_HISTORY_KEY, nextHistory)
-    if (projectUpdate.changed) await kv.set(ARTWORK_PROJECTS_KEY, projectUpdate.value)
-    await writeTrash(nextTrash)
+    await commitRelatedRecords([
+      { key: ARTWORK_HISTORY_KEY, value: nextHistory },
+      ...(projectUpdate.changed ? [{ key: ARTWORK_PROJECTS_KEY, value: projectUpdate.value }] : []),
+      { key: ARTWORK_TRASH_KEY, value: nextTrash },
+    ], '作品删除')
     return { deleted: true }
   }
 
@@ -327,9 +352,6 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
     const history = arrayValue(historySnapshot) ?? []
     // 同 id 已存在（恢复过一次的重复点击）：幂等成功
     const exists = history.some(item => recordId(item) === targetId)
-    if (!exists) {
-      await kv.set(ARTWORK_HISTORY_KEY, [...entry.historyEntries, ...history])
-    }
 
     // 项目引用增量补回：只把「快照里有引用、现在没有」的 project 加回该 id，
     // 不整体回写旧快照——恢复期间新建/修改过的 project 不受影响。
@@ -344,9 +366,11 @@ export function createArtworkRepository(dependencies: ArtworkRepositoryDependenc
       refsRestored += 1
       return { ...source, history_ids: [...source.history_ids, targetId] }
     })
-    if (refsRestored > 0) await kv.set(ARTWORK_PROJECTS_KEY, nextProjects)
-
-    await writeTrash(trash.filter(item => item.id !== targetId))
+    await commitRelatedRecords([
+      ...(!exists ? [{ key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] }] : []),
+      ...(refsRestored > 0 ? [{ key: ARTWORK_PROJECTS_KEY, value: nextProjects }] : []),
+      { key: ARTWORK_TRASH_KEY, value: trash.filter(item => item.id !== targetId) },
+    ], '作品恢复')
     return { restored: true }
   }
 

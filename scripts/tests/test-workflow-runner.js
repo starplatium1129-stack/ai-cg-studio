@@ -10,6 +10,47 @@ const { WORKFLOWS } = require('../workflow');
 const { classifyFiles, main: gate } = require('../maintenance/gate-quick');
 const root = path.resolve(__dirname, '../..');
 
+test('postinstall preserves custom hooks and only removes the absent legacy override', () => {
+  const { migrateHooks } = require('../maintenance/install-git-hooks');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-hooks-'));
+  try {
+    for (const configured of ['custom/hooks', '/shared/hooks', '.githooks']) {
+      const calls = [];
+      migrateHooks(dir, (_command, args) => { calls.push(args); return configured; });
+      assert.equal(calls.length, configured === '.githooks' ? 2 : 1);
+      if (calls.length === 2) assert.deepEqual(calls[1], ['config', '--local', '--unset-all', 'core.hooksPath']);
+    }
+    fs.mkdirSync(path.join(dir, '.githooks'));
+    let calls = 0;
+    migrateHooks(dir, () => { calls++; return '.githooks'; });
+    assert.equal(calls, 1);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('orphan check fails for an unreferenced script and accepts a desktop source reference', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'huiyu-orphans-'));
+  const maintenance = path.join(dir, 'scripts/maintenance');
+  try {
+    fs.mkdirSync(maintenance, { recursive: true });
+    fs.copyFileSync(path.join(root, 'scripts/maintenance/detect-orphan-scripts.js'), path.join(maintenance, 'detect-orphan-scripts.js'));
+    fs.writeFileSync(path.join(maintenance, 'lonely.js'), '// no runtime side effects');
+    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ scripts: { audit: 'node scripts/maintenance/detect-orphan-scripts.js' } }));
+    const run = () => spawnSync(process.execPath, [path.join(maintenance, 'detect-orphan-scripts.js'), '--check', '--json'], { encoding: 'utf8', timeout: 10000, windowsHide: true });
+    let result = run();
+    assert.equal(result.status, 1);
+    assert.deepEqual(JSON.parse(result.stdout).orphans, [{ name: 'lonely.js' }]);
+    fs.mkdirSync(path.join(dir, 'desktop-tauri'));
+    fs.writeFileSync(path.join(dir, 'desktop-tauri/build.rs'), '// calls scripts/maintenance/lonely.js\n');
+    result = run();
+    assert.equal(result.status, 0);
+    assert.equal(JSON.parse(result.stdout).orphanCount, 0);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('every registered help is side-effect free; plans never spawn', () => {
   const never = () => { throw new Error('unexpected child execution'); };
   for (const name of Object.keys(WORKFLOWS)) assert.equal(main([name, '--help'], WORKFLOWS, root, never), 0);

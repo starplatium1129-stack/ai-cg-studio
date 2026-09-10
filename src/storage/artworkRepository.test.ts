@@ -76,6 +76,61 @@ function historyIds(kv: ReturnType<typeof makeKv>): string[] {
 }
 
 describe('artworkRepository 软删 / 恢复', () => {
+  for (const operation of ['softDeleteArtwork', 'restoreArtwork'] as const) {
+    for (const failureKey of [KV.history, KV.projects, KV.trash]) {
+      it(`${operation}：${failureKey} 写入后失败也恢复完整快照，后续仍可重试`, async () => {
+        const { repo, kv, images } = makeRepo()
+        if (operation === 'restoreArtwork') await repo.softDeleteArtwork('a1')
+        const before = new Map(kv.store)
+        let failOnce = true
+        kv.adapter.set.mockImplementation(async (key, value) => {
+          kv.store.set(key, value)
+          if (key === failureKey && failOnce) { failOnce = false; throw new Error('quota exceeded') }
+        })
+
+        await expect(repo[operation]('a1')).rejects.toMatchObject({ rollbackErrors: [] })
+        expect(kv.store).toEqual(before)
+        expect(images.adapter.deleteMany).not.toHaveBeenCalled()
+        await expect(repo[operation]('a1')).resolves.toEqual(operation === 'softDeleteArtwork' ? { deleted: true } : { restored: true })
+      })
+    }
+  }
+
+  it('支持批量写的存储适配器在一个事务中提交删除和恢复的三个记录', async () => {
+    const kv = makeKv({
+      [KV.history]: [{ id: 'a1', image_id: 'img-a' }],
+      [KV.projects]: [{ id: 'p1', history_ids: ['a1'] }],
+    })
+    const setMany = vi.fn(async (entries: Array<{ key: string; value: unknown }>) => {
+      for (const entry of entries) kv.store.set(entry.key, entry.value)
+    })
+    const repo = createArtworkRepository({ kv: { ...kv.adapter, setMany } })
+    await repo.softDeleteArtwork('a1')
+    await repo.restoreArtwork('a1')
+    expect(kv.adapter.set).not.toHaveBeenCalled()
+    expect(setMany).toHaveBeenCalledTimes(2)
+    for (const [entries] of setMany.mock.calls) {
+      expect(entries.map(entry => entry.key)).toEqual([KV.history, KV.projects, KV.trash])
+    }
+    expect(kv.store.get(KV.history)).toEqual([{ id: 'a1', image_id: 'img-a' }])
+    expect(kv.store.get(KV.trash)).toEqual([])
+  })
+
+  it('没有 remove 的适配器在同一存储内写 null 回滚新键', async () => {
+    const history = [{ id: 'a1', image_id: 'img-a' }]
+    const kv = makeKv({ [KV.history]: history })
+    let failOnce = true
+    kv.adapter.set.mockImplementation(async (key, value) => {
+      kv.store.set(key, value)
+      if (key === KV.trash && failOnce) { failOnce = false; throw new Error('quota') }
+    })
+    const repo = createArtworkRepository({ kv: { get: kv.adapter.get, set: kv.adapter.set } })
+    await expect(repo.softDeleteArtwork('a1')).rejects.toMatchObject({ rollbackErrors: [] })
+    expect(await kv.adapter.get(KV.trash)).toBeNull()
+    expect(kv.store.get(KV.history)).toEqual(history)
+    expect(kv.adapter.set).toHaveBeenCalledWith(KV.trash, null)
+  })
+
   it('softDelete：history 移除、项目引用摘除、图片保留、快照进 trash', async () => {
     const { repo, kv, images } = makeRepo()
     const result = await repo.softDeleteArtwork('a1')
