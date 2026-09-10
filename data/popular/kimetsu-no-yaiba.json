@@ -1,12 +1,7 @@
 {
-  "version": "1.0.0",
-  "franchise": "Kimetsu no Yaiba",
   "characters": [
     {
-      "id": "kochou_shinobu",
-      "displayName": "蝴蝶忍",
-      "originalName": "胡蝶しのぶ",
-      "franchise": "Kimetsu no Yaiba",
+      "adultEligibility": "adult",
       "aliases": [
         "Kochou Shinobu",
         "蝴蝶忍",
@@ -14,6 +9,19 @@
         "蝶屋敷主人",
         "紫藤姐姐"
       ],
+      "animeStudio": "ufotable",
+      "curatedArtistStyles": [
+        "ufotable"
+      ],
+      "displayName": "蝴蝶忍",
+      "exactPrefixes": [
+        "1girl, solo, kochou_shinobu"
+      ],
+      "exactTokens": [
+        "kochou_shinobu"
+      ],
+      "franchise": "Kimetsu no Yaiba",
+      "id": "kochou_shinobu",
       "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira and master of the Butterfly Mansion, a petite, eternally-smiling beauty with pale skin, purple eyes, and two-tone black wavy hair that fades to dark purple",
       "identityTokens": [
         "kochou_shinobu",
@@ -28,23 +36,6 @@
         "pale_skin",
         "smile"
       ],
-      "exactTokens": [
-        "kochou_shinobu"
-      ],
-      "exactPrefixes": [
-        "1girl, solo, kochou_shinobu"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "animeStudio": "ufotable",
-      "curatedArtistStyles": [
-        "ufotable"
-      ],
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -57,9 +48,12 @@
         "watermark",
         "fire, flames, burning ears"
       ],
+      "originalName": "胡蝶しのぶ",
       "outfits": [
         {
+          "default": true,
           "id": "official_demon_slayer_uniform",
+          "isDefault": true,
           "name": "虫柱队服与蝶翼羽织",
           "prose": "her Demon Slayer uniform under a butterfly-patterned haori: a black high-collared jacket with gold buttons, hakama pants tucked with white belt, white tabi socks, waraji sandals with purple straps, and the butterfly-wing haori flowing behind her — a hidden blade in one heel",
           "tokens": [
@@ -76,9 +70,7 @@
             "animal_print",
             "hair_bun",
             "butterfly_hair_ornament"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
           "id": "festive_purple_yukata",
@@ -142,18 +134,60 @@
             "slender_body",
             "hair_down"
           ]
+        },
+        {
+          "default": false,
+          "id": "home_lavender_kimono",
+          "isDefault": false,
+          "name": "蝶屋敷淡紫居家着物",
+          "prose": "a comfortable lavender home kimono with a simple obi and her butterfly hair ornament, suited to a quiet breakfast at the Butterfly Mansion",
+          "tokens": [
+            "kimono",
+            "casual_kimono",
+            "lavender_kimono",
+            "obi",
+            "japanese_clothes",
+            "butterfly_hair_ornament"
+          ]
+        },
+        {
+          "default": false,
+          "id": "sfw_white_shiromuku",
+          "isDefault": false,
+          "name": "神前白无垢与角隐",
+          "prose": "a formal opaque white shiromuku bridal kimono with a white obi, woven silk motifs, a white tsunokakushi head covering and white tabi socks",
+          "tokens": [
+            "shiromuku",
+            "white_bridal_kimono",
+            "white_obi",
+            "tsunokakushi",
+            "white_tabi",
+            "opaque_fabric"
+          ]
         }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "kanroji_mitsuri",
-      "displayName": "甘露寺蜜璃",
-      "originalName": "Mitsuri Kanroji",
-      "franchise": "Kimetsu no Yaiba",
+      "adultEligibility": "adult",
       "aliases": [
         "甘露寺蜜璃",
         "Mitsuri Kanroji"
       ],
+      "displayName": "甘露寺蜜璃",
+      "exactPrefixes": [
+        "1girl, solo, kanroji_mitsuri"
+      ],
+      "exactTokens": [
+        "kanroji_mitsuri"
+      ],
+      "franchise": "Kimetsu no Yaiba",
+      "id": "kanroji_mitsuri",
       "identityProse": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",
       "identityTokens": [
         "kanroji_mitsuri",
@@ -166,18 +200,6 @@
         "green_eyes",
         "mole_under_eye"
       ],
-      "exactTokens": [
-        "kanroji_mitsuri"
-      ],
-      "exactPrefixes": [
-        "1girl, solo, kanroji_mitsuri"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -196,9 +218,12 @@
         "underwear",
         "see-through"
       ],
+      "originalName": "Mitsuri Kanroji",
       "outfits": [
         {
+          "default": true,
           "id": "sfw_daily",
+          "isDefault": true,
           "name": "庭院端庄日常和装",
           "prose": "a pale pink kimono securely wrapped with a green obi and opaque inner collar",
           "tokens": [
@@ -206,12 +231,12 @@
             "green_obi",
             "inner_collar",
             "japanese_clothes"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "sfw_home",
+          "isDefault": false,
           "name": "食堂料理围裙装",
           "prose": "a cream long-sleeved blouse, green long skirt and pink apron",
           "tokens": [
@@ -219,12 +244,12 @@
             "long_sleeves",
             "green_skirt",
             "pink_apron"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_festival",
+          "isDefault": false,
           "name": "夏祭花纹浴衣",
           "prose": "a light green floral yukata with a pink obi and sandals",
           "tokens": [
@@ -232,23 +257,23 @@
             "floral_print",
             "pink_obi",
             "sandals"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_boudoir",
+          "isDefault": false,
           "name": "甘露寺蜜璃·成人私密造型",
           "prose": "a private adult ensemble built around dressing_room, completely_nude",
           "tokens": [
             "dressing_room",
             "completely_nude"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_bridal",
+          "isDefault": false,
           "name": "甘露寺蜜璃·圣洁花嫁",
           "prose": "a pink-and-white wedding dress with a green sash, petal embroidery and a long translucent veil",
           "tokens": [
@@ -257,12 +282,12 @@
             "green_sash",
             "petal_embroidery",
             "long_veil"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_beach",
+          "isDefault": false,
           "name": "甘露寺蜜璃·海滨泳装",
           "prose": "a pink-and-green floral swimsuit with a light wrap skirt, striped beach towel and ribbon sandals",
           "tokens": [
@@ -271,12 +296,12 @@
             "wrap_skirt",
             "striped_towel",
             "ribbon_sandals"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
           "id": "sfw_refined_daily",
+          "isDefault": false,
+          "isNsfw": false,
           "name": "桃色小纹与工作围裙",
           "prose": "a securely wrapped peach floral long-sleeved kimono with a cream cotton work apron and plain tabi socks",
           "tokens": [
@@ -285,11 +310,16 @@
             "long_sleeves",
             "cream_apron",
             "tabi"
-          ],
-          "isDefault": false,
-          "isNsfw": false
+          ]
         }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Kimetsu no Yaiba",
+  "version": "1.0.0"
 }
