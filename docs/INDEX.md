@@ -20,6 +20,7 @@
 ## 按需查阅
 
 - [项目评价与优化／修复清单](archive/audits/project-review-checklist-2026-09-10.md)：8.0/10 工程评价、14 项分级清单、3 类请求层问题的隔离复现及当前验收边界。
+- [请求层修复与门禁复核](archive/audits/request-layer-repair-2026-09-10.md)：R1／R2／R3／O1／O2／O4 修复与回归记录、`DATA_VERSION` 同步、定稿基线漂移 35/100 与其余本机验收边界。
 - [启动与排错](../STARTUP.md)：干净工作区启动、AI 服务端点、模型目录与本机凭据恢复。
 - [项目评价复核与修复](archive/audits/project-evaluation-followup-2026-09-10.md)：19 项评价裁决、补充缺陷、当前修复与本次验证限制。
 - [专题指南](guides/README.md)：角色与粒子、提示词、美术、视频、桌面、工程设计。
