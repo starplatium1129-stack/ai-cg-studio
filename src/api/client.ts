@@ -193,6 +193,8 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
   /** 每个 URL 的写入代际（2026-09-10 复核 R1）：写请求成功即自增。
    * 写前发起的 GET 属于旧代，不得回填缓存；写后发起的 GET 属于新代，不得搭乘旧代 inflight。 */
   const generations = new Map<string, number>()
+  // Explicit refreshes supersede older reads even without a successful write.
+  const readVersions = new Map<string, { version: number; pending: number }>()
   const generationOf = (url: string): number => generations.get(url) ?? 0
 
   /** 搭车等待：共享响应与调用方自己的 abort/timeout 竞速。
@@ -325,6 +327,13 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
 
       // 发起前先占位 inflight：并发到达的同代 GET 在底层 fetch 未完成前即可搭车。
       // 失败的请求同样从 inflight 移除（finally），同 URL 后续请求重新发起。
+      let readState = usesMemoryCache ? readVersions.get(url) : undefined
+      if (usesMemoryCache && !readState) {
+        readState = { version: 0, pending: 0 }
+        readVersions.set(url, readState)
+      }
+      const readVersion = readState ? ++readState.version : 0
+      if (readState) readState.pending++
       const shared: Promise<TransportedResponse> = (async () => {
         try {
           const response = await fetchImplementation(url, {
@@ -371,7 +380,8 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         if (usesMemoryCache) {
           const ttl = options.cacheTtlMs
           // 写入期间该 URL 已被作废的旧代读取不回填，避免旧配置复活（R1）
-          if (typeof ttl === 'number' && Number.isFinite(ttl) && ttl > 0 && generation === generationOf(url)) {
+          if (typeof ttl === 'number' && Number.isFinite(ttl) && ttl > 0 && generation === generationOf(url)
+            && readVersion === readState?.version) {
             responseCache.set(url, {
               value: transported.value,
               status: transported.status,
@@ -402,6 +412,9 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
           detail: errorDetail(error),
         })
       } finally {
+        if (readState && --readState.pending === 0 && readVersions.get(url) === readState) {
+          readVersions.delete(url)
+        }
         if (timeoutId !== undefined) clearTimeout(timeoutId)
         if (callerSignal) callerSignal.removeEventListener('abort', abortFromCaller)
       }
