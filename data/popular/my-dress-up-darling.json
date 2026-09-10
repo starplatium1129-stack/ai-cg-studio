@@ -1,12 +1,7 @@
 {
-  "version": 1,
-  "franchise": "My Dress-Up Darling",
   "characters": [
     {
-      "id": "kitagawa_marin",
-      "displayName": "喜多川海梦",
-      "originalName": "Kitagawa Marin",
-      "franchise": "My Dress-Up Darling",
+      "adultEligibility": "adult",
       "aliases": [
         "kitagawa_marin",
         "marin",
@@ -14,6 +9,25 @@
         "my dress-up darling",
         "sono bisque doll"
       ],
+      "animeStudio": "cloverworks, official anime screencap, anime coloring",
+      "canon": {
+        "era": "当代",
+        "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
+        "research": "2026-08-14 调研",
+        "world": "现代日常（更衣人偶）"
+      },
+      "curatedArtistStyles": [
+        "morikura_en",
+        "momoco_haru",
+        "kantoku"
+      ],
+      "displayName": "喜多川海梦",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "kitagawa_marin"
+      ],
+      "franchise": "My Dress-Up Darling",
+      "id": "kitagawa_marin",
       "identityProse": "Kitagawa Marin from My Dress-Up Darling, a glamorous bubbly high school gyaru with long blonde hair with pink dip-dyed tips and a glossy sheen, bright dark-pink contact lenses, long painted nails and silver ear piercings",
       "identityTokens": [
         "kitagawa_marin",
@@ -28,19 +42,21 @@
         "painted_nails",
         "sono_bisque_doll_wa_koi_wo_suru"
       ],
-      "exactTokens": [
-        "kitagawa_marin"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Kitagawa Marin",
       "outfits": [
         {
+          "default": true,
           "id": "school_uniform",
+          "isDefault": true,
           "name": "校服",
           "prose": "her school uniform with an open blazer and a loose tie",
           "tokens": [
@@ -49,12 +65,12 @@
             "open_jacket",
             "pleated_skirt",
             "loose_tie"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "gal_casual",
+          "isDefault": false,
           "name": "日常辣妹",
           "prose": "a bright gyaru street outfit with a cropped top and skirt",
           "tokens": [
@@ -63,12 +79,12 @@
             "miniskirt",
             "sneakers",
             "casual_clothes"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "cosplay",
+          "isDefault": false,
           "name": "泛用 cosplay",
           "prose": "a playful cosplay outfit with character accents and a wig",
           "tokens": [
@@ -77,12 +93,12 @@
             "wig",
             "hair_ornament",
             "sailor_uniform"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "gothic_lolita",
+          "isDefault": false,
           "name": "哥特洛丽塔 cos",
           "prose": "her handmade gothic lolita cosplay with black frilled dress, lace and a hair bow",
           "tokens": [
@@ -91,13 +107,15 @@
             "frilled_dress",
             "lace",
             "hair_bow"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "silk_pajamas",
+          "isDefault": false,
           "name": "丝绸居家睡衣",
+          "prose": "wearing loose silk pajamas with a button-up top and matching pajama pants, smooth lustrous silk in a soft pastel tone",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "pajamas",
             "silk_pajamas",
@@ -109,15 +127,15 @@
             "nightwear",
             "loungewear",
             "soft_fabric"
-          ],
-          "prose": "wearing loose silk pajamas with a button-up top and matching pajama pants, smooth lustrous silk in a soft pastel tone",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "sheer_bathrobe",
+          "isDefault": false,
           "name": "薄透浴袍",
+          "prose": "wearing nothing but a thin sheer bathrobe of translucent fabric, a loose belt at the waist, the sheer material clinging to her curves",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "bathrobe",
             "sheer_bathrobe",
@@ -129,15 +147,15 @@
             "bare_shoulders",
             "bare_legs",
             "clinging_fabric"
-          ],
-          "prose": "wearing nothing but a thin sheer bathrobe of translucent fabric, a loose belt at the waist, the sheer material clinging to her curves",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -149,34 +167,30 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
+          ]
+        },
+        {
+          "default": false,
+          "id": "sailor_uniform",
           "isDefault": false,
-          "default": false
+          "name": "清凉水手制服",
+          "prose": "a light sailor-style school uniform with a sailor collar and pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "sailor_collar",
+            "pleated_skirt",
+            "short_sleeves"
+          ]
         }
       ],
-      "canon": {
-        "world": "现代日常（更衣人偶）",
-        "era": "当代",
-        "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
-        "research": "2026-08-14 调研"
-      },
-      "animeStudio": "cloverworks, official anime screencap, anime coloring",
-      "curatedArtistStyles": [
-        "morikura_en",
-        "momoco_haru",
-        "kantoku"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "My Dress-Up Darling",
+  "version": 1
 }
