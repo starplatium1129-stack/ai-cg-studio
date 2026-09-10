@@ -1,8 +1,18 @@
 {
-  "version": 2,
-  "franchise": "Oshi no Ko",
   "blueprints": [
     {
+      "action": "舞台上高唱登场",
+      "camera": "cowboy shot, dynamic idol pose under arena spotlights",
+      "category": "舞台演出",
+      "characterId": "hoshino_ai",
+      "coverageTags": [
+        "iconic"
+      ],
+      "description": "【星野爱 · B 小町演唱会】万人场馆的聚光灯下，星野爱跃上舞台最高点，粉裙与兔耳发饰在光柱中飞扬，星形瞳孔倒映着整片应援海——「把爱送给大家！今天也要好好应援哦！」",
+      "id": "hoshino_ai_live_stage",
+      "lighting": "舞台聚光与应援海",
+      "location": "万人演唱会舞台",
+      "mood": "偶像闪耀",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -60,17 +70,25 @@
         "second person",
         "two people"
       ],
-      "id": "hoshino_ai_live_stage",
-      "title": "星野爱 · B 小町演唱会",
-      "category": "舞台演出",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · B 小町演唱会】万人场馆的聚光灯下，星野爱跃上舞台最高点，粉裙与兔耳发饰在光柱中飞扬，星形瞳孔倒映着整片应援海——「把爱送给大家！今天也要好好应援哦！」",
-      "location": "万人演唱会舞台",
-      "action": "舞台上高唱登场",
-      "timeOfDay": "夜晚",
-      "lighting": "舞台聚光与应援海",
-      "camera": "cowboy shot, dynamic idol pose under arena spotlights",
-      "mood": "偶像闪耀",
+      "outfitId": "main_look",
+      "promptProse": "Leaping to the highest point of the sold-out Dome stage while singing into her pink microphone, Ai rises through the arena spotlights with dazzling star-filled eyes. Iridescent confetti and the cheering sea of idol lights frame her peerless B-Komachi performance.",
+      "promptTokens": [
+        "concert_stage",
+        "spotlight",
+        "holding_microphone",
+        "singing",
+        "idol_dress",
+        "star_eyes",
+        "confetti",
+        "cowboy_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field",
+        "jumping",
+        "mid-air"
+      ],
+      "recommendedSize": "1152x1536",
       "sceneTags": [
         "concert",
         "stage",
@@ -80,29 +98,22 @@
         "crowd_lights",
         "night"
       ],
-      "promptProse": "Performing center-stage at the sold-out Dome concert holding her pink microphone, Ai winks with dazzling star-filled eyes. Blazing multi-colored stage spotlights and raining iridescent confetti capture her peerless, ultimate idol aura.",
-      "promptTokens": [
-        "concert_stage",
-        "spotlight",
-        "holding_microphone",
-        "singing",
-        "idol_dress",
-        "winking",
-        "star_eyes",
-        "confetti",
-        "cowboy_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
-      ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "main_look",
-      "coverageTags": [
-        "iconic"
-      ]
+      "timeOfDay": "夜晚",
+      "title": "星野爱 · B 小町演唱会"
     },
     {
+      "action": "镜前反复彩排",
+      "camera": "medium shot, practicing dance before rehearsal mirror",
+      "category": "音乐日常",
+      "characterId": "hoshino_ai",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【星野爱 · 彩排室镜前】彩排室的落地镜前，星野爱一遍遍校准舞步与微笑的弧度，紫色侧发垂落，镜中的偶像连呼吸都掐着节拍——「舞台上的每一秒，都是这样练出来的哦。」",
+      "id": "hoshino_ai_rehearsal_room",
+      "lighting": "窗光与镜面反光",
+      "location": "偶像彩排室",
+      "mood": "专注自律",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -160,17 +171,22 @@
         "second person",
         "two people"
       ],
-      "id": "hoshino_ai_rehearsal_room",
-      "title": "星野爱 · 彩排室镜前",
-      "category": "音乐日常",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 彩排室镜前】彩排室的落地镜前，星野爱一遍遍校准舞步与微笑的弧度，紫色侧发垂落，镜中的偶像连呼吸都掐着节拍——「舞台上的每一秒，都是这样练出来的哦。」",
-      "location": "偶像彩排室",
-      "action": "镜前反复彩排",
-      "timeOfDay": "白天",
-      "lighting": "窗光与镜面反光",
-      "camera": "medium shot, practicing dance before rehearsal mirror",
-      "mood": "专注自律",
+      "outfitId": "rehearsal_casual",
+      "promptProse": "Dancing through repeated choreography before full-length studio mirrors during B-Komachi rehearsal, Ai practices the precise arc of her smile and every beat of the routine. Clean studio floor reflections and bright daylight capture her dedicated idol training.",
+      "promptTokens": [
+        "rehearsal_room",
+        "studio_mirrors",
+        "dance_practice",
+        "casual_t-shirt",
+        "smiling",
+        "daylight",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
+      ],
+      "recommendedSize": "1152x1536",
       "sceneTags": [
         "rehearsal",
         "mirror",
@@ -180,28 +196,20 @@
         "interior",
         "daylight"
       ],
-      "promptProse": "Dancing tirelessly before full-length studio mirrors during B-Komachi rehearsal, Ai wipes sweat from her forehead with a bright smile. Clean studio floor reflections and bright daylight capture her dedicated, passionate idol training.",
-      "promptTokens": [
-        "rehearsal_room",
-        "studio_mirrors",
-        "sweat",
-        "dance_practice",
-        "casual_t-shirt",
-        "smiling",
-        "daylight",
-        "cowboy_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
-      ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "main_look",
-      "coverageTags": [
-        "daily"
-      ]
+      "timeOfDay": "白天",
+      "title": "星野爱 · 彩排室镜前"
     },
     {
+      "action": "追光下抛飞吻",
+      "camera": "cowboy shot, dynamic idol pose with mic",
+      "category": "舞台演出",
+      "characterId": "hoshino_ai",
+      "coverageTags": [],
+      "description": "【星野爱 · 剧场公演】剧场公演的舞台上，星野爱换上露肩粉裙与蓝领结，手指轻点唇边抛出一个飞吻，白丝与黑鞋在追光下划出利落的弧线——「这份心意，要好好收下哦。」",
+      "id": "hoshino_ai_stage_off_shoulder",
+      "lighting": "追光与舞台灯",
+      "location": "剧场舞台",
+      "mood": "灵动撩人",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -259,17 +267,22 @@
         "second person",
         "two people"
       ],
-      "id": "hoshino_ai_stage_off_shoulder",
-      "title": "星野爱 · 剧场公演",
-      "category": "舞台演出",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 剧场公演】剧场公演的舞台上，星野爱换上露肩粉裙与蓝领结，手指轻点唇边抛出一个飞吻，白丝与黑鞋在追光下划出利落的弧线——「这份心意，要好好收下哦。」",
-      "location": "剧场舞台",
-      "action": "追光下抛飞吻",
-      "timeOfDay": "夜晚",
-      "lighting": "追光与舞台灯",
-      "camera": "cowboy shot, dynamic idol pose with mic",
-      "mood": "灵动撩人",
+      "outfitId": "stage_off_shoulder",
+      "promptProse": "On the theatre stage beneath a focused spotlight, Ai touches two fingers to her lips and blows a playful kiss toward the audience in her off-shoulder frilled dress. Her sparkling star pupils and flowing purple hair catch the soft lilac stage light.",
+      "promptTokens": [
+        "theatre_stage",
+        "off_shoulder_dress",
+        "rabbit_hairpin",
+        "spotlight",
+        "cowboy_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field",
+        "blowing_kiss",
+        "hand_to_lips"
+      ],
+      "recommendedSize": "1152x1536",
       "sceneTags": [
         "theater",
         "stage",
@@ -279,25 +292,20 @@
         "pink_dress",
         "night"
       ],
-      "promptProse": "Extending a gentle hand toward her audience on the theatre stage in an off-shoulder frilled dress, Ai sings with captivating emotion. Soft lilac stage lighting highlights her sparkling star pupils and flowing purple hair.",
-      "promptTokens": [
-        "theatre_stage",
-        "off_shoulder_dress",
-        "rabbit_hairpin",
-        "singing",
-        "reaching_out",
-        "spotlight",
-        "cowboy_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
-      ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "stage_off_shoulder",
-      "coverageTags": []
+      "timeOfDay": "夜晚",
+      "title": "星野爱 · 剧场公演"
     },
     {
+      "action": "镜头前比偶像手势",
+      "camera": "medium shot, wink and peace sign",
+      "category": "舞台演出",
+      "characterId": "hoshino_ai",
+      "coverageTags": [],
+      "description": "【星野爱 · 电视录制】音乐番组录影棚里，星野爱一身白上粉下的双色裙装，对着镜头比出偶像手势，紫发间的水晶发饰闪着微光——「电视里的我，也要让大家心跳加速才行呢。」",
+      "id": "hoshino_ai_stage_two_tone",
+      "lighting": "棚内柔光",
+      "location": "电视录影棚",
+      "mood": "元气满格",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -355,26 +363,7 @@
         "second person",
         "two people"
       ],
-      "id": "hoshino_ai_stage_two_tone",
-      "title": "星野爱 · 电视录制",
-      "category": "舞台演出",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 电视录制】音乐番组录影棚里，星野爱一身白上粉下的双色裙装，对着镜头比出偶像手势，紫发间的水晶发饰闪着微光——「电视里的我，也要让大家心跳加速才行呢。」",
-      "location": "电视录影棚",
-      "action": "镜头前比偶像手势",
-      "timeOfDay": "白天",
-      "lighting": "棚内柔光",
-      "camera": "medium shot, wink and peace sign",
-      "mood": "元气满格",
-      "sceneTags": [
-        "tv_studio",
-        "recording",
-        "idol",
-        "two_tone_dress",
-        "interior",
-        "camera",
-        "daylight"
-      ],
+      "outfitId": "stage_two_tone",
       "promptProse": "Flashing a signature double peace-sign on the live TV broadcast set, Ai beams with infectious, irresistible energy. Studio studio cameras and dazzling broadcast studio lights frame her flawless, photogenic idol charm.",
       "promptTokens": [
         "tv_studio",
@@ -389,10 +378,31 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "stage_two_tone",
-      "coverageTags": []
+      "sceneTags": [
+        "tv_studio",
+        "recording",
+        "idol",
+        "two_tone_dress",
+        "interior",
+        "camera",
+        "daylight"
+      ],
+      "timeOfDay": "白天",
+      "title": "星野爱 · 电视录制"
     },
     {
+      "action": "镜前补妆",
+      "camera": "medium shot, applying glitter eyeshadow before the backstage vanity mirror",
+      "category": "音乐日常",
+      "characterId": "hoshino_ai",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【星野爱 · 后台化妆间】演出前的后台化妆间里，星野爱对着化妆镜补上最后一笔亮片眼影，镜灯把她的侧脸照得近乎透明——「化妆是舞台魔法的一部分……你看，一点就亮啦。」",
+      "id": "hoshino_ai_backstage",
+      "lighting": "化妆镜灯",
+      "location": "演唱会后台化妆间",
+      "mood": "静谧专注",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -450,17 +460,21 @@
         "second person",
         "two people"
       ],
-      "id": "hoshino_ai_backstage",
-      "title": "星野爱 · 后台化妆间",
-      "category": "音乐日常",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 后台化妆间】演出前的后台化妆间里，星野爱对着化妆镜补上最后一笔亮片眼影，镜灯把她的侧脸照得近乎透明——「化妆是舞台魔法的一部分……你看，一点就亮啦。」",
-      "location": "演唱会后台化妆间",
-      "action": "镜前补妆",
-      "timeOfDay": "夜晚",
-      "lighting": "化妆镜灯",
-      "camera": "medium shot, winking backstage before going on stage",
-      "mood": "静谧专注",
+      "outfitId": "main_look",
+      "promptProse": "Backstage before the performance, Ai applies the final touch of glitter eyeshadow while looking into the vanity mirror. Warm bulbs illuminate her focused profile and the small sparkle she adds to her idol makeup.",
+      "promptTokens": [
+        "backstage",
+        "dressing_room_mirror",
+        "vanity_lights",
+        "applying_eyeshadow",
+        "looking_in_mirror",
+        "cowboy_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
+      ],
+      "recommendedSize": "1152x1536",
       "sceneTags": [
         "dressing_room",
         "mirror",
@@ -470,26 +484,21 @@
         "interior",
         "night"
       ],
-      "promptProse": "Adjusting her hair ribbon before the vanity mirror backstage seconds before showtime, Ai prepares her legendary smile. Warm vanity bulb lighting creates an intimate, thrilling pre-concert atmosphere.",
-      "promptTokens": [
-        "backstage",
-        "dressing_room_mirror",
-        "vanity_lights",
-        "adjusting_ribbon",
-        "looking_in_mirror",
-        "cowboy_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
-      ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "main_look",
-      "coverageTags": [
-        "daily"
-      ]
+      "timeOfDay": "夜晚",
+      "title": "星野爱 · 后台化妆间"
     },
     {
+      "action": "与粉丝握手交谈",
+      "camera": "medium two-shot, handshake across a fan meeting table",
+      "category": "音乐日常",
+      "characterId": "hoshino_ai",
+      "compositionIntent": "group",
+      "coverageTags": [],
+      "description": "【星野爱 · 握手会】握手会会场里，星野爱隔着桌面握住粉丝的手，星形瞳孔亮得像两颗真正的星星，双色裙装在会馆灯光下泛着柔光——「谢谢你今天来见我……我最喜欢你了。」",
+      "id": "hoshino_ai_fan_signing",
+      "lighting": "会馆灯光",
+      "location": "握手会会场",
+      "mood": "温柔亲和",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -547,17 +556,22 @@
         "second person",
         "two people"
       ],
-      "id": "hoshino_ai_fan_signing",
-      "title": "星野爱 · 握手会",
-      "category": "音乐日常",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 握手会】握手会会场里，星野爱隔着桌面握住粉丝的手，星形瞳孔亮得像两颗真正的星星，双色裙装在会馆灯光下泛着柔光——「谢谢你今天来见我……我最喜欢你了。」",
-      "location": "握手会会场",
-      "action": "与粉丝握手交谈",
-      "timeOfDay": "白天",
-      "lighting": "会馆灯光",
-      "camera": "medium shot, signing album at fan meeting table",
-      "mood": "温柔亲和",
+      "outfitId": "stage_two_tone",
+      "promptProse": "Across the fan meeting table, Ai shakes a fan's hand and speaks with a radiant, attentive smile. Soft event-hall light catches her star-shaped pupils and two-tone stage costume as she gives the visitor her full attention.",
+      "promptTokens": [
+        "fan_signing_event",
+        "table",
+        "looking_at_viewer",
+        "radiant_smile",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field",
+        "shaking_hands",
+        "two_clothed_figures"
+      ],
+      "recommendedSize": "1152x1536",
       "sceneTags": [
         "handshake_event",
         "idol",
@@ -566,25 +580,26 @@
         "smile",
         "daylight"
       ],
-      "promptProse": "Handing over a signed poster at the fan handshake event, Ai looks directly into Sensei’s eyes with a heart-melting, radiant smile. Soft event hall illumination captures her genuine, magnetic connection with her fans.",
-      "promptTokens": [
-        "fan_signing_event",
-        "table",
-        "signing_autograph",
-        "holding_pen",
-        "looking_at_viewer",
-        "radiant_smile",
-        "medium_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
-      ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "stage_two_tone",
-      "coverageTags": []
+      "timeOfDay": "白天",
+      "title": "星野爱 · 握手会"
     },
     {
+      "action": "明亮化妆镜前转椅上解开偶像礼服回眸微笑",
+      "adult": true,
+      "adultArtistHint": "@tiv",
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "medium shot, sitting gracefully on swivel chair before large illuminated vanity mirror, warm backstage room depth",
+      "category": "成人",
+      "characterId": "hoshino_ai",
+      "coverageTags": [
+        "special_nsfw"
+      ],
+      "description": "【星野爱 · 演出后后台化妆镜前】明亮专属化妆室的大面发光化妆镜前，星野爱坐在转椅上，解开偶像礼服拉链滑落至腰际，双眸中标志性的璀璨六芒星瞳闪烁着私密的娇羞与爱意，明亮环形柔光映衬着纤细锁骨、平坦小腹与迷人胸线。",
+      "id": "hoshino_ai_r18_hotel_after_live",
+      "kreaStyleHint": "r18_elegant_boudoir",
+      "lighting": "大面发光化妆镜的明亮环形柔光与化妆室通透漫射光",
+      "location": "演出后台专属化妆室",
+      "mood": "私密娇羞",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -645,31 +660,16 @@
         "childlike",
         "teenager"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "hoshino_ai_r18_hotel_after_live",
-      "title": "星野爱 · 演出后后台化妆镜前",
-      "category": "成人",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 演出后后台化妆镜前】明亮专属化妆室的大面发光化妆镜前，星野爱坐在转椅上，解开偶像礼服拉链滑落至腰际，双眸中标志性的璀璨六芒星瞳闪烁着私密的娇羞与爱意，明亮环形柔光映衬着纤细锁骨、平坦小腹与迷人胸线。",
-      "location": "演出后台专属化妆室",
-      "action": "明亮化妆镜前转椅上解开偶像礼服回眸微笑",
-      "timeOfDay": "夜晚",
-      "lighting": "大面发光化妆镜的明亮环形柔光与化妆室通透漫射光",
-      "camera": "medium shot, sitting gracefully on swivel chair before large illuminated vanity mirror, warm backstage room depth",
-      "mood": "私密娇羞",
-      "sceneTags": [
-        "dressing_room",
-        "vanity_mirror",
-        "star_pupils",
-        "star_in_eye",
-        "purple_eyes",
-        "bare_shoulders",
-        "unfastened_dress",
-        "cleavage",
-        "slender_waist",
-        "sitting"
+      "nsfwProse": "",
+      "nsfwTokens": [
+        "unzipping_idol_costume",
+        "bare_breasts",
+        "pink_nipples",
+        "star_eyes",
+        "heavy_blush",
+        "seductive_smile"
       ],
+      "outfitId": "main_look",
       "promptProse": "Backstage vanity bulbs illuminate adult Ai Hoshino alone after a live performance. Her sparkling idol dress is unzipped and gathered at the waist, exposing bare breasts above one knee raised on a stool. She holds the zipper tab behind her with one hand and traces glitter from her inner thigh with the other, while the mirror stays opaque. Purple hair frames star-shaped pupils, wet lashes and a radiant blush. Vertical dressing-room solo portrait, no text or extra people.",
       "promptTokens": [
         "luxury_hotel",
@@ -683,24 +683,36 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "main_look",
-      "kreaStyleHint": "r18_elegant_boudoir",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "nsfwTokens": [
-        "unzipping_idol_costume",
-        "bare_breasts",
-        "pink_nipples",
-        "star_eyes",
-        "heavy_blush",
-        "seductive_smile"
+      "sampleRating": "R18",
+      "sceneTags": [
+        "dressing_room",
+        "vanity_mirror",
+        "star_pupils",
+        "star_in_eye",
+        "purple_eyes",
+        "bare_shoulders",
+        "unfastened_dress",
+        "cleavage",
+        "slender_waist",
+        "sitting"
       ],
-      "nsfwProse": "",
-      "adultArtistHint": "@tiv",
-      "coverageTags": [
-        "special_nsfw"
-      ]
+      "timeOfDay": "夜晚",
+      "title": "星野爱 · 演出后后台化妆镜前"
     },
     {
+      "action": "天窗日光下俯身扶台回眸",
+      "adult": true,
+      "animaStyleHint": "r18_sensual_cg",
+      "camera": "intimate medium shot, bright skylight sunbeam",
+      "category": "成人",
+      "characterId": "hoshino_ai",
+      "coverageTags": [],
+      "description": "【星野爱 · 剧场阳光舞台兔女郎】白日阳光透过剧场巨大天窗倾泻在舞台中央，星野爱身着纯白兔女郎紧身衣与半透白丝，俯身手扶舞台边缘回眸眨眼，兔子尾巴微颤，细腰挺胸在明媚天光下充满灵动魅力。",
+      "id": "hoshino_ai_r18_stage_room_alone",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "纯白高光舞台聚光灯与舞台天顶主光",
+      "location": "独占剧场舞台",
+      "mood": "俏皮反差",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -761,32 +773,16 @@
         "childlike",
         "teenager"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "hoshino_ai_r18_stage_room_alone",
-      "title": "星野爱 · 剧场阳光舞台兔女郎",
-      "category": "成人",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 剧场阳光舞台兔女郎】白日阳光透过剧场巨大天窗倾泻在舞台中央，星野爱身着纯白兔女郎紧身衣与半透白丝，俯身手扶舞台边缘回眸眨眼，兔子尾巴微颤，细腰挺胸在明媚天光下充满灵动魅力。",
-      "location": "独占剧场舞台",
-      "action": "天窗日光下俯身扶台回眸",
-      "timeOfDay": "夜晚",
-      "lighting": "纯白高光舞台聚光灯与舞台天顶主光",
-      "camera": "intimate medium shot, bright skylight sunbeam",
-      "mood": "俏皮反差",
-      "sceneTags": [
-        "stage",
-        "skylight",
-        "sunbeam",
-        "playboy_bunny",
-        "white_pantyhose",
-        "rabbit_ears",
-        "rabbit_tail",
-        "star_pupils",
-        "looking_back",
-        "cleavage",
-        "daylight"
+      "nsfwProse": "",
+      "nsfwTokens": [
+        "open_bunny_suit",
+        "bare_breasts",
+        "pink_nipples",
+        "star_eyes",
+        "winking",
+        "heavy_blush"
       ],
+      "outfitId": "stage_off_shoulder",
       "promptProse": "A single theatre spotlight catches adult Ai alone on an empty rehearsal stage. Her violet bunny suit is unzipped and peeled below bare breasts, with one heel planted on a low prop block and the other leg extended. She grips the zipper seam with one hand and fingers herself through the high-cut opening with the other. Purple hair and twin star pupils glow through sweat, a practiced wink and an unguarded blush. Vertical stage solo portrait, no text or extra people.",
       "promptTokens": [
         "theatre_stage",
@@ -800,21 +796,37 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "stage_off_shoulder",
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_sensual_cg",
-      "nsfwTokens": [
-        "open_bunny_suit",
-        "bare_breasts",
-        "pink_nipples",
-        "star_eyes",
-        "winking",
-        "heavy_blush"
+      "sampleRating": "R18",
+      "sceneTags": [
+        "stage",
+        "skylight",
+        "sunbeam",
+        "playboy_bunny",
+        "white_pantyhose",
+        "rabbit_ears",
+        "rabbit_tail",
+        "star_pupils",
+        "looking_back",
+        "cleavage",
+        "daylight"
       ],
-      "nsfwProse": "",
-      "coverageTags": []
+      "timeOfDay": "夜晚",
+      "title": "星野爱 · 剧场阳光舞台兔女郎"
     },
     {
+      "action": "晴空阳台边微敞薄衫回眸浅笑",
+      "adult": true,
+      "animaStyleHint": "r18_sensual_cg",
+      "camera": "intimate medium shot, bright daylight and blue sky",
+      "category": "成人",
+      "characterId": "hoshino_ai",
+      "coverageTags": [],
+      "description": "【星野爱 · 阳台晴空薄衫微敞】私密公寓阳光露台上，明媚海风轻拂星野爱的紫色发丝，身上宽大的薄白衬衫滑落肩头，俯瞰着蔚蓝海天侧身回眸，星瞳闪烁，充沛阳光勾勒着白皙锁骨与曼妙侧胸。",
+      "id": "hoshino_ai_r18_dressing_room",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "化妆台环形高显色柔光灯与天花漫射白光",
+      "location": "明亮化妆间",
+      "mood": "晴空浪漫",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -875,30 +887,16 @@
         "childlike",
         "teenager"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "hoshino_ai_r18_dressing_room",
-      "title": "星野爱 · 阳台晴空薄衫微敞",
-      "category": "成人",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 阳台晴空薄衫微敞】私密公寓阳光露台上，明媚海风轻拂星野爱的紫色发丝，身上宽大的薄白衬衫滑落肩头，俯瞰着蔚蓝海天侧身回眸，星瞳闪烁，充沛阳光勾勒着白皙锁骨与曼妙侧胸。",
-      "location": "明亮化妆间",
-      "action": "晴空阳台边微敞薄衫回眸浅笑",
-      "timeOfDay": "白天",
-      "lighting": "化妆台环形高显色柔光灯与天花漫射白光",
-      "camera": "intimate medium shot, bright daylight and blue sky",
-      "mood": "晴空浪漫",
-      "sceneTags": [
-        "balcony",
-        "blue_sky",
-        "sunlight",
+      "nsfwProse": "",
+      "nsfwTokens": [
         "open_shirt",
-        "off_shoulder",
-        "sideboob",
-        "star_pupils",
-        "cleavage",
-        "daylight"
+        "bare_breasts",
+        "pink_nipples",
+        "looking_back",
+        "heavy_blush",
+        "radiant_smile"
       ],
+      "outfitId": "main_look",
       "promptProse": "Morning air enters an apartment balcony where adult Ai stands alone beside fluttering curtains. Her pale blouse is open and tied below bare breasts, while a short skirt lifts around one bent knee on a chair. She holds the curtain with one hand and lets the other move beneath the hem between her thighs. Purple hair and star-shaped eyes catch the sun as her public smile softens into private affection and red cheeks. Vertical environmental solo portrait, no text or extra people.",
       "promptTokens": [
         "apartment_balcony",
@@ -912,21 +910,37 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "main_look",
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_sensual_cg",
-      "nsfwTokens": [
+      "sampleRating": "R18",
+      "sceneTags": [
+        "balcony",
+        "blue_sky",
+        "sunlight",
         "open_shirt",
-        "bare_breasts",
-        "pink_nipples",
-        "looking_back",
-        "heavy_blush",
-        "radiant_smile"
+        "off_shoulder",
+        "sideboob",
+        "star_pupils",
+        "cleavage",
+        "daylight"
       ],
-      "nsfwProse": "",
-      "coverageTags": []
+      "timeOfDay": "白天",
+      "title": "星野爱 · 阳台晴空薄衫微敞"
     },
     {
+      "action": "清晨阳光地毯上抱抱枕屈膝斜倚，单人独处微笑注视镜头",
+      "adult": true,
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "medium shot, cowboy shot, eye level",
+      "category": "成人",
+      "characterId": "hoshino_ai",
+      "coverageTags": [
+        "intimate"
+      ],
+      "description": "【星野爱 · 客厅地毯抱枕纯欲】私密公寓温暖的客厅阳光地毯上，星野爱单人抱着软绵绵的白抱枕斜倚，身着黑色细带比基尼，清晨温暖的晨光洒在平坦紧致的小腹与娇嫩双峰上，双眸中标志性的六芒星瞳闪烁着卸下偶像光环后的纯真爱意。",
+      "id": "hoshino_ai_r18_apartment_morning",
+      "kreaStyleHint": "r18_elegant_boudoir",
+      "lighting": "落地窗洒入的清晨金色阳光与柔和丁达尔光束",
+      "location": "私密公寓温暖客厅",
+      "mood": "纯真爱恋",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -965,35 +979,19 @@
         "deformed",
         "signature"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "hoshino_ai_r18_apartment_morning",
-      "title": "星野爱 · 客厅地毯抱枕纯欲",
-      "category": "成人",
-      "characterId": "hoshino_ai",
-      "description": "【星野爱 · 客厅地毯抱枕纯欲】私密公寓温暖的客厅阳光地毯上，星野爱单人抱着软绵绵的白抱枕斜倚，身着黑色细带比基尼，清晨温暖的晨光洒在平坦紧致的小腹与娇嫩双峰上，双眸中标志性的六芒星瞳闪烁着卸下偶像光环后的纯真爱意。",
-      "location": "私密公寓温暖客厅",
-      "action": "清晨阳光地毯上抱抱枕屈膝斜倚，单人独处微笑注视镜头",
-      "timeOfDay": "清晨",
-      "lighting": "落地窗洒入的清晨金色阳光与柔和丁达尔光束",
-      "camera": "medium shot, cowboy shot, eye level",
-      "mood": "纯真爱恋",
-      "sceneTags": [
-        "living_room",
-        "carpet",
-        "pillow",
-        "hugging_pillow",
+      "nsfwProse": "",
+      "nsfwTokens": [
         "black_bikini",
         "string_bikini",
-        "bare_shoulders",
-        "cleavage",
-        "navel",
-        "slender_waist",
-        "spread_legs",
-        "bent_knees",
-        "morning_sun",
-        "sunbeam"
+        "bare_breasts",
+        "pink_nipples",
+        "sitting_on_rug",
+        "hugging_pillow",
+        "star_eyes",
+        "sweet_smile",
+        "blushing"
       ],
+      "outfitId": "main_look",
       "promptProse": "Sunbeams fill a living room where adult Ai reclines alone on a plush rug in a black string bikini. A white pillow rests beneath her bare breasts while one leg folds and the other reaches toward the window, showing soft waist and navel. She hugs the pillow with one arm and pulls a side string aside with the other, touching herself beneath it. Purple hair frames star pupils, damp lashes and a tender blush. Horizontal morning solo portrait, no text or extra people.",
       "promptTokens": [
         "living_room",
@@ -1013,26 +1011,39 @@
         "depth_of_field"
       ],
       "recommendedSize": "1536x1152",
-      "outfitId": "main_look",
-      "kreaStyleHint": "r18_elegant_boudoir",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "nsfwTokens": [
+      "sampleRating": "R18",
+      "sceneTags": [
+        "living_room",
+        "carpet",
+        "pillow",
+        "hugging_pillow",
         "black_bikini",
         "string_bikini",
-        "bare_breasts",
-        "pink_nipples",
-        "sitting_on_rug",
-        "hugging_pillow",
-        "star_eyes",
-        "sweet_smile",
-        "blushing"
+        "bare_shoulders",
+        "cleavage",
+        "navel",
+        "slender_waist",
+        "spread_legs",
+        "bent_knees",
+        "morning_sun",
+        "sunbeam"
       ],
-      "nsfwProse": "",
-      "coverageTags": [
-        "intimate"
-      ]
+      "timeOfDay": "清晨",
+      "title": "星野爱 · 客厅地毯抱枕纯欲"
     },
     {
+      "action": "拔刀出鞘立于布景光中",
+      "camera": "cowboy shot, drawing katana",
+      "category": "舞台演出",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [
+        "iconic"
+      ],
+      "description": "【黑川茜 · 东京之刃】《东京之刃》舞台剧的决胜幕，黑川茜身着和风刺客戏服以纱姬之姿拔刀出鞘，蓝紫长发扬起，双瞳点亮为璀璨的星形——「这一刀，我要让整座剧场都记住纱姬的名字。」",
+      "id": "kurokawa_akane_tokyo_blade_stage",
+      "lighting": "血色舞台光",
+      "location": "剧场舞台",
+      "mood": "演技爆发",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1107,29 +1118,7 @@
         "beast_ears",
         "claws"
       ],
-      "id": "kurokawa_akane_tokyo_blade_stage",
-      "title": "黑川茜 · 东京之刃",
-      "category": "舞台演出",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 东京之刃】《东京之刃》舞台剧的决胜幕，黑川茜身着和风刺客戏服以纱姬之姿拔刀出鞘，蓝紫长发扬起，双瞳点亮为璀璨的星形——「这一刀，我要让整座剧场都记住纱姬的名字。」",
-      "location": "剧场舞台",
-      "action": "拔刀出鞘立于布景光中",
-      "timeOfDay": "夜晚",
-      "lighting": "血色舞台光",
-      "camera": "cowboy shot, drawing katana",
-      "mood": "演技爆发",
-      "sceneTags": [
-        "stage",
-        "katana",
-        "holding_katana",
-        "japanese_clothes",
-        "sayahime_(tokyo_blade)",
-        "star_eyes",
-        "theater",
-        "night",
-        "blue_purple_hair",
-        "performance"
-      ],
+      "outfitId": "sayahime_stage",
       "promptProse": "Delivering a powerhouse stage performance in Tokyo Blade holding her prop katana, Akane commands the scene with intense method-acting focus. Dramatic stage spotlights and billowing stage fog highlight her extraordinary artistic genius.",
       "promptTokens": [
         "theatre_stage",
@@ -1145,12 +1134,34 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "sayahime_stage",
-      "coverageTags": [
-        "iconic"
-      ]
+      "sceneTags": [
+        "stage",
+        "katana",
+        "holding_katana",
+        "japanese_clothes",
+        "sayahime_(tokyo_blade)",
+        "star_eyes",
+        "theater",
+        "night",
+        "blue_purple_hair",
+        "performance"
+      ],
+      "timeOfDay": "夜晚",
+      "title": "黑川茜 · 东京之刃"
     },
     {
+      "action": "抱课本走过走廊",
+      "camera": "medium shot, walking through the school hallway with textbooks",
+      "category": "现代校园",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【黑川茜 · 阳东走廊】阳东高中的午后走廊，黑川茜抱着课本走过光斑交错的窗边，蓝紫直发在阳光里泛着清冷的光泽，制服裙摆随着步伐轻摆——「戏外的我，也只是一个普通的高中生而已。」",
+      "id": "kurokawa_akane_school_hallway",
+      "lighting": "走廊窗光",
+      "location": "阳东高中走廊",
+      "mood": "清冷沉静",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1208,17 +1219,22 @@
         "second person",
         "two people"
       ],
-      "id": "kurokawa_akane_school_hallway",
-      "title": "黑川茜 · 阳东走廊",
-      "category": "现代校园",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 阳东走廊】阳东高中的午后走廊，黑川茜抱着课本走过光斑交错的窗边，蓝紫直发在阳光里泛着清冷的光泽，制服裙摆随着步伐轻摆——「戏外的我，也只是一个普通的高中生而已。」",
-      "location": "阳东高中走廊",
-      "action": "抱课本走过走廊",
-      "timeOfDay": "白天",
-      "lighting": "走廊窗光",
-      "camera": "medium shot, leaning on window ledge",
-      "mood": "清冷沉静",
+      "outfitId": "school_uniform",
+      "promptProse": "Walking through the quiet school hallway with a stack of textbooks in her arms, Akane passes the window in clear afternoon light. Her blue-violet hair and school uniform catch the soft geometric shadows as the hallway recedes behind her.",
+      "promptTokens": [
+        "school_hallway",
+        "school_uniform",
+        "focused_expression",
+        "window_light",
+        "medium_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field",
+        "holding_textbooks",
+        "walking"
+      ],
+      "recommendedSize": "1152x1536",
       "sceneTags": [
         "school",
         "hallway",
@@ -1228,27 +1244,20 @@
         "daylight",
         "window"
       ],
-      "promptProse": "Memorizing performance lines from a highlighted script in the quiet school hallway, Akane murmurs with serious, dedicated focus. Clear afternoon window light illuminates her smart, studious posture.",
-      "promptTokens": [
-        "school_hallway",
-        "holding_script",
-        "school_uniform",
-        "memorizing_lines",
-        "focused_expression",
-        "window_light",
-        "medium_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
-      ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "school_uniform",
-      "coverageTags": [
-        "daily"
-      ]
+      "timeOfDay": "白天",
+      "title": "黑川茜 · 阳东走廊"
     },
     {
+      "action": "白墙前入戏试镜",
+      "camera": "medium shot, holding script",
+      "category": "现代都市",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [],
+      "description": "【黑川茜 · 试镜间】试镜间的白墙前，黑川茜收起所有犹豫，一瞬间进入角色，蓝紫瞳孔里的星芒若隐若现——「角色活在剧本里……而演员，是把她们请进现实的人。」",
+      "id": "kurokawa_akane_audition_room",
+      "lighting": "棚内白光",
+      "location": "试镜间",
+      "mood": "专注入戏",
       "negativeTokens": [
         "normal pupils",
         "round pupils",
@@ -1327,26 +1336,7 @@
         "beast_ears",
         "claws"
       ],
-      "id": "kurokawa_akane_audition_room",
-      "title": "黑川茜 · 试镜间",
-      "category": "现代都市",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 试镜间】试镜间的白墙前，黑川茜收起所有犹豫，一瞬间进入角色，蓝紫瞳孔里的星芒若隐若现——「角色活在剧本里……而演员，是把她们请进现实的人。」",
-      "location": "试镜间",
-      "action": "白墙前入戏试镜",
-      "timeOfDay": "白天",
-      "lighting": "棚内白光",
-      "camera": "medium shot, holding script",
-      "mood": "专注入戏",
-      "sceneTags": [
-        "audition",
-        "studio",
-        "actress",
-        "blue_purple_hair",
-        "interior",
-        "daylight",
-        "focus"
-      ],
+      "outfitId": "school_uniform",
       "promptProse": "Captivating casting directors under bright audition lights, Akane channels star-filled eyes with breathtaking acting intensity. Crisp directional spotlights emphasize her magnetic, transformative stage presence.",
       "promptTokens": [
         "audition_room",
@@ -1362,10 +1352,31 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "school_uniform",
-      "coverageTags": []
+      "sceneTags": [
+        "audition",
+        "studio",
+        "actress",
+        "blue_purple_hair",
+        "interior",
+        "daylight",
+        "focus"
+      ],
+      "timeOfDay": "白天",
+      "title": "黑川茜 · 试镜间"
     },
     {
+      "action": "在冰茶旁写角色分析笔记，抬头微笑交谈",
+      "camera": "full body",
+      "category": "现代都市",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【黑川茜 · 咖啡店对谈】咖啡厅明亮的窗边，黑川茜穿着蓝色围裙连衣裙与白衬衫，面前放着一杯冰茶。她仔细写下角色分析笔记，随后抬起闪烁着星瞳的双眼，向你露出温柔而认真的笑容——「每记下一点新的理解，就觉得离这个角色更近了一步。也想听听你的看法呢。」",
+      "id": "kurokawa_akane_cafe_table",
+      "lighting": "窗边柔光",
+      "location": "城市咖啡店",
+      "mood": "温柔放松",
       "negativeTokens": [
         "normal pupils",
         "round pupils",
@@ -1395,26 +1406,7 @@
         "2girls",
         "extra person"
       ],
-      "id": "kurokawa_akane_cafe_table",
-      "title": "黑川茜 · 咖啡店对谈",
-      "category": "现代都市",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 咖啡店对谈】咖啡厅明亮的窗边，黑川茜穿着蓝色围裙连衣裙与白衬衫，面前放着一杯冰茶。她仔细写下角色分析笔记，随后抬起闪烁着星瞳的双眼，向你露出温柔而认真的笑容——「每记下一点新的理解，就觉得离这个角色更近了一步。也想听听你的看法呢。」",
-      "location": "城市咖啡店",
-      "action": "在冰茶旁写角色分析笔记，抬头微笑交谈",
-      "timeOfDay": "白天",
-      "lighting": "窗边柔光",
-      "camera": "full body",
-      "mood": "温柔放松",
-      "sceneTags": [
-        "cafe",
-        "coffee",
-        "pinafore_dress",
-        "blue_purple_hair",
-        "interior",
-        "window",
-        "daylight"
-      ],
+      "outfitId": "pinafore_dress",
       "promptProse": "Jotting down character analysis notes over iced tea at a sunny cafe table, Akane looks up with an affectionate, intelligent smile. Warm ambient daylight and quiet cafe bustle create a charming, thoughtful date moment.",
       "promptTokens": [
         "cafe",
@@ -1431,12 +1423,29 @@
         "depth_of_field"
       ],
       "recommendedSize": "1216x832",
-      "outfitId": "pinafore_dress",
-      "coverageTags": [
-        "daily"
-      ]
+      "sceneTags": [
+        "cafe",
+        "coffee",
+        "pinafore_dress",
+        "blue_purple_hair",
+        "interior",
+        "window",
+        "daylight"
+      ],
+      "timeOfDay": "白天",
+      "title": "黑川茜 · 咖啡店对谈"
     },
     {
+      "action": "沙发上接受访谈",
+      "camera": "cowboy shot, sitting on studio sofa",
+      "category": "现代都市",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [],
+      "description": "【黑川茜 · 访谈节目】深夜访谈节目的沙发上，黑川茜礼貌地微笑作答，蓝紫长发垂落在围裙裙装的肩线上，摄像头红灯亮起的一瞬她已进入状态——「关于纱姬这个角色……我想说的还有很多。」",
+      "id": "kurokawa_akane_talk_show",
+      "lighting": "演播厅布光",
+      "location": "演播厅",
+      "mood": "从容得体",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1511,26 +1520,7 @@
         "beast_ears",
         "claws"
       ],
-      "id": "kurokawa_akane_talk_show",
-      "title": "黑川茜 · 访谈节目",
-      "category": "现代都市",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 访谈节目】深夜访谈节目的沙发上，黑川茜礼貌地微笑作答，蓝紫长发垂落在围裙裙装的肩线上，摄像头红灯亮起的一瞬她已进入状态——「关于纱姬这个角色……我想说的还有很多。」",
-      "location": "演播厅",
-      "action": "沙发上接受访谈",
-      "timeOfDay": "夜晚",
-      "lighting": "演播厅布光",
-      "camera": "cowboy shot, sitting on studio sofa",
-      "mood": "从容得体",
-      "sceneTags": [
-        "tv_studio",
-        "interview",
-        "actress",
-        "blue_purple_hair",
-        "interior",
-        "night",
-        "sofa"
-      ],
+      "outfitId": "pinafore_dress",
       "promptProse": "Answering interview questions gracefully on a televised talk show set holding a microphone, Akane charms the audience with poise. Professional studio lighting and vibrant set backdrops frame her rising star reputation.",
       "promptTokens": [
         "talk_show_studio",
@@ -1545,10 +1535,29 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "pinafore_dress",
-      "coverageTags": []
+      "sceneTags": [
+        "tv_studio",
+        "interview",
+        "actress",
+        "blue_purple_hair",
+        "interior",
+        "night",
+        "sofa"
+      ],
+      "timeOfDay": "夜晚",
+      "title": "黑川茜 · 访谈节目"
     },
     {
+      "action": "戴眼镜翻阅剧本研究",
+      "camera": "medium shot, leaning against bookshelf",
+      "category": "现代日常",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [],
+      "description": "【黑川茜 · 书店眼镜】旧书店的角落，黑川茜戴上细框眼镜翻着剧本研究手册，镜片后的蓝紫眼睛认真得发亮，常服的她像是换了一个人——「研究角色的时候，戴眼镜更安心一些。」",
+      "id": "kurokawa_akane_bookstore_glasses",
+      "lighting": "店内暖光",
+      "location": "旧书店",
+      "mood": "沉静书卷气",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1623,26 +1632,7 @@
         "beast_ears",
         "claws"
       ],
-      "id": "kurokawa_akane_bookstore_glasses",
-      "title": "黑川茜 · 书店眼镜",
-      "category": "现代日常",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 书店眼镜】旧书店的角落，黑川茜戴上细框眼镜翻着剧本研究手册，镜片后的蓝紫眼睛认真得发亮，常服的她像是换了一个人——「研究角色的时候，戴眼镜更安心一些。」",
-      "location": "旧书店",
-      "action": "戴眼镜翻阅剧本研究",
-      "timeOfDay": "白天",
-      "lighting": "店内暖光",
-      "camera": "medium shot, leaning against bookshelf",
-      "mood": "沉静书卷气",
-      "sceneTags": [
-        "bookstore",
-        "glasses",
-        "reading",
-        "blue_purple_hair",
-        "interior",
-        "daylight",
-        "casual"
-      ],
+      "outfitId": "daily_glasses",
       "promptProse": "Reading theatrical play collections in the bookstore aisle wearing reading glasses, Akane immerses herself in study. Soft interior lighting creates an intimate, refined intellectual atmosphere.",
       "promptTokens": [
         "bookstore",
@@ -1658,10 +1648,35 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "daily_glasses",
-      "coverageTags": []
+      "sceneTags": [
+        "bookstore",
+        "glasses",
+        "reading",
+        "blue_purple_hair",
+        "interior",
+        "daylight",
+        "casual"
+      ],
+      "timeOfDay": "白天",
+      "title": "黑川茜 · 书店眼镜"
     },
     {
+      "action": "阳光厨房吧台边系单薄围裙回眸微笑",
+      "adult": true,
+      "adultArtistHint": "@rella",
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "close-up, bright morning kitchen sunlight",
+      "category": "成人",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [
+        "special_nsfw"
+      ],
+      "description": "【黑川茜 · 晨光厨房单薄围裙】清晨明媚阳光照亮的开放式厨房吧台前，黑川茜仅系着一条单薄棉质围裙为你准备热饮，侧身回眸带着娇羞的微嗔，围裙侧空展露出迷人的侧乳、纤细腰肢与白皙肌肤，明亮通透。",
+      "id": "kurokawa_akane_r18_actor_dressing",
+      "kreaStyleHint": "r18_elegant_boudoir",
+      "lighting": "梳妆镜高显色柔光与室内温暖漫射光",
+      "location": "单人更衣室",
+      "mood": "日常私密温情",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1722,31 +1737,16 @@
         "childlike",
         "teenager"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "kurokawa_akane_r18_actor_dressing",
-      "title": "黑川茜 · 晨光厨房单薄围裙",
-      "category": "成人",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 晨光厨房单薄围裙】清晨明媚阳光照亮的开放式厨房吧台前，黑川茜仅系着一条单薄棉质围裙为你准备热饮，侧身回眸带着娇羞的微嗔，围裙侧空展露出迷人的侧乳、纤细腰肢与白皙肌肤，明亮通透。",
-      "location": "单人更衣室",
-      "action": "阳光厨房吧台边系单薄围裙回眸微笑",
-      "timeOfDay": "白天",
-      "lighting": "梳妆镜高显色柔光与室内温暖漫射光",
-      "camera": "close-up, bright morning kitchen sunlight",
-      "mood": "日常私密温情",
-      "sceneTags": [
-        "kitchen",
-        "apron",
+      "nsfwProse": "",
+      "nsfwTokens": [
         "naked_apron",
-        "sideboob",
-        "bare_back",
+        "bare_breasts",
+        "pink_nipples",
         "star_eyes",
-        "cleavage",
-        "slender_waist",
-        "morning_sun",
-        "daylight"
+        "holding_ladle",
+        "heavy_blush"
       ],
+      "outfitId": "sayahime_stage",
       "promptProse": "Kitchen sunlight frames adult Akane Kurokawa alone in a white apron tied around her waist. The apron bib has slipped beneath bare breasts as she kneels beside an open oven, one leg folded on a mat. She holds a wooden spoon in one hand and wipes flour from her inner thigh with the other, blue theatrical light reflecting faint stars in her eyes. Dark hair, parted breath and a devoted blush remain crisp. Vertical domestic solo portrait, no text or extra people.",
       "promptTokens": [
         "kitchen",
@@ -1760,24 +1760,36 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "sayahime_stage",
-      "kreaStyleHint": "r18_elegant_boudoir",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "nsfwTokens": [
+      "sampleRating": "R18",
+      "sceneTags": [
+        "kitchen",
+        "apron",
         "naked_apron",
-        "bare_breasts",
-        "pink_nipples",
+        "sideboob",
+        "bare_back",
         "star_eyes",
-        "holding_ladle",
-        "heavy_blush"
+        "cleavage",
+        "slender_waist",
+        "morning_sun",
+        "daylight"
       ],
-      "nsfwProse": "",
-      "adultArtistHint": "@rella",
-      "coverageTags": [
-        "special_nsfw"
-      ]
+      "timeOfDay": "白天",
+      "title": "黑川茜 · 晨光厨房单薄围裙"
     },
     {
+      "action": "阳光落地窗前微解长裙全身立姿回眸",
+      "adult": true,
+      "animaStyleHint": "r18_sensual_cg",
+      "camera": "full-length shot, full body view, standing gracefully by sunlit French window with floating sheer curtains",
+      "category": "成人",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [],
+      "description": "【黑川茜 · 晴窗白纱长裙微敞】阳光明媚的高大落地窗前，白纱轻扬，充沛天光将黑川茜白皙高挑、修长曼妙的全身身段勾勒得分外迷人，她半解丝绸长裙立姿回眸微喘，青紫长发垂落，星瞳中满溢着对恋人的全身心托付。",
+      "id": "kurokawa_akane_r18_apartment_blue",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "宽大落地窗倾泻的淡金晨光与漫射天光",
+      "location": "晨光公寓窗边",
+      "mood": "温存依恋",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1840,32 +1852,16 @@
         "cropped legs",
         "cutoff feet"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "kurokawa_akane_r18_apartment_blue",
-      "title": "黑川茜 · 晴窗白纱长裙微敞",
-      "category": "成人",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 晴窗白纱长裙微敞】阳光明媚的高大落地窗前，白纱轻扬，充沛天光将黑川茜白皙高挑、修长曼妙的全身身段勾勒得分外迷人，她半解丝绸长裙立姿回眸微喘，青紫长发垂落，星瞳中满溢着对恋人的全身心托付。",
-      "location": "晨光公寓窗边",
-      "action": "阳光落地窗前微解长裙全身立姿回眸",
-      "timeOfDay": "清晨",
-      "lighting": "宽大落地窗倾泻的淡金晨光与漫射天光",
-      "camera": "full-length shot, full body view, standing gracefully by sunlit French window with floating sheer curtains",
-      "mood": "温存依恋",
-      "sceneTags": [
-        "window",
-        "sheer_curtains",
-        "sunlight",
-        "silk_dress",
-        "unfastened_dress",
+      "nsfwProse": "",
+      "nsfwTokens": [
+        "unbuttoned_dress",
+        "bare_breasts",
+        "pink_nipples",
         "star_eyes",
-        "cleavage",
-        "slender_waist",
-        "bare_legs",
-        "full_body",
-        "daylight"
+        "gentle_smile",
+        "heavy_blush"
       ],
+      "outfitId": "daily_glasses",
       "promptProse": "A blue evening breeze enters adult Akane's apartment as she sits alone beside billowing balcony curtains. Her fitted blue dress is unzipped and gathered below bare breasts, one leg folded on the window bench and the other lowered. She reaches behind for the zipper with one hand and fingers herself beneath the loose skirt with the other. Dark hair frames blue eyes carrying a studied star-like intensity, damp lashes and an adoring blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "apartment",
@@ -1879,21 +1875,37 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "daily_glasses",
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_sensual_cg",
-      "nsfwTokens": [
-        "unbuttoned_dress",
-        "bare_breasts",
-        "pink_nipples",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "window",
+        "sheer_curtains",
+        "sunlight",
+        "silk_dress",
+        "unfastened_dress",
         "star_eyes",
-        "gentle_smile",
-        "heavy_blush"
+        "cleavage",
+        "slender_waist",
+        "bare_legs",
+        "full_body",
+        "daylight"
       ],
-      "nsfwProse": "",
-      "coverageTags": []
+      "timeOfDay": "清晨",
+      "title": "黑川茜 · 晴窗白纱长裙微敞"
     },
     {
+      "action": "阳光排练室提撩女仆裙摆微嗔回眸",
+      "adult": true,
+      "animaStyleHint": "r18_sensual_cg",
+      "camera": "intimate medium shot, bright studio daylight",
+      "category": "成人",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [],
+      "description": "【黑川茜 · 阳光排练室女仆装微嗔】采光通透的排练室更衣帘旁，黑川茜身穿露肩女仆短裙与黑丝袜，提撩裙摆微微蹙眉回眸，体验派角色的沉浸微嗔与饱满胸型在明亮日光下充满惊艳张力。",
+      "id": "kurokawa_akane_r18_school_rooftop",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "绚烂紫金晚霞逆光与金色高光轮廓",
+      "location": "晚霞天台",
+      "mood": "微嗔傲娇",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1954,30 +1966,16 @@
         "childlike",
         "teenager"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "kurokawa_akane_r18_school_rooftop",
-      "title": "黑川茜 · 阳光排练室女仆装微嗔",
-      "category": "成人",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 阳光排练室女仆装微嗔】采光通透的排练室更衣帘旁，黑川茜身穿露肩女仆短裙与黑丝袜，提撩裙摆微微蹙眉回眸，体验派角色的沉浸微嗔与饱满胸型在明亮日光下充满惊艳张力。",
-      "location": "晚霞天台",
-      "action": "阳光排练室提撩女仆裙摆微嗔回眸",
-      "timeOfDay": "黄昏",
-      "lighting": "绚烂紫金晚霞逆光与金色高光轮廓",
-      "camera": "intimate medium shot, bright studio daylight",
-      "mood": "微嗔傲娇",
-      "sceneTags": [
-        "studio",
-        "maid_dress",
-        "black_pantyhose",
-        "dress_lift",
-        "frown",
+      "nsfwProse": "",
+      "nsfwTokens": [
+        "skirt_lift",
+        "open_maid_dress",
+        "bare_breasts",
+        "pink_nipples",
         "star_eyes",
-        "looking_back",
-        "cleavage",
-        "daylight"
+        "heavy_blush"
       ],
+      "outfitId": "school_uniform",
       "promptProse": "Sunset colors a private post-graduation rehearsal rooftop where adult Akane kneels alone beside costume cases. Her festival-inspired maid bodice is opened beneath bare breasts and the skirt rests above one stockinged thigh. She holds a marked script in one hand and moves the other between her legs, practicing a fragile expression that becomes real. Dark hair and blue eyes catch the orange rim light through tears and a flustered pout. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "office_rooftop",
@@ -1991,21 +1989,37 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "school_uniform",
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_sensual_cg",
-      "nsfwTokens": [
-        "skirt_lift",
-        "open_maid_dress",
-        "bare_breasts",
-        "pink_nipples",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "studio",
+        "maid_dress",
+        "black_pantyhose",
+        "dress_lift",
+        "frown",
         "star_eyes",
-        "heavy_blush"
+        "looking_back",
+        "cleavage",
+        "daylight"
       ],
-      "nsfwProse": "",
-      "coverageTags": []
+      "timeOfDay": "黄昏",
+      "title": "黑川茜 · 阳光排练室女仆装微嗔"
     },
     {
+      "action": "丝绒更衣帘前侧身回眸整理挂脖礼服优雅微笑",
+      "adult": true,
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "medium full shot, standing beside velvet curtain, turning back over shoulder",
+      "category": "成人",
+      "characterId": "kurokawa_akane",
+      "coverageTags": [
+        "intimate"
+      ],
+      "description": "【黑川茜 · 优雅试衣间挂脖露背】精品店私密试衣间内柔和环光下，黑川茜身着挂脖露背晚礼服站在垂落的丝绒更衣帘旁，侧身回眸带着甜美自信的微笑与星眸，展露出优美的背部曲线、纤细腰肢与高挑身姿，单人私享纯净无镜面干扰。",
+      "id": "kurokawa_akane_r18_pinafore_evening",
+      "kreaStyleHint": "r18_elegant_boudoir",
+      "lighting": "试衣间柔和环形灯光与温暖漫射光",
+      "location": "精品店试衣更衣室",
+      "mood": "私密挑逗",
       "negativeTokens": [
         "mirror",
         "reflection",
@@ -2077,31 +2091,16 @@
         "childlike",
         "teenager"
       ],
-      "adult": true,
-      "sampleRating": "R18",
-      "id": "kurokawa_akane_r18_pinafore_evening",
-      "title": "黑川茜 · 优雅试衣间挂脖露背",
-      "category": "成人",
-      "characterId": "kurokawa_akane",
-      "description": "【黑川茜 · 优雅试衣间挂脖露背】精品店私密试衣间内柔和环光下，黑川茜身着挂脖露背晚礼服站在垂落的丝绒更衣帘旁，侧身回眸带着甜美自信的微笑与星眸，展露出优美的背部曲线、纤细腰肢与高挑身姿，单人私享纯净无镜面干扰。",
-      "location": "精品店试衣更衣室",
-      "action": "丝绒更衣帘前侧身回眸整理挂脖礼服优雅微笑",
-      "timeOfDay": "室内",
-      "lighting": "试衣间柔和环形灯光与温暖漫射光",
-      "camera": "medium full shot, standing beside velvet curtain, turning back over shoulder",
-      "mood": "私密挑逗",
-      "sceneTags": [
-        "fitting_room",
-        "mirror",
-        "mirror_reflection",
-        "halterneck",
+      "nsfwProse": "",
+      "nsfwTokens": [
         "backless_dress",
+        "bare_back",
         "sideboob",
-        "thigh_strap",
-        "star_eyes",
-        "cleavage",
-        "bright_room"
+        "bare_breasts",
+        "looking_back",
+        "seductive_smile"
       ],
+      "outfitId": "pinafore_dress",
       "promptProse": "Vanity light surrounds adult Akane alone in a fitting room wearing an elegant backless evening gown. Its side zipper is jammed at the waist, pulling the neckline below bare breasts as she twists into a compact rear three-quarter pose. Both hands reach behind to work the fastener while one heel slips from her foot. Dark hair frames blue eyes with reflected star highlights, wet lashes and a controlled seductive blush. Vertical wardrobe-malfunction solo portrait, no text or extra people.",
       "promptTokens": [
         "dressing_room",
@@ -2115,47 +2114,58 @@
         "depth_of_field"
       ],
       "recommendedSize": "1152x1536",
-      "outfitId": "pinafore_dress",
-      "kreaStyleHint": "r18_elegant_boudoir",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "nsfwTokens": [
+      "sampleRating": "R18",
+      "sceneTags": [
+        "fitting_room",
+        "mirror",
+        "mirror_reflection",
+        "halterneck",
         "backless_dress",
-        "bare_back",
         "sideboob",
-        "bare_breasts",
-        "looking_back",
-        "seductive_smile"
+        "thigh_strap",
+        "star_eyes",
+        "cleavage",
+        "bright_room"
       ],
-      "nsfwProse": "",
-      "coverageTags": [
-        "intimate"
-      ]
+      "timeOfDay": "室内",
+      "title": "黑川茜 · 优雅试衣间挂脖露背"
     },
     {
-      "id": "arima_kana_sfw_b5_01",
-      "title": "有马加奈 · B小町舞台的定格",
+      "action": "握着麦克风完成歌曲结尾定格，红瞳专注而额角带汗。",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "medium shot, environmental portrait",
       "category": "日常生活",
       "characterId": "arima_kana",
-      "outfitId": "sfw_stage",
-      "description": "【演出舞台·聚光灯下】加奈穿着红白打歌服，握住麦克风完成歌曲结尾的定格。红色短发下的额角泛着汗光，她目光明亮而专注，背景收进暗色舞台，只留下追光照亮层叠裙摆。",
-      "location": "B小町演出舞台",
-      "action": "握着麦克风完成歌曲结尾定格，红瞳专注而额角带汗。",
-      "timeOfDay": "日间",
-      "lighting": "spotlight",
-      "camera": "medium shot, environmental portrait",
-      "mood": "自然日常、细腻表情",
-      "sceneTags": [
-        "stage",
-        "microphone",
-        "holding_microphone",
-        "idol_clothes",
-        "performance",
-        "final_pose",
-        "spotlight",
-        "sweat",
-        "determined",
-        "medium_shot"
+      "coverageTags": [
+        "iconic",
+        "daily"
       ],
+      "description": "【演出舞台·聚光灯下】加奈穿着红白打歌服，握住麦克风完成歌曲结尾的定格。红色短发下的额角泛着汗光，她目光明亮而专注，背景收进暗色舞台，只留下追光照亮层叠裙摆。",
+      "id": "arima_kana_sfw_b5_01",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "spotlight",
+      "location": "B小町演出舞台",
+      "mood": "自然日常、细腻表情",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfitId": "sfw_stage",
       "promptProse": "At the center of a concert stage, Kana grips her microphone and lands the final pose of a song. A bead of sweat shines at her temple beneath wine-red bangs, while her red-and-white layered costume catches a single brilliant spotlight. Her ruby eyes burn with practiced concentration; the medium stage portrait gives the frame to her alone, with dark theatrical space behind the light.",
       "promptTokens": [
         "1girl",
@@ -2171,6 +2181,39 @@
         "determined",
         "medium_shot"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "stage",
+        "microphone",
+        "holding_microphone",
+        "idol_clothes",
+        "performance",
+        "final_pose",
+        "spotlight",
+        "sweat",
+        "determined",
+        "medium_shot"
+      ],
+      "timeOfDay": "日间",
+      "title": "有马加奈 · B小町舞台的定格"
+    },
+    {
+      "action": "坐在地板标记旁喝水，看着镜中自己重新鼓劲。",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "medium shot, environmental portrait",
+      "category": "日常生活",
+      "characterId": "arima_kana",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "空排练室，她对着整墙镜子反复练习同一个转身，地板上是贴着标记的胶带；休息时直接坐在地板上喝水，看着镜中的自己，表情在不甘与鼓劲之间切换。",
+      "id": "arima_kana_sfw_b5_02",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "studio_light",
+      "location": "空排练室镜墙前",
+      "mood": "自然日常、细腻表情",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2189,41 +2232,7 @@
         "underwear",
         "see-through"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "coverageTags": [
-        "iconic",
-        "daily"
-      ]
-    },
-    {
-      "id": "arima_kana_sfw_b5_02",
-      "title": "有马加奈 · 排练室镜子前的独白",
-      "category": "日常生活",
-      "characterId": "arima_kana",
       "outfitId": "sfw_practice",
-      "description": "空排练室，她对着整墙镜子反复练习同一个转身，地板上是贴着标记的胶带；休息时直接坐在地板上喝水，看着镜中的自己，表情在不甘与鼓劲之间切换。",
-      "location": "空排练室镜墙前",
-      "action": "坐在地板标记旁喝水，看着镜中自己重新鼓劲。",
-      "timeOfDay": "日间",
-      "lighting": "studio_light",
-      "camera": "medium shot, environmental portrait",
-      "mood": "自然日常、细腻表情",
-      "sceneTags": [
-        "rehearsal_room",
-        "sitting_on_floor",
-        "water_bottle",
-        "drinking",
-        "mirror",
-        "reflection",
-        "floor_tape",
-        "tired",
-        "determined",
-        "studio_light"
-      ],
       "promptProse": "After repeating a turn in the empty rehearsal studio, Kana sits on the floor beside taped position marks and drinks from a water bottle. Her red bob rests against the charcoal T-shirt as she studies her reflection in the wall mirror. Frustration and self-encouragement share her expression; broad studio lighting shows the practice shoes, floor tape and unglamorous work behind the performance.",
       "promptTokens": [
         "1girl",
@@ -2239,6 +2248,39 @@
         "determined",
         "studio_light"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "rehearsal_room",
+        "sitting_on_floor",
+        "water_bottle",
+        "drinking",
+        "mirror",
+        "reflection",
+        "floor_tape",
+        "tired",
+        "determined",
+        "studio_light"
+      ],
+      "timeOfDay": "日间",
+      "title": "有马加奈 · 排练室镜子前的独白"
+    },
+    {
+      "action": "手指抵着下巴默读剧本，帽子放在荧光笔与便签旁。",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "medium shot, environmental portrait",
+      "category": "日常生活",
+      "characterId": "arima_kana",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "事务所会议室，她面前摊着画满荧光笔与便签的剧本，手指抵着下巴默读台词；围读还没有开始，她已经完全沉浸在角色里——努力家的素颜。",
+      "id": "arima_kana_sfw_b5_03",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "soft overhead studio light",
+      "location": "演艺事务所会议桌",
+      "mood": "自然日常、细腻表情",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2257,41 +2299,7 @@
         "underwear",
         "see-through"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "arima_kana_sfw_b5_03",
-      "title": "有马加奈 · 剧本围读的荧光笔",
-      "category": "日常生活",
-      "characterId": "arima_kana",
       "outfitId": "sfw_casual",
-      "description": "事务所会议室，她面前摊着画满荧光笔与便签的剧本，手指抵着下巴默读台词；围读还没有开始，她已经完全沉浸在角色里——努力家的素颜。",
-      "location": "演艺事务所会议桌",
-      "action": "手指抵着下巴默读剧本，帽子放在荧光笔与便签旁。",
-      "timeOfDay": "日间",
-      "lighting": "soft overhead studio light",
-      "camera": "medium shot, environmental portrait",
-      "mood": "自然日常、细腻表情",
-      "sceneTags": [
-        "meeting_room",
-        "script",
-        "highlighter",
-        "sticky_notes",
-        "reading",
-        "finger_on_chin",
-        "table",
-        "hat_on_table",
-        "focused",
-        "soft_lighting",
-        "medium_shot"
-      ],
       "promptProse": "Before the others arrive at the agency meeting room, Kana silently studies a script crowded with highlighter marks and small page flags. A fingertip rests beneath her chin, ruby eyes following the next line. Her beret sits beside the notebook rather than on her head; a cream cardigan and soft overhead light frame this absorbed table portrait, with the marked pages clearly present but unreadable.",
       "promptTokens": [
         "1girl",
@@ -2308,81 +2316,40 @@
         "soft_lighting",
         "medium_shot"
       ],
-      "negativeTokens": [
-        "worst_quality",
-        "low_quality",
-        "bad_anatomy",
-        "bad_hands",
-        "missing_fingers",
-        "extra_fingers",
-        "extra_limbs",
-        "blurry",
-        "watermark",
-        "text",
-        "signature",
-        "2girls",
-        "1boy",
-        "nude",
-        "underwear",
-        "see-through"
-      ],
       "recommendedSize": "1152x1536",
-      "adult": false,
       "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "coverageTags": [
-        "daily"
-      ]
+      "sceneTags": [
+        "meeting_room",
+        "script",
+        "highlighter",
+        "sticky_notes",
+        "reading",
+        "finger_on_chin",
+        "table",
+        "hat_on_table",
+        "focused",
+        "soft_lighting",
+        "medium_shot"
+      ],
+      "timeOfDay": "日间",
+      "title": "有马加奈 · 剧本围读的荧光笔"
     },
     {
-      "id": "arima_kana_sfw_b5_04",
-      "title": "有马加奈 · 10 秒落泪的现场",
+      "action": "调整一次呼吸后抬头，将泪水准确凝在眼眶里。",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "close-up, shoulders upward, single continuous face portrait",
       "category": "日常生活",
       "characterId": "arima_kana",
-      "outfitId": "sfw_school",
+      "coverageTags": [
+        "daily"
+      ],
       "description": "拍摄现场，导演喊开始后她低头调整呼吸，再抬头时眼泪已经精准挂在眼眶里；画面捕捉情绪到位的一瞬间，是她职业能力的最高光。",
-      "location": "影视拍摄现场",
-      "action": "调整一次呼吸后抬头，将泪水准确凝在眼眶里。",
-      "timeOfDay": "日间",
+      "id": "arima_kana_sfw_b5_04",
+      "kreaStyleHint": "anime_portrait_sharp",
       "lighting": "studio_light",
-      "camera": "close-up, shoulders upward, single continuous face portrait",
+      "location": "影视拍摄现场",
       "mood": "自然日常、细腻表情",
-      "sceneTags": [
-        "arima_kana",
-        "face_focus",
-        "close-up",
-        "shoulders",
-        "teary_eyes",
-        "teardrop",
-        "sad",
-        "closed_mouth",
-        "looking_up",
-        "red_eyes",
-        "blunt_bangs",
-        "white_collar",
-        "studio_light",
-        "blurry_background"
-      ],
-      "promptProse": "A single continuous close view of Kana Arima on a film set, cropped from the shoulders upward. Her head has just lifted after a steady breath; one tear gathers on the lower rim of each ruby eye, her mouth closed in controlled sadness. Wine-red blunt bangs and the white collar of her school blouse remain visible. A softly blurred studio lamp glows behind her left shoulder. Only one face appears, filling most of the unbroken canvas.",
-      "promptTokens": [
-        "1girl",
-        "solo",
-        "arima_kana",
-        "face_focus",
-        "close-up",
-        "shoulders",
-        "teary_eyes",
-        "teardrop",
-        "sad",
-        "closed_mouth",
-        "looking_up",
-        "red_eyes",
-        "blunt_bangs",
-        "white_collar",
-        "studio_light",
-        "blurry_background"
-      ],
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2408,38 +2375,82 @@
         "letterbox",
         "distant_view"
       ],
+      "outfitId": "sfw_school",
+      "promptProse": "A single continuous close view of Kana Arima on a film set, cropped from the shoulders upward. Her head has just lifted after a steady breath; one tear gathers on the lower rim of each ruby eye, her mouth closed in controlled sadness. Wine-red blunt bangs and the white collar of her school blouse remain visible. A softly blurred studio lamp glows behind her left shoulder. Only one face appears, filling most of the unbroken canvas.",
+      "promptTokens": [
+        "1girl",
+        "solo",
+        "arima_kana",
+        "face_focus",
+        "close-up",
+        "shoulders",
+        "teary_eyes",
+        "teardrop",
+        "sad",
+        "closed_mouth",
+        "looking_up",
+        "red_eyes",
+        "blunt_bangs",
+        "white_collar",
+        "studio_light",
+        "blurry_background"
+      ],
       "recommendedSize": "1152x1536",
-      "adult": false,
       "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "coverageTags": [
-        "daily"
-      ]
+      "sceneTags": [
+        "arima_kana",
+        "face_focus",
+        "close-up",
+        "shoulders",
+        "teary_eyes",
+        "teardrop",
+        "sad",
+        "closed_mouth",
+        "looking_up",
+        "red_eyes",
+        "blunt_bangs",
+        "white_collar",
+        "studio_light",
+        "blurry_background"
+      ],
+      "timeOfDay": "日间",
+      "title": "有马加奈 · 10 秒落泪的现场"
     },
     {
-      "id": "arima_kana_sfw_b5_06",
-      "title": "有马加奈 · 棕色贝雷帽的试戴",
+      "action": "双手调好贝雷帽帽檐，露出满意的小笑容。",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "medium shot, environmental portrait",
       "category": "日常生活",
       "characterId": "arima_kana",
-      "outfitId": "sfw_refined_daily",
-      "description": "帽子店的木架前，加奈穿棕色格纹外套和藏蓝阔腿裤，双手调整刚试上的贝雷帽。她用余光检查帽檐位置，原本挑剔的表情慢慢变成藏不住的满意，红色短发从帽沿露出。",
-      "location": "帽子店木架旁",
-      "action": "双手调好贝雷帽帽檐，露出满意的小笑容。",
-      "timeOfDay": "afternoon",
-      "lighting": "warm diffuse shop light",
-      "camera": "medium shot, environmental portrait",
-      "mood": "自然日常、细腻表情",
-      "sceneTags": [
-        "hat_shop",
-        "adjusting_hat",
-        "hands_up",
-        "sideways_glance",
-        "pleased",
-        "wooden_shelf",
-        "shop_lighting",
-        "medium_shot"
+      "coverageTags": [
+        "daily"
       ],
+      "description": "帽子店的木架前，加奈穿棕色格纹外套和藏蓝阔腿裤，双手调整刚试上的贝雷帽。她用余光检查帽檐位置，原本挑剔的表情慢慢变成藏不住的满意，红色短发从帽沿露出。",
+      "id": "arima_kana_sfw_b5_06",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "warm diffuse shop light",
+      "location": "帽子店木架旁",
+      "mood": "自然日常、细腻表情",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "outfitId": "sfw_refined_daily",
       "promptProse": "Kana Arima adjusts the edge of a brown beret with both hands beside a wooden hat display. Her rust-checked jacket, cream blouse and navy wide-leg trousers make a composed weekend outfit. A critical sideways glance gives way to a pleased little smile as the brim settles above her wine-red bob. Warm diffuse shop light keeps the ruby eyes and hands readable in the close portrait. Avoid mirrors, reflected figures and printed branding.",
       "promptTokens": [
         "1girl",
@@ -2458,6 +2469,37 @@
         "cinematic_lighting",
         "volumetric_lighting"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "hat_shop",
+        "adjusting_hat",
+        "hands_up",
+        "sideways_glance",
+        "pleased",
+        "wooden_shelf",
+        "shop_lighting",
+        "medium_shot"
+      ],
+      "timeOfDay": "afternoon",
+      "title": "有马加奈 · 棕色贝雷帽的试戴"
+    },
+    {
+      "action": "举起装着金鱼的小袋开怀大笑，另一手仍拿着纸网。",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "medium shot, environmental portrait",
+      "category": "日常生活",
+      "characterId": "arima_kana",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "夏祭摊位，她挽起袖子全神贯注捞金鱼，浴衣袖摆滑下也顾不上；捞到之后高高举起战利品，虎牙都笑出来的瞬间，比舞台笑容更真实。",
+      "id": "arima_kana_sfw_b5_10",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "warm lantern light at night",
+      "location": "夏祭捞金鱼摊",
+      "mood": "自然日常、细腻表情",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2476,41 +2518,7 @@
         "underwear",
         "see-through"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "arima_kana_sfw_b5_10",
-      "title": "有马加奈 · 祭典捞金鱼的胜负欲",
-      "category": "日常生活",
-      "characterId": "arima_kana",
       "outfitId": "sfw_festival",
-      "description": "夏祭摊位，她挽起袖子全神贯注捞金鱼，浴衣袖摆滑下也顾不上；捞到之后高高举起战利品，虎牙都笑出来的瞬间，比舞台笑容更真实。",
-      "location": "夏祭捞金鱼摊",
-      "action": "举起装着金鱼的小袋开怀大笑，另一手仍拿着纸网。",
-      "timeOfDay": "夜晚",
-      "lighting": "warm lantern light at night",
-      "camera": "medium shot, environmental portrait",
-      "mood": "自然日常、细腻表情",
-      "sceneTags": [
-        "goldfish_scooping",
-        "goldfish_bag",
-        "holding_bag",
-        "paper_scoop",
-        "yukata",
-        "laughing",
-        "fang",
-        "lantern",
-        "festival",
-        "night",
-        "medium_shot"
-      ],
       "promptProse": "Kana lifts a small goldfish bag triumphantly above the festival pool, laughing so openly that her tiny canine tooth shows. Her red-and-white yukata sleeves are gathered safely clear of the water, one hand still holding the paper scoop. Warm lantern light ripples over the pool and her delighted ruby eyes in a close, lively portrait of winning an ordinary summer game.",
       "promptTokens": [
         "1girl",
@@ -2527,6 +2535,42 @@
         "night",
         "medium_shot"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "goldfish_scooping",
+        "goldfish_bag",
+        "holding_bag",
+        "paper_scoop",
+        "yukata",
+        "laughing",
+        "fang",
+        "lantern",
+        "festival",
+        "night",
+        "medium_shot"
+      ],
+      "timeOfDay": "夜晚",
+      "title": "有马加奈 · 祭典捞金鱼的胜负欲"
+    },
+    {
+      "action": "跨坐腰间红白偶像服半褪露双峰，贝雷帽斜戴，红瞳带泪娇蛮起伏",
+      "adult": true,
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "intimate vertical medium shot",
+      "category": "主控骑乘",
+      "characterId": "arima_kana",
+      "coverageTags": [
+        "nsfw",
+        "cowgirl",
+        "special_nsfw"
+      ],
+      "description": "【偶像巡演休息室·散场后】B小町红色担当偶像服。加奈跨坐在你的腰间，蓬蓬裙被推到腰部，红白蕾丝内衣解开了胸前的蝴蝶结。平日里满嘴带刺的傲娇童星，此刻红瞳湿润欲滴，一边主动晃动纤细的腰肢，一边霸道又脆弱地命令——「不管外面有多少粉丝……看着我的眼神，绝对不许分给别人哪怕一秒钟！」",
+      "id": "arima_kana_r18_b5_01",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "warm_cinematic_lighting",
+      "location": "偶像巡演休息室·散场后",
+      "mood": "主动亲密与失神",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2541,35 +2585,15 @@
         "signature",
         "2girls",
         "1boy",
-        "nude",
-        "underwear",
-        "see-through"
+        "underage",
+        "child",
+        "loli",
+        "extra_characters",
+        "second_person",
+        "duplicate"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "arima_kana_r18_b5_01",
-      "title": "有马加奈 · 演出现场休息室的主控跨坐 ·「阿库亚……你今晚的推子只能是我！」",
-      "category": "主控骑乘",
-      "characterId": "arima_kana",
-      "description": "【偶像巡演休息室·散场后】B小町红色担当偶像服。加奈跨坐在你的腰间，蓬蓬裙被推到腰部，红白蕾丝内衣解开了胸前的蝴蝶结。平日里满嘴带刺的傲娇童星，此刻红瞳湿润欲滴，一边主动晃动纤细的腰肢，一边霸道又脆弱地命令——「不管外面有多少粉丝……看着我的眼神，绝对不许分给别人哪怕一秒钟！」",
-      "location": "偶像巡演休息室·散场后",
-      "action": "跨坐腰间红白偶像服半褪露双峰，贝雷帽斜戴，红瞳带泪娇蛮起伏",
-      "timeOfDay": "night",
-      "lighting": "warm_cinematic_lighting",
-      "camera": "intimate vertical medium shot",
-      "mood": "主动亲密与失神",
-      "sceneTags": [
-        "cowgirl",
-        "adult",
-        "solo",
+      "nsfwProse": "Kana Arima from Oshi no Ko straddles your lap in the locked backstage dressing room after a B-Komachi concert, her ruffled red idol costume shoved up to her waist. Her matching crimson lace bra hangs open, freeing her perky, sensitive breasts to bounce with her passionate, defiant hip motion as she grips your collar. Her glossy red bob and signature beret frame a face burning scarlet with tears and fierce love, demanding that you look only at her.",
+      "nsfwTokens": [
         "straddling",
         "cowgirl_position",
         "on_lap",
@@ -2577,8 +2601,25 @@
         "idol_clothes",
         "beret",
         "bare_breasts",
-        "bouncing_breasts"
+        "bouncing_breasts",
+        "pink_nipples",
+        "crotchless_panties",
+        "pussy_juice",
+        "sweat_drops",
+        "heavy_blush",
+        "blushing_ears",
+        "parted_lips",
+        "red_hair",
+        "short_hair",
+        "red_eyes",
+        "vertical_shot",
+        "low_angle",
+        "detailed_background",
+        "cinematic_lighting",
+        "depth_of_field",
+        "volumetric_lighting"
       ],
+      "outfitId": "nsfw_boudoir",
       "promptProse": "Kana Arima from Oshi no Ko straddles your lap in the locked backstage dressing room after a B-Komachi concert, her ruffled red idol costume shoved up to her waist. Her matching crimson lace bra hangs open, freeing her perky, sensitive breasts to bounce with her passionate, defiant hip motion as she grips your collar. Her glossy red bob and signature beret frame a face burning scarlet with tears and fierce love, demanding that you look only at her.",
       "promptTokens": [
         "straddling",
@@ -2606,6 +2647,42 @@
         "depth_of_field",
         "volumetric_lighting"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "cowgirl",
+        "adult",
+        "solo",
+        "straddling",
+        "cowgirl_position",
+        "on_lap",
+        "riding",
+        "idol_clothes",
+        "beret",
+        "bare_breasts",
+        "bouncing_breasts"
+      ],
+      "timeOfDay": "night",
+      "title": "有马加奈 · 演出现场休息室的主控跨坐 ·「阿库亚……你今晚的推子只能是我！」"
+    },
+    {
+      "action": "淋浴下湿身赤裸手探腿间，水流冲刷短发，咬唇仰头带泪自抚",
+      "adult": true,
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "intimate vertical medium shot",
+      "category": "水光湿身",
+      "characterId": "arima_kana",
+      "coverageTags": [
+        "nsfw",
+        "wet",
+        "special_nsfw"
+      ],
+      "description": "【加奈公寓浴室·深夜】卸掉舞台浓妆的加奈赤裸着站在花洒下。湿透的红色短发贴在颈项，温水顺着眼角冲刷走白天积攒的委屈。她的单手在水雾中探向腿心，饱满的红唇咬得泛白——「十秒就能哭出来的天才童星……为什么唯独在你面前……眼泪怎么也止不住啊……」",
+      "id": "arima_kana_r18_b5_02",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "liquid_reflection_lighting",
+      "location": "加奈公寓浴室·深夜",
+      "mood": "湿身水光与私密自持",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2627,61 +2704,8 @@
         "second_person",
         "duplicate"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "sampleRating": "R18",
+      "nsfwProse": "Kana Arima stands completely bare under the cascading spray of her apartment shower after washing off her stage makeup. Her red bob clings wetly to her temples as tears mix with water streaming over her porcelain collarbones and compact, beautiful breasts. Her trembling fingers massage herself with frantic, aching need between parted thighs, her throat knotting around muffled sobs as her famous crying-act becomes genuine heartbreak and desire.",
       "nsfwTokens": [
-        "straddling",
-        "cowgirl_position",
-        "on_lap",
-        "riding",
-        "idol_clothes",
-        "beret",
-        "bare_breasts",
-        "bouncing_breasts",
-        "pink_nipples",
-        "crotchless_panties",
-        "pussy_juice",
-        "sweat_drops",
-        "heavy_blush",
-        "blushing_ears",
-        "parted_lips",
-        "red_hair",
-        "short_hair",
-        "red_eyes",
-        "vertical_shot",
-        "low_angle",
-        "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
-      ],
-      "nsfwProse": "Kana Arima from Oshi no Ko straddles your lap in the locked backstage dressing room after a B-Komachi concert, her ruffled red idol costume shoved up to her waist. Her matching crimson lace bra hangs open, freeing her perky, sensitive breasts to bounce with her passionate, defiant hip motion as she grips your collar. Her glossy red bob and signature beret frame a face burning scarlet with tears and fierce love, demanding that you look only at her.",
-      "outfitId": "nsfw_boudoir",
-      "coverageTags": [
-        "nsfw",
-        "cowgirl",
-        "special_nsfw"
-      ]
-    },
-    {
-      "id": "arima_kana_r18_b5_02",
-      "title": "有马加奈 · 淋浴间卸妆水雾中的湿身独奏 ·「把帽子摘掉后……我就只是个普通的胆小鬼」",
-      "category": "水光湿身",
-      "characterId": "arima_kana",
-      "description": "【加奈公寓浴室·深夜】卸掉舞台浓妆的加奈赤裸着站在花洒下。湿透的红色短发贴在颈项，温水顺着眼角冲刷走白天积攒的委屈。她的单手在水雾中探向腿心，饱满的红唇咬得泛白——「十秒就能哭出来的天才童星……为什么唯独在你面前……眼泪怎么也止不住啊……」",
-      "location": "加奈公寓浴室·深夜",
-      "action": "淋浴下湿身赤裸手探腿间，水流冲刷短发，咬唇仰头带泪自抚",
-      "timeOfDay": "night",
-      "lighting": "liquid_reflection_lighting",
-      "camera": "intimate vertical medium shot",
-      "mood": "湿身水光与私密自持",
-      "sceneTags": [
-        "wet",
-        "adult",
-        "solo",
         "sensual_solo",
         "masturbation",
         "touching_own_body",
@@ -2689,8 +2713,25 @@
         "shower",
         "wet_skin",
         "water_droplets",
-        "completely_nude"
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "exposed_pussy",
+        "pussy",
+        "pussy_juice",
+        "red_hair",
+        "short_hair",
+        "red_eyes",
+        "crying",
+        "heavy_blush",
+        "teary_eyes",
+        "parted_lips",
+        "detailed_background",
+        "cinematic_lighting",
+        "depth_of_field",
+        "volumetric_lighting"
       ],
+      "outfitId": "nsfw_boudoir",
       "promptProse": "Kana Arima stands completely bare under the cascading spray of her apartment shower after washing off her stage makeup. Her red bob clings wetly to her temples as tears mix with water streaming over her porcelain collarbones and compact, beautiful breasts. Her trembling fingers massage herself with frantic, aching need between parted thighs, her throat knotting around muffled sobs as her famous crying-act becomes genuine heartbreak and desire.",
       "promptTokens": [
         "sensual_solo",
@@ -2718,6 +2759,42 @@
         "depth_of_field",
         "volumetric_lighting"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "wet",
+        "adult",
+        "solo",
+        "sensual_solo",
+        "masturbation",
+        "touching_own_body",
+        "hand_between_legs",
+        "shower",
+        "wet_skin",
+        "water_droplets",
+        "completely_nude"
+      ],
+      "timeOfDay": "night",
+      "title": "有马加奈 · 淋浴间卸妆水雾中的湿身独奏 ·「把帽子摘掉后……我就只是个普通的胆小鬼」"
+    },
+    {
+      "action": "撑试衣台塌腰回眸双手反剪扯拉链，紧身包臀裙卡死勒肉，贝雷帽微歪娇恼",
+      "adult": true,
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "intimate horizontal medium shot",
+      "category": "更衣事故",
+      "characterId": "arima_kana",
+      "coverageTags": [
+        "nsfw",
+        "dressing_malfunction",
+        "special_nsfw"
+      ],
+      "description": "【服装品牌赞助更衣室·午后】为了试镜挑了一件超修身的暗红色包臀迷你裙，后背拉链却卡在腰臀转折处。加奈双手拼命向后够，紧绷的布料把饱满微翘的臀部勒得弧度毕露，侧乳从开衩边缘完全溢出。她慌乱回头，小尖牙咬住嘴唇——「裙子真的拉不开了啦！要是试镜迟到的话……我、我就拿你是问！」",
+      "id": "arima_kana_r18_b5_03",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "warm_cinematic_lighting",
+      "location": "服装品牌赞助更衣室·午后",
+      "mood": "意外失控与羞赧",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2739,61 +2816,8 @@
         "second_person",
         "duplicate"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "sampleRating": "R18",
+      "nsfwProse": "Kana Arima bends forward over a boutique fitting stool, trapped inside a skin-tight burgundy velvet minidress with its rear zipper jammed hopelessly over her arched hips. The severe constriction pushes her chest forward into an exquisite spill of cleavage while the hem rides high enough to reveal sheer black stockings and lace panties. Glancing back with her beret askew, her crimson eyes swim with flustered tears as her sharp canine bites into her lower lip.",
       "nsfwTokens": [
-        "sensual_solo",
-        "masturbation",
-        "touching_own_body",
-        "hand_between_legs",
-        "shower",
-        "wet_skin",
-        "water_droplets",
-        "completely_nude",
-        "bare_breasts",
-        "pink_nipples",
-        "exposed_pussy",
-        "pussy",
-        "pussy_juice",
-        "red_hair",
-        "short_hair",
-        "red_eyes",
-        "crying",
-        "heavy_blush",
-        "teary_eyes",
-        "parted_lips",
-        "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
-      ],
-      "nsfwProse": "Kana Arima stands completely bare under the cascading spray of her apartment shower after washing off her stage makeup. Her red bob clings wetly to her temples as tears mix with water streaming over her porcelain collarbones and compact, beautiful breasts. Her trembling fingers massage herself with frantic, aching need between parted thighs, her throat knotting around muffled sobs as her famous crying-act becomes genuine heartbreak and desire.",
-      "outfitId": "nsfw_boudoir",
-      "coverageTags": [
-        "nsfw",
-        "wet",
-        "special_nsfw"
-      ]
-    },
-    {
-      "id": "arima_kana_r18_b5_03",
-      "title": "有马加奈 · 试衣间紧身迷你裙的拉链卡死事故 ·「笨蛋阿库亚……快拉我一把，裙子要被撑破了！」",
-      "category": "更衣事故",
-      "characterId": "arima_kana",
-      "description": "【服装品牌赞助更衣室·午后】为了试镜挑了一件超修身的暗红色包臀迷你裙，后背拉链却卡在腰臀转折处。加奈双手拼命向后够，紧绷的布料把饱满微翘的臀部勒得弧度毕露，侧乳从开衩边缘完全溢出。她慌乱回头，小尖牙咬住嘴唇——「裙子真的拉不开了啦！要是试镜迟到的话……我、我就拿你是问！」",
-      "location": "服装品牌赞助更衣室·午后",
-      "action": "撑试衣台塌腰回眸双手反剪扯拉链，紧身包臀裙卡死勒肉，贝雷帽微歪娇恼",
-      "timeOfDay": "afternoon",
-      "lighting": "warm_cinematic_lighting",
-      "camera": "intimate horizontal medium shot",
-      "mood": "意外失控与羞赧",
-      "sceneTags": [
-        "dressing_malfunction",
-        "adult",
-        "solo",
         "bent_over",
         "leaning_forward",
         "dressing_room",
@@ -2801,8 +2825,31 @@
         "tight_dress",
         "miniskirt",
         "stuck_zipper",
-        "clothes_pull"
+        "clothes_pull",
+        "hands_behind_back",
+        "breast_squeeze",
+        "cleavage",
+        "skirt_lift",
+        "black_stockings",
+        "crotchless_panties",
+        "exposed_pussy",
+        "pussy",
+        "pussy_juice",
+        "sensual_solo",
+        "looking_back",
+        "biting_lip",
+        "heavy_blush",
+        "blushing_ears",
+        "teary_eyes",
+        "parted_lips",
+        "red_hair",
+        "wide_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "depth_of_field",
+        "volumetric_lighting"
       ],
+      "outfitId": "nsfw_boudoir",
       "promptProse": "Kana Arima bends forward over a boutique fitting stool, trapped inside a skin-tight burgundy velvet minidress with its rear zipper jammed hopelessly over her arched hips. The severe constriction pushes her chest forward into an exquisite spill of cleavage while the hem rides high enough to reveal sheer black stockings and lace panties. Glancing back with her beret askew, her crimson eyes swim with flustered tears as her sharp canine bites into her lower lip.",
       "promptTokens": [
         "bent_over",
@@ -2836,6 +2883,42 @@
         "depth_of_field",
         "volumetric_lighting"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "dressing_malfunction",
+        "adult",
+        "solo",
+        "bent_over",
+        "leaning_forward",
+        "dressing_room",
+        "red_dress",
+        "tight_dress",
+        "miniskirt",
+        "stuck_zipper",
+        "clothes_pull"
+      ],
+      "timeOfDay": "afternoon",
+      "title": "有马加奈 · 试衣间紧身迷你裙的拉链卡死事故 ·「笨蛋阿库亚……快拉我一把，裙子要被撑破了！」"
+    },
+    {
+      "action": "侧卧床单睡衣半褪手探腿间自抚，抓紧床单抽泣高潮，泪水浸湿被褥",
+      "adult": true,
+      "animaStyleHint": "r18_elegant_boudoir",
+      "camera": "intimate vertical medium shot",
+      "category": "私密自持",
+      "characterId": "arima_kana",
+      "coverageTags": [
+        "nsfw",
+        "self_control",
+        "special_nsfw"
+      ],
+      "description": "【加奈卧室·深夜】看到阿库亚和茜的新闻后的夜晚。加奈把整张脸埋在被窝里，睡衣被扯开露出一侧饱满白皙的乳房。手指在爱液里急促揉弄，眼泪大颗大颗砸在床单上——「明明我才是最早认识你的人……为什么每一次……都只能看着别人的背影……哈啊……」",
+      "id": "arima_kana_r18_b5_04",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "warm_cinematic_lighting",
+      "location": "加奈卧室·深夜",
+      "mood": "独处沉沦与情绪释放",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -2857,34 +2940,27 @@
         "second_person",
         "duplicate"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "sampleRating": "R18",
+      "nsfwProse": "Curled on her side across a messy bed after seeing the latest entertainment tabloids, Kana Arima pulls her pink nightgown open, exposing one round breast and taut pink nipple. Her fingers pump feverishly between her damp thighs, her other hand clawing into the cotton sheets as choking sobs break from her chest. Tears flood her deep crimson eyes, glistening across her flushed cheeks as she climaxes alone in agonizing jealousy and pure yearning.",
       "nsfwTokens": [
-        "bent_over",
-        "leaning_forward",
-        "dressing_room",
-        "red_dress",
-        "tight_dress",
-        "miniskirt",
-        "stuck_zipper",
-        "clothes_pull",
-        "hands_behind_back",
-        "breast_squeeze",
-        "cleavage",
-        "skirt_lift",
-        "black_stockings",
-        "crotchless_panties",
+        "sensual_solo",
+        "lying_on_side",
+        "on_bed",
+        "bed_sheet",
+        "nightgown",
+        "shirt_lift",
+        "one_breast_exposed",
+        "bare_breasts",
+        "pink_nipples",
+        "spread_legs",
+        "hand_between_legs",
+        "touching_own_body",
         "exposed_pussy",
         "pussy",
         "pussy_juice",
-        "sensual_solo",
-        "looking_back",
-        "biting_lip",
+        "sweat",
         "heavy_blush",
-        "blushing_ears",
+        "crying",
+        "weeping",
         "teary_eyes",
         "parted_lips",
         "red_hair",
@@ -2894,39 +2970,7 @@
         "depth_of_field",
         "volumetric_lighting"
       ],
-      "nsfwProse": "Kana Arima bends forward over a boutique fitting stool, trapped inside a skin-tight burgundy velvet minidress with its rear zipper jammed hopelessly over her arched hips. The severe constriction pushes her chest forward into an exquisite spill of cleavage while the hem rides high enough to reveal sheer black stockings and lace panties. Glancing back with her beret askew, her crimson eyes swim with flustered tears as her sharp canine bites into her lower lip.",
       "outfitId": "nsfw_boudoir",
-      "coverageTags": [
-        "nsfw",
-        "dressing_malfunction",
-        "special_nsfw"
-      ]
-    },
-    {
-      "id": "arima_kana_r18_b5_04",
-      "title": "有马加奈 · 单身公寓被窝里的吃醋自持 ·「如果连我都放弃了……你眼里就真的没有我了……」",
-      "category": "私密自持",
-      "characterId": "arima_kana",
-      "description": "【加奈卧室·深夜】看到阿库亚和茜的新闻后的夜晚。加奈把整张脸埋在被窝里，睡衣被扯开露出一侧饱满白皙的乳房。手指在爱液里急促揉弄，眼泪大颗大颗砸在床单上——「明明我才是最早认识你的人……为什么每一次……都只能看着别人的背影……哈啊……」",
-      "location": "加奈卧室·深夜",
-      "action": "侧卧床单睡衣半褪手探腿间自抚，抓紧床单抽泣高潮，泪水浸湿被褥",
-      "timeOfDay": "night",
-      "lighting": "warm_cinematic_lighting",
-      "camera": "intimate vertical medium shot",
-      "mood": "独处沉沦与情绪释放",
-      "sceneTags": [
-        "self_control",
-        "adult",
-        "solo",
-        "sensual_solo",
-        "lying_on_side",
-        "on_bed",
-        "bed_sheet",
-        "nightgown",
-        "shirt_lift",
-        "one_breast_exposed",
-        "bare_breasts"
-      ],
       "promptProse": "Curled on her side across a messy bed after seeing the latest entertainment tabloids, Kana Arima pulls her pink nightgown open, exposing one round breast and taut pink nipple. Her fingers pump feverishly between her damp thighs, her other hand clawing into the cotton sheets as choking sobs break from her chest. Tears flood her deep crimson eyes, glistening across her flushed cheeks as she climaxes alone in agonizing jealousy and pure yearning.",
       "promptTokens": [
         "sensual_solo",
@@ -2957,33 +3001,12 @@
         "depth_of_field",
         "volumetric_lighting"
       ],
-      "negativeTokens": [
-        "worst_quality",
-        "low_quality",
-        "bad_anatomy",
-        "bad_hands",
-        "missing_fingers",
-        "extra_fingers",
-        "extra_limbs",
-        "blurry",
-        "watermark",
-        "text",
-        "signature",
-        "2girls",
-        "1boy",
-        "underage",
-        "child",
-        "loli",
-        "extra_characters",
-        "second_person",
-        "duplicate"
-      ],
       "recommendedSize": "1536x1152",
-      "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_elegant_boudoir",
       "sampleRating": "R18",
-      "nsfwTokens": [
+      "sceneTags": [
+        "self_control",
+        "adult",
+        "solo",
         "sensual_solo",
         "lying_on_side",
         "on_bed",
@@ -2991,34 +3014,12 @@
         "nightgown",
         "shirt_lift",
         "one_breast_exposed",
-        "bare_breasts",
-        "pink_nipples",
-        "spread_legs",
-        "hand_between_legs",
-        "touching_own_body",
-        "exposed_pussy",
-        "pussy",
-        "pussy_juice",
-        "sweat",
-        "heavy_blush",
-        "crying",
-        "weeping",
-        "teary_eyes",
-        "parted_lips",
-        "red_hair",
-        "wide_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "depth_of_field",
-        "volumetric_lighting"
+        "bare_breasts"
       ],
-      "nsfwProse": "Curled on her side across a messy bed after seeing the latest entertainment tabloids, Kana Arima pulls her pink nightgown open, exposing one round breast and taut pink nipple. Her fingers pump feverishly between her damp thighs, her other hand clawing into the cotton sheets as choking sobs break from her chest. Tears flood her deep crimson eyes, glistening across her flushed cheeks as she climaxes alone in agonizing jealousy and pure yearning.",
-      "outfitId": "nsfw_boudoir",
-      "coverageTags": [
-        "nsfw",
-        "self_control",
-        "special_nsfw"
-      ]
+      "timeOfDay": "night",
+      "title": "有马加奈 · 单身公寓被窝里的吃醋自持 ·「如果连我都放弃了……你眼里就真的没有我了……」"
     }
-  ]
+  ],
+  "franchise": "Oshi no Ko",
+  "version": 2
 }

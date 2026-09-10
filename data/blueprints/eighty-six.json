@@ -1,28 +1,35 @@
 {
-  "version": "1.0.0",
-  "franchise": "86 -Eighty Six-",
   "blueprints": [
     {
-      "id": "lena_handler_one_moonlit_command",
-      "title": "芙拉蒂蕾娜 · 月光指挥室的秘话同调·「这里是我的声音，也永远是你们的」",
+      "action": "单手扶全息沙盘下达指令，指尖划过战线光点，颈侧耳机泛蓝光，银灰眼眸锐利坚定",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "medium shot, low angle, holographic display glow, commanding presence",
       "category": "军旅高光",
       "characterId": "vladilena_milize",
-      "description": "【共和国防线地下指挥室·深夜】全息沙盘的幽蓝光束切开黑暗，身着蓝色共和国军装的蕾娜立于指挥桌前，军帽檐下的银白长发泛着冷冽光泽。她单手扶着全息投影边缘，颈侧的Para-RAID秘话耳机亮起微光，银灰色的双眸倒映着战线光点，果决地下达一道道指令——那是既是温柔又绝不容侵犯的指挥官威严。",
-      "location": "共和国防线地下作战指挥室",
-      "action": "单手扶全息沙盘下达指令，指尖划过战线光点，颈侧耳机泛蓝光，银灰眼眸锐利坚定",
-      "timeOfDay": "深夜",
-      "lighting": "全息沙盘幽蓝光束自下而上勾勒军装轮廓与银发冷光",
-      "camera": "medium shot, low angle, holographic display glow, commanding presence",
-      "mood": "凛然果决、威严动人",
-      "sceneTags": [
-        "command_room",
-        "hologram",
-        "military_uniform",
-        "headset",
-        "commanding",
-        "night",
-        "iconic"
+      "coverageTags": [
+        "official_default",
+        "iconic",
+        "signature"
       ],
+      "description": "【共和国防线地下指挥室·深夜】全息沙盘的幽蓝光束切开黑暗，身着蓝色共和国军装的蕾娜立于指挥桌前，军帽檐下的银白长发泛着冷冽光泽。她单手扶着全息投影边缘，颈侧的Para-RAID秘话耳机亮起微光，银灰色的双眸倒映着战线光点，果决地下达一道道指令——那是既是温柔又绝不容侵犯的指挥官威严。",
+      "id": "lena_handler_one_moonlit_command",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "全息沙盘幽蓝光束自下而上勾勒军装轮廓与银发冷光",
+      "location": "共和国防线地下作战指挥室",
+      "mood": "凛然果决、威严动人",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "bad hands",
+        "extra fingers",
+        "blurry",
+        "cropped",
+        "watermark",
+        "fire, flames, burning ears"
+      ],
+      "outfitId": "official_republic_military_uniform",
       "promptProse": "Vladilena Milize from 86 -Eighty Six- stands in a dim underground command room at night, wearing her blue San Magnolia military uniform with a peaked cap. Her long silver hair spills over her shoulders as she leans one hand on a glowing holographic strategy table, blue light washing up her composed face and silver-grey eyes. A Para-RAID headset glows faintly on her neck while she issues calm, resolute orders across the glowing front-line markers. Medium shot with dramatic under-glow, cinematic lighting, volumetric hologram haze, detailed background of dark console banks, depth of field.",
       "promptTokens": [
         "vladilena_millize",
@@ -45,6 +52,38 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "command_room",
+        "hologram",
+        "military_uniform",
+        "headset",
+        "commanding",
+        "night",
+        "iconic"
+      ],
+      "timeOfDay": "深夜",
+      "title": "芙拉蒂蕾娜 · 月光指挥室的秘话同调·「这里是我的声音，也永远是你们的」"
+    },
+    {
+      "action": "单膝跪地献放白花，双手合拢垂首默祷，赤发与黑军装在晚风中轻扬",
+      "adult": false,
+      "animaStyleHint": "anime_slice_of_life",
+      "camera": "cowboy shot, solemn low angle, warm rim light, memorial atmosphere",
+      "category": "军旅叙事",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "story",
+        "emotional",
+        "iconic"
+      ],
+      "description": "【基地纪念墙前·黄昏】染血赤发在晚风中轻扬，身着黑色军装的蕾娜单膝跪在刻满名字的纪念墙前，将一束白花轻轻放下。黑裙、黑靴与黑手套勾勒出肃穆的剪影，唯有那缕赤红发丝像不肯熄灭的火种。她合拢双手垂首默祷，银灰的睫毛在颤动，坚强与哀恸在她脸上达成了完美的平衡。",
+      "id": "lena_requiem_black_uniform_memorial",
+      "kreaStyleHint": "anime_slice_of_life",
+      "lighting": "低角度橙金夕照为黑色军装镶上暖边，白花高光纯净",
+      "location": "基地纪念广场刻名墙前",
+      "mood": "肃穆哀恸、坚毅不屈",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -56,41 +95,8 @@
         "watermark",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "outfitId": "official_republic_military_uniform",
-      "coverageTags": [
-        "official_default",
-        "iconic",
-        "signature"
-      ]
-    },
-    {
-      "id": "lena_requiem_black_uniform_memorial",
-      "title": "芙拉蒂蕾娜 · 黑色军装的追悼白花·「鲜血女王绝不会忘记任何一个名字」",
-      "category": "军旅叙事",
-      "characterId": "vladilena_milize",
-      "description": "【基地纪念墙前·黄昏】染血赤发在晚风中轻扬，身着黑色军装的蕾娜单膝跪在刻满名字的纪念墙前，将一束白花轻轻放下。黑裙、黑靴与黑手套勾勒出肃穆的剪影，唯有那缕赤红发丝像不肯熄灭的火种。她合拢双手垂首默祷，银灰的睫毛在颤动，坚强与哀恸在她脸上达成了完美的平衡。",
-      "location": "基地纪念广场刻名墙前",
-      "action": "单膝跪地献放白花，双手合拢垂首默祷，赤发与黑军装在晚风中轻扬",
-      "timeOfDay": "黄昏",
-      "lighting": "低角度橙金夕照为黑色军装镶上暖边，白花高光纯净",
-      "camera": "cowboy shot, solemn low angle, warm rim light, memorial atmosphere",
-      "mood": "肃穆哀恸、坚毅不屈",
-      "sceneTags": [
-        "memorial",
-        "white_flower",
-        "black_uniform",
-        "kneeling",
-        "praying",
-        "red_streak",
-        "sunset",
-        "solemn"
-      ],
-      "promptProse": "Vladilena Milize kneels gracefully before a carved memorial wall at dusk, dressed in the black variant of her military uniform with black gloves and boots. A single red streak glows in her silver hair as she lays down a bouquet of white flowers and folds her hands in quiet prayer. Warm orange sunset light rims her black jacket and skirt, catching the trembling of her silver-grey lashes as she honors the fallen with unwavering resolve. Cowboy shot, cinematic lighting, volumetric dusk haze, detailed stone wall background, depth of field.",
+      "outfitId": "bloody_reina_black_uniform",
+      "promptProse": "Vladilena Milize kneels gracefully before a carved memorial wall at dusk in the black variant of her military uniform with black gloves and boots. A bouquet of white flowers rests at the wall as she folds her hands in quiet prayer, a single red streak glowing in her silver hair. Warm orange sunset light rims her black jacket and skirt as she honors the fallen with unwavering resolve.",
       "promptTokens": [
         "vladilena_millize",
         "1girl",
@@ -112,8 +118,42 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hands_clasped"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "memorial",
+        "white_flower",
+        "black_uniform",
+        "kneeling",
+        "praying",
+        "red_streak",
+        "sunset",
+        "solemn"
+      ],
+      "timeOfDay": "黄昏",
+      "title": "芙拉蒂蕾娜 · 黑色军装的追悼白花·「鲜血女王绝不会忘记任何一个名字」"
+    },
+    {
+      "action": "抱膝坐在野餐布上远眺湖面，裙摆长发随风轻扬，被偷看后红着脸嗔怒",
+      "adult": false,
+      "animaStyleHint": "anime_slice_of_life",
+      "camera": "medium full shot, eye level, lakeside sparkle, gentle breeze motion",
+      "category": "夏日日常",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "daily",
+        "summer",
+        "girlfriend"
+      ],
+      "description": "【军事区外的宁静湖畔·午后】难得的休假日，蕾娜褪下军装换上淡紫色碎花连衣裙，与你并肩坐在湖边的野餐布上。她抱着膝盖望向粼粼波光，裙摆与银白长发随风轻扬，白皙的脚踝交叠在草地上。回过神来发现你在看她，贵族小姐的脸颊瞬间烧红——「看、看什么呀，快点把三明治吃掉啦。」",
+      "id": "lena_lakeside_summer_dress_picnic",
+      "kreaStyleHint": "anime_slice_of_life",
+      "lighting": "明亮通透的夏日阳光，湖面反光在她侧脸跳跃",
+      "location": "军事禁区外的湖畔草坪野餐点",
+      "mood": "松弛惬意、娇羞反差",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -125,40 +165,7 @@
         "watermark",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_slice_of_life",
-      "animaStyleHint": "anime_slice_of_life",
-      "outfitId": "bloody_reina_black_uniform",
-      "coverageTags": [
-        "story",
-        "emotional",
-        "iconic"
-      ]
-    },
-    {
-      "id": "lena_lakeside_summer_dress_picnic",
-      "title": "芙拉蒂蕾娜 · 湖畔野餐的紫色裙摆·「今天，请忘掉军衔陪我放空一午后」",
-      "category": "夏日日常",
-      "characterId": "vladilena_milize",
-      "description": "【军事区外的宁静湖畔·午后】难得的休假日，蕾娜褪下军装换上淡紫色碎花连衣裙，与你并肩坐在湖边的野餐布上。她抱着膝盖望向粼粼波光，裙摆与银白长发随风轻扬，白皙的脚踝交叠在草地上。回过神来发现你在看她，贵族小姐的脸颊瞬间烧红——「看、看什么呀，快点把三明治吃掉啦。」",
-      "location": "军事禁区外的湖畔草坪野餐点",
-      "action": "抱膝坐在野餐布上远眺湖面，裙摆长发随风轻扬，被偷看后红着脸嗔怒",
-      "timeOfDay": "午后",
-      "lighting": "明亮通透的夏日阳光，湖面反光在她侧脸跳跃",
-      "camera": "medium full shot, eye level, lakeside sparkle, gentle breeze motion",
-      "mood": "松弛惬意、娇羞反差",
-      "sceneTags": [
-        "picnic",
-        "lake",
-        "sundress",
-        "summer_dress",
-        "bare_legs",
-        "wind_blown",
-        "blush",
-        "daily"
-      ],
+      "outfitId": "casual_summer_dress",
       "promptProse": "Vladilena Milize sits on a picnic blanket by a tranquil summer lake, wearing a light lilac floral sundress with a ribbon at her slender waist. Her long silver hair and the hem of her dress flutter in the warm breeze as she hugs her knees and gazes across the sparkling water. Noticing your gaze, her aristocratic cheeks flush pink as she pouts and looks away. Bright midday sunlight shimmers on the lake, illuminating her pale ankles in the grass. Medium full shot, cinematic lighting, volumetric sunlight, detailed lakeside background, depth of field.",
       "promptTokens": [
         "vladilena_millize",
@@ -184,6 +191,39 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "picnic",
+        "lake",
+        "sundress",
+        "summer_dress",
+        "bare_legs",
+        "wind_blown",
+        "blush",
+        "daily"
+      ],
+      "timeOfDay": "午后",
+      "title": "芙拉蒂蕾娜 · 湖畔野餐的紫色裙摆·「今天，请忘掉军衔陪我放空一午后」"
+    },
+    {
+      "action": "倚着窗台单手捧红茶，宽松白衬衫下裸露小腿，睡眼惺忪地微笑",
+      "adult": false,
+      "animaStyleHint": "anime_slice_of_life",
+      "camera": "medium shot, backlit window glow, cozy morning atmosphere, eye level",
+      "category": "居家日常",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "daily",
+        "girlfriend",
+        "morning"
+      ],
+      "description": "【共和国军官宿舍·清晨】晨光透过白纱帘洒进简洁的军官宿舍。蕾娜穿着一袭过肘的宽松白衬衫（那分明是你落在她那里的），裸露的小腿在晨光里泛着柔光。她单手捧着冒热气的红茶倚在窗台，另一只手还攥着没有梳拢的银白长发，睡眼惺忪地朝你弯起眼睛——卸下军衔的清晨，柔软得不像那位鲜血女王。",
+      "id": "lena_dorm_morning_casual_domestic",
+      "kreaStyleHint": "anime_slice_of_life",
+      "lighting": "白纱帘过滤的柔和晨光，逆光勾勒银发与白衬衫轮廓",
+      "location": "军官宿舍窗台边",
+      "mood": "慵懒治愈、人妻感满溢",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -195,40 +235,7 @@
         "watermark",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_slice_of_life",
-      "animaStyleHint": "anime_slice_of_life",
       "outfitId": "casual_summer_dress",
-      "coverageTags": [
-        "daily",
-        "summer",
-        "girlfriend"
-      ]
-    },
-    {
-      "id": "lena_dorm_morning_casual_domestic",
-      "title": "芙拉蒂蕾娜 · 军官宿舍的晨光白衬衫·「少校的休息日，从一杯红茶开始」",
-      "category": "居家日常",
-      "characterId": "vladilena_milize",
-      "description": "【共和国军官宿舍·清晨】晨光透过白纱帘洒进简洁的军官宿舍。蕾娜穿着一袭过肘的宽松白衬衫（那分明是你落在她那里的），裸露的小腿在晨光里泛着柔光。她单手捧着冒热气的红茶倚在窗台，另一只手还攥着没有梳拢的银白长发，睡眼惺忪地朝你弯起眼睛——卸下军衔的清晨，柔软得不像那位鲜血女王。",
-      "location": "军官宿舍窗台边",
-      "action": "倚着窗台单手捧红茶，宽松白衬衫下裸露小腿，睡眼惺忪地微笑",
-      "timeOfDay": "清晨",
-      "lighting": "白纱帘过滤的柔和晨光，逆光勾勒银发与白衬衫轮廓",
-      "camera": "medium shot, backlit window glow, cozy morning atmosphere, eye level",
-      "mood": "慵懒治愈、人妻感满溢",
-      "sceneTags": [
-        "bedroom",
-        "morning",
-        "oversized_shirt",
-        "white_shirt",
-        "bare_legs",
-        "tea",
-        "messy_hair",
-        "daily"
-      ],
       "promptProse": "Vladilena Milize leans against the windowsill of a tidy officers' dormitory in soft morning light, wearing an oversized white shirt slipping off one shoulder and baring her long pale legs. Steam curls from the cup of black tea cradled in her hands as her unbound silver hair falls messily past her waist. She blinks away sleep and smiles gently at you, backlit by gauzy white curtains that outline her relaxed silhouette. Medium shot, warm cinematic lighting, volumetric morning haze, detailed interior background, depth of field.",
       "promptTokens": [
         "vladilena_millize",
@@ -253,6 +260,39 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "bedroom",
+        "morning",
+        "oversized_shirt",
+        "white_shirt",
+        "bare_legs",
+        "tea",
+        "messy_hair",
+        "daily"
+      ],
+      "timeOfDay": "清晨",
+      "title": "芙拉蒂蕾娜 · 军官宿舍的晨光白衬衫·「少校的休息日，从一杯红茶开始」"
+    },
+    {
+      "action": "蹲在金鱼摊前屏息用纸网捞起金鱼，成功后回头向你高举展示，笑容灿烂",
+      "adult": false,
+      "animaStyleHint": "anime_slice_of_life",
+      "camera": "medium close-up, warm lantern glow, festival bokeh, joyful energy",
+      "category": "和风祭典",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "daily",
+        "festival",
+        "date"
+      ],
+      "description": "【共和国边境小镇夏祭·夜】脱下军装的蕾娜换上藏青底色绣银线花火的浴衣，银白长发挽起露出白皙后颈。她屏息凝神地用纸网逼近一只红金鱼，那份对待作战简报般一丝不苟的认真表情，让旁边的摊主忍俊不禁。捞起的瞬间她眼睛倏地亮起来，回头朝你高高展示战利品——烟火在她银灰色的眼眸里炸开成星河。",
+      "id": "lena_festival_yukata_goldfish",
+      "kreaStyleHint": "anime_slice_of_life",
+      "lighting": "暖红灯笼串光与远处烟火冷光交织，照亮浴衣与侧脸",
+      "location": "边境小镇夏祭摊位街巷",
+      "mood": "反差萌爆击、心动夜祭",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -264,41 +304,8 @@
         "watermark",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_slice_of_life",
-      "animaStyleHint": "anime_slice_of_life",
-      "outfitId": "casual_summer_dress",
-      "coverageTags": [
-        "daily",
-        "girlfriend",
-        "morning"
-      ]
-    },
-    {
-      "id": "lena_festival_yukata_goldfish",
-      "title": "芙拉蒂蕾娜 · 夏祭浴衣与金鱼·「军官的手，连捞金鱼都这么一板一眼」",
-      "category": "和风祭典",
-      "characterId": "vladilena_milize",
-      "description": "【共和国边境小镇夏祭·夜】脱下军装的蕾娜换上藏青底色绣银线花火的浴衣，银白长发挽起露出白皙后颈。她屏息凝神地用纸网逼近一只红金鱼，那份对待作战简报般一丝不苟的认真表情，让旁边的摊主忍俊不禁。捞起的瞬间她眼睛倏地亮起来，回头朝你高高展示战利品——烟火在她银灰色的眼眸里炸开成星河。",
-      "location": "边境小镇夏祭摊位街巷",
-      "action": "蹲在金鱼摊前屏息用纸网捞起金鱼，成功后回头向你高举展示，笑容灿烂",
-      "timeOfDay": "夜晚",
-      "lighting": "暖红灯笼串光与远处烟火冷光交织，照亮浴衣与侧脸",
-      "camera": "medium close-up, warm lantern glow, festival bokeh, joyful energy",
-      "mood": "反差萌爆击、心动夜祭",
-      "sceneTags": [
-        "festival",
-        "yukata",
-        "goldfish_scooping",
-        "fireworks",
-        "lanterns",
-        "smile",
-        "hair_up",
-        "daily"
-      ],
-      "promptProse": "Vladilena Milize crouches at a goldfish-scooping stall during a summer festival night, wearing a navy yukata patterned with silver fireworks and her silver hair swept up to bare her pale neck. With the same seriousness she gives battlefield briefings, she steadies a paper net over a red goldfish, then beams and holds up her catch toward you as fireworks bloom in her silver-grey eyes. Strings of warm lanterns glow across the lively stall background. Medium close-up, cinematic lighting, volumetric lantern haze, detailed festival background, depth of field.",
+      "outfitId": "festival_navy_yukata",
+      "promptProse": "Vladilena Milize crouches at a goldfish-scooping stall during a summer festival night in a navy yukata patterned with silver fireworks, her silver hair swept up. She lifts a paper net containing a red goldfish toward you with a bright, triumphant smile as warm lanterns and fireworks glow across the lively stall background.",
       "promptTokens": [
         "vladilena_millize",
         "1girl",
@@ -321,8 +328,43 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "displaying_catch"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "festival",
+        "yukata",
+        "goldfish_scooping",
+        "fireworks",
+        "lanterns",
+        "smile",
+        "hair_up",
+        "daily"
+      ],
+      "timeOfDay": "夜晚",
+      "title": "芙拉蒂蕾娜 · 夏祭浴衣与金鱼·「军官的手，连捞金鱼都这么一板一眼」"
+    },
+    {
+      "action": "手捧白花立于光柱中，仰头望向新娘入场的方向，泪光与浅笑交织",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "wide shot, environmental portrait, stained glass light rays, sacred bridal atmosphere",
+      "category": "圣洁花嫁",
+      "characterId": "vladilena_milize",
+      "compositionIntent": "group",
+      "coverageTags": [
+        "bridal",
+        "iconic",
+        "romance"
+      ],
+      "description": "【基地小教堂·正午】彩绘玻璃将正午阳光滤成圣洁的光柱。蕾娜身着纯白婚纱立于光柱中央，银白长发以白纱半掩，手捧白花与国旗色的缎带花束。她仰头望向走来的你，银灰眼眸里蓄满不敢相信般的泪光，贵族式的端庄仪态再也压不住唇角的颤抖——这位把葬礼献给无数士兵的女王，终于迎来了属于自己的婚礼进行曲。",
+      "id": "lena_bridal_vow_white_chapel",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "彩绘玻璃折射的圣洁彩色光柱笼罩全身",
+      "location": "基地附属小教堂彩绘玻璃长廊",
+      "mood": "神圣圣洁、泪光心动",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -334,41 +376,8 @@
         "watermark",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_slice_of_life",
-      "animaStyleHint": "anime_slice_of_life",
-      "outfitId": "casual_summer_dress",
-      "coverageTags": [
-        "daily",
-        "festival",
-        "date"
-      ]
-    },
-    {
-      "id": "lena_bridal_vow_white_chapel",
-      "title": "芙拉蒂蕾娜 · 纯白花嫁的军装誓约·「无论战区是否存在，我愿永远与你同调」",
-      "category": "圣洁花嫁",
-      "characterId": "vladilena_milize",
-      "description": "【基地小教堂·正午】彩绘玻璃将正午阳光滤成圣洁的光柱。蕾娜身着纯白婚纱立于光柱中央，银白长发以白纱半掩，手捧白花与国旗色的缎带花束。她仰头望向走来的你，银灰眼眸里蓄满不敢相信般的泪光，贵族式的端庄仪态再也压不住唇角的颤抖——这位把葬礼献给无数士兵的女王，终于迎来了属于自己的婚礼进行曲。",
-      "location": "基地附属小教堂彩绘玻璃长廊",
-      "action": "手捧白花立于光柱中，仰头望向新娘入场的方向，泪光与浅笑交织",
-      "timeOfDay": "正午",
-      "lighting": "彩绘玻璃折射的圣洁彩色光柱笼罩全身",
-      "camera": "wide shot, environmental portrait, stained glass light rays, sacred bridal atmosphere",
-      "mood": "神圣圣洁、泪光心动",
-      "sceneTags": [
-        "wedding_dress",
-        "bridal_veil",
-        "bouquet",
-        "chapel",
-        "stained_glass",
-        "light_rays",
-        "tears",
-        "smile"
-      ],
-      "promptProse": "Vladilena Milize stands at the center of a small base chapel wearing a pure white wedding dress with a delicate veil over her silver hair, clutching a bouquet of white flowers tied with national-flag ribbons. Colored stained-glass light pillars fall across her figure as she looks up toward her approaching partner, tears glistening in her silver-grey eyes beneath a trembling noble smile. Sacred midday light fills the stone aisle behind her. Environmental portrait, cinematic lighting, volumetric god rays, detailed chapel background, depth of field.",
+      "outfitId": "white_bridal_gown",
+      "promptProse": "Vladilena Milize stands at the center of a small base chapel in a pure white wedding dress and delicate veil, clutching a bouquet of white flowers tied with national-flag ribbons. Colored stained-glass light falls across her figure as she looks up toward her approaching partner, tears glistening in her silver-grey eyes beneath a trembling noble smile. Sacred midday light fills the stone aisle behind the two-person ceremony.",
       "promptTokens": [
         "vladilena_millize",
         "1girl",
@@ -389,8 +398,42 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "two_clothed_figures"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "wedding_dress",
+        "bridal_veil",
+        "bouquet",
+        "chapel",
+        "stained_glass",
+        "light_rays",
+        "tears",
+        "smile"
+      ],
+      "timeOfDay": "正午",
+      "title": "芙拉蒂蕾娜 · 纯白花嫁的军装誓约·「无论战区是否存在，我愿永远与你同调」"
+    },
+    {
+      "action": "披军装外套倚栏夜谈，指尖轻抵泛光耳机，侧头露出深夜限定柔笑",
+      "adult": false,
+      "animaStyleHint": "anime_slice_of_life",
+      "camera": "medium shot, starry night backdrop, intimate quiet atmosphere",
+      "category": "专属羁绊",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "daily",
+        "signature",
+        "romance"
+      ],
+      "description": "【基地宿舍阳台·星夜】万籁俱寂的深夜，蕾娜披着军装外套倚在阳台栏杆上，银白长发与星河一同倾泻。颈侧的Para-RAID耳机泛着温柔蓝光，她把指尖轻抵在耳机上，像是在确认你的心跳频率。夜风拂起她的发梢与外套衣摆，她侧过头对你露出一个只有深夜才允许的、柔软到透明的微笑。",
+      "id": "lena_para_raid_balcony_nightcall",
+      "kreaStyleHint": "anime_slice_of_life",
+      "lighting": "星河冷蓝环境光与耳机暖蓝辉光相映",
+      "location": "基地宿舍阳台栏杆边",
+      "mood": "私密静谧、深情羁绊",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -402,40 +445,7 @@
         "watermark",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
       "outfitId": "official_republic_military_uniform",
-      "coverageTags": [
-        "bridal",
-        "iconic",
-        "romance"
-      ]
-    },
-    {
-      "id": "lena_para_raid_balcony_nightcall",
-      "title": "芙拉蒂蕾娜 · 深夜阳台的专属同调·「今夜也请，只听我的声音」",
-      "category": "专属羁绊",
-      "characterId": "vladilena_milize",
-      "description": "【基地宿舍阳台·星夜】万籁俱寂的深夜，蕾娜披着军装外套倚在阳台栏杆上，银白长发与星河一同倾泻。颈侧的Para-RAID耳机泛着温柔蓝光，她把指尖轻抵在耳机上，像是在确认你的心跳频率。夜风拂起她的发梢与外套衣摆，她侧过头对你露出一个只有深夜才允许的、柔软到透明的微笑。",
-      "location": "基地宿舍阳台栏杆边",
-      "action": "披军装外套倚栏夜谈，指尖轻抵泛光耳机，侧头露出深夜限定柔笑",
-      "timeOfDay": "深夜",
-      "lighting": "星河冷蓝环境光与耳机暖蓝辉光相映",
-      "camera": "medium shot, starry night backdrop, intimate quiet atmosphere",
-      "mood": "私密静谧、深情羁绊",
-      "sceneTags": [
-        "balcony",
-        "night",
-        "stars",
-        "headset",
-        "jacket_on_shoulders",
-        "whisper",
-        "smile",
-        "romance"
-      ],
       "promptProse": "Vladilena Milize leans against a dormitory balcony railing under a river of stars, her Republic uniform jacket draped over her shoulders like a cloak and her long silver hair spilling into the night breeze. The Para-RAID headset on her neck glows a gentle blue as she rests her fingertips against it, listening for your heartbeat across the distance, then turns with a soft translucent smile reserved only for these midnight calls. Cool starlight and warm device glow mingle on her face. Medium shot, cinematic lighting, volumetric night haze, detailed starry background, depth of field.",
       "promptTokens": [
         "vladilena_millize",
@@ -449,7 +459,7 @@
         "grey_eyes",
         "leaning_forward",
         "railing",
-        "finger_to_mouth",
+        "finger_to_headset",
         "gentle_smile",
         "night",
         "starry_sky",
@@ -459,55 +469,51 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "balcony",
+        "night",
+        "stars",
+        "headset",
+        "jacket_on_shoulders",
+        "whisper",
+        "smile",
+        "romance"
+      ],
+      "timeOfDay": "深夜",
+      "title": "芙拉蒂蕾娜 · 深夜阳台的专属同调·「今夜也请，只听我的声音」"
+    },
+    {
+      "action": "双手反剪够卡死拉链导致制服绷紧溢乳，咬唇潮红单手探入裙底自抚，胸口剧烈起伏",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "horizontal dynamic POV, desk edge leverage, tight uniform cleavage spill, arched spine",
+      "category": "成人私密",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "special_nsfw",
+        "h_cg"
+      ],
+      "description": "【深夜指挥办公室·熄灯后】作战简报批阅完毕准备更衣时，蕾娜的蓝色军官制服背部拉链意外卡死在腰臀之间。她双手反剪在背后拼命去够拉链，反弓的身躯让饱满雪白的胸脯完全从敞开的前领中挤压溢出，挺立粉嫩乳头毫无遮掩。因燥热与羞耻，她咬着下唇，单手掀起裙摆探入被勒得发红的大腿内侧自抚缓解悸动，银发散乱铺在作战地图上。",
+      "id": "lena_nsfw_desk_uniform_skirt_lift",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "桌面台灯暖光在军装布料与白皙肌肤上勾勒油亮水光",
+      "location": "指挥办公室原木长桌前",
+      "mood": "更衣事故、羞耻悸动",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "bad hands",
-        "extra fingers",
-        "blurry",
-        "cropped",
-        "watermark",
-        "fire, flames, burning ears"
+        "extra limbs",
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_slice_of_life",
-      "animaStyleHint": "anime_slice_of_life",
-      "outfitId": "official_republic_military_uniform",
-      "coverageTags": [
-        "daily",
-        "signature",
-        "romance"
-      ]
-    },
-    {
-      "id": "lena_nsfw_desk_uniform_skirt_lift",
-      "title": "芙拉蒂蕾娜 · 军官桌前的拉链卡壳事故·「少校的威严……要被卡住的拉链彻底毁掉了」",
-      "category": "成人私密",
-      "characterId": "vladilena_milize",
-      "description": "【深夜指挥办公室·熄灯后】作战简报批阅完毕准备更衣时，蕾娜的蓝色军官制服背部拉链意外卡死在腰臀之间。她双手反剪在背后拼命去够拉链，反弓的身躯让饱满雪白的胸脯完全从敞开的前领中挤压溢出，挺立粉嫩乳头毫无遮掩。因燥热与羞耻，她咬着下唇，单手掀起裙摆探入被勒得发红的大腿内侧自抚缓解悸动，银发散乱铺在作战地图上。",
-      "location": "指挥办公室原木长桌前",
-      "action": "双手反剪够卡死拉链导致制服绷紧溢乳，咬唇潮红单手探入裙底自抚，胸口剧烈起伏",
-      "timeOfDay": "深夜",
-      "lighting": "桌面台灯暖光在军装布料与白皙肌肤上勾勒油亮水光",
-      "camera": "horizontal dynamic POV, desk edge leverage, tight uniform cleavage spill, arched spine",
-      "mood": "更衣事故、羞耻悸动",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "desk",
-        "military_uniform",
-        "zipper_pull",
-        "wardrobe_malfunction",
-        "cleavage_spill",
-        "exposed_breasts",
-        "skirt_lift",
-        "white_thighhighs"
-      ],
-      "promptProse": "Vladilena Milize from 86 -Eighty Six- caught in a breathless wardrobe malfunction inside the dimly lit command office late at night. Leaning forward over the large wooden desk strewn with tactical battle maps, her blue military uniform zipper is jammed halfway down her arched back, squeezing her voluptuous porcelain breasts so hard they spill bare from the loosened front collar with taut pink nipples exposed. Her white thighhighs bite into her soft thighs, and with one hand straining behind her back to reach the zipper and her other hand sliding beneath her pleated skirt to soothe her aching core, she bites her lip in helpless, crimson-faced pleasure as teary silver eyes gaze at the viewer. Warm amber desk lamp, dynamic perspective, rich anime visual style, solo 1girl, no text, no extra people.",
       "nsfwProse": "",
+      "outfitId": "official_republic_military_uniform",
+      "promptProse": "Vladilena Milize from 86 -Eighty Six- caught in a breathless wardrobe malfunction inside the dimly lit command office late at night. Leaning forward over the large wooden desk strewn with tactical battle maps, her blue military uniform zipper is jammed halfway down her arched back, squeezing her voluptuous porcelain breasts so hard they spill bare from the loosened front collar with taut pink nipples exposed. Her white thighhighs bite into her soft thighs, and with one hand straining behind her back to reach the zipper and her other hand sliding beneath her pleated skirt to soothe her aching core, she bites her lip in helpless, crimson-faced pleasure as teary silver eyes gaze at the viewer. Warm amber desk lamp, dynamic perspective, rich anime visual style, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "touching_own_body",
@@ -544,6 +550,40 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "nsfw",
+        "solo",
+        "desk",
+        "military_uniform",
+        "zipper_pull",
+        "wardrobe_malfunction",
+        "cleavage_spill",
+        "exposed_breasts",
+        "skirt_lift",
+        "white_thighhighs"
+      ],
+      "timeOfDay": "深夜",
+      "title": "芙拉蒂蕾娜 · 军官桌前的拉链卡壳事故·「少校的威严……要被卡住的拉链彻底毁掉了」"
+    },
+    {
+      "action": "身着开档蕾丝睡袍柔情仰卧，双腿大开展示私密花瓣，双手抚胸轻揉乳晕，银眸迷离泛水光",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "vertical POV, supine open legs, sheer babydoll, loving devotion framing",
+      "category": "成人私密",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "special_nsfw",
+        "h_cg"
+      ],
+      "description": "【军官寝室·深夜床褥】卸下一切防备的蕾娜身着半透明纯白蕾丝吊带连体睡衣，底部镂空开档设计让私密粉嫩花瓣毫无遮掩地完全暴露在微温空气中。她柔顺地仰卧在深色军毯大床上，修长双腿微微曲起大开，手指轻抚着饱满微挺的双乳与敏感乳晕，银白长发如月光倾泻满枕席，眼眸水汽氤氲轻唤着你的名字。",
+      "id": "lena_nsfw_bed_supine_devotion",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "床头暖黄小灯勾出香汗与潮红的湿润高光",
+      "location": "军官寝室军毯床褥",
+      "mood": "深情奉献、失神沉沦",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -554,43 +594,9 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "official_republic_military_uniform",
-      "coverageTags": [
-        "special_nsfw",
-        "h_cg"
-      ]
-    },
-    {
-      "id": "lena_nsfw_bed_supine_devotion",
-      "title": "芙拉蒂蕾娜 · 纯白蕾丝开档战袍与床褥柔情仰卧·「今夜，请把女王变成只属于你的成年女性」",
-      "category": "成人私密",
-      "characterId": "vladilena_milize",
-      "description": "【军官寝室·深夜床褥】卸下一切防备的蕾娜身着半透明纯白蕾丝吊带连体睡衣，底部镂空开档设计让私密粉嫩花瓣毫无遮掩地完全暴露在微温空气中。她柔顺地仰卧在深色军毯大床上，修长双腿微微曲起大开，手指轻抚着饱满微挺的双乳与敏感乳晕，银白长发如月光倾泻满枕席，眼眸水汽氤氲轻唤着你的名字。",
-      "location": "军官寝室军毯床褥",
-      "action": "身着开档蕾丝睡袍柔情仰卧，双腿大开展示私密花瓣，双手抚胸轻揉乳晕，银眸迷离泛水光",
-      "timeOfDay": "深夜",
-      "lighting": "床头暖黄小灯勾出香汗与潮红的湿润高光",
-      "camera": "vertical POV, supine open legs, sheer babydoll, loving devotion framing",
-      "mood": "深情奉献、失神沉沦",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "on_back",
-        "bed",
-        "open_legs",
-        "sheer_babydoll",
-        "crotchless_panties",
-        "exposed_pussy",
-        "bare_breasts",
-        "hand_on_breast"
-      ],
-      "promptProse": "A breathtaking, deeply intimate anime illustration of Vladilena Milize from 86 -Eighty Six- relaxing on a dark military blanket in her private quarters late at night. She is completely solo, reclining gracefully on her back with her slender thighs parted in sweet surrender. She wears an exquisite, sheer white lace babydoll that is crotchless, leaving her glistening pink pussy completely exposed to the warm air, while the delicate lace bodice is pushed aside to reveal her full, bare breasts and perky pink nipples. One pale hand gently cups her breast while silver hair spreads across the pillows like spilled moonlight. Heavy crimson blush across her porcelain cheeks, teary silver-grey eyes shimmering with unconditional devotion, soft golden bedside lamp glow, vertical composition, ultra-clean anime visual novel art, solo 1girl, no text, no extra people.",
       "nsfwProse": "",
+      "outfitId": "nsfw_nude",
+      "promptProse": "A breathtaking, deeply intimate anime illustration of Vladilena Milize from 86 -Eighty Six- relaxing on a dark military blanket in her private quarters late at night. She is completely solo, reclining gracefully on her back with her slender thighs parted in sweet surrender. She wears an exquisite, sheer white lace babydoll that is crotchless, leaving her glistening pink pussy completely exposed to the warm air, while the delicate lace bodice is pushed aside to reveal her full, bare breasts and perky pink nipples. One pale hand gently cups her breast while silver hair spreads across the pillows like spilled moonlight. Heavy crimson blush across her porcelain cheeks, teary silver-grey eyes shimmering with unconditional devotion, soft golden bedside lamp glow, vertical composition, ultra-clean anime visual novel art, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "on_back",
@@ -625,6 +631,41 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "nsfw",
+        "solo",
+        "on_back",
+        "bed",
+        "open_legs",
+        "sheer_babydoll",
+        "crotchless_panties",
+        "exposed_pussy",
+        "bare_breasts",
+        "hand_on_breast"
+      ],
+      "timeOfDay": "深夜",
+      "title": "芙拉蒂蕾娜 · 纯白蕾丝开档战袍与床褥柔情仰卧·「今夜，请把女王变成只属于你的成年女性」"
+    },
+    {
+      "action": "正面主控反客为主骑乘机位，耳机同调幽蓝微光，挺拔双乳剧烈晃动，修长大腿紧绷律动",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowgirl straddle POV, vertical framing, low angle, glowing device accent",
+      "category": "主控骑乘",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "nsfw",
+        "cowgirl",
+        "special_nsfw"
+      ],
+      "description": "【军官寝室·黎明前的幽光】蕾娜处于绝对主控中心正面跨坐，脖颈上贴附的Para-RAID耳机泛着幽蓝同调辉光。她全身无瑕赤裸，唯有大腿还紧绷着白色过膝袜，双手按在自己膝头主动起伏腰肢，高挺雪白的丰盈双乳随着律动激烈颤荡，粉嫩小穴毫无遮掩地贴合对准镜头。银白长发随动作在空中扬起，汗水滑过精致锁骨，红唇微张发出失神娇啼。",
+      "id": "lena_nsfw_headset_bond_riding",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "耳机幽蓝辉光与窗外微明星光勾勒汗珠轮廓",
+      "location": "军官寝室床上",
+      "mood": "深情主控、痴缠沉溺",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -635,43 +676,9 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "special_nsfw",
-        "h_cg"
-      ]
-    },
-    {
-      "id": "lena_nsfw_headset_bond_riding",
-      "title": "芙拉蒂蕾娜 · 同调状态下的主控跨坐骑乘·「戴着它的话……就算闭上眼睛，也感受得到你的全部」",
-      "category": "主控骑乘",
-      "characterId": "vladilena_milize",
-      "description": "【军官寝室·黎明前的幽光】蕾娜处于绝对主控中心正面跨坐，脖颈上贴附的Para-RAID耳机泛着幽蓝同调辉光。她全身无瑕赤裸，唯有大腿还紧绷着白色过膝袜，双手按在自己膝头主动起伏腰肢，高挺雪白的丰盈双乳随着律动激烈颤荡，粉嫩小穴毫无遮掩地贴合对准镜头。银白长发随动作在空中扬起，汗水滑过精致锁骨，红唇微张发出失神娇啼。",
-      "location": "军官寝室床上",
-      "action": "正面主控反客为主骑乘机位，耳机同调幽蓝微光，挺拔双乳剧烈晃动，修长大腿紧绷律动",
-      "timeOfDay": "黎明前",
-      "lighting": "耳机幽蓝辉光与窗外微明星光勾勒汗珠轮廓",
-      "camera": "cowgirl straddle POV, vertical framing, low angle, glowing device accent",
-      "mood": "深情主控、痴缠沉溺",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "cowgirl_position",
-        "straddling",
-        "headset",
-        "completely_nude",
-        "bouncing_breasts",
-        "exposed_pussy",
-        "white_thighhighs",
-        "sweat"
-      ],
-      "promptProse": "An exquisite high-impact anime illustration of Vladilena Milize from 86 -Eighty Six- in an intimate, solitary cowgirl straddle perspective atop dark sheets. She is in absolute command of the frame, completely nude except for her white thighhigh stockings and her glowing blue Para-RAID communication device fitted to her neck. Leaning slightly forward with hands gripping her own slender knees, she rolls her supple hips with breathless rhythm, her full natural breasts bouncing softly with erect rose nipples exposed. Her glistening wet pussy is fully visible and glistening with moisture, with sweat beads catching the cool blue device glow as they trickle down her cleavage. Parted lips, flushed face, fluttering silver hair, vertical low-angle framing, cinematic anime visual novel style, solo 1girl, no text, no extra people.",
       "nsfwProse": "",
+      "outfitId": "nsfw_nude",
+      "promptProse": "An exquisite high-impact anime illustration of Vladilena Milize from 86 -Eighty Six- in an intimate, solitary cowgirl straddle perspective atop dark sheets. She is in absolute command of the frame, completely nude except for her white thighhigh stockings and her glowing blue Para-RAID communication device fitted to her neck. Leaning slightly forward with hands gripping her own slender knees, she rolls her supple hips with breathless rhythm, her full natural breasts bouncing softly with erect rose nipples exposed. Her glistening wet pussy is fully visible and glistening with moisture, with sweat beads catching the cool blue device glow as they trickle down her cleavage. Parted lips, flushed face, fluttering silver hair, vertical low-angle framing, cinematic anime visual novel style, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "straddling",
@@ -700,6 +707,41 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "nsfw",
+        "solo",
+        "cowgirl_position",
+        "straddling",
+        "headset",
+        "completely_nude",
+        "bouncing_breasts",
+        "exposed_pussy",
+        "white_thighhighs",
+        "sweat"
+      ],
+      "timeOfDay": "黎明前",
+      "title": "芙拉蒂蕾娜 · 同调状态下的主控跨坐骑乘·「戴着它的话……就算闭上眼睛，也感受得到你的全部」"
+    },
+    {
+      "action": "斜倚缸沿湿身半透真丝睡裙，水下手指自我抚慰，仰头失神轻喘泛潮红",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "medium shot, steam haze, wet translucent silk, sensual solo framing",
+      "category": "单人成人",
+      "characterId": "vladilena_milize",
+      "coverageTags": [
+        "nsfw",
+        "solo",
+        "special_nsfw"
+      ],
+      "description": "【军官浴室·熄灯后的蒸汽】卸下一切军衔的深夜，蕾娜穿着深蓝真丝吊带睡裙泡在温热的浴缸边缘。水汽把真丝浸得半透，紧贴着丰盈的曲线，深蓝布料下的粉色樱点若隐若现。她仰头靠在缸沿，银白长发垂进水中，一只手在水面之下缓缓地抚过最敏感的花瓣，潮红的脸颊与失神的轻喘在蒸汽里化开——只有此刻，她允许自己不再是少校。",
+      "id": "lena_nsfw_bath_silk_nightwear_wet",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "浴室壁灯暖光穿透氤氲水汽，湿透真丝泛出诱惑水光",
+      "location": "军官浴室浴缸",
+      "mood": "湿身媚态、私密失神",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -710,42 +752,9 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "nsfw",
-        "cowgirl",
-        "special_nsfw"
-      ]
-    },
-    {
-      "id": "lena_nsfw_bath_silk_nightwear_wet",
-      "title": "芙拉蒂蕾娜 · 真丝睡裙的浴室湿身独奏·「军装之下，是只有深夜才承认的燥热」",
-      "category": "单人成人",
-      "characterId": "vladilena_milize",
-      "description": "【军官浴室·熄灯后的蒸汽】卸下一切军衔的深夜，蕾娜穿着深蓝真丝吊带睡裙泡在温热的浴缸边缘。水汽把真丝浸得半透，紧贴着丰盈的曲线，深蓝布料下的粉色樱点若隐若现。她仰头靠在缸沿，银白长发垂进水中，一只手在水面之下缓缓地抚过最敏感的花瓣，潮红的脸颊与失神的轻喘在蒸汽里化开——只有此刻，她允许自己不再是少校。",
-      "location": "军官浴室浴缸",
-      "action": "斜倚缸沿湿身半透真丝睡裙，水下手指自我抚慰，仰头失神轻喘泛潮红",
-      "timeOfDay": "深夜",
-      "lighting": "浴室壁灯暖光穿透氤氲水汽，湿透真丝泛出诱惑水光",
-      "camera": "medium shot, steam haze, wet translucent silk, sensual solo framing",
-      "mood": "湿身媚态、私密失神",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "wet_clothes",
-        "see-through",
-        "nightgown",
-        "bath",
-        "masturbation",
-        "steam"
-      ],
-      "promptProse": "Reclining against the rim of a deep bathtub in the steam-fogged officers' bathroom, Vladilena Milize wears her midnight-blue silk nightgown soaked to translucent clinging sheerness. The wet silk reveals the pink outlines of her nipples beneath as water beads roll down her collarbone, her long silver hair trailing into the bath while one hand glides slowly beneath the water's surface between her thighs. Her head tilts back against the rim with a flushed, unfocused expression and trembling parted lips, steam curling through warm lamplight. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric steam, detailed tile background, depth of field.",
       "nsfwProse": "",
+      "outfitId": "sensual_silk_nightwear",
+      "promptProse": "Reclining against the rim of a deep bathtub in the steam-fogged officers' bathroom, Vladilena Milize wears her midnight-blue silk nightgown soaked to translucent clinging sheerness. The wet silk reveals the pink outlines of her nipples beneath as water beads roll down her collarbone, her long silver hair trailing into the bath while one hand glides slowly beneath the water's surface between her thighs. Her head tilts back against the rim with a flushed, unfocused expression and trembling parted lips, steam curling through warm lamplight. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric steam, detailed tile background, depth of field.",
       "promptTokens": [
         "sensual_solo",
         "masturbation",
@@ -772,27 +781,22 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst quality",
-        "low quality",
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "fire, flames, burning ears",
-        "2girls",
-        "1boy"
-      ],
       "recommendedSize": "1152x1536",
-      "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "sensual_silk_nightwear",
-      "coverageTags": [
+      "sceneTags": [
         "nsfw",
         "solo",
-        "special_nsfw"
-      ]
+        "wet_clothes",
+        "see-through",
+        "nightgown",
+        "bath",
+        "masturbation",
+        "steam"
+      ],
+      "timeOfDay": "深夜",
+      "title": "芙拉蒂蕾娜 · 真丝睡裙的浴室湿身独奏·「军装之下，是只有深夜才承认的燥热」"
     }
-  ]
+  ],
+  "franchise": "86 -Eighty Six-",
+  "version": "1.0.0"
 }

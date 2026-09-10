@@ -1,35 +1,36 @@
 {
-  "version": 1,
-  "franchise": "Violet Evergarden",
   "blueprints": [
     {
-      "id": "violet_battlefield_relic_dawn",
-      "title": "薇尔莉特 · 破晓废墟的怀表与胸针·「我也想明白……『我爱你』的含义」",
+      "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，翠眸清澈凝视",
+      "adult": false,
+      "animaStyleHint": "anime_portrait_sharp",
+      "camera": "medium shot, cinematic low angle, dawn mist atmosphere, emotional reflection",
       "category": "战争叙事",
       "characterId": "violet_evergarden",
-      "description": "【黎明晨曦中的石柱遗迹】冷冽的晨风拂过残破古老的大理石废墟，晨曦的微光割裂天际。身着普鲁士蓝军装礼服的薇尔莉特单膝微屈，银白机械义手轻捧着那枚象征着誓言的祖母绿胸针。晨风吹拂起她金色的秀发与红色发带，她那双宝石般清透的湛蓝双眸中，第一次流淌出对生与爱的深切追寻。",
-      "location": "战火停歇的古遗迹山岗顶端",
-      "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，翠眸清澈凝视",
-      "timeOfDay": "黎明破晓",
-      "lighting": "破晓初升的清冷淡金曙光穿透薄雾，映亮机械指节与翡翠晶体",
-      "camera": "medium shot, cinematic low angle, dawn mist atmosphere, emotional reflection",
-      "mood": "庄严肃穆、圣洁空灵",
-      "sceneTags": [
-        "ruins",
-        "dawn",
-        "sunrise",
-        "emerald_brooch",
-        "holding_brooch",
-        "mechanical_hands",
-        "wind_blown",
-        "emotional"
+      "coverageTags": [
+        "official_default",
+        "iconic",
+        "signature"
       ],
-      "promptProse": "Violet Evergarden stands upon ancient dawn ruins clutching her radiant emerald brooch with articulated silver mechanical fingers. The first golden rays of sunrise pierce the morning mist, casting pristine reflections across her Prussian-blue doll uniform and braided golden hair. Morning wind gently rustles her white pleated skirt as she gazes ahead with quiet emotional discovery.",
+      "description": "【黎明晨曦中的石柱遗迹】冷冽的晨风拂过残破古老的大理石废墟，晨曦的微光割裂天际。身着普鲁士蓝军装礼服的薇尔莉特单膝微屈，银白机械义手轻捧着那枚象征着誓言的祖母绿胸针。晨风吹拂起她金色的秀发与红色发带，她那双宝石般清透的湛蓝双眸中，第一次流淌出对生与爱的深切追寻。",
+      "id": "violet_battlefield_relic_dawn",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "lighting": "破晓初升的清冷淡金曙光穿透薄雾，映亮机械指节与翡翠晶体",
+      "location": "战火停歇的古遗迹山岗顶端",
+      "mood": "庄严肃穆、圣洁空灵",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "fire, flames, burning ears"
+      ],
+      "outfitId": "official_auto_memories_doll_attire",
+      "promptProse": "Kneeling on one knee among ancient dawn ruins, Violet Evergarden holds her radiant emerald brooch against her chest with articulated silver mechanical fingers. The first golden rays of sunrise pierce the morning mist, reflecting across her Prussian-blue doll uniform as the wind lifts her golden hair and white pleated skirt.",
       "promptTokens": [
         "ruins",
         "dawn",
         "sunrise",
-        "standing",
+        "kneeling",
         "holding_brooch",
         "emerald",
         "mechanical_hands",
@@ -40,48 +41,50 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "one_knee",
+        "brooch_at_chest"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "ruins",
+        "dawn",
+        "sunrise",
+        "emerald_brooch",
+        "holding_brooch",
+        "mechanical_hands",
+        "wind_blown",
+        "emotional"
+      ],
+      "timeOfDay": "黎明破晓",
+      "title": "薇尔莉特 · 破晓废墟的怀表与胸针·「我也想明白……『我爱你』的含义」"
+    },
+    {
+      "action": "坐在白色铁艺椅上，身前摆放着复古打字机，双手端正托起写好的信纸递向你，面带温柔微笑",
+      "adult": false,
+      "animaStyleHint": "anime_slice_of_life",
+      "camera": "eye level medium close-up, girlfriend POV, antique stationery aesthetic, sunlit warmth",
+      "category": "现代日常",
+      "characterId": "violet_evergarden",
+      "coverageTags": [
+        "daily",
+        "casual",
+        "girlfriend"
+      ],
+      "description": "【阳光倾泻的露天咖啡桌】清晨的莱顿港微风和煦。薇尔莉特在咖啡馆的白色铸铁圆桌上端正摆放着便携式机械打字机，修长的银白金属指节在键帽上轻快跳跃。打完最后一朵花体的收尾句后，她双手托起散发着墨香的信纸递向你，瓷白的面庞上露出一抹浅浅却极尽温柔的微笑。",
+      "id": "violet_morning_cafe_letter_writing",
+      "kreaStyleHint": "anime_slice_of_life",
+      "lighting": "明净澄澈的晨曦直射，树影与白色蕾丝桌布交织出透亮光斑",
+      "location": "C.H.邮政公司旁阳光露天咖啡座",
+      "mood": "宁静优雅、甜润治愈",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_portrait_sharp",
-      "animaStyleHint": "anime_portrait_sharp",
-      "outfitId": "official_auto_memories_doll_attire",
-      "coverageTags": [
-        "official_default",
-        "iconic",
-        "signature"
-      ]
-    },
-    {
-      "id": "violet_morning_cafe_letter_writing",
-      "title": "薇尔莉特 · 邮政露台的打字机晨光·「为您代笔的情书，已经完成了」",
-      "category": "现代日常",
-      "characterId": "violet_evergarden",
-      "description": "【阳光倾泻的露天咖啡桌】清晨的莱顿港微风和煦。薇尔莉特在咖啡馆的白色铸铁圆桌上端正摆放着便携式机械打字机，修长的银白金属指节在键帽上轻快跳跃。打完最后一朵花体的收尾句后，她双手托起散发着墨香的信纸递向你，瓷白的面庞上露出一抹浅浅却极尽温柔的微笑。",
-      "location": "C.H.邮政公司旁阳光露天咖啡座",
-      "action": "坐在白色铁艺椅上，身前摆放着复古打字机，双手端正托起写好的信纸递向你，面带温柔微笑",
-      "timeOfDay": "清晨",
-      "lighting": "明净澄澈的晨曦直射，树影与白色蕾丝桌布交织出透亮光斑",
-      "camera": "eye level medium close-up, girlfriend POV, antique stationery aesthetic, sunlit warmth",
-      "mood": "宁静优雅、甜润治愈",
-      "sceneTags": [
-        "cafe",
-        "terrace",
-        "typewriter",
-        "letter",
-        "mechanical_hands",
-        "holding_letter",
-        "gentle_smile",
-        "morning"
-      ],
+      "outfitId": "doll_cafe_no_parasol",
       "promptProse": "Violet Evergarden sits poised at a sun-drenched outdoor cafe terrace with an antique metal typewriter before her. Her delicate silver prosthetic hands present a beautifully written letter towards you, her doll-like porcelain face gracing you with a soft tender smile. Crisp morning sunlight illuminates the flutter of white lace and warm coffee steam dancing in the breeze.",
       "promptTokens": [
         "cafe",
@@ -100,46 +103,46 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "cafe",
+        "terrace",
+        "typewriter",
+        "letter",
+        "mechanical_hands",
+        "holding_letter",
+        "gentle_smile",
+        "morning"
+      ],
+      "timeOfDay": "清晨",
+      "title": "薇尔莉特 · 邮政露台的打字机晨光·「为您代笔的情书，已经完成了」"
+    },
+    {
+      "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
+      "adult": false,
+      "animaStyleHint": "anime_cinematic_scenic",
+      "camera": "medium shot, wide scenic perspective, flower petals fluttering, romantic summer stroll",
+      "category": "唯美浪漫",
+      "characterId": "violet_evergarden",
+      "coverageTags": [
+        "daily",
+        "romantic",
+        "summer"
+      ],
+      "description": "【繁花盛开的花园小径】南国小镇的花园里，紫红色的九重葛花藤宛如瀑布般从白色石墙倾泻而下。薇尔莉特身着一袭纯白的夏日轻薄棉质连身裙，头戴系着海蓝缎带的宽檐草帽。她一手轻撑着蕾丝遮阳伞，一手小心翼翼地牵住你的指尖，微微偏过头，脸颊泛着淡淡的樱粉色。",
+      "id": "violet_bougainvillea_field_parasol",
+      "kreaStyleHint": "anime_cinematic_scenic",
+      "lighting": "明媚灿烂的地中海夏日阳光穿透花隙，投下绚丽的紫红与金黄光斑",
+      "location": "沿海山城蜿蜒的紫红九重葛花径",
+      "mood": "清纯唯美、少女情怀",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_slice_of_life",
-      "animaStyleHint": "anime_slice_of_life",
-      "outfitId": "official_auto_memories_doll_attire",
-      "coverageTags": [
-        "daily",
-        "casual",
-        "girlfriend"
-      ]
-    },
-    {
-      "id": "violet_bougainvillea_field_parasol",
-      "title": "薇尔莉特 · 九重葛花海的草帽微风·「和您走在一起，心跳会变得很快」",
-      "category": "唯美浪漫",
-      "characterId": "violet_evergarden",
-      "description": "【繁花盛开的花园小径】南国小镇的花园里，紫红色的九重葛花藤宛如瀑布般从白色石墙倾泻而下。薇尔莉特身着一袭纯白的夏日轻薄棉质连身裙，头戴系着海蓝缎带的宽檐草帽。她一手轻撑着蕾丝遮阳伞，一手小心翼翼地牵住你的指尖，微微偏过头，脸颊泛着淡淡的樱粉色。",
-      "location": "沿海山城蜿蜒的紫红九重葛花径",
-      "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
-      "timeOfDay": "午后",
-      "lighting": "明媚灿烂的地中海夏日阳光穿透花隙，投下绚丽的紫红与金黄光斑",
-      "camera": "medium shot, wide scenic perspective, flower petals fluttering, romantic summer stroll",
-      "mood": "清纯唯美、少女情怀",
-      "sceneTags": [
-        "flower_garden",
-        "bougainvillea",
-        "white_dress",
-        "straw_hat",
-        "parasol",
-        "holding_hands",
-        "blushing",
-        "summer"
-      ],
+      "outfitId": "casual_white_summer_dress",
       "promptProse": "Violet Evergarden strolls along a cobblestone path lined with cascading magenta bougainvillea flowers beneath a lace parasol. Her simple white summer cotton sundress sways with the gentle sea breeze as her ribboned straw hat frames her blushing porcelain cheeks. She gently clasps your hand with silver prosthetic fingers while flower petals drift across the sunlit afternoon warmth.",
       "promptTokens": [
         "garden",
@@ -158,47 +161,48 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "flower_garden",
+        "bougainvillea",
+        "white_dress",
+        "straw_hat",
+        "parasol",
+        "holding_hands",
+        "blushing",
+        "summer"
+      ],
+      "timeOfDay": "午后",
+      "title": "薇尔莉特 · 九重葛花海的草帽微风·「和您走在一起，心跳会变得很快」"
+    },
+    {
+      "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
+      "adult": false,
+      "animaStyleHint": "anime_warm_domestic",
+      "camera": "medium close-up, cozy two-person intimacy, library dust motes floating in sunbeam",
+      "category": "温馨陪伴",
+      "characterId": "violet_evergarden",
+      "compositionIntent": "group",
+      "coverageTags": [
+        "daily",
+        "library",
+        "healing"
+      ],
+      "description": "【夕阳静谧的高穹图书馆】高达穹顶的老式木质图书馆内弥漫着古卷与墨汁的沉静清香。斜阳将巨大的落地窗棂投影在长木桌上。薇尔莉特与你并肩而坐共享一本厚厚的诗集。或许是因为看得入神，她那松散开的金色秀发轻轻倚靠在你的肩膀上，静静聆听着你均匀的心跳声。",
+      "id": "violet_evening_library_reading_together",
+      "kreaStyleHint": "anime_warm_domestic",
+      "lighting": "晚霞透过高耸彩绘玻璃投射的浓郁暖橙与古铜金斜射光",
+      "location": "莱顿大学皇家藏书馆一角",
+      "mood": "沉静治愈、心照不宣",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_cinematic_scenic",
-      "animaStyleHint": "anime_cinematic_scenic",
-      "outfitId": "casual_white_summer_dress",
-      "coverageTags": [
-        "daily",
-        "romantic",
-        "summer"
-      ]
-    },
-    {
-      "id": "violet_evening_library_reading_together",
-      "title": "薇尔莉特 · 暮色藏书馆的肩头轻倚·「书里描绘的幸福，就像现在这样吗？」",
-      "category": "温馨陪伴",
-      "characterId": "violet_evergarden",
-      "description": "【夕阳静谧的高穹图书馆】高达穹顶的老式木质图书馆内弥漫着古卷与墨汁的沉静清香。斜阳将巨大的落地窗棂投影在长木桌上。薇尔莉特与你并肩而坐共享一本厚厚的诗集。或许是因为看得入神，她那松散开的金色秀发轻轻倚靠在你的肩膀上，静静聆听着你均匀的心跳声。",
-      "location": "莱顿大学皇家藏书馆一角",
-      "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
-      "timeOfDay": "黄昏",
-      "lighting": "晚霞透过高耸彩绘玻璃投射的浓郁暖橙与古铜金斜射光",
-      "camera": "medium close-up, cozy two-person intimacy, library dust motes floating in sunbeam",
-      "mood": "沉静治愈、心照不宣",
-      "sceneTags": [
-        "library",
-        "books",
-        "reading",
-        "leaning_on_shoulder",
-        "sunset",
-        "golden_hour",
-        "peaceful",
-        "intimate"
-      ],
-      "promptProse": "Violet Evergarden rests her head gently against your shoulder at a dark mahogany desk in a majestic sunlit library. Her unbraided blonde hair cascades softly over your coat as her articulated silver fingers rest on an open antique book of poetry. Golden dust motes dance in the late afternoon sunbeams pouring through towering arched windows.",
+      "outfitId": "library_casual_no_hat",
+      "promptProse": "Violet Evergarden rests her head gently against your shoulder at a dark mahogany desk in a majestic sunlit library. Her articulated silver fingers rest on an open antique book of poetry as the two of you read together, while golden dust motes dance in the late-afternoon sunbeams through the towering arched windows.",
       "promptTokens": [
         "library",
         "bookshelves",
@@ -213,49 +217,51 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "two_clothed_figures"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "library",
+        "books",
+        "reading",
+        "leaning_on_shoulder",
+        "sunset",
+        "golden_hour",
+        "peaceful",
+        "intimate"
+      ],
+      "timeOfDay": "黄昏",
+      "title": "薇尔莉特 · 暮色藏书馆的肩头轻倚·「书里描绘的幸福，就像现在这样吗？」"
+    },
+    {
+      "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，翡翠双眸顾盼生辉",
+      "adult": false,
+      "animaStyleHint": "anime_night_glamour",
+      "camera": "dynamic wide shot, rotating dress flow, ballroom depth, royal grandeur",
+      "category": "浪漫华贵",
+      "characterId": "violet_evergarden",
+      "compositionIntent": "group",
+      "coverageTags": [
+        "daily",
+        "ballroom",
+        "glamour"
+      ],
+      "description": "【璀璨水晶吊灯舞厅】金碧辉煌的皇家晚宴大厅内，华尔兹圆舞曲悠扬回响。身着一袭深邃墨绿丝绒露肩晚礼裙的薇尔莉特身段曼妙，雪白肌肤胜雪。她将一只精巧的银白机械义手轻搭在你的掌心，另一手挽在你的肩头，随着舞步轻盈旋转，宛如夜幕中最夺目的翡翠精灵。",
+      "id": "violet_royal_ball_waltz",
+      "kreaStyleHint": "anime_night_glamour",
+      "lighting": "千万枚璀璨水晶吊灯折射出的华贵暖金光芒与流转光斑",
+      "location": "王国迎宾馆水晶吊灯盛大舞池中央",
+      "mood": "高贵华美、深情款款",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_warm_domestic",
-      "animaStyleHint": "anime_warm_domestic",
-      "outfitId": "casual_white_summer_dress",
-      "coverageTags": [
-        "daily",
-        "library",
-        "healing"
-      ]
-    },
-    {
-      "id": "violet_royal_ball_waltz",
-      "title": "薇尔莉特 · 宫廷华尔兹的翡翠裙摆·「请握紧我的手……我不会松开」",
-      "category": "浪漫华贵",
-      "characterId": "violet_evergarden",
-      "description": "【璀璨水晶吊灯舞厅】金碧辉煌的皇家晚宴大厅内，华尔兹圆舞曲悠扬回响。身着一袭深邃墨绿丝绒露肩晚礼裙的薇尔莉特身段曼妙，雪白肌肤胜雪。她将一只精巧的银白机械义手轻搭在你的掌心，另一手挽在你的肩头，随着舞步轻盈旋转，宛如夜幕中最夺目的翡翠精灵。",
-      "location": "王国迎宾馆水晶吊灯盛大舞池中央",
-      "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，翡翠双眸顾盼生辉",
-      "timeOfDay": "夜晚",
-      "lighting": "千万枚璀璨水晶吊灯折射出的华贵暖金光芒与流转光斑",
-      "camera": "dynamic wide shot, rotating dress flow, ballroom depth, royal grandeur",
-      "mood": "高贵华美、深情款款",
-      "sceneTags": [
-        "ballroom",
-        "dancing",
-        "waltz",
-        "ball_gown",
-        "green_dress",
-        "bare_shoulders",
-        "mechanical_hands",
-        "chandelier"
-      ],
-      "promptProse": "Violet Evergarden waltzes across a grand marble ballroom under the dazzling shimmer of crystal chandeliers. Her flowing emerald-green velvet ballgown sweeps around her in fluid waves, accentuating her porcelain bare shoulders and slender waist. She looks directly into your eyes with breathtaking devotion as her silver prosthetic hand rests firmly in your palm.",
+      "outfitId": "festive_ballgown_dress",
+      "promptProse": "Violet Evergarden waltzes with you across a grand marble ballroom under the dazzling shimmer of crystal chandeliers. Her flowing emerald-green velvet ballgown sweeps around her in fluid waves as her silver prosthetic hand rests in your palm and her other hand settles on your shoulder. The two-person dance turns through the royal hall in warm candlelight.",
       "promptTokens": [
         "ballroom",
         "chandelier",
@@ -270,49 +276,51 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hand_on_shoulder",
+        "two_clothed_figures"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "ballroom",
+        "dancing",
+        "waltz",
+        "ball_gown",
+        "green_dress",
+        "bare_shoulders",
+        "mechanical_hands",
+        "chandelier"
+      ],
+      "timeOfDay": "夜晚",
+      "title": "薇尔莉特 · 宫廷华尔兹的翡翠裙摆·「请握紧我的手……我不会松开」"
+    },
+    {
+      "action": "裹着毛毯蜷缩在你的怀中，微凉的金属手掌贴在你的心口，仰起白净面容依恋地凝望你",
+      "adult": false,
+      "animaStyleHint": "anime_warm_domestic",
+      "camera": "close-up intimate angle, fireplace glow reflections, cocoon of warmth, storm outside",
+      "category": "深情依恋",
+      "characterId": "violet_evergarden",
+      "compositionIntent": "group",
+      "coverageTags": [
+        "daily",
+        "cuddling",
+        "fireplace"
+      ],
+      "description": "【暴风雨夜的松木山间小屋】窗外雷雨交加，而简朴的小木屋内，红泥壁炉里的松木柴火正毕剥燃烧，暖意融融。薇尔莉特身穿纯白细带真丝睡裙，身上裹着一条厚厚的红白羊毛毯。她紧贴在你的怀里，微凉的机械手掌轻轻覆在你的胸膛上，感受着你的体温，翠眸中盈满了对归宿的安详眷恋。",
+      "id": "violet_rainy_cabin_fireplace_warmth",
+      "kreaStyleHint": "anime_warm_domestic",
+      "lighting": "壁炉柴火跳跃激荡出的深红与赤橙暖芒，勾勒出丝绸与毛毯的柔和轮廓",
+      "location": "山顶避雨的原始松木小木屋壁炉前",
+      "mood": "安心避风港、至死不渝的依恋",
       "negativeTokens": [
         "worst quality",
         "low quality",
-        "bad anatomy",
-        "fire, flames, burning ears"
+        "bad anatomy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_night_glamour",
-      "animaStyleHint": "anime_night_glamour",
-      "outfitId": "festive_ballgown_dress",
-      "coverageTags": [
-        "daily",
-        "ballroom",
-        "glamour"
-      ]
-    },
-    {
-      "id": "violet_rainy_cabin_fireplace_warmth",
-      "title": "薇尔莉特 · 暴风雨木屋的壁炉依偎·「被您拥抱着的时候，身体会变得好暖」",
-      "category": "深情依恋",
-      "characterId": "violet_evergarden",
-      "description": "【暴风雨夜的松木山间小屋】窗外雷雨交加，而简朴的小木屋内，红泥壁炉里的松木柴火正毕剥燃烧，暖意融融。薇尔莉特身穿纯白细带真丝睡裙，身上裹着一条厚厚的红白羊毛毯。她紧贴在你的怀里，微凉的机械手掌轻轻覆在你的胸膛上，感受着你的体温，翠眸中盈满了对归宿的安详眷恋。",
-      "location": "山顶避雨的原始松木小木屋壁炉前",
-      "action": "裹着毛毯蜷缩在你的怀中，微凉的金属手掌贴在你的心口，仰起白净面容依恋地凝望你",
-      "timeOfDay": "暴雨夜",
-      "lighting": "壁炉柴火跳跃激荡出的深红与赤橙暖芒，勾勒出丝绸与毛毯的柔和轮廓",
-      "camera": "close-up intimate angle, fireplace glow reflections, cocoon of warmth, storm outside",
-      "mood": "安心避风港、至死不渝的依恋",
-      "sceneTags": [
-        "log_cabin",
-        "fireplace",
-        "blanket",
-        "cuddling",
-        "rain_outside",
-        "nightgown",
-        "bare_shoulders",
-        "mechanical_hands"
-      ],
-      "promptProse": "Violet Evergarden cuddles close inside your embrace before a crackling cabin fireplace while a torrential rainstorm beats against the dark wooden shutters. She is draped in a thick wool blanket over her white silk nightgown slip, her cool mechanical palm resting gently upon your chest to feel your heartbeat. The flickering orange hearthfire casts deep romantic warmth across her blonde hair and peaceful face.",
+      "outfitId": "charming_nightgown_slip",
+      "promptProse": "Violet Evergarden curls into your embrace before a crackling cabin fireplace while torrential rain beats against the dark wooden shutters. A thick wool blanket covers her white silk nightgown, and her cool mechanical palm rests gently upon your chest to feel your heartbeat. Flickering orange hearthfire warms the quiet two-person shelter.",
       "promptTokens": [
         "cabin",
         "fireplace",
@@ -327,50 +335,52 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "two_clothed_figures"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "log_cabin",
+        "fireplace",
+        "blanket",
+        "cuddling",
+        "rain_outside",
+        "nightgown",
+        "bare_shoulders",
+        "mechanical_hands"
+      ],
+      "timeOfDay": "暴雨夜",
+      "title": "薇尔莉特 · 暴风雨木屋的壁炉依偎·「被您拥抱着的时候，身体会变得好暖」"
+    },
+    {
+      "action": "双手轻柔捧起你的脸颊，金发在海风中纷飞，霞光染透湛蓝眼眸，探头微吻",
+      "adult": false,
+      "animaStyleHint": "anime_cinematic_scenic",
+      "camera": "medium close-up, dramatic sunset bokeh, wind swept hair, profound emotional confession",
+      "category": "永恒誓约",
+      "characterId": "violet_evergarden",
+      "compositionIntent": "group",
+      "coverageTags": [
+        "daily",
+        "sunset",
+        "romantic",
+        "confession"
+      ],
+      "description": "【俯瞰大海的海崖白石露台】漫天如梦似幻的粉紫晚霞映照着翻涌的金色海浪。薇尔莉特身着白色夏日连身裙，海风吹散了她编起的发辫，金色长发在霞光中如金色缎带般漫天起伏。她抬起冰凉而精致的银色机械双手，小心翼翼地捧起你的脸庞，在两唇相碰前，轻声诉说着她一生唯一的誓言。",
+      "id": "violet_balcony_sunset_confession",
+      "kreaStyleHint": "anime_cinematic_scenic",
+      "lighting": "粉紫与暖金交融的梦幻落日晚霞，水面波光粼粼的逆光反光",
+      "location": "海滨灯塔旁的白色大理石观海露台",
+      "mood": "史诗纯爱、浪漫巅峰",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_warm_domestic",
-      "animaStyleHint": "anime_warm_domestic",
-      "outfitId": "charming_nightgown_slip",
-      "coverageTags": [
-        "daily",
-        "cuddling",
-        "fireplace"
-      ]
-    },
-    {
-      "id": "violet_balcony_sunset_confession",
-      "title": "薇尔莉特 · 海崖晚霞的指尖抚触·「我的生命与爱意，全部奉献给您」",
-      "category": "永恒誓约",
-      "characterId": "violet_evergarden",
-      "description": "【俯瞰大海的海崖白石露台】漫天如梦似幻的粉紫晚霞映照着翻涌的金色海浪。薇尔莉特身着白色夏日连身裙，海风吹散了她编起的发辫，金色长发在霞光中如金色缎带般漫天起伏。她抬起冰凉而精致的银色机械双手，小心翼翼地捧起你的脸庞，在两唇相碰前，轻声诉说着她一生唯一的誓言。",
-      "location": "海滨灯塔旁的白色大理石观海露台",
-      "action": "双手轻柔捧起你的脸颊，金发在海风中纷飞，霞光染透湛蓝眼眸，探头微吻",
-      "timeOfDay": "黄昏晚霞",
-      "lighting": "粉紫与暖金交融的梦幻落日晚霞，水面波光粼粼的逆光反光",
-      "camera": "medium close-up, dramatic sunset bokeh, wind swept hair, profound emotional confession",
-      "mood": "史诗纯爱、浪漫巅峰",
-      "sceneTags": [
-        "balcony",
-        "sea",
-        "ocean",
-        "sunset",
-        "golden_hour",
-        "cupping_cheek",
-        "mechanical_hands",
-        "confession",
-        "wind_blown"
-      ],
-      "promptProse": "Violet Evergarden gently cups your cheeks with both silver prosthetic hands upon a marble clifftop terrace overlooking the radiant twilight sea. The wind unfurls her golden hair across the violet and rose-tinted sunset horizon, her emerald eyes glistening with absolute devotion. Brilliant golden sunbeams illuminate her pure white dress and the shimmering waves far below.",
+      "outfitId": "casual_white_summer_dress",
+      "promptProse": "Violet Evergarden gently cups your cheeks with both silver prosthetic hands upon a marble clifftop terrace overlooking the radiant twilight sea. The wind unfurls her golden hair across the violet and rose-tinted sunset horizon, her azure-blue eyes glistening with absolute devotion. Brilliant golden sunbeams illuminate her pure white dress and the shimmering waves far below.",
       "promptTokens": [
         "balcony",
         "sea",
@@ -385,53 +395,54 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "two_clothed_figures"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "SFW",
+      "sceneTags": [
+        "balcony",
+        "sea",
+        "ocean",
+        "sunset",
+        "golden_hour",
+        "cupping_cheek",
+        "mechanical_hands",
+        "confession",
+        "wind_blown"
+      ],
+      "timeOfDay": "黄昏晚霞",
+      "title": "薇尔莉特 · 海崖晚霞的指尖抚触·「我的生命与爱意，全部奉献给您」"
+    },
+    {
+      "action": "双手反剪解卡死系带导致胸前白衬衫崩开露双乳，单手撑桌撩裙私抚花瓣，银指反差羞涩泛泪",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "wide angle horizontal POV, desk edge leverage, open shirt cleavage spill, arched spine",
+      "category": "成人私密",
+      "characterId": "violet_evergarden",
+      "coverageTags": [
+        "special_nsfw",
+        "h_cg"
+      ],
+      "description": "【夜间锁闭的代笔工作室】夜深人静更衣时，薇尔莉特常服后背的皮质束腰与系带意外卡扣。她双手反剪在背后艰难地试图解开束缚，反弓的身段导致前襟白色衬衫纽扣崩开，饱满娇挺的雪白双乳完全弹露，挺立粉嫩乳头在烛光下微微颤抖。因燥热与懵懂情愫，她单手撑在打字机旁的大理石案头，另一手探入长裙拨开蕾丝内裤轻抚敏感带，银白机械手指与柔嫩肌肤形成惊艳反差。",
+      "id": "violet_nsfw_desk_doggystyle_rear",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "桌面复古绿罩台灯投射下的温暖聚光与四周深邃阴影",
+      "location": "深夜完全锁闭的私人手记代笔工作室",
+      "mood": "更衣事故、人偶悸动",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
-        "fire, flames, burning ears"
+        "extra limbs",
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": false,
-      "sampleRating": "SFW",
-      "kreaStyleHint": "anime_cinematic_scenic",
-      "animaStyleHint": "anime_cinematic_scenic",
-      "outfitId": "casual_white_summer_dress",
-      "coverageTags": [
-        "daily",
-        "sunset",
-        "romantic",
-        "confession"
-      ]
-    },
-    {
-      "id": "violet_nsfw_desk_doggystyle_rear",
-      "title": "薇尔莉特 · 书桌更衣束胸解纽事故与白衬衫半褪·「人偶的心跳……好像第一次这样炽热地跳动着」",
-      "category": "成人私密",
-      "characterId": "violet_evergarden",
-      "description": "【夜间锁闭的代笔工作室】夜深人静更衣时，薇尔莉特常服后背的皮质束腰与系带意外卡扣。她双手反剪在背后艰难地试图解开束缚，反弓的身段导致前襟白色衬衫纽扣崩开，饱满娇挺的雪白双乳完全弹露，挺立粉嫩乳头在烛光下微微颤抖。因燥热与懵懂情愫，她单手撑在打字机旁的大理石案头，另一手探入长裙拨开蕾丝内裤轻抚敏感带，银白机械手指与柔嫩肌肤形成惊艳反差。",
-      "location": "深夜完全锁闭的私人手记代笔工作室",
-      "action": "双手反剪解卡死系带导致胸前白衬衫崩开露双乳，单手撑桌撩裙私抚花瓣，银指反差羞涩泛泪",
-      "timeOfDay": "深夜",
-      "lighting": "桌面复古绿罩台灯投射下的温暖聚光与四周深邃阴影",
-      "camera": "wide angle horizontal POV, desk edge leverage, open shirt cleavage spill, arched spine",
-      "mood": "更衣事故、人偶悸动",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "desk",
-        "typewriter",
-        "open_shirt",
-        "cleavage_spill",
-        "exposed_breasts",
-        "bare_breasts",
-        "skirt_lift",
-        "mechanical_hands"
-      ],
-      "promptProse": "Violet Evergarden suffering a deeply romantic wardrobe malfunction alone inside the quiet Auto Memories Doll writing studio late at night. Leaning forward over the polished mahogany desk beside her antique typewriter, the back corset lacing of her uniform is hopelessly jammed, popping open her crisp white shirt to completely expose her firm, immaculate porcelain breasts and perky pink nipples. With one articulated silver mechanical hand reaching behind to unfasten the ties and her other mechanical hand gently sliding beneath her layered skirt to pull her lace panties aside, her smooth fingers touch her glistening, wet core with innocent curiosity. Her golden hair falls softly around her face as her crystal blue eyes brim with shy, breathy tears. Warm brass lamplight, vintage European study, cinematic anime film aesthetic, solo 1girl, no text, no extra people.",
       "nsfwProse": "",
+      "outfitId": "official_auto_memories_doll_attire",
+      "promptProse": "Violet Evergarden suffering a deeply romantic wardrobe malfunction alone inside the quiet Auto Memories Doll writing studio late at night. Leaning forward over the polished mahogany desk beside her antique typewriter, the back corset lacing of her uniform is hopelessly jammed, popping open her crisp white shirt to completely expose her firm, immaculate porcelain breasts and perky pink nipples. With one articulated silver mechanical hand reaching behind to unfasten the ties and her other mechanical hand gently sliding beneath her layered skirt to pull her lace panties aside, her smooth fingers touch her glistening, wet core with innocent curiosity. Her golden hair falls softly around her face as her crystal blue eyes brim with shy, breathy tears. Warm brass lamplight, vintage European study, cinematic anime film aesthetic, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "touching_own_body",
@@ -465,6 +476,41 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "nsfw",
+        "solo",
+        "desk",
+        "typewriter",
+        "open_shirt",
+        "cleavage_spill",
+        "exposed_breasts",
+        "bare_breasts",
+        "skirt_lift",
+        "mechanical_hands"
+      ],
+      "timeOfDay": "深夜",
+      "title": "薇尔莉特 · 书桌更衣束胸解纽事故与白衬衫半褪·「人偶的心跳……好像第一次这样炽热地跳动着」"
+    },
+    {
+      "action": "薄纱前襟敞开大开双腿仰卧展示私密处，机械手指轻抚雪胸与平坦小腹，晨光下含泪微笑",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "vertical downward POV, supine open legs, sheer lace babydoll, pure love devotion",
+      "category": "成人私密",
+      "characterId": "violet_evergarden",
+      "coverageTags": [
+        "special_nsfw",
+        "h_cg",
+        "pure_love"
+      ],
+      "description": "【晨曦微露的白色帷幔大床】纯白薄纱真丝睡裙前襟完全敞开，露出宛如初雪般无瑕的一对娇挺粉嫩双乳与挺立粉红乳头。下身身着纯白开档蕾丝，双腿在凌乱白床单上大开曲起，花瓣晶莹水润。薇尔莉特银白色的机械手指轻轻覆在自己丰盈的胸口与小腹上，感受着呼吸的急促起伏，金发如阳光散落满枕席，澄澈蓝眸泛着幸福水光。",
+      "id": "violet_nsfw_bed_missionary_tenderness",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "穿透白色薄纱窗帘的柔白晨光，勾勒出雪白晶莹的娇躯曲线",
+      "location": "轻纱帷幔轻垂的宽大欧式双人床",
+      "mood": "圣洁无垢与情愫苏醒的极致纯爱",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -474,43 +520,9 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "official_auto_memories_doll_attire",
-      "coverageTags": [
-        "special_nsfw",
-        "h_cg"
-      ]
-    },
-    {
-      "id": "violet_nsfw_bed_missionary_tenderness",
-      "title": "薇尔莉特 · 纯白蕾丝开档战袍与晨曦帷幔柔情仰卧·「这就是被渴望的感觉吗……整个身体都好温暖……」",
-      "category": "成人私密",
-      "characterId": "violet_evergarden",
-      "description": "【晨曦微露的白色帷幔大床】纯白薄纱真丝睡裙前襟完全敞开，露出宛如初雪般无瑕的一对娇挺粉嫩双乳与挺立粉红乳头。下身身着纯白开档蕾丝，双腿在凌乱白床单上大开曲起，花瓣晶莹水润。薇尔莉特银白色的机械手指轻轻覆在自己丰盈的胸口与小腹上，感受着呼吸的急促起伏，金发如阳光散落满枕席，澄澈蓝眸泛着幸福水光。",
-      "location": "轻纱帷幔轻垂的宽大欧式双人床",
-      "action": "薄纱前襟敞开大开双腿仰卧展示私密处，机械手指轻抚雪胸与平坦小腹，晨光下含泪微笑",
-      "timeOfDay": "清晨",
-      "lighting": "穿透白色薄纱窗帘的柔白晨光，勾勒出雪白晶莹的娇躯曲线",
-      "camera": "vertical downward POV, supine open legs, sheer lace babydoll, pure love devotion",
-      "mood": "圣洁无垢与情愫苏醒的极致纯爱",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "on_back",
-        "spread_legs",
-        "crotchless_panties",
-        "exposed_pussy",
-        "open_front",
-        "bare_breasts",
-        "pink_nipples",
-        "mechanical_hands"
-      ],
-      "promptProse": "A breathtakingly pure yet intensely sensual anime illustration of Violet Evergarden reclining solo across rumpled white bedsheets under delicate sheer canopy curtains in the soft dawn light. Her translucent white lace negligee is draped open from her throat down, baring her flawless ivory breasts and delicate rose nipples. Her slender, pale legs are spread gently across the covers, wearing sheer white crotchless panties that reveal her glistening wet pink pussy. Her articulate silver mechanical fingers rest tenderly over her soft bosom, feeling her own racing heartbeat as long golden hair spreads like spun sunlight across the pillows. Shimmering teary blue eyes filled with newfound emotional warmth, blushing cheeks, gentle morning sunbeams, vertical framing, high-end key visual finish, solo 1girl, no text, no extra people.",
       "nsfwProse": "",
+      "outfitId": "charming_nightgown_slip",
+      "promptProse": "A breathtakingly pure yet intensely sensual anime illustration of Violet Evergarden reclining solo across rumpled white bedsheets under delicate sheer canopy curtains in the soft dawn light. Her translucent white lace negligee is draped open from her throat down, baring her flawless ivory breasts and delicate rose nipples. Her slender, pale legs are spread gently across the covers, wearing sheer white crotchless panties that reveal her glistening wet pink pussy. Her articulate silver mechanical fingers rest tenderly over her soft bosom, feeling her own racing heartbeat as long golden hair spreads like spun sunlight across the pillows. Shimmering teary blue eyes filled with newfound emotional warmth, blushing cheeks, gentle morning sunbeams, vertical framing, high-end key visual finish, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "on_back",
@@ -545,6 +557,41 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "nsfw",
+        "solo",
+        "on_back",
+        "spread_legs",
+        "crotchless_panties",
+        "exposed_pussy",
+        "open_front",
+        "bare_breasts",
+        "pink_nipples",
+        "mechanical_hands"
+      ],
+      "timeOfDay": "清晨",
+      "title": "薇尔莉特 · 纯白蕾丝开档战袍与晨曦帷幔柔情仰卧·「这就是被渴望的感觉吗……整个身体都好温暖……」"
+    },
+    {
+      "action": "斜倚大理石池沿单腿出水，机械双手水下自抚私密处，金发湿透水珠滑落，迷离轻喘",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "horizontal wide angle POV, reclining on marble bath rim, glistening wet nude anatomy, steam atmosphere",
+      "category": "成人私密",
+      "characterId": "violet_evergarden",
+      "coverageTags": [
+        "special_nsfw",
+        "h_cg",
+        "bath"
+      ],
+      "description": "【私人大理石温泉浴池·水汽蒸腾】暖热的泉水在池边泛起层层涟漪。全身赤裸的薇尔莉特斜倚在光滑的大理石池沿上，单腿微曲露出水面，金发被打湿紧贴在晶莹的蝴蝶骨与锁骨上。一双银白机械手在水波下轻抚自己修长敏感的大腿内侧与花瓣，水珠沿着饱满微挺的胸脯滑落，水波映照着她绯红的面庞与迷离水润的蓝眸。",
+      "id": "violet_nsfw_bathhouse_edge_prone",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "池底幽蓝景观水灯与四周石壁壁灯折射的水波暖光",
+      "location": "隐秘奢华的私人大理石温泉浴池",
+      "mood": "湿身水光、人偶温存",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -554,45 +601,9 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "charming_nightgown_slip",
-      "coverageTags": [
-        "special_nsfw",
-        "h_cg",
-        "pure_love"
-      ]
-    },
-    {
-      "id": "violet_nsfw_bathhouse_edge_prone",
-      "title": "薇尔莉特 · 私人温泉水光湿身与大理石池沿斜倚·「金属的身体好冰……但温泉与心跳……让这里变得好热……」",
-      "category": "成人私密",
-      "characterId": "violet_evergarden",
-      "description": "【私人大理石温泉浴池·水汽蒸腾】暖热的泉水在池边泛起层层涟漪。全身赤裸的薇尔莉特斜倚在光滑的大理石池沿上，单腿微曲露出水面，金发被打湿紧贴在晶莹的蝴蝶骨与锁骨上。一双银白机械手在水波下轻抚自己修长敏感的大腿内侧与花瓣，水珠沿着饱满微挺的胸脯滑落，水波映照着她绯红的面庞与迷离水润的蓝眸。",
-      "location": "隐秘奢华的私人大理石温泉浴池",
-      "action": "斜倚大理石池沿单腿出水，机械双手水下自抚私密处，金发湿透水珠滑落，迷离轻喘",
-      "timeOfDay": "深夜",
-      "lighting": "池底幽蓝景观水灯与四周石壁壁灯折射的水波暖光",
-      "camera": "horizontal wide angle POV, reclining on marble bath rim, glistening wet nude anatomy, steam atmosphere",
-      "mood": "湿身水光、人偶温存",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "onsen",
-        "bathhouse",
-        "marble",
-        "reclining",
-        "wet_skin",
-        "completely_nude",
-        "bare_breasts",
-        "exposed_pussy",
-        "mechanical_hands"
-      ],
-      "promptProse": "Violet Evergarden enjoying a deeply peaceful, sensual private hot spring bath surrounded by rising steam and polished marble walls. She is completely solo, reclining gracefully against the smooth stone rim with warm geothermal water lapping around her waist. Her supple, bare porcelain breasts and pink nipples glisten with warm droplets in the soft ambient lantern glow, her long wet golden hair clinging delicately to her bare shoulders. With one silver mechanical hand resting on the wet marble and her other hand gliding softly below the water's surface to caress her glistening pink core, a breathless tremor parts her lips. Her wide sapphire eyes glisten with shy ecstasy, rich reflections on rippling water, cinematic steam atmosphere, pristine anime art style, solo 1girl, no text, no extra people.",
       "nsfwProse": "",
+      "outfitId": "nsfw_nude",
+      "promptProse": "Violet Evergarden enjoying a deeply peaceful, sensual private hot spring bath surrounded by rising steam and polished marble walls. She is completely solo, reclining gracefully against the smooth stone rim with warm geothermal water lapping around her waist. Her supple, bare porcelain breasts and pink nipples glisten with warm droplets in the soft ambient lantern glow, her long wet golden hair clinging delicately to her bare shoulders. With one silver mechanical hand resting on the wet marble and her other hand gliding softly below the water's surface to caress her glistening pink core, a breathless tremor parts her lips. Her wide sapphire eyes glisten with shy ecstasy, rich reflections on rippling water, cinematic steam atmosphere, pristine anime art style, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "onsen",
@@ -625,6 +636,42 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "nsfw",
+        "solo",
+        "onsen",
+        "bathhouse",
+        "marble",
+        "reclining",
+        "wet_skin",
+        "completely_nude",
+        "bare_breasts",
+        "exposed_pussy",
+        "mechanical_hands"
+      ],
+      "timeOfDay": "深夜",
+      "title": "薇尔莉特 · 私人温泉水光湿身与大理石池沿斜倚·「金属的身体好冰……但温泉与心跳……让这里变得好热……」"
+    },
+    {
+      "action": "反客为主正面主控跨坐红丝绒椅，双手撑椅背挺胸弓腰，丰满双乳与私密花瓣毫无遮掩展现",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "vertical close-up, cowgirl straddle perspective, bouncing natural breasts, ecstatic climactic gaze",
+      "category": "成人私密",
+      "characterId": "violet_evergarden",
+      "coverageTags": [
+        "special_nsfw",
+        "h_cg",
+        "cowgirl"
+      ],
+      "description": "【壁炉暖阁·复古红丝绒高背椅】壁炉柴火跳跃着暖光。薇尔莉特全身无暇赤裸，正面跨坐在宽大的红丝绒扶手椅座上，双手扶着椅背两侧主动弓起身段。雪白柔嫩的丰盈双乳完全挺立，粉红乳尖随急促呼吸轻轻起伏，晶莹湿润的小穴毫无遮掩地居高临下对准镜头。金色长发随动作披散在椅背两侧，银白色机械手臂泛着金属光泽，迷离的蓝眸中是人偶初懂情欲后的极致执着与动人娇啼。",
+      "id": "violet_nsfw_chair_straddle_ecstasy",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "壁炉柴火跳跃的温暖赤红火光与幽暗阴影交织",
+      "location": "暖炉房中央高背红丝绒复古扶手椅",
+      "mood": "人偶初懂情欲后的主动求欢、极乐交融",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -634,43 +681,9 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "special_nsfw",
-        "h_cg",
-        "bath"
-      ]
-    },
-    {
-      "id": "violet_nsfw_chair_straddle_ecstasy",
-      "title": "薇尔莉特 · 红丝绒扶手椅上的反客为主主控姿态·「薇尔莉特的心愿……就是将全部的自己，毫无保留地呈现在您眼前」",
-      "category": "成人私密",
-      "characterId": "violet_evergarden",
-      "description": "【壁炉暖阁·复古红丝绒高背椅】壁炉柴火跳跃着暖光。薇尔莉特全身无暇赤裸，正面跨坐在宽大的红丝绒扶手椅座上，双手扶着椅背两侧主动弓起身段。雪白柔嫩的丰盈双乳完全挺立，粉红乳尖随急促呼吸轻轻起伏，晶莹湿润的小穴毫无遮掩地居高临下对准镜头。金色长发随动作披散在椅背两侧，银白色机械手臂泛着金属光泽，迷离的蓝眸中是人偶初懂情欲后的极致执着与动人娇啼。",
-      "location": "暖炉房中央高背红丝绒复古扶手椅",
-      "action": "反客为主正面主控跨坐红丝绒椅，双手撑椅背挺胸弓腰，丰满双乳与私密花瓣毫无遮掩展现",
-      "timeOfDay": "深夜",
-      "lighting": "壁炉柴火跳跃的温暖赤红火光与幽暗阴影交织",
-      "camera": "vertical close-up, cowgirl straddle perspective, bouncing natural breasts, ecstatic climactic gaze",
-      "mood": "人偶初懂情欲后的主动求欢、极乐交融",
-      "sceneTags": [
-        "nsfw",
-        "solo",
-        "cowgirl",
-        "straddling",
-        "armchair",
-        "completely_nude",
-        "bouncing_breasts",
-        "exposed_pussy",
-        "mechanical_hands"
-      ],
-      "promptProse": "An astonishing, deeply moving anime illustration of Violet Evergarden seated in an alluring solo frontal straddling pose upon a regal crimson velvet armchair before a roaring stone fireplace. She commands the frame completely naked, leaning slightly forward with her articulated silver mechanical hands gripping the curved armrests, arching her slender back to proudly present her pert, full natural breasts and erect rose nipples. Her glistening wet pussy is fully exposed in the warm hearth light, glistening with pure desire that trickles down her porcelain thighs. Her magnificent golden hair cascades wildly over the deep red upholstery, her tear-filled blue eyes looking directly into the viewer with breathy, devoted adoration. Firelight highlights, vertical composition, cinematic anime film key visual, solo 1girl, no text, no extra people.",
       "nsfwProse": "",
+      "outfitId": "nsfw_nude",
+      "promptProse": "An astonishing, deeply moving anime illustration of Violet Evergarden seated in an alluring solo frontal straddling pose upon a regal crimson velvet armchair before a roaring stone fireplace. She commands the frame completely naked, leaning slightly forward with her articulated silver mechanical hands gripping the curved armrests, arching her slender back to proudly present her pert, full natural breasts and erect rose nipples. Her glistening wet pussy is fully exposed in the warm hearth light, glistening with pure desire that trickles down her porcelain thighs. Her magnificent golden hair cascades wildly over the deep red upholstery, her tear-filled blue eyes looking directly into the viewer with breathy, devoted adoration. Firelight highlights, vertical composition, cinematic anime film key visual, solo 1girl, no text, no extra people.",
       "promptTokens": [
         "sensual_solo",
         "cowgirl_position",
@@ -700,26 +713,23 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst quality",
-        "low quality",
-        "bad anatomy",
-        "extra limbs",
-        "fire, flames, burning ears",
-        "2girls",
-        "1boy"
-      ],
       "recommendedSize": "1152x1536",
-      "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "special_nsfw",
-        "h_cg",
-        "cowgirl"
-      ]
+      "sceneTags": [
+        "nsfw",
+        "solo",
+        "cowgirl",
+        "straddling",
+        "armchair",
+        "completely_nude",
+        "bouncing_breasts",
+        "exposed_pussy",
+        "mechanical_hands"
+      ],
+      "timeOfDay": "深夜",
+      "title": "薇尔莉特 · 红丝绒扶手椅上的反客为主主控姿态·「薇尔莉特的心愿……就是将全部的自己，毫无保留地呈现在您眼前」"
     }
-  ]
+  ],
+  "franchise": "Violet Evergarden",
+  "version": 1
 }

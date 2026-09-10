@@ -1,12 +1,7 @@
 {
-  "version": 1,
-  "franchise": "Oshi no Ko",
   "characters": [
     {
-      "id": "hoshino_ai",
-      "displayName": "星野爱",
-      "originalName": "Hoshino Ai",
-      "franchise": "Oshi no Ko",
+      "adultEligibility": "adult",
       "aliases": [
         "hoshino_ai",
         "ai hoshino",
@@ -14,6 +9,25 @@
         "b-komachi",
         "idol"
       ],
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
+      "canon": {
+        "era": "现代偶像时代",
+        "formNotes": "瞳孔=星形高光 star_pupils；B 小町主推；应援色=粉；强调色 #E60012 应援红",
+        "research": "2026-08-31 调研",
+        "world": "现代日本娱乐圈（艺能界）"
+      },
+      "curatedArtistStyles": [
+        "yokoyari_mengo",
+        "nekotomi_chao",
+        "mika_pikazo"
+      ],
+      "displayName": "星野爱",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "hoshino_ai"
+      ],
+      "franchise": "Oshi no Ko",
+      "id": "hoshino_ai",
       "identityProse": "Hoshino Ai from Oshi no Ko, the top idol of B-Komachi with long purple hair styled with one side up, hair between her eyes and purple eyes with star-shaped pupils, wearing her signature rabbit hair ornament and a sleeveless frilled pink dress with a heart brooch",
       "identityTokens": [
         "hoshino_ai",
@@ -31,19 +45,21 @@
         "idol",
         "oshi_no_ko"
       ],
-      "exactTokens": [
-        "hoshino_ai"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Hoshino Ai",
       "outfits": [
         {
+          "default": true,
           "id": "main_look",
+          "isDefault": true,
           "name": "立绘主形象",
           "prose": "her signature idol look, a sleeveless frilled pink dress with a heart brooch, frilled gloves and thigh boots, with the rabbit hair ornament in her one-side-up hair",
           "tokens": [
@@ -54,12 +70,12 @@
             "frilled_gloves",
             "thigh_boots",
             "rabbit_hair_ornament"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "stage_off_shoulder",
+          "isDefault": false,
           "name": "舞台服·露肩粉裙",
           "prose": "her stage costume with an off-shoulder pink dress, a blue necktie, white thigh-highs and black shoes",
           "tokens": [
@@ -68,12 +84,12 @@
             "blue_necktie",
             "white_thighhighs",
             "black_shoes"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "stage_two_tone",
+          "isDefault": false,
           "name": "舞台服·白上粉下",
           "prose": "her second stage costume, a two-tone dress with a white top, pink skirt and collar, brown belt, brown boots and white thigh-highs",
           "tokens": [
@@ -84,38 +100,30 @@
             "brown_belt",
             "brown_boots",
             "white_thighhighs"
-          ],
+          ]
+        },
+        {
           "default": false,
-          "isDefault": false
+          "id": "rehearsal_casual",
+          "isDefault": false,
+          "name": "彩排室练习便装",
+          "prose": "a comfortable casual t-shirt and pleated skirt with sneakers for dance rehearsal, with her rabbit hair ornament",
+          "tokens": [
+            "casual_tshirt",
+            "pleated_skirt",
+            "sneakers",
+            "rabbit_hair_ornament"
+          ]
         }
       ],
-      "canon": {
-        "world": "现代日本娱乐圈（艺能界）",
-        "era": "现代偶像时代",
-        "formNotes": "瞳孔=星形高光 star_pupils；B 小町主推；应援色=粉；强调色 #E60012 应援红",
-        "research": "2026-08-31 调研"
-      },
-      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
-      "curatedArtistStyles": [
-        "yokoyari_mengo",
-        "nekotomi_chao",
-        "mika_pikazo"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "kurokawa_akane",
-      "displayName": "黑川茜",
-      "originalName": "Kurokawa Akane",
-      "franchise": "Oshi no Ko",
+      "adultEligibility": "adult",
       "aliases": [
         "kurokawa_akane",
         "akane kurokawa",
@@ -123,6 +131,25 @@
         "sayahime tokyo blade",
         "actress"
       ],
+      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
+      "canon": {
+        "era": "现代",
+        "formNotes": "纱姬造型 tag=sayahime_(tokyo_blade)；演剧时眼睛=星形高光 star_eyes；强调色 #8A7CD8 蓝紫",
+        "research": "2026-08-31 调研",
+        "world": "现代日本娱乐圈（舞台剧与影视）"
+      },
+      "curatedArtistStyles": [
+        "yokoyari_mengo",
+        "nekotomi_chao",
+        "momoco_haru"
+      ],
+      "displayName": "黑川茜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "kurokawa_akane"
+      ],
+      "franchise": "Oshi no Ko",
+      "id": "kurokawa_akane",
       "identityProse": "Kurokawa Akane from Oshi no Ko, a slim cool-beauty actress with blue-violet long straight hair and blue-purple eyes, who gains intense brilliant star-shaped pupils during passionate performances",
       "identityTokens": [
         "kurokawa_akane",
@@ -136,85 +163,6 @@
         "star_eyes",
         "oshi_no_ko"
       ],
-      "exactTokens": [
-        "kurokawa_akane"
-      ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "outfits": [
-        {
-          "id": "school_uniform",
-          "name": "阳东高中制服",
-          "prose": "her Yoto High School uniform, a white collared shirt with a black sweater vest and necktie, and a grey pleated skirt",
-          "tokens": [
-            "school_uniform",
-            "white_collared_shirt",
-            "black_sweater_vest",
-            "necktie",
-            "grey_pleated_skirt"
-          ],
-          "default": true,
-          "isDefault": true
-        },
-        {
-          "id": "pinafore_dress",
-          "name": "蓝围裙连衣裙",
-          "prose": "a casual blue pinafore dress over a white blouse, with black high heels",
-          "tokens": [
-            "pinafore_dress",
-            "blue_dress",
-            "white_blouse",
-            "black_footwear",
-            "high_heels"
-          ],
-          "default": false,
-          "isDefault": false
-        },
-        {
-          "id": "sayahime_stage",
-          "name": "舞台剧·纱姬造型",
-          "prose": "her Sayahime stage look from the Tokyo Blade stage play, wielding a sword with intense star-lit eyes",
-          "tokens": [
-            "sayahime_(tokyo_blade)",
-            "star_eyes",
-            "sword",
-            "long_sleeves",
-            "stage_costume"
-          ],
-          "default": false,
-          "isDefault": false
-        },
-        {
-          "id": "daily_glasses",
-          "name": "日常常服（眼镜）",
-          "prose": "a relaxed everyday outfit with glasses and a soft casual styling",
-          "tokens": [
-            "glasses",
-            "casual",
-            "white_shirt",
-            "blue_skirt"
-          ],
-          "default": false,
-          "isDefault": false
-        }
-      ],
-      "canon": {
-        "world": "现代日本娱乐圈（舞台剧与影视）",
-        "era": "现代",
-        "formNotes": "纱姬造型 tag=sayahime_(tokyo_blade)；演剧时眼睛=星形高光 star_eyes；强调色 #8A7CD8 蓝紫",
-        "research": "2026-08-31 调研"
-      },
-      "animeStudio": "oshi no ko, official anime art, Doga Kobo style",
-      "curatedArtistStyles": [
-        "yokoyari_mengo",
-        "nekotomi_chao",
-        "momoco_haru"
-      ],
       "negativeTokens": [
         "bad anatomy",
         "bad hands",
@@ -223,17 +171,86 @@
         "lowres",
         "signature",
         "watermark"
+      ],
+      "originalName": "Kurokawa Akane",
+      "outfits": [
+        {
+          "default": true,
+          "id": "school_uniform",
+          "isDefault": true,
+          "name": "阳东高中制服",
+          "prose": "her Yoto High School uniform, a white collared shirt with a black sweater vest and necktie, and a grey pleated skirt",
+          "tokens": [
+            "school_uniform",
+            "white_collared_shirt",
+            "black_sweater_vest",
+            "necktie",
+            "grey_pleated_skirt"
+          ]
+        },
+        {
+          "default": false,
+          "id": "pinafore_dress",
+          "isDefault": false,
+          "name": "蓝围裙连衣裙",
+          "prose": "a casual blue pinafore dress over a white blouse, with black high heels",
+          "tokens": [
+            "pinafore_dress",
+            "blue_dress",
+            "white_blouse",
+            "black_footwear",
+            "high_heels"
+          ]
+        },
+        {
+          "default": false,
+          "id": "sayahime_stage",
+          "isDefault": false,
+          "name": "舞台剧·纱姬造型",
+          "prose": "her Sayahime stage look from the Tokyo Blade stage play, wielding a sword with intense star-lit eyes",
+          "tokens": [
+            "sayahime_(tokyo_blade)",
+            "star_eyes",
+            "sword",
+            "long_sleeves",
+            "stage_costume"
+          ]
+        },
+        {
+          "default": false,
+          "id": "daily_glasses",
+          "isDefault": false,
+          "name": "日常常服（眼镜）",
+          "prose": "a relaxed everyday outfit with glasses and a soft casual styling",
+          "tokens": [
+            "glasses",
+            "casual",
+            "white_shirt",
+            "blue_skirt"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "arima_kana",
-      "displayName": "有马加奈",
-      "originalName": "Kana Arima",
-      "franchise": "Oshi no Ko",
+      "adultEligibility": "adult",
       "aliases": [
         "有马加奈",
         "Kana Arima"
       ],
+      "displayName": "有马加奈",
+      "exactPrefixes": [
+        "1girl, solo, arima_kana"
+      ],
+      "exactTokens": [
+        "arima_kana"
+      ],
+      "franchise": "Oshi no Ko",
+      "id": "arima_kana",
       "identityProse": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
       "identityTokens": [
         "arima_kana",
@@ -243,18 +260,6 @@
         "blunt_bangs",
         "red_eyes"
       ],
-      "exactTokens": [
-        "arima_kana"
-      ],
-      "exactPrefixes": [
-        "1girl, solo, arima_kana"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -273,9 +278,12 @@
         "underwear",
         "see-through"
       ],
+      "originalName": "Kana Arima",
       "outfits": [
         {
+          "default": true,
           "id": "sfw_stage",
+          "isDefault": true,
           "name": "B小町舞台打歌服",
           "prose": "an opaque red-and-white idol stage dress with layered knee-length skirt, fitted jacket, gloves and polished shoes",
           "tokens": [
@@ -285,36 +293,36 @@
             "layered_skirt",
             "gloves",
             "stage_shoes"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "sfw_practice",
+          "isDefault": false,
           "name": "排练室运动便装",
           "prose": "a charcoal T-shirt, burgundy tracksuit trousers and white sneakers",
           "tokens": [
             "t-shirt",
             "track_pants",
             "sneakers"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_casual",
+          "isDefault": false,
           "name": "围读针织便装",
           "prose": "a cream knit cardigan over a white blouse and a navy knee-length skirt",
           "tokens": [
             "cream_cardigan",
             "white_blouse",
             "navy_skirt"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_school",
+          "isDefault": false,
           "name": "阳东高校制服",
           "prose": "a tidy dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
           "tokens": [
@@ -323,12 +331,12 @@
             "white_blouse",
             "ribbon",
             "pleated_skirt"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_festival",
+          "isDefault": false,
           "name": "夏祭红白花纹浴衣",
           "prose": "a properly wrapped red-and-white floral yukata with a dark obi and sandals",
           "tokens": [
@@ -337,24 +345,24 @@
             "floral_print",
             "obi",
             "sandals"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_boudoir",
+          "isDefault": false,
           "name": "有马加奈·成人私密造型",
           "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
           "tokens": [
             "private_lingerie",
             "sheer_lace",
             "soft_shadows"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
           "id": "sfw_refined_daily",
+          "isDefault": false,
+          "isNsfw": false,
           "name": "格纹短外套",
           "prose": "a rust-brown checked jacket over a cream blouse, navy wide-leg trousers and a soft brown beret",
           "tokens": [
@@ -362,11 +370,16 @@
             "cream_blouse",
             "wide_leg_pants",
             "brown_beret"
-          ],
-          "isDefault": false,
-          "isNsfw": false
+          ]
         }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Oshi no Ko",
+  "version": 1
 }

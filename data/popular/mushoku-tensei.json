@@ -1,12 +1,7 @@
 {
-  "version": 1,
-  "franchise": "Mushoku Tensei",
   "characters": [
     {
-      "id": "roxy_migurdia",
-      "displayName": "洛琪希",
-      "originalName": "Roxy Migurdia",
-      "franchise": "Mushoku Tensei",
+      "adultEligibility": "adult",
       "aliases": [
         "roxy_migurdia",
         "roxy",
@@ -14,6 +9,25 @@
         "mushoku tensei",
         "jobless reincarnation"
       ],
+      "animeStudio": "studio bind, official anime screencap, anime coloring",
+      "canon": {
+        "era": "中世纪风",
+        "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
+        "research": "2026-08-14 调研",
+        "world": "异世界奇幻（无职转生）"
+      },
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "displayName": "洛琪希",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "roxy_migurdia"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "roxy_migurdia",
       "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids with a soft silky shine, blue eyes, a mole on her left collarbone",
       "identityTokens": [
         "roxy_migurdia",
@@ -28,19 +42,21 @@
         "petite_female",
         "mushoku_tensei"
       ],
-      "exactTokens": [
-        "roxy_migurdia"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Roxy Migurdia",
       "outfits": [
         {
+          "default": true,
           "id": "witch_outfit",
+          "isDefault": true,
           "name": "魔女服",
           "prose": "her short witch outfit with a blue hat, white blouse and blue skirt",
           "tokens": [
@@ -51,24 +67,24 @@
             "frills",
             "thighhighs",
             "wooden_staff"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "casual",
+          "isDefault": false,
           "name": "便服",
           "prose": "a relaxed casual dress in soft blue tones",
           "tokens": [
             "casual_clothes",
             "dress",
             "blue_clothes"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "adventurer",
+          "isDefault": false,
           "name": "冒险装",
           "prose": "a practical adventurer outfit with a cape and boots",
           "tokens": [
@@ -77,13 +93,15 @@
             "boots",
             "pants",
             "belt"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "lingerie_only",
+          "isDefault": false,
           "name": "私密内衣形态",
+          "prose": "wearing only a simple bra and matching briefs, plain cotton underwear with thin straps, minimal private undergarments",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "lingerie",
             "bra",
@@ -95,42 +113,58 @@
             "bare_shoulders",
             "bare_legs",
             "bare_midriff"
-          ],
-          "prose": "wearing only a simple bra and matching briefs, plain cotton underwear with thin straps, minimal private undergarments",
-          "styleHint": "soft cinematic lighting",
+          ]
+        },
+        {
+          "default": false,
+          "id": "summer_yukata",
           "isDefault": false,
-          "default": false
+          "name": "温泉旅馆浴衣",
+          "prose": "a loose cotton yukata with a simple obi sash",
+          "tokens": [
+            "yukata",
+            "cotton",
+            "obi"
+          ]
         }
       ],
-      "canon": {
-        "world": "异世界奇幻（无职转生）",
-        "era": "中世纪风",
-        "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
-        "research": "2026-08-14 调研"
-      },
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "sylphiette",
+        "sylphie",
+        "sylphiette grayrat",
+        "mushoku tensei",
+        "希露菲叶特",
+        "希露菲"
+      ],
       "animeStudio": "studio bind, official anime screencap, anime coloring",
+      "canon": {
+        "era": "中世纪风",
+        "formNotes": "米格路德族（长耳族）1/4 混血（人族1/2+兽族1/4+长耳族1/4）；又长又尖的双耳是个人标志（高兴/害羞时会扑腾）；幼年绿发→青年白发；红瞳；贫乳；不擅长火系魔术",
+        "research": "2026-08-18 调研",
+        "world": "古典奇幻（无职转生·六面世界）"
+      },
       "curatedArtistStyles": [
         "shirotaka",
         "rella",
         "kantoku"
       ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ]
-    },
-    {
-      "id": "sylphiette",
-      "displayName": "希露菲叶特",
-      "franchise": "Mushoku Tensei",
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "adultEligibility": "adult",
       "defaultOutfitId": "default_mage_robe",
+      "displayName": "希露菲叶特",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "sylphiette (mushoku tensei)"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "sylphiette",
+      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair with a feathery texture, delicate long pointed elf ears, and ruby red eyes with a warm glow, carrying a sweet shy demeanor",
       "identityTokens": [
         "sylphiette",
         "sylphie",
@@ -144,11 +178,24 @@
         "flat_chest",
         "mushoku_tensei"
       ],
-      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair with a feathery texture, delicate long pointed elf ears, and ruby red eyes with a warm glow, carrying a sweet shy demeanor",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "希露菲叶特",
       "outfits": [
         {
+          "default": true,
           "id": "default_mage_robe",
+          "isDefault": true,
           "name": "学徒法师长袍",
+          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
+          "styleHint": "anime adventure style",
           "tokens": [
             "green_hair",
             "short_hair",
@@ -156,15 +203,15 @@
             "mage_robe",
             "shorts",
             "boots"
-          ],
-          "prose": "wearing her classic green hooded mage cloak over a simple white shirt and shorts with travel boots",
-          "styleHint": "anime adventure style",
-          "isDefault": true,
-          "default": true
+          ]
         },
         {
+          "default": false,
           "id": "silent_fitz_uniform",
+          "isDefault": false,
           "name": "菲兹学长魔术学院执事装",
+          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
+          "styleHint": "sharp noble academy aesthetic",
           "tokens": [
             "white_hair",
             "short_hair",
@@ -173,29 +220,29 @@
             "formal_suit",
             "white_pants",
             "cape"
-          ],
-          "prose": "wearing the Ranoa Magic Academy formal white male uniform with cape and dark sunglasses as the Silent Fitz",
-          "styleHint": "sharp noble academy aesthetic",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "oversized_nightshirt",
+          "isDefault": false,
           "name": "居家宽松露肩睡衣",
+          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
+          "styleHint": "soft cozy morning atmosphere",
           "tokens": [
             "oversized_shirt",
             "off_shoulder_shirt",
             "bare_thighs",
             "bare_legs"
-          ],
-          "prose": "wearing an oversized loose nightshirt slipping off one shoulder, showing bare slender legs",
-          "styleHint": "soft cozy morning atmosphere",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
+          "styleHint": "intimate soft studio lighting",
           "tokens": [
             "nude",
             "completely_naked",
@@ -206,15 +253,15 @@
             "bare_breasts",
             "pink_nipples",
             "bare_feet"
-          ],
-          "prose": "completely naked with zero clothes, natural fair porcelain skin, exposed pink pussy, detailed vulva, pink nipples, elf ears",
-          "styleHint": "intimate soft studio lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "casual_day_dress",
+          "isDefault": false,
           "name": "居家便服连衣裙",
+          "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "sylphiette_casual_day_dress",
             "cardigan",
@@ -225,57 +272,33 @@
             "casual_clothes",
             "long_sleeves",
             "dress"
-          ],
-          "prose": "wearing soft casual homewear: a cream knit cardigan layered over a simple light dress",
-          "styleHint": "soft cinematic lighting",
+          ]
+        },
+        {
+          "default": false,
+          "id": "silent_fitz_uniform_no_sunglasses",
           "isDefault": false,
-          "default": false
+          "name": "菲兹学院执事装·摘镜",
+          "prose": "the Ranoa Magic Academy formal white male uniform with cape, worn as the Silent Fitz without sunglasses",
+          "styleHint": "sharp noble academy aesthetic",
+          "tokens": [
+            "white_hair",
+            "short_hair",
+            "academy_uniform",
+            "formal_suit",
+            "white_pants",
+            "cape"
+          ]
         }
       ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "curatedArtistStyles": [
-        "shirotaka",
-        "rella",
-        "kantoku"
-      ],
-      "originalName": "希露菲叶特",
-      "exactTokens": [
-        "sylphiette (mushoku tensei)"
-      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
       "supportedEngines": [
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
-      ],
-      "exactPrefixes": [],
-      "aliases": [
-        "sylphiette",
-        "sylphie",
-        "sylphiette grayrat",
-        "mushoku tensei",
-        "希露菲叶特",
-        "希露菲"
-      ],
-      "canon": {
-        "world": "古典奇幻（无职转生·六面世界）",
-        "era": "中世纪风",
-        "formNotes": "米格路德族（长耳族）1/4 混血（人族1/2+兽族1/4+长耳族1/4）；又长又尖的双耳是个人标志（高兴/害羞时会扑腾）；幼年绿发→青年白发；红瞳；贫乳；不擅长火系魔术",
-        "research": "2026-08-18 调研"
-      },
-      "animeStudio": "studio bind, official anime screencap, anime coloring"
+      ]
     },
     {
-      "id": "eris_greyrat",
-      "displayName": "艾莉丝",
-      "originalName": "Eris Greyrat",
-      "franchise": "Mushoku Tensei",
+      "adultEligibility": "adult",
       "aliases": [
         "eris_greyrat",
         "eris boreas greyrat",
@@ -283,6 +306,25 @@
         "mushoku tensei",
         "jobless reincarnation"
       ],
+      "animeStudio": "mushoku tensei, official anime art, Studio Bind style",
+      "canon": {
+        "era": "中世纪魔大陆与王族领地",
+        "formNotes": "成年版 tag=eris_greyrat_(adult)；红发红瞳=格雷拉特家族特征；武器=大剑；强调色 #CC0000 深红",
+        "research": "2026-08-31 调研",
+        "world": "奇幻异世界（六面世界）"
+      },
+      "curatedArtistStyles": [
+        "shirotaka",
+        "rella",
+        "kantoku"
+      ],
+      "displayName": "艾莉丝",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "eris_greyrat"
+      ],
+      "franchise": "Mushoku Tensei",
+      "id": "eris_greyrat",
       "identityProse": "Eris Greyrat from Mushoku Tensei, a noble-born swordswoman with deep crimson wavy long hair, red eyes, thick eyebrows and a small ahoge, tall and athletic with a tomboyish \"mad dog\" aura that contrasts her noble upbringing",
       "identityTokens": [
         "eris_greyrat",
@@ -298,19 +340,21 @@
         "athletic",
         "mushoku_tensei"
       ],
-      "exactTokens": [
-        "eris_greyrat"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Eris Greyrat",
       "outfits": [
         {
+          "default": true,
           "id": "sword_king",
+          "isDefault": true,
           "name": "剑王时期",
           "prose": "her iconic outfit as the Sword King, a crop top with open inner-thigh pants and stirrup leggings, white pantyhose, a headband and a sheathed sword at her hip",
           "tokens": [
@@ -321,12 +365,12 @@
             "headband",
             "sword",
             "sheath"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "dead_end_adventurer",
+          "isDefault": false,
           "name": "冒险者 Dead End",
           "prose": "her Dead End adventurer outfit from the journey across the Demon Continent, a practical jacket with pants and boots, sword and sheath at her belt",
           "tokens": [
@@ -337,12 +381,12 @@
             "sheath",
             "belt",
             "adventure"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "noble_child",
+          "isDefault": false,
           "name": "贵族大小姐",
           "prose": "her childhood noble outfit, an elegant frilled dress befitting the young lady of the Greyrat house, with her characteristic headband and ahoge",
           "tokens": [
@@ -352,32 +396,16 @@
             "hair_ribbon",
             "ahoge",
             "red_hair"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         }
       ],
-      "canon": {
-        "world": "奇幻异世界（六面世界）",
-        "era": "中世纪魔大陆与王族领地",
-        "formNotes": "成年版 tag=eris_greyrat_(adult)；红发红瞳=格雷拉特家族特征；武器=大剑；强调色 #CC0000 深红",
-        "research": "2026-08-31 调研"
-      },
-      "animeStudio": "mushoku tensei, official anime art, Studio Bind style",
-      "curatedArtistStyles": [
-        "shirotaka",
-        "rella",
-        "kantoku"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Mushoku Tensei",
+  "version": 1
 }

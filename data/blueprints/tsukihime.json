@@ -1,29 +1,27 @@
 {
-  "version": "1.0.0",
-  "franchise": "Tsukihime",
   "blueprints": [
     {
-      "id": "arcueid_crimson_moon_true_ancestor_slash",
-      "title": "爱尔奎特 · 绯红真祖月下神威",
+      "action": "悬空迎风挥出金色月牙爪风，赤瞳闪烁神性杀意，金发翻飞嘴角微扬",
+      "camera": "cowboy shot, low angle, majestic combat view",
       "category": "身份高光",
       "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 绯红真祖月下神威】高耸摩天大楼顶端的血月之夜，爱尔奎特凌空而立。原本清澈的眼眸化为摄人心魄的鲜红赤瞳，指尖闪烁着撕裂大气的金色月弧利刃风暴，金色短发在狂乱的夜风中肆意飞扬，嘴角扬起唯我独尊的真祖暴君浅笑——「今晚的月色，是不是比任何时候都要美丽呢？」",
-      "location": "摩天大楼天台悬空俯瞰冬木夜景处",
-      "action": "悬空迎风挥出金色月牙爪风，赤瞳闪烁神性杀意，金发翻飞嘴角微扬",
-      "timeOfDay": "血月深夜",
-      "lighting": "猩红圆月洒下的冷冽月光与金色魔力刀光",
-      "camera": "cowboy shot, low angle, majestic combat view",
-      "mood": "真祖神威",
-      "sceneTags": [
-        "rooftop",
-        "red_moon",
-        "full_moon",
-        "floating",
-        "slash_effect",
-        "flowing_hair",
-        "red_eyes",
-        "dominant_smile"
+      "coverageTags": [
+        "iconic",
+        "combat"
       ],
+      "description": "【爱尔奎特 · 绯红真祖月下神威】高耸摩天大楼顶端的血月之夜，爱尔奎特凌空而立。原本清澈的眼眸化为摄人心魄的鲜红赤瞳，指尖闪烁着撕裂大气的金色月弧利刃风暴，金色短发在狂乱的夜风中肆意飞扬，嘴角扬起唯我独尊的真祖暴君浅笑——「今晚的月色，是不是比任何时候都要美丽呢？」",
+      "id": "arcueid_crimson_moon_true_ancestor_slash",
+      "lighting": "猩红圆月洒下的冷冽月光与金色魔力刀光",
+      "location": "摩天大楼天台悬空俯瞰冬木夜景处",
+      "mood": "真祖神威",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "extra limbs",
+        "fire, flames, burning ears"
+      ],
+      "outfitId": "archetype_earth_regal_gown",
       "promptProse": "Hovering effortlessly above a sprawling skyscraper skyline beneath an ominous crimson moon, Arcueid Brunestud unleashes her True Ancestor power. Golden claws of atmospheric pressure slash through the gale around her fingers as her short blonde hair whips dynamically. Her glowing ruby eyes gleam with playful yet terrifying ancient supremacy. Dynamic low-angle anime CG, solo 1girl, no text.",
       "promptTokens": [
         "rooftop",
@@ -43,6 +41,35 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "rooftop",
+        "red_moon",
+        "full_moon",
+        "floating",
+        "slash_effect",
+        "flowing_hair",
+        "red_eyes",
+        "dominant_smile"
+      ],
+      "timeOfDay": "血月深夜",
+      "title": "爱尔奎特 · 绯红真祖月下神威"
+    },
+    {
+      "action": "双手撑在视角胸膛两侧俯身凑近，双腿向后翘起，露出可爱小虎牙与灿烂笑脸",
+      "camera": "cowboy shot, high angle, playful bed POV",
+      "category": "晨间女友",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "daily",
+        "sweet",
+        "catlike"
+      ],
+      "description": "【爱尔奎特 · 晨曦床榻的白猫飞扑撒娇】温暖的卧室晨光透过白纱帘洒在床上。爱尔奎特像一只好奇又黏人的大白猫一样扑上床榻，双手按在你胸膛两侧，金发凌乱垂落，小巧的虎牙微微探出唇瓣。她双腿在身后轻快翘起，金色发梢在晨曦中闪耀，眨巴着红宝石眼眸向你索吻——「早安！今天的太阳好舒服，快点陪我出门玩，不然我就咬你咯！」",
+      "id": "arcueid_morning_bed_catlike_pounce_cuddle",
+      "lighting": "柔和透亮的晨曦丁达尔光束",
+      "location": "洒满金色阳光的公寓主卧柔软大床",
+      "mood": "元气撒娇",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -50,37 +77,7 @@
         "extra limbs",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "archetype_earth_regal_gown",
-      "coverageTags": [
-        "iconic",
-        "combat"
-      ]
-    },
-    {
-      "id": "arcueid_morning_bed_catlike_pounce_cuddle",
-      "title": "爱尔奎特 · 晨曦床榻的白猫飞扑撒娇",
-      "category": "晨间女友",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 晨曦床榻的白猫飞扑撒娇】温暖的卧室晨光透过白纱帘洒在床上。爱尔奎特像一只好奇又黏人的大白猫一样扑上床榻，双手按在你胸膛两侧，金发凌乱垂落，小巧的虎牙微微探出唇瓣。她双腿在身后轻快翘起，金色发梢在晨曦中闪耀，眨巴着红宝石眼眸向你索吻——「早安！今天的太阳好舒服，快点陪我出门玩，不然我就咬你咯！」",
-      "location": "洒满金色阳光的公寓主卧柔软大床",
-      "action": "双手撑在视角胸膛两侧俯身凑近，双腿向后翘起，露出可爱小虎牙与灿烂笑脸",
-      "timeOfDay": "清晨",
-      "lighting": "柔和透亮的晨曦丁达尔光束",
-      "camera": "cowboy shot, high angle, playful bed POV",
-      "mood": "元气撒娇",
-      "sceneTags": [
-        "bedroom",
-        "bed",
-        "morning_sun",
-        "leaning_forward",
-        "hands_on_chest",
-        "sundress",
-        "bare_legs",
-        "playful_smile",
-        "fang",
-        "blush"
-      ],
+      "outfitId": "casual_summer_sundress",
       "promptProse": "Pouncing affectionately onto the viewer's bed in the warm morning sun, Arcueid Brunestud rests her hands playfully on the viewer's chest. Dressed in a relaxed white sundress, her bare legs kick behind her as her golden bangs frame a bright, feline smile with a cute vampire fang peeking out. Her ruby eyes sparkle with mischievous adoration. Charming, domestic anime key visual, solo 1girl, no text.",
       "promptTokens": [
         "bedroom",
@@ -102,6 +99,37 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "bedroom",
+        "bed",
+        "morning_sun",
+        "leaning_forward",
+        "hands_on_chest",
+        "sundress",
+        "bare_legs",
+        "playful_smile",
+        "fang",
+        "blush"
+      ],
+      "timeOfDay": "清晨",
+      "title": "爱尔奎特 · 晨曦床榻的白猫飞扑撒娇"
+    },
+    {
+      "action": "一手牵着视角手腕，一手举着可丽饼，嘴角沾着奶油回头露出纯真灿烂的笑容",
+      "camera": "cowboy shot, eye level, joyful street date",
+      "category": "街头约会",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "date",
+        "sweet",
+        "daily"
+      ],
+      "description": "【爱尔奎特 · 游乐园可丽饼的甜蜜回眸】热闹缤纷的游乐园摩天轮下，爱尔奎特身穿经典的白色高领毛衣与长紫裙，手里捧着一份刚买的巧克力香蕉可丽饼。她嘴角沾着一抹白色的甜奶油，一手拉着你的手腕回头灿笑，双眸闪烁着从未体验过人类市井快乐的纯粹幸福——「人类发明的东西真的太棒了！这个叫可丽饼的点心超级甜，你也快尝一口！」",
+      "id": "arcueid_amusement_park_crepe_date",
+      "lighting": "明媚清透的阳光与摩天轮倒影",
+      "location": "摩天轮与旋转木马转动的主题游乐园广场",
+      "mood": "纯真欢快",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -109,37 +137,7 @@
         "extra limbs",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "casual_summer_sundress",
-      "coverageTags": [
-        "daily",
-        "sweet",
-        "catlike"
-      ]
-    },
-    {
-      "id": "arcueid_amusement_park_crepe_date",
-      "title": "爱尔奎特 · 游乐园可丽饼的甜蜜回眸",
-      "category": "街头约会",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 游乐园可丽饼的甜蜜回眸】热闹缤纷的游乐园摩天轮下，爱尔奎特身穿经典的白色高领毛衣与长紫裙，手里捧着一份刚买的巧克力香蕉可丽饼。她嘴角沾着一抹白色的甜奶油，一手拉着你的手腕回头灿笑，双眸闪烁着从未体验过人类市井快乐的纯粹幸福——「人类发明的东西真的太棒了！这个叫可丽饼的点心超级甜，你也快尝一口！」",
-      "location": "摩天轮与旋转木马转动的主题游乐园广场",
-      "action": "一手牵着视角手腕，一手举着可丽饼，嘴角沾着奶油回头露出纯真灿烂的笑容",
-      "timeOfDay": "晴朗午后",
-      "lighting": "明媚清透的阳光与摩天轮倒影",
-      "camera": "cowboy shot, eye level, joyful street date",
-      "mood": "纯真欢快",
-      "sceneTags": [
-        "amusement_park",
-        "ferris_wheel",
-        "holding_crepe",
-        "eating_crepe",
-        "whipped_cream_on_lip",
-        "holding_hands",
-        "white_sweater",
-        "purple_skirt",
-        "radiant_smile"
-      ],
+      "outfitId": "official_white_sweater_purple_skirt",
       "promptProse": "Walking through a bustling amusement park beneath a giant Ferris wheel, Arcueid Brunestud pulls the viewer eagerly forward while holding a sweet banana chocolate crepe. Wearing her iconic white knit turtleneck and purple maxi skirt, she looks back with pure childlike joy, a speck of sweet cream at the corner of her lips. Vibrant, joyful anime date scene, solo 1girl, no text.",
       "promptTokens": [
         "amusement_park",
@@ -159,46 +157,47 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "amusement_park",
+        "ferris_wheel",
+        "holding_crepe",
+        "eating_crepe",
+        "whipped_cream_on_lip",
+        "holding_hands",
+        "white_sweater",
+        "purple_skirt",
+        "radiant_smile"
+      ],
+      "timeOfDay": "晴朗午后",
+      "title": "爱尔奎特 · 游乐园可丽饼的甜蜜回眸"
+    },
+    {
+      "action": "背靠在怀中双手反握住环抱的手臂，脸红透耳根，咬唇露出小尖牙害羞别头",
+      "camera": "medium close-up, eye level, flustered tender embrace",
+      "category": "反差娇羞",
+      "characterId": "arcueid_brunestud",
+      "compositionIntent": "group",
+      "coverageTags": [
+        "gap_moe",
+        "flustered",
+        "embrace"
+      ],
+      "description": "【爱尔奎特 · 客厅突袭相拥的娇羞发颤】黄昏的客厅沙发旁，当你突然从背后将毫无防备的爱尔奎特整个揽入怀中、将下巴搁在她柔软的发窝时，这位活了数百年的真祖少女瞬间僵住。整张脸颊与白皙的耳根迅速被绯红吞没，双手羞涩地抓着你的手臂，小小的吸血犬齿在咬唇时隐约若现，声音微颤却舍不得挣脱——「突、突然抱过来干什么啦……我的心跳声……都要被你听到了啦……」",
+      "id": "arcueid_living_room_hugged_blush_fang",
+      "lighting": "窗外如蜂蜜般浓郁的金黄夕阳余晖",
+      "location": "夕阳斜照的温馨公寓客厅沙发旁",
+      "mood": "反差心动",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "self-harm, choking"
       ],
-      "recommendedSize": "1152x1536",
       "outfitId": "official_white_sweater_purple_skirt",
-      "coverageTags": [
-        "date",
-        "sweet",
-        "daily"
-      ]
-    },
-    {
-      "id": "arcueid_living_room_hugged_blush_fang",
-      "title": "爱尔奎特 · 客厅突袭相拥的娇羞发颤",
-      "category": "反差娇羞",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 客厅突袭相拥的娇羞发颤】黄昏的客厅沙发旁，当你突然从背后将毫无防备的爱尔奎特整个揽入怀中、将下巴搁在她柔软的发窝时，这位活了数百年的真祖少女瞬间僵住。整张脸颊与白皙的耳根迅速被绯红吞没，双手羞涩地抓着你的手臂，小小的吸血犬齿在咬唇时隐约若现，声音微颤却舍不得挣脱——「突、突然抱过来干什么啦……我的心跳声……都要被你听到了啦……」",
-      "location": "夕阳斜照的温馨公寓客厅沙发旁",
-      "action": "背靠在怀中双手反握住环抱的手臂，脸红透耳根，咬唇露出小尖牙害羞别头",
-      "timeOfDay": "黄昏",
-      "lighting": "窗外如蜂蜜般浓郁的金黄夕阳余晖",
-      "camera": "medium close-up, eye level, flustered tender embrace",
-      "mood": "反差心动",
-      "sceneTags": [
-        "living_room",
-        "back_hug",
-        "held_by_viewer",
-        "white_sweater",
-        "heavy_blush",
-        "blushing_ears",
-        "biting_lip",
-        "fang",
-        "flustered",
-        "shy"
-      ],
-      "promptProse": "Wrapped from behind in a tender, sudden embrace in the sunset-lit living room, Arcueid Brunestud freezes in delightful fluster. Her fair cheeks and ears flush deep crimson with embarrassment as her small hands grasp the viewer's forearms. Biting her lower lip, revealing the hint of a tiny vampire fang, her ruby eyes quiver between shyness and deep affection. Emotional anime illustration, solo 1girl, no text.",
+      "promptProse": "Wrapped from behind in a tender, sudden embrace in the sunset-lit living room, Arcueid Brunestud freezes in delightful fluster. Her fair cheeks and ears flush deep crimson with embarrassment as her small hands grasp the viewer's forearms. Biting her lower lip, revealing the hint of a tiny vampire fang, her ruby eyes quiver between shyness and deep affection. Emotional anime illustration with two clothed figures, no text.",
       "promptTokens": [
         "living_room",
         "sofa",
@@ -218,48 +217,50 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "two_clothed_figures"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "living_room",
+        "back_hug",
+        "held_by_viewer",
+        "white_sweater",
+        "heavy_blush",
+        "blushing_ears",
+        "biting_lip",
+        "fang",
+        "flustered",
+        "shy"
+      ],
+      "timeOfDay": "黄昏",
+      "title": "爱尔奎特 · 客厅突袭相拥的娇羞发颤"
+    },
+    {
+      "action": "并肩坐着头靠在视角肩头，双手抱膝，侧首含情脉脉仰望夜空与视角",
+      "camera": "cowboy shot, medium angle, peaceful romantic night",
+      "category": "温柔陪伴",
+      "characterId": "arcueid_brunestud",
+      "compositionIntent": "group",
+      "coverageTags": [
+        "healing",
+        "peaceful",
+        "romantic"
+      ],
+      "description": "【爱尔奎特 · 天台夜风中的倚肩私语】夜幕降临的高楼天台边缘，晚风吹拂着她轻盈的白裙裙摆。爱尔奎特安静地并肩依偎在你身侧，将毛茸茸的金发脑袋轻轻靠在你的肩头，双手环抱着曲起的小腿。红宝石般的眼眸中映照着漫天繁星与城市灯火，收敛了所有王者的霸道，唯有恋人间最温柔的眷恋——「如果一直留在你身边，即便吸血冲动发作……我也绝对能战胜它呢。」",
+      "id": "arcueid_rooftop_stargazing_shoulder_rest",
+      "lighting": "幽蓝夜空微光与远处城市金黄灯海",
+      "location": "俯瞰整座安宁城市的公寓楼顶露台",
+      "mood": "深情依恋",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears",
-        "self-harm, choking"
+        "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "official_white_sweater_purple_skirt",
-      "coverageTags": [
-        "gap_moe",
-        "flustered",
-        "embrace"
-      ]
-    },
-    {
-      "id": "arcueid_rooftop_stargazing_shoulder_rest",
-      "title": "爱尔奎特 · 天台夜风中的倚肩私语",
-      "category": "温柔陪伴",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 天台夜风中的倚肩私语】夜幕降临的高楼天台边缘，晚风吹拂着她轻盈的白裙裙摆。爱尔奎特安静地并肩依偎在你身侧，将毛茸茸的金发脑袋轻轻靠在你的肩头，双手环抱着曲起的小腿。红宝石般的眼眸中映照着漫天繁星与城市灯火，收敛了所有王者的霸道，唯有恋人间最温柔的眷恋——「如果一直留在你身边，即便吸血冲动发作……我也绝对能战胜它呢。」",
-      "location": "俯瞰整座安宁城市的公寓楼顶露台",
-      "action": "并肩坐着头靠在视角肩头，双手抱膝，侧首含情脉脉仰望夜空与视角",
-      "timeOfDay": "深夜",
-      "lighting": "幽蓝夜空微光与远处城市金黄灯海",
-      "camera": "cowboy shot, medium angle, peaceful romantic night",
-      "mood": "深情依恋",
-      "sceneTags": [
-        "rooftop",
-        "night_sky",
-        "stars",
-        "city_lights",
-        "sitting_side_by_side",
-        "head_on_shoulder",
-        "hugging_knees",
-        "white_dress",
-        "gentle_smile"
-      ],
-      "promptProse": "Sitting peacefully together on an apartment rooftop beneath a vast star-studded night sky, Arcueid Brunestud rests her blonde head gently upon the viewer's shoulder. Dressed in her breezy white sundress, she hugs her knees while gazing at the twinkling city below. Her crimson eyes radiate tranquil devotion and serene love. Atmospheric, emotional anime CG, solo 1girl, no text.",
+      "outfitId": "casual_summer_sundress",
+      "promptProse": "Sitting peacefully together on an apartment rooftop beneath a vast star-studded night sky, Arcueid Brunestud rests her blonde head gently upon the viewer's shoulder. Dressed in her breezy white sundress, she hugs her knees while gazing at the twinkling city below. Her crimson eyes radiate tranquil devotion and serene love. Atmospheric, emotional anime CG with two clothed figures, no text.",
       "promptTokens": [
         "rooftop",
         "night_sky",
@@ -276,8 +277,39 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "two_clothed_figures"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "rooftop",
+        "night_sky",
+        "stars",
+        "city_lights",
+        "sitting_side_by_side",
+        "head_on_shoulder",
+        "hugging_knees",
+        "white_dress",
+        "gentle_smile"
+      ],
+      "timeOfDay": "深夜",
+      "title": "爱尔奎特 · 天台夜风中的倚肩私语"
+    },
+    {
+      "action": "赤足踩在海水中双手微提裙摆，回眸向视角招手呼唤，笑容灿烂如阳",
+      "camera": "cowboy shot, eye level, dynamic summer beach view",
+      "category": "海滨漫步",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "vacation",
+        "summer",
+        "beach"
+      ],
+      "description": "【爱尔奎特 · 碧海清波的赤足踏浪】海天一色的清澈白沙滩边，海浪轻柔地拍打着海岸。爱尔奎特双手提起白色吊带裙的下摆，光着雪白玲珑的小脚踩在清凉的海水泡沫中，溅起阵阵晶莹的水花。海风吹起她金色的发丝与白裙，她站在水波中回过头，向你张开双手露出极具感染力的大笑——「快看！海水凉凉的超舒服！你也快把鞋子脱掉一起过来呀！」",
+      "id": "arcueid_beach_water_splash_sundress",
+      "lighting": "热带海滨刺目灿烂的金色阳光与水面反光",
+      "location": "阳光灿烂、碧浪翻涌的白色沙滩浅水区",
+      "mood": "开朗元气",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -285,38 +317,7 @@
         "extra limbs",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
       "outfitId": "casual_summer_sundress",
-      "coverageTags": [
-        "healing",
-        "peaceful",
-        "romantic"
-      ]
-    },
-    {
-      "id": "arcueid_beach_water_splash_sundress",
-      "title": "爱尔奎特 · 碧海清波的赤足踏浪",
-      "category": "海滨漫步",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 碧海清波的赤足踏浪】海天一色的清澈白沙滩边，海浪轻柔地拍打着海岸。爱尔奎特双手提起白色吊带裙的下摆，光着雪白玲珑的小脚踩在清凉的海水泡沫中，溅起阵阵晶莹的水花。海风吹起她金色的发丝与白裙，她站在水波中回过头，向你张开双手露出极具感染力的大笑——「快看！海水凉凉的超舒服！你也快把鞋子脱掉一起过来呀！」",
-      "location": "阳光灿烂、碧浪翻涌的白色沙滩浅水区",
-      "action": "赤足踩在海水中双手微提裙摆，回眸向视角招手呼唤，笑容灿烂如阳",
-      "timeOfDay": "正午晴日",
-      "lighting": "热带海滨刺目灿烂的金色阳光与水面反光",
-      "camera": "cowboy shot, eye level, dynamic summer beach view",
-      "mood": "开朗元气",
-      "sceneTags": [
-        "beach",
-        "ocean",
-        "waves",
-        "white_sand",
-        "white_dress",
-        "skirt_lift",
-        "barefoot",
-        "splashing_water",
-        "radiant_smile",
-        "windy"
-      ],
       "promptProse": "Wading barefoot through crystal-clear turquoise waves along a sun-drenched tropical beach, Arcueid Brunestud lifts the hem of her white summer sundress. Salty sea spray glistens on her smooth skin as sea breezes toss her golden hair. Turning back toward the viewer with arms open in pure joyful excitement, her ruby eyes shine with vivacious life. Brilliant summer anime film visual style, solo 1girl, no text.",
       "promptTokens": [
         "beach",
@@ -337,6 +338,37 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "beach",
+        "ocean",
+        "waves",
+        "white_sand",
+        "white_dress",
+        "skirt_lift",
+        "barefoot",
+        "splashing_water",
+        "radiant_smile",
+        "windy"
+      ],
+      "timeOfDay": "正午晴日",
+      "title": "爱尔奎特 · 碧海清波的赤足踏浪"
+    },
+    {
+      "action": "身着纯白王后花嫁大礼服与长头纱，头戴王冠，捧花步向视角，眼含热泪幸福微笑",
+      "camera": "cowboy shot, slightly low angle, grand regal bridal view",
+      "category": "纯白誓约",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "bridal",
+        "romantic",
+        "vow"
+      ],
+      "description": "【爱尔奎特 · 千年王城的真祖花嫁】梦幻般的千年之城巍峨主殿内，无尽的纯白蔷薇从王座阶梯一直蔓延至殿门。爱尔奎特身披纯白层叠华丽大礼服与及地透明蕾丝长头纱，头戴精致的金色真祖王冠。原本桀骜冷酷的白姬，此刻眼中满含幸福的泪光，双手捧着一束白山茶向你轻步走来——「跨越千年的孤寂与轮回，我的王座与我的永恒……自此刻起全都是你的。」",
+      "id": "arcueid_millennium_castle_bridal_vow",
+      "lighting": "王城高耸穹顶透射下来的纯白神圣天光",
+      "location": "千年之城晶莹大理石王座大殿圣坛前",
+      "mood": "神圣至高",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -344,38 +376,7 @@
         "extra limbs",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "casual_summer_sundress",
-      "coverageTags": [
-        "vacation",
-        "summer",
-        "beach"
-      ]
-    },
-    {
-      "id": "arcueid_millennium_castle_bridal_vow",
-      "title": "爱尔奎特 · 千年王城的真祖花嫁",
-      "category": "纯白誓约",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 千年王城的真祖花嫁】梦幻般的千年之城巍峨主殿内，无尽的纯白蔷薇从王座阶梯一直蔓延至殿门。爱尔奎特身披纯白层叠华丽大礼服与及地透明蕾丝长头纱，头戴精致的金色真祖王冠。原本桀骜冷酷的白姬，此刻眼中满含幸福的泪光，双手捧着一束白山茶向你轻步走来——「跨越千年的孤寂与轮回，我的王座与我的永恒……自此刻起全都是你的。」",
-      "location": "千年之城晶莹大理石王座大殿圣坛前",
-      "action": "身着纯白王后花嫁大礼服与长头纱，头戴王冠，捧花步向视角，眼含热泪幸福微笑",
-      "timeOfDay": "破晓圣光",
-      "lighting": "王城高耸穹顶透射下来的纯白神圣天光",
-      "camera": "cowboy shot, slightly low angle, grand regal bridal view",
-      "mood": "神圣至高",
-      "sceneTags": [
-        "palace",
-        "throne_room",
-        "white_roses",
-        "royal_dress",
-        "bridal_veil",
-        "tiara",
-        "bouquet",
-        "teary_eyes",
-        "happy_tears",
-        "serene_smile"
-      ],
+      "outfitId": "archetype_earth_regal_gown",
       "promptProse": "Gliding down the marble aisle of the Millennium Castle strewn with pristine white roses, Arcueid Brunestud appears majestic in a royal white bridal gown and delicate gossamer veil beneath a golden tiara. Tears of transcendent, eternal happiness glisten in her crimson eyes as she holds a bridal bouquet close to her heart. Breathtaking regal anime key visual style, solo 1girl, no text.",
       "promptTokens": [
         "castle_hall",
@@ -397,46 +398,51 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "palace",
+        "throne_room",
+        "white_roses",
+        "royal_dress",
+        "bridal_veil",
+        "tiara",
+        "bouquet",
+        "teary_eyes",
+        "happy_tears",
+        "serene_smile"
+      ],
+      "timeOfDay": "破晓圣光",
+      "title": "爱尔奎特 · 千年王城的真祖花嫁"
+    },
+    {
+      "action": "全裸仰卧在纯白床榻上，双腿大开曲膝，双手拉着视角手掌十指紧扣，眼眸水润迷乱",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "upper body to knees, vertical framing, high angle POV",
+      "category": "私密温存",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "nsfw",
+        "supine",
+        "special_nsfw"
+      ],
+      "description": "【爱尔奎特 · 纯白床榻的深情仰卧交付】铺着蓬松鹅毛垫的纯白大床上，爱尔奎特浑身赤裸仰卧其中。金色的短发散落在枕间，修长的双腿自然张开曲起，向你彻底敞开她毫无防备的娇躯。饱满柔嫩的雪白双乳因剧烈的心跳与情动而起伏，粉嫩小巧的乳头挺立充血。她双手紧紧扣住你的手掌十指相交，赤红眼眸水雾迷离，小虎牙轻抵下唇娇喘连连——「我的身体……全部都在发烫……进来吧……把你的全部都交给我……」",
+      "id": "arcueid_nsfw_white_bed_supine_devotion",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "窗外如银水般的月光与床头昏暗暖烛",
+      "location": "主卧纯白床榻中央散落的羽绒枕间",
+      "mood": "深情交付",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears"
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "archetype_earth_regal_gown",
-      "coverageTags": [
-        "bridal",
-        "romantic",
-        "vow"
-      ]
-    },
-    {
-      "id": "arcueid_nsfw_white_bed_supine_devotion",
-      "title": "爱尔奎特 · 纯白床榻的深情仰卧交付",
-      "category": "私密温存",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 纯白床榻的深情仰卧交付】铺着蓬松鹅毛垫的纯白大床上，爱尔奎特浑身赤裸仰卧其中。金色的短发散落在枕间，修长的双腿自然张开曲起，向你彻底敞开她毫无防备的娇躯。饱满柔嫩的雪白双乳因剧烈的心跳与情动而起伏，粉嫩小巧的乳头挺立充血。她双手紧紧扣住你的手掌十指相交，赤红眼眸水雾迷离，小虎牙轻抵下唇娇喘连连——「我的身体……全部都在发烫……进来吧……把你的全部都交给我……」",
-      "location": "主卧纯白床榻中央散落的羽绒枕间",
-      "action": "全裸仰卧在纯白床榻上，双腿大开曲膝，双手拉着视角手掌十指紧扣，眼眸水润迷乱",
-      "timeOfDay": "深夜",
-      "lighting": "窗外如银水般的月光与床头昏暗暖烛",
-      "camera": "upper body to knees, vertical framing, high angle POV",
-      "mood": "深情交付",
-      "sceneTags": [
-        "bedroom",
-        "white_sheets",
-        "completely_nude",
-        "lying_on_back",
-        "spread_legs",
-        "bare_breasts",
-        "pink_nipples",
-        "interlocked_fingers",
-        "red_eyes",
-        "heavy_blush",
-        "parted_lips"
-      ],
+      "nsfwProse": "",
+      "outfitId": "nsfw_nude",
       "promptProse": "Cold moonlight reaches adult Arcueid Brunestud lying alone across a white bed. Her pale dress is open and gathered beneath bare breasts while both knees fold toward her chest, creating a compact vertical pose. She grips a sheet with one hand and fingers herself with the other, golden vampire eyes brightening as silver light travels across damp skin. Long blonde hair frames wet lashes, small fangs and a delighted blush. Top-down solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
@@ -463,55 +469,53 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "bedroom",
+        "white_sheets",
+        "completely_nude",
+        "lying_on_back",
+        "spread_legs",
+        "bare_breasts",
+        "pink_nipples",
+        "interlocked_fingers",
+        "red_eyes",
+        "heavy_blush",
+        "parted_lips"
+      ],
+      "timeOfDay": "深夜",
+      "title": "爱尔奎特 · 纯白床榻的深情仰卧交付"
+    },
+    {
+      "action": "双手撑在玻璃窗上俯身弓腰翘臀，裙摆被撩起，单手探入内裤自抚花瓣，回头含泪咬唇喘息",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+      "category": "私密承载",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "nsfw",
+        "prone",
+        "solo"
+      ],
+      "description": "【爱尔奎特 · 落地月光窗前的毛衣半褪自抚】高层公寓巨大落地窗前，爱尔奎特的白色高领毛衣被推至锁骨露出饱满雪乳，长紫裙彻底撩起堆在腰间。她双手轻撑在冰凉的玻璃窗上俯身弓腰，展现着丰满圆润的雪白臀部曲线。单手探入裙底拉开内裤边缘自抚晶莹的花瓣，呼吸在窗户上扑出一层薄雾。咬紧嘴唇回头，耳根红透，含泪的赤瞳泛着近乎失控的甜蜜愉悦——「啊……哈……身体好热……真祖的心跳……全部乱掉了……」",
+      "id": "arcueid_nsfw_windowsill_bent_over_prone",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "落地窗外浩瀚银白月光洒在雪白肌肤上",
+      "location": "落地玻璃大窗前的加宽大理石窗台边",
+      "mood": "狂乱自抚、唯美心动",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
+        "self-harm, choking",
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "nsfw",
-        "supine",
-        "special_nsfw"
-      ],
-      "nsfwProse": ""
-    },
-    {
-      "id": "arcueid_nsfw_windowsill_bent_over_prone",
-      "title": "爱尔奎特 · 落地月光窗前的毛衣半褪自抚·「身体变得好烫……像被吸血冲动烧焦了一样」",
-      "category": "私密承载",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 落地月光窗前的毛衣半褪自抚】高层公寓巨大落地窗前，爱尔奎特的白色高领毛衣被推至锁骨露出饱满雪乳，长紫裙彻底撩起堆在腰间。她双手轻撑在冰凉的玻璃窗上俯身弓腰，展现着丰满圆润的雪白臀部曲线。单手探入裙底拉开内裤边缘自抚晶莹的花瓣，呼吸在窗户上扑出一层薄雾。咬紧嘴唇回头，耳根红透，含泪的赤瞳泛着近乎失控的甜蜜愉悦——「啊……哈……身体好热……真祖的心跳……全部乱掉了……」",
-      "location": "落地玻璃大窗前的加宽大理石窗台边",
-      "action": "双手撑在玻璃窗上俯身弓腰翘臀，裙摆被撩起，单手探入内裤自抚花瓣，回头含泪咬唇喘息",
-      "timeOfDay": "深夜月色",
-      "lighting": "落地窗外浩瀚银白月光洒在雪白肌肤上",
-      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
-      "mood": "狂乱自抚、唯美心动",
-      "sceneTags": [
-        "window",
-        "glass_window",
-        "bent_over",
-        "arched_back",
-        "hands_on_glass",
-        "skirt_lift",
-        "panties_aside",
-        "exposed_pussy",
-        "pussy_juice",
-        "heavy_blush",
-        "blushing_ears",
-        "looking_back",
-        "horizontal_shot"
-      ],
+      "outfitId": "official_white_sweater_purple_skirt",
       "promptProse": "Bent forward against the cool panoramic glass window overlooking a moonlit cityscape, Arcueid Brunestud arches her spine in breathless solitary surrender. Her sweater is pulled up and purple skirt gathered high, hands resting flat against the glass while her fingers slide down to draw her panties aside and caress her dripping, sensitive core. Looking back over her bare shoulder with tears shining in her ruby eyes and red flushed ears, her breath fogs the cool windowpane. Dynamic horizontal anime visual novel art, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
@@ -540,53 +544,54 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "window",
+        "glass_window",
+        "bent_over",
+        "arched_back",
+        "hands_on_glass",
+        "skirt_lift",
+        "panties_aside",
+        "exposed_pussy",
+        "pussy_juice",
+        "heavy_blush",
+        "blushing_ears",
+        "looking_back",
+        "horizontal_shot"
+      ],
+      "timeOfDay": "深夜月色",
+      "title": "爱尔奎特 · 落地月光窗前的毛衣半褪自抚·「身体变得好烫……像被吸血冲动烧焦了一样」"
+    },
+    {
+      "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸膛，俯身贴颈轻磨犬齿，眼眸赤红泛着痴情",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowboy shot, vertical framing, low angle POV",
+      "category": "主控骑乘",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "nsfw",
+        "straddling",
+        "cowgirl"
+      ],
+      "description": "【爱尔奎特 · 白猫真祖的痴情跨坐骑乘】散乱的床铺上，爱尔奎特浑身香汗淋漓跨坐在你的大腿腰间。她上身直挺，双手按在你的胸膛上，如同一只食髓知味的金发小野猫般主动摆动腰肢起伏研磨。饱满弹润的双乳随动作剧烈晃荡，粉嫩乳头挺立泛红。她俯下身凑在你的耳边，尖尖的吸血犬齿轻轻厮磨着你的颈动脉，赤眸迷离娇喘——「你是我的……谁都不准抢……再抱紧一点……让我把你彻底吃掉……」",
+      "id": "arcueid_nsfw_feline_straddle_cowgirl",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "摇曳的暖黄烛台火光勾勒出晶莹汗珠",
+      "location": "松软被单散乱的主卧大床中央",
+      "mood": "痴情狂热",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
-        "self-harm, choking",
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "official_white_sweater_purple_skirt",
-      "coverageTags": [
-        "nsfw",
-        "prone",
-        "solo"
-      ]
-    },
-    {
-      "id": "arcueid_nsfw_feline_straddle_cowgirl",
-      "title": "爱尔奎特 · 白猫真祖的痴情跨坐骑乘",
-      "category": "主控骑乘",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 白猫真祖的痴情跨坐骑乘】散乱的床铺上，爱尔奎特浑身香汗淋漓跨坐在你的大腿腰间。她上身直挺，双手按在你的胸膛上，如同一只食髓知味的金发小野猫般主动摆动腰肢起伏研磨。饱满弹润的双乳随动作剧烈晃荡，粉嫩乳头挺立泛红。她俯下身凑在你的耳边，尖尖的吸血犬齿轻轻厮磨着你的颈动脉，赤眸迷离娇喘——「你是我的……谁都不准抢……再抱紧一点……让我把你彻底吃掉……」",
-      "location": "松软被单散乱的主卧大床中央",
-      "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸膛，俯身贴颈轻磨犬齿，眼眸赤红泛着痴情",
-      "timeOfDay": "深夜",
-      "lighting": "摇曳的暖黄烛台火光勾勒出晶莹汗珠",
-      "camera": "cowboy shot, vertical framing, low angle POV",
-      "mood": "痴情狂热",
-      "sceneTags": [
-        "bedroom",
-        "straddling",
-        "cowgirl_position",
-        "completely_nude",
-        "large_breasts",
-        "bouncing_breasts",
-        "pink_nipples",
-        "sweat",
-        "fang",
-        "red_eyes",
-        "heavy_blush"
-      ],
+      "outfitId": "nsfw_nude",
       "promptProse": "Straddling the viewer's waist in wild, catlike passion atop rumpled bedding, naked Arcueid Brunestud rides with rhythmic, fervent abandon. Her gorgeous, supple breasts bounce with each descent, beads of sweat glistening across her collarbone. Leaning down with half-lidded crimson eyes and tiny fangs grazing the viewer's neck, she whispers breathless adoration through parted lips. High-impact vertical anime CG, solo 1girl focus, no text.",
       "promptTokens": [
         "sensual_solo",
@@ -612,6 +617,42 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "bedroom",
+        "straddling",
+        "cowgirl_position",
+        "completely_nude",
+        "large_breasts",
+        "bouncing_breasts",
+        "pink_nipples",
+        "sweat",
+        "fang",
+        "red_eyes",
+        "heavy_blush"
+      ],
+      "timeOfDay": "深夜",
+      "title": "爱尔奎特 · 白猫真祖的痴情跨坐骑乘"
+    },
+    {
+      "action": "黑吊带滑脱露胸，双手环抱自抚腿心，咬唇羞耻眼角泛泪娇喘",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowboy shot, medium close perspective, sensual bedroom incident",
+      "category": "更衣事故",
+      "characterId": "arcueid_brunestud",
+      "coverageTags": [
+        "nsfw",
+        "wardrobe_malfunction",
+        "sensual_solo"
+      ],
+      "description": "【爱尔奎特 · 闺房黑丝睡衣半褪的自抚娇吟】昏暗静谧的闺房落地镜前，爱尔奎特身上的黑色蕾丝吊带小睡裙肩带滑脱至手臂两侧，饱满如玉的半裸雪乳弹跳而出，粉嫩小巧的乳晕在镜中纤毫毕现。因为刚才相拥的余温未散，她双腿夹紧，修长的单手悄悄探入黑色蕾丝内裤深处，指尖在湿润的花瓣间轻轻抽送自抚，转头看着门外等候的你，眼角含泪咬唇微喘——「呜……身体变得好奇怪……停不下来了……快进来帮我……」",
+      "id": "arcueid_nsfw_dressing_camisole_slip_solo",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "床头暖色小台灯与落地镜反光",
+      "location": "落地穿衣镜前的复古闺房地毯上",
+      "mood": "羞耻自持",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -621,42 +662,7 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "nsfw",
-        "straddling",
-        "cowgirl"
-      ]
-    },
-    {
-      "id": "arcueid_nsfw_dressing_camisole_slip_solo",
-      "title": "爱尔奎特 · 闺房黑丝睡衣半褪的自抚娇吟",
-      "category": "更衣事故",
-      "characterId": "arcueid_brunestud",
-      "description": "【爱尔奎特 · 闺房黑丝睡衣半褪的自抚娇吟】昏暗静谧的闺房落地镜前，爱尔奎特身上的黑色蕾丝吊带小睡裙肩带滑脱至手臂两侧，饱满如玉的半裸雪乳弹跳而出，粉嫩小巧的乳晕在镜中纤毫毕现。因为刚才相拥的余温未散，她双腿夹紧，修长的单手悄悄探入黑色蕾丝内裤深处，指尖在湿润的花瓣间轻轻抽送自抚，转头看着门外等候的你，眼角含泪咬唇微喘——「呜……身体变得好奇怪……停不下来了……快进来帮我……」",
-      "location": "落地穿衣镜前的复古闺房地毯上",
-      "action": "黑吊带滑脱露胸，双手环抱自抚腿心，咬唇羞耻眼角泛泪娇喘",
-      "timeOfDay": "深夜",
-      "lighting": "床头暖色小台灯与落地镜反光",
-      "camera": "cowboy shot, medium close perspective, sensual bedroom incident",
-      "mood": "羞耻自持",
-      "sceneTags": [
-        "bedroom",
-        "mirror",
-        "camisole_slip",
-        "bare_breasts",
-        "pink_nipples",
-        "panties_aside",
-        "hand_between_legs",
-        "pussy_juice",
-        "heavy_blush",
-        "sensual_solo"
-      ],
+      "outfitId": "black_lace_sensual_camisole",
       "promptProse": "Inside her moonlit private bedroom before an antique standing mirror, Arcueid Brunestud deals with a sweet sensual overload. Her black lace camisole has slipped off her shoulders, fully displaying her shapely, bare breasts and taut pink nipples. Trembling with bashful desire, she slides one slender hand beneath her lace panties to tease her soaked entrance with gentle fingering and masturbation. Her cheeks burn bright crimson as she glances toward the doorway with breathless ruby eyes. Sensual anime artwork, solo 1girl, no text.",
       "promptTokens": [
         "bedroom",
@@ -682,50 +688,45 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "bedroom",
+        "mirror",
+        "camisole_slip",
+        "bare_breasts",
+        "pink_nipples",
+        "panties_aside",
+        "hand_between_legs",
+        "pussy_juice",
+        "heavy_blush",
+        "sensual_solo"
+      ],
+      "timeOfDay": "深夜",
+      "title": "爱尔奎特 · 闺房黑丝睡衣半褪的自抚娇吟"
+    },
+    {
+      "action": "单臂肩抗巨型重火器第七圣典，神圣光辉汇聚炮口，眼神冷冽推了推眼镜架",
+      "camera": "cowboy shot, low angle, heavy artillery combat view",
+      "category": "身份高光",
+      "characterId": "ciel_tsukihime",
+      "coverageTags": [
+        "iconic",
+        "combat"
+      ],
+      "description": "【希耶尔 · 第七圣典月下重炮制裁】废弃工业大楼顶端狂风呼啸，希耶尔身穿深蓝修女法衣战袍，戴着金丝无框眼镜。她单臂稳稳架起比人还庞大、散发着神圣白光的巨型概念武装「第七圣典」，炮口魔力洪流汇聚如炽热烈阳。短发在狂暴的气流中飞舞，镜片后深蓝眼眸冷静而决绝——「转生之因果，由我在此斩断。第七圣典，神圣真理击铁开合！」",
+      "id": "ciel_seventh_scripture_cannon_strike",
+      "lighting": "第七圣典炽烈白金炮口光芒与清冷夜色",
+      "location": "废弃工厂高耸水泥平台顶端",
+      "mood": "冷彻重火",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
-        "fire, flames, burning ears",
-        "2girls",
-        "1boy"
+        "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "black_lace_sensual_camisole",
-      "coverageTags": [
-        "nsfw",
-        "wardrobe_malfunction",
-        "sensual_solo"
-      ]
-    },
-    {
-      "id": "ciel_seventh_scripture_cannon_strike",
-      "title": "希耶尔 · 第七圣典月下重炮制裁",
-      "category": "身份高光",
-      "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 第七圣典月下重炮制裁】废弃工业大楼顶端狂风呼啸，希耶尔身穿深蓝修女法衣战袍，戴着金丝无框眼镜。她单臂稳稳架起比人还庞大、散发着神圣白光的巨型概念武装「第七圣典」，炮口魔力洪流汇聚如炽热烈阳。短发在狂暴的气流中飞舞，镜片后深蓝眼眸冷静而决绝——「转生之因果，由我在此斩断。第七圣典，神圣真理击铁开合！」",
-      "location": "废弃工厂高耸水泥平台顶端",
-      "action": "单臂肩抗巨型重火器第七圣典，神圣光辉汇聚炮口，眼神冷冽推了推眼镜架",
-      "timeOfDay": "深夜月冷",
-      "lighting": "第七圣典炽烈白金炮口光芒与清冷夜色",
-      "camera": "cowboy shot, low angle, heavy artillery combat view",
-      "mood": "冷彻重火",
-      "sceneTags": [
-        "rooftop",
-        "industrial_ruins",
-        "heavy_weapon",
-        "seventh_scripture",
-        "church_uniform",
-        "blue_dress",
-        "glasses",
-        "pushing_up_glasses",
-        "cold_gaze"
-      ],
+      "outfitId": "official_burial_agency_habit",
       "promptProse": "Standing resolute upon a deserted industrial rooftop under the cold night sky, Ciel heaves the colossal, sacred cannon Seventh Scripture onto her shoulder. Brilliant white holy energy swirls around the massive barrel as her short navy hair flutters in the wind. Pushing up her wire-rim glasses with leather-gloved fingers, her dark blue eyes lock onto her target with unflinching resolve. Epic low-angle anime key visual, solo 1girl, no text.",
       "promptTokens": [
         "rooftop",
@@ -747,6 +748,36 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "rooftop",
+        "industrial_ruins",
+        "heavy_weapon",
+        "seventh_scripture",
+        "church_uniform",
+        "blue_dress",
+        "glasses",
+        "pushing_up_glasses",
+        "cold_gaze"
+      ],
+      "timeOfDay": "深夜月冷",
+      "title": "希耶尔 · 第七圣典月下重炮制裁"
+    },
+    {
+      "action": "系着围裙吹着勺中热咖喱递向前方，稍微被烫到吐舌头轻笑，眼眸含情",
+      "camera": "cowboy shot, eye level, warm domestic view",
+      "category": "晨间女友",
+      "characterId": "ciel_tsukihime",
+      "coverageTags": [
+        "daily",
+        "sweet",
+        "curry"
+      ],
+      "description": "【希耶尔 · 晨间厨房的特制咖喱试吃】晨光洒进整洁的公寓厨房，锅中冒着浓郁醇厚的咖喱香气。希耶尔系着白色蕾丝小围裙，穿着修身的知性针织毛衣，双手端着勺子吹了吹滚烫的特制香浓咖喱，递向你的嘴边。因为尝了一小口烫到舌尖，她俏皮地微微吐了吐粉红的舌头，眼镜后眼眸满是期待——「啊——张嘴！这次我特别加了苹果和蜂蜜，绝对是天下第一美味的咖喱，快夸夸我！」",
+      "id": "ciel_morning_kitchen_curry_tasting",
+      "lighting": "晨光穿过明净玻璃洒满厨房台面",
+      "location": "香气四溢、阳光明媚的公寓现代厨房灶台前",
+      "mood": "温馨贤惠",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -754,37 +785,7 @@
         "extra limbs",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "official_burial_agency_habit",
-      "coverageTags": [
-        "iconic",
-        "combat"
-      ]
-    },
-    {
-      "id": "ciel_morning_kitchen_curry_tasting",
-      "title": "希耶尔 · 晨间厨房的特制咖喱试吃",
-      "category": "晨间女友",
-      "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 晨间厨房的特制咖喱试吃】晨光洒进整洁的公寓厨房，锅中冒着浓郁醇厚的咖喱香气。希耶尔系着白色蕾丝小围裙，穿着修身的知性针织毛衣，双手端着勺子吹了吹滚烫的特制香浓咖喱，递向你的嘴边。因为尝了一小口烫到舌尖，她俏皮地微微吐了吐粉红的舌头，眼镜后眼眸满是期待——「啊——张嘴！这次我特别加了苹果和蜂蜜，绝对是天下第一美味的咖喱，快夸夸我！」",
-      "location": "香气四溢、阳光明媚的公寓现代厨房灶台前",
-      "action": "系着围裙吹着勺中热咖喱递向前方，稍微被烫到吐舌头轻笑，眼眸含情",
-      "timeOfDay": "清晨",
-      "lighting": "晨光穿过明净玻璃洒满厨房台面",
-      "camera": "cowboy shot, eye level, warm domestic view",
-      "mood": "温馨贤惠",
-      "sceneTags": [
-        "kitchen",
-        "apron",
-        "cooking",
-        "holding_spoon",
-        "feeding_viewer",
-        "steaming_food",
-        "glasses",
-        "sticking_out_tongue",
-        "gentle_smile",
-        "blush"
-      ],
+      "outfitId": "casual_knit_sweater_jeans",
       "promptProse": "Standing in a sun-drenched apartment kitchen wearing a crisp white apron over her cozy knit sweater, Ciel lovingly blows on a steaming spoonful of homemade curry. With her oval glasses catching the golden morning light, she winces adorably after burning her tongue, sticking it out with a flustered chuckle before feeding the viewer. Sweet, domestic anime illustration, solo 1girl, no text.",
       "promptTokens": [
         "kitchen",
@@ -806,6 +807,37 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "kitchen",
+        "apron",
+        "cooking",
+        "holding_spoon",
+        "feeding_viewer",
+        "steaming_food",
+        "glasses",
+        "sticking_out_tongue",
+        "gentle_smile",
+        "blush"
+      ],
+      "timeOfDay": "清晨",
+      "title": "希耶尔 · 晨间厨房的特制咖喱试吃"
+    },
+    {
+      "action": "跪坐在走廊上双手奉上热茶与和果子，推了推鼻梁上的眼镜，神态温婉可靠",
+      "camera": "cowboy shot, eye level, peaceful school view",
+      "category": "校园日常",
+      "characterId": "ciel_tsukihime",
+      "coverageTags": [
+        "daily",
+        "school",
+        "sweet"
+      ],
+      "description": "【希耶尔 · 茶道室长廊的静谧茶点】三咲高中放学后的静谧茶道社外走廊，庭院竹林微风飒飒。希耶尔身穿端庄的三咲校服西装与灰色百褶裙，双手托着茶盘跪坐在木地板上，将一碗泛着抹茶香气的热茶与精致和果子推到你面前。她推了推眼镜，嘴角扬起可靠又亲近的学姐微笑——「辛苦了，远野同学……不，在只有我们两个人的时候，直接叫我学姐就好了哦。」",
+      "id": "ciel_tea_room_veranda_snack_date",
+      "lighting": "庭院竹林过滤的金色斜阳柔光",
+      "location": "三咲高中僻静日式茶道室木质走廊长廊",
+      "mood": "温婉知性",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -813,38 +845,7 @@
         "extra limbs",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "casual_knit_sweater_jeans",
-      "coverageTags": [
-        "daily",
-        "sweet",
-        "curry"
-      ]
-    },
-    {
-      "id": "ciel_tea_room_veranda_snack_date",
-      "title": "希耶尔 · 茶道室长廊的静谧茶点",
-      "category": "校园日常",
-      "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 茶道室长廊的静谧茶点】三咲高中放学后的静谧茶道社外走廊，庭院竹林微风飒飒。希耶尔身穿端庄的三咲校服西装与灰色百褶裙，双手托着茶盘跪坐在木地板上，将一碗泛着抹茶香气的热茶与精致和果子推到你面前。她推了推眼镜，嘴角扬起可靠又亲近的学姐微笑——「辛苦了，远野同学……不，在只有我们两个人的时候，直接叫我学姐就好了哦。」",
-      "location": "三咲高中僻静日式茶道室木质走廊长廊",
-      "action": "跪坐在走廊上双手奉上热茶与和果子，推了推鼻梁上的眼镜，神态温婉可靠",
-      "timeOfDay": "黄昏",
-      "lighting": "庭院竹林过滤的金色斜阳柔光",
-      "camera": "cowboy shot, eye level, peaceful school view",
-      "mood": "温婉知性",
-      "sceneTags": [
-        "japanese_room",
-        "veranda",
-        "school_uniform",
-        "blazer",
-        "kneeling",
-        "serving_tea",
-        "matcha",
-        "holding_tray",
-        "glasses",
-        "gentle_smile"
-      ],
+      "outfitId": "misaki_school_uniform",
       "promptProse": "Sitting gracefully along the wooden veranda of the school tea ceremony room at sunset, Ciel serves freshly whisked matcha tea and wagashi sweets. Dressed in her neat high school uniform blazer and pleated skirt, she adjusts her glasses with a fond, dependable upperclassman smile. Dappled amber evening light filters through the bamboo garden. Serene, nostalgic anime key visual, solo 1girl, no text.",
       "promptTokens": [
         "japanese_veranda",
@@ -866,47 +867,53 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst quality",
-        "low quality",
-        "bad anatomy",
-        "extra limbs",
-        "fire, flames, burning ears"
-      ],
       "recommendedSize": "1152x1536",
-      "outfitId": "misaki_school_uniform",
-      "coverageTags": [
-        "daily",
-        "school",
-        "sweet"
-      ]
+      "sceneTags": [
+        "japanese_room",
+        "veranda",
+        "school_uniform",
+        "blazer",
+        "kneeling",
+        "serving_tea",
+        "matcha",
+        "holding_tray",
+        "glasses",
+        "gentle_smile"
+      ],
+      "timeOfDay": "黄昏",
+      "title": "希耶尔 · 茶道室长廊的静谧茶点"
     },
     {
-      "id": "ciel_glasses_removed_flustered_tsundere",
-      "title": "希耶尔 · 摘下眼镜的慌乱娇羞",
+      "action": "摘下的眼镜放在桌上，双手抓住视角衣袖，抬眼露出惊讶而害羞的浅笑。",
+      "camera": "medium close-up, eye level, sleeve in foreground",
       "category": "反差娇羞",
       "characterId": "ciel_tsukihime",
-      "description": "黄昏的社团活动室里，希耶尔的眼镜已经折好放在书桌上。少了镜片的遮挡，她对上你近在眼前的目光，蓝色眼眸里浮起惊讶，耳根一点点变红。她穿着整齐的藏青校服外套和灰色百褶裙，双手轻轻攥住你递来的衣袖，想要说些什么，又先露出难为情的浅笑。",
-      "location": "夕阳斜照的无人社团活动室书桌旁",
-      "action": "摘下的眼镜放在桌上，双手抓住视角衣袖，抬眼露出惊讶而害羞的浅笑。",
-      "timeOfDay": "sunset",
-      "lighting": "soft sunset light",
-      "camera": "medium close-up, eye level, sleeve in foreground",
-      "mood": "反差破防",
-      "sceneTags": [
-        "clubroom",
-        "desk",
-        "folded_glasses_on_desk",
-        "eyes_visible",
-        "holding_viewer_sleeve",
-        "both_hands",
-        "looking_up",
-        "surprised",
-        "small_smile",
-        "blush",
-        "sunset_light",
-        "medium_shot"
+      "coverageTags": [
+        "gap_moe",
+        "flustered",
+        "sweet"
       ],
+      "description": "黄昏的社团活动室里，希耶尔的眼镜已经折好放在书桌上。少了镜片的遮挡，她对上你近在眼前的目光，蓝色眼眸里浮起惊讶，耳根一点点变红。她穿着整齐的藏青校服外套和灰色百褶裙，双手轻轻攥住你递来的衣袖，想要说些什么，又先露出难为情的浅笑。",
+      "id": "ciel_glasses_removed_flustered_tsundere",
+      "lighting": "soft sunset light",
+      "location": "夕阳斜照的无人社团活动室书桌旁",
+      "mood": "反差破防",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "extra_fingers",
+        "extra_limbs",
+        "text",
+        "watermark",
+        "duplicate",
+        "nude",
+        "lingerie",
+        "underwear",
+        "see-through"
+      ],
+      "outfitId": "sfw_school_uniform_without_glasses",
       "promptProse": "Folded glasses rest on the clubroom desk beside Ciel, leaving her sapphire eyes unobstructed when she looks up at the viewer. She wears a neat navy blazer, white shirt, red tie and grey pleated skirt. Both hands gather the cuff of the sleeve entering the foreground, and surprise settles into a small embarrassed smile. Warm sunset light touches her short blue hair and reddened ears. Keep her uncovered face and the two hands in a medium close view; the glasses remain on the desk.",
       "promptTokens": [
         "1girl",
@@ -927,52 +934,47 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst_quality",
-        "low_quality",
-        "bad_anatomy",
-        "bad_hands",
-        "extra_fingers",
-        "extra_limbs",
-        "text",
-        "watermark",
-        "duplicate",
-        "nude",
-        "lingerie",
-        "underwear",
-        "see-through"
-      ],
       "recommendedSize": "1152x1536",
-      "outfitId": "sfw_school_uniform_without_glasses",
-      "coverageTags": [
-        "gap_moe",
-        "flustered",
-        "sweet"
-      ]
+      "sceneTags": [
+        "clubroom",
+        "desk",
+        "folded_glasses_on_desk",
+        "eyes_visible",
+        "holding_viewer_sleeve",
+        "both_hands",
+        "looking_up",
+        "surprised",
+        "small_smile",
+        "blush",
+        "sunset_light",
+        "medium_shot"
+      ],
+      "timeOfDay": "sunset",
+      "title": "希耶尔 · 摘下眼镜的慌乱娇羞"
     },
     {
-      "id": "ciel_late_night_library_shared_study",
-      "title": "希耶尔 · 深夜图书馆的指尖相触",
+      "action": "并肩坐于书桌旁，一手微触对方指尖，一手轻托下巴微红着脸温柔对视",
+      "camera": "cowboy shot, eye level, tranquil intellectual romance",
       "category": "温柔陪伴",
       "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 深夜图书馆的指尖相触】静谧古老的私人图书室内，只有复古绿罩台灯散发着温暖的光芒。希耶尔与你并肩坐在厚重的木质书桌旁查阅典籍，微风翻动着泛黄的书页。当你们同时伸手去拿同一本词典时，冰凉与温暖的指尖在桌面上轻轻触碰。希耶尔推了推眼镜，侧脸泛着一层浅浅的红晕，嘴角扬起温柔又深情的弧度——「不用急……长夜漫漫，我们还有很多时间，慢慢看吧。」",
-      "location": "四面被高耸书架包围的古朴私人图书室",
-      "action": "并肩坐于书桌旁，一手微触对方指尖，一手轻托下巴微红着脸温柔对视",
-      "timeOfDay": "深夜",
-      "lighting": "经典复古绿色台灯散发的温润暖调光晕",
-      "camera": "cowboy shot, eye level, tranquil intellectual romance",
-      "mood": "知性温存",
-      "sceneTags": [
-        "library",
-        "bookshelves",
-        "desk_lamp",
-        "sitting_at_desk",
-        "books",
-        "touching_fingers",
-        "glasses",
-        "gentle_smile",
-        "subtle_blush"
+      "coverageTags": [
+        "healing",
+        "peaceful",
+        "intellectual"
       ],
+      "description": "【希耶尔 · 深夜图书馆的指尖相触】静谧古老的私人图书室内，只有复古绿罩台灯散发着温暖的光芒。希耶尔与你并肩坐在厚重的木质书桌旁查阅典籍，微风翻动着泛黄的书页。当你们同时伸手去拿同一本词典时，冰凉与温暖的指尖在桌面上轻轻触碰。希耶尔推了推眼镜，侧脸泛着一层浅浅的红晕，嘴角扬起温柔又深情的弧度——「不用急……长夜漫漫，我们还有很多时间，慢慢看吧。」",
+      "id": "ciel_late_night_library_shared_study",
+      "lighting": "经典复古绿色台灯散发的温润暖调光晕",
+      "location": "四面被高耸书架包围的古朴私人图书室",
+      "mood": "知性温存",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "extra limbs",
+        "fire, flames, burning ears"
+      ],
+      "outfitId": "casual_knit_sweater_jeans",
       "promptProse": "Seated side by side at an antique wooden study desk in a quiet late-night library, Ciel shares a scholarly vigil under the warm glow of a green banker's lamp. As their fingers brush softly across an ancient tome, she looks over her glasses with a gentle rosy flush and a tender, deeply affectionate smile. Atmospheric, cozy intellectual anime visual, solo 1girl, no text.",
       "promptTokens": [
         "library",
@@ -993,6 +995,36 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "library",
+        "bookshelves",
+        "desk_lamp",
+        "sitting_at_desk",
+        "books",
+        "touching_fingers",
+        "glasses",
+        "gentle_smile",
+        "subtle_blush"
+      ],
+      "timeOfDay": "深夜",
+      "title": "希耶尔 · 深夜图书馆的指尖相触"
+    },
+    {
+      "action": "围着红围巾，将一只手伸进视角大衣口袋取暖，呼着热气侧首微笑",
+      "camera": "cowboy shot, eye level, winter romantic walk",
+      "category": "冬日漫步",
+      "characterId": "ciel_tsukihime",
+      "coverageTags": [
+        "date",
+        "winter",
+        "romantic"
+      ],
+      "description": "【希耶尔 · 冬日公园的暖袋牵手】初雪飘落的宁静公园长椅旁，希耶尔穿着暖和的米色毛衣与风衣，脖子上围着一条红色长围巾。寒风吹红了她小巧的鼻尖，她呵出一口白色的暖气，有些羞怯地将自己冰凉纤细的手指悄悄钻进你的大衣口袋里十指相扣，侧过头露出安心又幸福的笑靥——「呼……手好冷呢。不过，被你握住的话，一下子就变得好暖和了。」",
+      "id": "ciel_winter_park_scarf_hand_pocket",
+      "lighting": "初雪折射的清冷天光与公园路灯初上",
+      "location": "初雪落满松树与木长椅的静谧冬日公园",
+      "mood": "冬日纯爱",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1000,37 +1032,7 @@
         "extra limbs",
         "fire, flames, burning ears"
       ],
-      "recommendedSize": "1152x1536",
       "outfitId": "casual_knit_sweater_jeans",
-      "coverageTags": [
-        "healing",
-        "peaceful",
-        "intellectual"
-      ]
-    },
-    {
-      "id": "ciel_winter_park_scarf_hand_pocket",
-      "title": "希耶尔 · 冬日公园的暖袋牵手",
-      "category": "冬日漫步",
-      "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 冬日公园的暖袋牵手】初雪飘落的宁静公园长椅旁，希耶尔穿着暖和的米色毛衣与风衣，脖子上围着一条红色长围巾。寒风吹红了她小巧的鼻尖，她呵出一口白色的暖气，有些羞怯地将自己冰凉纤细的手指悄悄钻进你的大衣口袋里十指相扣，侧过头露出安心又幸福的笑靥——「呼……手好冷呢。不过，被你握住的话，一下子就变得好暖和了。」",
-      "location": "初雪落满松树与木长椅的静谧冬日公园",
-      "action": "围着红围巾，将一只手伸进视角大衣口袋取暖，呼着热气侧首微笑",
-      "timeOfDay": "冬日黄昏",
-      "lighting": "初雪折射的清冷天光与公园路灯初上",
-      "camera": "cowboy shot, eye level, winter romantic walk",
-      "mood": "冬日纯爱",
-      "sceneTags": [
-        "winter",
-        "park",
-        "snowing",
-        "scarf",
-        "hands_in_pocket",
-        "steaming_breath",
-        "glasses",
-        "happy_smile",
-        "blush"
-      ],
       "promptProse": "Walking through a snow-dusted park at twilight, Ciel wears a cozy thick red scarf wrapped snug around her neck. Her cheeks and nose are dusted with a delicate cold pink flush as puffs of white breath escape her lips. She shyly slips her cold hand into the viewer's coat pocket, smiling with serene romantic bliss behind her fogged glasses. Heartwarming winter anime CG, solo 1girl, no text.",
       "promptTokens": [
         "winter_park",
@@ -1051,49 +1053,56 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst quality",
-        "low quality",
-        "bad anatomy",
-        "extra limbs",
-        "fire, flames, burning ears"
-      ],
       "recommendedSize": "1152x1536",
-      "outfitId": "casual_knit_sweater_jeans",
-      "coverageTags": [
-        "date",
+      "sceneTags": [
         "winter",
-        "romantic"
-      ]
+        "park",
+        "snowing",
+        "scarf",
+        "hands_in_pocket",
+        "steaming_breath",
+        "glasses",
+        "happy_smile",
+        "blush"
+      ],
+      "timeOfDay": "冬日黄昏",
+      "title": "希耶尔 · 冬日公园的暖袋牵手"
     },
     {
-      "id": "ciel_chapel_cross_bridal_vow",
-      "title": "希耶尔 · 纯白圣堂的赎罪婚誓",
+      "action": "站在圣坛前，双手合握心口银十字架，摘下眼镜抬眼露出含泪的浅笑。",
+      "camera": "medium shot, eye level, altar portrait",
       "category": "纯白誓约",
       "characterId": "ciel_tsukihime",
-      "description": "日光从教堂彩窗落到圣坛前，希耶尔换上有完整内衬的纯白露肩长婚纱，白色头纱落在齐颌蓝发旁。她摘下眼镜，双手在心口前合握一枚银十字架，微微抬起眼睛，深蓝眼眸里蓄着克制的泪光。婚纱裙摆铺落石阶，窗上的蓝白色光斑映亮她逐渐放松的笑容。",
-      "location": "洒满神圣彩窗光晕的宏伟教堂十字架圣坛前",
-      "action": "站在圣坛前，双手合握心口银十字架，摘下眼镜抬眼露出含泪的浅笑。",
-      "timeOfDay": "day",
-      "lighting": "soft stained-glass daylight",
-      "camera": "medium shot, eye level, altar portrait",
-      "mood": "神圣救赎",
-      "sceneTags": [
-        "chapel",
-        "altar",
-        "stained_glass",
-        "stone_steps",
-        "holding_cross",
-        "hands_together",
-        "standing",
-        "looking_up",
-        "tears",
-        "small_smile",
-        "bridal_veil",
-        "wedding_dress",
-        "white_dress",
-        "daylight"
+      "coverageTags": [
+        "bridal",
+        "vow",
+        "redemption"
       ],
+      "description": "日光从教堂彩窗落到圣坛前，希耶尔换上有完整内衬的纯白露肩长婚纱，白色头纱落在齐颌蓝发旁。她摘下眼镜，双手在心口前合握一枚银十字架，微微抬起眼睛，深蓝眼眸里蓄着克制的泪光。婚纱裙摆铺落石阶，窗上的蓝白色光斑映亮她逐渐放松的笑容。",
+      "id": "ciel_chapel_cross_bridal_vow",
+      "lighting": "soft stained-glass daylight",
+      "location": "洒满神圣彩窗光晕的宏伟教堂十字架圣坛前",
+      "mood": "神圣救赎",
+      "negativeTokens": [
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "extra_fingers",
+        "extra_limbs",
+        "text",
+        "watermark",
+        "signature",
+        "blurry",
+        "2girls",
+        "1boy",
+        "duplicate",
+        "nude",
+        "lingerie",
+        "underwear",
+        "see-through"
+      ],
+      "outfitId": "sfw_white_bridal_gown",
       "promptProse": "Before the chapel altar, Ciel from Tsukihime clasps a small silver cross with both hands at her heart. Her opaque white bridal gown has an off-shoulder neckline and a long skirt resting across the stone step. A veil falls beside her chin-length navy-blue hair; without glasses, her sapphire eyes lift through restrained tears toward a quiet smile. Blue-white stained-glass patches brighten the fabric and her face. Keep the cross, hands and upper skirt clearly visible in a solitary bridal portrait.",
       "promptTokens": [
         "1girl",
@@ -1117,58 +1126,55 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst_quality",
-        "low_quality",
-        "bad_anatomy",
-        "bad_hands",
-        "extra_fingers",
-        "extra_limbs",
-        "text",
-        "watermark",
-        "signature",
-        "blurry",
-        "2girls",
-        "1boy",
-        "duplicate",
-        "nude",
-        "lingerie",
-        "underwear",
-        "see-through"
-      ],
       "recommendedSize": "1152x1536",
-      "outfitId": "sfw_white_bridal_gown",
-      "coverageTags": [
-        "bridal",
-        "vow",
-        "redemption"
-      ]
+      "sceneTags": [
+        "chapel",
+        "altar",
+        "stained_glass",
+        "stone_steps",
+        "holding_cross",
+        "hands_together",
+        "standing",
+        "looking_up",
+        "tears",
+        "small_smile",
+        "bridal_veil",
+        "wedding_dress",
+        "white_dress",
+        "daylight"
+      ],
+      "timeOfDay": "day",
+      "title": "希耶尔 · 纯白圣堂的赎罪婚誓"
     },
     {
-      "id": "ciel_nsfw_church_mat_supine_devotion",
-      "title": "希耶尔 · 圣堂软榻的深情仰卧交付",
+      "action": "全裸仰卧软榻上，双腿曲膝大开，单手与视角十指紧扣，眼眸水润迷乱娇喘",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "upper body to knees, vertical framing, high angle POV",
       "category": "私密温存",
       "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 圣堂软榻的深情仰卧交付】僻静祈祷室的丝绒软榻上，希耶尔的法衣完全大敞，全身肌肤散发着淡淡的幽香。她仰卧在深蓝软垫上，修长的双腿完全曲起分开，向你袒露出湿润粉嫩的深处。没有眼镜的遮掩，她深蓝色的瞳孔泛着水汽，饱满成熟的丰满雪乳随急促的心跳剧烈起伏，粉嫩乳头挺立泛红。她一手拉过你的手掌与你十指相扣，另一手轻掩唇瓣发出微颤的甜美娇吟——「把我当成普通的成年女性子……狠狠地爱我吧……」",
-      "location": "教会幽暗祈祷室深处深蓝丝绒软榻",
-      "action": "全裸仰卧软榻上，双腿曲膝大开，单手与视角十指紧扣，眼眸水润迷乱娇喘",
-      "timeOfDay": "深夜",
-      "lighting": "烛台摇曳的暖黄光芒照亮雪白娇躯",
-      "camera": "upper body to knees, vertical framing, high angle POV",
-      "mood": "深情交付",
-      "sceneTags": [
-        "church_room",
-        "velvet_bed",
-        "completely_nude",
-        "lying_on_back",
-        "spread_legs",
-        "bare_breasts",
-        "large_breasts",
-        "pink_nipples",
-        "interlocked_fingers",
-        "heavy_blush",
-        "parted_lips"
+      "coverageTags": [
+        "nsfw",
+        "supine",
+        "special_nsfw"
       ],
+      "description": "【希耶尔 · 圣堂软榻的深情仰卧交付】僻静祈祷室的丝绒软榻上，希耶尔的法衣完全大敞，全身肌肤散发着淡淡的幽香。她仰卧在深蓝软垫上，修长的双腿完全曲起分开，向你袒露出湿润粉嫩的深处。没有眼镜的遮掩，她深蓝色的瞳孔泛着水汽，饱满成熟的丰满雪乳随急促的心跳剧烈起伏，粉嫩乳头挺立泛红。她一手拉过你的手掌与你十指相扣，另一手轻掩唇瓣发出微颤的甜美娇吟——「把我当成普通的成年女性子……狠狠地爱我吧……」",
+      "id": "ciel_nsfw_church_mat_supine_devotion",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "烛台摇曳的暖黄光芒照亮雪白娇躯",
+      "location": "教会幽暗祈祷室深处深蓝丝绒软榻",
+      "mood": "深情交付",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "bad anatomy",
+        "extra limbs",
+        "fire, flames, burning ears",
+        "2girls",
+        "1boy"
+      ],
+      "nsfwProse": "",
+      "outfitId": "nsfw_nude",
       "promptProse": "Blue stained-glass light surrounds adult Ciel lying alone on a padded mat inside a locked church side room. Her dark ceremonial suit and white shirt are open below bare breasts, with one stockinged leg raised and the other folded inward. She holds a page of scripture against her chest with one hand and fingers herself with the other, glasses catching a clean reflection. Indigo hair and amber eyes remain focused through tears and a guilty blush. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "church_interior",
@@ -1197,56 +1203,53 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "church_room",
+        "velvet_bed",
+        "completely_nude",
+        "lying_on_back",
+        "spread_legs",
+        "bare_breasts",
+        "large_breasts",
+        "pink_nipples",
+        "interlocked_fingers",
+        "heavy_blush",
+        "parted_lips"
+      ],
+      "timeOfDay": "深夜",
+      "title": "希耶尔 · 圣堂软榻的深情仰卧交付"
+    },
+    {
+      "action": "双手撑在长木桌俯身弓腰翘臀，法衣半褪单手探入内裤自抚花瓣，回头微扶眼镜含泪娇喘",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+      "category": "私密承载",
+      "characterId": "ciel_tsukihime",
+      "coverageTags": [
+        "nsfw",
+        "prone",
+        "solo"
+      ],
+      "description": "【希耶尔 · 圣堂教坛前法衣半褪的自抚】幽暗清冷的圣堂大厅内，高耸彩窗透下银蓝月光。希耶尔深蓝修女法衣被解开带子半褪至腰际，露出圆润白皙的雪乳与饱满紧致的腰臀。她双手撑在沉重的橡木教坛长桌边缘俯身弓腰，单手探入裙底拉开内裤边缘自抚湿润的花瓣，推了推微斜的眼镜。耳根红透，回头回眸时眼眸水雾迷离——「就算身为代行者……面对你的时候……身体也会彻底诚实呢……」",
+      "id": "ciel_nsfw_altar_table_bent_over_prone",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "高耸彩窗透下的幽冷银蓝月光",
+      "location": "空旷圣堂中央沉重橡木教坛长桌旁",
+      "mood": "神圣禁忌、唯美自抚",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
+        "self-harm, choking",
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "nsfw",
-        "supine",
-        "special_nsfw"
-      ],
-      "nsfwProse": ""
-    },
-    {
-      "id": "ciel_nsfw_altar_table_bent_over_prone",
-      "title": "希耶尔 · 圣堂教坛前法衣半褪的自抚·「在神圣的殿堂里……身体却擅自渴求着你」",
-      "category": "私密承载",
-      "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 圣堂教坛前法衣半褪的自抚】幽暗清冷的圣堂大厅内，高耸彩窗透下银蓝月光。希耶尔深蓝修女法衣被解开带子半褪至腰际，露出圆润白皙的雪乳与饱满紧致的腰臀。她双手撑在沉重的橡木教坛长桌边缘俯身弓腰，单手探入裙底拉开内裤边缘自抚湿润的花瓣，推了推微斜的眼镜。耳根红透，回头回眸时眼眸水雾迷离——「就算身为代行者……面对你的时候……身体也会彻底诚实呢……」",
-      "location": "空旷圣堂中央沉重橡木教坛长桌旁",
-      "action": "双手撑在长木桌俯身弓腰翘臀，法衣半褪单手探入内裤自抚花瓣，回头微扶眼镜含泪娇喘",
-      "timeOfDay": "深夜月明",
-      "lighting": "高耸彩窗透下的幽冷银蓝月光",
-      "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
-      "mood": "神圣禁忌、唯美自抚",
-      "sceneTags": [
-        "church",
-        "altar_table",
-        "bent_over",
-        "arched_back",
-        "hands_on_table",
-        "skirt_lift",
-        "habit",
-        "panties_aside",
-        "exposed_pussy",
-        "pussy_juice",
-        "heavy_blush",
-        "blushing_ears",
-        "looking_back",
-        "horizontal_shot"
-      ],
+      "outfitId": "official_burial_agency_habit",
       "promptProse": "Bent forward over the polished oak altar table inside the darkened church under cool blue moonbeams, Ciel arches her supple back in solitary, breathless surrender. Her navy-blue clergy habit is loosened and drawn high around her waist, hands gripping the smooth wood while her fingers reach down to draw her panties aside and caress her dripping, sensitive entrance. Looking back over her bare shoulder with tear-filled sapphire eyes and flushed red ears behind tilted glasses, she gasps softly in the sacred silence. Dynamic horizontal anime visual novel composition, solo 1girl, no text.",
       "promptTokens": [
         "sensual_solo",
@@ -1276,52 +1279,55 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "church",
+        "altar_table",
+        "bent_over",
+        "arched_back",
+        "hands_on_table",
+        "skirt_lift",
+        "habit",
+        "panties_aside",
+        "exposed_pussy",
+        "pussy_juice",
+        "heavy_blush",
+        "blushing_ears",
+        "looking_back",
+        "horizontal_shot"
+      ],
+      "timeOfDay": "深夜月明",
+      "title": "希耶尔 · 圣堂教坛前法衣半褪的自抚·「在神圣的殿堂里……身体却擅自渴求着你」"
+    },
+    {
+      "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸前，俯身深吻，眼神充满深沉爱意",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowboy shot, vertical framing, low angle POV",
+      "category": "主控骑乘",
+      "characterId": "ciel_tsukihime",
+      "coverageTags": [
+        "nsfw",
+        "straddling",
+        "cowgirl"
+      ],
+      "description": "【希耶尔 · 摘镜动情的修女主控骑乘】温暖卧榻上，希耶尔亲手摘下眼镜放在床头，浑身赤裸跨坐在你的腰跨之上。这位原本冷静严谨的埋葬机关代行者，此刻在极致的爱意驱动下展现出惊人的热情。她双手按在你的胸膛上，腰肢主动而深沉地下沉研磨，饱满丰腴的雪乳随动作剧烈起伏摇晃，粉红乳头娇艳挺拔。她低头吻上你的唇瓣，双眸水雾弥漫——「平时总是你在保护大家……今晚，就让我来完全服侍你吧。」",
+      "id": "ciel_nsfw_glasses_off_cowgirl_straddle",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "床头暖橙壁灯勾勒出饱满身体的汗水光泽",
+      "location": "铺着柔软棉垫的私密卧房床榻中央",
+      "mood": "热情主控",
       "negativeTokens": [
         "worst quality",
         "low quality",
         "bad anatomy",
         "extra limbs",
         "fire, flames, burning ears",
-        "self-harm, choking",
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1536x1152",
-      "adult": true,
-      "sampleRating": "R18",
-      "outfitId": "official_burial_agency_habit",
-      "coverageTags": [
-        "nsfw",
-        "prone",
-        "solo"
-      ],
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg"
-    },
-    {
-      "id": "ciel_nsfw_glasses_off_cowgirl_straddle",
-      "title": "希耶尔 · 摘镜动情的修女主控骑乘",
-      "category": "主控骑乘",
-      "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 摘镜动情的修女主控骑乘】温暖卧榻上，希耶尔亲手摘下眼镜放在床头，浑身赤裸跨坐在你的腰跨之上。这位原本冷静严谨的埋葬机关代行者，此刻在极致的爱意驱动下展现出惊人的热情。她双手按在你的胸膛上，腰肢主动而深沉地下沉研磨，饱满丰腴的雪乳随动作剧烈起伏摇晃，粉红乳头娇艳挺拔。她低头吻上你的唇瓣，双眸水雾弥漫——「平时总是你在保护大家……今晚，就让我来完全服侍你吧。」",
-      "location": "铺着柔软棉垫的私密卧房床榻中央",
-      "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸前，俯身深吻，眼神充满深沉爱意",
-      "timeOfDay": "深夜",
-      "lighting": "床头暖橙壁灯勾勒出饱满身体的汗水光泽",
-      "camera": "cowboy shot, vertical framing, low angle POV",
-      "mood": "热情主控",
-      "sceneTags": [
-        "bedroom",
-        "straddling",
-        "cowgirl_position",
-        "completely_nude",
-        "large_breasts",
-        "bouncing_breasts",
-        "pink_nipples",
-        "glasses_removed",
-        "sweat",
-        "heavy_blush"
-      ],
+      "outfitId": "nsfw_nude",
       "promptProse": "Straddling the viewer's waist in passionate, loving abandon atop soft bedding, naked Ciel commands the rhythm without her glasses. Her surprisingly voluptuous breasts with firm pink nipples bounce in steady cadence with her undulating hips. Leaning down with heavy-lidded sapphire eyes to plant tender kisses upon the viewer's lips, she groans softly in delicious ecstasy. Intense vertical anime CG, solo 1girl focus, no text.",
       "promptTokens": [
         "sensual_solo",
@@ -1348,6 +1354,41 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "bedroom",
+        "straddling",
+        "cowgirl_position",
+        "completely_nude",
+        "large_breasts",
+        "bouncing_breasts",
+        "pink_nipples",
+        "glasses_removed",
+        "sweat",
+        "heavy_blush"
+      ],
+      "timeOfDay": "深夜",
+      "title": "希耶尔 · 摘镜动情的修女主控骑乘"
+    },
+    {
+      "action": "斜靠在浴池边缘，湿透白蕾丝紧贴娇躯，单手在水下自抚，微仰头闭目娇喘",
+      "adult": true,
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowboy shot, medium angle, intimate water view",
+      "category": "水光私语",
+      "characterId": "ciel_tsukihime",
+      "coverageTags": [
+        "nsfw",
+        "wet",
+        "sensual_solo"
+      ],
+      "description": "【希耶尔 · 氤氲浴池的水光白纱自抚】热气腾腾的大理石浴池内，温水荡漾。希耶尔身上仅穿一件极薄的纯白蕾丝吊带内衣斜靠在池壁边，浸水的蕾丝薄纱紧紧贴在胸口与小腹上，将饱满傲人的胸型与粉嫩乳晕勾勒得一清二楚。深蓝色的短发沾湿贴在白皙后颈上，她单手在水波下悄悄探入大腿内侧自抚，指尖泛起圈圈微波，微仰起泛红的俏脸发出细碎的喘息——「呼……水温明明刚好……为什么胸口和下面……会这么热呢……」",
+      "id": "ciel_nsfw_marble_bath_translucent_solo",
+      "kreaStyleHint": "r18_explicit_h_cg",
+      "lighting": "水面金色射灯与朦胧水汽交织的光雾",
+      "location": "弥漫水汽白雾的私密大理石温泉浴室",
+      "mood": "唯美水光",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -1357,43 +1398,7 @@
         "2girls",
         "1boy"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "nsfw",
-        "straddling",
-        "cowgirl"
-      ]
-    },
-    {
-      "id": "ciel_nsfw_marble_bath_translucent_solo",
-      "title": "希耶尔 · 氤氲浴池的水光白纱自抚",
-      "category": "水光私语",
-      "characterId": "ciel_tsukihime",
-      "description": "【希耶尔 · 氤氲浴池的水光白纱自抚】热气腾腾的大理石浴池内，温水荡漾。希耶尔身上仅穿一件极薄的纯白蕾丝吊带内衣斜靠在池壁边，浸水的蕾丝薄纱紧紧贴在胸口与小腹上，将饱满傲人的胸型与粉嫩乳晕勾勒得一清二楚。深蓝色的短发沾湿贴在白皙后颈上，她单手在水波下悄悄探入大腿内侧自抚，指尖泛起圈圈微波，微仰起泛红的俏脸发出细碎的喘息——「呼……水温明明刚好……为什么胸口和下面……会这么热呢……」",
-      "location": "弥漫水汽白雾的私密大理石温泉浴室",
-      "action": "斜靠在浴池边缘，湿透白蕾丝紧贴娇躯，单手在水下自抚，微仰头闭目娇喘",
-      "timeOfDay": "深夜沐浴",
-      "lighting": "水面金色射灯与朦胧水汽交织的光雾",
-      "camera": "cowboy shot, medium angle, intimate water view",
-      "mood": "唯美水光",
-      "sceneTags": [
-        "onsen",
-        "bathroom",
-        "marble_bath",
-        "steaming_water",
-        "wet_clothes",
-        "white_lingerie",
-        "sheer_cloth",
-        "translucent_dress",
-        "nipples_visible_through_clothes",
-        "hand_between_legs",
-        "sensual_solo"
-      ],
+      "outfitId": "holy_white_lace_lingerie",
       "promptProse": "Reclining against the smooth marble ledge of a steaming private bath, Ciel is soaked in pure tranquility. Her sheer white lace camisole is completely drenched and clinging like liquid glass to her ample bust, exposing the vivid contour of her full breasts and pink areolas. One hand strokes softly between her parted thighs fingering and masturbating gently beneath the rippling water as she tilts her head back with a breathless shudder. Exquisite anime watercolor style, solo 1girl, no text.",
       "promptTokens": [
         "bathroom",
@@ -1418,26 +1423,25 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst quality",
-        "low quality",
-        "bad anatomy",
-        "extra limbs",
-        "fire, flames, burning ears",
-        "2girls",
-        "1boy"
-      ],
       "recommendedSize": "1152x1536",
-      "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_explicit_h_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "outfitId": "holy_white_lace_lingerie",
-      "coverageTags": [
-        "nsfw",
-        "wet",
+      "sceneTags": [
+        "onsen",
+        "bathroom",
+        "marble_bath",
+        "steaming_water",
+        "wet_clothes",
+        "white_lingerie",
+        "sheer_cloth",
+        "translucent_dress",
+        "nipples_visible_through_clothes",
+        "hand_between_legs",
         "sensual_solo"
-      ]
+      ],
+      "timeOfDay": "深夜沐浴",
+      "title": "希耶尔 · 氤氲浴池的水光白纱自抚"
     }
-  ]
+  ],
+  "franchise": "Tsukihime",
+  "version": "1.0.0"
 }

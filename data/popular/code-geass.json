@@ -1,12 +1,7 @@
 {
-  "version": "1.0.0",
-  "franchise": "Code Geass",
   "characters": [
     {
-      "id": "cc_code_geass",
-      "displayName": "C.C.",
-      "originalName": "C.C.",
-      "franchise": "Code Geass",
+      "adultEligibility": "adult",
       "aliases": [
         "C.C.",
         "CC",
@@ -16,6 +11,27 @@
         "披萨魔女",
         "共犯"
       ],
+      "animeStudio": "Sunrise",
+      "curatedArtistStyles": [
+        "Takahiro Kimura",
+        "CLAMP"
+      ],
+      "displayName": "C.C.",
+      "dna_lock": {
+        "avoid": [
+          "geass_sigil"
+        ],
+        "flexible": [],
+        "must": []
+      },
+      "exactPrefixes": [
+        "1girl, solo, c.c."
+      ],
+      "exactTokens": [
+        "c.c."
+      ],
+      "franchise": "Code Geass",
+      "id": "cc_code_geass",
       "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, and a serene, detached yet intimately teasing smile",
       "identityTokens": [
         "c.c.",
@@ -29,24 +45,6 @@
         "seductive_smile",
         "code_geass"
       ],
-      "exactTokens": [
-        "c.c."
-      ],
-      "exactPrefixes": [
-        "1girl, solo, c.c."
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "animeStudio": "Sunrise",
-      "curatedArtistStyles": [
-        "Takahiro Kimura",
-        "CLAMP"
-      ],
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -59,9 +57,12 @@
         "watermark",
         "fire, flames, burning ears"
       ],
+      "originalName": "C.C.",
       "outfits": [
         {
+          "default": true,
           "id": "official_straitjacket",
+          "isDefault": true,
           "name": "纯白拘束服风衣",
           "prose": "her iconic white straitjacket uniform with long sleeves extending past her hands, high zippered collar, loose buckled belts trailing behind her, and tight white leggings accentuating her slender legs",
           "tokens": [
@@ -74,9 +75,7 @@
             "high_collar",
             "white_pants",
             "tight_pants"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
           "id": "black_knights_uniform",
@@ -137,15 +136,44 @@
             "navel",
             "slender_body"
           ]
+        },
+        {
+          "default": false,
+          "id": "beige_trench_sunhat",
+          "isDefault": false,
+          "name": "米色风衣宽檐草帽",
+          "prose": "a sophisticated beige English-style trench coat with a wide-brim black-ribbon sunhat and comfortable walking shoes",
+          "tokens": [
+            "trench_coat",
+            "beige_coat",
+            "sunhat",
+            "holding_hat",
+            "casual_outfit"
+          ]
+        },
+        {
+          "default": false,
+          "id": "lawn_sweater_no_plush",
+          "isDefault": false,
+          "name": "草坪慵懒毛衣·无玩偶",
+          "prose": "a relaxed oversized off-white knit sweater with comfortable denim shorts and bare feet, with no plush toy",
+          "tokens": [
+            "oversized_sweater",
+            "knit_sweater",
+            "denim_shorts",
+            "bare_legs",
+            "barefoot"
+          ]
         }
       ],
-      "dna_lock": {
-        "must": [],
-        "flexible": [],
-        "avoid": [
-          "geass_sigil"
-        ]
-      }
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ]
     }
-  ]
+  ],
+  "franchise": "Code Geass",
+  "version": "1.0.0"
 }
