@@ -1,18 +1,32 @@
 {
-  "version": 1,
-  "franchise": "Arknights",
   "characters": [
     {
-      "id": "surtr_arknights",
-      "displayName": "史尔特尔",
-      "originalName": "Surtr",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "surtr",
         "surtur",
         "arknights",
         "laevatein"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发红瞳；大剑莱瓦汀；气质慵懒忧郁",
+        "research": "2026-08-15 调研（Danbooru surtr_(arknights) 5266 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "swav",
+        "rella"
+      ],
+      "displayName": "史尔特尔",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "surtr (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "surtr_arknights",
       "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail under a black headband, amber-orange eyes, black-red curved horns, and a slender athletic build.",
       "identityTokens": [
         "surtr (arknights)",
@@ -26,19 +40,21 @@
         "horns",
         "arknights"
       ],
-      "exactTokens": [
-        "surtr (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Surtr",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "罗德岛作战服",
           "prose": "her black sleeveless cropped turtleneck with a black-and-white techwear jacket with red lining, black high-waisted shorts, thigh holster, asymmetrical black thigh-high socks, combat boots, fingerless gloves and a black headband",
           "tokens": [
@@ -52,12 +68,12 @@
             "combat_boots",
             "fingerless_gloves",
             "headband"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "liberte_echec",
+          "isDefault": false,
           "name": "自由//失效（街头滑板）",
           "prose": "a black off-shoulder top with a black and red plaid pleated skirt, a loose black jacket worn off her shoulders, a tiny golden crown hair accessory and a skateboard",
           "tokens": [
@@ -67,12 +83,12 @@
             "jacket",
             "crown",
             "skateboard"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "prelude_to_transcendence",
+          "isDefault": false,
           "name": "超然序曲（音律礼服）",
           "prose": "a black and gold gothic rock tailcoat jacket with gold epaulets and chains over a black lace shirt, tight leather pants and high heel boots",
           "tokens": [
@@ -82,12 +98,12 @@
             "lace_shirt",
             "leather_pants",
             "high_heels"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "ice_cream_cafe_casual",
+          "isDefault": false,
           "name": "香草融意甜品店日常便服",
           "prose": "a sweet-cool street casual outfit: a loose oatmeal-grey cropped hoodie worn open over a tight black camisole, high-waisted charcoal pleated skirt with a metal-buckle belt, mismatched grey thigh-high socks and retro black-and-white chunky skate sneakers, small black crossbody bag",
           "tokens": [
@@ -98,12 +114,12 @@
             "thighhighs",
             "sneakers",
             "crossbody_bag"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "lava_silk_loungewear",
+          "isDefault": false,
           "name": "熔温夜曲丝绸慵懒睡袍",
           "prose": "a luxurious silk loungewear set: a short black silk slip nightdress with champagne-pink trim and delicate black lace trim at the chest and hem, overlaid with a sheer translucent black silk robe slipping off one shoulder, barefoot",
           "tokens": [
@@ -113,13 +129,15 @@
             "robe",
             "slipping_off_shoulder",
             "barefoot"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -131,40 +149,32 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
+          ]
+        },
+        {
+          "default": false,
+          "id": "rhodes_canteen_hoodie_shorts",
           "isDefault": false,
-          "default": false
+          "name": "食堂甜品·卫衣短裤便服",
+          "prose": "a loose oatmeal-grey cropped hoodie over a black camisole, black high-waisted shorts, mismatched grey thigh-high socks and retro black-and-white skate sneakers",
+          "tokens": [
+            "casual_clothes",
+            "hoodie",
+            "camisole",
+            "shorts",
+            "thighhighs",
+            "sneakers"
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "白发红瞳；大剑莱瓦汀；气质慵懒忧郁",
-        "research": "2026-08-15 调研（Danbooru surtr_(arknights) 5266 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "ask_(askzy)",
-        "swav",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "kaltsit_arknights",
-      "displayName": "凯尔希",
-      "originalName": "Kal'tsit",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "kaltsit",
         "kal'tsit",
@@ -172,6 +182,25 @@
         "mon3tr",
         "kal'tsit (arknights)"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银白短发绿瞳；绿白医师袍；Mon3tr 召唤物；Danbooru 本体 tag 缺失（仅衍生变体），以视觉词为主",
+        "research": "2026-08-15 调研（Danbooru 本体 tag 缺失，衍生 kal'tsit_esperanta 407 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "displayName": "凯尔希",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "kal'tsit (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "kaltsit_arknights",
       "identityProse": "Kal'tsit from Arknights, the venerable feline medical director with short pale mint-green hair, feline ears, sharp analytical green eyes, and a calm, stoic expression.",
       "identityTokens": [
         "kal'tsit (arknights)",
@@ -184,19 +213,21 @@
         "earring",
         "arknights"
       ],
-      "exactTokens": [
-        "kal'tsit (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Kal'tsit",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "罗德岛医师服",
           "prose": "her white lab coat with pale green trim and a translucent hem over a black halterneck backless dress, a green tech utility belt and long emerald crystal drop earrings",
           "tokens": [
@@ -208,12 +239,12 @@
             "dress",
             "utility_belt",
             "earrings"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "evening_gown",
+          "isDefault": false,
           "name": "不觅浪尘（音律礼服）",
           "prose": "an elegant black velvet evening gown with gold and emerald embroidery, her hair up, holding a black cello",
           "tokens": [
@@ -223,12 +254,12 @@
             "gold_trim",
             "hair_up",
             "cello"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "remains",
+          "isDefault": false,
           "name": "残余（决战常服）",
           "prose": "a dark grey tactical cropped jacket over a black work vest, cargo pants and military boots, her hair in a side ponytail",
           "tokens": [
@@ -238,12 +269,12 @@
             "grey_clothes",
             "cargo_pants",
             "side_ponytail"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "walker",
+          "isDefault": false,
           "name": "遗尘漫步（学者行装）",
           "prose": "a grey-green hooded scholar cloak over a long robe, a brass astrolabe at her waist and a scholar staff",
           "tokens": [
@@ -252,12 +283,12 @@
             "robe",
             "scholar",
             "staff"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "rhodes_island_lounge_knit",
+          "isDefault": false,
           "name": "罗德岛日常慵懒高领毛衣便服",
           "prose": "a cozy lounge outfit: an oatmeal chunky-knit oversized turtleneck sweater with a relaxed dropped shoulder, over a sleeveless cotton camisole, paired with deep emerald wide-leg linen lounge trousers",
           "tokens": [
@@ -268,12 +299,12 @@
             "wide_leg_pants",
             "linen",
             "lounge"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "victorian_traveler_coat",
+          "isDefault": false,
           "name": "维多利亚博物学者古典旅行大衣",
           "prose": "a forest-green heavyweight wool greatcoat with dark brown velvet lapels and a detachable shoulder capelet, worn over a ruffled white stand-collar blouse with a burgundy satin ribbon tie",
           "tokens": [
@@ -283,13 +314,15 @@
             "ruffled_collar",
             "blouse",
             "ribbon_tie"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -301,46 +334,42 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "银白短发绿瞳；绿白医师袍；Mon3tr 召唤物；Danbooru 本体 tag 缺失（仅衍生变体），以视觉词为主",
-        "research": "2026-08-15 调研（Danbooru 本体 tag 缺失，衍生 kal'tsit_esperanta 407 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "swav",
-        "yoneyama_mai",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "chen_arknights",
-      "displayName": "陈",
-      "originalName": "Ch'en",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "ch'en",
         "chen",
         "arknights",
         "lungmen"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "蓝发金瞳小龙角；近卫局制服；赤霄双剑",
+        "research": "2026-08-15 调研（Danbooru ch'en_(arknights) 4467 posts）",
+        "world": "泰拉（龙门近卫局）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "so-bin"
+      ],
+      "displayName": "陈",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "ch'en (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "chen_arknights",
       "identityProse": "Ch'en from Arknights, the disciplined Lung inspector with dark teal hair tied in low twin tails with red ribbons, sharp amber eyes, dragon horns, and a slender dragon tail.",
       "identityTokens": [
         "ch'en (arknights)",
@@ -355,19 +384,21 @@
         "tail",
         "arknights"
       ],
-      "exactTokens": [
-        "ch'en (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Ch'en",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "龙门近卫局制服",
           "prose": "her blue-and-black short-sleeve stand-collar tactical jacket over a white shirt with a black tie, a black pleated skirt, knee-high socks and combat boots, twin swords at her back",
           "tokens": [
@@ -381,12 +412,12 @@
             "combat_boots",
             "twin_swords",
             "military_uniform"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "wanderer",
+          "isDefault": false,
           "name": "赤刃明霄（游侠行装）",
           "prose": "a dark green and crimson traveller robe with a grey cape, a jade belt pendant, holding the crimson sword Chi Xiao",
           "tokens": [
@@ -396,12 +427,12 @@
             "green_clothes",
             "red_clothes",
             "sword"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "street_gourmet_casual",
+          "isDefault": false,
           "name": "龙门夜市街头休闲装",
           "prose": "a retro 90s Hong Kong street-style casual outfit: an open vintage floral-print shirt over a plain white tee, slim washed dark jeans, white canvas sneakers, and a small black crossbody sling bag",
           "tokens": [
@@ -411,12 +442,12 @@
             "jeans",
             "sneakers",
             "crossbody_bag"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "morning_kendo_robe",
+          "isDefault": false,
           "name": "清晨道场练功服",
           "prose": "a minimalist modern wushu training outfit: a loose white martial-arts gi jacket with dark teal accents, paired with dark teal wide-leg pleated hakama pants and a cloth obi belt",
           "tokens": [
@@ -425,12 +456,12 @@
             "pleated_skirt",
             "martial_arts",
             "training_clothes"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "lgd_detective_undercover",
+          "isDefault": false,
           "name": "近卫局便衣潜伏风衣",
           "prose": "a classic hard-boiled detective undercover outfit: a dark charcoal trench coat over a black turtleneck and slim trousers, with polished black oxford leather shoes",
           "tokens": [
@@ -439,9 +470,7 @@
             "black_clothes",
             "detective",
             "undercover"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
           "id": "cadet_royal_guard",
@@ -492,8 +521,12 @@
           ]
         },
         {
+          "default": false,
           "id": "bath_towel_wrap",
+          "isDefault": false,
           "name": "浴后浴巾",
+          "prose": "wrapped in a large thick bath towel secured at the bust, soft cotton towel fabric with bare shoulders and bare legs",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "bath_towel",
             "towel",
@@ -505,15 +538,15 @@
             "bare_back",
             "collarbone",
             "thick_towel"
-          ],
-          "prose": "wrapped in a large thick bath towel secured at the bust, soft cotton towel fabric with bare shoulders and bare legs",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "light_lingerie",
+          "isDefault": false,
           "name": "轻薄内衣",
+          "prose": "wearing light lingerie with a delicate bralette and matching panties, soft lightweight fabric",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "lingerie",
             "light_lingerie",
@@ -525,45 +558,41 @@
             "bare_shoulders",
             "bare_midriff",
             "navel"
-          ],
-          "prose": "wearing light lingerie with a delicate bralette and matching panties, soft lightweight fabric",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（龙门近卫局）",
-        "era": "近未来奇幻",
-        "formNotes": "蓝发金瞳小龙角；近卫局制服；赤霄双剑",
-        "research": "2026-08-15 调研（Danbooru ch'en_(arknights) 4467 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "swav",
-        "yoneyama_mai",
-        "so-bin"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "eyjafjalla_arknights",
-      "displayName": "艾雅法拉",
-      "originalName": "Eyjafjalla",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "eyjafjalla",
         "eyja",
         "arknights"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "粉发红瞳羊角；火山学家",
+        "research": "2026-08-15 调研（Danbooru eyjafjalla_(arknights) 2237 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "rella",
+        "morikura_en"
+      ],
+      "displayName": "艾雅法拉",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "eyjafjalla (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "eyjafjalla_arknights",
       "identityProse": "Eyjafjalla from Arknights, a gentle Caprinae volcanologist with soft light brown hair tied in twintails, curved sheep horns, and warm crimson eyes.",
       "identityTokens": [
         "eyjafjalla (arknights)",
@@ -575,19 +604,21 @@
         "horns",
         "arknights"
       ],
-      "exactTokens": [
-        "eyjafjalla (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Eyjafjalla",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "研究员裙装",
           "prose": "her dark grey hooded volcano research coat over a white frilled blouse with a black pleated skirt, black thighhighs and black boots",
           "tokens": [
@@ -599,12 +630,12 @@
             "thighhighs",
             "boots",
             "black_clothes"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "picnic",
+          "isDefault": false,
           "name": "远行前的野餐",
           "prose": "a retro dark green and cream country dress with a wool shawl, a beret and a picnic basket",
           "tokens": [
@@ -613,12 +644,12 @@
             "cream_clothes",
             "beret",
             "picnic"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "cozy_sheep_fleece_loungewear",
+          "isDefault": false,
           "name": "【温软梦乡】羊羔绒暖绒居家睡衣",
           "prose": "a fluffy oversized cream-and-tan sherpa fleece hoodie cardigan with a hood, worn like a cozy loungewear set with sheep pajamas, soft warm winter lounge look",
           "tokens": [
@@ -628,12 +659,12 @@
             "cardigan",
             "pajamas",
             "loungewear"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "siesta_hotspring_yukata",
+          "isDefault": false,
           "name": "【汐斯塔之憩】地热温泉和风浴衣",
           "prose": "a traditional Japanese onsen yukata with a pale floral pattern, light cotton fabric, tied with an obi sash, summer resort hot-spring robe",
           "tokens": [
@@ -642,12 +673,12 @@
             "cotton",
             "obi",
             "hot_spring"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "leithanien_volcanology_lab_coat",
+          "isDefault": false,
           "name": "【学者之思】莱塔尼亚地质研究白大褂",
           "prose": "an intellectual volcanologist outfit: a white lab coat over a soft knit sweater and skirt, gold half-rim reading glasses, and a tiny silver hearing aid at the ear",
           "tokens": [
@@ -656,13 +687,15 @@
             "sweater",
             "glasses",
             "hearing_aid"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "waterproof_explorer",
+          "isDefault": false,
           "name": "防水探险服",
+          "prose": "wearing a water-resistant expedition outfit: a tough layered expedition jacket with zip closure and cargo pockets, durable cargo trousers, and sturdy hiking boots",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "eyjafjalla_waterproof_explorer",
             "expedition_jacket",
@@ -674,45 +707,41 @@
             "gloves",
             "cargo_pants",
             "hiking_boots"
-          ],
-          "prose": "wearing a water-resistant expedition outfit: a tough layered expedition jacket with zip closure and cargo pockets, durable cargo trousers, and sturdy hiking boots",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "粉发红瞳羊角；火山学家",
-        "research": "2026-08-15 调研（Danbooru eyjafjalla_(arknights) 2237 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "anmi",
-        "rella",
-        "morikura_en"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "lemuen_arknights",
-      "displayName": "蕾缪安",
-      "originalName": "Lemuen",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "lemuen",
         "arknights",
         "laterano"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银白长发蓝瞳；萨科塔光环+小翅膀；蓝白战术服",
+        "research": "2026-08-15 调研（Danbooru lemuen_(arknights) 1554 posts）",
+        "world": "泰拉（拉特兰）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "rella",
+        "ask_(askzy)"
+      ],
+      "displayName": "蕾缪安",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "lemuen (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "lemuen_arknights",
       "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with ginger long hair, warm amber eyes, a luminous angelic halo, and delicate white wings.",
       "identityTokens": [
         "lemuen (arknights)",
@@ -725,19 +754,21 @@
         "wings",
         "arknights"
       ],
-      "exactTokens": [
-        "lemuen (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Lemuen",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "拉特兰制服",
           "prose": "her slate dark tailored long overcoat with a white collared shirt, a black necktie, dark trousers and a warm lap blanket, seated in her high-tech wheelchair",
           "tokens": [
@@ -749,12 +780,12 @@
             "lap_blanket",
             "wheelchair",
             "dark_clothes"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "baking_apron_loungewear",
+          "isDefault": false,
           "name": "苹果派烘焙日恬静甜点师便服",
           "prose": "a cozy home baking outfit: a cream ribbed knit turtleneck sweater with the sleeves rolled to mid-arm, over a beige linen baking apron with a small apple emblem and big front pockets",
           "tokens": [
@@ -764,12 +795,12 @@
             "apron",
             "linen",
             "baking"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "rehab_cozy_knitwear",
+          "isDefault": false,
           "name": "温室休养录罗德岛医疗康复针织便服",
           "prose": "a soft recovery lounge outfit: an oversized chunky sage-green cable-knit cardigan over a champagne silk camisole, paired with flowing lounge trousers",
           "tokens": [
@@ -778,12 +809,12 @@
             "silk_camisole",
             "lounge_pants",
             "sage_green"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "silk_lace_morning_robe",
+          "isDefault": false,
           "name": "午后私语真丝蕾丝晨袍与私密居家长裙",
           "prose": "a delicate morning loungewear set: a pearl-white silk slip nightdress with fine French lace trim at the neckline and hem, overlaid with a sheer champagne chiffon lace morning robe",
           "tokens": [
@@ -793,13 +824,15 @@
             "chiffon",
             "morning_robe",
             "sheer"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nun_habit",
+          "isDefault": false,
           "name": "素白修女服",
+          "prose": "wearing a plain white nun habit with a long modest white gown, high collar, long sleeves, and a white head veil",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "lemuen_nun_habit",
             "nun_habit",
@@ -810,46 +843,42 @@
             "cross_pendant",
             "long_sleeves",
             "white_clothes"
-          ],
-          "prose": "wearing a plain white nun habit with a long modest white gown, high collar, long sleeves, and a white head veil",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（拉特兰）",
-        "era": "近未来奇幻",
-        "formNotes": "银白长发蓝瞳；萨科塔光环+小翅膀；蓝白战术服",
-        "research": "2026-08-15 调研（Danbooru lemuen_(arknights) 1554 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "swav",
-        "rella",
-        "ask_(askzy)"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "dusk_arknights",
-      "displayName": "夕",
-      "originalName": "Dusk",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "dusk",
         "xi",
         "arknights",
         "sui"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "黑长直红瞳；水墨画师；白底黑纹旗袍",
+        "research": "2026-08-15 调研（Danbooru dusk_(arknights) 4097 posts）",
+        "world": "泰拉（岁兽一脉）"
+      },
+      "curatedArtistStyles": [
+        "huanxiang_heitu",
+        "rella",
+        "yoneyama_mai"
+      ],
+      "displayName": "夕",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "dusk (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "dusk_arknights",
       "identityProse": "Dusk from Arknights, a reclusive dragon painter with flowing floor-length ink-black hair, slit emerald eyes, curved black dragon horns, and a long scaly tail.",
       "identityTokens": [
         "dusk (arknights)",
@@ -862,19 +891,21 @@
         "tail",
         "arknights"
       ],
-      "exactTokens": [
-        "dusk (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Dusk",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "水墨旗袍",
           "prose": "her ink-black high-slit qipao with dark teal cloud motifs, overlaid with a sheer black-and-white gradient wide-sleeve robe, barefoot",
           "tokens": [
@@ -887,12 +918,12 @@
             "barefoot",
             "black_clothes",
             "white_clothes"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "dying_dust",
+          "isDefault": false,
           "name": "染尘烟（新春旗袍）",
           "prose": "a black and gold high-slit short qipao with a black fur-trimmed capelet, black pantyhose, black heels and a long thin smoking pipe",
           "tokens": [
@@ -903,12 +934,12 @@
             "black_pantyhose",
             "high_heels",
             "smoking_pipe"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "atelier_slouchy_loungewear",
+          "isDefault": false,
           "name": "画斋幽梦",
           "prose": "an oversized slouchy ink-grey hoodie printed with a cute hand-drawn ink spirit mascot and splatter calligraphy, loose cotton loungewear shorts, messy hair bun held with a calligraphy brush, paint smudges on sleeves",
           "tokens": [
@@ -918,12 +949,12 @@
             "hoodie",
             "ink",
             "messy_bun"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "neo_cyber_ink_techwear",
+          "isDefault": false,
           "name": "街头墨客",
           "prose": "a deconstructed ink-techwear outfit: a black strappy high-neck crop tank top, a lightweight techwear hooded jacket with cyan reflective lines and ink-splatter print worn loose off one shoulder, high-waisted black utility cargo pants with magnetic straps, chunky high-top sneakers",
           "tokens": [
@@ -933,13 +964,15 @@
             "hooded_jacket",
             "high_top_sneakers",
             "cyberpunk"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -951,44 +984,53 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
+          ]
+        },
+        {
+          "default": false,
+          "id": "festival_black_gold_qipao",
           "isDefault": false,
-          "default": false
+          "name": "岁节灯会·黑金旗袍",
+          "prose": "a black-and-gold woven qipao with a modest short silhouette and black heeled shoes",
+          "tokens": [
+            "qipao",
+            "black_clothes",
+            "gold_trim",
+            "black_heels"
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（岁兽一脉）",
-        "era": "近未来奇幻",
-        "formNotes": "黑长直红瞳；水墨画师；白底黑纹旗袍",
-        "research": "2026-08-15 调研（Danbooru dusk_(arknights) 4097 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "huanxiang_heitu",
-        "rella",
-        "yoneyama_mai"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "mudrock_arknights",
-      "displayName": "泥岩",
-      "originalName": "Mudrock",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "mudrock",
         "arknights"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银发红瞳萨卡兹；重甲+大锤；外冷内柔",
+        "research": "2026-08-15 调研（Danbooru mudrock_(arknights) 4238 posts）",
+        "world": "泰拉（泥岩小队）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "so-bin",
+        "rella"
+      ],
+      "displayName": "泥岩",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "mudrock (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "mudrock_arknights",
       "identityProse": "Mudrock from Arknights, a gentle yet formidable Sarkaz with flowing silver-white hair, obsidian curved horns, ruby eyes, and a voluptuous figure.",
       "identityTokens": [
         "mudrock (arknights)",
@@ -1001,19 +1043,21 @@
         "large_breasts",
         "arknights"
       ],
-      "exactTokens": [
-        "mudrock (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Mudrock",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "重型装甲（战斗态）",
           "prose": "her heavy olive-green sealed power armor with a hazmat helmet and a huge engineering warhammer",
           "tokens": [
@@ -1022,12 +1066,12 @@
             "olive",
             "helmet",
             "hammer"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "elite2",
+          "isDefault": false,
           "name": "卸甲破壳态（连体服）",
           "prose": "her black high-neck bodysuit with heavy armor plates removed and set aside beside her, only a few shoulder pauldrons and forearm gauntlets still worn, long silver-white hair loose and her black Sarkaz horns visible",
           "tokens": [
@@ -1039,12 +1083,12 @@
             "horns",
             "shoulder_armor",
             "gauntlets"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "clay_artisan_apron",
+          "isDefault": false,
           "name": "陶艺工坊泥塑工装",
           "prose": "a pottery artisan outfit: a breathable ivory linen long-sleeve shirt with sleeves rolled to the elbows, over a dark khaki canvas work apron with leather pockets holding wooden carving tools, clay smudges on the apron and fingertips, loose comfortable trousers",
           "tokens": [
@@ -1053,12 +1097,12 @@
             "rolled_sleeves",
             "work_clothes",
             "craftsman"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "rhodes_oversized_hoodie",
+          "isDefault": false,
           "name": "罗德岛大号连帽卫衣",
           "prose": "a super oversized charcoal-grey Rhodes Island hoodie reaching mid-thigh with sleeves past the fingertips, subtle geometric logo on the chest, black athletic shorts hidden under the hem",
           "tokens": [
@@ -1067,12 +1111,12 @@
             "charcoal",
             "mengkawaii",
             "loungewear"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "cozy_winter_knit_coat",
+          "isDefault": false,
           "name": "暖冬高领粗针织毛衣与羊绒大衣",
           "prose": "an elegant winter outfit: a thick ivory chunky cable-knit turtleneck sweater, worn under an open dark camel long wool coat, with a soft cashmere scarf",
           "tokens": [
@@ -1082,13 +1126,15 @@
             "wool_coat",
             "scarf",
             "winter_clothes"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "white_plain_dress",
+          "isDefault": false,
           "name": "素白连衣裙",
+          "prose": "wearing a simple plain white cotton dress with a modest round neckline, short sleeves, and a clean unadorned silhouette",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "mudrock_white_plain_dress",
             "white_dress",
@@ -1099,15 +1145,15 @@
             "round_neckline",
             "white_clothes",
             "summer_dress"
-          ],
-          "prose": "wearing a simple plain white cotton dress with a modest round neckline, short sleeves, and a clean unadorned silhouette",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "thin_camisole",
+          "isDefault": false,
           "name": "轻薄吊带单衣",
+          "prose": "wearing only a thin sleeveless camisole of soft lightweight fabric with thin straps, leaving her shoulders and collarbone bare",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "mudrock_thin_camisole",
             "camisole",
@@ -1118,15 +1164,15 @@
             "bare_shoulders",
             "collarbone",
             "pale_skin"
-          ],
-          "prose": "wearing only a thin sleeveless camisole of soft lightweight fabric with thin straps, leaving her shoulders and collarbone bare",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -1138,44 +1184,40 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（泥岩小队）",
-        "era": "近未来奇幻",
-        "formNotes": "银发红瞳萨卡兹；重甲+大锤；外冷内柔",
-        "research": "2026-08-15 调研（Danbooru mudrock_(arknights) 4238 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "swav",
-        "so-bin",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "eunectes_arknights",
-      "displayName": "森蚺",
-      "originalName": "Eunectes",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "eunectes",
         "arknights"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "深绿长发金瞳健康肤色；机甲工程痴",
+        "research": "2026-08-15 调研（Danbooru eunectes_(arknights) 1138 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "liduke",
+        "swav",
+        "rella"
+      ],
+      "displayName": "森蚺",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "eunectes (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "eunectes_arknights",
       "identityProse": "Eunectes (Zumama) from Arknights, an inventive Pythia engineer with lush forest-green long hair, sharp golden reptilian eyes, and a thick snake tail.",
       "identityTokens": [
         "eunectes (arknights)",
@@ -1187,19 +1229,21 @@
         "tail",
         "arknights"
       ],
-      "exactTokens": [
-        "eunectes (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Eunectes",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "机械师工装",
           "prose": "her dark green halter crop top with a grey-green sleeveless tactical vest, leather hotpants, a single thigh-high sock with a leg harness and heavy work boots",
           "tokens": [
@@ -1212,12 +1256,12 @@
             "boots",
             "green_clothes",
             "black_clothes"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "forgemaster",
+          "isDefault": false,
           "name": "熔锻铸匠（工装）",
           "prose": "a black fire-resistant top with rolled-down coveralls tied at her waist, heat-resistant gloves and a heavy forging hammer",
           "tokens": [
@@ -1226,12 +1270,12 @@
             "gloves",
             "hammer",
             "workwear"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "rainforest_safari_explorer",
+          "isDefault": false,
           "name": "林间搜猎 / 阿卡胡拉丛林勘探轻装",
           "prose": "a rainforest safari utility outfit: an olive sports bralette under an open khaki short-sleeve utility shirt, quick-release climbing harness with metal carabiners at the waist, rugged cargo pants, explorer boots",
           "tokens": [
@@ -1241,12 +1285,12 @@
             "harness",
             "explorer",
             "adventure"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "gala_night_evening_dress",
+          "isDefault": false,
           "name": "盛宴夜影 / 庆典之夜",
           "prose": "a luxury high-slit evening gown in deep emerald green and satin black panels, asymmetrical one-shoulder neckline with an ornate metal clasp and pendant chain",
           "tokens": [
@@ -1256,13 +1300,15 @@
             "emerald_green",
             "satin",
             "formal"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -1274,15 +1320,15 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "thin_undershirt",
+          "isDefault": false,
           "name": "单薄内衬背心",
+          "prose": "wearing only a thin form-fitting tank-top undershirt of lightweight fabric, leaving her shoulders and arms bare",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "eunectes_thin_undershirt",
             "tank_top",
@@ -1292,44 +1338,40 @@
             "form_fitting",
             "bare_shoulders",
             "goggles"
-          ],
-          "prose": "wearing only a thin form-fitting tank-top undershirt of lightweight fabric, leaving her shoulders and arms bare",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "深绿长发金瞳健康肤色；机甲工程痴",
-        "research": "2026-08-15 调研（Danbooru eunectes_(arknights) 1138 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "liduke",
-        "swav",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "goldenglow_arknights",
-      "displayName": "澄闪",
-      "originalName": "Goldenglow",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "goldenglow",
         "arknights"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "金发蓝瞳双马尾；温婉图书管理员",
+        "research": "2026-08-15 调研（Danbooru goldenglow_(arknights) 2586 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "morikura_en",
+        "kantoku"
+      ],
+      "displayName": "澄闪",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "goldenglow (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "goldenglow_arknights",
       "identityProse": "Goldenglow (Susie) from Arknights, a sweet Scottish Fold hairdresser with fluffy pastel pink twintails, folded feline ears, blue eyes, and a slender cat tail.",
       "identityTokens": [
         "goldenglow (arknights)",
@@ -1343,19 +1385,21 @@
         "cat_tail",
         "arknights"
       ],
-      "exactTokens": [
-        "goldenglow (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Goldenglow",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "理发师学徒工装",
           "prose": "a white shirt with a yellow ascot scarf, a dark suspender pinafore dress, a black pleated skirt, asymmetric thighhighs and a hairdresser tool pouch with scissors",
           "tokens": [
@@ -1366,12 +1410,12 @@
             "pleated_skirt",
             "thighhighs",
             "scissors"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "greenhouse_tea",
+          "isDefault": false,
           "name": "花房茶话会（三丽鸥联动）",
           "prose": "a cream pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes, in a greenhouse tea party setting",
           "tokens": [
@@ -1380,12 +1424,12 @@
             "frills",
             "ribbon",
             "mary_janes"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "cozy_afternoon_knit_casual",
+          "isDefault": false,
           "name": "温暖午后·针织毛衣便服",
           "prose": "a cozy autumn casual knit outfit: an oversized soft pink knit sweater with cream cable patterns, pink twintails peeking from a dark brown wool beret, folded pink cat ears visible, paired with a pleated skirt and tights",
           "tokens": [
@@ -1394,12 +1438,12 @@
             "beret",
             "pleated_skirt",
             "cat_ears"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "static_paw_cozy_cat_pajamas",
+          "isDefault": false,
           "name": "静电防线·小猫绒绒睡衣",
           "prose": "a pastel pink-and-white fluffy cat-ear fleece pajama set: an oversized hooded hoodie with realistic cat-ear hood and golden lightning bolt print, matching fleece shorts, ultra soft loungewear",
           "tokens": [
@@ -1409,12 +1453,12 @@
             "hoodie",
             "pink",
             "lightning"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "salon_dreamer_work_apron",
+          "isDefault": false,
           "name": "梦想剪刀手·理发沙龙工装",
           "prose": "a vintage hair-salon stylist work outfit: high twin ponytails with cat-paw scrunchies, a clean light pink-and-white striped shirt, and a soft sage work apron with pockets, folding pink cat ears visible",
           "tokens": [
@@ -1423,13 +1467,15 @@
             "striped_shirt",
             "stylist",
             "cat_ears"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "unbuttoned_shirt",
+          "isDefault": false,
           "name": "解开襟口的单薄衬衫",
+          "prose": "wearing a thin white shirt with buttons undone to mid-chest, the soft fabric hanging open over her pale chest and collarbone",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "goldenglow_unbuttoned_shirt",
             "white_shirt",
@@ -1440,15 +1486,15 @@
             "cleavage",
             "bare_shoulders",
             "pale_skin"
-          ],
-          "prose": "wearing a thin white shirt with buttons undone to mid-chest, the soft fabric hanging open over her pale chest and collarbone",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -1460,14 +1506,13 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_pastel_tea_dress",
+          "isDefault": false,
+          "isNsfw": false,
           "name": "粉薄荷茶会裙（日常场景）",
           "prose": "a cream-pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes",
           "tokens": [
@@ -1476,44 +1521,41 @@
             "frills",
             "ribbon",
             "mary_janes"
-          ],
-          "default": false,
-          "isDefault": false,
-          "isNsfw": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "金发蓝瞳双马尾；温婉图书管理员",
-        "research": "2026-08-15 调研（Danbooru goldenglow_(arknights) 2586 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "anmi",
-        "morikura_en",
-        "kantoku"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "skadi_arknights",
-      "displayName": "斯卡蒂",
-      "originalName": "Skadi",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "skadi",
         "arknights",
         "abyss hunter"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发红瞳；黑色连体作战服+大剑",
+        "research": "2026-08-15 调研（Danbooru skadi_(arknights) 6856 posts）",
+        "world": "泰拉（深海猎人）"
+      },
+      "curatedArtistStyles": [
+        "alchemaniac",
+        "swav",
+        "rella"
+      ],
+      "displayName": "斯卡蒂",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "skadi (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "skadi_arknights",
       "identityProse": "Skadi from Arknights, a melancholic Abyssal Hunter with flowing pure white hair, haunting red eyes, and a tall, shapely silhouette.",
       "identityTokens": [
         "skadi (arknights)",
@@ -1525,19 +1567,21 @@
         "large_breasts",
         "arknights"
       ],
-      "exactTokens": [
-        "skadi (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Skadi",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "深海猎人作战服",
           "prose": "her black high-cut sleeveless bodysuit with red accents, a black cropped jacket with red lining, a black wide-brimmed hunter hat and black thigh-high boots",
           "tokens": [
@@ -1548,12 +1592,12 @@
             "wide_brimmed_hat",
             "thighhighs",
             "high_boots"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "sublimation",
+          "isDefault": false,
           "name": "升华（神官礼服）",
           "prose": "a pure white backless divine priestess gown with gold hollow ornaments and a sacred ritual staff",
           "tokens": [
@@ -1562,12 +1606,12 @@
             "gold_trim",
             "backless",
             "staff"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "cozy_orca_loungewear",
+          "isDefault": false,
           "name": "鲸梦独语·连帽卫衣居家服",
           "prose": "an oversized dark charcoal hoodie with a cute white orca silhouette print and sleeves past the fingertips, black cotton lounge shorts, plush slippers",
           "tokens": [
@@ -1577,12 +1621,12 @@
             "lounge_shorts",
             "slippers",
             "orca"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "quiet_barista_uniform",
+          "isDefault": false,
           "name": "静谧午后·咖啡店围裙便服",
           "prose": "a quiet barista outfit: a crisp white button-up collared shirt with sleeves rolled to the forearm, over a dark black canvas waist apron with a red pen and notepad in the front pocket, charcoal tailored trousers",
           "tokens": [
@@ -1591,12 +1635,12 @@
             "barista",
             "rolled_sleeves",
             "white_shirt"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "oceanic_symphony_gown",
+          "isDefault": false,
           "name": "海潮绝响·音律交响晚礼服",
           "prose": "a haute couture Aegir symphony gown: a midnight-blue to deep-black gradient velvet strapless gown with a high side slit and faint silver wave embroidery, a single sheer crimson chiffon train draped over one shoulder",
           "tokens": [
@@ -1606,13 +1650,15 @@
             "side_slit",
             "gradient",
             "chiffon"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -1624,40 +1670,31 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
+          ]
+        },
+        {
+          "default": false,
+          "id": "deep_sea_hunter_trench_coat",
           "isDefault": false,
-          "default": false
+          "name": "深海猎人·长风衣",
+          "prose": "a long black deep-sea hunter trench coat over her black high-cut sleeveless bodysuit with red accents, paired with black thigh-high boots",
+          "tokens": [
+            "trench_coat",
+            "bodysuit",
+            "black_clothes",
+            "red_clothes",
+            "high_boots"
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（深海猎人）",
-        "era": "近未来奇幻",
-        "formNotes": "白发红瞳；黑色连体作战服+大剑",
-        "research": "2026-08-15 调研（Danbooru skadi_(arknights) 6856 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "alchemaniac",
-        "swav",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "quillpen_arknights",
-      "displayName": "羽毛笔",
-      "originalName": "La Pluma",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "la pluma",
         "la pluma (arknights)",
@@ -1665,6 +1702,25 @@
         "rafaela silva",
         "arknights"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "银白短发红瞳；镰刀信使兼调酒师；Danbooru 词条 la_pluma_(arknights)（2026-08-29 修正，原 quillpen 调研有误，WD14 反推实测命中）",
+        "research": "2026-08-15 初调研误作 Quillpen（Danbooru quillpen 0 posts，视觉词兜底）；2026-08-29 修正：官方英文名 La Pluma（本名拉菲艾拉·席尔瓦），Danbooru 词条 la_pluma_(arknights)",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "rella"
+      ],
+      "displayName": "羽毛笔",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "la pluma (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "quillpen_arknights",
       "identityProse": "La Pluma (Rafaela) from Arknights, a soft-spoken Liberi girl with white-to-teal gradient hair, feathery winged ears, sleepy crimson eyes, and an ahoge.",
       "identityTokens": [
         "la pluma (arknights)",
@@ -1678,19 +1734,21 @@
         "red_eyes",
         "arknights"
       ],
-      "exactTokens": [
-        "la pluma (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "La Pluma",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "调酒师装",
           "prose": "a black crop top with an asymmetrical grey hooded jacket, black hotpants, a tactical belt with a cocktail shaker pouch and a black choker, holding her giant scythe",
           "tokens": [
@@ -1701,12 +1759,12 @@
             "hotpants",
             "choker",
             "scythe"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "sleepy_oversized_loungewear",
+          "isDefault": false,
           "name": "迷糊小憩慵懒大号连帽卫衣居家睡衣",
           "prose": "an oversized dusty pink-lilac pullover hoodie with sleeves far past the fingertips, white cotton lounge shorts underneath, cozy sleepy loungewear",
           "tokens": [
@@ -1715,12 +1773,12 @@
             "pink",
             "loungewear",
             "mengkawaii"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "classic_bartender_apron",
+          "isDefault": false,
           "name": "午夜特调经典调酒师工装围裙制服",
           "prose": "a classic bartender outfit: a dark brown canvas half apron with leather harness straps over a crisp white short-sleeve collared shirt with a crimson ribbon tie at the collar",
           "tokens": [
@@ -1729,12 +1787,12 @@
             "short_sleeves",
             "ribbon_tie",
             "bartender"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "dossoles_tropical_casual",
+          "isDefault": false,
           "name": "多索雷斯假日热带海滨街头漫步便服",
           "prose": "a tropical resort casual outfit: a white off-shoulder ruffled crop top, high-waisted light-blue distressed denim shorts with a woven brown leather belt, strappy sandals",
           "tokens": [
@@ -1743,13 +1801,15 @@
             "denim_shorts",
             "tropical",
             "sandals"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -1761,45 +1821,41 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "银白短发红瞳；镰刀信使兼调酒师；Danbooru 词条 la_pluma_(arknights)（2026-08-29 修正，原 quillpen 调研有误，WD14 反推实测命中）",
-        "research": "2026-08-15 初调研误作 Quillpen（Danbooru quillpen 0 posts，视觉词兜底）；2026-08-29 修正：官方英文名 La Pluma（本名拉菲艾拉·席尔瓦），Danbooru 词条 la_pluma_(arknights)"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "swav",
-        "yoneyama_mai",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "exusiai_arknights",
-      "displayName": "能天使",
-      "originalName": "Exusiai",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "exusiai",
         "arknights",
         "penguin logistics"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发蓝瞳光环小翅膀；企鹅物流黑白制服；活泼乐天",
+        "research": "2026-08-15 调研（Danbooru exusiai_(arknights) 5612 posts）",
+        "world": "泰拉（企鹅物流）"
+      },
+      "curatedArtistStyles": [
+        "huanxiang_heitu",
+        "mika_pikazo",
+        "rella"
+      ],
+      "displayName": "能天使",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "exusiai (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "exusiai_arknights",
       "identityProse": "Exusiai from Arknights, an energetic Sankta courier with vibrant short red hair, bright red eyes, a radiant golden halo, and luminous white wings.",
       "identityTokens": [
         "exusiai (arknights)",
@@ -1812,19 +1868,21 @@
         "wings",
         "arknights"
       ],
-      "exactTokens": [
-        "exusiai (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Exusiai",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "企鹅物流制服",
           "prose": "her light grey-white hooded windbreaker with black colorblock trim over a black fitted shirt, black shorts, black thighhighs and black-and-white tactical sneakers",
           "tokens": [
@@ -1836,12 +1894,12 @@
             "sneakers",
             "black_clothes",
             "white_clothes"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "city_rider",
+          "isDefault": false,
           "name": "城市骑手（KFC联动）",
           "prose": "a red and white delivery rider jacket with a baseball cap, white t-shirt, black shorts and red-striped socks, holding a fried chicken box",
           "tokens": [
@@ -1851,12 +1909,12 @@
             "baseball_cap",
             "shorts",
             "food"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "midnight_courier",
+          "isDefault": false,
           "name": "午夜邮差（夜行装）",
           "prose": "a black hooded techwear coat with fluorescent yellow reflective stripes, a waterproof messenger bag and dark tactical boots",
           "tokens": [
@@ -1865,12 +1923,12 @@
             "reflective",
             "messenger_bag",
             "tactical"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "apple_pie_bakery_patissiere",
+          "isDefault": false,
           "name": "甜心烘焙师·苹果派围裙装",
           "prose": "a warm home-baking outfit: a cream loose-knit sweater, beige pleated mini skirt, brown cotton tights, and a vintage beige strap apron with a small apple print",
           "tokens": [
@@ -1880,12 +1938,12 @@
             "apron",
             "baking",
             "tights"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "lungmen_streetwear_skater",
+          "isDefault": false,
           "name": "龙门街头机能滑板潮服",
           "prose": "a dynamic streetwear outfit: an oversized red-and-white colorblock hoodie over a translucent techwear utility vest, over-ear wireless headphones around the neck, black cargo pants and chunky sneakers",
           "tokens": [
@@ -1895,13 +1953,15 @@
             "vest",
             "headphones",
             "streetwear"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "red_hooded_tee",
+          "isDefault": false,
           "name": "红色连帽T恤",
+          "prose": "wearing an oversized red hooded t-shirt with long sleeves, a soft relaxed silhouette, and a loose off-shoulder collar",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "exusiai_red_hooded_tee",
             "hooded_tee",
@@ -1912,15 +1972,15 @@
             "red_clothes",
             "long_sleeves",
             "off_shoulder"
-          ],
-          "prose": "wearing an oversized red hooded t-shirt with long sleeves, a soft relaxed silhouette, and a loose off-shoulder collar",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -1932,44 +1992,40 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（企鹅物流）",
-        "era": "近未来奇幻",
-        "formNotes": "白发蓝瞳光环小翅膀；企鹅物流黑白制服；活泼乐天",
-        "research": "2026-08-15 调研（Danbooru exusiai_(arknights) 5612 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "huanxiang_heitu",
-        "mika_pikazo",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "suzuran_arknights",
-      "displayName": "铃兰",
-      "originalName": "Suzuran",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "suzuran",
         "arknights"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发金瞳狐耳九尾；白金色和服；治愈系",
+        "research": "2026-08-15 调研（Danbooru suzuran_(arknights) 6749 posts）",
+        "world": "泰拉（罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "anmi",
+        "morikura_en",
+        "kantoku"
+      ],
+      "displayName": "铃兰",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "suzuran (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "suzuran_arknights",
       "identityProse": "Suzuran (Lisa) from Arknights, an adorable young Vulpo nine-tailed fox with silky blonde hair, expressive fox ears, bright blue eyes, and nine fluffy golden tails.",
       "identityTokens": [
         "suzuran (arknights)",
@@ -1982,19 +2038,21 @@
         "nine_tails",
         "arknights"
       ],
-      "exactTokens": [
-        "suzuran (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Suzuran",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "白狐和服",
           "prose": "her white haori jacket with dark green trim and a knotted cord over a dark pleated skirt, white over-knee socks and brown lace-up boots",
           "tokens": [
@@ -2004,12 +2062,12 @@
             "pleated_skirt",
             "over_knee_socks",
             "boots"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "wasteland_bloom",
+          "isDefault": false,
           "name": "弃土花开（废土探索）",
           "prose": "a moss green and khaki explorer coat with a bucket hat, a heavy backpack and hiking boots, her nine tails poking out from behind",
           "tokens": [
@@ -2018,12 +2076,12 @@
             "green_clothes",
             "backpack",
             "hiking_boots"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "cozy_fluffy_pajamas",
+          "isDefault": false,
           "name": "【小憩时光】软绵绵小狐狸居家睡衣",
           "prose": "a pastel fleece loungewear set in cream white, butter yellow and peach pink: an extremely oversized fluffy hoodie with a hood and matching fleece shorts, soft cozy pajamas",
           "tokens": [
@@ -2032,13 +2090,15 @@
             "hoodie",
             "pastel",
             "loungewear"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "white_garden_dress",
+          "isDefault": false,
           "name": "洁白花园连衣裙",
+          "prose": "wearing a pure white garden dress of soft cotton with a flowing skirt, short sleeves, and a clean innocent silhouette",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "suzuran_white_garden_dress",
             "white_dress",
@@ -2048,15 +2108,15 @@
             "soft_skirt",
             "white_clothes",
             "short_sleeves"
-          ],
-          "prose": "wearing a pure white garden dress of soft cotton with a flowing skirt, short sleeves, and a clean innocent silhouette",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "fluffy_cloak",
+          "isDefault": false,
           "name": "厚绒斗篷",
+          "prose": "wearing a thick fluffy fur cloak with a plush hood, fur trim collar, and a warm voluminous winter silhouette",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "suzuran_fluffy_cloak",
             "fur_cloak",
@@ -2068,15 +2128,15 @@
             "fur_collar",
             "long_cloak",
             "warm_clothes"
-          ],
-          "prose": "wearing a thick fluffy fur cloak with a plush hood, fur trim collar, and a warm voluminous winter silhouette",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "small_kimono",
+          "isDefault": false,
           "name": "小和服",
+          "prose": "wearing a traditional small kimono with a crisp white collar, neat obi sash, and long sleeves, elegant Japanese classical dress",
+          "styleHint": "soft cinematic lighting",
           "tokens": [
             "suzuran_small_kimono",
             "small_kimono",
@@ -2086,15 +2146,15 @@
             "obi",
             "long_sleeves",
             "collar"
-          ],
-          "prose": "wearing a traditional small kimono with a crisp white collar, neat obi sash, and long sleeves, elegant Japanese classical dress",
-          "styleHint": "soft cinematic lighting",
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -2106,40 +2166,17 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "白发金瞳狐耳九尾；白金色和服；治愈系",
-        "research": "2026-08-15 调研（Danbooru suzuran_(arknights) 6749 posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "anmi",
-        "morikura_en",
-        "kantoku"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "ling_arknights",
-      "displayName": "令",
-      "originalName": "Ling",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "ling",
         "ling (arknights)",
@@ -2147,6 +2184,25 @@
         "arknights",
         "sui"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "白发金瞳；岁十二生肖之龙；慵懒诗人；精二白发如瀑浮空；丹博鲁词条 ling_(arknights)",
+        "research": "2026-08-30 调研（Danbooru ling_(arknights) 1100+ posts；WD14 词表实测：white_hair/very_long_hair/streaked_hair/yellow_eyes/dragon_horns/pointy_ears/chinese_clothes/long_dress 全命中，golden_eyes 不在词表故取 yellow_eyes）",
+        "world": "泰拉（岁兽一脉）"
+      },
+      "curatedArtistStyles": [
+        "xiayehongming",
+        "rella",
+        "yoneyama_mai"
+      ],
+      "displayName": "令",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "ling (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "ling_arknights",
       "identityProse": "Ling from Arknights, a free-spirited dragon poetess with flowing deep cerulean hair with white streaks, translucent dragon horns, serene blue eyes, and a powerful dragon tail.",
       "identityTokens": [
         "ling (arknights)",
@@ -2161,19 +2217,21 @@
         "pointy_ears",
         "arknights"
       ],
-      "exactTokens": [
-        "ling (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Ling",
       "outfits": [
         {
+          "default": true,
           "id": "standard",
+          "isDefault": true,
           "name": "岁序华章（黑金旗袍）",
           "prose": "her ink-teal high-slit qipao-style long dress with gold and pale aqua-blue cloud and dragon motifs, off-shoulder bare shoulders, a long gold necklace and dangling gold earrings, gold hair ornaments, the deep teal fabric harmonizing with her aqua-tipped white hair, barefoot",
           "tokens": [
@@ -2189,12 +2247,12 @@
             "earrings",
             "hair_ornament",
             "barefoot"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "zhuoying",
+          "isDefault": false,
           "name": "濯缨（素白羽衣）",
           "prose": "the official Zhuoying outfit: a plain white feather-trimmed feathered robe with wide sleeves reaching the knees, a white long skirt embroidered with auspicious beast motifs, loose and flowing like a dream",
           "tokens": [
@@ -2206,12 +2264,12 @@
             "hanfu",
             "loose_clothes",
             "chinese_clothes"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "fangqiu_juan",
+          "isDefault": false,
           "name": "方遒卷（银甲玄袍）",
           "prose": "the official Fangqiu Juan outfit: a silver-armored dark robe with white beast-embroidered lapels, jade-green accessories and a jade hair ornament, a border-command style with a proud wandering air",
           "tokens": [
@@ -2223,12 +2281,12 @@
             "jade",
             "hair_ornament",
             "wide_sleeves"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "drunkard_loungewear",
+          "isDefault": false,
           "name": "醉里丹青（慵懒家居）",
           "prose": "an oversized loose ink-grey hanfu-style loungewear robe with a wine gourd hanging from the sash, messy long hair loose, cozy sleepy poet loungewear",
           "tokens": [
@@ -2240,13 +2298,15 @@
             "messy_hair",
             "sleepy",
             "chinese_clothes"
-          ],
-          "isDefault": false,
-          "default": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -2258,40 +2318,17 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-          "styleHint": "tender romantic candlelight",
-          "isDefault": false,
-          "default": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（岁兽一脉）",
-        "era": "近未来奇幻",
-        "formNotes": "白发金瞳；岁十二生肖之龙；慵懒诗人；精二白发如瀑浮空；丹博鲁词条 ling_(arknights)",
-        "research": "2026-08-30 调研（Danbooru ling_(arknights) 1100+ posts；WD14 词表实测：white_hair/very_long_hair/streaked_hair/yellow_eyes/dragon_horns/pointy_ears/chinese_clothes/long_dress 全命中，golden_eyes 不在词表故取 yellow_eyes）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "xiayehongming",
-        "rella",
-        "yoneyama_mai"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "texas_arknights",
-      "displayName": "德克萨斯",
-      "originalName": "Texas",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "texas",
         "texas_arknights",
@@ -2304,6 +2341,25 @@
         "arknights",
         "texas (arknights)"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "企鹅物流信使 / 德克萨斯家族末裔；冷静沉稳、少言寡语，喜欢吃巧克力棒（Pocky），擅长使用源石剑雨技艺",
+        "research": "2026-08-31 调研（Danbooru texas_(arknights) 11000+ posts）",
+        "world": "泰拉（罗德岛 / 企鹅物流 / 叙拉古）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "ask_(askzy)",
+        "rella"
+      ],
+      "displayName": "德克萨斯",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "texas (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "texas_arknights",
       "identityProse": "Texas from Arknights, a calm and stoic Lupo courier with sleek straight black hair, pointy wolf ears, a bushy black tail, and golden-amber eyes.",
       "identityTokens": [
         "texas (arknights)",
@@ -2317,19 +2373,21 @@
         "calm_expression",
         "arknights"
       ],
-      "exactTokens": [
-        "texas (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Texas",
       "outfits": [
         {
+          "default": true,
           "id": "penguin_logistics",
+          "isDefault": true,
           "name": "企鹅物流制服",
           "prose": "Penguin Logistics courier uniform: a hooded black and white techwear windbreaker jacket with yellow accents and PL logo, white collared shirt, slim black tie, dark high-waisted shorts, black leather belt with sword scabbards, black over-knee socks, combat boots, and fingerless gloves",
           "tokens": [
@@ -2348,12 +2406,12 @@
             "holster",
             "sheath",
             "penguin_logistics"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "omertosa_mafia",
+          "isDefault": false,
           "name": "叙拉古缄默黑帮风衣",
           "prose": "Siracusa Texas the Omertosa formal attire: an exquisite double-breasted charcoal-black mafia overcoat with crimson silk lining, tailored black pinstripe vest, crisp white dress shirt, red silk ascot, slim tailored trousers, polished leather dress shoes, and twin glowing golden rapier swords",
           "tokens": [
@@ -2370,12 +2428,12 @@
             "rapier",
             "dual_wielding",
             "siracusa"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "willpower_winter",
+          "isDefault": false,
           "name": "意志 / 寒冬信使日常便服",
           "prose": "a cozy winter urban courier outfit: a heavy olive-green winter parka with faux-fur lined hood, thick cream knit scarf, charcoal skinny jeans, leather motorcycle boots, leather messenger courier bag, and a pocky box in her pocket",
           "tokens": [
@@ -2389,12 +2447,12 @@
             "messenger_bag",
             "casual",
             "winter_clothes"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "summer_sunbreeze",
+          "isDefault": false,
           "name": "阳光微风夏日泳装",
           "prose": "a stylish and sleek black one-piece swimsuit with asymmetric cutouts along the waist, translucent white linen beach shirt worn open, dark sunglasses, and sandals, wolf tail swishing in the seaside breeze",
           "tokens": [
@@ -2407,13 +2465,15 @@
             "sunglasses",
             "sandals",
             "beachwear"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, bare skin, lean and beautifully toned athletic body, perky natural breasts with tender pink nipples, slender waist, flat stomach, navel, delicate pussy, fluffy dark wolf ears and tail, bare legs, bare feet, soft dramatic room lighting",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -2427,40 +2487,17 @@
             "wolf_ears",
             "wolf_tail",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, bare skin, lean and beautifully toned athletic body, perky natural breasts with tender pink nipples, slender waist, flat stomach, navel, delicate pussy, fluffy dark wolf ears and tail, bare legs, bare feet, soft dramatic room lighting",
-          "styleHint": "tender romantic candlelight",
-          "default": false,
-          "isDefault": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛 / 企鹅物流 / 叙拉古）",
-        "era": "近未来奇幻",
-        "formNotes": "企鹅物流信使 / 德克萨斯家族末裔；冷静沉稳、少言寡语，喜欢吃巧克力棒（Pocky），擅长使用源石剑雨技艺",
-        "research": "2026-08-31 调研（Danbooru texas_(arknights) 11000+ posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "swav",
-        "ask_(askzy)",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "lappland_arknights",
-      "displayName": "拉普兰德",
-      "originalName": "Lappland",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "lappland",
         "lappland_arknights",
@@ -2471,6 +2508,25 @@
         "arknights",
         "lappland (arknights)"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "萨卢佐家族狂狼；双刀源石技艺能沉默敌方特殊能力，狂放不羁、享受杀戮与狂乱对决，对德克萨斯有着极度执着的痴迷",
+        "research": "2026-08-31 调研（Danbooru lappland_(arknights) 8000+ posts）",
+        "world": "泰拉（罗德岛 / 叙拉古 / 萨卢佐家族）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "ask_(askzy)",
+        "rella"
+      ],
+      "displayName": "拉普兰德",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "lappland (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "lappland_arknights",
       "identityProse": "Lappland from Arknights, an unhinged Lupo swordswoman with wild messy silver-white hair, wolf ears, a bushy tail, manic grey eyes, and a sharp predatory smirk.",
       "identityTokens": [
         "lappland (arknights)",
@@ -2485,19 +2541,21 @@
         "sharp_teeth",
         "arknights"
       ],
-      "exactTokens": [
-        "lappland (arknights)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Lappland",
       "outfits": [
         {
+          "default": true,
           "id": "standard_mercenary",
+          "isDefault": true,
           "name": "罗德岛作战服",
           "prose": "Lappland's signature battle attire: a dark slate-grey duster trench coat with tattered ragged hem and high collar worn open over a white tank top, black leather utility harness with thigh straps, black shorts, leather combat boots, dual sword sheaths on her back, and black fingerless gloves",
           "tokens": [
@@ -2515,12 +2573,12 @@
             "combat_boots",
             "fingerless_gloves",
             "dual_swords"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "refined_horrormare",
+          "isDefault": false,
           "name": "典雅噩兆 / 宴会礼服",
           "prose": "the Refined Horrormare gothic evening ensemble: a dramatic black and crimson velvet ballgown with an asymmetric jagged lace hem, sheer lace masquerade eye mask, black leather opera gloves, crimson rose corsage, and dark crystal jewelry, projecting lethal aristocratic madness",
           "tokens": [
@@ -2536,12 +2594,12 @@
             "corsage",
             "elegant",
             "aristocratic"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "casual_leather",
+          "isDefault": false,
           "name": "狂野机车皮衣便服",
           "prose": "a rebellious street-biker look: a cropped black leather biker jacket studded with silver rivets over a dark grey cropped camisole, distressed denim mini shorts, fishnet stockings, studded leather choker, and heavy platform combat boots, wolf tail swishing restlessly",
           "tokens": [
@@ -2556,12 +2614,12 @@
             "platform_boots",
             "rebellious",
             "casual"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nomad_wasteland",
+          "isDefault": false,
           "name": "叙拉古荒原行者",
           "prose": "a weathered Siracusa nomad wanderer outfit: a heavy hooded grey poncho cloak with wolf fur trim, bandolier ammo belts crossing her chest, weathered leather pants, traveling canteen, and combat boots, dual blades drawn in the dust storm",
           "tokens": [
@@ -2575,13 +2633,15 @@
             "traveling",
             "wasteland",
             "wanderer"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, pale fair skin dotted with fine glistening sweat and a few black originium crystal flecks, firm perky breasts with erect pink nipples, slender athletic waist with subtle abs, navel, exposed dripping pussy, white wolf ears and tail, bare feet, wild flushed euphoric expression",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -2597,40 +2657,17 @@
             "wolf_ears",
             "wolf_tail",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, pale fair skin dotted with fine glistening sweat and a few black originium crystal flecks, firm perky breasts with erect pink nipples, slender athletic waist with subtle abs, navel, exposed dripping pussy, white wolf ears and tail, bare feet, wild flushed euphoric expression",
-          "styleHint": "tender romantic candlelight",
-          "default": false,
-          "isDefault": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（罗德岛 / 叙拉古 / 萨卢佐家族）",
-        "era": "近未来奇幻",
-        "formNotes": "萨卢佐家族狂狼；双刀源石技艺能沉默敌方特殊能力，狂放不羁、享受杀戮与狂乱对决，对德克萨斯有着极度执着的痴迷",
-        "research": "2026-08-31 调研（Danbooru lappland_(arknights) 8000+ posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "swav",
-        "ask_(askzy)",
-        "rella"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "viviana_arknights",
-      "displayName": "薇薇安娜",
-      "originalName": "Viviana Droste",
-      "franchise": "Arknights",
+      "adultEligibility": "adult",
       "aliases": [
         "viviana",
         "viviana_arknights",
@@ -2643,6 +2680,26 @@
         "arknights",
         "viviana (arknights)"
       ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来奇幻",
+        "formNotes": "卡西米尔骑士大赛「烛骑士」/ 莱塔尼亚贵族后裔；优雅高贵、爱好诗歌与文学，以光影与微光微尘为源石技艺",
+        "research": "2026-08-31 调研（Danbooru viviana_(arknights) 4500+ posts）",
+        "world": "泰拉（卡西米尔 / 莱塔尼亚 / 罗德岛）"
+      },
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "rella",
+        "swav"
+      ],
+      "displayName": "薇薇安娜",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "viviana (arknights)",
+        "viviana_droste"
+      ],
+      "franchise": "Arknights",
+      "id": "viviana_arknights",
       "identityProse": "Viviana Droste from Arknights, the Candle Knight of Kazimierz with flowing wavy golden-blonde hair, magnificent golden deer antlers, soft deer ears, sapphire eyes, and a gentle noble smile.",
       "identityTokens": [
         "viviana (arknights)",
@@ -2657,20 +2714,21 @@
         "gentle_smile",
         "arknights"
       ],
-      "exactTokens": [
-        "viviana (arknights)",
-        "viviana_droste"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Viviana Droste",
       "outfits": [
         {
+          "default": true,
           "id": "candle_knight_armor",
+          "isDefault": true,
           "name": "烛骑士礼装铠甲",
           "prose": "the Candle Knight ceremonial armor: a tailored midnight-black and gold knightly tunic dress with polished golden breastplate and pauldrons, flowing pleated layered skirt with gold filigree embroidery, white silk opera gloves, golden sword sash, and polished armored greaves boots, carrying her golden rapier",
           "tokens": [
@@ -2688,12 +2746,12 @@
             "rapier",
             "sash",
             "kazimierz"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "lethe_poet_gown",
+          "isDefault": false,
           "name": "莱塔尼亚贵族诗集礼裙",
           "prose": "a romantic Leithanien aristocratic evening gown of deep sapphire-blue velvet with translucent sheer black lace sleeves, a delicate golden choker necklace, pearl hairpins woven among her antlers, holding a leather-bound poetry book, radiating poetic grace",
           "tokens": [
@@ -2709,12 +2767,12 @@
             "elegant",
             "noble",
             "leithanien"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "autumn_stroll_casual",
+          "isDefault": false,
           "name": "金秋漫步羊毛风衣",
           "prose": "an autumn casual promenade ensemble: a warm camel-beige wool trench coat over a cream cable-knit turtleneck sweater, brown tartan pleated midi skirt, dark brown leather riding boots, leather gloves, and a soft beige wool beret nestled between her antlers",
           "tokens": [
@@ -2730,12 +2788,12 @@
             "beret",
             "casual",
             "autumn_clothes"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "candle_silk_slip",
+          "isDefault": false,
           "name": "烛影夜曲丝绸睡裙",
           "prose": "a luxurious champagne-gold silk camisole slip nightgown with delicate French lace trim along the plunging neckline and hem, thin straps resting on her porcelain shoulders, barefoot, surrounded by soft glowing candlelights",
           "tokens": [
@@ -2749,13 +2807,15 @@
             "barefoot",
             "sensual",
             "sleepwear"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, fair porcelain skin bathed in warm amber candlelight, glowing golden antlers, soft blonde wavy hair, voluptuous and elegant feminine body, full breasts with sensitive pink nipples, slender waist, curving hips, navel, delicate moist pink pussy, bare legs, bare feet, poetic romantic intimacy",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -2770,34 +2830,16 @@
             "pussy",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, fair porcelain skin bathed in warm amber candlelight, glowing golden antlers, soft blonde wavy hair, voluptuous and elegant feminine body, full breasts with sensitive pink nipples, slender waist, curving hips, navel, delicate moist pink pussy, bare legs, bare feet, poetic romantic intimacy",
-          "styleHint": "tender romantic candlelight",
-          "default": false,
-          "isDefault": false
+          ]
         }
       ],
-      "canon": {
-        "world": "泰拉（卡西米尔 / 莱塔尼亚 / 罗德岛）",
-        "era": "近未来奇幻",
-        "formNotes": "卡西米尔骑士大赛「烛骑士」/ 莱塔尼亚贵族后裔；优雅高贵、爱好诗歌与文学，以光影与微光微尘为源石技艺",
-        "research": "2026-08-31 调研（Danbooru viviana_(arknights) 4500+ posts）"
-      },
-      "animeStudio": "arknights, hypergryph, official anime art",
-      "curatedArtistStyles": [
-        "ask_(askzy)",
-        "rella",
-        "swav"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Arknights",
+  "version": 1
 }
