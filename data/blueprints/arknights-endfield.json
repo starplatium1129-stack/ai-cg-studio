@@ -282,19 +282,17 @@
         "second person",
         "two people"
       ],
-      "outfitId": "standard",
-      "promptProse": "On the forward observation deck of the Endfield research vessel at night, Perlica leans both forearms against the alloy railing, looking up in quiet contemplation. Her sharp supervisor trench coat and silver hair flutter in the night breeze, her cyan-blue eyes reflecting the enormous slowly turning alien star-ring in the sky above, with deck lights and antenna towers casting sleek reflections around her.",
+      "outfitId": "research_deck_uniform",
+      "promptProse": "On the forward observation deck of the Endfield research vessel at night, Perlica leans both forearms against the alloy railing and looks up at the enormous slowly turning alien star-ring. Her supervisor trench coat flutters in the night breeze as deck lights and distant planet glow outline the quiet research vessel.",
       "promptTokens": [
         "perlica_(arknights)",
         "atmospheric",
-        "bare_legs",
         "cinematic_lighting",
         "clean_face",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "endfield",
-        "full_body",
         "night",
         "planet",
         "railing",
@@ -312,22 +310,14 @@
         "cropped_jacket",
         "cyan_trim",
         "necktie",
-        "pleated_skirt",
         "utility_belt",
-        "thigh_strap",
-        "black_thighhighs",
-        "combat_boots",
         "silver_hair",
         "long_hair",
         "blunt_bangs",
         "feather_ears",
         "blue_eyes",
         "oversized_sleeves",
-        "white_dress",
-        "sleeveless_dress",
-        "black_pantyhose",
-        "sheer_pantyhose",
-        "high_heels"
+        "boots"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -538,12 +528,8 @@
         "medium_shot",
         "pleated_skirt",
         "searching",
-        "sheer_thighhighs",
-        "black_thighhighs",
-        "smooth_thighs",
         "tactical",
         "terminal",
-        "thighhighs",
         "utility_belt",
         "volumetric_lighting",
         "white_clothes",
@@ -563,8 +549,7 @@
         "oversized_sleeves",
         "white_dress",
         "sleeveless_dress",
-        "high_heels",
-        "cowboy_shot"
+        "high_heels"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -648,13 +633,11 @@
         "second person",
         "two people"
       ],
-      "outfitId": "sub_zero_frostfield_parka",
+      "outfitId": "greenhouse_facility_uniform",
       "promptProse": "Inside the climate-controlled grow chamber in daylight, Perlica crouches low beside the sprout bed, eyes fixed with total focus on the first green seedling breaking through the soil, her rarely seen gentle smile crossing her face as she turns to the viewer, warm grow-lights glowing over the young leaves. The warm grow-lights bathe the young leaves in a soft violet-white glow, the chamber humming quietly around them.",
       "promptTokens": [
         "perlica_(arknights)",
         "atmospheric",
-        "bare_legs",
-        "barefoot",
         "care",
         "cinematic_lighting",
         "clean_face",
@@ -663,20 +646,13 @@
         "detailed_background",
         "dynamic_lighting",
         "endfield",
-        "full_body",
-        "fur_trim",
         "gentle_smile",
         "greenhouse",
         "grow_light",
-        "insulated",
         "medium_shot",
-        "parka",
         "plants",
         "seedling",
-        "snow",
-        "turtleneck",
         "volumetric_lighting",
-        "winter_coat",
         "cyan_streaks",
         "animal_ears",
         "hairclip",
@@ -684,7 +660,10 @@
         "long_hair",
         "blunt_bangs",
         "feather_ears",
-        "blue_eyes"
+        "blue_eyes",
+        "workwear",
+        "trousers",
+        "boots"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2285,7 +2264,7 @@
         "two people"
       ],
       "outfitId": "combat_outfit",
-      "promptProse": "In the repair workshop of the Endfield base, Yvonne leans over her workbench and spins a freshly repaired handgun on her finger, pink twin tails streaked with grime as her small horns catch the overhead work light. Blueprints and spare parts scatter across the metal table while cool fluorescent beams slice through the faint haze of solder smoke.",
+      "promptProse": "In the repair workshop of the Endfield base, Yvonne leans over her workbench with a screwdriver between her teeth while she spins a freshly repaired handgun on her finger, pink twin tails streaked with grime as her small horns catch the overhead work light. Blueprints and spare parts scatter across the metal table while cool fluorescent beams slice through the faint haze of solder smoke.",
       "promptTokens": [
         "blue_eyes",
         "cinematic_lighting",
@@ -2308,7 +2287,8 @@
         "tail",
         "twintails",
         "volumetric_lighting",
-        "workshop"
+        "workshop",
+        "screwdriver"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2704,12 +2684,11 @@
         "second person",
         "two people"
       ],
-      "outfitId": "selfie_casual",
+      "outfitId": "canteen_casual",
       "promptProse": "At the Endfield base canteen during lunch, Yvonne carries a loaded tray toward an open table, keeping her phone tucked in the pocket of her casual outfit while her tail sways behind her. Bright cafeteria light reflects off the metal tables and the busy serving line.",
       "promptTokens": [
         "blue_eyes",
         "canteen",
-        "casual_clothes",
         "cinematic_lighting",
         "depth_of_field",
         "detailed_background",

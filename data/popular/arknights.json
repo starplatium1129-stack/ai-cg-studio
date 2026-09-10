@@ -1685,6 +1685,20 @@
             "red_clothes",
             "high_boots"
           ]
+        },
+        {
+          "default": false,
+          "id": "reef_rest_barefoot",
+          "isDefault": false,
+          "name": "礁石小憩·赤足战装",
+          "prose": "her black high-cut sleeveless bodysuit with red accents, the cropped jacket set aside beside the reef, barefoot",
+          "tokens": [
+            "bodysuit",
+            "black_clothes",
+            "red_clothes",
+            "barefoot",
+            "greatsword"
+          ]
         }
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
@@ -1992,6 +2006,20 @@
             "collarbone",
             "bare_legs",
             "bare_feet"
+          ]
+        },
+        {
+          "default": false,
+          "id": "red_delivery_windbreaker",
+          "isDefault": false,
+          "name": "极速派送·红色防风外套",
+          "prose": "a red lightweight delivery windbreaker over a black utility shirt, reinforced dark cargo pants and chunky sneakers",
+          "tokens": [
+            "red_windbreaker",
+            "utility_shirt",
+            "cargo_pants",
+            "sneakers",
+            "delivery_uniform"
           ]
         }
       ],

@@ -2038,7 +2038,7 @@
     },
     {
       "action": "凭栏远眺城市灯火",
-      "camera": "cowboy shot, front three-quarter view, hand on hilt",
+      "camera": "cowboy shot, front three-quarter view",
       "category": "泰拉都市",
       "characterId": "chen_arknights",
       "description": "【陈 · 天台暮色】傍晚的近卫局大楼天台顶端，晚风吹拂着陈墨绿色的利落双马尾与红色发绳。她凭栏远眺龙门核心城璀璨的万家灯火，神情坚定中带着一丝疲倦——「守护这片灯火的代价虽然沉重，但只要看到市民平安的笑容……一切就都是值得的。」",
@@ -2198,7 +2198,7 @@
         "two people"
       ],
       "outfitId": "street_gourmet_casual",
-      "promptProse": "Enjoying a spicy hotpot dinner with friends around a boiling broth pot, Ch'en wipes sweat from her brow with a rare, happy grin. Steaming red soup and lively restaurant chatter create a heartwarming, cozy evening.",
+      "promptProse": "At a Lungmen hotpot restaurant, Ch'en uses chopsticks to lift a piece of tender tripe from the boiling spicy broth into a sesame-oil dipping dish, a bead of sweat on her brow and a rare happy grin on her face. Steam and warm restaurant light fill the cozy evening scene.",
       "promptTokens": [
         "hotpot_restaurant",
         "eating_hotpot",
@@ -2210,7 +2210,9 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "tripe",
+        "sesame_oil_dish"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -2358,7 +2360,7 @@
         "two people"
       ],
       "outfitId": "lgd_detective_undercover",
-      "promptProse": "Waiting under a transparent umbrella on the rainy train platform at midnight, Ch'en gazes into the mist with steady resolve. Shimmering station lanterns and rain-streaked tracks create a poignant, moody urban visual.",
+      "promptProse": "Waiting on the rainy train platform at midnight, Ch'en holds a black umbrella and watches the misty tracks with steady resolve. When the train doors open, she steps forward and angles the umbrella toward the arriving passenger as station lights shimmer across the wet ground.",
       "promptTokens": [
         "train_station",
         "rain",
@@ -2366,11 +2368,11 @@
         "wet_platform",
         "waiting",
         "night",
-        "cowboy_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "black_umbrella"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -9287,8 +9289,8 @@
         "second person",
         "two people"
       ],
-      "outfitId": "standard",
-      "promptProse": "On a wide flat reef standing alone in the rising tide, Skadi sits cross-legged with her bare feet in the cool shallow water, the greatsword laid flat across her lap, silver hair drying in the bright sea light as she tilts her chin up toward the open ocean, foam washing gently around her ankles. The bright sea light glitters off the rising tide as foam washes gently around the reef's dark edge.",
+      "outfitId": "reef_rest_barefoot",
+      "promptProse": "On a wide flat reef in the rising tide, Skadi sits cross-legged barefoot with her greatsword laid across her lap, silver hair drying in the bright sea light as foam washes around her ankles. Her cropped jacket rests beside the rock while she looks out over the open ocean.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
@@ -9301,15 +9303,12 @@
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
-        "full_body",
         "greatsword",
-        "jacket",
         "medium_shot",
         "red_clothes",
         "reef",
         "sea",
         "sitting",
-        "smooth_thighs",
         "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
@@ -9952,13 +9951,11 @@
         "two people"
       ],
       "outfitId": "classic_bartender_apron",
-      "promptProse": "Behind the loud underground bar counter of Dossoles at night, the sleepy-eyed Liberi girl La Pluma flips and shakes the stainless-steel cocktail shaker one-handed with practiced ease, gives a small yawn, then nudges a gradient pink cocktail across the counter toward the viewer, neon bokeh and warm bar light glinting off the bottles behind her. Neon bokeh and warm bar light glint off the backlit bottles, painting the marble counter in soft pink and amber.",
+      "promptProse": "Behind the underground bar counter in Dossoles at night, the sleepy-eyed La Pluma shakes a stainless-steel cocktail shaker one-handed, gives a small yawn, and slides a gradient pink cocktail across the counter. Neon bokeh and warm bar light glint off the bottles behind her.",
       "promptTokens": [
         "apron",
         "atmospheric",
         "bar_counter",
-        "bare_legs",
-        "barefoot",
         "bartender",
         "cinematic_lighting",
         "clean_face",
@@ -9966,14 +9963,12 @@
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
-        "full_body",
         "liquor_bottles",
         "medium_shot",
         "neon_lighting",
         "neon_lights",
         "night",
         "ribbon_tie",
-        "scythe",
         "shaking_cocktail_shaker",
         "short_sleeves",
         "sleepy",
@@ -10064,12 +10059,10 @@
         "two people"
       ],
       "outfitId": "standard",
-      "promptProse": "Patrolling a rain-slicked Dossoles back alley illuminated by buzzing neon signs at midnight, La Pluma balances her massive black scythe effortlessly with one hand in her stylish crop-top street outfit. Her feathered hair and winged tail catch cool magenta and cyan rim light as she glances alertly down the alley with calm, razor-sharp focus.",
+      "promptProse": "Standing alert in a rain-slicked Dossoles back alley at midnight, La Pluma balances her massive black scythe in one hand, her feathered hair catching cool magenta and cyan rim light as she watches the alley with razor-sharp focus.",
       "promptTokens": [
         "alley",
         "atmospheric",
-        "bare_legs",
-        "barefoot",
         "black_clothes",
         "choker",
         "cinematic_lighting",
@@ -10089,7 +10082,8 @@
         "night",
         "scythe",
         "volumetric_lighting",
-        "weapon"
+        "weapon",
+        "standing"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -10178,7 +10172,6 @@
       "promptTokens": [
         "atmospheric",
         "bare_legs",
-        "barefoot",
         "beach_chair",
         "bikini",
         "cinematic_lighting",
@@ -10200,7 +10193,6 @@
         "sunny_day",
         "swimming_pool",
         "tropical",
-        "tropical_drink",
         "volumetric_lighting",
         "waterpark"
       ],
@@ -10280,12 +10272,10 @@
         "two people"
       ],
       "outfitId": "sleepy_oversized_loungewear",
-      "promptProse": "On a rainy afternoon in the rest bar, La Pluma sprawls over the round wooden table by the rainy window, both hands cupping her cheeks as she nods off, long lashes shadowing her pale face, rain streaking the glass behind her and a warm indoor lamp glow softening the whole room. Rain streaks the window glass while the warm indoor lamp glow softens the whole drowsy room.",
+      "promptProse": "On a rainy afternoon in the rest bar, La Pluma sprawls over the round wooden table by the window, both hands cupping her cheeks as she nods off, a thin blanket draped over her shoulders while rain streaks the glass behind her. A warm indoor lamp softens the drowsy room.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
-        "bare_legs",
-        "barefoot",
         "cafe_table",
         "cheeks_in_hands",
         "cinematic_lighting",
@@ -10302,10 +10292,10 @@
         "pink",
         "pullover",
         "rain_window",
-        "smooth_thighs",
         "volumetric_lighting",
         "water_drops",
-        "upper_body"
+        "upper_body",
+        "blanket"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -10393,8 +10383,6 @@
       "promptTokens": [
         "afternoon",
         "atmospheric",
-        "bare_legs",
-        "barefoot",
         "cinematic_lighting",
         "clean_face",
         "curled_up",
@@ -10403,9 +10391,7 @@
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
-        "full_body",
         "hugging_cushion",
-        "iced_drink",
         "loungewear",
         "medium_shot",
         "mengkawaii",
@@ -10414,7 +10400,6 @@
         "pullover",
         "rhodes_island_lounge",
         "sleeping",
-        "smooth_thighs",
         "sofa",
         "volumetric_lighting"
       ],
@@ -10490,13 +10475,11 @@
         "two people"
       ],
       "outfitId": "classic_bartender_apron",
-      "promptProse": "At the softly lit bar counter at dusk, La Pluma raises a frosted highball glass of her new fruit cocktail and sips it through a straw with a satisfied smile, then nudges the straw toward the viewer's lips, amber reflections from the backlit bottles glowing across the marble counter. Amber reflections from the backlit bottles glow across the marble counter as dusk deepens beyond the bar windows.",
+      "promptProse": "At the softly lit bar counter at dusk, La Pluma raises a frosted cocktail glass and takes a small sip of her new fruit recipe through a straw, smiling with quiet satisfaction as amber bottle reflections glow across the marble counter.",
       "promptTokens": [
         "apron",
         "atmospheric",
         "bar_counter",
-        "bare_legs",
-        "barefoot",
         "bartender",
         "cinematic_lighting",
         "clean_face",
@@ -10508,15 +10491,13 @@
         "ice_cubes",
         "lemon_slice",
         "medium_shot",
-        "offering_straw",
         "ribbon_tie",
         "short_sleeves",
         "sipping",
         "tasting",
         "twilight",
         "volumetric_lighting",
-        "white_shirt",
-        "cowboy_shot"
+        "white_shirt"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -11101,6 +11082,7 @@
       "camera": "medium shot",
       "category": "泰拉都市",
       "characterId": "exusiai_arknights",
+      "compositionIntent": "group",
       "description": "【能天使 · 酒馆吧台】爵士乐震耳欲聋的地下酒吧吧台前，能天使高高举起一杯加满碎冰与柠檬片的碳酸气泡饮，橘红色的短发在霓虹灯下神采飞扬。她用力搂住你的肩膀哈哈大笑——「干杯！今晚把所有的烦恼全部忘掉，摇滚与苹果派就是拯救人生的终极信仰！」",
       "id": "exusiai_arknights_bar_counter",
       "lighting": "warm bar light",
@@ -11154,13 +11136,11 @@
         "second person",
         "two people"
       ],
-      "outfitId": "apple_pie_bakery_patissiere",
-      "promptProse": "At the roaring jazz bar counter in Lungmen at night, Exusiai hoists a tall glass of fizzing lemon soda high overhead, throws a laughing arm around the viewer's shoulder, her orange hair catching the neon glow as she cheers, the warm bar light bouncing off her bright grin. Neon glow and warm bar light bounce off the counter as the jazz band's brass swells behind her.",
+      "outfitId": "standard",
+      "promptProse": "At a lively Lungmen jazz bar at night, Exusiai raises a tall glass of lemon soda and throws an arm around the viewer's shoulder with a bright laugh. Warm bar light and neon reflections bounce across the counter as the band plays behind her.",
       "promptTokens": [
-        "apron",
         "arm_around_shoulder",
         "atmospheric",
-        "baking",
         "bar",
         "cinematic_lighting",
         "clean_face",
@@ -11169,18 +11149,11 @@
         "detailed_background",
         "drink",
         "dynamic_lighting",
-        "full_body",
         "happy",
         "laughing",
-        "loose_knit",
         "medium_shot",
         "night",
-        "pleated_skirt",
         "raising_glass",
-        "sheer_black_pantyhose",
-        "smooth_thighs",
-        "sweater",
-        "tights",
         "volumetric_lighting"
       ],
       "recommendedSize": "1152x1536",
@@ -11352,22 +11325,18 @@
         "second person",
         "two people"
       ],
-      "outfitId": "lungmen_streetwear_skater",
-      "promptProse": "Through the crowded old streets of Lungmen in bright daylight, Exusiai sprints at full speed, a sealed priority package clutched to her chest, her red windbreaker snapping and flying out behind her as she weaves between the foot traffic, motion energy in every stride. The bright daylight flashes past the old shopfronts as her red windbreaker snaps like a banner in the rush.",
+      "outfitId": "red_delivery_windbreaker",
+      "promptProse": "Through the crowded old streets of Lungmen in bright daylight, Exusiai sprints at full speed with a sealed priority package clutched to her chest, her red delivery windbreaker snapping behind her as she weaves between pedestrians. Motion blur and sunlit shopfronts emphasize the urgency of the run.",
       "promptTokens": [
         "atmospheric",
-        "bare_legs",
         "cinematic_lighting",
         "clean_face",
-        "colorblock",
         "crowd",
         "daylight",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
         "full_body",
-        "headphones",
-        "hoodie",
         "motion",
         "package",
         "red_windbreaker",
@@ -11375,10 +11344,9 @@
         "soft_lighting",
         "sneakers",
         "street",
-        "streetwear",
-        "techwear",
-        "vest",
-        "volumetric_lighting"
+        "volumetric_lighting",
+        "cargo_pants",
+        "delivery_uniform"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -11554,10 +11522,9 @@
         "two people"
       ],
       "outfitId": "midnight_courier",
-      "promptProse": "As night falls over the entrance of the Lungmen night market, Exusiai leans back against a cold metal street lamp, idly scuffing a pebble with the toe of her sneaker, her golden halo flickering softly in the neon and paper-lantern glow, then her eyes light up as she spots the viewer approaching. Neon and paper-lantern glow wash over the night market entrance, her halo flickering softly in the shifting colors.",
+      "promptProse": "As night falls at the entrance of the Lungmen night market, Exusiai leans against a cold metal street lamp and idly scuffs a pebble with the toe of her tactical boot. Her golden halo flickers softly in the neon and paper-lantern glow as she waits for the viewer.",
       "promptTokens": [
         "atmospheric",
-        "bare_legs",
         "medium_shot",
         "black_clothes",
         "cinematic_lighting",
@@ -11566,7 +11533,6 @@
         "detailed_background",
         "dynamic_lighting",
         "evening",
-        "full_body",
         "hoodie",
         "lamp_post",
         "lantern",
@@ -11574,11 +11540,11 @@
         "neon_lighting",
         "night_market",
         "reflective",
-        "sneakers",
         "street",
         "tactical",
         "volumetric_lighting",
-        "waiting"
+        "waiting",
+        "tactical_boots"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -12165,7 +12131,6 @@
         "afternoon",
         "armchair",
         "atmospheric",
-        "bare_legs",
         "book",
         "boots",
         "cinematic_lighting",
@@ -12177,7 +12142,6 @@
         "haori",
         "kimono",
         "library",
-        "medium_shot",
         "over_knee_socks",
         "picture_book",
         "pleated_skirt",
@@ -12185,8 +12149,7 @@
         "sitting",
         "volumetric_lighting",
         "white_clothes",
-        "white_tabi",
-        "cowboy_shot"
+        "medium_close_up"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -12261,13 +12224,11 @@
         "two people"
       ],
       "outfitId": "fluffy_cloak",
-      "promptProse": "Before the snow-covered cabin door in deep winter, Suzuran waits bundled in a thick fluffy fur cloak, both hands carefully holding a double-layer insulated lunch box, small puffs of breath misting in the cold air as she smiles warmly at the viewer. The deep-winter snow glitters around the cabin, her small puffs of breath misting in the pale cold light.",
+      "promptProse": "At the door of the Doctor's office in a snow-covered Rhodes Island corridor, Suzuran waits in a thick fluffy fur cloak, carefully holding a double-layer insulated lunch box in both hands. Small puffs of breath mist in the warm window light as she smiles at the arriving Doctor.",
       "promptTokens": [
         "atmospheric",
-        "bare_legs",
         "cinematic_lighting",
         "clean_face",
-        "cottage",
         "depth_of_field",
         "detailed_background",
         "dynamic_lighting",
@@ -12281,8 +12242,9 @@
         "visit",
         "volumetric_lighting",
         "white_clothes",
-        "white_tabi",
-        "winter"
+        "winter",
+        "office_door",
+        "corridor"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -12365,8 +12327,6 @@
         "afternoon",
         "atmospheric",
         "backpack",
-        "bare_legs",
-        "barefoot",
         "cinematic_lighting",
         "clean_face",
         "depth_of_field",
@@ -12460,12 +12420,10 @@
         "two people"
       ],
       "outfitId": "small_kimono",
-      "promptProse": "In the old-fashioned tea room by the veranda on a quiet afternoon, Suzuran kneels properly on the straw mat in a traditional small kimono, scooping matcha powder with a little wooden spoon, then lifting the tea bowl with both hands and bowing low to present it toward the viewer with lowered eyes. Soft afternoon light falls through the veranda screen, the matcha steam rising in a thin pale thread over the tatami.",
+      "promptProse": "In the old-fashioned tea room by the veranda, Suzuran kneels on a straw mat in her traditional small kimono and presents a tea bowl with both hands, bowing with lowered eyes. Soft afternoon light falls through the screen as a thin thread of steam rises from the finished tea.",
       "promptTokens": [
         "afternoon",
         "atmospheric",
-        "bare_legs",
-        "barefoot",
         "cinematic_lighting",
         "clean_face",
         "depth_of_field",
@@ -12474,7 +12432,6 @@
         "full_body",
         "kimono",
         "kneeling",
-        "matcha",
         "medium_shot",
         "soft_lighting",
         "tatami",
@@ -12482,7 +12439,7 @@
         "tea_bowl",
         "veranda",
         "volumetric_lighting",
-        "wooden_scoop"
+        "holding_tea_bowl"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -12554,8 +12511,6 @@
       "promptProse": "On the cozy dorm bed at night, Suzuran curls herself into a small tight ball like a baby fox, all nine thick fluffy golden tails wrapped around her body like a warm blanket, only her small head peeking out as she blinks big bright eyes at the viewer under the dim lamp. The dim bedside lamp casts a warm amber pool over the tangle of golden tails and the soft pillows.",
       "promptTokens": [
         "atmospheric",
-        "bare_legs",
-        "barefoot",
         "blanket",
         "cinematic_lighting",
         "clean_face",
@@ -12573,9 +12528,9 @@
         "nine_tails",
         "pajamas",
         "pastel",
-        "smooth_thighs",
         "volumetric_lighting",
-        "wrapped_in_tails"
+        "wrapped_in_tails",
+        "covered_by_tails"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -13085,17 +13040,15 @@
         "twin"
       ],
       "outfitId": "wayfarer_wanderer",
-      "promptProse": "Striding forward into the foreground along a rugged desert highway at dusk, Chen holds her twin swords securely strapped to her side, wind whipping her dark-green hooded trench coat. Her determined gaze meets the viewer as dusty amber sunset light cuts across the cracked asphalt road, weathered road signs, and distant canyon cliffs.",
+      "promptProse": "Striding alone along an ancient dirt road through the Terran wasteland, Chen carries twin swords strapped across her back, her long dark sage-green travel coat whipping in the wind. Dust and red sunset light trail her steady steps toward the distant frontier.",
       "promptTokens": [
         "atmospheric",
-        "bare_legs",
         "canteen",
         "cargo_pants",
         "cinematic_lighting",
         "clean_face",
         "depth_of_field",
         "detailed_background",
-        "dirt_road",
         "dust",
         "dynamic_lighting",
         "full_body",
@@ -13111,7 +13064,8 @@
         "walking",
         "wasteland",
         "wilderness",
-        "wind"
+        "wind",
+        "ancient_road"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -13633,7 +13587,7 @@
     },
     {
       "action": "立于山巅仰望银河伸臂虚握流星",
-      "camera": "cowboy shot, reclining on boulder raising cup",
+      "camera": "wide shot, standing on a mountain peak with one arm outstretched",
       "category": "泰拉自然",
       "characterId": "ling_arknights",
       "description": "【令 · 云海山巅观星】绝顶之上，云海在脚下翻涌成浪，银河横贯天际。令立于山巅青石之上，极长的蓝发在夜风中如瀑飘散，龙角映着星辉，墨青旗袍的下摆轻轻翻飞。她抬手虚握一颗流星的余光，声音飘渺如吟——「朝菌不知晦朔，蟪蛄不知春秋。而我看过太多春秋，仍觉得人间有趣。」",
@@ -13701,7 +13655,7 @@
         "two people"
       ],
       "outfitId": "standard",
-      "promptProse": "Reclining comfortably against a mossy boulder atop the moonlit mountain ridge, Ling raises a glazed wine cup in a casual toast toward the viewer, her dragon tail coiled gracefully beside her. Her impossibly long azure hair ripples like a waterfall across the stone, with the arching Milky Way, glowing mountain mist, and wind-bent pine trees framing her carefree, poetic presence.",
+      "promptProse": "Standing on a blue-stone mountain peak above the cloud sea, Ling reaches one arm toward a meteor's fading light while her extremely long hair and ink-teal robe stream in the night wind. The Milky Way and pale mountain mist frame her poetic gaze.",
       "promptTokens": [
         "atmospheric",
         "clean_face",
@@ -13721,7 +13675,9 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "outstretched_arm",
+        "meteor"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -16393,7 +16349,7 @@
         "explicit"
       ],
       "outfitId": "candle_silk_slip",
-      "promptProse": "Standing on a high marble palace balcony under a glittering canopy of stars, Viviana Droste leans gently against the sculpted balustrade in the cool night air. She wears a luxurious champagne-gold silk slip nightgown trimmed with delicate lace, barefoot upon the polished stone with glass candle lanterns casting warm flickering light around her. Her luminous deer antlers glow softly against the deep indigo sky as her sapphire eyes gaze into the distance with tender, poetic melancholy. A magnificent cowboy shot captures her ethereal beauty, fluttering sheer silks, and sublime romantic stillness.",
+      "promptProse": "On a high marble palace balcony beneath a glittering canopy of stars, Viviana leans against the balustrade in a champagne-gold silk slip nightgown, one hand resting over her chest as she gazes into the night. Bare feet touch the polished stone while glass candle lanterns cast warm flickering light around her antlers.",
       "promptTokens": [
         "balcony",
         "terrace",
@@ -16406,12 +16362,12 @@
         "barefoot",
         "antlers",
         "melancholy",
-        "cowboy_shot",
         "slightly_low_angle",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "hand_on_chest"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -16462,14 +16418,13 @@
         "explicit"
       ],
       "outfitId": "candle_knight_armor",
-      "promptProse": "Inside the grand vaulted nave of a gothic cathedral, Viviana Droste kneels reverently upon a crimson carpet before a high marble altar illuminated by hundreds of glowing white candles. She wears her ceremonial black and gold knightly dress with white opera gloves, clasping her hands before her chest in silent devotion with her golden rapier resting across her knees. Golden candlelight and dawn rays streaming through high rose windows cast divine volumetric beams around her magnificent antlers and bowed head. A breathtaking wide low-angle shot conveys solemn majesty, architectural wonder, and pure spiritual grace in immaculate anime key visual style.",
+      "promptProse": "Inside the grand vaulted nave of a gothic cathedral, Viviana kneels on one knee upon a crimson carpet before a marble altar, her golden rapier resting across the raised knee while she clasps her hands in silent prayer. Hundreds of candles and dawn rays through the rose windows surround her bowed head and antlers.",
       "promptTokens": [
         "church",
         "cathedral",
         "altar",
         "candles",
         "sea_of_candles",
-        "kneeling",
         "praying",
         "rapier",
         "antlers",
@@ -16480,7 +16435,8 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "one_knee"
       ],
       "recommendedSize": "1536x1152",
       "sceneTags": [

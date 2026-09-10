@@ -154,6 +154,36 @@
             "bare_shoulders",
             "collarbone"
           ]
+        },
+        {
+          "default": false,
+          "id": "research_deck_uniform",
+          "isDefault": false,
+          "name": "研究舰甲板·监督风衣",
+          "prose": "a crisp white-and-charcoal Endfield supervisor trench coat with a technical utility belt and practical black boots",
+          "tokens": [
+            "uniform",
+            "trench_coat",
+            "white_jacket",
+            "utility_belt",
+            "black_clothes",
+            "boots"
+          ]
+        },
+        {
+          "default": false,
+          "id": "greenhouse_facility_uniform",
+          "isDefault": false,
+          "name": "生态舱设施作业服",
+          "prose": "a light white-and-charcoal facility work uniform with a cropped jacket, utility belt, practical trousers and flat work boots",
+          "tokens": [
+            "white_jacket",
+            "cropped_jacket",
+            "utility_belt",
+            "workwear",
+            "trousers",
+            "boots"
+          ]
         }
       ],
       "recommendedEngine": "anima-miaomiao-v1.2",
@@ -441,6 +471,19 @@
             "selfie",
             "casual_clothes",
             "smile"
+          ]
+        },
+        {
+          "default": false,
+          "id": "canteen_casual",
+          "isDefault": false,
+          "name": "基地食堂·休闲装",
+          "prose": "a relaxed casual outfit with a cropped jacket, practical trousers and comfortable sneakers",
+          "tokens": [
+            "casual_clothes",
+            "cropped_jacket",
+            "trousers",
+            "sneakers"
           ]
         }
       ],
