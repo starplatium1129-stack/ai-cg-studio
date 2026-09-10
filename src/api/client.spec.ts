@@ -148,3 +148,193 @@ describe('apiClient GET inflight 去重与 TTL 缓存', () => {
     await expect(client.request('/api/config', { cacheTtlMs: 30_000 })).resolves.toEqual({ ok: true, configured: true })
   })
 })
+
+/** 2026-09-10 项目复核：R2 消费者校验、R3 响应隔离、R1 写入代际、O1 缓存策略。
+ * 以下断言在修复前的实现上必须失败，不能用“请求次数”代替“最终可见状态”。 */
+describe('apiClient 每个消费者执行自己的响应契约（R2）', () => {
+  it('新请求的校验失败即拒绝（fresh 路径对照）', async () => {
+    const client = createApiClient(async () => okResponse({ ok: true, value: 1 }))
+    const reject = vi.fn(() => false)
+
+    await expect(client.request('/api/contract', { validate: reject }))
+      .rejects.toMatchObject({ kind: 'invalid-response' })
+    expect(reject).toHaveBeenCalledTimes(1)
+  })
+
+  it('缓存命中仍执行本调用 validate，不因先前的成功缓存而跳过', async () => {
+    const fetch = vi.fn(async () => okResponse({ ok: true, value: 1 }))
+    const client = createApiClient(fetch)
+
+    await expect(client.request('/api/contract', { cacheTtlMs: 30_000 }))
+      .resolves.toEqual({ ok: true, value: 1 })
+
+    const reject = vi.fn(() => false)
+    await expect(client.request('/api/contract', { cacheTtlMs: 30_000, validate: reject }))
+      .rejects.toMatchObject({ kind: 'invalid-response' })
+    expect(reject).toHaveBeenCalledTimes(1)
+    expect(fetch).toHaveBeenCalledTimes(1)
+  })
+
+  it('共享等待的搭车者各自校验，消费者之间互不连带', async () => {
+    const { fetch, calls, flush } = deferredFetch(async () => okResponse({ ok: true, value: 1 }))
+    const client = createApiClient(fetch)
+
+    const initiator = client.request('/api/shared-contract')
+    const reject = vi.fn(() => false)
+    const rider = client.request('/api/shared-contract', { validate: reject })
+    await flush()
+
+    await expect(initiator).resolves.toEqual({ ok: true, value: 1 })
+    await expect(rider).rejects.toMatchObject({ kind: 'invalid-response' })
+    expect(reject).toHaveBeenCalledTimes(1)
+    expect(calls).toEqual(['/api/shared-contract'])
+  })
+})
+
+describe('apiClient 隔离响应对象（R3）', () => {
+  interface NestedPayload {
+    ok: boolean
+    config: { engine: string; loras: string[] }
+  }
+
+  it('缓存响应：调用方改顶层、嵌套对象与数组都不影响缓存与后续消费者', async () => {
+    const fetch = vi.fn(async () => okResponse({ ok: true, config: { engine: 'original', loras: ['a'] } }))
+    const client = createApiClient(fetch)
+
+    const first = await client.request<NestedPayload>('/api/isolated', { cacheTtlMs: 30_000 })
+    first.ok = false
+    first.config.engine = 'caller-edited'
+    first.config.loras.push('caller-added')
+
+    const second = await client.request<NestedPayload>('/api/isolated', { cacheTtlMs: 30_000 })
+    expect(second.ok).toBe(true)
+    expect(second.config.engine).toBe('original')
+    expect(second.config.loras).toEqual(['a'])
+    expect(fetch).toHaveBeenCalledTimes(1)
+  })
+
+  it('共享响应：搭车者改动嵌套字段不影响发起者', async () => {
+    const { fetch, flush } = deferredFetch(async () =>
+      okResponse({ ok: true, config: { engine: 'original', loras: ['a'] } }),
+    )
+    const client = createApiClient(fetch)
+
+    const initiator = client.request<NestedPayload>('/api/isolated-shared')
+    const rider = client.request<NestedPayload>('/api/isolated-shared')
+    await flush()
+
+    const riderValue = await rider
+    riderValue.config.engine = 'rider-edited'
+    const initiatorValue = await initiator
+    expect(initiatorValue.config.engine).toBe('original')
+  })
+})
+
+describe('apiClient 写入代际（R1）', () => {
+  it('写成功后迟到的旧 GET 不回填缓存，写后读取不搭乘写前 inflight', async () => {
+    const gets: Array<(response: Response) => void> = []
+    let configured = false
+    const fetch: FetchImplementation = (input, init) => {
+      if ((init?.method ?? 'GET').toUpperCase() === 'POST') {
+        configured = true
+        return Promise.resolve(okResponse({ ok: true, configured: true }))
+      }
+      return new Promise<Response>(resolve => {
+        gets.push(resolve)
+      })
+    }
+    const client = createApiClient(fetch)
+
+    const stale = client.request('/api/host-config', { cacheTtlMs: 30_000 })
+    await expect(client.request('/api/host-config', { method: 'POST', body: { host: 'x' } }))
+      .resolves.toEqual({ ok: true, configured: true })
+
+    const afterWrite = client.request('/api/host-config', { cacheTtlMs: 30_000 })
+    expect(gets).toHaveLength(2)
+
+    gets[1](okResponse({ ok: true, configured }))
+    await expect(afterWrite).resolves.toEqual({ ok: true, configured: true })
+
+    gets[0](okResponse({ ok: true, configured: false }))
+    await expect(stale).resolves.toEqual({ ok: true, configured: false })
+
+    await expect(client.request('/api/host-config', { cacheTtlMs: 30_000 }))
+      .resolves.toEqual({ ok: true, configured: true })
+    expect(gets).toHaveLength(2)
+  })
+
+  it('DELETE 成功后迟到旧读不回填，最终读取与服务端一致', async () => {
+    const gets: Array<(response: Response) => void> = []
+    const fetch: FetchImplementation = (input, init) => {
+      if ((init?.method ?? 'GET').toUpperCase() === 'DELETE') {
+        return Promise.resolve(okResponse({ ok: true, configured: false }))
+      }
+      return new Promise<Response>(resolve => {
+        gets.push(resolve)
+      })
+    }
+    const client = createApiClient(fetch)
+
+    const stale = client.request('/api/host-config', { cacheTtlMs: 30_000 })
+    await expect(client.request('/api/host-config', { method: 'DELETE' }))
+      .resolves.toEqual({ ok: true, configured: false })
+    gets[0](okResponse({ ok: true, configured: true }))
+    await expect(stale).resolves.toEqual({ ok: true, configured: true })
+
+    const fresh = client.request('/api/host-config', { cacheTtlMs: 30_000 })
+    expect(gets).toHaveLength(2)
+    gets[1](okResponse({ ok: true, configured: false }))
+    await expect(fresh).resolves.toEqual({ ok: true, configured: false })
+  })
+})
+
+describe('apiClient 内存缓存策略（O1）', () => {
+  it('HTTP no-store 与内存 TTL 相互独立，no-store 仍可命中内存缓存', async () => {
+    let counter = 0
+    const fetch = vi.fn(async () => okResponse({ ok: true, n: ++counter }))
+    const client = createApiClient(fetch)
+
+    await client.request('/api/policy', { cache: 'no-store', cacheTtlMs: 30_000 })
+    await expect(client.request('/api/policy', { cache: 'no-store', cacheTtlMs: 30_000 }))
+      .resolves.toEqual({ ok: true, n: 1 })
+    expect(fetch).toHaveBeenCalledTimes(1)
+  })
+
+  it('cachePolicy: bypass 不读、不写、不登记内存缓存', async () => {
+    let counter = 0
+    const fetch = vi.fn(async () => okResponse({ ok: true, n: ++counter }))
+    const client = createApiClient(fetch)
+
+    await expect(client.request('/api/policy', { cacheTtlMs: 30_000, cachePolicy: 'bypass' }))
+      .resolves.toEqual({ ok: true, n: 1 })
+    await expect(client.request('/api/policy', { cacheTtlMs: 30_000, cachePolicy: 'bypass' }))
+      .resolves.toEqual({ ok: true, n: 2 })
+    expect(fetch).toHaveBeenCalledTimes(2)
+  })
+
+  it('cachePolicy: refresh 跳过缓存强制新传输，成功后回填', async () => {
+    let counter = 0
+    const fetch = vi.fn(async () => okResponse({ ok: true, n: ++counter }))
+    const client = createApiClient(fetch)
+
+    await expect(client.request('/api/policy', { cacheTtlMs: 30_000 })).resolves.toEqual({ ok: true, n: 1 })
+    await expect(client.request('/api/policy', { cacheTtlMs: 30_000 })).resolves.toEqual({ ok: true, n: 1 })
+    await expect(client.request('/api/policy', { cacheTtlMs: 30_000, cachePolicy: 'refresh' }))
+      .resolves.toEqual({ ok: true, n: 2 })
+    await expect(client.request('/api/policy', { cacheTtlMs: 30_000 })).resolves.toEqual({ ok: true, n: 2 })
+    expect(fetch).toHaveBeenCalledTimes(2)
+  })
+
+  it('cachePolicy: refresh 不搭乘写前 inflight，各自完成', async () => {
+    const { fetch, calls, flush } = deferredFetch(async () => okResponse({ ok: true }))
+    const client = createApiClient(fetch)
+
+    const pending = client.request('/api/policy')
+    const refreshed = client.request('/api/policy', { cachePolicy: 'refresh' })
+    await flush()
+
+    expect(calls).toEqual(['/api/policy', '/api/policy'])
+    await expect(pending).resolves.toEqual({ ok: true })
+    await expect(refreshed).resolves.toEqual({ ok: true })
+  })
+})

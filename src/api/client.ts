@@ -41,14 +41,23 @@ export type FetchImplementation = (
   init?: RequestInit,
 ) => Promise<Response>
 
+/** 应用内内存缓存策略，与 HTTP `cache` 选项互不影响：
+ * `cache: 'no-store'` 只关闭浏览器 HTTP 缓存，不等于绕过内存 TTL（chatApi 正是两者并存）。
+ * - `default`：读同 URL 缓存，并可搭车同 URL 进行中的 GET；
+ * - `refresh`：跳过缓存并强制新传输（不搭车写前 inflight），成功后回填缓存；
+ * - `bypass`：完全不参与内存缓存：不读、不搭车、不登记、不回填。 */
+export type ApiCachePolicy = 'default' | 'refresh' | 'bypass'
+
 export interface ApiRequestOptions extends Omit<RequestInit, 'body' | 'signal'> {
   body?: unknown
   signal?: AbortSignal
   timeoutMs?: number
   validate?: (value: ApiResponseObject) => boolean
   /** GET 响应内存缓存时长（毫秒）。默认不缓存（任务态端点必须直连）；
-   * 仅准静态配置类端点显式声明。任何写请求成功后自动失效同 URL 缓存。 */
+   * 仅准静态配置类端点显式声明。任何写请求成功后自动失效同 URL 缓存并推进代际。 */
   cacheTtlMs?: number
+  /** 内存缓存策略，见 ApiCachePolicy。非 GET 或带 body 的请求固定等价于 `bypass`。 */
+  cachePolicy?: ApiCachePolicy
 }
 
 export interface ApiClient {
@@ -128,11 +137,46 @@ const defaultFetch: FetchImplementation = (input, init) => globalThis.fetch(inpu
 
 const GET_METHOD = 'GET'
 
+/** 请求层消费者隔离（2026-09-10 复核 R3）：响应正文只来自 JSON.parse，
+ * 交给缓存或第二个消费者前必须复制，否则调用方改顶层或嵌套字段都会污染其他结果。
+ * 序列化回退保证非纯 JSON 结构也不会抛错。 */
+function cloneResponse(value: ApiResponseObject): ApiResponseObject {
+  const structured = (globalThis as typeof globalThis & {
+    structuredClone?: (input: unknown) => unknown
+  }).structuredClone
+  if (typeof structured === 'function') {
+    try {
+      return structured(value) as ApiResponseObject
+    } catch {
+      // 含不可克隆值时退回 JSON 往返
+    }
+  }
+  return JSON.parse(JSON.stringify(value)) as ApiResponseObject
+}
+
+/** 每个消费者在自己的传输结果上应用自己的响应契约（2026-09-10 复核 R2）。
+ * 共享层只负责传输、解析与通用 HTTP 错误；首个消费者的专属校验不得代表其他消费者。 */
+function applyResponseContract<T extends object>(
+  value: ApiResponseObject,
+  status: number,
+  validate: ((value: ApiResponseObject) => boolean) | undefined,
+): T {
+  if (validate && !validate(value)) {
+    throw invalidResponse(status, '响应对象不符合预期格式', value)
+  }
+  return value as T
+}
+
 /** GET 请求并发去重与显式 TTL 缓存（2026-08-28 审计 P1-8）。
- * inflight：同 URL GET 并发时共享一次底层请求；搭车者的 abort/timeout 只作用于自己。
- * 缓存：仅显式传 cacheTtlMs 的 GET 走内存 TTL 缓存；写请求成功即失效同 URL 缓存。 */
-interface CacheEntry {
+ * inflight：同 URL 同代 GET 并发时共享一次底层请求；搭车者的 abort/timeout 只作用于自己。
+ * 缓存：仅显式传 cacheTtlMs 的 GET 走内存 TTL 缓存；写请求成功即失效同 URL 缓存并推进代际。 */
+interface TransportedResponse {
+  /** 传输层解析结果：内存中唯一副本，只用于缓存与共享，不直接交给消费者。 */
   value: ApiResponseObject
+  status: number
+}
+
+interface CacheEntry extends TransportedResponse {
   expiresAt: number
 }
 
@@ -142,14 +186,22 @@ function requestKey(url: string, method: string): string {
 
 export function createApiClient(fetchImplementation: FetchImplementation = defaultFetch): ApiClient {
   const responseCache = new Map<string, CacheEntry>()
-  const inflight = new Map<string, { response: Promise<ApiResponseObject>; signal: AbortSignal }>()
+  const inflight = new Map<
+    string,
+    { response: Promise<TransportedResponse>; signal: AbortSignal; generation: number }
+  >()
+  /** 每个 URL 的写入代际（2026-09-10 复核 R1）：写请求成功即自增。
+   * 写前发起的 GET 属于旧代，不得回填缓存；写后发起的 GET 属于新代，不得搭乘旧代 inflight。 */
+  const generations = new Map<string, number>()
+  const generationOf = (url: string): number => generations.get(url) ?? 0
 
-  /** 搭车等待：共享响应与调用方自己的 abort/timeout 竞速，返回浅拷贝防跨消费者污染。 */
-  async function awaitShared<T extends object>(
-    shared: Promise<ApiResponseObject>,
+  /** 搭车等待：共享响应与调用方自己的 abort/timeout 竞速。
+   * 只返回传输结果与取消语义，对象隔离与响应契约由各消费者独立执行。 */
+  async function awaitShared(
+    shared: Promise<TransportedResponse>,
     callerSignal: AbortSignal | undefined,
     timeoutMs: number,
-  ): Promise<T> {
+  ): Promise<TransportedResponse> {
     let abortListener: (() => void) | undefined
     let timer: ReturnType<typeof setTimeout> | undefined
     const guard = new Promise<never>((_, reject) => {
@@ -170,8 +222,7 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
       }
     })
     try {
-      const value = await Promise.race([shared, guard])
-      return { ...value } as T
+      return await Promise.race([shared, guard])
     } catch (error) {
       if (error instanceof ApiClientError) throw error
       // 发起者取消连带取消共享请求时，原生 AbortError 归一为 aborted；
@@ -198,16 +249,44 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
       const method = (options.method ?? GET_METHOD).toUpperCase()
       const isCacheableGet = method === GET_METHOD && !hasBody
 
-      if (isCacheableGet) {
+      const {
+        body: _body,
+        signal: _signal,
+        timeoutMs: _timeoutMs,
+        cacheTtlMs: _cacheTtlMs,
+        cachePolicy: requestedCachePolicy,
+        validate,
+        ...requestInit
+      } = options
+
+      // 只有 GET 才参与内存缓存；写请求与带 body 的 GET 固定按 bypass 处理。
+      const cachePolicy: ApiCachePolicy = isCacheableGet ? requestedCachePolicy ?? 'default' : 'bypass'
+      const usesMemoryCache = isCacheableGet && cachePolicy !== 'bypass'
+      const joinsInflight = isCacheableGet && cachePolicy === 'default'
+      const generation = generationOf(url)
+      const key = requestKey(url, method)
+
+      if (joinsInflight) {
         const cached = responseCache.get(url)
         if (cached && cached.expiresAt > Date.now()) {
-          return { ...cached.value } as T
+          // 缓存命中同样要过本调用的校验，且返回独立副本
+          return applyResponseContract<T>(cloneResponse(cached.value), cached.status, validate)
         }
         if (cached) responseCache.delete(url)
 
-        const pending = inflight.get(requestKey(url, method))
-        if (pending && !pending.signal.aborted) {
-          return awaitShared<T>(pending.response, callerSignal, options.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+        // 写后读取不得搭乘写前 inflight：仅同代请求共享传输
+        const pending = inflight.get(key)
+        if (pending && !pending.signal.aborted && pending.generation === generation) {
+          const transported = await awaitShared(
+            pending.response,
+            callerSignal,
+            options.timeoutMs ?? DEFAULT_TIMEOUT_MS,
+          )
+          return applyResponseContract<T>(
+            cloneResponse(transported.value),
+            transported.status,
+            validate,
+          )
         }
       }
 
@@ -244,19 +323,9 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         }, timeoutMs)
       }
 
-      const {
-        body: _body,
-        signal: _signal,
-        timeoutMs: _timeoutMs,
-        cacheTtlMs: _cacheTtlMs,
-        validate,
-        ...requestInit
-      } = options
-
-      // 发起前先占位 inflight：并发到达的 GET 在底层 fetch 未完成前即可搭车。
+      // 发起前先占位 inflight：并发到达的同代 GET 在底层 fetch 未完成前即可搭车。
       // 失败的请求同样从 inflight 移除（finally），同 URL 后续请求重新发起。
-      const key = requestKey(url, method)
-      const shared: Promise<ApiResponseObject> = (async () => {
+      const shared: Promise<TransportedResponse> = (async () => {
         try {
           const response = await fetchImplementation(url, {
             ...requestInit,
@@ -288,29 +357,35 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
           if (parsed.ok === false) {
             throw explicitFailure(response, parsed)
           }
-          if (validate && !validate(parsed)) {
-            throw invalidResponse(response.status, '响应对象不符合预期格式', parsed)
-          }
-          return parsed
+          // 共享层到此为止：调用者的 validate 由各消费者在副本上分别执行（R2）
+          return { value: parsed, status: response.status }
         } finally {
           // A cancelled request may finish after its replacement has started.
           if (inflight.get(key)?.signal === controller.signal) inflight.delete(key)
         }
       })()
-      if (isCacheableGet) inflight.set(key, { response: shared, signal: controller.signal })
+      if (usesMemoryCache) inflight.set(key, { response: shared, signal: controller.signal, generation })
 
       try {
-        const parsed = await shared
-        const cacheTtlMs = options.cacheTtlMs
-        if (isCacheableGet) {
-          if (typeof cacheTtlMs === 'number' && Number.isFinite(cacheTtlMs) && cacheTtlMs > 0) {
-            responseCache.set(url, { value: parsed, expiresAt: Date.now() + cacheTtlMs })
+        const transported = await shared
+        if (usesMemoryCache) {
+          const ttl = options.cacheTtlMs
+          // 写入期间该 URL 已被作废的旧代读取不回填，避免旧配置复活（R1）
+          if (typeof ttl === 'number' && Number.isFinite(ttl) && ttl > 0 && generation === generationOf(url)) {
+            responseCache.set(url, {
+              value: transported.value,
+              status: transported.status,
+              expiresAt: Date.now() + ttl,
+            })
           }
-        } else {
-          // 写请求成功即失效同 URL 缓存，防止 saveHostConfig 之后再读到旧配置
+        } else if (!isCacheableGet) {
+          // 写请求成功即推进代际并失效同 URL 缓存，防止 saveHostConfig 之后再读到旧配置
+          generations.set(url, generationOf(url) + 1)
           responseCache.delete(url)
         }
-        return parsed as T
+        // 参与内存缓存／共享的 GET 结果必须隔离后再交给消费者；其余请求结果仅本调用持有
+        const value = usesMemoryCache ? cloneResponse(transported.value) : transported.value
+        return applyResponseContract<T>(value, transported.status, validate)
       } catch (error) {
         if (error instanceof ApiClientError) throw error
         if (abortSource === 'caller') {
