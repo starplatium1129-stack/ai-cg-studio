@@ -1,18 +1,27 @@
 {
-  "version": "1.0.0",
-  "franchise": "Violet Evergarden",
   "characters": [
     {
-      "id": "violet_evergarden",
-      "displayName": "薇尔莉特·伊芙加登",
-      "originalName": "ヴァイオレット・エヴァーガーデン",
-      "franchise": "Violet Evergarden",
+      "adultEligibility": "adult",
       "aliases": [
         "Violet Evergarden",
         "薇尔莉特",
         "自动手记人偶",
         "战争兵器少女"
       ],
+      "animeStudio": "Kyoto Animation",
+      "curatedArtistStyles": [
+        "Akiko Takase",
+        "Taichi Ishidate"
+      ],
+      "displayName": "薇尔莉特·伊芙加登",
+      "exactPrefixes": [
+        "1girl, solo, violet_evergarden"
+      ],
+      "exactTokens": [
+        "violet_evergarden"
+      ],
+      "franchise": "Violet Evergarden",
+      "id": "violet_evergarden",
       "identityProse": "Violet Evergarden from Violet Evergarden, an ethereal and pristine former soldier turned Auto Memories Doll, with mid-back braided golden-blonde hair tied with red ribbons, luminous azure-blue eyes, articulated silver prosthetic mechanical hands, and a doll-like porcelain face brimming with tender emotion",
       "identityTokens": [
         "violet_evergarden",
@@ -24,24 +33,6 @@
         "prosthetic_hands",
         "doll-like_face",
         "slender_figure"
-      ],
-      "exactTokens": [
-        "violet_evergarden"
-      ],
-      "exactPrefixes": [
-        "1girl, solo, violet_evergarden"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "animeStudio": "Kyoto Animation",
-      "curatedArtistStyles": [
-        "Akiko Takase",
-        "Taichi Ishidate"
       ],
       "negativeTokens": [
         "worst quality",
@@ -55,9 +46,12 @@
         "watermark",
         "fire, flames, burning ears"
       ],
+      "originalName": "ヴァイオレット・エヴァーガーデン",
       "outfits": [
         {
+          "default": true,
           "id": "official_auto_memories_doll_attire",
+          "isDefault": true,
           "name": "自动手记人偶宝蓝骑士礼服",
           "prose": "her signature Auto Memories Doll attire: a tailored Prussian-blue officer jacket with ruffled ascot, an emerald brooch at her collar, a pleated pure white Prussian silk skirt, brown leather travel boots, and intricate articulated silver mechanical prosthetic hands",
           "tokens": [
@@ -69,9 +63,7 @@
             "boots",
             "mechanical_hands",
             "parasol"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
           "id": "casual_white_summer_dress",
@@ -130,8 +122,45 @@
             "mechanical_hands",
             "slender_body"
           ]
+        },
+        {
+          "default": false,
+          "id": "doll_cafe_no_parasol",
+          "isDefault": false,
+          "name": "咖啡店人偶礼服·无伞",
+          "prose": "her tailored Prussian-blue Auto Memories Doll jacket with ruffled ascot, emerald brooch, pleated white skirt, brown travel boots and articulated silver mechanical hands, with no parasol",
+          "tokens": [
+            "blue_jacket",
+            "pleated_skirt",
+            "brooch",
+            "ascot",
+            "boots",
+            "mechanical_hands"
+          ]
+        },
+        {
+          "default": false,
+          "id": "library_casual_no_hat",
+          "isDefault": false,
+          "name": "图书馆白裙·无帽",
+          "prose": "a simple pure white cotton summer dress with a lace hem, leather sandals and articulated silver mechanical hands, with no hat",
+          "tokens": [
+            "white_dress",
+            "sundress",
+            "bare_arms",
+            "mechanical_hands",
+            "sandals"
+          ]
         }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Violet Evergarden",
+  "version": "1.0.0"
 }
