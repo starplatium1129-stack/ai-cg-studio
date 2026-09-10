@@ -91,3 +91,16 @@ V1（浏览器 CSP 复验）、C1（提示词逐条对账与人工看图）、C2
 - 打包预算实测：`PromptBuilderView` JS 138.6 KiB / 140.0 KiB（余量约 1.4 KiB，与上一轮报告一致）、CSS 111.5 / 115.0、路由静态闭包 538.1 / 580.0、入口闭包 359.6 / 390.0。仅 4 项 >90% 警告，未放宽门槛（O3 依据）。
 - 未做：浏览器内复验聊天配置“保存／清除后仍显示旧配置”的页面症状（R1 只到模块与用例层）；未在真实 GitHub 运行上观察 O4 的并发取消效果（本机无 `gh`，配置文件无法自证生效）；未跑 Playwright 与真机桌面验收；未对回滚后的 35 个场景做真实出图核验（本轮是恢复人工基线，不是新增视觉验收）。
 - 本轮所有改动均在本机完成并推送（`21ce17f..26f4dd8` 加回滚提交）；未执行、失败或需用户操作的步骤已在上表列出，不沿用历史 PASS。
+
+## 6. 合并远端稳定分支（同日 23:00）
+
+远端 `main` 在本机推送后继续前进到 `4dd06b2`（补 `readVersions` 与场景审计检查点），同时出现两条以 `b18fa1b` 为基点的 codex 分支。按用户要求把交付线合入 main：
+
+| 分支 | 处置 | 依据 |
+| --- | --- | --- |
+| `codex/huiyu-audit-stability-b18fa1b`（`5ded751`） | **已合入** | 相对基点只新增：审计稳定性 CI 工作流、`apply-scene-patch.js` 加固与 `test-scene-patch.js` 回归、`client.refresh.spec.ts`、`poc` 核验脚本；不含一次性快照，文件集与 main 不相交（`git merge-tree` 预演无冲突） |
+| `codex/scene-audit-closeout-20260910`（`c427560`） | 未合并 | 携带 103 个 `poc/scene-audit-snapshots` 证据快照且缺 `test-scene-patch.js`／`client.refresh.spec.ts`；属证据线，避免把快照倒进 main，留待用户决定 |
+
+**合并暴露并修掉一个语义缺口**：分支的 `a successful refresh without a TTL invalidates an older cached response` 在合并态失败（24 条中 1 挂）。原因是 main 上的 `readVersions` 只约束缓存**写入**的先后，没有作废刷新前已存在的条目——于是未声明 TTL 的显式刷新完成后，下一次读取仍命中旧值。补法：判定收敛为 `superseded`（代际或读取序被超越），未过期且未被超越时按 TTL 回填；`cachePolicy:'refresh'` 成功且未被超越时，即使没有 TTL 也删除该 URL 的旧缓存；失败或超时的显式刷新保持既有缓存。
+
+合并后复核：请求层两条 spec 24/24；`npx vitest run --coverage` 77 文件 / 553 用例通过；`typecheck:app` 通过；`test-scene-patch.js` 10/10；`npm run check` 与合并前同为 2/22 失败（`content-contracts` 数据污染、`ref-urls` 无素材根目录）；`unit` 15 项失败清单逐条一致（未引入新失败）；`wf check:workflows` 通过；`npm run build` 与打包预算通过。

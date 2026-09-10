@@ -379,14 +379,18 @@ export function createApiClient(fetchImplementation: FetchImplementation = defau
         const transported = await shared
         if (usesMemoryCache) {
           const ttl = options.cacheTtlMs
-          // 写入期间该 URL 已被作废的旧代读取不回填，避免旧配置复活（R1）
-          if (typeof ttl === 'number' && Number.isFinite(ttl) && ttl > 0 && generation === generationOf(url)
-            && readVersion === readState?.version) {
+          // 写入期间该 URL 已被作废的旧代读取不回填（R1）；同代并发时只允许最新一次读取
+          // 动缓存，避免晚到的旧刷新覆盖或作废新结果。
+          const superseded = generation !== generationOf(url) || readVersion !== readState?.version
+          if (!superseded && typeof ttl === 'number' && Number.isFinite(ttl) && ttl > 0) {
             responseCache.set(url, {
               value: transported.value,
               status: transported.status,
               expiresAt: Date.now() + ttl,
             })
+          } else if (!superseded && cachePolicy === 'refresh') {
+            // 显式刷新成功后不得再让旧缓存服务后续读取：本次未声明 TTL 时也要作废旧条目
+            responseCache.delete(url)
           }
         } else if (!isCacheableGet) {
           // 写请求成功即推进代际并失效同 URL 缓存，防止 saveHostConfig 之后再读到旧配置
