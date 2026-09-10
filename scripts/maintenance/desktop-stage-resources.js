@@ -27,6 +27,7 @@ const ENTRIES = [
   ['routes', 'gateway/routes'],
   ['services', 'gateway/services'],
   ['scripts/lib', 'gateway/scripts/lib'],
+  ['docs', 'gateway/docs'],
   ['data', 'gateway/data'],
   ['dist', 'gateway/dist'],
   ['assets', 'gateway/assets'],

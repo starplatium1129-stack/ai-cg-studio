@@ -151,6 +151,7 @@ async function prepareTauri(options = {}) {
     logger: options.logger,
   });
   console.log('[tauri] prepare complete');
+  await (options.verifyGateway || require('./verify-desktop-gateway').verifyDesktopGateway)({ root });
   return { webDir, sidecarPath, ...staged };
 }
 

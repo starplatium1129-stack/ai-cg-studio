@@ -22,13 +22,25 @@ param(
   [switch]$Cleanup,
   [switch]$UseInstaller,
   [switch]$QuietInstall,
-  [switch]$NoRestart
+  [switch]$NoRestart,
+  [switch]$StartupRepair,
+  [string]$InstallDir
 )
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
-$installDir = 'C:\Program Files\AI-CG-Studio'
+if (-not $InstallDir) {
+  $locations = @('HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio',
+    'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio',
+    'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio') |
+    ForEach-Object { (Get-ItemProperty -LiteralPath $_ -ErrorAction SilentlyContinue).InstallLocation } |
+    Where-Object { $_ } | ForEach-Object { $_.Trim('"') } | Select-Object -Unique
+  if (@($locations).Count -gt 1) { throw '发现多个安装目录，请用 -InstallDir 指定要修复的安装。' }
+  $InstallDir = if ($locations) { @($locations)[0] } else { 'C:\Program Files\AI-CG-Studio' }
+}
+$installDir = [IO.Path]::GetFullPath($InstallDir)
 $gatewayDir = Join-Path $installDir 'gateway'
+if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
 
 # 源端已删除、但增量部署（Copy-Item 只合并不删除）会在安装目录永久堆积的历史目录。
 # 2026-08-29：character-references（~1.2G）已迁出项目到 AI 工作区，安装目录那份成冗余副本。
@@ -40,23 +52,55 @@ $STALE_ASSETS = @('assets\character-references')
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
   Write-Host '需要管理员权限，正在弹出 UAC 授权窗口，请点击"是"' -ForegroundColor Yellow
-  $argList = @('-NoExit', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
+  $argList = @('-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
   if ($SkipBuild)    { $argList += '-SkipBuild' }
   if ($Cleanup)      { $argList += '-Cleanup' }
   if ($UseInstaller) { $argList += '-UseInstaller' }
   if ($QuietInstall) { $argList += '-QuietInstall' }
   if ($NoRestart)    { $argList += '-NoRestart' }
+  if ($StartupRepair) { $argList += '-StartupRepair' }
+  $argList += @('-InstallDir', "`"$installDir`"")
   if ($QuietInstall) {
     $argList = @($argList | Where-Object { $_ -ne '-NoExit' })
     Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ')
   } else {
-    Start-Process powershell -Verb RunAs -ArgumentList ($argList -join ' ')
+    Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ')
   }
   exit 0
 }
 
 if ($QuietInstall -and -not $UseInstaller) { throw '-QuietInstall 仅可与 -UseInstaller 一起使用' }
 Start-Transcript -Path (Join-Path $root 'runtime\desktop-deploy-last.log') -Append | Out-Null
+
+# Narrow repair for 1.6.0: no dependency, executable or user-data replacement.
+if ($StartupRepair) {
+  if (-not (Test-Path -LiteralPath (Join-Path $gatewayDir 'server.js'))) { throw "无效安装目录: $installDir" }
+  $destination = Join-Path $gatewayDir 'docs'
+  New-Item -ItemType Directory -Force -Path $destination | Out-Null
+  Copy-Item -Path (Join-Path $root 'docs\*') -Destination $destination -Recurse -Force
+  $icon = Join-Path $installDir 'huiyu-icon.ico'
+  Copy-Item -LiteralPath (Join-Path $root 'desktop-tauri\src-tauri\icons\icon.ico') -Destination $icon -Force
+  $shell = New-Object -ComObject WScript.Shell
+  foreach ($directory in @([Environment]::GetFolderPath('CommonDesktopDirectory'), [Environment]::GetFolderPath('Desktop'),
+      [Environment]::GetFolderPath('CommonPrograms'), [Environment]::GetFolderPath('Programs'))) {
+    if (-not $directory -or -not (Test-Path -LiteralPath $directory)) { continue }
+    Get-ChildItem -LiteralPath $directory -Filter '*.lnk' -File -Recurse | ForEach-Object {
+      $shortcut = $shell.CreateShortcut($_.FullName)
+      if ($shortcut.TargetPath -ieq (Join-Path $installDir 'ai-cg-studio-desktop.exe')) {
+        $shortcut.IconLocation = "$icon,0"
+        $shortcut.Save()
+      }
+    }
+  }
+  Add-Type -TypeDefinition 'using System.Runtime.InteropServices; public class HuiyuShell { [DllImport("shell32.dll")] public static extern void SHChangeNotify(uint e, uint f, System.IntPtr a, System.IntPtr b); }'
+  [HuiyuShell]::SHChangeNotify(0x08000000, 0, [IntPtr]::Zero, [IntPtr]::Zero)
+  Get-Process -Name 'ai-cg-studio-desktop' -ErrorAction SilentlyContinue |
+    Where-Object { $_.Path -ieq (Join-Path $installDir 'ai-cg-studio-desktop.exe') } | Stop-Process
+  if (-not $NoRestart) { Start-Process explorer.exe -ArgumentList "`"$installDir\ai-cg-studio-desktop.exe`"" }
+  Write-Host "启动资源和快捷方式图标已修复: $installDir"
+  Stop-Transcript | Out-Null
+  exit 0
+}
 
 # 安装包里已经带好了构建产物，用它安装时无需本地构建
 if ($UseInstaller) { $SkipBuild = $true }
@@ -143,6 +187,7 @@ if ($UseInstaller) {
     @{ src = 'assets';       dst = 'assets' },
     @{ src = 'routes';       dst = 'routes' },
     @{ src = 'server';       dst = 'server' },
+    @{ src = 'docs';         dst = 'docs' },
     @{ src = 'services';     dst = 'services' },
     # scripts/lib 是 server/config.js、tunnel.js 与 routes/maintenance.js 的运行时依赖
     # （runtime-paths / scene-store），安装目录没有 scripts/，必须随增量同步。
@@ -152,6 +197,7 @@ if ($UseInstaller) {
     $src = Join-Path $root $item.src
     $dst = Join-Path $gatewayDir $item.dst
     if (Test-Path $src) {
+      New-Item -ItemType Directory -Force -Path $dst | Out-Null
       Copy-Item -Path (Join-Path $src '*') -Destination $dst -Recurse -Force
       Write-Host "  copied $($item.src) -> gateway/$($item.dst)" -ForegroundColor DarkGray
     }

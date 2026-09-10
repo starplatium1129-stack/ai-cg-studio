@@ -248,6 +248,8 @@ impl GatewaySupervisor {
         let started_at = Instant::now();
         loop {
             if self.stopping.load(Ordering::Relaxed) {
+                let _ = child.kill();
+                let _ = child.wait();
                 let _ = self.stop().await;
                 return Err("Gateway start cancelled".into());
             }
@@ -261,6 +263,8 @@ impl GatewaySupervisor {
                 return Ok(self.base_url());
             }
             if started_at.elapsed() > Duration::from_millis(self.wait_ms) {
+                let _ = child.kill();
+                let _ = child.wait();
                 let _ = self.stop().await;
                 return Err(format!("Gateway did not become healthy at {}", self.base_url()));
             }

@@ -26,6 +26,8 @@ function customizeTemplate(source, background, uiFile) {
   output = replaceOnce(output, 'VIAddVersionKey "ProductName" "${PRODUCTNAME}"', 'VIAddVersionKey "ProductName" "绘遇 · HUIYU"');
   output = replaceOnce(output, 'VIAddVersionKey "FileDescription" "${PRODUCTNAME}"', 'VIAddVersionKey "FileDescription" "绘遇安装器"');
   output = output.replaceAll('${PRODUCTNAME}.lnk', '绘遇 HUIYU.lnk');
+  output = output.replace(/(CreateShortcut "[^"\n]+" "\$INSTDIR\\\$\{MAINBINARYNAME\}\.exe")/g, '$1 "" "$INSTDIR\\huiyu-icon.ico" 0');
+  output = replaceOnce(output, 'Function .onInstSuccess', 'Function .onInstSuccess\n  System::Call \'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)\'');
   // Rename only an existing shortcut targeting this installation. Preserve the
   // user's no-shortcut choice and never overwrite an unrelated named shortcut.
   const migrateShortcut = location => `

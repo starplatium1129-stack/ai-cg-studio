@@ -65,6 +65,11 @@ fn start_gateway_monitor(app: AppHandle) {
                         if let Ok(parsed) = companion_url.parse() {
                             let _ = w.navigate(parsed);
                         }
+                    } else {
+                        let visible = !std::env::args().any(|arg| arg == "--hidden");
+                        if let Err(error) = main_shared::create_companion_window(&app, &url, shim::COMPANION_SHIM_JS, visible) {
+                            state.error(&format!("companion recovery failed: {error}"));
+                        }
                     }
                     if let Some(w) = app.get_webview_window("companion-chat") {
                         let chat_url = format!("{}/companion-chat", url.trim_end_matches('/'));
@@ -295,7 +300,14 @@ fn main() {
                         s.info(&format!("Gateway {} at {url}", if supervisor.owns_gateway() { "started" } else { "attached" }));
                         let _ = handle.emit("aics:gateway-ready", url);
                     }
-                    Err(e) => s.error(&format!("Gateway start failed: {e}")),
+                    Err(e) => {
+                        s.error(&format!("Gateway start failed: {e}"));
+                        use tauri_plugin_dialog::DialogExt;
+                        handle.dialog().message(format!(
+                            "本地网关未能启动，桌宠和画室暂时无法打开。请重新安装修复版；后台会继续尝试恢复。\n\n诊断日志：{}\n\n{}",
+                            s.paths.desktop_log.display(), e
+                        )).title("绘遇 · 启动未完成").show(|_| {});
+                    }
                 }
             });
 

@@ -31,6 +31,9 @@ test('game installer preserves upstream install and maintenance behavior', () =>
   const themed = customizeTemplate(source, 'C:\\preview\\art.bmp', 'C:\\preview\\game-ui.nsh');
   const sections = text => text.slice(text.indexOf('Section EarlyChecks'));
   let payload = sections(themed);
+  assert.equal((payload.match(/"\$INSTDIR\\huiyu-icon.ico" 0/g) || []).length, 3);
+  payload = payload.replaceAll(' "" "$INSTDIR\\huiyu-icon.ico" 0', '')
+    .replace("\n  System::Call 'shell32::SHChangeNotify(i 0x08000000, i 0, p 0, p 0)'", '');
   for (const location of ['$DESKTOP', '$SMPROGRAMS', '$SMPROGRAMS\\$AppStartMenuFolder']) {
     const migration = `
   !insertmacro IsShortcutTarget "${location}\\\${PRODUCTNAME}.lnk" "$INSTDIR\\\${MAINBINARYNAME}.exe"
@@ -70,6 +73,7 @@ function createFixture() {
   const dirs = ['server', 'routes', 'scripts/lib', 'data', 'dist', 'assets', 'tools'];
   dirs.forEach((directory) => fs.mkdirSync(path.join(root, directory), { recursive: true }));
   write(path.join(root, 'server.js'), 'module.exports = {}\n');
+  write(path.join(root, 'docs', 'redirects.json'), '{"/docs/old":"/docs/new"}\n');
   write(path.join(root, 'server', 'config.js'), 'module.exports = {}\n');
   write(path.join(root, 'routes', 'health.js'), 'module.exports = {}\n');
   write(path.join(root, 'scripts/lib', 'runtime.js'), 'runtime\n');
@@ -137,6 +141,7 @@ test('production stage uses exact runtime outputs and atomic replacement', () =>
     });
 
     assert.equal(installCalls, 1);
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(stage, 'gateway/docs/redirects.json'))), { '/docs/old': '/docs/new' });
     assert.deepEqual(result.runtimeJavaScriptFiles, ['fixture.js']);
     assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'fixture.js')), true);
     assert.equal(fs.existsSync(path.join(stage, 'gateway', 'services', 'fixture.ts')), false);

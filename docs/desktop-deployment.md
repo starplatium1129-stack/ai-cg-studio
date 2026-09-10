@@ -5,6 +5,10 @@
 
 ## 打包前检查
 
+`package:tauri` 在资源暂存后自动按 `bundle.resources` 复制到仓库外隔离目录，用内置 Node 真正启动网关，验证健康检查、画室、桌宠、聊天及文档重定向。也可运行 `npm run wf -- desktop:verify-gateway`。不能用仓库根网关或 Live2D 自测替代此项，否则会漏掉安装包资源缺失。
+
+1.6.0 若出现只有托盘/任务栏图标、窗口不打开，诊断日志可能包含 `Cannot find module '../docs/redirects.json'`。运行 `deploy-desktop.bat -StartupRepair` 可补齐文档并刷新本安装的快捷方式图标，保留样张和用户数据；完整修复请安装 1.6.1。部署入口从卸载登记读取实际安装位置，多个安装需用 `-InstallDir` 明确选择。
+
 先运行 `npm run wf -- desktop:doctor --json`，确认 Windows x64、Node.js、Rust MSVC、Visual C++、Windows SDK 和 Cubism Native SDK 全部就绪。`npm run package:tauri` 会在构建前自动执行同一检查，缺失时立即给出具体安装指引。
 
 Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x64 MSVC stable 工具链。入口会自动发现 `%USERPROFILE%\.cargo\bin`，无需重启终端或手动修改全局 PATH。C++/Windows SDK 要求见 [Tauri 官方前置条件](https://v2.tauri.app/start/prerequisites/)。
