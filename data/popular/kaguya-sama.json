@@ -1,12 +1,7 @@
 {
-  "version": "1.0.0",
-  "franchise": "Kaguya-sama: Love Is War",
   "characters": [
     {
-      "id": "shinomiya_kaguya",
-      "displayName": "四宫辉夜",
-      "originalName": "四宮かぐや",
-      "franchise": "Kaguya-sama: Love Is War",
+      "adultEligibility": "adult",
       "aliases": [
         "Shinomiya Kaguya",
         "辉夜",
@@ -14,6 +9,19 @@
         "副会长",
         "秀知院的辉夜"
       ],
+      "animeStudio": "A-1 Pictures",
+      "curatedArtistStyles": [
+        "Aka Akasaka"
+      ],
+      "displayName": "四宫辉夜",
+      "exactPrefixes": [
+        "1girl, solo, shinomiya_kaguya"
+      ],
+      "exactTokens": [
+        "shinomiya_kaguya"
+      ],
+      "franchise": "Kaguya-sama: Love Is War",
+      "id": "shinomiya_kaguya",
       "identityProse": "Shinomiya Kaguya from Kaguya-sama: Love Is War, the elegant vice president of Shuchiin Academy, a wealthy refined beauty with short black hair styled in a folded ponytail with parted bangs and sidelocks, and tareme red eyes that soften when she is in love",
       "identityTokens": [
         "shinomiya_kaguya",
@@ -27,23 +35,6 @@
         "red_eyes",
         "tareme"
       ],
-      "exactTokens": [
-        "shinomiya_kaguya"
-      ],
-      "exactPrefixes": [
-        "1girl, solo, shinomiya_kaguya"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "anima-aesthetic-v1.1",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "animeStudio": "A-1 Pictures",
-      "curatedArtistStyles": [
-        "Aka Akasaka"
-      ],
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -56,9 +47,12 @@
         "watermark",
         "fire, flames, burning ears"
       ],
+      "originalName": "四宮かぐや",
       "outfits": [
         {
+          "default": true,
           "id": "official_shuchiin_uniform",
+          "isDefault": true,
           "name": "私立秀知院学园制服",
           "prose": "her Shuchiin Academy school uniform: a pristine white long-sleeved blouse with a black sleeveless dress over it, a stiff white collar with a small dark ribbon tie, a red ribbon in her folded-ponytail black hair, and sheer black pantyhose",
           "tokens": [
@@ -72,9 +66,7 @@
             "black_pantyhose",
             "red_ribbon",
             "folded_ponytail"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
           "id": "festive_furisode_kimono",
@@ -133,18 +125,59 @@
             "hair_down",
             "slender_body"
           ]
+        },
+        {
+          "default": false,
+          "id": "winter_shuchiin_uniform",
+          "isDefault": false,
+          "name": "圣诞雪夜保暖校服",
+          "prose": "her Shuchiin Academy uniform under a warm dark winter coat, with a white scarf, black tights, polished shoes and her red hair ribbon",
+          "tokens": [
+            "school_uniform",
+            "winter_coat",
+            "white_scarf",
+            "black_tights",
+            "polished_shoes",
+            "red_ribbon"
+          ]
+        },
+        {
+          "default": false,
+          "id": "white_shiromuku",
+          "isDefault": false,
+          "name": "神前白无垢与角隐",
+          "prose": "a formal opaque white shiromuku bridal kimono with a white obi, woven silk motifs and a white tsunokakushi head covering",
+          "tokens": [
+            "shiromuku",
+            "white_bridal_kimono",
+            "white_obi",
+            "tsunokakushi",
+            "opaque_fabric"
+          ]
         }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "hayasaka_ai",
-      "displayName": "早坂爱",
-      "originalName": "Ai Hayasaka",
-      "franchise": "Kaguya-sama: Love Is War",
+      "adultEligibility": "adult",
       "aliases": [
         "早坂爱",
         "Ai Hayasaka"
       ],
+      "displayName": "早坂爱",
+      "exactPrefixes": [
+        "1girl, solo, hayasaka_ai"
+      ],
+      "exactTokens": [
+        "hayasaka_ai"
+      ],
+      "franchise": "Kaguya-sama: Love Is War",
+      "id": "hayasaka_ai",
       "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",
       "identityTokens": [
         "hayasaka_ai",
@@ -152,18 +185,6 @@
         "blonde_hair",
         "blue_eyes"
       ],
-      "exactTokens": [
-        "hayasaka_ai"
-      ],
-      "exactPrefixes": [
-        "1girl, solo, hayasaka_ai"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -182,9 +203,12 @@
         "underwear",
         "see-through"
       ],
+      "originalName": "Ai Hayasaka",
       "outfits": [
         {
+          "default": true,
           "id": "sfw_maid",
+          "isDefault": true,
           "name": "四宫宅长发女仆装",
           "prose": "a long-sleeved black maid dress with a white apron, modest collar, maid headband and pale blonde side ponytail tied with a scrunchie",
           "tokens": [
@@ -195,12 +219,12 @@
             "maid_headdress",
             "side_ponytail",
             "hair_scrunchie"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "sfw_school",
+          "isDefault": false,
           "name": "秀知院校服侧马尾",
           "prose": "a dark Shuchiin school uniform with a white collar, red ribbon, loose socks and a blonde side ponytail",
           "tokens": [
@@ -210,12 +234,12 @@
             "loose_socks",
             "side_ponytail",
             "hair_scrunchie"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_casual",
+          "isDefault": false,
           "name": "任务间隙便装",
           "prose": "an opaque navy zip jacket, cream T-shirt, straight jeans and a blonde side ponytail",
           "tokens": [
@@ -223,12 +247,12 @@
             "t-shirt",
             "jeans",
             "side_ponytail"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_sports",
+          "isDefault": false,
           "name": "庭院体操运动装",
           "prose": "an opaque blue sports T-shirt, grey tracksuit trousers and a blonde side ponytail",
           "tokens": [
@@ -236,12 +260,12 @@
             "track_pants",
             "sportswear",
             "side_ponytail"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_short",
+          "isDefault": false,
           "name": "离职后短发旅行装",
           "prose": "a light blue jacket over a cream top and dark trousers, with her pale blonde hair cut in a neat short bob",
           "tokens": [
@@ -250,12 +274,12 @@
             "dark_pants",
             "short_hair",
             "bob_cut"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_night",
+          "isDefault": false,
           "name": "夜间散发针织装",
           "prose": "a warm cream cardigan over a buttoned cotton shirt and navy trousers, her blonde hair loose around her shoulders",
           "tokens": [
@@ -263,33 +287,42 @@
             "buttoned_shirt",
             "navy_pants",
             "hair_down"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_boudoir",
+          "isDefault": false,
           "name": "早坂爱·成人私密造型",
           "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
           "tokens": [
             "private_lingerie",
             "sheer_lace",
             "soft_shadows"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     },
     {
-      "id": "shirogane_kei",
-      "displayName": "白银圭",
-      "originalName": "Kei Shirogane",
-      "franchise": "Kaguya-sama: Love Is War",
+      "adultEligibility": "adult",
       "aliases": [
         "白银圭",
         "Kei Shirogane"
       ],
+      "displayName": "白银圭",
+      "exactPrefixes": [
+        "1girl, solo, shirogane_kei"
+      ],
+      "exactTokens": [
+        "shirogane_kei"
+      ],
+      "franchise": "Kaguya-sama: Love Is War",
+      "id": "shirogane_kei",
       "identityProse": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",
       "identityTokens": [
         "shirogane_kei",
@@ -301,18 +334,6 @@
         "black_hairband",
         "ribbon"
       ],
-      "exactTokens": [
-        "shirogane_kei"
-      ],
-      "exactPrefixes": [
-        "1girl, solo, shirogane_kei"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
       "negativeTokens": [
         "worst_quality",
         "low_quality",
@@ -331,9 +352,12 @@
         "underwear",
         "see-through"
       ],
+      "originalName": "Kei Shirogane",
       "outfits": [
         {
+          "default": true,
           "id": "sfw_school",
+          "isDefault": true,
           "name": "学生会整齐校服",
           "prose": "a dark school uniform with a white collar, knee-length skirt and black headband",
           "tokens": [
@@ -341,23 +365,23 @@
             "white_collar",
             "pleated_skirt",
             "black_hairband"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "sfw_home",
+          "isDefault": false,
           "name": "居家家计针织装",
           "prose": "a cream knitted pullover and navy lounge trousers",
           "tokens": [
             "cream_sweater",
             "navy_pants"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_delivery",
+          "isDefault": false,
           "name": "清晨配送防风装",
           "prose": "a blue windbreaker over a white top, long trousers and practical sneakers",
           "tokens": [
@@ -365,22 +389,22 @@
             "white_top",
             "long_pants",
             "sneakers"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_boudoir",
+          "isDefault": false,
           "name": "白银圭·成人私密造型",
           "prose": "a private adult ensemble built around small_towel",
           "tokens": [
             "small_towel"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_bridal",
+          "isDefault": false,
           "name": "白银圭·圣洁花嫁",
           "prose": "a simple silver-white bridal dress with a black ribbon headband, modest veil and a small budget-friendly flower bouquet",
           "tokens": [
@@ -389,12 +413,12 @@
             "black_headband",
             "modest_veil",
             "small_bouquet"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "sfw_beach",
+          "isDefault": false,
           "name": "白银圭·海滨泳装",
           "prose": "a slate-blue swimsuit with a light windbreaker, black headband and a chilled canned drink",
           "tokens": [
@@ -403,12 +427,12 @@
             "black_headband",
             "canned_drink",
             "seaside_vending_machine"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
           "id": "sfw_refined_daily",
+          "isDefault": false,
+          "isNsfw": false,
           "name": "杏色针织周末装",
           "prose": "an apricot knit cardigan over a navy collared shirt, a calf-length grey pleated skirt and brown loafers",
           "tokens": [
@@ -416,11 +440,16 @@
             "collared_shirt",
             "long_skirt",
             "loafers"
-          ],
-          "isDefault": false,
-          "isNsfw": false
+          ]
         }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Kaguya-sama: Love Is War",
+  "version": "1.0.0"
 }
