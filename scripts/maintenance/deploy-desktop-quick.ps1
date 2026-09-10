@@ -122,12 +122,14 @@ if (-not $SkipBuild) {
 }
 
 # ---------------------------------------------------------- [2] 停应用
-$appProcs = Get-Process -Name 'ai-cg-studio-desktop' -ErrorAction SilentlyContinue
-$sidecar = Get-NetTCPConnection -LocalPort 3123 -State Listen -ErrorAction SilentlyContinue
+$appProcs = Get-Process -Name 'ai-cg-studio-desktop' -ErrorAction SilentlyContinue |
+  Where-Object { $_.Path -ieq (Join-Path $installDir 'ai-cg-studio-desktop.exe') }
+$sidecar = Get-Process -Name 'node' -ErrorAction SilentlyContinue |
+  Where-Object { $_.Path -ieq (Join-Path $installDir 'node.exe') }
 if ($appProcs -or $sidecar) {
-  Write-Host '[2/6] 停止正在运行的应用与网关端口 ...' -ForegroundColor Cyan
+  Write-Host '[2/6] 停止本安装目录的应用与网关 ...' -ForegroundColor Cyan
   $appProcs | Stop-Process -Force -ErrorAction SilentlyContinue
-  if ($sidecar) { Stop-Process -Id $sidecar.OwningProcess -Force -ErrorAction SilentlyContinue }
+  $sidecar | Stop-Process -Force -ErrorAction SilentlyContinue
   Start-Sleep -Seconds 2
 } else {
   Write-Host '[2/6] 应用未在运行' -ForegroundColor DarkGray
@@ -159,7 +161,7 @@ if ($UseInstaller) {
   if (-not $setup) { Write-Error 'runtime\desktop-updates 下没有找到安装包，请先 npm run package:tauri'; exit 1 }
   Write-Host "  $($setup.Name)（$([math]::Round($setup.Length / 1MB, 1)) MB）" -ForegroundColor DarkGray
   $setupProcess = if ($QuietInstall) {
-    Start-Process -FilePath $setup.FullName -ArgumentList '/S' -Wait -PassThru
+    Start-Process -FilePath $setup.FullName -ArgumentList "/S /D=$installDir" -Wait -PassThru
   } else {
     Start-Process -FilePath $setup.FullName -Wait -PassThru
   }
