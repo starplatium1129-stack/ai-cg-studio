@@ -7,6 +7,12 @@ on:
 permissions:
   contents: read
 
+# 普通验证按分支／PR 收敛（2026-09-10 复核 O4）：连续提交只保留最新一次完整流水线。
+# tag 推送可能对应发布验证，不做自动取消；Windows 原生与定时任务各自独立分组。
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+
 jobs:
   validate:
     runs-on: ubuntu-latest
