@@ -10,6 +10,8 @@ var animaRoute = require('../../routes/anima.js');
 var characterData = require('../../data/popular-characters.json');
 var blueprintData = require('../../data/scene-blueprints.json');
 
+var coverageRepairs = require('./fixtures/scene-coverage-repairs.json');
+var { hasAtmosphericSceneProse } = require('./scene-prose-contract');
 var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
 
@@ -225,7 +227,7 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
   // 2026-09-02 天降与出包专栏：新增 6 位核心角色（6 位角色各 11 蓝图 = +66 场景，88 角色 = 939 场景）。
   // 2026-09-02 第一批殿堂级女神：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，93 角色 = 994 场景）。
   // 2026-09-02 第二批型月神作三大源流：新增 5 位角色（5 位角色各 11 蓝图 = +55 场景，98 角色 = 1049 场景）。
-  assert.strictEqual(blueprints.length, 1249 + legacyAdultIds.size * 10 + onboardingIds.size * 10 + onboardingExtraSceneCount,
+  assert.strictEqual(blueprints.length, 1249 + legacyAdultIds.size * 10 + onboardingIds.size * 10 + onboardingExtraSceneCount + coverageRepairs.additions.length,
     'preserve existing scenes alongside the complete adult onboarding batches');
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
@@ -242,19 +244,29 @@ test('blueprints: preserve existing scenes, add adult onboarding batches, and fa
   // 13=陈/日奈/和纱/时/莉音扩容（5 角色）、15=未花专属双场景扩容（1 角色）。
   var sceneDist = {};
   Object.entries(byCharacter).forEach(function (entry) {
-    if (onboardingIds.has(entry[0])) {
+    const additionCount = coverageRepairs.additions.filter(item => item.characterId === entry[0]).length;
+    if (additionCount) {
+      assert.strictEqual(entry[1], coverageRepairs.baselineCounts[entry[0]] + additionCount, entry[0] + ' must add only its declared wardrobe scenes');
+    }
+    else if (onboardingIds.has(entry[0])) {
       const onboardingEntry = remainingOnboarding.find(item => item.id === entry[0]);
       assert.strictEqual(entry[1], onboardingEntry.sceneCount, entry[0] + ' must own the declared onboarding scene count');
     }
     else assert.ok(entry[1] === 10 || entry[1] === 11 || entry[1] === 13 || entry[1] === 15, entry[0] + ' must preserve its existing scene count, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, {
+  const expectedSceneDist = {
     10: 43 + legacyAdultIds.size + onboardingIds.size - extendedOnboardingIds.size,
     11: 66 + extendedOnboardingIds.size,
     13: 6,
     15: 1,
-  },
+  };
+  for (const [id, count] of Object.entries(coverageRepairs.baselineCounts)) {
+    const next = count + coverageRepairs.additions.filter(item => item.characterId === id).length;
+    expectedSceneDist[count] -= 1;
+    expectedSceneDist[next] = (expectedSceneDist[next] || 0) + 1;
+  }
+  assert.deepStrictEqual(sceneDist, expectedSceneDist,
     'remaining batches add the declared daily/adult scenes without removing existing content');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
@@ -376,8 +388,8 @@ test('scene coverage: every outfit referenced, >=1 iconic + >=1 daily per charac
 });
 
 // 2026-08-23 壁纸级质感契约——成人 hint 必须是 r18_* 配方 id（自由短语会以垃圾前缀
-// 直接拼进 Krea 提示词开头）；尺寸收敛到高分辨率；原型场景必须含追加的壁纸氛围句
-// （prose 句点数 ≥2）。质量词属于 profile 装配层（quality_prefix 恰好一次，且
+// 直接拼进 Krea 提示词开头）；尺寸收敛到高分辨率；原型场景须有实质环境描述。
+// 一句完整叙事可含动作和具体光影，不以追加模板句凑句号。质量词属于 profile 装配层（quality_prefix 恰好一次，且
 // aesthetic/2.9B 均 strip_quality_tokens=true），场景数据严禁携带政策质量词与玄学词；
 // 具体光影/环境 tag（detailed_background/cinematic_lighting 等）作为壁纸层保留。
 test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words in data layer', function () {
@@ -406,12 +418,26 @@ test('wallpaper-grade scenes: legal r18 hints, high-res sizes, no quality words 
       assert.ok(blueprint.promptTokens.some(t => /light|sun|dawn|morning|afternoon|noon|night|evening|lantern|neon|lamp|shade/.test(t)), blueprint.id + ' must specify scene lighting or time');
       assert.ok(blueprint.promptProse.length >= 300, blueprint.id + ' needs a complete independently written scene');
     } else ['detailed_background', 'cinematic_lighting', 'volumetric_lighting', 'depth_of_field'].forEach(function (token) {
-      assert.ok(blueprint.promptTokens.includes(token),
-        blueprint.id + ' promptTokens missing wallpaper lighting token ' + token);
+      const phrase = token.replaceAll('_', ' ');
+      if (blueprint.promptTokens.includes(token)) return;
+      assert.ok(blueprint.promptProse.toLowerCase().includes(phrase),
+        blueprint.id + ' missing atmosphere in both tags and authored prose: ' + token);
+      // Prose is a production input, not a UI label. When it supplies an anchor,
+      // verify both actual engine payloads retain it instead of adding duplicate tags.
+      const character = characters.find(item => item.id === blueprint.characterId);
+      const outfit = popular.findOutfit(character, blueprint.outfitId);
+      const profiles = require('../../data/presets.json').model_profiles;
+      for (const engine of ['anima', 'krea2']) {
+        const model = engine === 'anima' ? 'anima-miaomiao-v1.2' : 'krea2-turbo-fp8';
+        const profile = profiles.find(item => item.model_id === model);
+        const plan = popular.buildPopularPromptPlan({ character, outfit, blueprint, engine, profile, adultEnabled: false });
+        assert.ok(plan && plan.prompt.toLowerCase().includes(phrase),
+          blueprint.id + ':' + engine + ' must preserve prose atmosphere ' + token);
+      }
     });
     if (!blueprint.adult) {
-      assert.ok((blueprint.promptProse.match(/\./g) || []).length >= 2,
-        blueprint.id + ' prototype promptProse must carry the atmospheric wallpaper sentence');
+      assert.ok(hasAtmosphericSceneProse(blueprint.promptProse),
+        blueprint.id + ' needs complete scene prose with atmospheric content, not punctuation padding');
     }
   });
 });

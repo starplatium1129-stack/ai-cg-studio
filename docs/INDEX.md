@@ -19,6 +19,8 @@
 
 ## 按需查阅
 
+- [内容门禁修复与回归](archive/audits/content-gate-repair-2026-09-10.md)：服装引用覆盖、环境词分层、单句结构误报的修复与本次真实验证边界。
+
 - [场景审计编译检查点与请求层补充修复](archive/audits/scene-audit-compiler-checkpoint-2026-09-10.md)：当前队列的只读编译结果、刷新乱序回归与明确未完成范围。
 
 - [项目评价与优化／修复清单](archive/audits/project-review-checklist-2026-09-10.md)：8.0/10 工程评价、14 项分级清单、3 类请求层问题的隔离复现及当前验收边界。

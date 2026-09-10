@@ -8,9 +8,9 @@
 | --- | ---: | --- |
 | 角色档案 | 160 | data/characters.json 数组长度 |
 | 热门角色 | 158 | data/popular-characters.json 的 characters；候选四十九位已全部接入 |
-| 热门服装形态 | 928 | 上述 characters[].outfits 长度之和 |
+| 热门服装形态 | 971 | 上述 characters[].outfits 长度之和 |
 | 通用场景 | 302 | data/scenes.json 数组长度 |
-| 场景蓝图 | 1,681 | data/scene-blueprints.json 的 blueprints |
+| 场景蓝图 | 1,692 | data/scene-blueprints.json 的 blueprints |
 | 参考库角色 / 已登记形态 | 160 / 644 | standards.characters 与 view 的 outfits；不同于热门服装总数 |
 | 参考条目 | 4,508 | view 中全部 outfits[].references |
 | 非 pending 且有 URL / pending | 2,534 / 1,974 | 登记统计，不代表出图或视觉审核完成 |
@@ -28,6 +28,8 @@
 - Git bundle 当前是最多 2 个全量锚点与默认 10 个增量（git-bundle-backup.js），属于本地第二副本；提交后仍须推送远端。
 
 ## 验证与后续
+
+本轮[内容门禁修复](archive/audits/content-gate-repair-2026-09-10.md)新增 11 条普通服装覆盖蓝图，未新增／删除服装；服装 971 为对当前源的重新统计，修正旧页的 928。新场景尚无本轮真实渲染或视觉审核结果。
 
 场景审计按用户要求暂停于当前检查点，467 条本任务记录与部分新角色证据对账留待后续；290 条候选图等待用户人工审核。本次发布不代表全场景视觉验收完成，详见 [1.6.0 更新说明](releases/v1.6.0.md) 和 [审计台账](archive/audits/all-scene-audit-2026-09-08.md)。
 
