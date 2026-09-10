@@ -1,12 +1,7 @@
 {
-  "version": 1,
-  "franchise": "Cyberpunk: Edgerunners",
   "characters": [
     {
-      "id": "lucy_cyberpunk",
-      "displayName": "露西",
-      "originalName": "Lucy",
-      "franchise": "Cyberpunk: Edgerunners",
+      "adultEligibility": "adult",
       "aliases": [
         "lucy_cyberpunk",
         "lucy",
@@ -16,6 +11,27 @@
         "cyberpunk edgerunners",
         "夜之城"
       ],
+      "animeStudio": "Studio TRIGGER / CD PROJEKT RED style",
+      "canon": {
+        "era": "近未来高科技低生活时代",
+        "formNotes": "夜之城顶尖网络黑客，曾逃脱荒坂的残酷深潜设施；性格清冷孤傲、内心深情脆弱，始终梦想着前往安宁纯洁的月球表面",
+        "research": "2026-09-02 调研（Danbooru lucy_(cyberpunk) 16000+ posts）",
+        "world": "赛博朋克 2077（Cyberpunk 2077）· 夜之城"
+      },
+      "curatedArtistStyles": [
+        "yoneyama_mai",
+        "swav",
+        "kappe"
+      ],
+      "displayName": "露西",
+      "exactPrefixes": [
+        "lucy_"
+      ],
+      "exactTokens": [
+        "lucy (cyberpunk)"
+      ],
+      "franchise": "Cyberpunk: Edgerunners",
+      "id": "lucy_cyberpunk",
       "identityProse": "Lucy from Cyberpunk: Edgerunners, an elite netrunner in Night City with asymmetrical short hair blending white and pastel rainbow gradients, vibrant purple eyeliner, red eyeshadow, glowing cyberware spinal interface ports, and a slender agile silhouette.",
       "identityTokens": [
         "lucy (cyberpunk)",
@@ -30,21 +46,21 @@
         "cyberware",
         "cyberpunk"
       ],
-      "exactTokens": [
-        "lucy (cyberpunk)"
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ],
-      "exactPrefixes": [
-        "lucy_"
-      ],
-      "recommendedEngine": "anima-miaomiao-v1.2",
-      "supportedEngines": [
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
+      "originalName": "Lucy",
       "outfits": [
         {
+          "default": true,
           "id": "netrunner_suit",
+          "isDefault": true,
           "name": "深潜黑客战术紧身衣",
           "prose": "an iconic netrunner combat outfit: cropped high-collar black techwear leather jacket with white line accents, asymmetrical sleeveless white netrunner bodysuit with deep hip cutouts, high-waisted dark shorts, monowire spool on her right wrist, sheer dark stockings, and futuristic over-the-knee thigh-high cyber boots",
           "tokens": [
@@ -61,12 +77,12 @@
             "cyberware",
             "futuristic",
             "netrunner"
-          ],
-          "default": true,
-          "isDefault": true
+          ]
         },
         {
+          "default": false,
           "id": "moon_spacesuit",
+          "isDefault": false,
           "name": "月面愿景轻量宇航服",
           "prose": "a futuristic lunar explorer flight suit: form-fitting white and silver thermo-regulated spacesuit with illuminated cyan telemetry strips, clear bubble helmet rested under one arm, umbilical connector on her hip, and moon dust boots standing on lunar regolith",
           "tokens": [
@@ -79,12 +95,12 @@
             "boots",
             "moon",
             "space"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "cyber_streetwear",
+          "isDefault": false,
           "name": "夜之城街头便装",
           "prose": "casual Night City street techwear: an oversized cropped charcoal sleeveless mesh tank top, low-rise baggy dark techwear cargo joggers with neon straps and utility buckles, high-top sneakers, glowing cybernetic cigarette between her fingers, and a moody neon glow",
           "tokens": [
@@ -99,12 +115,12 @@
             "smoking",
             "streetwear",
             "cyberpunk"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "neon_evening_dress",
+          "isDefault": false,
           "name": "沃森霓虹幻彩吊带裙",
           "prose": "a stunning iridescent metallic silk slip dress reflecting shifting cyan and magenta neon lights, daring thigh-high side slit, delicate fiber-optic choker, sheer black pantyhose, and pointed ankle-strap stiletto heels",
           "tokens": [
@@ -118,13 +134,15 @@
             "black_pantyhose",
             "high_heels",
             "elegant"
-          ],
-          "default": false,
-          "isDefault": false
+          ]
         },
         {
+          "default": false,
           "id": "nsfw_nude",
+          "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
+          "prose": "completely naked, full nudity, pristine pale skin kissed by soft ambient magenta neon glow, small shapely perky breasts with delicate berry-pink nipples, slender athletic midriff, glowing cyberware spinal interface sockets running down her elegant back, exposed pussy, bare legs and bare feet, cinematic high-rise apartment nightscape",
+          "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
             "completely_naked",
@@ -138,34 +156,54 @@
             "cyberware",
             "bare_legs",
             "bare_feet"
-          ],
-          "prose": "completely naked, full nudity, pristine pale skin kissed by soft ambient magenta neon glow, small shapely perky breasts with delicate berry-pink nipples, slender athletic midriff, glowing cyberware spinal interface sockets running down her elegant back, exposed pussy, bare legs and bare feet, cinematic high-rise apartment nightscape",
-          "styleHint": "tender romantic candlelight",
+          ]
+        },
+        {
           "default": false,
-          "isDefault": false
+          "id": "apartment_streetwear_barefoot",
+          "isDefault": false,
+          "name": "安全屋赤足街头便装",
+          "prose": "casual Night City street techwear: an oversized cropped charcoal sleeveless mesh tank top, low-rise baggy dark techwear cargo joggers with neon straps and utility buckles, a glowing cybernetic cigarette between her fingers, and bare feet",
+          "tokens": [
+            "casual",
+            "tank_top",
+            "crop_top",
+            "sleeveless",
+            "cargo_pants",
+            "pants",
+            "cigarette",
+            "smoking",
+            "barefoot",
+            "streetwear",
+            "cyberpunk"
+          ]
+        },
+        {
+          "default": false,
+          "id": "monorail_transit_no_cigarette",
+          "isDefault": false,
+          "name": "磁悬浮车厢扶手便装",
+          "prose": "casual Night City street techwear: an oversized cropped charcoal sleeveless mesh tank top, low-rise baggy dark techwear cargo joggers with neon straps and utility buckles, and high-top sneakers, with no cigarette",
+          "tokens": [
+            "casual",
+            "tank_top",
+            "crop_top",
+            "sleeveless",
+            "cargo_pants",
+            "pants",
+            "sneakers",
+            "streetwear",
+            "cyberpunk"
+          ]
         }
       ],
-      "canon": {
-        "world": "赛博朋克 2077（Cyberpunk 2077）· 夜之城",
-        "era": "近未来高科技低生活时代",
-        "formNotes": "夜之城顶尖网络黑客，曾逃脱荒坂的残酷深潜设施；性格清冷孤傲、内心深情脆弱，始终梦想着前往安宁纯洁的月球表面",
-        "research": "2026-09-02 调研（Danbooru lucy_(cyberpunk) 16000+ posts）"
-      },
-      "animeStudio": "Studio TRIGGER / CD PROJEKT RED style",
-      "curatedArtistStyles": [
-        "yoneyama_mai",
-        "swav",
-        "kappe"
-      ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
+      "recommendedEngine": "anima-miaomiao-v1.2",
+      "supportedEngines": [
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ]
     }
-  ]
+  ],
+  "franchise": "Cyberpunk: Edgerunners",
+  "version": 1
 }

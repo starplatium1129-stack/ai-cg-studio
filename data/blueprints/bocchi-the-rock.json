@@ -1,31 +1,37 @@
 {
-  "version": 2,
-  "franchise": "Bocchi the Rock!",
   "blueprints": [
     {
-      "id": "gotoh_hitori_starry_stage",
-      "title": "后藤一里 · STARRY 舞台觉醒",
+      "action": "低头全神贯注弹奏电吉他，发丝随激烈演奏飘扬",
+      "camera": "medium shot, dynamic low angle",
       "category": "舞台演出",
       "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · STARRY 舞台觉醒】下北泽 STARRY 的地下舞台上，眩目的聚光灯如潮水般打在身上。后藤一里深吸一口气，抱紧怀中的黑金电吉他，手指在指板上如幻影般飞舞，奏出撕裂全场的失真SOLO——「虽然我还是那么害怕社交……但这一刻在舞台上，我想要把心中的全部声音，传达给每一个人！」",
-      "location": "STARRY Livehouse 地下舞台",
-      "action": "低头全神贯注弹奏电吉他，发丝随激烈演奏飘扬",
-      "timeOfDay": "夜晚",
-      "lighting": "炫目舞台顶光与侧面冷蓝射灯",
-      "camera": "medium shot, dynamic low angle",
-      "mood": "激情热烈",
-      "sceneTags": [
-        "live_house",
-        "stage",
-        "spotlight",
-        "electric_guitar",
-        "gibson_les_paul",
-        "guitar_strap",
-        "wristband",
-        "sweat",
-        "flying_sweat_drops",
-        "stage_lights"
+      "coverageTags": [
+        "iconic"
       ],
+      "description": "【后藤一里 · STARRY 舞台觉醒】下北泽 STARRY 的地下舞台上，眩目的聚光灯如潮水般打在身上。后藤一里深吸一口气，抱紧怀中的黑金电吉他，手指在指板上如幻影般飞舞，奏出撕裂全场的失真SOLO——「虽然我还是那么害怕社交……但这一刻在舞台上，我想要把心中的全部声音，传达给每一个人！」",
+      "id": "gotoh_hitori_starry_stage",
+      "lighting": "炫目舞台顶光与侧面冷蓝射灯",
+      "location": "STARRY Livehouse 地下舞台",
+      "mood": "激情热烈",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "lowres",
+        "blurry",
+        "jpeg artifacts",
+        "watermark",
+        "text",
+        "extra fingers",
+        "mutated hands",
+        "bad anatomy",
+        "extra limbs",
+        "deformed",
+        "signature",
+        "nsfw",
+        "nude",
+        "explicit"
+      ],
+      "outfitId": "kessoku_band_live_tshirt",
       "promptProse": "Inside the vibrant STARRY livehouse in Shimokitazawa, Gotoh Hitori performs passionately on stage with her black and gold electric guitar slung across her chest. Intense stage spotlights and cool blue volumetric lighting pierce through rising stage haze, casting radiant rim lights across her messy pink hair and cubic hair clip. She leans forward into the dynamic low angle frame, fingers flying across the guitar fretboard with flying sweat droplets capturing the raw energy of her solo performance. Crisp line art and high contrast concert stage atmosphere deliver a breathtaking anime key visual aesthetic.",
       "promptTokens": [
         "live_house",
@@ -46,6 +52,35 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "live_house",
+        "stage",
+        "spotlight",
+        "electric_guitar",
+        "gibson_les_paul",
+        "guitar_strap",
+        "wristband",
+        "sweat",
+        "flying_sweat_drops",
+        "stage_lights"
+      ],
+      "timeOfDay": "夜晚",
+      "title": "后藤一里 · STARRY 舞台觉醒"
+    },
+    {
+      "action": "蜷坐于壁橱软垫上，头戴耳机专注看吉他谱",
+      "camera": "medium shot, eye level",
+      "category": "现代日常",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【后藤一里 · 壁橱秘密基地】逼仄而充满安全感的卧室壁橱里，四壁贴满了喜爱的摇滚乐队海报与暖黄色小串灯。波奇酱蜷坐在软垫上，头戴专业监听耳机，怀抱吉他专注练琴，眼神温柔又安心——「这里是属于我一个人的安全岛……只有吉他和录音麦克风，不用担心任何人的目光。」",
+      "id": "gotoh_hitori_closet_shelter",
+      "lighting": "暖黄串灯微光与电脑屏幕冷光交融",
+      "location": "家中卧室壁橱内部",
+      "mood": "静谧安详",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -64,35 +99,7 @@
         "nude",
         "explicit"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "kessoku_band_live_tshirt",
-      "coverageTags": [
-        "iconic"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_closet_shelter",
-      "title": "后藤一里 · 壁橱秘密基地",
-      "category": "现代日常",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 壁橱秘密基地】逼仄而充满安全感的卧室壁橱里，四壁贴满了喜爱的摇滚乐队海报与暖黄色小串灯。波奇酱蜷坐在软垫上，头戴专业监听耳机，怀抱吉他专注练琴，眼神温柔又安心——「这里是属于我一个人的安全岛……只有吉他和录音麦克风，不用担心任何人的目光。」",
-      "location": "家中卧室壁橱内部",
-      "action": "蜷坐于壁橱软垫上，头戴耳机专注看吉他谱",
-      "timeOfDay": "夜晚",
-      "lighting": "暖黄串灯微光与电脑屏幕冷光交融",
-      "camera": "medium shot, eye level",
-      "mood": "静谧安详",
-      "sceneTags": [
-        "closet",
-        "bedroom",
-        "fairy_lights",
-        "headphones",
-        "over-ear_headphones",
-        "sheet_music",
-        "posters_on_wall",
-        "sitting",
-        "curled_up"
-      ],
+      "outfitId": "closet_pajamas_casual",
       "promptProse": "Inside a cozy dimly lit bedroom closet sanctuary, Gotoh Hitori sits curled up on a soft floor cushion wearing large monitor headphones and loose pastel loungewear. Warm golden fairy lights and the subtle bluish glow of a laptop screen illuminate the surrounding rock band posters and guitar cables. She cradles her acoustic guitar gently with a peaceful, reflective expression, gazing down at handwritten tablature sheets. Rich interior shadows and gentle rim lighting create an intimate, heartwarming slice-of-life atmosphere.",
       "promptTokens": [
         "closet",
@@ -110,6 +117,34 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "closet",
+        "bedroom",
+        "fairy_lights",
+        "headphones",
+        "over-ear_headphones",
+        "sheet_music",
+        "posters_on_wall",
+        "sitting",
+        "curled_up"
+      ],
+      "timeOfDay": "夜晚",
+      "title": "后藤一里 · 壁橱秘密基地"
+    },
+    {
+      "action": "双手端着托盘微躬身躯，满脸通红眼角带泪",
+      "camera": "cowboy shot, eye level",
+      "category": "校园日常",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【后藤一里 · 文化祭女仆危机】高中文化祭热闹的教室里，波奇酱换上了黑白蕾丝花边的女仆装，双手战战兢兢地端着盛有蛋包饭的餐盘。面对客人的注视，她的脸颊泛起剧烈的红晕，头顶的呆毛剧烈颤抖——「欢、欢迎光临主人……请问要给蛋包饭施加变好吃的魔法吗……呜呜我好想钻进地缝里！」",
+      "id": "gotoh_hitori_school_cultural_maid",
+      "lighting": "教室午后明亮柔和窗光",
+      "location": "秀华高中文化祭班级女仆咖啡厅",
+      "mood": "羞涩慌乱",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -128,36 +163,7 @@
         "nude",
         "explicit"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "closet_pajamas_casual",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_school_cultural_maid",
-      "title": "后藤一里 · 文化祭女仆危机",
-      "category": "校园日常",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 文化祭女仆危机】高中文化祭热闹的教室里，波奇酱换上了黑白蕾丝花边的女仆装，双手战战兢兢地端着盛有蛋包饭的餐盘。面对客人的注视，她的脸颊泛起剧烈的红晕，头顶的呆毛剧烈颤抖——「欢、欢迎光临主人……请问要给蛋包饭施加变好吃的魔法吗……呜呜我好想钻进地缝里！」",
-      "location": "秀华高中文化祭班级女仆咖啡厅",
-      "action": "双手端着托盘微躬身躯，满脸通红眼角带泪",
-      "timeOfDay": "午后",
-      "lighting": "教室午后明亮柔和窗光",
-      "camera": "cowboy shot, eye level",
-      "mood": "羞涩慌乱",
-      "sceneTags": [
-        "classroom",
-        "school_festival",
-        "maid_uniform",
-        "holding_tray",
-        "omelet_rice",
-        "blushing",
-        "heavy_blush",
-        "teary_eyes",
-        "flustered",
-        "shaking"
-      ],
+      "outfitId": "cultural_festival_maid",
       "promptProse": "Inside a festively decorated high school classroom during the cultural festival, Gotoh Hitori stands flustered in a classic black and white frilled maid uniform while timidly balancing a serving tray with ketchup-decorated omurice. Bright sunny afternoon light filters through the classroom windows, casting soft reflections on the chalkboard and chalk art behind her. Her cheeks burn with an intense crimson blush, eyes wide and watery with cute panic as she bows slightly forward in nervous embarrassment. Vibrant pastel colors and delicate line art deliver a charmingly comedic and endearing anime scene.",
       "promptTokens": [
         "classroom",
@@ -176,6 +182,35 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "classroom",
+        "school_festival",
+        "maid_uniform",
+        "holding_tray",
+        "omelet_rice",
+        "blushing",
+        "heavy_blush",
+        "teary_eyes",
+        "flustered",
+        "shaking"
+      ],
+      "timeOfDay": "午后",
+      "title": "后藤一里 · 文化祭女仆危机"
+    },
+    {
+      "action": "缩在长椅一侧抱膝沉思，吉他包靠在身旁",
+      "camera": "medium shot, eye level",
+      "category": "现代日常",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【后藤一里 · 黄昏公园长椅】放学后的静谧街心公园，夕阳将天空染成温柔的金粉色。后藤一里独自坐在木质长椅一角，把下巴深深埋进粉色运动服的高领里，身旁放着心爱的黑色吉他包，静静看着飘落的晚霞落叶——「今天也没有鼓起勇气去搭话……不过，有吉他陪伴的黄昏，似乎也没有那么难熬。」",
+      "id": "gotoh_hitori_park_bench_sunset",
+      "lighting": "金色落日逆光与柔和余晖轮廓光",
+      "location": "社区公园长椅",
+      "mood": "宁静微忧",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -194,35 +229,7 @@
         "nude",
         "explicit"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "cultural_festival_maid",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_park_bench_sunset",
-      "title": "后藤一里 · 黄昏公园长椅",
-      "category": "现代日常",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 黄昏公园长椅】放学后的静谧街心公园，夕阳将天空染成温柔的金粉色。后藤一里独自坐在木质长椅一角，把下巴深深埋进粉色运动服的高领里，身旁放着心爱的黑色吉他包，静静看着飘落的晚霞落叶——「今天也没有鼓起勇气去搭话……不过，有吉他陪伴的黄昏，似乎也没有那么难熬。」",
-      "location": "社区公园长椅",
-      "action": "缩在长椅一侧抱膝沉思，吉他包靠在身旁",
-      "timeOfDay": "黄昏",
-      "lighting": "金色落日逆光与柔和余晖轮廓光",
-      "camera": "medium shot, eye level",
-      "mood": "宁静微忧",
-      "sceneTags": [
-        "park",
-        "park_bench",
-        "sitting",
-        "sunset",
-        "golden_hour",
-        "fallen_leaves",
-        "guitar_case",
-        "backlight",
-        "rim_light"
-      ],
+      "outfitId": "pink_tracksuit",
       "promptProse": "In a peaceful neighborhood park during a breathtaking golden hour sunset, Gotoh Hitori sits quietly on a weathered wooden park bench with her knees drawn slightly up. She buries her chin shyly inside the collar of her oversized pink tracksuit jacket, her black guitar gig bag resting upright against the bench beside her. Golden amber sunlight streams through autumn tree branches, casting long luminous shadows and dazzling rim light across her pink hair and the drifting leaves. The widescreen composition captures a serene, melancholic yet comforting slice-of-life moment.",
       "promptTokens": [
         "park",
@@ -241,6 +248,34 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1536x1152",
+      "sceneTags": [
+        "park",
+        "park_bench",
+        "sitting",
+        "sunset",
+        "golden_hour",
+        "fallen_leaves",
+        "guitar_case",
+        "backlight",
+        "rim_light"
+      ],
+      "timeOfDay": "黄昏",
+      "title": "后藤一里 · 黄昏公园长椅"
+    },
+    {
+      "action": "背着吉他包在街道前行，回首害羞张望",
+      "camera": "cowboy shot, eye level",
+      "category": "现代日常",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "iconic"
+      ],
+      "description": "【后藤一里 · 下北泽街巷漫步】下北泽错落有致的文艺后巷中，涂鸦墙与复古店铺牌匾在午后树影斑驳下交错。波奇酱背着比自己身躯还沉重的黑色吉他包，小心翼翼地沿着路沿石走过，微风吹拂着她粉色的发丝与蓝黄发夹——「去排练室的这条路我已经走过很多次了……但每次心跳还是快得像双踩鼓点一样。」",
+      "id": "gotoh_hitori_shimokitazawa_alley",
+      "lighting": "午后阳光穿透树叶投下斑驳光斑",
+      "location": "下北泽街头后巷",
+      "mood": "羞怯小心",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -259,36 +294,8 @@
         "nude",
         "explicit"
       ],
-      "recommendedSize": "1536x1152",
       "outfitId": "pink_tracksuit",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_shimokitazawa_alley",
-      "title": "后藤一里 · 下北泽街巷漫步",
-      "category": "现代日常",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 下北泽街巷漫步】下北泽错落有致的文艺后巷中，涂鸦墙与复古店铺牌匾在午后树影斑驳下交错。波奇酱背着比自己身躯还沉重的黑色吉他包，小心翼翼地沿着路沿石走过，微风吹拂着她粉色的发丝与蓝黄发夹——「去排练室的这条路我已经走过很多次了……但每次心跳还是快得像双踩鼓点一样。」",
-      "location": "下北泽街头后巷",
-      "action": "背着吉他包在街道前行，回首害羞张望",
-      "timeOfDay": "午后",
-      "lighting": "午后阳光穿透树叶投下斑驳光斑",
-      "camera": "cowboy shot, eye level",
-      "mood": "羞怯小心",
-      "sceneTags": [
-        "shimokitazawa",
-        "city_street",
-        "alley",
-        "carrying_guitar_case",
-        "guitar_case_on_back",
-        "graffiti_wall",
-        "dappled_sunlight",
-        "looking_back",
-        "blushing"
-      ],
-      "promptProse": "Along a picturesque bohemian alleyway in Shimokitazawa, Gotoh Hitori walks cautiously with her heavy black guitar case strapped securely to her back. Dappled afternoon sunlight filters through street trees, projecting soft geometric patterns onto rustic brick walls adorned with indie music posters and stylish graffiti. She turns her head back towards the viewer with a bashful, hesitant blush, her pink hair ribbons fluttering in the gentle city breeze. Rich urban environmental details and warm ambient contrast deliver an authentic anime key visual feel.",
+      "promptProse": "Along a picturesque bohemian alleyway in Shimokitazawa, Gotoh Hitori walks cautiously with her heavy black guitar case strapped securely to her back. Dappled afternoon sunlight filters through street trees, projecting soft geometric patterns onto rustic brick walls adorned with indie music posters and stylish graffiti. She turns her head back towards the viewer with a bashful, hesitant blush, her distinctive blue-and-yellow cubic hair clip catching the gentle city breeze. Rich urban environmental details and warm ambient contrast deliver an authentic anime key visual feel.",
       "promptTokens": [
         "shimokitazawa",
         "city_street",
@@ -304,8 +311,37 @@
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "cubic_hair_clip"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "shimokitazawa",
+        "city_street",
+        "alley",
+        "carrying_guitar_case",
+        "guitar_case_on_back",
+        "graffiti_wall",
+        "dappled_sunlight",
+        "looking_back",
+        "blushing"
+      ],
+      "timeOfDay": "午后",
+      "title": "后藤一里 · 下北泽街巷漫步"
+    },
+    {
+      "action": "双手按住发丝回眸微笑，海风吹起裙角",
+      "camera": "medium shot, eye level",
+      "category": "风景旅行",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【后藤一里 · 江之岛海风】蔚蓝的大海泛着波光粼粼的浪花，江之岛海风卷起白色水手服的裙摆。后藤一里扶着海滨栏杆，双手紧紧按住被风吹乱的发丝，回眸看向镜头，羞涩而灿烂的微笑在夏日晴空下格外动人——「大家一起看到的大海……比我想象中要辽阔几千倍呢。」",
+      "id": "gotoh_hitori_enoshima_beach",
+      "lighting": "夏日海滨明朗阳光与海面高光反光",
+      "location": "江之岛海滨步道",
+      "mood": "明媚开朗",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -324,36 +360,7 @@
         "nude",
         "explicit"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "pink_tracksuit",
-      "coverageTags": [
-        "iconic"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_enoshima_beach",
-      "title": "后藤一里 · 江之岛海风",
-      "category": "风景旅行",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 江之岛海风】蔚蓝的大海泛着波光粼粼的浪花，江之岛海风卷起白色水手服的裙摆。后藤一里扶着海滨栏杆，双手紧紧按住被风吹乱的发丝，回眸看向镜头，羞涩而灿烂的微笑在夏日晴空下格外动人——「大家一起看到的大海……比我想象中要辽阔几千倍呢。」",
-      "location": "江之岛海滨步道",
-      "action": "双手按住发丝回眸微笑，海风吹起裙角",
-      "timeOfDay": "白天",
-      "lighting": "夏日海滨明朗阳光与海面高光反光",
-      "camera": "medium shot, eye level",
-      "mood": "明媚开朗",
-      "sceneTags": [
-        "enoshima",
-        "beach",
-        "ocean",
-        "sea_breeze",
-        "railing",
-        "coastal",
-        "wind_blown_hair",
-        "holding_hair",
-        "shy_smile",
-        "summer_sky"
-      ],
+      "outfitId": "shuka_summer_uniform",
       "promptProse": "On a scenic coastal overlook in Enoshima, Gotoh Hitori stands beside a white sea railing against a vast sparkling azure ocean under a brilliant summer sky. She wears her crisp Shuka High School summer sailor uniform as fresh ocean gusts playfully billow her pleated skirt and long pink hair. She presses both hands gently against her temples to tame her flying bangs, turning to offer a tender, radiant smile illuminated by bright seaside sunlight. Glistening water reflections and vivid sky hues produce an uplifting, cinematic vacation illustration.",
       "promptTokens": [
         "enoshima",
@@ -373,6 +380,35 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "enoshima",
+        "beach",
+        "ocean",
+        "sea_breeze",
+        "railing",
+        "coastal",
+        "wind_blown_hair",
+        "holding_hair",
+        "shy_smile",
+        "summer_sky"
+      ],
+      "timeOfDay": "白天",
+      "title": "后藤一里 · 江之岛海风"
+    },
+    {
+      "action": "坐在天台长椅上咬着筷子凝望天空",
+      "camera": "medium shot, low angle",
+      "category": "校园日常",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "daily"
+      ],
+      "description": "【后藤一里 · 天台午休时光】空旷安静的教学楼天台铁丝网旁，微风拂过蔚蓝天际。后藤一里坐在长椅上打开便当盒，微风掀动水手服的领巾，她咬着筷子望向远方的积雨云，享受着无拘无束的片刻独处——「不用看别人脸色的天台……是世界上最棒的秘密宝座。」",
+      "id": "gotoh_hitori_rooftop_solitude",
+      "lighting": "明媚正午天光与开阔天际反光",
+      "location": "学校教学楼天台边缘",
+      "mood": "自在惬意",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -391,34 +427,7 @@
         "nude",
         "explicit"
       ],
-      "recommendedSize": "1152x1536",
       "outfitId": "shuka_summer_uniform",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_rooftop_solitude",
-      "title": "后藤一里 · 天台午休时光",
-      "category": "校园日常",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 天台午休时光】空旷安静的教学楼天台铁丝网旁，微风拂过蔚蓝天际。后藤一里坐在长椅上打开便当盒，微风掀动水手服的领巾，她咬着筷子望向远方的积雨云，享受着无拘无束的片刻独处——「不用看别人脸色的天台……是世界上最棒的秘密宝座。」",
-      "location": "学校教学楼天台边缘",
-      "action": "坐在天台长椅上咬着筷子凝望天空",
-      "timeOfDay": "白天",
-      "lighting": "明媚正午天光与开阔天际反光",
-      "camera": "medium shot, low angle",
-      "mood": "自在惬意",
-      "sceneTags": [
-        "school_rooftop",
-        "chainlink_fence",
-        "bento_box",
-        "sitting_on_bench",
-        "chopsticks",
-        "cumulonimbus_clouds",
-        "blue_sky",
-        "wind_blown"
-      ],
       "promptProse": "High above the school on a tranquil rooftop beside a tall chain-link fence, Gotoh Hitori sits comfortably on a wooden bench holding an open bento lunchbox. Gentle summer thermals ruffle her navy sailor collar and pink hair as towering white cumulonimbus clouds drift across an endless cobalt sky. She holds a chopstick lightly between her lips while daydreaming with a relaxed, serene expression. Bright natural daylight and deep aerial perspective create a peaceful, expansive slice-of-life anime frame.",
       "promptTokens": [
         "school_rooftop",
@@ -436,6 +445,37 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "school_rooftop",
+        "chainlink_fence",
+        "bento_box",
+        "sitting_on_bench",
+        "chopsticks",
+        "cumulonimbus_clouds",
+        "blue_sky",
+        "wind_blown"
+      ],
+      "timeOfDay": "白天",
+      "title": "后藤一里 · 天台午休时光"
+    },
+    {
+      "action": "全裸斜靠在软垫与吉他箱旁，双腿屈膝大张，手指在湿润私处深处自慰抽插，娇啼喘息",
+      "adult": true,
+      "adultArtistHint": "@mizuryu kei",
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "cowboy shot, medium close-up, vertical framing",
+      "category": "私密情欲",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "special_nsfw"
+      ],
+      "description": "【后藤一里 · 壁橱深处的秘密喘息】狭窄幽闭的壁橱在昏暗暖黄串灯下泛着微红的暧昧光晕。波奇酱浑身赤裸地斜靠在软垫与吉他箱之间，雪白娇躯因极度的情欲而泛起一层剧烈的粉色潮红，丰满耸立的白皙乳房随着急促的喘息剧烈起伏，粉嫩的乳头挺立如樱。她羞耻地咬着指节，双腿自然向两侧屈膝大张，沾满晶莹爱液的修长指尖正在娇嫩的花缝间羞涩抽送，眼神迷离如水——「呜……壁橱里太热了……明明是在弹吉他……身体为什么会变得这么奇怪……」",
+      "id": "gotoh_hitori_r18_closet_desire",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "暖黄色串灯昏暗暧昧光影",
+      "location": "昏暗私密的卧室壁橱内部",
+      "mood": "极度情欲",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -448,44 +488,28 @@
         "mutated hands",
         "bad anatomy",
         "extra limbs",
+        "extra legs",
+        "fused legs",
+        "missing limbs",
+        "bad proportions",
         "deformed",
-        "signature",
-        "nsfw",
-        "nude",
-        "explicit"
+        "signature"
       ],
-      "recommendedSize": "1152x1536",
-      "outfitId": "shuka_summer_uniform",
-      "coverageTags": [
-        "daily"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_r18_closet_desire",
-      "title": "后藤一里 · 壁橱深处的秘密喘息",
-      "category": "私密情欲",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 壁橱深处的秘密喘息】狭窄幽闭的壁橱在昏暗暖黄串灯下泛着微红的暧昧光晕。波奇酱浑身赤裸地斜靠在软垫与吉他箱之间，雪白娇躯因极度的情欲而泛起一层剧烈的粉色潮红，丰满耸立的白皙乳房随着急促的喘息剧烈起伏，粉嫩的乳头挺立如樱。她羞耻地咬着指节，双腿自然向两侧屈膝大张，沾满晶莹爱液的修长指尖正在娇嫩的花缝间羞涩抽送，眼神迷离如水——「呜……壁橱里太热了……明明是在弹吉他……身体为什么会变得这么奇怪……」",
-      "location": "昏暗私密的卧室壁橱内部",
-      "action": "全裸斜靠在软垫与吉他箱旁，双腿屈膝大张，手指在湿润私处深处自慰抽插，娇啼喘息",
-      "timeOfDay": "深夜",
-      "lighting": "暖黄色串灯昏暗暧昧光影",
-      "camera": "cowboy shot, medium close-up, vertical framing",
-      "mood": "极度情欲",
-      "sceneTags": [
-        "closet",
-        "bedroom",
-        "fairy_lights",
-        "dim_lighting",
-        "cushions",
+      "nsfwProse": "Completely nude inside her dim closet between guitar cases in the warm fairy light glow, Gotoh Hitori spreads her thighs and fingers her soaking wet pussy with trembling hands. Her massive bare breasts bounce with each panicked gasp as tears of intense arousal stream down her bright red cheeks.",
+      "nsfwTokens": [
         "completely_nude",
-        "large_breasts",
+        "huge_breasts",
+        "pink_nipples",
+        "on_back",
         "spread_legs",
         "bent_knees",
         "female_masturbation",
-        "fingering",
-        "heavy_blush"
+        "fingering_self",
+        "vaginal_fluids",
+        "heavy_blush",
+        "tears_of_pleasure"
       ],
+      "outfitId": "nsfw_nude",
       "promptProse": "Inside the cozy, secluded darkness of her bedroom closet illuminated by warm yellow fairy lights, Gotoh Hitori reclines completely nude between plush cushions and her hard guitar case. Her porcelain skin is flushed crimson from overwhelming desire, her massive, voluptuous bare breasts heaving with rapid gasps. With her slender legs spread wide, she nervously strokes her soaking wet pink folds with her own trembling fingers, tears of embarrassment and intense pleasure welling in her eyes as love juices coat her fingers.",
       "promptTokens": [
         "closet",
@@ -510,6 +534,42 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "closet",
+        "bedroom",
+        "fairy_lights",
+        "dim_lighting",
+        "cushions",
+        "completely_nude",
+        "large_breasts",
+        "spread_legs",
+        "bent_knees",
+        "female_masturbation",
+        "fingering",
+        "heavy_blush"
+      ],
+      "timeOfDay": "深夜",
+      "title": "后藤一里 · 壁橱深处的秘密喘息"
+    },
+    {
+      "action": "拉开运动服拉链展露爆乳，双手羞耻半遮半掩，面红娇喘",
+      "adult": true,
+      "adultArtistHint": "@asakura maru",
+      "animaStyleHint": "r18_sensual_art",
+      "camera": "medium shot, cowboy shot, eye level",
+      "category": "私密情欲",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "special_nsfw"
+      ],
+      "description": "【后藤一里 · 运动服下的隐藏巨乳】排练结束后的隔音室角落，粉色运动服拉链被一路拉到底，露出毫无内衣束缚的极品爆乳。沉甸甸的雪乳随着心跳微微晃动，粉嫩的乳晕在阴影中若隐若现。波奇酱满脸通红地想要伸手遮掩却欲拒还迎，娇喘连连地看着视线前方的恋人——「请、请不要一直盯着看……我的身材……真的没有那么奇怪啦……」",
+      "id": "gotoh_hitori_r18_tracksuit_unzipped",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "排练室昏暗顶灯与阴影边缘对比",
+      "location": "排练室昏暗器械角落",
+      "mood": "羞耻诱惑",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -529,43 +589,31 @@
         "deformed",
         "signature"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
+      "nsfwProse": "",
       "nsfwTokens": [
-        "completely_nude",
-        "huge_breasts",
+        "pink_tracksuit",
+        "jacket_open",
+        "no_bra",
+        "bare_breasts",
         "pink_nipples",
-        "on_back",
-        "spread_legs",
-        "bent_knees",
-        "female_masturbation",
-        "fingering_self",
-        "vaginal_fluids",
+        "covering_breasts",
         "heavy_blush",
-        "tears_of_pleasure"
+        "shy",
+        "trembling"
       ],
-      "nsfwProse": "Completely nude inside her dim closet between guitar cases in the warm fairy light glow, Gotoh Hitori spreads her thighs and fingers her soaking wet pussy with trembling hands. Her massive bare breasts bounce with each panicked gasp as tears of intense arousal stream down her bright red cheeks.",
-      "adultArtistHint": "@mizuryu kei",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "special_nsfw"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_r18_tracksuit_unzipped",
-      "title": "后藤一里 · 运动服下的隐藏巨乳",
-      "category": "私密情欲",
-      "characterId": "gotoh_hitori",
-      "description": "【后藤一里 · 运动服下的隐藏巨乳】排练结束后的隔音室角落，粉色运动服拉链被一路拉到底，露出毫无内衣束缚的极品爆乳。沉甸甸的雪乳随着心跳微微晃动，粉嫩的乳晕在阴影中若隐若现。波奇酱满脸通红地想要伸手遮掩却欲拒还迎，娇喘连连地看着视线前方的恋人——「请、请不要一直盯着看……我的身材……真的没有那么奇怪啦……」",
-      "location": "排练室昏暗器械角落",
-      "action": "拉开运动服拉链展露爆乳，双手羞耻半遮半掩，面红娇喘",
-      "timeOfDay": "夜晚",
-      "lighting": "排练室昏暗顶灯与阴影边缘对比",
-      "camera": "medium shot, cowboy shot, eye level",
-      "mood": "羞耻诱惑",
+      "outfitId": "pink_tracksuit",
+      "promptProse": "A warm rehearsal spotlight isolates adult, age-twenty-plus Hitori Gotoh alone beside stacked amplifiers. Her oversized pink tracksuit is unzipped and pushed beneath full bare breasts, while one knee folds atop a flight case. She covers one breast with a trembling hand and presses the other beneath loose shorts between her thighs. Long pink hair and blue eyes frame tears, clenched lips and an anxious blush, with her guitar resting safely in its case. Vertical solo portrait, no text or extra people.",
+      "promptTokens": [
+        "rehearsal_room",
+        "amplifier",
+        "cowboy_shot",
+        "detailed_background",
+        "cinematic_lighting",
+        "volumetric_lighting",
+        "depth_of_field"
+      ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
       "sceneTags": [
         "rehearsal_room",
         "soundproof_studio",
@@ -579,16 +627,26 @@
         "covering_breasts",
         "heavy_blush"
       ],
-      "promptProse": "A warm rehearsal spotlight isolates adult, age-twenty-plus Hitori Gotoh alone beside stacked amplifiers. Her oversized pink tracksuit is unzipped and pushed beneath full bare breasts, while one knee folds atop a flight case. She covers one breast with a trembling hand and presses the other beneath loose shorts between her thighs. Long pink hair and blue eyes frame tears, clenched lips and an anxious blush, with her guitar resting safely in its case. Vertical solo portrait, no text or extra people.",
-      "promptTokens": [
-        "rehearsal_room",
-        "amplifier",
-        "cowboy_shot",
-        "detailed_background",
-        "cinematic_lighting",
-        "volumetric_lighting",
-        "depth_of_field"
+      "timeOfDay": "夜晚",
+      "title": "后藤一里 · 运动服下的隐藏巨乳"
+    },
+    {
+      "action": "独坐工作台，一手抓桌沿、一手指交自抚",
+      "adult": true,
+      "adultArtistHint": "@hisasi",
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "first-person pov, cowboy shot, vertical framing",
+      "category": "私密情欲",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "special_nsfw"
       ],
+      "description": "【成年后藤一里 · 私人排练室的女仆装失控】成年一里独自坐在工作台上，女仆围裙卷至腰间，一手抓桌沿、一手在腿间指交自抚，粉发与泪眼映着夕光。",
+      "id": "gotoh_hitori_r18_maid_service",
+      "kreaStyleHint": "r18_elegant_boudoir",
+      "lighting": "黄昏暖橘色夕阳穿透窗帘的斜射光",
+      "location": "文化祭后的空私人工作室角落",
+      "mood": "沉沦娇吟",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -608,54 +666,20 @@
         "deformed",
         "signature"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_sensual_art",
-      "nsfwTokens": [
-        "pink_tracksuit",
-        "jacket_open",
-        "no_bra",
-        "bare_breasts",
-        "pink_nipples",
-        "covering_breasts",
-        "heavy_blush",
-        "shy",
-        "trembling"
-      ],
       "nsfwProse": "",
-      "adultArtistHint": "@asakura maru",
-      "outfitId": "pink_tracksuit",
-      "coverageTags": [
-        "special_nsfw"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_r18_maid_service",
-      "title": "后藤一里 · 女仆装后的特别奉仕",
-      "category": "私密情欲",
-      "characterId": "gotoh_hitori",
-      "description": "【成年后藤一里 · 私人排练室的女仆装失控】成年一里独自坐在工作台上，女仆围裙卷至腰间，一手抓桌沿、一手在腿间指交自抚，粉发与泪眼映着夕光。",
-      "location": "文化祭后的空私人工作室角落",
-      "action": "独坐工作台，一手抓桌沿、一手指交自抚",
-      "timeOfDay": "黄昏",
-      "lighting": "黄昏暖橘色夕阳穿透窗帘的斜射光",
-      "camera": "first-person pov, cowboy shot, vertical framing",
-      "mood": "沉沦娇吟",
-      "sceneTags": [
-        "empty_private_studio",
-        "after_office",
-        "sunset",
-        "golden_hour",
-        "sitting_on_desk",
-        "maid_uniform",
-        "skirt_lift",
+      "nsfwTokens": [
+        "maid_uniform_lifted",
+        "panties_down",
+        "huge_breasts",
+        "pink_nipples",
         "spread_legs",
         "bent_knees",
-        "fingering",
-        "heavy_blush"
+        "pov_fingering",
+        "vaginal_fluids",
+        "heavy_blush",
+        "tears_of_joy"
       ],
+      "outfitId": "cultural_festival_maid",
       "promptProse": "Sunset enters a private post-graduation rehearsal studio where adult Hitori sits alone on a wooden worktable. Her maid-inspired apron is hitched at the waist and bodice loosened below bare breasts, with black underwear around one knee. She grips the tabletop with one hand and fingers herself with the other, love fluids catching the orange light. Pink hair frames blue eyes, bitten knuckles and tearful panic. Vertical solo portrait, no text or extra people.",
       "promptTokens": [
         "empty_private_studio",
@@ -680,6 +704,41 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
+      "recommendedSize": "1152x1536",
+      "sampleRating": "R18",
+      "sceneTags": [
+        "empty_private_studio",
+        "after_office",
+        "sunset",
+        "golden_hour",
+        "sitting_on_desk",
+        "maid_uniform",
+        "skirt_lift",
+        "spread_legs",
+        "bent_knees",
+        "fingering",
+        "heavy_blush"
+      ],
+      "timeOfDay": "黄昏",
+      "title": "后藤一里 · 女仆装后的特别奉仕"
+    },
+    {
+      "action": "独自仰卧分腿，一手抓床单、一手指交至高潮",
+      "adult": true,
+      "adultArtistHint": "@tony taka",
+      "animaStyleHint": "r18_explicit_h_cg",
+      "camera": "high angle, top-down view, vertical foreshortening, pov",
+      "category": "私密情欲",
+      "characterId": "gotoh_hitori",
+      "coverageTags": [
+        "special_nsfw"
+      ],
+      "description": "【成年后藤一里 · 白床单上的私密高潮】成年一里独自仰卧白床单，双腿分开，一手紧抓床褥、另一手在湿润腿间指交，丰满胸部与失神泪眼处于竖幅核心。",
+      "id": "gotoh_hitori_r18_bed_climax",
+      "kreaStyleHint": "r18_sensual_cg",
+      "lighting": "柔和床头台灯暖色侧光与静谧夜色",
+      "location": "卧室凌乱的单人床铺",
+      "mood": "极度绝顶",
       "negativeTokens": [
         "worst quality",
         "low quality",
@@ -699,51 +758,21 @@
         "deformed",
         "signature"
       ],
-      "recommendedSize": "1152x1536",
-      "adult": true,
-      "sampleRating": "R18",
-      "kreaStyleHint": "r18_elegant_boudoir",
-      "animaStyleHint": "r18_explicit_h_cg",
+      "nsfwProse": "",
       "nsfwTokens": [
-        "maid_uniform_lifted",
-        "panties_down",
+        "completely_nude",
         "huge_breasts",
         "pink_nipples",
+        "on_back",
         "spread_legs",
         "bent_knees",
-        "pov_fingering",
-        "vaginal_fluids",
-        "heavy_blush",
-        "tears_of_joy"
-      ],
-      "nsfwProse": "",
-      "adultArtistHint": "@hisasi",
-      "outfitId": "cultural_festival_maid",
-      "coverageTags": [
-        "special_nsfw"
-      ]
-    },
-    {
-      "id": "gotoh_hitori_r18_bed_climax",
-      "title": "后藤一里 · 凌乱床单上的极乐高潮",
-      "category": "私密情欲",
-      "characterId": "gotoh_hitori",
-      "description": "【成年后藤一里 · 白床单上的私密高潮】成年一里独自仰卧白床单，双腿分开，一手紧抓床褥、另一手在湿润腿间指交，丰满胸部与失神泪眼处于竖幅核心。",
-      "location": "卧室凌乱的单人床铺",
-      "action": "独自仰卧分腿，一手抓床单、一手指交至高潮",
-      "timeOfDay": "深夜",
-      "lighting": "柔和床头台灯暖色侧光与静谧夜色",
-      "camera": "high angle, top-down view, vertical foreshortening, pov",
-      "mood": "极度绝顶",
-      "sceneTags": [
-        "bedroom",
-        "bed",
-        "white_sheets",
-        "completely_nude",
-        "spread_legs",
-        "bent_knees",
+        "grabbing_bedsheets",
+        "ahegao",
+        "eyes_rolled_up",
+        "drooling",
         "heavy_blush"
       ],
+      "outfitId": "nsfw_nude",
       "promptProse": "Dim bedroom light surrounds adult Hitori lying alone on white sheets at the peak of private pleasure. Completely nude, she spreads her thighs and grips the bedding with one hand while the other fingers her wet pussy, keeping the frame strictly single-subject. Full breasts flush beneath erect nipples and pink hair fans across the pillow. Blue eyes roll upward through tears as parted lips and saliva capture an overwhelmed expression. Vertical top-down solo portrait, no text or extra people.",
       "promptTokens": [
         "bedroom",
@@ -767,49 +796,21 @@
         "volumetric_lighting",
         "depth_of_field"
       ],
-      "negativeTokens": [
-        "worst quality",
-        "low quality",
-        "lowres",
-        "blurry",
-        "jpeg artifacts",
-        "watermark",
-        "text",
-        "extra fingers",
-        "mutated hands",
-        "bad anatomy",
-        "extra limbs",
-        "extra legs",
-        "fused legs",
-        "missing limbs",
-        "bad proportions",
-        "deformed",
-        "signature"
-      ],
       "recommendedSize": "1152x1536",
-      "adult": true,
       "sampleRating": "R18",
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_explicit_h_cg",
-      "nsfwTokens": [
+      "sceneTags": [
+        "bedroom",
+        "bed",
+        "white_sheets",
         "completely_nude",
-        "huge_breasts",
-        "pink_nipples",
-        "on_back",
         "spread_legs",
         "bent_knees",
-        "grabbing_bedsheets",
-        "ahegao",
-        "eyes_rolled_up",
-        "drooling",
         "heavy_blush"
       ],
-      "nsfwProse": "",
-      "adultArtistHint": "@tony taka",
-      "outfitId": "nsfw_nude",
-      "coverageTags": [
-        "special_nsfw"
-      ]
+      "timeOfDay": "深夜",
+      "title": "后藤一里 · 凌乱床单上的极乐高潮"
     }
-  ]
+  ],
+  "franchise": "Bocchi the Rock!",
+  "version": 2
 }

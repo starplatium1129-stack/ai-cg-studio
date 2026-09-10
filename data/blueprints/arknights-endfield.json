@@ -165,7 +165,7 @@
         "two people"
       ],
       "outfitId": "wasteland_explorer",
-      "promptProse": "At the windswept wasteland of Talos-II at dusk under dusty amber twilight, Perlica navigates the rocky terrain in her hooded khaki explorer coat and cargo pants. She raises one gloved hand to shield her eyes from the swirling grit while checking a glowing tactical survey pad in the other, her sharp cyan-blue gaze fixed on the distant horizon. Weathered sandstone spires, half-buried rusty industrial relics, and swirling dust devils rise against the burning sunset, casting dynamic golden rim highlights across her poised silhouette.",
+      "promptProse": "At the windswept wasteland of Talos-II at dusk, Perlica braces one hand against the communications ornament at her ear and looks toward the distant industrial hub as yellow sand sweeps across the rocky terrain. Her hooded khaki explorer coat, cargo pants and backpack hold steady in the gale while the dust-muted horizon glows amber.",
       "promptTokens": [
         "perlica_(arknights)",
         "1girl",
@@ -183,8 +183,6 @@
         "hiking_boots",
         "backpack",
         "gloves",
-        "survey_pad",
-        "holding_device",
         "wasteland",
         "sandstorm",
         "dust",
@@ -198,7 +196,9 @@
         "cinematic_lighting",
         "volumetric_lighting",
         "dramatic_lighting",
-        "detailed_background"
+        "detailed_background",
+        "hand_on_earpiece",
+        "looking_at_horizon"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
@@ -1110,9 +1110,6 @@
         "nsfw",
         "nude",
         "explicit",
-        "icefield",
-        "snow",
-        "snowstorm",
         "landscape",
         "cityscape",
         "background_people",
@@ -1124,7 +1121,7 @@
         "beach"
       ],
       "outfitId": "standard",
-      "promptProse": "On the vast frozen icefield of Talos-II beneath a cold twilight sky, Laevatain stands resolute against the howling blizzard. Her right hand grips the hilt of the molten greatsword thrust deep into the permafrost, glowing heat from the blade hissing as it melts surrounding snow into rolling plumes of white steam. Her vibrant crimson hair and single-shoulder jacket whip in the freezing gale, sharp purple slit-pupil eyes watching the viewer with fierce confidence. Jagged blue glacial spires, swirling snowdrifts, and faint ribbons of emerald aurora create a deep, dramatic battlefield atmosphere.",
+      "promptProse": "On the frozen icefield of Talos-II, Laevatain strides forward with the molten greatsword balanced over one shoulder. Heat from the blade melts a narrow line of snow into white steam as her red hair and loose jacket whip in the cold wind, while blue glacial spires and snowdrifts recede behind her.",
       "promptTokens": [
         "laevatain_(arknights)",
         "1girl",
@@ -1161,7 +1158,6 @@
         "icefield",
         "glaciers",
         "aurora",
-        "night",
         "outdoor",
         "wind",
         "blowing_snow",
@@ -1171,7 +1167,10 @@
         "cinematic_lighting",
         "volumetric_lighting",
         "depth_of_field",
-        "detailed_background"
+        "detailed_background",
+        "walking",
+        "sword_over_shoulder",
+        "daylight"
       ],
       "recommendedSize": "1216x832",
       "sceneTags": [
@@ -1370,7 +1369,7 @@
       "outfitId": "street_cafe_sweet",
       "promptProse": "Inside the bright Talos-II scifi corridor canteen, she holds up an oversized triple-scoop strawberry matcha ice cream cone in a medium shot from the waist up, the tip just brushing her lips, tail swaying contentedly. Around her: a humming vending machine, stacked drink dispensers, metal lockers, a long counter with steam rising from a hot drinks machine, empty snack stools.",
       "promptTokens": [
-        "full_body",
+        "medium_shot",
         "looking_at_viewer",
         "atmospheric",
         "cinematic_lighting",
@@ -1475,7 +1474,7 @@
         "medium_hair"
       ],
       "outfitId": "obsidian_formal_gown",
-      "promptProse": "On a quiet battlefield ridge at dusk, she sits in a full body shot on her planted greatsword, the gown pooling around her crossed legs, a soft half-smile catching the warm orange sunset. Around her: scorched soil, scattered embers, a tilted banner, broken rifle barrels half-buried in the dirt, distant smoke columns against a violet sky.",
+      "promptProse": "On a quiet battlefield ridge at dusk, Laevatain sits on a broad greatsword laid horizontally across the rocks, swinging her legs as the gown pools around them. A soft half-smile catches the warm orange sunset while broken weapons and distant smoke frame the relaxed sword-rest scene.",
       "promptTokens": [
         "full_body",
         "looking_at_viewer",
@@ -1488,9 +1487,10 @@
         "dusk",
         "sunset",
         "warm_light",
-        "sword_planted",
+        "sword_horizontal",
         "sitting",
-        "relaxed"
+        "relaxed",
+        "swinging_legs"
       ],
       "recommendedSize": "1216x832",
       "sceneTags": [

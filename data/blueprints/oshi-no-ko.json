@@ -1151,7 +1151,7 @@
     },
     {
       "action": "抱课本走过走廊",
-      "camera": "medium shot, leaning on window ledge",
+      "camera": "medium shot, walking through the school hallway with textbooks",
       "category": "现代校园",
       "characterId": "kurokawa_akane",
       "coverageTags": [
@@ -1220,19 +1220,19 @@
         "two people"
       ],
       "outfitId": "school_uniform",
-      "promptProse": "Memorizing performance lines from a highlighted script in the quiet school hallway, Akane murmurs with serious, dedicated focus. Clear afternoon window light illuminates her smart, studious posture.",
+      "promptProse": "Walking through the quiet school hallway with a stack of textbooks in her arms, Akane passes the window in clear afternoon light. Her blue-violet hair and school uniform catch the soft geometric shadows as the hallway recedes behind her.",
       "promptTokens": [
         "school_hallway",
-        "holding_script",
         "school_uniform",
-        "memorizing_lines",
         "focused_expression",
         "window_light",
         "medium_shot",
         "detailed_background",
         "cinematic_lighting",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "holding_textbooks",
+        "walking"
       ],
       "recommendedSize": "1152x1536",
       "sceneTags": [
