@@ -450,7 +450,7 @@
     "weather": "秋日晴朗"
   },
   {
-    "animaCaption": "In a medium shot by the large windows of an empty classroom, she looks forward toward the viewer, under soft ambient lighting.",
+    "animaCaption": "In a landscape official-event CG composition inside an empty afternoon classroom, Ayachi Nene raises both clasped hands below her chin and asks the viewer to stay a little longer. Her pleading gentle expression and subtle blush are framed by windblown curtains, the large classroom window and green trees outside.",
     "audit": {
       "attempt": 2,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
@@ -459,7 +459,7 @@
       "reviewer": "direct-vision",
       "seedKey": "official-cg:ocn02:2"
     },
-    "auditRevision": "careful-batch06-2026-08-27",
+    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "官方CG横幅构图",
     "category": "官方CG灵感",
     "char": "nene",
@@ -474,7 +474,7 @@
     "mature": false,
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit",
     "officialCgCandidate": "ocn02",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), direct_eye_contact_with_viewer, front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, windblown_classroom_curtains, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",
