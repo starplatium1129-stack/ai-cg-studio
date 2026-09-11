@@ -6,10 +6,20 @@
  * 对齐过」的场景清单固化为字节级基线；任何后续改动必须显式 --capture 才能过门禁。
  *
  * 用法：
- *   node scripts/maintenance/pin-scene-prompts.js            # 报告漂移（相对最后一次定点修状态）
- *   node scripts/maintenance/pin-scene-prompts.js --apply    # 回滚被批次覆盖的字段到最后一次定点修状态
+ *   node scripts/maintenance/pin-scene-prompts.js            # 报告漂移（默认 --source=auto）
+ *   node scripts/maintenance/pin-scene-prompts.js --apply    # 回滚被批次覆盖的字段到目标来源
  *   node scripts/maintenance/pin-scene-prompts.js --capture  # 以当前工作区为新一版基线（改动须先真实出图自测）
  *   node scripts/maintenance/pin-scene-prompts.js --check    # 门禁：与基线逐字节一致，否则退出码 1
+ *   --source=auto|baseline|history                           # 目标来源，默认 auto
+ *
+ * 目标来源与无历史环境（如浅克隆）：
+ *   auto     优先按历史定点提交定位目标。历史不可用时 --report 降级为 baseline 并打印提示；
+ *            而 --apply 直接失败——宁可不改，也不在不知道目标的情况下写盘。
+ *   baseline 显式以 data/prompt-pinned-scenes.json 为目标，完全不依赖 Git 历史。
+ *   history  强制历史来源，不可用即失败，不降级。
+ * 写盘模式（--apply/--capture）一律先整体校验再落盘：基线为空、条目缺来源、场景不存在或
+ * ID 重复都会在改动任何分片之前报错退出。--capture 沿用既有基线的成员与来源，因此不需要
+ * 历史对象也不会丢条目；它只重写 pinnedAt 与受保护字段，不改变清单范围。
  *
  * PINNED_SOURCES 的判定依据是提交信息（定点xN / 官方CG / 恢复手工 / 按实拍还原），
  * 取值窗口从 2026-08-22 倒推优化批次开始；更早的定点修已被底模换代（v14→v21）淘汰，
@@ -19,7 +29,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const BASELINE_PATH = path.join(ROOT, 'data', 'prompt-pinned-scenes.json');
@@ -59,7 +69,7 @@ function newestSourceByScene() {
   const stampCache = new Map();
   const stampOf = (commit) => {
     if (!stampCache.has(commit)) {
-      stampCache.set(commit, Number(execSync(`git show -s --format=%ct ${commit}`).toString().trim()));
+      stampCache.set(commit, Number(execFileSync('git', ['show', '-s', '--format=%ct', commit], { cwd: ROOT, stdio: 'pipe' }).toString().trim()));
     }
     return stampCache.get(commit);
   };
@@ -87,7 +97,7 @@ function diffFields(current, target) {
 }
 
 function gitScene(commit, id) {
-  const raw = execSync(`git show ${commit}:data/scenes.json`, { maxBuffer: 5e8 }).toString();
+  const raw = execFileSync('git', ['show', `${commit}:data/scenes.json`], { cwd: ROOT, maxBuffer: 5e8, stdio: 'pipe' }).toString();
   return JSON.parse(raw).find((s) => s.id === id) || null;
 }
 
@@ -109,23 +119,63 @@ function loadShards() {
 function indexShards(shards) {
   const out = new Map();
   for (const { file, arr } of shards) {
-    for (const entry of arr) if (entry && entry.id) out.set(entry.id, { file, arr, entry });
+    for (const entry of arr) if (entry && entry.id) {
+      if (out.has(entry.id)) throw new Error(`重复场景 ID: ${entry.id}`);
+      out.set(entry.id, { file, arr, entry });
+    }
   }
   return out;
 }
 
 // ── 主流程 ────────────────────────────────────────────────────────────────
 const mode = process.argv[2] || '--report';
+const source = process.argv.find(arg => arg.startsWith('--source='))?.slice(9) || 'auto';
 
-if (!['--report', '--apply', '--capture', '--check'].includes(mode)) {
-  console.error(`usage: node ${path.basename(__filename)} [--report|--apply|--capture|--check]`);
+function readBaseline() {
+  const payload = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+  if (!payload.scenes || Array.isArray(payload.scenes) || !Object.keys(payload.scenes).length) {
+    throw new Error('定稿基线为空或格式错误，不能降级或覆盖');
+  }
+  for (const [id, entry] of Object.entries(payload.scenes)) {
+    if (!entry || typeof entry !== 'object' || !Array.isArray(entry.pinSource) || !entry.pinSource.length) {
+      throw new Error(`定稿基线 ${id} 缺少有效来源`);
+    }
+  }
+  return payload.scenes;
+}
+
+function resolveTargets() {
+  if (source === 'baseline') return { targets: new Map(Object.entries(readBaseline())), origin: 'baseline' };
+  try {
+    const sources = newestSourceByScene();
+    const targets = new Map();
+    for (const [id, commit] of sources) {
+      if (PNG_AUTHORED.has(id)) continue;
+      const entry = gitScene(commit, id);
+      if (!entry) throw new Error(`${commit} 中缺少 ${id}`);
+      targets.set(id, { ...pick(entry), pinSource: [commit] });
+    }
+    return { targets, origin: 'history' };
+  } catch (error) {
+    if (source === 'history' || mode === '--apply') {
+      throw new Error('历史来源不可用。请补齐 Git 历史；或显式使用 --source=baseline 对齐已保存基线。未写入任何场景。', { cause: error });
+    }
+    console.warn('历史来源不可用；本次报告降级为已保存基线（baseline），不代表历史来源复验。');
+    return { targets: new Map(Object.entries(readBaseline())), origin: 'baseline' };
+  }
+}
+
+try {
+if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto', 'baseline', 'history'].includes(source)
+    || process.argv.slice(3).some(arg => !/^--source=(auto|baseline|history)$/.test(arg))) {
+  console.error(`usage: node ${path.basename(__filename)} [--report|--apply|--capture|--check] [--source=auto|baseline|history]`);
   process.exitCode = 2;
 } else if (mode === '--check') {
   if (!fs.existsSync(BASELINE_PATH)) {
     console.error('baseline 缺失：先运行 --capture 生成 data/prompt-pinned-scenes.json');
     process.exitCode = 1;
   } else {
-    const baseline = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8')).scenes;
+    const baseline = readBaseline();
     const entries = indexShards(loadShards());
     let bad = 0;
     for (const [id, want] of Object.entries(baseline)) {
@@ -144,14 +194,19 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode)) {
   }
 } else if (mode === '--capture') {
   const entries = indexShards(loadShards());
-  const sources = newestSourceByScene();
+  // An existing reviewed baseline owns both membership and provenance. Capturing
+  // its current fields must not require historical Git objects or drop entries.
+  const previous = fs.existsSync(BASELINE_PATH) ? readBaseline() : null;
+  const sources = previous
+    ? new Map(Object.entries(previous).map(([id, entry]) => [id, entry.pinSource]))
+    : new Map([...newestSourceByScene()].map(([id, commit]) => [id, PNG_AUTHORED.has(id) ? ['png-reference'] : [commit]]));
   const scenes = {};
   for (const [id] of sources) {
     const hit = entries.get(id);
     if (!hit) throw new Error(`受保护场景 ${id} 不存在于分片`);
     scenes[id] = {
       ...pick(hit.entry),
-      pinSource: PNG_AUTHORED.has(id) ? ['png-reference'] : [sources.get(id)],
+      pinSource: sources.get(id),
     };
   }
   const payload = {
@@ -165,23 +220,24 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode)) {
   // --report / --apply
   const shards = loadShards();
   const entries = indexShards(shards);
-  const sources = newestSourceByScene();
+  const { targets, origin } = resolveTargets();
+  // Validate the entire operation before changing any shard.
+  for (const [id] of targets) if (!entries.has(id)) throw new Error(`受保护场景 ${id} 不存在于分片；未写入任何场景`);
   const applied = [];
   let drifted = 0;
-  for (const [id, commit] of sources) {
-    if (PNG_AUTHORED.has(id)) continue;
+  for (const [id, version] of targets) {
     const hit = entries.get(id);
-    if (!hit) { console.error(`[missing] ${id}`); continue; }
-    const version = gitScene(commit, id);
-    if (!version) { console.error(`[skip] ${id}: ${commit} 中不存在`); continue; }
     const target = pick(version);
     const drift = diffFields(pick(hit.entry), target);
     if (!drift.length) continue;
     drifted += 1;
-    console.log(`[drift] ${id} source=${commit} fields=${drift.join(',')}`);
+    console.log(`[drift] ${id} source=${origin} fields=${drift.join(',')}`);
     if (mode === '--apply') {
-      Object.assign(hit.entry, target);
-      applied.push(`${id} <- ${commit} (${drift.join(',')})`);
+      for (const field of PIN_FIELDS) {
+        if (target[field] === undefined) delete hit.entry[field];
+        else hit.entry[field] = target[field];
+      }
+      applied.push(`${id} <- ${origin} (${drift.join(',')})`);
     }
   }
   if (mode === '--apply') {
@@ -189,11 +245,15 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode)) {
     for (const { file, arr } of shards) {
       if (touchedFiles.has(file)) fs.writeFileSync(path.join(SHARDS_DIR, file), JSON.stringify(arr, null, 2) + '\n');
     }
-    console.log(`\napplied rollback: ${applied.length}/${sources.size - PNG_AUTHORED.size} scenes, rewrote shard files: ${[...touchedFiles].join(', ')}`);
-    console.log('下一步: npm run scenes:build && npm run precompress && 本工具 --capture 固化新基线');
+    console.log(`\napplied rollback (${origin}): ${applied.length}/${targets.size} scenes, rewrote shard files: ${[...touchedFiles].join(', ')}`);
+    console.log('下一步: npm run scenes:build && 本工具 --check；更新基线前仍须真实出图验证。');
   } else {
     console.log(drifted
-      ? `\n${drifted}/${sources.size - PNG_AUTHORED.size} 条定稿场景与最后一次定点修不一致`
-      : `\n全部 ${sources.size - PNG_AUTHORED.size} 个手工定稿场景一致`);
+      ? `\n${drifted}/${targets.size} 条定稿场景与 ${origin} 不一致`
+      : `\n全部 ${targets.size} 个定稿场景与 ${origin} 一致`);
   }
+}
+} catch (error) {
+  console.error(error.message);
+  process.exitCode = 1;
 }
